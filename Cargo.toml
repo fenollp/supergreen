@@ -1,0 +1,26 @@
+[package]
+name = "rustcbuildx"
+version = "0.1.0"
+authors = ["Pierre Fenoll <pierrefenoll@gmail.com>"]
+categories = [
+	"caching",
+	"compilers",
+	"concurrency",
+	"development-tools::build-utils",
+]
+description = "RUSTC_WRAPPER tool to sandbox cargo builds and execute jobs remotely"
+edition = "2021"
+keywords = [
+	"build",
+	"buildkit",
+	"docker",
+	"DOCKER_HOST",
+	"RUSTC_WRAPPER",
+	"sandbox",
+]
+license = "MIT"
+repository = "https://github.com/fenollp/rustcbuildx"
+
+[dependencies]
+anyhow = "1"
+env_logger = "0.10"
