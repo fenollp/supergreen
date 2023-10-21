@@ -1,0 +1,68 @@
+name: CI
+
+on: [push]
+
+jobs:
+  test:
+    name: tests
+    runs-on: ubuntu-latest
+    steps:
+    - run: docker buildx version
+    - run: DOCKER_BUILDKIT=1 docker --help
+    - run: docker buildx bake --help
+    - run: docker buildx build --help
+    - uses: actions-rs/toolchain@v1
+      with:
+        profile: minimal
+        toolchain: stable
+    - uses: actions/checkout@v3
+    - uses: taiki-e/install-action@nextest
+    - uses: actions-rs/cargo@v1
+      with:
+        command: fetch
+    - uses: actions-rs/cargo@v1
+      with:
+        command: nextest
+        args: run --all-targets --all-features --locked --frozen --offline
+    - uses: actions-rs/cargo@v1
+      with:
+        command: nextest
+        args: run --all-targets --all-features --locked --frozen --offline --release
+
+  fmt:
+    name: cargo fmt
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions-rs/toolchain@v1
+      with:
+        profile: minimal
+        toolchain: nightly
+    - run: rustup component add rustfmt
+    - uses: actions/checkout@v3
+    - uses: actions-rs/cargo@v1
+      with:
+        command: fmt
+        args: --check --all
+
+  clippy:
+    name: cargo clippy
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions-rs/toolchain@v1
+      with:
+        profile: minimal
+        toolchain: stable
+    - run: rustup component add clippy
+    - uses: actions/checkout@v3
+    - uses: actions-rs/cargo@v1
+      with:
+        command: fetch
+    - uses: actions-rs/cargo@v1
+      with:
+        command: clippy
+        args: >
+          --locked --frozen --offline --all-targets --all-features
+          -- -D warnings --no-deps
+          -W clippy::cast_lossless
+          -W clippy::redundant_closure_for_method_calls
+          -W clippy::str_to_string
