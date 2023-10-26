@@ -4,7 +4,7 @@ use std::{
     ffi::OsStr,
     fmt::Write as FmtWrite,
     fs::{self, create_dir_all, read_dir, read_to_string, remove_dir, remove_file, File},
-    io::{BufRead, BufReader, ErrorKind, Write},
+    io::{BufRead, BufReader, ErrorKind},
     path::{Path, PathBuf},
     process::{Command, ExitCode, Stdio},
     unreachable,
@@ -136,10 +136,10 @@ fn bake_rustc(
             _ => bail!("BUG: unexpected crate-type: '{crate_type}'"),
         };
         if crate_type == "proc-macro" {
-            let guard = format!("{crate_externs}_proc-macro");
             // This way crates that depend on this know they must require it as .so
-            create_file(&guard, "").context("Failed to `touch FILE`")?;
-            debug!(target:&krate, "wrote guard {guard}");
+            let guard = format!("{crate_externs}_proc-macro");
+            info!(target:&krate, "opening (RW) {guard}");
+            fs::write(&guard, "").with_context(|| format!("Failed to `touch {guard}`"))?;
         };
 
         let mut short_externs = BTreeSet::new();
@@ -184,13 +184,13 @@ fn bake_rustc(
             }
         }
         {
-            info!(target:&krate, "opening (RW) {crate_externs}");
             let mut shorts = String::new();
             for short_extern in &short_externs {
-                writeln!(shorts, "{short_extern}")?;
+                shorts.push_str(short_extern);
             }
-            create_file(&crate_externs, shorts)
-                .with_context(|| format!("Writing {} crate externs", short_externs.len()))?;
+            info!(target:&krate, "opening (RW) {crate_externs}");
+            fs::write(&crate_externs, shorts)
+                .with_context(|| format!("Failed creating crate externs {crate_externs}"))?;
         }
     }
     let all_externs = all_externs;
@@ -284,7 +284,6 @@ fn bake_rustc(
             format!("toolchain{extra_filename}"));
 
     let mut dockerfile = String::new();
-    writeln!(dockerfile, "# syntax={docker_syntax}")?;
 
     if let Some(toolchain_stage) = &toolchain_stage {
         writeln!(
@@ -478,8 +477,6 @@ COPY --from={rustc_stage} {out_dir}/*{extra_filename}* /"#,
     // TODO: ask upstream `docker buildx bake` for a "dockerfiles" []string bake setting (that concatanates) or some way to inherit multiple dockerfiles (don't forget inlined ones)
     // TODO: ask upstream `docker buildx` for orderless stages (so we can concat Dockerfiles any which way, and save another DAG)
 
-    let mut dockerfile_bis = String::new();
-    writeln!(dockerfile_bis, "# syntax={docker_syntax}")?;
     let mut extern_dockerfiles: BTreeMap<_, _> = bakefiles
         .into_iter()
         .map(|extern_bakefile| -> Result<_> {
@@ -492,6 +489,7 @@ COPY --from={rustc_stage} {out_dir}/*{extra_filename}* /"#,
             Ok((extern_dockerfile, mounts_len))
         })
         .collect::<Result<_>>()?;
+    let mut dockerfile_bis = String::new();
     // Concat dockerfiles from topological sort of the DAG (stages must be defined first, then used)
     // TODO: do     vvvvvvvvv better than this
     for i_mounts in 0..999999usize {
@@ -507,8 +505,10 @@ COPY --from={rustc_stage} {out_dir}/*{extra_filename}* /"#,
         for extern_dockerfile in matching {
             let res = extern_dockerfiles.remove(&extern_dockerfile);
             assert!(res.is_some());
-            info!(target:&krate, "opening (RO) {}", extern_dockerfile.as_path().to_string_lossy());
-            append_skipping_header(&extern_dockerfile, &mut dockerfile_bis)?;
+            info!(target:&krate, "opening (RO) {}", extern_dockerfile.to_string_lossy());
+            fs::write(&extern_dockerfile, &mut dockerfile_bis).with_context(|| {
+                format!("Failed creating dockerfile {}", extern_dockerfile.to_string_lossy())
+            })?;
         }
     }
     if !extern_dockerfiles.is_empty() {
@@ -516,10 +516,12 @@ COPY --from={rustc_stage} {out_dir}/*{extra_filename}* /"#,
     }
     dockerfile_bis.push_str(dockerfile.as_str());
     {
-        let dockerfile_path = Path::new(&target_path)
-            .join(format!("{}.Dockerfile", &extra_filename[1..(extra_filename.len())])); // Drop leading dash
+        let whats_that_fn = &extra_filename[1..(extra_filename.len())]; // Drop leading dash
+        let dockerfile_path = Path::new(&target_path).join(format!("{whats_that_fn}.Dockerfile"));
         info!(target:&krate, "opening (RW) {}", dockerfile_path.to_string_lossy());
-        fs::write(dockerfile_path, dockerfile)?;
+        fs::write(&dockerfile_path, dockerfile).with_context(|| {
+            format!("Failed creating dockerfile {}", dockerfile_path.to_string_lossy())
+        })?;
     }
 
     const TAB: char = '\t';
@@ -541,6 +543,7 @@ target "{out_stage}" {{
         bakefile,
         r#"{TAB}}}
 {TAB}dockerfile-inline = <<DOCKERFILE
+# syntax={docker_syntax}
 {dockerfile_bis}
 DOCKERFILE
 {TAB}network = "none"
@@ -572,8 +575,9 @@ target "{incremental_stage}" {{
 
     let bakefile_path = {
         let bakefile_path = format!("{target_path}/{crate_name}{extra_filename}.hcl");
-        create_file(&bakefile_path, &bakefile).context("Creating final Docker bakefile")?;
-        drop(bakefile); // Don't remove HCL file
+        info!(target:&krate, "opening (RW) {bakefile_path}");
+        fs::write(&bakefile_path, bakefile)
+            .with_context(|| format!("Failed creating bakefile {bakefile_path}"))?; // Don't remove HCL file
         bakefile_path
     };
 
@@ -721,7 +725,7 @@ fn bakefile_and_stage_for_rlib() {
 }
 
 fn bakefile_and_stage(xtern: String, target_path: &str) -> Option<(String, String)> {
-    assert!(xtern.starts_with("lib"));
+    assert!(xtern.starts_with("lib")); // TODO: stop doing that (stripping ^lib)
     let bk = xtern.strip_prefix("lib").and_then(|x| x.split_once('.')).map(|(x, _)| x);
     let sg = bk.and_then(|x| x.split_once('-')).map(|(_, x)| x).map(|x| format!("out-{x}"));
     let bk = bk
@@ -766,21 +770,6 @@ fn hcl_to_dockerfile(hcl: &str) -> PathBuf {
     common.join(format!("{file_name}.Dockerfile"))
 }
 
-fn append_skipping_header<W: FmtWrite>(from: impl AsRef<Path>, to: &mut W) -> Result<()> {
-    let from =
-        File::open(&from).with_context(|| format!("Failed to read from {:?}", from.as_ref()))?;
-
-    for (line, i) in BufReader::new(from).lines().zip(0..) {
-        let line = line?;
-        if i == 0 {
-            assert!(line.starts_with("# syntax=")); // TODO: if that turns out useless, use fs::copy
-            continue;
-        }
-        writeln!(to, "{line}")?;
-    }
-    Ok(())
-}
-
 fn copy_file(f: &Path, cwd: &Path) -> Result<()> {
     let Some(f_dirname) = f.parent() else { bail!("BUG: unexpected f={f:?} cwd={cwd:?}") };
     let dst = cwd.join(f_dirname);
@@ -806,25 +795,5 @@ fn copy_files(dir: &Path, dst: &Path) -> Result<()> {
             }
         }
     }
-    Ok(())
-}
-
-fn create_file(p: impl AsRef<Path>, d: impl AsRef<str>) -> Result<()> {
-    let ctx = || format!("Failed to create {}", p.as_ref().to_string_lossy());
-
-    // Don't OpenOptions::create_new(true) as file may already exist, instead
-    // on (unique) flush(): success only if both contents match exactly
-    //TODO: switcheroo for create new
-    let mut fd = File::options()
-        .read(true)
-        .write(true)
-        .create(true) // TODO: do .create_new(true)
-        .open(p.as_ref())
-        .with_context(ctx)?;
-
-    write!(fd, "{}", d.as_ref()).with_context(ctx)?;
-
-    fd.flush().with_context(ctx)?;
-
     Ok(())
 }
