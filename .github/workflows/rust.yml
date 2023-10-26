@@ -1,8 +1,7 @@
-name: CI
-
 on: [push]
-
+name: CI
 jobs:
+
   test:
     name: tests
     runs-on: ubuntu-latest
