@@ -3,13 +3,14 @@ use std::{
     env,
     ffi::OsStr,
     fmt::Write as FmtWrite,
-    fs::{self, create_dir_all, read_dir, read_to_string, remove_dir, remove_file, File},
+    fs::{self, create_dir_all, read_dir, read_to_string, File},
     io::{BufRead, BufReader, ErrorKind},
     path::{Path, PathBuf},
     process::{Command, ExitCode, Stdio},
     unreachable,
 };
 
+use advisory_lock::{AdvisoryFileLock, FileLockMode};
 use anyhow::{bail, Context, Result};
 use env_logger::Env;
 use log::{debug, error, info};
@@ -89,13 +90,20 @@ fn bake_rustc(
         vsn = env!("CARGO_PKG_VERSION"),
     );
 
-    if is_debug() {
-        // TODO: sequentialize
-        // until (set -o noclobber; echo >/tmp/global.lock) >/dev/null 2>&1; do
-        //     [[ "$(( "$(date +%s)" - "$(stat -c %Y /tmp/global.lock)" ))" -ge 31 ]] && return 4
-        //     sleep .5
-        // done
-    }
+    let global_lock = is_debug()
+        .then(|| -> Result<_> {
+            let global_lock = File::create("/tmp/global.lock")?;
+            global_lock.lock(FileLockMode::Exclusive)?;
+            Ok(global_lock)
+            // // try_lock
+            // // unlock
+            // // TODO: loop + try_lock => abort after 30s-ish of trying
+            //     // until (set -o noclobber; echo >/tmp/global.lock) >/dev/null 2>&1; do
+            //     //     [[ "$(( "$(date +%s)" - "$(stat -c %Y /tmp/global.lock)" ))" -ge 31 ]] && return 4
+            //     //     sleep .5
+            //     // done
+        })
+        .transpose()?;
 
     let docker_image = env::var(RUSTCBUILDX_DOCKER_IMAGE).unwrap_or(DOCKER_IMAGE.to_owned());
     let docker_syntax = env::var(RUSTCBUILDX_DOCKER_SYNTAX).unwrap_or(DOCKER_SYNTAX.to_owned()); // TODO: see if #syntax= is actually needed
@@ -112,6 +120,7 @@ fn bake_rustc(
 
     {
         let p = Path::new(&target_path).join("deps");
+        info!(target:&krate, "ensuring {} exists", p.to_string_lossy());
         create_dir_all(&p)
             .with_context(|| format!("Failed to `mkdir -p {}`", p.to_string_lossy()))?;
     }
@@ -119,6 +128,7 @@ fn bake_rustc(
     let crate_out = env::var("OUT_DIR").ok().and_then(|x| x.ends_with("/out").then_some(x)); // NOTE: not `out_dir`
 
     let full_crate_id = format!("{crate_type}-{crate_name}{extra_filename}");
+    let krate = full_crate_id.as_str();
 
     // https://github.com/rust-lang/cargo/issues/12059
     let mut all_externs = BTreeSet::new();
@@ -127,71 +137,91 @@ fn bake_rustc(
     };
     let crate_externs = externs_prefix(&format!("{crate_name}{extra_filename}"));
 
-    if !file_exists_and_is_not_empty(&crate_externs)
-        .with_context(|| format!("Failed to `test -s {crate_externs}"))?
-    {
-        let ext = match crate_type.as_str() {
-            "lib" => "rmeta".to_owned(),
-            "bin" | "test" | "proc-macro" => "rlib".to_owned(),
-            _ => bail!("BUG: unexpected crate-type: '{crate_type}'"),
-        };
-        if crate_type == "proc-macro" {
-            // This way crates that depend on this know they must require it as .so
-            let guard = format!("{crate_externs}_proc-macro");
-            info!(target:&krate, "opening (RW) {guard}");
-            fs::write(&guard, "").with_context(|| format!("Failed to `touch {guard}`"))?;
-        };
+    // let ext = match crate_type.as_str() {
+    //     "lib" => "rmeta".to_owned(),
+    //     "bin" | "test" | "proc-macro" => "rlib".to_owned(),
+    //     _ => bail!("BUG: unexpected crate-type: '{crate_type}'"),
+    // };
+    // debug!(">>> ext={ext}");
 
-        let mut short_externs = BTreeSet::new();
-        for xtern in &externs {
-            all_externs.insert(xtern.clone());
+    // if crate_type == "proc-macro" {
+    //     // This way crates that depend on this know they must require it as .so
+    //     let guard = format!("{crate_externs}_proc-macro");
+    //     info!(target:&krate, "opening (RW) {guard}");
+    //     fs::write(&guard, "").with_context(|| format!("Failed to `touch {guard}`"))?;
+    // };
 
-            if !xtern.starts_with("lib") {
-                bail!("CONTRACT: cargo gave unexpected extern [^lib]: {xtern:?}")
-            }
-            let xtern = xtern.strip_prefix("lib").expect("PROOF: ~ ^lib");
-            let xtern = if xtern.ends_with(".rlib") {
-                xtern.strip_suffix(".rlib")
-            } else if xtern.ends_with(".rmeta") {
-                xtern.strip_suffix(".rmeta")
-            } else if xtern.ends_with(".so") {
-                xtern.strip_suffix(".so")
-            } else {
-                bail!("CONTRACT: cargo gave unexpected extern: {xtern:?}")
-            }
-            .expect("PROOF: all cases match");
-            short_externs.insert(xtern.to_owned());
+    let mut short_externs = BTreeSet::new();
+    for xtern in &externs {
+        all_externs.insert(xtern.clone());
 
-            let xtern_crate_externs = externs_prefix(xtern);
-            if file_exists_and_is_not_empty(&xtern_crate_externs)
-                .with_context(|| format!("Failed to `test -s {crate_externs}"))?
-            {
-                info!(target:&krate, "opening (RO) {xtern_crate_externs}");
-                let fd = File::open(&xtern_crate_externs)
-                    .with_context(|| format!("Failed to `cat {xtern_crate_externs}`"))?;
-                for line in BufReader::new(fd).lines() {
-                    let transitive =
-                        line.with_context(|| format!("Corrupted {xtern_crate_externs}"))?;
-                    assert_ne!(transitive, "");
-                    let guard = externs_prefix(&format!("{transitive}_proc-macro"));
-                    if file_exists(&guard).with_context(|| format!("Failed to `stat {guard}`"))? {
-                        all_externs.insert(format!("lib{transitive}.so"));
-                    } else {
-                        all_externs.insert(format!("lib{transitive}.{ext}"));
-                    }
-                    short_externs.insert(transitive);
-                }
-            }
+        if !xtern.starts_with("lib") {
+            bail!("CONTRACT: cargo gave unexpected extern [^lib]: {xtern:?}")
         }
+        let xtern = xtern.strip_prefix("lib").expect("PROOF: ~ ^lib");
+        let xtern = if xtern.ends_with(".rlib") {
+            xtern.strip_suffix(".rlib")
+        } else if xtern.ends_with(".rmeta") {
+            xtern.strip_suffix(".rmeta")
+        } else if xtern.ends_with(".so") {
+            xtern.strip_suffix(".so")
+        } else {
+            bail!("CONTRACT: cargo gave unexpected extern: {xtern:?}")
+        }
+        .expect("PROOF: all cases match");
+        short_externs.insert(xtern.to_owned());
+
+        let xtern_crate_externs = externs_prefix(xtern);
+        info!(target:&krate, "checking extern's externs (RO) {xtern_crate_externs}");
+        if file_exists_and_is_not_empty(&xtern_crate_externs)
+            .with_context(|| format!("Failed to `test -s {crate_externs}`"))?
         {
-            let mut shorts = String::new();
-            for short_extern in &short_externs {
-                shorts.push_str(short_extern);
+            info!(target:&krate, "opening crate externs (RO) {xtern_crate_externs}");
+            let fd = File::open(&xtern_crate_externs)
+                .with_context(|| format!("Failed to `cat {xtern_crate_externs}`"))?;
+            for line in BufReader::new(fd).lines() {
+                let transitive =
+                    line.with_context(|| format!("Corrupted {xtern_crate_externs}"))?;
+                assert_ne!(transitive, "");
+
+                // let guard = externs_prefix(&format!("{transitive}_proc-macro"));
+                // info!(target:&krate, "checking extern's guard (RO) {guard}");
+                // let actual_extern =
+                //     if file_exists(&guard).with_context(|| format!("Failed to `stat {guard}`"))? {
+                //         format!("lib{transitive}.so")
+                //     } else {
+                //         format!("lib{transitive}.{ext}")
+                //     };
+
+                let listing = read_dir(Path::new(&target_path).join("deps"))?
+                    .filter_map(std::result::Result::ok)
+                    .map(|p| p.file_name())
+                    .filter(|p| p.to_string_lossy().contains(&transitive))
+                    .filter(|p| !p.to_string_lossy().ends_with(&format!("{transitive}.d")))
+                    .map(|p| p.to_string_lossy().to_string())
+                    .collect::<Vec<_>>();
+                // debug!(target:&krate, ">>> {transitive} all_externs.insert({actual_extern}) but these exist: {listing:?}");
+
+                // all_externs.insert(actual_extern);
+
+                all_externs.extend(listing.into_iter());
+
+                short_externs.insert(transitive);
             }
-            info!(target:&krate, "opening (RW) {crate_externs}");
-            fs::write(&crate_externs, shorts)
-                .with_context(|| format!("Failed creating crate externs {crate_externs}"))?;
         }
+    }
+    info!(target:&krate, "checking externs (RO) {crate_externs}");
+    if !file_exists_and_is_not_empty(&crate_externs)
+        .with_context(|| format!("Failed to `test -s {crate_externs}`"))?
+    {
+        let mut shorts = String::new();
+        for short_extern in &short_externs {
+            shorts.push_str(short_extern);
+            shorts.push('\n');
+        }
+        info!(target:&krate, "writing (RW) externs to {crate_externs}");
+        fs::write(&crate_externs, shorts)
+            .with_context(|| format!("Failed creating crate externs {crate_externs}"))?;
     }
     let all_externs = all_externs;
     if is_debug() {
@@ -272,6 +302,7 @@ fn bake_rustc(
         .as_ref()
         .map(|(_imn, imt)| {
             let p = Path::new(imt).join("rust-toolchain");
+            info!(target:&krate, "checking toolchain file (RO) {}", p.to_string_lossy());
             file_exists_and_is_not_empty(&p).with_context(|| format!("Failed to `test -s {p:?}`"))
         })
         .transpose()?
@@ -329,7 +360,7 @@ WORKDIR {out_dir}"#
                 .output()
                 .with_context(|| format!("Failed calling `git ls-files {pwd}`"))?;
             if !output.status.success() {
-                bail!("Failed `git ls-files {pwd}: {:?}", output.stderr)
+                bail!("Failed `git ls-files {pwd}`: {:?}", output.stderr)
             }
             // TODO: buffer reads to this command's output
             // NOTE: unsorted output lines
@@ -446,7 +477,7 @@ RUN \
         dockerfile,
         r#"    if ! rustc '{args}' {input} >/tmp/stdout 2>/tmp/stderr; then head /tmp/std???; exit 1; fi"#,
         args = args.join("' '"),
-    )?;
+    )?; // TODO: write somewhere else than /tmp
 
     if let Some(incremental) = &incremental {
         writeln!(
@@ -464,6 +495,37 @@ FROM scratch AS {out_stage}
 COPY --from={rustc_stage} {out_dir}/*{extra_filename}* /"#,
     )?;
 
+    let dockerfile = dockerfile; // Drop mut
+    {
+        let whats_that_fn = &extra_filename[1..(extra_filename.len())]; // Drop leading dash
+
+        let dockerfile_path = Path::new(&target_path).join(format!("{whats_that_fn}.Dockerfile"));
+        info!(target:&krate, "opening crate dockerfile (RW) {}", dockerfile_path.to_string_lossy());
+        fs::write(&dockerfile_path, &dockerfile).with_context(|| {
+            format!("Failed creating dockerfile {}", dockerfile_path.to_string_lossy())
+        })?;
+        assert!(read_to_string(&dockerfile_path).is_ok());
+
+        // // From std::fs::write
+        // fn write<P: AsRef<Path>, C: AsRef<[u8]>>(path: P, contents: C) -> Result<()> {
+        //     let path: &Path = path.as_ref();
+        //     let contents: &[u8] = contents.as_ref();
+        //     let ctx = || format!(">>> f {}", line!());
+        //     let mut f = File::create(path).with_context(ctx)?;
+        //     f.write_all(contents).with_context(ctx)?;
+        //     f.flush().with_context(ctx)?;
+        //     f.sync_data().with_context(ctx)?;
+        //     f.sync_all().with_context(ctx)?;
+        //     Ok(())
+        // }
+        // write(&dockerfile_path, &dockerfile).with_context(|| {
+        //     format!("Failed creating dockerfile {} again!", dockerfile_path.to_string_lossy())
+        // })?;
+        // let bytes = read_to_string(&dockerfile_path).map(|x| x.len()).unwrap_or_default();
+        // assert_ne!(bytes, 0);
+        // info!(target:&krate, ">>> successfully wrote {bytes}B to crate dockerfile (RW) {}",  dockerfile_path.to_string_lossy());
+    }
+
     let mut contexts: BTreeMap<_, _> = [
         Some(("rust".to_owned(), docker_image)),
         input_mount.clone(),
@@ -480,7 +542,7 @@ COPY --from={rustc_stage} {out_dir}/*{extra_filename}* /"#,
     let mut extern_dockerfiles: BTreeMap<_, _> = bakefiles
         .into_iter()
         .map(|extern_bakefile| -> Result<_> {
-            info!(target:&krate, "opening (RO) {extern_bakefile}");
+            info!(target:&krate, "opening extern bakefile (RO) {extern_bakefile}");
             let mounts = used_contexts(&extern_bakefile)?;
             let mounts_len = mounts.len();
             contexts.extend(mounts.into_iter());
@@ -491,6 +553,7 @@ COPY --from={rustc_stage} {out_dir}/*{extra_filename}* /"#,
         .collect::<Result<_>>()?;
     let mut dockerfile_bis = String::new();
     // Concat dockerfiles from topological sort of the DAG (stages must be defined first, then used)
+    // Assumes that the more deps a crate has, the later it appears in the deps tree
     // TODO: do     vvvvvvvvv better than this
     for i_mounts in 0..999999usize {
         if extern_dockerfiles.is_empty() {
@@ -502,27 +565,20 @@ COPY --from={rustc_stage} {out_dir}/*{extra_filename}* /"#,
             .map(|(k, _)| k)
             .cloned()
             .collect();
-        for extern_dockerfile in matching {
-            let res = extern_dockerfiles.remove(&extern_dockerfile);
+        for extern_dockerfile_path in matching {
+            let res = extern_dockerfiles.remove(&extern_dockerfile_path);
             assert!(res.is_some());
-            info!(target:&krate, "opening (RO) {}", extern_dockerfile.to_string_lossy());
-            fs::write(&extern_dockerfile, &mut dockerfile_bis).with_context(|| {
-                format!("Failed creating dockerfile {}", extern_dockerfile.to_string_lossy())
+            info!(target:&krate, "opening extern dockerfile (RO) {}", extern_dockerfile_path.to_string_lossy());
+            let extern_dockerfile = read_to_string(&extern_dockerfile_path).with_context(|| {
+                format!("Failed reading dockerfile {}", extern_dockerfile_path.to_string_lossy())
             })?;
+            dockerfile_bis.push_str(extern_dockerfile.as_str());
+            dockerfile_bis.push('\n');
         }
     }
-    if !extern_dockerfiles.is_empty() {
-        bail!("BUG: failed to dereference all transitive Dockerfiles")
-    }
+    assert!(extern_dockerfiles.is_empty());
     dockerfile_bis.push_str(dockerfile.as_str());
-    {
-        let whats_that_fn = &extra_filename[1..(extra_filename.len())]; // Drop leading dash
-        let dockerfile_path = Path::new(&target_path).join(format!("{whats_that_fn}.Dockerfile"));
-        info!(target:&krate, "opening (RW) {}", dockerfile_path.to_string_lossy());
-        fs::write(&dockerfile_path, dockerfile).with_context(|| {
-            format!("Failed creating dockerfile {}", dockerfile_path.to_string_lossy())
-        })?;
-    }
+    drop(dockerfile); // Earlier: write to disk
 
     const TAB: char = '\t';
     let platform = "local".to_owned();
@@ -561,7 +617,7 @@ target "{stdio_stage}" {{
 
     let mut stages = vec![out_stage.as_str(), stdio_stage.as_str()];
     if let Some(incremental) = incremental.as_ref() {
-        stages.push(incremental.as_str());
+        stages.push(incremental_stage.as_str());
         writeln!(
             bakefile,
             r#"
@@ -575,14 +631,13 @@ target "{incremental_stage}" {{
 
     let bakefile_path = {
         let bakefile_path = format!("{target_path}/{crate_name}{extra_filename}.hcl");
-        info!(target:&krate, "opening (RW) {bakefile_path}");
+        info!(target:&krate, "opening (RW) bakefile {bakefile_path}");
         fs::write(&bakefile_path, bakefile)
             .with_context(|| format!("Failed creating bakefile {bakefile_path}"))?; // Don't remove HCL file
         bakefile_path
     };
 
     let mut cmd = Command::new("docker");
-    cmd.stdin(Stdio::null());
     if is_debug() {
         info!(target:&krate, "bakefile: {bakefile_path}");
         debug!(target:&krate, "{bakefile_path} = {data}", data = match read_to_string(&bakefile_path) {
@@ -591,16 +646,14 @@ target "{incremental_stage}" {{
         });
 
         // TODO: multiwriter?
-        cmd.stdout(os_pipe::dup_stdout().context("Failed to dup STDOUT")?)
-            .stderr(os_pipe::dup_stderr().context("Failed to dup STDERR")?)
-            .arg("--debug");
+        cmd.arg("--debug")
+            .stdin(Stdio::null())
+            .stdout(os_pipe::dup_stdout().context("Failed to dup STDOUT")?)
+            .stderr(os_pipe::dup_stderr().context("Failed to dup STDERR")?);
     } else {
-        cmd.stdout(Stdio::null()).stderr(os_pipe::dup_stdout().context("Failed to dup STDOUT")?);
+        cmd.stdin(Stdio::null()).stdout(Stdio::null()).stderr(Stdio::null());
     }
-    cmd.arg("buildx").arg("bake").arg("--file").arg(&bakefile_path);
-    for stage in stages {
-        cmd.arg(stage);
-    }
+    cmd.arg("buildx").arg("bake").arg("--file").arg(&bakefile_path).args(stages);
     let code = cmd
         .output()
         .with_context(|| format!("Failed calling `docker {args:?}`", args = cmd.get_args()))?
@@ -615,24 +668,22 @@ target "{incremental_stage}" {{
         println!("{}", read_to_string(stdio.join("stdout")).context("Failed to copy STDOUT")?);
     }
     if !is_debug() {
-        remove_file(stdio.join("stderr"))
-            .with_context(|| format!("Failed `rm {}/stderr`", stdio.to_string_lossy()))?;
-        remove_file(stdio.join("stdout"))
-            .with_context(|| format!("Failed `rm {}/stdout`", stdio.to_string_lossy()))?;
-        remove_dir(&stdio)
-            .with_context(|| format!("Failed `rmdir {}`", stdio.to_string_lossy()))?;
-        drop(stdio); // Tree was removed
+        drop(stdio); // Removes stdio/std{err,out} files and stdio dir
         if let Some(cwd) = cwd {
             drop(cwd); // Removes tempdir contents
         }
     }
-    if is_debug() {
-        // TODO: sequentialize `rm /tmp/global.lock >/dev/null 2>&1`
+    if let Some(global_lock) = global_lock {
+        global_lock.unlock().context("Failed to unlock")?;
         return exit_code(code);
     } else if code != Some(0) {
+        if true {
+            let _fallback = fallback;
+            return exit_code(code);
+        }
         // Bubble up actual error & outputs
         let res = fallback();
-        error!("A bug was found :O");
+        error!(target:&krate, "A bug was found! {code:?}");
         eprintln!("Found a bug in this script!");
         return res;
     }
@@ -658,18 +709,18 @@ fn file_exists_and_is_not_empty(path: impl AsRef<Path>) -> Result<bool> {
     }
 }
 
-#[inline]
-fn file_exists(path: impl AsRef<Path>) -> Result<bool> {
-    match path.as_ref().metadata().map(|md| md.is_file()) {
-        Ok(b) => Ok(b),
-        Err(e) => {
-            if e.kind() == ErrorKind::NotFound {
-                return Ok(false);
-            }
-            Err(e.into())
-        }
-    }
-}
+// #[inline]
+// fn file_exists(path: impl AsRef<Path>) -> Result<bool> {
+//     match path.as_ref().metadata().map(|md| md.is_file()) {
+//         Ok(b) => Ok(b),
+//         Err(e) => {
+//             if e.kind() == ErrorKind::NotFound {
+//                 return Ok(false);
+//             }
+//             Err(e.into())
+//         }
+//     }
+// }
 
 #[test]
 fn fetches_back_used_contexts() {

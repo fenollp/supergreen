@@ -12,7 +12,7 @@ pub(crate) struct RustcArgs {
     pub(crate) externs: BTreeSet<String>,
 
     /// 1: -C extra-filename=EXTRA_FILENAME
-    pub(crate) extra_filename: String,
+    pub(crate) extra_filename: String, // TODO: use metadata instead: same content modulo dash
 
     /// 0|1: -C incremental=INCREMENTAL
     pub(crate) incremental: Option<String>,
@@ -196,6 +196,12 @@ pub(crate) fn as_rustc(
     } else {
         bail!("BUG: --out-dir path should match /deps$|.+/build/.+: {}", state.out_dir)
     };
+    // TODO: make conversion Dockerfile <> HCL easier (just change extension)
+    // TODO: return path makers through closures
+    // TODO: use https://github.com/camino-rs/camino (
+    //     There are already many systems, such as Cargo, that only support UTF-8 paths. If your own tool interacts with any such system, you can assume that paths are valid UTF-8 without creating any additional burdens on consumers.
+    //   )
+    // TODO: namespace our files: {target_path}/{NS}/{profile}/...
 
     Ok((state, args))
 }
@@ -206,14 +212,22 @@ mod tests {
 
     use crate::parse::{as_rustc, RustcArgs};
 
+    const HOME: &str = "/home/maison";
+    const PWD: &str = "$HOME/⺟/rustcbuildx.git";
+
+    fn as_argument(arg: &str) -> String {
+        arg.to_owned().replace("$PWD", PWD).replace("$HOME", HOME)
+    }
+
+    fn as_arguments(args: &[&str]) -> Vec<String> {
+        args.iter().map(|x| as_argument(x)).collect()
+    }
+
     #[test]
     fn args_when_building_final_binary() {
-        let home = "/home/maison".to_owned();
-        let pwd = "$HOME/⺟/rustcbuildx.git".to_owned();
-
         #[rustfmt::skip]
         // Original ordering per rustc 1.69.0 (84c898d65 2023-04-16)
-        let arguments: Vec<_> = [
+        let arguments= as_arguments(&[
             "$PWD/./dbg/debug/rustcbuildx",                                                   // this
             "$HOME/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/rustc",             // rustc
             "--crate-name", "rustcbuildx",                                                    // state.crate_name
@@ -238,12 +252,9 @@ mod tests {
             "--extern", "mktemp=$PWD/target/debug/deps/libmktemp-b84fe47f0a44f88d.rlib",         // state.externs
             "--extern", "os_pipe=$PWD/target/debug/deps/libos_pipe-f344e452b9bd1c5e.rlib",       // state.externs
             "-C", "link-arg=-fuse-ld=/usr/local/bin/mold",
-        ].into_iter().map(ToOwned::to_owned)
-                     .map(|x|x.replace("$PWD", &pwd))
-                     .map(|x|x.replace("$HOME", &home))
-                     .collect();
+        ]);
 
-        let (st, args) = as_rustc(&pwd, env!("CARGO_PKG_NAME"), arguments.clone(), false).unwrap();
+        let (st, args) = as_rustc(PWD, env!("CARGO_PKG_NAME"), arguments.clone(), false).unwrap();
 
         assert_eq!(
             st,
@@ -260,19 +271,17 @@ mod tests {
                 .map(ToOwned::to_owned)
                 .collect(),
                 extra_filename: "-710b4516f388a5e4".to_owned(),
-                incremental: Some(
-                    "/home/maison/⺟/rustcbuildx.git/target/debug/incremental".to_owned()
-                ),
-                input: "src/main.rs".to_owned(),
-                out_dir: "/home/maison/⺟/rustcbuildx.git/target/debug/deps".to_owned(),
-                target_path: "/home/maison/⺟/rustcbuildx.git/target/debug".to_owned(),
+                incremental: Some(as_argument("$PWD/target/debug/incremental")),
+                input: as_argument("src/main.rs"),
+                out_dir: as_argument("$PWD/target/debug/deps"),
+                target_path: as_argument("$PWD/target/debug"),
             }
         );
 
         #[rustfmt::skip]
-        assert_eq!(args,  [
-                "/home/maison/⺟/rustcbuildx.git/./dbg/debug/rustcbuildx",
-                "/home/maison/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/rustc",
+        assert_eq!(args,  as_arguments(&[
+                "$PWD/./dbg/debug/rustcbuildx",
+                "$HOME/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/rustc",
                 "--crate-name", "rustcbuildx",
                 "--edition", "2021",
                 "--error-format", "json",
@@ -284,25 +293,22 @@ mod tests {
                 "-C", "debuginfo=2",
                 "-C", "metadata=710b4516f388a5e4",
                 "-C", "extra-filename=-710b4516f388a5e4",
-                "--out-dir", "/home/maison/⺟/rustcbuildx.git/target/debug/deps",
-                "-C", "incremental=/home/maison/⺟/rustcbuildx.git/target/debug/incremental",
-                "-L", "dependency=/home/maison/⺟/rustcbuildx.git/target/debug/deps",
-                "--extern", "anyhow=/home/maison/⺟/rustcbuildx.git/target/debug/deps/libanyhow-f96497119bad6f50.rlib",
-                "--extern", "env_logger=/home/maison/⺟/rustcbuildx.git/target/debug/deps/libenv_logger-7e2d283f6e473671.rlib",
-                "--extern", "log=/home/maison/⺟/rustcbuildx.git/target/debug/deps/liblog-27d1dc50ab631e5f.rlib",
-                "--extern", "mktemp=/home/maison/⺟/rustcbuildx.git/target/debug/deps/libmktemp-b84fe47f0a44f88d.rlib",
-                "--extern", "os_pipe=/home/maison/⺟/rustcbuildx.git/target/debug/deps/libos_pipe-f344e452b9bd1c5e.rlib",
-             ].into_iter().map(ToOwned::to_owned).collect::<Vec<_>>());
+                "--out-dir", "$PWD/target/debug/deps",
+                "-C", "incremental=$PWD/target/debug/incremental",
+                "-L", "dependency=$PWD/target/debug/deps",
+                "--extern", "anyhow=$PWD/target/debug/deps/libanyhow-f96497119bad6f50.rlib",
+                "--extern", "env_logger=$PWD/target/debug/deps/libenv_logger-7e2d283f6e473671.rlib",
+                "--extern", "log=$PWD/target/debug/deps/liblog-27d1dc50ab631e5f.rlib",
+                "--extern", "mktemp=$PWD/target/debug/deps/libmktemp-b84fe47f0a44f88d.rlib",
+                "--extern", "os_pipe=$PWD/target/debug/deps/libos_pipe-f344e452b9bd1c5e.rlib",
+             ]));
     }
 
     #[test]
     fn args_when_building_final_test() {
-        let home = "/home/maison".to_owned();
-        let pwd = "$HOME/⺟/rustcbuildx.git".to_owned();
-
         #[rustfmt::skip]
         // Original ordering per rustc 1.69.0 (84c898d65 2023-04-16)
-        let arguments: Vec<_> = [
+        let arguments = as_arguments(&[
             "$PWD/./dbg/debug/rustcbuildx",                                                   // this
             "$HOME/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/rustc",             // rustc
             "--crate-name", "rustcbuildx",                                                    // state.crate_name
@@ -328,12 +334,9 @@ mod tests {
             "--extern", "os_pipe=$PWD/target/debug/deps/libos_pipe-f344e452b9bd1c5e.rlib",
             "--extern", "pretty_assertions=$PWD/target/debug/deps/libpretty_assertions-9fa55d8a39fa5fe3.rlib",
             "-C", "link-arg=-fuse-ld=/usr/local/bin/mold",
-        ].into_iter().map(ToOwned::to_owned)
-                     .map(|x|x.replace("$PWD", &pwd))
-                     .map(|x|x.replace("$HOME", &home))
-                     .collect();
+        ]);
 
-        let (st, args) = as_rustc(&pwd, env!("CARGO_PKG_NAME"), arguments.clone(), false).unwrap();
+        let (st, args) = as_rustc(PWD, env!("CARGO_PKG_NAME"), arguments.clone(), false).unwrap();
 
         assert_eq!(
             st,
@@ -351,19 +354,17 @@ mod tests {
                 .map(ToOwned::to_owned)
                 .collect(),
                 extra_filename: "-7c7a0950383d41d3".to_owned(),
-                incremental: Some(
-                    "/home/maison/⺟/rustcbuildx.git/target/debug/incremental".to_owned()
-                ),
-                input: "src/main.rs".to_owned(),
-                out_dir: "/home/maison/⺟/rustcbuildx.git/target/debug/deps".to_owned(),
-                target_path: "/home/maison/⺟/rustcbuildx.git/target/debug".to_owned(),
+                incremental: Some(as_argument("$PWD/target/debug/incremental")),
+                input: as_argument("src/main.rs"),
+                out_dir: as_argument("$PWD/target/debug/deps"),
+                target_path: as_argument("$PWD/target/debug"),
             }
         );
 
         #[rustfmt::skip]
-        assert_eq!(args,  [
-                "/home/maison/⺟/rustcbuildx.git/./dbg/debug/rustcbuildx",
-                "/home/maison/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/rustc",
+        assert_eq!(args,  as_arguments(&[
+                "$PWD/./dbg/debug/rustcbuildx",
+                "$HOME/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/rustc",
                 "--crate-name", "rustcbuildx",
                 "--edition", "2021",
                 "--error-format", "json",
@@ -375,15 +376,85 @@ mod tests {
                 "--test",
                 "-C", "metadata=7c7a0950383d41d3",
                 "-C", "extra-filename=-7c7a0950383d41d3",
-                "--out-dir", "/home/maison/⺟/rustcbuildx.git/target/debug/deps",
-                "-C", "incremental=/home/maison/⺟/rustcbuildx.git/target/debug/incremental",
-                "-L", "dependency=/home/maison/⺟/rustcbuildx.git/target/debug/deps",
-                "--extern", "anyhow=/home/maison/⺟/rustcbuildx.git/target/debug/deps/libanyhow-f96497119bad6f50.rlib",
-                "--extern", "env_logger=/home/maison/⺟/rustcbuildx.git/target/debug/deps/libenv_logger-7e2d283f6e473671.rlib",
-                "--extern", "log=/home/maison/⺟/rustcbuildx.git/target/debug/deps/liblog-27d1dc50ab631e5f.rlib",
-                "--extern", "mktemp=/home/maison/⺟/rustcbuildx.git/target/debug/deps/libmktemp-b84fe47f0a44f88d.rlib",
-                "--extern", "os_pipe=/home/maison/⺟/rustcbuildx.git/target/debug/deps/libos_pipe-f344e452b9bd1c5e.rlib",
-                "--extern", "pretty_assertions=/home/maison/⺟/rustcbuildx.git/target/debug/deps/libpretty_assertions-9fa55d8a39fa5fe3.rlib",
-             ].into_iter().map(ToOwned::to_owned).collect::<Vec<_>>());
+                "--out-dir", "$PWD/target/debug/deps",
+                "-C", "incremental=$PWD/target/debug/incremental",
+                "-L", "dependency=$PWD/target/debug/deps",
+                "--extern", "anyhow=$PWD/target/debug/deps/libanyhow-f96497119bad6f50.rlib",
+                "--extern", "env_logger=$PWD/target/debug/deps/libenv_logger-7e2d283f6e473671.rlib",
+                "--extern", "log=$PWD/target/debug/deps/liblog-27d1dc50ab631e5f.rlib",
+                "--extern", "mktemp=$PWD/target/debug/deps/libmktemp-b84fe47f0a44f88d.rlib",
+                "--extern", "os_pipe=$PWD/target/debug/deps/libos_pipe-f344e452b9bd1c5e.rlib",
+                "--extern", "pretty_assertions=$PWD/target/debug/deps/libpretty_assertions-9fa55d8a39fa5fe3.rlib",
+             ]));
+    }
+
+    #[test]
+    fn args_when_building_build_script() {
+        #[rustfmt::skip]
+        // Original ordering per rustc 1.69.0 (84c898d65 2023-04-16)
+        let arguments = as_arguments(&[
+            "$PWD/./dbg/debug/rustcbuildx",                                                   // this
+            "$HOME/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/rustc",             // rustc
+            "--crate-name", "build_script_build",                                             // state.crate_name
+            "--edition=2021",
+            "$HOME/.cargo/registry/src/index.crates.io-6f17d22bba15001f/rustix-0.38.20/build.rs", // state.input
+            "--error-format=json",
+            "--json=diagnostic-rendered-ansi,artifacts,future-incompat",
+            "--diagnostic-width=211",
+            "--crate-type", "bin",                                                            // state.crate_type~
+            "--emit=dep-info,link",
+            "-C", "embed-bitcode=no",
+            "--cfg", "'feature=\"alloc\"'",
+            "--cfg", "'feature=\"default\"'",
+            "--cfg", "'feature=\"std\"'",
+            "--cfg", "'feature=\"termios\"'",
+            "--cfg", "'feature=\"use-libc-auxv\"'",
+            "-C", "metadata=c7101a3d6c8e4dce",
+            "-C", "extra-filename=-c7101a3d6c8e4dce",
+            "--out-dir", "$PWD/target/debug/build/rustix-c7101a3d6c8e4dce",                   // state.out_dir =+> state.target_path
+            "-C", "linker=/usr/bin/clang",
+            "-L", "dependency=$PWD/target/debug/deps",
+            "--cap-lints", "warn",
+            "-C", "link-arg=-fuse-ld=/usr/local/bin/mold",
+        ]);
+
+        let (st, args) = as_rustc(PWD, "build_script_build", arguments.clone(), false).unwrap();
+
+        assert_eq!(
+            st,
+            RustcArgs {
+                crate_type: "bin".to_owned(),
+                externs: Default::default(),
+                extra_filename: "-c7101a3d6c8e4dce".to_owned(),
+                incremental: None,
+                input: as_argument("$HOME/.cargo/registry/src/index.crates.io-6f17d22bba15001f/rustix-0.38.20/build.rs"),
+                out_dir: as_argument("$PWD/target/debug/build/rustix-c7101a3d6c8e4dce"),
+                target_path: as_argument("$PWD/target/debug/build/rustix-c7101a3d6c8e4dce"),
+            }
+        );
+
+        #[rustfmt::skip]
+        assert_eq!(args,  as_arguments(&[
+                "$PWD/./dbg/debug/rustcbuildx",
+                "$HOME/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/rustc",
+                "--crate-name", "build_script_build",
+                "--edition", "2021",
+                "--error-format", "json",
+                "--json", "diagnostic-rendered-ansi,artifacts,future-incompat",
+                "--diagnostic-width", "211",
+                "--crate-type", "bin",
+                "--emit", "dep-info,link",
+                "-C", "embed-bitcode=no",
+                "--cfg", "'feature=\"alloc\"'",
+                "--cfg", "'feature=\"default\"'",
+                "--cfg", "'feature=\"std\"'",
+                "--cfg", "'feature=\"termios\"'",
+                "--cfg", "'feature=\"use-libc-auxv\"'",
+                "-C", "metadata=c7101a3d6c8e4dce",
+                "-C", "extra-filename=-c7101a3d6c8e4dce",
+                "--out-dir", "$PWD/target/debug/build/rustix-c7101a3d6c8e4dce",
+                "-L", "dependency=$PWD/target/debug/deps",
+                "--cap-lints", "warn",
+             ]));
     }
 }

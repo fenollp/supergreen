@@ -17,7 +17,7 @@ pub(crate) const DOCKER_IMAGE: &str = "docker-image://docker.io/library/rust:1.7
 // RUN set -eux && apt update && apt install -y libpq-dev libssl3
 // EOF
 
-pub(crate) const DOCKER_SYNTAX: &str = "docker.io/docker/dockerfile:1";
+pub(crate) const DOCKER_SYNTAX: &str = "docker.io/docker/dockerfile:1@sha256:ac85f380a63b13dfcefa89046420e1781752bab202122f8f50032edf31be0021";
 
 pub(crate) const DEBUG: &str = "1";
 
