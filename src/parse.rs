@@ -11,8 +11,8 @@ pub(crate) struct RustcArgs {
     /// 0..: --extern=EXTERN | --extern EXTERN
     pub(crate) externs: BTreeSet<String>,
 
-    /// 1: -C extra-filename=EXTRA_FILENAME
-    pub(crate) extra_filename: String, // TODO: use metadata instead: same content modulo dash
+    /// 1: -C metadata=METADATA
+    pub(crate) metadata: String,
 
     /// 0|1: -C incremental=INCREMENTAL
     pub(crate) incremental: Option<String>,
@@ -96,9 +96,9 @@ pub(crate) fn as_rustc(
 
         match key.as_str() {
             "-C" => match val.split_once('=') {
-                Some(("extra-filename", v)) => {
-                    assert_eq!(state.extra_filename, "");
-                    state.extra_filename = v.to_owned();
+                Some(("metadata", v)) => {
+                    assert_eq!(state.metadata, "");
+                    state.metadata = v.to_owned();
                 }
                 Some(("incremental", v)) => {
                     assert_eq!(state.incremental, None);
@@ -161,7 +161,7 @@ pub(crate) fn as_rustc(
     }
 
     assert!(!state.crate_type.is_empty());
-    assert!(!state.extra_filename.is_empty());
+    assert!(!state.metadata.is_empty());
     assert!(!state.incremental.as_ref().map(String::is_empty).unwrap_or_default()); // MAY be unset: only set on last calls
     assert!(!state.input.is_empty());
     assert!(!state.out_dir.is_empty());
@@ -240,8 +240,8 @@ mod tests {
             "--emit=dep-info,link",
             "-C", "embed-bitcode=no",
             "-C", "debuginfo=2",
-            "-C", "metadata=710b4516f388a5e4",
-            "-C", "extra-filename=-710b4516f388a5e4",                                         // state.extra_filename
+            "-C", "metadata=710b4516f388a5e4",                                                // state.metadata
+            "-C", "extra-filename=-710b4516f388a5e4",
             "--out-dir", "$PWD/target/debug/deps",                                            // state.out_dir =+> state.target_path
             "-C", "linker=/usr/bin/clang",
             "-C", "incremental=$PWD/target/debug/incremental",                                   // state.incremental
@@ -270,7 +270,7 @@ mod tests {
                 .into_iter()
                 .map(ToOwned::to_owned)
                 .collect(),
-                extra_filename: "-710b4516f388a5e4".to_owned(),
+                metadata: "710b4516f388a5e4".to_owned(),
                 incremental: Some(as_argument("$PWD/target/debug/incremental")),
                 input: as_argument("src/main.rs"),
                 out_dir: as_argument("$PWD/target/debug/deps"),
@@ -321,8 +321,8 @@ mod tests {
             "-C", "embed-bitcode=no",
             "-C", "debuginfo=2",
             "--test",
-            "-C", "metadata=7c7a0950383d41d3",
-            "-C", "extra-filename=-7c7a0950383d41d3",                                         // state.extra_filename
+            "-C", "metadata=7c7a0950383d41d3",                                                // state.metadata
+            "-C", "extra-filename=-7c7a0950383d41d3",
             "--out-dir", "$PWD/target/debug/deps",                                            // state.out_dir =+> state.target_path
             "-C", "linker=/usr/bin/clang",
             "-C", "incremental=$PWD/target/debug/incremental",                                // state.incremental
@@ -353,7 +353,7 @@ mod tests {
                 .into_iter()
                 .map(ToOwned::to_owned)
                 .collect(),
-                extra_filename: "-7c7a0950383d41d3".to_owned(),
+                metadata: "7c7a0950383d41d3".to_owned(),
                 incremental: Some(as_argument("$PWD/target/debug/incremental")),
                 input: as_argument("src/main.rs"),
                 out_dir: as_argument("$PWD/target/debug/deps"),
@@ -425,7 +425,7 @@ mod tests {
             RustcArgs {
                 crate_type: "bin".to_owned(),
                 externs: Default::default(),
-                extra_filename: "-c7101a3d6c8e4dce".to_owned(),
+                metadata: "c7101a3d6c8e4dce".to_owned(),
                 incremental: None,
                 input: as_argument("$HOME/.cargo/registry/src/index.crates.io-6f17d22bba15001f/rustix-0.38.20/build.rs"),
                 out_dir: as_argument("$PWD/target/debug/build/rustix-c7101a3d6c8e4dce"),

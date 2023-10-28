@@ -112,7 +112,7 @@ fn bake_rustc(
     info!(target:&krate, "{:?}", st);
     let crate_type = st.crate_type;
     let externs = st.externs;
-    let extra_filename = st.extra_filename;
+    let metadata = st.metadata;
     let incremental = st.incremental;
     let input = st.input;
     let out_dir = st.out_dir;
@@ -127,7 +127,7 @@ fn bake_rustc(
 
     let crate_out = env::var("OUT_DIR").ok().and_then(|x| x.ends_with("/out").then_some(x)); // NOTE: not `out_dir`
 
-    let full_crate_id = format!("{crate_type}-{crate_name}{extra_filename}");
+    let full_crate_id = format!("{crate_type}-{crate_name}-{metadata}");
     let krate = full_crate_id.as_str();
 
     // https://github.com/rust-lang/cargo/issues/12059
@@ -135,7 +135,7 @@ fn bake_rustc(
     let externs_prefix = |part: &str| {
         Path::new(&target_path).join(format!("externs_{part}")).to_string_lossy().to_string()
     };
-    let crate_externs = externs_prefix(&format!("{crate_name}{extra_filename}"));
+    let crate_externs = externs_prefix(&format!("{crate_name}-{metadata}"));
 
     // let ext = match crate_type.as_str() {
     //     "lib" => "rmeta".to_owned(),
@@ -295,9 +295,9 @@ fn bake_rustc(
     };
     assert!(!matches!(input_mount, Some((_,ref x)) if x.ends_with("/.cargo/registry")));
 
-    let incremental_stage = format!("incremental{extra_filename}");
-    let out_stage = format!("out{extra_filename}");
-    let stdio_stage = format!("stdio{extra_filename}");
+    let incremental_stage = format!("incremental-{metadata}");
+    let out_stage = format!("out-{metadata}");
+    let stdio_stage = format!("stdio-{metadata}");
     let toolchain_stage = input_mount
         .as_ref()
         .map(|(_imn, imt)| {
@@ -312,7 +312,7 @@ fn bake_rustc(
             // NOTE: without this, the crate's rust-toolchain gets installed and used and (for the mentioned crate)
             //   fails due to (yet)unknown rustc CLI arg: `error: Unrecognized option: 'diagnostic-width'`
             // e.g. https://github.com/xacrimon/dashmap/blob/v5.4.0/rust-toolchain
-            format!("toolchain{extra_filename}"));
+            format!("toolchain-{metadata}"));
 
     let mut dockerfile = String::new();
 
@@ -492,13 +492,13 @@ COPY --from={rustc_stage} {incremental} /"#,
 COPY --from={rustc_stage} /tmp/stderr /
 COPY --from={rustc_stage} /tmp/stdout /
 FROM scratch AS {out_stage}
-COPY --from={rustc_stage} {out_dir}/*{extra_filename}* /"#,
+COPY --from={rustc_stage} {out_dir}/*-{metadata}* /"#,
     )?;
+    // NOTE: -C extra-filename=-${metadata}
 
     let dockerfile = dockerfile; // Drop mut
     {
-        let whats_that_fn = &extra_filename[1..(extra_filename.len())]; // Drop leading dash
-        let dockerfile_path = Path::new(&target_path).join(format!("{whats_that_fn}.Dockerfile"));
+        let dockerfile_path = Path::new(&target_path).join(format!("{metadata}.Dockerfile"));
         info!(target:&krate, "opening crate dockerfile (RW) {}", dockerfile_path.to_string_lossy());
         fs::write(&dockerfile_path, &dockerfile).with_context(|| {
             format!("Failed creating dockerfile {}", dockerfile_path.to_string_lossy())
@@ -609,7 +609,7 @@ target "{incremental_stage}" {{
     }
 
     let bakefile_path = {
-        let bakefile_path = format!("{target_path}/{crate_name}{extra_filename}.hcl");
+        let bakefile_path = format!("{target_path}/{crate_name}-{metadata}.hcl");
         info!(target:&krate, "opening (RW) bakefile {bakefile_path}");
         fs::write(&bakefile_path, bakefile)
             .with_context(|| format!("Failed creating bakefile {bakefile_path}"))?; // Don't remove HCL file
