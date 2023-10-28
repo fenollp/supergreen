@@ -498,32 +498,11 @@ COPY --from={rustc_stage} {out_dir}/*{extra_filename}* /"#,
     let dockerfile = dockerfile; // Drop mut
     {
         let whats_that_fn = &extra_filename[1..(extra_filename.len())]; // Drop leading dash
-
         let dockerfile_path = Path::new(&target_path).join(format!("{whats_that_fn}.Dockerfile"));
         info!(target:&krate, "opening crate dockerfile (RW) {}", dockerfile_path.to_string_lossy());
         fs::write(&dockerfile_path, &dockerfile).with_context(|| {
             format!("Failed creating dockerfile {}", dockerfile_path.to_string_lossy())
         })?;
-        assert!(read_to_string(&dockerfile_path).is_ok());
-
-        // // From std::fs::write
-        // fn write<P: AsRef<Path>, C: AsRef<[u8]>>(path: P, contents: C) -> Result<()> {
-        //     let path: &Path = path.as_ref();
-        //     let contents: &[u8] = contents.as_ref();
-        //     let ctx = || format!(">>> f {}", line!());
-        //     let mut f = File::create(path).with_context(ctx)?;
-        //     f.write_all(contents).with_context(ctx)?;
-        //     f.flush().with_context(ctx)?;
-        //     f.sync_data().with_context(ctx)?;
-        //     f.sync_all().with_context(ctx)?;
-        //     Ok(())
-        // }
-        // write(&dockerfile_path, &dockerfile).with_context(|| {
-        //     format!("Failed creating dockerfile {} again!", dockerfile_path.to_string_lossy())
-        // })?;
-        // let bytes = read_to_string(&dockerfile_path).map(|x| x.len()).unwrap_or_default();
-        // assert_ne!(bytes, 0);
-        // info!(target:&krate, ">>> successfully wrote {bytes}B to crate dockerfile (RW) {}",  dockerfile_path.to_string_lossy());
     }
 
     let mut contexts: BTreeMap<_, _> = [
@@ -582,7 +561,7 @@ COPY --from={rustc_stage} {out_dir}/*{extra_filename}* /"#,
 
     const TAB: char = '\t';
     let platform = "local".to_owned();
-    let stdio = Temp::new_dir().context("Failed to create tmpdir 'stdio'")?; // TODO: don't drop!
+    let stdio = Temp::new_dir().context("Failed to create tmpdir 'stdio'")?;
     let mut bakefile = String::new();
 
     writeln!(
@@ -591,7 +570,7 @@ COPY --from={rustc_stage} {out_dir}/*{extra_filename}* /"#,
 target "{out_stage}" {{
 {TAB}contexts = {{"#
     )?;
-    let contexts: BTreeMap<_, _> = contexts.into_iter().collect(); // TODO: ordered map earlier
+    let contexts: BTreeMap<_, _> = contexts.into_iter().collect();
     for (name, uri) in contexts {
         writeln!(bakefile, r#"{TAB}{TAB}"{name}" = "{uri}","#)?;
     }
