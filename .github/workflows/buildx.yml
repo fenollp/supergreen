@@ -81,22 +81,19 @@ jobs:
         name: bin-artifact
     - run: | # TODO: whence https://github.com/actions/download-artifact/issues/236
         chmod +x ./rustcbuildx
-        echo RUSTCBUILDX_DEBUG=1 >>"$GITHUB_ENV"
-        echo RUSTC_WRAPPER="$PWD"/rustcbuildx >>"$GITHUB_ENV"
-    - run: |
-        "$RUSTC_WRAPPER" --version | grep rustcbuildx
+        ./rustcbuildx --version | grep rustcbuildx
 
     - name: cargo build net=OFF cache=OFF remote=OFF
-      uses: actions-rs/cargo@v1 # https://github.com/actions-rs/cargo#inputs
-      with:
-        command: -vv build
-        args: --all-targets --all-features --locked --frozen --offline
+      run: |
+        RUSTCBUILDX_DEBUG=1 \
+        RUSTC_WRAPPER="$PWD"/rustcbuildx \
+          cargo -vv build --all-targets --all-features --locked --frozen --offline
 
     - name: cargo build net=OFF cache=ON remote=OFF
-      uses: actions-rs/cargo@v1
-      with:
-        command: -vv build
-        args: --all-targets --all-features --locked --frozen --offline
+      run: |
+        RUSTCBUILDX_DEBUG=1 \
+        RUSTC_WRAPPER="$PWD"/rustcbuildx \
+          cargo -vv build --all-targets --all-features --locked --frozen --offline
 
 
   # single-rustc-call:
