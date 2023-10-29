@@ -72,12 +72,52 @@ fn faillible_main() -> Result<ExitCode> {
     Ok(ExitCode::SUCCESS)
 }
 
+#[test]
+fn passthrough_getting_rust_target_specific_information() {
+    #[rustfmt::skip]
+    let first_few_args = &[
+        "$PWD/rustcbuildx/rustcbuildx",
+        "$HOME/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/rustc",
+        "-",
+        "--crate-name", "___",
+        "--print=file-names",
+        "--crate-type", "bin",
+        "--crate-type", "rlib",
+        "--crate-type", "dylib",
+        "--crate-type", "cdylib",
+        "--crate-type", "staticlib",
+        "--crate-type", "proc-macro",
+        "--print=sysroot",
+        "--print=split-debuginfo",
+        "--print=crate-name",
+        "--print=cfg",
+    ]
+    .into_iter()
+    .take(4)
+    .map(ToOwned::to_owned)
+    .collect::<Vec<String>>();
+
+    let first_few_args = first_few_args.iter().map(String::as_str).collect::<Vec<_>>();
+    assert_eq!(
+        match &first_few_args[..] {
+            [_, _rustc, "-", ..] | [_, _rustc, _ /*driver*/, "-", ..] => 1,
+            [_, _rustc, "--crate-name", _crate_name, ..] => 2,
+            _ => 3,
+        },
+        1
+    );
+}
+
 fn call_rustc<I: Iterator<Item = String>>(rustc: &str, args: fn() -> I) -> Result<ExitCode> {
     // TODO? run within `bake` for consistency
     let argz = || args().collect::<Vec<_>>();
     exit_code(
         Command::new(rustc)
             .args(args())
+            // .stdout(os_pipe::dup_stdout().context("Failed to dup STDOUT")?)
+            .stdin(Stdio::inherit())
+            .stdout(Stdio::inherit())
+            .stderr(Stdio::inherit())
             .spawn()
             .with_context(|| format!("Failed to spawn rustc {rustc} with {:?}", argz()))?
             .wait()
