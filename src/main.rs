@@ -66,7 +66,8 @@ fn faillible_main() -> Result<ExitCode> {
                 e
             });
         }
-        _ => {}
+        // _ => {}
+        _=> if true {            panic!(">>> env::args() = {:?}", env::args())}
     }
 
     Ok(ExitCode::SUCCESS)
@@ -114,6 +115,7 @@ fn call_rustc<I: Iterator<Item = String>>(rustc: &str, args: fn() -> I) -> Resul
     exit_code(
         Command::new(rustc)
             .args(args())
+            //TODO
             // .stdout(os_pipe::dup_stdout().context("Failed to dup STDOUT")?)
             .stdin(Stdio::inherit())
             .stdout(Stdio::inherit())
