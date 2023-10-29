@@ -60,11 +60,11 @@ jobs:
     - uses: docker/setup-buildx-action@v2
 
     - run: |
-      export RUSTCBUILDX_DEBUG=1
-      export PROFILE=${PROFILE:-debug}
-      export CARGO_HOME=${CARGO_HOME:-$HOME/.cargo}
-      export CARGO_TARGET_DIR=${CARGO_TARGET_DIR:-$PWD/_targetWell}
-      ./target/debug/rustcbuildx rustc --crate-name build_script_build --edition=2018 "$CARGO_HOME"/registry/src/github.com-1ecc6299db9ec823/io-lifetimes-1.0.3/build.rs --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --diagnostic-width=211 --crate-type bin --emit=dep-info,link -C embed-bitcode=no -C debuginfo=2 --cfg 'feature="close"' --cfg 'feature="default"' --cfg 'feature="libc"' --cfg 'feature="windows-sys"' -C metadata=5fc4d6e9dda15f11 -C extra-filename=-5fc4d6e9dda15f11 --out-dir "$CARGO_TARGET_DIR/$PROFILE"/build/io-lifetimes-5fc4d6e9dda15f11 -C linker=/usr/bin/clang -L dependency="$CARGO_TARGET_DIR/$PROFILE"/deps --cap-lints allow -C link-arg=-fuse-ld=/usr/local/bin/mold
+        export RUSTCBUILDX_DEBUG=1
+        export PROFILE=${PROFILE:-debug}
+        export CARGO_HOME=${CARGO_HOME:-$HOME/.cargo}
+        export CARGO_TARGET_DIR=${CARGO_TARGET_DIR:-$PWD/_targetWell}
+        ./target/debug/rustcbuildx rustc --crate-name build_script_build --edition=2018 "$CARGO_HOME"/registry/src/github.com-1ecc6299db9ec823/io-lifetimes-1.0.3/build.rs --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --diagnostic-width=211 --crate-type bin --emit=dep-info,link -C embed-bitcode=no -C debuginfo=2 --cfg 'feature="close"' --cfg 'feature="default"' --cfg 'feature="libc"' --cfg 'feature="windows-sys"' -C metadata=5fc4d6e9dda15f11 -C extra-filename=-5fc4d6e9dda15f11 --out-dir "$CARGO_TARGET_DIR/$PROFILE"/build/io-lifetimes-5fc4d6e9dda15f11 -C linker=/usr/bin/clang -L dependency="$CARGO_TARGET_DIR/$PROFILE"/deps --cap-lints allow -C link-arg=-fuse-ld=/usr/local/bin/mold
 
 
   tryin-sequential:
@@ -95,9 +95,9 @@ jobs:
         ls -lha /home/runner/.cargo/registry/src/*/io-lifetimes-1.0.3 || true
         ls -lha /home/runner/.cargo/registry/src/*/io-lifetimes-* || true
     - run: |
-      export RUSTCBUILDX_DEBUG=1
-      export CARGO_TARGET_DIR=$PWD/_target
-      ./target/debug/rustcbuildx
+        export RUSTCBUILDX_DEBUG=1
+        CARGO_TARGET_DIR=_target \
+          ./target/debug/rustcbuildx
 
 
   wrapped-build:
@@ -124,9 +124,9 @@ jobs:
     - uses: docker/setup-buildx-action@v2
 
     - run: |
-      export RUSTCBUILDX_DEBUG=1
-      export RUSTC_WRAPPER=$PWD/target/debug/rustcbuildx
-      cargo -vv build --locked --frozen --offline --all-targets --all-features
+        export RUSTCBUILDX_DEBUG=1
+        export RUSTC_WRAPPER=$PWD/target/debug/rustcbuildx
+        cargo -vv build --locked --frozen --offline --all-targets --all-features
 
 
   wrapped-build-with-target:
@@ -153,7 +153,7 @@ jobs:
     - uses: docker/setup-buildx-action@v2
 
     - run: |
-      export CARGO_TARGET_DIR=$PWD/target
-      export RUSTCBUILDX_DEBUG=1
-      export RUSTC_WRAPPER=$PWD/target/debug/rustcbuildx
-      cargo -vv build --locked --frozen --offline --all-targets --all-features
+        export RUSTCBUILDX_DEBUG=1
+        export RUSTC_WRAPPER=$PWD/target/debug/rustcbuildx
+        CARGO_TARGET_DIR=target \
+          cargo -vv build --locked --frozen --offline --all-targets --all-features

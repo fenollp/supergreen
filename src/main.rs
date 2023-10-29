@@ -53,8 +53,8 @@ fn faillible_main() -> Result<ExitCode> {
 
     let first_few_args = env::args().take(4).collect::<Vec<String>>();
     let first_few_args = first_few_args.iter().map(String::as_str).collect::<Vec<_>>();
-    match first_few_args[..] {
-        [_, rustc, "-", ..] => {
+    match &first_few_args[..] {
+        [_, rustc, "-", ..] | [_, rustc, _ /*driver*/, "-", ..] => {
             return call_rustc(rustc, || env::args().skip(2));
         }
         [_, rustc, "--crate-name", crate_name, ..] => {
