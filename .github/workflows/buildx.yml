@@ -96,7 +96,7 @@ jobs:
         echo RUSTCBUILDX_DEBUG=1 >>"$GITHUB_ENV"
         echo RUSTC_WRAPPER="$PWD"/rustcbuildx >>"$GITHUB_ENV"
         # FIXME
-        ls -lha "$PWD"/rustcbuildx  "$PWD"/rustcbuildx/..  "$PWD"/rustcbuildx/../..
+        ls -lha "$PWD"/rustcbuildx  "$PWD"/rustcbuildx/..  "$PWD"/rustcbuildx/../..||true
         "$PWD"/rustcbuildx --version
     - run: |
         echo $RUSTCBUILDX_DEBUG | grep 1
