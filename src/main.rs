@@ -1,28 +1,34 @@
 use std::{
     collections::{BTreeMap, BTreeSet},
     env,
-    ffi::OsStr,
     fmt::Write as FmtWrite,
     fs::{self, create_dir_all, read_dir, read_to_string, File},
     io::{BufRead, BufReader, ErrorKind},
-    path::{Path, PathBuf},
     process::{Command, ExitCode, Stdio},
     unreachable,
 };
 
 use advisory_lock::{AdvisoryFileLock, FileLockMode};
 use anyhow::{bail, Context, Result};
+use camino::{Utf8Path, Utf8PathBuf};
 use env_logger::Env;
 use log::{debug, error, info};
 use mktemp::Temp;
 
-use crate::envs::{
-    is_debug, DEBUG, DOCKER_IMAGE, DOCKER_SYNTAX, RUSTCBUILDX_DEBUG,
-    RUSTCBUILDX_DEBUG_IF_CRATE_NAME, RUSTCBUILDX_DOCKER_IMAGE, RUSTCBUILDX_DOCKER_SYNTAX,
+use crate::{
+    envs::{
+        is_debug, DEBUG, DOCKER_IMAGE, DOCKER_SYNTAX, RUSTCBUILDX_DEBUG,
+        RUSTCBUILDX_DEBUG_IF_CRATE_NAME, RUSTCBUILDX_DOCKER_IMAGE, RUSTCBUILDX_DOCKER_SYNTAX,
+    },
+    pops::Popped,
 };
-
 mod envs;
 mod parse;
+mod pops;
+
+// NOTE: this RUSTC_WRAPPER program only ever gets called by `cargo`, so we save
+//       ourselves some trouble and assume std::path::{Path, PathBuf} are UTF-8.
+//       Or in the words of this crate: https://github.com/camino-rs/camino/tree/8bec62382e1bce1326ee48f6bf93c46e7a4fde0b#:~:text=there%20are%20already%20many%20systems%2C%20such%20as%20cargo%2C%20that%20only%20support%20utf-8%20paths.%20if%20your%20own%20tool%20interacts%20with%20any%20such%20system%2C%20you%20can%20assume%20that%20paths%20are%20valid%20utf-8%20without%20creating%20any%20additional%20burdens%20on%20consumers.
 
 fn main() -> ExitCode {
     match faillible_main() {
@@ -42,23 +48,25 @@ fn faillible_main() -> Result<ExitCode> {
     }
     if is_debug() {
         env::set_var("RUST_LOG", "debug");
+        env_logger::Builder::from_env(Env::default().default_filter_or("info")).init();
     }
-    env_logger::Builder::from_env(Env::default().default_filter_or("info")).init();
 
-    match &env::args().take(4).collect::<Vec<_>>()[..] {
-        [] | [_] | [_, _] | [_, _, _] => {}
-        [_, rustc, dash, ..] if dash == "-" => {
+    let first_few_args = env::args().take(4).collect::<Vec<String>>();
+    let first_few_args = first_few_args.iter().map(String::as_str).collect::<Vec<_>>();
+    match first_few_args[..] {
+        [_, rustc, "-", ..] => {
             return call_rustc(rustc, || env::args().skip(2));
         }
-        [_, rustc, __crate_name, crate_name, ..] => {
-            assert_eq!(__crate_name, "--crate-name");
-            return bake_rustc(
-                env::current_dir().context("Failed to get $PWD")?.to_string_lossy().as_ref(),
-                crate_name.clone(),
-                env::args().skip(2).collect(),
-                || call_rustc(rustc, || env::args().skip(2)),
-            );
+        [_, rustc, "--crate-name", crate_name, ..] => {
+            return bake_rustc(crate_name, env::args().skip(2).collect(), || {
+                call_rustc(rustc, || env::args().skip(2))
+            })
+            .map_err(|e| {
+                error!(target:crate_name, "Failure: {e}");
+                e
+            });
         }
+        _ => {}
     }
 
     Ok(ExitCode::SUCCESS)
@@ -79,8 +87,7 @@ fn call_rustc<I: Iterator<Item = String>>(rustc: &str, args: fn() -> I) -> Resul
 }
 
 fn bake_rustc(
-    pwd: &str,
-    crate_name: String,
+    crate_name: &str,
     arguments: Vec<String>,
     fallback: impl Fn() -> Result<ExitCode>,
 ) -> Result<ExitCode> {
@@ -93,7 +100,9 @@ fn bake_rustc(
     let global_lock = is_debug()
         .then(|| -> Result<_> {
             let global_lock = File::create("/tmp/global.lock")?;
+            debug!(target:&krate, "getting lock...");
             global_lock.lock(FileLockMode::Exclusive)?;
+            debug!(target:&krate, "... got lock!");
             Ok(global_lock)
             // // try_lock
             // // unlock
@@ -108,7 +117,10 @@ fn bake_rustc(
     let docker_image = env::var(RUSTCBUILDX_DOCKER_IMAGE).unwrap_or(DOCKER_IMAGE.to_owned());
     let docker_syntax = env::var(RUSTCBUILDX_DOCKER_SYNTAX).unwrap_or(DOCKER_SYNTAX.to_owned()); // TODO: see if #syntax= is actually needed
 
-    let (st, args) = parse::as_rustc(pwd, crate_name.as_ref(), arguments, is_debug())?;
+    let pwd = env::current_dir().context("Failed to get $PWD")?;
+    let pwd: Utf8PathBuf = pwd.try_into().context("Path's UTF-8 encoding is corrupted")?;
+
+    let (st, args) = parse::as_rustc(&pwd, crate_name, arguments, is_debug())?;
     info!(target:&krate, "{:?}", st);
     let crate_type = st.crate_type;
     let externs = st.externs;
@@ -119,10 +131,9 @@ fn bake_rustc(
     let target_path = st.target_path;
 
     {
-        let p = Path::new(&target_path).join("deps");
-        info!(target:&krate, "ensuring {} exists", p.to_string_lossy());
-        create_dir_all(&p)
-            .with_context(|| format!("Failed to `mkdir -p {}`", p.to_string_lossy()))?;
+        let p = Utf8Path::new(&target_path).join("deps");
+        info!(target:&krate, "ensuring {p} exists");
+        create_dir_all(&p).with_context(|| format!("Failed to `mkdir -p {p}`"))?;
     }
 
     let crate_out = env::var("OUT_DIR").ok().and_then(|x| x.ends_with("/out").then_some(x)); // NOTE: not `out_dir`
@@ -132,9 +143,7 @@ fn bake_rustc(
 
     // https://github.com/rust-lang/cargo/issues/12059
     let mut all_externs = BTreeSet::new();
-    let externs_prefix = |part: &str| {
-        Path::new(&target_path).join(format!("externs_{part}")).to_string_lossy().to_string()
-    };
+    let externs_prefix = |part: &str| Utf8Path::new(&target_path).join(format!("externs_{part}"));
     let crate_externs = externs_prefix(&format!("{crate_name}-{metadata}"));
 
     // let ext = match crate_type.as_str() {
@@ -172,11 +181,11 @@ fn bake_rustc(
         short_externs.insert(xtern.to_owned());
 
         let xtern_crate_externs = externs_prefix(xtern);
-        info!(target:&krate, "checking extern's externs (RO) {xtern_crate_externs}");
+        info!(target:&krate, "checking (RO) extern's externs {xtern_crate_externs}");
         if file_exists_and_is_not_empty(&xtern_crate_externs)
             .with_context(|| format!("Failed to `test -s {crate_externs}`"))?
         {
-            info!(target:&krate, "opening crate externs (RO) {xtern_crate_externs}");
+            info!(target:&krate, "opening (RO) crate externs {xtern_crate_externs}");
             let fd = File::open(&xtern_crate_externs)
                 .with_context(|| format!("Failed to `cat {xtern_crate_externs}`"))?;
             for line in BufReader::new(fd).lines() {
@@ -185,32 +194,38 @@ fn bake_rustc(
                 assert_ne!(transitive, "");
 
                 // let guard = externs_prefix(&format!("{transitive}_proc-macro"));
-                // info!(target:&krate, "checking extern's guard (RO) {guard}");
+                // info!(target:&krate, "checking (RO) extern's guard {guard}");
                 // let actual_extern =
                 //     if file_exists(&guard).with_context(|| format!("Failed to `stat {guard}`"))? {
                 //         format!("lib{transitive}.so")
                 //     } else {
                 //         format!("lib{transitive}.{ext}")
                 //     };
-
-                let listing = read_dir(Path::new(&target_path).join("deps"))?
-                    .filter_map(std::result::Result::ok)
-                    .map(|p| p.file_name())
-                    .filter(|p| p.to_string_lossy().contains(&transitive))
-                    .filter(|p| !p.to_string_lossy().ends_with(&format!("{transitive}.d")))
-                    .map(|p| p.to_string_lossy().to_string())
-                    .collect::<Vec<_>>();
                 // debug!(target:&krate, ">>> {transitive} all_externs.insert({actual_extern}) but these exist: {listing:?}");
-
                 // all_externs.insert(actual_extern);
 
+                let deps_dir = Utf8Path::new(&target_path).join("deps");
+                info!(target:&krate, "listing existing an extern crate's extern matches {deps_dir}/lib*.*");
+                let listing = read_dir(&deps_dir)
+                    .with_context(|| format!("Failed reading directory {deps_dir}"))?
+                    // TODO: at least context() error
+                    .filter_map(std::result::Result::ok)
+                    .filter_map(|p| {
+                        let p = p.path();
+                        p.file_name().map(|p| p.to_string_lossy().to_string())
+                    })
+                    .filter(|p| p.contains(&transitive))
+                    .filter(|p| !p.ends_with(&format!("{transitive}.d")))
+                    .map(|p| p.to_string())
+                    .collect::<Vec<_>>();
                 all_externs.extend(listing.into_iter());
+                // TODO: move to after for loop
 
                 short_externs.insert(transitive);
             }
         }
     }
-    info!(target:&krate, "checking externs (RO) {crate_externs}");
+    info!(target:&krate, "checking (RO) externs {crate_externs}");
     if !file_exists_and_is_not_empty(&crate_externs)
         .with_context(|| format!("Failed to `test -s {crate_externs}`"))?
     {
@@ -239,90 +254,69 @@ fn bake_rustc(
     }
 
     // Ordering matters
-    let (input_mount, rustc_stage) = {
-        let mut input_pathbuf = <PathBuf>::from(input.clone());
-        // TODO: macro that introduces idents to guard for literals
-        match input_pathbuf.iter().rev().collect::<Vec<_>>()[..] {
-            // TODO: turn matches of literal strings into `if _var1==OsStr::new($var)` guards
-            [lib_rs, src] if src == OsStr::new("src") && lib_rs == OsStr::new("lib.rs") => {
-                (None, format!("final-{full_crate_id}"))
-            }
-            [main_rs, src] if src == OsStr::new("src") && main_rs == OsStr::new("main.rs") => {
-                (None, format!("final-{full_crate_id}"))
-            }
-            [build_rs, basename, ..] if build_rs == OsStr::new("build.rs") => (
-                Some((format!("input_build_rs--{}", basename.to_string_lossy()), {
-                    input_pathbuf.pop();
-                    input_pathbuf.to_string_lossy().to_string()
-                })),
-                format!("build_rs-{full_crate_id}"),
-            ),
-            [lib_rs, src, basename, ..]
-                if src == OsStr::new("src") && lib_rs == OsStr::new("lib.rs") =>
-            {
-                (
-                    Some((format!("input_src_lib_rs--{}", basename.to_string_lossy()), {
-                        input_pathbuf.pop();
-                        input_pathbuf.pop();
-                        input_pathbuf.to_string_lossy().to_string()
-                    })),
-                    format!("src_lib_rs-{full_crate_id}"),
-                )
-            }
-            // e.g. $HOME/.cargo/registry/src/github.com-1ecc6299db9ec823/fnv-1.0.7/lib.rs
-            [lib_rs, basename, ..] if lib_rs == OsStr::new("lib.rs") => (
-                Some((format!("input_lib_rs--{}", basename.to_string_lossy()), {
-                    input_pathbuf.pop();
-                    input_pathbuf.to_string_lossy().to_string()
-                })),
-                format!("lib_rs-{full_crate_id}"),
-            ),
-            // e.g. $HOME/.cargo/registry/src/github.com-1ecc6299db9ec823/untrusted-0.7.1/src/untrusted.rs
-            [rsfile, src, basename, ..]
-                if src == OsStr::new("src") && rsfile.to_string_lossy().ends_with(".rs") =>
-            {
-                (
-                    Some((format!("input_src__rs--{}", basename.to_string_lossy()), {
-                        input_pathbuf.pop();
-                        input_pathbuf.pop();
-                        input_pathbuf.to_string_lossy().to_string()
-                    })),
-                    format!("src__rs-{full_crate_id}"),
-                )
-            }
-            _ => unreachable!("Unexpected input={input}"),
-        }
+    let (input_mount, rustc_stage) = match input.iter().rev().take(4).collect::<Vec<_>>()[..] {
+        ["lib.rs", "src"] => (None, format!("final-{full_crate_id}")),
+        ["main.rs", "src"] => (None, format!("final-{full_crate_id}")),
+        ["build.rs", basename, ..] => (
+            Some((format!("input_build_rs--{basename}"), input.clone().popped(1))),
+            format!("build_rs-{full_crate_id}"),
+        ),
+        ["lib.rs", "src", basename, ..] => (
+            Some((format!("input_src_lib_rs--{basename}"), input.clone().popped(2))),
+            format!("src_lib_rs-{full_crate_id}"),
+        ),
+        // e.g. $HOME/.cargo/registry/src/github.com-1ecc6299db9ec823/fnv-1.0.7/lib.rs
+        ["lib.rs", basename, ..] => (
+            Some((format!("input_lib_rs--{basename}"), input.clone().popped(1))),
+            format!("lib_rs-{full_crate_id}"),
+        ),
+        // e.g. $HOME/.cargo/registry/src/github.com-1ecc6299db9ec823/untrusted-0.7.1/src/untrusted.rs
+        [rsfile, "src", basename, ..] if rsfile.ends_with(".rs") => (
+            Some((format!("input_src__rs--{basename}"), input.clone().popped(2))),
+            format!("src__rs-{full_crate_id}"),
+        ),
+        _ => unreachable!("Unexpected input file {input:?}"),
     };
     assert!(!matches!(input_mount, Some((_,ref x)) if x.ends_with("/.cargo/registry")));
 
     let incremental_stage = format!("incremental-{metadata}");
     let out_stage = format!("out-{metadata}");
     let stdio_stage = format!("stdio-{metadata}");
-    let toolchain_stage = input_mount
-        .as_ref()
-        .map(|(_imn, imt)| {
-            let p = Path::new(imt).join("rust-toolchain");
-            info!(target:&krate, "checking toolchain file (RO) {}", p.to_string_lossy());
-            file_exists_and_is_not_empty(&p).with_context(|| format!("Failed to `test -s {p:?}`"))
-        })
-        .transpose()?
-        .unwrap_or_default()
-        .then(||
-            // https://rust-lang.github.io/rustup/overrides.html
-            // NOTE: without this, the crate's rust-toolchain gets installed and used and (for the mentioned crate)
-            //   fails due to (yet)unknown rustc CLI arg: `error: Unrecognized option: 'diagnostic-width'`
-            // e.g. https://github.com/xacrimon/dashmap/blob/v5.4.0/rust-toolchain
-            format!("toolchain-{metadata}"));
+    // let toolchain = input_mount
+    //     .as_ref()
+    //     .map(|(_imn, imt)| -> Result<Option<String>> {
+    //         let check = |file_name| -> Result<bool> {
+    //             let p = Utf8Path::new(imt).join(file_name);
+    //             info!(target:&krate, "checking (RO) toolchain file {p}");
+    //             file_exists_and_is_not_empty(&p)
+    //                 .with_context(|| format!("Failed to `test -s {p:?}`"))
+    //         };
+    //         for file_name in &["rust-toolchain.toml", "rust-toolchain"] {
+    //             if check(file_name)? {
+    //                 return Ok(Some(file_name.to_owned().to_owned()));
+    //             }
+    //         }
+    //         Ok(None)
+    //     })
+    //     .transpose()?
+    //     .flatten()
+    //     .map(|toolchain_file_name|
+    //         // https://rust-lang.github.io/rustup/overrides.html
+    //         // NOTE: without this, the crate's rust-toolchain gets installed and used and (for the mentioned crate)
+    //         //   fails due to (yet)unknown rustc CLI arg: `error: Unrecognized option: 'diagnostic-width'`
+    //         // e.g. https://github.com/xacrimon/dashmap/blob/v5.4.0/rust-toolchain
+    //         (format!("toolchain-{metadata}"), toolchain_file_name));
 
     let mut dockerfile = String::new();
 
-    if let Some(toolchain_stage) = &toolchain_stage {
-        writeln!(
-            dockerfile,
-            r#"FROM rust AS {toolchain_stage}
-RUN rustup default | cut -d- -f1 >/rustup-toolchain"#
-        )?;
-    }
+    //     const RUSTUP_TOOLCHAIN: &str = "rustup-toolchain";
+    //     if let Some((stage, _)) = toolchain.as_ref() {
+    //         writeln!(
+    //             dockerfile,
+    //             r#"FROM rust AS {stage}
+    // RUN rustup default | cut -d- -f1 >/{RUSTUP_TOOLCHAIN}"#
+    //         )?;
+    //     }
 
     writeln!(
         dockerfile,
@@ -334,7 +328,7 @@ WORKDIR {out_dir}"#
         writeln!(dockerfile, r#"WORKDIR {incremental}"#)?;
     }
 
-    let cwd = if Path::new(&input).is_relative() && input.ends_with(".rs") {
+    let cwd = if input.is_relative() && input.as_str().ends_with(".rs") {
         assert!(
             input_mount.is_none(),
             "TODO: change condition to this if this message doesn't show up (smart)"
@@ -350,13 +344,16 @@ WORKDIR {out_dir}"#
         //     --mount=type=bind,source=Cargo.lock,target=Cargo.lock \
 
         let cwd = Temp::new_dir().context("Failed to create tmpdir 'cwd'")?;
+        let Some(cwd_path) = Utf8Path::from_path(cwd.as_path()) else {
+            bail!("Path's UTF-8 encoding is corrupted: {cwd:?}")
+        };
 
         // TODO: use tmpfs when on *NIX
         // TODO: cache these folders
-        if Path::new(pwd).join(".git").is_dir() {
+        if pwd.join(".git").is_dir() {
             let output = Command::new("git")
                 .arg("ls-files")
-                .arg(pwd)
+                .arg(&pwd)
                 .output()
                 .with_context(|| format!("Failed calling `git ls-files {pwd}`"))?;
             if !output.status.success() {
@@ -365,10 +362,10 @@ WORKDIR {out_dir}"#
             // TODO: buffer reads to this command's output
             // NOTE: unsorted output lines
             for f in String::from_utf8(output.stdout).context("Parsing `git ls-files`")?.lines() {
-                copy_file(Path::new(f), &cwd)?;
+                copy_file(Utf8Path::new(f), cwd_path)?;
             }
         } else {
-            copy_files(Path::new(pwd), &cwd)?;
+            copy_files(&pwd, cwd_path)?;
         }
 
         writeln!(
@@ -400,12 +397,12 @@ RUN \
         )?;
     }
 
-    if let Some(toolchain_stage) = &toolchain_stage {
-        writeln!(
-            dockerfile,
-            r#"  --mount=type=bind,from={toolchain_stage},source=/rustup-toolchain,target=/rustup-toolchain \"#
-        )?;
-    }
+    // if let Some((stage, _file_name)) = toolchain.as_ref() {
+    //     writeln!(
+    //         dockerfile,
+    //         r#"  --mount=type=bind,from={stage},source=/{RUSTUP_TOOLCHAIN},target=/{RUSTUP_TOOLCHAIN} \"#
+    //     )?;
+    // }
 
     debug!(target:&krate, "all_externs = {all_externs:?}");
     assert!(externs.len() <= all_externs.len());
@@ -469,9 +466,10 @@ RUN \
         Ok(())
     })?;
 
-    if toolchain_stage.is_some() {
-        writeln!(dockerfile, r#"    export RUSTUP_TOOLCHAIN="$(cat /rustup-toolchain)" && \"#)?;
-    }
+    // if toolchain.is_some() {
+    //     writeln!(dockerfile, r#"    export RUSTUP_TOOLCHAIN="$(cat /{RUSTUP_TOOLCHAIN})" && \"#)?;
+    //     // TODO: merge with iterator above
+    // }
 
     writeln!(
         dockerfile,
@@ -498,17 +496,16 @@ COPY --from={rustc_stage} {out_dir}/*-{metadata}* /"#,
 
     let dockerfile = dockerfile; // Drop mut
     {
-        let dockerfile_path = Path::new(&target_path).join(format!("{metadata}.Dockerfile"));
-        info!(target:&krate, "opening crate dockerfile (RW) {}", dockerfile_path.to_string_lossy());
-        fs::write(&dockerfile_path, &dockerfile).with_context(|| {
-            format!("Failed creating dockerfile {}", dockerfile_path.to_string_lossy())
-        })?;
+        let dockerfile_path = Utf8Path::new(&target_path).join(format!("{metadata}.Dockerfile"));
+        info!(target:&krate, "opening (RW) crate dockerfile {dockerfile_path}");
+        fs::write(&dockerfile_path, &dockerfile)
+            .with_context(|| format!("Failed creating dockerfile {dockerfile_path}"))?;
     }
 
     let mut contexts: BTreeMap<_, _> = [
         Some(("rust".to_owned(), docker_image)),
-        input_mount.clone(),
-        cwd.as_deref().map(|cwd| ("cwd".to_owned(), cwd.to_string_lossy().to_string())),
+        input_mount.map(|(name, target)| (name, target.to_string())),
+        cwd.as_deref().map(|cwd| ("cwd".to_owned(), cwd.to_string_lossy().to_string())), // lossy but checked earlier
         crate_out.as_deref().map(|crate_out| (crate_out_name(crate_out), crate_out.to_owned())),
     ]
     .into_iter()
@@ -521,7 +518,7 @@ COPY --from={rustc_stage} {out_dir}/*-{metadata}* /"#,
     let mut extern_dockerfiles: BTreeMap<_, _> = bakefiles
         .into_iter()
         .map(|extern_bakefile| -> Result<_> {
-            info!(target:&krate, "opening extern bakefile (RO) {extern_bakefile}");
+            info!(target:&krate, "opening (RO) extern bakefile {extern_bakefile}");
             let mounts = used_contexts(&extern_bakefile)?;
             let mounts_len = mounts.len();
             contexts.extend(mounts.into_iter());
@@ -547,10 +544,9 @@ COPY --from={rustc_stage} {out_dir}/*-{metadata}* /"#,
         for extern_dockerfile_path in matching {
             let res = extern_dockerfiles.remove(&extern_dockerfile_path);
             assert!(res.is_some());
-            info!(target:&krate, "opening extern dockerfile (RO) {}", extern_dockerfile_path.to_string_lossy());
-            let extern_dockerfile = read_to_string(&extern_dockerfile_path).with_context(|| {
-                format!("Failed reading dockerfile {}", extern_dockerfile_path.to_string_lossy())
-            })?;
+            info!(target:&krate, "opening (RO) extern dockerfile {extern_dockerfile_path}");
+            let extern_dockerfile = read_to_string(&extern_dockerfile_path)
+                .with_context(|| format!("Failed reading dockerfile {extern_dockerfile_path}"))?;
             dockerfile_bis.push_str(extern_dockerfile.as_str());
             dockerfile_bis.push('\n');
         }
@@ -559,9 +555,13 @@ COPY --from={rustc_stage} {out_dir}/*-{metadata}* /"#,
     dockerfile_bis.push_str(dockerfile.as_str());
     drop(dockerfile); // Earlier: write to disk
 
+    let stdio = Temp::new_dir().context("Failed to create tmpdir 'stdio'")?;
+    let Some(stdio_path) = Utf8Path::from_path(stdio.as_path()) else {
+        bail!("Path's UTF-8 encoding is corrupted: {stdio:?}")
+    };
+
     const TAB: char = '\t';
     let platform = "local".to_owned();
-    let stdio = Temp::new_dir().context("Failed to create tmpdir 'stdio'")?;
     let mut bakefile = String::new();
 
     writeln!(
@@ -588,10 +588,9 @@ DOCKERFILE
 }}
 target "{stdio_stage}" {{
 {TAB}inherits = ["{out_stage}"]
-{TAB}output = ["{stdio}"]
+{TAB}output = ["{stdio_path}"]
 {TAB}target = "{stdio_stage}"
 }}"#,
-        stdio = stdio.to_string_lossy(),
     )?;
 
     let mut stages = vec![out_stage.as_str(), stdio_stage.as_str()];
@@ -610,7 +609,7 @@ target "{incremental_stage}" {{
 
     let bakefile_path = {
         let bakefile_path = format!("{target_path}/{crate_name}-{metadata}.hcl");
-        info!(target:&krate, "opening (RW) bakefile {bakefile_path}");
+        info!(target:&krate, "opening (RW) crate bakefile {bakefile_path}");
         fs::write(&bakefile_path, bakefile)
             .with_context(|| format!("Failed creating bakefile {bakefile_path}"))?; // Don't remove HCL file
         bakefile_path
@@ -639,12 +638,19 @@ target "{incremental_stage}" {{
         .status
         .code();
 
+    // TODO: buffered reading + copy to STDERR/STDOUT
     if code == Some(0) {
-        info!(target:&krate, "reading {}/stderr", stdio.to_string_lossy());
-        eprintln!("{}", read_to_string(stdio.join("stderr")).context("Failed to copy STDERR")?);
-        // TODO: buffered reading + copy to STDERR/STDOUT
-        info!(target:&krate, "reading {}/stdout", stdio.to_string_lossy());
-        println!("{}", read_to_string(stdio.join("stdout")).context("Failed to copy STDOUT")?);
+        let fwd = |file, name, show: fn(&str)| -> Result<()> {
+            let data = stdio_path.join(file);
+            info!(target:&krate, "reading {data}");
+            let data = read_to_string(data).with_context(|| format!("Failed to copy {name}"))?;
+            if !data.is_empty() {
+                show(data.as_str());
+            }
+            Ok(())
+        };
+        fwd("stderr", "STDERR", |msg: &str| eprintln!("{msg}"))?;
+        fwd("stdout", "STDOUT", |msg: &str| println!("{msg}"))?;
     }
     if !is_debug() {
         drop(stdio); // Removes stdio/std{err,out} files and stdio dir
@@ -676,7 +682,7 @@ fn exit_code(code: Option<i32>) -> Result<ExitCode> {
 }
 
 #[inline]
-fn file_exists_and_is_not_empty(path: impl AsRef<Path>) -> Result<bool> {
+fn file_exists_and_is_not_empty(path: impl AsRef<Utf8Path>) -> Result<bool> {
     match path.as_ref().metadata().map(|md| md.is_file() && md.len() > 0) {
         Ok(b) => Ok(b),
         Err(e) => {
@@ -718,12 +724,12 @@ contexts = {
 (    "input_src_lib_rs--rustversion-1.0.9".to_owned() , "/home/pete/.cargo/registry/src/github.com-1ecc6299db9ec823/rustversion-1.0.9".to_owned()),
  (   "crate_out-...".to_owned() , "/home/pete/wefwefwef/network_products/ipam/ipam.git/target/debug/build/rustversion-ae69baa7face5565/out".to_owned()),
         ].into_iter().collect();
-    assert_eq!(used_contexts(tmp).unwrap(), exp);
+    assert_eq!(used_contexts(Utf8Path::from_path(tmp.as_path()).unwrap()).unwrap(), exp);
 }
 
-fn used_contexts(path: impl AsRef<Path>) -> Result<BTreeMap<String, String>> {
-    let fd = File::open(path.as_ref())
-        .with_context(|| format!("Failed reading {}", path.as_ref().to_string_lossy()))?;
+fn used_contexts(path: impl AsRef<Utf8Path>) -> Result<BTreeMap<String, String>> {
+    let path: &Utf8Path = path.as_ref();
+    let fd = File::open(path).with_context(|| format!("Failed reading {path}"))?;
     BufReader::new(fd)
         .lines()
         .map_while(Result::ok)
@@ -735,7 +741,7 @@ fn used_contexts(path: impl AsRef<Path>) -> Result<BTreeMap<String, String>> {
             if let [_, name, _, target, _] = line.splitn(5, '"').collect::<Vec<_>>()[..] {
                 Ok((name.to_owned(), target.to_owned()))
             } else {
-                bail!("corrupted extern_bakefile {}: {line:?}", path.as_ref().to_string_lossy())
+                bail!("corrupted extern_bakefile {path}: {line:?}")
             }
         })
         .collect::<Result<_>>()
@@ -754,13 +760,14 @@ fn bakefile_and_stage_for_rlib() {
     );
 }
 
-fn bakefile_and_stage(xtern: String, target_path: &str) -> Option<(String, String)> {
+fn bakefile_and_stage(
+    xtern: String,
+    target_path: impl AsRef<Utf8Path>,
+) -> Option<(String, String)> {
     assert!(xtern.starts_with("lib")); // TODO: stop doing that (stripping ^lib)
     let bk = xtern.strip_prefix("lib").and_then(|x| x.split_once('.')).map(|(x, _)| x);
     let sg = bk.and_then(|x| x.split_once('-')).map(|(_, x)| x).map(|x| format!("out-{x}"));
-    let bk = bk
-        .map(|x| Path::new(&target_path).join(format!("{x}.hcl")))
-        .map(|x| x.to_string_lossy().to_string());
+    let bk = bk.map(|x| target_path.as_ref().join(format!("{x}.hcl")).to_string());
     bk.zip(sg)
 }
 
@@ -773,10 +780,9 @@ fn crate_out_name_for_some_pkg() {
 }
 
 fn crate_out_name(name: &str) -> String {
-    Path::new(name)
+    Utf8Path::new(name)
         .parent()
         .and_then(|x| x.file_name())
-        .and_then(|x| x.to_str())
         .and_then(|x| x.rsplit_once('-'))
         .map(|(_, x)| x)
         .map(|x| format!("crate_out-{x}"))
@@ -786,42 +792,43 @@ fn crate_out_name(name: &str) -> String {
 #[test]
 fn hcl_to_dockerfile_() {
     let res = hcl_to_dockerfile("target/path/strsim-8ed1051e7e58e636.hcl");
-    assert_eq!(res.as_path(), Path::new("target/path/8ed1051e7e58e636.Dockerfile"));
+    assert_eq!(res.as_path(), Utf8Path::new("target/path/8ed1051e7e58e636.Dockerfile"));
 }
 
-fn hcl_to_dockerfile(hcl: &str) -> PathBuf {
-    let mut common = PathBuf::from(&hcl);
+fn hcl_to_dockerfile(hcl: &str) -> Utf8PathBuf {
+    let mut common = Utf8PathBuf::from(&hcl);
     let file_name = common
         .file_stem()
-        .and_then(|x| x.to_string_lossy().rsplit_once('-').map(|(_, x)| x.to_owned()))
-        .expect("PROOF: we crafted that path");
+        .and_then(|x| x.rsplit_once('-').map(|(_, x)| x.to_owned()))
+        .expect("PROOF: FIXME");
     let ok = common.pop();
     assert!(ok);
     common.join(format!("{file_name}.Dockerfile"))
 }
 
-fn copy_file(f: &Path, cwd: &Path) -> Result<()> {
+fn copy_file(f: &Utf8Path, cwd: &Utf8Path) -> Result<()> {
     let Some(f_dirname) = f.parent() else { bail!("BUG: unexpected f={f:?} cwd={cwd:?}") };
     let dst = cwd.join(f_dirname);
-    create_dir_all(&dst).with_context(|| format!("Failed `mkdir -p {}`", dst.to_string_lossy()))?;
+    create_dir_all(&dst).with_context(|| format!("Failed `mkdir -p {dst}`"))?;
     let dst = cwd.join(f);
-    fs::copy(f, &dst).with_context(|| {
-        format!("Failed `cp {} {}`", f.to_string_lossy(), dst.to_string_lossy())
-    })?;
+    fs::copy(f, &dst).with_context(|| format!("Failed `cp {f} {dst}`"))?;
     Ok(())
 }
 
-fn copy_files(dir: &Path, dst: &Path) -> Result<()> {
+fn copy_files(dir: &Utf8Path, dst: &Utf8Path) -> Result<()> {
     if dir.is_dir() {
         // TODO: deterministic iteration
-        for entry in read_dir(dir)
-            .with_context(|| format!("Failed reading dir {}", dir.to_string_lossy()))?
-        {
-            let path = entry?.path();
+        for entry in read_dir(dir).with_context(|| format!("Failed reading dir {dir}"))? {
+            let entry = entry?;
+            let entry = entry.path();
+            let entry = entry.as_path(); // thanks, Rust
+            let Some(path) = Utf8Path::from_path(entry) else {
+                bail!("Path's UTF-8 encoding is corrupted: {entry:?}")
+            };
             if path.is_dir() {
-                copy_files(&path, dst)?;
+                copy_files(path, dst)?;
             } else {
-                copy_file(&path, dst)?;
+                copy_file(path, dst)?;
             }
         }
     }

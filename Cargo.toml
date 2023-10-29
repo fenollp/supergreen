@@ -24,6 +24,7 @@ repository = "https://github.com/fenollp/rustcbuildx"
 [dependencies]
 advisory-lock = "0.3"
 anyhow = "1"
+camino = "1"
 env_logger = "0.10"
 log = "0.4"
 mktemp = "0.5"

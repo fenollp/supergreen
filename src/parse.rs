@@ -1,6 +1,9 @@
-use std::{collections::BTreeSet, path::Path};
+use std::collections::BTreeSet;
 
 use anyhow::{bail, Result};
+use camino::{Utf8Path, Utf8PathBuf};
+
+use crate::pops::Popped;
 
 /// RustcArgs contains parts of `rustc`'s arguments
 #[derive(Debug, Default, PartialEq)]
@@ -15,20 +18,20 @@ pub(crate) struct RustcArgs {
     pub(crate) metadata: String,
 
     /// 0|1: -C incremental=INCREMENTAL
-    pub(crate) incremental: Option<String>,
+    pub(crate) incremental: Option<Utf8PathBuf>,
 
     /// 1: plain path to (non-empty existing) file
-    pub(crate) input: String,
+    pub(crate) input: Utf8PathBuf,
 
     /// 1: --out-dir OUT_DIR
-    pub(crate) out_dir: String,
+    pub(crate) out_dir: Utf8PathBuf,
 
     /// Target path:
-    pub(crate) target_path: String,
+    pub(crate) target_path: Utf8PathBuf,
 }
 
 pub(crate) fn as_rustc(
-    pwd: &str,
+    pwd: impl AsRef<Utf8Path>,
     crate_name: &str,
     arguments: Vec<String>,
     debug: bool,
@@ -60,7 +63,7 @@ pub(crate) fn as_rustc(
         {
             assert_eq!(state.input, "");
             // For e.g. $HOME/.cargo/registry/src/github.com-1ecc6299db9ec823/ahash-0.7.6/./build.rs
-            state.input = key.as_str().replace("/./", "/");
+            state.input = key.as_str().replace("/./", "/").into();
             (s_e, key) = (false, "".to_owned());
             continue;
         }
@@ -102,14 +105,14 @@ pub(crate) fn as_rustc(
                 }
                 Some(("incremental", v)) => {
                     assert_eq!(state.incremental, None);
-                    state.incremental = Some(v.to_owned());
+                    state.incremental = Some(Utf8PathBuf::from(v));
                 }
                 _ => {}
             },
             "-L" => {
                 if let Some(("dependency", v)) = val.split_once('=') {
                     if !v.starts_with('/') {
-                        val = format!("dependency={}", Path::new(pwd).join(v).to_string_lossy());
+                        val = format!("dependency={}", pwd.as_ref().join(v));
                     }
                 }
             }
@@ -141,17 +144,20 @@ pub(crate) fn as_rustc(
                 // So we can't do: externs+=("${extern#"$deps_path"/}")
                 // Anyway the goal is simply to just extract libutf8parse-03cddaef72c90e73.rmeta from $HOME/wefwefwef/buildxargs.git/target/debug/deps/libutf8parse-03cddaef72c90e73.rmeta
                 // So let's just do that!
-                let xtern = Path::new(xtern).file_name().unwrap_or_default().to_string_lossy();
-                state.externs.insert(xtern.to_string());
+                if let Some(xtern) = Utf8Path::new(xtern).file_name() {
+                    state.externs.insert(xtern.to_owned());
+                } else {
+                    bail!("BUG: {xtern} has no file name")
+                }
             }
             "--out-dir" => {
                 assert_eq!(state.out_dir, "");
-                state.out_dir = val.clone();
-                if !state.out_dir.starts_with('/') {
+                state.out_dir = val.clone().into();
+                if state.out_dir.is_relative() {
                     // TODO: decide whether $PWD is an issue. Maybe CARGO_TARGET_DIR can help?
-                    state.out_dir = Path::new(pwd).join(&val).to_string_lossy().to_string();
+                    state.out_dir = pwd.as_ref().join(&val);
                 }
-                val = state.out_dir.clone();
+                val = state.out_dir.to_string();
             }
             _ => {}
         }
@@ -160,11 +166,11 @@ pub(crate) fn as_rustc(
         args.push(val);
     }
 
-    assert!(!state.crate_type.is_empty());
-    assert!(!state.metadata.is_empty());
-    assert!(!state.incremental.as_ref().map(String::is_empty).unwrap_or_default()); // MAY be unset: only set on last calls
-    assert!(!state.input.is_empty());
-    assert!(!state.out_dir.is_empty());
+    assert_ne!(state.crate_type, "");
+    assert_ne!(state.metadata, "");
+    assert!(!state.incremental.as_ref().map(|x| x == "").unwrap_or_default()); // MAY be unset: only set on last calls
+    assert_ne!(state.input, "");
+    assert_ne!(state.out_dir, "");
 
     // https://github.com/rust-lang/cargo/issues/12099
     // Sometimes, a proc-macro crate that depends on sysroot crate `proc_macro` is missing `--extern proc_macro` rustc flag.
@@ -182,25 +188,13 @@ pub(crate) fn as_rustc(
     // Out dir though...
     // --out-dir "$CARGO_TARGET_DIR/$PROFILE"/build/rustix-2a01a00f5bdd1924
     // --out-dir "$CARGO_TARGET_DIR/$PROFILE"/deps
-    state.target_path = if state.out_dir.ends_with("/deps") {
-        state.out_dir[..(state.out_dir.len() - "/deps".len())].to_owned() // Drop /deps suffix
-    } else if state.out_dir.contains("/build/") {
-        let p = Path::new(&state.out_dir);
-        loop {
-            let Some(p) = p.parent() else { break };
-            if p.to_string_lossy().ends_with("/build") {
-                break;
-            }
-        }
-        p.to_string_lossy().to_string()
-    } else {
-        bail!("BUG: --out-dir path should match /deps$|.+/build/.+: {}", state.out_dir)
+    state.target_path = match &state.out_dir.iter().rev().take(3).collect::<Vec<_>>()[..] {
+        ["deps", ..] => state.out_dir.clone().popped(1),
+        [_crate_dir, "build", ..] => state.out_dir.clone().popped(2),
+        nope => bail!("BUG: --out-dir path should match /deps$|.+/build/.+: {nope:?}"),
     };
     // TODO: make conversion Dockerfile <> HCL easier (just change extension)
     // TODO: return path makers through closures
-    // TODO: use https://github.com/camino-rs/camino (
-    //     There are already many systems, such as Cargo, that only support UTF-8 paths. If your own tool interacts with any such system, you can assume that paths are valid UTF-8 without creating any additional burdens on consumers.
-    //   )
     // TODO: namespace our files: {target_path}/{NS}/{profile}/...
 
     Ok((state, args))
@@ -271,10 +265,10 @@ mod tests {
                 .map(ToOwned::to_owned)
                 .collect(),
                 metadata: "710b4516f388a5e4".to_owned(),
-                incremental: Some(as_argument("$PWD/target/debug/incremental")),
-                input: as_argument("src/main.rs"),
-                out_dir: as_argument("$PWD/target/debug/deps"),
-                target_path: as_argument("$PWD/target/debug"),
+                incremental: Some(as_argument("$PWD/target/debug/incremental").into()),
+                input: as_argument("src/main.rs").into(),
+                out_dir: as_argument("$PWD/target/debug/deps").into(),
+                target_path: as_argument("$PWD/target/debug").into(),
             }
         );
 
@@ -354,10 +348,10 @@ mod tests {
                 .map(ToOwned::to_owned)
                 .collect(),
                 metadata: "7c7a0950383d41d3".to_owned(),
-                incremental: Some(as_argument("$PWD/target/debug/incremental")),
-                input: as_argument("src/main.rs"),
-                out_dir: as_argument("$PWD/target/debug/deps"),
-                target_path: as_argument("$PWD/target/debug"),
+                incremental: Some(as_argument("$PWD/target/debug/incremental").into()),
+                input: as_argument("src/main.rs").into(),
+                out_dir: as_argument("$PWD/target/debug/deps").into(),
+                target_path: as_argument("$PWD/target/debug").into(),
             }
         );
 
@@ -427,9 +421,9 @@ mod tests {
                 externs: Default::default(),
                 metadata: "c7101a3d6c8e4dce".to_owned(),
                 incremental: None,
-                input: as_argument("$HOME/.cargo/registry/src/index.crates.io-6f17d22bba15001f/rustix-0.38.20/build.rs"),
-                out_dir: as_argument("$PWD/target/debug/build/rustix-c7101a3d6c8e4dce"),
-                target_path: as_argument("$PWD/target/debug/build/rustix-c7101a3d6c8e4dce"),
+                input: as_argument("$HOME/.cargo/registry/src/index.crates.io-6f17d22bba15001f/rustix-0.38.20/build.rs").into(),
+                out_dir: as_argument("$PWD/target/debug/build/rustix-c7101a3d6c8e4dce").into(),
+                target_path: as_argument("$PWD/target/debug").into(),
             }
         );
 
