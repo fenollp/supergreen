@@ -24,12 +24,10 @@ jobs:
         command: build
         args: --all-targets --all-features --locked --frozen --offline --release
 
-    - name: Temporarily save bin
-      uses: actions/upload-artifact@v2
+    - uses: actions/upload-artifact@v3
       with:
         name: bin-artifact
         path: target/release/rustcbuildx
-        retention-days: 1
 
 
   self-builds:
@@ -37,16 +35,11 @@ jobs:
     needs: bin
     steps:
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v2
+      uses: actions/download-artifact@v3
       with:
         name: bin-artifact
-        path: .
-        # FIXME
-    - run: |
-        echo $PWD
-        ls -lha .
-        ls -lha bin || true
-        ./rustcbuildx
+    - run: | # TODO: whence https://github.com/actions/download-artifact/issues/236
+        chmod +x ./rustcbuildx
 
     - uses: actions-rs/toolchain@v1
       with:
