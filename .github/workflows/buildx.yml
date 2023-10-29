@@ -24,9 +24,9 @@ jobs:
         #   ~/.cargo/git/db/
         #   target/
         path: |
-          $HOME/.cargo/registry/index/
-          $HOME/.cargo/registry/cache/
-          $HOME/.cargo/git/db/
+          ~/.cargo/registry/index/
+          ~/.cargo/registry/cache/
+          ~/.cargo/git/db/
         # key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
         key: cargo-deps-${{ hashFiles('**/Cargo.lock') }}
         # restore-keys: ${{ runner.os }}-cargo-
@@ -80,9 +80,9 @@ jobs:
       continue-on-error: false
       with:
         path: |
-          $HOME/.cargo/registry/index/
-          $HOME/.cargo/registry/cache/
-          $HOME/.cargo/git/db/
+          ~/.cargo/registry/index/
+          ~/.cargo/registry/cache/
+          ~/.cargo/git/db/
         key: cargo-deps-${{ hashFiles('**/Cargo.lock') }}
         restore-keys: cargo-deps-
 
