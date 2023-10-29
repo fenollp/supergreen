@@ -54,11 +54,11 @@ jobs:
         command: fetch
 
     - run: |
-        export RUSTCBUILDX_DEBUG=1
-        export RUSTC_WRAPPER=$PWD/rustcbuildx
+        printf 'RUSTCBUILDX_DEBUG=1\n' >>"$GITHUB_ENV"
+        printf 'RUSTC_WRAPPER=%2\n' "$PWD"/rustcbuildx >>"$GITHUB_ENV"
     - run: |
-        echo $RUSTCBUILDX_DEBUG
-        echo $RUSTC_WRAPPER
+        echo $RUSTCBUILDX_DEBUG | grep 1
+        echo $RUSTC_WRAPPER | grep rustcbuildx
 
     - uses: actions-rs/cargo@v1
       with:
