@@ -207,6 +207,9 @@ fn bake_rustc(
                 // debug!(target:&krate, ">>> {transitive} all_externs.insert({actual_extern}) but these exist: {listing:?}");
                 // all_externs.insert(actual_extern);
 
+                // ^ this algo tried to "keep track" of actual paths to transitive deps artifacts
+                //   however some edge cases (at least 1) go through. That fix seems to bust cache on 2nd builds though v
+
                 let deps_dir = Utf8Path::new(&target_path).join("deps");
                 info!(target:&krate, "listing existing an extern crate's extern matches {deps_dir}/lib*.*");
                 let listing = read_dir(&deps_dir)
