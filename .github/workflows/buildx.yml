@@ -54,8 +54,8 @@ jobs:
         command: fetch
 
     - run: |
-        printf 'RUSTCBUILDX_DEBUG=1\n' >>"$GITHUB_ENV"
-        printf 'RUSTC_WRAPPER=%2\n' "$PWD"/rustcbuildx >>"$GITHUB_ENV"
+        echo RUSTCBUILDX_DEBUG=1 >>"$GITHUB_ENV"
+        echo RUSTC_WRAPPER="$PWD"/rustcbuildx >>"$GITHUB_ENV"
     - run: |
         echo $RUSTCBUILDX_DEBUG | grep 1
         echo $RUSTC_WRAPPER | grep rustcbuildx
