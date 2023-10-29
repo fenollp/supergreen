@@ -81,6 +81,9 @@ jobs:
     - run: |
         echo RUSTCBUILDX_DEBUG=1 >>"$GITHUB_ENV"
         echo RUSTC_WRAPPER="$PWD"/rustcbuildx >>"$GITHUB_ENV"
+        # FIXME
+        ls -lha $RUSTC_WRAPPER  $RUSTC_WRAPPER/..  $RUSTC_WRAPPER/../..
+        $RUSTC_WRAPPER --version
     - run: |
         echo $RUSTCBUILDX_DEBUG | grep 1
         echo $RUSTC_WRAPPER | grep rustcbuildx
