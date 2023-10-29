@@ -61,19 +61,12 @@ jobs:
     runs-on: ubuntu-latest
     needs: bin
     steps:
-    - name: Retrieve saved bin
-      uses: actions/download-artifact@v3
-      with:
-        name: bin-artifact
-    - run: | # TODO: whence https://github.com/actions/download-artifact/issues/236
-        chmod +x ./rustcbuildx
+    - uses: actions/checkout@v3
 
     - uses: actions-rs/toolchain@v1
       with:
         profile: minimal
         toolchain: stable
-
-    - uses: actions/checkout@v3
 
     - name: Cache `cargo fetch`
       uses: actions/cache@v3
@@ -90,7 +83,16 @@ jobs:
       with:
         command: fetch
 
-    - run: |
+    - name: Retrieve saved bin
+      uses: actions/download-artifact@v3
+      with:
+        name: bin-artifact
+    - run: | # TODO: whence https://github.com/actions/download-artifact/issues/236
+        chmod +x ./rustcbuildx
+        # FIXME
+        echo $PWD
+        ls -lha ./rustcbuildx
+        ./rustcbuildx --version
         echo RUSTCBUILDX_DEBUG=1 >>"$GITHUB_ENV"
         echo RUSTC_WRAPPER="$PWD"/rustcbuildx >>"$GITHUB_ENV"
         # FIXME
