@@ -13,12 +13,37 @@ jobs:
 
     - uses: actions/checkout@v3
 
-    # TODO: cache
+    - name: Cache `cargo fetch`
+      uses: actions/cache@v3
+      continue-on-error: false
+      with:
+        # path: |
+        #   ~/.cargo/bin/
+        #   ~/.cargo/registry/index/
+        #   ~/.cargo/registry/cache/
+        #   ~/.cargo/git/db/
+        #   target/
+        path: |
+          $HOME/.cargo/registry/index/
+          $HOME/.cargo/registry/cache/
+          $HOME/.cargo/git/db/
+        # key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+        key: cargo-deps-${{ hashFiles('**/Cargo.lock') }}
+        # restore-keys: ${{ runner.os }}-cargo-
+        restore-key: cargo-deps-
+
     - uses: actions-rs/cargo@v1
       with:
         command: fetch
 
-    # TODO: cache
+    - name: Cache `cargo build`
+      uses: actions/cache@v3
+      continue-on-error: false
+      with:
+        path: target
+        key: ${{ runner.os }}-cargo-build-${{ hashFiles('**/Cargo.lock') }}
+        restore-keys: ${{ runner.os }}-cargo-build-
+
     - uses: actions-rs/cargo@v1
       with:
         command: build
