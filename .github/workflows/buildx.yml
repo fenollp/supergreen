@@ -39,6 +39,10 @@ jobs:
       with:
         name: bin-artifact
         path: target/debug/rustcbuildx
+    - run: |
+        echo $PWD
+        ls -lha .
+        /home/runner/work/rustcbuildx/rustcbuildx/target/debug/rustcbuildx
 
     - uses: actions-rs/toolchain@v1
       with:

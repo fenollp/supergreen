@@ -141,6 +141,9 @@ fn bake_rustc(
     let full_crate_id = format!("{crate_type}-{crate_name}-{metadata}");
     let krate = full_crate_id.as_str();
 
+    // TODO: look into forwarding more envs: https://doc.rust-lang.org/nightly/cargo/reference/environment-variables.html
+    env::vars().for_each(|(k, v)| debug!(target:&krate, "env is set: {k}={v:?}"));
+
     // https://github.com/rust-lang/cargo/issues/12059
     let mut all_externs = BTreeSet::new();
     let externs_prefix = |part: &str| Utf8Path::new(&target_path).join(format!("externs_{part}"));
