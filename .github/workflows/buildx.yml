@@ -102,7 +102,8 @@ jobs:
         echo $RUSTCBUILDX_DEBUG | grep 1
         echo $RUSTC_WRAPPER | grep rustcbuildx
 
-    - uses: actions-rs/cargo@v1
+    - name: cargo build offline no cache no remote
+      uses: actions-rs/cargo@v1
       with:
         command: build
         args: --all-targets --all-features --locked --frozen --offline

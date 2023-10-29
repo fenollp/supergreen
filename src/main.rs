@@ -51,13 +51,21 @@ fn faillible_main() -> Result<ExitCode> {
         env_logger::Builder::from_env(Env::default().default_filter_or("info")).init();
     }
 
-    let first_few_args = env::args().take(4).collect::<Vec<String>>();
+    let first_few_args = env::args().skip(1).take(3).collect::<Vec<String>>();
     let first_few_args = first_few_args.iter().map(String::as_str).collect::<Vec<_>>();
     match &first_few_args[..] {
-        [_, rustc, "-", ..] | [_, rustc, _ /*driver*/, "-", ..] => {
+        [] | ["-h" | "--help" |"--version"] => {
+            println!("{name} {version}: {description}\n{repository}",
+                name = env!("CARGO_PKG_NAME"),
+                description = env!("CARGO_PKG_DESCRIPTION"),
+                version = env!("CARGO_PKG_VERSION"),
+                repository = env!("CARGO_PKG_REPOSITORY"),
+            );
+        }
+        [rustc, "-", ..] | [rustc, _ /*driver*/, "-", ..] => {
             return call_rustc(rustc, || env::args().skip(2));
         }
-        [_, rustc, "--crate-name", crate_name, ..] => {
+        [rustc, "--crate-name", crate_name, ..] => {
             return bake_rustc(crate_name, env::args().skip(2).collect(), || {
                 call_rustc(rustc, || env::args().skip(2))
             })
@@ -98,11 +106,12 @@ fn passthrough_getting_rust_target_specific_information() {
     .map(ToOwned::to_owned)
     .collect::<Vec<String>>();
 
-    let first_few_args = first_few_args.iter().map(String::as_str).collect::<Vec<_>>();
+    let first_few_args =
+        first_few_args.iter().skip(1).take(3).map(String::as_str).collect::<Vec<_>>();
     assert_eq!(
         match &first_few_args[..] {
-            [_, _rustc, "-", ..] | [_, _rustc, _ /*driver*/, "-", ..] => 1,
-            [_, _rustc, "--crate-name", _crate_name, ..] => 2,
+            [_rustc, "-", ..] | [_rustc, _ /*driver*/, "-", ..] => 1,
+            [_rustc, "--crate-name", _crate_name, ..] => 2,
             _ => 3,
         },
         1
