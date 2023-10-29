@@ -30,7 +30,7 @@ jobs:
         # key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
         key: cargo-deps-${{ hashFiles('**/Cargo.lock') }}
         # restore-keys: ${{ runner.os }}-cargo-
-        restore-key: cargo-deps-
+        restore-keys: cargo-deps-
 
     - uses: actions-rs/cargo@v1
       with:
@@ -41,8 +41,10 @@ jobs:
       continue-on-error: false
       with:
         path: target
-        key: ${{ runner.os }}-cargo-build-${{ hashFiles('**/Cargo.lock') }}
-        restore-keys: ${{ runner.os }}-cargo-build-
+        key: ${{ runner.os }}-cargo-build-${{ hashFiles('**/Cargo.lock') }}-and-${{ hashFiles('src/**') }}
+        restore-keys: |
+          ${{ runner.os }}-cargo-build-${{ hashFiles('**/Cargo.lock') }}-and-
+          ${{ runner.os }}-cargo-build-
 
     - uses: actions-rs/cargo@v1
       with:
