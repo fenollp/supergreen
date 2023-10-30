@@ -54,14 +54,7 @@ fn faillible_main() -> Result<ExitCode> {
     let first_few_args = env::args().skip(1).take(3).collect::<Vec<String>>();
     let first_few_args = first_few_args.iter().map(String::as_str).collect::<Vec<_>>();
     match &first_few_args[..] {
-        [] | ["-h" | "--help" |"--version"] => {
-            println!("{name} {version}: {description}\n{repository}",
-                name = env!("CARGO_PKG_NAME"),
-                description = env!("CARGO_PKG_DESCRIPTION"),
-                version = env!("CARGO_PKG_VERSION"),
-                repository = env!("CARGO_PKG_REPOSITORY"),
-            );
-        }
+        [] | ["-h" | "--help" |"--version"] => help(),
         [rustc, "-", ..] | [rustc, _ /*driver*/, "-", ..] => {
             return call_rustc(rustc, || env::args().skip(2));
         }
@@ -74,8 +67,7 @@ fn faillible_main() -> Result<ExitCode> {
                 e
             });
         }
-        // _ => {}
-        _=> if true {            panic!(">>> env::args() = {:?}", env::args())}
+        _ => {}
     }
 
     Ok(ExitCode::SUCCESS)
@@ -118,17 +110,22 @@ fn passthrough_getting_rust_target_specific_information() {
     );
 }
 
+fn help() {
+    println!(
+        "{name} {version}: {description}\n{repository}",
+        name = env!("CARGO_PKG_NAME"),
+        description = env!("CARGO_PKG_DESCRIPTION"),
+        version = env!("CARGO_PKG_VERSION"),
+        repository = env!("CARGO_PKG_REPOSITORY"),
+    );
+}
+
 fn call_rustc<I: Iterator<Item = String>>(rustc: &str, args: fn() -> I) -> Result<ExitCode> {
     // TODO? run within `bake` for consistency
     let argz = || args().collect::<Vec<_>>();
     exit_code(
         Command::new(rustc)
             .args(args())
-            //TODO
-            // .stdout(os_pipe::dup_stdout().context("Failed to dup STDOUT")?)
-            .stdin(Stdio::inherit())
-            .stdout(Stdio::inherit())
-            .stderr(Stdio::inherit())
             .spawn()
             .with_context(|| format!("Failed to spawn rustc {rustc} with {:?}", argz()))?
             .wait()

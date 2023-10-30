@@ -89,6 +89,10 @@ jobs:
         RUSTC_WRAPPER="$PWD"/rustcbuildx \
           cargo -vv build --all-targets --all-features --locked --frozen --offline
 
+  # TODO: ensure running the same command twice without modifications does not recompile anything
+  # NOTE: cargo -vv test != cargo test: => the rustc flags will change => Dockerfile needs new cache key
+  # => otherwise docker builder cache won't have the correct hit
+
     - name: cargo build net=OFF cache=ON remote=OFF
       run: |
         RUSTCBUILDX_DEBUG=1 \
