@@ -14,6 +14,7 @@ use camino::{Utf8Path, Utf8PathBuf};
 use env_logger::Env;
 use log::{debug, error, info};
 use mktemp::Temp;
+use regex::Regex;
 
 use crate::{
     envs::{
@@ -197,19 +198,19 @@ fn bake_rustc(
     let externs_prefix = |part: &str| Utf8Path::new(&target_path).join(format!("externs_{part}"));
     let crate_externs = externs_prefix(&format!("{crate_name}-{metadata}"));
 
-    // let ext = match crate_type.as_str() {
-    //     "lib" => "rmeta".to_owned(),
-    //     "bin" | "test" | "proc-macro" => "rlib".to_owned(),
-    //     _ => bail!("BUG: unexpected crate-type: '{crate_type}'"),
-    // };
-    // debug!(">>> ext={ext}");
+    let ext = match crate_type.as_str() {
+        "lib" => "rmeta".to_owned(),
+        "bin" | "test" | "proc-macro" => "rlib".to_owned(),
+        _ => bail!("BUG: unexpected crate-type: '{crate_type}'"),
+    };
+    debug!(">>> ext={ext}");
 
-    // if crate_type == "proc-macro" {
-    //     // This way crates that depend on this know they must require it as .so
-    //     let guard = format!("{crate_externs}_proc-macro");
-    //     info!(target:&krate, "opening (RW) {guard}");
-    //     fs::write(&guard, "").with_context(|| format!("Failed to `touch {guard}`"))?;
-    // };
+    if crate_type == "proc-macro" {
+        // This way crates that depend on this know they must require it as .so
+        let guard = format!("{crate_externs}_proc-macro");
+        info!(target:&krate, "opening (RW) {guard}");
+        fs::write(&guard, "").with_context(|| format!("Failed to `touch {guard}`"))?;
+    };
 
     let mut short_externs = BTreeSet::new();
     for xtern in &externs {
@@ -244,36 +245,47 @@ fn bake_rustc(
                     line.with_context(|| format!("Corrupted {xtern_crate_externs}"))?;
                 assert_ne!(transitive, "");
 
-                // let guard = externs_prefix(&format!("{transitive}_proc-macro"));
-                // info!(target:&krate, "checking (RO) extern's guard {guard}");
-                // let actual_extern =
-                //     if file_exists(&guard).with_context(|| format!("Failed to `stat {guard}`"))? {
-                //         format!("lib{transitive}.so")
-                //     } else {
-                //         format!("lib{transitive}.{ext}")
-                //     };
-                // debug!(target:&krate, ">>> {transitive} all_externs.insert({actual_extern}) but these exist: {listing:?}");
-                // all_externs.insert(actual_extern);
+                fn file_exists(path: impl AsRef<Utf8Path>) -> Result<bool> {
+                    match path.as_ref().metadata().map(|md| md.is_file()) {
+                        Ok(b) => Ok(b),
+                        Err(e) => {
+                            if e.kind() == ErrorKind::NotFound {
+                                return Ok(false);
+                            }
+                            Err(e.into())
+                        }
+                    }
+                }
 
-                // ^ this algo tried to "keep track" of actual paths to transitive deps artifacts
-                //   however some edge cases (at least 1) go through. That fix seems to bust cache on 2nd builds though v
+                let guard = externs_prefix(&format!("{transitive}_proc-macro"));
+                info!(target:&krate, "checking (RO) extern's guard {guard}");
+                let actual_extern =
+                    if file_exists(&guard).with_context(|| format!("Failed to `stat {guard}`"))? {
+                        format!("lib{transitive}.so")
+                    } else {
+                        format!("lib{transitive}.{ext}")
+                    };
+                all_externs.insert(actual_extern);
 
-                let deps_dir = Utf8Path::new(&target_path).join("deps");
-                info!(target:&krate, "listing existing an extern crate's extern matches {deps_dir}/lib*.*");
-                let listing = read_dir(&deps_dir)
-                    .with_context(|| format!("Failed reading directory {deps_dir}"))?
-                    // TODO: at least context() error
-                    .filter_map(std::result::Result::ok)
-                    .filter_map(|p| {
-                        let p = p.path();
-                        p.file_name().map(|p| p.to_string_lossy().to_string())
-                    })
-                    .filter(|p| p.contains(&transitive))
-                    .filter(|p| !p.ends_with(&format!("{transitive}.d")))
-                    .map(|p| p.to_string())
-                    .collect::<Vec<_>>();
-                all_externs.extend(listing.into_iter());
-                // TODO: move to after for loop
+                // // ^ this algo tried to "keep track" of actual paths to transitive deps artifacts
+                // //   however some edge cases (at least 1) go through. That fix seems to bust cache on 2nd builds though v
+
+                // let deps_dir = Utf8Path::new(&target_path).join("deps");
+                // info!(target:&krate, "listing existing an extern crate's extern matches {deps_dir}/lib*.*");
+                // let listing = read_dir(&deps_dir)
+                //     .with_context(|| format!("Failed reading directory {deps_dir}"))?
+                //     // TODO: at least context() error
+                //     .filter_map(std::result::Result::ok)
+                //     .filter_map(|p| {
+                //         let p = p.path();
+                //         p.file_name().map(|p| p.to_string_lossy().to_string())
+                //     })
+                //     .filter(|p| p.contains(&transitive))
+                //     .filter(|p| !p.ends_with(&format!("{transitive}.d")))
+                //     .map(|p| p.to_string())
+                //     .collect::<Vec<_>>();
+                // all_externs.extend(listing.into_iter());
+                // // TODO: move to after for loop
 
                 short_externs.insert(transitive);
             }
@@ -436,8 +448,10 @@ RUN \"#
         let (name, target) = input_mount.as_ref().expect("TODO: check that assert earlier");
         writeln!(
             dockerfile,
-            r#"WORKDIR {pwd}
-RUN \
+            //             r#"WORKDIR {pwd}
+            // RUN \
+            //   --mount=type=bind,from={name},target={target} \"#
+            r#"RUN \
   --mount=type=bind,from={name},target={target} \"#
         )?;
         None
@@ -664,6 +678,18 @@ target "{incremental_stage}" {{
     let bakefile_path = {
         let bakefile_path = format!("{target_path}/{crate_name}-{metadata}.hcl");
         info!(target:&krate, "opening (RW) crate bakefile {bakefile_path}");
+        match read_to_string(&bakefile_path) {
+            Ok(existing) => {
+                let re = Regex::new(r#""\/tmp\/[^"]+""#)?;
+                let replacement = r#""REDACTED""#;
+                pretty_assertions::assert_eq!(
+                    re.replace_all(&existing, replacement).to_string(),
+                    re.replace_all(&bakefile, replacement).to_string(),
+                );
+            }
+            Err(e) if e.kind() == ErrorKind::NotFound => {}
+            Err(e) => bail!("{e}"),
+        }
         fs::write(&bakefile_path, bakefile)
             .with_context(|| format!("Failed creating bakefile {bakefile_path}"))?; // Don't remove HCL file
         bakefile_path
@@ -743,19 +769,6 @@ fn file_exists_and_is_not_empty(path: impl AsRef<Utf8Path>) -> Result<bool> {
         Err(e) => Err(e.into()),
     }
 }
-
-// #[inline]
-// fn file_exists(path: impl AsRef<Path>) -> Result<bool> {
-//     match path.as_ref().metadata().map(|md| md.is_file()) {
-//         Ok(b) => Ok(b),
-//         Err(e) => {
-//             if e.kind() == ErrorKind::NotFound {
-//                 return Ok(false);
-//             }
-//             Err(e.into())
-//         }
-//     }
-// }
 
 #[test]
 fn fetches_back_used_contexts() {
