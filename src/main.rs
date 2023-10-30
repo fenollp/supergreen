@@ -739,12 +739,8 @@ fn exit_code(code: Option<i32>) -> Result<ExitCode> {
 fn file_exists_and_is_not_empty(path: impl AsRef<Utf8Path>) -> Result<bool> {
     match path.as_ref().metadata().map(|md| md.is_file() && md.len() > 0) {
         Ok(b) => Ok(b),
-        Err(e) => {
-            if e.kind() == ErrorKind::NotFound {
-                return Ok(false);
-            }
-            Err(e.into())
-        }
+        Err(e) if e.kind() == ErrorKind::NotFound => Ok(false),
+        Err(e) => Err(e.into()),
     }
 }
 
