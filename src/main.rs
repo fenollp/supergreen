@@ -51,13 +51,14 @@ fn faillible_main() -> Result<ExitCode> {
         env_logger::Builder::from_env(Env::default().default_filter_or("info")).init();
     }
 
-    let first_few_args = env::args().take(4).collect::<Vec<String>>();
+    let first_few_args = env::args().skip(1).take(3).collect::<Vec<String>>();
     let first_few_args = first_few_args.iter().map(String::as_str).collect::<Vec<_>>();
-    match first_few_args[..] {
-        [_, rustc, "-", ..] => {
+    match &first_few_args[..] {
+        [] | ["-h" | "--help" |"--version"] => help(),
+        [rustc, "-", ..] | [rustc, _ /*driver*/, "-", ..] => {
             return call_rustc(rustc, || env::args().skip(2));
         }
-        [_, rustc, "--crate-name", crate_name, ..] => {
+        [rustc, "--crate-name", crate_name, ..] => {
             return bake_rustc(crate_name, env::args().skip(2).collect(), || {
                 call_rustc(rustc, || env::args().skip(2))
             })
@@ -70,6 +71,53 @@ fn faillible_main() -> Result<ExitCode> {
     }
 
     Ok(ExitCode::SUCCESS)
+}
+
+#[test]
+fn passthrough_getting_rust_target_specific_information() {
+    #[rustfmt::skip]
+    let first_few_args = &[
+        "$PWD/rustcbuildx/rustcbuildx",
+        "$HOME/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/rustc",
+        "-",
+        "--crate-name", "___",
+        "--print=file-names",
+        "--crate-type", "bin",
+        "--crate-type", "rlib",
+        "--crate-type", "dylib",
+        "--crate-type", "cdylib",
+        "--crate-type", "staticlib",
+        "--crate-type", "proc-macro",
+        "--print=sysroot",
+        "--print=split-debuginfo",
+        "--print=crate-name",
+        "--print=cfg",
+    ]
+    .into_iter()
+    .take(4)
+    .map(ToOwned::to_owned)
+    .collect::<Vec<String>>();
+
+    let first_few_args =
+        first_few_args.iter().skip(1).take(3).map(String::as_str).collect::<Vec<_>>();
+    assert_eq!(
+        match &first_few_args[..] {
+            [_rustc, "-", ..] | [_rustc, _ /*driver*/, "-", ..] => 1,
+            [_rustc, "--crate-name", _crate_name, ..] => 2,
+            _ => 3,
+        },
+        1
+    );
+}
+
+fn help() {
+    println!(
+        "{name} {version}: {description}\n{repository}",
+        name = env!("CARGO_PKG_NAME"),
+        description = env!("CARGO_PKG_DESCRIPTION"),
+        version = env!("CARGO_PKG_VERSION"),
+        repository = env!("CARGO_PKG_REPOSITORY"),
+    );
 }
 
 fn call_rustc<I: Iterator<Item = String>>(rustc: &str, args: fn() -> I) -> Result<ExitCode> {
@@ -141,6 +189,9 @@ fn bake_rustc(
     let full_crate_id = format!("{crate_type}-{crate_name}-{metadata}");
     let krate = full_crate_id.as_str();
 
+    // TODO: look into forwarding more envs: https://doc.rust-lang.org/nightly/cargo/reference/environment-variables.html
+    env::vars().for_each(|(k, v)| debug!(target:&krate, "env is set: {k}={v:?}"));
+
     // https://github.com/rust-lang/cargo/issues/12059
     let mut all_externs = BTreeSet::new();
     let externs_prefix = |part: &str| Utf8Path::new(&target_path).join(format!("externs_{part}"));
@@ -203,6 +254,9 @@ fn bake_rustc(
                 //     };
                 // debug!(target:&krate, ">>> {transitive} all_externs.insert({actual_extern}) but these exist: {listing:?}");
                 // all_externs.insert(actual_extern);
+
+                // ^ this algo tried to "keep track" of actual paths to transitive deps artifacts
+                //   however some edge cases (at least 1) go through. That fix seems to bust cache on 2nd builds though v
 
                 let deps_dir = Utf8Path::new(&target_path).join("deps");
                 info!(target:&krate, "listing existing an extern crate's extern matches {deps_dir}/lib*.*");
@@ -685,12 +739,8 @@ fn exit_code(code: Option<i32>) -> Result<ExitCode> {
 fn file_exists_and_is_not_empty(path: impl AsRef<Utf8Path>) -> Result<bool> {
     match path.as_ref().metadata().map(|md| md.is_file() && md.len() > 0) {
         Ok(b) => Ok(b),
-        Err(e) => {
-            if e.kind() == ErrorKind::NotFound {
-                return Ok(false);
-            }
-            Err(e.into())
-        }
+        Err(e) if e.kind() == ErrorKind::NotFound => Ok(false),
+        Err(e) => Err(e.into()),
     }
 }
 
