@@ -360,41 +360,45 @@ fn bake_rustc(
     let incremental_stage = format!("incremental-{metadata}");
     let out_stage = format!("out-{metadata}");
     let stdio_stage = format!("stdio-{metadata}");
-    // let toolchain = input_mount
-    //     .as_ref()
-    //     .map(|(_imn, imt)| -> Result<Option<String>> {
-    //         let check = |file_name| -> Result<bool> {
-    //             let p = Utf8Path::new(imt).join(file_name);
-    //             info!(target:&krate, "checking (RO) toolchain file {p}");
-    //             file_exists_and_is_not_empty(&p)
-    //                 .with_context(|| format!("Failed to `test -s {p:?}`"))
-    //         };
-    //         for file_name in &["rust-toolchain.toml", "rust-toolchain"] {
-    //             if check(file_name)? {
-    //                 return Ok(Some(file_name.to_owned().to_owned()));
-    //             }
-    //         }
-    //         Ok(None)
-    //     })
-    //     .transpose()?
-    //     .flatten()
-    //     .map(|toolchain_file_name|
-    //         // https://rust-lang.github.io/rustup/overrides.html
-    //         // NOTE: without this, the crate's rust-toolchain gets installed and used and (for the mentioned crate)
-    //         //   fails due to (yet)unknown rustc CLI arg: `error: Unrecognized option: 'diagnostic-width'`
-    //         // e.g. https://github.com/xacrimon/dashmap/blob/v5.4.0/rust-toolchain
-    //         (format!("toolchain-{metadata}"), toolchain_file_name));
+    let mut toolchain = input_mount
+        .as_ref()
+        .map(|(_imn, imt)| -> Result<Option<String>> {
+            let check = |file_name| -> Result<bool> {
+                let p = Utf8Path::new(imt).join(file_name);
+                info!(target:&krate, "checking (RO) toolchain file {p}");
+                file_exists_and_is_not_empty(&p)
+                    .with_context(|| format!("Failed to `test -s {p:?}`"))
+            };
+            for file_name in &["rust-toolchain.toml", "rust-toolchain"] {
+                if check(file_name)? {
+                    return Ok(Some(file_name.to_owned().to_owned()));
+                }
+            }
+            Ok(None)
+        })
+        .transpose()?
+        .flatten()
+        .map(|toolchain_file_name|
+            // https://rust-lang.github.io/rustup/overrides.html
+            // NOTE: without this, the crate's rust-toolchain gets installed and used and (for the mentioned crate)
+            //   fails due to (yet)unknown rustc CLI arg: `error: Unrecognized option: 'diagnostic-width'`
+            // e.g. https://github.com/xacrimon/dashmap/blob/v5.4.0/rust-toolchain
+            (format!("toolchain-{metadata}"), toolchain_file_name));
+    if true {
+        // TODO: test building something involving rust-toolchain.toml
+        toolchain = None;
+    }
 
     let mut dockerfile = String::new();
 
-    //     const RUSTUP_TOOLCHAIN: &str = "rustup-toolchain";
-    //     if let Some((stage, _)) = toolchain.as_ref() {
-    //         writeln!(
-    //             dockerfile,
-    //             r#"FROM rust AS {stage}
-    // RUN rustup default | cut -d- -f1 >/{RUSTUP_TOOLCHAIN}"#
-    //         )?;
-    //     }
+    const RUSTUP_TOOLCHAIN: &str = "rustup-toolchain";
+    if let Some((stage, _)) = toolchain.as_ref() {
+        writeln!(
+            dockerfile,
+            r#"FROM rust AS {stage}
+    RUN rustup default | cut -d- -f1 >/{RUSTUP_TOOLCHAIN}"#
+        )?;
+    }
 
     writeln!(
         dockerfile,
@@ -479,12 +483,12 @@ RUN \"#
         )?;
     }
 
-    // if let Some((stage, _file_name)) = toolchain.as_ref() {
-    //     writeln!(
-    //         dockerfile,
-    //         r#"  --mount=type=bind,from={stage},source=/{RUSTUP_TOOLCHAIN},target=/{RUSTUP_TOOLCHAIN} \"#
-    //     )?;
-    // }
+    if let Some((stage, _file_name)) = toolchain.as_ref() {
+        writeln!(
+            dockerfile,
+            r#"  --mount=type=bind,from={stage},source=/{RUSTUP_TOOLCHAIN},target=/{RUSTUP_TOOLCHAIN} \"#
+        )?;
+    }
 
     debug!(target:&krate, "all_externs = {all_externs:?}");
     assert!(externs.len() <= all_externs.len());
@@ -548,10 +552,10 @@ RUN \"#
         Ok(())
     })?;
 
-    // if toolchain.is_some() {
-    //     writeln!(dockerfile, r#"    export RUSTUP_TOOLCHAIN="$(cat /{RUSTUP_TOOLCHAIN})" && \"#)?;
-    //     // TODO: merge with iterator above
-    // }
+    if toolchain.is_some() {
+        writeln!(dockerfile, r#"    export RUSTUP_TOOLCHAIN="$(cat /{RUSTUP_TOOLCHAIN})" && \"#)?;
+        // TODO: merge with iterator above
+    }
 
     writeln!(
         dockerfile,
