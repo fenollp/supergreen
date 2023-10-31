@@ -203,7 +203,6 @@ fn bake_rustc(
         "bin" | "test" | "proc-macro" => "rlib".to_owned(),
         _ => bail!("BUG: unexpected crate-type: '{crate_type}'"),
     };
-    debug!(">>> ext={ext}");
 
     if crate_type == "proc-macro" {
         // This way crates that depend on this know they must require it as .so
@@ -265,27 +264,30 @@ fn bake_rustc(
                     } else {
                         format!("lib{transitive}.{ext}")
                     };
-                all_externs.insert(actual_extern);
+                all_externs.insert(actual_extern.clone());
 
-                // // ^ this algo tried to "keep track" of actual paths to transitive deps artifacts
-                // //   however some edge cases (at least 1) go through. That fix seems to bust cache on 2nd builds though v
+                // ^ this algo tried to "keep track" of actual paths to transitive deps artifacts
+                //   however some edge cases (at least 1) go through. That fix seems to bust cache on 2nd builds though v
 
-                // let deps_dir = Utf8Path::new(&target_path).join("deps");
-                // info!(target:&krate, "listing existing an extern crate's extern matches {deps_dir}/lib*.*");
-                // let listing = read_dir(&deps_dir)
-                //     .with_context(|| format!("Failed reading directory {deps_dir}"))?
-                //     // TODO: at least context() error
-                //     .filter_map(std::result::Result::ok)
-                //     .filter_map(|p| {
-                //         let p = p.path();
-                //         p.file_name().map(|p| p.to_string_lossy().to_string())
-                //     })
-                //     .filter(|p| p.contains(&transitive))
-                //     .filter(|p| !p.ends_with(&format!("{transitive}.d")))
-                //     .map(|p| p.to_string())
-                //     .collect::<Vec<_>>();
-                // all_externs.extend(listing.into_iter());
-                // // TODO: move to after for loop
+                if is_debug() {
+                    let deps_dir = Utf8Path::new(&target_path).join("deps");
+                    info!(target:&krate, "listing existing an extern crate's extern matches {deps_dir}/lib*.*");
+                    let listing = read_dir(&deps_dir)
+                        .with_context(|| format!("Failed reading directory {deps_dir}"))?
+                        // TODO: at least context() error
+                        .filter_map(std::result::Result::ok)
+                        .filter_map(|p| {
+                            let p = p.path();
+                            p.file_name().map(|p| p.to_string_lossy().to_string())
+                        })
+                        .filter(|p| p.contains(&transitive))
+                        .filter(|p| !p.ends_with(&format!("{transitive}.d")))
+                        .map(|p| p.to_string())
+                        .collect::<Vec<_>>();
+                    pretty_assertions::assert_eq!(vec![actual_extern], listing);
+                    // all_externs.extend(listing.into_iter());
+                    // TODO: move to after for loop
+                }
 
                 short_externs.insert(transitive);
             }
@@ -448,6 +450,8 @@ RUN \"#
         let (name, target) = input_mount.as_ref().expect("TODO: check that assert earlier");
         writeln!(
             dockerfile,
+            // TODO: WORKDIR was remove as it changed during a single `cargo build`
+            // Looks like removing it isn't an issue, however we need more testing.
             //             r#"WORKDIR {pwd}
             // RUN \
             //   --mount=type=bind,from={name},target={target} \"#
