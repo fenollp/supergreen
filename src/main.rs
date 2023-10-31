@@ -557,11 +557,13 @@ RUN \"#
         // TODO: merge with iterator above
     }
 
+    const TMP_STDERR: &str = "/stderr";
+    const TMP_STDOUT: &str = "/stdout";
     writeln!(
         dockerfile,
-        r#"    if ! rustc '{args}' {input} >/tmp/stdout 2>/tmp/stderr; then head /tmp/std???; exit 1; fi"#,
+        r#"    if ! rustc '{args}' {input} >{TMP_STDOUT} 2>{TMP_STDERR}; then head {TMP_STDOUT} {TMP_STDERR}; exit 1; fi"#,
         args = args.join("' '"),
-    )?; // TODO: write somewhere else than /tmp
+    )?;
 
     if let Some(incremental) = &incremental {
         writeln!(
@@ -573,8 +575,7 @@ COPY --from={rustc_stage} {incremental} /"#,
     writeln!(
         dockerfile,
         r#"FROM scratch AS {stdio_stage}
-COPY --from={rustc_stage} /tmp/stderr /
-COPY --from={rustc_stage} /tmp/stdout /
+COPY --from={rustc_stage} {TMP_STDOUT} {TMP_STDERR} /
 FROM scratch AS {out_stage}
 COPY --from={rustc_stage} {out_dir}/*-{metadata}* /"#,
     )?;
