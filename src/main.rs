@@ -678,17 +678,19 @@ target "{incremental_stage}" {{
     let bakefile_path = {
         let bakefile_path = format!("{target_path}/{crate_name}-{metadata}.hcl");
         info!(target:&krate, "opening (RW) crate bakefile {bakefile_path}");
-        match read_to_string(&bakefile_path) {
-            Ok(existing) => {
-                let re = Regex::new(r#""\/tmp\/[^"]+""#)?;
-                let replacement = r#""REDACTED""#;
-                pretty_assertions::assert_eq!(
-                    re.replace_all(&existing, replacement).to_string(),
-                    re.replace_all(&bakefile, replacement).to_string(),
-                );
+        if is_debug() {
+            match read_to_string(&bakefile_path) {
+                Ok(existing) => {
+                    let re = Regex::new(r#""\/tmp\/[^"]+""#)?;
+                    let replacement = r#""REDACTED""#;
+                    pretty_assertions::assert_eq!(
+                        re.replace_all(&existing, replacement).to_string(),
+                        re.replace_all(&bakefile, replacement).to_string(),
+                    );
+                }
+                Err(e) if e.kind() == ErrorKind::NotFound => {}
+                Err(e) => bail!("{e}"),
             }
-            Err(e) if e.kind() == ErrorKind::NotFound => {}
-            Err(e) => bail!("{e}"),
         }
         fs::write(&bakefile_path, bakefile)
             .with_context(|| format!("Failed creating bakefile {bakefile_path}"))?; // Don't remove HCL file
