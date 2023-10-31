@@ -122,7 +122,7 @@ fn help() {
 }
 
 fn call_rustc<I: Iterator<Item = String>>(rustc: &str, args: fn() -> I) -> Result<ExitCode> {
-    // TODO? run within `bake` for consistency
+    // NOTE: not running inside Docker: local install should match Docker image setup
     let argz = || args().collect::<Vec<_>>();
     exit_code(
         Command::new(rustc)
