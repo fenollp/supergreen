@@ -592,7 +592,10 @@ COPY --from={rustc_stage} {out_dir}/*-{metadata}* /"#,
     let mut contexts: BTreeMap<_, _> = [
         Some(("rust".to_owned(), docker_image)),
         input_mount.map(|(name, target)| (name, target.to_string())),
-        cwd.as_deref().map(|cwd| ("cwd".to_owned(), cwd.to_string_lossy().to_string())), // lossy but checked earlier
+        cwd.as_deref().map(|cwd| {
+            let cwd_path = Utf8Path::from_path(cwd.as_path()).expect("PROOF: did not fail earlier");
+            ("cwd".to_owned(), cwd_path.to_string())
+        }),
         crate_out.as_deref().map(|crate_out| (crate_out_name(crate_out), crate_out.to_owned())),
     ]
     .into_iter()
