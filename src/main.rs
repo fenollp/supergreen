@@ -5,10 +5,12 @@ use std::{
     fs::{self, create_dir_all, read_dir, read_to_string, File},
     io::{BufRead, BufReader, ErrorKind},
     process::{Command, ExitCode, Stdio},
+    thread::sleep,
+    time::{Duration, Instant},
     unreachable,
 };
 
-use advisory_lock::{AdvisoryFileLock, FileLockMode};
+use advisory_lock::{AdvisoryFileLock, FileLockError, FileLockMode};
 use anyhow::{bail, Context, Result};
 use camino::{Utf8Path, Utf8PathBuf};
 use env_logger::Env;
@@ -148,18 +150,26 @@ fn bake_rustc(
 
     let global_lock = is_debug()
         .then(|| -> Result<_> {
-            let global_lock = File::create("/tmp/global.lock")?;
+            let lock = File::create("/tmp/global.lock")?;
             debug!(target:&krate, "getting lock...");
-            global_lock.lock(FileLockMode::Exclusive)?;
+            let start = Instant::now();
+            loop {
+                match lock.try_lock(FileLockMode::Exclusive) {
+                    Ok(()) => {
+                        debug!(target:&krate, "... got lock!");
+                        break;
+                    }
+                    Err(FileLockError::AlreadyLocked) => {
+                        sleep(Duration::from_millis(500));
+                        if start.elapsed().as_secs() >= 31 {
+                            bail!("Couldn't lock!")
+                        }
+                    }
+                    Err(e) => bail!("Couldn't lock: {e}"),
+                }
+            }
             debug!(target:&krate, "... got lock!");
-            Ok(global_lock)
-            // // try_lock
-            // // unlock
-            // // TODO: loop + try_lock => abort after 30s-ish of trying
-            //     // until (set -o noclobber; echo >/tmp/global.lock) >/dev/null 2>&1; do
-            //     //     [[ "$(( "$(date +%s)" - "$(stat -c %Y /tmp/global.lock)" ))" -ge 31 ]] && return 4
-            //     //     sleep .5
-            //     // done
+            Ok(lock)
         })
         .transpose()?;
 
