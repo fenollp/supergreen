@@ -161,7 +161,7 @@ fn bake_rustc(
                     }
                     Err(FileLockError::AlreadyLocked) => {
                         sleep(Duration::from_millis(500));
-                        if start.elapsed().as_secs() >= 31 {
+                        if start.elapsed().as_secs() >= 91 {
                             bail!("Couldn't lock!")
                         }
                     }
