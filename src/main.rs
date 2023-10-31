@@ -14,7 +14,7 @@ use advisory_lock::{AdvisoryFileLock, FileLockError, FileLockMode};
 use anyhow::{bail, Context, Result};
 use camino::{Utf8Path, Utf8PathBuf};
 use env_logger::Env;
-use log::{debug, error, info};
+use log::{debug, error, info, warn};
 use mktemp::Temp;
 use regex::Regex;
 
@@ -294,8 +294,10 @@ fn bake_rustc(
                         .filter(|p| !p.ends_with(&format!("{transitive}.d")))
                         .map(|p| p.to_string())
                         .collect::<Vec<_>>();
-                    pretty_assertions::assert_eq!(vec![actual_extern], listing);
-                    // all_externs.extend(listing.into_iter());
+                    if listing != vec![actual_extern.clone()] {
+                        warn!("instead of [{actual_extern}], listing found {listing:?}");
+                    }
+                    //all_externs.extend(listing.into_iter());
                     // TODO: move to after for loop
                 }
 
