@@ -920,7 +920,7 @@ fn log_file() -> Result<Option<File>> {
             let log_path =
                 env::var(RUSTCBUILDX_LOG_PATH).ok().unwrap_or("/tmp/rstcbldx_FIXME".to_owned());
             let log_file = OpenOptions::new()
-                .write(true)
+                .create(true)
                 .append(true)
                 .open(&log_path)
                 .with_context(|| format!("Failed opening (RW) log file {log_path}"))?;
