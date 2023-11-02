@@ -4,6 +4,7 @@ pub(crate) const RUSTCBUILDX_DEBUG: &str = "RUSTCBUILDX_DEBUG";
 pub(crate) const RUSTCBUILDX_DEBUG_IF_CRATE_NAME: &str = "RUSTCBUILDX_DEBUG_IF_CRATE_NAME";
 pub(crate) const RUSTCBUILDX_DOCKER_IMAGE: &str = "RUSTCBUILDX_DOCKER_IMAGE";
 pub(crate) const RUSTCBUILDX_DOCKER_SYNTAX: &str = "RUSTCBUILDX_DOCKER_SYNTAX";
+pub(crate) const RUSTCBUILDX_SEQUENTIAL_CARGO: &str = "RUSTCBUILDX_SEQUENTIAL_CARGO";
 
 // rustc 1.73.0 (cc66ad468 2023-10-03)
 pub(crate) const DOCKER_IMAGE: &str = "docker-image://docker.io/library/rust:1.73.0-slim@sha256:89e1efffc83a631bced1bf86135f4f671223cc5dc32ebf26ef8b3efd1b97ffff";
@@ -19,10 +20,12 @@ pub(crate) const DOCKER_IMAGE: &str = "docker-image://docker.io/library/rust:1.7
 
 pub(crate) const DOCKER_SYNTAX: &str = "docker.io/docker/dockerfile:1@sha256:ac85f380a63b13dfcefa89046420e1781752bab202122f8f50032edf31be0021";
 
-pub(crate) const DEBUG: &str = "1";
-
-#[inline]
 pub(crate) fn is_debug() -> bool {
     // TODO: oncelock
-    env::var(RUSTCBUILDX_DEBUG).ok().map(|x| x == DEBUG).unwrap_or_default()
+    env::var(RUSTCBUILDX_DEBUG).ok().map(|x| x == "1").unwrap_or_default()
+}
+
+pub(crate) fn is_sequential() -> bool {
+    // TODO: oncelock
+    env::var(RUSTCBUILDX_SEQUENTIAL_CARGO).ok().map(|x| x == "1").unwrap_or_default()
 }
