@@ -18,6 +18,7 @@ jobs:
 
     - uses: actions/checkout@v3
 
+    # Actually, the whole archives
     - name: Cache `cargo fetch`
       uses: actions/cache@v3
       with:
@@ -28,28 +29,23 @@ jobs:
         key: cargo-deps-${{ hashFiles('**/Cargo.lock') }}
         restore-keys: cargo-deps-
 
-    - uses: actions-rs/cargo@v1
-      with:
-        command: fetch
-
-    - name: Cache `cargo build`
+    - name: Cache `cargo install`
       uses: actions/cache@v3
       with:
-        path: target
-        key: ${{ runner.os }}-cargo-build-${{ hashFiles('**/Cargo.lock') }}-and-${{ hashFiles('src/**') }}
+        path: ~/instmp
+        key: ${{ runner.os }}-cargo-install-${{ hashFiles('**/Cargo.lock') }}-and-${{ hashFiles('src/**') }}
         restore-keys: |
-          ${{ runner.os }}-cargo-build-${{ hashFiles('**/Cargo.lock') }}-and-
-          ${{ runner.os }}-cargo-build-
+          ${{ runner.os }}-cargo-install-${{ hashFiles('**/Cargo.lock') }}-and-
+          ${{ runner.os }}-cargo-install-
 
-    - uses: actions-rs/cargo@v1
-      with:
-        command: build
-        args: --all-targets --all-features --locked --frozen --offline --release
+    - name: Compile HEAD
+      run: |
+        CARGO_TARGET_DIR=~/instmp cargo install --force --path=$PWD
 
     - uses: actions/upload-artifact@v3
       with:
         name: bin-artifact
-        path: target/release/rustcbuildx
+        path: ~/instmp/release/rustcbuildx
 
 
   self-builds:
@@ -73,9 +69,7 @@ jobs:
         key: cargo-deps-${{ hashFiles('**/Cargo.lock') }}
         restore-keys: cargo-deps-
 
-    - uses: actions-rs/cargo@v1
-      with:
-        command: fetch
+    - run: cargo fetch
 
     - name: Retrieve saved bin
       uses: actions/download-artifact@v3

@@ -21,9 +21,7 @@ jobs:
           ~/.cargo/git/db/
         key: cargo-deps-${{ hashFiles('**/Cargo.lock') }}
         restore-keys: cargo-deps-
-    - uses: actions-rs/cargo@v1
-      with:
-        command: fetch
+    - run: cargo fetch
     - name: Cache `cargo test`
       uses: actions/cache@v3
       with:
@@ -32,14 +30,8 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-cargo-test-${{ hashFiles('**/Cargo.lock') }}-and-
           ${{ runner.os }}-cargo-test-
-    - uses: actions-rs/cargo@v1
-      with:
-        command: nextest
-        args: run --all-targets --all-features --locked --frozen --offline
-    - uses: actions-rs/cargo@v1
-      with:
-        command: nextest
-        args: run --all-targets --all-features --locked --frozen --offline --release
+    - run: cargo nextest run --all-targets --all-features --locked --frozen --offline
+    - run: cargo nextest run --all-targets --all-features --locked --frozen --offline --release
 
   fmt:
     name: fmt
@@ -51,10 +43,7 @@ jobs:
         toolchain: nightly
     - run: rustup component add rustfmt
     - uses: actions/checkout@v3
-    - uses: actions-rs/cargo@v1
-      with:
-        command: fmt
-        args: --check --all
+    - run: cargo fmt --check --all
 
   clippy:
     name: clippy
@@ -75,9 +64,7 @@ jobs:
           ~/.cargo/git/db/
         key: cargo-deps-${{ hashFiles('**/Cargo.lock') }}
         restore-keys: cargo-deps-
-    - uses: actions-rs/cargo@v1
-      with:
-        command: fetch
+    - run: cargo fetch
     - name: Cache `cargo clippy`
       uses: actions/cache@v3
       with:
@@ -86,12 +73,10 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-cargo-clippy-${{ hashFiles('**/Cargo.lock') }}-and-
           ${{ runner.os }}-cargo-clippy-
-    - uses: actions-rs/cargo@v1
-      with:
-        command: clippy
-        args: >
-          --locked --frozen --offline --all-targets --all-features
-          -- -D warnings --no-deps
-          -W clippy::cast_lossless
-          -W clippy::redundant_closure_for_method_calls
+    - run: |
+        cargo clippy \
+          --locked --frozen --offline --all-targets --all-features \
+          -- -D warnings --no-deps \
+          -W clippy::cast_lossless \
+          -W clippy::redundant_closure_for_method_calls \
           -W clippy::str_to_string
