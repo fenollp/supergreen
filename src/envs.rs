@@ -5,6 +5,9 @@ pub(crate) const RUSTCBUILDX_DEBUG_IF_CRATE_NAME: &str = "RUSTCBUILDX_DEBUG_IF_C
 pub(crate) const RUSTCBUILDX_DOCKER_IMAGE: &str = "RUSTCBUILDX_DOCKER_IMAGE";
 pub(crate) const RUSTCBUILDX_DOCKER_SYNTAX: &str = "RUSTCBUILDX_DOCKER_SYNTAX";
 pub(crate) const RUSTCBUILDX_SEQUENTIAL_CARGO: &str = "RUSTCBUILDX_SEQUENTIAL_CARGO";
+pub(crate) const RUSTCBUILDX_LOG_STYLE: &str = "RUSTCBUILDX_LOG_STYLE";
+pub(crate) const RUSTCBUILDX_LOG_PATH: &str = "RUSTCBUILDX_LOG_PATH";
+pub(crate) const RUSTCBUILDX_LOG: &str = "RUSTCBUILDX_LOG";
 
 // rustc 1.73.0 (cc66ad468 2023-10-03)
 pub(crate) const DOCKER_IMAGE: &str = "docker-image://docker.io/library/rust:1.73.0-slim@sha256:89e1efffc83a631bced1bf86135f4f671223cc5dc32ebf26ef8b3efd1b97ffff";
