@@ -28,7 +28,6 @@ camino = "1"
 env_logger = "0.10"
 log = "0.4"
 mktemp = "0.5"
-os_pipe = "1"
 pretty_assertions = "1" # TODO: drop once !dbg
 regex = "1"
 

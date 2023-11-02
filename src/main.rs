@@ -2,7 +2,7 @@ use std::{
     collections::{BTreeMap, BTreeSet},
     env,
     fmt::Write as FmtWrite,
-    fs::{self, create_dir_all, read_dir, read_to_string, File},
+    fs::{self, create_dir_all, read_dir, read_to_string, File, OpenOptions},
     io::{BufRead, BufReader, ErrorKind},
     process::{Command, ExitCode, Stdio},
     thread::sleep,
@@ -13,14 +13,15 @@ use std::{
 use advisory_lock::{AdvisoryFileLock, FileLockError, FileLockMode};
 use anyhow::{bail, Context, Result};
 use camino::{Utf8Path, Utf8PathBuf};
-use env_logger::Env;
+use env_logger::{Env, Target};
+use envs::{RUSTCBUILDX_LOG, RUSTCBUILDX_LOG_PATH, RUSTCBUILDX_LOG_STYLE};
 use log::{debug, error, info, warn};
 use mktemp::Temp;
 use regex::Regex;
 
 use crate::{
     envs::{
-        is_debug, DEBUG, DOCKER_IMAGE, DOCKER_SYNTAX, RUSTCBUILDX_DEBUG,
+        is_debug, is_sequential, DOCKER_IMAGE, DOCKER_SYNTAX, RUSTCBUILDX_DEBUG,
         RUSTCBUILDX_DEBUG_IF_CRATE_NAME, RUSTCBUILDX_DOCKER_IMAGE, RUSTCBUILDX_DOCKER_SYNTAX,
     },
     pops::Popped,
@@ -34,26 +35,10 @@ mod pops;
 //       Or in the words of this crate: https://github.com/camino-rs/camino/tree/8bec62382e1bce1326ee48f6bf93c46e7a4fde0b#:~:text=there%20are%20already%20many%20systems%2C%20such%20as%20cargo%2C%20that%20only%20support%20utf-8%20paths.%20if%20your%20own%20tool%20interacts%20with%20any%20such%20system%2C%20you%20can%20assume%20that%20paths%20are%20valid%20utf-8%20without%20creating%20any%20additional%20burdens%20on%20consumers.
 
 fn main() -> ExitCode {
-    match faillible_main() {
-        Ok(exit) => exit,
-        Err(e) => {
-            eprintln!("Failure: {e}");
-            ExitCode::FAILURE
-        }
-    }
+    faillible_main().unwrap_or(ExitCode::FAILURE)
 }
 
 fn faillible_main() -> Result<ExitCode> {
-    if let Some(name) = env::var(RUSTCBUILDX_DEBUG_IF_CRATE_NAME).ok().as_deref() {
-        if env::args().any(|arg| arg.contains(name)) {
-            env::set_var(RUSTCBUILDX_DEBUG, DEBUG); // TODO: set oncelock instead
-        }
-    }
-    if is_debug() {
-        env::set_var("RUST_LOG", "debug");
-        env_logger::Builder::from_env(Env::default().default_filter_or("info")).init();
-    }
-
     let first_few_args = env::args().skip(1).take(3).collect::<Vec<String>>();
     let first_few_args = first_few_args.iter().map(String::as_str).collect::<Vec<_>>();
     match &first_few_args[..] {
@@ -67,6 +52,7 @@ fn faillible_main() -> Result<ExitCode> {
             })
             .map_err(|e| {
                 error!(target:crate_name, "Failure: {e}");
+                eprintln!("Failure: {e}");
                 e
             });
         }
@@ -142,13 +128,14 @@ fn bake_rustc(
     arguments: Vec<String>,
     fallback: impl Fn() -> Result<ExitCode>,
 ) -> Result<ExitCode> {
+    let log_file = log_file().context("setting up logger")?;
     let krate = format!("{}:{crate_name}", env!("CARGO_PKG_NAME"));
     info!(target:&krate, "{bin}@{vsn} wraps `rustc` calls to BuildKit builders",
         bin = env!("CARGO_PKG_NAME"),
         vsn = env!("CARGO_PKG_VERSION"),
     );
 
-    let global_lock = is_debug()
+    let global_lock = is_sequential()
         .then(|| -> Result<_> {
             let lock = File::create("/tmp/global.lock")?;
             debug!(target:&krate, "getting lock...");
@@ -168,7 +155,6 @@ fn bake_rustc(
                     Err(e) => bail!("Couldn't lock: {e}"),
                 }
             }
-            debug!(target:&krate, "... got lock!");
             Ok(lock)
         })
         .transpose()?;
@@ -179,7 +165,7 @@ fn bake_rustc(
     let pwd = env::current_dir().context("Failed to get $PWD")?;
     let pwd: Utf8PathBuf = pwd.try_into().context("Path's UTF-8 encoding is corrupted")?;
 
-    let (st, args) = parse::as_rustc(&pwd, crate_name, arguments, is_debug())?;
+    let (st, args) = parse::as_rustc(&pwd, crate_name, arguments, false)?;
     info!(target:&krate, "{:?}", st);
     let crate_type = st.crate_type;
     let externs = st.externs;
@@ -319,13 +305,11 @@ fn bake_rustc(
             .with_context(|| format!("Failed creating crate externs {crate_externs}"))?;
     }
     let all_externs = all_externs;
-    if is_debug() {
-        info!(target:&krate, "crate_externs: {crate_externs}");
-        debug!(target:&krate, "{crate_externs} = {data}", data = match read_to_string(&crate_externs) {
-            Ok(data) => data,
-            Err(e) => e.to_string(),
-        });
-    }
+    info!(target:&krate, "crate_externs: {crate_externs}");
+    debug!(target:&krate, "{crate_externs} = {data}", data = match read_to_string(&crate_externs) {
+        Ok(data) => data,
+        Err(e) => e.to_string(),
+    });
 
     create_dir_all(&out_dir).with_context(|| format!("Failed to `mkdir -p {out_dir}`"))?;
     if let Some(ref incremental) = incremental {
@@ -722,18 +706,13 @@ target "{incremental_stage}" {{
     };
 
     let mut cmd = Command::new("docker");
-    if is_debug() {
+    if let Some(log_file) = log_file {
         info!(target:&krate, "bakefile: {bakefile_path}");
         debug!(target:&krate, "{bakefile_path} = {data}", data = match read_to_string(&bakefile_path) {
             Ok(data) => data,
             Err(e) => e.to_string(),
         });
-
-        // TODO: multiwriter?
-        cmd.arg("--debug")
-            .stdin(Stdio::null())
-            .stdout(os_pipe::dup_stdout().context("Failed to dup STDOUT")?)
-            .stderr(os_pipe::dup_stderr().context("Failed to dup STDERR")?);
+        cmd.arg("--debug").stdin(Stdio::null()).stdout(log_file.try_clone()?).stderr(log_file);
     } else {
         cmd.stdin(Stdio::null()).stdout(Stdio::null()).stderr(Stdio::null());
     }
@@ -746,17 +725,18 @@ target "{incremental_stage}" {{
 
     // TODO: buffered reading + copy to STDERR/STDOUT
     if code == Some(0) {
-        let fwd = |file, name, show: fn(&str)| -> Result<()> {
+        let fwd = |file, show: fn(&str)| -> Result<()> {
             let data = stdio_path.join(file);
             info!(target:&krate, "reading {data}");
-            let data = read_to_string(data).with_context(|| format!("Failed to copy {name}"))?;
-            if !data.is_empty() {
-                show(data.as_str());
+            let data = read_to_string(&data).with_context(|| format!("Failed to copy {data}"))?;
+            let msg = data.trim();
+            if !msg.is_empty() {
+                show(msg);
             }
             Ok(())
         };
-        fwd("stderr", "STDERR", |msg: &str| eprintln!("{msg}"))?;
-        fwd("stdout", "STDOUT", |msg: &str| println!("{msg}"))?;
+        fwd("stderr", |msg: &str| eprintln!("{msg}"))?;
+        fwd("stdout", |msg: &str| println!("{msg}"))?;
     }
     if !is_debug() {
         drop(stdio); // Removes stdio/std{err,out} files and stdio dir
@@ -767,7 +747,9 @@ target "{incremental_stage}" {{
     if let Some(global_lock) = global_lock {
         global_lock.unlock().context("Failed to unlock")?;
         return exit_code(code);
-    } else if code != Some(0) {
+    }
+    if code != Some(0) {
+        // TODO: re-enable
         if true {
             let _fallback = fallback;
             return exit_code(code);
@@ -922,4 +904,35 @@ fn copy_files(dir: &Utf8Path, dst: &Utf8Path) -> Result<()> {
         }
     }
     Ok(())
+}
+
+fn log_file() -> Result<Option<File>> {
+    if let Some(name) = env::var(RUSTCBUILDX_DEBUG_IF_CRATE_NAME).ok().as_deref() {
+        if env::args().any(|arg| arg.contains(name)) {
+            env::set_var(RUSTCBUILDX_DEBUG, "1");
+        }
+    }
+
+    is_debug()
+        .then(|| -> Result<_> {
+            let log_path =
+                env::var(RUSTCBUILDX_LOG_PATH).ok().unwrap_or("/tmp/rstcbldx_FIXME".to_owned());
+            let log_file = OpenOptions::new()
+                .create(true)
+                .append(true)
+                .open(&log_path)
+                .with_context(|| format!("Failed opening (RW) log file {log_path}"))?;
+
+            env_logger::Builder::from_env(
+                Env::default()
+                    .filter(RUSTCBUILDX_LOG)
+                    .write_style(RUSTCBUILDX_LOG_STYLE)
+                    .default_filter_or("info"),
+            )
+            .target(Target::Pipe(Box::new(log_file.try_clone()?)))
+            .init();
+
+            Ok(log_file)
+        })
+        .transpose()
 }

@@ -1,24 +1,37 @@
 on: [push]
-name: CI
+name: cargo
 jobs:
 
   test:
     name: tests
     runs-on: ubuntu-latest
     steps:
-    - run: docker buildx version
-    - run: DOCKER_BUILDKIT=1 docker --help
-    - run: docker buildx bake --help
-    - run: docker buildx build --help
     - uses: actions-rs/toolchain@v1
       with:
         profile: minimal
         toolchain: stable
     - uses: actions/checkout@v3
     - uses: taiki-e/install-action@nextest
+    - name: Cache `cargo fetch`
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~/.cargo/registry/index/
+          ~/.cargo/registry/cache/
+          ~/.cargo/git/db/
+        key: cargo-deps-${{ hashFiles('**/Cargo.lock') }}
+        restore-keys: cargo-deps-
     - uses: actions-rs/cargo@v1
       with:
         command: fetch
+    - name: Cache `cargo test`
+      uses: actions/cache@v3
+      with:
+        path: target
+        key: ${{ runner.os }}-cargo-test-${{ hashFiles('**/Cargo.lock') }}-and-${{ hashFiles('src/**') }}
+        restore-keys: |
+          ${{ runner.os }}-cargo-test-${{ hashFiles('**/Cargo.lock') }}-and-
+          ${{ runner.os }}-cargo-test-
     - uses: actions-rs/cargo@v1
       with:
         command: nextest
@@ -29,7 +42,7 @@ jobs:
         args: run --all-targets --all-features --locked --frozen --offline --release
 
   fmt:
-    name: cargo fmt
+    name: fmt
     runs-on: ubuntu-latest
     steps:
     - uses: actions-rs/toolchain@v1
@@ -44,7 +57,7 @@ jobs:
         args: --check --all
 
   clippy:
-    name: cargo clippy
+    name: clippy
     runs-on: ubuntu-latest
     steps:
     - uses: actions-rs/toolchain@v1
@@ -53,9 +66,26 @@ jobs:
         toolchain: stable
     - run: rustup component add clippy
     - uses: actions/checkout@v3
+    - name: Cache `cargo fetch`
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~/.cargo/registry/index/
+          ~/.cargo/registry/cache/
+          ~/.cargo/git/db/
+        key: cargo-deps-${{ hashFiles('**/Cargo.lock') }}
+        restore-keys: cargo-deps-
     - uses: actions-rs/cargo@v1
       with:
         command: fetch
+    - name: Cache `cargo clippy`
+      uses: actions/cache@v3
+      with:
+        path: target
+        key: ${{ runner.os }}-cargo-clippy-${{ hashFiles('**/Cargo.lock') }}-and-${{ hashFiles('src/**') }}
+        restore-keys: |
+          ${{ runner.os }}-cargo-clippy-${{ hashFiles('**/Cargo.lock') }}-and-
+          ${{ runner.os }}-cargo-clippy-
     - uses: actions-rs/cargo@v1
       with:
         command: clippy
