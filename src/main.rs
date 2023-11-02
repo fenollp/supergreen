@@ -746,17 +746,18 @@ target "{incremental_stage}" {{
 
     // TODO: buffered reading + copy to STDERR/STDOUT
     if code == Some(0) {
-        let fwd = |file, name, show: fn(&str)| -> Result<()> {
+        let fwd = |file, show: fn(&str)| -> Result<()> {
             let data = stdio_path.join(file);
             info!(target:&krate, "reading {data}");
-            let data = read_to_string(data).with_context(|| format!("Failed to copy {name}"))?;
-            if !data.is_empty() {
-                show(data.as_str());
+            let data = read_to_string(&data).with_context(|| format!("Failed to copy {data}"))?;
+            let msg = data.trim();
+            if !msg.is_empty() {
+                show(msg);
             }
             Ok(())
         };
-        fwd("stderr", "STDERR", |msg: &str| eprintln!("{msg}"))?;
-        fwd("stdout", "STDOUT", |msg: &str| println!("{msg}"))?;
+        fwd("stderr", |msg: &str| eprintln!("{msg}"))?;
+        fwd("stdout", |msg: &str| println!("{msg}"))?;
     }
     if !is_debug() {
         drop(stdio); // Removes stdio/std{err,out} files and stdio dir
