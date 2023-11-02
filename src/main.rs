@@ -128,7 +128,7 @@ fn bake_rustc(
     arguments: Vec<String>,
     fallback: impl Fn() -> Result<ExitCode>,
 ) -> Result<ExitCode> {
-    let log_file = log_file()?;
+    let log_file = log_file().context("setting up logger")?;
     let krate = format!("{}:{crate_name}", env!("CARGO_PKG_NAME"));
     info!(target:&krate, "{bin}@{vsn} wraps `rustc` calls to BuildKit builders",
         bin = env!("CARGO_PKG_NAME"),
