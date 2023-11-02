@@ -6,6 +6,11 @@ jobs:
   bin:
     runs-on: ubuntu-latest
     steps:
+    - run: docker buildx version
+    - run: DOCKER_BUILDKIT=1 docker --help
+    - run: docker buildx bake --help
+    - run: docker buildx build --help
+
     - uses: actions-rs/toolchain@v1
       with:
         profile: minimal
@@ -99,11 +104,12 @@ jobs:
         RUSTC_WRAPPER="$PWD"/rustcbuildx \
           cargo -vv build --all-targets --all-features --locked --frozen --offline
 
-    - name: cargo build net=OFF cache=ON remote=OFF
+    - name: Make sure cargo messages show all fresh
       run: |
+        unset RUSTCBUILDX_DEBUG
         RUSTC_WRAPPER="$PWD"/rustcbuildx \
           cargo -vv build --all-targets --all-features --locked --frozen --offline >2&1 >_
-        cat -A _
+        # cat -A _
         cat _ | grep Finished | grep 0...s
         cat _ | grep Fresh
         ! cat _ | grep Compiling
