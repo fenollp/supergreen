@@ -108,8 +108,8 @@ jobs:
       run: |
         unset RUSTCBUILDX_DEBUG
         RUSTC_WRAPPER="$PWD"/rustcbuildx \
-          cargo -vv build --all-targets --all-features --locked --frozen --offline >2&1 >_
-        # cat -A _
+          cargo -vv build --all-targets --all-features --locked --frozen --offline 2>&1 | tee _
+        cat -A _
         cat _ | grep Finished | grep 0...s
         cat _ | grep Fresh
         ! cat _ | grep Compiling
