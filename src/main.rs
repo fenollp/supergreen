@@ -47,7 +47,7 @@ fn faillible_main() -> Result<ExitCode> {
             return call_rustc(rustc, || env::args().skip(2));
         }
         [rustc, "--crate-name", crate_name, ..] => {
-            return bake_rustc(crate_name, env::args().skip(2).collect(), log_file()?, || {
+            return bake_rustc(crate_name, env::args().skip(2).collect(), || {
                 call_rustc(rustc, || env::args().skip(2))
             })
             .map_err(|e| {
@@ -126,9 +126,9 @@ fn call_rustc<I: Iterator<Item = String>>(rustc: &str, args: fn() -> I) -> Resul
 fn bake_rustc(
     crate_name: &str,
     arguments: Vec<String>,
-    log_file: Option<File>,
     fallback: impl Fn() -> Result<ExitCode>,
 ) -> Result<ExitCode> {
+    let log_file = log_file()?;
     let krate = format!("{}:{crate_name}", env!("CARGO_PKG_NAME"));
     info!(target:&krate, "{bin}@{vsn} wraps `rustc` calls to BuildKit builders",
         bin = env!("CARGO_PKG_NAME"),
@@ -712,8 +712,6 @@ target "{incremental_stage}" {{
             Ok(data) => data,
             Err(e) => e.to_string(),
         });
-
-        // TODO: multiwriter?
         cmd.arg("--debug").stdin(Stdio::null()).stdout(log_file.try_clone()?).stderr(log_file);
     } else {
         cmd.stdin(Stdio::null()).stdout(Stdio::null()).stderr(Stdio::null());
