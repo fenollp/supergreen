@@ -34,45 +34,10 @@ mod pops;
 //       Or in the words of this crate: https://github.com/camino-rs/camino/tree/8bec62382e1bce1326ee48f6bf93c46e7a4fde0b#:~:text=there%20are%20already%20many%20systems%2C%20such%20as%20cargo%2C%20that%20only%20support%20utf-8%20paths.%20if%20your%20own%20tool%20interacts%20with%20any%20such%20system%2C%20you%20can%20assume%20that%20paths%20are%20valid%20utf-8%20without%20creating%20any%20additional%20burdens%20on%20consumers.
 
 fn main() -> ExitCode {
-    match faillible_main() {
-        Ok(exit) => exit,
-        Err(e) => {
-            eprintln!("Failure: {e}");
-            ExitCode::FAILURE
-        }
-    }
+    faillible_main().unwrap_or(ExitCode::FAILURE)
 }
 
 fn faillible_main() -> Result<ExitCode> {
-    if let Some(name) = env::var(RUSTCBUILDX_DEBUG_IF_CRATE_NAME).ok().as_deref() {
-        if env::args().any(|arg| arg.contains(name)) {
-            env::set_var(RUSTCBUILDX_DEBUG, "1");
-        }
-    }
-    let log_file = is_debug()
-        .then(|| -> Result<_> {
-            let log_path = "/tmp/rstcbldx_FIXME"; // RUSTCBUILDX_LOG_PATH
-            let log_file = OpenOptions::new()
-                .write(true)
-                .append(true)
-                .open(log_path)
-                .with_context(|| format!("Failed opening (RW) log file {log_path}"))?;
-
-            env_logger::Builder::from_env(
-                Env::default()
-                    .filter("RUSTCBUILDX_LOG")
-                    // .write_style("RUSTCBUILDX_LOG_STYLE")
-                    .default_filter_or("info"),
-            )
-            // https://github.com/rust-cli/env_logger/issues/125#issuecomment-1582209797
-            .target(Target::Pipe(Box::new(log_file.try_clone()?)))
-            .write_style(env_logger::WriteStyle::Always)
-            .init();
-
-            Ok(log_file)
-        })
-        .transpose()?;
-
     let first_few_args = env::args().skip(1).take(3).collect::<Vec<String>>();
     let first_few_args = first_few_args.iter().map(String::as_str).collect::<Vec<_>>();
     match &first_few_args[..] {
@@ -81,7 +46,7 @@ fn faillible_main() -> Result<ExitCode> {
             return call_rustc(rustc, || env::args().skip(2));
         }
         [rustc, "--crate-name", crate_name, ..] => {
-            return bake_rustc(crate_name, env::args().skip(2).collect(), log_file, || {
+            return bake_rustc(crate_name, env::args().skip(2).collect(), log_file()?, || {
                 call_rustc(rustc, || env::args().skip(2))
             })
             .map_err(|e| {
@@ -939,4 +904,36 @@ fn copy_files(dir: &Utf8Path, dst: &Utf8Path) -> Result<()> {
         }
     }
     Ok(())
+}
+
+fn log_file() -> Result<Option<File>> {
+    if let Some(name) = env::var(RUSTCBUILDX_DEBUG_IF_CRATE_NAME).ok().as_deref() {
+        if env::args().any(|arg| arg.contains(name)) {
+            env::set_var(RUSTCBUILDX_DEBUG, "1");
+        }
+    }
+
+    is_debug()
+        .then(|| -> Result<_> {
+            let log_path = "/tmp/rstcbldx_FIXME"; // RUSTCBUILDX_LOG_PATH
+            let log_file = OpenOptions::new()
+                .write(true)
+                .append(true)
+                .open(log_path)
+                .with_context(|| format!("Failed opening (RW) log file {log_path}"))?;
+
+            env_logger::Builder::from_env(
+                Env::default()
+                    .filter("RUSTCBUILDX_LOG")
+                    // .write_style("RUSTCBUILDX_LOG_STYLE")
+                    .default_filter_or("info"),
+            )
+            // https://github.com/rust-cli/env_logger/issues/125#issuecomment-1582209797
+            .target(Target::Pipe(Box::new(log_file.try_clone()?)))
+            .write_style(env_logger::WriteStyle::Always)
+            .init();
+
+            Ok(log_file)
+        })
+        .transpose()
 }
