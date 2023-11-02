@@ -165,7 +165,7 @@ fn bake_rustc(
     let pwd = env::current_dir().context("Failed to get $PWD")?;
     let pwd: Utf8PathBuf = pwd.try_into().context("Path's UTF-8 encoding is corrupted")?;
 
-    let (st, args) = parse::as_rustc(&pwd, crate_name, arguments, is_debug())?;
+    let (st, args) = parse::as_rustc(&pwd, crate_name, arguments, false)?;
     info!(target:&krate, "{:?}", st);
     let crate_type = st.crate_type;
     let externs = st.externs;
