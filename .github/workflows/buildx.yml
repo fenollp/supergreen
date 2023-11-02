@@ -87,30 +87,33 @@ jobs:
 
     - name: cargo build net=OFF cache=OFF remote=OFF
       run: |
-        touch logs.txt && tail -f logs.txt &
+        # touch logs.txt && tail -f logs.txt &
         RUSTCBUILDX_DEBUG=1 \
         RUSTCBUILDX_LOG_PATH=./logs.txt \
         RUSTC_WRAPPER="$PWD"/rustcbuildx \
-          cargo -vv build --all-targets --all-features --locked --frozen --offline
+          cargo -vv build --all-targets --all-features --locked --frozen --offline || \
+            cat logs.txt
 
   # TODO: cargo -vv test != cargo test: => the rustc flags will change => Dockerfile needs new cache key
   # => otherwise docker builder cache won't have the correct hit
 
     - name: cargo build net=OFF cache=ON remote=OFF
       run: |
-        touch logs.txt && tail -f logs.txt &
+        # touch logs.txt && tail -f logs.txt &
         RUSTCBUILDX_DEBUG=1 \
         RUSTCBUILDX_LOG_PATH=./logs.txt \
         RUSTC_WRAPPER="$PWD"/rustcbuildx \
-          cargo -vv build --all-targets --all-features --locked --frozen --offline
+          cargo -vv build --all-targets --all-features --locked --frozen --offline || \
+            cat logs.txt
 
     - name: Ensure running the same command twice without modifications does not recompile anything
       run: |
-        touch logs.txt && tail -f logs.txt &
+        # touch logs.txt && tail -f logs.txt &
         RUSTCBUILDX_DEBUG=0 \
         RUSTCBUILDX_LOG_PATH=./logs.txt \
         RUSTC_WRAPPER="$PWD"/rustcbuildx \
-          cargo -vv build --all-targets --all-features --locked --frozen --offline 2>&1 | tee _
+          cargo -vv build --all-targets --all-features --locked --frozen --offline 2>&1 | tee _ || \
+            cat logs.txt
         cat _ | grep Finished | grep 0...s
         cat _ | grep Fresh
         ! cat _ | grep Compiling
