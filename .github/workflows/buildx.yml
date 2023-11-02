@@ -87,6 +87,7 @@ jobs:
 
     - name: cargo build net=OFF cache=OFF remote=OFF
       run: |
+        touch logs.txt && tail -f logs.txt &
         RUSTCBUILDX_DEBUG=1 \
         RUSTCBUILDX_LOG_PATH=./logs.txt \
         RUSTC_WRAPPER="$PWD"/rustcbuildx \
@@ -97,6 +98,7 @@ jobs:
 
     - name: cargo build net=OFF cache=ON remote=OFF
       run: |
+        touch logs.txt && tail -f logs.txt &
         RUSTCBUILDX_DEBUG=1 \
         RUSTCBUILDX_LOG_PATH=./logs.txt \
         RUSTC_WRAPPER="$PWD"/rustcbuildx \
@@ -104,6 +106,7 @@ jobs:
 
     - name: Ensure running the same command twice without modifications does not recompile anything
       run: |
+        touch logs.txt && tail -f logs.txt &
         RUSTCBUILDX_DEBUG=0 \
         RUSTCBUILDX_LOG_PATH=./logs.txt \
         RUSTC_WRAPPER="$PWD"/rustcbuildx \
