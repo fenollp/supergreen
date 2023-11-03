@@ -71,7 +71,7 @@ jobs:
       run: |
         RUSTCBUILDX_DEBUG=1 \
         RUSTCBUILDX_SEQUENTIAL_CARGO=1 \
-        RUSTC_WRAPPER=rustcbuildx \
+        RUSTC_WRAPPER="$PWD"/rustcbuildx \
           CARGO_TARGET_DIR=~/instst cargo -vv install --force --path=.
 
 
