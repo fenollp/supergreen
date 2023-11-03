@@ -9,9 +9,6 @@ pub(crate) const RUSTCBUILDX_LOG_STYLE: &str = "RUSTCBUILDX_LOG_STYLE";
 pub(crate) const RUSTCBUILDX_LOG_PATH: &str = "RUSTCBUILDX_LOG_PATH";
 pub(crate) const RUSTCBUILDX_LOG: &str = "RUSTCBUILDX_LOG";
 
-// rustc 1.73.0 (cc66ad468 2023-10-03)
-pub(crate) const DOCKER_IMAGE: &str = "docker-image://docker.io/library/rust:1.73.0-slim@sha256:89e1efffc83a631bced1bf86135f4f671223cc5dc32ebf26ef8b3efd1b97ffff";
-
 // TODO: document envs + usage
 
 // RUSTCBUILDX_DOCKER_IMAGE MUST start with docker-image:// and image MUST be available on DOCKER_HOST e.g.:
@@ -21,8 +18,6 @@ pub(crate) const DOCKER_IMAGE: &str = "docker-image://docker.io/library/rust:1.7
 // RUN set -eux && apt update && apt install -y libpq-dev libssl3
 // EOF
 
-pub(crate) const DOCKER_SYNTAX: &str = "docker.io/docker/dockerfile:1@sha256:ac85f380a63b13dfcefa89046420e1781752bab202122f8f50032edf31be0021";
-
 pub(crate) fn is_debug() -> bool {
     // TODO: oncelock
     env::var(RUSTCBUILDX_DEBUG).ok().map(|x| x == "1").unwrap_or_default()
@@ -31,4 +26,22 @@ pub(crate) fn is_debug() -> bool {
 pub(crate) fn is_sequential() -> bool {
     // TODO: oncelock
     env::var(RUSTCBUILDX_SEQUENTIAL_CARGO).ok().map(|x| x == "1").unwrap_or_default()
+}
+
+pub(crate) fn log_path() -> String {
+    // TODO: oncelock
+    env::var(RUSTCBUILDX_LOG_PATH).ok().unwrap_or("/tmp/rstcbldx_FIXME".to_owned())
+}
+
+pub(crate) fn docker_image() -> String {
+    // TODO: oncelock
+    // rustc 1.73.0 (cc66ad468 2023-10-03)
+    let x="docker-image://docker.io/library/rust:1.73.0-slim@sha256:89e1efffc83a631bced1bf86135f4f671223cc5dc32ebf26ef8b3efd1b97ffff";
+    env::var(RUSTCBUILDX_DOCKER_IMAGE).unwrap_or(x.to_owned())
+}
+
+pub(crate) fn docker_syntax() -> String {
+    // TODO: oncelock
+    let x= "docker.io/docker/dockerfile:1@sha256:ac85f380a63b13dfcefa89046420e1781752bab202122f8f50032edf31be0021";
+    env::var(RUSTCBUILDX_DOCKER_SYNTAX).unwrap_or(x.to_owned()) // TODO: see if #syntax= is actually needed
 }

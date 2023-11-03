@@ -14,15 +14,15 @@ use advisory_lock::{AdvisoryFileLock, FileLockError, FileLockMode};
 use anyhow::{bail, Context, Result};
 use camino::{Utf8Path, Utf8PathBuf};
 use env_logger::{Env, Target};
-use envs::{RUSTCBUILDX_LOG, RUSTCBUILDX_LOG_PATH, RUSTCBUILDX_LOG_STYLE};
+use envs::{log_path, RUSTCBUILDX_LOG, RUSTCBUILDX_LOG_STYLE};
 use log::{debug, error, info, warn};
 use mktemp::Temp;
 use regex::Regex;
 
 use crate::{
     envs::{
-        is_debug, is_sequential, DOCKER_IMAGE, DOCKER_SYNTAX, RUSTCBUILDX_DEBUG,
-        RUSTCBUILDX_DEBUG_IF_CRATE_NAME, RUSTCBUILDX_DOCKER_IMAGE, RUSTCBUILDX_DOCKER_SYNTAX,
+        docker_image, docker_syntax, is_debug, is_sequential, RUSTCBUILDX_DEBUG,
+        RUSTCBUILDX_DEBUG_IF_CRATE_NAME,
     },
     pops::Popped,
 };
@@ -158,9 +158,6 @@ fn bake_rustc(
             Ok(lock)
         })
         .transpose()?;
-
-    let docker_image = env::var(RUSTCBUILDX_DOCKER_IMAGE).unwrap_or(DOCKER_IMAGE.to_owned());
-    let docker_syntax = env::var(RUSTCBUILDX_DOCKER_SYNTAX).unwrap_or(DOCKER_SYNTAX.to_owned()); // TODO: see if #syntax= is actually needed
 
     let pwd = env::current_dir().context("Failed to get $PWD")?;
     let pwd: Utf8PathBuf = pwd.try_into().context("Path's UTF-8 encoding is corrupted")?;
@@ -583,7 +580,7 @@ COPY --from={rustc_stage} {out_dir}/*-{metadata}* /"#,
     }
 
     let mut contexts: BTreeMap<_, _> = [
-        Some(("rust".to_owned(), docker_image)),
+        Some(("rust".to_owned(), docker_image())),
         input_mount.map(|(name, target)| (name, target.to_string())),
         cwd.as_deref().map(|cwd| {
             let cwd_path = Utf8Path::from_path(cwd.as_path()).expect("PROOF: did not fail earlier");
@@ -674,6 +671,7 @@ target "{stdio_stage}" {{
 {TAB}output = ["{stdio_path}"]
 {TAB}target = "{stdio_stage}"
 }}"#,
+        docker_syntax = docker_syntax(),
     )?;
 
     let mut stages = vec![out_stage.as_str(), stdio_stage.as_str()];
