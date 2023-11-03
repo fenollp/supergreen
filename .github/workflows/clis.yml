@@ -184,7 +184,7 @@ jobs:
       with:
         profile: minimal
         toolchain: stable
-    - uses: rustup component add llvm-tools-preview
+    - run: rustup component add llvm-tools-preview
 
     - name: Retrieve saved bin
       uses: actions/download-artifact@v3

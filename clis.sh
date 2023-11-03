@@ -78,7 +78,7 @@ cli() {
         toolchain: stable
 $(
 	case "$name_at_version" in
-		cargo-llvm-cov@*) printf '    - uses: rustup component add llvm-tools-preview\n' ;;
+		cargo-llvm-cov@*) printf '    - run: rustup component add llvm-tools-preview\n' ;;
 		*) ;;
 	esac
 )
