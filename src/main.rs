@@ -343,28 +343,27 @@ fn bake_rustc(
             .with_context(|| format!("Failed to `mkdir -p {incremental}`"))?;
     }
 
+    let hm = |prefix: &str, basename: &str, pop: usize| {
+        let not_lowalnums = |c: char| {
+            !("._-".contains(c) || c.is_ascii_digit() || (c.is_alphabetic() && c.is_lowercase()))
+        };
+        let basename = basename.replace(not_lowalnums, "_");
+        (
+            Some((format!("input_{prefix}--{basename}"), input.clone().popped(pop))),
+            format!("{prefix}-{full_crate_id}"),
+        )
+    };
+
     // Ordering matters
     let (input_mount, rustc_stage) = match input.iter().rev().take(4).collect::<Vec<_>>()[..] {
         ["lib.rs", "src"] => (None, format!("final-{full_crate_id}")),
         ["main.rs", "src"] => (None, format!("final-{full_crate_id}")),
-        ["build.rs", basename, ..] => (
-            Some((format!("input_build_rs--{basename}"), input.clone().popped(1))),
-            format!("build_rs-{full_crate_id}"),
-        ),
-        ["lib.rs", "src", basename, ..] => (
-            Some((format!("input_src_lib_rs--{basename}"), input.clone().popped(2))),
-            format!("src_lib_rs-{full_crate_id}"),
-        ),
+        ["build.rs", basename, ..] => hm("build_rs", basename, 1),
+        ["lib.rs", "src", basename, ..] => hm("src_lib_rs", basename, 2),
         // e.g. $HOME/.cargo/registry/src/github.com-1ecc6299db9ec823/fnv-1.0.7/lib.rs
-        ["lib.rs", basename, ..] => (
-            Some((format!("input_lib_rs--{basename}"), input.clone().popped(1))),
-            format!("lib_rs-{full_crate_id}"),
-        ),
+        ["lib.rs", basename, ..] => hm("lib_rs", basename, 1),
         // e.g. $HOME/.cargo/registry/src/github.com-1ecc6299db9ec823/untrusted-0.7.1/src/untrusted.rs
-        [rsfile, "src", basename, ..] if rsfile.ends_with(".rs") => (
-            Some((format!("input_src__rs--{basename}"), input.clone().popped(2))),
-            format!("src__rs-{full_crate_id}"),
-        ),
+        [rsfile, "src", basename, ..] if rsfile.ends_with(".rs") => hm("src__rs", basename, 2),
         _ => unreachable!("Unexpected input file {input:?}"),
     };
     assert!(!matches!(input_mount, Some((_,ref x)) if x.ends_with("/.cargo/registry")));
