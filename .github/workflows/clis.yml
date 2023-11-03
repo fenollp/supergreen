@@ -43,7 +43,7 @@ jobs:
         path: ~/instmp/release/rustcbuildx
 
 
-  cargo-audit_0.18.3:
+  cargo-audit_0-18-3:
     runs-on: ubuntu-latest
     needs: bin
     steps:
@@ -82,7 +82,7 @@ jobs:
         ! cat _ | grep 'DEBUG|INFO|WARN|ERROR'
 
 
-  cargo-deny_0.14.3:
+  cargo-deny_0-14-3:
     runs-on: ubuntu-latest
     needs: bin
     steps:
@@ -121,7 +121,7 @@ jobs:
         ! cat _ | grep 'DEBUG|INFO|WARN|ERROR'
 
 
-  diesel_cli_2.1.1:
+  diesel_cli_2-1-1:
     runs-on: ubuntu-latest
     needs: bin
     steps:
@@ -160,7 +160,7 @@ jobs:
         ! cat _ | grep 'DEBUG|INFO|WARN|ERROR'
 
 
-  cargo-llvm-cov_0.5.36:
+  cargo-llvm-cov_0-5-36:
     runs-on: ubuntu-latest
     needs: bin
     steps:
