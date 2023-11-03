@@ -636,7 +636,7 @@ COPY --from={rustc_stage} {out_dir}/*-{metadata}* /"#,
     }
     assert!(extern_dockerfiles.is_empty());
     dockerfile_bis.push_str(dockerfile.as_str());
-    drop(dockerfile); // Earlier: write to disk
+    drop(dockerfile); // Earlier: wrote to disk
 
     let stdio = Temp::new_dir().context("Failed to create tmpdir 'stdio'")?;
     let Some(stdio_path) = Utf8Path::from_path(stdio.as_path()) else {
