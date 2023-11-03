@@ -94,7 +94,7 @@ $(
     - name: cargo install net=ON cache=OFF remote=OFF
       run: |
         RUSTCBUILDX_DEBUG=1 \\
-        RUSTCBUILDX_LOG_PATH=./logs.txt \\
+        RUSTCBUILDX_LOG_PATH="\$PWD"/logs.txt \\
         RUSTC_WRAPPER="\$PWD"/rustcbuildx \\
           CARGO_TARGET_DIR=~/instst cargo -vv install --force $name_at_version $@ || \\
             cat logs.txt
@@ -102,7 +102,7 @@ $(
     - name: cargo install net=ON cache=ON remote=OFF
       run: |
         RUSTCBUILDX_DEBUG=1 \\
-        RUSTCBUILDX_LOG_PATH=./logs.txt \\
+        RUSTCBUILDX_LOG_PATH="\$PWD"/logs.txt \\
         RUSTC_WRAPPER="\$PWD"/rustcbuildx \\
           CARGO_TARGET_DIR=~/instst cargo -vv install --force $name_at_version $@ 2>&1 | tee _ || \\
             cat logs.txt
