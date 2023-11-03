@@ -128,7 +128,32 @@ fn bake_rustc(
     arguments: Vec<String>,
     fallback: impl Fn() -> Result<ExitCode>,
 ) -> Result<ExitCode> {
-    let log_file = log_file().context("setting up logger")?;
+    fn log_file() -> Result<File> {
+        let log_path = log_path();
+        OpenOptions::new()
+            .create(true)
+            .append(true)
+            .open(&log_path)
+            .with_context(|| format!("Failed opening (WA) log file {log_path}"))
+    }
+
+    if let Some(name) = env::var(RUSTCBUILDX_DEBUG_IF_CRATE_NAME).ok().as_deref() {
+        if env::args().any(|arg| arg.contains(name)) {
+            env::set_var(RUSTCBUILDX_DEBUG, "1");
+        }
+    }
+
+    if is_debug() {
+        env_logger::Builder::from_env(
+            Env::default()
+                .filter(RUSTCBUILDX_LOG)
+                .write_style(RUSTCBUILDX_LOG_STYLE)
+                .default_filter_or("info"),
+        )
+        .target(Target::Pipe(Box::new(log_file()?)))
+        .init();
+    }
+
     let krate = format!("{}:{crate_name}", env!("CARGO_PKG_NAME"));
     info!(target:&krate, "{bin}@{vsn} wraps `rustc` calls to BuildKit builders",
         bin = env!("CARGO_PKG_NAME"),
@@ -711,13 +736,13 @@ target "{incremental_stage}" {{
     };
 
     let mut cmd = Command::new("docker");
-    if let Some(log_file) = log_file {
+    if is_debug() {
         info!(target:&krate, "bakefile: {bakefile_path}");
         debug!(target:&krate, "{bakefile_path} = {data}", data = match read_to_string(&bakefile_path) {
             Ok(data) => data,
             Err(e) => e.to_string(),
         });
-        cmd.arg("--debug").stdin(Stdio::null()).stdout(log_file.try_clone()?).stderr(log_file);
+        cmd.arg("--debug").stdin(Stdio::null()).stdout(log_file()?).stderr(log_file()?);
     } else {
         cmd.stdin(Stdio::null()).stdout(Stdio::null()).stderr(Stdio::null());
     }
@@ -909,35 +934,4 @@ fn copy_files(dir: &Utf8Path, dst: &Utf8Path) -> Result<()> {
         }
     }
     Ok(())
-}
-
-fn log_file() -> Result<Option<File>> {
-    if let Some(name) = env::var(RUSTCBUILDX_DEBUG_IF_CRATE_NAME).ok().as_deref() {
-        if env::args().any(|arg| arg.contains(name)) {
-            env::set_var(RUSTCBUILDX_DEBUG, "1");
-        }
-    }
-
-    is_debug()
-        .then(|| -> Result<_> {
-            let log_path =
-                env::var(RUSTCBUILDX_LOG_PATH).ok().unwrap_or("/tmp/rstcbldx_FIXME".to_owned());
-            let log_file = OpenOptions::new()
-                .create(true)
-                .append(true)
-                .open(&log_path)
-                .with_context(|| format!("Failed opening (RW) log file {log_path}"))?;
-
-            env_logger::Builder::from_env(
-                Env::default()
-                    .filter(RUSTCBUILDX_LOG)
-                    .write_style(RUSTCBUILDX_LOG_STYLE)
-                    .default_filter_or("info"),
-            )
-            .target(Target::Pipe(Box::new(log_file.try_clone()?)))
-            .init();
-
-            Ok(log_file)
-        })
-        .transpose()
 }
