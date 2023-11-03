@@ -172,6 +172,10 @@ pub(crate) fn as_rustc(
             _ => {}
         }
 
+        if (key.as_str(), val.as_str()) == ("--cfg", "error_generic_member_access") {
+            continue; //FIXME: try removing toolchain file?
+        }
+
         args.push(key.clone());
         args.push(val);
     }
