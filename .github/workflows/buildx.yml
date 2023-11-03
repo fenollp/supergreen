@@ -48,6 +48,83 @@ jobs:
         path: ~/instmp/release/rustcbuildx
 
 
+  self-installs:
+    runs-on: ubuntu-latest
+    needs: bin
+    steps:
+    - uses: actions/checkout@v3
+
+    - uses: actions-rs/toolchain@v1
+      with:
+        profile: minimal
+        toolchain: stable
+
+    - name: Retrieve saved bin
+      uses: actions/download-artifact@v3
+      with:
+        name: bin-artifact
+    - run: | # TODO: whence https://github.com/actions/download-artifact/issues/236
+        chmod +x ./rustcbuildx
+        ./rustcbuildx --version | grep rustcbuildx
+
+    - name: cargo install net=ON cache=OFF remote=OFF
+      run: |
+        RUSTCBUILDX_DEBUG=1 \
+        RUSTCBUILDX_SEQUENTIAL_CARGO=1 \
+        RUSTC_WRAPPER="$PWD"/rustcbuildx \
+          CARGO_TARGET_DIR=~/instst cargo -vv install --force --path=.
+
+
+  self-audits:
+    runs-on: ubuntu-latest
+    needs: bin
+    steps:
+    - uses: actions/checkout@v3
+
+    - uses: actions-rs/toolchain@v1
+      with:
+        profile: minimal
+        toolchain: stable
+
+    - name: Retrieve saved bin
+      uses: actions/download-artifact@v3
+      with:
+        name: bin-artifact
+    - run: | # TODO: whence https://github.com/actions/download-artifact/issues/236
+        chmod +x ./rustcbuildx
+        ./rustcbuildx --version | grep rustcbuildx
+
+    # Actually, the whole archives
+    - name: Cache `cargo fetch`
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~/.cargo/registry/index/
+          ~/.cargo/registry/cache/
+          ~/.cargo/git/db/
+        key: cargo-deps-${{ hashFiles('**/Cargo.lock') }}
+        restore-keys: cargo-deps-
+
+    - name: Cache `cargo install`
+      uses: actions/cache@v3
+      with:
+        path: ~/cargo-audit
+        key: ${{ runner.os }}-cargo-install-audit
+
+    - name: Compile cargo-audit
+      run: |
+        CARGO_TARGET_DIR=~/cargo-audit cargo install --force cargo-audit --features=fix
+
+    - name: cargo audit net=ON cache=OFF remote=OFF
+      run: |
+        RUSTCBUILDX_DEBUG=1 \
+        RUSTCBUILDX_LOG_PATH=./logs.txt \
+        RUSTCBUILDX_SEQUENTIAL_CARGO=1 \
+        RUSTC_WRAPPER="$PWD"/rustcbuildx \
+          cargo -vv audit || \
+            cat logs.txt
+
+
   self-builds:
     runs-on: ubuntu-latest
     needs: bin
@@ -81,36 +158,227 @@ jobs:
 
     - name: cargo build net=OFF cache=OFF remote=OFF
       run: |
-        # touch logs.txt && tail -f logs.txt &
         RUSTCBUILDX_DEBUG=1 \
         RUSTCBUILDX_LOG_PATH=./logs.txt \
+        RUSTCBUILDX_SEQUENTIAL_CARGO=1 \
         RUSTC_WRAPPER="$PWD"/rustcbuildx \
           cargo -vv build --all-targets --all-features --locked --frozen --offline || \
             cat logs.txt
 
   # TODO: cargo -vv test != cargo test: => the rustc flags will change => Dockerfile needs new cache key
   # => otherwise docker builder cache won't have the correct hit
+  # https://rustc-dev-guide.rust-lang.org/backend/libs-and-metadata.html
 
     - name: cargo build net=OFF cache=ON remote=OFF
       run: |
-        # touch logs.txt && tail -f logs.txt &
         RUSTCBUILDX_DEBUG=1 \
         RUSTCBUILDX_LOG_PATH=./logs.txt \
+        RUSTCBUILDX_SEQUENTIAL_CARGO=1 \
         RUSTC_WRAPPER="$PWD"/rustcbuildx \
           cargo -vv build --all-targets --all-features --locked --frozen --offline || \
             cat logs.txt
 
     - name: Ensure running the same command twice without modifications does not recompile anything
       run: |
-        # touch logs.txt && tail -f logs.txt &
         RUSTCBUILDX_DEBUG=0 \
         RUSTCBUILDX_LOG_PATH=./logs.txt \
+        RUSTCBUILDX_SEQUENTIAL_CARGO=1 \
         RUSTC_WRAPPER="$PWD"/rustcbuildx \
           cargo -vv build --all-targets --all-features --locked --frozen --offline 2>&1 | tee _ || \
             cat logs.txt
         cat _ | grep Finished | grep 0...s
         cat _ | grep Fresh
         ! cat _ | grep Compiling
+        ! cat _ | grep 'DEBUG|INFO|WARN|ERROR'
+
+
+  self-tests:
+    runs-on: ubuntu-latest
+    needs: bin
+    steps:
+    - uses: actions/checkout@v3
+
+    - uses: actions-rs/toolchain@v1
+      with:
+        profile: minimal
+        toolchain: stable
+
+    - name: Cache `cargo fetch`
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~/.cargo/registry/index/
+          ~/.cargo/registry/cache/
+          ~/.cargo/git/db/
+        key: cargo-deps-${{ hashFiles('**/Cargo.lock') }}
+        restore-keys: cargo-deps-
+
+    - run: cargo fetch
+
+    - name: Retrieve saved bin
+      uses: actions/download-artifact@v3
+      with:
+        name: bin-artifact
+    - run: | # TODO: whence https://github.com/actions/download-artifact/issues/236
+        chmod +x ./rustcbuildx
+        ./rustcbuildx --version | grep rustcbuildx
+
+    - name: cargo test net=OFF cache=OFF remote=OFF
+      run: |
+        RUSTCBUILDX_DEBUG=1 \
+        RUSTCBUILDX_LOG_PATH=./logs.txt \
+        RUSTCBUILDX_SEQUENTIAL_CARGO=1 \
+        RUSTC_WRAPPER="$PWD"/rustcbuildx \
+          cargo -vv test --all-targets --all-features --locked --frozen --offline || \
+            cat logs.txt
+
+    - name: cargo test net=OFF cache=ON remote=OFF
+      run: |
+        RUSTCBUILDX_DEBUG=1 \
+        RUSTCBUILDX_LOG_PATH=./logs.txt \
+        RUSTCBUILDX_SEQUENTIAL_CARGO=1 \
+        RUSTC_WRAPPER="$PWD"/rustcbuildx \
+          cargo -vv test --all-targets --all-features --locked --frozen --offline || \
+            cat logs.txt
+
+    - name: Ensure running the same command twice without modifications does not recompile anything
+      run: |
+        RUSTCBUILDX_DEBUG=0 \
+        RUSTCBUILDX_LOG_PATH=./logs.txt \
+        RUSTCBUILDX_SEQUENTIAL_CARGO=1 \
+        RUSTC_WRAPPER="$PWD"/rustcbuildx \
+          cargo -vv test --all-targets --all-features --locked --frozen --offline 2>&1 | tee _ || \
+            cat logs.txt
+        cat _ | grep Finished | grep 0...s
+        cat _ | grep Fresh
+        ! cat _ | grep Compiling
+        ! cat _ | grep 'DEBUG|INFO|WARN|ERROR'
+
+
+  self-checks:
+    runs-on: ubuntu-latest
+    needs: bin
+    steps:
+    - uses: actions/checkout@v3
+
+    - uses: actions-rs/toolchain@v1
+      with:
+        profile: minimal
+        toolchain: stable
+
+    - name: Cache `cargo fetch`
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~/.cargo/registry/index/
+          ~/.cargo/registry/cache/
+          ~/.cargo/git/db/
+        key: cargo-deps-${{ hashFiles('**/Cargo.lock') }}
+        restore-keys: cargo-deps-
+
+    - run: cargo fetch
+
+    - name: Retrieve saved bin
+      uses: actions/download-artifact@v3
+      with:
+        name: bin-artifact
+    - run: | # TODO: whence https://github.com/actions/download-artifact/issues/236
+        chmod +x ./rustcbuildx
+        ./rustcbuildx --version | grep rustcbuildx
+
+    - name: cargo check net=OFF cache=OFF remote=OFF
+      run: |
+        RUSTCBUILDX_DEBUG=1 \
+        RUSTCBUILDX_LOG_PATH=./logs.txt \
+        RUSTCBUILDX_SEQUENTIAL_CARGO=1 \
+        RUSTC_WRAPPER="$PWD"/rustcbuildx \
+          cargo -vv check --all-targets --all-features --locked --frozen --offline || \
+            cat logs.txt
+
+    - name: cargo check net=OFF cache=ON remote=OFF
+      run: |
+        RUSTCBUILDX_DEBUG=1 \
+        RUSTCBUILDX_LOG_PATH=./logs.txt \
+        RUSTCBUILDX_SEQUENTIAL_CARGO=1 \
+        RUSTC_WRAPPER="$PWD"/rustcbuildx \
+          cargo -vv check --all-targets --all-features --locked --frozen --offline || \
+            cat logs.txt
+
+    - name: Ensure running the same command twice without modifications does not recompile anything
+      run: |
+        RUSTCBUILDX_DEBUG=0 \
+        RUSTCBUILDX_LOG_PATH=./logs.txt \
+        RUSTCBUILDX_SEQUENTIAL_CARGO=1 \
+        RUSTC_WRAPPER="$PWD"/rustcbuildx \
+          cargo -vv check --all-targets --all-features --locked --frozen --offline 2>&1 | tee _ || \
+            cat logs.txt
+        cat _ | grep Finished | grep 0...s
+        cat _ | grep Fresh
+        ! cat _ | grep Compiling
+        ! cat _ | grep 'DEBUG|INFO|WARN|ERROR'
+
+
+  self-clippy:
+    runs-on: ubuntu-latest
+    needs: bin
+    steps:
+    - uses: actions/checkout@v3
+
+    - uses: actions-rs/toolchain@v1
+      with:
+        profile: minimal
+        toolchain: stable
+
+    - run: rustup component add clippy
+
+    - name: Cache `cargo fetch`
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~/.cargo/registry/index/
+          ~/.cargo/registry/cache/
+          ~/.cargo/git/db/
+        key: cargo-deps-${{ hashFiles('**/Cargo.lock') }}
+        restore-keys: cargo-deps-
+
+    - run: cargo fetch
+
+    - name: Retrieve saved bin
+      uses: actions/download-artifact@v3
+      with:
+        name: bin-artifact
+    - run: | # TODO: whence https://github.com/actions/download-artifact/issues/236
+        chmod +x ./rustcbuildx
+        ./rustcbuildx --version | grep rustcbuildx
+
+    - name: cargo clippy net=OFF cache=OFF remote=OFF
+      run: |
+        RUSTCBUILDX_DEBUG=1 \
+        RUSTCBUILDX_LOG_PATH=./logs.txt \
+        RUSTCBUILDX_SEQUENTIAL_CARGO=1 \
+        RUSTC_WRAPPER="$PWD"/rustcbuildx \
+          cargo -vv clippy --all-targets --all-features --locked --frozen --offline || \
+            cat logs.txt
+
+    - name: cargo clippy net=OFF cache=ON remote=OFF
+      run: |
+        RUSTCBUILDX_DEBUG=1 \
+        RUSTCBUILDX_LOG_PATH=./logs.txt \
+        RUSTCBUILDX_SEQUENTIAL_CARGO=1 \
+        RUSTC_WRAPPER="$PWD"/rustcbuildx \
+          cargo -vv clippy --all-targets --all-features --locked --frozen --offline || \
+            cat logs.txt
+
+    - name: Ensure running the same command twice without modifications does not recompile anything
+      run: |
+        RUSTCBUILDX_DEBUG=0 \
+        RUSTCBUILDX_LOG_PATH=./logs.txt \
+        RUSTCBUILDX_SEQUENTIAL_CARGO=1 \
+        RUSTC_WRAPPER="$PWD"/rustcbuildx \
+          cargo -vv clippy --all-targets --all-features --locked --frozen --offline 2>&1 | tee _ || \
+            cat logs.txt
+        cat _ | grep Finished | grep 0...s
+        ! cat _ | grep 'Compiling|Compiling'
         ! cat _ | grep 'DEBUG|INFO|WARN|ERROR'
 
 

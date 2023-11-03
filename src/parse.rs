@@ -11,6 +11,9 @@ pub(crate) struct RustcArgs {
     /// 1: --crate-type
     pub(crate) crate_type: String,
 
+    /// 1: --emit=EMIT | --emit EMIT
+    pub(crate) emit: String,
+
     /// 0..: --extern=EXTERN | --extern EXTERN
     pub(crate) externs: BTreeSet<String>,
 
@@ -125,6 +128,11 @@ pub(crate) fn as_rustc(
                 assert!(["bin", "lib", "proc-macro"].contains(&val.as_str()));
                 state.crate_type = val.clone();
             }
+            "--emit" => {
+                assert_eq!(state.emit, "");
+                // For instance: dep-info,link dep-info,metadata dep-info,metadata,link
+                state.emit = val.clone();
+            }
             "--extern" => {
                 if ["alloc", "core", "proc_macro", "std", "test"].contains(&val.as_str()) {
                     continue; // Sysroot crates (e.g. https://doc.rust-lang.org/proc_macro)
@@ -231,7 +239,7 @@ mod tests {
             "--json=diagnostic-rendered-ansi,artifacts,future-incompat",
             "--diagnostic-width=211",
             "--crate-type", "bin",                                                            // state.crate_type~
-            "--emit=dep-info,link",
+            "--emit=dep-info,link",                                                           // state.emit
             "-C", "embed-bitcode=no",
             "-C", "debuginfo=2",
             "-C", "metadata=710b4516f388a5e4",                                                // state.metadata
@@ -254,6 +262,7 @@ mod tests {
             st,
             RustcArgs {
                 crate_type: "bin".to_owned(),
+                emit: "dep-info,link".to_owned(),
                 externs: [
                     "libanyhow-f96497119bad6f50.rlib",
                     "libenv_logger-7e2d283f6e473671.rlib",
@@ -336,6 +345,7 @@ mod tests {
             st,
             RustcArgs {
                 crate_type: "test".to_owned(),
+                emit: "dep-info,link".to_owned(),
                 externs: [
                     "libanyhow-f96497119bad6f50.rlib",
                     "libenv_logger-7e2d283f6e473671.rlib",
@@ -418,6 +428,7 @@ mod tests {
             st,
             RustcArgs {
                 crate_type: "bin".to_owned(),
+                emit: "dep-info,link".to_owned(),
                 externs: Default::default(),
                 metadata: "c7101a3d6c8e4dce".to_owned(),
                 incremental: None,

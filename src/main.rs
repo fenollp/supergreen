@@ -168,10 +168,11 @@ fn bake_rustc(
     let (st, args) = parse::as_rustc(&pwd, crate_name, arguments, false)?;
     info!(target:&krate, "{:?}", st);
     let crate_type = st.crate_type;
+    let emit = st.emit;
     let externs = st.externs;
-    let metadata = st.metadata;
     let incremental = st.incremental;
     let input = st.input;
+    let metadata = st.metadata;
     let out_dir = st.out_dir;
     let target_path = st.target_path;
 
@@ -199,6 +200,9 @@ fn bake_rustc(
         "bin" | "test" | "proc-macro" => "rlib".to_owned(),
         _ => bail!("BUG: unexpected crate-type: '{crate_type}'"),
     };
+    // https://rustc-dev-guide.rust-lang.org/backend/libs-and-metadata.html#rmeta
+    // > [rmeta] is created if the --emit=metadata CLI option is used.
+    let ext = if emit.contains("metadata") { "rmeta".to_owned() } else { ext };
 
     if crate_type == "proc-macro" {
         // This way crates that depend on this know they must require it as .so
@@ -458,6 +462,9 @@ RUN \"#
             r#"RUN \
   --mount=type=bind,from={name},target={target} \"#
         )?;
+
+        // TODO: --build-arg BUILDKIT_CONTEXT_KEEP_GIT_DIR=0 https://docs.docker.com/engine/reference/builder/#buildkit-built-in-build-args
+
         None
     };
 
