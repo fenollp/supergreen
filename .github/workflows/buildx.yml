@@ -67,14 +67,14 @@ jobs:
         chmod +x ./rustcbuildx
         ./rustcbuildx --version | grep rustcbuildx
 
-    - name: cargo install net=OFF cache=OFF remote=OFF
+    - name: cargo install net=ON cache=OFF remote=OFF
       run: |
         # touch logs.txt && tail -f logs.txt &
         RUSTCBUILDX_DEBUG=1 \
         RUSTCBUILDX_LOG_PATH=./logs.txt \
         RUSTCBUILDX_SEQUENTIAL_CARGO=1 \
         RUSTC_WRAPPER="$PWD"/rustcbuildx \
-          cargo -vv build --all-targets --all-features --locked --frozen --offline || \
+          cargo -vv install || \
             cat logs.txt
 
 
