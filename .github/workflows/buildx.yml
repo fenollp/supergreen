@@ -72,7 +72,7 @@ jobs:
         RUSTCBUILDX_DEBUG=1 \
         RUSTCBUILDX_SEQUENTIAL_CARGO=1 \
         RUSTC_WRAPPER=rustcbuildx \
-          cargo -vv install --force --path=.
+          CARGO_TARGET_DIR=~/instst cargo -vv install --force --path=.
 
 
   self-audits:
