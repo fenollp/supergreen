@@ -134,46 +134,6 @@ jobs:
         ! cat _ | grep Compiling
         ! cat _ | grep 'DEBUG|INFO|WARN|ERROR'
 
-  diesel_cli_2-1-1:
-    runs-on: ubuntu-latest
-    needs: bin
-    steps:
-    - uses: actions/checkout@v4
-
-    - uses: actions-rs/toolchain@v1
-      with:
-        profile: minimal
-        toolchain: stable
-
-
-    - name: Retrieve saved bin
-      uses: actions/download-artifact@v3
-      with:
-        name: bin-artifact
-    - run: | # TODO: whence https://github.com/actions/download-artifact/issues/236
-        chmod +x ./rustcbuildx
-        ./rustcbuildx --version | grep rustcbuildx
-
-    - name: cargo install net=ON cache=OFF remote=OFF
-      run: |
-        RUSTCBUILDX_DEBUG=1 \
-        RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
-        RUSTC_WRAPPER="$PWD"/rustcbuildx \
-          CARGO_TARGET_DIR=~/instst cargo -vv install --force diesel_cli@2.1.1 --no-default-features --features=postgres || \
-            cat logs.txt
-
-    - name: cargo install net=ON cache=ON remote=OFF
-      run: |
-        RUSTCBUILDX_DEBUG=1 \
-        RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
-        RUSTC_WRAPPER="$PWD"/rustcbuildx \
-          CARGO_TARGET_DIR=~/instst cargo -vv install --force diesel_cli@2.1.1 --no-default-features --features=postgres 2>&1 | tee _ || \
-            cat logs.txt
-        cat _ | grep Finished | grep 0...s
-        cat _ | grep Fresh
-        ! cat _ | grep Compiling
-        ! cat _ | grep 'DEBUG|INFO|WARN|ERROR'
-
   cargo-llvm-cov_0-5-36:
     runs-on: ubuntu-latest
     needs: bin
@@ -208,6 +168,126 @@ jobs:
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
         RUSTC_WRAPPER="$PWD"/rustcbuildx \
           CARGO_TARGET_DIR=~/instst cargo -vv install --force cargo-llvm-cov@0.5.36  2>&1 | tee _ || \
+            cat logs.txt
+        cat _ | grep Finished | grep 0...s
+        cat _ | grep Fresh
+        ! cat _ | grep Compiling
+        ! cat _ | grep 'DEBUG|INFO|WARN|ERROR'
+
+  cargo-nextest_0-9-61:
+    runs-on: ubuntu-latest
+    needs: bin
+    steps:
+    - uses: actions/checkout@v4
+
+    - uses: actions-rs/toolchain@v1
+      with:
+        profile: minimal
+        toolchain: stable
+
+
+    - name: Retrieve saved bin
+      uses: actions/download-artifact@v3
+      with:
+        name: bin-artifact
+    - run: | # TODO: whence https://github.com/actions/download-artifact/issues/236
+        chmod +x ./rustcbuildx
+        ./rustcbuildx --version | grep rustcbuildx
+
+    - name: cargo install net=ON cache=OFF remote=OFF
+      run: |
+        RUSTCBUILDX_DEBUG=1 \
+        RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
+        RUSTC_WRAPPER="$PWD"/rustcbuildx \
+          CARGO_TARGET_DIR=~/instst cargo -vv install --force cargo-nextest@0.9.61  || \
+            cat logs.txt
+
+    - name: cargo install net=ON cache=ON remote=OFF
+      run: |
+        RUSTCBUILDX_DEBUG=1 \
+        RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
+        RUSTC_WRAPPER="$PWD"/rustcbuildx \
+          CARGO_TARGET_DIR=~/instst cargo -vv install --force cargo-nextest@0.9.61  2>&1 | tee _ || \
+            cat logs.txt
+        cat _ | grep Finished | grep 0...s
+        cat _ | grep Fresh
+        ! cat _ | grep Compiling
+        ! cat _ | grep 'DEBUG|INFO|WARN|ERROR'
+
+  cross_0-2-5:
+    runs-on: ubuntu-latest
+    needs: bin
+    steps:
+    - uses: actions/checkout@v4
+
+    - uses: actions-rs/toolchain@v1
+      with:
+        profile: minimal
+        toolchain: stable
+
+
+    - name: Retrieve saved bin
+      uses: actions/download-artifact@v3
+      with:
+        name: bin-artifact
+    - run: | # TODO: whence https://github.com/actions/download-artifact/issues/236
+        chmod +x ./rustcbuildx
+        ./rustcbuildx --version | grep rustcbuildx
+
+    - name: cargo install net=ON cache=OFF remote=OFF
+      run: |
+        RUSTCBUILDX_DEBUG=1 \
+        RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
+        RUSTC_WRAPPER="$PWD"/rustcbuildx \
+          CARGO_TARGET_DIR=~/instst cargo -vv install --force  --git https://github.com/cross-rs/cross.git --tag=v0.2.5 cross || \
+            cat logs.txt
+
+    - name: cargo install net=ON cache=ON remote=OFF
+      run: |
+        RUSTCBUILDX_DEBUG=1 \
+        RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
+        RUSTC_WRAPPER="$PWD"/rustcbuildx \
+          CARGO_TARGET_DIR=~/instst cargo -vv install --force  --git https://github.com/cross-rs/cross.git --tag=v0.2.5 cross 2>&1 | tee _ || \
+            cat logs.txt
+        cat _ | grep Finished | grep 0...s
+        cat _ | grep Fresh
+        ! cat _ | grep Compiling
+        ! cat _ | grep 'DEBUG|INFO|WARN|ERROR'
+
+  diesel_cli_2-1-1:
+    runs-on: ubuntu-latest
+    needs: bin
+    steps:
+    - uses: actions/checkout@v4
+
+    - uses: actions-rs/toolchain@v1
+      with:
+        profile: minimal
+        toolchain: stable
+
+
+    - name: Retrieve saved bin
+      uses: actions/download-artifact@v3
+      with:
+        name: bin-artifact
+    - run: | # TODO: whence https://github.com/actions/download-artifact/issues/236
+        chmod +x ./rustcbuildx
+        ./rustcbuildx --version | grep rustcbuildx
+
+    - name: cargo install net=ON cache=OFF remote=OFF
+      run: |
+        RUSTCBUILDX_DEBUG=1 \
+        RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
+        RUSTC_WRAPPER="$PWD"/rustcbuildx \
+          CARGO_TARGET_DIR=~/instst cargo -vv install --force diesel_cli@2.1.1 --no-default-features --features=postgres || \
+            cat logs.txt
+
+    - name: cargo install net=ON cache=ON remote=OFF
+      run: |
+        RUSTCBUILDX_DEBUG=1 \
+        RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
+        RUSTC_WRAPPER="$PWD"/rustcbuildx \
+          CARGO_TARGET_DIR=~/instst cargo -vv install --force diesel_cli@2.1.1 --no-default-features --features=postgres 2>&1 | tee _ || \
             cat logs.txt
         cat _ | grep Finished | grep 0...s
         cat _ | grep Fresh

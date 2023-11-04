@@ -61,9 +61,7 @@ pub(crate) fn as_rustc(
             (s_e, key, val) = (!s_e, lhs.to_owned(), rhs.to_owned());
         }
 
-        if val.is_empty()
-            && (key.starts_with('/') || key.ends_with("src/lib.rs") || key.ends_with("src/main.rs"))
-        {
+        if val.is_empty() && (key.starts_with('/') || key.ends_with(".rs")) {
             assert_eq!(state.input, "");
             // For e.g. $HOME/.cargo/registry/src/github.com-1ecc6299db9ec823/ahash-0.7.6/./build.rs
             state.input = key.as_str().replace("/./", "/").into();
@@ -170,10 +168,6 @@ pub(crate) fn as_rustc(
                 val = state.out_dir.to_string();
             }
             _ => {}
-        }
-
-        if (key.as_str(), val.as_str()) == ("--cfg", "error_generic_member_access") {
-            continue; //FIXME: try removing toolchain file?
         }
 
         args.push(key.clone());
@@ -527,6 +521,72 @@ mod tests {
                 "--extern", "time_core=/tmp/wfrefwef__cargo-deny_0-14-3/release/deps/libtime_core-c880e75c55528c08.rlib",
                 "--extern", "proc_macro", // oh hi
                 "--cap-lints", "warn",
+             ]), args);
+    }
+
+    #[test]
+    fn args_when_building_that_buildrs() {
+        #[rustfmt::skip]
+        // Original ordering per rustc 1.73.0
+        let arguments = as_arguments(&[
+            "rustcbuildx",
+            "$HOME/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/rustc",
+            "--crate-name", "build_script_build",
+            "--edition=2021",
+            "src/build.rs",
+            "--error-format=json",
+            "--json=diagnostic-rendered-ansi,artifacts,future-incompat",
+            "--diagnostic-width=211",
+            "--crate-type", "bin",
+            "--emit=dep-info,link",
+            "-C", "embed-bitcode=no",
+            "-C", "debug-assertions=off",
+            "--cfg", "feature=\"default\"",
+            "-C", "metadata=96fe5c8493f1a08f",
+            "-C", "extra-filename=-96fe5c8493f1a08f",
+            "--out-dir", "/tmp/wfrefwef__cross@0.2.5/release/build/cross-96fe5c8493f1a08f",
+            "-C", "linker=/usr/bin/clang",
+            "-L", "dependency=/tmp/wfrefwef__cross@0.2.5/release/deps",
+            "-C", "link-arg=-fuse-ld=/usr/local/bin/mold",
+        ]);
+
+        let (st, args) = as_rustc(PWD, "build_script_build", arguments.clone(), false).unwrap();
+
+        assert_eq!(
+            st,
+            RustcArgs {
+                crate_type: "bin".to_owned(),
+                emit: "dep-info,link".to_owned(),
+                externs: Default::default(),
+                metadata: "96fe5c8493f1a08f".to_owned(),
+                incremental: None,
+                input: as_argument("src/build.rs").into(),
+                out_dir: as_argument(
+                    "/tmp/wfrefwef__cross@0.2.5/release/build/cross-96fe5c8493f1a08f"
+                )
+                .into(),
+                target_path: as_argument("/tmp/wfrefwef__cross@0.2.5/release").into(),
+            }
+        );
+
+        #[rustfmt::skip]
+        assert_eq!(as_arguments(&[
+                "rustcbuildx",
+                "$HOME/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/rustc",
+                "--crate-name", "build_script_build",
+                "--edition", "2021",
+                "--error-format", "json",
+                "--json", "diagnostic-rendered-ansi,artifacts,future-incompat",
+                "--diagnostic-width", "211",
+                "--crate-type", "bin",
+                "--emit", "dep-info,link",
+                "-C", "embed-bitcode=no",
+                "-C", "debug-assertions=off",
+                "--cfg", "feature=\"default\"",
+                "-C", "metadata=96fe5c8493f1a08f",
+                "-C", "extra-filename=-96fe5c8493f1a08f",
+                "--out-dir", "/tmp/wfrefwef__cross@0.2.5/release/build/cross-96fe5c8493f1a08f",
+                "-L", "dependency=/tmp/wfrefwef__cross@0.2.5/release/deps",
              ]), args);
     }
 }

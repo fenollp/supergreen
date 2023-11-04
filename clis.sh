@@ -65,8 +65,14 @@ EOF
 cli() {
 	local name_at_version=$1; shift
 
+  local job=$(sed 's%@%_%g;s%\.%-%g' <<<"$name_at_version")
+  case "$name_at_version" in
+    cross@*) name_at_version='' ;;
+    *) ;;
+  esac
+
 	cat <<EOF
-  $(sed 's%@%_%g;s%\.%-%g' <<<"$name_at_version"):
+  $job:
     runs-on: ubuntu-latest
     needs: bin
     steps:
@@ -118,12 +124,10 @@ EOF
 
 header
 
-cli cargo-audit@0.18.3 	    --features=fix
+# TODO: https://crates.io/categories/command-line-utilities?sort=recent-updates
+cli cargo-audit@0.18.3      --features=fix
 cli cargo-deny@0.14.3
-cli diesel_cli@2.1.1        --no-default-features --features=postgres
 cli cargo-llvm-cov@0.5.36
-
-# TODO: more
-# https://github.com/cross-rs/cross/releases/tag/v0.2.5
-# https://crates.io/categories/command-line-utilities?sort=recent-updates
-# https://crates.io/crates/cargo-nextest
+cli cargo-nextest@0.9.61
+cli cross@0.2.5             --git https://github.com/cross-rs/cross.git --tag=v0.2.5 cross
+cli diesel_cli@2.1.1        --no-default-features --features=postgres
