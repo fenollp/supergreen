@@ -122,3 +122,8 @@ cli cargo-audit@0.18.3 	    --features=fix
 cli cargo-deny@0.14.3
 cli diesel_cli@2.1.1        --no-default-features --features=postgres
 cli cargo-llvm-cov@0.5.36
+
+# TODO: more
+# https://github.com/cross-rs/cross/releases/tag/v0.2.5
+# https://crates.io/categories/command-line-utilities?sort=recent-updates
+# https://crates.io/crates/cargo-nextest

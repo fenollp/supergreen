@@ -364,6 +364,15 @@ fn bake_rustc(
         ["lib.rs", basename, ..] => hm("lib_rs", basename, 1),
         // e.g. $HOME/.cargo/registry/src/github.com-1ecc6299db9ec823/untrusted-0.7.1/src/untrusted.rs
         [rsfile, "src", basename, ..] if rsfile.ends_with(".rs") => hm("src__rs", basename, 2),
+        // Running `CARGO=/home/runner/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/cargo CARGO_CRATE_NAME=build_script_main CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/openssl-sys-0.9.95 CARGO_PKG_AUTHORS='Alex Crichton <alex@alexcrichton.com>:Steven Fackler <sfackler@gmail.com>' CARGO_PKG_DESCRIPTION='FFI bindings to OpenSSL' CARGO_PKG_HOMEPAGE='' CARGO_PKG_LICENSE=MIT CARGO_PKG_LICENSE_FILE='' CARGO_PKG_NAME=openssl-sys CARGO_PKG_README=README.md CARGO_PKG_REPOSITORY='https://github.com/sfackler/rust-openssl' CARGO_PKG_RUST_VERSION='' CARGO_PKG_VERSION=0.9.95 CARGO_PKG_VERSION_MAJOR=0 CARGO_PKG_VERSION_MINOR=9 CARGO_PKG_VERSION_PATCH=95 CARGO_PKG_VERSION_PRE='' LD_LIBRARY_PATH='/home/runner/instst/release/deps:/home/runner/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib:/home/runner/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib' /home/runner/work/rustcbuildx/rustcbuildx/rustcbuildx /home/runner/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/rustc --crate-name build_script_main --edition=2018 /home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/openssl-sys-0.9.95/build/main.rs --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit=dep-info,link -C embed-bitcode=no -C debug-assertions=off -C metadata=99f749eccead4467 -C extra-filename=-99f749eccead4467 --out-dir /home/runner/instst/release/build/openssl-sys-99f749eccead4467 -L dependency=/home/runner/instst/release/deps --extern cc=/home/runner/instst/release/deps/libcc-3c316ebdde73b0fe.rlib --extern pkg_config=/home/runner/instst/release/deps/libpkg_config-a6962381fee76247.rlib --extern vcpkg=/home/runner/instst/release/deps/libvcpkg-ebcbc23bfdf4209b.rlib --cap-lints warn`
+        // /home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/openssl-sys-0.9.95/build/main.rs
+        [rsfile, "build", basename, ..]
+            if rsfile.ends_with(".rs") && crate_name == "build_script_main" =>
+        {
+            // TODO: that's ducktape. Read Cargo.toml to match [package]build = "build/main.rs" ?
+            // or just catchall >=4
+            hm("main_rs", basename, 2)
+        }
         _ => unreachable!("Unexpected input file {input:?}"),
     };
     assert!(!matches!(input_mount, Some((_,ref x)) if x.ends_with("/.cargo/registry")));
@@ -452,7 +461,7 @@ WORKDIR {out_dir}"#
     .try_for_each(|var| -> Result<_> {
         let val = env::var(var)
             .ok()
-            .and_then(|x| (!x.is_empty()).then_some(x))
+            .and_then(|x| if x.is_empty() { None } else { Some(x) })
             .map(|x| format!("{x:?}"))
             .unwrap_or_default();
         writeln!(dockerfile, r#"ENV {var}={val}"#)?;
