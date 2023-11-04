@@ -86,6 +86,11 @@ pub(crate) fn as_rustc(
             ("-C", "link-arg=-fuse-ld=/usr/local/bin/mold") => {
                 (s_e, key) = (false, "".to_owned());
                 continue;
+                // HACK=> this flag is the last one added by my local config
+                // and something seems to be messing up and adding --cfg args
+                // after that (crates' build.rs do this [can_compile]: anyhow, rustic, ...)
+                // break; // FIXME
+                // Lies: https://github.com/rust-lang/cargo/issues/5499#issuecomment-387418947
             }
             ("-C", "linker=/usr/bin/clang") => {
                 (s_e, key) = (false, "".to_owned());
@@ -587,6 +592,78 @@ mod tests {
                 "-C", "extra-filename=-96fe5c8493f1a08f",
                 "--out-dir", "/tmp/wfrefwef__cross@0.2.5/release/build/cross-96fe5c8493f1a08f",
                 "-L", "dependency=/tmp/wfrefwef__cross@0.2.5/release/deps",
+             ]), args);
+    }
+
+    #[test]
+    fn args_when_build_script_main() {
+        #[rustfmt::skip]
+        // Original ordering per rustc 1.73.0
+        let arguments = as_arguments(&[
+            "$HOME/work/rustcbuildx/rustcbuildx/rustcbuildx",
+            "$HOME/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/rustc",
+            "--crate-name", "build_script_main",
+            "--edition=2018",
+            "$HOME/.cargo/registry/src/index.crates.io-6f17d22bba15001f/openssl-sys-0.9.95/build/main.rs",
+            "--error-format=json",
+            "--json=diagnostic-rendered-ansi,artifacts,future-incompat",
+            "--crate-type", "bin",
+            "--emit=dep-info,link",
+            "-C", "embed-bitcode=no",
+            "-C", "debug-assertions=off",
+            "-C", "metadata=99f749eccead4467",
+            "-C", "extra-filename=-99f749eccead4467",
+            "--out-dir", "$HOME/instst/release/build/openssl-sys-99f749eccead4467",
+            "-L", "dependency=$HOME/instst/release/deps",
+            "--extern", "cc=$HOME/instst/release/deps/libcc-3c316ebdde73b0fe.rlib",
+            "--extern", "pkg_config=%HOME/instst/release/deps/libpkg_config-a6962381fee76247.rlib",
+            "--extern", "vcpkg=$HOME/instst/release/deps/libvcpkg-ebcbc23bfdf4209b.rlib",
+            "--cap-lints", "warn",
+        ]);
+
+        let (st, args) = as_rustc(PWD, "build_script_main", arguments.clone(), false).unwrap();
+
+        assert_eq!(
+            st,
+            RustcArgs {
+                crate_type: "bin".to_owned(),
+                emit: "dep-info,link".to_owned(),
+                externs: [
+                    "libcc-3c316ebdde73b0fe.rlib".to_owned(),
+                    "libpkg_config-a6962381fee76247.rlib".to_owned(),
+                    "libvcpkg-ebcbc23bfdf4209b.rlib".to_owned(),
+                ].into(),
+                metadata: "99f749eccead4467".to_owned(),
+                incremental: None,
+                input: as_argument("$HOME/.cargo/registry/src/index.crates.io-6f17d22bba15001f/openssl-sys-0.9.95/build/main.rs").into(),
+                out_dir: as_argument(
+                    "$HOME/instst/release/build/openssl-sys-99f749eccead4467"
+                )
+                .into(),
+                target_path: as_argument("$HOME/instst/release").into(),
+            }
+        );
+
+        #[rustfmt::skip]
+        assert_eq!(as_arguments(&[
+                "$HOME/work/rustcbuildx/rustcbuildx/rustcbuildx",
+                "$HOME/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/rustc",
+                "--crate-name", "build_script_main",
+                "--edition", "2018",
+                "--error-format", "json",
+                "--json", "diagnostic-rendered-ansi,artifacts,future-incompat",
+                "--crate-type", "bin",
+                "--emit", "dep-info,link",
+                "-C", "embed-bitcode=no",
+                "-C", "debug-assertions=off",
+                "-C", "metadata=99f749eccead4467",
+                "-C", "extra-filename=-99f749eccead4467",
+                "--out-dir", "$HOME/instst/release/build/openssl-sys-99f749eccead4467",
+                "-L", "dependency=$HOME/instst/release/deps",
+                "--extern", "cc=$HOME/instst/release/deps/libcc-3c316ebdde73b0fe.rlib",
+                "--extern", "pkg_config=%HOME/instst/release/deps/libpkg_config-a6962381fee76247.rlib",
+                "--extern", "vcpkg=$HOME/instst/release/deps/libvcpkg-ebcbc23bfdf4209b.rlib",
+                "--cap-lints", "warn",
              ]), args);
     }
 }

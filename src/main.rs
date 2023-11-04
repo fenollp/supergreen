@@ -469,8 +469,8 @@ WORKDIR {out_dir}"#
     })?;
 
     let cwd = if input.is_relative() && input.as_str().ends_with(".rs") {
-        assert!(
-            input_mount.is_none(),
+        assert_eq!(
+            input_mount, None,
             "TODO: change condition to this if this message doesn't show up (smart)"
         );
         // Save/send local workspace
