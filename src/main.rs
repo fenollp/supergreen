@@ -468,12 +468,27 @@ WORKDIR {out_dir}"#
         Ok(())
     })?;
 
-    let cwd = if input.is_relative() && input.as_str().ends_with(".rs") {
-        assert_eq!(
-            input_mount, None,
-            "TODO: change condition to this if this message doesn't show up (smart)"
-        );
+    let cwd = if let Some((name, target)) = input_mount.as_ref() {
+        // Reuse previous contexts
+
+        writeln!(
+            dockerfile,
+            // TODO: WORKDIR was removed as it changed during a single `cargo build`
+            // Looks like removing it isn't an issue, however we need more testing.
+            //             r#"WORKDIR {pwd}
+            // RUN \
+            //   --mount=type=bind,from={name},target={target} \"#
+            r#"RUN \
+  --mount=type=bind,from={name},target={target} \"#
+        )?;
+
+        // TODO: --build-arg BUILDKIT_CONTEXT_KEEP_GIT_DIR=0 https://docs.docker.com/engine/reference/builder/#buildkit-built-in-build-args
+
+        None
+    } else {
         // Save/send local workspace
+
+        assert_eq!((input.is_relative(), input.as_str().ends_with(".rs")), (true, true));
 
         // TODO: try just bind mount instead of copying to a tmpdir
         // TODO: try not FWDing .git/* and equivalent
@@ -516,24 +531,6 @@ RUN \"#
         )?;
 
         Some(cwd)
-    } else {
-        // Reuse previous contexts
-
-        let (name, target) = input_mount.as_ref().expect("TODO: check that assert earlier");
-        writeln!(
-            dockerfile,
-            // TODO: WORKDIR was remove as it changed during a single `cargo build`
-            // Looks like removing it isn't an issue, however we need more testing.
-            //             r#"WORKDIR {pwd}
-            // RUN \
-            //   --mount=type=bind,from={name},target={target} \"#
-            r#"RUN \
-  --mount=type=bind,from={name},target={target} \"#
-        )?;
-
-        // TODO: --build-arg BUILDKIT_CONTEXT_KEEP_GIT_DIR=0 https://docs.docker.com/engine/reference/builder/#buildkit-built-in-build-args
-
-        None
     };
 
     if let Some(crate_out) = crate_out.as_ref() {
