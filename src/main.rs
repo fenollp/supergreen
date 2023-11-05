@@ -341,6 +341,7 @@ fn bake_rustc(
     }
 
     let hm = |prefix: &str, basename: &str, pop: usize| {
+        assert_eq!(pop, prefix.chars().filter(|c| *c == '_').count());
         let not_lowalnums = |c: char| {
             !("._-".contains(c) || c.is_ascii_digit() || (c.is_alphabetic() && c.is_lowercase()))
         };
@@ -355,6 +356,7 @@ fn bake_rustc(
     let (input_mount, rustc_stage) = match input.iter().rev().take(4).collect::<Vec<_>>()[..] {
         ["lib.rs", "src"] => (None, format!("final-{full_crate_id}")),
         ["main.rs", "src"] => (None, format!("final-{full_crate_id}")),
+        ["build.rs", "src", basename, ..] => hm("build__rs", basename, 2), // TODO: un-ducktape
         ["build.rs", basename, ..] => hm("build_rs", basename, 1),
         ["lib.rs", "src", basename, ..] => hm("src_lib_rs", basename, 2),
         // e.g. $HOME/.cargo/registry/src/github.com-1ecc6299db9ec823/fnv-1.0.7/lib.rs
@@ -368,7 +370,7 @@ fn bake_rustc(
         {
             // TODO: that's ducktape. Read Cargo.toml to match [package]build = "build/main.rs" ?
             // or just catchall >=4
-            hm("main_rs", basename, 2)
+            hm("main__rs", basename, 2)
         }
         _ => unreachable!("Unexpected input file {input:?}"),
     };
