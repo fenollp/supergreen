@@ -145,10 +145,7 @@ fn bake_rustc(
 
     if is_debug() {
         env_logger::Builder::from_env(
-            Env::default()
-                .filter(RUSTCBUILDX_LOG)
-                .write_style(RUSTCBUILDX_LOG_STYLE)
-                .default_filter_or("info"),
+            Env::default().filter_or(RUSTCBUILDX_LOG, "debug").write_style(RUSTCBUILDX_LOG_STYLE),
         )
         .target(Target::Pipe(Box::new(log_file()?)))
         .init();
