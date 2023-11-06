@@ -69,7 +69,7 @@ jobs:
 
     - name: cargo install net=ON cache=OFF remote=OFF
       run: |
-        RUSTCBUILDX_DEBUG=1 \
+        RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_SEQUENTIAL_CARGO=1 \
         RUSTC_WRAPPER="$PWD"/rustcbuildx \
           CARGO_TARGET_DIR=~/instst cargo -vv install --force --path=.
@@ -117,7 +117,7 @@ jobs:
 
     - name: cargo audit net=ON cache=OFF remote=OFF
       run: |
-        RUSTCBUILDX_DEBUG=1 \
+        RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH=./logs.txt \
         RUSTCBUILDX_SEQUENTIAL_CARGO=1 \
         RUSTC_WRAPPER="$PWD"/rustcbuildx \
@@ -158,7 +158,7 @@ jobs:
 
     - name: cargo build net=OFF cache=OFF remote=OFF
       run: |
-        RUSTCBUILDX_DEBUG=1 \
+        RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH=./logs.txt \
         RUSTCBUILDX_SEQUENTIAL_CARGO=1 \
         RUSTC_WRAPPER="$PWD"/rustcbuildx \
@@ -171,7 +171,7 @@ jobs:
 
     - name: cargo build net=OFF cache=ON remote=OFF
       run: |
-        RUSTCBUILDX_DEBUG=1 \
+        RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH=./logs.txt \
         RUSTCBUILDX_SEQUENTIAL_CARGO=1 \
         RUSTC_WRAPPER="$PWD"/rustcbuildx \
@@ -180,7 +180,7 @@ jobs:
 
     - name: Ensure running the same command twice without modifications does not recompile anything
       run: |
-        RUSTCBUILDX_DEBUG=0 \
+        unset RUSTCBUILDX_LOG
         RUSTCBUILDX_LOG_PATH=./logs.txt \
         RUSTCBUILDX_SEQUENTIAL_CARGO=1 \
         RUSTC_WRAPPER="$PWD"/rustcbuildx \
@@ -225,7 +225,7 @@ jobs:
 
     - name: cargo test net=OFF cache=OFF remote=OFF
       run: |
-        RUSTCBUILDX_DEBUG=1 \
+        RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH=./logs.txt \
         RUSTCBUILDX_SEQUENTIAL_CARGO=1 \
         RUSTC_WRAPPER="$PWD"/rustcbuildx \
@@ -234,7 +234,7 @@ jobs:
 
     - name: cargo test net=OFF cache=ON remote=OFF
       run: |
-        RUSTCBUILDX_DEBUG=1 \
+        RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH=./logs.txt \
         RUSTCBUILDX_SEQUENTIAL_CARGO=1 \
         RUSTC_WRAPPER="$PWD"/rustcbuildx \
@@ -243,7 +243,7 @@ jobs:
 
     - name: Ensure running the same command twice without modifications does not recompile anything
       run: |
-        RUSTCBUILDX_DEBUG=0 \
+        unset RUSTCBUILDX_LOG
         RUSTCBUILDX_LOG_PATH=./logs.txt \
         RUSTCBUILDX_SEQUENTIAL_CARGO=1 \
         RUSTC_WRAPPER="$PWD"/rustcbuildx \
@@ -288,7 +288,7 @@ jobs:
 
     - name: cargo check net=OFF cache=OFF remote=OFF
       run: |
-        RUSTCBUILDX_DEBUG=1 \
+        RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH=./logs.txt \
         RUSTCBUILDX_SEQUENTIAL_CARGO=1 \
         RUSTC_WRAPPER="$PWD"/rustcbuildx \
@@ -297,7 +297,7 @@ jobs:
 
     - name: cargo check net=OFF cache=ON remote=OFF
       run: |
-        RUSTCBUILDX_DEBUG=1 \
+        RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH=./logs.txt \
         RUSTCBUILDX_SEQUENTIAL_CARGO=1 \
         RUSTC_WRAPPER="$PWD"/rustcbuildx \
@@ -306,7 +306,7 @@ jobs:
 
     - name: Ensure running the same command twice without modifications does not recompile anything
       run: |
-        RUSTCBUILDX_DEBUG=0 \
+        unset RUSTCBUILDX_LOG
         RUSTCBUILDX_LOG_PATH=./logs.txt \
         RUSTCBUILDX_SEQUENTIAL_CARGO=1 \
         RUSTC_WRAPPER="$PWD"/rustcbuildx \
@@ -353,7 +353,7 @@ jobs:
 
     - name: cargo clippy net=OFF cache=OFF remote=OFF
       run: |
-        RUSTCBUILDX_DEBUG=1 \
+        RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH=./logs.txt \
         RUSTCBUILDX_SEQUENTIAL_CARGO=1 \
         RUSTC_WRAPPER="$PWD"/rustcbuildx \
@@ -362,7 +362,7 @@ jobs:
 
     - name: cargo clippy net=OFF cache=ON remote=OFF
       run: |
-        RUSTCBUILDX_DEBUG=1 \
+        RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH=./logs.txt \
         RUSTCBUILDX_SEQUENTIAL_CARGO=1 \
         RUSTC_WRAPPER="$PWD"/rustcbuildx \
@@ -371,7 +371,7 @@ jobs:
 
     - name: Ensure running the same command twice without modifications does not recompile anything
       run: |
-        RUSTCBUILDX_DEBUG=0 \
+        unset RUSTCBUILDX_LOG
         RUSTCBUILDX_LOG_PATH=./logs.txt \
         RUSTCBUILDX_SEQUENTIAL_CARGO=1 \
         RUSTC_WRAPPER="$PWD"/rustcbuildx \
@@ -390,7 +390,7 @@ jobs:
   #       mkdir -p $HOME/.cargo/registry/src/github.com-1ecc6299db9ec823/
   #       mv "$tmp"/io-lifetimes-1.0.3 $HOME/.cargo/registry/src/github.com-1ecc6299db9ec823/
   #   - run: |
-  #       export RUSTCBUILDX_DEBUG=1
+  #       export RUSTCBUILDX_LOG=debug
   #       export PROFILE=${PROFILE:-debug}
   #       export CARGO_HOME=${CARGO_HOME:-$HOME/.cargo}
   #       export CARGO_TARGET_DIR=${CARGO_TARGET_DIR:-$PWD/_targetWell}

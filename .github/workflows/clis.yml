@@ -76,7 +76,7 @@ jobs:
 
     - name: cargo install net=ON cache=OFF remote=OFF
       run: |
-        RUSTCBUILDX_DEBUG=1 \
+        RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
         RUSTC_WRAPPER="$PWD"/rustcbuildx \
           CARGO_TARGET_DIR=~/instst cargo -vv install --force cargo-audit@0.18.3 --features=fix || \
@@ -84,7 +84,7 @@ jobs:
 
     - name: cargo install net=ON cache=ON remote=OFF
       run: |
-        RUSTCBUILDX_DEBUG=1 \
+        RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
         RUSTC_WRAPPER="$PWD"/rustcbuildx \
           CARGO_TARGET_DIR=~/instst cargo -vv install --force cargo-audit@0.18.3 --features=fix 2>&1 | tee _ || \
@@ -116,7 +116,7 @@ jobs:
 
     - name: cargo install net=ON cache=OFF remote=OFF
       run: |
-        RUSTCBUILDX_DEBUG=1 \
+        RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
         RUSTC_WRAPPER="$PWD"/rustcbuildx \
           CARGO_TARGET_DIR=~/instst cargo -vv install --force cargo-deny@0.14.3  || \
@@ -124,7 +124,7 @@ jobs:
 
     - name: cargo install net=ON cache=ON remote=OFF
       run: |
-        RUSTCBUILDX_DEBUG=1 \
+        RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
         RUSTC_WRAPPER="$PWD"/rustcbuildx \
           CARGO_TARGET_DIR=~/instst cargo -vv install --force cargo-deny@0.14.3  2>&1 | tee _ || \
@@ -156,7 +156,7 @@ jobs:
 
     - name: cargo install net=ON cache=OFF remote=OFF
       run: |
-        RUSTCBUILDX_DEBUG=1 \
+        RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
         RUSTC_WRAPPER="$PWD"/rustcbuildx \
           CARGO_TARGET_DIR=~/instst cargo -vv install --force cargo-llvm-cov@0.5.36  || \
@@ -164,7 +164,7 @@ jobs:
 
     - name: cargo install net=ON cache=ON remote=OFF
       run: |
-        RUSTCBUILDX_DEBUG=1 \
+        RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
         RUSTC_WRAPPER="$PWD"/rustcbuildx \
           CARGO_TARGET_DIR=~/instst cargo -vv install --force cargo-llvm-cov@0.5.36  2>&1 | tee _ || \
@@ -196,7 +196,7 @@ jobs:
 
     - name: cargo install net=ON cache=OFF remote=OFF
       run: |
-        RUSTCBUILDX_DEBUG=1 \
+        RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
         RUSTC_WRAPPER="$PWD"/rustcbuildx \
           CARGO_TARGET_DIR=~/instst cargo -vv install --force cargo-nextest@0.9.61  || \
@@ -204,7 +204,7 @@ jobs:
 
     - name: cargo install net=ON cache=ON remote=OFF
       run: |
-        RUSTCBUILDX_DEBUG=1 \
+        RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
         RUSTC_WRAPPER="$PWD"/rustcbuildx \
           CARGO_TARGET_DIR=~/instst cargo -vv install --force cargo-nextest@0.9.61  2>&1 | tee _ || \
@@ -236,7 +236,7 @@ jobs:
 
     - name: cargo install net=ON cache=OFF remote=OFF
       run: |
-        RUSTCBUILDX_DEBUG=1 \
+        RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
         RUSTC_WRAPPER="$PWD"/rustcbuildx \
           CARGO_TARGET_DIR=~/instst cargo -vv install --force  --git https://github.com/cross-rs/cross.git --tag=v0.2.5 cross || \
@@ -244,7 +244,7 @@ jobs:
 
     - name: cargo install net=ON cache=ON remote=OFF
       run: |
-        RUSTCBUILDX_DEBUG=1 \
+        RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
         RUSTC_WRAPPER="$PWD"/rustcbuildx \
           CARGO_TARGET_DIR=~/instst cargo -vv install --force  --git https://github.com/cross-rs/cross.git --tag=v0.2.5 cross 2>&1 | tee _ || \
@@ -276,7 +276,7 @@ jobs:
 
     - name: cargo install net=ON cache=OFF remote=OFF
       run: |
-        RUSTCBUILDX_DEBUG=1 \
+        RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
         RUSTC_WRAPPER="$PWD"/rustcbuildx \
           CARGO_TARGET_DIR=~/instst cargo -vv install --force diesel_cli@2.1.1 --no-default-features --features=postgres || \
@@ -284,7 +284,7 @@ jobs:
 
     - name: cargo install net=ON cache=ON remote=OFF
       run: |
-        RUSTCBUILDX_DEBUG=1 \
+        RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
         RUSTC_WRAPPER="$PWD"/rustcbuildx \
           CARGO_TARGET_DIR=~/instst cargo -vv install --force diesel_cli@2.1.1 --no-default-features --features=postgres 2>&1 | tee _ || \

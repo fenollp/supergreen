@@ -20,10 +20,7 @@ use mktemp::Temp;
 use regex::Regex;
 
 use crate::{
-    envs::{
-        docker_image, docker_syntax, is_debug, is_sequential, RUSTCBUILDX_DEBUG,
-        RUSTCBUILDX_DEBUG_IF_CRATE_NAME,
-    },
+    envs::{docker_image, docker_syntax, is_debug, is_sequential, RUSTCBUILDX_LOG_IF_CRATE_NAME},
     parse::RustcArgs,
     pops::Popped,
 };
@@ -138,9 +135,9 @@ fn bake_rustc(
             .with_context(|| format!("Failed opening (WA) log file {log_path}"))
     }
 
-    if let Some(name) = env::var(RUSTCBUILDX_DEBUG_IF_CRATE_NAME).ok().as_deref() {
+    if let Some(name) = env::var(RUSTCBUILDX_LOG_IF_CRATE_NAME).ok().as_deref() {
         if env::args().any(|arg| arg.contains(name)) {
-            env::set_var(RUSTCBUILDX_DEBUG, "1");
+            env::set_var(RUSTCBUILDX_LOG, "debug");
         }
     }
 
