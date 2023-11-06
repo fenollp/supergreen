@@ -40,7 +40,7 @@ jobs:
 
     - name: Compile HEAD
       run: |
-        CARGO_TARGET_DIR=~/instmp cargo install --force --path=$PWD
+        CARGO_TARGET_DIR=~/instmp cargo install --locked --force --path=$PWD
 
     - uses: actions/upload-artifact@v3
       with:
@@ -72,7 +72,7 @@ jobs:
         RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_SEQUENTIAL_CARGO=1 \
         RUSTC_WRAPPER="$PWD"/rustcbuildx \
-          CARGO_TARGET_DIR=~/instst cargo -vv install --force --path=.
+          CARGO_TARGET_DIR=~/instst cargo -vv install --locked --force --path=.
 
 
   self-audits:
@@ -113,7 +113,7 @@ jobs:
 
     - name: Compile cargo-audit
       run: |
-        CARGO_TARGET_DIR=~/cargo-audit cargo install --force cargo-audit --features=fix
+        CARGO_TARGET_DIR=~/cargo-audit cargo install --locked --force cargo-audit --features=fix
 
     - name: cargo audit net=ON cache=OFF remote=OFF
       run: |
