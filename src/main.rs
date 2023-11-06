@@ -24,6 +24,7 @@ use crate::{
         docker_image, docker_syntax, is_debug, is_sequential, RUSTCBUILDX_DEBUG,
         RUSTCBUILDX_DEBUG_IF_CRATE_NAME,
     },
+    parse::RustcArgs,
     pops::Popped,
 };
 mod envs;
@@ -186,14 +187,8 @@ fn bake_rustc(
 
     let (st, args) = parse::as_rustc(&pwd, crate_name, arguments, false)?;
     info!(target:&krate, "{:?}", st);
-    let crate_type = st.crate_type;
-    let emit = st.emit;
-    let externs = st.externs;
-    let incremental = st.incremental;
-    let input = st.input;
-    let metadata = st.metadata;
-    let out_dir = st.out_dir;
-    let target_path = st.target_path;
+    let RustcArgs { crate_type, emit, externs, metadata, incremental, input, out_dir, target_path } =
+        st;
 
     {
         let p = Utf8Path::new(&target_path).join("deps");
@@ -352,7 +347,6 @@ fn bake_rustc(
         )
     };
 
-    // Ordering matters
     let (input_mount, rustc_stage) = match input.iter().rev().take(4).collect::<Vec<_>>()[..] {
         ["lib.rs", "src"] => (None, format!("final-{full_crate_id}")),
         ["main.rs", "src"] => (None, format!("final-{full_crate_id}")),
@@ -365,15 +359,14 @@ fn bake_rustc(
         [rsfile, "src", basename, ..] if rsfile.ends_with(".rs") => hm("src__rs", basename, 2),
         // Running `CARGO=/home/runner/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/cargo CARGO_CRATE_NAME=build_script_main CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/openssl-sys-0.9.95 CARGO_PKG_AUTHORS='Alex Crichton <alex@alexcrichton.com>:Steven Fackler <sfackler@gmail.com>' CARGO_PKG_DESCRIPTION='FFI bindings to OpenSSL' CARGO_PKG_HOMEPAGE='' CARGO_PKG_LICENSE=MIT CARGO_PKG_LICENSE_FILE='' CARGO_PKG_NAME=openssl-sys CARGO_PKG_README=README.md CARGO_PKG_REPOSITORY='https://github.com/sfackler/rust-openssl' CARGO_PKG_RUST_VERSION='' CARGO_PKG_VERSION=0.9.95 CARGO_PKG_VERSION_MAJOR=0 CARGO_PKG_VERSION_MINOR=9 CARGO_PKG_VERSION_PATCH=95 CARGO_PKG_VERSION_PRE='' LD_LIBRARY_PATH='/home/runner/instst/release/deps:/home/runner/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib:/home/runner/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib' /home/runner/work/rustcbuildx/rustcbuildx/rustcbuildx /home/runner/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/rustc --crate-name build_script_main --edition=2018 /home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/openssl-sys-0.9.95/build/main.rs --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit=dep-info,link -C embed-bitcode=no -C debug-assertions=off -C metadata=99f749eccead4467 -C extra-filename=-99f749eccead4467 --out-dir /home/runner/instst/release/build/openssl-sys-99f749eccead4467 -L dependency=/home/runner/instst/release/deps --extern cc=/home/runner/instst/release/deps/libcc-3c316ebdde73b0fe.rlib --extern pkg_config=/home/runner/instst/release/deps/libpkg_config-a6962381fee76247.rlib --extern vcpkg=/home/runner/instst/release/deps/libvcpkg-ebcbc23bfdf4209b.rlib --cap-lints warn`
         // /home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/openssl-sys-0.9.95/build/main.rs
-        [rsfile, "build", basename, ..]
-            if rsfile.ends_with(".rs") && crate_name == "build_script_main" =>
-        {
+        ["main.rs", "build", basename, ..] if crate_name == "build_script_main" => {
             // TODO: that's ducktape. Read Cargo.toml to match [package]build = "build/main.rs" ?
             // or just catchall >=4
             hm("main__rs", basename, 2)
         }
         _ => unreachable!("Unexpected input file {input:?}"),
     };
+    info!(target:&krate, "picked {rustc_stage} for {suf:?}", suf=input.iter().rev().take(4).collect::<Vec<_>>());
     assert!(!matches!(input_mount, Some((_,ref x)) if x.ends_with("/.cargo/registry")));
 
     let incremental_stage = format!("incremental-{metadata}");
@@ -505,6 +498,7 @@ WORKDIR {out_dir}"#
         // TODO: use tmpfs when on *NIX
         // TODO: cache these folders
         if pwd.join(".git").is_dir() {
+            info!(target:&krate, "copying all git files under {}", pwd.join(".git"));
             let output = Command::new("git")
                 .arg("ls-files")
                 .arg(&pwd)
@@ -516,9 +510,11 @@ WORKDIR {out_dir}"#
             // TODO: buffer reads to this command's output
             // NOTE: unsorted output lines
             for f in String::from_utf8(output.stdout).context("Parsing `git ls-files`")?.lines() {
+                info!(target:&krate, "copying git repo file {f}");
                 copy_file(Utf8Path::new(f), cwd_path)?;
             }
         } else {
+            info!(target:&krate, "copying all files under {pwd}");
             copy_files(&pwd, cwd_path)?;
         }
 
@@ -754,26 +750,32 @@ target "{incremental_stage}" {{
         cmd.stdin(Stdio::null()).stdout(Stdio::null()).stderr(Stdio::null());
     }
     cmd.arg("buildx").arg("bake").arg("--file").arg(&bakefile_path).args(stages);
+    let start = Instant::now();
     let code = cmd
         .output()
         .with_context(|| format!("Failed calling `docker {args:?}`", args = cmd.get_args()))?
         .status
         .code();
+    info!("command `docker buildx bake` ran in {}s: {code:?}", start.elapsed().as_secs());
 
-    // TODO: buffered reading + copy to STDERR/STDOUT
-    if code == Some(0) {
-        let fwd = |file, show: fn(&str)| -> Result<()> {
-            let data = stdio_path.join(file);
-            info!(target:&krate, "reading {data}");
-            let data = read_to_string(&data).with_context(|| format!("Failed to copy {data}"))?;
-            let msg = data.trim();
-            if !msg.is_empty() {
-                show(msg);
+    // TODO: buffered reading + copy to STDERR/STDOUT => give open fds in bakefile?
+    for x in [true, false] {
+        let path = stdio_path.join(if x { TMP_STDERR } else { TMP_STDOUT });
+        info!(target:&krate, "reading (RO) {path}");
+        let data = match read_to_string(&path) {
+            Err(e) if e.kind() == ErrorKind::NotFound => continue,
+            otherwise => otherwise,
+        }
+        .with_context(|| format!("Failed to copy {path}"))?;
+        let msg = data.trim();
+        debug!(target:&krate, "{path} ~= {msg}");
+        if !msg.is_empty() {
+            if x {
+                eprintln!("{msg}");
+            } else {
+                println!("{msg}");
             }
-            Ok(())
-        };
-        fwd("stderr", |msg: &str| eprintln!("{msg}"))?;
-        fwd("stdout", |msg: &str| println!("{msg}"))?;
+        }
     }
     if !is_debug() {
         drop(stdio); // Removes stdio/std{err,out} files and stdio dir
