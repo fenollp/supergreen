@@ -54,6 +54,46 @@ jobs:
         name: bin-artifact
         path: ~/instmp/release/rustcbuildx
 
+  buildxargs_master:
+    runs-on: ubuntu-latest
+    needs: bin
+    steps:
+    - uses: actions/checkout@v4
+
+    - uses: actions-rs/toolchain@v1
+      with:
+        profile: minimal
+        toolchain: stable
+
+
+    - name: Retrieve saved bin
+      uses: actions/download-artifact@v3
+      with:
+        name: bin-artifact
+    - run: | # TODO: whence https://github.com/actions/download-artifact/issues/236
+        chmod +x ./rustcbuildx
+        ./rustcbuildx --version | grep rustcbuildx
+
+    - name: cargo install net=ON cache=OFF remote=OFF
+      run: |
+        RUSTCBUILDX_LOG=debug \
+        RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
+        RUSTC_WRAPPER="$PWD"/rustcbuildx \
+          CARGO_TARGET_DIR=~/instst cargo -vv install --locked --force  --git https://github.com/fenollp/buildxargs.git || \
+            cat logs.txt
+
+    - name: cargo install net=ON cache=ON remote=OFF
+      run: |
+        RUSTCBUILDX_LOG=debug \
+        RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
+        RUSTC_WRAPPER="$PWD"/rustcbuildx \
+          CARGO_TARGET_DIR=~/instst cargo -vv install --locked --force  --git https://github.com/fenollp/buildxargs.git 2>&1 | tee _ || \
+            cat logs.txt
+        cat _ | grep Finished | grep 0...s
+        cat _ | grep Fresh
+        ! cat _ | grep Compiling
+        ! cat _ | grep 'DEBUG|INFO|WARN|ERROR'
+
   cargo-audit_0-18-3:
     runs-on: ubuntu-latest
     needs: bin
@@ -239,7 +279,7 @@ jobs:
         RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
         RUSTC_WRAPPER="$PWD"/rustcbuildx \
-          CARGO_TARGET_DIR=~/instst cargo -vv install --locked --force  --git https://github.com/cross-rs/cross.git --tag=v0.2.5 cross || \
+          CARGO_TARGET_DIR=~/instst cargo -vv install --locked --force  --git https://github.com/cross-rs/cross.git --tag=v0.2.5 || \
             cat logs.txt
 
     - name: cargo install net=ON cache=ON remote=OFF
@@ -247,7 +287,7 @@ jobs:
         RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
         RUSTC_WRAPPER="$PWD"/rustcbuildx \
-          CARGO_TARGET_DIR=~/instst cargo -vv install --locked --force  --git https://github.com/cross-rs/cross.git --tag=v0.2.5 cross 2>&1 | tee _ || \
+          CARGO_TARGET_DIR=~/instst cargo -vv install --locked --force  --git https://github.com/cross-rs/cross.git --tag=v0.2.5 2>&1 | tee _ || \
             cat logs.txt
         cat _ | grep Finished | grep 0...s
         cat _ | grep Fresh

@@ -67,6 +67,7 @@ cli() {
 
   local job=$(sed 's%@%_%g;s%\.%-%g' <<<"$name_at_version")
   case "$name_at_version" in
+    buildxargs@*) name_at_version='' ;;
     cross@*) name_at_version='' ;;
     *) ;;
   esac
@@ -125,9 +126,10 @@ EOF
 header
 
 # TODO: https://crates.io/categories/command-line-utilities?sort=recent-updates
+cli buildxargs@master       --git https://github.com/fenollp/buildxargs.git
 cli cargo-audit@0.18.3      --features=fix
 cli cargo-deny@0.14.3
 cli cargo-llvm-cov@0.5.36
 cli cargo-nextest@0.9.61
-cli cross@0.2.5             --git https://github.com/cross-rs/cross.git --tag=v0.2.5 cross
+cli cross@0.2.5             --git https://github.com/cross-rs/cross.git --tag=v0.2.5
 cli diesel_cli@2.1.1        --no-default-features --features=postgres

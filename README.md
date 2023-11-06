@@ -3,7 +3,7 @@
 
 ## Usage
 
-* Ensure `$HOME/.cargo/bin` is in `$PATH`
+* Ensure `~/.cargo/bin` is in `$PATH`
 * Ensure [`docker buildx bake`](https://docs.docker.com/engine/reference/commandline/buildx_bake/) is installed
 * Known to work on `Ubuntu 22.04` with `github.com/docker/buildx v0.11.2 9872040` and `rust 1.73`
 
@@ -39,7 +39,7 @@ cargo test ...
 ## Installation
 
 ```shell
-# Installs to $HOME/.cargo/bin
+# Installs to ~/.cargo/bin
 cargo install --locked --force --git https://github.com/fenollp/rustcbuildx.git
 ```
 
