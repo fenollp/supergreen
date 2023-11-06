@@ -630,7 +630,7 @@ COPY --from={rustc_stage} {out_dir}/*-{metadata}* /"#,
             let mounts_len = mounts.len();
             contexts.extend(mounts.into_iter());
 
-            let extern_dockerfile = hcl_to_dockerfile(&extern_bakefile);
+            let extern_dockerfile = hcl_to_dockerfile(extern_bakefile);
             Ok((extern_dockerfile, mounts_len))
         })
         .collect::<Result<_>>()?;
@@ -866,7 +866,7 @@ fn bakefile_and_stage_for_rlib() {
     assert_eq!(
         res,
         Some((
-            "./target/path/strsim-8ed1051e7e58e636.hcl".to_owned(),
+            "./target/path/strsim-8ed1051e7e58e636.hcl".to_owned().into(),
             "out-8ed1051e7e58e636".to_owned()
         ))
     );
@@ -875,11 +875,11 @@ fn bakefile_and_stage_for_rlib() {
 fn bakefile_and_stage(
     xtern: String,
     target_path: impl AsRef<Utf8Path>,
-) -> Option<(String, String)> {
+) -> Option<(Utf8PathBuf, String)> {
     assert!(xtern.starts_with("lib")); // TODO: stop doing that (stripping ^lib)
     let bk = xtern.strip_prefix("lib").and_then(|x| x.split_once('.')).map(|(x, _)| x);
     let sg = bk.and_then(|x| x.split_once('-')).map(|(_, x)| x).map(|x| format!("out-{x}"));
-    let bk = bk.map(|x| target_path.as_ref().join(format!("{x}.hcl")).to_string());
+    let bk = bk.map(|x| target_path.as_ref().join(format!("{x}.hcl")));
     bk.zip(sg)
 }
 
@@ -902,20 +902,25 @@ fn crate_out_name(name: &str) -> String {
 }
 
 #[test]
-fn hcl_to_dockerfile_() {
-    let res = hcl_to_dockerfile("target/path/strsim-8ed1051e7e58e636.hcl");
-    assert_eq!(res.as_path(), Utf8Path::new("target/path/8ed1051e7e58e636.Dockerfile"));
+fn a_few_hcl_to_dockerfile() {
+    assert_eq!(
+        hcl_to_dockerfile("target/path/strsim-8ed1051e7e58e636.hcl".into()),
+        "target/path/8ed1051e7e58e636.Dockerfile".to_owned()
+    );
+    assert_eq!(
+        hcl_to_dockerfile("target/path/blip_blap-blop-1312051e7e58e636.hcl".into()),
+        "target/path/1312051e7e58e636.Dockerfile".to_owned()
+    );
 }
 
-fn hcl_to_dockerfile(hcl: &str) -> Utf8PathBuf {
-    let mut common = Utf8PathBuf::from(&hcl);
-    let file_name = common
+fn hcl_to_dockerfile(mut hcl: Utf8PathBuf) -> Utf8PathBuf {
+    let file_name = hcl
         .file_stem()
         .and_then(|x| x.rsplit_once('-').map(|(_, x)| x.to_owned()))
         .expect("PROOF: FIXME");
-    let ok = common.pop();
+    let ok = hcl.pop();
     assert!(ok);
-    common.join(format!("{file_name}.Dockerfile"))
+    hcl.join(format!("{file_name}.Dockerfile"))
 }
 
 fn copy_file(f: &Utf8Path, cwd: &Utf8Path) -> Result<()> {
