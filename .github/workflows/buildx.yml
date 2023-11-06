@@ -118,7 +118,7 @@ jobs:
     - name: cargo audit net=ON cache=OFF remote=OFF
       run: |
         RUSTCBUILDX_LOG=debug \
-        RUSTCBUILDX_LOG_PATH=./logs.txt \
+        RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
         RUSTCBUILDX_SEQUENTIAL_CARGO=1 \
         RUSTC_WRAPPER="$PWD"/rustcbuildx \
           cargo -vv audit || \
@@ -159,7 +159,7 @@ jobs:
     - name: cargo build net=OFF cache=OFF remote=OFF
       run: |
         RUSTCBUILDX_LOG=debug \
-        RUSTCBUILDX_LOG_PATH=./logs.txt \
+        RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
         RUSTCBUILDX_SEQUENTIAL_CARGO=1 \
         RUSTC_WRAPPER="$PWD"/rustcbuildx \
           cargo -vv build --all-targets --all-features --locked --frozen --offline || \
@@ -172,7 +172,7 @@ jobs:
     - name: cargo build net=OFF cache=ON remote=OFF
       run: |
         RUSTCBUILDX_LOG=debug \
-        RUSTCBUILDX_LOG_PATH=./logs.txt \
+        RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
         RUSTCBUILDX_SEQUENTIAL_CARGO=1 \
         RUSTC_WRAPPER="$PWD"/rustcbuildx \
           cargo -vv build --all-targets --all-features --locked --frozen --offline || \
@@ -181,7 +181,7 @@ jobs:
     - name: Ensure running the same command twice without modifications does not recompile anything
       run: |
         unset RUSTCBUILDX_LOG
-        RUSTCBUILDX_LOG_PATH=./logs.txt \
+        RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
         RUSTCBUILDX_SEQUENTIAL_CARGO=1 \
         RUSTC_WRAPPER="$PWD"/rustcbuildx \
           cargo -vv build --all-targets --all-features --locked --frozen --offline 2>&1 | tee _ || \
@@ -226,7 +226,7 @@ jobs:
     - name: cargo test net=OFF cache=OFF remote=OFF
       run: |
         RUSTCBUILDX_LOG=debug \
-        RUSTCBUILDX_LOG_PATH=./logs.txt \
+        RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
         RUSTCBUILDX_SEQUENTIAL_CARGO=1 \
         RUSTC_WRAPPER="$PWD"/rustcbuildx \
           cargo -vv test --all-targets --all-features --locked --frozen --offline || \
@@ -235,7 +235,7 @@ jobs:
     - name: cargo test net=OFF cache=ON remote=OFF
       run: |
         RUSTCBUILDX_LOG=debug \
-        RUSTCBUILDX_LOG_PATH=./logs.txt \
+        RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
         RUSTCBUILDX_SEQUENTIAL_CARGO=1 \
         RUSTC_WRAPPER="$PWD"/rustcbuildx \
           cargo -vv test --all-targets --all-features --locked --frozen --offline || \
@@ -244,7 +244,7 @@ jobs:
     - name: Ensure running the same command twice without modifications does not recompile anything
       run: |
         unset RUSTCBUILDX_LOG
-        RUSTCBUILDX_LOG_PATH=./logs.txt \
+        RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
         RUSTCBUILDX_SEQUENTIAL_CARGO=1 \
         RUSTC_WRAPPER="$PWD"/rustcbuildx \
           cargo -vv test --all-targets --all-features --locked --frozen --offline 2>&1 | tee _ || \
@@ -289,7 +289,7 @@ jobs:
     - name: cargo check net=OFF cache=OFF remote=OFF
       run: |
         RUSTCBUILDX_LOG=debug \
-        RUSTCBUILDX_LOG_PATH=./logs.txt \
+        RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
         RUSTCBUILDX_SEQUENTIAL_CARGO=1 \
         RUSTC_WRAPPER="$PWD"/rustcbuildx \
           cargo -vv check --all-targets --all-features --locked --frozen --offline || \
@@ -298,7 +298,7 @@ jobs:
     - name: cargo check net=OFF cache=ON remote=OFF
       run: |
         RUSTCBUILDX_LOG=debug \
-        RUSTCBUILDX_LOG_PATH=./logs.txt \
+        RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
         RUSTCBUILDX_SEQUENTIAL_CARGO=1 \
         RUSTC_WRAPPER="$PWD"/rustcbuildx \
           cargo -vv check --all-targets --all-features --locked --frozen --offline || \
@@ -307,7 +307,7 @@ jobs:
     - name: Ensure running the same command twice without modifications does not recompile anything
       run: |
         unset RUSTCBUILDX_LOG
-        RUSTCBUILDX_LOG_PATH=./logs.txt \
+        RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
         RUSTCBUILDX_SEQUENTIAL_CARGO=1 \
         RUSTC_WRAPPER="$PWD"/rustcbuildx \
           cargo -vv check --all-targets --all-features --locked --frozen --offline 2>&1 | tee _ || \
@@ -354,7 +354,7 @@ jobs:
     - name: cargo clippy net=OFF cache=OFF remote=OFF
       run: |
         RUSTCBUILDX_LOG=debug \
-        RUSTCBUILDX_LOG_PATH=./logs.txt \
+        RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
         RUSTCBUILDX_SEQUENTIAL_CARGO=1 \
         RUSTC_WRAPPER="$PWD"/rustcbuildx \
           cargo -vv clippy --all-targets --all-features --locked --frozen --offline || \
@@ -363,7 +363,7 @@ jobs:
     - name: cargo clippy net=OFF cache=ON remote=OFF
       run: |
         RUSTCBUILDX_LOG=debug \
-        RUSTCBUILDX_LOG_PATH=./logs.txt \
+        RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
         RUSTCBUILDX_SEQUENTIAL_CARGO=1 \
         RUSTC_WRAPPER="$PWD"/rustcbuildx \
           cargo -vv clippy --all-targets --all-features --locked --frozen --offline || \
@@ -372,7 +372,7 @@ jobs:
     - name: Ensure running the same command twice without modifications does not recompile anything
       run: |
         unset RUSTCBUILDX_LOG
-        RUSTCBUILDX_LOG_PATH=./logs.txt \
+        RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
         RUSTCBUILDX_SEQUENTIAL_CARGO=1 \
         RUSTC_WRAPPER="$PWD"/rustcbuildx \
           cargo -vv clippy --all-targets --all-features --locked --frozen --offline 2>&1 | tee _ || \
