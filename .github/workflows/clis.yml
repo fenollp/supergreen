@@ -279,7 +279,7 @@ jobs:
         RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
         RUSTC_WRAPPER="$PWD"/rustcbuildx \
-          CARGO_TARGET_DIR=~/instst cargo -vv install --locked --force  --git https://github.com/cross-rs/cross.git --tag=v0.2.5 || \
+          CARGO_TARGET_DIR=~/instst cargo -vv install --locked --force  --git https://github.com/cross-rs/cross.git --tag=v0.2.5 cross || \
             cat logs.txt
 
     - name: cargo install net=ON cache=ON remote=OFF
@@ -287,7 +287,7 @@ jobs:
         RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
         RUSTC_WRAPPER="$PWD"/rustcbuildx \
-          CARGO_TARGET_DIR=~/instst cargo -vv install --locked --force  --git https://github.com/cross-rs/cross.git --tag=v0.2.5 2>&1 | tee _ || \
+          CARGO_TARGET_DIR=~/instst cargo -vv install --locked --force  --git https://github.com/cross-rs/cross.git --tag=v0.2.5 cross 2>&1 | tee _ || \
             cat logs.txt
         cat _ | grep Finished | grep 0...s
         cat _ | grep Fresh
