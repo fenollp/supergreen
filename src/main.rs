@@ -43,7 +43,17 @@ fn faillible_main() -> Result<ExitCode> {
         [rustc, "-", ..] | [rustc, _ /*driver*/, "-", ..] => {
             return call_rustc(rustc, || env::args().skip(2));
         }
-        [rustc, "--crate-name", crate_name, ..] => {
+        [rustc, opt, ..] if called_from_build_script() && opt.starts_with('-') && *opt != "-" => {
+            // Special case for crates whose build.rs calls rustc, using RUSTC_WRAPPER,
+            // but arriving at a wrong conclusion (here: activates nightly-only features, somehow)
+            // Workaround: we defer to local rustc instead.
+            // See https://github.com/rust-lang/rust-analyzer/issues/12973#issuecomment-1208162732
+            // Culprits:
+            //   https://github.com/dtolnay/anyhow/blob/05e413219e97f101d8f39a90902e5c5d39f951fe/build.rs#L88
+            //   https://github.com/dtolnay/thiserror/blob/e9ea67c7e251764c3c2d839b6c06d9f35b154647/build.rs#L65
+            return call_rustc(rustc, || env::args().skip(1));
+        }
+        [rustc, "--crate-name", crate_name, ..] if !called_from_build_script() => {
             return bake_rustc(crate_name, env::args().skip(2).collect(), || {
                 call_rustc(rustc, || env::args().skip(2))
             })
@@ -96,6 +106,14 @@ fn passthrough_getting_rust_target_specific_information() {
     );
 }
 
+#[must_use]
+fn called_from_build_script() -> bool {
+    env::vars().any(|(k, v)| k.starts_with("CARGO_CFG_") && !v.is_empty())
+        && ["HOST", "NUM_JOBS", "OUT_DIR", "PROFILE", "TARGET"]
+            .iter()
+            .all(|var| env::vars().any(|(k, v)| *var == k && !v.is_empty()))
+}
+
 fn help() {
     println!(
         "{name} {version}: {description}\n{repository}",
@@ -125,6 +143,11 @@ fn bake_rustc(
     arguments: Vec<String>,
     fallback: impl Fn() -> Result<ExitCode>,
 ) -> Result<ExitCode> {
+    if env::var_os("RUSTCBUILDX").map(|x| !x.is_empty()).unwrap_or_default() {
+        bail!("It's turtles all the way down!")
+    }
+    assert!(!called_from_build_script());
+
     fn log_file() -> Result<File> {
         let log_path = log_path();
         OpenOptions::new()
@@ -313,7 +336,9 @@ fn bake_rustc(
         )
     };
 
+    // TODO: impl non-default build.rs https://doc.rust-lang.org/cargo/reference/manifest.html?highlight=build.rs#the-build-field
     let (input_mount, rustc_stage) = match input.iter().rev().take(4).collect::<Vec<_>>()[..] {
+        ["build.rs"] => (None, format!("finalbuildrs-{full_crate_id}")),
         ["lib.rs", "src"] => (None, format!("final-{full_crate_id}")),
         ["main.rs", "src"] => (None, format!("final-{full_crate_id}")),
         ["build.rs", "src", basename, ..] => hm("build__rs", basename, 2), // TODO: un-ducktape
