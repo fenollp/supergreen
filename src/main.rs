@@ -38,11 +38,13 @@ fn main() -> ExitCode {
 fn faillible_main() -> Result<ExitCode> {
     let first_few_args = env::args().skip(1).take(3).collect::<Vec<String>>();
     let first_few_args = first_few_args.iter().map(String::as_str).collect::<Vec<_>>();
-    match &first_few_args[..] {
+    match first_few_args[..] {
         [] | ["-h"|"--help"|"-V"|"--version"] => Ok(help()),
-        [rustc, "-", ..] | [rustc, _ /*driver*/, "-", ..] =>
+        [rustc, "-", ..] =>
              call_rustc(rustc, || env::args().skip(2)),
-        [rustc, opt, ..] if called_from_build_script() && opt.starts_with('-') && *opt != "-" =>
+        [driver, _rustc, "-"|"--crate-name", ..] => // TODO: wrap driver+rustc calls as well
+             call_rustc(driver, || env::args().skip(2)), // driver: e.g. /home/maison/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/clippy-driver
+        [rustc, opt, ..] if called_from_build_script() && opt.starts_with('-') && opt != "-" =>
             // Special case for crates whose build.rs calls rustc, using RUSTC_WRAPPER,
             // but arriving at a wrong conclusion (here: activates nightly-only features, somehow)
             // Workaround: we defer to local rustc instead.
@@ -61,7 +63,12 @@ fn faillible_main() -> Result<ExitCode> {
                 eprintln!("Failure: {e}");
                 e
             }),
-        _ => Ok(ExitCode::FAILURE),
+        _ => panic!("RUSTC_WRAPPER={binary}'s input unexpected:\n\targz = {argz:?}\n\targs = {args:?}\n\tenvs = {envs:?}\n",
+               binary = env!("CARGO_PKG_NAME"),
+               argz = env::args().skip(1).take(3).collect::<Vec<_>>(),
+               args = env::args().collect::<Vec<_>>(),
+               envs = env::vars().collect::<Vec<_>>(),
+            ),
     }
 }
 
@@ -843,17 +850,28 @@ fn fetches_back_used_contexts() {
 ...
 contexts = {
     "rust" = "docker-image://docker.io/library/rust:1.69.0-slim@sha256:8b85a8a6bf7ed968e24bab2eae6f390d2c9c8dbed791d3547fef584000f48f9e",
-    "input_src_lib_rs--rustversion-1.0.9" = "/home/pete/.cargo/registry/src/github.com-1ecc6299db9ec823/rustversion-1.0.9",
-    "crate_out-..." = "/home/pete/wefwefwef/network_products/ipam/ipam.git/target/debug/build/rustversion-ae69baa7face5565/out",
+    "input_src_lib_rs--rustversion-1.0.9" = "/home/maison/.cargo/registry/src/github.com-1ecc6299db9ec823/rustversion-1.0.9",
+    "crate_out-..." = "/home/maison/code/thing.git/target/debug/build/rustversion-ae69baa7face5565/out",
 }
 ...
 "#).unwrap();
 
-    let exp=[
-(    "input_src_lib_rs--rustversion-1.0.9".to_owned() , "/home/pete/.cargo/registry/src/github.com-1ecc6299db9ec823/rustversion-1.0.9".to_owned()),
- (   "crate_out-...".to_owned() , "/home/pete/wefwefwef/network_products/ipam/ipam.git/target/debug/build/rustversion-ae69baa7face5565/out".to_owned()),
-        ].into_iter().collect();
-    assert_eq!(used_contexts(Utf8Path::from_path(tmp.as_path()).unwrap()).unwrap(), exp);
+    assert_eq!(
+        used_contexts(Utf8Path::from_path(tmp.as_path()).unwrap()).unwrap(),
+        [
+            (
+                "input_src_lib_rs--rustversion-1.0.9",
+                "/home/maison/.cargo/registry/src/github.com-1ecc6299db9ec823/rustversion-1.0.9",
+            ),
+            (
+                "crate_out-...",
+                "/home/maison/code/thing.git/target/debug/build/rustversion-ae69baa7face5565/out",
+            ),
+        ]
+        .into_iter()
+        .map(|(k, v)| (k.to_owned(), v.to_owned()))
+        .collect()
+    );
 }
 
 fn used_contexts(path: impl AsRef<Utf8Path>) -> Result<BTreeMap<String, String>> {
