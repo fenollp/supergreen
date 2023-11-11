@@ -11,6 +11,7 @@ use std::{
 
 use anyhow::{bail, Context, Result};
 use camino::{Utf8Path, Utf8PathBuf};
+use cli::{envs, exit_code, help, pull};
 use env_logger::{Env, Target};
 use envs::{log_path, RUSTCBUILDX_LOG, RUSTCBUILDX_LOG_STYLE};
 use log::{debug, error, info, warn};
@@ -23,6 +24,7 @@ use crate::{
     pops::Popped,
 };
 
+mod cli;
 mod envs;
 mod parse;
 mod pops;
@@ -40,6 +42,8 @@ fn faillible_main() -> Result<ExitCode> {
     let first_few_args = first_few_args.iter().map(String::as_str).collect::<Vec<_>>();
     match first_few_args[..] {
         [] | ["-h"|"--help"|"-V"|"--version"] => Ok(help()),
+        ["pull"] => pull(),
+        ["env", ..] => Ok(envs(env::args().skip(2))),
         [rustc, "-", ..] =>
              call_rustc(rustc, || env::args().skip(2)),
         [driver, _rustc, "-"|"--crate-name", ..] => // TODO: wrap driver+rustc calls as well
@@ -117,29 +121,18 @@ fn called_from_build_script() -> bool {
             .all(|var| env::vars().any(|(k, v)| *var == k && !v.is_empty()))
 }
 
-fn help() -> ExitCode {
-    println!(
-        "{name} {version}: {description}\n{repository}",
-        name = env!("CARGO_PKG_NAME"),
-        description = env!("CARGO_PKG_DESCRIPTION"),
-        version = env!("CARGO_PKG_VERSION"),
-        repository = env!("CARGO_PKG_REPOSITORY"),
-    );
-    ExitCode::SUCCESS
-}
-
 fn call_rustc<I: Iterator<Item = String>>(rustc: &str, args: fn() -> I) -> Result<ExitCode> {
-    // NOTE: not running inside Docker: local install should match Docker image setup
+    // NOTE: not running inside Docker: local install SHOULD match Docker image setup
+    // Meaning: it's up to the user to craft their desired $RUSTCBUILDX_BASE_IMAGE
     let argz = || args().collect::<Vec<_>>();
-    exit_code(
-        Command::new(rustc)
-            .args(args())
-            .spawn()
-            .with_context(|| format!("Failed to spawn rustc {rustc} with {:?}", argz()))?
-            .wait()
-            .with_context(|| format!("Failed to wait for rustc {rustc} with {:?}", argz()))?
-            .code(),
-    )
+    let code = Command::new(rustc)
+        .args(args())
+        .spawn()
+        .with_context(|| format!("Failed to spawn rustc {rustc} with {:?}", argz()))?
+        .wait()
+        .with_context(|| format!("Failed to wait for rustc {rustc} with {:?}", argz()))?
+        .code();
+    Ok(exit_code(code))
 }
 
 fn bake_rustc(
@@ -352,8 +345,8 @@ fn bake_rustc(
         ["lib.rs", basename, ..] => hm("lib_rs", basename, 1),
         // e.g. $HOME/.cargo/registry/src/github.com-1ecc6299db9ec823/untrusted-0.7.1/src/untrusted.rs
         [rsfile, "src", basename, ..] if rsfile.ends_with(".rs") => hm("src__rs", basename, 2),
-        // Running `CARGO=/home/runner/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/cargo CARGO_CRATE_NAME=build_script_main CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/openssl-sys-0.9.95 CARGO_PKG_AUTHORS='Alex Crichton <alex@alexcrichton.com>:Steven Fackler <sfackler@gmail.com>' CARGO_PKG_DESCRIPTION='FFI bindings to OpenSSL' CARGO_PKG_HOMEPAGE='' CARGO_PKG_LICENSE=MIT CARGO_PKG_LICENSE_FILE='' CARGO_PKG_NAME=openssl-sys CARGO_PKG_README=README.md CARGO_PKG_REPOSITORY='https://github.com/sfackler/rust-openssl' CARGO_PKG_RUST_VERSION='' CARGO_PKG_VERSION=0.9.95 CARGO_PKG_VERSION_MAJOR=0 CARGO_PKG_VERSION_MINOR=9 CARGO_PKG_VERSION_PATCH=95 CARGO_PKG_VERSION_PRE='' LD_LIBRARY_PATH='/home/runner/instst/release/deps:/home/runner/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib:/home/runner/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib' /home/runner/work/rustcbuildx/rustcbuildx/rustcbuildx /home/runner/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/rustc --crate-name build_script_main --edition=2018 /home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/openssl-sys-0.9.95/build/main.rs --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit=dep-info,link -C embed-bitcode=no -C debug-assertions=off -C metadata=99f749eccead4467 -C extra-filename=-99f749eccead4467 --out-dir /home/runner/instst/release/build/openssl-sys-99f749eccead4467 -L dependency=/home/runner/instst/release/deps --extern cc=/home/runner/instst/release/deps/libcc-3c316ebdde73b0fe.rlib --extern pkg_config=/home/runner/instst/release/deps/libpkg_config-a6962381fee76247.rlib --extern vcpkg=/home/runner/instst/release/deps/libvcpkg-ebcbc23bfdf4209b.rlib --cap-lints warn`
-        // /home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/openssl-sys-0.9.95/build/main.rs
+        // When compiling openssl-sys-0.9.95 on stable-x86_64-unknown-linux-gnu:
+        //   /home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/openssl-sys-0.9.95/build/main.rs
         ["main.rs", "build", basename, ..] if crate_name == "build_script_main" => {
             // TODO: that's ducktape. Read Cargo.toml to match [package]build = "build/main.rs" ?
             // or just catchall >=4
@@ -813,24 +806,16 @@ target "{incremental_stage}" {{
     }
 
     if code != Some(0) {
-        // TODO: re-enable
-        if true {
-            let _fallback = fallback;
-            return exit_code(code);
-        }
         // Bubble up actual error & outputs
         let res = fallback();
-        error!(target:&krate, "A bug was found! {code:?}");
-        eprintln!("Found a bug in this script!");
+        if res.is_ok() {
+            error!(target:&krate, "A bug was found! {code:?}");
+            eprintln!("Found a bug in this script!");
+        }
         return res;
     }
 
-    exit_code(code)
-}
-
-fn exit_code(code: Option<i32>) -> Result<ExitCode> {
-    // TODO: https://doc.rust-lang.org/std/os/unix/process/trait.ExitStatusExt.html
-    Ok((code.unwrap_or(-1) as u8).into())
+    Ok(exit_code(code))
 }
 
 #[inline]

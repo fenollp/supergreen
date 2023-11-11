@@ -22,6 +22,19 @@ cargo install ...
 cargo test ...
 ```
 
+### Fine tuning settings
+
+```shell
+rustcbuildx@version: $RUSTC_WRAPPER tool to sandbox cargo builds and execute jobs remotely
+    https://github.com/fenollp/rustcbuildx
+
+Usage:
+  rustcbuildx env             Show used values
+  rustcbuildx pull            Pulls images (respects $DOCKER_HOST)
+  rustcbuildx -h | --help
+  rustcbuildx -V | --version
+```
+
 ## Remote execution
 
 Say you have a bigger machine in your `~/.ssh/config` called `extra_oomph`:

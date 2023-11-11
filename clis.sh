@@ -98,6 +98,18 @@ $(
         chmod +x ./rustcbuildx
         ./rustcbuildx --version | grep rustcbuildx
 
+    - name: Buildx version
+      run: docker buildx version
+
+    - name: Pre-pull images
+      run: ./rustcbuildx pull
+
+    - name: Show defaults
+      run: ./rustcbuildx env
+
+    - name: Buildx disk usage
+      run: docker buildx du | tail -n-1
+
     - name: cargo install net=ON cache=OFF remote=OFF
       run: |
         RUSTCBUILDX_LOG=debug \\
@@ -105,7 +117,10 @@ $(
         RUSTC_WRAPPER="\$PWD"/rustcbuildx \\
           CARGO_TARGET_DIR=~/instst cargo -vv install --jobs=1 --locked --force $name_at_version $@
     - if: \${{ failure() || success() }}
-      run: cat logs.txt
+      run: cat logs.txt && rm logs.txt
+
+    - name: Buildx disk usage
+      run: docker buildx du | tail -n-1
 
     - name: cargo install net=ON cache=ON remote=OFF
       run: |
@@ -120,7 +135,10 @@ $(
     - if: \${{ failure() || success() }}
       run: cat logs.txt
     - if: \${{ failure() || success() }}
-      run: cat _
+      run: cat _ || true
+
+    - name: Buildx disk usage
+      run: docker buildx du | tail -n-1
 
 EOF
 }

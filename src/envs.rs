@@ -44,5 +44,5 @@ pub(crate) fn docker_syntax() -> String {
 #[must_use]
 pub(crate) fn nesting() -> bool {
     // TODO: oncelock
-    env::var_os(RUSTCBUILDX).map(|x| !x.is_empty()).unwrap_or_default()
+    env::var_os(RUSTCBUILDX).map(|x| x == "1").unwrap_or_default()
 }

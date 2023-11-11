@@ -8,7 +8,7 @@ categories = [
 	"concurrency",
 	"development-tools::build-utils",
 ]
-description = "RUSTC_WRAPPER tool to sandbox cargo builds and execute jobs remotely"
+description = "$RUSTC_WRAPPER tool to sandbox cargo builds and execute jobs remotely"
 edition = "2021"
 keywords = [
 	"build",
