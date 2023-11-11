@@ -5,12 +5,10 @@ use std::{
     fs::{self, create_dir_all, read_dir, read_to_string, File, OpenOptions},
     io::{BufRead, BufReader, ErrorKind},
     process::{Command, ExitCode, Stdio},
-    thread::sleep,
-    time::{Duration, Instant},
+    time::Instant,
     unreachable,
 };
 
-use advisory_lock::{AdvisoryFileLock, FileLockError, FileLockMode};
 use anyhow::{bail, Context, Result};
 use camino::{Utf8Path, Utf8PathBuf};
 use env_logger::{Env, Target};
@@ -20,10 +18,11 @@ use mktemp::Temp;
 use regex::Regex;
 
 use crate::{
-    envs::{docker_image, docker_syntax, is_debug, is_sequential, RUSTCBUILDX_LOG_IF_CRATE_NAME},
+    envs::{docker_image, docker_syntax, is_debug, RUSTCBUILDX_LOG_IF_CRATE_NAME},
     parse::RustcArgs,
     pops::Popped,
 };
+
 mod envs;
 mod parse;
 mod pops;
@@ -154,30 +153,6 @@ fn bake_rustc(
         bin = env!("CARGO_PKG_NAME"),
         vsn = env!("CARGO_PKG_VERSION"),
     );
-
-    let global_lock = is_sequential()
-        .then(|| -> Result<_> {
-            let lock = File::create("/tmp/global.lock")?;
-            debug!(target:&krate, "getting lock...");
-            let start = Instant::now();
-            loop {
-                match lock.try_lock(FileLockMode::Exclusive) {
-                    Ok(()) => {
-                        debug!(target:&krate, "... got lock!");
-                        break;
-                    }
-                    Err(FileLockError::AlreadyLocked) => {
-                        sleep(Duration::from_millis(500));
-                        if start.elapsed().as_secs() >= 91 * 4 {
-                            bail!("Couldn't lock!")
-                        }
-                    }
-                    Err(e) => bail!("Couldn't lock: {e}"),
-                }
-            }
-            Ok(lock)
-        })
-        .transpose()?;
 
     let pwd = env::current_dir().context("Failed to get $PWD")?;
     let pwd: Utf8PathBuf = pwd.try_into().context("Path's UTF-8 encoding is corrupted")?;
@@ -776,16 +751,14 @@ target "{incremental_stage}" {{
             }
         }
     }
+
     if !is_debug() {
         drop(stdio); // Removes stdio/std{err,out} files and stdio dir
         if let Some(cwd) = cwd {
             drop(cwd); // Removes tempdir contents
         }
     }
-    if let Some(global_lock) = global_lock {
-        global_lock.unlock().context("Failed to unlock")?;
-        return exit_code(code);
-    }
+
     if code != Some(0) {
         // TODO: re-enable
         if true {
@@ -799,7 +772,7 @@ target "{incremental_stage}" {{
         return res;
     }
 
-    Ok(ExitCode::SUCCESS)
+    exit_code(code)
 }
 
 fn exit_code(code: Option<i32>) -> Result<ExitCode> {

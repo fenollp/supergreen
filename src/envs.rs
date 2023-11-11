@@ -6,7 +6,6 @@ pub(crate) const RUSTCBUILDX_LOG: &str = "RUSTCBUILDX_LOG";
 pub(crate) const RUSTCBUILDX_LOG_IF_CRATE_NAME: &str = "RUSTCBUILDX_LOG_IF_CRATE_NAME";
 pub(crate) const RUSTCBUILDX_LOG_PATH: &str = "RUSTCBUILDX_LOG_PATH";
 pub(crate) const RUSTCBUILDX_LOG_STYLE: &str = "RUSTCBUILDX_LOG_STYLE";
-pub(crate) const RUSTCBUILDX_SEQUENTIAL_CARGO: &str = "RUSTCBUILDX_SEQUENTIAL_CARGO";
 
 // TODO: document envs + usage
 
@@ -21,11 +20,6 @@ pub(crate) const RUSTCBUILDX_SEQUENTIAL_CARGO: &str = "RUSTCBUILDX_SEQUENTIAL_CA
 pub(crate) fn is_debug() -> bool {
     // TODO: oncelock
     env::var(RUSTCBUILDX_LOG).ok().map(|x| !x.is_empty()).unwrap_or_default()
-}
-
-pub(crate) fn is_sequential() -> bool {
-    // TODO: oncelock
-    env::var(RUSTCBUILDX_SEQUENTIAL_CARGO).ok().map(|x| x == "1").unwrap_or_default()
 }
 
 pub(crate) fn log_path() -> String {
