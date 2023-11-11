@@ -396,28 +396,24 @@ fn bake_rustc(
 
     // const RUSTUP_TOOLCHAIN: &str = "rustup-toolchain";
     // if let Some((stage, _)) = toolchain.as_ref() {
-    //     writeln!(
-    //         dockerfile,
-    //         r#"FROM rust AS {stage}
-    // RUN rustup default | cut -d- -f1 >/{RUSTUP_TOOLCHAIN}"#
-    //     )?;
+    //     dockerfile.push_str(&format!("FROM rust AS {stage}\n"));
+    //     dockerfile
+    //         .push_str(&format!("    RUN rustup default | cut -d- -f1 >/{RUSTUP_TOOLCHAIN}\n"));
     // }
 
-    writeln!(
-        dockerfile,
-        r#"FROM rust AS {rustc_stage}
-WORKDIR {out_dir}"#
-    )?;
+    dockerfile.push_str(&format!("FROM rust AS {rustc_stage}\n"));
+    dockerfile.push_str(&format!("WORKDIR {out_dir}\n"));
 
+    // TODO: disable remote cache for incremental builds?
     if let Some(incremental) = &incremental {
-        writeln!(dockerfile, r#"WORKDIR {incremental}"#)?;
+        dockerfile.push_str(&format!("WORKDIR {incremental}\n"));
     }
 
     // https://doc.rust-lang.org/cargo/reference/environment-variables.html#environment-variables-cargo-sets-for-crates
-
-    [
+    dockerfile.push_str("ENV \\\n");
+    for var in [
         "LD_LIBRARY_PATH", // TODO: see if that can be dropped
-        "CARGO",
+        // "CARGO", excluded: later, set to image's
         "CARGO_MANIFEST_DIR",
         "CARGO_PKG_VERSION",
         "CARGO_PKG_VERSION_MAJOR",
@@ -440,30 +436,58 @@ WORKDIR {out_dir}"#
     // TODO: CARGO_BIN_EXE_<name> — The absolute path to a binary target’s executable. This is only set when building an integration test or benchmark. This may be used with the env macro to find the executable to run for testing purposes. The <name> is the name of the binary target, exactly as-is. For example, CARGO_BIN_EXE_my-program for a binary named my-program. Binaries are automatically built when the test is built, unless the binary has required features that are not enabled.
     // TODO: CARGO_PRIMARY_PACKAGE — This environment variable will be set if the package being built is primary. Primary packages are the ones the user selected on the command-line, either with -p flags or the defaults based on the current directory and the default workspace members. This environment variable will not be set when building dependencies. This is only set when compiling the package (not when running binaries or tests).
     // TODO: CARGO_TARGET_TMPDIR — Only set when building integration test or benchmark code. This is a path to a directory inside the target directory where integration tests or benchmarks are free to put any data needed by the tests/benches. Cargo initially creates this directory but doesn’t manage its content in any way, this is the responsibility of the test code.
-    .iter()
-    .try_for_each(|var| -> Result<_> {
-        let val = env::var(var)
-            .ok()
-            .and_then(|x| if x.is_empty() { None } else { Some(x) })
-            .map(|x| format!("{x:?}"))
-            .unwrap_or_default();
-        writeln!(dockerfile, r#"ENV {var}={val}"#)?;
-        Ok(())
-    })?;
+    {
+        dockerfile.push_str(&format!(
+            "  {var}={val} \\\n",
+            val = env::var(var)
+                .ok()
+                .and_then(|x| if x.is_empty() { None } else { Some(x) })
+                .map(|x: String| format!("{x:?}"))
+                .unwrap_or_default()
+        ));
+    }
+    dockerfile.push_str("  RUSTCBUILDX=1\n");
+    // Thanks https://github.com/cross-rs/cross/blob/44011c8854cb2eaac83b173cc323220ccdff18ea/src/docker/shared.rs#L969
+    // let other = &[
+    //      "http_proxy",
+    //      "TERM",
+    //      "RUSTDOCFLAGS",
+    //      "RUSTFLAGS",
+    //      "BROWSER",
+    //      "HTTPS_PROXY",
+    //      "HTTP_TIMEOUT",
+    //      "https_proxy",
+    //      "QEMU_STRACE",
+    //  ];
+    //  let cargo_prefix_skip = &[
+    //      "CARGO_HOME",
+    //      "CARGO_TARGET_DIR",
+    //      "CARGO_BUILD_TARGET_DIR",
+    //      "CARGO_BUILD_RUSTC",
+    //      "CARGO_BUILD_RUSTC_WRAPPER",
+    //      "CARGO_BUILD_RUSTC_WORKSPACE_WRAPPER",
+    //      "CARGO_BUILD_RUSTDOC",
+    //  ];
+    //  let cross_prefix_skip = &[
+    //      "CROSS_RUNNER",
+    //      "CROSS_RUSTC_MAJOR_VERSION",
+    //      "CROSS_RUSTC_MINOR_VERSION",
+    //      "CROSS_RUSTC_PATCH_VERSION",
+    //  ];
+    //  let is_passthrough = |key: &str| -> bool {
+    //      other.contains(&key)
+    //          || key.starts_with("CARGO_") && !cargo_prefix_skip.contains(&key)
+    //          || key.starts_with("CROSS_") && !cross_prefix_skip.contains(&key)
+    //  };
 
     let cwd = if let Some((name, target)) = input_mount.as_ref() {
         // Reuse previous contexts
 
-        writeln!(
-            dockerfile,
-            // TODO: WORKDIR was removed as it changed during a single `cargo build`
-            // Looks like removing it isn't an issue, however we need more testing.
-            //             r#"WORKDIR {pwd}
-            // RUN \
-            //   --mount=type=bind,from={name},target={target} \"#
-            r#"RUN \
-  --mount=type=bind,from={name},target={target} \"#
-        )?;
+        // TODO: WORKDIR was removed as it changed during a single `cargo build`
+        // Looks like removing it isn't an issue, however we need more testing.
+        // dockerfile.push_str(&format!("WORKDIR {pwd}\n"));
+        dockerfile.push_str("RUN \\\n");
+        dockerfile.push_str(&format!("  --mount=type=bind,from={name},target={target} \\\n"));
 
         // TODO: --build-arg BUILDKIT_CONTEXT_KEEP_GIT_DIR=0 https://docs.docker.com/engine/reference/builder/#buildkit-built-in-build-args
 
@@ -471,7 +495,7 @@ WORKDIR {out_dir}"#
     } else {
         // Save/send local workspace
 
-        assert_eq!((input.is_relative(), input.as_str().ends_with(".rs")), (true, true));
+        assert_eq!((input.is_relative(), input.ends_with(".rs")), (true, true));
 
         // TODO: try just bind mount instead of copying to a tmpdir
         // TODO: try not FWDing .git/* and equivalent
@@ -509,29 +533,20 @@ WORKDIR {out_dir}"#
             copy_files(&pwd, cwd_path)?;
         }
 
-        writeln!(
-            dockerfile,
-            r#"WORKDIR {pwd}
-COPY --from=cwd / .
-RUN \"#
-        )?;
+        dockerfile.push_str(&format!("WORKDIR {pwd}\n"));
+        dockerfile.push_str("COPY --from=cwd / .\n");
+        dockerfile.push_str("RUN \\\n");
 
         Some(cwd)
     };
 
     if let Some(crate_out) = crate_out.as_ref() {
-        writeln!(
-            dockerfile,
-            r#"  --mount=type=bind,from={named},target={crate_out} \"#,
-            named = crate_out_name(crate_out)
-        )?;
+        let named = crate_out_name(crate_out);
+        dockerfile.push_str(&format!("  --mount=type=bind,from={named},target={crate_out} \\\n"));
     }
 
     // if let Some((stage, _file_name)) = toolchain.as_ref() {
-    //     writeln!(
-    //         dockerfile,
-    //         r#"  --mount=type=bind,from={stage},source=/{RUSTUP_TOOLCHAIN},target=/{RUSTUP_TOOLCHAIN} \"#
-    //     )?;
+    //     dockerfile.push_str(&format!("  --mount=type=bind,from={stage},source=/{RUSTUP_TOOLCHAIN},target=/{RUSTUP_TOOLCHAIN} \\\n"));
     // }
 
     debug!(target:&krate, "all_externs = {all_externs:?}");
@@ -545,17 +560,18 @@ RUN \"#
 
             info!(target:&krate, "extern_bakefile: {extern_bakefile}");
 
-            writeln!(dockerfile,
-                    r#"  --mount=type=bind,from={extern_bakefile_stage},source=/{xtern},target={target_path}/deps/{xtern} \"#
-            )?;
+            dockerfile.push_str(&format!("  --mount=type=bind,from={extern_bakefile_stage},source=/{xtern},target={target_path}/deps/{xtern} \\\n"));
 
             Ok(extern_bakefile)
         })
         .collect::<Result<Vec<_>>>()?;
 
+    dockerfile.push_str("     <<RUN\n"); // Start heredoc
+    dockerfile.push_str("  set -eux\n");
+
     // if toolchain.is_some() {
-    //     writeln!(dockerfile, r#"    export RUSTUP_TOOLCHAIN="$(cat /{RUSTUP_TOOLCHAIN})" && \"#)?;
-    //     // TODO: merge with iterator above
+    //     dockerfile
+    //         .push_str(&format!("  export RUSTUP_TOOLCHAIN=\"$(cat /{RUSTUP_TOOLCHAIN})\" && \\\n"));
     // }
 
     // // https://rust-lang.github.io/rustup/overrides.html
@@ -563,37 +579,41 @@ RUN \"#
     // // e.g. https://github.com/xacrimon/dashmap/blob/v5.4.0/rust-toolchain
     // // e.g. https://github.com/dtolnay/anyhow/blob/05e413219e97f101d8f39a90902e5c5d39f951fe/rust-toolchain.toml
     // // NOTE this is [[ -s "$input_mount_target"/rust-toolchain ]]
-    // writeln!(
-    //     dockerfile,
-    //     //     r#"if [ -s ./rust-toolchain.toml ] || [ -s ./rust-toolchain ]; then \
-    //     //     export RUSTUP_TOOLCHAIN="$(rustup default | cut -d- -f1)"; \
-    //     // fi && \"#,
-    //     r#"export RUSTUP_TOOLCHAIN=stable && \"#,
-    // )?;
+    // // dockerfile.push_str("  if [ -s ./rust-toolchain.toml ] || [ -s ./rust-toolchain ]; then \\\n");
+    // // dockerfile.push_str("    export RUSTUP_TOOLCHAIN=\"$(rustup default | cut -d- -f1)\"; \\\n");
+    // // dockerfile.push_str("  fi\n");
+    // dockerfile.push_str("  export RUSTUP_TOOLCHAIN=stable");
 
-    const TMP_STDERR: &str = "stderr";
-    const TMP_STDOUT: &str = "stdout";
-    writeln!(
-        dockerfile,
-        r#"    if ! rustc '{args}' {input} >/{TMP_STDOUT} 2>/{TMP_STDERR}; then head /{TMP_STDOUT} /{TMP_STDERR}; exit 1; fi"#,
-        args = args.join("' '"),
-    )?;
+    dockerfile.push_str("  export CARGO=\"$(which cargo)\"\n");
+
+    // TODO: report BUG
+    // buildx bake github issue dockerfile-inline and dockerfile heredoc conflict when using RUN echo "${VAR:-}"
+    // error =>
+    // Extra characters after interpolation expression; Expected a closing brace to end the interpolation expression, but found extra characters.
+    // dockerfile.push_str("  if [ -z \"${CARGO:-}\" ]; then exit 40; fi\n");
+
+    const IOERR: &str = "stderr";
+    const IOOUT: &str = "stdout";
+    dockerfile.push_str(&format!(
+        "  if ! rustc '{}' {input} >/{IOOUT} 2>/{IOERR}; then\n",
+        args.join("' '"),
+    ));
+    dockerfile.push_str(&format!("    head /{IOOUT} /{IOERR}\n"));
+    dockerfile.push_str("    exit 1\n");
+    dockerfile.push_str("  fi\n");
+
+    dockerfile.push_str("RUN\n"); // End of heredoc
 
     if let Some(incremental) = &incremental {
-        writeln!(
-            dockerfile,
-            r#"FROM scratch AS {incremental_stage}
-COPY --from={rustc_stage} {incremental} /"#,
-        )?;
+        dockerfile.push_str(&format!("FROM scratch AS {incremental_stage}\n"));
+        dockerfile.push_str(&format!("COPY --from={rustc_stage} {incremental} /\n"));
     }
-    writeln!(
-        dockerfile,
-        r#"FROM scratch AS {stdio_stage}
-COPY --from={rustc_stage} /{TMP_STDOUT} /{TMP_STDERR} /
-FROM scratch AS {out_stage}
-COPY --from={rustc_stage} {out_dir}/*-{metadata}* /"#,
-    )?;
-    // NOTE: -C extra-filename=-${metadata}
+    dockerfile.push_str(&format!("FROM scratch AS {stdio_stage}\n"));
+    dockerfile.push_str(&format!("COPY --from={rustc_stage} /{IOOUT} /{IOERR} /\n"));
+    dockerfile.push_str(&format!("FROM scratch AS {out_stage}\n"));
+    dockerfile.push_str(&format!("COPY --from={rustc_stage} {out_dir}/*-{metadata}* /\n"));
+    // NOTE: -C extra-filename=-${metadata} (starts with dash)
+    // TODO: use extra filename here for fwd compat
 
     let dockerfile = dockerfile; // Drop mut
     {
@@ -651,12 +671,12 @@ COPY --from={rustc_stage} {out_dir}/*-{metadata}* /"#,
             info!(target:&krate, "opening (RO) extern dockerfile {extern_dockerfile_path}");
             let extern_dockerfile = read_to_string(&extern_dockerfile_path)
                 .with_context(|| format!("Failed reading dockerfile {extern_dockerfile_path}"))?;
-            dockerfile_bis.push_str(extern_dockerfile.as_str());
+            dockerfile_bis.push_str(&extern_dockerfile);
             dockerfile_bis.push('\n');
         }
     }
     assert!(extern_dockerfiles.is_empty());
-    dockerfile_bis.push_str(dockerfile.as_str());
+    dockerfile_bis.push_str(&dockerfile);
     drop(dockerfile); // Earlier: wrote to disk
 
     let stdio = Temp::new_dir().context("Failed to create tmpdir 'stdio'")?;
@@ -665,7 +685,7 @@ COPY --from={rustc_stage} {out_dir}/*-{metadata}* /"#,
     };
 
     const TAB: char = '\t';
-    let platform = "local".to_owned();
+    // TODO: use https://lib.rs/crates/hcl-rs#readme-serialization-examples
     let mut bakefile = String::new();
 
     writeln!(
@@ -676,18 +696,17 @@ target "{out_stage}" {{
     )?;
     let contexts: BTreeMap<_, _> = contexts.into_iter().collect();
     for (name, uri) in contexts {
-        writeln!(bakefile, r#"{TAB}{TAB}"{name}" = "{uri}","#)?;
+        bakefile.push_str(&format!("{TAB}{TAB}\"{name}\" = \"{uri}\",\n"));
     }
     writeln!(
         bakefile,
         r#"{TAB}}}
 {TAB}dockerfile-inline = <<DOCKERFILE
 # syntax={docker_syntax}
-{dockerfile_bis}
-DOCKERFILE
+{dockerfile_bis}DOCKERFILE
 {TAB}network = "none"
 {TAB}output = ["{out_dir}"] # https://github.com/moby/buildkit/issues/1224
-{TAB}platforms = ["{platform}"]
+{TAB}platforms = ["local"]
 {TAB}target = "{out_stage}"
 }}
 target "{stdio_stage}" {{
@@ -748,7 +767,11 @@ target "{incremental_stage}" {{
     } else {
         cmd.stdin(Stdio::null()).stdout(Stdio::null()).stderr(Stdio::null());
     }
-    cmd.arg("buildx").arg("bake").arg("--file").arg(&bakefile_path).args(stages);
+    cmd.arg("buildx")
+        .arg("bake") /*.arg("--no-cache")*/ // TODO
+        .arg("--file")
+        .arg(&bakefile_path)
+        .args(stages);
     let start = Instant::now();
     let code = cmd
         .output()
@@ -759,7 +782,7 @@ target "{incremental_stage}" {{
 
     // TODO: buffered reading + copy to STDERR/STDOUT => give open fds in bakefile?
     for x in [true, false] {
-        let path = stdio_path.join(if x { TMP_STDERR } else { TMP_STDOUT });
+        let path = stdio_path.join(if x { IOERR } else { IOOUT });
         info!(target:&krate, "reading (RO) {path}");
         let data = match read_to_string(&path) {
             Err(e) if e.kind() == ErrorKind::NotFound => continue,

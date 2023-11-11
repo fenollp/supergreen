@@ -133,3 +133,8 @@ cli cargo-llvm-cov@0.5.36
 cli cargo-nextest@0.9.61
 cli cross@0.2.5             --git https://github.com/cross-rs/cross.git --tag=v0.2.5 cross
 cli diesel_cli@2.1.1        --no-default-features --features=postgres
+
+#TODO: not a cli but try users of https://github.com/dtolnay/watt
+#TODO: play with cargo flags: lto (embeds bitcode)
+#TODO: allowlist non-busting rustc flags => se about this cache key
+#TODO: test cargo -vv build -> test -> build and look for "Dirty", expect none
