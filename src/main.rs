@@ -60,7 +60,6 @@ fn faillible_main() -> Result<ExitCode> {
              call_rustc(rustc, || env::args().skip(1)),
         [rustc, "--crate-name", crate_name, ..] if !called_from_build_script() =>
              bake_rustc(crate_name, env::args().skip(2).collect(), || {
-                env::set_var(RUSTCBUILDX, "1"); // Just to be sure
                 call_rustc(rustc, || env::args().skip(2))
             })
             .map_err(|e| {
@@ -144,6 +143,8 @@ fn bake_rustc(
     if env::var_os(RUSTCBUILDX).map(|x| x == "1").unwrap_or_default() {
         bail!("It's turtles all the way down!")
     }
+    env::set_var(RUSTCBUILDX, "1");
+
     assert!(!called_from_build_script());
 
     fn log_file() -> Result<File> {
