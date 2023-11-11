@@ -495,7 +495,9 @@ fn bake_rustc(
     } else {
         // Save/send local workspace
 
-        assert_eq!((input.is_relative(), input.ends_with(".rs")), (true, true));
+        // TODO: drop
+        // note .as_str() is to use &str's ends_with
+        assert_eq!((input.is_relative(), input.as_str().ends_with(".rs")), (true, true));
 
         // TODO: try just bind mount instead of copying to a tmpdir
         // TODO: try not FWDing .git/* and equivalent
