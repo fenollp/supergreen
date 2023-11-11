@@ -93,7 +93,7 @@ jobs:
         RUSTC_WRAPPER="$PWD"/rustcbuildx \
           CARGO_TARGET_DIR=~/instst cargo -vv install --jobs=1 --locked --force  --git https://github.com/fenollp/buildxargs.git
     - if: ${{ failure() || success() }}
-      run: cat logs.txt && rm logs.txt
+      run: cat logs.txt && echo >logs.txt
 
     - name: Buildx disk usage
       run: docker buildx du | tail -n-1
@@ -155,7 +155,7 @@ jobs:
         RUSTC_WRAPPER="$PWD"/rustcbuildx \
           CARGO_TARGET_DIR=~/instst cargo -vv install --jobs=1 --locked --force cargo-audit@0.18.3 --features=fix
     - if: ${{ failure() || success() }}
-      run: cat logs.txt && rm logs.txt
+      run: cat logs.txt && echo >logs.txt
 
     - name: Buildx disk usage
       run: docker buildx du | tail -n-1
@@ -217,7 +217,7 @@ jobs:
         RUSTC_WRAPPER="$PWD"/rustcbuildx \
           CARGO_TARGET_DIR=~/instst cargo -vv install --jobs=1 --locked --force cargo-deny@0.14.3 
     - if: ${{ failure() || success() }}
-      run: cat logs.txt && rm logs.txt
+      run: cat logs.txt && echo >logs.txt
 
     - name: Buildx disk usage
       run: docker buildx du | tail -n-1
@@ -279,7 +279,7 @@ jobs:
         RUSTC_WRAPPER="$PWD"/rustcbuildx \
           CARGO_TARGET_DIR=~/instst cargo -vv install --jobs=1 --locked --force cargo-llvm-cov@0.5.36 
     - if: ${{ failure() || success() }}
-      run: cat logs.txt && rm logs.txt
+      run: cat logs.txt && echo >logs.txt
 
     - name: Buildx disk usage
       run: docker buildx du | tail -n-1
@@ -341,7 +341,7 @@ jobs:
         RUSTC_WRAPPER="$PWD"/rustcbuildx \
           CARGO_TARGET_DIR=~/instst cargo -vv install --jobs=1 --locked --force cargo-nextest@0.9.61 
     - if: ${{ failure() || success() }}
-      run: cat logs.txt && rm logs.txt
+      run: cat logs.txt && echo >logs.txt
 
     - name: Buildx disk usage
       run: docker buildx du | tail -n-1
@@ -403,7 +403,7 @@ jobs:
         RUSTC_WRAPPER="$PWD"/rustcbuildx \
           CARGO_TARGET_DIR=~/instst cargo -vv install --jobs=1 --locked --force  --git https://github.com/cross-rs/cross.git --tag=v0.2.5 cross
     - if: ${{ failure() || success() }}
-      run: cat logs.txt && rm logs.txt
+      run: cat logs.txt && echo >logs.txt
 
     - name: Buildx disk usage
       run: docker buildx du | tail -n-1
@@ -465,7 +465,7 @@ jobs:
         RUSTC_WRAPPER="$PWD"/rustcbuildx \
           CARGO_TARGET_DIR=~/instst cargo -vv install --jobs=1 --locked --force diesel_cli@2.1.1 --no-default-features --features=postgres
     - if: ${{ failure() || success() }}
-      run: cat logs.txt && rm logs.txt
+      run: cat logs.txt && echo >logs.txt
 
     - name: Buildx disk usage
       run: docker buildx du | tail -n-1

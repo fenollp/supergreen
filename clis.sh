@@ -117,7 +117,7 @@ $(
         RUSTC_WRAPPER="\$PWD"/rustcbuildx \\
           CARGO_TARGET_DIR=~/instst cargo -vv install --jobs=1 --locked --force $name_at_version $@
     - if: \${{ failure() || success() }}
-      run: cat logs.txt && rm logs.txt
+      run: cat logs.txt && echo >logs.txt
 
     - name: Buildx disk usage
       run: docker buildx du | tail -n-1
