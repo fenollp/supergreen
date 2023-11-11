@@ -17,6 +17,7 @@ pub(crate) const RUSTCBUILDX_SEQUENTIAL_CARGO: &str = "RUSTCBUILDX_SEQUENTIAL_CA
 // RUN set -eux && apt update && apt install -y libpq-dev libssl3
 // EOF
 
+#[must_use]
 pub(crate) fn is_debug() -> bool {
     // TODO: oncelock
     env::var(RUSTCBUILDX_LOG).ok().map(|x| !x.is_empty()).unwrap_or_default()
