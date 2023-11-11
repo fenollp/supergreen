@@ -600,13 +600,12 @@ fn bake_rustc(
 
     const IOERR: &str = "stderr";
     const IOOUT: &str = "stdout";
-    dockerfile.push_str(&format!(
-        "  if ! rustc '{}' {input} >/{IOOUT} 2>/{IOERR}; then\n",
-        args.join("' '"),
-    ));
-    dockerfile.push_str(&format!("    head /{IOOUT} /{IOERR}\n"));
-    dockerfile.push_str("    exit 1\n");
-    dockerfile.push_str("  fi\n");
+    dockerfile.push_str("  set +e\n");
+    dockerfile.push_str(&format!("  rustc '{}' {input} >/{IOOUT} 2>/{IOERR}\n", args.join("' '")));
+    dockerfile.push_str("  code=$?\n");
+    dockerfile.push_str("  set -e\n");
+    dockerfile.push_str(&format!("  [ $code -eq 0 ] || head /{IOOUT} /{IOERR}\n"));
+    dockerfile.push_str("  exit $code\n");
 
     dockerfile.push_str("RUN\n"); // End of heredoc
 

@@ -103,20 +103,24 @@ $(
         RUSTCBUILDX_LOG=debug \\
         RUSTCBUILDX_LOG_PATH="\$PWD"/logs.txt \\
         RUSTC_WRAPPER="\$PWD"/rustcbuildx \\
-          CARGO_TARGET_DIR=~/instst cargo -vv install --jobs=1 --locked --force $name_at_version $@ || \\
-            cat logs.txt
+          CARGO_TARGET_DIR=~/instst cargo -vv install --jobs=1 --locked --force $name_at_version $@
+    - if: \${{ failure() || success() }}
+      run: cat logs.txt
 
     - name: cargo install net=ON cache=ON remote=OFF
       run: |
         RUSTCBUILDX_LOG=debug \\
         RUSTCBUILDX_LOG_PATH="\$PWD"/logs.txt \\
         RUSTC_WRAPPER="\$PWD"/rustcbuildx \\
-          CARGO_TARGET_DIR=~/instst cargo -vv install --jobs=1 --locked --force $name_at_version $@ 2>&1 | tee _ || \\
-            cat logs.txt
+          CARGO_TARGET_DIR=~/instst cargo -vv install --jobs=1 --locked --force $name_at_version $@ 2>&1 | tee _
         cat _ | grep Finished | grep 0...s
         cat _ | grep Fresh
         ! cat _ | grep Compiling
         ! cat _ | grep 'DEBUG|INFO|WARN|ERROR'
+    - if: \${{ failure() || success() }}
+      run: cat logs.txt
+    - if: \${{ failure() || success() }}
+      run: cat _
 
 EOF
 }
