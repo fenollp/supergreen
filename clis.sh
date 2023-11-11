@@ -103,7 +103,7 @@ $(
         RUSTCBUILDX_LOG=debug \\
         RUSTCBUILDX_LOG_PATH="\$PWD"/logs.txt \\
         RUSTC_WRAPPER="\$PWD"/rustcbuildx \\
-          CARGO_TARGET_DIR=~/instst cargo -vv install --locked --force $name_at_version $@ || \\
+          CARGO_TARGET_DIR=~/instst cargo -vv install --jobs=1 --locked --force $name_at_version $@ || \\
             cat logs.txt
 
     - name: cargo install net=ON cache=ON remote=OFF
@@ -111,7 +111,7 @@ $(
         RUSTCBUILDX_LOG=debug \\
         RUSTCBUILDX_LOG_PATH="\$PWD"/logs.txt \\
         RUSTC_WRAPPER="\$PWD"/rustcbuildx \\
-          CARGO_TARGET_DIR=~/instst cargo -vv install --locked --force $name_at_version $@ 2>&1 | tee _ || \\
+          CARGO_TARGET_DIR=~/instst cargo -vv install --jobs=1 --locked --force $name_at_version $@ 2>&1 | tee _ || \\
             cat logs.txt
         cat _ | grep Finished | grep 0...s
         cat _ | grep Fresh

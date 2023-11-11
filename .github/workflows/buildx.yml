@@ -176,7 +176,7 @@ jobs:
 
     - name: Ensure running the same command twice without modifications does not recompile anything
       run: |
-        unset RUSTCBUILDX_LOG
+        RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
         RUSTC_WRAPPER="$PWD"/rustcbuildx \
           cargo -vv build --jobs=1 --all-targets --all-features --locked --frozen --offline 2>&1 | tee _ || \
@@ -236,7 +236,7 @@ jobs:
 
     - name: Ensure running the same command twice without modifications does not recompile anything
       run: |
-        unset RUSTCBUILDX_LOG
+        RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
         RUSTC_WRAPPER="$PWD"/rustcbuildx \
           cargo -vv test --jobs=1 --all-targets --all-features --locked --frozen --offline 2>&1 | tee _ || \
@@ -296,7 +296,7 @@ jobs:
 
     - name: Ensure running the same command twice without modifications does not recompile anything
       run: |
-        unset RUSTCBUILDX_LOG
+        RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
         RUSTC_WRAPPER="$PWD"/rustcbuildx \
           cargo -vv check --jobs=1 --all-targets --all-features --locked --frozen --offline 2>&1 | tee _ || \
@@ -358,7 +358,7 @@ jobs:
 
     - name: Ensure running the same command twice without modifications does not recompile anything
       run: |
-        unset RUSTCBUILDX_LOG
+        RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
         RUSTC_WRAPPER="$PWD"/rustcbuildx \
           cargo -vv clippy --jobs=1 --all-targets --all-features --locked --frozen --offline 2>&1 | tee _ || \
