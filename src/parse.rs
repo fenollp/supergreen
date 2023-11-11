@@ -86,11 +86,6 @@ pub(crate) fn as_rustc(
             ("-C", "link-arg=-fuse-ld=/usr/local/bin/mold") => {
                 (s_e, key) = (false, "".to_owned());
                 continue;
-                // HACK=> this flag is the last one added by my local config
-                // and something seems to be messing up and adding --cfg args
-                // after that (crates' build.rs do this [can_compile]: anyhow, rustic, ...)
-                // break; // FIXME
-                // Lies: https://github.com/rust-lang/cargo/issues/5499#issuecomment-387418947
             }
             ("-C", "linker=/usr/bin/clang") => {
                 (s_e, key) = (false, "".to_owned());

@@ -18,7 +18,7 @@ use mktemp::Temp;
 use regex::Regex;
 
 use crate::{
-    envs::{docker_image, docker_syntax, is_debug, RUSTCBUILDX_LOG_IF_CRATE_NAME},
+    envs::{base_image, docker_syntax, is_debug, nesting, RUSTCBUILDX_LOG_IF_CRATE_NAME},
     parse::RustcArgs,
     pops::Popped,
 };
@@ -39,34 +39,30 @@ fn faillible_main() -> Result<ExitCode> {
     let first_few_args = env::args().skip(1).take(3).collect::<Vec<String>>();
     let first_few_args = first_few_args.iter().map(String::as_str).collect::<Vec<_>>();
     match &first_few_args[..] {
-        [] | ["-h" | "--help" |"--version"] => help(),
-        [rustc, "-", ..] | [rustc, _ /*driver*/, "-", ..] => {
-            return call_rustc(rustc, || env::args().skip(2));
-        }
-        [rustc, opt, ..] if called_from_build_script() && opt.starts_with('-') && *opt != "-" => {
+        [] | ["-h"|"--help"|"-V"|"--version"] => Ok(help()),
+        [rustc, "-", ..] | [rustc, _ /*driver*/, "-", ..] =>
+             call_rustc(rustc, || env::args().skip(2)),
+        [rustc, opt, ..] if called_from_build_script() && opt.starts_with('-') && *opt != "-" =>
             // Special case for crates whose build.rs calls rustc, using RUSTC_WRAPPER,
             // but arriving at a wrong conclusion (here: activates nightly-only features, somehow)
             // Workaround: we defer to local rustc instead.
             // See https://github.com/rust-lang/rust-analyzer/issues/12973#issuecomment-1208162732
+            // Note https://github.com/rust-lang/cargo/issues/5499#issuecomment-387418947
             // Culprits:
             //   https://github.com/dtolnay/anyhow/blob/05e413219e97f101d8f39a90902e5c5d39f951fe/build.rs#L88
             //   https://github.com/dtolnay/thiserror/blob/e9ea67c7e251764c3c2d839b6c06d9f35b154647/build.rs#L65
-            return call_rustc(rustc, || env::args().skip(1));
-        }
-        [rustc, "--crate-name", crate_name, ..] if !called_from_build_script() => {
-            return bake_rustc(crate_name, env::args().skip(2).collect(), || {
+             call_rustc(rustc, || env::args().skip(1)),
+        [rustc, "--crate-name", crate_name, ..] if !called_from_build_script() =>
+             bake_rustc(crate_name, env::args().skip(2).collect(), || {
                 call_rustc(rustc, || env::args().skip(2))
             })
             .map_err(|e| {
                 error!(target:crate_name, "Failure: {e}");
                 eprintln!("Failure: {e}");
                 e
-            });
-        }
-        _ => {}
+            }),
+        _ => Ok(ExitCode::FAILURE),
     }
-
-    Ok(ExitCode::SUCCESS)
 }
 
 #[test]
@@ -114,7 +110,7 @@ fn called_from_build_script() -> bool {
             .all(|var| env::vars().any(|(k, v)| *var == k && !v.is_empty()))
 }
 
-fn help() {
+fn help() -> ExitCode {
     println!(
         "{name} {version}: {description}\n{repository}",
         name = env!("CARGO_PKG_NAME"),
@@ -122,6 +118,7 @@ fn help() {
         version = env!("CARGO_PKG_VERSION"),
         repository = env!("CARGO_PKG_REPOSITORY"),
     );
+    ExitCode::SUCCESS
 }
 
 fn call_rustc<I: Iterator<Item = String>>(rustc: &str, args: fn() -> I) -> Result<ExitCode> {
@@ -143,7 +140,7 @@ fn bake_rustc(
     arguments: Vec<String>,
     fallback: impl Fn() -> Result<ExitCode>,
 ) -> Result<ExitCode> {
-    if env::var_os("RUSTCBUILDX").map(|x| !x.is_empty()).unwrap_or_default() {
+    if nesting() {
         bail!("It's turtles all the way down!")
     }
     assert!(!called_from_build_script());
@@ -325,15 +322,15 @@ fn bake_rustc(
     }
 
     let hm = |prefix: &str, basename: &str, pop: usize| {
+        let stage = format!("{prefix}-{full_crate_id}");
         assert_eq!(pop, prefix.chars().filter(|c| *c == '_').count());
         let not_lowalnums = |c: char| {
             !("._-".contains(c) || c.is_ascii_digit() || (c.is_alphabetic() && c.is_lowercase()))
         };
         let basename = basename.replace(not_lowalnums, "_");
-        (
-            Some((format!("input_{prefix}--{basename}"), input.clone().popped(pop))),
-            format!("{prefix}-{full_crate_id}"),
-        )
+        let name = format!("input_{prefix}--{basename}");
+        let target = input.clone().popped(pop);
+        (Some((name, target)), stage)
     };
 
     // TODO: impl non-default build.rs https://doc.rust-lang.org/cargo/reference/manifest.html?highlight=build.rs#the-build-field
@@ -626,7 +623,7 @@ fn bake_rustc(
     }
 
     let mut contexts: BTreeMap<_, _> = [
-        Some(("rust".to_owned(), docker_image())),
+        Some(("rust".to_owned(), base_image())),
         input_mount.map(|(name, target)| (name, target.to_string())),
         cwd.as_deref().map(|cwd| {
             let cwd_path = Utf8Path::from_path(cwd.as_path()).expect("PROOF: did not fail earlier");

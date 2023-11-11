@@ -366,18 +366,3 @@ jobs:
         cat _ | grep Finished | grep 0...s
         ! cat _ | grep 'Compiling|Compiling'
         ! cat _ | grep 'DEBUG|INFO|WARN|ERROR'
-
-
-# TODO: single-rustc-call:
-  #   - run: |
-  #       tmp=$(mktemp -d)
-  #       curl -#fsSLo "$tmp"/v1.0.3.zip https://github.com/sunfishcode/io-lifetimes/archive/refs/tags/v1.0.3.zip
-  #       cd "$tmp" && unzip v1.0.3.zip && cd -
-  #       mkdir -p $HOME/.cargo/registry/src/github.com-1ecc6299db9ec823/
-  #       mv "$tmp"/io-lifetimes-1.0.3 $HOME/.cargo/registry/src/github.com-1ecc6299db9ec823/
-  #   - run: |
-  #       export RUSTCBUILDX_LOG=debug
-  #       export PROFILE=${PROFILE:-debug}
-  #       export CARGO_HOME=${CARGO_HOME:-$HOME/.cargo}
-  #       export CARGO_TARGET_DIR=${CARGO_TARGET_DIR:-$PWD/_targetWell}
-  #       ./bin/rustcbuildx rustc --crate-name build_script_build --edition=2018 "$CARGO_HOME"/registry/src/github.com-1ecc6299db9ec823/io-lifetimes-1.0.3/build.rs --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --diagnostic-width=211 --crate-type bin --emit=dep-info,link -C embed-bitcode=no -C debuginfo=2 --cfg 'feature="close"' --cfg 'feature="default"' --cfg 'feature="libc"' --cfg 'feature="windows-sys"' -C metadata=5fc4d6e9dda15f11 -C extra-filename=-5fc4d6e9dda15f11 --out-dir "$CARGO_TARGET_DIR/$PROFILE"/build/io-lifetimes-5fc4d6e9dda15f11 -C linker=/usr/bin/clang -L dependency="$CARGO_TARGET_DIR/$PROFILE"/deps --cap-lints allow -C link-arg=-fuse-ld=/usr/local/bin/mold
