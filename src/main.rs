@@ -13,13 +13,13 @@ use anyhow::{bail, Context, Result};
 use camino::{Utf8Path, Utf8PathBuf};
 use cli::{envs, exit_code, help, pull};
 use env_logger::{Env, Target};
-use envs::{log_path, RUSTCBUILDX_LOG, RUSTCBUILDX_LOG_STYLE};
+use envs::{log_path, RUSTCBUILDX, RUSTCBUILDX_LOG, RUSTCBUILDX_LOG_STYLE};
 use log::{debug, error, info, warn};
 use mktemp::Temp;
 use regex::Regex;
 
 use crate::{
-    envs::{base_image, docker_syntax, is_debug, nesting, RUSTCBUILDX_LOG_IF_CRATE_NAME},
+    envs::{base_image, docker_syntax, is_debug, RUSTCBUILDX_LOG_IF_CRATE_NAME},
     parse::RustcArgs,
     pops::Popped,
 };
@@ -60,6 +60,7 @@ fn faillible_main() -> Result<ExitCode> {
              call_rustc(rustc, || env::args().skip(1)),
         [rustc, "--crate-name", crate_name, ..] if !called_from_build_script() =>
              bake_rustc(crate_name, env::args().skip(2).collect(), || {
+                env::set_var(RUSTCBUILDX, "1"); // Just to be sure
                 call_rustc(rustc, || env::args().skip(2))
             })
             .map_err(|e| {
@@ -140,7 +141,7 @@ fn bake_rustc(
     arguments: Vec<String>,
     fallback: impl Fn() -> Result<ExitCode>,
 ) -> Result<ExitCode> {
-    if nesting() {
+    if env::var_os(RUSTCBUILDX).map(|x| x == "1").unwrap_or_default() {
         bail!("It's turtles all the way down!")
     }
     assert!(!called_from_build_script());
@@ -809,7 +810,7 @@ target "{incremental_stage}" {{
         // Bubble up actual error & outputs
         let res = fallback();
         if res.is_ok() {
-            error!(target:&krate, "A bug was found! {code:?}");
+            error!(target:&krate, "BUG found!");
             eprintln!("Found a bug in this script!");
         }
         return res;

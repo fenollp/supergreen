@@ -40,9 +40,3 @@ pub(crate) fn docker_syntax() -> String {
     let x= "docker.io/docker/dockerfile:1@sha256:ac85f380a63b13dfcefa89046420e1781752bab202122f8f50032edf31be0021";
     env::var(RUSTCBUILDX_DOCKER_SYNTAX).unwrap_or(x.to_owned()) // TODO: see if #syntax= is actually needed
 }
-
-#[must_use]
-pub(crate) fn nesting() -> bool {
-    // TODO: oncelock
-    env::var_os(RUSTCBUILDX).map(|x| x == "1").unwrap_or_default()
-}
