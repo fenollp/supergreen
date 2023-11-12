@@ -1,6 +1,23 @@
 #!/bin/bash -eu
 set -o pipefail
 
+# TODO: https://crates.io/categories/command-line-utilities?sort=recent-updates
+declare -a nvs nvs_args
+   i=0  ; nvs[i]=buildxargs@master;     nvs_args[i]='--git https://github.com/fenollp/buildxargs.git'
+((i+=1)); nvs[i]=cargo-audit@0.18.3;    nvs_args[i]='--features=fix'
+((i+=1)); nvs[i]=cargo-deny@0.14.3;     nvs_args[i]=''
+((i+=1)); nvs[i]=cargo-llvm-cov@0.5.36; nvs_args[i]=''
+((i+=1)); nvs[i]=cargo-nextest@0.9.61;  nvs_args[i]=''
+((i+=1)); nvs[i]=cross@0.2.5;           nvs_args[i]='--git https://github.com/cross-rs/cross.git --tag=v0.2.5 cross'
+((i+=1)); nvs[i]=diesel_cli@2.1.1;      nvs_args[i]='--no-default-features --features=postgres'
+((i+=1)); nvs[i]=hickory-dns@0.24.0;    nvs_args[i]='--features=dns-over-rustls'
+
+#TODO: not a cli but try users of https://github.com/dtolnay/watt
+#TODO: play with cargo flags: lto (embeds bitcode)
+#TODO: allowlist non-busting rustc flags => se about this cache key
+#TODO: test cargo -vv build -> test -> build and look for "Dirty", expect none
+
+
 header() {
 	cat <<EOF
 on: [push]
@@ -64,8 +81,9 @@ EOF
 
 cli() {
 	local name_at_version=$1; shift
+  local job
 
-  local job=$(sed 's%@%_%g;s%\.%-%g' <<<"$name_at_version")
+  job=$(sed 's%@%_%g;s%\.%-%g' <<<"$name_at_version")
   case "$name_at_version" in
     buildxargs@*) name_at_version='' ;;
     cross@*) name_at_version='' ;;
@@ -176,21 +194,15 @@ $(
 EOF
 }
 
+if [[ $# = 0 ]]; then
+  header
 
+  total=${#nvs[@]}
+  for ((i=0; i<total; i++)); do
+    name_at_version=${nvs["$i"]}
+    cli "$name_at_version" "${nvs_args["$i"]}"
+  done
 
-header
+  exit
+fi
 
-# TODO: https://crates.io/categories/command-line-utilities?sort=recent-updates
-cli buildxargs@master       --git https://github.com/fenollp/buildxargs.git
-cli cargo-audit@0.18.3      --features=fix
-cli cargo-deny@0.14.3
-cli cargo-llvm-cov@0.5.36
-cli cargo-nextest@0.9.61
-cli cross@0.2.5             --git https://github.com/cross-rs/cross.git --tag=v0.2.5 cross
-cli diesel_cli@2.1.1        --no-default-features --features=postgres
-cli hickory-dns@0.24.0      --features=dns-over-rustls
-
-#TODO: not a cli but try users of https://github.com/dtolnay/watt
-#TODO: play with cargo flags: lto (embeds bitcode)
-#TODO: allowlist non-busting rustc flags => se about this cache key
-#TODO: test cargo -vv build -> test -> build and look for "Dirty", expect none

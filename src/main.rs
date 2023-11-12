@@ -799,6 +799,7 @@ target "{incremental_stage}" {{
     }
 
     if code != Some(0) {
+        warn!(target:&krate, "Falling back...");
         // Bubble up actual error & outputs
         let res = fallback();
         if res.is_ok() {
