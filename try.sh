@@ -29,6 +29,8 @@ if [[ "${ANEW:-0}" = '1' ]]; then
 	send docker buildx prune -af '&&' touch "$tmpgooo"
 	tmux select-layout even-vertical
 	tmux split-window
+else
+	touch "$tmpgooo"
 fi
 
 send rustcbuildx pull
