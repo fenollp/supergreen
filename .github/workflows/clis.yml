@@ -98,23 +98,32 @@ jobs:
     - name: Buildx disk usage
       run: docker buildx du | tail -n-1
 
+    - name: Target dir disk usage
+      run: du -sh ~/instst
+
     - name: cargo install net=ON cache=ON remote=OFF
       run: |
         RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
         RUSTC_WRAPPER="$PWD"/rustcbuildx \
           CARGO_TARGET_DIR=~/instst cargo -vv install --jobs=1 --locked --force  --git https://github.com/fenollp/buildxargs.git 2>&1 | tee _
-        cat _ | grep Finished | grep 0...s
-        cat _ | grep Fresh
-        ! cat _ | grep Compiling
-        ! cat _ | grep 'DEBUG|INFO|WARN|ERROR'
     - if: ${{ failure() || success() }}
       run: cat logs.txt
+    - name: Ensure fresh
+      run: |
+        grep Finished _ | grep 0...s
+        grep Fresh _
+        ! grep Compiling _
+        ! grep 'DEBUG|INFO|WARN|ERROR' _
+        ! grep BUG _
     - if: ${{ failure() || success() }}
       run: cat _ || true
 
     - name: Buildx disk usage
       run: docker buildx du | tail -n-1
+
+    - name: Target dir disk usage
+      run: du -sh ~/instst
 
   cargo-audit_0-18-3:
     runs-on: ubuntu-latest
@@ -160,23 +169,32 @@ jobs:
     - name: Buildx disk usage
       run: docker buildx du | tail -n-1
 
+    - name: Target dir disk usage
+      run: du -sh ~/instst
+
     - name: cargo install net=ON cache=ON remote=OFF
       run: |
         RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
         RUSTC_WRAPPER="$PWD"/rustcbuildx \
           CARGO_TARGET_DIR=~/instst cargo -vv install --jobs=1 --locked --force cargo-audit@0.18.3 --features=fix 2>&1 | tee _
-        cat _ | grep Finished | grep 0...s
-        cat _ | grep Fresh
-        ! cat _ | grep Compiling
-        ! cat _ | grep 'DEBUG|INFO|WARN|ERROR'
     - if: ${{ failure() || success() }}
       run: cat logs.txt
+    - name: Ensure fresh
+      run: |
+        grep Finished _ | grep 0...s
+        grep Fresh _
+        ! grep Compiling _
+        ! grep 'DEBUG|INFO|WARN|ERROR' _
+        ! grep BUG _
     - if: ${{ failure() || success() }}
       run: cat _ || true
 
     - name: Buildx disk usage
       run: docker buildx du | tail -n-1
+
+    - name: Target dir disk usage
+      run: du -sh ~/instst
 
   cargo-deny_0-14-3:
     runs-on: ubuntu-latest
@@ -222,23 +240,32 @@ jobs:
     - name: Buildx disk usage
       run: docker buildx du | tail -n-1
 
+    - name: Target dir disk usage
+      run: du -sh ~/instst
+
     - name: cargo install net=ON cache=ON remote=OFF
       run: |
         RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
         RUSTC_WRAPPER="$PWD"/rustcbuildx \
           CARGO_TARGET_DIR=~/instst cargo -vv install --jobs=1 --locked --force cargo-deny@0.14.3  2>&1 | tee _
-        cat _ | grep Finished | grep 0...s
-        cat _ | grep Fresh
-        ! cat _ | grep Compiling
-        ! cat _ | grep 'DEBUG|INFO|WARN|ERROR'
     - if: ${{ failure() || success() }}
       run: cat logs.txt
+    - name: Ensure fresh
+      run: |
+        grep Finished _ | grep 0...s
+        grep Fresh _
+        ! grep Compiling _
+        ! grep 'DEBUG|INFO|WARN|ERROR' _
+        ! grep BUG _
     - if: ${{ failure() || success() }}
       run: cat _ || true
 
     - name: Buildx disk usage
       run: docker buildx du | tail -n-1
+
+    - name: Target dir disk usage
+      run: du -sh ~/instst
 
   cargo-llvm-cov_0-5-36:
     runs-on: ubuntu-latest
@@ -284,23 +311,32 @@ jobs:
     - name: Buildx disk usage
       run: docker buildx du | tail -n-1
 
+    - name: Target dir disk usage
+      run: du -sh ~/instst
+
     - name: cargo install net=ON cache=ON remote=OFF
       run: |
         RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
         RUSTC_WRAPPER="$PWD"/rustcbuildx \
           CARGO_TARGET_DIR=~/instst cargo -vv install --jobs=1 --locked --force cargo-llvm-cov@0.5.36  2>&1 | tee _
-        cat _ | grep Finished | grep 0...s
-        cat _ | grep Fresh
-        ! cat _ | grep Compiling
-        ! cat _ | grep 'DEBUG|INFO|WARN|ERROR'
     - if: ${{ failure() || success() }}
       run: cat logs.txt
+    - name: Ensure fresh
+      run: |
+        grep Finished _ | grep 0...s
+        grep Fresh _
+        ! grep Compiling _
+        ! grep 'DEBUG|INFO|WARN|ERROR' _
+        ! grep BUG _
     - if: ${{ failure() || success() }}
       run: cat _ || true
 
     - name: Buildx disk usage
       run: docker buildx du | tail -n-1
+
+    - name: Target dir disk usage
+      run: du -sh ~/instst
 
   cargo-nextest_0-9-61:
     runs-on: ubuntu-latest
@@ -346,23 +382,32 @@ jobs:
     - name: Buildx disk usage
       run: docker buildx du | tail -n-1
 
+    - name: Target dir disk usage
+      run: du -sh ~/instst
+
     - name: cargo install net=ON cache=ON remote=OFF
       run: |
         RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
         RUSTC_WRAPPER="$PWD"/rustcbuildx \
           CARGO_TARGET_DIR=~/instst cargo -vv install --jobs=1 --locked --force cargo-nextest@0.9.61  2>&1 | tee _
-        cat _ | grep Finished | grep 0...s
-        cat _ | grep Fresh
-        ! cat _ | grep Compiling
-        ! cat _ | grep 'DEBUG|INFO|WARN|ERROR'
     - if: ${{ failure() || success() }}
       run: cat logs.txt
+    - name: Ensure fresh
+      run: |
+        grep Finished _ | grep 0...s
+        grep Fresh _
+        ! grep Compiling _
+        ! grep 'DEBUG|INFO|WARN|ERROR' _
+        ! grep BUG _
     - if: ${{ failure() || success() }}
       run: cat _ || true
 
     - name: Buildx disk usage
       run: docker buildx du | tail -n-1
+
+    - name: Target dir disk usage
+      run: du -sh ~/instst
 
   cross_0-2-5:
     runs-on: ubuntu-latest
@@ -408,23 +453,32 @@ jobs:
     - name: Buildx disk usage
       run: docker buildx du | tail -n-1
 
+    - name: Target dir disk usage
+      run: du -sh ~/instst
+
     - name: cargo install net=ON cache=ON remote=OFF
       run: |
         RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
         RUSTC_WRAPPER="$PWD"/rustcbuildx \
           CARGO_TARGET_DIR=~/instst cargo -vv install --jobs=1 --locked --force  --git https://github.com/cross-rs/cross.git --tag=v0.2.5 cross 2>&1 | tee _
-        cat _ | grep Finished | grep 0...s
-        cat _ | grep Fresh
-        ! cat _ | grep Compiling
-        ! cat _ | grep 'DEBUG|INFO|WARN|ERROR'
     - if: ${{ failure() || success() }}
       run: cat logs.txt
+    - name: Ensure fresh
+      run: |
+        grep Finished _ | grep 0...s
+        grep Fresh _
+        ! grep Compiling _
+        ! grep 'DEBUG|INFO|WARN|ERROR' _
+        ! grep BUG _
     - if: ${{ failure() || success() }}
       run: cat _ || true
 
     - name: Buildx disk usage
       run: docker buildx du | tail -n-1
+
+    - name: Target dir disk usage
+      run: du -sh ~/instst
 
   diesel_cli_2-1-1:
     runs-on: ubuntu-latest
@@ -470,21 +524,30 @@ jobs:
     - name: Buildx disk usage
       run: docker buildx du | tail -n-1
 
+    - name: Target dir disk usage
+      run: du -sh ~/instst
+
     - name: cargo install net=ON cache=ON remote=OFF
       run: |
         RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
         RUSTC_WRAPPER="$PWD"/rustcbuildx \
           CARGO_TARGET_DIR=~/instst cargo -vv install --jobs=1 --locked --force diesel_cli@2.1.1 --no-default-features --features=postgres 2>&1 | tee _
-        cat _ | grep Finished | grep 0...s
-        cat _ | grep Fresh
-        ! cat _ | grep Compiling
-        ! cat _ | grep 'DEBUG|INFO|WARN|ERROR'
     - if: ${{ failure() || success() }}
       run: cat logs.txt
+    - name: Ensure fresh
+      run: |
+        grep Finished _ | grep 0...s
+        grep Fresh _
+        ! grep Compiling _
+        ! grep 'DEBUG|INFO|WARN|ERROR' _
+        ! grep BUG _
     - if: ${{ failure() || success() }}
       run: cat _ || true
 
     - name: Buildx disk usage
       run: docker buildx du | tail -n-1
+
+    - name: Target dir disk usage
+      run: du -sh ~/instst
 

@@ -122,23 +122,32 @@ $(
     - name: Buildx disk usage
       run: docker buildx du | tail -n-1
 
+    - name: Target dir disk usage
+      run: du -sh ~/instst
+
     - name: cargo install net=ON cache=ON remote=OFF
       run: |
         RUSTCBUILDX_LOG=debug \\
         RUSTCBUILDX_LOG_PATH="\$PWD"/logs.txt \\
         RUSTC_WRAPPER="\$PWD"/rustcbuildx \\
           CARGO_TARGET_DIR=~/instst cargo -vv install --jobs=1 --locked --force $name_at_version $@ 2>&1 | tee _
-        cat _ | grep Finished | grep 0...s
-        cat _ | grep Fresh
-        ! cat _ | grep Compiling
-        ! cat _ | grep 'DEBUG|INFO|WARN|ERROR'
     - if: \${{ failure() || success() }}
       run: cat logs.txt
+    - name: Ensure fresh
+      run: |
+        grep Finished _ | grep 0...s
+        grep Fresh _
+        ! grep Compiling _
+        ! grep 'DEBUG|INFO|WARN|ERROR' _
+        ! grep BUG _
     - if: \${{ failure() || success() }}
       run: cat _ || true
 
     - name: Buildx disk usage
       run: docker buildx du | tail -n-1
+
+    - name: Target dir disk usage
+      run: du -sh ~/instst
 
 EOF
 }
