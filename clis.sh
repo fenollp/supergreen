@@ -146,19 +146,28 @@ $(
       if: \${{ failure() || success() }}
       run: du -sh ~/instst
 
-    - run: |
+    - if: \${{ failure() || success() }}
+      run: |
         grep Finished _ | grep -E [01]...s
 
-    - run: |
+    - if: \${{ failure() || success() }}
+      run: |
         grep Fresh _
 
-    - run: |
+    - if: \${{ failure() || success() }}
+      run: |
         ! grep Compiling _
 
-    - run: |
+    - if: \${{ failure() || success() }}
+      run: |
         ! grep 'DEBUG|INFO|WARN|ERROR' _
 
-    - run: |
+    - if: \${{ failure() || success() }}
+      run: |
+        ! grep 'Falling back' _
+
+    - if: \${{ failure() || success() }}
+      run: |
         ! grep BUG _
 
     - if: \${{ failure() || success() }}
