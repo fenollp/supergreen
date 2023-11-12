@@ -410,74 +410,42 @@ fn bake_rustc(
 
     // https://doc.rust-lang.org/cargo/reference/environment-variables.html#environment-variables-cargo-sets-for-crates
     dockerfile.push_str("ENV \\\n");
-    for var in [
-        "LD_LIBRARY_PATH", // TODO: see if that can be dropped
-        // "CARGO", excluded: later, set to image's
-        "CARGO_MANIFEST_DIR",
-        "CARGO_PKG_VERSION",
-        "CARGO_PKG_VERSION_MAJOR",
-        "CARGO_PKG_VERSION_MINOR",
-        "CARGO_PKG_VERSION_PATCH",
-        "CARGO_PKG_VERSION_PRE",
-        "CARGO_PKG_AUTHORS",
-        "CARGO_PKG_NAME",
-        "CARGO_PKG_DESCRIPTION",
-        "CARGO_PKG_HOMEPAGE",
-        "CARGO_PKG_REPOSITORY",
-        "CARGO_PKG_LICENSE",
-        "CARGO_PKG_LICENSE_FILE",
-        "CARGO_PKG_RUST_VERSION",
-        "CARGO_CRATE_NAME",
-        "CARGO_BIN_NAME",
-        // TODO: allow additional envs to be passed as RUSTCBUILDX_ENV_* env(s)
-        "OUT_DIR", // (Only set during compilation.)
-    ]
-    // TODO: CARGO_BIN_EXE_<name> — The absolute path to a binary target’s executable. This is only set when building an integration test or benchmark. This may be used with the env macro to find the executable to run for testing purposes. The <name> is the name of the binary target, exactly as-is. For example, CARGO_BIN_EXE_my-program for a binary named my-program. Binaries are automatically built when the test is built, unless the binary has required features that are not enabled.
-    // TODO: CARGO_PRIMARY_PACKAGE — This environment variable will be set if the package being built is primary. Primary packages are the ones the user selected on the command-line, either with -p flags or the defaults based on the current directory and the default workspace members. This environment variable will not be set when building dependencies. This is only set when compiling the package (not when running binaries or tests).
-    // TODO: CARGO_TARGET_TMPDIR — Only set when building integration test or benchmark code. This is a path to a directory inside the target directory where integration tests or benchmarks are free to put any data needed by the tests/benches. Cargo initially creates this directory but doesn’t manage its content in any way, this is the responsibility of the test code.
-    {
-        dockerfile.push_str(&format!(
-            "  {var}={val} \\\n",
-            val = env::var(var)
-                .ok()
-                .and_then(|x| if x.is_empty() { None } else { Some(x) })
+    for (var, val) in env::vars() {
+        // Thanks https://github.com/cross-rs/cross/blob/44011c8854cb2eaac83b173cc323220ccdff18ea/src/docker/shared.rs#L969
+        let passthrough = [
+            "http_proxy",
+            "TERM",
+            "RUSTDOCFLAGS",
+            "RUSTFLAGS",
+            "BROWSER",
+            "HTTPS_PROXY",
+            "HTTP_TIMEOUT",
+            "https_proxy",
+            "QEMU_STRACE",
+            // Not here but set in RUN script: CARGO, PATH, ...
+            "OUT_DIR", // (Only set during compilation.)
+        ];
+        let skiplist = [
+            "CARGO_BUILD_RUSTC",
+            "CARGO_BUILD_RUSTC_WORKSPACE_WRAPPER",
+            "CARGO_BUILD_RUSTC_WRAPPER",
+            "CARGO_BUILD_RUSTDOC",
+            "CARGO_BUILD_TARGET_DIR",
+            "CARGO_HOME",
+            "CARGO_TARGET_DIR",
+            "RUSTC_WRAPPER",
+        ];
+        if (var.starts_with("CARGO_") || passthrough.contains(&var.as_str()))
+            && !skiplist.contains(&var.as_str())
+        {
+            let val = (!val.is_empty())
+                .then_some(val)
                 .map(|x: String| format!("{x:?}"))
-                .unwrap_or_default()
-        ));
+                .unwrap_or_default();
+            dockerfile.push_str(&format!("  {var}={val} \\\n"));
+        }
     }
     dockerfile.push_str("  RUSTCBUILDX=1\n");
-    // Thanks https://github.com/cross-rs/cross/blob/44011c8854cb2eaac83b173cc323220ccdff18ea/src/docker/shared.rs#L969
-    // let other = &[
-    //      "http_proxy",
-    //      "TERM",
-    //      "RUSTDOCFLAGS",
-    //      "RUSTFLAGS",
-    //      "BROWSER",
-    //      "HTTPS_PROXY",
-    //      "HTTP_TIMEOUT",
-    //      "https_proxy",
-    //      "QEMU_STRACE",
-    //  ];
-    //  let cargo_prefix_skip = &[
-    //      "CARGO_HOME",
-    //      "CARGO_TARGET_DIR",
-    //      "CARGO_BUILD_TARGET_DIR",
-    //      "CARGO_BUILD_RUSTC",
-    //      "CARGO_BUILD_RUSTC_WRAPPER",
-    //      "CARGO_BUILD_RUSTC_WORKSPACE_WRAPPER",
-    //      "CARGO_BUILD_RUSTDOC",
-    //  ];
-    //  let cross_prefix_skip = &[
-    //      "CROSS_RUNNER",
-    //      "CROSS_RUSTC_MAJOR_VERSION",
-    //      "CROSS_RUSTC_MINOR_VERSION",
-    //      "CROSS_RUSTC_PATCH_VERSION",
-    //  ];
-    //  let is_passthrough = |key: &str| -> bool {
-    //      other.contains(&key)
-    //          || key.starts_with("CARGO_") && !cargo_prefix_skip.contains(&key)
-    //          || key.starts_with("CROSS_") && !cross_prefix_skip.contains(&key)
-    //  };
 
     let cwd = if let Some((name, target)) = input_mount.as_ref() {
         // Reuse previous contexts
@@ -586,6 +554,14 @@ fn bake_rustc(
     // dockerfile.push_str("  export RUSTUP_TOOLCHAIN=stable");
 
     dockerfile.push_str("  export CARGO=\"$(which cargo)\"\n");
+
+    // TODO: keep only paths that we explicitly mount or copy
+    for var in ["PATH", "DYLD_FALLBACK_LIBRARY_PATH", "LD_LIBRARY_PATH", "LIBPATH"] {
+        let Ok(val) = env::var(var) else { continue };
+        if !val.is_empty() {
+            dockerfile.push_str(&format!("  # export {var}=\"{val}:${var}\"\n"));
+        }
+    }
 
     // TODO: report BUG
     // buildx bake github issue dockerfile-inline and dockerfile heredoc conflict when using RUN echo "${VAR:-}"
