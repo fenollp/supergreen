@@ -42,7 +42,7 @@ send "rm $tmplogs; touch $tmplogs; tail -f $tmplogs; :"
 tmux select-layout even-vertical
 tmux split-window
 
-send 'until' '[[' -f "$tmpgooo" ']];' 'do' sleep '1;' 'done' '&&' rm "$tmpgooo" '&&' RUSTCBUILDX_LOG=debug RUSTCBUILDX_LOG_PATH="$tmplogs" RUSTC_WRAPPER=rustcbuildx CARGO_TARGET_DIR="$tmptrgt" cargo -vv install --jobs=1 --locked --frozen --offline "$name_at_version" "$@"
+send 'until' '[[' -f "$tmpgooo" ']];' 'do' sleep '1;' 'done' '&&' rm "$tmpgooo" '&&' RUSTCBUILDX_LOG=debug RUSTCBUILDX_LOG_PATH="$tmplogs" RUSTC_WRAPPER=rustcbuildx CARGO_TARGET_DIR="$tmptrgt" cargo -vv install --jobs=1 --locked --force "$name_at_version" "$@" '&&' tmux kill-session -t "$session_name"
 tmux select-layout even-vertical
 
 tmux attach-session -t "$session_name"
