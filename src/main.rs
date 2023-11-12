@@ -773,6 +773,21 @@ target "{incremental_stage}" {{
             } else {
                 println!("{msg}");
             }
+
+            if x {
+                let mut z = msg.split('"');
+                let mut a = z.next();
+                let mut b = z.next();
+                let mut c = z.next();
+                loop {
+                    match (a, b, c) {
+                        (Some("artifact"), Some(":"), Some(file)) => info!("rustc wrote {file}"),
+                        (_, _, Some(_)) => {}
+                        (_, _, None) => break,
+                    }
+                    (a, b, c) = (b, c, z.next());
+                }
+            }
         }
     }
 
