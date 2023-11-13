@@ -796,17 +796,15 @@ target "{incremental_stage}" {{
         if let Some(cwd) = cwd {
             drop(cwd); // Removes tempdir contents
         }
-    }
-
-    if code != Some(0) {
-        warn!(target:&krate, "Falling back...");
-        // Bubble up actual error & outputs
-        let res = fallback();
-        if res.is_ok() {
-            error!(target:&krate, "BUG found!");
-            eprintln!("Found a bug in this script!");
+        if code != Some(0) {
+            warn!(target:&krate, "Falling back...");
+            let res = fallback(); // Bubble up actual error & outputs
+            if res.is_ok() {
+                error!(target:&krate, "BUG found!");
+                eprintln!("Found a bug in this script!");
+            }
+            return res;
         }
-        return res;
     }
 
     Ok(exit_code(code))
