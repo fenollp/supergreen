@@ -11,6 +11,7 @@ declare -a nvs nvs_args
 ((i+=1)); nvs[i]=cross@0.2.5;           nvs_args[i]='--git https://github.com/cross-rs/cross.git --tag=v0.2.5 cross'
 ((i+=1)); nvs[i]=diesel_cli@2.1.1;      nvs_args[i]='--no-default-features --features=postgres'
 ((i+=1)); nvs[i]=hickory-dns@0.24.0;    nvs_args[i]='--features=dns-over-rustls'
+((i+=1)); nvs[i]=rustcbuildx@main;      nvs_args[i]='--git https://github.com/fenollp/rustcbuildx.git --branch=main rustcbuildx'
 
 #TODO: not a cli but try users of https://github.com/dtolnay/watt
 #TODO: play with cargo flags: lto (embeds bitcode)
@@ -79,19 +80,21 @@ jobs:
 EOF
 }
 
+as_install() {
+  local name_at_version=$1; shift
+  case "$name_at_version" in
+    buildxargs@*) echo ;;
+    cross@*) echo ;;
+    rustcbuildx@*) echo ;;
+    *) echo "$name_at_version" ;;
+  esac
+}
+
 cli() {
 	local name_at_version=$1; shift
-  local job
-
-  job=$(sed 's%@%_%g;s%\.%-%g' <<<"$name_at_version")
-  case "$name_at_version" in
-    buildxargs@*) name_at_version='' ;;
-    cross@*) name_at_version='' ;;
-    *) ;;
-  esac
 
 	cat <<EOF
-  $job:
+  $(sed 's%@%_%g;s%\.%-%g' <<<"$name_at_version"):
     runs-on: ubuntu-latest
     needs: bin
     steps:
@@ -133,7 +136,7 @@ $(
         RUSTCBUILDX_LOG=debug \\
         RUSTCBUILDX_LOG_PATH="\$PWD"/logs.txt \\
         RUSTC_WRAPPER="\$PWD"/rustcbuildx \\
-          CARGO_TARGET_DIR=~/instst cargo -vv install --jobs=1 --locked --force $name_at_version $@
+          CARGO_TARGET_DIR=~/instst cargo -vv install --jobs=1 --locked --force $(as_install "$name_at_version") $@
 
     - if: \${{ failure() || success() }}
       run: cat logs.txt && echo >logs.txt
@@ -151,7 +154,7 @@ $(
         RUSTCBUILDX_LOG=debug \\
         RUSTCBUILDX_LOG_PATH="\$PWD"/logs.txt \\
         RUSTC_WRAPPER="\$PWD"/rustcbuildx \\
-          CARGO_TARGET_DIR=~/instst cargo -vv install --jobs=1 --locked --force $name_at_version $@ 2>&1 | tee _
+          CARGO_TARGET_DIR=~/instst cargo -vv install --jobs=1 --locked --force $(as_install "$name_at_version") $@ 2>&1 | tee _
 
     - if: \${{ failure() || success() }}
       run: cat logs.txt
@@ -199,6 +202,9 @@ if [[ $# = 0 ]]; then
 
   for i in "${!nvs[@]}"; do
     name_at_version=${nvs["$i"]}
+    case "$name_at_version" in
+      rustcbuildx@*) continue ;;
+    esac
     cli "$name_at_version" "${nvs_args["$i"]}"
   done
 
@@ -226,9 +232,9 @@ name_at_version=${nvs[$i]}
 args=${nvs_args[$i]}
 
 session_name=$(sed 's%@%_%g;s%\.%-%g' <<<"$name_at_version")
-tmptrgt=/tmp/$session_name
-tmplogs=/tmp/$session_name.logs.txt
-tmpgooo=/tmp/$session_name.ready
+tmptrgt=/tmp/clis-$session_name
+tmplogs=/tmp/clis-$session_name.logs.txt
+tmpgooo=/tmp/clis-$session_name.ready
 
 
 tmux new-session -d -s "$session_name"
@@ -267,7 +273,7 @@ send \
   RUSTCBUILDX_LOG=debug \
   RUSTCBUILDX_LOG_PATH="$tmplogs" \
   RUSTC_WRAPPER=rustcbuildx \
-    CARGO_TARGET_DIR="$tmptrgt" cargo -vv install --jobs=1 --locked --force "$name_at_version" "$args" \
+    CARGO_TARGET_DIR="$tmptrgt" cargo -vv install --jobs=1 --locked --force "$(as_install "$name_at_version")" "$args" \
   '&&' tmux kill-session -t "$session_name"
 tmux select-layout even-vertical
 
