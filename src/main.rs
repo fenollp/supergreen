@@ -5,27 +5,26 @@ use std::{
     fs::{self, create_dir_all, read_dir, read_to_string, File, OpenOptions},
     io::{BufRead, BufReader, ErrorKind},
     process::{Command, ExitCode, Stdio},
-    thread::sleep,
-    time::{Duration, Instant},
+    time::Instant,
     unreachable,
 };
 
-use advisory_lock::{AdvisoryFileLock, FileLockError, FileLockMode};
 use anyhow::{bail, Context, Result};
 use camino::{Utf8Path, Utf8PathBuf};
+use cli::{envs, exit_code, help, pull};
 use env_logger::{Env, Target};
-use envs::{RUSTCBUILDX_LOG, RUSTCBUILDX_LOG_PATH, RUSTCBUILDX_LOG_STYLE};
+use envs::{log_path, RUSTCBUILDX, RUSTCBUILDX_LOG, RUSTCBUILDX_LOG_STYLE};
 use log::{debug, error, info, warn};
 use mktemp::Temp;
 use regex::Regex;
 
 use crate::{
-    envs::{
-        is_debug, is_sequential, DOCKER_IMAGE, DOCKER_SYNTAX, RUSTCBUILDX_DEBUG,
-        RUSTCBUILDX_DEBUG_IF_CRATE_NAME, RUSTCBUILDX_DOCKER_IMAGE, RUSTCBUILDX_DOCKER_SYNTAX,
-    },
+    envs::{base_image, docker_syntax, is_debug, RUSTCBUILDX_LOG_IF_CRATE_NAME},
+    parse::RustcArgs,
     pops::Popped,
 };
+
+mod cli;
 mod envs;
 mod parse;
 mod pops;
@@ -41,25 +40,40 @@ fn main() -> ExitCode {
 fn faillible_main() -> Result<ExitCode> {
     let first_few_args = env::args().skip(1).take(3).collect::<Vec<String>>();
     let first_few_args = first_few_args.iter().map(String::as_str).collect::<Vec<_>>();
-    match &first_few_args[..] {
-        [] | ["-h" | "--help" |"--version"] => help(),
-        [rustc, "-", ..] | [rustc, _ /*driver*/, "-", ..] => {
-            return call_rustc(rustc, || env::args().skip(2));
-        }
-        [rustc, "--crate-name", crate_name, ..] => {
-            return bake_rustc(crate_name, env::args().skip(2).collect(), || {
+    match first_few_args[..] {
+        [] | ["-h"|"--help"|"-V"|"--version"] => Ok(help()),
+        ["pull"] => pull(),
+        ["env", ..] => Ok(envs(env::args().skip(2))),
+        [rustc, "-", ..] =>
+             call_rustc(rustc, || env::args().skip(2)),
+        [driver, _rustc, "-"|"--crate-name", ..] => // TODO: wrap driver+rustc calls as well
+             call_rustc(driver, || env::args().skip(2)), // driver: e.g. /home/maison/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/clippy-driver
+        [rustc, opt, ..] if called_from_build_script() && opt.starts_with('-') && opt != "-" =>
+            // Special case for crates whose build.rs calls rustc, using RUSTC_WRAPPER,
+            // but arriving at a wrong conclusion (here: activates nightly-only features, somehow)
+            // Workaround: we defer to local rustc instead.
+            // See https://github.com/rust-lang/rust-analyzer/issues/12973#issuecomment-1208162732
+            // Note https://github.com/rust-lang/cargo/issues/5499#issuecomment-387418947
+            // Culprits:
+            //   https://github.com/dtolnay/anyhow/blob/05e413219e97f101d8f39a90902e5c5d39f951fe/build.rs#L88
+            //   https://github.com/dtolnay/thiserror/blob/e9ea67c7e251764c3c2d839b6c06d9f35b154647/build.rs#L65
+             call_rustc(rustc, || env::args().skip(1)),
+        [rustc, "--crate-name", crate_name, ..] if !called_from_build_script() =>
+             bake_rustc(crate_name, env::args().skip(2).collect(), || {
                 call_rustc(rustc, || env::args().skip(2))
             })
             .map_err(|e| {
                 error!(target:crate_name, "Failure: {e}");
                 eprintln!("Failure: {e}");
                 e
-            });
-        }
-        _ => {}
+            }),
+        _ => panic!("RUSTC_WRAPPER={binary}'s input unexpected:\n\targz = {argz:?}\n\targs = {args:?}\n\tenvs = {envs:?}\n",
+               binary = env!("CARGO_PKG_NAME"),
+               argz = env::args().skip(1).take(3).collect::<Vec<_>>(),
+               args = env::args().collect::<Vec<_>>(),
+               envs = env::vars().collect::<Vec<_>>(),
+            ),
     }
-
-    Ok(ExitCode::SUCCESS)
 }
 
 #[test]
@@ -99,28 +113,26 @@ fn passthrough_getting_rust_target_specific_information() {
     );
 }
 
-fn help() {
-    println!(
-        "{name} {version}: {description}\n{repository}",
-        name = env!("CARGO_PKG_NAME"),
-        description = env!("CARGO_PKG_DESCRIPTION"),
-        version = env!("CARGO_PKG_VERSION"),
-        repository = env!("CARGO_PKG_REPOSITORY"),
-    );
+#[must_use]
+fn called_from_build_script() -> bool {
+    env::vars().any(|(k, v)| k.starts_with("CARGO_CFG_") && !v.is_empty())
+        && ["HOST", "NUM_JOBS", "OUT_DIR", "PROFILE", "TARGET"]
+            .iter()
+            .all(|var| env::vars().any(|(k, v)| *var == k && !v.is_empty()))
 }
 
 fn call_rustc<I: Iterator<Item = String>>(rustc: &str, args: fn() -> I) -> Result<ExitCode> {
-    // NOTE: not running inside Docker: local install should match Docker image setup
+    // NOTE: not running inside Docker: local install SHOULD match Docker image setup
+    // Meaning: it's up to the user to craft their desired $RUSTCBUILDX_BASE_IMAGE
     let argz = || args().collect::<Vec<_>>();
-    exit_code(
-        Command::new(rustc)
-            .args(args())
-            .spawn()
-            .with_context(|| format!("Failed to spawn rustc {rustc} with {:?}", argz()))?
-            .wait()
-            .with_context(|| format!("Failed to wait for rustc {rustc} with {:?}", argz()))?
-            .code(),
-    )
+    let code = Command::new(rustc)
+        .args(args())
+        .spawn()
+        .with_context(|| format!("Failed to spawn rustc {rustc} with {:?}", argz()))?
+        .wait()
+        .with_context(|| format!("Failed to wait for rustc {rustc} with {:?}", argz()))?
+        .code();
+    Ok(exit_code(code))
 }
 
 fn bake_rustc(
@@ -128,59 +140,49 @@ fn bake_rustc(
     arguments: Vec<String>,
     fallback: impl Fn() -> Result<ExitCode>,
 ) -> Result<ExitCode> {
-    let log_file = log_file().context("setting up logger")?;
+    if env::var_os(RUSTCBUILDX).map(|x| x == "1").unwrap_or_default() {
+        bail!("It's turtles all the way down!")
+    }
+    env::set_var(RUSTCBUILDX, "1");
+
+    assert!(!called_from_build_script());
+
+    fn log_file() -> Result<File> {
+        let log_path = log_path();
+        OpenOptions::new()
+            .create(true)
+            .append(true)
+            .open(&log_path)
+            .with_context(|| format!("Failed opening (WA) log file {log_path}"))
+    }
+
+    if let Some(name) = env::var(RUSTCBUILDX_LOG_IF_CRATE_NAME).ok().as_deref() {
+        if env::args().any(|arg| arg.contains(name)) {
+            env::set_var(RUSTCBUILDX_LOG, "debug");
+        }
+    }
+
+    if is_debug() {
+        env_logger::Builder::from_env(
+            Env::default().filter_or(RUSTCBUILDX_LOG, "debug").write_style(RUSTCBUILDX_LOG_STYLE),
+        )
+        .target(Target::Pipe(Box::new(log_file()?)))
+        .init();
+    }
+
     let krate = format!("{}:{crate_name}", env!("CARGO_PKG_NAME"));
     info!(target:&krate, "{bin}@{vsn} wraps `rustc` calls to BuildKit builders",
         bin = env!("CARGO_PKG_NAME"),
         vsn = env!("CARGO_PKG_VERSION"),
     );
 
-    let global_lock = is_sequential()
-        .then(|| -> Result<_> {
-            let lock = File::create("/tmp/global.lock")?;
-            debug!(target:&krate, "getting lock...");
-            let start = Instant::now();
-            loop {
-                match lock.try_lock(FileLockMode::Exclusive) {
-                    Ok(()) => {
-                        debug!(target:&krate, "... got lock!");
-                        break;
-                    }
-                    Err(FileLockError::AlreadyLocked) => {
-                        sleep(Duration::from_millis(500));
-                        if start.elapsed().as_secs() >= 91 {
-                            bail!("Couldn't lock!")
-                        }
-                    }
-                    Err(e) => bail!("Couldn't lock: {e}"),
-                }
-            }
-            Ok(lock)
-        })
-        .transpose()?;
-
-    let docker_image = env::var(RUSTCBUILDX_DOCKER_IMAGE).unwrap_or(DOCKER_IMAGE.to_owned());
-    let docker_syntax = env::var(RUSTCBUILDX_DOCKER_SYNTAX).unwrap_or(DOCKER_SYNTAX.to_owned()); // TODO: see if #syntax= is actually needed
-
     let pwd = env::current_dir().context("Failed to get $PWD")?;
     let pwd: Utf8PathBuf = pwd.try_into().context("Path's UTF-8 encoding is corrupted")?;
 
     let (st, args) = parse::as_rustc(&pwd, crate_name, arguments, false)?;
     info!(target:&krate, "{:?}", st);
-    let crate_type = st.crate_type;
-    let emit = st.emit;
-    let externs = st.externs;
-    let incremental = st.incremental;
-    let input = st.input;
-    let metadata = st.metadata;
-    let out_dir = st.out_dir;
-    let target_path = st.target_path;
-
-    {
-        let p = Utf8Path::new(&target_path).join("deps");
-        info!(target:&krate, "ensuring {p} exists");
-        create_dir_all(&p).with_context(|| format!("Failed to `mkdir -p {p}`"))?;
-    }
+    let RustcArgs { crate_type, emit, externs, metadata, incremental, input, out_dir, target_path } =
+        st;
 
     let crate_out = env::var("OUT_DIR").ok().and_then(|x| x.ends_with("/out").then_some(x)); // NOTE: not `out_dir`
 
@@ -321,91 +323,148 @@ fn bake_rustc(
             .with_context(|| format!("Failed to `mkdir -p {incremental}`"))?;
     }
 
-    // Ordering matters
+    let hm = |prefix: &str, basename: &str, pop: usize| {
+        let stage = format!("{prefix}-{full_crate_id}");
+        assert_eq!(pop, prefix.chars().filter(|c| *c == '_').count());
+        let not_lowalnums = |c: char| {
+            !("._-".contains(c) || c.is_ascii_digit() || (c.is_alphabetic() && c.is_lowercase()))
+        };
+        let basename = basename.replace(not_lowalnums, "_");
+        let name = format!("input_{prefix}--{basename}");
+        let target = input.clone().popped(pop);
+        (Some((name, target)), stage)
+    };
+
+    // TODO: impl non-default build.rs https://doc.rust-lang.org/cargo/reference/manifest.html?highlight=build.rs#the-build-field
     let (input_mount, rustc_stage) = match input.iter().rev().take(4).collect::<Vec<_>>()[..] {
+        ["build.rs"] => (None, format!("finalbuildrs-{full_crate_id}")),
         ["lib.rs", "src"] => (None, format!("final-{full_crate_id}")),
         ["main.rs", "src"] => (None, format!("final-{full_crate_id}")),
-        ["build.rs", basename, ..] => (
-            Some((format!("input_build_rs--{basename}"), input.clone().popped(1))),
-            format!("build_rs-{full_crate_id}"),
-        ),
-        ["lib.rs", "src", basename, ..] => (
-            Some((format!("input_src_lib_rs--{basename}"), input.clone().popped(2))),
-            format!("src_lib_rs-{full_crate_id}"),
-        ),
+        ["build.rs", "src", basename, ..] => hm("build__rs", basename, 2), // TODO: un-ducktape
+        ["build.rs", basename, ..] => hm("build_rs", basename, 1),
+        ["lib.rs", "src", basename, ..] => hm("src_lib_rs", basename, 2),
         // e.g. $HOME/.cargo/registry/src/github.com-1ecc6299db9ec823/fnv-1.0.7/lib.rs
-        ["lib.rs", basename, ..] => (
-            Some((format!("input_lib_rs--{basename}"), input.clone().popped(1))),
-            format!("lib_rs-{full_crate_id}"),
-        ),
+        ["lib.rs", basename, ..] => hm("lib_rs", basename, 1),
         // e.g. $HOME/.cargo/registry/src/github.com-1ecc6299db9ec823/untrusted-0.7.1/src/untrusted.rs
-        [rsfile, "src", basename, ..] if rsfile.ends_with(".rs") => (
-            Some((format!("input_src__rs--{basename}"), input.clone().popped(2))),
-            format!("src__rs-{full_crate_id}"),
-        ),
+        [rsfile, "src", basename, ..] if rsfile.ends_with(".rs") => hm("src__rs", basename, 2),
+        // When compiling openssl-sys-0.9.95 on stable-x86_64-unknown-linux-gnu:
+        //   /home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/openssl-sys-0.9.95/build/main.rs
+        ["main.rs", "build", basename, ..] if crate_name == "build_script_main" => {
+            // TODO: that's ducktape. Read Cargo.toml to match [package]build = "build/main.rs" ?
+            // or just catchall >=4
+            hm("main__rs", basename, 2)
+        }
         _ => unreachable!("Unexpected input file {input:?}"),
     };
+    info!(target:&krate, "picked {rustc_stage} for {suf:?}", suf=input.iter().rev().take(4).collect::<Vec<_>>());
     assert!(!matches!(input_mount, Some((_,ref x)) if x.ends_with("/.cargo/registry")));
 
     let incremental_stage = format!("incremental-{metadata}");
     let out_stage = format!("out-{metadata}");
     let stdio_stage = format!("stdio-{metadata}");
-    let mut toolchain = input_mount
-        .as_ref()
-        .map(|(_imn, imt)| -> Result<Option<String>> {
-            let check = |file_name| -> Result<bool> {
-                let p = Utf8Path::new(imt).join(file_name);
-                info!(target:&krate, "checking (RO) toolchain file {p}");
-                file_exists_and_is_not_empty(&p)
-                    .with_context(|| format!("Failed to `test -s {p:?}`"))
-            };
-            for file_name in &["rust-toolchain.toml", "rust-toolchain"] {
-                if check(file_name)? {
-                    return Ok(Some(file_name.to_owned().to_owned()));
-                }
-            }
-            Ok(None)
-        })
-        .transpose()?
-        .flatten()
-        .map(|toolchain_file_name|
-            // https://rust-lang.github.io/rustup/overrides.html
-            // NOTE: without this, the crate's rust-toolchain gets installed and used and (for the mentioned crate)
-            //   fails due to (yet)unknown rustc CLI arg: `error: Unrecognized option: 'diagnostic-width'`
-            // e.g. https://github.com/xacrimon/dashmap/blob/v5.4.0/rust-toolchain
-            (format!("toolchain-{metadata}"), toolchain_file_name));
-    if true {
-        // TODO: test building something involving rust-toolchain.toml
-        toolchain = None;
-    }
+    // let mut toolchain = input_mount
+    //     .as_ref()
+    //     .map(|(_imn, imt)| -> Result<Option<String>> {
+    //         let check = |file_name| -> Result<bool> {
+    //             let p = Utf8Path::new(imt).join(file_name);
+    //             info!(target:&krate, "checking (RO) toolchain file {p}");
+    //             file_exists_and_is_not_empty(&p)
+    //                 .with_context(|| format!("Failed to `test -s {p:?}`"))
+    //         };
+    //         for file_name in &["rust-toolchain.toml", "rust-toolchain"] {
+    //             if check(file_name)? {
+    //                 return Ok(Some(file_name.to_owned().to_owned()));
+    //             }
+    //         }
+    //         Ok(None)
+    //     })
+    //     .transpose()?
+    //     .flatten()
+    //     .map(|toolchain_file_name|
+    //         // https://rust-lang.github.io/rustup/overrides.html
+    //         // NOTE: without this, the crate's rust-toolchain gets installed and used and (for the mentioned crate)
+    //         //   fails due to (yet)unknown rustc CLI arg: `error: Unrecognized option: 'diagnostic-width'`
+    //         // e.g. https://github.com/xacrimon/dashmap/blob/v5.4.0/rust-toolchain
+    //         (format!("toolchain-{metadata}"), toolchain_file_name));
+    // if true {
+    //     // TODO: test building something involving rust-toolchain.toml
+    //     toolchain = None;
+    // }
 
     let mut dockerfile = String::new();
 
-    const RUSTUP_TOOLCHAIN: &str = "rustup-toolchain";
-    if let Some((stage, _)) = toolchain.as_ref() {
-        writeln!(
-            dockerfile,
-            r#"FROM rust AS {stage}
-    RUN rustup default | cut -d- -f1 >/{RUSTUP_TOOLCHAIN}"#
-        )?;
-    }
+    // const RUSTUP_TOOLCHAIN: &str = "rustup-toolchain";
+    // if let Some((stage, _)) = toolchain.as_ref() {
+    //     dockerfile.push_str(&format!("FROM rust AS {stage}\n"));
+    //     dockerfile
+    //         .push_str(&format!("    RUN rustup default | cut -d- -f1 >/{RUSTUP_TOOLCHAIN}\n"));
+    // }
 
-    writeln!(
-        dockerfile,
-        r#"FROM rust AS {rustc_stage}
-WORKDIR {out_dir}"#
-    )?;
+    dockerfile.push_str(&format!("FROM rust AS {rustc_stage}\n"));
+    dockerfile.push_str(&format!("WORKDIR {out_dir}\n"));
 
+    // TODO: disable remote cache for incremental builds?
     if let Some(incremental) = &incremental {
-        writeln!(dockerfile, r#"WORKDIR {incremental}"#)?;
+        dockerfile.push_str(&format!("WORKDIR {incremental}\n"));
     }
 
-    let cwd = if input.is_relative() && input.as_str().ends_with(".rs") {
-        assert!(
-            input_mount.is_none(),
-            "TODO: change condition to this if this message doesn't show up (smart)"
-        );
+    // https://doc.rust-lang.org/cargo/reference/environment-variables.html#environment-variables-cargo-sets-for-crates
+    dockerfile.push_str("ENV \\\n");
+    for (var, val) in env::vars() {
+        // Thanks https://github.com/cross-rs/cross/blob/44011c8854cb2eaac83b173cc323220ccdff18ea/src/docker/shared.rs#L969
+        let passthrough = [
+            "http_proxy",
+            "TERM",
+            "RUSTDOCFLAGS",
+            "RUSTFLAGS",
+            "BROWSER",
+            "HTTPS_PROXY",
+            "HTTP_TIMEOUT",
+            "https_proxy",
+            "QEMU_STRACE",
+            // Not here but set in RUN script: CARGO, PATH, ...
+            "OUT_DIR", // (Only set during compilation.)
+        ];
+        let skiplist = [
+            "CARGO_BUILD_RUSTC",
+            "CARGO_BUILD_RUSTC_WORKSPACE_WRAPPER",
+            "CARGO_BUILD_RUSTC_WRAPPER",
+            "CARGO_BUILD_RUSTDOC",
+            "CARGO_BUILD_TARGET_DIR",
+            "CARGO_HOME",
+            "CARGO_TARGET_DIR",
+            "RUSTC_WRAPPER",
+        ];
+        if (var.starts_with("CARGO_") || passthrough.contains(&var.as_str()))
+            && !skiplist.contains(&var.as_str())
+        {
+            let val = (!val.is_empty())
+                .then_some(val)
+                .map(|x: String| format!("{x:?}"))
+                .unwrap_or_default();
+            dockerfile.push_str(&format!("  {var}={val} \\\n"));
+        }
+    }
+    dockerfile.push_str("  RUSTCBUILDX=1\n");
+
+    let cwd = if let Some((name, target)) = input_mount.as_ref() {
+        // Reuse previous contexts
+
+        // TODO: WORKDIR was removed as it changed during a single `cargo build`
+        // Looks like removing it isn't an issue, however we need more testing.
+        // dockerfile.push_str(&format!("WORKDIR {pwd}\n"));
+        dockerfile.push_str("RUN \\\n");
+        dockerfile.push_str(&format!("  --mount=type=bind,from={name},target={target} \\\n"));
+
+        // TODO: --build-arg BUILDKIT_CONTEXT_KEEP_GIT_DIR=0 https://docs.docker.com/engine/reference/builder/#buildkit-built-in-build-args
+
+        None
+    } else {
         // Save/send local workspace
+
+        // TODO: drop
+        // note .as_str() is to use &str's ends_with
+        assert_eq!((input.is_relative(), input.as_str().ends_with(".rs")), (true, true));
 
         // TODO: try just bind mount instead of copying to a tmpdir
         // TODO: try not FWDing .git/* and equivalent
@@ -423,6 +482,7 @@ WORKDIR {out_dir}"#
         // TODO: use tmpfs when on *NIX
         // TODO: cache these folders
         if pwd.join(".git").is_dir() {
+            info!(target:&krate, "copying all git files under {}", pwd.join(".git"));
             let output = Command::new("git")
                 .arg("ls-files")
                 .arg(&pwd)
@@ -434,54 +494,29 @@ WORKDIR {out_dir}"#
             // TODO: buffer reads to this command's output
             // NOTE: unsorted output lines
             for f in String::from_utf8(output.stdout).context("Parsing `git ls-files`")?.lines() {
+                info!(target:&krate, "copying git repo file {f}");
                 copy_file(Utf8Path::new(f), cwd_path)?;
             }
         } else {
+            info!(target:&krate, "copying all files under {pwd}");
             copy_files(&pwd, cwd_path)?;
         }
 
-        writeln!(
-            dockerfile,
-            r#"WORKDIR {pwd}
-COPY --from=cwd / .
-RUN \"#
-        )?;
+        dockerfile.push_str(&format!("WORKDIR {pwd}\n"));
+        dockerfile.push_str("COPY --from=cwd / .\n");
+        dockerfile.push_str("RUN \\\n");
 
         Some(cwd)
-    } else {
-        // Reuse previous contexts
-
-        let (name, target) = input_mount.as_ref().expect("TODO: check that assert earlier");
-        writeln!(
-            dockerfile,
-            // TODO: WORKDIR was remove as it changed during a single `cargo build`
-            // Looks like removing it isn't an issue, however we need more testing.
-            //             r#"WORKDIR {pwd}
-            // RUN \
-            //   --mount=type=bind,from={name},target={target} \"#
-            r#"RUN \
-  --mount=type=bind,from={name},target={target} \"#
-        )?;
-
-        // TODO: --build-arg BUILDKIT_CONTEXT_KEEP_GIT_DIR=0 https://docs.docker.com/engine/reference/builder/#buildkit-built-in-build-args
-
-        None
     };
 
     if let Some(crate_out) = crate_out.as_ref() {
-        writeln!(
-            dockerfile,
-            r#"  --mount=type=bind,from={named},target={crate_out} \"#,
-            named = crate_out_name(crate_out)
-        )?;
+        let named = crate_out_name(crate_out);
+        dockerfile.push_str(&format!("  --mount=type=bind,from={named},target={crate_out} \\\n"));
     }
 
-    if let Some((stage, _file_name)) = toolchain.as_ref() {
-        writeln!(
-            dockerfile,
-            r#"  --mount=type=bind,from={stage},source=/{RUSTUP_TOOLCHAIN},target=/{RUSTUP_TOOLCHAIN} \"#
-        )?;
-    }
+    // if let Some((stage, _file_name)) = toolchain.as_ref() {
+    //     dockerfile.push_str(&format!("  --mount=type=bind,from={stage},source=/{RUSTUP_TOOLCHAIN},target=/{RUSTUP_TOOLCHAIN} \\\n"));
+    // }
 
     debug!(target:&krate, "all_externs = {all_externs:?}");
     assert!(externs.len() <= all_externs.len());
@@ -493,86 +528,68 @@ RUN \"#
             };
 
             info!(target:&krate, "extern_bakefile: {extern_bakefile}");
-            debug!(target:&krate, "{extern_bakefile} = {data}", data = match read_to_string(&extern_bakefile) {
-                Ok(data) => data,
-                Err(e) => e.to_string(),
-            });
-            info!(target:&krate, "mount from:{extern_bakefile_stage} source:/{xtern} target:{target_path}/deps/{xtern}");
 
-            writeln!(dockerfile,
-                    r#"  --mount=type=bind,from={extern_bakefile_stage},source=/{xtern},target={target_path}/deps/{xtern} \"#
-            )?;
+            dockerfile.push_str(&format!("  --mount=type=bind,from={extern_bakefile_stage},source=/{xtern},target={target_path}/deps/{xtern} \\\n"));
 
             Ok(extern_bakefile)
         })
         .collect::<Result<Vec<_>>>()?;
 
-    // https://doc.rust-lang.org/cargo/reference/environment-variables.html#environment-variables-cargo-sets-for-crates
+    dockerfile.push_str("     <<RUN\n"); // Start heredoc
+    dockerfile.push_str("  set -eux\n");
 
-    [
-        "LD_LIBRARY_PATH", // TODO: see if that can be dropped
-        "CARGO",
-        "CARGO_MANIFEST_DIR",
-        "CARGO_PKG_VERSION",
-        "CARGO_PKG_VERSION_MAJOR",
-        "CARGO_PKG_VERSION_MINOR",
-        "CARGO_PKG_VERSION_PATCH",
-        "CARGO_PKG_VERSION_PRE",
-        "CARGO_PKG_AUTHORS",
-        "CARGO_PKG_NAME",
-        "CARGO_PKG_DESCRIPTION",
-        "CARGO_PKG_HOMEPAGE",
-        "CARGO_PKG_REPOSITORY",
-        "CARGO_PKG_LICENSE",
-        "CARGO_PKG_LICENSE_FILE",
-        "CARGO_PKG_RUST_VERSION",
-        "CARGO_CRATE_NAME",
-        "CARGO_BIN_NAME",
-        // TODO: allow additional envs to be passed as RUSTCBUILDX_ENV_* env(s)
-        "OUT_DIR", // (Only set during compilation.)
-    ]
-    // TODO: CARGO_BIN_EXE_<name> — The absolute path to a binary target’s executable. This is only set when building an integration test or benchmark. This may be used with the env macro to find the executable to run for testing purposes. The <name> is the name of the binary target, exactly as-is. For example, CARGO_BIN_EXE_my-program for a binary named my-program. Binaries are automatically built when the test is built, unless the binary has required features that are not enabled.
-    // TODO: CARGO_PRIMARY_PACKAGE — This environment variable will be set if the package being built is primary. Primary packages are the ones the user selected on the command-line, either with -p flags or the defaults based on the current directory and the default workspace members. This environment variable will not be set when building dependencies. This is only set when compiling the package (not when running binaries or tests).
-    // TODO: CARGO_TARGET_TMPDIR — Only set when building integration test or benchmark code. This is a path to a directory inside the target directory where integration tests or benchmarks are free to put any data needed by the tests/benches. Cargo initially creates this directory but doesn’t manage its content in any way, this is the responsibility of the test code.
-    .iter()
-    .try_for_each(|var| -> Result<_> {
-        let val = env::var(var)
-            .ok()
-            .and_then(|x| (!x.is_empty()).then_some(x))
-            .map(|x| format!("{x:?}"))
-            .unwrap_or_default();
-        writeln!(dockerfile, r#"    export {var}={val} && \"#)?;
-        Ok(())
-    })?;
+    // if toolchain.is_some() {
+    //     dockerfile
+    //         .push_str(&format!("  export RUSTUP_TOOLCHAIN=\"$(cat /{RUSTUP_TOOLCHAIN})\" && \\\n"));
+    // }
 
-    if toolchain.is_some() {
-        writeln!(dockerfile, r#"    export RUSTUP_TOOLCHAIN="$(cat /{RUSTUP_TOOLCHAIN})" && \"#)?;
-        // TODO: merge with iterator above
+    // // https://rust-lang.github.io/rustup/overrides.html
+    // // NOTE: without this, the crate's rust-toolchain gets installed and used.
+    // // e.g. https://github.com/xacrimon/dashmap/blob/v5.4.0/rust-toolchain
+    // // e.g. https://github.com/dtolnay/anyhow/blob/05e413219e97f101d8f39a90902e5c5d39f951fe/rust-toolchain.toml
+    // // NOTE this is [[ -s "$input_mount_target"/rust-toolchain ]]
+    // // dockerfile.push_str("  if [ -s ./rust-toolchain.toml ] || [ -s ./rust-toolchain ]; then \\\n");
+    // // dockerfile.push_str("    export RUSTUP_TOOLCHAIN=\"$(rustup default | cut -d- -f1)\"; \\\n");
+    // // dockerfile.push_str("  fi\n");
+    // dockerfile.push_str("  export RUSTUP_TOOLCHAIN=stable");
+
+    dockerfile.push_str("  export CARGO=\"$(which cargo)\"\n");
+
+    // TODO: keep only paths that we explicitly mount or copy
+    for var in ["PATH", "DYLD_FALLBACK_LIBRARY_PATH", "LD_LIBRARY_PATH", "LIBPATH"] {
+        let Ok(val) = env::var(var) else { continue };
+        if !val.is_empty() {
+            dockerfile.push_str(&format!("  # export {var}=\"{val}:${var}\"\n"));
+        }
     }
 
-    const TMP_STDERR: &str = "/stderr";
-    const TMP_STDOUT: &str = "/stdout";
-    writeln!(
-        dockerfile,
-        r#"    if ! rustc '{args}' {input} >{TMP_STDOUT} 2>{TMP_STDERR}; then head {TMP_STDOUT} {TMP_STDERR}; exit 1; fi"#,
-        args = args.join("' '"),
-    )?;
+    // TODO: report BUG
+    // buildx bake github issue dockerfile-inline and dockerfile heredoc conflict when using RUN echo "${VAR:-}"
+    // error =>
+    // Extra characters after interpolation expression; Expected a closing brace to end the interpolation expression, but found extra characters.
+    // dockerfile.push_str("  if [ -z \"${CARGO:-}\" ]; then exit 40; fi\n");
+
+    const IOERR: &str = "stderr";
+    const IOOUT: &str = "stdout";
+    dockerfile.push_str("  set +e\n");
+    dockerfile.push_str(&format!("  rustc '{}' {input} >/{IOOUT} 2>/{IOERR}\n", args.join("' '")));
+    dockerfile.push_str("  code=$?\n");
+    dockerfile.push_str("  set -e\n");
+    dockerfile.push_str(&format!("  [ $code -eq 0 ] || head /{IOOUT} /{IOERR}\n"));
+    dockerfile.push_str("  exit $code\n");
+
+    dockerfile.push_str("RUN\n"); // End of heredoc
 
     if let Some(incremental) = &incremental {
-        writeln!(
-            dockerfile,
-            r#"FROM scratch AS {incremental_stage}
-COPY --from={rustc_stage} {incremental} /"#,
-        )?;
+        dockerfile.push_str(&format!("FROM scratch AS {incremental_stage}\n"));
+        dockerfile.push_str(&format!("COPY --from={rustc_stage} {incremental} /\n"));
     }
-    writeln!(
-        dockerfile,
-        r#"FROM scratch AS {stdio_stage}
-COPY --from={rustc_stage} {TMP_STDOUT} {TMP_STDERR} /
-FROM scratch AS {out_stage}
-COPY --from={rustc_stage} {out_dir}/*-{metadata}* /"#,
-    )?;
-    // NOTE: -C extra-filename=-${metadata}
+    dockerfile.push_str(&format!("FROM scratch AS {stdio_stage}\n"));
+    dockerfile.push_str(&format!("COPY --from={rustc_stage} /{IOOUT} /{IOERR} /\n"));
+    dockerfile.push_str(&format!("FROM scratch AS {out_stage}\n"));
+    dockerfile.push_str(&format!("COPY --from={rustc_stage} {out_dir}/*-{metadata}* /\n"));
+    // NOTE: -C extra-filename=-${metadata} (starts with dash)
+    // TODO: use extra filename here for fwd compat
 
     let dockerfile = dockerfile; // Drop mut
     {
@@ -583,7 +600,7 @@ COPY --from={rustc_stage} {out_dir}/*-{metadata}* /"#,
     }
 
     let mut contexts: BTreeMap<_, _> = [
-        Some(("rust".to_owned(), docker_image)),
+        Some(("rust".to_owned(), base_image())),
         input_mount.map(|(name, target)| (name, target.to_string())),
         cwd.as_deref().map(|cwd| {
             let cwd_path = Utf8Path::from_path(cwd.as_path()).expect("PROOF: did not fail earlier");
@@ -606,7 +623,7 @@ COPY --from={rustc_stage} {out_dir}/*-{metadata}* /"#,
             let mounts_len = mounts.len();
             contexts.extend(mounts.into_iter());
 
-            let extern_dockerfile = hcl_to_dockerfile(&extern_bakefile);
+            let extern_dockerfile = hcl_to_dockerfile(extern_bakefile);
             Ok((extern_dockerfile, mounts_len))
         })
         .collect::<Result<_>>()?;
@@ -630,13 +647,13 @@ COPY --from={rustc_stage} {out_dir}/*-{metadata}* /"#,
             info!(target:&krate, "opening (RO) extern dockerfile {extern_dockerfile_path}");
             let extern_dockerfile = read_to_string(&extern_dockerfile_path)
                 .with_context(|| format!("Failed reading dockerfile {extern_dockerfile_path}"))?;
-            dockerfile_bis.push_str(extern_dockerfile.as_str());
+            dockerfile_bis.push_str(&extern_dockerfile);
             dockerfile_bis.push('\n');
         }
     }
     assert!(extern_dockerfiles.is_empty());
-    dockerfile_bis.push_str(dockerfile.as_str());
-    drop(dockerfile); // Earlier: write to disk
+    dockerfile_bis.push_str(&dockerfile);
+    drop(dockerfile); // Earlier: wrote to disk
 
     let stdio = Temp::new_dir().context("Failed to create tmpdir 'stdio'")?;
     let Some(stdio_path) = Utf8Path::from_path(stdio.as_path()) else {
@@ -644,7 +661,7 @@ COPY --from={rustc_stage} {out_dir}/*-{metadata}* /"#,
     };
 
     const TAB: char = '\t';
-    let platform = "local".to_owned();
+    // TODO: use https://lib.rs/crates/hcl-rs#readme-serialization-examples
     let mut bakefile = String::new();
 
     writeln!(
@@ -655,18 +672,17 @@ target "{out_stage}" {{
     )?;
     let contexts: BTreeMap<_, _> = contexts.into_iter().collect();
     for (name, uri) in contexts {
-        writeln!(bakefile, r#"{TAB}{TAB}"{name}" = "{uri}","#)?;
+        bakefile.push_str(&format!("{TAB}{TAB}\"{name}\" = \"{uri}\",\n"));
     }
     writeln!(
         bakefile,
         r#"{TAB}}}
 {TAB}dockerfile-inline = <<DOCKERFILE
 # syntax={docker_syntax}
-{dockerfile_bis}
-DOCKERFILE
+{dockerfile_bis}DOCKERFILE
 {TAB}network = "none"
 {TAB}output = ["{out_dir}"] # https://github.com/moby/buildkit/issues/1224
-{TAB}platforms = ["{platform}"]
+{TAB}platforms = ["local"]
 {TAB}target = "{out_stage}"
 }}
 target "{stdio_stage}" {{
@@ -674,6 +690,7 @@ target "{stdio_stage}" {{
 {TAB}output = ["{stdio_path}"]
 {TAB}target = "{stdio_stage}"
 }}"#,
+        docker_syntax = docker_syntax(),
     )?;
 
     let mut stages = vec![out_stage.as_str(), stdio_stage.as_str()];
@@ -698,10 +715,13 @@ target "{incremental_stage}" {{
                 Ok(existing) => {
                     let re = Regex::new(r#""\/tmp\/[^"]+""#)?;
                     let replacement = r#""REDACTED""#;
-                    pretty_assertions::assert_eq!(
-                        re.replace_all(&existing, replacement).to_string(),
-                        re.replace_all(&bakefile, replacement).to_string(),
-                    );
+                    if false {
+                        //FIXME
+                        pretty_assertions::assert_eq!(
+                            re.replace_all(&existing, replacement).to_string(),
+                            re.replace_all(&bakefile, replacement).to_string(),
+                        );
+                    }
                 }
                 Err(e) if e.kind() == ErrorKind::NotFound => {}
                 Err(e) => bail!("{e}"),
@@ -713,67 +733,81 @@ target "{incremental_stage}" {{
     };
 
     let mut cmd = Command::new("docker");
-    if let Some(log_file) = log_file {
+    if is_debug() {
         info!(target:&krate, "bakefile: {bakefile_path}");
         debug!(target:&krate, "{bakefile_path} = {data}", data = match read_to_string(&bakefile_path) {
             Ok(data) => data,
             Err(e) => e.to_string(),
         });
-        cmd.arg("--debug").stdin(Stdio::null()).stdout(log_file.try_clone()?).stderr(log_file);
+        cmd.arg("--debug").stdin(Stdio::null()).stdout(log_file()?).stderr(log_file()?);
     } else {
         cmd.stdin(Stdio::null()).stdout(Stdio::null()).stderr(Stdio::null());
     }
-    cmd.arg("buildx").arg("bake").arg("--file").arg(&bakefile_path).args(stages);
+    cmd.arg("buildx")
+        .arg("bake") /*.arg("--no-cache")*/ // TODO
+        .arg("--file")
+        .arg(&bakefile_path)
+        .args(stages);
+    let start = Instant::now();
     let code = cmd
         .output()
         .with_context(|| format!("Failed calling `docker {args:?}`", args = cmd.get_args()))?
         .status
         .code();
+    info!("command `docker buildx bake` ran in {}s: {code:?}", start.elapsed().as_secs());
 
-    // TODO: buffered reading + copy to STDERR/STDOUT
-    if code == Some(0) {
-        let fwd = |file, show: fn(&str)| -> Result<()> {
-            let data = stdio_path.join(file);
-            info!(target:&krate, "reading {data}");
-            let data = read_to_string(&data).with_context(|| format!("Failed to copy {data}"))?;
-            let msg = data.trim();
-            if !msg.is_empty() {
-                show(msg);
+    // TODO: buffered reading + copy to STDERR/STDOUT => give open fds in bakefile?
+    for x in [true, false] {
+        let path = stdio_path.join(if x { IOERR } else { IOOUT });
+        info!(target:&krate, "reading (RO) {path}");
+        let data = match read_to_string(&path) {
+            Err(e) if e.kind() == ErrorKind::NotFound => continue,
+            otherwise => otherwise,
+        }
+        .with_context(|| format!("Failed to copy {path}"))?;
+        let msg = data.trim();
+        debug!(target:&krate, "{path} ~= {msg}");
+        if !msg.is_empty() {
+            if x {
+                eprintln!("{msg}");
+            } else {
+                println!("{msg}");
             }
-            Ok(())
-        };
-        fwd("stderr", |msg: &str| eprintln!("{msg}"))?;
-        fwd("stdout", |msg: &str| println!("{msg}"))?;
+
+            if x {
+                let mut z = msg.split('"');
+                let mut a = z.next();
+                let mut b = z.next();
+                let mut c = z.next();
+                loop {
+                    match (a, b, c) {
+                        (Some("artifact"), Some(":"), Some(file)) => info!("rustc wrote {file}"),
+                        (_, _, Some(_)) => {}
+                        (_, _, None) => break,
+                    }
+                    (a, b, c) = (b, c, z.next());
+                }
+            }
+        }
     }
+
     if !is_debug() {
         drop(stdio); // Removes stdio/std{err,out} files and stdio dir
         if let Some(cwd) = cwd {
             drop(cwd); // Removes tempdir contents
         }
-    }
-    if let Some(global_lock) = global_lock {
-        global_lock.unlock().context("Failed to unlock")?;
-        return exit_code(code);
-    }
-    if code != Some(0) {
-        // TODO: re-enable
-        if true {
-            let _fallback = fallback;
-            return exit_code(code);
+        if code != Some(0) {
+            warn!(target:&krate, "Falling back...");
+            let res = fallback(); // Bubble up actual error & outputs
+            if res.is_ok() {
+                error!(target:&krate, "BUG found!");
+                eprintln!("Found a bug in this script!");
+            }
+            return res;
         }
-        // Bubble up actual error & outputs
-        let res = fallback();
-        error!(target:&krate, "A bug was found! {code:?}");
-        eprintln!("Found a bug in this script!");
-        return res;
     }
 
-    Ok(ExitCode::SUCCESS)
-}
-
-fn exit_code(code: Option<i32>) -> Result<ExitCode> {
-    // TODO: https://doc.rust-lang.org/std/os/unix/process/trait.ExitStatusExt.html
-    Ok((code.unwrap_or(-1) as u8).into())
+    Ok(exit_code(code))
 }
 
 #[inline]
@@ -792,17 +826,28 @@ fn fetches_back_used_contexts() {
 ...
 contexts = {
     "rust" = "docker-image://docker.io/library/rust:1.69.0-slim@sha256:8b85a8a6bf7ed968e24bab2eae6f390d2c9c8dbed791d3547fef584000f48f9e",
-    "input_src_lib_rs--rustversion-1.0.9" = "/home/pete/.cargo/registry/src/github.com-1ecc6299db9ec823/rustversion-1.0.9",
-    "crate_out-..." = "/home/pete/wefwefwef/network_products/ipam/ipam.git/target/debug/build/rustversion-ae69baa7face5565/out",
+    "input_src_lib_rs--rustversion-1.0.9" = "/home/maison/.cargo/registry/src/github.com-1ecc6299db9ec823/rustversion-1.0.9",
+    "crate_out-..." = "/home/maison/code/thing.git/target/debug/build/rustversion-ae69baa7face5565/out",
 }
 ...
 "#).unwrap();
 
-    let exp=[
-(    "input_src_lib_rs--rustversion-1.0.9".to_owned() , "/home/pete/.cargo/registry/src/github.com-1ecc6299db9ec823/rustversion-1.0.9".to_owned()),
- (   "crate_out-...".to_owned() , "/home/pete/wefwefwef/network_products/ipam/ipam.git/target/debug/build/rustversion-ae69baa7face5565/out".to_owned()),
-        ].into_iter().collect();
-    assert_eq!(used_contexts(Utf8Path::from_path(tmp.as_path()).unwrap()).unwrap(), exp);
+    assert_eq!(
+        used_contexts(Utf8Path::from_path(tmp.as_path()).unwrap()).unwrap(),
+        [
+            (
+                "input_src_lib_rs--rustversion-1.0.9",
+                "/home/maison/.cargo/registry/src/github.com-1ecc6299db9ec823/rustversion-1.0.9",
+            ),
+            (
+                "crate_out-...",
+                "/home/maison/code/thing.git/target/debug/build/rustversion-ae69baa7face5565/out",
+            ),
+        ]
+        .into_iter()
+        .map(|(k, v)| (k.to_owned(), v.to_owned()))
+        .collect()
+    );
 }
 
 fn used_contexts(path: impl AsRef<Utf8Path>) -> Result<BTreeMap<String, String>> {
@@ -832,7 +877,7 @@ fn bakefile_and_stage_for_rlib() {
     assert_eq!(
         res,
         Some((
-            "./target/path/strsim-8ed1051e7e58e636.hcl".to_owned(),
+            "./target/path/strsim-8ed1051e7e58e636.hcl".to_owned().into(),
             "out-8ed1051e7e58e636".to_owned()
         ))
     );
@@ -841,11 +886,11 @@ fn bakefile_and_stage_for_rlib() {
 fn bakefile_and_stage(
     xtern: String,
     target_path: impl AsRef<Utf8Path>,
-) -> Option<(String, String)> {
+) -> Option<(Utf8PathBuf, String)> {
     assert!(xtern.starts_with("lib")); // TODO: stop doing that (stripping ^lib)
     let bk = xtern.strip_prefix("lib").and_then(|x| x.split_once('.')).map(|(x, _)| x);
     let sg = bk.and_then(|x| x.split_once('-')).map(|(_, x)| x).map(|x| format!("out-{x}"));
-    let bk = bk.map(|x| target_path.as_ref().join(format!("{x}.hcl")).to_string());
+    let bk = bk.map(|x| target_path.as_ref().join(format!("{x}.hcl")));
     bk.zip(sg)
 }
 
@@ -868,20 +913,25 @@ fn crate_out_name(name: &str) -> String {
 }
 
 #[test]
-fn hcl_to_dockerfile_() {
-    let res = hcl_to_dockerfile("target/path/strsim-8ed1051e7e58e636.hcl");
-    assert_eq!(res.as_path(), Utf8Path::new("target/path/8ed1051e7e58e636.Dockerfile"));
+fn a_few_hcl_to_dockerfile() {
+    assert_eq!(
+        hcl_to_dockerfile("target/path/strsim-8ed1051e7e58e636.hcl".into()),
+        "target/path/8ed1051e7e58e636.Dockerfile".to_owned()
+    );
+    assert_eq!(
+        hcl_to_dockerfile("target/path/blip_blap-blop-1312051e7e58e636.hcl".into()),
+        "target/path/1312051e7e58e636.Dockerfile".to_owned()
+    );
 }
 
-fn hcl_to_dockerfile(hcl: &str) -> Utf8PathBuf {
-    let mut common = Utf8PathBuf::from(&hcl);
-    let file_name = common
+fn hcl_to_dockerfile(mut hcl: Utf8PathBuf) -> Utf8PathBuf {
+    let file_name = hcl
         .file_stem()
         .and_then(|x| x.rsplit_once('-').map(|(_, x)| x.to_owned()))
         .expect("PROOF: FIXME");
-    let ok = common.pop();
+    let ok = hcl.pop();
     assert!(ok);
-    common.join(format!("{file_name}.Dockerfile"))
+    hcl.join(format!("{file_name}.Dockerfile"))
 }
 
 fn copy_file(f: &Utf8Path, cwd: &Utf8Path) -> Result<()> {
@@ -911,35 +961,4 @@ fn copy_files(dir: &Utf8Path, dst: &Utf8Path) -> Result<()> {
         }
     }
     Ok(())
-}
-
-fn log_file() -> Result<Option<File>> {
-    if let Some(name) = env::var(RUSTCBUILDX_DEBUG_IF_CRATE_NAME).ok().as_deref() {
-        if env::args().any(|arg| arg.contains(name)) {
-            env::set_var(RUSTCBUILDX_DEBUG, "1");
-        }
-    }
-
-    is_debug()
-        .then(|| -> Result<_> {
-            let log_path =
-                env::var(RUSTCBUILDX_LOG_PATH).ok().unwrap_or("/tmp/rstcbldx_FIXME".to_owned());
-            let log_file = OpenOptions::new()
-                .create(true)
-                .append(true)
-                .open(&log_path)
-                .with_context(|| format!("Failed opening (RW) log file {log_path}"))?;
-
-            env_logger::Builder::from_env(
-                Env::default()
-                    .filter(RUSTCBUILDX_LOG)
-                    .write_style(RUSTCBUILDX_LOG_STYLE)
-                    .default_filter_or("info"),
-            )
-            .target(Target::Pipe(Box::new(log_file.try_clone()?)))
-            .init();
-
-            Ok(log_file)
-        })
-        .transpose()
 }

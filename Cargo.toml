@@ -8,7 +8,7 @@ categories = [
 	"concurrency",
 	"development-tools::build-utils",
 ]
-description = "RUSTC_WRAPPER tool to sandbox cargo builds and execute jobs remotely"
+description = "$RUSTC_WRAPPER tool to sandbox cargo builds and execute jobs remotely"
 edition = "2021"
 keywords = [
 	"build",
@@ -21,15 +21,23 @@ keywords = [
 license = "MIT"
 repository = "https://github.com/fenollp/rustcbuildx"
 
+# [profile.release]
+# codegen-units = 1
+# Try tuning rustc codegen options to optimize for speed (suggest mold?)
+# https://doc.rust-lang.org/nightly/rustc/codegen-options/index.html#codegen-units
+# https://doc.rust-lang.org/nightly/rustc/codegen-options/index.html#embed-bitcode
+# https://doc.rust-lang.org/nightly/rustc/codegen-options/index.html#instrument-coverage
+# https://doc.rust-lang.org/nightly/rustc/codegen-options/index.html#link-arg
+# https://doc.rust-lang.org/nightly/rustc/codegen-options/index.html#linker
+
 [dependencies]
-advisory-lock = "0.3"
 anyhow = "1"
 camino = "1"
 env_logger = "0.10"
 log = "0.4"
 mktemp = "0.5"
 pretty_assertions = "1" # TODO: drop once !dbg
-regex = "1"
+regex = "1" # TODO: drop once !dbg
 
 [dev-dependencies]
 pretty_assertions = "1"

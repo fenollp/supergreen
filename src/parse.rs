@@ -61,9 +61,7 @@ pub(crate) fn as_rustc(
             (s_e, key, val) = (!s_e, lhs.to_owned(), rhs.to_owned());
         }
 
-        if val.is_empty()
-            && (key.starts_with('/') || key.ends_with("src/lib.rs") || key.ends_with("src/main.rs"))
-        {
+        if val.is_empty() && (key.starts_with('/') || key.ends_with(".rs")) {
             assert_eq!(state.input, "");
             // For e.g. $HOME/.cargo/registry/src/github.com-1ecc6299db9ec823/ahash-0.7.6/./build.rs
             state.input = key.as_str().replace("/./", "/").into();
@@ -135,6 +133,8 @@ pub(crate) fn as_rustc(
             }
             "--extern" => {
                 if ["alloc", "core", "proc_macro", "std", "test"].contains(&val.as_str()) {
+                    args.push(key.clone());
+                    args.push(val);
                     continue; // Sysroot crates (e.g. https://doc.rust-lang.org/proc_macro)
                 }
 
@@ -179,18 +179,6 @@ pub(crate) fn as_rustc(
     assert!(!state.incremental.as_ref().map(|x| x == "").unwrap_or_default()); // MAY be unset: only set on last calls
     assert_ne!(state.input, "");
     assert_ne!(state.out_dir, "");
-
-    // https://github.com/rust-lang/cargo/issues/12099
-    // Sometimes, a proc-macro crate that depends on sysroot crate `proc_macro` is missing `--extern proc_macro` rustc flag.
-    // So add it here or it won't compile. (e.g. openssl-macros-0.1.0-024d32b3f7af0a4f)
-    // {"message":"unresolved import `proc_macro`","code":{"code":"E0432","explanation":"An import was unresolved.\n\nErroneous code example:\n\n```compile_fail,E0432\nuse something::Foo; // error: unresolved import `something::Foo`.\n```\n\nIn Rust 2015, paths in `use` statements are relative to the crate root. To\nimport items relative to the current and parent modules, use the `self::` and\n`super::` prefixes, respectively.\n\nIn Rust 2018 or later, paths in `use` statements are relative to the current\nmodule unless they begin with the name of a crate or a literal `crate::`, in\nwhich case they start from the crate root. As in Rust 2015 code, the `self::`\nand `super::` prefixes refer to the current and parent modules respectively.\n\nAlso verify that you didn't misspell the import name and that the import exists\nin the module from where you tried to import it. Example:\n\n```\nuse self::something::Foo; // Ok.\n\nmod something {\n    pub struct Foo;\n}\n# fn main() {}\n```\n\nIf you tried to use a module from an external crate and are using Rust 2015,\nyou may have missed the `extern crate` declaration (which is usually placed in\nthe crate root):\n\n```edition2015\nextern crate core; // Required to use the `core` crate in Rust 2015.\n\nuse core::any;\n# fn main() {}\n```\n\nSince Rust 2018 the `extern crate` declaration is not required and\nyou can instead just `use` it:\n\n```edition2018\nuse core::any; // No extern crate required in Rust 2018.\n# fn main() {}\n```\n"},"level":"error","spans":[{"file_name":"/home/pete/.cargo/registry/src/github.com-1ecc6299db9ec823/openssl-macros-0.1.0/src/lib.rs","byte_start":4,"byte_end":14,"line_start":1,"line_end":1,"column_start":5,"column_end":15,"is_primary":true,"text":[{"text":"use proc_macro::TokenStream;","highlight_start":5,"highlight_end":15}],"label":"use of undeclared crate or module `proc_macro`","suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"there is a crate or module with a similar name","code":null,"level":"help","spans":[{"file_name":"/home/pete/.cargo/registry/src/github.com-1ecc6299db9ec823/openssl-macros-0.1.0/src/lib.rs","byte_start":4,"byte_end":14,"line_start":1,"line_end":1,"column_start":5,"column_end":15,"is_primary":true,"text":[{"text":"use proc_macro::TokenStream;","highlight_start":5,"highlight_end":15}],"label":null,"suggested_replacement":"proc_macro2","suggestion_applicability":"MaybeIncorrect","expansion":null}],"children":[],"rendered":null}],"rendered":"error[E0432]: unresolved import `proc_macro`\n --> /home/pete/.cargo/registry/src/github.com-1ecc6299db9ec823/openssl-macros-0.1.0/src/lib.rs:1:5\n  |\n1 | use proc_macro::TokenStream;\n  |     ^^^^^^^^^^ use of undeclared crate or module `proc_macro`\n  |\nhelp: there is a crate or module with a similar name\n  |\n1 | use proc_macro2::TokenStream;\n  |     ~~~~~~~~~~~\n\n"}
-    if state.crate_type == "proc-macro"
-        && !arguments.iter().any(|arg| arg == "--extern=proc_macro")
-    // TODO: just in-loop set has_extern_proc_macro
-        && !arguments.to_vec().join(" ").contains("--extern proc_macro")
-    {
-        args.append(&mut vec!["--extern".to_owned(), "proc_macro".to_owned()]);
-    }
 
     // Can't rely on $PWD nor $CARGO_TARGET_DIR because `cargo` changes them.
     // Out dir though...
@@ -461,5 +449,216 @@ mod tests {
                 "-L", "dependency=$PWD/target/debug/deps",
                 "--cap-lints", "warn",
              ]));
+    }
+
+    #[test]
+    fn args_when_building_proc_macro() {
+        #[rustfmt::skip]
+        // Original ordering per rustc 1.73.0
+        let arguments = as_arguments(&[
+            "rustcbuildx",
+            "$HOME/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/rustc",
+            "--crate-name", "time_macros",
+            "--edition=2021",
+            "$HOME/.cargo/registry/src/index.crates.io-6f17d22bba15001f/time-macros-0.2.14/src/lib.rs",
+            "--error-format=json",
+            "--json=diagnostic-rendered-ansi,artifacts,future-incompat",
+            "--diagnostic-width=211",
+            "--crate-type", "proc-macro",
+            "--emit=dep-info,link",
+            "-C", "prefer-dynamic",
+            "-C", "embed-bitcode=no",
+            "-C", "debug-assertions=off",
+            "--cfg", "'feature=\"formatting\"'",
+            "--cfg", "'feature=\"parsing\"'",
+            "-C", "metadata=89438a15ab938e2f",
+            "-C", "extra-filename=-89438a15ab938e2f",
+            "--out-dir", "/tmp/wfrefwef__cargo-deny_0-14-3/release/deps",
+            "-C", "linker=/usr/bin/clang",
+            "-L", "dependency=/tmp/wfrefwef__cargo-deny_0-14-3/release/deps",
+            "--extern", "time_core=/tmp/wfrefwef__cargo-deny_0-14-3/release/deps/libtime_core-c880e75c55528c08.rlib",
+            "--extern", "proc_macro", // oh hi
+            "--cap-lints", "warn",
+            "-C", "link-arg=-fuse-ld=/usr/local/bin/mold",
+        ]);
+
+        let (st, args) = as_rustc(PWD, "time_macros", arguments.clone(), false).unwrap();
+
+        assert_eq!(
+            st,
+            RustcArgs {
+                crate_type: "proc-macro".to_owned(),
+                emit: "dep-info,link".to_owned(),
+                externs: ["libtime_core-c880e75c55528c08.rlib".to_owned()].into(),
+                metadata: "89438a15ab938e2f".to_owned(),
+                incremental: None,
+                input: as_argument("$HOME/.cargo/registry/src/index.crates.io-6f17d22bba15001f/time-macros-0.2.14/src/lib.rs").into(),
+                out_dir: as_argument("/tmp/wfrefwef__cargo-deny_0-14-3/release/deps").into(),
+                target_path: as_argument("/tmp/wfrefwef__cargo-deny_0-14-3/release").into(),
+            }
+        );
+
+        #[rustfmt::skip]
+        assert_eq!(as_arguments(&[
+                "rustcbuildx",
+                "$HOME/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/rustc",
+                "--crate-name", "time_macros",
+                "--edition", "2021",
+                "--error-format", "json",
+                "--json", "diagnostic-rendered-ansi,artifacts,future-incompat",
+                "--diagnostic-width", "211",
+                "--crate-type", "proc-macro",
+                "--emit", "dep-info,link",
+                "-C", "prefer-dynamic",
+                "-C", "embed-bitcode=no",
+                "-C", "debug-assertions=off",
+                "--cfg", "'feature=\"formatting\"'",
+                "--cfg", "'feature=\"parsing\"'",
+                "-C", "metadata=89438a15ab938e2f",
+                "-C", "extra-filename=-89438a15ab938e2f",
+                "--out-dir", "/tmp/wfrefwef__cargo-deny_0-14-3/release/deps",
+                "-L", "dependency=/tmp/wfrefwef__cargo-deny_0-14-3/release/deps",
+                "--extern", "time_core=/tmp/wfrefwef__cargo-deny_0-14-3/release/deps/libtime_core-c880e75c55528c08.rlib",
+                "--extern", "proc_macro", // oh hi
+                "--cap-lints", "warn",
+             ]), args);
+    }
+
+    #[test]
+    fn args_when_building_that_buildrs() {
+        #[rustfmt::skip]
+        // Original ordering per rustc 1.73.0
+        let arguments = as_arguments(&[
+            "rustcbuildx",
+            "$HOME/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/rustc",
+            "--crate-name", "build_script_build",
+            "--edition=2021",
+            "src/build.rs",
+            "--error-format=json",
+            "--json=diagnostic-rendered-ansi,artifacts,future-incompat",
+            "--diagnostic-width=211",
+            "--crate-type", "bin",
+            "--emit=dep-info,link",
+            "-C", "embed-bitcode=no",
+            "-C", "debug-assertions=off",
+            "--cfg", "feature=\"default\"",
+            "-C", "metadata=96fe5c8493f1a08f",
+            "-C", "extra-filename=-96fe5c8493f1a08f",
+            "--out-dir", "/tmp/wfrefwef__cross@0.2.5/release/build/cross-96fe5c8493f1a08f",
+            "-C", "linker=/usr/bin/clang",
+            "-L", "dependency=/tmp/wfrefwef__cross@0.2.5/release/deps",
+            "-C", "link-arg=-fuse-ld=/usr/local/bin/mold",
+        ]);
+
+        let (st, args) = as_rustc(PWD, "build_script_build", arguments.clone(), false).unwrap();
+
+        assert_eq!(
+            st,
+            RustcArgs {
+                crate_type: "bin".to_owned(),
+                emit: "dep-info,link".to_owned(),
+                externs: Default::default(),
+                metadata: "96fe5c8493f1a08f".to_owned(),
+                incremental: None,
+                input: as_argument("src/build.rs").into(),
+                out_dir: as_argument(
+                    "/tmp/wfrefwef__cross@0.2.5/release/build/cross-96fe5c8493f1a08f"
+                )
+                .into(),
+                target_path: as_argument("/tmp/wfrefwef__cross@0.2.5/release").into(),
+            }
+        );
+
+        #[rustfmt::skip]
+        assert_eq!(as_arguments(&[
+                "rustcbuildx",
+                "$HOME/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/rustc",
+                "--crate-name", "build_script_build",
+                "--edition", "2021",
+                "--error-format", "json",
+                "--json", "diagnostic-rendered-ansi,artifacts,future-incompat",
+                "--diagnostic-width", "211",
+                "--crate-type", "bin",
+                "--emit", "dep-info,link",
+                "-C", "embed-bitcode=no",
+                "-C", "debug-assertions=off",
+                "--cfg", "feature=\"default\"",
+                "-C", "metadata=96fe5c8493f1a08f",
+                "-C", "extra-filename=-96fe5c8493f1a08f",
+                "--out-dir", "/tmp/wfrefwef__cross@0.2.5/release/build/cross-96fe5c8493f1a08f",
+                "-L", "dependency=/tmp/wfrefwef__cross@0.2.5/release/deps",
+             ]), args);
+    }
+
+    #[test]
+    fn args_when_build_script_main() {
+        #[rustfmt::skip]
+        // Original ordering per rustc 1.73.0
+        let arguments = as_arguments(&[
+            "$HOME/work/rustcbuildx/rustcbuildx/rustcbuildx",
+            "$HOME/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/rustc",
+            "--crate-name", "build_script_main",
+            "--edition=2018",
+            "$HOME/.cargo/registry/src/index.crates.io-6f17d22bba15001f/openssl-sys-0.9.95/build/main.rs",
+            "--error-format=json",
+            "--json=diagnostic-rendered-ansi,artifacts,future-incompat",
+            "--crate-type", "bin",
+            "--emit=dep-info,link",
+            "-C", "embed-bitcode=no",
+            "-C", "debug-assertions=off",
+            "-C", "metadata=99f749eccead4467",
+            "-C", "extra-filename=-99f749eccead4467",
+            "--out-dir", "$HOME/instst/release/build/openssl-sys-99f749eccead4467",
+            "-L", "dependency=$HOME/instst/release/deps",
+            "--extern", "cc=$HOME/instst/release/deps/libcc-3c316ebdde73b0fe.rlib",
+            "--extern", "pkg_config=%HOME/instst/release/deps/libpkg_config-a6962381fee76247.rlib",
+            "--extern", "vcpkg=$HOME/instst/release/deps/libvcpkg-ebcbc23bfdf4209b.rlib",
+            "--cap-lints", "warn",
+        ]);
+
+        let (st, args) = as_rustc(PWD, "build_script_main", arguments.clone(), false).unwrap();
+
+        assert_eq!(
+            st,
+            RustcArgs {
+                crate_type: "bin".to_owned(),
+                emit: "dep-info,link".to_owned(),
+                externs: [
+                    "libcc-3c316ebdde73b0fe.rlib".to_owned(),
+                    "libpkg_config-a6962381fee76247.rlib".to_owned(),
+                    "libvcpkg-ebcbc23bfdf4209b.rlib".to_owned(),
+                ].into(),
+                metadata: "99f749eccead4467".to_owned(),
+                incremental: None,
+                input: as_argument("$HOME/.cargo/registry/src/index.crates.io-6f17d22bba15001f/openssl-sys-0.9.95/build/main.rs").into(),
+                out_dir: as_argument(
+                    "$HOME/instst/release/build/openssl-sys-99f749eccead4467"
+                )
+                .into(),
+                target_path: as_argument("$HOME/instst/release").into(),
+            }
+        );
+
+        #[rustfmt::skip]
+        assert_eq!(as_arguments(&[
+                "$HOME/work/rustcbuildx/rustcbuildx/rustcbuildx",
+                "$HOME/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/rustc",
+                "--crate-name", "build_script_main",
+                "--edition", "2018",
+                "--error-format", "json",
+                "--json", "diagnostic-rendered-ansi,artifacts,future-incompat",
+                "--crate-type", "bin",
+                "--emit", "dep-info,link",
+                "-C", "embed-bitcode=no",
+                "-C", "debug-assertions=off",
+                "-C", "metadata=99f749eccead4467",
+                "-C", "extra-filename=-99f749eccead4467",
+                "--out-dir", "$HOME/instst/release/build/openssl-sys-99f749eccead4467",
+                "-L", "dependency=$HOME/instst/release/deps",
+                "--extern", "cc=$HOME/instst/release/deps/libcc-3c316ebdde73b0fe.rlib",
+                "--extern", "pkg_config=%HOME/instst/release/deps/libpkg_config-a6962381fee76247.rlib",
+                "--extern", "vcpkg=$HOME/instst/release/deps/libvcpkg-ebcbc23bfdf4209b.rlib",
+                "--cap-lints", "warn",
+             ]), args);
     }
 }

@@ -1,3 +1,0 @@
-[env]
-RUSTC_STAGE = "1" # For dependency.anyhow = "1": hack to not have its build.rs attempt calling a nightly rustc
-# https://github.com/dtolnay/anyhow/blob/05e413219e97f101d8f39a90902e5c5d39f951fe/build.rs#L71

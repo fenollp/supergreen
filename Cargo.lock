@@ -3,16 +3,6 @@
 version = 3
 
 [[package]]
-name = "advisory-lock"
-version = "0.3.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a6caee7d48f930f9ad3fc9546f8cbf843365da0c5b0ca4eee1d1ac3dd12d8f93"
-dependencies = [
- "libc",
- "winapi",
-]
-
-[[package]]
 name = "aho-corasick"
 version = "1.1.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -184,7 +174,6 @@ checksum = "c08c74e62047bb2de4ff487b251e4a92e24f48745648451635cec7d591162d9f"
 name = "rustcbuildx"
 version = "0.1.0"
 dependencies = [
- "advisory-lock",
  "anyhow",
  "camino",
  "env_logger",
