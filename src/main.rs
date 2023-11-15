@@ -781,7 +781,9 @@ target "{incremental_stage}" {{
                 let mut c = z.next();
                 loop {
                     match (a, b, c) {
-                        (Some("artifact"), Some(":"), Some(file)) => info!("rustc wrote {file}"),
+                        (Some("artifact"), Some(":"), Some(file)) => {
+                            info!(target:&krate, "rustc wrote {file}")
+                        }
                         (_, _, Some(_)) => {}
                         (_, _, None) => break,
                     }
