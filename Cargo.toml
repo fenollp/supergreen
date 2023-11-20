@@ -23,6 +23,7 @@ repository = "https://github.com/fenollp/rustcbuildx"
 # [profile.release]
 # codegen-units = 1
 # Try tuning rustc codegen options to optimize for speed (suggest mold?)
+# TODO: use the least amount of codegen units for best LTO
 # https://doc.rust-lang.org/nightly/rustc/codegen-options/index.html#codegen-units
 # https://doc.rust-lang.org/nightly/rustc/codegen-options/index.html#embed-bitcode
 # https://doc.rust-lang.org/nightly/rustc/codegen-options/index.html#instrument-coverage

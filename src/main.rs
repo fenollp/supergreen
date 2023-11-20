@@ -467,12 +467,13 @@ fn bake_rustc(
         assert_eq!((input.is_relative(), input.as_str().ends_with(".rs")), (true, true));
 
         // TODO: try just bind mount instead of copying to a tmpdir
-        // TODO: try not FWDing .git/* and equivalent
+        // TODO: try not FWDing .git/* and equivalent BUILDKIT_CONTEXT_KEEP_GIT_DIR=0
         // TODO: try filtering out CARGO_TARGET_DIR also
         // https://docs.docker.com/language/rust/develop/
         // RUN --mount=type=bind,source=src,target=src \
         //     --mount=type=bind,source=Cargo.toml,target=Cargo.toml \
         //     --mount=type=bind,source=Cargo.lock,target=Cargo.lock \
+        // TODO: try `target = "target:$other"` https://docs.docker.com/build/bake/reference/#targetcontexts
 
         let cwd = Temp::new_dir().context("Failed to create tmpdir 'cwd'")?;
         let Some(cwd_path) = Utf8Path::from_path(cwd.as_path()) else {
