@@ -7,12 +7,12 @@ declare -a nvs nvs_args
 ((i+=1)); nvs[i]=cargo-audit@0.18.3;    nvs_args[i]='--features=fix'
 ((i+=1)); nvs[i]=cargo-deny@0.14.3;     nvs_args[i]=''
 ((i+=1)); nvs[i]=cargo-llvm-cov@0.5.36; nvs_args[i]=''
-((i+=1)); nvs[i]=vixargs@0.1.0;         nvs_args[i]=''
 ((i+=1)); nvs[i]=cargo-nextest@0.9.61;  nvs_args[i]=''
 ((i+=1)); nvs[i]=cross@0.2.5;           nvs_args[i]='--git https://github.com/cross-rs/cross.git --tag=v0.2.5 cross'
 ((i+=1)); nvs[i]=diesel_cli@2.1.1;      nvs_args[i]='--no-default-features --features=postgres'
 ((i+=1)); nvs[i]=hickory-dns@0.24.0;    nvs_args[i]='--features=dns-over-rustls'
 ((i+=1)); nvs[i]=rustcbuildx@main;      nvs_args[i]='--git https://github.com/fenollp/rustcbuildx.git --branch=main rustcbuildx'
+((i+=1)); nvs[i]=vixargs@0.1.0;         nvs_args[i]=''
 
 #TODO: not a cli but try users of https://github.com/dtolnay/watt
 #TODO: play with cargo flags: lto (embeds bitcode)
@@ -133,8 +133,10 @@ $(
     - name: Show defaults
       run: ./rustcbuildx env
 
-    - name: Buildx disk usage
-      run: docker buildx du | tail -n-1
+    - name: Disk usage
+      run: |
+        docker system df
+        du -sh /var/lib/docker
 
     - name: cargo install net=ON cache=OFF remote=OFF
       run: |
@@ -146,9 +148,11 @@ $(
     - if: \${{ failure() || success() }}
       run: cat logs.txt && echo >logs.txt
 
-    - name: Buildx disk usage
+    - name: Disk usage
       if: \${{ failure() || success() }}
-      run: docker buildx du | tail -n-1
+      run: |
+        docker system df
+        du -sh /var/lib/docker
 
     - name: Target dir disk usage
       if: \${{ failure() || success() }}
@@ -164,9 +168,11 @@ $(
     - if: \${{ failure() || success() }}
       run: cat logs.txt
 
-    - name: Buildx disk usage
+    - name: Disk usage
       if: \${{ failure() || success() }}
-      run: docker buildx du | tail -n-1
+      run: |
+        docker system df
+        du -sh /var/lib/docker
 
     - name: Target dir disk usage
       if: \${{ failure() || success() }}
