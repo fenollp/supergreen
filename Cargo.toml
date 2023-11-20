@@ -16,7 +16,6 @@ keywords = [
 	"docker",
 	"DOCKER_HOST",
 	"RUSTC_WRAPPER",
-	"sandbox",
 ]
 license = "MIT"
 repository = "https://github.com/fenollp/rustcbuildx"
