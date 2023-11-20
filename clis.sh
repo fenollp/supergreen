@@ -136,7 +136,7 @@ $(
     - name: Disk usage
       run: |
         docker system df
-        du -sh /var/lib/docker
+        sudo du -sh /var/lib/docker
 
     - name: cargo install net=ON cache=OFF remote=OFF
       run: |
@@ -152,7 +152,7 @@ $(
       if: \${{ failure() || success() }}
       run: |
         docker system df
-        du -sh /var/lib/docker
+        sudo du -sh /var/lib/docker
 
     - name: Target dir disk usage
       if: \${{ failure() || success() }}
@@ -172,7 +172,7 @@ $(
       if: \${{ failure() || success() }}
       run: |
         docker system df
-        du -sh /var/lib/docker
+        sudo du -sh /var/lib/docker
 
     - name: Target dir disk usage
       if: \${{ failure() || success() }}
