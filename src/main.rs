@@ -113,6 +113,7 @@ fn passthrough_getting_rust_target_specific_information() {
     );
 }
 
+// See https://doc.rust-lang.org/cargo/reference/environment-variables.html#environment-variables-cargo-sets-for-build-scripts
 #[must_use]
 fn called_from_build_script() -> bool {
     env::vars().any(|(k, v)| k.starts_with("CARGO_CFG_") && !v.is_empty())
