@@ -7,6 +7,7 @@ declare -a nvs nvs_args
 ((i+=1)); nvs[i]=cargo-audit@0.18.3;    nvs_args[i]='--features=fix'
 ((i+=1)); nvs[i]=cargo-deny@0.14.3;     nvs_args[i]=''
 ((i+=1)); nvs[i]=cargo-llvm-cov@0.5.36; nvs_args[i]=''
+((i+=1)); nvs[i]=vixargs@0.1.0;         nvs_args[i]=''
 ((i+=1)); nvs[i]=cargo-nextest@0.9.61;  nvs_args[i]=''
 ((i+=1)); nvs[i]=cross@0.2.5;           nvs_args[i]='--git https://github.com/cross-rs/cross.git --tag=v0.2.5 cross'
 ((i+=1)); nvs[i]=diesel_cli@2.1.1;      nvs_args[i]='--no-default-features --features=postgres'
@@ -17,6 +18,10 @@ declare -a nvs nvs_args
 #TODO: play with cargo flags: lto (embeds bitcode)
 #TODO: allowlist non-busting rustc flags => se about this cache key
 #TODO: test cargo -vv build -> test -> build and look for "Dirty", expect none
+#TODO: merge buildx.yml in here
+#TODO: test cargo miri usage
+#TODO: test cargo lambda build --release --arm64 usage
+#TODO: test https://github.com/facebookexperimental/MIRAI
 
 
 header() {
@@ -222,7 +227,7 @@ for i in "${!nvs[@]}"; do
   esac
 done
 if [[ "$picked" = -1 ]]; then
-  echo "Could not match '$name_at_version'"
+  echo "Could not match '$name_at_version' among:"
   for i in "${!nvs[@]}"; do
     echo "${nvs[$i]}" "${nvs_args[$i]}"
   done
