@@ -1,4 +1,9 @@
-use std::env;
+use std::{
+    env,
+    fs::{File, OpenOptions},
+};
+
+use anyhow::{Context, Result};
 
 pub(crate) const RUSTCBUILDX: &str = "RUSTCBUILDX";
 pub(crate) const RUSTCBUILDX_BASE_IMAGE: &str = "RUSTCBUILDX_BASE_IMAGE";
@@ -17,26 +22,17 @@ pub(crate) const RUSTCBUILDX_LOG_STYLE: &str = "RUSTCBUILDX_LOG_STYLE";
 // RUN set -eux && apt update && apt install -y libpq-dev libssl3
 // EOF
 
-#[must_use]
-pub(crate) fn is_debug() -> bool {
-    // TODO: oncelock
-    env::var(RUSTCBUILDX_LOG).ok().map(|x| !x.is_empty()).unwrap_or_default()
-}
-
 pub(crate) fn log_path() -> String {
-    // TODO: oncelock
     env::var(RUSTCBUILDX_LOG_PATH).ok().unwrap_or("/tmp/rstcbldx_FIXME".to_owned())
 }
 
 pub(crate) fn base_image() -> String {
-    // TODO: oncelock
     // rustc 1.73.0 (cc66ad468 2023-10-03)
     let x="docker-image://docker.io/library/rust:1.73.0-slim@sha256:89e1efffc83a631bced1bf86135f4f671223cc5dc32ebf26ef8b3efd1b97ffff";
     env::var(RUSTCBUILDX_BASE_IMAGE).unwrap_or(x.to_owned())
 }
 
 pub(crate) fn docker_syntax() -> String {
-    // TODO: oncelock
     let x= "docker.io/docker/dockerfile:1@sha256:ac85f380a63b13dfcefa89046420e1781752bab202122f8f50032edf31be0021";
     env::var(RUSTCBUILDX_DOCKER_SYNTAX).unwrap_or(x.to_owned()) // TODO: see if #syntax= is actually needed
 }

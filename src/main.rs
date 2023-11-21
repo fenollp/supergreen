@@ -2,7 +2,7 @@ use std::{
     collections::{BTreeMap, BTreeSet},
     env,
     fmt::Write as FmtWrite,
-    fs::{self, create_dir_all, read_dir, read_to_string, File, OpenOptions},
+    fs::{self, create_dir_all, read_dir, read_to_string, File},
     io::{BufRead, BufReader, ErrorKind},
     process::{Command, ExitCode, Stdio},
     time::Instant,
@@ -13,13 +13,13 @@ use anyhow::{bail, Context, Result};
 use camino::{Utf8Path, Utf8PathBuf};
 use cli::{envs, exit_code, help, pull};
 use env_logger::{Env, Target};
-use envs::{log_path, RUSTCBUILDX, RUSTCBUILDX_LOG, RUSTCBUILDX_LOG_STYLE};
+use envs::{RUSTCBUILDX, RUSTCBUILDX_LOG, RUSTCBUILDX_LOG_STYLE};
 use log::{debug, error, info, warn};
 use mktemp::Temp;
 use regex::Regex;
 
 use crate::{
-    envs::{base_image, docker_syntax, is_debug},
+    envs::{base_image, docker_syntax, maybe_log},
     parse::RustcArgs,
     pops::Popped,
 };
@@ -148,16 +148,8 @@ fn bake_rustc(
 
     assert!(!called_from_build_script());
 
-    fn log_file() -> Result<File> {
-        let log_path = log_path();
-        OpenOptions::new()
-            .create(true)
-            .append(true)
-            .open(&log_path)
-            .with_context(|| format!("Failed opening (WA) log file {log_path}"))
-    }
-
-    if is_debug() {
+    let debug = maybe_log();
+    if let Some(log_file) = debug {
         env_logger::Builder::from_env(
             Env::default().filter_or(RUSTCBUILDX_LOG, "debug").write_style(RUSTCBUILDX_LOG_STYLE),
         )
@@ -266,7 +258,7 @@ fn bake_rustc(
                 // ^ this algo tried to "keep track" of actual paths to transitive deps artifacts
                 //   however some edge cases (at least 1) go through. That fix seems to bust cache on 2nd builds though v
 
-                if is_debug() {
+                if debug.is_some() {
                     let deps_dir = Utf8Path::new(&target_path).join("deps");
                     info!(target:&krate, "listing existing an extern crate's extern matches {deps_dir}/lib*.*");
                     let listing = read_dir(&deps_dir)
@@ -307,10 +299,12 @@ fn bake_rustc(
     }
     let all_externs = all_externs;
     info!(target:&krate, "crate_externs: {crate_externs}");
-    debug!(target:&krate, "{crate_externs} = {data}", data = match read_to_string(&crate_externs) {
-        Ok(data) => data,
-        Err(e) => e.to_string(),
-    });
+    if debug.is_some() {
+        debug!(target:&krate, "{crate_externs} = {data}", data = match read_to_string(&crate_externs) {
+            Ok(data) => data,
+            Err(e) => e.to_string(),
+        });
+    }
 
     create_dir_all(&out_dir).with_context(|| format!("Failed to `mkdir -p {out_dir}`"))?;
     if let Some(ref incremental) = incremental {
@@ -706,7 +700,7 @@ target "{incremental_stage}" {{
     let bakefile_path = {
         let bakefile_path = format!("{target_path}/{crate_name}-{metadata}.hcl");
         info!(target:&krate, "opening (RW) crate bakefile {bakefile_path}");
-        if is_debug() {
+        if debug.is_some() {
             match read_to_string(&bakefile_path) {
                 Ok(existing) => {
                     let re = Regex::new(r#""\/tmp\/[^"]+""#)?;
@@ -729,7 +723,7 @@ target "{incremental_stage}" {{
     };
 
     let mut cmd = Command::new("docker");
-    if is_debug() {
+    if let Some(log_file) = debug {
         info!(target:&krate, "bakefile: {bakefile_path}");
         debug!(target:&krate, "{bakefile_path} = {data}", data = match read_to_string(&bakefile_path) {
             Ok(data) => data,
@@ -789,7 +783,7 @@ target "{incremental_stage}" {{
         }
     }
 
-    if !is_debug() {
+    if debug.is_none() {
         drop(stdio); // Removes stdio/std{err,out} files and stdio dir
         if let Some(cwd) = cwd {
             drop(cwd); // Removes tempdir contents
