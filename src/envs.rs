@@ -36,3 +36,56 @@ pub(crate) fn docker_syntax() -> String {
     let x= "docker.io/docker/dockerfile:1@sha256:ac85f380a63b13dfcefa89046420e1781752bab202122f8f50032edf31be0021";
     env::var(RUSTCBUILDX_DOCKER_SYNTAX).unwrap_or(x.to_owned()) // TODO: see if #syntax= is actually needed
 }
+
+pub(crate) fn maybe_log() -> Option<fn() -> Result<File>> {
+    fn log_file() -> Result<File> {
+        let log_path = log_path();
+        OpenOptions::new()
+            .create(true)
+            .append(true)
+            .open(&log_path)
+            .with_context(|| format!("Failed opening (WA) log file {log_path}"))
+    }
+
+    env::var(RUSTCBUILDX_LOG).ok().map(|x| !x.is_empty()).unwrap_or_default().then_some(log_file)
+}
+
+// See https://doc.rust-lang.org/cargo/reference/environment-variables.html#environment-variables-cargo-sets-for-build-scripts
+#[must_use]
+pub(crate) fn called_from_build_script() -> bool {
+    env::vars().any(|(k, v)| k.starts_with("CARGO_CFG_") && !v.is_empty())
+        && ["HOST", "NUM_JOBS", "OUT_DIR", "PROFILE", "TARGET"]
+            .iter()
+            .all(|var| env::vars().any(|(k, v)| *var == k && !v.is_empty()))
+}
+
+// https://doc.rust-lang.org/cargo/reference/environment-variables.html#environment-variables-cargo-sets-for-crates
+#[inline]
+#[must_use]
+pub(crate) fn pass_env(var: &str) -> bool {
+    // Thanks https://github.com/cross-rs/cross/blob/44011c8854cb2eaac83b173cc323220ccdff18ea/src/docker/shared.rs#L969
+    let passthrough = [
+        "http_proxy",
+        "TERM",
+        "RUSTDOCFLAGS",
+        "RUSTFLAGS",
+        "BROWSER",
+        "HTTPS_PROXY",
+        "HTTP_TIMEOUT",
+        "https_proxy",
+        "QEMU_STRACE",
+        // Not here but set in RUN script: CARGO, PATH, ...
+        "OUT_DIR", // (Only set during compilation.)
+    ];
+    let skiplist = [
+        "CARGO_BUILD_RUSTC",
+        "CARGO_BUILD_RUSTC_WORKSPACE_WRAPPER",
+        "CARGO_BUILD_RUSTC_WRAPPER",
+        "CARGO_BUILD_RUSTDOC",
+        "CARGO_BUILD_TARGET_DIR",
+        "CARGO_HOME",
+        "CARGO_TARGET_DIR",
+        "RUSTC_WRAPPER",
+    ];
+    (passthrough.contains(&var) || var.starts_with("CARGO_")) && !skiplist.contains(&var)
+}

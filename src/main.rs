@@ -13,13 +13,13 @@ use anyhow::{bail, Context, Result};
 use camino::{Utf8Path, Utf8PathBuf};
 use cli::{envs, exit_code, help, pull};
 use env_logger::{Env, Target};
-use envs::{RUSTCBUILDX, RUSTCBUILDX_LOG, RUSTCBUILDX_LOG_STYLE};
+use envs::{called_from_build_script, RUSTCBUILDX, RUSTCBUILDX_LOG, RUSTCBUILDX_LOG_STYLE};
 use log::{debug, error, info, warn};
 use mktemp::Temp;
 use regex::Regex;
 
 use crate::{
-    envs::{base_image, docker_syntax, maybe_log},
+    envs::{base_image, docker_syntax, maybe_log, pass_env},
     parse::RustcArgs,
     pops::Popped,
 };
@@ -38,6 +38,7 @@ fn main() -> ExitCode {
 }
 
 fn faillible_main() -> Result<ExitCode> {
+    let called_from_build_script = called_from_build_script();
     let first_few_args = env::args().skip(1).take(3).collect::<Vec<String>>();
     let first_few_args = first_few_args.iter().map(String::as_str).collect::<Vec<_>>();
     match first_few_args[..] {
@@ -48,7 +49,7 @@ fn faillible_main() -> Result<ExitCode> {
              call_rustc(rustc, || env::args().skip(2)),
         [driver, _rustc, "-"|"--crate-name", ..] => // TODO: wrap driver+rustc calls as well
              call_rustc(driver, || env::args().skip(2)), // driver: e.g. /home/maison/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/clippy-driver
-        [rustc, opt, ..] if called_from_build_script() && opt.starts_with('-') && opt != "-" =>
+        [rustc, opt, ..] if called_from_build_script && opt.starts_with('-') && opt != "-" =>
             // Special case for crates whose build.rs calls rustc, using RUSTC_WRAPPER,
             // but arriving at a wrong conclusion (here: activates nightly-only features, somehow)
             // Workaround: we defer to local rustc instead.
@@ -58,7 +59,7 @@ fn faillible_main() -> Result<ExitCode> {
             //   https://github.com/dtolnay/anyhow/blob/05e413219e97f101d8f39a90902e5c5d39f951fe/build.rs#L88
             //   https://github.com/dtolnay/thiserror/blob/e9ea67c7e251764c3c2d839b6c06d9f35b154647/build.rs#L65
              call_rustc(rustc, || env::args().skip(1)),
-        [rustc, "--crate-name", crate_name, ..] if !called_from_build_script() =>
+        [rustc, "--crate-name", crate_name, ..] if !called_from_build_script =>
              bake_rustc(crate_name, env::args().skip(2).collect(), || {
                 call_rustc(rustc, || env::args().skip(2))
             })
@@ -111,15 +112,6 @@ fn passthrough_getting_rust_target_specific_information() {
         },
         1
     );
-}
-
-// See https://doc.rust-lang.org/cargo/reference/environment-variables.html#environment-variables-cargo-sets-for-build-scripts
-#[must_use]
-fn called_from_build_script() -> bool {
-    env::vars().any(|(k, v)| k.starts_with("CARGO_CFG_") && !v.is_empty())
-        && ["HOST", "NUM_JOBS", "OUT_DIR", "PROFILE", "TARGET"]
-            .iter()
-            .all(|var| env::vars().any(|(k, v)| *var == k && !v.is_empty()))
 }
 
 fn call_rustc<I: Iterator<Item = String>>(rustc: &str, args: fn() -> I) -> Result<ExitCode> {
@@ -176,8 +168,7 @@ fn bake_rustc(
     let full_crate_id = format!("{crate_type}-{crate_name}-{metadata}");
     let krate = full_crate_id.as_str();
 
-    // TODO: look into forwarding more envs: https://doc.rust-lang.org/nightly/cargo/reference/environment-variables.html
-    env::vars().for_each(|(k, v)| debug!(target:&krate, "env is set: {k}={v:?}"));
+    env::vars().for_each(|(k, v)| debug!(target:&krate, "env is set: {k}={v:?}")); // TODO: drop
 
     // https://github.com/rust-lang/cargo/issues/12059
     let mut all_externs = BTreeSet::new();
@@ -232,18 +223,6 @@ fn bake_rustc(
                 let transitive =
                     line.with_context(|| format!("Corrupted {xtern_crate_externs}"))?;
                 assert_ne!(transitive, "");
-
-                fn file_exists(path: impl AsRef<Utf8Path>) -> Result<bool> {
-                    match path.as_ref().metadata().map(|md| md.is_file()) {
-                        Ok(b) => Ok(b),
-                        Err(e) => {
-                            if e.kind() == ErrorKind::NotFound {
-                                return Ok(false);
-                            }
-                            Err(e.into())
-                        }
-                    }
-                }
 
                 let guard = externs_prefix(&format!("{transitive}_proc-macro"));
                 info!(target:&krate, "checking (RO) extern's guard {guard}");
@@ -397,36 +376,9 @@ fn bake_rustc(
         dockerfile.push_str(&format!("WORKDIR {incremental}\n"));
     }
 
-    // https://doc.rust-lang.org/cargo/reference/environment-variables.html#environment-variables-cargo-sets-for-crates
     dockerfile.push_str("ENV \\\n");
     for (var, val) in env::vars() {
-        // Thanks https://github.com/cross-rs/cross/blob/44011c8854cb2eaac83b173cc323220ccdff18ea/src/docker/shared.rs#L969
-        let passthrough = [
-            "http_proxy",
-            "TERM",
-            "RUSTDOCFLAGS",
-            "RUSTFLAGS",
-            "BROWSER",
-            "HTTPS_PROXY",
-            "HTTP_TIMEOUT",
-            "https_proxy",
-            "QEMU_STRACE",
-            // Not here but set in RUN script: CARGO, PATH, ...
-            "OUT_DIR", // (Only set during compilation.)
-        ];
-        let skiplist = [
-            "CARGO_BUILD_RUSTC",
-            "CARGO_BUILD_RUSTC_WORKSPACE_WRAPPER",
-            "CARGO_BUILD_RUSTC_WRAPPER",
-            "CARGO_BUILD_RUSTDOC",
-            "CARGO_BUILD_TARGET_DIR",
-            "CARGO_HOME",
-            "CARGO_TARGET_DIR",
-            "RUSTC_WRAPPER",
-        ];
-        if (var.starts_with("CARGO_") || passthrough.contains(&var.as_str()))
-            && !skiplist.contains(&var.as_str())
-        {
+        if pass_env(var.as_str()) {
             let val = (!val.is_empty())
                 .then_some(val)
                 .map(|x: String| format!("{x:?}"))
@@ -800,6 +752,19 @@ target "{incremental_stage}" {{
     }
 
     Ok(exit_code(code))
+}
+
+#[inline]
+fn file_exists(path: impl AsRef<Utf8Path>) -> Result<bool> {
+    match path.as_ref().metadata().map(|md| md.is_file()) {
+        Ok(b) => Ok(b),
+        Err(e) => {
+            if e.kind() == ErrorKind::NotFound {
+                return Ok(false);
+            }
+            Err(e.into())
+        }
+    }
 }
 
 #[inline]
