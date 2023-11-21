@@ -1,5 +1,5 @@
 use std::{
-    collections::{BTreeMap, BTreeSet},
+    collections::{BTreeMap, BTreeSet, VecDeque},
     env,
     fmt::Write,
     fs::{self, create_dir_all, read_dir, read_to_string, File},
@@ -29,26 +29,35 @@ mod envs;
 mod parse;
 mod pops;
 
+const PKG: &str = env!("CARGO_PKG_NAME");
+
 // NOTE: this RUSTC_WRAPPER program only ever gets called by `cargo`, so we save
 //       ourselves some trouble and assume std::path::{Path, PathBuf} are UTF-8.
 //       Or in the words of this crate: https://github.com/camino-rs/camino/tree/8bec62382e1bce1326ee48f6bf93c46e7a4fde0b#:~:text=there%20are%20already%20many%20systems%2C%20such%20as%20cargo%2C%20that%20only%20support%20utf-8%20paths.%20if%20your%20own%20tool%20interacts%20with%20any%20such%20system%2C%20you%20can%20assume%20that%20paths%20are%20valid%20utf-8%20without%20creating%20any%20additional%20burdens%20on%20consumers.
 
 fn main() -> ExitCode {
-    faillible_main().unwrap_or(ExitCode::FAILURE)
+    let args = env::args().skip(1).collect(); // drops $0
+    let vars = env::vars().collect();
+    faillible_main(args, vars).unwrap_or(ExitCode::FAILURE)
 }
 
-fn faillible_main() -> Result<ExitCode> {
-    let called_from_build_script = called_from_build_script();
-    let first_few_args = env::args().skip(1).take(3).collect::<Vec<String>>();
-    let first_few_args = first_few_args.iter().map(String::as_str).collect::<Vec<_>>();
-    match first_few_args[..] {
+fn faillible_main(args: VecDeque<String>, vars: BTreeMap<String, String>) -> Result<ExitCode> {
+    let called_from_build_script = called_from_build_script(&vars);
+
+    let argz = args.iter().take(3).map(AsRef::as_ref).collect::<Vec<_>>();
+
+    let mut args = args.clone();
+    args.pop_front();
+    let args = args.into_iter().collect();
+
+    match argz[..] {
         [] | ["-h"|"--help"|"-V"|"--version"] => Ok(help()),
         ["pull"] => pull(),
-        ["env", ..] => Ok(envs(env::args().skip(2))),
+        ["env", ..] => Ok(envs(args)),
         [rustc, "-", ..] =>
-             call_rustc(rustc, || env::args().skip(2)),
+             call_rustc(rustc, args),
         [driver, _rustc, "-"|"--crate-name", ..] => // TODO: wrap driver+rustc calls as well
-             call_rustc(driver, || env::args().skip(2)), // driver: e.g. /home/maison/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/clippy-driver
+             call_rustc(driver, args), // driver: e.g. /home/maison/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/clippy-driver
         [rustc, opt, ..] if called_from_build_script && opt.starts_with('-') && opt != "-" =>
             // Special case for crates whose build.rs calls rustc, using RUSTC_WRAPPER,
             // but arriving at a wrong conclusion (here: activates nightly-only features, somehow)
@@ -58,22 +67,15 @@ fn faillible_main() -> Result<ExitCode> {
             // Culprits:
             //   https://github.com/dtolnay/anyhow/blob/05e413219e97f101d8f39a90902e5c5d39f951fe/build.rs#L88
             //   https://github.com/dtolnay/thiserror/blob/e9ea67c7e251764c3c2d839b6c06d9f35b154647/build.rs#L65
-             call_rustc(rustc, || env::args().skip(1)),
+             call_rustc(rustc, args),
         [rustc, "--crate-name", crate_name, ..] if !called_from_build_script =>
-             bake_rustc(crate_name, env::args().skip(2).collect(), || {
-                call_rustc(rustc, || env::args().skip(2))
-            })
+             bake_rustc(crate_name, args.clone(), || call_rustc(rustc, args.clone()))
             .map_err(|e| {
                 error!(target:crate_name, "Failure: {e}");
                 eprintln!("Failure: {e}");
                 e
             }),
-        _ => panic!("RUSTC_WRAPPER={binary}'s input unexpected:\n\targz = {argz:?}\n\targs = {args:?}\n\tenvs = {envs:?}\n",
-               binary = env!("CARGO_PKG_NAME"),
-               argz = env::args().skip(1).take(3).collect::<Vec<_>>(),
-               args = env::args().collect::<Vec<_>>(),
-               envs = env::vars().collect::<Vec<_>>(),
-            ),
+        _ => panic!("RUSTC_WRAPPER={PKG}'s input unexpected:\n\targz = {argz:?}\n\targs = {args:?}\n\tenvs = {vars:?}\n"),
     }
 }
 
@@ -114,16 +116,15 @@ fn passthrough_getting_rust_target_specific_information() {
     );
 }
 
-fn call_rustc<I: Iterator<Item = String>>(rustc: &str, args: fn() -> I) -> Result<ExitCode> {
+fn call_rustc(rustc: &str, args: Vec<String>) -> Result<ExitCode> {
     // NOTE: not running inside Docker: local install SHOULD match Docker image setup
     // Meaning: it's up to the user to craft their desired $RUSTCBUILDX_BASE_IMAGE
-    let argz = || args().collect::<Vec<_>>();
     let code = Command::new(rustc)
-        .args(args())
+        .args(&args)
         .spawn()
-        .with_context(|| format!("Failed to spawn rustc {rustc} with {:?}", argz()))?
+        .with_context(|| format!("Failed to spawn rustc {rustc} with {args:?}"))?
         .wait()
-        .with_context(|| format!("Failed to wait for rustc {rustc} with {:?}", argz()))?
+        .with_context(|| format!("Failed to wait for rustc {rustc} with {args:?}"))?
         .code();
     Ok(exit_code(code))
 }
@@ -138,8 +139,6 @@ fn bake_rustc(
     }
     env::set_var(RUSTCBUILDX, "1");
 
-    assert!(!called_from_build_script());
-
     let debug = maybe_log();
     if let Some(log_file) = debug {
         env_logger::Builder::from_env(
@@ -149,9 +148,8 @@ fn bake_rustc(
         .init();
     }
 
-    let krate = format!("{}:{crate_name}", env!("CARGO_PKG_NAME"));
-    info!(target:&krate, "{bin}@{vsn} wraps `rustc` calls to BuildKit builders",
-        bin = env!("CARGO_PKG_NAME"),
+    let krate = format!("{PKG}:{crate_name}");
+    info!(target:&krate, "{PKG}@{vsn} wraps `rustc` calls to BuildKit builders",
         vsn = env!("CARGO_PKG_VERSION"),
     );
 

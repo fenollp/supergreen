@@ -1,4 +1,5 @@
 use std::{
+    collections::BTreeMap,
     env,
     fs::{File, OpenOptions},
 };
@@ -52,11 +53,11 @@ pub(crate) fn maybe_log() -> Option<fn() -> Result<File>> {
 
 // See https://doc.rust-lang.org/cargo/reference/environment-variables.html#environment-variables-cargo-sets-for-build-scripts
 #[must_use]
-pub(crate) fn called_from_build_script() -> bool {
-    env::vars().any(|(k, v)| k.starts_with("CARGO_CFG_") && !v.is_empty())
+pub(crate) fn called_from_build_script(vars: &BTreeMap<String, String>) -> bool {
+    vars.iter().any(|(k, v)| k.starts_with("CARGO_CFG_") && !v.is_empty())
         && ["HOST", "NUM_JOBS", "OUT_DIR", "PROFILE", "TARGET"]
             .iter()
-            .all(|var| env::vars().any(|(k, v)| *var == k && !v.is_empty()))
+            .all(|var| vars.iter().any(|(k, v)| *var == k && !v.is_empty()))
 }
 
 // https://doc.rust-lang.org/cargo/reference/environment-variables.html#environment-variables-cargo-sets-for-crates
