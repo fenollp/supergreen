@@ -1,7 +1,7 @@
 use std::{
     collections::{BTreeMap, BTreeSet},
     env,
-    fmt::Write as FmtWrite,
+    fmt::Write,
     fs::{self, create_dir_all, read_dir, read_to_string, File},
     io::{BufRead, BufReader, ErrorKind},
     process::{Command, ExitCode, Stdio},
