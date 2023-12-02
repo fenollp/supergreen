@@ -45,18 +45,25 @@ fn faillible_main(args: VecDeque<String>, vars: BTreeMap<String, String>) -> Res
 
     let argz = args.iter().take(3).map(AsRef::as_ref).collect::<Vec<_>>();
 
-    let mut args = args.clone();
-    args.pop_front();
-    let args = args.into_iter().collect();
+    let argv = |times| {
+        let mut argv = args.clone();
+        for _ in 0..times {
+            argv.pop_front(); // shift 1
+        }
+        argv.into_iter().collect()
+    };
 
     match argz[..] {
         [] | ["-h"|"--help"|"-V"|"--version"] => Ok(help()),
         ["pull"] => pull(),
-        ["env", ..] => Ok(envs(args)),
+        ["env", ..] => Ok(envs(argv(1))),
         [rustc, "-", ..] =>
-             call_rustc(rustc, args),
-        [driver, _rustc, "-"|"--crate-name", ..] => // TODO: wrap driver+rustc calls as well
-             call_rustc(driver, args), // driver: e.g. /home/maison/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/clippy-driver
+             call_rustc(rustc, argv(1)),
+        [driver, _rustc, "-"|"--crate-name", ..] => {
+            // driver: e.g. /home/maison/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/clippy-driver
+            // cf. https://github.com/rust-lang/rust-clippy/tree/da27c979e29e78362b7a2a91ebcf605cb01da94c#using-clippy-driver
+             call_rustc(driver, argv(2))
+         }
         [rustc, opt, ..] if called_from_build_script && opt.starts_with('-') && opt != "-" =>
             // Special case for crates whose build.rs calls rustc, using RUSTC_WRAPPER,
             // but arriving at a wrong conclusion (here: activates nightly-only features, somehow)
@@ -66,9 +73,9 @@ fn faillible_main(args: VecDeque<String>, vars: BTreeMap<String, String>) -> Res
             // Culprits:
             //   https://github.com/dtolnay/anyhow/blob/05e413219e97f101d8f39a90902e5c5d39f951fe/build.rs#L88
             //   https://github.com/dtolnay/thiserror/blob/e9ea67c7e251764c3c2d839b6c06d9f35b154647/build.rs#L65
-             call_rustc(rustc, args),
+             call_rustc(rustc, argv(1)),
         [rustc, "--crate-name", crate_name, ..] if !called_from_build_script =>
-             bake_rustc(crate_name, args.clone(), || call_rustc(rustc, args.clone()))
+             bake_rustc(crate_name, argv(1), || call_rustc(rustc, argv(1)))
             .map_err(|e| {
                 error!(target:crate_name, "Failure: {e}");
                 eprintln!("Failure: {e}");
