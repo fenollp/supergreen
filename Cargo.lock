@@ -180,7 +180,6 @@ dependencies = [
  "log",
  "mktemp",
  "pretty_assertions",
- "regex",
 ]
 
 [[package]]

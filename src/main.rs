@@ -16,7 +16,6 @@ use env_logger::{Env, Target};
 use envs::{called_from_build_script, RUSTCBUILDX, RUSTCBUILDX_LOG, RUSTCBUILDX_LOG_STYLE};
 use log::{debug, error, info, warn};
 use mktemp::Temp;
-use regex::Regex;
 
 use crate::{
     envs::{base_image, docker_syntax, maybe_log, pass_env},
@@ -595,7 +594,7 @@ fn bake_rustc(
     dockerfile_bis.push_str(&dockerfile);
     drop(dockerfile); // Earlier: wrote to disk
 
-    let stdio = Temp::new_dir().context("Failed to create tmpdir 'stdio'")?;
+    let stdio = env::temp_dir().join(format!("{PKG}-{stdio_stage}"));
     let Some(stdio_path) = Utf8Path::from_path(stdio.as_path()) else {
         bail!("Path's UTF-8 encoding is corrupted: {stdio:?}")
     };
@@ -652,17 +651,7 @@ target "{incremental_stage}" {{
         info!(target:&krate, "opening (RW) crate bakefile {bakefile_path}");
         if debug.is_some() {
             match read_to_string(&bakefile_path) {
-                Ok(existing) => {
-                    let re = Regex::new(r#""\/tmp\/[^"]+""#)?;
-                    let replacement = r#""REDACTED""#;
-                    if false {
-                        //FIXME
-                        pretty_assertions::assert_eq!(
-                            re.replace_all(&existing, replacement).to_string(),
-                            re.replace_all(&bakefile, replacement).to_string(),
-                        );
-                    }
-                }
+                Ok(existing) => pretty_assertions::assert_eq!(existing, bakefile),
                 Err(e) if e.kind() == ErrorKind::NotFound => {}
                 Err(e) => bail!("{e}"),
             }

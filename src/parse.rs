@@ -167,6 +167,7 @@ pub(crate) fn as_rustc(
                 }
                 val = state.out_dir.to_string();
             }
+            "--diagnostic-width" if debug => val = "211".to_owned(), // FIXME: drop when !debugging
             _ => {}
         }
 
@@ -327,7 +328,7 @@ mod tests {
             "-C", "link-arg=-fuse-ld=/usr/local/bin/mold",
         ]);
 
-        let (st, args) = as_rustc(PWD, env!("CARGO_PKG_NAME"), arguments.clone(), false).unwrap();
+        let (st, args) = as_rustc(PWD, env!("CARGO_PKG_NAME"), arguments.clone(), true).unwrap();
 
         assert_eq!(
             st,
@@ -360,8 +361,8 @@ mod tests {
                 "--crate-name", "rustcbuildx",
                 "--edition", "2021",
                 "--error-format", "json",
-                "--json", "diagnostic-rendered-ansi,artifacts,future-incompat",
-                "--diagnostic-width", "347",
+                "--json", "artifacts,future-incompat",
+                "--diagnostic-width", "211",
                 "--emit", "dep-info,link",
                 "-C", "embed-bitcode=no",
                 "-C", "debuginfo=2",
