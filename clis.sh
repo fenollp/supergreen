@@ -256,7 +256,7 @@ args=${nvs_args[$i]}
 session_name=$(sed 's%@%_%g;s%\.%-%g' <<<"$name_at_version")
 tmptrgt=/tmp/clis-$session_name
 tmplogs=/tmp/clis-$session_name.logs.txt
-tmpgooo=/tmp/clis-$session_name.ready
+tmpgooo=/tmp/clis-$session_name.state
 
 
 tmux new-session -d -s "$session_name"
@@ -268,17 +268,20 @@ send() {
 
 
 gitdir=$(realpath "$(dirname "$0")")
-send "CARGO_TARGET_DIR=/tmp/rstcbldx cargo install --locked --force --path=$gitdir"
+send \
+  CARGO_TARGET_DIR=/tmp/rstcbldx \
+    cargo install --locked --force --path="$gitdir" \
+    '&&' touch "$tmpgooo".installed
 tmux split-window
 if [[ "$cleanup" = '1' ]]; then
   send rm -rf "$tmptrgt"
   tmux select-layout even-vertical
   tmux split-window
-  send docker buildx prune -af '&&' touch "$tmpgooo"
+  send docker buildx prune -af '&&' touch "$tmpgooo".ready
   tmux select-layout even-vertical
   tmux split-window
 else
-  touch "$tmpgooo"
+  touch "$tmpgooo".ready
 fi
 
 send rustcbuildx pull
@@ -291,7 +294,7 @@ tmux select-layout even-vertical
 tmux split-window
 
 send \
-  'until' '[[' -f "$tmpgooo" ']];' 'do' sleep '1;' 'done' '&&' rm "$tmpgooo" '&&' \
+  'until' '[[' -f "$tmpgooo".installed ']] && [[' -f "$tmpgooo".ready ']];' 'do' sleep '1;' 'done' '&&' rm "$tmpgooo".* '&&' \
   RUSTCBUILDX_LOG=debug \
   RUSTCBUILDX_LOG_PATH="$tmplogs" \
   RUSTC_WRAPPER=rustcbuildx \
