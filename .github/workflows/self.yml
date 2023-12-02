@@ -328,6 +328,8 @@ jobs:
         chmod +x ./rustcbuildx
         ./rustcbuildx --version | grep rustcbuildx
 
+    - run: rm -rf target/
+
     - name: cargo clippy net=OFF cache=OFF remote=OFF
       run: |
         RUSTCBUILDX_LOG=debug \
