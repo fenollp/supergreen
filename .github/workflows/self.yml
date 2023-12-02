@@ -328,12 +328,11 @@ jobs:
         chmod +x ./rustcbuildx
         ./rustcbuildx --version | grep rustcbuildx
 
-    - run: rm -rf target/
-
     - name: cargo clippy net=OFF cache=OFF remote=OFF
       run: |
         RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
+        RUSTCBUILDX_BASE_IMAGE=docker-image://docker.io/library/rust:$(rustc -V | awk '{print $2}')-slim \
         RUSTC_WRAPPER="$PWD"/rustcbuildx \
           cargo -vv clippy --jobs=1 --all-targets --all-features --locked --frozen --offline
 
@@ -344,6 +343,7 @@ jobs:
       run: |
         RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
+        RUSTCBUILDX_BASE_IMAGE=docker-image://docker.io/library/rust:$(rustc -V | awk '{print $2}')-slim \
         RUSTC_WRAPPER="$PWD"/rustcbuildx \
           cargo -vv clippy --jobs=1 --all-targets --all-features --locked --frozen --offline 2>&1 | tee _
         cat _ | grep Finished | grep 0...s
