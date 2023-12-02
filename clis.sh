@@ -19,7 +19,6 @@ declare -a nvs nvs_args
 #TODO: play with cargo flags: lto (embeds bitcode)
 #TODO: allowlist non-busting rustc flags => se about this cache key
 #TODO: test cargo -vv build -> test -> build and look for "Dirty", expect none
-#TODO: merge buildx.yml in here
 #TODO: test cargo miri usage
 #TODO: test cargo lambda build --release --arm64 usage
 #TODO: test https://github.com/facebookexperimental/MIRAI

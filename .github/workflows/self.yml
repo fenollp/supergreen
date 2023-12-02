@@ -159,32 +159,28 @@ jobs:
         RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
         RUSTC_WRAPPER="$PWD"/rustcbuildx \
-          cargo -vv build --jobs=1 --all-targets --all-features --locked --frozen --offline || \
-            cat logs.txt
+          cargo -vv build --jobs=1 --all-targets --all-features --locked --frozen --offline
+
+    - if: ${{ failure() || success() }}
+      run: cat logs.txt && echo >logs.txt
 
   # TODO: cargo -vv test != cargo test: => the rustc flags will change => Dockerfile needs new cache key
   # => otherwise docker builder cache won't have the correct hit
   # https://rustc-dev-guide.rust-lang.org/backend/libs-and-metadata.html
-
-    - name: cargo build net=OFF cache=ON remote=OFF
-      run: |
-        RUSTCBUILDX_LOG=debug \
-        RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
-        RUSTC_WRAPPER="$PWD"/rustcbuildx \
-          cargo -vv build --jobs=1 --all-targets --all-features --locked --frozen --offline || \
-            cat logs.txt
 
     - name: Ensure running the same command twice without modifications does not recompile anything
       run: |
         RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
         RUSTC_WRAPPER="$PWD"/rustcbuildx \
-          cargo -vv build --jobs=1 --all-targets --all-features --locked --frozen --offline 2>&1 | tee _ || \
-            cat logs.txt
+          cargo -vv build --jobs=1 --all-targets --all-features --locked --frozen --offline 2>&1 | tee _
         cat _ | grep Finished | grep 0...s
         cat _ | grep Fresh
         ! cat _ | grep Compiling
         ! cat _ | grep 'DEBUG|INFO|WARN|ERROR'
+
+    - if: ${{ failure() || success() }}
+      run: cat logs.txt && echo >logs.txt
 
 
   tests:
@@ -223,28 +219,24 @@ jobs:
         RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
         RUSTC_WRAPPER="$PWD"/rustcbuildx \
-          cargo -vv test --jobs=1 --all-targets --all-features --locked --frozen --offline || \
-            cat logs.txt
+          cargo -vv test --jobs=1 --all-targets --all-features --locked --frozen --offline
 
-    - name: cargo test net=OFF cache=ON remote=OFF
-      run: |
-        RUSTCBUILDX_LOG=debug \
-        RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
-        RUSTC_WRAPPER="$PWD"/rustcbuildx \
-          cargo -vv test --jobs=1 --all-targets --all-features --locked --frozen --offline || \
-            cat logs.txt
+    - if: ${{ failure() || success() }}
+      run: cat logs.txt && echo >logs.txt
 
     - name: Ensure running the same command twice without modifications does not recompile anything
       run: |
         RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
         RUSTC_WRAPPER="$PWD"/rustcbuildx \
-          cargo -vv test --jobs=1 --all-targets --all-features --locked --frozen --offline 2>&1 | tee _ || \
-            cat logs.txt
+          cargo -vv test --jobs=1 --all-targets --all-features --locked --frozen --offline 2>&1 | tee _
         cat _ | grep Finished | grep 0...s
         cat _ | grep Fresh
         ! cat _ | grep Compiling
         ! cat _ | grep 'DEBUG|INFO|WARN|ERROR'
+
+    - if: ${{ failure() || success() }}
+      run: cat logs.txt && echo >logs.txt
 
 
   checks:
@@ -283,28 +275,24 @@ jobs:
         RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
         RUSTC_WRAPPER="$PWD"/rustcbuildx \
-          cargo -vv check --jobs=1 --all-targets --all-features --locked --frozen --offline || \
-            cat logs.txt
+          cargo -vv check --jobs=1 --all-targets --all-features --locked --frozen --offline
 
-    - name: cargo check net=OFF cache=ON remote=OFF
-      run: |
-        RUSTCBUILDX_LOG=debug \
-        RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
-        RUSTC_WRAPPER="$PWD"/rustcbuildx \
-          cargo -vv check --jobs=1 --all-targets --all-features --locked --frozen --offline || \
-            cat logs.txt
+    - if: ${{ failure() || success() }}
+      run: cat logs.txt && echo >logs.txt
 
     - name: Ensure running the same command twice without modifications does not recompile anything
       run: |
         RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
         RUSTC_WRAPPER="$PWD"/rustcbuildx \
-          cargo -vv check --jobs=1 --all-targets --all-features --locked --frozen --offline 2>&1 | tee _ || \
-            cat logs.txt
+          cargo -vv check --jobs=1 --all-targets --all-features --locked --frozen --offline 2>&1 | tee _
         cat _ | grep Finished | grep 0...s
         cat _ | grep Fresh
         ! cat _ | grep Compiling
         ! cat _ | grep 'DEBUG|INFO|WARN|ERROR'
+
+    - if: ${{ failure() || success() }}
+      run: cat logs.txt && echo >logs.txt
 
 
   clippy:
@@ -345,24 +333,20 @@ jobs:
         RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
         RUSTC_WRAPPER="$PWD"/rustcbuildx \
-          cargo -vv clippy --jobs=1 --all-targets --all-features --locked --frozen --offline || \
-            cat logs.txt
+          cargo -vv clippy --jobs=1 --all-targets --all-features --locked --frozen --offline
 
-    - name: cargo clippy net=OFF cache=ON remote=OFF
-      run: |
-        RUSTCBUILDX_LOG=debug \
-        RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
-        RUSTC_WRAPPER="$PWD"/rustcbuildx \
-          cargo -vv clippy --jobs=1 --all-targets --all-features --locked --frozen --offline || \
-            cat logs.txt
+    - if: ${{ failure() || success() }}
+      run: cat logs.txt && echo >logs.txt
 
     - name: Ensure running the same command twice without modifications does not recompile anything
       run: |
         RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
         RUSTC_WRAPPER="$PWD"/rustcbuildx \
-          cargo -vv clippy --jobs=1 --all-targets --all-features --locked --frozen --offline 2>&1 | tee _ || \
-            cat logs.txt
+          cargo -vv clippy --jobs=1 --all-targets --all-features --locked --frozen --offline 2>&1 | tee _
         cat _ | grep Finished | grep 0...s
         ! cat _ | grep 'Compiling|Compiling'
         ! cat _ | grep 'DEBUG|INFO|WARN|ERROR'
+
+    - if: ${{ failure() || success() }}
+      run: cat logs.txt && echo >logs.txt
