@@ -258,6 +258,7 @@ tmplogs=/tmp/clis-$session_name.logs.txt
 tmpgooo=/tmp/clis-$session_name.state
 
 
+rm -f "$tmpgooo".*
 tmux new-session -d -s "$session_name"
 tmux select-window -t "$session_name:0"
 
@@ -273,10 +274,7 @@ send \
     '&&' touch "$tmpgooo".installed
 tmux split-window
 if [[ "$cleanup" = '1' ]]; then
-  send rm -rf "$tmptrgt"
-  tmux select-layout even-vertical
-  tmux split-window
-  send docker buildx prune -af '&&' touch "$tmpgooo".ready
+  send rm -rf "$tmptrgt" '&&' docker buildx prune -af '&&' touch "$tmpgooo".ready
   tmux select-layout even-vertical
   tmux split-window
 else

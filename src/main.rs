@@ -3,7 +3,7 @@ use std::{
     env,
     fmt::Write,
     fs::{self, create_dir_all, read_dir, read_to_string, File},
-    io::{BufRead, BufReader, ErrorKind},
+    io::{BufRead, BufReader, ErrorKind, Read},
     process::{Command, ExitCode, Stdio},
     time::Instant,
     unreachable,
@@ -515,12 +515,14 @@ fn bake_rustc(
     // Extra characters after interpolation expression; Expected a closing brace to end the interpolation expression, but found extra characters.
     // dockerfile.push_str("  if [ -z \"${CARGO:-}\" ]; then exit 40; fi\n");
 
+    let io = format!("{stdio_stage}.tar");
     const IOERR: &str = "stderr";
     const IOOUT: &str = "stdout";
     dockerfile.push_str("  set +e\n");
     dockerfile.push_str(&format!("  rustc '{}' {input} >/{IOOUT} 2>/{IOERR}\n", args.join("' '")));
     dockerfile.push_str("  code=$?\n");
     dockerfile.push_str("  set -e\n");
+    dockerfile.push_str(&format!("  tar cf /{io} /{IOOUT} /{IOERR}\n"));
     dockerfile.push_str(&format!("  [ $code -eq 0 ] || head /{IOOUT} /{IOERR}\n"));
     dockerfile.push_str("  exit $code\n");
 
@@ -531,7 +533,7 @@ fn bake_rustc(
         dockerfile.push_str(&format!("COPY --from={rustc_stage} {incremental} /\n"));
     }
     dockerfile.push_str(&format!("FROM scratch AS {stdio_stage}\n"));
-    dockerfile.push_str(&format!("COPY --from={rustc_stage} /{IOOUT} /{IOERR} /\n"));
+    dockerfile.push_str(&format!("COPY --from={rustc_stage} /{io} /\n"));
     dockerfile.push_str(&format!("FROM scratch AS {out_stage}\n"));
     dockerfile.push_str(&format!("COPY --from={rustc_stage} {out_dir}/*-{metadata}* /\n"));
     // NOTE: -C extra-filename=-${metadata} (starts with dash)
@@ -693,40 +695,45 @@ target "{incremental_stage}" {{
     info!("command `docker buildx bake` ran in {}s: {code:?}", start.elapsed().as_secs());
 
     // TODO: buffered reading + copy to STDERR/STDOUT => give open fds in bakefile?
-    for x in [true, false] {
-        let path = stdio_path.join(if x { IOERR } else { IOOUT });
+    {
+        use tar::Archive;
+        let path = stdio_path.join(&io);
         info!(target:&krate, "reading (RO) {path}");
-        let data = match read_to_string(&path) {
-            Err(e) if e.kind() == ErrorKind::NotFound => continue,
-            otherwise => otherwise,
-        }
-        .with_context(|| format!("Failed to copy {path}"))?;
-        let msg = data.trim();
-        debug!(target:&krate, "{path} ~= {msg}");
-        if !msg.is_empty() {
-            if x {
-                eprintln!("{msg}");
-            } else {
-                println!("{msg}");
-            }
+        let file = File::open(&path).with_context(|| format!("Failed to read {path}"))?;
+        let mut archive = Archive::new(file);
+        for entry in
+            archive.entries().with_context(|| format!("Failed getting tar entries {path}"))?
+        {
+            let Ok(mut entry) = entry else { continue };
+            let mut data = String::new();
+            let Ok(_) = entry.read_to_string(&mut data) else { continue };
+            let msg = data.trim();
+            debug!(target:&krate, "{path} ~= {msg:?}");
+            if !msg.is_empty() {
+                let epath = entry.path_bytes();
+                if epath == IOOUT.as_bytes() {
+                    println!("{msg}");
+                } else if epath == IOOUT.as_bytes() {
+                    eprintln!("{msg}");
 
-            if x {
-                let mut z = msg.split('"');
-                let mut a = z.next();
-                let mut b = z.next();
-                let mut c = z.next();
-                loop {
-                    match (a, b, c) {
-                        (Some("artifact"), Some(":"), Some(file)) => {
-                            info!(target:&krate, "rustc wrote {file}")
+                    let mut z = msg.split('"');
+                    let mut a = z.next();
+                    let mut b = z.next();
+                    let mut c = z.next();
+                    loop {
+                        match (a, b, c) {
+                            (Some("artifact"), Some(":"), Some(file)) => {
+                                info!(target:&krate, "rustc wrote {file}")
+                            }
+                            (_, _, Some(_)) => {}
+                            (_, _, None) => break,
                         }
-                        (_, _, Some(_)) => {}
-                        (_, _, None) => break,
+                        (a, b, c) = (b, c, z.next());
                     }
-                    (a, b, c) = (b, c, z.next());
                 }
             }
         }
+        fs::remove_file(&path).with_context(|| format!("Failed deleting {path}"))?;
     }
 
     if debug.is_none() {
