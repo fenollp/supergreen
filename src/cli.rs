@@ -29,14 +29,12 @@ Usage:
     ExitCode::SUCCESS
 }
 
-pub(crate) fn envs(vars: impl Iterator<Item = String>) -> ExitCode {
-    //TODO: CI: sort + grep src/envs.rs
+pub(crate) fn envs(vars: Vec<String>) -> ExitCode {
     let all: BTreeMap<_, _> = [
         ("RUSTCBUILDX", None),
         ("RUSTCBUILDX_BASE_IMAGE", Some(base_image())),
         ("RUSTCBUILDX_DOCKER_SYNTAX", Some(docker_syntax())),
         ("RUSTCBUILDX_LOG", None),
-        ("RUSTCBUILDX_LOG_IF_CRATE_NAME", None),
         ("RUSTCBUILDX_LOG_PATH", Some(log_path())),
         ("RUSTCBUILDX_LOG_STYLE", None),
     ]
