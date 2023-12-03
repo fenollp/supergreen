@@ -2,6 +2,7 @@ use std::{
     collections::BTreeMap,
     env,
     fs::{File, OpenOptions},
+    process::Command,
 };
 
 use anyhow::{Context, Result};
@@ -28,9 +29,22 @@ pub(crate) fn log_path() -> String {
 }
 
 pub(crate) fn base_image() -> String {
-    // rustc 1.73.0 (cc66ad468 2023-10-03)
-    let x="docker-image://docker.io/library/rust:1.73.0-slim@sha256:89e1efffc83a631bced1bf86135f4f671223cc5dc32ebf26ef8b3efd1b97ffff";
-    env::var(RUSTCBUILDX_BASE_IMAGE).unwrap_or(x.to_owned())
+    // Passthrough to https://docs.docker.com/engine/reference/commandline/buildx_build/#build-context
+    env::var(RUSTCBUILDX_BASE_IMAGE).ok().unwrap_or_else(|| {
+        let s = Command::new("rustc")
+            .arg("-V")
+            .output()
+            .ok()
+            .and_then(|cmd| String::from_utf8(cmd.stdout).ok());
+        // e.g. rustc 1.73.0 (cc66ad468 2023-10-03)
+
+        let v = s
+            .map(|x| x.trim_start_matches("rustc ").to_owned())
+            .and_then(|x| x.split_once(' ').map(|x| x.0.to_owned()))
+            .unwrap_or("1".to_owned());
+
+        format!("docker-image://docker.io/library/rust:{v}-slim")
+    })
 }
 
 pub(crate) fn docker_syntax() -> String {
