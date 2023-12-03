@@ -60,6 +60,7 @@ fn faillible_main(args: VecDeque<String>, vars: BTreeMap<String, String>) -> Res
         [rustc, "-", ..] =>
              call_rustc(rustc, argv(1)),
         [driver, _rustc, "-"|"--crate-name", ..] => {
+            // TODO: wrap driver+rustc calls as well
             // driver: e.g. /home/maison/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/clippy-driver
             // cf. https://github.com/rust-lang/rust-clippy/tree/da27c979e29e78362b7a2a91ebcf605cb01da94c#using-clippy-driver
              call_rustc(driver, argv(2))
