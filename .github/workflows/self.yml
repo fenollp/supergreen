@@ -60,7 +60,7 @@ jobs:
         toolchain: stable
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: bin-artifact
     - run: | # TODO: whence https://github.com/actions/download-artifact/issues/236
@@ -86,7 +86,7 @@ jobs:
         toolchain: stable
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: bin-artifact
     - run: | # TODO: whence https://github.com/actions/download-artifact/issues/236
@@ -147,7 +147,7 @@ jobs:
     - run: cargo fetch
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: bin-artifact
     - run: | # TODO: whence https://github.com/actions/download-artifact/issues/236
@@ -207,7 +207,7 @@ jobs:
     - run: cargo fetch
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: bin-artifact
     - run: | # TODO: whence https://github.com/actions/download-artifact/issues/236
@@ -263,7 +263,7 @@ jobs:
     - run: cargo fetch
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: bin-artifact
     - run: | # TODO: whence https://github.com/actions/download-artifact/issues/236
@@ -321,7 +321,7 @@ jobs:
     - run: cargo fetch
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: bin-artifact
     - run: | # TODO: whence https://github.com/actions/download-artifact/issues/236
