@@ -213,6 +213,7 @@ if [[ $# = 0 ]]; then
   header
 
   for i in "${!nvs[@]}"; do
+    [[ "${ok[$i]}" = 1 ]] || continue
     name_at_version=${nvs["$i"]}
     case "$name_at_version" in
       rustcbuildx@*) continue ;;
@@ -229,10 +230,9 @@ cleanup=${1:-0}
 
 if [[ "$name_at_version" = 'ok' ]]; then
   for i in "${!nvs[@]}"; do
-    if [[ "${ok[$i]}" = 1 ]]; then
-      nv=${nvs[$i]}
-      "$0" "${nv#*@}" "$cleanup"
-    fi
+    [[ "${ok[$i]}" = 1 ]] || continue
+    nv=${nvs[$i]}
+    "$0" "${nv#*@}" "$cleanup"
   done
   exit $?
 fi
