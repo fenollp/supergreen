@@ -291,6 +291,8 @@ send "rm $tmplogs >/dev/null 2>&1; touch $tmplogs; tail -f $tmplogs; :"
 tmux select-layout even-vertical
 tmux split-window
 
+tryin=./tryin-8cd141b
+cp "$tryin" /tmp/
 send \
   'until' '[[' -f "$tmpgooo".installed ']] && [[' -f "$tmpgooo".ready ']];' 'do' sleep '1;' 'done' '&&' rm "$tmpgooo".* '&&' \
   RUSTFLAGS= \
@@ -307,7 +309,7 @@ send \
   RUSTCBUILDX_DEBUG=0 \
   RUSTCBUILDX_DOCKER_IMAGE=docker-image://docker.io/library/rust:"$(rustc -V | awk '{print $2}')"-slim \
   RUSTCBUILDX_DOCKER_SYNTAX=docker.io/docker/dockerfile:1 \
-  RUSTC_WRAPPER=/home/pete/wefwefwef/buildxargs.git/tryin.sh \
+  RUSTC_WRAPPER=/tmp/"$tryin" \
     CARGO_TARGET_DIR="$tmptrgt" cargo -vv install --jobs=1 --locked --force "$(as_install "$name_at_version")" "$args" \
   '&&' tmux kill-session -t "$session_name"
 tmux select-layout even-vertical
