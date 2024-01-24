@@ -286,7 +286,7 @@ tmux select-layout even-vertical
 tmux split-window
 
 
-send "rm $tmplogs; touch $tmplogs; tail -f $tmplogs; :"
+send "rm $tmplogs >/dev/null 2>&1; touch $tmplogs; tail -f $tmplogs; :"
 tmux select-layout even-vertical
 tmux split-window
 
