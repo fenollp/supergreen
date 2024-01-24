@@ -271,12 +271,11 @@ send() {
 
 gitdir=$(realpath "$(dirname "$0")")
 send \
-  CARGO_TARGET_DIR=/tmp/rstcbldx \
-    cargo install --locked --force --path="$gitdir" \
+  CARGO_TARGET_DIR=/tmp/rstcbldx cargo install --locked --force --path="$gitdir" \
     '&&' touch "$tmpgooo".installed
 tmux split-window
 if [[ "$cleanup" = '1' ]]; then
-  send rm -rf "$tmptrgt" '&&' docker buildx prune -af '&&' touch "$tmpgooo".ready
+  send docker buildx prune --all --force --verbose '&&' rm -rf "$tmptrgt" '&&' touch "$tmpgooo".ready
   tmux select-layout even-vertical
   tmux split-window
 else
