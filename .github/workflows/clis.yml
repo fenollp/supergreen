@@ -96,7 +96,7 @@ jobs:
           CARGO_TARGET_DIR=~/instst cargo -vv install --jobs=1 --locked --force  --git https://github.com/fenollp/buildxargs.git
 
     - if: ${{ failure() || success() }}
-      run: cat logs.txt && echo >logs.txt
+      run: [ "" -lt 1751778 ] && cat logs.txt ; echo >logs.txt
 
     - name: Disk usage
       if: ${{ failure() || success() }}
@@ -116,7 +116,7 @@ jobs:
           CARGO_TARGET_DIR=~/instst cargo -vv install --jobs=1 --locked --force  --git https://github.com/fenollp/buildxargs.git 2>&1 | tee _
 
     - if: ${{ failure() || success() }}
-      run: cat logs.txt
+      run: [ "" -lt 1751778 ] && cat logs.txt
 
     - name: Disk usage
       if: ${{ failure() || success() }}
@@ -197,7 +197,7 @@ jobs:
           CARGO_TARGET_DIR=~/instst cargo -vv install --jobs=1 --locked --force cargo-audit@0.18.3 --features=fix
 
     - if: ${{ failure() || success() }}
-      run: cat logs.txt && echo >logs.txt
+      run: [ "" -lt 1751778 ] && cat logs.txt ; echo >logs.txt
 
     - name: Disk usage
       if: ${{ failure() || success() }}
@@ -217,7 +217,7 @@ jobs:
           CARGO_TARGET_DIR=~/instst cargo -vv install --jobs=1 --locked --force cargo-audit@0.18.3 --features=fix 2>&1 | tee _
 
     - if: ${{ failure() || success() }}
-      run: cat logs.txt
+      run: [ "" -lt 1751778 ] && cat logs.txt
 
     - name: Disk usage
       if: ${{ failure() || success() }}
@@ -298,7 +298,7 @@ jobs:
           CARGO_TARGET_DIR=~/instst cargo -vv install --jobs=1 --locked --force cargo-llvm-cov@0.5.36 
 
     - if: ${{ failure() || success() }}
-      run: cat logs.txt && echo >logs.txt
+      run: [ "" -lt 1751778 ] && cat logs.txt ; echo >logs.txt
 
     - name: Disk usage
       if: ${{ failure() || success() }}
@@ -318,7 +318,7 @@ jobs:
           CARGO_TARGET_DIR=~/instst cargo -vv install --jobs=1 --locked --force cargo-llvm-cov@0.5.36  2>&1 | tee _
 
     - if: ${{ failure() || success() }}
-      run: cat logs.txt
+      run: [ "" -lt 1751778 ] && cat logs.txt
 
     - name: Disk usage
       if: ${{ failure() || success() }}
@@ -399,7 +399,7 @@ jobs:
           CARGO_TARGET_DIR=~/instst cargo -vv install --jobs=1 --locked --force hickory-dns@0.24.0 --features=dns-over-rustls
 
     - if: ${{ failure() || success() }}
-      run: cat logs.txt && echo >logs.txt
+      run: [ "" -lt 1751778 ] && cat logs.txt ; echo >logs.txt
 
     - name: Disk usage
       if: ${{ failure() || success() }}
@@ -419,7 +419,7 @@ jobs:
           CARGO_TARGET_DIR=~/instst cargo -vv install --jobs=1 --locked --force hickory-dns@0.24.0 --features=dns-over-rustls 2>&1 | tee _
 
     - if: ${{ failure() || success() }}
-      run: cat logs.txt
+      run: [ "" -lt 1751778 ] && cat logs.txt
 
     - name: Disk usage
       if: ${{ failure() || success() }}
@@ -500,7 +500,7 @@ jobs:
           CARGO_TARGET_DIR=~/instst cargo -vv install --jobs=1 --locked --force vixargs@0.1.0 
 
     - if: ${{ failure() || success() }}
-      run: cat logs.txt && echo >logs.txt
+      run: [ "" -lt 1751778 ] && cat logs.txt ; echo >logs.txt
 
     - name: Disk usage
       if: ${{ failure() || success() }}
@@ -520,7 +520,7 @@ jobs:
           CARGO_TARGET_DIR=~/instst cargo -vv install --jobs=1 --locked --force vixargs@0.1.0  2>&1 | tee _
 
     - if: ${{ failure() || success() }}
-      run: cat logs.txt
+      run: [ "" -lt 1751778 ] && cat logs.txt
 
     - name: Disk usage
       if: ${{ failure() || success() }}
