@@ -298,11 +298,11 @@ send \
   RUSTFLAGS= \
   CARGO_BUILD_RUSTFLAGS= \
   CARGO_ENCODED_RUSTFLAGS= \
-  CARGO_TARGET_aarch64-apple-darwin_RUSTFLAGS= \
-  CARGO_TARGET_aarch64-unknown-linux-gnu_RUSTFLAGS= \
-  CARGO_TARGET_x86_64-apple-darwin_RUSTFLAGS= \
-  CARGO_TARGET_x86_64-unknown-linux-gnu_RUSTFLAGS= \
-  CARGO_TARGET_x86_64-unknown-linux-musl_RUSTFLAGS= \
+  CARGO_TARGET_aarch64_apple_darwin_RUSTFLAGS= \
+  CARGO_TARGET_aarch64_unknown_linux_gnu_RUSTFLAGS= \
+  CARGO_TARGET_x86_64_apple_darwin_RUSTFLAGS= \
+  CARGO_TARGET_x86_64_unknown_linux_gnu_RUSTFLAGS= \
+  CARGO_TARGET_x86_64_unknown_linux_musl_RUSTFLAGS= \
   RUSTCBUILDX_LOG=debug \
   RUSTCBUILDX_LOG_PATH="$tmplogs" \
   RUSTCBUILDX_BASE_IMAGE=docker-image://docker.io/library/rust:"$(rustc -V | awk '{print $2}')"-slim \
