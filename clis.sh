@@ -293,9 +293,21 @@ tmux split-window
 
 send \
   'until' '[[' -f "$tmpgooo".installed ']] && [[' -f "$tmpgooo".ready ']];' 'do' sleep '1;' 'done' '&&' rm "$tmpgooo".* '&&' \
+  RUSTFLAGS= \
+  CARGO_BUILD_RUSTFLAGS= \
+  CARGO_ENCODED_RUSTFLAGS= \
+  CARGO_TARGET_aarch64-apple-darwin_RUSTFLAGS= \
+  CARGO_TARGET_aarch64-unknown-linux-gnu_RUSTFLAGS= \
+  CARGO_TARGET_x86_64-apple-darwin_RUSTFLAGS= \
+  CARGO_TARGET_x86_64-unknown-linux-gnu_RUSTFLAGS= \
+  CARGO_TARGET_x86_64-unknown-linux-musl_RUSTFLAGS= \
   RUSTCBUILDX_LOG=debug \
   RUSTCBUILDX_LOG_PATH="$tmplogs" \
-  RUSTC_WRAPPER=rustcbuildx \
+  RUSTCBUILDX_BASE_IMAGE=docker-image://docker.io/library/rust:"$(rustc -V | awk '{print $2}')"-slim \
+  RUSTCBUILDX_DEBUG=0 \
+  RUSTCBUILDX_DOCKER_IMAGE=docker-image://docker.io/library/rust:"$(rustc -V | awk '{print $2}')"-slim \
+  RUSTCBUILDX_DOCKER_SYNTAX=docker.io/docker/dockerfile:1 \
+  RUSTC_WRAPPER=/home/pete/wefwefwef/buildxargs.git/tryin.sh \
     CARGO_TARGET_DIR="$tmptrgt" cargo -vv install --jobs=1 --locked --force "$(as_install "$name_at_version")" "$args" \
   '&&' tmux kill-session -t "$session_name"
 tmux select-layout even-vertical
