@@ -56,7 +56,7 @@ jobs:
 
     # Actually, the whole archives
     - name: Cache \`cargo fetch\`
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: |
           ~/.cargo/registry/index/
@@ -66,7 +66,7 @@ jobs:
         restore-keys: cargo-deps-
 
     - name: Cache \`cargo install\`
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: ~/instmp
         key: \${{ runner.os }}-cargo-install-\${{ hashFiles('**/Cargo.lock') }}-and-\${{ hashFiles('src/**') }}
@@ -78,7 +78,7 @@ jobs:
       run: |
         CARGO_TARGET_DIR=~/instmp cargo install --force --path=\$PWD
 
-    - uses: actions/upload-artifact@v3
+    - uses: actions/upload-artifact@v4
       with:
         name: bin-artifact
         path: ~/instmp/release/rustcbuildx
@@ -118,7 +118,7 @@ $(
 )
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: bin-artifact
     - run: | # TODO: whence https://github.com/actions/download-artifact/issues/236
@@ -147,7 +147,8 @@ $(
           CARGO_TARGET_DIR=~/instst cargo -vv install --jobs=1 --locked --force $(as_install "$name_at_version") $@
 
     - if: \${{ failure() || success() }}
-      run: cat logs.txt && echo >logs.txt
+      run: |
+        [ \$(stat -c%s logs.txt) -lt 1751778 ] && cat logs.txt ; echo >logs.txt
 
     - name: Disk usage
       if: \${{ failure() || success() }}
@@ -167,7 +168,8 @@ $(
           CARGO_TARGET_DIR=~/instst cargo -vv install --jobs=1 --locked --force $(as_install "$name_at_version") $@ 2>&1 | tee _
 
     - if: \${{ failure() || success() }}
-      run: cat logs.txt
+      run: |
+        [ \$(stat -c%s logs.txt) -lt 1751778 ] && cat logs.txt
 
     - name: Disk usage
       if: \${{ failure() || success() }}
@@ -213,6 +215,7 @@ if [[ $# = 0 ]]; then
   header
 
   for i in "${!nvs[@]}"; do
+    [[ "${ok[$i]}" = 1 ]] || continue
     name_at_version=${nvs["$i"]}
     case "$name_at_version" in
       rustcbuildx@*) continue ;;
@@ -229,10 +232,9 @@ cleanup=${1:-0}
 
 if [[ "$name_at_version" = 'ok' ]]; then
   for i in "${!nvs[@]}"; do
-    if [[ "${ok[$i]}" = 1 ]]; then
-      nv=${nvs[$i]}
-      "$0" "${nv#*@}" "$cleanup"
-    fi
+    [[ "${ok[$i]}" = 1 ]] || continue
+    nv=${nvs[$i]}
+    "$0" "${nv#*@}" "$cleanup"
   done
   exit $?
 fi
@@ -269,12 +271,11 @@ send() {
 
 gitdir=$(realpath "$(dirname "$0")")
 send \
-  CARGO_TARGET_DIR=/tmp/rstcbldx \
-    cargo install --locked --force --path="$gitdir" \
+  CARGO_TARGET_DIR=/tmp/rstcbldx cargo install --locked --force --path="$gitdir" \
     '&&' touch "$tmpgooo".installed
 tmux split-window
 if [[ "$cleanup" = '1' ]]; then
-  send rm -rf "$tmptrgt" '&&' docker buildx prune -af '&&' touch "$tmpgooo".ready
+  send docker buildx prune --all --force --verbose '&&' rm -rf "$tmptrgt" '&&' touch "$tmpgooo".ready
   tmux select-layout even-vertical
   tmux split-window
 else
@@ -286,7 +287,7 @@ tmux select-layout even-vertical
 tmux split-window
 
 
-send "rm $tmplogs; touch $tmplogs; tail -f $tmplogs; :"
+send "rm $tmplogs >/dev/null 2>&1; touch $tmplogs; tail -f $tmplogs; :"
 tmux select-layout even-vertical
 tmux split-window
 
