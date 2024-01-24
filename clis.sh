@@ -144,7 +144,7 @@ $(
         RUSTCBUILDX_LOG=debug \\
         RUSTCBUILDX_LOG_PATH="\$PWD"/logs.txt \\
         RUSTC_WRAPPER="\$PWD"/rustcbuildx \\
-          CARGO_TARGET_DIR=~/instst cargo -vv install --jobs=1 --locked --force $(as_install "$name_at_version") $@
+          CARGO_TARGET_DIR=~/instst cargo -vv install --locked --force $(as_install "$name_at_version") $@
 
     - if: \${{ failure() || success() }}
       run: |
