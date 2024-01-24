@@ -56,7 +56,7 @@ jobs:
 
     # Actually, the whole archives
     - name: Cache \`cargo fetch\`
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: |
           ~/.cargo/registry/index/
@@ -66,7 +66,7 @@ jobs:
         restore-keys: cargo-deps-
 
     - name: Cache \`cargo install\`
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: ~/instmp
         key: \${{ runner.os }}-cargo-install-\${{ hashFiles('**/Cargo.lock') }}-and-\${{ hashFiles('src/**') }}
