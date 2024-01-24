@@ -516,7 +516,7 @@ fn bake_rustc(
     // Extra characters after interpolation expression; Expected a closing brace to end the interpolation expression, but found extra characters.
     // dockerfile.push_str("  if [ -z \"${CARGO:-}\" ]; then exit 40; fi\n");
 
-    let io = format!("{stdio_stage}.tar");
+    let io = format!("{stdio_stage}.tar"); // FIXME: revert tar "optimization"
     const IOERR: &str = "stderr";
     const IOOUT: &str = "stdout";
     dockerfile.push_str("  set +e\n");
