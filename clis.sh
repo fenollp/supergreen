@@ -125,6 +125,9 @@ $(
         chmod +x ./rustcbuildx
         ./rustcbuildx --version | grep rustcbuildx
 
+    - name: Docker info
+      run: docker info
+
     - name: Buildx version
       run: docker buildx version
 
@@ -219,6 +222,7 @@ if [[ $# = 0 ]]; then
     name_at_version=${nvs["$i"]}
     case "$name_at_version" in
       rustcbuildx@*) continue ;;
+      cargo-audit@*) continue ;; # TODO: drop once max cache use
     esac
     cli "$name_at_version" "${nvs_args["$i"]}"
   done
@@ -258,6 +262,7 @@ session_name=$(sed 's%@%_%g;s%\.%-%g' <<<"$name_at_version")
 tmptrgt=/tmp/clis-$session_name
 tmplogs=/tmp/clis-$session_name.logs.txt
 tmpgooo=/tmp/clis-$session_name.state
+tmpbins=/tmp
 
 
 rm -f "$tmpgooo".*
@@ -296,7 +301,7 @@ send \
   RUSTCBUILDX_LOG=debug \
   RUSTCBUILDX_LOG_PATH="$tmplogs" \
   RUSTC_WRAPPER=rustcbuildx \
-    CARGO_TARGET_DIR="$tmptrgt" cargo -vv install --jobs=1 --locked --force "$(as_install "$name_at_version")" "$args" \
+    CARGO_TARGET_DIR="$tmptrgt" cargo -vv install --jobs=1 --root=$tmpbins --locked --force "$(as_install "$name_at_version")" "$args" \
   '&&' tmux kill-session -t "$session_name"
 tmux select-layout even-vertical
 
