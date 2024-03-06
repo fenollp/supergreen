@@ -222,6 +222,7 @@ if [[ $# = 0 ]]; then
     name_at_version=${nvs["$i"]}
     case "$name_at_version" in
       rustcbuildx@*) continue ;;
+      cargo-audit@*) continue ;; # TODO: drop once max cache use
     esac
     cli "$name_at_version" "${nvs_args["$i"]}"
   done
