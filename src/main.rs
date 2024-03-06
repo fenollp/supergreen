@@ -77,10 +77,9 @@ fn faillible_main(args: VecDeque<String>, vars: BTreeMap<String, String>) -> Res
              call_rustc(rustc, argv(1)),
         [rustc, "--crate-name", crate_name, ..] if !called_from_build_script =>
              bake_rustc(crate_name, argv(1), || call_rustc(rustc, argv(1)))
-            .map_err(|e| {
+            .inspect_err(|e| {
                 error!(target:crate_name, "Failure: {e}");
                 eprintln!("Failure: {e}");
-                e
             }),
         _ => panic!("RUSTC_WRAPPER={PKG}'s input unexpected:\n\targz = {argz:?}\n\targs = {args:?}\n\tenvs = {vars:?}\n"),
     }
