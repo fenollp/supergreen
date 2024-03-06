@@ -125,6 +125,9 @@ $(
         chmod +x ./rustcbuildx
         ./rustcbuildx --version | grep rustcbuildx
 
+    - name: Docker info
+      run: docker info
+
     - name: Buildx version
       run: docker buildx version
 

@@ -74,6 +74,9 @@ jobs:
         chmod +x ./rustcbuildx
         ./rustcbuildx --version | grep rustcbuildx
 
+    - name: Docker info
+      run: docker info
+
     - name: Buildx version
       run: docker buildx version
 
@@ -176,6 +179,9 @@ jobs:
     - run: | # TODO: whence https://github.com/actions/download-artifact/issues/236
         chmod +x ./rustcbuildx
         ./rustcbuildx --version | grep rustcbuildx
+
+    - name: Docker info
+      run: docker info
 
     - name: Buildx version
       run: docker buildx version
@@ -280,6 +286,9 @@ jobs:
         chmod +x ./rustcbuildx
         ./rustcbuildx --version | grep rustcbuildx
 
+    - name: Docker info
+      run: docker info
+
     - name: Buildx version
       run: docker buildx version
 
@@ -383,6 +392,9 @@ jobs:
         chmod +x ./rustcbuildx
         ./rustcbuildx --version | grep rustcbuildx
 
+    - name: Docker info
+      run: docker info
+
     - name: Buildx version
       run: docker buildx version
 
@@ -485,6 +497,9 @@ jobs:
     - run: | # TODO: whence https://github.com/actions/download-artifact/issues/236
         chmod +x ./rustcbuildx
         ./rustcbuildx --version | grep rustcbuildx
+
+    - name: Docker info
+      run: docker info
 
     - name: Buildx version
       run: docker buildx version
