@@ -38,6 +38,9 @@ pub(crate) fn base_image() -> String {
             .and_then(|cmd| String::from_utf8(cmd.stdout).ok());
         // e.g. rustc 1.73.0 (cc66ad468 2023-10-03)
 
+        // TODO: actually, suggest a dockefile script with the correct exact base?
+        // Error response from daemon: manifest for rust:1.77.1-slim not found: manifest unknown: manifest unknown
+
         let v = s
             .map(|x| x.trim_start_matches("rustc ").to_owned())
             .and_then(|x| x.split_once(' ').map(|x| x.0.to_owned()))
