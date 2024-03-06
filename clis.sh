@@ -144,7 +144,7 @@ $(
         RUSTCBUILDX_LOG=debug \\
         RUSTCBUILDX_LOG_PATH="\$PWD"/logs.txt \\
         RUSTC_WRAPPER="\$PWD"/rustcbuildx \\
-          CARGO_TARGET_DIR=~/instst cargo -vv install --locked --force $(as_install "$name_at_version") $@
+          CARGO_TARGET_DIR=~/instst cargo -vv install --jobs=1 --locked --force $(as_install "$name_at_version") $@
 
     - if: \${{ failure() || success() }}
       run: |
@@ -258,6 +258,7 @@ session_name=$(sed 's%@%_%g;s%\.%-%g' <<<"$name_at_version")
 tmptrgt=/tmp/clis-$session_name
 tmplogs=/tmp/clis-$session_name.logs.txt
 tmpgooo=/tmp/clis-$session_name.state
+tmpbins=/tmp
 
 
 rm -f "$tmpgooo".*
@@ -296,7 +297,7 @@ send \
   RUSTCBUILDX_LOG=debug \
   RUSTCBUILDX_LOG_PATH="$tmplogs" \
   RUSTC_WRAPPER=rustcbuildx \
-    CARGO_TARGET_DIR="$tmptrgt" cargo -vv install --jobs=1 --locked --force "$(as_install "$name_at_version")" "$args" \
+    CARGO_TARGET_DIR="$tmptrgt" cargo -vv install --jobs=1 --root=$tmpbins --locked --force "$(as_install "$name_at_version")" "$args" \
   '&&' tmux kill-session -t "$session_name"
 tmux select-layout even-vertical
 
