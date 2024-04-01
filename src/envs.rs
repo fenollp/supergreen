@@ -38,13 +38,12 @@ pub(crate) fn base_image() -> String {
             .and_then(|cmd| String::from_utf8(cmd.stdout).ok());
         // e.g. rustc 1.73.0 (cc66ad468 2023-10-03)
 
-        // TODO: actually, suggest a dockefile script with the correct exact base?
-        // Error response from daemon: manifest for rust:1.77.1-slim not found: manifest unknown: manifest unknown
-
         let v = s
             .map(|x| x.trim_start_matches("rustc ").to_owned())
-            .and_then(|x| x.split_once(' ').map(|x| x.0.to_owned()))
+            .and_then(|x| x.split_once(' ').map(|(x, _)| x.to_owned()))
             .unwrap_or("1".to_owned());
+
+        let v = v.trim_end_matches(".1"); // TODO: drop whence https://github.com/rust-lang/docker-rust/issues/193
 
         format!("docker-image://docker.io/library/rust:{v}-slim")
     })
