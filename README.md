@@ -1,6 +1,47 @@
 # rustcbuildx
 `RUSTC_WRAPPER` that uses `docker buildx bake`
 
+## Goals
+* [x] seamlessly build on another machine (with more cores, more cache)
+  * [x] support setting env `DOCKER_HOST=` with e.g. `ssh://me@beaffy-machine.internal.net`
+* [x] seamlessly integrate with normal `cargo` usage
+  * [x] only pull sources from local filesystem
+  * [x] produce the same intermediary artefacts as local `cargo` does
+  * [x] fallback to normal, local `rustc` anytime
+* [ ] wrap `rustc` calls in `buildkit`-like calls (`docker`, `podman`)
+  * [x] `docker`
+  * [ ] `podman`
+  * [ ] deps compatibility
+    * [x] handle Rust-only deps
+    * [ ] handle all the other deps (expand this list) (use `crater`)
+      * [x] `C` deps
+      * [ ] ...
+  * [ ] runner compatibility
+    * [ ] drop `docker buildx bake` usage
+    * [ ] set `.dockerignore`s (to be authoritative on srcs)
+  * [ ] trace these outputs (STDOUT/STDERR) for debugging
+* [x] available as a `rustc` wrapper through `$RUSTC_WRAPPER`
+* [ ] available as a `cargo` subcommand
+  * [ ] configuration profiles (user, team, per-workspace, per-crate, CI, ...)
+  * [x] seamlessly use current/local `rustc` version
+    * [x] support overriding `rustc` base image
+  * [ ] seamlessly use current/local tools (`mold`, ...)
+    * [ ] config expressions on top of base image config?
+    * [ ] just suggest an inline `Dockerfile` stage?
+  * [ ] support CRUD-ish operations on local/remotes cache
+  * [x] `[SEC]` support building a crate without it having network access
+* [x] integrate with shipping OCI images
+* [ ] share cache with the World
+  * [x] never rebuild a dep (for a given version of `rustc`, ...)
+  * [ ] share cache with other projects on local machine
+    * [ ] fix `WORKDIR`s + rewrite paths with `remap-path-prefix` 
+  * [ ] share cache with CI and team
+    * [ ] share cache with CI (at least for a single user)
+  * [ ] `[SEC]` ensure private deps don't leak through/to cache
+* [ ] suggest a global cache -faciliting configuration profile
+* [ ] integrate with `cross`
+  * [ ] build for a non-local target
+
 ## Usage
 
 * Ensure `~/.cargo/bin` is in `$PATH`
@@ -94,6 +135,10 @@ PoC originally written in Bash: https://github.com/fenollp/buildxargs/blob/build
 * https://doc.rust-lang.org/rustc/command-line-arguments.html#option-emit
 * https://rust-lang.github.io/rustup/overrides.html
 * https://docs.rs/rustflags/0.1.4/rustflags/index.html
+* [Provide better diagnostics for why crates are rebuilt](https://github.com/rust-lang/cargo/issues/2904)
+* `[build] rustflags = ["--remap-path-prefix"`
+  * [RFC: `trim-paths`](https://rust-lang.github.io/rfcs/3127-trim-paths.html)
+* [`crater`: Run experiments across parts of the Rust ecosystem!](https://github.com/rust-lang/crater)
 
 ## cross
 *  Convert --target-dir to use absolute paths. https://github.com/cross-rs/cross/commit/2504e04375a4a8f62f5dc62f95745701521c590e
