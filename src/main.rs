@@ -4,7 +4,7 @@ use std::{
     fmt::Write,
     fs::{self, create_dir_all, read_dir, read_to_string, File},
     future::Future,
-    io::{BufRead, BufReader, ErrorKind, Read},
+    io::{BufRead, BufReader, ErrorKind},
     process::{ExitCode, Stdio},
     time::{Duration, Instant},
     unreachable,
@@ -36,6 +36,10 @@ mod parse;
 mod pops;
 
 const PKG: &str = env!("CARGO_PKG_NAME");
+const VSN: &str = env!("CARGO_PKG_VERSION");
+
+const MARK_STDOUT: &str = "::STDOUT:: ";
+const MARK_STDERR: &str = "::STDERR:: ";
 
 // NOTE: this RUSTC_WRAPPER program only ever gets called by `cargo`, so we save
 //       ourselves some trouble and assume std::path::{Path, PathBuf} are UTF-8.
@@ -168,9 +172,7 @@ async fn bake_rustc(
     }
 
     let krate = format!("{PKG}:{crate_name}");
-    log::info!(target:&krate, "{PKG}@{vsn} wraps `rustc` calls to BuildKit builders",
-        vsn = env!("CARGO_PKG_VERSION"),
-    );
+    log::info!(target:&krate, "{PKG}@{VSN} wraps `rustc` calls to BuildKit builders");
 
     let pwd = env::current_dir().context("Failed to get $PWD")?;
     let pwd: Utf8PathBuf = pwd.try_into().context("Path's UTF-8 encoding is corrupted")?;
@@ -361,7 +363,6 @@ async fn bake_rustc(
 
     let incremental_stage = format!("incremental-{metadata}");
     let out_stage = format!("out-{metadata}");
-    let stdio_stage = format!("stdio-{metadata}");
     // let mut toolchain = input_mount
     //     .as_ref()
     //     .map(|(_imn, imt)| -> Result<Option<String>> {
@@ -420,6 +421,9 @@ async fn bake_rustc(
         }
     }
     dockerfile.push_str("  RUSTCBUILDX=1\n");
+
+    // Switch from /bin/sh to bash so stream redirection works
+    dockerfile.push_str("SHELL [\"/bin/bash\", \"-c\"]\n");
 
     let cwd = if let Some((name, target)) = input_mount.as_ref() {
         // Reuse previous contexts
@@ -514,7 +518,7 @@ async fn bake_rustc(
         })
         .collect::<Result<Vec<_>>>()?;
 
-    dockerfile.push_str("     <<RUN\n"); // Start heredoc
+    dockerfile.push_str("     <<RUNHERE\n"); // Start heredoc
     dockerfile.push_str("  set -eux\n");
 
     // if toolchain.is_some() {
@@ -538,35 +542,20 @@ async fn bake_rustc(
     for var in ["PATH", "DYLD_FALLBACK_LIBRARY_PATH", "LD_LIBRARY_PATH", "LIBPATH"] {
         let Ok(val) = env::var(var) else { continue };
         if !val.is_empty() {
-            dockerfile.push_str(&format!("  # export {var}=\"{val}:${var}\"\n"));
+            dockerfile.push_str(&format!("  # export {var}=\"{val:?}:${var}\"\n"));
         }
     }
 
-    // TODO: report BUG
-    // buildx bake github issue dockerfile-inline and dockerfile heredoc conflict when using RUN echo "${VAR:-}"
-    // error =>
-    // Extra characters after interpolation expression; Expected a closing brace to end the interpolation expression, but found extra characters.
-    // dockerfile.push_str("  if [ -z \"${CARGO:-}\" ]; then exit 40; fi\n");
+    dockerfile.push_str(&format!("  rustc '{}' {input} \\\n", args.join("' '")));
+    dockerfile.push_str(&format!("    1> >(sed 's%^%{MARK_STDOUT}%') \\\n"));
+    dockerfile.push_str(&format!("    2> >(sed 's%^%{MARK_STDERR}%' >&2)\n"));
 
-    let io = format!("{stdio_stage}.tar"); // FIXME: revert tar "optimization"
-    const IOERR: &str = "stderr";
-    const IOOUT: &str = "stdout";
-    dockerfile.push_str("  set +e\n");
-    dockerfile.push_str(&format!("  rustc '{}' {input} >/{IOOUT} 2>/{IOERR}\n", args.join("' '")));
-    dockerfile.push_str("  code=$?\n");
-    dockerfile.push_str("  set -e\n");
-    dockerfile.push_str(&format!("  tar cf /{io} /{IOOUT} /{IOERR}\n"));
-    dockerfile.push_str(&format!("  [ $code -eq 0 ] || head /{IOOUT} /{IOERR}\n"));
-    dockerfile.push_str("  exit $code\n");
-
-    dockerfile.push_str("RUN\n"); // End of heredoc
+    dockerfile.push_str("RUNHERE\n"); // End of heredoc
 
     if let Some(incremental) = &incremental {
         dockerfile.push_str(&format!("FROM scratch AS {incremental_stage}\n"));
         dockerfile.push_str(&format!("COPY --link --from={rustc_stage} {incremental} /\n"));
     }
-    dockerfile.push_str(&format!("FROM scratch AS {stdio_stage}\n"));
-    dockerfile.push_str(&format!("COPY --link --from={rustc_stage} /{io} /\n"));
     dockerfile.push_str(&format!("FROM scratch AS {out_stage}\n"));
     dockerfile.push_str(&format!("COPY --link --from={rustc_stage} {out_dir}/*-{metadata}* /\n"));
     // NOTE: -C extra-filename=-${metadata} (starts with dash)
@@ -638,11 +627,6 @@ async fn bake_rustc(
     dockerfile_bis.push_str(&dockerfile);
     drop(dockerfile); // Earlier: wrote to disk
 
-    let stdio = env::temp_dir().join(format!("{PKG}-{stdio_stage}"));
-    let Some(stdio_path) = Utf8Path::from_path(stdio.as_path()) else {
-        bail!("Path's UTF-8 encoding is corrupted: {stdio:?}")
-    };
-
     const TAB: char = '\t';
     // TODO: use https://lib.rs/crates/hcl-rs#readme-serialization-examples
     let mut bakefile = String::new();
@@ -667,16 +651,11 @@ target "{out_stage}" {{
 {TAB}output = ["{out_dir}"] # https://github.com/moby/buildkit/issues/1224
 {TAB}platforms = ["local"]
 {TAB}target = "{out_stage}"
-}}
-target "{stdio_stage}" {{
-{TAB}inherits = ["{out_stage}"]
-{TAB}output = ["{stdio_path}"]
-{TAB}target = "{stdio_stage}"
 }}"#,
         docker_syntax = docker_syntax(),
     )?;
 
-    let mut stages = vec![out_stage.as_str(), stdio_stage.as_str()];
+    let mut stages = vec![out_stage.as_str()];
     if let Some(incremental) = incremental.as_ref() {
         stages.push(incremental_stage.as_str());
         writeln!(
@@ -752,7 +731,12 @@ target "{incremental_stage}" {{
         loop {
             match out.next_line().await {
                 Ok(None) => break,
-                Ok(Some(line)) => log::debug!(target:&krate_clone, "➤ {line}"),
+                Ok(Some(line)) => {
+                    log::debug!(target:&krate_clone, "➤ {line}");
+                    if let Some(msg) = lift_stdio(&line, MARK_STDOUT) {
+                        println!("{msg}");
+                    }
+                }
                 Err(e) => {
                     log::warn!("Failed during piping of STDOUT{pid}: {e:?}");
                     break;
@@ -770,7 +754,15 @@ target "{incremental_stage}" {{
         loop {
             match err.next_line().await {
                 Ok(None) => break,
-                Ok(Some(line)) => log::debug!(target:&krate_clone, "✖ {line}"),
+                Ok(Some(line)) => {
+                    log::debug!(target:&krate_clone, "✖ {line}");
+                    if let Some(msg) = lift_stdio(&line, MARK_STDERR) {
+                        eprintln!("{msg}");
+                        if let Some(file) = artifact_written(msg) {
+                            log::info!(target:&krate_clone, "rustc wrote {file}")
+                        }
+                    }
+                }
                 Err(e) => {
                     log::warn!("Failed during piping of STDERR{pid}: {e:?}");
                     break;
@@ -795,60 +787,19 @@ target "{incremental_stage}" {{
     drop(child);
 
     if code == Some(255) {
-        let check = Command::new(COMMAND)
-            .arg("info")
-            .output()
-            .await
-            .with_context(|| format!("Failed starting `{COMMAND} info`"))?;
-        let stdout = String::from_utf8(check.stdout).context("Failed parsing check STDOUT")?;
-        let stderr = String::from_utf8(check.stderr).context("Failed parsing check STDERR")?;
-        log::warn!(target:&krate, "Runner info: [code: {}] [STDOUT {}] [STDERR {}]", check.status, stdout, stderr);
-    }
-
-    // TODO: buffered reading + copy to STDERR/STDOUT => give open fds in bakefile?
-    {
-        use tar::Archive;
-        let path = stdio_path.join(&io);
-        log::info!(target:&krate, "reading (RO) {path}");
-        let file = File::open(&path).with_context(|| format!("Failed to read {path}"))?;
-        let mut archive = Archive::new(file);
-        for entry in
-            archive.entries().with_context(|| format!("Failed getting tar entries {path}"))?
-        {
-            let Ok(mut entry) = entry else { continue };
-            let mut data = String::new();
-            let Ok(_) = entry.read_to_string(&mut data) else { continue };
-            let msg = data.trim();
-            log::debug!(target:&krate, "{path} ~= {msg:?}");
-            if !msg.is_empty() {
-                let epath = entry.path_bytes();
-                if epath == IOOUT.as_bytes() {
-                    println!("{msg}");
-                } else if epath == IOERR.as_bytes() {
-                    eprintln!("{msg}");
-
-                    let mut z = msg.split('"');
-                    let mut a = z.next();
-                    let mut b = z.next();
-                    let mut c = z.next();
-                    loop {
-                        match (a, b, c) {
-                            (Some("artifact"), Some(":"), Some(file)) => {
-                                log::info!(target:&krate, "rustc wrote {file}")
-                            }
-                            (_, _, Some(_)) => {}
-                            (_, _, None) => break,
-                        }
-                        (a, b, c) = (b, c, z.next());
-                    }
-                }
-            }
+        for command in [COMMAND] {
+            let check = Command::new(command)
+                .arg("info")
+                .output()
+                .await
+                .with_context(|| format!("Failed starting `{command} info`"))?;
+            let stdout = String::from_utf8(check.stdout).context("Failed parsing check STDOUT")?;
+            let stderr = String::from_utf8(check.stderr).context("Failed parsing check STDERR")?;
+            log::warn!(target:&krate, "Runner info: [code: {}] [STDOUT {}] [STDERR {}]", check.status, stdout, stderr);
         }
-        fs::remove_file(&path).with_context(|| format!("Failed deleting {path}"))?;
     }
 
     if debug.is_none() {
-        drop(stdio); // Removes stdio/std{err,out} files and stdio dir
         if let Some(cwd) = cwd {
             drop(cwd); // Removes tempdir contents
         }
@@ -864,6 +815,55 @@ target "{incremental_stage}" {{
     }
 
     Ok(exit_code(code))
+}
+
+#[test]
+fn stdio_passthrough_from_runner() {
+    assert_eq!(lift_stdio("#47 1.714 ::STDOUT:: hi!", MARK_STDOUT), Some("hi!"));
+    let lines = [
+        r#"#47 1.714 ::STDERR:: {"$message_type":"artifact","artifact":"/tmp/clis-vixargs_0-1-0/release/deps/libclap_derive-fcea659dae5440c4.so","emit":"link"}"#,
+        r#"#47 1.714 ::STDERR:: {"$message_type":"diagnostic","message":"2 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"warning: 2 warnings emitted\n\n"}"#,
+        r#"#47 1.714 ::STDOUT:: hi!"#,
+    ].into_iter().map(|line| lift_stdio(line, MARK_STDERR));
+    assert_eq!(
+        lines.collect::<Vec<_>>(),
+        vec![
+            Some(
+                r#"{"$message_type":"artifact","artifact":"/tmp/clis-vixargs_0-1-0/release/deps/libclap_derive-fcea659dae5440c4.so","emit":"link"}"#
+            ),
+            Some(
+                r#"{"$message_type":"diagnostic","message":"2 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"warning: 2 warnings emitted\n\n"}"#
+            ),
+            None,
+        ]
+    );
+}
+
+// Maybe replace with actual JSON deserialization
+#[inline]
+fn artifact_written(msg: &str) -> Option<&str> {
+    let mut z = msg.split('"');
+    let mut a = z.next();
+    let mut b = z.next();
+    let mut c = z.next();
+    loop {
+        match (a, b, c) {
+            (Some("artifact"), Some(":"), Some(file)) => return Some(file),
+            (_, _, Some(_)) => {}
+            (_, _, None) => return None,
+        }
+        (a, b, c) = (b, c, z.next());
+    }
+}
+
+#[inline]
+fn lift_stdio<'a>(line: &'a str, mark: &'static str) -> Option<&'a str> {
+    // Docker builds running shell code usually start like: #47 0.057
+    let line = line.trim_start_matches(|c| ['#', '.', ' '].contains(&c) || c.is_ascii_digit());
+    let msg = line.trim_start_matches(mark);
+    let cut = msg.len() != line.len();
+    let msg = msg.trim();
+    (cut && !msg.is_empty()).then_some(msg)
 }
 
 #[inline]
