@@ -565,6 +565,13 @@ async fn bake_rustc(
     {
         let dockerfile_path = Utf8Path::new(&target_path).join(format!("{metadata}.Dockerfile"));
         log::info!(target:&krate, "opening (RW) crate dockerfile {dockerfile_path}");
+        if debug.is_some() {
+            match read_to_string(&dockerfile_path) {
+                Ok(existing) => pretty_assertions::assert_eq!(&existing, &dockerfile),
+                Err(e) if e.kind() == ErrorKind::NotFound => {}
+                Err(e) => bail!("{e}"),
+            }
+        }
         fs::write(&dockerfile_path, &dockerfile)
             .with_context(|| format!("Failed creating dockerfile {dockerfile_path}"))?;
     }
@@ -628,7 +635,6 @@ async fn bake_rustc(
     drop(dockerfile); // Earlier: wrote to disk
 
     const TAB: char = '\t';
-    // TODO: use https://lib.rs/crates/hcl-rs#readme-serialization-examples
     let mut bakefile = String::new();
 
     writeln!(
