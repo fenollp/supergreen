@@ -1,5 +1,5 @@
 # rustcbuildx
-`RUSTC_WRAPPER` that uses `docker buildx bake`
+A [`RUSTC_WRAPPER`](https://doc.rust-lang.org/cargo/reference/config.html#buildrustc-wrapper) for cached and remote building of Rust projects (on [BuildKit](https://github.com/moby/buildkit)).
 
 ## Goals
 * [x] seamlessly build on another machine (with more cores, more cache)
@@ -10,14 +10,13 @@
   * [x] fallback to normal, local `rustc` anytime
 * [ ] wrap `rustc` calls in `buildkit`-like calls (`docker`, `podman`)
   * [x] `docker`
-  * [ ] `podman`
+  * [x] `podman`
   * [ ] deps compatibility
     * [x] handle Rust-only deps
     * [ ] handle all the other deps (expand this list) (use `crater`)
       * [x] `C` deps
       * [ ] ...
   * [ ] runner compatibility
-    * [ ] drop `docker buildx bake` usage
     * [ ] set `.dockerignore`s (to be authoritative on srcs)
   * [ ] trace these outputs (STDOUT/STDERR) for debugging
 * [x] available as a `rustc` wrapper through `$RUSTC_WRAPPER`
@@ -45,7 +44,7 @@
 ## Usage
 
 * Ensure `~/.cargo/bin` is in `$PATH`
-* Ensure [`docker buildx bake`](https://docs.docker.com/engine/reference/commandline/buildx_bake/) is installed
+* Ensure at least either a [`docker`](https://github.com/docker/docker-install) or [`podman`](https://podman.io/docs/installation) *client* is installed
 * Known to work on `Ubuntu 22.04` with `github.com/docker/buildx v0.11.2 9872040` and `rust 1.73`
 
 ```shell
@@ -120,7 +119,6 @@ PoC originally written in Bash: https://github.com/fenollp/buildxargs/blob/build
 * https://docs.docker.com/engine/reference/builder/#buildkit-built-in-build-args
 * https://github.com/moby/buildkit#export-cache
 * `tunnel tty into a docker build through http`
-* file:///home/pete/wefwefwef/docker-bake-invalidate-child-cache.git
 
 ## rustc / cargo
 * `cargo restrict targets of crate`

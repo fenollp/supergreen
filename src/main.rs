@@ -639,7 +639,6 @@ async fn bake_rustc(
     drop(dockerfile); // Earlier: wrote to disk
 
     let stdio = env::temp_dir().join(format!("{PKG}-{stdio_stage}"));
-    // let stdio = Temp::new_dir().context("Failed to create tmpdir 'stdio'")?;
     let Some(stdio_path) = Utf8Path::from_path(stdio.as_path()) else {
         bail!("Path's UTF-8 encoding is corrupted: {stdio:?}")
     };
