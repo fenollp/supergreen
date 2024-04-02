@@ -43,8 +43,6 @@ pub(crate) fn base_image() -> String {
             .and_then(|x| x.split_once(' ').map(|(x, _)| x.to_owned()))
             .unwrap_or("1".to_owned());
 
-        let v = v.trim_end_matches(".1"); // TODO: drop whence https://github.com/rust-lang/docker-rust/issues/193
-
         format!("docker-image://docker.io/library/rust:{v}-slim")
     })
 }
