@@ -248,7 +248,7 @@ async fn bake_rustc(
                     let listing = read_dir(&deps_dir)
                         .with_context(|| format!("Failed reading directory {deps_dir}"))?
                         // TODO: at least context() error
-                        .filter_map(std::result::Result::ok)
+                        .filter_map(Result::ok)
                         .filter_map(|p| {
                             let p = p.path();
                             p.file_name().map(|p| p.to_string_lossy().to_string())
@@ -439,7 +439,6 @@ async fn bake_rustc(
         // RUN --mount=type=bind,source=src,target=src \
         //     --mount=type=bind,source=Cargo.toml,target=Cargo.toml \
         //     --mount=type=bind,source=Cargo.lock,target=Cargo.lock \
-        // TODO: try `target = "target:$other"` https://docs.docker.com/build/bake/reference/#targetcontexts
 
         let cwd = Temp::new_dir().context("Failed to create tmpdir 'cwd'")?;
         let Some(cwd_path) = Utf8Path::from_path(cwd.as_path()) else {
@@ -489,8 +488,6 @@ async fn bake_rustc(
 
     log::debug!(target:&krate, "all_externs = {all_externs:?}");
     assert!(externs.len() <= all_externs.len());
-    // TODO: drop bake for naked buildx (podman support) and then set dockerignore with
-    // https://docs.docker.com/build/building/context/#filename-and-location
     let bakefiles = all_externs
         .into_iter()
         .map(|xtern| -> Result<_> {
@@ -562,10 +559,6 @@ async fn bake_rustc(
         }
         fs::write(&dockerfile_path, &dockerfile)
             .with_context(|| format!("Failed creating dockerfile {dockerfile_path}"))?;
-
-        let dockerignr_path = format!("{dockerfile_path}.dockerignore");
-        fs::write(&dockerignr_path, "")
-            .with_context(|| format!("Failed creating dockerfile {dockerignr_path}"))?;
     }
 
     let mut contexts: BTreeMap<_, _> = [
@@ -581,7 +574,6 @@ async fn bake_rustc(
     .flatten()
     .collect();
 
-    // TODO: ask upstream `docker buildx bake` for a "dockerfiles" []string bake setting (that concatanates) or some way to inherit multiple dockerfiles (don't forget inlined ones)
     // TODO: ask upstream `docker buildx` for orderless stages (so we can concat Dockerfiles any which way, and save another DAG)
 
     let mut extern_dockerfiles: BTreeMap<_, _> = bakefiles
@@ -655,7 +647,6 @@ async fn bake_rustc(
         fs::write(&bis_ignore, "")
             .with_context(|| format!("Failed creating dockerignore {bis_ignore}"))?;
 
-        //FIXME: drop
         if debug.is_some() {
             log::info!(target:&krate, "dockerfile: {bis_path}");
             match read_to_string(&bis_path) {
@@ -841,7 +832,7 @@ fn hcl_to_dockerfile(mut hcl: Utf8PathBuf) -> Utf8PathBuf {
     let file_name = hcl
         .file_stem()
         .and_then(|x| x.rsplit_once('-').map(|(_, x)| x.to_owned()))
-        .expect("PROOF: FIXME");
+        .expect("PROOF: file_stem is non-empty");
     let ok = hcl.pop();
     assert!(ok);
     hcl.join(format!("{file_name}.Dockerfile"))
