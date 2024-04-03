@@ -37,32 +37,33 @@ pub(crate) async fn build(
     // Makes sure that the BuildKit builder is used by either runner
     cmd.env("DOCKER_BUILDKIT", "1");
 
-    for (name, uri) in contexts {
-        cmd.arg(format!("--build-context={name}={uri}"));
-    }
-
-    cmd.arg("--network=none");
-    cmd.arg("--platform=local");
-    cmd.arg("--pull=false");
-    cmd.arg(format!("--output=type=local,dest={out_dir}", out_dir = out_dir.as_ref()));
     if false {
         cmd.arg("--no-cache");
     }
-    cmd.arg(format!("--file={dockerfile_path}", dockerfile_path = dockerfile_path.as_ref()));
+    cmd.arg("--network=none");
+    cmd.arg("--platform=local");
+    cmd.arg("--pull=false");
     cmd.arg(format!("--target={target}"));
+    cmd.arg(format!("--output=type=local,dest={out_dir}", out_dir = out_dir.as_ref()));
+    cmd.arg(format!("--file={dockerfile_path}", dockerfile_path = dockerfile_path.as_ref()));
+
+    for (name, uri) in contexts {
+        cmd.arg(format!("--build-context={name}={uri}"));
+    }
 
     cmd.arg(dockerfile_path.as_ref().parent().unwrap_or(dockerfile_path.as_ref()));
     let args = cmd.as_std().get_args().map(|x| x.to_string_lossy().to_string()).collect::<Vec<_>>();
     let args = args.join(" ");
 
-    log::info!(target:&krate, "Starting `{command} {args:?}`");
-    let errf = || format!("Failed starting `{command} {args:?}`");
+    log::info!(target:&krate, "Starting `{command} {args}`");
+    let errf = || format!("Failed starting `{command} {args}`");
     let mut child = cmd.spawn().with_context(errf)?;
+
     let pid = child.id().unwrap_or_default();
-    log::info!(target:&krate, "Started `{command} {args:?} as pid {pid}`");
+    log::info!(target:&krate, "Started `{command} {args}` as pid={pid}`");
 
     let krate_clone = krate.to_owned();
-    let mut out = TokioBufReader::new(child.stdout.take().expect("piped")).lines();
+    let mut out = TokioBufReader::new(child.stdout.take().expect("started")).lines();
     let stdout = spawn(async move {
         log::debug!(target:&krate_clone, "Starting STDOUT-{pid} task");
         loop {
@@ -85,7 +86,7 @@ pub(crate) async fn build(
     });
 
     let krate_clone = krate.to_owned();
-    let mut err = TokioBufReader::new(child.stderr.take().expect("piped")).lines();
+    let mut err = TokioBufReader::new(child.stderr.take().expect("started")).lines();
     let stderr = spawn(async move {
         log::debug!(target:&krate_clone, "Starting STDERR-{pid} task");
         loop {
@@ -110,10 +111,13 @@ pub(crate) async fn build(
         drop(err);
     });
 
-    let start = Instant::now();
-    let code =
-        child.wait().await.with_context(|| format!("Failed calling `{command} {args:?}`"))?.code();
-    log::info!("command `{command} build` ran in {:?}: {code:?}", start.elapsed());
+    let (secs, code) = {
+        let start = Instant::now();
+        let res = child.wait().await;
+        let elapsed = start.elapsed();
+        (elapsed, res.with_context(|| format!("Failed calling `{command} {args}`"))?.code())
+    };
+    log::info!("command `{command} build` ran in {secs:?}: {code:?}");
     let longish = Duration::from_secs(2);
     let (_, _) = join!(timeout(longish, stdout), timeout(longish, stderr));
     drop(child);

@@ -410,16 +410,13 @@ async fn bake_rustc(
     }
     dockerfile.push_str("  RUSTCBUILDX=1\n");
 
-    // Switch from /bin/sh to bash so stream redirection works
-    dockerfile.push_str("SHELL [\"/bin/bash\", \"-c\"]\n");
-
     let cwd = if let Some((name, target)) = input_mount.as_ref() {
         // Reuse previous contexts
 
         // TODO: WORKDIR was removed as it changed during a single `cargo build`
         // Looks like removing it isn't an issue, however we need more testing.
         // dockerfile.push_str(&format!("WORKDIR {pwd}\n"));
-        dockerfile.push_str("RUN --network=none \\\n");
+        dockerfile.push_str("RUN \\\n");
         dockerfile.push_str(&format!("  --mount=type=bind,from={name},target={target} \\\n"));
 
         // TODO: --build-arg BUILDKIT_CONTEXT_KEEP_GIT_DIR=0 https://docs.docker.com/engine/reference/builder/#buildkit-built-in-build-args
@@ -470,9 +467,10 @@ async fn bake_rustc(
             copy_files(&pwd, cwd_path)?;
         }
 
+        // TODO: try RUN --mount=type=bind,from=cwd,target={pwd}/
         dockerfile.push_str(&format!("WORKDIR {pwd}\n"));
-        dockerfile.push_str("COPY --link --from=cwd / .\n");
-        dockerfile.push_str("RUN --network=none \\\n");
+        dockerfile.push_str("COPY --from=cwd / .\n");
+        dockerfile.push_str("RUN \\\n");
 
         Some(cwd)
     };
@@ -503,12 +501,11 @@ async fn bake_rustc(
         })
         .collect::<Result<Vec<_>>>()?;
 
-    dockerfile.push_str("     <<RUNHERE\n"); // Start heredoc
-    dockerfile.push_str("  set -eux\n");
+    dockerfile.push_str("    set -eux \\\n");
 
     // if toolchain.is_some() {
     //     dockerfile
-    //         .push_str(&format!("  export RUSTUP_TOOLCHAIN=\"$(cat /{RUSTUP_TOOLCHAIN})\" && \\\n"));
+    //         .push_str(&format!(" && export RUSTUP_TOOLCHAIN=\"$(cat /{RUSTUP_TOOLCHAIN})\" \\\n"));
     // }
 
     // // https://rust-lang.github.io/rustup/overrides.html
@@ -516,35 +513,43 @@ async fn bake_rustc(
     // // e.g. https://github.com/xacrimon/dashmap/blob/v5.4.0/rust-toolchain
     // // e.g. https://github.com/dtolnay/anyhow/blob/05e413219e97f101d8f39a90902e5c5d39f951fe/rust-toolchain.toml
     // // NOTE this is [[ -s "$input_mount_target"/rust-toolchain ]]
-    // // dockerfile.push_str("  if [ -s ./rust-toolchain.toml ] || [ -s ./rust-toolchain ]; then \\\n");
-    // // dockerfile.push_str("    export RUSTUP_TOOLCHAIN=\"$(rustup default | cut -d- -f1)\"; \\\n");
-    // // dockerfile.push_str("  fi\n");
-    // dockerfile.push_str("  export RUSTUP_TOOLCHAIN=stable");
+    // // dockerfile.push_str(" && if [ -s ./rust-toolchain.toml ] || [ -s ./rust-toolchain ]; then \\\n");
+    // // dockerfile.push_str(" &&   export RUSTUP_TOOLCHAIN=\"$(rustup default | cut -d- -f1)\"; \\\n");
+    // // dockerfile.push_str(" && fi \\\n");
+    // dockerfile.push_str(" && export RUSTUP_TOOLCHAIN=stable \\\n");
 
-    dockerfile.push_str("  export CARGO=\"$(which cargo)\"\n");
+    dockerfile.push_str(" && export CARGO=\"$(which cargo)\" \\\n");
 
     // TODO: keep only paths that we explicitly mount or copy
     for var in ["PATH", "DYLD_FALLBACK_LIBRARY_PATH", "LD_LIBRARY_PATH", "LIBPATH"] {
         let Ok(val) = env::var(var) else { continue };
         if !val.is_empty() {
-            dockerfile.push_str(&format!("  # export {var}=\"{val:?}:${var}\"\n"));
+            dockerfile.push_str(&format!("#&& export {var}=\"{val}:${var}\" \\\n"));
         }
     }
 
-    dockerfile.push_str(&format!("  rustc '{}' {input} \\\n", args.join("' '")));
-    dockerfile.push_str(&format!("    1> >(sed 's%^%{MARK_STDOUT}%') \\\n"));
-    dockerfile.push_str(&format!("    2> >(sed 's%^%{MARK_STDERR}%' >&2)\n"));
-
-    dockerfile.push_str("RUNHERE\n"); // End of heredoc
+    // Having to upgrade from /bin/sh here to handle passing '--cfg' 'feature=\"std\"'
+    // λ /bin/sh
+    // $ { echo a >&1 && echo b >&2 ; } 1> >(sed 's/^/::STDOUT:: /') 2> >(sed 's/^/::STDERR:: /' >&2)
+    // /bin/sh: 1: Syntax error: redirection unexpected
+    let args = args.join("' '").replace('"', "\\\"");
+    dockerfile.push_str(&format!(" && /bin/bash -c \"rustc '{args}' {input} \\\n"));
+    dockerfile.push_str(&format!("      1> >(sed 's/^/{MARK_STDOUT}/') \\\n"));
+    dockerfile.push_str(&format!("      2> >(sed 's/^/{MARK_STDERR}/' >&2)\"\n"));
 
     if let Some(incremental) = &incremental {
         dockerfile.push_str(&format!("FROM scratch AS {incremental_stage}\n"));
-        dockerfile.push_str(&format!("COPY --link --from={rustc_stage} {incremental} /\n"));
+        dockerfile.push_str(&format!("COPY --from={rustc_stage} {incremental} /\n"));
     }
     dockerfile.push_str(&format!("FROM scratch AS {out_stage}\n"));
-    dockerfile.push_str(&format!("COPY --link --from={rustc_stage} {out_dir}/*-{metadata}* /\n"));
+    dockerfile.push_str(&format!("COPY --from={rustc_stage} {out_dir}/*-{metadata}* /\n"));
     // NOTE: -C extra-filename=-${metadata} (starts with dash)
     // TODO: use extra filename here for fwd compat
+
+    //FIXME:
+    // name bis dockerfile => {name}{extra_filename}-headed.Dockerfile
+    // name smol dockerfile => {name}{extra_filename}.Dockerfile
+    //   (store smol in toml header?)
 
     let dockerfile = dockerfile; // Drop mut
     {
