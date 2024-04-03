@@ -29,7 +29,7 @@ A [`RUSTC_WRAPPER`](https://doc.rust-lang.org/cargo/reference/config.html#buildr
     * [ ] just suggest an inline `Dockerfile` stage?
   * [ ] support CRUD-ish operations on local/remotes cache
   * [x] `[SEC]` support building a crate without it having network access
-* [x] integrate with shipping OCI images
+* [ ] integrate with shipping OCI images
 * [ ] share cache with the World
   * [x] never rebuild a dep (for a given version of `rustc`, ...)
   * [ ] share cache with other projects on local machine

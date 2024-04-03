@@ -264,7 +264,7 @@ tmplogs=/tmp/clis-$session_name.logs.txt
 tmpgooo=/tmp/clis-$session_name.state
 tmpbins=/tmp
 
-rustcbuildx pull
+rm -rf "$tmptrgt"
 if [[ "$cleanup" = '1' ]]; then
   docker buildx prune --all --force --verbose
 fi
@@ -283,25 +283,21 @@ send \
   CARGO_TARGET_DIR=/tmp/rstcbldx cargo install --locked --force --path="$gitdir" \
     '&&' touch "$tmpgooo".installed
 tmux split-window
-if [[ "$cleanup" = '1' ]]; then
-  send rm -rf "$tmptrgt" /tmp/rustcbuildx-stdio-* /tmp/dockerfile* '&&' touch "$tmpgooo".ready
-  tmux select-layout even-vertical
-  tmux split-window
-else
-  touch "$tmpgooo".ready
-fi
 
+send rustcbuildx pull '&&' touch "$tmpgooo".ready
+tmux select-layout even-vertical
+tmux split-window
 
 send "rm $tmplogs >/dev/null 2>&1; touch $tmplogs; tail -f $tmplogs; :"
 tmux select-layout even-vertical
 tmux split-window
 
 send \
-  'until' '[[' -f "$tmpgooo".installed ']] && [[' -f "$tmpgooo".ready ']];' 'do' sleep '1;' 'done' '&&' rm "$tmpgooo".* '&&' \
+  'until' '[[' -f "$tmpgooo".installed ']] && [[' -f "$tmpgooo".ready ']];' 'do' sleep '.1;' 'done' '&&' rm "$tmpgooo".* '&&' \
   RUSTCBUILDX_LOG=debug \
   RUSTCBUILDX_LOG_PATH="$tmplogs" \
   RUSTC_WRAPPER=rustcbuildx \
-    CARGO_TARGET_DIR="$tmptrgt" cargo -vv install --jobs=1 --root=$tmpbins --locked --force "$(as_install "$name_at_version")" "$args" \
+    CARGO_TARGET_DIR="$tmptrgt" cargo -vv install --jobs=${jobs:-1} --root=$tmpbins --locked --force "$(as_install "$name_at_version")" "$args" \
   '&&' 'if' '[[' "$cleanup" '=' '1' ']];' 'then' docker buildx prune --all --force --verbose '|' tee --append "$tmplogs" '||' 'exit' '1;' 'fi' \
   '&&' tmux kill-session -t "$session_name"
 tmux select-layout even-vertical
