@@ -2,16 +2,16 @@ use std::{
     collections::BTreeMap,
     env,
     io::{self, Write},
-    process::{Command, ExitCode, Stdio},
+    process::{ExitCode, Stdio},
 };
 
 use anyhow::{Context, Result};
+use tokio::process::Command;
 
-use crate::envs::{base_image, docker_syntax, log_path};
+use crate::envs::{base_image, log_path, runner, syntax};
 
 #[inline]
 pub(crate) fn help() -> ExitCode {
-    let name = env!("CARGO_PKG_NAME");
     println!(
         "{name}@{version}: {description}
     {repository}
@@ -22,56 +22,63 @@ Usage:
   {name} -h | --help
   {name} -V | --version
 ",
-        description = env!("CARGO_PKG_DESCRIPTION"),
+        name = env!("CARGO_PKG_NAME"),
         version = env!("CARGO_PKG_VERSION"),
         repository = env!("CARGO_PKG_REPOSITORY"),
+        description = env!("CARGO_PKG_DESCRIPTION"),
     );
     ExitCode::SUCCESS
 }
 
-pub(crate) fn envs(vars: Vec<String>) -> ExitCode {
+pub(crate) async fn envs(vars: Vec<String>) -> ExitCode {
     let all: BTreeMap<_, _> = [
         ("RUSTCBUILDX", None),
-        ("RUSTCBUILDX_BASE_IMAGE", Some(base_image())),
-        ("RUSTCBUILDX_DOCKER_SYNTAX", Some(docker_syntax())),
+        ("RUSTCBUILDX_BASE_IMAGE", Some(base_image().await)),
         ("RUSTCBUILDX_LOG", None),
         ("RUSTCBUILDX_LOG_PATH", Some(log_path())),
         ("RUSTCBUILDX_LOG_STYLE", None),
+        ("RUSTCBUILDX_RUNNER", Some(runner())),
+        ("RUSTCBUILDX_SYNTAX", Some(syntax())),
     ]
     .into_iter()
     .collect();
 
-    fn show(var: &str, o: Option<String>) {
-        let val = env::var(var).ok().or(o).map(|x| format!("{x:?}")).unwrap_or_default();
+    fn show(var: &str, o: &Option<String>) {
+        let val = env::var(var)
+            .ok()
+            .or_else(|| o.to_owned())
+            .map(|x| format!("{x:?}"))
+            .unwrap_or_default();
         println!("{var}={val}");
     }
 
     let mut empty_vars = true;
     for var in vars {
         if let Some(o) = all.get(&var.as_str()) {
-            show(&var, o.clone());
+            show(&var, o);
             empty_vars = false;
         }
     }
     if empty_vars {
-        all.into_iter().for_each(|(var, o)| show(var, o));
+        all.into_iter().for_each(|(var, o)| show(var, &o));
     }
 
     ExitCode::SUCCESS
 }
 
-pub(crate) fn pull() -> Result<ExitCode> {
-    for img in [docker_syntax(), base_image().trim_start_matches("docker-image://").to_owned()] {
+pub(crate) async fn pull() -> Result<ExitCode> {
+    for img in [syntax(), base_image().await.trim_start_matches("docker-image://").to_owned()] {
         println!("Pulling {img}...");
-        let o = Command::new("docker")
+        let o = Command::new(&runner())
+            .kill_on_drop(true)
             .arg("pull")
             .arg(&img)
             .stdin(Stdio::null())
             .output()
-            .with_context(|| format!("Failed to call docker pull {img}"))
-            .unwrap();
-        io::stderr().write_all(&o.stderr).unwrap();
-        io::stdout().write_all(&o.stdout).unwrap();
+            .await
+            .with_context(|| format!("Failed to call docker pull {img}"))?;
+        io::stderr().write_all(&o.stderr)?;
+        io::stdout().write_all(&o.stdout)?;
         let o = o.status;
         if !o.success() {
             return Ok(exit_code(o.code()));

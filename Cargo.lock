@@ -328,7 +328,6 @@ dependencies = [
  "log",
  "mktemp",
  "pretty_assertions",
- "regex",
  "tokio",
 ]
 

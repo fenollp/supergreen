@@ -2,17 +2,18 @@ use std::{
     collections::BTreeMap,
     env,
     fs::{File, OpenOptions},
-    process::Command,
 };
 
 use anyhow::{Context, Result};
+use tokio::process::Command;
 
 pub(crate) const RUSTCBUILDX: &str = "RUSTCBUILDX";
 pub(crate) const RUSTCBUILDX_BASE_IMAGE: &str = "RUSTCBUILDX_BASE_IMAGE";
-pub(crate) const RUSTCBUILDX_DOCKER_SYNTAX: &str = "RUSTCBUILDX_DOCKER_SYNTAX";
 pub(crate) const RUSTCBUILDX_LOG: &str = "RUSTCBUILDX_LOG";
 pub(crate) const RUSTCBUILDX_LOG_PATH: &str = "RUSTCBUILDX_LOG_PATH";
 pub(crate) const RUSTCBUILDX_LOG_STYLE: &str = "RUSTCBUILDX_LOG_STYLE";
+pub(crate) const RUSTCBUILDX_RUNNER: &str = "RUSTCBUILDX_RUNNER";
+pub(crate) const RUSTCBUILDX_SYNTAX: &str = "RUSTCBUILDX_SYNTAX";
 
 // TODO: document envs + usage
 
@@ -28,28 +29,34 @@ pub(crate) fn log_path() -> String {
     env::var(RUSTCBUILDX_LOG_PATH).ok().unwrap_or("/tmp/rstcbldx_FIXME".to_owned())
 }
 
-pub(crate) fn base_image() -> String {
-    // Passthrough to https://docs.docker.com/engine/reference/commandline/buildx_build/#build-context
-    env::var(RUSTCBUILDX_BASE_IMAGE).ok().unwrap_or_else(|| {
-        let s = Command::new("rustc")
-            .arg("-V")
-            .output()
-            .ok()
-            .and_then(|cmd| String::from_utf8(cmd.stdout).ok());
-        // e.g. rustc 1.73.0 (cc66ad468 2023-10-03)
-
-        let v = s
-            .map(|x| x.trim_start_matches("rustc ").to_owned())
-            .and_then(|x| x.split_once(' ').map(|(x, _)| x.to_owned()))
-            .unwrap_or("1".to_owned());
-
-        format!("docker-image://docker.io/library/rust:{v}-slim")
-    })
+pub(crate) fn runner() -> String {
+    env::var(RUSTCBUILDX_RUNNER).ok().unwrap_or("docker".to_owned())
 }
 
-pub(crate) fn docker_syntax() -> String {
-    let x= "docker.io/docker/dockerfile:1@sha256:ac85f380a63b13dfcefa89046420e1781752bab202122f8f50032edf31be0021";
-    env::var(RUSTCBUILDX_DOCKER_SYNTAX).unwrap_or(x.to_owned()) // TODO: see if #syntax= is actually needed
+pub(crate) async fn base_image() -> String {
+    // Passthrough to https://docs.docker.com/engine/reference/commandline/buildx_build/#build-context
+    if let Ok(val) = env::var(RUSTCBUILDX_BASE_IMAGE) {
+        return val;
+    }
+    let s = Command::new("rustc")
+        .kill_on_drop(true)
+        .arg("-V")
+        .output()
+        .await
+        .ok()
+        .and_then(|cmd| String::from_utf8(cmd.stdout).ok());
+    // e.g. rustc 1.73.0 (cc66ad468 2023-10-03)
+
+    let v = s
+        .map(|x| x.trim_start_matches("rustc ").to_owned())
+        .and_then(|x| x.split_once(' ').map(|(x, _)| x.to_owned()))
+        .unwrap_or("1".to_owned());
+
+    format!("docker-image://docker.io/library/rust:{v}-slim")
+}
+
+pub(crate) fn syntax() -> String {
+    env::var(RUSTCBUILDX_SYNTAX).unwrap_or("docker.io/docker/dockerfile:1".to_owned())
 }
 
 pub(crate) fn maybe_log() -> Option<fn() -> Result<File>> {

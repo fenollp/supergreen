@@ -37,7 +37,6 @@ env_logger = "0.11"
 log = "0.4"
 mktemp = "0.5"
 pretty_assertions = "1" # TODO: drop once !dbg
-regex = "1" # TODO: drop once !dbg
 tokio = { version = "1", features = ["macros", "io-util", "process", "rt-multi-thread", "time"] }
 
 [dev-dependencies]

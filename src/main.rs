@@ -1,45 +1,36 @@
 use std::{
     collections::{BTreeMap, BTreeSet, VecDeque},
     env,
-    fmt::Write,
     fs::{self, create_dir_all, read_dir, read_to_string, File},
     future::Future,
     io::{BufRead, BufReader, ErrorKind},
-    process::{ExitCode, Stdio},
-    time::{Duration, Instant},
+    process::ExitCode,
     unreachable,
 };
 
-use anyhow::{bail, Context, /*Error,*/ Result};
+use anyhow::{bail, Context, Result};
 use camino::{Utf8Path, Utf8PathBuf};
 use cli::{envs, exit_code, help, pull};
 use env_logger::{Env, Target};
 use envs::{called_from_build_script, RUSTCBUILDX, RUSTCBUILDX_LOG, RUSTCBUILDX_LOG_STYLE};
 use mktemp::Temp;
-use tokio::{
-    io::{AsyncBufReadExt, BufReader as TokioBufReader},
-    join,
-    process::Command,
-    spawn,
-    time::timeout,
-};
+use tokio::process::Command;
 
 use crate::{
-    envs::{base_image, docker_syntax, maybe_log, pass_env},
+    envs::{base_image, maybe_log, pass_env, runner, syntax},
     parse::RustcArgs,
     pops::Popped,
+    runner::{build, MARK_STDERR, MARK_STDOUT},
 };
 
 mod cli;
 mod envs;
 mod parse;
 mod pops;
+mod runner;
 
 const PKG: &str = env!("CARGO_PKG_NAME");
 const VSN: &str = env!("CARGO_PKG_VERSION");
-
-const MARK_STDOUT: &str = "::STDOUT:: ";
-const MARK_STDERR: &str = "::STDERR:: ";
 
 // NOTE: this RUSTC_WRAPPER program only ever gets called by `cargo`, so we save
 //       ourselves some trouble and assume std::path::{Path, PathBuf} are UTF-8.
@@ -49,13 +40,10 @@ const MARK_STDERR: &str = "::STDERR:: ";
 async fn main() -> ExitCode {
     let args = env::args().skip(1).collect(); // drops $0
     let vars = env::vars().collect();
-    faillible_main(args, vars).await.unwrap_or(ExitCode::FAILURE)
+    fallible_main(args, vars).await.unwrap_or(ExitCode::FAILURE)
 }
 
-async fn faillible_main(
-    args: VecDeque<String>,
-    vars: BTreeMap<String, String>,
-) -> Result<ExitCode> {
+async fn fallible_main(args: VecDeque<String>, vars: BTreeMap<String, String>) -> Result<ExitCode> {
     let called_from_build_script = called_from_build_script(&vars);
 
     let argz = args.iter().take(3).map(AsRef::as_ref).collect::<Vec<_>>();
@@ -70,8 +58,8 @@ async fn faillible_main(
 
     match argz[..] {
         [] | ["-h"|"--help"|"-V"|"--version"] => Ok(help()),
-        ["pull"] => pull(),
-        ["env", ..] => Ok(envs(argv(1))),
+        ["pull"] => pull().await,
+        ["env", ..] => Ok(envs(argv(1)).await),
         [rustc, "-", ..] =>
              call_rustc(rustc, argv(1)).await,
         [driver, _rustc, "-"|"--crate-name", ..] => {
@@ -574,10 +562,14 @@ async fn bake_rustc(
         }
         fs::write(&dockerfile_path, &dockerfile)
             .with_context(|| format!("Failed creating dockerfile {dockerfile_path}"))?;
+
+        let dockerignr_path = format!("{dockerfile_path}.dockerignore");
+        fs::write(&dockerignr_path, "")
+            .with_context(|| format!("Failed creating dockerfile {dockerignr_path}"))?;
     }
 
     let mut contexts: BTreeMap<_, _> = [
-        Some(("rust".to_owned(), base_image())),
+        Some(("rust".to_owned(), base_image().await)),
         input_mount.map(|(name, target)| (name, target.to_string())),
         cwd.as_deref().map(|cwd| {
             let cwd_path = Utf8Path::from_path(cwd.as_path()).expect("PROOF: did not fail earlier");
@@ -634,175 +626,60 @@ async fn bake_rustc(
     dockerfile_bis.push_str(&dockerfile);
     drop(dockerfile); // Earlier: wrote to disk
 
-    const TAB: char = '\t';
-    let mut bakefile = String::new();
+    let bis_path = {
+        let bis_path =
+            Utf8Path::new(&target_path).join(format!("{crate_name}-{metadata}.Dockerfile"));
 
-    writeln!(
-        bakefile,
-        r#"
-target "{out_stage}" {{
-{TAB}contexts = {{"#
-    )?;
-    let contexts: BTreeMap<_, _> = contexts.into_iter().collect();
-    for (name, uri) in contexts {
-        bakefile.push_str(&format!("{TAB}{TAB}\"{name}\" = \"{uri}\",\n"));
-    }
-    writeln!(
-        bakefile,
-        r#"{TAB}}}
-{TAB}dockerfile-inline = <<DOCKERFILE
-# syntax={docker_syntax}
-{dockerfile_bis}DOCKERFILE
-{TAB}network = "none"
-{TAB}output = ["{out_dir}"] # https://github.com/moby/buildkit/issues/1224
-{TAB}platforms = ["local"]
-{TAB}target = "{out_stage}"
-}}"#,
-        docker_syntax = docker_syntax(),
-    )?;
+        let mut header = format!("# syntax={syntax}\n", syntax = syntax());
+        header.push_str("# contexts = [\n");
+        for (name, uri) in &contexts {
+            header.push_str(&format!("{HDR}  {{ name = {name:?}, uri = {uri:?} }},\n"));
+        }
+        header.push_str("# ]\n");
+        header.push_str(&dockerfile_bis);
+        let dockerfile_bis = header;
 
-    let mut stages = vec![out_stage.as_str()];
-    if let Some(incremental) = incremental.as_ref() {
-        stages.push(incremental_stage.as_str());
-        writeln!(
-            bakefile,
-            r#"
-target "{incremental_stage}" {{
-{TAB}inherits = ["{out_stage}"]
-{TAB}output = ["{incremental}"]
-{TAB}target = "{incremental_stage}"
-}}"#,
-        )?;
-    }
-
-    let bakefile_path = {
-        let bakefile_path = format!("{target_path}/{crate_name}-{metadata}.hcl");
-        log::info!(target:&krate, "opening (RW) crate bakefile {bakefile_path}");
+        log::info!(target:&krate, "opening (RW) crate dockerfile {bis_path}");
         if debug.is_some() {
-            match read_to_string(&bakefile_path) {
-                Ok(existing) => {
-                    let re = regex::Regex::new(r#"output = \["[^"]+"\]"#).unwrap();
-                    pretty_assertions::assert_eq!(
-                        re.replace(&existing, ""),
-                        re.replace(&bakefile, "")
-                    )
-                }
+            match read_to_string(&bis_path) {
+                Ok(existing) => pretty_assertions::assert_eq!(&existing, &dockerfile_bis),
                 Err(e) if e.kind() == ErrorKind::NotFound => {}
                 Err(e) => bail!("{e}"),
             }
         }
-        fs::write(&bakefile_path, bakefile)
-            .with_context(|| format!("Failed creating bakefile {bakefile_path}"))?; // Don't remove HCL file
-        bakefile_path
+
+        fs::write(&bis_path, dockerfile_bis)
+            .with_context(|| format!("Failed creating dockerfile {bis_path}"))?; // Don't remove this file
+
+        let bis_ignore = format!("{bis_path}.dockerignore");
+        fs::write(&bis_ignore, "")
+            .with_context(|| format!("Failed creating dockerignore {bis_ignore}"))?;
+
+        //FIXME: drop
+        if debug.is_some() {
+            log::info!(target:&krate, "dockerfile: {bis_path}");
+            match read_to_string(&bis_path) {
+                Ok(data) => data,
+                Err(e) => e.to_string(),
+            }
+            .lines()
+            .filter(|x| !x.is_empty())
+            .for_each(|line| log::debug!(target:&krate, "❯ {line}"));
+        }
+
+        bis_path
     };
 
-    const COMMAND: &str = "docker"; // TODO: read from env/config
-    let mut cmd = Command::new(COMMAND);
-    cmd.kill_on_drop(true);
-    if debug.is_some() {
-        log::info!(target:&krate, "bakefile: {bakefile_path}");
-        match read_to_string(&bakefile_path) {
-            Ok(data) => data,
-            Err(e) => e.to_string(),
-        }
-        .lines()
-        .filter(|x| !x.is_empty())
-        .for_each(|line| log::debug!(target:&krate, "❯ {line}"));
+    // TODO: use tracing instead:
+    // https://docs.rs/tracing-subscriber/latest/tracing_subscriber/fmt/struct.Subscriber.html
+    // https://crates.io/crates/tracing-appender
 
-        // TODO: use tracing instead:
-        // https://docs.rs/tracing-subscriber/latest/tracing_subscriber/fmt/struct.Subscriber.html
-        // https://crates.io/crates/tracing-appender
-
-        cmd.arg("--debug");
-    }
-    cmd.stdin(Stdio::null()).stdout(Stdio::piped()).stderr(Stdio::piped());
-    cmd.arg("buildx").arg("bake");
-    if false {
-        cmd.arg("--no-cache");
-    }
-    cmd.arg("--file").arg(&bakefile_path);
-    cmd.args(stages);
-
-    log::info!(target:&krate, "Starting `{COMMAND} {args:?}`", args = cmd.as_std().get_args());
-    let mut child = cmd.spawn().with_context(|| {
-        format!("Failed starting `{COMMAND} {args:?}`", args = cmd.as_std().get_args())
-    })?;
-    let pid = child.id().unwrap_or_default();
-    log::info!(target:&krate, "Started `{COMMAND} {args:?} as pid {pid}`", args = cmd.as_std().get_args());
-
-    let krate_clone = krate.to_owned();
-    let mut out = TokioBufReader::new(child.stdout.take().expect("piped")).lines();
-    let stdout = spawn(async move {
-        log::debug!(target:&krate_clone, "Starting STDOUT{pid} task");
-        loop {
-            match out.next_line().await {
-                Ok(None) => break,
-                Ok(Some(line)) => {
-                    log::debug!(target:&krate_clone, "➤ {line}");
-                    if let Some(msg) = lift_stdio(&line, MARK_STDOUT) {
-                        println!("{msg}");
-                    }
-                }
-                Err(e) => {
-                    log::warn!("Failed during piping of STDOUT{pid}: {e:?}");
-                    break;
-                }
-            }
-        }
-        log::debug!(target:&krate_clone, "Going down: STDOUT{pid} task");
-        drop(out);
-    });
-
-    let krate_clone = krate.to_owned();
-    let mut err = TokioBufReader::new(child.stderr.take().expect("piped")).lines();
-    let stderr = spawn(async move {
-        log::debug!(target:&krate_clone, "Starting STDERR{pid} task");
-        loop {
-            match err.next_line().await {
-                Ok(None) => break,
-                Ok(Some(line)) => {
-                    log::debug!(target:&krate_clone, "✖ {line}");
-                    if let Some(msg) = lift_stdio(&line, MARK_STDERR) {
-                        eprintln!("{msg}");
-                        if let Some(file) = artifact_written(msg) {
-                            log::info!(target:&krate_clone, "rustc wrote {file}")
-                        }
-                    }
-                }
-                Err(e) => {
-                    log::warn!("Failed during piping of STDERR{pid}: {e:?}");
-                    break;
-                }
-            }
-        }
-        log::debug!(target:&krate_clone, "Going down: STDERR{pid} task");
-        drop(err);
-    });
-
-    let start = Instant::now();
-    let code = child
-        .wait()
-        .await
-        .with_context(|| {
-            format!("Failed calling `{COMMAND} {args:?}`", args = cmd.as_std().get_args())
-        })?
-        .code();
-    log::info!("command `{COMMAND} buildx bake` ran in {}s: {code:?}", start.elapsed().as_secs());
-    let longish = Duration::from_secs(2);
-    let (_, _) = join!(timeout(longish, stdout), timeout(longish, stderr));
-    drop(child);
-
-    if code == Some(255) {
-        for command in [COMMAND] {
-            let check = Command::new(command)
-                .arg("info")
-                .output()
-                .await
-                .with_context(|| format!("Failed starting `{command} info`"))?;
-            let stdout = String::from_utf8(check.stdout).context("Failed parsing check STDOUT")?;
-            let stderr = String::from_utf8(check.stderr).context("Failed parsing check STDERR")?;
-            log::warn!(target:&krate, "Runner info: [code: {}] [STDOUT {}] [STDERR {}]", check.status, stdout, stderr);
-        }
+    let runner = runner();
+    let code = build(krate, &runner, bis_path.as_path(), &out_stage, &contexts, &out_dir).await?;
+    if let Some(incremental) = incremental.as_ref() {
+        let _ = build(krate, &runner, &bis_path, &incremental_stage, &contexts, incremental)
+            .await
+            .inspect_err(|e| log::warn!(target:&krate, "Error fetching incremental data: {e}"));
     }
 
     if debug.is_none() {
@@ -821,55 +698,6 @@ target "{incremental_stage}" {{
     }
 
     Ok(exit_code(code))
-}
-
-#[test]
-fn stdio_passthrough_from_runner() {
-    assert_eq!(lift_stdio("#47 1.714 ::STDOUT:: hi!", MARK_STDOUT), Some("hi!"));
-    let lines = [
-        r#"#47 1.714 ::STDERR:: {"$message_type":"artifact","artifact":"/tmp/clis-vixargs_0-1-0/release/deps/libclap_derive-fcea659dae5440c4.so","emit":"link"}"#,
-        r#"#47 1.714 ::STDERR:: {"$message_type":"diagnostic","message":"2 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"warning: 2 warnings emitted\n\n"}"#,
-        r#"#47 1.714 ::STDOUT:: hi!"#,
-    ].into_iter().map(|line| lift_stdio(line, MARK_STDERR));
-    assert_eq!(
-        lines.collect::<Vec<_>>(),
-        vec![
-            Some(
-                r#"{"$message_type":"artifact","artifact":"/tmp/clis-vixargs_0-1-0/release/deps/libclap_derive-fcea659dae5440c4.so","emit":"link"}"#
-            ),
-            Some(
-                r#"{"$message_type":"diagnostic","message":"2 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"warning: 2 warnings emitted\n\n"}"#
-            ),
-            None,
-        ]
-    );
-}
-
-// Maybe replace with actual JSON deserialization
-#[inline]
-fn artifact_written(msg: &str) -> Option<&str> {
-    let mut z = msg.split('"');
-    let mut a = z.next();
-    let mut b = z.next();
-    let mut c = z.next();
-    loop {
-        match (a, b, c) {
-            (Some("artifact"), Some(":"), Some(file)) => return Some(file),
-            (_, _, Some(_)) => {}
-            (_, _, None) => return None,
-        }
-        (a, b, c) = (b, c, z.next());
-    }
-}
-
-#[inline]
-fn lift_stdio<'a>(line: &'a str, mark: &'static str) -> Option<&'a str> {
-    // Docker builds running shell code usually start like: #47 0.057
-    let line = line.trim_start_matches(|c| ['#', '.', ' '].contains(&c) || c.is_ascii_digit());
-    let msg = line.trim_start_matches(mark);
-    let cut = msg.len() != line.len();
-    let msg = msg.trim();
-    (cut && !msg.is_empty()).then_some(msg)
 }
 
 #[inline]
@@ -897,13 +725,12 @@ fn file_exists_and_is_not_empty(path: impl AsRef<Utf8Path>) -> Result<bool> {
 #[test]
 fn fetches_back_used_contexts() {
     let tmp = Temp::new_file().unwrap();
-    fs::write(&tmp, r#"
-...
-contexts = {
-    "rust" = "docker-image://docker.io/library/rust:1.69.0-slim@sha256:8b85a8a6bf7ed968e24bab2eae6f390d2c9c8dbed791d3547fef584000f48f9e",
-    "input_src_lib_rs--rustversion-1.0.9" = "/home/maison/.cargo/registry/src/github.com-1ecc6299db9ec823/rustversion-1.0.9",
-    "crate_out-..." = "/home/maison/code/thing.git/target/debug/build/rustversion-ae69baa7face5565/out",
-}
+    fs::write(&tmp, r#"# syntax=docker.io/docker/dockerfile:1
+# contexts = {
+#   { name = "rust", uri = "docker-image://docker.io/library/rust:1.69.0-slim@sha256:8b85a8a6bf7ed968e24bab2eae6f390d2c9c8dbed791d3547fef584000f48f9e" },
+#   { name = "input_src_lib_rs--rustversion-1.0.9", uri = "/home/maison/.cargo/registry/src/github.com-1ecc6299db9ec823/rustversion-1.0.9" },
+#   { name = "crate_out-...", uri = "/home/maison/code/thing.git/target/debug/build/rustversion-ae69baa7face5565/out" },
+# ]
 ...
 "#).unwrap();
 
@@ -925,15 +752,26 @@ contexts = {
     );
 }
 
+const HDR: &str = "# ";
+
+// TODO: parse TOML
+// # syntax = ..
+// # contexts = [
+// #   { name = "a", uri = "b" },
+// # ]
+// FROM ..
 fn used_contexts(path: impl AsRef<Utf8Path>) -> Result<BTreeMap<String, String>> {
     let path: &Utf8Path = path.as_ref();
     let fd = File::open(path).with_context(|| format!("Failed reading {path}"))?;
     BufReader::new(fd)
         .lines()
         .map_while(Result::ok)
-        .filter(|line| {
-            let ln = line.trim_start();
-            ln.starts_with("\"input_") || ln.starts_with("\"crate_out-")
+        .take_while(|x| x.starts_with(HDR))
+        .filter(|x| !x.starts_with("# syntax="))
+        .map(|x| x.strip_prefix(HDR).unwrap_or(&x).to_owned())
+        .filter(|ln| {
+            let ln = ln.trim_start();
+            ln.starts_with("{ name = \"input_") || ln.starts_with("{ name = \"crate_out-")
         })
         .map(|line| {
             if let [_, name, _, target, _] = line.splitn(5, '"').collect::<Vec<_>>()[..] {
@@ -952,7 +790,7 @@ fn bakefile_and_stage_for_rlib() {
     assert_eq!(
         res,
         Some((
-            "./target/path/strsim-8ed1051e7e58e636.hcl".to_owned().into(),
+            "./target/path/strsim-8ed1051e7e58e636.Dockerfile".to_owned().into(),
             "out-8ed1051e7e58e636".to_owned()
         ))
     );
@@ -965,7 +803,7 @@ fn bakefile_and_stage(
     assert!(xtern.starts_with("lib")); // TODO: stop doing that (stripping ^lib)
     let bk = xtern.strip_prefix("lib").and_then(|x| x.split_once('.')).map(|(x, _)| x);
     let sg = bk.and_then(|x| x.split_once('-')).map(|(_, x)| x).map(|x| format!("out-{x}"));
-    let bk = bk.map(|x| target_path.as_ref().join(format!("{x}.hcl")));
+    let bk = bk.map(|x| target_path.as_ref().join(format!("{x}.Dockerfile")));
     bk.zip(sg)
 }
 
@@ -990,11 +828,11 @@ fn crate_out_name(name: &str) -> String {
 #[test]
 fn a_few_hcl_to_dockerfile() {
     assert_eq!(
-        hcl_to_dockerfile("target/path/strsim-8ed1051e7e58e636.hcl".into()),
+        hcl_to_dockerfile("target/path/strsim-8ed1051e7e58e636.Dockerfile".into()),
         "target/path/8ed1051e7e58e636.Dockerfile".to_owned()
     );
     assert_eq!(
-        hcl_to_dockerfile("target/path/blip_blap-blop-1312051e7e58e636.hcl".into()),
+        hcl_to_dockerfile("target/path/blip_blap-blop-1312051e7e58e636.Dockerfile".into()),
         "target/path/1312051e7e58e636.Dockerfile".to_owned()
     );
 }
