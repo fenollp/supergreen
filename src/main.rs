@@ -411,17 +411,15 @@ async fn bake_rustc(
     }
     dockerfile.push_str("  RUSTCBUILDX=1\n");
 
+    dockerfile.push_str("RUN \\\n");
     let cwd = if let Some((name, target)) = input_mount.as_ref() {
         // Reuse previous contexts
 
         // TODO: WORKDIR was removed as it changed during a single `cargo build`
         // Looks like removing it isn't an issue, however we need more testing.
         // dockerfile.push_str(&format!("WORKDIR {pwd}\n"));
-        dockerfile.push_str("RUN \\\n");
+
         dockerfile.push_str(&format!("  --mount=type=bind,from={name},target={target} \\\n"));
-
-        // TODO: --build-arg BUILDKIT_CONTEXT_KEEP_GIT_DIR=0 https://docs.docker.com/engine/reference/builder/#buildkit-built-in-build-args
-
         None
     } else {
         // Save/send local workspace
@@ -431,7 +429,7 @@ async fn bake_rustc(
         assert_eq!((input.is_relative(), input.as_str().ends_with(".rs")), (true, true));
 
         // TODO: try just bind mount instead of copying to a tmpdir
-        // TODO: try not FWDing .git/* and equivalent BUILDKIT_CONTEXT_KEEP_GIT_DIR=0
+        // TODO: --build-arg BUILDKIT_CONTEXT_KEEP_GIT_DIR=0 https://docs.docker.com/engine/reference/builder/#buildkit-built-in-build-args
         // TODO: try filtering out CARGO_TARGET_DIR also
         // https://docs.docker.com/language/rust/develop/
         // RUN --mount=type=bind,source=src,target=src \
@@ -447,6 +445,7 @@ async fn bake_rustc(
         // TODO: cache these folders
         if pwd.join(".git").is_dir() {
             log::info!(target:&krate, "copying all git files under {}", pwd.join(".git"));
+            // TODO: rust git crate?
             let output = Command::new("git")
                 .kill_on_drop(true)
                 .arg("ls-files")
@@ -468,11 +467,7 @@ async fn bake_rustc(
             copy_files(&pwd, cwd_path)?;
         }
 
-        // TODO: try RUN --mount=type=bind,from=cwd,target={pwd}/
-        dockerfile.push_str(&format!("WORKDIR {pwd}\n"));
-        dockerfile.push_str("COPY --from=cwd / .\n");
-        dockerfile.push_str("RUN \\\n");
-
+        dockerfile.push_str(&format!("  --mount=type=bind,from=cwd,target={pwd} \\\n"));
         Some(cwd)
     };
 
