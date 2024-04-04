@@ -131,15 +131,25 @@ $(
     - name: Buildx version
       run: docker buildx version
 
+    - name: Podman version
+      run: podman version || true
+
+    - name: Rust version
+      run: rustc -Vv
+
+    - name: Envs
+      run: ./rustcbuildx env
+
     - name: Pre-pull images
       run: ./rustcbuildx pull
 
-    - name: Show defaults
+    - name: Envs again
       run: ./rustcbuildx env
 
     - name: Disk usage
       run: |
         docker system df
+        docker buildx du
         sudo du -sh /var/lib/docker
 
     - name: cargo install net=ON cache=OFF remote=OFF
