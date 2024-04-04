@@ -128,7 +128,6 @@ pub(crate) async fn syntax() -> &'static str {
             let img = "docker-image://docker.io/docker/dockerfile:1".to_owned();
             let img = internal::syntax().unwrap_or(img);
             let img = maybe_lock_image(img).await;
-            let img = img.trim_start_matches("docker-image://").to_owned();
             let _ = ONCE.set(img);
             ONCE.get().expect("just set syntax")
         }

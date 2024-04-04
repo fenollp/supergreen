@@ -63,16 +63,24 @@ pub(crate) async fn envs(vars: Vec<String>) -> ExitCode {
 pub(crate) async fn pull() -> Result<ExitCode> {
     let command = runner();
     let mut failure = ExitCode::SUCCESS;
-    for (user_inputed, img) in
+    for (user_input, img) in
         [(internal::syntax(), syntax().await), (internal::base_image(), base_image().await)]
     {
         let img = img.trim_start_matches("docker-image://");
-        let img = if user_inputed.map(|x| x.contains('@')).unwrap_or_default() {
+        let img = if img.contains('@')
+            && (user_input.is_none() || user_input.map(|x| !x.contains('@')).unwrap_or_default())
+        {
             // Don't pull a locked image unless that's what's asked
-            img
-        } else {
             // Otherwise, pull unlocked
+
+            // The only possible cases (user_input sets img)
+            // none + @ = trim
+            // none + _ = _
+            // s @  + @ = _
+            // s !  + @ = trim
             img.trim_end_matches(|c| c != '@').trim_end_matches('@')
+        } else {
+            img
         };
         println!("Pulling {img}...");
 

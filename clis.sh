@@ -167,6 +167,7 @@ $(
       if: \${{ failure() || success() }}
       run: |
         docker system df
+        docker buildx du
         sudo du -sh /var/lib/docker
 
     - name: Target dir disk usage
@@ -188,6 +189,7 @@ $(
       if: \${{ failure() || success() }}
       run: |
         docker system df
+        docker buildx du
         sudo du -sh /var/lib/docker
 
     - name: Target dir disk usage

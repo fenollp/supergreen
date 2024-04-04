@@ -628,7 +628,10 @@ async fn bake_rustc(
         let bis_path =
             Utf8Path::new(&target_path).join(format!("{crate_name}-{metadata}.Dockerfile"));
 
-        let mut header = format!("# syntax={syntax}\n", syntax = syntax().await);
+        let mut header = format!(
+            "# syntax={syntax}\n",
+            syntax = syntax().await.trim_start_matches("docker-image://")
+        );
         header.push_str("# contexts = [\n");
         for (name, uri) in &contexts {
             header.push_str(&format!("{HDR}  {{ name = {name:?}, uri = {uri:?} }},\n"));
