@@ -10,14 +10,13 @@ use std::{
 
 use anyhow::{bail, Context, Result};
 use camino::{Utf8Path, Utf8PathBuf};
-use cli::{envs, exit_code, help, pull};
 use env_logger::{Env, Target};
-use envs::{called_from_build_script, RUSTCBUILDX, RUSTCBUILDX_LOG, RUSTCBUILDX_LOG_STYLE};
 use mktemp::Temp;
 use tokio::process::Command;
 
 use crate::{
-    envs::{base_image, maybe_log, pass_env, runner, syntax},
+    cli::{envs, exit_code, help, pull},
+    envs::{base_image, called_from_build_script, internal, maybe_log, pass_env, syntax},
     parse::RustcArgs,
     pops::Popped,
     runner::{build, MARK_STDERR, MARK_STDOUT},
@@ -145,15 +144,17 @@ async fn bake_rustc(
     arguments: Vec<String>,
     fallback: impl Future<Output = Result<ExitCode>>,
 ) -> Result<ExitCode> {
-    if env::var_os(RUSTCBUILDX).map(|x| x == "1").unwrap_or_default() {
+    if internal::this().map(|x| x == "1").unwrap_or_default() {
         bail!("It's turtles all the way down!")
     }
-    env::set_var(RUSTCBUILDX, "1");
+    env::set_var(internal::RUSTCBUILDX, "1");
 
     let debug = maybe_log();
     if let Some(log_file) = debug {
         env_logger::Builder::from_env(
-            Env::default().filter_or(RUSTCBUILDX_LOG, "debug").write_style(RUSTCBUILDX_LOG_STYLE),
+            Env::default()
+                .filter_or(internal::RUSTCBUILDX_LOG, "debug")
+                .write_style(internal::RUSTCBUILDX_LOG_STYLE),
         )
         .target(Target::Pipe(Box::new(log_file()?)))
         .init();
@@ -567,7 +568,7 @@ async fn bake_rustc(
     }
 
     let mut contexts: BTreeMap<_, _> = [
-        Some(("rust".to_owned(), base_image().await)),
+        Some(("rust".to_owned(), base_image().await.to_owned())),
         input_mount.map(|(name, target)| (name, target.to_string())),
         cwd.as_deref().map(|cwd| {
             let cwd_path = Utf8Path::from_path(cwd.as_path()).expect("PROOF: did not fail earlier");
@@ -627,7 +628,7 @@ async fn bake_rustc(
         let bis_path =
             Utf8Path::new(&target_path).join(format!("{crate_name}-{metadata}.Dockerfile"));
 
-        let mut header = format!("# syntax={syntax}\n", syntax = syntax());
+        let mut header = format!("# syntax={syntax}\n", syntax = syntax().await);
         header.push_str("# contexts = [\n");
         for (name, uri) in &contexts {
             header.push_str(&format!("{HDR}  {{ name = {name:?}, uri = {uri:?} }},\n"));
@@ -670,10 +671,9 @@ async fn bake_rustc(
     // https://docs.rs/tracing-subscriber/latest/tracing_subscriber/fmt/struct.Subscriber.html
     // https://crates.io/crates/tracing-appender
 
-    let runner = runner();
-    let code = build(krate, &runner, bis_path.as_path(), &out_stage, &contexts, &out_dir).await?;
+    let code = build(krate, bis_path.as_path(), &out_stage, &contexts, &out_dir).await?;
     if let Some(incremental) = incremental.as_ref() {
-        let _ = build(krate, &runner, &bis_path, &incremental_stage, &contexts, incremental)
+        let _ = build(krate, &bis_path, &incremental_stage, &contexts, incremental)
             .await
             .inspect_err(|e| log::warn!(target:&krate, "Error fetching incremental data: {e}"));
     }
