@@ -16,9 +16,9 @@ A [`RUSTC_WRAPPER`](https://doc.rust-lang.org/cargo/reference/config.html#buildr
     * [ ] handle all the other deps (expand this list) (use `crater`)
       * [x] `C` deps
       * [ ] ...
-  * [ ] runner compatibility
-    * [ ] set `.dockerignore`s (to be authoritative on srcs)
-  * [ ] trace these outputs (STDOUT/STDERR) for debugging
+  * [x] runner compatibility
+    * [x] set `.dockerignore`s (to be authoritative on srcs)
+  * [x] trace these outputs (STDOUT/STDERR) for debugging
 * [x] available as a `rustc` wrapper through `$RUSTC_WRAPPER`
 * [ ] available as a `cargo` subcommand
   * [ ] configuration profiles (user, team, per-workspace, per-crate, CI, ...)
