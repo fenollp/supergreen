@@ -71,6 +71,9 @@ pub(crate) async fn base_image() -> &'static str {
         Some(ctx) => ctx,
         None => {
             let ctx = if let Some(val) = internal::base_image() {
+                if !val.starts_with("docker-image://") {
+                    panic!("{} must start with 'docker-image://'", internal::RUSTCBUILDX_BASE_IMAGE)
+                }
                 val
             } else {
                 let s = Command::new("rustc")

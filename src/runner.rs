@@ -1,5 +1,6 @@
 use std::{
     collections::BTreeMap,
+    fmt::Display,
     process::Stdio,
     time::{Duration, Instant},
 };
@@ -22,7 +23,7 @@ pub(crate) const MARK_STDERR: &str = "::STDERR:: ";
 pub(crate) async fn build(
     krate: &str,
     dockerfile_path: impl AsRef<Utf8Path>,
-    target: &str,
+    target: impl AsRef<str> + Display,
     contexts: &BTreeMap<String, String>,
     out_dir: impl AsRef<Utf8Path>,
 ) -> Result<Option<i32>> {
