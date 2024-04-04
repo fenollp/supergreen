@@ -411,15 +411,15 @@ async fn bake_rustc(
     }
     dockerfile.push_str("  RUSTCBUILDX=1\n");
 
-    dockerfile.push_str("RUN \\\n");
     let cwd = if let Some((name, target)) = input_mount.as_ref() {
         // Reuse previous contexts
 
         // TODO: WORKDIR was removed as it changed during a single `cargo build`
         // Looks like removing it isn't an issue, however we need more testing.
         // dockerfile.push_str(&format!("WORKDIR {pwd}\n"));
-
+        dockerfile.push_str("RUN \\\n");
         dockerfile.push_str(&format!("  --mount=type=bind,from={name},target={target} \\\n"));
+
         None
     } else {
         // Save/send local workspace
@@ -467,7 +467,16 @@ async fn bake_rustc(
             copy_files(&pwd, cwd_path)?;
         }
 
-        dockerfile.push_str(&format!("  --mount=type=bind,from=cwd,target={pwd} \\\n"));
+        // This doesn't work: dockerfile.push_str(&format!("  --mount=type=bind,from=cwd,target={pwd} \\\n"));
+        // ✖ 0.040 runc run failed: unable to start container process: error during container init:
+        //     error mounting "/var/lib/docker/tmp/buildkit-mount1189821268/libaho_corasick-b99b6e1b4f09cbff.rlib"
+        //     to rootfs at "/home/runner/work/rustcbuildx/rustcbuildx/target/debug/deps/libaho_corasick-b99b6e1b4f09cbff.rlib":
+        //         mkdir /var/lib/docker/buildkit/executor/m7p2ehjfewlxfi5zjupw23oo7/rootfs/home/runner/work/rustcbuildx/rustcbuildx/target:
+        //             read-only file system
+        dockerfile.push_str(&format!("WORKDIR {pwd}\n"));
+        dockerfile.push_str("COPY --from=cwd / .\n");
+        dockerfile.push_str("RUN \\\n");
+
         Some(cwd)
     };
 
