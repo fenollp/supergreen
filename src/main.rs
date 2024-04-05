@@ -795,14 +795,22 @@ fn headed_path_and_stage_for_libc() {
     assert_eq!(res.1, "out-c53783e3f8edcfe4".to_owned());
 }
 
+#[test]
+fn headed_path_and_stage_for_weird_extension() {
+    let xtern = "libthing-131283e3f8edcfe4.a.2.c".to_owned();
+    let res = headed_path_and_stage(xtern, "./target/path").unwrap();
+    assert_eq!(res.0, "./target/path/thing-131283e3f8edcfe4-headed.Dockerfile".to_owned());
+    assert_eq!(res.1, "out-131283e3f8edcfe4".to_owned());
+}
+
 #[inline]
 fn headed_path_and_stage(
     xtern: String,
     target_path: impl AsRef<Utf8Path>,
 ) -> Option<(Utf8PathBuf, String)> {
     assert!(xtern.starts_with("lib")); // TODO: stop doing that (stripping ^lib)
-    let pa = Utf8PathBuf::from(&xtern[3..]).file_stem().map(ToOwned::to_owned);
-    let st = pa.as_deref().and_then(|x| x.split_once('-')).map(|(_, x)| format!("out-{x}"));
+    let pa = xtern.strip_prefix("lib").and_then(|x| x.split_once('.')).map(|(x, _)| x);
+    let st = pa.and_then(|x| x.split_once('-')).map(|(_, x)| format!("out-{x}"));
     let pa = pa.map(|x| target_path.as_ref().join(format!("{x}-headed.Dockerfile")));
     pa.zip(st)
 }

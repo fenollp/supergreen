@@ -64,11 +64,12 @@ pub(crate) async fn build(
 
     let pid = child.id().unwrap_or_default();
     log::info!(target:&krate, "Started `{command} {args}` as pid={pid}`");
+    let krate = format!("{krate}@{pid}");
 
-    let krate_clone = krate.to_owned();
+    let krate_clone = krate.clone();
     let mut out = TokioBufReader::new(child.stdout.take().expect("started")).lines();
     let stdout = spawn(async move {
-        log::debug!(target:&krate_clone, "Starting STDOUT-{pid} task");
+        log::debug!(target:&krate_clone, "Starting stdout task");
         loop {
             match out.next_line().await {
                 Ok(None) => break,
@@ -79,19 +80,19 @@ pub(crate) async fn build(
                     }
                 }
                 Err(e) => {
-                    log::warn!("Failed during piping of STDOUT-{pid}: {e:?}");
+                    log::warn!("Failed during piping of stdout: {e:?}");
                     break;
                 }
             }
         }
-        log::debug!(target:&krate_clone, "Going down: STDOUT-{pid} task");
+        log::debug!(target:&krate_clone, "Terminating stdout task");
         drop(out);
     });
 
-    let krate_clone = krate.to_owned();
+    let krate_clone = krate.clone();
     let mut err = TokioBufReader::new(child.stderr.take().expect("started")).lines();
     let stderr = spawn(async move {
-        log::debug!(target:&krate_clone, "Starting STDERR-{pid} task");
+        log::debug!(target:&krate_clone, "Starting stderr task");
         loop {
             match err.next_line().await {
                 Ok(None) => break,
@@ -105,12 +106,12 @@ pub(crate) async fn build(
                     }
                 }
                 Err(e) => {
-                    log::warn!("Failed during piping of STDERR-{pid}: {e:?}");
+                    log::warn!("Failed during piping of stderr: {e:?}");
                     break;
                 }
             }
         }
-        log::debug!(target:&krate_clone, "Going down: STDERR-{pid} task");
+        log::debug!(target:&krate_clone, "Terminating stderr task");
         drop(err);
     });
 
@@ -125,7 +126,8 @@ pub(crate) async fn build(
     let (_, _) = join!(timeout(longish, stdout), timeout(longish, stderr));
     drop(child);
 
-    if code == Some(255) {
+    if !(0..=1).contains(&code.unwrap_or(-1)) {
+        // Something is very wrong here. Try to be helpful by logging some info about runner config:
         let check = Command::new(command)
             .kill_on_drop(true)
             .arg("info")
