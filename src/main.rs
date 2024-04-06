@@ -494,7 +494,7 @@ async fn bake_rustc(
         .into_iter()
         .map(|xtern| {
             let Some((extern_headed_path, extern_headed_stage)) = headed_path_and_stage(xtern.clone(), &target_path) else {
-                bail!("BUG: corrupted bakefile.FIXMEhcl for {xtern}")
+                bail!("Unexpected extern name format: {xtern}")
             };
 
             script.push_str(&format!("  --mount=type=bind,from={extern_headed_stage},source=/{xtern},target={target_path}/deps/{xtern} \\\n"));
@@ -687,7 +687,7 @@ async fn bake_rustc(
             let res = fallback.await; // Bubble up actual error & outputs
             if res.is_ok() {
                 log::error!(target:&krate, "BUG found!");
-                eprintln!("Found a bug in this script!");
+                eprintln!("Found a bug in this script! Falling back... (logs: {debug:?})");
             }
             return res;
         }
