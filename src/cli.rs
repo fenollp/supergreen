@@ -1,17 +1,16 @@
 use std::{
     collections::BTreeMap,
     env,
-    io::{self, Write},
-    process::{Command, ExitCode, Stdio},
+    process::{ExitCode, Stdio},
 };
 
 use anyhow::{Context, Result};
+use tokio::process::Command;
 
-use crate::envs::{base_image, docker_syntax, log_path};
+use crate::envs::{base_image, internal, log_path, runner, syntax};
 
 #[inline]
 pub(crate) fn help() -> ExitCode {
-    let name = env!("CARGO_PKG_NAME");
     println!(
         "{name}@{version}: {description}
     {repository}
@@ -22,62 +21,85 @@ Usage:
   {name} -h | --help
   {name} -V | --version
 ",
-        description = env!("CARGO_PKG_DESCRIPTION"),
+        name = env!("CARGO_PKG_NAME"),
         version = env!("CARGO_PKG_VERSION"),
         repository = env!("CARGO_PKG_REPOSITORY"),
+        description = env!("CARGO_PKG_DESCRIPTION"),
     );
     ExitCode::SUCCESS
 }
 
-pub(crate) fn envs(vars: Vec<String>) -> ExitCode {
+pub(crate) async fn envs(vars: Vec<String>) -> ExitCode {
     let all: BTreeMap<_, _> = [
-        ("RUSTCBUILDX", None),
-        ("RUSTCBUILDX_BASE_IMAGE", Some(base_image())),
-        ("RUSTCBUILDX_DOCKER_SYNTAX", Some(docker_syntax())),
-        ("RUSTCBUILDX_LOG", None),
-        ("RUSTCBUILDX_LOG_PATH", Some(log_path())),
-        ("RUSTCBUILDX_LOG_STYLE", None),
+        ("RUSTCBUILDX", internal::this()),
+        ("RUSTCBUILDX_BASE_IMAGE", Some(base_image().await.to_owned())),
+        ("RUSTCBUILDX_LOG", internal::log()),
+        ("RUSTCBUILDX_LOG_PATH", Some(log_path().to_owned())),
+        ("RUSTCBUILDX_LOG_STYLE", internal::log_style()),
+        ("RUSTCBUILDX_RUNNER", Some(runner().to_owned())),
+        ("RUSTCBUILDX_SYNTAX", Some(syntax().await.to_owned())),
     ]
     .into_iter()
     .collect();
 
-    fn show(var: &str, o: Option<String>) {
-        let val = env::var(var).ok().or(o).map(|x| format!("{x:?}")).unwrap_or_default();
-        println!("{var}={val}");
+    fn show(var: &str, o: &Option<String>) {
+        println!("{var}={val}", val = o.as_deref().unwrap_or_default());
     }
 
     let mut empty_vars = true;
     for var in vars {
         if let Some(o) = all.get(&var.as_str()) {
-            show(&var, o.clone());
+            show(&var, o);
             empty_vars = false;
         }
     }
     if empty_vars {
-        all.into_iter().for_each(|(var, o)| show(var, o));
+        all.into_iter().for_each(|(var, o)| show(var, &o));
     }
 
     ExitCode::SUCCESS
 }
 
-pub(crate) fn pull() -> Result<ExitCode> {
-    for img in [docker_syntax(), base_image().trim_start_matches("docker-image://").to_owned()] {
+pub(crate) async fn pull() -> Result<ExitCode> {
+    let command = runner();
+    let mut failure = ExitCode::SUCCESS;
+    for (user_input, img) in
+        [(internal::syntax(), syntax().await), (internal::base_image(), base_image().await)]
+    {
+        let img = img.trim_start_matches("docker-image://");
+        let img = if img.contains('@')
+            && (user_input.is_none() || user_input.map(|x| !x.contains('@')).unwrap_or_default())
+        {
+            // Don't pull a locked image unless that's what's asked
+            // Otherwise, pull unlocked
+
+            // The only possible cases (user_input sets img)
+            // none + @ = trim
+            // none + _ = _
+            // s @  + @ = _
+            // s !  + @ = trim
+            img.trim_end_matches(|c| c != '@').trim_end_matches('@')
+        } else {
+            img
+        };
         println!("Pulling {img}...");
-        let o = Command::new("docker")
+
+        let o = Command::new(command)
+            .kill_on_drop(true)
             .arg("pull")
-            .arg(&img)
+            .arg(img)
             .stdin(Stdio::null())
-            .output()
-            .with_context(|| format!("Failed to call docker pull {img}"))
-            .unwrap();
-        io::stderr().write_all(&o.stderr).unwrap();
-        io::stdout().write_all(&o.stdout).unwrap();
-        let o = o.status;
+            .spawn()
+            .with_context(|| format!("Failed to start `{command} pull {img}`"))?
+            .wait()
+            .await
+            .with_context(|| format!("Failed to call `{command} pull {img}`"))?;
         if !o.success() {
-            return Ok(exit_code(o.code()));
+            failure = exit_code(o.code());
         }
+        println!();
     }
-    Ok(ExitCode::SUCCESS)
+    Ok(failure)
 }
 
 #[inline]

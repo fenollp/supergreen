@@ -190,7 +190,6 @@ pub(crate) fn as_rustc(
         [_crate_dir, "build", ..] => state.out_dir.clone().popped(2),
         nope => bail!("BUG: --out-dir path should match /deps$|.+/build/.+: {nope:?}"),
     };
-    // TODO: make conversion Dockerfile <> HCL easier (just change extension)
     // TODO: return path makers through closures
     // TODO: namespace our files: {target_path}/{NS}/{profile}/...
 

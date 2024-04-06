@@ -1,18 +1,45 @@
 use std::{
     collections::BTreeMap,
-    env,
     fs::{File, OpenOptions},
-    process::Command,
+    sync::OnceLock,
 };
 
 use anyhow::{Context, Result};
+use tokio::process::Command;
 
-pub(crate) const RUSTCBUILDX: &str = "RUSTCBUILDX";
-pub(crate) const RUSTCBUILDX_BASE_IMAGE: &str = "RUSTCBUILDX_BASE_IMAGE";
-pub(crate) const RUSTCBUILDX_DOCKER_SYNTAX: &str = "RUSTCBUILDX_DOCKER_SYNTAX";
-pub(crate) const RUSTCBUILDX_LOG: &str = "RUSTCBUILDX_LOG";
-pub(crate) const RUSTCBUILDX_LOG_PATH: &str = "RUSTCBUILDX_LOG_PATH";
-pub(crate) const RUSTCBUILDX_LOG_STYLE: &str = "RUSTCBUILDX_LOG_STYLE";
+pub(crate) mod internal {
+    use std::env;
+
+    pub const RUSTCBUILDX: &str = "RUSTCBUILDX";
+    pub const RUSTCBUILDX_BASE_IMAGE: &str = "RUSTCBUILDX_BASE_IMAGE";
+    pub const RUSTCBUILDX_LOG: &str = "RUSTCBUILDX_LOG";
+    pub const RUSTCBUILDX_LOG_PATH: &str = "RUSTCBUILDX_LOG_PATH";
+    pub const RUSTCBUILDX_LOG_STYLE: &str = "RUSTCBUILDX_LOG_STYLE";
+    pub const RUSTCBUILDX_RUNNER: &str = "RUSTCBUILDX_RUNNER";
+    pub const RUSTCBUILDX_SYNTAX: &str = "RUSTCBUILDX_SYNTAX";
+
+    pub fn this() -> Option<String> {
+        env::var(RUSTCBUILDX).ok()
+    }
+    pub fn base_image() -> Option<String> {
+        env::var(RUSTCBUILDX_BASE_IMAGE).ok()
+    }
+    pub fn log() -> Option<String> {
+        env::var(RUSTCBUILDX_LOG).ok()
+    }
+    pub fn log_path() -> Option<String> {
+        env::var(RUSTCBUILDX_LOG_PATH).ok()
+    }
+    pub fn log_style() -> Option<String> {
+        env::var(RUSTCBUILDX_LOG_STYLE).ok()
+    }
+    pub fn runner() -> Option<String> {
+        env::var(RUSTCBUILDX_RUNNER).ok()
+    }
+    pub fn syntax() -> Option<String> {
+        env::var(RUSTCBUILDX_SYNTAX).ok()
+    }
+}
 
 // TODO: document envs + usage
 
@@ -24,47 +51,101 @@ pub(crate) const RUSTCBUILDX_LOG_STYLE: &str = "RUSTCBUILDX_LOG_STYLE";
 // RUN set -eux && apt update && apt install -y libpq-dev libssl3
 // EOF
 
-pub(crate) fn log_path() -> String {
-    env::var(RUSTCBUILDX_LOG_PATH).ok().unwrap_or("/tmp/rstcbldx_FIXME".to_owned())
+#[must_use]
+pub(crate) fn log_path() -> &'static str {
+    static ONCE: OnceLock<String> = OnceLock::new();
+    ONCE.get_or_init(|| internal::log_path().unwrap_or("/tmp/rstcbldx_FIXME".to_owned()))
 }
 
-pub(crate) fn base_image() -> String {
-    // Passthrough to https://docs.docker.com/engine/reference/commandline/buildx_build/#build-context
-    env::var(RUSTCBUILDX_BASE_IMAGE).ok().unwrap_or_else(|| {
-        let s = Command::new("rustc")
-            .arg("-V")
+#[must_use]
+pub(crate) fn runner() -> &'static str {
+    static ONCE: OnceLock<String> = OnceLock::new();
+    ONCE.get_or_init(|| internal::runner().unwrap_or("docker".to_owned()))
+}
+
+// A Docker image or any build context, actually.
+#[must_use]
+pub(crate) async fn base_image() -> &'static str {
+    static ONCE: OnceLock<String> = OnceLock::new();
+    match ONCE.get() {
+        Some(ctx) => ctx,
+        None => {
+            let ctx = if let Some(val) = internal::base_image() {
+                if !val.starts_with("docker-image://") {
+                    panic!("{} must start with 'docker-image://'", internal::RUSTCBUILDX_BASE_IMAGE)
+                }
+                val
+            } else {
+                let s = Command::new("rustc")
+                    .kill_on_drop(true)
+                    .arg("-V")
+                    .output()
+                    .await
+                    .ok()
+                    .and_then(|cmd| String::from_utf8(cmd.stdout).ok());
+                // e.g. rustc 1.73.0 (cc66ad468 2023-10-03)
+
+                let v = s
+                    .map(|x| x.trim_start_matches("rustc ").to_owned())
+                    .and_then(|x| x.split_once(' ').map(|(x, _)| x.to_owned()))
+                    .unwrap_or("1".to_owned());
+
+                format!("docker-image://docker.io/library/rust:{v}-slim")
+            };
+
+            let ctx = maybe_lock_image(ctx).await;
+
+            let _ = ONCE.set(ctx);
+            ONCE.get().expect("just set base_image")
+        }
+    }
+}
+
+#[must_use]
+async fn maybe_lock_image(mut img: String) -> String {
+    // Lock image, as podman(4.3.1) does not respect --pull=false (fully, anyway)
+    if img.starts_with("docker-image://") && !img.contains("@sha256:") {
+        if let Some(line) = Command::new(runner())
+            .kill_on_drop(true)
+            .arg("inspect")
+            .arg("--format={{index .RepoDigests 0}}")
+            .arg(img.trim_start_matches("docker-image://"))
             .output()
+            .await
             .ok()
-            .and_then(|cmd| String::from_utf8(cmd.stdout).ok());
-        // e.g. rustc 1.73.0 (cc66ad468 2023-10-03)
-
-        let v = s
-            .map(|x| x.trim_start_matches("rustc ").to_owned())
-            .and_then(|x| x.split_once(' ').map(|(x, _)| x.to_owned()))
-            .unwrap_or("1".to_owned());
-
-        let v = v.trim_end_matches(".1"); // TODO: drop whence https://github.com/rust-lang/docker-rust/issues/193
-
-        format!("docker-image://docker.io/library/rust:{v}-slim")
-    })
+            .and_then(|o| String::from_utf8(o.stdout).ok())
+            .and_then(|x| x.lines().next().map(ToOwned::to_owned))
+        {
+            img.push_str(line.trim_start_matches(|c| c != '@'));
+        }
+    }
+    img
 }
 
-pub(crate) fn docker_syntax() -> String {
-    let x= "docker.io/docker/dockerfile:1@sha256:ac85f380a63b13dfcefa89046420e1781752bab202122f8f50032edf31be0021";
-    env::var(RUSTCBUILDX_DOCKER_SYNTAX).unwrap_or(x.to_owned()) // TODO: see if #syntax= is actually needed
+#[must_use]
+pub(crate) async fn syntax() -> &'static str {
+    static ONCE: OnceLock<String> = OnceLock::new();
+    match ONCE.get() {
+        Some(img) => img,
+        None => {
+            let img = "docker-image://docker.io/docker/dockerfile:1".to_owned();
+            let img = internal::syntax().unwrap_or(img);
+            let img = maybe_lock_image(img).await;
+            let _ = ONCE.set(img);
+            ONCE.get().expect("just set syntax")
+        }
+    }
 }
 
+#[must_use]
 pub(crate) fn maybe_log() -> Option<fn() -> Result<File>> {
     fn log_file() -> Result<File> {
         let log_path = log_path();
-        OpenOptions::new()
-            .create(true)
-            .append(true)
-            .open(&log_path)
-            .with_context(|| format!("Failed opening (WA) log file {log_path}"))
+        let errf = || format!("Failed opening (WA) log file {log_path}");
+        OpenOptions::new().create(true).append(true).open(log_path).with_context(errf)
     }
 
-    env::var(RUSTCBUILDX_LOG).ok().map(|x| !x.is_empty()).unwrap_or_default().then_some(log_file)
+    internal::log().map(|x| !x.is_empty()).unwrap_or_default().then_some(log_file)
 }
 
 // See https://doc.rust-lang.org/cargo/reference/environment-variables.html#environment-variables-cargo-sets-for-build-scripts
