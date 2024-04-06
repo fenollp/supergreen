@@ -15,19 +15,17 @@ use tokio::{
     time::timeout,
 };
 
-use crate::envs::runner;
-
 pub(crate) const MARK_STDOUT: &str = "::STDOUT:: ";
 pub(crate) const MARK_STDERR: &str = "::STDERR:: ";
 
 pub(crate) async fn build(
     krate: &str,
+    command: &str,
     dockerfile_path: impl AsRef<Utf8Path>,
     target: impl AsRef<str> + Display,
     contexts: &BTreeMap<String, String>,
     out_dir: impl AsRef<Utf8Path>,
 ) -> Result<Option<i32>> {
-    let command = runner();
     let mut cmd = Command::new(command);
     cmd.arg("--debug");
     cmd.arg("build");

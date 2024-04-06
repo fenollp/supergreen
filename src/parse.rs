@@ -123,7 +123,9 @@ pub(crate) fn as_rustc(
             }
             "--crate-type" => {
                 assert_eq!(state.crate_type, "");
-                assert!(["bin", "lib", "proc-macro"].contains(&val.as_str()));
+                if !["bin", "lib", "proc-macro"].contains(&val.as_str()) {
+                    bail!("Unhandled --crate-type={val}")
+                }
                 state.crate_type = val.clone();
             }
             "--emit" => {

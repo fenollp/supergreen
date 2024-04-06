@@ -16,7 +16,7 @@ use tokio::process::Command;
 
 use crate::{
     cli::{envs, exit_code, help, pull},
-    envs::{base_image, called_from_build_script, internal, maybe_log, pass_env, syntax},
+    envs::{base_image, called_from_build_script, internal, maybe_log, pass_env, runner, syntax},
     parse::RustcArgs,
     pops::Popped,
     runner::{build, MARK_STDERR, MARK_STDOUT},
@@ -81,7 +81,7 @@ async fn fallible_main(args: VecDeque<String>, vars: BTreeMap<String, String>) -
              bake_rustc(crate_name, argv(1), call_rustc(rustc, argv(1))).await
             .inspect_err(|e| {
                 log::error!(target:crate_name, "Failure: {e}");
-                eprintln!("Failure: {e}");
+                eprintln!("{PKG}@{VSN} error: {e}");
             }),
         _ => panic!("RUSTC_WRAPPER={PKG}'s input unexpected:\n\targz = {argz:?}\n\targs = {args:?}\n\tenvs = {vars:?}\n"),
     }
@@ -547,9 +547,6 @@ async fn bake_rustc(
     // NOTE: -C extra-filename=-${metadata} (starts with dash)
     // TODO: use extra filename here for fwd compat
 
-    //FIXME:
-    //   (store smol in toml header?)
-
     let script = script; // Drop mut
     {
         let script_path =
@@ -671,9 +668,13 @@ async fn bake_rustc(
     // https://docs.rs/tracing-subscriber/latest/tracing_subscriber/fmt/struct.Subscriber.html
     // https://crates.io/crates/tracing-appender
 
-    let code = build(krate, &headed_path, out_stage, &contexts, out_dir).await?;
+    let command = runner();
+    if command == "none" {
+        return fallback.await;
+    }
+    let code = build(krate, command, &headed_path, out_stage, &contexts, out_dir).await?;
     if let Some(incremental) = incremental {
-        let _ = build(krate, headed_path, incremental_stage, &contexts, incremental)
+        let _ = build(krate, command, headed_path, incremental_stage, &contexts, incremental)
             .await
             .inspect_err(|e| log::warn!(target:&krate, "Error fetching incremental data: {e}"));
     }

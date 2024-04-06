@@ -60,7 +60,17 @@ pub(crate) fn log_path() -> &'static str {
 #[must_use]
 pub(crate) fn runner() -> &'static str {
     static ONCE: OnceLock<String> = OnceLock::new();
-    ONCE.get_or_init(|| internal::runner().unwrap_or("docker".to_owned()))
+    ONCE.get_or_init(|| {
+        let val = internal::runner().unwrap_or("docker".to_owned());
+        // TODO: Result<_> API on bad config
+        match val.as_str() {
+            "docker" => {}
+            "none" => {}
+            "podman" => {}
+            _ => panic!("{} MUST be either docker, podman or none", internal::RUSTCBUILDX_RUNNER),
+        }
+        val
+    })
 }
 
 // A Docker image or any build context, actually.
