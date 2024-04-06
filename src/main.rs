@@ -183,7 +183,7 @@ async fn bake_rustc(
 
     let ext = match crate_type.as_str() {
         "lib" => "rmeta".to_owned(),
-        "bin" | "test" | "proc-macro" => "rlib".to_owned(),
+        "bin" | "rlib" | "test" | "proc-macro" => "rlib".to_owned(),
         _ => bail!("BUG: unexpected crate-type: '{crate_type}'"),
     };
     // https://rustc-dev-guide.rust-lang.org/backend/libs-and-metadata.html#rmeta

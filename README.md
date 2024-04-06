@@ -141,6 +141,4 @@ PoC originally written in Bash: https://github.com/fenollp/buildxargs/blob/build
 * `[build] rustflags = ["--remap-path-prefix"`
   * [RFC: `trim-paths`](https://rust-lang.github.io/rfcs/3127-trim-paths.html)
 * [`crater`: Run experiments across parts of the Rust ecosystem!](https://github.com/rust-lang/crater)
-
-## cross
-*  Convert --target-dir to use absolute paths. https://github.com/cross-rs/cross/commit/2504e04375a4a8f62f5dc62f95745701521c590e
+* [`cargo-options` Clap parser](https://docs.rs/cargo-options/latest/cargo_options/struct.Build.html)

@@ -122,9 +122,14 @@ pub(crate) fn as_rustc(
                 assert!(!crate_name.is_empty());
             }
             "--crate-type" => {
-                assert_eq!(state.crate_type, "");
-                if !["bin", "lib", "proc-macro"].contains(&val.as_str()) {
-                    bail!("Unhandled --crate-type={val}")
+                // https://doc.rust-lang.org/cargo/reference/cargo-targets.html#the-crate-type-field
+                // array, >=1 per rustc call => as many products !!! we expect a single one throughout FIXME
+                // assert_eq!(state.crate_type, "");
+                const ALL_CRATE_TYPES: [&str; 7] =
+                    ["bin", "lib", "rlib", "dylib", "cdylib", "staticlib", "proc-macro"];
+                if !ALL_CRATE_TYPES.contains(&val.as_str()) {
+                    let ct = state.crate_type;
+                    bail!("Unhandled --crate-type={val} (knowing {ct:?}) in {arguments:?}")
                 }
                 state.crate_type = val.clone();
             }
@@ -164,7 +169,6 @@ pub(crate) fn as_rustc(
                 assert_eq!(state.out_dir, "");
                 state.out_dir = val.clone().into();
                 if state.out_dir.is_relative() {
-                    // TODO: decide whether $PWD is an issue. Maybe CARGO_TARGET_DIR can help?
                     state.out_dir = pwd.as_ref().join(&val);
                 }
                 val = state.out_dir.to_string();
@@ -189,6 +193,7 @@ pub(crate) fn as_rustc(
     // --out-dir "$CARGO_TARGET_DIR/$PROFILE"/deps
     state.target_path = match &state.out_dir.iter().rev().take(3).collect::<Vec<_>>()[..] {
         ["deps", ..] => state.out_dir.clone().popped(1),
+        ["examples", _profile, ..] => state.out_dir.clone().popped(2),
         [_crate_dir, "build", ..] => state.out_dir.clone().popped(2),
         nope => bail!("BUG: --out-dir path should match /deps$|.+/build/.+: {nope:?}"),
     };
