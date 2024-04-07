@@ -9,10 +9,11 @@ use std::{
 use anyhow::{Context, Result};
 use camino::Utf8Path;
 use tokio::{
-    io::{AsyncBufReadExt, BufReader as TokioBufReader},
+    io::{AsyncBufRead, AsyncBufReadExt, BufReader as TokioBufReader, Lines},
     join,
     process::Command,
     spawn,
+    task::JoinHandle,
     time::timeout,
 };
 
@@ -65,81 +66,11 @@ pub(crate) async fn build(
     log::info!(target:&krate, "Started `{command} {args}` as pid={pid}`");
     let krate = format!("{krate}@{pid}");
 
-    let krate_clone = krate.clone();
-    let mut out = TokioBufReader::new(child.stdout.take().expect("started")).lines();
-    let stdout = spawn(async move {
-        log::debug!(target:&krate_clone, "Starting stdout task");
-        loop {
-            match out.next_line().await {
-                Ok(None) => break,
-                Ok(Some(line)) => {
-                    log::debug!(target:&krate_clone, "➤ {line}");
-                    if let Some(msg) = lift_stdio(&line, MARK_STDOUT) {
-                        println!("{msg}");
-                    }
-                }
-                Err(e) => {
-                    log::warn!("Failed during piping of stdout: {e:?}");
-                    break;
-                }
-            }
-        }
-        log::debug!(target:&krate_clone, "Terminating stdout task");
-        drop(out);
-    });
+    let out = TokioBufReader::new(child.stdout.take().expect("started")).lines();
+    let err = TokioBufReader::new(child.stderr.take().expect("started")).lines();
 
-    let krate_clone = krate.clone();
-    let mut err = TokioBufReader::new(child.stderr.take().expect("started")).lines();
-    let stderr = spawn(async move {
-        log::debug!(target:&krate_clone, "Starting stderr task");
-
-        let show = |msg: &str| {
-            eprintln!("{msg}");
-            if let Some(file) = artifact_written(msg) {
-                log::info!(target:&krate_clone, "rustc wrote {file}")
-            }
-        };
-
-        let mut buf = String::new();
-        loop {
-            match err.next_line().await {
-                Ok(None) => break,
-                Ok(Some(line)) => {
-                    log::debug!(target:&krate_clone, "✖ {line}");
-                    if let Some(msg) = lift_stdio(&line, MARK_STDERR) {
-                        match (buf.is_empty(), msg.starts_with('{'), msg.ends_with('}')) {
-                            (true, true, true) => show(msg), // json
-                            (true, true, false) => buf.push_str(msg),
-                            (true, false, true) => show(msg),  // ?
-                            (true, false, false) => show(msg), // text
-                            (false, true, true) => {
-                                show(&mem::take(&mut buf));
-                                show(msg) // json
-                            }
-                            (false, true, false) => {
-                                show(&mem::take(&mut buf));
-                                buf.push_str(msg)
-                            }
-                            (false, false, true) => {
-                                buf.push_str(msg);
-                                show(&mem::take(&mut buf));
-                            }
-                            (false, false, false) => {
-                                show(&mem::take(&mut buf));
-                                show(msg) // text
-                            }
-                        }
-                    }
-                }
-                Err(e) => {
-                    log::warn!("Failed during piping of stderr: {e:?}");
-                    break;
-                }
-            }
-        }
-        log::debug!(target:&krate_clone, "Terminating stderr task");
-        drop(err);
-    });
+    let out_task = fwd(krate.clone(), out, "stdout", "➤", MARK_STDOUT);
+    let err_task = fwd(krate.clone(), err, "stderr", "✖", MARK_STDERR);
 
     let (secs, code) = {
         let start = Instant::now();
@@ -148,8 +79,9 @@ pub(crate) async fn build(
         (elapsed, res.with_context(|| format!("Failed calling `{command} {args}`"))?.code())
     };
     log::info!("command `{command} build` ran in {secs:?}: {code:?}");
+
     let longish = Duration::from_secs(2);
-    let (_, _) = join!(timeout(longish, stdout), timeout(longish, stderr));
+    let (_, _) = join!(timeout(longish, out_task), timeout(longish, err_task));
     drop(child);
 
     if !(0..=1).contains(&code.unwrap_or(-1)) {
@@ -166,6 +98,77 @@ pub(crate) async fn build(
     }
 
     Ok(code)
+}
+
+#[inline]
+fn fwd<R>(
+    krate: String,
+    mut stdio: Lines<R>,
+    name: &'static str,
+    badge: &'static str,
+    mark: &'static str,
+) -> JoinHandle<()>
+where
+    R: AsyncBufRead + Unpin + Send + 'static,
+{
+    let fwder = if name == "stdout" { fwd_stdout } else { fwd_stderr };
+    spawn(async move {
+        log::debug!(target:&krate, "Starting {name} task");
+        let mut buf = String::new();
+        loop {
+            match stdio.next_line().await {
+                Ok(None) => break,
+                Ok(Some(line)) => {
+                    log::debug!(target:&krate, "{badge} {line}");
+                    if let Some(msg) = lift_stdio(&line, mark) {
+                        fwder(&krate, msg, &mut buf)
+                    }
+                }
+                Err(e) => {
+                    log::warn!("Failed during piping of {name}: {e:?}");
+                    break;
+                }
+            }
+        }
+        log::debug!(target:&krate, "Terminating {name} task");
+        drop(stdio);
+    })
+}
+
+#[allow(clippy::ptr_arg)]
+fn fwd_stdout(_krate: &str, msg: &str, _buf: &mut String) {
+    println!("{msg}");
+}
+
+fn fwd_stderr(krate: &str, msg: &str, buf: &mut String) {
+    let show = |msg: &str| {
+        eprintln!("{msg}");
+        if let Some(file) = artifact_written(msg) {
+            log::info!(target:&krate, "rustc wrote {file}")
+        }
+    };
+    match (buf.is_empty(), msg.starts_with('{'), msg.ends_with('}')) {
+        (true, true, true) => show(msg), // json
+        (true, true, false) => buf.push_str(msg),
+        (true, false, true) => show(msg),  // ?
+        (true, false, false) => show(msg), // text
+        (false, true, true) => {
+            show(&mem::take(buf));
+            show(msg) // json
+        }
+        (false, true, false) => {
+            show(&mem::take(buf));
+            buf.push_str(msg)
+        }
+        (false, false, true) => {
+            buf.push_str(msg);
+            show(&mem::take(buf));
+        }
+        (false, false, false) => {
+            show(&mem::take(buf));
+            show(msg) // text
+        }
+    }
 }
 
 #[test]
