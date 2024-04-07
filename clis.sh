@@ -2,6 +2,7 @@
 set -o pipefail
 
 # TODO: https://crates.io/categories/command-line-utilities?sort=recent-updates
+# TODO: (👑) https://github.com/briansmith/ring
 declare -a nvs nvs_args
    i=0  ; nvs[i]=buildxargs@master;     oks[i]=ok; nvs_args[i]='--git https://github.com/fenollp/buildxargs.git'
 ((i+=1)); nvs[i]=cargo-audit@0.18.3;    oks[i]=ok; nvs_args[i]='--features=fix'
