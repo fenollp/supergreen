@@ -8,6 +8,7 @@ A [`RUSTC_WRAPPER`](https://doc.rust-lang.org/cargo/reference/config.html#buildr
   * [x] only pull sources from local filesystem
   * [x] produce the same intermediary artefacts as local `cargo` does
   * [x] fallback to normal, local `rustc` anytime
+    * switching from this wrapper back to local `rustc` does necessitate a fresh build
 * [ ] wrap `rustc` calls in `buildkit`-like calls (`docker`, `podman`)
   * [x] `docker`
   * [x] `podman`
