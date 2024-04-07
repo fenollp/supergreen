@@ -111,7 +111,7 @@ fn fwd<R>(
 where
     R: AsyncBufRead + Unpin + Send + 'static,
 {
-    let fwder = if name == "stdout" { fwd_stdout } else { fwd_stderr };
+    let fwder = if mark == MARK_STDOUT { fwd_stdout } else { fwd_stderr };
     spawn(async move {
         log::debug!(target:&krate, "Starting {name} task");
         let mut buf = String::new();
@@ -153,7 +153,9 @@ fn support_long_broken_json_lines() {
     fwd_stderr("krate", msg.unwrap(), &mut buf);
     assert_eq!(buf, "");
 
-    // vec![Some(r#"{"$message_type":"artifact","artifact":"/tmp/thing","emit":"link"}"#)]
+    // TODO: actually test that fwd_stderr
+    // calls artifact_written(r#"{"$message_type":"artifact","artifact":"/tmp/thing","emit":"link"}"#)
+    // which returns Some("/tmp/thing")
 }
 
 #[inline]
