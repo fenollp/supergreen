@@ -1,6 +1,7 @@
 use std::{
     collections::BTreeMap,
     fmt::Display,
+    mem,
     process::Stdio,
     time::{Duration, Instant},
 };
@@ -91,15 +92,42 @@ pub(crate) async fn build(
     let mut err = TokioBufReader::new(child.stderr.take().expect("started")).lines();
     let stderr = spawn(async move {
         log::debug!(target:&krate_clone, "Starting stderr task");
+
+        let show = |msg: &str| {
+            eprintln!("{msg}");
+            if let Some(file) = artifact_written(msg) {
+                log::info!(target:&krate_clone, "rustc wrote {file}")
+            }
+        };
+
+        let mut buf = String::new();
         loop {
             match err.next_line().await {
                 Ok(None) => break,
                 Ok(Some(line)) => {
                     log::debug!(target:&krate_clone, "✖ {line}");
                     if let Some(msg) = lift_stdio(&line, MARK_STDERR) {
-                        eprintln!("{msg}");
-                        if let Some(file) = artifact_written(msg) {
-                            log::info!(target:&krate_clone, "rustc wrote {file}")
+                        match (buf.is_empty(), msg.starts_with('{'), msg.ends_with('}')) {
+                            (true, true, true) => show(msg), // json
+                            (true, true, false) => buf.push_str(msg),
+                            (true, false, true) => show(msg),  // ?
+                            (true, false, false) => show(msg), // text
+                            (false, true, true) => {
+                                show(&mem::take(&mut buf));
+                                show(msg) // json
+                            }
+                            (false, true, false) => {
+                                show(&mem::take(&mut buf));
+                                buf.push_str(msg)
+                            }
+                            (false, false, true) => {
+                                buf.push_str(msg);
+                                show(&mem::take(&mut buf));
+                            }
+                            (false, false, false) => {
+                                show(&mem::take(&mut buf));
+                                show(msg) // text
+                            }
                         }
                     }
                 }
@@ -160,6 +188,14 @@ fn stdio_passthrough_from_runner() {
             None,
         ]
     );
+    // let lines = [
+    //     r#"#42 1.312 ::STDOUT:: {"$message_type":"artifact","artifact":"/tmp/thing","emit":"link""#,
+    //     r#"#42 1.313 ::STDOUT:: {"#,
+    // ];
+    // assert_eq!(
+    //     lines.into_iter().map(|line| lift_stdio(line, MARK_STDOUT)).collect::<Vec<_>>(),
+    //     vec![Some(r#"{"$message_type":"artifact","artifact":"/tmp/thing","emit":"link"}"#)]
+    // );
 }
 
 // Maybe replace with actual JSON deserialization

@@ -9,6 +9,8 @@ use tokio::process::Command;
 
 use crate::envs::{base_image, internal, log_path, runner, syntax};
 
+// TODO: tune logging verbosity https://docs.rs/clap-verbosity-flag/latest/clap_verbosity_flag/
+
 #[inline]
 pub(crate) fn help() -> ExitCode {
     println!(
