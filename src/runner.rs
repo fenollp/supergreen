@@ -121,7 +121,7 @@ where
                 Ok(Some(line)) => {
                     log::debug!(target:&krate, "{badge} {line}");
                     if let Some(msg) = lift_stdio(&line, mark) {
-                        fwder(&krate, msg, &mut buf)
+                        fwder(&krate, msg, &mut buf);
                     }
                 }
                 Err(e) => {
@@ -135,11 +135,28 @@ where
     })
 }
 
-#[allow(clippy::ptr_arg)]
-fn fwd_stdout(_krate: &str, msg: &str, _buf: &mut String) {
-    println!("{msg}");
+#[test]
+fn support_long_broken_json_lines() {
+    let lines = [
+        r#"#42 1.312 ::STDERR:: {"$message_type":"artifact","artifact":"/tmp/thing","emit":"link""#,
+        r#"#42 1.313 ::STDERR:: }"#,
+    ];
+    let mut buf = String::new();
+
+    let msg = lift_stdio(lines[0], MARK_STDERR);
+    assert_eq!(msg, Some(r#"{"$message_type":"artifact","artifact":"/tmp/thing","emit":"link""#));
+    fwd_stderr("krate", msg.unwrap(), &mut buf);
+    assert_eq!(buf, r#"{"$message_type":"artifact","artifact":"/tmp/thing","emit":"link""#);
+
+    let msg = lift_stdio(lines[1], MARK_STDERR);
+    assert_eq!(msg, Some("}"));
+    fwd_stderr("krate", msg.unwrap(), &mut buf);
+    assert_eq!(buf, "");
+
+    // vec![Some(r#"{"$message_type":"artifact","artifact":"/tmp/thing","emit":"link"}"#)]
 }
 
+#[inline]
 fn fwd_stderr(krate: &str, msg: &str, buf: &mut String) {
     let show = |msg: &str| {
         eprintln!("{msg}");
@@ -171,6 +188,11 @@ fn fwd_stderr(krate: &str, msg: &str, buf: &mut String) {
     }
 }
 
+#[inline]
+fn fwd_stdout(_krate: &str, msg: &str, #[allow(clippy::ptr_arg)] _buf: &mut String) {
+    println!("{msg}");
+}
+
 #[test]
 fn stdio_passthrough_from_runner() {
     assert_eq!(lift_stdio("#47 1.714 ::STDOUT:: hi!", MARK_STDOUT), Some("hi!"));
@@ -191,14 +213,6 @@ fn stdio_passthrough_from_runner() {
             None,
         ]
     );
-    // let lines = [
-    //     r#"#42 1.312 ::STDOUT:: {"$message_type":"artifact","artifact":"/tmp/thing","emit":"link""#,
-    //     r#"#42 1.313 ::STDOUT:: {"#,
-    // ];
-    // assert_eq!(
-    //     lines.into_iter().map(|line| lift_stdio(line, MARK_STDOUT)).collect::<Vec<_>>(),
-    //     vec![Some(r#"{"$message_type":"artifact","artifact":"/tmp/thing","emit":"link"}"#)]
-    // );
 }
 
 // Maybe replace with actual JSON deserialization
