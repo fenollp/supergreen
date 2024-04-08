@@ -364,42 +364,8 @@ async fn bake_rustc(
 
     let incremental_stage = format!("incremental-{metadata}");
     let out_stage = format!("out-{metadata}");
-    // let mut toolchain = input_mount
-    //     .as_ref()
-    //     .map(|(_imn, imt)| -> Result<Option<String>> {
-    //         let check = |file_name| -> Result<bool> {
-    //             let p = Utf8Path::new(imt).join(file_name);
-    //             log::info!(target:&krate, "checking (RO) toolchain file {p}");
-    //             file_exists_and_is_not_empty(&p)
-    //                 .with_context(|| format!("Failed to `test -s {p:?}`"))
-    //         };
-    //         for file_name in &["rust-toolchain.toml", "rust-toolchain"] {
-    //             if check(file_name)? {
-    //                 return Ok(Some(file_name.to_owned().to_owned()));
-    //             }
-    //         }
-    //         Ok(None)
-    //     })
-    //     .transpose()?
-    //     .flatten()
-    //     .map(|toolchain_file_name|
-    //         // https://rust-lang.github.io/rustup/overrides.html
-    //         // NOTE: without this, the crate's rust-toolchain gets installed and used and (for the mentioned crate)
-    //         //   fails due to (yet)unknown rustc CLI arg: `error: Unrecognized option: 'diagnostic-width'`
-    //         // e.g. https://github.com/xacrimon/dashmap/blob/v5.4.0/rust-toolchain
-    //         (format!("toolchain-{metadata}"), toolchain_file_name));
-    // if true {
-    //     // TODO: test building something involving rust-toolchain.toml
-    //     toolchain = None;
-    // }
 
     let mut script = String::new();
-
-    // const RUSTUP_TOOLCHAIN: &str = "rustup-toolchain";
-    // if let Some((stage, _)) = toolchain.as_ref() {
-    //     script.push_str(&format!("FROM rust AS {stage}\n"));
-    //     script.push_str(&format!("    RUN rustup default | cut -d- -f1 >/{RUSTUP_TOOLCHAIN}\n"));
-    // }
 
     script.push_str(&format!("FROM rust AS {rustc_stage}\n"));
     script.push_str(&format!("WORKDIR {out_dir}\n"));
@@ -496,10 +462,6 @@ async fn bake_rustc(
         script.push_str(&format!("  --mount=type=bind,from={named},target={crate_out} \\\n"));
     }
 
-    // if let Some((stage, _file_name)) = toolchain.as_ref() {
-    //     script.push_str(&format!("  --mount=type=bind,from={stage},source=/{RUSTUP_TOOLCHAIN},target=/{RUSTUP_TOOLCHAIN} \\\n"));
-    // }
-
     log::debug!(target:&krate, "all_externs = {all_externs:?}");
     assert!(externs.len() <= all_externs.len());
     let headed_paths = all_externs
@@ -516,20 +478,6 @@ async fn bake_rustc(
         .collect::<Result<Vec<_>>>()?;
 
     script.push_str("    set -eux \\\n");
-
-    // if toolchain.is_some() {
-    //     script.push_str(&format!(" && export RUSTUP_TOOLCHAIN=\"$(cat /{RUSTUP_TOOLCHAIN})\" \\\n"));
-    // }
-
-    // // https://rust-lang.github.io/rustup/overrides.html
-    // // NOTE: without this, the crate's rust-toolchain gets installed and used.
-    // // e.g. https://github.com/xacrimon/dashmap/blob/v5.4.0/rust-toolchain
-    // // e.g. https://github.com/dtolnay/anyhow/blob/05e413219e97f101d8f39a90902e5c5d39f951fe/rust-toolchain.toml
-    // // NOTE this is [[ -s "$input_mount_target"/rust-toolchain ]]
-    // // script.push_str(" && if [ -s ./rust-toolchain.toml ] || [ -s ./rust-toolchain ]; then \\\n");
-    // // script.push_str(" &&   export RUSTUP_TOOLCHAIN=\"$(rustup default | cut -d- -f1)\"; \\\n");
-    // // script.push_str(" && fi \\\n");
-    // script.push_str(" && export RUSTUP_TOOLCHAIN=stable \\\n");
 
     script.push_str(" && export CARGO=\"$(which cargo)\" \\\n");
 

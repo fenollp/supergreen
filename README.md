@@ -142,3 +142,4 @@ PoC originally written in Bash: https://github.com/fenollp/buildxargs/blob/build
   * [RFC: `trim-paths`](https://rust-lang.github.io/rfcs/3127-trim-paths.html)
 * [`crater`: Run experiments across parts of the Rust ecosystem!](https://github.com/rust-lang/crater)
 * [`cargo-options` Clap parser](https://docs.rs/cargo-options/latest/cargo_options/struct.Build.html)
+* /r/Rust scare [Serde has started shipping precompiled binaries with no way to opt out](https://www.reddit.com/r/rust/comments/15va70a/serde_has_started_shipping_precompiled_binaries/)
