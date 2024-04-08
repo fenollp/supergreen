@@ -171,7 +171,20 @@ async fn bake_rustc(
     let RustcArgs { crate_type, emit, externs, metadata, incremental, input, out_dir, target_path } =
         st;
 
-    let crate_out = env::var("OUT_DIR").ok().and_then(|x| x.ends_with("/out").then_some(x)); // NOTE: not `out_dir`
+    // NOTE: not `out_dir`
+    let crate_out = env::var("OUT_DIR")
+        .ok()
+        .and_then(|x| x.ends_with("/out").then_some(x))
+        .and_then(|crate_out| {
+            log::info!(target:&krate, "listing (RO) crate_out contents {crate_out}");
+            let Ok(listing) = fs::read_dir(&crate_out) else { return None };
+            let listing = listing
+                .map_while(Result::ok)
+                .inspect(|x| log::info!(target:&krate, "contains {x:?}"))
+                .count();
+            // crate_out dir empty => mount can be dropped
+            (listing != 0).then_some(crate_out)
+        });
 
     let full_crate_id = format!("{crate_type}-{crate_name}-{metadata}");
     let krate = full_crate_id.as_str();
@@ -245,10 +258,9 @@ async fn bake_rustc(
 
                 if debug.is_some() {
                     let deps_dir = Utf8Path::new(&target_path).join("deps");
-                    log::info!(target:&krate, "listing existing an extern crate's extern matches {deps_dir}/lib*.*");
+                    log::info!(target:&krate, "extern crate's extern matches {deps_dir}/lib*.*");
                     let listing = read_dir(&deps_dir)
                         .with_context(|| format!("Failed reading directory {deps_dir}"))?
-                        // TODO: at least context() error
                         .filter_map(Result::ok)
                         .filter_map(|p| {
                             let p = p.path();
@@ -577,46 +589,41 @@ async fn bake_rustc(
     .collect();
 
     // TODO: ask upstream `docker buildx` for orderless stages (so we can concat Dockerfiles any which way, and save another DAG)
-
-    let mut extern_scripts: BTreeMap<_, _> = headed_paths
+    let mut extern_scripts: Vec<(_, _)> = headed_paths
         .into_iter()
-        .map(|extern_headed_path| -> Result<_> {
+        .map(|extern_headed_path| {
             log::info!(target:&krate, "opening (RO) extern dockerfile {extern_headed_path}");
-            let mounts = used_contexts(&extern_headed_path)?;
-            let mounts_len = mounts.len();
-            contexts.extend(mounts.into_iter());
+            let fd = File::open(&extern_headed_path)
+                .with_context(|| format!("Failed reading {extern_headed_path}"))?;
+            let mounts = Head::from_file(fd)
+                .with_context(|| format!("Parsing head of {extern_headed_path}"))?
+                .contexts
+                .into_iter()
+                .filter(BuildContext::unbuilt_local_readonly_mount)
+                .map(|BuildContext { name, uri }| (name, uri));
+            let mounts_len = mounts.clone().count();
+            contexts.extend(mounts);
 
             let extern_script_path = from_headed_path(extern_headed_path);
             Ok((extern_script_path, mounts_len))
         })
         .collect::<Result<_>>()?;
+    log::info!(target:&krate, "extern_scripts {}: {extern_scripts:?}", extern_scripts.len());
+    extern_scripts.sort_unstable_by_key(|(_, mounts_len)| *mounts_len);
+    log::info!(target:&krate, "final extern_scripts {}: {extern_scripts:?}", extern_scripts.len());
     let mut headed_script = String::new();
     // Concat dockerfiles from
     // topological sort
     // of the DAG (stages must be defined first, then used)
     // Assumes that the more deps a crate has, the later it appears in the deps tree
     // TODO: do     vvvvvvvvv better than this
-    for i_mounts in 0..999999usize {
-        if extern_scripts.is_empty() {
-            break;
-        }
-        let matching: Vec<_> = extern_scripts
-            .iter()
-            .filter(|(_, v)| **v == i_mounts)
-            .map(|(k, _)| k)
-            .cloned()
-            .collect();
-        for extern_script_path in matching {
-            let res = extern_scripts.remove(&extern_script_path);
-            assert!(res.is_some());
-            log::info!(target:&krate, "opening (RO) extern dockerfile {extern_script_path}");
-            let extern_script = read_to_string(&extern_script_path)
-                .with_context(|| format!("Failed reading dockerfile {extern_script_path}"))?;
-            headed_script.push_str(&extern_script);
-            headed_script.push('\n');
-        }
+    for (extern_script_path, _) in extern_scripts {
+        log::info!(target:&krate, "opening (RO) extern dockerfile {extern_script_path}");
+        let extern_script = read_to_string(&extern_script_path)
+            .with_context(|| format!("Failed reading dockerfile {extern_script_path}"))?;
+        headed_script.push_str(&extern_script);
+        headed_script.push('\n');
     }
-    assert!(extern_scripts.is_empty());
     headed_script.push_str(&script);
     drop(script); // Earlier: wrote to disk
 
@@ -723,7 +730,7 @@ fn file_exists_and_is_not_empty(path: impl AsRef<Utf8Path>) -> Result<bool> {
 fn fetches_back_used_contexts() {
     let tmp = Temp::new_file().unwrap();
     fs::write(&tmp, r#"# syntax=docker.io/docker/dockerfile:1
-# contexts = {
+# contexts = [
 #   { name = "rust", uri = "docker-image://docker.io/library/rust:1.69.0-slim@sha256:8b85a8a6bf7ed968e24bab2eae6f390d2c9c8dbed791d3547fef584000f48f9e" },
 #   { name = "input_src_lib_rs--rustversion-1.0.9", uri = "/home/maison/.cargo/registry/src/github.com-1ecc6299db9ec823/rustversion-1.0.9" },
 #   { name = "crate_out-...", uri = "/home/maison/code/thing.git/target/debug/build/rustversion-ae69baa7face5565/out" },
@@ -731,53 +738,103 @@ fn fetches_back_used_contexts() {
 ...
 "#).unwrap();
 
-    assert_eq!(
-        used_contexts(Utf8Path::from_path(tmp.as_path()).unwrap()).unwrap(),
-        [
-            (
-                "input_src_lib_rs--rustversion-1.0.9",
-                "/home/maison/.cargo/registry/src/github.com-1ecc6299db9ec823/rustversion-1.0.9",
-            ),
-            (
-                "crate_out-...",
-                "/home/maison/code/thing.git/target/debug/build/rustversion-ae69baa7face5565/out",
-            ),
-        ]
-        .into_iter()
-        .map(|(k, v)| (k.to_owned(), v.to_owned()))
-        .collect()
-    );
+    let contexts = vec![
+        BuildContext {
+    name:"rust".to_owned(),
+    uri : "docker-image://docker.io/library/rust:1.69.0-slim@sha256:8b85a8a6bf7ed968e24bab2eae6f390d2c9c8dbed791d3547fef584000f48f9e".to_owned(),
+        },
+        BuildContext {
+            name: "input_src_lib_rs--rustversion-1.0.9".to_owned(),
+            uri: "/home/maison/.cargo/registry/src/github.com-1ecc6299db9ec823/rustversion-1.0.9"
+                .to_owned(),
+        },
+        BuildContext {
+            name: "crate_out-...".to_owned(),
+            uri: "/home/maison/code/thing.git/target/debug/build/rustversion-ae69baa7face5565/out"
+                .to_owned(),
+        },
+    ];
+    let fd = File::open(tmp).unwrap();
+    assert_eq!(Head::from_file(fd).unwrap(), Head { contexts: contexts.clone() });
+
+    let used: Vec<_> =
+        contexts.into_iter().filter(BuildContext::unbuilt_local_readonly_mount).collect();
+    assert!(used[0].name.starts_with("input_"));
+    assert!(used[1].name.starts_with("crate_out-"));
+    assert_eq!(used.len(), 2);
 }
 
 const HDR: &str = "# ";
 
-// TODO: parse TOML
 // # syntax = ..
 // # contexts = [
 // #   { name = "a", uri = "b" },
 // # ]
 // FROM ..
-fn used_contexts(path: impl AsRef<Utf8Path>) -> Result<BTreeMap<String, String>> {
-    let path: &Utf8Path = path.as_ref();
-    let fd = File::open(path).with_context(|| format!("Failed reading {path}"))?;
-    BufReader::new(fd)
-        .lines()
-        .map_while(Result::ok)
-        .take_while(|x| x.starts_with(HDR))
-        .filter(|x| !x.starts_with("# syntax="))
-        .map(|x| x.strip_prefix(HDR).unwrap_or(&x).to_owned())
-        .filter(|ln| {
-            let ln = ln.trim_start();
-            ln.starts_with("{ name = \"input_") || ln.starts_with("{ name = \"crate_out-")
+#[derive(Debug, PartialEq)]
+pub(crate) struct Head {
+    contexts: Vec<BuildContext>,
+}
+impl Head {
+    fn from_file(fd: File) -> Result<Self> {
+        Ok(Self {
+            contexts: BufReader::new(fd)
+                .lines()
+                .map_while(Result::ok)
+                .take_while(|x| x.starts_with(HDR))
+                .filter(|x| !x.starts_with("# syntax="))
+                .map(|x| x.strip_prefix(HDR).unwrap_or(&x).to_owned())
+                .filter(|x| !(x == "contexts = [" || x == "]")) // TODO: parse TOML
+                .map(|line| {
+                    if let [_, name, _, target, _] = line.splitn(5, '"').collect::<Vec<_>>()[..] {
+                        Ok(BuildContext { name: name.to_owned(), uri: target.to_owned() })
+                    } else {
+                        bail!("corrupted header: {line:?}")
+                    }
+                })
+                .collect::<Result<_>>()?,
         })
-        .map(|line| {
-            if let [_, name, _, target, _] = line.splitn(5, '"').collect::<Vec<_>>()[..] {
-                Ok((name.to_owned(), target.to_owned()))
-            } else {
-                bail!("corrupted header {path}: {line:?}")
-            }
-        })
-        .collect::<Result<_>>()
+    }
+}
+
+#[derive(Clone, Debug, PartialEq)]
+pub(crate) struct BuildContext {
+    name: String,
+    uri: String,
+}
+impl BuildContext {
+    #[inline]
+    #[must_use]
+    fn unbuilt_local_readonly_mount(&self) -> bool {
+        // TODO: create a stage from sources where able (crates.io, public repos)
+        self.name.starts_with("input_") ||
+         // TODO: link this to the build script it's coming from
+         self.name.starts_with("crate_out-")
+
+        // 0 0s release λ \grep -Eo from=crate_out-[^,]+ -r .|rev|cut -d- -f1|rev|sort -u
+        // 265546c15e86ed0e
+        // 32442d049a6a6273
+        // 6730bb71af4c9e5e
+        // 68773b12152d6b74
+        // 7c50baf419c12613
+        // 806d05c2cb9423e5
+        // 890fbb16b2570e5a
+        // c0cfb33e19b51a94
+        // c21afc9aa144d6a6
+        // 0 0s release λ ag 6730bb71af4c9e5e
+        // num_traits-3ab0e20848896109-headed.Dockerfile
+        // 3:#   { name = "crate_out-6730bb71af4c9e5e", uri = "/tmp/clis-vixargs_0-1-0/release/build/num-traits-6730bb71af4c9e5e/out" },
+        // 27:  OUT_DIR="/tmp/clis-vixargs_0-1-0/release/build/num-traits-6730bb71af4c9e5e/out" \
+        // 32:  --mount=type=bind,from=crate_out-6730bb71af4c9e5e,target=/tmp/clis-vixargs_0-1-0/release/build/num-traits-6730bb71af4c9e5e/out \
+
+        // vixargs-d2f27f94bee85c6b-headed.Dockerfile
+        // 5:#   { name = "crate_out-6730bb71af4c9e5e", uri = "/tmp/clis-vixargs_0-1-0/release/build/num-traits-6730bb71af4c9e5e/out" },
+        // 331:  OUT_DIR="/tmp/clis-vixargs_0-1-0/release/build/num-traits-6730bb71af4c9e5e/out" \
+        // 336:  --mount=type=bind,from=crate_out-6730bb71af4c9e5e,target=/tmp/clis-vixargs_0-1-0/release/build/num-traits-6730bb71af4c9e5e/out \
+
+        // .fingerprint/num-traits-6730bb71af4c9e5e/run-build-script-build-script-build.json
+        // 1:{"rustc":16286356497298320803,"features":"","declared_features":"","target":0,"profile":0,"path":0,"deps":[[3889717946063921280,"build_script_build",false,10623348317785739830]],"local":[{"RerunIfChanged":{"output":"release/build/num-traits-6730bb71af4c9e5e/output","paths":["build.rs"]}}],"rustflags":[],"metadata":0,"config":0,"compile_kind":0}
+    }
 }
 
 #[test]

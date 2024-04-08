@@ -107,7 +107,6 @@ which rustcbuildx
 ```
 
 ## Origins
-
 PoC originally written in Bash: https://github.com/fenollp/buildxargs/blob/buildx/tryin.sh
 
 

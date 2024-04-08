@@ -78,7 +78,7 @@ pub(crate) async fn build(
         let elapsed = start.elapsed();
         (elapsed, res.with_context(|| format!("Failed calling `{command} {args}`"))?.code())
     };
-    log::info!("command `{command} build` ran in {secs:?}: {code:?}");
+    log::info!(target:&krate, "command `{command} build` ran in {secs:?}: {code:?}");
 
     let longish = Duration::from_secs(2);
     let (_, _) = join!(timeout(longish, out_task), timeout(longish, err_task));
@@ -136,7 +136,9 @@ where
 }
 
 #[test]
+#[allow(clippy::str_to_string)]
 fn support_long_broken_json_lines() {
+    let logs = assertx::setup_logging_test();
     let lines = [
         r#"#42 1.312 ::STDERR:: {"$message_type":"artifact","artifact":"/tmp/thing","emit":"link""#,
         r#"#42 1.313 ::STDERR:: }"#,
@@ -156,6 +158,11 @@ fn support_long_broken_json_lines() {
     // TODO: actually test that fwd_stderr
     // calls artifact_written(r#"{"$message_type":"artifact","artifact":"/tmp/thing","emit":"link"}"#)
     // which returns Some("/tmp/thing")
+
+    assertx::assert_logs_contain_in_order!(
+        logs,
+        log::Level::Info => "rustc wrote /tmp/thing"
+    );
 }
 
 #[inline]
