@@ -12,6 +12,7 @@ use anyhow::{bail, Context, Result};
 use camino::{Utf8Path, Utf8PathBuf};
 use env_logger::{Env, Target};
 use mktemp::Temp;
+use serde::Deserialize;
 use tokio::process::Command;
 
 use crate::{
@@ -182,8 +183,7 @@ async fn bake_rustc(
                 .map_while(Result::ok)
                 .inspect(|x| log::info!(target:&krate, "contains {x:?}"))
                 .count();
-            // crate_out dir empty => mount can be dropped
-            (listing != 0).then_some(crate_out)
+            (listing != 0).then_some(crate_out) // crate_out dir empty => mount can be dropped
         });
 
     let full_crate_id = format!("{crate_type}-{crate_name}-{metadata}");
@@ -771,33 +771,27 @@ const HDR: &str = "# ";
 // #   { name = "a", uri = "b" },
 // # ]
 // FROM ..
-#[derive(Debug, PartialEq)]
+#[derive(Debug, Deserialize, PartialEq)]
 pub(crate) struct Head {
     contexts: Vec<BuildContext>,
 }
 impl Head {
     fn from_file(fd: File) -> Result<Self> {
-        Ok(Self {
-            contexts: BufReader::new(fd)
+        toml::from_str(
+            &BufReader::new(fd)
                 .lines()
                 .map_while(Result::ok)
                 .take_while(|x| x.starts_with(HDR))
                 .filter(|x| !x.starts_with("# syntax="))
                 .map(|x| x.strip_prefix(HDR).unwrap_or(&x).to_owned())
-                .filter(|x| !(x == "contexts = [" || x == "]")) // TODO: parse TOML
-                .map(|line| {
-                    if let [_, name, _, target, _] = line.splitn(5, '"').collect::<Vec<_>>()[..] {
-                        Ok(BuildContext { name: name.to_owned(), uri: target.to_owned() })
-                    } else {
-                        bail!("corrupted header: {line:?}")
-                    }
-                })
-                .collect::<Result<_>>()?,
-        })
+                .collect::<Vec<_>>()
+                .join("\n"),
+        )
+        .context("parsing TOML head")
     }
 }
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, Deserialize, PartialEq)]
 pub(crate) struct BuildContext {
     name: String,
     uri: String,

@@ -155,10 +155,9 @@ fn support_long_broken_json_lines() {
     fwd_stderr("krate", msg.unwrap(), &mut buf);
     assert_eq!(buf, "");
 
-    // TODO: actually test that fwd_stderr
+    // Then fwd_stderr
     // calls artifact_written(r#"{"$message_type":"artifact","artifact":"/tmp/thing","emit":"link"}"#)
     // which returns Some("/tmp/thing")
-
     assertx::assert_logs_contain_in_order!(
         logs,
         log::Level::Info => "rustc wrote /tmp/thing"

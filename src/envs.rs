@@ -42,6 +42,8 @@ pub(crate) mod internal {
 }
 
 // TODO: document envs + usage
+// TODO: https://docs.rs/figment/latest/figment/
+// TODO: cli for stats (cache hit/miss/size/age/volume, existing available/selected runners, disk usage/free)
 
 // If needing additional envs to be passed to rustc or buildrs, set them in the base image.
 // RUSTCBUILDX_BASE_IMAGE MUST start with docker-image:// and image MUST be available on DOCKER_HOST e.g.:
