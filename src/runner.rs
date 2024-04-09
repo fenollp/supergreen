@@ -40,10 +40,25 @@ pub(crate) async fn build(
     // Makes sure that the BuildKit builder is used by either runner
     cmd.env("DOCKER_BUILDKIT", "1");
 
+    // docker buildx create \
+    //   --name remote-container \
+    //   --driver remote \
+    //   --driver-opt cacert=${PWD}/.certs/client/ca.pem,cert=${PWD}/.certs/client/cert.pem,key=${PWD}/.certs/client/key.pem,servername=<TLS_SERVER_NAME> \
+    //   tcp://localhost:1234
+
     if false {
         cmd.arg("--no-cache");
     }
+    //cmd.arg("--metadata-file=/tmp/meta.json"); => {"buildx.build.ref": "default/default/o5c4435yz6o6xxxhdvekx5lmn"}
     cmd.arg("--network=none");
+    // const CACHE_IMG: &str = "myimgcach";
+    //     cmd.arg(format!(
+    //         "--cache-to=type=registry,ref={CACHE_IMG},mode=max,compression=zstd,force-compression=true,oci-mediatypes=true"
+    // // [2024-04-09T07:55:39Z DEBUG lib-autocfg-72217d8ded4d7ec7@177912] ✖ ERROR: Cache export is not supported for the docker driver.
+    // // [2024-04-09T07:55:39Z DEBUG lib-autocfg-72217d8ded4d7ec7@177912] ✖ Switch to a different driver, or turn on the containerd image store, and try again.
+    // // [2024-04-09T07:55:39Z DEBUG lib-autocfg-72217d8ded4d7ec7@177912] ✖ Learn more at https://docs.docker.com/go/build-cache-backends/
+    //     ));
+    //     cmd.arg(format!("--cache-from=type=registry,ref={CACHE_IMG}"));
     cmd.arg("--platform=local");
     cmd.arg("--pull=false");
     cmd.arg(format!("--target={target}"));
