@@ -136,7 +136,7 @@ where
 }
 
 #[test]
-#[allow(clippy::str_to_string)]
+#[allow(clippy::str_to_string)] // assertx
 fn support_long_broken_json_lines() {
     let logs = assertx::setup_logging_test();
     let lines = [

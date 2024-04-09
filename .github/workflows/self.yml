@@ -164,10 +164,6 @@ jobs:
     - if: ${{ failure() || success() }}
       run: cat logs.txt && echo >logs.txt
 
-  # TODO: cargo -vv test != cargo test: => the rustc flags will change => Dockerfile needs new cache key
-  # => otherwise docker builder cache won't have the correct hit
-  # https://rustc-dev-guide.rust-lang.org/backend/libs-and-metadata.html
-
     - name: Ensure running the same command twice without modifications does not recompile anything
       run: |
         RUSTCBUILDX_LOG=debug \

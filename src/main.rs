@@ -576,6 +576,10 @@ async fn bake_rustc(
     drop(script); // Earlier: wrote to disk
 
     let headed_path = {
+        // TODO: cargo -vv test != cargo test: => the rustc flags will change => Dockerfile needs new cache key
+        // => otherwise docker builder cache won't have the correct hit
+        // https://rustc-dev-guide.rust-lang.org/backend/libs-and-metadata.html
+        //=> a filename suffix with content hash?
         let headed_path =
             Utf8Path::new(&target_path).join(format!("{crate_name}-{metadata}-headed.Dockerfile"));
 
@@ -748,7 +752,7 @@ impl BuildContext {
     #[inline]
     #[must_use]
     fn unbuilt_local_readonly_mount(&self) -> bool {
-        // TODO: create a stage from sources where able (crates.io, public repos)
+        // TODO: create a stage from sources where able (crates.io, public repos) use --secret mounts for private deps (and secreet direct artifacts)
         self.name.starts_with("input_") ||
          // TODO: link this to the build script it's coming from
          self.name.starts_with("crate_out-")

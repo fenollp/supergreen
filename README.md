@@ -3,7 +3,9 @@ A [`RUSTC_WRAPPER`](https://doc.rust-lang.org/cargo/reference/config.html#buildr
 
 ## Goals
 * [x] seamlessly build on another machine (with more cores, more cache)
-  * [x] support setting env `DOCKER_HOST=` with e.g. `ssh://me@beaffy-machine.internal.net`
+  * [x] support remote builds by setting env `DOCKER_HOST=` with e.g. `ssh://me@beaffy-machine.internal.net`
+    * [x] Build cache is saved remotely, artifacts are saved locally
+    * [x] Tests building happens on remote machine, execution happens on local machine
 * [x] seamlessly integrate with normal `cargo` usage
   * [x] only pull sources from local filesystem
   * [x] produce the same intermediary artefacts as local `cargo` does
@@ -91,11 +93,6 @@ export RUSTC_WRAPPER=rustcbuildx
 cargo test ...
 ```
 
-* Build cache is saved remotely
-* Build artifacts are saved locally
-* Tests building happens on remote machine
-* Tests execution happens on local machine
-
 ## Installation
 
 ```shell
@@ -123,6 +120,8 @@ PoC originally written in Bash: https://github.com/fenollp/buildxargs/blob/build
 * https://docs.docker.com/engine/reference/builder/#buildkit-built-in-build-args
 * https://github.com/moby/buildkit#export-cache
 * `tunnel tty into a docker build through http`
+* docker build `remote` driver https://docs.docker.com/build/drivers/remote/
+* rootless `k8s` driver https://docs.docker.com/build/drivers/kubernetes/#rootless-mode
 
 ## rustc / cargo
 * `cargo restrict targets of crate`
