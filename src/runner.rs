@@ -46,6 +46,12 @@ pub(crate) async fn build(
     //   --driver-opt cacert=${PWD}/.certs/client/ca.pem,cert=${PWD}/.certs/client/cert.pem,key=${PWD}/.certs/client/key.pem,servername=<TLS_SERVER_NAME> \
     //   tcp://localhost:1234
 
+    // docker buildx create \
+    //   --name container \
+    //   --driver=docker-container \
+    //   --driver-opt=[key=value,...]
+    // container
+
     if false {
         cmd.arg("--no-cache");
     }

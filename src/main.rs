@@ -382,7 +382,9 @@ async fn bake_rustc(
                 .then_some(val)
                 .map(|x: String| format!("{x:?}"))
                 .unwrap_or_default();
-            log::debug!(target:&krate, "env is set: {var}={val}");
+            let dec: Option<Vec<_>> =
+                (var == "CARGO_ENCODED_RUSTFLAGS").then(|| rustflags::from_env().collect());
+            log::debug!(target:&krate, "env is set: {var}={val} ({dec:?})");
             script.push_str(&format!("  {var}={val} \\\n"));
         }
     }
@@ -560,8 +562,8 @@ async fn bake_rustc(
     extern_scripts.sort_unstable_by_key(|(_, mounts_len)| *mounts_len);
     log::info!(target:&krate, "final extern_scripts {}: {extern_scripts:?}", extern_scripts.len());
     let mut headed_script = String::new();
-    // Concat dockerfiles from
-    // topological sort
+    // Concat dockerfiles from topological sort
+    // * https://docs.rs/topo_sort/latest/topo_sort/struct.TopoSort.html
     // of the DAG (stages must be defined first, then used)
     // Assumes that the more deps a crate has, the later it appears in the deps tree
     // TODO: do     vvvvvvvvv better than this
