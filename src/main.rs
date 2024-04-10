@@ -162,7 +162,7 @@ async fn bake_rustc(
     }
 
     let krate = format!("{PKG}:{crate_name}");
-    log::info!(target:&krate, "{PKG}@{VSN} wraps `rustc` calls to BuildKit builders");
+    log::info!(target:&krate, "{PKG}@{VSN} original args: {arguments:?}");
 
     let pwd = env::current_dir().context("Failed to get $PWD")?;
     let pwd: Utf8PathBuf = pwd.try_into().context("Path's UTF-8 encoding is corrupted")?;

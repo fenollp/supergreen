@@ -65,6 +65,7 @@ pub(crate) async fn build(
     // // [2024-04-09T07:55:39Z DEBUG lib-autocfg-72217d8ded4d7ec7@177912] ✖ Learn more at https://docs.docker.com/go/build-cache-backends/
     //     ));
     //     cmd.arg(format!("--cache-from=type=registry,ref={CACHE_IMG}"));
+    //this works :-) --tag you/clis-vixargs_0-1-0:vixargs-d2f27f94bee85c6b --load
     cmd.arg("--platform=local");
     cmd.arg("--pull=false");
     cmd.arg(format!("--target={target}"));
@@ -79,7 +80,7 @@ pub(crate) async fn build(
     let args = cmd.as_std().get_args().map(|x| x.to_string_lossy().to_string()).collect::<Vec<_>>();
     let args = args.join(" ");
 
-    log::info!(target:&krate, "Starting `{command} {args}`");
+    log::info!(target:&krate, "Starting `{command} {args} (env: {:?})`", cmd.as_std().get_envs());
     let errf = || format!("Failed starting `{command} {args}`");
     let mut child = cmd.spawn().with_context(errf)?;
 

@@ -1,5 +1,7 @@
-# rustcbuildx
-A [`RUSTC_WRAPPER`](https://doc.rust-lang.org/cargo/reference/config.html#buildrustc-wrapper) for cached and remote building of Rust projects (on [BuildKit](https://github.com/moby/buildkit)).
+# [`rustcbuildx`](https://github.com/fenollp/rustcbuildx)
+Forwards `rustc` calls to BuildKit builders.
+
+`rustcbuildx` is a [`RUSTC_WRAPPER`](https://doc.rust-lang.org/cargo/reference/config.html#buildrustc-wrapper) for cached and remote building of Rust projects (on [BuildKit](https://github.com/moby/buildkit)).
 
 ## Goals
 * [x] seamlessly build on another machine (with more cores, more cache)
@@ -120,8 +122,15 @@ PoC originally written in Bash: https://github.com/fenollp/buildxargs/blob/build
 * https://docs.docker.com/engine/reference/builder/#buildkit-built-in-build-args
 * https://github.com/moby/buildkit#export-cache
 * `tunnel tty into a docker build through http`
-* docker build `remote` driver https://docs.docker.com/build/drivers/remote/
+* docker build `remote` driver https://docs.docker.com/build/drivers/remote
 * rootless `k8s` driver https://docs.docker.com/build/drivers/kubernetes/#rootless-mode
+* tune many options https://docs.docker.com/build/drivers/docker-container/
+  * https://docs.docker.com/config/containers/resource_constraints/
+  * https://hub.docker.com/r/moby/buildkit
+    * https://github.com/moby/buildkit/releases
+* https://docs.docker.com/build/attestations/sbom/
+  * https://github.com/moby/buildkit/blob/647a997b389757068760410053873745acabfc80/docs/attestations/sbom.md?plain=1#L48
+  * `BUILDKIT_SBOM_SCAN_CONTEXT and BUILDKIT_SBOM_SCAN_STAGE`
 
 ## rustc / cargo
 * `cargo restrict targets of crate`

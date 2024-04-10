@@ -199,7 +199,7 @@ $(
 
     - if: \${{ failure() || success() }}
       run: |
-        grep Finished _ | grep -E [01]...s
+        grep Finished _ | grep -E [012]...s || grep Finished _
 
     - if: \${{ failure() || success() }}
       run: |
