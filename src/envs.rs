@@ -167,7 +167,7 @@ pub(crate) fn called_from_build_script(vars: &BTreeMap<String, String>) -> bool 
 // https://doc.rust-lang.org/cargo/reference/environment-variables.html#environment-variables-cargo-sets-for-crates
 #[inline]
 #[must_use]
-pub(crate) fn pass_env(var: &str) -> bool {
+pub(crate) fn pass_env(var: &str) -> (bool, bool) {
     // Thanks https://github.com/cross-rs/cross/blob/44011c8854cb2eaac83b173cc323220ccdff18ea/src/docker/shared.rs#L969
     let passthrough = [
         "http_proxy",
@@ -192,5 +192,5 @@ pub(crate) fn pass_env(var: &str) -> bool {
         "CARGO_TARGET_DIR",
         "RUSTC_WRAPPER",
     ];
-    (passthrough.contains(&var) || var.starts_with("CARGO_")) && !skiplist.contains(&var)
+    (passthrough.contains(&var) || var.starts_with("CARGO_"), skiplist.contains(&var))
 }

@@ -1,7 +1,7 @@
 use std::{
     collections::{BTreeMap, BTreeSet, VecDeque},
     env,
-    fs::{self, create_dir_all, read_dir, read_to_string, File},
+    fs::{self, File},
     future::Future,
     io::{BufRead, BufReader, ErrorKind},
     process::ExitCode,
@@ -259,7 +259,7 @@ async fn bake_rustc(
                 if debug.is_some() {
                     let deps_dir = Utf8Path::new(&target_path).join("deps");
                     log::info!(target:&krate, "extern crate's extern matches {deps_dir}/lib*.*");
-                    let listing = read_dir(&deps_dir)
+                    let listing = fs::read_dir(&deps_dir)
                         .with_context(|| format!("Failed reading directory {deps_dir}"))?
                         .filter_map(Result::ok)
                         .filter_map(|p| {
@@ -297,7 +297,7 @@ async fn bake_rustc(
     let all_externs = all_externs;
     log::info!(target:&krate, "crate_externs: {crate_externs}");
     if debug.is_some() {
-        match read_to_string(&crate_externs) {
+        match fs::read_to_string(&crate_externs) {
             Ok(data) => data,
             Err(e) => e.to_string(),
         }
@@ -306,9 +306,9 @@ async fn bake_rustc(
         .for_each(|line| log::debug!(target:&krate, "❯ {line}"));
     }
 
-    create_dir_all(&out_dir).with_context(|| format!("Failed to `mkdir -p {out_dir}`"))?;
+    fs::create_dir_all(&out_dir).with_context(|| format!("Failed to `mkdir -p {out_dir}`"))?;
     if let Some(ref incremental) = incremental {
-        create_dir_all(incremental)
+        fs::create_dir_all(incremental)
             .with_context(|| format!("Failed to `mkdir -p {incremental}`"))?;
     }
 
@@ -367,24 +367,143 @@ async fn bake_rustc(
 
     let mut script = String::new();
 
+    let cargo_home =
+        env::var("CARGO_HOME").map(Utf8PathBuf::from).expect("`cargo` sets $CARGO_HOME");
+    let cratesio_prefix = cargo_home.join("registry/src");
+    let _cratesio_stage = if input.starts_with(&cratesio_prefix) {
+        const PREFIX: &str = "index.crates.io-";
+        let (name, version, cratesio_index) = {
+            let mut it = input.iter();
+            let mut cratesio_index = String::new();
+            let mut cratesio_crate = None;
+            while let Some(part) = it.next() {
+                if part.starts_with(PREFIX) {
+                    cratesio_index = part.to_owned();
+                    cratesio_crate = it.next();
+                    break;
+                }
+            }
+            if cratesio_index.is_empty() || cratesio_crate.map_or(true, str::is_empty) {
+                bail!("Unexpected cratesio crate path: {input}")
+            }
+            let cratesio_crate = cratesio_crate.expect("just checked above");
+            let cratesio_index = cratesio_index.trim_start_matches(PREFIX).to_owned();
+
+            let Some((name, version)) = cratesio_crate.rsplit_once('-') else {
+                bail!("Unexpected cratesio crate format: {cratesio_crate}")
+            };
+
+            (name, version, cratesio_index)
+        };
+
+        let cratesio_hash = cargo_home
+            .join(format!("registry/cache/{PREFIX}{cratesio_index}/{name}-{version}.crate"));
+        log::info!(target:&krate, "opening (RO) crate tarball {cratesio_hash}");
+        let cratesio_hash = sha256::try_async_digest(cratesio_hash.as_path())
+            .await
+            .with_context(|| format!("Failed reading {cratesio_hash}"))?;
+
+        let cratesio_stage = format!("cratesio-{name}-{version}"); // FIXME? include {cratesio_index}
+        script.push_str(&format!("FROM scratch AS {cratesio_stage}\n"));
+        script.push_str(&format!("ADD --chmod=0664 --checksum=sha256:{cratesio_hash} \\\n"));
+        script.push_str(&format!(
+            "  https://static.crates.io/crates/{name}/{name}-{version}.crate \\\n"
+        ));
+        script.push_str(&format!(
+            "  {cargo_home}/registry/cache/{PREFIX}{cratesio_index}/{name}-{version}.crate\n"
+        ));
+
+        Some(cratesio_stage)
+    } else {
+        None
+    };
+
+    // 0 0s _ wip λ tar -xf proc-macro2-1.0.36.crate -C bla/
+    // 0 0s _ wip λ t
+    // [4.0K]  ./
+    // ├── [4.0K]  bla/
+    // │   └── [4.0K]  proc-macro2-1.0.36/
+    // │       ├── [5.8K]  build.rs
+    // │       ├── [1.5K]  Cargo.toml
+    // │       ├── [2.0K]  Cargo.toml.orig
+    // │       ├── [  94]  .cargo_vcs_info.json
+    // │       ├── [  16]  .clippy.toml
+    // │       ├── [4.0K]  .github/
+    // │       │   └── [4.0K]  workflows/
+    // │       │       └── [2.2K]  ci.yml
+    // │       ├── [  30]  .gitignore
+    // │       ├── [ 11K]  LICENSE-APACHE
+    // │       ├── [1.0K]  LICENSE-MIT
+    // │       ├── [4.7K]  README.md
+    // │       ├── [4.0K]  src/
+    // │       │   ├── [2.6K]  detection.rs
+    // │       │   ├── [ 24K]  fallback.rs
+    // │       │   ├── [ 43K]  lib.rs
+    // │       │   ├── [ 494]  marker.rs
+    // │       │   ├── [ 24K]  parse.rs
+    // │       │   └── [ 29K]  wrapper.rs
+    // │       └── [4.0K]  tests/
+    // │           ├── [3.3K]  comments.rs
+    // │           ├── [ 152]  features.rs
+    // │           ├── [2.6K]  marker.rs
+    // │           ├── [1.3K]  test_fmt.rs
+    // │           └── [ 16K]  test.rs
+    // ├── [4.0K]  proc-macro2-1.0.36/
+    // │   ├── [5.8K]  build.rs
+    // │   ├── [1.5K]  Cargo.toml
+    // │   ├── [2.0K]  Cargo.toml.orig
+    // │   ├── [  94]  .cargo_vcs_info.json
+    // │   ├── [  16]  .clippy.toml
+    // │   ├── [4.0K]  .github/
+    // │   │   └── [4.0K]  workflows/
+    // │   │       └── [2.2K]  ci.yml
+    // │   ├── [  30]  .gitignore
+    // │   ├── [ 11K]  LICENSE-APACHE
+    // │   ├── [1.0K]  LICENSE-MIT
+    // │   ├── [4.7K]  README.md
+    // │   ├── [4.0K]  src/
+    // │   │   ├── [2.6K]  detection.rs
+    // │   │   ├── [ 24K]  fallback.rs
+    // │   │   ├── [ 43K]  lib.rs
+    // │   │   ├── [ 494]  marker.rs
+    // │   │   ├── [ 24K]  parse.rs
+    // │   │   └── [ 29K]  wrapper.rs
+    // │   └── [4.0K]  tests/
+    // │       ├── [3.3K]  comments.rs
+    // │       ├── [ 152]  features.rs
+    // │       ├── [2.6K]  marker.rs
+    // │       ├── [1.3K]  test_fmt.rs
+    // │       └── [ 16K]  test.rs
+    // └── [ 40K]  proc-macro2-1.0.36.crate
+
+    // 12 directories, 43 files
+
     script.push_str(&format!("FROM rust AS {rustc_stage}\n"));
     script.push_str(&format!("WORKDIR {out_dir}\n"));
 
-    // TODO: disable remote cache for incremental builds?
+    // TODO: disable (remote) cache for incremental builds?
     if let Some(incremental) = &incremental {
         script.push_str(&format!("WORKDIR {incremental}\n"));
     }
 
     script.push_str("ENV \\\n");
     for (var, val) in env::vars() {
-        if pass_env(var.as_str()) {
+        let (pass, skip) = pass_env(var.as_str());
+        if pass {
+            if skip {
+                log::debug!(target:&krate, "not forwarding env: {var}={val}");
+                continue;
+            }
             let val = (!val.is_empty())
                 .then_some(val)
                 .map(|x: String| format!("{x:?}"))
                 .unwrap_or_default();
-            let dec: Option<Vec<_>> =
-                (var == "CARGO_ENCODED_RUSTFLAGS").then(|| rustflags::from_env().collect());
-            log::debug!(target:&krate, "env is set: {var}={val} ({dec:?})");
+            if var == "CARGO_ENCODED_RUSTFLAGS" {
+                let dec: Vec<_> = rustflags::from_env().collect();
+                log::debug!(target:&krate, "env is set: {var}={val} ({dec:?})");
+            } else {
+                log::debug!(target:&krate, "env is set: {var}={val}");
+            }
             script.push_str(&format!("  {var}={val} \\\n"));
         }
     }
@@ -515,7 +634,7 @@ async fn bake_rustc(
             Utf8Path::new(&target_path).join(format!("{crate_name}-{metadata}.Dockerfile"));
         log::info!(target:&krate, "opening (RW) crate dockerfile {script_path}");
         if debug.is_some() {
-            match read_to_string(&script_path) {
+            match fs::read_to_string(&script_path) {
                 Ok(existing) => pretty_assertions::assert_eq!(&existing, &script),
                 Err(e) if e.kind() == ErrorKind::NotFound => {}
                 Err(e) => bail!("{e}"),
@@ -569,7 +688,7 @@ async fn bake_rustc(
     // TODO: do     vvvvvvvvv better than this
     for (extern_script_path, _) in extern_scripts {
         log::info!(target:&krate, "opening (RO) extern dockerfile {extern_script_path}");
-        let extern_script = read_to_string(&extern_script_path)
+        let extern_script = fs::read_to_string(&extern_script_path)
             .with_context(|| format!("Failed reading dockerfile {extern_script_path}"))?;
         headed_script.push_str(&extern_script);
         headed_script.push('\n');
@@ -598,7 +717,7 @@ async fn bake_rustc(
 
         log::info!(target:&krate, "opening (RW) crate dockerfile {headed_path}");
         if debug.is_some() {
-            match read_to_string(&headed_path) {
+            match fs::read_to_string(&headed_path) {
                 Ok(existing) => pretty_assertions::assert_eq!(&existing, &header),
                 Err(e) if e.kind() == ErrorKind::NotFound => {}
                 Err(e) => bail!("{e}"),
@@ -613,7 +732,7 @@ async fn bake_rustc(
 
         if debug.is_some() {
             log::info!(target:&krate, "dockerfile: {headed_path}");
-            match read_to_string(&headed_path) {
+            match fs::read_to_string(&headed_path) {
                 Ok(data) => data,
                 Err(e) => e.to_string(),
             }
@@ -863,7 +982,7 @@ fn from_headed_path(headed_path: Utf8PathBuf) -> Utf8PathBuf {
 fn copy_file(f: &Utf8Path, cwd: &Utf8Path) -> Result<()> {
     let Some(f_dirname) = f.parent() else { bail!("BUG: unexpected f={f:?} cwd={cwd:?}") };
     let dst = cwd.join(f_dirname);
-    create_dir_all(&dst).with_context(|| format!("Failed `mkdir -p {dst}`"))?;
+    fs::create_dir_all(&dst).with_context(|| format!("Failed `mkdir -p {dst}`"))?;
     let dst = cwd.join(f);
     fs::copy(f, &dst).with_context(|| format!("Failed `cp {f} {dst}`"))?;
     Ok(())
@@ -872,7 +991,7 @@ fn copy_file(f: &Utf8Path, cwd: &Utf8Path) -> Result<()> {
 fn copy_files(dir: &Utf8Path, dst: &Utf8Path) -> Result<()> {
     if dir.is_dir() {
         // TODO: deterministic iteration
-        for entry in read_dir(dir).with_context(|| format!("Failed reading dir {dir}"))? {
+        for entry in fs::read_dir(dir).with_context(|| format!("Failed reading dir {dir}"))? {
             let entry = entry?;
             let entry = entry.path();
             let entry = entry.as_path(); // thanks, Rust

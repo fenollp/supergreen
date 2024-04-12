@@ -72,6 +72,10 @@ pub(crate) async fn build(
     cmd.arg(format!("--output=type=local,dest={out_dir}", out_dir = out_dir.as_ref()));
     cmd.arg(format!("--file={dockerfile_path}", dockerfile_path = dockerfile_path.as_ref()));
 
+    // https://github.com/pyaillet/doggy
+    // https://lib.rs/crates/bollard
+    // https://lib.rs/crates/strip-ansi-escapes
+
     for (name, uri) in contexts {
         cmd.arg(format!("--build-context={name}={uri}"));
     }
