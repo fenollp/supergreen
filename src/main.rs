@@ -368,11 +368,10 @@ async fn bake_rustc(
     let mut script = String::new();
 
     let cargo_home =
-        env::var("CARGO_HOME").map(Utf8PathBuf::from).expect("`cargo` sets $CARGO_HOME");
-    let cratesio_prefix = cargo_home.join("registry/src");
-    let _cratesio_stage = if input.starts_with(&cratesio_prefix) {
-        const PREFIX: &str = "index.crates.io-";
+        env::var("CARGO_HOME").map(Utf8PathBuf::from).context("`cargo` sets $CARGO_HOME")?;
+    let _cratesio_stage = if input.starts_with(cargo_home.join("registry/src")) {
         let (name, version, cratesio_index) = {
+            const PREFIX: &str = "index.crates.io-";
             let mut it = input.iter();
             let mut cratesio_index = String::new();
             let mut cratesio_crate = None;
@@ -387,7 +386,6 @@ async fn bake_rustc(
                 bail!("Unexpected cratesio crate path: {input}")
             }
             let cratesio_crate = cratesio_crate.expect("just checked above");
-            let cratesio_index = cratesio_index.trim_start_matches(PREFIX).to_owned();
 
             let Some((name, version)) = cratesio_crate.rsplit_once('-') else {
                 bail!("Unexpected cratesio crate format: {cratesio_crate}")
@@ -396,22 +394,22 @@ async fn bake_rustc(
             (name, version, cratesio_index)
         };
 
-        let cratesio_hash = cargo_home
-            .join(format!("registry/cache/{PREFIX}{cratesio_index}/{name}-{version}.crate"));
-        log::info!(target:&krate, "opening (RO) crate tarball {cratesio_hash}");
-        let cratesio_hash = sha256::try_async_digest(cratesio_hash.as_path())
+        let cratesio_srced = cargo_home.join(format!("registry/src/{cratesio_index}"));
+        let cratesio_cached =
+            cargo_home.join(format!("registry/cache/{cratesio_index}/{name}-{version}.crate"));
+        log::info!(target:&krate, "opening (RO) crate tarball {cratesio_cached}");
+        let cratesio_hash = sha256::try_async_digest(cratesio_cached.as_path())
             .await
-            .with_context(|| format!("Failed reading {cratesio_hash}"))?;
+            .with_context(|| format!("Failed reading {cratesio_cached}"))?;
 
+        let alpine = "docker.io/library/alpine@sha256:c5b1261d6d3e43071626931fc004f70149baeba2c8ec672bd4f27761f8e1ad6b";
         let cratesio_stage = format!("cratesio-{name}-{version}"); // FIXME? include {cratesio_index}
-        script.push_str(&format!("FROM scratch AS {cratesio_stage}\n"));
+        let cratesio = "https://static.crates.io";
+        script.push_str(&format!("FROM {alpine} AS {cratesio_stage}\n"));
         script.push_str(&format!("ADD --chmod=0664 --checksum=sha256:{cratesio_hash} \\\n"));
-        script.push_str(&format!(
-            "  https://static.crates.io/crates/{name}/{name}-{version}.crate \\\n"
-        ));
-        script.push_str(&format!(
-            "  {cargo_home}/registry/cache/{PREFIX}{cratesio_index}/{name}-{version}.crate\n"
-        ));
+        script.push_str(&format!("  {cratesio}/crates/{name}/{name}-{version}.crate \\\n"));
+        script.push_str(&format!("  {cratesio_cached}\n"));
+        script.push_str(&format!("RUN set -eux && mkdir -p {cratesio_srced} && tar -xf {cratesio_cached} -C {cratesio_srced}\n"));
 
         Some(cratesio_stage)
     } else {

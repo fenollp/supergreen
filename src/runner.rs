@@ -81,10 +81,13 @@ pub(crate) async fn build(
     }
 
     cmd.arg(dockerfile_path.as_ref().parent().unwrap_or(dockerfile_path.as_ref()));
-    let args = cmd.as_std().get_args().map(|x| x.to_string_lossy().to_string()).collect::<Vec<_>>();
+    let args: Vec<_> = cmd.as_std().get_args().map(|x| x.to_string_lossy().to_string()).collect();
     let args = args.join(" ");
 
-    log::info!(target:&krate, "Starting `{command} {args} (env: {:?})`", cmd.as_std().get_envs());
+    let envs: Vec<_> = cmd.as_std().get_envs().map(|(k, v)| format!("{k:?}={v:?}")).collect();
+    let envs = envs.join(" ");
+
+    log::info!(target:&krate, "Starting `{command} {args} (env: {envs:?})`");
     let errf = || format!("Failed starting `{command} {args}`");
     let mut child = cmd.spawn().with_context(errf)?;
 
