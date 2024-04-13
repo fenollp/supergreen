@@ -186,7 +186,7 @@ async fn bake_rustc(
             (listing != 0).then_some(crate_out) // crate_out dir empty => mount can be dropped
         });
 
-    let full_crate_id = format!("{crate_type}-{crate_name}-{metadata}");
+    let full_crate_id = format!("{crate_type}-{crate_name}-{metadata}"); // FIXME: include crate_version (: CARGO_PKG_VERSION=)
     let krate = full_crate_id.as_str();
 
     // https://github.com/rust-lang/cargo/issues/12059
@@ -324,59 +324,22 @@ async fn bake_rustc(
         (Some((name, target)), stage)
     };
 
-    // TODO: impl non-default build.rs https://doc.rust-lang.org/cargo/reference/manifest.html?highlight=build.rs#the-build-field
-    let (input_mount, rustc_stage) = match input.iter().rev().take(4).collect::<Vec<_>>()[..] {
-        ["build.rs"] => (None, format!("finalbuildrs-{full_crate_id}")),
-        ["lib.rs", "src"] => (None, format!("final-{full_crate_id}")),
-        ["main.rs", "src"] => (None, format!("final-{full_crate_id}")),
-        ["build.rs", "src", basename, ..] => hm("build__rs", basename, 2), // TODO: un-ducktape
-        ["build.rs", basename, ..] => hm("build_rs", basename, 1),
-        ["lib.rs", "src", basename, ..] => hm("src_lib_rs", basename, 2),
-        // e.g. $HOME/.cargo/registry/src/github.com-1ecc6299db9ec823/fnv-1.0.7/lib.rs
-        ["lib.rs", basename, ..] => hm("lib_rs", basename, 1),
-        // e.g. $HOME/.cargo/registry/src/github.com-1ecc6299db9ec823/untrusted-0.7.1/src/untrusted.rs
-        [rsfile, "src", basename, ..] if rsfile.ends_with(".rs") => hm("src__rs", basename, 2),
-        // When compiling openssl-sys-0.9.95 on stable-x86_64-unknown-linux-gnu:
-        //   /home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/openssl-sys-0.9.95/build/main.rs
-        ["main.rs", "build", basename, ..] if crate_name == "build_script_main" => {
-            // TODO: that's ducktape. Read Cargo.toml to match [package]build = "build/main.rs" ?
-            // or just catchall >=4
-            hm("main__rs", basename, 2)
-        }
-        // /home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/cargo-deny-0.14.3/src/cargo-deny/main.rs crate_type=bin
-        ["main.rs", "cargo-deny", "src", basename] => hm("main___rs", basename, 3), // TODO: un-ducktape
-        _ => unreachable!("Unexpected input file {input:?}"),
-    };
-    // TODO cli=deny: explore mounts: do they include?  -L native=/home/runner/instst/release/build/ring-3c73f9fd9a67ce28/out
-    // nner/instst/release/build/zstd-sys-f571b8facf393189/out -L native=/home/runner/instst/release/build/ring-3c73f9fd9a67ce28/out`
-    // Found a bug in this script!
-    //      Running `CARGO=/home/runner/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/cargo CARGO_BIN_NAME=cargo-deny CARGO_CRATE_NAME=cargo_deny CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/cargo-deny-0.14.3 CARGO_PKG_AUTHORS='Embark <opensource@embark-studios.com>:Jake Shadle <jake.shadle@embark-studios.com>' CARGO_PKG_DESCRIPTION='Cargo plugin to help you manage large dependency graphs' CARGO_PKG_HOMEPAGE='https://github.com/EmbarkStudios/cargo-deny' CARGO_PKG_LICENSE='MIT OR Apache-2.0' CARGO_PKG_LICENSE_FILE='' CARGO_PKG_NAME=cargo-deny CARGO_PKG_README=README.md CARGO_PKG_REPOSITORY='https://github.com/EmbarkStudios/cargo-deny' CARGO_PKG_RUST_VERSION=1.70.0 CARGO_PKG_VERSION=0.14.3 CARGO_PKG_VERSION_MAJOR=0 CARGO_PKG_VERSION_MINOR=14 CARGO_PKG_VERSION_PATCH=3 CARGO_PKG_VERSION_PRE='' CARGO_PRIMARY_PACKAGE=1 LD_LIBRARY_PATH='/home/runner/instst/release/deps:/home/runner/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib:/home/runner/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib'
-    // /home/runner/work/rustcbuildx/rustcbuildx/rustcbuildx /home/runner/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/rustc
-    // --crate-name cargo_deny --edition=2021
-    // /home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/cargo-deny-0.14.3/src/cargo-deny/main.rs --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat
-    // --crate-type bin --emit=dep-info,link -C opt-level=3 -C embed-bitcode=no --cfg 'feature="default"' -C metadata=3bcfd2691bae63ba -C extra-filename=-3bcfd2691bae63ba --out-dir /home/runner/instst/release/deps -L dependency=/home/runner/instst/release/deps --extern anyhow=/home/runner/instst/release/deps/libanyhow-94b7395c89edd8b1.rlib --extern askalono=/home/runner/instst/release/deps/libaskalono-ddae43dc4d3d2420.rlib --extern bitvec=/home/runner/instst/release/deps/libbitvec-d623938ca4bca493.rlib --extern camino=/home/runner/instst/release/deps/libcamino-146d319673d173c5.rlib --extern cargo_deny=/home/runner/instst/release/deps/libcargo_deny-06e4f61b912645ef.rlib --extern clap=/home/runner/instst/release/deps/libclap-2c7e3f9347d4597a.rlib --extern codespan=/home/runner/instst/release/deps/libcodespan-a43ae384a6e01906.rlib --extern codespan_reporting=/home/runner/instst/release/deps/libcodespan_reporting-40482f50e693ecb1.rlib --extern crossbeam=/home/runner/instst/release/deps/libcrossbeam-522c8a6792edb38b.rlib --extern fern=/home/runner/instst/release/deps/libfern-82ebb4a2d795cc6e.rlib --extern gix=/home/runner/instst/release/deps/libgix-2269c2d16d598f3b.rlib --extern globset=/home/runner/instst/release/deps/libglobset-1cb53a4633a9e532.rlib --extern goblin=/home/runner/instst/release/deps/libgoblin-a375a2c21dba8a6d.rlib --extern home=/home/runner/instst/release/deps/libhome-a03540b18a902546.rlib --extern krates=/home/runner/instst/release/deps/libkrates-2923f082e623ae47.rlib --extern log=/home/runner/instst/release/deps/liblog-e9c072abf79b5d2b.rlib --extern nu_ansi_term=/home/runner/instst/release/deps/libnu_ansi_term-14990884fe5cdb0f.rlib --extern parking_lot=/home/runner/instst/release/deps/libparking_lot-b8d4a6184ea5481b.rlib --extern rayon=/home/runner/instst/release/deps/librayon-103cc3573de4615f.rlib --extern reqwest=/home/runner/instst/release/deps/libreqwest-c7fbedc59852c9c7.rlib --extern ring=/home/runner/instst/release/deps/libring-691303221da8a7f0.rlib --extern rustsec=/home/runner/instst/release/deps/librustsec-bf5acc14d6976003.rlib --extern semver=/home/runner/instst/release/deps/libsemver-81c2747e00bddbb9.rlib --extern serde=/home/runner/instst/release/deps/libserde-3f028327f7dabe68.rlib --extern serde_json=/home/runner/instst/release/deps/libserde_json-48447a61a356a1fd.rlib --extern smallvec=/home/runner/instst/release/deps/libsmallvec-8853bfbdb0f0c104.rlib --extern spdx=/home/runner/instst/release/deps/libspdx-dcd7ef5eaf2c5c4d.rlib --extern strum=/home/runner/instst/release/deps/libstrum-97202369a5147909.rlib --extern tame_index=/home/runner/instst/release/deps/libtame_index-93d5aa0a6979a91f.rlib --extern time=/home/runner/instst/release/deps/libtime-c0960b055b327693.rlib --extern toml=/home/runner/instst/release/deps/libtoml-04310ccc9f3732b0.rlib --extern twox_hash=/home/runner/instst/release/deps/libtwox_hash-6feb0d177b42c269.rlib --extern url=/home/runner/instst/release/deps/liburl-27ace54f5002c0aa.rlib --extern walkdir=/home/runner/instst/release/deps/libwalkdir-0fa0886e334a678c.rlib --cap-lints warn -L native=/home/runner/instst/release/build/zstd-sys-f571b8facf393189/out -L native=/home/runner/instst/release/build/ring-3c73f9fd9a67ce28/out`
-    // thread 'main' panicked at src/main.rs:357:14:
-    // internal error: entered unreachable code: Unexpected input file "/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/cargo-deny-0.14.3/src/cargo-deny/main.rs"
-    // note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
-    // error: could not compile `cargo-deny` (bin "cargo-deny")
-    log::info!(target:&krate, "picked {rustc_stage} for {suf:?}", suf=input.iter().rev().take(4).collect::<Vec<_>>());
-    assert!(!matches!(input_mount, Some((_,ref x)) if x.ends_with("/.cargo/registry")));
-
-    let incremental_stage = format!("incremental-{metadata}");
-    let out_stage = format!("out-{metadata}");
-
-    let mut script = String::new();
-
     let cargo_home =
         env::var("CARGO_HOME").map(Utf8PathBuf::from).context("`cargo` sets $CARGO_HOME")?;
-    let _cratesio_stage = if input.starts_with(cargo_home.join("registry/src")) {
+
+    // TODO: impl non-default build.rs https://doc.rust-lang.org/cargo/reference/manifest.html?highlight=build.rs#the-build-field
+    let (input_mount, rustc_stage, mut script) = if input
+        .starts_with(cargo_home.join("registry/src"))
+    {
+        // Input is of a crate dep (hosted at crates.io)
+        // Let's optimize this case by fetching & caching crate tarball
+
         let (name, version, cratesio_index) = {
-            const PREFIX: &str = "index.crates.io-";
             let mut it = input.iter();
             let mut cratesio_index = String::new();
             let mut cratesio_crate = None;
             while let Some(part) = it.next() {
-                if part.starts_with(PREFIX) {
+                if part.starts_with(CRATESIO_PREFIX) {
                     cratesio_index = part.to_owned();
                     cratesio_crate = it.next();
                     break;
@@ -394,7 +357,8 @@ async fn bake_rustc(
             (name, version, cratesio_index)
         };
 
-        let cratesio_srced = cargo_home.join(format!("registry/src/{cratesio_index}"));
+        let cratesio_extracted =
+            cargo_home.join(format!("registry/src/{cratesio_index}/{name}-{version}"));
         let cratesio_cached =
             cargo_home.join(format!("registry/cache/{cratesio_index}/{name}-{version}.crate"));
         log::info!(target:&krate, "opening (RO) crate tarball {cratesio_cached}");
@@ -403,78 +367,59 @@ async fn bake_rustc(
             .with_context(|| format!("Failed reading {cratesio_cached}"))?;
 
         let alpine = "docker.io/library/alpine@sha256:c5b1261d6d3e43071626931fc004f70149baeba2c8ec672bd4f27761f8e1ad6b";
-        let cratesio_stage = format!("cratesio-{name}-{version}"); // FIXME? include {cratesio_index}
+        // TODO: see if {cratesio_index} can be dropped from paths (+ stage names) => content hashing + remap-path-prefix?
+        let cratesio_stage = format!("{name}-{version}-{cratesio_index}"); // No need for more, e.g. crate_type
         let cratesio = "https://static.crates.io";
+        let mut script = String::new();
         script.push_str(&format!("FROM {alpine} AS {cratesio_stage}\n"));
         script.push_str(&format!("ADD --chmod=0664 --checksum=sha256:{cratesio_hash} \\\n"));
-        script.push_str(&format!("  {cratesio}/crates/{name}/{name}-{version}.crate \\\n"));
-        script.push_str(&format!("  {cratesio_cached}\n"));
-        script.push_str(&format!("RUN set -eux && mkdir -p {cratesio_srced} && tar -xf {cratesio_cached} -C {cratesio_srced}\n"));
+        script.push_str(&format!("  {cratesio}/crates/{name}/{name}-{version}.crate /crate\n"));
+        script.push_str("RUN set -eux && tar -xf /crate --strip-components=1 -C /tmp/\n");
 
-        Some(cratesio_stage)
+        let rustc_stage = format!("dep-{name}-{version}-{full_crate_id}-{cratesio_index}");
+        (Some((cratesio_stage, "/tmp", cratesio_extracted)), rustc_stage, script)
     } else {
-        None
+        let (input_mount, rustc_stage) = match input.iter().rev().take(4).collect::<Vec<_>>()[..] {
+            ["build.rs"] => (None, format!("finalbuildrs-{full_crate_id}")),
+            ["lib.rs", "src"] => (None, format!("final-{full_crate_id}")),
+            ["main.rs", "src"] => (None, format!("final-{full_crate_id}")),
+            ["build.rs", "src", basename, ..] => hm("build__rs", basename, 2), // TODO: un-ducktape
+            ["build.rs", basename, ..] => hm("build_rs", basename, 1),
+            ["lib.rs", "src", basename, ..] => hm("src_lib_rs", basename, 2),
+            // e.g. $HOME/.cargo/registry/src/github.com-1ecc6299db9ec823/fnv-1.0.7/lib.rs
+            ["lib.rs", basename, ..] => hm("lib_rs", basename, 1),
+            // e.g. $HOME/.cargo/registry/src/github.com-1ecc6299db9ec823/untrusted-0.7.1/src/untrusted.rs
+            [rsfile, "src", basename, ..] if rsfile.ends_with(".rs") => hm("src__rs", basename, 2),
+            // When compiling openssl-sys-0.9.95 on stable-x86_64-unknown-linux-gnu:
+            //   /home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/openssl-sys-0.9.95/build/main.rs
+            ["main.rs", "build", basename, ..] if crate_name == "build_script_main" => {
+                // TODO: that's ducktape. Read Cargo.toml to match [package]build = "build/main.rs" ?
+                // or just catchall >=4
+                hm("main__rs", basename, 2)
+            }
+            // /home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/cargo-deny-0.14.3/src/cargo-deny/main.rs crate_type=bin
+            ["main.rs", "cargo-deny", "src", basename] => hm("main___rs", basename, 3), // TODO: un-ducktape
+            _ => unreachable!("Unexpected input file {input:?}"),
+        };
+        (input_mount.map(|(name, target)| (name, "", target)), rustc_stage, String::new())
     };
+    // TODO cli=deny: explore mounts: do they include?  -L native=/home/runner/instst/release/build/ring-3c73f9fd9a67ce28/out
+    // nner/instst/release/build/zstd-sys-f571b8facf393189/out -L native=/home/runner/instst/release/build/ring-3c73f9fd9a67ce28/out`
+    // Found a bug in this script!
+    //      Running `CARGO=/home/runner/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/cargo CARGO_BIN_NAME=cargo-deny CARGO_CRATE_NAME=cargo_deny CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/cargo-deny-0.14.3 CARGO_PKG_AUTHORS='Embark <opensource@embark-studios.com>:Jake Shadle <jake.shadle@embark-studios.com>' CARGO_PKG_DESCRIPTION='Cargo plugin to help you manage large dependency graphs' CARGO_PKG_HOMEPAGE='https://github.com/EmbarkStudios/cargo-deny' CARGO_PKG_LICENSE='MIT OR Apache-2.0' CARGO_PKG_LICENSE_FILE='' CARGO_PKG_NAME=cargo-deny CARGO_PKG_README=README.md CARGO_PKG_REPOSITORY='https://github.com/EmbarkStudios/cargo-deny' CARGO_PKG_RUST_VERSION=1.70.0 CARGO_PKG_VERSION=0.14.3 CARGO_PKG_VERSION_MAJOR=0 CARGO_PKG_VERSION_MINOR=14 CARGO_PKG_VERSION_PATCH=3 CARGO_PKG_VERSION_PRE='' CARGO_PRIMARY_PACKAGE=1 LD_LIBRARY_PATH='/home/runner/instst/release/deps:/home/runner/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib:/home/runner/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib'
+    // /home/runner/work/rustcbuildx/rustcbuildx/rustcbuildx /home/runner/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/rustc
+    // --crate-name cargo_deny --edition=2021
+    // /home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/cargo-deny-0.14.3/src/cargo-deny/main.rs --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat
+    // --crate-type bin --emit=dep-info,link -C opt-level=3 -C embed-bitcode=no --cfg 'feature="default"' -C metadata=3bcfd2691bae63ba -C extra-filename=-3bcfd2691bae63ba --out-dir /home/runner/instst/release/deps -L dependency=/home/runner/instst/release/deps --extern anyhow=/home/runner/instst/release/deps/libanyhow-94b7395c89edd8b1.rlib --extern askalono=/home/runner/instst/release/deps/libaskalono-ddae43dc4d3d2420.rlib --extern bitvec=/home/runner/instst/release/deps/libbitvec-d623938ca4bca493.rlib --extern camino=/home/runner/instst/release/deps/libcamino-146d319673d173c5.rlib --extern cargo_deny=/home/runner/instst/release/deps/libcargo_deny-06e4f61b912645ef.rlib --extern clap=/home/runner/instst/release/deps/libclap-2c7e3f9347d4597a.rlib --extern codespan=/home/runner/instst/release/deps/libcodespan-a43ae384a6e01906.rlib --extern codespan_reporting=/home/runner/instst/release/deps/libcodespan_reporting-40482f50e693ecb1.rlib --extern crossbeam=/home/runner/instst/release/deps/libcrossbeam-522c8a6792edb38b.rlib --extern fern=/home/runner/instst/release/deps/libfern-82ebb4a2d795cc6e.rlib --extern gix=/home/runner/instst/release/deps/libgix-2269c2d16d598f3b.rlib --extern globset=/home/runner/instst/release/deps/libglobset-1cb53a4633a9e532.rlib --extern goblin=/home/runner/instst/release/deps/libgoblin-a375a2c21dba8a6d.rlib --extern home=/home/runner/instst/release/deps/libhome-a03540b18a902546.rlib --extern krates=/home/runner/instst/release/deps/libkrates-2923f082e623ae47.rlib --extern log=/home/runner/instst/release/deps/liblog-e9c072abf79b5d2b.rlib --extern nu_ansi_term=/home/runner/instst/release/deps/libnu_ansi_term-14990884fe5cdb0f.rlib --extern parking_lot=/home/runner/instst/release/deps/libparking_lot-b8d4a6184ea5481b.rlib --extern rayon=/home/runner/instst/release/deps/librayon-103cc3573de4615f.rlib --extern reqwest=/home/runner/instst/release/deps/libreqwest-c7fbedc59852c9c7.rlib --extern ring=/home/runner/instst/release/deps/libring-691303221da8a7f0.rlib --extern rustsec=/home/runner/instst/release/deps/librustsec-bf5acc14d6976003.rlib --extern semver=/home/runner/instst/release/deps/libsemver-81c2747e00bddbb9.rlib --extern serde=/home/runner/instst/release/deps/libserde-3f028327f7dabe68.rlib --extern serde_json=/home/runner/instst/release/deps/libserde_json-48447a61a356a1fd.rlib --extern smallvec=/home/runner/instst/release/deps/libsmallvec-8853bfbdb0f0c104.rlib --extern spdx=/home/runner/instst/release/deps/libspdx-dcd7ef5eaf2c5c4d.rlib --extern strum=/home/runner/instst/release/deps/libstrum-97202369a5147909.rlib --extern tame_index=/home/runner/instst/release/deps/libtame_index-93d5aa0a6979a91f.rlib --extern time=/home/runner/instst/release/deps/libtime-c0960b055b327693.rlib --extern toml=/home/runner/instst/release/deps/libtoml-04310ccc9f3732b0.rlib --extern twox_hash=/home/runner/instst/release/deps/libtwox_hash-6feb0d177b42c269.rlib --extern url=/home/runner/instst/release/deps/liburl-27ace54f5002c0aa.rlib --extern walkdir=/home/runner/instst/release/deps/libwalkdir-0fa0886e334a678c.rlib --cap-lints warn -L native=/home/runner/instst/release/build/zstd-sys-f571b8facf393189/out -L native=/home/runner/instst/release/build/ring-3c73f9fd9a67ce28/out`
+    // thread 'main' panicked at src/main.rs:357:14:
+    // internal error: entered unreachable code: Unexpected input file "/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/cargo-deny-0.14.3/src/cargo-deny/main.rs"
+    // note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+    // error: could not compile `cargo-deny` (bin "cargo-deny")
+    log::info!(target:&krate, "picked {rustc_stage} for {suf:?}", suf=input.iter().rev().take(4).collect::<Vec<_>>());
+    assert!(!matches!(input_mount, Some((_,_,ref x)) if x.ends_with("/.cargo/registry")));
 
-    // 0 0s _ wip λ tar -xf proc-macro2-1.0.36.crate -C bla/
-    // 0 0s _ wip λ t
-    // [4.0K]  ./
-    // ├── [4.0K]  bla/
-    // │   └── [4.0K]  proc-macro2-1.0.36/
-    // │       ├── [5.8K]  build.rs
-    // │       ├── [1.5K]  Cargo.toml
-    // │       ├── [2.0K]  Cargo.toml.orig
-    // │       ├── [  94]  .cargo_vcs_info.json
-    // │       ├── [  16]  .clippy.toml
-    // │       ├── [4.0K]  .github/
-    // │       │   └── [4.0K]  workflows/
-    // │       │       └── [2.2K]  ci.yml
-    // │       ├── [  30]  .gitignore
-    // │       ├── [ 11K]  LICENSE-APACHE
-    // │       ├── [1.0K]  LICENSE-MIT
-    // │       ├── [4.7K]  README.md
-    // │       ├── [4.0K]  src/
-    // │       │   ├── [2.6K]  detection.rs
-    // │       │   ├── [ 24K]  fallback.rs
-    // │       │   ├── [ 43K]  lib.rs
-    // │       │   ├── [ 494]  marker.rs
-    // │       │   ├── [ 24K]  parse.rs
-    // │       │   └── [ 29K]  wrapper.rs
-    // │       └── [4.0K]  tests/
-    // │           ├── [3.3K]  comments.rs
-    // │           ├── [ 152]  features.rs
-    // │           ├── [2.6K]  marker.rs
-    // │           ├── [1.3K]  test_fmt.rs
-    // │           └── [ 16K]  test.rs
-    // ├── [4.0K]  proc-macro2-1.0.36/
-    // │   ├── [5.8K]  build.rs
-    // │   ├── [1.5K]  Cargo.toml
-    // │   ├── [2.0K]  Cargo.toml.orig
-    // │   ├── [  94]  .cargo_vcs_info.json
-    // │   ├── [  16]  .clippy.toml
-    // │   ├── [4.0K]  .github/
-    // │   │   └── [4.0K]  workflows/
-    // │   │       └── [2.2K]  ci.yml
-    // │   ├── [  30]  .gitignore
-    // │   ├── [ 11K]  LICENSE-APACHE
-    // │   ├── [1.0K]  LICENSE-MIT
-    // │   ├── [4.7K]  README.md
-    // │   ├── [4.0K]  src/
-    // │   │   ├── [2.6K]  detection.rs
-    // │   │   ├── [ 24K]  fallback.rs
-    // │   │   ├── [ 43K]  lib.rs
-    // │   │   ├── [ 494]  marker.rs
-    // │   │   ├── [ 24K]  parse.rs
-    // │   │   └── [ 29K]  wrapper.rs
-    // │   └── [4.0K]  tests/
-    // │       ├── [3.3K]  comments.rs
-    // │       ├── [ 152]  features.rs
-    // │       ├── [2.6K]  marker.rs
-    // │       ├── [1.3K]  test_fmt.rs
-    // │       └── [ 16K]  test.rs
-    // └── [ 40K]  proc-macro2-1.0.36.crate
-
-    // 12 directories, 43 files
+    let incremental_stage = format!("incremental-{metadata}");
+    let out_stage = format!("out-{metadata}");
 
     script.push_str(&format!("FROM rust AS {rustc_stage}\n"));
     script.push_str(&format!("WORKDIR {out_dir}\n"));
@@ -507,14 +452,18 @@ async fn bake_rustc(
     }
     script.push_str("  RUSTCBUILDX=1\n");
 
-    let cwd = if let Some((name, target)) = input_mount.as_ref() {
+    let cwd = if let Some((name, src, target)) = input_mount.as_ref() {
         // Reuse previous contexts
 
         // TODO: WORKDIR was removed as it changed during a single `cargo build`
         // Looks like removing it isn't an issue, however we need more testing.
         // script.push_str(&format!("WORKDIR {pwd}\n"));
         script.push_str("RUN \\\n");
-        script.push_str(&format!("  --mount=type=bind,from={name},target={target} \\\n"));
+        script.push_str(&if src.is_empty() {
+            format!("  --mount=type=bind,from={name},target={target} \\\n")
+        } else {
+            format!("  --mount=type=bind,from={name},source={src},target={target} \\\n")
+        });
 
         None
     } else {
@@ -573,7 +522,8 @@ async fn bake_rustc(
         script.push_str("COPY --from=cwd / .\n");
         script.push_str("RUN \\\n");
 
-        Some(cwd)
+        let cwd_path = cwd_path.to_owned();
+        Some((cwd, cwd_path))
     };
 
     if let Some(crate_out) = crate_out.as_ref() {
@@ -631,6 +581,7 @@ async fn bake_rustc(
         let script_path =
             Utf8Path::new(&target_path).join(format!("{crate_name}-{metadata}.Dockerfile"));
         log::info!(target:&krate, "opening (RW) crate dockerfile {script_path}");
+        // TODO? suggest a `cargo clean` then fail
         if debug.is_some() {
             match fs::read_to_string(&script_path) {
                 Ok(existing) => pretty_assertions::assert_eq!(&existing, &script),
@@ -644,11 +595,9 @@ async fn bake_rustc(
 
     let mut contexts: BTreeMap<_, _> = [
         Some(("rust".to_owned(), base_image().await.to_owned())),
-        input_mount.map(|(name, target)| (name, target.to_string())),
-        cwd.as_deref().map(|cwd| {
-            let cwd_path = Utf8Path::from_path(cwd.as_path()).expect("PROOF: did not fail earlier");
-            ("cwd".to_owned(), cwd_path.to_string())
-        }),
+        input_mount
+            .and_then(|(name, src, target)| src.is_empty().then_some((name, target.to_string()))),
+        cwd.as_ref().map(|(_, cwd)| ("cwd".to_owned(), cwd.to_string())),
         crate_out.map(|crate_out| (crate_out_name(&crate_out), crate_out)),
     ]
     .into_iter()
@@ -666,7 +615,7 @@ async fn bake_rustc(
                 .with_context(|| format!("Parsing head of {extern_headed_path}"))?
                 .contexts
                 .into_iter()
-                .filter(BuildContext::unbuilt_local_readonly_mount)
+                .filter(BuildContext::is_readonly_mount)
                 .map(|BuildContext { name, uri }| (name, uri));
             let mounts_len = mounts.clone().count();
             contexts.extend(mounts);
@@ -714,6 +663,7 @@ async fn bake_rustc(
         header.push_str(&headed_script);
 
         log::info!(target:&krate, "opening (RW) crate dockerfile {headed_path}");
+        // TODO? suggest a `cargo clean` then fail
         if debug.is_some() {
             match fs::read_to_string(&headed_path) {
                 Ok(existing) => pretty_assertions::assert_eq!(&existing, &header),
@@ -828,8 +778,7 @@ fn fetches_back_used_contexts() {
     let fd = File::open(tmp).unwrap();
     assert_eq!(Head::from_file(fd).unwrap(), Head { contexts: contexts.clone() });
 
-    let used: Vec<_> =
-        contexts.into_iter().filter(BuildContext::unbuilt_local_readonly_mount).collect();
+    let used: Vec<_> = contexts.into_iter().filter(BuildContext::is_readonly_mount).collect();
     assert!(used[0].name.starts_with("input_"));
     assert!(used[1].name.starts_with("crate_out-"));
     assert_eq!(used.len(), 2);
@@ -862,6 +811,8 @@ impl Head {
     }
 }
 
+const CRATESIO_PREFIX: &str = "index.crates.io-";
+
 #[derive(Clone, Debug, Deserialize, PartialEq)]
 pub(crate) struct BuildContext {
     name: String,
@@ -870,8 +821,9 @@ pub(crate) struct BuildContext {
 impl BuildContext {
     #[inline]
     #[must_use]
-    fn unbuilt_local_readonly_mount(&self) -> bool {
-        // TODO: create a stage from sources where able (crates.io, public repos) use --secret mounts for private deps (and secreet direct artifacts)
+    fn is_readonly_mount(&self) -> bool {
+        self.name.contains(CRATESIO_PREFIX) ||
+        // TODO: create a stage from sources where able (public repos) use --secret mounts for private deps (and secreet direct artifacts)
         self.name.starts_with("input_") ||
          // TODO: link this to the build script it's coming from
          self.name.starts_with("crate_out-")
