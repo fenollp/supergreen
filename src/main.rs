@@ -669,11 +669,15 @@ async fn bake_rustc(
         assert!(lines.len() >= 5);
         assert!(lines[0].starts_with("FROM "));
         // FIXME: please => turn single .Dockerfile s into plain toml with stages = [ "cratesio", "rust", "incr"]
+        for (i, line) in lines.iter().enumerate().take(5) {
+            log::info!(target:&krate, ">>> i={i} lines[{i}] = {:?} .starts_withFROM rust AS: {}",line, line.starts_with("FROM rust AS"));
+        }
+        log::info!(target:&krate, ">>> visited_cratesio_stages: {visited_cratesio_stages:?}");
         let mut begin_from = 0..;
         if lines[4].starts_with("FROM rust AS ") {
+            begin_from = 4..;
             let cratesio_stage = lines[..4].join("\n");
             if !visited_cratesio_stages.contains(&cratesio_stage) {
-                begin_from = 4..;
                 headed_script.push_str(&cratesio_stage);
                 headed_script.push('\n');
                 visited_cratesio_stages.insert(cratesio_stage);
