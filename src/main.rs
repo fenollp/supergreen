@@ -8,16 +8,16 @@ use std::{
     unreachable,
 };
 
-use anyhow::{bail, Context, Result};
+use anyhow::{anyhow, bail, Context, Result};
 use camino::{Utf8Path, Utf8PathBuf};
 use env_logger::{Env, Target};
 use mktemp::Temp;
-use serde::Deserialize;
 use tokio::process::Command;
 
 use crate::{
     cli::{envs, exit_code, help, pull},
     envs::{base_image, called_from_build_script, internal, maybe_log, pass_env, runner, syntax},
+    ir::{BuildContext, Head, CRATESIO_PREFIX, HDR},
     parse::RustcArgs,
     pops::Popped,
     runner::{build, MARK_STDERR, MARK_STDOUT},
@@ -25,12 +25,15 @@ use crate::{
 
 mod cli;
 mod envs;
+mod ir;
 mod parse;
 mod pops;
 mod runner;
 
 const PKG: &str = env!("CARGO_PKG_NAME");
 const VSN: &str = env!("CARGO_PKG_VERSION");
+
+const RUST: &str = "rust";
 
 // NOTE: this RUSTC_WRAPPER program only ever gets called by `cargo`, so we save
 //       ourselves some trouble and assume std::path::{Path, PathBuf} are UTF-8.
@@ -374,10 +377,11 @@ async fn bake_rustc(
         script.push_str(&format!("FROM {alpine} AS {cratesio_stage}\n"));
         script.push_str(&format!("ADD --chmod=0664 --checksum=sha256:{cratesio_hash} \\\n"));
         script.push_str(&format!("  {cratesio}/crates/{name}/{name}-{version}.crate /crate\n"));
-        script.push_str("RUN set -eux && tar -xf /crate --strip-components=1 -C /tmp/\n");
+        // Using tar: https://github.com/rust-lang/cargo/issues/3577#issuecomment-890693359
+        script.push_str("RUN set -eux && tar -zxf /crate --strip-components=1 -C /tmp/\n");
 
         let rustc_stage = format!("dep-{name}-{version}-{full_crate_id}-{cratesio_index}");
-        (Some((cratesio_stage, "/tmp", cratesio_extracted)), rustc_stage, script)
+        (Some((cratesio_stage, Some("/tmp"), cratesio_extracted)), rustc_stage, script)
     } else {
         let (input_mount, rustc_stage) = match input.iter().rev().take(4).collect::<Vec<_>>()[..] {
             ["build.rs"] => (None, format!("finalbuildrs-{full_crate_id}")),
@@ -401,7 +405,7 @@ async fn bake_rustc(
             ["main.rs", "cargo-deny", "src", basename] => hm("main___rs", basename, 3), // TODO: un-ducktape
             _ => unreachable!("Unexpected input file {input:?}"),
         };
-        (input_mount.map(|(name, target)| (name, "", target)), rustc_stage, String::new())
+        (input_mount.map(|(name, target)| (name, None, target)), rustc_stage, String::new())
     };
     // TODO cli=deny: explore mounts: do they include?  -L native=/home/runner/instst/release/build/ring-3c73f9fd9a67ce28/out
     // nner/instst/release/build/zstd-sys-f571b8facf393189/out -L native=/home/runner/instst/release/build/ring-3c73f9fd9a67ce28/out`
@@ -421,7 +425,7 @@ async fn bake_rustc(
     let incremental_stage = format!("incremental-{metadata}");
     let out_stage = format!("out-{metadata}");
 
-    script.push_str(&format!("FROM rust AS {rustc_stage}\n"));
+    script.push_str(&format!("FROM {RUST} AS {rustc_stage}\n"));
     script.push_str(&format!("WORKDIR {out_dir}\n"));
 
     // TODO: disable (remote) cache for incremental builds?
@@ -459,11 +463,10 @@ async fn bake_rustc(
         // Looks like removing it isn't an issue, however we need more testing.
         // script.push_str(&format!("WORKDIR {pwd}\n"));
         script.push_str("RUN \\\n");
-        script.push_str(&if src.is_empty() {
-            format!("  --mount=type=bind,from={name},target={target} \\\n")
-        } else {
-            format!("  --mount=type=bind,from={name},source={src},target={target} \\\n")
-        });
+        script.push_str(&format!(
+            "  --mount=type=bind,from={name}{source},target={target} \\\n",
+            source = src.map(|src| format!(",source={src}")).unwrap_or_default()
+        ));
 
         None
     } else {
@@ -533,18 +536,58 @@ async fn bake_rustc(
 
     log::debug!(target:&krate, "all_externs = {all_externs:?}");
     assert!(externs.len() <= all_externs.len());
-    let headed_paths = all_externs
-        .into_iter()
-        .map(|xtern| {
-            let Some((extern_headed_path, extern_headed_stage)) = headed_path_and_stage(xtern.clone(), &target_path) else {
-                bail!("Unexpected extern name format: {xtern}")
-            };
 
-            script.push_str(&format!("  --mount=type=bind,from={extern_headed_stage},source=/{xtern},target={target_path}/deps/{xtern} \\\n"));
+    // let full_crate_id = format!("{crate_type}-{crate_name}-{metadata}"); // FIXME: include crate_version (: CARGO_PKG_VERSION=)
 
-            Ok(extern_headed_path)
-        })
-        .collect::<Result<Vec<_>>>()?;
+    let mut dag = vec![];
+    let mut mounts = Vec::with_capacity(all_externs.len());
+    let mut headed_paths = vec![];
+    let mut visited: BTreeMap<u64, bool> = BTreeMap::new();
+    log::info!(target:&krate, ">>> metadata={metadata} = {}", dec(&metadata));
+    let mut mnt = vec![];
+    for xtern in all_externs {
+        let Some((headed_path, headed_stage)) = headed_path_and_stage(xtern.clone(), &target_path)
+        else {
+            bail!("Unexpected extern name format: {xtern}")
+        };
+        mounts.push((headed_stage, format!("/{xtern}"), format!("{target_path}/deps/{xtern}")));
+        headed_paths.push(headed_path.clone());
+
+        let xtern_script_path = from_headed_path(headed_path);
+
+        log::info!(target:&krate, "opening (RO) extern dockerfile {xtern_script_path}");
+        let errf = || format!("Failed reading {xtern_script_path}");
+        let fd = File::open(&xtern_script_path).with_context(errf)?;
+        let errf = || format!("Parsing head of {xtern_script_path}");
+        let xtern_script_head = Head::from_file(fd).with_context(errf)?;
+
+        let this = dec(&xtern_script_head.this);
+        log::info!(target:&krate, ">>> this={this}");
+        let deps: Vec<_> = xtern_script_head.mnt.iter().map(dec).collect();
+        log::info!(target:&krate, ">>> deps={deps:?}");
+        let node = szyk::Node::new(this, deps.clone(), xtern_script_path);
+        log::info!(target:&krate, ">>> node+= ({:?}->{:?}){node:?}",xtern_script_head.this,xtern_script_head.mnt);
+        dag.push(node);
+        visited.extend(deps.into_iter().map(|x| (x, false)));
+        *visited.entry(this).or_default() = true;
+        mnt.push(this);
+    }
+    dag.push(szyk::Node::new(dec(&metadata), mnt, "".into()));
+    *visited.entry(dec(&metadata)).or_default() = true;
+    log::info!(target:&krate, ">>> visited({})= {visited:?}", visited.len());
+    let mut extern_scripts = match szyk::sort(&dag, dec(&metadata)) {
+        Ok(ordering) => ordering,
+        Err(e) => bail!("Failed topolosorting {metadata} ({}): {e:?}", dec(&metadata)),
+    };
+    log::info!(target:&krate, ">>> ordering= {extern_scripts:?}");
+    extern_scripts.truncate(extern_scripts.len() - 1);
+    let extern_scripts = extern_scripts; // Drops mut
+
+    for (name, source, target) in &mounts {
+        script.push_str(&format!(
+            "  --mount=type=bind,from={name},source={source},target={target} \\\n"
+        ));
+    }
 
     script.push_str("    set -eux \\\n");
 
@@ -576,27 +619,19 @@ async fn bake_rustc(
     // NOTE: -C extra-filename=-${metadata} (starts with dash)
     // TODO: use extra filename here for fwd compat
 
+    let mut head = Head::new(&metadata);
+    head.mnt = mounts
+        .into_iter()
+        .inspect(|x| log::info!(target:&krate, ">>> {x:?}"))
+        .filter(|(x, _, _)| x.starts_with("out-"))
+        .map(|(name, _, _)| name.trim_start_matches("out-").to_owned())
+        .collect();
     let script = script; // Drop mut
-    {
-        let script_path =
-            Utf8Path::new(&target_path).join(format!("{crate_name}-{metadata}.Dockerfile"));
-        log::info!(target:&krate, "opening (RW) crate dockerfile {script_path}");
-        // TODO? suggest a `cargo clean` then fail
-        if debug.is_some() {
-            match fs::read_to_string(&script_path) {
-                Ok(existing) => pretty_assertions::assert_eq!(&existing, &script),
-                Err(e) if e.kind() == ErrorKind::NotFound => {}
-                Err(e) => bail!("{e}"),
-            }
-        }
-        fs::write(&script_path, &script)
-            .with_context(|| format!("Failed creating dockerfile {script_path}"))?;
-    }
 
     let mut contexts: BTreeMap<_, _> = [
-        Some(("rust".to_owned(), base_image().await.to_owned())),
+        Some((RUST.to_owned(), base_image().await.to_owned())),
         input_mount
-            .and_then(|(name, src, target)| src.is_empty().then_some((name, target.to_string()))),
+            .and_then(|(name, src, target)| src.is_none().then_some((name, target.to_string()))),
         cwd.as_ref().map(|(_, cwd)| ("cwd".to_owned(), cwd.to_string())),
         crate_out.map(|crate_out| (crate_out_name(&crate_out), crate_out)),
     ]
@@ -605,43 +640,58 @@ async fn bake_rustc(
     .collect();
 
     // TODO: ask upstream `docker buildx` for orderless stages (so we can concat Dockerfiles any which way, and save another DAG)
-    let mut extern_scripts: Vec<(_, _)> = headed_paths
-        .into_iter()
-        .map(|extern_headed_path| {
-            log::info!(target:&krate, "opening (RO) extern dockerfile {extern_headed_path}");
-            let fd = File::open(&extern_headed_path)
-                .with_context(|| format!("Failed reading {extern_headed_path}"))?;
-            let mounts = Head::from_file(fd)
-                .with_context(|| format!("Parsing head of {extern_headed_path}"))?
-                .contexts
-                .into_iter()
-                .filter(BuildContext::is_readonly_mount)
-                .map(|BuildContext { name, uri }| (name, uri));
-            let mounts_len = mounts.clone().count();
-            contexts.extend(mounts);
 
-            let extern_script_path = from_headed_path(extern_headed_path);
-            Ok((extern_script_path, mounts_len))
-        })
-        .collect::<Result<_>>()?;
+    for extern_headed_path in headed_paths {
+        log::info!(target:&krate, "opening (RO) extern dockerfile {extern_headed_path}");
+        let fd = File::open(&extern_headed_path)
+            .map_err(|e| anyhow!("Failed reading {extern_headed_path}: {e}"))?;
+        let bcs = Head::from_file(fd)
+            .map_err(|e| anyhow!("Parsing head of {extern_headed_path}: {e}"))?
+            .contexts
+            .into_iter()
+            .filter(BuildContext::is_readonly_mount) // FIXME: toposort, then drop CRATESIO_PREFIX-containing mounts from `contexts`
+            .map(|BuildContext { name, uri }| (name, uri));
+        contexts.extend(bcs);
+    }
+    head.contexts = contexts.into_iter().map(Into::into).collect(); //FIXME?
     log::info!(target:&krate, "extern_scripts {}: {extern_scripts:?}", extern_scripts.len());
-    extern_scripts.sort_unstable_by_key(|(_, mounts_len)| *mounts_len);
-    log::info!(target:&krate, "final extern_scripts {}: {extern_scripts:?}", extern_scripts.len());
     let mut headed_script = String::new();
-    // Concat dockerfiles from topological sort
-    // * https://docs.rs/topo_sort/latest/topo_sort/struct.TopoSort.html
-    // of the DAG (stages must be defined first, then used)
-    // Assumes that the more deps a crate has, the later it appears in the deps tree
-    // TODO: do     vvvvvvvvv better than this
-    for (extern_script_path, _) in extern_scripts {
+    for extern_script_path in extern_scripts {
         log::info!(target:&krate, "opening (RO) extern dockerfile {extern_script_path}");
-        let extern_script = fs::read_to_string(&extern_script_path)
-            .with_context(|| format!("Failed reading dockerfile {extern_script_path}"))?;
-        headed_script.push_str(&extern_script);
+        let fd = File::open(&extern_script_path)
+            .map_err(|e| anyhow!("Reading extern's dockerfile {extern_script_path}: {e}"))?;
+        for line in BufReader::new(fd).lines().map_while(Result::ok).filter(|x| !x.starts_with(HDR))
+        {
+            headed_script.push_str(&line);
+            headed_script.push('\n');
+        }
         headed_script.push('\n');
     }
     headed_script.push_str(&script);
-    drop(script); // Earlier: wrote to disk
+
+    let syntax = syntax().await.trim_start_matches("docker-image://");
+
+    {
+        let mut header = format!("# syntax={syntax}\n",);
+        head.write_to_slice(&mut header);
+        header.push_str(&script);
+        let script2 = header;
+
+        let script_path =
+            Utf8Path::new(&target_path).join(format!("{crate_name}-{metadata}.Dockerfile"));
+        log::info!(target:&krate, "opening (RW) crate dockerfile {script_path}");
+        // TODO? suggest a `cargo clean` then fail
+        if debug.is_some() {
+            match fs::read_to_string(&script_path) {
+                Ok(existing) => pretty_assertions::assert_eq!(&existing, &script2),
+                Err(e) if e.kind() == ErrorKind::NotFound => {}
+                Err(e) => bail!("{e}"),
+            }
+        }
+        fs::write(&script_path, script2)
+            .with_context(|| format!("Failed creating dockerfile {script_path}"))?;
+        drop(script); // Earlier: wrote to disk
+    }
 
     let headed_path = {
         // TODO: cargo -vv test != cargo test: => the rustc flags will change => Dockerfile needs new cache key
@@ -649,17 +699,10 @@ async fn bake_rustc(
         // https://rustc-dev-guide.rust-lang.org/backend/libs-and-metadata.html
         //=> a filename suffix with content hash?
         let headed_path =
-            Utf8Path::new(&target_path).join(format!("{crate_name}-{metadata}-headed.Dockerfile"));
+            Utf8Path::new(&target_path).join(format!("{crate_name}-{metadata}-final.Dockerfile"));
 
-        let mut header = format!(
-            "# syntax={syntax}\n",
-            syntax = syntax().await.trim_start_matches("docker-image://")
-        );
-        header.push_str("# contexts = [\n");
-        for (name, uri) in &contexts {
-            header.push_str(&format!("{HDR}  {{ name = {name:?}, uri = {uri:?} }},\n"));
-        }
-        header.push_str("# ]\n");
+        let mut header = format!("# syntax={syntax}\n",);
+        head.write_to_slice(&mut header);
         header.push_str(&headed_script);
 
         log::info!(target:&krate, "opening (RW) crate dockerfile {headed_path}");
@@ -700,9 +743,9 @@ async fn bake_rustc(
     if command == "none" {
         return fallback.await;
     }
-    let code = build(krate, command, &headed_path, out_stage, &contexts, out_dir).await?;
+    let code = build(krate, command, &headed_path, out_stage, &head.contexts, out_dir).await?;
     if let Some(incremental) = incremental {
-        let _ = build(krate, command, headed_path, incremental_stage, &contexts, incremental)
+        let _ = build(krate, command, headed_path, incremental_stage, &head.contexts, incremental)
             .await
             .inspect_err(|e| log::warn!(target:&krate, "Error fetching incremental data: {e}"));
     }
@@ -748,117 +791,10 @@ fn file_exists_and_is_not_empty(path: impl AsRef<Utf8Path>) -> Result<bool> {
 }
 
 #[test]
-fn fetches_back_used_contexts() {
-    let tmp = Temp::new_file().unwrap();
-    fs::write(&tmp, r#"# syntax=docker.io/docker/dockerfile:1
-# contexts = [
-#   { name = "rust", uri = "docker-image://docker.io/library/rust:1.69.0-slim@sha256:8b85a8a6bf7ed968e24bab2eae6f390d2c9c8dbed791d3547fef584000f48f9e" },
-#   { name = "input_src_lib_rs--rustversion-1.0.9", uri = "/home/maison/.cargo/registry/src/github.com-1ecc6299db9ec823/rustversion-1.0.9" },
-#   { name = "crate_out-...", uri = "/home/maison/code/thing.git/target/debug/build/rustversion-ae69baa7face5565/out" },
-# ]
-...
-"#).unwrap();
-
-    let contexts = vec![
-        BuildContext {
-    name:"rust".to_owned(),
-    uri : "docker-image://docker.io/library/rust:1.69.0-slim@sha256:8b85a8a6bf7ed968e24bab2eae6f390d2c9c8dbed791d3547fef584000f48f9e".to_owned(),
-        },
-        BuildContext {
-            name: "input_src_lib_rs--rustversion-1.0.9".to_owned(),
-            uri: "/home/maison/.cargo/registry/src/github.com-1ecc6299db9ec823/rustversion-1.0.9"
-                .to_owned(),
-        },
-        BuildContext {
-            name: "crate_out-...".to_owned(),
-            uri: "/home/maison/code/thing.git/target/debug/build/rustversion-ae69baa7face5565/out"
-                .to_owned(),
-        },
-    ];
-    let fd = File::open(tmp).unwrap();
-    assert_eq!(Head::from_file(fd).unwrap(), Head { contexts: contexts.clone() });
-
-    let used: Vec<_> = contexts.into_iter().filter(BuildContext::is_readonly_mount).collect();
-    assert!(used[0].name.starts_with("input_"));
-    assert!(used[1].name.starts_with("crate_out-"));
-    assert_eq!(used.len(), 2);
-}
-
-const HDR: &str = "# ";
-
-// # syntax = ..
-// # contexts = [
-// #   { name = "a", uri = "b" },
-// # ]
-// FROM ..
-#[derive(Debug, Deserialize, PartialEq)]
-pub(crate) struct Head {
-    contexts: Vec<BuildContext>,
-}
-impl Head {
-    fn from_file(fd: File) -> Result<Self> {
-        toml::from_str(
-            &BufReader::new(fd)
-                .lines()
-                .map_while(Result::ok)
-                .take_while(|x| x.starts_with(HDR))
-                .filter(|x| !x.starts_with("# syntax="))
-                .map(|x| x.strip_prefix(HDR).unwrap_or(&x).to_owned())
-                .collect::<Vec<_>>()
-                .join("\n"),
-        )
-        .context("parsing TOML head")
-    }
-}
-
-const CRATESIO_PREFIX: &str = "index.crates.io-";
-
-#[derive(Clone, Debug, Deserialize, PartialEq)]
-pub(crate) struct BuildContext {
-    name: String,
-    uri: String,
-}
-impl BuildContext {
-    #[inline]
-    #[must_use]
-    fn is_readonly_mount(&self) -> bool {
-        self.name.contains(CRATESIO_PREFIX) ||
-        // TODO: create a stage from sources where able (public repos) use --secret mounts for private deps (and secreet direct artifacts)
-        self.name.starts_with("input_") ||
-         // TODO: link this to the build script it's coming from
-         self.name.starts_with("crate_out-")
-
-        // 0 0s release λ \grep -Eo from=crate_out-[^,]+ -r .|rev|cut -d- -f1|rev|sort -u
-        // 265546c15e86ed0e
-        // 32442d049a6a6273
-        // 6730bb71af4c9e5e
-        // 68773b12152d6b74
-        // 7c50baf419c12613
-        // 806d05c2cb9423e5
-        // 890fbb16b2570e5a
-        // c0cfb33e19b51a94
-        // c21afc9aa144d6a6
-        // 0 0s release λ ag 6730bb71af4c9e5e
-        // num_traits-3ab0e20848896109-headed.Dockerfile
-        // 3:#   { name = "crate_out-6730bb71af4c9e5e", uri = "/tmp/clis-vixargs_0-1-0/release/build/num-traits-6730bb71af4c9e5e/out" },
-        // 27:  OUT_DIR="/tmp/clis-vixargs_0-1-0/release/build/num-traits-6730bb71af4c9e5e/out" \
-        // 32:  --mount=type=bind,from=crate_out-6730bb71af4c9e5e,target=/tmp/clis-vixargs_0-1-0/release/build/num-traits-6730bb71af4c9e5e/out \
-
-        // vixargs-d2f27f94bee85c6b-headed.Dockerfile
-        // 5:#   { name = "crate_out-6730bb71af4c9e5e", uri = "/tmp/clis-vixargs_0-1-0/release/build/num-traits-6730bb71af4c9e5e/out" },
-        // 331:  OUT_DIR="/tmp/clis-vixargs_0-1-0/release/build/num-traits-6730bb71af4c9e5e/out" \
-        // 336:  --mount=type=bind,from=crate_out-6730bb71af4c9e5e,target=/tmp/clis-vixargs_0-1-0/release/build/num-traits-6730bb71af4c9e5e/out \
-
-        // .fingerprint/num-traits-6730bb71af4c9e5e/run-build-script-build-script-build.json
-        // 1:{"rustc":16286356497298320803,"features":"","declared_features":"","target":0,"profile":0,"path":0,"deps":[[3889717946063921280,"build_script_build",false,10623348317785739830]],"local":[{"RerunIfChanged":{"output":"release/build/num-traits-6730bb71af4c9e5e/output","paths":["build.rs"]}}],"rustflags":[],"metadata":0,"config":0,"compile_kind":0}
-    }
-}
-
-#[test]
 fn headed_path_and_stage_for_rlib() {
     let xtern = "libstrsim-8ed1051e7e58e636.rlib".to_owned();
     let res = headed_path_and_stage(xtern, "./target/path").unwrap();
-    assert_eq!(res.0, "./target/path/strsim-8ed1051e7e58e636-headed.Dockerfile".to_owned());
+    assert_eq!(res.0, "./target/path/strsim-8ed1051e7e58e636-final.Dockerfile".to_owned());
     assert_eq!(res.1, "out-8ed1051e7e58e636".to_owned());
 }
 
@@ -866,7 +802,7 @@ fn headed_path_and_stage_for_rlib() {
 fn headed_path_and_stage_for_libc() {
     let xtern = "liblibc-c53783e3f8edcfe4.rmeta".to_owned();
     let res = headed_path_and_stage(xtern, "./target/path").unwrap();
-    assert_eq!(res.0, "./target/path/libc-c53783e3f8edcfe4-headed.Dockerfile".to_owned());
+    assert_eq!(res.0, "./target/path/libc-c53783e3f8edcfe4-final.Dockerfile".to_owned());
     assert_eq!(res.1, "out-c53783e3f8edcfe4".to_owned());
 }
 
@@ -874,7 +810,7 @@ fn headed_path_and_stage_for_libc() {
 fn headed_path_and_stage_for_weird_extension() {
     let xtern = "libthing-131283e3f8edcfe4.a.2.c".to_owned();
     let res = headed_path_and_stage(xtern, "./target/path").unwrap();
-    assert_eq!(res.0, "./target/path/thing-131283e3f8edcfe4-headed.Dockerfile".to_owned());
+    assert_eq!(res.0, "./target/path/thing-131283e3f8edcfe4-final.Dockerfile".to_owned());
     assert_eq!(res.1, "out-131283e3f8edcfe4".to_owned());
 }
 
@@ -886,7 +822,7 @@ fn headed_path_and_stage(
     assert!(xtern.starts_with("lib")); // TODO: stop doing that (stripping ^lib)
     let pa = xtern.strip_prefix("lib").and_then(|x| x.split_once('.')).map(|(x, _)| x);
     let st = pa.and_then(|x| x.split_once('-')).map(|(_, x)| format!("out-{x}"));
-    let pa = pa.map(|x| target_path.as_ref().join(format!("{x}-headed.Dockerfile")));
+    let pa = pa.map(|x| target_path.as_ref().join(format!("{x}-final.Dockerfile")));
     pa.zip(st)
 }
 
@@ -911,11 +847,11 @@ fn crate_out_name(name: &str) -> String {
 #[test]
 fn a_few_from_headed_path() {
     assert_eq!(
-        from_headed_path("target/path/strsim-8ed1051e7e58e636-headed.Dockerfile".into()),
+        from_headed_path("target/path/strsim-8ed1051e7e58e636-final.Dockerfile".into()),
         "target/path/strsim-8ed1051e7e58e636.Dockerfile".to_owned()
     );
     assert_eq!(
-        from_headed_path("target/path/blip_blap-blop-1312051e7e58e636-headed.Dockerfile".into()),
+        from_headed_path("target/path/blip_blap-blop-1312051e7e58e636-final.Dockerfile".into()),
         "target/path/blip_blap-blop-1312051e7e58e636.Dockerfile".to_owned()
     );
 }
@@ -925,7 +861,7 @@ fn from_headed_path(headed_path: Utf8PathBuf) -> Utf8PathBuf {
         headed_path
             .file_name()
             .expect("follows naming scheme")
-            .replace("-headed.Dockerfile", ".Dockerfile"),
+            .replace("-final.Dockerfile", ".Dockerfile"),
     )
 }
 
@@ -956,4 +892,17 @@ fn copy_files(dir: &Utf8Path, dst: &Utf8Path) -> Result<()> {
         }
     }
     Ok(())
+}
+
+#[inline]
+fn dec(#[allow(clippy::ptr_arg)] x: &String) -> u64 {
+    u64::from_str_radix(x, 16).expect(">>>")
+}
+
+#[test]
+fn dec_decs() {
+    let as_hex = "dab737da4696ee62".to_owned();
+    let as_dec = 15760126831633034850;
+    assert_eq!(dec(&as_hex), as_dec);
+    assert_eq!(format!("{as_dec:#x}"), format!("0x{as_hex}"));
 }

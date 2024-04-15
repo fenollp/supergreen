@@ -435,6 +435,7 @@ dependencies = [
  "rustflags",
  "serde",
  "sha256",
+ "szyk",
  "tokio",
  "toml",
 ]
@@ -517,6 +518,12 @@ dependencies = [
  "quote",
  "unicode-ident",
 ]
+
+[[package]]
+name = "szyk"
+version = "1.0.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "98834a241a289eef3dd36826edbe2219f2a3df61ee9b0b62fac0091ee22ec438"
 
 [[package]]
 name = "tokio"

@@ -1,5 +1,4 @@
 use std::{
-    collections::BTreeMap,
     fmt::Display,
     mem,
     process::Stdio,
@@ -17,6 +16,8 @@ use tokio::{
     time::timeout,
 };
 
+use crate::ir::BuildContext;
+
 pub(crate) const MARK_STDOUT: &str = "::STDOUT:: ";
 pub(crate) const MARK_STDERR: &str = "::STDERR:: ";
 
@@ -25,7 +26,7 @@ pub(crate) async fn build(
     command: &str,
     dockerfile_path: impl AsRef<Utf8Path>,
     target: impl AsRef<str> + Display,
-    contexts: &BTreeMap<String, String>,
+    contexts: &[BuildContext],
     out_dir: impl AsRef<Utf8Path>,
 ) -> Result<Option<i32>> {
     let mut cmd = Command::new(command);
@@ -76,7 +77,7 @@ pub(crate) async fn build(
     // https://lib.rs/crates/bollard
     // https://lib.rs/crates/strip-ansi-escapes
 
-    for (name, uri) in contexts {
+    for BuildContext { name, uri } in contexts {
         cmd.arg(format!("--build-context={name}={uri}"));
     }
 
