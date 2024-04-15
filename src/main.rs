@@ -656,13 +656,31 @@ async fn bake_rustc(
     head.contexts = contexts.into_iter().map(Into::into).collect(); //FIXME?
     log::info!(target:&krate, "extern_scripts {}: {extern_scripts:?}", extern_scripts.len());
     let mut headed_script = String::new();
+    let mut visited_cratesio_stages = BTreeSet::new();
     for extern_script_path in extern_scripts {
         log::info!(target:&krate, "opening (RO) extern dockerfile {extern_script_path}");
         let fd = File::open(&extern_script_path)
             .map_err(|e| anyhow!("Reading extern's dockerfile {extern_script_path}: {e}"))?;
-        for line in BufReader::new(fd).lines().map_while(Result::ok).filter(|x| !x.starts_with(HDR))
-        {
-            headed_script.push_str(&line);
+        let lines: Vec<_> = BufReader::new(fd)
+            .lines()
+            .map_while(Result::ok)
+            .filter(|x| !x.starts_with(HDR))
+            .collect();
+        assert!(lines.len() >= 5);
+        assert!(lines[0].starts_with("FROM "));
+        // FIXME: please => turn single .Dockerfile s into plain toml with stages = [ "cratesio", "rust", "incr"]
+        let mut begin_from = 0..;
+        if lines[4].starts_with("FROM rust AS ") {
+            let cratesio_stage = lines[..4].join("\n");
+            if !visited_cratesio_stages.contains(&cratesio_stage) {
+                begin_from = 4..;
+                headed_script.push_str(&cratesio_stage);
+                headed_script.push('\n');
+                visited_cratesio_stages.insert(cratesio_stage);
+            }
+        }
+        for line in &lines[begin_from] {
+            headed_script.push_str(line);
             headed_script.push('\n');
         }
         headed_script.push('\n');
