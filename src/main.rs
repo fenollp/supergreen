@@ -17,7 +17,7 @@ use tokio::process::Command;
 use crate::{
     cli::{envs, exit_code, help, pull},
     envs::{base_image, called_from_build_script, internal, maybe_log, pass_env, runner, syntax},
-    ir::{dec, BuildContext, Head, CRATESIO_PREFIX, HDR},
+    ir::{BuildContext, Head, CRATESIO_PREFIX, HDR},
     parse::RustcArgs,
     pops::Popped,
     runner::{build, MARK_STDERR, MARK_STDOUT},
@@ -539,39 +539,59 @@ async fn bake_rustc(
 
     // let full_crate_id = format!("{crate_type}-{crate_name}-{metadata}"); // FIXME: include crate_version (: CARGO_PKG_VERSION=)
 
-    let mut dag = vec![];
+    let mut dag = Vec::with_capacity(1 + all_externs.len()); // TODO: ask upstream `docker buildx` for orderless stages (so we can concat Dockerfiles any which way)
     let mut mounts = Vec::with_capacity(all_externs.len());
-    let mut headed_paths = vec![];
     let mut head = Head::new(&metadata);
-    let mut mnt = vec![];
+
+    head.contexts = [
+        Some((RUST.to_owned(), base_image().await.to_owned())),
+        input_mount
+            .and_then(|(name, src, target)| src.is_none().then_some((name, target.to_string()))),
+        cwd.as_ref().map(|(_, cwd)| ("cwd".to_owned(), cwd.to_string())),
+        crate_out.map(|crate_out| (crate_out_name(&crate_out), crate_out)),
+    ]
+    .into_iter()
+    .flatten()
+    .map(|(name, uri)| BuildContext { name, uri })
+    .collect();
+
     for xtern in all_externs {
         let Some((headed_path, headed_stage)) = headed_path_and_stage(xtern.clone(), &target_path)
         else {
             bail!("Unexpected extern name format: {xtern}")
         };
         mounts.push((headed_stage, format!("/{xtern}"), format!("{target_path}/deps/{xtern}")));
-        headed_paths.push(headed_path.clone());
 
-        let xtern_script_path = from_headed_path(headed_path);
+        log::info!(target:&krate, "opening (RO) extern dockerfile {headed_path}");
+        let errf = |e| anyhow!("Failed reading {headed_path}: {e}");
+        let fd = File::open(&headed_path).map_err(errf)?;
+        let errf = |e| anyhow!("Parsing head of {headed_path}: {e}");
+        let hd = Head::from_file(fd).map_err(errf)?;
+        head.contexts.extend(hd.contexts.into_iter().filter(BuildContext::is_readonly_mount));
 
-        log::info!(target:&krate, "opening (RO) extern dockerfile {xtern_script_path}");
-        let errf = |e| anyhow!("Failed reading {xtern_script_path}: {e}");
-        let fd = File::open(&xtern_script_path).map_err(errf)?;
-        let errf = |e| anyhow!("Parsing head of {xtern_script_path}: {e}");
-        let xtern_script_head = Head::from_file(fd).map_err(errf)?;
+        let script_path = from_headed_path(headed_path);
+        log::info!(target:&krate, "opening (RO) extern dockerfile {script_path}");
+        let errf = |e| anyhow!("Failed reading {script_path}: {e}");
+        let fd = File::open(&script_path).map_err(errf)?;
+        let errf = |e| anyhow!("Parsing head of {script_path}: {e}");
+        let hd = Head::from_file(fd).map_err(errf)?;
 
-        dag.push(szyk::Node::new(xtern_script_head.this, xtern_script_head.mnt, xtern_script_path));
-        mnt.push(xtern_script_head.this);
+        dag.push(szyk::Node::new(hd.this, hd.mnt, script_path));
+        head.mnt.push(hd.this);
     }
-    dag.push(szyk::Node::new(head.this, mnt, "".into()));
+    dag.push(szyk::Node::new(head.this, head.mnt.clone(), "".into()));
     let mut extern_scripts = match szyk::sort(&dag, head.this) {
         Ok(ordering) => ordering,
         Err(e) => bail!("Failed topolosorting {metadata} ({}): {e:?}", head.this),
     };
-    extern_scripts.truncate(extern_scripts.len() - 1);
+    extern_scripts.truncate(extern_scripts.len() - 1); //FIXME: write script earlier
     let extern_scripts = extern_scripts; // Drops mut
+    log::info!(target:&krate, "extern_scripts {}: {extern_scripts:?}", extern_scripts.len());
 
-    for (name, source, target) in &mounts {
+    head.contexts.sort_unstable();
+    head.contexts.dedup();
+
+    for (name, source, target) in mounts {
         script.push_str(&format!(
             "  --mount=type=bind,from={name},source={source},target={target} \\\n"
         ));
@@ -607,40 +627,8 @@ async fn bake_rustc(
     // NOTE: -C extra-filename=-${metadata} (starts with dash)
     // TODO: use extra filename here for fwd compat
 
-    head.mnt = mounts
-        .into_iter()
-        .filter(|(x, _, _)| x.starts_with("out-"))
-        .map(|(name, _, _)| dec(&name.trim_start_matches("out-").to_owned()))
-        .collect();
     let script = script; // Drop mut
 
-    let mut contexts: BTreeMap<_, _> = [
-        Some((RUST.to_owned(), base_image().await.to_owned())),
-        input_mount
-            .and_then(|(name, src, target)| src.is_none().then_some((name, target.to_string()))),
-        cwd.as_ref().map(|(_, cwd)| ("cwd".to_owned(), cwd.to_string())),
-        crate_out.map(|crate_out| (crate_out_name(&crate_out), crate_out)),
-    ]
-    .into_iter()
-    .flatten()
-    .collect();
-
-    // TODO: ask upstream `docker buildx` for orderless stages (so we can concat Dockerfiles any which way, and save another DAG)
-
-    for extern_headed_path in headed_paths {
-        log::info!(target:&krate, "opening (RO) extern dockerfile {extern_headed_path}");
-        let fd = File::open(&extern_headed_path)
-            .map_err(|e| anyhow!("Failed reading {extern_headed_path}: {e}"))?;
-        let bcs = Head::from_file(fd)
-            .map_err(|e| anyhow!("Parsing head of {extern_headed_path}: {e}"))?
-            .contexts
-            .into_iter()
-            .filter(BuildContext::is_readonly_mount) // FIXME: toposort, then drop CRATESIO_PREFIX-containing mounts from `contexts`
-            .map(|BuildContext { name, uri }| (name, uri));
-        contexts.extend(bcs);
-    }
-    head.contexts = contexts.into_iter().map(Into::into).collect(); //FIXME?
-    log::info!(target:&krate, "extern_scripts {}: {extern_scripts:?}", extern_scripts.len());
     let mut headed_script = String::new();
     let mut visited_cratesio_stages = BTreeSet::new();
     let append = |final_script: &mut String,

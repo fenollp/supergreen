@@ -60,7 +60,7 @@ impl Head {
 }
 
 #[inline]
-pub(crate) fn dec(#[allow(clippy::ptr_arg)] x: &String) -> u64 {
+fn dec(#[allow(clippy::ptr_arg)] x: &String) -> u64 {
     u64::from_str_radix(x, 16).expect(">>>")
 }
 
@@ -91,7 +91,7 @@ fn dec_decs() {
     assert_eq!(enc(as_dec), format!("{as_hex}"));
 }
 
-#[derive(Clone, Debug, Deserialize, PartialEq)]
+#[derive(Clone, Debug, Deserialize, PartialEq, Eq, PartialOrd, Ord)]
 pub(crate) struct BuildContext {
     pub(crate) name: String, // TODO: constrain with Docker stage name pattern
     pub(crate) uri: String,  // TODO: constrain with Docker build-context URIs
