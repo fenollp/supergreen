@@ -16,7 +16,10 @@ use tokio::process::Command;
 
 use crate::{
     cli::{envs, exit_code, help, pull},
-    envs::{base_image, called_from_build_script, internal, maybe_log, pass_env, runner, syntax},
+    envs::{
+        alpine_image, base_image, called_from_build_script, internal, maybe_log, pass_env, runner,
+        syntax,
+    },
     ir::{BuildContext, Head, CRATESIO_PREFIX, HDR},
     parse::RustcArgs,
     pops::Popped,
@@ -33,6 +36,7 @@ mod runner;
 const PKG: &str = env!("CARGO_PKG_NAME");
 const VSN: &str = env!("CARGO_PKG_VERSION");
 
+const ALPINE: &str = "alpine";
 const RUST: &str = "rust";
 
 // NOTE: this RUSTC_WRAPPER program only ever gets called by `cargo`, so we save
@@ -378,14 +382,13 @@ async fn bake_rustc(
             .await
             .with_context(|| format!("Failed reading {cratesio_cached}"))?;
 
-        let alpine = "docker.io/library/alpine@sha256:c5b1261d6d3e43071626931fc004f70149baeba2c8ec672bd4f27761f8e1ad6b";
         // TODO: see if {cratesio_index} can be dropped from paths (+ stage names) => content hashing + remap-path-prefix?
         let cratesio_stage = format!("{name}-{version}-{cratesio_index}"); // No need for more, e.g. crate_type
-        let cratesio = "https://static.crates.io";
+        const CRATESIO: &str = "https://static.crates.io";
         let mut script = String::new();
-        script.push_str(&format!("FROM {alpine} AS {cratesio_stage}\n")); // FIXME alpine like rust img
+        script.push_str(&format!("FROM {ALPINE} AS {cratesio_stage}\n"));
         script.push_str(&format!("ADD --chmod=0664 --checksum=sha256:{cratesio_hash} \\\n"));
-        script.push_str(&format!("  {cratesio}/crates/{name}/{name}-{version}.crate /crate\n"));
+        script.push_str(&format!("  {CRATESIO}/crates/{name}/{name}-{version}.crate /crate\n"));
         // Using tar: https://github.com/rust-lang/cargo/issues/3577#issuecomment-890693359
         script.push_str("RUN set -eux && tar -zxf /crate --strip-components=1 -C /tmp/\n");
 
@@ -550,8 +553,12 @@ async fn bake_rustc(
     let mut mounts = Vec::with_capacity(all_externs.len());
     let mut head = Head::new(&metadata);
 
+    let alpine = alpine_image().await.to_owned();
     head.contexts = [
         Some((RUST.to_owned(), base_image().await.to_owned())),
+        input_mount
+            .as_ref()
+            .and_then(|(_, src, _)| src.is_some().then_some((ALPINE.to_owned(), alpine))),
         input_mount
             .and_then(|(name, src, target)| src.is_none().then_some((name, target.to_string()))),
         cwd.as_ref().map(|(_, cwd)| ("cwd".to_owned(), cwd.to_string())),

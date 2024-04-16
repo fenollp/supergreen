@@ -11,6 +11,7 @@ pub(crate) mod internal {
     use std::env;
 
     pub const RUSTCBUILDX: &str = "RUSTCBUILDX";
+    pub const RUSTCBUILDX_ALPINE_IMAGE: &str = "RUSTCBUILDX_ALPINE_IMAGE";
     pub const RUSTCBUILDX_BASE_IMAGE: &str = "RUSTCBUILDX_BASE_IMAGE";
     pub const RUSTCBUILDX_LOG: &str = "RUSTCBUILDX_LOG";
     pub const RUSTCBUILDX_LOG_PATH: &str = "RUSTCBUILDX_LOG_PATH";
@@ -20,6 +21,9 @@ pub(crate) mod internal {
 
     pub fn this() -> Option<String> {
         env::var(RUSTCBUILDX).ok()
+    }
+    pub fn alpine_image() -> Option<String> {
+        env::var(RUSTCBUILDX_ALPINE_IMAGE).ok()
     }
     pub fn base_image() -> Option<String> {
         env::var(RUSTCBUILDX_BASE_IMAGE).ok()
@@ -84,7 +88,8 @@ pub(crate) async fn base_image() -> &'static str {
         None => {
             let ctx = if let Some(val) = internal::base_image() {
                 if !val.starts_with("docker-image://") {
-                    panic!("{} must start with 'docker-image://'", internal::RUSTCBUILDX_BASE_IMAGE)
+                    let var = internal::RUSTCBUILDX_BASE_IMAGE;
+                    panic!("{var} must start with 'docker-image://'")
                 }
                 val
             } else {
@@ -104,6 +109,28 @@ pub(crate) async fn base_image() -> &'static str {
 
             let _ = ONCE.set(ctx);
             ONCE.get().expect("just set base_image")
+        }
+    }
+}
+
+// A Docker image or any build context, actually.
+#[must_use]
+pub(crate) async fn alpine_image() -> &'static str {
+    static ONCE: OnceLock<String> = OnceLock::new();
+    match ONCE.get() {
+        Some(ctx) => ctx,
+        None => {
+            let ctx = "docker-image://docker.io/library/alpine:3";
+            let val = internal::alpine_image().unwrap_or(ctx.to_owned());
+            if !val.starts_with("docker-image://") {
+                let var = internal::RUSTCBUILDX_ALPINE_IMAGE;
+                panic!("{var} must start with 'docker-image://'")
+            }
+
+            let ctx = maybe_lock_image(val).await;
+
+            let _ = ONCE.set(ctx);
+            ONCE.get().expect("just set alpine_image")
         }
     }
 }

@@ -7,7 +7,7 @@ use std::{
 use anyhow::{Context, Result};
 use tokio::process::Command;
 
-use crate::envs::{base_image, internal, log_path, runner, syntax};
+use crate::envs::{alpine_image, base_image, internal, log_path, runner, syntax};
 
 // TODO: tune logging verbosity https://docs.rs/clap-verbosity-flag/latest/clap_verbosity_flag/
 
@@ -34,6 +34,7 @@ Usage:
 pub(crate) async fn envs(vars: Vec<String>) -> ExitCode {
     let all: BTreeMap<_, _> = [
         ("RUSTCBUILDX", internal::this()),
+        ("RUSTCBUILDX_ALPINE_IMAGE", Some(alpine_image().await.to_owned())),
         ("RUSTCBUILDX_BASE_IMAGE", Some(base_image().await.to_owned())),
         ("RUSTCBUILDX_LOG", internal::log()),
         ("RUSTCBUILDX_LOG_PATH", Some(log_path().to_owned())),
@@ -65,9 +66,11 @@ pub(crate) async fn envs(vars: Vec<String>) -> ExitCode {
 pub(crate) async fn pull() -> Result<ExitCode> {
     let command = runner();
     let mut failure = ExitCode::SUCCESS;
-    for (user_input, img) in
-        [(internal::syntax(), syntax().await), (internal::base_image(), base_image().await)]
-    {
+    for (user_input, img) in [
+        (internal::syntax(), syntax().await),
+        (internal::base_image(), base_image().await),
+        (internal::alpine_image(), alpine_image().await),
+    ] {
         let img = img.trim_start_matches("docker-image://");
         let img = if img.contains('@')
             && (user_input.is_none() || user_input.map(|x| !x.contains('@')).unwrap_or_default())
