@@ -175,6 +175,18 @@ async fn bake_rustc(
     let RustcArgs { crate_type, emit, externs, metadata, incremental, input, out_dir, target_path } =
         st;
 
+    const BUILDRS_CRATE_NAME: &str = "build_script_build";
+    let krate_version = env::var("CARGO_PKG_VERSION").ok().unwrap_or_default();
+    let krate_name = env::var("CARGO_PKG_NAME").ok().unwrap_or_default();
+    let full_crate_id = if crate_name == BUILDRS_CRATE_NAME {
+        assert_eq!(&crate_type, "bin"); // TODO: drop
+        format!("buildrs-{krate_name}-{krate_version}-{metadata}")
+    } else {
+        assert_ne!(crate_name, BUILDRS_CRATE_NAME); // TODO: drop
+        format!("{crate_type}-{krate_name}-{krate_version}-{metadata}")
+    };
+    let krate = full_crate_id.as_str();
+
     // NOTE: not `out_dir`
     let crate_out = env::var("OUT_DIR")
         .ok()
@@ -188,9 +200,6 @@ async fn bake_rustc(
                 .count();
             (listing != 0).then_some(crate_out) // crate_out dir empty => mount can be dropped
         });
-
-    let full_crate_id = format!("{crate_type}-{crate_name}-{metadata}"); // FIXME: include crate_version (: CARGO_PKG_VERSION=)
-    let krate = full_crate_id.as_str();
 
     // https://github.com/rust-lang/cargo/issues/12059
     let mut all_externs = BTreeSet::new();
@@ -374,13 +383,13 @@ async fn bake_rustc(
         let cratesio_stage = format!("{name}-{version}-{cratesio_index}"); // No need for more, e.g. crate_type
         let cratesio = "https://static.crates.io";
         let mut script = String::new();
-        script.push_str(&format!("FROM {alpine} AS {cratesio_stage}\n"));
+        script.push_str(&format!("FROM {alpine} AS {cratesio_stage}\n")); // FIXME alpine like rust img
         script.push_str(&format!("ADD --chmod=0664 --checksum=sha256:{cratesio_hash} \\\n"));
         script.push_str(&format!("  {cratesio}/crates/{name}/{name}-{version}.crate /crate\n"));
         // Using tar: https://github.com/rust-lang/cargo/issues/3577#issuecomment-890693359
         script.push_str("RUN set -eux && tar -zxf /crate --strip-components=1 -C /tmp/\n");
 
-        let rustc_stage = format!("dep-{name}-{version}-{full_crate_id}-{cratesio_index}");
+        let rustc_stage = format!("dep-{full_crate_id}-{cratesio_index}");
         (Some((cratesio_stage, Some("/tmp"), cratesio_extracted)), rustc_stage, script)
     } else {
         let (input_mount, rustc_stage) = match input.iter().rev().take(4).collect::<Vec<_>>()[..] {
@@ -536,8 +545,6 @@ async fn bake_rustc(
 
     log::debug!(target:&krate, "all_externs = {all_externs:?}");
     assert!(externs.len() <= all_externs.len());
-
-    // let full_crate_id = format!("{crate_type}-{crate_name}-{metadata}"); // FIXME: include crate_version (: CARGO_PKG_VERSION=)
 
     let mut dag = Vec::with_capacity(1 + all_externs.len()); // TODO: ask upstream `docker buildx` for orderless stages (so we can concat Dockerfiles any which way)
     let mut mounts = Vec::with_capacity(all_externs.len());
