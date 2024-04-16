@@ -17,7 +17,7 @@ use tokio::process::Command;
 use crate::{
     cli::{envs, exit_code, help, pull},
     envs::{base_image, called_from_build_script, internal, maybe_log, pass_env, runner, syntax},
-    ir::{BuildContext, Head, CRATESIO_PREFIX, HDR},
+    ir::{dec, BuildContext, Head, CRATESIO_PREFIX, HDR},
     parse::RustcArgs,
     pops::Popped,
     runner::{build, MARK_STDERR, MARK_STDOUT},
@@ -542,8 +542,7 @@ async fn bake_rustc(
     let mut dag = vec![];
     let mut mounts = Vec::with_capacity(all_externs.len());
     let mut headed_paths = vec![];
-    let mut visited: BTreeMap<u64, bool> = BTreeMap::new();
-    log::info!(target:&krate, ">>> metadata={metadata} = {}", dec(&metadata));
+    let mut head = Head::new(&metadata);
     let mut mnt = vec![];
     for xtern in all_externs {
         let Some((headed_path, headed_stage)) = headed_path_and_stage(xtern.clone(), &target_path)
@@ -556,30 +555,19 @@ async fn bake_rustc(
         let xtern_script_path = from_headed_path(headed_path);
 
         log::info!(target:&krate, "opening (RO) extern dockerfile {xtern_script_path}");
-        let errf = || format!("Failed reading {xtern_script_path}");
-        let fd = File::open(&xtern_script_path).with_context(errf)?;
-        let errf = || format!("Parsing head of {xtern_script_path}");
-        let xtern_script_head = Head::from_file(fd).with_context(errf)?;
+        let errf = |e| anyhow!("Failed reading {xtern_script_path}: {e}");
+        let fd = File::open(&xtern_script_path).map_err(errf)?;
+        let errf = |e| anyhow!("Parsing head of {xtern_script_path}: {e}");
+        let xtern_script_head = Head::from_file(fd).map_err(errf)?;
 
-        let this = dec(&xtern_script_head.this);
-        log::info!(target:&krate, ">>> this={this}");
-        let deps: Vec<_> = xtern_script_head.mnt.iter().map(dec).collect();
-        log::info!(target:&krate, ">>> deps={deps:?}");
-        let node = szyk::Node::new(this, deps.clone(), xtern_script_path);
-        log::info!(target:&krate, ">>> node+= ({:?}->{:?}){node:?}",xtern_script_head.this,xtern_script_head.mnt);
-        dag.push(node);
-        visited.extend(deps.into_iter().map(|x| (x, false)));
-        *visited.entry(this).or_default() = true;
-        mnt.push(this);
+        dag.push(szyk::Node::new(xtern_script_head.this, xtern_script_head.mnt, xtern_script_path));
+        mnt.push(xtern_script_head.this);
     }
-    dag.push(szyk::Node::new(dec(&metadata), mnt, "".into()));
-    *visited.entry(dec(&metadata)).or_default() = true;
-    log::info!(target:&krate, ">>> visited({})= {visited:?}", visited.len());
-    let mut extern_scripts = match szyk::sort(&dag, dec(&metadata)) {
+    dag.push(szyk::Node::new(head.this, mnt, "".into()));
+    let mut extern_scripts = match szyk::sort(&dag, head.this) {
         Ok(ordering) => ordering,
-        Err(e) => bail!("Failed topolosorting {metadata} ({}): {e:?}", dec(&metadata)),
+        Err(e) => bail!("Failed topolosorting {metadata} ({}): {e:?}", head.this),
     };
-    log::info!(target:&krate, ">>> ordering= {extern_scripts:?}");
     extern_scripts.truncate(extern_scripts.len() - 1);
     let extern_scripts = extern_scripts; // Drops mut
 
@@ -619,12 +607,10 @@ async fn bake_rustc(
     // NOTE: -C extra-filename=-${metadata} (starts with dash)
     // TODO: use extra filename here for fwd compat
 
-    let mut head = Head::new(&metadata);
     head.mnt = mounts
         .into_iter()
-        .inspect(|x| log::info!(target:&krate, ">>> {x:?}"))
         .filter(|(x, _, _)| x.starts_with("out-"))
-        .map(|(name, _, _)| name.trim_start_matches("out-").to_owned())
+        .map(|(name, _, _)| dec(&name.trim_start_matches("out-").to_owned()))
         .collect();
     let script = script; // Drop mut
 
@@ -657,6 +643,27 @@ async fn bake_rustc(
     log::info!(target:&krate, "extern_scripts {}: {extern_scripts:?}", extern_scripts.len());
     let mut headed_script = String::new();
     let mut visited_cratesio_stages = BTreeSet::new();
+    let append = |final_script: &mut String,
+                  visited_cratesio_stages: &mut BTreeSet<String>,
+                  lines: Vec<String>| {
+        assert!(lines.len() >= 5);
+        assert!(lines[0].starts_with("FROM "));
+        // FIXME: please => turn single .Dockerfile s into plain toml with stages = [ "cratesio", "rust", "incr"]
+        let mut begin_from = 0..;
+        if lines[4].starts_with("FROM rust AS ") {
+            begin_from = 4..;
+            let cratesio_stage = lines[..4].join("\n");
+            if !visited_cratesio_stages.contains(&cratesio_stage) {
+                final_script.push_str(&cratesio_stage);
+                final_script.push('\n');
+                visited_cratesio_stages.insert(cratesio_stage);
+            }
+        }
+        for line in &lines[begin_from] {
+            final_script.push_str(line);
+            final_script.push('\n');
+        }
+    };
     for extern_script_path in extern_scripts {
         log::info!(target:&krate, "opening (RO) extern dockerfile {extern_script_path}");
         let fd = File::open(&extern_script_path)
@@ -666,30 +673,11 @@ async fn bake_rustc(
             .map_while(Result::ok)
             .filter(|x| !x.starts_with(HDR))
             .collect();
-        assert!(lines.len() >= 5);
-        assert!(lines[0].starts_with("FROM "));
-        // FIXME: please => turn single .Dockerfile s into plain toml with stages = [ "cratesio", "rust", "incr"]
-        for (i, line) in lines.iter().enumerate().take(5) {
-            log::info!(target:&krate, ">>> i={i} lines[{i}] = {:?} .starts_withFROM rust AS: {}",line, line.starts_with("FROM rust AS"));
-        }
-        log::info!(target:&krate, ">>> visited_cratesio_stages: {visited_cratesio_stages:?}");
-        let mut begin_from = 0..;
-        if lines[4].starts_with("FROM rust AS ") {
-            begin_from = 4..;
-            let cratesio_stage = lines[..4].join("\n");
-            if !visited_cratesio_stages.contains(&cratesio_stage) {
-                headed_script.push_str(&cratesio_stage);
-                headed_script.push('\n');
-                visited_cratesio_stages.insert(cratesio_stage);
-            }
-        }
-        for line in &lines[begin_from] {
-            headed_script.push_str(line);
-            headed_script.push('\n');
-        }
+        append(&mut headed_script, &mut visited_cratesio_stages, lines);
         headed_script.push('\n');
     }
-    headed_script.push_str(&script);
+    let lines = script.lines().map(ToOwned::to_owned).collect();
+    append(&mut headed_script, &mut visited_cratesio_stages, lines);
 
     let syntax = syntax().await.trim_start_matches("docker-image://");
 
@@ -914,17 +902,4 @@ fn copy_files(dir: &Utf8Path, dst: &Utf8Path) -> Result<()> {
         }
     }
     Ok(())
-}
-
-#[inline]
-fn dec(#[allow(clippy::ptr_arg)] x: &String) -> u64 {
-    u64::from_str_radix(x, 16).expect(">>>")
-}
-
-#[test]
-fn dec_decs() {
-    let as_hex = "dab737da4696ee62".to_owned();
-    let as_dec = 15760126831633034850;
-    assert_eq!(dec(&as_hex), as_dec);
-    assert_eq!(format!("{as_dec:#x}"), format!("0x{as_hex}"));
 }

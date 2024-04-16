@@ -21,13 +21,15 @@ pub(crate) const HDR: &str = "# ";
 // FROM ..
 #[derive(Debug, Deserialize, PartialEq)]
 pub(crate) struct Head {
-    pub(crate) this: String,
-    pub(crate) mnt: Vec<String>,
+    #[serde(deserialize_with = "dec_id")]
+    pub(crate) this: u64,
+    #[serde(deserialize_with = "dec_ids")]
+    pub(crate) mnt: Vec<u64>,
     pub(crate) contexts: Vec<BuildContext>,
 }
 impl Head {
     pub(crate) fn new(this: &str) -> Self {
-        Self { this: this.to_owned(), mnt: vec![], contexts: vec![] }
+        Self { this: dec(&this.to_owned()), mnt: vec![], contexts: vec![] }
     }
 
     pub(crate) fn from_file(fd: File) -> Result<Self> {
@@ -46,15 +48,47 @@ impl Head {
 
     pub(crate) fn write_to_slice(&self, header: &mut String) {
         let Self { this, mnt, contexts } = self;
-        header.push_str(&format!("# this = {this:?}\n"));
-        let mnt = mnt.iter().map(|x| format!("{x:?}")).collect::<Vec<_>>().join(",");
-        header.push_str(&format!("# mnt = [{mnt}]\n"));
+        header.push_str(&format!("# this = {:?}\n", enc(*this)));
+        let mnt: Vec<_> = mnt.iter().map(|x| format!("{:?}", enc(*x))).collect();
+        header.push_str(&format!("# mnt = [{}]\n", mnt.join(",")));
         header.push_str("# contexts = [\n");
         for BuildContext { name, uri } in contexts {
             header.push_str(&format!("{HDR}  {{ name = {name:?}, uri = {uri:?} }},\n"));
         }
         header.push_str("# ]\n");
     }
+}
+
+#[inline]
+pub(crate) fn dec(#[allow(clippy::ptr_arg)] x: &String) -> u64 {
+    u64::from_str_radix(x, 16).expect(">>>")
+}
+
+#[inline]
+fn enc(metadata: u64) -> String {
+    format!("{metadata:#x}").trim_start_matches("0x").to_owned()
+}
+
+fn dec_id<'de, D>(de: D) -> Result<u64, D::Error>
+where
+    D: serde::Deserializer<'de>,
+{
+    Ok(dec(&<String>::deserialize(de)?))
+}
+
+fn dec_ids<'de, D>(de: D) -> Result<Vec<u64>, D::Error>
+where
+    D: serde::Deserializer<'de>,
+{
+    <Vec<String>>::deserialize(de)?.into_iter().map(|x| Ok(dec(&x))).collect()
+}
+
+#[test]
+fn dec_decs() {
+    let as_hex = "dab737da4696ee62".to_owned();
+    let as_dec = 15760126831633034850;
+    assert_eq!(dec(&as_hex), as_dec);
+    assert_eq!(enc(as_dec), format!("{as_hex}"));
 }
 
 #[derive(Clone, Debug, Deserialize, PartialEq)]
@@ -107,8 +141,8 @@ impl From<(String, String)> for BuildContext {
 #[test]
 fn head_ser() {
     let head = Head {
-        this: "711ba64e1183a234".to_owned(),
-        mnt: vec!["81529f4c2380d9ec".to_owned(), "88a4324b2aff6db9".to_owned()],
+        this: dec(&"711ba64e1183a234".to_owned()),
+        mnt: vec![dec(&"81529f4c2380d9ec".to_owned()), dec(&"88a4324b2aff6db9".to_owned())],
         contexts: vec![BuildContext { name: "rust".to_owned(), uri: "docker-image://docker.io/library/rust:1.77.2-slim@sha256:090d8d4e37850b349b59912647cc7a35c6a64dba8168f6998562f02483fa37d7".to_owned() }],
     };
 
@@ -145,8 +179,8 @@ fn head_utils() {
 ...
 "#).unwrap();
 
-    let this = "9494aa6093cd94c9".to_owned();
-    let mnt = vec!["0dc1fe2644e3176a".to_owned()];
+    let this = dec(&"9494aa6093cd94c9".to_owned());
+    let mnt = vec![dec(&"0dc1fe2644e3176a".to_owned())];
     let contexts = vec![
         BuildContext {
     name:RUST.to_owned(),
