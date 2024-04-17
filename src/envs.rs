@@ -4,7 +4,7 @@ use std::{
     sync::OnceLock,
 };
 
-use anyhow::{Context, Result};
+use anyhow::{anyhow, Result};
 use tokio::process::Command;
 
 pub(crate) mod internal {
@@ -171,12 +171,14 @@ pub(crate) async fn syntax() -> &'static str {
     }
 }
 
+// TODO: rename proj to https://crates.io/search?q=cargo-surimi
+
 #[must_use]
 pub(crate) fn maybe_log() -> Option<fn() -> Result<File>> {
     fn log_file() -> Result<File> {
         let log_path = log_path();
-        let errf = || format!("Failed opening (WA) log file {log_path}");
-        OpenOptions::new().create(true).append(true).open(log_path).with_context(errf)
+        let errf = |e| anyhow!("Failed opening (WA) log file {log_path}: {e}");
+        OpenOptions::new().create(true).append(true).open(log_path).map_err(errf)
     }
 
     internal::log().map(|x| !x.is_empty()).unwrap_or_default().then_some(log_file)
@@ -209,6 +211,7 @@ pub(crate) fn pass_env(var: &str) -> (bool, bool) {
         // Not here but set in RUN script: CARGO, PATH, ...
         "OUT_DIR", // (Only set during compilation.)
     ];
+    // TODO: vvv drop what can be dropped vvv
     let skiplist = [
         "CARGO_BUILD_RUSTC",
         "CARGO_BUILD_RUSTC_WORKSPACE_WRAPPER",
@@ -216,6 +219,7 @@ pub(crate) fn pass_env(var: &str) -> (bool, bool) {
         "CARGO_BUILD_RUSTDOC",
         "CARGO_BUILD_TARGET_DIR",
         "CARGO_HOME",
+        "CARGO_MAKEFLAGS", // TODO: probably drop
         "CARGO_TARGET_DIR",
         "RUSTC_WRAPPER",
     ];

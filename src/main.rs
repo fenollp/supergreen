@@ -184,12 +184,13 @@ async fn bake_rustc(
     let krate_name = env::var("CARGO_PKG_NAME").ok().unwrap_or_default();
     let full_crate_id = if crate_name == BUILDRS_CRATE_NAME {
         assert_eq!(&crate_type, "bin"); // TODO: drop
-        format!("buildrs-{krate_name}-{krate_version}-{metadata}")
+        format!("buildrs|{krate_name}|{krate_version}|{metadata}")
     } else {
         assert_ne!(crate_name, BUILDRS_CRATE_NAME); // TODO: drop
-        format!("{crate_type}-{krate_name}-{krate_version}-{metadata}")
+        format!("{crate_type}|{krate_name}|{krate_version}|{metadata}")
     };
     let krate = full_crate_id.as_str();
+    let crate_id = full_crate_id.replace('|', "-");
 
     // NOTE: not `out_dir`
     let crate_out = env::var("OUT_DIR")
@@ -329,7 +330,7 @@ async fn bake_rustc(
     }
 
     let hm = |prefix: &str, basename: &str, pop: usize| {
-        let stage = format!("{prefix}-{full_crate_id}");
+        let stage = format!("{prefix}-{crate_id}");
         assert_eq!(pop, prefix.chars().filter(|c| *c == '_').count());
         let not_lowalnums = |c: char| {
             !("._-".contains(c) || c.is_ascii_digit() || (c.is_alphabetic() && c.is_lowercase()))
@@ -392,13 +393,13 @@ async fn bake_rustc(
         // Using tar: https://github.com/rust-lang/cargo/issues/3577#issuecomment-890693359
         script.push_str("RUN set -eux && tar -zxf /crate --strip-components=1 -C /tmp/\n");
 
-        let rustc_stage = format!("dep-{full_crate_id}-{cratesio_index}");
+        let rustc_stage = format!("dep-{crate_id}-{cratesio_index}");
         (Some((cratesio_stage, Some("/tmp"), cratesio_extracted)), rustc_stage, script)
     } else {
         let (input_mount, rustc_stage) = match input.iter().rev().take(4).collect::<Vec<_>>()[..] {
-            ["build.rs"] => (None, format!("finalbuildrs-{full_crate_id}")),
-            ["lib.rs", "src"] => (None, format!("final-{full_crate_id}")),
-            ["main.rs", "src"] => (None, format!("final-{full_crate_id}")),
+            ["build.rs"] => (None, format!("finalbuildrs-{crate_id}")),
+            ["lib.rs", "src"] => (None, format!("final-{crate_id}")),
+            ["main.rs", "src"] => (None, format!("final-{crate_id}")),
             ["build.rs", "src", basename, ..] => hm("build__rs", basename, 2), // TODO: un-ducktape
             ["build.rs", basename, ..] => hm("build_rs", basename, 1),
             ["lib.rs", "src", basename, ..] => hm("src_lib_rs", basename, 2),
