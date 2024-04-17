@@ -10,7 +10,7 @@ declare -a nvs nvs_args
 ((i+=1)); nvs[i]=cargo-llvm-cov@0.5.36; oks[i]=ok; nvs_args[i]=''
 ((i+=1)); nvs[i]=cargo-nextest@0.9.61;  oks[i]=ko; nvs_args[i]='' # .. environment variable `TARGET` not defined at compile time .. self_update-0.38.0
 ((i+=1)); nvs[i]=cross@0.2.5;           oks[i]=ko; nvs_args[i]='--git https://github.com/cross-rs/cross.git --tag=v0.2.5 cross' # Failed `cp docker/cross-toolchains /tmp/5c0b38e4c9a646068a44859f854b17cd/docker/cross-toolchains`
-((i+=1)); nvs[i]=diesel_cli@2.1.1;      oks[i]=ko; nvs_args[i]='--no-default-features --features=postgres' # rustix-f01186d74b53ab0e .. could not find native static library `rustix_outline_x86_64`, perhaps an -L flag is missing?
+((i+=1)); nvs[i]=diesel_cli@2.1.1;      oks[i]=ko; nvs_args[i]='--no-default-features --features=postgres' # /usr/bin/ld: cannot find -lpq: No such file or directory
 ((i+=1)); nvs[i]=hickory-dns@0.24.0;    oks[i]=ok; nvs_args[i]='--features=dns-over-rustls'
 ((i+=1)); nvs[i]=vixargs@0.1.0;         oks[i]=ok; nvs_args[i]=''
 

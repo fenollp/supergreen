@@ -20,7 +20,7 @@ use crate::{
         alpine_image, base_image, called_from_build_script, internal, maybe_log, pass_env, runner,
         syntax,
     },
-    ir::{BuildContext, Head, CRATESIO_PREFIX, HDR},
+    ir::{safe_stage, BuildContext, Head, CRATESIO_PREFIX, HDR},
     parse::RustcArgs,
     pops::Popped,
     runner::{build, MARK_STDERR, MARK_STDOUT},
@@ -180,17 +180,19 @@ async fn bake_rustc(
         st;
 
     const BUILDRS_CRATE_NAME: &str = "build_script_build";
-    let krate_version = env::var("CARGO_PKG_VERSION").ok().unwrap_or_default();
-    let krate_name = env::var("CARGO_PKG_NAME").ok().unwrap_or_default();
-    let full_crate_id = if crate_name == BUILDRS_CRATE_NAME {
-        assert_eq!(&crate_type, "bin"); // TODO: drop
-        format!("buildrs|{krate_name}|{krate_version}|{metadata}")
-    } else {
-        assert_ne!(crate_name, BUILDRS_CRATE_NAME); // TODO: drop
-        format!("{crate_type}|{krate_name}|{krate_version}|{metadata}")
+    let full_krate_id = {
+        let krate_version = env::var("CARGO_PKG_VERSION").ok().unwrap_or_default();
+        let krate_name = env::var("CARGO_PKG_NAME").ok().unwrap_or_default();
+        if crate_name == BUILDRS_CRATE_NAME {
+            assert_eq!(&crate_type, "bin"); // TODO: drop
+            format!("buildrs|{krate_name}|{krate_version}|{metadata}")
+        } else {
+            assert_ne!(crate_name, BUILDRS_CRATE_NAME); // TODO: drop
+            format!("{crate_type}|{krate_name}|{krate_version}|{metadata}")
+        }
     };
-    let krate = full_crate_id.as_str();
-    let crate_id = full_crate_id.replace('|', "-");
+    let krate = full_krate_id.as_str();
+    let crate_id = full_krate_id.replace('|', "-");
 
     // NOTE: not `out_dir`
     let crate_out = env::var("OUT_DIR")
@@ -330,7 +332,7 @@ async fn bake_rustc(
     }
 
     let hm = |prefix: &str, basename: &str, pop: usize| {
-        let stage = format!("{prefix}-{crate_id}");
+        let stage = safe_stage(format!("{prefix}-{crate_id}"));
         assert_eq!(pop, prefix.chars().filter(|c| *c == '_').count());
         let not_lowalnums = |c: char| {
             !("._-".contains(c) || c.is_ascii_digit() || (c.is_alphabetic() && c.is_lowercase()))
@@ -384,7 +386,7 @@ async fn bake_rustc(
             .with_context(|| format!("Failed reading {cratesio_cached}"))?;
 
         // TODO: see if {cratesio_index} can be dropped from paths (+ stage names) => content hashing + remap-path-prefix?
-        let cratesio_stage = format!("{name}-{version}-{cratesio_index}"); // No need for more, e.g. crate_type
+        let cratesio_stage = safe_stage(format!("{name}-{version}-{cratesio_index}")); // No need for more, e.g. crate_type
         const CRATESIO: &str = "https://static.crates.io";
         let mut script = String::new();
         script.push_str(&format!("FROM {ALPINE} AS {cratesio_stage}\n"));
@@ -393,13 +395,13 @@ async fn bake_rustc(
         // Using tar: https://github.com/rust-lang/cargo/issues/3577#issuecomment-890693359
         script.push_str("RUN set -eux && tar -zxf /crate --strip-components=1 -C /tmp/\n");
 
-        let rustc_stage = format!("dep-{crate_id}-{cratesio_index}");
+        let rustc_stage = safe_stage(format!("dep-{crate_id}-{cratesio_index}"));
         (Some((cratesio_stage, Some("/tmp"), cratesio_extracted)), rustc_stage, script)
     } else {
         let (input_mount, rustc_stage) = match input.iter().rev().take(4).collect::<Vec<_>>()[..] {
-            ["build.rs"] => (None, format!("finalbuildrs-{crate_id}")),
-            ["lib.rs", "src"] => (None, format!("final-{crate_id}")),
-            ["main.rs", "src"] => (None, format!("final-{crate_id}")),
+            ["build.rs"] => (None, safe_stage(format!("finalbuildrs-{crate_id}"))),
+            ["lib.rs", "src"] => (None, safe_stage(format!("final-{crate_id}"))),
+            ["main.rs", "src"] => (None, safe_stage(format!("final-{crate_id}"))),
             ["build.rs", "src", basename, ..] => hm("build__rs", basename, 2), // TODO: un-ducktape
             ["build.rs", basename, ..] => hm("build_rs", basename, 1),
             ["lib.rs", "src", basename, ..] => hm("src_lib_rs", basename, 2),
@@ -435,8 +437,8 @@ async fn bake_rustc(
     log::info!(target:&krate, "picked {rustc_stage} for {suf:?}", suf=input.iter().rev().take(4).collect::<Vec<_>>());
     assert!(!matches!(input_mount, Some((_,_,ref x)) if x.ends_with("/.cargo/registry")));
 
-    let incremental_stage = format!("incremental-{metadata}");
-    let out_stage = format!("out-{metadata}");
+    let incremental_stage = safe_stage(format!("incremental-{metadata}"));
+    let out_stage = safe_stage(format!("out-{metadata}"));
 
     script.push_str(&format!("FROM {RUST} AS {rustc_stage}\n"));
     script.push_str(&format!("WORKDIR {out_dir}\n"));

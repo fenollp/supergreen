@@ -91,6 +91,25 @@ fn dec_decs() {
     assert_eq!(enc(as_dec), format!("{as_hex}"));
 }
 
+// FIXME: nutype?
+#[inline]
+#[must_use]
+pub(crate) fn safe_stage(stage: String) -> String {
+    stage
+        .to_lowercase()
+        .replace(|c: char| c != '.' && !c.is_alphanumeric(), "-")
+        .replace("___", "_")
+        .to_owned()
+}
+
+#[test]
+fn safe_stages() {
+    pretty_assertions::assert_eq!(
+        safe_stage("libgit2-sys-0.14.2+1.5.1-index.crates.io-6f17d22bba15001f".to_owned()),
+        "libgit2-sys-0.14.2-1.5.1-index.crates.io-6f17d22bba15001f".to_owned()
+    );
+}
+
 #[derive(Clone, Debug, Deserialize, PartialEq, Eq, PartialOrd, Ord)]
 pub(crate) struct BuildContext {
     pub(crate) name: String, // TODO: constrain with Docker stage name pattern
