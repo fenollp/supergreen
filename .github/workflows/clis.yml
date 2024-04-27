@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-    - run: ./clis.sh | tee .github/workflows/clis.yml
+    - run: ./hack/clis.sh | tee .github/workflows/clis.yml
     - run: git --no-pager diff --exit-code
     - name: Run shellcheck
       uses: ludeeus/action-shellcheck@2.0.0

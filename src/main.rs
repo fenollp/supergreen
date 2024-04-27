@@ -8,7 +8,7 @@ use std::{
     unreachable,
 };
 
-use anyhow::{anyhow, bail, Context, Result};
+use anyhow::{anyhow, bail, Result};
 use camino::{Utf8Path, Utf8PathBuf};
 use env_logger::{Env, Target};
 use mktemp::Temp;
@@ -16,17 +16,19 @@ use tokio::process::Command;
 
 use crate::{
     cli::{envs, exit_code, help, pull},
+    cratesio::{from_cratesio_input_path, into_stage},
     envs::{
         alpine_image, base_image, called_from_build_script, internal, maybe_log, pass_env, runner,
         syntax,
     },
-    ir::{safe_stage, BuildContext, Head, CRATESIO_PREFIX, HDR},
+    ir::{safe_stage, BuildContext, Head, HDR},
     parse::RustcArgs,
     pops::Popped,
     runner::{build, MARK_STDERR, MARK_STDOUT},
 };
 
 mod cli;
+mod cratesio;
 mod envs;
 mod ir;
 mod parse;
@@ -139,10 +141,10 @@ async fn call_rustc(rustc: &str, args: Vec<String>) -> Result<ExitCode> {
         .kill_on_drop(true)
         .args(&args)
         .spawn()
-        .with_context(|| format!("Failed to spawn rustc {rustc} with {args:?}"))?
+        .map_err(|e| anyhow!("Failed to spawn rustc {rustc} with {args:?}: {e}"))?
         .wait()
         .await
-        .with_context(|| format!("Failed to wait for rustc {rustc} with {args:?}"))?
+        .map_err(|e| anyhow!("Failed to wait for rustc {rustc} with {args:?}: {e}"))?
         .code();
     Ok(exit_code(code))
 }
@@ -171,8 +173,9 @@ async fn bake_rustc(
     let krate = format!("{PKG}:{crate_name}");
     log::info!(target:&krate, "{PKG}@{VSN} original args: {arguments:?}");
 
-    let pwd = env::current_dir().context("Failed to get $PWD")?;
-    let pwd: Utf8PathBuf = pwd.try_into().context("Path's UTF-8 encoding is corrupted")?;
+    let pwd = env::current_dir().map_err(|e| anyhow!("Failed to get $PWD: {e}"))?;
+    let pwd: Utf8PathBuf =
+        pwd.try_into().map_err(|e| anyhow!("Path's UTF-8 encoding is corrupted: {e}"))?;
 
     let (st, args) = parse::as_rustc(&pwd, crate_name, arguments, debug.is_some())?;
     log::info!(target:&krate, "{st:?}");
@@ -224,9 +227,9 @@ async fn bake_rustc(
 
     if crate_type == "proc-macro" {
         // This way crates that depend on this know they must require it as .so
-        let guard = format!("{crate_externs}_proc-macro");
+        let guard = format!("{crate_externs}_proc-macro"); // FIXME: store this bit of info in smol file
         log::info!(target:&krate, "opening (RW) {guard}");
-        fs::write(&guard, "").with_context(|| format!("Failed to `touch {guard}`"))?;
+        fs::write(&guard, "").map_err(|e| anyhow!("Failed to `touch {guard}`: {e}"))?;
     };
 
     let mut short_externs = BTreeSet::new();
@@ -251,21 +254,18 @@ async fn bake_rustc(
 
         let xtern_crate_externs = externs_prefix(xtern);
         log::info!(target:&krate, "checking (RO) extern's externs {xtern_crate_externs}");
-        if file_exists_and_is_not_empty(&xtern_crate_externs)
-            .with_context(|| format!("Failed to `test -s {crate_externs}`"))?
-        {
+        let errf = |e| anyhow!("Failed to `test -s {crate_externs}`: {e}");
+        if file_exists_and_is_not_empty(&xtern_crate_externs).map_err(errf)? {
             log::info!(target:&krate, "opening (RO) crate externs {xtern_crate_externs}");
-            let fd = File::open(&xtern_crate_externs)
-                .with_context(|| format!("Failed to `cat {xtern_crate_externs}`"))?;
-            for line in BufReader::new(fd).lines() {
-                let transitive =
-                    line.with_context(|| format!("Corrupted {xtern_crate_externs}"))?;
+            let errf = |e| anyhow!("Failed to `cat {xtern_crate_externs}`: {e}");
+            let fd = File::open(&xtern_crate_externs).map_err(errf)?;
+            for transitive in BufReader::new(fd).lines().map_while(Result::ok) {
                 assert_ne!(transitive, "");
 
                 let guard = externs_prefix(&format!("{transitive}_proc-macro"));
                 log::info!(target:&krate, "checking (RO) extern's guard {guard}");
                 let actual_extern =
-                    if file_exists(&guard).with_context(|| format!("Failed to `stat {guard}`"))? {
+                    if file_exists(&guard).map_err(|e| anyhow!("Failed to `stat {guard}`: {e}"))? {
                         format!("lib{transitive}.so")
                     } else {
                         format!("lib{transitive}.{ext}")
@@ -279,7 +279,7 @@ async fn bake_rustc(
                     let deps_dir = Utf8Path::new(&target_path).join("deps");
                     log::info!(target:&krate, "extern crate's extern matches {deps_dir}/lib*.*");
                     let listing = fs::read_dir(&deps_dir)
-                        .with_context(|| format!("Failed reading directory {deps_dir}"))?
+                        .map_err(|e| anyhow!("Failed reading directory {deps_dir}: {e}"))?
                         .filter_map(Result::ok)
                         .filter_map(|p| {
                             let p = p.path();
@@ -301,17 +301,16 @@ async fn bake_rustc(
         }
     }
     log::info!(target:&krate, "checking (RO) externs {crate_externs}");
-    if !file_exists_and_is_not_empty(&crate_externs)
-        .with_context(|| format!("Failed to `test -s {crate_externs}`"))?
-    {
+    let errf = |e| anyhow!("Failed to `test -s {crate_externs}`: {e}");
+    if !file_exists_and_is_not_empty(&crate_externs).map_err(errf)? {
         let mut shorts = String::new();
         for short_extern in &short_externs {
             shorts.push_str(short_extern);
             shorts.push('\n');
         }
         log::info!(target:&krate, "writing (RW) externs to {crate_externs}");
-        fs::write(&crate_externs, shorts)
-            .with_context(|| format!("Failed creating crate externs {crate_externs}"))?;
+        let errf = |e| anyhow!("Failed creating crate externs {crate_externs}: {e}");
+        fs::write(&crate_externs, shorts).map_err(errf)?;
     }
     let all_externs = all_externs;
     log::info!(target:&krate, "crate_externs: {crate_externs}");
@@ -325,11 +324,13 @@ async fn bake_rustc(
         .for_each(|line| log::debug!(target:&krate, "❯ {line}"));
     }
 
-    fs::create_dir_all(&out_dir).with_context(|| format!("Failed to `mkdir -p {out_dir}`"))?;
+    fs::create_dir_all(&out_dir).map_err(|e| anyhow!("Failed to `mkdir -p {out_dir}`: {e}"))?;
     if let Some(ref incremental) = incremental {
-        fs::create_dir_all(incremental)
-            .with_context(|| format!("Failed to `mkdir -p {incremental}`"))?;
+        let errf = |e| anyhow!("Failed to `mkdir -p {incremental}`: {e}");
+        fs::create_dir_all(incremental).map_err(errf)?;
     }
+
+    let mut smol = Smol::default();
 
     let hm = |prefix: &str, basename: &str, pop: usize| {
         let stage = safe_stage(format!("{prefix}-{crate_id}"));
@@ -343,61 +344,28 @@ async fn bake_rustc(
         (Some((name, target)), stage)
     };
 
-    let cargo_home =
-        env::var("CARGO_HOME").map(Utf8PathBuf::from).context("`cargo` sets $CARGO_HOME")?;
+    let cargo_home = env::var("CARGO_HOME")
+        .map(Utf8PathBuf::from)
+        .map_err(|e| anyhow!("`cargo` sets $CARGO_HOME: {e}"))?;
 
-    // TODO: impl non-default build.rs https://doc.rust-lang.org/cargo/reference/manifest.html?highlight=build.rs#the-build-field
+    // TODO: allow opt-out of cratesio_stage => to support offline builds
+    // TODO: or, allow a `cargo fetch` alike: create+pre-build all cratesio stages from lockfile
     let (input_mount, rustc_stage, mut script) = if input
         .starts_with(cargo_home.join("registry/src"))
     {
         // Input is of a crate dep (hosted at crates.io)
         // Let's optimize this case by fetching & caching crate tarball
 
-        let (name, version, cratesio_index) = {
-            let mut it = input.iter();
-            let mut cratesio_index = String::new();
-            let mut cratesio_crate = None;
-            while let Some(part) = it.next() {
-                if part.starts_with(CRATESIO_PREFIX) {
-                    cratesio_index = part.to_owned();
-                    cratesio_crate = it.next();
-                    break;
-                }
-            }
-            if cratesio_index.is_empty() || cratesio_crate.map_or(true, str::is_empty) {
-                bail!("Unexpected cratesio crate path: {input}")
-            }
-            let cratesio_crate = cratesio_crate.expect("just checked above");
+        let (name, version, cratesio_index) = from_cratesio_input_path(&input)?;
 
-            let Some((name, version)) = cratesio_crate.rsplit_once('-') else {
-                bail!("Unexpected cratesio crate format: {cratesio_crate}")
-            };
-
-            (name, version, cratesio_index)
-        };
-
-        let cratesio_extracted =
-            cargo_home.join(format!("registry/src/{cratesio_index}/{name}-{version}"));
-        let cratesio_cached =
-            cargo_home.join(format!("registry/cache/{cratesio_index}/{name}-{version}.crate"));
-        log::info!(target:&krate, "opening (RO) crate tarball {cratesio_cached}");
-        let cratesio_hash = sha256::try_async_digest(cratesio_cached.as_path())
-            .await
-            .with_context(|| format!("Failed reading {cratesio_cached}"))?;
-
-        // TODO: see if {cratesio_index} can be dropped from paths (+ stage names) => content hashing + remap-path-prefix?
-        let cratesio_stage = safe_stage(format!("{name}-{version}-{cratesio_index}")); // No need for more, e.g. crate_type
-        const CRATESIO: &str = "https://static.crates.io";
-        let mut script = String::new();
-        script.push_str(&format!("FROM {ALPINE} AS {cratesio_stage}\n"));
-        script.push_str(&format!("ADD --chmod=0664 --checksum=sha256:{cratesio_hash} \\\n"));
-        script.push_str(&format!("  {CRATESIO}/crates/{name}/{name}-{version}.crate /crate\n"));
-        // Using tar: https://github.com/rust-lang/cargo/issues/3577#issuecomment-890693359
-        script.push_str("RUN set -eux && tar -zxf /crate --strip-components=1 -C /tmp/\n");
+        let (cratesio_stage, block) =
+            into_stage(cargo_home.as_path(), &name, &version, &cratesio_index).await?;
+        smol.push_block(cratesio_stage, block);
 
         let rustc_stage = safe_stage(format!("dep-{crate_id}-{cratesio_index}"));
-        (Some((cratesio_stage, Some("/tmp"), cratesio_extracted)), rustc_stage, script)
+        (Some((cratesio_stage, Some("/tmp"), cratesio_extracted)), rustc_stage, block)
     } else {
+        // TODO: impl non-default build.rs https://doc.rust-lang.org/cargo/reference/manifest.html?highlight=build.rs#the-build-field
         let (input_mount, rustc_stage) = match input.iter().rev().take(4).collect::<Vec<_>>()[..] {
             ["build.rs"] => (None, safe_stage(format!("finalbuildrs-{crate_id}"))),
             ["lib.rs", "src"] => (None, safe_stage(format!("final-{crate_id}"))),
@@ -499,7 +467,7 @@ async fn bake_rustc(
         //     --mount=type=bind,source=Cargo.toml,target=Cargo.toml \
         //     --mount=type=bind,source=Cargo.lock,target=Cargo.lock \
 
-        let cwd = Temp::new_dir().context("Failed to create tmpdir 'cwd'")?;
+        let cwd = Temp::new_dir().map_err(|e| anyhow!("Failed to create tmpdir 'cwd': {e}"))?;
         let Some(cwd_path) = Utf8Path::from_path(cwd.as_path()) else {
             bail!("Path's UTF-8 encoding is corrupted: {cwd:?}")
         };
@@ -515,13 +483,16 @@ async fn bake_rustc(
                 .arg(&pwd)
                 .output()
                 .await
-                .with_context(|| format!("Failed calling `git ls-files {pwd}`"))?;
+                .map_err(|e| anyhow!("Failed calling `git ls-files {pwd}`: {e}"))?;
             if !output.status.success() {
                 bail!("Failed `git ls-files {pwd}`: {:?}", output.stderr)
             }
             // TODO: buffer reads to this command's output
             // NOTE: unsorted output lines
-            for f in String::from_utf8(output.stdout).context("Parsing `git ls-files`")?.lines() {
+            for f in String::from_utf8(output.stdout)
+                .map_err(|e| anyhow!("Parsing `git ls-files`: {e}"))?
+                .lines()
+            {
                 log::info!(target:&krate, "copying git repo file {f}");
                 copy_file(Utf8Path::new(f), cwd_path)?;
             }
@@ -704,7 +675,7 @@ async fn bake_rustc(
             }
         }
         fs::write(&script_path, script2)
-            .with_context(|| format!("Failed creating dockerfile {script_path}"))?;
+            .map_err(|e| anyhow!("Failed creating dockerfile {script_path}: {e}"))?;
         drop(script); // Earlier: wrote to disk
     }
 
@@ -731,10 +702,11 @@ async fn bake_rustc(
         }
 
         fs::write(&headed_path, header)
-            .with_context(|| format!("Failed creating dockerfile {headed_path}"))?; // Don't remove this file
+            .map_err(|e| anyhow!("Failed creating dockerfile {headed_path}: {e}"))?; // Don't remove this file
 
         let ignore = format!("{headed_path}.dockerignore");
-        fs::write(&ignore, "").with_context(|| format!("Failed creating dockerignore {ignore}"))?;
+        fs::write(&ignore, "")
+            .map_err(|e| anyhow!("Failed creating dockerignore {ignore}: {e}"))?;
 
         if debug.is_some() {
             log::info!(target:&krate, "dockerfile: {headed_path}");
@@ -883,16 +855,16 @@ fn from_headed_path(headed_path: Utf8PathBuf) -> Utf8PathBuf {
 fn copy_file(f: &Utf8Path, cwd: &Utf8Path) -> Result<()> {
     let Some(f_dirname) = f.parent() else { bail!("BUG: unexpected f={f:?} cwd={cwd:?}") };
     let dst = cwd.join(f_dirname);
-    fs::create_dir_all(&dst).with_context(|| format!("Failed `mkdir -p {dst}`"))?;
+    fs::create_dir_all(&dst).map_err(|e| anyhow!("Failed `mkdir -p {dst}`: {e}"))?;
     let dst = cwd.join(f);
-    fs::copy(f, &dst).with_context(|| format!("Failed `cp {f} {dst}`"))?;
+    fs::copy(f, &dst).map_err(|e| anyhow!("Failed `cp {f} {dst}`: {e}"))?;
     Ok(())
 }
 
 fn copy_files(dir: &Utf8Path, dst: &Utf8Path) -> Result<()> {
     if dir.is_dir() {
         // TODO: deterministic iteration
-        for entry in fs::read_dir(dir).with_context(|| format!("Failed reading dir {dir}"))? {
+        for entry in fs::read_dir(dir).map_err(|e| anyhow!("Failed reading dir {dir}: {e}"))? {
             let entry = entry?;
             let entry = entry.path();
             let entry = entry.as_path(); // thanks, Rust

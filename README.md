@@ -42,6 +42,7 @@ Forwards `rustc` calls to BuildKit builders.
   * [ ] share cache with CI and team
     * [ ] share cache with CI (at least for a single user)
   * [ ] `[SEC]` ensure private deps don't leak through/to cache
+  * [ ] CLI gives the Dockerfile that `cargo install`'s any crate
 * [ ] suggest a global cache -faciliting configuration profile
 * [ ] integrate with `cross`
   * [ ] build for a non-local target
@@ -107,6 +108,10 @@ which rustcbuildx
 
 ## Origins
 PoC originally written in Bash: https://github.com/fenollp/buildxargs/blob/buildx/tryin.sh
+
+
+## Hacking
+See `./hack/`
 
 
 ## docker / podman / buildkit

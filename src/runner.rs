@@ -5,7 +5,7 @@ use std::{
     time::{Duration, Instant},
 };
 
-use anyhow::{Context, Result};
+use anyhow::{anyhow, Result};
 use camino::Utf8Path;
 use tokio::{
     io::{AsyncBufRead, AsyncBufReadExt, BufReader as TokioBufReader, Lines},
@@ -89,8 +89,8 @@ pub(crate) async fn build(
     let envs = envs.join(" ");
 
     log::info!(target:&krate, "Starting `{command} {args} (env: {envs:?})`");
-    let errf = || format!("Failed starting `{command} {args}`");
-    let mut child = cmd.spawn().with_context(errf)?;
+    let errf = |e| anyhow!("Failed starting `{command} {args}`: {e}");
+    let mut child = cmd.spawn().map_err(errf)?;
 
     let pid = child.id().unwrap_or_default();
     log::info!(target:&krate, "Started `{command} {args}` as pid={pid}`");
@@ -106,7 +106,7 @@ pub(crate) async fn build(
         let start = Instant::now();
         let res = child.wait().await;
         let elapsed = start.elapsed();
-        (elapsed, res.with_context(|| format!("Failed calling `{command} {args}`"))?.code())
+        (elapsed, res.map_err(|e| anyhow!("Failed calling `{command} {args}`: {e}"))?.code())
     };
     log::info!(target:&krate, "command `{command} build` ran in {secs:?}: {code:?}");
 
@@ -121,10 +121,12 @@ pub(crate) async fn build(
             .arg("info")
             .output()
             .await
-            .with_context(|| format!("Failed starting `{command} info`"))?;
-        let stdout = String::from_utf8(check.stdout).context("Failed parsing check STDOUT")?;
-        let stderr = String::from_utf8(check.stderr).context("Failed parsing check STDERR")?;
-        log::warn!(target:&krate, "Runner info: [code: {}] [STDOUT {}] [STDERR {}]", check.status, stdout, stderr);
+            .map_err(|e| anyhow!("Failed starting `{command} info`: {e}"))?;
+        let stdout = String::from_utf8(check.stdout)
+            .map_err(|e| anyhow!("Failed parsing check STDOUT: {e}"))?;
+        let stderr = String::from_utf8(check.stderr)
+            .map_err(|e| anyhow!("Failed parsing check STDERR: {e}"))?;
+        log::warn!(target:&krate, "Runner info: [code: {}] [STDOUT {stdout}] [STDERR {stderr}]", check.status);
     }
 
     Ok(code)

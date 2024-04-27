@@ -4,7 +4,11 @@ use std::{
     process::{ExitCode, Stdio},
 };
 
-use anyhow::{Context, Result};
+use anyhow::{anyhow, Result};
+use futures::{
+    future::ok,
+    stream::{iter, StreamExt, TryStreamExt},
+};
 use tokio::process::Command;
 
 use crate::envs::{alpine_image, base_image, internal, log_path, runner, syntax};
@@ -64,13 +68,14 @@ pub(crate) async fn envs(vars: Vec<String>) -> ExitCode {
 }
 
 pub(crate) async fn pull() -> Result<ExitCode> {
-    let command = runner();
-    let mut failure = ExitCode::SUCCESS;
-    for (user_input, img) in [
+    let imgs = [
         (internal::syntax(), syntax().await),
         (internal::base_image(), base_image().await),
         (internal::alpine_image(), alpine_image().await),
-    ] {
+    ];
+
+    let mut to_pull = Vec::with_capacity(imgs.len());
+    for (user_input, img) in imgs {
         let img = img.trim_start_matches("docker-image://");
         let img = if img.contains('@')
             && (user_input.is_none() || user_input.map(|x| !x.contains('@')).unwrap_or_default())
@@ -87,28 +92,41 @@ pub(crate) async fn pull() -> Result<ExitCode> {
         } else {
             img
         };
+        to_pull.push(img.to_owned());
         println!("Pulling {img}...");
-
-        let o = Command::new(command)
-            .kill_on_drop(true)
-            .arg("pull")
-            .arg(img)
-            .stdin(Stdio::null())
-            .spawn()
-            .with_context(|| format!("Failed to start `{command} pull {img}`"))?
-            .wait()
-            .await
-            .with_context(|| format!("Failed to call `{command} pull {img}`"))?;
-        if !o.success() {
-            failure = exit_code(o.code());
-        }
-        println!();
     }
-    Ok(failure)
+
+    let zero = Some(0);
+    // TODO: nice TUI that handles concurrent progress
+    let code = iter(to_pull.into_iter())
+        .map(|img| async move { do_pull(img).await })
+        .boxed() // https://github.com/rust-lang/rust/issues/104382
+        .buffered(10)
+        .try_fold(zero, |a, b| if a == zero { ok(b) } else { ok(a) })
+        .await?;
+    Ok(exit_code(code))
+}
+
+async fn do_pull(img: String) -> Result<Option<i32>> {
+    let command = runner();
+    let o = Command::new(command)
+        .kill_on_drop(true)
+        .arg("pull")
+        .arg(&img)
+        .stdin(Stdio::null())
+        .spawn()
+        .map_err(|e| anyhow!("Failed to start `{command} pull {img}`: {e}"))?
+        .wait()
+        .await
+        .map_err(|e| anyhow!("Failed to call `{command} pull {img}`: {e}"))?;
+    if !o.success() {
+        println!("Failed to pull {img}");
+        return Ok(o.code());
+    }
+    Ok(Some(0)) // TODO: -> Result<ExitCode>, once exit codes impl PartialEq.
 }
 
 #[inline]
 pub(crate) fn exit_code(code: Option<i32>) -> ExitCode {
-    // TODO: https://doc.rust-lang.org/std/os/unix/process/trait.ExitStatusExt.html
-    (code.unwrap_or(-1) as u8).into()
+    (code.unwrap_or(-1) as u8).into() // TODO: https://doc.rust-lang.org/std/os/unix/process/trait.ExitStatusExt.html
 }

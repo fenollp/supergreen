@@ -37,7 +37,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-    - run: ./clis.sh | tee .github/workflows/clis.yml
+    - run: ./hack/clis.sh | tee .github/workflows/clis.yml
     - run: git --no-pager diff --exit-code
     - name: Run shellcheck
       uses: ludeeus/action-shellcheck@2.0.0
@@ -291,9 +291,9 @@ send() {
 }
 
 
-gitdir=$(realpath "$(dirname "$0")")
+gitdir=$(realpath "$(dirname "$(dirname "$0")")")
 send \
-  CARGO_TARGET_DIR=/tmp/rstcbldx cargo install --locked --force --path="$gitdir" \
+  CARGO_TARGET_DIR=/tmp/rstcbldx cargo install --locked --frozen --offline --force --path="$gitdir" \
     '&&' touch "$tmpgooo".installed
 tmux split-window
 
