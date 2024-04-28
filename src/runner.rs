@@ -65,7 +65,26 @@ pub(crate) async fn build(
     // // [2024-04-09T07:55:39Z DEBUG lib-autocfg-72217d8ded4d7ec7@177912] ✖ Learn more at https://docs.docker.com/go/build-cache-backends/
     //     ));
     //     cmd.arg(format!("--cache-from=type=registry,ref={CACHE_IMG}"));
-    //this works :-) --tag you/clis-vixargs_0-1-0:vixargs-d2f27f94bee85c6b --load
+
+    if true {
+        const CACHE_IMG: &str = "docker.io/fenollp/myimgcach"; // https://hub.docker.com/r/fenollp/myimgcach/tags
+        cmd.arg(format!("--cache-from=type=registry,ref={CACHE_IMG}"));
+
+        let tag = Stage::new(krate.to_owned()).expect("FIXME");
+        if tag.to_string().starts_with("bin-") {
+            cmd.arg(format!("--tag={CACHE_IMG}:latest"));
+        } else {
+            cmd.arg(format!("--tag={CACHE_IMG}:{tag}"));
+        }
+        cmd.arg("--build-arg=BUILDKIT_INLINE_CACHE=1");
+        cmd.arg("--load");
+        // if std::env::var("CI").as_deref() == Ok("true") {
+        //     cmd.arg("--push"); // TODO: now ensure reproducible/hermetic builds so re-push'es are free
+        //                        // TODO: allow disabling "smart push"
+        //                        // TODO: CLI command dedicated to push all cache tags at once
+        // }
+    }
+
     cmd.arg("--platform=local");
     cmd.arg("--pull=false");
     cmd.arg(format!("--target={target}"));
