@@ -23,7 +23,7 @@ pub(crate) const MARK_STDERR: &str = "::STDERR:: ";
 pub(crate) async fn build(
     krate: &str,
     command: &str,
-    dockerfile_path: impl AsRef<Utf8Path>,
+    dockerfile_path: &Utf8Path,
     target: Stage,
     contexts: &[BuildContext],
     out_dir: impl AsRef<Utf8Path>,
@@ -56,7 +56,7 @@ pub(crate) async fn build(
         cmd.arg("--no-cache");
     }
     //cmd.arg("--metadata-file=/tmp/meta.json"); => {"buildx.build.ref": "default/default/o5c4435yz6o6xxxhdvekx5lmn"}
-    cmd.arg("--network=none");
+
     // const CACHE_IMG: &str = "myimgcach";
     //     cmd.arg(format!(
     //         "--cache-to=type=registry,ref={CACHE_IMG},mode=max,compression=zstd,force-compression=true,oci-mediatypes=true"
@@ -76,20 +76,22 @@ pub(crate) async fn build(
         } else {
             cmd.arg(format!("--tag={CACHE_IMG}:{tag}"));
         }
-        cmd.arg("--build-arg=BUILDKIT_INLINE_CACHE=1");
-        cmd.arg("--load");
-        // if std::env::var("CI").as_deref() == Ok("true") {
-        //     cmd.arg("--push"); // TODO: now ensure reproducible/hermetic builds so re-push'es are free
-        //                        // TODO: allow disabling "smart push"
-        //                        // TODO: CLI command dedicated to push all cache tags at once
-        // }
+        cmd.arg("--build-arg=BUILDKIT_INLINE_CACHE=1"); // https://docs.docker.com/build/cache/backends/inline
+        cmd.arg("--load"); // FIXME: required?
+        if false {
+            // if std::env::var("CI").as_deref() == Ok("true") {
+            cmd.arg("--push"); // TODO: now ensure reproducible/hermetic builds so re-push'es are free
+                               // TODO: allow disabling "smart push"
+                               // TODO: CLI command dedicated to push all cache tags at once
+        }
     }
 
+    cmd.arg("--network=none");
     cmd.arg("--platform=local");
     cmd.arg("--pull=false");
     cmd.arg(format!("--target={target}"));
     cmd.arg(format!("--output=type=local,dest={out_dir}", out_dir = out_dir.as_ref()));
-    cmd.arg(format!("--file={dockerfile_path}", dockerfile_path = dockerfile_path.as_ref()));
+    cmd.arg(format!("--file={dockerfile_path}"));
 
     // https://github.com/pyaillet/doggy
     // https://lib.rs/crates/bollard
@@ -99,7 +101,7 @@ pub(crate) async fn build(
         cmd.arg(format!("--build-context={name}={uri}"));
     }
 
-    cmd.arg(dockerfile_path.as_ref().parent().unwrap_or(dockerfile_path.as_ref()));
+    cmd.arg(dockerfile_path.parent().unwrap_or(dockerfile_path));
     let args: Vec<_> = cmd.as_std().get_args().map(|x| x.to_string_lossy().to_string()).collect();
     let args = args.join(" ");
 

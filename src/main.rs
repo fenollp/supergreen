@@ -740,7 +740,7 @@ async fn bake_rustc(
     }
     let code = build(krate, command, &headed_path, out_stage, &head.contexts, out_dir).await?;
     if let Some(incremental) = incremental {
-        let _ = build(krate, command, headed_path, incremental_stage, &head.contexts, incremental)
+        let _ = build(krate, command, &headed_path, incremental_stage, &head.contexts, incremental)
             .await
             .inspect_err(|e| log::warn!(target:&krate, "Error fetching incremental data: {e}"));
     }
