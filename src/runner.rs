@@ -1,5 +1,4 @@
 use std::{
-    fmt::Display,
     mem,
     process::Stdio,
     time::{Duration, Instant},
@@ -16,7 +15,7 @@ use tokio::{
     time::timeout,
 };
 
-use crate::ir::BuildContext;
+use crate::{ir::BuildContext, stage::Stage};
 
 pub(crate) const MARK_STDOUT: &str = "::STDOUT:: ";
 pub(crate) const MARK_STDERR: &str = "::STDERR:: ";
@@ -25,7 +24,7 @@ pub(crate) async fn build(
     krate: &str,
     command: &str,
     dockerfile_path: impl AsRef<Utf8Path>,
-    target: impl AsRef<str> + Display,
+    target: Stage,
     contexts: &[BuildContext],
     out_dir: impl AsRef<Utf8Path>,
 ) -> Result<Option<i32>> {

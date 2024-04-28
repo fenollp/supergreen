@@ -21,10 +21,11 @@ use crate::{
         alpine_image, base_image, called_from_build_script, internal, maybe_log, pass_env, runner,
         syntax,
     },
-    ir::{safe_stage, BuildContext, Head, HDR},
+    ir::{BuildContext, Head, HDR},
     parse::RustcArgs,
     pops::Popped,
     runner::{build, MARK_STDERR, MARK_STDOUT},
+    stage::{Stage, StageError},
 };
 
 mod cli;
@@ -34,6 +35,7 @@ mod ir;
 mod parse;
 mod pops;
 mod runner;
+mod stage;
 
 const PKG: &str = env!("CARGO_PKG_NAME");
 const VSN: &str = env!("CARGO_PKG_VERSION");
@@ -330,19 +332,7 @@ async fn bake_rustc(
         fs::create_dir_all(incremental).map_err(errf)?;
     }
 
-    let mut smol = Smol::default();
-
-    let hm = |prefix: &str, basename: &str, pop: usize| {
-        let stage = safe_stage(format!("{prefix}-{crate_id}"));
-        assert_eq!(pop, prefix.chars().filter(|c| *c == '_').count());
-        let not_lowalnums = |c: char| {
-            !("._-".contains(c) || c.is_ascii_digit() || (c.is_alphabetic() && c.is_lowercase()))
-        };
-        let basename = basename.replace(not_lowalnums, "_");
-        let name = format!("input_{prefix}--{basename}");
-        let target = input.clone().popped(pop);
-        (Some((name, target)), stage)
-    };
+    // let mut smol = Smol::default();
 
     let cargo_home = env::var("CARGO_HOME")
         .map(Utf8PathBuf::from)
@@ -350,46 +340,62 @@ async fn bake_rustc(
 
     // TODO: allow opt-out of cratesio_stage => to support offline builds
     // TODO: or, allow a `cargo fetch` alike: create+pre-build all cratesio stages from lockfile
-    let (input_mount, rustc_stage, mut script) = if input
-        .starts_with(cargo_home.join("registry/src"))
-    {
-        // Input is of a crate dep (hosted at crates.io)
-        // Let's optimize this case by fetching & caching crate tarball
+    let (input_mount, rustc_stage, mut script) =
+        if input.starts_with(cargo_home.join("registry/src")) {
+            // Input is of a crate dep (hosted at crates.io)
+            // Let's optimize this case by fetching & caching crate tarball
 
-        let (name, version, cratesio_index) = from_cratesio_input_path(&input)?;
+            let (name, version, cratesio_index) = from_cratesio_input_path(&input)?;
 
-        let (cratesio_stage, block) =
-            into_stage(cargo_home.as_path(), &name, &version, &cratesio_index).await?;
-        smol.push_block(cratesio_stage, block);
+            let (cratesio_stage, cratesio_extracted, block) =
+                into_stage(krate, cargo_home.as_path(), &name, &version, &cratesio_index).await?;
+            // smol.push_block(cratesio_stage, block);
 
-        let rustc_stage = safe_stage(format!("dep-{crate_id}-{cratesio_index}"));
-        (Some((cratesio_stage, Some("/tmp"), cratesio_extracted)), rustc_stage, block)
-    } else {
-        // TODO: impl non-default build.rs https://doc.rust-lang.org/cargo/reference/manifest.html?highlight=build.rs#the-build-field
-        let (input_mount, rustc_stage) = match input.iter().rev().take(4).collect::<Vec<_>>()[..] {
-            ["build.rs"] => (None, safe_stage(format!("finalbuildrs-{crate_id}"))),
-            ["lib.rs", "src"] => (None, safe_stage(format!("final-{crate_id}"))),
-            ["main.rs", "src"] => (None, safe_stage(format!("final-{crate_id}"))),
-            ["build.rs", "src", basename, ..] => hm("build__rs", basename, 2), // TODO: un-ducktape
-            ["build.rs", basename, ..] => hm("build_rs", basename, 1),
-            ["lib.rs", "src", basename, ..] => hm("src_lib_rs", basename, 2),
-            // e.g. $HOME/.cargo/registry/src/github.com-1ecc6299db9ec823/fnv-1.0.7/lib.rs
-            ["lib.rs", basename, ..] => hm("lib_rs", basename, 1),
-            // e.g. $HOME/.cargo/registry/src/github.com-1ecc6299db9ec823/untrusted-0.7.1/src/untrusted.rs
-            [rsfile, "src", basename, ..] if rsfile.ends_with(".rs") => hm("src__rs", basename, 2),
-            // When compiling openssl-sys-0.9.95 on stable-x86_64-unknown-linux-gnu:
-            //   /home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/openssl-sys-0.9.95/build/main.rs
-            ["main.rs", "build", basename, ..] if crate_name == "build_script_main" => {
-                // TODO: that's ducktape. Read Cargo.toml to match [package]build = "build/main.rs" ?
-                // or just catchall >=4
-                hm("main__rs", basename, 2)
-            }
-            // /home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/cargo-deny-0.14.3/src/cargo-deny/main.rs crate_type=bin
-            ["main.rs", "cargo-deny", "src", basename] => hm("main___rs", basename, 3), // TODO: un-ducktape
-            _ => unreachable!("Unexpected input file {input:?}"),
+            let rustc_stage = Stage::new(format!("dep-{crate_id}-{cratesio_index}"))?;
+            (Some((cratesio_stage, Some("/tmp"), cratesio_extracted)), rustc_stage, block)
+        } else {
+            let hm = |prefix: &str, basename: &str, pop: usize| {
+                let stage = Stage::new(format!("{prefix}-{crate_id}"))?;
+                assert_eq!(pop, prefix.chars().filter(|c| *c == '_').count());
+                // let not_lowalnums = |c: char| {
+                //     !("._-".contains(c)
+                //         || c.is_ascii_digit()
+                //         || (c.is_alphabetic() && c.is_lowercase()))
+                // };
+                // let basename = basename.replace(not_lowalnums, "_");
+                let name = Stage::new(format!("input_{prefix}--{basename}"))?;
+                let target = input.clone().popped(pop);
+                Ok::<_, StageError>((Some((name, target)), stage))
+            };
+            // TODO: impl non-default build.rs https://doc.rust-lang.org/cargo/reference/manifest.html?highlight=build.rs#the-build-field
+            let (input_mount, rustc_stage): (_, Stage) =
+                match input.iter().rev().take(4).collect::<Vec<_>>()[..] {
+                    ["build.rs"] => (None, Stage::new(format!("finalbuildrs-{crate_id}"))?),
+                    ["lib.rs", "src"] => (None, Stage::new(format!("final-{crate_id}"))?),
+                    ["main.rs", "src"] => (None, Stage::new(format!("final-{crate_id}"))?),
+                    ["build.rs", "src", basename, ..] => hm("build__rs", basename, 2)?, // TODO: un-ducktape
+                    ["build.rs", basename, ..] => hm("build_rs", basename, 1)?,
+                    ["lib.rs", "src", basename, ..] => hm("src_lib_rs", basename, 2)?,
+                    // e.g. $HOME/.cargo/registry/src/github.com-1ecc6299db9ec823/fnv-1.0.7/lib.rs
+                    ["lib.rs", basename, ..] => hm("lib_rs", basename, 1)?,
+                    // e.g. $HOME/.cargo/registry/src/github.com-1ecc6299db9ec823/untrusted-0.7.1/src/untrusted.rs
+                    [rsfile, "src", basename, ..] if rsfile.ends_with(".rs") => {
+                        hm("src__rs", basename, 2)?
+                    }
+                    // When compiling openssl-sys-0.9.95 on stable-x86_64-unknown-linux-gnu:
+                    //   /home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/openssl-sys-0.9.95/build/main.rs
+                    ["main.rs", "build", basename, ..] if crate_name == "build_script_main" => {
+                        // TODO: that's ducktape. Read Cargo.toml to match [package]build = "build/main.rs" ?
+                        // or just catchall >=4
+                        hm("main__rs", basename, 2)?
+                    }
+                    // /home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/cargo-deny-0.14.3/src/cargo-deny/main.rs crate_type=bin
+                    ["main.rs", "cargo-deny", "src", basename] => hm("main___rs", basename, 3)?, // TODO: un-ducktape
+                    _ => unreachable!("Unexpected input file {input:?}"),
+                };
+            let input_mount = input_mount.map(|(name, target)| (name, None, target));
+            (input_mount, rustc_stage, String::new())
         };
-        (input_mount.map(|(name, target)| (name, None, target)), rustc_stage, String::new())
-    };
     // TODO cli=deny: explore mounts: do they include?  -L native=/home/runner/instst/release/build/ring-3c73f9fd9a67ce28/out
     // nner/instst/release/build/zstd-sys-f571b8facf393189/out -L native=/home/runner/instst/release/build/ring-3c73f9fd9a67ce28/out`
     // Found a bug in this script!
@@ -405,8 +411,8 @@ async fn bake_rustc(
     log::info!(target:&krate, "picked {rustc_stage} for {suf:?}", suf=input.iter().rev().take(4).collect::<Vec<_>>());
     assert!(!matches!(input_mount, Some((_,_,ref x)) if x.ends_with("/.cargo/registry")));
 
-    let incremental_stage = safe_stage(format!("incremental-{metadata}"));
-    let out_stage = safe_stage(format!("out-{metadata}"));
+    let incremental_stage = Stage::new(format!("incremental-{metadata}"))?;
+    let out_stage = Stage::new(format!("out-{metadata}"))?;
 
     script.push_str(&format!("FROM {RUST} AS {rustc_stage}\n"));
     script.push_str(&format!("WORKDIR {out_dir}\n"));
@@ -530,11 +536,13 @@ async fn bake_rustc(
     let alpine = alpine_image().await.to_owned();
     head.contexts = [
         Some((RUST.to_owned(), base_image().await.to_owned())),
-        input_mount
-            .as_ref()
-            .and_then(|(_, src, _)| src.is_some().then_some((ALPINE.to_owned(), alpine))),
-        input_mount
-            .and_then(|(name, src, target)| src.is_none().then_some((name, target.to_string()))),
+        input_mount.map(|(name, src, target)| {
+            if src.is_some() {
+                (ALPINE.to_owned(), alpine)
+            } else {
+                (name.to_string(), target.to_string())
+            }
+        }),
         cwd.as_ref().map(|(_, cwd)| ("cwd".to_owned(), cwd.to_string())),
         crate_out.map(|crate_out| (crate_out_name(&crate_out), crate_out)),
     ]
