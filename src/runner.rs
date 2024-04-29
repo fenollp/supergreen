@@ -15,7 +15,7 @@ use tokio::{
     time::timeout,
 };
 
-use crate::{ir::BuildContext, stage::Stage};
+use crate::{envs::cache_image, ir::BuildContext, stage::Stage};
 
 pub(crate) const MARK_STDOUT: &str = "::STDOUT:: ";
 pub(crate) const MARK_STDERR: &str = "::STDERR:: ";
@@ -40,6 +40,8 @@ pub(crate) async fn build(
     // Makes sure that the BuildKit builder is used by either runner
     cmd.env("DOCKER_BUILDKIT", "1");
 
+    cmd.env("SOURCE_DATE_EPOCH", "0"); // https://reproducible-builds.org/docs/source-date-epoch
+
     // docker buildx create \
     //   --name remote-container \
     //   --driver remote \
@@ -55,26 +57,21 @@ pub(crate) async fn build(
     if false {
         cmd.arg("--no-cache");
     }
-    //cmd.arg("--metadata-file=/tmp/meta.json"); => {"buildx.build.ref": "default/default/o5c4435yz6o6xxxhdvekx5lmn"}
 
-    // const CACHE_IMG: &str = "myimgcach";
-    //     cmd.arg(format!(
-    //         "--cache-to=type=registry,ref={CACHE_IMG},mode=max,compression=zstd,force-compression=true,oci-mediatypes=true"
+    //     cmd.arg(format!("--cache-to=type=registry,ref={img},mode=max,compression=zstd,force-compression=true,oci-mediatypes=true"));
     // // [2024-04-09T07:55:39Z DEBUG lib-autocfg-72217d8ded4d7ec7@177912] ✖ ERROR: Cache export is not supported for the docker driver.
     // // [2024-04-09T07:55:39Z DEBUG lib-autocfg-72217d8ded4d7ec7@177912] ✖ Switch to a different driver, or turn on the containerd image store, and try again.
     // // [2024-04-09T07:55:39Z DEBUG lib-autocfg-72217d8ded4d7ec7@177912] ✖ Learn more at https://docs.docker.com/go/build-cache-backends/
-    //     ));
-    //     cmd.arg(format!("--cache-from=type=registry,ref={CACHE_IMG}"));
 
-    if true {
-        const CACHE_IMG: &str = "docker.io/fenollp/myimgcach"; // https://hub.docker.com/r/fenollp/myimgcach/tags
-        cmd.arg(format!("--cache-from=type=registry,ref={CACHE_IMG}"));
+    if let Some(img) = cache_image() {
+        cmd.arg(format!("--cache-from=type=registry,ref={img}"));
 
-        let tag = Stage::new(krate.to_owned()).expect("FIXME");
+        let tag = Stage::new(krate.to_owned())?;
         if tag.to_string().starts_with("bin-") {
-            cmd.arg(format!("--tag={CACHE_IMG}:latest"));
+            // FIXME: re-tag some tag to latest when pushing only?
+            cmd.arg(format!("--tag={img}:latest"));
         } else {
-            cmd.arg(format!("--tag={CACHE_IMG}:{tag}"));
+            cmd.arg(format!("--tag={img}:{tag}"));
         }
         cmd.arg("--build-arg=BUILDKIT_INLINE_CACHE=1"); // https://docs.docker.com/build/cache/backends/inline
         cmd.arg("--load"); // FIXME: required?
@@ -82,9 +79,19 @@ pub(crate) async fn build(
             // if std::env::var("CI").as_deref() == Ok("true") {
             cmd.arg("--push"); // TODO: now ensure reproducible/hermetic builds so re-push'es are free
                                // TODO: allow disabling "smart push"
-                               // TODO: CLI command dedicated to push all cache tags at once
+
+            // TODO: CLI command dedicated to push all cache tags at once
+            // docker push --all-tags {img}
+            // https://github.com/containers/podman/issues/2369
         }
     }
+
+    if false {
+        // TODO: https://docs.docker.com/build/attestations/
+        cmd.arg("--provenance=mode=max");
+        cmd.arg("--sbom=true");
+    }
+    //cmd.arg("--metadata-file=/tmp/meta.json"); => {"buildx.build.ref": "default/default/o5c4435yz6o6xxxhdvekx5lmn"}
 
     cmd.arg("--network=none");
     cmd.arg("--platform=local");
@@ -93,9 +100,9 @@ pub(crate) async fn build(
     cmd.arg(format!("--output=type=local,dest={out_dir}", out_dir = out_dir.as_ref()));
     cmd.arg(format!("--file={dockerfile_path}"));
 
+    // TODO: do without local Docker-compatible CLI
     // https://github.com/pyaillet/doggy
     // https://lib.rs/crates/bollard
-    // https://lib.rs/crates/strip-ansi-escapes
 
     for BuildContext { name, uri } in contexts {
         cmd.arg(format!("--build-context={name}={uri}"));

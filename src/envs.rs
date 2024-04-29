@@ -13,6 +13,7 @@ pub(crate) mod internal {
     pub const RUSTCBUILDX: &str = "RUSTCBUILDX";
     pub const RUSTCBUILDX_ALPINE_IMAGE: &str = "RUSTCBUILDX_ALPINE_IMAGE";
     pub const RUSTCBUILDX_BASE_IMAGE: &str = "RUSTCBUILDX_BASE_IMAGE";
+    pub const RUSTCBUILDX_CACHE_IMAGE: &str = "RUSTCBUILDX_CACHE_IMAGE";
     pub const RUSTCBUILDX_LOG: &str = "RUSTCBUILDX_LOG";
     pub const RUSTCBUILDX_LOG_PATH: &str = "RUSTCBUILDX_LOG_PATH";
     pub const RUSTCBUILDX_LOG_STYLE: &str = "RUSTCBUILDX_LOG_STYLE";
@@ -26,6 +27,9 @@ pub(crate) mod internal {
         env::var(RUSTCBUILDX_ALPINE_IMAGE).ok()
     }
     pub fn base_image() -> Option<String> {
+        env::var(RUSTCBUILDX_BASE_IMAGE).ok()
+    }
+    pub fn cache_image() -> Option<String> {
         env::var(RUSTCBUILDX_BASE_IMAGE).ok()
     }
     pub fn log() -> Option<String> {
@@ -46,8 +50,16 @@ pub(crate) mod internal {
 }
 
 // TODO: document envs + usage
-// TODO: https://docs.rs/figment/latest/figment/
 // TODO: cli for stats (cache hit/miss/size/age/volume, existing available/selected runners, disk usage/free)
+
+// TODO: rename under `cargo-green` https://github.com/rust-lang/cargo/wiki/Third-party-cargo-subcommands
+// TODO: cli config / profiles
+//   * https://docs.rs/figment/latest/figment/
+//   * https://lib.rs/crates/toml_edit
+//   * https://github.com/jdrouet/serde-toml-merge
+//   * https://crates.io/crates/toml-merge
+// https://github.com/cbourjau/cargo-with
+// https://github.com/RazrFalcon/cargo-bloat
 
 // If needing additional envs to be passed to rustc or buildrs, set them in the base image.
 // RUSTCBUILDX_BASE_IMAGE MUST start with docker-image:// and image MUST be available on DOCKER_HOST e.g.:
@@ -133,6 +145,27 @@ pub(crate) async fn alpine_image() -> &'static str {
             ONCE.get().expect("just set alpine_image")
         }
     }
+}
+
+// A Docker image path with registry information.
+#[must_use]
+pub(crate) fn cache_image() -> &'static Option<String> {
+    static ONCE: OnceLock<Option<String>> = OnceLock::new();
+    ONCE.get_or_init(|| {
+        let val = internal::cache_image();
+
+        if let Some(ref val) = val {
+            let var = internal::RUSTCBUILDX_CACHE_IMAGE;
+            if !val.starts_with("docker-image://") {
+                panic!("{var} must start with 'docker-image://'")
+            }
+            if !val.trim_start_matches("docker-image://").contains('/') {
+                panic!("{var} must start with 'docker-image://'")
+            }
+        }
+
+        val
+    })
 }
 
 #[must_use]

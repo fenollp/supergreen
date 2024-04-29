@@ -357,12 +357,6 @@ async fn bake_rustc(
             let hm = |prefix: &str, basename: &str, pop: usize| {
                 let stage = Stage::new(format!("{prefix}-{crate_id}"))?;
                 assert_eq!(pop, prefix.chars().filter(|c| *c == '_').count());
-                // let not_lowalnums = |c: char| {
-                //     !("._-".contains(c)
-                //         || c.is_ascii_digit()
-                //         || (c.is_alphabetic() && c.is_lowercase()))
-                // };
-                // let basename = basename.replace(not_lowalnums, "_");
                 let name = Stage::new(format!("input_{prefix}--{basename}"))?;
                 let target = input.clone().popped(pop);
                 Ok::<_, StageError>((Some((name, target)), stage))
@@ -529,11 +523,13 @@ async fn bake_rustc(
     log::debug!(target:&krate, "all_externs = {all_externs:?}");
     assert!(externs.len() <= all_externs.len());
 
-    let mut dag = Vec::with_capacity(1 + all_externs.len()); // TODO: ask upstream `docker buildx` for orderless stages (so we can concat Dockerfiles any which way)
+    let mut dag = Vec::with_capacity(1 + all_externs.len());
     let mut mounts = Vec::with_capacity(all_externs.len());
     let mut head = Head::new(&metadata);
 
     let alpine = alpine_image().await.to_owned();
+    // cargo-green: try using tar from rust img and drop alpine?
+    // FIXME: actually, let cargo extract .crate file
     head.contexts = [
         Some((RUST.to_owned(), base_image().await.to_owned())),
         input_mount.map(|(name, src, target)| {
@@ -733,6 +729,7 @@ async fn bake_rustc(
     // TODO: use tracing instead:
     // https://docs.rs/tracing-subscriber/latest/tracing_subscriber/fmt/struct.Subscriber.html
     // https://crates.io/crates/tracing-appender
+    // https://github.com/tugglecore/rust-tracing-primer
 
     let command = runner();
     if command == "none" {

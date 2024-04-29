@@ -5,6 +5,9 @@ use camino::{Utf8Path, Utf8PathBuf};
 
 use crate::pops::Popped;
 
+// FIXME: fix bad mapping (eg. multiple crate types) + generalize
+// https://github.com/declantsien/cargo-ninja/blob/42490a0c8a67bbf8c0aff56a0cb70731913fd3e3/src/rustc_config.rs
+
 /// RustcArgs contains parts of `rustc`'s arguments
 #[derive(Debug, Default, PartialEq)]
 pub(crate) struct RustcArgs {

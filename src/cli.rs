@@ -40,6 +40,7 @@ pub(crate) async fn envs(vars: Vec<String>) -> ExitCode {
         ("RUSTCBUILDX", internal::this()),
         ("RUSTCBUILDX_ALPINE_IMAGE", Some(alpine_image().await.to_owned())),
         ("RUSTCBUILDX_BASE_IMAGE", Some(base_image().await.to_owned())),
+        ("RUSTCBUILDX_CACHE_IMAGE", internal::cache_image().to_owned()),
         ("RUSTCBUILDX_LOG", internal::log()),
         ("RUSTCBUILDX_LOG_PATH", Some(log_path().to_owned())),
         ("RUSTCBUILDX_LOG_STYLE", internal::log_style()),
