@@ -39,12 +39,13 @@ Usage:
 // TODO: make it work for podman: https://github.com/containers/podman/issues/2369
 pub(crate) async fn push() -> Result<ExitCode> {
     if let Some(img) = cache_image() {
+        let img = img.trim_start_matches("docker-image://");
         let command = runner();
         let o = Command::new(command)
             .kill_on_drop(true)
             .arg("push")
             .arg("--all-tags")
-            .arg(img.trim_start_matches("docker-image://"))
+            .arg(img)
             .stdin(Stdio::null())
             .spawn()
             .map_err(|e| anyhow!("Failed to start `{command} push --all-tags {img}`: {e}"))?
