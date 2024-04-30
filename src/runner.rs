@@ -64,6 +64,7 @@ pub(crate) async fn build(
     // // [2024-04-09T07:55:39Z DEBUG lib-autocfg-72217d8ded4d7ec7@177912] ✖ Learn more at https://docs.docker.com/go/build-cache-backends/
 
     if let Some(img) = cache_image() {
+        let img = img.trim_start_matches("docker-image://");
         cmd.arg(format!("--cache-from=type=registry,ref={img}"));
 
         let tag = Stage::new(krate.to_owned())?;
