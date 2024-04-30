@@ -11,7 +11,7 @@ use futures::{
 };
 use tokio::process::Command;
 
-use crate::envs::{alpine_image, base_image, internal, log_path, runner, syntax};
+use crate::envs::{alpine_image, base_image, cache_image, internal, log_path, runner, syntax};
 
 // TODO: tune logging verbosity https://docs.rs/clap-verbosity-flag/latest/clap_verbosity_flag/
 
@@ -24,6 +24,7 @@ pub(crate) fn help() -> ExitCode {
 Usage:
   {name} env             Show used values
   {name} pull            Pulls images (respects $DOCKER_HOST)
+  {name} push            Push cache image (all tags)
   {name} -h | --help
   {name} -V | --version
 ",
@@ -35,12 +36,35 @@ Usage:
     ExitCode::SUCCESS
 }
 
+// TODO: make it work for podman: https://github.com/containers/podman/issues/2369
+pub(crate) async fn push() -> Result<ExitCode> {
+    if let Some(img) = cache_image() {
+        let command = runner();
+        let o = Command::new(command)
+            .kill_on_drop(true)
+            .arg("push")
+            .arg("--all-tags")
+            .arg(img.trim_start_matches("docker-image://"))
+            .stdin(Stdio::null())
+            .spawn()
+            .map_err(|e| anyhow!("Failed to start `{command} push --all-tags {img}`: {e}"))?
+            .wait()
+            .await
+            .map_err(|e| anyhow!("Failed to call `{command} push --all-tags {img}`: {e}"))?;
+        if !o.success() {
+            println!("Failed to push {img}");
+            return Ok(exit_code(o.code()));
+        }
+    }
+    Ok(exit_code(Some(0)))
+}
+
 pub(crate) async fn envs(vars: Vec<String>) -> ExitCode {
     let all: BTreeMap<_, _> = [
         ("RUSTCBUILDX", internal::this()),
         ("RUSTCBUILDX_ALPINE_IMAGE", Some(alpine_image().await.to_owned())),
         ("RUSTCBUILDX_BASE_IMAGE", Some(base_image().await.to_owned())),
-        ("RUSTCBUILDX_CACHE_IMAGE", internal::cache_image().to_owned()),
+        ("RUSTCBUILDX_CACHE_IMAGE", cache_image().to_owned()),
         ("RUSTCBUILDX_LOG", internal::log()),
         ("RUSTCBUILDX_LOG_PATH", Some(log_path().to_owned())),
         ("RUSTCBUILDX_LOG_STYLE", internal::log_style()),

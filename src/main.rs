@@ -15,7 +15,7 @@ use mktemp::Temp;
 use tokio::process::Command;
 
 use crate::{
-    cli::{envs, exit_code, help, pull},
+    cli::{envs, exit_code, help, pull, push},
     cratesio::{from_cratesio_input_path, into_stage},
     envs::{
         alpine_image, base_image, called_from_build_script, internal, maybe_log, pass_env, runner,
@@ -69,8 +69,9 @@ async fn fallible_main(args: VecDeque<String>, vars: BTreeMap<String, String>) -
 
     match argz[..] {
         [] | ["-h"|"--help"|"-V"|"--version"] => Ok(help()),
-        ["pull"] => pull().await,
         ["env", ..] => Ok(envs(argv(1)).await),
+        ["pull"] => pull().await,
+        ["push"] => push().await,
         [rustc, "-", ..] =>
              call_rustc(rustc, argv(1)).await,
         [driver, _rustc, "-"|"--crate-name", ..] => {

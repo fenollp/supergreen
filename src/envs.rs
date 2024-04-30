@@ -30,7 +30,7 @@ pub(crate) mod internal {
         env::var(RUSTCBUILDX_BASE_IMAGE).ok()
     }
     pub fn cache_image() -> Option<String> {
-        env::var(RUSTCBUILDX_BASE_IMAGE).ok()
+        env::var(RUSTCBUILDX_CACHE_IMAGE).ok()
     }
     pub fn log() -> Option<String> {
         env::var(RUSTCBUILDX_LOG).ok()

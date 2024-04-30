@@ -76,13 +76,8 @@ pub(crate) async fn build(
         cmd.arg("--build-arg=BUILDKIT_INLINE_CACHE=1"); // https://docs.docker.com/build/cache/backends/inline
         cmd.arg("--load"); // FIXME: required?
         if false {
-            // if std::env::var("CI").as_deref() == Ok("true") {
+            // if std::env::var("CI").as_deref() == Ok("true") {  TODO: allow disabling "smart push"
             cmd.arg("--push"); // TODO: now ensure reproducible/hermetic builds so re-push'es are free
-                               // TODO: allow disabling "smart push"
-
-            // TODO: CLI command dedicated to push all cache tags at once
-            // docker push --all-tags {img}
-            // https://github.com/containers/podman/issues/2369
         }
     }
 
