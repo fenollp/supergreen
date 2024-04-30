@@ -37,6 +37,7 @@ Usage:
 }
 
 // TODO: make it work for podman: https://github.com/containers/podman/issues/2369
+// TODO: also, make it concurrent on max=5 upload streams
 pub(crate) async fn push() -> Result<ExitCode> {
     if let Some(img) = cache_image() {
         let img = img.trim_start_matches("docker-image://");

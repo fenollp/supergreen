@@ -75,7 +75,7 @@ pub(crate) async fn build(
             cmd.arg(format!("--tag={img}:{tag}"));
         }
         cmd.arg("--build-arg=BUILDKIT_INLINE_CACHE=1"); // https://docs.docker.com/build/cache/backends/inline
-        cmd.arg("--load"); // FIXME: required?
+        // cmd.arg("--load"); // FIXME: required?
         if false {
             // if std::env::var("CI").as_deref() == Ok("true") {  TODO: allow disabling "smart push"
             cmd.arg("--push"); // TODO: now ensure reproducible/hermetic builds so re-push'es are free
