@@ -309,6 +309,7 @@ send \
   'until' '[[' -f "$tmpgooo".installed ']] && [[' -f "$tmpgooo".ready ']];' 'do' sleep '.1;' 'done' '&&' rm "$tmpgooo".* '&&' \
   RUSTCBUILDX_LOG=debug \
   RUSTCBUILDX_LOG_PATH="$tmplogs" \
+  RUSTCBUILDX_CACHE_IMAGE="${RUSTCBUILDX_CACHE_IMAGE:-}" \
   RUSTC_WRAPPER=rustcbuildx \
     CARGO_TARGET_DIR="$tmptrgt" cargo -vv install --jobs=${jobs:-1} --root=$tmpbins --locked --force "$(as_install "$name_at_version")" "$args" \
   '&&' 'if' '[[' "$cleanup" '=' '1' ']];' 'then' docker buildx prune --all --force --verbose '|' tee --append "$tmplogs" '||' 'exit' '1;' 'fi' \
