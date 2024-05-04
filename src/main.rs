@@ -21,7 +21,7 @@ use crate::{
         alpine_image, base_image, called_from_build_script, internal, maybe_log, pass_env, runner,
         syntax,
     },
-    ir::{BuildContext, Head, HDR},
+    ir::{BuildContext, Head},
     parse::RustcArgs,
     pops::Popped,
     runner::{build, MARK_STDERR, MARK_STDOUT},
@@ -333,7 +333,7 @@ async fn bake_rustc(
         fs::create_dir_all(incremental).map_err(errf)?;
     }
 
-    // let mut smol = Smol::default();
+    let mut smol = Smol::new();
 
     let cargo_home = env::var("CARGO_HOME")
         .map(Utf8PathBuf::from)
@@ -341,56 +341,55 @@ async fn bake_rustc(
 
     // TODO: allow opt-out of cratesio_stage => to support offline builds
     // TODO: or, allow a `cargo fetch` alike: create+pre-build all cratesio stages from lockfile
-    let (input_mount, rustc_stage, mut script) =
-        if input.starts_with(cargo_home.join("registry/src")) {
-            // Input is of a crate dep (hosted at crates.io)
-            // Let's optimize this case by fetching & caching crate tarball
+    let (input_mount, rustc_stage) = if input.starts_with(cargo_home.join("registry/src")) {
+        // Input is of a crate dep (hosted at crates.io)
+        // Let's optimize this case by fetching & caching crate tarball
 
-            let (name, version, cratesio_index) = from_cratesio_input_path(&input)?;
+        let (name, version, cratesio_index) = from_cratesio_input_path(&input)?;
 
-            let (cratesio_stage, cratesio_extracted, block) =
-                into_stage(krate, cargo_home.as_path(), &name, &version, &cratesio_index).await?;
-            // smol.push_block(cratesio_stage, block);
+        let (cratesio_stage, cratesio_extracted, block) =
+            into_stage(krate, cargo_home.as_path(), &name, &version, &cratesio_index).await?;
+        smol.push_block(&cratesio_stage, block);
 
-            let rustc_stage = Stage::new(format!("dep-{crate_id}-{cratesio_index}"))?;
-            (Some((cratesio_stage, Some("/tmp"), cratesio_extracted)), rustc_stage, block)
-        } else {
-            let hm = |prefix: &str, basename: &str, pop: usize| {
-                let stage = Stage::new(format!("{prefix}-{crate_id}"))?;
-                assert_eq!(pop, prefix.chars().filter(|c| *c == '_').count());
-                let name = Stage::new(format!("input_{prefix}--{basename}"))?;
-                let target = input.clone().popped(pop);
-                Ok::<_, StageError>((Some((name, target)), stage))
-            };
-            // TODO: impl non-default build.rs https://doc.rust-lang.org/cargo/reference/manifest.html?highlight=build.rs#the-build-field
-            let (input_mount, rustc_stage): (_, Stage) =
-                match input.iter().rev().take(4).collect::<Vec<_>>()[..] {
-                    ["build.rs"] => (None, Stage::new(format!("finalbuildrs-{crate_id}"))?),
-                    ["lib.rs", "src"] => (None, Stage::new(format!("final-{crate_id}"))?),
-                    ["main.rs", "src"] => (None, Stage::new(format!("final-{crate_id}"))?),
-                    ["build.rs", "src", basename, ..] => hm("build__rs", basename, 2)?, // TODO: un-ducktape
-                    ["build.rs", basename, ..] => hm("build_rs", basename, 1)?,
-                    ["lib.rs", "src", basename, ..] => hm("src_lib_rs", basename, 2)?,
-                    // e.g. $HOME/.cargo/registry/src/github.com-1ecc6299db9ec823/fnv-1.0.7/lib.rs
-                    ["lib.rs", basename, ..] => hm("lib_rs", basename, 1)?,
-                    // e.g. $HOME/.cargo/registry/src/github.com-1ecc6299db9ec823/untrusted-0.7.1/src/untrusted.rs
-                    [rsfile, "src", basename, ..] if rsfile.ends_with(".rs") => {
-                        hm("src__rs", basename, 2)?
-                    }
-                    // When compiling openssl-sys-0.9.95 on stable-x86_64-unknown-linux-gnu:
-                    //   /home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/openssl-sys-0.9.95/build/main.rs
-                    ["main.rs", "build", basename, ..] if crate_name == "build_script_main" => {
-                        // TODO: that's ducktape. Read Cargo.toml to match [package]build = "build/main.rs" ?
-                        // or just catchall >=4
-                        hm("main__rs", basename, 2)?
-                    }
-                    // /home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/cargo-deny-0.14.3/src/cargo-deny/main.rs crate_type=bin
-                    ["main.rs", "cargo-deny", "src", basename] => hm("main___rs", basename, 3)?, // TODO: un-ducktape
-                    _ => unreachable!("Unexpected input file {input:?}"),
-                };
-            let input_mount = input_mount.map(|(name, target)| (name, None, target));
-            (input_mount, rustc_stage, String::new())
+        let rustc_stage = Stage::new(format!("dep-{crate_id}-{cratesio_index}"))?;
+        (Some((cratesio_stage, Some("/tmp"), cratesio_extracted)), rustc_stage)
+    } else {
+        let hm = |prefix: &str, basename: &str, pop: usize| {
+            let stage = Stage::new(format!("{prefix}-{crate_id}"))?;
+            assert_eq!(pop, prefix.chars().filter(|c| *c == '_').count());
+            let name = Stage::new(format!("input_{prefix}--{basename}"))?;
+            let target = input.clone().popped(pop);
+            Ok::<_, StageError>((Some((name, target)), stage))
         };
+        // TODO: impl non-default build.rs https://doc.rust-lang.org/cargo/reference/manifest.html?highlight=build.rs#the-build-field
+        let (input_mount, rustc_stage): (_, Stage) =
+            match input.iter().rev().take(4).collect::<Vec<_>>()[..] {
+                ["build.rs"] => (None, Stage::new(format!("finalbuildrs-{crate_id}"))?),
+                ["lib.rs", "src"] => (None, Stage::new(format!("final-{crate_id}"))?),
+                ["main.rs", "src"] => (None, Stage::new(format!("final-{crate_id}"))?),
+                ["build.rs", "src", basename, ..] => hm("build__rs", basename, 2)?, // TODO: un-ducktape
+                ["build.rs", basename, ..] => hm("build_rs", basename, 1)?,
+                ["lib.rs", "src", basename, ..] => hm("src_lib_rs", basename, 2)?,
+                // e.g. $HOME/.cargo/registry/src/github.com-1ecc6299db9ec823/fnv-1.0.7/lib.rs
+                ["lib.rs", basename, ..] => hm("lib_rs", basename, 1)?,
+                // e.g. $HOME/.cargo/registry/src/github.com-1ecc6299db9ec823/untrusted-0.7.1/src/untrusted.rs
+                [rsfile, "src", basename, ..] if rsfile.ends_with(".rs") => {
+                    hm("src__rs", basename, 2)?
+                }
+                // When compiling openssl-sys-0.9.95 on stable-x86_64-unknown-linux-gnu:
+                //   /home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/openssl-sys-0.9.95/build/main.rs
+                ["main.rs", "build", basename, ..] if crate_name == "build_script_main" => {
+                    // TODO: that's ducktape. Read Cargo.toml to match [package]build = "build/main.rs" ?
+                    // or just catchall >=4
+                    hm("main__rs", basename, 2)?
+                }
+                // /home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/cargo-deny-0.14.3/src/cargo-deny/main.rs crate_type=bin
+                ["main.rs", "cargo-deny", "src", basename] => hm("main___rs", basename, 3)?, // TODO: un-ducktape
+                _ => unreachable!("Unexpected input file {input:?}"),
+            };
+        let input_mount = input_mount.map(|(name, target)| (name, None, target));
+        (input_mount, rustc_stage)
+    };
     // TODO cli=deny: explore mounts: do they include?  -L native=/home/runner/instst/release/build/ring-3c73f9fd9a67ce28/out
     // nner/instst/release/build/zstd-sys-f571b8facf393189/out -L native=/home/runner/instst/release/build/ring-3c73f9fd9a67ce28/out`
     // Found a bug in this script!
@@ -409,15 +408,16 @@ async fn bake_rustc(
     let incremental_stage = Stage::new(format!("incremental-{metadata}"))?;
     let out_stage = Stage::new(format!("out-{metadata}"))?;
 
-    script.push_str(&format!("FROM {RUST} AS {rustc_stage}\n"));
-    script.push_str(&format!("WORKDIR {out_dir}\n"));
+    let mut rustc_block = String::new();
+    rustc_block.push_str(&format!("FROM {RUST} AS {rustc_stage}\n"));
+    rustc_block.push_str(&format!("WORKDIR {out_dir}\n"));
 
     // TODO: disable (remote) cache for incremental builds?
     if let Some(incremental) = &incremental {
-        script.push_str(&format!("WORKDIR {incremental}\n"));
+        rustc_block.push_str(&format!("WORKDIR {incremental}\n"));
     }
 
-    script.push_str("ENV \\\n");
+    rustc_block.push_str("ENV \\\n");
     for (var, val) in env::vars() {
         let (pass, skip) = pass_env(var.as_str());
         if pass {
@@ -435,19 +435,19 @@ async fn bake_rustc(
             } else {
                 log::debug!(target:&krate, "env is set: {var}={val}");
             }
-            script.push_str(&format!("  {var}={val} \\\n"));
+            rustc_block.push_str(&format!("  {var}={val} \\\n"));
         }
     }
-    script.push_str("  RUSTCBUILDX=1\n");
+    rustc_block.push_str("  RUSTCBUILDX=1\n");
 
     let cwd = if let Some((name, src, target)) = input_mount.as_ref() {
         // Reuse previous contexts
 
         // TODO: WORKDIR was removed as it changed during a single `cargo build`
         // Looks like removing it isn't an issue, however we need more testing.
-        // script.push_str(&format!("WORKDIR {pwd}\n"));
-        script.push_str("RUN \\\n");
-        script.push_str(&format!(
+        // rustc_block.push_str(&format!("WORKDIR {pwd}\n"));
+        rustc_block.push_str("RUN \\\n");
+        rustc_block.push_str(&format!(
             "  --mount=type=bind,from={name}{source},target={target} \\\n",
             source = src.map(|src| format!(",source={src}")).unwrap_or_default()
         ));
@@ -502,15 +502,15 @@ async fn bake_rustc(
             copy_files(&pwd, cwd_path)?;
         }
 
-        // This doesn't work: script.push_str(&format!("  --mount=type=bind,from=cwd,target={pwd} \\\n"));
+        // This doesn't work: rustc_block.push_str(&format!("  --mount=type=bind,from=cwd,target={pwd} \\\n"));
         // ✖ 0.040 runc run failed: unable to start container process: error during container init:
         //     error mounting "/var/lib/docker/tmp/buildkit-mount1189821268/libaho_corasick-b99b6e1b4f09cbff.rlib"
         //     to rootfs at "/home/runner/work/rustcbuildx/rustcbuildx/target/debug/deps/libaho_corasick-b99b6e1b4f09cbff.rlib":
         //         mkdir /var/lib/docker/buildkit/executor/m7p2ehjfewlxfi5zjupw23oo7/rootfs/home/runner/work/rustcbuildx/rustcbuildx/target:
         //             read-only file system
-        script.push_str(&format!("WORKDIR {pwd}\n"));
-        script.push_str("COPY --from=cwd / .\n");
-        script.push_str("RUN \\\n");
+        rustc_block.push_str(&format!("WORKDIR {pwd}\n"));
+        rustc_block.push_str("COPY --from=cwd / .\n");
+        rustc_block.push_str("RUN \\\n");
 
         let cwd_path = cwd_path.to_owned();
         Some((cwd, cwd_path))
@@ -518,7 +518,7 @@ async fn bake_rustc(
 
     if let Some(crate_out) = crate_out.as_ref() {
         let named = crate_out_name(crate_out);
-        script.push_str(&format!("  --mount=type=bind,from={named},target={crate_out} \\\n"));
+        rustc_block.push_str(&format!("  --mount=type=bind,from={named},target={crate_out} \\\n"));
     }
 
     log::debug!(target:&krate, "all_externs = {all_externs:?}");
@@ -585,20 +585,20 @@ async fn bake_rustc(
     head.contexts.dedup();
 
     for (name, source, target) in mounts {
-        script.push_str(&format!(
+        rustc_block.push_str(&format!(
             "  --mount=type=bind,from={name},source={source},target={target} \\\n"
         ));
     }
 
-    script.push_str("    set -eux \\\n");
+    rustc_block.push_str("    set -eux \\\n");
 
-    script.push_str(" && export CARGO=\"$(which cargo)\" \\\n");
+    rustc_block.push_str(" && export CARGO=\"$(which cargo)\" \\\n");
 
     // TODO: keep only paths that we explicitly mount or copy
     for var in ["PATH", "DYLD_FALLBACK_LIBRARY_PATH", "LD_LIBRARY_PATH", "LIBPATH"] {
         let Ok(val) = env::var(var) else { continue };
         if !val.is_empty() {
-            script.push_str(&format!("#&& export {var}=\"{val}:${var}\" \\\n"));
+            rustc_block.push_str(&format!("#&& export {var}=\"{val}:${var}\" \\\n"));
         }
     }
 
@@ -607,81 +607,95 @@ async fn bake_rustc(
     // $ { echo a >&1 && echo b >&2 ; } 1> >(sed 's/^/::STDOUT:: /') 2> >(sed 's/^/::STDERR:: /' >&2)
     // /bin/sh: 1: Syntax error: redirection unexpected
     let args = args.join("' '").replace('"', "\\\"");
-    script.push_str(&format!(" && /bin/bash -c \"rustc '{args}' {input} \\\n"));
-    script.push_str(&format!("      1> >(sed 's/^/{MARK_STDOUT}/') \\\n"));
-    script.push_str(&format!("      2> >(sed 's/^/{MARK_STDERR}/' >&2)\"\n"));
+    rustc_block.push_str(&format!(" && /bin/bash -c \"rustc '{args}' {input} \\\n"));
+    rustc_block.push_str(&format!("      1> >(sed 's/^/{MARK_STDOUT}/') \\\n"));
+    rustc_block.push_str(&format!("      2> >(sed 's/^/{MARK_STDERR}/' >&2)\"\n"));
+    smol.push_block(&rustc_stage, rustc_block);
 
-    if let Some(incremental) = &incremental {
-        script.push_str(&format!("FROM scratch AS {incremental_stage}\n"));
-        script.push_str(&format!("COPY --from={rustc_stage} {incremental} /\n"));
+    if let Some(ref incremental) = incremental {
+        let mut incremental_block = format!("FROM scratch AS {incremental_stage}\n");
+        incremental_block.push_str(&format!("COPY --from={rustc_stage} {incremental} /\n"));
+        smol.push_block(&incremental_stage, incremental_block);
     }
-    script.push_str(&format!("FROM scratch AS {out_stage}\n"));
-    script.push_str(&format!("COPY --from={rustc_stage} {out_dir}/*-{metadata}* /\n"));
+    let mut out_block = format!("FROM scratch AS {out_stage}\n");
+    out_block.push_str(&format!("COPY --from={rustc_stage} {out_dir}/*-{metadata}* /\n"));
     // NOTE: -C extra-filename=-${metadata} (starts with dash)
     // TODO: use extra filename here for fwd compat
+    smol.push_block(&out_stage, out_block);
 
-    let script = script; // Drop mut
+    let smol = smol; // Drop mut
 
     let mut headed_script = String::new();
     let mut visited_cratesio_stages = BTreeSet::new();
-    let append = |final_script: &mut String,
-                  visited_cratesio_stages: &mut BTreeSet<String>,
-                  lines: Vec<String>| {
-        assert!(lines.len() >= 5);
-        assert!(lines[0].starts_with("FROM "));
-        // FIXME: please => turn single .Dockerfile s into plain toml with stages = [ "cratesio", "rust", "incr"]
-        let mut begin_from = 0..;
-        if lines[4].starts_with("FROM rust AS ") {
-            begin_from = 4..;
-            let cratesio_stage = lines[..4].join("\n");
-            if !visited_cratesio_stages.contains(&cratesio_stage) {
-                final_script.push_str(&cratesio_stage);
-                final_script.push('\n');
-                visited_cratesio_stages.insert(cratesio_stage);
+    let append =
+        |final_script: &mut String, visited_cratesio_stages: &mut BTreeSet<String>, smol: &Smol| {
+            let mut begin_from = 0..;
+            if smol.blocks[1].starts_with("FROM rust AS ") {
+                //FIXME use enums (prefix stage with cratesio-)
+                begin_from = 1..;
+                if !visited_cratesio_stages.contains(&smol.block_names[0]) {
+                    final_script.push_str(&smol.blocks[0]);
+                    final_script.push('\n');
+                    visited_cratesio_stages.insert(smol.block_names[0].clone());
+                }
             }
-        }
-        for line in &lines[begin_from] {
-            final_script.push_str(line);
-            final_script.push('\n');
-        }
-    };
+            // // assert!(lines.len() >= 5);
+            // assert!(smol.blocks[0].starts_with("FROM "));//TODO: drop
+            // let mut begin_from = 0..;
+            // if lines[4].starts_with("FROM rust AS ") {
+            //     begin_from = 4..;
+            //     let cratesio_stage = lines[..4].join("\n");
+            //     if !visited_cratesio_stages.contains(&cratesio_stage) {
+            //         final_script.push_str(&cratesio_stage);
+            //         final_script.push('\n');
+            //         visited_cratesio_stages.insert(cratesio_stage);
+            //     }
+            // }
+            // for line in &lines[begin_from] {
+            for block in &smol.blocks[begin_from] {
+                final_script.push_str(block);
+                final_script.push('\n');
+            }
+        };
     for extern_script_path in extern_scripts {
         log::info!(target:&krate, "opening (RO) extern dockerfile {extern_script_path}");
-        let fd = File::open(&extern_script_path)
-            .map_err(|e| anyhow!("Reading extern's dockerfile {extern_script_path}: {e}"))?;
-        let lines: Vec<_> = BufReader::new(fd)
-            .lines()
-            .map_while(Result::ok)
-            .filter(|x| !x.starts_with(HDR))
-            .collect();
-        append(&mut headed_script, &mut visited_cratesio_stages, lines);
+        let smol_raw = fs::read_to_string(&extern_script_path)// TODO: deser from stream
+            .map_err(|e| anyhow!("Reading extern's smol {extern_script_path}: {e}"))?;
+        let smol_des: Smol = toml::de::from_str(&smol_raw).unwrap();
+        // let lines: Vec<_> = BufReader::new(fd)
+        //     .lines()
+        //     .map_while(Result::ok)
+        //     .filter(|x| !x.starts_with(HDR))
+        //     .collect();
+        append(&mut headed_script, &mut visited_cratesio_stages, &smol_des);
         headed_script.push('\n');
     }
-    let lines = script.lines().map(ToOwned::to_owned).collect();
-    append(&mut headed_script, &mut visited_cratesio_stages, lines);
+    // let lines = script.lines().map(ToOwned::to_owned).collect();
+    append(&mut headed_script, &mut visited_cratesio_stages, &smol);
 
     let syntax = syntax().await.trim_start_matches("docker-image://");
 
     {
-        let mut header = format!("# syntax={syntax}\n",);
+        let mut header = format!("# syntax={syntax}\n");
         head.write_to_slice(&mut header);
-        header.push_str(&script);
+        let smol_ser = toml::to_string_pretty(&smol).unwrap();
+        header.push_str(&smol_ser);
         let script2 = header;
 
-        let script_path =
-            Utf8Path::new(&target_path).join(format!("{crate_name}-{metadata}.Dockerfile"));
-        log::info!(target:&krate, "opening (RW) crate dockerfile {script_path}");
+        let smol_path =
+            Utf8Path::new(&target_path).join(format!("{crate_name}-{metadata}-smol.toml"));
+        log::info!(target:&krate, "opening (RW) crate's smol {smol_path}");
         // TODO? suggest a `cargo clean` then fail
         if debug.is_some() {
-            match fs::read_to_string(&script_path) {
+            match fs::read_to_string(&smol_path) {
                 Ok(existing) => pretty_assertions::assert_eq!(&existing, &script2),
                 Err(e) if e.kind() == ErrorKind::NotFound => {}
                 Err(e) => bail!("{e}"),
             }
         }
-        fs::write(&script_path, script2)
-            .map_err(|e| anyhow!("Failed creating dockerfile {script_path}: {e}"))?;
-        drop(script); // Earlier: wrote to disk
+        fs::write(&smol_path, script2)
+            .map_err(|e| anyhow!("Failed creating crate's smol {smol_path}: {e}"))?;
+        drop(smol); // Earlier: wrote to disk
     }
 
     let headed_path = {
@@ -692,7 +706,7 @@ async fn bake_rustc(
         let headed_path =
             Utf8Path::new(&target_path).join(format!("{crate_name}-{metadata}-final.Dockerfile"));
 
-        let mut header = format!("# syntax={syntax}\n",);
+        let mut header = format!("# syntax={syntax}\n");
         head.write_to_slice(&mut header);
         header.push_str(&headed_script);
 
@@ -759,6 +773,22 @@ async fn bake_rustc(
     }
 
     Ok(exit_code(code))
+}
+
+#[derive(serde::Serialize, serde::Deserialize)]
+struct Smol {
+    // TODO: headings
+    block_names: Vec<String>, //Btree...
+    blocks: Vec<String>,      //////...map? Is it insertion-order?
+}
+impl Smol {
+    fn new() -> Self {
+        Self { block_names: vec![], blocks: vec![] }
+    }
+    fn push_block(&mut self, name: &Stage, block: String) {
+        self.block_names.push(name.to_string()); //TODO: enum instead?
+        self.blocks.push(block);
+    }
 }
 
 #[inline]
