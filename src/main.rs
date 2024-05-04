@@ -871,11 +871,11 @@ fn crate_out_name(name: &str) -> String {
 fn a_few_from_headed_path() {
     assert_eq!(
         from_headed_path("target/path/strsim-8ed1051e7e58e636-final.Dockerfile".into()),
-        "target/path/strsim-8ed1051e7e58e636.Dockerfile".to_owned()
+        "target/path/strsim-8ed1051e7e58e636-smol.toml".to_owned()
     );
     assert_eq!(
         from_headed_path("target/path/blip_blap-blop-1312051e7e58e636-final.Dockerfile".into()),
-        "target/path/blip_blap-blop-1312051e7e58e636.Dockerfile".to_owned()
+        "target/path/blip_blap-blop-1312051e7e58e636-smol.toml".to_owned()
     );
 }
 
@@ -884,7 +884,7 @@ fn from_headed_path(headed_path: Utf8PathBuf) -> Utf8PathBuf {
         headed_path
             .file_name()
             .expect("follows naming scheme")
-            .replace("-final.Dockerfile", ".Dockerfile"),
+            .replace("-final.Dockerfile", "-smol.toml"),
     )
 }
 
