@@ -12,7 +12,7 @@ pub(crate) fn from_cratesio_input_path(input: &Utf8PathBuf) -> Result<(String, S
     let mut cratesio_crate = None;
     while let Some(part) = it.next() {
         if part.starts_with("index.crates.io-") {
-            cratesio_index = part.to_owned();
+            part.clone_into(&mut cratesio_index);
             cratesio_crate = it.next();
             break;
         }

@@ -40,7 +40,6 @@ pub(crate) fn as_rustc(
     pwd: impl AsRef<Utf8Path>,
     crate_name: &str,
     arguments: Vec<String>,
-    debug: bool,
 ) -> Result<(RustcArgs, Vec<String>)> {
     let mut args = vec![];
 
@@ -74,7 +73,7 @@ pub(crate) fn as_rustc(
 
         if s_e && key == "--test" && val.is_empty() {
             assert_eq!(state.crate_type, "");
-            state.crate_type = "test".to_owned(); // Not a real `--crate-type`
+            "test".clone_into(&mut state.crate_type); // Not a real `--crate-type`
             (s_e, key) = (false, "".to_owned());
             args.push("--test".to_owned());
             continue;
@@ -94,10 +93,6 @@ pub(crate) fn as_rustc(
                 (s_e, key) = (false, "".to_owned());
                 continue;
             }
-            ("--json", "diagnostic-rendered-ansi,artifacts,future-incompat") if debug => {
-                // remove coloring in output for readability during debug
-                val = "artifacts,future-incompat".to_owned();
-            }
             _ => {}
         }
 
@@ -105,7 +100,7 @@ pub(crate) fn as_rustc(
             "-C" => match val.split_once('=') {
                 Some(("metadata", v)) => {
                     assert_eq!(state.metadata, "");
-                    state.metadata = v.to_owned();
+                    v.clone_into(&mut state.metadata);
                 }
                 Some(("incremental", v)) => {
                     assert_eq!(state.incremental, None);
@@ -134,12 +129,12 @@ pub(crate) fn as_rustc(
                     let ct = state.crate_type;
                     bail!("Unhandled --crate-type={val} (knowing {ct:?}) in {arguments:?}")
                 }
-                state.crate_type = val.clone();
+                val.clone_into(&mut state.crate_type);
             }
             "--emit" => {
                 assert_eq!(state.emit, "");
                 // For instance: dep-info,link dep-info,metadata dep-info,metadata,link
-                state.emit = val.clone();
+                val.clone_into(&mut state.emit);
             }
             "--extern" => {
                 if ["alloc", "core", "proc_macro", "std", "test"].contains(&val.as_str()) {
@@ -176,7 +171,6 @@ pub(crate) fn as_rustc(
                 }
                 val = state.out_dir.to_string();
             }
-            "--diagnostic-width" if debug => val = "211".to_owned(), // FIXME: drop when !debugging
             _ => {}
         }
 
@@ -254,7 +248,7 @@ mod tests {
             "-C", "link-arg=-fuse-ld=/usr/local/bin/mold",
         ]);
 
-        let (st, args) = as_rustc(PWD, env!("CARGO_PKG_NAME"), arguments.clone(), false).unwrap();
+        let (st, args) = as_rustc(PWD, env!("CARGO_PKG_NAME"), arguments.clone()).unwrap();
 
         assert_eq!(
             st,
@@ -337,7 +331,7 @@ mod tests {
             "-C", "link-arg=-fuse-ld=/usr/local/bin/mold",
         ]);
 
-        let (st, args) = as_rustc(PWD, env!("CARGO_PKG_NAME"), arguments.clone(), true).unwrap();
+        let (st, args) = as_rustc(PWD, env!("CARGO_PKG_NAME"), arguments.clone()).unwrap();
 
         assert_eq!(
             st,
@@ -364,14 +358,14 @@ mod tests {
         );
 
         #[rustfmt::skip]
-        assert_eq!(args,  as_arguments(&[
+        assert_eq!(as_arguments(&[
                 "$PWD/./dbg/debug/rustcbuildx",
                 "$HOME/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/rustc",
                 "--crate-name", "rustcbuildx",
                 "--edition", "2021",
                 "--error-format", "json",
-                "--json", "artifacts,future-incompat",
-                "--diagnostic-width", "211",
+                "--json", "diagnostic-rendered-ansi,artifacts,future-incompat",
+                "--diagnostic-width", "347",
                 "--emit", "dep-info,link",
                 "-C", "embed-bitcode=no",
                 "-C", "debuginfo=2",
@@ -387,7 +381,7 @@ mod tests {
                 "--extern", "mktemp=$PWD/target/debug/deps/libmktemp-b84fe47f0a44f88d.rlib",
                 "--extern", "os_pipe=$PWD/target/debug/deps/libos_pipe-f344e452b9bd1c5e.rlib",
                 "--extern", "pretty_assertions=$PWD/target/debug/deps/libpretty_assertions-9fa55d8a39fa5fe3.rlib",
-             ]));
+             ]), args);
     }
 
     #[test]
@@ -420,7 +414,7 @@ mod tests {
             "-C", "link-arg=-fuse-ld=/usr/local/bin/mold",
         ]);
 
-        let (st, args) = as_rustc(PWD, "build_script_build", arguments.clone(), false).unwrap();
+        let (st, args) = as_rustc(PWD, "build_script_build", arguments.clone()).unwrap();
 
         assert_eq!(
             st,
@@ -492,7 +486,7 @@ mod tests {
             "-C", "link-arg=-fuse-ld=/usr/local/bin/mold",
         ]);
 
-        let (st, args) = as_rustc(PWD, "time_macros", arguments.clone(), false).unwrap();
+        let (st, args) = as_rustc(PWD, "time_macros", arguments.clone()).unwrap();
 
         assert_eq!(
             st,
@@ -560,7 +554,7 @@ mod tests {
             "-C", "link-arg=-fuse-ld=/usr/local/bin/mold",
         ]);
 
-        let (st, args) = as_rustc(PWD, "build_script_build", arguments.clone(), false).unwrap();
+        let (st, args) = as_rustc(PWD, "build_script_build", arguments.clone()).unwrap();
 
         assert_eq!(
             st,
@@ -626,7 +620,7 @@ mod tests {
             "--cap-lints", "warn",
         ]);
 
-        let (st, args) = as_rustc(PWD, "build_script_main", arguments.clone(), false).unwrap();
+        let (st, args) = as_rustc(PWD, "build_script_main", arguments.clone()).unwrap();
 
         assert_eq!(
             st,
