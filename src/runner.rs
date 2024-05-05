@@ -1,4 +1,5 @@
 use std::{
+    collections::BTreeSet,
     mem,
     process::Stdio,
     time::{Duration, Instant},
@@ -15,7 +16,7 @@ use tokio::{
     time::timeout,
 };
 
-use crate::{envs::cache_image, ir::BuildContext, stage::Stage};
+use crate::{envs::cache_image, md::BuildContext, stage::Stage};
 
 pub(crate) const MARK_STDOUT: &str = "::STDOUT:: ";
 pub(crate) const MARK_STDERR: &str = "::STDERR:: ";
@@ -25,7 +26,7 @@ pub(crate) async fn build(
     command: &str,
     dockerfile_path: &Utf8Path,
     target: Stage,
-    contexts: &[BuildContext],
+    contexts: &BTreeSet<BuildContext>,
     out_dir: impl AsRef<Utf8Path>,
 ) -> Result<Option<i32>> {
     let mut cmd = Command::new(command);

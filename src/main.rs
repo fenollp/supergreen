@@ -21,7 +21,7 @@ use crate::{
         alpine_image, base_image, called_from_build_script, internal, maybe_log, pass_env, runner,
         syntax,
     },
-    ir::{BuildContext, Head},
+    md::{BuildContext, Md},
     parse::RustcArgs,
     pops::Popped,
     runner::{build, MARK_STDERR, MARK_STDOUT},
@@ -31,7 +31,7 @@ use crate::{
 mod cli;
 mod cratesio;
 mod envs;
-mod ir;
+mod md;
 mod parse;
 mod pops;
 mod runner;
@@ -230,7 +230,7 @@ async fn bake_rustc(
 
     if crate_type == "proc-macro" {
         // This way crates that depend on this know they must require it as .so
-        let guard = format!("{crate_externs}_proc-macro"); // FIXME: store this bit of info in smol file
+        let guard = format!("{crate_externs}_proc-macro"); // FIXME: store this bit of info in md file
         log::info!(target:&krate, "opening (RW) {guard}");
         fs::write(&guard, "").map_err(|e| anyhow!("Failed to `touch {guard}`: {e}"))?;
     };
@@ -308,8 +308,7 @@ async fn bake_rustc(
     if !file_exists_and_is_not_empty(&crate_externs).map_err(errf)? {
         let mut shorts = String::new();
         for short_extern in &short_externs {
-            shorts.push_str(short_extern);
-            shorts.push('\n');
+            shorts.push_str(&format!("{short_extern}\n"));
         }
         log::info!(target:&krate, "writing (RW) externs to {crate_externs}");
         let errf = |e| anyhow!("Failed creating crate externs {crate_externs}: {e}");
@@ -333,7 +332,7 @@ async fn bake_rustc(
         fs::create_dir_all(incremental).map_err(errf)?;
     }
 
-    let mut smol = Smol::new();
+    let mut md = Md::new(&metadata);
 
     let cargo_home = env::var("CARGO_HOME")
         .map(Utf8PathBuf::from)
@@ -349,7 +348,7 @@ async fn bake_rustc(
 
         let (cratesio_stage, cratesio_extracted, block) =
             into_stage(krate, cargo_home.as_path(), &name, &version, &cratesio_index).await?;
-        smol.push_block(&cratesio_stage, block);
+        md.push_block(&cratesio_stage, block);
 
         let rustc_stage = Stage::new(format!("dep-{crate_id}-{cratesio_index}"))?;
         (Some((cratesio_stage, Some("/tmp"), cratesio_extracted)), rustc_stage)
@@ -508,6 +507,7 @@ async fn bake_rustc(
         //     to rootfs at "/home/runner/work/rustcbuildx/rustcbuildx/target/debug/deps/libaho_corasick-b99b6e1b4f09cbff.rlib":
         //         mkdir /var/lib/docker/buildkit/executor/m7p2ehjfewlxfi5zjupw23oo7/rootfs/home/runner/work/rustcbuildx/rustcbuildx/target:
         //             read-only file system
+        // Meaning: tried to mount overlapping paths
         rustc_block.push_str(&format!("WORKDIR {pwd}\n"));
         rustc_block.push_str("COPY --from=cwd / .\n");
         rustc_block.push_str("RUN \\\n");
@@ -524,14 +524,10 @@ async fn bake_rustc(
     log::debug!(target:&krate, "all_externs = {all_externs:?}");
     assert!(externs.len() <= all_externs.len());
 
-    let mut dag = Vec::with_capacity(1 + all_externs.len());
-    let mut mounts = Vec::with_capacity(all_externs.len());
-    let mut head = Head::new(&metadata);
-
     let alpine = alpine_image().await.to_owned();
     // cargo-green: try using tar from rust img and drop alpine?
     // FIXME: actually, let cargo extract .crate file
-    head.contexts = [
+    md.contexts = [
         Some((RUST.to_owned(), base_image().await.to_owned())),
         input_mount.map(|(name, src, target)| {
             if src.is_some() {
@@ -548,41 +544,26 @@ async fn bake_rustc(
     .map(|(name, uri)| BuildContext { name, uri })
     .collect();
 
-    for xtern in all_externs {
-        let Some((headed_path, headed_stage)) = headed_path_and_stage(xtern.clone(), &target_path)
-        else {
-            bail!("Unexpected extern name format: {xtern}")
-        };
-        mounts.push((headed_stage, format!("/{xtern}"), format!("{target_path}/deps/{xtern}")));
+    let mut mounts = Vec::with_capacity(all_externs.len());
+    let extern_mds = all_externs
+        .into_iter()
+        .map(|xtern| {
+            // for xtern in all_externs {
+            let Some((headed_path, headed_stage)) =
+                headed_path_and_stage(xtern.clone(), &target_path)
+            else {
+                bail!("Unexpected extern name format: {xtern}")
+            };
+            mounts.push((headed_stage, format!("/{xtern}"), format!("{target_path}/deps/{xtern}")));
 
-        log::info!(target:&krate, "opening (RO) extern dockerfile {headed_path}");
-        let errf = |e| anyhow!("Failed reading {headed_path}: {e}");
-        let fd = File::open(&headed_path).map_err(errf)?;
-        let errf = |e| anyhow!("Parsing head of {headed_path}: {e}");
-        let hd = Head::from_file(fd).map_err(errf)?;
-        head.contexts.extend(hd.contexts.into_iter().filter(BuildContext::is_readonly_mount));
-
-        let script_path = from_headed_path(headed_path);
-        log::info!(target:&krate, "opening (RO) extern dockerfile {script_path}");
-        let errf = |e| anyhow!("Failed reading {script_path}: {e}");
-        let fd = File::open(&script_path).map_err(errf)?;
-        let errf = |e| anyhow!("Parsing head of {script_path}: {e}");
-        let hd = Head::from_file(fd).map_err(errf)?;
-
-        dag.push(szyk::Node::new(hd.this, hd.mnt, script_path));
-        head.mnt.push(hd.this);
-    }
-    dag.push(szyk::Node::new(head.this, head.mnt.clone(), "".into()));
-    let mut extern_scripts = match szyk::sort(&dag, head.this) {
-        Ok(ordering) => ordering,
-        Err(e) => bail!("Failed topolosorting {metadata} ({}): {e:?}", head.this),
-    };
-    extern_scripts.truncate(extern_scripts.len() - 1); //FIXME: write script earlier
-    let extern_scripts = extern_scripts; // Drops mut
-    log::info!(target:&krate, "extern_scripts {}: {extern_scripts:?}", extern_scripts.len());
-
-    head.contexts.sort_unstable();
-    head.contexts.dedup();
+            let extern_md_path = from_headed_path(headed_path);
+            log::info!(target:&krate, "opening (RO) extern md {extern_md_path}");
+            let extern_md = Md::from_file(&extern_md_path)?;
+            Ok((extern_md_path, extern_md))
+        })
+        .collect::<Result<Vec<_>>>()?;
+    let extern_md_paths = md.extend_from_externs(extern_mds)?;
+    log::info!(target:&krate, "extern_md_paths {}: {extern_md_paths:?}", extern_md_paths.len());
 
     for (name, source, target) in mounts {
         rustc_block.push_str(&format!(
@@ -597,7 +578,7 @@ async fn bake_rustc(
     // TODO: keep only paths that we explicitly mount or copy
     for var in ["PATH", "DYLD_FALLBACK_LIBRARY_PATH", "LD_LIBRARY_PATH", "LIBPATH"] {
         let Ok(val) = env::var(var) else { continue };
-        if !val.is_empty() {
+        if !val.is_empty() && debug.is_some() {
             rustc_block.push_str(&format!("#&& export {var}=\"{val}:${var}\" \\\n"));
         }
     }
@@ -610,92 +591,47 @@ async fn bake_rustc(
     rustc_block.push_str(&format!(" && /bin/bash -c \"rustc '{args}' {input} \\\n"));
     rustc_block.push_str(&format!("      1> >(sed 's/^/{MARK_STDOUT}/') \\\n"));
     rustc_block.push_str(&format!("      2> >(sed 's/^/{MARK_STDERR}/' >&2)\"\n"));
-    smol.push_block(&rustc_stage, rustc_block);
+    md.push_block(&rustc_stage, rustc_block);
 
     if let Some(ref incremental) = incremental {
         let mut incremental_block = format!("FROM scratch AS {incremental_stage}\n");
         incremental_block.push_str(&format!("COPY --from={rustc_stage} {incremental} /\n"));
-        smol.push_block(&incremental_stage, incremental_block);
+        md.push_block(&incremental_stage, incremental_block);
     }
     let mut out_block = format!("FROM scratch AS {out_stage}\n");
     out_block.push_str(&format!("COPY --from={rustc_stage} {out_dir}/*-{metadata}* /\n"));
     // NOTE: -C extra-filename=-${metadata} (starts with dash)
     // TODO: use extra filename here for fwd compat
-    smol.push_block(&out_stage, out_block);
+    md.push_block(&out_stage, out_block);
 
-    let smol = smol; // Drop mut
+    let md = md; // Drop mut
 
-    let mut headed_script = String::new();
+    let mut dockerfile = String::new();
     let mut visited_cratesio_stages = BTreeSet::new();
-    let append =
-        |final_script: &mut String, visited_cratesio_stages: &mut BTreeSet<String>, smol: &Smol| {
-            let mut begin_from = 0..;
-            if smol.blocks[1].starts_with("FROM rust AS ") {
-                //FIXME use enums (prefix stage with cratesio-)
-                begin_from = 1..;
-                if !visited_cratesio_stages.contains(&smol.block_names[0]) {
-                    final_script.push_str(&smol.blocks[0]);
-                    final_script.push('\n');
-                    visited_cratesio_stages.insert(smol.block_names[0].clone());
-                }
-            }
-            // // assert!(lines.len() >= 5);
-            // assert!(smol.blocks[0].starts_with("FROM "));//TODO: drop
-            // let mut begin_from = 0..;
-            // if lines[4].starts_with("FROM rust AS ") {
-            //     begin_from = 4..;
-            //     let cratesio_stage = lines[..4].join("\n");
-            //     if !visited_cratesio_stages.contains(&cratesio_stage) {
-            //         final_script.push_str(&cratesio_stage);
-            //         final_script.push('\n');
-            //         visited_cratesio_stages.insert(cratesio_stage);
-            //     }
-            // }
-            // for line in &lines[begin_from] {
-            for block in &smol.blocks[begin_from] {
-                final_script.push_str(block);
-                final_script.push('\n');
-            }
-        };
-    for extern_script_path in extern_scripts {
-        log::info!(target:&krate, "opening (RO) extern dockerfile {extern_script_path}");
-        let smol_raw = fs::read_to_string(&extern_script_path)// TODO: deser from stream
-            .map_err(|e| anyhow!("Reading extern's smol {extern_script_path}: {e}"))?;
-        let smol_des: Smol = toml::de::from_str(&smol_raw).unwrap();
-        // let lines: Vec<_> = BufReader::new(fd)
-        //     .lines()
-        //     .map_while(Result::ok)
-        //     .filter(|x| !x.starts_with(HDR))
-        //     .collect();
-        append(&mut headed_script, &mut visited_cratesio_stages, &smol_des);
-        headed_script.push('\n');
+    for extern_md_path in extern_md_paths {
+        log::info!(target:&krate, "opening (RO) extern's md {extern_md_path}");
+        let extern_md = Md::from_file(&extern_md_path)?;
+        extern_md.append_blocks(&mut dockerfile, &mut visited_cratesio_stages);
+        dockerfile.push('\n');
     }
-    // let lines = script.lines().map(ToOwned::to_owned).collect();
-    append(&mut headed_script, &mut visited_cratesio_stages, &smol);
-
-    let syntax = syntax().await.trim_start_matches("docker-image://");
+    md.append_blocks(&mut dockerfile, &mut visited_cratesio_stages);
 
     {
-        let mut header = format!("# syntax={syntax}\n");
-        head.write_to_slice(&mut header);
-        let smol_ser = toml::to_string_pretty(&smol).unwrap();
-        header.push_str(&smol_ser);
-        let script2 = header;
-
-        let smol_path =
+        let md_path =
             Utf8Path::new(&target_path).join(format!("{crate_name}-{metadata}-smol.toml"));
-        log::info!(target:&krate, "opening (RW) crate's smol {smol_path}");
+        let md_ser = md.to_string()?;
+
+        log::info!(target:&krate, "opening (RW) crate's md {md_path}");
         // TODO? suggest a `cargo clean` then fail
         if debug.is_some() {
-            match fs::read_to_string(&smol_path) {
-                Ok(existing) => pretty_assertions::assert_eq!(&existing, &script2),
+            match fs::read_to_string(&md_path) {
+                Ok(existing) => pretty_assertions::assert_eq!(&existing, &md_ser),
                 Err(e) if e.kind() == ErrorKind::NotFound => {}
-                Err(e) => bail!("{e}"),
+                Err(e) => bail!("Failed reading {md_path}: {e}"),
             }
         }
-        fs::write(&smol_path, script2)
-            .map_err(|e| anyhow!("Failed creating crate's smol {smol_path}: {e}"))?;
-        drop(smol); // Earlier: wrote to disk
+        fs::write(&md_path, md_ser)
+            .map_err(|e| anyhow!("Failed creating crate's md {md_path}: {e}"))?;
     }
 
     let headed_path = {
@@ -706,9 +642,9 @@ async fn bake_rustc(
         let headed_path =
             Utf8Path::new(&target_path).join(format!("{crate_name}-{metadata}-final.Dockerfile"));
 
+        let syntax = syntax().await.trim_start_matches("docker-image://");
         let mut header = format!("# syntax={syntax}\n");
-        head.write_to_slice(&mut header);
-        header.push_str(&headed_script);
+        header.push_str(&dockerfile);
 
         log::info!(target:&krate, "opening (RW) crate dockerfile {headed_path}");
         // TODO? suggest a `cargo clean` then fail
@@ -716,7 +652,7 @@ async fn bake_rustc(
             match fs::read_to_string(&headed_path) {
                 Ok(existing) => pretty_assertions::assert_eq!(&existing, &header),
                 Err(e) if e.kind() == ErrorKind::NotFound => {}
-                Err(e) => bail!("{e}"),
+                Err(e) => bail!("Failed reading {headed_path}: {e}"),
             }
         }
 
@@ -750,9 +686,9 @@ async fn bake_rustc(
     if command == "none" {
         return fallback.await;
     }
-    let code = build(krate, command, &headed_path, out_stage, &head.contexts, out_dir).await?;
+    let code = build(krate, command, &headed_path, out_stage, &md.contexts, out_dir).await?;
     if let Some(incremental) = incremental {
-        let _ = build(krate, command, &headed_path, incremental_stage, &head.contexts, incremental)
+        let _ = build(krate, command, &headed_path, incremental_stage, &md.contexts, incremental)
             .await
             .inspect_err(|e| log::warn!(target:&krate, "Error fetching incremental data: {e}"));
     }
@@ -773,22 +709,6 @@ async fn bake_rustc(
     }
 
     Ok(exit_code(code))
-}
-
-#[derive(serde::Serialize, serde::Deserialize)]
-struct Smol {
-    // TODO: headings
-    block_names: Vec<String>, //Btree...
-    blocks: Vec<String>,      //////...map? Is it insertion-order?
-}
-impl Smol {
-    fn new() -> Self {
-        Self { block_names: vec![], blocks: vec![] }
-    }
-    fn push_block(&mut self, name: &Stage, block: String) {
-        self.block_names.push(name.to_string()); //TODO: enum instead?
-        self.blocks.push(block);
-    }
 }
 
 #[inline]

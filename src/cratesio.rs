@@ -3,7 +3,7 @@ use camino::{Utf8Path, Utf8PathBuf};
 
 use crate::{Stage, ALPINE};
 
-pub(crate) const CRATESIO_PREFIX: &str = "index.crates.io-";
+pub(crate) const CRATESIO_STAGE_PREFIX: &str = "cratesio-";
 
 #[inline]
 pub(crate) fn from_cratesio_input_path(input: &Utf8PathBuf) -> Result<(String, String, String)> {
@@ -11,7 +11,7 @@ pub(crate) fn from_cratesio_input_path(input: &Utf8PathBuf) -> Result<(String, S
     let mut cratesio_index = String::new();
     let mut cratesio_crate = None;
     while let Some(part) = it.next() {
-        if part.starts_with(CRATESIO_PREFIX) {
+        if part.starts_with("index.crates.io-") {
             cratesio_index = part.to_owned();
             cratesio_crate = it.next();
             break;
@@ -39,7 +39,8 @@ pub(crate) async fn into_stage(
     let cargo_home = cargo_home.as_ref();
 
     // TODO: see if {cratesio_index} can be dropped from paths (+ stage names) => content hashing + remap-path-prefix?
-    let cratesio_stage = Stage::new(format!("{name}-{version}-{cratesio_index}"))?; // No need for more, e.g. crate_type
+    let cratesio_stage =
+        Stage::new(format!("{CRATESIO_STAGE_PREFIX}{name}-{version}-{cratesio_index}"))?; // No need for more, e.g. crate_type
 
     let cratesio_extracted =
         cargo_home.join(format!("registry/src/{cratesio_index}/{name}-{version}"));
