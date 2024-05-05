@@ -617,8 +617,7 @@ async fn bake_rustc(
     md.append_blocks(&mut dockerfile, &mut visited_cratesio_stages);
 
     {
-        let md_path =
-            Utf8Path::new(&target_path).join(format!("{crate_name}-{metadata}-smol.toml"));
+        let md_path = Utf8Path::new(&target_path).join(format!("{crate_name}-{metadata}.toml"));
         let md_ser = md.to_string()?;
 
         log::info!(target:&krate, "opening (RW) crate's md {md_path}");
@@ -640,7 +639,7 @@ async fn bake_rustc(
         // https://rustc-dev-guide.rust-lang.org/backend/libs-and-metadata.html
         //=> a filename suffix with content hash?
         let headed_path =
-            Utf8Path::new(&target_path).join(format!("{crate_name}-{metadata}-final.Dockerfile"));
+            Utf8Path::new(&target_path).join(format!("{crate_name}-{metadata}.Dockerfile"));
 
         let syntax = syntax().await.trim_start_matches("docker-image://");
         let mut header = format!("# syntax={syntax}\n");
@@ -737,7 +736,7 @@ fn file_exists_and_is_not_empty(path: impl AsRef<Utf8Path>) -> Result<bool> {
 fn headed_path_and_stage_for_rlib() {
     let xtern = "libstrsim-8ed1051e7e58e636.rlib".to_owned();
     let res = headed_path_and_stage(xtern, "./target/path").unwrap();
-    assert_eq!(res.0, "./target/path/strsim-8ed1051e7e58e636-final.Dockerfile".to_owned());
+    assert_eq!(res.0, "./target/path/strsim-8ed1051e7e58e636.Dockerfile".to_owned());
     assert_eq!(res.1, "out-8ed1051e7e58e636".to_owned());
 }
 
@@ -745,7 +744,7 @@ fn headed_path_and_stage_for_rlib() {
 fn headed_path_and_stage_for_libc() {
     let xtern = "liblibc-c53783e3f8edcfe4.rmeta".to_owned();
     let res = headed_path_and_stage(xtern, "./target/path").unwrap();
-    assert_eq!(res.0, "./target/path/libc-c53783e3f8edcfe4-final.Dockerfile".to_owned());
+    assert_eq!(res.0, "./target/path/libc-c53783e3f8edcfe4.Dockerfile".to_owned());
     assert_eq!(res.1, "out-c53783e3f8edcfe4".to_owned());
 }
 
@@ -753,7 +752,7 @@ fn headed_path_and_stage_for_libc() {
 fn headed_path_and_stage_for_weird_extension() {
     let xtern = "libthing-131283e3f8edcfe4.a.2.c".to_owned();
     let res = headed_path_and_stage(xtern, "./target/path").unwrap();
-    assert_eq!(res.0, "./target/path/thing-131283e3f8edcfe4-final.Dockerfile".to_owned());
+    assert_eq!(res.0, "./target/path/thing-131283e3f8edcfe4.Dockerfile".to_owned());
     assert_eq!(res.1, "out-131283e3f8edcfe4".to_owned());
 }
 
@@ -765,7 +764,7 @@ fn headed_path_and_stage(
     assert!(xtern.starts_with("lib")); // TODO: stop doing that (stripping ^lib)
     let pa = xtern.strip_prefix("lib").and_then(|x| x.split_once('.')).map(|(x, _)| x);
     let st = pa.and_then(|x| x.split_once('-')).map(|(_, x)| format!("out-{x}"));
-    let pa = pa.map(|x| target_path.as_ref().join(format!("{x}-final.Dockerfile")));
+    let pa = pa.map(|x| target_path.as_ref().join(format!("{x}.Dockerfile")));
     pa.zip(st)
 }
 
@@ -790,21 +789,18 @@ fn crate_out_name(name: &str) -> String {
 #[test]
 fn a_few_from_headed_path() {
     assert_eq!(
-        from_headed_path("target/path/strsim-8ed1051e7e58e636-final.Dockerfile".into()),
-        "target/path/strsim-8ed1051e7e58e636-smol.toml".to_owned()
+        from_headed_path("target/path/strsim-8ed1051e7e58e636.Dockerfile".into()),
+        "target/path/strsim-8ed1051e7e58e636.toml".to_owned()
     );
     assert_eq!(
-        from_headed_path("target/path/blip_blap-blop-1312051e7e58e636-final.Dockerfile".into()),
-        "target/path/blip_blap-blop-1312051e7e58e636-smol.toml".to_owned()
+        from_headed_path("target/path/blip_blap-blop-1312051e7e58e636.Dockerfile".into()),
+        "target/path/blip_blap-blop-1312051e7e58e636.toml".to_owned()
     );
 }
 
 fn from_headed_path(headed_path: Utf8PathBuf) -> Utf8PathBuf {
     headed_path.with_file_name(
-        headed_path
-            .file_name()
-            .expect("follows naming scheme")
-            .replace("-final.Dockerfile", "-smol.toml"),
+        headed_path.file_name().expect("follows naming scheme").replace(".Dockerfile", ".toml"),
     )
 }
 
