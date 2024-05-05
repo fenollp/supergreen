@@ -44,12 +44,16 @@ impl Md {
     }
 
     pub(crate) fn append_blocks(&self, dockerfile: &mut String, visited: &mut BTreeSet<String>) {
+        let mut filter = ""; // not an actual stage name
         let DockerfileStage { name, script } =
             self.stages.first().expect("has to have at least one stage");
-        if name.starts_with(CRATESIO_STAGE_PREFIX) && visited.insert(name.to_owned()) {
-            dockerfile.push_str(script);
+        if name.starts_with(CRATESIO_STAGE_PREFIX) {
+            filter = name;
+            if visited.insert(name.to_owned()) {
+                dockerfile.push_str(script);
+            }
         }
-        for stage in self.stages.iter().filter(|stage| &stage.name != name) {
+        for stage in self.stages.iter().filter(|stage| stage.name != filter) {
             dockerfile.push_str(&stage.script);
         }
     }
