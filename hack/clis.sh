@@ -196,28 +196,25 @@ $(
       run: du -sh ~/instst
 
     - if: \${{ failure() || success() }}
+      name: Finishes fast
       run: |
-        grep Finished _ | grep -E [012]...s || grep Finished _
+        grep Finished _
+        grep Finished _ | grep -E [012]...s
 
     - if: \${{ failure() || success() }}
       run: |
         grep Fresh _
 
     - if: \${{ failure() || success() }}
+      name: Did not recompile things (yay!)
       run: |
         ! grep Compiling _
 
     - if: \${{ failure() || success() }}
       run: |
         ! grep 'DEBUG|INFO|WARN|ERROR' _
-
-    - if: \${{ failure() || success() }}
-      run: |
         ! grep 'Falling back' _
-
-    - if: \${{ failure() || success() }}
-      run: |
-        ! grep BUG _
+        ! grep 'BUG[: ]' _
 
     - if: \${{ failure() || success() }}
       run: cat _ || true

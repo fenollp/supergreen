@@ -12,7 +12,7 @@ use serde::{Deserialize, Serialize};
 use crate::{cratesio::CRATESIO_STAGE_PREFIX, Stage};
 
 #[cfg_attr(test, derive(Default))]
-#[derive(Serialize, Deserialize)]
+#[derive(Clone, Deserialize, Serialize)]
 pub(crate) struct Md {
     pub(crate) this: String,
     pub(crate) deps: Vec<String>,
@@ -162,7 +162,6 @@ fn md_ser() {
 
     let ser = md.to_string().unwrap();
     pretty_assertions::assert_eq!(
-        ser,
         r#"
 this = "711ba64e1183a234"
 deps = [
@@ -174,7 +173,8 @@ stages = []
 [[contexts]]
 name = "rust"
 uri = "docker-image://docker.io/library/rust:1.77.2-slim@sha256:090d8d4e37850b349b59912647cc7a35c6a64dba8168f6998562f02483fa37d7"
-"#[1..]
+"#[1..],
+        ser
     );
 }
 

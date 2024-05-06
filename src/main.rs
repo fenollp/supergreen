@@ -504,6 +504,9 @@ async fn bake_rustc(
         //         mkdir /var/lib/docker/buildkit/executor/m7p2ehjfewlxfi5zjupw23oo7/rootfs/home/runner/work/rustcbuildx/rustcbuildx/target:
         //             read-only file system
         // Meaning: tried to mount overlapping paths
+        // TODO: try mounting each individual file from `*.d` dep file
+        // 0 0s debug HEAD λ cat rustcbuildx.d
+        // $target_dir/debug/rustcbuildx: $cwd/src/cli.rs $cwd/src/cratesio.rs $cwd/src/envs.rs $cwd/src/main.rs $cwd/src/md.rs $cwd/src/parse.rs $cwd/src/pops.rs $cwd/src/runner.rs $cwd/src/stage.rs
         rustc_block.push_str(&format!("WORKDIR {pwd}\n"));
         rustc_block.push_str("COPY --from=cwd / .\n");
         rustc_block.push_str("RUN \\\n");

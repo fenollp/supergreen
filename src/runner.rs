@@ -41,7 +41,7 @@ pub(crate) async fn build(
     // Makes sure that the BuildKit builder is used by either runner
     cmd.env("DOCKER_BUILDKIT", "1");
 
-    cmd.env("SOURCE_DATE_EPOCH", "0"); // https://reproducible-builds.org/docs/source-date-epoch
+    //TODO: cmd.env("SOURCE_DATE_EPOCH", "0"); // https://reproducible-builds.org/docs/source-date-epoch
 
     // docker buildx create \
     //   --name remote-container \
@@ -131,7 +131,10 @@ pub(crate) async fn build(
     log::info!(target:&krate, "command `{command} build` ran in {secs:?}: {code:?}");
 
     let longish = Duration::from_secs(2);
-    let (_, _) = join!(timeout(longish, out_task), timeout(longish, err_task));
+    match join!(timeout(longish, out_task), timeout(longish, err_task)) {
+        (Err(e), _) | (_, Err(e)) => panic!(">>> {krate} ({longish:?}): {e}"),
+        (_, _) => {}
+    }
     drop(child);
 
     if !(0..=1).contains(&code.unwrap_or(-1)) {
