@@ -282,7 +282,7 @@ tmux new-session -d -s "$session_name"
 tmux select-window -t "$session_name:0"
 
 send() {
-  tmux send-keys " $* && tmux select-layout even-vertical && exit" C-m
+  tmux send-keys "$* && tmux select-layout even-vertical && exit" C-m
 }
 
 

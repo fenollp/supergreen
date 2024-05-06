@@ -210,10 +210,13 @@ async fn bake_rustc(
             (listing != 0).then_some(crate_out) // crate_out dir empty => mount can be dropped
         });
 
-    // https://github.com/rust-lang/cargo/issues/12059
+    // https://github.com/rust-lang/cargo/issues/12059#issuecomment-1537457492
+    //   https://github.com/rust-lang/rust/issues/63012 : Tracking issue for -Z binary-dep-depinfo
     let mut all_externs = BTreeSet::new();
     let externs_prefix = |part: &str| Utf8Path::new(&target_path).join(format!("externs_{part}"));
     let crate_externs = externs_prefix(&format!("{crate_name}-{metadata}"));
+
+    let mut md = Md::new(&metadata);
 
     let ext = match crate_type.as_str() {
         "lib" => "rmeta".to_owned(),
@@ -251,7 +254,7 @@ async fn bake_rustc(
 
         let xtern_crate_externs = externs_prefix(xtern);
         log::info!(target:&krate, "checking (RO) extern's externs {xtern_crate_externs}");
-        let errf = |e| anyhow!("Failed to `test -s {crate_externs}`: {e}");
+        let errf = |e| anyhow!("Failed to `test -s {xtern_crate_externs}`: {e}");
         if file_exists_and_is_not_empty(&xtern_crate_externs).map_err(errf)? {
             log::info!(target:&krate, "opening (RO) crate externs {xtern_crate_externs}");
             let errf = |e| anyhow!("Failed to `cat {xtern_crate_externs}`: {e}");
@@ -325,8 +328,6 @@ async fn bake_rustc(
         let errf = |e| anyhow!("Failed to `mkdir -p {incremental}`: {e}");
         fs::create_dir_all(incremental).map_err(errf)?;
     }
-
-    let mut md = Md::new(&metadata);
 
     let cargo_home = env::var("CARGO_HOME")
         .map(Utf8PathBuf::from)
@@ -669,6 +670,7 @@ async fn bake_rustc(
     // https://docs.rs/tracing-subscriber/latest/tracing_subscriber/fmt/struct.Subscriber.html
     // https://crates.io/crates/tracing-appender
     // https://github.com/tugglecore/rust-tracing-primer
+    // TODO: `cargo green -v{N+1} ..` starts a TUI showing colored logs on above `cargo -v{N} ..`
 
     let command = runner();
     if command == "none" {
