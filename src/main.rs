@@ -235,9 +235,7 @@ async fn bake_rustc(
     for xtern in &externs {
         all_externs.insert(xtern.clone());
 
-        if !xtern.starts_with("lib") {
-            bail!("CONTRACT: cargo gave unexpected extern [^lib]: {xtern:?}")
-        }
+        assert!(xtern.starts_with("lib"));
         let xtern = xtern.strip_prefix("lib").expect("PROOF: ~ ^lib");
         let xtern = if xtern.ends_with(".rlib") {
             xtern.strip_suffix(".rlib")
@@ -520,9 +518,6 @@ async fn bake_rustc(
         rustc_block.push_str(&format!("  --mount=type=bind,from={named},target={crate_out} \\\n"));
     }
 
-    log::debug!(target:&krate, "all_externs = {all_externs:?}");
-    assert!(externs.len() <= all_externs.len());
-
     md.contexts = [
         Some((RUST.to_owned(), base_image().await.to_owned())),
         input_mount.and_then(|(name, src, target)| {
@@ -536,11 +531,13 @@ async fn bake_rustc(
     .map(|(name, uri)| BuildContext { name, uri })
     .collect();
 
+    log::debug!(target:&krate, "all_externs = {all_externs:?}");
+    assert!(externs.len() <= all_externs.len());
+
     let mut mounts = Vec::with_capacity(all_externs.len());
     let extern_mds = all_externs
         .into_iter()
         .map(|xtern| {
-            // for xtern in all_externs {
             let Some((headed_path, headed_stage)) =
                 headed_path_and_stage(xtern.clone(), &target_path)
             else {

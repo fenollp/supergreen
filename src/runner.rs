@@ -41,7 +41,7 @@ pub(crate) async fn build(
     // Makes sure that the BuildKit builder is used by either runner
     cmd.env("DOCKER_BUILDKIT", "1");
 
-    //TODO: cmd.env("SOURCE_DATE_EPOCH", "0"); // https://reproducible-builds.org/docs/source-date-epoch
+    //TODO: (use if set) cmd.env("SOURCE_DATE_EPOCH", "0"); // https://reproducible-builds.org/docs/source-date-epoch
 
     // docker buildx create \
     //   --name remote-container \
