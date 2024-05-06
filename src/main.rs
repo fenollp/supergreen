@@ -17,10 +17,7 @@ use tokio::process::Command;
 use crate::{
     cli::{envs, exit_code, help, pull, push},
     cratesio::{from_cratesio_input_path, into_stage},
-    envs::{
-        alpine_image, base_image, called_from_build_script, internal, maybe_log, pass_env, runner,
-        syntax,
-    },
+    envs::{base_image, called_from_build_script, internal, maybe_log, pass_env, runner, syntax},
     md::{BuildContext, Md},
     parse::RustcArgs,
     pops::Popped,
@@ -40,7 +37,6 @@ mod stage;
 const PKG: &str = env!("CARGO_PKG_NAME");
 const VSN: &str = env!("CARGO_PKG_VERSION");
 
-const ALPINE: &str = "alpine";
 const RUST: &str = "rust";
 
 // NOTE: this RUSTC_WRAPPER program only ever gets called by `cargo`, so we save
@@ -346,12 +342,12 @@ async fn bake_rustc(
 
         let (name, version, cratesio_index) = from_cratesio_input_path(&input)?;
 
-        let (cratesio_stage, cratesio_extracted, block) =
+        let (cratesio_stage, cratesio_cached, block) =
             into_stage(krate, cargo_home.as_path(), &name, &version, &cratesio_index).await?;
         md.push_block(&cratesio_stage, block);
 
         let rustc_stage = Stage::new(format!("dep-{crate_id}-{cratesio_index}"))?;
-        (Some((cratesio_stage, Some("/tmp"), cratesio_extracted)), rustc_stage)
+        (Some((cratesio_stage, Some("/crate"), cratesio_cached)), rustc_stage)
     } else {
         let hm = |prefix: &str, basename: &str, pop: usize| {
             let stage = Stage::new(format!("{prefix}-{crate_id}"))?;
@@ -524,17 +520,10 @@ async fn bake_rustc(
     log::debug!(target:&krate, "all_externs = {all_externs:?}");
     assert!(externs.len() <= all_externs.len());
 
-    let alpine = alpine_image().await.to_owned();
-    // cargo-green: try using tar from rust img and drop alpine?
-    // FIXME: actually, let cargo extract .crate file
     md.contexts = [
         Some((RUST.to_owned(), base_image().await.to_owned())),
-        input_mount.map(|(name, src, target)| {
-            if src.is_some() {
-                (ALPINE.to_owned(), alpine)
-            } else {
-                (name.to_string(), target.to_string())
-            }
+        input_mount.and_then(|(name, src, target)| {
+            src.is_none().then_some((name.to_string(), target.to_string()))
         }),
         cwd.as_ref().map(|(_, cwd)| ("cwd".to_owned(), cwd.to_string())),
         crate_out.map(|crate_out| (crate_out_name(&crate_out), crate_out)),

@@ -1,7 +1,7 @@
 use anyhow::{anyhow, bail, Result};
 use camino::{Utf8Path, Utf8PathBuf};
 
-use crate::{Stage, ALPINE};
+use crate::Stage;
 
 pub(crate) const CRATESIO_STAGE_PREFIX: &str = "cratesio-";
 
@@ -42,8 +42,8 @@ pub(crate) async fn into_stage(
     let cratesio_stage =
         Stage::new(format!("{CRATESIO_STAGE_PREFIX}{name}-{version}-{cratesio_index}"))?; // No need for more, e.g. crate_type
 
-    let cratesio_extracted =
-        cargo_home.join(format!("registry/src/{cratesio_index}/{name}-{version}"));
+    // let cratesio_extracted =
+    //     cargo_home.join(format!("registry/src/{cratesio_index}/{name}-{version}"));
     let cratesio_cached =
         cargo_home.join(format!("registry/cache/{cratesio_index}/{name}-{version}.crate"));
 
@@ -54,11 +54,10 @@ pub(crate) async fn into_stage(
 
     const CRATESIO: &str = "https://static.crates.io";
     let mut block = String::new();
-    block.push_str(&format!("FROM {ALPINE} AS {cratesio_stage}\n"));
+    block.push_str(&format!("FROM scratch AS {cratesio_stage}\n"));
     block.push_str(&format!("ADD --chmod=0664 --checksum=sha256:{cratesio_hash} \\\n"));
+    // block.push_str(&format!("  {CRATESIO}/crates/{name}/{name}-{version}.crate {cratesio_cached}\n"));
     block.push_str(&format!("  {CRATESIO}/crates/{name}/{name}-{version}.crate /crate\n"));
-    // Using tar: https://github.com/rust-lang/cargo/issues/3577#issuecomment-890693359
-    block.push_str("RUN set -eux && tar -zxf /crate --strip-components=1 -C /tmp/\n");
 
-    Ok((cratesio_stage, cratesio_extracted, block))
+    Ok((cratesio_stage, cratesio_cached, block))
 }
