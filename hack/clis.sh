@@ -161,8 +161,7 @@ $(
           CARGO_TARGET_DIR=~/instst cargo -vv install --jobs=1 --locked --force $(as_install "$name_at_version") $@
 
     - if: \${{ failure() || success() }}
-      run: |
-        [ \$(stat -c%s logs.txt) -lt 1751778 ] && cat logs.txt ; echo >logs.txt
+      run: if [ \$(stat -c%s logs.txt) -lt 1751778 ]; then cat logs.txt; fi ; echo >logs.txt
 
     - name: Disk usage
       if: \${{ failure() || success() }}
@@ -183,8 +182,7 @@ $(
           CARGO_TARGET_DIR=~/instst cargo -vv install --jobs=1 --locked --force $(as_install "$name_at_version") $@ 2>&1 | tee _
 
     - if: \${{ failure() || success() }}
-      run: |
-        [ \$(stat -c%s logs.txt) -lt 1751778 ] && cat logs.txt
+      run: if [ \$(stat -c%s logs.txt) -lt 1751778 ]; then cat logs.txt; fi
 
     - name: Disk usage
       if: \${{ failure() || success() }}
