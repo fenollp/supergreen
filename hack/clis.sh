@@ -321,6 +321,5 @@ tmux attach-session -t "$session_name"
 echo "$name_at_version"
 echo "Target dir: $tmptrgt"
 echo "Logs: $tmplogs"
-case "$(wc "$tmplogs")" in '0 0 0 '*) ;; *)
-  $PAGER "$tmplogs"
-;; esac
+case "$(wc "$tmplogs")" in '0 0 0 '*) ;;
+                                   *) $PAGER "$tmplogs" ;; esac

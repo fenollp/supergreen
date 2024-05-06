@@ -11,7 +11,7 @@ use futures::{
 };
 use tokio::process::Command;
 
-use crate::envs::{alpine_image, base_image, cache_image, internal, log_path, runner, syntax};
+use crate::envs::{base_image, cache_image, internal, log_path, runner, syntax};
 
 // TODO: tune logging verbosity https://docs.rs/clap-verbosity-flag/latest/clap_verbosity_flag/
 
@@ -64,7 +64,6 @@ pub(crate) async fn push() -> Result<ExitCode> {
 pub(crate) async fn envs(vars: Vec<String>) -> ExitCode {
     let all: BTreeMap<_, _> = [
         ("RUSTCBUILDX", internal::this()),
-        ("RUSTCBUILDX_ALPINE_IMAGE", Some(alpine_image().await.to_owned())),
         ("RUSTCBUILDX_BASE_IMAGE", Some(base_image().await.to_owned())),
         ("RUSTCBUILDX_CACHE_IMAGE", cache_image().to_owned()),
         ("RUSTCBUILDX_LOG", internal::log()),
@@ -95,11 +94,7 @@ pub(crate) async fn envs(vars: Vec<String>) -> ExitCode {
 }
 
 pub(crate) async fn pull() -> Result<ExitCode> {
-    let imgs = [
-        (internal::syntax(), syntax().await),
-        (internal::base_image(), base_image().await),
-        (internal::alpine_image(), alpine_image().await),
-    ];
+    let imgs = [(internal::syntax(), syntax().await), (internal::base_image(), base_image().await)];
 
     let mut to_pull = Vec::with_capacity(imgs.len());
     for (user_input, img) in imgs {
