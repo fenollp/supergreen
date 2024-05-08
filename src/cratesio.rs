@@ -60,6 +60,10 @@ pub(crate) async fn into_stage(
     // Using tar: https://github.com/rust-lang/cargo/issues/3577#issuecomment-890693359
     block.push_str("RUN set -eux && tar -zxf /crate --strip-components=1 -C /tmp/\n");
 
+    // TODO: ask upstream `buildx/buildkit+podman` for a way to drop that RUN
+
+    // Otherwise:
+
     // TODO: ask upstream `rustc` if it could be able to take a .crate archive as input
     //=> would remove that `RUN tar` step + stage dep on RUST (=> scratch)
 

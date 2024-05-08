@@ -99,9 +99,10 @@ as_install() {
 
 cli() {
 	local name_at_version=$1; shift
+  local jobs=$1; shift
 
 	cat <<EOF
-  $(sed 's%@%_%g;s%\.%-%g' <<<"$name_at_version"):
+  $(sed 's%@%_%g;s%\.%-%g' <<<"$name_at_version")$(if [[ "$jobs" != 1 ]]; then echo '-J'; fi):
     runs-on: ubuntu-latest
     needs: bin
     steps:
@@ -158,7 +159,7 @@ $(
         RUSTCBUILDX_LOG=debug \\
         RUSTCBUILDX_LOG_PATH="\$PWD"/logs.txt \\
         RUSTC_WRAPPER="\$PWD"/rustcbuildx \\
-          CARGO_TARGET_DIR=~/instst cargo -vv install --jobs=1 --locked --force $(as_install "$name_at_version") $@
+          CARGO_TARGET_DIR=~/instst cargo -vv install --jobs=$jobs --locked --force $(as_install "$name_at_version") $@
 
     - if: \${{ failure() || success() }}
       run: if [ \$(stat -c%s logs.txt) -lt 1751778 ]; then cat logs.txt; fi ; echo >logs.txt
@@ -179,7 +180,7 @@ $(
         RUSTCBUILDX_LOG=debug \\
         RUSTCBUILDX_LOG_PATH="\$PWD"/logs.txt \\
         RUSTC_WRAPPER="\$PWD"/rustcbuildx \\
-          CARGO_TARGET_DIR=~/instst cargo -vv install --jobs=1 --locked --force $(as_install "$name_at_version") $@ 2>&1 | tee _
+          CARGO_TARGET_DIR=~/instst cargo -vv install --jobs=$jobs --locked --force $(as_install "$name_at_version") $@ 2>&1 | tee _
 
     - if: \${{ failure() || success() }}
       run: if [ \$(stat -c%s logs.txt) -lt 1751778 ]; then cat logs.txt; fi
@@ -232,7 +233,9 @@ if [[ $# = 0 ]]; then
       rustcbuildx@*) continue ;;
       cargo-audit@*) continue ;; # TODO: drop once max cache use
     esac
-    cli "$name_at_version" "${nvs_args["$i"]}"
+    cli "$name_at_version" 1 "${nvs_args["$i"]}"
+    # 3: https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners/about-github-hosted-runners#standard-github-hosted-runners-for-public-repositories
+    cli "$name_at_version" 3 "${nvs_args["$i"]}"
   done
 
   exit
@@ -240,13 +243,16 @@ fi
 
 
 name_at_version=$1; shift
-cleanup=${1:-0}
+modifier=${1:-0}
+
+distclean=0; if [[ "$modifier" = 'distclean' ]]; then distclean=1; fi
+clean=0;     if [[ "$modifier" = 'clean'     ]]; then clean=1; fi
 
 if [[ "$name_at_version" = 'ok' ]]; then
   for i in "${!nvs[@]}"; do
     [[ "${oks[$i]}" = 'ok' ]] || continue
     nv=${nvs[$i]}
-    "$0" "${nv#*@}" "$cleanup"
+    "$0" "${nv#*@}" "$modifier"
   done
   exit $?
 fi
@@ -272,8 +278,12 @@ tmplogs=/tmp/clis-$session_name.logs.txt
 tmpgooo=/tmp/clis-$session_name.state
 tmpbins=/tmp
 
-rm -rf "$tmptrgt"
-if [[ "$cleanup" = '1' ]]; then
+if [[ "$clean" = '1' ]]; then
+  rm -rf "$tmptrgt"
+  docker buildx prune       --force --verbose
+fi
+if [[ "$distclean" = '1' ]]; then
+  rm -rf "$tmptrgt"
   docker buildx prune --all --force --verbose
 fi
 
@@ -307,7 +317,8 @@ send \
   RUSTCBUILDX_CACHE_IMAGE="${RUSTCBUILDX_CACHE_IMAGE:-}" \
   RUSTC_WRAPPER=rustcbuildx \
     CARGO_TARGET_DIR="$tmptrgt" cargo -vv install --jobs=${jobs:-1} --root=$tmpbins --locked --force "$(as_install "$name_at_version")" "$args" \
-  '&&' 'if' '[[' "$cleanup" '=' '1' ']];' 'then' docker buildx prune --all --force --verbose '|' tee --append "$tmplogs" '||' 'exit' '1;' 'fi' \
+  '&&' 'if' '[[' "$clean"     '=' '1' ']];' 'then' docker buildx prune       --force --verbose '|' tee --append "$tmplogs" '||' 'exit' '1;' 'fi' \
+  '&&' 'if' '[[' "$distclean" '=' '1' ']];' 'then' docker buildx prune --all --force --verbose '|' tee --append "$tmplogs" '||' 'exit' '1;' 'fi' \
   '&&' tmux kill-session -t "$session_name"
 tmux select-layout even-vertical
 
