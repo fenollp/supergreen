@@ -18,9 +18,9 @@ use crate::{
     cli::{envs, exit_code, help, pull, push},
     cratesio::{from_cratesio_input_path, into_stage},
     envs::{base_image, called_from_build_script, internal, maybe_log, pass_env, runner, syntax},
+    extensions::{Popped, ShowCmd},
     md::{BuildContext, Md},
     parse::RustcArgs,
-    pops::Popped,
     runner::{build, MARK_STDERR, MARK_STDOUT},
     stage::{Stage, StageError},
 };
@@ -28,9 +28,9 @@ use crate::{
 mod cli;
 mod cratesio;
 mod envs;
+mod extensions;
 mod md;
 mod parse;
-mod pops;
 mod runner;
 mod stage;
 
@@ -136,14 +136,14 @@ fn passthrough_getting_rust_target_specific_information() {
 async fn call_rustc(rustc: &str, args: Vec<String>) -> Result<ExitCode> {
     // NOTE: not running inside Docker: local install SHOULD match Docker image setup
     // Meaning: it's up to the user to craft their desired $RUSTCBUILDX_BASE_IMAGE
-    let code = Command::new(rustc)
-        .kill_on_drop(true)
-        .args(&args)
+    let mut cmd = Command::new(rustc);
+    let cmd = cmd.kill_on_drop(true).args(args);
+    let code = cmd
         .spawn()
-        .map_err(|e| anyhow!("Failed to spawn rustc {rustc} with {args:?}: {e}"))?
+        .map_err(|e| anyhow!("Failed to spawn {}: {e}", cmd.show()))?
         .wait()
         .await
-        .map_err(|e| anyhow!("Failed to wait for rustc {rustc} with {args:?}: {e}"))?
+        .map_err(|e| anyhow!("Failed to wait {}: {e}", cmd.show()))?
         .code();
     Ok(exit_code(code))
 }
@@ -472,20 +472,18 @@ async fn bake_rustc(
         if pwd.join(".git").is_dir() {
             log::info!(target:&krate, "copying all git files under {}", pwd.join(".git"));
             // TODO: rust git crate?
-            let output = Command::new("git")
-                .kill_on_drop(true)
-                .arg("ls-files")
-                .arg(&pwd)
-                .output()
-                .await
-                .map_err(|e| anyhow!("Failed calling `git ls-files {pwd}`: {e}"))?;
+            // TODO: --mount=bind each file one by one => drop temp dir ctx
+            let mut cmd = Command::new("git");
+            let cmd = cmd.kill_on_drop(true).arg("ls-files").arg(&pwd);
+            let output =
+                cmd.output().await.map_err(|e| anyhow!("Failed calling {}: {e}", cmd.show()))?;
             if !output.status.success() {
-                bail!("Failed `git ls-files {pwd}`: {:?}", output.stderr)
+                bail!("Failed {}: {:?}", cmd.show(), output.stderr)
             }
             // TODO: buffer reads to this command's output
             // NOTE: unsorted output lines
             for f in String::from_utf8(output.stdout)
-                .map_err(|e| anyhow!("Parsing `git ls-files`: {e}"))?
+                .map_err(|e| anyhow!("Parsing {}: {e}", cmd.show()))?
                 .lines()
             {
                 log::info!(target:&krate, "copying git repo file {f}");

@@ -1,17 +1,22 @@
 use std::{
     collections::BTreeMap,
     env,
+    io::Cursor,
     process::{ExitCode, Stdio},
 };
 
-use anyhow::{anyhow, Result};
+use anyhow::{anyhow, Error, Result};
 use futures::{
     future::ok,
     stream::{iter, StreamExt, TryStreamExt},
 };
-use tokio::process::Command;
+use serde_jsonlines::AsyncBufReadJsonLines;
+use tokio::{io::BufReader, process::Command};
 
-use crate::envs::{base_image, cache_image, internal, log_path, runner, syntax};
+use crate::{
+    envs::{base_image, cache_image, internal, log_path, runner, syntax},
+    extensions::ShowCmd,
+};
 
 // TODO: tune logging verbosity https://docs.rs/clap-verbosity-flag/latest/clap_verbosity_flag/
 
@@ -37,28 +42,75 @@ Usage:
 }
 
 // TODO: make it work for podman: https://github.com/containers/podman/issues/2369
-// TODO: also, make it concurrent on max=5 upload streams
 pub(crate) async fn push() -> Result<ExitCode> {
     if let Some(img) = cache_image() {
         let img = img.trim_start_matches("docker-image://");
-        let command = runner();
-        let o = Command::new(command)
-            .kill_on_drop(true)
-            .arg("push")
-            .arg("--all-tags")
-            .arg(img)
-            .stdin(Stdio::null())
-            .spawn()
-            .map_err(|e| anyhow!("Failed to start `{command} push --all-tags {img}`: {e}"))?
-            .wait()
-            .await
-            .map_err(|e| anyhow!("Failed to call `{command} push --all-tags {img}`: {e}"))?;
-        if !o.success() {
-            println!("Failed to push {img}");
-            return Ok(exit_code(o.code()));
-        }
+
+        let tags = match all_tags_of(img).await? {
+            (_, Some(code)) => return Ok(code),
+            (tags, _) => tags,
+        };
+
+        iter(tags)
+            .map(|tag: String| async move {
+                println!("Pushing {img}:{tag}...");
+                let mut cmd = Command::new(runner());
+                let cmd = cmd
+                    .kill_on_drop(true)
+                    .arg("push")
+                    .arg(format!("{img}:{tag}"))
+                    .stdin(Stdio::null())
+                    .stdout(Stdio::null())
+                    .stderr(Stdio::null());
+                let o = cmd
+                    .spawn()
+                    .map_err(|e| anyhow!("Failed to start {}: {e}", cmd.show()))?
+                    .wait()
+                    .await
+                    .map_err(|e| anyhow!("Failed to call {}: {e}", cmd.show()))?;
+                if !o.success() {
+                    eprintln!("Pushing {img}:{tag} failed!");
+                } else {
+                    println!("Pushing {img}:{tag}... done!");
+                }
+                Ok(0)
+            })
+            .buffered(10)
+            .try_fold(0, |a, b| ok::<_, Error>(a + b))
+            .await?;
     }
     Ok(exit_code(Some(0)))
+}
+
+// TODO: test with known tags
+// TODO: test docker.io/ prefix bug for the future
+async fn all_tags_of(img: &str) -> Result<(Vec<String>, Option<ExitCode>)> {
+    //thats a silly return type
+
+    // NOTE: https://github.com/moby/moby/issues/47809
+    //   Meanwhile: just drop docker.io/ prefix
+    let mut cmd = Command::new(runner());
+    let cmd = cmd
+        .kill_on_drop(true)
+        .arg("image")
+        .arg("ls")
+        .arg("--format=json")
+        .arg(format!("--filter=reference={}:*", img.trim_start_matches("docker.io/")));
+    let o = cmd.output().await.map_err(|e| anyhow!("Failed calling {}: {e}", cmd.show()))?;
+    if !o.status.success() {
+        eprintln!("Failed to list tags of image {img}");
+        return Ok((vec![], Some(exit_code(o.status.code()))));
+    }
+    let tags: Vec<String> = BufReader::new(Cursor::new(String::from_utf8(o.stdout).unwrap()))
+        .json_lines()
+        .filter_map(|x| async move { x.ok() })
+        .filter_map(|x: serde_json::Value| async move {
+            x.get("Tag").and_then(|x| x.as_str().map(ToOwned::to_owned))
+        })
+        .collect()
+        .await;
+
+    Ok((tags, None))
 }
 
 pub(crate) async fn envs(vars: Vec<String>) -> ExitCode {
@@ -130,19 +182,16 @@ pub(crate) async fn pull() -> Result<ExitCode> {
 }
 
 async fn do_pull(img: String) -> Result<Option<i32>> {
-    let command = runner();
-    let o = Command::new(command)
-        .kill_on_drop(true)
-        .arg("pull")
-        .arg(&img)
-        .stdin(Stdio::null())
+    let mut cmd = Command::new(runner());
+    let cmd = cmd.kill_on_drop(true).arg("pull").arg(&img).stdin(Stdio::null());
+    let o = cmd
         .spawn()
-        .map_err(|e| anyhow!("Failed to start `{command} pull {img}`: {e}"))?
+        .map_err(|e| anyhow!("Failed to start {}: {e}", cmd.show()))?
         .wait()
         .await
-        .map_err(|e| anyhow!("Failed to call `{command} pull {img}`: {e}"))?;
+        .map_err(|e| anyhow!("Failed to call {}: {e}", cmd.show()))?;
     if !o.success() {
-        println!("Failed to pull {img}");
+        eprintln!("Failed to pull {img}");
         return Ok(o.code());
     }
     Ok(Some(0)) // TODO: -> Result<ExitCode>, once exit codes impl PartialEq.

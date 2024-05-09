@@ -16,7 +16,7 @@ use tokio::{
     time::timeout,
 };
 
-use crate::{envs::cache_image, md::BuildContext, stage::Stage};
+use crate::{envs::cache_image, extensions::ShowCmd, md::BuildContext, stage::Stage};
 
 pub(crate) const MARK_STDOUT: &str = "::STDOUT:: ";
 pub(crate) const MARK_STDERR: &str = "::STDERR:: ";
@@ -102,18 +102,17 @@ pub(crate) async fn build(
     }
 
     cmd.arg(dockerfile_path.parent().unwrap_or(dockerfile_path));
-    let args: Vec<_> = cmd.as_std().get_args().map(|x| x.to_string_lossy().to_string()).collect();
-    let args = args.join(" ");
 
+    let call = cmd.show();
     let envs: Vec<_> = cmd.as_std().get_envs().map(|(k, v)| format!("{k:?}={v:?}")).collect();
     let envs = envs.join(" ");
 
-    log::info!(target:&krate, "Starting `{command} {args} (env: {envs:?})`");
-    let errf = |e| anyhow!("Failed starting `{command} {args}`: {e}");
+    log::info!(target:&krate, "Starting {call} (env: {envs:?})`");
+    let errf = |e| anyhow!("Failed starting {call}: {e}");
     let mut child = cmd.spawn().map_err(errf)?;
 
     let pid = child.id().unwrap_or_default();
-    log::info!(target:&krate, "Started `{command} {args}` as pid={pid}`");
+    log::info!(target:&krate, "Started {call} as pid={pid}`");
     let krate = format!("{krate}@{pid}");
 
     let out = TokioBufReader::new(child.stdout.take().expect("started")).lines();
@@ -126,7 +125,7 @@ pub(crate) async fn build(
         let start = Instant::now();
         let res = child.wait().await;
         let elapsed = start.elapsed();
-        (elapsed, res.map_err(|e| anyhow!("Failed calling `{command} {args}`: {e}"))?.code())
+        (elapsed, res.map_err(|e| anyhow!("Failed calling {call}: {e}"))?.code())
     };
     log::info!(target:&krate, "command `{command} build` ran in {secs:?}: {code:?}");
 
@@ -139,12 +138,10 @@ pub(crate) async fn build(
 
     if !(0..=1).contains(&code.unwrap_or(-1)) {
         // Something is very wrong here. Try to be helpful by logging some info about runner config:
-        let check = Command::new(command)
-            .kill_on_drop(true)
-            .arg("info")
-            .output()
-            .await
-            .map_err(|e| anyhow!("Failed starting `{command} info`: {e}"))?;
+        let mut cmd = Command::new(command);
+        let cmd = cmd.kill_on_drop(true).arg("info");
+        let check =
+            cmd.output().await.map_err(|e| anyhow!("Failed starting {}: {e}", cmd.show()))?;
         let stdout = String::from_utf8(check.stdout)
             .map_err(|e| anyhow!("Failed parsing check STDOUT: {e}"))?;
         let stderr = String::from_utf8(check.stderr)

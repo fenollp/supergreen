@@ -48,7 +48,7 @@ pub(crate) async fn into_stage(
         cargo_home.join(format!("registry/cache/{cratesio_index}/{name}-{version}.crate"));
 
     log::info!(target:&krate, "opening (RO) crate tarball {cratesio_cached}");
-    let cratesio_hash = sha256::try_async_digest(cratesio_cached.as_path())
+    let cratesio_hash = sha256::try_async_digest(cratesio_cached.as_path()) //TODO: read from lockfile? cargo_metadata?
         .await
         .map_err(|e| anyhow!("Failed reading {cratesio_cached}: {e}"))?;
 
