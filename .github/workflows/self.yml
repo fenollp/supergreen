@@ -40,7 +40,7 @@ jobs:
 
     - name: Compile HEAD
       run: |
-        CARGO_TARGET_DIR=~/instmp cargo install --locked --force --path=$PWD
+        CARGO_TARGET_DIR=~/instmp cargo install --locked --force --path=./rustcbuildx
 
     - uses: actions/upload-artifact@v3
       with:
