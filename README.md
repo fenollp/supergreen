@@ -49,7 +49,6 @@ Forwards `rustc` calls to BuildKit builders.
 
 ## Usage
 
-* Ensure `~/.cargo/bin` is in `$PATH`
 * Ensure at least either a [`docker`](https://github.com/docker/docker-install) or [`podman`](https://podman.io/docs/installation) *client* is installed
 * Known to work on `Ubuntu 22.04` with `github.com/docker/buildx v0.11.2 9872040` and `rust 1.73`
 
@@ -97,6 +96,9 @@ cargo test ...
 ```
 
 ## Installation
+
+Make sur `$CARGO_HOME/bin` is in your `$PATH`.
+
 
 ```shell
 # Installs to ~/.cargo/bin

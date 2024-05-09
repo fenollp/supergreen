@@ -42,6 +42,7 @@ Usage:
 }
 
 // TODO: make it work for podman: https://github.com/containers/podman/issues/2369
+// TODO: have fun with https://github.com/console-rs/indicatif
 pub(crate) async fn push() -> Result<ExitCode> {
     if let Some(img) = cache_image() {
         let img = img.trim_start_matches("docker-image://");

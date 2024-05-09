@@ -77,7 +77,7 @@ jobs:
 
     - name: Compile HEAD
       run: |
-        CARGO_TARGET_DIR=~/instmp cargo install --force --path=\$PWD
+        CARGO_TARGET_DIR=~/instmp cargo install --force --path=\$PWD/../rustcbuildx
 
     - uses: actions/upload-artifact@v4
       with:
@@ -280,7 +280,7 @@ tmpbins=/tmp
 
 if [[ "$clean" = '1' ]]; then
   rm -rf "$tmptrgt"
-  docker buildx prune       --force --verbose
+  docker buildx prune       --force
 fi
 if [[ "$distclean" = '1' ]]; then
   rm -rf "$tmptrgt"
@@ -298,7 +298,7 @@ send() {
 
 gitdir=$(realpath "$(dirname "$(dirname "$0")")")
 send \
-  CARGO_TARGET_DIR=/tmp/rstcbldx cargo install --locked --frozen --offline --force --path="$gitdir" \
+  CARGO_TARGET_DIR=/tmp/rstcbldx cargo install --locked --frozen --offline --force --path="$gitdir"/rustcbuildx \
     '&&' touch "$tmpgooo".installed
 tmux split-window
 
@@ -317,7 +317,7 @@ send \
   RUSTCBUILDX_CACHE_IMAGE="${RUSTCBUILDX_CACHE_IMAGE:-}" \
   RUSTC_WRAPPER=rustcbuildx \
     CARGO_TARGET_DIR="$tmptrgt" cargo -vv install --jobs=${jobs:-1} --root=$tmpbins --locked --force "$(as_install "$name_at_version")" "$args" \
-  '&&' 'if' '[[' "$clean"     '=' '1' ']];' 'then' docker buildx prune       --force --verbose '|' tee --append "$tmplogs" '||' 'exit' '1;' 'fi' \
+  '&&' 'if' '[[' "$clean"     '=' '1' ']];' 'then' docker buildx prune       --force           '|' tee --append "$tmplogs" '||' 'exit' '1;' 'fi' \
   '&&' 'if' '[[' "$distclean" '=' '1' ']];' 'then' docker buildx prune --all --force --verbose '|' tee --append "$tmplogs" '||' 'exit' '1;' 'fi' \
   '&&' tmux kill-session -t "$session_name"
 tmux select-layout even-vertical
