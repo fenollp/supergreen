@@ -40,7 +40,7 @@ jobs:
     - run: ./hack/clis.sh | tee .github/workflows/clis.yml
     - run: git --no-pager diff --exit-code
     - name: Run shellcheck
-      uses: ludeeus/action-shellcheck@2.0.0
+      uses: ludeeus/action-shellcheck@2
       with:
         check_together: 'yes'
         severity: error
@@ -157,7 +157,7 @@ $(
         docker buildx du
         sudo du -sh /var/lib/docker
 
-    - name: cargo install net=ON cache=OFF remote=OFF
+    - name: cargo install net=ON cache=OFF remote=OFF jobs=$jobs
       run: |
         RUSTCBUILDX_LOG=debug \\
         RUSTCBUILDX_LOG_PATH="\$PWD"/logs.txt \\
@@ -178,7 +178,7 @@ $(
       if: \${{ failure() || success() }}
       run: du -sh ~/instst
 
-    - name: cargo install net=ON cache=ON remote=OFF
+    - name: cargo install net=ON cache=ON remote=OFF jobs=$jobs
       run: |
         RUSTCBUILDX_LOG=debug \\
         RUSTCBUILDX_LOG_PATH="\$PWD"/logs.txt \\
@@ -305,7 +305,8 @@ send \
     '&&' touch "$tmpgooo".installed
 tmux split-window
 
-send cargo run --locked --frozen --offline pull '&&' ls -lha /tmp/rstcbldx/bin/rustcbuildx '&&' touch "$tmpgooo".ready
+# send cargo run --locked --frozen --offline pull '&&' ls -lha /tmp/rstcbldx/bin/rustcbuildx '&&' touch "$tmpgooo".ready
+send                                                   ls -lha /tmp/rstcbldx/bin/rustcbuildx '&&' touch "$tmpgooo".ready
 tmux select-layout even-vertical
 tmux split-window
 

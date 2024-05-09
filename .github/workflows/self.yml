@@ -70,11 +70,11 @@ jobs:
 
     - uses: actions/checkout@v4
 
-    - name: cargo install net=ON cache=OFF remote=OFF
+    - name: cargo install net=ON cache=OFF remote=OFF jobs=$(nproc)
       run: |
         RUSTCBUILDX_LOG=debug \
         RUSTC_WRAPPER=/home/runner/.cargo/bin/rustcbuildx \
-          CARGO_TARGET_DIR=~/instst cargo -vv install --jobs=1 --locked --force --path=.
+          CARGO_TARGET_DIR=~/instst cargo -vv install --jobs=$(nproc) --locked --force --path=./rustcbuildx
 
 
   audits:
@@ -159,17 +159,18 @@ jobs:
 
     - run: cargo fetch
 
-    - name: cargo build net=OFF cache=OFF remote=OFF
+    - name: cargo build net=OFF cache=OFF remote=OFF jobs=$(nproc)
       run: |
         RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
         RUSTC_WRAPPER=/home/runner/.cargo/bin/rustcbuildx \
-          cargo -vv build --jobs=1 --all-targets --all-features --locked --frozen --offline
+          cargo -vv build --jobs=$(nproc) --all-targets --all-features --locked --frozen --offline
 
     - if: ${{ failure() || success() }}
       run: cat logs.txt && echo >logs.txt
 
-    - name: Ensure running the same command twice without modifications does not recompile anything
+    - if: ${{ failure() || success() }}
+      name: Ensure running the same command twice without modifications does not recompile anything
       run: |
         RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
@@ -216,17 +217,18 @@ jobs:
 
     - run: cargo fetch
 
-    - name: cargo test net=OFF cache=OFF remote=OFF
+    - name: cargo test net=OFF cache=OFF remote=OFF jobs=$(nproc)
       run: |
         RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
         RUSTC_WRAPPER=/home/runner/.cargo/bin/rustcbuildx \
-          cargo -vv test --jobs=1 --all-targets --all-features --locked --frozen --offline
+          cargo -vv test --jobs=$(nproc) --all-targets --all-features --locked --frozen --offline
 
     - if: ${{ failure() || success() }}
       run: cat logs.txt && echo >logs.txt
 
-    - name: Ensure running the same command twice without modifications does not recompile anything
+    - if: ${{ failure() || success() }}
+      name: Ensure running the same command twice without modifications does not recompile anything
       run: |
         RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
@@ -273,17 +275,18 @@ jobs:
 
     - run: cargo fetch
 
-    - name: cargo check net=OFF cache=OFF remote=OFF
+    - name: cargo check net=OFF cache=OFF remote=OFF jobs=$(nproc)
       run: |
         RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
         RUSTC_WRAPPER=/home/runner/.cargo/bin/rustcbuildx \
-          cargo -vv check --jobs=1 --all-targets --all-features --locked --frozen --offline
+          cargo -vv check --jobs=$(nproc) --all-targets --all-features --locked --frozen --offline
 
     - if: ${{ failure() || success() }}
       run: cat logs.txt && echo >logs.txt
 
-    - name: Ensure running the same command twice without modifications does not recompile anything
+    - if: ${{ failure() || success() }}
+      name: Ensure running the same command twice without modifications does not recompile anything
       run: |
         RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
@@ -332,17 +335,18 @@ jobs:
 
     - run: cargo fetch
 
-    - name: cargo clippy net=OFF cache=OFF remote=OFF
+    - name: cargo clippy net=OFF cache=OFF remote=OFF jobs=$(nproc)
       run: |
         RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
         RUSTC_WRAPPER=/home/runner/.cargo/bin/rustcbuildx \
-          cargo -vv clippy --jobs=1 --all-targets --all-features --locked --frozen --offline
+          cargo -vv clippy --jobs=$(nproc) --all-targets --all-features --locked --frozen --offline
 
     - if: ${{ failure() || success() }}
       run: cat logs.txt && echo >logs.txt
 
-    - name: Ensure running the same command twice without modifications does not recompile anything
+    - if: ${{ failure() || success() }}
+      name: Ensure running the same command twice without modifications does not recompile anything
       run: |
         RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
