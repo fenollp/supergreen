@@ -77,7 +77,7 @@ jobs:
 
     - name: Compile HEAD
       run: |
-        CARGO_TARGET_DIR=~/instmp cargo install --force --path=\$PWD/../rustcbuildx
+        CARGO_TARGET_DIR=~/instmp cargo install --force --path=./rustcbuildx
 
     - uses: actions/upload-artifact@v4
       with:
