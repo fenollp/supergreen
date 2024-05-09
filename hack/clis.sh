@@ -40,7 +40,7 @@ jobs:
     - run: ./hack/clis.sh | tee .github/workflows/clis.yml
     - run: git --no-pager diff --exit-code
     - name: Run shellcheck
-      uses: ludeeus/action-shellcheck@2
+      uses: ludeeus/action-shellcheck@2.0.0
       with:
         check_together: 'yes'
         severity: error
