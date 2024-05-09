@@ -108,8 +108,6 @@ cli() {
     runs-on: ubuntu-latest
     needs: bin
     steps:
-    - uses: actions/checkout@v4
-
     - uses: actions-rs/toolchain@v1
       with:
         profile: minimal
@@ -128,6 +126,9 @@ $(
     - run: | # TODO: whence https://github.com/actions/download-artifact/issues/236
         chmod +x ./rustcbuildx
         ./rustcbuildx --version | grep rustcbuildx
+        mv ./rustcbuildx /home/runner/.cargo/bin/
+
+    - uses: actions/checkout@v4
 
     - name: Docker info
       run: docker info
