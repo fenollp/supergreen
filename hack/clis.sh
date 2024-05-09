@@ -78,11 +78,13 @@ jobs:
     - name: Compile HEAD
       run: |
         CARGO_TARGET_DIR=~/instmp cargo install --force --path=./rustcbuildx
+    - run: ls -lha ~/instmp/release/
+    - run: ls -lha /home/runner/.cargo/bin/
 
     - uses: actions/upload-artifact@v4
       with:
         name: bin-artifact
-        path: ~/instmp/release/rustcbuildx
+        path: /home/runner/.cargo/bin/rustcbuildx
 
 EOF
 }
