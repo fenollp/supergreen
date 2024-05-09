@@ -81,7 +81,7 @@ jobs:
     - run: ls -lha ~/instmp/release/
     - run: ls -lha /home/runner/.cargo/bin/
 
-    - uses: actions/upload-artifact@v4
+    - uses: actions/upload-artifact@v4.0.0
       with:
         name: bin-artifact
         path: /home/runner/.cargo/bin/rustcbuildx
@@ -122,7 +122,7 @@ $(
 )
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v4.0.0
       with:
         name: bin-artifact
     - run: | # TODO: whence https://github.com/actions/download-artifact/issues/236
