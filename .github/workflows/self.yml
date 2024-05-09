@@ -73,7 +73,7 @@ jobs:
     - name: cargo install net=ON cache=OFF remote=OFF
       run: |
         RUSTCBUILDX_LOG=debug \
-        RUSTC_WRAPPER="$PWD"/rustcbuildx \
+        RUSTC_WRAPPER=/home/runner/.cargo/bin/rustcbuildx \
           CARGO_TARGET_DIR=~/instst cargo -vv install --jobs=1 --locked --force --path=.
 
 
@@ -122,7 +122,7 @@ jobs:
       run: |
         RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
-        RUSTC_WRAPPER="$PWD"/rustcbuildx \
+        RUSTC_WRAPPER=/home/runner/.cargo/bin/rustcbuildx \
           cargo -vv audit || \
             cat logs.txt
 
@@ -163,7 +163,7 @@ jobs:
       run: |
         RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
-        RUSTC_WRAPPER="$PWD"/rustcbuildx \
+        RUSTC_WRAPPER=/home/runner/.cargo/bin/rustcbuildx \
           cargo -vv build --jobs=1 --all-targets --all-features --locked --frozen --offline
 
     - if: ${{ failure() || success() }}
@@ -173,7 +173,7 @@ jobs:
       run: |
         RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
-        RUSTC_WRAPPER="$PWD"/rustcbuildx \
+        RUSTC_WRAPPER=/home/runner/.cargo/bin/rustcbuildx \
           cargo -vv build --jobs=1 --all-targets --all-features --locked --frozen --offline 2>&1 | tee _
         cat _ | grep Finished | grep 0...s
         cat _ | grep Fresh
@@ -220,7 +220,7 @@ jobs:
       run: |
         RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
-        RUSTC_WRAPPER="$PWD"/rustcbuildx \
+        RUSTC_WRAPPER=/home/runner/.cargo/bin/rustcbuildx \
           cargo -vv test --jobs=1 --all-targets --all-features --locked --frozen --offline
 
     - if: ${{ failure() || success() }}
@@ -230,7 +230,7 @@ jobs:
       run: |
         RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
-        RUSTC_WRAPPER="$PWD"/rustcbuildx \
+        RUSTC_WRAPPER=/home/runner/.cargo/bin/rustcbuildx \
           cargo -vv test --jobs=1 --all-targets --all-features --locked --frozen --offline 2>&1 | tee _
         cat _ | grep Finished | grep 0...s
         cat _ | grep Fresh
@@ -277,7 +277,7 @@ jobs:
       run: |
         RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
-        RUSTC_WRAPPER="$PWD"/rustcbuildx \
+        RUSTC_WRAPPER=/home/runner/.cargo/bin/rustcbuildx \
           cargo -vv check --jobs=1 --all-targets --all-features --locked --frozen --offline
 
     - if: ${{ failure() || success() }}
@@ -287,7 +287,7 @@ jobs:
       run: |
         RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
-        RUSTC_WRAPPER="$PWD"/rustcbuildx \
+        RUSTC_WRAPPER=/home/runner/.cargo/bin/rustcbuildx \
           cargo -vv check --jobs=1 --all-targets --all-features --locked --frozen --offline 2>&1 | tee _
         cat _ | grep Finished | grep 0...s
         cat _ | grep Fresh
@@ -336,7 +336,7 @@ jobs:
       run: |
         RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
-        RUSTC_WRAPPER="$PWD"/rustcbuildx \
+        RUSTC_WRAPPER=/home/runner/.cargo/bin/rustcbuildx \
           cargo -vv clippy --jobs=1 --all-targets --all-features --locked --frozen --offline
 
     - if: ${{ failure() || success() }}
@@ -346,7 +346,7 @@ jobs:
       run: |
         RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
-        RUSTC_WRAPPER="$PWD"/rustcbuildx \
+        RUSTC_WRAPPER=/home/runner/.cargo/bin/rustcbuildx \
           cargo -vv clippy --jobs=1 --all-targets --all-features --locked --frozen --offline 2>&1 | tee _
         cat _ | grep Finished | grep 0...s
         ! cat _ | grep 'Compiling|Compiling'

@@ -143,13 +143,13 @@ $(
       run: rustc -Vv
 
     - name: Envs
-      run: ./rustcbuildx env
+      run: /home/runner/.cargo/bin/rustcbuildx env
 
     - name: Pre-pull images
-      run: ./rustcbuildx pull
+      run: /home/runner/.cargo/bin/rustcbuildx pull
 
     - name: Envs again
-      run: ./rustcbuildx env
+      run: /home/runner/.cargo/bin/rustcbuildx env
 
     - name: Disk usage
       run: |
@@ -161,7 +161,7 @@ $(
       run: |
         RUSTCBUILDX_LOG=debug \\
         RUSTCBUILDX_LOG_PATH="\$PWD"/logs.txt \\
-        RUSTC_WRAPPER="\$PWD"/rustcbuildx \\
+        RUSTC_WRAPPER=/home/runner/.cargo/bin/rustcbuildx \\
           CARGO_TARGET_DIR=~/instst cargo -vv install --jobs=$jobs --locked --force $(as_install "$name_at_version") $@
 
     - if: \${{ failure() || success() }}
@@ -182,7 +182,7 @@ $(
       run: |
         RUSTCBUILDX_LOG=debug \\
         RUSTCBUILDX_LOG_PATH="\$PWD"/logs.txt \\
-        RUSTC_WRAPPER="\$PWD"/rustcbuildx \\
+        RUSTC_WRAPPER=/home/runner/.cargo/bin/rustcbuildx \\
           CARGO_TARGET_DIR=~/instst cargo -vv install --jobs=$jobs --locked --force $(as_install "$name_at_version") $@ 2>&1 | tee _
 
     - if: \${{ failure() || success() }}
@@ -301,11 +301,11 @@ send() {
 
 gitdir=$(realpath "$(dirname "$(dirname "$0")")")
 send \
-  CARGO_TARGET_DIR=/tmp/rstcbldx cargo install --locked --frozen --offline --force --path="$gitdir"/rustcbuildx \
+  CARGO_TARGET_DIR=/tmp/rstcbldx cargo install --locked --frozen --offline --force --root=/tmp/rstcbldx --path="$gitdir"/rustcbuildx \
     '&&' touch "$tmpgooo".installed
 tmux split-window
 
-send rustcbuildx pull '&&' touch "$tmpgooo".ready
+send cargo run --locked --frozen --offline pull '&&' ls -lha /tmp/rstcbldx/bin/rustcbuildx '&&' touch "$tmpgooo".ready
 tmux select-layout even-vertical
 tmux split-window
 
@@ -318,7 +318,7 @@ send \
   RUSTCBUILDX_LOG=debug \
   RUSTCBUILDX_LOG_PATH="$tmplogs" \
   RUSTCBUILDX_CACHE_IMAGE="${RUSTCBUILDX_CACHE_IMAGE:-}" \
-  RUSTC_WRAPPER=rustcbuildx \
+  RUSTC_WRAPPER=/tmp/rstcbldx/bin/rustcbuildx \
     CARGO_TARGET_DIR="$tmptrgt" cargo -vv install --jobs=${jobs:-1} --root=$tmpbins --locked --force "$(as_install "$name_at_version")" "$args" \
   '&&' 'if' '[[' "$clean"     '=' '1' ']];' 'then' docker buildx prune       --force           '|' tee --append "$tmplogs" '||' 'exit' '1;' 'fi' \
   '&&' 'if' '[[' "$distclean" '=' '1' ']];' 'then' docker buildx prune --all --force --verbose '|' tee --append "$tmplogs" '||' 'exit' '1;' 'fi' \
