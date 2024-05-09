@@ -305,8 +305,7 @@ send \
     '&&' touch "$tmpgooo".installed
 tmux split-window
 
-# send cargo run --locked --frozen --offline pull '&&' ls -lha /tmp/rstcbldx/bin/rustcbuildx '&&' touch "$tmpgooo".ready
-send                                                   ls -lha /tmp/rstcbldx/bin/rustcbuildx '&&' touch "$tmpgooo".ready
+send cargo run --locked --frozen --offline pull '&&' ls -lha /tmp/rstcbldx/bin/rustcbuildx '&&' touch "$tmpgooo".ready
 tmux select-layout even-vertical
 tmux split-window
 

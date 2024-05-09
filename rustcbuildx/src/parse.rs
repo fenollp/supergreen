@@ -11,7 +11,7 @@ use crate::extensions::Popped;
 /// RustcArgs contains parts of `rustc`'s arguments
 #[derive(Debug, Default, PartialEq)]
 pub(crate) struct RustcArgs {
-    /// 1: --crate-type
+    /// 1..: --crate-type
     pub(crate) crate_type: String,
 
     /// 1: --emit=EMIT | --emit EMIT

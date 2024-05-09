@@ -17,7 +17,9 @@ use tokio::process::Command;
 use crate::{
     cli::{envs, exit_code, help, pull, push},
     cratesio::{from_cratesio_input_path, into_stage},
-    envs::{base_image, called_from_build_script, internal, maybe_log, pass_env, runner, syntax},
+    envs::{
+        base_image, called_from_build_script, internal, maybe_log, pass_env, runner, syntax, this,
+    },
     extensions::{Popped, ShowCmd},
     md::{BuildContext, Md},
     parse::RustcArgs,
@@ -153,7 +155,7 @@ async fn bake_rustc(
     arguments: Vec<String>,
     fallback: impl Future<Output = Result<ExitCode>>,
 ) -> Result<ExitCode> {
-    if internal::this().map(|x| x == "1").unwrap_or_default() {
+    if this() {
         bail!("It's turtles all the way down!")
     }
     env::set_var(internal::RUSTCBUILDX, "1");
@@ -180,6 +182,7 @@ async fn bake_rustc(
     log::info!(target:&krate, "{st:?}");
     let RustcArgs { crate_type, emit, externs, metadata, incremental, input, out_dir, target_path } =
         st;
+    let incremental = envs::incremental().then_some(incremental).flatten();
 
     const BUILDRS_CRATE_NAME: &str = "build_script_build";
     let full_krate_id = {
@@ -325,8 +328,8 @@ async fn bake_rustc(
 
     fs::create_dir_all(&out_dir).map_err(|e| anyhow!("Failed to `mkdir -p {out_dir}`: {e}"))?;
     if let Some(ref incremental) = incremental {
-        let errf = |e| anyhow!("Failed to `mkdir -p {incremental}`: {e}");
-        fs::create_dir_all(incremental).map_err(errf)?;
+        fs::create_dir_all(incremental)
+            .map_err(|e| anyhow!("Failed to `mkdir -p {incremental}`: {e}"))?;
     }
 
     let cargo_home = env::var("CARGO_HOME")
@@ -399,15 +402,14 @@ async fn bake_rustc(
     log::info!(target:&krate, "picked {rustc_stage} for {suf:?}", suf=input.iter().rev().take(4).collect::<Vec<_>>());
     assert!(!matches!(input_mount, Some((_,_,ref x)) if x.ends_with("/.cargo/registry")));
 
-    let incremental_stage = Stage::new(format!("incremental-{metadata}"))?;
+    let incremental_stage = Stage::new(format!("inc-{metadata}"))?;
     let out_stage = Stage::new(format!("out-{metadata}"))?;
 
     let mut rustc_block = String::new();
     rustc_block.push_str(&format!("FROM {RUST} AS {rustc_stage}\n"));
     rustc_block.push_str(&format!("WORKDIR {out_dir}\n"));
 
-    // TODO: disable (remote) cache for incremental builds?
-    if let Some(incremental) = &incremental {
+    if let Some(ref incremental) = incremental {
         rustc_block.push_str(&format!("WORKDIR {incremental}\n"));
     }
 

@@ -13,6 +13,7 @@ pub(crate) mod internal {
     pub const RUSTCBUILDX: &str = "RUSTCBUILDX";
     pub const RUSTCBUILDX_BASE_IMAGE: &str = "RUSTCBUILDX_BASE_IMAGE";
     pub const RUSTCBUILDX_CACHE_IMAGE: &str = "RUSTCBUILDX_CACHE_IMAGE";
+    pub const RUSTCBUILDX_INCREMENTAL: &str = "RUSTCBUILDX_INCREMENTAL";
     pub const RUSTCBUILDX_LOG: &str = "RUSTCBUILDX_LOG";
     pub const RUSTCBUILDX_LOG_PATH: &str = "RUSTCBUILDX_LOG_PATH";
     pub const RUSTCBUILDX_LOG_STYLE: &str = "RUSTCBUILDX_LOG_STYLE";
@@ -27,6 +28,9 @@ pub(crate) mod internal {
     }
     pub fn cache_image() -> Option<String> {
         env::var(RUSTCBUILDX_CACHE_IMAGE).ok().and_then(|x| (!x.is_empty()).then_some(x))
+    }
+    pub fn incremental() -> Option<String> {
+        env::var(RUSTCBUILDX_INCREMENTAL).ok()
     }
     pub fn log() -> Option<String> {
         env::var(RUSTCBUILDX_LOG).ok()
@@ -64,6 +68,17 @@ pub(crate) mod internal {
 // FROM docker.io/library/rust:1.69.0-slim-bookworm@sha256:8bdd28ef184d85c9b4932586af6280732780e806e5f452065420f2e783323ca3
 // RUN set -eux && apt update && apt install -y libpq-dev libssl3
 // EOF
+
+#[must_use]
+pub(crate) fn this() -> bool {
+    internal::this().map(|x| x == "1").unwrap_or_default()
+}
+
+#[must_use]
+pub(crate) fn incremental() -> bool {
+    static ONCE: OnceLock<bool> = OnceLock::new();
+    *ONCE.get_or_init(|| internal::incremental().map(|x| x == "1").unwrap_or_default())
+}
 
 #[must_use]
 pub(crate) fn log_path() -> &'static str {
