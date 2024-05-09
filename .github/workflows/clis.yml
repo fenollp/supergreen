@@ -47,7 +47,7 @@ jobs:
 
     - name: Compile HEAD
       run: |
-        CARGO_TARGET_DIR=~/instmp cargo install --force --path=./rustcbuildx
+        CARGO_TARGET_DIR=~/instmp cargo install --locked --force --path=./rustcbuildx
     - run: ls -lha ~/instmp/release/
     - run: ls -lha /home/runner/.cargo/bin/
 
