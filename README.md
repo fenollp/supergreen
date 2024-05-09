@@ -97,14 +97,11 @@ cargo test ...
 
 ## Installation
 
-Make sur `$CARGO_HOME/bin` is in your `$PATH`.
-
-
 ```shell
 # Installs to ~/.cargo/bin
 cargo install --locked --force --git https://github.com/fenollp/rustcbuildx.git
 
-# Make sure it's in your $PATH
+# Make sur $CARGO_HOME/bin is in your $PATH
 which rustcbuildx
 ```
 
@@ -116,10 +113,8 @@ PoC originally written in Bash: https://github.com/fenollp/buildxargs/blob/build
 See `./hack/`
 
 
-## docker / podman / buildkit
+### En vrac
 * Proposal: c8d: expose contentstore API #44369 https://github.com/moby/moby/issues/44369
-*  --load with moby containerd store should use the oci exporter #1813 https://github.com/docker/buildx/pull/1813
-*  Make --load faster #626 https://github.com/docker/buildx/issues/626
 *  Incremental export transfer #1224 https://github.com/moby/buildkit/issues/1224
 * "sending tarball" takes a long time even when the image already exists #107 https://github.com/docker/buildx/issues/107
 *  mount=type=cache more in-depth explanation? #1673 https://github.com/moby/buildkit/issues/1673
@@ -138,8 +133,12 @@ See `./hack/`
 * https://docs.docker.com/build/attestations/sbom/
   * https://github.com/moby/buildkit/blob/647a997b389757068760410053873745acabfc80/docs/attestations/sbom.md?plain=1#L48
   * `BUILDKIT_SBOM_SCAN_CONTEXT and BUILDKIT_SBOM_SCAN_STAGE`
+* [Support extracting `ADD --checksum=.. https://.. ..` #4907](https://github.com/moby/buildkit/issues/4907)
+* [`docker image ls --filter=reference=docker.io/$MY/$IMG` != `docker image ls --filter=reference=$MY/$IMG` #47809](https://github.com/moby/moby/issues/47809)
+* [Proposal: csv syntax for git repos #4905](https://github.com/moby/buildkit/issues/4905)
+* [`prune`: filtering out `ADD --checksum=... https://...` entries #2448](https://github.com/docker/buildx/issues/2448)
+* [`-o=.`: `open $HOME/.local/share/docker/overlay2/066f6../work/work: permission denied` #2219](https://github.com/docker/buildx/issues/2219)
 
-## rustc / cargo
 * `cargo restrict targets of crate`
 *  Target configuration for binaries #9208 https://github.com/rust-lang/cargo/issues/9208
 *  Unsafe fields #3458 https://github.com/rust-lang/rfcs/pull/3458
@@ -158,3 +157,6 @@ See `./hack/`
 * [`crater`: Run experiments across parts of the Rust ecosystem!](https://github.com/rust-lang/crater)
 * [`cargo-options` Clap parser](https://docs.rs/cargo-options/latest/cargo_options/struct.Build.html)
 * /r/Rust scare [Serde has started shipping precompiled binaries with no way to opt out](https://www.reddit.com/r/rust/comments/15va70a/serde_has_started_shipping_precompiled_binaries/)
+* [assertion failed: edges.remove(&key) #13889](https://github.com/rust-lang/cargo/issues/13889)
+
+* [Doesn't detect Docker Rootless #4](https://github.com/TheLarkInn/is-docker/issues/4)

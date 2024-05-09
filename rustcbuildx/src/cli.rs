@@ -20,6 +20,8 @@ use crate::{
 
 // TODO: tune logging verbosity https://docs.rs/clap-verbosity-flag/latest/clap_verbosity_flag/
 
+// TODO: cargo green cache --keep-less-than=(1month|10GB)      Set $RUSTCBUILDX_CACHE_IMAGE to apply to tagged images.
+
 #[inline]
 pub(crate) fn help() -> ExitCode {
     println!(
