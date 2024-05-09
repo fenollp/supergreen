@@ -61,6 +61,7 @@ pub(crate) async fn into_stage(
     block.push_str("RUN set -eux && tar -zxf /crate --strip-components=1 -C /tmp/\n");
 
     // TODO: ask upstream `buildx/buildkit+podman` for a way to drop that RUN
+    //  => https://github.com/moby/buildkit/issues/4907
 
     // Otherwise:
 
