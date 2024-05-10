@@ -92,6 +92,7 @@ pub(crate) async fn build(
     cmd.arg(format!("--target={target}"));
     cmd.arg(format!("--output=type=local,dest={out_dir}", out_dir = out_dir.as_ref()));
     cmd.arg(format!("--file={dockerfile_path}"));
+    cmd.arg("--build-arg=BUILDKIT_MULTI_PLATFORM=1"); // "deterministic output"
 
     // TODO: do without local Docker-compatible CLI
     // https://github.com/pyaillet/doggy

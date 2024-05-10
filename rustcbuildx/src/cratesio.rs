@@ -35,7 +35,7 @@ pub(crate) async fn into_stage(
     name: &str,
     version: &str,
     cratesio_index: &str,
-) -> Result<(Stage, Utf8PathBuf, String)> {
+) -> Result<(Stage, &'static str, Utf8PathBuf, String)> {
     let cargo_home = cargo_home.as_ref();
 
     // TODO: see if {cratesio_index} can be dropped from paths (+ stage names) => content hashing + remap-path-prefix?
@@ -53,12 +53,25 @@ pub(crate) async fn into_stage(
         .map_err(|e| anyhow!("Failed reading {cratesio_cached}: {e}"))?;
 
     const CRATESIO: &str = "https://static.crates.io";
-    let mut block = String::new();
-    block.push_str(&format!("FROM {RUST} AS {cratesio_stage}\n"));
-    block.push_str(&format!("ADD --chmod=0664 --checksum=sha256:{cratesio_hash} \\\n"));
-    block.push_str(&format!("  {CRATESIO}/crates/{name}/{name}-{version}.crate /crate\n"));
-    // Using tar: https://github.com/rust-lang/cargo/issues/3577#issuecomment-890693359
-    block.push_str("RUN set -eux && tar -zxf /crate --strip-components=1 -C /tmp/\n");
+    const SRC: &str = "/extracted";
+
+    // On using tar: https://github.com/rust-lang/cargo/issues/3577#issuecomment-890693359
+
+    //FIXME: newline
+    let block = format!(
+        r#"FROM scratch AS {cratesio_stage}
+ADD --chmod=0664 --checksum=sha256:{cratesio_hash} \
+  {CRATESIO}/crates/{name}/{name}-{version}.crate /crate
+SHELL ["/usr/bin/dash", "-c"]
+RUN \
+  --mount=from={RUST},src=/lib,dst=/lib \
+  --mount=from={RUST},src=/lib64,dst=/lib64 \
+  --mount=from={RUST},src=/usr,dst=/usr \
+    set -eux \
+ && mkdir -p {SRC} \
+ && tar zxvf /crate --strip-components=1 -C {SRC}
+"#
+    );
 
     // TODO: ask upstream `buildx/buildkit+podman` for a way to drop that RUN
     //  => https://github.com/moby/buildkit/issues/4907
@@ -68,5 +81,5 @@ pub(crate) async fn into_stage(
     // TODO: ask upstream `rustc` if it could be able to take a .crate archive as input
     //=> would remove that `RUN tar` step + stage dep on RUST (=> scratch)
 
-    Ok((cratesio_stage, cratesio_extracted, block))
+    Ok((cratesio_stage, SRC, cratesio_extracted, block))
 }

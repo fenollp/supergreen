@@ -38,7 +38,6 @@ pub(crate) struct RustcArgs {
 
 pub(crate) fn as_rustc(
     pwd: impl AsRef<Utf8Path>,
-    crate_name: &str,
     arguments: Vec<String>,
 ) -> Result<(RustcArgs, Vec<String>)> {
     let mut args = vec![];
@@ -114,10 +113,6 @@ pub(crate) fn as_rustc(
                         val = format!("dependency={}", pwd.as_ref().join(v));
                     }
                 }
-            }
-            "--crate-name" => {
-                assert_eq!(val, crate_name);
-                assert!(!crate_name.is_empty());
             }
             "--crate-type" => {
                 // https://doc.rust-lang.org/cargo/reference/cargo-targets.html#the-crate-type-field
@@ -224,7 +219,7 @@ mod tests {
         let arguments= as_arguments(&[
             "$PWD/./dbg/debug/rustcbuildx",                                                   // this
             "$HOME/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/rustc",             // rustc
-            "--crate-name", "rustcbuildx",                                                    // state.crate_name
+            "--crate-name", "rustcbuildx",                                                    // crate_name
             "--edition=2021",
             "src/main.rs",                                                                    // state.input
             "--error-format=json",
@@ -248,7 +243,7 @@ mod tests {
             "-C", "link-arg=-fuse-ld=/usr/local/bin/mold",
         ]);
 
-        let (st, args) = as_rustc(PWD, env!("CARGO_PKG_NAME"), arguments.clone()).unwrap();
+        let (st, args) = as_rustc(PWD, arguments.clone()).unwrap();
 
         assert_eq!(
             st,
@@ -306,7 +301,7 @@ mod tests {
         let arguments = as_arguments(&[
             "$PWD/./dbg/debug/rustcbuildx",                                                   // this
             "$HOME/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/rustc",             // rustc
-            "--crate-name", "rustcbuildx",                                                    // state.crate_name
+            "--crate-name", "rustcbuildx",                                                    // crate_name
             "--edition=2021",
             "src/main.rs",                                                                    // state.input
             "--error-format=json",
@@ -331,7 +326,7 @@ mod tests {
             "-C", "link-arg=-fuse-ld=/usr/local/bin/mold",
         ]);
 
-        let (st, args) = as_rustc(PWD, env!("CARGO_PKG_NAME"), arguments.clone()).unwrap();
+        let (st, args) = as_rustc(PWD, arguments.clone()).unwrap();
 
         assert_eq!(
             st,
@@ -391,7 +386,7 @@ mod tests {
         let arguments = as_arguments(&[
             "$PWD/./dbg/debug/rustcbuildx",                                                   // this
             "$HOME/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/rustc",             // rustc
-            "--crate-name", "build_script_build",                                             // state.crate_name
+            "--crate-name", "build_script_build",                                             // crate_name
             "--edition=2021",
             "$HOME/.cargo/registry/src/index.crates.io-6f17d22bba15001f/rustix-0.38.20/build.rs", // state.input
             "--error-format=json",
@@ -414,7 +409,7 @@ mod tests {
             "-C", "link-arg=-fuse-ld=/usr/local/bin/mold",
         ]);
 
-        let (st, args) = as_rustc(PWD, "build_script_build", arguments.clone()).unwrap();
+        let (st, args) = as_rustc(PWD, arguments.clone()).unwrap();
 
         assert_eq!(
             st,
@@ -486,7 +481,7 @@ mod tests {
             "-C", "link-arg=-fuse-ld=/usr/local/bin/mold",
         ]);
 
-        let (st, args) = as_rustc(PWD, "time_macros", arguments.clone()).unwrap();
+        let (st, args) = as_rustc(PWD, arguments.clone()).unwrap();
 
         assert_eq!(
             st,
@@ -554,7 +549,7 @@ mod tests {
             "-C", "link-arg=-fuse-ld=/usr/local/bin/mold",
         ]);
 
-        let (st, args) = as_rustc(PWD, "build_script_build", arguments.clone()).unwrap();
+        let (st, args) = as_rustc(PWD, arguments.clone()).unwrap();
 
         assert_eq!(
             st,
@@ -620,7 +615,7 @@ mod tests {
             "--cap-lints", "warn",
         ]);
 
-        let (st, args) = as_rustc(PWD, "build_script_main", arguments.clone()).unwrap();
+        let (st, args) = as_rustc(PWD, arguments.clone()).unwrap();
 
         assert_eq!(
             st,

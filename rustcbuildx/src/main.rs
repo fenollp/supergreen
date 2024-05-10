@@ -5,7 +5,6 @@ use std::{
     future::Future,
     io::{BufRead, BufReader, ErrorKind},
     process::ExitCode,
-    unreachable,
 };
 
 use anyhow::{anyhow, bail, Result};
@@ -20,11 +19,11 @@ use crate::{
     envs::{
         base_image, called_from_build_script, internal, maybe_log, pass_env, runner, syntax, this,
     },
-    extensions::{Popped, ShowCmd},
+    extensions::ShowCmd,
     md::{BuildContext, Md},
     parse::RustcArgs,
     runner::{build, MARK_STDERR, MARK_STDOUT},
-    stage::{Stage, StageError},
+    stage::Stage,
 };
 
 mod cli;
@@ -47,12 +46,23 @@ const RUST: &str = "rust";
 
 #[tokio::main]
 async fn main() -> ExitCode {
-    let args = env::args().skip(1).collect(); // drops $0
+    let arg0 = env::args().nth(1);
+    let args = env::args().skip(1).collect();
     let vars = env::vars().collect();
-    fallible_main(args, vars).await.unwrap_or(ExitCode::FAILURE)
+    match fallible_main(arg0, args, vars).await {
+        Ok(code) => code,
+        Err(e) => {
+            eprintln!("Wrapped: {e}");
+            ExitCode::FAILURE
+        }
+    }
 }
 
-async fn fallible_main(args: VecDeque<String>, vars: BTreeMap<String, String>) -> Result<ExitCode> {
+async fn fallible_main(
+    arg0: Option<String>,
+    args: VecDeque<String>,
+    vars: BTreeMap<String, String>,
+) -> Result<ExitCode> {
     let called_from_build_script = called_from_build_script(&vars);
 
     let argz = args.iter().take(3).map(AsRef::as_ref).collect::<Vec<_>>();
@@ -73,7 +83,7 @@ async fn fallible_main(args: VecDeque<String>, vars: BTreeMap<String, String>) -
         [rustc, "-", ..] =>
              call_rustc(rustc, argv(1)).await,
         [driver, _rustc, "-"|"--crate-name", ..] => {
-            // TODO: wrap driver+rustc calls as well
+            // TODO: wrap driver? + rustc
             // driver: e.g. /home/maison/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/clippy-driver
             // cf. https://github.com/rust-lang/rust-clippy/tree/da27c979e29e78362b7a2a91ebcf605cb01da94c#using-clippy-driver
              call_rustc(driver, argv(2)).await
@@ -87,14 +97,10 @@ async fn fallible_main(args: VecDeque<String>, vars: BTreeMap<String, String>) -
             // Culprits:
             //   https://github.com/dtolnay/anyhow/blob/05e413219e97f101d8f39a90902e5c5d39f951fe/build.rs#L88
             //   https://github.com/dtolnay/thiserror/blob/e9ea67c7e251764c3c2d839b6c06d9f35b154647/build.rs#L65
-             call_rustc(rustc, argv(1)).await,
+             call_rustc(rustc, argv(1)).await, // TODO: wrap
         [rustc, "--crate-name", crate_name, ..] if !called_from_build_script =>
-             bake_rustc(crate_name, argv(1), call_rustc(rustc, argv(1))).await
-            .inspect_err(|e| {
-                log::error!(target:crate_name, "Failure: {e}");
-                eprintln!("{PKG}@{VSN} error: {e}");
-            }),
-        _ => panic!("RUSTC_WRAPPER={PKG}'s input unexpected:\n\targz = {argz:?}\n\targs = {args:?}\n\tenvs = {vars:?}\n"),
+             wrap_rustc(crate_name, argv(1), call_rustc(rustc, argv(1))).await,
+        _ => panic!("RUSTC_WRAPPER={arg0:?}'s input unexpected:\n\targz = {argz:?}\n\targs = {args:?}\n\tenvs = {vars:?}\n"),
     }
 }
 
@@ -150,7 +156,7 @@ async fn call_rustc(rustc: &str, args: Vec<String>) -> Result<ExitCode> {
     Ok(exit_code(code))
 }
 
-async fn bake_rustc(
+async fn wrap_rustc(
     crate_name: &str,
     arguments: Vec<String>,
     fallback: impl Future<Output = Result<ExitCode>>,
@@ -160,25 +166,41 @@ async fn bake_rustc(
     }
     env::set_var(internal::RUSTCBUILDX, "1");
 
-    let debug = maybe_log();
-    if let Some(log_file) = debug {
+    if let Some(log_file) = maybe_log() {
         env_logger::Builder::from_env(
             Env::default()
                 .filter_or(internal::RUSTCBUILDX_LOG, "debug")
                 .write_style(internal::RUSTCBUILDX_LOG_STYLE),
         )
+        //FIXME: expect before logging is installed
         .target(Target::Pipe(Box::new(log_file()?)))
         .init();
     }
-
-    let krate = format!("{PKG}:{crate_name}");
-    log::info!(target:&krate, "{PKG}@{VSN} original args: {arguments:?}");
 
     let pwd = env::current_dir().map_err(|e| anyhow!("Failed to get $PWD: {e}"))?;
     let pwd: Utf8PathBuf =
         pwd.try_into().map_err(|e| anyhow!("Path's UTF-8 encoding is corrupted: {e}"))?;
 
-    let (st, args) = parse::as_rustc(&pwd, crate_name, arguments)?;
+    let krate = format!("{PKG}:{crate_name}");
+    log::info!(target:&krate, "{PKG}@{VSN} original args: {arguments:?} pwd={pwd}");
+
+    do_wrap_rustc(crate_name, arguments, fallback, &krate, pwd)
+        .await
+        .inspect_err(|e| log::error!(target:&krate, "Error: {e}"))
+}
+
+// FIXME: replace asserts with bail!
+
+async fn do_wrap_rustc(
+    crate_name: &str,
+    arguments: Vec<String>,
+    fallback: impl Future<Output = Result<ExitCode>>,
+    krate: &str,
+    pwd: Utf8PathBuf,
+) -> Result<ExitCode> {
+    let debug = maybe_log();
+
+    let (st, args) = parse::as_rustc(&pwd, arguments)?;
     log::info!(target:&krate, "{st:?}");
     let RustcArgs { crate_type, emit, externs, metadata, incremental, input, out_dir, target_path } =
         st;
@@ -338,53 +360,58 @@ async fn bake_rustc(
 
         let (name, version, cratesio_index) = from_cratesio_input_path(&input)?;
 
-        let (cratesio_stage, cratesio_extracted, block) =
+        let (cratesio_stage, src, dst, block) =
             into_stage(krate, cargo_home.as_path(), &name, &version, &cratesio_index).await?;
         md.push_block(&cratesio_stage, block);
 
         let rustc_stage = Stage::new(format!("dep-{crate_id}-{cratesio_index}"))?;
-        (Some((cratesio_stage, Some("/tmp"), cratesio_extracted)), rustc_stage)
-    } else {
-        let hm = |prefix: &str, basename: &str, pop: usize| {
-            let stage = Stage::new(format!("{prefix}-{crate_id}"))?;
-            assert_eq!(pop, prefix.chars().filter(|c| *c == '_').count());
-            let name = Stage::new(format!("input_{prefix}--{basename}"))?;
-            let target = input.clone().popped(pop);
-            Ok::<_, StageError>((Some((name, target)), stage))
-        };
+        (Some((cratesio_stage, Some(src), dst)), rustc_stage)
+        // (Some((cratesio_stage, Option::<String>::None, cratesio_extracted)), rustc_stage)
+    } else if input.is_relative() {
+        // let hm = |prefix: &str, basename: &str, pop: usize| {
+        //     let stage = Stage::new(format!("{prefix}-{crate_id}"))?;
+        //     assert_eq!(pop, prefix.chars().filter(|c| *c == '_').count());
+        //     let name = Stage::new(format!("input_{prefix}--{basename}"))?;
+        //     let target = input.clone().popped(pop);
+        //     Ok::<_, StageError>((Some((name, target)), stage))
+        // };
+
         // TODO: impl non-default build.rs https://doc.rust-lang.org/cargo/reference/manifest.html?highlight=build.rs#the-build-field
+
         let (input_mount, rustc_stage): (Option<_>, Stage) =
-            match input.iter().rev().take(4).collect::<Vec<_>>()[..] {
-                ["build.rs"] => (None, Stage::new(format!("finalbuildrs-{crate_id}"))?),
-                ["lib.rs", "src"] => (None, Stage::new(format!("final-{crate_id}"))?),
-                ["main.rs", "src"] => (None, Stage::new(format!("final-{crate_id}"))?),
-                ["build.rs", "src", basename, ..] => hm("build__rs", basename, 2)?, // TODO: un-ducktape
-                ["build.rs", basename, ..] => hm("build_rs", basename, 1)?,
-                ["lib.rs", "src", basename, ..] => hm("src_lib_rs", basename, 2)?,
-                // e.g. $HOME/.cargo/registry/src/github.com-1ecc6299db9ec823/fnv-1.0.7/lib.rs
-                ["lib.rs", basename, ..] => hm("lib_rs", basename, 1)?,
-                // e.g. $HOME/.cargo/registry/src/github.com-1ecc6299db9ec823/untrusted-0.7.1/src/untrusted.rs
-                _ if input.is_relative() => {
+            // match input.iter().rev().take(4).collect::<Vec<_>>()[..] {
+            //     ["build.rs"] => (None, Stage::new(format!("finalbuildrs-{crate_id}"))?),
+            //     ["lib.rs", "src"] => (None, Stage::new(format!("final-{crate_id}"))?),
+            //     ["main.rs", "src"] => (None, Stage::new(format!("final-{crate_id}"))?),
+            //     ["build.rs", "src", basename, ..] => hm("build__rs", basename, 2)?, // TODO: un-ducktape
+            //     ["build.rs", basename, ..] => hm("build_rs", basename, 1)?,
+            //     ["lib.rs", "src", basename, ..] => hm("src_lib_rs", basename, 2)?,
+            //     // e.g. $HOME/.cargo/registry/src/github.com-1ecc6299db9ec823/fnv-1.0.7/lib.rs
+            //     ["lib.rs", basename, ..] => hm("lib_rs", basename, 1)?,
+            //     // e.g. $HOME/.cargo/registry/src/github.com-1ecc6299db9ec823/untrusted-0.7.1/src/untrusted.rs
+                {
                     log::info!(target:&krate, ">>> input = {input:?}");
                     let rustc_stage = input.to_string().replace(['/', '.'], "-");
                     (None, Stage::new(format!("cwd-{crate_id}-{rustc_stage}"))?)
-                }
-                // When compiling openssl-sys-0.9.95 on stable-x86_64-unknown-linux-gnu:
-                //   /home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/openssl-sys-0.9.95/build/main.rs
-                ["main.rs", "build", basename, ..] if crate_name == "build_script_main" => {
-                    // TODO: that's ducktape. Read Cargo.toml to match [package]build = "build/main.rs" ?
-                    // or just catchall >=4
-                    hm("main__rs", basename, 2)?
-                }
-                // /home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/cargo-deny-0.14.3/src/cargo-deny/main.rs crate_type=bin
-                ["main.rs", "cargo-deny", "src", basename] => hm("main___rs", basename, 3)?, // TODO: un-ducktape
-                _ => unreachable!("Unexpected input file {input:?}"),
+                // // When compiling openssl-sys-0.9.95 on stable-x86_64-unknown-linux-gnu:
+                // //   /home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/openssl-sys-0.9.95/build/main.rs
+                // ["main.rs", "build", basename, ..] if crate_name == "build_script_main" => {
+                //     // TODO: that's ducktape. Read Cargo.toml to match [package]build = "build/main.rs" ?
+                //     // or just catchall >=4
+                //     hm("main__rs", basename, 2)?
+                // }
+                // // /home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/cargo-deny-0.14.3/src/cargo-deny/main.rs crate_type=bin
+                // ["main.rs", "cargo-deny", "src", basename] => hm("main___rs", basename, 3)?, // TODO: un-ducktape
+                // _ => unreachable!("Unexpected input file {input:?}"),
             };
         let input_mount = input_mount.map(|(name, target)| (name, None, target));
         (input_mount, rustc_stage)
+    } else {
+        bail!("Unexpected input file {input:?}")
     };
-    log::info!(target:&krate, ">>> input_mount = {input_mount:?}");
-    log::info!(target:&krate, ">>> rustc_stage = {rustc_stage:?}");
+    log::info!(target:&krate, "picked {rustc_stage} ({:?}) for {suf:?}", rustc_stage.to_string(), suf=input.iter().rev().take(4).collect::<Vec<_>>());
+    assert!(!matches!(input_mount, Some((_,_,ref x)) if x.ends_with("/.cargo/registry")));
+
     // TODO cli=deny: explore mounts: do they include?  -L native=/home/runner/instst/release/build/ring-3c73f9fd9a67ce28/out
     // nner/instst/release/build/zstd-sys-f571b8facf393189/out -L native=/home/runner/instst/release/build/ring-3c73f9fd9a67ce28/out`
     // Found a bug in this script!
@@ -397,8 +424,6 @@ async fn bake_rustc(
     // internal error: entered unreachable code: Unexpected input file "/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/cargo-deny-0.14.3/src/cargo-deny/main.rs"
     // note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
     // error: could not compile `cargo-deny` (bin "cargo-deny")
-    log::info!(target:&krate, "picked {rustc_stage} ({:?}) for {suf:?}", rustc_stage.to_string(), suf=input.iter().rev().take(4).collect::<Vec<_>>());
-    assert!(!matches!(input_mount, Some((_,_,ref x)) if x.ends_with("/.cargo/registry")));
 
     let incremental_stage = Stage::new(format!("inc-{metadata}"))?;
     let out_stage = Stage::new(format!("out-{metadata}"))?;
@@ -441,10 +466,14 @@ async fn bake_rustc(
         // Looks like removing it isn't an issue, however we need more testing.
         // rustc_block.push_str(&format!("WORKDIR {pwd}\n"));
         rustc_block.push_str("RUN \\\n");
-        rustc_block.push_str(&format!(
-            "  --mount=type=bind,from={name}{source},target={target} \\\n",
-            source = src.map(|src| format!(",source={src}")).unwrap_or_default()
-        ));
+        // rustc_block.push_str(&format!(
+        //     "  --mount=type=bind,from={name}{source},target={target} \\\n",
+        //     source = src.map(|src| format!(",source={src}")).unwrap_or_default()
+        // ));
+        if src.is_some() {
+            panic!(">>> src={src:?}");
+        }
+        rustc_block.push_str(&format!("  --mount=type=bind,from={name},target={target} \\\n"));
 
         None
     } else {
