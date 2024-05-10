@@ -226,6 +226,7 @@ $(
 EOF
 }
 
+# No args: try many combinations, sequentially
 if [[ $# = 0 ]]; then
   header
 
@@ -251,14 +252,51 @@ modifier=${1:-0}
 distclean=0; if [[ "$modifier" = 'distclean' ]]; then distclean=1; fi
 clean=0;     if [[ "$modifier" = 'clean'     ]]; then clean=1; fi
 
-if [[ "$name_at_version" = 'ok' ]]; then
-  for i in "${!nvs[@]}"; do
-    [[ "${oks[$i]}" = 'ok' ]] || continue
-    nv=${nvs[$i]}
-    "$0" "${nv#*@}" "$modifier"
-  done
-  exit $?
-fi
+# Special first arg handling..
+case "$name_at_version" in
+  ok)
+    for i in "${!nvs[@]}"; do
+      [[ "${oks[$i]}" = 'ok' ]] || continue
+      nv=${nvs[$i]}
+      "$0" "${nv#*@}" "$modifier"
+    done
+    exit $? ;;
+
+  build)
+set -x
+    tmptrgt=/tmp/clis-$name_at_version
+    tmplogs=/tmp/clis-$name_at_version.logs.txt
+    if [[ "$clean" = '1' ]]; then
+      rm -rf "$tmptrgt"
+      docker buildx prune       --force
+    fi
+    if [[ "$distclean" = '1' ]]; then
+      rm -rf "$tmptrgt"
+      docker buildx prune --all --force --verbose
+    fi
+    CARGO_TARGET_DIR=/tmp/rstcbldx cargo install --locked --frozen --offline --force --root=/tmp/rstcbldx --path="$PWD"/rustcbuildx
+    cargo run --locked --frozen --offline pull
+    ls -lha /tmp/rstcbldx/bin/rustcbuildx
+    rm $tmplogs >/dev/null 2>&1 || true
+    touch $tmplogs
+    echo "$name_at_version"
+    echo "Target dir: $tmptrgt"
+    echo "Logs: $tmplogs"
+    xdg-terminal-exec tail -f $tmplogs
+    RUSTCBUILDX_LOG=debug \
+    RUSTCBUILDX_LOG_PATH="$tmplogs" \
+    RUSTCBUILDX_CACHE_IMAGE="${RUSTCBUILDX_CACHE_IMAGE:-}" \
+    RUSTC_WRAPPER=/tmp/rstcbldx/bin/rustcbuildx \
+    CARGO_TARGET_DIR="$tmptrgt" \
+      cargo -v build --jobs=${jobs:-1} --all-targets --all-features --locked --frozen --offline
+    if [[ "$clean"     = 1 ]]; then docker buildx prune       --force; fi
+    if [[ "$distclean" = 1 ]]; then docker buildx prune --all --force --verbose | tee --append "$tmplogs" || exit 1; fi
+    case "$(wc "$tmplogs")" in '0 0 0 '*) ;;
+                                       *) $PAGER "$tmplogs" ;; esac
+    exit ;;
+esac
+
+# Matching first arg:
 picked=-1
 for i in "${!nvs[@]}"; do
   case "${nvs[$i]}" in

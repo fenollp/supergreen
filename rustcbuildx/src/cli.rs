@@ -5,7 +5,7 @@ use std::{
     process::{ExitCode, Stdio},
 };
 
-use anyhow::{anyhow, Error, Result};
+use anyhow::{anyhow, Result};
 use futures::{
     future::ok,
     stream::{iter, StreamExt, TryStreamExt},
@@ -65,22 +65,19 @@ pub(crate) async fn push() -> Result<ExitCode> {
                     .stdin(Stdio::null())
                     .stdout(Stdio::null())
                     .stderr(Stdio::null());
-                let o = cmd
-                    .spawn()
-                    .map_err(|e| anyhow!("Failed to start {}: {e}", cmd.show()))?
-                    .wait()
-                    .await
-                    .map_err(|e| anyhow!("Failed to call {}: {e}", cmd.show()))?;
-                if !o.success() {
-                    eprintln!("Pushing {img}:{tag} failed!");
-                } else {
-                    println!("Pushing {img}:{tag}... done!");
+                if let Ok(mut o) = cmd.spawn() {
+                    if let Ok(o) = o.wait().await {
+                        if o.success() {
+                            println!("Pushing {img}:{tag}... done!");
+                            return;
+                        }
+                    }
                 }
-                Ok(0)
+                eprintln!("Pushing {img}:{tag} failed!");
             })
-            .buffered(10)
-            .try_fold(0, |a, b| ok::<_, Error>(a + b))
-            .await?;
+            .buffer_unordered(10)
+            .fold((), |a, _| async move { a })
+            .await;
     }
     Ok(exit_code(Some(0)))
 }

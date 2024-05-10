@@ -257,8 +257,7 @@ async fn bake_rustc(
 
         let xtern_crate_externs = externs_prefix(xtern);
         log::info!(target:&krate, "checking (RO) extern's externs {xtern_crate_externs}");
-        let errf = |e| anyhow!("Failed to `test -s {xtern_crate_externs}`: {e}");
-        if file_exists_and_is_not_empty(&xtern_crate_externs).map_err(errf)? {
+        if file_exists_and_is_not_empty(&xtern_crate_externs)? {
             log::info!(target:&krate, "opening (RO) crate externs {xtern_crate_externs}");
             let errf = |e| anyhow!("Failed to `cat {xtern_crate_externs}`: {e}");
             let fd = File::open(&xtern_crate_externs).map_err(errf)?;
@@ -267,12 +266,8 @@ async fn bake_rustc(
 
                 let guard = externs_prefix(&format!("{transitive}_proc-macro"));
                 log::info!(target:&krate, "checking (RO) extern's guard {guard}");
-                let actual_extern =
-                    if file_exists(&guard).map_err(|e| anyhow!("Failed to `stat {guard}`: {e}"))? {
-                        format!("lib{transitive}.so")
-                    } else {
-                        format!("lib{transitive}.{ext}")
-                    };
+                let ext = if file_exists(&guard)? { "so" } else { &ext };
+                let actual_extern = format!("lib{transitive}.{ext}");
                 all_externs.insert(actual_extern.clone());
 
                 // ^ this algo tried to "keep track" of actual paths to transitive deps artifacts
@@ -293,7 +288,7 @@ async fn bake_rustc(
                         .map(|p| p.to_string())
                         .collect::<Vec<_>>();
                     if listing != vec![actual_extern.clone()] {
-                        log::warn!("instead of [{actual_extern}], listing found {listing:?}");
+                        log::warn!(target:&krate, "instead of [{actual_extern}], listing found {listing:?}");
                     }
                     //all_externs.extend(listing.into_iter());
                     // TODO: move to after for loop
@@ -304,8 +299,7 @@ async fn bake_rustc(
         }
     }
     log::info!(target:&krate, "checking (RO) externs {crate_externs}");
-    let errf = |e| anyhow!("Failed to `test -s {crate_externs}`: {e}");
-    if !file_exists_and_is_not_empty(&crate_externs).map_err(errf)? {
+    if !file_exists_and_is_not_empty(&crate_externs)? {
         let mut shorts = String::new();
         for short_extern in &short_externs {
             shorts.push_str(&format!("{short_extern}\n"));
@@ -359,7 +353,7 @@ async fn bake_rustc(
             Ok::<_, StageError>((Some((name, target)), stage))
         };
         // TODO: impl non-default build.rs https://doc.rust-lang.org/cargo/reference/manifest.html?highlight=build.rs#the-build-field
-        let (input_mount, rustc_stage): (_, Stage) =
+        let (input_mount, rustc_stage): (Option<_>, Stage) =
             match input.iter().rev().take(4).collect::<Vec<_>>()[..] {
                 ["build.rs"] => (None, Stage::new(format!("finalbuildrs-{crate_id}"))?),
                 ["lib.rs", "src"] => (None, Stage::new(format!("final-{crate_id}"))?),
@@ -399,7 +393,7 @@ async fn bake_rustc(
     // internal error: entered unreachable code: Unexpected input file "/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/cargo-deny-0.14.3/src/cargo-deny/main.rs"
     // note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
     // error: could not compile `cargo-deny` (bin "cargo-deny")
-    log::info!(target:&krate, "picked {rustc_stage} for {suf:?}", suf=input.iter().rev().take(4).collect::<Vec<_>>());
+    log::info!(target:&krate, "picked {rustc_stage} ({:?}) for {suf:?}", rustc_stage.to_string(), suf=input.iter().rev().take(4).collect::<Vec<_>>());
     assert!(!matches!(input_mount, Some((_,_,ref x)) if x.ends_with("/.cargo/registry")));
 
     let incremental_stage = Stage::new(format!("inc-{metadata}"))?;
@@ -514,7 +508,7 @@ async fn bake_rustc(
         Some((cwd, cwd_path))
     };
 
-    if let Some(crate_out) = crate_out.as_ref() {
+    if let Some(ref crate_out) = crate_out {
         let named = crate_out_name(crate_out);
         rustc_block.push_str(&format!("  --mount=type=bind,from={named},target={crate_out} \\\n"));
     }
@@ -553,7 +547,7 @@ async fn bake_rustc(
         })
         .collect::<Result<Vec<_>>>()?;
     let extern_md_paths = md.extend_from_externs(extern_mds)?;
-    log::info!(target:&krate, "extern_md_paths {}: {extern_md_paths:?}", extern_md_paths.len());
+    log::info!(target:&krate, "extern_md_paths: {} {extern_md_paths:?}", extern_md_paths.len());
 
     for (name, source, target) in mounts {
         rustc_block.push_str(&format!(
@@ -566,10 +560,12 @@ async fn bake_rustc(
     rustc_block.push_str(" && export CARGO=\"$(which cargo)\" \\\n");
 
     // TODO: keep only paths that we explicitly mount or copy
-    for var in ["PATH", "DYLD_FALLBACK_LIBRARY_PATH", "LD_LIBRARY_PATH", "LIBPATH"] {
-        let Ok(val) = env::var(var) else { continue };
-        if !val.is_empty() && debug.is_some() {
-            rustc_block.push_str(&format!("#&& export {var}=\"{val}:${var}\" \\\n"));
+    if false {
+        for var in ["PATH", "DYLD_FALLBACK_LIBRARY_PATH", "LD_LIBRARY_PATH", "LIBPATH"] {
+            let Ok(val) = env::var(var) else { continue };
+            if !val.is_empty() && debug.is_some() {
+                rustc_block.push_str(&format!("#&& export {var}=\"{val}:${var}\" \\\n"));
+            }
         }
     }
 
@@ -703,31 +699,27 @@ async fn bake_rustc(
 }
 
 #[inline]
-fn file_exists(path: impl AsRef<Utf8Path>) -> Result<bool> {
-    match path.as_ref().metadata().map(|md| md.is_file()) {
+fn file_exists(path: &Utf8Path) -> Result<bool> {
+    match path.metadata().map(|md| md.is_file()) {
         Ok(b) => Ok(b),
-        Err(e) => {
-            if e.kind() == ErrorKind::NotFound {
-                return Ok(false);
-            }
-            Err(e.into())
-        }
+        Err(e) if e.kind() == ErrorKind::NotFound => Ok(false),
+        Err(e) => Err(anyhow!("Failed to `stat {path}`: {e}")),
     }
 }
 
 #[inline]
-fn file_exists_and_is_not_empty(path: impl AsRef<Utf8Path>) -> Result<bool> {
-    match path.as_ref().metadata().map(|md| md.is_file() && md.len() > 0) {
+fn file_exists_and_is_not_empty(path: &Utf8Path) -> Result<bool> {
+    match path.metadata().map(|md| md.is_file() && md.len() > 0) {
         Ok(b) => Ok(b),
         Err(e) if e.kind() == ErrorKind::NotFound => Ok(false),
-        Err(e) => Err(e.into()),
+        Err(e) => Err(anyhow!("Failed to `test -s {path}`: {e}")),
     }
 }
 
 #[test]
 fn headed_path_and_stage_for_rlib() {
     let xtern = "libstrsim-8ed1051e7e58e636.rlib".to_owned();
-    let res = headed_path_and_stage(xtern, "./target/path").unwrap();
+    let res = headed_path_and_stage(xtern, "./target/path".into()).unwrap();
     assert_eq!(res.0, "./target/path/strsim-8ed1051e7e58e636.Dockerfile".to_owned());
     assert_eq!(res.1, "out-8ed1051e7e58e636".to_owned());
 }
@@ -735,7 +727,7 @@ fn headed_path_and_stage_for_rlib() {
 #[test]
 fn headed_path_and_stage_for_libc() {
     let xtern = "liblibc-c53783e3f8edcfe4.rmeta".to_owned();
-    let res = headed_path_and_stage(xtern, "./target/path").unwrap();
+    let res = headed_path_and_stage(xtern, "./target/path".into()).unwrap();
     assert_eq!(res.0, "./target/path/libc-c53783e3f8edcfe4.Dockerfile".to_owned());
     assert_eq!(res.1, "out-c53783e3f8edcfe4".to_owned());
 }
@@ -743,20 +735,17 @@ fn headed_path_and_stage_for_libc() {
 #[test]
 fn headed_path_and_stage_for_weird_extension() {
     let xtern = "libthing-131283e3f8edcfe4.a.2.c".to_owned();
-    let res = headed_path_and_stage(xtern, "./target/path").unwrap();
+    let res = headed_path_and_stage(xtern, "./target/path".into()).unwrap();
     assert_eq!(res.0, "./target/path/thing-131283e3f8edcfe4.Dockerfile".to_owned());
     assert_eq!(res.1, "out-131283e3f8edcfe4".to_owned());
 }
 
 #[inline]
-fn headed_path_and_stage(
-    xtern: String,
-    target_path: impl AsRef<Utf8Path>,
-) -> Option<(Utf8PathBuf, String)> {
+fn headed_path_and_stage(xtern: String, target_path: &Utf8Path) -> Option<(Utf8PathBuf, String)> {
     assert!(xtern.starts_with("lib")); // TODO: stop doing that (stripping ^lib)
     let pa = xtern.strip_prefix("lib").and_then(|x| x.split_once('.')).map(|(x, _)| x);
     let st = pa.and_then(|x| x.split_once('-')).map(|(_, x)| format!("out-{x}"));
-    let pa = pa.map(|x| target_path.as_ref().join(format!("{x}.Dockerfile")));
+    let pa = pa.map(|x| target_path.join(format!("{x}.Dockerfile")));
     pa.zip(st)
 }
 

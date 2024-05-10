@@ -8,7 +8,7 @@ pub(crate) struct Stage(String);
 fn oci_name(name: String) -> String {
     name.to_lowercase()
         .replace(|c: char| c != '.' && !c.is_alphanumeric(), "-")
-        .replace("___", "_")
+        .replace("---", "-")
         .to_owned()
 }
 
