@@ -364,8 +364,10 @@ async fn bake_rustc(
                 // e.g. $HOME/.cargo/registry/src/github.com-1ecc6299db9ec823/fnv-1.0.7/lib.rs
                 ["lib.rs", basename, ..] => hm("lib_rs", basename, 1)?,
                 // e.g. $HOME/.cargo/registry/src/github.com-1ecc6299db9ec823/untrusted-0.7.1/src/untrusted.rs
-                [rsfile, "src", basename, ..] if rsfile.ends_with(".rs") => {
-                    hm("src__rs", basename, 2)?
+                _ if input.is_relative() => {
+                    log::info!(target:&krate, ">>> input = {input:?}");
+                    let rustc_stage = input.to_string().replace(['/', '.'], "-");
+                    (None, Stage::new(format!("cwd-{crate_id}-{rustc_stage}"))?)
                 }
                 // When compiling openssl-sys-0.9.95 on stable-x86_64-unknown-linux-gnu:
                 //   /home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/openssl-sys-0.9.95/build/main.rs
@@ -381,6 +383,8 @@ async fn bake_rustc(
         let input_mount = input_mount.map(|(name, target)| (name, None, target));
         (input_mount, rustc_stage)
     };
+    log::info!(target:&krate, ">>> input_mount = {input_mount:?}");
+    log::info!(target:&krate, ">>> rustc_stage = {rustc_stage:?}");
     // TODO cli=deny: explore mounts: do they include?  -L native=/home/runner/instst/release/build/ring-3c73f9fd9a67ce28/out
     // nner/instst/release/build/zstd-sys-f571b8facf393189/out -L native=/home/runner/instst/release/build/ring-3c73f9fd9a67ce28/out`
     // Found a bug in this script!
