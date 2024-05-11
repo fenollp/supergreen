@@ -1,6 +1,7 @@
 [workspace]
 resolver = "2"
 members = [
+    "cargo-green",
     "rustcbuildx",
 ]
 
@@ -22,7 +23,7 @@ keywords = [
 	"RUSTC_WRAPPER",
 ]
 license = "MIT"
-repository = "https://github.com/fenollp/rustcbuildx"
+repository = "https://github.com/fenollp/supergreen"
 
 [workspace.dependencies]
 anyhow = "1"

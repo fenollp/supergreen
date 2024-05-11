@@ -52,8 +52,7 @@ pub(crate) mod internal {
 // TODO: document envs + usage
 // TODO: cli for stats (cache hit/miss/size/age/volume, existing available/selected runners, disk usage/free)
 
-// TODO: rename under `cargo-green` https://github.com/rust-lang/cargo/wiki/Third-party-cargo-subcommands
-// TODO: cli config / profiles
+// TODO: cli config / profiles https://github.com/rust-lang/cargo/wiki/Third-party-cargo-subcommands
 //   * https://docs.rs/figment/latest/figment/
 //   * https://lib.rs/crates/toml_edit
 //   * https://github.com/jdrouet/serde-toml-merge

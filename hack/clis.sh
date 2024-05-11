@@ -14,7 +14,7 @@ declare -a nvs nvs_args
 ((i+=1)); nvs[i]=hickory-dns@0.24.0;    oks[i]=ok; nvs_args[i]='--features=dns-over-rustls'
 ((i+=1)); nvs[i]=vixargs@0.1.0;         oks[i]=ok; nvs_args[i]=''
 
-((i+=1)); nvs[i]=rustcbuildx@main;      oks[i]=ok; nvs_args[i]='--git https://github.com/fenollp/rustcbuildx.git --branch=main rustcbuildx'
+((i+=1)); nvs[i]=rustcbuildx@main;      oks[i]=ok; nvs_args[i]='--git https://github.com/fenollp/supergreen.git --branch=main rustcbuildx'
 
 #TODO: not a cli but try users of https://github.com/dtolnay/watt
 #TODO: play with cargo flags: lto (embeds bitcode)

@@ -1,4 +1,4 @@
-# [`rustcbuildx`](https://github.com/fenollp/rustcbuildx)
+# [`supergreen`](https://github.com/fenollp/supergreen)
 Forwards `rustc` calls to BuildKit builders.
 
 `rustcbuildx` is a [`RUSTC_WRAPPER`](https://doc.rust-lang.org/cargo/reference/config.html#buildrustc-wrapper) for cached and remote building of Rust projects (on [BuildKit](https://github.com/moby/buildkit)).
@@ -75,7 +75,7 @@ RUSTC_WRAPPER=rustcbuildx cargo test ...
 
 ```shell
 rustcbuildx@version: $RUSTC_WRAPPER tool to sandbox cargo builds and execute jobs remotely
-    https://github.com/fenollp/rustcbuildx
+    https://github.com/fenollp/supergreen
 
 Usage:
   rustcbuildx env             Show used values
@@ -99,7 +99,7 @@ cargo test ...
 
 ```shell
 # Installs to ~/.cargo/bin
-cargo install --locked --force --git https://github.com/fenollp/rustcbuildx.git
+cargo install --locked --force --git https://github.com/fenollp/supergreen.git
 
 # Make sur $CARGO_HOME/bin is in your $PATH
 which rustcbuildx
