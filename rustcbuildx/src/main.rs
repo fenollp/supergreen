@@ -162,7 +162,7 @@ async fn wrap_rustc(
     fallback: impl Future<Output = Result<ExitCode>>,
 ) -> Result<ExitCode> {
     if this() {
-        bail!("It's turtles all the way down!")
+        panic!("It's turtles all the way down!")
     }
     env::set_var(internal::RUSTCBUILDX, "1");
 
@@ -172,14 +172,12 @@ async fn wrap_rustc(
                 .filter_or(internal::RUSTCBUILDX_LOG, "debug")
                 .write_style(internal::RUSTCBUILDX_LOG_STYLE),
         )
-        //FIXME: expect before logging is installed
-        .target(Target::Pipe(Box::new(log_file()?)))
+        .target(Target::Pipe(Box::new(log_file().expect("Installing logfile"))))
         .init();
     }
 
-    let pwd = env::current_dir().map_err(|e| anyhow!("Failed to get $PWD: {e}"))?;
-    let pwd: Utf8PathBuf =
-        pwd.try_into().map_err(|e| anyhow!("Path's UTF-8 encoding is corrupted: {e}"))?;
+    let pwd = env::current_dir().expect("Getting $PWD");
+    let pwd: Utf8PathBuf = pwd.try_into().expect("Encoding $PWD in UTF-8");
 
     let krate = format!("{PKG}:{crate_name}");
     log::info!(target:&krate, "{PKG}@{VSN} original args: {arguments:?} pwd={pwd}");
@@ -347,8 +345,6 @@ async fn do_wrap_rustc(
             .map_err(|e| anyhow!("Failed to `mkdir -p {incremental}`: {e}"))?;
     }
 
-    // #[cfg(target_os="windows")]
-    // let cargo_home = https://doc.rust-lang.org/cargo/reference/environment-variables.html#environment-variables-cargo-reads
     let cargo_home = env::var("CARGO_HOME")
         .map(Utf8PathBuf::from)
         .map_err(|e| anyhow!("`cargo` sets $CARGO_HOME: {e}"))?;
@@ -360,7 +356,6 @@ async fn do_wrap_rustc(
         // Let's optimize this case by fetching & caching crate tarball
 
         let (name, version, cratesio_index) = from_cratesio_input_path(&input)?;
-
         let (cratesio_stage, src, dst, block) =
             into_stage(krate, cargo_home.as_path(), &name, &version, &cratesio_index).await?;
         md.push_block(&cratesio_stage, block);
@@ -368,44 +363,11 @@ async fn do_wrap_rustc(
         let rustc_stage = Stage::new(format!("dep-{crate_id}-{cratesio_index}"))?;
         (Some((cratesio_stage, Some(src), dst)), rustc_stage)
     } else if input.is_relative() {
-        // let hm = |prefix: &str, basename: &str, pop: usize| {
-        //     let stage = Stage::new(format!("{prefix}-{crate_id}"))?;
-        //     assert_eq!(pop, prefix.chars().filter(|c| *c == '_').count());
-        //     let name = Stage::new(format!("input_{prefix}--{basename}"))?;
-        //     let target = input.clone().popped(pop);
-        //     Ok::<_, StageError>((Some((name, target)), stage))
-        // };
+        // Input is local, non-public code
 
-        // TODO: impl non-default build.rs https://doc.rust-lang.org/cargo/reference/manifest.html?highlight=build.rs#the-build-field
-
-        let (input_mount, rustc_stage): (Option<_>, Stage) =
-            // match input.iter().rev().take(4).collect::<Vec<_>>()[..] {
-            //     ["build.rs"] => (None, Stage::new(format!("finalbuildrs-{crate_id}"))?),
-            //     ["lib.rs", "src"] => (None, Stage::new(format!("final-{crate_id}"))?),
-            //     ["main.rs", "src"] => (None, Stage::new(format!("final-{crate_id}"))?),
-            //     ["build.rs", "src", basename, ..] => hm("build__rs", basename, 2)?, // TODO: un-ducktape
-            //     ["build.rs", basename, ..] => hm("build_rs", basename, 1)?,
-            //     ["lib.rs", "src", basename, ..] => hm("src_lib_rs", basename, 2)?,
-            //     // e.g. $HOME/.cargo/registry/src/github.com-1ecc6299db9ec823/fnv-1.0.7/lib.rs
-            //     ["lib.rs", basename, ..] => hm("lib_rs", basename, 1)?,
-            //     // e.g. $HOME/.cargo/registry/src/github.com-1ecc6299db9ec823/untrusted-0.7.1/src/untrusted.rs
-                {
-                    log::info!(target:&krate, ">>> input = {input:?}");
-                    let rustc_stage = input.to_string().replace(['/', '.'], "-");
-                    (None, Stage::new(format!("cwd-{crate_id}-{rustc_stage}"))?)
-                // // When compiling openssl-sys-0.9.95 on stable-x86_64-unknown-linux-gnu:
-                // //   /home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/openssl-sys-0.9.95/build/main.rs
-                // ["main.rs", "build", basename, ..] if crate_name == "build_script_main" => {
-                //     // TODO: that's ducktape. Read Cargo.toml to match [package]build = "build/main.rs" ?
-                //     // or just catchall >=4
-                //     hm("main__rs", basename, 2)?
-                // }
-                // // /home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/cargo-deny-0.14.3/src/cargo-deny/main.rs crate_type=bin
-                // ["main.rs", "cargo-deny", "src", basename] => hm("main___rs", basename, 3)?, // TODO: un-ducktape
-                // _ => unreachable!("Unexpected input file {input:?}"),
-            };
-        let input_mount = input_mount.map(|(name, target)| (name, None, target));
-        (input_mount, rustc_stage)
+        let rustc_stage = input.to_string().replace(['/', '.'], "-");
+        let rustc_stage = Stage::new(format!("cwd-{crate_id}-{rustc_stage}"))?;
+        (None, rustc_stage)
     } else {
         bail!("Unexpected input file {input:?}")
     };
@@ -413,19 +375,6 @@ async fn do_wrap_rustc(
     if matches!(input_mount, Some((_,_,ref x)) if x.ends_with("/.cargo/registry")) {
         bail!("BUG: wrong input_mount pick: {input_mount:?}")
     }
-
-    // TODO cli=deny: explore mounts: do they include?  -L native=/home/runner/instst/release/build/ring-3c73f9fd9a67ce28/out
-    // nner/instst/release/build/zstd-sys-f571b8facf393189/out -L native=/home/runner/instst/release/build/ring-3c73f9fd9a67ce28/out`
-    // Found a bug in this script!
-    //      Running `CARGO=/home/runner/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/cargo CARGO_BIN_NAME=cargo-deny CARGO_CRATE_NAME=cargo_deny CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/cargo-deny-0.14.3 CARGO_PKG_AUTHORS='Embark <opensource@embark-studios.com>:Jake Shadle <jake.shadle@embark-studios.com>' CARGO_PKG_DESCRIPTION='Cargo plugin to help you manage large dependency graphs' CARGO_PKG_HOMEPAGE='https://github.com/EmbarkStudios/cargo-deny' CARGO_PKG_LICENSE='MIT OR Apache-2.0' CARGO_PKG_LICENSE_FILE='' CARGO_PKG_NAME=cargo-deny CARGO_PKG_README=README.md CARGO_PKG_REPOSITORY='https://github.com/EmbarkStudios/cargo-deny' CARGO_PKG_RUST_VERSION=1.70.0 CARGO_PKG_VERSION=0.14.3 CARGO_PKG_VERSION_MAJOR=0 CARGO_PKG_VERSION_MINOR=14 CARGO_PKG_VERSION_PATCH=3 CARGO_PKG_VERSION_PRE='' CARGO_PRIMARY_PACKAGE=1 LD_LIBRARY_PATH='/home/runner/instst/release/deps:/home/runner/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib:/home/runner/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib'
-    // /home/runner/work/rustcbuildx/rustcbuildx/rustcbuildx /home/runner/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/rustc
-    // --crate-name cargo_deny --edition=2021
-    // /home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/cargo-deny-0.14.3/src/cargo-deny/main.rs --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat
-    // --crate-type bin --emit=dep-info,link -C opt-level=3 -C embed-bitcode=no --cfg 'feature="default"' -C metadata=3bcfd2691bae63ba -C extra-filename=-3bcfd2691bae63ba --out-dir /home/runner/instst/release/deps -L dependency=/home/runner/instst/release/deps --extern anyhow=/home/runner/instst/release/deps/libanyhow-94b7395c89edd8b1.rlib --extern askalono=/home/runner/instst/release/deps/libaskalono-ddae43dc4d3d2420.rlib --extern bitvec=/home/runner/instst/release/deps/libbitvec-d623938ca4bca493.rlib --extern camino=/home/runner/instst/release/deps/libcamino-146d319673d173c5.rlib --extern cargo_deny=/home/runner/instst/release/deps/libcargo_deny-06e4f61b912645ef.rlib --extern clap=/home/runner/instst/release/deps/libclap-2c7e3f9347d4597a.rlib --extern codespan=/home/runner/instst/release/deps/libcodespan-a43ae384a6e01906.rlib --extern codespan_reporting=/home/runner/instst/release/deps/libcodespan_reporting-40482f50e693ecb1.rlib --extern crossbeam=/home/runner/instst/release/deps/libcrossbeam-522c8a6792edb38b.rlib --extern fern=/home/runner/instst/release/deps/libfern-82ebb4a2d795cc6e.rlib --extern gix=/home/runner/instst/release/deps/libgix-2269c2d16d598f3b.rlib --extern globset=/home/runner/instst/release/deps/libglobset-1cb53a4633a9e532.rlib --extern goblin=/home/runner/instst/release/deps/libgoblin-a375a2c21dba8a6d.rlib --extern home=/home/runner/instst/release/deps/libhome-a03540b18a902546.rlib --extern krates=/home/runner/instst/release/deps/libkrates-2923f082e623ae47.rlib --extern log=/home/runner/instst/release/deps/liblog-e9c072abf79b5d2b.rlib --extern nu_ansi_term=/home/runner/instst/release/deps/libnu_ansi_term-14990884fe5cdb0f.rlib --extern parking_lot=/home/runner/instst/release/deps/libparking_lot-b8d4a6184ea5481b.rlib --extern rayon=/home/runner/instst/release/deps/librayon-103cc3573de4615f.rlib --extern reqwest=/home/runner/instst/release/deps/libreqwest-c7fbedc59852c9c7.rlib --extern ring=/home/runner/instst/release/deps/libring-691303221da8a7f0.rlib --extern rustsec=/home/runner/instst/release/deps/librustsec-bf5acc14d6976003.rlib --extern semver=/home/runner/instst/release/deps/libsemver-81c2747e00bddbb9.rlib --extern serde=/home/runner/instst/release/deps/libserde-3f028327f7dabe68.rlib --extern serde_json=/home/runner/instst/release/deps/libserde_json-48447a61a356a1fd.rlib --extern smallvec=/home/runner/instst/release/deps/libsmallvec-8853bfbdb0f0c104.rlib --extern spdx=/home/runner/instst/release/deps/libspdx-dcd7ef5eaf2c5c4d.rlib --extern strum=/home/runner/instst/release/deps/libstrum-97202369a5147909.rlib --extern tame_index=/home/runner/instst/release/deps/libtame_index-93d5aa0a6979a91f.rlib --extern time=/home/runner/instst/release/deps/libtime-c0960b055b327693.rlib --extern toml=/home/runner/instst/release/deps/libtoml-04310ccc9f3732b0.rlib --extern twox_hash=/home/runner/instst/release/deps/libtwox_hash-6feb0d177b42c269.rlib --extern url=/home/runner/instst/release/deps/liburl-27ace54f5002c0aa.rlib --extern walkdir=/home/runner/instst/release/deps/libwalkdir-0fa0886e334a678c.rlib --cap-lints warn -L native=/home/runner/instst/release/build/zstd-sys-f571b8facf393189/out -L native=/home/runner/instst/release/build/ring-3c73f9fd9a67ce28/out`
-    // thread 'main' panicked at src/main.rs:357:14:
-    // internal error: entered unreachable code: Unexpected input file "/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/cargo-deny-0.14.3/src/cargo-deny/main.rs"
-    // note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
-    // error: could not compile `cargo-deny` (bin "cargo-deny")
 
     let incremental_stage = Stage::new(format!("inc-{metadata}"))?;
     let out_stage = Stage::new(format!("out-{metadata}"))?;
