@@ -189,8 +189,6 @@ async fn wrap_rustc(
         .inspect_err(|e| log::error!(target:&krate, "Error: {e}"))
 }
 
-// FIXME: replace asserts with bail!
-
 async fn do_wrap_rustc(
     crate_name: &str,
     arguments: Vec<String>,
@@ -211,10 +209,11 @@ async fn do_wrap_rustc(
         let krate_version = env::var("CARGO_PKG_VERSION").ok().unwrap_or_default();
         let krate_name = env::var("CARGO_PKG_NAME").ok().unwrap_or_default();
         if crate_name == BUILDRS_CRATE_NAME {
-            assert_eq!(&crate_type, "bin"); // TODO: drop
+            if crate_type != "bin" {
+                bail!("BUG: expected build script to be of crate_type bin, got: {crate_type}")
+            }
             format!("buildrs|{krate_name}|{krate_version}|{metadata}")
         } else {
-            assert_ne!(crate_name, BUILDRS_CRATE_NAME); // TODO: drop
             format!("{crate_type}|{krate_name}|{krate_version}|{metadata}")
         }
     };
@@ -263,7 +262,9 @@ async fn do_wrap_rustc(
     for xtern in &externs {
         all_externs.insert(xtern.clone());
 
-        assert!(xtern.starts_with("lib"));
+        if !xtern.starts_with("lib") {
+            bail!("BUG: expected extern to match ^lib: {xtern}")
+        }
         let xtern = xtern.strip_prefix("lib").expect("PROOF: ~ ^lib");
         let xtern = if xtern.ends_with(".rlib") {
             xtern.strip_suffix(".rlib")
@@ -284,8 +285,6 @@ async fn do_wrap_rustc(
             let errf = |e| anyhow!("Failed to `cat {xtern_crate_externs}`: {e}");
             let fd = File::open(&xtern_crate_externs).map_err(errf)?;
             for transitive in BufReader::new(fd).lines().map_while(Result::ok) {
-                assert_ne!(transitive, "");
-
                 let guard = externs_prefix(&format!("{transitive}_proc-macro"));
                 log::info!(target:&krate, "checking (RO) extern's guard {guard}");
                 let ext = if file_exists(&guard)? { "so" } else { &ext };
@@ -348,6 +347,8 @@ async fn do_wrap_rustc(
             .map_err(|e| anyhow!("Failed to `mkdir -p {incremental}`: {e}"))?;
     }
 
+    // #[cfg(target_os="windows")]
+    // let cargo_home = https://doc.rust-lang.org/cargo/reference/environment-variables.html#environment-variables-cargo-reads
     let cargo_home = env::var("CARGO_HOME")
         .map(Utf8PathBuf::from)
         .map_err(|e| anyhow!("`cargo` sets $CARGO_HOME: {e}"))?;
@@ -366,7 +367,6 @@ async fn do_wrap_rustc(
 
         let rustc_stage = Stage::new(format!("dep-{crate_id}-{cratesio_index}"))?;
         (Some((cratesio_stage, Some(src), dst)), rustc_stage)
-        // (Some((cratesio_stage, Option::<String>::None, cratesio_extracted)), rustc_stage)
     } else if input.is_relative() {
         // let hm = |prefix: &str, basename: &str, pop: usize| {
         //     let stage = Stage::new(format!("{prefix}-{crate_id}"))?;
@@ -410,7 +410,9 @@ async fn do_wrap_rustc(
         bail!("Unexpected input file {input:?}")
     };
     log::info!(target:&krate, "picked {rustc_stage} ({:?}) for {suf:?}", rustc_stage.to_string(), suf=input.iter().rev().take(4).collect::<Vec<_>>());
-    assert!(!matches!(input_mount, Some((_,_,ref x)) if x.ends_with("/.cargo/registry")));
+    if matches!(input_mount, Some((_,_,ref x)) if x.ends_with("/.cargo/registry")) {
+        bail!("BUG: wrong input_mount pick: {input_mount:?}")
+    }
 
     // TODO cli=deny: explore mounts: do they include?  -L native=/home/runner/instst/release/build/ring-3c73f9fd9a67ce28/out
     // nner/instst/release/build/zstd-sys-f571b8facf393189/out -L native=/home/runner/instst/release/build/ring-3c73f9fd9a67ce28/out`
@@ -466,22 +468,20 @@ async fn do_wrap_rustc(
         // Looks like removing it isn't an issue, however we need more testing.
         // rustc_block.push_str(&format!("WORKDIR {pwd}\n"));
         rustc_block.push_str("RUN \\\n");
-        // rustc_block.push_str(&format!(
-        //     "  --mount=type=bind,from={name}{source},target={target} \\\n",
-        //     source = src.map(|src| format!(",source={src}")).unwrap_or_default()
-        // ));
-        if src.is_some() {
-            panic!(">>> src={src:?}");
-        }
-        rustc_block.push_str(&format!("  --mount=type=bind,from={name},target={target} \\\n"));
+        rustc_block.push_str(&format!(
+            "  --mount=type=bind,from={name}{source},target={target} \\\n",
+            source = src.map(|src| format!(",source={src}")).unwrap_or_default()
+        ));
 
         None
     } else {
         // Save/send local workspace
 
-        // TODO: drop
-        // note .as_str() is to use &str's ends_with
-        assert_eq!((input.is_relative(), input.as_str().ends_with(".rs")), (true, true));
+        if (input.is_relative(), input.as_str().ends_with(".rs")) != (true, true) {
+            // TODO: drop
+            // note .as_str() is to use &str's ends_with
+            bail!("BUG: unexpected input={input:?}")
+        }
 
         // TODO: try just bind mount instead of copying to a tmpdir
         // TODO: --build-arg BUILDKIT_CONTEXT_KEEP_GIT_DIR=0 https://docs.docker.com/engine/reference/builder/#buildkit-built-in-build-args
@@ -560,7 +560,9 @@ async fn do_wrap_rustc(
     .collect();
 
     log::debug!(target:&krate, "all_externs = {all_externs:?}");
-    assert!(externs.len() <= all_externs.len());
+    if externs.len() > all_externs.len() {
+        bail!("BUG: (externs, all_externs) = {:?}", (externs.len(), all_externs.len()))
+    }
 
     let mut mounts = Vec::with_capacity(all_externs.len());
     let extern_mds = all_externs
@@ -775,7 +777,8 @@ fn headed_path_and_stage_for_weird_extension() {
 
 #[inline]
 fn headed_path_and_stage(xtern: String, target_path: &Utf8Path) -> Option<(Utf8PathBuf, String)> {
-    assert!(xtern.starts_with("lib")); // TODO: stop doing that (stripping ^lib)
+    // TODO: drop stripping ^lib
+    assert!(xtern.starts_with("lib"), "BUG: unexpected xtern format: {xtern}");
     let pa = xtern.strip_prefix("lib").and_then(|x| x.split_once('.')).map(|(x, _)| x);
     let st = pa.and_then(|x| x.split_once('-')).map(|(_, x)| format!("out-{x}"));
     let pa = pa.map(|x| target_path.join(format!("{x}.Dockerfile")));

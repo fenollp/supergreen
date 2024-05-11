@@ -92,7 +92,7 @@ pub(crate) async fn build(
     cmd.arg(format!("--target={target}"));
     cmd.arg(format!("--output=type=local,dest={out_dir}", out_dir = out_dir.as_ref()));
     cmd.arg(format!("--file={dockerfile_path}"));
-    cmd.arg("--build-arg=BUILDKIT_MULTI_PLATFORM=1"); // "deterministic output"
+    // cmd.arg("--build-arg=BUILDKIT_MULTI_PLATFORM=1"); // "deterministic output"? adds /linux_amd64/ to extracted cratesio
 
     // TODO: do without local Docker-compatible CLI
     // https://github.com/pyaillet/doggy

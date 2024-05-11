@@ -210,9 +210,22 @@ pub(crate) fn maybe_log() -> Option<fn() -> Result<File>> {
 #[must_use]
 pub(crate) fn called_from_build_script(vars: &BTreeMap<String, String>) -> bool {
     vars.iter().any(|(k, v)| k.starts_with("CARGO_CFG_") && !v.is_empty())
-        && ["HOST", "NUM_JOBS", "OUT_DIR", "PROFILE", "TARGET"]
-            .iter()
-            .all(|var| vars.iter().any(|(k, v)| *var == k && !v.is_empty()))
+        && [
+            "DEBUG",
+            "HOST",
+            "LD_LIBRARY_PATH",
+            "NUM_JOBS",
+            "OPT_LEVEL",
+            "OUT_DIR",
+            "PROFILE",
+            "RUSTC",
+            "RUSTC_LINKER",
+            "RUSTC_WRAPPER",
+            "RUSTDOC",
+            "TARGET",
+        ]
+        .iter()
+        .all(|var| vars.iter().any(|(k, v)| *var == k && !v.is_empty()))
 }
 
 // https://doc.rust-lang.org/cargo/reference/environment-variables.html#environment-variables-cargo-sets-for-crates

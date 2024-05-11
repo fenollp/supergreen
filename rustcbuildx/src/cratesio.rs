@@ -57,9 +57,9 @@ pub(crate) async fn into_stage(
 
     // On using tar: https://github.com/rust-lang/cargo/issues/3577#issuecomment-890693359
 
-    //FIXME: newline
     let block = format!(
-        r#"FROM scratch AS {cratesio_stage}
+        r#"
+FROM scratch AS {cratesio_stage}
 ADD --chmod=0664 --checksum=sha256:{cratesio_hash} \
   {CRATESIO}/crates/{name}/{name}-{version}.crate /crate
 SHELL ["/usr/bin/dash", "-c"]
@@ -69,9 +69,11 @@ RUN \
   --mount=from={RUST},src=/usr,dst=/usr \
     set -eux \
  && mkdir -p {SRC} \
- && tar zxvf /crate --strip-components=1 -C {SRC}
+ && tar zxvf /crate --strip-components=1 -C {SRC} \
+ && ls -lha {SRC}
 "#
-    );
+    )[1..]
+        .to_owned();
 
     // TODO: ask upstream `buildx/buildkit+podman` for a way to drop that RUN
     //  => https://github.com/moby/buildkit/issues/4907
