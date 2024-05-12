@@ -742,7 +742,7 @@ fn copy_file(f: &Utf8Path, cwd: &Utf8Path) -> Result<()> {
     let dst = cwd.join(f_dirname);
     fs::create_dir_all(&dst).map_err(|e| anyhow!("Failed `mkdir -p {dst}`: {e}"))?;
     let dst = cwd.join(f);
-    fs::copy(f, &dst).map_err(|e| anyhow!("Failed `cp {f} {dst}`: {e}"))?;
+    fs::copy(f, &dst).map_err(|e| anyhow!("Failed `cp {f} {dst}` ({:?}): {e}", f.metadata()))?;
     Ok(())
 }
 
