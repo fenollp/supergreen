@@ -453,11 +453,7 @@ async fn do_wrap_rustc(
             {
                 log::info!(target:&krate, "copying git repo file {f}");
                 let f = Utf8Path::new(f);
-                if f.is_dir() {
-                    copy_files(f, cwd_path)?;
-                } else {
-                    copy_file(f, cwd_path)?;
-                }
+                copy_files(f, cwd_path)?;
             }
         } else {
             log::info!(target:&krate, "copying all files under {pwd}");
@@ -751,10 +747,10 @@ fn copy_file(f: &Utf8Path, cwd: &Utf8Path) -> Result<()> {
     Ok(())
 }
 
-fn copy_files(dir: &Utf8Path, dst: &Utf8Path) -> Result<()> {
-    if dir.is_dir() {
+fn copy_files(src: &Utf8Path, dst: &Utf8Path) -> Result<()> {
+    if src.is_dir() {
         // TODO: deterministic iteration
-        for entry in fs::read_dir(dir).map_err(|e| anyhow!("Failed reading dir {dir}: {e}"))? {
+        for entry in fs::read_dir(src).map_err(|e| anyhow!("Failed reading dir {src}: {e}"))? {
             let entry = entry?;
             let entry = entry.path();
             let entry = entry.as_path(); // thanks, Rust
@@ -762,11 +758,13 @@ fn copy_files(dir: &Utf8Path, dst: &Utf8Path) -> Result<()> {
                 bail!("Path's UTF-8 encoding is corrupted: {entry:?}")
             };
             if path.is_dir() {
-                copy_files(path, dst)?;
+                copy_files(path, dst)?
             } else {
-                copy_file(path, dst)?;
+                copy_file(path, dst)?
             }
         }
+        Ok(())
+    } else {
+        copy_file(src, dst)
     }
-    Ok(())
 }
