@@ -452,7 +452,12 @@ async fn do_wrap_rustc(
                 .lines()
             {
                 log::info!(target:&krate, "copying git repo file {f}");
-                copy_file(Utf8Path::new(f), cwd_path)?;
+                let f = Utf8Path::new(f);
+                if f.is_dir() {
+                    copy_files(f, cwd_path)?;
+                } else {
+                    copy_file(f, cwd_path)?;
+                }
             }
         } else {
             log::info!(target:&krate, "copying all files under {pwd}");
