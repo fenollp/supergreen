@@ -6,10 +6,10 @@ set -o pipefail
 declare -a nvs nvs_args
    i=0  ; nvs[i]=buildxargs@master;     oks[i]=ok; nvs_args[i]='--git https://github.com/fenollp/buildxargs.git'
 ((i+=1)); nvs[i]=cargo-audit@0.18.3;    oks[i]=ok; nvs_args[i]='--features=fix'
-((i+=1)); nvs[i]=cargo-deny@0.14.3;     oks[i]=ko; nvs_args[i]='' # ResourceExhausted: (x5) grpc: received message larger than max (4202037 vs. 4194304) [also: 4949313 vs. 4194304] 2023-11-21T13:21:18.5168012Z    1 | >>> # syntax=docker.io/docker/dockerfile:1@sha256:ac85f380a63b13dfcefa89046420e1781752bab202122f8f50032edf31be0021
+((i+=1)); nvs[i]=cargo-deny@0.14.3;     oks[i]=ko; nvs_args[i]='' # https://github.com/docker/buildx/issues/2453  ResourceExhausted: (x5) grpc: received message larger than max (4202037 vs. 4194304) [also: 4949313 vs. 4194304] 2023-11-21T13:21:18.5168012Z    1 | >>> # syntax=docker.io/docker/dockerfile:1@sha256:ac85f380a63b13dfcefa89046420e1781752bab202122f8f50032edf31be0021
 ((i+=1)); nvs[i]=cargo-llvm-cov@0.5.36; oks[i]=ok; nvs_args[i]=''
 ((i+=1)); nvs[i]=cargo-nextest@0.9.61;  oks[i]=ko; nvs_args[i]='' # .. environment variable `TARGET` not defined at compile time .. self_update-0.38.0
-((i+=1)); nvs[i]=cross@0.2.5;           oks[i]=ko; nvs_args[i]='--git https://github.com/cross-rs/cross.git --tag=v0.2.5 cross' # Failed `cp docker/cross-toolchains /tmp/5c0b38e4c9a646068a44859f854b17cd/docker/cross-toolchains`
+((i+=1)); nvs[i]=cross@0.2.5;           oks[i]=ok; nvs_args[i]='--git https://github.com/cross-rs/cross.git --tag=v0.2.5 cross'
 ((i+=1)); nvs[i]=diesel_cli@2.1.1;      oks[i]=ko; nvs_args[i]='--no-default-features --features=postgres' # /usr/bin/ld: cannot find -lpq: No such file or directory
 ((i+=1)); nvs[i]=hickory-dns@0.24.0;    oks[i]=ok; nvs_args[i]='--features=dns-over-rustls'
 ((i+=1)); nvs[i]=vixargs@0.1.0;         oks[i]=ok; nvs_args[i]=''
