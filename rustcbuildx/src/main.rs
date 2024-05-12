@@ -17,7 +17,8 @@ use crate::{
     cli::{envs, exit_code, help, pull, push},
     cratesio::{from_cratesio_input_path, into_stage},
     envs::{
-        base_image, called_from_build_script, internal, maybe_log, pass_env, runner, syntax, this,
+        base_image, /*called_from_build_script,*/ internal, maybe_log, pass_env, runner,
+        syntax, this,
     },
     extensions::ShowCmd,
     md::{BuildContext, Md},
@@ -63,7 +64,7 @@ async fn fallible_main(
     args: VecDeque<String>,
     vars: BTreeMap<String, String>,
 ) -> Result<ExitCode> {
-    let called_from_build_script = called_from_build_script(&vars);
+    // let called_from_build_script = called_from_build_script(&vars);
 
     let argz = args.iter().take(3).map(AsRef::as_ref).collect::<Vec<_>>();
 
@@ -88,17 +89,17 @@ async fn fallible_main(
             // cf. https://github.com/rust-lang/rust-clippy/tree/da27c979e29e78362b7a2a91ebcf605cb01da94c#using-clippy-driver
              call_rustc(driver, argv(2)).await
          }
-        [rustc, opt, ..] if called_from_build_script && opt.starts_with('-') && opt != "-" =>
-            // Special case for crates whose build.rs calls rustc, using RUSTC_WRAPPER,
-            // but arriving at a wrong conclusion (here: activates nightly-only features, somehow)
-            // Workaround: we defer to local rustc instead.
-            // See https://github.com/rust-lang/rust-analyzer/issues/12973#issuecomment-1208162732
-            // Note https://github.com/rust-lang/cargo/issues/5499#issuecomment-387418947
-            // Culprits:
-            //   https://github.com/dtolnay/anyhow/blob/05e413219e97f101d8f39a90902e5c5d39f951fe/build.rs#L88
-            //   https://github.com/dtolnay/thiserror/blob/e9ea67c7e251764c3c2d839b6c06d9f35b154647/build.rs#L65
-             call_rustc(rustc, argv(1)).await, // TODO: wrap
-        [rustc, "--crate-name", crate_name, ..] if !called_from_build_script =>
+        // [rustc, opt, ..] if called_from_build_script && opt.starts_with('-') && opt != "-" =>
+        //     // Special case for crates whose build.rs calls rustc, using RUSTC_WRAPPER,
+        //     // but arriving at a wrong conclusion (here: activates nightly-only features, somehow)
+        //     // Workaround: we defer to local rustc instead.
+        //     // See https://github.com/rust-lang/rust-analyzer/issues/12973#issuecomment-1208162732
+        //     // Note https://github.com/rust-lang/cargo/issues/5499#issuecomment-387418947
+        //     // Culprits:
+        //     //   https://github.com/dtolnay/anyhow/blob/05e413219e97f101d8f39a90902e5c5d39f951fe/build.rs#L88
+        //     //   https://github.com/dtolnay/thiserror/blob/e9ea67c7e251764c3c2d839b6c06d9f35b154647/build.rs#L65
+        //      call_rustc(rustc, argv(1)).await, // TODO: wrap
+        [rustc, "--crate-name", crate_name, ..] =>//if !called_from_build_script =>
              wrap_rustc(crate_name, argv(1), call_rustc(rustc, argv(1))).await,
         _ => panic!("RUSTC_WRAPPER={arg0:?}'s input unexpected:\n\targz = {argz:?}\n\targs = {args:?}\n\tenvs = {vars:?}\n"),
     }
