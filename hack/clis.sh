@@ -108,7 +108,7 @@ cli() {
   #   assertion failed: edges.remove(&key)
   # https://github.com/fenollp/supergreen/actions/runs/9050434991/job/24865786185?pr=35#logs
   # https://github.com/rust-lang/cargo/issues/13889
-  if [[ "$name_at_version--$jobs" = cargo-llvm-cov@0.5.36--1 ]]; then return; fi
+  if [[ "$name_at_version" = cargo-llvm-cov@0.5.36 ]] && [[ "$jobs" != 1 ]]; then return; fi
 
 	cat <<EOF
   $(sed 's%@%_%g;s%\.%-%g' <<<"$name_at_version")$(if [[ "$jobs" != 1 ]]; then echo '-J'; fi):
