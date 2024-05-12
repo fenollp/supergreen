@@ -275,7 +275,7 @@ set -x
       docker buildx prune --all --force --verbose
     fi
     CARGO_TARGET_DIR=/tmp/rstcbldx cargo install --locked --frozen --offline --force --root=/tmp/rstcbldx --path="$PWD"/rustcbuildx
-    cargo run --locked --frozen --offline pull
+    cargo run --locked --frozen --offline --bin=rustcbuildx pull
     ls -lha /tmp/rstcbldx/bin/rustcbuildx
     rm $tmplogs >/dev/null 2>&1 || true
     touch $tmplogs
@@ -343,7 +343,7 @@ send \
     '&&' touch "$tmpgooo".installed
 tmux split-window
 
-send cargo run --locked --frozen --offline pull '&&' ls -lha /tmp/rstcbldx/bin/rustcbuildx '&&' touch "$tmpgooo".ready
+send cargo run --locked --frozen --offline --bin=rustcbuildx pull '&&' ls -lha /tmp/rstcbldx/bin/rustcbuildx '&&' touch "$tmpgooo".ready
 tmux select-layout even-vertical
 tmux split-window
 
