@@ -103,13 +103,6 @@ cli() {
 	local name_at_version=$1; shift
   local jobs=$1; shift
 
-  # # TODO: drop
-  # #   thread 'main' panicked at src/cargo/util/dependency_queue.rs:191:13:
-  # #   assertion failed: edges.remove(&key)
-  # # https://github.com/fenollp/supergreen/actions/runs/9050434991/job/24865786185?pr=35#logs
-  # # https://github.com/rust-lang/cargo/issues/13889
-  # if [[ "$name_at_version" = cargo-llvm-cov@0.5.36 ]] && [[ "$jobs" != 1 ]]; then return; fi
-
 	cat <<EOF
   $(sed 's%@%_%g;s%\.%-%g' <<<"$name_at_version")$(if [[ "$jobs" != 1 ]]; then echo '-J'; fi):
     runs-on: ubuntu-latest

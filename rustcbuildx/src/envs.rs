@@ -204,32 +204,10 @@ pub(crate) fn maybe_log() -> Option<fn() -> Result<File>> {
     internal::log().map(|x| !x.is_empty()).unwrap_or_default().then_some(log_file)
 }
 
-// // See https://doc.rust-lang.org/cargo/reference/environment-variables.html#environment-variables-cargo-sets-for-build-scripts
-// #[must_use]
-// pub(crate) fn called_from_build_script(vars: &BTreeMap<String, String>) -> bool {
-//     vars.iter().any(|(k, v)| k.starts_with("CARGO_CFG_") && !v.is_empty())
-//         && [
-//             "DEBUG",
-//             "HOST",
-//             "LD_LIBRARY_PATH",
-//             "NUM_JOBS",
-//             "OPT_LEVEL",
-//             "OUT_DIR",
-//             "PROFILE",
-//             "RUSTC",
-//             "RUSTC_LINKER",
-//             "RUSTC_WRAPPER",
-//             "RUSTDOC",
-//             "TARGET",
-//         ]
-//         .iter()
-//         .all(|var| vars.iter().any(|(k, v)| *var == k && !v.is_empty()))
-// }
-
 // https://doc.rust-lang.org/cargo/reference/environment-variables.html#environment-variables-cargo-sets-for-crates
 #[inline]
 #[must_use]
-pub(crate) fn pass_env(var: &str) -> (bool, bool) {
+pub(crate) fn pass_env(var: &str) -> (bool, bool, bool) {
     // Thanks https://github.com/cross-rs/cross/blob/44011c8854cb2eaac83b173cc323220ccdff18ea/src/docker/shared.rs#L969
     let passthrough = [
         "http_proxy",
@@ -256,5 +234,23 @@ pub(crate) fn pass_env(var: &str) -> (bool, bool) {
         "CARGO_TARGET_DIR",
         "RUSTC_WRAPPER",
     ];
-    (passthrough.contains(&var) || var.starts_with("CARGO_"), skiplist.contains(&var))
+    let buildrs_only = [
+        "DEBUG",
+        "HOST",
+        "LD_LIBRARY_PATH",
+        "NUM_JOBS",
+        "OPT_LEVEL",
+        "OUT_DIR",
+        "PROFILE",
+        "RUSTC",
+        "RUSTC_LINKER",
+        "RUSTC_WRAPPER",
+        "RUSTDOC",
+        "TARGET",
+    ];
+    (
+        var.starts_with("CARGO_") || passthrough.contains(&var),
+        skiplist.contains(&var),
+        buildrs_only.contains(&var),
+    )
 }
