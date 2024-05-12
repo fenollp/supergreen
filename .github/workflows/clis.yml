@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-    - run: ./clis.sh | tee .github/workflows/clis.yml
+    - run: ./hack/clis.sh | tee .github/workflows/clis.yml
     - run: git --no-pager diff --exit-code
     - name: Run shellcheck
       uses: ludeeus/action-shellcheck@2.0.0
@@ -47,19 +47,19 @@ jobs:
 
     - name: Compile HEAD
       run: |
-        CARGO_TARGET_DIR=~/instmp cargo install --force --path=$PWD
+        CARGO_TARGET_DIR=~/instmp cargo install --locked --force --path=./rustcbuildx
+    - run: ls -lha ~/instmp/release/
+    - run: ls -lha /home/runner/.cargo/bin/
 
     - uses: actions/upload-artifact@v4
       with:
         name: bin-artifact
-        path: ~/instmp/release/rustcbuildx
+        path: /home/runner/.cargo/bin/rustcbuildx
 
   buildxargs_master:
     runs-on: ubuntu-latest
     needs: bin
     steps:
-    - uses: actions/checkout@v4
-
     - uses: actions-rs/toolchain@v1
       with:
         profile: minimal
@@ -73,6 +73,9 @@ jobs:
     - run: | # TODO: whence https://github.com/actions/download-artifact/issues/236
         chmod +x ./rustcbuildx
         ./rustcbuildx --version | grep rustcbuildx
+        mv ./rustcbuildx /home/runner/.cargo/bin/
+
+    - uses: actions/checkout@v4
 
     - name: Docker info
       run: docker info
@@ -87,13 +90,13 @@ jobs:
       run: rustc -Vv
 
     - name: Envs
-      run: ./rustcbuildx env
+      run: /home/runner/.cargo/bin/rustcbuildx env
 
     - name: Pre-pull images
-      run: ./rustcbuildx pull
+      run: /home/runner/.cargo/bin/rustcbuildx pull
 
     - name: Envs again
-      run: ./rustcbuildx env
+      run: /home/runner/.cargo/bin/rustcbuildx env
 
     - name: Disk usage
       run: |
@@ -101,16 +104,15 @@ jobs:
         docker buildx du
         sudo du -sh /var/lib/docker
 
-    - name: cargo install net=ON cache=OFF remote=OFF
+    - name: cargo install net=ON cache=OFF remote=OFF jobs=1
       run: |
         RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
-        RUSTC_WRAPPER="$PWD"/rustcbuildx \
+        RUSTC_WRAPPER=/home/runner/.cargo/bin/rustcbuildx \
           CARGO_TARGET_DIR=~/instst cargo -vv install --jobs=1 --locked --force  --git https://github.com/fenollp/buildxargs.git
 
     - if: ${{ failure() || success() }}
-      run: |
-        [ $(stat -c%s logs.txt) -lt 1751778 ] && cat logs.txt ; echo >logs.txt
+      run: if [ $(stat -c%s logs.txt) -lt 1751778 ]; then cat logs.txt; fi ; echo >logs.txt
 
     - name: Disk usage
       if: ${{ failure() || success() }}
@@ -123,16 +125,15 @@ jobs:
       if: ${{ failure() || success() }}
       run: du -sh ~/instst
 
-    - name: cargo install net=ON cache=ON remote=OFF
+    - name: cargo install net=ON cache=ON remote=OFF jobs=1
       run: |
         RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
-        RUSTC_WRAPPER="$PWD"/rustcbuildx \
+        RUSTC_WRAPPER=/home/runner/.cargo/bin/rustcbuildx \
           CARGO_TARGET_DIR=~/instst cargo -vv install --jobs=1 --locked --force  --git https://github.com/fenollp/buildxargs.git 2>&1 | tee _
 
     - if: ${{ failure() || success() }}
-      run: |
-        [ $(stat -c%s logs.txt) -lt 1751778 ] && cat logs.txt
+      run: if [ $(stat -c%s logs.txt) -lt 1751778 ]; then cat logs.txt; fi
 
     - name: Disk usage
       if: ${{ failure() || success() }}
@@ -146,28 +147,139 @@ jobs:
       run: du -sh ~/instst
 
     - if: ${{ failure() || success() }}
+      name: Finishes fast
       run: |
-        grep Finished _ | grep -E [01]...s
+        grep Finished _
+        grep Finished _ | grep -E [012]...s
 
     - if: ${{ failure() || success() }}
       run: |
         grep Fresh _
 
     - if: ${{ failure() || success() }}
+      name: Did not recompile things (yay!)
       run: |
         ! grep Compiling _
 
     - if: ${{ failure() || success() }}
       run: |
         ! grep 'DEBUG|INFO|WARN|ERROR' _
-
-    - if: ${{ failure() || success() }}
-      run: |
         ! grep 'Falling back' _
+        ! grep 'BUG[: ]' _
+
+    - if: ${{ failure() || success() }}
+      run: cat _ || true
+
+  buildxargs_master-J:
+    runs-on: ubuntu-latest
+    needs: bin
+    steps:
+    - uses: actions-rs/toolchain@v1
+      with:
+        profile: minimal
+        toolchain: stable
+
+
+    - name: Retrieve saved bin
+      uses: actions/download-artifact@v4
+      with:
+        name: bin-artifact
+    - run: | # TODO: whence https://github.com/actions/download-artifact/issues/236
+        chmod +x ./rustcbuildx
+        ./rustcbuildx --version | grep rustcbuildx
+        mv ./rustcbuildx /home/runner/.cargo/bin/
+
+    - uses: actions/checkout@v4
+
+    - name: Docker info
+      run: docker info
+
+    - name: Buildx version
+      run: docker buildx version
+
+    - name: Podman version
+      run: podman version || true
+
+    - name: Rust version
+      run: rustc -Vv
+
+    - name: Envs
+      run: /home/runner/.cargo/bin/rustcbuildx env
+
+    - name: Pre-pull images
+      run: /home/runner/.cargo/bin/rustcbuildx pull
+
+    - name: Envs again
+      run: /home/runner/.cargo/bin/rustcbuildx env
+
+    - name: Disk usage
+      run: |
+        docker system df
+        docker buildx du
+        sudo du -sh /var/lib/docker
+
+    - name: cargo install net=ON cache=OFF remote=OFF jobs=3
+      run: |
+        RUSTCBUILDX_LOG=debug \
+        RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
+        RUSTC_WRAPPER=/home/runner/.cargo/bin/rustcbuildx \
+          CARGO_TARGET_DIR=~/instst cargo -vv install --jobs=3 --locked --force  --git https://github.com/fenollp/buildxargs.git
+
+    - if: ${{ failure() || success() }}
+      run: if [ $(stat -c%s logs.txt) -lt 1751778 ]; then cat logs.txt; fi ; echo >logs.txt
+
+    - name: Disk usage
+      if: ${{ failure() || success() }}
+      run: |
+        docker system df
+        docker buildx du
+        sudo du -sh /var/lib/docker
+
+    - name: Target dir disk usage
+      if: ${{ failure() || success() }}
+      run: du -sh ~/instst
+
+    - name: cargo install net=ON cache=ON remote=OFF jobs=3
+      run: |
+        RUSTCBUILDX_LOG=debug \
+        RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
+        RUSTC_WRAPPER=/home/runner/.cargo/bin/rustcbuildx \
+          CARGO_TARGET_DIR=~/instst cargo -vv install --jobs=3 --locked --force  --git https://github.com/fenollp/buildxargs.git 2>&1 | tee _
+
+    - if: ${{ failure() || success() }}
+      run: if [ $(stat -c%s logs.txt) -lt 1751778 ]; then cat logs.txt; fi
+
+    - name: Disk usage
+      if: ${{ failure() || success() }}
+      run: |
+        docker system df
+        docker buildx du
+        sudo du -sh /var/lib/docker
+
+    - name: Target dir disk usage
+      if: ${{ failure() || success() }}
+      run: du -sh ~/instst
+
+    - if: ${{ failure() || success() }}
+      name: Finishes fast
+      run: |
+        grep Finished _
+        grep Finished _ | grep -E [012]...s
 
     - if: ${{ failure() || success() }}
       run: |
-        ! grep BUG _
+        grep Fresh _
+
+    - if: ${{ failure() || success() }}
+      name: Did not recompile things (yay!)
+      run: |
+        ! grep Compiling _
+
+    - if: ${{ failure() || success() }}
+      run: |
+        ! grep 'DEBUG|INFO|WARN|ERROR' _
+        ! grep 'Falling back' _
+        ! grep 'BUG[: ]' _
 
     - if: ${{ failure() || success() }}
       run: cat _ || true
@@ -176,8 +288,6 @@ jobs:
     runs-on: ubuntu-latest
     needs: bin
     steps:
-    - uses: actions/checkout@v4
-
     - uses: actions-rs/toolchain@v1
       with:
         profile: minimal
@@ -191,6 +301,9 @@ jobs:
     - run: | # TODO: whence https://github.com/actions/download-artifact/issues/236
         chmod +x ./rustcbuildx
         ./rustcbuildx --version | grep rustcbuildx
+        mv ./rustcbuildx /home/runner/.cargo/bin/
+
+    - uses: actions/checkout@v4
 
     - name: Docker info
       run: docker info
@@ -205,13 +318,13 @@ jobs:
       run: rustc -Vv
 
     - name: Envs
-      run: ./rustcbuildx env
+      run: /home/runner/.cargo/bin/rustcbuildx env
 
     - name: Pre-pull images
-      run: ./rustcbuildx pull
+      run: /home/runner/.cargo/bin/rustcbuildx pull
 
     - name: Envs again
-      run: ./rustcbuildx env
+      run: /home/runner/.cargo/bin/rustcbuildx env
 
     - name: Disk usage
       run: |
@@ -219,16 +332,15 @@ jobs:
         docker buildx du
         sudo du -sh /var/lib/docker
 
-    - name: cargo install net=ON cache=OFF remote=OFF
+    - name: cargo install net=ON cache=OFF remote=OFF jobs=1
       run: |
         RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
-        RUSTC_WRAPPER="$PWD"/rustcbuildx \
+        RUSTC_WRAPPER=/home/runner/.cargo/bin/rustcbuildx \
           CARGO_TARGET_DIR=~/instst cargo -vv install --jobs=1 --locked --force cargo-llvm-cov@0.5.36 
 
     - if: ${{ failure() || success() }}
-      run: |
-        [ $(stat -c%s logs.txt) -lt 1751778 ] && cat logs.txt ; echo >logs.txt
+      run: if [ $(stat -c%s logs.txt) -lt 1751778 ]; then cat logs.txt; fi ; echo >logs.txt
 
     - name: Disk usage
       if: ${{ failure() || success() }}
@@ -241,16 +353,15 @@ jobs:
       if: ${{ failure() || success() }}
       run: du -sh ~/instst
 
-    - name: cargo install net=ON cache=ON remote=OFF
+    - name: cargo install net=ON cache=ON remote=OFF jobs=1
       run: |
         RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
-        RUSTC_WRAPPER="$PWD"/rustcbuildx \
+        RUSTC_WRAPPER=/home/runner/.cargo/bin/rustcbuildx \
           CARGO_TARGET_DIR=~/instst cargo -vv install --jobs=1 --locked --force cargo-llvm-cov@0.5.36  2>&1 | tee _
 
     - if: ${{ failure() || success() }}
-      run: |
-        [ $(stat -c%s logs.txt) -lt 1751778 ] && cat logs.txt
+      run: if [ $(stat -c%s logs.txt) -lt 1751778 ]; then cat logs.txt; fi
 
     - name: Disk usage
       if: ${{ failure() || success() }}
@@ -264,28 +375,25 @@ jobs:
       run: du -sh ~/instst
 
     - if: ${{ failure() || success() }}
+      name: Finishes fast
       run: |
-        grep Finished _ | grep -E [01]...s
+        grep Finished _
+        grep Finished _ | grep -E [012]...s
 
     - if: ${{ failure() || success() }}
       run: |
         grep Fresh _
 
     - if: ${{ failure() || success() }}
+      name: Did not recompile things (yay!)
       run: |
         ! grep Compiling _
 
     - if: ${{ failure() || success() }}
       run: |
         ! grep 'DEBUG|INFO|WARN|ERROR' _
-
-    - if: ${{ failure() || success() }}
-      run: |
         ! grep 'Falling back' _
-
-    - if: ${{ failure() || success() }}
-      run: |
-        ! grep BUG _
+        ! grep 'BUG[: ]' _
 
     - if: ${{ failure() || success() }}
       run: cat _ || true
@@ -294,8 +402,6 @@ jobs:
     runs-on: ubuntu-latest
     needs: bin
     steps:
-    - uses: actions/checkout@v4
-
     - uses: actions-rs/toolchain@v1
       with:
         profile: minimal
@@ -309,6 +415,9 @@ jobs:
     - run: | # TODO: whence https://github.com/actions/download-artifact/issues/236
         chmod +x ./rustcbuildx
         ./rustcbuildx --version | grep rustcbuildx
+        mv ./rustcbuildx /home/runner/.cargo/bin/
+
+    - uses: actions/checkout@v4
 
     - name: Docker info
       run: docker info
@@ -323,13 +432,13 @@ jobs:
       run: rustc -Vv
 
     - name: Envs
-      run: ./rustcbuildx env
+      run: /home/runner/.cargo/bin/rustcbuildx env
 
     - name: Pre-pull images
-      run: ./rustcbuildx pull
+      run: /home/runner/.cargo/bin/rustcbuildx pull
 
     - name: Envs again
-      run: ./rustcbuildx env
+      run: /home/runner/.cargo/bin/rustcbuildx env
 
     - name: Disk usage
       run: |
@@ -337,16 +446,15 @@ jobs:
         docker buildx du
         sudo du -sh /var/lib/docker
 
-    - name: cargo install net=ON cache=OFF remote=OFF
+    - name: cargo install net=ON cache=OFF remote=OFF jobs=1
       run: |
         RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
-        RUSTC_WRAPPER="$PWD"/rustcbuildx \
+        RUSTC_WRAPPER=/home/runner/.cargo/bin/rustcbuildx \
           CARGO_TARGET_DIR=~/instst cargo -vv install --jobs=1 --locked --force hickory-dns@0.24.0 --features=dns-over-rustls
 
     - if: ${{ failure() || success() }}
-      run: |
-        [ $(stat -c%s logs.txt) -lt 1751778 ] && cat logs.txt ; echo >logs.txt
+      run: if [ $(stat -c%s logs.txt) -lt 1751778 ]; then cat logs.txt; fi ; echo >logs.txt
 
     - name: Disk usage
       if: ${{ failure() || success() }}
@@ -359,16 +467,15 @@ jobs:
       if: ${{ failure() || success() }}
       run: du -sh ~/instst
 
-    - name: cargo install net=ON cache=ON remote=OFF
+    - name: cargo install net=ON cache=ON remote=OFF jobs=1
       run: |
         RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
-        RUSTC_WRAPPER="$PWD"/rustcbuildx \
+        RUSTC_WRAPPER=/home/runner/.cargo/bin/rustcbuildx \
           CARGO_TARGET_DIR=~/instst cargo -vv install --jobs=1 --locked --force hickory-dns@0.24.0 --features=dns-over-rustls 2>&1 | tee _
 
     - if: ${{ failure() || success() }}
-      run: |
-        [ $(stat -c%s logs.txt) -lt 1751778 ] && cat logs.txt
+      run: if [ $(stat -c%s logs.txt) -lt 1751778 ]; then cat logs.txt; fi
 
     - name: Disk usage
       if: ${{ failure() || success() }}
@@ -382,28 +489,139 @@ jobs:
       run: du -sh ~/instst
 
     - if: ${{ failure() || success() }}
+      name: Finishes fast
       run: |
-        grep Finished _ | grep -E [01]...s
+        grep Finished _
+        grep Finished _ | grep -E [012]...s
 
     - if: ${{ failure() || success() }}
       run: |
         grep Fresh _
 
     - if: ${{ failure() || success() }}
+      name: Did not recompile things (yay!)
       run: |
         ! grep Compiling _
 
     - if: ${{ failure() || success() }}
       run: |
         ! grep 'DEBUG|INFO|WARN|ERROR' _
-
-    - if: ${{ failure() || success() }}
-      run: |
         ! grep 'Falling back' _
+        ! grep 'BUG[: ]' _
+
+    - if: ${{ failure() || success() }}
+      run: cat _ || true
+
+  hickory-dns_0-24-0-J:
+    runs-on: ubuntu-latest
+    needs: bin
+    steps:
+    - uses: actions-rs/toolchain@v1
+      with:
+        profile: minimal
+        toolchain: stable
+
+
+    - name: Retrieve saved bin
+      uses: actions/download-artifact@v4
+      with:
+        name: bin-artifact
+    - run: | # TODO: whence https://github.com/actions/download-artifact/issues/236
+        chmod +x ./rustcbuildx
+        ./rustcbuildx --version | grep rustcbuildx
+        mv ./rustcbuildx /home/runner/.cargo/bin/
+
+    - uses: actions/checkout@v4
+
+    - name: Docker info
+      run: docker info
+
+    - name: Buildx version
+      run: docker buildx version
+
+    - name: Podman version
+      run: podman version || true
+
+    - name: Rust version
+      run: rustc -Vv
+
+    - name: Envs
+      run: /home/runner/.cargo/bin/rustcbuildx env
+
+    - name: Pre-pull images
+      run: /home/runner/.cargo/bin/rustcbuildx pull
+
+    - name: Envs again
+      run: /home/runner/.cargo/bin/rustcbuildx env
+
+    - name: Disk usage
+      run: |
+        docker system df
+        docker buildx du
+        sudo du -sh /var/lib/docker
+
+    - name: cargo install net=ON cache=OFF remote=OFF jobs=3
+      run: |
+        RUSTCBUILDX_LOG=debug \
+        RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
+        RUSTC_WRAPPER=/home/runner/.cargo/bin/rustcbuildx \
+          CARGO_TARGET_DIR=~/instst cargo -vv install --jobs=3 --locked --force hickory-dns@0.24.0 --features=dns-over-rustls
+
+    - if: ${{ failure() || success() }}
+      run: if [ $(stat -c%s logs.txt) -lt 1751778 ]; then cat logs.txt; fi ; echo >logs.txt
+
+    - name: Disk usage
+      if: ${{ failure() || success() }}
+      run: |
+        docker system df
+        docker buildx du
+        sudo du -sh /var/lib/docker
+
+    - name: Target dir disk usage
+      if: ${{ failure() || success() }}
+      run: du -sh ~/instst
+
+    - name: cargo install net=ON cache=ON remote=OFF jobs=3
+      run: |
+        RUSTCBUILDX_LOG=debug \
+        RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
+        RUSTC_WRAPPER=/home/runner/.cargo/bin/rustcbuildx \
+          CARGO_TARGET_DIR=~/instst cargo -vv install --jobs=3 --locked --force hickory-dns@0.24.0 --features=dns-over-rustls 2>&1 | tee _
+
+    - if: ${{ failure() || success() }}
+      run: if [ $(stat -c%s logs.txt) -lt 1751778 ]; then cat logs.txt; fi
+
+    - name: Disk usage
+      if: ${{ failure() || success() }}
+      run: |
+        docker system df
+        docker buildx du
+        sudo du -sh /var/lib/docker
+
+    - name: Target dir disk usage
+      if: ${{ failure() || success() }}
+      run: du -sh ~/instst
+
+    - if: ${{ failure() || success() }}
+      name: Finishes fast
+      run: |
+        grep Finished _
+        grep Finished _ | grep -E [012]...s
 
     - if: ${{ failure() || success() }}
       run: |
-        ! grep BUG _
+        grep Fresh _
+
+    - if: ${{ failure() || success() }}
+      name: Did not recompile things (yay!)
+      run: |
+        ! grep Compiling _
+
+    - if: ${{ failure() || success() }}
+      run: |
+        ! grep 'DEBUG|INFO|WARN|ERROR' _
+        ! grep 'Falling back' _
+        ! grep 'BUG[: ]' _
 
     - if: ${{ failure() || success() }}
       run: cat _ || true
@@ -412,8 +630,6 @@ jobs:
     runs-on: ubuntu-latest
     needs: bin
     steps:
-    - uses: actions/checkout@v4
-
     - uses: actions-rs/toolchain@v1
       with:
         profile: minimal
@@ -427,6 +643,9 @@ jobs:
     - run: | # TODO: whence https://github.com/actions/download-artifact/issues/236
         chmod +x ./rustcbuildx
         ./rustcbuildx --version | grep rustcbuildx
+        mv ./rustcbuildx /home/runner/.cargo/bin/
+
+    - uses: actions/checkout@v4
 
     - name: Docker info
       run: docker info
@@ -441,13 +660,13 @@ jobs:
       run: rustc -Vv
 
     - name: Envs
-      run: ./rustcbuildx env
+      run: /home/runner/.cargo/bin/rustcbuildx env
 
     - name: Pre-pull images
-      run: ./rustcbuildx pull
+      run: /home/runner/.cargo/bin/rustcbuildx pull
 
     - name: Envs again
-      run: ./rustcbuildx env
+      run: /home/runner/.cargo/bin/rustcbuildx env
 
     - name: Disk usage
       run: |
@@ -455,16 +674,15 @@ jobs:
         docker buildx du
         sudo du -sh /var/lib/docker
 
-    - name: cargo install net=ON cache=OFF remote=OFF
+    - name: cargo install net=ON cache=OFF remote=OFF jobs=1
       run: |
         RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
-        RUSTC_WRAPPER="$PWD"/rustcbuildx \
+        RUSTC_WRAPPER=/home/runner/.cargo/bin/rustcbuildx \
           CARGO_TARGET_DIR=~/instst cargo -vv install --jobs=1 --locked --force vixargs@0.1.0 
 
     - if: ${{ failure() || success() }}
-      run: |
-        [ $(stat -c%s logs.txt) -lt 1751778 ] && cat logs.txt ; echo >logs.txt
+      run: if [ $(stat -c%s logs.txt) -lt 1751778 ]; then cat logs.txt; fi ; echo >logs.txt
 
     - name: Disk usage
       if: ${{ failure() || success() }}
@@ -477,16 +695,15 @@ jobs:
       if: ${{ failure() || success() }}
       run: du -sh ~/instst
 
-    - name: cargo install net=ON cache=ON remote=OFF
+    - name: cargo install net=ON cache=ON remote=OFF jobs=1
       run: |
         RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
-        RUSTC_WRAPPER="$PWD"/rustcbuildx \
+        RUSTC_WRAPPER=/home/runner/.cargo/bin/rustcbuildx \
           CARGO_TARGET_DIR=~/instst cargo -vv install --jobs=1 --locked --force vixargs@0.1.0  2>&1 | tee _
 
     - if: ${{ failure() || success() }}
-      run: |
-        [ $(stat -c%s logs.txt) -lt 1751778 ] && cat logs.txt
+      run: if [ $(stat -c%s logs.txt) -lt 1751778 ]; then cat logs.txt; fi
 
     - name: Disk usage
       if: ${{ failure() || success() }}
@@ -500,28 +717,139 @@ jobs:
       run: du -sh ~/instst
 
     - if: ${{ failure() || success() }}
+      name: Finishes fast
       run: |
-        grep Finished _ | grep -E [01]...s
+        grep Finished _
+        grep Finished _ | grep -E [012]...s
 
     - if: ${{ failure() || success() }}
       run: |
         grep Fresh _
 
     - if: ${{ failure() || success() }}
+      name: Did not recompile things (yay!)
       run: |
         ! grep Compiling _
 
     - if: ${{ failure() || success() }}
       run: |
         ! grep 'DEBUG|INFO|WARN|ERROR' _
-
-    - if: ${{ failure() || success() }}
-      run: |
         ! grep 'Falling back' _
+        ! grep 'BUG[: ]' _
+
+    - if: ${{ failure() || success() }}
+      run: cat _ || true
+
+  vixargs_0-1-0-J:
+    runs-on: ubuntu-latest
+    needs: bin
+    steps:
+    - uses: actions-rs/toolchain@v1
+      with:
+        profile: minimal
+        toolchain: stable
+
+
+    - name: Retrieve saved bin
+      uses: actions/download-artifact@v4
+      with:
+        name: bin-artifact
+    - run: | # TODO: whence https://github.com/actions/download-artifact/issues/236
+        chmod +x ./rustcbuildx
+        ./rustcbuildx --version | grep rustcbuildx
+        mv ./rustcbuildx /home/runner/.cargo/bin/
+
+    - uses: actions/checkout@v4
+
+    - name: Docker info
+      run: docker info
+
+    - name: Buildx version
+      run: docker buildx version
+
+    - name: Podman version
+      run: podman version || true
+
+    - name: Rust version
+      run: rustc -Vv
+
+    - name: Envs
+      run: /home/runner/.cargo/bin/rustcbuildx env
+
+    - name: Pre-pull images
+      run: /home/runner/.cargo/bin/rustcbuildx pull
+
+    - name: Envs again
+      run: /home/runner/.cargo/bin/rustcbuildx env
+
+    - name: Disk usage
+      run: |
+        docker system df
+        docker buildx du
+        sudo du -sh /var/lib/docker
+
+    - name: cargo install net=ON cache=OFF remote=OFF jobs=3
+      run: |
+        RUSTCBUILDX_LOG=debug \
+        RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
+        RUSTC_WRAPPER=/home/runner/.cargo/bin/rustcbuildx \
+          CARGO_TARGET_DIR=~/instst cargo -vv install --jobs=3 --locked --force vixargs@0.1.0 
+
+    - if: ${{ failure() || success() }}
+      run: if [ $(stat -c%s logs.txt) -lt 1751778 ]; then cat logs.txt; fi ; echo >logs.txt
+
+    - name: Disk usage
+      if: ${{ failure() || success() }}
+      run: |
+        docker system df
+        docker buildx du
+        sudo du -sh /var/lib/docker
+
+    - name: Target dir disk usage
+      if: ${{ failure() || success() }}
+      run: du -sh ~/instst
+
+    - name: cargo install net=ON cache=ON remote=OFF jobs=3
+      run: |
+        RUSTCBUILDX_LOG=debug \
+        RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
+        RUSTC_WRAPPER=/home/runner/.cargo/bin/rustcbuildx \
+          CARGO_TARGET_DIR=~/instst cargo -vv install --jobs=3 --locked --force vixargs@0.1.0  2>&1 | tee _
+
+    - if: ${{ failure() || success() }}
+      run: if [ $(stat -c%s logs.txt) -lt 1751778 ]; then cat logs.txt; fi
+
+    - name: Disk usage
+      if: ${{ failure() || success() }}
+      run: |
+        docker system df
+        docker buildx du
+        sudo du -sh /var/lib/docker
+
+    - name: Target dir disk usage
+      if: ${{ failure() || success() }}
+      run: du -sh ~/instst
+
+    - if: ${{ failure() || success() }}
+      name: Finishes fast
+      run: |
+        grep Finished _
+        grep Finished _ | grep -E [012]...s
 
     - if: ${{ failure() || success() }}
       run: |
-        ! grep BUG _
+        grep Fresh _
+
+    - if: ${{ failure() || success() }}
+      name: Did not recompile things (yay!)
+      run: |
+        ! grep Compiling _
+
+    - if: ${{ failure() || success() }}
+      run: |
+        ! grep 'DEBUG|INFO|WARN|ERROR' _
+        ! grep 'Falling back' _
+        ! grep 'BUG[: ]' _
 
     - if: ${{ failure() || success() }}
       run: cat _ || true

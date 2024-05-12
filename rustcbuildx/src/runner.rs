@@ -1,12 +1,11 @@
 use std::{
-    collections::BTreeMap,
-    fmt::Display,
+    collections::BTreeSet,
     mem,
     process::Stdio,
     time::{Duration, Instant},
 };
 
-use anyhow::{Context, Result};
+use anyhow::{anyhow, Result};
 use camino::Utf8Path;
 use tokio::{
     io::{AsyncBufRead, AsyncBufReadExt, BufReader as TokioBufReader, Lines},
@@ -17,15 +16,17 @@ use tokio::{
     time::timeout,
 };
 
+use crate::{envs::cache_image, extensions::ShowCmd, md::BuildContext, stage::Stage};
+
 pub(crate) const MARK_STDOUT: &str = "::STDOUT:: ";
 pub(crate) const MARK_STDERR: &str = "::STDERR:: ";
 
 pub(crate) async fn build(
     krate: &str,
     command: &str,
-    dockerfile_path: impl AsRef<Utf8Path>,
-    target: impl AsRef<str> + Display,
-    contexts: &BTreeMap<String, String>,
+    dockerfile_path: &Utf8Path,
+    target: Stage,
+    contexts: &BTreeSet<BuildContext>,
     out_dir: impl AsRef<Utf8Path>,
 ) -> Result<Option<i32>> {
     let mut cmd = Command::new(command);
@@ -40,30 +41,79 @@ pub(crate) async fn build(
     // Makes sure that the BuildKit builder is used by either runner
     cmd.env("DOCKER_BUILDKIT", "1");
 
+    //TODO: (use if set) cmd.env("SOURCE_DATE_EPOCH", "0"); // https://reproducible-builds.org/docs/source-date-epoch
+
+    // docker buildx create \
+    //   --name remote-container \
+    //   --driver remote \
+    //   --driver-opt cacert=${PWD}/.certs/client/ca.pem,cert=${PWD}/.certs/client/cert.pem,key=${PWD}/.certs/client/key.pem,servername=<TLS_SERVER_NAME> \
+    //   tcp://localhost:1234
+
+    // docker buildx create \
+    //   --name container \
+    //   --driver=docker-container \
+    //   --driver-opt=[key=value,...]
+    // container
+
     if false {
         cmd.arg("--no-cache");
     }
+
+    //     cmd.arg(format!("--cache-to=type=registry,ref={img},mode=max,compression=zstd,force-compression=true,oci-mediatypes=true"));
+    // // [2024-04-09T07:55:39Z DEBUG lib-autocfg-72217d8ded4d7ec7@177912] ✖ ERROR: Cache export is not supported for the docker driver.
+    // // [2024-04-09T07:55:39Z DEBUG lib-autocfg-72217d8ded4d7ec7@177912] ✖ Switch to a different driver, or turn on the containerd image store, and try again.
+    // // [2024-04-09T07:55:39Z DEBUG lib-autocfg-72217d8ded4d7ec7@177912] ✖ Learn more at https://docs.docker.com/go/build-cache-backends/
+
+    if let Some(img) = cache_image() {
+        let img = img.trim_start_matches("docker-image://");
+        cmd.arg(format!("--cache-from=type=registry,ref={img}"));
+
+        let tag = Stage::new(krate.to_owned())?;
+        if tag.to_string().starts_with("bin-") {
+            // FIXME: re-tag some tag to latest when pushing only?
+            cmd.arg(format!("--tag={img}:latest"));
+        } else {
+            cmd.arg(format!("--tag={img}:{tag}"));
+        }
+        cmd.arg("--build-arg=BUILDKIT_INLINE_CACHE=1"); // https://docs.docker.com/build/cache/backends/inline
+        cmd.arg("--load");
+    }
+
+    if false {
+        // TODO: https://docs.docker.com/build/attestations/
+        cmd.arg("--provenance=mode=max");
+        cmd.arg("--sbom=true");
+    }
+    //cmd.arg("--metadata-file=/tmp/meta.json"); => {"buildx.build.ref": "default/default/o5c4435yz6o6xxxhdvekx5lmn"}
+
     cmd.arg("--network=none");
     cmd.arg("--platform=local");
     cmd.arg("--pull=false");
     cmd.arg(format!("--target={target}"));
     cmd.arg(format!("--output=type=local,dest={out_dir}", out_dir = out_dir.as_ref()));
-    cmd.arg(format!("--file={dockerfile_path}", dockerfile_path = dockerfile_path.as_ref()));
+    cmd.arg(format!("--file={dockerfile_path}"));
+    // cmd.arg("--build-arg=BUILDKIT_MULTI_PLATFORM=1"); // "deterministic output"? adds /linux_amd64/ to extracted cratesio
 
-    for (name, uri) in contexts {
+    // TODO: do without local Docker-compatible CLI
+    // https://github.com/pyaillet/doggy
+    // https://lib.rs/crates/bollard
+
+    for BuildContext { name, uri } in contexts {
         cmd.arg(format!("--build-context={name}={uri}"));
     }
 
-    cmd.arg(dockerfile_path.as_ref().parent().unwrap_or(dockerfile_path.as_ref()));
-    let args = cmd.as_std().get_args().map(|x| x.to_string_lossy().to_string()).collect::<Vec<_>>();
-    let args = args.join(" ");
+    cmd.arg(dockerfile_path.parent().unwrap_or(dockerfile_path));
 
-    log::info!(target:&krate, "Starting `{command} {args}`");
-    let errf = || format!("Failed starting `{command} {args}`");
-    let mut child = cmd.spawn().with_context(errf)?;
+    let call = cmd.show();
+    let envs: Vec<_> = cmd.as_std().get_envs().map(|(k, v)| format!("{k:?}={v:?}")).collect();
+    let envs = envs.join(" ");
+
+    log::info!(target:&krate, "Starting {call} (env: {envs:?})`");
+    let errf = |e| anyhow!("Failed starting {call}: {e}");
+    let mut child = cmd.spawn().map_err(errf)?;
 
     let pid = child.id().unwrap_or_default();
-    log::info!(target:&krate, "Started `{command} {args}` as pid={pid}`");
+    log::info!(target:&krate, "Started {call} as pid={pid}`");
     let krate = format!("{krate}@{pid}");
 
     let out = TokioBufReader::new(child.stdout.take().expect("started")).lines();
@@ -76,25 +126,28 @@ pub(crate) async fn build(
         let start = Instant::now();
         let res = child.wait().await;
         let elapsed = start.elapsed();
-        (elapsed, res.with_context(|| format!("Failed calling `{command} {args}`"))?.code())
+        (elapsed, res.map_err(|e| anyhow!("Failed calling {call}: {e}"))?.code())
     };
-    log::info!("command `{command} build` ran in {secs:?}: {code:?}");
+    log::info!(target:&krate, "command `{command} build` ran in {secs:?}: {code:?}");
 
     let longish = Duration::from_secs(2);
-    let (_, _) = join!(timeout(longish, out_task), timeout(longish, err_task));
+    match join!(timeout(longish, out_task), timeout(longish, err_task)) {
+        (Err(e), _) | (_, Err(e)) => panic!(">>> {krate} ({longish:?}): {e}"),
+        (_, _) => {}
+    }
     drop(child);
 
     if !(0..=1).contains(&code.unwrap_or(-1)) {
         // Something is very wrong here. Try to be helpful by logging some info about runner config:
-        let check = Command::new(command)
-            .kill_on_drop(true)
-            .arg("info")
-            .output()
-            .await
-            .with_context(|| format!("Failed starting `{command} info`"))?;
-        let stdout = String::from_utf8(check.stdout).context("Failed parsing check STDOUT")?;
-        let stderr = String::from_utf8(check.stderr).context("Failed parsing check STDERR")?;
-        log::warn!(target:&krate, "Runner info: [code: {}] [STDOUT {}] [STDERR {}]", check.status, stdout, stderr);
+        let mut cmd = Command::new(command);
+        let cmd = cmd.kill_on_drop(true).arg("info");
+        let check =
+            cmd.output().await.map_err(|e| anyhow!("Failed starting {}: {e}", cmd.show()))?;
+        let stdout = String::from_utf8(check.stdout)
+            .map_err(|e| anyhow!("Failed parsing check STDOUT: {e}"))?;
+        let stderr = String::from_utf8(check.stderr)
+            .map_err(|e| anyhow!("Failed parsing check STDERR: {e}"))?;
+        log::warn!(target:&krate, "Runner info: [code: {}] [STDOUT {stdout}] [STDERR {stderr}]", check.status);
     }
 
     Ok(code)
@@ -136,7 +189,9 @@ where
 }
 
 #[test]
+#[allow(clippy::str_to_string)] // assertx
 fn support_long_broken_json_lines() {
+    let logs = assertx::setup_logging_test();
     let lines = [
         r#"#42 1.312 ::STDERR:: {"$message_type":"artifact","artifact":"/tmp/thing","emit":"link""#,
         r#"#42 1.313 ::STDERR:: }"#,
@@ -153,9 +208,13 @@ fn support_long_broken_json_lines() {
     fwd_stderr("krate", msg.unwrap(), &mut buf);
     assert_eq!(buf, "");
 
-    // TODO: actually test that fwd_stderr
+    // Then fwd_stderr
     // calls artifact_written(r#"{"$message_type":"artifact","artifact":"/tmp/thing","emit":"link"}"#)
     // which returns Some("/tmp/thing")
+    assertx::assert_logs_contain_in_order!(
+        logs,
+        log::Level::Info => "rustc wrote /tmp/thing"
+    );
 }
 
 #[inline]

@@ -10,11 +10,11 @@ declare -a nvs nvs_args
 ((i+=1)); nvs[i]=cargo-llvm-cov@0.5.36; oks[i]=ok; nvs_args[i]=''
 ((i+=1)); nvs[i]=cargo-nextest@0.9.61;  oks[i]=ko; nvs_args[i]='' # .. environment variable `TARGET` not defined at compile time .. self_update-0.38.0
 ((i+=1)); nvs[i]=cross@0.2.5;           oks[i]=ko; nvs_args[i]='--git https://github.com/cross-rs/cross.git --tag=v0.2.5 cross' # Failed `cp docker/cross-toolchains /tmp/5c0b38e4c9a646068a44859f854b17cd/docker/cross-toolchains`
-((i+=1)); nvs[i]=diesel_cli@2.1.1;      oks[i]=ko; nvs_args[i]='--no-default-features --features=postgres' # rustix-f01186d74b53ab0e .. could not find native static library `rustix_outline_x86_64`, perhaps an -L flag is missing?
+((i+=1)); nvs[i]=diesel_cli@2.1.1;      oks[i]=ko; nvs_args[i]='--no-default-features --features=postgres' # /usr/bin/ld: cannot find -lpq: No such file or directory
 ((i+=1)); nvs[i]=hickory-dns@0.24.0;    oks[i]=ok; nvs_args[i]='--features=dns-over-rustls'
 ((i+=1)); nvs[i]=vixargs@0.1.0;         oks[i]=ok; nvs_args[i]=''
 
-((i+=1)); nvs[i]=rustcbuildx@main;      oks[i]=ok; nvs_args[i]='--git https://github.com/fenollp/rustcbuildx.git --branch=main rustcbuildx'
+((i+=1)); nvs[i]=rustcbuildx@main;      oks[i]=ok; nvs_args[i]='--git https://github.com/fenollp/supergreen.git --branch=main rustcbuildx'
 
 #TODO: not a cli but try users of https://github.com/dtolnay/watt
 #TODO: play with cargo flags: lto (embeds bitcode)
@@ -37,7 +37,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-    - run: ./clis.sh | tee .github/workflows/clis.yml
+    - run: ./hack/clis.sh | tee .github/workflows/clis.yml
     - run: git --no-pager diff --exit-code
     - name: Run shellcheck
       uses: ludeeus/action-shellcheck@2.0.0
@@ -77,12 +77,14 @@ jobs:
 
     - name: Compile HEAD
       run: |
-        CARGO_TARGET_DIR=~/instmp cargo install --force --path=\$PWD
+        CARGO_TARGET_DIR=~/instmp cargo install --locked --force --path=./rustcbuildx
+    - run: ls -lha ~/instmp/release/
+    - run: ls -lha /home/runner/.cargo/bin/
 
     - uses: actions/upload-artifact@v4
       with:
         name: bin-artifact
-        path: ~/instmp/release/rustcbuildx
+        path: /home/runner/.cargo/bin/rustcbuildx
 
 EOF
 }
@@ -99,14 +101,20 @@ as_install() {
 
 cli() {
 	local name_at_version=$1; shift
+  local jobs=$1; shift
+
+  # TODO: drop
+  #   thread 'main' panicked at src/cargo/util/dependency_queue.rs:191:13:
+  #   assertion failed: edges.remove(&key)
+  # https://github.com/fenollp/supergreen/actions/runs/9050434991/job/24865786185?pr=35#logs
+  # https://github.com/rust-lang/cargo/issues/13889
+  if [[ "$name_at_version" = cargo-llvm-cov@0.5.36 ]] && [[ "$jobs" != 1 ]]; then return; fi
 
 	cat <<EOF
-  $(sed 's%@%_%g;s%\.%-%g' <<<"$name_at_version"):
+  $(sed 's%@%_%g;s%\.%-%g' <<<"$name_at_version")$(if [[ "$jobs" != 1 ]]; then echo '-J'; fi):
     runs-on: ubuntu-latest
     needs: bin
     steps:
-    - uses: actions/checkout@v4
-
     - uses: actions-rs/toolchain@v1
       with:
         profile: minimal
@@ -125,6 +133,9 @@ $(
     - run: | # TODO: whence https://github.com/actions/download-artifact/issues/236
         chmod +x ./rustcbuildx
         ./rustcbuildx --version | grep rustcbuildx
+        mv ./rustcbuildx /home/runner/.cargo/bin/
+
+    - uses: actions/checkout@v4
 
     - name: Docker info
       run: docker info
@@ -139,13 +150,13 @@ $(
       run: rustc -Vv
 
     - name: Envs
-      run: ./rustcbuildx env
+      run: /home/runner/.cargo/bin/rustcbuildx env
 
     - name: Pre-pull images
-      run: ./rustcbuildx pull
+      run: /home/runner/.cargo/bin/rustcbuildx pull
 
     - name: Envs again
-      run: ./rustcbuildx env
+      run: /home/runner/.cargo/bin/rustcbuildx env
 
     - name: Disk usage
       run: |
@@ -153,16 +164,15 @@ $(
         docker buildx du
         sudo du -sh /var/lib/docker
 
-    - name: cargo install net=ON cache=OFF remote=OFF
+    - name: cargo install net=ON cache=OFF remote=OFF jobs=$jobs
       run: |
         RUSTCBUILDX_LOG=debug \\
         RUSTCBUILDX_LOG_PATH="\$PWD"/logs.txt \\
-        RUSTC_WRAPPER="\$PWD"/rustcbuildx \\
-          CARGO_TARGET_DIR=~/instst cargo -vv install --jobs=1 --locked --force $(as_install "$name_at_version") $@
+        RUSTC_WRAPPER=/home/runner/.cargo/bin/rustcbuildx \\
+          CARGO_TARGET_DIR=~/instst cargo -vv install --jobs=$jobs --locked --force $(as_install "$name_at_version") $@
 
     - if: \${{ failure() || success() }}
-      run: |
-        [ \$(stat -c%s logs.txt) -lt 1751778 ] && cat logs.txt ; echo >logs.txt
+      run: if [ \$(stat -c%s logs.txt) -lt 1751778 ]; then cat logs.txt; fi ; echo >logs.txt
 
     - name: Disk usage
       if: \${{ failure() || success() }}
@@ -175,16 +185,15 @@ $(
       if: \${{ failure() || success() }}
       run: du -sh ~/instst
 
-    - name: cargo install net=ON cache=ON remote=OFF
+    - name: cargo install net=ON cache=ON remote=OFF jobs=$jobs
       run: |
         RUSTCBUILDX_LOG=debug \\
         RUSTCBUILDX_LOG_PATH="\$PWD"/logs.txt \\
-        RUSTC_WRAPPER="\$PWD"/rustcbuildx \\
-          CARGO_TARGET_DIR=~/instst cargo -vv install --jobs=1 --locked --force $(as_install "$name_at_version") $@ 2>&1 | tee _
+        RUSTC_WRAPPER=/home/runner/.cargo/bin/rustcbuildx \\
+          CARGO_TARGET_DIR=~/instst cargo -vv install --jobs=$jobs --locked --force $(as_install "$name_at_version") $@ 2>&1 | tee _
 
     - if: \${{ failure() || success() }}
-      run: |
-        [ \$(stat -c%s logs.txt) -lt 1751778 ] && cat logs.txt
+      run: if [ \$(stat -c%s logs.txt) -lt 1751778 ]; then cat logs.txt; fi
 
     - name: Disk usage
       if: \${{ failure() || success() }}
@@ -198,28 +207,25 @@ $(
       run: du -sh ~/instst
 
     - if: \${{ failure() || success() }}
+      name: Finishes fast
       run: |
-        grep Finished _ | grep -E [01]...s
+        grep Finished _
+        grep Finished _ | grep -E [012]...s
 
     - if: \${{ failure() || success() }}
       run: |
         grep Fresh _
 
     - if: \${{ failure() || success() }}
+      name: Did not recompile things (yay!)
       run: |
         ! grep Compiling _
 
     - if: \${{ failure() || success() }}
       run: |
         ! grep 'DEBUG|INFO|WARN|ERROR' _
-
-    - if: \${{ failure() || success() }}
-      run: |
         ! grep 'Falling back' _
-
-    - if: \${{ failure() || success() }}
-      run: |
-        ! grep BUG _
+        ! grep 'BUG[: ]' _
 
     - if: \${{ failure() || success() }}
       run: cat _ || true
@@ -227,6 +233,7 @@ $(
 EOF
 }
 
+# No args: try many combinations, sequentially
 if [[ $# = 0 ]]; then
   header
 
@@ -237,7 +244,9 @@ if [[ $# = 0 ]]; then
       rustcbuildx@*) continue ;;
       cargo-audit@*) continue ;; # TODO: drop once max cache use
     esac
-    cli "$name_at_version" "${nvs_args["$i"]}"
+    cli "$name_at_version" 1 "${nvs_args["$i"]}"
+    # 3: https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners/about-github-hosted-runners#standard-github-hosted-runners-for-public-repositories
+    cli "$name_at_version" 3 "${nvs_args["$i"]}"
   done
 
   exit
@@ -245,16 +254,56 @@ fi
 
 
 name_at_version=$1; shift
-cleanup=${1:-0}
+modifier=${1:-0}
 
-if [[ "$name_at_version" = 'ok' ]]; then
-  for i in "${!nvs[@]}"; do
-    [[ "${oks[$i]}" = 'ok' ]] || continue
-    nv=${nvs[$i]}
-    "$0" "${nv#*@}" "$cleanup"
-  done
-  exit $?
-fi
+distclean=0; if [[ "$modifier" = 'distclean' ]]; then distclean=1; fi
+clean=0;     if [[ "$modifier" = 'clean'     ]]; then clean=1; fi
+
+# Special first arg handling..
+case "$name_at_version" in
+  ok)
+    for i in "${!nvs[@]}"; do
+      [[ "${oks[$i]}" = 'ok' ]] || continue
+      nv=${nvs[$i]}
+      "$0" "${nv#*@}" "$modifier"
+    done
+    exit $? ;;
+
+  build)
+set -x
+    tmptrgt=/tmp/clis-$name_at_version
+    tmplogs=/tmp/clis-$name_at_version.logs.txt
+    if [[ "$clean" = '1' ]]; then
+      rm -rf "$tmptrgt"
+      docker buildx prune       --force
+    fi
+    if [[ "$distclean" = '1' ]]; then
+      rm -rf "$tmptrgt"
+      docker buildx prune --all --force --verbose
+    fi
+    CARGO_TARGET_DIR=/tmp/rstcbldx cargo install --locked --frozen --offline --force --root=/tmp/rstcbldx --path="$PWD"/rustcbuildx
+    cargo run --locked --frozen --offline --bin=rustcbuildx pull
+    ls -lha /tmp/rstcbldx/bin/rustcbuildx
+    rm $tmplogs >/dev/null 2>&1 || true
+    touch $tmplogs
+    echo "$name_at_version"
+    echo "Target dir: $tmptrgt"
+    echo "Logs: $tmplogs"
+    xdg-terminal-exec tail -f $tmplogs
+    RUSTCBUILDX_LOG=debug \
+    RUSTCBUILDX_LOG_PATH="$tmplogs" \
+    RUSTCBUILDX_CACHE_IMAGE="${RUSTCBUILDX_CACHE_IMAGE:-}" \
+    RUSTC_WRAPPER=/tmp/rstcbldx/bin/rustcbuildx \
+    CARGO_TARGET_DIR="$tmptrgt" \
+      cargo -v build --jobs=${jobs:-1} --all-targets --all-features --locked --frozen --offline
+    if [[ "$clean"     = 1 ]]; then docker buildx prune       --force; fi
+    if [[ "$distclean" = 1 ]]; then docker buildx prune --all --force --verbose | tee --append "$tmplogs" || exit 1; fi
+    case "$(wc "$tmplogs")" in '0 0 0 '*) ;;
+                                       *) $PAGER "$tmplogs" ;; esac
+    exit ;;
+esac
+
+# Matching first arg:
 picked=-1
 for i in "${!nvs[@]}"; do
   case "${nvs[$i]}" in
@@ -277,8 +326,12 @@ tmplogs=/tmp/clis-$session_name.logs.txt
 tmpgooo=/tmp/clis-$session_name.state
 tmpbins=/tmp
 
-rm -rf "$tmptrgt"
-if [[ "$cleanup" = '1' ]]; then
+if [[ "$clean" = '1' ]]; then
+  rm -rf "$tmptrgt"
+  docker buildx prune       --force
+fi
+if [[ "$distclean" = '1' ]]; then
+  rm -rf "$tmptrgt"
   docker buildx prune --all --force --verbose
 fi
 
@@ -291,13 +344,13 @@ send() {
 }
 
 
-gitdir=$(realpath "$(dirname "$0")")
+gitdir=$(realpath "$(dirname "$(dirname "$0")")")
 send \
-  CARGO_TARGET_DIR=/tmp/rstcbldx cargo install --locked --force --path="$gitdir" \
+  CARGO_TARGET_DIR=/tmp/rstcbldx cargo install --locked --frozen --offline --force --root=/tmp/rstcbldx --path="$gitdir"/rustcbuildx \
     '&&' touch "$tmpgooo".installed
 tmux split-window
 
-send rustcbuildx pull '&&' touch "$tmpgooo".ready
+send cargo run --locked --frozen --offline --bin=rustcbuildx pull '&&' ls -lha /tmp/rstcbldx/bin/rustcbuildx '&&' touch "$tmpgooo".ready
 tmux select-layout even-vertical
 tmux split-window
 
@@ -309,9 +362,11 @@ send \
   'until' '[[' -f "$tmpgooo".installed ']] && [[' -f "$tmpgooo".ready ']];' 'do' sleep '.1;' 'done' '&&' rm "$tmpgooo".* '&&' \
   RUSTCBUILDX_LOG=debug \
   RUSTCBUILDX_LOG_PATH="$tmplogs" \
-  RUSTC_WRAPPER=rustcbuildx \
+  RUSTCBUILDX_CACHE_IMAGE="${RUSTCBUILDX_CACHE_IMAGE:-}" \
+  RUSTC_WRAPPER=/tmp/rstcbldx/bin/rustcbuildx \
     CARGO_TARGET_DIR="$tmptrgt" cargo -vv install --jobs=${jobs:-1} --root=$tmpbins --locked --force "$(as_install "$name_at_version")" "$args" \
-  '&&' 'if' '[[' "$cleanup" '=' '1' ']];' 'then' docker buildx prune --all --force --verbose '|' tee --append "$tmplogs" '||' 'exit' '1;' 'fi' \
+  '&&' 'if' '[[' "$clean"     '=' '1' ']];' 'then' docker buildx prune       --force           '|' tee --append "$tmplogs" '||' 'exit' '1;' 'fi' \
+  '&&' 'if' '[[' "$distclean" '=' '1' ']];' 'then' docker buildx prune --all --force --verbose '|' tee --append "$tmplogs" '||' 'exit' '1;' 'fi' \
   '&&' tmux kill-session -t "$session_name"
 tmux select-layout even-vertical
 
@@ -320,6 +375,5 @@ tmux attach-session -t "$session_name"
 echo "$name_at_version"
 echo "Target dir: $tmptrgt"
 echo "Logs: $tmplogs"
-case "$(wc "$tmplogs")" in '0 0 0 '*) ;; *)
-  $PAGER "$tmplogs"
-;; esac
+case "$(wc "$tmplogs")" in '0 0 0 '*) ;;
+                                   *) $PAGER "$tmplogs" ;; esac

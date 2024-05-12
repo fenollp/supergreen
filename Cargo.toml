@@ -1,6 +1,12 @@
-[package]
-name = "rustcbuildx"
-version = "0.1.0"
+[workspace]
+resolver = "2"
+members = [
+    "cargo-green",
+    "rustcbuildx",
+]
+
+[workspace.package]
+version = "0.2.0"
 authors = ["Pierre Fenoll <pierrefenoll@gmail.com>"]
 categories = [
 	"caching",
@@ -8,7 +14,6 @@ categories = [
 	"concurrency",
 	"development-tools::build-utils",
 ]
-description = "$RUSTC_WRAPPER tool to sandbox cargo builds and execute jobs remotely"
 edition = "2021"
 keywords = [
 	"build",
@@ -18,23 +23,23 @@ keywords = [
 	"RUSTC_WRAPPER",
 ]
 license = "MIT"
-repository = "https://github.com/fenollp/rustcbuildx"
+repository = "https://github.com/fenollp/supergreen"
 
-# [profile.release]
-# codegen-units = 1
-# Try tuning rustc codegen options to optimize for speed (suggest mold?)
-# TODO: use the least amount of codegen units for best LTO
-# https://doc.rust-lang.org/nightly/rustc/codegen-options/index.html#codegen-units
-# https://doc.rust-lang.org/nightly/rustc/codegen-options/index.html#embed-bitcode
-# https://doc.rust-lang.org/nightly/rustc/codegen-options/index.html#instrument-coverage
-# https://doc.rust-lang.org/nightly/rustc/codegen-options/index.html#link-arg
-# https://doc.rust-lang.org/nightly/rustc/codegen-options/index.html#linker
-
-[dependencies]
+[workspace.dependencies]
 anyhow = "1"
+assertx = { version = "1", features = ["logging"] }
 camino = "1"
-env_logger = "0.11"
-log = "0.4"
-mktemp = "0.5"
-pretty_assertions = "1" # TODO: drop once !dbg
+env_logger = "0,>=0.11"
+futures = "0.3"
+log = "0,>=0.4"
+mktemp = "0,>=0.5"
+nutype = "0,>=0.4"
+pretty_assertions = "1"
+rustflags = "0,>=0.1"
+serde = { version = "1", features = ["derive"] }
+serde-jsonlines = { version = "0,>=0.5", features = ["async"] }
+serde_json = "1"
+sha256 = "1"
+szyk = "1"
 tokio = { version = "1", features = ["macros", "io-util", "process", "rt-multi-thread", "time"] }
+toml = "0,>=0.8"
