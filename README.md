@@ -5,6 +5,7 @@ Faster Rust builds!
 * [`cargo-green`](./cargo-green): Cargo plugin to sandbox, cache & remote exec `cargo` builds
 * [`rustcbuildx`](./rustcbuildx): `$RUSTC_WRAPPER` tool to sandbox `cargo` builds and execute jobs remotely
 
+![A rusty crab character named Ferris, featuring a unique hairstyle resembling 'Ruby Road', a vibrant and textured hairdo often seen in flamboyant red](./hack/logo.jpg)
 
 ## Goals
 * [x] seamlessly build on another machine (with more cores, more cache)
