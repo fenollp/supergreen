@@ -8,3 +8,6 @@ license.workspace = true
 name = "cargo-green"
 repository.workspace = true
 version.workspace = true
+
+[dependencies]
+clap.workspace = true
