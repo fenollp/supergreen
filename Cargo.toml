@@ -29,7 +29,6 @@ repository = "https://github.com/fenollp/supergreen"
 anyhow = "1"
 assertx = { version = "1", features = ["logging"] }
 camino = "1"
-clap = { version = "4", features = ["cargo", "derive"] }
 env_logger = "0,>=0.11"
 futures = "0.3"
 log = "0,>=0.4"
