@@ -29,12 +29,7 @@ use anyhow::{anyhow, bail, Result};
 // \cargo green # check displays help
 
 fn main() -> Result<ExitCode, Box<dyn std::error::Error>> {
-    let cargo = env::var("CARGO").unwrap_or("cargo".into());
-    eprintln!(">>> CARGO={cargo:?}"); // FIXME: drop
-    eprintln!(">>> RUSTC={:?}", env::var("RUSTC")); // FIXME: drop
-
     let mut args = env::args().skip(1); // skips $0
-    eprintln!(">>> {args:?}"); // FIXME: drop
 
     // skips "green"
     if args.next().is_none() {
@@ -48,7 +43,7 @@ fn main() -> Result<ExitCode, Box<dyn std::error::Error>> {
         return Ok(ExitCode::FAILURE);
     }
 
-    let mut cmd = Command::new(cargo);
+    let mut cmd = Command::new(env::var("CARGO").unwrap_or("cargo".into()));
     if let Some(arg) = args.next().as_deref() {
         cmd.arg(arg);
         if arg == "supergreen" {
@@ -62,42 +57,40 @@ fn main() -> Result<ExitCode, Box<dyn std::error::Error>> {
     }
     cmd.args(args);
 
-    if false {
-        if let Err(e) = (|| -> Result<()> {
-            let bin = ensure_binary_exists("rustcbuildx")?;
+    if let Err(e) = (|| -> Result<()> {
+        let bin = ensure_binary_exists("rustcbuildx")?;
 
-            // TODO pull-images
-            // TODO read package.metadata.green
-            // TODO: TUI above cargo output
+        // TODO pull-images
+        // TODO read package.metadata.green
+        // TODO: TUI above cargo output
 
-            cmd.env("RUSTCBUILDX_LOG", env::var("RUSTCBUILDX_LOG").unwrap_or("info".to_owned()));
-            cmd.env(
-                "RUSTCBUILDX_LOG_PATH",
-                env::var("RUSTCBUILDX_LOG_PATH").unwrap_or("/tmp/cargo-green.log".to_owned()),
-            );
-            if let Ok(ctx) = env::var("RUSTCBUILDX_CACHE_IMAGE") {
-                cmd.env("RUSTCBUILDX_CACHE_IMAGE", ctx);
-            }
-            if let Ok(wrapper) = env::var("RUSTC_WRAPPER") {
-                bail!(
-                    r#"
+        cmd.env("RUSTCBUILDX_LOG", env::var("RUSTCBUILDX_LOG").unwrap_or("info".to_owned()));
+        cmd.env(
+            "RUSTCBUILDX_LOG_PATH",
+            env::var("RUSTCBUILDX_LOG_PATH").unwrap_or("/tmp/cargo-green.log".to_owned()),
+        );
+        if let Ok(ctx) = env::var("RUSTCBUILDX_CACHE_IMAGE") {
+            cmd.env("RUSTCBUILDX_CACHE_IMAGE", ctx);
+        }
+        if let Ok(wrapper) = env::var("RUSTC_WRAPPER") {
+            bail!(
+                r#"
     You called `cargo-green` but a $RUSTC_WRAPPER is already set (to {wrapper})
         We don't know what to do...
 "#
-                )
-            }
-            cmd.env("RUSTC_WRAPPER", bin);
-
-            Ok(())
-        })() {
-            eprintln!("{e}");
-            return Ok(ExitCode::FAILURE);
+            )
         }
+        cmd.env("RUSTC_WRAPPER", bin);
+
+        Ok(())
+    })() {
+        eprintln!("{e}");
+        return Ok(ExitCode::FAILURE);
     }
 
-    eprintln!(">>> {:?}", cmd.get_program()); // FIXME: drop
-    eprintln!(">>> {:?}", cmd.get_args()); // FIXME: drop
-    eprintln!(">>> {:?}", cmd.get_envs()); // FIXME: drop
+    // eprintln!(">>> {:?}", cmd.get_program()); // FIXME: drop
+    // eprintln!(">>> {:?}", cmd.get_args()); // FIXME: drop
+    // eprintln!(">>> {:?}", cmd.get_envs()); // FIXME: drop
     let status = cmd.status()?;
     Ok(status.code().map_or(ExitCode::FAILURE, |code| ExitCode::from(code as u8)))
 }
