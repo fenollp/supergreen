@@ -579,7 +579,7 @@ async fn do_wrap_rustc(
 
         log::info!(target:&krate, "opening (RW) crate's md {md_path}");
         // TODO? suggest a `cargo clean` then fail
-        if debug.is_some() {
+        if internal::log().map(|x| x == "debug").unwrap_or_default() {
             match fs::read_to_string(&md_path) {
                 Ok(existing) => pretty_assertions::assert_eq!(&existing, &md_ser),
                 Err(e) if e.kind() == ErrorKind::NotFound => {}
@@ -605,7 +605,7 @@ async fn do_wrap_rustc(
 
         log::info!(target:&krate, "opening (RW) crate dockerfile {dockerfile}");
         // TODO? suggest a `cargo clean` then fail
-        if debug.is_some() {
+        if internal::log().map(|x| x == "debug").unwrap_or_default() {
             match fs::read_to_string(&dockerfile) {
                 Ok(existing) => pretty_assertions::assert_eq!(&existing, &header),
                 Err(e) if e.kind() == ErrorKind::NotFound => {}

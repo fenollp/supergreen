@@ -10,14 +10,27 @@ No more dependencies than [the transitive ones coming from](../rustcbuildx#usage
 
 ```shell
 cargo green build
+cargo green b
 cargo green check
+cargo green c
+cargo green clean
 cargo green clippy
 cargo green doc
-cargo green install
-cargo green metadata
+cargo green d
+cargo green new
+cargo green init
+cargo green add
+cargo green remove
 cargo green run
-cargo green rustc
+cargo green r
 cargo green test
+cargo green t
+cargo green bench
+cargo green update
+cargo green search
+cargo green publish
+cargo green install
+cargo green uninstall
 
 # or, setting an alias in e.g. ~/.bashrc
 alias cargo='cargo green'
