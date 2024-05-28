@@ -3,12 +3,11 @@
 
 use std::{
     env,
-    ffi::OsString,
     path::PathBuf,
-    process::{Command as StdCommand, ExitCode},
+    process::{Command, ExitCode},
 };
 
-use anyhow::{anyhow, Result};
+use anyhow::{anyhow, bail, Result};
 
 /*
 
@@ -24,72 +23,79 @@ use anyhow::{anyhow, Result};
 
 */
 
+//TODO test
+// \cargo green +nightly --version # check displayed vsn
+// \cargo green --version # check != displayed vsn
+// \cargo green # check displays help
+
 fn main() -> Result<ExitCode, Box<dyn std::error::Error>> {
     let cargo = env::var("CARGO").unwrap_or("cargo".into());
-    let mut args: Vec<OsString> = env::args_os().skip(2).collect(); // skips $0 and "green"
+    eprintln!(">>> CARGO={cargo:?}"); // FIXME: drop
+    eprintln!(">>> RUSTC={:?}", env::var("RUSTC")); // FIXME: drop
 
-    let mut cmd = StdCommand::new(cargo);
+    let mut args = env::args().skip(1); // skips $0
+    eprintln!(">>> {args:?}"); // FIXME: drop
 
-    // Rewrites `cargo green +nightly ..` into `cargo +nightly green ..`
-    if args[0].as_encoded_bytes().starts_with(&[b'+']) {
-        cmd.arg(&args[0]);
-        args = args.into_iter().skip(1).collect();
-    }
-
-    if args[0] == *"supergreen" {
-        // FIXME: handle commands
-    }
-
-    // if [
-    //     // All cargo-provided subcommands
-    //     "add".into(),
-    //     "b".into(),
-    //     "bench".into(),
-    //     "build".into(),
-    //     "c".into(),
-    //     "check".into(),
-    //     "clean".into(),
-    //     "clippy".into(),
-    //     "d".into(),
-    //     "doc".into(),
-    //     "init".into(),
-    //     "install".into(),
-    //     "new".into(),
-    //     "publish".into(),
-    //     "r".into(),
-    //     "remove".into(),
-    //     "run".into(),
-    //     "search".into(),
-    //     "t".into(),
-    //     "test".into(),
-    //     "uninstall".into(),
-    //     "update".into(),
-    //     //
-    //     "supergreen".into(), // Our subcommand
-    // ]
-    // .contains(&args[0])
-    // {
-    if let Err(e) = (|| -> Result<()> {
-        let bin = ensure_binary_exists("rustcbuildx")?;
-
-        // TODO pull-images
-
-        // cmd.env("RUSTCBUILDX_LOG", "debug");
-        cmd.env("RUSTCBUILDX_LOG", "info");
-        cmd.env("RUSTCBUILDX_LOG_PATH", "/tmp/cargo-green.log"); // TODO: TUI above cargo output
-        if let Ok(ctx) = env::var("RUSTCBUILDX_CACHE_IMAGE") {
-            cmd.env("RUSTCBUILDX_CACHE_IMAGE", ctx);
-        }
-        cmd.env("RUSTC_WRAPPER", bin);
-
-        Ok(())
-    })() {
-        eprintln!("{e}");
+    // skips "green"
+    if args.next().is_none() {
+        // Warn when running this via `cargo run -p cargo-green -- ..`
+        eprintln!(
+            r#"
+    The `cargo-green` binary needs to be called via cargo, e.g.:
+        cargo green build
+"#
+        );
         return Ok(ExitCode::FAILURE);
     }
-    // }
 
+    let mut cmd = Command::new(cargo);
+    if let Some(arg) = args.next().as_deref() {
+        cmd.arg(arg);
+        if arg == "supergreen" {
+            // FIXME: handle commands
+        }
+        if arg.starts_with('+') {
+            cmd = Command::new(which::which("cargo").unwrap_or("cargo".into()));
+            cmd.arg(arg);
+            // TODO: reinterpret `rustc` when given `+toolchain`
+        }
+    }
     cmd.args(args);
+
+    if false {
+        if let Err(e) = (|| -> Result<()> {
+            let bin = ensure_binary_exists("rustcbuildx")?;
+
+            // TODO pull-images
+            // TODO read package.metadata.green
+            // TODO: TUI above cargo output
+
+            cmd.env("RUSTCBUILDX_LOG", env::var("RUSTCBUILDX_LOG").unwrap_or("info".to_owned()));
+            cmd.env(
+                "RUSTCBUILDX_LOG_PATH",
+                env::var("RUSTCBUILDX_LOG_PATH").unwrap_or("/tmp/cargo-green.log".to_owned()),
+            );
+            if let Ok(ctx) = env::var("RUSTCBUILDX_CACHE_IMAGE") {
+                cmd.env("RUSTCBUILDX_CACHE_IMAGE", ctx);
+            }
+            if let Ok(wrapper) = env::var("RUSTC_WRAPPER") {
+                bail!(
+                    r#"
+    You called `cargo-green` but a $RUSTC_WRAPPER is already set (to {wrapper})
+        We don't know what to do...
+"#
+                )
+            }
+            cmd.env("RUSTC_WRAPPER", bin);
+
+            Ok(())
+        })() {
+            eprintln!("{e}");
+            return Ok(ExitCode::FAILURE);
+        }
+    }
+
+    eprintln!(">>> {:?}", cmd.get_program()); // FIXME: drop
     eprintln!(">>> {:?}", cmd.get_args()); // FIXME: drop
     eprintln!(">>> {:?}", cmd.get_envs()); // FIXME: drop
     let status = cmd.status()?;
