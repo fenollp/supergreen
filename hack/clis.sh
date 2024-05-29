@@ -75,7 +75,10 @@ jobs:
           \${{ runner.os }}-cargo-install-\${{ hashFiles('**/Cargo.lock') }}-and-
           \${{ runner.os }}-cargo-install-
 
-    - name: Compile HEAD
+    - name: Compile HEAD cargo-green
+      run: |
+        CARGO_TARGET_DIR=~/instmp cargo install --locked --force --path=./cargo-green
+    - name: Compile HEAD rustcbuildx
       run: |
         CARGO_TARGET_DIR=~/instmp cargo install --locked --force --path=./rustcbuildx
     - run: ls -lha ~/instmp/release/
@@ -83,8 +86,10 @@ jobs:
 
     - uses: actions/upload-artifact@v4
       with:
-        name: bin-artifact
-        path: /home/runner/.cargo/bin/rustcbuildx
+        name: bin-artifacts
+        paths: |
+          /home/runner/.cargo/bin/cargo-green
+          /home/runner/.cargo/bin/rustcbuildx
 
 EOF
 }
@@ -129,11 +134,13 @@ $(
     - name: Retrieve saved bin
       uses: actions/download-artifact@v4
       with:
-        name: bin-artifact
+        name: bin-artifacts
     - run: | # TODO: whence https://github.com/actions/download-artifact/issues/236
-        chmod +x ./rustcbuildx
+        chmod +x ./cargo-green ./rustcbuildx
         ./rustcbuildx --version | grep rustcbuildx
         mv ./rustcbuildx /home/runner/.cargo/bin/
+        mv ./cargo-green /home/runner/.cargo/bin/
+        cargo green --version
 
     - uses: actions/checkout@v4
 
@@ -168,8 +175,7 @@ $(
       run: |
         RUSTCBUILDX_LOG=debug \\
         RUSTCBUILDX_LOG_PATH="\$PWD"/logs.txt \\
-        RUSTC_WRAPPER=/home/runner/.cargo/bin/rustcbuildx \\
-          CARGO_TARGET_DIR=~/instst cargo -vv install --jobs=$jobs --locked --force $(as_install "$name_at_version") $@
+          CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=$jobs --locked --force $(as_install "$name_at_version") $@
 
     - if: \${{ failure() || success() }}
       run: if [ \$(stat -c%s logs.txt) -lt 1751778 ]; then cat logs.txt; fi ; echo >logs.txt
@@ -189,8 +195,7 @@ $(
       run: |
         RUSTCBUILDX_LOG=debug \\
         RUSTCBUILDX_LOG_PATH="\$PWD"/logs.txt \\
-        RUSTC_WRAPPER=/home/runner/.cargo/bin/rustcbuildx \\
-          CARGO_TARGET_DIR=~/instst cargo -vv install --jobs=$jobs --locked --force $(as_install "$name_at_version") $@ 2>&1 | tee _
+          CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=$jobs --locked --force $(as_install "$name_at_version") $@ 2>&1 | tee _
 
     - if: \${{ failure() || success() }}
       run: if [ \$(stat -c%s logs.txt) -lt 1751778 ]; then cat logs.txt; fi
@@ -282,8 +287,10 @@ set -x
       docker buildx prune --all --force --verbose
     fi
     CARGO_TARGET_DIR=/tmp/rstcbldx cargo install --locked --frozen --offline --force --root=/tmp/rstcbldx --path="$PWD"/rustcbuildx
+    CARGO_TARGET_DIR=/tmp/crggreen cargo install --locked --frozen --offline --force --root=/tmp/crggreen --path="$PWD"/cargo-green
     cargo run --locked --frozen --offline --bin=rustcbuildx pull
     ls -lha /tmp/rstcbldx/bin/rustcbuildx
+    ls -lha /tmp/crggreen/bin/cargo-green
     rm $tmplogs >/dev/null 2>&1 || true
     touch $tmplogs
     echo "$name_at_version"
@@ -293,9 +300,9 @@ set -x
     RUSTCBUILDX_LOG=debug \
     RUSTCBUILDX_LOG_PATH="$tmplogs" \
     RUSTCBUILDX_CACHE_IMAGE="${RUSTCBUILDX_CACHE_IMAGE:-}" \
-    RUSTC_WRAPPER=/tmp/rstcbldx/bin/rustcbuildx \
+    PATH=/tmp/crggreen/bin:"$PATH" \
     CARGO_TARGET_DIR="$tmptrgt" \
-      cargo -v build --jobs=${jobs:-1} --all-targets --all-features --locked --frozen --offline
+      \cargo green -v build --jobs=${jobs:-1} --all-targets --all-features --locked --frozen --offline
     if [[ "$clean"     = 1 ]]; then docker buildx prune       --force; fi
     if [[ "$distclean" = 1 ]]; then docker buildx prune --all --force --verbose | tee --append "$tmplogs" || exit 1; fi
     case "$(wc "$tmplogs")" in '0 0 0 '*) ;;
@@ -354,17 +361,21 @@ send cargo run --locked --frozen --offline --bin=rustcbuildx pull '&&' ls -lha /
 tmux select-layout even-vertical
 tmux split-window
 
-send "rm $tmplogs >/dev/null 2>&1; touch $tmplogs; tail -f $tmplogs; :"
+send \
+  CARGO_TARGET_DIR=/tmp/crggreen cargo install --locked --frozen --offline --force --root=/tmp/crggreen --path="$gitdir"/cargo-green \
+    '&&' touch "$tmpgooo".installed_bis \
+    '&&' "rm $tmplogs >/dev/null 2>&1; touch $tmplogs; tail -f $tmplogs; :"
 tmux select-layout even-vertical
 tmux split-window
 
 send \
-  'until' '[[' -f "$tmpgooo".installed ']] && [[' -f "$tmpgooo".ready ']];' 'do' sleep '.1;' 'done' '&&' rm "$tmpgooo".* '&&' \
+  'until' '[[' -f "$tmpgooo".installed ']] && [[' -f "$tmpgooo".installed_bis ']] && [[' -f "$tmpgooo".ready ']];' \
+  'do' sleep '.1;' 'done' '&&' rm "$tmpgooo".* '&&' \
   RUSTCBUILDX_LOG=debug \
   RUSTCBUILDX_LOG_PATH="$tmplogs" \
   RUSTCBUILDX_CACHE_IMAGE="${RUSTCBUILDX_CACHE_IMAGE:-}" \
-  RUSTC_WRAPPER=/tmp/rstcbldx/bin/rustcbuildx \
-    CARGO_TARGET_DIR="$tmptrgt" cargo -vv install --jobs=${jobs:-1} --root=$tmpbins --locked --force "$(as_install "$name_at_version")" "$args" \
+  PATH=/tmp/crggreen/bin:"$PATH" \
+    CARGO_TARGET_DIR="$tmptrgt" \cargo green -vv install --jobs=${jobs:-1} --root=$tmpbins --locked --force "$(as_install "$name_at_version")" "$args" \
   '&&' 'if' '[[' "$clean"     '=' '1' ']];' 'then' docker buildx prune       --force           '|' tee --append "$tmplogs" '||' 'exit' '1;' 'fi' \
   '&&' 'if' '[[' "$distclean" '=' '1' ']];' 'then' docker buildx prune --all --force --verbose '|' tee --append "$tmplogs" '||' 'exit' '1;' 'fi' \
   '&&' tmux kill-session -t "$session_name"
