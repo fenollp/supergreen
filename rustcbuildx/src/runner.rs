@@ -119,6 +119,7 @@ pub(crate) async fn build(
     let out = TokioBufReader::new(child.stdout.take().expect("started")).lines();
     let err = TokioBufReader::new(child.stderr.take().expect("started")).lines();
 
+    // TODO: try https://github.com/docker/buildx/pull/2500/files + find podman equivalent?
     let out_task = fwd(krate.clone(), out, "stdout", "➤", MARK_STDOUT);
     let err_task = fwd(krate.clone(), err, "stderr", "✖", MARK_STDERR);
 
