@@ -108,12 +108,12 @@ pub(crate) async fn build(
     let envs: Vec<_> = cmd.as_std().get_envs().map(|(k, v)| format!("{k:?}={v:?}")).collect();
     let envs = envs.join(" ");
 
-    log::info!(target:&krate, "Starting {call} (env: {envs:?})`");
+    log::info!(target: &krate, "Starting {call} (env: {envs:?})`");
     let errf = |e| anyhow!("Failed starting {call}: {e}");
     let mut child = cmd.spawn().map_err(errf)?;
 
     let pid = child.id().unwrap_or_default();
-    log::info!(target:&krate, "Started {call} as pid={pid}`");
+    log::info!(target: &krate, "Started {call} as pid={pid}`");
     let krate = format!("{krate}@{pid}");
 
     let out = TokioBufReader::new(child.stdout.take().expect("started")).lines();
@@ -128,7 +128,7 @@ pub(crate) async fn build(
         let elapsed = start.elapsed();
         (elapsed, res.map_err(|e| anyhow!("Failed calling {call}: {e}"))?.code())
     };
-    log::info!(target:&krate, "command `{command} build` ran in {secs:?}: {code:?}");
+    log::info!(target: &krate, "command `{command} build` ran in {secs:?}: {code:?}");
 
     let longish = Duration::from_secs(2);
     match join!(timeout(longish, out_task), timeout(longish, err_task)) {
@@ -147,7 +147,11 @@ pub(crate) async fn build(
             .map_err(|e| anyhow!("Failed parsing check STDOUT: {e}"))?;
         let stderr = String::from_utf8(check.stderr)
             .map_err(|e| anyhow!("Failed parsing check STDERR: {e}"))?;
-        log::warn!(target:&krate, "Runner info: [code: {}] [STDOUT {stdout}] [STDERR {stderr}]", check.status);
+        log::warn!(
+            target: &krate,
+            "Runner info: [code: {}] [STDOUT {stdout}] [STDERR {stderr}]",
+            check.status
+        );
     }
 
     Ok(code)
@@ -166,13 +170,13 @@ where
 {
     let fwder = if mark == MARK_STDOUT { fwd_stdout } else { fwd_stderr };
     spawn(async move {
-        log::debug!(target:&krate, "Starting {name} task");
+        log::debug!(target: &krate, "Starting {name} task");
         let mut buf = String::new();
         loop {
             match stdio.next_line().await {
                 Ok(None) => break,
                 Ok(Some(line)) => {
-                    log::debug!(target:&krate, "{badge} {line}");
+                    log::debug!(target: &krate, "{badge} {line}");
                     if let Some(msg) = lift_stdio(&line, mark) {
                         fwder(&krate, msg, &mut buf);
                     }
@@ -183,7 +187,7 @@ where
                 }
             }
         }
-        log::debug!(target:&krate, "Terminating {name} task");
+        log::debug!(target: &krate, "Terminating {name} task");
         drop(stdio);
     })
 }
@@ -222,7 +226,7 @@ fn fwd_stderr(krate: &str, msg: &str, buf: &mut String) {
     let show = |msg: &str| {
         eprintln!("{msg}");
         if let Some(file) = artifact_written(msg) {
-            log::info!(target:&krate, "rustc wrote {file}")
+            log::info!(target: &krate, "rustc wrote {file}")
         }
     };
     match (buf.is_empty(), msg.starts_with('{'), msg.ends_with('}')) {
