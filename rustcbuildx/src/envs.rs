@@ -123,7 +123,7 @@ pub(crate) async fn base_image() -> &'static str {
                     .and_then(|x| x.split_once(' ').map(|(x, _)| x.to_owned()))
                     .unwrap_or("1".to_owned());
 
-                if v.ends_with("-nightly") {}
+                // TODO: if v.ends_with("-nightly") {}
 
                 format!("docker-image://docker.io/library/rust:{v}-slim")
             };
