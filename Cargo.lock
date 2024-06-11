@@ -103,7 +103,7 @@ checksum = "e0ec6b951b160caa93cc0c7b209e5a3bff7aae9062213451ac99493cd844c239"
 
 [[package]]
 name = "cargo-green"
-version = "0.2.0"
+version = "0.3.0"
 dependencies = [
  "anyhow",
  "which",
@@ -575,7 +575,7 @@ checksum = "719b953e2095829ee67db738b3bfa9fa368c94900df327b3f07fe6e794d2fe1f"
 
 [[package]]
 name = "rustcbuildx"
-version = "0.2.0"
+version = "0.3.0"
 dependencies = [
  "anyhow",
  "assertx",
