@@ -89,6 +89,8 @@ async fn fallible_main(
          }
         [rustc, "--crate-name", crate_name, ..] =>
              wrap_rustc(crate_name, argv(1), call_rustc(rustc, argv(1))).await,
+        [rustc, "-vV", ..] =>
+             call_rustc(rustc, argv(1)).await,
         _ => panic!("RUSTC_WRAPPER={arg0:?}'s input unexpected:\n\targz = {argz:?}\n\targs = {args:?}\n\tenvs = {vars:?}\n"),
     }
 }
@@ -169,11 +171,11 @@ async fn wrap_rustc(
     let pwd: Utf8PathBuf = pwd.try_into().expect("Encoding $PWD in UTF-8");
 
     let krate = format!("{PKG}:{crate_name}");
-    log::info!(target:&krate, "{PKG}@{VSN} original args: {arguments:?} pwd={pwd}");
+    log::info!(target: &krate, "{PKG}@{VSN} original args: {arguments:?} pwd={pwd}");
 
     do_wrap_rustc(crate_name, arguments, fallback, &krate, pwd)
         .await
-        .inspect_err(|e| log::error!(target:&krate, "Error: {e}"))
+        .inspect_err(|e| log::error!(target: &krate, "Error: {e}"))
 }
 
 async fn do_wrap_rustc(
@@ -186,7 +188,7 @@ async fn do_wrap_rustc(
     let debug = maybe_log();
 
     let (st, args) = parse::as_rustc(&pwd, arguments)?;
-    log::info!(target:&krate, "{st:?}");
+    log::info!(target: &krate, "{st:?}");
     let RustcArgs { crate_type, emit, externs, metadata, incremental, input, out_dir, target_path } =
         st;
     let incremental = envs::incremental().then_some(incremental).flatten();
@@ -211,11 +213,11 @@ async fn do_wrap_rustc(
         .ok()
         .and_then(|x| x.ends_with("/out").then_some(x))
         .and_then(|crate_out| {
-            log::info!(target:&krate, "listing (RO) crate_out contents {crate_out}");
+            log::info!(target: &krate, "listing (RO) crate_out contents {crate_out}");
             let Ok(listing) = fs::read_dir(&crate_out) else { return None };
             let listing = listing
                 .map_while(Result::ok)
-                .inspect(|x| log::info!(target:&krate, "contains {x:?}"))
+                .inspect(|x| log::info!(target: &krate, "contains {x:?}"))
                 .count();
             (listing != 0).then_some(crate_out) // crate_out dir empty => mount can be dropped
         });
@@ -240,7 +242,7 @@ async fn do_wrap_rustc(
     if crate_type == "proc-macro" {
         // This way crates that depend on this know they must require it as .so
         let guard = format!("{crate_externs}_proc-macro"); // FIXME: store this bit of info in md file
-        log::info!(target:&krate, "opening (RW) {guard}");
+        log::info!(target: &krate, "opening (RW) {guard}");
         fs::write(&guard, "").map_err(|e| anyhow!("Failed to `touch {guard}`: {e}"))?;
     };
 
@@ -265,14 +267,14 @@ async fn do_wrap_rustc(
         short_externs.insert(xtern.to_owned());
 
         let xtern_crate_externs = externs_prefix(xtern);
-        log::info!(target:&krate, "checking (RO) extern's externs {xtern_crate_externs}");
+        log::info!(target: &krate, "checking (RO) extern's externs {xtern_crate_externs}");
         if file_exists_and_is_not_empty(&xtern_crate_externs)? {
-            log::info!(target:&krate, "opening (RO) crate externs {xtern_crate_externs}");
+            log::info!(target: &krate, "opening (RO) crate externs {xtern_crate_externs}");
             let errf = |e| anyhow!("Failed to `cat {xtern_crate_externs}`: {e}");
             let fd = File::open(&xtern_crate_externs).map_err(errf)?;
             for transitive in BufReader::new(fd).lines().map_while(Result::ok) {
                 let guard = externs_prefix(&format!("{transitive}_proc-macro"));
-                log::info!(target:&krate, "checking (RO) extern's guard {guard}");
+                log::info!(target: &krate, "checking (RO) extern's guard {guard}");
                 let ext = if file_exists(&guard)? { "so" } else { &ext };
                 let actual_extern = format!("lib{transitive}.{ext}");
                 all_externs.insert(actual_extern.clone());
@@ -282,7 +284,7 @@ async fn do_wrap_rustc(
 
                 if debug.is_some() {
                     let deps_dir = Utf8Path::new(&target_path).join("deps");
-                    log::info!(target:&krate, "extern crate's extern matches {deps_dir}/lib*.*");
+                    log::info!(target: &krate, "extern crate's extern matches {deps_dir}/lib*.*");
                     let listing = fs::read_dir(&deps_dir)
                         .map_err(|e| anyhow!("Failed reading directory {deps_dir}: {e}"))?
                         .filter_map(Result::ok)
@@ -295,7 +297,10 @@ async fn do_wrap_rustc(
                         .map(|p| p.to_string())
                         .collect::<Vec<_>>();
                     if listing != vec![actual_extern.clone()] {
-                        log::warn!(target:&krate, "instead of [{actual_extern}], listing found {listing:?}");
+                        log::warn!(
+                            target: &krate,
+                            "instead of [{actual_extern}], listing found {listing:?}"
+                        );
                     }
                     //all_externs.extend(listing.into_iter());
                     // TODO: move to after for loop
@@ -305,18 +310,18 @@ async fn do_wrap_rustc(
             }
         }
     }
-    log::info!(target:&krate, "checking (RO) externs {crate_externs}");
+    log::info!(target: &krate, "checking (RO) externs {crate_externs}");
     if !file_exists_and_is_not_empty(&crate_externs)? {
         let mut shorts = String::new();
         for short_extern in &short_externs {
             shorts.push_str(&format!("{short_extern}\n"));
         }
-        log::info!(target:&krate, "writing (RW) externs to {crate_externs}");
+        log::info!(target: &krate, "writing (RW) externs to {crate_externs}");
         let errf = |e| anyhow!("Failed creating crate externs {crate_externs}: {e}");
         fs::write(&crate_externs, shorts).map_err(errf)?;
     }
     let all_externs = all_externs;
-    log::info!(target:&krate, "crate_externs: {crate_externs}");
+    log::info!(target: &krate, "crate_externs: {crate_externs}");
     if debug.is_some() {
         match fs::read_to_string(&crate_externs) {
             Ok(data) => data,
@@ -324,7 +329,7 @@ async fn do_wrap_rustc(
         }
         .lines()
         .filter(|x| !x.is_empty())
-        .for_each(|line| log::debug!(target:&krate, "❯ {line}"));
+        .for_each(|line| log::debug!(target: &krate, "❯ {line}"));
     }
 
     fs::create_dir_all(&out_dir).map_err(|e| anyhow!("Failed to `mkdir -p {out_dir}`: {e}"))?;
@@ -333,9 +338,10 @@ async fn do_wrap_rustc(
             .map_err(|e| anyhow!("Failed to `mkdir -p {incremental}`: {e}"))?;
     }
 
-    let cargo_home = env::var("CARGO_HOME")
-        .map(Utf8PathBuf::from)
-        .map_err(|e| anyhow!("`cargo` sets $CARGO_HOME: {e}"))?;
+    let cargo_home: Utf8PathBuf = home::cargo_home()
+        .map_err(|e| anyhow!("bad $CARGO_HOME or something: {e}"))?
+        .try_into()
+        .map_err(|e| anyhow!("corrupted $CARGO_HOME path: {e}"))?;
 
     // TODO: allow opt-out of cratesio_stage => to support offline builds
     // TODO: or, allow a `cargo fetch` alike: create+pre-build all cratesio stages from lockfile
@@ -359,7 +365,12 @@ async fn do_wrap_rustc(
     } else {
         bail!("Unexpected input file {input:?}")
     };
-    log::info!(target:&krate, "picked {rustc_stage} ({:?}) for {suf:?}", rustc_stage.to_string(), suf=input.iter().rev().take(4).collect::<Vec<_>>());
+    log::info!(
+        target: &krate,
+        "picked {rustc_stage} ({:?}) for {suf:?}",
+        rustc_stage.to_string(),
+        suf = input.iter().rev().take(4).collect::<Vec<_>>()
+    );
     if matches!(input_mount, Some((_,_,ref x)) if x.ends_with("/.cargo/registry")) {
         bail!("BUG: wrong input_mount pick: {input_mount:?}")
     }
@@ -380,7 +391,7 @@ async fn do_wrap_rustc(
         let (pass, skip, only_buildrs) = pass_env(var.as_str());
         if pass || (crate_name == BUILDRS_CRATE_NAME && only_buildrs) {
             if skip {
-                log::debug!(target:&krate, "not forwarding env: {var}={val}");
+                log::debug!(target: &krate, "not forwarding env: {var}={val}");
                 continue;
             }
             let val = (!val.is_empty())
@@ -389,9 +400,9 @@ async fn do_wrap_rustc(
                 .unwrap_or_default();
             if var == "CARGO_ENCODED_RUSTFLAGS" {
                 let dec: Vec<_> = rustflags::from_env().collect();
-                log::debug!(target:&krate, "env is set: {var}={val} ({dec:?})");
+                log::debug!(target: &krate, "env is set: {var}={val} ({dec:?})");
             } else {
-                log::debug!(target:&krate, "env is set: {var}={val}");
+                log::debug!(target: &krate, "env is set: {var}={val}");
             }
             rustc_block.push_str(&format!("  {var}={val} \\\n"));
         }
@@ -436,7 +447,7 @@ async fn do_wrap_rustc(
         // TODO: use tmpfs when on *NIX
         // TODO: cache these folders
         if pwd.join(".git").is_dir() {
-            log::info!(target:&krate, "copying all git files under {}", pwd.join(".git"));
+            log::info!(target: &krate, "copying all git files under {}", pwd.join(".git"));
             // TODO: rust git crate?
             // TODO: --mount=bind each file one by one => drop temp dir ctx
             let mut cmd = Command::new("git");
@@ -452,12 +463,12 @@ async fn do_wrap_rustc(
                 .map_err(|e| anyhow!("Parsing {}: {e}", cmd.show()))?
                 .lines()
             {
-                log::info!(target:&krate, "copying git repo file {f}");
+                log::info!(target: &krate, "copying git repo file {f}");
                 let f = Utf8Path::new(f);
                 copy_files(f, cwd_path)?;
             }
         } else {
-            log::info!(target:&krate, "copying all files under {pwd}");
+            log::info!(target: &krate, "copying all files under {pwd}");
             copy_files(&pwd, cwd_path)?;
         }
 
@@ -497,7 +508,7 @@ async fn do_wrap_rustc(
     .map(|(name, uri)| BuildContext { name, uri })
     .collect();
 
-    log::debug!(target:&krate, "all_externs = {all_externs:?}");
+    log::debug!(target: &krate, "all_externs = {all_externs:?}");
     if externs.len() > all_externs.len() {
         bail!("BUG: (externs, all_externs) = {:?}", (externs.len(), all_externs.len()))
     }
@@ -512,13 +523,13 @@ async fn do_wrap_rustc(
             };
             mounts.push((xtern_stage, format!("/{xtern}"), format!("{target_path}/deps/{xtern}")));
 
-            log::info!(target:&krate, "opening (RO) extern md {extern_md_path}");
+            log::info!(target: &krate, "opening (RO) extern md {extern_md_path}");
             let extern_md = Md::from_file(&extern_md_path)?;
             Ok((extern_md_path, extern_md))
         })
         .collect::<Result<Vec<_>>>()?;
     let extern_md_paths = md.extend_from_externs(extern_mds)?;
-    log::info!(target:&krate, "extern_md_paths: {} {extern_md_paths:?}", extern_md_paths.len());
+    log::info!(target: &krate, "extern_md_paths: {} {extern_md_paths:?}", extern_md_paths.len());
 
     for (name, source, target) in mounts {
         rustc_block.push_str(&format!(
@@ -566,7 +577,7 @@ async fn do_wrap_rustc(
     let mut blocks = String::new();
     let mut visited_cratesio_stages = BTreeSet::new();
     for extern_md_path in extern_md_paths {
-        log::info!(target:&krate, "opening (RO) extern's md {extern_md_path}");
+        log::info!(target: &krate, "opening (RO) extern's md {extern_md_path}");
         let extern_md = Md::from_file(&extern_md_path)?;
         extern_md.append_blocks(&mut blocks, &mut visited_cratesio_stages);
         blocks.push('\n');
@@ -577,9 +588,9 @@ async fn do_wrap_rustc(
         let md_path = Utf8Path::new(&target_path).join(format!("{crate_name}-{metadata}.toml"));
         let md_ser = md.to_string()?;
 
-        log::info!(target:&krate, "opening (RW) crate's md {md_path}");
+        log::info!(target: &krate, "opening (RW) crate's md {md_path}");
         // TODO? suggest a `cargo clean` then fail
-        if debug.is_some() {
+        if internal::log().map(|x| x == "debug").unwrap_or_default() {
             match fs::read_to_string(&md_path) {
                 Ok(existing) => pretty_assertions::assert_eq!(&existing, &md_ser),
                 Err(e) if e.kind() == ErrorKind::NotFound => {}
@@ -603,9 +614,9 @@ async fn do_wrap_rustc(
         header.push_str(&format!("# Generated by {REPO} version {VSN}\n"));
         header.push_str(&blocks);
 
-        log::info!(target:&krate, "opening (RW) crate dockerfile {dockerfile}");
+        log::info!(target: &krate, "opening (RW) crate dockerfile {dockerfile}");
         // TODO? suggest a `cargo clean` then fail
-        if debug.is_some() {
+        if internal::log().map(|x| x == "debug").unwrap_or_default() {
             match fs::read_to_string(&dockerfile) {
                 Ok(existing) => pretty_assertions::assert_eq!(&existing, &header),
                 Err(e) if e.kind() == ErrorKind::NotFound => {}
@@ -621,14 +632,14 @@ async fn do_wrap_rustc(
             .map_err(|e| anyhow!("Failed creating dockerignore {ignore}: {e}"))?;
 
         if debug.is_some() {
-            log::info!(target:&krate, "dockerfile: {dockerfile}");
+            log::info!(target: &krate, "dockerfile: {dockerfile}");
             match fs::read_to_string(&dockerfile) {
                 Ok(data) => data,
                 Err(e) => e.to_string(),
             }
             .lines()
             .filter(|x| !x.is_empty())
-            .for_each(|line| log::debug!(target:&krate, "❯ {line}"));
+            .for_each(|line| log::debug!(target: &krate, "❯ {line}"));
         }
 
         dockerfile
@@ -648,7 +659,7 @@ async fn do_wrap_rustc(
     if let Some(incremental) = incremental {
         let _ = build(krate, command, &dockerfile, incremental_stage, &md.contexts, incremental)
             .await
-            .inspect_err(|e| log::warn!(target:&krate, "Error fetching incremental data: {e}"));
+            .inspect_err(|e| log::warn!(target: &krate, "Error fetching incremental data: {e}"));
     }
 
     if debug.is_none() {
@@ -656,10 +667,10 @@ async fn do_wrap_rustc(
             drop(cwd); // Removes tempdir contents
         }
         if code != Some(0) {
-            log::warn!(target:&krate, "Falling back...");
+            log::warn!(target: &krate, "Falling back...");
             let res = fallback.await; // Bubble up actual error & outputs
             if res.is_ok() {
-                log::error!(target:&krate, "BUG found!");
+                log::error!(target: &krate, "BUG found!");
                 eprintln!("Found a bug in this script! Falling back... (logs: {debug:?})");
             }
             return res;

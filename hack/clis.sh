@@ -14,6 +14,56 @@ declare -a nvs nvs_args
 ((i+=1)); nvs[i]=hickory-dns@0.24.0;    oks[i]=ok; nvs_args[i]='--features=dns-over-rustls'
 ((i+=1)); nvs[i]=vixargs@0.1.0;         oks[i]=ok; nvs_args[i]=''
 
+# CARGO_TARGET_DIR=/tmp/cargoconfig0126 \cargo green install -vv --jobs=1 --locked --force cargo-config2@0.1.26 --example get --root=/tmp
+
+#        Fresh bitflags v2.5.0
+#    Compiling rustversion v1.0.15
+#      Running `CARGO=/home/pete/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/cargo CARGO_CFG_PANIC=unwind CARGO_CFG_TARGET_ABI='' CARGO_CFG_TARGET_ARCH=x86_64 CARGO_CFG_TARGET_ENDIAN=little CARGO_CFG_TARGET_ENV=gnu CARGO_CFG_TARGET_FAMILY=unix CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr CARGO_CFG_TARGET_OS=linux CARGO_CFG_TARGET_POINTER_WIDTH=64 CARGO_CFG_TARGET_VENDOR=unknown CARGO_CFG_UNIX='' CARGO_ENCODED_RUSTFLAGS='-Clink-arg=-fuse-ld=/usr/local/bin/mold' CARGO_MANIFEST_DIR=/home/pete/.cargo/registry/src/index.crates.io-6f17d22bba15001f/rustversion-1.0.15 CARGO_PKG_AUTHORS='David Tolnay <dtolnay@gmail.com>' CARGO_PKG_DESCRIPTION='Conditional compilation according to rustc compiler version' CARGO_PKG_HOMEPAGE='' CARGO_PKG_LICENSE='MIT OR Apache-2.0' CARGO_PKG_LICENSE_FILE='' CARGO_PKG_NAME=rustversion CARGO_PKG_README=README.md CARGO_PKG_REPOSITORY='https://github.com/dtolnay/rustversion' CARGO_PKG_RUST_VERSION=1.31 CARGO_PKG_VERSION=1.0.15 CARGO_PKG_VERSION_MAJOR=1 CARGO_PKG_VERSION_MINOR=0 CARGO_PKG_VERSION_PATCH=15 CARGO_PKG_VERSION_PRE='' DEBUG=false HOST=x86_64-unknown-linux-gnu LD_LIBRARY_PATH='/tmp/cargoconfig0126/release/deps:/tmp/cargoconfig0126/release:/home/pete/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib:/home/pete/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib' NUM_JOBS=1 OPT_LEVEL=0 OUT_DIR=/tmp/cargoconfig0126/release/build/rustversion-610e66d3a19c233d/out PROFILE=release RUSTC=/home/pete/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/rustc RUSTC_LINKER=/usr/bin/clang RUSTC_WRAPPER=/home/pete/.cargo/bin/rustcbuildx RUSTDOC=/home/pete/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/rustdoc TARGET=x86_64-unknown-linux-gnu /tmp/cargoconfig0126/release/build/rustversion-a65d385f727cc537/build-script-build`
+# [rustversion 1.0.15] cargo:rerun-if-changed=build/build.rs
+# [rustversion 1.0.15] Error: unexpected output from `rustc --version`: ""
+# [rustversion 1.0.15] 
+# [rustversion 1.0.15] Please file an issue in https://github.com/dtolnay/rustversion
+# error: failed to run custom build command for `rustversion v1.0.15`
+
+# Caused by:
+#   process didn't exit successfully: `CARGO=/home/pete/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/cargo CARGO_CFG_PANIC=unwind CARGO_CFG_TARGET_ABI='' CARGO_CFG_TARGET_ARCH=x86_64 CARGO_CFG_TARGET_ENDIAN=little CARGO_CFG_TARGET_ENV=gnu CARGO_CFG_TARGET_FAMILY=unix CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr CARGO_CFG_TARGET_OS=linux CARGO_CFG_TARGET_POINTER_WIDTH=64 CARGO_CFG_TARGET_VENDOR=unknown CARGO_CFG_UNIX='' CARGO_ENCODED_RUSTFLAGS='-Clink-arg=-fuse-ld=/usr/local/bin/mold' CARGO_MANIFEST_DIR=/home/pete/.cargo/registry/src/index.crates.io-6f17d22bba15001f/rustversion-1.0.15 CARGO_PKG_AUTHORS='David Tolnay <dtolnay@gmail.com>' CARGO_PKG_DESCRIPTION='Conditional compilation according to rustc compiler version' CARGO_PKG_HOMEPAGE='' CARGO_PKG_LICENSE='MIT OR Apache-2.0' CARGO_PKG_LICENSE_FILE='' CARGO_PKG_NAME=rustversion CARGO_PKG_README=README.md CARGO_PKG_REPOSITORY='https://github.com/dtolnay/rustversion' CARGO_PKG_RUST_VERSION=1.31 CARGO_PKG_VERSION=1.0.15 CARGO_PKG_VERSION_MAJOR=1 CARGO_PKG_VERSION_MINOR=0 CARGO_PKG_VERSION_PATCH=15 CARGO_PKG_VERSION_PRE='' DEBUG=false HOST=x86_64-unknown-linux-gnu LD_LIBRARY_PATH='/tmp/cargoconfig0126/release/deps:/tmp/cargoconfig0126/release:/home/pete/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib:/home/pete/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib' NUM_JOBS=1 OPT_LEVEL=0 OUT_DIR=/tmp/cargoconfig0126/release/build/rustversion-610e66d3a19c233d/out PROFILE=release RUSTC=/home/pete/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/rustc RUSTC_LINKER=/usr/bin/clang RUSTC_WRAPPER=/home/pete/.cargo/bin/rustcbuildx RUSTDOC=/home/pete/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/rustdoc TARGET=x86_64-unknown-linux-gnu /tmp/cargoconfig0126/release/build/rustversion-a65d385f727cc537/build-script-build` (exit status: 1)
+#   --- stdout
+#   cargo:rerun-if-changed=build/build.rs
+
+#   --- stderr
+#   Error: unexpected output from `rustc --version`: ""
+
+#   Please file an issue in https://github.com/dtolnay/rustversion
+
+
+# https://crates.io/crates/cargo-fuzz/0.12.0
+#    Compiling thiserror-impl v1.0.50
+# error: environment variable `TARGET_PLATFORM` not defined at compile time
+#   --> /home/pete/.cargo/registry/src/index.crates.io-6f17d22bba15001f/current_platform-0.2.0/src/lib.rs:29:36
+#    |
+# 29 | pub const CURRENT_PLATFORM: &str = env!("TARGET_PLATFORM");
+#    |                                    ^^^^^^^^^^^^^^^^^^^^^^^
+#    |
+#    = help: use `std::env::var("TARGET_PLATFORM")` to read the variable at run time
+#    = note: this error originates in the macro `env` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+# error: environment variable `HOST_PLATFORM` not defined at compile time
+#   --> /home/pete/.cargo/registry/src/index.crates.io-6f17d22bba15001f/current_platform-0.2.0/src/lib.rs:38:31
+#    |
+# 38 | pub const COMPILED_ON: &str = env!("HOST_PLATFORM");
+#    |                               ^^^^^^^^^^^^^^^^^^^^^
+#    |
+#    = help: use `std::env::var("HOST_PLATFORM")` to read the variable at run time
+#    = note: this error originates in the macro `env` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+# error: could not compile `current_platform` (lib) due to 2 previous errors
+# warning: build failed, waiting for other jobs to finish...
+# error: failed to compile `cargo-fuzz v0.12.0`, intermediate artifacts can be found at `/tmp/cfzz`.
+# To reuse those artifacts with a future compilation, set the environment variable `CARGO_TARGET_DIR` to that path.
+# 101 36s supergreen.git green λ CARGO_TARGET_DIR=/tmp/cfzz \cargo green install --force --locked cargo-fuzz
+
+
+
 ((i+=1)); nvs[i]=rustcbuildx@main;      oks[i]=ok; nvs_args[i]='--git https://github.com/fenollp/supergreen.git --branch=main rustcbuildx'
 
 #TODO: not a cli but try users of https://github.com/dtolnay/watt
@@ -75,7 +125,10 @@ jobs:
           \${{ runner.os }}-cargo-install-\${{ hashFiles('**/Cargo.lock') }}-and-
           \${{ runner.os }}-cargo-install-
 
-    - name: Compile HEAD
+    - name: Compile HEAD cargo-green
+      run: |
+        CARGO_TARGET_DIR=~/instmp cargo install --locked --force --path=./cargo-green
+    - name: Compile HEAD rustcbuildx
       run: |
         CARGO_TARGET_DIR=~/instmp cargo install --locked --force --path=./rustcbuildx
     - run: ls -lha ~/instmp/release/
@@ -83,8 +136,10 @@ jobs:
 
     - uses: actions/upload-artifact@v4
       with:
-        name: bin-artifact
-        path: /home/runner/.cargo/bin/rustcbuildx
+        name: bin-artifacts
+        path: |
+          /home/runner/.cargo/bin/cargo-green
+          /home/runner/.cargo/bin/rustcbuildx
 
 EOF
 }
@@ -129,11 +184,13 @@ $(
     - name: Retrieve saved bin
       uses: actions/download-artifact@v4
       with:
-        name: bin-artifact
+        name: bin-artifacts
     - run: | # TODO: whence https://github.com/actions/download-artifact/issues/236
-        chmod +x ./rustcbuildx
+        chmod +x ./cargo-green ./rustcbuildx
         ./rustcbuildx --version | grep rustcbuildx
         mv ./rustcbuildx /home/runner/.cargo/bin/
+        mv ./cargo-green /home/runner/.cargo/bin/
+        cargo green --version
 
     - uses: actions/checkout@v4
 
@@ -168,8 +225,7 @@ $(
       run: |
         RUSTCBUILDX_LOG=debug \\
         RUSTCBUILDX_LOG_PATH="\$PWD"/logs.txt \\
-        RUSTC_WRAPPER=/home/runner/.cargo/bin/rustcbuildx \\
-          CARGO_TARGET_DIR=~/instst cargo -vv install --jobs=$jobs --locked --force $(as_install "$name_at_version") $@
+          CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=$jobs --locked --force $(as_install "$name_at_version") $@
 
     - if: \${{ failure() || success() }}
       run: if [ \$(stat -c%s logs.txt) -lt 1751778 ]; then cat logs.txt; fi ; echo >logs.txt
@@ -189,8 +245,7 @@ $(
       run: |
         RUSTCBUILDX_LOG=debug \\
         RUSTCBUILDX_LOG_PATH="\$PWD"/logs.txt \\
-        RUSTC_WRAPPER=/home/runner/.cargo/bin/rustcbuildx \\
-          CARGO_TARGET_DIR=~/instst cargo -vv install --jobs=$jobs --locked --force $(as_install "$name_at_version") $@ 2>&1 | tee _
+          CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=$jobs --locked --force $(as_install "$name_at_version") $@ 2>&1 | tee _
 
     - if: \${{ failure() || success() }}
       run: if [ \$(stat -c%s logs.txt) -lt 1751778 ]; then cat logs.txt; fi
@@ -282,8 +337,10 @@ set -x
       docker buildx prune --all --force --verbose
     fi
     CARGO_TARGET_DIR=/tmp/rstcbldx cargo install --locked --frozen --offline --force --root=/tmp/rstcbldx --path="$PWD"/rustcbuildx
+    CARGO_TARGET_DIR=/tmp/crggreen cargo install --locked --frozen --offline --force --root=/tmp/crggreen --path="$PWD"/cargo-green
     cargo run --locked --frozen --offline --bin=rustcbuildx pull
     ls -lha /tmp/rstcbldx/bin/rustcbuildx
+    ls -lha /tmp/crggreen/bin/cargo-green
     rm $tmplogs >/dev/null 2>&1 || true
     touch $tmplogs
     echo "$name_at_version"
@@ -293,9 +350,9 @@ set -x
     RUSTCBUILDX_LOG=debug \
     RUSTCBUILDX_LOG_PATH="$tmplogs" \
     RUSTCBUILDX_CACHE_IMAGE="${RUSTCBUILDX_CACHE_IMAGE:-}" \
-    RUSTC_WRAPPER=/tmp/rstcbldx/bin/rustcbuildx \
+    PATH=/tmp/crggreen/bin:"$PATH" \
     CARGO_TARGET_DIR="$tmptrgt" \
-      cargo -v build --jobs=${jobs:-1} --all-targets --all-features --locked --frozen --offline
+      \cargo green -v build --jobs=${jobs:-1} --all-targets --all-features --locked --frozen --offline
     if [[ "$clean"     = 1 ]]; then docker buildx prune       --force; fi
     if [[ "$distclean" = 1 ]]; then docker buildx prune --all --force --verbose | tee --append "$tmplogs" || exit 1; fi
     case "$(wc "$tmplogs")" in '0 0 0 '*) ;;
@@ -354,17 +411,21 @@ send cargo run --locked --frozen --offline --bin=rustcbuildx pull '&&' ls -lha /
 tmux select-layout even-vertical
 tmux split-window
 
-send "rm $tmplogs >/dev/null 2>&1; touch $tmplogs; tail -f $tmplogs; :"
+send \
+  CARGO_TARGET_DIR=/tmp/crggreen cargo install --locked --frozen --offline --force --root=/tmp/crggreen --path="$gitdir"/cargo-green \
+    '&&' touch "$tmpgooo".installed_bis \
+    '&&' "rm $tmplogs >/dev/null 2>&1; touch $tmplogs; tail -f $tmplogs; :"
 tmux select-layout even-vertical
 tmux split-window
 
 send \
-  'until' '[[' -f "$tmpgooo".installed ']] && [[' -f "$tmpgooo".ready ']];' 'do' sleep '.1;' 'done' '&&' rm "$tmpgooo".* '&&' \
+  'until' '[[' -f "$tmpgooo".installed ']] && [[' -f "$tmpgooo".installed_bis ']] && [[' -f "$tmpgooo".ready ']];' \
+  'do' sleep '.1;' 'done' '&&' rm "$tmpgooo".* '&&' \
   RUSTCBUILDX_LOG=debug \
   RUSTCBUILDX_LOG_PATH="$tmplogs" \
   RUSTCBUILDX_CACHE_IMAGE="${RUSTCBUILDX_CACHE_IMAGE:-}" \
-  RUSTC_WRAPPER=/tmp/rstcbldx/bin/rustcbuildx \
-    CARGO_TARGET_DIR="$tmptrgt" cargo -vv install --jobs=${jobs:-1} --root=$tmpbins --locked --force "$(as_install "$name_at_version")" "$args" \
+  PATH=/tmp/crggreen/bin:"$PATH" \
+    CARGO_TARGET_DIR="$tmptrgt" \cargo green -vv install --jobs=${jobs:-1} --root=$tmpbins --locked --force "$(as_install "$name_at_version")" "$args" \
   '&&' 'if' '[[' "$clean"     '=' '1' ']];' 'then' docker buildx prune       --force           '|' tee --append "$tmplogs" '||' 'exit' '1;' 'fi' \
   '&&' 'if' '[[' "$distclean" '=' '1' ']];' 'then' docker buildx prune --all --force --verbose '|' tee --append "$tmplogs" '||' 'exit' '1;' 'fi' \
   '&&' tmux kill-session -t "$session_name"

@@ -38,7 +38,10 @@ jobs:
           ${{ runner.os }}-cargo-install-${{ hashFiles('**/Cargo.lock') }}-and-
           ${{ runner.os }}-cargo-install-
 
-    - name: Compile HEAD
+    - name: Compile HEAD cargo-green
+      run: |
+        CARGO_TARGET_DIR=~/instmp cargo install --locked --force --path=./cargo-green
+    - name: Compile HEAD rustcbuildx
       run: |
         CARGO_TARGET_DIR=~/instmp cargo install --locked --force --path=./rustcbuildx
     - run: ls -lha ~/instmp/release/
@@ -46,8 +49,10 @@ jobs:
 
     - uses: actions/upload-artifact@v4
       with:
-        name: bin-artifact
-        path: /home/runner/.cargo/bin/rustcbuildx
+        name: bin-artifacts
+        path: |
+          /home/runner/.cargo/bin/cargo-green
+          /home/runner/.cargo/bin/rustcbuildx
 
 
   installs:
@@ -62,19 +67,20 @@ jobs:
     - name: Retrieve saved bin
       uses: actions/download-artifact@v4
       with:
-        name: bin-artifact
+        name: bin-artifacts
     - run: | # TODO: whence https://github.com/actions/download-artifact/issues/236
-        chmod +x ./rustcbuildx
+        chmod +x ./cargo-green ./rustcbuildx
         ./rustcbuildx --version | grep rustcbuildx
         mv ./rustcbuildx /home/runner/.cargo/bin/
+        mv ./cargo-green /home/runner/.cargo/bin/
+        cargo green --version
 
     - uses: actions/checkout@v4
 
     - name: cargo install net=ON cache=OFF remote=OFF jobs=$(nproc)
       run: |
         RUSTCBUILDX_LOG=debug \
-        RUSTC_WRAPPER=/home/runner/.cargo/bin/rustcbuildx \
-          CARGO_TARGET_DIR=~/instst cargo -vv install --jobs=$(nproc) --locked --force --path=./rustcbuildx
+          CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=$(nproc) --locked --force --path=./rustcbuildx
 
 
   audits:
@@ -89,11 +95,13 @@ jobs:
     - name: Retrieve saved bin
       uses: actions/download-artifact@v4
       with:
-        name: bin-artifact
+        name: bin-artifacts
     - run: | # TODO: whence https://github.com/actions/download-artifact/issues/236
-        chmod +x ./rustcbuildx
+        chmod +x ./cargo-green ./rustcbuildx
         ./rustcbuildx --version | grep rustcbuildx
         mv ./rustcbuildx /home/runner/.cargo/bin/
+        mv ./cargo-green /home/runner/.cargo/bin/
+        cargo green --version
 
     - uses: actions/checkout@v4
 
@@ -122,8 +130,58 @@ jobs:
       run: |
         RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
-        RUSTC_WRAPPER=/home/runner/.cargo/bin/rustcbuildx \
-          cargo -vv audit || \
+          cargo green -vv audit || \
+            cat logs.txt
+
+
+  udeps:
+    runs-on: ubuntu-latest
+    needs: bin
+    steps:
+    - uses: actions-rs/toolchain@v1
+      with:
+        profile: minimal
+        toolchain: nightly
+
+    - name: Retrieve saved bin
+      uses: actions/download-artifact@v4
+      with:
+        name: bin-artifacts
+    - run: | # TODO: whence https://github.com/actions/download-artifact/issues/236
+        chmod +x ./cargo-green ./rustcbuildx
+        ./rustcbuildx --version | grep rustcbuildx
+        mv ./rustcbuildx /home/runner/.cargo/bin/
+        mv ./cargo-green /home/runner/.cargo/bin/
+        cargo green --version
+
+    - uses: actions/checkout@v4
+
+    # Actually, the whole archives
+    - name: Cache `cargo fetch`
+      uses: actions/cache@v4
+      with:
+        path: |
+          ~/.cargo/registry/index/
+          ~/.cargo/registry/cache/
+          ~/.cargo/git/db/
+        key: cargo-deps-${{ hashFiles('**/Cargo.lock') }}
+        restore-keys: cargo-deps-
+
+    - name: Cache `cargo install`
+      uses: actions/cache@v4
+      with:
+        path: ~/cargo-udeps
+        key: ${{ runner.os }}-cargo-install-udeps
+
+    - name: Compile cargo-udeps
+      run: |
+        CARGO_TARGET_DIR=~/cargo-udeps cargo install --locked --force cargo-udeps
+
+    - name: cargo green +nightly udeps --all-targets net=ON cache=OFF remote=OFF
+      run: |
+        RUSTCBUILDX_LOG=debug \
+        RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
+          cargo green +nightly udeps --all-targets || \
             cat logs.txt
 
 
@@ -139,11 +197,13 @@ jobs:
     - name: Retrieve saved bin
       uses: actions/download-artifact@v4
       with:
-        name: bin-artifact
+        name: bin-artifacts
     - run: | # TODO: whence https://github.com/actions/download-artifact/issues/236
-        chmod +x ./rustcbuildx
+        chmod +x ./cargo-green ./rustcbuildx
         ./rustcbuildx --version | grep rustcbuildx
         mv ./rustcbuildx /home/runner/.cargo/bin/
+        mv ./cargo-green /home/runner/.cargo/bin/
+        cargo green --version
 
     - uses: actions/checkout@v4
 
@@ -163,8 +223,7 @@ jobs:
       run: |
         RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
-        RUSTC_WRAPPER=/home/runner/.cargo/bin/rustcbuildx \
-          cargo -vv build --jobs=$(nproc) --all-targets --all-features --locked --frozen --offline
+          cargo green -vv build --jobs=$(nproc) --all-targets --all-features --locked --frozen --offline
 
     - if: ${{ failure() || success() }}
       run: cat logs.txt && echo >logs.txt
@@ -174,8 +233,7 @@ jobs:
       run: |
         RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
-        RUSTC_WRAPPER=/home/runner/.cargo/bin/rustcbuildx \
-          cargo -vv build --jobs=1 --all-targets --all-features --locked --frozen --offline 2>&1 | tee _
+          cargo green -vv build --jobs=1 --all-targets --all-features --locked --frozen --offline 2>&1 | tee _
         cat _ | grep Finished | grep 0...s
         cat _ | grep Fresh
         ! cat _ | grep Compiling
@@ -197,11 +255,13 @@ jobs:
     - name: Retrieve saved bin
       uses: actions/download-artifact@v4
       with:
-        name: bin-artifact
+        name: bin-artifacts
     - run: | # TODO: whence https://github.com/actions/download-artifact/issues/236
-        chmod +x ./rustcbuildx
+        chmod +x ./cargo-green ./rustcbuildx
         ./rustcbuildx --version | grep rustcbuildx
         mv ./rustcbuildx /home/runner/.cargo/bin/
+        mv ./cargo-green /home/runner/.cargo/bin/
+        cargo green --version
 
     - uses: actions/checkout@v4
 
@@ -221,8 +281,7 @@ jobs:
       run: |
         RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
-        RUSTC_WRAPPER=/home/runner/.cargo/bin/rustcbuildx \
-          cargo -vv test --jobs=$(nproc) --all-targets --all-features --locked --frozen --offline
+          cargo green -vv test --jobs=$(nproc) --all-targets --all-features --locked --frozen --offline
 
     - if: ${{ failure() || success() }}
       run: cat logs.txt && echo >logs.txt
@@ -232,8 +291,7 @@ jobs:
       run: |
         RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
-        RUSTC_WRAPPER=/home/runner/.cargo/bin/rustcbuildx \
-          cargo -vv test --jobs=1 --all-targets --all-features --locked --frozen --offline 2>&1 | tee _
+          cargo green -vv test --jobs=1 --all-targets --all-features --locked --frozen --offline 2>&1 | tee _
         cat _ | grep Finished | grep 0...s
         cat _ | grep Fresh
         ! cat _ | grep Compiling
@@ -255,11 +313,13 @@ jobs:
     - name: Retrieve saved bin
       uses: actions/download-artifact@v4
       with:
-        name: bin-artifact
+        name: bin-artifacts
     - run: | # TODO: whence https://github.com/actions/download-artifact/issues/236
-        chmod +x ./rustcbuildx
+        chmod +x ./cargo-green ./rustcbuildx
         ./rustcbuildx --version | grep rustcbuildx
         mv ./rustcbuildx /home/runner/.cargo/bin/
+        mv ./cargo-green /home/runner/.cargo/bin/
+        cargo green --version
 
     - uses: actions/checkout@v4
 
@@ -279,8 +339,7 @@ jobs:
       run: |
         RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
-        RUSTC_WRAPPER=/home/runner/.cargo/bin/rustcbuildx \
-          cargo -vv check --jobs=$(nproc) --all-targets --all-features --locked --frozen --offline
+          cargo green -vv check --jobs=$(nproc) --all-targets --all-features --locked --frozen --offline
 
     - if: ${{ failure() || success() }}
       run: cat logs.txt && echo >logs.txt
@@ -290,8 +349,7 @@ jobs:
       run: |
         RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
-        RUSTC_WRAPPER=/home/runner/.cargo/bin/rustcbuildx \
-          cargo -vv check --jobs=1 --all-targets --all-features --locked --frozen --offline 2>&1 | tee _
+          cargo green -vv check --jobs=1 --all-targets --all-features --locked --frozen --offline 2>&1 | tee _
         cat _ | grep Finished | grep 0...s
         cat _ | grep Fresh
         ! cat _ | grep Compiling
@@ -315,11 +373,13 @@ jobs:
     - name: Retrieve saved bin
       uses: actions/download-artifact@v4
       with:
-        name: bin-artifact
+        name: bin-artifacts
     - run: | # TODO: whence https://github.com/actions/download-artifact/issues/236
-        chmod +x ./rustcbuildx
+        chmod +x ./cargo-green ./rustcbuildx
         ./rustcbuildx --version | grep rustcbuildx
         mv ./rustcbuildx /home/runner/.cargo/bin/
+        mv ./cargo-green /home/runner/.cargo/bin/
+        cargo green --version
 
     - uses: actions/checkout@v4
 
@@ -339,8 +399,7 @@ jobs:
       run: |
         RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
-        RUSTC_WRAPPER=/home/runner/.cargo/bin/rustcbuildx \
-          cargo -vv clippy --jobs=$(nproc) --all-targets --all-features --locked --frozen --offline
+          cargo green -vv clippy --jobs=$(nproc) --all-targets --all-features --locked --frozen --offline
 
     - if: ${{ failure() || success() }}
       run: cat logs.txt && echo >logs.txt
@@ -350,8 +409,7 @@ jobs:
       run: |
         RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
-        RUSTC_WRAPPER=/home/runner/.cargo/bin/rustcbuildx \
-          cargo -vv clippy --jobs=1 --all-targets --all-features --locked --frozen --offline 2>&1 | tee _
+          cargo green -vv clippy --jobs=1 --all-targets --all-features --locked --frozen --offline 2>&1 | tee _
         cat _ | grep Finished | grep 0...s
         ! cat _ | grep 'Compiling|Compiling'
         ! cat _ | grep 'DEBUG|INFO|WARN|ERROR'

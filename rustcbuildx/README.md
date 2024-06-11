@@ -59,7 +59,7 @@ cargo test ...
 
 ```shell
 # Installs to ~/.cargo/bin
-cargo install --locked --force --git https://github.com/fenollp/supergreen.git
+cargo install --locked --force --git https://github.com/fenollp/supergreen.git rustcbuildx
 
 # Make sur $CARGO_HOME/bin is in your $PATH
 which rustcbuildx
