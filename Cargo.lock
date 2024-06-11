@@ -582,6 +582,7 @@ dependencies = [
  "camino",
  "env_logger",
  "futures",
+ "home",
  "log",
  "mktemp",
  "nutype",

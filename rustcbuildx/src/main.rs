@@ -89,6 +89,8 @@ async fn fallible_main(
          }
         [rustc, "--crate-name", crate_name, ..] =>
              wrap_rustc(crate_name, argv(1), call_rustc(rustc, argv(1))).await,
+        [rustc, "-vV", ..] =>
+             call_rustc(rustc, argv(1)).await,
         _ => panic!("RUSTC_WRAPPER={arg0:?}'s input unexpected:\n\targz = {argz:?}\n\targs = {args:?}\n\tenvs = {vars:?}\n"),
     }
 }
@@ -336,9 +338,10 @@ async fn do_wrap_rustc(
             .map_err(|e| anyhow!("Failed to `mkdir -p {incremental}`: {e}"))?;
     }
 
-    let cargo_home = env::var("CARGO_HOME")
-        .map(Utf8PathBuf::from)
-        .map_err(|e| anyhow!("`cargo` sets $CARGO_HOME: {e}"))?;
+    let cargo_home: Utf8PathBuf = home::cargo_home()
+        .map_err(|e| anyhow!("bad $CARGO_HOME or something: {e}"))?
+        .try_into()
+        .map_err(|e| anyhow!("corrupted $CARGO_HOME path: {e}"))?;
 
     // TODO: allow opt-out of cratesio_stage => to support offline builds
     // TODO: or, allow a `cargo fetch` alike: create+pre-build all cratesio stages from lockfile
