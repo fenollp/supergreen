@@ -69,8 +69,7 @@ RUN \
   --mount=from={RUST},src=/usr,dst=/usr \
     set -eux \
  && mkdir -p {SRC} \
- && tar zxvf /crate --strip-components=1 -C {SRC} \
- && ls -lha {SRC}
+ && tar zxvf /crate --strip-components=1 -C {SRC}
 "#
     )[1..]
         .to_owned();

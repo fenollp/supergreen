@@ -68,7 +68,7 @@ pub(crate) async fn build(
         let img = img.trim_start_matches("docker-image://");
         cmd.arg(format!("--cache-from=type=registry,ref={img}"));
 
-        let tag = Stage::new(krate.to_owned())?;
+        let tag = Stage::new(krate.to_owned())?; // TODO: include enough info for repro
         if tag.to_string().starts_with("bin-") {
             // FIXME: re-tag some tag to latest when pushing only?
             cmd.arg(format!("--tag={img}:latest"));
