@@ -353,6 +353,7 @@ set -x
     PATH=/tmp/crggreen/bin:"$PATH" \
     CARGO_TARGET_DIR="$tmptrgt" \
       \cargo green -v build --jobs=${jobs:-1} --all-targets --all-features --locked --frozen --offline
+      # FIXME: this doesn't depend on $name_at_version
     if [[ "$clean"     = 1 ]]; then docker buildx prune       --force; fi
     if [[ "$distclean" = 1 ]]; then docker buildx prune --all --force --verbose | tee --append "$tmplogs" || exit 1; fi
     case "$(wc "$tmplogs")" in '0 0 0 '*) ;;
@@ -403,16 +404,16 @@ send() {
 
 gitdir=$(realpath "$(dirname "$(dirname "$0")")")
 send \
-  CARGO_TARGET_DIR=/tmp/rstcbldx cargo install --locked --frozen --offline --force --root=/tmp/rstcbldx --path="$gitdir"/rustcbuildx \
+  CARGO_TARGET_DIR=/tmp/rstcbldx cargo install --locked --frozen --offline --force --path="$gitdir"/rustcbuildx \
     '&&' touch "$tmpgooo".installed
 tmux split-window
 
-send cargo run --locked --frozen --offline --bin=rustcbuildx pull '&&' ls -lha /tmp/rstcbldx/bin/rustcbuildx '&&' touch "$tmpgooo".ready
+send cargo run --locked --frozen --offline --bin=rustcbuildx pull '&&' touch "$tmpgooo".ready
 tmux select-layout even-vertical
 tmux split-window
 
 send \
-  CARGO_TARGET_DIR=/tmp/crggreen cargo install --locked --frozen --offline --force --root=/tmp/crggreen --path="$gitdir"/cargo-green \
+  CARGO_TARGET_DIR=/tmp/crggreen cargo install --locked --frozen --offline --force --path="$gitdir"/cargo-green \
     '&&' touch "$tmpgooo".installed_bis \
     '&&' "rm $tmplogs >/dev/null 2>&1; touch $tmplogs; tail -f $tmplogs; :"
 tmux select-layout even-vertical

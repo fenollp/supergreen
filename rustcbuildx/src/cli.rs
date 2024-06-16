@@ -116,7 +116,7 @@ async fn all_tags_of(img: &str) -> Result<(Vec<String>, Option<ExitCode>)> {
 pub(crate) async fn envs(vars: Vec<String>) -> ExitCode {
     let all: BTreeMap<_, _> = [
         ("RUSTCBUILDX", internal::this()),
-        ("RUSTCBUILDX_BASE_IMAGE", Some(base_image().await.to_owned())),
+        ("RUSTCBUILDX_BASE_IMAGE", Some(base_image().await.base())),
         ("RUSTCBUILDX_CACHE_IMAGE", cache_image().to_owned()),
         ("RUSTCBUILDX_LOG", internal::log()),
         ("RUSTCBUILDX_LOG_PATH", Some(log_path().to_owned())),
@@ -146,7 +146,10 @@ pub(crate) async fn envs(vars: Vec<String>) -> ExitCode {
 }
 
 pub(crate) async fn pull() -> Result<ExitCode> {
-    let imgs = [(internal::syntax(), syntax().await), (internal::base_image(), base_image().await)];
+    let imgs = [
+        (internal::syntax(), syntax().await),
+        (internal::base_image(), &base_image().await.base()),
+    ];
 
     let mut to_pull = Vec::with_capacity(imgs.len());
     for (user_input, img) in imgs {

@@ -6,6 +6,8 @@ use std::{
 use anyhow::{anyhow, Result};
 use tokio::process::Command;
 
+use crate::{base::BaseImage, runner::maybe_lock_image};
+
 pub(crate) mod internal {
     use std::env;
 
@@ -102,17 +104,17 @@ pub(crate) fn runner() -> &'static str {
 
 // A Docker image or any build context, actually.
 #[must_use]
-pub(crate) async fn base_image() -> &'static str {
-    static ONCE: OnceLock<String> = OnceLock::new();
+pub(crate) async fn base_image() -> BaseImage {
+    static ONCE: OnceLock<BaseImage> = OnceLock::new();
     match ONCE.get() {
-        Some(ctx) => ctx,
+        Some(ctx) => ctx.clone(),
         None => {
             let ctx = if let Some(val) = internal::base_image() {
                 if !val.starts_with("docker-image://") {
                     let var = internal::RUSTCBUILDX_BASE_IMAGE;
                     panic!("{var} must start with 'docker-image://'")
                 }
-                val
+                BaseImage::Image(val)
             } else {
                 let s = Command::new("rustc").kill_on_drop(true).arg("-V").output().await.ok();
                 let s = s.and_then(|child| String::from_utf8(child.stdout).ok());
@@ -123,15 +125,24 @@ pub(crate) async fn base_image() -> &'static str {
                     .and_then(|x| x.split_once(' ').map(|(x, _)| x.to_owned()))
                     .unwrap_or("1".to_owned());
 
-                // TODO: if v.ends_with("-nightly") {}
+                // let vv = v.trim_end_matches("-nightly");
 
-                format!("docker-image://docker.io/library/rust:{v}-slim")
+                // BaseImage::Image("docker-image://docker.io/library/rust:1.79.0-slim@sha256:87ea6187f9ecb0914c898092e947193e1ea104d5c1e4f0387d1591d05e732b12".to_owned())
+
+                // BaseImage::RustcV(RustcV {
+                //     version: "1.79.0".to_owned(),
+                //     commit: "129f3b996".to_owned(),
+                //     date: "2024-06-10".to_owned(),
+                //     channel: "".to_owned(),
+                // })
+
+                BaseImage::Image(format!("docker-image://docker.io/library/rust:{v}-slim"))
             };
 
-            let ctx = maybe_lock_image(ctx).await;
+            let ctx = ctx.maybe_lock_base().await;
 
             let _ = ONCE.set(ctx);
-            ONCE.get().expect("just set base_image")
+            ONCE.get().expect("just set base_image").clone()
         }
     }
 }
@@ -155,27 +166,6 @@ pub(crate) fn cache_image() -> &'static Option<String> {
 
         val
     })
-}
-
-#[must_use]
-async fn maybe_lock_image(mut img: String) -> String {
-    // Lock image, as podman(4.3.1) does not respect --pull=false (fully, anyway)
-    if img.starts_with("docker-image://") && !img.contains("@sha256:") {
-        if let Some(line) = Command::new(runner())
-            .kill_on_drop(true)
-            .arg("inspect")
-            .arg("--format={{index .RepoDigests 0}}")
-            .arg(img.trim_start_matches("docker-image://"))
-            .output()
-            .await
-            .ok()
-            .and_then(|o| String::from_utf8(o.stdout).ok())
-            .and_then(|x| x.lines().next().map(ToOwned::to_owned))
-        {
-            img.push_str(line.trim_start_matches(|c| c != '@'));
-        }
-    }
-    img
 }
 
 #[must_use]

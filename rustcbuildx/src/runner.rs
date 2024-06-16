@@ -16,10 +16,36 @@ use tokio::{
     time::timeout,
 };
 
-use crate::{envs::cache_image, extensions::ShowCmd, md::BuildContext, stage::Stage};
+use crate::{
+    envs::{cache_image, runner},
+    extensions::ShowCmd,
+    md::BuildContext,
+    stage::Stage,
+};
 
 pub(crate) const MARK_STDOUT: &str = "::STDOUT:: ";
 pub(crate) const MARK_STDERR: &str = "::STDERR:: ";
+
+#[must_use]
+pub(crate) async fn maybe_lock_image(mut img: String) -> String {
+    // Lock image, as podman(4.3.1) does not respect --pull=false (fully, anyway)
+    if img.starts_with("docker-image://") && !img.contains("@sha256:") {
+        if let Some(line) = Command::new(runner())
+            .kill_on_drop(true)
+            .arg("inspect")
+            .arg("--format={{index .RepoDigests 0}}")
+            .arg(img.trim_start_matches("docker-image://"))
+            .output()
+            .await
+            .ok()
+            .and_then(|o| String::from_utf8(o.stdout).ok())
+            .and_then(|x| x.lines().next().map(ToOwned::to_owned))
+        {
+            img.push_str(line.trim_start_matches(|c| c != '@'));
+        }
+    }
+    img
+}
 
 pub(crate) async fn build(
     krate: &str,
