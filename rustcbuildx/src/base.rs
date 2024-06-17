@@ -92,7 +92,7 @@ RUN \
             }
             block
         } else {
-            format!("FROM {base} AS rust\n")
+            format!("FROM {base} AS {RUST}\n")
         }
     }
 }

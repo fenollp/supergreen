@@ -40,8 +40,7 @@ const VSN: &str = env!("CARGO_PKG_VERSION");
 
 const BUILDRS_CRATE_NAME: &str = "build_script_build";
 
-const RUST: &str = "rust";
-// const RUST: &str = "rust-base";
+const RUST: &str = "rust-base";
 
 // NOTE: this RUSTC_WRAPPER program only ever gets called by `cargo`, so we save
 //       ourselves some trouble and assume std::path::{Path, PathBuf} are UTF-8.

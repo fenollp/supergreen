@@ -209,7 +209,7 @@ fn md_utils() {
     fs::write(&tmp, format!(r#"this = "9494aa6093cd94c9"
 deps = ["0dc1fe2644e3176a"]
 contexts = [
-  {{ name = "rust", uri = {LONG:?} }},
+  {{ name = "rust-base", uri = {LONG:?} }},
   {{ name = "input_src_lib_rs--rustversion-1.0.9", uri = "/home/maison/.cargo/registry/src/github.com-1ecc6299db9ec823/rustversion-1.0.9" }},
   {{ name = "crate_out-...", uri = "/home/maison/code/thing.git/target/debug/build/rustversion-ae69baa7face5565/out" }},
 ]
