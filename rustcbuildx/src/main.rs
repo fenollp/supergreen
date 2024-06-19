@@ -434,7 +434,9 @@ async fn do_wrap_rustc(
         //     --mount=type=bind,source=Cargo.toml,target=Cargo.toml \
         //     --mount=type=bind,source=Cargo.lock,target=Cargo.lock \
 
-        let cwd = Temp::new_dir().map_err(|e| anyhow!("Failed to create tmpdir 'cwd': {e}"))?;
+        // let cwd = Temp::new_dir().map_err(|e| anyhow!("Failed to create tmpdir 'cwd': {e}"))?;
+        let cwd = std::env::temp_dir().join(&metadata);
+        std::fs::create_dir_all(&cwd).unwrap();
         let Some(cwd_path) = Utf8Path::from_path(cwd.as_path()) else {
             bail!("Path's UTF-8 encoding is corrupted: {cwd:?}")
         };
@@ -442,7 +444,7 @@ async fn do_wrap_rustc(
         // TODO: use tmpfs when on *NIX
         // TODO: cache these folders
         if pwd.join(".git").is_dir() {
-            log::info!(target: &krate, "copying all git files under {}", pwd.join(".git"));
+            log::info!(target: &krate, "copying all git files under {pwd} to {cwd_path}");
             // TODO: rust git crate?
             // TODO: --mount=bind each file one by one => drop temp dir ctx
             let mut cmd = Command::new("git");
@@ -463,7 +465,7 @@ async fn do_wrap_rustc(
                 copy_files(f, cwd_path)?;
             }
         } else {
-            log::info!(target: &krate, "copying all files under {pwd}");
+            log::info!(target: &krate, "copying all files under {pwd} to {cwd_path}");
             copy_files(&pwd, cwd_path)?;
         }
 
@@ -478,6 +480,7 @@ async fn do_wrap_rustc(
         // 0 0s debug HEAD λ cat rustcbuildx.d
         // $target_dir/debug/rustcbuildx: $cwd/src/cli.rs $cwd/src/cratesio.rs $cwd/src/envs.rs $cwd/src/main.rs $cwd/src/md.rs $cwd/src/parse.rs $cwd/src/pops.rs $cwd/src/runner.rs $cwd/src/stage.rs
         rustc_block.push_str(&format!("WORKDIR {pwd}\n"));
+        // rustc_block.push_str("COPY --from={rustc_stage} / .\n");
         rustc_block.push_str("COPY --from=cwd / .\n");
         rustc_block.push_str("RUN \\\n");
 
@@ -494,6 +497,7 @@ async fn do_wrap_rustc(
         input_mount.and_then(|(name, src, target)| {
             src.is_none().then_some((name.to_string(), target.to_string()))
         }),
+        // cwd.as_ref().map(|(_, cwd_path)| (rustc_stage.to_string(), cwd_path.to_string())),
         cwd.as_ref().map(|(_, cwd)| ("cwd".to_owned(), cwd.to_string())),
         crate_out.map(|crate_out| (crate_out_name(&crate_out), crate_out)),
     ]
@@ -501,6 +505,10 @@ async fn do_wrap_rustc(
     .flatten()
     .map(|(name, uri)| BuildContext { name, uri })
     .collect();
+    log::info!(target: &krate, "loading {} Docker contexts", md.contexts.len());
+    for BuildContext { name, uri } in &md.contexts {
+        log::info!(target: &krate, "loading {name:?}: {uri}");
+    }
 
     log::debug!(target: &krate, "all_externs = {all_externs:?}");
     if externs.len() > all_externs.len() {
