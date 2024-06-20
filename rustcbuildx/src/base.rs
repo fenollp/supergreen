@@ -25,7 +25,7 @@ impl BaseImage {
     #[must_use]
     pub(crate) fn base(&self) -> String {
         match self {
-            Self::Image(img) => img.trim_start_matches("docker-image://").to_owned(),
+            Self::Image(img) => img.clone(),
             Self::RustcV(RustcV { base, .. }) if base.is_empty() => {
                 "docker.io/library/debian:12-slim".to_owned()
             }
@@ -43,6 +43,7 @@ impl BaseImage {
 
     pub(crate) fn block(&self) -> String {
         let base = self.base();
+        let base = base.trim_start_matches("docker-image://");
 
         if let BaseImage::RustcV(RustcV { version, commit, date, channel, .. }) = self {
             log::trace!("{version} + {commit}");

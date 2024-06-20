@@ -364,6 +364,7 @@ async fn do_wrap_rustc(
 
         let rustc_stage = input.to_string().replace(['/', '.'], "-");
         let rustc_stage = Stage::new(format!("cwd-{crate_id}-{rustc_stage}"))?;
+        // let rustc_stage = Stage::new("cwd")?;
         (None, rustc_stage)
     } else {
         bail!("Unexpected input file {input:?}")

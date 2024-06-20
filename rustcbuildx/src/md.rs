@@ -64,7 +64,11 @@ impl Md {
             if visited.insert(name.to_owned()) {
                 dockerfile.push_str(script);
             }
+        } else {
+            // Otherwise, write it back in
+            dockerfile.push_str(script);
         }
+
         for DockerfileStage { name, script } in stages {
             if name == filter {
                 continue;
