@@ -17,7 +17,8 @@ use tokio::{
 };
 
 use crate::{
-    envs::{cache_image, runner},
+    base::BaseImage,
+    envs::{base_image, cache_image, runner},
     extensions::ShowCmd,
     md::BuildContext,
     stage::Stage,
@@ -112,7 +113,10 @@ pub(crate) async fn build(
     }
     //cmd.arg("--metadata-file=/tmp/meta.json"); => {"buildx.build.ref": "default/default/o5c4435yz6o6xxxhdvekx5lmn"}
 
-    cmd.arg("--network=none");
+    if matches!(base_image().await, BaseImage::Image(_)) {
+        // FIXME: pre-build rust stage with network then, never activate network ever.
+        cmd.arg("--network=none");
+    }
     cmd.arg("--platform=local");
     cmd.arg("--pull=false");
     cmd.arg(format!("--target={target}"));

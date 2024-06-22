@@ -97,31 +97,23 @@ impl BaseImage {
 
             if channel == "nightly" {
                 block.push_str(&format!(r#"
-FROM {base} AS rustup
-RUN \
-    set -ux \
- && dpkgArch="$(dpkg --print-architecture)" \
- && case "$dpkgArch" in \
-        *amd64) rustArch='x86_64-unknown-linux-gnu' ;; \
-        *arm64) rustArch='aarch64-unknown-linux-gnu' ;; \
-        *) echo "Unsupported architecture: $dpkgArch" >&2 && exit 1 ;; \
-    esac \
- && wget -O /rustup-init https://static.rust-lang.org/rustup/archive/1.27.1/$rustArch/rustup-init \
- && sha256sum /rustup-init \
- && echo '6aeece6993e902708983b209d04c0d1dbb14ebb405ddb87def578d41f920f56d *rustup-init' | sha256sum -c - \
- && chmod +x rustup-init
+FROM scratch AS rustup
+ADD --chmod=0755 --checksum=sha256:6aeece6993e902708983b209d04c0d1dbb14ebb405ddb87def578d41f920f56d \
+  https://static.rust-lang.org/rustup/archive/1.27.1/x86_64-unknown-linux-gnu/rustup-init /rustup-init
 FROM {base} AS {RUST}
 ENV RUSTUP_HOME=/usr/local/rustup \
-    CARGO_HOME=/usr/local/cargo \
-    PATH=/usr/local/cargo/bin:$PATH
+     CARGO_HOME=/usr/local/cargo \
+           PATH=/usr/local/cargo/bin:$PATH
 RUN \
-  --mount=from=rustup,source=/rustup-init,target=/rustup-init \
     set -ux \
  && apt-get update \
  && apt-get install -y --no-install-recommends \
         ca-certificates \
         gcc \
-        libc6-dev \
+        libc6-dev
+RUN \
+  --mount=from=rustup,source=/rustup-init,target=/rustup-init \
+    set -ux \
  && /rustup-init -y --no-modify-path --profile minimal --default-toolchain nightly-{date} \
  && chmod -R a+w $RUSTUP_HOME $CARGO_HOME \
  && rustup --version \
