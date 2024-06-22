@@ -120,23 +120,9 @@ pub(crate) async fn base_image() -> BaseImage {
                 let s = s.and_then(|child| String::from_utf8(child.stdout).ok());
                 // e.g. rustc 1.73.0 (cc66ad468 2023-10-03)
 
-                let v = s
-                    .map(|x| x.trim_start_matches("rustc ").to_owned())
-                    .and_then(|x| x.split_once(' ').map(|(x, _)| x.to_owned()))
-                    .unwrap_or("1".to_owned());
-
-                // let vv = v.trim_end_matches("-nightly");
-
-                // BaseImage::Image("docker-image://docker.io/library/rust:1.79.0-slim@sha256:87ea6187f9ecb0914c898092e947193e1ea104d5c1e4f0387d1591d05e732b12".to_owned())
-
-                // BaseImage::RustcV(RustcV {
-                //     version: "1.79.0".to_owned(),
-                //     commit: "129f3b996".to_owned(),
-                //     date: "2024-06-10".to_owned(),
-                //     channel: "".to_owned(),
-                // })
-
-                BaseImage::Image(format!("docker-image://docker.io/library/rust:{v}-slim"))
+                s.and_then(BaseImage::from_rustc_v).unwrap_or_else(|| {
+                    BaseImage::Image("docker-image://docker.io/library/rust:1-slim".to_owned())
+                })
             };
 
             let ctx = ctx.maybe_lock_base().await;
