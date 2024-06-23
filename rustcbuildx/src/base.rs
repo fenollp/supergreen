@@ -72,6 +72,7 @@ impl BaseImage {
                 }));
             }
         }
+
         Some(BaseImage::Image(format!("docker-image://docker.io/library/rust:{version}-slim")))
     }
 

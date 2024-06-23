@@ -70,7 +70,7 @@ fn main() -> Result<ExitCode, Box<dyn std::error::Error>> {
         // TODO read package.metadata.green
         // TODO: TUI above cargo output
 
-        cmd.env("RUSTCBUILDX_LOG", env::var("RUSTCBUILDX_LOG").unwrap_or("info".to_owned()));
+        cmd.env("RUSTCBUILDX_LOG", env::var("RUSTCBUILDX_LOG").unwrap_or("debug".to_owned()));
         cmd.env(
             "RUSTCBUILDX_LOG_PATH",
             env::var("RUSTCBUILDX_LOG_PATH").unwrap_or("/tmp/cargo-green.log".to_owned()),

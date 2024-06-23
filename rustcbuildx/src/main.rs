@@ -10,7 +10,6 @@ use std::{
 use anyhow::{anyhow, bail, Result};
 use camino::{Utf8Path, Utf8PathBuf};
 use env_logger::{Env, Target};
-use mktemp::Temp;
 use tokio::process::Command;
 
 use crate::{
@@ -364,7 +363,6 @@ async fn do_wrap_rustc(
 
         let rustc_stage = input.to_string().replace(['/', '.'], "-");
         let rustc_stage = Stage::new(format!("cwd-{crate_id}-{rustc_stage}"))?;
-        // let rustc_stage = Stage::new("cwd")?;
         (None, rustc_stage)
     } else {
         bail!("Unexpected input file {input:?}")
@@ -435,9 +433,8 @@ async fn do_wrap_rustc(
         //     --mount=type=bind,source=Cargo.toml,target=Cargo.toml \
         //     --mount=type=bind,source=Cargo.lock,target=Cargo.lock \
 
-        let cwd = Temp::new_dir().map_err(|e| anyhow!("Failed to create tmpdir 'cwd': {e}"))?;
-        // let cwd = std::env::temp_dir().join(&metadata);
-        // std::fs::create_dir_all(&cwd).unwrap();
+        let cwd = env::temp_dir().join(&metadata);
+        fs::create_dir_all(&cwd).map_err(|e| anyhow!("Failed to create tmpdir 'cwd': {e}"))?;
         let Some(cwd_path) = Utf8Path::from_path(cwd.as_path()) else {
             bail!("Path's UTF-8 encoding is corrupted: {cwd:?}")
         };
@@ -481,7 +478,6 @@ async fn do_wrap_rustc(
         // 0 0s debug HEAD λ cat rustcbuildx.d
         // $target_dir/debug/rustcbuildx: $cwd/src/cli.rs $cwd/src/cratesio.rs $cwd/src/envs.rs $cwd/src/main.rs $cwd/src/md.rs $cwd/src/parse.rs $cwd/src/pops.rs $cwd/src/runner.rs $cwd/src/stage.rs
         rustc_block.push_str(&format!("WORKDIR {pwd}\n"));
-        // rustc_block.push_str("COPY --from={rustc_stage} / .\n");
         rustc_block.push_str("COPY --from=cwd / .\n");
         rustc_block.push_str("RUN \\\n");
 
@@ -498,7 +494,6 @@ async fn do_wrap_rustc(
         input_mount.and_then(|(name, src, target)| {
             src.is_none().then_some((name.to_string(), target.to_string()))
         }),
-        // cwd.as_ref().map(|(_, cwd_path)| (rustc_stage.to_string(), cwd_path.to_string())),
         cwd.as_ref().map(|(_, cwd)| ("cwd".to_owned(), cwd.to_string())),
         crate_out.map(|crate_out| (crate_out_name(&crate_out), crate_out)),
     ]
@@ -668,8 +663,10 @@ async fn do_wrap_rustc(
     }
 
     if debug.is_none() {
-        if let Some(cwd) = cwd {
-            drop(cwd); // Removes tempdir contents
+        if let Some((cwd, cwd_path)) = cwd {
+            if let Err(e) = fs::remove_dir_all(cwd) {
+                log::warn!(target:&krate, "Error `rm -rf {cwd_path}`: {e}");
+            }
         }
         if code != Some(0) {
             log::warn!(target: &krate, "Falling back...");
