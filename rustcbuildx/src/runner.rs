@@ -16,10 +16,37 @@ use tokio::{
     time::timeout,
 };
 
-use crate::{envs::cache_image, extensions::ShowCmd, md::BuildContext, stage::Stage};
+use crate::{
+    base::BaseImage,
+    envs::{base_image, cache_image, runner},
+    extensions::ShowCmd,
+    md::BuildContext,
+    stage::Stage,
+};
 
 pub(crate) const MARK_STDOUT: &str = "::STDOUT:: ";
 pub(crate) const MARK_STDERR: &str = "::STDERR:: ";
+
+#[must_use]
+pub(crate) async fn maybe_lock_image(mut img: String) -> String {
+    // Lock image, as podman(4.3.1) does not respect --pull=false (fully, anyway)
+    if img.starts_with("docker-image://") && !img.contains("@sha256:") {
+        if let Some(line) = Command::new(runner())
+            .kill_on_drop(true)
+            .arg("inspect")
+            .arg("--format={{index .RepoDigests 0}}")
+            .arg(img.trim_start_matches("docker-image://"))
+            .output()
+            .await
+            .ok()
+            .and_then(|o| String::from_utf8(o.stdout).ok())
+            .and_then(|x| x.lines().next().map(ToOwned::to_owned))
+        {
+            img.push_str(line.trim_start_matches(|c| c != '@'));
+        }
+    }
+    img
+}
 
 pub(crate) async fn build(
     krate: &str,
@@ -86,12 +113,15 @@ pub(crate) async fn build(
     }
     //cmd.arg("--metadata-file=/tmp/meta.json"); => {"buildx.build.ref": "default/default/o5c4435yz6o6xxxhdvekx5lmn"}
 
-    cmd.arg("--network=none");
+    if matches!(base_image().await, BaseImage::Image(_)) {
+        // FIXME: pre-build rust stage with network then, never activate network ever.
+        cmd.arg("--network=none");
+    }
+
     cmd.arg("--platform=local");
     cmd.arg("--pull=false");
     cmd.arg(format!("--target={target}"));
     cmd.arg(format!("--output=type=local,dest={out_dir}", out_dir = out_dir.as_ref()));
-    cmd.arg(format!("--file={dockerfile_path}"));
     // cmd.arg("--build-arg=BUILDKIT_MULTI_PLATFORM=1"); // "deterministic output"? adds /linux_amd64/ to extracted cratesio
 
     // TODO: do without local Docker-compatible CLI
@@ -101,6 +131,8 @@ pub(crate) async fn build(
     for BuildContext { name, uri } in contexts {
         cmd.arg(format!("--build-context={name}={uri}"));
     }
+
+    cmd.arg(format!("--file={dockerfile_path}"));
 
     cmd.arg(dockerfile_path.parent().unwrap_or(dockerfile_path));
 

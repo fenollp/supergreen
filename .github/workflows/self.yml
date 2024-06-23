@@ -179,10 +179,12 @@ jobs:
 
     - name: cargo green +nightly udeps --all-targets net=ON cache=OFF remote=OFF
       run: |
-        RUSTCBUILDX_LOG=debug \
-        RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
-          cargo green +nightly udeps --all-targets || \
-            cat logs.txt
+        export RUSTCBUILDX_LOG=debug
+        export RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt
+        if ! cargo green +nightly udeps --all-targets; then
+          cat logs.txt
+          exit 1
+        fi
 
 
   builds:

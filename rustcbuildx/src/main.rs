@@ -10,7 +10,6 @@ use std::{
 use anyhow::{anyhow, bail, Result};
 use camino::{Utf8Path, Utf8PathBuf};
 use env_logger::{Env, Target};
-use mktemp::Temp;
 use tokio::process::Command;
 
 use crate::{
@@ -24,6 +23,7 @@ use crate::{
     stage::Stage,
 };
 
+mod base;
 mod cli;
 mod cratesio;
 mod envs;
@@ -39,7 +39,7 @@ const VSN: &str = env!("CARGO_PKG_VERSION");
 
 const BUILDRS_CRATE_NAME: &str = "build_script_build";
 
-const RUST: &str = "rust";
+const RUST: &str = "rust-base";
 
 // NOTE: this RUSTC_WRAPPER program only ever gets called by `cargo`, so we save
 //       ourselves some trouble and assume std::path::{Path, PathBuf} are UTF-8.
@@ -79,18 +79,20 @@ async fn fallible_main(
         ["env", ..] => Ok(envs(argv(1)).await),
         ["pull"] => pull().await,
         ["push"] => push().await,
+        [rustc, "--crate-name", crate_name, ..] =>
+             wrap_rustc(crate_name, argv(1), call_rustc(rustc, argv(1))).await,
         [rustc, "-", ..] =>
              call_rustc(rustc, argv(1)).await,
+        [rustc, "-vV", ..] =>
+             call_rustc(rustc, argv(1)).await,
+        [_driver, rustc, "-vV", ..] =>
+             call_rustc(rustc, argv(2)).await,
         [driver, _rustc, "-"|"--crate-name", ..] => {
             // TODO: wrap driver? + rustc
             // driver: e.g. /home/maison/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/clippy-driver
             // cf. https://github.com/rust-lang/rust-clippy/tree/da27c979e29e78362b7a2a91ebcf605cb01da94c#using-clippy-driver
              call_rustc(driver, argv(2)).await
          }
-        [rustc, "--crate-name", crate_name, ..] =>
-             wrap_rustc(crate_name, argv(1), call_rustc(rustc, argv(1))).await,
-        [rustc, "-vV", ..] =>
-             call_rustc(rustc, argv(1)).await,
         _ => panic!("RUSTC_WRAPPER={arg0:?}'s input unexpected:\n\targz = {argz:?}\n\targs = {args:?}\n\tenvs = {vars:?}\n"),
     }
 }
@@ -230,6 +232,8 @@ async fn do_wrap_rustc(
 
     let mut md = Md::new(&metadata);
 
+    md.push_block(&Stage::new(RUST).expect("rust stage"), base_image().await.block());
+
     let ext = match crate_type.as_str() {
         "lib" => "rmeta".to_owned(),
         "bin" | "rlib" | "test" | "proc-macro" => "rlib".to_owned(),
@@ -365,15 +369,7 @@ async fn do_wrap_rustc(
     } else {
         bail!("Unexpected input file {input:?}")
     };
-    log::info!(
-        target: &krate,
-        "picked {rustc_stage} ({:?}) for {suf:?}",
-        rustc_stage.to_string(),
-        suf = input.iter().rev().take(4).collect::<Vec<_>>()
-    );
-    if matches!(input_mount, Some((_,_,ref x)) if x.ends_with("/.cargo/registry")) {
-        bail!("BUG: wrong input_mount pick: {input_mount:?}")
-    }
+    log::info!(target: &krate, "picked {rustc_stage} for {input}");
 
     let incremental_stage = Stage::new(format!("inc-{metadata}"))?;
     let out_stage = Stage::new(format!("out-{metadata}"))?;
@@ -439,7 +435,8 @@ async fn do_wrap_rustc(
         //     --mount=type=bind,source=Cargo.toml,target=Cargo.toml \
         //     --mount=type=bind,source=Cargo.lock,target=Cargo.lock \
 
-        let cwd = Temp::new_dir().map_err(|e| anyhow!("Failed to create tmpdir 'cwd': {e}"))?;
+        let cwd = env::temp_dir().join(&metadata);
+        fs::create_dir_all(&cwd).map_err(|e| anyhow!("Failed to create tmpdir 'cwd': {e}"))?;
         let Some(cwd_path) = Utf8Path::from_path(cwd.as_path()) else {
             bail!("Path's UTF-8 encoding is corrupted: {cwd:?}")
         };
@@ -447,7 +444,7 @@ async fn do_wrap_rustc(
         // TODO: use tmpfs when on *NIX
         // TODO: cache these folders
         if pwd.join(".git").is_dir() {
-            log::info!(target: &krate, "copying all git files under {}", pwd.join(".git"));
+            log::info!(target: &krate, "copying all git files under {pwd} to {cwd_path}");
             // TODO: rust git crate?
             // TODO: --mount=bind each file one by one => drop temp dir ctx
             let mut cmd = Command::new("git");
@@ -468,7 +465,7 @@ async fn do_wrap_rustc(
                 copy_files(f, cwd_path)?;
             }
         } else {
-            log::info!(target: &krate, "copying all files under {pwd}");
+            log::info!(target: &krate, "copying all files under {pwd} to {cwd_path}");
             copy_files(&pwd, cwd_path)?;
         }
 
@@ -496,7 +493,6 @@ async fn do_wrap_rustc(
     }
 
     md.contexts = [
-        Some((RUST.to_owned(), base_image().await.to_owned())),
         input_mount.and_then(|(name, src, target)| {
             src.is_none().then_some((name.to_string(), target.to_string()))
         }),
@@ -507,6 +503,10 @@ async fn do_wrap_rustc(
     .flatten()
     .map(|(name, uri)| BuildContext { name, uri })
     .collect();
+    log::info!(target: &krate, "loading {} Docker contexts", md.contexts.len());
+    for BuildContext { name, uri } in &md.contexts {
+        log::info!(target: &krate, "loading {name:?}: {uri}");
+    }
 
     log::debug!(target: &krate, "all_externs = {all_externs:?}");
     if externs.len() > all_externs.len() {
@@ -579,10 +579,10 @@ async fn do_wrap_rustc(
     for extern_md_path in extern_md_paths {
         log::info!(target: &krate, "opening (RO) extern's md {extern_md_path}");
         let extern_md = Md::from_file(&extern_md_path)?;
-        extern_md.append_blocks(&mut blocks, &mut visited_cratesio_stages);
+        extern_md.append_blocks(&mut blocks, &mut visited_cratesio_stages)?;
         blocks.push('\n');
     }
-    md.append_blocks(&mut blocks, &mut visited_cratesio_stages);
+    md.append_blocks(&mut blocks, &mut visited_cratesio_stages)?;
 
     {
         let md_path = Utf8Path::new(&target_path).join(format!("{crate_name}-{metadata}.toml"));
@@ -612,6 +612,8 @@ async fn do_wrap_rustc(
         let syntax = syntax().await.trim_start_matches("docker-image://");
         let mut header = format!("# syntax={syntax}\n");
         header.push_str(&format!("# Generated by {REPO} version {VSN}\n"));
+        let root = md.rust_stage().expect("Stage 'rust' is the root stage");
+        header.push_str(&format!("{}\n", root.script));
         header.push_str(&blocks);
 
         log::info!(target: &krate, "opening (RW) crate dockerfile {dockerfile}");
@@ -663,8 +665,10 @@ async fn do_wrap_rustc(
     }
 
     if debug.is_none() {
-        if let Some(cwd) = cwd {
-            drop(cwd); // Removes tempdir contents
+        if let Some((cwd, cwd_path)) = cwd {
+            if let Err(e) = fs::remove_dir_all(cwd) {
+                log::warn!(target:&krate, "Error `rm -rf {cwd_path}`: {e}");
+            }
         }
         if code != Some(0) {
             log::warn!(target: &krate, "Falling back...");

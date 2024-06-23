@@ -9,7 +9,7 @@ use anyhow::{anyhow, bail, Result};
 use camino::{Utf8Path, Utf8PathBuf};
 use serde::{Deserialize, Serialize};
 
-use crate::{cratesio::CRATESIO_STAGE_PREFIX, Stage};
+use crate::{cratesio::CRATESIO_STAGE_PREFIX, Stage, RUST};
 
 #[cfg_attr(test, derive(Default))]
 #[derive(Clone, Deserialize, Serialize)]
@@ -39,23 +39,44 @@ impl Md {
         toml::to_string_pretty(self).map_err(|e| anyhow!("Failed serializing Md: {e}"))
     }
 
+    pub(crate) fn rust_stage(&self) -> Option<DockerfileStage> {
+        self.stages.iter().find(|DockerfileStage { name, .. }| name == RUST).cloned()
+    }
+
     pub(crate) fn push_block(&mut self, name: &Stage, script: String) {
         self.stages.insert(DockerfileStage { name: name.to_string(), script });
     }
 
-    pub(crate) fn append_blocks(&self, dockerfile: &mut String, visited: &mut BTreeSet<String>) {
+    pub(crate) fn append_blocks(
+        &self,
+        dockerfile: &mut String,
+        visited: &mut BTreeSet<String>,
+    ) -> Result<()> {
+        let mut stages = self.stages.iter().filter(|DockerfileStage { name, .. }| name != RUST);
+
+        let Some(DockerfileStage { name, script }) = stages.next() else {
+            bail!("BUG: has to have at least one stage")
+        };
+
         let mut filter = ""; // not an actual stage name
-        let DockerfileStage { name, script } =
-            self.stages.first().expect("has to have at least one stage");
         if name.starts_with(CRATESIO_STAGE_PREFIX) {
             filter = name;
             if visited.insert(name.to_owned()) {
                 dockerfile.push_str(script);
             }
+        } else {
+            // Otherwise, write it back in
+            dockerfile.push_str(script);
         }
-        for stage in self.stages.iter().filter(|stage| stage.name != filter) {
-            dockerfile.push_str(&stage.script);
+
+        for DockerfileStage { name, script } in stages {
+            if name == filter {
+                continue;
+            }
+            dockerfile.push_str(script);
         }
+
+        Ok(())
     }
 
     pub(crate) fn extend_from_externs(
@@ -192,7 +213,7 @@ fn md_utils() {
     fs::write(&tmp, format!(r#"this = "9494aa6093cd94c9"
 deps = ["0dc1fe2644e3176a"]
 contexts = [
-  {{ name = "rust", uri = {LONG:?} }},
+  {{ name = "rust-base", uri = {LONG:?} }},
   {{ name = "input_src_lib_rs--rustversion-1.0.9", uri = "/home/maison/.cargo/registry/src/github.com-1ecc6299db9ec823/rustversion-1.0.9" }},
   {{ name = "crate_out-...", uri = "/home/maison/code/thing.git/target/debug/build/rustversion-ae69baa7face5565/out" }},
 ]
