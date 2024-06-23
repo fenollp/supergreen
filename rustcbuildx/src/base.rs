@@ -87,9 +87,9 @@ impl BaseImage {
         let base = self.base();
         let base = base.trim_start_matches("docker-image://");
 
-        if let BaseImage::RustcV(RustcV { version, commit, date, channel, .. }) = self {
-            log::trace!("{version} + {commit}");
-            let mut block = String::new();
+        let mut block = String::new();
+        if let BaseImage::RustcV(RustcV { date, channel, .. }) = self {
+            // TODO? maybe use commit & version as selector too?
 
             // FIXME: multiplatformify (using auto ARG.s)
 
@@ -108,9 +108,9 @@ RUN \
     set -ux \
  && apt-get update \
  && apt-get install -y --no-install-recommends \
-        ca-certificates \
-        gcc \
-        libc6-dev
+      ca-certificates \
+      gcc \
+      libc6-dev
 RUN \
   --mount=from=rustup,source=/rustup-init,target=/rustup-init \
     set -ux \
@@ -125,9 +125,12 @@ RUN \
                     )[1..],
                 );
             }
-            block
-        } else {
+        }
+
+        if block.is_empty() {
             format!("FROM {base} AS {RUST}\n")
+        } else {
+            block
         }
     }
 }

@@ -117,11 +117,11 @@ pub(crate) async fn build(
         // FIXME: pre-build rust stage with network then, never activate network ever.
         cmd.arg("--network=none");
     }
+
     cmd.arg("--platform=local");
     cmd.arg("--pull=false");
     cmd.arg(format!("--target={target}"));
     cmd.arg(format!("--output=type=local,dest={out_dir}", out_dir = out_dir.as_ref()));
-    cmd.arg(format!("--file={dockerfile_path}"));
     // cmd.arg("--build-arg=BUILDKIT_MULTI_PLATFORM=1"); // "deterministic output"? adds /linux_amd64/ to extracted cratesio
 
     // TODO: do without local Docker-compatible CLI
@@ -131,6 +131,8 @@ pub(crate) async fn build(
     for BuildContext { name, uri } in contexts {
         cmd.arg(format!("--build-context={name}={uri}"));
     }
+
+    cmd.arg(format!("--file={dockerfile_path}"));
 
     cmd.arg(dockerfile_path.parent().unwrap_or(dockerfile_path));
 

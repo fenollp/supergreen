@@ -435,9 +435,9 @@ async fn do_wrap_rustc(
         //     --mount=type=bind,source=Cargo.toml,target=Cargo.toml \
         //     --mount=type=bind,source=Cargo.lock,target=Cargo.lock \
 
-        // let cwd = Temp::new_dir().map_err(|e| anyhow!("Failed to create tmpdir 'cwd': {e}"))?;
-        let cwd = std::env::temp_dir().join(&metadata);
-        std::fs::create_dir_all(&cwd).unwrap();
+        let cwd = Temp::new_dir().map_err(|e| anyhow!("Failed to create tmpdir 'cwd': {e}"))?;
+        // let cwd = std::env::temp_dir().join(&metadata);
+        // std::fs::create_dir_all(&cwd).unwrap();
         let Some(cwd_path) = Utf8Path::from_path(cwd.as_path()) else {
             bail!("Path's UTF-8 encoding is corrupted: {cwd:?}")
         };
