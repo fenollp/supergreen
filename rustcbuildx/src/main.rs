@@ -79,18 +79,20 @@ async fn fallible_main(
         ["env", ..] => Ok(envs(argv(1)).await),
         ["pull"] => pull().await,
         ["push"] => push().await,
+        [rustc, "--crate-name", crate_name, ..] =>
+             wrap_rustc(crate_name, argv(1), call_rustc(rustc, argv(1))).await,
         [rustc, "-", ..] =>
              call_rustc(rustc, argv(1)).await,
+        [rustc, "-vV", ..] =>
+             call_rustc(rustc, argv(1)).await,
+        [_driver, rustc, "-vV", ..] =>
+             call_rustc(rustc, argv(2)).await,
         [driver, _rustc, "-"|"--crate-name", ..] => {
             // TODO: wrap driver? + rustc
             // driver: e.g. /home/maison/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/clippy-driver
             // cf. https://github.com/rust-lang/rust-clippy/tree/da27c979e29e78362b7a2a91ebcf605cb01da94c#using-clippy-driver
              call_rustc(driver, argv(2)).await
          }
-        [rustc, "--crate-name", crate_name, ..] =>
-             wrap_rustc(crate_name, argv(1), call_rustc(rustc, argv(1))).await,
-        [rustc, "-vV", ..] =>
-             call_rustc(rustc, argv(1)).await,
         _ => panic!("RUSTC_WRAPPER={arg0:?}'s input unexpected:\n\targz = {argz:?}\n\targs = {args:?}\n\tenvs = {vars:?}\n"),
     }
 }
