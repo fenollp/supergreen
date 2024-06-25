@@ -1,6 +1,7 @@
 [package]
-name = "cargo-green"
-description = "Cargo plugin to sandbox, cache & remote exec cargo builds"
+name = "supergreen"
+description = "Lib of common utils for cargo-green & rustcbuildx"
+publish = false
 authors.workspace = true
 categories.workspace = true
 edition.workspace = true
@@ -10,7 +11,5 @@ repository.workspace = true
 version.workspace = true
 
 [dependencies]
-anyhow.workspace = true
-supergreen.path = "../supergreen"
-# tokio.workspace = true
-which.workspace = true
+camino.workspace = true
+tokio.workspace = true

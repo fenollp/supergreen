@@ -7,6 +7,7 @@ use std::{
 
 use anyhow::{anyhow, Result};
 use camino::Utf8Path;
+use supergreen::extensions::ShowCmd;
 use tokio::{
     io::{AsyncBufRead, AsyncBufReadExt, BufReader as TokioBufReader, Lines},
     join,
@@ -19,7 +20,6 @@ use tokio::{
 use crate::{
     base::BaseImage,
     envs::{base_image, cache_image, runner},
-    extensions::ShowCmd,
     md::BuildContext,
     stage::Stage,
 };
@@ -70,17 +70,7 @@ pub(crate) async fn build(
 
     //TODO: (use if set) cmd.env("SOURCE_DATE_EPOCH", "0"); // https://reproducible-builds.org/docs/source-date-epoch
 
-    // docker buildx create \
-    //   --name remote-container \
-    //   --driver remote \
-    //   --driver-opt cacert=${PWD}/.certs/client/ca.pem,cert=${PWD}/.certs/client/cert.pem,key=${PWD}/.certs/client/key.pem,servername=<TLS_SERVER_NAME> \
-    //   tcp://localhost:1234
-
-    // docker buildx create \
-    //   --name container \
-    //   --driver=docker-container \
-    //   --driver-opt=[key=value,...]
-    // container
+    cmd.arg("--builder=supergreen");
 
     if false {
         cmd.arg("--no-cache");
@@ -93,7 +83,7 @@ pub(crate) async fn build(
 
     if let Some(img) = cache_image() {
         let img = img.trim_start_matches("docker-image://");
-        cmd.arg(format!("--cache-from=type=registry,ref={img}"));
+        cmd.arg(format!("--cache-from=type=registry,ref={img},mode=max"));
 
         let tag = Stage::new(krate.to_owned())?; // TODO: include enough info for repro
         if tag.to_string().starts_with("bin-") {

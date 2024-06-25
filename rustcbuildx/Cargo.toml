@@ -1,11 +1,11 @@
 [package]
+name = "rustcbuildx"
+description = "$RUSTC_WRAPPER tool to sandbox cargo builds and execute jobs remotely"
 authors.workspace = true
 categories.workspace = true
-description = "$RUSTC_WRAPPER tool to sandbox cargo builds and execute jobs remotely"
 edition.workspace = true
 keywords.workspace = true
 license.workspace = true
-name = "rustcbuildx"
 repository.workspace = true
 version.workspace = true
 
@@ -33,6 +33,7 @@ serde-jsonlines.workspace = true
 serde.workspace = true
 serde_json.workspace = true
 sha256.workspace = true
+supergreen.path = "../supergreen"
 szyk.workspace = true
 tokio.workspace = true
 toml.workspace = true

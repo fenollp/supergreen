@@ -11,12 +11,10 @@ use futures::{
     stream::{iter, StreamExt, TryStreamExt},
 };
 use serde_jsonlines::AsyncBufReadJsonLines;
+use supergreen::extensions::ShowCmd;
 use tokio::{io::BufReader, process::Command};
 
-use crate::{
-    envs::{base_image, cache_image, internal, log_path, runner, syntax},
-    extensions::ShowCmd,
-};
+use crate::envs::{base_image, cache_image, internal, log_path, runner, syntax};
 
 // TODO: tune logging verbosity https://docs.rs/clap-verbosity-flag/latest/clap_verbosity_flag/
 

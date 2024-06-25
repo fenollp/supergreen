@@ -10,13 +10,13 @@ use std::{
 use anyhow::{anyhow, bail, Result};
 use camino::{Utf8Path, Utf8PathBuf};
 use env_logger::{Env, Target};
+use supergreen::extensions::ShowCmd;
 use tokio::process::Command;
 
 use crate::{
     cli::{envs, exit_code, help, pull, push},
     cratesio::{from_cratesio_input_path, into_stage},
     envs::{base_image, internal, maybe_log, pass_env, runner, syntax, this},
-    extensions::ShowCmd,
     md::{BuildContext, Md},
     parse::RustcArgs,
     runner::{build, MARK_STDERR, MARK_STDOUT},
@@ -27,7 +27,6 @@ mod base;
 mod cli;
 mod cratesio;
 mod envs;
-mod extensions;
 mod md;
 mod parse;
 mod runner;
