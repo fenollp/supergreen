@@ -61,11 +61,11 @@ fn main() -> Result<ExitCode, Box<dyn std::error::Error>> {
     if let Err(e) = (|| -> Result<()> {
         let bin = ensure_binary_exists("rustcbuildx")?;
 
+        setup_build_driver()?;
+
         // TODO pull-images
         // TODO read package.metadata.green
         // TODO: TUI above cargo output
-
-        setup_build_driver()?;
 
         cmd.env("RUSTCBUILDX_LOG", env::var("RUSTCBUILDX_LOG").unwrap_or("debug".to_owned()));
         cmd.env(
@@ -111,14 +111,14 @@ fn ensure_binary_exists(name: &'static str) -> Result<PathBuf> {
 // https://docs.docker.com/build/drivers/remote/
 // https://docs.docker.com/build/drivers/kubernetes/
 fn setup_build_driver() -> Result<()> {
-    let mut cmd = /*tokio::process::*/Command::new("docker");
+    let mut cmd = Command::new("docker");
     cmd.arg("--debug");
     cmd.args(["buildx", "create"]);
+    cmd.arg("--name=supergreen");
+    cmd.arg("--driver=docker-container");
+    cmd.arg("--driver-opt=image=docker.io/moby/buildkit:buildx-stable-1@sha256:5d410bbb6d22b01fcaead1345936c5e0a0963eb6c3b190e38694e015467640fe");
 
     cmd.stdin(Stdio::null()).stdout(Stdio::null()).stderr(Stdio::null());
-
-    // Makes sure the underlying OS process dies with us
-    // cmd.kill_on_drop(true);
 
     let call = cmd.show();
     let envs: Vec<_> = cmd.get_envs().map(|(k, v)| format!("{k:?}={v:?}")).collect();
@@ -126,49 +126,9 @@ fn setup_build_driver() -> Result<()> {
 
     eprintln!("Starting {call} (env: {envs:?})`");
 
-    let _code = cmd.status()?;
-    //     .spawn()
-    //     .map_err(|e| anyhow!("Failed to spawn {}: {e}", cmd.show()))?
-    //     .wait()
-    //     .await
-    //     .map_err(|e| anyhow!("Failed to wait {}: {e}", cmd.show()))?
-    //     .code();
-    // Ok(exit_code(code))
-
-    // let errf = |e| anyhow!("Failed starting {call}: {e}");
-    // let mut child = cmd.spawn().map_err(errf)?;
-
-    // let pid = child.id().unwrap_or_default();
-    // log::info!(target: &krate, "Started {call} as pid={pid}`");
-    // let krate = format!("{krate}@{pid}");
-
-    // let out = TokioBufReader::new(child.stdout.take().expect("started")).lines();
-    // let err = TokioBufReader::new(child.stderr.take().expect("started")).lines();
-
-    // // TODO: try https://github.com/docker/buildx/pull/2500/files + find podman equivalent?
-    // let out_task = fwd(krate.clone(), out, "stdout", "➤", MARK_STDOUT);
-    // let err_task = fwd(krate.clone(), err, "stderr", "✖", MARK_STDERR);
-
-    // let (secs, code) = {
-    //     let start = Instant::now();
-    //     let res = child.wait().await;
-    //     let elapsed = start.elapsed();
-    //     (elapsed, res.map_err(|e| anyhow!("Failed calling {call}: {e}"))?.code())
-    // };
-    // log::info!(target: &krate, "command `{command} build` ran in {secs:?}: {code:?}");
-
-    // let longish = Duration::from_secs(2);
-    // match join!(timeout(longish, out_task), timeout(longish, err_task)) {
-    //     (Err(e), _) | (_, Err(e)) => panic!(">>> {krate} ({longish:?}): {e}"),
-    //     (_, _) => {}
-    // }
-    // drop(child);
-
-    // docker buildx create \
-    //   --name supergreen \
-    //   --driver=docker-container \
-    //   --driver-opt=image=docker.io/moby/buildkit:buildx-stable-1@sha256:5d410bbb6d22b01fcaead1345936c5e0a0963eb6c3b190e38694e015467640fe
-    // container
+    if !cmd.status()?.success() {
+        panic!("FIXME")
+    }
 
     Ok(())
 }

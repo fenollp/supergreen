@@ -176,7 +176,7 @@ pub(crate) async fn pull() -> Result<ExitCode> {
     let code = iter(to_pull.into_iter())
         .map(|img| async move { do_pull(img).await })
         .boxed() // https://github.com/rust-lang/rust/issues/104382
-        .buffered(10)
+        .buffer_unordered(10)
         .try_fold(zero, |a, b| if a == zero { ok(b) } else { ok(a) })
         .await?;
     Ok(exit_code(code))
