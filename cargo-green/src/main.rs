@@ -119,6 +119,7 @@ fn setup_build_driver() -> Result<()> {
     cmd.arg("--debug");
     cmd.args(["buildx", "create"]);
     cmd.arg(format!("--name={name}"));
+    cmd.arg("--bootstrap");
     cmd.arg("--driver=docker-container");
     cmd.arg("--driver-opt=image=docker.io/moby/buildkit:buildx-stable-1@sha256:5d410bbb6d22b01fcaead1345936c5e0a0963eb6c3b190e38694e015467640fe");
 
@@ -131,7 +132,7 @@ fn setup_build_driver() -> Result<()> {
     eprintln!("Calling {call} (env: {envs:?})`");
 
     if !cmd.status()?.success() {
-        panic!("FIXME")
+        bail!("BUG: failed to create builder")
     }
 
     Ok(())
@@ -140,7 +141,7 @@ fn setup_build_driver() -> Result<()> {
 fn try_removing_previous_builder(name: &str) {
     let mut cmd = Command::new(runner());
     cmd.arg("--debug");
-    cmd.args(["buildx", "rm", name]);
+    cmd.args(["buildx", "rm", name, "--keep-state", "--force"]);
 
     cmd.stdin(Stdio::null()).stdout(Stdio::null()).stderr(Stdio::null());
 
