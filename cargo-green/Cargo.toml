@@ -12,4 +12,5 @@ version.workspace = true
 [dependencies]
 anyhow.workspace = true
 supergreen.path = "../supergreen"
+tokio.workspace = true
 which.workspace = true
