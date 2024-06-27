@@ -8,7 +8,11 @@ use std::{
 };
 
 use anyhow::{anyhow, bail, Result};
-use supergreen::{envs::runner, extensions::ShowCmd};
+use supergreen::{
+    cli::pull,
+    envs::{builder_image, runner},
+    extensions::ShowCmd,
+};
 use tokio::process::Command;
 
 /*
@@ -75,6 +79,8 @@ async fn build(cmd: &mut Command) -> Result<()> {
 
     setup_build_driver().await?;
 
+    let _ = pull().await?;
+
     // TODO pull-images
     // TODO read package.metadata.green
     // TODO: TUI above cargo output
@@ -126,7 +132,8 @@ async fn setup_build_driver() -> Result<()> {
     cmd.arg(format!("--name={name}"));
     cmd.arg("--bootstrap");
     cmd.arg("--driver=docker-container");
-    cmd.arg("--driver-opt=image=docker.io/moby/buildkit:buildx-stable-1@sha256:5d410bbb6d22b01fcaead1345936c5e0a0963eb6c3b190e38694e015467640fe");
+    let img = builder_image().await.trim_start_matches("docker-image://");
+    cmd.arg(&format!("--driver-opt=image={img}"));
 
     cmd.kill_on_drop(true);
     cmd.stdin(Stdio::null()).stdout(Stdio::null()).stderr(Stdio::null());

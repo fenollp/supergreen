@@ -14,7 +14,7 @@ use serde_jsonlines::AsyncBufReadJsonLines;
 use tokio::{io::BufReader, process::Command};
 
 use crate::{
-    envs::{base_image, cache_image, internal, log_path, runner, syntax},
+    envs::{base_image, builder_image, cache_image, internal, log_path, runner, syntax},
     extensions::ShowCmd,
 };
 
@@ -149,6 +149,7 @@ pub async fn pull() -> Result<ExitCode> {
     let imgs = [
         (internal::syntax(), syntax().await),
         (internal::base_image(), &base_image().await.base()),
+        (internal::builder_image(), builder_image().await),
     ];
 
     let mut to_pull = Vec::with_capacity(imgs.len());
