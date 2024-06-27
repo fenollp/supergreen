@@ -579,24 +579,14 @@ name = "rustcbuildx"
 version = "0.4.0"
 dependencies = [
  "anyhow",
- "assertx",
  "camino",
  "env_logger",
- "futures",
  "home",
  "log",
- "mktemp",
- "nutype",
  "pretty_assertions",
  "rustflags",
- "serde",
- "serde-jsonlines",
- "serde_json",
- "sha256",
  "supergreen",
- "szyk",
  "tokio",
- "toml",
 ]
 
 [[package]]
@@ -724,8 +714,21 @@ dependencies = [
 name = "supergreen"
 version = "0.4.0"
 dependencies = [
+ "anyhow",
+ "assertx",
  "camino",
+ "futures",
+ "log",
+ "mktemp",
+ "nutype",
+ "pretty_assertions",
+ "serde",
+ "serde-jsonlines",
+ "serde_json",
+ "sha256",
+ "szyk",
  "tokio",
+ "toml",
 ]
 
 [[package]]

@@ -7,7 +7,6 @@ use std::{
 
 use anyhow::{anyhow, Result};
 use camino::Utf8Path;
-use supergreen::extensions::ShowCmd;
 use tokio::{
     io::{AsyncBufRead, AsyncBufReadExt, BufReader as TokioBufReader, Lines},
     join,
@@ -20,15 +19,16 @@ use tokio::{
 use crate::{
     base::BaseImage,
     envs::{base_image, cache_image, runner},
+    extensions::ShowCmd,
     md::BuildContext,
     stage::Stage,
 };
 
-pub(crate) const MARK_STDOUT: &str = "::STDOUT:: ";
-pub(crate) const MARK_STDERR: &str = "::STDERR:: ";
+pub const MARK_STDOUT: &str = "::STDOUT:: ";
+pub const MARK_STDERR: &str = "::STDERR:: ";
 
 #[must_use]
-pub(crate) async fn maybe_lock_image(mut img: String) -> String {
+pub async fn maybe_lock_image(mut img: String) -> String {
     // Lock image, as podman(4.3.1) does not respect --pull=false (fully, anyway)
     if img.starts_with("docker-image://") && !img.contains("@sha256:") {
         if let Some(line) = Command::new(runner())
@@ -48,7 +48,7 @@ pub(crate) async fn maybe_lock_image(mut img: String) -> String {
     img
 }
 
-pub(crate) async fn build(
+pub async fn build(
     krate: &str,
     command: &str,
     dockerfile_path: &Utf8Path,
