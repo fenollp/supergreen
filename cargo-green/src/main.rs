@@ -8,7 +8,7 @@ use std::{
 };
 
 use anyhow::{anyhow, bail, Result};
-use supergreen::extensions::ShowCmd;
+use supergreen::{envs::runner, extensions::ShowCmd};
 
 /*
 
@@ -111,10 +111,14 @@ fn ensure_binary_exists(name: &'static str) -> Result<PathBuf> {
 // https://docs.docker.com/build/drivers/remote/
 // https://docs.docker.com/build/drivers/kubernetes/
 fn setup_build_driver() -> Result<()> {
-    let mut cmd = Command::new("docker");
+    let name = "supergreen";
+
+    try_removing_previous_builder(name);
+
+    let mut cmd = Command::new(runner());
     cmd.arg("--debug");
     cmd.args(["buildx", "create"]);
-    cmd.arg("--name=supergreen");
+    cmd.arg(format!("--name={name}"));
     cmd.arg("--driver=docker-container");
     cmd.arg("--driver-opt=image=docker.io/moby/buildkit:buildx-stable-1@sha256:5d410bbb6d22b01fcaead1345936c5e0a0963eb6c3b190e38694e015467640fe");
 
@@ -124,11 +128,27 @@ fn setup_build_driver() -> Result<()> {
     let envs: Vec<_> = cmd.get_envs().map(|(k, v)| format!("{k:?}={v:?}")).collect();
     let envs = envs.join(" ");
 
-    eprintln!("Starting {call} (env: {envs:?})`");
+    eprintln!("Calling {call} (env: {envs:?})`");
 
     if !cmd.status()?.success() {
         panic!("FIXME")
     }
 
     Ok(())
+}
+
+fn try_removing_previous_builder(name: &str) {
+    let mut cmd = Command::new(runner());
+    cmd.arg("--debug");
+    cmd.args(["buildx", "rm", name]);
+
+    cmd.stdin(Stdio::null()).stdout(Stdio::null()).stderr(Stdio::null());
+
+    let call = cmd.show();
+    let envs: Vec<_> = cmd.get_envs().map(|(k, v)| format!("{k:?}={v:?}")).collect();
+    let envs = envs.join(" ");
+
+    eprintln!("Calling {call} (env: {envs:?})`");
+
+    let _ = cmd.status();
 }
