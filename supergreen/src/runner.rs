@@ -44,6 +44,7 @@ pub async fn maybe_lock_image(mut img: String) -> String {
         {
             img.push_str(line.trim_start_matches(|c| c != '@'));
         }
+        // FIXME: else HTTP read registry for platform
     }
     img
 }

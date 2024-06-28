@@ -9,7 +9,6 @@ use std::{
 
 use anyhow::{anyhow, bail, Result};
 use supergreen::{
-    cli::pull,
     envs::{builder_image, runner},
     extensions::ShowCmd,
 };
@@ -79,9 +78,6 @@ async fn build(cmd: &mut Command) -> Result<()> {
 
     setup_build_driver().await?;
 
-    let _ = pull().await?;
-
-    // TODO pull-images
     // TODO read package.metadata.green
     // TODO: TUI above cargo output
 
