@@ -211,9 +211,6 @@ $(
     - name: Envs
       run: /home/runner/.cargo/bin/rustcbuildx env
 
-    - name: Pre-pull images
-      run: /home/runner/.cargo/bin/rustcbuildx pull
-
     - name: Envs again
       run: /home/runner/.cargo/bin/rustcbuildx env
 
@@ -331,11 +328,9 @@ set -x
     tmplogs=/tmp/clis-$name_at_version.logs.txt
     if [[ "$clean" = '1' ]]; then
       rm -rf "$tmptrgt"
-      docker buildx rm --force supergreen
     fi
     CARGO_TARGET_DIR=/tmp/rstcbldx cargo install --locked --frozen --offline --force --root=/tmp/rstcbldx --path="$PWD"/rustcbuildx
     CARGO_TARGET_DIR=/tmp/crggreen cargo install --locked --frozen --offline --force --root=/tmp/crggreen --path="$PWD"/cargo-green
-    cargo run --locked --frozen --offline --bin=rustcbuildx pull
     ls -lha /tmp/rstcbldx/bin/rustcbuildx
     ls -lha /tmp/crggreen/bin/cargo-green
     rm $tmplogs >/dev/null 2>&1 || true
@@ -351,7 +346,7 @@ set -x
     CARGO_TARGET_DIR="$tmptrgt" \
       \cargo green -v build --jobs=${jobs:-1} --all-targets --all-features --locked --frozen --offline
       # FIXME: this doesn't depend on $name_at_version
-    if [[ "$clean" = 1 ]]; then docker buildx du --builder=supergreen --verbose | tee --append "$tmplogs" || exit 1; docker buildx rm --force supergreen; fi
+    if [[ "$clean" = 1 ]]; then docker buildx du --builder=supergreen --verbose | tee --append "$tmplogs" || exit 1; fi
     case "$(wc "$tmplogs")" in '0 0 0 '*) ;;
                                        *) $PAGER "$tmplogs" ;; esac
     exit ;;
@@ -382,7 +377,6 @@ tmpbins=/tmp
 
 if [[ "$clean" = '1' ]]; then
   rm -rf "$tmptrgt"
-  docker buildx rm --force supergreen
 fi
 
 rm -f "$tmpgooo".*
@@ -400,10 +394,6 @@ send \
     '&&' touch "$tmpgooo".installed
 tmux split-window
 
-send cargo run --locked --frozen --offline --bin=rustcbuildx pull '&&' touch "$tmpgooo".ready
-tmux select-layout even-vertical
-tmux split-window
-
 send \
   CARGO_TARGET_DIR=/tmp/crggreen cargo install --locked --frozen --offline --force --path="$gitdir"/cargo-green \
     '&&' touch "$tmpgooo".installed_bis \
@@ -412,14 +402,14 @@ tmux select-layout even-vertical
 tmux split-window
 
 send \
-  'until' '[[' -f "$tmpgooo".installed ']] && [[' -f "$tmpgooo".installed_bis ']] && [[' -f "$tmpgooo".ready ']];' \
+  'until' '[[' -f "$tmpgooo".installed ']] && [[' -f "$tmpgooo".installed_bis ']];' \
   'do' sleep '.1;' 'done' '&&' rm "$tmpgooo".* '&&' \
   RUSTCBUILDX_LOG=debug \
   RUSTCBUILDX_LOG_PATH="$tmplogs" \
   RUSTCBUILDX_CACHE_IMAGE="${RUSTCBUILDX_CACHE_IMAGE:-}" \
   PATH=/tmp/crggreen/bin:"$PATH" \
     CARGO_TARGET_DIR="$tmptrgt" \cargo green -vv install --jobs=${jobs:-1} --root=$tmpbins --locked --force "$(as_install "$name_at_version")" "$args" \
-  '&&' 'if' '[[' "$clean" '=' '1' ']];' 'then' docker buildx du --builder=supergreen --verbose '|' tee --append "$tmplogs" '||' 'exit' '1;' docker buildx rm --force supergreen ';' 'fi' \
+  '&&' 'if' '[[' "$clean" '=' '1' ']];' 'then' docker buildx du --builder=supergreen --verbose '|' tee --append "$tmplogs" '||' 'exit' '1;' 'fi' \
   '&&' tmux kill-session -t "$session_name"
 tmux select-layout even-vertical
 

@@ -1,6 +1,6 @@
 use std::{
     collections::BTreeSet,
-    mem,
+    env, mem,
     process::Stdio,
     time::{Duration, Instant},
 };
@@ -71,7 +71,11 @@ pub async fn build(
 
     //TODO: (use if set) cmd.env("SOURCE_DATE_EPOCH", "0"); // https://reproducible-builds.org/docs/source-date-epoch
 
-    cmd.arg("--builder=supergreen");
+    if let Ok(hst) = env::var("DOCKER_HOST") {
+        cmd.env("DOCKER_HOST", hst);
+    } else if let Ok(ctx) = env::var("BUILDX_BUILDER") {
+        cmd.env("BUILDX_BUILDER", ctx);
+    }
 
     if false {
         cmd.arg("--no-cache");
@@ -132,6 +136,27 @@ pub async fn build(
     let envs = envs.join(" ");
 
     log::info!(target: &krate, "Starting {call} (env: {envs:?})`");
+    for var in [
+        "DOCKER_API_VERSION",
+        "DOCKER_CERT_PATH",
+        "DOCKER_CONFIG",
+        "DOCKER_CONTENT_TRUST_SERVER",
+        "DOCKER_CONTENT_TRUST",
+        "DOCKER_CONTEXT",
+        "DOCKER_DEFAULT_PLATFORM",
+        "DOCKER_HIDE_LEGACY_COMMANDS",
+        "DOCKER_HOST",
+        "DOCKER_TLS",
+        "DOCKER_TLS_VERIFY",
+        "BUILDKIT_PROGRESS",
+        "HTTP_PROXY",
+        "HTTPS_PROXY",
+        "NO_PROXY",
+    ] {
+        if let Ok(val) = env::var(var) {
+            log::info!(target: &krate, "note env: {var}={val}");
+        }
+    }
     let errf = |e| anyhow!("Failed starting {call}: {e}");
     let mut child = cmd.spawn().map_err(errf)?;
 

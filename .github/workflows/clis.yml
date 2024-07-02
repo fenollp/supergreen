@@ -99,9 +99,6 @@ jobs:
     - name: Envs
       run: /home/runner/.cargo/bin/rustcbuildx env
 
-    - name: Pre-pull images
-      run: /home/runner/.cargo/bin/rustcbuildx pull
-
     - name: Envs again
       run: /home/runner/.cargo/bin/rustcbuildx env
 
@@ -212,9 +209,6 @@ jobs:
 
     - name: Envs
       run: /home/runner/.cargo/bin/rustcbuildx env
-
-    - name: Pre-pull images
-      run: /home/runner/.cargo/bin/rustcbuildx pull
 
     - name: Envs again
       run: /home/runner/.cargo/bin/rustcbuildx env
@@ -327,9 +321,6 @@ jobs:
     - name: Envs
       run: /home/runner/.cargo/bin/rustcbuildx env
 
-    - name: Pre-pull images
-      run: /home/runner/.cargo/bin/rustcbuildx pull
-
     - name: Envs again
       run: /home/runner/.cargo/bin/rustcbuildx env
 
@@ -440,9 +431,6 @@ jobs:
 
     - name: Envs
       run: /home/runner/.cargo/bin/rustcbuildx env
-
-    - name: Pre-pull images
-      run: /home/runner/.cargo/bin/rustcbuildx pull
 
     - name: Envs again
       run: /home/runner/.cargo/bin/rustcbuildx env
@@ -555,9 +543,6 @@ jobs:
     - name: Envs
       run: /home/runner/.cargo/bin/rustcbuildx env
 
-    - name: Pre-pull images
-      run: /home/runner/.cargo/bin/rustcbuildx pull
-
     - name: Envs again
       run: /home/runner/.cargo/bin/rustcbuildx env
 
@@ -668,9 +653,6 @@ jobs:
 
     - name: Envs
       run: /home/runner/.cargo/bin/rustcbuildx env
-
-    - name: Pre-pull images
-      run: /home/runner/.cargo/bin/rustcbuildx pull
 
     - name: Envs again
       run: /home/runner/.cargo/bin/rustcbuildx env
@@ -783,9 +765,6 @@ jobs:
     - name: Envs
       run: /home/runner/.cargo/bin/rustcbuildx env
 
-    - name: Pre-pull images
-      run: /home/runner/.cargo/bin/rustcbuildx pull
-
     - name: Envs again
       run: /home/runner/.cargo/bin/rustcbuildx env
 
@@ -897,9 +876,6 @@ jobs:
     - name: Envs
       run: /home/runner/.cargo/bin/rustcbuildx env
 
-    - name: Pre-pull images
-      run: /home/runner/.cargo/bin/rustcbuildx pull
-
     - name: Envs again
       run: /home/runner/.cargo/bin/rustcbuildx env
 
@@ -1010,9 +986,6 @@ jobs:
 
     - name: Envs
       run: /home/runner/.cargo/bin/rustcbuildx env
-
-    - name: Pre-pull images
-      run: /home/runner/.cargo/bin/rustcbuildx pull
 
     - name: Envs again
       run: /home/runner/.cargo/bin/rustcbuildx env
