@@ -219,7 +219,7 @@ where
 {
     let fwder = if mark == MARK_STDOUT { fwd_stdout } else { fwd_stderr };
     spawn(async move {
-        log::debug!(target: &krate, "Starting {name} task");
+        log::debug!(target: &krate, "Starting {name} task {badge}");
         let mut buf = String::new();
         loop {
             match stdio.next_line().await {
