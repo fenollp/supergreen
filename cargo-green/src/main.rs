@@ -9,7 +9,8 @@ use std::{
 
 use anyhow::{anyhow, bail, Result};
 use supergreen::{
-    envs::{builder_image, runner},
+    base::BaseImage,
+    envs::{base_image, builder_image, cache_image, incremental, internal, runner, syntax},
     extensions::ShowCmd,
 };
 use tokio::process::Command;
@@ -49,6 +50,7 @@ async fn main() -> Result<ExitCode, Box<dyn std::error::Error>> {
         return Ok(ExitCode::FAILURE);
     }
 
+    // FIXME: make sure this handles cargo plugins
     let mut cmd = Command::new(env::var("CARGO").unwrap_or("cargo".into()));
     if let Some(arg) = args.next().as_deref() {
         cmd.arg(arg);
@@ -74,37 +76,6 @@ async fn main() -> Result<ExitCode, Box<dyn std::error::Error>> {
 }
 
 async fn build(cmd: &mut Command) -> Result<()> {
-    let bin = ensure_binary_exists("rustcbuildx")?;
-
-    // FIXME https://github.com/docker/buildx/issues/2564
-    // https://docs.docker.com/build/building/variables/#buildx_builder
-    if let Ok(ctx) = env::var("DOCKER_HOST") {
-        eprintln!("$DOCKER_HOST is set to {ctx:?}");
-    } else if let Ok(ctx) = env::var("BUILDX_BUILDER") {
-        eprintln!("$BUILDX_BUILDER is set to {ctx:?}");
-    // } else if let Ok(_remote) = env::var("CARGOGREEN_REMOTE") {
-    //     // docker buildx create \
-    //     //   --name supergreen \
-    //     //   --driver remote \
-    //     //   tcp://localhost:1234
-    //     //{remote}
-    //     env::set_var("DOCKER_CONTEXT", "supergreen"); //FIXME: ensure this gets passed down & used
-    } else {
-        setup_build_driver("supergreen").await?; // FIXME? maybe_..
-        env::set_var("BUILDX_BUILDER", "supergreen");
-    }
-
-    // TODO read package.metadata.green
-    // TODO: TUI above cargo output (? https://docs.rs/prodash )
-
-    cmd.env("RUSTCBUILDX_LOG", env::var("RUSTCBUILDX_LOG").unwrap_or("debug".to_owned()));
-    cmd.env(
-        "RUSTCBUILDX_LOG_PATH",
-        env::var("RUSTCBUILDX_LOG_PATH").unwrap_or("/tmp/cargo-green.log".to_owned()),
-    );
-    if let Ok(ctx) = env::var("RUSTCBUILDX_CACHE_IMAGE") {
-        cmd.env("RUSTCBUILDX_CACHE_IMAGE", ctx);
-    }
     if let Ok(wrapper) = env::var("RUSTC_WRAPPER") {
         bail!(
             r#"
@@ -113,7 +84,70 @@ async fn build(cmd: &mut Command) -> Result<()> {
 "#
         )
     }
-    cmd.env("RUSTC_WRAPPER", bin);
+    cmd.env("RUSTC_WRAPPER", ensure_binary_exists("rustcbuildx")?);
+
+    // FIXME https://github.com/docker/buildx/issues/2564
+    // https://docs.docker.com/build/building/variables/#buildx_builder
+    if let Ok(ctx) = env::var("DOCKER_HOST") {
+        eprintln!("$DOCKER_HOST is set to {ctx:?}");
+    } else if let Ok(ctx) = env::var("BUILDX_BUILDER") {
+        eprintln!("$BUILDX_BUILDER is set to {ctx:?}");
+    } else if let Ok(remote) = env::var("CARGOGREEN_REMOTE") {
+        //     // docker buildx create \
+        //     //   --name supergreen \
+        //     //   --driver remote \
+        //     //   tcp://localhost:1234
+        //     //{remote}
+        //     env::set_var("DOCKER_CONTEXT", "supergreen"); //FIXME: ensure this gets passed down & used
+        panic!("$CARGOGREEN_REMOTE is reserved but set to: {remote}");
+    } else if false {
+        setup_build_driver("supergreen").await?; // FIXME? maybe_..
+        env::set_var("BUILDX_BUILDER", "supergreen");
+    }
+
+    // TODO read package.metadata.green
+    // TODO: TUI above cargo output (? https://docs.rs/prodash )
+
+    if let Ok(log) = env::var("CARGOGREEN_LOG") {
+        for (var, def) in [
+            //
+            (internal::RUSTCBUILDX_LOG, log),
+            (internal::RUSTCBUILDX_LOG_PATH, "/tmp/cargo-green.log".to_owned()),
+        ] {
+            cmd.env(var, env::var(var).unwrap_or(def.to_owned()));
+        }
+    }
+
+    // RUSTCBUILDX is handled by `rustcbuildx`
+    // TODO? set a CARGOGREEN=1
+
+    let base_image = base_image().await;
+    env::set_var("RUSTCBUILDX_BASE_IMAGE_BLOCK_", base_image.block());
+    if let Some(val) = internal::runs_on_network() {
+        cmd.env(internal::RUSTCBUILDX_RUNS_ON_NETWORK, val);
+    } else {
+        cmd.env(
+            internal::RUSTCBUILDX_RUNS_ON_NETWORK,
+            if matches!(base_image, BaseImage::Image(_)) { "none" } else { "" },
+        );
+    }
+
+    cmd.env(internal::RUSTCBUILDX_BUILDER_IMAGE, builder_image().await);
+    if let Some(val) = cache_image() {
+        cmd.env(internal::RUSTCBUILDX_CACHE_IMAGE, val);
+    }
+    if incremental() {
+        cmd.env(internal::RUSTCBUILDX_INCREMENTAL, "1");
+    }
+    // RUSTCBUILDX_LOG
+    // RUSTCBUILDX_LOG_PATH
+    // RUSTCBUILDX_LOG_STYLE
+    cmd.env(internal::RUSTCBUILDX_RUNNER, runner());
+    cmd.env(internal::RUSTCBUILDX_SYNTAX, syntax().await);
+
+    if let Some(val) = cache_image() {
+        cmd.env(internal::RUSTCBUILDX_CACHE_IMAGE, val);
+    }
 
     Ok(())
 }
@@ -134,7 +168,10 @@ fn ensure_binary_exists(name: &'static str) -> Result<PathBuf> {
 // https://docs.docker.com/build/drivers/remote/
 // https://docs.docker.com/build/drivers/kubernetes/
 async fn setup_build_driver(name: &str) -> Result<()> {
-    // try_removing_previous_builder(name).await;
+    if false {
+        // TODO: reuse old state but try auto-upgrading builder impl
+        try_removing_previous_builder(name).await;
+    }
 
     let mut cmd = Command::new(runner());
     cmd.arg("--debug");
@@ -165,19 +202,20 @@ async fn setup_build_driver(name: &str) -> Result<()> {
     Ok(())
 }
 
-// async fn try_removing_previous_builder(name: &str) {
-//     let mut cmd = Command::new(runner());
-//     cmd.arg("--debug");
-//     cmd.args(["buildx", "rm", name, "--keep-state", "--force"]);
+#[allow(dead_code)]
+async fn try_removing_previous_builder(name: &str) {
+    let mut cmd = Command::new(runner());
+    cmd.arg("--debug");
+    cmd.args(["buildx", "rm", name, "--keep-state", "--force"]);
 
-//     cmd.kill_on_drop(true);
-//     cmd.stdin(Stdio::null()).stdout(Stdio::null()).stderr(Stdio::null());
+    cmd.kill_on_drop(true);
+    cmd.stdin(Stdio::null()).stdout(Stdio::null()).stderr(Stdio::null());
 
-//     let call = cmd.show();
-//     let envs: Vec<_> = cmd.as_std().get_envs().map(|(k, v)| format!("{k:?}={v:?}")).collect();
-//     let envs = envs.join(" ");
+    let call = cmd.show();
+    let envs: Vec<_> = cmd.as_std().get_envs().map(|(k, v)| format!("{k:?}={v:?}")).collect();
+    let envs = envs.join(" ");
 
-//     eprintln!("Calling {call} (env: {envs:?})`");
+    eprintln!("Calling {call} (env: {envs:?})`");
 
-//     let _ = cmd.status().await;
-// }
+    let _ = cmd.status().await;
+}

@@ -26,5 +26,4 @@ toml.workspace = true
 
 [dev-dependencies]
 assertx.workspace = true
-mktemp.workspace = true
 pretty_assertions.workspace = true

@@ -1,12 +1,9 @@
 // Our own MetaData utils
 
-use std::{
-    collections::BTreeSet,
-    fs::{self},
-};
+use std::{collections::BTreeSet, str::FromStr};
 
-use anyhow::{anyhow, bail, Result};
-use camino::{Utf8Path, Utf8PathBuf};
+use anyhow::{bail, Result};
+use camino::Utf8PathBuf;
 use serde::{Deserialize, Serialize};
 
 use crate::{base::RUST, cratesio::CRATESIO_STAGE_PREFIX, stage::Stage};
@@ -21,6 +18,12 @@ pub struct Md {
 
     pub stages: BTreeSet<DockerfileStage>,
 }
+impl FromStr for Md {
+    type Err = toml::de::Error;
+    fn from_str(md_raw: &str) -> Result<Self, Self::Err> {
+        toml::de::from_str(md_raw)
+    }
+}
 impl Md {
     #[inline]
     #[must_use]
@@ -28,15 +31,8 @@ impl Md {
         Self { this: this.to_owned(), deps: vec![], contexts: [].into(), stages: [].into() }
     }
 
-    pub fn from_file(md_path: &Utf8Path) -> Result<Self> {
-        // TODO: deser from stream
-        let md_raw =
-            fs::read_to_string(md_path).map_err(|e| anyhow!("Failed reading Md {md_path}: {e}"))?;
-        toml::de::from_str(&md_raw).map_err(|e| anyhow!("Failed deserializing Md {md_path}: {e}"))
-    }
-
-    pub fn to_string(&self) -> Result<String> {
-        toml::to_string_pretty(self).map_err(|e| anyhow!("Failed serializing Md: {e}"))
+    pub fn to_string_pretty(&self) -> Result<String, toml::ser::Error> {
+        toml::to_string_pretty(self)
     }
 
     pub fn rust_stage(&self) -> Option<DockerfileStage> {
@@ -181,7 +177,7 @@ fn md_ser() {
         ..Default::default()
     };
 
-    let ser = md.to_string().unwrap();
+    let ser = md.to_string_pretty().unwrap();
     pretty_assertions::assert_eq!(
         r#"
 this = "711ba64e1183a234"
@@ -201,16 +197,12 @@ uri = "docker-image://docker.io/library/rust:1.77.2-slim@sha256:090d8d4e37850b34
 
 #[test]
 fn md_utils() {
-    use std::fs;
-
-    use mktemp::Temp;
-
     use crate::base::RUST;
 
     const LONG:&str= "docker-image://docker.io/library/rust:1.69.0-slim@sha256:8b85a8a6bf7ed968e24bab2eae6f390d2c9c8dbed791d3547fef584000f48f9e";
 
-    let tmp = Temp::new_file().unwrap();
-    fs::write(&tmp, format!(r#"this = "9494aa6093cd94c9"
+    let origin = &format!(
+        r#"this = "9494aa6093cd94c9"
 deps = ["0dc1fe2644e3176a"]
 contexts = [
   {{ name = "rust-base", uri = {LONG:?} }},
@@ -218,7 +210,8 @@ contexts = [
   {{ name = "crate_out-...", uri = "/home/maison/code/thing.git/target/debug/build/rustversion-ae69baa7face5565/out" }},
 ]
 stages = []
-"#)).unwrap();
+"#
+    );
 
     let this = "9494aa6093cd94c9".to_owned();
     let deps = vec!["0dc1fe2644e3176a".to_owned()];
@@ -235,7 +228,7 @@ stages = []
                 .to_owned(),
         },
     ];
-    let md = Md::from_file(tmp.as_path().try_into().unwrap()).unwrap();
+    let md = Md::from_str(origin).unwrap();
     assert_eq!(md.this, this);
     assert_eq!(md.deps, deps);
     assert_eq!(md.contexts, contexts.clone().into());
@@ -248,22 +241,14 @@ stages = []
 
 #[test]
 fn md_parsing_failure() {
-    use std::fs;
-
-    use mktemp::Temp;
-
-    let tmp = Temp::new_file().unwrap();
-    fs::write(&tmp, r#"this = "81529f4c2380d9ec"
+    let origin = r#"this = "81529f4c2380d9ec"
 deps = [[]]
 contexts = [
   { name = "rust", uri = "docker-image://docker.io/library/rust:1.77.2-slim@sha256:090d8d4e37850b349b59912647cc7a35c6a64dba8168f6998562f02483fa37d7" },
 ]
-"#).unwrap();
+"#;
 
-    let err = Md::from_file(tmp.as_path().try_into().unwrap())
-        .err()
-        .map(|x| x.to_string())
-        .unwrap_or_default();
+    let err = Md::from_str(origin).err().map(|x| x.to_string()).unwrap_or_default();
     dbg!(&err);
     assert!(err.contains("\n2 | deps = [[]]\n"));
     assert!(err.contains("\ninvalid type: sequence, expected a string\n"));

@@ -62,6 +62,7 @@ impl BaseImage {
             return None;
         };
 
+        // https://rust-lang.github.io/rustup/concepts/toolchains.html#toolchain-specification
         for channel in ["nightly", "stable", "beta"] {
             let suffix = format!("-{channel}");
             if version.ends_with(&suffix) {
@@ -90,16 +91,19 @@ impl BaseImage {
         let base = self.base();
         let base = base.trim_start_matches("docker-image://");
 
-        let mut block = String::new();
-        if let BaseImage::RustcV(RustcV { date, channel, .. }) = self {
-            // TODO? maybe use commit & version as selector too?
+        match self {
+            BaseImage::Image(_) => {
+                format!("FROM {base} AS {RUST}\n")
+            }
+            BaseImage::RustcV(RustcV { date, channel, .. }) => {
+                // TODO? maybe use commit & version as selector too?
 
-            // FIXME: multiplatformify (using auto ARG.s)
+                // FIXME: multiplatformify (using auto ARG.s)
 
-            // TODO: use https://github.com/reproducible-containers/repro-sources-list.sh
+                // TODO: use https://github.com/reproducible-containers/repro-sources-list.sh
 
-            if channel == "nightly" {
-                block.push_str(&format!(r#"
+                format!(
+                    r#"
 FROM scratch AS rustup
 ADD --chmod=0755 --checksum=sha256:6aeece6993e902708983b209d04c0d1dbb14ebb405ddb87def578d41f920f56d \
   https://static.rust-lang.org/rustup/archive/1.27.1/x86_64-unknown-linux-gnu/rustup-init /rustup-init
@@ -117,7 +121,7 @@ RUN \
 RUN \
   --mount=from=rustup,source=/rustup-init,target=/rustup-init \
     set -ux \
- && /rustup-init -y --no-modify-path --profile minimal --default-toolchain nightly-{date} \
+ && /rustup-init -y --no-modify-path --profile minimal --default-toolchain {channel}-{date} \
  && chmod -R a+w $RUSTUP_HOME $CARGO_HOME \
  && rustup --version \
  && cargo --version \
@@ -125,15 +129,8 @@ RUN \
  && apt-get remove -y --auto-remove \
  && rm -rf /var/lib/apt/lists/*
 "#
-                    )[1..],
-                );
+                )
             }
-        }
-
-        if block.is_empty() {
-            format!("FROM {base} AS {RUST}\n")
-        } else {
-            block
         }
     }
 }

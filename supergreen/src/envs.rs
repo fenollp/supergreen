@@ -20,6 +20,7 @@ pub mod internal {
     pub const RUSTCBUILDX_LOG_PATH: &str = "RUSTCBUILDX_LOG_PATH";
     pub const RUSTCBUILDX_LOG_STYLE: &str = "RUSTCBUILDX_LOG_STYLE";
     pub const RUSTCBUILDX_RUNNER: &str = "RUSTCBUILDX_RUNNER";
+    pub const RUSTCBUILDX_RUNS_ON_NETWORK: &str = "RUSTCBUILDX_RUNS_ON_NETWORK";
     pub const RUSTCBUILDX_SYNTAX: &str = "RUSTCBUILDX_SYNTAX";
 
     pub fn this() -> Option<String> {
@@ -48,6 +49,9 @@ pub mod internal {
     }
     pub fn runner() -> Option<String> {
         env::var(RUSTCBUILDX_RUNNER).ok()
+    }
+    pub fn runs_on_network() -> Option<String> {
+        env::var(RUSTCBUILDX_RUNS_ON_NETWORK).ok()
     }
     pub fn syntax() -> Option<String> {
         env::var(RUSTCBUILDX_SYNTAX).ok()
@@ -154,8 +158,24 @@ pub fn cache_image() -> &'static Option<String> {
             }
         }
 
+        // no resolving needed
+        // TODO? although we may want to error e.g. when registry is unreachable
+
         val
     })
+}
+
+#[must_use]
+pub fn runs_on_network() -> &'static str {
+    static ONCE: OnceLock<String> = OnceLock::new();
+    match ONCE.get() {
+        Some(network) => network,
+        None => {
+            let network = internal::runs_on_network().unwrap_or("none".to_owned());
+            let _ = ONCE.set(network);
+            ONCE.get().expect("just set network")
+        }
+    }
 }
 
 #[must_use]

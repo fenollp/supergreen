@@ -75,8 +75,9 @@ declare -a nvs nvs_args
 #TODO: test cargo miri usage
 #TODO: test cargo lambda build --release --arm64 usage
 #TODO: test https://github.com/facebookexperimental/MIRAI
-#TODO: test with Environment: CARGO_BUILD_RUSTC_WRAPPER or RUSTC_WRAPPER  or Environment: CARGO_BUILD_RUSTC_WORKSPACE_WRAPPER or RUSTC_WORKSPACE_WRAPPER
 
+#FIXME: test with Environment: CARGO_BUILD_RUSTC_WRAPPER or RUSTC_WRAPPER  or Environment: CARGO_BUILD_RUSTC_WORKSPACE_WRAPPER or RUSTC_WORKSPACE_WRAPPER
+# => the final invocation is $RUSTC_WRAPPER $RUSTC_WORKSPACE_WRAPPER $RUSTC.
 
 header() {
 	cat <<EOF

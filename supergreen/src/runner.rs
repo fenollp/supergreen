@@ -17,8 +17,7 @@ use tokio::{
 };
 
 use crate::{
-    base::BaseImage,
-    envs::{base_image, cache_image, runner},
+    envs::{cache_image, runner, runs_on_network},
     extensions::ShowCmd,
     md::BuildContext,
     stage::Stage,
@@ -91,11 +90,11 @@ pub async fn build(
         cmd.arg(format!("--cache-from=type=registry,ref={img},mode=max"));
 
         let tag = Stage::new(krate.to_owned())?; // TODO: include enough info for repro
+                                                 // => rustc shortcommit, ..?
+                                                 // Can buildx give list of all inputs? || short hash(dockerfile + call + envs)
+        cmd.arg(format!("--tag={img}:{tag}"));
         if tag.to_string().starts_with("bin-") {
-            // FIXME: re-tag some tag to latest when pushing only?
             cmd.arg(format!("--tag={img}:latest"));
-        } else {
-            cmd.arg(format!("--tag={img}:{tag}"));
         }
         cmd.arg("--build-arg=BUILDKIT_INLINE_CACHE=1"); // https://docs.docker.com/build/cache/backends/inline
         cmd.arg("--load");
@@ -108,10 +107,8 @@ pub async fn build(
     }
     //cmd.arg("--metadata-file=/tmp/meta.json"); => {"buildx.build.ref": "default/default/o5c4435yz6o6xxxhdvekx5lmn"}
 
-    if matches!(base_image().await, BaseImage::Image(_)) {
-        // FIXME: pre-build rust stage with network then, never activate network ever.
-        cmd.arg("--network=none");
-    }
+    // TODO? pre-build rust stage with network, then never activate network ever.
+    cmd.arg(format!("--network={}", runs_on_network()));
 
     cmd.arg("--platform=local");
     cmd.arg("--pull=false");
@@ -154,7 +151,7 @@ pub async fn build(
         "NO_PROXY",
     ] {
         if let Ok(val) = env::var(var) {
-            log::info!(target: &krate, "note env: {var}={val}");
+            log::info!(target: &krate, "note env: {var}={val}"); // FIXME: forward these
         }
     }
     let errf = |e| anyhow!("Failed starting {call}: {e}");

@@ -14,7 +14,9 @@ use serde_jsonlines::AsyncBufReadJsonLines;
 use tokio::{io::BufReader, process::Command};
 
 use crate::{
-    envs::{base_image, builder_image, cache_image, internal, log_path, runner, syntax},
+    envs::{
+        base_image, builder_image, cache_image, incremental, internal, log_path, runner, syntax,
+    },
     extensions::ShowCmd,
 };
 
@@ -117,7 +119,9 @@ pub async fn envs(vars: Vec<String>) -> ExitCode {
     let all: BTreeMap<_, _> = [
         ("RUSTCBUILDX", internal::this()),
         ("RUSTCBUILDX_BASE_IMAGE", Some(base_image().await.base())),
+        ("RUSTCBUILDX_BUILDER_IMAGE", Some(builder_image().await.to_owned())),
         ("RUSTCBUILDX_CACHE_IMAGE", cache_image().to_owned()),
+        ("RUSTCBUILDX_INCREMENTAL", incremental().then_some("1".to_owned())),
         ("RUSTCBUILDX_LOG", internal::log()),
         ("RUSTCBUILDX_LOG_PATH", Some(log_path().to_owned())),
         ("RUSTCBUILDX_LOG_STYLE", internal::log_style()),
@@ -150,7 +154,7 @@ pub async fn pull() -> Result<ExitCode> {
         (internal::syntax(), syntax().await),
         (internal::base_image(), &base_image().await.base()),
         (internal::builder_image(), builder_image().await),
-    ];
+    ]; // NOTE: we don't pull cache_image()
 
     let mut to_pull = Vec::with_capacity(imgs.len());
     for (user_input, img) in imgs {
@@ -178,7 +182,6 @@ pub async fn pull() -> Result<ExitCode> {
     // TODO: nice TUI that handles concurrent progress
     let code = iter(to_pull.into_iter())
         .map(|img| async move { do_pull(img).await })
-        .boxed() // https://github.com/rust-lang/rust/issues/104382
         .buffer_unordered(10)
         .try_fold(zero, |a, b| if a == zero { ok(b) } else { ok(a) })
         .await?;

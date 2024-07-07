@@ -4,6 +4,17 @@ Cached & remote-ready Rust projects builder.
 `cargo-green` is a `cargo` plugin that sets a `$RUSTC_WRAPPER` then calls `cargo`.
 
 
+## Configuration
+
+Reads envs
+* [`$BUILDX_BUILDER`](https://docs.docker.com/build/building/variables/#buildx_builder)
+* `$CARGOGREEN_LOG`: sets `$RUSTCBUILDX_LOG` level
+* `$CARGOGREEN_REMOTE`: *reserved for now*
+* [`$DOCKER_HOST`](https://docs.docker.com/engine/reference/commandline/cli/#environment-variables)
+
+Sets
+* [`$RUSTC_WRAPPER`](https://doc.rust-lang.org/cargo/reference/environment-variables.html#environment-variables-cargo-reads)
+
 ## Usage
 
 No more dependencies than [the transitive ones coming from](../rustcbuildx#usage) usage of `rustcbuildx`.
