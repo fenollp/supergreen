@@ -105,7 +105,10 @@ pub async fn build(
 
     if let Some(img) = cache_image() {
         let img = img.trim_start_matches("docker-image://");
-        cmd.arg(format!("--cache-from=type=registry,ref={img},mode=max"));
+        cmd.arg(format!(
+            "--cache-from=type=registry,ref={img}{}", // TODO: check img for commas
+            if false { ",mode=max" } else { "" }      // TODO: env? builder call?
+        ));
 
         let tag = Stage::new(krate.to_owned())?; // TODO: include enough info for repro
                                                  // => rustc shortcommit, ..?

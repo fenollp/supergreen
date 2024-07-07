@@ -10,10 +10,7 @@ use std::{
 use anyhow::{anyhow, bail, Result};
 use supergreen::{
     base::BaseImage,
-    envs::{
-        base_image, builder_image, cache_image, incremental, internal, runner, runs_on_network,
-        syntax,
-    },
+    envs::{base_image, builder_image, cache_image, incremental, internal, runner, syntax},
     extensions::ShowCmd,
 };
 use tokio::process::Command;
@@ -130,8 +127,7 @@ async fn build(cmd: &mut Command) -> Result<()> {
     cmd.env(
         internal::RUSTCBUILDX_RUNS_ON_NETWORK,
         internal::runs_on_network().unwrap_or_else(|| {
-            if matches!(base_image, BaseImage::RustcV(_)) { "default" } else { runs_on_network() }
-                .to_owned()
+            if matches!(base_image, BaseImage::RustcV(_)) { "default" } else { "none" }.to_owned()
         }),
     );
 
@@ -139,6 +135,8 @@ async fn build(cmd: &mut Command) -> Result<()> {
     if let Some(val) = cache_image() {
         cmd.env(internal::RUSTCBUILDX_CACHE_IMAGE, val);
     }
+    cmd.env(internal::RUSTCBUILDX_SYNTAX, syntax().await);
+
     if incremental() {
         cmd.env(internal::RUSTCBUILDX_INCREMENTAL, "1");
     }
@@ -146,11 +144,6 @@ async fn build(cmd: &mut Command) -> Result<()> {
     // RUSTCBUILDX_LOG_PATH
     // RUSTCBUILDX_LOG_STYLE
     cmd.env(internal::RUSTCBUILDX_RUNNER, runner());
-    cmd.env(internal::RUSTCBUILDX_SYNTAX, syntax().await);
-
-    if let Some(val) = cache_image() {
-        cmd.env(internal::RUSTCBUILDX_CACHE_IMAGE, val);
-    }
 
     Ok(())
 }
