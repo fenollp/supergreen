@@ -175,13 +175,18 @@ pub async fn pull() -> Result<ExitCode> {
             img
         };
         to_pull.push(img.to_owned());
-        println!("Pulling {img}...");
     }
+    pull_images(to_pull).await
+}
 
+pub async fn pull_images(to_pull: Vec<String>) -> Result<ExitCode> {
     let zero = Some(0);
     // TODO: nice TUI that handles concurrent progress
     let code = iter(to_pull.into_iter())
-        .map(|img| async move { do_pull(img).await })
+        .map(|img| async move {
+            println!("Pulling {img}...");
+            do_pull(img).await
+        })
         .buffer_unordered(10)
         .try_fold(zero, |a, b| if a == zero { ok(b) } else { ok(a) })
         .await?;

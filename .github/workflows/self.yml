@@ -186,6 +186,15 @@ jobs:
           exit 1
         fi
 
+    - name: cargo green +nightly udeps --all-targets net=ON cache=OFF remote=OFF
+      run: |
+        export RUSTCBUILDX_LOG=debug
+        export RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt
+        if ! cargo green +nightly udeps --all-targets; then
+          cat logs.txt
+          exit 1
+        fi
+
 
   builds:
     runs-on: ubuntu-latest

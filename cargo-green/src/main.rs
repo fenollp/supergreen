@@ -10,6 +10,7 @@ use std::{
 use anyhow::{anyhow, bail, Result};
 use supergreen::{
     base::BaseImage,
+    cli::pull_images,
     envs::{base_image, builder_image, cache_image, incremental, internal, runner, syntax},
     extensions::ShowCmd,
 };
@@ -122,6 +123,7 @@ async fn build(cmd: &mut Command) -> Result<()> {
     // RUSTCBUILDX is handled by `rustcbuildx`
     // TODO? set a CARGOGREEN=1
 
+    // don't set
     let base_image = base_image().await;
     env::set_var("RUSTCBUILDX_BASE_IMAGE_BLOCK_", base_image.block());
     cmd.env(
@@ -130,12 +132,24 @@ async fn build(cmd: &mut Command) -> Result<()> {
             if matches!(base_image, BaseImage::RustcV(_)) { "default" } else { "none" }.to_owned()
         }),
     );
-
-    cmd.env(internal::RUSTCBUILDX_BUILDER_IMAGE, builder_image().await);
+    let _ = pull_images(
+        [base_image.base().as_str(), builder_image().await, syntax().await]
+            .into_iter()
+            .map(|x| {
+                let x = x.trim_start_matches("docker-image://");
+                x.contains('@')
+                    .then(|| x.trim_end_matches(|c| c != '@').trim_end_matches('@'))
+                    .unwrap_or(x)
+                    .to_owned()
+            })
+            .filter(|x| !x.is_empty())
+            .collect(),
+    )
+    .await?;
+    // don't pull
     if let Some(val) = cache_image() {
         cmd.env(internal::RUSTCBUILDX_CACHE_IMAGE, val);
     }
-    cmd.env(internal::RUSTCBUILDX_SYNTAX, syntax().await);
 
     if incremental() {
         cmd.env(internal::RUSTCBUILDX_INCREMENTAL, "1");

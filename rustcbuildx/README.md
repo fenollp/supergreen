@@ -4,6 +4,22 @@ Forwards `rustc` calls to BuildKit builders.
 `rustcbuildx` is a [`RUSTC_WRAPPER`](https://doc.rust-lang.org/cargo/reference/config.html#buildrustc-wrapper) for cached and remote building of Rust projects (on [BuildKit](https://github.com/moby/buildkit)).
 
 
+## Configuration
+
+Reads envs
+* `$RUSTCBUILDX`
+* `$RUSTCBUILDX_BASE_IMAGE`
+* `$RUSTCBUILDX_BUILDER_IMAGE`
+* `$RUSTCBUILDX_CACHE_IMAGE`
+* `$RUSTCBUILDX_INCREMENTAL`
+* `$RUSTCBUILDX_LOG`
+* `$RUSTCBUILDX_LOG_PATH`
+* `$RUSTCBUILDX_LOG_STYLE`
+* `$RUSTCBUILDX_RUNNER`
+* `$RUSTCBUILDX_RUNS_ON_NETWORK`
+* `$RUSTCBUILDX_SYNTAX`
+
+
 ## Usage
 
 * Ensure at least either a [`docker`](https://github.com/docker/docker-install) or [`podman`](https://podman.io/docs/installation) *client* is installed
