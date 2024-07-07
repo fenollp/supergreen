@@ -65,6 +65,8 @@ declare -a nvs nvs_args
 # 101 36s supergreen.git green λ CARGO_TARGET_DIR=/tmp/cfzz \cargo green install --force --locked cargo-fuzz
 
 
+# TODO https://github.com/aizcutei/nanometers?tab=readme-ov-file#testing-locally
+
 
 ((i+=1)); nvs[i]=rustcbuildx@main;      oks[i]=ok; nvs_args[i]='--git https://github.com/fenollp/supergreen.git --branch=main rustcbuildx'
 

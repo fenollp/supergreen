@@ -70,10 +70,28 @@ pub async fn build(
 
     //TODO: (use if set) cmd.env("SOURCE_DATE_EPOCH", "0"); // https://reproducible-builds.org/docs/source-date-epoch
 
-    if let Ok(hst) = env::var("DOCKER_HOST") {
-        cmd.env("DOCKER_HOST", hst);
-    } else if let Ok(ctx) = env::var("BUILDX_BUILDER") {
-        cmd.env("BUILDX_BUILDER", ctx);
+    // https://docs.docker.com/engine/reference/commandline/cli/#environment-variables
+    for var in [
+        "BUILDKIT_PROGRESS",
+        "BUILDX_BUILDER", //
+        "DOCKER_API_VERSION",
+        "DOCKER_CERT_PATH",
+        "DOCKER_CONFIG",
+        "DOCKER_CONTENT_TRUST",
+        "DOCKER_CONTENT_TRUST_SERVER",
+        "DOCKER_CONTEXT",
+        "DOCKER_DEFAULT_PLATFORM",
+        "DOCKER_HIDE_LEGACY_COMMANDS",
+        "DOCKER_HOST",
+        "DOCKER_TLS",
+        "DOCKER_TLS_VERIFY",
+        "HTTP_PROXY",
+        "HTTPS_PROXY",
+        "NO_PROXY",
+    ] {
+        if let Ok(val) = env::var(var) {
+            cmd.env(var, val);
+        }
     }
 
     if false {
@@ -131,29 +149,8 @@ pub async fn build(
     let call = cmd.show();
     let envs: Vec<_> = cmd.as_std().get_envs().map(|(k, v)| format!("{k:?}={v:?}")).collect();
     let envs = envs.join(" ");
-
     log::info!(target: &krate, "Starting {call} (env: {envs:?})`");
-    for var in [
-        "DOCKER_API_VERSION",
-        "DOCKER_CERT_PATH",
-        "DOCKER_CONFIG",
-        "DOCKER_CONTENT_TRUST_SERVER",
-        "DOCKER_CONTENT_TRUST",
-        "DOCKER_CONTEXT",
-        "DOCKER_DEFAULT_PLATFORM",
-        "DOCKER_HIDE_LEGACY_COMMANDS",
-        "DOCKER_HOST",
-        "DOCKER_TLS",
-        "DOCKER_TLS_VERIFY",
-        "BUILDKIT_PROGRESS",
-        "HTTP_PROXY",
-        "HTTPS_PROXY",
-        "NO_PROXY",
-    ] {
-        if let Ok(val) = env::var(var) {
-            log::info!(target: &krate, "note env: {var}={val}"); // FIXME: forward these
-        }
-    }
+
     let errf = |e| anyhow!("Failed starting {call}: {e}");
     let mut child = cmd.spawn().map_err(errf)?;
 
@@ -222,6 +219,9 @@ where
             match stdio.next_line().await {
                 Ok(None) => break,
                 Ok(Some(line)) => {
+                    if line.is_empty() {
+                        continue;
+                    }
                     log::debug!(target: &krate, "{badge} {line}");
                     if let Some(msg) = lift_stdio(&line, mark) {
                         fwder(&krate, msg, &mut buf);

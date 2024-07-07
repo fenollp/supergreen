@@ -239,12 +239,13 @@ pub fn pass_env(var: &str) -> (bool, bool, bool) {
     ];
     // TODO: vvv drop what can be dropped vvv
     let skiplist = [
+        "CARGO_BUILD_JOBS",
         "CARGO_BUILD_RUSTC",
         "CARGO_BUILD_RUSTC_WORKSPACE_WRAPPER",
         "CARGO_BUILD_RUSTC_WRAPPER",
         "CARGO_BUILD_RUSTDOC",
         "CARGO_BUILD_TARGET_DIR",
-        "CARGO_HOME",
+        "CARGO_HOME",      // TODO? drop
         "CARGO_MAKEFLAGS", // TODO: probably drop
         "CARGO_TARGET_DIR",
         "RUSTC_WRAPPER",

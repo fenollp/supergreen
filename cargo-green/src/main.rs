@@ -10,7 +10,10 @@ use std::{
 use anyhow::{anyhow, bail, Result};
 use supergreen::{
     base::BaseImage,
-    envs::{base_image, builder_image, cache_image, incremental, internal, runner, syntax},
+    envs::{
+        base_image, builder_image, cache_image, incremental, internal, runner, runs_on_network,
+        syntax,
+    },
     extensions::ShowCmd,
 };
 use tokio::process::Command;
@@ -38,8 +41,7 @@ use tokio::process::Command;
 async fn main() -> Result<ExitCode, Box<dyn std::error::Error>> {
     let mut args = env::args().skip(1); // skips $0
 
-    // skips "green"
-    if args.next().is_none() {
+    let Some(arg1) = args.next() else {
         // Warn when running this via `cargo run -p cargo-green -- ..`
         eprintln!(
             r#"
@@ -48,7 +50,8 @@ async fn main() -> Result<ExitCode, Box<dyn std::error::Error>> {
 "#
         );
         return Ok(ExitCode::FAILURE);
-    }
+    };
+    assert_eq!(arg1.as_str(), "green");
 
     // FIXME: make sure this handles cargo plugins
     let mut cmd = Command::new(env::var("CARGO").unwrap_or("cargo".into()));
@@ -59,6 +62,7 @@ async fn main() -> Result<ExitCode, Box<dyn std::error::Error>> {
         }
         if arg.starts_with('+') {
             cmd = Command::new(which::which("cargo").unwrap_or("cargo".into()));
+            eprintln!("Passing +toolchain param: {arg:?}");
             cmd.arg(arg);
             // TODO: reinterpret `rustc` when given `+toolchain`
         }
@@ -123,14 +127,13 @@ async fn build(cmd: &mut Command) -> Result<()> {
 
     let base_image = base_image().await;
     env::set_var("RUSTCBUILDX_BASE_IMAGE_BLOCK_", base_image.block());
-    if let Some(val) = internal::runs_on_network() {
-        cmd.env(internal::RUSTCBUILDX_RUNS_ON_NETWORK, val);
-    } else {
-        cmd.env(
-            internal::RUSTCBUILDX_RUNS_ON_NETWORK,
-            if matches!(base_image, BaseImage::Image(_)) { "none" } else { "" },
-        );
-    }
+    cmd.env(
+        internal::RUSTCBUILDX_RUNS_ON_NETWORK,
+        internal::runs_on_network().unwrap_or_else(|| {
+            if matches!(base_image, BaseImage::RustcV(_)) { "default" } else { runs_on_network() }
+                .to_owned()
+        }),
+    );
 
     cmd.env(internal::RUSTCBUILDX_BUILDER_IMAGE, builder_image().await);
     if let Some(val) = cache_image() {
