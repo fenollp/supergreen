@@ -27,11 +27,19 @@ pub const MARK_STDOUT: &str = "::STDOUT:: ";
 pub const MARK_STDERR: &str = "::STDERR:: ";
 
 #[must_use]
+pub fn runner_cmd() -> Command {
+    let mut cmd = Command::new(runner());
+    cmd.kill_on_drop(true);
+    cmd.stdin(Stdio::null());
+    cmd.arg("--debug");
+    cmd
+}
+
+#[must_use]
 pub async fn maybe_lock_image(mut img: String) -> String {
     // Lock image, as podman(4.3.1) does not respect --pull=false (fully, anyway)
     if img.starts_with("docker-image://") && !img.contains("@sha256:") {
-        if let Some(line) = Command::new(runner())
-            .kill_on_drop(true)
+        if let Some(line) = runner_cmd()
             .arg("inspect")
             .arg("--format={{index .RepoDigests 0}}")
             .arg(img.trim_start_matches("docker-image://"))

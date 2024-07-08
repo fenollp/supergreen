@@ -10,9 +10,10 @@ use std::{
 use anyhow::{anyhow, bail, Result};
 use supergreen::{
     base::BaseImage,
-    cli::pull_images,
+    cli::{pull_images, trim_docker_image},
     envs::{base_image, builder_image, cache_image, incremental, internal, runner, syntax},
     extensions::ShowCmd,
+    runner::{maybe_lock_image, runner_cmd},
 };
 use tokio::process::Command;
 
@@ -88,25 +89,6 @@ async fn build(cmd: &mut Command) -> Result<()> {
     }
     cmd.env("RUSTC_WRAPPER", ensure_binary_exists("rustcbuildx")?);
 
-    // FIXME https://github.com/docker/buildx/issues/2564
-    // https://docs.docker.com/build/building/variables/#buildx_builder
-    if let Ok(ctx) = env::var("DOCKER_HOST") {
-        eprintln!("$DOCKER_HOST is set to {ctx:?}");
-    } else if let Ok(ctx) = env::var("BUILDX_BUILDER") {
-        eprintln!("$BUILDX_BUILDER is set to {ctx:?}");
-    } else if let Ok(remote) = env::var("CARGOGREEN_REMOTE") {
-        //     // docker buildx create \
-        //     //   --name supergreen \
-        //     //   --driver remote \
-        //     //   tcp://localhost:1234
-        //     //{remote}
-        //     env::set_var("DOCKER_CONTEXT", "supergreen"); //FIXME: ensure this gets passed down & used
-        panic!("$CARGOGREEN_REMOTE is reserved but set to: {remote}");
-    } else if false {
-        setup_build_driver("supergreen").await?; // FIXME? maybe_..
-        env::set_var("BUILDX_BUILDER", "supergreen");
-    }
-
     // TODO read package.metadata.green
     // TODO: TUI above cargo output (? https://docs.rs/prodash )
 
@@ -132,17 +114,12 @@ async fn build(cmd: &mut Command) -> Result<()> {
             if matches!(base_image, BaseImage::RustcV(_)) { "default" } else { "none" }.to_owned()
         }),
     );
+    let builder_image = builder_image().await;
+    // Locks images in Dockerfiles handled by sub-bin
     let _ = pull_images(
-        [base_image.base().as_str(), builder_image().await, syntax().await]
+        [base_image.base().as_str(), builder_image, syntax().await]
             .into_iter()
-            .map(|x| {
-                let x = x.trim_start_matches("docker-image://");
-                x.contains('@')
-                    .then(|| x.trim_end_matches(|c| c != '@').trim_end_matches('@'))
-                    .unwrap_or(x)
-                    .to_owned()
-            })
-            .filter(|x| !x.is_empty())
+            .filter_map(trim_docker_image)
             .collect(),
     )
     .await?;
@@ -158,6 +135,28 @@ async fn build(cmd: &mut Command) -> Result<()> {
     // RUSTCBUILDX_LOG_PATH
     // RUSTCBUILDX_LOG_STYLE
     cmd.env(internal::RUSTCBUILDX_RUNNER, runner());
+
+    // FIXME https://github.com/docker/buildx/issues/2564
+    // https://docs.docker.com/build/building/variables/#buildx_builder
+    if let Ok(ctx) = env::var("DOCKER_HOST") {
+        eprintln!("$DOCKER_HOST is set to {ctx:?}");
+    } else if let Ok(ctx) = env::var("BUILDX_BUILDER") {
+        eprintln!("$BUILDX_BUILDER is set to {ctx:?}");
+    } else if let Ok(remote) = env::var("CARGOGREEN_REMOTE") {
+        //     // docker buildx create \
+        //     //   --name supergreen \
+        //     //   --driver remote \
+        //     //   tcp://localhost:1234
+        //     //{remote}
+        //     env::set_var("DOCKER_CONTEXT", "supergreen"); //FIXME: ensure this gets passed down & used
+        panic!("$CARGOGREEN_REMOTE is reserved but set to: {remote}");
+    } else if false {
+        // Images were pulled, we have to re-read their now-locked values now
+        let builder_image = maybe_lock_image(builder_image.to_owned()).await;
+        setup_build_driver("supergreen", builder_image.trim_start_matches("docker-image://"))
+            .await?; // FIXME? maybe_..
+        env::set_var("BUILDX_BUILDER", "supergreen");
+    }
 
     Ok(())
 }
@@ -177,23 +176,20 @@ fn ensure_binary_exists(name: &'static str) -> Result<PathBuf> {
 // https://docs.docker.com/build/drivers/docker-container/
 // https://docs.docker.com/build/drivers/remote/
 // https://docs.docker.com/build/drivers/kubernetes/
-async fn setup_build_driver(name: &str) -> Result<()> {
+async fn setup_build_driver(name: &str, builder_image: &str) -> Result<()> {
     if false {
         // TODO: reuse old state but try auto-upgrading builder impl
         try_removing_previous_builder(name).await;
     }
 
-    let mut cmd = Command::new(runner());
-    cmd.arg("--debug");
-    cmd.args(["buildx", "create"]);
-    cmd.arg(format!("--name={name}"));
-    cmd.arg("--bootstrap");
-    cmd.arg("--driver=docker-container");
-    let img = builder_image().await.trim_start_matches("docker-image://");
-    cmd.arg(&format!("--driver-opt=image={img}"));
-
-    cmd.kill_on_drop(true);
-    cmd.stdin(Stdio::null()).stdout(Stdio::null()).stderr(Stdio::null());
+    let mut cmd = runner_cmd();
+    cmd.args(["buildx", "create"])
+        .arg(format!("--name={name}"))
+        .arg("--bootstrap")
+        .arg("--driver=docker-container")
+        .arg(format!("--driver-opt=image={builder_image}"))
+        .stdout(Stdio::null())
+        .stderr(Stdio::null());
 
     let call = cmd.show();
     let envs: Vec<_> = cmd.as_std().get_envs().map(|(k, v)| format!("{k:?}={v:?}")).collect();
@@ -214,12 +210,10 @@ async fn setup_build_driver(name: &str) -> Result<()> {
 
 #[allow(dead_code)]
 async fn try_removing_previous_builder(name: &str) {
-    let mut cmd = Command::new(runner());
-    cmd.arg("--debug");
-    cmd.args(["buildx", "rm", name, "--keep-state", "--force"]);
-
-    cmd.kill_on_drop(true);
-    cmd.stdin(Stdio::null()).stdout(Stdio::null()).stderr(Stdio::null());
+    let mut cmd = runner_cmd();
+    cmd.args(["buildx", "rm", name, "--keep-state", "--force"])
+        .stdout(Stdio::null())
+        .stderr(Stdio::null());
 
     let call = cmd.show();
     let envs: Vec<_> = cmd.as_std().get_envs().map(|(k, v)| format!("{k:?}={v:?}")).collect();

@@ -11,13 +11,14 @@ use futures::{
     stream::{iter, StreamExt, TryStreamExt},
 };
 use serde_jsonlines::AsyncBufReadJsonLines;
-use tokio::{io::BufReader, process::Command};
+use tokio::io::BufReader;
 
 use crate::{
     envs::{
         base_image, builder_image, cache_image, incremental, internal, log_path, runner, syntax,
     },
     extensions::ShowCmd,
+    runner::runner_cmd,
 };
 
 // TODO: tune logging verbosity https://docs.rs/clap-verbosity-flag/latest/clap_verbosity_flag/
@@ -59,12 +60,9 @@ pub async fn push() -> Result<ExitCode> {
         iter(tags)
             .map(|tag: String| async move {
                 println!("Pushing {img}:{tag}...");
-                let mut cmd = Command::new(runner());
-                let cmd = cmd
-                    .kill_on_drop(true)
-                    .arg("push")
+                let mut cmd = runner_cmd();
+                cmd.arg("push")
                     .arg(format!("{img}:{tag}"))
-                    .stdin(Stdio::null())
                     .stdout(Stdio::null())
                     .stderr(Stdio::null());
                 if let Ok(mut o) = cmd.spawn() {
@@ -91,10 +89,8 @@ async fn all_tags_of(img: &str) -> Result<(Vec<String>, Option<ExitCode>)> {
 
     // NOTE: https://github.com/moby/moby/issues/47809
     //   Meanwhile: just drop docker.io/ prefix
-    let mut cmd = Command::new(runner());
-    let cmd = cmd
-        .kill_on_drop(true)
-        .arg("image")
+    let mut cmd = runner_cmd();
+    cmd.arg("image")
         .arg("ls")
         .arg("--format=json")
         .arg(format!("--filter=reference={}:*", img.trim_start_matches("docker.io/")));
@@ -159,9 +155,13 @@ pub async fn pull() -> Result<ExitCode> {
     let mut to_pull = Vec::with_capacity(imgs.len());
     for (user_input, img) in imgs {
         let img = img.trim_start_matches("docker-image://");
-        let img = if img.contains('@')
-            && (user_input.is_none() || user_input.map(|x| !x.contains('@')).unwrap_or_default())
-        {
+        assert_eq!(
+            user_input.as_ref().map(|x| !x.contains('@')).unwrap_or_default(),
+            (user_input.is_none()
+                || user_input.as_ref().map(|x| !x.contains('@')).unwrap_or_default()),
+        );
+
+        let img = if img.contains('@') && user_input.map(|x| !x.contains('@')).unwrap_or_default() {
             // Don't pull a locked image unless that's what's asked
             // Otherwise, pull unlocked
 
@@ -170,13 +170,22 @@ pub async fn pull() -> Result<ExitCode> {
             // none + _ = _
             // s @  + @ = _
             // s !  + @ = trim
-            img.trim_end_matches(|c| c != '@').trim_end_matches('@')
+            trim_docker_image(img).expect("contains @")
         } else {
-            img
+            img.to_owned()
         };
-        to_pull.push(img.to_owned());
+        to_pull.push(img);
     }
     pull_images(to_pull).await
+}
+
+pub fn trim_docker_image(x: &str) -> Option<String> {
+    let x = x.trim_start_matches("docker-image://");
+    let x = x
+        .contains('@')
+        .then(|| x.trim_end_matches(|c| c != '@').trim_end_matches('@'))
+        .unwrap_or(x);
+    (!x.is_empty()).then(|| x.to_owned())
 }
 
 pub async fn pull_images(to_pull: Vec<String>) -> Result<ExitCode> {
@@ -194,8 +203,8 @@ pub async fn pull_images(to_pull: Vec<String>) -> Result<ExitCode> {
 }
 
 async fn do_pull(img: String) -> Result<Option<i32>> {
-    let mut cmd = Command::new(runner());
-    let cmd = cmd.kill_on_drop(true).arg("pull").arg(&img).stdin(Stdio::null());
+    let mut cmd = runner_cmd();
+    cmd.arg("pull").arg(&img);
     let o = cmd
         .spawn()
         .map_err(|e| anyhow!("Failed to start {}: {e}", cmd.show()))?

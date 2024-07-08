@@ -104,7 +104,7 @@ pub fn runner() -> &'static str {
             "docker" => {}
             "none" => {}
             "podman" => {}
-            _ => panic!("{} MUST be either docker, podman or none", internal::RUSTCBUILDX_RUNNER),
+            _ => panic!("${} MUST be either docker, podman or none", internal::RUSTCBUILDX_RUNNER),
         }
         val
     })
