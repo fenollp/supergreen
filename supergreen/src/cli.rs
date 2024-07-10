@@ -155,12 +155,6 @@ pub async fn pull() -> Result<ExitCode> {
     let mut to_pull = Vec::with_capacity(imgs.len());
     for (user_input, img) in imgs {
         let img = img.trim_start_matches("docker-image://");
-        assert_eq!(
-            user_input.as_ref().map(|x| !x.contains('@')).unwrap_or_default(),
-            (user_input.is_none()
-                || user_input.as_ref().map(|x| !x.contains('@')).unwrap_or_default()),
-        );
-
         let img = if img.contains('@') && user_input.map(|x| !x.contains('@')).unwrap_or_default() {
             // Don't pull a locked image unless that's what's asked
             // Otherwise, pull unlocked

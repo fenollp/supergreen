@@ -156,6 +156,12 @@ async fn build(cmd: &mut Command) -> Result<()> {
         setup_build_driver("supergreen", builder_image.trim_start_matches("docker-image://"))
             .await?; // FIXME? maybe_..
         env::set_var("BUILDX_BUILDER", "supergreen");
+
+        // TODO? docker dial-stdio proxy
+        // https://github.com/docker/cli/blob/9bb1a62735174e9220d84fecc056a0ef8a1fc26f/cli/command/system/dial_stdio.go
+
+        // https://docs.docker.com/engine/context/working-with-contexts/
+        // https://docs.docker.com/engine/security/protect-access/
     }
 
     Ok(())

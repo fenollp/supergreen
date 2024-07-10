@@ -81,6 +81,8 @@ declare -a nvs nvs_args
 #FIXME: test with Environment: CARGO_BUILD_RUSTC_WRAPPER or RUSTC_WRAPPER  or Environment: CARGO_BUILD_RUSTC_WORKSPACE_WRAPPER or RUSTC_WORKSPACE_WRAPPER
 # => the final invocation is $RUSTC_WRAPPER $RUSTC_WORKSPACE_WRAPPER $RUSTC.
 
+#TODO: look into "writing rust tests inside tmux sessions"
+
 header() {
 	cat <<EOF
 on: [push]
