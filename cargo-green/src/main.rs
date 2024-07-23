@@ -52,33 +52,41 @@ async fn main() -> Result<ExitCode, Box<dyn std::error::Error>> {
     };
     assert_eq!(arg1.as_str(), "green");
 
-    // FIXME: make sure this handles cargo plugins
     let mut cmd = Command::new(env::var("CARGO").unwrap_or("cargo".into()));
-    if let Some(arg) = args.next().as_deref() {
-        cmd.arg(arg);
+    if let Some(arg) = args.next() {
         if arg == "supergreen" {
-            // FIXME: handle commands
+            unimplemented!("FIXME: handle commands")
         }
+        cmd.arg(&arg);
         if arg.starts_with('+') {
             cmd = Command::new(which::which("cargo").unwrap_or("cargo".into()));
             eprintln!("Passing +toolchain param: {arg:?}");
-            cmd.arg(arg);
             // TODO: reinterpret `rustc` when given `+toolchain`
         }
     }
     cmd.args(args);
     cmd.kill_on_drop(true);
 
-    if let Err(e) = build(&mut cmd).await {
-        eprintln!("{e}");
-        return Ok(ExitCode::FAILURE);
+    match env::args().skip(3).next().as_deref() {
+        None => {}
+        Some("fetch") => {
+            // TODO: run cargo fetch + read lockfile + generate cratesio stages + build them cacheonly
+            // TODO: skip these stages (and any other "locked thing" stage) when building with --no-cache
+        }
+        // TODO: Skip this call for the ones not calling rustc
+        Some(_) => {
+            if let Err(e) = setup_for_build(&mut cmd).await {
+                eprintln!("{e}");
+                return Ok(ExitCode::FAILURE);
+            }
+        }
     }
 
     let status = cmd.status().await?;
     Ok(status.code().map_or(ExitCode::FAILURE, |code| ExitCode::from(code as u8)))
 }
 
-async fn build(cmd: &mut Command) -> Result<()> {
+async fn setup_for_build(cmd: &mut Command) -> Result<()> {
     if let Ok(wrapper) = env::var("RUSTC_WRAPPER") {
         bail!(
             r#"
