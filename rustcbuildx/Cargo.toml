@@ -27,5 +27,5 @@ home.workspace = true
 log.workspace = true
 pretty_assertions.workspace = true # TODO: drop once !dbg
 rustflags.workspace = true # TODO: drop once !dbg
-supergreen.path = "../supergreen"
+supergreen.workspace = true
 tokio.workspace = true
