@@ -30,7 +30,7 @@ repository = "https://github.com/fenollp/supergreen"
 anyhow = "1"
 assertx = { version = "1", features = ["logging"] }
 camino = "1"
-env_logger = "0.10"
+env_logger = "0.11"
 futures = "0.3"
 home = "0,>=0.5"
 log = "0,>=0.4"
@@ -38,7 +38,7 @@ nutype = "0,>=0.4"
 pretty_assertions = "1"
 rustflags = "0,>=0.1"
 serde = { version = "1", features = ["derive"] }
-serde-jsonlines = { version = "0,>=0.5", features = ["async"] }
+serde-jsonlines = { version = "0,>=0.6", features = ["async"] }
 serde_json = "1"
 sha256 = "1"
 szyk = "1"

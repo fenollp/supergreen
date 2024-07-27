@@ -77,6 +77,10 @@ pub async fn build(
     cmd.env("DOCKER_BUILDKIT", "1");
 
     //TODO: (use if set) cmd.env("SOURCE_DATE_EPOCH", "0"); // https://reproducible-builds.org/docs/source-date-epoch
+    // https://github.com/moby/buildkit/blob/master/docs/build-repro.md#source_date_epoch
+    // Set SOURCE_DATE_EPOCH=$(git log -1 --pretty=%ct) for local code, and
+    // set it to crates' birth date, in case it's a $HOME/.cargo/registry/cache/...crate
+    // set it to the directory's birth date otherwise (should be a relative path to local files).
 
     // https://docs.docker.com/engine/reference/commandline/cli/#environment-variables
     for var in [
@@ -118,9 +122,9 @@ pub async fn build(
             if false { ",mode=max" } else { "" }      // TODO: env? builder call?
         ));
 
-        let tag = Stage::new(krate.to_owned())?; // TODO: include enough info for repro
-                                                 // => rustc shortcommit, ..?
-                                                 // Can buildx give list of all inputs? || short hash(dockerfile + call + envs)
+        let tag = Stage::try_new(krate.to_owned())?; // TODO: include enough info for repro
+                                                     // => rustc shortcommit, ..?
+                                                     // Can buildx give list of all inputs? || short hash(dockerfile + call + envs)
         cmd.arg(format!("--tag={img}:{tag}"));
         if tag.to_string().starts_with("bin-") {
             cmd.arg(format!("--tag={img}:latest"));

@@ -226,7 +226,7 @@ async fn do_wrap_rustc(
 
     // A woodlegged way of passing around work cargo-green already did
     md.push_block(
-        &Stage::new(RUST).expect("rust stage"),
+        &Stage::try_new(RUST).expect("rust stage"),
         if let Ok(base_block) = env::var("RUSTCBUILDX_BASE_IMAGE_BLOCK_") {
             base_block
         } else {
@@ -358,21 +358,21 @@ async fn do_wrap_rustc(
             into_stage(krate, cargo_home.as_path(), &name, &version, &cratesio_index).await?;
         md.push_block(&cratesio_stage, block);
 
-        let rustc_stage = Stage::new(format!("dep-{crate_id}-{cratesio_index}"))?;
+        let rustc_stage = Stage::try_new(format!("dep-{crate_id}-{cratesio_index}"))?;
         (Some((cratesio_stage, Some(src), dst)), rustc_stage)
     } else if input.is_relative() {
         // Input is local, non-public code
 
         let rustc_stage = input.to_string().replace(['/', '.'], "-");
-        let rustc_stage = Stage::new(format!("cwd-{crate_id}-{rustc_stage}"))?;
+        let rustc_stage = Stage::try_new(format!("cwd-{crate_id}-{rustc_stage}"))?;
         (None, rustc_stage)
     } else {
         bail!("Unexpected input file {input:?}")
     };
     log::info!(target: &krate, "picked {rustc_stage} for {input}");
 
-    let incremental_stage = Stage::new(format!("inc-{metadata}"))?;
-    let out_stage = Stage::new(format!("out-{metadata}"))?;
+    let incremental_stage = Stage::try_new(format!("inc-{metadata}"))?;
+    let out_stage = Stage::try_new(format!("out-{metadata}"))?;
 
     let mut rustc_block = String::new();
     rustc_block.push_str(&format!("FROM {RUST} AS {rustc_stage}\n"));

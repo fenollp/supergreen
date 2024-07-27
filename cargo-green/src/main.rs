@@ -67,10 +67,11 @@ async fn main() -> Result<ExitCode, Box<dyn std::error::Error>> {
     cmd.args(args);
     cmd.kill_on_drop(true);
 
-    match env::args().skip(3).next().as_deref() {
+    match env::args().nth(3).as_deref() {
         None => {}
         Some("fetch") => {
             // TODO: run cargo fetch + read lockfile + generate cratesio stages + build them cacheonly
+            //   https://github.com/rustsec/rustsec/tree/main/cargo-lock
             // TODO: skip these stages (and any other "locked thing" stage) when building with --no-cache
         }
         // TODO: Skip this call for the ones not calling rustc

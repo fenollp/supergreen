@@ -20,14 +20,14 @@ fn tag_name(name: &str) -> bool {
 
 #[test]
 fn safe_stages() {
-    let mk = |x| Stage::new(x).unwrap().to_string();
+    let mk = |x| Stage::try_new(x).unwrap().to_string();
 
     pretty_assertions::assert_eq!(
         mk("libgit2-sys-0.14.2+1.5.1-index.crates.io-6f17d22bba15001f"),
         "libgit2-sys-0.14.2-1.5.1-index.crates.io-6f17d22bba15001f".to_owned()
     );
 
-    assert!(Stage::new("-libgit2-sys-0.14.2+1.5.1-index.crates.io-6f17d22bba15001f").is_err());
-    assert!(Stage::new(".libgit2-sys-0.14.2+1.5.1-index.crates.io-6f17d22bba15001f").is_err());
-    assert!(Stage::new(".libgit2-".to_owned() + &"b".repeat(128)).is_err());
+    assert!(Stage::try_new("-libgit2-sys-0.14.2+1.5.1-index.crates.io-6f17d22bba15001f").is_err());
+    assert!(Stage::try_new(".libgit2-sys-0.14.2+1.5.1-index.crates.io-6f17d22bba15001f").is_err());
+    assert!(Stage::try_new(".libgit2-".to_owned() + &"b".repeat(128)).is_err());
 }
