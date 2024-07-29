@@ -114,7 +114,8 @@ async fn setup_for_build(cmd: &mut Command) -> Result<()> {
     }
 
     // RUSTCBUILDX is handled by `rustcbuildx`
-    // TODO? set a CARGOGREEN=1
+
+    env::set_var("CARGOGREEN", "1");
 
     // don't set
     let base_image = base_image().await;
@@ -128,8 +129,9 @@ async fn setup_for_build(cmd: &mut Command) -> Result<()> {
     let builder_image = builder_image().await;
     // Locks images in Dockerfiles handled by sub-bin
     let _ = pull_images(
-        [base_image.base().as_str(), builder_image, syntax().await]
+        [base_image.base().as_str(), /*builder_image, Don't pull until used*/ syntax().await]
             .into_iter()
+            .filter(|img| !img.contains('@'))
             .filter_map(trim_docker_image)
             .collect(),
     )
