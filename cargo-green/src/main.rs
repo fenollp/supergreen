@@ -2,7 +2,7 @@
 // maybe https://lib.rs/crates/clap-cargo
 
 use std::{
-    env,
+    env, fs,
     path::PathBuf,
     process::{ExitCode, Stdio},
 };
@@ -102,12 +102,14 @@ async fn setup_for_build(cmd: &mut Command) -> Result<()> {
     // TODO: TUI above cargo output (? https://docs.rs/prodash )
 
     if let Ok(log) = env::var("CARGOGREEN_LOG") {
+        let path = "/tmp/cargo-green.log";
         for (var, def) in [
             //
             (internal::RUSTCBUILDX_LOG, log),
-            (internal::RUSTCBUILDX_LOG_PATH, "/tmp/cargo-green.log".to_owned()),
+            (internal::RUSTCBUILDX_LOG_PATH, path.to_owned()),
         ] {
             cmd.env(var, env::var(var).unwrap_or(def.to_owned()));
+            let _ = fs::remove_file(path);
         }
     }
 
