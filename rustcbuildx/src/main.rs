@@ -526,10 +526,10 @@ async fn do_wrap_rustc(
                     return anyhow!(
                         r#"
                     Looks like `rustcbuildx` ran on an unkempt project. That's alright!
-                    Let's remove the current target directory {target_dir}
+                    Let's remove the current target directory (note: $CARGO_TARGET_DIR={target_dir})
                     then run your command again.
                 "#,
-                        target_dir = env::var("CARGO_TARGET_DIR").unwrap_or_default(),
+                        target_dir = env::var("CARGO_TARGET_DIR").as_deref().unwrap_or("./target"),
                     );
                 }
                 anyhow!("Failed reading Md {extern_md_path}: {e}")
