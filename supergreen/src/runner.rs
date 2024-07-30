@@ -215,6 +215,15 @@ pub async fn build(
     Ok(code)
 }
 
+#[inline(always)]
+fn strip_ansi_escapes(line: &str) -> String {
+    line.replace("\\u001b[0m", "")
+        .replace("\\u001b[1m", "")
+        .replace("\\u001b[33m", "")
+        .replace("\\u001b[38;5;12m", "")
+        .replace("\\u001b[38;5;9m", "")
+}
+
 #[inline]
 fn fwd<R>(
     krate: String,
@@ -237,7 +246,7 @@ where
                     if line.is_empty() {
                         continue;
                     }
-                    log::debug!(target: &krate, "{badge} {line}");
+                    log::debug!(target: &krate, "{badge} {}", strip_ansi_escapes(&line));
                     if let Some(msg) = lift_stdio(&line, mark) {
                         fwder(&krate, msg, &mut buf);
                     }
