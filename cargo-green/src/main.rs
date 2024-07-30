@@ -2,7 +2,8 @@
 // maybe https://lib.rs/crates/clap-cargo
 
 use std::{
-    env, fs,
+    env,
+    fs::File,
     path::PathBuf,
     process::{ExitCode, Stdio},
 };
@@ -109,7 +110,7 @@ async fn setup_for_build(cmd: &mut Command) -> Result<()> {
             (internal::RUSTCBUILDX_LOG_PATH, path.to_owned()),
         ] {
             cmd.env(var, env::var(var).unwrap_or(def.to_owned()));
-            let _ = fs::remove_file(path);
+            let _ = File::create(path).map(|f| f.set_len(0));
         }
     }
 
