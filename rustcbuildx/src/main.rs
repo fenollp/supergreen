@@ -181,7 +181,8 @@ async fn do_wrap_rustc(
 ) -> Result<ExitCode> {
     let debug = maybe_log();
 
-    let (st, args) = parse::as_rustc(&pwd, arguments)?;
+    let out_dir_var = env::var("OUT_DIR").ok();
+    let (st, args) = parse::as_rustc(&pwd, arguments, out_dir_var.as_deref())?;
     log::info!(target: &krate, "{st:?}");
     let RustcArgs { crate_type, emit, externs, metadata, incremental, input, out_dir, target_path } =
         st;
@@ -203,10 +204,8 @@ async fn do_wrap_rustc(
     let crate_id = full_krate_id.replace('|', "-");
 
     // NOTE: not `out_dir`
-    let crate_out = env::var("OUT_DIR")
-        .ok()
-        .and_then(|x| x.ends_with("/out").then_some(x))
-        .and_then(|crate_out| {
+    let crate_out =
+        out_dir_var.and_then(|x| x.ends_with("/out").then_some(x)).and_then(|crate_out| {
             log::info!(target: &krate, "listing (RO) crate_out contents {crate_out}");
             let Ok(listing) = fs::read_dir(&crate_out) else { return None };
             let listing = listing

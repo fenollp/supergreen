@@ -38,6 +38,7 @@ pub(crate) struct RustcArgs {
 pub(crate) fn as_rustc(
     pwd: impl AsRef<Utf8Path>,
     arguments: Vec<String>,
+    out_dir_var: Option<&str>,
 ) -> Result<(RustcArgs, Vec<String>)> {
     let mut args = vec![];
 
@@ -172,24 +173,40 @@ pub(crate) fn as_rustc(
         args.push(val);
     }
 
-    assert_ne!(state.crate_type, "");
-    assert_ne!(state.metadata, "");
+    //assert_ne!(state.crate_type, "");
+    //assert_ne!(state.metadata, "");
+    //assert_ne!(state.input, "");
+    //assert_ne!(state.out_dir, "");
     assert!(!state.incremental.as_ref().map(|x| x == "").unwrap_or_default()); // MAY be unset: only set on last calls
-    assert_ne!(state.input, "");
-    assert_ne!(state.out_dir, "");
 
     // Can't rely on $PWD nor $CARGO_TARGET_DIR because `cargo` changes them.
     // Out dir though...
     // --out-dir "$CARGO_TARGET_DIR/$PROFILE"/build/rustix-2a01a00f5bdd1924
     // --out-dir "$CARGO_TARGET_DIR/$PROFILE"/deps
-    state.target_path = match &state.out_dir.iter().rev().take(3).collect::<Vec<_>>()[..] {
-        ["deps", ..] => state.out_dir.clone().popped(1),
-        ["examples", _profile, ..] => state.out_dir.clone().popped(2),
-        [_crate_dir, "build", ..] => state.out_dir.clone().popped(2),
-        nope => bail!("BUG: --out-dir path should match /deps$|.+/build/.+: {nope:?}"),
-    };
-    // TODO: return path makers through closures
-    // TODO: namespace our files: {target_path}/{NS}/{profile}/...
+    state.target_path =
+        match (&state.out_dir.iter().rev().take(3).collect::<Vec<_>>()[..], out_dir_var) {
+            (["deps", ..], _) => state.out_dir.clone().popped(1),
+            (["examples", _profile, ..], _) => state.out_dir.clone().popped(2),
+            ([_crate_dir, "build", ..], _) => state.out_dir.clone().popped(2),
+            ([], Some(out_dir)) => {
+                // e.g. OUT_DIR=$HOME/work/supergreen/supergreen/target/debug/build/slab-94793bb2b78c57b5/out
+                let mut out_dir = Utf8PathBuf::from(out_dir);
+                assert_eq!(out_dir.file_name(), Some("out"));
+                let exploded = out_dir.iter().rev().take(4).collect::<Vec<_>>();
+                match exploded[..] {
+                    ["out", crate_dir, "build", ..] => {
+                        state.metadata = crate_dir
+                            .rsplit_once('-')
+                            .map(|(_, m)| m)
+                            .expect("crate dir name contains metadata")
+                            .to_owned();
+                        out_dir.popped(3)
+                    }
+                    _ => bail!("BUG: $OUT_DIR is surprising for this build script: {exploded:?}"),
+                }
+            }
+            nope => bail!("BUG: --out-dir path should match /deps$|.+/build/.+: {nope:?}"),
+        };
 
     Ok((state, args))
 }
@@ -242,7 +259,7 @@ mod tests {
             "-C", "link-arg=-fuse-ld=/usr/local/bin/mold",
         ]);
 
-        let (st, args) = as_rustc(PWD, arguments.clone()).unwrap();
+        let (st, args) = as_rustc(PWD, arguments.clone(), None).unwrap();
 
         assert_eq!(
             st,
@@ -325,7 +342,7 @@ mod tests {
             "-C", "link-arg=-fuse-ld=/usr/local/bin/mold",
         ]);
 
-        let (st, args) = as_rustc(PWD, arguments.clone()).unwrap();
+        let (st, args) = as_rustc(PWD, arguments.clone(), None).unwrap();
 
         assert_eq!(
             st,
@@ -408,7 +425,7 @@ mod tests {
             "-C", "link-arg=-fuse-ld=/usr/local/bin/mold",
         ]);
 
-        let (st, args) = as_rustc(PWD, arguments.clone()).unwrap();
+        let (st, args) = as_rustc(PWD, arguments.clone(), None).unwrap();
 
         assert_eq!(
             st,
@@ -480,7 +497,7 @@ mod tests {
             "-C", "link-arg=-fuse-ld=/usr/local/bin/mold",
         ]);
 
-        let (st, args) = as_rustc(PWD, arguments.clone()).unwrap();
+        let (st, args) = as_rustc(PWD, arguments.clone(), None).unwrap();
 
         assert_eq!(
             st,
@@ -548,7 +565,7 @@ mod tests {
             "-C", "link-arg=-fuse-ld=/usr/local/bin/mold",
         ]);
 
-        let (st, args) = as_rustc(PWD, arguments.clone()).unwrap();
+        let (st, args) = as_rustc(PWD, arguments.clone(), None).unwrap();
 
         assert_eq!(
             st,
@@ -614,7 +631,7 @@ mod tests {
             "--cap-lints", "warn",
         ]);
 
-        let (st, args) = as_rustc(PWD, arguments.clone()).unwrap();
+        let (st, args) = as_rustc(PWD, arguments.clone(), None).unwrap();
 
         assert_eq!(
             st,
@@ -658,5 +675,77 @@ mod tests {
                 "--extern", "vcpkg=$HOME/instst/release/deps/libvcpkg-ebcbc23bfdf4209b.rlib",
                 "--cap-lints", "warn",
              ]), args);
+    }
+
+    #[test]
+    fn the_weird_build_script_of_slab_0_4_9() {
+        #[rustfmt::skip]
+        // Original ordering per rustc 1.80.0
+        let arguments = as_arguments(&[
+            // CARGO=$HOME/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/cargo
+            // CARGO_CFG_PANIC=unwind
+            // CARGO_CFG_TARGET_ABI=''
+            // CARGO_CFG_TARGET_ARCH=x86_64
+            // CARGO_CFG_TARGET_ENDIAN=little
+            // CARGO_CFG_TARGET_ENV=gnu
+            // CARGO_CFG_TARGET_FAMILY=unix
+            // CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2
+            // CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr
+            // CARGO_CFG_TARGET_OS=linux
+            // CARGO_CFG_TARGET_POINTER_WIDTH=64
+            // CARGO_CFG_TARGET_VENDOR=unknown
+            // CARGO_CFG_UNIX=''
+            // CARGO_ENCODED_RUSTFLAGS=''
+            // CARGO_FEATURE_DEFAULT=1
+            // CARGO_FEATURE_STD=1
+            // CARGO_MANIFEST_DIR=$HOME/.cargo/registry/src/index.crates.io-6f17d22bba15001f/slab-0.4.9
+            // CARGO_PKG_AUTHORS='Carl Lerche <me@carllerche.com>'
+            // CARGO_PKG_DESCRIPTION='Pre-allocated storage for a uniform data type'
+            // CARGO_PKG_HOMEPAGE=''
+            // CARGO_PKG_LICENSE=MIT
+            // CARGO_PKG_LICENSE_FILE=''
+            // CARGO_PKG_NAME=slab
+            // CARGO_PKG_README=README.md
+            // CARGO_PKG_REPOSITORY='https://github.com/tokio-rs/slab'
+            // CARGO_PKG_RUST_VERSION=1.31
+            // CARGO_PKG_VERSION=0.4.9
+            // CARGO_PKG_VERSION_MAJOR=0
+            // CARGO_PKG_VERSION_MINOR=4
+            // CARGO_PKG_VERSION_PATCH=9
+            // CARGO_PKG_VERSION_PRE=''
+            // DEBUG=true
+            // HOST=x86_64-unknown-linux-gnu
+            // LD_LIBRARY_PATH='$HOME/work/supergreen/supergreen/target/debug/deps:$HOME/work/supergreen/supergreen/target/debug:$HOME/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib:$HOME/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib'
+            // NUM_JOBS=1
+            // OPT_LEVEL=0
+            // OUT_DIR=$HOME/work/supergreen/supergreen/target/debug/build/slab-94793bb2b78c57b5/out  <===
+            // PROFILE=debug
+            // RUSTC=$HOME/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/rustc
+            // RUSTC_WRAPPER=$HOME/.cargo/bin/rustcbuildx
+            // RUSTDOC=$HOME/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/rustdoc
+            // TARGET=x86_64-unknown-linux-gnu
+            "$HOME/work/supergreen/supergreen/target/debug/build/slab-b0340a0384800aca/build-script-build",
+        ]);
+
+        let out_dir_var =
+            Some("$HOME/work/supergreen/supergreen/target/debug/build/slab-94793bb2b78c57b5/out");
+
+        let (st, args) = as_rustc(PWD, arguments.clone(), out_dir_var).unwrap();
+
+        assert_eq!(
+            st,
+            RustcArgs {
+                crate_type: "".to_owned(),
+                emit: "".to_owned(),
+                externs: [].into(),
+                metadata: "94793bb2b78c57b5".to_owned(),
+                incremental: None,
+                input: "".into(),
+                out_dir: "".into(),
+                target_path: "$HOME/work/supergreen/supergreen/target/debug".into(),
+            }
+        );
+
+        assert_eq!(as_arguments(&[]), args);
     }
 }
