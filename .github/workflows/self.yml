@@ -177,20 +177,20 @@ jobs:
       run: |
         CARGO_TARGET_DIR=~/cargo-udeps cargo install --locked --force cargo-udeps
 
-    - name: cargo +nightly green udeps --all-targets net=ON cache=OFF remote=OFF
+    - name: cargo +nightly green udeps --all-targets --jobs=1 cache=OFF remote=OFF
       run: |
         export RUSTCBUILDX_LOG=debug
         export RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt
-        if ! cargo +nightly green udeps --all-targets; then
+        if ! cargo +nightly green udeps --all-targets --jobs=1; then
           cat logs.txt
           exit 1
         fi
 
-    - name: cargo green +nightly udeps --all-targets net=ON cache=OFF remote=OFF
+    - name: cargo green +nightly udeps --all-targets --jobs=1 cache=ON remote=OFF
       run: |
         export RUSTCBUILDX_LOG=debug
         export RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt
-        if ! cargo green +nightly udeps --all-targets; then
+        if ! cargo green +nightly udeps --all-targets --jobs=1; then
           cat logs.txt
           exit 1
         fi
