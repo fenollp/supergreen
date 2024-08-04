@@ -22,11 +22,37 @@ pub fn from_cratesio_input_path(input: &Utf8PathBuf) -> Result<(String, String, 
     }
     let cratesio_crate = cratesio_crate.expect("just checked above");
 
-    let Some((name, version)) = cratesio_crate.rsplit_once('-') else {
+    let mut name = String::new();
+    let mut version = String::new();
+    let mut prev_dash = false;
+    for (i, c) in cratesio_crate.chars().enumerate() {
+        if prev_dash && c.is_ascii_digit() {
+            name = cratesio_crate[..(i - 1/*i is never zero: prev_dash starts false*/)].to_owned();
+            version = cratesio_crate[i..].to_owned();
+            break;
+        }
+        prev_dash = c == '-'
+    }
+    if name.is_empty() || version.is_empty() {
         bail!("Unexpected cratesio crate format: {cratesio_crate}")
-    };
+    }
 
-    Ok((name.to_owned(), version.to_owned(), cratesio_index))
+    Ok((name, version, cratesio_index))
+}
+
+#[test]
+fn test_from_cratesio_input_path() {
+    assert_eq!(from_cratesio_input_path(
+        &"/home/pete/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ring-0.17.8/src/lib.rs"
+            .into(),
+    ).unwrap(),
+    ("ring".to_owned(), "0.17.8".to_owned(), "index.crates.io-6f17d22bba15001f".to_owned()));
+
+    assert_eq!(from_cratesio_input_path(
+        &"/home/pete/.cargo/registry/src/index.crates.io-6f17d22bba15001f/hickory-proto-0.25.0-alpha.1/src/lib.rs"
+            .into(),
+    ).unwrap(),
+    ("hickory-proto".to_owned(), "0.25.0-alpha.1".to_owned(), "index.crates.io-6f17d22bba15001f".to_owned()));
 }
 
 pub async fn into_stage(
@@ -51,6 +77,7 @@ pub async fn into_stage(
     let cratesio_hash = sha256::try_async_digest(cratesio_cached.as_path()) //TODO: read from lockfile? cargo_metadata?
         .await
         .map_err(|e| anyhow!("Failed reading {cratesio_cached}: {e}"))?;
+    log::debug!(target: &krate, "crate sha256 for {cratesio_stage}: {cratesio_hash}");
 
     const CRATESIO: &str = "https://static.crates.io";
     const SRC: &str = "/extracted";

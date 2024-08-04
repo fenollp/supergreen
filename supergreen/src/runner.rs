@@ -296,7 +296,7 @@ fn fwd_stderr(krate: &str, msg: &str, buf: &mut String) {
     let show = |msg: &str| {
         eprintln!("{msg}");
         if let Some(file) = artifact_written(msg) {
-            log::info!(target: &krate, "rustc wrote {file}")
+            log::info!(target: &krate, "rustc wrote {file}") // FIXME: replace prefix target_path with '.'
         }
     };
     match (buf.is_empty(), msg.starts_with('{'), msg.ends_with('}')) {

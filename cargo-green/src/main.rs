@@ -129,6 +129,9 @@ async fn setup_for_build(cmd: &mut Command) -> Result<()> {
     );
     let builder_image = builder_image().await;
     // Locks images in Dockerfiles handled by sub-bin
+    // TODO: actually don't pull images, just use local hashed image if one matching `rustc` exists locally
+    //       otherwise default to a hash found through some Web API.
+    //       Goal: produce only fully-locked Dockerfiles
     let _ = pull_images(
         [base_image.base().as_str(), /*builder_image, Don't pull until used*/ syntax().await]
             .into_iter()
