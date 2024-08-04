@@ -551,6 +551,11 @@ async fn do_wrap_rustc(
 
     rustc_block.push_str(" && export CARGO=\"$(which cargo)\" \\\n");
 
+    if let Ok(v) = env::var("RING_CORE_PREFIX") {
+        log::warn!(target: &krate, "passing $RING_CORE_PREFIX={v:?} env through");
+        rustc_block.push_str(&format!("&& export RING_CORE_PREFIX={v:?} \\\n"));
+    }
+
     // TODO: keep only paths that we explicitly mount or copy
     if false {
         for var in ["PATH", "DYLD_FALLBACK_LIBRARY_PATH", "LD_LIBRARY_PATH", "LIBPATH"] {
