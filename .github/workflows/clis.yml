@@ -115,7 +115,7 @@ jobs:
           CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=1 --locked --force buildxargs --git https://github.com/fenollp/buildxargs.git
 
     - if: ${{ failure() || success() }}
-      run: if [ $(stat -c%s logs.txt) -lt 1751778 ]; then cat logs.txt; fi ; echo >logs.txt
+      run: tail -n9999999 logs.txt ; echo >logs.txt
 
     - name: Disk usage
       if: ${{ failure() || success() }}
@@ -135,7 +135,7 @@ jobs:
           CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=1 --locked --force buildxargs --git https://github.com/fenollp/buildxargs.git 2>&1 | tee _
 
     - if: ${{ failure() || success() }}
-      run: if [ $(stat -c%s logs.txt) -lt 1751778 ]; then cat logs.txt; fi
+      run: tail -n9999999 logs.txt
 
     - name: Disk usage
       if: ${{ failure() || success() }}
@@ -226,7 +226,7 @@ jobs:
           CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=3 --locked --force buildxargs --git https://github.com/fenollp/buildxargs.git
 
     - if: ${{ failure() || success() }}
-      run: if [ $(stat -c%s logs.txt) -lt 1751778 ]; then cat logs.txt; fi ; echo >logs.txt
+      run: tail -n9999999 logs.txt ; echo >logs.txt
 
     - name: Disk usage
       if: ${{ failure() || success() }}
@@ -246,7 +246,7 @@ jobs:
           CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=3 --locked --force buildxargs --git https://github.com/fenollp/buildxargs.git 2>&1 | tee _
 
     - if: ${{ failure() || success() }}
-      run: if [ $(stat -c%s logs.txt) -lt 1751778 ]; then cat logs.txt; fi
+      run: tail -n9999999 logs.txt
 
     - name: Disk usage
       if: ${{ failure() || success() }}
@@ -337,7 +337,7 @@ jobs:
           CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=1 --locked --force cargo-audit@0.21.0-pre.0 --features=fix
 
     - if: ${{ failure() || success() }}
-      run: if [ $(stat -c%s logs.txt) -lt 1751778 ]; then cat logs.txt; fi ; echo >logs.txt
+      run: tail -n9999999 logs.txt ; echo >logs.txt
 
     - name: Disk usage
       if: ${{ failure() || success() }}
@@ -357,7 +357,7 @@ jobs:
           CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=1 --locked --force cargo-audit@0.21.0-pre.0 --features=fix 2>&1 | tee _
 
     - if: ${{ failure() || success() }}
-      run: if [ $(stat -c%s logs.txt) -lt 1751778 ]; then cat logs.txt; fi
+      run: tail -n9999999 logs.txt
 
     - name: Disk usage
       if: ${{ failure() || success() }}
@@ -448,7 +448,7 @@ jobs:
           CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=3 --locked --force cargo-audit@0.21.0-pre.0 --features=fix
 
     - if: ${{ failure() || success() }}
-      run: if [ $(stat -c%s logs.txt) -lt 1751778 ]; then cat logs.txt; fi ; echo >logs.txt
+      run: tail -n9999999 logs.txt ; echo >logs.txt
 
     - name: Disk usage
       if: ${{ failure() || success() }}
@@ -468,7 +468,7 @@ jobs:
           CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=3 --locked --force cargo-audit@0.21.0-pre.0 --features=fix 2>&1 | tee _
 
     - if: ${{ failure() || success() }}
-      run: if [ $(stat -c%s logs.txt) -lt 1751778 ]; then cat logs.txt; fi
+      run: tail -n9999999 logs.txt
 
     - name: Disk usage
       if: ${{ failure() || success() }}
@@ -559,7 +559,7 @@ jobs:
           CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=1 --locked --force cargo-llvm-cov@0.5.36 
 
     - if: ${{ failure() || success() }}
-      run: if [ $(stat -c%s logs.txt) -lt 1751778 ]; then cat logs.txt; fi ; echo >logs.txt
+      run: tail -n9999999 logs.txt ; echo >logs.txt
 
     - name: Disk usage
       if: ${{ failure() || success() }}
@@ -579,7 +579,7 @@ jobs:
           CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=1 --locked --force cargo-llvm-cov@0.5.36  2>&1 | tee _
 
     - if: ${{ failure() || success() }}
-      run: if [ $(stat -c%s logs.txt) -lt 1751778 ]; then cat logs.txt; fi
+      run: tail -n9999999 logs.txt
 
     - name: Disk usage
       if: ${{ failure() || success() }}
@@ -670,7 +670,7 @@ jobs:
           CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=1 --locked --force cross@0.2.5 
 
     - if: ${{ failure() || success() }}
-      run: if [ $(stat -c%s logs.txt) -lt 1751778 ]; then cat logs.txt; fi ; echo >logs.txt
+      run: tail -n9999999 logs.txt ; echo >logs.txt
 
     - name: Disk usage
       if: ${{ failure() || success() }}
@@ -690,7 +690,7 @@ jobs:
           CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=1 --locked --force cross@0.2.5  2>&1 | tee _
 
     - if: ${{ failure() || success() }}
-      run: if [ $(stat -c%s logs.txt) -lt 1751778 ]; then cat logs.txt; fi
+      run: tail -n9999999 logs.txt
 
     - name: Disk usage
       if: ${{ failure() || success() }}
@@ -781,7 +781,7 @@ jobs:
           CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=3 --locked --force cross@0.2.5 
 
     - if: ${{ failure() || success() }}
-      run: if [ $(stat -c%s logs.txt) -lt 1751778 ]; then cat logs.txt; fi ; echo >logs.txt
+      run: tail -n9999999 logs.txt ; echo >logs.txt
 
     - name: Disk usage
       if: ${{ failure() || success() }}
@@ -801,7 +801,7 @@ jobs:
           CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=3 --locked --force cross@0.2.5  2>&1 | tee _
 
     - if: ${{ failure() || success() }}
-      run: if [ $(stat -c%s logs.txt) -lt 1751778 ]; then cat logs.txt; fi
+      run: tail -n9999999 logs.txt
 
     - name: Disk usage
       if: ${{ failure() || success() }}
@@ -892,7 +892,7 @@ jobs:
           CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=1 --locked --force hickory-dns@0.25.0-alpha.1 --features=dns-over-rustls
 
     - if: ${{ failure() || success() }}
-      run: if [ $(stat -c%s logs.txt) -lt 1751778 ]; then cat logs.txt; fi ; echo >logs.txt
+      run: tail -n9999999 logs.txt ; echo >logs.txt
 
     - name: Disk usage
       if: ${{ failure() || success() }}
@@ -912,7 +912,7 @@ jobs:
           CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=1 --locked --force hickory-dns@0.25.0-alpha.1 --features=dns-over-rustls 2>&1 | tee _
 
     - if: ${{ failure() || success() }}
-      run: if [ $(stat -c%s logs.txt) -lt 1751778 ]; then cat logs.txt; fi
+      run: tail -n9999999 logs.txt
 
     - name: Disk usage
       if: ${{ failure() || success() }}
@@ -1003,7 +1003,7 @@ jobs:
           CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=3 --locked --force hickory-dns@0.25.0-alpha.1 --features=dns-over-rustls
 
     - if: ${{ failure() || success() }}
-      run: if [ $(stat -c%s logs.txt) -lt 1751778 ]; then cat logs.txt; fi ; echo >logs.txt
+      run: tail -n9999999 logs.txt ; echo >logs.txt
 
     - name: Disk usage
       if: ${{ failure() || success() }}
@@ -1023,7 +1023,7 @@ jobs:
           CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=3 --locked --force hickory-dns@0.25.0-alpha.1 --features=dns-over-rustls 2>&1 | tee _
 
     - if: ${{ failure() || success() }}
-      run: if [ $(stat -c%s logs.txt) -lt 1751778 ]; then cat logs.txt; fi
+      run: tail -n9999999 logs.txt
 
     - name: Disk usage
       if: ${{ failure() || success() }}
@@ -1114,7 +1114,7 @@ jobs:
           CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=1 --locked --force vixargs@0.1.0 
 
     - if: ${{ failure() || success() }}
-      run: if [ $(stat -c%s logs.txt) -lt 1751778 ]; then cat logs.txt; fi ; echo >logs.txt
+      run: tail -n9999999 logs.txt ; echo >logs.txt
 
     - name: Disk usage
       if: ${{ failure() || success() }}
@@ -1134,7 +1134,7 @@ jobs:
           CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=1 --locked --force vixargs@0.1.0  2>&1 | tee _
 
     - if: ${{ failure() || success() }}
-      run: if [ $(stat -c%s logs.txt) -lt 1751778 ]; then cat logs.txt; fi
+      run: tail -n9999999 logs.txt
 
     - name: Disk usage
       if: ${{ failure() || success() }}
@@ -1225,7 +1225,7 @@ jobs:
           CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=3 --locked --force vixargs@0.1.0 
 
     - if: ${{ failure() || success() }}
-      run: if [ $(stat -c%s logs.txt) -lt 1751778 ]; then cat logs.txt; fi ; echo >logs.txt
+      run: tail -n9999999 logs.txt ; echo >logs.txt
 
     - name: Disk usage
       if: ${{ failure() || success() }}
@@ -1245,7 +1245,7 @@ jobs:
           CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=3 --locked --force vixargs@0.1.0  2>&1 | tee _
 
     - if: ${{ failure() || success() }}
-      run: if [ $(stat -c%s logs.txt) -lt 1751778 ]; then cat logs.txt; fi
+      run: tail -n9999999 logs.txt
 
     - name: Disk usage
       if: ${{ failure() || success() }}
