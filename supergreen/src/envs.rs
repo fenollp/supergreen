@@ -4,9 +4,11 @@ use std::{
 };
 
 use anyhow::{anyhow, Result};
-use tokio::process::Command;
 
-use crate::{base::BaseImage, runner::maybe_lock_image};
+use crate::{
+    base::{BaseImage, STABLE_RUST},
+    runner::maybe_lock_image,
+};
 
 pub mod internal {
     use std::env;
@@ -124,13 +126,10 @@ pub async fn base_image() -> BaseImage {
                 }
                 BaseImage::Image(val)
             } else {
-                let s = Command::new("rustc").kill_on_drop(true).arg("-V").output().await.ok();
-                let s = s.and_then(|child| String::from_utf8(child.stdout).ok());
-                // e.g. rustc 1.73.0 (cc66ad468 2023-10-03)
-
-                s.and_then(BaseImage::from_rustc_v).unwrap_or_else(|| {
-                    BaseImage::Image("docker-image://docker.io/library/rust:1-slim".to_owned())
-                })
+                rustc_version::version_meta()
+                    .ok()
+                    .and_then(BaseImage::from_rustc_v)
+                    .unwrap_or_else(|| BaseImage::Image(STABLE_RUST.to_owned()))
             };
 
             let ctx = ctx.maybe_lock_base().await;

@@ -16,6 +16,7 @@ camino.workspace = true
 futures.workspace = true
 log.workspace = true
 nutype.workspace = true
+rustc_version.workspace = true
 serde-jsonlines.workspace = true
 serde.workspace = true
 serde_json.workspace = true

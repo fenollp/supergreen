@@ -1,13 +1,15 @@
+use rustc_version::{Channel, Version, VersionMeta};
+
 use crate::runner::maybe_lock_image;
 
 pub const RUST: &str = "rust-base";
 
 #[derive(Clone, Debug, PartialEq)]
 pub struct RustcV {
-    pub version: String,
+    pub version: Version,
     pub commit: String,
     pub date: String,
-    pub channel: String,
+    pub channel: Channel,
 
     pub base: String,
 }
@@ -18,22 +20,52 @@ pub enum BaseImage {
     RustcV(RustcV),
 }
 
+pub const STABLE_RUST: &str = "docker-image://docker.io/library/rust:1-slim";
+
 #[test]
 fn test_from_rustc_v() {
+    use std::str::FromStr;
+
+    use rustc_version::version_meta_for;
+
     assert_eq!(
-        // # rustc -V
-        BaseImage::from_rustc_v("rustc 1.79.0 (129f3b996 2024-06-10)\n".to_owned()),
-        Some(BaseImage::Image("docker-image://docker.io/library/rust:1.79.0-slim".to_owned()))
+        BaseImage::from_rustc_v(
+            version_meta_for(
+                &r#"
+rustc 1.80.0 (051478957 2024-07-21)
+binary: rustc
+commit-hash: 051478957371ee0084a7c0913941d2a8c4757bb9
+commit-date: 2024-07-21
+host: x86_64-unknown-linux-gnu
+release: 1.80.0
+LLVM version: 18.1.7
+"#[1..]
+            )
+            .unwrap()
+        ),
+        Some(BaseImage::Image("docker-image://docker.io/library/rust:1.80.0-slim".to_owned()))
     );
 
     assert_eq!(
-        // # rustc +nightly -V
-        BaseImage::from_rustc_v("rustc 1.81.0-nightly (d7f6ebace 2024-06-16)\n".to_owned()),
+        BaseImage::from_rustc_v(
+            version_meta_for(
+                &r#"
+rustc 1.82.0-nightly (60d146580 2024-08-06)
+binary: rustc
+commit-hash: 60d146580c10036ce89e019422c6bc2fd9729b65
+commit-date: 2024-08-06
+host: x86_64-unknown-linux-gnu
+release: 1.82.0-nightly
+LLVM version: 19.1.0
+"#[1..]
+            )
+            .unwrap()
+        ),
         Some(BaseImage::RustcV(RustcV {
-            version: "1.81.0".to_owned(),
-            commit: "d7f6ebace".to_owned(),
-            date: "2024-06-16".to_owned(),
-            channel: "nightly".to_owned(),
+            version: Version::from_str("1.82.0-nightly").unwrap(),
+            commit: "60d146580c10036ce89e019422c6bc2fd9729b65".to_owned(),
+            date: "2024-08-06".to_owned(),
+            channel: Channel::Nightly,
             base: "".to_owned(),
         }))
     );
@@ -45,38 +77,33 @@ impl BaseImage {
     pub fn base(&self) -> String {
         match self {
             Self::Image(img) => img.clone(),
-            Self::RustcV(RustcV { base, .. }) if base.is_empty() => {
-                "docker.io/library/debian:12-slim".to_owned()
+            Self::RustcV(RustcV { base, .. }) => {
+                if base.is_empty() {
+                    "docker.io/library/debian:12-slim".to_owned()
+                } else {
+                    base.clone()
+                }
             }
-            Self::RustcV(RustcV { base, .. }) => base.clone(),
         }
     }
 
     #[inline]
     #[must_use]
-    pub fn from_rustc_v(rustc_v: String) -> Option<Self> {
-        let x = rustc_v.trim_start_matches("rustc ").replace(['(', ')', '\n'], "");
-
-        let cut: Vec<&str> = x.splitn(3, ' ').collect();
-        let [version, commit, date] = cut[..] else {
-            return None;
-        };
-
-        // https://rust-lang.github.io/rustup/concepts/toolchains.html#toolchain-specification
-        for channel in ["nightly", "stable", "beta"] {
-            let suffix = format!("-{channel}");
-            if version.ends_with(&suffix) {
-                return Some(Self::RustcV(RustcV {
-                    version: version.trim_end_matches(&suffix).to_owned(),
-                    commit: commit.to_owned(),
-                    date: date.to_owned(),
-                    channel: channel.to_owned(),
-                    base: "".to_owned(),
-                }));
-            }
+    pub fn from_rustc_v(
+        VersionMeta { semver, commit_hash, commit_date, channel, .. }: VersionMeta,
+    ) -> Option<Self> {
+        if channel == Channel::Stable {
+            return Some(Self::Image(STABLE_RUST.replace(":1-", &format!(":{semver}-"))));
         }
-
-        Some(BaseImage::Image(format!("docker-image://docker.io/library/rust:{version}-slim")))
+        commit_hash.zip(commit_date).map(|(commit, date)| {
+            Self::RustcV(RustcV {
+                version: semver.to_owned(),
+                commit: commit.to_owned(),
+                date: date.to_owned(),
+                channel: channel.to_owned(),
+                base: "".to_owned(),
+            })
+        })
     }
 
     pub async fn maybe_lock_base(self) -> Self {
@@ -92,15 +119,20 @@ impl BaseImage {
         let base = base.trim_start_matches("docker-image://");
 
         match self {
-            BaseImage::Image(_) => {
-                format!("FROM {base} AS {RUST}\n")
-            }
-            BaseImage::RustcV(RustcV { date, channel, .. }) => {
+            Self::Image(_) => format!("FROM {base} AS {RUST}\n"),
+            Self::RustcV(RustcV { date, channel, .. }) => {
                 // TODO? maybe use commit & version as selector too?
 
-                // FIXME: multiplatformify (using auto ARG.s)
+                // FIXME: multiplatformify (using auto ARG.s) (use rustc_version::VersionMeta.host)
 
                 // TODO: use https://github.com/reproducible-containers/repro-sources-list.sh
+
+                let channel = match channel {
+                    Channel::Stable => "stable",
+                    Channel::Dev => "dev",
+                    Channel::Beta => "beta",
+                    Channel::Nightly => "nightly",
+                };
 
                 format!(
                     r#"
