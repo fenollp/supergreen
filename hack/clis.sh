@@ -68,6 +68,59 @@ declare -a nvs nvs_args
 # TODO https://github.com/aizcutei/nanometers?tab=readme-ov-file#testing-locally
 
 
+#    Compiling clap_lex v0.7.0
+#    Compiling winnow v0.5.40
+#    Compiling anyhow v1.0.81
+#    Compiling bitflags v1.3.2
+#    Compiling heck v0.4.1
+#    Compiling same-file v1.0.6
+#    Compiling strsim v0.11.0
+#    Compiling arrayvec v0.7.4
+#    Compiling vte v0.12.1
+#    Compiling clap_builder v4.5.2
+#    Compiling walkdir v2.5.0
+#    Compiling clap_derive v4.5.0
+#    Compiling inotify v0.9.6
+#    Compiling toml_edit v0.19.15
+#    Compiling sharded-slab v0.1.7
+# error: failed to run custom build command for `motd v0.2.1`
+
+# Caused by:
+#   process didn't exit successfully: `/tmp/cargo-installSYJwTA/release/build/motd-0e127c12db4c87b5/build-script-build` (exit status: 101)
+#   --- stdout
+#   cargo:rerun-if-changed=src/pam_motd_overlay.c
+#   cargo:rerun-if-changed=src/pam_motd_overlay_versions.ldscript
+
+#   --- stderr
+#   thread 'main' panicked at /home/pete/.cargo/registry/src/index.crates.io-6f17d22bba15001f/motd-0.2.1/build.rs:23:13:
+#   build failed: error building overlay, code = exit status: 1
+#   STDOUT: 
+#   STDERR: ./src/pam_motd_overlay.c:11:10: fatal error: security/_pam_types.h: No such file or directory
+#      11 | #include <security/_pam_types.h>
+#         |          ^~~~~~~~~~~~~~~~~~~~~~~
+#   compilation terminated.
+
+#   note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+# error: failed to compile `shpool v0.6.2`, intermediate artifacts can be found at `/tmp/cargo-installSYJwTA`.
+# To reuse those artifacts with a future compilation, set the environment variable `CARGO_TARGET_DIR` to that path.
+# 101 70s supergreen.git main λ RUSTCBUILDX_LOG=debug \cargo green install --locked shpool --jobs=1
+
+
+
+# https://crates.io/crates/motd/0.2.1
+
+# Dependencies
+
+# You must install libpam headers to build this crate. On debian based systems you can do so with
+
+# sudo apt-get install libpam0g-dev
+
+
+# RUSTCBUILDX_LOG=debug \cargo green install --offline --locked shpool --jobs=1
+
+
+
+
 ((i+=1)); nvs[i]=rustcbuildx@main;      oks[i]=ok; nvs_args[i]='--git https://github.com/fenollp/supergreen.git --branch=main rustcbuildx'
 
 #TODO: not a cli but try users of https://github.com/dtolnay/watt
