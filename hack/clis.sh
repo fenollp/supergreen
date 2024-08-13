@@ -5,36 +5,19 @@ set -o pipefail
 declare -a nvs nvs_args
    i=0  ; nvs[i]=buildxargs@master;           oks[i]=ok; nvs_args[i]='--git https://github.com/fenollp/buildxargs.git'
 ((i+=1)); nvs[i]=cargo-audit@0.21.0-pre.0;    oks[i]=ok; nvs_args[i]='--features=fix' # ResourceExhausted: grpc: received message larger than max (5136915 vs. 4194304)
+((i+=1)); nvs[i]=cargo-bpf@2.3.0;             oks[i]=ko; nvs_args[i]='' # Package libelf was not found in the pkg-config search path.
+((i+=1)); nvs[i]=cargo-config2@0.1.26;        oks[i]=ko; nvs_args[i]='--example=get' # unexpected output from `rustc --version`: ""
 ((i+=1)); nvs[i]=cargo-deny@0.14.3;           oks[i]=ko; nvs_args[i]='' # https://github.com/docker/buildx/issues/2453  ResourceExhausted: (x5) grpc: received message larger than max (4202037 vs. 4194304) [also: 4949313 vs. 4194304] 2023-11-21T13:21:18.5168012Z    1 | >>> # syntax=docker.io/docker/dockerfile:1@sha256:ac85f380a63b13dfcefa89046420e1781752bab202122f8f50032edf31be0021
 ((i+=1)); nvs[i]=cargo-llvm-cov@0.5.36;       oks[i]=ok; nvs_args[i]=''
 ((i+=1)); nvs[i]=cargo-nextest@0.9.61;        oks[i]=ko; nvs_args[i]='' # .. environment variable `TARGET` not defined at compile time .. self_update-0.38.0
 ((i+=1)); nvs[i]=cross@0.2.5;                 oks[i]=ok; nvs_args[i]=''
 ((i+=1)); nvs[i]=diesel_cli@2.1.1;            oks[i]=ko; nvs_args[i]='--no-default-features --features=postgres' # /usr/bin/ld: cannot find -lpq: No such file or directory
 ((i+=1)); nvs[i]=hickory-dns@0.25.0-alpha.1;  oks[i]=ok; nvs_args[i]='--features=dns-over-rustls'
+((i+=1)); nvs[i]=solana-gossip@2.0.5;         oks[i]=ko; nvs_args[i]='' # error: environment variable `TYPENUM_BUILD_OP` not defined at compile time                                                                                                                    
+((i+=1)); nvs[i]=statehub@0.14.10;            oks[i]=ko; nvs_args[i]='' # BUG: unexpected crate-type: 'cdylib'
 ((i+=1)); nvs[i]=vixargs@0.1.0;               oks[i]=ok; nvs_args[i]=''
 
 # https://crates.io/crates/ntpd
-
-# CARGO_TARGET_DIR=/tmp/cargoconfig0126 \cargo green install -vv --jobs=1 --locked --force cargo-config2@0.1.26 --example get --root=/tmp
-
-#        Fresh bitflags v2.5.0
-#    Compiling rustversion v1.0.15
-#      Running `CARGO=/home/pete/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/cargo CARGO_CFG_PANIC=unwind CARGO_CFG_TARGET_ABI='' CARGO_CFG_TARGET_ARCH=x86_64 CARGO_CFG_TARGET_ENDIAN=little CARGO_CFG_TARGET_ENV=gnu CARGO_CFG_TARGET_FAMILY=unix CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr CARGO_CFG_TARGET_OS=linux CARGO_CFG_TARGET_POINTER_WIDTH=64 CARGO_CFG_TARGET_VENDOR=unknown CARGO_CFG_UNIX='' CARGO_ENCODED_RUSTFLAGS='-Clink-arg=-fuse-ld=/usr/local/bin/mold' CARGO_MANIFEST_DIR=/home/pete/.cargo/registry/src/index.crates.io-6f17d22bba15001f/rustversion-1.0.15 CARGO_PKG_AUTHORS='David Tolnay <dtolnay@gmail.com>' CARGO_PKG_DESCRIPTION='Conditional compilation according to rustc compiler version' CARGO_PKG_HOMEPAGE='' CARGO_PKG_LICENSE='MIT OR Apache-2.0' CARGO_PKG_LICENSE_FILE='' CARGO_PKG_NAME=rustversion CARGO_PKG_README=README.md CARGO_PKG_REPOSITORY='https://github.com/dtolnay/rustversion' CARGO_PKG_RUST_VERSION=1.31 CARGO_PKG_VERSION=1.0.15 CARGO_PKG_VERSION_MAJOR=1 CARGO_PKG_VERSION_MINOR=0 CARGO_PKG_VERSION_PATCH=15 CARGO_PKG_VERSION_PRE='' DEBUG=false HOST=x86_64-unknown-linux-gnu LD_LIBRARY_PATH='/tmp/cargoconfig0126/release/deps:/tmp/cargoconfig0126/release:/home/pete/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib:/home/pete/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib' NUM_JOBS=1 OPT_LEVEL=0 OUT_DIR=/tmp/cargoconfig0126/release/build/rustversion-610e66d3a19c233d/out PROFILE=release RUSTC=/home/pete/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/rustc RUSTC_LINKER=/usr/bin/clang RUSTC_WRAPPER=/home/pete/.cargo/bin/rustcbuildx RUSTDOC=/home/pete/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/rustdoc TARGET=x86_64-unknown-linux-gnu /tmp/cargoconfig0126/release/build/rustversion-a65d385f727cc537/build-script-build`
-# [rustversion 1.0.15] cargo:rerun-if-changed=build/build.rs
-# [rustversion 1.0.15] Error: unexpected output from `rustc --version`: ""
-# [rustversion 1.0.15] 
-# [rustversion 1.0.15] Please file an issue in https://github.com/dtolnay/rustversion
-# error: failed to run custom build command for `rustversion v1.0.15`
-
-# Caused by:
-#   process didn't exit successfully: `CARGO=/home/pete/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/cargo CARGO_CFG_PANIC=unwind CARGO_CFG_TARGET_ABI='' CARGO_CFG_TARGET_ARCH=x86_64 CARGO_CFG_TARGET_ENDIAN=little CARGO_CFG_TARGET_ENV=gnu CARGO_CFG_TARGET_FAMILY=unix CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr CARGO_CFG_TARGET_OS=linux CARGO_CFG_TARGET_POINTER_WIDTH=64 CARGO_CFG_TARGET_VENDOR=unknown CARGO_CFG_UNIX='' CARGO_ENCODED_RUSTFLAGS='-Clink-arg=-fuse-ld=/usr/local/bin/mold' CARGO_MANIFEST_DIR=/home/pete/.cargo/registry/src/index.crates.io-6f17d22bba15001f/rustversion-1.0.15 CARGO_PKG_AUTHORS='David Tolnay <dtolnay@gmail.com>' CARGO_PKG_DESCRIPTION='Conditional compilation according to rustc compiler version' CARGO_PKG_HOMEPAGE='' CARGO_PKG_LICENSE='MIT OR Apache-2.0' CARGO_PKG_LICENSE_FILE='' CARGO_PKG_NAME=rustversion CARGO_PKG_README=README.md CARGO_PKG_REPOSITORY='https://github.com/dtolnay/rustversion' CARGO_PKG_RUST_VERSION=1.31 CARGO_PKG_VERSION=1.0.15 CARGO_PKG_VERSION_MAJOR=1 CARGO_PKG_VERSION_MINOR=0 CARGO_PKG_VERSION_PATCH=15 CARGO_PKG_VERSION_PRE='' DEBUG=false HOST=x86_64-unknown-linux-gnu LD_LIBRARY_PATH='/tmp/cargoconfig0126/release/deps:/tmp/cargoconfig0126/release:/home/pete/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib:/home/pete/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib' NUM_JOBS=1 OPT_LEVEL=0 OUT_DIR=/tmp/cargoconfig0126/release/build/rustversion-610e66d3a19c233d/out PROFILE=release RUSTC=/home/pete/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/rustc RUSTC_LINKER=/usr/bin/clang RUSTC_WRAPPER=/home/pete/.cargo/bin/rustcbuildx RUSTDOC=/home/pete/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/rustdoc TARGET=x86_64-unknown-linux-gnu /tmp/cargoconfig0126/release/build/rustversion-a65d385f727cc537/build-script-build` (exit status: 1)
-#   --- stdout
-#   cargo:rerun-if-changed=build/build.rs
-
-#   --- stderr
-#   Error: unexpected output from `rustc --version`: ""
-
-#   Please file an issue in https://github.com/dtolnay/rustversion
 
 
 # https://crates.io/crates/cargo-fuzz/0.12.0
