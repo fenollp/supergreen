@@ -131,7 +131,11 @@ async fn setup_for_build(cmd: &mut Command) -> Result<()> {
     // Locks images in Dockerfiles handled by sub-bin
     // TODO: actually don't pull images, just use local hashed image if one matching `rustc` exists locally
     //       otherwise default to a hash found through some Web API.
-    //       Goal: produce only fully-locked Dockerfiles
+    //       Goal: produce only fully-locked Dockerfiles/TOMLs
+    // FIXME: read `base_image().await` (and others) without setting oncelock, then set fully locked image
+    //   to avoid:
+    //       <FROM docker.io/library/rust:1.80.1-slim AS rust-base
+    //       >FROM docker.io/library/rust:1.80.1-slim@sha256:e8e40c50bfb54c0a76218f480cc69783b908430de87b59619c1dca847fdbd753 AS rust-base
     let _ = pull_images(
         [base_image.base().as_str(), /*builder_image, Don't pull until used*/ syntax().await]
             .into_iter()

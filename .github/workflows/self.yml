@@ -83,55 +83,56 @@ jobs:
           CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=$(nproc) --locked --force --path=./rustcbuildx
 
 
-  audits:
-    runs-on: ubuntu-latest
-    needs: bin
-    steps:
-    - uses: actions-rs/toolchain@v1
-      with:
-        profile: minimal
-        toolchain: stable
+# TODO: re-enable once cargo-audit compiles on rust1.80
+  # audits:
+  #   runs-on: ubuntu-latest
+  #   needs: bin
+  #   steps:
+  #   - uses: actions-rs/toolchain@v1
+  #     with:
+  #       profile: minimal
+  #       toolchain: stable
 
-    - name: Retrieve saved bin
-      uses: actions/download-artifact@v4
-      with:
-        name: bin-artifacts
-    - run: | # TODO: whence https://github.com/actions/download-artifact/issues/236
-        chmod +x ./cargo-green ./rustcbuildx
-        ./rustcbuildx --version | grep rustcbuildx
-        mv ./rustcbuildx /home/runner/.cargo/bin/
-        mv ./cargo-green /home/runner/.cargo/bin/
-        cargo green --version
+  #   - name: Retrieve saved bin
+  #     uses: actions/download-artifact@v4
+  #     with:
+  #       name: bin-artifacts
+  #   - run: | # TODO: whence https://github.com/actions/download-artifact/issues/236
+  #       chmod +x ./cargo-green ./rustcbuildx
+  #       ./rustcbuildx --version | grep rustcbuildx
+  #       mv ./rustcbuildx /home/runner/.cargo/bin/
+  #       mv ./cargo-green /home/runner/.cargo/bin/
+  #       cargo green --version
 
-    - uses: actions/checkout@v4
+  #   - uses: actions/checkout@v4
 
-    # Actually, the whole archives
-    - name: Cache `cargo fetch`
-      uses: actions/cache@v4
-      with:
-        path: |
-          ~/.cargo/registry/index/
-          ~/.cargo/registry/cache/
-          ~/.cargo/git/db/
-        key: cargo-deps-${{ hashFiles('**/Cargo.lock') }}
-        restore-keys: cargo-deps-
+  #   # Actually, the whole archives
+  #   - name: Cache `cargo fetch`
+  #     uses: actions/cache@v4
+  #     with:
+  #       path: |
+  #         ~/.cargo/registry/index/
+  #         ~/.cargo/registry/cache/
+  #         ~/.cargo/git/db/
+  #       key: cargo-deps-${{ hashFiles('**/Cargo.lock') }}
+  #       restore-keys: cargo-deps-
 
-    - name: Cache `cargo install`
-      uses: actions/cache@v4
-      with:
-        path: ~/cargo-audit
-        key: ${{ runner.os }}-cargo-install-audit
+  #   - name: Cache `cargo install`
+  #     uses: actions/cache@v4
+  #     with:
+  #       path: ~/cargo-audit
+  #       key: ${{ runner.os }}-cargo-install-audit
 
-    - name: Compile cargo-audit
-      run: |
-        CARGO_TARGET_DIR=~/cargo-audit cargo install --locked --force cargo-audit --features=fix
+  #   - name: Compile cargo-audit
+  #     run: |
+  #       CARGO_TARGET_DIR=~/cargo-audit cargo install --locked --force cargo-audit --features=fix
 
-    - name: cargo audit net=ON cache=OFF remote=OFF
-      run: |
-        RUSTCBUILDX_LOG=debug \
-        RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
-          cargo green -vv audit || \
-            cat logs.txt
+  #   - name: cargo audit net=ON cache=OFF remote=OFF
+  #     run: |
+  #       RUSTCBUILDX_LOG=debug \
+  #       RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
+  #         cargo green -vv audit || \
+  #           cat logs.txt
 
 
   udeps:
