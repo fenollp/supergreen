@@ -283,7 +283,7 @@ jobs:
     - if: ${{ failure() || success() }}
       run: cat _ || true
 
-  cargo-audit_0-21-0-pre-0:
+  cargo-config2_0-1-26:
     runs-on: ubuntu-latest
     needs: bin
     steps:
@@ -334,7 +334,7 @@ jobs:
       run: |
         RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
-          CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=1 --locked --force cargo-audit@0.21.0-pre.0 --features=fix
+          CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=1 --locked --force cargo-config2@0.1.26 --example=get
 
     - if: ${{ failure() || success() }}
       run: tail -n9999999 logs.txt ; echo >logs.txt
@@ -354,7 +354,7 @@ jobs:
       run: |
         RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
-          CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=1 --locked --force cargo-audit@0.21.0-pre.0 --features=fix 2>&1 | tee _
+          CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=1 --locked --force cargo-config2@0.1.26 --example=get 2>&1 | tee _
 
     - if: ${{ failure() || success() }}
       run: tail -n9999999 logs.txt
@@ -394,7 +394,7 @@ jobs:
     - if: ${{ failure() || success() }}
       run: cat _ || true
 
-  cargo-audit_0-21-0-pre-0-J:
+  cargo-config2_0-1-26-J:
     runs-on: ubuntu-latest
     needs: bin
     steps:
@@ -445,7 +445,7 @@ jobs:
       run: |
         RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
-          CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=3 --locked --force cargo-audit@0.21.0-pre.0 --features=fix
+          CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=3 --locked --force cargo-config2@0.1.26 --example=get
 
     - if: ${{ failure() || success() }}
       run: tail -n9999999 logs.txt ; echo >logs.txt
@@ -465,7 +465,7 @@ jobs:
       run: |
         RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
-          CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=3 --locked --force cargo-audit@0.21.0-pre.0 --features=fix 2>&1 | tee _
+          CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=3 --locked --force cargo-config2@0.1.26 --example=get 2>&1 | tee _
 
     - if: ${{ failure() || success() }}
       run: tail -n9999999 logs.txt
