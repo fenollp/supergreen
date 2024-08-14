@@ -8,111 +8,36 @@ declare -a nvs nvs_args
 ((i+=1)); nvs[i]=cargo-bpf@2.3.0;             oks[i]=ko; nvs_args[i]='' # Package libelf was not found in the pkg-config search path.
 ((i+=1)); nvs[i]=cargo-config2@0.1.26;        oks[i]=ok; nvs_args[i]='--example=get' # unexpected output from `rustc --version`: ""
 ((i+=1)); nvs[i]=cargo-deny@0.16.1;           oks[i]=ko; nvs_args[i]='' # [rustix 0.38.34] thread 'main' panicked at /home/pete/.cargo/registry/src/index.crates.io-6f17d22bba15001f/rustix-0.38.34/build.rs:247:64: [rustix 0.38.34] called `Result::unwrap()` on an `Err` value: Os { code: 32, kind: BrokenPipe, message: "Broken pipe" }
+((i+=1)); nvs[i]=cargo-fuzz@0.12.0;           oks[i]=ko; nvs_args[i]='' # .. environment variable `TARGET_PLATFORM` not defined at compile time .. current_platform-0.2.0 + HOST_PLATFORM
 ((i+=1)); nvs[i]=cargo-green@main;            oks[i]=ok; nvs_args[i]='--git https://github.com/fenollp/supergreen.git --branch=main cargo-green'
 ((i+=1)); nvs[i]=cargo-llvm-cov@0.5.36;       oks[i]=ok; nvs_args[i]=''
 ((i+=1)); nvs[i]=cargo-nextest@0.9.72;        oks[i]=ko; nvs_args[i]='' # .. environment variable `TARGET` not defined at compile time .. self_update-0.39.0
 ((i+=1)); nvs[i]=cross@0.2.5;                 oks[i]=ok; nvs_args[i]=''
 ((i+=1)); nvs[i]=diesel_cli@2.1.1;            oks[i]=ko; nvs_args[i]='--no-default-features --features=postgres' # /usr/bin/ld: cannot find -lpq: No such file or directory
 ((i+=1)); nvs[i]=hickory-dns@0.25.0-alpha.1;  oks[i]=ok; nvs_args[i]='--features=dns-over-rustls'
+((i+=1)); nvs[i]=krnlc@0.1.1;                 oks[i]=ko; nvs_args[i]='' # type annotations needed for `Box<_>` .. time-0.3.31
+((i+=1)); nvs[i]=mussh@3.1.3;                 oks[i]=ko; nvs_args[i]='' # = note: /usr/bin/ld: cannot find -lsqlite3: No such file or directory (and -lssl -lcrypto -lz)
+((i+=1)); nvs[i]=ntpd@1.2.3;                  oks[i]=ko; nvs_args[i]='' # BUG: bad URL creation https://static.crates.io/crates/md/md-5-0.10.6.crate
+((i+=1)); nvs[i]=qcow2-rs@0.1.2;              oks[i]=ok; nvs_args[i]=''
+((i+=1)); nvs[i]=rublk@0.2.0;                 oks[i]=ko; nvs_args[i]='' # could not find native static library `rustix_outline_x86_64`, perhaps an -L flag is missing?
 ((i+=1)); nvs[i]=rustcbuildx@main;            oks[i]=ok; nvs_args[i]='--git https://github.com/fenollp/supergreen.git --branch=main rustcbuildx'
+((i+=1)); nvs[i]=shpool@0.6.2;                oks[i]=ko; nvs_args[i]='' # sudo apt-get install libpam0g-dev
 ((i+=1)); nvs[i]=solana-gossip@2.0.5;         oks[i]=ko; nvs_args[i]='' # error: environment variable `TYPENUM_BUILD_OP` not defined at compile time                                                                                                                    
 ((i+=1)); nvs[i]=statehub@0.14.10;            oks[i]=ko; nvs_args[i]='' # BUG: unexpected crate-type: 'cdylib'
+((i+=1)); nvs[i]=torrust-index@3.0.0-alpha.12; oks[i]=ko; nvs_args[i]='' # unexpected output from `rustc --version`: ""
 ((i+=1)); nvs[i]=vixargs@0.1.0;               oks[i]=ok; nvs_args[i]=''
-
-# https://crates.io/crates/ntpd
-
-
-# https://crates.io/crates/cargo-fuzz/0.12.0
-#    Compiling thiserror-impl v1.0.50
-# error: environment variable `TARGET_PLATFORM` not defined at compile time
-#   --> /home/pete/.cargo/registry/src/index.crates.io-6f17d22bba15001f/current_platform-0.2.0/src/lib.rs:29:36
-#    |
-# 29 | pub const CURRENT_PLATFORM: &str = env!("TARGET_PLATFORM");
-#    |                                    ^^^^^^^^^^^^^^^^^^^^^^^
-#    |
-#    = help: use `std::env::var("TARGET_PLATFORM")` to read the variable at run time
-#    = note: this error originates in the macro `env` (in Nightly builds, run with -Z macro-backtrace for more info)
-
-# error: environment variable `HOST_PLATFORM` not defined at compile time
-#   --> /home/pete/.cargo/registry/src/index.crates.io-6f17d22bba15001f/current_platform-0.2.0/src/lib.rs:38:31
-#    |
-# 38 | pub const COMPILED_ON: &str = env!("HOST_PLATFORM");
-#    |                               ^^^^^^^^^^^^^^^^^^^^^
-#    |
-#    = help: use `std::env::var("HOST_PLATFORM")` to read the variable at run time
-#    = note: this error originates in the macro `env` (in Nightly builds, run with -Z macro-backtrace for more info)
-
-# error: could not compile `current_platform` (lib) due to 2 previous errors
-# warning: build failed, waiting for other jobs to finish...
-# error: failed to compile `cargo-fuzz v0.12.0`, intermediate artifacts can be found at `/tmp/cfzz`.
-# To reuse those artifacts with a future compilation, set the environment variable `CARGO_TARGET_DIR` to that path.
-# 101 36s supergreen.git green λ CARGO_TARGET_DIR=/tmp/cfzz \cargo green install --force --locked cargo-fuzz
-
-
-# TODO https://github.com/aizcutei/nanometers?tab=readme-ov-file#testing-locally
-
-
-#    Compiling clap_lex v0.7.0
-#    Compiling winnow v0.5.40
-#    Compiling anyhow v1.0.81
-#    Compiling bitflags v1.3.2
-#    Compiling heck v0.4.1
-#    Compiling same-file v1.0.6
-#    Compiling strsim v0.11.0
-#    Compiling arrayvec v0.7.4
-#    Compiling vte v0.12.1
-#    Compiling clap_builder v4.5.2
-#    Compiling walkdir v2.5.0
-#    Compiling clap_derive v4.5.0
-#    Compiling inotify v0.9.6
-#    Compiling toml_edit v0.19.15
-#    Compiling sharded-slab v0.1.7
-# error: failed to run custom build command for `motd v0.2.1`
-
-# Caused by:
-#   process didn't exit successfully: `/tmp/cargo-installSYJwTA/release/build/motd-0e127c12db4c87b5/build-script-build` (exit status: 101)
-#   --- stdout
-#   cargo:rerun-if-changed=src/pam_motd_overlay.c
-#   cargo:rerun-if-changed=src/pam_motd_overlay_versions.ldscript
-
-#   --- stderr
-#   thread 'main' panicked at /home/pete/.cargo/registry/src/index.crates.io-6f17d22bba15001f/motd-0.2.1/build.rs:23:13:
-#   build failed: error building overlay, code = exit status: 1
-#   STDOUT: 
-#   STDERR: ./src/pam_motd_overlay.c:11:10: fatal error: security/_pam_types.h: No such file or directory
-#      11 | #include <security/_pam_types.h>
-#         |          ^~~~~~~~~~~~~~~~~~~~~~~
-#   compilation terminated.
-
-#   note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
-# error: failed to compile `shpool v0.6.2`, intermediate artifacts can be found at `/tmp/cargo-installSYJwTA`.
-# To reuse those artifacts with a future compilation, set the environment variable `CARGO_TARGET_DIR` to that path.
-# 101 70s supergreen.git main λ RUSTCBUILDX_LOG=debug \cargo green install --locked shpool --jobs=1
-
-
-
-# https://crates.io/crates/motd/0.2.1
-
-# Dependencies
-
-# You must install libpam headers to build this crate. On debian based systems you can do so with
-
-# sudo apt-get install libpam0g-dev
-
-
-# RUSTCBUILDX_LOG=debug \cargo green install --offline --locked shpool --jobs=1
-
-
-
 
 
 #TODO: not a cli but try users of https://github.com/dtolnay/watt
+  # curl -s 'https://crates.io/api/v1/crates/rustversion/reverse_dependencies?page=4&per_page=100' --compressed |jq '.versions[]|select(.bin_names != [])|.crate'
 #TODO: play with cargo flags: lto (embeds bitcode)
 #TODO: allowlist non-busting rustc flags => se about this cache key
 #TODO: test cargo -vv build -> test -> build and look for "Dirty", expect none
 #TODO: test cargo miri usage
 #TODO: test cargo lambda build --release --arm64 usage
 #TODO: test https://github.com/facebookexperimental/MIRAI
+
+# TODO https://github.com/aizcutei/nanometers?tab=readme-ov-file#testing-locally
 
 #FIXME: test with Environment: CARGO_BUILD_RUSTC_WRAPPER or RUSTC_WRAPPER  or Environment: CARGO_BUILD_RUSTC_WORKSPACE_WRAPPER or RUSTC_WORKSPACE_WRAPPER
 # => the final invocation is $RUSTC_WRAPPER $RUSTC_WORKSPACE_WRAPPER $RUSTC.
