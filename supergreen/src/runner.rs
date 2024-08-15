@@ -1,12 +1,14 @@
 use std::{
     collections::BTreeSet,
-    mem,
+    env, mem,
     process::Stdio,
     time::{Duration, Instant},
 };
 
-use anyhow::{anyhow, Result};
-use camino::Utf8Path;
+use anyhow::{anyhow, bail, Result};
+use camino::{Utf8Path, Utf8PathBuf};
+use reqwest::Client as ReqwestClient;
+use serde::Deserialize;
 use tokio::{
     io::{AsyncBufRead, AsyncBufReadExt, BufReader as TokioBufReader, Lines},
     join,
@@ -17,22 +19,29 @@ use tokio::{
 };
 
 use crate::{
-    base::BaseImage,
-    envs::{base_image, cache_image, runner},
+    envs::{cache_image, runner, runs_on_network},
     extensions::ShowCmd,
     md::BuildContext,
     stage::Stage,
 };
 
-pub(crate) const MARK_STDOUT: &str = "::STDOUT:: ";
-pub(crate) const MARK_STDERR: &str = "::STDERR:: ";
+pub const MARK_STDOUT: &str = "::STDOUT:: ";
+pub const MARK_STDERR: &str = "::STDERR:: ";
 
 #[must_use]
-pub(crate) async fn maybe_lock_image(mut img: String) -> String {
+pub fn runner_cmd() -> Command {
+    let mut cmd = Command::new(runner());
+    cmd.kill_on_drop(true);
+    cmd.stdin(Stdio::null());
+    cmd.arg("--debug");
+    cmd
+}
+
+#[must_use]
+pub async fn maybe_lock_image(mut img: String) -> String {
     // Lock image, as podman(4.3.1) does not respect --pull=false (fully, anyway)
     if img.starts_with("docker-image://") && !img.contains("@sha256:") {
-        if let Some(line) = Command::new(runner())
-            .kill_on_drop(true)
+        if let Some(line) = runner_cmd()
             .arg("inspect")
             .arg("--format={{index .RepoDigests 0}}")
             .arg(img.trim_start_matches("docker-image://"))
@@ -48,7 +57,42 @@ pub(crate) async fn maybe_lock_image(mut img: String) -> String {
     img
 }
 
-pub(crate) async fn build(
+pub async fn fetch_digest(img: &str) -> Result<String> {
+    // e.g. docker-image://docker.io/library/rust:1.80.1-slim
+    if !img.starts_with("docker-image://") {
+        bail!("Image missing 'docker-image' scheme: {img}")
+    }
+    let img = img.trim_start_matches("docker-image://");
+    if img.contains("@") {
+        bail!("Image is already locked: {img}")
+    }
+    let Some((path, tag)) = img.split_once(':') else { bail!("Image is missing a tag: {img}") };
+    let path: Utf8PathBuf = path.into();
+    let (dir, img) = match path.iter().collect::<Vec<_>>()[..] {
+        ["docker.io", dir, img] => (dir, img),
+        _ => bail!("BUG: unhandled image path {path}"),
+    };
+
+    let txt = ReqwestClient::new()
+        .get(format!("https://registry.hub.docker.com/v2/repositories/{dir}/{img}/tags/{tag}"))
+        .send()
+        .await
+        .map_err(|e| anyhow!("Failed to reach Docker Hub's registry: {e}"))?
+        .text()
+        .await
+        .map_err(|e| anyhow!("Failed to read response from registry: {e}"))?;
+
+    #[derive(Deserialize)]
+    struct RegistryResponse {
+        digest: String,
+    }
+    let RegistryResponse { digest } = serde_json::from_str(&txt)
+        .map_err(|e| anyhow!("Failed to decode response from registry: {e}"))?;
+
+    Ok(format!("docker-image://{path}:{tag}@{digest}"))
+}
+
+pub async fn build(
     krate: &str,
     command: &str,
     dockerfile_path: &Utf8Path,
@@ -69,18 +113,34 @@ pub(crate) async fn build(
     cmd.env("DOCKER_BUILDKIT", "1");
 
     //TODO: (use if set) cmd.env("SOURCE_DATE_EPOCH", "0"); // https://reproducible-builds.org/docs/source-date-epoch
+    // https://github.com/moby/buildkit/blob/master/docs/build-repro.md#source_date_epoch
+    // Set SOURCE_DATE_EPOCH=$(git log -1 --pretty=%ct) for local code, and
+    // set it to crates' birth date, in case it's a $HOME/.cargo/registry/cache/...crate
+    // set it to the directory's birth date otherwise (should be a relative path to local files).
 
-    // docker buildx create \
-    //   --name remote-container \
-    //   --driver remote \
-    //   --driver-opt cacert=${PWD}/.certs/client/ca.pem,cert=${PWD}/.certs/client/cert.pem,key=${PWD}/.certs/client/key.pem,servername=<TLS_SERVER_NAME> \
-    //   tcp://localhost:1234
-
-    // docker buildx create \
-    //   --name container \
-    //   --driver=docker-container \
-    //   --driver-opt=[key=value,...]
-    // container
+    // https://docs.docker.com/engine/reference/commandline/cli/#environment-variables
+    for var in [
+        "BUILDKIT_PROGRESS",
+        "BUILDX_BUILDER", //
+        "DOCKER_API_VERSION",
+        "DOCKER_CERT_PATH",
+        "DOCKER_CONFIG",
+        "DOCKER_CONTENT_TRUST",
+        "DOCKER_CONTENT_TRUST_SERVER",
+        "DOCKER_CONTEXT",
+        "DOCKER_DEFAULT_PLATFORM",
+        "DOCKER_HIDE_LEGACY_COMMANDS",
+        "DOCKER_HOST",
+        "DOCKER_TLS",
+        "DOCKER_TLS_VERIFY",
+        "HTTP_PROXY",
+        "HTTPS_PROXY",
+        "NO_PROXY",
+    ] {
+        if let Ok(val) = env::var(var) {
+            cmd.env(var, val);
+        }
+    }
 
     if false {
         cmd.arg("--no-cache");
@@ -93,14 +153,17 @@ pub(crate) async fn build(
 
     if let Some(img) = cache_image() {
         let img = img.trim_start_matches("docker-image://");
-        cmd.arg(format!("--cache-from=type=registry,ref={img}"));
+        cmd.arg(format!(
+            "--cache-from=type=registry,ref={img}{}", // TODO: check img for commas
+            if false { ",mode=max" } else { "" }      // TODO: env? builder call?
+        ));
 
-        let tag = Stage::new(krate.to_owned())?; // TODO: include enough info for repro
+        let tag = Stage::try_new(krate.to_owned())?; // TODO: include enough info for repro
+                                                     // => rustc shortcommit, ..?
+                                                     // Can buildx give list of all inputs? || short hash(dockerfile + call + envs)
+        cmd.arg(format!("--tag={img}:{tag}"));
         if tag.to_string().starts_with("bin-") {
-            // FIXME: re-tag some tag to latest when pushing only?
             cmd.arg(format!("--tag={img}:latest"));
-        } else {
-            cmd.arg(format!("--tag={img}:{tag}"));
         }
         cmd.arg("--build-arg=BUILDKIT_INLINE_CACHE=1"); // https://docs.docker.com/build/cache/backends/inline
         cmd.arg("--load");
@@ -113,10 +176,8 @@ pub(crate) async fn build(
     }
     //cmd.arg("--metadata-file=/tmp/meta.json"); => {"buildx.build.ref": "default/default/o5c4435yz6o6xxxhdvekx5lmn"}
 
-    if matches!(base_image().await, BaseImage::Image(_)) {
-        // FIXME: pre-build rust stage with network then, never activate network ever.
-        cmd.arg("--network=none");
-    }
+    // TODO? pre-build rust stage with network, then never activate network ever.
+    cmd.arg(format!("--network={}", runs_on_network()));
 
     cmd.arg("--platform=local");
     cmd.arg("--pull=false");
@@ -139,8 +200,8 @@ pub(crate) async fn build(
     let call = cmd.show();
     let envs: Vec<_> = cmd.as_std().get_envs().map(|(k, v)| format!("{k:?}={v:?}")).collect();
     let envs = envs.join(" ");
-
     log::info!(target: &krate, "Starting {call} (env: {envs:?})`");
+
     let errf = |e| anyhow!("Failed starting {call}: {e}");
     let mut child = cmd.spawn().map_err(errf)?;
 
@@ -190,6 +251,15 @@ pub(crate) async fn build(
     Ok(code)
 }
 
+#[inline(always)]
+fn strip_ansi_escapes(line: &str) -> String {
+    line.replace("\\u001b[0m", "")
+        .replace("\\u001b[1m", "")
+        .replace("\\u001b[33m", "")
+        .replace("\\u001b[38;5;12m", "")
+        .replace("\\u001b[38;5;9m", "")
+}
+
 #[inline]
 fn fwd<R>(
     krate: String,
@@ -203,13 +273,16 @@ where
 {
     let fwder = if mark == MARK_STDOUT { fwd_stdout } else { fwd_stderr };
     spawn(async move {
-        log::debug!(target: &krate, "Starting {name} task");
+        log::debug!(target: &krate, "Starting {name} task {badge}");
         let mut buf = String::new();
         loop {
             match stdio.next_line().await {
                 Ok(None) => break,
                 Ok(Some(line)) => {
-                    log::debug!(target: &krate, "{badge} {line}");
+                    if line.is_empty() {
+                        continue;
+                    }
+                    log::debug!(target: &krate, "{badge} {}", strip_ansi_escapes(&line));
                     if let Some(msg) = lift_stdio(&line, mark) {
                         fwder(&krate, msg, &mut buf);
                     }
@@ -259,7 +332,7 @@ fn fwd_stderr(krate: &str, msg: &str, buf: &mut String) {
     let show = |msg: &str| {
         eprintln!("{msg}");
         if let Some(file) = artifact_written(msg) {
-            log::info!(target: &krate, "rustc wrote {file}")
+            log::info!(target: &krate, "rustc wrote {file}") // FIXME: replace prefix target_path with '.'
         }
     };
     match (buf.is_empty(), msg.starts_with('{'), msg.ends_with('}')) {

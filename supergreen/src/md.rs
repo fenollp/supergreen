@@ -1,53 +1,49 @@
 // Our own MetaData utils
 
-use std::{
-    collections::BTreeSet,
-    fs::{self},
-};
+use std::{collections::BTreeSet, str::FromStr};
 
-use anyhow::{anyhow, bail, Result};
-use camino::{Utf8Path, Utf8PathBuf};
+use anyhow::{bail, Result};
+use camino::Utf8PathBuf;
 use serde::{Deserialize, Serialize};
 
-use crate::{cratesio::CRATESIO_STAGE_PREFIX, Stage, RUST};
+use crate::{base::RUST, cratesio::CRATESIO_STAGE_PREFIX, stage::Stage};
 
 #[cfg_attr(test, derive(Default))]
 #[derive(Clone, Deserialize, Serialize)]
-pub(crate) struct Md {
-    pub(crate) this: String,
-    pub(crate) deps: Vec<String>,
+pub struct Md {
+    pub this: String,
+    pub deps: Vec<String>,
 
-    pub(crate) contexts: BTreeSet<BuildContext>,
+    pub contexts: BTreeSet<BuildContext>,
 
-    pub(crate) stages: BTreeSet<DockerfileStage>,
+    pub stages: BTreeSet<DockerfileStage>,
+}
+impl FromStr for Md {
+    type Err = toml::de::Error;
+    fn from_str(md_raw: &str) -> Result<Self, Self::Err> {
+        toml::de::from_str(md_raw)
+    }
 }
 impl Md {
     #[inline]
     #[must_use]
-    pub(crate) fn new(this: &str) -> Self {
+    pub fn new(this: &str) -> Self {
         Self { this: this.to_owned(), deps: vec![], contexts: [].into(), stages: [].into() }
     }
 
-    pub(crate) fn from_file(md_path: &Utf8Path) -> Result<Self> {
-        // TODO: deser from stream
-        let md_raw =
-            fs::read_to_string(md_path).map_err(|e| anyhow!("Failed reading Md {md_path}: {e}"))?;
-        toml::de::from_str(&md_raw).map_err(|e| anyhow!("Failed deserializing Md {md_path}: {e}"))
+    pub fn to_string_pretty(&self) -> Result<String, toml::ser::Error> {
+        toml::to_string_pretty(self)
     }
 
-    pub(crate) fn to_string(&self) -> Result<String> {
-        toml::to_string_pretty(self).map_err(|e| anyhow!("Failed serializing Md: {e}"))
-    }
-
-    pub(crate) fn rust_stage(&self) -> Option<DockerfileStage> {
+    pub fn rust_stage(&self) -> Option<DockerfileStage> {
         self.stages.iter().find(|DockerfileStage { name, .. }| name == RUST).cloned()
     }
 
-    pub(crate) fn push_block(&mut self, name: &Stage, script: String) {
+    pub fn push_block(&mut self, name: &Stage, script: String) {
         self.stages.insert(DockerfileStage { name: name.to_string(), script });
     }
 
-    pub(crate) fn append_blocks(
+    pub fn append_blocks(
         &self,
         dockerfile: &mut String,
         visited: &mut BTreeSet<String>,
@@ -79,7 +75,7 @@ impl Md {
         Ok(())
     }
 
-    pub(crate) fn extend_from_externs(
+    pub fn extend_from_externs(
         &mut self,
         mds: Vec<(Utf8PathBuf, Self)>,
     ) -> Result<Vec<Utf8PathBuf>> {
@@ -109,9 +105,9 @@ impl Md {
 }
 
 #[derive(Clone, Debug, Deserialize, Eq, Ord, PartialEq, PartialOrd, Serialize)]
-pub(crate) struct DockerfileStage {
-    pub(crate) name: String,
-    pub(crate) script: String,
+pub struct DockerfileStage {
+    pub name: String,
+    pub script: String,
 }
 
 // pub(crate) const HDR: &str = "# ";
@@ -150,14 +146,14 @@ fn dec_decs() {
 }
 
 #[derive(Clone, Debug, Deserialize, Eq, Ord, PartialEq, PartialOrd, Serialize)]
-pub(crate) struct BuildContext {
-    pub(crate) name: String, // TODO: constrain with Docker stage name pattern
-    pub(crate) uri: String,  // TODO: constrain with Docker build-context URIs
+pub struct BuildContext {
+    pub name: String, // TODO: constrain with Docker stage name pattern
+    pub uri: String,  // TODO: constrain with Docker build-context URIs
 }
 impl BuildContext {
     #[inline]
     #[must_use]
-    pub(crate) fn is_readonly_mount(&self) -> bool {
+    pub fn is_readonly_mount(&self) -> bool {
         self.name.starts_with(CRATESIO_STAGE_PREFIX) ||
         // TODO: create a stage from sources where able (public repos) use --secret mounts for private deps (and secret direct artifacts)
         self.name.starts_with("input_") ||
@@ -181,7 +177,7 @@ fn md_ser() {
         ..Default::default()
     };
 
-    let ser = md.to_string().unwrap();
+    let ser = md.to_string_pretty().unwrap();
     pretty_assertions::assert_eq!(
         r#"
 this = "711ba64e1183a234"
@@ -201,16 +197,12 @@ uri = "docker-image://docker.io/library/rust:1.77.2-slim@sha256:090d8d4e37850b34
 
 #[test]
 fn md_utils() {
-    use std::fs;
-
-    use mktemp::Temp;
-
-    use crate::RUST;
+    use crate::base::RUST;
 
     const LONG:&str= "docker-image://docker.io/library/rust:1.69.0-slim@sha256:8b85a8a6bf7ed968e24bab2eae6f390d2c9c8dbed791d3547fef584000f48f9e";
 
-    let tmp = Temp::new_file().unwrap();
-    fs::write(&tmp, format!(r#"this = "9494aa6093cd94c9"
+    let origin = &format!(
+        r#"this = "9494aa6093cd94c9"
 deps = ["0dc1fe2644e3176a"]
 contexts = [
   {{ name = "rust-base", uri = {LONG:?} }},
@@ -218,7 +210,8 @@ contexts = [
   {{ name = "crate_out-...", uri = "/home/maison/code/thing.git/target/debug/build/rustversion-ae69baa7face5565/out" }},
 ]
 stages = []
-"#)).unwrap();
+"#
+    );
 
     let this = "9494aa6093cd94c9".to_owned();
     let deps = vec!["0dc1fe2644e3176a".to_owned()];
@@ -235,7 +228,7 @@ stages = []
                 .to_owned(),
         },
     ];
-    let md = Md::from_file(tmp.as_path().try_into().unwrap()).unwrap();
+    let md = Md::from_str(origin).unwrap();
     assert_eq!(md.this, this);
     assert_eq!(md.deps, deps);
     assert_eq!(md.contexts, contexts.clone().into());
@@ -248,22 +241,14 @@ stages = []
 
 #[test]
 fn md_parsing_failure() {
-    use std::fs;
-
-    use mktemp::Temp;
-
-    let tmp = Temp::new_file().unwrap();
-    fs::write(&tmp, r#"this = "81529f4c2380d9ec"
+    let origin = r#"this = "81529f4c2380d9ec"
 deps = [[]]
 contexts = [
   { name = "rust", uri = "docker-image://docker.io/library/rust:1.77.2-slim@sha256:090d8d4e37850b349b59912647cc7a35c6a64dba8168f6998562f02483fa37d7" },
 ]
-"#).unwrap();
+"#;
 
-    let err = Md::from_file(tmp.as_path().try_into().unwrap())
-        .err()
-        .map(|x| x.to_string())
-        .unwrap_or_default();
+    let err = Md::from_str(origin).err().map(|x| x.to_string()).unwrap_or_default();
     dbg!(&err);
     assert!(err.contains("\n2 | deps = [[]]\n"));
     assert!(err.contains("\ninvalid type: sequence, expected a string\n"));

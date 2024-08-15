@@ -4,6 +4,22 @@ Forwards `rustc` calls to BuildKit builders.
 `rustcbuildx` is a [`RUSTC_WRAPPER`](https://doc.rust-lang.org/cargo/reference/config.html#buildrustc-wrapper) for cached and remote building of Rust projects (on [BuildKit](https://github.com/moby/buildkit)).
 
 
+## Configuration
+
+Reads envs
+* `$RUSTCBUILDX`
+* `$RUSTCBUILDX_BASE_IMAGE`
+* `$RUSTCBUILDX_BUILDER_IMAGE`
+* `$RUSTCBUILDX_CACHE_IMAGE`
+* `$RUSTCBUILDX_INCREMENTAL`
+* `$RUSTCBUILDX_LOG`
+* `$RUSTCBUILDX_LOG_PATH`
+* `$RUSTCBUILDX_LOG_STYLE`
+* `$RUSTCBUILDX_RUNNER`
+* `$RUSTCBUILDX_RUNS_ON_NETWORK`
+* `$RUSTCBUILDX_SYNTAX`
+
+
 ## Usage
 
 * Ensure at least either a [`docker`](https://github.com/docker/docker-install) or [`podman`](https://podman.io/docs/installation) *client* is installed
@@ -111,5 +127,9 @@ which rustcbuildx
 * [`cargo-options` Clap parser](https://docs.rs/cargo-options/latest/cargo_options/struct.Build.html)
 * /r/Rust scare [Serde has started shipping precompiled binaries with no way to opt out](https://www.reddit.com/r/rust/comments/15va70a/serde_has_started_shipping_precompiled_binaries/)
 * [assertion failed: edges.remove(&key) #13889](https://github.com/rust-lang/cargo/issues/13889)
+* [How we rescued our build process from 24+ hour nightmares](https://www.reddit.com/r/rust/comments/1emhq19/how_we_rescued_our_build_process_from_24_hour/)
 
 * [Doesn't detect Docker Rootless #4](https://github.com/TheLarkInn/is-docker/issues/4)
+
+* [Compile a crate from its source archive directly](https://github.com/rust-lang/cargo/issues/14373)
+* [Build function: ResourceExhausted: grpc: received message larger than max (_ vs. 4194304)](https://github.com/moby/buildkit/issues/5217)

@@ -99,9 +99,6 @@ jobs:
     - name: Envs
       run: /home/runner/.cargo/bin/rustcbuildx env
 
-    - name: Pre-pull images
-      run: /home/runner/.cargo/bin/rustcbuildx pull
-
     - name: Envs again
       run: /home/runner/.cargo/bin/rustcbuildx env
 
@@ -115,10 +112,10 @@ jobs:
       run: |
         RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
-          CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=1 --locked --force  --git https://github.com/fenollp/buildxargs.git
+          CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=1 --locked --force buildxargs --git https://github.com/fenollp/buildxargs.git
 
     - if: ${{ failure() || success() }}
-      run: if [ $(stat -c%s logs.txt) -lt 1751778 ]; then cat logs.txt; fi ; echo >logs.txt
+      run: tail -n9999999 logs.txt ; echo >logs.txt
 
     - name: Disk usage
       if: ${{ failure() || success() }}
@@ -135,10 +132,10 @@ jobs:
       run: |
         RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
-          CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=1 --locked --force  --git https://github.com/fenollp/buildxargs.git 2>&1 | tee _
+          CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=1 --locked --force buildxargs --git https://github.com/fenollp/buildxargs.git 2>&1 | tee _
 
     - if: ${{ failure() || success() }}
-      run: if [ $(stat -c%s logs.txt) -lt 1751778 ]; then cat logs.txt; fi
+      run: tail -n9999999 logs.txt
 
     - name: Disk usage
       if: ${{ failure() || success() }}
@@ -213,9 +210,6 @@ jobs:
     - name: Envs
       run: /home/runner/.cargo/bin/rustcbuildx env
 
-    - name: Pre-pull images
-      run: /home/runner/.cargo/bin/rustcbuildx pull
-
     - name: Envs again
       run: /home/runner/.cargo/bin/rustcbuildx env
 
@@ -229,10 +223,10 @@ jobs:
       run: |
         RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
-          CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=3 --locked --force  --git https://github.com/fenollp/buildxargs.git
+          CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=3 --locked --force buildxargs --git https://github.com/fenollp/buildxargs.git
 
     - if: ${{ failure() || success() }}
-      run: if [ $(stat -c%s logs.txt) -lt 1751778 ]; then cat logs.txt; fi ; echo >logs.txt
+      run: tail -n9999999 logs.txt ; echo >logs.txt
 
     - name: Disk usage
       if: ${{ failure() || success() }}
@@ -249,10 +243,10 @@ jobs:
       run: |
         RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
-          CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=3 --locked --force  --git https://github.com/fenollp/buildxargs.git 2>&1 | tee _
+          CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=3 --locked --force buildxargs --git https://github.com/fenollp/buildxargs.git 2>&1 | tee _
 
     - if: ${{ failure() || success() }}
-      run: if [ $(stat -c%s logs.txt) -lt 1751778 ]; then cat logs.txt; fi
+      run: tail -n9999999 logs.txt
 
     - name: Disk usage
       if: ${{ failure() || success() }}
@@ -327,9 +321,6 @@ jobs:
     - name: Envs
       run: /home/runner/.cargo/bin/rustcbuildx env
 
-    - name: Pre-pull images
-      run: /home/runner/.cargo/bin/rustcbuildx pull
-
     - name: Envs again
       run: /home/runner/.cargo/bin/rustcbuildx env
 
@@ -346,7 +337,7 @@ jobs:
           CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=1 --locked --force cargo-llvm-cov@0.5.36 
 
     - if: ${{ failure() || success() }}
-      run: if [ $(stat -c%s logs.txt) -lt 1751778 ]; then cat logs.txt; fi ; echo >logs.txt
+      run: tail -n9999999 logs.txt ; echo >logs.txt
 
     - name: Disk usage
       if: ${{ failure() || success() }}
@@ -366,7 +357,7 @@ jobs:
           CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=1 --locked --force cargo-llvm-cov@0.5.36  2>&1 | tee _
 
     - if: ${{ failure() || success() }}
-      run: if [ $(stat -c%s logs.txt) -lt 1751778 ]; then cat logs.txt; fi
+      run: tail -n9999999 logs.txt
 
     - name: Disk usage
       if: ${{ failure() || success() }}
@@ -441,9 +432,6 @@ jobs:
     - name: Envs
       run: /home/runner/.cargo/bin/rustcbuildx env
 
-    - name: Pre-pull images
-      run: /home/runner/.cargo/bin/rustcbuildx pull
-
     - name: Envs again
       run: /home/runner/.cargo/bin/rustcbuildx env
 
@@ -457,10 +445,10 @@ jobs:
       run: |
         RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
-          CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=1 --locked --force  --git https://github.com/cross-rs/cross.git --tag=v0.2.5 cross
+          CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=1 --locked --force cross@0.2.5 
 
     - if: ${{ failure() || success() }}
-      run: if [ $(stat -c%s logs.txt) -lt 1751778 ]; then cat logs.txt; fi ; echo >logs.txt
+      run: tail -n9999999 logs.txt ; echo >logs.txt
 
     - name: Disk usage
       if: ${{ failure() || success() }}
@@ -477,10 +465,10 @@ jobs:
       run: |
         RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
-          CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=1 --locked --force  --git https://github.com/cross-rs/cross.git --tag=v0.2.5 cross 2>&1 | tee _
+          CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=1 --locked --force cross@0.2.5  2>&1 | tee _
 
     - if: ${{ failure() || success() }}
-      run: if [ $(stat -c%s logs.txt) -lt 1751778 ]; then cat logs.txt; fi
+      run: tail -n9999999 logs.txt
 
     - name: Disk usage
       if: ${{ failure() || success() }}
@@ -555,9 +543,6 @@ jobs:
     - name: Envs
       run: /home/runner/.cargo/bin/rustcbuildx env
 
-    - name: Pre-pull images
-      run: /home/runner/.cargo/bin/rustcbuildx pull
-
     - name: Envs again
       run: /home/runner/.cargo/bin/rustcbuildx env
 
@@ -571,10 +556,10 @@ jobs:
       run: |
         RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
-          CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=3 --locked --force  --git https://github.com/cross-rs/cross.git --tag=v0.2.5 cross
+          CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=3 --locked --force cross@0.2.5 
 
     - if: ${{ failure() || success() }}
-      run: if [ $(stat -c%s logs.txt) -lt 1751778 ]; then cat logs.txt; fi ; echo >logs.txt
+      run: tail -n9999999 logs.txt ; echo >logs.txt
 
     - name: Disk usage
       if: ${{ failure() || success() }}
@@ -591,10 +576,10 @@ jobs:
       run: |
         RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
-          CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=3 --locked --force  --git https://github.com/cross-rs/cross.git --tag=v0.2.5 cross 2>&1 | tee _
+          CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=3 --locked --force cross@0.2.5  2>&1 | tee _
 
     - if: ${{ failure() || success() }}
-      run: if [ $(stat -c%s logs.txt) -lt 1751778 ]; then cat logs.txt; fi
+      run: tail -n9999999 logs.txt
 
     - name: Disk usage
       if: ${{ failure() || success() }}
@@ -631,7 +616,7 @@ jobs:
     - if: ${{ failure() || success() }}
       run: cat _ || true
 
-  hickory-dns_0-24-0:
+  hickory-dns_0-25-0-alpha-1:
     runs-on: ubuntu-latest
     needs: bin
     steps:
@@ -669,9 +654,6 @@ jobs:
     - name: Envs
       run: /home/runner/.cargo/bin/rustcbuildx env
 
-    - name: Pre-pull images
-      run: /home/runner/.cargo/bin/rustcbuildx pull
-
     - name: Envs again
       run: /home/runner/.cargo/bin/rustcbuildx env
 
@@ -685,10 +667,10 @@ jobs:
       run: |
         RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
-          CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=1 --locked --force hickory-dns@0.24.0 --features=dns-over-rustls
+          CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=1 --locked --force hickory-dns@0.25.0-alpha.1 --features=dns-over-rustls
 
     - if: ${{ failure() || success() }}
-      run: if [ $(stat -c%s logs.txt) -lt 1751778 ]; then cat logs.txt; fi ; echo >logs.txt
+      run: tail -n9999999 logs.txt ; echo >logs.txt
 
     - name: Disk usage
       if: ${{ failure() || success() }}
@@ -705,10 +687,10 @@ jobs:
       run: |
         RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
-          CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=1 --locked --force hickory-dns@0.24.0 --features=dns-over-rustls 2>&1 | tee _
+          CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=1 --locked --force hickory-dns@0.25.0-alpha.1 --features=dns-over-rustls 2>&1 | tee _
 
     - if: ${{ failure() || success() }}
-      run: if [ $(stat -c%s logs.txt) -lt 1751778 ]; then cat logs.txt; fi
+      run: tail -n9999999 logs.txt
 
     - name: Disk usage
       if: ${{ failure() || success() }}
@@ -745,7 +727,7 @@ jobs:
     - if: ${{ failure() || success() }}
       run: cat _ || true
 
-  hickory-dns_0-24-0-J:
+  hickory-dns_0-25-0-alpha-1-J:
     runs-on: ubuntu-latest
     needs: bin
     steps:
@@ -783,9 +765,6 @@ jobs:
     - name: Envs
       run: /home/runner/.cargo/bin/rustcbuildx env
 
-    - name: Pre-pull images
-      run: /home/runner/.cargo/bin/rustcbuildx pull
-
     - name: Envs again
       run: /home/runner/.cargo/bin/rustcbuildx env
 
@@ -799,10 +778,10 @@ jobs:
       run: |
         RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
-          CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=3 --locked --force hickory-dns@0.24.0 --features=dns-over-rustls
+          CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=3 --locked --force hickory-dns@0.25.0-alpha.1 --features=dns-over-rustls
 
     - if: ${{ failure() || success() }}
-      run: if [ $(stat -c%s logs.txt) -lt 1751778 ]; then cat logs.txt; fi ; echo >logs.txt
+      run: tail -n9999999 logs.txt ; echo >logs.txt
 
     - name: Disk usage
       if: ${{ failure() || success() }}
@@ -819,10 +798,232 @@ jobs:
       run: |
         RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
-          CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=3 --locked --force hickory-dns@0.24.0 --features=dns-over-rustls 2>&1 | tee _
+          CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=3 --locked --force hickory-dns@0.25.0-alpha.1 --features=dns-over-rustls 2>&1 | tee _
 
     - if: ${{ failure() || success() }}
-      run: if [ $(stat -c%s logs.txt) -lt 1751778 ]; then cat logs.txt; fi
+      run: tail -n9999999 logs.txt
+
+    - name: Disk usage
+      if: ${{ failure() || success() }}
+      run: |
+        docker system df
+        docker buildx du
+        sudo du -sh /var/lib/docker
+
+    - name: Target dir disk usage
+      if: ${{ failure() || success() }}
+      run: du -sh ~/instst
+
+    - if: ${{ failure() || success() }}
+      name: Finishes fast
+      run: |
+        grep Finished _
+        grep Finished _ | grep -E [012]...s
+
+    - if: ${{ failure() || success() }}
+      run: |
+        grep Fresh _
+
+    - if: ${{ failure() || success() }}
+      name: Did not recompile things (yay!)
+      run: |
+        ! grep Compiling _
+
+    - if: ${{ failure() || success() }}
+      run: |
+        ! grep 'DEBUG|INFO|WARN|ERROR' _
+        ! grep 'Falling back' _
+        ! grep 'BUG[: ]' _
+
+    - if: ${{ failure() || success() }}
+      run: cat _ || true
+
+  qcow2-rs_0-1-2:
+    runs-on: ubuntu-latest
+    needs: bin
+    steps:
+    - uses: actions-rs/toolchain@v1
+      with:
+        profile: minimal
+        toolchain: stable
+
+
+    - name: Retrieve saved bin
+      uses: actions/download-artifact@v4
+      with:
+        name: bin-artifacts
+    - run: | # TODO: whence https://github.com/actions/download-artifact/issues/236
+        chmod +x ./cargo-green ./rustcbuildx
+        ./rustcbuildx --version | grep rustcbuildx
+        mv ./rustcbuildx /home/runner/.cargo/bin/
+        mv ./cargo-green /home/runner/.cargo/bin/
+        cargo green --version
+
+    - uses: actions/checkout@v4
+
+    - name: Docker info
+      run: docker info
+
+    - name: Buildx version
+      run: docker buildx version
+
+    - name: Podman version
+      run: podman version || true
+
+    - name: Rust version
+      run: rustc -Vv
+
+    - name: Envs
+      run: /home/runner/.cargo/bin/rustcbuildx env
+
+    - name: Envs again
+      run: /home/runner/.cargo/bin/rustcbuildx env
+
+    - name: Disk usage
+      run: |
+        docker system df
+        docker buildx du
+        sudo du -sh /var/lib/docker
+
+    - name: cargo install net=ON cache=OFF remote=OFF jobs=1
+      run: |
+        RUSTCBUILDX_LOG=debug \
+        RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
+          CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=1 --locked --force qcow2-rs@0.1.2 
+
+    - if: ${{ failure() || success() }}
+      run: tail -n9999999 logs.txt ; echo >logs.txt
+
+    - name: Disk usage
+      if: ${{ failure() || success() }}
+      run: |
+        docker system df
+        docker buildx du
+        sudo du -sh /var/lib/docker
+
+    - name: Target dir disk usage
+      if: ${{ failure() || success() }}
+      run: du -sh ~/instst
+
+    - name: cargo install net=ON cache=ON remote=OFF jobs=1
+      run: |
+        RUSTCBUILDX_LOG=debug \
+        RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
+          CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=1 --locked --force qcow2-rs@0.1.2  2>&1 | tee _
+
+    - if: ${{ failure() || success() }}
+      run: tail -n9999999 logs.txt
+
+    - name: Disk usage
+      if: ${{ failure() || success() }}
+      run: |
+        docker system df
+        docker buildx du
+        sudo du -sh /var/lib/docker
+
+    - name: Target dir disk usage
+      if: ${{ failure() || success() }}
+      run: du -sh ~/instst
+
+    - if: ${{ failure() || success() }}
+      name: Finishes fast
+      run: |
+        grep Finished _
+        grep Finished _ | grep -E [012]...s
+
+    - if: ${{ failure() || success() }}
+      run: |
+        grep Fresh _
+
+    - if: ${{ failure() || success() }}
+      name: Did not recompile things (yay!)
+      run: |
+        ! grep Compiling _
+
+    - if: ${{ failure() || success() }}
+      run: |
+        ! grep 'DEBUG|INFO|WARN|ERROR' _
+        ! grep 'Falling back' _
+        ! grep 'BUG[: ]' _
+
+    - if: ${{ failure() || success() }}
+      run: cat _ || true
+
+  qcow2-rs_0-1-2-J:
+    runs-on: ubuntu-latest
+    needs: bin
+    steps:
+    - uses: actions-rs/toolchain@v1
+      with:
+        profile: minimal
+        toolchain: stable
+
+
+    - name: Retrieve saved bin
+      uses: actions/download-artifact@v4
+      with:
+        name: bin-artifacts
+    - run: | # TODO: whence https://github.com/actions/download-artifact/issues/236
+        chmod +x ./cargo-green ./rustcbuildx
+        ./rustcbuildx --version | grep rustcbuildx
+        mv ./rustcbuildx /home/runner/.cargo/bin/
+        mv ./cargo-green /home/runner/.cargo/bin/
+        cargo green --version
+
+    - uses: actions/checkout@v4
+
+    - name: Docker info
+      run: docker info
+
+    - name: Buildx version
+      run: docker buildx version
+
+    - name: Podman version
+      run: podman version || true
+
+    - name: Rust version
+      run: rustc -Vv
+
+    - name: Envs
+      run: /home/runner/.cargo/bin/rustcbuildx env
+
+    - name: Envs again
+      run: /home/runner/.cargo/bin/rustcbuildx env
+
+    - name: Disk usage
+      run: |
+        docker system df
+        docker buildx du
+        sudo du -sh /var/lib/docker
+
+    - name: cargo install net=ON cache=OFF remote=OFF jobs=3
+      run: |
+        RUSTCBUILDX_LOG=debug \
+        RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
+          CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=3 --locked --force qcow2-rs@0.1.2 
+
+    - if: ${{ failure() || success() }}
+      run: tail -n9999999 logs.txt ; echo >logs.txt
+
+    - name: Disk usage
+      if: ${{ failure() || success() }}
+      run: |
+        docker system df
+        docker buildx du
+        sudo du -sh /var/lib/docker
+
+    - name: Target dir disk usage
+      if: ${{ failure() || success() }}
+      run: du -sh ~/instst
+
+    - name: cargo install net=ON cache=ON remote=OFF jobs=3
+      run: |
+        RUSTCBUILDX_LOG=debug \
+        RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
+          CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=3 --locked --force qcow2-rs@0.1.2  2>&1 | tee _
+
+    - if: ${{ failure() || success() }}
+      run: tail -n9999999 logs.txt
 
     - name: Disk usage
       if: ${{ failure() || success() }}
@@ -897,9 +1098,6 @@ jobs:
     - name: Envs
       run: /home/runner/.cargo/bin/rustcbuildx env
 
-    - name: Pre-pull images
-      run: /home/runner/.cargo/bin/rustcbuildx pull
-
     - name: Envs again
       run: /home/runner/.cargo/bin/rustcbuildx env
 
@@ -916,7 +1114,7 @@ jobs:
           CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=1 --locked --force vixargs@0.1.0 
 
     - if: ${{ failure() || success() }}
-      run: if [ $(stat -c%s logs.txt) -lt 1751778 ]; then cat logs.txt; fi ; echo >logs.txt
+      run: tail -n9999999 logs.txt ; echo >logs.txt
 
     - name: Disk usage
       if: ${{ failure() || success() }}
@@ -936,7 +1134,7 @@ jobs:
           CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=1 --locked --force vixargs@0.1.0  2>&1 | tee _
 
     - if: ${{ failure() || success() }}
-      run: if [ $(stat -c%s logs.txt) -lt 1751778 ]; then cat logs.txt; fi
+      run: tail -n9999999 logs.txt
 
     - name: Disk usage
       if: ${{ failure() || success() }}
@@ -1011,9 +1209,6 @@ jobs:
     - name: Envs
       run: /home/runner/.cargo/bin/rustcbuildx env
 
-    - name: Pre-pull images
-      run: /home/runner/.cargo/bin/rustcbuildx pull
-
     - name: Envs again
       run: /home/runner/.cargo/bin/rustcbuildx env
 
@@ -1030,7 +1225,7 @@ jobs:
           CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=3 --locked --force vixargs@0.1.0 
 
     - if: ${{ failure() || success() }}
-      run: if [ $(stat -c%s logs.txt) -lt 1751778 ]; then cat logs.txt; fi ; echo >logs.txt
+      run: tail -n9999999 logs.txt ; echo >logs.txt
 
     - name: Disk usage
       if: ${{ failure() || success() }}
@@ -1050,7 +1245,7 @@ jobs:
           CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=3 --locked --force vixargs@0.1.0  2>&1 | tee _
 
     - if: ${{ failure() || success() }}
-      run: if [ $(stat -c%s logs.txt) -lt 1751778 ]; then cat logs.txt; fi
+      run: tail -n9999999 logs.txt
 
     - name: Disk usage
       if: ${{ failure() || success() }}

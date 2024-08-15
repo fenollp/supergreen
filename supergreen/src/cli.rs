@@ -11,11 +11,14 @@ use futures::{
     stream::{iter, StreamExt, TryStreamExt},
 };
 use serde_jsonlines::AsyncBufReadJsonLines;
-use tokio::{io::BufReader, process::Command};
+use tokio::io::BufReader;
 
 use crate::{
-    envs::{base_image, cache_image, internal, log_path, runner, syntax},
+    envs::{
+        base_image, builder_image, cache_image, incremental, internal, log_path, runner, syntax,
+    },
     extensions::ShowCmd,
+    runner::runner_cmd,
 };
 
 // TODO: tune logging verbosity https://docs.rs/clap-verbosity-flag/latest/clap_verbosity_flag/
@@ -23,7 +26,7 @@ use crate::{
 // TODO: cargo green cache --keep-less-than=(1month|10GB)      Set $RUSTCBUILDX_CACHE_IMAGE to apply to tagged images.
 
 #[inline]
-pub(crate) fn help() -> ExitCode {
+pub fn help() -> ExitCode {
     println!(
         "{name}@{version}: {description}
     {repository}
@@ -45,7 +48,7 @@ Usage:
 
 // TODO: make it work for podman: https://github.com/containers/podman/issues/2369
 // TODO: have fun with https://github.com/console-rs/indicatif
-pub(crate) async fn push() -> Result<ExitCode> {
+pub async fn push() -> Result<ExitCode> {
     if let Some(img) = cache_image() {
         let img = img.trim_start_matches("docker-image://");
 
@@ -57,12 +60,9 @@ pub(crate) async fn push() -> Result<ExitCode> {
         iter(tags)
             .map(|tag: String| async move {
                 println!("Pushing {img}:{tag}...");
-                let mut cmd = Command::new(runner());
-                let cmd = cmd
-                    .kill_on_drop(true)
-                    .arg("push")
+                let mut cmd = runner_cmd();
+                cmd.arg("push")
                     .arg(format!("{img}:{tag}"))
-                    .stdin(Stdio::null())
                     .stdout(Stdio::null())
                     .stderr(Stdio::null());
                 if let Ok(mut o) = cmd.spawn() {
@@ -89,10 +89,8 @@ async fn all_tags_of(img: &str) -> Result<(Vec<String>, Option<ExitCode>)> {
 
     // NOTE: https://github.com/moby/moby/issues/47809
     //   Meanwhile: just drop docker.io/ prefix
-    let mut cmd = Command::new(runner());
-    let cmd = cmd
-        .kill_on_drop(true)
-        .arg("image")
+    let mut cmd = runner_cmd();
+    cmd.arg("image")
         .arg("ls")
         .arg("--format=json")
         .arg(format!("--filter=reference={}:*", img.trim_start_matches("docker.io/")));
@@ -113,11 +111,13 @@ async fn all_tags_of(img: &str) -> Result<(Vec<String>, Option<ExitCode>)> {
     Ok((tags, None))
 }
 
-pub(crate) async fn envs(vars: Vec<String>) -> ExitCode {
+pub async fn envs(vars: Vec<String>) -> ExitCode {
     let all: BTreeMap<_, _> = [
         ("RUSTCBUILDX", internal::this()),
         ("RUSTCBUILDX_BASE_IMAGE", Some(base_image().await.base())),
+        ("RUSTCBUILDX_BUILDER_IMAGE", Some(builder_image().await.to_owned())),
         ("RUSTCBUILDX_CACHE_IMAGE", cache_image().to_owned()),
+        ("RUSTCBUILDX_INCREMENTAL", incremental().then_some("1".to_owned())),
         ("RUSTCBUILDX_LOG", internal::log()),
         ("RUSTCBUILDX_LOG_PATH", Some(log_path().to_owned())),
         ("RUSTCBUILDX_LOG_STYLE", internal::log_style()),
@@ -145,18 +145,17 @@ pub(crate) async fn envs(vars: Vec<String>) -> ExitCode {
     ExitCode::SUCCESS
 }
 
-pub(crate) async fn pull() -> Result<ExitCode> {
+pub async fn pull() -> Result<ExitCode> {
     let imgs = [
         (internal::syntax(), syntax().await),
         (internal::base_image(), &base_image().await.base()),
-    ];
+        (internal::builder_image(), builder_image().await),
+    ]; // NOTE: we don't pull cache_image()
 
     let mut to_pull = Vec::with_capacity(imgs.len());
     for (user_input, img) in imgs {
         let img = img.trim_start_matches("docker-image://");
-        let img = if img.contains('@')
-            && (user_input.is_none() || user_input.map(|x| !x.contains('@')).unwrap_or_default())
-        {
+        let img = if img.contains('@') && user_input.map(|x| !x.contains('@')).unwrap_or_default() {
             // Don't pull a locked image unless that's what's asked
             // Otherwise, pull unlocked
 
@@ -165,28 +164,41 @@ pub(crate) async fn pull() -> Result<ExitCode> {
             // none + _ = _
             // s @  + @ = _
             // s !  + @ = trim
-            img.trim_end_matches(|c| c != '@').trim_end_matches('@')
+            trim_docker_image(img).expect("contains @")
         } else {
-            img
+            img.to_owned()
         };
-        to_pull.push(img.to_owned());
-        println!("Pulling {img}...");
+        to_pull.push(img);
     }
+    pull_images(to_pull).await
+}
 
+pub fn trim_docker_image(x: &str) -> Option<String> {
+    let x = x.trim_start_matches("docker-image://");
+    let x = x
+        .contains('@')
+        .then(|| x.trim_end_matches(|c| c != '@').trim_end_matches('@'))
+        .unwrap_or(x);
+    (!x.is_empty()).then(|| x.to_owned())
+}
+
+pub async fn pull_images(to_pull: Vec<String>) -> Result<ExitCode> {
     let zero = Some(0);
     // TODO: nice TUI that handles concurrent progress
     let code = iter(to_pull.into_iter())
-        .map(|img| async move { do_pull(img).await })
-        .boxed() // https://github.com/rust-lang/rust/issues/104382
-        .buffered(10)
+        .map(|img| async move {
+            println!("Pulling {img}...");
+            do_pull(img).await
+        })
+        .buffer_unordered(10)
         .try_fold(zero, |a, b| if a == zero { ok(b) } else { ok(a) })
         .await?;
     Ok(exit_code(code))
 }
 
 async fn do_pull(img: String) -> Result<Option<i32>> {
-    let mut cmd = Command::new(runner());
-    let cmd = cmd.kill_on_drop(true).arg("pull").arg(&img).stdin(Stdio::null());
+    let mut cmd = runner_cmd();
+    cmd.arg("pull").arg(&img);
     let o = cmd
         .spawn()
         .map_err(|e| anyhow!("Failed to start {}: {e}", cmd.show()))?
@@ -201,6 +213,6 @@ async fn do_pull(img: String) -> Result<Option<i32>> {
 }
 
 #[inline]
-pub(crate) fn exit_code(code: Option<i32>) -> ExitCode {
+pub fn exit_code(code: Option<i32>) -> ExitCode {
     (code.unwrap_or(-1) as u8).into() // TODO: https://doc.rust-lang.org/std/os/unix/process/trait.ExitStatusExt.html
 }

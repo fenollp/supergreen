@@ -4,21 +4,22 @@ use std::{
 };
 
 use anyhow::{anyhow, Result};
-use tokio::process::Command;
 
 use crate::{base::BaseImage, runner::maybe_lock_image};
 
-pub(crate) mod internal {
+pub mod internal {
     use std::env;
 
     pub const RUSTCBUILDX: &str = "RUSTCBUILDX";
     pub const RUSTCBUILDX_BASE_IMAGE: &str = "RUSTCBUILDX_BASE_IMAGE";
+    pub const RUSTCBUILDX_BUILDER_IMAGE: &str = "RUSTCBUILDX_BUILDER_IMAGE";
     pub const RUSTCBUILDX_CACHE_IMAGE: &str = "RUSTCBUILDX_CACHE_IMAGE";
     pub const RUSTCBUILDX_INCREMENTAL: &str = "RUSTCBUILDX_INCREMENTAL";
     pub const RUSTCBUILDX_LOG: &str = "RUSTCBUILDX_LOG";
     pub const RUSTCBUILDX_LOG_PATH: &str = "RUSTCBUILDX_LOG_PATH";
     pub const RUSTCBUILDX_LOG_STYLE: &str = "RUSTCBUILDX_LOG_STYLE";
     pub const RUSTCBUILDX_RUNNER: &str = "RUSTCBUILDX_RUNNER";
+    pub const RUSTCBUILDX_RUNS_ON_NETWORK: &str = "RUSTCBUILDX_RUNS_ON_NETWORK";
     pub const RUSTCBUILDX_SYNTAX: &str = "RUSTCBUILDX_SYNTAX";
 
     pub fn this() -> Option<String> {
@@ -26,6 +27,9 @@ pub(crate) mod internal {
     }
     pub fn base_image() -> Option<String> {
         env::var(RUSTCBUILDX_BASE_IMAGE).ok()
+    }
+    pub fn builder_image() -> Option<String> {
+        env::var(RUSTCBUILDX_BUILDER_IMAGE).ok()
     }
     pub fn cache_image() -> Option<String> {
         env::var(RUSTCBUILDX_CACHE_IMAGE).ok().and_then(|x| (!x.is_empty()).then_some(x))
@@ -44,6 +48,9 @@ pub(crate) mod internal {
     }
     pub fn runner() -> Option<String> {
         env::var(RUSTCBUILDX_RUNNER).ok()
+    }
+    pub fn runs_on_network() -> Option<String> {
+        env::var(RUSTCBUILDX_RUNS_ON_NETWORK).ok()
     }
     pub fn syntax() -> Option<String> {
         env::var(RUSTCBUILDX_SYNTAX).ok()
@@ -70,24 +77,24 @@ pub(crate) mod internal {
 // EOF
 
 #[must_use]
-pub(crate) fn this() -> bool {
+pub fn this() -> bool {
     internal::this().map(|x| x == "1").unwrap_or_default()
 }
 
 #[must_use]
-pub(crate) fn incremental() -> bool {
+pub fn incremental() -> bool {
     static ONCE: OnceLock<bool> = OnceLock::new();
     *ONCE.get_or_init(|| internal::incremental().map(|x| x == "1").unwrap_or_default())
 }
 
 #[must_use]
-pub(crate) fn log_path() -> &'static str {
+pub fn log_path() -> &'static str {
     static ONCE: OnceLock<String> = OnceLock::new();
     ONCE.get_or_init(|| internal::log_path().unwrap_or("/tmp/rstcbldx_FIXME".to_owned()))
 }
 
 #[must_use]
-pub(crate) fn runner() -> &'static str {
+pub fn runner() -> &'static str {
     static ONCE: OnceLock<String> = OnceLock::new();
     ONCE.get_or_init(|| {
         let val = internal::runner().unwrap_or("docker".to_owned());
@@ -96,7 +103,7 @@ pub(crate) fn runner() -> &'static str {
             "docker" => {}
             "none" => {}
             "podman" => {}
-            _ => panic!("{} MUST be either docker, podman or none", internal::RUSTCBUILDX_RUNNER),
+            _ => panic!("${} MUST be either docker, podman or none", internal::RUSTCBUILDX_RUNNER),
         }
         val
     })
@@ -104,26 +111,12 @@ pub(crate) fn runner() -> &'static str {
 
 // A Docker image or any build context, actually.
 #[must_use]
-pub(crate) async fn base_image() -> BaseImage {
+pub async fn base_image() -> BaseImage {
     static ONCE: OnceLock<BaseImage> = OnceLock::new();
     match ONCE.get() {
         Some(ctx) => ctx.clone(),
         None => {
-            let ctx = if let Some(val) = internal::base_image() {
-                if !val.starts_with("docker-image://") {
-                    let var = internal::RUSTCBUILDX_BASE_IMAGE;
-                    panic!("{var} must start with 'docker-image://'")
-                }
-                BaseImage::Image(val)
-            } else {
-                let s = Command::new("rustc").kill_on_drop(true).arg("-V").output().await.ok();
-                let s = s.and_then(|child| String::from_utf8(child.stdout).ok());
-                // e.g. rustc 1.73.0 (cc66ad468 2023-10-03)
-
-                s.and_then(BaseImage::from_rustc_v).unwrap_or_else(|| {
-                    BaseImage::Image("docker-image://docker.io/library/rust:1-slim".to_owned())
-                })
-            };
+            let ctx = BaseImage::from_rustc_v().unwrap();
 
             let ctx = ctx.maybe_lock_base().await;
 
@@ -135,7 +128,7 @@ pub(crate) async fn base_image() -> BaseImage {
 
 // A Docker image path with registry information.
 #[must_use]
-pub(crate) fn cache_image() -> &'static Option<String> {
+pub fn cache_image() -> &'static Option<String> {
     static ONCE: OnceLock<Option<String>> = OnceLock::new();
     ONCE.get_or_init(|| {
         let val = internal::cache_image();
@@ -146,22 +139,39 @@ pub(crate) fn cache_image() -> &'static Option<String> {
                 panic!("{var} must start with 'docker-image://'")
             }
             if !val.trim_start_matches("docker-image://").contains('/') {
-                panic!("{var} must start with 'docker-image://'")
+                panic!("{var} host must contain a registry'")
             }
         }
+
+        // no resolving needed
+        // TODO? although we may want to error e.g. when registry is unreachable
 
         val
     })
 }
 
 #[must_use]
-pub(crate) async fn syntax() -> &'static str {
+pub fn runs_on_network() -> &'static str {
+    static ONCE: OnceLock<String> = OnceLock::new();
+    match ONCE.get() {
+        Some(network) => network,
+        None => {
+            let network = internal::runs_on_network().unwrap_or_else(|| "none".to_owned());
+            let _ = ONCE.set(network);
+            ONCE.get().expect("just set network")
+        }
+    }
+}
+
+pub const DEFAULT_SYNTAX: &str = "docker-image://docker.io/docker/dockerfile:1";
+
+#[must_use]
+pub async fn syntax() -> &'static str {
     static ONCE: OnceLock<String> = OnceLock::new();
     match ONCE.get() {
         Some(img) => img,
         None => {
-            let img = "docker-image://docker.io/docker/dockerfile:1".to_owned();
-            let img = internal::syntax().unwrap_or(img);
+            let img = internal::syntax().unwrap_or_else(|| DEFAULT_SYNTAX.to_owned());
             let img = maybe_lock_image(img).await;
             let _ = ONCE.set(img);
             ONCE.get().expect("just set syntax")
@@ -169,10 +179,24 @@ pub(crate) async fn syntax() -> &'static str {
     }
 }
 
-// TODO: rename proj to https://crates.io/search?q=cargo-surimi
+pub const DEFAULT_BUILDER_IMAGE: &str = "docker-image://docker.io/moby/buildkit:buildx-stable-1";
 
 #[must_use]
-pub(crate) fn maybe_log() -> Option<fn() -> Result<File>> {
+pub async fn builder_image() -> &'static str {
+    static ONCE: OnceLock<String> = OnceLock::new();
+    match ONCE.get() {
+        Some(img) => img,
+        None => {
+            let img = internal::builder_image().unwrap_or_else(|| DEFAULT_BUILDER_IMAGE.to_owned());
+            let img = maybe_lock_image(img).await;
+            let _ = ONCE.set(img);
+            ONCE.get().expect("just set builder_image")
+        }
+    }
+}
+
+#[must_use]
+pub fn maybe_log() -> Option<fn() -> Result<File>> {
     fn log_file() -> Result<File> {
         let log_path = log_path();
         let errf = |e| anyhow!("Failed opening (WA) log file {log_path}: {e}");
@@ -185,7 +209,7 @@ pub(crate) fn maybe_log() -> Option<fn() -> Result<File>> {
 // https://doc.rust-lang.org/cargo/reference/environment-variables.html#environment-variables-cargo-sets-for-crates
 #[inline]
 #[must_use]
-pub(crate) fn pass_env(var: &str) -> (bool, bool, bool) {
+pub fn pass_env(var: &str) -> (bool, bool, bool) {
     // Thanks https://github.com/cross-rs/cross/blob/44011c8854cb2eaac83b173cc323220ccdff18ea/src/docker/shared.rs#L969
     let passthrough = [
         "http_proxy",
@@ -202,12 +226,13 @@ pub(crate) fn pass_env(var: &str) -> (bool, bool, bool) {
     ];
     // TODO: vvv drop what can be dropped vvv
     let skiplist = [
+        "CARGO_BUILD_JOBS",
         "CARGO_BUILD_RUSTC",
         "CARGO_BUILD_RUSTC_WORKSPACE_WRAPPER",
         "CARGO_BUILD_RUSTC_WRAPPER",
         "CARGO_BUILD_RUSTDOC",
         "CARGO_BUILD_TARGET_DIR",
-        "CARGO_HOME",
+        "CARGO_HOME",      // TODO? drop
         "CARGO_MAKEFLAGS", // TODO: probably drop
         "CARGO_TARGET_DIR",
         "RUSTC_WRAPPER",

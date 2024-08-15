@@ -5,41 +5,33 @@ use std::{
     future::Future,
     io::{BufRead, BufReader, ErrorKind},
     process::ExitCode,
+    str::FromStr,
 };
 
 use anyhow::{anyhow, bail, Result};
 use camino::{Utf8Path, Utf8PathBuf};
 use env_logger::{Env, Target};
-use tokio::process::Command;
-
-use crate::{
+use supergreen::{
+    base::RUST,
     cli::{envs, exit_code, help, pull, push},
     cratesio::{from_cratesio_input_path, into_stage},
-    envs::{base_image, internal, maybe_log, pass_env, runner, syntax, this},
+    envs::{self, base_image, internal, maybe_log, pass_env, runner, syntax, this},
     extensions::ShowCmd,
     md::{BuildContext, Md},
-    parse::RustcArgs,
     runner::{build, MARK_STDERR, MARK_STDOUT},
     stage::Stage,
 };
+use tokio::process::Command;
 
-mod base;
-mod cli;
-mod cratesio;
-mod envs;
-mod extensions;
-mod md;
+use crate::parse::RustcArgs;
+
 mod parse;
-mod runner;
-mod stage;
 
 const PKG: &str = env!("CARGO_PKG_NAME");
 const REPO: &str = env!("CARGO_PKG_REPOSITORY");
 const VSN: &str = env!("CARGO_PKG_VERSION");
 
 const BUILDRS_CRATE_NAME: &str = "build_script_build";
-
-const RUST: &str = "rust-base";
 
 // NOTE: this RUSTC_WRAPPER program only ever gets called by `cargo`, so we save
 //       ourselves some trouble and assume std::path::{Path, PathBuf} are UTF-8.
@@ -189,7 +181,8 @@ async fn do_wrap_rustc(
 ) -> Result<ExitCode> {
     let debug = maybe_log();
 
-    let (st, args) = parse::as_rustc(&pwd, arguments)?;
+    let out_dir_var = env::var("OUT_DIR").ok();
+    let (st, args) = parse::as_rustc(&pwd, arguments, out_dir_var.as_deref())?;
     log::info!(target: &krate, "{st:?}");
     let RustcArgs { crate_type, emit, externs, metadata, incremental, input, out_dir, target_path } =
         st;
@@ -211,10 +204,8 @@ async fn do_wrap_rustc(
     let crate_id = full_krate_id.replace('|', "-");
 
     // NOTE: not `out_dir`
-    let crate_out = env::var("OUT_DIR")
-        .ok()
-        .and_then(|x| x.ends_with("/out").then_some(x))
-        .and_then(|crate_out| {
+    let crate_out =
+        out_dir_var.and_then(|x| x.ends_with("/out").then_some(x)).and_then(|crate_out| {
             log::info!(target: &krate, "listing (RO) crate_out contents {crate_out}");
             let Ok(listing) = fs::read_dir(&crate_out) else { return None };
             let listing = listing
@@ -232,7 +223,21 @@ async fn do_wrap_rustc(
 
     let mut md = Md::new(&metadata);
 
-    md.push_block(&Stage::new(RUST).expect("rust stage"), base_image().await.block());
+    // A woodlegged way of passing around work cargo-green already did
+    // TODO: merge both binaries into a single one
+    // * so both versions always match
+    // * so passing data from cargo-green to wrapper cannot be interrupted/manipulated
+    // * so RUSTCBUILDX_ envs turn into only CARGOGREEN_ envs?
+    // * so config is driven only by cargo-green
+    // * so we can drop this kind of ducktape:
+    md.push_block(
+        &Stage::try_new(RUST).expect("rust stage"),
+        if let Ok(base_block) = env::var("RUSTCBUILDX_BASE_IMAGE_BLOCK_") {
+            base_block
+        } else {
+            base_image().await.block()
+        },
+    );
 
     let ext = match crate_type.as_str() {
         "lib" => "rmeta".to_owned(),
@@ -358,21 +363,21 @@ async fn do_wrap_rustc(
             into_stage(krate, cargo_home.as_path(), &name, &version, &cratesio_index).await?;
         md.push_block(&cratesio_stage, block);
 
-        let rustc_stage = Stage::new(format!("dep-{crate_id}-{cratesio_index}"))?;
+        let rustc_stage = Stage::try_new(format!("dep-{crate_id}-{cratesio_index}"))?;
         (Some((cratesio_stage, Some(src), dst)), rustc_stage)
     } else if input.is_relative() {
         // Input is local, non-public code
 
         let rustc_stage = input.to_string().replace(['/', '.'], "-");
-        let rustc_stage = Stage::new(format!("cwd-{crate_id}-{rustc_stage}"))?;
+        let rustc_stage = Stage::try_new(format!("cwd-{crate_id}-{rustc_stage}"))?;
         (None, rustc_stage)
     } else {
         bail!("Unexpected input file {input:?}")
     };
     log::info!(target: &krate, "picked {rustc_stage} for {input}");
 
-    let incremental_stage = Stage::new(format!("inc-{metadata}"))?;
-    let out_stage = Stage::new(format!("out-{metadata}"))?;
+    let incremental_stage = Stage::try_new(format!("inc-{metadata}"))?;
+    let out_stage = Stage::try_new(format!("out-{metadata}"))?;
 
     let mut rustc_block = String::new();
     rustc_block.push_str(&format!("FROM {RUST} AS {rustc_stage}\n"));
@@ -390,10 +395,7 @@ async fn do_wrap_rustc(
                 log::debug!(target: &krate, "not forwarding env: {var}={val}");
                 continue;
             }
-            let val = (!val.is_empty())
-                .then_some(val)
-                .map(|x: String| format!("{x:?}"))
-                .unwrap_or_default();
+            let val = safeify(val);
             if var == "CARGO_ENCODED_RUSTFLAGS" {
                 let dec: Vec<_> = rustflags::from_env().collect();
                 log::debug!(target: &krate, "env is set: {var}={val} ({dec:?})");
@@ -524,7 +526,21 @@ async fn do_wrap_rustc(
             mounts.push((xtern_stage, format!("/{xtern}"), format!("{target_path}/deps/{xtern}")));
 
             log::info!(target: &krate, "opening (RO) extern md {extern_md_path}");
-            let extern_md = Md::from_file(&extern_md_path)?;
+            let md_raw = fs::read_to_string(&extern_md_path).map_err(|e| {
+                if e.kind() == ErrorKind::NotFound {
+                    return anyhow!(
+                        r#"
+                    Looks like `rustcbuildx` ran on an unkempt project. That's alright!
+                    Let's remove the current target directory (note: $CARGO_TARGET_DIR={target_dir})
+                    then run your command again.
+                "#,
+                        target_dir = env::var("CARGO_TARGET_DIR").as_deref().unwrap_or("./target"),
+                    );
+                }
+                anyhow!("Failed reading Md {extern_md_path}: {e}")
+            })?;
+
+            let extern_md = Md::from_str(&md_raw)?;
             Ok((extern_md_path, extern_md))
         })
         .collect::<Result<Vec<_>>>()?;
@@ -540,6 +556,11 @@ async fn do_wrap_rustc(
     rustc_block.push_str("    set -eux \\\n");
 
     rustc_block.push_str(" && export CARGO=\"$(which cargo)\" \\\n");
+
+    if let Ok(v) = env::var("RING_CORE_PREFIX") {
+        log::warn!(target: &krate, "passing $RING_CORE_PREFIX={v:?} env through");
+        rustc_block.push_str(&format!("&& export RING_CORE_PREFIX={v:?} \\\n"));
+    }
 
     // TODO: keep only paths that we explicitly mount or copy
     if false {
@@ -578,7 +599,9 @@ async fn do_wrap_rustc(
     let mut visited_cratesio_stages = BTreeSet::new();
     for extern_md_path in extern_md_paths {
         log::info!(target: &krate, "opening (RO) extern's md {extern_md_path}");
-        let extern_md = Md::from_file(&extern_md_path)?;
+        let md_raw = fs::read_to_string(&extern_md_path)
+            .map_err(|e| anyhow!("Failed reading Md {extern_md_path}: {e}"))?;
+        let extern_md = Md::from_str(&md_raw)?;
         extern_md.append_blocks(&mut blocks, &mut visited_cratesio_stages)?;
         blocks.push('\n');
     }
@@ -586,7 +609,7 @@ async fn do_wrap_rustc(
 
     {
         let md_path = Utf8Path::new(&target_path).join(format!("{crate_name}-{metadata}.toml"));
-        let md_ser = md.to_string()?;
+        let md_ser = md.to_string_pretty()?;
 
         log::info!(target: &krate, "opening (RW) crate's md {md_path}");
         // TODO? suggest a `cargo clean` then fail
@@ -682,6 +705,19 @@ async fn do_wrap_rustc(
     }
 
     Ok(exit_code(code))
+}
+
+fn safeify(val: String) -> String {
+    (!val.is_empty())
+        .then_some(val)
+        .map(|x: String| format!("{x:?}"))
+        .unwrap_or_default()
+        .replace('$', "\\$")
+}
+
+#[test]
+fn test_safeify() {
+    assert_eq!(safeify("$VAR=val".to_owned()), "\"\\$VAR=val\"".to_owned());
 }
 
 #[inline]
