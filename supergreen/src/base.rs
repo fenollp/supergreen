@@ -22,6 +22,7 @@ pub enum BaseImage {
 }
 
 const STABLE_RUST: &str = "docker-image://docker.io/library/rust:1-slim";
+const BASE_FOR_RUST: &str = "docker-image://docker.io/library/debian:12-slim";
 
 #[test]
 fn test_from_rustc_v() {
@@ -80,7 +81,7 @@ impl BaseImage {
             Self::Image(img) => img.clone(),
             Self::RustcV(RustcV { base, .. }) => {
                 if base.is_empty() {
-                    "docker.io/library/debian:12-slim".to_owned()
+                    BASE_FOR_RUST.to_owned()
                 } else {
                     base.clone()
                 }
