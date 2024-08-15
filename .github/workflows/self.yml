@@ -77,10 +77,10 @@ jobs:
 
     - uses: actions/checkout@v4
 
-    - name: cargo install net=ON cache=OFF remote=OFF jobs=$(nproc)
+    - name: cargo install net=ON cache=OFF remote=OFF jobs=1
       run: |
         RUSTCBUILDX_LOG=debug \
-          CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=$(nproc) --locked --force --path=./rustcbuildx
+          CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=1 --locked --force --path=./rustcbuildx
 
 
 # TODO: re-enable once cargo-audit compiles on rust1.80
