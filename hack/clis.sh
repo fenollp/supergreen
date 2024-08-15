@@ -6,7 +6,7 @@ declare -a nvs nvs_args
    i=0  ; nvs[i]=buildxargs@master;           oks[i]=ok; nvs_args[i]='--git https://github.com/fenollp/buildxargs.git'
 ((i+=1)); nvs[i]=cargo-audit@0.21.0-pre.0;    oks[i]=ko; nvs_args[i]='--features=fix' # ResourceExhausted: grpc: received message larger than max (5136915 vs. 4194304)
 ((i+=1)); nvs[i]=cargo-bpf@2.3.0;             oks[i]=ko; nvs_args[i]='' # Package libelf was not found in the pkg-config search path.
-((i+=1)); nvs[i]=cargo-config2@0.1.26;        oks[i]=ok; nvs_args[i]='--example=get' # unexpected output from `rustc --version`: ""
+((i+=1)); nvs[i]=cargo-config2@0.1.26;        oks[i]=ko; nvs_args[i]='--example=get' # unexpected output from `rustc --version`: ""
 ((i+=1)); nvs[i]=cargo-deny@0.16.1;           oks[i]=ko; nvs_args[i]='' # [rustix 0.38.34] thread 'main' panicked at /home/pete/.cargo/registry/src/index.crates.io-6f17d22bba15001f/rustix-0.38.34/build.rs:247:64: [rustix 0.38.34] called `Result::unwrap()` on an `Err` value: Os { code: 32, kind: BrokenPipe, message: "Broken pipe" }
 ((i+=1)); nvs[i]=cargo-fuzz@0.12.0;           oks[i]=ko; nvs_args[i]='' # .. environment variable `TARGET_PLATFORM` not defined at compile time .. current_platform-0.2.0 + HOST_PLATFORM
 ((i+=1)); nvs[i]=cargo-green@main;            oks[i]=ok; nvs_args[i]='--git https://github.com/fenollp/supergreen.git --branch=main cargo-green'
