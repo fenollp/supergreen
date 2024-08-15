@@ -183,32 +183,55 @@ pub(crate) fn as_rustc(
     // Out dir though...
     // --out-dir "$CARGO_TARGET_DIR/$PROFILE"/build/rustix-2a01a00f5bdd1924
     // --out-dir "$CARGO_TARGET_DIR/$PROFILE"/deps
-    state.target_path =
-        match (&state.out_dir.iter().rev().take(3).collect::<Vec<_>>()[..], out_dir_var) {
-            (["deps", ..], _) => state.out_dir.clone().popped(1),
-            (["examples", _profile, ..], _) => state.out_dir.clone().popped(2),
-            ([_crate_dir, "build", ..], _) => state.out_dir.clone().popped(2),
-            ([], Some(out_dir)) => {
-                // e.g. OUT_DIR=$HOME/work/supergreen/supergreen/target/debug/build/slab-94793bb2b78c57b5/out
-                let mut out_dir = Utf8PathBuf::from(out_dir);
-                assert_eq!(out_dir.file_name(), Some("out"));
-                let exploded = out_dir.iter().rev().take(4).collect::<Vec<_>>();
-                match exploded[..] {
-                    ["out", crate_dir, "build", ..] => {
-                        state.metadata = crate_dir
-                            .rsplit_once('-')
-                            .map(|(_, m)| m)
-                            .expect("crate dir name contains metadata")
-                            .to_owned();
-                        out_dir.popped(3)
-                    }
-                    _ => bail!("BUG: $OUT_DIR is surprising for this build script: {exploded:?}"),
-                }
+    state.target_path = if let Some(target_path) = out_dir_to_target_path(state.out_dir.clone()) {
+        target_path
+    } else if let Some(out_dir) = out_dir_var {
+        // e.g. OUT_DIR=$HOME/work/supergreen/supergreen/target/debug/build/slab-94793bb2b78c57b5/out
+        let mut out_dir = Utf8PathBuf::from(out_dir);
+        assert_eq!(out_dir.file_name(), Some("out"));
+        let exploded = out_dir.iter().rev().take(4).collect::<Vec<_>>();
+        match exploded[..] {
+            ["out", crate_dir, "build", ..] => {
+                state.metadata = crate_dir
+                    .rsplit_once('-')
+                    .map(|(_, m)| m)
+                    .expect("crate dir name contains metadata")
+                    .to_owned();
+                out_dir.popped(3)
             }
-            nope => bail!("BUG: --out-dir path should match /deps$|.+/build/.+: {nope:?}"),
-        };
+            _ => bail!("BUG: $OUT_DIR is surprising for this build script: {exploded:?}"),
+        }
+    } else {
+        bail!(
+            "BUG: --out-dir path should match /deps$|.+/build/.+: {:?}",
+            (state.out_dir, out_dir_var)
+        )
+    };
 
     Ok((state, args))
+}
+
+#[must_use]
+fn out_dir_to_target_path(mut out_dir: Utf8PathBuf) -> Option<Utf8PathBuf> {
+    match out_dir.iter().rev().take(3).collect::<Vec<_>>()[..] {
+        ["deps", ..] => Some(out_dir.popped(1)),
+        ["examples", _profile, ..] => Some(out_dir.popped(2)),
+        [_crate_dir, "build", ..] => Some(out_dir.popped(2)),
+        ["out", _crate_dir, "build", ..] => Some(out_dir.popped(3)), // E.g. slab-0.4.9's build.rs
+        _ => None,
+    }
+}
+
+#[test]
+fn target_path_from_out_dir() {
+    for out_dir in [
+        "$CARGO_TARGET_DIR/$PROFILE/build/rustix-2a01a00f5bdd1924",
+        "$CARGO_TARGET_DIR/$PROFILE/build/slab-3e929764daead7d0/out",
+        "$CARGO_TARGET_DIR/$PROFILE/deps",
+    ] {
+        let res = out_dir_to_target_path(out_dir.into());
+        assert_eq!(res, Some("$CARGO_TARGET_DIR/$PROFILE".into()));
+    }
 }
 
 #[cfg(test)]
