@@ -304,11 +304,11 @@ jobs:
 
     - run: cargo fetch
 
-    - name: cargo test net=OFF cache=OFF remote=OFF jobs=$(nproc)
+    - name: cargo test net=OFF cache=OFF remote=OFF jobs=1
       run: |
         RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
-          cargo green -vv test --jobs=$(nproc) --all-targets --all-features --locked --frozen --offline
+          cargo green -vv test --jobs=1 --all-targets --all-features --locked --frozen --offline
 
     - if: ${{ failure() || success() }}
       run: cat logs.txt && echo >logs.txt
@@ -319,6 +319,20 @@ jobs:
         RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
           cargo green -vv test --jobs=1 --all-targets --all-features --locked --frozen --offline 2>&1 | tee _
+        cat _ | grep Finished | grep 0...s
+        cat _ | grep Fresh
+        ! cat _ | grep Compiling
+        ! cat _ | grep 'DEBUG|INFO|WARN|ERROR'
+
+    - if: ${{ failure() || success() }}
+      run: cat logs.txt && echo >logs.txt
+
+    - if: ${{ failure() || success() }}
+      name: Ensure running the same command twice without modifications does not recompile anything (jobs>1)
+      run: |
+        RUSTCBUILDX_LOG=debug \
+        RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
+          cargo green -vv test --jobs=$(nproc) --all-targets --all-features --locked --frozen --offline 2>&1 | tee _
         cat _ | grep Finished | grep 0...s
         cat _ | grep Fresh
         ! cat _ | grep Compiling
