@@ -11,10 +11,9 @@ use std::{
 use anyhow::{anyhow, bail, Result};
 use supergreen::{
     base::BaseImage,
-    cli::{pull_images, trim_docker_image},
-    envs::{base_image, builder_image, cache_image, incremental, internal, runner, syntax},
+    envs::{builder_image, cache_image, incremental, internal, runner, DEFAULT_SYNTAX},
     extensions::ShowCmd,
-    runner::{maybe_lock_image, runner_cmd},
+    runner::{fetch_digest, maybe_lock_image, runner_cmd},
 };
 use tokio::process::Command;
 
@@ -118,32 +117,35 @@ async fn setup_for_build(cmd: &mut Command) -> Result<()> {
 
     env::set_var("CARGOGREEN", "1");
 
-    // don't set
-    let base_image = base_image().await;
-    env::set_var("RUSTCBUILDX_BASE_IMAGE_BLOCK_", base_image.block());
+    // Not calling envs::{syntax,base_image} directly so value isn't locked now.
+    // Goal: produce only fully-locked Dockerfiles/TOMLs
+
+    let mut syntax = internal::syntax().unwrap_or_else(|| DEFAULT_SYNTAX.to_owned());
+    // Use local hashed image if one matching exists locally
+    if !syntax.contains('@') {
+        // otherwise default to a hash found through some Web API
+        syntax = fetch_digest(&syntax).await?;
+    }
+    env::set_var(internal::RUSTCBUILDX_SYNTAX, syntax);
+
+    let mut base_image = BaseImage::from_rustc_v()?.maybe_lock_base().await;
+    let base = base_image.base();
+    if !base.contains('@') {
+        base_image = base_image.lock_base_to(fetch_digest(&base).await?);
+    }
+    env::set_var(internal::RUSTCBUILDX_BASE_IMAGE, base_image.base());
+
+    let base_image_block = base_image.block();
+    env::set_var("RUSTCBUILDX_BASE_IMAGE_BLOCK_", base_image_block.clone());
     cmd.env(
         internal::RUSTCBUILDX_RUNS_ON_NETWORK,
         internal::runs_on_network().unwrap_or_else(|| {
-            if matches!(base_image, BaseImage::RustcV(_)) { "default" } else { "none" }.to_owned()
+            if base_image_block.contains(" apt-get ") { "default" } else { "none" }.to_owned()
         }),
     );
+
     let builder_image = builder_image().await;
-    // Locks images in Dockerfiles handled by sub-bin
-    // TODO: actually don't pull images, just use local hashed image if one matching `rustc` exists locally
-    //       otherwise default to a hash found through some Web API.
-    //       Goal: produce only fully-locked Dockerfiles/TOMLs
-    // FIXME: read `base_image().await` (and others) without setting oncelock, then set fully locked image
-    //   to avoid:
-    //       <FROM docker.io/library/rust:1.80.1-slim AS rust-base
-    //       >FROM docker.io/library/rust:1.80.1-slim@sha256:e8e40c50bfb54c0a76218f480cc69783b908430de87b59619c1dca847fdbd753 AS rust-base
-    let _ = pull_images(
-        [base_image.base().as_str(), /*builder_image, Don't pull until used*/ syntax().await]
-            .into_iter()
-            .filter(|img| !img.contains('@'))
-            .filter_map(trim_docker_image)
-            .collect(),
-    )
-    .await?;
+
     // don't pull
     if let Some(val) = cache_image() {
         cmd.env(internal::RUSTCBUILDX_CACHE_IMAGE, val);

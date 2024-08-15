@@ -5,8 +5,10 @@ use std::{
     time::{Duration, Instant},
 };
 
-use anyhow::{anyhow, Result};
-use camino::Utf8Path;
+use anyhow::{anyhow, bail, Result};
+use camino::{Utf8Path, Utf8PathBuf};
+use reqwest::Client as ReqwestClient;
+use serde::Deserialize;
 use tokio::{
     io::{AsyncBufRead, AsyncBufReadExt, BufReader as TokioBufReader, Lines},
     join,
@@ -51,9 +53,43 @@ pub async fn maybe_lock_image(mut img: String) -> String {
         {
             img.push_str(line.trim_start_matches(|c| c != '@'));
         }
-        // FIXME: else HTTP read registry for platform
     }
     img
+}
+
+pub async fn fetch_digest(img: &str) -> Result<String> {
+    // e.g. docker-image://docker.io/library/rust:1.80.1-slim
+    if !img.starts_with("docker-image://") {
+        bail!("Image missing 'docker-image' scheme: {img}")
+    }
+    let img = img.trim_start_matches("docker-image://");
+    if img.contains("@") {
+        bail!("Image is already locked: {img}")
+    }
+    let Some((path, tag)) = img.split_once(':') else { bail!("Image is missing a tag: {img}") };
+    let path: Utf8PathBuf = path.into();
+    let (dir, img) = match path.iter().collect::<Vec<_>>()[..] {
+        ["docker.io", dir, img] => (dir, img),
+        _ => bail!("BUG: unhandled image path {path}"),
+    };
+
+    let txt = ReqwestClient::new()
+        .get(format!("https://registry.hub.docker.com/v2/repositories/{dir}/{img}/tags/{tag}"))
+        .send()
+        .await
+        .map_err(|e| anyhow!("Failed to reach Docker Hub's registry: {e}"))?
+        .text()
+        .await
+        .map_err(|e| anyhow!("Failed to read response from registry: {e}"))?;
+
+    #[derive(Deserialize)]
+    struct RegistryResponse {
+        digest: String,
+    }
+    let RegistryResponse { digest } = serde_json::from_str(&txt)
+        .map_err(|e| anyhow!("Failed to decode response from registry: {e}"))?;
+
+    Ok(format!("docker-image://{path}:{tag}@{digest}"))
 }
 
 pub async fn build(

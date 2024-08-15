@@ -1,6 +1,7 @@
+use anyhow::{bail, Result};
 use rustc_version::{Channel, Version, VersionMeta};
 
-use crate::runner::maybe_lock_image;
+use crate::{envs::internal, runner::maybe_lock_image};
 
 pub const RUST: &str = "rust-base";
 
@@ -20,7 +21,7 @@ pub enum BaseImage {
     RustcV(RustcV),
 }
 
-pub const STABLE_RUST: &str = "docker-image://docker.io/library/rust:1-slim";
+const STABLE_RUST: &str = "docker-image://docker.io/library/rust:1-slim";
 
 #[test]
 fn test_from_rustc_v() {
@@ -29,7 +30,7 @@ fn test_from_rustc_v() {
     use rustc_version::version_meta_for;
 
     assert_eq!(
-        BaseImage::from_rustc_v(
+        BaseImage::from_rustcv(
             version_meta_for(
                 &r#"
 rustc 1.80.0 (051478957 2024-07-21)
@@ -47,7 +48,7 @@ LLVM version: 18.1.7
     );
 
     assert_eq!(
-        BaseImage::from_rustc_v(
+        BaseImage::from_rustcv(
             version_meta_for(
                 &r#"
 rustc 1.82.0-nightly (60d146580 2024-08-06)
@@ -87,9 +88,24 @@ impl BaseImage {
         }
     }
 
+    pub fn from_rustc_v() -> Result<Self> {
+        if let Some(val) = internal::base_image() {
+            if !val.starts_with("docker-image://") {
+                let var = internal::RUSTCBUILDX_BASE_IMAGE;
+                bail!("${var} must start with 'docker-image://' ({val})")
+            }
+            Ok(Self::Image(val))
+        } else {
+            Ok(rustc_version::version_meta()
+                .ok()
+                .and_then(Self::from_rustcv)
+                .unwrap_or_else(|| BaseImage::Image(STABLE_RUST.to_owned())))
+        }
+    }
+
     #[inline]
     #[must_use]
-    pub fn from_rustc_v(
+    fn from_rustcv(
         VersionMeta { semver, commit_hash, commit_date, channel, .. }: VersionMeta,
     ) -> Option<Self> {
         if channel == Channel::Stable {
@@ -107,7 +123,10 @@ impl BaseImage {
     }
 
     pub async fn maybe_lock_base(self) -> Self {
-        let base = maybe_lock_image(self.base()).await;
+        self.clone().lock_base_to(maybe_lock_image(self.base()).await)
+    }
+
+    pub fn lock_base_to(self, base: String) -> Self {
         match self {
             Self::Image(_) => Self::Image(base),
             Self::RustcV(rustcv @ RustcV { .. }) => Self::RustcV(RustcV { base, ..rustcv }),

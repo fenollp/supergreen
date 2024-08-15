@@ -5,10 +5,7 @@ use std::{
 
 use anyhow::{anyhow, Result};
 
-use crate::{
-    base::{BaseImage, STABLE_RUST},
-    runner::maybe_lock_image,
-};
+use crate::{base::BaseImage, runner::maybe_lock_image};
 
 pub mod internal {
     use std::env;
@@ -119,18 +116,7 @@ pub async fn base_image() -> BaseImage {
     match ONCE.get() {
         Some(ctx) => ctx.clone(),
         None => {
-            let ctx = if let Some(val) = internal::base_image() {
-                if !val.starts_with("docker-image://") {
-                    let var = internal::RUSTCBUILDX_BASE_IMAGE;
-                    panic!("{var} must start with 'docker-image://'")
-                }
-                BaseImage::Image(val)
-            } else {
-                rustc_version::version_meta()
-                    .ok()
-                    .and_then(BaseImage::from_rustc_v)
-                    .unwrap_or_else(|| BaseImage::Image(STABLE_RUST.to_owned()))
-            };
+            let ctx = BaseImage::from_rustc_v().unwrap();
 
             let ctx = ctx.maybe_lock_base().await;
 
@@ -170,12 +156,14 @@ pub fn runs_on_network() -> &'static str {
     match ONCE.get() {
         Some(network) => network,
         None => {
-            let network = internal::runs_on_network().unwrap_or("none".to_owned());
+            let network = internal::runs_on_network().unwrap_or_else(|| "none".to_owned());
             let _ = ONCE.set(network);
             ONCE.get().expect("just set network")
         }
     }
 }
+
+pub const DEFAULT_SYNTAX: &str = "docker-image://docker.io/docker/dockerfile:1";
 
 #[must_use]
 pub async fn syntax() -> &'static str {
@@ -183,8 +171,7 @@ pub async fn syntax() -> &'static str {
     match ONCE.get() {
         Some(img) => img,
         None => {
-            let img = "docker-image://docker.io/docker/dockerfile:1".to_owned();
-            let img = internal::syntax().unwrap_or(img);
+            let img = internal::syntax().unwrap_or_else(|| DEFAULT_SYNTAX.to_owned());
             let img = maybe_lock_image(img).await;
             let _ = ONCE.set(img);
             ONCE.get().expect("just set syntax")
@@ -192,14 +179,15 @@ pub async fn syntax() -> &'static str {
     }
 }
 
+pub const DEFAULT_BUILDER_IMAGE: &str = "docker-image://docker.io/moby/buildkit:buildx-stable-1";
+
 #[must_use]
 pub async fn builder_image() -> &'static str {
     static ONCE: OnceLock<String> = OnceLock::new();
     match ONCE.get() {
         Some(img) => img,
         None => {
-            let img = "docker-image://docker.io/moby/buildkit:buildx-stable-1".to_owned();
-            let img = internal::builder_image().unwrap_or(img);
+            let img = internal::builder_image().unwrap_or_else(|| DEFAULT_BUILDER_IMAGE.to_owned());
             let img = maybe_lock_image(img).await;
             let _ = ONCE.set(img);
             ONCE.get().expect("just set builder_image")
