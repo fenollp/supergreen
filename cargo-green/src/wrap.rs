@@ -437,30 +437,9 @@ async fn do_wrap_rustc(
 
         // TODO: use tmpfs when on *NIX
         // TODO: cache these folders
-        if pwd.join(".git").is_dir() {
-            log::info!(target: &krate, "copying all git files under {pwd} to {cwd_path}");
-            // TODO: rust git crate?
-            // TODO: --mount=bind each file one by one => drop temp dir ctx
-            let mut cmd = Command::new("git");
-            let cmd = cmd.kill_on_drop(true).arg("ls-files").arg(&pwd);
-            let output =
-                cmd.output().await.map_err(|e| anyhow!("Failed calling {}: {e}", cmd.show()))?;
-            if !output.status.success() {
-                bail!("Failed {}: {:?}", cmd.show(), output.stderr)
-            }
-            // TODO: buffer reads to this command's output
-            // NOTE: unsorted output lines
-            for f in String::from_utf8(output.stdout)
-                .map_err(|e| anyhow!("Parsing {}: {e}", cmd.show()))?
-                .lines()
-            {
-                log::info!(target: &krate, "copying git repo file {f}");
-                copy_dir_all(Utf8Path::new(f), cwd_path)?;
-            }
-        } else {
-            log::info!(target: &krate, "copying all files under {pwd} to {cwd_path}");
-            copy_dir_all(&pwd, cwd_path)?;
-        }
+        // TODO: --mount=bind each file one by one => drop temp dir ctx
+        log::info!(target: &krate, "copying all {}files under {pwd} to {cwd_path}", if pwd.join(".git").is_dir() { "git " } else { "" });
+        copy_dir_all(&pwd, cwd_path)?;
 
         // This doesn't work: rustc_block.push_str(&format!("  --mount=type=bind,from=cwd,target={pwd} \\\n"));
         // ✖ 0.040 runc run failed: unable to start container process: error during container init:
@@ -789,9 +768,11 @@ fn copy_dir_all(src: impl AsRef<Path>, dst: impl AsRef<Path>) -> Result<()> {
         fs::read_dir(&src).map_err(|e| anyhow!("Failed reading dir {:?}: {e}", src.as_ref()))?
     {
         let entry = entry?;
-        if entry.file_type().map_err(|e| anyhow!("Failed getting type of {entry:?}: {e}"))?.is_dir()
-        {
-            copy_dir_all(entry.path(), dst.join(entry.file_name()))?;
+        if entry.file_type().map_err(|e| anyhow!("Failed typing {entry:?}: {e}"))?.is_dir() {
+            // Skip copying .git dir
+            if entry.file_name() != ".git" {
+                copy_dir_all(entry.path(), dst.join(entry.file_name()))?;
+            }
         } else {
             fs::copy(entry.path(), dst.join(entry.file_name())).map_err(|e| {
                 anyhow!("Failed `cp {:?} {dst:?}` ({:?}): {e}", entry.path(), entry.metadata())
