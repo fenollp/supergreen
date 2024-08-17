@@ -21,12 +21,12 @@ declare -a nvs nvs_args
 ((i+=1)); nvs[i]=qcow2-rs@0.1.2;              oks[i]=ok; nvs_args[i]=''
 ((i+=1)); nvs[i]=rublk@0.2.0;                 oks[i]=ko; nvs_args[i]='' # could not find native static library `rustix_outline_x86_64`, perhaps an -L flag is missing?
 ((i+=1)); nvs[i]=rustcbuildx@main;            oks[i]=ok; nvs_args[i]='--git https://github.com/fenollp/supergreen.git --branch=main rustcbuildx'
+((i+=1)); nvs[i]=samply@0.12.0;               oks[i]=ok; nvs_args[i]=''
 ((i+=1)); nvs[i]=shpool@0.6.2;                oks[i]=ko; nvs_args[i]='' # sudo apt-get install libpam0g-dev
 ((i+=1)); nvs[i]=solana-gossip@2.0.5;         oks[i]=ko; nvs_args[i]='' # error: environment variable `TYPENUM_BUILD_OP` not defined at compile time                                                                                                                    
 ((i+=1)); nvs[i]=statehub@0.14.10;            oks[i]=ko; nvs_args[i]='' # BUG: unexpected crate-type: 'cdylib'
 ((i+=1)); nvs[i]=torrust-index@3.0.0-alpha.12; oks[i]=ko; nvs_args[i]='' # unexpected output from `rustc --version`: ""
 ((i+=1)); nvs[i]=vixargs@0.1.0;               oks[i]=ok; nvs_args[i]=''
-
 
 #TODO: not a cli but try users of https://github.com/dtolnay/watt
   # curl -s 'https://crates.io/api/v1/crates/rustversion/reverse_dependencies?page=4&per_page=100' --compressed |jq '.versions[]|select(.bin_names != [])|.crate'

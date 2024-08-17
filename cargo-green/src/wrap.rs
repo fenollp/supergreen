@@ -23,9 +23,7 @@ use supergreen::{
 };
 use tokio::process::Command;
 
-use crate::parse::RustcArgs;
-
-mod parse;
+use crate::{parse, parse::RustcArgs};
 
 const PKG: &str = env!("CARGO_PKG_NAME");
 const REPO: &str = env!("CARGO_PKG_REPOSITORY");
@@ -37,8 +35,7 @@ const BUILDRS_CRATE_NAME: &str = "build_script_build";
 //       ourselves some trouble and assume std::path::{Path, PathBuf} are UTF-8.
 //       Or in the words of this crate: https://github.com/camino-rs/camino/tree/8bec62382e1bce1326ee48f6bf93c46e7a4fde0b#:~:text=there%20are%20already%20many%20systems%2C%20such%20as%20cargo%2C%20that%20only%20support%20utf-8%20paths.%20if%20your%20own%20tool%20interacts%20with%20any%20such%20system%2C%20you%20can%20assume%20that%20paths%20are%20valid%20utf-8%20without%20creating%20any%20additional%20burdens%20on%20consumers.
 
-#[tokio::main]
-async fn main() -> ExitCode {
+pub(crate) async fn do_wrap() -> ExitCode {
     let arg0 = env::args().nth(1);
     let args = env::args().skip(1).collect();
     let vars = env::vars().collect();

@@ -3,12 +3,13 @@
 
 use std::{
     env,
+    ffi::OsStr,
     fs::OpenOptions,
     path::PathBuf,
     process::{ExitCode, Stdio},
 };
 
-use anyhow::{anyhow, bail, Result};
+use anyhow::{bail, Result};
 use supergreen::{
     base::BaseImage,
     envs::{builder_image, cache_image, incremental, internal, runner, DEFAULT_SYNTAX},
@@ -16,6 +17,11 @@ use supergreen::{
     runner::{fetch_digest, maybe_lock_image, runner_cmd},
 };
 use tokio::process::Command;
+
+use crate::wrap::do_wrap;
+
+mod parse;
+mod wrap;
 
 /*
 
@@ -38,7 +44,21 @@ use tokio::process::Command;
 
 #[tokio::main]
 async fn main() -> Result<ExitCode, Box<dyn std::error::Error>> {
-    let mut args = env::args().skip(1); // skips $0
+    let mut args = env::args();
+    let arg0 = args.next().expect("$0 has to be set");
+    if let Ok(wrapper) = env::var("RUSTC_WRAPPER") {
+        assert_eq!(PathBuf::from(arg0).file_name(), Some(OsStr::new(env!("CARGO_PKG_NAME")))); // FIXME
+
+        if false {
+            panic!(
+                ">>> {wrapper:?}\n{:?}\n{:?}",
+                env::args().collect::<Vec<_>>(),
+                env::vars().collect::<Vec<_>>()
+            )
+        }
+
+        return Ok(do_wrap().await);
+    }
 
     let Some(arg1) = args.next() else {
         // Warn when running this via `cargo run -p cargo-green -- ..`
@@ -96,7 +116,7 @@ async fn setup_for_build(cmd: &mut Command) -> Result<()> {
 "#
         )
     }
-    cmd.env("RUSTC_WRAPPER", ensure_binary_exists("rustcbuildx")?);
+    cmd.env("RUSTC_WRAPPER", env::args().next().expect("$0 has to be set"));
 
     // TODO read package.metadata.green
     // TODO: TUI above cargo output (? https://docs.rs/prodash )
@@ -188,18 +208,6 @@ async fn setup_for_build(cmd: &mut Command) -> Result<()> {
     }
 
     Ok(())
-}
-
-fn ensure_binary_exists(name: &'static str) -> Result<PathBuf> {
-    which::which(name).map_err(|_| {
-        anyhow!(
-            r#"
-    You called `cargo-green` but its dependency `rustcbuildx` cannot be found.
-    Please run:
-        # \cargo install --locked rustcbuildx
-"#
-        )
-    })
 }
 
 // https://docs.docker.com/build/drivers/docker-container/
