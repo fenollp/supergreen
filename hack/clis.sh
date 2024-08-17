@@ -167,10 +167,10 @@ $(
       run: rustc -Vv
 
     - name: Envs
-      run: /home/runner/.cargo/bin/cargo-green env
+      run: /home/runner/.cargo/bin/cargo-green green supergreen env
 
     - name: Envs again
-      run: /home/runner/.cargo/bin/cargo-green env
+      run: /home/runner/.cargo/bin/cargo-green green supergreen env
 
     - name: Disk usage
       run: |

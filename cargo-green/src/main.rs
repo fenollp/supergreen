@@ -70,7 +70,7 @@ async fn main() -> Result<ExitCode> {
         // Warn when running this via `cargo run -p cargo-green -- ..`
         eprintln!(
             r#"
-    The `cargo-green` binary needs to be called via cargo, e.g.:
+    The `{PKG}` binary needs to be called via cargo, e.g.:
         cargo green build
 "#
         );
@@ -141,7 +141,7 @@ async fn setup_for_build(cmd: &mut Command) -> Result<()> {
     if let Ok(wrapper) = env::var("RUSTC_WRAPPER") {
         bail!(
             r#"
-    You called `cargo-green` but a $RUSTC_WRAPPER is already set (to {wrapper})
+    You called `{PKG}` but a $RUSTC_WRAPPER is already set (to {wrapper})
         We don't know what to do...
 "#
         )
