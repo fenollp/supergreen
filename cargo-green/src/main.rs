@@ -32,7 +32,6 @@ mod runner;
 mod stage;
 mod wrap;
 
-const DESC: &str = env!("CARGO_PKG_DESCRIPTION");
 const PKG: &str = env!("CARGO_PKG_NAME");
 const REPO: &str = env!("CARGO_PKG_REPOSITORY");
 const VSN: &str = env!("CARGO_PKG_VERSION");
@@ -84,20 +83,8 @@ async fn main() -> Result<ExitCode> {
         );
         return Ok(ExitCode::FAILURE);
     };
-    if ["-V", "--version"].contains(&arg1.as_str()) {
-        println!(
-            r#"{PKG}@{VSN}: {DESC}
-    {REPO}
-
-Usage:
-  supergreen env             Show used values
-  supergreen pull            Pulls images (respects $DOCKER_HOST)
-  supergreen push            Push cache image (all tags)
-  supergreen -h | --help
-  supergreen -V | --version
-"#
-        );
-        return Ok(ExitCode::SUCCESS);
+    if ["-h", "--help", "-V", "--version"].contains(&arg1.as_str()) {
+        return Ok(help());
     }
     assert_eq!(arg1.as_str(), "green");
 

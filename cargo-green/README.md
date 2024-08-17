@@ -70,14 +70,15 @@ cargo supergreen push-cache              Pushes all to `--cache-to`
 ### Fine tuning settings
 
 ```shell
-rustcbuildx@version: $RUSTC_WRAPPER tool to sandbox cargo builds and execute jobs remotely
+cargo-green@0.6.0: Cargo plugin and $RUSTC_WRAPPER to sandbox & cache cargo builds and execute jobs remotely
     https://github.com/fenollp/supergreen
 
 Usage:
-  rustcbuildx env             Show used values
-  rustcbuildx pull            Pulls images (respects $DOCKER_HOST)
-  rustcbuildx -h | --help
-  rustcbuildx -V | --version
+  cargo green supergreen env             Show used values
+  cargo green supergreen pull            Pulls images (respects $DOCKER_HOST)
+  cargo green supergreen push            Push cache image (all tags)
+  cargo green supergreen -h | --help
+  cargo green supergreen -V | --version
 ```
 
 

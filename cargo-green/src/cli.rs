@@ -32,11 +32,11 @@ pub(crate) fn help() -> ExitCode {
     {repository}
 
 Usage:
-  {name} env             Show used values
-  {name} pull            Pulls images (respects $DOCKER_HOST)
-  {name} push            Push cache image (all tags)
-  {name} -h | --help
-  {name} -V | --version
+  cargo green supergreen env             Show used values
+  cargo green supergreen pull            Pulls images (respects $DOCKER_HOST)
+  cargo green supergreen push            Push cache image (all tags)
+  cargo green supergreen -h | --help
+  cargo green supergreen -V | --version
 ",
         name = env!("CARGO_PKG_NAME"),
         version = env!("CARGO_PKG_VERSION"),
