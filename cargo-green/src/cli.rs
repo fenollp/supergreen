@@ -113,16 +113,16 @@ async fn all_tags_of(img: &str) -> Result<(Vec<String>, Option<ExitCode>)> {
 
 pub(crate) async fn envs(vars: Vec<String>) -> ExitCode {
     let all: BTreeMap<_, _> = [
-        ("RUSTCBUILDX", internal::this()),
-        ("RUSTCBUILDX_BASE_IMAGE", Some(base_image().await.base())),
-        ("RUSTCBUILDX_BUILDER_IMAGE", Some(builder_image().await.to_owned())),
-        ("RUSTCBUILDX_CACHE_IMAGE", cache_image().to_owned()),
-        ("RUSTCBUILDX_INCREMENTAL", incremental().then_some("1".to_owned())),
-        ("RUSTCBUILDX_LOG", internal::log()),
-        ("RUSTCBUILDX_LOG_PATH", Some(log_path().to_owned())),
-        ("RUSTCBUILDX_LOG_STYLE", internal::log_style()),
-        ("RUSTCBUILDX_RUNNER", Some(runner().to_owned())),
-        ("RUSTCBUILDX_SYNTAX", Some(syntax().await.to_owned())),
+        (internal::RUSTCBUILDX, internal::this()),
+        (internal::RUSTCBUILDX_BASE_IMAGE, Some(base_image().await.base())),
+        (internal::RUSTCBUILDX_BUILDER_IMAGE, Some(builder_image().await.to_owned())),
+        (internal::RUSTCBUILDX_CACHE_IMAGE, cache_image().to_owned()),
+        (internal::RUSTCBUILDX_INCREMENTAL, incremental().then_some("1".to_owned())),
+        (internal::RUSTCBUILDX_LOG, internal::log()),
+        (internal::RUSTCBUILDX_LOG_PATH, Some(log_path().to_owned())),
+        (internal::RUSTCBUILDX_LOG_STYLE, internal::log_style()),
+        (internal::RUSTCBUILDX_RUNNER, Some(runner().to_owned())),
+        (internal::RUSTCBUILDX_SYNTAX, Some(syntax().await.to_owned())),
     ]
     .into_iter()
     .collect();

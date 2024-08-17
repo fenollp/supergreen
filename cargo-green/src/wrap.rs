@@ -430,7 +430,6 @@ async fn do_wrap_rustc(
         //     --mount=type=bind,source=Cargo.lock,target=Cargo.lock \
 
         let cwd = env::temp_dir().join(&metadata);
-        fs::create_dir_all(&cwd).map_err(|e| anyhow!("Failed to create tmpdir 'cwd': {e}"))?;
         let Some(cwd_path) = Utf8Path::from_path(cwd.as_path()) else {
             bail!("Path's UTF-8 encoding is corrupted: {cwd:?}")
         };
@@ -761,6 +760,9 @@ fn crate_out_name(name: &str) -> String {
 }
 
 fn copy_dir_all(src: impl AsRef<Path>, dst: impl AsRef<Path>) -> Result<()> {
+    if dst.as_ref().exists() {
+        return Ok(());
+    }
     fs::create_dir_all(&dst).map_err(|e| anyhow!("Failed `mkdir -p {:?}`: {e}", dst.as_ref()))?;
     let dst = dst.as_ref();
     // TODO: deterministic iteration
