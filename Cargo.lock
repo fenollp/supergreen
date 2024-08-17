@@ -170,11 +170,27 @@ checksum = "e0ec6b951b160caa93cc0c7b209e5a3bff7aae9062213451ac99493cd844c239"
 
 [[package]]
 name = "cargo-green"
-version = "0.5.0"
+version = "0.6.0"
 dependencies = [
  "anyhow",
- "supergreen 0.5.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "assertx",
+ "camino",
+ "env_logger",
+ "futures",
+ "home",
+ "log",
+ "nutype",
+ "pretty_assertions",
+ "reqwest",
+ "rustc_version",
+ "rustflags",
+ "serde",
+ "serde-jsonlines",
+ "serde_json",
+ "sha256",
+ "szyk",
  "tokio",
+ "toml",
  "which",
 ]
 
@@ -967,21 +983,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "rustcbuildx"
-version = "0.5.0"
-dependencies = [
- "anyhow",
- "camino",
- "env_logger",
- "home",
- "log",
- "pretty_assertions",
- "rustflags",
- "supergreen 0.5.0 (registry+https://github.com/rust-lang/crates.io-index)",
- "tokio",
-]
-
-[[package]]
 name = "rustflags"
 version = "0.1.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1195,50 +1196,6 @@ name = "subtle"
 version = "2.6.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "13c2bddecc57b384dee18652358fb23172facb8a2c51ccc10d74c157bdea3292"
-
-[[package]]
-name = "supergreen"
-version = "0.5.0"
-dependencies = [
- "anyhow",
- "assertx",
- "camino",
- "futures",
- "log",
- "nutype",
- "pretty_assertions",
- "reqwest",
- "rustc_version",
- "serde",
- "serde-jsonlines",
- "serde_json",
- "sha256",
- "szyk",
- "tokio",
- "toml",
-]
-
-[[package]]
-name = "supergreen"
-version = "0.5.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "43f33932ff91de907e854ba63d4280cf77ea2dcc1fdd26cb6ea091a22e072bad"
-dependencies = [
- "anyhow",
- "camino",
- "futures",
- "log",
- "nutype",
- "reqwest",
- "rustc_version",
- "serde",
- "serde-jsonlines",
- "serde_json",
- "sha256",
- "szyk",
- "tokio",
- "toml",
-]
 
 [[package]]
 name = "syn"

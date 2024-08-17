@@ -41,18 +41,13 @@ jobs:
     - name: Compile HEAD cargo-green
       run: |
         CARGO_TARGET_DIR=~/instmp cargo install --locked --force --path=./cargo-green
-    - name: Compile HEAD rustcbuildx
-      run: |
-        CARGO_TARGET_DIR=~/instmp cargo install --locked --force --path=./rustcbuildx
     - run: ls -lha ~/instmp/release/
     - run: ls -lha /home/runner/.cargo/bin/
 
     - uses: actions/upload-artifact@v4
       with:
         name: bin-artifacts
-        path: |
-          /home/runner/.cargo/bin/cargo-green
-          /home/runner/.cargo/bin/rustcbuildx
+        path: /home/runner/.cargo/bin/cargo-green
 
 
   installs:
@@ -69,9 +64,8 @@ jobs:
       with:
         name: bin-artifacts
     - run: | # TODO: whence https://github.com/actions/download-artifact/issues/236
-        chmod +x ./cargo-green ./rustcbuildx
-        ./rustcbuildx --version | grep rustcbuildx
-        mv ./rustcbuildx /home/runner/.cargo/bin/
+        chmod +x ./cargo-green
+        ./cargo-green --version | grep cargo-green
         mv ./cargo-green /home/runner/.cargo/bin/
         cargo green --version
 
@@ -80,59 +74,57 @@ jobs:
     - name: cargo install net=ON cache=OFF remote=OFF jobs=1
       run: |
         RUSTCBUILDX_LOG=debug \
-          CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=1 --locked --force --path=./rustcbuildx
+          CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=1 --locked --force --path=./cargo-green
 
 
-# TODO: re-enable once cargo-audit compiles on rust1.80
-  # audits:
-  #   runs-on: ubuntu-latest
-  #   needs: bin
-  #   steps:
-  #   - uses: actions-rs/toolchain@v1
-  #     with:
-  #       profile: minimal
-  #       toolchain: stable
+  audits:
+    runs-on: ubuntu-latest
+    needs: bin
+    steps:
+    - uses: actions-rs/toolchain@v1
+      with:
+        profile: minimal
+        toolchain: stable
 
-  #   - name: Retrieve saved bin
-  #     uses: actions/download-artifact@v4
-  #     with:
-  #       name: bin-artifacts
-  #   - run: | # TODO: whence https://github.com/actions/download-artifact/issues/236
-  #       chmod +x ./cargo-green ./rustcbuildx
-  #       ./rustcbuildx --version | grep rustcbuildx
-  #       mv ./rustcbuildx /home/runner/.cargo/bin/
-  #       mv ./cargo-green /home/runner/.cargo/bin/
-  #       cargo green --version
+    - name: Retrieve saved bin
+      uses: actions/download-artifact@v4
+      with:
+        name: bin-artifacts
+    - run: | # TODO: whence https://github.com/actions/download-artifact/issues/236
+        chmod +x ./cargo-green
+        ./cargo-green --version | grep cargo-green
+        mv ./cargo-green /home/runner/.cargo/bin/
+        cargo green --version
 
-  #   - uses: actions/checkout@v4
+    - uses: actions/checkout@v4
 
-  #   # Actually, the whole archives
-  #   - name: Cache `cargo fetch`
-  #     uses: actions/cache@v4
-  #     with:
-  #       path: |
-  #         ~/.cargo/registry/index/
-  #         ~/.cargo/registry/cache/
-  #         ~/.cargo/git/db/
-  #       key: cargo-deps-${{ hashFiles('**/Cargo.lock') }}
-  #       restore-keys: cargo-deps-
+    # Actually, the whole archives
+    - name: Cache `cargo fetch`
+      uses: actions/cache@v4
+      with:
+        path: |
+          ~/.cargo/registry/index/
+          ~/.cargo/registry/cache/
+          ~/.cargo/git/db/
+        key: cargo-deps-${{ hashFiles('**/Cargo.lock') }}
+        restore-keys: cargo-deps-
 
-  #   - name: Cache `cargo install`
-  #     uses: actions/cache@v4
-  #     with:
-  #       path: ~/cargo-audit
-  #       key: ${{ runner.os }}-cargo-install-audit
+    - name: Cache `cargo install`
+      uses: actions/cache@v4
+      with:
+        path: ~/cargo-audit
+        key: ${{ runner.os }}-cargo-install-audit
 
-  #   - name: Compile cargo-audit
-  #     run: |
-  #       CARGO_TARGET_DIR=~/cargo-audit cargo install --locked --force cargo-audit --features=fix
+    - name: Compile cargo-audit
+      run: |
+        CARGO_TARGET_DIR=~/cargo-audit cargo install --locked --force cargo-audit --features=fix
 
-  #   - name: cargo audit net=ON cache=OFF remote=OFF
-  #     run: |
-  #       RUSTCBUILDX_LOG=debug \
-  #       RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
-  #         cargo green -vv audit || \
-  #           cat logs.txt
+    - name: cargo audit net=ON cache=OFF remote=OFF
+      run: |
+        RUSTCBUILDX_LOG=debug \
+        RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
+          cargo green -vv audit || \
+            cat logs.txt
 
 
   udeps:
@@ -149,9 +141,8 @@ jobs:
       with:
         name: bin-artifacts
     - run: | # TODO: whence https://github.com/actions/download-artifact/issues/236
-        chmod +x ./cargo-green ./rustcbuildx
-        ./rustcbuildx --version | grep rustcbuildx
-        mv ./rustcbuildx /home/runner/.cargo/bin/
+        chmod +x ./cargo-green
+        ./cargo-green --version | grep cargo-green
         mv ./cargo-green /home/runner/.cargo/bin/
         cargo green --version
 
@@ -212,9 +203,8 @@ jobs:
       with:
         name: bin-artifacts
     - run: | # TODO: whence https://github.com/actions/download-artifact/issues/236
-        chmod +x ./cargo-green ./rustcbuildx
-        ./rustcbuildx --version | grep rustcbuildx
-        mv ./rustcbuildx /home/runner/.cargo/bin/
+        chmod +x ./cargo-green
+        ./cargo-green --version | grep cargo-green
         mv ./cargo-green /home/runner/.cargo/bin/
         cargo green --version
 
@@ -284,9 +274,8 @@ jobs:
       with:
         name: bin-artifacts
     - run: | # TODO: whence https://github.com/actions/download-artifact/issues/236
-        chmod +x ./cargo-green ./rustcbuildx
-        ./rustcbuildx --version | grep rustcbuildx
-        mv ./rustcbuildx /home/runner/.cargo/bin/
+        chmod +x ./cargo-green
+        ./cargo-green --version | grep cargo-green
         mv ./cargo-green /home/runner/.cargo/bin/
         cargo green --version
 
@@ -356,9 +345,8 @@ jobs:
       with:
         name: bin-artifacts
     - run: | # TODO: whence https://github.com/actions/download-artifact/issues/236
-        chmod +x ./cargo-green ./rustcbuildx
-        ./rustcbuildx --version | grep rustcbuildx
-        mv ./rustcbuildx /home/runner/.cargo/bin/
+        chmod +x ./cargo-green
+        ./cargo-green --version | grep cargo-green
         mv ./cargo-green /home/runner/.cargo/bin/
         cargo green --version
 
@@ -416,9 +404,8 @@ jobs:
       with:
         name: bin-artifacts
     - run: | # TODO: whence https://github.com/actions/download-artifact/issues/236
-        chmod +x ./cargo-green ./rustcbuildx
-        ./rustcbuildx --version | grep rustcbuildx
-        mv ./rustcbuildx /home/runner/.cargo/bin/
+        chmod +x ./cargo-green
+        ./cargo-green --version | grep cargo-green
         mv ./cargo-green /home/runner/.cargo/bin/
         cargo green --version
 

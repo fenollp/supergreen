@@ -20,13 +20,12 @@ declare -a nvs nvs_args
 ((i+=1)); nvs[i]=ntpd@1.2.3;                  oks[i]=ko; nvs_args[i]='' # BUG: bad URL creation https://static.crates.io/crates/md/md-5-0.10.6.crate
 ((i+=1)); nvs[i]=qcow2-rs@0.1.2;              oks[i]=ok; nvs_args[i]=''
 ((i+=1)); nvs[i]=rublk@0.2.0;                 oks[i]=ko; nvs_args[i]='' # could not find native static library `rustix_outline_x86_64`, perhaps an -L flag is missing?
-((i+=1)); nvs[i]=rustcbuildx@main;            oks[i]=ok; nvs_args[i]='--git https://github.com/fenollp/supergreen.git --branch=main rustcbuildx'
+((i+=1)); nvs[i]=samply@0.12.0;               oks[i]=ok; nvs_args[i]=''
 ((i+=1)); nvs[i]=shpool@0.6.2;                oks[i]=ko; nvs_args[i]='' # sudo apt-get install libpam0g-dev
 ((i+=1)); nvs[i]=solana-gossip@2.0.5;         oks[i]=ko; nvs_args[i]='' # error: environment variable `TYPENUM_BUILD_OP` not defined at compile time                                                                                                                    
 ((i+=1)); nvs[i]=statehub@0.14.10;            oks[i]=ko; nvs_args[i]='' # BUG: unexpected crate-type: 'cdylib'
 ((i+=1)); nvs[i]=torrust-index@3.0.0-alpha.12; oks[i]=ko; nvs_args[i]='' # unexpected output from `rustc --version`: ""
 ((i+=1)); nvs[i]=vixargs@0.1.0;               oks[i]=ok; nvs_args[i]=''
-
 
 #TODO: not a cli but try users of https://github.com/dtolnay/watt
   # curl -s 'https://crates.io/api/v1/crates/rustversion/reverse_dependencies?page=4&per_page=100' --compressed |jq '.versions[]|select(.bin_names != [])|.crate'
@@ -96,18 +95,13 @@ jobs:
     - name: Compile HEAD cargo-green
       run: |
         CARGO_TARGET_DIR=~/instmp cargo install --locked --force --path=./cargo-green
-    - name: Compile HEAD rustcbuildx
-      run: |
-        CARGO_TARGET_DIR=~/instmp cargo install --locked --force --path=./rustcbuildx
     - run: ls -lha ~/instmp/release/
     - run: ls -lha /home/runner/.cargo/bin/
 
     - uses: actions/upload-artifact@v4
       with:
         name: bin-artifacts
-        path: |
-          /home/runner/.cargo/bin/cargo-green
-          /home/runner/.cargo/bin/rustcbuildx
+        path: /home/runner/.cargo/bin/cargo-green
 
 EOF
 }
@@ -117,7 +111,6 @@ as_install() {
   case "$name_at_version" in
     buildxargs@*) echo 'buildxargs';;
     cargo-green@*) echo 'cargo-green';;
-    rustcbuildx@*) echo 'rustcbuildx';;
     *) echo "$name_at_version" ;;
   esac
 }
@@ -154,9 +147,8 @@ $(
       with:
         name: bin-artifacts
     - run: | # TODO: whence https://github.com/actions/download-artifact/issues/236
-        chmod +x ./cargo-green ./rustcbuildx
-        ./rustcbuildx --version | grep rustcbuildx
-        mv ./rustcbuildx /home/runner/.cargo/bin/
+        chmod +x ./cargo-green
+        ./cargo-green --version | grep cargo-green
         mv ./cargo-green /home/runner/.cargo/bin/
         cargo green --version
 
@@ -175,10 +167,10 @@ $(
       run: rustc -Vv
 
     - name: Envs
-      run: /home/runner/.cargo/bin/rustcbuildx env
+      run: /home/runner/.cargo/bin/cargo-green green supergreen env
 
     - name: Envs again
-      run: /home/runner/.cargo/bin/rustcbuildx env
+      run: /home/runner/.cargo/bin/cargo-green green supergreen env
 
     - name: Disk usage
       run: |
@@ -262,7 +254,6 @@ if [[ $# = 0 ]]; then
     name_at_version=${nvs["$i"]}
     case "$name_at_version" in
       cargo-green@*) continue ;;
-      rustcbuildx@*) continue ;;
     esac
     cli "$name_at_version" 1 "${nvs_args["$i"]}"
     # 3: https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners/about-github-hosted-runners#standard-github-hosted-runners-for-public-repositories
@@ -295,9 +286,7 @@ set -x
     if [[ "$clean" = '1' ]]; then
       rm -rf "$tmptrgt"
     fi
-    CARGO_TARGET_DIR=/tmp/rstcbldx cargo install --locked --frozen --offline --force --root=/tmp/rstcbldx --path="$PWD"/rustcbuildx
     CARGO_TARGET_DIR=/tmp/crggreen cargo install --locked --frozen --offline --force --root=/tmp/crggreen --path="$PWD"/cargo-green
-    ls -lha /tmp/rstcbldx/bin/rustcbuildx
     ls -lha /tmp/crggreen/bin/cargo-green
     rm $tmplogs >/dev/null 2>&1 || true
     touch $tmplogs
@@ -356,19 +345,14 @@ send() {
 
 gitdir=$(realpath "$(dirname "$(dirname "$0")")")
 send \
-  CARGO_TARGET_DIR=/tmp/rstcbldx cargo install --locked --frozen --offline --force --path="$gitdir"/rustcbuildx \
-    '&&' touch "$tmpgooo".installed
-tmux split-window
-
-send \
-  CARGO_TARGET_DIR=/tmp/crggreen cargo install --locked --frozen --offline --force --path="$gitdir"/cargo-green \
-    '&&' touch "$tmpgooo".installed_bis \
+  CARGO_TARGET_DIR=/tmp/rstcbldx cargo install --locked --frozen --offline --force --path="$gitdir"/cargo-green \
+    '&&' touch "$tmpgooo".installed \
     '&&' "rm $tmplogs >/dev/null 2>&1; touch $tmplogs; tail -f $tmplogs; :"
 tmux select-layout even-vertical
 tmux split-window
 
 send \
-  'until' '[[' -f "$tmpgooo".installed ']] && [[' -f "$tmpgooo".installed_bis ']];' \
+  'until' '[[' -f "$tmpgooo".installed ']];' \
   'do' sleep '.1;' 'done' '&&' rm "$tmpgooo".* '&&' \
   RUSTCBUILDX_LOG=debug \
   RUSTCBUILDX_LOG_PATH="$tmplogs" \

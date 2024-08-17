@@ -3,20 +3,20 @@ use rustc_version::{Channel, Version, VersionMeta};
 
 use crate::{envs::internal, runner::maybe_lock_image};
 
-pub const RUST: &str = "rust-base";
+pub(crate) const RUST: &str = "rust-base";
 
 #[derive(Clone, Debug, PartialEq)]
-pub struct RustcV {
-    pub version: Version,
-    pub commit: String,
-    pub date: String,
-    pub channel: Channel,
+pub(crate) struct RustcV {
+    pub(crate) version: Version,
+    pub(crate) commit: String,
+    pub(crate) date: String,
+    pub(crate) channel: Channel,
 
-    pub base: String,
+    pub(crate) base: String,
 }
 
 #[derive(Clone, Debug, PartialEq)]
-pub enum BaseImage {
+pub(crate) enum BaseImage {
     Image(String),
     RustcV(RustcV),
 }
@@ -76,7 +76,7 @@ LLVM version: 19.1.0
 impl BaseImage {
     #[inline]
     #[must_use]
-    pub fn base(&self) -> String {
+    pub(crate) fn base(&self) -> String {
         match self {
             Self::Image(img) => img.clone(),
             Self::RustcV(RustcV { base, .. }) => {
@@ -89,7 +89,7 @@ impl BaseImage {
         }
     }
 
-    pub fn from_rustc_v() -> Result<Self> {
+    pub(crate) fn from_rustc_v() -> Result<Self> {
         if let Some(val) = internal::base_image() {
             if !val.starts_with("docker-image://") {
                 let var = internal::RUSTCBUILDX_BASE_IMAGE;
@@ -123,18 +123,18 @@ impl BaseImage {
         })
     }
 
-    pub async fn maybe_lock_base(self) -> Self {
+    pub(crate) async fn maybe_lock_base(self) -> Self {
         self.clone().lock_base_to(maybe_lock_image(self.base()).await)
     }
 
-    pub fn lock_base_to(self, base: String) -> Self {
+    pub(crate) fn lock_base_to(self, base: String) -> Self {
         match self {
             Self::Image(_) => Self::Image(base),
             Self::RustcV(rustcv @ RustcV { .. }) => Self::RustcV(RustcV { base, ..rustcv }),
         }
     }
 
-    pub fn block(&self) -> String {
+    pub(crate) fn block(&self) -> String {
         let base = self.base();
         let base = base.trim_start_matches("docker-image://");
 

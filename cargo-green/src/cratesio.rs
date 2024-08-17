@@ -3,10 +3,10 @@ use camino::{Utf8Path, Utf8PathBuf};
 
 use crate::{base::RUST, stage::Stage};
 
-pub const CRATESIO_STAGE_PREFIX: &str = "cratesio-";
+pub(crate) const CRATESIO_STAGE_PREFIX: &str = "cratesio-";
 
 #[inline]
-pub fn from_cratesio_input_path(input: &Utf8PathBuf) -> Result<(String, String, String)> {
+pub(crate) fn from_cratesio_input_path(input: &Utf8PathBuf) -> Result<(String, String, String)> {
     let mut it = input.iter();
     let mut cratesio_index = String::new();
     let mut cratesio_crate = None;
@@ -55,7 +55,7 @@ fn test_from_cratesio_input_path() {
     ("hickory-proto".to_owned(), "0.25.0-alpha.1".to_owned(), "index.crates.io-6f17d22bba15001f".to_owned()));
 }
 
-pub async fn into_stage(
+pub(crate) async fn into_stage(
     krate: &str,
     cargo_home: impl AsRef<Utf8Path>,
     name: &str,

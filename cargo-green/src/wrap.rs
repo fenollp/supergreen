@@ -11,25 +11,21 @@ use std::{
 use anyhow::{anyhow, bail, Result};
 use camino::{Utf8Path, Utf8PathBuf};
 use env_logger::{Env, Target};
-use supergreen::{
+use tokio::process::Command;
+
+use crate::{
     base::RUST,
-    cli::{envs, exit_code, help, pull, push},
+    cli::exit_code,
     cratesio::{from_cratesio_input_path, into_stage},
     envs::{self, base_image, internal, maybe_log, pass_env, runner, syntax, this},
     extensions::ShowCmd,
     md::{BuildContext, Md},
+    parse,
+    parse::RustcArgs,
     runner::{build, MARK_STDERR, MARK_STDOUT},
     stage::Stage,
+    PKG, REPO, VSN,
 };
-use tokio::process::Command;
-
-use crate::parse::RustcArgs;
-
-mod parse;
-
-const PKG: &str = env!("CARGO_PKG_NAME");
-const REPO: &str = env!("CARGO_PKG_REPOSITORY");
-const VSN: &str = env!("CARGO_PKG_VERSION");
 
 const BUILDRS_CRATE_NAME: &str = "build_script_build";
 
@@ -37,8 +33,7 @@ const BUILDRS_CRATE_NAME: &str = "build_script_build";
 //       ourselves some trouble and assume std::path::{Path, PathBuf} are UTF-8.
 //       Or in the words of this crate: https://github.com/camino-rs/camino/tree/8bec62382e1bce1326ee48f6bf93c46e7a4fde0b#:~:text=there%20are%20already%20many%20systems%2C%20such%20as%20cargo%2C%20that%20only%20support%20utf-8%20paths.%20if%20your%20own%20tool%20interacts%20with%20any%20such%20system%2C%20you%20can%20assume%20that%20paths%20are%20valid%20utf-8%20without%20creating%20any%20additional%20burdens%20on%20consumers.
 
-#[tokio::main]
-async fn main() -> ExitCode {
+pub(crate) async fn do_wrap() -> ExitCode {
     let arg0 = env::args().nth(1);
     let args = env::args().skip(1).collect();
     let vars = env::vars().collect();
@@ -67,10 +62,6 @@ async fn fallible_main(
     };
 
     match argz[..] {
-        [] | ["-h"|"--help"|"-V"|"--version"] => Ok(help()),
-        ["env", ..] => Ok(envs(argv(1)).await),
-        ["pull"] => pull().await,
-        ["push"] => push().await,
         [rustc, "--crate-name", crate_name, ..] =>
              wrap_rustc(crate_name, argv(1), call_rustc(rustc, argv(1))).await,
         [rustc, "-", ..] =>
@@ -530,7 +521,7 @@ async fn do_wrap_rustc(
                 if e.kind() == ErrorKind::NotFound {
                     return anyhow!(
                         r#"
-                    Looks like `rustcbuildx` ran on an unkempt project. That's alright!
+                    Looks like `{PKG}` ran on an unkempt project. That's alright!
                     Let's remove the current target directory (note: $CARGO_TARGET_DIR={target_dir})
                     then run your command again.
                 "#,

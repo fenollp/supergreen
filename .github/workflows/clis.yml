@@ -48,18 +48,13 @@ jobs:
     - name: Compile HEAD cargo-green
       run: |
         CARGO_TARGET_DIR=~/instmp cargo install --locked --force --path=./cargo-green
-    - name: Compile HEAD rustcbuildx
-      run: |
-        CARGO_TARGET_DIR=~/instmp cargo install --locked --force --path=./rustcbuildx
     - run: ls -lha ~/instmp/release/
     - run: ls -lha /home/runner/.cargo/bin/
 
     - uses: actions/upload-artifact@v4
       with:
         name: bin-artifacts
-        path: |
-          /home/runner/.cargo/bin/cargo-green
-          /home/runner/.cargo/bin/rustcbuildx
+        path: /home/runner/.cargo/bin/cargo-green
 
   buildxargs_master:
     runs-on: ubuntu-latest
@@ -76,9 +71,8 @@ jobs:
       with:
         name: bin-artifacts
     - run: | # TODO: whence https://github.com/actions/download-artifact/issues/236
-        chmod +x ./cargo-green ./rustcbuildx
-        ./rustcbuildx --version | grep rustcbuildx
-        mv ./rustcbuildx /home/runner/.cargo/bin/
+        chmod +x ./cargo-green
+        ./cargo-green --version | grep cargo-green
         mv ./cargo-green /home/runner/.cargo/bin/
         cargo green --version
 
@@ -97,10 +91,10 @@ jobs:
       run: rustc -Vv
 
     - name: Envs
-      run: /home/runner/.cargo/bin/rustcbuildx env
+      run: /home/runner/.cargo/bin/cargo-green green supergreen env
 
     - name: Envs again
-      run: /home/runner/.cargo/bin/rustcbuildx env
+      run: /home/runner/.cargo/bin/cargo-green green supergreen env
 
     - name: Disk usage
       run: |
@@ -187,9 +181,8 @@ jobs:
       with:
         name: bin-artifacts
     - run: | # TODO: whence https://github.com/actions/download-artifact/issues/236
-        chmod +x ./cargo-green ./rustcbuildx
-        ./rustcbuildx --version | grep rustcbuildx
-        mv ./rustcbuildx /home/runner/.cargo/bin/
+        chmod +x ./cargo-green
+        ./cargo-green --version | grep cargo-green
         mv ./cargo-green /home/runner/.cargo/bin/
         cargo green --version
 
@@ -208,10 +201,10 @@ jobs:
       run: rustc -Vv
 
     - name: Envs
-      run: /home/runner/.cargo/bin/rustcbuildx env
+      run: /home/runner/.cargo/bin/cargo-green green supergreen env
 
     - name: Envs again
-      run: /home/runner/.cargo/bin/rustcbuildx env
+      run: /home/runner/.cargo/bin/cargo-green green supergreen env
 
     - name: Disk usage
       run: |
@@ -298,9 +291,8 @@ jobs:
       with:
         name: bin-artifacts
     - run: | # TODO: whence https://github.com/actions/download-artifact/issues/236
-        chmod +x ./cargo-green ./rustcbuildx
-        ./rustcbuildx --version | grep rustcbuildx
-        mv ./rustcbuildx /home/runner/.cargo/bin/
+        chmod +x ./cargo-green
+        ./cargo-green --version | grep cargo-green
         mv ./cargo-green /home/runner/.cargo/bin/
         cargo green --version
 
@@ -319,10 +311,10 @@ jobs:
       run: rustc -Vv
 
     - name: Envs
-      run: /home/runner/.cargo/bin/rustcbuildx env
+      run: /home/runner/.cargo/bin/cargo-green green supergreen env
 
     - name: Envs again
-      run: /home/runner/.cargo/bin/rustcbuildx env
+      run: /home/runner/.cargo/bin/cargo-green green supergreen env
 
     - name: Disk usage
       run: |
@@ -409,9 +401,8 @@ jobs:
       with:
         name: bin-artifacts
     - run: | # TODO: whence https://github.com/actions/download-artifact/issues/236
-        chmod +x ./cargo-green ./rustcbuildx
-        ./rustcbuildx --version | grep rustcbuildx
-        mv ./rustcbuildx /home/runner/.cargo/bin/
+        chmod +x ./cargo-green
+        ./cargo-green --version | grep cargo-green
         mv ./cargo-green /home/runner/.cargo/bin/
         cargo green --version
 
@@ -430,10 +421,10 @@ jobs:
       run: rustc -Vv
 
     - name: Envs
-      run: /home/runner/.cargo/bin/rustcbuildx env
+      run: /home/runner/.cargo/bin/cargo-green green supergreen env
 
     - name: Envs again
-      run: /home/runner/.cargo/bin/rustcbuildx env
+      run: /home/runner/.cargo/bin/cargo-green green supergreen env
 
     - name: Disk usage
       run: |
@@ -520,9 +511,8 @@ jobs:
       with:
         name: bin-artifacts
     - run: | # TODO: whence https://github.com/actions/download-artifact/issues/236
-        chmod +x ./cargo-green ./rustcbuildx
-        ./rustcbuildx --version | grep rustcbuildx
-        mv ./rustcbuildx /home/runner/.cargo/bin/
+        chmod +x ./cargo-green
+        ./cargo-green --version | grep cargo-green
         mv ./cargo-green /home/runner/.cargo/bin/
         cargo green --version
 
@@ -541,10 +531,10 @@ jobs:
       run: rustc -Vv
 
     - name: Envs
-      run: /home/runner/.cargo/bin/rustcbuildx env
+      run: /home/runner/.cargo/bin/cargo-green green supergreen env
 
     - name: Envs again
-      run: /home/runner/.cargo/bin/rustcbuildx env
+      run: /home/runner/.cargo/bin/cargo-green green supergreen env
 
     - name: Disk usage
       run: |
@@ -631,9 +621,8 @@ jobs:
       with:
         name: bin-artifacts
     - run: | # TODO: whence https://github.com/actions/download-artifact/issues/236
-        chmod +x ./cargo-green ./rustcbuildx
-        ./rustcbuildx --version | grep rustcbuildx
-        mv ./rustcbuildx /home/runner/.cargo/bin/
+        chmod +x ./cargo-green
+        ./cargo-green --version | grep cargo-green
         mv ./cargo-green /home/runner/.cargo/bin/
         cargo green --version
 
@@ -652,10 +641,10 @@ jobs:
       run: rustc -Vv
 
     - name: Envs
-      run: /home/runner/.cargo/bin/rustcbuildx env
+      run: /home/runner/.cargo/bin/cargo-green green supergreen env
 
     - name: Envs again
-      run: /home/runner/.cargo/bin/rustcbuildx env
+      run: /home/runner/.cargo/bin/cargo-green green supergreen env
 
     - name: Disk usage
       run: |
@@ -742,9 +731,8 @@ jobs:
       with:
         name: bin-artifacts
     - run: | # TODO: whence https://github.com/actions/download-artifact/issues/236
-        chmod +x ./cargo-green ./rustcbuildx
-        ./rustcbuildx --version | grep rustcbuildx
-        mv ./rustcbuildx /home/runner/.cargo/bin/
+        chmod +x ./cargo-green
+        ./cargo-green --version | grep cargo-green
         mv ./cargo-green /home/runner/.cargo/bin/
         cargo green --version
 
@@ -763,10 +751,10 @@ jobs:
       run: rustc -Vv
 
     - name: Envs
-      run: /home/runner/.cargo/bin/rustcbuildx env
+      run: /home/runner/.cargo/bin/cargo-green green supergreen env
 
     - name: Envs again
-      run: /home/runner/.cargo/bin/rustcbuildx env
+      run: /home/runner/.cargo/bin/cargo-green green supergreen env
 
     - name: Disk usage
       run: |
@@ -853,9 +841,8 @@ jobs:
       with:
         name: bin-artifacts
     - run: | # TODO: whence https://github.com/actions/download-artifact/issues/236
-        chmod +x ./cargo-green ./rustcbuildx
-        ./rustcbuildx --version | grep rustcbuildx
-        mv ./rustcbuildx /home/runner/.cargo/bin/
+        chmod +x ./cargo-green
+        ./cargo-green --version | grep cargo-green
         mv ./cargo-green /home/runner/.cargo/bin/
         cargo green --version
 
@@ -874,10 +861,10 @@ jobs:
       run: rustc -Vv
 
     - name: Envs
-      run: /home/runner/.cargo/bin/rustcbuildx env
+      run: /home/runner/.cargo/bin/cargo-green green supergreen env
 
     - name: Envs again
-      run: /home/runner/.cargo/bin/rustcbuildx env
+      run: /home/runner/.cargo/bin/cargo-green green supergreen env
 
     - name: Disk usage
       run: |
@@ -964,9 +951,8 @@ jobs:
       with:
         name: bin-artifacts
     - run: | # TODO: whence https://github.com/actions/download-artifact/issues/236
-        chmod +x ./cargo-green ./rustcbuildx
-        ./rustcbuildx --version | grep rustcbuildx
-        mv ./rustcbuildx /home/runner/.cargo/bin/
+        chmod +x ./cargo-green
+        ./cargo-green --version | grep cargo-green
         mv ./cargo-green /home/runner/.cargo/bin/
         cargo green --version
 
@@ -985,10 +971,10 @@ jobs:
       run: rustc -Vv
 
     - name: Envs
-      run: /home/runner/.cargo/bin/rustcbuildx env
+      run: /home/runner/.cargo/bin/cargo-green green supergreen env
 
     - name: Envs again
-      run: /home/runner/.cargo/bin/rustcbuildx env
+      run: /home/runner/.cargo/bin/cargo-green green supergreen env
 
     - name: Disk usage
       run: |
@@ -1060,7 +1046,7 @@ jobs:
     - if: ${{ failure() || success() }}
       run: cat _ || true
 
-  vixargs_0-1-0:
+  samply_0-12-0:
     runs-on: ubuntu-latest
     needs: bin
     steps:
@@ -1075,9 +1061,8 @@ jobs:
       with:
         name: bin-artifacts
     - run: | # TODO: whence https://github.com/actions/download-artifact/issues/236
-        chmod +x ./cargo-green ./rustcbuildx
-        ./rustcbuildx --version | grep rustcbuildx
-        mv ./rustcbuildx /home/runner/.cargo/bin/
+        chmod +x ./cargo-green
+        ./cargo-green --version | grep cargo-green
         mv ./cargo-green /home/runner/.cargo/bin/
         cargo green --version
 
@@ -1096,10 +1081,230 @@ jobs:
       run: rustc -Vv
 
     - name: Envs
-      run: /home/runner/.cargo/bin/rustcbuildx env
+      run: /home/runner/.cargo/bin/cargo-green green supergreen env
 
     - name: Envs again
-      run: /home/runner/.cargo/bin/rustcbuildx env
+      run: /home/runner/.cargo/bin/cargo-green green supergreen env
+
+    - name: Disk usage
+      run: |
+        docker system df
+        docker buildx du
+        sudo du -sh /var/lib/docker
+
+    - name: cargo install net=ON cache=OFF remote=OFF jobs=1
+      run: |
+        RUSTCBUILDX_LOG=debug \
+        RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
+          CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=1 --locked --force samply@0.12.0 
+
+    - if: ${{ failure() || success() }}
+      run: tail -n9999999 logs.txt ; echo >logs.txt
+
+    - name: Disk usage
+      if: ${{ failure() || success() }}
+      run: |
+        docker system df
+        docker buildx du
+        sudo du -sh /var/lib/docker
+
+    - name: Target dir disk usage
+      if: ${{ failure() || success() }}
+      run: du -sh ~/instst
+
+    - name: cargo install net=ON cache=ON remote=OFF jobs=1
+      run: |
+        RUSTCBUILDX_LOG=debug \
+        RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
+          CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=1 --locked --force samply@0.12.0  2>&1 | tee _
+
+    - if: ${{ failure() || success() }}
+      run: tail -n9999999 logs.txt
+
+    - name: Disk usage
+      if: ${{ failure() || success() }}
+      run: |
+        docker system df
+        docker buildx du
+        sudo du -sh /var/lib/docker
+
+    - name: Target dir disk usage
+      if: ${{ failure() || success() }}
+      run: du -sh ~/instst
+
+    - if: ${{ failure() || success() }}
+      name: Finishes fast
+      run: |
+        grep Finished _
+        grep Finished _ | grep -E [012]...s
+
+    - if: ${{ failure() || success() }}
+      run: |
+        grep Fresh _
+
+    - if: ${{ failure() || success() }}
+      name: Did not recompile things (yay!)
+      run: |
+        ! grep Compiling _
+
+    - if: ${{ failure() || success() }}
+      run: |
+        ! grep 'DEBUG|INFO|WARN|ERROR' _
+        ! grep 'Falling back' _
+        ! grep 'BUG[: ]' _
+
+    - if: ${{ failure() || success() }}
+      run: cat _ || true
+
+  samply_0-12-0-J:
+    runs-on: ubuntu-latest
+    needs: bin
+    steps:
+    - uses: actions-rs/toolchain@v1
+      with:
+        profile: minimal
+        toolchain: stable
+
+
+    - name: Retrieve saved bin
+      uses: actions/download-artifact@v4
+      with:
+        name: bin-artifacts
+    - run: | # TODO: whence https://github.com/actions/download-artifact/issues/236
+        chmod +x ./cargo-green
+        ./cargo-green --version | grep cargo-green
+        mv ./cargo-green /home/runner/.cargo/bin/
+        cargo green --version
+
+    - uses: actions/checkout@v4
+
+    - name: Docker info
+      run: docker info
+
+    - name: Buildx version
+      run: docker buildx version
+
+    - name: Podman version
+      run: podman version || true
+
+    - name: Rust version
+      run: rustc -Vv
+
+    - name: Envs
+      run: /home/runner/.cargo/bin/cargo-green green supergreen env
+
+    - name: Envs again
+      run: /home/runner/.cargo/bin/cargo-green green supergreen env
+
+    - name: Disk usage
+      run: |
+        docker system df
+        docker buildx du
+        sudo du -sh /var/lib/docker
+
+    - name: cargo install net=ON cache=OFF remote=OFF jobs=3
+      run: |
+        RUSTCBUILDX_LOG=debug \
+        RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
+          CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=3 --locked --force samply@0.12.0 
+
+    - if: ${{ failure() || success() }}
+      run: tail -n9999999 logs.txt ; echo >logs.txt
+
+    - name: Disk usage
+      if: ${{ failure() || success() }}
+      run: |
+        docker system df
+        docker buildx du
+        sudo du -sh /var/lib/docker
+
+    - name: Target dir disk usage
+      if: ${{ failure() || success() }}
+      run: du -sh ~/instst
+
+    - name: cargo install net=ON cache=ON remote=OFF jobs=3
+      run: |
+        RUSTCBUILDX_LOG=debug \
+        RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
+          CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=3 --locked --force samply@0.12.0  2>&1 | tee _
+
+    - if: ${{ failure() || success() }}
+      run: tail -n9999999 logs.txt
+
+    - name: Disk usage
+      if: ${{ failure() || success() }}
+      run: |
+        docker system df
+        docker buildx du
+        sudo du -sh /var/lib/docker
+
+    - name: Target dir disk usage
+      if: ${{ failure() || success() }}
+      run: du -sh ~/instst
+
+    - if: ${{ failure() || success() }}
+      name: Finishes fast
+      run: |
+        grep Finished _
+        grep Finished _ | grep -E [012]...s
+
+    - if: ${{ failure() || success() }}
+      run: |
+        grep Fresh _
+
+    - if: ${{ failure() || success() }}
+      name: Did not recompile things (yay!)
+      run: |
+        ! grep Compiling _
+
+    - if: ${{ failure() || success() }}
+      run: |
+        ! grep 'DEBUG|INFO|WARN|ERROR' _
+        ! grep 'Falling back' _
+        ! grep 'BUG[: ]' _
+
+    - if: ${{ failure() || success() }}
+      run: cat _ || true
+
+  vixargs_0-1-0:
+    runs-on: ubuntu-latest
+    needs: bin
+    steps:
+    - uses: actions-rs/toolchain@v1
+      with:
+        profile: minimal
+        toolchain: stable
+
+
+    - name: Retrieve saved bin
+      uses: actions/download-artifact@v4
+      with:
+        name: bin-artifacts
+    - run: | # TODO: whence https://github.com/actions/download-artifact/issues/236
+        chmod +x ./cargo-green
+        ./cargo-green --version | grep cargo-green
+        mv ./cargo-green /home/runner/.cargo/bin/
+        cargo green --version
+
+    - uses: actions/checkout@v4
+
+    - name: Docker info
+      run: docker info
+
+    - name: Buildx version
+      run: docker buildx version
+
+    - name: Podman version
+      run: podman version || true
+
+    - name: Rust version
+      run: rustc -Vv
+
+    - name: Envs
+      run: /home/runner/.cargo/bin/cargo-green green supergreen env
+
+    - name: Envs again
+      run: /home/runner/.cargo/bin/cargo-green green supergreen env
 
     - name: Disk usage
       run: |
@@ -1186,9 +1391,8 @@ jobs:
       with:
         name: bin-artifacts
     - run: | # TODO: whence https://github.com/actions/download-artifact/issues/236
-        chmod +x ./cargo-green ./rustcbuildx
-        ./rustcbuildx --version | grep rustcbuildx
-        mv ./rustcbuildx /home/runner/.cargo/bin/
+        chmod +x ./cargo-green
+        ./cargo-green --version | grep cargo-green
         mv ./cargo-green /home/runner/.cargo/bin/
         cargo green --version
 
@@ -1207,10 +1411,10 @@ jobs:
       run: rustc -Vv
 
     - name: Envs
-      run: /home/runner/.cargo/bin/rustcbuildx env
+      run: /home/runner/.cargo/bin/cargo-green green supergreen env
 
     - name: Envs again
-      run: /home/runner/.cargo/bin/rustcbuildx env
+      run: /home/runner/.cargo/bin/cargo-green green supergreen env
 
     - name: Disk usage
       run: |

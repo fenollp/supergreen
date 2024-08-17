@@ -1,6 +1,6 @@
 [package]
 name = "cargo-green"
-description = "Cargo plugin to sandbox, cache & remote exec cargo builds"
+description = "Cargo plugin and $RUSTC_WRAPPER to sandbox & cache cargo builds and execute jobs remotely"
 authors.workspace = true
 categories.workspace = true
 edition.workspace = true
@@ -9,8 +9,36 @@ license.workspace = true
 repository.workspace = true
 version.workspace = true
 
+# [profile.release]
+# codegen-units = 1
+# Try tuning rustc codegen options to optimize for speed (suggest mold?)
+# TODO: use the least amount of codegen units for best LTO
+# https://doc.rust-lang.org/nightly/rustc/codegen-options/index.html#codegen-units
+# https://doc.rust-lang.org/nightly/rustc/codegen-options/index.html#embed-bitcode
+# https://doc.rust-lang.org/nightly/rustc/codegen-options/index.html#instrument-coverage
+# https://doc.rust-lang.org/nightly/rustc/codegen-options/index.html#link-arg
+# https://doc.rust-lang.org/nightly/rustc/codegen-options/index.html#linker
+
 [dependencies]
 anyhow.workspace = true
-supergreen.workspace = true
+camino.workspace = true
+env_logger.workspace = true
+futures.workspace = true
+home.workspace = true
+log.workspace = true
+nutype.workspace = true
+pretty_assertions.workspace = true # TODO: drop once !dbg
+reqwest.workspace = true
+rustc_version.workspace = true
+rustflags.workspace = true # TODO: drop once !dbg
+serde-jsonlines.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+sha256.workspace = true
+szyk.workspace = true
 tokio.workspace = true
+toml.workspace = true
 which.workspace = true
+
+[dev-dependencies]
+assertx.workspace = true

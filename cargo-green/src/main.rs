@@ -3,19 +3,38 @@
 
 use std::{
     env,
+    ffi::OsStr,
     fs::OpenOptions,
     path::PathBuf,
     process::{ExitCode, Stdio},
 };
 
-use anyhow::{anyhow, bail, Result};
-use supergreen::{
+use anyhow::{bail, Result};
+use tokio::process::Command;
+
+use crate::{
     base::BaseImage,
+    cli::{envs, help, pull, push},
     envs::{builder_image, cache_image, incremental, internal, runner, DEFAULT_SYNTAX},
     extensions::ShowCmd,
     runner::{fetch_digest, maybe_lock_image, runner_cmd},
+    wrap::do_wrap,
 };
-use tokio::process::Command;
+
+mod base;
+mod cli;
+mod cratesio;
+mod envs;
+mod extensions;
+mod md;
+mod parse;
+mod runner;
+mod stage;
+mod wrap;
+
+const PKG: &str = env!("CARGO_PKG_NAME");
+const REPO: &str = env!("CARGO_PKG_REPOSITORY");
+const VSN: &str = env!("CARGO_PKG_VERSION");
 
 /*
 
@@ -37,25 +56,60 @@ use tokio::process::Command;
 // \cargo green # check displays help
 
 #[tokio::main]
-async fn main() -> Result<ExitCode, Box<dyn std::error::Error>> {
-    let mut args = env::args().skip(1); // skips $0
+async fn main() -> Result<ExitCode> {
+    let mut args = env::args();
+
+    let arg0 = args.next().expect("$0 has to be set");
+    if PathBuf::from(&arg0).file_name() != Some(OsStr::new(PKG)) {
+        eprintln!(
+            r#"
+    This binary should be named `{PKG}`.
+"#
+        );
+        return Ok(ExitCode::FAILURE);
+    }
+
+    if let Ok(wrapper) = env::var("RUSTC_WRAPPER") {
+        if PathBuf::from(&wrapper).file_name() != Some(OsStr::new(PKG)) {
+            eprintln!(
+                r#"
+    A $RUSTC_WRAPPER other than `{PKG}` is already set: {wrapper}.
+"#
+            );
+            return Ok(ExitCode::FAILURE);
+        }
+        // Now running as a subprocess
+        return Ok(do_wrap().await);
+    }
 
     let Some(arg1) = args.next() else {
         // Warn when running this via `cargo run -p cargo-green -- ..`
         eprintln!(
             r#"
-    The `cargo-green` binary needs to be called via cargo, e.g.:
+    The `{PKG}` binary needs to be called via cargo, e.g.:
         cargo green build
 "#
         );
         return Ok(ExitCode::FAILURE);
     };
+    if ["-h", "--help", "-V", "--version"].contains(&arg1.as_str()) {
+        return Ok(help());
+    }
     assert_eq!(arg1.as_str(), "green");
 
     let mut cmd = Command::new(env::var("CARGO").unwrap_or("cargo".into()));
     if let Some(arg) = args.next() {
         if arg == "supergreen" {
-            unimplemented!("FIXME: handle commands")
+            return match args.next().as_deref() {
+                None | Some("-h" | "--help" | "-V" | "--version") => Ok(help()),
+                Some("env") => Ok(envs(args.collect()).await),
+                Some("pull") => pull().await,
+                Some("push") => push().await,
+                Some(arg) => {
+                    eprintln!("Unexpected supergreen command {arg:?}");
+                    return Ok(ExitCode::FAILURE);
+                }
+            };
         }
         cmd.arg(&arg);
         if arg.starts_with('+') {
@@ -76,6 +130,7 @@ async fn main() -> Result<ExitCode, Box<dyn std::error::Error>> {
         }
         // TODO: Skip this call for the ones not calling rustc
         Some(_) => {
+            cmd.env("RUSTC_WRAPPER", arg0);
             if let Err(e) = setup_for_build(&mut cmd).await {
                 eprintln!("{e}");
                 return Ok(ExitCode::FAILURE);
@@ -88,16 +143,6 @@ async fn main() -> Result<ExitCode, Box<dyn std::error::Error>> {
 }
 
 async fn setup_for_build(cmd: &mut Command) -> Result<()> {
-    if let Ok(wrapper) = env::var("RUSTC_WRAPPER") {
-        bail!(
-            r#"
-    You called `cargo-green` but a $RUSTC_WRAPPER is already set (to {wrapper})
-        We don't know what to do...
-"#
-        )
-    }
-    cmd.env("RUSTC_WRAPPER", ensure_binary_exists("rustcbuildx")?);
-
     // TODO read package.metadata.green
     // TODO: TUI above cargo output (? https://docs.rs/prodash )
 
@@ -188,18 +233,6 @@ async fn setup_for_build(cmd: &mut Command) -> Result<()> {
     }
 
     Ok(())
-}
-
-fn ensure_binary_exists(name: &'static str) -> Result<PathBuf> {
-    which::which(name).map_err(|_| {
-        anyhow!(
-            r#"
-    You called `cargo-green` but its dependency `rustcbuildx` cannot be found.
-    Please run:
-        # \cargo install --locked rustcbuildx
-"#
-        )
-    })
 }
 
 // https://docs.docker.com/build/drivers/docker-container/
