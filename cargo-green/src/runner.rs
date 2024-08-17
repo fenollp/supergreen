@@ -118,6 +118,24 @@ pub(crate) async fn build(
     // set it to crates' birth date, in case it's a $HOME/.cargo/registry/cache/...crate
     // set it to the directory's birth date otherwise (should be a relative path to local files).
 
+    // `--repro`
+    // From https://github.com/docker-library/official-images/issues/16044
+    // $ # "none://" is a filler for the build context arg
+    // $ docker buildx build \
+    //   --load \
+    //   -t gcc:local \
+    //   --repro from=gcc@sha256:f97e2719cd5138c932a814ca43f3ca7b33fde866e182e7d76d8391ec0b05091f \
+    //   none://
+    // ...
+    // [amd64] Using SLSA provenance sha256:7ecde97c24ea34e1409caf6e91123690fa62d1465ad08f638ebbd75dd381f08f
+    // [amd64] Importing Dockerfile blob embedded in the provenance
+    // [amd64] Importing build context https://github.com/docker-library/gcc.git#af458ec8254ef7ca3344f12631e2356b20b4a7f1:13
+    // [amd64] Importing build-arg SOURCE_DATE_EPOCH=1690467916
+    // [amd64] Importing buildpack-deps:bookworm from docker-image://buildpack-deps:bookworm@sha256:bccdd9ebd8dbbb95d41bb5d9de3f654f8cd03b57d65d090ac330d106c87d7ed
+    // ...
+    // $ diffoci diff gcc@sha256:f97e2719cd5138c932a814ca43f3ca7b33fde866e182e7d76d8391ec0b05091f gcc:local
+    // ...
+
     // https://docs.docker.com/engine/reference/commandline/cli/#environment-variables
     for var in [
         "BUILDKIT_PROGRESS",
