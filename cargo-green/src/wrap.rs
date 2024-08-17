@@ -4,6 +4,7 @@ use std::{
     fs::{self, File},
     future::Future,
     io::{BufRead, BufReader, ErrorKind},
+    path::Path,
     process::ExitCode,
     str::FromStr,
 };
@@ -454,12 +455,11 @@ async fn do_wrap_rustc(
                 .lines()
             {
                 log::info!(target: &krate, "copying git repo file {f}");
-                let f = Utf8Path::new(f);
-                copy_files(f, cwd_path)?;
+                copy_dir_all(Utf8Path::new(f), cwd_path)?;
             }
         } else {
             log::info!(target: &krate, "copying all files under {pwd} to {cwd_path}");
-            copy_files(&pwd, cwd_path)?;
+            copy_dir_all(&pwd, cwd_path)?;
         }
 
         // This doesn't work: rustc_block.push_str(&format!("  --mount=type=bind,from=cwd,target={pwd} \\\n"));
@@ -781,31 +781,21 @@ fn crate_out_name(name: &str) -> String {
         .expect("PROOF: suffix is /out")
 }
 
-fn copy_file(f: &Utf8Path, cwd: &Utf8Path) -> Result<()> {
-    let Some(f_dirname) = f.parent() else { bail!("BUG: unexpected f={f:?} cwd={cwd:?}") };
-    let dst = cwd.join(f_dirname);
-    fs::create_dir_all(&dst).map_err(|e| anyhow!("Failed `mkdir -p {dst}`: {e}"))?;
-    let dst = cwd.join(f);
-    fs::copy(f, &dst).map_err(|e| anyhow!("Failed `cp {f} {dst}` ({:?}): {e}", f.metadata()))?;
-    Ok(())
-}
-
-fn copy_files(src: &Utf8Path, dst: &Utf8Path) -> Result<()> {
-    if !src.is_dir() {
-        return copy_file(src, dst);
-    }
+fn copy_dir_all(src: impl AsRef<Path>, dst: impl AsRef<Path>) -> Result<()> {
+    fs::create_dir_all(&dst).map_err(|e| anyhow!("Failed `mkdir -p {:?}`: {e}", dst.as_ref()))?;
+    let dst = dst.as_ref();
     // TODO: deterministic iteration
-    for entry in fs::read_dir(src).map_err(|e| anyhow!("Failed reading dir {src}: {e}"))? {
+    for entry in
+        fs::read_dir(&src).map_err(|e| anyhow!("Failed reading dir {:?}: {e}", src.as_ref()))?
+    {
         let entry = entry?;
-        let entry = entry.path();
-        let entry = entry.as_path(); // thanks, Rust
-        let Some(path) = Utf8Path::from_path(entry) else {
-            bail!("Path's UTF-8 encoding is corrupted: {entry:?}")
-        };
-        if path.is_dir() {
-            copy_files(path, dst)?
+        if entry.file_type().map_err(|e| anyhow!("Failed getting type of {entry:?}: {e}"))?.is_dir()
+        {
+            copy_dir_all(entry.path(), dst.join(entry.file_name()))?;
         } else {
-            copy_file(path, dst)?
+            fs::copy(entry.path(), dst.join(entry.file_name())).map_err(|e| {
+                anyhow!("Failed `cp {:?} {dst:?}` ({:?}): {e}", entry.path(), entry.metadata())
+            })?;
         }
     }
     Ok(())
