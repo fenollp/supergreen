@@ -5,6 +5,7 @@ use std::{collections::BTreeSet, str::FromStr};
 use anyhow::{bail, Result};
 use camino::Utf8PathBuf;
 use serde::{Deserialize, Serialize};
+use szyk::{sort, Node};
 
 use crate::{base::RUST, cratesio::CRATESIO_STAGE_PREFIX, stage::Stage};
 
@@ -79,8 +80,6 @@ impl Md {
         &mut self,
         mds: Vec<(Utf8PathBuf, Self)>,
     ) -> Result<Vec<Utf8PathBuf>> {
-        use szyk::{sort, Node};
-
         let mut dag: Vec<_> = mds
             .into_iter()
             .map(|(md_path, md)| {
@@ -155,8 +154,7 @@ impl BuildContext {
     #[must_use]
     pub(crate) fn is_readonly_mount(&self) -> bool {
         self.name.starts_with(CRATESIO_STAGE_PREFIX) ||
-        // TODO: create a stage from sources where able (public repos) use --secret mounts for private deps (and secret direct artifacts)
-        self.name.starts_with("input_") ||
+        self.name.starts_with("cwd-") ||
          // TODO: link this to the build script it's coming from
          self.name.starts_with("crate_out-")
     }
@@ -208,6 +206,7 @@ contexts = [
   {{ name = "rust-base", uri = {LONG:?} }},
   {{ name = "input_src_lib_rs--rustversion-1.0.9", uri = "/home/maison/.cargo/registry/src/github.com-1ecc6299db9ec823/rustversion-1.0.9" }},
   {{ name = "crate_out-...", uri = "/home/maison/code/thing.git/target/debug/build/rustversion-ae69baa7face5565/out" }},
+  {{ name = "cwd-5b79a479b19b5f41", uri = "/tmp/CWD5b79a479b19b5f41" }},
 ]
 stages = []
 "#
@@ -227,6 +226,10 @@ stages = []
             uri: "/home/maison/code/thing.git/target/debug/build/rustversion-ae69baa7face5565/out"
                 .to_owned(),
         },
+        BuildContext {
+            name: "cwd-5b79a479b19b5f41".to_owned(),
+            uri: "/tmp/CWD5b79a479b19b5f41".to_owned(),
+        },
     ];
     let md = Md::from_str(origin).unwrap();
     assert_eq!(md.this, this);
@@ -234,8 +237,8 @@ stages = []
     assert_eq!(md.contexts, contexts.clone().into());
 
     let used: Vec<_> = contexts.into_iter().filter(BuildContext::is_readonly_mount).collect();
-    assert!(used[0].name.starts_with("input_"));
-    assert!(used[1].name.starts_with("crate_out-"));
+    assert_eq!(&used[0].name[..10], "crate_out-");
+    assert_eq!(&used[1].name[..4], "cwd-");
     assert_eq!(used.len(), 2);
 }
 

@@ -357,14 +357,24 @@ async fn do_wrap_rustc(
 
         let rustc_stage = Stage::try_new(format!("dep-{crate_id}-{cratesio_index}"))?;
         (Some((cratesio_stage, Some(src), dst)), rustc_stage)
-    } else if input.is_relative() {
-        // Input is local, non-public code
+    } else {
+        // Input is local code
 
-        let rustc_stage = input.to_string().replace(['/', '.'], "-");
+        let rustc_stage = if input.is_relative() {
+            &input
+        } else {
+            // e.g. $CARGO_HOME/git/checkouts/rustc-version-rs-de99f49481c38c43/48cf99e/src/lib.rs
+            // TODO: create a stage from sources where able (public repos) use --secret mounts for private deps (and secret direct artifacts)
+            // TODO=> make sense of git origin file://$CARGO_HOME/git/db/rustc-version-rs-de99f49481c38c43
+            input
+                .strip_prefix(&pwd)
+                .map_err(|e| anyhow!("BUG: unexpected input {input:?} ({e})"))?
+        }
+        .to_string()
+        .replace(['/', '.'], "-");
+
         let rustc_stage = Stage::try_new(format!("cwd-{crate_id}-{rustc_stage}"))?;
         (None, rustc_stage)
-    } else {
-        bail!("Unexpected input file {input:?}")
     };
     log::info!(target: &krate, "picked {rustc_stage} for {input}");
 
@@ -408,6 +418,7 @@ async fn do_wrap_rustc(
 
         None
     } else {
+        // NOTE: we don't `rm -rf cwd`
         let cwd = env::temp_dir().join(format!("CWD{metadata}"));
         let Some(cwd_path) = Utf8Path::from_path(cwd.as_path()) else {
             bail!("Path's UTF-8 encoding is corrupted: {cwd:?}")
@@ -636,21 +647,14 @@ async fn do_wrap_rustc(
             .inspect_err(|e| log::warn!(target: &krate, "Error fetching incremental data: {e}"));
     }
 
-    if debug.is_none() {
-        if let Some((cwd, cwd_path)) = cwd {
-            if let Err(e) = fs::remove_dir_all(cwd) {
-                log::warn!(target:&krate, "Error `rm -rf {cwd_path}`: {e}");
-            }
+    if code != Some(0) && debug.is_none() {
+        log::warn!(target: &krate, "Falling back...");
+        let res = fallback.await; // Bubble up actual error & outputs
+        if res.is_ok() {
+            log::error!(target: &krate, "BUG found!");
+            eprintln!("Found a bug in this script! Falling back... (logs: {debug:?})");
         }
-        if code != Some(0) {
-            log::warn!(target: &krate, "Falling back...");
-            let res = fallback.await; // Bubble up actual error & outputs
-            if res.is_ok() {
-                log::error!(target: &krate, "BUG found!");
-                eprintln!("Found a bug in this script! Falling back... (logs: {debug:?})");
-            }
-            return res;
-        }
+        return res;
     }
 
     Ok(exit_code(code))
