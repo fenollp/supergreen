@@ -400,11 +400,6 @@ async fn do_wrap_rustc(
     rustc_block.push_str("  RUSTCBUILDX=1\n");
 
     let cwd = if let Some((name, src, target)) = input_mount.as_ref() {
-        // Reuse previous contexts
-
-        // TODO: WORKDIR was removed as it changed during a single `cargo build`
-        // Looks like removing it isn't an issue, however we need more testing.
-        // rustc_block.push_str(&format!("WORKDIR {pwd}\n"));
         rustc_block.push_str("RUN \\\n");
         rustc_block.push_str(&format!(
             "  --mount=type=bind,from={name}{source},target={target} \\\n",
@@ -413,33 +408,18 @@ async fn do_wrap_rustc(
 
         None
     } else {
-        // Save/send local workspace
-
-        if (input.is_relative(), input.as_str().ends_with(".rs")) != (true, true) {
-            // TODO: drop
-            // note .as_str() is to use &str's ends_with
-            bail!("BUG: unexpected input={input:?}")
-        }
-
-        // TODO: try just bind mount instead of copying to a tmpdir
-        // TODO: --build-arg BUILDKIT_CONTEXT_KEEP_GIT_DIR=0 https://docs.docker.com/engine/reference/builder/#buildkit-built-in-build-args
-        // TODO: try filtering out CARGO_TARGET_DIR also
-        // https://docs.docker.com/language/rust/develop/
-        // RUN --mount=type=bind,source=src,target=src \
-        //     --mount=type=bind,source=Cargo.toml,target=Cargo.toml \
-        //     --mount=type=bind,source=Cargo.lock,target=Cargo.lock \
-
-        let cwd = env::temp_dir().join(&metadata);
+        let cwd = env::temp_dir().join(format!("CWD{metadata}"));
         let Some(cwd_path) = Utf8Path::from_path(cwd.as_path()) else {
             bail!("Path's UTF-8 encoding is corrupted: {cwd:?}")
         };
 
-        // TODO: use tmpfs when on *NIX
-        // TODO: cache these folders
-        // TODO: --mount=bind each file one by one => drop temp dir ctx (needs [multiple] `mkdir -p`[s] first though)
+        // TODO: --build-arg BUILDKIT_CONTEXT_KEEP_GIT_DIR=0 https://docs.docker.com/engine/reference/builder/#buildkit-built-in-build-args
+        //   in Git case: do that ^ IFF remote URL + branch/tag/rev can be decided (a la cratesio optimization)
+
         log::info!(target: &krate, "copying all {}files under {pwd} to {cwd_path}", if pwd.join(".git").is_dir() { "git " } else { "" });
         copy_dir_all(&pwd, cwd_path)?;
 
+        // TODO: --mount=bind each file one by one => drop temp dir ctx (needs [multiple] `mkdir -p`[s] first though)
         // This doesn't work: rustc_block.push_str(&format!("  --mount=type=bind,from=cwd,target={pwd} \\\n"));
         // ✖ 0.040 runc run failed: unable to start container process: error during container init:
         //     error mounting "/var/lib/docker/tmp/buildkit-mount1189821268/libaho_corasick-b99b6e1b4f09cbff.rlib"
@@ -451,7 +431,7 @@ async fn do_wrap_rustc(
         // 0 0s debug HEAD λ cat rustcbuildx.d
         // $target_dir/debug/rustcbuildx: $cwd/src/cli.rs $cwd/src/cratesio.rs $cwd/src/envs.rs $cwd/src/main.rs $cwd/src/md.rs $cwd/src/parse.rs $cwd/src/pops.rs $cwd/src/runner.rs $cwd/src/stage.rs
         rustc_block.push_str(&format!("WORKDIR {pwd}\n"));
-        rustc_block.push_str("COPY --from=cwd / .\n");
+        rustc_block.push_str(&format!("COPY --from=cwd-{metadata} / .\n"));
         rustc_block.push_str("RUN \\\n");
 
         let cwd_path = cwd_path.to_owned();
@@ -467,7 +447,7 @@ async fn do_wrap_rustc(
         input_mount.and_then(|(name, src, target)| {
             src.is_none().then_some((name.to_string(), target.to_string()))
         }),
-        cwd.as_ref().map(|(_, cwd)| ("cwd".to_owned(), cwd.to_string())),
+        cwd.as_ref().map(|(_, cwd)| (format!("cwd-{metadata}"), cwd.to_string())),
         crate_out.map(|crate_out| (crate_out_name(&crate_out), crate_out)),
     ]
     .into_iter()
