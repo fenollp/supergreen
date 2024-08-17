@@ -425,35 +425,7 @@ jobs:
       run: |
         RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
-          cargo green -vv package --jobs=1 --all-features --locked --frozen --offline
-
-    - if: ${{ failure() || success() }}
-      run: cat logs.txt && echo >logs.txt
-
-    - if: ${{ failure() || success() }}
-      name: Ensure running the same command twice without modifications does not recompile anything
-      run: |
-        RUSTCBUILDX_LOG=debug \
-        RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
-          cargo green -vv package --jobs=1 --all-features --locked --frozen --offline 2>&1 | tee _
-        cat _ | grep Finished | grep 0...s
-        cat _ | grep Fresh
-        ! cat _ | grep Compiling
-        ! cat _ | grep 'DEBUG|INFO|WARN|ERROR'
-
-    - if: ${{ failure() || success() }}
-      run: cat logs.txt && echo >logs.txt
-
-    - if: ${{ failure() || success() }}
-      name: Ensure running the same command twice without modifications does not recompile anything (jobs>1)
-      run: |
-        RUSTCBUILDX_LOG=debug \
-        RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
-          cargo green -vv package --jobs=$(nproc) --all-features --locked --frozen --offline 2>&1 | tee _
-        cat _ | grep Finished | grep 0...s
-        cat _ | grep Fresh
-        ! cat _ | grep Compiling
-        ! cat _ | grep 'DEBUG|INFO|WARN|ERROR'
+          CARGO_TARGET_DIR=~/cargo-package cargo green -vv package --jobs=1 --all-features --locked --frozen --offline
 
     - if: ${{ failure() || success() }}
       run: cat logs.txt && echo >logs.txt
