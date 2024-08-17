@@ -58,18 +58,27 @@ const VSN: &str = env!("CARGO_PKG_VERSION");
 #[tokio::main]
 async fn main() -> Result<ExitCode> {
     let mut args = env::args();
+
     let arg0 = args.next().expect("$0 has to be set");
+    if PathBuf::from(&arg0).file_name() != Some(OsStr::new(PKG)) {
+        eprintln!(
+            r#"
+    This binary should be named `{PKG}`.
+"#
+        );
+        return Ok(ExitCode::FAILURE);
+    }
+
     if let Ok(wrapper) = env::var("RUSTC_WRAPPER") {
-        assert_eq!(PathBuf::from(arg0).file_name(), Some(OsStr::new(env!("CARGO_PKG_NAME")))); // FIXME
-
-        if false {
-            panic!(
-                ">>> {wrapper:?}\n{:?}\n{:?}",
-                env::args().collect::<Vec<_>>(),
-                env::vars().collect::<Vec<_>>()
-            )
+        if PathBuf::from(&wrapper).file_name() != Some(OsStr::new(PKG)) {
+            eprintln!(
+                r#"
+    A $RUSTC_WRAPPER other than `{PKG}` is already set: {wrapper}.
+"#
+            );
+            return Ok(ExitCode::FAILURE);
         }
-
+        // Now running as a subprocess
         return Ok(do_wrap().await);
     }
 
@@ -121,6 +130,7 @@ async fn main() -> Result<ExitCode> {
         }
         // TODO: Skip this call for the ones not calling rustc
         Some(_) => {
+            cmd.env("RUSTC_WRAPPER", arg0);
             if let Err(e) = setup_for_build(&mut cmd).await {
                 eprintln!("{e}");
                 return Ok(ExitCode::FAILURE);
@@ -133,16 +143,6 @@ async fn main() -> Result<ExitCode> {
 }
 
 async fn setup_for_build(cmd: &mut Command) -> Result<()> {
-    if let Ok(wrapper) = env::var("RUSTC_WRAPPER") {
-        bail!(
-            r#"
-    You called `{PKG}` but a $RUSTC_WRAPPER is already set (to {wrapper})
-        We don't know what to do...
-"#
-        )
-    }
-    cmd.env("RUSTC_WRAPPER", env::args().next().expect("$0 has to be set"));
-
     // TODO read package.metadata.green
     // TODO: TUI above cargo output (? https://docs.rs/prodash )
 
