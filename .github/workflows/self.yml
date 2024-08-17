@@ -231,8 +231,7 @@ jobs:
     - if: ${{ failure() || success() }}
       run: cat logs.txt && echo >logs.txt
 
-    - if: ${{ failure() || success() }}
-      name: Ensure running the same command twice without modifications does not recompile anything
+    - name: Ensure running the same command twice without modifications does not recompile anything
       run: |
         RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
@@ -245,8 +244,7 @@ jobs:
     - if: ${{ failure() || success() }}
       run: cat logs.txt && echo >logs.txt
 
-    - if: ${{ failure() || success() }}
-      name: Ensure running the same command twice without modifications does not recompile anything (jobs>1)
+    - name: Ensure running the same command twice without modifications does not recompile anything (jobs>1)
       run: |
         RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
@@ -302,8 +300,7 @@ jobs:
     - if: ${{ failure() || success() }}
       run: cat logs.txt && echo >logs.txt
 
-    - if: ${{ failure() || success() }}
-      name: Ensure running the same command twice without modifications does not recompile anything
+    - name: Ensure running the same command twice without modifications does not recompile anything
       run: |
         RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
@@ -316,8 +313,7 @@ jobs:
     - if: ${{ failure() || success() }}
       run: cat logs.txt && echo >logs.txt
 
-    - if: ${{ failure() || success() }}
-      name: Ensure running the same command twice without modifications does not recompile anything (jobs>1)
+    - name: Ensure running the same command twice without modifications does not recompile anything (jobs>1)
       run: |
         RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
@@ -373,8 +369,7 @@ jobs:
     - if: ${{ failure() || success() }}
       run: cat logs.txt && echo >logs.txt
 
-    - if: ${{ failure() || success() }}
-      name: Ensure running the same command twice without modifications does not recompile anything
+    - name: Ensure running the same command twice without modifications does not recompile anything
       run: |
         RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
@@ -383,6 +378,49 @@ jobs:
         cat _ | grep Fresh
         ! cat _ | grep Compiling
         ! cat _ | grep 'DEBUG|INFO|WARN|ERROR'
+
+    - if: ${{ failure() || success() }}
+      run: cat logs.txt && echo >logs.txt
+
+
+  packages:
+    runs-on: ubuntu-latest
+    needs: bin
+    steps:
+    - uses: actions-rs/toolchain@v1
+      with:
+        profile: minimal
+        toolchain: stable
+
+    - name: Retrieve saved bin
+      uses: actions/download-artifact@v4
+      with:
+        name: bin-artifacts
+    - run: | # TODO: whence https://github.com/actions/download-artifact/issues/236
+        chmod +x ./cargo-green
+        ./cargo-green --version | grep cargo-green
+        mv ./cargo-green /home/runner/.cargo/bin/
+        cargo green --version
+
+    - uses: actions/checkout@v4
+
+    - name: Cache `cargo fetch`
+      uses: actions/cache@v4
+      with:
+        path: |
+          ~/.cargo/registry/index/
+          ~/.cargo/registry/cache/
+          ~/.cargo/git/db/
+        key: cargo-deps-${{ hashFiles('**/Cargo.lock') }}
+        restore-keys: cargo-deps-
+
+    - run: cargo fetch
+
+    - name: cargo package net=OFF cache=OFF remote=OFF jobs=1
+      run: |
+        RUSTCBUILDX_LOG=debug \
+        RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
+          CARGO_TARGET_DIR=~/cargo-package cargo green -vv package --jobs=1 --all-features --locked --frozen --offline
 
     - if: ${{ failure() || success() }}
       run: cat logs.txt && echo >logs.txt
@@ -432,8 +470,7 @@ jobs:
     - if: ${{ failure() || success() }}
       run: cat logs.txt && echo >logs.txt
 
-    - if: ${{ failure() || success() }}
-      name: Ensure running the same command twice without modifications does not recompile anything
+    - name: Ensure running the same command twice without modifications does not recompile anything
       run: |
         RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \

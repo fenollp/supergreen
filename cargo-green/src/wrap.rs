@@ -4,6 +4,7 @@ use std::{
     fs::{self, File},
     future::Future,
     io::{BufRead, BufReader, ErrorKind},
+    path::Path,
     process::ExitCode,
     str::FromStr,
 };
@@ -436,31 +437,9 @@ async fn do_wrap_rustc(
 
         // TODO: use tmpfs when on *NIX
         // TODO: cache these folders
-        if pwd.join(".git").is_dir() {
-            log::info!(target: &krate, "copying all git files under {pwd} to {cwd_path}");
-            // TODO: rust git crate?
-            // TODO: --mount=bind each file one by one => drop temp dir ctx
-            let mut cmd = Command::new("git");
-            let cmd = cmd.kill_on_drop(true).arg("ls-files").arg(&pwd);
-            let output =
-                cmd.output().await.map_err(|e| anyhow!("Failed calling {}: {e}", cmd.show()))?;
-            if !output.status.success() {
-                bail!("Failed {}: {:?}", cmd.show(), output.stderr)
-            }
-            // TODO: buffer reads to this command's output
-            // NOTE: unsorted output lines
-            for f in String::from_utf8(output.stdout)
-                .map_err(|e| anyhow!("Parsing {}: {e}", cmd.show()))?
-                .lines()
-            {
-                log::info!(target: &krate, "copying git repo file {f}");
-                let f = Utf8Path::new(f);
-                copy_files(f, cwd_path)?;
-            }
-        } else {
-            log::info!(target: &krate, "copying all files under {pwd} to {cwd_path}");
-            copy_files(&pwd, cwd_path)?;
-        }
+        // TODO: --mount=bind each file one by one => drop temp dir ctx (needs [multiple] `mkdir -p`[s] first though)
+        log::info!(target: &krate, "copying all {}files under {pwd} to {cwd_path}", if pwd.join(".git").is_dir() { "git " } else { "" });
+        copy_dir_all(&pwd, cwd_path)?;
 
         // This doesn't work: rustc_block.push_str(&format!("  --mount=type=bind,from=cwd,target={pwd} \\\n"));
         // ✖ 0.040 runc run failed: unable to start container process: error during container init:
@@ -781,31 +760,23 @@ fn crate_out_name(name: &str) -> String {
         .expect("PROOF: suffix is /out")
 }
 
-fn copy_file(f: &Utf8Path, cwd: &Utf8Path) -> Result<()> {
-    let Some(f_dirname) = f.parent() else { bail!("BUG: unexpected f={f:?} cwd={cwd:?}") };
-    let dst = cwd.join(f_dirname);
-    fs::create_dir_all(&dst).map_err(|e| anyhow!("Failed `mkdir -p {dst}`: {e}"))?;
-    let dst = cwd.join(f);
-    fs::copy(f, &dst).map_err(|e| anyhow!("Failed `cp {f} {dst}` ({:?}): {e}", f.metadata()))?;
-    Ok(())
-}
-
-fn copy_files(src: &Utf8Path, dst: &Utf8Path) -> Result<()> {
-    if !src.is_dir() {
-        return copy_file(src, dst);
-    }
+fn copy_dir_all(src: impl AsRef<Path>, dst: impl AsRef<Path>) -> Result<()> {
+    fs::create_dir_all(&dst).map_err(|e| anyhow!("Failed `mkdir -p {:?}`: {e}", dst.as_ref()))?;
+    let dst = dst.as_ref();
     // TODO: deterministic iteration
-    for entry in fs::read_dir(src).map_err(|e| anyhow!("Failed reading dir {src}: {e}"))? {
+    for entry in
+        fs::read_dir(&src).map_err(|e| anyhow!("Failed reading dir {:?}: {e}", src.as_ref()))?
+    {
         let entry = entry?;
-        let entry = entry.path();
-        let entry = entry.as_path(); // thanks, Rust
-        let Some(path) = Utf8Path::from_path(entry) else {
-            bail!("Path's UTF-8 encoding is corrupted: {entry:?}")
-        };
-        if path.is_dir() {
-            copy_files(path, dst)?
+        if entry.file_type().map_err(|e| anyhow!("Failed typing {entry:?}: {e}"))?.is_dir() {
+            // Skip copying .git dir
+            if entry.file_name() != ".git" {
+                copy_dir_all(entry.path(), dst.join(entry.file_name()))?;
+            }
         } else {
-            copy_file(path, dst)?
+            fs::copy(entry.path(), dst.join(entry.file_name())).map_err(|e| {
+                anyhow!("Failed `cp {:?} {dst:?}` ({:?}): {e}", entry.path(), entry.metadata())
+            })?;
         }
     }
     Ok(())
