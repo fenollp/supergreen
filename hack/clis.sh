@@ -19,8 +19,8 @@ declare -a nvs nvs_args
 ((i+=1)); nvs[i]=mussh@3.1.3;                 oks[i]=ko; nvs_args[i]='' # = note: /usr/bin/ld: cannot find -lsqlite3: No such file or directory (and -lssl -lcrypto -lz)
 ((i+=1)); nvs[i]=ntpd@1.2.3;                  oks[i]=ko; nvs_args[i]='' # BUG: bad URL creation https://static.crates.io/crates/md/md-5-0.10.6.crate
 ((i+=1)); nvs[i]=qcow2-rs@0.1.2;              oks[i]=ok; nvs_args[i]=''
+((i+=1)); nvs[i]=ripgrep@14.1.0;              oks[i]=ok; nvs_args[i]=''
 ((i+=1)); nvs[i]=rublk@0.2.0;                 oks[i]=ko; nvs_args[i]='' # could not find native static library `rustix_outline_x86_64`, perhaps an -L flag is missing?
-((i+=1)); nvs[i]=samply@0.12.0;               oks[i]=ok; nvs_args[i]=''
 ((i+=1)); nvs[i]=shpool@0.6.2;                oks[i]=ko; nvs_args[i]='' # sudo apt-get install libpam0g-dev
 ((i+=1)); nvs[i]=solana-gossip@2.0.5;         oks[i]=ko; nvs_args[i]='' # error: environment variable `TYPENUM_BUILD_OP` not defined at compile time                                                                                                                    
 ((i+=1)); nvs[i]=statehub@0.14.10;            oks[i]=ko; nvs_args[i]='' # BUG: unexpected crate-type: 'cdylib'

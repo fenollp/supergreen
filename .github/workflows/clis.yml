@@ -1046,7 +1046,7 @@ jobs:
     - if: ${{ failure() || success() }}
       run: cat _ || true
 
-  samply_0-12-0:
+  ripgrep_14-1-0:
     runs-on: ubuntu-latest
     needs: bin
     steps:
@@ -1096,7 +1096,7 @@ jobs:
       run: |
         RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
-          CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=1 --locked --force samply@0.12.0 
+          CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=1 --locked --force ripgrep@14.1.0 
 
     - if: ${{ failure() || success() }}
       run: tail -n9999999 logs.txt ; echo >logs.txt
@@ -1116,7 +1116,7 @@ jobs:
       run: |
         RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
-          CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=1 --locked --force samply@0.12.0  2>&1 | tee _
+          CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=1 --locked --force ripgrep@14.1.0  2>&1 | tee _
 
     - if: ${{ failure() || success() }}
       run: tail -n9999999 logs.txt
@@ -1156,7 +1156,7 @@ jobs:
     - if: ${{ failure() || success() }}
       run: cat _ || true
 
-  samply_0-12-0-J:
+  ripgrep_14-1-0-J:
     runs-on: ubuntu-latest
     needs: bin
     steps:
@@ -1206,7 +1206,7 @@ jobs:
       run: |
         RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
-          CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=3 --locked --force samply@0.12.0 
+          CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=3 --locked --force ripgrep@14.1.0 
 
     - if: ${{ failure() || success() }}
       run: tail -n9999999 logs.txt ; echo >logs.txt
@@ -1226,7 +1226,7 @@ jobs:
       run: |
         RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
-          CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=3 --locked --force samply@0.12.0  2>&1 | tee _
+          CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=3 --locked --force ripgrep@14.1.0  2>&1 | tee _
 
     - if: ${{ failure() || success() }}
       run: tail -n9999999 logs.txt
