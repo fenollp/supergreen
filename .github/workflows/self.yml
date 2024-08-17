@@ -231,8 +231,7 @@ jobs:
     - if: ${{ failure() || success() }}
       run: cat logs.txt && echo >logs.txt
 
-    - if: ${{ failure() || success() }}
-      name: Ensure running the same command twice without modifications does not recompile anything
+    - name: Ensure running the same command twice without modifications does not recompile anything
       run: |
         RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
@@ -245,8 +244,7 @@ jobs:
     - if: ${{ failure() || success() }}
       run: cat logs.txt && echo >logs.txt
 
-    - if: ${{ failure() || success() }}
-      name: Ensure running the same command twice without modifications does not recompile anything (jobs>1)
+    - name: Ensure running the same command twice without modifications does not recompile anything (jobs>1)
       run: |
         RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
@@ -302,8 +300,7 @@ jobs:
     - if: ${{ failure() || success() }}
       run: cat logs.txt && echo >logs.txt
 
-    - if: ${{ failure() || success() }}
-      name: Ensure running the same command twice without modifications does not recompile anything
+    - name: Ensure running the same command twice without modifications does not recompile anything
       run: |
         RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
@@ -316,8 +313,7 @@ jobs:
     - if: ${{ failure() || success() }}
       run: cat logs.txt && echo >logs.txt
 
-    - if: ${{ failure() || success() }}
-      name: Ensure running the same command twice without modifications does not recompile anything (jobs>1)
+    - name: Ensure running the same command twice without modifications does not recompile anything (jobs>1)
       run: |
         RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
@@ -373,8 +369,7 @@ jobs:
     - if: ${{ failure() || success() }}
       run: cat logs.txt && echo >logs.txt
 
-    - if: ${{ failure() || success() }}
-      name: Ensure running the same command twice without modifications does not recompile anything
+    - name: Ensure running the same command twice without modifications does not recompile anything
       run: |
         RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
@@ -475,8 +470,7 @@ jobs:
     - if: ${{ failure() || success() }}
       run: cat logs.txt && echo >logs.txt
 
-    - if: ${{ failure() || success() }}
-      name: Ensure running the same command twice without modifications does not recompile anything
+    - name: Ensure running the same command twice without modifications does not recompile anything
       run: |
         RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
