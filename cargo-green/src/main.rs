@@ -12,6 +12,7 @@ use std::{
 use anyhow::{bail, Result};
 use supergreen::{
     base::BaseImage,
+    cli::{envs, help, pull, push},
     envs::{builder_image, cache_image, incremental, internal, runner, DEFAULT_SYNTAX},
     extensions::ShowCmd,
     runner::{fetch_digest, maybe_lock_image, runner_cmd},
@@ -22,6 +23,11 @@ use crate::wrap::do_wrap;
 
 mod parse;
 mod wrap;
+
+const DESC: &str = env!("CARGO_PKG_DESCRIPTION");
+const PKG: &str = env!("CARGO_PKG_NAME");
+const REPO: &str = env!("CARGO_PKG_REPOSITORY");
+const VSN: &str = env!("CARGO_PKG_VERSION");
 
 /*
 
@@ -43,7 +49,7 @@ mod wrap;
 // \cargo green # check displays help
 
 #[tokio::main]
-async fn main() -> Result<ExitCode, Box<dyn std::error::Error>> {
+async fn main() -> Result<ExitCode> {
     let mut args = env::args();
     let arg0 = args.next().expect("$0 has to be set");
     if let Ok(wrapper) = env::var("RUSTC_WRAPPER") {
@@ -70,12 +76,36 @@ async fn main() -> Result<ExitCode, Box<dyn std::error::Error>> {
         );
         return Ok(ExitCode::FAILURE);
     };
+    if ["-V", "--version"].contains(&arg1.as_str()) {
+        println!(
+            r#"{PKG}@{VSN}: {DESC}
+    {REPO}
+
+Usage:
+  supergreen env             Show used values
+  supergreen pull            Pulls images (respects $DOCKER_HOST)
+  supergreen push            Push cache image (all tags)
+  supergreen -h | --help
+  supergreen -V | --version
+"#
+        );
+        return Ok(ExitCode::SUCCESS);
+    }
     assert_eq!(arg1.as_str(), "green");
 
     let mut cmd = Command::new(env::var("CARGO").unwrap_or("cargo".into()));
     if let Some(arg) = args.next() {
         if arg == "supergreen" {
-            unimplemented!("FIXME: handle commands")
+            return match args.next().as_deref() {
+                None | Some("-h" | "--help" | "-V" | "--version") => Ok(help()),
+                Some("env") => Ok(envs(args.collect()).await),
+                Some("pull") => pull().await,
+                Some("push") => push().await,
+                Some(arg) => {
+                    eprintln!("Unexpected supergreen command {arg:?}");
+                    return Ok(ExitCode::FAILURE);
+                }
+            };
         }
         cmd.arg(&arg);
         if arg.starts_with('+') {

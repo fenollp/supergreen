@@ -13,7 +13,7 @@ use camino::{Utf8Path, Utf8PathBuf};
 use env_logger::{Env, Target};
 use supergreen::{
     base::RUST,
-    cli::{envs, exit_code, help, pull, push},
+    cli::exit_code,
     cratesio::{from_cratesio_input_path, into_stage},
     envs::{self, base_image, internal, maybe_log, pass_env, runner, syntax, this},
     extensions::ShowCmd,
@@ -23,11 +23,7 @@ use supergreen::{
 };
 use tokio::process::Command;
 
-use crate::{parse, parse::RustcArgs};
-
-const PKG: &str = env!("CARGO_PKG_NAME");
-const REPO: &str = env!("CARGO_PKG_REPOSITORY");
-const VSN: &str = env!("CARGO_PKG_VERSION");
+use crate::{parse, parse::RustcArgs, PKG, REPO, VSN};
 
 const BUILDRS_CRATE_NAME: &str = "build_script_build";
 
@@ -64,10 +60,6 @@ async fn fallible_main(
     };
 
     match argz[..] {
-        [] | ["-h"|"--help"|"-V"|"--version"] => Ok(help()),
-        ["env", ..] => Ok(envs(argv(1)).await),
-        ["pull"] => pull().await,
-        ["push"] => push().await,
         [rustc, "--crate-name", crate_name, ..] =>
              wrap_rustc(crate_name, argv(1), call_rustc(rustc, argv(1))).await,
         [rustc, "-", ..] =>
