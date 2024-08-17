@@ -1,11 +1,9 @@
 # [`cargo-green`](https://github.com/fenollp/supergreen/tree/main/cargo-green)
-Cached & remote-ready Rust projects builder.
+Cached & remote-ready Rust projects builder by forwarding `rustc` calls to [BuildKit](https://github.com/moby/buildkit) builders.
 
-`cargo-green` is a `cargo` plugin that sets a `$RUSTC_WRAPPER` then calls `cargo`.
-
-Forwards `rustc` calls to BuildKit builders.
-
-`rustcbuildx` is a [`RUSTC_WRAPPER`](https://doc.rust-lang.org/cargo/reference/config.html#buildrustc-wrapper) for cached and remote building of Rust projects (on [BuildKit](https://github.com/moby/buildkit)).
+`cargo-green` is
+* a `cargo` plugin that sets a `$RUSTC_WRAPPER` then calls `cargo`.
+* a [`RUSTC_WRAPPER`](https://doc.rust-lang.org/cargo/reference/config.html#buildrustc-wrapper) that builds Dockerfiles
 
 
 ## Configuration

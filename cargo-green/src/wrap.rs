@@ -519,7 +519,7 @@ async fn do_wrap_rustc(
                 if e.kind() == ErrorKind::NotFound {
                     return anyhow!(
                         r#"
-                    Looks like `rustcbuildx` ran on an unkempt project. That's alright!
+                    Looks like `{PKG}` ran on an unkempt project. That's alright!
                     Let's remove the current target directory (note: $CARGO_TARGET_DIR={target_dir})
                     then run your command again.
                 "#,
