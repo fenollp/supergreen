@@ -111,11 +111,14 @@ async fn main() -> Result<ExitCode> {
                 }
             };
         }
-        cmd.arg(&arg);
-        if arg.starts_with('+') {
-            cmd = Command::new(which::which("cargo").unwrap_or("cargo".into()));
-            eprintln!("Passing +toolchain param: {arg:?}");
-            // TODO: reinterpret `rustc` when given `+toolchain`
+
+        // https://rust-lang.github.io/rustup/overrides.html#toolchain-override-shorthand
+        if let Some(toolchain) = arg.strip_prefix('+') {
+            // Special handling: call was `cargo green +toolchain ..` (probably from `alias cargo='cargo green'`).
+            // Normally, calls look like `cargo +toolchain green ..` but let's simplify alias creation!
+            env::set_var("RUSTUP_TOOLCHAIN", toolchain); // Informs `rustc -vV` when deciding base_image()
+        } else {
+            cmd.arg(&arg);
         }
     }
     cmd.args(args);

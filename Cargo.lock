@@ -976,8 +976,7 @@ checksum = "583034fd73374156e66797ed8e5b0d5690409c9226b22d87cb7f19821c05d152"
 [[package]]
 name = "rustc_version"
 version = "0.4.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "bfa0f585226d2e68097d4f95d113b15b83a82e819ab25717ec0590d9584ef366"
+source = "git+https://github.com/fenollp/rustc-version-rs.git?branch=RUSTUP_TOOLCHAIN#48cf99e8ecca2bf8e3c7970eb910bcade532cfaa"
 dependencies = [
  "semver",
 ]
