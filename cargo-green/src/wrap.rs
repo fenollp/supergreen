@@ -19,7 +19,7 @@ use crate::{
     cli::exit_code,
     cratesio::{from_cratesio_input_path, into_stage},
     envs::{self, base_image, internal, maybe_log, pass_env, runner, syntax, this},
-    extensions::ShowCmd,
+    extensions::{Popped, ShowCmd},
     md::{BuildContext, Md},
     parse,
     parse::RustcArgs,
@@ -196,16 +196,31 @@ async fn do_wrap_rustc(
     let crate_id = full_krate_id.replace('|', "-");
 
     // NOTE: not `out_dir`
-    let crate_out =
-        out_dir_var.and_then(|x| x.ends_with("/out").then_some(x)).and_then(|crate_out| {
+    let crate_out = if let Some(crate_out) = out_dir_var {
+        if crate_out.ends_with("/out") {
             log::info!(target: &krate, "listing (RO) crate_out contents {crate_out}");
-            let Ok(listing) = fs::read_dir(&crate_out) else { return None };
+            let listing = fs::read_dir(&crate_out)
+                .map_err(|e| anyhow!("Failed reading crate_out dir {crate_out}: {e}"))?;
             let listing = listing
                 .map_while(Result::ok)
                 .inspect(|x| log::info!(target: &krate, "contains {x:?}"))
                 .count();
-            (listing != 0).then_some(crate_out) // crate_out dir empty => mount can be dropped
-        });
+            // crate_out dir empty => mount can be dropped
+            if listing != 0 {
+                let ignore = Utf8PathBuf::from(&crate_out).popped(1).join(".dockerignore");
+                fs::write(&ignore, "")
+                    .map_err(|e| anyhow!("Failed creating crate_out dockerignore {ignore}: {e}"))?;
+
+                Some(crate_out)
+            } else {
+                None
+            }
+        } else {
+            None
+        }
+    } else {
+        None
+    };
 
     // https://github.com/rust-lang/cargo/issues/12059#issuecomment-1537457492
     //   https://github.com/rust-lang/rust/issues/63012 : Tracking issue for -Z binary-dep-depinfo
@@ -418,8 +433,16 @@ async fn do_wrap_rustc(
 
         None
     } else {
-        // NOTE: we don't `rm -rf cwd`
-        let cwd = env::temp_dir().join(format!("CWD{metadata}"));
+        // NOTE: we don't `rm -rf cwd_root`
+        let cwd_root = env::temp_dir().join(format!("{PKG}_{VSN}"));
+        fs::create_dir_all(&cwd_root)
+            .map_err(|e| anyhow!("Failed `mkdir -p {cwd_root:?}`: {e}"))?;
+
+        let ignore = cwd_root.join(".dockerignore");
+        fs::write(&ignore, "")
+            .map_err(|e| anyhow!("Failed creating cwd dockerignore {ignore:?}: {e}"))?;
+
+        let cwd = cwd_root.join(format!("CWD{metadata}"));
         let Some(cwd_path) = Utf8Path::from_path(cwd.as_path()) else {
             bail!("Path's UTF-8 encoding is corrupted: {cwd:?}")
         };

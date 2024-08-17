@@ -8,7 +8,7 @@ pub(crate) trait Popped: Clone {
         for _ in 0..times {
             assert!(self.pop());
         }
-        self.clone()
+        self.to_owned()
     }
 }
 
