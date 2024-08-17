@@ -26,7 +26,7 @@ use crate::{
 // TODO: cargo green cache --keep-less-than=(1month|10GB)      Set $RUSTCBUILDX_CACHE_IMAGE to apply to tagged images.
 
 #[inline]
-pub fn help() -> ExitCode {
+pub(crate) fn help() -> ExitCode {
     println!(
         "{name}@{version}: {description}
     {repository}
@@ -48,7 +48,7 @@ Usage:
 
 // TODO: make it work for podman: https://github.com/containers/podman/issues/2369
 // TODO: have fun with https://github.com/console-rs/indicatif
-pub async fn push() -> Result<ExitCode> {
+pub(crate) async fn push() -> Result<ExitCode> {
     if let Some(img) = cache_image() {
         let img = img.trim_start_matches("docker-image://");
 
@@ -111,7 +111,7 @@ async fn all_tags_of(img: &str) -> Result<(Vec<String>, Option<ExitCode>)> {
     Ok((tags, None))
 }
 
-pub async fn envs(vars: Vec<String>) -> ExitCode {
+pub(crate) async fn envs(vars: Vec<String>) -> ExitCode {
     let all: BTreeMap<_, _> = [
         ("RUSTCBUILDX", internal::this()),
         ("RUSTCBUILDX_BASE_IMAGE", Some(base_image().await.base())),
@@ -145,7 +145,7 @@ pub async fn envs(vars: Vec<String>) -> ExitCode {
     ExitCode::SUCCESS
 }
 
-pub async fn pull() -> Result<ExitCode> {
+pub(crate) async fn pull() -> Result<ExitCode> {
     let imgs = [
         (internal::syntax(), syntax().await),
         (internal::base_image(), &base_image().await.base()),
@@ -173,7 +173,7 @@ pub async fn pull() -> Result<ExitCode> {
     pull_images(to_pull).await
 }
 
-pub fn trim_docker_image(x: &str) -> Option<String> {
+pub(crate) fn trim_docker_image(x: &str) -> Option<String> {
     let x = x.trim_start_matches("docker-image://");
     let x = x
         .contains('@')
@@ -182,7 +182,7 @@ pub fn trim_docker_image(x: &str) -> Option<String> {
     (!x.is_empty()).then(|| x.to_owned())
 }
 
-pub async fn pull_images(to_pull: Vec<String>) -> Result<ExitCode> {
+pub(crate) async fn pull_images(to_pull: Vec<String>) -> Result<ExitCode> {
     let zero = Some(0);
     // TODO: nice TUI that handles concurrent progress
     let code = iter(to_pull.into_iter())
@@ -213,6 +213,6 @@ async fn do_pull(img: String) -> Result<Option<i32>> {
 }
 
 #[inline]
-pub fn exit_code(code: Option<i32>) -> ExitCode {
+pub(crate) fn exit_code(code: Option<i32>) -> ExitCode {
     (code.unwrap_or(-1) as u8).into() // TODO: https://doc.rust-lang.org/std/os/unix/process/trait.ExitStatusExt.html
 }

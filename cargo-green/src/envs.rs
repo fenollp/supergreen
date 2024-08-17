@@ -7,7 +7,7 @@ use anyhow::{anyhow, Result};
 
 use crate::{base::BaseImage, runner::maybe_lock_image};
 
-pub mod internal {
+pub(crate) mod internal {
     use std::env;
 
     pub const RUSTCBUILDX: &str = "RUSTCBUILDX";
@@ -77,24 +77,24 @@ pub mod internal {
 // EOF
 
 #[must_use]
-pub fn this() -> bool {
+pub(crate) fn this() -> bool {
     internal::this().map(|x| x == "1").unwrap_or_default()
 }
 
 #[must_use]
-pub fn incremental() -> bool {
+pub(crate) fn incremental() -> bool {
     static ONCE: OnceLock<bool> = OnceLock::new();
     *ONCE.get_or_init(|| internal::incremental().map(|x| x == "1").unwrap_or_default())
 }
 
 #[must_use]
-pub fn log_path() -> &'static str {
+pub(crate) fn log_path() -> &'static str {
     static ONCE: OnceLock<String> = OnceLock::new();
     ONCE.get_or_init(|| internal::log_path().unwrap_or("/tmp/rstcbldx_FIXME".to_owned()))
 }
 
 #[must_use]
-pub fn runner() -> &'static str {
+pub(crate) fn runner() -> &'static str {
     static ONCE: OnceLock<String> = OnceLock::new();
     ONCE.get_or_init(|| {
         let val = internal::runner().unwrap_or("docker".to_owned());
@@ -111,7 +111,7 @@ pub fn runner() -> &'static str {
 
 // A Docker image or any build context, actually.
 #[must_use]
-pub async fn base_image() -> BaseImage {
+pub(crate) async fn base_image() -> BaseImage {
     static ONCE: OnceLock<BaseImage> = OnceLock::new();
     match ONCE.get() {
         Some(ctx) => ctx.clone(),
@@ -128,7 +128,7 @@ pub async fn base_image() -> BaseImage {
 
 // A Docker image path with registry information.
 #[must_use]
-pub fn cache_image() -> &'static Option<String> {
+pub(crate) fn cache_image() -> &'static Option<String> {
     static ONCE: OnceLock<Option<String>> = OnceLock::new();
     ONCE.get_or_init(|| {
         let val = internal::cache_image();
@@ -151,7 +151,7 @@ pub fn cache_image() -> &'static Option<String> {
 }
 
 #[must_use]
-pub fn runs_on_network() -> &'static str {
+pub(crate) fn runs_on_network() -> &'static str {
     static ONCE: OnceLock<String> = OnceLock::new();
     match ONCE.get() {
         Some(network) => network,
@@ -163,10 +163,10 @@ pub fn runs_on_network() -> &'static str {
     }
 }
 
-pub const DEFAULT_SYNTAX: &str = "docker-image://docker.io/docker/dockerfile:1";
+pub(crate) const DEFAULT_SYNTAX: &str = "docker-image://docker.io/docker/dockerfile:1";
 
 #[must_use]
-pub async fn syntax() -> &'static str {
+pub(crate) async fn syntax() -> &'static str {
     static ONCE: OnceLock<String> = OnceLock::new();
     match ONCE.get() {
         Some(img) => img,
@@ -179,10 +179,11 @@ pub async fn syntax() -> &'static str {
     }
 }
 
-pub const DEFAULT_BUILDER_IMAGE: &str = "docker-image://docker.io/moby/buildkit:buildx-stable-1";
+pub(crate) const DEFAULT_BUILDER_IMAGE: &str =
+    "docker-image://docker.io/moby/buildkit:buildx-stable-1";
 
 #[must_use]
-pub async fn builder_image() -> &'static str {
+pub(crate) async fn builder_image() -> &'static str {
     static ONCE: OnceLock<String> = OnceLock::new();
     match ONCE.get() {
         Some(img) => img,
@@ -196,7 +197,7 @@ pub async fn builder_image() -> &'static str {
 }
 
 #[must_use]
-pub fn maybe_log() -> Option<fn() -> Result<File>> {
+pub(crate) fn maybe_log() -> Option<fn() -> Result<File>> {
     fn log_file() -> Result<File> {
         let log_path = log_path();
         let errf = |e| anyhow!("Failed opening (WA) log file {log_path}: {e}");
@@ -209,7 +210,7 @@ pub fn maybe_log() -> Option<fn() -> Result<File>> {
 // https://doc.rust-lang.org/cargo/reference/environment-variables.html#environment-variables-cargo-sets-for-crates
 #[inline]
 #[must_use]
-pub fn pass_env(var: &str) -> (bool, bool, bool) {
+pub(crate) fn pass_env(var: &str) -> (bool, bool, bool) {
     // Thanks https://github.com/cross-rs/cross/blob/44011c8854cb2eaac83b173cc323220ccdff18ea/src/docker/shared.rs#L969
     let passthrough = [
         "http_proxy",

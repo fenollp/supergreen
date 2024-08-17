@@ -25,11 +25,11 @@ use crate::{
     stage::Stage,
 };
 
-pub const MARK_STDOUT: &str = "::STDOUT:: ";
-pub const MARK_STDERR: &str = "::STDERR:: ";
+pub(crate) const MARK_STDOUT: &str = "::STDOUT:: ";
+pub(crate) const MARK_STDERR: &str = "::STDERR:: ";
 
 #[must_use]
-pub fn runner_cmd() -> Command {
+pub(crate) fn runner_cmd() -> Command {
     let mut cmd = Command::new(runner());
     cmd.kill_on_drop(true);
     cmd.stdin(Stdio::null());
@@ -38,7 +38,7 @@ pub fn runner_cmd() -> Command {
 }
 
 #[must_use]
-pub async fn maybe_lock_image(mut img: String) -> String {
+pub(crate) async fn maybe_lock_image(mut img: String) -> String {
     // Lock image, as podman(4.3.1) does not respect --pull=false (fully, anyway)
     if img.starts_with("docker-image://") && !img.contains("@sha256:") {
         if let Some(line) = runner_cmd()
@@ -57,7 +57,7 @@ pub async fn maybe_lock_image(mut img: String) -> String {
     img
 }
 
-pub async fn fetch_digest(img: &str) -> Result<String> {
+pub(crate) async fn fetch_digest(img: &str) -> Result<String> {
     // e.g. docker-image://docker.io/library/rust:1.80.1-slim
     if !img.starts_with("docker-image://") {
         bail!("Image missing 'docker-image' scheme: {img}")
@@ -92,7 +92,7 @@ pub async fn fetch_digest(img: &str) -> Result<String> {
     Ok(format!("docker-image://{path}:{tag}@{digest}"))
 }
 
-pub async fn build(
+pub(crate) async fn build(
     krate: &str,
     command: &str,
     dockerfile_path: &Utf8Path,

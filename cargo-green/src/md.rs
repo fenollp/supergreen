@@ -10,13 +10,13 @@ use crate::{base::RUST, cratesio::CRATESIO_STAGE_PREFIX, stage::Stage};
 
 #[cfg_attr(test, derive(Default))]
 #[derive(Clone, Deserialize, Serialize)]
-pub struct Md {
-    pub this: String,
-    pub deps: Vec<String>,
+pub(crate) struct Md {
+    pub(crate) this: String,
+    pub(crate) deps: Vec<String>,
 
-    pub contexts: BTreeSet<BuildContext>,
+    pub(crate) contexts: BTreeSet<BuildContext>,
 
-    pub stages: BTreeSet<DockerfileStage>,
+    pub(crate) stages: BTreeSet<DockerfileStage>,
 }
 impl FromStr for Md {
     type Err = toml::de::Error;
@@ -27,23 +27,23 @@ impl FromStr for Md {
 impl Md {
     #[inline]
     #[must_use]
-    pub fn new(this: &str) -> Self {
+    pub(crate) fn new(this: &str) -> Self {
         Self { this: this.to_owned(), deps: vec![], contexts: [].into(), stages: [].into() }
     }
 
-    pub fn to_string_pretty(&self) -> Result<String, toml::ser::Error> {
+    pub(crate) fn to_string_pretty(&self) -> Result<String, toml::ser::Error> {
         toml::to_string_pretty(self)
     }
 
-    pub fn rust_stage(&self) -> Option<DockerfileStage> {
+    pub(crate) fn rust_stage(&self) -> Option<DockerfileStage> {
         self.stages.iter().find(|DockerfileStage { name, .. }| name == RUST).cloned()
     }
 
-    pub fn push_block(&mut self, name: &Stage, script: String) {
+    pub(crate) fn push_block(&mut self, name: &Stage, script: String) {
         self.stages.insert(DockerfileStage { name: name.to_string(), script });
     }
 
-    pub fn append_blocks(
+    pub(crate) fn append_blocks(
         &self,
         dockerfile: &mut String,
         visited: &mut BTreeSet<String>,
@@ -75,7 +75,7 @@ impl Md {
         Ok(())
     }
 
-    pub fn extend_from_externs(
+    pub(crate) fn extend_from_externs(
         &mut self,
         mds: Vec<(Utf8PathBuf, Self)>,
     ) -> Result<Vec<Utf8PathBuf>> {
@@ -105,9 +105,9 @@ impl Md {
 }
 
 #[derive(Clone, Debug, Deserialize, Eq, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct DockerfileStage {
-    pub name: String,
-    pub script: String,
+pub(crate) struct DockerfileStage {
+    pub(crate) name: String,
+    pub(crate) script: String,
 }
 
 // pub(crate) const HDR: &str = "# ";
@@ -146,14 +146,14 @@ fn dec_decs() {
 }
 
 #[derive(Clone, Debug, Deserialize, Eq, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct BuildContext {
-    pub name: String, // TODO: constrain with Docker stage name pattern
-    pub uri: String,  // TODO: constrain with Docker build-context URIs
+pub(crate) struct BuildContext {
+    pub(crate) name: String, // TODO: constrain with Docker stage name pattern
+    pub(crate) uri: String,  // TODO: constrain with Docker build-context URIs
 }
 impl BuildContext {
     #[inline]
     #[must_use]
-    pub fn is_readonly_mount(&self) -> bool {
+    pub(crate) fn is_readonly_mount(&self) -> bool {
         self.name.starts_with(CRATESIO_STAGE_PREFIX) ||
         // TODO: create a stage from sources where able (public repos) use --secret mounts for private deps (and secret direct artifacts)
         self.name.starts_with("input_") ||
