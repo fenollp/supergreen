@@ -381,6 +381,14 @@ async fn do_wrap_rustc(
             // e.g. $CARGO_HOME/git/checkouts/rustc-version-rs-de99f49481c38c43/48cf99e/src/lib.rs
             // TODO: create a stage from sources where able (public repos) use --secret mounts for private deps (and secret direct artifacts)
             // TODO=> make sense of git origin file://$CARGO_HOME/git/db/rustc-version-rs-de99f49481c38c43
+
+            // env is set: CARGO_MANIFEST_DIR="/home/pete/.cargo/git/checkouts/rustc-version-rs-de99f49481c38c43/48cf99e"
+            // => commit
+            // env is set: CARGO_PKG_REPOSITORY="https://github.com/djc/rustc-version-rs"
+            // => url
+            // copying all git files under /home/pete/.cargo/git/checkouts/rustc-version-rs-de99f49481c38c43/48cf99e to /tmp/cargo-green_0.7.0/CWD2ee709abf3a7f0b4
+            // loading "cwd-2ee709abf3a7f0b4": /tmp/cargo-green_0.7.0/CWD2ee709abf3a7f0b4
+
             input
                 .strip_prefix(&pwd)
                 .map_err(|e| anyhow!("BUG: unexpected input {input:?} ({e})"))?
@@ -449,6 +457,7 @@ async fn do_wrap_rustc(
 
         // TODO: --build-arg BUILDKIT_CONTEXT_KEEP_GIT_DIR=0 https://docs.docker.com/engine/reference/builder/#buildkit-built-in-build-args
         //   in Git case: do that ^ IFF remote URL + branch/tag/rev can be decided (a la cratesio optimization)
+        // https://docs.docker.com/reference/dockerfile/#add---keep-git-dir
 
         log::info!(target: &krate, "copying all {}files under {pwd} to {cwd_path}", if pwd.join(".git").is_dir() { "git " } else { "" });
 
