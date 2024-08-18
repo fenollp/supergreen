@@ -19,6 +19,13 @@ impl Popped for camino::Utf8PathBuf {
     }
 }
 
+impl Popped for std::path::PathBuf {
+    #[must_use]
+    fn pop(&mut self) -> bool {
+        self.pop()
+    }
+}
+
 pub(crate) trait ShowCmd {
     #[must_use]
     fn show(&self) -> String;
