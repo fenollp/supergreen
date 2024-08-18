@@ -115,6 +115,7 @@ fn list_entries(
     Ok(stats)
 }
 
+#[allow(clippy::type_complexity)]
 fn init_cache(
     repo: &Repository,
 ) -> Result<(Search, IndexPersistedOrInMemory, Option<(Outcome, AttributeStack<'_>)>)> {
