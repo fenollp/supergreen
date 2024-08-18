@@ -95,8 +95,8 @@ RUN \
   --mount=from={RUST},src=/lib64,dst=/lib64 \
   --mount=from={RUST},src=/usr,dst=/usr \
     set -eux \
- && mkdir -p {SRC} \
- && tar zxvf /crate --strip-components=1 -C {SRC}
+ && mkdir {SRC} \
+ && tar zxf /crate --strip-components=1 -C {SRC}
 "#
     )[1..]
         .to_owned();
@@ -108,6 +108,7 @@ RUN \
 
     // TODO: ask upstream `rustc` if it could be able to take a .crate archive as input
     //=> would remove that `RUN tar` step + stage dep on RUST (=> scratch)
+    //  => https://github.com/rust-lang/cargo/issues/14373
 
     Ok((cratesio_stage, SRC, cratesio_extracted, block))
 }
