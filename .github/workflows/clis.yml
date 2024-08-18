@@ -434,7 +434,7 @@ jobs:
       run: |
         RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
-          CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=1 --locked --force cross@0.2.5 
+          CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=1 --locked --force cross@0.2.5 --git https://github.com/cross-rs/cross.git --tag=v0.2.5 cross
 
     - if: ${{ failure() || success() }}
       run: tail -n9999999 logs.txt ; echo >logs.txt
@@ -454,7 +454,7 @@ jobs:
       run: |
         RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
-          CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=1 --locked --force cross@0.2.5  2>&1 | tee _
+          CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=1 --locked --force cross@0.2.5 --git https://github.com/cross-rs/cross.git --tag=v0.2.5 cross 2>&1 | tee _
 
     - if: ${{ failure() || success() }}
       run: tail -n9999999 logs.txt
@@ -544,7 +544,7 @@ jobs:
       run: |
         RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
-          CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=3 --locked --force cross@0.2.5 
+          CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=3 --locked --force cross@0.2.5 --git https://github.com/cross-rs/cross.git --tag=v0.2.5 cross
 
     - if: ${{ failure() || success() }}
       run: tail -n9999999 logs.txt ; echo >logs.txt
@@ -564,7 +564,7 @@ jobs:
       run: |
         RUSTCBUILDX_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
-          CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=3 --locked --force cross@0.2.5  2>&1 | tee _
+          CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=3 --locked --force cross@0.2.5 --git https://github.com/cross-rs/cross.git --tag=v0.2.5 cross 2>&1 | tee _
 
     - if: ${{ failure() || success() }}
       run: tail -n9999999 logs.txt
