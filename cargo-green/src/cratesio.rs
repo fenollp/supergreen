@@ -22,19 +22,15 @@ pub(crate) fn from_cratesio_input_path(input: &Utf8PathBuf) -> Result<(String, S
     }
     let cratesio_crate = cratesio_crate.expect("just checked above");
 
-    let mut name = String::new();
-    let mut version = String::new();
-    let mut prev_dash = false;
-    for (i, c) in cratesio_crate.chars().enumerate() {
-        if prev_dash && c.is_ascii_digit() {
-            name = cratesio_crate[..(i - 1/*i is never zero: prev_dash starts false*/)].to_owned();
-            version = cratesio_crate[i..].to_owned();
-            break;
-        }
-        prev_dash = c == '-'
+    let (mut name, mut version) = (String::new(), String::new());
+    if let Some(mid) =
+        "1234567890".chars().filter_map(|x| cratesio_crate.rfind(&format!("-{x}"))).max()
+    {
+        let (n, v) = cratesio_crate.split_at(mid);
+        (name, version) = (n.to_owned(), v[1..].to_owned());
     }
     if name.is_empty() || version.is_empty() {
-        bail!("Unexpected cratesio crate format: {cratesio_crate}")
+        bail!("Unexpected cratesio crate name-version format: {cratesio_crate}")
     }
 
     Ok((name, version, cratesio_index))
@@ -53,6 +49,12 @@ fn test_from_cratesio_input_path() {
             .into(),
     ).unwrap(),
     ("hickory-proto".to_owned(), "0.25.0-alpha.1".to_owned(), "index.crates.io-6f17d22bba15001f".to_owned()));
+
+    assert_eq!(from_cratesio_input_path(
+        &"/home/pete/.cargo/registry/src/index.crates.io-6f17d22bba15001f/md-5-0.10.6/src/lib.rs"
+            .into(),
+    ).unwrap(),
+    ("md-5".to_owned(), "0.10.6".to_owned(), "index.crates.io-6f17d22bba15001f".to_owned()));
 }
 
 pub(crate) async fn into_stage(
