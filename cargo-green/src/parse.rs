@@ -12,7 +12,7 @@ use crate::extensions::Popped;
 #[derive(Debug, Default, PartialEq)]
 pub(crate) struct RustcArgs {
     /// 1..: --crate-type
-    pub(crate) crate_type: String,
+    pub(crate) crate_type: String, // FIXME: handle >1
 
     /// 1: --emit=EMIT | --emit EMIT
     pub(crate) emit: String,
@@ -45,13 +45,15 @@ pub(crate) fn as_rustc(
 
     let mut state: RustcArgs = Default::default();
 
-    // TODO: find something that sets value only once
-
     let mut s_e = true;
     let mut key = arguments.first().expect("PROOF: defo not empty").clone();
 
-    #[allow(unused_assignments)] // TODO: but why
-    let mut val = String::new();
+    // e.g. $HOME/work/supergreen/supergreen/target/debug/build/lock_api-a60f4042e32867e8/build-script-build
+    if arguments.len() == 1 && key.ends_with("build-script-build") {
+        state.input = key.as_str().into();
+    }
+
+    let mut val: String;
     for arg in arguments.iter().skip(1) {
         (s_e, key, val) = if s_e {
             (!s_e, key, arg.clone()) // end
@@ -709,7 +711,7 @@ mod tests {
     fn the_weird_build_script_of_slab_0_4_9() {
         #[rustfmt::skip]
         // Original ordering per rustc 1.80.0
-        let arguments = as_arguments(&[
+        let arguments = [
             // CARGO=$HOME/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/cargo
             // CARGO_CFG_PANIC=unwind
             // CARGO_CFG_TARGET_ABI=''
@@ -753,12 +755,13 @@ mod tests {
             // RUSTDOC=$HOME/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/rustdoc
             // TARGET=x86_64-unknown-linux-gnu
             "$HOME/work/supergreen/supergreen/target/debug/build/slab-b0340a0384800aca/build-script-build",
-        ]);
+        ];
 
         let out_dir_var =
             Some("$HOME/work/supergreen/supergreen/target/debug/build/slab-94793bb2b78c57b5/out");
 
-        let (st, args) = as_rustc(PWD, arguments.clone(), out_dir_var).unwrap();
+        let (st, args) =
+            as_rustc(PWD, arguments.iter().map(|&x| x.to_owned()).collect(), out_dir_var).unwrap();
 
         assert_eq!(
             st,
@@ -768,12 +771,11 @@ mod tests {
                 externs: [].into(),
                 metadata: "94793bb2b78c57b5".to_owned(),
                 incremental: None,
-                input: "".into(),
+                input: "$HOME/work/supergreen/supergreen/target/debug/build/slab-b0340a0384800aca/build-script-build".into(),
                 out_dir: "".into(),
                 target_path: "$HOME/work/supergreen/supergreen/target/debug".into(),
             }
         );
-
-        assert_eq!(as_arguments(&[]), args);
+        assert_eq!(Vec::<String>::new(), args);
     }
 }
