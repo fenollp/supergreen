@@ -30,8 +30,8 @@ assertx = { version = "1", features = ["logging"] }
 camino = "1"
 env_logger = "0.11"
 futures = "0.3"
-gitoxide-core = "0,>=0.39"
-gix = "0,>=0.64"
+gitoxide-core = { version = "0,>=0.39", default-features = false }
+gix = { version = "0,>=0.64", default-features = false }
 home = "0,>=0.5"
 log = "0,>=0.4"
 nutype = "0,>=0.4"

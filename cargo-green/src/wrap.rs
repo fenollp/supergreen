@@ -585,6 +585,7 @@ async fn do_wrap_rustc(
 
     // TODO: keep only paths that we explicitly mount or copy
     if false {
+        // https://github.com/maelstrom-software/maelstrom/blob/ef90f8a990722352e55ef1a2f219ef0fc77e7c8c/crates/maelstrom-util/src/elf.rs#L4
         for var in ["PATH", "DYLD_FALLBACK_LIBRARY_PATH", "LD_LIBRARY_PATH", "LIBPATH"] {
             let Ok(val) = env::var(var) else { continue };
             if !val.is_empty() && debug.is_some() {
