@@ -21,6 +21,7 @@ use crate::{
     cratesio::{from_cratesio_input_path, into_stage},
     envs::{self, base_image, internal, maybe_log, pass_env, runner, syntax, this},
     extensions::{Popped, ShowCmd},
+    git::ls_files,
     md::{BuildContext, Md},
     parse::{self, RustcArgs},
     runner::{build, MARK_STDERR, MARK_STDOUT},
@@ -460,30 +461,8 @@ async fn do_wrap_rustc(
         log::info!(target: &krate, "copying all {}files under {pwd} to {cwd_path}", if pwd.join(".git").is_dir() { "git " } else { "" });
 
         if pwd.join(".git").is_dir() {
-            use std::io::empty;
-
-            use gitoxide_core::{
-                repository::index::{entries as ls_files, entries::Options},
-                OutputFormat,
-            };
-            use gix::discover;
-
-            // TODO: https://github.com/Byron/gitoxide/discussions/1525
-            let repo = discover(&pwd).map_err(|e| anyhow!("Failed git-ing dir {pwd}: {e}"))?;
-            let opts = Options {
-                attributes: None,
-                format: OutputFormat::Human,
-                recurse_submodules: true,
-                simple: true,
-                statistics: false,
-            };
-            let mut stdout = vec![];
-            ls_files(repo, vec![], &mut stdout, empty(), opts)
-                .map_err(|e| anyhow!("Failed `git ls-files` {pwd}: {e}"))?;
-            let stdout =
-                String::from_utf8(stdout).map_err(|e| anyhow!("Failed parsing stdout: {e}"))?;
-            let only = stdout.lines().map(OsString::from).collect::<BTreeSet<_>>();
-
+            let only = ls_files(&pwd)?;
+            log::info!(target: &krate, "about to copy {} git files", only.len());
             copy_dir_only(&pwd, &only, cwd_path.as_ref())?;
         } else {
             copy_dir_all(&pwd, cwd_path)?;
