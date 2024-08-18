@@ -30,8 +30,7 @@ assertx = { version = "1", features = ["logging"] }
 camino = "1"
 env_logger = "0.11"
 futures = "0.3"
-gitoxide-core = { version = "0,>=0.39", default-features = false }
-gix = { version = "0,>=0.64", default-features = false }
+gix = { version = "0,>=0.64", default-features = false, features = ["attributes", "index"] }
 home = "0,>=0.5"
 log = "0,>=0.4"
 nutype = "0,>=0.4"
@@ -46,4 +45,3 @@ sha256 = "1"
 szyk = "1"
 tokio = { version = "1", features = ["macros", "io-util", "process", "rt-multi-thread", "time"] }
 toml = "0,>=0.8"
-which = "6"
