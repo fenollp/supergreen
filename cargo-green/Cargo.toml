@@ -24,7 +24,6 @@ anyhow.workspace = true
 camino.workspace = true
 env_logger.workspace = true
 futures.workspace = true
-gix.workspace = true
 home.workspace = true
 log.workspace = true
 nutype.workspace = true

@@ -20,7 +20,6 @@ use crate::{
     cratesio::{from_cratesio_input_path, into_stage},
     envs::{self, base_image, internal, maybe_log, pass_env, runner, syntax, this},
     extensions::{Popped, ShowCmd},
-    git::ls_files,
     md::{BuildContext, Md},
     parse::{self, RustcArgs},
     runner::{build, MARK_STDERR, MARK_STDOUT},
@@ -459,13 +458,7 @@ async fn do_wrap_rustc(
 
         log::info!(target: &krate, "copying all {}files under {pwd} to {cwd_path}", if pwd.join(".git").is_dir() { "git " } else { "" });
 
-        if pwd.join(".git").is_dir() {
-            let only = ls_files(&pwd)?;
-            log::info!(target: &krate, "about to copy {} git files", only.len());
-            copy_dir_only(&pwd, only, cwd_path.as_ref())?;
-        } else {
-            copy_dir_all(&pwd, cwd_path)?;
-        }
+        copy_dir_all(&pwd, cwd_path)?;
 
         // TODO: --mount=bind each file one by one => drop temp dir ctx (needs [multiple] `mkdir -p`[s] first though)
         // This doesn't work: rustc_block.push_str(&format!("  --mount=type=bind,from=cwd,target={pwd} \\\n"));
@@ -779,28 +772,6 @@ fn crate_out_name(name: &str) -> String {
         .map(|(_, x)| x)
         .map(|x| format!("crate_out-{x}"))
         .expect("PROOF: suffix is /out")
-}
-
-fn copy_dir_only(
-    pwd: impl AsRef<Path>,
-    only: impl IntoIterator<Item = Utf8PathBuf>,
-    dst: &Path,
-) -> Result<()> {
-    if dst.exists() {
-        return Ok(());
-    }
-    for fname in only {
-        let dst = dst.join(&fname);
-
-        let mut dst_dir = dst.clone();
-        dst_dir.pop();
-        fs::create_dir_all(&dst_dir).map_err(|e| anyhow!("Failed `mkdir -p {dst_dir:?}`: {e}"))?;
-
-        let src = pwd.as_ref().join(fname);
-        fs::copy(&src, &dst)
-            .map_err(|e| anyhow!("Failed `cp {src:?} {dst:?}` ({:?}): {e}", src.metadata()))?;
-    }
-    Ok(())
 }
 
 fn copy_dir_all(src: impl AsRef<Path>, dst: impl AsRef<Path>) -> Result<()> {

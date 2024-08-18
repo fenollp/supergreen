@@ -26,7 +26,6 @@ mod cli;
 mod cratesio;
 mod envs;
 mod extensions;
-mod git;
 mod md;
 mod parse;
 mod runner;
