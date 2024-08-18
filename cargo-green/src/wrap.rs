@@ -547,9 +547,17 @@ async fn do_wrap_rustc(
 
     rustc_block.push_str(" && export CARGO=\"$(which cargo)\" \\\n");
 
-    if let Ok(v) = env::var("RING_CORE_PREFIX") {
-        log::warn!(target: &krate, "passing $RING_CORE_PREFIX={v:?} env through");
-        rustc_block.push_str(&format!("&& export RING_CORE_PREFIX={v:?} \\\n"));
+    // TODO: find a way to discover these
+    // e.g? https://doc.rust-lang.org/cargo/reference/build-scripts.html#rerun-if-env-changed
+    // e.g. https://doc.rust-lang.org/cargo/reference/build-scripts.html#rustc-env
+    // but actually no! The cargo directives get emitted when running compiled build script,
+    // and this is handled by cargo, outside of the wrapper!
+    // TODO: cargo upstream issue "pass env vars read/wrote by build script on call to rustc"
+    for var in ["NTPD_RS_GIT_REV", "NTPD_RS_GIT_DATE", "RING_CORE_PREFIX"] {
+        if let Ok(v) = env::var(var) {
+            log::warn!(target: &krate, "passing ${var}={v:?} env through");
+            rustc_block.push_str(&format!(" && export {var}={v:?} \\\n"));
+        }
     }
 
     // TODO: keep only paths that we explicitly mount or copy

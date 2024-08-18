@@ -999,6 +999,276 @@ jobs:
     - if: ${{ failure() || success() }}
       run: cat _ || true
 
+  ntpd_1-2-3:
+    runs-on: ubuntu-latest
+    needs: bin
+    steps:
+    - uses: actions-rs/toolchain@v1
+      with:
+        profile: minimal
+        toolchain: stable
+
+
+    - name: Retrieve saved bin
+      uses: actions/download-artifact@v4
+      with:
+        name: bin-artifacts
+    - run: | # TODO: whence https://github.com/actions/download-artifact/issues/236
+        chmod +x ./cargo-green
+        ./cargo-green --version | grep cargo-green
+        mv ./cargo-green /home/runner/.cargo/bin/
+        cargo green --version
+
+    - uses: actions/checkout@v4
+
+    - name: Docker info
+      run: docker info
+
+    - name: Buildx version
+      run: docker buildx version
+
+    - name: Podman version
+      run: podman version || true
+
+    - name: Rust version
+      run: rustc -Vv
+
+    - name: Envs
+      run: /home/runner/.cargo/bin/cargo-green green supergreen env
+
+    - name: Envs again
+      run: /home/runner/.cargo/bin/cargo-green green supergreen env
+
+    - name: Disk usage
+      run: |
+        docker system df
+        docker buildx du
+        sudo du -sh /var/lib/docker
+
+    - name: cargo install net=ON cache=OFF remote=OFF jobs=1
+      run: |
+        CARGOGREEN_LOG=debug \
+        RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
+          CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=1 --locked --force ntpd@1.2.3  |& tee _
+
+    - if: ${{ failure() || success() }}
+      name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
+      run: |
+        ! grep -C20 -F "thread 'main' panicked at src/cargo/util/dependency_queue.rs:" _
+
+    - if: ${{ failure() || success() }}
+      name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
+      run: |
+        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' logs.txt
+
+    - if: ${{ failure() || success() }}
+      name: 🔴 =means=> there's some panic!s
+      run: |
+        ! grep -C20 -F ' panicked at ' logs.txt
+
+    - if: ${{ failure() || success() }}
+      name: 🔴 =means=> there's some BUGs
+      run: |
+        ! grep -C20 -F 'BUG: ' logs.txt
+
+    - if: ${{ failure() || success() }}
+      name: 🔴 =means=> here's relevant logs
+      run: |
+        ! grep -C20 -F ' >>> ' logs.txt
+
+    - if: ${{ failure() || success() }}
+      run: tail -n9999999 logs.txt ; echo >logs.txt
+
+    - name: Disk usage
+      if: ${{ failure() || success() }}
+      run: |
+        docker system df
+        docker buildx du
+        sudo du -sh /var/lib/docker
+
+    - name: Target dir disk usage
+      if: ${{ failure() || success() }}
+      run: du -sh ~/instst
+
+    - name: cargo install net=ON cache=ON remote=OFF jobs=1
+      run: |
+        CARGOGREEN_LOG=debug \
+        RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
+          CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=1 --locked --force ntpd@1.2.3  |& tee _
+
+    - if: ${{ failure() || success() }}
+      run: tail -n9999999 logs.txt
+
+    - name: Disk usage
+      if: ${{ failure() || success() }}
+      run: |
+        docker system df
+        docker buildx du
+        sudo du -sh /var/lib/docker
+
+    - name: Target dir disk usage
+      if: ${{ failure() || success() }}
+      run: du -sh ~/instst
+
+    - if: ${{ failure() || success() }}
+      name: Finishes fast
+      run: |
+        grep Finished _
+        grep Finished _ | grep -E [012]...s
+
+    - if: ${{ failure() || success() }}
+      run: |
+        grep Fresh _
+
+    - if: ${{ failure() || success() }}
+      name: Did not recompile things (yay!)
+      run: |
+        ! grep Compiling _
+
+    - if: ${{ failure() || success() }}
+      run: |
+        ! grep 'DEBUG|INFO|WARN|ERROR' _
+        ! grep 'Falling back' _
+        ! grep 'BUG[: ]' _
+
+    - if: ${{ failure() || success() }}
+      run: cat _ || true
+
+  ntpd_1-2-3-J:
+    runs-on: ubuntu-latest
+    needs: bin
+    steps:
+    - uses: actions-rs/toolchain@v1
+      with:
+        profile: minimal
+        toolchain: stable
+
+
+    - name: Retrieve saved bin
+      uses: actions/download-artifact@v4
+      with:
+        name: bin-artifacts
+    - run: | # TODO: whence https://github.com/actions/download-artifact/issues/236
+        chmod +x ./cargo-green
+        ./cargo-green --version | grep cargo-green
+        mv ./cargo-green /home/runner/.cargo/bin/
+        cargo green --version
+
+    - uses: actions/checkout@v4
+
+    - name: Docker info
+      run: docker info
+
+    - name: Buildx version
+      run: docker buildx version
+
+    - name: Podman version
+      run: podman version || true
+
+    - name: Rust version
+      run: rustc -Vv
+
+    - name: Envs
+      run: /home/runner/.cargo/bin/cargo-green green supergreen env
+
+    - name: Envs again
+      run: /home/runner/.cargo/bin/cargo-green green supergreen env
+
+    - name: Disk usage
+      run: |
+        docker system df
+        docker buildx du
+        sudo du -sh /var/lib/docker
+
+    - name: cargo install net=ON cache=OFF remote=OFF jobs=3
+      run: |
+        CARGOGREEN_LOG=debug \
+        RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
+          CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=3 --locked --force ntpd@1.2.3  |& tee _
+
+    - if: ${{ failure() || success() }}
+      name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
+      run: |
+        ! grep -C20 -F "thread 'main' panicked at src/cargo/util/dependency_queue.rs:" _
+
+    - if: ${{ failure() || success() }}
+      name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
+      run: |
+        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' logs.txt
+
+    - if: ${{ failure() || success() }}
+      name: 🔴 =means=> there's some panic!s
+      run: |
+        ! grep -C20 -F ' panicked at ' logs.txt
+
+    - if: ${{ failure() || success() }}
+      name: 🔴 =means=> there's some BUGs
+      run: |
+        ! grep -C20 -F 'BUG: ' logs.txt
+
+    - if: ${{ failure() || success() }}
+      name: 🔴 =means=> here's relevant logs
+      run: |
+        ! grep -C20 -F ' >>> ' logs.txt
+
+    - if: ${{ failure() || success() }}
+      run: tail -n9999999 logs.txt ; echo >logs.txt
+
+    - name: Disk usage
+      if: ${{ failure() || success() }}
+      run: |
+        docker system df
+        docker buildx du
+        sudo du -sh /var/lib/docker
+
+    - name: Target dir disk usage
+      if: ${{ failure() || success() }}
+      run: du -sh ~/instst
+
+    - name: cargo install net=ON cache=ON remote=OFF jobs=3
+      run: |
+        CARGOGREEN_LOG=debug \
+        RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
+          CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=3 --locked --force ntpd@1.2.3  |& tee _
+
+    - if: ${{ failure() || success() }}
+      run: tail -n9999999 logs.txt
+
+    - name: Disk usage
+      if: ${{ failure() || success() }}
+      run: |
+        docker system df
+        docker buildx du
+        sudo du -sh /var/lib/docker
+
+    - name: Target dir disk usage
+      if: ${{ failure() || success() }}
+      run: du -sh ~/instst
+
+    - if: ${{ failure() || success() }}
+      name: Finishes fast
+      run: |
+        grep Finished _
+        grep Finished _ | grep -E [012]...s
+
+    - if: ${{ failure() || success() }}
+      run: |
+        grep Fresh _
+
+    - if: ${{ failure() || success() }}
+      name: Did not recompile things (yay!)
+      run: |
+        ! grep Compiling _
+
+    - if: ${{ failure() || success() }}
+      run: |
+        ! grep 'DEBUG|INFO|WARN|ERROR' _
+        ! grep 'Falling back' _
+        ! grep 'BUG[: ]' _
+
+    - if: ${{ failure() || success() }}
+      run: cat _ || true
+
   qcow2-rs_0-1-2:
     runs-on: ubuntu-latest
     needs: bin
