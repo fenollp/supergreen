@@ -1,7 +1,6 @@
 use std::{
     collections::{BTreeMap, BTreeSet, VecDeque},
     env,
-    ffi::OsString,
     fs::{self, File},
     future::Future,
     io::{BufRead, BufReader, ErrorKind},
@@ -464,7 +463,7 @@ async fn do_wrap_rustc(
         if pwd.join(".git").is_dir() {
             let only = ls_files(&pwd)?;
             log::info!(target: &krate, "about to copy {} git files", only.len());
-            copy_dir_only(&pwd, &only, cwd_path.as_ref())?;
+            copy_dir_only(&pwd, only, cwd_path.as_ref())?;
         } else {
             copy_dir_all(&pwd, cwd_path)?;
         }
@@ -785,17 +784,19 @@ fn crate_out_name(name: &str) -> String {
 
 fn copy_dir_only(
     pwd: impl AsRef<Path>,
-    only: &BTreeSet<OsString>, // paths relative to pwd
+    only: impl IntoIterator<Item = Utf8PathBuf>,
     dst: &Path,
 ) -> Result<()> {
     if dst.exists() {
         return Ok(());
     }
     for fname in only {
-        let dst = dst.join(fname);
+        let dst = dst.join(&fname);
+
         let mut dst_dir = dst.clone();
         dst_dir.pop();
         fs::create_dir_all(&dst_dir).map_err(|e| anyhow!("Failed `mkdir -p {dst_dir:?}`: {e}"))?;
+
         let src = pwd.as_ref().join(fname);
         fs::copy(&src, &dst)
             .map_err(|e| anyhow!("Failed `cp {src:?} {dst:?}` ({:?}): {e}", src.metadata()))?;
