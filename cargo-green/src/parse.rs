@@ -210,7 +210,13 @@ pub(crate) fn as_rustc(
     };
 
     //assert_ne!(state.crate_type, "");
-    assert_ne!(state.metadata, "");
+    //assert_ne!(state.metadata, "");
+    if state.metadata.is_empty() {
+        panic!(
+            ">>> {:?}",
+            (std::env::args(), std::env::vars(), std::env::current_exe(), std::env::current_dir())
+        )
+    }
     //assert_ne!(state.input, "");
     //assert_ne!(state.out_dir, "");
     assert!(!state.incremental.as_ref().map(|x| x == "").unwrap_or_default()); // MAY be unset: only set on last calls
