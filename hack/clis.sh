@@ -72,7 +72,6 @@ jobs:
 
     - uses: actions/checkout@v4
 
-    # Actually, the whole archives
     - name: Cache \`cargo fetch\`
       uses: actions/cache@v4
       with:
@@ -80,16 +79,15 @@ jobs:
           ~/.cargo/registry/index/
           ~/.cargo/registry/cache/
           ~/.cargo/git/db/
-        key: cargo-deps-\${{ hashFiles('**/Cargo.lock') }}
-        restore-keys: cargo-deps-
+        key: \${{ github.job }}-\${{ runner.os }}-cargo-deps-\${{ hashFiles('**/Cargo.lock') }}
+        restore-keys: \${{ github.job }}-\${{ runner.os }}-cargo-deps-
 
     - name: Cache \`cargo install\`
       uses: actions/cache@v4
       with:
         path: ~/instmp
-        key: \${{ runner.os }}-cargo-install-\${{ hashFiles('**/Cargo.lock') }}-and-\${{ hashFiles('src/**') }}
+        key: \${{ runner.os }}-cargo-install-\${{ hashFiles('**/Cargo.lock') }}
         restore-keys: |
-          \${{ runner.os }}-cargo-install-\${{ hashFiles('**/Cargo.lock') }}-and-
           \${{ runner.os }}-cargo-install-
 
     - name: Compile HEAD cargo-green

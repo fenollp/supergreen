@@ -18,7 +18,6 @@ jobs:
 
     - uses: actions/checkout@v4
 
-    # Actually, the whole archives
     - name: Cache `cargo fetch`
       uses: actions/cache@v4
       with:
@@ -26,16 +25,15 @@ jobs:
           ~/.cargo/registry/index/
           ~/.cargo/registry/cache/
           ~/.cargo/git/db/
-        key: cargo-deps-${{ hashFiles('**/Cargo.lock') }}
-        restore-keys: cargo-deps-
+        key: ${{ github.job }}-${{ runner.os }}-cargo-deps-${{ hashFiles('**/Cargo.lock') }}
+        restore-keys: ${{ github.job }}-${{ runner.os }}-cargo-deps-
 
     - name: Cache `cargo install`
       uses: actions/cache@v4
       with:
         path: ~/instmp
-        key: ${{ runner.os }}-cargo-install-${{ hashFiles('**/Cargo.lock') }}-and-${{ hashFiles('src/**') }}
+        key: ${{ runner.os }}-cargo-install-${{ hashFiles('**/Cargo.lock') }}
         restore-keys: |
-          ${{ runner.os }}-cargo-install-${{ hashFiles('**/Cargo.lock') }}-and-
           ${{ runner.os }}-cargo-install-
 
     - name: Compile HEAD cargo-green
@@ -73,8 +71,13 @@ jobs:
 
     - name: cargo install net=ON cache=OFF remote=OFF jobs=1
       run: |
-        RUSTCBUILDX_LOG=debug \
-          CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=1 --locked --force --path=./cargo-green
+        export RUSTCBUILDX_LOG=debug
+        export RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt
+        export CARGO_TARGET_DIR=~/instst
+        if ! cargo green -vv install --jobs=1 --locked --force --path=./cargo-green; then
+          cat logs.txt
+          exit 1
+        fi
 
 
   audits:
@@ -98,7 +101,6 @@ jobs:
 
     - uses: actions/checkout@v4
 
-    # Actually, the whole archives
     - name: Cache `cargo fetch`
       uses: actions/cache@v4
       with:
@@ -106,25 +108,21 @@ jobs:
           ~/.cargo/registry/index/
           ~/.cargo/registry/cache/
           ~/.cargo/git/db/
-        key: cargo-deps-${{ hashFiles('**/Cargo.lock') }}
-        restore-keys: cargo-deps-
+        key: ${{ github.job }}-${{ runner.os }}-cargo-deps-${{ hashFiles('**/Cargo.lock') }}
+        restore-keys: ${{ github.job }}-${{ runner.os }}-cargo-deps-
 
-    - name: Cache `cargo install`
-      uses: actions/cache@v4
+    - uses: taiki-e/install-action@v2
       with:
-        path: ~/cargo-audit
-        key: ${{ runner.os }}-cargo-install-audit
-
-    - name: Compile cargo-audit
-      run: |
-        CARGO_TARGET_DIR=~/cargo-audit cargo install --locked --force cargo-audit --features=fix
+        tool: cargo-audit
 
     - name: cargo audit net=ON cache=OFF remote=OFF
       run: |
-        RUSTCBUILDX_LOG=debug \
-        RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
-          cargo green -vv audit || \
-            cat logs.txt
+        export RUSTCBUILDX_LOG=debug
+        export RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt
+        if ! cargo green -vv audit; then
+          cat logs.txt
+          exit 1
+        fi
 
 
   udeps:
@@ -148,7 +146,6 @@ jobs:
 
     - uses: actions/checkout@v4
 
-    # Actually, the whole archives
     - name: Cache `cargo fetch`
       uses: actions/cache@v4
       with:
@@ -156,8 +153,8 @@ jobs:
           ~/.cargo/registry/index/
           ~/.cargo/registry/cache/
           ~/.cargo/git/db/
-        key: cargo-deps-${{ hashFiles('**/Cargo.lock') }}
-        restore-keys: cargo-deps-
+        key: ${{ github.job }}-${{ runner.os }}-cargo-deps-${{ hashFiles('**/Cargo.lock') }}
+        restore-keys: ${{ github.job }}-${{ runner.os }}-cargo-deps-
 
     - uses: taiki-e/install-action@v2
       with:
@@ -210,8 +207,8 @@ jobs:
           ~/.cargo/registry/index/
           ~/.cargo/registry/cache/
           ~/.cargo/git/db/
-        key: cargo-deps-${{ hashFiles('**/Cargo.lock') }}
-        restore-keys: cargo-deps-
+        key: ${{ github.job }}-${{ runner.os }}-cargo-deps-${{ hashFiles('**/Cargo.lock') }}
+        restore-keys: ${{ github.job }}-${{ runner.os }}-cargo-deps-
 
     - run: cargo fetch
 
@@ -279,8 +276,8 @@ jobs:
           ~/.cargo/registry/index/
           ~/.cargo/registry/cache/
           ~/.cargo/git/db/
-        key: cargo-deps-${{ hashFiles('**/Cargo.lock') }}
-        restore-keys: cargo-deps-
+        key: ${{ github.job }}-${{ runner.os }}-cargo-deps-${{ hashFiles('**/Cargo.lock') }}
+        restore-keys: ${{ github.job }}-${{ runner.os }}-cargo-deps-
 
     - run: cargo fetch
 
@@ -348,8 +345,8 @@ jobs:
           ~/.cargo/registry/index/
           ~/.cargo/registry/cache/
           ~/.cargo/git/db/
-        key: cargo-deps-${{ hashFiles('**/Cargo.lock') }}
-        restore-keys: cargo-deps-
+        key: ${{ github.job }}-${{ runner.os }}-cargo-deps-${{ hashFiles('**/Cargo.lock') }}
+        restore-keys: ${{ github.job }}-${{ runner.os }}-cargo-deps-
 
     - run: cargo fetch
 
@@ -404,8 +401,8 @@ jobs:
           ~/.cargo/registry/index/
           ~/.cargo/registry/cache/
           ~/.cargo/git/db/
-        key: cargo-deps-${{ hashFiles('**/Cargo.lock') }}
-        restore-keys: cargo-deps-
+        key: ${{ github.job }}-${{ runner.os }}-cargo-deps-${{ hashFiles('**/Cargo.lock') }}
+        restore-keys: ${{ github.job }}-${{ runner.os }}-cargo-deps-
 
     - run: cargo fetch
 
@@ -449,8 +446,8 @@ jobs:
           ~/.cargo/registry/index/
           ~/.cargo/registry/cache/
           ~/.cargo/git/db/
-        key: cargo-deps-${{ hashFiles('**/Cargo.lock') }}
-        restore-keys: cargo-deps-
+        key: ${{ github.job }}-${{ runner.os }}-cargo-deps-${{ hashFiles('**/Cargo.lock') }}
+        restore-keys: ${{ github.job }}-${{ runner.os }}-cargo-deps-
 
     - run: cargo fetch
 
