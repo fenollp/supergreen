@@ -48,10 +48,10 @@ pub(crate) fn as_rustc(
     let mut s_e = true;
     let mut key = arguments.first().expect("PROOF: defo not empty").clone();
 
-    // e.g. $HOME/work/supergreen/supergreen/target/debug/build/lock_api-a60f4042e32867e8/build-script-build
-    if arguments.len() == 1 && key.ends_with("build-script-build") {
-        state.input = key.as_str().into();
-    }
+    // // e.g. $HOME/work/supergreen/supergreen/target/debug/build/lock_api-a60f4042e32867e8/build-script-build
+    // if arguments.len() == 1 && key.ends_with("build-script-build") {
+    //     state.input = key.as_str().into();
+    // }
 
     let mut val: String;
     for arg in arguments.iter().skip(1) {
@@ -210,7 +210,6 @@ pub(crate) fn as_rustc(
     };
 
     //assert_ne!(state.crate_type, "");
-    //assert_ne!(state.metadata, "");
     if state.metadata.is_empty() {
         panic!(
             ">>> {:?}",
@@ -777,7 +776,7 @@ mod tests {
                 externs: [].into(),
                 metadata: "94793bb2b78c57b5".to_owned(),
                 incremental: None,
-                input: "$HOME/work/supergreen/supergreen/target/debug/build/slab-b0340a0384800aca/build-script-build".into(),
+                input: "".into(),
                 out_dir: "".into(),
                 target_path: "$HOME/work/supergreen/supergreen/target/debug".into(),
             }
