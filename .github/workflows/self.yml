@@ -39,8 +39,6 @@ jobs:
     - name: Compile HEAD cargo-green
       run: |
         CARGO_TARGET_DIR=~/instmp cargo install --locked --force --path=./cargo-green
-    - run: ls -lha ~/instmp/release/
-    - run: ls -lha /home/runner/.cargo/bin/
 
     - uses: actions/upload-artifact@v4
       with:
@@ -71,13 +69,37 @@ jobs:
 
     - name: cargo install net=ON cache=OFF remote=OFF jobs=1
       run: |
-        export CARGOGREEN_LOG=debug
-        export RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt
-        export CARGO_TARGET_DIR=~/instst
-        if ! cargo green -vv install --jobs=1 --locked --force --path=./cargo-green; then
-          cat logs.txt
-          exit 1
-        fi
+        CARGOGREEN_LOG=debug \
+        RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
+          CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=1 --locked --force --path=./cargo-green |& tee _
+
+    - if: ${{ failure() || success() }}
+      name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
+      run: |
+        ! grep -C20 -F "thread 'main' panicked at src/cargo/util/dependency_queue.rs:" _
+
+    - if: ${{ failure() || success() }}
+      name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
+      run: |
+        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' logs.txt
+
+    - if: ${{ failure() || success() }}
+      name: 🔴 =means=> there's some panic!s
+      run: |
+        ! grep -C20 -F ' panicked at ' logs.txt
+
+    - if: ${{ failure() || success() }}
+      name: 🔴 =means=> there's some BUGs
+      run: |
+        ! grep -C20 -F 'BUG: ' logs.txt
+
+    - if: ${{ failure() || success() }}
+      name: 🔴 =means=> here's relevant logs
+      run: |
+        ! grep -C20 -F ' >>> ' logs.txt
+
+    - if: ${{ failure() || success() }}
+      run: tail -n9999999 logs.txt ; echo >logs.txt
 
 
   audits:
@@ -117,12 +139,37 @@ jobs:
 
     - name: cargo audit net=ON cache=OFF remote=OFF
       run: |
-        export CARGOGREEN_LOG=debug
-        export RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt
-        if ! cargo green -vv audit; then
-          cat logs.txt
-          exit 1
-        fi
+        CARGOGREEN_LOG=debug \
+        RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
+          cargo green -vv audit |& tee _
+
+    - if: ${{ failure() || success() }}
+      name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
+      run: |
+        ! grep -C20 -F "thread 'main' panicked at src/cargo/util/dependency_queue.rs:" _
+
+    - if: ${{ failure() || success() }}
+      name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
+      run: |
+        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' logs.txt
+
+    - if: ${{ failure() || success() }}
+      name: 🔴 =means=> there's some panic!s
+      run: |
+        ! grep -C20 -F ' panicked at ' logs.txt
+
+    - if: ${{ failure() || success() }}
+      name: 🔴 =means=> there's some BUGs
+      run: |
+        ! grep -C20 -F 'BUG: ' logs.txt
+
+    - if: ${{ failure() || success() }}
+      name: 🔴 =means=> here's relevant logs
+      run: |
+        ! grep -C20 -F ' >>> ' logs.txt
+
+    - if: ${{ failure() || success() }}
+      run: tail -n9999999 logs.txt ; echo >logs.txt
 
 
   udeps:
@@ -162,21 +209,43 @@ jobs:
 
     - name: cargo +nightly green udeps --all-targets --jobs=1 cache=OFF remote=OFF
       run: |
-        export CARGOGREEN_LOG=debug
-        export RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt
-        if ! cargo +nightly green udeps --all-targets --jobs=1; then
-          cat logs.txt
-          exit 1
-        fi
+        CARGOGREEN_LOG=debug \
+        RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
+          cargo +nightly green udeps --all-targets --jobs=1 |& tee _
+
+    - if: ${{ failure() || success() }}
+      name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
+      run: |
+        ! grep -C20 -F "thread 'main' panicked at src/cargo/util/dependency_queue.rs:" _
+
+    - if: ${{ failure() || success() }}
+      name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
+      run: |
+        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' logs.txt
+
+    - if: ${{ failure() || success() }}
+      name: 🔴 =means=> there's some panic!s
+      run: |
+        ! grep -C20 -F ' panicked at ' logs.txt
+
+    - if: ${{ failure() || success() }}
+      name: 🔴 =means=> there's some BUGs
+      run: |
+        ! grep -C20 -F 'BUG: ' logs.txt
+
+    - if: ${{ failure() || success() }}
+      name: 🔴 =means=> here's relevant logs
+      run: |
+        ! grep -C20 -F ' >>> ' logs.txt
+
+    - if: ${{ failure() || success() }}
+      run: tail -n9999999 logs.txt ; echo >logs.txt
 
     - name: cargo green +nightly udeps --all-targets --jobs=1 cache=ON remote=OFF
       run: |
-        export CARGOGREEN_LOG=debug
-        export RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt
-        if ! cargo green +nightly udeps --all-targets --jobs=1; then
-          cat logs.txt
-          exit 1
-        fi
+        CARGOGREEN_LOG=debug \
+        RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
+          cargo green +nightly udeps --all-targets --jobs=1
 
 
   builds:
@@ -216,16 +285,41 @@ jobs:
       run: |
         CARGOGREEN_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
-          cargo green -vv build --jobs=1 --all-targets --all-features --locked --frozen --offline
+          cargo green -vv build --jobs=1 --all-targets --all-features --locked --frozen --offline |& tee _
 
     - if: ${{ failure() || success() }}
-      run: cat logs.txt && echo >logs.txt
+      name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
+      run: |
+        ! grep -C20 -F "thread 'main' panicked at src/cargo/util/dependency_queue.rs:" _
+
+    - if: ${{ failure() || success() }}
+      name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
+      run: |
+        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' logs.txt
+
+    - if: ${{ failure() || success() }}
+      name: 🔴 =means=> there's some panic!s
+      run: |
+        ! grep -C20 -F ' panicked at ' logs.txt
+
+    - if: ${{ failure() || success() }}
+      name: 🔴 =means=> there's some BUGs
+      run: |
+        ! grep -C20 -F 'BUG: ' logs.txt
+
+    - if: ${{ failure() || success() }}
+      name: 🔴 =means=> here's relevant logs
+      run: |
+        ! grep -C20 -F ' >>> ' logs.txt
+
+    - if: ${{ failure() || success() }}
+      run: tail -n9999999 logs.txt ; echo >logs.txt
 
     - name: Ensure running the same command twice without modifications does not recompile anything
       run: |
         CARGOGREEN_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
-          cargo green -vv build --jobs=1 --all-targets --all-features --locked --frozen --offline 2>&1 | tee _
+          cargo green -vv build --jobs=1 --all-targets --all-features --locked --frozen --offline |& tee _
         cat _ | grep Finished | grep 0...s
         cat _ | grep Fresh
         ! cat _ | grep Compiling
@@ -238,7 +332,7 @@ jobs:
       run: |
         CARGOGREEN_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
-          cargo green -vv build --jobs=$(nproc) --all-targets --all-features --locked --frozen --offline 2>&1 | tee _
+          cargo green -vv build --jobs=$(nproc) --all-targets --all-features --locked --frozen --offline |& tee _
         cat _ | grep Finished | grep 0...s
         cat _ | grep Fresh
         ! cat _ | grep Compiling
@@ -285,16 +379,41 @@ jobs:
       run: |
         CARGOGREEN_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
-          cargo green -vv test --jobs=1 --all-targets --all-features --locked --frozen --offline
+          cargo green -vv test --jobs=1 --all-targets --all-features --locked --frozen --offline |& tee _
 
     - if: ${{ failure() || success() }}
-      run: cat logs.txt && echo >logs.txt
+      name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
+      run: |
+        ! grep -C20 -F "thread 'main' panicked at src/cargo/util/dependency_queue.rs:" _
+
+    - if: ${{ failure() || success() }}
+      name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
+      run: |
+        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' logs.txt
+
+    - if: ${{ failure() || success() }}
+      name: 🔴 =means=> there's some panic!s
+      run: |
+        ! grep -C20 -F ' panicked at ' logs.txt
+
+    - if: ${{ failure() || success() }}
+      name: 🔴 =means=> there's some BUGs
+      run: |
+        ! grep -C20 -F 'BUG: ' logs.txt
+
+    - if: ${{ failure() || success() }}
+      name: 🔴 =means=> here's relevant logs
+      run: |
+        ! grep -C20 -F ' >>> ' logs.txt
+
+    - if: ${{ failure() || success() }}
+      run: tail -n9999999 logs.txt ; echo >logs.txt
 
     - name: Ensure running the same command twice without modifications does not recompile anything
       run: |
         CARGOGREEN_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
-          cargo green -vv test --jobs=1 --all-targets --all-features --locked --frozen --offline 2>&1 | tee _
+          cargo green -vv test --jobs=1 --all-targets --all-features --locked --frozen --offline |& tee _
         cat _ | grep Finished | grep 0...s
         cat _ | grep Fresh
         ! cat _ | grep Compiling
@@ -307,7 +426,7 @@ jobs:
       run: |
         CARGOGREEN_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
-          cargo green -vv test --jobs=$(nproc) --all-targets --all-features --locked --frozen --offline 2>&1 | tee _
+          cargo green -vv test --jobs=$(nproc) --all-targets --all-features --locked --frozen --offline |& tee _
         cat _ | grep Finished | grep 0...s
         cat _ | grep Fresh
         ! cat _ | grep Compiling
@@ -354,16 +473,41 @@ jobs:
       run: |
         CARGOGREEN_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
-          cargo green -vv check --jobs=$(nproc) --all-targets --all-features --locked --frozen --offline
+          cargo green -vv check --jobs=$(nproc) --all-targets --all-features --locked --frozen --offline |& tee _
 
     - if: ${{ failure() || success() }}
-      run: cat logs.txt && echo >logs.txt
+      name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
+      run: |
+        ! grep -C20 -F "thread 'main' panicked at src/cargo/util/dependency_queue.rs:" _
+
+    - if: ${{ failure() || success() }}
+      name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
+      run: |
+        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' logs.txt
+
+    - if: ${{ failure() || success() }}
+      name: 🔴 =means=> there's some panic!s
+      run: |
+        ! grep -C20 -F ' panicked at ' logs.txt
+
+    - if: ${{ failure() || success() }}
+      name: 🔴 =means=> there's some BUGs
+      run: |
+        ! grep -C20 -F 'BUG: ' logs.txt
+
+    - if: ${{ failure() || success() }}
+      name: 🔴 =means=> here's relevant logs
+      run: |
+        ! grep -C20 -F ' >>> ' logs.txt
+
+    - if: ${{ failure() || success() }}
+      run: tail -n9999999 logs.txt ; echo >logs.txt
 
     - name: Ensure running the same command twice without modifications does not recompile anything
       run: |
         CARGOGREEN_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
-          cargo green -vv check --jobs=1 --all-targets --all-features --locked --frozen --offline 2>&1 | tee _
+          cargo green -vv check --jobs=1 --all-targets --all-features --locked --frozen --offline |& tee _
         cat _ | grep Finished | grep 0...s
         cat _ | grep Fresh
         ! cat _ | grep Compiling
@@ -410,10 +554,35 @@ jobs:
       run: |
         CARGOGREEN_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
-          CARGO_TARGET_DIR=~/cargo-package cargo green -vv package --jobs=1 --all-features --locked --frozen --offline
+          CARGO_TARGET_DIR=~/cargo-package cargo green -vv package --jobs=1 --all-features --locked --frozen --offline |& tee _
 
     - if: ${{ failure() || success() }}
-      run: cat logs.txt && echo >logs.txt
+      name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
+      run: |
+        ! grep -C20 -F "thread 'main' panicked at src/cargo/util/dependency_queue.rs:" _
+
+    - if: ${{ failure() || success() }}
+      name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
+      run: |
+        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' logs.txt
+
+    - if: ${{ failure() || success() }}
+      name: 🔴 =means=> there's some panic!s
+      run: |
+        ! grep -C20 -F ' panicked at ' logs.txt
+
+    - if: ${{ failure() || success() }}
+      name: 🔴 =means=> there's some BUGs
+      run: |
+        ! grep -C20 -F 'BUG: ' logs.txt
+
+    - if: ${{ failure() || success() }}
+      name: 🔴 =means=> here's relevant logs
+      run: |
+        ! grep -C20 -F ' >>> ' logs.txt
+
+    - if: ${{ failure() || success() }}
+      run: tail -n9999999 logs.txt ; echo >logs.txt
 
 
   clippy:
@@ -455,16 +624,41 @@ jobs:
       run: |
         CARGOGREEN_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
-          cargo green -vv clippy --jobs=1 --all-targets --all-features --locked --frozen --offline
+          cargo green -vv clippy --jobs=1 --all-targets --all-features --locked --frozen --offline |& tee _
 
     - if: ${{ failure() || success() }}
-      run: cat logs.txt && echo >logs.txt
+      name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
+      run: |
+        ! grep -C20 -F "thread 'main' panicked at src/cargo/util/dependency_queue.rs:" _
+
+    - if: ${{ failure() || success() }}
+      name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
+      run: |
+        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' logs.txt
+
+    - if: ${{ failure() || success() }}
+      name: 🔴 =means=> there's some panic!s
+      run: |
+        ! grep -C20 -F ' panicked at ' logs.txt
+
+    - if: ${{ failure() || success() }}
+      name: 🔴 =means=> there's some BUGs
+      run: |
+        ! grep -C20 -F 'BUG: ' logs.txt
+
+    - if: ${{ failure() || success() }}
+      name: 🔴 =means=> here's relevant logs
+      run: |
+        ! grep -C20 -F ' >>> ' logs.txt
+
+    - if: ${{ failure() || success() }}
+      run: tail -n9999999 logs.txt ; echo >logs.txt
 
     - name: Ensure running the same command twice without modifications does not recompile anything
       run: |
         CARGOGREEN_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
-          cargo green -vv clippy --jobs=$(nproc) --all-targets --all-features --locked --frozen --offline 2>&1 | tee _
+          cargo green -vv clippy --jobs=$(nproc) --all-targets --all-features --locked --frozen --offline |& tee _
         cat _ | grep Finished | grep 0...s
         ! cat _ | grep 'Compiling|Compiling'
         ! cat _ | grep 'DEBUG|INFO|WARN|ERROR'

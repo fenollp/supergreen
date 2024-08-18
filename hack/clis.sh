@@ -180,7 +180,32 @@ $(
       run: |
         CARGOGREEN_LOG=debug \\
         RUSTCBUILDX_LOG_PATH="\$PWD"/logs.txt \\
-          CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=$jobs --locked --force $(as_install "$name_at_version") $@
+          CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=$jobs --locked --force $(as_install "$name_at_version") $@ |& tee _
+
+    - if: \${{ failure() || success() }}
+      name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
+      run: |
+        ! grep -C20 -F "thread 'main' panicked at src/cargo/util/dependency_queue.rs:" _
+
+    - if: \${{ failure() || success() }}
+      name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
+      run: |
+        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' logs.txt
+
+    - if: \${{ failure() || success() }}
+      name: 🔴 =means=> there's some panic!s
+      run: |
+        ! grep -C20 -F ' panicked at ' logs.txt
+
+    - if: \${{ failure() || success() }}
+      name: 🔴 =means=> there's some BUGs
+      run: |
+        ! grep -C20 -F 'BUG: ' logs.txt
+
+    - if: \${{ failure() || success() }}
+      name: 🔴 =means=> here's relevant logs
+      run: |
+        ! grep -C20 -F ' >>> ' logs.txt
 
     - if: \${{ failure() || success() }}
       run: tail -n9999999 logs.txt ; echo >logs.txt
@@ -200,7 +225,7 @@ $(
       run: |
         CARGOGREEN_LOG=debug \\
         RUSTCBUILDX_LOG_PATH="\$PWD"/logs.txt \\
-          CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=$jobs --locked --force $(as_install "$name_at_version") $@ 2>&1 | tee _
+          CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=$jobs --locked --force $(as_install "$name_at_version") $@ |& tee _
 
     - if: \${{ failure() || success() }}
       run: tail -n9999999 logs.txt
