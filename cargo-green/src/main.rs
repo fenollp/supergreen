@@ -135,6 +135,7 @@ async fn main() -> Result<ExitCode> {
             // TODO: run cargo fetch + read lockfile + generate cratesio stages + build them cacheonly
             //   https://github.com/rustsec/rustsec/tree/main/cargo-lock
             // TODO: skip these stages (and any other "locked thing" stage) when building with --no-cache
+            todo!("BUG: this is never run") //=> fetch on first ever run!
         }
         // TODO: Skip this call for the ones not calling rustc
         Some(_) => {

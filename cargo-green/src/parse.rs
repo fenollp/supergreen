@@ -174,12 +174,6 @@ pub(crate) fn as_rustc(
         args.push(val);
     }
 
-    //assert_ne!(state.crate_type, "");
-    //assert_ne!(state.metadata, "");
-    //assert_ne!(state.input, "");
-    //assert_ne!(state.out_dir, "");
-    assert!(!state.incremental.as_ref().map(|x| x == "").unwrap_or_default()); // MAY be unset: only set on last calls
-
     // Can't rely on $PWD nor $CARGO_TARGET_DIR because `cargo` changes them.
     // Out dir though...
     // --out-dir "$CARGO_TARGET_DIR/$PROFILE"/build/rustix-2a01a00f5bdd1924
@@ -188,6 +182,10 @@ pub(crate) fn as_rustc(
         target_path
     } else if let Some(out_dir) = out_dir_var {
         // e.g. OUT_DIR=$HOME/work/supergreen/supergreen/target/debug/build/slab-94793bb2b78c57b5/out
+        // NOTE: ducktaping in the dark!
+        // We may as well get metadata from the input Rust file: $HOME/work/supergreen/supergreen/target/debug/build/slab-b0340a0384800aca/build-script-build
+        // TODO: decide which to use
+
         let mut out_dir = Utf8PathBuf::from(out_dir);
         assert_eq!(out_dir.file_name(), Some("out"));
         let exploded = out_dir.iter().rev().take(4).collect::<Vec<_>>();
@@ -208,6 +206,12 @@ pub(crate) fn as_rustc(
             (state.out_dir, out_dir_var)
         )
     };
+
+    //assert_ne!(state.crate_type, "");
+    assert_ne!(state.metadata, "");
+    //assert_ne!(state.input, "");
+    //assert_ne!(state.out_dir, "");
+    assert!(!state.incremental.as_ref().map(|x| x == "").unwrap_or_default()); // MAY be unset: only set on last calls
 
     Ok((state, args))
 }
