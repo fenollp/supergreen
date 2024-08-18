@@ -1,6 +1,7 @@
 use std::{
     collections::{BTreeMap, BTreeSet, VecDeque},
     env,
+    ffi::OsString,
     fs::{self, File},
     future::Future,
     io::{BufRead, BufReader, ErrorKind},
@@ -458,7 +459,35 @@ async fn do_wrap_rustc(
 
         log::info!(target: &krate, "copying all {}files under {pwd} to {cwd_path}", if pwd.join(".git").is_dir() { "git " } else { "" });
 
-        copy_dir_all(&pwd, cwd_path)?;
+        if pwd.join(".git").is_dir() {
+            use std::io::empty;
+
+            use gitoxide_core::{
+                repository::index::{entries as ls_files, entries::Options},
+                OutputFormat,
+            };
+            use gix::discover;
+
+            // TODO: https://github.com/Byron/gitoxide/discussions/1525
+            let repo = discover(&pwd).map_err(|e| anyhow!("Failed git-ing dir {pwd}: {e}"))?;
+            let opts = Options {
+                attributes: None,
+                format: OutputFormat::Human,
+                recurse_submodules: true,
+                simple: true,
+                statistics: false,
+            };
+            let mut stdout = vec![];
+            ls_files(repo, vec![], &mut stdout, empty(), opts)
+                .map_err(|e| anyhow!("Failed `git ls-files` {pwd}: {e}"))?;
+            let stdout =
+                String::from_utf8(stdout).map_err(|e| anyhow!("Failed parsing stdout: {e}"))?;
+            let only = stdout.lines().map(OsString::from).collect::<BTreeSet<_>>();
+
+            copy_dir_only(&pwd, &only, cwd_path.as_ref())?;
+        } else {
+            copy_dir_all(&pwd, cwd_path)?;
+        }
 
         // TODO: --mount=bind each file one by one => drop temp dir ctx (needs [multiple] `mkdir -p`[s] first though)
         // This doesn't work: rustc_block.push_str(&format!("  --mount=type=bind,from=cwd,target={pwd} \\\n"));
@@ -780,6 +809,26 @@ fn crate_out_name(name: &str) -> String {
         .map(|(_, x)| x)
         .map(|x| format!("crate_out-{x}"))
         .expect("PROOF: suffix is /out")
+}
+
+fn copy_dir_only(
+    pwd: impl AsRef<Path>,
+    only: &BTreeSet<OsString>, // paths relative to pwd
+    dst: &Path,
+) -> Result<()> {
+    if dst.exists() {
+        return Ok(());
+    }
+    for fname in only {
+        let dst = dst.join(fname);
+        let mut dst_dir = dst.clone();
+        dst_dir.pop();
+        fs::create_dir_all(&dst_dir).map_err(|e| anyhow!("Failed `mkdir -p {dst_dir:?}`: {e}"))?;
+        let src = pwd.as_ref().join(fname);
+        fs::copy(&src, &dst)
+            .map_err(|e| anyhow!("Failed `cp {src:?} {dst:?}` ({:?}): {e}", src.metadata()))?;
+    }
+    Ok(())
 }
 
 fn copy_dir_all(src: impl AsRef<Path>, dst: impl AsRef<Path>) -> Result<()> {
