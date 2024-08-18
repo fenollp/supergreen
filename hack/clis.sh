@@ -178,7 +178,7 @@ $(
 
     - name: cargo install net=ON cache=OFF remote=OFF jobs=$jobs
       run: |
-        RUSTCBUILDX_LOG=debug \\
+        CARGOGREEN_LOG=debug \\
         RUSTCBUILDX_LOG_PATH="\$PWD"/logs.txt \\
           CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=$jobs --locked --force $(as_install "$name_at_version") $@
 
@@ -198,7 +198,7 @@ $(
 
     - name: cargo install net=ON cache=ON remote=OFF jobs=$jobs
       run: |
-        RUSTCBUILDX_LOG=debug \\
+        CARGOGREEN_LOG=debug \\
         RUSTCBUILDX_LOG_PATH="\$PWD"/logs.txt \\
           CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=$jobs --locked --force $(as_install "$name_at_version") $@ 2>&1 | tee _
 
@@ -292,7 +292,7 @@ set -x
     echo "Target dir: $tmptrgt"
     echo "Logs: $tmplogs"
     xdg-terminal-exec tail -f $tmplogs
-    RUSTCBUILDX_LOG=debug \
+    CARGOGREEN_LOG=debug \
     RUSTCBUILDX_LOG_PATH="$tmplogs" \
     RUSTCBUILDX_CACHE_IMAGE="${RUSTCBUILDX_CACHE_IMAGE:-}" \
     PATH=/tmp/crggreen/bin:"$PATH" \
@@ -352,7 +352,7 @@ tmux split-window
 send \
   'until' '[[' -f "$tmpgooo".installed ']];' \
   'do' sleep '.1;' 'done' '&&' rm "$tmpgooo".* '&&' \
-  RUSTCBUILDX_LOG=debug \
+  CARGOGREEN_LOG=debug \
   RUSTCBUILDX_LOG_PATH="$tmplogs" \
   RUSTCBUILDX_CACHE_IMAGE="${RUSTCBUILDX_CACHE_IMAGE:-}" \
   PATH=/tmp/crggreen/bin:"$PATH" \

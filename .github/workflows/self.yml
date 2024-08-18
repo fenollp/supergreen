@@ -71,7 +71,7 @@ jobs:
 
     - name: cargo install net=ON cache=OFF remote=OFF jobs=1
       run: |
-        export RUSTCBUILDX_LOG=debug
+        export CARGOGREEN_LOG=debug
         export RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt
         export CARGO_TARGET_DIR=~/instst
         if ! cargo green -vv install --jobs=1 --locked --force --path=./cargo-green; then
@@ -117,7 +117,7 @@ jobs:
 
     - name: cargo audit net=ON cache=OFF remote=OFF
       run: |
-        export RUSTCBUILDX_LOG=debug
+        export CARGOGREEN_LOG=debug
         export RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt
         if ! cargo green -vv audit; then
           cat logs.txt
@@ -162,7 +162,7 @@ jobs:
 
     - name: cargo +nightly green udeps --all-targets --jobs=1 cache=OFF remote=OFF
       run: |
-        export RUSTCBUILDX_LOG=debug
+        export CARGOGREEN_LOG=debug
         export RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt
         if ! cargo +nightly green udeps --all-targets --jobs=1; then
           cat logs.txt
@@ -171,7 +171,7 @@ jobs:
 
     - name: cargo green +nightly udeps --all-targets --jobs=1 cache=ON remote=OFF
       run: |
-        export RUSTCBUILDX_LOG=debug
+        export CARGOGREEN_LOG=debug
         export RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt
         if ! cargo green +nightly udeps --all-targets --jobs=1; then
           cat logs.txt
@@ -214,7 +214,7 @@ jobs:
 
     - name: cargo build net=OFF cache=OFF remote=OFF jobs=1
       run: |
-        RUSTCBUILDX_LOG=debug \
+        CARGOGREEN_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
           cargo green -vv build --jobs=1 --all-targets --all-features --locked --frozen --offline
 
@@ -223,7 +223,7 @@ jobs:
 
     - name: Ensure running the same command twice without modifications does not recompile anything
       run: |
-        RUSTCBUILDX_LOG=debug \
+        CARGOGREEN_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
           cargo green -vv build --jobs=1 --all-targets --all-features --locked --frozen --offline 2>&1 | tee _
         cat _ | grep Finished | grep 0...s
@@ -236,7 +236,7 @@ jobs:
 
     - name: Ensure running the same command twice without modifications does not recompile anything (jobs>1)
       run: |
-        RUSTCBUILDX_LOG=debug \
+        CARGOGREEN_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
           cargo green -vv build --jobs=$(nproc) --all-targets --all-features --locked --frozen --offline 2>&1 | tee _
         cat _ | grep Finished | grep 0...s
@@ -283,7 +283,7 @@ jobs:
 
     - name: cargo test net=OFF cache=OFF remote=OFF jobs=1
       run: |
-        RUSTCBUILDX_LOG=debug \
+        CARGOGREEN_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
           cargo green -vv test --jobs=1 --all-targets --all-features --locked --frozen --offline
 
@@ -292,7 +292,7 @@ jobs:
 
     - name: Ensure running the same command twice without modifications does not recompile anything
       run: |
-        RUSTCBUILDX_LOG=debug \
+        CARGOGREEN_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
           cargo green -vv test --jobs=1 --all-targets --all-features --locked --frozen --offline 2>&1 | tee _
         cat _ | grep Finished | grep 0...s
@@ -305,7 +305,7 @@ jobs:
 
     - name: Ensure running the same command twice without modifications does not recompile anything (jobs>1)
       run: |
-        RUSTCBUILDX_LOG=debug \
+        CARGOGREEN_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
           cargo green -vv test --jobs=$(nproc) --all-targets --all-features --locked --frozen --offline 2>&1 | tee _
         cat _ | grep Finished | grep 0...s
@@ -352,7 +352,7 @@ jobs:
 
     - name: cargo check net=OFF cache=OFF remote=OFF jobs=$(nproc)
       run: |
-        RUSTCBUILDX_LOG=debug \
+        CARGOGREEN_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
           cargo green -vv check --jobs=$(nproc) --all-targets --all-features --locked --frozen --offline
 
@@ -361,7 +361,7 @@ jobs:
 
     - name: Ensure running the same command twice without modifications does not recompile anything
       run: |
-        RUSTCBUILDX_LOG=debug \
+        CARGOGREEN_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
           cargo green -vv check --jobs=1 --all-targets --all-features --locked --frozen --offline 2>&1 | tee _
         cat _ | grep Finished | grep 0...s
@@ -408,7 +408,7 @@ jobs:
 
     - name: cargo package net=OFF cache=OFF remote=OFF jobs=1
       run: |
-        RUSTCBUILDX_LOG=debug \
+        CARGOGREEN_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
           CARGO_TARGET_DIR=~/cargo-package cargo green -vv package --jobs=1 --all-features --locked --frozen --offline
 
@@ -453,7 +453,7 @@ jobs:
 
     - name: cargo clippy net=OFF cache=OFF remote=OFF jobs=1
       run: |
-        RUSTCBUILDX_LOG=debug \
+        CARGOGREEN_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
           cargo green -vv clippy --jobs=1 --all-targets --all-features --locked --frozen --offline
 
@@ -462,7 +462,7 @@ jobs:
 
     - name: Ensure running the same command twice without modifications does not recompile anything
       run: |
-        RUSTCBUILDX_LOG=debug \
+        CARGOGREEN_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
           cargo green -vv clippy --jobs=$(nproc) --all-targets --all-features --locked --frozen --offline 2>&1 | tee _
         cat _ | grep Finished | grep 0...s

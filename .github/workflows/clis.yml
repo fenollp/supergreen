@@ -102,7 +102,7 @@ jobs:
 
     - name: cargo install net=ON cache=OFF remote=OFF jobs=1
       run: |
-        RUSTCBUILDX_LOG=debug \
+        CARGOGREEN_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
           CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=1 --locked --force buildxargs --git https://github.com/fenollp/buildxargs.git
 
@@ -122,7 +122,7 @@ jobs:
 
     - name: cargo install net=ON cache=ON remote=OFF jobs=1
       run: |
-        RUSTCBUILDX_LOG=debug \
+        CARGOGREEN_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
           CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=1 --locked --force buildxargs --git https://github.com/fenollp/buildxargs.git 2>&1 | tee _
 
@@ -212,7 +212,7 @@ jobs:
 
     - name: cargo install net=ON cache=OFF remote=OFF jobs=3
       run: |
-        RUSTCBUILDX_LOG=debug \
+        CARGOGREEN_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
           CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=3 --locked --force buildxargs --git https://github.com/fenollp/buildxargs.git
 
@@ -232,7 +232,7 @@ jobs:
 
     - name: cargo install net=ON cache=ON remote=OFF jobs=3
       run: |
-        RUSTCBUILDX_LOG=debug \
+        CARGOGREEN_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
           CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=3 --locked --force buildxargs --git https://github.com/fenollp/buildxargs.git 2>&1 | tee _
 
@@ -322,7 +322,7 @@ jobs:
 
     - name: cargo install net=ON cache=OFF remote=OFF jobs=1
       run: |
-        RUSTCBUILDX_LOG=debug \
+        CARGOGREEN_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
           CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=1 --locked --force cargo-llvm-cov@0.5.36 
 
@@ -342,7 +342,7 @@ jobs:
 
     - name: cargo install net=ON cache=ON remote=OFF jobs=1
       run: |
-        RUSTCBUILDX_LOG=debug \
+        CARGOGREEN_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
           CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=1 --locked --force cargo-llvm-cov@0.5.36  2>&1 | tee _
 
@@ -432,7 +432,7 @@ jobs:
 
     - name: cargo install net=ON cache=OFF remote=OFF jobs=1
       run: |
-        RUSTCBUILDX_LOG=debug \
+        CARGOGREEN_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
           CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=1 --locked --force cross@0.2.5 --git https://github.com/cross-rs/cross.git --tag=v0.2.5 cross
 
@@ -452,7 +452,7 @@ jobs:
 
     - name: cargo install net=ON cache=ON remote=OFF jobs=1
       run: |
-        RUSTCBUILDX_LOG=debug \
+        CARGOGREEN_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
           CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=1 --locked --force cross@0.2.5 --git https://github.com/cross-rs/cross.git --tag=v0.2.5 cross 2>&1 | tee _
 
@@ -542,7 +542,7 @@ jobs:
 
     - name: cargo install net=ON cache=OFF remote=OFF jobs=3
       run: |
-        RUSTCBUILDX_LOG=debug \
+        CARGOGREEN_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
           CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=3 --locked --force cross@0.2.5 --git https://github.com/cross-rs/cross.git --tag=v0.2.5 cross
 
@@ -562,7 +562,7 @@ jobs:
 
     - name: cargo install net=ON cache=ON remote=OFF jobs=3
       run: |
-        RUSTCBUILDX_LOG=debug \
+        CARGOGREEN_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
           CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=3 --locked --force cross@0.2.5 --git https://github.com/cross-rs/cross.git --tag=v0.2.5 cross 2>&1 | tee _
 
@@ -652,7 +652,7 @@ jobs:
 
     - name: cargo install net=ON cache=OFF remote=OFF jobs=1
       run: |
-        RUSTCBUILDX_LOG=debug \
+        CARGOGREEN_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
           CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=1 --locked --force hickory-dns@0.25.0-alpha.1 --features=dns-over-rustls
 
@@ -672,7 +672,7 @@ jobs:
 
     - name: cargo install net=ON cache=ON remote=OFF jobs=1
       run: |
-        RUSTCBUILDX_LOG=debug \
+        CARGOGREEN_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
           CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=1 --locked --force hickory-dns@0.25.0-alpha.1 --features=dns-over-rustls 2>&1 | tee _
 
@@ -762,7 +762,7 @@ jobs:
 
     - name: cargo install net=ON cache=OFF remote=OFF jobs=3
       run: |
-        RUSTCBUILDX_LOG=debug \
+        CARGOGREEN_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
           CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=3 --locked --force hickory-dns@0.25.0-alpha.1 --features=dns-over-rustls
 
@@ -782,7 +782,7 @@ jobs:
 
     - name: cargo install net=ON cache=ON remote=OFF jobs=3
       run: |
-        RUSTCBUILDX_LOG=debug \
+        CARGOGREEN_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
           CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=3 --locked --force hickory-dns@0.25.0-alpha.1 --features=dns-over-rustls 2>&1 | tee _
 
@@ -872,7 +872,7 @@ jobs:
 
     - name: cargo install net=ON cache=OFF remote=OFF jobs=1
       run: |
-        RUSTCBUILDX_LOG=debug \
+        CARGOGREEN_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
           CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=1 --locked --force qcow2-rs@0.1.2 
 
@@ -892,7 +892,7 @@ jobs:
 
     - name: cargo install net=ON cache=ON remote=OFF jobs=1
       run: |
-        RUSTCBUILDX_LOG=debug \
+        CARGOGREEN_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
           CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=1 --locked --force qcow2-rs@0.1.2  2>&1 | tee _
 
@@ -982,7 +982,7 @@ jobs:
 
     - name: cargo install net=ON cache=OFF remote=OFF jobs=3
       run: |
-        RUSTCBUILDX_LOG=debug \
+        CARGOGREEN_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
           CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=3 --locked --force qcow2-rs@0.1.2 
 
@@ -1002,7 +1002,7 @@ jobs:
 
     - name: cargo install net=ON cache=ON remote=OFF jobs=3
       run: |
-        RUSTCBUILDX_LOG=debug \
+        CARGOGREEN_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
           CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=3 --locked --force qcow2-rs@0.1.2  2>&1 | tee _
 
@@ -1092,7 +1092,7 @@ jobs:
 
     - name: cargo install net=ON cache=OFF remote=OFF jobs=1
       run: |
-        RUSTCBUILDX_LOG=debug \
+        CARGOGREEN_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
           CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=1 --locked --force ripgrep@14.1.0 
 
@@ -1112,7 +1112,7 @@ jobs:
 
     - name: cargo install net=ON cache=ON remote=OFF jobs=1
       run: |
-        RUSTCBUILDX_LOG=debug \
+        CARGOGREEN_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
           CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=1 --locked --force ripgrep@14.1.0  2>&1 | tee _
 
@@ -1202,7 +1202,7 @@ jobs:
 
     - name: cargo install net=ON cache=OFF remote=OFF jobs=3
       run: |
-        RUSTCBUILDX_LOG=debug \
+        CARGOGREEN_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
           CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=3 --locked --force ripgrep@14.1.0 
 
@@ -1222,7 +1222,7 @@ jobs:
 
     - name: cargo install net=ON cache=ON remote=OFF jobs=3
       run: |
-        RUSTCBUILDX_LOG=debug \
+        CARGOGREEN_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
           CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=3 --locked --force ripgrep@14.1.0  2>&1 | tee _
 
@@ -1312,7 +1312,7 @@ jobs:
 
     - name: cargo install net=ON cache=OFF remote=OFF jobs=1
       run: |
-        RUSTCBUILDX_LOG=debug \
+        CARGOGREEN_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
           CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=1 --locked --force vixargs@0.1.0 
 
@@ -1332,7 +1332,7 @@ jobs:
 
     - name: cargo install net=ON cache=ON remote=OFF jobs=1
       run: |
-        RUSTCBUILDX_LOG=debug \
+        CARGOGREEN_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
           CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=1 --locked --force vixargs@0.1.0  2>&1 | tee _
 
@@ -1422,7 +1422,7 @@ jobs:
 
     - name: cargo install net=ON cache=OFF remote=OFF jobs=3
       run: |
-        RUSTCBUILDX_LOG=debug \
+        CARGOGREEN_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
           CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=3 --locked --force vixargs@0.1.0 
 
@@ -1442,7 +1442,7 @@ jobs:
 
     - name: cargo install net=ON cache=ON remote=OFF jobs=3
       run: |
-        RUSTCBUILDX_LOG=debug \
+        CARGOGREEN_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
           CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=3 --locked --force vixargs@0.1.0  2>&1 | tee _
 
