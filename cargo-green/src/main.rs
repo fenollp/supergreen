@@ -115,9 +115,13 @@ async fn main() -> Result<ExitCode> {
 
         // https://rust-lang.github.io/rustup/overrides.html#toolchain-override-shorthand
         if let Some(toolchain) = arg.strip_prefix('+') {
+            let var = "RUSTUP_TOOLCHAIN";
+            if let Ok(val) = env::var(var) {
+                println!("Overriding {var}={val:?} to {toolchain:?} for `{PKG} +toolchain`");
+            }
             // Special handling: call was `cargo green +toolchain ..` (probably from `alias cargo='cargo green'`).
             // Normally, calls look like `cargo +toolchain green ..` but let's simplify alias creation!
-            env::set_var("RUSTUP_TOOLCHAIN", toolchain); // Informs `rustc -vV` when deciding base_image()
+            env::set_var(var, toolchain); // Informs `rustc -vV` when deciding base_image()
         } else {
             cmd.arg(&arg);
         }

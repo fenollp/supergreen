@@ -34,6 +34,7 @@ pub(crate) fn runner_cmd() -> Command {
     cmd.kill_on_drop(true);
     cmd.stdin(Stdio::null());
     cmd.arg("--debug");
+    // TODO: use env_clear https://docs.rs/tokio/latest/tokio/process/struct.Command.html#method.env_clear
     cmd
 }
 
