@@ -215,7 +215,13 @@ async fn setup_for_build(cmd: &mut Command) -> Result<()> {
     // RUSTCBUILDX_LOG_STYLE
     cmd.env(internal::RUSTCBUILDX_RUNNER, runner());
 
-    // FIXME https://github.com/docker/buildx/issues/2564
+    // FIXME https://github.com/docker/buildx/issues/2564#issuecomment-2207435201
+    // https://linuxhandbook.com/docker-remote-access/
+    // https://thenewstack.io/connect-to-remote-docker-machines-with-docker-context/
+    // https://www.cyberciti.biz/faq/linux-unix-reuse-openssh-connection/
+    // https://github.com/moby/buildkit/issues/4268#issuecomment-2128464135
+    // https://github.com/moby/buildkit/blob/v0.15.1/session/sshforward/sshprovider/agentprovider.go#L119
+
     // https://docs.docker.com/build/building/variables/#buildx_builder
     if let Ok(ctx) = env::var("DOCKER_HOST") {
         eprintln!("$DOCKER_HOST is set to {ctx:?}");
