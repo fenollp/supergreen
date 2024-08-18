@@ -62,21 +62,20 @@ async fn fallible_main(
         argv.into_iter().collect()
     };
 
-    match argz[..] {
-        [rustc, "--crate-name", crate_name, ..] =>
+    // TODO: find a better heuristic to ensure `rustc` is rustc
+    match &argz[..] {
+        [rustc, "--crate-name", crate_name, ..] if rustc.ends_with("rustc") =>
              wrap_rustc(crate_name, argv(1), call_rustc(rustc, argv(1))).await,
-        [rustc, "-", ..] =>
-             call_rustc(rustc, argv(1)).await,
-        [rustc, "-vV", ..] =>
-             call_rustc(rustc, argv(1)).await,
-        [_driver, rustc, "-vV", ..] =>
-             call_rustc(rustc, argv(2)).await,
-        [driver, _rustc, "-"|"--crate-name", ..] => {
+        [driver, rustc, "-"|"--crate-name", ..] if rustc.ends_with("rustc") => {
             // TODO: wrap driver? + rustc
-            // driver: e.g. /home/maison/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/clippy-driver
+            // driver: e.g. $RUSTUP_HOME/toolchains/stable-x86_64-unknown-linux-gnu/bin/clippy-driver
             // cf. https://github.com/rust-lang/rust-clippy/tree/da27c979e29e78362b7a2a91ebcf605cb01da94c#using-clippy-driver
              call_rustc(driver, argv(2)).await
          }
+        [_driver, rustc, ..] if rustc.ends_with("rustc") =>
+             call_rustc(rustc, argv(2)).await,
+        [rustc, ..] if rustc.ends_with("rustc") =>
+             call_rustc(rustc, argv(1)).await,
         _ => panic!("RUSTC_WRAPPER={arg0:?}'s input unexpected:\n\targz = {argz:?}\n\targs = {args:?}\n\tenvs = {vars:?}\n"),
     }
 }
@@ -381,11 +380,11 @@ async fn do_wrap_rustc(
             // TODO: create a stage from sources where able (public repos) use --secret mounts for private deps (and secret direct artifacts)
             // TODO=> make sense of git origin file://$CARGO_HOME/git/db/rustc-version-rs-de99f49481c38c43
 
-            // env is set: CARGO_MANIFEST_DIR="/home/pete/.cargo/git/checkouts/rustc-version-rs-de99f49481c38c43/48cf99e"
+            // env is set: CARGO_MANIFEST_DIR="$CARGO_HOME/git/checkouts/rustc-version-rs-de99f49481c38c43/48cf99e"
             // => commit
             // env is set: CARGO_PKG_REPOSITORY="https://github.com/djc/rustc-version-rs"
             // => url
-            // copying all git files under /home/pete/.cargo/git/checkouts/rustc-version-rs-de99f49481c38c43/48cf99e to /tmp/cargo-green_0.7.0/CWD2ee709abf3a7f0b4
+            // copying all git files under $CARGO_HOME/git/checkouts/rustc-version-rs-de99f49481c38c43/48cf99e to /tmp/cargo-green_0.7.0/CWD2ee709abf3a7f0b4
             // loading "cwd-2ee709abf3a7f0b4": /tmp/cargo-green_0.7.0/CWD2ee709abf3a7f0b4
 
             input
