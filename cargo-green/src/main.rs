@@ -147,18 +147,20 @@ async fn main() -> Result<ExitCode> {
 
 async fn setup_for_build(cmd: &mut Command) -> Result<()> {
     // TODO read package.metadata.green
+    // https://lib.rs/crates/cargo_metadata
+    // https://github.com/stormshield/cargo-ft/blob/d4ba5b048345ab4b21f7992cc6ed12afff7cc863/src/package/metadata.rs
     // TODO: TUI above cargo output (? https://docs.rs/prodash )
 
     if let Ok(log) = env::var("CARGOGREEN_LOG") {
-        let path = "/tmp/cargo-green.log";
+        let mut val = String::new();
         for (var, def) in [
-            //
             (internal::RUSTCBUILDX_LOG, log),
-            (internal::RUSTCBUILDX_LOG_PATH, path.to_owned()),
+            (internal::RUSTCBUILDX_LOG_PATH, "/tmp/cargo-green.log".to_owned()), // last
         ] {
-            cmd.env(var, env::var(var).unwrap_or(def.to_owned()));
-            let _ = OpenOptions::new().create(true).truncate(false).append(true).open(path);
+            val = env::var(var).unwrap_or(def.to_owned());
+            cmd.env(var, &val);
         }
+        let _ = OpenOptions::new().create(true).truncate(false).append(true).open(val);
     }
 
     // RUSTCBUILDX is handled by `rustcbuildx`
