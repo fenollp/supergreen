@@ -121,8 +121,8 @@ pub(crate) struct DockerfileStage {
 
 #[inline]
 #[must_use]
-fn dec(#[allow(clippy::ptr_arg)] x: &String) -> u64 {
-    u64::from_str_radix(x, 16).expect("16-digit hex str")
+fn dec(x: impl AsRef<str>) -> u64 {
+    u64::from_str_radix(x.as_ref(), 16).expect("16-digit hex str")
 }
 
 #[inline]
