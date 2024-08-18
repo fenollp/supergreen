@@ -36,7 +36,7 @@ log = "0,>=0.4"
 nutype = "0,>=0.4"
 pretty_assertions = "1"
 reqwest = { version = "0.12", default-features = false, features = ["rustls-tls"] }
-rustc_version = { git = "https://github.com/fenollp/rustc-version-rs.git", branch = "RUSTUP_TOOLCHAIN" } # TODO: whence https://github.com/djc/rustc-version-rs/pull/47
+rustc_version = "0,>=0.4"
 rustflags = "0,>=0.1"
 serde = { version = "1", features = ["derive"] }
 serde-jsonlines = { version = "0,>=0.6", features = ["async"] }
