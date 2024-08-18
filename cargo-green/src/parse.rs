@@ -776,7 +776,7 @@ mod tests {
                 externs: [].into(),
                 metadata: "94793bb2b78c57b5".to_owned(),
                 incremental: None,
-                input: "$HOME/work/supergreen/supergreen/target/debug/build/slab-b0340a0384800aca/build-script-build".into(),
+                input: "".into(),
                 out_dir: "".into(),
                 target_path: "$HOME/work/supergreen/supergreen/target/debug".into(),
             }
