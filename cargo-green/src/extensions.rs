@@ -8,11 +8,18 @@ pub(crate) trait Popped: Clone {
         for _ in 0..times {
             assert!(self.pop());
         }
-        self.clone()
+        self.to_owned()
     }
 }
 
 impl Popped for camino::Utf8PathBuf {
+    #[must_use]
+    fn pop(&mut self) -> bool {
+        self.pop()
+    }
+}
+
+impl Popped for std::path::PathBuf {
     #[must_use]
     fn pop(&mut self) -> bool {
         self.pop()

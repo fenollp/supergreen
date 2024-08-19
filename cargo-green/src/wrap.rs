@@ -19,10 +19,9 @@ use crate::{
     cli::exit_code,
     cratesio::{from_cratesio_input_path, into_stage},
     envs::{self, base_image, internal, maybe_log, pass_env, runner, syntax, this},
-    extensions::ShowCmd,
+    extensions::{Popped, ShowCmd},
     md::{BuildContext, Md},
-    parse,
-    parse::RustcArgs,
+    parse::{self, RustcArgs},
     runner::{build, MARK_STDERR, MARK_STDOUT},
     stage::Stage,
     PKG, REPO, VSN,
@@ -62,21 +61,20 @@ async fn fallible_main(
         argv.into_iter().collect()
     };
 
-    match argz[..] {
-        [rustc, "--crate-name", crate_name, ..] =>
+    // TODO: find a better heuristic to ensure `rustc` is rustc
+    match &argz[..] {
+        [rustc, "--crate-name", crate_name, ..] if rustc.ends_with("rustc") =>
              wrap_rustc(crate_name, argv(1), call_rustc(rustc, argv(1))).await,
-        [rustc, "-", ..] =>
-             call_rustc(rustc, argv(1)).await,
-        [rustc, "-vV", ..] =>
-             call_rustc(rustc, argv(1)).await,
-        [_driver, rustc, "-vV", ..] =>
-             call_rustc(rustc, argv(2)).await,
-        [driver, _rustc, "-"|"--crate-name", ..] => {
+        [driver, rustc, "-"|"--crate-name", ..] if rustc.ends_with("rustc") => {
             // TODO: wrap driver? + rustc
-            // driver: e.g. /home/maison/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/clippy-driver
+            // driver: e.g. $RUSTUP_HOME/toolchains/stable-x86_64-unknown-linux-gnu/bin/clippy-driver
             // cf. https://github.com/rust-lang/rust-clippy/tree/da27c979e29e78362b7a2a91ebcf605cb01da94c#using-clippy-driver
              call_rustc(driver, argv(2)).await
          }
+        [_driver, rustc, ..] if rustc.ends_with("rustc") =>
+             call_rustc(rustc, argv(2)).await,
+        [rustc, ..] if rustc.ends_with("rustc") =>
+             call_rustc(rustc, argv(1)).await,
         _ => panic!("RUSTC_WRAPPER={arg0:?}'s input unexpected:\n\targz = {argz:?}\n\targs = {args:?}\n\tenvs = {vars:?}\n"),
     }
 }
@@ -196,16 +194,31 @@ async fn do_wrap_rustc(
     let crate_id = full_krate_id.replace('|', "-");
 
     // NOTE: not `out_dir`
-    let crate_out =
-        out_dir_var.and_then(|x| x.ends_with("/out").then_some(x)).and_then(|crate_out| {
+    let crate_out = if let Some(crate_out) = out_dir_var {
+        if crate_out.ends_with("/out") {
             log::info!(target: &krate, "listing (RO) crate_out contents {crate_out}");
-            let Ok(listing) = fs::read_dir(&crate_out) else { return None };
+            let listing = fs::read_dir(&crate_out)
+                .map_err(|e| anyhow!("Failed reading crate_out dir {crate_out}: {e}"))?;
             let listing = listing
                 .map_while(Result::ok)
                 .inspect(|x| log::info!(target: &krate, "contains {x:?}"))
                 .count();
-            (listing != 0).then_some(crate_out) // crate_out dir empty => mount can be dropped
-        });
+            // crate_out dir empty => mount can be dropped
+            if listing != 0 {
+                let ignore = Utf8PathBuf::from(&crate_out).popped(1).join(".dockerignore");
+                fs::write(&ignore, "")
+                    .map_err(|e| anyhow!("Failed creating crate_out dockerignore {ignore}: {e}"))?;
+
+                Some(crate_out)
+            } else {
+                None
+            }
+        } else {
+            None
+        }
+    } else {
+        None
+    };
 
     // https://github.com/rust-lang/cargo/issues/12059#issuecomment-1537457492
     //   https://github.com/rust-lang/rust/issues/63012 : Tracking issue for -Z binary-dep-depinfo
@@ -221,7 +234,6 @@ async fn do_wrap_rustc(
     // * so passing data from cargo-green to wrapper cannot be interrupted/manipulated
     // * so RUSTCBUILDX_ envs turn into only CARGOGREEN_ envs?
     // * so config is driven only by cargo-green
-    // * so we can drop this kind of ducktape:
     md.push_block(
         &Stage::try_new(RUST).expect("rust stage"),
         if let Ok(base_block) = env::var("RUSTCBUILDX_BASE_IMAGE_BLOCK_") {
@@ -357,14 +369,32 @@ async fn do_wrap_rustc(
 
         let rustc_stage = Stage::try_new(format!("dep-{crate_id}-{cratesio_index}"))?;
         (Some((cratesio_stage, Some(src), dst)), rustc_stage)
-    } else if input.is_relative() {
-        // Input is local, non-public code
+    } else {
+        // Input is local code
 
-        let rustc_stage = input.to_string().replace(['/', '.'], "-");
+        let rustc_stage = if input.is_relative() {
+            &input
+        } else {
+            // e.g. $CARGO_HOME/git/checkouts/rustc-version-rs-de99f49481c38c43/48cf99e/src/lib.rs
+            // TODO: create a stage from sources where able (public repos) use --secret mounts for private deps (and secret direct artifacts)
+            // TODO=> make sense of git origin file://$CARGO_HOME/git/db/rustc-version-rs-de99f49481c38c43
+
+            // env is set: CARGO_MANIFEST_DIR="$CARGO_HOME/git/checkouts/rustc-version-rs-de99f49481c38c43/48cf99e"
+            // => commit
+            // env is set: CARGO_PKG_REPOSITORY="https://github.com/djc/rustc-version-rs"
+            // => url
+            // copying all git files under $CARGO_HOME/git/checkouts/rustc-version-rs-de99f49481c38c43/48cf99e to /tmp/cargo-green_0.7.0/CWD2ee709abf3a7f0b4
+            // loading "cwd-2ee709abf3a7f0b4": /tmp/cargo-green_0.7.0/CWD2ee709abf3a7f0b4
+
+            input
+                .strip_prefix(&pwd)
+                .map_err(|e| anyhow!("BUG: unexpected input {input:?} ({e})"))?
+        }
+        .to_string()
+        .replace(['/', '.'], "-");
+
         let rustc_stage = Stage::try_new(format!("cwd-{crate_id}-{rustc_stage}"))?;
         (None, rustc_stage)
-    } else {
-        bail!("Unexpected input file {input:?}")
     };
     log::info!(target: &krate, "picked {rustc_stage} for {input}");
 
@@ -400,11 +430,6 @@ async fn do_wrap_rustc(
     rustc_block.push_str("  RUSTCBUILDX=1\n");
 
     let cwd = if let Some((name, src, target)) = input_mount.as_ref() {
-        // Reuse previous contexts
-
-        // TODO: WORKDIR was removed as it changed during a single `cargo build`
-        // Looks like removing it isn't an issue, however we need more testing.
-        // rustc_block.push_str(&format!("WORKDIR {pwd}\n"));
         rustc_block.push_str("RUN \\\n");
         rustc_block.push_str(&format!(
             "  --mount=type=bind,from={name}{source},target={target} \\\n",
@@ -413,34 +438,29 @@ async fn do_wrap_rustc(
 
         None
     } else {
-        // Save/send local workspace
+        // NOTE: we don't `rm -rf cwd_root`
+        let cwd_root = env::temp_dir().join(format!("{PKG}_{VSN}"));
+        fs::create_dir_all(&cwd_root)
+            .map_err(|e| anyhow!("Failed `mkdir -p {cwd_root:?}`: {e}"))?;
 
-        if (input.is_relative(), input.as_str().ends_with(".rs")) != (true, true) {
-            // TODO: drop
-            // note .as_str() is to use &str's ends_with
-            bail!("BUG: unexpected input={input:?}")
-        }
+        let ignore = cwd_root.join(".dockerignore");
+        fs::write(&ignore, "")
+            .map_err(|e| anyhow!("Failed creating cwd dockerignore {ignore:?}: {e}"))?;
 
-        // TODO: try just bind mount instead of copying to a tmpdir
-        // TODO: --build-arg BUILDKIT_CONTEXT_KEEP_GIT_DIR=0 https://docs.docker.com/engine/reference/builder/#buildkit-built-in-build-args
-        // TODO: try filtering out CARGO_TARGET_DIR also
-        // https://docs.docker.com/language/rust/develop/
-        // RUN --mount=type=bind,source=src,target=src \
-        //     --mount=type=bind,source=Cargo.toml,target=Cargo.toml \
-        //     --mount=type=bind,source=Cargo.lock,target=Cargo.lock \
-
-        let cwd = env::temp_dir().join(&metadata);
-        fs::create_dir_all(&cwd).map_err(|e| anyhow!("Failed to create tmpdir 'cwd': {e}"))?;
+        let cwd = cwd_root.join(format!("CWD{metadata}"));
         let Some(cwd_path) = Utf8Path::from_path(cwd.as_path()) else {
             bail!("Path's UTF-8 encoding is corrupted: {cwd:?}")
         };
 
-        // TODO: use tmpfs when on *NIX
-        // TODO: cache these folders
-        // TODO: --mount=bind each file one by one => drop temp dir ctx (needs [multiple] `mkdir -p`[s] first though)
+        // TODO: --build-arg BUILDKIT_CONTEXT_KEEP_GIT_DIR=0 https://docs.docker.com/engine/reference/builder/#buildkit-built-in-build-args
+        //   in Git case: do that ^ IFF remote URL + branch/tag/rev can be decided (a la cratesio optimization)
+        // https://docs.docker.com/reference/dockerfile/#add---keep-git-dir
+
         log::info!(target: &krate, "copying all {}files under {pwd} to {cwd_path}", if pwd.join(".git").is_dir() { "git " } else { "" });
+
         copy_dir_all(&pwd, cwd_path)?;
 
+        // TODO: --mount=bind each file one by one => drop temp dir ctx (needs [multiple] `mkdir -p`[s] first though)
         // This doesn't work: rustc_block.push_str(&format!("  --mount=type=bind,from=cwd,target={pwd} \\\n"));
         // ✖ 0.040 runc run failed: unable to start container process: error during container init:
         //     error mounting "/var/lib/docker/tmp/buildkit-mount1189821268/libaho_corasick-b99b6e1b4f09cbff.rlib"
@@ -452,7 +472,7 @@ async fn do_wrap_rustc(
         // 0 0s debug HEAD λ cat rustcbuildx.d
         // $target_dir/debug/rustcbuildx: $cwd/src/cli.rs $cwd/src/cratesio.rs $cwd/src/envs.rs $cwd/src/main.rs $cwd/src/md.rs $cwd/src/parse.rs $cwd/src/pops.rs $cwd/src/runner.rs $cwd/src/stage.rs
         rustc_block.push_str(&format!("WORKDIR {pwd}\n"));
-        rustc_block.push_str("COPY --from=cwd / .\n");
+        rustc_block.push_str(&format!("COPY --from=cwd-{metadata} / .\n"));
         rustc_block.push_str("RUN \\\n");
 
         let cwd_path = cwd_path.to_owned();
@@ -468,7 +488,7 @@ async fn do_wrap_rustc(
         input_mount.and_then(|(name, src, target)| {
             src.is_none().then_some((name.to_string(), target.to_string()))
         }),
-        cwd.as_ref().map(|(_, cwd)| ("cwd".to_owned(), cwd.to_string())),
+        cwd.as_ref().map(|(_, cwd)| (format!("cwd-{metadata}"), cwd.to_string())),
         crate_out.map(|crate_out| (crate_out_name(&crate_out), crate_out)),
     ]
     .into_iter()
@@ -527,13 +547,22 @@ async fn do_wrap_rustc(
 
     rustc_block.push_str(" && export CARGO=\"$(which cargo)\" \\\n");
 
-    if let Ok(v) = env::var("RING_CORE_PREFIX") {
-        log::warn!(target: &krate, "passing $RING_CORE_PREFIX={v:?} env through");
-        rustc_block.push_str(&format!("&& export RING_CORE_PREFIX={v:?} \\\n"));
+    // TODO: find a way to discover these
+    // e.g? https://doc.rust-lang.org/cargo/reference/build-scripts.html#rerun-if-env-changed
+    // e.g. https://doc.rust-lang.org/cargo/reference/build-scripts.html#rustc-env
+    // but actually no! The cargo directives get emitted when running compiled build script,
+    // and this is handled by cargo, outside of the wrapper!
+    // TODO: cargo upstream issue "pass env vars read/wrote by build script on call to rustc"
+    for var in ["NTPD_RS_GIT_REV", "NTPD_RS_GIT_DATE", "RING_CORE_PREFIX"] {
+        if let Ok(v) = env::var(var) {
+            log::warn!(target: &krate, "passing ${var}={v:?} env through");
+            rustc_block.push_str(&format!(" && export {var}={v:?} \\\n"));
+        }
     }
 
     // TODO: keep only paths that we explicitly mount or copy
     if false {
+        // https://github.com/maelstrom-software/maelstrom/blob/ef90f8a990722352e55ef1a2f219ef0fc77e7c8c/crates/maelstrom-util/src/elf.rs#L4
         for var in ["PATH", "DYLD_FALLBACK_LIBRARY_PATH", "LD_LIBRARY_PATH", "LIBPATH"] {
             let Ok(val) = env::var(var) else { continue };
             if !val.is_empty() && debug.is_some() {
@@ -657,21 +686,14 @@ async fn do_wrap_rustc(
             .inspect_err(|e| log::warn!(target: &krate, "Error fetching incremental data: {e}"));
     }
 
-    if debug.is_none() {
-        if let Some((cwd, cwd_path)) = cwd {
-            if let Err(e) = fs::remove_dir_all(cwd) {
-                log::warn!(target:&krate, "Error `rm -rf {cwd_path}`: {e}");
-            }
+    if code != Some(0) && debug.is_none() {
+        log::warn!(target: &krate, "Falling back...");
+        let res = fallback.await; // Bubble up actual error & outputs
+        if res.is_ok() {
+            log::error!(target: &krate, "BUG found!");
+            eprintln!("Found a bug in this script! Falling back... (logs: {debug:?})");
         }
-        if code != Some(0) {
-            log::warn!(target: &krate, "Falling back...");
-            let res = fallback.await; // Bubble up actual error & outputs
-            if res.is_ok() {
-                log::error!(target: &krate, "BUG found!");
-                eprintln!("Found a bug in this script! Falling back... (logs: {debug:?})");
-            }
-            return res;
-        }
+        return res;
     }
 
     Ok(exit_code(code))
@@ -761,6 +783,9 @@ fn crate_out_name(name: &str) -> String {
 }
 
 fn copy_dir_all(src: impl AsRef<Path>, dst: impl AsRef<Path>) -> Result<()> {
+    if dst.as_ref().exists() {
+        return Ok(());
+    }
     fs::create_dir_all(&dst).map_err(|e| anyhow!("Failed `mkdir -p {:?}`: {e}", dst.as_ref()))?;
     let dst = dst.as_ref();
     // TODO: deterministic iteration
@@ -768,14 +793,17 @@ fn copy_dir_all(src: impl AsRef<Path>, dst: impl AsRef<Path>) -> Result<()> {
         fs::read_dir(&src).map_err(|e| anyhow!("Failed reading dir {:?}: {e}", src.as_ref()))?
     {
         let entry = entry?;
-        if entry.file_type().map_err(|e| anyhow!("Failed typing {entry:?}: {e}"))?.is_dir() {
-            // Skip copying .git dir
-            if entry.file_name() != ".git" {
-                copy_dir_all(entry.path(), dst.join(entry.file_name()))?;
+        let fpath = entry.path();
+        let fname = entry.file_name();
+        let ty = entry.file_type().map_err(|e| anyhow!("Failed typing {entry:?}: {e}"))?;
+        if ty.is_dir() {
+            if fname == ".git" {
+                continue; // Skip copying .git dir
             }
+            copy_dir_all(fpath, dst.join(fname))?;
         } else {
-            fs::copy(entry.path(), dst.join(entry.file_name())).map_err(|e| {
-                anyhow!("Failed `cp {:?} {dst:?}` ({:?}): {e}", entry.path(), entry.metadata())
+            fs::copy(&fpath, dst.join(fname)).map_err(|e| {
+                anyhow!("Failed `cp {fpath:?} {dst:?}` ({:?}): {e}", entry.metadata())
             })?;
         }
     }

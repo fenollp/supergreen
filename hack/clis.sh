@@ -12,19 +12,19 @@ declare -a nvs nvs_args
 ((i+=1)); nvs[i]=cargo-green@main;            oks[i]=ok; nvs_args[i]='--git https://github.com/fenollp/supergreen.git --branch=main cargo-green'
 ((i+=1)); nvs[i]=cargo-llvm-cov@0.5.36;       oks[i]=ok; nvs_args[i]=''
 ((i+=1)); nvs[i]=cargo-nextest@0.9.72;        oks[i]=ko; nvs_args[i]='' # .. environment variable `TARGET` not defined at compile time .. self_update-0.39.0
-((i+=1)); nvs[i]=cross@0.2.5;                 oks[i]=ok; nvs_args[i]=''
+((i+=1)); nvs[i]=cross@0.2.5;                 oks[i]=ok; nvs_args[i]='--git https://github.com/cross-rs/cross.git --tag=v0.2.5 cross'
 ((i+=1)); nvs[i]=diesel_cli@2.1.1;            oks[i]=ko; nvs_args[i]='--no-default-features --features=postgres' # /usr/bin/ld: cannot find -lpq: No such file or directory
 ((i+=1)); nvs[i]=hickory-dns@0.25.0-alpha.1;  oks[i]=ok; nvs_args[i]='--features=dns-over-rustls'
 ((i+=1)); nvs[i]=krnlc@0.1.1;                 oks[i]=ko; nvs_args[i]='' # type annotations needed for `Box<_>` .. time-0.3.31
 ((i+=1)); nvs[i]=mussh@3.1.3;                 oks[i]=ko; nvs_args[i]='' # = note: /usr/bin/ld: cannot find -lsqlite3: No such file or directory (and -lssl -lcrypto -lz)
-((i+=1)); nvs[i]=ntpd@1.2.3;                  oks[i]=ko; nvs_args[i]='' # BUG: bad URL creation https://static.crates.io/crates/md/md-5-0.10.6.crate
+((i+=1)); nvs[i]=ntpd@1.2.3;                  oks[i]=ok; nvs_args[i]=''
 ((i+=1)); nvs[i]=qcow2-rs@0.1.2;              oks[i]=ok; nvs_args[i]=''
+((i+=1)); nvs[i]=ripgrep@14.1.0;              oks[i]=ok; nvs_args[i]=''
 ((i+=1)); nvs[i]=rublk@0.2.0;                 oks[i]=ko; nvs_args[i]='' # could not find native static library `rustix_outline_x86_64`, perhaps an -L flag is missing?
-((i+=1)); nvs[i]=samply@0.12.0;               oks[i]=ok; nvs_args[i]=''
 ((i+=1)); nvs[i]=shpool@0.6.2;                oks[i]=ko; nvs_args[i]='' # sudo apt-get install libpam0g-dev
 ((i+=1)); nvs[i]=solana-gossip@2.0.5;         oks[i]=ko; nvs_args[i]='' # error: environment variable `TYPENUM_BUILD_OP` not defined at compile time                                                                                                                    
 ((i+=1)); nvs[i]=statehub@0.14.10;            oks[i]=ko; nvs_args[i]='' # BUG: unexpected crate-type: 'cdylib'
-((i+=1)); nvs[i]=torrust-index@3.0.0-alpha.12; oks[i]=ko; nvs_args[i]='' # unexpected output from `rustc --version`: ""
+((i+=1)); nvs[i]=torrust-index@3.0.0-alpha.12; oks[i]=ko; nvs_args[i]='' # /usr/bin/ld: cannot find -lssl: No such file or directory
 ((i+=1)); nvs[i]=vixargs@0.1.0;               oks[i]=ok; nvs_args[i]=''
 
 #TODO: not a cli but try users of https://github.com/dtolnay/watt
@@ -72,7 +72,6 @@ jobs:
 
     - uses: actions/checkout@v4
 
-    # Actually, the whole archives
     - name: Cache \`cargo fetch\`
       uses: actions/cache@v4
       with:
@@ -80,16 +79,15 @@ jobs:
           ~/.cargo/registry/index/
           ~/.cargo/registry/cache/
           ~/.cargo/git/db/
-        key: cargo-deps-\${{ hashFiles('**/Cargo.lock') }}
-        restore-keys: cargo-deps-
+        key: \${{ github.job }}-\${{ runner.os }}-cargo-deps-\${{ hashFiles('**/Cargo.lock') }}
+        restore-keys: \${{ github.job }}-\${{ runner.os }}-cargo-deps-
 
     - name: Cache \`cargo install\`
       uses: actions/cache@v4
       with:
         path: ~/instmp
-        key: \${{ runner.os }}-cargo-install-\${{ hashFiles('**/Cargo.lock') }}-and-\${{ hashFiles('src/**') }}
+        key: \${{ runner.os }}-cargo-install-\${{ hashFiles('**/Cargo.lock') }}
         restore-keys: |
-          \${{ runner.os }}-cargo-install-\${{ hashFiles('**/Cargo.lock') }}-and-
           \${{ runner.os }}-cargo-install-
 
     - name: Compile HEAD cargo-green
@@ -180,9 +178,34 @@ $(
 
     - name: cargo install net=ON cache=OFF remote=OFF jobs=$jobs
       run: |
-        RUSTCBUILDX_LOG=debug \\
+        CARGOGREEN_LOG=debug \\
         RUSTCBUILDX_LOG_PATH="\$PWD"/logs.txt \\
-          CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=$jobs --locked --force $(as_install "$name_at_version") $@
+          CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=$jobs --locked --force $(as_install "$name_at_version") $@ |& tee _
+
+    - if: \${{ failure() || success() }}
+      name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
+      run: |
+        ! grep -C20 -F "thread 'main' panicked at src/cargo/util/dependency_queue.rs:" _
+
+    - if: \${{ failure() || success() }}
+      name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
+      run: |
+        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' logs.txt
+
+    - if: \${{ failure() || success() }}
+      name: 🔴 =means=> there's some panic!s
+      run: |
+        ! grep -C20 -F ' panicked at ' logs.txt
+
+    - if: \${{ failure() || success() }}
+      name: 🔴 =means=> there's some BUGs
+      run: |
+        ! grep -C20 -F 'BUG: ' logs.txt
+
+    - if: \${{ failure() || success() }}
+      name: 🔴 =means=> here's relevant logs
+      run: |
+        ! grep -C20 -F ' >>> ' logs.txt
 
     - if: \${{ failure() || success() }}
       run: tail -n9999999 logs.txt ; echo >logs.txt
@@ -200,9 +223,9 @@ $(
 
     - name: cargo install net=ON cache=ON remote=OFF jobs=$jobs
       run: |
-        RUSTCBUILDX_LOG=debug \\
+        CARGOGREEN_LOG=debug \\
         RUSTCBUILDX_LOG_PATH="\$PWD"/logs.txt \\
-          CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=$jobs --locked --force $(as_install "$name_at_version") $@ 2>&1 | tee _
+          CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=$jobs --locked --force $(as_install "$name_at_version") $@ |& tee _
 
     - if: \${{ failure() || success() }}
       run: tail -n9999999 logs.txt
@@ -294,7 +317,7 @@ set -x
     echo "Target dir: $tmptrgt"
     echo "Logs: $tmplogs"
     xdg-terminal-exec tail -f $tmplogs
-    RUSTCBUILDX_LOG=debug \
+    CARGOGREEN_LOG=debug \
     RUSTCBUILDX_LOG_PATH="$tmplogs" \
     RUSTCBUILDX_CACHE_IMAGE="${RUSTCBUILDX_CACHE_IMAGE:-}" \
     PATH=/tmp/crggreen/bin:"$PATH" \
@@ -354,7 +377,7 @@ tmux split-window
 send \
   'until' '[[' -f "$tmpgooo".installed ']];' \
   'do' sleep '.1;' 'done' '&&' rm "$tmpgooo".* '&&' \
-  RUSTCBUILDX_LOG=debug \
+  CARGOGREEN_LOG=debug \
   RUSTCBUILDX_LOG_PATH="$tmplogs" \
   RUSTCBUILDX_CACHE_IMAGE="${RUSTCBUILDX_CACHE_IMAGE:-}" \
   PATH=/tmp/crggreen/bin:"$PATH" \

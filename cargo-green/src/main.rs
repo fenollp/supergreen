@@ -111,11 +111,18 @@ async fn main() -> Result<ExitCode> {
                 }
             };
         }
-        cmd.arg(&arg);
-        if arg.starts_with('+') {
-            cmd = Command::new(which::which("cargo").unwrap_or("cargo".into()));
-            eprintln!("Passing +toolchain param: {arg:?}");
-            // TODO: reinterpret `rustc` when given `+toolchain`
+
+        // https://rust-lang.github.io/rustup/overrides.html#toolchain-override-shorthand
+        if let Some(toolchain) = arg.strip_prefix('+') {
+            let var = "RUSTUP_TOOLCHAIN";
+            if let Ok(val) = env::var(var) {
+                println!("Overriding {var}={val:?} to {toolchain:?} for `{PKG} +toolchain`");
+            }
+            // Special handling: call was `cargo green +toolchain ..` (probably from `alias cargo='cargo green'`).
+            // Normally, calls look like `cargo +toolchain green ..` but let's simplify alias creation!
+            env::set_var(var, toolchain); // Informs `rustc -vV` when deciding base_image()
+        } else {
+            cmd.arg(&arg);
         }
     }
     cmd.args(args);
@@ -127,6 +134,7 @@ async fn main() -> Result<ExitCode> {
             // TODO: run cargo fetch + read lockfile + generate cratesio stages + build them cacheonly
             //   https://github.com/rustsec/rustsec/tree/main/cargo-lock
             // TODO: skip these stages (and any other "locked thing" stage) when building with --no-cache
+            todo!("BUG: this is never run") //=> fetch on first ever run!
         }
         // TODO: Skip this call for the ones not calling rustc
         Some(_) => {
@@ -144,18 +152,20 @@ async fn main() -> Result<ExitCode> {
 
 async fn setup_for_build(cmd: &mut Command) -> Result<()> {
     // TODO read package.metadata.green
+    // https://lib.rs/crates/cargo_metadata
+    // https://github.com/stormshield/cargo-ft/blob/d4ba5b048345ab4b21f7992cc6ed12afff7cc863/src/package/metadata.rs
     // TODO: TUI above cargo output (? https://docs.rs/prodash )
 
     if let Ok(log) = env::var("CARGOGREEN_LOG") {
-        let path = "/tmp/cargo-green.log";
+        let mut val = String::new();
         for (var, def) in [
-            //
             (internal::RUSTCBUILDX_LOG, log),
-            (internal::RUSTCBUILDX_LOG_PATH, path.to_owned()),
+            (internal::RUSTCBUILDX_LOG_PATH, "/tmp/cargo-green.log".to_owned()), // last
         ] {
-            cmd.env(var, env::var(var).unwrap_or(def.to_owned()));
-            let _ = OpenOptions::new().create(true).truncate(false).append(true).open(path);
+            val = env::var(var).unwrap_or(def.to_owned());
+            cmd.env(var, &val);
         }
+        let _ = OpenOptions::new().create(true).truncate(false).append(true).open(val);
     }
 
     // RUSTCBUILDX is handled by `rustcbuildx`
@@ -204,7 +214,13 @@ async fn setup_for_build(cmd: &mut Command) -> Result<()> {
     // RUSTCBUILDX_LOG_STYLE
     cmd.env(internal::RUSTCBUILDX_RUNNER, runner());
 
-    // FIXME https://github.com/docker/buildx/issues/2564
+    // FIXME https://github.com/docker/buildx/issues/2564#issuecomment-2207435201
+    // https://linuxhandbook.com/docker-remote-access/
+    // https://thenewstack.io/connect-to-remote-docker-machines-with-docker-context/
+    // https://www.cyberciti.biz/faq/linux-unix-reuse-openssh-connection/
+    // https://github.com/moby/buildkit/issues/4268#issuecomment-2128464135
+    // https://github.com/moby/buildkit/blob/v0.15.1/session/sshforward/sshprovider/agentprovider.go#L119
+
     // https://docs.docker.com/build/building/variables/#buildx_builder
     if let Ok(ctx) = env::var("DOCKER_HOST") {
         eprintln!("$DOCKER_HOST is set to {ctx:?}");

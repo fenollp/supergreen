@@ -151,6 +151,3 @@ which cargo-green
 * [How we rescued our build process from 24+ hour nightmares](https://www.reddit.com/r/rust/comments/1emhq19/how_we_rescued_our_build_process_from_24_hour/)
 
 * [Doesn't detect Docker Rootless #4](https://github.com/TheLarkInn/is-docker/issues/4)
-
-* [Compile a crate from its source archive directly](https://github.com/rust-lang/cargo/issues/14373)
-* [Build function: ResourceExhausted: grpc: received message larger than max (_ vs. 4194304)](https://github.com/moby/buildkit/issues/5217)

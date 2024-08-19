@@ -154,6 +154,7 @@ impl BaseImage {
                     Channel::Nightly => "nightly",
                 };
 
+                // Inspired from https://github.com/rust-lang/docker-rust/blob/d14e1ad7efeb270012b1a7e88fea699b1d1082f2/nightly/bullseye/slim/Dockerfile
                 format!(
                     r#"
 FROM scratch AS rustup
@@ -173,13 +174,15 @@ RUN \
 RUN \
   --mount=from=rustup,source=/rustup-init,target=/rustup-init \
     set -ux \
- && /rustup-init -y --no-modify-path --profile minimal --default-toolchain {channel}-{date} \
+ && /rustup-init -y --no-modify-path --profile minimal --default-toolchain {channel}-{date} --default-host x86_64-unknown-linux-gnu \
  && chmod -R a+w $RUSTUP_HOME $CARGO_HOME \
  && rustup --version \
  && cargo --version \
  && rustc --version \
  && apt-get remove -y --auto-remove \
- && rm -rf /var/lib/apt/lists/*
+ && rm -rf /var/lib/apt/lists/* \
+# clean up for reproducibility
+ && rm -rf /var/log/* /var/cache/ldconfig/aux-cache
 "#
                 )
             }

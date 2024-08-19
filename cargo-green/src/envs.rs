@@ -236,12 +236,12 @@ pub(crate) fn pass_env(var: &str) -> (bool, bool, bool) {
         "CARGO_HOME",      // TODO? drop
         "CARGO_MAKEFLAGS", // TODO: probably drop
         "CARGO_TARGET_DIR",
+        "LD_LIBRARY_PATH", // TODO: probably drop
         "RUSTC_WRAPPER",
     ];
     let buildrs_only = [
         "DEBUG",
         "HOST",
-        "LD_LIBRARY_PATH",
         "NUM_JOBS",
         "OPT_LEVEL",
         "OUT_DIR",
