@@ -1,7 +1,7 @@
 use std::{
     collections::BTreeSet,
     env, mem,
-    process::Stdio,
+    process::{Output, Stdio},
     time::{Duration, Instant},
 };
 
@@ -222,18 +222,22 @@ pub(crate) async fn build(
     log::info!(target: &krate, "Starting {call} (env: {envs:?})`");
 
     let errf = |e| anyhow!("Failed starting {call}: {e}");
+    let start = Instant::now();
     let mut child = cmd.spawn().map_err(errf)?;
 
+    // ---
+
     let pid = child.id().unwrap_or_default();
-    log::info!(target: &krate, "Started {call} as pid={pid}`");
+    log::info!(target: &krate, "Started as pid={pid} in {:?}", start.elapsed());
     let krate = format!("{krate}@{pid}");
 
     let out = TokioBufReader::new(child.stdout.take().expect("started")).lines();
     let err = TokioBufReader::new(child.stderr.take().expect("started")).lines();
 
-    // TODO: try https://github.com/docker/buildx/pull/2500/files + find podman equivalent?
-    let out_task = fwd(krate.clone(), out, "stdout", "➤", MARK_STDOUT);
-    let err_task = fwd(krate.clone(), err, "stderr", "✖", MARK_STDERR);
+    // TODO: try https://github.com/docker/buildx/pull/2500/files (rawjson progress mode) + find podman equivalent?
+    // => rawjd
+    let out_task = fwd(krate.clone(), out, "stdout", start, "➤", MARK_STDOUT);
+    let err_task = fwd(krate.clone(), err, "stderr", start, "✖", MARK_STDERR);
 
     let (secs, code) = {
         let start = Instant::now();
@@ -254,17 +258,13 @@ pub(crate) async fn build(
         // Something is very wrong here. Try to be helpful by logging some info about runner config:
         let mut cmd = Command::new(command);
         let cmd = cmd.kill_on_drop(true).arg("info");
-        let check =
+        let Output { stdout, stderr, status } =
             cmd.output().await.map_err(|e| anyhow!("Failed starting {}: {e}", cmd.show()))?;
-        let stdout = String::from_utf8(check.stdout)
-            .map_err(|e| anyhow!("Failed parsing check STDOUT: {e}"))?;
-        let stderr = String::from_utf8(check.stderr)
-            .map_err(|e| anyhow!("Failed parsing check STDERR: {e}"))?;
-        log::warn!(
-            target: &krate,
-            "Runner info: [code: {}] [STDOUT {stdout}] [STDERR {stderr}]",
-            check.status
-        );
+        let stdout =
+            String::from_utf8(stdout).map_err(|e| anyhow!("Failed parsing check STDOUT: {e}"))?;
+        let stderr =
+            String::from_utf8(stderr).map_err(|e| anyhow!("Failed parsing check STDERR: {e}"))?;
+        log::warn!(target: &krate, "Runner info: [code: {status}] [STDOUT {stdout}] [STDERR {stderr}]");
     }
 
     Ok(code)
@@ -284,6 +284,7 @@ fn fwd<R>(
     krate: String,
     mut stdio: Lines<R>,
     name: &'static str,
+    start: Instant,
     badge: &'static str,
     mark: &'static str,
 ) -> JoinHandle<()>
@@ -294,8 +295,14 @@ where
     spawn(async move {
         log::debug!(target: &krate, "Starting {name} task {badge}");
         let mut buf = String::new();
+        let mut first = true;
         loop {
-            match stdio.next_line().await {
+            let maybe_line = stdio.next_line().await;
+            if first {
+                first = false;
+                log::debug!(target: &krate, "Time To First Line for task {name}: {:?}", start.elapsed());
+            }
+            match maybe_line {
                 Ok(None) => break,
                 Ok(Some(line)) => {
                     if line.is_empty() {
@@ -307,7 +314,7 @@ where
                     }
                 }
                 Err(e) => {
-                    log::warn!("Failed during piping of {name}: {e:?}");
+                    log::warn!(target: &krate, "Failed during piping of {name}: {e:?}");
                     break;
                 }
             }
@@ -340,10 +347,8 @@ fn support_long_broken_json_lines() {
     // Then fwd_stderr
     // calls artifact_written(r#"{"$message_type":"artifact","artifact":"/tmp/thing","emit":"link"}"#)
     // which returns Some("/tmp/thing")
-    assertx::assert_logs_contain_in_order!(
-        logs,
-        log::Level::Info => "rustc wrote /tmp/thing"
-    );
+    use log::Level;
+    assertx::assert_logs_contain_in_order!(logs, Level::Info => "rustc wrote /tmp/thing");
 }
 
 #[inline]
