@@ -139,7 +139,7 @@ impl BaseImage {
         let base = base.trim_start_matches("docker-image://");
 
         match self {
-            Self::Image(_) => format!("FROM {base} AS {RUST}\n"),
+            Self::Image(_) => format!("FROM --platform=$BUILDPLATFORM {base} AS {RUST}\n"),
             Self::RustcV(RustcV { date, channel, .. }) => {
                 // TODO? maybe use commit & version as selector too?
 
@@ -160,7 +160,7 @@ impl BaseImage {
 FROM scratch AS rustup
 ADD --chmod=0755 --checksum=sha256:6aeece6993e902708983b209d04c0d1dbb14ebb405ddb87def578d41f920f56d \
   https://static.rust-lang.org/rustup/archive/1.27.1/x86_64-unknown-linux-gnu/rustup-init /rustup-init
-FROM {base} AS {RUST}
+FROM --platform=$BUILDPLATFORM {base} AS {RUST}
 ENV RUSTUP_HOME=/usr/local/rustup \
      CARGO_HOME=/usr/local/cargo \
            PATH=/usr/local/cargo/bin:$PATH
