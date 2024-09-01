@@ -55,6 +55,8 @@ const VSN: &str = env!("CARGO_PKG_VERSION");
 // \cargo green --version # check != displayed vsn
 // \cargo green # check displays help
 
+cargo_subcommand_metadata::description!(env!("CARGO_PKG_DESCRIPTION"));
+
 #[tokio::main]
 async fn main() -> Result<ExitCode> {
     let mut args = env::args();
@@ -179,7 +181,8 @@ async fn setup_for_build(cmd: &mut Command) -> Result<()> {
     // Use local hashed image if one matching exists locally
     if !syntax.contains('@') {
         // otherwise default to a hash found through some Web API
-        syntax = fetch_digest(&syntax).await?;
+        syntax = fetch_digest(&syntax).await?; //TODO: lower conn timeout to 4s (is 30s)
+                                               //TODO: review online code to try to provide an offline mode
     }
     env::set_var(internal::RUSTCBUILDX_SYNTAX, syntax);
 
@@ -214,12 +217,17 @@ async fn setup_for_build(cmd: &mut Command) -> Result<()> {
     // RUSTCBUILDX_LOG_STYLE
     cmd.env(internal::RUSTCBUILDX_RUNNER, runner());
 
-    // FIXME https://github.com/docker/buildx/issues/2564#issuecomment-2207435201
+    // FIXME "multiplex conns to daemon" https://github.com/docker/buildx/issues/2564#issuecomment-2207435201
+    // > If you do have docker context created already on ssh endpoint then you don't need to set the ssh address again on buildx create, you can use the context name or let it use the active context.
+
     // https://linuxhandbook.com/docker-remote-access/
     // https://thenewstack.io/connect-to-remote-docker-machines-with-docker-context/
     // https://www.cyberciti.biz/faq/linux-unix-reuse-openssh-connection/
     // https://github.com/moby/buildkit/issues/4268#issuecomment-2128464135
     // https://github.com/moby/buildkit/blob/v0.15.1/session/sshforward/sshprovider/agentprovider.go#L119
+
+    // https://crates.io/crates/async-ssh2-tokio
+    // https://crates.io/crates/russh
 
     // https://docs.docker.com/build/building/variables/#buildx_builder
     if let Ok(ctx) = env::var("DOCKER_HOST") {
