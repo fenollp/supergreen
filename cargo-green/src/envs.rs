@@ -238,6 +238,7 @@ pub(crate) fn pass_env(var: &str) -> (bool, bool, bool) {
         "CARGO_TARGET_DIR",
         "LD_LIBRARY_PATH", // TODO: probably drop
         "RUSTC_WRAPPER",
+        "RUSTC_WORKSPACE_WRAPPER",
     ];
     let buildrs_only = [
         "DEBUG",
@@ -249,12 +250,13 @@ pub(crate) fn pass_env(var: &str) -> (bool, bool, bool) {
         "RUSTC",
         "RUSTC_LINKER",
         "RUSTC_WRAPPER",
+        "RUSTC_WORKSPACE_WRAPPER",
         "RUSTDOC",
         "TARGET",
     ];
     (
         var.starts_with("CARGO_") || passthrough.contains(&var),
         skiplist.contains(&var),
-        buildrs_only.contains(&var),
+        var.starts_with("DEP_") || buildrs_only.contains(&var),
     )
 }
