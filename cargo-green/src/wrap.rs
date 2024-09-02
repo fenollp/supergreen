@@ -400,6 +400,8 @@ async fn do_wrap_rustc(
 
     let mut rustc_block = String::new();
     rustc_block.push_str(&format!("FROM {RUST} AS {rustc_stage}\n"));
+    rustc_block.push_str(r#"SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]"#);
+    rustc_block.push('\n');
     rustc_block.push_str(&format!("WORKDIR {out_dir}\n"));
 
     if let Some(ref incremental) = incremental {
@@ -546,7 +548,8 @@ async fn do_wrap_rustc(
             .push_str(&format!("  --mount=from={name},target={target},source={source} \\\n"));
     }
 
-    rustc_block.push_str("    set -eux \\\n");
+    // rustc_block.push_str("    set -eux \\\n");
+    rustc_block.push_str("    : \\\n");
 
     rustc_block.push_str(" && export CARGO=\"$(which cargo)\" \\\n");
 
@@ -575,14 +578,10 @@ async fn do_wrap_rustc(
         }
     }
 
-    // Having to upgrade from /bin/sh here to handle passing '--cfg' 'feature=\"std\"'
-    // λ /bin/sh
-    // $ { echo a >&1 && echo b >&2 ; } 1> >(sed 's/^/::STDOUT:: /') 2> >(sed 's/^/::STDERR:: /' >&2)
-    // /bin/sh: 1: Syntax error: redirection unexpected
-    let args = args.join("' '").replace('"', "\\\"");
-    rustc_block.push_str(&format!(" && /bin/bash -c \"rustc '{args}' {input} \\\n"));
+    let args = args.join("' '"); //.replace('"', "\\\"");
+    rustc_block.push_str(&format!(" && rustc '{args}' {input} \\\n"));
     rustc_block.push_str(&format!("      1> >(sed 's/^/{MARK_STDOUT}/') \\\n"));
-    rustc_block.push_str(&format!("      2> >(sed 's/^/{MARK_STDERR}/' >&2)\"\n"));
+    rustc_block.push_str(&format!("      2> >(sed 's/^/{MARK_STDERR}/' >&2)\n"));
     md.push_block(&rustc_stage, rustc_block);
 
     if let Some(ref incremental) = incremental {
