@@ -310,10 +310,7 @@ async fn do_wrap_rustc(
                         .map(|p| p.to_string())
                         .collect::<Vec<_>>();
                     if listing != vec![actual_extern.clone()] {
-                        log::warn!(
-                            target: &krate,
-                            "instead of [{actual_extern}], listing found {listing:?}"
-                        );
+                        log::warn!(target: &krate,"instead of [{actual_extern}], listing found {listing:?}");
                     }
                     //all_externs.extend(listing.into_iter());
                     // TODO: move to after for loop
@@ -431,10 +428,8 @@ async fn do_wrap_rustc(
 
     let cwd = if let Some((name, src, target)) = input_mount.as_ref() {
         rustc_block.push_str("RUN \\\n");
-        rustc_block.push_str(&format!(
-            "  --mount=type=bind,from={name}{source},target={target} \\\n",
-            source = src.map(|src| format!(",source={src}")).unwrap_or_default()
-        ));
+        let source = src.map(|src| format!(",source={src}")).unwrap_or_default();
+        rustc_block.push_str(&format!("  --mount=from={name}{source},target={target} \\\n"));
 
         None
     } else {
@@ -448,9 +443,10 @@ async fn do_wrap_rustc(
             .map_err(|e| anyhow!("Failed creating cwd dockerignore {ignore:?}: {e}"))?;
 
         let cwd = cwd_root.join(format!("CWD{metadata}"));
-        let Some(cwd_path) = Utf8Path::from_path(cwd.as_path()) else {
-            bail!("Path's UTF-8 encoding is corrupted: {cwd:?}")
-        };
+        let cwd_path: Utf8PathBuf = cwd
+            .clone()
+            .try_into()
+            .map_err(|e| anyhow!("cwd's {cwd:?} UTF-8 encoding is corrupted: {e}"))?;
 
         // TODO: --build-arg BUILDKIT_CONTEXT_KEEP_GIT_DIR=0 https://docs.docker.com/engine/reference/builder/#buildkit-built-in-build-args
         //   in Git case: do that ^ IFF remote URL + branch/tag/rev can be decided (a la cratesio optimization)
@@ -458,10 +454,10 @@ async fn do_wrap_rustc(
 
         log::info!(target: &krate, "copying all {}files under {pwd} to {cwd_path}", if pwd.join(".git").is_dir() { "git " } else { "" });
 
-        copy_dir_all(&pwd, cwd_path)?;
+        copy_dir_all(&pwd, &cwd_path)?;
 
         // TODO: --mount=bind each file one by one => drop temp dir ctx (needs [multiple] `mkdir -p`[s] first though)
-        // This doesn't work: rustc_block.push_str(&format!("  --mount=type=bind,from=cwd,target={pwd} \\\n"));
+        // This doesn't work: rustc_block.push_str(&format!("  --mount=from=cwd,target={pwd} \\\n"));
         // ✖ 0.040 runc run failed: unable to start container process: error during container init:
         //     error mounting "/var/lib/docker/tmp/buildkit-mount1189821268/libaho_corasick-b99b6e1b4f09cbff.rlib"
         //     to rootfs at "/home/runner/work/rustcbuildx/rustcbuildx/target/debug/deps/libaho_corasick-b99b6e1b4f09cbff.rlib":
@@ -471,24 +467,31 @@ async fn do_wrap_rustc(
         // TODO: try mounting each individual file from `*.d` dep file
         // 0 0s debug HEAD λ cat rustcbuildx.d
         // $target_dir/debug/rustcbuildx: $cwd/src/cli.rs $cwd/src/cratesio.rs $cwd/src/envs.rs $cwd/src/main.rs $cwd/src/md.rs $cwd/src/parse.rs $cwd/src/pops.rs $cwd/src/runner.rs $cwd/src/stage.rs
+
         rustc_block.push_str(&format!("WORKDIR {pwd}\n"));
         rustc_block.push_str(&format!("COPY --from=cwd-{metadata} / .\n"));
         rustc_block.push_str("RUN \\\n");
 
         let cwd_path = cwd_path.to_owned();
-        Some((cwd, cwd_path))
+
+        // TODO: do better to avoid copying >1 times local work dir on each cargo call => context-mount local content-addressed tarball?
+        // test|cargo-green|0.8.0|f273b3fc9f002200] copying all git files under $HOME/wefwefwef/supergreen.git to /tmp/cargo-green_0.8.0/CWDf273b3fc9f002200
+        // bin|cargo-green|0.8.0|efe5575298075b07] copying all git files under $HOME/wefwefwef/supergreen.git to /tmp/cargo-green_0.8.0/CWDefe5575298075b07
+        let cwd_stage = Stage::try_new(format!("cwd-{metadata}")).expect("empty metadata?");
+
+        Some((cwd_path, cwd_stage))
     };
 
     if let Some(ref crate_out) = crate_out {
         let named = crate_out_name(crate_out);
-        rustc_block.push_str(&format!("  --mount=type=bind,from={named},target={crate_out} \\\n"));
+        rustc_block.push_str(&format!("  --mount=from={named},target={crate_out} \\\n"));
     }
 
     md.contexts = [
         input_mount.and_then(|(name, src, target)| {
             src.is_none().then_some((name.to_string(), target.to_string()))
         }),
-        cwd.as_ref().map(|(_, cwd)| (format!("cwd-{metadata}"), cwd.to_string())),
+        cwd.as_ref().map(|(cwd, cwd_stage)| (cwd_stage.to_string(), cwd.to_string())),
         crate_out.map(|crate_out| (crate_out_name(&crate_out), crate_out)),
     ]
     .into_iter()
@@ -524,7 +527,8 @@ async fn do_wrap_rustc(
                     Let's remove the current target directory (note: $CARGO_TARGET_DIR={target_dir})
                     then run your command again.
                 "#,
-                        target_dir = env::var("CARGO_TARGET_DIR").as_deref().unwrap_or("./target"),
+                        target_dir =
+                            env::var("CARGO_TARGET_DIR").expect("cargo sets $CARGO_TARGET_DIR"),
                     );
                 }
                 anyhow!("Failed reading Md {extern_md_path}: {e}")
@@ -538,9 +542,8 @@ async fn do_wrap_rustc(
     log::info!(target: &krate, "extern_md_paths: {} {extern_md_paths:?}", extern_md_paths.len());
 
     for (name, source, target) in mounts {
-        rustc_block.push_str(&format!(
-            "  --mount=type=bind,from={name},source={source},target={target} \\\n"
-        ));
+        rustc_block
+            .push_str(&format!("  --mount=from={name},target={target},source={source} \\\n"));
     }
 
     rustc_block.push_str("    set -eux \\\n");
@@ -565,6 +568,7 @@ async fn do_wrap_rustc(
         // https://github.com/maelstrom-software/maelstrom/blob/ef90f8a990722352e55ef1a2f219ef0fc77e7c8c/crates/maelstrom-util/src/elf.rs#L4
         for var in ["PATH", "DYLD_FALLBACK_LIBRARY_PATH", "LD_LIBRARY_PATH", "LIBPATH"] {
             let Ok(val) = env::var(var) else { continue };
+            log::debug!(target: &krate, "system env set (skipped): ${var}={val:?}");
             if !val.is_empty() && debug.is_some() {
                 rustc_block.push_str(&format!("#&& export {var}=\"{val}:${var}\" \\\n"));
             }
@@ -782,16 +786,18 @@ fn crate_out_name(name: &str) -> String {
         .expect("PROOF: suffix is /out")
 }
 
-fn copy_dir_all(src: impl AsRef<Path>, dst: impl AsRef<Path>) -> Result<()> {
-    if dst.as_ref().exists() {
+fn copy_dir_all<P: AsRef<Path>>(src: P, dst: P) -> Result<()> {
+    let dst = dst.as_ref();
+    let src = src.as_ref();
+
+    if dst.exists() {
         return Ok(());
     }
-    fs::create_dir_all(&dst).map_err(|e| anyhow!("Failed `mkdir -p {:?}`: {e}", dst.as_ref()))?;
-    let dst = dst.as_ref();
+
+    fs::create_dir_all(dst).map_err(|e| anyhow!("Failed `mkdir -p {dst:?}`: {e}"))?;
+
     // TODO: deterministic iteration
-    for entry in
-        fs::read_dir(&src).map_err(|e| anyhow!("Failed reading dir {:?}: {e}", src.as_ref()))?
-    {
+    for entry in fs::read_dir(src).map_err(|e| anyhow!("Failed reading dir {src:?}: {e}"))? {
         let entry = entry?;
         let fpath = entry.path();
         let fname = entry.file_name();

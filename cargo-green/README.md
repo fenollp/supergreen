@@ -149,5 +149,6 @@ which cargo-green
 * /r/Rust scare [Serde has started shipping precompiled binaries with no way to opt out](https://www.reddit.com/r/rust/comments/15va70a/serde_has_started_shipping_precompiled_binaries/)
 * [assertion failed: edges.remove(&key) #13889](https://github.com/rust-lang/cargo/issues/13889)
 * [How we rescued our build process from 24+ hour nightmares](https://www.reddit.com/r/rust/comments/1emhq19/how_we_rescued_our_build_process_from_24_hour/)
-
+* [Partially sandbox your Rust builds](https://www.reddit.com/r/rust/comments/hjxh2a/partially_sandbox_your_rust_builds/)
+* [Is just me or Rust is too heavy for my computer to handle?](https://www.reddit.com/r/rust/comments/1f6bvw3/is_just_me_or_rust_is_too_heavy_for_my_computer/)
 * [Doesn't detect Docker Rootless #4](https://github.com/TheLarkInn/is-docker/issues/4)

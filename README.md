@@ -38,7 +38,7 @@ Faster Rust builds!
   * [ ] support CRUD-ish operations on local/remotes cache
   * [x] `[SEC]` support building a crate without it having network access
 * [ ] integrate with shipping OCI images
-* [ ] share cache with the World
+* [ ] share cache with the World cf. [`user-wide-cache`](https://rust-lang.github.io/rust-project-goals/2024h2/user-wide-cache.html)
   * [x] never rebuild a dep (for a given version of `rustc`, ...)
   * [ ] share cache with other projects on local machine
     * [ ] fix `WORKDIR`s + rewrite paths with `remap-path-prefix` 
@@ -51,8 +51,25 @@ Faster Rust builds!
   * [ ] build for a non-local target
 
 
+## Upstream issues & patches
+* [ ] [`rust`: Compile a crate from its source archive directly](https://github.com/rust-lang/rust/issues/128884)
+* [ ] [`cargo`: Tell `rustc` wrappers which envs to pass through to allow env sandboxing](https://github.com/rust-lang/cargo/issues/14444)
+* TODO
+  1. buildkit flags to prefix stdout and stderr progress
+  1. buildkit flag to disable dockerignore and save disk read
+    * --ignore-file (closed) https://github.com/moby/moby/issues/12886
+    * --no-ignore-file
+  1. docker build support multiple input files
+    * --file-part
+    * >=1 stage per Dockerfile part file
+      * order doesn't matter: order is fixed when consolidation happens (internally)
+  1. cargo + docker
+    * https://github.com/rust-lang/cargo/issues/2644#issuecomment-2304774192
+
+
 ## Origins
-PoC originally written in Bash: https://github.com/fenollp/buildxargs/blob/buildx/tryin.sh
+* PoC originally written in Bash: https://github.com/fenollp/buildxargs/blob/buildx/tryin.sh
+* Initial blog post https://fenollp.github.io/faster-rust-builds-docker_host
 
 
 ## Hacking
