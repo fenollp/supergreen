@@ -551,7 +551,7 @@ async fn do_wrap_rustc(
     // rustc_block.push_str("    set -eux \\\n");
     rustc_block.push_str("    : \\\n");
 
-    rustc_block.push_str(" && export CARGO=\"$(which cargo)\" \\\n");
+    // rustc_block.push_str(" && export CARGO=\"$(which cargo)\" \\\n");
 
     // TODO: find a way to discover these
     // e.g? https://doc.rust-lang.org/cargo/reference/build-scripts.html#rerun-if-env-changed
@@ -579,7 +579,7 @@ async fn do_wrap_rustc(
     }
 
     let args = args.join("' '"); //.replace('"', "\\\"");
-    rustc_block.push_str(&format!(" && rustc '{args}' {input} \\\n"));
+    rustc_block.push_str(&format!(" && env CARGO=\"$(which cargo)\" rustc '{args}' {input} \\\n"));
     rustc_block.push_str(&format!("      1> >(sed 's/^/{MARK_STDOUT}/') \\\n"));
     rustc_block.push_str(&format!("      2> >(sed 's/^/{MARK_STDERR}/' >&2)\n"));
     md.push_block(&rustc_stage, rustc_block);
