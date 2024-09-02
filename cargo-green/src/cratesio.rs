@@ -91,13 +91,12 @@ pub(crate) async fn into_stage(
 FROM scratch AS {cratesio_stage}
 ADD --chmod=0664 --checksum=sha256:{cratesio_hash} \
   {CRATESIO}/crates/{name}/{name}-{version}.crate /crate
-SHELL ["/usr/bin/dash", "-c"]
+SHELL ["/usr/bin/dash", "-eux", "-c"]
 RUN \
   --mount=from={RUST},src=/lib,dst=/lib \
   --mount=from={RUST},src=/lib64,dst=/lib64 \
   --mount=from={RUST},src=/usr,dst=/usr \
-    set -eux \
- && mkdir {SRC} \
+    mkdir {SRC} \
  && tar zxf /crate --strip-components=1 -C {SRC}
 "#
     )[1..]

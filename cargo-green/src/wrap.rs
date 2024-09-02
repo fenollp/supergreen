@@ -400,33 +400,12 @@ async fn do_wrap_rustc(
 
     let mut rustc_block = String::new();
     rustc_block.push_str(&format!("FROM {RUST} AS {rustc_stage}\n"));
-    rustc_block.push_str(r#"SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]"#);
-    rustc_block.push('\n');
+    rustc_block.push_str(&format!("SHELL {:?}\n", ["/bin/bash", "-eux", "-c"]));
     rustc_block.push_str(&format!("WORKDIR {out_dir}\n"));
 
     if let Some(ref incremental) = incremental {
         rustc_block.push_str(&format!("WORKDIR {incremental}\n"));
     }
-
-    rustc_block.push_str("ENV \\\n");
-    for (var, val) in env::vars() {
-        let (pass, skip, only_buildrs) = pass_env(var.as_str());
-        if pass || (crate_name == BUILDRS_CRATE_NAME && only_buildrs) {
-            if skip {
-                log::debug!(target: &krate, "not forwarding env: {var}={val}");
-                continue;
-            }
-            let val = safeify(val);
-            if var == "CARGO_ENCODED_RUSTFLAGS" {
-                let dec: Vec<_> = rustflags::from_env().collect();
-                log::debug!(target: &krate, "env is set: {var}={val} ({dec:?})");
-            } else {
-                log::debug!(target: &krate, "env is set: {var}={val}");
-            }
-            rustc_block.push_str(&format!("  {var}={val} \\\n"));
-        }
-    }
-    rustc_block.push_str("  RUSTCBUILDX=1\n");
 
     let cwd = if let Some((name, src, target)) = input_mount.as_ref() {
         rustc_block.push_str("RUN \\\n");
@@ -548,21 +527,38 @@ async fn do_wrap_rustc(
             .push_str(&format!("  --mount=from={name},target={target},source={source} \\\n"));
     }
 
-    // rustc_block.push_str("    set -eux \\\n");
-    rustc_block.push_str("    : \\\n");
+    rustc_block.push_str(&format!("    env CARGO={:?} \\\n", "$(which cargo)"));
 
-    // rustc_block.push_str(" && export CARGO=\"$(which cargo)\" \\\n");
+    for (var, val) in env::vars() {
+        let (pass, skip, only_buildrs) = pass_env(var.as_str());
+        if pass || (crate_name == BUILDRS_CRATE_NAME && only_buildrs) {
+            if skip {
+                log::debug!(target: &krate, "not forwarding env: {var}={val}");
+                continue;
+            }
+            let val = safeify(val);
+            if var == "CARGO_ENCODED_RUSTFLAGS" {
+                let dec: Vec<_> = rustflags::from_env().collect();
+                log::debug!(target: &krate, "env is set: {var}={val} ({dec:?})");
+            } else {
+                log::debug!(target: &krate, "env is set: {var}={val}");
+            }
+            rustc_block.push_str(&format!("        {var}={val} \\\n"));
+        }
+    }
+    rustc_block.push_str("        RUSTCBUILDX=1 \\\n");
 
     // TODO: find a way to discover these
     // e.g? https://doc.rust-lang.org/cargo/reference/build-scripts.html#rerun-if-env-changed
     // e.g. https://doc.rust-lang.org/cargo/reference/build-scripts.html#rustc-env
     // but actually no! The cargo directives get emitted when running compiled build script,
     // and this is handled by cargo, outside of the wrapper!
-    // TODO: cargo upstream issue "pass env vars read/wrote by build script on call to rustc"
+    // => cargo upstream issue "pass env vars read/wrote by build script on call to rustc"
+    //   => https://github.com/rust-lang/cargo/issues/14444#issuecomment-2305891696
     for var in ["NTPD_RS_GIT_REV", "NTPD_RS_GIT_DATE", "RING_CORE_PREFIX"] {
         if let Ok(v) = env::var(var) {
             log::warn!(target: &krate, "passing ${var}={v:?} env through");
-            rustc_block.push_str(&format!(" && export {var}={v:?} \\\n"));
+            rustc_block.push_str(&format!("        {var}={v:?} \\\n"));
         }
     }
 
@@ -573,15 +569,14 @@ async fn do_wrap_rustc(
             let Ok(val) = env::var(var) else { continue };
             log::debug!(target: &krate, "system env set (skipped): ${var}={val:?}");
             if !val.is_empty() && debug.is_some() {
-                rustc_block.push_str(&format!("#&& export {var}=\"{val}:${var}\" \\\n"));
+                rustc_block.push_str(&format!("#       {var}={val:?} \\\n"));
             }
         }
     }
 
-    let args = args.join("' '"); //.replace('"', "\\\"");
-    rustc_block.push_str(&format!(" && env CARGO=\"$(which cargo)\" rustc '{args}' {input} \\\n"));
-    rustc_block.push_str(&format!("      1> >(sed 's/^/{MARK_STDOUT}/') \\\n"));
-    rustc_block.push_str(&format!("      2> >(sed 's/^/{MARK_STDERR}/' >&2)\n"));
+    rustc_block.push_str(&format!("      rustc '{}' {input} \\\n", args.join("' '")));
+    rustc_block.push_str(&format!("        1> >(sed 's/^/{MARK_STDOUT}/') \\\n"));
+    rustc_block.push_str(&format!("        2> >(sed 's/^/{MARK_STDERR}/' >&2)\n"));
     md.push_block(&rustc_stage, rustc_block);
 
     if let Some(ref incremental) = incremental {
@@ -589,6 +584,7 @@ async fn do_wrap_rustc(
         incremental_block.push_str(&format!("COPY --from={rustc_stage} {incremental} /\n"));
         md.push_block(&incremental_stage, incremental_block);
     }
+
     let mut out_block = format!("FROM scratch AS {out_stage}\n");
     out_block.push_str(&format!("COPY --from={rustc_stage} {out_dir}/*-{metadata}* /\n"));
     // NOTE: -C extra-filename=-${metadata} (starts with dash)
