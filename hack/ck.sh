@@ -80,6 +80,10 @@ postconds() {
     [[ $# -eq 0 ]]
 cat <<EOF
     - if: \${{ failure() || success() }}
+      name: 🔴 =means=> here's relevant logs (FIXME drop)
+      run: grep -C50 -F ' blblblbl ' $greenlogs || true
+
+    - if: \${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
         ! grep -C20 -F "thread 'main' panicked at src/cargo/util/dependency_queue.rs:" $cargologs

@@ -104,6 +104,10 @@ jobs:
         RUSTCBUILDX_LOG_PATH="$PWD"/../logs.txt \
           CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=1 --locked --force --path=./cargo-green |& tee ../_
     - if: ${{ failure() || success() }}
+      name: 🔴 =means=> here's relevant logs (FIXME drop)
+      run: grep -C50 -F ' blblblbl ' ../logs.txt || true
+
+    - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
         ! grep -C20 -F "thread 'main' panicked at src/cargo/util/dependency_queue.rs:" ../_
@@ -196,6 +200,10 @@ jobs:
         CARGOGREEN_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/../logs.txt \
           cargo green -vv audit |& tee ../_
+    - if: ${{ failure() || success() }}
+      name: 🔴 =means=> here's relevant logs (FIXME drop)
+      run: grep -C50 -F ' blblblbl ' ../logs.txt || true
+
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
@@ -290,6 +298,10 @@ jobs:
         RUSTCBUILDX_LOG_PATH="$PWD"/../logs.txt \
           cargo +nightly-2024-07-12 green udeps --all-targets --jobs=1 |& tee ../_
     - if: ${{ failure() || success() }}
+      name: 🔴 =means=> here's relevant logs (FIXME drop)
+      run: grep -C50 -F ' blblblbl ' ../logs.txt || true
+
+    - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
         ! grep -C20 -F "thread 'main' panicked at src/cargo/util/dependency_queue.rs:" ../_
@@ -328,6 +340,10 @@ jobs:
         CARGOGREEN_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/../logs.txt \
           cargo green +nightly-2024-07-12 udeps --all-targets --jobs=1 |& tee ../_
+    - if: ${{ failure() || success() }}
+      name: 🔴 =means=> here's relevant logs (FIXME drop)
+      run: grep -C50 -F ' blblblbl ' ../logs.txt || true
+
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
@@ -419,6 +435,10 @@ jobs:
         RUSTCBUILDX_LOG_PATH="$PWD"/../logs.txt \
           cargo green -vv build --jobs=1 --all-targets --all-features --locked --frozen --offline |& tee ../_
     - if: ${{ failure() || success() }}
+      name: 🔴 =means=> here's relevant logs (FIXME drop)
+      run: grep -C50 -F ' blblblbl ' ../logs.txt || true
+
+    - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
         ! grep -C20 -F "thread 'main' panicked at src/cargo/util/dependency_queue.rs:" ../_
@@ -465,6 +485,10 @@ jobs:
         grep Compiling ../_                    && err=1
         exit $err
     - if: ${{ failure() || success() }}
+      name: 🔴 =means=> here's relevant logs (FIXME drop)
+      run: grep -C50 -F ' blblblbl ' ../logs.txt || true
+
+    - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
         ! grep -C20 -F "thread 'main' panicked at src/cargo/util/dependency_queue.rs:" ../_
@@ -510,6 +534,10 @@ jobs:
         grep Dirty     ../_                    && err=1
         grep Compiling ../_                    && err=1
         exit $err
+    - if: ${{ failure() || success() }}
+      name: 🔴 =means=> here's relevant logs (FIXME drop)
+      run: grep -C50 -F ' blblblbl ' ../logs.txt || true
+
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
@@ -601,6 +629,10 @@ jobs:
         RUSTCBUILDX_LOG_PATH="$PWD"/../logs.txt \
           cargo green -vv test --jobs=1 --all-targets --all-features --locked --frozen --offline |& tee ../_
     - if: ${{ failure() || success() }}
+      name: 🔴 =means=> here's relevant logs (FIXME drop)
+      run: grep -C50 -F ' blblblbl ' ../logs.txt || true
+
+    - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
         ! grep -C20 -F "thread 'main' panicked at src/cargo/util/dependency_queue.rs:" ../_
@@ -647,6 +679,10 @@ jobs:
         grep Compiling ../_                    && err=1
         exit $err
     - if: ${{ failure() || success() }}
+      name: 🔴 =means=> here's relevant logs (FIXME drop)
+      run: grep -C50 -F ' blblblbl ' ../logs.txt || true
+
+    - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
         ! grep -C20 -F "thread 'main' panicked at src/cargo/util/dependency_queue.rs:" ../_
@@ -692,6 +728,10 @@ jobs:
         grep Dirty     ../_                    && err=1
         grep Compiling ../_                    && err=1
         exit $err
+    - if: ${{ failure() || success() }}
+      name: 🔴 =means=> here's relevant logs (FIXME drop)
+      run: grep -C50 -F ' blblblbl ' ../logs.txt || true
+
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
@@ -783,6 +823,10 @@ jobs:
         RUSTCBUILDX_LOG_PATH="$PWD"/../logs.txt \
           cargo green -vv check --jobs=$(nproc) --all-targets --all-features --locked --frozen --offline |& tee ../_
     - if: ${{ failure() || success() }}
+      name: 🔴 =means=> here's relevant logs (FIXME drop)
+      run: grep -C50 -F ' blblblbl ' ../logs.txt || true
+
+    - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
         ! grep -C20 -F "thread 'main' panicked at src/cargo/util/dependency_queue.rs:" ../_
@@ -828,6 +872,10 @@ jobs:
         grep Dirty     ../_                    && err=1
         grep Compiling ../_                    && err=1
         exit $err
+    - if: ${{ failure() || success() }}
+      name: 🔴 =means=> here's relevant logs (FIXME drop)
+      run: grep -C50 -F ' blblblbl ' ../logs.txt || true
+
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
@@ -918,6 +966,10 @@ jobs:
         CARGOGREEN_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/../logs.txt \
           CARGO_TARGET_DIR=~/cargo-package cargo green -vv package --jobs=1 --all-features --locked --frozen --offline |& tee ../_
+    - if: ${{ failure() || success() }}
+      name: 🔴 =means=> here's relevant logs (FIXME drop)
+      run: grep -C50 -F ' blblblbl ' ../logs.txt || true
+
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
@@ -1010,6 +1062,10 @@ jobs:
         RUSTCBUILDX_LOG_PATH="$PWD"/../logs.txt \
           cargo green -vv clippy --jobs=1 --all-targets --all-features --locked --frozen --offline |& tee ../_
     - if: ${{ failure() || success() }}
+      name: 🔴 =means=> here's relevant logs (FIXME drop)
+      run: grep -C50 -F ' blblblbl ' ../logs.txt || true
+
+    - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
         ! grep -C20 -F "thread 'main' panicked at src/cargo/util/dependency_queue.rs:" ../_
@@ -1055,6 +1111,10 @@ jobs:
         grep Dirty     ../_                    && err=1
         grep Compiling ../_                    && err=1
         exit $err
+    - if: ${{ failure() || success() }}
+      name: 🔴 =means=> here's relevant logs (FIXME drop)
+      run: grep -C50 -F ' blblblbl ' ../logs.txt || true
+
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
