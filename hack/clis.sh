@@ -41,9 +41,8 @@ declare -a nvs nvs_args
 
 # ((i+=1)); nvs[i]=cargo-acl@0.8.0;             oks[i]=ok; nvs_args[i]='' passes (unsurprisingly)
 ((i+=1)); nvs[i]=miri@master;                 oks[i]=ko; nvs_args[i]='--git https://github.com/rust-lang/miri.git --rev=dcd2112' # can't find crate for `either`
-((i+=1)); nvs[i]=zed@main;                    oks[i]=ko; nvs_args[i]='--git https://github.com/zed-industries/zed.git --tag=v0.149.5 zed'
- # BUG: bad cratesio name [cratesio-curl-sys-0.4.74-curl-8.9.0-index.crates.io-6f17d22bba15001f 1/2] ADD --chmod=0664 --checksum=sha256:8af10b986114528fcdc4b63b6f5f021b7057618411046a4de2ba0f0149a097bf   https://static.crates.io/crates/curl-sys-0.4.74+curl/curl-sys-0.4.74+curl-8.9.0.crate /crate
-((i+=1)); nvs[i]=cargo-udeps@0.1.50;          oks[i]=ko; nvs_args[i]='' #BUGGG bad curl-sys cratesio URL construction``
+((i+=1)); nvs[i]=zed@main;                    oks[i]=ko; nvs_args[i]='--git https://github.com/zed-industries/zed.git --tag=v0.149.5 zed' # The pkg-config command could not be found.
+((i+=1)); nvs[i]=cargo-udeps@0.1.50;          oks[i]=ko; nvs_args[i]='' # The pkg-config command could not be found.
 ((i+=1)); nvs[i]=rerun-cli@0.18.0;            oks[i]=ko; nvs_args[i]='' # environment variable `TYPENUM_BUILD_OP` not defined at compile time + TYPENUM_BUILD_CONSTS
 
 ((i+=1)); nvs[i]=mirai@main;                  oks[i]=ko; nvs_args[i]='--git https://github.com/facebookexperimental/MIRAI.git --tag=v1.1.9 checker'
