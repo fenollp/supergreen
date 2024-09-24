@@ -64,7 +64,7 @@ pub(crate) async fn fetch_digest(img: &str) -> Result<String> {
         bail!("Image missing 'docker-image' scheme: {img}")
     }
     let img = img.trim_start_matches("docker-image://");
-    if img.contains("@") {
+    if img.contains('@') {
         bail!("Image is already locked: {img}")
     }
     let Some((path, tag)) = img.split_once(':') else { bail!("Image is missing a tag: {img}") };

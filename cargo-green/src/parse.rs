@@ -21,7 +21,7 @@ pub(crate) struct RustcArgs {
     pub(crate) externs: BTreeSet<String>,
 
     /// 1: -C metadata=METADATA
-    pub(crate) metadata: String,
+    pub(crate) metadata: String, // https://github.com/rust-lang/cargo/pull/14107
 
     /// 0|1: -C incremental=INCREMENTAL
     pub(crate) incremental: Option<Utf8PathBuf>,

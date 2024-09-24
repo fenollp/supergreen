@@ -22,10 +22,10 @@ pub(crate) fn from_cratesio_input_path(input: &Utf8PathBuf) -> Result<(String, S
     }
     let cratesio_crate = cratesio_crate.expect("just checked above");
 
+    let lhs = cratesio_crate.split_once('+').map(|(l, _)| l).unwrap_or(cratesio_crate); //https://semver.org/#spec-item-10
+
     let (mut name, mut version) = (String::new(), String::new());
-    if let Some(mid) =
-        "1234567890".chars().filter_map(|x| cratesio_crate.rfind(&format!("-{x}"))).max()
-    {
+    if let Some(mid) = "1234567890".chars().filter_map(|x| lhs.rfind(&format!("-{x}"))).max() {
         let (n, v) = cratesio_crate.split_at(mid);
         (name, version) = (n.to_owned(), v[1..].to_owned());
     }
@@ -55,6 +55,14 @@ fn test_from_cratesio_input_path() {
             .into(),
     ).unwrap(),
     ("md-5".to_owned(), "0.10.6".to_owned(), "index.crates.io-6f17d22bba15001f".to_owned()));
+
+    assert_eq!(from_cratesio_input_path(
+        &"/home/pete/.cargo/registry/src/index.crates.io-6f17d22bba15001f/curl-sys-0.4.74+curl-8.9.0/lib.rs"
+            .into(),
+    ).unwrap(),
+    ("curl-sys".to_owned(), "0.4.74+curl-8.9.0".to_owned(), "index.crates.io-6f17d22bba15001f".to_owned()));
+
+    // /home/pete/.cargo/registry/cache/index.crates.io-6f17d22bba15001f/curl-sys-0.4.74+curl-8.9.0.crate
 }
 
 pub(crate) async fn into_stage(
