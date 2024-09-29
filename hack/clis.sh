@@ -75,6 +75,13 @@ declare -a nvs nvs_args
 ((i+=1)); nvs[i]=ipa@main;                    oks[i]=ko; nvs_args[i]='--git https://github.com/seekbytes/IPA.git --rev=3094f92 ipa' # environment variable `MIME_TYPES_GENERATED_PATH` not defined at compile time
 
 
+# ((i+=1)); nvs[i]=cargo-tally@1.0.48;          oks[i]=ok; nvs_args[i]='' #
+# ((i+=1)); nvs[i]=cargo-mutants@24.7.1;        oks[i]=ok; nvs_args[i]='' #
+
+
+
+
+
 
 #TODO: not a cli but try users of https://github.com/dtolnay/watt
   # curl -s 'https://crates.io/api/v1/crates/rustversion/reverse_dependencies?page=4&per_page=100' --compressed |jq '.versions[]|select(.bin_names != [])|.crate'

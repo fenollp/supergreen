@@ -1,0 +1,21 @@
+0 0s ~ 🤖 tail  bin/buildctl bin/docker 
+==> bin/buildctl <==
+#!/bin/sh -eu
+
+exec /home/pete/bin/bin/buildctl --addr unix:///run/user/1000/buildkit/buildkitd.sock "$@"
+
+==> bin/docker <==
+
+exec /usr/bin/docker "$@"
+
+# error: no valid drivers found: error during connect: Get "http://docker.example.com/v1.24/info": command [ssh -- toaster docker system dial-stdio] has exited with exit status 127, please make sure the URL is valid, and Docker 18.09 or later is installed on the remote host: stderr=bash: line 1: docker: command not found
+
+[ $# -ne 3 ] && exit 3
+[ "$1" != 'system' ] && exit 4
+[ "$2" != 'dial-stdio' ] && exit 5
+#echo "$*" >>/home/pete/_
+exec /home/pete/bin/bin/buildctl --addr unix:///run/user/1000/buildkit/buildkitd.sock dial-stdio
+
+
+
+https://www.cmtops.dev/posts/rootless-docker-in-multiuser-environment/
