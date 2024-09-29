@@ -1,0 +1,118 @@
+130 0s ~ λ docker inspect docker.io/library/rust:1.80.1-slim@sha256:e8e40c50bfb54c0a76218f480cc69783b908430de87b59619c1dca847fdbd753 |jq |head
+[
+  {
+    "Architecture": "amd64",
+    "Author": "",
+    "Comment": "buildkit.dockerfile.v0",
+    "Config": {
+      "AttachStderr": false,
+      "AttachStdin": false,
+      "AttachStdout": false,
+      "Cmd": [
+0 0s ~ λ docker inspect docker.io/library/rust:@sha256:e8e40c50bfb54c0a76218f480cc69783b908430de87b59619c1dca847fdbd753 
+[]
+Error: No such object: docker.io/library/rust:@sha256:e8e40c50bfb54c0a76218f480cc69783b908430de87b59619c1dca847fdbd753
+1 0s ~ λ docker inspect docker.io/library/rust@sha256:e8e40c50bfb54c0a76218f480cc69783b908430de87b59619c1dca847fdbd753 |jq |head
+[
+  {
+    "Architecture": "amd64",
+    "Author": "",
+    "Comment": "buildkit.dockerfile.v0",
+    "Config": {
+      "AttachStderr": false,
+      "AttachStdin": false,
+      "AttachStdout": false,
+      "Cmd": [
+0 0s ~ λ docker inspect docker.io/library:@sha256:e8e40c50bfb54c0a76218f480cc69783b908430de87b59619c1dca847fdbd753 
+[]
+Error: No such object: docker.io/library:@sha256:e8e40c50bfb54c0a76218f480cc69783b908430de87b59619c1dca847fdbd753
+1 0s ~ λ docker inspect docker.io/library@sha256:e8e40c50bfb54c0a76218f480cc69783b908430de87b59619c1dca847fdbd753 
+[]
+Error: No such object: docker.io/library@sha256:e8e40c50bfb54c0a76218f480cc69783b908430de87b59619c1dca847fdbd753
+1 0s ~ λ docker inspect docker.io/@sha256:e8e40c50bfb54c0a76218f480cc69783b908430de87b59619c1dca847fdbd753 
+[]
+Error: No such object: docker.io/@sha256:e8e40c50bfb54c0a76218f480cc69783b908430de87b59619c1dca847fdbd753
+1 0s ~ λ docker inspect docker.io/:@sha256:e8e40c50bfb54c0a76218f480cc69783b908430de87b59619c1dca847fdbd753 
+[]
+Error: No such object: docker.io/:@sha256:e8e40c50bfb54c0a76218f480cc69783b908430de87b59619c1dca847fdbd753
+1 0s ~ λ 
+
+---
+
+```shell
+     ~ λ docker pull docker.io/library/rust:1.80.1-slim@sha256:e8e40c50bfb54c0a76218f480cc69783b908430de87b59619c1dca847fdbd753 
+docker.io/library/rust@sha256:e8e40c50bfb54c0a76218f480cc69783b908430de87b59619c1dca847fdbd753: Pulling from library/rust
+Digest: sha256:e8e40c50bfb54c0a76218f480cc69783b908430de87b59619c1dca847fdbd753
+Status: Image is up to date for rust@sha256:e8e40c50bfb54c0a76218f480cc69783b908430de87b59619c1dca847fdbd753
+docker.io/library/rust:1.80.1-slim@sha256:e8e40c50bfb54c0a76218f480cc69783b908430de87b59619c1dca847fdbd753
+0 1s ~ λ docker pull docker.io/library/rust:@sha256:e8e40c50bfb54c0a76218f480cc69783b908430de87b59619c1dca847fdbd753 
+invalid reference format
+1 0s ~ λ docker pull docker.io/library/rust@sha256:e8e40c50bfb54c0a76218f480cc69783b908430de87b59619c1dca847fdbd753 
+docker.io/library/rust@sha256:e8e40c50bfb54c0a76218f480cc69783b908430de87b59619c1dca847fdbd753: Pulling from library/rust
+Digest: sha256:e8e40c50bfb54c0a76218f480cc69783b908430de87b59619c1dca847fdbd753
+Status: Image is up to date for rust@sha256:e8e40c50bfb54c0a76218f480cc69783b908430de87b59619c1dca847fdbd753
+docker.io/library/rust@sha256:e8e40c50bfb54c0a76218f480cc69783b908430de87b59619c1dca847fdbd753
+0 0s ~ λ docker pull docker.io/library:@sha256:e8e40c50bfb54c0a76218f480cc69783b908430de87b59619c1dca847fdbd753 
+invalid reference format
+1 0s ~ λ docker pull docker.io/library@sha256:e8e40c50bfb54c0a76218f480cc69783b908430de87b59619c1dca847fdbd753 
+Error response from daemon: pull access denied for library, repository does not exist or may require 'docker login': denied: requested access to the resource is denied
+1 2s ~ λ docker pull docker.io/:@sha256:e8e40c50bfb54c0a76218f480cc69783b908430de87b59619c1dca847fdbd753 
+invalid reference format
+1 0s ~ λ docker pull docker.io/@sha256:e8e40c50bfb54c0a76218f480cc69783b908430de87b59619c1dca847fdbd753 
+invalid reference format
+1 0s ~ λ docker pull docker.io@sha256:e8e40c50bfb54c0a76218f480cc69783b908430de87b59619c1dca847fdbd753 
+Error response from daemon: pull access denied for docker.io, repository does not exist or may require 'docker login': denied: requested access to the resource is denied
+1 2s ~ λ 
+```
+
+---
+
+```shell
+# docker pull docker.io/@sha256:e0b10610709509aded9b101a61a090e24a5161f46d5eb8a479297fe96aa5d8ac
+invalid reference format
+```
+
+I propose to extend registry URLs allowing for an entirely empty path (/).
+
+Now 
+
+A client app would maintain a set of hosts concurrently against which to query an image digest
+A client app would query an image's digets concurrently against a set of hosts
+
+
+```
+     .bin master λ curl --silent --location --url https://registry.hub.docker.com/v2/repositories/library/rust/tags/1.80.1-slim | jq |head 
+{
+  "content_type": "image",
+  "creator": 1156886,
+  "digest": "sha256:e8e40c50bfb54c0a76218f480cc69783b908430de87b59619c1dca847fdbd753",
+  "full_size": 280199925,
+  "id": 734775581,
+  "images": [
+    {
+      "architecture": "amd64",
+      "digest": "sha256:c843545c3459df49f242e5f65abfaefab8daf6762fd02c9e7cc7d61ab0231f16",
+```
+=> does current registry APIs allow querying an image digest from a host without image path (nor tag)?
+
+oh
+```
+     ~ λ curl --silent --location --url https://registry.hub.docker.com/v2/repositories/@sha256:e8e40c50bfb54c0a76218f480cc69783b908430de87b59619c1dca847fdbd753 | jq
+{
+  "count": 0,
+  "next": null,
+  "previous": null,
+  "results": []
+}
+  15s ~ λ 
+     ~ λ curl --silent --location --url https://registry.hub.docker.com/v2/repositories@sha256:e8e40c50bfb54c0a76218f480cc69783b908430de87b59619c1dca847fdbd753 | jq
+{
+  "message": "404: Page Not Found"
+}
+```
+looks like there's a hole to crawl in
+
+
+
+https://maelstrom-software.com/doc/book/latest/container-images.html
+
