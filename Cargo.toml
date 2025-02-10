@@ -5,7 +5,7 @@ members = [
 ]
 
 [workspace.package]
-version = "0.10.0"
+version = "0.10.1"
 authors = ["Pierre Fenoll <pierrefenoll@gmail.com>"]
 categories = [
 	"caching",
@@ -35,7 +35,7 @@ home = "0, >=0.5"
 log = "0, >=0.4"
 nutype = "0, >=0.4"
 pretty_assertions = "1"
-reqwest = { version = "0.12", default-features = false, features = ["rustls-tls"] }
+reqwest = { version = "0, >=0.12", default-features = false, features = ["rustls-tls"] }
 rustc_version = "0, >=0.4"
 rustflags = "0, >=0.1"
 serde = { version = "1", features = ["derive"] }
