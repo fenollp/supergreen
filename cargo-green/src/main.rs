@@ -149,10 +149,6 @@ async fn main() -> Result<ExitCode> {
     // );
     // // https://doc.rust-lang.org/rustc/codegen-options/index.html#linker
 
-    if true {
-        panic!(">>> {:?} {:?}", env::args(), env::args().nth(2).as_deref())
-    }
-
     match env::args().nth(3).as_deref() {
         None => {}
         Some("fetch") => {
