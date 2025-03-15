@@ -17,7 +17,7 @@ pub(crate) fn from_cratesio_input_path(input: &Utf8PathBuf) -> Result<(String, S
             break;
         }
     }
-    if cratesio_index.is_empty() || cratesio_crate.map_or(true, str::is_empty) {
+    if cratesio_index.is_empty() || cratesio_crate.is_none_or(str::is_empty) {
         bail!("Unexpected cratesio crate path: {input}")
     }
     let cratesio_crate = cratesio_crate.expect("just checked above");
