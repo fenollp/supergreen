@@ -30,7 +30,10 @@ assertx = { version = "1", features = [ "logging" ] }
 camino = { version = "1", features = [ "serde1" ] }
 cargo-lock = "10"
 cargo-subcommand-metadata = "0, >=0.1"
+cargo_toml = "0, >=0.21"
 chrono = { version = "0, >=0.4", default-features = false, features = [ "now" ] }
+clap = { version = "4", features = [ "derive" ] }
+clap-cargo = { version = "0, >=0.15", features = [ "cargo_metadata", "clap" ] }
 env_logger = "0, >=0.11"
 futures = "0, >=0.3"
 home = "0, >=0.5"

@@ -9,6 +9,14 @@ name = "cargo-green"
 repository.workspace = true
 version.workspace = true
 
+[package.metadata.green]
+this = """
+RUN echo '#!/bin/bash -eux -o pipefail' >/linker.sh
+RUN echo 'printf '\\n%s\\n\\n' "$*"' >>/linker.sh
+RUN echo 'exec /usr/bin/cc "$@"' >>/linker.sh
+RUN chmod +x /linker.sh
+"""
+
 # [profile.release]
 # codegen-units = 1
 # Try tuning rustc codegen options to optimize for speed (suggest mold?)
@@ -24,7 +32,10 @@ anyhow.workspace = true
 camino.workspace = true
 cargo-lock.workspace = true
 cargo-subcommand-metadata.workspace = true
+cargo_toml.workspace = true
 chrono.workspace = true
+clap.workspace = true
+clap-cargo.workspace = true
 env_logger.workspace = true
 futures.workspace = true
 home.workspace = true

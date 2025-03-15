@@ -139,6 +139,9 @@ impl BaseImage {
 
         match self {
             Self::Image(_) => format!("FROM --platform=$BUILDPLATFORM {base} AS {RUST}\n"),
+            // Self::Image(_) => {
+            //     format!("FROM --platform=$BUILDPLATFORM {base} AS {RUST}\nRUN echo '#!/bin/bash -eux -o pipefail' >/linker.sh\nRUN echo 'env >&2' >>/linker.sh\nRUN echo 'echo \"$@\" >&2' >>/linker.sh\nRUN echo 'shift 1 ; exec \"$@\"' >>/linker.sh\n")
+            // }
             Self::RustcV(RustcV { date, channel, .. }) => {
                 // TODO? maybe use commit & version as selector too?
 
