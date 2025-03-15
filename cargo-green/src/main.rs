@@ -118,7 +118,9 @@ async fn main() -> Result<ExitCode> {
         if let Some(toolchain) = arg.strip_prefix('+') {
             let var = "RUSTUP_TOOLCHAIN";
             if let Ok(val) = env::var(var) {
-                println!("Overriding {var}={val:?} to {toolchain:?} for `{PKG} +toolchain`");
+                if val != toolchain {
+                    println!("Overriding {var}={val:?} to {toolchain:?} for `{PKG} +toolchain`");
+                }
             }
             // Special handling: call was `cargo green +toolchain ..` (probably from `alias cargo='cargo green'`).
             // Normally, calls look like `cargo +toolchain green ..` but let's simplify alias creation!
