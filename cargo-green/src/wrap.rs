@@ -231,16 +231,11 @@ async fn do_wrap_rustc(
     // A woodlegged way of passing around work cargo-green already did
     // TODO: merge both binaries into a single one
     // * so both versions always match
-    // * so passing data from cargo-green to wrapper cannot be interrupted/manipulated
     // * so RUSTCBUILDX_ envs turn into only CARGOGREEN_ envs?
     // * so config is driven only by cargo-green
     md.push_block(
         &Stage::try_new(RUST).expect("rust stage"),
-        if let Ok(base_block) = env::var("RUSTCBUILDX_BASE_IMAGE_BLOCK_") {
-            base_block
-        } else {
-            base_image().await.block()
-        },
+        env::var("RUSTCBUILDX_BASE_IMAGE_BLOCK_").expect("RUSTCBUILDX_BASE_IMAGE_BLOCK_"),
     );
 
     let ext = match crate_type.as_str() {

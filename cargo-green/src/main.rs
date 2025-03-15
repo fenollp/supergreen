@@ -9,7 +9,10 @@ use std::{
     process::{ExitCode, Stdio},
 };
 
-use anyhow::{bail, Result};
+use anyhow::{bail, Context, Result};
+use cargo_toml::Manifest;
+use clap::Parser;
+use serde::Deserialize;
 use tokio::process::Command;
 
 use crate::{
@@ -17,6 +20,7 @@ use crate::{
     cli::{envs, help, pull, push},
     envs::{builder_image, cache_image, incremental, internal, runner, DEFAULT_SYNTAX},
     extensions::ShowCmd,
+    green::GreenCli,
     runner::{fetch_digest, maybe_lock_image, runner_cmd},
     wrap::do_wrap,
 };
@@ -26,6 +30,7 @@ mod cli;
 mod cratesio;
 mod envs;
 mod extensions;
+mod green;
 mod md;
 mod parse;
 mod runner;
@@ -132,6 +137,22 @@ async fn main() -> Result<ExitCode> {
     cmd.args(args);
     cmd.kill_on_drop(true);
 
+    // // cargo green: intercept buildrs runs with
+    // // RUSTFLAGS="-C linker=/use/bin/cc"
+    // cmd.env(
+    //     "RUSTFLAGS",
+    //     format!(
+    //         // "{} -C linker=/home/pete/wefwefwef/supergreen.git/linker.sh",
+    //         "{} -C linker=/linker.sh",
+    //         std::env::var("RUSTFLAGS").unwrap_or_default()
+    //     ),
+    // );
+    // // https://doc.rust-lang.org/rustc/codegen-options/index.html#linker
+
+    if true {
+        panic!(">>> {:?} {:?}", env::args(), env::args().nth(2).as_deref())
+    }
+
     match env::args().nth(3).as_deref() {
         None => {}
         Some("fetch") => {
@@ -142,6 +163,53 @@ async fn main() -> Result<ExitCode> {
         }
         // TODO: Skip this call for the ones not calling rustc
         Some(_) => {
+            if false {
+                // let manifest = match GreenCli::try_parse_from(env::args().skip(4)) {
+                //     Ok(GreenCli { manifest }) => manifest,
+                //     Err(e) => bail!(">>> {e}"),
+                // };
+
+                // let manifest = clap_cargo::Manifest::default();
+                let manifest_path = std::env::current_dir().expect("$PWD");
+                let manifest_path: PathBuf =
+                    // std::fs::canonicalize(manifest_path).expect("canon").join("Cargo.toml");
+                    std::fs::canonicalize(manifest_path).expect("canon").join("cargo-green/Cargo.toml");
+                let manifest = Manifest::from_path(&manifest_path).expect("from");
+
+                // panic!(">>> {:?}", env::vars().collect::<Vec<_>>())
+
+                eprintln!(">>> {manifest_path:?}");
+                eprintln!(">>> .package {:?}", manifest.package.clone());
+                if let Some(metadata) = manifest.package.as_ref().and_then(|x| x.metadata.as_ref())
+                {
+                    eprintln!(">>> {metadata:?}");
+                    eprintln!(">>> {:?}", toml::to_string(metadata));
+
+                    #[derive(Debug, Deserialize)]
+                    #[allow(dead_code)]
+                    struct GreenMetadata {
+                        green: ThisField,
+                    }
+                    #[derive(Debug, Deserialize)]
+                    #[allow(dead_code)]
+                    struct ThisField {
+                        this: String,
+                    }
+
+                    let cfg: GreenMetadata =
+                        toml::from_str(&toml::to_string(metadata).expect("str")).expect("parse");
+
+                    eprintln!(">>> {cfg:?}");
+                }
+
+                // eprintln!(">>> .workspace {:?}", manifest.workspace.clone());
+                // eprintln!(
+                //     ">>> .workspace.package {:?}",
+                //     manifest.workspace.clone().map(|x| x.package).and_then(|x| x.metadata)
+                // );
+                panic!(">>> {manifest:?}");
+            }
+
             cmd.env("RUSTC_WRAPPER", arg0);
             if let Err(e) = setup_for_build(&mut cmd).await {
                 eprintln!("{e}");
@@ -152,6 +220,34 @@ async fn main() -> Result<ExitCode> {
 
     let status = cmd.status().await?;
     Ok(status.code().map_or(ExitCode::FAILURE, |code| ExitCode::from(code as u8)))
+}
+
+fn green_field() -> Result<Option<String>> {
+    let manifest_path = std::env::current_dir().expect("$PWD");
+    let manifest_path: PathBuf =
+        std::fs::canonicalize(manifest_path).expect("canon").join("cargo-green/Cargo.toml");
+    let manifest = Manifest::from_path(&manifest_path).context("from")?;
+
+    if let Some(metadata) = manifest.package.as_ref().and_then(|x| x.metadata.as_ref()) {
+        #[derive(Debug, Deserialize)]
+        #[allow(dead_code)]
+        struct GreenMetadata {
+            green: ThisField,
+        }
+        #[derive(Debug, Deserialize)]
+        #[allow(dead_code)]
+        struct ThisField {
+            this: String,
+        }
+
+        let cfg: GreenMetadata =
+            toml::from_str(&toml::to_string(metadata).expect("str")).expect("parse");
+        let cfg = cfg.green;
+
+        return Ok((!cfg.this.is_empty()).then_some(cfg.this));
+    }
+
+    Ok(None)
 }
 
 async fn setup_for_build(cmd: &mut Command) -> Result<()> {
@@ -195,7 +291,10 @@ async fn setup_for_build(cmd: &mut Command) -> Result<()> {
     }
     env::set_var(internal::RUSTCBUILDX_BASE_IMAGE, base_image.base());
 
-    let base_image_block = base_image.block();
+    let mut base_image_block = base_image.block();
+    if let Some(ref more_steps) = green_field()? {
+        base_image_block.push_str(more_steps);
+    }
     env::set_var("RUSTCBUILDX_BASE_IMAGE_BLOCK_", base_image_block.clone());
     cmd.env(
         internal::RUSTCBUILDX_RUNS_ON_NETWORK,
