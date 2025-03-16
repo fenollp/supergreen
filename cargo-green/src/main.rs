@@ -1,6 +1,21 @@
-use std::{env, ffi::OsStr, path::PathBuf, process::exit};
+use std::{
+    env,
+    ffi::OsStr,
+    fs::{self},
+    path::PathBuf,
+    process::exit,
+};
 
-use anyhow::{bail, Result};
+use anyhow::{anyhow, bail, Result};
+use camino::Utf8PathBuf;
+use cargo_green::setup_build_driver;
+use cargo_lock::{Lockfile, Package, SourceId};
+use cratesio::add_step;
+use envs::{builder_image, internal, runner, DEFAULT_SYNTAX};
+use runner::{build, fetch_digest, maybe_lock_image};
+use rustc_wrapper::file_exists_and_is_not_empty;
+use serde::Deserialize;
+use stage::Stage;
 use tokio::process::Command;
 
 mod base;
@@ -97,13 +112,63 @@ async fn main() -> Result<()> {
     //TODO: https://github.com/messense/cargo-options/blob/086d7470cae34b0e694a62237e258fbd35384e93/examples/cargo-mimic.rs
     // maybe https://lib.rs/crates/clap-cargo
 
-    match env::args().nth(3).as_deref() {
+    match env::args().nth(2).as_deref() {
         None => {}
         Some("fetch") => {
-            // TODO: run cargo fetch + read lockfile + generate cratesio stages + build them cacheonly
-            //   https://github.com/rustsec/rustsec/tree/main/cargo-lock
+            // First, run actuall `cargo fetch`
+            if !cmd.status().await?.success() {
+                exit(1)
+            }
+
             // TODO: skip these stages (and any other "locked thing" stage) when building with --no-cache
-            todo!("BUG: this is never run") //=> fetch on first ever run!
+
+            let manifest_path_lockfile = find_lockfile().await?;
+            let lockfile = Lockfile::load(manifest_path_lockfile)?;
+
+            let packages = lockfile
+                .packages
+                .into_iter()
+                .filter(|pkg| pkg.source.as_ref().is_some_and(SourceId::is_default_registry))
+                .filter(|pkg| pkg.checksum.is_some())
+                .map(|Package { name, version, checksum, .. }| {
+                    (name.to_string(), version.to_string(), checksum.unwrap().to_string())
+                })
+                .collect::<Vec<_>>();
+            if packages.is_empty() {
+                return Ok(());
+            }
+
+            let syntax = preset_syntax().await?;
+            let syntax = syntax.trim_start_matches("docker-image://");
+            preset_builder().await?;
+
+            let mut dockerfile = format!("# syntax={syntax}\n");
+            let stager = |i| format!("cargo-fetch-{i}");
+            let mut leaves = 0;
+            for (i, pkgs) in packages.chunks(127).enumerate() {
+                leaves = i;
+                dockerfile.push_str(&format!("FROM scratch AS {}\n", stager(i)));
+                let (name, version, hash) = pkgs[0].clone();
+                dockerfile.push_str(&add_step(&name, &version, &hash));
+                for (name, version, hash) in &pkgs[1..] {
+                    dockerfile.push_str(&add_step(name, version, hash));
+                }
+            }
+            let stage = Stage::try_new("cargo-fetch")?;
+            dockerfile.push_str(&format!("FROM scratch AS {stage}\n"));
+            for leaf in 0..=leaves {
+                dockerfile.push_str(&format!("COPY --from={} / /\n", stager(leaf)));
+            }
+
+            let cfetch: Utf8PathBuf = env::temp_dir().join("cargo-fetch").try_into()?;
+            fs::create_dir_all(&cfetch)
+                .map_err(|e| anyhow!("Failed `mkdir -p {cfetch:?}`: {e}"))?;
+
+            let dockerfile_path = cfetch.join("Dockerfile");
+            fs::write(&dockerfile_path, dockerfile)
+                .map_err(|e| anyhow!("Failed creating dockerfile {dockerfile_path}: {e}"))?;
+
+            return build(runner(), &dockerfile_path, stage, &[].into(), &cfetch).await;
         }
         Some(_) => {}
     }
@@ -112,4 +177,80 @@ async fn main() -> Result<()> {
         exit(1)
     }
     Ok(())
+}
+
+async fn preset_syntax() -> Result<String> {
+    let mut syntax = internal::syntax().unwrap_or_else(|| DEFAULT_SYNTAX.to_owned());
+    // Use local hashed image if one matching exists locally
+    if !syntax.contains('@') {
+        // otherwise default to a hash found through some Web API
+        syntax = fetch_digest(&syntax).await?; //TODO: lower conn timeout to 4s (is 30s)
+                                               //TODO: review online code to try to provide an offline mode
+    }
+    Ok(syntax)
+}
+
+async fn preset_builder() -> Result<()> {
+    let builder_image = builder_image().await;
+
+    // https://docs.docker.com/build/building/variables/#buildx_builder
+    if let Ok(ctx) = env::var("DOCKER_HOST") {
+        eprintln!("$DOCKER_HOST is set to {ctx:?}");
+    } else if let Ok(ctx) = env::var("BUILDX_BUILDER") {
+        eprintln!("$BUILDX_BUILDER is set to {ctx:?}");
+    } else if let Ok(remote) = env::var("CARGOGREEN_REMOTE") {
+        //     // docker buildx create \
+        //     //   --name supergreen \
+        //     //   --driver remote \
+        //     //   tcp://localhost:1234
+        //     //{remote}
+        //     env::set_var("DOCKER_CONTEXT", "supergreen"); //FIXME: ensure this gets passed down & used
+        panic!("$CARGOGREEN_REMOTE is reserved but set to: {remote}");
+    } else if false {
+        // Images were pulled, we have to re-read their now-locked values now
+        let builder_image = maybe_lock_image(builder_image.to_owned()).await;
+        setup_build_driver("supergreen", builder_image.trim_start_matches("docker-image://"))
+            .await?; // FIXME? maybe_..
+        env::set_var("BUILDX_BUILDER", "supergreen");
+
+        // TODO? docker dial-stdio proxy
+        // https://github.com/docker/cli/blob/9bb1a62735174e9220d84fecc056a0ef8a1fc26f/cli/command/system/dial_stdio.go
+
+        // https://docs.docker.com/engine/context/working-with-contexts/
+        // https://docs.docker.com/engine/security/protect-access/
+    }
+    Ok(())
+}
+
+async fn find_lockfile() -> Result<Utf8PathBuf> {
+    let manifest_path = cargo_locate_project(false).await?;
+    let candidate = manifest_path.with_extension("lock");
+    if file_exists_and_is_not_empty(candidate.as_path())? {
+        return Ok(candidate);
+    }
+    let manifest_path = cargo_locate_project(true).await?;
+    Ok(manifest_path.with_extension("lock"))
+}
+
+async fn cargo_locate_project(at_workspace: bool) -> Result<Utf8PathBuf> {
+    let mut cmd = Command::new(env::var_os("CARGO").unwrap_or_else(|| "cargo".into()));
+    cmd.kill_on_drop(true);
+
+    cmd.arg("locate-project");
+    if at_workspace {
+        cmd.arg("--workspace");
+    }
+
+    let output = cmd.output().await?;
+    if !output.stderr.is_empty() {
+        bail!(">>> {:?}", output.stderr)
+    }
+
+    #[derive(Debug, Deserialize)]
+    struct Located {
+        root: Utf8PathBuf,
+    }
+
+    let Located { root } = serde_json::from_slice(&output.stdout)?;
+    Ok(root)
 }

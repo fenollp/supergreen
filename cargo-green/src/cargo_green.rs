@@ -124,7 +124,7 @@ pub(crate) async fn main(cmd: &mut Command) -> Result<()> {
 // https://docs.docker.com/build/drivers/docker-container/
 // https://docs.docker.com/build/drivers/remote/
 // https://docs.docker.com/build/drivers/kubernetes/
-async fn setup_build_driver(name: &str, builder_image: &str) -> Result<()> {
+pub(crate) async fn setup_build_driver(name: &str, builder_image: &str) -> Result<()> {
     if false {
         // TODO: reuse old state but try auto-upgrading builder impl
         try_removing_previous_builder(name).await;

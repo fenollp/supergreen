@@ -86,16 +86,30 @@ pub(crate) async fn into_stage(
         .map_err(|e| anyhow!("Failed reading {cratesio_cached}: {e}"))?;
     debug!("crate sha256 for {cratesio_stage}: {cratesio_hash}");
 
-    const CRATESIO: &str = "https://static.crates.io";
-    const SRC: &str = "/extracted";
+    let (cratesio_stage, block) = dotcrate_stage(name, version, &cratesio_hash, cratesio_index)?;
+
+    Ok((cratesio_stage, SRC, cratesio_extracted, block))
+}
+
+const SRC: &str = "/extracted";
+
+fn dotcrate_stage(
+    name: &str,
+    version: &str,
+    hash: &str,
+    cratesio_index: &str,
+) -> Result<(Stage, String)> {
+    // TODO: see if {cratesio_index} can be dropped from paths (+ stage names) => content hashing + remap-path-prefix?
+    let cratesio_stage =
+        Stage::try_new(format!("{CRATESIO_STAGE_PREFIX}{name}-{version}-{cratesio_index}"))?;
 
     // On using tar: https://github.com/rust-lang/cargo/issues/3577#issuecomment-890693359
 
+    let add = add_step(name, version, hash);
     let block = format!(
         r#"
 FROM scratch AS {cratesio_stage}
-ADD --chmod=0664 --checksum=sha256:{cratesio_hash} \
-  {CRATESIO}/crates/{name}/{name}-{version}.crate /crate
+{add}
 SHELL ["/usr/bin/dash", "-eux", "-c"]
 RUN \
   --mount=from={RUST},src=/lib,dst=/lib \
@@ -116,5 +130,16 @@ RUN \
     //=> would remove that `RUN tar` step + stage dep on RUST (=> scratch)
     //  => https://github.com/rust-lang/cargo/issues/14373
 
-    Ok((cratesio_stage, SRC, cratesio_extracted, block))
+    Ok((cratesio_stage, block))
+}
+
+pub(crate) fn add_step(name: &str, version: &str, hash: &str) -> String {
+    const CRATESIO: &str = "https://static.crates.io";
+    format!(
+        r#"
+ADD --chmod=0664 --checksum=sha256:{hash} \
+  {CRATESIO}/crates/{name}/{name}-{version}.crate /crate
+"#
+    )[1..]
+        .to_owned()
 }

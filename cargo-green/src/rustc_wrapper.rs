@@ -720,7 +720,7 @@ fn file_exists(path: &Utf8Path) -> Result<bool> {
     }
 }
 
-fn file_exists_and_is_not_empty(path: &Utf8Path) -> Result<bool> {
+pub(crate) fn file_exists_and_is_not_empty(path: &Utf8Path) -> Result<bool> {
     match path.metadata().map(|md| md.is_file() && md.len() > 0) {
         Ok(b) => Ok(b),
         Err(e) if e.kind() == ErrorKind::NotFound => Ok(false),
