@@ -509,8 +509,7 @@ async fn do_wrap_rustc(
                     Let's remove the current target directory (note: $CARGO_TARGET_DIR={target_dir})
                     then run your command again.
                 "#,
-                        target_dir =
-                            env::var("CARGO_TARGET_DIR").expect("cargo sets $CARGO_TARGET_DIR"),
+                        target_dir = env::var("CARGO_TARGET_DIR").unwrap_or("<unset>".to_owned()),
                     );
                 }
                 anyhow!("Failed reading Md {extern_md_path}: {e}")
