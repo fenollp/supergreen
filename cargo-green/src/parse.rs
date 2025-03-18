@@ -5,6 +5,11 @@ use camino::{Utf8Path, Utf8PathBuf};
 
 use crate::extensions::Popped;
 
+const ALL_CRATE_TYPES: &[&str] =
+    &["bin", "lib", "rlib", "dylib", "cdylib", "staticlib", "proc-macro"];
+
+const SYSROOT_CRATES: &[&str] = &["alloc", "core", "proc_macro", "std", "test"];
+
 // FIXME: fix bad mapping (eg. multiple crate types) + generalize
 // https://github.com/declantsien/cargo-ninja/blob/42490a0c8a67bbf8c0aff56a0cb70731913fd3e3/src/rustc_config.rs
 
@@ -38,7 +43,7 @@ pub(crate) struct RustcArgs {
 
 pub(crate) fn as_rustc(
     pwd: impl AsRef<Utf8Path>,
-    arguments: Vec<String>,
+    arguments: &[String],
     out_dir_var: Option<&str>,
 ) -> Result<(RustcArgs, Vec<String>)> {
     let mut args = vec![];
@@ -121,8 +126,6 @@ pub(crate) fn as_rustc(
                 // https://doc.rust-lang.org/cargo/reference/cargo-targets.html#the-crate-type-field
                 // array, >=1 per rustc call => as many products !!! we expect a single one throughout FIXME
                 // assert_eq!(state.crate_type, "");
-                const ALL_CRATE_TYPES: &[&str] =
-                    &["bin", "lib", "rlib", "dylib", "cdylib", "staticlib", "proc-macro"];
                 if !ALL_CRATE_TYPES.contains(&val.as_str()) {
                     let ct = state.crate_type;
                     bail!("Unhandled --crate-type={val} (knowing {ct:?}) in {arguments:?}")
@@ -135,7 +138,7 @@ pub(crate) fn as_rustc(
                 val.clone_into(&mut state.emit);
             }
             "--extern" => {
-                if ["alloc", "core", "proc_macro", "std", "test"].contains(&val.as_str()) {
+                if SYSROOT_CRATES.contains(&val.as_str()) {
                     args.push(key.clone());
                     args.push(val);
                     continue; // Sysroot crates (e.g. https://doc.rust-lang.org/proc_macro)
@@ -241,6 +244,19 @@ fn target_path_from_out_dir() {
     }
 }
 
+pub(crate) fn crate_type_for_logging(crate_type: &str) -> char {
+    crate_type.chars().next().unwrap()
+}
+
+#[test]
+fn unique_krate_types() {
+    use std::collections::HashSet;
+
+    let all: HashSet<_> = ALL_CRATE_TYPES.iter().map(|ty| crate_type_for_logging(ty)).collect();
+    assert_eq!(ALL_CRATE_TYPES.len(), all.len());
+    assert!(!all.contains(&'x')); // for build scripts
+}
+
 #[cfg(test)]
 mod tests {
     use pretty_assertions::assert_eq;
@@ -262,7 +278,7 @@ mod tests {
     fn args_when_building_final_binary() {
         #[rustfmt::skip]
         // Original ordering per rustc 1.69.0 (84c898d65 2023-04-16)
-        let arguments= as_arguments(&[
+        let arguments = as_arguments(&[
             "$PWD/./dbg/debug/rustcbuildx",                                                   // this
             "$HOME/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/rustc",             // rustc
             "--crate-name", "rustcbuildx",                                                    // crate_name
@@ -289,7 +305,7 @@ mod tests {
             "-C", "link-arg=-fuse-ld=/usr/local/bin/mold",
         ]);
 
-        let (st, args) = as_rustc(PWD, arguments.clone(), None).unwrap();
+        let (st, args) = as_rustc(PWD, &arguments, None).unwrap();
 
         assert_eq!(
             st,
@@ -372,7 +388,7 @@ mod tests {
             "-C", "link-arg=-fuse-ld=/usr/local/bin/mold",
         ]);
 
-        let (st, args) = as_rustc(PWD, arguments.clone(), None).unwrap();
+        let (st, args) = as_rustc(PWD, &arguments, None).unwrap();
 
         assert_eq!(
             st,
@@ -455,7 +471,7 @@ mod tests {
             "-C", "link-arg=-fuse-ld=/usr/local/bin/mold",
         ]);
 
-        let (st, args) = as_rustc(PWD, arguments.clone(), None).unwrap();
+        let (st, args) = as_rustc(PWD, &arguments, None).unwrap();
 
         assert_eq!(
             st,
@@ -527,7 +543,7 @@ mod tests {
             "-C", "link-arg=-fuse-ld=/usr/local/bin/mold",
         ]);
 
-        let (st, args) = as_rustc(PWD, arguments.clone(), None).unwrap();
+        let (st, args) = as_rustc(PWD, &arguments, None).unwrap();
 
         assert_eq!(
             st,
@@ -595,7 +611,7 @@ mod tests {
             "-C", "link-arg=-fuse-ld=/usr/local/bin/mold",
         ]);
 
-        let (st, args) = as_rustc(PWD, arguments.clone(), None).unwrap();
+        let (st, args) = as_rustc(PWD, &arguments, None).unwrap();
 
         assert_eq!(
             st,
@@ -661,7 +677,7 @@ mod tests {
             "--cap-lints", "warn",
         ]);
 
-        let (st, args) = as_rustc(PWD, arguments.clone(), None).unwrap();
+        let (st, args) = as_rustc(PWD, &arguments, None).unwrap();
 
         assert_eq!(
             st,
@@ -711,7 +727,7 @@ mod tests {
     fn the_weird_build_script_of_slab_0_4_9() {
         #[rustfmt::skip]
         // Original ordering per rustc 1.80.0
-        let arguments = [
+        let arguments = as_arguments(&[
             // CARGO=$HOME/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/cargo
             // CARGO_CFG_PANIC=unwind
             // CARGO_CFG_TARGET_ABI=''
@@ -755,13 +771,12 @@ mod tests {
             // RUSTDOC=$HOME/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/rustdoc
             // TARGET=x86_64-unknown-linux-gnu
             "$HOME/work/supergreen/supergreen/target/debug/build/slab-b0340a0384800aca/build-script-build",
-        ];
+        ]);
 
         let out_dir_var =
             Some("$HOME/work/supergreen/supergreen/target/debug/build/slab-94793bb2b78c57b5/out");
 
-        let (st, args) =
-            as_rustc(PWD, arguments.iter().map(|&x| x.to_owned()).collect(), out_dir_var).unwrap();
+        let (st, args) = as_rustc(PWD, &arguments, out_dir_var).unwrap();
 
         assert_eq!(
             st,

@@ -106,7 +106,7 @@ jobs:
     - run: docker buildx du --verbose
     - name: cargo install net=ON cache=OFF remote=OFF jobs=1
       run: |
-        CARGOGREEN_LOG=debug \
+        CARGOGREEN_LOG=trace \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
           CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=1 --locked --force buildxargs --git https://github.com/fenollp/buildxargs.git |& tee _
     - if: ${{ failure() || success() }}
@@ -150,7 +150,7 @@ jobs:
 
     - name: Ensure running the same command twice without modifications...
       run: |
-        CARGOGREEN_LOG=debug \
+        CARGOGREEN_LOG=trace \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
           CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=1 --locked --force buildxargs --git https://github.com/fenollp/buildxargs.git |& tee _
     - name: ...doesn't recompile anything
@@ -244,7 +244,7 @@ jobs:
     - run: docker buildx du --verbose
     - name: cargo install net=ON cache=OFF remote=OFF jobs=1
       run: |
-        CARGOGREEN_LOG=debug \
+        CARGOGREEN_LOG=trace \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
           CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=1 --locked --force cargo-llvm-cov@0.5.36  |& tee _
     - if: ${{ failure() || success() }}
@@ -288,7 +288,7 @@ jobs:
 
     - name: Ensure running the same command twice without modifications...
       run: |
-        CARGOGREEN_LOG=debug \
+        CARGOGREEN_LOG=trace \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
           CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=1 --locked --force cargo-llvm-cov@0.5.36  |& tee _
     - name: ...doesn't recompile anything
@@ -382,7 +382,7 @@ jobs:
     - run: docker buildx du --verbose
     - name: cargo install net=ON cache=OFF remote=OFF jobs=1
       run: |
-        CARGOGREEN_LOG=debug \
+        CARGOGREEN_LOG=trace \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
           CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=1 --locked --force cross@0.2.5 --git https://github.com/cross-rs/cross.git --tag=v0.2.5 cross |& tee _
     - if: ${{ failure() || success() }}
@@ -426,7 +426,7 @@ jobs:
 
     - name: Ensure running the same command twice without modifications...
       run: |
-        CARGOGREEN_LOG=debug \
+        CARGOGREEN_LOG=trace \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
           CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=1 --locked --force cross@0.2.5 --git https://github.com/cross-rs/cross.git --tag=v0.2.5 cross |& tee _
     - name: ...doesn't recompile anything
@@ -520,7 +520,7 @@ jobs:
     - run: docker buildx du --verbose
     - name: cargo install net=ON cache=OFF remote=OFF jobs=1
       run: |
-        CARGOGREEN_LOG=debug \
+        CARGOGREEN_LOG=trace \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
           CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=1 --locked --force hickory-dns@0.25.0-alpha.1 --features=dns-over-rustls |& tee _
     - if: ${{ failure() || success() }}
@@ -564,7 +564,7 @@ jobs:
 
     - name: Ensure running the same command twice without modifications...
       run: |
-        CARGOGREEN_LOG=debug \
+        CARGOGREEN_LOG=trace \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
           CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=1 --locked --force hickory-dns@0.25.0-alpha.1 --features=dns-over-rustls |& tee _
     - name: ...doesn't recompile anything
@@ -658,7 +658,7 @@ jobs:
     - run: docker buildx du --verbose
     - name: cargo install net=ON cache=OFF remote=OFF jobs=1
       run: |
-        CARGOGREEN_LOG=debug \
+        CARGOGREEN_LOG=trace \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
           CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=1 --locked --force ntpd@1.2.3  |& tee _
     - if: ${{ failure() || success() }}
@@ -702,7 +702,7 @@ jobs:
 
     - name: Ensure running the same command twice without modifications...
       run: |
-        CARGOGREEN_LOG=debug \
+        CARGOGREEN_LOG=trace \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
           CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=1 --locked --force ntpd@1.2.3  |& tee _
     - name: ...doesn't recompile anything
@@ -796,7 +796,7 @@ jobs:
     - run: docker buildx du --verbose
     - name: cargo install net=ON cache=OFF remote=OFF jobs=1
       run: |
-        CARGOGREEN_LOG=debug \
+        CARGOGREEN_LOG=trace \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
           CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=1 --locked --force qcow2-rs@0.1.2  |& tee _
     - if: ${{ failure() || success() }}
@@ -840,7 +840,7 @@ jobs:
 
     - name: Ensure running the same command twice without modifications...
       run: |
-        CARGOGREEN_LOG=debug \
+        CARGOGREEN_LOG=trace \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
           CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=1 --locked --force qcow2-rs@0.1.2  |& tee _
     - name: ...doesn't recompile anything
@@ -934,7 +934,7 @@ jobs:
     - run: docker buildx du --verbose
     - name: cargo install net=ON cache=OFF remote=OFF jobs=1
       run: |
-        CARGOGREEN_LOG=debug \
+        CARGOGREEN_LOG=trace \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
           CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=1 --locked --force ripgrep@14.1.0  |& tee _
     - if: ${{ failure() || success() }}
@@ -978,7 +978,7 @@ jobs:
 
     - name: Ensure running the same command twice without modifications...
       run: |
-        CARGOGREEN_LOG=debug \
+        CARGOGREEN_LOG=trace \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
           CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=1 --locked --force ripgrep@14.1.0  |& tee _
     - name: ...doesn't recompile anything
@@ -1072,7 +1072,7 @@ jobs:
     - run: docker buildx du --verbose
     - name: cargo install net=ON cache=OFF remote=OFF jobs=1
       run: |
-        CARGOGREEN_LOG=debug \
+        CARGOGREEN_LOG=trace \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
           CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=1 --locked --force rublk@0.2.0  |& tee _
     - if: ${{ failure() || success() }}
@@ -1116,7 +1116,7 @@ jobs:
 
     - name: Ensure running the same command twice without modifications...
       run: |
-        CARGOGREEN_LOG=debug \
+        CARGOGREEN_LOG=trace \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
           CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=1 --locked --force rublk@0.2.0  |& tee _
     - name: ...doesn't recompile anything
@@ -1210,7 +1210,7 @@ jobs:
     - run: docker buildx du --verbose
     - name: cargo install net=ON cache=OFF remote=OFF jobs=1
       run: |
-        CARGOGREEN_LOG=debug \
+        CARGOGREEN_LOG=trace \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
           CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=1 --locked --force vixargs@0.1.0  |& tee _
     - if: ${{ failure() || success() }}
@@ -1254,7 +1254,7 @@ jobs:
 
     - name: Ensure running the same command twice without modifications...
       run: |
-        CARGOGREEN_LOG=debug \
+        CARGOGREEN_LOG=trace \
         RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
           CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=1 --locked --force vixargs@0.1.0  |& tee _
     - name: ...doesn't recompile anything
