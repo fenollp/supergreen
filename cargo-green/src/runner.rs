@@ -7,6 +7,7 @@ use std::{
 
 use anyhow::{anyhow, bail, Result};
 use camino::{Utf8Path, Utf8PathBuf};
+use log::{debug, info, warn};
 use reqwest::Client as ReqwestClient;
 use serde::Deserialize;
 use tokio::{
@@ -15,13 +16,14 @@ use tokio::{
     process::Command,
     spawn,
     task::JoinHandle,
-    time::timeout,
+    time::{error::Elapsed, timeout},
 };
 
 use crate::{
     envs::{cache_image, runner, runs_on_network},
     extensions::ShowCmd,
     md::BuildContext,
+    parse::crate_type_for_logging,
     stage::Stage,
 };
 
@@ -94,12 +96,11 @@ pub(crate) async fn fetch_digest(img: &str) -> Result<String> {
 }
 
 pub(crate) async fn build(
-    krate: &str,
     command: &str,
     dockerfile_path: &Utf8Path,
     target: Stage,
     contexts: &BTreeSet<BuildContext>,
-    out_dir: impl AsRef<Utf8Path>,
+    out_dir: &Utf8Path,
 ) -> Result<Option<i32>> {
     let mut cmd = Command::new(command);
     cmd.arg("--debug");
@@ -177,11 +178,11 @@ pub(crate) async fn build(
             if false { ",mode=max" } else { "" }      // TODO: env? builder call?
         ));
 
-        let tag = Stage::try_new(krate.to_owned())?; // TODO: include enough info for repro
-                                                     // => rustc shortcommit, ..?
-                                                     // Can buildx give list of all inputs? || short hash(dockerfile + call + envs)
+        let tag = target.to_string(); // TODO: include enough info for repro
+                                      // => rustc shortcommit, ..?
+                                      // Can buildx give list of all inputs? || short hash(dockerfile + call + envs)
         cmd.arg(format!("--tag={img}:{tag}"));
-        if tag.to_string().starts_with("bin-") {
+        if tag.starts_with(&format!("cwd-{}-", crate_type_for_logging("bin"))) {
             cmd.arg(format!("--tag={img}:latest"));
         }
         cmd.arg("--build-arg=BUILDKIT_INLINE_CACHE=1"); // https://docs.docker.com/build/cache/backends/inline
@@ -201,7 +202,7 @@ pub(crate) async fn build(
     cmd.arg("--platform=local");
     cmd.arg("--pull=false");
     cmd.arg(format!("--target={target}"));
-    cmd.arg(format!("--output=type=local,dest={out_dir}", out_dir = out_dir.as_ref()));
+    cmd.arg(format!("--output=type=local,dest={out_dir}"));
     // cmd.arg("--build-arg=BUILDKIT_MULTI_PLATFORM=1"); // "deterministic output"? adds /linux_amd64/ to extracted cratesio
 
     // TODO: do without local Docker-compatible CLI
@@ -219,7 +220,7 @@ pub(crate) async fn build(
     let call = cmd.show();
     let envs: Vec<_> = cmd.as_std().get_envs().map(|(k, v)| format!("{k:?}={v:?}")).collect();
     let envs = envs.join(" ");
-    log::info!(target: &krate, "Starting {call} (env: {envs:?})`");
+    info!("Starting {call} (env: {envs:?})`");
 
     let errf = |e| anyhow!("Failed starting {call}: {e}");
     let start = Instant::now();
@@ -228,16 +229,14 @@ pub(crate) async fn build(
     // ---
 
     let pid = child.id().unwrap_or_default();
-    log::info!(target: &krate, "Started as pid={pid} in {:?}", start.elapsed());
-    let krate = format!("{krate}@{pid}");
+    info!("Started as pid={pid} in {:?}", start.elapsed());
 
     let out = TokioBufReader::new(child.stdout.take().expect("started")).lines();
     let err = TokioBufReader::new(child.stderr.take().expect("started")).lines();
 
-    // TODO: try https://github.com/docker/buildx/pull/2500/files (rawjson progress mode) + find podman equivalent?
-    // => rawjd
-    let out_task = fwd(krate.clone(), out, "stdout", start, "➤", MARK_STDOUT);
-    let err_task = fwd(krate.clone(), err, "stderr", start, "✖", MARK_STDERR);
+    // TODO: try rawjson progress mode + find podman equivalent?
+    let out_task = fwd(out, "stdout", "➤", MARK_STDOUT);
+    let err_task = fwd(err, "stderr", "✖", MARK_STDERR);
 
     let (secs, code) = {
         let start = Instant::now();
@@ -245,12 +244,17 @@ pub(crate) async fn build(
         let elapsed = start.elapsed();
         (elapsed, res.map_err(|e| anyhow!("Failed calling {call}: {e}"))?.code())
     };
-    log::info!(target: &krate, "command `{command} build` ran in {secs:?}: {code:?}");
+    info!("command `{command} build` ran in {secs:?}: {code:?}");
 
     let longish = Duration::from_secs(2);
     match join!(timeout(longish, out_task), timeout(longish, err_task)) {
-        (Err(e), _) | (_, Err(e)) => panic!(">>> {krate} ({longish:?}): {e}"),
-        (_, _) => {}
+        (Ok(Ok(())), Ok(Ok(()))) => {}
+        (Ok(Err(e)), _) | (_, Ok(Err(e))) => {
+            bail!("BUG: STDIO forwarding crashed: {e}")
+        }
+        (Err(Elapsed { .. }), _) | (_, Err(Elapsed { .. })) => {
+            bail!("BUG: STDIO forwarding got crickets for {longish:?}")
+        }
     }
     drop(child);
 
@@ -260,11 +264,9 @@ pub(crate) async fn build(
         let cmd = cmd.kill_on_drop(true).arg("info");
         let Output { stdout, stderr, status } =
             cmd.output().await.map_err(|e| anyhow!("Failed starting {}: {e}", cmd.show()))?;
-        let stdout =
-            String::from_utf8(stdout).map_err(|e| anyhow!("Failed parsing check STDOUT: {e}"))?;
-        let stderr =
-            String::from_utf8(stderr).map_err(|e| anyhow!("Failed parsing check STDERR: {e}"))?;
-        log::warn!(target: &krate, "Runner info: [code: {status}] [STDOUT {stdout}] [STDERR {stderr}]");
+        let stdout = String::from_utf8_lossy(&stdout);
+        let stderr = String::from_utf8_lossy(&stderr);
+        warn!("Runner info: [code: {status}] [STDOUT {stdout}] [STDERR {stderr}]");
     }
 
     Ok(code)
@@ -281,10 +283,8 @@ fn strip_ansi_escapes(line: &str) -> String {
 
 #[inline]
 fn fwd<R>(
-    krate: String,
     mut stdio: Lines<R>,
     name: &'static str,
-    start: Instant,
     badge: &'static str,
     mark: &'static str,
 ) -> JoinHandle<()>
@@ -293,14 +293,15 @@ where
 {
     let fwder = if mark == MARK_STDOUT { fwd_stdout } else { fwd_stderr };
     spawn(async move {
-        log::debug!(target: &krate, "Starting {name} task {badge}");
+        debug!("Starting {name} task {badge}");
+        let start = Instant::now();
         let mut buf = String::new();
         let mut first = true;
         loop {
             let maybe_line = stdio.next_line().await;
             if first {
                 first = false;
-                log::debug!(target: &krate, "Time To First Line for task {name}: {:?}", start.elapsed());
+                debug!("Time To First Line for task {name}: {:?}", start.elapsed());
             }
             match maybe_line {
                 Ok(None) => break,
@@ -308,18 +309,18 @@ where
                     if line.is_empty() {
                         continue;
                     }
-                    log::debug!(target: &krate, "{badge} {}", strip_ansi_escapes(&line));
+                    debug!("{badge} {}", strip_ansi_escapes(&line));
                     if let Some(msg) = lift_stdio(&line, mark) {
-                        fwder(&krate, msg, &mut buf);
+                        fwder(msg, &mut buf);
                     }
                 }
                 Err(e) => {
-                    log::warn!(target: &krate, "Failed during piping of {name}: {e:?}");
+                    warn!("Failed during piping of {name}: {e:?}");
                     break;
                 }
             }
         }
-        log::debug!(target: &krate, "Terminating {name} task");
+        debug!("Terminating {name} task");
         drop(stdio);
     })
 }
@@ -336,12 +337,12 @@ fn support_long_broken_json_lines() {
 
     let msg = lift_stdio(lines[0], MARK_STDERR);
     assert_eq!(msg, Some(r#"{"$message_type":"artifact","artifact":"/tmp/thing","emit":"link""#));
-    fwd_stderr("krate", msg.unwrap(), &mut buf);
+    fwd_stderr(msg.unwrap(), &mut buf);
     assert_eq!(buf, r#"{"$message_type":"artifact","artifact":"/tmp/thing","emit":"link""#);
 
     let msg = lift_stdio(lines[1], MARK_STDERR);
     assert_eq!(msg, Some("}"));
-    fwd_stderr("krate", msg.unwrap(), &mut buf);
+    fwd_stderr(msg.unwrap(), &mut buf);
     assert_eq!(buf, "");
 
     // Then fwd_stderr
@@ -352,12 +353,12 @@ fn support_long_broken_json_lines() {
 }
 
 #[inline]
-fn fwd_stderr(krate: &str, msg: &str, buf: &mut String) {
+fn fwd_stderr(msg: &str, buf: &mut String) {
     let show = |msg: &str| {
         eprintln!("{msg}");
         if let Some(file) = artifact_written(msg) {
             // TODO: later assert said files were actually written, after runner completes
-            log::info!(target: &krate, "rustc wrote {file}") // FIXME: replace prefix target_path with '.'
+            info!("rustc wrote {file}") // FIXME: replace prefix target_path with '.'
         }
     };
     match (buf.is_empty(), msg.starts_with('{'), msg.ends_with('}')) {
@@ -385,7 +386,7 @@ fn fwd_stderr(krate: &str, msg: &str, buf: &mut String) {
 }
 
 #[inline]
-fn fwd_stdout(_krate: &str, msg: &str, #[allow(clippy::ptr_arg)] _buf: &mut String) {
+fn fwd_stdout(msg: &str, #[allow(clippy::ptr_arg)] _buf: &mut String) {
     println!("{msg}");
 }
 

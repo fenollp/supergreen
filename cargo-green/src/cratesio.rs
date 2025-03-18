@@ -1,5 +1,6 @@
 use anyhow::{anyhow, bail, Result};
 use camino::{Utf8Path, Utf8PathBuf};
+use log::{debug, info};
 
 use crate::{base::RUST, stage::Stage};
 
@@ -66,14 +67,11 @@ fn test_from_cratesio_input_path() {
 }
 
 pub(crate) async fn into_stage(
-    krate: &str,
-    cargo_home: impl AsRef<Utf8Path>,
+    cargo_home: &Utf8Path,
     name: &str,
     version: &str,
     cratesio_index: &str,
 ) -> Result<(Stage, &'static str, Utf8PathBuf, String)> {
-    let cargo_home = cargo_home.as_ref();
-
     // TODO: see if {cratesio_index} can be dropped from paths (+ stage names) => content hashing + remap-path-prefix?
     let cratesio_stage =
         Stage::try_new(format!("{CRATESIO_STAGE_PREFIX}{name}-{version}-{cratesio_index}"))?;
@@ -83,11 +81,11 @@ pub(crate) async fn into_stage(
     let cratesio_cached =
         cargo_home.join(format!("registry/cache/{cratesio_index}/{name}-{version}.crate"));
 
-    log::info!(target: &krate, "opening (RO) crate tarball {cratesio_cached}");
+    info!("opening (RO) crate tarball {cratesio_cached}");
     let cratesio_hash = sha256::try_async_digest(cratesio_cached.as_path()) //TODO: read from lockfile? cargo_metadata?
         .await
         .map_err(|e| anyhow!("Failed reading {cratesio_cached}: {e}"))?;
-    log::debug!(target: &krate, "crate sha256 for {cratesio_stage}: {cratesio_hash}");
+    debug!("crate sha256 for {cratesio_stage}: {cratesio_hash}");
 
     const CRATESIO: &str = "https://static.crates.io";
     const SRC: &str = "/extracted";

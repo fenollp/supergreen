@@ -6,7 +6,7 @@ use std::{
     ffi::OsStr,
     fs::OpenOptions,
     path::PathBuf,
-    process::{ExitCode, Stdio},
+    process::{ExitCode, Output, Stdio},
 };
 
 use anyhow::{bail, Result};
@@ -283,9 +283,9 @@ async fn setup_build_driver(name: &str, builder_image: &str) -> Result<()> {
 
     eprintln!("Calling {call} (env: {envs:?})`");
 
-    let res = cmd.output().await?;
-    if !res.status.success() {
-        let stderr = String::from_utf8(res.stderr)?;
+    let Output { status, stderr, .. } = cmd.output().await?;
+    if !status.success() {
+        let stderr = String::from_utf8_lossy(&stderr);
         if !stderr.starts_with(r#"ERROR: existing instance for "supergreen""#) {
             bail!("BUG: failed to create builder: {stderr}")
         }
