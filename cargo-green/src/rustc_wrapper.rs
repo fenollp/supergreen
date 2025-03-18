@@ -652,15 +652,19 @@ fn pass_env(var: &str) -> (bool, bool, bool) {
 #[must_use]
 fn safeify(val: String) -> String {
     (!val.is_empty())
-        .then_some(val)
-        .map(|x: String| format!("{x:?}"))
+        .then_some(val.replace('\n', "").as_str())
+        .map(shellwords::escape)
+        .map(|x: String| format!("\"{x}\""))
         .unwrap_or_default()
-        .replace('$', "\\$")
 }
 
 #[test]
 fn test_safeify() {
-    assert_eq!(safeify("$VAR=val".to_owned()), "\"\\$VAR=val\"".to_owned());
+    assert_eq!(safeify("$VAR=val".to_owned()), r#""\$VAR\=val""#.to_owned());
+    assert_eq!(
+        safeify("the compiler's `proc_macro` API to.".to_owned()),
+        r#""the\ compiler\'s\ \`proc_macro\`\ API\ to.""#.to_owned()
+    );
 }
 
 #[test]
