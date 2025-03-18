@@ -43,6 +43,7 @@ cargo_toml.workspace = true
 chrono.workspace = true
 indexmap.workspace = true
 merkle_hash.workspace = true
+shell-quote.workspace = true
 tokio-stream.workspace = true
 # clap.workspace = true
 # clap-cargo.workspace = true

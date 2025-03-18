@@ -358,14 +358,16 @@ async fn do_wrap_rustc(
     rustc_block.push_str(&format!("    env CARGO={:?} \\\n", "$(which cargo)"));
 
     for (var, val) in env::vars().filter_map(|kv| fmap_env(kv, buildrs)) {
+        let val = safeify(&val)?;
         rustc_block.push_str(&format!("        {var}={val} \\\n"));
     }
     rustc_block.push_str(&format!("        {}=1 \\\n", ENV!()));
     // => cargo upstream issue "pass env vars read/wrote by build script on call to rustc"
     // TODO whence https://github.com/rust-lang/cargo/issues/14444#issuecomment-2305891696
     for var in &green.set_envs {
-        if let Some(val) = env::var_os(var) {
+        if let Ok(val) = env::var(var) {
             warn!("passing ${var}={val:?} env through");
+            let val = safeify(&val)?;
             rustc_block.push_str(&format!("        {var}={val:?} \\\n"));
         }
     }
@@ -383,6 +385,7 @@ async fn do_wrap_rustc(
             let Ok(val) = env::var(var) else { continue };
             debug!("system env set (skipped): ${var}={val:?}");
             if !val.is_empty() {
+                let val = safeify(&val)?;
                 rustc_block.push_str(&format!("#       {var}={val:?} \\\n"));
             }
         }
@@ -514,7 +517,6 @@ fn fmap_env((var, val): (String, String), buildrs: bool) -> Option<(String, Stri
             debug!("not forwarding env: {var}={val}");
             return None;
         }
-        let val = safeify(val);
         if var == "CARGO_ENCODED_RUSTFLAGS" {
             let dec: Vec<_> = rustflags::from_env().collect();
             debug!("env is set: {var}={val} ({dec:?})");
@@ -586,18 +588,27 @@ fn pass_env(var: &str) -> (bool, bool, bool) {
     )
 }
 
-#[must_use]
-fn safeify(val: String) -> String {
-    (!val.is_empty())
-        .then_some(val)
-        .map(|x: String| format!("{x:?}"))
-        .unwrap_or_default()
-        .replace('$', "\\$")
+fn safeify(val: &str) -> Result<String> {
+    String::from_utf8(shell_quote::Sh::quote_vec(val))
+        .map_err(|e| anyhow!("Failed escaping env value {val:?}: {e}"))
+        .map(|s| s.replace("\n", "\\\n"))
+        .map(|s| if s == "''" { "".to_owned() } else { s })
 }
 
 #[test]
 fn test_safeify() {
-    assert_eq!(safeify("$VAR=val".to_owned()), "\"\\$VAR=val\"".to_owned());
+    assert_eq!(safeify("$VAR=val").unwrap(), r#"'$VAR=val'"#.to_owned());
+    assert_eq!(
+        safeify("the compiler's `proc_macro` API to.").unwrap(),
+        r#"the' compiler'\'s' `proc_macro` API to.'"#.to_owned()
+    );
+    assert_eq!(
+        safeify("$VAR=v\na\nl").unwrap(),
+        r#"'$VAR=v\
+a\
+l'"#
+        .to_owned()
+    );
 }
 
 #[test]
