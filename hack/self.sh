@@ -3,7 +3,7 @@ set -o pipefail
 
 source $(realpath "$(dirname "$0")")/ck.sh
 
-nightly=nightly-2024-07-12
+nightly=nightly-2025-02-09
 
 # Usage:  $0                              #=> generate CI
 

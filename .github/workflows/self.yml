@@ -247,7 +247,7 @@ jobs:
     - uses: actions-rs/toolchain@v1
       with:
         profile: minimal
-        toolchain: nightly-2024-07-12
+        toolchain: nightly-2025-02-09
 
     - name: Retrieve saved bin
       uses: actions/download-artifact@v4
@@ -284,11 +284,11 @@ jobs:
         docker buildx du | head || true
         docker buildx du | tail || true
     - run: docker buildx du --verbose
-    - name: cargo +nightly-2024-07-12 green udeps --all-targets --jobs=1 cache=OFF remote=OFF
+    - name: cargo +nightly-2025-02-09 green udeps --all-targets --jobs=1 cache=OFF remote=OFF
       run: |
         CARGOGREEN_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/../logs.txt \
-          cargo +nightly-2024-07-12 green udeps --all-targets --jobs=1 |& tee ../_
+          cargo +nightly-2025-02-09 green udeps --all-targets --jobs=1 |& tee ../_
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
@@ -327,7 +327,7 @@ jobs:
       run: |
         CARGOGREEN_LOG=debug \
         RUSTCBUILDX_LOG_PATH="$PWD"/../logs.txt \
-          cargo green +nightly-2024-07-12 udeps --all-targets --jobs=1 |& tee ../_
+          cargo green +nightly-2025-02-09 udeps --all-targets --jobs=1 |& tee ../_
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
