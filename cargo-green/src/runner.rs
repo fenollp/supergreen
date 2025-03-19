@@ -356,6 +356,7 @@ fn fwd_stderr(krate: &str, msg: &str, buf: &mut String) {
     let show = |msg: &str| {
         eprintln!("{msg}");
         if let Some(file) = artifact_written(msg) {
+            // TODO: later assert said files were actually written, after runner completes
             log::info!(target: &krate, "rustc wrote {file}") // FIXME: replace prefix target_path with '.'
         }
     };

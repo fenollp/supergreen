@@ -20,8 +20,8 @@ pub(crate) struct RustcArgs {
     /// 0..: --extern=EXTERN | --extern EXTERN
     pub(crate) externs: BTreeSet<String>,
 
-    /// 1: -C metadata=METADATA
-    pub(crate) metadata: String, // https://github.com/rust-lang/cargo/pull/14107
+    /// 1: -C extra-filename=EXTRAFN e.g. "-710b4516f388a5e4"
+    pub(crate) extrafn: String,
 
     /// 0|1: -C incremental=INCREMENTAL
     pub(crate) incremental: Option<Utf8PathBuf>,
@@ -100,9 +100,9 @@ pub(crate) fn as_rustc(
 
         match key.as_str() {
             "-C" => match val.split_once('=') {
-                Some(("metadata", v)) => {
-                    assert_eq!(state.metadata, "");
-                    v.clone_into(&mut state.metadata);
+                Some(("extra-filename", v)) => {
+                    assert_eq!(state.extrafn, "");
+                    v.clone_into(&mut state.extrafn);
                 }
                 Some(("incremental", v)) => {
                     assert_eq!(state.incremental, None);
@@ -121,8 +121,8 @@ pub(crate) fn as_rustc(
                 // https://doc.rust-lang.org/cargo/reference/cargo-targets.html#the-crate-type-field
                 // array, >=1 per rustc call => as many products !!! we expect a single one throughout FIXME
                 // assert_eq!(state.crate_type, "");
-                const ALL_CRATE_TYPES: [&str; 7] =
-                    ["bin", "lib", "rlib", "dylib", "cdylib", "staticlib", "proc-macro"];
+                const ALL_CRATE_TYPES: &[&str] =
+                    &["bin", "lib", "rlib", "dylib", "cdylib", "staticlib", "proc-macro"];
                 if !ALL_CRATE_TYPES.contains(&val.as_str()) {
                     let ct = state.crate_type;
                     bail!("Unhandled --crate-type={val} (knowing {ct:?}) in {arguments:?}")
@@ -193,11 +193,10 @@ pub(crate) fn as_rustc(
         let exploded = out_dir.iter().rev().take(4).collect::<Vec<_>>();
         match exploded[..] {
             ["out", crate_dir, "build", ..] => {
-                state.metadata = crate_dir
-                    .rsplit_once('-')
-                    .map(|(_, m)| m)
-                    .expect("crate dir name contains metadata")
-                    .to_owned();
+                let Some((_, extrafn)) = crate_dir.rsplit_once('-') else {
+                    bail!("BUG: crate directory SHOULD contain extra-filename")
+                };
+                state.extrafn = format!("-{extrafn}");
                 out_dir.popped(3)
             }
             _ => bail!("BUG: $OUT_DIR is surprising for this build script: {exploded:?}"),
@@ -210,12 +209,8 @@ pub(crate) fn as_rustc(
     };
 
     //assert_ne!(state.crate_type, "");
-    if state.metadata.is_empty() {
-        panic!(
-            ">>> {:?}",
-            (std::env::args(), std::env::vars(), std::env::current_exe(), std::env::current_dir())
-        )
-    }
+    assert_ne!(state.extrafn, "");
+    assert_eq!(state.extrafn.chars().next(), Some('-'));
     //assert_ne!(state.input, "");
     //assert_ne!(state.out_dir, "");
     assert!(!state.incremental.as_ref().map(|x| x == "").unwrap_or_default()); // MAY be unset: only set on last calls
@@ -280,8 +275,8 @@ mod tests {
             "--emit=dep-info,link",                                                           // state.emit
             "-C", "embed-bitcode=no",
             "-C", "debuginfo=2",
-            "-C", "metadata=710b4516f388a5e4",                                                // state.metadata
-            "-C", "extra-filename=-710b4516f388a5e4",
+            "-C", "metadata=710b4516f388a5e4",
+            "-C", "extra-filename=-710b4516f388a5e4",                                         // state.extrafn
             "--out-dir", "$PWD/target/debug/deps",                                            // state.out_dir =+> state.target_path
             "-C", "linker=/usr/bin/clang",
             "-C", "incremental=$PWD/target/debug/incremental",                                   // state.incremental
@@ -311,7 +306,7 @@ mod tests {
                 .into_iter()
                 .map(ToOwned::to_owned)
                 .collect(),
-                metadata: "710b4516f388a5e4".to_owned(),
+                extrafn: "-710b4516f388a5e4".to_owned(),
                 incremental: Some(as_argument("$PWD/target/debug/incremental").into()),
                 input: as_argument("src/main.rs").into(),
                 out_dir: as_argument("$PWD/target/debug/deps").into(),
@@ -362,8 +357,8 @@ mod tests {
             "-C", "embed-bitcode=no",
             "-C", "debuginfo=2",
             "--test",
-            "-C", "metadata=7c7a0950383d41d3",                                                // state.metadata
-            "-C", "extra-filename=-7c7a0950383d41d3",
+            "-C", "metadata=7c7a0950383d41d3",
+            "-C", "extra-filename=-7c7a0950383d41d3",                                         // state.extrafn
             "--out-dir", "$PWD/target/debug/deps",                                            // state.out_dir =+> state.target_path
             "-C", "linker=/usr/bin/clang",
             "-C", "incremental=$PWD/target/debug/incremental",                                // state.incremental
@@ -395,7 +390,7 @@ mod tests {
                 .into_iter()
                 .map(ToOwned::to_owned)
                 .collect(),
-                metadata: "7c7a0950383d41d3".to_owned(),
+                extrafn: "-7c7a0950383d41d3".to_owned(),
                 incremental: Some(as_argument("$PWD/target/debug/incremental").into()),
                 input: as_argument("src/main.rs").into(),
                 out_dir: as_argument("$PWD/target/debug/deps").into(),
@@ -468,7 +463,7 @@ mod tests {
                 crate_type: "bin".to_owned(),
                 emit: "dep-info,link".to_owned(),
                 externs: Default::default(),
-                metadata: "c7101a3d6c8e4dce".to_owned(),
+                extrafn: "-c7101a3d6c8e4dce".to_owned(),
                 incremental: None,
                 input: as_argument("$HOME/.cargo/registry/src/index.crates.io-6f17d22bba15001f/rustix-0.38.20/build.rs").into(),
                 out_dir: as_argument("$PWD/target/debug/build/rustix-c7101a3d6c8e4dce").into(),
@@ -540,7 +535,7 @@ mod tests {
                 crate_type: "proc-macro".to_owned(),
                 emit: "dep-info,link".to_owned(),
                 externs: ["libtime_core-c880e75c55528c08.rlib".to_owned()].into(),
-                metadata: "89438a15ab938e2f".to_owned(),
+                extrafn: "-89438a15ab938e2f".to_owned(),
                 incremental: None,
                 input: as_argument("$HOME/.cargo/registry/src/index.crates.io-6f17d22bba15001f/time-macros-0.2.14/src/lib.rs").into(),
                 out_dir: as_argument("/tmp/wfrefwef__cargo-deny_0-14-3/release/deps").into(),
@@ -608,7 +603,7 @@ mod tests {
                 crate_type: "bin".to_owned(),
                 emit: "dep-info,link".to_owned(),
                 externs: Default::default(),
-                metadata: "96fe5c8493f1a08f".to_owned(),
+                extrafn: "-96fe5c8493f1a08f".to_owned(),
                 incremental: None,
                 input: as_argument("src/build.rs").into(),
                 out_dir: as_argument(
@@ -678,7 +673,7 @@ mod tests {
                     "libpkg_config-a6962381fee76247.rlib".to_owned(),
                     "libvcpkg-ebcbc23bfdf4209b.rlib".to_owned(),
                 ].into(),
-                metadata: "99f749eccead4467".to_owned(),
+                extrafn: "-99f749eccead4467".to_owned(),
                 incremental: None,
                 input: as_argument("$HOME/.cargo/registry/src/index.crates.io-6f17d22bba15001f/openssl-sys-0.9.95/build/main.rs").into(),
                 out_dir: as_argument(
@@ -774,7 +769,7 @@ mod tests {
                 crate_type: "".to_owned(),
                 emit: "".to_owned(),
                 externs: [].into(),
-                metadata: "94793bb2b78c57b5".to_owned(),
+                extrafn: "-94793bb2b78c57b5".to_owned(),
                 incremental: None,
                 input: "".into(),
                 out_dir: "".into(),
