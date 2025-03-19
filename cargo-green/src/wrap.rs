@@ -174,7 +174,7 @@ async fn do_wrap_rustc(
     let out_dir_var = env::var("OUT_DIR").ok();
     let (st, args) = parse::as_rustc(&pwd, arguments, out_dir_var.as_deref())?;
     log::info!(target: &krate, "{st:?}");
-    let RustcArgs { crate_type, emit, externs, metadata, incremental, input, out_dir, target_path } =
+    let RustcArgs { crate_type, emit, externs, extrafn, incremental, input, out_dir, target_path } =
         st;
     let incremental = envs::incremental().then_some(incremental).flatten();
 
@@ -185,9 +185,9 @@ async fn do_wrap_rustc(
             if crate_type != "bin" {
                 bail!("BUG: expected build script to be of crate_type bin, got: {crate_type}")
             }
-            format!("buildrs|{krate_name}|{krate_version}|{metadata}")
+            format!("buildrs|{krate_name}|{krate_version}|{extrafn}")
         } else {
-            format!("{crate_type}|{krate_name}|{krate_version}|{metadata}")
+            format!("{crate_type}|{krate_name}|{krate_version}|{extrafn}")
         }
     };
     let krate = full_krate_id.as_str();
@@ -224,9 +224,9 @@ async fn do_wrap_rustc(
     //   https://github.com/rust-lang/rust/issues/63012 : Tracking issue for -Z binary-dep-depinfo
     let mut all_externs = BTreeSet::new();
     let externs_prefix = |part: &str| Utf8Path::new(&target_path).join(format!("externs_{part}"));
-    let crate_externs = externs_prefix(&format!("{crate_name}-{metadata}"));
+    let crate_externs = externs_prefix(&format!("{crate_name}{extrafn}"));
 
-    let mut md = Md::new(&metadata);
+    let mut md = Md::new(&extrafn[1..]); // Drops leading dash
 
     // A woodlegged way of passing around work cargo-green already did
     // TODO: merge both binaries into a single one
@@ -395,8 +395,8 @@ async fn do_wrap_rustc(
     };
     log::info!(target: &krate, "picked {rustc_stage} for {input}");
 
-    let incremental_stage = Stage::try_new(format!("inc-{metadata}"))?;
-    let out_stage = Stage::try_new(format!("out-{metadata}"))?;
+    let incremental_stage = Stage::try_new(format!("inc{extrafn}")).unwrap();
+    let out_stage = Stage::try_new(format!("out{extrafn}")).unwrap();
 
     let mut rustc_block = String::new();
     rustc_block.push_str(&format!("FROM {RUST} AS {rustc_stage}\n"));
@@ -423,7 +423,7 @@ async fn do_wrap_rustc(
         fs::write(&ignore, "")
             .map_err(|e| anyhow!("Failed creating cwd dockerignore {ignore:?}: {e}"))?;
 
-        let cwd = cwd_root.join(format!("CWD{metadata}"));
+        let cwd = cwd_root.join(format!("CWD{extrafn}"));
         let cwd_path: Utf8PathBuf = cwd
             .clone()
             .try_into()
@@ -450,7 +450,7 @@ async fn do_wrap_rustc(
         // $target_dir/debug/rustcbuildx: $cwd/src/cli.rs $cwd/src/cratesio.rs $cwd/src/envs.rs $cwd/src/main.rs $cwd/src/md.rs $cwd/src/parse.rs $cwd/src/pops.rs $cwd/src/runner.rs $cwd/src/stage.rs
 
         rustc_block.push_str(&format!("WORKDIR {pwd}\n"));
-        rustc_block.push_str(&format!("COPY --from=cwd-{metadata} / .\n"));
+        rustc_block.push_str(&format!("COPY --from=cwd{extrafn} / .\n"));
         rustc_block.push_str("RUN \\\n");
 
         let cwd_path = cwd_path.to_owned();
@@ -458,7 +458,7 @@ async fn do_wrap_rustc(
         // TODO: do better to avoid copying >1 times local work dir on each cargo call => context-mount local content-addressed tarball?
         // test|cargo-green|0.8.0|f273b3fc9f002200] copying all git files under $HOME/wefwefwef/supergreen.git to /tmp/cargo-green_0.8.0/CWDf273b3fc9f002200
         // bin|cargo-green|0.8.0|efe5575298075b07] copying all git files under $HOME/wefwefwef/supergreen.git to /tmp/cargo-green_0.8.0/CWDefe5575298075b07
-        let cwd_stage = Stage::try_new(format!("cwd-{metadata}")).expect("empty metadata?");
+        let cwd_stage = Stage::try_new(format!("cwd{extrafn}")).unwrap();
 
         Some((cwd_path, cwd_stage))
     };
@@ -586,9 +586,7 @@ async fn do_wrap_rustc(
     }
 
     let mut out_block = format!("FROM scratch AS {out_stage}\n");
-    out_block.push_str(&format!("COPY --from={rustc_stage} {out_dir}/*-{metadata}* /\n"));
-    // NOTE: -C extra-filename=-${metadata} (starts with dash)
-    // TODO: use extra filename here for fwd compat
+    out_block.push_str(&format!("COPY --from={rustc_stage} {out_dir}/*{extrafn}* /\n"));
     md.push_block(&out_stage, out_block);
 
     let md = md; // Drop mut
@@ -606,7 +604,7 @@ async fn do_wrap_rustc(
     md.append_blocks(&mut blocks, &mut visited_cratesio_stages)?;
 
     {
-        let md_path = Utf8Path::new(&target_path).join(format!("{crate_name}-{metadata}.toml"));
+        let md_path = Utf8Path::new(&target_path).join(format!("{crate_name}{extrafn}.toml"));
         let md_ser = md.to_string_pretty()?;
 
         log::info!(target: &krate, "opening (RW) crate's md {md_path}");
@@ -628,7 +626,7 @@ async fn do_wrap_rustc(
         // https://rustc-dev-guide.rust-lang.org/backend/libs-and-metadata.html
         //=> a filename suffix with content hash?
         let dockerfile =
-            Utf8Path::new(&target_path).join(format!("{crate_name}-{metadata}.Dockerfile"));
+            Utf8Path::new(&target_path).join(format!("{crate_name}{extrafn}.Dockerfile"));
 
         let syntax = syntax().await.trim_start_matches("docker-image://");
         let mut header = format!("# syntax={syntax}\n");
