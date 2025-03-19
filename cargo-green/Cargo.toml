@@ -1,11 +1,11 @@
 [package]
-name = "cargo-green"
-description = "Cargo plugin and $RUSTC_WRAPPER to sandbox & cache cargo builds and execute jobs remotely"
 authors.workspace = true
 categories.workspace = true
+description = "Cargo plugin and $RUSTC_WRAPPER to sandbox & cache cargo builds and execute jobs remotely"
 edition.workspace = true
 keywords.workspace = true
 license.workspace = true
+name = "cargo-green"
 repository.workspace = true
 version.workspace = true
 
@@ -28,12 +28,12 @@ futures.workspace = true
 home.workspace = true
 log.workspace = true
 nutype.workspace = true
-pretty_assertions.workspace = true # TODO: drop once !dbg
+pretty_assertions.workspace = true         # TODO: drop once !dbg
 reqwest.workspace = true
 rustc_version.workspace = true
-rustflags.workspace = true # TODO: drop once !dbg
-serde-jsonlines.workspace = true
+rustflags.workspace = true                 # TODO: drop once !dbg
 serde.workspace = true
+serde-jsonlines.workspace = true
 serde_json.workspace = true
 sha256.workspace = true
 szyk.workspace = true

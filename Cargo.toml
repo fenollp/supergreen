@@ -1,32 +1,32 @@
 [workspace]
-resolver = "2"
 members = [
     "cargo-green",
 ]
+resolver = "2"
 
 [workspace.package]
-version = "0.10.1"
-authors = ["Pierre Fenoll <pierrefenoll@gmail.com>"]
+authors = [ "Pierre Fenoll <pierrefenoll@gmail.com>" ]
 categories = [
-	"caching",
-	"compilers",
-	"concurrency",
-	"development-tools::build-utils",
+    "caching",
+    "compilers",
+    "concurrency",
+    "development-tools::build-utils",
 ]
 edition = "2021"
 keywords = [
-	"build",
-	"buildkit",
-	"docker",
-	"DOCKER_HOST",
-	"RUSTC_WRAPPER",
+    "DOCKER_HOST",
+    "RUSTC_WRAPPER",
+    "build",
+    "buildkit",
+    "docker",
 ]
 license = "MIT"
 repository = "https://github.com/fenollp/supergreen"
+version = "0.10.1"
 
 [workspace.dependencies]
 anyhow = "1"
-assertx = { version = "1", features = ["logging"] }
+assertx = { version = "1", features = [ "logging" ] }
 camino = "1"
 cargo-subcommand-metadata = "0, >=0.1"
 env_logger = "0.11"
@@ -35,13 +35,13 @@ home = "0, >=0.5"
 log = "0, >=0.4"
 nutype = "0, >=0.4"
 pretty_assertions = "1"
-reqwest = { version = "0, >=0.12", default-features = false, features = ["rustls-tls"] }
+reqwest = { version = "0, >=0.12", default-features = false, features = [ "rustls-tls" ] }
 rustc_version = "0, >=0.4"
 rustflags = "0, >=0.1"
-serde = { version = "1", features = ["derive"] }
-serde-jsonlines = { version = "0, >=0.6", features = ["async"] }
+serde = { version = "1", features = [ "derive" ] }
+serde-jsonlines = { version = "0, >=0.6", features = [ "async" ] }
 serde_json = "1"
 sha256 = "1"
 szyk = "1"
-tokio = { version = "1", features = ["macros", "io-util", "process", "rt-multi-thread", "time"] }
+tokio = { version = "1", features = [ "io-util", "macros", "process", "rt-multi-thread", "time" ] }
 toml = "0, >=0.8"
