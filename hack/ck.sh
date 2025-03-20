@@ -24,11 +24,11 @@ restore_bin-artifacts() {
         name: bin-artifacts
 
     - name: Install saved bin
+      shell: bash -eu {0}
       run: | # TODO: whence https://github.com/actions/download-artifact/issues/236
         chmod +x ./cargo-green
-        ./cargo-green --version | grep cargo-green
+        { ! ./cargo-green --version ; } | grep cargo-green
         mv ./cargo-green ~/.cargo/bin/
-        cargo green --version
 EOF
 }
 

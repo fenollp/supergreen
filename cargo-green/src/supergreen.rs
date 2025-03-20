@@ -33,7 +33,10 @@ pub(crate) async fn main(arg1: Option<&str>, args: Vec<String>) -> Result<()> {
 #[expect(clippy::unnecessary_wraps)]
 pub(crate) fn help() -> Result<()> {
     println!(
-        "{name}@{version}: {description}
+        "{name} v{version}
+
+        {description}
+
     {repository}
 
 Usage:
