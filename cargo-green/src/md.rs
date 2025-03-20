@@ -36,6 +36,7 @@ impl Md {
         toml::to_string_pretty(self)
     }
 
+    #[must_use]
     pub(crate) fn rust_stage(&self) -> Option<DockerfileStage> {
         self.stages.iter().find(|DockerfileStage { name, .. }| name == RUST).cloned()
     }

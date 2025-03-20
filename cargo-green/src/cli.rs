@@ -25,7 +25,7 @@ use crate::{
 
 // TODO: cargo green cache --keep-less-than=(1month|10GB)      Set $RUSTCBUILDX_CACHE_IMAGE to apply to tagged images.
 
-#[inline]
+#[must_use]
 pub(crate) fn help() -> ExitCode {
     println!(
         "{name}@{version}: {description}
@@ -111,6 +111,7 @@ async fn all_tags_of(img: &str) -> Result<(Vec<String>, Option<ExitCode>)> {
     Ok((tags, None))
 }
 
+#[must_use]
 pub(crate) async fn envs(vars: Vec<String>) -> ExitCode {
     let all: BTreeMap<_, _> = [
         (internal::RUSTCBUILDX, internal::this()),
@@ -173,6 +174,7 @@ pub(crate) async fn pull() -> Result<ExitCode> {
     pull_images(to_pull).await
 }
 
+#[must_use]
 pub(crate) fn trim_docker_image(x: &str) -> Option<String> {
     let x = x.trim_start_matches("docker-image://");
     let x = x
@@ -212,7 +214,7 @@ async fn do_pull(img: String) -> Result<Option<i32>> {
     Ok(Some(0)) // TODO: -> Result<ExitCode>, once exit codes impl PartialEq.
 }
 
-#[inline]
+#[must_use]
 pub(crate) fn exit_code(code: Option<i32>) -> ExitCode {
     (code.unwrap_or(-1) as u8).into() // TODO: https://doc.rust-lang.org/std/os/unix/process/trait.ExitStatusExt.html
 }

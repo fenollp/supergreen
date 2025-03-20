@@ -272,7 +272,7 @@ pub(crate) async fn build(
     Ok(code)
 }
 
-#[inline(always)]
+#[must_use]
 fn strip_ansi_escapes(line: &str) -> String {
     line.replace("\\u001b[0m", "")
         .replace("\\u001b[1m", "")
@@ -281,7 +281,7 @@ fn strip_ansi_escapes(line: &str) -> String {
         .replace("\\u001b[38;5;9m", "")
 }
 
-#[inline]
+#[must_use]
 fn fwd<R>(
     mut stdio: Lines<R>,
     name: &'static str,
@@ -351,7 +351,6 @@ fn support_long_broken_json_lines() {
     assertx::assert_logs_contain_in_order!(logs, Level::Info => "rustc wrote /tmp/thing");
 }
 
-#[inline]
 fn fwd_stderr(msg: &str, buf: &mut String) {
     let show = |msg: &str| {
         eprintln!("{msg}");
@@ -412,7 +411,7 @@ fn stdio_passthrough_from_runner() {
 }
 
 // Maybe replace with actual JSON deserialization
-#[inline]
+#[must_use]
 fn artifact_written(msg: &str) -> Option<&str> {
     let mut z = msg.split('"');
     let mut a = z.next();
@@ -428,7 +427,7 @@ fn artifact_written(msg: &str) -> Option<&str> {
     }
 }
 
-#[inline]
+#[must_use]
 fn lift_stdio<'a>(line: &'a str, mark: &'static str) -> Option<&'a str> {
     // Docker builds running shell code usually start like: #47 0.057
     let line = line.trim_start_matches(|c| ['#', '.', ' '].contains(&c) || c.is_ascii_digit());

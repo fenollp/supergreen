@@ -33,6 +33,7 @@ const BUILDRS_CRATE_NAME: &str = "build_script_build";
 //       ourselves some trouble and assume std::path::{Path, PathBuf} are UTF-8.
 //       Or in the words of this crate: https://github.com/camino-rs/camino/tree/8bec62382e1bce1326ee48f6bf93c46e7a4fde0b#:~:text=there%20are%20already%20many%20systems%2C%20such%20as%20cargo%2C%20that%20only%20support%20utf-8%20paths.%20if%20your%20own%20tool%20interacts%20with%20any%20such%20system%2C%20you%20can%20assume%20that%20paths%20are%20valid%20utf-8%20without%20creating%20any%20additional%20burdens%20on%20consumers.
 
+#[must_use]
 pub(crate) async fn do_wrap() -> ExitCode {
     let arg0 = env::args().nth(1);
     let args = env::args().skip(1).collect();
@@ -702,7 +703,7 @@ async fn do_wrap_rustc(
         warn!("Falling back...");
         let res = fallback.await; // Bubble up actual error & outputs
         if res.is_ok() {
-            log::error!("BUG found!");
+            error!("BUG found!");
             eprintln!("Found a bug in this script! Falling back... (logs: {debug:?})");
         }
         return res;
@@ -711,6 +712,7 @@ async fn do_wrap_rustc(
     Ok(exit_code(code))
 }
 
+#[must_use]
 fn safeify(val: String) -> String {
     (!val.is_empty())
         .then_some(val)
@@ -766,7 +768,7 @@ fn toml_path_and_stage_for_weird_extension() {
     assert_eq!(res.1, "out-131283e3f8edcfe4".to_owned());
 }
 
-#[inline]
+#[must_use]
 fn toml_path_and_stage(xtern: &str, target_path: &Utf8Path) -> Option<(Utf8PathBuf, String)> {
     // TODO: drop stripping ^lib
     assert!(xtern.starts_with("lib"), "BUG: unexpected xtern format: {xtern}");
@@ -784,6 +786,7 @@ fn crate_out_name_for_some_pkg() {
     assert_eq!(res, "crate_out-adce79444856d618".to_owned());
 }
 
+#[must_use]
 fn crate_out_name(name: &str) -> String {
     Utf8Path::new(name)
         .parent()
