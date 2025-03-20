@@ -6,7 +6,7 @@ use std::{
     ffi::OsStr,
     fs::OpenOptions,
     path::PathBuf,
-    process::{ExitCode, Output, Stdio},
+    process::{Output, Stdio},
 };
 
 use anyhow::{bail, Result};
@@ -59,45 +59,32 @@ const VSN: &str = env!("CARGO_PKG_VERSION");
 cargo_subcommand_metadata::description!(env!("CARGO_PKG_DESCRIPTION"));
 
 #[tokio::main]
-async fn main() -> Result<ExitCode> {
+async fn main() -> Result<()> {
     let mut args = env::args();
 
     let arg0 = args.next().expect("$0 has to be set");
     if PathBuf::from(&arg0).file_name() != Some(OsStr::new(PKG)) {
-        eprintln!(
-            r#"
-    This binary should be named `{PKG}`.
-"#
-        );
-        return Ok(ExitCode::FAILURE);
+        eprintln!("This binary should be named `{PKG}`");
+        bail!("This binary should be named `{PKG}`")
     }
 
     if let Ok(wrapper) = env::var("RUSTC_WRAPPER") {
         if PathBuf::from(&wrapper).file_name() != Some(OsStr::new(PKG)) {
-            eprintln!(
-                r#"
-    A $RUSTC_WRAPPER other than `{PKG}` is already set: {wrapper}.
-"#
-            );
-            return Ok(ExitCode::FAILURE);
+            eprintln!("A $RUSTC_WRAPPER other than `{PKG}` is already set: {wrapper}");
+            bail!("A $RUSTC_WRAPPER other than `{PKG}` is already set: {wrapper}")
         }
         // Now running as a subprocess
-        return Ok(do_wrap().await);
+        return do_wrap().await;
     }
 
     let Some(arg1) = args.next() else {
         // Warn when running this via `cargo run -p cargo-green -- ..`
-        eprintln!(
-            r#"
-    The `{PKG}` binary needs to be called via cargo, e.g.:
-        cargo green build
-"#
-        );
-        return Ok(ExitCode::FAILURE);
+        eprintln!("The `{PKG}` binary needs to be called via cargo, e.g.: `cargo green build`");
+        bail!("The `{PKG}` binary needs to be called via cargo, e.g.: `cargo green build`")
     };
 
     if ["-h", "--help", "-V", "--version"].contains(&arg1.as_str()) {
-        return Ok(supergreen::help());
+        return supergreen::help();
     }
 
     assert_eq!(arg1.as_str(), "green");
@@ -137,13 +124,16 @@ async fn main() -> Result<ExitCode> {
             cmd.env("RUSTC_WRAPPER", arg0);
             if let Err(e) = setup_for_build(&mut cmd).await {
                 eprintln!("{e}");
-                return Ok(ExitCode::FAILURE);
+                bail!("{e}")
             }
         }
     }
 
     let status = cmd.status().await?;
-    Ok(status.code().map_or(ExitCode::FAILURE, |code| ExitCode::from(code as u8)))
+    if !status.success() {
+        bail!("Failed")
+    }
+    Ok(())
 }
 
 async fn setup_for_build(cmd: &mut Command) -> Result<()> {

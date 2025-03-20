@@ -101,7 +101,7 @@ pub(crate) async fn build(
     target: Stage,
     contexts: &BTreeSet<BuildContext>,
     out_dir: &Utf8Path,
-) -> Result<Option<i32>> {
+) -> Result<()> {
     let mut cmd = Command::new(command);
     cmd.arg("--debug");
     cmd.arg("build");
@@ -238,13 +238,13 @@ pub(crate) async fn build(
     let out_task = fwd(out, "stdout", "➤", MARK_STDOUT);
     let err_task = fwd(err, "stderr", "✖", MARK_STDERR);
 
-    let (secs, code) = {
+    let (secs, res) = {
         let start = Instant::now();
         let res = child.wait().await;
-        let elapsed = start.elapsed();
-        (elapsed, res.map_err(|e| anyhow!("Failed calling {call}: {e}"))?.code())
+        (start.elapsed(), res)
     };
-    info!("command `{command} build` ran in {secs:?}: {code:?}");
+    let status = res.map_err(|e| anyhow!("Failed calling {call}: {e}"))?;
+    info!("command `{command} build` ran in {secs:?}: {status}");
 
     let longish = Duration::from_secs(2);
     match join!(timeout(longish, out_task), timeout(longish, err_task)) {
@@ -258,7 +258,7 @@ pub(crate) async fn build(
     }
     drop(child);
 
-    if !(0..=1).contains(&code.unwrap_or(-1)) {
+    if !status.success() {
         // Something is very wrong here. Try to be helpful by logging some info about runner config:
         let mut cmd = Command::new(command);
         let cmd = cmd.kill_on_drop(true).arg("info");
@@ -266,10 +266,10 @@ pub(crate) async fn build(
             cmd.output().await.map_err(|e| anyhow!("Failed starting {}: {e}", cmd.show()))?;
         let stdout = String::from_utf8_lossy(&stdout);
         let stderr = String::from_utf8_lossy(&stderr);
-        warn!("Runner info: [code: {status}] [STDOUT {stdout}] [STDERR {stderr}]");
+        bail!("Runner info: {status} [STDOUT {stdout}] [STDERR {stderr}]")
     }
 
-    Ok(code)
+    Ok(())
 }
 
 #[must_use]

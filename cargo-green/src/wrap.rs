@@ -5,7 +5,6 @@ use std::{
     future::Future,
     io::{BufRead, BufReader, ErrorKind, Write},
     path::Path,
-    process::ExitCode,
     str::FromStr,
 };
 
@@ -23,7 +22,6 @@ use crate::{
     runner::{build, MARK_STDERR, MARK_STDOUT},
     rustc_arguments::{as_rustc, crate_type_for_logging, RustcArgs},
     stage::Stage,
-    supergreen::exit_code,
     PKG, REPO, VSN,
 };
 
@@ -33,16 +31,15 @@ const BUILDRS_CRATE_NAME: &str = "build_script_build";
 //       ourselves some trouble and assume std::path::{Path, PathBuf} are UTF-8.
 //       Or in the words of this crate: https://github.com/camino-rs/camino/tree/8bec62382e1bce1326ee48f6bf93c46e7a4fde0b#:~:text=there%20are%20already%20many%20systems%2C%20such%20as%20cargo%2C%20that%20only%20support%20utf-8%20paths.%20if%20your%20own%20tool%20interacts%20with%20any%20such%20system%2C%20you%20can%20assume%20that%20paths%20are%20valid%20utf-8%20without%20creating%20any%20additional%20burdens%20on%20consumers.
 
-#[must_use]
-pub(crate) async fn do_wrap() -> ExitCode {
+pub(crate) async fn do_wrap() -> Result<()> {
     let arg0 = env::args().nth(1);
     let args = env::args().skip(1).collect();
     let vars = env::vars().collect();
     match fallible_main(arg0, args, vars).await {
-        Ok(code) => code,
+        Ok(()) => Ok(()),
         Err(e) => {
             eprintln!("Wrapped: {e}");
-            ExitCode::FAILURE
+            Err(e)
         }
     }
 }
@@ -51,7 +48,7 @@ async fn fallible_main(
     arg0: Option<String>,
     args: VecDeque<String>,
     vars: BTreeMap<String, String>,
-) -> Result<ExitCode> {
+) -> Result<()> {
     let argz = args.iter().take(3).map(AsRef::as_ref).collect::<Vec<_>>();
 
     let argv = |times| {
@@ -117,26 +114,28 @@ fn passthrough_getting_rust_target_specific_information() {
     );
 }
 
-async fn call_rustc(rustc: &str, args: Vec<String>) -> Result<ExitCode> {
+async fn call_rustc(rustc: &str, args: Vec<String>) -> Result<()> {
     // NOTE: not running inside Docker: local install SHOULD match Docker image setup
     // Meaning: it's up to the user to craft their desired $RUSTCBUILDX_BASE_IMAGE
     let mut cmd = Command::new(rustc);
     let cmd = cmd.kill_on_drop(true).args(args);
-    let code = cmd
+    let status = cmd
         .spawn()
         .map_err(|e| anyhow!("Failed to spawn {}: {e}", cmd.show()))?
         .wait()
         .await
-        .map_err(|e| anyhow!("Failed to wait {}: {e}", cmd.show()))?
-        .code();
-    Ok(exit_code(code))
+        .map_err(|e| anyhow!("Failed to wait {}: {e}", cmd.show()))?;
+    if !status.success() {
+        bail!("Failed in call_rustc")
+    }
+    Ok(())
 }
 
 async fn wrap_rustc(
     crate_name: &str,
     arguments: Vec<String>,
-    fallback: impl Future<Output = Result<ExitCode>>,
-) -> Result<ExitCode> {
+    fallback: impl Future<Output = Result<()>>,
+) -> Result<()> {
     if this() {
         panic!("It's turtles all the way down!")
     }
@@ -203,8 +202,8 @@ async fn do_wrap_rustc(
     args: Vec<String>,
     out_dir_var: Option<String>,
     RustcArgs { crate_type, emit, externs, extrafn, incremental, input, out_dir, target_path }: RustcArgs,
-    fallback: impl Future<Output = Result<ExitCode>>,
-) -> Result<ExitCode> {
+    fallback: impl Future<Output = Result<()>>,
+) -> Result<()> {
     let debug = maybe_log();
 
     let incremental = envs::incremental().then_some(incremental).flatten();
@@ -692,14 +691,14 @@ async fn do_wrap_rustc(
     if command == "none" {
         return fallback.await;
     }
-    let code = build(command, &dockerfile, out_stage, &md.contexts, &out_dir).await?;
-    if let Some(incremental) = incremental {
+    let res = build(command, &dockerfile, out_stage, &md.contexts, &out_dir).await;
+    if let Some(incremental) = res.is_ok().then_some(incremental).flatten() {
         let _ = build(command, &dockerfile, incremental_stage, &md.contexts, &incremental)
             .await
             .inspect_err(|e| warn!("Error fetching incremental data: {e}"));
     }
 
-    if code != Some(0) && debug.is_none() {
+    if res.is_err() && debug.is_none() {
         warn!("Falling back...");
         let res = fallback.await; // Bubble up actual error & outputs
         if res.is_ok() {
@@ -709,7 +708,7 @@ async fn do_wrap_rustc(
         return res;
     }
 
-    Ok(exit_code(code))
+    Ok(())
 }
 
 #[must_use]
