@@ -35,13 +35,7 @@ pub(crate) async fn do_wrap() -> Result<()> {
     let arg0 = env::args().nth(1);
     let args = env::args().skip(1).collect();
     let vars = env::vars().collect();
-    match fallible_main(arg0, args, vars).await {
-        Ok(()) => Ok(()),
-        Err(e) => {
-            eprintln!("Wrapped: {e}");
-            Err(e)
-        }
-    }
+    fallible_main(arg0, args, vars).await
 }
 
 async fn fallible_main(
@@ -687,27 +681,28 @@ async fn do_wrap_rustc(
     // https://github.com/tugglecore/rust-tracing-primer
     // TODO: `cargo green -v{N+1} ..` starts a TUI showing colored logs on above `cargo -v{N} ..`
 
-    let command = runner();
-    if command == "none" {
+    let runner = runner();
+    if runner == "none" {
+        info!("Runner disabled, falling back...");
         return fallback.await;
     }
-    let res = build(command, &dockerfile, out_stage, &md.contexts, &out_dir).await;
+    let res = build(runner, &dockerfile, out_stage, &md.contexts, &out_dir).await;
     if let Some(incremental) = res.is_ok().then_some(incremental).flatten() {
-        let _ = build(command, &dockerfile, incremental_stage, &md.contexts, &incremental)
+        let _ = build(runner, &dockerfile, incremental_stage, &md.contexts, &incremental)
             .await
             .inspect_err(|e| warn!("Error fetching incremental data: {e}"));
     }
 
-    if res.is_err() && debug.is_none() {
-        warn!("Falling back...");
-        let res = fallback.await; // Bubble up actual error & outputs
-        if res.is_ok() {
-            error!("BUG found!");
-            eprintln!("Found a bug in this script! Falling back... (logs: {debug:?})");
+    if let Err(e) = res {
+        warn!("Falling back due to {e}");
+        if debug.is_none() {
+            // Bubble up actual error & outputs
+            return fallback
+                .await
+                .inspect(|()| eprintln!("BUG: {PKG} should not have encountered this error: {e}"));
         }
-        return res;
+        return Err(e);
     }
-
     Ok(())
 }
 

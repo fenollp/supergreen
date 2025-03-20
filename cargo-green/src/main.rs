@@ -64,13 +64,11 @@ async fn main() -> Result<()> {
 
     let arg0 = args.next().expect("$0 has to be set");
     if PathBuf::from(&arg0).file_name() != Some(OsStr::new(PKG)) {
-        eprintln!("This binary should be named `{PKG}`");
         bail!("This binary should be named `{PKG}`")
     }
 
     if let Ok(wrapper) = env::var("RUSTC_WRAPPER") {
         if PathBuf::from(&wrapper).file_name() != Some(OsStr::new(PKG)) {
-            eprintln!("A $RUSTC_WRAPPER other than `{PKG}` is already set: {wrapper}");
             bail!("A $RUSTC_WRAPPER other than `{PKG}` is already set: {wrapper}")
         }
         // Now running as a subprocess
@@ -122,9 +120,8 @@ async fn main() -> Result<()> {
         }
     }
 
-    let status = cmd.status().await?;
-    if !status.success() {
-        bail!("Failed")
+    if !cmd.status().await?.success() {
+        exit(1)
     }
     Ok(())
 }
