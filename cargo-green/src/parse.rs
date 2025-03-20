@@ -244,6 +244,7 @@ fn target_path_from_out_dir() {
     }
 }
 
+#[must_use]
 pub(crate) fn crate_type_for_logging(crate_type: &str) -> char {
     crate_type.chars().next().unwrap()
 }

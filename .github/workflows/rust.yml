@@ -78,6 +78,10 @@ jobs:
           --locked --frozen --offline --all-targets --all-features \
           -- -D warnings --no-deps \
           -W clippy::cast_lossless \
+          -W clippy::double_must_use \
+          -W clippy::must_use_candidate \
+          -W clippy::must_use_unit \
           -W clippy::redundant_closure_for_method_calls \
+          -W clippy::return_self_not_must_use \
           -W clippy::str_to_string \
           -W clippy::unnecessary_wraps

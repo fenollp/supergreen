@@ -134,6 +134,7 @@ impl BaseImage {
         }
     }
 
+    #[must_use]
     pub(crate) fn block(&self) -> String {
         let base = self.base();
         let base = base.trim_start_matches("docker-image://");

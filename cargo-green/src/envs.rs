@@ -22,36 +22,47 @@ pub(crate) mod internal {
     pub const RUSTCBUILDX_RUNS_ON_NETWORK: &str = "RUSTCBUILDX_RUNS_ON_NETWORK";
     pub const RUSTCBUILDX_SYNTAX: &str = "RUSTCBUILDX_SYNTAX";
 
+    #[must_use]
     pub fn this() -> Option<String> {
         env::var(RUSTCBUILDX).ok()
     }
+    #[must_use]
     pub fn base_image() -> Option<String> {
         env::var(RUSTCBUILDX_BASE_IMAGE).ok()
     }
+    #[must_use]
     pub fn builder_image() -> Option<String> {
         env::var(RUSTCBUILDX_BUILDER_IMAGE).ok()
     }
+    #[must_use]
     pub fn cache_image() -> Option<String> {
         env::var(RUSTCBUILDX_CACHE_IMAGE).ok().and_then(|x| (!x.is_empty()).then_some(x))
     }
+    #[must_use]
     pub fn incremental() -> Option<String> {
         env::var(RUSTCBUILDX_INCREMENTAL).ok()
     }
+    #[must_use]
     pub fn log() -> Option<String> {
         env::var(RUSTCBUILDX_LOG).ok()
     }
+    #[must_use]
     pub fn log_path() -> Option<String> {
         env::var(RUSTCBUILDX_LOG_PATH).ok()
     }
+    #[must_use]
     pub fn log_style() -> Option<String> {
         env::var(RUSTCBUILDX_LOG_STYLE).ok()
     }
+    #[must_use]
     pub fn runner() -> Option<String> {
         env::var(RUSTCBUILDX_RUNNER).ok()
     }
+    #[must_use]
     pub fn runs_on_network() -> Option<String> {
         env::var(RUSTCBUILDX_RUNS_ON_NETWORK).ok()
     }
+    #[must_use]
     pub fn syntax() -> Option<String> {
         env::var(RUSTCBUILDX_SYNTAX).ok()
     }

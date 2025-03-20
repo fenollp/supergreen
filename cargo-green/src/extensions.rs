@@ -1,6 +1,8 @@
 pub(crate) trait Popped: Clone {
     #[must_use]
     fn pop(&mut self) -> bool;
+
+    #[must_use]
     fn popped(&mut self, times: usize) -> Self
     where
         Self: Sized,
