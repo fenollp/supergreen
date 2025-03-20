@@ -26,7 +26,6 @@ impl FromStr for Md {
     }
 }
 impl Md {
-    #[inline]
     #[must_use]
     pub(crate) fn new(this: &str) -> Self {
         Self { this: this.to_owned(), deps: vec![], contexts: [].into(), stages: [].into() }
@@ -120,13 +119,11 @@ pub(crate) struct DockerfileStage {
 // # ]
 // FROM ..
 
-#[inline]
 #[must_use]
 fn dec(x: impl AsRef<str>) -> u64 {
     u64::from_str_radix(x.as_ref(), 16).expect("16-digit hex str")
 }
 
-#[inline]
 #[must_use]
 fn decs(xs: &[String]) -> Vec<u64> {
     xs.iter().map(dec).collect()
@@ -134,7 +131,6 @@ fn decs(xs: &[String]) -> Vec<u64> {
 
 #[test]
 fn dec_decs() {
-    #[inline]
     fn enc(metadata: u64) -> String {
         format!("{metadata:#x}").trim_start_matches("0x").to_owned()
     }
@@ -151,7 +147,6 @@ pub(crate) struct BuildContext {
     pub(crate) uri: String,  // TODO: constrain with Docker build-context URIs
 }
 impl BuildContext {
-    #[inline]
     #[must_use]
     pub(crate) fn is_readonly_mount(&self) -> bool {
         self.name.starts_with(CRATESIO_STAGE_PREFIX) ||

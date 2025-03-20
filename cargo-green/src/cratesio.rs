@@ -6,7 +6,6 @@ use crate::{base::RUST, stage::Stage};
 
 pub(crate) const CRATESIO_STAGE_PREFIX: &str = "cratesio-";
 
-#[inline]
 pub(crate) fn from_cratesio_input_path(input: &Utf8PathBuf) -> Result<(String, String, String)> {
     let mut it = input.iter();
     let mut cratesio_index = String::new();
