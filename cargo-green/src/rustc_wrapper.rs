@@ -142,9 +142,9 @@ async fn wrap_rustc(
             if crate_type != "bin" {
                 bail!("BUG: expected build script to be of crate_type bin, got: {crate_type}")
             }
-            'x'
+            'X'
         } else {
-            crate_type_for_logging(crate_type)
+            crate_type_for_logging(crate_type).to_ascii_uppercase()
         };
         format!("{krate_type}|{krate_name}|{krate_version}|{}", &extrafn[1..])
     };
