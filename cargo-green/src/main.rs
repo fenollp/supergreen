@@ -6,7 +6,7 @@ use std::{
     ffi::OsStr,
     fs::OpenOptions,
     path::PathBuf,
-    process::{Output, Stdio},
+    process::{exit, Output, Stdio},
 };
 
 use anyhow::{bail, Result};
@@ -77,17 +77,10 @@ async fn main() -> Result<()> {
         return do_wrap().await;
     }
 
-    let Some(arg1) = args.next() else {
-        // Warn when running this via `cargo run -p cargo-green -- ..`
-        eprintln!("The `{PKG}` binary needs to be called via cargo, e.g.: `cargo green build`");
-        bail!("The `{PKG}` binary needs to be called via cargo, e.g.: `cargo green build`")
-    };
-
-    if ["-h", "--help", "-V", "--version"].contains(&arg1.as_str()) {
-        return supergreen::help();
+    if args.next().as_deref() != Some("green") {
+        supergreen::help()?;
+        exit(1)
     }
-
-    assert_eq!(arg1.as_str(), "green");
 
     let mut cmd = Command::new(env::var("CARGO").unwrap_or("cargo".into()));
     if let Some(arg) = args.next() {
