@@ -326,7 +326,6 @@ where
 }
 
 #[test]
-#[allow(clippy::str_to_string)] // assertx
 fn support_long_broken_json_lines() {
     let logs = assertx::setup_logging_test();
     let lines = [
@@ -386,7 +385,7 @@ fn fwd_stderr(msg: &str, buf: &mut String) {
 }
 
 #[inline]
-fn fwd_stdout(msg: &str, #[allow(clippy::ptr_arg)] _buf: &mut String) {
+fn fwd_stdout(msg: &str, #[expect(clippy::ptr_arg)] _buf: &mut String) {
     println!("{msg}");
 }
 

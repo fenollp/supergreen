@@ -79,4 +79,5 @@ jobs:
           -- -D warnings --no-deps \
           -W clippy::cast_lossless \
           -W clippy::redundant_closure_for_method_calls \
-          -W clippy::str_to_string
+          -W clippy::str_to_string \
+          -W clippy::unnecessary_wraps
