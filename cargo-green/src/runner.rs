@@ -23,7 +23,7 @@ use crate::{
     envs::{cache_image, runner, runs_on_network},
     extensions::ShowCmd,
     md::BuildContext,
-    parse::crate_type_for_logging,
+    rustc_arguments::crate_type_for_logging,
     stage::Stage,
 };
 

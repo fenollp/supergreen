@@ -27,8 +27,8 @@ mod cratesio;
 mod envs;
 mod extensions;
 mod md;
-mod parse;
 mod runner;
+mod rustc_arguments;
 mod stage;
 mod wrap;
 
