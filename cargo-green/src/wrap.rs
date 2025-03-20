@@ -21,8 +21,8 @@ use crate::{
     envs::{self, base_image, internal, maybe_log, pass_env, runner, syntax, this},
     extensions::{Popped, ShowCmd},
     md::{BuildContext, Md},
-    parse::{self, crate_type_for_logging, RustcArgs},
     runner::{build, MARK_STDERR, MARK_STDOUT},
+    rustc_arguments::{as_rustc, crate_type_for_logging, RustcArgs},
     stage::Stage,
     PKG, REPO, VSN,
 };
@@ -146,7 +146,7 @@ async fn wrap_rustc(
     let pwd: Utf8PathBuf = pwd.try_into().expect("Encoding $PWD in UTF-8");
 
     let out_dir_var = env::var("OUT_DIR").ok();
-    let (st, args) = parse::as_rustc(&pwd, &arguments, out_dir_var.as_deref())?;
+    let (st, args) = as_rustc(&pwd, &arguments, out_dir_var.as_deref())?;
 
     let full_krate_id = {
         let krate_version = env::var("CARGO_PKG_VERSION").ok().unwrap_or_default();

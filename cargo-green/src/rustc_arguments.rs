@@ -262,7 +262,7 @@ fn unique_krate_types() {
 mod tests {
     use pretty_assertions::assert_eq;
 
-    use crate::parse::{as_rustc, RustcArgs};
+    use super::{as_rustc, RustcArgs};
 
     const HOME: &str = "/home/maison";
     const PWD: &str = "$HOME/⺟/rustcbuildx.git";
