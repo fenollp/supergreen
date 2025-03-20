@@ -24,7 +24,6 @@ pub(crate) async fn main(arg1: Option<&str>, args: Vec<String>) -> Result<()> {
         Some("pull") => pull().await,
         Some("push") => push().await,
         Some(arg) => {
-            eprintln!("Unexpected supergreen command {arg:?}");
             bail!("Unexpected supergreen command {arg:?}")
         }
     }
@@ -74,7 +73,6 @@ async fn push() -> Result<()> {
                 }
             }
         }
-        eprintln!("Pushing {img}:{tag} failed!");
         bail!("Pushing {img}:{tag} failed!")
     }
 
@@ -93,7 +91,6 @@ async fn all_tags_of(img: &str) -> Result<Vec<String>> {
         .arg(format!("--filter=reference={}:*", img.trim_start_matches("docker.io/")));
     let o = cmd.output().await.map_err(|e| anyhow!("Failed calling {}: {e}", cmd.show()))?;
     if !o.status.success() {
-        eprintln!("Failed to list tags of image {img}");
         bail!("Failed to list tags of image {img}")
     }
     Ok(BufReader::new(Cursor::new(String::from_utf8(o.stdout).unwrap()))
@@ -200,7 +197,6 @@ async fn do_pull(img: String) -> Result<()> {
         .await
         .map_err(|e| anyhow!("Failed to call {}: {e}", cmd.show()))?;
     if !o.success() {
-        eprintln!("Failed to pull {img}");
         bail!("Failed to pull {img}")
     }
     Ok(())
