@@ -1,15 +1,7 @@
-use std::{
-    collections::BTreeMap,
-    env,
-    io::Cursor,
-    process::{ExitCode, Stdio},
-};
+use std::{collections::BTreeMap, env, io::Cursor, process::Stdio};
 
-use anyhow::{anyhow, Result};
-use futures::{
-    future::ok,
-    stream::{iter, StreamExt, TryStreamExt},
-};
+use anyhow::{anyhow, bail, Result};
+use futures::stream::{iter, StreamExt, TryStreamExt};
 use serde_jsonlines::AsyncBufReadJsonLines;
 use tokio::io::BufReader;
 
@@ -25,21 +17,21 @@ use crate::{
 
 // TODO: cargo green cache --keep-less-than=(1month|10GB)      Set $RUSTCBUILDX_CACHE_IMAGE to apply to tagged images.
 
-pub(crate) async fn main(arg1: Option<&str>, args: Vec<String>) -> Result<ExitCode> {
+pub(crate) async fn main(arg1: Option<&str>, args: Vec<String>) -> Result<()> {
     match arg1 {
-        None | Some("-h" | "--help" | "-V" | "--version") => Ok(help()),
-        Some("env") => Ok(envs(args).await),
+        None | Some("-h" | "--help" | "-V" | "--version") => help(),
+        Some("env") => envs(args).await,
         Some("pull") => pull().await,
         Some("push") => push().await,
         Some(arg) => {
             eprintln!("Unexpected supergreen command {arg:?}");
-            Ok(ExitCode::FAILURE)
+            bail!("Unexpected supergreen command {arg:?}")
         }
     }
 }
 
-#[must_use]
-pub(crate) fn help() -> ExitCode {
+#[expect(clippy::unnecessary_wraps)]
+pub(crate) fn help() -> Result<()> {
     println!(
         "{name}@{version}: {description}
     {repository}
@@ -56,50 +48,39 @@ Usage:
         repository = env!("CARGO_PKG_REPOSITORY"),
         description = env!("CARGO_PKG_DESCRIPTION"),
     );
-    ExitCode::SUCCESS
+    Ok(())
 }
 
 // TODO: make it work for podman: https://github.com/containers/podman/issues/2369
 // TODO: have fun with https://github.com/console-rs/indicatif
-pub(crate) async fn push() -> Result<ExitCode> {
-    if let Some(img) = cache_image() {
-        let img = img.trim_start_matches("docker-image://");
+async fn push() -> Result<()> {
+    let Some(img) = cache_image() else { return Ok(()) };
+    let img = img.trim_start_matches("docker-image://");
+    let tags = all_tags_of(img).await?;
 
-        let tags = match all_tags_of(img).await? {
-            (_, Some(code)) => return Ok(code),
-            (tags, _) => tags,
-        };
+    async fn do_push(tag: String, img: &str) -> Result<()> {
+        println!("Pushing {img}:{tag}...");
+        let mut cmd = runner_cmd();
+        cmd.arg("push").arg(format!("{img}:{tag}")).stdout(Stdio::null()).stderr(Stdio::null());
 
-        iter(tags)
-            .map(|tag: String| async move {
-                println!("Pushing {img}:{tag}...");
-                let mut cmd = runner_cmd();
-                cmd.arg("push")
-                    .arg(format!("{img}:{tag}"))
-                    .stdout(Stdio::null())
-                    .stderr(Stdio::null());
-                if let Ok(mut o) = cmd.spawn() {
-                    if let Ok(o) = o.wait().await {
-                        if o.success() {
-                            println!("Pushing {img}:{tag}... done!");
-                            return;
-                        }
-                    }
+        if let Ok(mut o) = cmd.spawn() {
+            if let Ok(o) = o.wait().await {
+                if o.success() {
+                    println!("Pushing {img}:{tag}... done!");
+                    return Ok(());
                 }
-                eprintln!("Pushing {img}:{tag} failed!");
-            })
-            .buffer_unordered(10)
-            .fold((), |a, _| async move { a })
-            .await;
+            }
+        }
+        eprintln!("Pushing {img}:{tag} failed!");
+        bail!("Pushing {img}:{tag} failed!")
     }
-    Ok(exit_code(Some(0)))
+
+    iter(tags).map(|tag| do_push(tag, img)).buffer_unordered(10).try_collect().await
 }
 
 // TODO: test with known tags
 // TODO: test docker.io/ prefix bug for the future
-async fn all_tags_of(img: &str) -> Result<(Vec<String>, Option<ExitCode>)> {
-    //thats a silly return type
-
+async fn all_tags_of(img: &str) -> Result<Vec<String>> {
     // NOTE: https://github.com/moby/moby/issues/47809
     //   Meanwhile: just drop docker.io/ prefix
     let mut cmd = runner_cmd();
@@ -110,22 +91,19 @@ async fn all_tags_of(img: &str) -> Result<(Vec<String>, Option<ExitCode>)> {
     let o = cmd.output().await.map_err(|e| anyhow!("Failed calling {}: {e}", cmd.show()))?;
     if !o.status.success() {
         eprintln!("Failed to list tags of image {img}");
-        return Ok((vec![], Some(exit_code(o.status.code()))));
+        bail!("Failed to list tags of image {img}")
     }
-    let tags: Vec<String> = BufReader::new(Cursor::new(String::from_utf8(o.stdout).unwrap()))
+    Ok(BufReader::new(Cursor::new(String::from_utf8(o.stdout).unwrap()))
         .json_lines()
         .filter_map(|x| async move { x.ok() })
         .filter_map(|x: serde_json::Value| async move {
             x.get("Tag").and_then(|x| x.as_str().map(ToOwned::to_owned))
         })
         .collect()
-        .await;
-
-    Ok((tags, None))
+        .await)
 }
 
-#[must_use]
-pub(crate) async fn envs(vars: Vec<String>) -> ExitCode {
+async fn envs(vars: Vec<String>) -> Result<()> {
     let all: BTreeMap<_, _> = [
         (internal::RUSTCBUILDX, internal::this()),
         (internal::RUSTCBUILDX_BASE_IMAGE, Some(base_image().await.base())),
@@ -156,10 +134,10 @@ pub(crate) async fn envs(vars: Vec<String>) -> ExitCode {
         all.into_iter().for_each(|(var, o)| show(var, &o));
     }
 
-    ExitCode::SUCCESS
+    Ok(())
 }
 
-pub(crate) async fn pull() -> Result<ExitCode> {
+async fn pull() -> Result<()> {
     let imgs = [
         (internal::syntax(), syntax().await),
         (internal::base_image(), &base_image().await.base()),
@@ -188,7 +166,7 @@ pub(crate) async fn pull() -> Result<ExitCode> {
 }
 
 #[must_use]
-pub(crate) fn trim_docker_image(x: &str) -> Option<String> {
+fn trim_docker_image(x: &str) -> Option<String> {
     let x = x.trim_start_matches("docker-image://");
     let x = x
         .contains('@')
@@ -197,21 +175,19 @@ pub(crate) fn trim_docker_image(x: &str) -> Option<String> {
     (!x.is_empty()).then(|| x.to_owned())
 }
 
-pub(crate) async fn pull_images(to_pull: Vec<String>) -> Result<ExitCode> {
-    let zero = Some(0);
+async fn pull_images(to_pull: Vec<String>) -> Result<()> {
     // TODO: nice TUI that handles concurrent progress
-    let code = iter(to_pull.into_iter())
+    iter(to_pull.into_iter())
         .map(|img| async move {
             println!("Pulling {img}...");
             do_pull(img).await
         })
         .buffer_unordered(10)
-        .try_fold(zero, |a, b| if a == zero { ok(b) } else { ok(a) })
-        .await?;
-    Ok(exit_code(code))
+        .try_collect()
+        .await
 }
 
-async fn do_pull(img: String) -> Result<Option<i32>> {
+async fn do_pull(img: String) -> Result<()> {
     let mut cmd = runner_cmd();
     cmd.arg("pull").arg(&img);
     let o = cmd
@@ -222,12 +198,7 @@ async fn do_pull(img: String) -> Result<Option<i32>> {
         .map_err(|e| anyhow!("Failed to call {}: {e}", cmd.show()))?;
     if !o.success() {
         eprintln!("Failed to pull {img}");
-        return Ok(o.code());
+        bail!("Failed to pull {img}")
     }
-    Ok(Some(0)) // TODO: -> Result<ExitCode>, once exit codes impl PartialEq.
-}
-
-#[must_use]
-pub(crate) fn exit_code(code: Option<i32>) -> ExitCode {
-    (code.unwrap_or(-1) as u8).into() // TODO: https://doc.rust-lang.org/std/os/unix/process/trait.ExitStatusExt.html
+    Ok(())
 }
