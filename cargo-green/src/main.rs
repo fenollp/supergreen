@@ -39,10 +39,12 @@ const VSN: &str = env!("CARGO_PKG_VERSION");
 /*
 
 \cargo green +nightly fmt --all
+\cargo +nightly green fmt --all
 
-\cargo green clippy --locked --frozen --offline --all-targets --all-features -- -D warnings --no-deps -W clippy::cast_lossless -W clippy::redundant_closure_for_method_calls -W clippy::str_to_string
+\cargo green clippy --locked --frozen --offline --all-targets --all-features
 
 \cargo green auditable build --locked --frozen --offline --all-targets --all-features
+\cargo auditable green build --locked --frozen --offline --all-targets --all-features
 
 \cargo green test --all-targets --all-features --locked --frozen --offline
 
@@ -294,7 +296,6 @@ async fn setup_build_driver(name: &str, builder_image: &str) -> Result<()> {
     Ok(())
 }
 
-#[allow(dead_code)]
 async fn try_removing_previous_builder(name: &str) {
     let mut cmd = runner_cmd();
     cmd.args(["buildx", "rm", name, "--keep-state", "--force"])
