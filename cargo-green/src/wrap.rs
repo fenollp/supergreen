@@ -726,7 +726,6 @@ fn test_safeify() {
     assert_eq!(safeify("$VAR=val".to_owned()), "\"\\$VAR=val\"".to_owned());
 }
 
-#[inline]
 fn file_exists(path: &Utf8Path) -> Result<bool> {
     match path.metadata().map(|md| md.is_file()) {
         Ok(b) => Ok(b),
@@ -735,7 +734,6 @@ fn file_exists(path: &Utf8Path) -> Result<bool> {
     }
 }
 
-#[inline]
 fn file_exists_and_is_not_empty(path: &Utf8Path) -> Result<bool> {
     match path.metadata().map(|md| md.is_file() && md.len() > 0) {
         Ok(b) => Ok(b),

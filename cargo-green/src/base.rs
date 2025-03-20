@@ -74,7 +74,6 @@ LLVM version: 19.1.0
 }
 
 impl BaseImage {
-    #[inline]
     #[must_use]
     pub(crate) fn base(&self) -> String {
         match self {
@@ -104,7 +103,6 @@ impl BaseImage {
         }
     }
 
-    #[inline]
     #[must_use]
     fn from_rustcv(
         VersionMeta { semver, commit_hash, commit_date, channel, .. }: VersionMeta,

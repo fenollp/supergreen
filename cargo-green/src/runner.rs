@@ -383,7 +383,6 @@ fn fwd_stderr(msg: &str, buf: &mut String) {
     }
 }
 
-#[inline]
 fn fwd_stdout(msg: &str, #[expect(clippy::ptr_arg)] _buf: &mut String) {
     println!("{msg}");
 }

@@ -7,7 +7,6 @@ use nutype::nutype;
 #[nutype(sanitize(with=oci_name), validate(predicate=tag_name), derive(Debug, Display, PartialEq))]
 pub(crate) struct Stage(String);
 
-#[inline]
 #[must_use]
 fn oci_name(name: String) -> String {
     name.to_lowercase()
@@ -16,7 +15,6 @@ fn oci_name(name: String) -> String {
         .to_owned()
 }
 
-#[inline]
 #[must_use]
 fn tag_name(name: &str) -> bool {
     !name.starts_with(['-', '.']) && name.len() <= 128
