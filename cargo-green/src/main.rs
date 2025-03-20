@@ -17,7 +17,6 @@ use crate::{
     envs::{builder_image, cache_image, incremental, internal, runner, DEFAULT_SYNTAX},
     extensions::ShowCmd,
     runner::{fetch_digest, maybe_lock_image, runner_cmd},
-    wrap::do_wrap,
 };
 
 mod base;
@@ -27,9 +26,9 @@ mod extensions;
 mod md;
 mod runner;
 mod rustc_arguments;
+mod rustc_wrapper;
 mod stage;
 mod supergreen;
-mod wrap;
 
 const PKG: &str = env!("CARGO_PKG_NAME");
 const REPO: &str = env!("CARGO_PKG_REPOSITORY");
@@ -72,7 +71,11 @@ async fn main() -> Result<()> {
             bail!("A $RUSTC_WRAPPER other than `{PKG}` is already set: {wrapper}")
         }
         // Now running as a subprocess
-        return do_wrap().await;
+
+        let arg0 = env::args().nth(1);
+        let args = env::args().skip(1).collect();
+        let vars = env::vars().collect();
+        return rustc_wrapper::main(arg0, args, vars).await;
     }
 
     if args.next().as_deref() != Some("green") {
