@@ -16,7 +16,6 @@ use tokio::process::Command;
 
 use crate::{
     base::RUST,
-    cli::exit_code,
     cratesio::{from_cratesio_input_path, into_stage},
     envs::{self, base_image, internal, maybe_log, pass_env, runner, syntax, this},
     extensions::{Popped, ShowCmd},
@@ -24,6 +23,7 @@ use crate::{
     runner::{build, MARK_STDERR, MARK_STDOUT},
     rustc_arguments::{as_rustc, crate_type_for_logging, RustcArgs},
     stage::Stage,
+    supergreen::exit_code,
     PKG, REPO, VSN,
 };
 

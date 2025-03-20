@@ -14,7 +14,6 @@ use tokio::process::Command;
 
 use crate::{
     base::BaseImage,
-    cli::{envs, help, pull, push},
     envs::{builder_image, cache_image, incremental, internal, runner, DEFAULT_SYNTAX},
     extensions::ShowCmd,
     runner::{fetch_digest, maybe_lock_image, runner_cmd},
@@ -22,7 +21,6 @@ use crate::{
 };
 
 mod base;
-mod cli;
 mod cratesio;
 mod envs;
 mod extensions;
@@ -30,6 +28,7 @@ mod md;
 mod runner;
 mod rustc_arguments;
 mod stage;
+mod supergreen;
 mod wrap;
 
 const PKG: &str = env!("CARGO_PKG_NAME");
@@ -96,24 +95,17 @@ async fn main() -> Result<ExitCode> {
         );
         return Ok(ExitCode::FAILURE);
     };
+
     if ["-h", "--help", "-V", "--version"].contains(&arg1.as_str()) {
-        return Ok(help());
+        return Ok(supergreen::help());
     }
+
     assert_eq!(arg1.as_str(), "green");
 
     let mut cmd = Command::new(env::var("CARGO").unwrap_or("cargo".into()));
     if let Some(arg) = args.next() {
         if arg == "supergreen" {
-            return match args.next().as_deref() {
-                None | Some("-h" | "--help" | "-V" | "--version") => Ok(help()),
-                Some("env") => Ok(envs(args.collect()).await),
-                Some("pull") => pull().await,
-                Some("push") => push().await,
-                Some(arg) => {
-                    eprintln!("Unexpected supergreen command {arg:?}");
-                    return Ok(ExitCode::FAILURE);
-                }
-            };
+            return supergreen::main(args.next().as_deref(), args.collect()).await;
         }
 
         // https://rust-lang.github.io/rustup/overrides.html#toolchain-override-shorthand

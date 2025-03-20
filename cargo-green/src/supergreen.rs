@@ -25,6 +25,19 @@ use crate::{
 
 // TODO: cargo green cache --keep-less-than=(1month|10GB)      Set $RUSTCBUILDX_CACHE_IMAGE to apply to tagged images.
 
+pub(crate) async fn main(arg1: Option<&str>, args: Vec<String>) -> Result<ExitCode> {
+    match arg1 {
+        None | Some("-h" | "--help" | "-V" | "--version") => Ok(help()),
+        Some("env") => Ok(envs(args).await),
+        Some("pull") => pull().await,
+        Some("push") => push().await,
+        Some(arg) => {
+            eprintln!("Unexpected supergreen command {arg:?}");
+            Ok(ExitCode::FAILURE)
+        }
+    }
+}
+
 #[must_use]
 pub(crate) fn help() -> ExitCode {
     println!(
