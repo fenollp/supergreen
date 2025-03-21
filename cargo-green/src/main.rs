@@ -126,11 +126,7 @@ async fn main() -> Result<()> {
                 exit(1)
             }
 
-            logging::setup(
-                "cfetch".to_owned(),
-                internal::RUSTCBUILDX_LOG,
-                internal::RUSTCBUILDX_LOG_STYLE,
-            );
+            logging::setup("fetch", internal::RUSTCBUILDX_LOG, internal::RUSTCBUILDX_LOG_STYLE);
 
             // TODO: skip these stages (and any other "locked thing" stage) when building with --no-cache
 

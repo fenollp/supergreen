@@ -22,8 +22,8 @@ use tokio::{
 use crate::{
     envs::{cache_image, runner, runs_on_network},
     extensions::ShowCmd,
+    logging::crate_type_for_logging,
     md::BuildContext,
-    rustc_arguments::crate_type_for_logging,
     stage::Stage,
 };
 
@@ -182,7 +182,7 @@ pub(crate) async fn build(
                                       // => rustc shortcommit, ..?
                                       // Can buildx give list of all inputs? || short hash(dockerfile + call + envs)
         cmd.arg(format!("--tag={img}:{tag}"));
-        let b = crate_type_for_logging("bin");
+        let b = crate_type_for_logging("bin").to_ascii_lowercase();
         if [format!("cwd-{b}-"), format!("dep-{b}-")].iter().any(|prefix| tag.starts_with(prefix)) {
             cmd.arg(format!("--tag={img}:latest"));
         }

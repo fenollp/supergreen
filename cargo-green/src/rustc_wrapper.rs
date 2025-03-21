@@ -19,10 +19,10 @@ use crate::{
     envs::{self, base_image, internal, maybe_log, pass_env, runner, syntax, this},
     extensions::{Popped, ShowCmd},
     lockfile::locked_crates,
-    logging,
+    logging::{self, crate_type_for_logging},
     md::{BuildContext, Md},
     runner::{build, MARK_STDERR, MARK_STDOUT},
-    rustc_arguments::{as_rustc, crate_type_for_logging, RustcArgs},
+    rustc_arguments::{as_rustc, RustcArgs},
     stage::Stage,
     PKG, REPO, VSN,
 };
@@ -146,20 +146,16 @@ async fn wrap_rustc(
             }
             'X'
         } else {
-            crate_type_for_logging(crate_type).to_ascii_uppercase()
+            crate_type_for_logging(crate_type)
         };
-        format!("{krate_type}|{krate_name}|{krate_version}|{}", &extrafn[1..])
+        format!("{krate_type} {krate_name} {krate_version}{extrafn}")
     };
 
-    logging::setup(
-        full_krate_id.clone(),
-        internal::RUSTCBUILDX_LOG,
-        internal::RUSTCBUILDX_LOG_STYLE,
-    );
+    logging::setup(&full_krate_id, internal::RUSTCBUILDX_LOG, internal::RUSTCBUILDX_LOG_STYLE);
 
     info!("{PKG}@{VSN} original args: {arguments:?} pwd={pwd} st={st:?}");
 
-    let crate_id = full_krate_id.replace('|', "-");
+    let crate_id = full_krate_id.replace(' ', "-");
     do_wrap_rustc(crate_name, crate_id, pwd, args, out_dir_var, st, fallback)
         .await
         .inspect_err(|e| error!("Error: {e}"))
