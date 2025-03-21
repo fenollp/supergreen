@@ -36,7 +36,7 @@ pub(crate) fn runner_cmd() -> Command {
     cmd.kill_on_drop(true);
     cmd.stdin(Stdio::null());
     cmd.arg("--debug");
-    // TODO: use env_clear https://docs.rs/tokio/latest/tokio/process/struct.Command.html#method.env_clear
+    // TODO: use env_clear https://docs.rs/tokio/latest/tokio/process/struct.Command.html#method.env_clear => pass all buildkit/docker/moby/podman envs explicitly
     cmd
 }
 
@@ -174,8 +174,8 @@ pub(crate) async fn build(
     if let Some(img) = cache_image() {
         let img = img.trim_start_matches("docker-image://");
         cmd.arg(format!(
-            "--cache-from=type=registry,ref={img}{}", // TODO: check img for commas
-            if false { ",mode=max" } else { "" }      // TODO: env? builder call?
+            "--cache-from=type=registry,ref={img}{}",
+            if false { ",mode=max" } else { "" } // TODO: env? builder call?
         ));
 
         let tag = target.to_string(); // TODO: include enough info for repro
@@ -348,8 +348,7 @@ fn support_long_broken_json_lines() {
     // Then fwd_stderr
     // calls artifact_written(r#"{"$message_type":"artifact","artifact":"/tmp/thing","emit":"link"}"#)
     // which returns Some("/tmp/thing")
-    use log::Level;
-    assertx::assert_logs_contain_in_order!(logs, Level::Info => "rustc wrote /tmp/thing");
+    assertx::assert_logs_contain_in_order!(logs, log::Level::Info => "rustc wrote /tmp/thing");
 }
 
 fn fwd_stderr(msg: &str, buf: &mut String) {

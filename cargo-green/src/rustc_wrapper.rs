@@ -1,5 +1,5 @@
 use std::{
-    collections::{BTreeMap, BTreeSet, VecDeque},
+    collections::{BTreeMap, BTreeSet},
     env,
     fs::{self, File},
     future::Future,
@@ -35,18 +35,12 @@ const BUILDRS_CRATE_NAME: &str = "build_script_build";
 
 pub(crate) async fn main(
     arg0: Option<String>,
-    args: VecDeque<String>,
+    args: Vec<String>,
     vars: BTreeMap<String, String>,
 ) -> Result<()> {
     let argz = args.iter().take(3).map(AsRef::as_ref).collect::<Vec<_>>();
 
-    let argv = |times| {
-        let mut argv = args.clone();
-        for _ in 0..times {
-            argv.pop_front(); // shift 1
-        }
-        argv.into_iter().collect()
-    };
+    let argv = |times| args.clone().into_iter().skip(times).collect();
 
     // TODO: find a better heuristic to ensure `rustc` is rustc
     match &argz[..] {
