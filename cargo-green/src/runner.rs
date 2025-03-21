@@ -297,6 +297,7 @@ where
         debug!("Starting {name} task {badge}");
         let start = Instant::now();
         let mut buf = String::new();
+        let mut details: Vec<String> = vec![];
         let mut first = true;
         loop {
             let maybe_line = stdio.next_line().await;
@@ -310,9 +311,18 @@ where
                     if line.is_empty() {
                         continue;
                     }
+
                     debug!("{badge} {}", strip_ansi_escapes(&line));
+
                     if let Some(msg) = lift_stdio(&line, mark) {
                         fwder(msg, &mut buf);
+                    }
+
+                    // Show data transfers (Bytes, maybe also timings?)
+                    let pattern = " transferring ";
+                    for (idx, _pattern) in line.as_str().match_indices(pattern) {
+                        let detail = line[(pattern.len() + idx)..].trim_end_matches(" done");
+                        details.push(detail.to_owned());
                     }
                 }
                 Err(e) => {
@@ -321,7 +331,7 @@ where
                 }
             }
         }
-        debug!("Terminating {name} task");
+        debug!("Terminating {name} task {details:?}");
         drop(stdio);
     })
 }
@@ -354,6 +364,7 @@ fn support_long_broken_json_lines() {
 fn fwd_stderr(msg: &str, buf: &mut String) {
     let show = |msg: &str| {
         eprintln!("{msg}");
+
         if let Some(file) = artifact_written(msg) {
             // TODO: later assert said files were actually written, after runner completes
             info!("rustc wrote {file}") // FIXME: replace prefix target_path with '.'
