@@ -11,7 +11,7 @@ use camino::Utf8PathBuf;
 use cargo_green::setup_build_driver;
 use cratesio::add_step;
 use envs::{builder_image, internal, runner, DEFAULT_SYNTAX};
-use lockfile::locked_crates;
+use lockfile::{find_lockfile, locked_crates};
 use runner::{build, fetch_digest, maybe_lock_image};
 use stage::Stage;
 use tokio::process::Command;
@@ -109,6 +109,12 @@ async fn main() -> Result<()> {
     cmd.env("RUSTC_WRAPPER", arg0);
     cargo_green::main(&mut cmd).await?;
 
+    let manifest_path_lockfile = find_lockfile().await?;
+    dbg!(&manifest_path_lockfile);
+    cmd.env("CARGOGREEN_LOCKFILE", &manifest_path_lockfile);
+    dbg!(std::env::vars());
+    dbg!(&std::env::args());
+
     //TODO: https://github.com/messense/cargo-options/blob/086d7470cae34b0e694a62237e258fbd35384e93/examples/cargo-mimic.rs
     // maybe https://lib.rs/crates/clap-cargo
 
@@ -128,7 +134,7 @@ async fn main() -> Result<()> {
 
             // TODO: skip these stages (and any other "locked thing" stage) when building with --no-cache
 
-            let packages = locked_crates().await?;
+            let packages = locked_crates(&manifest_path_lockfile).await?;
             if packages.is_empty() {
                 return Ok(());
             }

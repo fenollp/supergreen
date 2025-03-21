@@ -1,21 +1,23 @@
 use std::env;
 
 use anyhow::{bail, Result};
-use camino::Utf8PathBuf;
+use camino::{Utf8Path, Utf8PathBuf};
 use cargo_lock::{Lockfile, Package, SourceId};
 use serde::Deserialize;
 use tokio::process::Command;
 
 use crate::rustc_wrapper::file_exists_and_is_not_empty;
 
-pub(crate) async fn locked_crates() -> Result<Vec<(String, String, String)>> {
-    let manifest_path_lockfile = find_lockfile().await?;
+pub(crate) async fn locked_crates(
+    manifest_path_lockfile: &Utf8Path,
+) -> Result<Vec<(String, String, String)>> {
     let lockfile = Lockfile::load(manifest_path_lockfile)?;
+    // dbg!(&lockfile);
 
     let packages = lockfile
         .packages
         .into_iter()
-        .filter(|pkg| pkg.source.as_ref().is_some_and(SourceId::is_default_registry))
+        .filter(|pkg| pkg.source.as_ref().is_none_or(SourceId::is_default_registry))
         .filter(|pkg| pkg.checksum.is_some())
         .map(|Package { name, version, checksum, .. }| {
             (name.to_string(), version.to_string(), checksum.unwrap().to_string())
@@ -24,7 +26,7 @@ pub(crate) async fn locked_crates() -> Result<Vec<(String, String, String)>> {
     Ok(packages)
 }
 
-async fn find_lockfile() -> Result<Utf8PathBuf> {
+pub(crate) async fn find_lockfile() -> Result<Utf8PathBuf> {
     let manifest_path = cargo_locate_project(false).await?;
     let candidate = manifest_path.with_extension("lock");
     if file_exists_and_is_not_empty(candidate.as_path())? {
