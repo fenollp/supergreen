@@ -111,8 +111,23 @@ async fn main() -> Result<()> {
     let manifest_path_lockfile = find_lockfile().await?;
     dbg!(&manifest_path_lockfile);
     cmd.env("CARGOGREEN_LOCKFILE", &manifest_path_lockfile);
+
     dbg!(std::env::vars());
     dbg!(&std::env::args());
+    // [cargo-green/src/main.rs:116:5] &std::env::args() = Args { inner: [                                                                                                                                                                                          "/tmp/cargo-green/bin/cargo-green",                                                                                                                                                           "green",                                                                                                                                                                                      "-vv",                                                                                                                                                                                        "install",
+    //     "--timings",
+    //     "--jobs=1",
+    //     "--root=/tmp",
+    //     "--locked",
+    //     "--force",
+    //     "buildxargs",
+    //     "--git",
+    //     "https://github.com/fenollp/buildxargs.git",
+
+    //=> cargo install can't find lockfile
+    // => issue `cargo` to cp lockfile in $CARGO_TARGET_DIR?
+    // => parse its args, understand source, guess lockfile?
+    //https://github.com/rust-lang/cargo/issues/9700
 
     //TODO: https://github.com/messense/cargo-options/blob/086d7470cae34b0e694a62237e258fbd35384e93/examples/cargo-mimic.rs
     // maybe https://lib.rs/crates/clap-cargo

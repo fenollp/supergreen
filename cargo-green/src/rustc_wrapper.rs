@@ -344,7 +344,7 @@ async fn do_wrap_rustc(
             .collect();
         dbg!(&input);
         dbg!(&packages);
-        assert_eq!(packages.len(), 1);
+        // assert_eq!(packages.len(), 1);
 
         let (name, version, cratesio_index) = from_cratesio_input_path(&input)?;
         let (cratesio_stage, src, dst, block) =
