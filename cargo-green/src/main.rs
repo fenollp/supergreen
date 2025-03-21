@@ -9,12 +9,10 @@ use std::{
 use anyhow::{anyhow, bail, Result};
 use camino::Utf8PathBuf;
 use cargo_green::setup_build_driver;
-use cargo_lock::{Lockfile, Package, SourceId};
 use cratesio::add_step;
 use envs::{builder_image, internal, runner, DEFAULT_SYNTAX};
+use lockfile::locked_crates;
 use runner::{build, fetch_digest, maybe_lock_image};
-use rustc_wrapper::file_exists_and_is_not_empty;
-use serde::Deserialize;
 use stage::Stage;
 use tokio::process::Command;
 
@@ -23,6 +21,7 @@ mod cargo_green;
 mod cratesio;
 mod envs;
 mod extensions;
+mod lockfile;
 mod logging;
 mod md;
 mod runner;
@@ -129,18 +128,7 @@ async fn main() -> Result<()> {
 
             // TODO: skip these stages (and any other "locked thing" stage) when building with --no-cache
 
-            let manifest_path_lockfile = find_lockfile().await?;
-            let lockfile = Lockfile::load(manifest_path_lockfile)?;
-
-            let packages = lockfile
-                .packages
-                .into_iter()
-                .filter(|pkg| pkg.source.as_ref().is_some_and(SourceId::is_default_registry))
-                .filter(|pkg| pkg.checksum.is_some())
-                .map(|Package { name, version, checksum, .. }| {
-                    (name.to_string(), version.to_string(), checksum.unwrap().to_string())
-                })
-                .collect::<Vec<_>>();
+            let packages = locked_crates().await?;
             if packages.is_empty() {
                 return Ok(());
             }
@@ -229,37 +217,4 @@ async fn preset_builder() -> Result<()> {
         // https://docs.docker.com/engine/security/protect-access/
     }
     Ok(())
-}
-
-async fn find_lockfile() -> Result<Utf8PathBuf> {
-    let manifest_path = cargo_locate_project(false).await?;
-    let candidate = manifest_path.with_extension("lock");
-    if file_exists_and_is_not_empty(candidate.as_path())? {
-        return Ok(candidate);
-    }
-    let manifest_path = cargo_locate_project(true).await?;
-    Ok(manifest_path.with_extension("lock"))
-}
-
-async fn cargo_locate_project(at_workspace: bool) -> Result<Utf8PathBuf> {
-    let mut cmd = Command::new(env::var_os("CARGO").unwrap_or_else(|| "cargo".into()));
-    cmd.kill_on_drop(true);
-
-    cmd.arg("locate-project");
-    if at_workspace {
-        cmd.arg("--workspace");
-    }
-
-    let output = cmd.output().await?;
-    if !output.stderr.is_empty() {
-        bail!(">>> {:?}", output.stderr)
-    }
-
-    #[derive(Debug, Deserialize)]
-    struct Located {
-        root: Utf8PathBuf,
-    }
-
-    let Located { root } = serde_json::from_slice(&output.stdout)?;
-    Ok(root)
 }
