@@ -754,6 +754,12 @@ fn copy_dir_all(src: &Utf8Path, dst: &Utf8Path) -> Result<()> {
         return Ok(());
     }
 
+    // Heuristic: test for existence of ./target/CACHEDIR.TAG
+    // https://bford.info/cachedir/
+    if file_exists_and_is_not_empty(&src.join("CACHEDIR.TAG"))? {
+        return Ok(()); // Skip copying ./target dir
+    }
+
     fs::create_dir_all(dst).map_err(|e| anyhow!("Failed `mkdir -p {dst:?}`: {e}"))?;
 
     // TODO: deterministic iteration
