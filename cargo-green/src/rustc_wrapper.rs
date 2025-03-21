@@ -4,7 +4,6 @@ use std::{
     fs::{self, File},
     future::Future,
     io::{BufRead, BufReader, ErrorKind},
-    path::Path,
     str::FromStr,
 };
 
@@ -410,11 +409,11 @@ async fn do_wrap_rustc(
         fs::write(&ignore, "")
             .map_err(|e| anyhow!("Failed creating cwd dockerignore {ignore:?}: {e}"))?;
 
-        let cwd = cwd_root.join(format!("CWD{extrafn}"));
-        let cwd_path: Utf8PathBuf = cwd
+        let cwd_path = cwd_root.join(format!("CWD{extrafn}"));
+        let cwd_path: Utf8PathBuf = cwd_path
             .clone()
             .try_into()
-            .map_err(|e| anyhow!("cwd's {cwd:?} UTF-8 encoding is corrupted: {e}"))?;
+            .map_err(|e| anyhow!("cwd's {cwd_path:?} UTF-8 encoding is corrupted: {e}"))?;
 
         // TODO: --build-arg BUILDKIT_CONTEXT_KEEP_GIT_DIR=0 https://docs.docker.com/engine/reference/builder/#buildkit-built-in-build-args
         //   in Git case: do that ^ IFF remote URL + branch/tag/rev can be decided (a la cratesio optimization)
@@ -425,7 +424,7 @@ async fn do_wrap_rustc(
             if pwd.join(".git").is_dir() { "git " } else { "" }
         );
 
-        copy_dir_all(&pwd.clone().into_std_path_buf(), &cwd_path.clone().into_std_path_buf())?;
+        copy_dir_all(&pwd, &cwd_path)?;
 
         // TODO: --mount=bind each file one by one => drop temp dir ctx (needs [multiple] `mkdir -p`[s] first though)
         // This doesn't work: rustc_block.push_str(&format!("  --mount=from=cwd,target={pwd} \\\n"));
@@ -766,7 +765,7 @@ fn crate_out_name(name: &str) -> String {
         .expect("PROOF: suffix is /out")
 }
 
-fn copy_dir_all(src: &Path, dst: &Path) -> Result<()> {
+fn copy_dir_all(src: &Utf8Path, dst: &Utf8Path) -> Result<()> {
     if dst.exists() {
         return Ok(());
     }
@@ -777,7 +776,11 @@ fn copy_dir_all(src: &Path, dst: &Path) -> Result<()> {
     for entry in fs::read_dir(src).map_err(|e| anyhow!("Failed reading dir {src:?}: {e}"))? {
         let entry = entry?;
         let fpath = entry.path();
-        let fname = entry.file_name();
+        let fpath: Utf8PathBuf = fpath
+            .clone()
+            .try_into()
+            .map_err(|e| anyhow!("copying {fpath:?} found corrupted UTF-8 encoding: {e}"))?;
+        let Some(fname) = fpath.file_name() else { return Ok(()) };
         let ty = entry.file_type().map_err(|e| anyhow!("Failed typing {entry:?}: {e}"))?;
         if ty.is_dir() {
             if fname == ".git" {
