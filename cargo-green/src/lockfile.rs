@@ -37,6 +37,7 @@ pub(crate) async fn find_lockfile() -> Result<Utf8PathBuf> {
 }
 
 // https://doc.rust-lang.org/cargo/commands/cargo-locate-project.html
+// https://github.com/rust-lang/cargo/blob/3e96f1a28e47d4fd0f354b3a067d6322a8730cb6/src/bin/cargo/commands/locate_project.rs#L29
 async fn cargo_locate_project(at_workspace: bool) -> Result<Utf8PathBuf> {
     let mut cmd = Command::new(env::var_os("CARGO").unwrap_or_else(|| "cargo".into()));
     cmd.kill_on_drop(true);
