@@ -425,7 +425,7 @@ async fn do_wrap_rustc(
             if pwd.join(".git").is_dir() { "git " } else { "" }
         );
 
-        copy_dir_all(&pwd, &cwd_path)?;
+        copy_dir_all(&pwd.clone().into_std_path_buf(), &cwd_path.clone().into_std_path_buf())?;
 
         // TODO: --mount=bind each file one by one => drop temp dir ctx (needs [multiple] `mkdir -p`[s] first though)
         // This doesn't work: rustc_block.push_str(&format!("  --mount=from=cwd,target={pwd} \\\n"));
@@ -439,16 +439,14 @@ async fn do_wrap_rustc(
         // 0 0s debug HEAD λ cat rustcbuildx.d
         // $target_dir/debug/rustcbuildx: $cwd/src/cli.rs $cwd/src/cratesio.rs $cwd/src/envs.rs $cwd/src/main.rs $cwd/src/md.rs $cwd/src/parse.rs $cwd/src/pops.rs $cwd/src/runner.rs $cwd/src/stage.rs
 
-        rustc_block.push_str(&format!("WORKDIR {pwd}\n"));
-        rustc_block.push_str(&format!("COPY --from=cwd{extrafn} / .\n"));
-        rustc_block.push_str("RUN \\\n");
-
-        let cwd_path = cwd_path.to_owned();
-
         // TODO: do better to avoid copying >1 times local work dir on each cargo call => context-mount local content-addressed tarball?
         // test|cargo-green|0.8.0|f273b3fc9f002200] copying all git files under $HOME/wefwefwef/supergreen.git to /tmp/cargo-green_0.8.0/CWDf273b3fc9f002200
         // bin|cargo-green|0.8.0|efe5575298075b07] copying all git files under $HOME/wefwefwef/supergreen.git to /tmp/cargo-green_0.8.0/CWDefe5575298075b07
         let cwd_stage = Stage::try_new(format!("cwd{extrafn}")).unwrap();
+
+        rustc_block.push_str(&format!("WORKDIR {pwd}\n"));
+        rustc_block.push_str(&format!("COPY --from={cwd_stage} / .\n"));
+        rustc_block.push_str("RUN \\\n");
 
         Some((cwd_path, cwd_stage))
     };
@@ -768,10 +766,7 @@ fn crate_out_name(name: &str) -> String {
         .expect("PROOF: suffix is /out")
 }
 
-fn copy_dir_all<P: AsRef<Path>>(src: P, dst: P) -> Result<()> {
-    let dst = dst.as_ref();
-    let src = src.as_ref();
-
+fn copy_dir_all(src: &Path, dst: &Path) -> Result<()> {
     if dst.exists() {
         return Ok(());
     }
@@ -788,7 +783,7 @@ fn copy_dir_all<P: AsRef<Path>>(src: P, dst: P) -> Result<()> {
             if fname == ".git" {
                 continue; // Skip copying .git dir
             }
-            copy_dir_all(fpath, dst.join(fname))?;
+            copy_dir_all(&fpath, &dst.join(fname))?;
         } else {
             fs::copy(&fpath, dst.join(fname)).map_err(|e| {
                 anyhow!("Failed `cp {fpath:?} {dst:?}` ({:?}): {e}", entry.metadata())
