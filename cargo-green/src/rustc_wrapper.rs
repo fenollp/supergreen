@@ -4,7 +4,6 @@ use std::{
     fs::{self, File},
     future::Future,
     io::{BufRead, BufReader, ErrorKind, Write},
-    path::Path,
     str::FromStr,
 };
 
@@ -417,11 +416,11 @@ async fn do_wrap_rustc(
         fs::write(&ignore, "")
             .map_err(|e| anyhow!("Failed creating cwd dockerignore {ignore:?}: {e}"))?;
 
-        let cwd = cwd_root.join(format!("CWD{extrafn}"));
-        let cwd_path: Utf8PathBuf = cwd
+        let cwd_path = cwd_root.join(format!("CWD{extrafn}"));
+        let cwd_path: Utf8PathBuf = cwd_path
             .clone()
             .try_into()
-            .map_err(|e| anyhow!("cwd's {cwd:?} UTF-8 encoding is corrupted: {e}"))?;
+            .map_err(|e| anyhow!("cwd's {cwd_path:?} UTF-8 encoding is corrupted: {e}"))?;
 
         // TODO: --build-arg BUILDKIT_CONTEXT_KEEP_GIT_DIR=0 https://docs.docker.com/engine/reference/builder/#buildkit-built-in-build-args
         //   in Git case: do that ^ IFF remote URL + branch/tag/rev can be decided (a la cratesio optimization)
@@ -446,16 +445,14 @@ async fn do_wrap_rustc(
         // 0 0s debug HEAD λ cat rustcbuildx.d
         // $target_dir/debug/rustcbuildx: $cwd/src/cli.rs $cwd/src/cratesio.rs $cwd/src/envs.rs $cwd/src/main.rs $cwd/src/md.rs $cwd/src/parse.rs $cwd/src/pops.rs $cwd/src/runner.rs $cwd/src/stage.rs
 
-        rustc_block.push_str(&format!("WORKDIR {pwd}\n"));
-        rustc_block.push_str(&format!("COPY --from=cwd{extrafn} / .\n"));
-        rustc_block.push_str("RUN \\\n");
-
-        let cwd_path = cwd_path.to_owned();
-
         // TODO: do better to avoid copying >1 times local work dir on each cargo call => context-mount local content-addressed tarball?
         // test|cargo-green|0.8.0|f273b3fc9f002200] copying all git files under $HOME/wefwefwef/supergreen.git to /tmp/cargo-green_0.8.0/CWDf273b3fc9f002200
         // bin|cargo-green|0.8.0|efe5575298075b07] copying all git files under $HOME/wefwefwef/supergreen.git to /tmp/cargo-green_0.8.0/CWDefe5575298075b07
         let cwd_stage = Stage::try_new(format!("cwd{extrafn}")).unwrap();
+
+        rustc_block.push_str(&format!("WORKDIR {pwd}\n"));
+        rustc_block.push_str(&format!("COPY --from={cwd_stage} / .\n"));
+        rustc_block.push_str("RUN \\\n");
 
         Some((cwd_path, cwd_stage))
     };
@@ -774,10 +771,7 @@ fn crate_out_name(name: &str) -> String {
         .expect("PROOF: suffix is /out")
 }
 
-fn copy_dir_all<P: AsRef<Path>>(src: P, dst: P) -> Result<()> {
-    let dst = dst.as_ref();
-    let src = src.as_ref();
-
+fn copy_dir_all(src: &Utf8Path, dst: &Utf8Path) -> Result<()> {
     if dst.exists() {
         return Ok(());
     }
@@ -788,13 +782,17 @@ fn copy_dir_all<P: AsRef<Path>>(src: P, dst: P) -> Result<()> {
     for entry in fs::read_dir(src).map_err(|e| anyhow!("Failed reading dir {src:?}: {e}"))? {
         let entry = entry?;
         let fpath = entry.path();
-        let fname = entry.file_name();
+        let fpath: Utf8PathBuf = fpath
+            .clone()
+            .try_into()
+            .map_err(|e| anyhow!("copying {fpath:?} found corrupted UTF-8 encoding: {e}"))?;
+        let Some(fname) = fpath.file_name() else { return Ok(()) };
         let ty = entry.file_type().map_err(|e| anyhow!("Failed typing {entry:?}: {e}"))?;
         if ty.is_dir() {
             if fname == ".git" {
                 continue; // Skip copying .git dir
             }
-            copy_dir_all(fpath, dst.join(fname))?;
+            copy_dir_all(&fpath, &dst.join(fname))?;
         } else {
             fs::copy(&fpath, dst.join(fname)).map_err(|e| {
                 anyhow!("Failed `cp {fpath:?} {dst:?}` ({:?}): {e}", entry.metadata())
