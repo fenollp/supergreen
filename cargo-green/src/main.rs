@@ -23,6 +23,7 @@ mod cargo_green;
 mod cratesio;
 mod envs;
 mod extensions;
+mod logging;
 mod md;
 mod runner;
 mod rustc_arguments;
@@ -119,6 +120,12 @@ async fn main() -> Result<()> {
             if !cmd.status().await?.success() {
                 exit(1)
             }
+
+            logging::setup(
+                "cfetch".to_owned(),
+                internal::RUSTCBUILDX_LOG,
+                internal::RUSTCBUILDX_LOG_STYLE,
+            );
 
             // TODO: skip these stages (and any other "locked thing" stage) when building with --no-cache
 
