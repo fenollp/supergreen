@@ -182,7 +182,8 @@ pub(crate) async fn build(
                                       // => rustc shortcommit, ..?
                                       // Can buildx give list of all inputs? || short hash(dockerfile + call + envs)
         cmd.arg(format!("--tag={img}:{tag}"));
-        if tag.starts_with(&format!("cwd-{}-", crate_type_for_logging("bin"))) {
+        let b = crate_type_for_logging("bin");
+        if [format!("cwd-{b}-"), format!("dep-{b}-")].iter().any(|prefix| tag.starts_with(prefix)) {
             cmd.arg(format!("--tag={img}:latest"));
         }
         cmd.arg("--build-arg=BUILDKIT_INLINE_CACHE=1"); // https://docs.docker.com/build/cache/backends/inline
