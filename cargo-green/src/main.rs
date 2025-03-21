@@ -175,6 +175,8 @@ async fn main() -> Result<()> {
             fs::write(&dockerfile_path, dockerfile)
                 .map_err(|e| anyhow!("Failed creating dockerfile {dockerfile_path}: {e}"))?;
 
+            // TOOD: test in CI + hack/
+
             return build(runner(), &dockerfile_path, stage, &[].into(), &cfetch).await;
         }
         Some(_) => {}
