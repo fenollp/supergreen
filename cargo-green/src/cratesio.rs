@@ -86,16 +86,21 @@ pub(crate) async fn into_stage(
         .map_err(|e| anyhow!("Failed reading {cratesio_cached}: {e}"))?;
     debug!("crate sha256 for {cratesio_stage}: {cratesio_hash}");
 
-    const CRATESIO: &str = "https://static.crates.io";
-    const SRC: &str = "/extracted";
+    let block = dotcrate_stage(name, version, &cratesio_hash, &cratesio_stage);
 
+    Ok((cratesio_stage, SRC, cratesio_extracted, block))
+}
+
+const SRC: &str = "/extracted";
+
+#[must_use]
+fn dotcrate_stage(name: &str, version: &str, hash: &str, cratesio_stage: &Stage) -> String {
     // On using tar: https://github.com/rust-lang/cargo/issues/3577#issuecomment-890693359
 
-    let block = format!(
+    format!(
         r#"
 FROM scratch AS {cratesio_stage}
-ADD --chmod=0664 --checksum=sha256:{cratesio_hash} \
-  {CRATESIO}/crates/{name}/{name}-{version}.crate /crate
+{add}
 SHELL ["/usr/bin/dash", "-eux", "-c"]
 RUN \
   --mount=from={RUST},src=/lib,dst=/lib \
@@ -103,9 +108,10 @@ RUN \
   --mount=from={RUST},src=/usr,dst=/usr \
     mkdir {SRC} \
  && tar zxf /crate --strip-components=1 -C {SRC}
-"#
+"#,
+        add = add_step(name, version, hash),
     )[1..]
-        .to_owned();
+        .to_owned()
 
     // TODO: ask upstream `buildx/buildkit+podman` for a way to drop that RUN
     //  => https://github.com/moby/buildkit/issues/4907
@@ -115,6 +121,15 @@ RUN \
     // TODO: ask upstream `rustc` if it could be able to take a .crate archive as input
     //=> would remove that `RUN tar` step + stage dep on RUST (=> scratch)
     //  => https://github.com/rust-lang/cargo/issues/14373
+}
 
-    Ok((cratesio_stage, SRC, cratesio_extracted, block))
+#[must_use]
+pub(crate) fn add_step(name: &str, version: &str, hash: &str) -> String {
+    format!(
+        r#"
+ADD --chmod=0664 --checksum=sha256:{hash} \
+  https://static.crates.io/crates/{name}/{name}-{version}.crate /crate
+"#
+    )[1..]
+        .to_owned()
 }

@@ -1,6 +1,18 @@
-use std::{env, ffi::OsStr, path::PathBuf, process::exit};
+use std::{
+    env,
+    ffi::OsStr,
+    fs::{self},
+    path::PathBuf,
+    process::exit,
+};
 
-use anyhow::{bail, Result};
+use anyhow::{anyhow, bail, Result};
+use camino::Utf8PathBuf;
+use cratesio::add_step;
+use envs::{internal, runner};
+use lockfile::{find_lockfile, locked_crates};
+use runner::build;
+use stage::Stage;
 use tokio::process::Command;
 
 mod base;
@@ -8,6 +20,8 @@ mod cargo_green;
 mod cratesio;
 mod envs;
 mod extensions;
+mod lockfile;
+mod logging;
 mod md;
 mod runner;
 mod rustc_arguments;
@@ -94,16 +108,86 @@ async fn main() -> Result<()> {
     cmd.env("RUSTC_WRAPPER", arg0);
     cargo_green::main(&mut cmd).await?;
 
+    let manifest_path_lockfile = find_lockfile().await?;
+    dbg!(&manifest_path_lockfile);
+    cmd.env("CARGOGREEN_LOCKFILE", &manifest_path_lockfile);
+
+    dbg!(std::env::vars());
+    dbg!(&std::env::args());
+    // [cargo-green/src/main.rs:116:5] &std::env::args() = Args { inner: [                                                                                                                                                                                          "/tmp/cargo-green/bin/cargo-green",                                                                                                                                                           "green",                                                                                                                                                                                      "-vv",                                                                                                                                                                                        "install",
+    //     "--timings",
+    //     "--jobs=1",
+    //     "--root=/tmp",
+    //     "--locked",
+    //     "--force",
+    //     "buildxargs",
+    //     "--git",
+    //     "https://github.com/fenollp/buildxargs.git",
+
+    //=> cargo install can't find lockfile
+    // => issue `cargo` to cp lockfile in $CARGO_TARGET_DIR?
+    // => parse its args, understand source, guess lockfile?
+    //https://github.com/rust-lang/cargo/issues/9700
+
     //TODO: https://github.com/messense/cargo-options/blob/086d7470cae34b0e694a62237e258fbd35384e93/examples/cargo-mimic.rs
     // maybe https://lib.rs/crates/clap-cargo
 
-    match env::args().nth(3).as_deref() {
+    match env::args().nth(2).as_deref() {
         None => {}
         Some("fetch") => {
-            // TODO: run cargo fetch + read lockfile + generate cratesio stages + build them cacheonly
-            //   https://github.com/rustsec/rustsec/tree/main/cargo-lock
+            // First, run actuall `cargo fetch`
+            if !cmd.status().await?.success() {
+                exit(1)
+            }
+
+            logging::setup("fetch", internal::RUSTCBUILDX_LOG, internal::RUSTCBUILDX_LOG_STYLE);
+
             // TODO: skip these stages (and any other "locked thing" stage) when building with --no-cache
-            todo!("BUG: this is never run") //=> fetch on first ever run!
+
+            let packages = locked_crates(&manifest_path_lockfile).await?;
+            if packages.is_empty() {
+                return Ok(());
+            }
+
+            let syntax = cmd
+                .as_std()
+                .get_envs()
+                .filter_map(|(k, v)| (k == internal::RUSTCBUILDX_SYNTAX).then_some(v))
+                .next()
+                .flatten()
+                .and_then(|x| x.to_str())
+                .unwrap()
+                .trim_start_matches("docker-image://");
+
+            let mut dockerfile = format!("# syntax={syntax}\n");
+            let stager = |i| format!("cargo-fetch-{i}");
+            let mut leaves = 0;
+            for (i, pkgs) in packages.chunks(127).enumerate() {
+                leaves = i;
+                dockerfile.push_str(&format!("FROM scratch AS {}\n", stager(i)));
+                let (name, version, hash) = pkgs[0].clone();
+                dockerfile.push_str(&add_step(&name, &version, &hash));
+                for (name, version, hash) in &pkgs[1..] {
+                    dockerfile.push_str(&add_step(name, version, hash));
+                }
+            }
+            let stage = Stage::try_new("cargo-fetch")?;
+            dockerfile.push_str(&format!("FROM scratch AS {stage}\n"));
+            for leaf in 0..=leaves {
+                dockerfile.push_str(&format!("COPY --from={} / /\n", stager(leaf)));
+            }
+
+            let cfetch: Utf8PathBuf = env::temp_dir().join("cargo-fetch").try_into()?;
+            fs::create_dir_all(&cfetch)
+                .map_err(|e| anyhow!("Failed `mkdir -p {cfetch:?}`: {e}"))?;
+
+            let dockerfile_path = cfetch.join("Dockerfile");
+            fs::write(&dockerfile_path, dockerfile)
+                .map_err(|e| anyhow!("Failed creating dockerfile {dockerfile_path}: {e}"))?;
+
+            // TOOD: test in CI + hack/
+
+            return build(runner(), &dockerfile_path, stage, &[].into(), &cfetch).await;
         }
         Some(_) => {}
     }

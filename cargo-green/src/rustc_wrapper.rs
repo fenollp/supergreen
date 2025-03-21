@@ -1,10 +1,9 @@
 use std::{
-    collections::{BTreeMap, BTreeSet, VecDeque},
+    collections::{BTreeMap, BTreeSet},
     env,
     fs::{self, File},
     future::Future,
-    io::{BufRead, BufReader, ErrorKind, Write},
-    path::Path,
+    io::{BufRead, BufReader, ErrorKind},
     str::FromStr,
 };
 
@@ -18,9 +17,11 @@ use crate::{
     cratesio::{from_cratesio_input_path, into_stage},
     envs::{self, base_image, internal, maybe_log, pass_env, runner, syntax, this},
     extensions::{Popped, ShowCmd},
+    lockfile::locked_crates,
+    logging::{self, crate_type_for_logging},
     md::{BuildContext, Md},
     runner::{build, MARK_STDERR, MARK_STDOUT},
-    rustc_arguments::{as_rustc, crate_type_for_logging, RustcArgs},
+    rustc_arguments::{as_rustc, RustcArgs},
     stage::Stage,
     PKG, REPO, VSN,
 };
@@ -33,18 +34,12 @@ const BUILDRS_CRATE_NAME: &str = "build_script_build";
 
 pub(crate) async fn main(
     arg0: Option<String>,
-    args: VecDeque<String>,
+    args: Vec<String>,
     vars: BTreeMap<String, String>,
 ) -> Result<()> {
     let argz = args.iter().take(3).map(AsRef::as_ref).collect::<Vec<_>>();
 
-    let argv = |times| {
-        let mut argv = args.clone();
-        for _ in 0..times {
-            argv.pop_front(); // shift 1
-        }
-        argv.into_iter().collect()
-    };
+    let argv = |times| args.clone().into_iter().skip(times).collect();
 
     // TODO: find a better heuristic to ensure `rustc` is rustc
     match &argz[..] {
@@ -144,39 +139,16 @@ async fn wrap_rustc(
             }
             'X'
         } else {
-            crate_type_for_logging(crate_type).to_ascii_uppercase()
+            crate_type_for_logging(crate_type)
         };
-        format!("{krate_type}|{krate_name}|{krate_version}|{}", &extrafn[1..])
+        format!("{krate_type} {krate_name} {krate_version}{extrafn}")
     };
 
-    if let Some(log_file) = maybe_log() {
-        use env_logger::{Builder, Env, Target};
-        use log::Level;
-
-        let krate = full_krate_id.clone();
-        Builder::from_env(
-            Env::default()
-                .filter_or(internal::RUSTCBUILDX_LOG, "trace")
-                .write_style(internal::RUSTCBUILDX_LOG_STYLE),
-        )
-        .format(move |buf, record| {
-            let now = chrono::Utc::now().format("%y-%m-%dT%H:%M:%S%.3f");
-            let lvl = match record.level() {
-                Level::Error => 'E',
-                Level::Warn => 'W',
-                Level::Info => 'I',
-                Level::Debug => 'D',
-                Level::Trace => 'T',
-            };
-            writeln!(buf, "[{now} {lvl} {krate}] {}", record.args())
-        })
-        .target(Target::Pipe(Box::new(log_file().expect("Installing logfile"))))
-        .init();
-    }
+    logging::setup(&full_krate_id, internal::RUSTCBUILDX_LOG, internal::RUSTCBUILDX_LOG_STYLE);
 
     info!("{PKG}@{VSN} original args: {arguments:?} pwd={pwd} st={st:?}");
 
-    let crate_id = full_krate_id.replace('|', "-");
+    let crate_id = full_krate_id.replace(' ', "-");
     do_wrap_rustc(crate_name, crate_id, pwd, args, out_dir_var, st, fallback)
         .await
         .inspect_err(|e| error!("Error: {e}"))
@@ -194,6 +166,13 @@ async fn do_wrap_rustc(
     let debug = maybe_log();
 
     let incremental = envs::incremental().then_some(incremental).flatten();
+
+    let manifest_path_lockfile = std::env::var("CARGOGREEN_LOCKFILE").unwrap();
+    let manifest_path_lockfile: Utf8PathBuf = manifest_path_lockfile.into();
+    dbg!(&manifest_path_lockfile);
+    let packages = locked_crates(&manifest_path_lockfile).await?;
+    // dbg!(&packages);
+    dbg!(&pwd);
 
     // NOTE: not `out_dir`
     let crate_out = if let Some(crate_out) = out_dir_var {
@@ -353,11 +332,18 @@ async fn do_wrap_rustc(
         .try_into()
         .map_err(|e| anyhow!("corrupted $CARGO_HOME path: {e}"))?;
 
-    // TODO: allow opt-out of cratesio_stage => to support offline builds
-    // TODO: or, allow a `cargo fetch` alike: create+pre-build all cratesio stages from lockfile
+    // TODO: support non-crates.io crates managers + proxies
     let (input_mount, rustc_stage) = if input.starts_with(cargo_home.join("registry/src")) {
         // Input is of a crate dep (hosted at crates.io)
         // Let's optimize this case by fetching & caching crate tarball
+
+        let packages: Vec<_> = packages
+            .into_iter()
+            .filter(|(name, version, _)| input.as_str().contains(&format!("{name}-{version}")))
+            .collect();
+        dbg!(&input);
+        dbg!(&packages);
+        // assert_eq!(packages.len(), 1);
 
         let (name, version, cratesio_index) = from_cratesio_input_path(&input)?;
         let (cratesio_stage, src, dst, block) =
@@ -423,11 +409,11 @@ async fn do_wrap_rustc(
         fs::write(&ignore, "")
             .map_err(|e| anyhow!("Failed creating cwd dockerignore {ignore:?}: {e}"))?;
 
-        let cwd = cwd_root.join(format!("CWD{extrafn}"));
-        let cwd_path: Utf8PathBuf = cwd
+        let cwd_path = cwd_root.join(format!("CWD{extrafn}"));
+        let cwd_path: Utf8PathBuf = cwd_path
             .clone()
             .try_into()
-            .map_err(|e| anyhow!("cwd's {cwd:?} UTF-8 encoding is corrupted: {e}"))?;
+            .map_err(|e| anyhow!("cwd's {cwd_path:?} UTF-8 encoding is corrupted: {e}"))?;
 
         // TODO: --build-arg BUILDKIT_CONTEXT_KEEP_GIT_DIR=0 https://docs.docker.com/engine/reference/builder/#buildkit-built-in-build-args
         //   in Git case: do that ^ IFF remote URL + branch/tag/rev can be decided (a la cratesio optimization)
@@ -452,16 +438,14 @@ async fn do_wrap_rustc(
         // 0 0s debug HEAD λ cat rustcbuildx.d
         // $target_dir/debug/rustcbuildx: $cwd/src/cli.rs $cwd/src/cratesio.rs $cwd/src/envs.rs $cwd/src/main.rs $cwd/src/md.rs $cwd/src/parse.rs $cwd/src/pops.rs $cwd/src/runner.rs $cwd/src/stage.rs
 
-        rustc_block.push_str(&format!("WORKDIR {pwd}\n"));
-        rustc_block.push_str(&format!("COPY --from=cwd{extrafn} / .\n"));
-        rustc_block.push_str("RUN \\\n");
-
-        let cwd_path = cwd_path.to_owned();
-
         // TODO: do better to avoid copying >1 times local work dir on each cargo call => context-mount local content-addressed tarball?
         // test|cargo-green|0.8.0|f273b3fc9f002200] copying all git files under $HOME/wefwefwef/supergreen.git to /tmp/cargo-green_0.8.0/CWDf273b3fc9f002200
         // bin|cargo-green|0.8.0|efe5575298075b07] copying all git files under $HOME/wefwefwef/supergreen.git to /tmp/cargo-green_0.8.0/CWDefe5575298075b07
         let cwd_stage = Stage::try_new(format!("cwd{extrafn}")).unwrap();
+
+        rustc_block.push_str(&format!("WORKDIR {pwd}\n"));
+        rustc_block.push_str(&format!("COPY --from={cwd_stage} / .\n"));
+        rustc_block.push_str("RUN \\\n");
 
         Some((cwd_path, cwd_stage))
     };
@@ -720,7 +704,7 @@ fn file_exists(path: &Utf8Path) -> Result<bool> {
     }
 }
 
-fn file_exists_and_is_not_empty(path: &Utf8Path) -> Result<bool> {
+pub(crate) fn file_exists_and_is_not_empty(path: &Utf8Path) -> Result<bool> {
     match path.metadata().map(|md| md.is_file() && md.len() > 0) {
         Ok(b) => Ok(b),
         Err(e) if e.kind() == ErrorKind::NotFound => Ok(false),
@@ -781,12 +765,15 @@ fn crate_out_name(name: &str) -> String {
         .expect("PROOF: suffix is /out")
 }
 
-fn copy_dir_all<P: AsRef<Path>>(src: P, dst: P) -> Result<()> {
-    let dst = dst.as_ref();
-    let src = src.as_ref();
-
+fn copy_dir_all(src: &Utf8Path, dst: &Utf8Path) -> Result<()> {
     if dst.exists() {
         return Ok(());
+    }
+
+    // Heuristic: test for existence of ./target/CACHEDIR.TAG
+    // https://bford.info/cachedir/
+    if file_exists_and_is_not_empty(&src.join("CACHEDIR.TAG"))? {
+        return Ok(()); // Skip copying ./target dir
     }
 
     fs::create_dir_all(dst).map_err(|e| anyhow!("Failed `mkdir -p {dst:?}`: {e}"))?;
@@ -795,13 +782,17 @@ fn copy_dir_all<P: AsRef<Path>>(src: P, dst: P) -> Result<()> {
     for entry in fs::read_dir(src).map_err(|e| anyhow!("Failed reading dir {src:?}: {e}"))? {
         let entry = entry?;
         let fpath = entry.path();
-        let fname = entry.file_name();
+        let fpath: Utf8PathBuf = fpath
+            .clone()
+            .try_into()
+            .map_err(|e| anyhow!("copying {fpath:?} found corrupted UTF-8 encoding: {e}"))?;
+        let Some(fname) = fpath.file_name() else { return Ok(()) };
         let ty = entry.file_type().map_err(|e| anyhow!("Failed typing {entry:?}: {e}"))?;
         if ty.is_dir() {
             if fname == ".git" {
                 continue; // Skip copying .git dir
             }
-            copy_dir_all(fpath, dst.join(fname))?;
+            copy_dir_all(&fpath, &dst.join(fname))?;
         } else {
             fs::copy(&fpath, dst.join(fname)).map_err(|e| {
                 anyhow!("Failed `cp {fpath:?} {dst:?}` ({:?}): {e}", entry.metadata())
