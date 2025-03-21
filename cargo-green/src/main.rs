@@ -8,11 +8,10 @@ use std::{
 
 use anyhow::{anyhow, bail, Result};
 use camino::Utf8PathBuf;
-use cargo_green::setup_build_driver;
 use cratesio::add_step;
-use envs::{builder_image, internal, runner, DEFAULT_SYNTAX};
+use envs::{internal, runner};
 use lockfile::{find_lockfile, locked_crates};
-use runner::{build, fetch_digest, maybe_lock_image};
+use runner::build;
 use stage::Stage;
 use tokio::process::Command;
 
@@ -135,9 +134,15 @@ async fn main() -> Result<()> {
                 return Ok(());
             }
 
-            let syntax = preset_syntax().await?;
-            let syntax = syntax.trim_start_matches("docker-image://");
-            preset_builder().await?;
+            let syntax = cmd
+                .as_std()
+                .get_envs()
+                .filter_map(|(k, v)| (k == internal::RUSTCBUILDX_SYNTAX).then_some(v))
+                .next()
+                .flatten()
+                .and_then(|x| x.to_str())
+                .unwrap()
+                .trim_start_matches("docker-image://");
 
             let mut dockerfile = format!("# syntax={syntax}\n");
             let stager = |i| format!("cargo-fetch-{i}");
@@ -174,49 +179,6 @@ async fn main() -> Result<()> {
 
     if !cmd.status().await?.success() {
         exit(1)
-    }
-    Ok(())
-}
-
-async fn preset_syntax() -> Result<String> {
-    let mut syntax = internal::syntax().unwrap_or_else(|| DEFAULT_SYNTAX.to_owned());
-    // Use local hashed image if one matching exists locally
-    if !syntax.contains('@') {
-        // otherwise default to a hash found through some Web API
-        syntax = fetch_digest(&syntax).await?; //TODO: lower conn timeout to 4s (is 30s)
-                                               //TODO: review online code to try to provide an offline mode
-    }
-    Ok(syntax)
-}
-
-async fn preset_builder() -> Result<()> {
-    let builder_image = builder_image().await;
-
-    // https://docs.docker.com/build/building/variables/#buildx_builder
-    if let Ok(ctx) = env::var("DOCKER_HOST") {
-        eprintln!("$DOCKER_HOST is set to {ctx:?}");
-    } else if let Ok(ctx) = env::var("BUILDX_BUILDER") {
-        eprintln!("$BUILDX_BUILDER is set to {ctx:?}");
-    } else if let Ok(remote) = env::var("CARGOGREEN_REMOTE") {
-        //     // docker buildx create \
-        //     //   --name supergreen \
-        //     //   --driver remote \
-        //     //   tcp://localhost:1234
-        //     //{remote}
-        //     env::set_var("DOCKER_CONTEXT", "supergreen"); //FIXME: ensure this gets passed down & used
-        panic!("$CARGOGREEN_REMOTE is reserved but set to: {remote}");
-    } else if false {
-        // Images were pulled, we have to re-read their now-locked values now
-        let builder_image = maybe_lock_image(builder_image.to_owned()).await;
-        setup_build_driver("supergreen", builder_image.trim_start_matches("docker-image://"))
-            .await?; // FIXME? maybe_..
-        env::set_var("BUILDX_BUILDER", "supergreen");
-
-        // TODO? docker dial-stdio proxy
-        // https://github.com/docker/cli/blob/9bb1a62735174e9220d84fecc056a0ef8a1fc26f/cli/command/system/dial_stdio.go
-
-        // https://docs.docker.com/engine/context/working-with-contexts/
-        // https://docs.docker.com/engine/security/protect-access/
     }
     Ok(())
 }
