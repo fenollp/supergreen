@@ -14,7 +14,7 @@ use tokio::process::Command;
 
 use crate::{
     base::RUST,
-    cratesio::{from_cratesio_input_path, into_stage, rewrite_cratesio_index},
+    cratesio::{into_stage, rewrite_cratesio_index},
     envs::{self, base_image, internal, maybe_log, pass_env, runner, syntax, this},
     extensions::{Popped, ShowCmd},
     logging::{self, crate_type_for_logging},
@@ -24,8 +24,6 @@ use crate::{
     stage::Stage,
     PKG, REPO, VSN,
 };
-
-const BUILDRS_CRATE_NAME: &str = "build_script_build";
 
 // NOTE: this RUSTC_WRAPPER program only ever gets called by `cargo`, so we save
 //       ourselves some trouble and assume std::path::{Path, PathBuf} are UTF-8.
@@ -128,18 +126,17 @@ async fn wrap_rustc(
     let out_dir_var = env::var("OUT_DIR").ok();
     let (st, args) = as_rustc(&pwd, &arguments, out_dir_var.as_deref())?;
 
+    let buildrs = crate_name == "build_script_build";
+    // NOTE: krate_name != crate_name: Gets named build_script_build + s/-/_/g + may actually be a different name
+    let krate_name = env::var("CARGO_PKG_NAME").ok().unwrap();
+    let krate_version = env::var("CARGO_PKG_VERSION").ok().unwrap();
+
     let full_krate_id = {
-        let krate_version = env::var("CARGO_PKG_VERSION").ok().unwrap_or_default();
-        let krate_name = env::var("CARGO_PKG_NAME").ok().unwrap_or_default();
         let RustcArgs { crate_type, extrafn, .. } = &st;
-        let krate_type = if crate_name == BUILDRS_CRATE_NAME {
-            if crate_type != "bin" {
-                bail!("BUG: expected build script to be of crate_type bin, got: {crate_type}")
-            }
-            'X'
-        } else {
-            crate_type_for_logging(crate_type)
-        };
+        if buildrs && crate_type != "bin" {
+            bail!("BUG: expected build script to be of crate_type bin, got: {crate_type}")
+        }
+        let krate_type = if buildrs { 'X' } else { crate_type_for_logging(crate_type) };
         format!("{krate_type} {krate_name} {krate_version}{extrafn}")
     };
 
@@ -147,14 +144,28 @@ async fn wrap_rustc(
 
     info!("{PKG}@{VSN} original args: {arguments:?} pwd={pwd} st={st:?}");
 
-    let crate_id = full_krate_id.replace(' ', "-");
-    do_wrap_rustc(crate_name, crate_id, pwd, args, out_dir_var, st, fallback)
-        .await
-        .inspect_err(|e| error!("Error: {e}"))
+    do_wrap_rustc(
+        crate_name,
+        &krate_name,
+        krate_version,
+        buildrs,
+        full_krate_id.replace(' ', "-"),
+        pwd,
+        args,
+        out_dir_var,
+        st,
+        fallback,
+    )
+    .await
+    .inspect_err(|e| error!("Error: {e}"))
 }
 
+#[expect(clippy::too_many_arguments)]
 async fn do_wrap_rustc(
     crate_name: &str,
+    krate_name: &str,
+    krate_version: String,
+    buildrs: bool,
     crate_id: String,
     pwd: Utf8PathBuf,
     args: Vec<String>,
@@ -330,8 +341,8 @@ async fn do_wrap_rustc(
         // Input is of a crate dep (hosted at crates.io)
         // Let's optimize this case by fetching & caching crate tarball
 
-        let (name, version) = from_cratesio_input_path(&input)?;
-        let (cratesio_stage, src, dst, block) = into_stage(&cargo_home, &name, &version).await?;
+        let (cratesio_stage, src, dst, block) =
+            into_stage(&cargo_home, krate_name, &krate_version).await?;
         md.push_block(&cratesio_stage, block);
 
         let rustc_stage = Stage::try_new(format!("dep-{crate_id}"))?;
@@ -499,7 +510,7 @@ async fn do_wrap_rustc(
 
     for (var, val) in env::vars() {
         let (pass, skip, only_buildrs) = pass_env(&var);
-        if pass || (crate_name == BUILDRS_CRATE_NAME && only_buildrs) {
+        if pass || (buildrs && only_buildrs) {
             if skip {
                 debug!("not forwarding env: {var}={val}");
                 continue;
@@ -600,7 +611,7 @@ async fn do_wrap_rustc(
         // => otherwise docker builder cache won't have the correct hit
         // https://rustc-dev-guide.rust-lang.org/backend/libs-and-metadata.html
         //=> a filename suffix with content hash?
-        let dockerfile = target_path.as_path().join(format!("{crate_name}{extrafn}.Dockerfile"));
+        let dockerfile = target_path.as_path().join(format!("{krate_name}{extrafn}.Dockerfile"));
 
         let syntax = syntax().await.trim_start_matches("docker-image://");
         let mut header = format!("# syntax={syntax}\n");
