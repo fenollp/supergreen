@@ -7,7 +7,9 @@ use camino::Utf8PathBuf;
 use serde::{Deserialize, Serialize};
 use szyk::{sort, Node};
 
-use crate::{base::RUST, cratesio::CRATESIO_STAGE_PREFIX, stage::Stage};
+use crate::{
+    base::RUST, checkouts::CHECKOUTS_STAGE_PREFIX, cratesio::CRATESIO_STAGE_PREFIX, stage::Stage,
+};
 
 #[cfg_attr(test, derive(Default))]
 #[derive(Clone, Deserialize, Serialize)]
@@ -56,7 +58,7 @@ impl Md {
         };
 
         let mut filter = ""; // not an actual stage name
-        if name.starts_with(CRATESIO_STAGE_PREFIX) {
+        if name.starts_with(CHECKOUTS_STAGE_PREFIX) || name.starts_with(CRATESIO_STAGE_PREFIX) {
             filter = name;
             if visited.insert(name.to_owned()) {
                 dockerfile.push_str(script);
