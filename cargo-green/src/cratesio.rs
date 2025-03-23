@@ -17,6 +17,7 @@ pub(crate) async fn into_stage(
     cargo_home: &Utf8Path,
     name: &str,
     version: &str,
+    krate_manifest_dir: &Utf8Path,
 ) -> Result<(Stage, &'static str, Utf8PathBuf, String)> {
     let cratesio_stage = Stage::try_new(format!("{CRATESIO_STAGE_PREFIX}{name}-{version}"))?;
 
@@ -24,9 +25,7 @@ pub(crate) async fn into_stage(
         cargo_home.join(format!("registry/src/{CRATESIO_INDEX}/{name}-{version}"));
     let cratesio_cached = {
         // e.g. CARGO_MANIFEST_DIR="$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/pico-args-0.5.0"
-        let manifest_dir = std::env::var("CARGO_MANIFEST_DIR").ok().unwrap();
-        let manifest_dir = Utf8Path::new(&manifest_dir);
-        let cratesio_index = manifest_dir.parent().unwrap().file_name().unwrap();
+        let cratesio_index = krate_manifest_dir.parent().unwrap().file_name().unwrap();
         cargo_home.join(format!("registry/cache/{cratesio_index}/{name}-{version}.crate"))
     };
 
