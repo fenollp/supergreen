@@ -5,19 +5,18 @@ use log::{debug, info};
 use crate::{base::RUST, stage::Stage};
 
 pub(crate) const CRATESIO_STAGE_PREFIX: &str = "cratesio-";
+pub(crate) const CRATESIO_INDEX: &str = "index.crates.io-0000000000000000";
 
-pub(crate) fn from_cratesio_input_path(input: &Utf8PathBuf) -> Result<(String, String, String)> {
+pub(crate) fn from_cratesio_input_path(input: &Utf8PathBuf) -> Result<(String, String)> {
     let mut it = input.iter();
-    let mut cratesio_index = String::new();
     let mut cratesio_crate = None;
     while let Some(part) = it.next() {
         if part.starts_with("index.crates.io-") {
-            part.clone_into(&mut cratesio_index);
             cratesio_crate = it.next();
             break;
         }
     }
-    if cratesio_index.is_empty() || cratesio_crate.is_none_or(str::is_empty) {
+    if cratesio_crate.is_none_or(str::is_empty) {
         bail!("Unexpected cratesio crate path: {input}")
     }
     let cratesio_crate = cratesio_crate.expect("just checked above");
@@ -33,7 +32,7 @@ pub(crate) fn from_cratesio_input_path(input: &Utf8PathBuf) -> Result<(String, S
         bail!("Unexpected cratesio crate name-version format: {cratesio_crate}")
     }
 
-    Ok((name, version, cratesio_index))
+    Ok((name, version))
 }
 
 #[test]
@@ -42,43 +41,51 @@ fn test_from_cratesio_input_path() {
         &"/home/pete/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ring-0.17.8/src/lib.rs"
             .into(),
     ).unwrap(),
-    ("ring".to_owned(), "0.17.8".to_owned(), "index.crates.io-6f17d22bba15001f".to_owned()));
+    ("ring".to_owned(), "0.17.8".to_owned()));
 
     assert_eq!(from_cratesio_input_path(
         &"/home/pete/.cargo/registry/src/index.crates.io-6f17d22bba15001f/hickory-proto-0.25.0-alpha.1/src/lib.rs"
             .into(),
     ).unwrap(),
-    ("hickory-proto".to_owned(), "0.25.0-alpha.1".to_owned(), "index.crates.io-6f17d22bba15001f".to_owned()));
+    ("hickory-proto".to_owned(), "0.25.0-alpha.1".to_owned()));
 
     assert_eq!(from_cratesio_input_path(
         &"/home/pete/.cargo/registry/src/index.crates.io-6f17d22bba15001f/md-5-0.10.6/src/lib.rs"
             .into(),
     ).unwrap(),
-    ("md-5".to_owned(), "0.10.6".to_owned(), "index.crates.io-6f17d22bba15001f".to_owned()));
+    ("md-5".to_owned(), "0.10.6".to_owned()));
 
     assert_eq!(from_cratesio_input_path(
         &"/home/pete/.cargo/registry/src/index.crates.io-6f17d22bba15001f/curl-sys-0.4.74+curl-8.9.0/lib.rs"
             .into(),
     ).unwrap(),
-    ("curl-sys".to_owned(), "0.4.74+curl-8.9.0".to_owned(), "index.crates.io-6f17d22bba15001f".to_owned()));
+    ("curl-sys".to_owned(), "0.4.74+curl-8.9.0".to_owned()));
 
     // /home/pete/.cargo/registry/cache/index.crates.io-6f17d22bba15001f/curl-sys-0.4.74+curl-8.9.0.crate
+}
+
+#[must_use]
+pub(crate) fn rewrite_cratesio_index(path: &Utf8Path) -> Utf8PathBuf {
+    let prefix = CRATESIO_INDEX.trim_end_matches('0');
+    path.iter().map(|part| if part.starts_with(prefix) { CRATESIO_INDEX } else { part }).collect()
 }
 
 pub(crate) async fn into_stage(
     cargo_home: &Utf8Path,
     name: &str,
     version: &str,
-    cratesio_index: &str,
 ) -> Result<(Stage, &'static str, Utf8PathBuf, String)> {
-    // TODO: see if {cratesio_index} can be dropped from paths (+ stage names) => content hashing + remap-path-prefix?
-    let cratesio_stage =
-        Stage::try_new(format!("{CRATESIO_STAGE_PREFIX}{name}-{version}-{cratesio_index}"))?;
+    let cratesio_stage = Stage::try_new(format!("{CRATESIO_STAGE_PREFIX}{name}-{version}"))?;
 
     let cratesio_extracted =
-        cargo_home.join(format!("registry/src/{cratesio_index}/{name}-{version}"));
-    let cratesio_cached =
-        cargo_home.join(format!("registry/cache/{cratesio_index}/{name}-{version}.crate"));
+        cargo_home.join(format!("registry/src/{CRATESIO_INDEX}/{name}-{version}"));
+    let cratesio_cached = {
+        // e.g. CARGO_MANIFEST_DIR="$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/pico-args-0.5.0"
+        let manifest_dir = std::env::var("CARGO_MANIFEST_DIR").ok().unwrap();
+        let manifest_dir = Utf8Path::new(&manifest_dir);
+        let cratesio_index = manifest_dir.parent().unwrap().file_name().unwrap();
+        cargo_home.join(format!("registry/cache/{cratesio_index}/{name}-{version}.crate"))
+    };
 
     info!("opening (RO) crate tarball {cratesio_cached}");
     let cratesio_hash = sha256::try_async_digest(cratesio_cached.as_path()) //TODO: read from lockfile? cargo_metadata?

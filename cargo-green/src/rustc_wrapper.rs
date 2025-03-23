@@ -14,7 +14,7 @@ use tokio::process::Command;
 
 use crate::{
     base::RUST,
-    cratesio::{from_cratesio_input_path, into_stage},
+    cratesio::{from_cratesio_input_path, into_stage, rewrite_cratesio_index},
     envs::{self, base_image, internal, maybe_log, pass_env, runner, syntax, this},
     extensions::{Popped, ShowCmd},
     logging::{self, crate_type_for_logging},
@@ -330,12 +330,11 @@ async fn do_wrap_rustc(
         // Input is of a crate dep (hosted at crates.io)
         // Let's optimize this case by fetching & caching crate tarball
 
-        let (name, version, cratesio_index) = from_cratesio_input_path(&input)?;
-        let (cratesio_stage, src, dst, block) =
-            into_stage(&cargo_home, &name, &version, &cratesio_index).await?;
+        let (name, version) = from_cratesio_input_path(&input)?;
+        let (cratesio_stage, src, dst, block) = into_stage(&cargo_home, &name, &version).await?;
         md.push_block(&cratesio_stage, block);
 
-        let rustc_stage = Stage::try_new(format!("dep-{crate_id}-{cratesio_index}"))?;
+        let rustc_stage = Stage::try_new(format!("dep-{crate_id}"))?;
         (Some((cratesio_stage, Some(src), dst)), rustc_stage)
     } else {
         // Input is local code
@@ -512,6 +511,12 @@ async fn do_wrap_rustc(
             } else {
                 debug!("env is set: {var}={val}");
             }
+            let val = match var.as_str() {
+                "CARGO_MANIFEST_DIR" | "CARGO_MANIFEST_PATH" => {
+                    rewrite_cratesio_index(Utf8Path::new(&val)).to_string()
+                }
+                _ => val,
+            };
             rustc_block.push_str(&format!("        {var}={val} \\\n"));
         }
     }
@@ -543,6 +548,7 @@ async fn do_wrap_rustc(
         }
     }
 
+    let input = rewrite_cratesio_index(input.as_path());
     rustc_block.push_str(&format!("      rustc '{}' {input} \\\n", args.join("' '")));
     rustc_block.push_str(&format!("        1> >(sed 's/^/{MARK_STDOUT}/') \\\n"));
     rustc_block.push_str(&format!("        2> >(sed 's/^/{MARK_STDERR}/' >&2)\n"));
