@@ -15,14 +15,12 @@ pub(crate) trait Popped: Clone {
 }
 
 impl Popped for camino::Utf8PathBuf {
-    #[must_use]
     fn pop(&mut self) -> bool {
         self.pop()
     }
 }
 
 impl Popped for std::path::PathBuf {
-    #[must_use]
     fn pop(&mut self) -> bool {
         self.pop()
     }
@@ -34,7 +32,6 @@ pub(crate) trait ShowCmd {
 }
 
 impl ShowCmd for std::process::Command {
-    #[must_use]
     fn show(&self) -> String {
         format!(
             "`{command} {args}`",
@@ -49,7 +46,6 @@ impl ShowCmd for std::process::Command {
 }
 
 impl ShowCmd for tokio::process::Command {
-    #[must_use]
     fn show(&self) -> String {
         self.as_std().show()
     }
