@@ -1,4 +1,4 @@
-use anyhow::{anyhow, bail, Result};
+use anyhow::{anyhow, Result};
 use camino::{Utf8Path, Utf8PathBuf};
 use log::{debug, info};
 
@@ -6,63 +6,6 @@ use crate::{base::RUST, stage::Stage};
 
 pub(crate) const CRATESIO_STAGE_PREFIX: &str = "cratesio-";
 pub(crate) const CRATESIO_INDEX: &str = "index.crates.io-0000000000000000";
-
-pub(crate) fn from_cratesio_input_path(input: &Utf8PathBuf) -> Result<(String, String)> {
-    let mut it = input.iter();
-    let mut cratesio_crate = None;
-    while let Some(part) = it.next() {
-        if part.starts_with("index.crates.io-") {
-            cratesio_crate = it.next();
-            break;
-        }
-    }
-    if cratesio_crate.is_none_or(str::is_empty) {
-        bail!("Unexpected cratesio crate path: {input}")
-    }
-    let cratesio_crate = cratesio_crate.expect("just checked above");
-
-    let lhs = cratesio_crate.split_once('+').map(|(l, _)| l).unwrap_or(cratesio_crate); //https://semver.org/#spec-item-10
-
-    let (mut name, mut version) = (String::new(), String::new());
-    if let Some(mid) = "1234567890".chars().filter_map(|x| lhs.rfind(&format!("-{x}"))).max() {
-        let (n, v) = cratesio_crate.split_at(mid);
-        (name, version) = (n.to_owned(), v[1..].to_owned());
-    }
-    if name.is_empty() || version.is_empty() {
-        bail!("Unexpected cratesio crate name-version format: {cratesio_crate}")
-    }
-
-    Ok((name, version))
-}
-
-#[test]
-fn test_from_cratesio_input_path() {
-    assert_eq!(from_cratesio_input_path(
-        &"/home/pete/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ring-0.17.8/src/lib.rs"
-            .into(),
-    ).unwrap(),
-    ("ring".to_owned(), "0.17.8".to_owned()));
-
-    assert_eq!(from_cratesio_input_path(
-        &"/home/pete/.cargo/registry/src/index.crates.io-6f17d22bba15001f/hickory-proto-0.25.0-alpha.1/src/lib.rs"
-            .into(),
-    ).unwrap(),
-    ("hickory-proto".to_owned(), "0.25.0-alpha.1".to_owned()));
-
-    assert_eq!(from_cratesio_input_path(
-        &"/home/pete/.cargo/registry/src/index.crates.io-6f17d22bba15001f/md-5-0.10.6/src/lib.rs"
-            .into(),
-    ).unwrap(),
-    ("md-5".to_owned(), "0.10.6".to_owned()));
-
-    assert_eq!(from_cratesio_input_path(
-        &"/home/pete/.cargo/registry/src/index.crates.io-6f17d22bba15001f/curl-sys-0.4.74+curl-8.9.0/lib.rs"
-            .into(),
-    ).unwrap(),
-    ("curl-sys".to_owned(), "0.4.74+curl-8.9.0".to_owned()));
-
-    // /home/pete/.cargo/registry/cache/index.crates.io-6f17d22bba15001f/curl-sys-0.4.74+curl-8.9.0.crate
-}
 
 #[must_use]
 pub(crate) fn rewrite_cratesio_index(path: &Utf8Path) -> Utf8PathBuf {
