@@ -2,6 +2,7 @@ use std::{env, ffi::OsStr, path::PathBuf, process::exit};
 
 use anyhow::{bail, Result};
 use envs::internal;
+// use lockfile::find_lockfile;
 use tokio::process::Command;
 
 mod base;
@@ -98,6 +99,13 @@ async fn main() -> Result<()> {
     cargo_green::main(&mut cmd).await?;
 
     let syntax = internal::syntax().expect("set in cargo_green::main");
+
+    //=> cargo install can't find lockfile
+    // => issue `cargo` to cp lockfile in $CARGO_TARGET_DIR?
+    // => parse its args, understand source, guess lockfile?
+    //https://github.com/rust-lang/cargo/issues/9700
+    // let manifest_path_lockfile = find_lockfile().await?;
+    // cmd.env("CARGOGREEN_LOCKFILE_", &manifest_path_lockfile);
 
     //TODO: https://github.com/messense/cargo-options/blob/086d7470cae34b0e694a62237e258fbd35384e93/examples/cargo-mimic.rs
     // maybe https://lib.rs/crates/clap-cargo
