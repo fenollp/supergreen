@@ -35,7 +35,6 @@ pub(crate) async fn into_stage(
         .map_err(|e| anyhow!("Failed reading {cratesio_cached}: {e}"))?;
     debug!("crate sha256 for {cratesio_stage}: {cratesio_hash}");
 
-    const CRATESIO: &str = "https://static.crates.io";
     const SRC: &str = "/extracted";
 
     // On using tar: https://github.com/rust-lang/cargo/issues/3577#issuecomment-890693359
@@ -43,8 +42,7 @@ pub(crate) async fn into_stage(
     let block = format!(
         r#"
 FROM scratch AS {cratesio_stage}
-ADD --chmod=0664 --checksum=sha256:{cratesio_hash} \
-  {CRATESIO}/crates/{name}/{name}-{version}.crate /crate
+{add}
 SHELL ["/usr/bin/dash", "-eux", "-c"]
 RUN \
   --mount=from={RUST},src=/lib,dst=/lib \
@@ -52,7 +50,8 @@ RUN \
   --mount=from={RUST},src=/usr,dst=/usr \
     mkdir {SRC} \
  && tar zxf /crate --strip-components=1 -C {SRC}
-"#
+"#,
+        add = add_step(name, version, &cratesio_hash),
     )[1..]
         .to_owned();
 
@@ -66,4 +65,15 @@ RUN \
     //  => https://github.com/rust-lang/cargo/issues/14373
 
     Ok((cratesio_stage, SRC, cratesio_extracted, block))
+}
+
+#[must_use]
+pub(crate) fn add_step(name: &str, version: &str, hash: &str) -> String {
+    format!(
+        r#"
+ADD --chmod=0664 --checksum=sha256:{hash} \
+  https://static.crates.io/crates/{name}/{name}-{version}.crate /crate
+"#
+    )[1..]
+        .to_owned()
 }

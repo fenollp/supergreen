@@ -327,7 +327,7 @@ async fn do_wrap_rustc(
         }
         .lines()
         .filter(|x| !x.is_empty())
-        .for_each(|line| debug!("❯ {line}"));
+        .for_each(|line| trace!("❯ {line}"));
     }
 
     fs::create_dir_all(&out_dir).map_err(|e| anyhow!("Failed to `mkdir -p {out_dir}`: {e}"))?;
@@ -341,8 +341,7 @@ async fn do_wrap_rustc(
         .try_into()
         .map_err(|e| anyhow!("corrupted $CARGO_HOME path: {e}"))?;
 
-    // TODO: allow opt-out of cratesio_stage => to support offline builds
-    // TODO: or, allow a `cargo fetch` alike: create+pre-build all cratesio stages from lockfile
+    // TODO: support non-crates.io crates managers + proxies
     let (input_mount, rustc_stage) = if input.starts_with(cargo_home.join("registry/src")) {
         // Input is of a crate dep (hosted at crates.io)
         // Let's optimize this case by fetching & caching crate tarball
@@ -711,7 +710,7 @@ fn file_exists(path: &Utf8Path) -> Result<bool> {
     }
 }
 
-fn file_exists_and_is_not_empty(path: &Utf8Path) -> Result<bool> {
+pub(crate) fn file_exists_and_is_not_empty(path: &Utf8Path) -> Result<bool> {
     match path.metadata().map(|md| md.is_file() && md.len() > 0) {
         Ok(b) => Ok(b),
         Err(e) if e.kind() == ErrorKind::NotFound => Ok(false),

@@ -413,6 +413,38 @@ jobs:
         docker buildx du | head || true
         docker buildx du | tail || true
     - run: docker buildx du --verbose
+    - name: cargo fetch
+      run: |
+        CARGOGREEN_LOG=trace \
+        RUSTCBUILDX_LOG_PATH="$PWD"/../logs.txt \
+          cargo green -vv fetch |& tee ../_
+    - if: ${{ failure() || success() }}
+      name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
+      run: |
+        ! grep -C20 -F "thread 'main' panicked at src/cargo/util/dependency_queue.rs:" ../_
+
+    - if: ${{ failure() || success() }}
+      name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
+      run: |
+        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' ../logs.txt
+
+    - if: ${{ failure() || success() }}
+      name: 🔴 =means=> there's some panic!s
+      run: |
+        ! grep -C20 -F ' panicked at ' ../logs.txt
+
+    - if: ${{ failure() || success() }}
+      name: 🔴 =means=> there's some BUGs
+      run: |
+        ! grep -C20 -F 'BUG: ' ../logs.txt
+
+    - if: ${{ failure() || success() }}
+      name: 🔴 =means=> here's relevant logs
+      run: |
+        ! grep -C20 -F ' >>> ' ../logs.txt
+
+    - if: ${{ failure() || success() }}
+      run: tail -n9999999 ../logs.txt ; echo >../logs.txt
     - name: cargo build net=OFF cache=OFF remote=OFF jobs=1
       run: |
         CARGOGREEN_LOG=trace \
@@ -595,6 +627,38 @@ jobs:
         docker buildx du | head || true
         docker buildx du | tail || true
     - run: docker buildx du --verbose
+    - name: cargo fetch
+      run: |
+        CARGOGREEN_LOG=trace \
+        RUSTCBUILDX_LOG_PATH="$PWD"/../logs.txt \
+          cargo green -vv fetch |& tee ../_
+    - if: ${{ failure() || success() }}
+      name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
+      run: |
+        ! grep -C20 -F "thread 'main' panicked at src/cargo/util/dependency_queue.rs:" ../_
+
+    - if: ${{ failure() || success() }}
+      name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
+      run: |
+        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' ../logs.txt
+
+    - if: ${{ failure() || success() }}
+      name: 🔴 =means=> there's some panic!s
+      run: |
+        ! grep -C20 -F ' panicked at ' ../logs.txt
+
+    - if: ${{ failure() || success() }}
+      name: 🔴 =means=> there's some BUGs
+      run: |
+        ! grep -C20 -F 'BUG: ' ../logs.txt
+
+    - if: ${{ failure() || success() }}
+      name: 🔴 =means=> here's relevant logs
+      run: |
+        ! grep -C20 -F ' >>> ' ../logs.txt
+
+    - if: ${{ failure() || success() }}
+      run: tail -n9999999 ../logs.txt ; echo >../logs.txt
     - name: cargo test net=OFF cache=OFF remote=OFF jobs=1
       run: |
         CARGOGREEN_LOG=trace \
@@ -777,6 +841,38 @@ jobs:
         docker buildx du | head || true
         docker buildx du | tail || true
     - run: docker buildx du --verbose
+    - name: cargo fetch
+      run: |
+        CARGOGREEN_LOG=trace \
+        RUSTCBUILDX_LOG_PATH="$PWD"/../logs.txt \
+          cargo green -vv fetch |& tee ../_
+    - if: ${{ failure() || success() }}
+      name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
+      run: |
+        ! grep -C20 -F "thread 'main' panicked at src/cargo/util/dependency_queue.rs:" ../_
+
+    - if: ${{ failure() || success() }}
+      name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
+      run: |
+        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' ../logs.txt
+
+    - if: ${{ failure() || success() }}
+      name: 🔴 =means=> there's some panic!s
+      run: |
+        ! grep -C20 -F ' panicked at ' ../logs.txt
+
+    - if: ${{ failure() || success() }}
+      name: 🔴 =means=> there's some BUGs
+      run: |
+        ! grep -C20 -F 'BUG: ' ../logs.txt
+
+    - if: ${{ failure() || success() }}
+      name: 🔴 =means=> here's relevant logs
+      run: |
+        ! grep -C20 -F ' >>> ' ../logs.txt
+
+    - if: ${{ failure() || success() }}
+      run: tail -n9999999 ../logs.txt ; echo >../logs.txt
     - name: cargo check net=OFF cache=OFF remote=OFF jobs=$(nproc)
       run: |
         CARGOGREEN_LOG=trace \
@@ -913,6 +1009,38 @@ jobs:
         docker buildx du | head || true
         docker buildx du | tail || true
     - run: docker buildx du --verbose
+    - name: cargo fetch
+      run: |
+        CARGOGREEN_LOG=trace \
+        RUSTCBUILDX_LOG_PATH="$PWD"/../logs.txt \
+          CARGO_TARGET_DIR=~/cargo-package cargo green -vv fetch |& tee ../_
+    - if: ${{ failure() || success() }}
+      name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
+      run: |
+        ! grep -C20 -F "thread 'main' panicked at src/cargo/util/dependency_queue.rs:" ../_
+
+    - if: ${{ failure() || success() }}
+      name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
+      run: |
+        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' ../logs.txt
+
+    - if: ${{ failure() || success() }}
+      name: 🔴 =means=> there's some panic!s
+      run: |
+        ! grep -C20 -F ' panicked at ' ../logs.txt
+
+    - if: ${{ failure() || success() }}
+      name: 🔴 =means=> there's some BUGs
+      run: |
+        ! grep -C20 -F 'BUG: ' ../logs.txt
+
+    - if: ${{ failure() || success() }}
+      name: 🔴 =means=> here's relevant logs
+      run: |
+        ! grep -C20 -F ' >>> ' ../logs.txt
+
+    - if: ${{ failure() || success() }}
+      run: tail -n9999999 ../logs.txt ; echo >../logs.txt
     - name: cargo package net=OFF cache=OFF remote=OFF jobs=1
       run: |
         CARGOGREEN_LOG=trace \
@@ -1004,6 +1132,38 @@ jobs:
         docker buildx du | head || true
         docker buildx du | tail || true
     - run: docker buildx du --verbose
+    - name: cargo fetch
+      run: |
+        CARGOGREEN_LOG=trace \
+        RUSTCBUILDX_LOG_PATH="$PWD"/../logs.txt \
+          cargo green -vv fetch
+    - if: ${{ failure() || success() }}
+      name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
+      run: |
+        ! grep -C20 -F "thread 'main' panicked at src/cargo/util/dependency_queue.rs:" ../_
+
+    - if: ${{ failure() || success() }}
+      name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
+      run: |
+        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' ../logs.txt
+
+    - if: ${{ failure() || success() }}
+      name: 🔴 =means=> there's some panic!s
+      run: |
+        ! grep -C20 -F ' panicked at ' ../logs.txt
+
+    - if: ${{ failure() || success() }}
+      name: 🔴 =means=> there's some BUGs
+      run: |
+        ! grep -C20 -F 'BUG: ' ../logs.txt
+
+    - if: ${{ failure() || success() }}
+      name: 🔴 =means=> here's relevant logs
+      run: |
+        ! grep -C20 -F ' >>> ' ../logs.txt
+
+    - if: ${{ failure() || success() }}
+      run: tail -n9999999 ../logs.txt ; echo >../logs.txt
     - name: cargo clippy net=OFF cache=OFF remote=OFF jobs=1
       run: |
         CARGOGREEN_LOG=trace \
