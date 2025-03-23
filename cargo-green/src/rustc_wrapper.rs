@@ -129,7 +129,11 @@ async fn wrap_rustc(
     let buildrs = crate_name == "build_script_build";
     // NOTE: krate_name != crate_name: Gets named build_script_build + s/-/_/g + may actually be a different name
     let krate_name = env::var("CARGO_PKG_NAME").ok().unwrap();
+
     let krate_version = env::var("CARGO_PKG_VERSION").ok().unwrap();
+
+    let krate_manifest_dir = env::var("CARGO_MANIFEST_DIR").ok().unwrap();
+    let krate_manifest_dir = Utf8Path::new(&krate_manifest_dir);
 
     let full_krate_id = {
         let RustcArgs { crate_type, extrafn, .. } = &st;
@@ -148,6 +152,7 @@ async fn wrap_rustc(
         crate_name,
         &krate_name,
         krate_version,
+        krate_manifest_dir,
         buildrs,
         full_krate_id.replace(' ', "-"),
         pwd,
@@ -165,6 +170,7 @@ async fn do_wrap_rustc(
     crate_name: &str,
     krate_name: &str,
     krate_version: String,
+    krate_manifest_dir: &Utf8Path,
     buildrs: bool,
     crate_id: String,
     pwd: Utf8PathBuf,
@@ -342,7 +348,7 @@ async fn do_wrap_rustc(
         // Let's optimize this case by fetching & caching crate tarball
 
         let (cratesio_stage, src, dst, block) =
-            into_stage(&cargo_home, krate_name, &krate_version).await?;
+            into_stage(&cargo_home, krate_name, &krate_version, krate_manifest_dir).await?;
         md.push_block(&cratesio_stage, block);
 
         let rustc_stage = Stage::try_new(format!("dep-{crate_id}"))?;
