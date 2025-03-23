@@ -5,7 +5,7 @@ use camino::{Utf8Path, Utf8PathBuf};
 
 use crate::extensions::Popped;
 
-const ALL_CRATE_TYPES: &[&str] =
+pub(crate) const ALL_CRATE_TYPES: &[&str] =
     &["bin", "lib", "rlib", "dylib", "cdylib", "staticlib", "proc-macro"];
 
 const SYSROOT_CRATES: &[&str] = &["alloc", "core", "proc_macro", "std", "test"];
@@ -242,20 +242,6 @@ fn target_path_from_out_dir() {
         let res = out_dir_to_target_path(out_dir.into());
         assert_eq!(res, Some("$CARGO_TARGET_DIR/$PROFILE".into()));
     }
-}
-
-#[must_use]
-pub(crate) fn crate_type_for_logging(crate_type: &str) -> char {
-    crate_type.chars().next().unwrap()
-}
-
-#[test]
-fn unique_krate_types() {
-    use std::collections::HashSet;
-
-    let all: HashSet<_> = ALL_CRATE_TYPES.iter().map(|ty| crate_type_for_logging(ty)).collect();
-    assert_eq!(ALL_CRATE_TYPES.len(), all.len());
-    assert!(!all.contains(&'x')); // for build scripts
 }
 
 #[cfg(test)]

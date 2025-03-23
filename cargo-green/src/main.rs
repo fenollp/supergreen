@@ -8,6 +8,7 @@ mod cargo_green;
 mod cratesio;
 mod envs;
 mod extensions;
+mod logging;
 mod md;
 mod runner;
 mod rustc_arguments;

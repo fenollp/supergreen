@@ -3,7 +3,7 @@ use std::{
     env,
     fs::{self, File},
     future::Future,
-    io::{BufRead, BufReader, ErrorKind, Write},
+    io::{BufRead, BufReader, ErrorKind},
     str::FromStr,
 };
 
@@ -17,9 +17,10 @@ use crate::{
     cratesio::{from_cratesio_input_path, into_stage},
     envs::{self, base_image, internal, maybe_log, pass_env, runner, syntax, this},
     extensions::{Popped, ShowCmd},
+    logging::{self, crate_type_for_logging},
     md::{BuildContext, Md},
     runner::{build, MARK_STDERR, MARK_STDOUT},
-    rustc_arguments::{as_rustc, crate_type_for_logging, RustcArgs},
+    rustc_arguments::{as_rustc, RustcArgs},
     stage::Stage,
     PKG, REPO, VSN,
 };
@@ -137,39 +138,16 @@ async fn wrap_rustc(
             }
             'X'
         } else {
-            crate_type_for_logging(crate_type).to_ascii_uppercase()
+            crate_type_for_logging(crate_type)
         };
-        format!("{krate_type}|{krate_name}|{krate_version}|{}", &extrafn[1..])
+        format!("{krate_type} {krate_name} {krate_version}{extrafn}")
     };
 
-    if let Some(log_file) = maybe_log() {
-        use env_logger::{Builder, Env, Target};
-        use log::Level;
-
-        let krate = full_krate_id.clone();
-        Builder::from_env(
-            Env::default()
-                .filter_or(internal::RUSTCBUILDX_LOG, "trace")
-                .write_style(internal::RUSTCBUILDX_LOG_STYLE),
-        )
-        .format(move |buf, record| {
-            let now = chrono::Utc::now().format("%y-%m-%dT%H:%M:%S%.3f");
-            let lvl = match record.level() {
-                Level::Error => 'E',
-                Level::Warn => 'W',
-                Level::Info => 'I',
-                Level::Debug => 'D',
-                Level::Trace => 'T',
-            };
-            writeln!(buf, "[{now} {lvl} {krate}] {}", record.args())
-        })
-        .target(Target::Pipe(Box::new(log_file().expect("Installing logfile"))))
-        .init();
-    }
+    logging::setup(&full_krate_id, internal::RUSTCBUILDX_LOG, internal::RUSTCBUILDX_LOG_STYLE);
 
     info!("{PKG}@{VSN} original args: {arguments:?} pwd={pwd} st={st:?}");
 
-    let crate_id = full_krate_id.replace('|', "-");
+    let crate_id = full_krate_id.replace(' ', "-");
     do_wrap_rustc(crate_name, crate_id, pwd, args, out_dir_var, st, fallback)
         .await
         .inspect_err(|e| error!("Error: {e}"))
