@@ -19,7 +19,7 @@ pub(crate) async fn into_stage(
     version: &str,
     krate_manifest_dir: &Utf8Path,
 ) -> Result<(Stage, &'static str, Utf8PathBuf, String)> {
-    let cratesio_stage = Stage::try_new(format!("{CRATESIO_STAGE_PREFIX}{name}-{version}"))?;
+    let stage = Stage::try_new(format!("{CRATESIO_STAGE_PREFIX}{name}-{version}"))?;
 
     let cratesio_extracted =
         cargo_home.join(format!("registry/src/{CRATESIO_INDEX}/{name}-{version}"));
@@ -33,7 +33,7 @@ pub(crate) async fn into_stage(
     let cratesio_hash = sha256::try_async_digest(cratesio_cached.as_path()) //TODO: read from lockfile? cargo_metadata?
         .await
         .map_err(|e| anyhow!("Failed reading {cratesio_cached}: {e}"))?;
-    debug!("crate sha256 for {cratesio_stage}: {cratesio_hash}");
+    debug!("crate sha256 for {stage}: {cratesio_hash}");
 
     const SRC: &str = "/extracted";
 
@@ -41,7 +41,7 @@ pub(crate) async fn into_stage(
 
     let block = format!(
         r#"
-FROM scratch AS {cratesio_stage}
+FROM scratch AS {stage}
 {add}
 SHELL ["/usr/bin/dash", "-eux", "-c"]
 RUN \
@@ -64,7 +64,7 @@ RUN \
     //=> would remove that `RUN tar` step + stage dep on RUST (=> scratch)
     //  => https://github.com/rust-lang/cargo/issues/14373
 
-    Ok((cratesio_stage, SRC, cratesio_extracted, block))
+    Ok((stage, SRC, cratesio_extracted, block))
 }
 
 #[must_use]

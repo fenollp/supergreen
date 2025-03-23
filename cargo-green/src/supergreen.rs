@@ -1,3 +1,4 @@
+use core::str;
 use std::{collections::BTreeMap, env, io::Cursor, process::Stdio};
 
 use anyhow::{anyhow, bail, Result};
@@ -93,7 +94,7 @@ async fn all_tags_of(img: &str) -> Result<Vec<String>> {
     if !o.status.success() {
         bail!("Failed to list tags of image {img}")
     }
-    Ok(BufReader::new(Cursor::new(String::from_utf8(o.stdout).unwrap()))
+    Ok(BufReader::new(Cursor::new(str::from_utf8(&o.stdout).unwrap()))
         .json_lines()
         .filter_map(|x| async move { x.ok() })
         .filter_map(|x: serde_json::Value| async move {

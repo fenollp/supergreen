@@ -14,7 +14,8 @@ use tokio::process::Command;
 
 use crate::{
     base::RUST,
-    cratesio::{into_stage, rewrite_cratesio_index},
+    checkouts,
+    cratesio::{self, rewrite_cratesio_index},
     envs::{self, base_image, internal, maybe_log, pass_env, runner, syntax, this},
     extensions::{Popped, ShowCmd},
     logging::{self, crate_type_for_logging},
@@ -135,6 +136,8 @@ async fn wrap_rustc(
     let krate_manifest_dir = env::var("CARGO_MANIFEST_DIR").ok().unwrap();
     let krate_manifest_dir = Utf8Path::new(&krate_manifest_dir);
 
+    let krate_repository = env::var("CARGO_PKG_REPOSITORY").ok().unwrap_or_default();
+
     let full_krate_id = {
         let RustcArgs { crate_type, extrafn, .. } = &st;
         if buildrs && crate_type != "bin" {
@@ -153,6 +156,7 @@ async fn wrap_rustc(
         &krate_name,
         krate_version,
         krate_manifest_dir,
+        krate_repository,
         buildrs,
         full_krate_id.replace(' ', "-"),
         pwd,
@@ -171,6 +175,7 @@ async fn do_wrap_rustc(
     krate_name: &str,
     krate_version: String,
     krate_manifest_dir: &Utf8Path,
+    krate_repository: String,
     buildrs: bool,
     crate_id: String,
     pwd: Utf8PathBuf,
@@ -342,16 +347,27 @@ async fn do_wrap_rustc(
         .map_err(|e| anyhow!("corrupted $CARGO_HOME path: {e}"))?;
 
     // TODO: support non-crates.io crates managers + proxies
+    // TODO: use --secret mounts for private deps (and secret direct artifacts)
     let (input_mount, rustc_stage) = if input.starts_with(cargo_home.join("registry/src")) {
         // Input is of a crate dep (hosted at crates.io)
         // Let's optimize this case by fetching & caching crate tarball
 
-        let (cratesio_stage, src, dst, block) =
-            into_stage(&cargo_home, krate_name, &krate_version, krate_manifest_dir).await?;
-        md.push_block(&cratesio_stage, block);
+        let (stage, src, dst, block) =
+            cratesio::into_stage(&cargo_home, krate_name, &krate_version, krate_manifest_dir)
+                .await?;
+        md.push_block(&stage, block);
 
-        let rustc_stage = Stage::try_new(format!("dep-{crate_id}"))?;
-        (Some((cratesio_stage, Some(src), dst)), rustc_stage)
+        (Some((stage, Some(src), dst)), Stage::try_new(format!("dep-{crate_id}"))?)
+    } else if !krate_repository.is_empty()
+        && krate_manifest_dir.starts_with(cargo_home.join("git/checkouts"))
+    {
+        // Input is of a git checked out dep
+
+        let (stage, src, dst, block) =
+            checkouts::into_stage(krate_manifest_dir, &krate_repository).await?;
+        md.push_block(&stage, block);
+
+        (Some((stage, Some(src), dst)), Stage::try_new(format!("dep-{crate_id}"))?)
     } else {
         // Input is local code
 
@@ -359,16 +375,8 @@ async fn do_wrap_rustc(
             &input
         } else {
             // e.g. $CARGO_HOME/git/checkouts/rustc-version-rs-de99f49481c38c43/48cf99e/src/lib.rs
-            // TODO: create a stage from sources where able (public repos) use --secret mounts for private deps (and secret direct artifacts)
-            // TODO=> make sense of git origin file://$CARGO_HOME/git/db/rustc-version-rs-de99f49481c38c43
 
-            // env is set: CARGO_MANIFEST_DIR="$CARGO_HOME/git/checkouts/rustc-version-rs-de99f49481c38c43/48cf99e"
-            // => commit
-            // env is set: CARGO_PKG_REPOSITORY="https://github.com/djc/rustc-version-rs"
-            // => url
-            // copying all git files under $CARGO_HOME/git/checkouts/rustc-version-rs-de99f49481c38c43/48cf99e to /tmp/cargo-green_0.7.0/CWD2ee709abf3a7f0b4
-            // loading "cwd-2ee709abf3a7f0b4": /tmp/cargo-green_0.7.0/CWD2ee709abf3a7f0b4
-
+            //FIXME: try without thi branch
             input
                 .strip_prefix(&pwd)
                 .map_err(|e| anyhow!("BUG: unexpected input {input:?} ({e})"))?
@@ -388,6 +396,11 @@ async fn do_wrap_rustc(
     rustc_block.push_str(&format!("FROM {RUST} AS {rustc_stage}\n"));
     rustc_block.push_str(&format!("SHELL {:?}\n", ["/bin/bash", "-eux", "-c"]));
     rustc_block.push_str(&format!("WORKDIR {out_dir}\n"));
+    if pwd != out_dir {
+        rustc_block.push_str(&format!("WORKDIR {pwd}\n"));
+    }
+    dbg!(&out_dir);
+    dbg!(&pwd);
 
     if let Some(ref incremental) = incremental {
         rustc_block.push_str(&format!("WORKDIR {incremental}\n"));

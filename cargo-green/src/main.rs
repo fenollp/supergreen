@@ -6,6 +6,7 @@ use tokio::process::Command;
 
 mod base;
 mod cargo_green;
+mod checkouts;
 mod cratesio;
 mod envs;
 mod extensions;
