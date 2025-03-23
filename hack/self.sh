@@ -144,6 +144,12 @@ $(jobdef 'builds')
 $(rundeps_versions)
 $(postbin_steps)
 $(cache_usage)
+    - name: cargo fetch
+      run: |
+        CARGOGREEN_LOG=trace \\
+        RUSTCBUILDX_LOG_PATH="\$PWD"/../logs.txt \\
+          cargo green -vv fetch |& tee ../_
+$(postconds ../_ ../logs.txt)
     - name: cargo build net=OFF cache=OFF remote=OFF jobs=1
       run: |
         CARGOGREEN_LOG=trace \\
@@ -175,6 +181,12 @@ $(jobdef 'tests')
 $(rundeps_versions)
 $(postbin_steps)
 $(cache_usage)
+    - name: cargo fetch
+      run: |
+        CARGOGREEN_LOG=trace \\
+        RUSTCBUILDX_LOG_PATH="\$PWD"/../logs.txt \\
+          cargo green -vv fetch |& tee ../_
+$(postconds ../_ ../logs.txt)
     - name: cargo test net=OFF cache=OFF remote=OFF jobs=1
       run: |
         CARGOGREEN_LOG=trace \\
@@ -206,6 +218,12 @@ $(jobdef 'checks')
 $(rundeps_versions)
 $(postbin_steps)
 $(cache_usage)
+    - name: cargo fetch
+      run: |
+        CARGOGREEN_LOG=trace \\
+        RUSTCBUILDX_LOG_PATH="\$PWD"/../logs.txt \\
+          cargo green -vv fetch |& tee ../_
+$(postconds ../_ ../logs.txt)
     - name: cargo check net=OFF cache=OFF remote=OFF jobs=\$(nproc)
       run: |
         CARGOGREEN_LOG=trace \\
@@ -229,6 +247,12 @@ $(jobdef 'packages')
 $(rundeps_versions)
 $(postbin_steps)
 $(cache_usage)
+    - name: cargo fetch
+      run: |
+        CARGOGREEN_LOG=trace \\
+        RUSTCBUILDX_LOG_PATH="\$PWD"/../logs.txt \\
+          CARGO_TARGET_DIR=~/cargo-package cargo green -vv fetch |& tee ../_
+$(postconds ../_ ../logs.txt)
     - name: cargo package net=OFF cache=OFF remote=OFF jobs=1
       run: |
         CARGOGREEN_LOG=trace \\
@@ -245,6 +269,12 @@ $(rundeps_versions)
 $(postbin_steps)
     - run: rustup component add clippy
 $(cache_usage)
+    - name: cargo fetch
+      run: |
+        CARGOGREEN_LOG=trace \\
+        RUSTCBUILDX_LOG_PATH="\$PWD"/../logs.txt \\
+          cargo green -vv fetch
+$(postconds ../_ ../logs.txt)
     - name: cargo clippy net=OFF cache=OFF remote=OFF jobs=1
       run: |
         CARGOGREEN_LOG=trace \\

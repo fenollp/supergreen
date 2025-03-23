@@ -1,6 +1,7 @@
 use std::{env, ffi::OsStr, path::PathBuf, process::exit};
 
 use anyhow::{bail, Result};
+use envs::internal;
 use tokio::process::Command;
 
 mod base;
@@ -8,6 +9,7 @@ mod cargo_green;
 mod cratesio;
 mod envs;
 mod extensions;
+mod lockfile;
 mod logging;
 mod md;
 mod runner;
@@ -91,20 +93,23 @@ async fn main() -> Result<()> {
     cmd.args(args);
     cmd.kill_on_drop(true);
 
-    // TODO: Skip this for the invocations not calling rustc
     cmd.env("RUSTC_WRAPPER", arg0);
+
     cargo_green::main(&mut cmd).await?;
+
+    let syntax = internal::syntax().expect("set in cargo_green::main");
 
     //TODO: https://github.com/messense/cargo-options/blob/086d7470cae34b0e694a62237e258fbd35384e93/examples/cargo-mimic.rs
     // maybe https://lib.rs/crates/clap-cargo
 
-    match env::args().nth(3).as_deref() {
+    match env::args().nth(2).as_deref() {
         None => {}
         Some("fetch") => {
-            // TODO: run cargo fetch + read lockfile + generate cratesio stages + build them cacheonly
-            //   https://github.com/rustsec/rustsec/tree/main/cargo-lock
-            // TODO: skip these stages (and any other "locked thing" stage) when building with --no-cache
-            todo!("BUG: this is never run") //=> fetch on first ever run!
+            // Runs actual `cargo fetch`
+            if !cmd.status().await?.success() {
+                exit(1)
+            }
+            return cargo_green::fetch(&syntax).await;
         }
         Some(_) => {}
     }

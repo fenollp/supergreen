@@ -275,10 +275,15 @@ set -x
     ls -lha $install_dir/bin/cargo-green
     rm $tmplogs >/dev/null 2>&1 || true
     touch $tmplogs
+    xdg-terminal-exec tail -f $tmplogs
     echo "$arg1"
     echo "Target dir: $tmptrgt"
     echo "Logs: $tmplogs"
-    xdg-terminal-exec tail -f $tmplogs
+    CARGOGREEN_LOG=trace \
+    RUSTCBUILDX_LOG_PATH="$tmplogs" \
+    RUSTCBUILDX_CACHE_IMAGE="${RUSTCBUILDX_CACHE_IMAGE:-}" \
+    PATH=$install_dir/bin:"$PATH" \
+      \cargo green -v fetch
     CARGOGREEN_LOG=trace \
     RUSTCBUILDX_LOG_PATH="$tmplogs" \
     RUSTCBUILDX_CACHE_IMAGE="${RUSTCBUILDX_CACHE_IMAGE:-}" \
