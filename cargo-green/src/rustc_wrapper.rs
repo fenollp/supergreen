@@ -17,12 +17,15 @@ use crate::{
     cratesio::{into_stage, rewrite_cratesio_index},
     envs::{self, base_image, internal, maybe_log, pass_env, runner, syntax, this},
     extensions::{Popped, ShowCmd},
+    // lockfile::locked_crates,
     logging::{self, crate_type_for_logging},
     md::{BuildContext, Md},
     runner::{build, MARK_STDERR, MARK_STDOUT},
     rustc_arguments::{as_rustc, RustcArgs},
     stage::Stage,
-    PKG, REPO, VSN,
+    PKG,
+    REPO,
+    VSN,
 };
 
 // NOTE: this RUSTC_WRAPPER program only ever gets called by `cargo`, so we save
@@ -182,6 +185,10 @@ async fn do_wrap_rustc(
     let debug = maybe_log();
 
     let incremental = envs::incremental().then_some(incremental).flatten();
+
+    // let manifest_path_lockfile = std::env::var("CARGOGREEN_LOCKFILE_").unwrap();
+    // let manifest_path_lockfile: Utf8PathBuf = manifest_path_lockfile.into();
+    // let packages = locked_crates(&manifest_path_lockfile).await?;
 
     // NOTE: not `out_dir`
     let crate_out = if let Some(crate_out) = out_dir_var {
@@ -345,6 +352,12 @@ async fn do_wrap_rustc(
     let (input_mount, rustc_stage) = if input.starts_with(cargo_home.join("registry/src")) {
         // Input is of a crate dep (hosted at crates.io)
         // Let's optimize this case by fetching & caching crate tarball
+
+        // let packages: Vec<_> = packages
+        //     .into_iter()
+        //     .filter(|(name, version, _)| input.as_str().contains(&format!("{name}-{version}")))
+        //     .collect();
+        // assert_eq!(packages.len(), 1);
 
         let (cratesio_stage, src, dst, block) =
             into_stage(&cargo_home, krate_name, &krate_version, krate_manifest_dir).await?;
