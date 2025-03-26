@@ -42,7 +42,7 @@ pub(crate) struct RustcArgs {
 }
 
 pub(crate) fn as_rustc(
-    pwd: impl AsRef<Utf8Path>,
+    pwd: &Utf8Path,
     arguments: &[String],
     out_dir_var: Option<&str>,
 ) -> Result<(RustcArgs, Vec<String>)> {
@@ -118,7 +118,7 @@ pub(crate) fn as_rustc(
             "-L" => {
                 if let Some(("dependency", v)) = val.split_once('=') {
                     if !v.starts_with('/') {
-                        val = format!("dependency={}", pwd.as_ref().join(v));
+                        val = format!("dependency={}", pwd.join(v));
                     }
                 }
             }
@@ -168,7 +168,7 @@ pub(crate) fn as_rustc(
                 assert_eq!(state.out_dir, "");
                 state.out_dir = val.clone().into();
                 if state.out_dir.is_relative() {
-                    state.out_dir = pwd.as_ref().join(&val);
+                    state.out_dir = pwd.join(&val);
                 }
                 val = state.out_dir.to_string();
             }
@@ -292,7 +292,7 @@ mod tests {
             "-C", "link-arg=-fuse-ld=/usr/local/bin/mold",
         ]);
 
-        let (st, args) = as_rustc(PWD, &arguments, None).unwrap();
+        let (st, args) = as_rustc(PWD.into(), &arguments, None).unwrap();
 
         assert_eq!(
             st,
@@ -375,7 +375,7 @@ mod tests {
             "-C", "link-arg=-fuse-ld=/usr/local/bin/mold",
         ]);
 
-        let (st, args) = as_rustc(PWD, &arguments, None).unwrap();
+        let (st, args) = as_rustc(PWD.into(), &arguments, None).unwrap();
 
         assert_eq!(
             st,
@@ -458,7 +458,7 @@ mod tests {
             "-C", "link-arg=-fuse-ld=/usr/local/bin/mold",
         ]);
 
-        let (st, args) = as_rustc(PWD, &arguments, None).unwrap();
+        let (st, args) = as_rustc(PWD.into(), &arguments, None).unwrap();
 
         assert_eq!(
             st,
@@ -530,7 +530,7 @@ mod tests {
             "-C", "link-arg=-fuse-ld=/usr/local/bin/mold",
         ]);
 
-        let (st, args) = as_rustc(PWD, &arguments, None).unwrap();
+        let (st, args) = as_rustc(PWD.into(), &arguments, None).unwrap();
 
         assert_eq!(
             st,
@@ -598,7 +598,7 @@ mod tests {
             "-C", "link-arg=-fuse-ld=/usr/local/bin/mold",
         ]);
 
-        let (st, args) = as_rustc(PWD, &arguments, None).unwrap();
+        let (st, args) = as_rustc(PWD.into(), &arguments, None).unwrap();
 
         assert_eq!(
             st,
@@ -664,7 +664,7 @@ mod tests {
             "--cap-lints", "warn",
         ]);
 
-        let (st, args) = as_rustc(PWD, &arguments, None).unwrap();
+        let (st, args) = as_rustc(PWD.into(), &arguments, None).unwrap();
 
         assert_eq!(
             st,
@@ -763,7 +763,7 @@ mod tests {
         let out_dir_var =
             Some("$HOME/work/supergreen/supergreen/target/debug/build/slab-94793bb2b78c57b5/out");
 
-        let (st, args) = as_rustc(PWD, &arguments, out_dir_var).unwrap();
+        let (st, args) = as_rustc(PWD.into(), &arguments, out_dir_var).unwrap();
 
         assert_eq!(
             st,
