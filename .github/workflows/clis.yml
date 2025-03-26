@@ -1303,3 +1303,141 @@ jobs:
       if: ${{ failure() || success() }}
       run: du -sh ~/instst
 
+  cargo-config2_0-1-26:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash -euo pipefail {0}
+    needs: bin
+    steps:
+    - uses: actions-rs/toolchain@v1
+      with:
+        profile: minimal
+        toolchain: stable
+
+
+    - name: Retrieve saved bin
+      uses: actions/download-artifact@v4
+      with:
+        name: bin-artifacts
+
+    - name: Install saved bin
+      shell: bash -eu {0}
+      run: | # TODO: whence https://github.com/actions/download-artifact/issues/236
+        chmod +x ./cargo-green
+        { ! ./cargo-green --version ; } | grep cargo-green
+        mv ./cargo-green ~/.cargo/bin/
+    - uses: actions/checkout@v4
+    - run: docker info
+    - run: docker buildx version
+    - run: docker buildx build --help
+    - run: podman version || true
+    - run: rustc -Vv
+
+    - name: Envs
+      run: /home/runner/.cargo/bin/cargo-green green supergreen env
+    - name: Envs again
+      run: /home/runner/.cargo/bin/cargo-green green supergreen env
+
+    - run: sudo du -sh /var/lib/docker
+    - run: docker system df
+    - run: docker system df --verbose
+    - run: |
+        docker buildx du | head || true
+        docker buildx du | tail || true
+    - run: docker buildx du --verbose
+    - name: cargo install net=ON cache=OFF remote=OFF jobs=1
+      run: |
+        CARGOGREEN_LOG=trace \
+        RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
+          CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=1 --locked --force cargo-config2@0.1.26 --example=get |& tee _
+    - if: ${{ failure() || success() }}
+      name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
+      run: |
+        ! grep -C20 -F "thread 'main' panicked at src/cargo/util/dependency_queue.rs:" _
+
+    - if: ${{ failure() || success() }}
+      name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
+      run: |
+        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' logs.txt
+
+    - if: ${{ failure() || success() }}
+      name: 🔴 =means=> there's some panic!s
+      run: |
+        ! grep -C20 -F ' panicked at ' logs.txt
+
+    - if: ${{ failure() || success() }}
+      name: 🔴 =means=> there's some BUGs
+      run: |
+        ! grep -C20 -F 'BUG: ' logs.txt
+
+    - if: ${{ failure() || success() }}
+      name: 🔴 =means=> here's relevant logs
+      run: |
+        ! grep -C20 -F ' >>> ' logs.txt
+
+    - if: ${{ failure() || success() }}
+      run: tail -n9999999 logs.txt ; echo >logs.txt
+    - run: sudo du -sh /var/lib/docker
+    - run: docker system df
+    - run: docker system df --verbose
+    - run: |
+        docker buildx du | head || true
+        docker buildx du | tail || true
+    - run: docker buildx du --verbose
+
+    - name: Target dir disk usage
+      if: ${{ failure() || success() }}
+      run: du -sh ~/instst
+
+    - name: Ensure running the same command twice without modifications...
+      run: |
+        CARGOGREEN_LOG=trace \
+        RUSTCBUILDX_LOG_PATH="$PWD"/logs.txt \
+          CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=1 --locked --force cargo-config2@0.1.26 --example=get |& tee _
+    - name: ...doesn't recompile anything
+      run: |
+        err=0
+        grep Finished  _ | grep -E [01]...s || err=1
+        grep Dirty     _                    && err=1
+        grep Compiling _                    && err=1
+        exit $err
+    - if: ${{ failure() || success() }}
+      name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
+      run: |
+        ! grep -C20 -F "thread 'main' panicked at src/cargo/util/dependency_queue.rs:" _
+
+    - if: ${{ failure() || success() }}
+      name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
+      run: |
+        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' logs.txt
+
+    - if: ${{ failure() || success() }}
+      name: 🔴 =means=> there's some panic!s
+      run: |
+        ! grep -C20 -F ' panicked at ' logs.txt
+
+    - if: ${{ failure() || success() }}
+      name: 🔴 =means=> there's some BUGs
+      run: |
+        ! grep -C20 -F 'BUG: ' logs.txt
+
+    - if: ${{ failure() || success() }}
+      name: 🔴 =means=> here's relevant logs
+      run: |
+        ! grep -C20 -F ' >>> ' logs.txt
+
+    - if: ${{ failure() || success() }}
+      run: tail -n9999999 logs.txt ; echo >logs.txt
+    - run: sudo du -sh /var/lib/docker
+    - run: docker system df
+    - run: docker system df --verbose
+    - run: |
+        docker buildx du | head || true
+        docker buildx du | tail || true
+    - run: docker buildx du --verbose
+
+    - name: Target dir disk usage
+      if: ${{ failure() || success() }}
+      run: du -sh ~/instst
+
