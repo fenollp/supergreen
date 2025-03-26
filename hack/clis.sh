@@ -23,7 +23,6 @@ declare -a nvs nvs_args
 ((i+=1)); nvs[i]=cross@0.2.5;                 oks[i]=ok; nvs_args[i]='--git https://github.com/cross-rs/cross.git --tag=v0.2.5 cross'
 ((i+=1)); nvs[i]=diesel_cli@2.1.1;            oks[i]=ko; nvs_args[i]='--no-default-features --features=postgres' # /usr/bin/ld: cannot find -lpq: No such file or directory
 ((i+=1)); nvs[i]=hickory-dns@0.25.0-alpha.1;  oks[i]=ok; nvs_args[i]='--features=dns-over-rustls'
-((i+=1)); nvs[i]=krnlc@0.1.1;                 oks[i]=ko; nvs_args[i]='' # type annotations needed for `Box<_>` .. time-0.3.31
 ((i+=1)); nvs[i]=mussh@3.1.3;                 oks[i]=ko; nvs_args[i]='' # = note: /usr/bin/ld: cannot find -lsqlite3: No such file or directory (and -lssl -lcrypto -lz)
 ((i+=1)); nvs[i]=ntpd@1.2.3;                  oks[i]=ok; nvs_args[i]=''
 ((i+=1)); nvs[i]=qcow2-rs@0.1.2;              oks[i]=ok; nvs_args[i]=''
@@ -330,7 +329,7 @@ tmux new-session -d -s "$session_name"
 tmux select-window -t "$session_name:0"
 
 send() {
-  tmux send-keys "$* && tmux select-layout even-vertical && exit" C-m
+  tmux send-keys " $* && tmux select-layout even-vertical && exit" C-m
 }
 
 

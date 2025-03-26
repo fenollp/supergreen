@@ -399,8 +399,6 @@ async fn do_wrap_rustc(
     if pwd != out_dir {
         rustc_block.push_str(&format!("WORKDIR {pwd}\n"));
     }
-    dbg!(&out_dir);
-    dbg!(&pwd);
 
     if let Some(ref incremental) = incremental {
         rustc_block.push_str(&format!("WORKDIR {incremental}\n"));
