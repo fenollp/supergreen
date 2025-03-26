@@ -69,7 +69,12 @@ declare -a nvs nvs_args
 ((i+=1)); nvs[i]=cargo-make@0.37.15;          oks[i]=ko; nvs_args[i]='' #
 
 
-((i+=1)); nvs[i]=coccinelleforrust@main;      oks[i]=ko; nvs_args[i]='--git https://gitlab.inria.fr/coccinelle/coccinelleforrust.git --rev=42eab688 cfr' #
+((i+=1)); nvs[i]=coccinelleforrust@main;      oks[i]=ko; nvs_args[i]='--git https://gitlab.inria.fr/coccinelle/coccinelleforrust.git --rev=b06ba306 coccinelleforrust' #--branch=ctl2
+# could not download file from 'https://static.rust-lang.org/dist/channel-rust-nightly.toml.sha256' to '/usr/local/rustup/tmp/dmbquji61f3vgrgv_file':
+#   failed to make network request: error sending request for url (https://static.rust-lang.org/dist/channel-rust-nightly.toml.sha256):
+#     client error (Connect): dns error: failed to lookup address information: Temporary failure in name resolution: failed to lookup address information: Temporary failure in name resolution
+#=> has a toolchain file requiring nightly but --network=none
+#==> see (1) adapt this file to `cargo +nightly install` (2) pass env to allow network (3) at each crate, read toolchain file to auto-add a corresponding stage
 
 ((i+=1)); nvs[i]=ipa@main;                    oks[i]=ko; nvs_args[i]='--git https://github.com/seekbytes/IPA.git --rev=3094f92 ipa' # environment variable `MIME_TYPES_GENERATED_PATH` not defined at compile time
 
