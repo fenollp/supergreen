@@ -225,7 +225,7 @@ pub(crate) fn as_rustc(
 fn out_dir_to_target_path(mut out_dir: Utf8PathBuf) -> Option<Utf8PathBuf> {
     match out_dir.iter().rev().take(3).collect::<Vec<_>>()[..] {
         ["deps", ..] => Some(out_dir.popped(1)),
-        ["examples", _profile, ..] => Some(out_dir.popped(2)),
+        ["examples", _profile, ..] => Some(out_dir.popped(1)),
         [_crate_dir, "build", ..] => Some(out_dir.popped(2)),
         ["out", _crate_dir, "build", ..] => Some(out_dir.popped(3)), // E.g. slab-0.4.9's build.rs
         _ => None,
