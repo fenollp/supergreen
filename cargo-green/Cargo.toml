@@ -38,6 +38,7 @@ futures.workspace = true
 home.workspace = true
 log.workspace = true
 nutype.workspace = true
+pico-args.workspace = true
 pretty_assertions.workspace = true         # TODO: drop once !dbg
 reqwest.workspace = true
 rustc_version.workspace = true

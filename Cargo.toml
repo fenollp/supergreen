@@ -39,6 +39,7 @@ futures = "0, >=0.3"
 home = "0, >=0.5"
 log = "0, >=0.4"
 nutype = "0, >=0.4"
+pico-args = { version = "0, >=0.5", features = [ "eq-separator" ] }
 pretty_assertions = "1"
 reqwest = { version = "0, >=0.12", default-features = false, features = [ "rustls-tls" ] }
 rustc_version = "0, >=0.4"
