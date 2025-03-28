@@ -55,6 +55,9 @@ jobs:
       run:
         shell: bash -euo pipefail {0}
     needs: bin
+    env:
+      CARGOGREEN_LOG: trace
+      RUSTCBUILDX_LOG_PATH: /home/runner/work/supergreen/logs.txt
     steps:
     - run: docker info
     - run: docker buildx version
@@ -91,6 +94,8 @@ jobs:
         restore-keys: ${{ github.job }}-${{ runner.os }}-cargo-deps-
 
     - run: cargo fetch
+    - name: Envs
+      run: cargo green supergreen env
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
@@ -99,10 +104,7 @@ jobs:
         docker buildx du | tail || true
     - run: docker buildx du --verbose
     - name: cargo install net=ON cache=OFF remote=OFF jobs=1
-      run: |
-        CARGOGREEN_LOG=trace \
-        RUSTCBUILDX_LOG_PATH="$PWD"/../logs.txt \
-          CARGO_TARGET_DIR=~/instst cargo green -vv install --jobs=1 --locked --force --path=./cargo-green |& tee ../_
+      run: cargo green -vv install --jobs=1 --locked --force --path=./cargo-green |& tee ../_
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
@@ -129,6 +131,7 @@ jobs:
         ! grep -C20 -F ' >>> ' ../logs.txt
 
     - if: ${{ failure() || success() }}
+      name: cargo-green logs
       run: tail -n9999999 ../logs.txt ; echo >../logs.txt
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
@@ -145,6 +148,9 @@ jobs:
       run:
         shell: bash -euo pipefail {0}
     needs: bin
+    env:
+      CARGOGREEN_LOG: trace
+      RUSTCBUILDX_LOG_PATH: /home/runner/work/supergreen/logs.txt
     steps:
     - run: docker info
     - run: docker buildx version
@@ -181,6 +187,8 @@ jobs:
         restore-keys: ${{ github.job }}-${{ runner.os }}-cargo-deps-
 
     - run: cargo fetch
+    - name: Envs
+      run: cargo green supergreen env
     - uses: taiki-e/install-action@v2
       with:
         tool: cargo-audit
@@ -192,10 +200,7 @@ jobs:
         docker buildx du | tail || true
     - run: docker buildx du --verbose
     - name: cargo audit net=ON cache=OFF remote=OFF
-      run: |
-        CARGOGREEN_LOG=trace \
-        RUSTCBUILDX_LOG_PATH="$PWD"/../logs.txt \
-          cargo green -vv audit |& tee ../_
+      run: cargo green -vv audit |& tee ../_
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
@@ -222,6 +227,7 @@ jobs:
         ! grep -C20 -F ' >>> ' ../logs.txt
 
     - if: ${{ failure() || success() }}
+      name: cargo-green logs
       run: tail -n9999999 ../logs.txt ; echo >../logs.txt
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
@@ -238,6 +244,9 @@ jobs:
       run:
         shell: bash -euo pipefail {0}
     needs: bin
+    env:
+      CARGOGREEN_LOG: trace
+      RUSTCBUILDX_LOG_PATH: /home/runner/work/supergreen/logs.txt
     steps:
     - run: docker info
     - run: docker buildx version
@@ -274,6 +283,8 @@ jobs:
         restore-keys: ${{ github.job }}-${{ runner.os }}-cargo-deps-
 
     - run: cargo fetch
+    - name: Envs
+      run: cargo green supergreen env
     - uses: taiki-e/install-action@v2
       with:
         tool: cargo-udeps
@@ -285,10 +296,7 @@ jobs:
         docker buildx du | tail || true
     - run: docker buildx du --verbose
     - name: cargo +nightly-2025-02-09 green udeps --all-targets --jobs=1 cache=OFF remote=OFF
-      run: |
-        CARGOGREEN_LOG=trace \
-        RUSTCBUILDX_LOG_PATH="$PWD"/../logs.txt \
-          cargo +nightly-2025-02-09 green udeps --all-targets --jobs=1 |& tee ../_
+      run: cargo +nightly-2025-02-09 green udeps --all-targets --jobs=1 |& tee ../_
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
@@ -315,6 +323,7 @@ jobs:
         ! grep -C20 -F ' >>> ' ../logs.txt
 
     - if: ${{ failure() || success() }}
+      name: cargo-green logs
       run: tail -n9999999 ../logs.txt ; echo >../logs.txt
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
@@ -324,10 +333,7 @@ jobs:
         docker buildx du | tail || true
     - run: docker buildx du --verbose
     - name: Again, with +toolchain to cargo-green
-      run: |
-        CARGOGREEN_LOG=trace \
-        RUSTCBUILDX_LOG_PATH="$PWD"/../logs.txt \
-          cargo green +nightly-2025-02-09 udeps --all-targets --jobs=1 |& tee ../_
+      run: cargo green +nightly-2025-02-09 udeps --all-targets --jobs=1 |& tee ../_
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
@@ -354,6 +360,7 @@ jobs:
         ! grep -C20 -F ' >>> ' ../logs.txt
 
     - if: ${{ failure() || success() }}
+      name: cargo-green logs
       run: tail -n9999999 ../logs.txt ; echo >../logs.txt
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
@@ -370,6 +377,9 @@ jobs:
       run:
         shell: bash -euo pipefail {0}
     needs: bin
+    env:
+      CARGOGREEN_LOG: trace
+      RUSTCBUILDX_LOG_PATH: /home/runner/work/supergreen/logs.txt
     steps:
     - run: docker info
     - run: docker buildx version
@@ -406,6 +416,8 @@ jobs:
         restore-keys: ${{ github.job }}-${{ runner.os }}-cargo-deps-
 
     - run: cargo fetch
+    - name: Envs
+      run: cargo green supergreen env
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
@@ -414,10 +426,7 @@ jobs:
         docker buildx du | tail || true
     - run: docker buildx du --verbose
     - name: cargo fetch
-      run: |
-        CARGOGREEN_LOG=trace \
-        RUSTCBUILDX_LOG_PATH="$PWD"/../logs.txt \
-          cargo green -vv fetch |& tee ../_
+      run: cargo green -vv fetch |& tee ../_
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
@@ -444,12 +453,10 @@ jobs:
         ! grep -C20 -F ' >>> ' ../logs.txt
 
     - if: ${{ failure() || success() }}
+      name: cargo-green logs
       run: tail -n9999999 ../logs.txt ; echo >../logs.txt
     - name: cargo build net=OFF cache=OFF remote=OFF jobs=1
-      run: |
-        CARGOGREEN_LOG=trace \
-        RUSTCBUILDX_LOG_PATH="$PWD"/../logs.txt \
-          cargo green -vv build --jobs=1 --all-targets --all-features --locked --frozen --offline |& tee ../_
+      run: cargo green -vv build --jobs=1 --all-targets --all-features --locked --frozen --offline |& tee ../_
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
@@ -476,6 +483,7 @@ jobs:
         ! grep -C20 -F ' >>> ' ../logs.txt
 
     - if: ${{ failure() || success() }}
+      name: cargo-green logs
       run: tail -n9999999 ../logs.txt ; echo >../logs.txt
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
@@ -485,10 +493,7 @@ jobs:
         docker buildx du | tail || true
     - run: docker buildx du --verbose
     - name: Ensure running the same command twice without modifications...
-      run: |
-        CARGOGREEN_LOG=trace \
-        RUSTCBUILDX_LOG_PATH="$PWD"/../logs.txt \
-          cargo green -vv build --jobs=1 --all-targets --all-features --locked --frozen --offline |& tee ../_
+      run: cargo green -vv build --jobs=1 --all-targets --all-features --locked --frozen --offline |& tee ../_
     - name: ...doesn't recompile anything
       run: |
         err=0
@@ -522,6 +527,7 @@ jobs:
         ! grep -C20 -F ' >>> ' ../logs.txt
 
     - if: ${{ failure() || success() }}
+      name: cargo-green logs
       run: tail -n9999999 ../logs.txt ; echo >../logs.txt
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
@@ -531,10 +537,7 @@ jobs:
         docker buildx du | tail || true
     - run: docker buildx du --verbose
     - name: Ensure running the same command thrice without modifications (jobs>1)...
-      run: |
-        CARGOGREEN_LOG=trace \
-        RUSTCBUILDX_LOG_PATH="$PWD"/../logs.txt \
-          cargo green -vv build --jobs=$(nproc) --all-targets --all-features --locked --frozen --offline |& tee ../_
+      run: cargo green -vv build --jobs=$(nproc) --all-targets --all-features --locked --frozen --offline |& tee ../_
     - name: ...doesn't recompile anything
       run: |
         err=0
@@ -568,6 +571,7 @@ jobs:
         ! grep -C20 -F ' >>> ' ../logs.txt
 
     - if: ${{ failure() || success() }}
+      name: cargo-green logs
       run: tail -n9999999 ../logs.txt ; echo >../logs.txt
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
@@ -584,6 +588,9 @@ jobs:
       run:
         shell: bash -euo pipefail {0}
     needs: bin
+    env:
+      CARGOGREEN_LOG: trace
+      RUSTCBUILDX_LOG_PATH: /home/runner/work/supergreen/logs.txt
     steps:
     - run: docker info
     - run: docker buildx version
@@ -620,6 +627,8 @@ jobs:
         restore-keys: ${{ github.job }}-${{ runner.os }}-cargo-deps-
 
     - run: cargo fetch
+    - name: Envs
+      run: cargo green supergreen env
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
@@ -628,10 +637,7 @@ jobs:
         docker buildx du | tail || true
     - run: docker buildx du --verbose
     - name: cargo fetch
-      run: |
-        CARGOGREEN_LOG=trace \
-        RUSTCBUILDX_LOG_PATH="$PWD"/../logs.txt \
-          cargo green -vv fetch |& tee ../_
+      run: cargo green -vv fetch |& tee ../_
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
@@ -658,12 +664,10 @@ jobs:
         ! grep -C20 -F ' >>> ' ../logs.txt
 
     - if: ${{ failure() || success() }}
+      name: cargo-green logs
       run: tail -n9999999 ../logs.txt ; echo >../logs.txt
     - name: cargo test net=OFF cache=OFF remote=OFF jobs=1
-      run: |
-        CARGOGREEN_LOG=trace \
-        RUSTCBUILDX_LOG_PATH="$PWD"/../logs.txt \
-          cargo green -vv test --jobs=1 --all-targets --all-features --locked --frozen --offline |& tee ../_
+      run: cargo green -vv test --jobs=1 --all-targets --all-features --locked --frozen --offline |& tee ../_
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
@@ -690,6 +694,7 @@ jobs:
         ! grep -C20 -F ' >>> ' ../logs.txt
 
     - if: ${{ failure() || success() }}
+      name: cargo-green logs
       run: tail -n9999999 ../logs.txt ; echo >../logs.txt
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
@@ -699,10 +704,7 @@ jobs:
         docker buildx du | tail || true
     - run: docker buildx du --verbose
     - name: Ensure running the same command twice without modifications...
-      run: |
-        CARGOGREEN_LOG=trace \
-        RUSTCBUILDX_LOG_PATH="$PWD"/../logs.txt \
-          cargo green -vv test --jobs=1 --all-targets --all-features --locked --frozen --offline |& tee ../_
+      run: cargo green -vv test --jobs=1 --all-targets --all-features --locked --frozen --offline |& tee ../_
     - name: ...doesn't recompile anything
       run: |
         err=0
@@ -736,6 +738,7 @@ jobs:
         ! grep -C20 -F ' >>> ' ../logs.txt
 
     - if: ${{ failure() || success() }}
+      name: cargo-green logs
       run: tail -n9999999 ../logs.txt ; echo >../logs.txt
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
@@ -745,10 +748,7 @@ jobs:
         docker buildx du | tail || true
     - run: docker buildx du --verbose
     - name: Ensure running the same command thrice without modifications (jobs>1)...
-      run: |
-        CARGOGREEN_LOG=trace \
-        RUSTCBUILDX_LOG_PATH="$PWD"/../logs.txt \
-          cargo green -vv test --jobs=$(nproc) --all-targets --all-features --locked --frozen --offline |& tee ../_
+      run: cargo green -vv test --jobs=$(nproc) --all-targets --all-features --locked --frozen --offline |& tee ../_
     - name: ...doesn't recompile anything
       run: |
         err=0
@@ -782,6 +782,7 @@ jobs:
         ! grep -C20 -F ' >>> ' ../logs.txt
 
     - if: ${{ failure() || success() }}
+      name: cargo-green logs
       run: tail -n9999999 ../logs.txt ; echo >../logs.txt
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
@@ -798,6 +799,9 @@ jobs:
       run:
         shell: bash -euo pipefail {0}
     needs: bin
+    env:
+      CARGOGREEN_LOG: trace
+      RUSTCBUILDX_LOG_PATH: /home/runner/work/supergreen/logs.txt
     steps:
     - run: docker info
     - run: docker buildx version
@@ -834,6 +838,8 @@ jobs:
         restore-keys: ${{ github.job }}-${{ runner.os }}-cargo-deps-
 
     - run: cargo fetch
+    - name: Envs
+      run: cargo green supergreen env
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
@@ -842,10 +848,7 @@ jobs:
         docker buildx du | tail || true
     - run: docker buildx du --verbose
     - name: cargo fetch
-      run: |
-        CARGOGREEN_LOG=trace \
-        RUSTCBUILDX_LOG_PATH="$PWD"/../logs.txt \
-          cargo green -vv fetch |& tee ../_
+      run: cargo green -vv fetch |& tee ../_
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
@@ -872,12 +875,10 @@ jobs:
         ! grep -C20 -F ' >>> ' ../logs.txt
 
     - if: ${{ failure() || success() }}
+      name: cargo-green logs
       run: tail -n9999999 ../logs.txt ; echo >../logs.txt
     - name: cargo check net=OFF cache=OFF remote=OFF jobs=$(nproc)
-      run: |
-        CARGOGREEN_LOG=trace \
-        RUSTCBUILDX_LOG_PATH="$PWD"/../logs.txt \
-          cargo green -vv check --jobs=$(nproc) --all-targets --all-features --locked --frozen --offline |& tee ../_
+      run: cargo green -vv check --jobs=$(nproc) --all-targets --all-features --locked --frozen --offline |& tee ../_
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
@@ -904,6 +905,7 @@ jobs:
         ! grep -C20 -F ' >>> ' ../logs.txt
 
     - if: ${{ failure() || success() }}
+      name: cargo-green logs
       run: tail -n9999999 ../logs.txt ; echo >../logs.txt
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
@@ -913,10 +915,7 @@ jobs:
         docker buildx du | tail || true
     - run: docker buildx du --verbose
     - name: Ensure running the same command twice without modifications...
-      run: |
-        CARGOGREEN_LOG=trace \
-        RUSTCBUILDX_LOG_PATH="$PWD"/../logs.txt \
-          cargo green -vv check --jobs=1 --all-targets --all-features --locked --frozen --offline |& tee ../_
+      run: cargo green -vv check --jobs=1 --all-targets --all-features --locked --frozen --offline |& tee ../_
     - name: ...doesn't recompile anything
       run: |
         err=0
@@ -950,6 +949,7 @@ jobs:
         ! grep -C20 -F ' >>> ' ../logs.txt
 
     - if: ${{ failure() || success() }}
+      name: cargo-green logs
       run: tail -n9999999 ../logs.txt ; echo >../logs.txt
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
@@ -966,6 +966,9 @@ jobs:
       run:
         shell: bash -euo pipefail {0}
     needs: bin
+    env:
+      CARGOGREEN_LOG: trace
+      RUSTCBUILDX_LOG_PATH: /home/runner/work/supergreen/logs.txt
     steps:
     - run: docker info
     - run: docker buildx version
@@ -1002,6 +1005,8 @@ jobs:
         restore-keys: ${{ github.job }}-${{ runner.os }}-cargo-deps-
 
     - run: cargo fetch
+    - name: Envs
+      run: cargo green supergreen env
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
@@ -1010,10 +1015,7 @@ jobs:
         docker buildx du | tail || true
     - run: docker buildx du --verbose
     - name: cargo fetch
-      run: |
-        CARGOGREEN_LOG=trace \
-        RUSTCBUILDX_LOG_PATH="$PWD"/../logs.txt \
-          CARGO_TARGET_DIR=~/cargo-package cargo green -vv fetch |& tee ../_
+      run: cargo green -vv fetch |& tee ../_
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
@@ -1040,12 +1042,10 @@ jobs:
         ! grep -C20 -F ' >>> ' ../logs.txt
 
     - if: ${{ failure() || success() }}
+      name: cargo-green logs
       run: tail -n9999999 ../logs.txt ; echo >../logs.txt
     - name: cargo package net=OFF cache=OFF remote=OFF jobs=1
-      run: |
-        CARGOGREEN_LOG=trace \
-        RUSTCBUILDX_LOG_PATH="$PWD"/../logs.txt \
-          CARGO_TARGET_DIR=~/cargo-package cargo green -vv package --jobs=1 --all-features --locked --frozen --offline |& tee ../_
+      run: cargo green -vv package --jobs=1 --all-features --locked --frozen --offline |& tee ../_
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
@@ -1072,6 +1072,7 @@ jobs:
         ! grep -C20 -F ' >>> ' ../logs.txt
 
     - if: ${{ failure() || success() }}
+      name: cargo-green logs
       run: tail -n9999999 ../logs.txt ; echo >../logs.txt
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
@@ -1088,6 +1089,9 @@ jobs:
       run:
         shell: bash -euo pipefail {0}
     needs: bin
+    env:
+      CARGOGREEN_LOG: trace
+      RUSTCBUILDX_LOG_PATH: /home/runner/work/supergreen/logs.txt
     steps:
     - run: docker info
     - run: docker buildx version
@@ -1124,6 +1128,8 @@ jobs:
         restore-keys: ${{ github.job }}-${{ runner.os }}-cargo-deps-
 
     - run: cargo fetch
+    - name: Envs
+      run: cargo green supergreen env
     - run: rustup component add clippy
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
@@ -1133,10 +1139,7 @@ jobs:
         docker buildx du | tail || true
     - run: docker buildx du --verbose
     - name: cargo fetch
-      run: |
-        CARGOGREEN_LOG=trace \
-        RUSTCBUILDX_LOG_PATH="$PWD"/../logs.txt \
-          cargo green -vv fetch
+      run: cargo green -vv fetch
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
@@ -1163,12 +1166,10 @@ jobs:
         ! grep -C20 -F ' >>> ' ../logs.txt
 
     - if: ${{ failure() || success() }}
+      name: cargo-green logs
       run: tail -n9999999 ../logs.txt ; echo >../logs.txt
     - name: cargo clippy net=OFF cache=OFF remote=OFF jobs=1
-      run: |
-        CARGOGREEN_LOG=trace \
-        RUSTCBUILDX_LOG_PATH="$PWD"/../logs.txt \
-          cargo green -vv clippy --jobs=1 --all-targets --all-features --locked --frozen --offline |& tee ../_
+      run: cargo green -vv clippy --jobs=1 --all-targets --all-features --locked --frozen --offline |& tee ../_
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
@@ -1195,6 +1196,7 @@ jobs:
         ! grep -C20 -F ' >>> ' ../logs.txt
 
     - if: ${{ failure() || success() }}
+      name: cargo-green logs
       run: tail -n9999999 ../logs.txt ; echo >../logs.txt
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
@@ -1204,10 +1206,7 @@ jobs:
         docker buildx du | tail || true
     - run: docker buildx du --verbose
     - name: Ensure running the same command twice without modifications...
-      run: |
-        CARGOGREEN_LOG=trace \
-        RUSTCBUILDX_LOG_PATH="$PWD"/../logs.txt \
-          cargo green -vv clippy --jobs=$(nproc) --all-targets --all-features --locked --frozen --offline |& tee ../_
+      run: cargo green -vv clippy --jobs=$(nproc) --all-targets --all-features --locked --frozen --offline |& tee ../_
     - name: ...doesn't recompile anything
       run: |
         err=0
@@ -1241,6 +1240,7 @@ jobs:
         ! grep -C20 -F ' >>> ' ../logs.txt
 
     - if: ${{ failure() || success() }}
+      name: cargo-green logs
       run: tail -n9999999 ../logs.txt ; echo >../logs.txt
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
