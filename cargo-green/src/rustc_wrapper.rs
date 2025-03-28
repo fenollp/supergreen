@@ -129,11 +129,11 @@ async fn wrap_rustc(
 
     let buildrs = crate_name == "build_script_build";
     // NOTE: krate_name != crate_name: Gets named build_script_build + s/-/_/g + may actually be a different name
-    let krate_name = env::var("CARGO_PKG_NAME").ok().unwrap();
+    let krate_name = env::var("CARGO_PKG_NAME").expect("$CARGO_PKG_NAME");
 
-    let krate_version = env::var("CARGO_PKG_VERSION").ok().unwrap();
+    let krate_version = env::var("CARGO_PKG_VERSION").expect("$CARGO_PKG_VERSION");
 
-    let krate_manifest_dir = env::var("CARGO_MANIFEST_DIR").ok().unwrap();
+    let krate_manifest_dir = env::var("CARGO_MANIFEST_DIR").expect("$CARGO_MANIFEST_DIR");
     let krate_manifest_dir = Utf8Path::new(&krate_manifest_dir);
 
     let krate_repository = env::var("CARGO_PKG_REPOSITORY").ok().unwrap_or_default();
