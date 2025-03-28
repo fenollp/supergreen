@@ -20,7 +20,7 @@ use tokio::{
 };
 
 use crate::{
-    envs::{cache_image, runner, runs_on_network},
+    envs::{cache_image, log_path, maybe_log, runner, runs_on_network},
     extensions::ShowCmd,
     logging::crate_type_for_logging,
     md::BuildContext,
@@ -260,8 +260,12 @@ pub(crate) async fn build(
     }
     drop(child);
 
+    // Something is very wrong here. Try to be helpful by logging some info about runner config:
     if !status.success() {
-        // Something is very wrong here. Try to be helpful by logging some info about runner config:
+        if maybe_log().is_some() {
+            bail!("Runner failed. Check logs over at {}", log_path())
+        }
+
         let mut cmd = Command::new(command);
         let cmd = cmd.kill_on_drop(true).arg("info");
         let Output { stdout, stderr, status } =

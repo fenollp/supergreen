@@ -11,10 +11,7 @@ version.workspace = true
 
 [package.metadata.green]
 this = """
-RUN echo '#!/bin/bash -eux -o pipefail' >/linker.sh
-RUN echo 'printf '\\n%s\\n\\n' "$*"' >>/linker.sh
-RUN echo 'exec /usr/bin/cc "$@"' >>/linker.sh
-RUN chmod +x /linker.sh
+RUN exit 42
 """
 
 # [profile.release]

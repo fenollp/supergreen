@@ -26,6 +26,7 @@ use crate::{
 
 fn green_field() -> Result<Option<String>> {
     let manifest_path = std::env::current_dir().expect("$PWD");
+    //>>>
     let manifest_path: PathBuf =
         std::fs::canonicalize(manifest_path).expect("canon").join("cargo-green/Cargo.toml");
     let manifest = Manifest::from_path(&manifest_path).context("from")?;
@@ -102,6 +103,7 @@ pub(crate) async fn main(cmd: &mut Command) -> Result<()> {
     cmd.env(
         internal::RUSTCBUILDX_RUNS_ON_NETWORK,
         internal::runs_on_network().unwrap_or_else(|| {
+            // TODO: get that from .block() -> (_,_)
             if base_image_block.contains(" apt-get ") { "default" } else { "none" }.to_owned()
         }),
     );

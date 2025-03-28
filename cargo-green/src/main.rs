@@ -121,19 +121,11 @@ async fn main() -> Result<()> {
     // maybe https://lib.rs/crates/clap-cargo
 
     if false {
-        // let manifest = match GreenCli::try_parse_from(env::args().skip(4)) {
-        //     Ok(GreenCli { manifest }) => manifest,
-        //     Err(e) => bail!(">>> {e}"),
-        // };
-
-        // let manifest = clap_cargo::Manifest::default();
         let manifest_path = std::env::current_dir().expect("$PWD");
         let manifest_path: PathBuf =
-                    // std::fs::canonicalize(manifest_path).expect("canon").join("Cargo.toml");
-                    std::fs::canonicalize(manifest_path).expect("canon").join("cargo-green/Cargo.toml");
+        //>>>
+            std::fs::canonicalize(manifest_path).expect("canon").join("cargo-green/Cargo.toml");
         let manifest = Manifest::from_path(&manifest_path).expect("from");
-
-        // panic!(">>> {:?}", env::vars().collect::<Vec<_>>())
 
         eprintln!(">>> {manifest_path:?}");
         eprintln!(">>> .package {:?}", manifest.package.clone());
@@ -158,11 +150,6 @@ async fn main() -> Result<()> {
             eprintln!(">>> {cfg:?}");
         }
 
-        // eprintln!(">>> .workspace {:?}", manifest.workspace.clone());
-        // eprintln!(
-        //     ">>> .workspace.package {:?}",
-        //     manifest.workspace.clone().map(|x| x.package).and_then(|x| x.metadata)
-        // );
         panic!(">>> {manifest:?}");
     }
 
