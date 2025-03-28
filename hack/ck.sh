@@ -105,6 +105,7 @@ cat <<EOF
         ! grep -C20 -F ' >>> ' $greenlogs
 
     - if: \${{ failure() || success() }}
+      name: cargo-green logs
       run: tail -n9999999 $greenlogs ; echo >$greenlogs
 EOF
 }
