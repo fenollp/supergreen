@@ -164,6 +164,7 @@ pub(crate) async fn build(
 
     if false {
         cmd.arg("--no-cache");
+        //NOTE: --no-cache-filter target1,target2 --no-cache-filter=target3 (&&)
     }
 
     //     cmd.arg(format!("--cache-to=type=registry,ref={img},mode=max,compression=zstd,force-compression=true,oci-mediatypes=true"));
