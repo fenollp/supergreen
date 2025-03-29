@@ -18,6 +18,7 @@ use crate::{
     cratesio::{self, rewrite_cratesio_index},
     envs::{self, internal, maybe_log, pass_env, runner, syntax, this},
     extensions::{Popped, ShowCmd},
+    green::Green,
     logging::{self, crate_type_for_logging},
     md::{BuildContext, Md},
     runner::{build, MARK_STDERR, MARK_STDOUT},
@@ -31,6 +32,7 @@ use crate::{
 //       Or in the words of this crate: https://github.com/camino-rs/camino/tree/8bec62382e1bce1326ee48f6bf93c46e7a4fde0b#:~:text=there%20are%20already%20many%20systems%2C%20such%20as%20cargo%2C%20that%20only%20support%20utf-8%20paths.%20if%20your%20own%20tool%20interacts%20with%20any%20such%20system%2C%20you%20can%20assume%20that%20paths%20are%20valid%20utf-8%20without%20creating%20any%20additional%20burdens%20on%20consumers.
 
 pub(crate) async fn main(
+    green: Green,
     arg0: Option<String>,
     args: Vec<String>,
     vars: BTreeMap<String, String>,
@@ -42,7 +44,7 @@ pub(crate) async fn main(
     // TODO: find a better heuristic to ensure `rustc` is rustc
     match &argz[..] {
         [rustc, "--crate-name", crate_name, ..] if rustc.ends_with("rustc") =>
-             wrap_rustc(crate_name, argv(1), call_rustc(rustc, argv(1))).await,
+             wrap_rustc(green, crate_name, argv(1), call_rustc(rustc, argv(1))).await,
         [driver, rustc, "-"|"--crate-name", ..] if rustc.ends_with("rustc") => {
             // TODO: wrap driver? + rustc
             // driver: e.g. $RUSTUP_HOME/toolchains/stable-x86_64-unknown-linux-gnu/bin/clippy-driver
@@ -112,6 +114,7 @@ async fn call_rustc(rustc: &str, args: Vec<String>) -> Result<()> {
 }
 
 async fn wrap_rustc(
+    green: Green,
     crate_name: &str,
     arguments: Vec<String>,
     fallback: impl Future<Output = Result<()>>,
@@ -149,9 +152,10 @@ async fn wrap_rustc(
 
     logging::setup(&full_krate_id, internal::RUSTCBUILDX_LOG, internal::RUSTCBUILDX_LOG_STYLE);
 
-    info!("{PKG}@{VSN} original args: {arguments:?} pwd={pwd} st={st:?}");
+    info!("{PKG}@{VSN} original args: {arguments:?} pwd={pwd} st={st:?} green={green:?}");
 
     do_wrap_rustc(
+        green,
         crate_name,
         &krate_name,
         krate_version,
@@ -171,6 +175,7 @@ async fn wrap_rustc(
 
 #[expect(clippy::too_many_arguments)]
 async fn do_wrap_rustc(
+    green: Green,
     crate_name: &str,
     krate_name: &str,
     krate_version: String,
@@ -544,17 +549,12 @@ async fn do_wrap_rustc(
     }
     rustc_block.push_str("        RUSTCBUILDX=1 \\\n");
 
-    // TODO: find a way to discover these
-    // e.g? https://doc.rust-lang.org/cargo/reference/build-scripts.html#rerun-if-env-changed
-    // e.g. https://doc.rust-lang.org/cargo/reference/build-scripts.html#rustc-env
-    // but actually no! The cargo directives get emitted when running compiled build script,
-    // and this is handled by cargo, outside of the wrapper!
     // => cargo upstream issue "pass env vars read/wrote by build script on call to rustc"
-    //   => https://github.com/rust-lang/cargo/issues/14444#issuecomment-2305891696
-    for var in ["NTPD_RS_GIT_REV", "NTPD_RS_GIT_DATE", "RING_CORE_PREFIX"] {
-        if let Ok(v) = env::var(var) {
-            warn!("passing ${var}={v:?} env through");
-            rustc_block.push_str(&format!("        {var}={v:?} \\\n"));
+    // TODO whence https://github.com/rust-lang/cargo/issues/14444#issuecomment-2305891696
+    for var in &green.set_envs {
+        if let Some(val) = env::var_os(var) {
+            warn!("passing ${var}={val:?} env through");
+            rustc_block.push_str(&format!("        {var}={val:?} \\\n"));
         }
     }
 

@@ -62,10 +62,14 @@ async fn main() -> Result<()> {
         }
         // Now running as a subprocess
 
+        let green = env::var("CARGOGREEN_ROOT_PACKAGE_SETTINGS").ok();
+        let green = green.and_then(|green| serde_json::from_str(&green).ok());
+        let Some(green) = green else { bail!("BUG: internal variable is unreadable or unset") };
+
         let arg0 = env::args().nth(1);
         let args = env::args().skip(1).collect();
         let vars = env::vars().collect();
-        return rustc_wrapper::main(arg0, args, vars).await;
+        return rustc_wrapper::main(green, arg0, args, vars).await;
     }
 
     if args.next().as_deref() != Some("green") {
@@ -99,7 +103,8 @@ async fn main() -> Result<()> {
 
     cmd.env("RUSTC_WRAPPER", arg0);
 
-    cargo_green::main(&mut cmd).await?;
+    let green = cargo_green::main(&mut cmd).await?;
+    cmd.env("CARGOGREEN_ROOT_PACKAGE_SETTINGS", serde_json::to_string(&green)?);
 
     let syntax = internal::syntax().expect("set in cargo_green::main");
 

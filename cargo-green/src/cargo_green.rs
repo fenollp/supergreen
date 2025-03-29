@@ -22,7 +22,7 @@ use crate::{
     PKG, REPO, VSN,
 };
 
-pub(crate) async fn main(cmd: &mut Command) -> Result<()> {
+pub(crate) async fn main(cmd: &mut Command) -> Result<Green> {
     // TODO read package.metadata.green
     // https://lib.rs/crates/cargo_metadata
     // https://github.com/stormshield/cargo-ft/blob/d4ba5b048345ab4b21f7992cc6ed12afff7cc863/src/package/metadata.rs
@@ -132,7 +132,7 @@ pub(crate) async fn main(cmd: &mut Command) -> Result<()> {
         // https://docs.docker.com/engine/security/protect-access/
     }
 
-    Ok(())
+    Ok(green)
 }
 
 // https://docs.docker.com/build/drivers/docker-container/

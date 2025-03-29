@@ -1,6 +1,8 @@
+use std::env;
+
 use anyhow::{anyhow, bail, Context, Result};
 use cargo_toml::Manifest;
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 
 use crate::{base::RUST, lockfile::find_manifest_path};
 
@@ -29,7 +31,7 @@ struct GreenMetadata {
     green: Green,
 }
 
-#[derive(Debug, Deserialize, Default)]
+#[derive(Debug, Serialize, Deserialize, Default)]
 #[serde(default)]
 #[serde(deny_unknown_fields)]
 #[serde(rename_all = "kebab-case")]
@@ -42,11 +44,22 @@ pub(crate) struct Green {
     //
     //
     // base-image-inline = """
-    // FROM --platform=$BUILDPLATFORM rust:1 AS rust
+    // FROM --platform=$BUILDPLATFORM rust:1 AS rust-base
     // RUN --mount=from=some-context,target=/tmp/some-context cp -r /tmp/some-context ./
     // RUN --mount=type=secret,id=aws
     // """
     pub(crate) base_image_inline: String,
+
+    // Pass environment variables through to build runner.
+    // $CARGOGREEN_SET_ENVS overrides this setting.
+    // See also:
+    //   `packages`
+    // May be useful if a build script exported some vars that a package then reads.
+    // See $GIT_AUTH_TOKEN: https://docs.docker.com/build/building/secrets/#git-authentication-for-remote-contexts
+    //
+    //
+    // set-envs = [ "GIT_AUTH_TOKEN", "TYPENUM_BUILD_CONSTS", "TYPENUM_BUILD_OP" ]
+    pub(crate) set_envs: Vec<String>,
 }
 
 impl Green {
@@ -62,7 +75,7 @@ impl Green {
     }
 
     pub(crate) fn try_from_manifest(manifest: &Manifest) -> Result<Self> {
-        let green =
+        let mut green =
             if let Some(metadata) = manifest.package.as_ref().and_then(|x| x.metadata.as_ref()) {
                 let GreenMetadata { green } = toml::from_str(&toml::to_string(metadata)?)?;
                 green
@@ -77,14 +90,30 @@ impl Green {
                 .iter()
                 .any(|x| green.base_image_inline.starts_with(x))
             {
-                bail!("[metadata.green.base-image-inline] must not override syntax")
+                bail!("[metadata.green.base-image-inline] overrides syntax")
             }
 
             // TODO: drop this requirement by allowing a `base-image-stage` override
             if !green.base_image_inline.contains(&format!(" AS {RUST}\n"))
                 && !green.base_image_inline.contains(&format!(" as {RUST}\n"))
             {
-                bail!("[metadata.green.base-image-inline] must provide a stage named '{RUST}'")
+                bail!("[metadata.green.base-image-inline] does not provide a stage named '{RUST}'")
+            }
+        }
+
+        if let Ok(val) = env::var("CARGOGREEN_SET_ENVS") {
+            let vars: Vec<String> = serde_json::from_str(&val)?;
+            green.set_envs = vars;
+        }
+        if !green.set_envs.is_empty() {
+            if green.set_envs.iter().any(String::is_empty) {
+                bail!("[metadata.green.set-envs] contains empty names")
+            }
+            if green.set_envs.iter().any(|var| var.starts_with("CARGOGREEN_")) {
+                bail!("[metadata.green.set-envs] contains CARGOGREEN_* names")
+            }
+            if green.set_envs.iter().any(|var| var.starts_with("RUSTCBUILDX_")) {
+                bail!("[metadata.green.set-envs] contains RUSTCBUILDX_* names")
             }
         }
 
@@ -112,6 +141,58 @@ name = "test-package"
         Green::try_from_manifest(&manifest).unwrap();
     }
 
+    //
+
+    #[test]
+    fn metadata_green_set_envs_ok() {
+        let manifest = Manifest::from_str(
+            r#"
+[package]
+name = "test-package"
+
+[package.metadata.green]
+set-envs = [ "GIT_AUTH_TOKEN", "TYPENUM_BUILD_CONSTS", "TYPENUM_BUILD_OP" ]
+"#,
+        )
+        .unwrap();
+        let green = Green::try_from_manifest(&manifest).unwrap();
+        assert!(!green.set_envs.is_empty());
+    }
+
+    #[test]
+    fn metadata_green_set_envs_empty_var() {
+        let manifest = Manifest::from_str(
+            r#"
+[package]
+name = "test-package"
+
+[package.metadata.green]
+set-envs = [ "" ]
+"#,
+        )
+        .unwrap();
+        let err = Green::try_from_manifest(&manifest).err().unwrap().to_string();
+        assert!(err.contains("empty name"));
+    }
+
+    #[test]
+    fn metadata_green_set_envs_our_vars() {
+        let manifest = Manifest::from_str(
+            r#"
+[package]
+name = "test-package"
+
+[package.metadata.green]
+set-envs = [ "CARGOGREEN_LOG" ]
+"#,
+        )
+        .unwrap();
+        let err = Green::try_from_manifest(&manifest).err().unwrap().to_string();
+        assert!(err.contains("CARGOGREEN"));
+    }
+
+    //
+
     #[test]
     fn metadata_green_base_image_inline_ok() {
         let manifest = Manifest::from_str(
@@ -121,7 +202,7 @@ name = "test-package"
 
 [package.metadata.green]
 base-image-inline = """
-FROM rust:1 AS rust
+FROM rust:1 AS rust-base
 RUN --mount=from=some-context,target=/tmp/some-context cp -r /tmp/some-context ./
 RUN --mount=type=secret,id=aws
 """
@@ -142,7 +223,7 @@ name = "test-package"
 [package.metadata.green]
 base-image-inline = """
 # syntax = ghcr.io/reproducible-containers/buildkit-nix:v0.1.1@sha256:7d4c42a5c6baea2b21145589afa85e0862625e6779c89488987266b85e088021
-FROM xyz AS rust
+FROM xyz AS rust-base
 RUN exit 42
 """
 "#,
@@ -169,9 +250,9 @@ RUN exit 42
         )
         .unwrap();
         let err = Green::try_from_manifest(&manifest).err().unwrap().to_string();
-        assert!(err.contains("must provide"));
+        assert!(err.contains("provide"));
         assert!(err.contains("stage"));
-        assert!(err.contains("'rust'"));
+        assert!(err.contains("'rust-base'"));
     }
 }
 
