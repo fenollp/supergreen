@@ -64,7 +64,7 @@ pub(crate) async fn main(cmd: &mut Command) -> Result<()> {
     }
     env::set_var(internal::RUSTCBUILDX_BASE_IMAGE, base_image.base());
 
-    let green = Green::try_new().await?;
+    let green = Green::try_new()?;
 
     let (base_image_block, with_network) = if !green.base_image_inline.is_empty() {
         (green.base_image_inline.clone(), true)

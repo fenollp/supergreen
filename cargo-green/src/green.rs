@@ -2,7 +2,7 @@ use anyhow::{anyhow, bail, Context, Result};
 use cargo_toml::Manifest;
 use serde::Deserialize;
 
-use crate::lockfile::find_package_and_workspace_tomls;
+use crate::lockfile::find_manifest_path;
 
 // use std::fmt;
 
@@ -51,8 +51,8 @@ pub(crate) struct Green {
 
 impl Green {
     // TODO: handle worskpace cfg + merging fields
-    pub(crate) async fn try_new() -> Result<Self> {
-        let (_todo, manifest_path) = find_package_and_workspace_tomls().await?;
+    pub(crate) fn try_new() -> Result<Self> {
+        let manifest_path = find_manifest_path()?;
 
         let manifest =
             Manifest::from_path(&manifest_path) //hmmmm this searches workspace tho

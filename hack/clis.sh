@@ -283,17 +283,17 @@ set -x
     echo "$arg1"
     echo "Target dir: $tmptrgt"
     echo "Logs: $tmplogs"
-    CARGOGREEN_LOG=trace \
-    RUSTCBUILDX_LOG_PATH="$tmplogs" \
-    RUSTCBUILDX_CACHE_IMAGE="${RUSTCBUILDX_CACHE_IMAGE:-}" \
-    PATH=$install_dir/bin:"$PATH" \
-      \cargo green -v fetch
+    # CARGOGREEN_LOG=trace \
+    # RUSTCBUILDX_LOG_PATH="$tmplogs" \
+    # RUSTCBUILDX_CACHE_IMAGE="${RUSTCBUILDX_CACHE_IMAGE:-}" \
+    # PATH=$install_dir/bin:"$PATH" \
+    #   \cargo green -v fetch
     CARGOGREEN_LOG=trace \
     RUSTCBUILDX_LOG_PATH="$tmplogs" \
     RUSTCBUILDX_CACHE_IMAGE="${RUSTCBUILDX_CACHE_IMAGE:-}" \
     PATH=$install_dir/bin:"$PATH" \
     CARGO_TARGET_DIR="$tmptrgt" \
-      \cargo green -v $arg1 --jobs=${jobs:-$(nproc)} --all-targets --all-features --locked --frozen --offline
+      \cargo green -v $arg1 --jobs=${jobs:-$(nproc)} --all-targets --all-features --locked --frozen --offline -p cargo-green
     #if [[ "$clean" = 1 ]]; then docker buildx du --builder=supergreen --verbose | tee --append "$tmplogs" || exit 1; fi
     # TODO: tag/label buildx storage so things can be deleted with fine filters
     maybe_show_logs "$tmplogs"

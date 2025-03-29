@@ -37,18 +37,32 @@ pub(crate) async fn find_lockfile() -> Result<Utf8PathBuf> {
     Ok(manifest_path.with_extension("lock"))
 }
 
-pub(crate) async fn find_package_and_workspace_tomls() -> Result<(Option<Utf8PathBuf>, Utf8PathBuf)>
-{
-    let manifest_path = cargo_locate_project(false).await?;
-    let workspace_manifest_path = cargo_locate_project(true).await?;
-    let workspace_manifest_path =
-        (workspace_manifest_path != manifest_path).then_some(workspace_manifest_path);
-    Ok((workspace_manifest_path, manifest_path))
+pub(crate) fn find_manifest_path() -> Result<Utf8PathBuf> {
+    if let Some(manifest_path) = find_toml_from_env()? {
+        return Ok(manifest_path);
+    }
+    Ok(env::current_dir()?.join("Cargo.toml").try_into()?)
 }
 
 fn find_toml_from_env() -> Result<Option<Utf8PathBuf>> {
     let mut args = Arguments::from_env();
-    Ok(args.opt_value_from_str("--manifest-path")?.map(|x: String| Into::<Utf8PathBuf>::into(x)))
+
+    let manifest_path: Option<String> = args.opt_value_from_str("--manifest-path")?;
+    if let Some(manifest_path) = manifest_path {
+        return Ok(Some(manifest_path.into()));
+    }
+
+    //FIXME: not true for cinstall
+    let package: Option<String> = args.opt_value_from_str(["-p", "--package"])?;
+    if let Some(package) = package {
+        let manifest_path: Utf8PathBuf =
+            env::current_dir()?.join(package).join("Cargo.toml").try_into()?;
+        if file_exists_and_is_not_empty(manifest_path.as_path())? {
+            return Ok(Some(manifest_path));
+        }
+    }
+
+    Ok(None)
 }
 
 // Returns Cargo.toml
