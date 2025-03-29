@@ -14,6 +14,7 @@ use crate::{
     cratesio::{self},
     envs::{builder_image, cache_image, incremental, internal, maybe_log, runner, DEFAULT_SYNTAX},
     extensions::ShowCmd,
+    green::Green,
     lockfile::{find_lockfile, locked_crates},
     logging,
     runner::{build, fetch_digest, maybe_lock_image, runner_cmd},
@@ -21,7 +22,7 @@ use crate::{
     PKG, REPO, VSN,
 };
 
-pub(crate) async fn main(cmd: &mut Command) -> Result<()> {
+pub(crate) async fn main(cmd: &mut Command) -> Result<Green> {
     // TODO read package.metadata.green
     // https://lib.rs/crates/cargo_metadata
     // https://github.com/stormshield/cargo-ft/blob/d4ba5b048345ab4b21f7992cc6ed12afff7cc863/src/package/metadata.rs
@@ -63,13 +64,18 @@ pub(crate) async fn main(cmd: &mut Command) -> Result<()> {
     }
     env::set_var(internal::RUSTCBUILDX_BASE_IMAGE, base_image.base());
 
-    let base_image_block = base_image.block();
-    env::set_var("RUSTCBUILDX_BASE_IMAGE_BLOCK_", base_image_block.clone());
+    let green = Green::try_new()?;
+
+    let (base_image_block, with_network) = if !green.base_image_inline.is_empty() {
+        (green.base_image_inline.clone(), true)
+    } else {
+        base_image.block()
+    };
+    env::set_var("RUSTCBUILDX_BASE_IMAGE_BLOCK_", base_image_block);
     cmd.env(
         internal::RUSTCBUILDX_RUNS_ON_NETWORK,
-        internal::runs_on_network().unwrap_or_else(|| {
-            if base_image_block.contains(" apt-get ") { "default" } else { "none" }.to_owned()
-        }),
+        internal::runs_on_network()
+            .unwrap_or_else(|| if with_network { "default" } else { "none" }.to_owned()),
     );
 
     let builder_image = builder_image().await;
@@ -126,7 +132,7 @@ pub(crate) async fn main(cmd: &mut Command) -> Result<()> {
         // https://docs.docker.com/engine/security/protect-access/
     }
 
-    Ok(())
+    Ok(green)
 }
 
 // https://docs.docker.com/build/drivers/docker-container/

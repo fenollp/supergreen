@@ -1,8 +1,9 @@
-use std::env;
+use std::{env, process::Output};
 
 use anyhow::{bail, Result};
 use camino::{Utf8Path, Utf8PathBuf};
 use cargo_lock::{Lockfile, Package, SourceId};
+use pico_args::Arguments;
 use serde::Deserialize;
 use tokio::process::Command;
 
@@ -36,6 +37,35 @@ pub(crate) async fn find_lockfile() -> Result<Utf8PathBuf> {
     Ok(manifest_path.with_extension("lock"))
 }
 
+pub(crate) fn find_manifest_path() -> Result<Utf8PathBuf> {
+    if let Some(manifest_path) = find_toml_from_env()? {
+        return Ok(manifest_path);
+    }
+    Ok(env::current_dir()?.join("Cargo.toml").try_into()?)
+}
+
+fn find_toml_from_env() -> Result<Option<Utf8PathBuf>> {
+    let mut args = Arguments::from_env();
+
+    let manifest_path: Option<String> = args.opt_value_from_str("--manifest-path")?;
+    if let Some(manifest_path) = manifest_path {
+        return Ok(Some(manifest_path.into()));
+    }
+
+    //FIXME: not true for cinstall
+    let package: Option<String> = args.opt_value_from_str(["-p", "--package"])?;
+    if let Some(package) = package {
+        let manifest_path: Utf8PathBuf =
+            env::current_dir()?.join(package).join("Cargo.toml").try_into()?;
+        if file_exists_and_is_not_empty(manifest_path.as_path())? {
+            return Ok(Some(manifest_path));
+        }
+    }
+
+    Ok(None)
+}
+
+// Returns Cargo.toml
 // https://doc.rust-lang.org/cargo/commands/cargo-locate-project.html
 // https://github.com/rust-lang/cargo/blob/3e96f1a28e47d4fd0f354b3a067d6322a8730cb6/src/bin/cargo/commands/locate_project.rs#L29
 async fn cargo_locate_project(at_workspace: bool) -> Result<Utf8PathBuf> {
@@ -43,13 +73,17 @@ async fn cargo_locate_project(at_workspace: bool) -> Result<Utf8PathBuf> {
     cmd.kill_on_drop(true);
 
     cmd.arg("locate-project");
+    if let Some(manifest_path) = find_toml_from_env()? {
+        cmd.arg("--manifest-path");
+        cmd.arg(manifest_path);
+    }
     if at_workspace {
         cmd.arg("--workspace");
     }
 
-    let output = cmd.output().await?;
-    if !output.stderr.is_empty() {
-        bail!("{} failed: {:?}", cmd.show(), output.stderr)
+    let Output { stderr, stdout, status } = cmd.output().await?;
+    if !status.success() || !stderr.is_empty() {
+        bail!("{} failed: {:?}", cmd.show(), String::from_utf8_lossy(&stderr))
     }
 
     #[derive(Debug, Deserialize)]
@@ -57,6 +91,6 @@ async fn cargo_locate_project(at_workspace: bool) -> Result<Utf8PathBuf> {
         root: Utf8PathBuf,
     }
 
-    let Located { root } = serde_json::from_slice(&output.stdout)?;
+    let Located { root } = serde_json::from_slice(&stdout)?;
     Ok(root)
 }
