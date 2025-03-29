@@ -3,7 +3,7 @@ use rustc_version::{Channel, Version, VersionMeta};
 
 use crate::{envs::internal, runner::maybe_lock_image};
 
-pub(crate) const RUST: &str = "rust-base";
+pub(crate) const RUST: &str = "rust";
 
 #[derive(Clone, Debug, PartialEq)]
 pub(crate) struct RustcV {

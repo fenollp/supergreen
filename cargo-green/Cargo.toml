@@ -11,7 +11,8 @@ version.workspace = true
 
 [package.metadata.green]
 base-image-inline = """
-RUN exit 42
+FROM rust AS rust
+RUN echo Hello there
 """
 
 # [profile.release]

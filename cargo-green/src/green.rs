@@ -2,7 +2,7 @@ use anyhow::{anyhow, bail, Context, Result};
 use cargo_toml::Manifest;
 use serde::Deserialize;
 
-use crate::lockfile::find_manifest_path;
+use crate::{base::RUST, lockfile::find_manifest_path};
 
 // use std::fmt;
 
@@ -81,10 +81,10 @@ impl Green {
             }
 
             // TODO: drop this requirement by allowing a `base-image-stage` override
-            if !green.base_image_inline.contains(" AS rust\n")
-                && !green.base_image_inline.contains(" as rust\n")
+            if !green.base_image_inline.contains(&format!(" AS {RUST}\n"))
+                && !green.base_image_inline.contains(&format!(" as {RUST}\n"))
             {
-                bail!("[metadata.green.base-image-inline] must provide a stage named 'rust'")
+                bail!("[metadata.green.base-image-inline] must provide a stage named '{RUST}'")
             }
         }
 
