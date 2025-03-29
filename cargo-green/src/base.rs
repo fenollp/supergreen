@@ -133,12 +133,12 @@ impl BaseImage {
     }
 
     #[must_use]
-    pub(crate) fn block(&self) -> String {
+    pub(crate) fn block(&self) -> (String, bool) {
         let base = self.base();
         let base = base.trim_start_matches("docker-image://");
 
         match self {
-            Self::Image(_) => format!("FROM --platform=$BUILDPLATFORM {base} AS {RUST}\n"),
+            Self::Image(_) => (format!("FROM --platform=$BUILDPLATFORM {base} AS {RUST}\n"), false),
             Self::RustcV(RustcV { date, channel, .. }) => {
                 // TODO? maybe use commit & version as selector too?
 
@@ -154,35 +154,38 @@ impl BaseImage {
                 };
 
                 // Inspired from https://github.com/rust-lang/docker-rust/blob/d14e1ad7efeb270012b1a7e88fea699b1d1082f2/nightly/bullseye/slim/Dockerfile
-                format!(
-                    r#"
-FROM scratch AS rustup
-ADD --chmod=0755 --checksum=sha256:6aeece6993e902708983b209d04c0d1dbb14ebb405ddb87def578d41f920f56d \
-  https://static.rust-lang.org/rustup/archive/1.27.1/x86_64-unknown-linux-gnu/rustup-init /rustup-init
-FROM --platform=$BUILDPLATFORM {base} AS {RUST}
-ENV RUSTUP_HOME=/usr/local/rustup \
-     CARGO_HOME=/usr/local/cargo \
-           PATH=/usr/local/cargo/bin:$PATH
-RUN \
-    set -ux \
- && apt-get update \
- && apt-get install -y --no-install-recommends \
-      ca-certificates \
-      gcc \
-      libc6-dev
-RUN \
-  --mount=from=rustup,source=/rustup-init,target=/rustup-init \
-    set -ux \
- && /rustup-init -y --no-modify-path --profile minimal --default-toolchain {channel}-{date} --default-host x86_64-unknown-linux-gnu \
- && chmod -R a+w $RUSTUP_HOME $CARGO_HOME \
- && rustup --version \
- && cargo --version \
- && rustc --version \
- && apt-get remove -y --auto-remove \
- && rm -rf /var/lib/apt/lists/* \
-# clean up for reproducibility
- && rm -rf /var/log/* /var/cache/ldconfig/aux-cache
-"#
+                (
+                    format!(
+                        r#"
+               FROM scratch AS rustup
+               ADD --chmod=0755 --checksum=sha256:6aeece6993e902708983b209d04c0d1dbb14ebb405ddb87def578d41f920f56d \
+                 https://static.rust-lang.org/rustup/archive/1.27.1/x86_64-unknown-linux-gnu/rustup-init /rustup-init
+               FROM --platform=$BUILDPLATFORM {base} AS {RUST}
+               ENV RUSTUP_HOME=/usr/local/rustup \
+                    CARGO_HOME=/usr/local/cargo \
+                          PATH=/usr/local/cargo/bin:$PATH
+               RUN \
+                   set -ux \
+                && apt-get update \
+                && apt-get install -y --no-install-recommends \
+                     ca-certificates \
+                     gcc \
+                     libc6-dev
+               RUN \
+                 --mount=from=rustup,source=/rustup-init,target=/rustup-init \
+                   set -ux \
+                && /rustup-init -y --no-modify-path --profile minimal --default-toolchain {channel}-{date} --default-host x86_64-unknown-linux-gnu \
+                && chmod -R a+w $RUSTUP_HOME $CARGO_HOME \
+                && rustup --version \
+                && cargo --version \
+                && rustc --version \
+                && apt-get remove -y --auto-remove \
+                && rm -rf /var/lib/apt/lists/* \
+               # clean up for reproducibility
+                && rm -rf /var/log/* /var/cache/ldconfig/aux-cache
+               "#
+                    ),
+                    true,
                 )
             }
         }

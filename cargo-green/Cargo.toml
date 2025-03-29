@@ -10,7 +10,7 @@ repository.workspace = true
 version.workspace = true
 
 [package.metadata.green]
-this = """
+base-image-inline = """
 RUN exit 42
 """
 

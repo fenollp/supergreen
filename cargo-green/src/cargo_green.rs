@@ -14,7 +14,7 @@ use crate::{
     cratesio::{self},
     envs::{builder_image, cache_image, incremental, internal, maybe_log, runner, DEFAULT_SYNTAX},
     extensions::ShowCmd,
-    green::green_field,
+    green::Green,
     lockfile::{find_lockfile, locked_crates},
     logging,
     runner::{build, fetch_digest, maybe_lock_image, runner_cmd},
@@ -64,17 +64,18 @@ pub(crate) async fn main(cmd: &mut Command) -> Result<()> {
     }
     env::set_var(internal::RUSTCBUILDX_BASE_IMAGE, base_image.base());
 
-    let mut base_image_block = base_image.block();
-    if let Some(ref more_steps) = green_field().await? {
-        base_image_block.push_str(more_steps);
-    }
-    env::set_var("RUSTCBUILDX_BASE_IMAGE_BLOCK_", base_image_block.clone());
+    let green = Green::try_new().await?;
+
+    let (base_image_block, with_network) = if !green.base_image_inline.is_empty() {
+        (green.base_image_inline.clone(), true)
+    } else {
+        base_image.block()
+    };
+    env::set_var("RUSTCBUILDX_BASE_IMAGE_BLOCK_", base_image_block);
     cmd.env(
         internal::RUSTCBUILDX_RUNS_ON_NETWORK,
-        internal::runs_on_network().unwrap_or_else(|| {
-            // TODO: get that from .block() -> (_,_)
-            if base_image_block.contains(" apt-get ") { "default" } else { "none" }.to_owned()
-        }),
+        internal::runs_on_network()
+            .unwrap_or_else(|| if with_network { "default" } else { "none" }.to_owned()),
     );
 
     let builder_image = builder_image().await;

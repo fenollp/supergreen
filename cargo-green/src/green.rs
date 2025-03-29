@@ -1,4 +1,4 @@
-use anyhow::{anyhow, Context, Result};
+use anyhow::{anyhow, bail, Context, Result};
 use cargo_toml::Manifest;
 use serde::Deserialize;
 
@@ -29,26 +29,150 @@ struct GreenMetadata {
     green: Green,
 }
 
-#[derive(Debug, Deserialize)]
-struct Green {
-    this: String,
+#[derive(Debug, Deserialize, Default)]
+#[serde(default)]
+#[serde(deny_unknown_fields)]
+#[serde(rename_all = "kebab-case")]
+pub(crate) struct Green {
+    // Sets the base Rust image for root package and all dependencies, unless themselves being configured differently.
+    // See also:
+    //   `additional-build-arguments`
+    // In order to avoid unexpected changes, you may want to pin the image using an immutable digest.
+    // Note that carefully crafting crossplatform stages can be non-trivial.
+    //
+    //
+    // base-image-inline = """
+    // FROM --platform=$BUILDPLATFORM rust:1 AS rust
+    // RUN --mount=from=some-context,target=/tmp/some-context cp -r /tmp/some-context ./
+    // RUN --mount=type=secret,id=aws
+    // """
+    pub(crate) base_image_inline: String,
 }
 
-// TODO: handle worskpace cfg + merging fields
-pub(crate) async fn green_field() -> Result<Option<String>> {
-    let (_todo, manifest_path) = find_package_and_workspace_tomls().await?;
+impl Green {
+    // TODO: handle worskpace cfg + merging fields
+    pub(crate) async fn try_new() -> Result<Self> {
+        let (_todo, manifest_path) = find_package_and_workspace_tomls().await?;
 
-    let manifest = Manifest::from_path(&manifest_path)
-        .with_context(|| anyhow!("Reading package manifest {manifest_path}"))?;
+        let manifest =
+            Manifest::from_path(&manifest_path) //hmmmm this searches workspace tho
+                .with_context(|| anyhow!("Reading package manifest {manifest_path}"))?;
 
-    if let Some(metadata) = manifest.package.as_ref().and_then(|x| x.metadata.as_ref()) {
-        let GreenMetadata { green } =
-            toml::from_str(&toml::to_string(metadata).expect("str")).expect("parse");
-
-        return Ok((!green.this.is_empty()).then_some(green.this));
+        Self::try_from_manifest(&manifest)
     }
 
-    Ok(None)
+    pub(crate) fn try_from_manifest(manifest: &Manifest) -> Result<Self> {
+        let green =
+            if let Some(metadata) = manifest.package.as_ref().and_then(|x| x.metadata.as_ref()) {
+                let GreenMetadata { green } = toml::from_str(&toml::to_string(metadata)?)?;
+                green
+            } else {
+                Self::default()
+            };
+
+        // if let Some(val) =            env::var("CARGOGREEN_BASE_IMAGE").ok().and_then(|val| (!val.is_empty()).then_some(val))        {        }
+
+        if !green.base_image_inline.is_empty() {
+            if ["#syntax=", "# syntax=", "#syntax =", "# syntax ="]
+                .iter()
+                .any(|x| green.base_image_inline.starts_with(x))
+            {
+                bail!("[metadata.green.base-image-inline] must not override syntax")
+            }
+
+            // TODO: drop this requirement by allowing a `base-image-stage` override
+            if !green.base_image_inline.contains(" AS rust\n")
+                && !green.base_image_inline.contains(" as rust\n")
+            {
+                bail!("[metadata.green.base-image-inline] must provide a stage named 'rust'")
+            }
+        }
+
+        Ok(green)
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use cargo_toml::Manifest;
+
+    use super::Green;
+
+    #[test]
+    fn metadata_green_ok() {
+        let manifest = Manifest::from_str(
+            r#"
+[package]
+name = "test-package"
+
+[package.metadata.green]
+"#,
+        )
+        .unwrap();
+        Green::try_from_manifest(&manifest).unwrap();
+    }
+
+    #[test]
+    fn metadata_green_base_image_inline_ok() {
+        let manifest = Manifest::from_str(
+            r#"
+[package]
+name = "test-package"
+
+[package.metadata.green]
+base-image-inline = """
+FROM rust:1 AS rust
+RUN --mount=from=some-context,target=/tmp/some-context cp -r /tmp/some-context ./
+RUN --mount=type=secret,id=aws
+"""
+"#,
+        )
+        .unwrap();
+        let green = Green::try_from_manifest(&manifest).unwrap();
+        assert!(!green.base_image_inline.is_empty());
+    }
+
+    #[test]
+    fn metadata_green_base_image_inline_bad_syntax() {
+        let manifest = Manifest::from_str(
+        r#"
+[package]
+name = "test-package"
+
+[package.metadata.green]
+base-image-inline = """
+# syntax = ghcr.io/reproducible-containers/buildkit-nix:v0.1.1@sha256:7d4c42a5c6baea2b21145589afa85e0862625e6779c89488987266b85e088021
+FROM xyz AS rust
+RUN exit 42
+"""
+"#,
+    )
+    .unwrap();
+        let err = Green::try_from_manifest(&manifest).err().unwrap().to_string();
+        assert!(err.contains("override"));
+        assert!(err.contains("syntax"));
+    }
+
+    #[test]
+    fn metadata_green_base_image_inline_bad_stage() {
+        let manifest = Manifest::from_str(
+            r#"
+[package]
+name = "test-package"
+
+[package.metadata.green]
+base-image-inline = """
+FROM xyz AS not-rust
+RUN exit 42
+"""
+"#,
+        )
+        .unwrap();
+        let err = Green::try_from_manifest(&manifest).err().unwrap().to_string();
+        assert!(err.contains("must provide"));
+        assert!(err.contains("stage"));
+        assert!(err.contains("'rust'"));
+    }
 }
 
 //////////////////////////////////////////////////
