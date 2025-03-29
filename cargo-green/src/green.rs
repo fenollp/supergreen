@@ -1,4 +1,8 @@
-use clap::Parser;
+use anyhow::{anyhow, Context, Result};
+use cargo_toml::Manifest;
+use serde::Deserialize;
+
+use crate::lockfile::find_package_and_workspace_tomls;
 
 // use std::fmt;
 
@@ -9,14 +13,45 @@ use clap::Parser;
 //     Deserialize, Deserializer,
 // };
 
-#[derive(Debug, Clone, Eq, PartialEq, Parser)]
-#[command(no_binary_name = true)]
-#[command(styles = clap_cargo::style::CLAP_STYLING)]
-#[group(skip)]
-pub(crate) struct GreenCli {
-    #[command(flatten)]
-    pub manifest: clap_cargo::Manifest,
+// #[derive(Debug, Clone, Eq, PartialEq, Parser)]
+// #[command(no_binary_name = true)]
+// #[command(styles = clap_cargo::style::CLAP_STYLING)]
+// #[group(skip)]
+// pub(crate) struct GreenCli {
+//     #[command(flatten)]
+//     pub manifest: clap_cargo::Manifest,
+// }
+
+//////////////////////////////////////////////////
+
+#[derive(Debug, Deserialize)]
+struct GreenMetadata {
+    green: Green,
 }
+
+#[derive(Debug, Deserialize)]
+struct Green {
+    this: String,
+}
+
+// TODO: handle worskpace cfg + merging fields
+pub(crate) async fn green_field() -> Result<Option<String>> {
+    let (_todo, manifest_path) = find_package_and_workspace_tomls().await?;
+
+    let manifest = Manifest::from_path(&manifest_path)
+        .with_context(|| anyhow!("Reading package manifest {manifest_path}"))?;
+
+    if let Some(metadata) = manifest.package.as_ref().and_then(|x| x.metadata.as_ref()) {
+        let GreenMetadata { green } =
+            toml::from_str(&toml::to_string(metadata).expect("str")).expect("parse");
+
+        return Ok((!green.this.is_empty()).then_some(green.this));
+    }
+
+    Ok(None)
+}
+
+//////////////////////////////////////////////////
 
 // #[cfg(test)]
 // mod tests;

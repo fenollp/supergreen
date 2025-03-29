@@ -37,6 +37,15 @@ pub(crate) async fn find_lockfile() -> Result<Utf8PathBuf> {
     Ok(manifest_path.with_extension("lock"))
 }
 
+pub(crate) async fn find_package_and_workspace_tomls() -> Result<(Option<Utf8PathBuf>, Utf8PathBuf)>
+{
+    let manifest_path = cargo_locate_project(false).await?;
+    let workspace_manifest_path = cargo_locate_project(true).await?;
+    let workspace_manifest_path =
+        (workspace_manifest_path != manifest_path).then_some(workspace_manifest_path);
+    Ok((workspace_manifest_path, manifest_path))
+}
+
 fn find_toml_from_env() -> Result<Option<Utf8PathBuf>> {
     let mut args = Arguments::from_env();
     Ok(args.opt_value_from_str("--manifest-path")?.map(|x: String| Into::<Utf8PathBuf>::into(x)))
@@ -60,7 +69,7 @@ async fn cargo_locate_project(at_workspace: bool) -> Result<Utf8PathBuf> {
 
     let Output { stderr, stdout, status } = cmd.output().await?;
     if !status.success() || !stderr.is_empty() {
-        bail!("{} failed: {stderr:?}", cmd.show())
+        bail!("{} failed: {:?}", cmd.show(), String::from_utf8_lossy(&stderr))
     }
 
     #[derive(Debug, Deserialize)]

@@ -1,15 +1,12 @@
 use std::{
     env,
     fs::{self, OpenOptions},
-    path::PathBuf,
     process::{Output, Stdio},
 };
 
-use anyhow::{anyhow, bail, Context, Result};
+use anyhow::{anyhow, bail, Result};
 use camino::Utf8PathBuf;
-use cargo_toml::Manifest;
 use log::{debug, info, trace};
-use serde::Deserialize;
 use tokio::process::Command;
 
 use crate::{
@@ -17,41 +14,13 @@ use crate::{
     cratesio::{self},
     envs::{builder_image, cache_image, incremental, internal, maybe_log, runner, DEFAULT_SYNTAX},
     extensions::ShowCmd,
+    green::green_field,
     lockfile::{find_lockfile, locked_crates},
     logging,
     runner::{build, fetch_digest, maybe_lock_image, runner_cmd},
     stage::Stage,
     PKG, REPO, VSN,
 };
-
-fn green_field() -> Result<Option<String>> {
-    let manifest_path = std::env::current_dir().expect("$PWD");
-    //>>>
-    let manifest_path: PathBuf =
-        std::fs::canonicalize(manifest_path).expect("canon").join("cargo-green/Cargo.toml");
-    let manifest = Manifest::from_path(&manifest_path).context("from")?;
-
-    if let Some(metadata) = manifest.package.as_ref().and_then(|x| x.metadata.as_ref()) {
-        #[derive(Debug, Deserialize)]
-        #[allow(dead_code)]
-        struct GreenMetadata {
-            green: ThisField,
-        }
-        #[derive(Debug, Deserialize)]
-        #[allow(dead_code)]
-        struct ThisField {
-            this: String,
-        }
-
-        let cfg: GreenMetadata =
-            toml::from_str(&toml::to_string(metadata).expect("str")).expect("parse");
-        let cfg = cfg.green;
-
-        return Ok((!cfg.this.is_empty()).then_some(cfg.this));
-    }
-
-    Ok(None)
-}
 
 pub(crate) async fn main(cmd: &mut Command) -> Result<()> {
     // TODO read package.metadata.green
@@ -96,7 +65,7 @@ pub(crate) async fn main(cmd: &mut Command) -> Result<()> {
     env::set_var(internal::RUSTCBUILDX_BASE_IMAGE, base_image.base());
 
     let mut base_image_block = base_image.block();
-    if let Some(ref more_steps) = green_field()? {
+    if let Some(ref more_steps) = green_field().await? {
         base_image_block.push_str(more_steps);
     }
     env::set_var("RUSTCBUILDX_BASE_IMAGE_BLOCK_", base_image_block.clone());
