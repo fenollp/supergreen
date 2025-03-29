@@ -1,7 +1,9 @@
 use std::{env, ffi::OsStr, path::PathBuf, process::exit};
 
 use anyhow::{bail, Result};
+use cargo_toml::Manifest;
 use envs::internal;
+use serde::Deserialize;
 use tokio::process::Command;
 
 mod base;
@@ -10,6 +12,7 @@ mod checkouts;
 mod cratesio;
 mod envs;
 mod extensions;
+mod green;
 mod lockfile;
 mod logging;
 mod md;
@@ -82,7 +85,9 @@ async fn main() -> Result<()> {
         if let Some(toolchain) = arg.strip_prefix('+') {
             let var = "RUSTUP_TOOLCHAIN";
             if let Ok(val) = env::var(var) {
-                println!("Overriding {var}={val:?} to {toolchain:?} for `{PKG} +toolchain`");
+                if val != toolchain {
+                    println!("Overriding {var}={val:?} to {toolchain:?} for `{PKG} +toolchain`");
+                }
             }
             // Special handling: call was `cargo green +toolchain ..` (probably from `alias cargo='cargo green'`).
             // Normally, calls look like `cargo +toolchain green ..` but let's simplify alias creation!
@@ -94,6 +99,18 @@ async fn main() -> Result<()> {
     cmd.args(args);
     cmd.kill_on_drop(true);
 
+    // // cargo green: intercept buildrs runs with
+    // // RUSTFLAGS="-C linker=/use/bin/cc"
+    // cmd.env(
+    //     "RUSTFLAGS",
+    //     format!(
+    //         // "{} -C linker=/home/pete/wefwefwef/supergreen.git/linker.sh",
+    //         "{} -C linker=/linker.sh",
+    //         std::env::var("RUSTFLAGS").unwrap_or_default()
+    //     ),
+    // );
+    // // https://doc.rust-lang.org/rustc/codegen-options/index.html#linker
+
     cmd.env("RUSTC_WRAPPER", arg0);
 
     cargo_green::main(&mut cmd).await?;
@@ -102,6 +119,52 @@ async fn main() -> Result<()> {
 
     //TODO: https://github.com/messense/cargo-options/blob/086d7470cae34b0e694a62237e258fbd35384e93/examples/cargo-mimic.rs
     // maybe https://lib.rs/crates/clap-cargo
+
+    if false {
+        // let manifest = match GreenCli::try_parse_from(env::args().skip(4)) {
+        //     Ok(GreenCli { manifest }) => manifest,
+        //     Err(e) => bail!(">>> {e}"),
+        // };
+
+        // let manifest = clap_cargo::Manifest::default();
+        let manifest_path = std::env::current_dir().expect("$PWD");
+        let manifest_path: PathBuf =
+                    // std::fs::canonicalize(manifest_path).expect("canon").join("Cargo.toml");
+                    std::fs::canonicalize(manifest_path).expect("canon").join("cargo-green/Cargo.toml");
+        let manifest = Manifest::from_path(&manifest_path).expect("from");
+
+        // panic!(">>> {:?}", env::vars().collect::<Vec<_>>())
+
+        eprintln!(">>> {manifest_path:?}");
+        eprintln!(">>> .package {:?}", manifest.package.clone());
+        if let Some(metadata) = manifest.package.as_ref().and_then(|x| x.metadata.as_ref()) {
+            eprintln!(">>> {metadata:?}");
+            eprintln!(">>> {:?}", toml::to_string(metadata));
+
+            #[derive(Debug, Deserialize)]
+            #[allow(dead_code)]
+            struct GreenMetadata {
+                green: ThisField,
+            }
+            #[derive(Debug, Deserialize)]
+            #[allow(dead_code)]
+            struct ThisField {
+                this: String,
+            }
+
+            let cfg: GreenMetadata =
+                toml::from_str(&toml::to_string(metadata).expect("str")).expect("parse");
+
+            eprintln!(">>> {cfg:?}");
+        }
+
+        // eprintln!(">>> .workspace {:?}", manifest.workspace.clone());
+        // eprintln!(
+        //     ">>> .workspace.package {:?}",
+        //     manifest.workspace.clone().map(|x| x.package).and_then(|x| x.metadata)
+        // );
+        panic!(">>> {manifest:?}");
+    }
 
     match env::args().nth(2).as_deref() {
         None => {}
