@@ -14,7 +14,7 @@ use log::{debug, info, warn};
 use reqwest::Client as ReqwestClient;
 use serde::Deserialize;
 use tokio::{
-    io::{AsyncBufRead, AsyncBufReadExt, BufReader as TokioBufReader, Lines},
+    io::{AsyncBufRead, AsyncBufReadExt, AsyncWriteExt, BufReader as TokioBufReader, Lines},
     join,
     process::Command,
     spawn,
@@ -111,8 +111,6 @@ pub(crate) async fn build(
     let mut cmd = Command::new(command);
     cmd.arg("--debug");
     cmd.arg("build");
-
-    cmd.stdin(Stdio::null()).stdout(Stdio::piped()).stderr(Stdio::piped());
 
     // Makes sure the underlying OS process dies with us
     cmd.kill_on_drop(true);
@@ -221,10 +219,8 @@ pub(crate) async fn build(
         cmd.arg(format!("--build-context={name}={uri}"));
     }
 
-    let file_arg = format!("--file={dockerfile_path}");
-    cmd.arg(&file_arg);
-
-    cmd.arg(dockerfile_path.parent().unwrap_or(dockerfile_path));
+    cmd.arg("-").stdin(Stdio::piped()); // Pass Dockerfile via STDIN, this way there's no default filesystem context.
+    cmd.stdout(Stdio::piped()).stderr(Stdio::piped());
 
     let call = cmd.show();
     let envs: Vec<_> = cmd
@@ -238,6 +234,16 @@ pub(crate) async fn build(
     let errf = |e| anyhow!("Failed starting {call}: {e}");
     let start = Instant::now();
     let mut child = cmd.spawn().map_err(errf)?;
+
+    spawn({
+        let dockerfile_path = dockerfile_path.to_owned();
+        let mut stdin = child.stdin.take().expect("started");
+        async move {
+            // TODO: buffered IO
+            let contents = fs::read_to_string(&dockerfile_path).expect("Piping Dockerfile");
+            stdin.write_all(contents.as_bytes()).await.expect("Writing to STDIN");
+        }
+    });
 
     // ---
 
@@ -294,14 +300,13 @@ pub(crate) async fn build(
         let mut file = OpenOptions::new().append(true).open(&path)?;
         writeln!(file)?;
         writeln!(file)?;
-        write!(file, "# Run this with:")?;
+        write!(file, "# Pipe this file to:")?;
         if !contexts.is_empty() {
             //TODO: or additional-build-arguments
-            write!(file, " (not portable due to the need for local build contexts)")?;
+            write!(file, " (not portable due to usage of local build contexts)")?;
         }
         writeln!(file, "\n# {envs} \\")?;
         let call = &call[1..(call.len() - 1)]; // drops decorative backticks
-        let call = call.replace(&file_arg, &format!("--file={path}"));
         writeln!(file, "#   {call}")?;
     }
 
