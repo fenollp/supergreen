@@ -144,6 +144,24 @@ impl BaseImage {
 
                 // FIXME: multiplatformify (using auto ARG.s) (use rustc_version::VersionMeta.host)
 
+                // have buildkit call rustc with `--target $(adapted $TARGETPLATFORM)`, if not given `--target`
+                // `adapted` translates buildkit platform format to rustc's
+                //
+                // maybe that's too naive
+                //   do more research with `cargo cross`
+                //
+                // Use https://github.com/search?q=repo%3Across-rs/cross%20path%3Adockerfile&type=code images as auto base image?
+                //
+                // osx https://github.com/tonistiigi/xx?tab=readme-ov-file#external-sdk-support
+                //
+                // https://github.com/tonistiigi/xx?tab=readme-ov-file#rust
+                // xx-cargo
+                //
+                // RUN apk add clang lld
+                // ARG TARGETPLATFORM
+                // RUN cargo build --target=$(xx-cargo --print-target-triple) --release --target-dir ./build && \
+                //     xx-verify ./build/$(xx-cargo --print-target-triple)/release/hello_cargo
+
                 // TODO: use https://github.com/reproducible-containers/repro-sources-list.sh
 
                 let channel = match channel {
