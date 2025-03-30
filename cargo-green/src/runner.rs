@@ -25,6 +25,7 @@ use tokio::{
 use crate::{
     envs::{cache_image, log_path, maybe_log, runner, runs_on_network},
     extensions::ShowCmd,
+    green::ENV_FINAL_PATH,
     logging::crate_type_for_logging,
     md::BuildContext,
     stage::Stage,
@@ -297,7 +298,7 @@ pub(crate) async fn build(
         bail!("Runner info: {status} [STDOUT {stdout}] [STDERR {stderr}]")
     }
 
-    if let Ok(path) = env::var("CARGOGREEN_FINAL_PATH") {
+    if let Ok(path) = env::var(ENV_FINAL_PATH) {
         info!("Writing final Dockerfile to {path}");
 
         let _ = fs::copy(dockerfile_path, &path)?;

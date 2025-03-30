@@ -80,7 +80,7 @@ async fn main() -> Result<()> {
         exit(1)
     }
 
-    let mut cmd = Command::new(env::var("CARGO").unwrap_or("cargo".into()));
+    let mut cmd = Command::new(env::var_os("CARGO").unwrap_or_else(|| "cargo".into()));
     if let Some(arg) = args.next() {
         if arg == "supergreen" {
             return supergreen::main(args.next().as_deref(), args.collect()).await;
@@ -89,7 +89,7 @@ async fn main() -> Result<()> {
         // https://rust-lang.github.io/rustup/overrides.html#toolchain-override-shorthand
         if let Some(toolchain) = arg.strip_prefix('+') {
             let var = "RUSTUP_TOOLCHAIN";
-            if let Ok(val) = env::var(var) {
+            if let Some(val) = env::var_os(var) {
                 if val != toolchain {
                     println!("Overriding {var}={val:?} to {toolchain:?} for `{PKG} +toolchain`");
                 }

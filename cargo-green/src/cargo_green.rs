@@ -39,14 +39,14 @@ pub(crate) async fn main(cmd: &mut Command) -> Result<Green> {
     }
 
     // RUSTCBUILDX and eponymous envs are handled by wrapper
-    assert!(env::var("RUSTCBUILDX").is_err());
+    assert!(env::var_os("RUSTCBUILDX").is_none());
 
     // This exports vars so they will be accessible by later-spawned $RUSTC_WRAPPER.
 
     // Not calling envs::{syntax,base_image} directly so value isn't locked now.
     // Goal: produce only fully-locked Dockerfiles/TOMLs
 
-    assert!(env::var("CARGOGREEN").is_err());
+    assert!(env::var_os("CARGOGREEN").is_none());
     env::set_var("CARGOGREEN", "1");
 
     // Use local hashed image if one matching exists locally
