@@ -404,6 +404,8 @@ async fn do_wrap_rustc(
         rustc_block.push_str(&format!("WORKDIR {incremental}\n"));
     }
 
+    rustc_block.push_str("RUN set -eux && env >/DIFF_ENVS\n");
+
     let cwd = if let Some((name, src, target)) = input_mount.as_ref() {
         rustc_block.push_str("RUN \\\n");
         let source = src.map(|src| format!(",source={src}")).unwrap_or_default();
@@ -579,6 +581,7 @@ async fn do_wrap_rustc(
     rustc_block.push_str(&format!("      rustc '{}' {input} \\\n", args.join("' '")));
     rustc_block.push_str(&format!("        1> >(sed 's/^/{MARK_STDOUT}/') \\\n"));
     rustc_block.push_str(&format!("        2> >(sed 's/^/{MARK_STDERR}/' >&2)\n"));
+    rustc_block.push_str("RUN diff <(sort /DIFF_ENVS) <(env | sort)\n");
     md.push_block(&rustc_stage, rustc_block);
 
     if let Some(ref incremental) = incremental {
