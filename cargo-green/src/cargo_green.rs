@@ -49,13 +49,9 @@ pub(crate) async fn main(cmd: &mut Command) -> Result<Green> {
     assert!(env::var("CARGOGREEN").is_err());
     env::set_var("CARGOGREEN", "1");
 
-    let mut syntax = internal::syntax().unwrap_or_else(|| DEFAULT_SYNTAX.to_owned());
     // Use local hashed image if one matching exists locally
-    if !syntax.contains('@') {
-        // otherwise default to a hash found through some Web API
-        syntax = fetch_digest(&syntax).await?; //TODO: lower conn timeout to 4s (is 30s)
-                                               //TODO: review online code to try to provide an offline mode
-    }
+    // otherwise default to a hash found through some Web API
+    let syntax = fetch_digest(&internal::syntax().unwrap_or(DEFAULT_SYNTAX.to_owned())).await?;
     env::set_var(internal::RUSTCBUILDX_SYNTAX, syntax);
 
     let green = Green::try_new()?;

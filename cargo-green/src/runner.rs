@@ -68,10 +68,10 @@ pub(crate) async fn fetch_digest(img: &str) -> Result<String> {
     if !img.starts_with("docker-image://") {
         bail!("Image missing 'docker-image' scheme: {img}")
     }
-    let img = img.trim_start_matches("docker-image://");
     if img.contains('@') {
-        bail!("Image is already locked: {img}")
+        return Ok(img.to_owned());
     }
+    let img = img.trim_start_matches("docker-image://");
     let Some((path, tag)) = img.split_once(':') else { bail!("Image is missing a tag: {img}") };
     let path: Utf8PathBuf = path.into();
     let (dir, img) = match path.iter().collect::<Vec<_>>()[..] {
@@ -79,7 +79,10 @@ pub(crate) async fn fetch_digest(img: &str) -> Result<String> {
         _ => bail!("BUG: unhandled image path {path}"),
     };
 
-    let txt = ReqwestClient::new()
+    let txt = ReqwestClient::builder()
+        .connect_timeout(Duration::from_secs(4))
+        .build()
+        .map_err(|e| anyhow!("HTTP client's config/TLS failed: {e}"))?
         .get(format!("https://registry.hub.docker.com/v2/repositories/{dir}/{img}/tags/{tag}"))
         .send()
         .await
