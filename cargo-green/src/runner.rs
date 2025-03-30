@@ -106,7 +106,7 @@ pub(crate) async fn build(
     dockerfile_path: &Utf8Path,
     target: Stage,
     contexts: &BTreeSet<BuildContext>,
-    out_dir: &Utf8Path,
+    out_dir: Option<&Utf8Path>,
 ) -> Result<()> {
     let mut cmd = Command::new(command);
     cmd.arg("--debug");
@@ -208,7 +208,12 @@ pub(crate) async fn build(
     cmd.arg("--platform=local");
     cmd.arg("--pull=false");
     cmd.arg(format!("--target={target}"));
-    cmd.arg(format!("--output=type=local,dest={out_dir}"));
+    if let Some(out_dir) = out_dir {
+        cmd.arg(format!("--output=type=local,dest={out_dir}"));
+    } else {
+        // https://docs.docker.com/build/exporters/#cache-only-export
+        cmd.arg("--output=type=cacheonly");
+    }
     // cmd.arg("--build-arg=BUILDKIT_MULTI_PLATFORM=1"); // "deterministic output"? adds /linux_amd64/ to extracted cratesio
 
     // TODO: do without local Docker-compatible CLI

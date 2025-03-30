@@ -297,5 +297,5 @@ pub(crate) async fn fetch(syntax: &str) -> Result<()> {
     .filter(|x| !x.is_empty())
     .for_each(|line| trace!("❯ {line}"));
 
-    return build(runner(), &dockerfile_path, stage, &[].into(), &cfetch).await;
+    return build(runner(), &dockerfile_path, stage, &[].into(), None).await;
 }

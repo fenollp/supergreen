@@ -673,9 +673,9 @@ async fn do_wrap_rustc(
         info!("Runner disabled, falling back...");
         return fallback.await;
     }
-    let res = build(runner, &dockerfile, out_stage, &md.contexts, &out_dir).await;
+    let res = build(runner, &dockerfile, out_stage, &md.contexts, Some(&out_dir)).await;
     if let Some(incremental) = res.is_ok().then_some(incremental).flatten() {
-        let _ = build(runner, &dockerfile, incremental_stage, &md.contexts, &incremental)
+        let _ = build(runner, &dockerfile, incremental_stage, &md.contexts, Some(&incremental))
             .await
             .inspect_err(|e| warn!("Error fetching incremental data: {e}"));
     }
