@@ -24,6 +24,9 @@ strip_versioning_from_final_path() {
 compute_installed_bin_hash() {
 	sha256sum $install_root/bin/${install_package%@*} | awk '{print $1}'
 }
+ensure__rewrite_cratesio_index__works() {
+	! grep -F '/index.crates.io-' $RUSTCBUILDX_LOG_PATH | grep -vE '/index.crates.io-0{16}|original args|env is set|opening .RO. crate tarball|picked'
+}
 
 echo Sortons nos cartes!
 echo
@@ -36,19 +39,8 @@ rm -rf $CARGO_TARGET_DIR/* >/dev/null
 cargo green install --locked --frozen --offline --force $install_package --root=$install_root
 strip_versioning_from_final_path
 git add $CARGOGREEN_FINAL_PATH
+ensure__rewrite_cratesio_index__works
 install_sha=$(compute_installed_bin_hash)
-
-if grep -F '/index.crates.io-' $RUSTCBUILDX_LOG_PATH | grep -vE '/index.crates.io-0{16}|original args|env is set|picked'; then
-	echo TODO: 's/1949cf8c6b5b557f/0{16}/' that WORKDIR
-
-# fe4243ac919c90b5 ✖ #10 CACHED
-# fe4243ac919c90b5 ✖ #11 [dep-l-regex-syntax-0.8.5-fe4243ac919c90b5 1/3] WORKDIR /tmp/clis-cargo-udeps_0-1-55/release/deps
-# fe4243ac919c90b5 ✖ #11 CACHED
-# fe4243ac919c90b5 ✖ #12 [cratesio-regex-syntax-0.8.5 1/2] ADD --chmod=0664 --checksum=sha256:2b15c43186be67a4fd63bee50d0303afffcef381492ebe2c5d87f324e1b8815c   https://static.crates.io/crates/regex-syntax/regex-syntax-0.8.5.crate /crate
-# fe4243ac919c90b5 ✖ #12 CACHED
-# fe4243ac919c90b5 ✖ #13 [dep-l-regex-syntax-0.8.5-fe4243ac919c90b5 2/3] WORKDIR /home/pete/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/regex-syntax-0.8.5
-# fe4243ac919c90b5 ✖ #13 DONE 0.1s
-fi
 
 grep -A2 '# Pipe this file to:' $CARGOGREEN_FINAL_PATH
 echo Builds fine
@@ -85,6 +77,7 @@ cat <<'EOF' | diff -u <(git --no-pager diff -- $CARGOGREEN_FINAL_PATH | tail -n 
  ADD --chmod=0664 --checksum=sha256:5be167a7af36ee22fe3115051bc51f6e6c7054c9348e28deb4f49bd6f705a315 \
 EOF
 git add $CARGOGREEN_FINAL_PATH
+ensure__rewrite_cratesio_index__works
 [[ $install_sha != $(compute_installed_bin_hash) ]] # change rustc => change final bin
 install_sha=$(compute_installed_bin_hash)
 
@@ -112,6 +105,7 @@ export CARGO_TARGET_DIR=$(mktemp -d /tmp/hack-caching--XXXXXXX)
 rm -rf $CARGO_TARGET_DIR/* >/dev/null
 cargo green install --locked --frozen --offline --force $install_package --root=$install_root
 strip_versioning_from_final_path
+ensure__rewrite_cratesio_index__works
 [[ $install_sha = $(compute_installed_bin_hash) ]] # change targetdir => no binary changes
 
 echo Changing CARGO_TARGET_DIR tho.... TODO: replace target dir in final path with e.g. /target/ or '/target/$target_triple/'

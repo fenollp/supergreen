@@ -395,7 +395,9 @@ async fn do_wrap_rustc(
     rustc_block.push_str(&format!("FROM {RUST} AS {rustc_stage}\n"));
     rustc_block.push_str(&format!("SHELL {:?}\n", ["/bin/bash", "-eux", "-c"]));
     rustc_block.push_str(&format!("WORKDIR {out_dir}\n"));
-    if pwd != out_dir {
+    if !pwd.starts_with(cargo_home.join("registry/src")) {
+        // Essentially match the same-ixh path that points to crates-io paths.
+        // Experiment showed that git crates didn't like: // if !pwd.starts_with(&cargo_home) {
         rustc_block.push_str(&format!("WORKDIR {pwd}\n"));
     }
 
