@@ -306,12 +306,12 @@ pub(crate) async fn build(
         let mut file = OpenOptions::new().append(true).open(&path)?;
         writeln!(file)?;
         writeln!(file)?;
-        write!(file, "# Pipe this file to:")?;
+        write!(file, "# Pipe this file to")?;
         if !contexts.is_empty() {
             //TODO: or additional-build-arguments
             write!(file, " (not portable due to usage of local build contexts)")?;
         }
-        writeln!(file, "\n# {envs} \\")?;
+        writeln!(file, ":\n# {envs} \\")?;
         let call = &call[1..(call.len() - 1)]; // drops decorative backticks
         writeln!(file, "#   {call}")?;
     }
