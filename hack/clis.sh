@@ -169,7 +169,7 @@ as_env() {
   case "$name_at_version" in
     cargo-authors@*) envvars+=(CARGOGREEN_INSTALL_WITH_APT='"[\"libssl-dev\",\"zlib1g-dev\"]"') ;;
     dbcc@*) envvars+=(CARGOGREEN_SET_ENVS='"[\"TYPENUM_BUILD_CONSTS\",\"TYPENUM_BUILD_OP\"]"') ;;
-    diesel_cli@*) envvars+=(CARGOGREEN_INSTALL_WITH_APT='"[\"libpq-dev\",\"pkg-config\"]"') ;;
+    diesel_cli@*) envvars+=(CARGOGREEN_INSTALL_WITH_APT='"[\"libpq-dev\"]"') ;;
     hickory-dns@*) envvars+=(CARGOGREEN_SET_ENVS='"[\"RING_CORE_PREFIX\"]"') ;;
     mussh@*) envvars+=(CARGOGREEN_INSTALL_WITH_APT='"[\"libsqlite3-dev\",\"libssl-dev\",\"zlib1g-dev\"]"') ;;
     ntpd@*) envvars+=(CARGOGREEN_SET_ENVS='"[\"NTPD_RS_GIT_DATE\",\"NTPD_RS_GIT_REV\",\"RING_CORE_PREFIX\"]"') ;;
