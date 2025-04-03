@@ -25,7 +25,7 @@ RUN \
         CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/pico-args-0.5.0" \
         CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/pico-args-0.5.0/Cargo.toml" \
         CARGO_PKG_AUTHORS="Yevhenii Reizner <razrfalcon@gmail.com>" \
-        CARGO_PKG_DESCRIPTION="An ultra simple CLI arguments parser." \
+        CARGO_PKG_DESCRIPTION=FIXME \
         CARGO_PKG_HOMEPAGE= \
         CARGO_PKG_LICENSE="MIT" \
         CARGO_PKG_LICENSE_FILE= \
@@ -38,7 +38,6 @@ RUN \
         CARGO_PKG_VERSION_MINOR="5" \
         CARGO_PKG_VERSION_PATCH="0" \
         CARGO_PKG_VERSION_PRE= \
-        TERM="xterm-256color" \
         CARGOGREEN=1 \
       rustc '--crate-name' 'pico_args' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="default"' '--cfg' 'feature="eq-separator"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("combined-flags", "default", "eq-separator", "short-space-opt"))' '-C' 'metadata=9531c7e3ea64e837' '-C' 'extra-filename=-b8c41dbf50ca5479' '--out-dir' '/tmp/cargo-green--hack-caching/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/cargo-green--hack-caching/release/deps' '--cap-lints' 'allow' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/pico-args-0.5.0/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
@@ -67,7 +66,7 @@ RUN \
         CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0" \
         CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0/Cargo.toml" \
         CARGO_PKG_AUTHORS="comex <comexk@gmail.com>:Fenhl <fenhl@fenhl.net>:Adrian Taylor <adetaylor@chromium.org>:Alex Touchet <alextouchet@outlook.com>:Daniel Parks <dp+git@oxidized.org>:Garrett Berg <googberg@gmail.com>" \
-        CARGO_PKG_DESCRIPTION="Split a string into shell words, like Python's shlex." \
+        CARGO_PKG_DESCRIPTION=FIXME \
         CARGO_PKG_HOMEPAGE= \
         CARGO_PKG_LICENSE="MIT OR Apache-2.0" \
         CARGO_PKG_LICENSE_FILE= \
@@ -80,7 +79,6 @@ RUN \
         CARGO_PKG_VERSION_MINOR="3" \
         CARGO_PKG_VERSION_PATCH="0" \
         CARGO_PKG_VERSION_PRE= \
-        TERM="xterm-256color" \
         CARGOGREEN=1 \
       rustc '--crate-name' 'shlex' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "std"))' '-C' 'metadata=57dc058ec0bb424e' '-C' 'extra-filename=-96a741f581f4126a' '--out-dir' '/tmp/cargo-green--hack-caching/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/cargo-green--hack-caching/release/deps' '--cap-lints' 'allow' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
@@ -111,7 +109,7 @@ RUN \
         CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/buildxargs-1.4.0" \
         CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/buildxargs-1.4.0/Cargo.toml" \
         CARGO_PKG_AUTHORS="Pierre Fenoll <pierrefenoll@gmail.com>" \
-        CARGO_PKG_DESCRIPTION="xargs for BuildKit with docker buildx bake" \
+        CARGO_PKG_DESCRIPTION=FIXME \
         CARGO_PKG_HOMEPAGE= \
         CARGO_PKG_LICENSE="MIT" \
         CARGO_PKG_LICENSE_FILE= \
@@ -126,7 +124,6 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         CARGO_PRIMARY_PACKAGE="1" \
         CARGO_SBOM_PATH= \
-        TERM="xterm-256color" \
         CARGOGREEN=1 \
       rustc '--crate-name' 'buildxargs' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=0d0386ef92a0f4e5' '-C' 'extra-filename=-d78f4de4a17f92cd' '--out-dir' '/tmp/cargo-green--hack-caching/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/cargo-green--hack-caching/release/deps' '--extern' 'pico_args=/tmp/cargo-green--hack-caching/release/deps/libpico_args-b8c41dbf50ca5479.rmeta' '--extern' 'shlex=/tmp/cargo-green--hack-caching/release/deps/libshlex-96a741f581f4126a.rmeta' '--cap-lints' 'allow' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/buildxargs-1.4.0/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
@@ -150,7 +147,7 @@ RUN \
         CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/buildxargs-1.4.0" \
         CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/buildxargs-1.4.0/Cargo.toml" \
         CARGO_PKG_AUTHORS="Pierre Fenoll <pierrefenoll@gmail.com>" \
-        CARGO_PKG_DESCRIPTION="xargs for BuildKit with docker buildx bake" \
+        CARGO_PKG_DESCRIPTION=FIXME \
         CARGO_PKG_HOMEPAGE= \
         CARGO_PKG_LICENSE="MIT" \
         CARGO_PKG_LICENSE_FILE= \
@@ -165,7 +162,6 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         CARGO_PRIMARY_PACKAGE="1" \
         CARGO_SBOM_PATH= \
-        TERM="xterm-256color" \
         CARGOGREEN=1 \
       rustc '--crate-name' 'buildxargs' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'bin' '--emit' 'dep-info,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=afebe456ed549d51' '-C' 'extra-filename=-39127c16f4d70192' '--out-dir' '/tmp/cargo-green--hack-caching/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/cargo-green--hack-caching/release/deps' '--extern' 'buildxargs=/tmp/cargo-green--hack-caching/release/deps/libbuildxargs-d78f4de4a17f92cd.rlib' '--extern' 'pico_args=/tmp/cargo-green--hack-caching/release/deps/libpico_args-b8c41dbf50ca5479.rlib' '--extern' 'shlex=/tmp/cargo-green--hack-caching/release/deps/libshlex-96a741f581f4126a.rlib' '--cap-lints' 'allow' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/buildxargs-1.4.0/src/main.rs \
         1> >(sed 's/^/::STDOUT:: /') \

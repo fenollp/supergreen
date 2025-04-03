@@ -72,15 +72,20 @@ async fn main() -> Result<()> {
     const ENV_ROOT_PACKAGE_SETTINGS: &str = "CARGOGREEN_ROOT_PACKAGE_SETTINGS_";
 
     if let Ok(wrapper) = env::var("RUSTC_WRAPPER") {
+        // Now running as a subprocess
         if PathBuf::from(&wrapper).file_name() != Some(OsStr::new(PKG)) {
             bail!("A $RUSTC_WRAPPER other than `{PKG}` is already set: {wrapper}")
         }
-        // Now running as a subprocess
 
         let green = env::var(ENV_ROOT_PACKAGE_SETTINGS)
             .map_err(|_| anyhow!("BUG: ${ENV_ROOT_PACKAGE_SETTINGS} is unset"))?;
         let green = serde_json::from_str(&green)
             .map_err(|e| anyhow!("BUG: ${ENV_ROOT_PACKAGE_SETTINGS} is unreadable: {e}"))?;
+
+        // Dance to wrap build script execution: we patched the build.rs to call us back through here.
+        if let Ok(exe) = env::var(rustc_wrapper::ENV_EXECUTE_BUILDRS) {
+            return rustc_wrapper::exec_buildrs(green, exe.into()).await;
+        }
 
         let arg0 = env::args().nth(1);
         let args = env::args().skip(1).collect();

@@ -16,7 +16,7 @@ use crate::{
 };
 
 #[cfg_attr(test, derive(Default))]
-#[derive(Clone, Deserialize, Serialize)]
+#[derive(Debug, Clone, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub(crate) struct Md {
     pub(crate) this: String,

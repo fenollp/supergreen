@@ -64,5 +64,6 @@ fn unique_krate_types() {
 
     let all: HashSet<_> = ALL_CRATE_TYPES.iter().map(|ty| crate_type_for_logging(ty)).collect();
     assert_eq!(ALL_CRATE_TYPES.len(), all.len());
-    assert!(!all.contains(&'X')); // for build scripts
+    assert!(!all.contains(&'X')); // for building build scripts
+    assert!(!all.contains(&'Z')); // for executing build scripts
 }
