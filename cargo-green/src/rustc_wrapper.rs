@@ -522,6 +522,10 @@ async fn do_wrap_rustc(
             .push_str(&format!("  --mount=from={name},target={target},source={source} \\\n"));
     }
 
+    // Log a possible toolchain file contents (TODO: make per-crate base_image out of this)
+    rustc_block.push_str("    { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \\\n");
+    //fixme? prefix with ::rustc-toolchain::
+
     rustc_block.push_str(&format!("    env CARGO={:?} \\\n", "$(which cargo)"));
 
     for (var, val) in env::vars() {
