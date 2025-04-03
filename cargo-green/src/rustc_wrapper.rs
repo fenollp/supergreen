@@ -456,7 +456,7 @@ async fn do_wrap_rustc(
         // bin|cargo-green|0.8.0|efe5575298075b07] copying all git files under $HOME/wefwefwef/supergreen.git to /tmp/cargo-green_0.8.0/CWDefe5575298075b07
         let cwd_stage = Stage::try_new(format!("cwd{extrafn}")).unwrap();
 
-        rustc_block.push_str(&format!("WORKDIR {pwd}\n"));
+        // rustc_block.push_str(&format!("WORKDIR {pwd}\n"));
         rustc_block.push_str(&format!("COPY --from={cwd_stage} / .\n"));
         rustc_block.push_str("RUN \\\n");
 
