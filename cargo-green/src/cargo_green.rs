@@ -53,6 +53,10 @@ pub(crate) async fn main(cmd: &mut Command) -> Result<Green> {
     // otherwise default to a hash found through some Web API
     let syntax = fetch_digest(&internal::syntax().unwrap_or(DEFAULT_SYNTAX.to_owned())).await?;
     env::set_var(internal::RUSTCBUILDX_SYNTAX, syntax);
+    //TODO: no longer allow completely changing syntax=
+    //actually just allow setting digest part => enforce prefix up to before '@'
+    //TODO: also start a tokio race between local and remote syntax digest lookups
+    // start very early in cargo-green, pick winner here.
 
     let green = Green::try_new()?;
 
@@ -124,6 +128,9 @@ RUN \
         internal::runs_on_network()
             .unwrap_or_else(|| if with_network { "default" } else { "none" }.to_owned()),
     );
+    //TODO: CARGOGREEN_NETWORK= <unset> | default | none | host
+    //=> see also `base-image-inline`
+    //=> auto set to "default" when using `add.{apk,apt,apt-get}` and maybe others
 
     let builder_image = builder_image().await;
 

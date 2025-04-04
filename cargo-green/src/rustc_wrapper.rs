@@ -437,7 +437,7 @@ async fn do_wrap_rustc(
             if pwd.join(".git").is_dir() { "git " } else { "" }
         );
 
-        copy_dir_all(&pwd, &cwd_path)?;
+        copy_dir_all(&pwd, &cwd_path)?; //TODO: atomic mv
 
         // TODO: --mount=bind each file one by one => drop temp dir ctx (needs [multiple] `mkdir -p`[s] first though)
         // This doesn't work: rustc_block.push_str(&format!("  --mount=from=cwd,target={pwd} \\\n"));

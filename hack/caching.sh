@@ -90,6 +90,7 @@ echo
 
 # Adding -vv => s/'--cap-lints' 'allow'/'--cap-lints' 'warn'/g
 # Adding +nightly => changes '-C' 'metadata=' and '-C' 'extra-filename='
+# Changing CARGOGREEN_LOG_LEVEL shouldn't evict cache
 
 # rm -rf $CARGO_TARGET_DIR/* >/dev/null
 # cargo green +nightly install --locked --frozen --offline --force $install_package --root=$install_root

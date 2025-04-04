@@ -176,6 +176,7 @@ pub(crate) async fn build(
     // // [2024-04-09T07:55:39Z DEBUG lib-autocfg-72217d8ded4d7ec7@177912] ✖ ERROR: Cache export is not supported for the docker driver.
     // // [2024-04-09T07:55:39Z DEBUG lib-autocfg-72217d8ded4d7ec7@177912] ✖ Switch to a different driver, or turn on the containerd image store, and try again.
     // // [2024-04-09T07:55:39Z DEBUG lib-autocfg-72217d8ded4d7ec7@177912] ✖ Learn more at https://docs.docker.com/go/build-cache-backends/
+    //TODO: experiment --cache-to=type=inline => try ,mode=max
 
     if let Some(img) = cache_image() {
         let img = img.trim_start_matches("docker-image://");
@@ -202,6 +203,8 @@ pub(crate) async fn build(
         cmd.arg("--sbom=true");
     }
     //cmd.arg("--metadata-file=/tmp/meta.json"); => {"buildx.build.ref": "default/default/o5c4435yz6o6xxxhdvekx5lmn"}
+
+    //TODO? --annotation=(PLATFORM=)KEY=VALUE
 
     // TODO? pre-build rust stage with network, then never activate network ever.
     cmd.arg(format!("--network={}", runs_on_network()));
@@ -256,10 +259,13 @@ pub(crate) async fn build(
     let pid = child.id().unwrap_or_default();
     info!("Started as pid={pid} in {:?}", start.elapsed());
 
+    // TODO: don't parse out/err when out_dir is None
+
     let out = TokioBufReader::new(child.stdout.take().expect("started")).lines();
     let err = TokioBufReader::new(child.stderr.take().expect("started")).lines();
 
     // TODO: try rawjson progress mode + find podman equivalent?
+    // TODO: set these when --builder is ready https://stackoverflow.com/a/75632518/1418165
     let out_task = fwd(out, "stdout", "➤", MARK_STDOUT);
     let err_task = fwd(err, "stderr", "✖", MARK_STDERR);
 
@@ -289,6 +295,11 @@ pub(crate) async fn build(
             bail!("Runner failed. Check logs over at {}", log_path())
         }
 
+        // TODO: all these
+        // * docker buildx version
+        // * docker info
+        // * docker buildx ls
+
         let mut cmd = Command::new(command);
         let cmd = cmd.kill_on_drop(true).arg("info");
         let Output { stdout, stderr, status } =
@@ -300,6 +311,9 @@ pub(crate) async fn build(
 
     if let Ok(path) = env::var(ENV_FINAL_PATH) {
         info!("Writing final Dockerfile to {path}");
+
+        //TODO: only write if final root pkg? => how to detect? parse cargo args?(:/)
+        //TODO: use an atomic mv
 
         let _ = fs::copy(dockerfile_path, &path)?;
 
@@ -370,6 +384,31 @@ where
                         let detail = line[(pattern.len() + idx)..].trim_end_matches(" done");
                         details.push(detail.to_owned());
                     }
+                    //TODO: count DONEs and CACHEDs
+
+                    // D 25/03/31 23:21:11.702 L winnow 0.7.3-2a24a5220012bbd8 ✖ #0 building with "default" instance using docker driver                                                           01:21:12 [46/1876]
+                    // D 25/03/31 23:21:11.702 L winnow 0.7.3-2a24a5220012bbd8 ✖ #1 [internal] load build definition from Dockerfile
+                    // D 25/03/31 23:21:11.702 L winnow 0.7.3-2a24a5220012bbd8 ✖ #1 transferring dockerfile: 6.92kB done
+                    // D 25/03/31 23:21:11.702 L winnow 0.7.3-2a24a5220012bbd8 ✖ #1 DONE 0.0s
+                    // D 25/03/31 23:21:11.702 L winnow 0.7.3-2a24a5220012bbd8 ✖ #2 resolve image config for docker-image://docker.io/docker/dockerfile:1@sha256:4c68376a702446fc3c79af22de146a148bc3367e73c25a5803d453b6b3f722fb
+                    // D 25/03/31 23:21:11.702 L winnow 0.7.3-2a24a5220012bbd8 ✖ #2 DONE 0.0s
+                    // D 25/03/31 23:21:11.702 L winnow 0.7.3-2a24a5220012bbd8 ✖ #3 docker-image://docker.io/docker/dockerfile:1@sha256:4c68376a702446fc3c79af22de146a148bc3367e73c25a5803d453b6b3f722fb
+                    // D 25/03/31 23:21:11.702 L winnow 0.7.3-2a24a5220012bbd8 ✖ #3 CACHED
+                    // D 25/03/31 23:21:11.702 L winnow 0.7.3-2a24a5220012bbd8 ✖ #4 [internal] load metadata for docker.io/library/rust:1.85.0-slim@sha256:1829c432be4a592f3021501334d3fcca24f238432b13306a4e62669dec538e52
+                    // D 25/03/31 23:21:11.852 L winnow 0.7.3-2a24a5220012bbd8 ✖ #4 DONE 0.0s
+                    // D 25/03/31 23:21:11.852 L winnow 0.7.3-2a24a5220012bbd8 ✖ #5 [internal] load metadata for docker.io/tonistiigi/xx:latest
+                    // D 25/03/31 23:21:11.852 L winnow 0.7.3-2a24a5220012bbd8 ✖ #5 DONE 0.0s
+                    // D 25/03/31 23:21:11.852 L winnow 0.7.3-2a24a5220012bbd8 ✖ #6 [internal] load .dockerignore
+                    // D 25/03/31 23:21:11.852 L winnow 0.7.3-2a24a5220012bbd8 ✖ #6 transferring context: 2B done
+                    // D 25/03/31 23:21:11.852 L winnow 0.7.3-2a24a5220012bbd8 ✖ #6 DONE 0.0s
+                    // D 25/03/31 23:21:11.852 L winnow 0.7.3-2a24a5220012bbd8 ✖ #7 [xx 1/1] FROM docker.io/tonistiigi/xx:latest
+                    // D 25/03/31 23:21:11.852 L winnow 0.7.3-2a24a5220012bbd8 ✖ #7 DONE 0.0s
+                    // D 25/03/31 23:21:11.852 L winnow 0.7.3-2a24a5220012bbd8 ✖ #8 [rust-base 1/2] FROM docker.io/library/rust:1.85.0-slim@sha256:1829c432be4a592f3021501334d3fcca24f238432b13306a4e62669dec538e52
+                    // D 25/03/31 23:21:11.852 L winnow 0.7.3-2a24a5220012bbd8 ✖ #8 DONE 0.0s
+                    // D 25/03/31 23:21:11.852 L winnow 0.7.3-2a24a5220012bbd8 ✖ #9 [dep-l-winnow-0.7.3-2a24a5220012bbd8 1/3] WORKDIR /tmp/clis-cargo-udeps_0-1-55/release/deps
+                    // D 25/03/31 23:21:11.852 L winnow 0.7.3-2a24a5220012bbd8 ✖ #9 CACHED
+                    // D 25/03/31 23:21:11.852 L winnow 0.7.3-2a24a5220012bbd8 ✖ #10 [cratesio-winnow-0.7.3 1/2] ADD --chmod=0664 --checksum=sha256:0e7f4ea97f6f78012141bcdb6a216b2609f0979ada50b20ca5b52dde2eac2bb1   https://static.crates.io/crates/winnow/winnow-0.7.3.crate /crate
+                    // D 25/03/31 23:21:11.852 L winnow 0.7.3-2a24a5220012bbd8 ✖ #10 CACHED
                 }
                 Err(e) => {
                     warn!("Failed during piping of {name}: {e:?}");

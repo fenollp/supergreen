@@ -30,6 +30,31 @@ pub(crate) async fn main(arg1: Option<&str>, args: Vec<String>) -> Result<()> {
     }
 }
 
+//TODO: util to inspect + clear (+ push) build cache: docker buildx du --verbose
+//TODO: prune command (use filters) https://github.com/docker/buildx/pull/2473
+//      ~ 🤖 docker buildx du --verbose --filter type=frontend
+// ID:     peng2elrcincm360vextha1zz
+// Created at: 2025-03-30 16:26:19.48787607 +0000 UTC
+// Mutable:    false
+// Reclaimable:    true
+// Shared:     false
+// Size:       0B
+// Description:    pulled from docker.io/docker/dockerfile:1@sha256:4c68376a702446fc3c79af22de146a148bc3367e73c25a5803d453b6b3f722fb
+// Usage count:    1
+// Last used:  2 days ago
+// Type:       frontend
+//      ~ 🤖 docker buildx du --verbose --filter type=source.git.checkout
+// ID:     9serb7k61zusy8vf6x7k4yp2f
+// Created at: 2025-03-30 16:26:22.145481847 +0000 UTC
+// Mutable:    true
+// Reclaimable:    true
+// Shared:     false
+// Size:       41.58kB
+// Description:    git snapshot for https://github.com/fenollp/buildxargs.git#df9b810011cd416b8e3fc02911f2f496acb8475e
+// Usage count:    1
+// Last used:  2 days ago
+// Type:       source.git.checkout
+
 #[expect(clippy::unnecessary_wraps)]
 pub(crate) fn help() -> Result<()> {
     println!(
