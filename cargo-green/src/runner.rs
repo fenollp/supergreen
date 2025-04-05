@@ -10,7 +10,7 @@ use std::{
 
 use anyhow::{anyhow, bail, Result};
 use camino::{Utf8Path, Utf8PathBuf};
-use log::{debug, info, warn};
+use log::{debug, info};
 use reqwest::Client as ReqwestClient;
 use serde::Deserialize;
 use tokio::{
@@ -233,7 +233,9 @@ pub(crate) async fn build(
     }
 
     cmd.arg("-").stdin(Stdio::piped()); // Pass Dockerfile via STDIN, this way there's no default filesystem context.
-    cmd.stdout(Stdio::piped()).stderr(Stdio::piped());
+    if out_dir.is_some() {
+        cmd.stdout(Stdio::piped()).stderr(Stdio::piped());
+    }
 
     let call = cmd.show();
     let envs: Vec<_> = cmd
@@ -263,15 +265,18 @@ pub(crate) async fn build(
     let pid = child.id().unwrap_or_default();
     info!("Started as pid={pid} in {:?}", start.elapsed());
 
-    // TODO: don't parse out/err when out_dir is None
+    let handles = if out_dir.is_some() {
+        let out = TokioBufReader::new(child.stdout.take().expect("started")).lines();
+        let err = TokioBufReader::new(child.stderr.take().expect("started")).lines();
 
-    let out = TokioBufReader::new(child.stdout.take().expect("started")).lines();
-    let err = TokioBufReader::new(child.stderr.take().expect("started")).lines();
-
-    // TODO: try rawjson progress mode + find podman equivalent?
-    // TODO: set these when --builder is ready https://stackoverflow.com/a/75632518/1418165
-    let out_task = fwd(out, "stdout", "➤", MARK_STDOUT);
-    let err_task = fwd(err, "stderr", "✖", MARK_STDERR);
+        // TODO: try rawjson progress mode + find podman equivalent?
+        // TODO: set these when --builder is ready https://stackoverflow.com/a/75632518/1418165
+        let out_task = fwd(out, "stdout", "➤", MARK_STDOUT);
+        let err_task = fwd(err, "stderr", "✖", MARK_STDERR);
+        Some((out_task, err_task))
+    } else {
+        None
+    };
 
     let (secs, res) = {
         let start = Instant::now();
@@ -281,14 +286,35 @@ pub(crate) async fn build(
     let status = res.map_err(|e| anyhow!("Failed calling {call}: {e}"))?;
     info!("build ran in {secs:?}: {status}");
 
-    let longish = Duration::from_secs(2);
-    match join!(timeout(longish, out_task), timeout(longish, err_task)) {
-        (Ok(Ok(())), Ok(Ok(()))) => {}
-        (Ok(Err(e)), _) | (_, Ok(Err(e))) => {
-            bail!("BUG: STDIO forwarding crashed: {e}")
-        }
-        (Err(Elapsed { .. }), _) | (_, Err(Elapsed { .. })) => {
-            bail!("BUG: STDIO forwarding got crickets for {longish:?}")
+    if let Some((out_task, err_task)) = handles {
+        let longish = Duration::from_secs(2);
+        match join!(timeout(longish, out_task), timeout(longish, err_task)) {
+            (Ok(Ok(Ok(_))), Ok(Ok(Ok(written)))) => {
+                if !written.is_empty() {
+                    info!("rustc wrote {} files:", written.len());
+                    for f in written {
+                        let f = Utf8Path::new(&f);
+                        info!(
+                            "metadata for {f:?}: {:?}",
+                            f.metadata().map(|fmd| format!(
+                                "created:{c:?} accessed:{a:?} modified:{m:?}",
+                                c = fmd.created(),
+                                a = fmd.accessed(),
+                                m = fmd.modified(),
+                            ))
+                        );
+                    }
+                }
+            }
+            (Ok(Ok(Err(e))), _) | (_, Ok(Ok(Err(e)))) => {
+                bail!("BUG: STDIO forwarding crashed: {e}")
+            }
+            (Ok(Err(e)), _) | (_, Ok(Err(e))) => {
+                bail!("BUG: spawning STDIO forwarding crashed: {e}")
+            }
+            (Err(Elapsed { .. }), _) | (_, Err(Elapsed { .. })) => {
+                bail!("BUG: STDIO forwarding got crickets for {longish:?}")
+            }
         }
     }
     drop(child);
@@ -352,16 +378,17 @@ fn fwd<R>(
     name: &'static str,
     badge: &'static str,
     mark: &'static str,
-) -> JoinHandle<()>
+) -> JoinHandle<Result<Vec<String>>>
 where
     R: AsyncBufRead + Unpin + Send + 'static,
 {
+    debug!("Starting {name} task {badge}");
+    let start = Instant::now();
     let fwder = if mark == MARK_STDOUT { fwd_stdout } else { fwd_stderr };
     spawn(async move {
-        debug!("Starting {name} task {badge}");
-        let start = Instant::now();
         let mut buf = String::new();
         let mut details: Vec<String> = vec![];
+        let mut written: Vec<String> = vec![];
         let mut first = true;
         loop {
             let maybe_line = stdio.next_line().await;
@@ -369,59 +396,129 @@ where
                 first = false;
                 debug!("Time To First Line for task {name}: {:?}", start.elapsed());
             }
-            match maybe_line {
-                Ok(None) => break,
-                Ok(Some(line)) => {
-                    if line.is_empty() {
-                        continue;
-                    }
-
-                    debug!("{badge} {}", strip_ansi_escapes(&line));
-
-                    if let Some(msg) = lift_stdio(&line, mark) {
-                        fwder(msg, &mut buf);
-                    }
-
-                    // Show data transfers (Bytes, maybe also timings?)
-                    let pattern = " transferring ";
-                    for (idx, _pattern) in line.as_str().match_indices(pattern) {
-                        let detail = line[(pattern.len() + idx)..].trim_end_matches(" done");
-                        details.push(detail.to_owned());
-                    }
-                    //TODO: count DONEs and CACHEDs
-
-                    // D 25/03/31 23:21:11.702 L winnow 0.7.3-2a24a5220012bbd8 ✖ #0 building with "default" instance using docker driver                                                           01:21:12 [46/1876]
-                    // D 25/03/31 23:21:11.702 L winnow 0.7.3-2a24a5220012bbd8 ✖ #1 [internal] load build definition from Dockerfile
-                    // D 25/03/31 23:21:11.702 L winnow 0.7.3-2a24a5220012bbd8 ✖ #1 transferring dockerfile: 6.92kB done
-                    // D 25/03/31 23:21:11.702 L winnow 0.7.3-2a24a5220012bbd8 ✖ #1 DONE 0.0s
-                    // D 25/03/31 23:21:11.702 L winnow 0.7.3-2a24a5220012bbd8 ✖ #2 resolve image config for docker-image://docker.io/docker/dockerfile:1@sha256:4c68376a702446fc3c79af22de146a148bc3367e73c25a5803d453b6b3f722fb
-                    // D 25/03/31 23:21:11.702 L winnow 0.7.3-2a24a5220012bbd8 ✖ #2 DONE 0.0s
-                    // D 25/03/31 23:21:11.702 L winnow 0.7.3-2a24a5220012bbd8 ✖ #3 docker-image://docker.io/docker/dockerfile:1@sha256:4c68376a702446fc3c79af22de146a148bc3367e73c25a5803d453b6b3f722fb
-                    // D 25/03/31 23:21:11.702 L winnow 0.7.3-2a24a5220012bbd8 ✖ #3 CACHED
-                    // D 25/03/31 23:21:11.702 L winnow 0.7.3-2a24a5220012bbd8 ✖ #4 [internal] load metadata for docker.io/library/rust:1.85.0-slim@sha256:1829c432be4a592f3021501334d3fcca24f238432b13306a4e62669dec538e52
-                    // D 25/03/31 23:21:11.852 L winnow 0.7.3-2a24a5220012bbd8 ✖ #4 DONE 0.0s
-                    // D 25/03/31 23:21:11.852 L winnow 0.7.3-2a24a5220012bbd8 ✖ #5 [internal] load metadata for docker.io/tonistiigi/xx:latest
-                    // D 25/03/31 23:21:11.852 L winnow 0.7.3-2a24a5220012bbd8 ✖ #5 DONE 0.0s
-                    // D 25/03/31 23:21:11.852 L winnow 0.7.3-2a24a5220012bbd8 ✖ #6 [internal] load .dockerignore
-                    // D 25/03/31 23:21:11.852 L winnow 0.7.3-2a24a5220012bbd8 ✖ #6 transferring context: 2B done
-                    // D 25/03/31 23:21:11.852 L winnow 0.7.3-2a24a5220012bbd8 ✖ #6 DONE 0.0s
-                    // D 25/03/31 23:21:11.852 L winnow 0.7.3-2a24a5220012bbd8 ✖ #7 [xx 1/1] FROM docker.io/tonistiigi/xx:latest
-                    // D 25/03/31 23:21:11.852 L winnow 0.7.3-2a24a5220012bbd8 ✖ #7 DONE 0.0s
-                    // D 25/03/31 23:21:11.852 L winnow 0.7.3-2a24a5220012bbd8 ✖ #8 [rust-base 1/2] FROM docker.io/library/rust:1.85.0-slim@sha256:1829c432be4a592f3021501334d3fcca24f238432b13306a4e62669dec538e52
-                    // D 25/03/31 23:21:11.852 L winnow 0.7.3-2a24a5220012bbd8 ✖ #8 DONE 0.0s
-                    // D 25/03/31 23:21:11.852 L winnow 0.7.3-2a24a5220012bbd8 ✖ #9 [dep-l-winnow-0.7.3-2a24a5220012bbd8 1/3] WORKDIR /tmp/clis-cargo-udeps_0-1-55/release/deps
-                    // D 25/03/31 23:21:11.852 L winnow 0.7.3-2a24a5220012bbd8 ✖ #9 CACHED
-                    // D 25/03/31 23:21:11.852 L winnow 0.7.3-2a24a5220012bbd8 ✖ #10 [cratesio-winnow-0.7.3 1/2] ADD --chmod=0664 --checksum=sha256:0e7f4ea97f6f78012141bcdb6a216b2609f0979ada50b20ca5b52dde2eac2bb1   https://static.crates.io/crates/winnow/winnow-0.7.3.crate /crate
-                    // D 25/03/31 23:21:11.852 L winnow 0.7.3-2a24a5220012bbd8 ✖ #10 CACHED
-                }
-                Err(e) => {
-                    warn!("Failed during piping of {name}: {e:?}");
-                    break;
-                }
+            let line = maybe_line.map_err(|e| anyhow!("Failed during piping of {name}: {e:?}"))?;
+            let Some(line) = line else { break };
+            if line.is_empty() {
+                continue;
             }
+
+            debug!("{badge} {}", strip_ansi_escapes(&line));
+
+            if let Some(msg) = lift_stdio(&line, mark) {
+                fwder(msg, &mut buf, &mut written);
+            }
+
+            // //warning: panic message contains an unused formatting placeholder
+            // //--> /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.36/build.rs:191:17
+            // => un-rewrite /index.crates.io-0000000000000000/ in cargo messages
+            // => also in .d files
+            // cache should be ok (cargo's point of view) if written right after green's build(..) call
+
+            // Show data transfers (Bytes, maybe also timings?)
+            let pattern = " transferring ";
+            for (idx, _pattern) in line.as_str().match_indices(pattern) {
+                let detail = line[(pattern.len() + idx)..].trim_end_matches(" done");
+                details.push(detail.to_owned());
+            }
+
+            //TODO: count DONEs and CACHEDs
+            // D 25/03/31 23:21:11.702 L winnow 0.7.3-2a24a5220012bbd8 ✖ #0 building with "default" instance using docker driver                                                           01:21:12 [46/1876]
+            // D 25/03/31 23:21:11.702 L winnow 0.7.3-2a24a5220012bbd8 ✖ #1 [internal] load build definition from Dockerfile
+            // D 25/03/31 23:21:11.702 L winnow 0.7.3-2a24a5220012bbd8 ✖ #1 transferring dockerfile: 6.92kB done
+            // D 25/03/31 23:21:11.702 L winnow 0.7.3-2a24a5220012bbd8 ✖ #1 DONE 0.0s
+            // D 25/03/31 23:21:11.702 L winnow 0.7.3-2a24a5220012bbd8 ✖ #2 resolve image config for docker-image://docker.io/docker/dockerfile:1@sha256:4c68376a702446fc3c79af22de146a148bc3367e73c25a5803d453b6b3f722fb
+            // D 25/03/31 23:21:11.702 L winnow 0.7.3-2a24a5220012bbd8 ✖ #2 DONE 0.0s
+            // D 25/03/31 23:21:11.702 L winnow 0.7.3-2a24a5220012bbd8 ✖ #3 docker-image://docker.io/docker/dockerfile:1@sha256:4c68376a702446fc3c79af22de146a148bc3367e73c25a5803d453b6b3f722fb
+            // D 25/03/31 23:21:11.702 L winnow 0.7.3-2a24a5220012bbd8 ✖ #3 CACHED
+            // D 25/03/31 23:21:11.702 L winnow 0.7.3-2a24a5220012bbd8 ✖ #4 [internal] load metadata for docker.io/library/rust:1.85.0-slim@sha256:1829c432be4a592f3021501334d3fcca24f238432b13306a4e62669dec538e52
+            // D 25/03/31 23:21:11.852 L winnow 0.7.3-2a24a5220012bbd8 ✖ #4 DONE 0.0s
+            // D 25/03/31 23:21:11.852 L winnow 0.7.3-2a24a5220012bbd8 ✖ #5 [internal] load metadata for docker.io/tonistiigi/xx:latest
+            // D 25/03/31 23:21:11.852 L winnow 0.7.3-2a24a5220012bbd8 ✖ #5 DONE 0.0s
+            // D 25/03/31 23:21:11.852 L winnow 0.7.3-2a24a5220012bbd8 ✖ #6 [internal] load .dockerignore
+            // D 25/03/31 23:21:11.852 L winnow 0.7.3-2a24a5220012bbd8 ✖ #6 transferring context: 2B done
+            // D 25/03/31 23:21:11.852 L winnow 0.7.3-2a24a5220012bbd8 ✖ #6 DONE 0.0s
+            // D 25/03/31 23:21:11.852 L winnow 0.7.3-2a24a5220012bbd8 ✖ #7 [xx 1/1] FROM docker.io/tonistiigi/xx:latest
+            // D 25/03/31 23:21:11.852 L winnow 0.7.3-2a24a5220012bbd8 ✖ #7 DONE 0.0s
+            // D 25/03/31 23:21:11.852 L winnow 0.7.3-2a24a5220012bbd8 ✖ #8 [rust-base 1/2] FROM docker.io/library/rust:1.85.0-slim@sha256:1829c432be4a592f3021501334d3fcca24f238432b13306a4e62669dec538e52
+            // D 25/03/31 23:21:11.852 L winnow 0.7.3-2a24a5220012bbd8 ✖ #8 DONE 0.0s
+            // D 25/03/31 23:21:11.852 L winnow 0.7.3-2a24a5220012bbd8 ✖ #9 [dep-l-winnow-0.7.3-2a24a5220012bbd8 1/3] WORKDIR /tmp/clis-cargo-udeps_0-1-55/release/deps
+            // D 25/03/31 23:21:11.852 L winnow 0.7.3-2a24a5220012bbd8 ✖ #9 CACHED
+            // D 25/03/31 23:21:11.852 L winnow 0.7.3-2a24a5220012bbd8 ✖ #10 [cratesio-winnow-0.7.3 1/2] ADD --chmod=0664 --checksum=sha256:0e7f4ea97f6f78012141bcdb6a216b2609f0979ada50b20ca5b52dde2eac2bb1   https://static.crates.io/crates/winnow/winnow-0.7.3.crate /crate
+            // D 25/03/31 23:21:11.852 L winnow 0.7.3-2a24a5220012bbd8 ✖ #10 CACHED
+
+            // D 25/03/30 03:30:33.891 L mime_guess 2.0.5-d2ac06fbe540be6e ✖ #30 0.265 ::STDERR:: {"$message_type":"diagnostic","message":"environment variable `MIME_TYPES_GENERATED_PATH` not defined at co
+            // mpile time","code":null,"level":"error","spans":[{"file_name":"/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/mime_guess-2.0.5/src/impl_bin_search.rs","byte_start":62,"byte_
+            // end":95,"line_start":4,"line_end":4,"column_start":10,"column_end":43,"is_primary":true,"text":[{"text":"include!(env!(\"MIME_TYPES_GENERATED_PATH\"));","highlight_start":10,"highlight_end":
+            // 43}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":{"span":{"file_name":"/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/mime_guess-2.
+            // 0.5/src/impl_bin_search.rs","byte_start":62,"byte_end":95,"line_start":4,"line_end":4,"column_start":10,"column_end":43,"is_primary":false,"text":[{"text":"include!(env!(\"MIME_TYPES_GENERAT
+            // ED_PATH\"));","highlight_start":10,"highlight_end":43}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null},"macro_decl_name":"env!","def_site_span":{
+            // "file_name":"/rustc/4d91de4e48198da2e33413efdcd9cd2cc0c46688/library/core/src/macros/mod.rs","byte_start":38805,"byte_end":38821,"line_start":1101,"line_end":1101,"column_start":5,"column_en
+            // d":21,"is_primary":false,"text":[],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}}}],"children":[{"message":"use `std::env::var(\"MIME_TYPES_GENERATED_PATH\")` to read the variable at run time","code":null,"level":"help","spans":[],"children":[],"rendered":null}],"rendered":"error: environment variable `MIME_TYPES_GENERATED_PATH` not
+            //  defined at compile time\n --> /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/mime_guess-2.0.5/src/impl_bin_search.rs:4:10\n  |\n4 | include!(env!(\"MIME_TYPES_GENERATED_PAT
+            // H\"));\n  |          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  |\n  = help: use `std::env::var(\"MIME_TYPES_GENERATED_PATH\")` to read the variable at run time\n  = note: this error originates in
+            //  the macro `env` (in Nightly builds, run with -Z macro-backtrace for more info)\n\n"}
+            // D 25/03/30 03:30:33.891 L mime_guess 2.0.5-d2ac06fbe540be6e ✖ #30 0.265 ::STDERR:: {"$message_type":"artifact","artifact":"/tmp/clis-torrust-index_3-0-0-alpha-12/release/deps/mime_guess-d2ac
+            // 06fbe540be6e.d","emit":"dep-info"}
+            // I 25/03/30 03:30:33.891 L mime_guess 2.0.5-d2ac06fbe540be6e rustc wrote /tmp/clis-torrust-index_3-0-0-alpha-12/release/deps/mime_guess-d2ac06fbe540be6e.d
+            // D 25/03/30 03:30:33.891 L mime_guess 2.0.5-d2ac06fbe540be6e ✖ #30 0.265 ::STDERR::
+            // g=-fuse-ld=/usr/local/bin/mold`                                                                              error: environment variable `MIME_TYPES_GENERATED_PATH` not defined at compile time                                                                                                            --> /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/mime_guess-2.0.5/src/impl_bin_search.rs:4:10                                                                               |
+            // 4 | include!(env!("MIME_TYPES_GENERATED_PATH"));
+            //   |          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            //   |
+            //   = help: use `std::env::var("MIME_TYPES_GENERATED_PATH")` to read the variable at run time
+            //   = note: this error originates in the macro `env` (in Nightly builds, run with -Z macro-backtrace for more info)
+            // => TODO: suggest    CARGOGREEN_SET_ENVS='"[\"MIME_TYPES_GENERATED_PATH\",\"RING_CORE_PREFIX\"]"') ;;
+
+            // I 25/03/31 22:33:29.519 X cargo 0.81.0-d28c49a0e79c24d1 rustc wrote /tmp/clis-cargo-udeps_0-1-50/release/build/cargo-d28c49a0e79c24d1/build_script_build-d28c49a0e79c24d1.d
+            // D 25/03/31 22:33:29.665 X cargo 0.81.0-d28c49a0e79c24d1 ✖ #55 0.310 ::STDERR:: {"$message_type":"diagnostic","message":"linking with `cc` failed: exit status: 1","code":null,"level":"error",
+            // "spans":[],"children":[{"message":"LC_ALL=\"C\" PATH=\"/usr/local/rustup/toolchains/1.85.0-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/bin:/usr/local/cargo/bin:/usr/local/s
+            // bin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\" VSLANG=\"1033\" \"cc\" \"-m64\" \"/tmp/rustcaqBYLY/symbols.o\" \"<5 object files omitted>\" \"-Wl,--as-needed\" \"-Wl,-Bstatic\" \"/tmp/cli
+            // s-cargo-udeps_0-1-50/release/deps/{libtar-abaf872bda85c202.rlib,libfiletime-fe7a973ce74b2e13.rlib,liblibc-bea4c89311b7f903.rlib,libflate2-949eb855661d0057.rlib,liblibz_sys-7c0f9d8ec45388e2.r
+            // lib,libcrc32fast-df9d3a277d606584.rlib,libcfg_if-902bdc8a7a06a77f.rlib}\" \"/usr/local/rustup/toolchains/1.85.0-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/{libstd-6273
+            // 572f18644c87.rlib,libpanic_unwind-267e668abf74a283.rlib,libobject-ec6154ccae37a33e.rlib,libmemchr-500edd5521c440d4.rlib,libaddr2line-86d8d9428792e8ef.rlib,libgimli-10f06487503767c2.rlib,libr
+            // ustc_demangle-6a38424de1e5bca5.rlib,libstd_detect-de9763ea1c19dca3.rlib,libhashbrown-a7f5bb2f736d3c49.rlib,librustc_std_workspace_alloc-7e368919bdc4a44c.rlib,libminiz_oxide-376454d49910c786.
+            // rlib,libadler-fa99f5692b5dce85.rlib,libunwind-91cafdaf16f7fe40.rlib,libcfg_if-f7ee3f1ea78d9dae.rlib,liblibc-d3a35665f881365a.rlib,liballoc-715bc629a88bca60.rlib,librustc_std_workspace_core-a
+            // e70165d1278cff7.rlib,libcore-406129d0e3fbc101.rlib,libcompiler_builtins-1af05515ab19524a.rlib}\" \"-Wl,-Bdynamic\" \"-lz\" \"-lgcc_s\" \"-lutil\" \"-lrt\" \"-lpthread\" \"-lm\" \"-ldl\" \"-l
+            // c\" \"-Wl,--eh-frame-hdr\" \"-Wl,-z,noexecstack\" \"-L\" \"/usr/local/rustup/toolchains/1.85.0-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib\" \"-o\" \"/tmp/clis-cargo-ud
+            // eps_0-1-50/release/build/cargo-d28c49a0e79c24d1/build_script_build-d28c49a0e79c24d1\" \"-Wl,--gc-sections\" \"-pie\" \"-Wl,-z,relro,-z,now\" \"-Wl,--strip-all\" \"-nodefaultlibs\"","code":nu
+            // ll,"level":"note","spans":[],"children":[],"rendered":null},{"message":"some arguments are omitted. use `--verbose` to show all linker arguments","code":null,"level":"note","spans":[],"child
+            // ren":[],"rendered":null},{"message":"/usr/bin/ld: cannot find -lz: No such file or directory\ncollect2: error: ld returned 1 exit status\n","code":null,"level":"note","spans":[],"children":[
+            // ],"rendered":null}],"rendered":"error: linking with `cc` failed: exit status: 1\n  |\n  = note: LC_ALL=\"C\" PATH=\"/usr/local/rustup/toolchains/1.85.0-x86_64-unknown-linux-gnu/lib/rustlib/x
+            // 86_64-unknown-linux-gnu/bin:/usr/local/cargo/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\" VSLANG=\"1033\" \"cc\" \"-m64\" \"/tmp/rustcaqBYLY/symbols.o\" \"<5 object fil
+            // es omitted>\" \"-Wl,--as-needed\" \"-Wl,-Bstatic\" \"/tmp/clis-cargo-udeps_0-1-50/release/deps/{libtar-abaf872bda85c202.rlib,libfiletime-fe7a973ce74b2e13.rlib,liblibc-bea4c89311b7f903.rlib,l
+            // ibflate2-949eb855661d0057.rlib,liblibz_sys-7c0f9d8ec45388e2.rlib,libcrc32fast-df9d3a277d606584.rlib,libcfg_if-902bdc8a7a06a77f.rlib}\" \"/usr/local/rustup/toolchains/1.85.0-x86_64-unknown-li
+            // nux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/{libstd-6273572f18644c87.rlib,libpanic_unwind-267e668abf74a283.rlib,libobject-ec6154ccae37a33e.rlib,libmemchr-500edd5521c440d4.rlib,libaddr2l
+            // ine-86d8d9428792e8ef.rlib,libgimli-10f06487503767c2.rlib,librustc_demangle-6a38424de1e5bca5.rlib,libstd_detect-de9763ea1c19dca3.rlib,libhashbrown-a7f5bb2f736d3c49.rlib,librustc_std_workspace
+            // _alloc-7e368919bdc4a44c.rlib,libminiz_oxide-376454d49910c786.rlib,libadler-fa99f5692b5dce85.rlib,libunwind-91cafdaf16f7fe40.rlib,libcfg_if-f7ee3f1ea78d9dae.rlib,liblibc-d3a35665f881365a.rlib
+            // ,liballoc-715bc629a88bca60.rlib,librustc_std_workspace_core-ae70165d1278cff7.rlib,libcore-406129d0e3fbc101.rlib,libcompiler_builtins-1af05515ab19524a.rlib}\" \"-Wl,-Bdynamic\" \"-lz\" \"-lgc
+            // c_s\" \"-lutil\" \"-lrt\" \"-lpthread\" \"-lm\" \"-ldl\" \"-lc\" \"-Wl,--eh-frame-hdr\" \"-Wl,-z,noexecstack\" \"-L\" \"/usr/local/rustup/toolchains/1.85.0-x86_64-unknown-linux-gnu/lib/rustl
+            // ib/x86_64-unknown-linux-gnu/lib\" \"-o\" \"/tmp/clis-cargo-udeps_0-1-50/release/build/cargo-d28c49a0e79c24d1/build_script_build-d28c49a0e79c24d1\" \"-Wl,--gc-sections\" \"-pie\" \"-Wl,-z,rel
+            // ro,-z,now\" \"-Wl,--strip-all\" \"-nodefaultlibs\"\n  = note: some arguments are omitted. use `--verbose` to show all linker arguments\n  = note: /usr/bin/ld: cannot find -lz: No such file o
+            // r directory\n          collect2: error: ld returned 1 exit status\n          \n\n"}
+            // D 25/03/31 22:33:29.665 X cargo 0.81.0-d28c49a0e79c24d1 ✖ #55 0.326 ::STDERR:: {"$message_type":"diagnostic","message":"aborting due to 1 previous error","code":null,"level":"error","spans":
+            // [],"children":[],"rendered":"error: aborting due to 1 previous error\n\n"}
+            // error: linking with `cc` failed: exit status: 1
+            //   |
+            //   = note: LC_ALL="C" PATH="/usr/local/rustup/toolchains/1.85.0-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/bin:/usr/local/cargo/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin
+            // :/usr/bin:/sbin:/bin" VSLANG="1033" "cc" "-m64" "/tmp/rustcaqBYLY/symbols.o" "<5 object files omitted>" "-Wl,--as-needed" "-Wl,-Bstatic" "/tmp/clis-cargo-udeps_0-1-50/release/deps/{libtar-ab
+            // af872bda85c202.rlib,libfiletime-fe7a973ce74b2e13.rlib,liblibc-bea4c89311b7f903.rlib,libflate2-949eb855661d0057.rlib,liblibz_sys-7c0f9d8ec45388e2.rlib,libcrc32fast-df9d3a277d606584.rlib,libcf
+            // g_if-902bdc8a7a06a77f.rlib}" "/usr/local/rustup/toolchains/1.85.0-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/{libstd-6273572f18644c87.rlib,libpanic_unwind-267e668abf74
+            // a283.rlib,libobject-ec6154ccae37a33e.rlib,libmemchr-500edd5521c440d4.rlib,libaddr2line-86d8d9428792e8ef.rlib,libgimli-10f06487503767c2.rlib,librustc_demangle-6a38424de1e5bca5.rlib,libstd_det
+            // ect-de9763ea1c19dca3.rlib,libhashbrown-a7f5bb2f736d3c49.rlib,librustc_std_workspace_alloc-7e368919bdc4a44c.rlib,libminiz_oxide-376454d49910c786.rlib,libadler-fa99f5692b5dce85.rlib,libunwind-
+            // 91cafdaf16f7fe40.rlib,libcfg_if-f7ee3f1ea78d9dae.rlib,liblibc-d3a35665f881365a.rlib,liballoc-715bc629a88bca60.rlib,librustc_std_workspace_core-ae70165d1278cff7.rlib,libcore-406129d0e3fbc101.
+            // rlib,libcompiler_builtins-1af05515ab19524a.rlib}" "-Wl,-Bdynamic" "-lz" "-lgcc_s" "-lutil" "-lrt" "-lpthread" "-lm" "-ldl" "-lc" "-Wl,--eh-frame-hdr" "-Wl,-z,noexecstack" "-L" "/usr/local/ru
+            // stup/toolchains/1.85.0-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib" "-o" "/tmp/clis-cargo-udeps_0-1-50/release/build/cargo-d28c49a0e79c24d1/build_script_build-d28c49a0e
+            // 79c24d1" "-Wl,--gc-sections" "-pie" "-Wl,-z,relro,-z,now" "-Wl,--strip-all" "-nodefaultlibs"
+            //   = note: some arguments are omitted. use `--verbose` to show all linker arguments
+            //   = note: /usr/bin/ld: cannot find -lz: No such file or directory
+            //           collect2: error: ld returned 1 exit status
+            // => suggest "-lz":
+            // [package.metadata.green]
+            // install-with.apt = [ "zlib1g-dev" ]
         }
         debug!("Terminating {name} task {details:?}");
         drop(stdio);
+        Ok(written)
     })
 }
 
@@ -433,16 +530,19 @@ fn support_long_broken_json_lines() {
         r#"#42 1.313 ::STDERR:: }"#,
     ];
     let mut buf = String::new();
+    let mut written = vec![];
 
     let msg = lift_stdio(lines[0], MARK_STDERR);
     assert_eq!(msg, Some(r#"{"$message_type":"artifact","artifact":"/tmp/thing","emit":"link""#));
-    fwd_stderr(msg.unwrap(), &mut buf);
+    fwd_stderr(msg.unwrap(), &mut buf, &mut written);
     assert_eq!(buf, r#"{"$message_type":"artifact","artifact":"/tmp/thing","emit":"link""#);
+    assert_eq!(written, Vec::<String>::new());
 
     let msg = lift_stdio(lines[1], MARK_STDERR);
     assert_eq!(msg, Some("}"));
-    fwd_stderr(msg.unwrap(), &mut buf);
+    fwd_stderr(msg.unwrap(), &mut buf, &mut written);
     assert_eq!(buf, "");
+    assert_eq!(written, vec!["/tmp/thing".to_owned()]);
 
     // Then fwd_stderr
     // calls artifact_written(r#"{"$message_type":"artifact","artifact":"/tmp/thing","emit":"link"}"#)
@@ -450,14 +550,14 @@ fn support_long_broken_json_lines() {
     assertx::assert_logs_contain_in_order!(logs, log::Level::Info => "rustc wrote /tmp/thing");
 }
 
-fn fwd_stderr(msg: &str, buf: &mut String) {
-    let show = |msg: &str| {
+fn fwd_stderr(msg: &str, buf: &mut String, written: &mut Vec<String>) {
+    let mut show = |msg: &str| {
         info!("(To cargo's STDERR): {msg}");
         eprintln!("{msg}");
 
         if let Some(file) = artifact_written(msg) {
-            // TODO: later assert said files were actually written, after runner completes
-            info!("rustc wrote {file}") // FIXME: replace prefix target_path with '.'
+            written.push(file.to_owned());
+            info!("rustc wrote {file}");
         }
     };
     match (buf.is_empty(), msg.starts_with('{'), msg.ends_with('}')) {
@@ -484,7 +584,11 @@ fn fwd_stderr(msg: &str, buf: &mut String) {
     }
 }
 
-fn fwd_stdout(msg: &str, #[expect(clippy::ptr_arg)] _buf: &mut String) {
+fn fwd_stdout(
+    msg: &str,
+    #[expect(clippy::ptr_arg)] _buf: &mut String,
+    #[expect(clippy::ptr_arg)] _written: &mut Vec<String>,
+) {
     info!("(To cargo's STDOUT): {msg}");
     println!("{msg}");
 }

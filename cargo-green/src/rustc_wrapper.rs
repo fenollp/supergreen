@@ -198,10 +198,22 @@ async fn do_wrap_rustc(
             info!("listing (RO) crate_out contents {crate_out}");
             let listing = fs::read_dir(&crate_out)
                 .map_err(|e| anyhow!("Failed reading crate_out dir {crate_out}: {e}"))?;
-            let listing =
-                listing.map_while(Result::ok).inspect(|x| info!("contains {x:?}")).count();
+            let count = listing
+                .map_while(Result::ok)
+                .map(|f| {
+                    info!(
+                        "metadata for {f:?}: {:?}",
+                        f.metadata().map(|fmd| format!(
+                            "created:{c:?} accessed:{a:?} modified:{m:?}",
+                            c = fmd.created(),
+                            a = fmd.accessed(),
+                            m = fmd.modified(),
+                        ))
+                    );
+                })
+                .count();
             // crate_out dir empty => mount can be dropped
-            if listing != 0 {
+            if count != 0 {
                 let ignore = Utf8PathBuf::from(&crate_out).popped(1).join(".dockerignore");
                 fs::write(&ignore, "")
                     .map_err(|e| anyhow!("Failed creating crate_out dockerignore {ignore}: {e}"))?;
