@@ -559,6 +559,12 @@ async fn do_wrap_rustc(
             rustc_block.push_str(&format!("        {var}={val:?} \\\n"));
         }
     }
+    // TODO: catch these cargo:rustc-env= to add to TOML+Dockerfile in extremis so downstream knows about these envs
+    // 2025-04-05T09:42:41.5322589Z [typenum 1.12.0] cargo:rustc-env=TYPENUM_BUILD_CONSTS=/home/runner/instst/release/build/typenum-3cf9e442dfddd505/out/consts.rs
+    // 2025-04-05T09:42:41.5748814Z [typenum 1.12.0] cargo:rustc-env=TYPENUM_BUILD_OP=/home/runner/instst/release/build/typenum-3cf9e442dfddd505/out/op.rs
+    // https://doc.rust-lang.org/cargo/reference/build-scripts.html#outputs-of-the-build-script
+    // https://github.com/ALinuxPerson/build_script?tab=readme-ov-file#examples
+    // TODO: also maybe same for "rustc wrote"?
 
     // TODO: keep only paths that we explicitly mount or copy
     if false {
