@@ -278,6 +278,7 @@ modifier=${1:-0}
 clean=0; if [[ "$modifier" = 'clean' ]]; then clean=1; fi
 
 install_dir=/tmp/cargo-green
+CARGO=${CARGO:-cargo}
 
 # Special first arg handling..
 case "$arg1" in
@@ -296,7 +297,7 @@ set -x
     tmplogs=$tmptrgt.logs.txt
     mkdir -p "$tmptrgt"
     if [[ "$clean" = '1' ]]; then rm -rf "$tmptrgt" || exit 1; fi
-    CARGO_TARGET_DIR=$install_dir cargo install --locked --frozen --offline --force --root=$install_dir --path="$PWD"/cargo-green
+    CARGO_TARGET_DIR=$install_dir $CARGO install --locked --frozen --offline --force --root=$install_dir --path="$PWD"/cargo-green
     ls -lha $install_dir/bin/cargo-green
     rm $tmplogs >/dev/null 2>&1 || true
     touch $tmplogs
@@ -309,14 +310,14 @@ set -x
     RUSTCBUILDX_LOG_PATH="$tmplogs" \
     RUSTCBUILDX_CACHE_IMAGE="${RUSTCBUILDX_CACHE_IMAGE:-}" \
     PATH=$install_dir/bin:"$PATH" \
-      \cargo green -v fetch
+      $CARGO green -v fetch
     CARGOGREEN_LOG=trace \
     CARGOGREEN_FINAL_PATH="$tmptrgt/cargo-green.Dockerfile" \
     RUSTCBUILDX_LOG_PATH="$tmplogs" \
     RUSTCBUILDX_CACHE_IMAGE="${RUSTCBUILDX_CACHE_IMAGE:-}" \
     PATH=$install_dir/bin:"$PATH" \
     CARGO_TARGET_DIR="$tmptrgt" \
-      \cargo green -v $arg1 --jobs=${jobs:-$(nproc)} --all-targets --all-features --locked --frozen --offline -p cargo-green
+      $CARGO green -v $arg1 --jobs=${jobs:-$(nproc)} --all-targets --all-features --locked --frozen --offline -p cargo-green
     #if [[ "$clean" = 1 ]]; then docker buildx du --builder=supergreen --verbose | tee --append "$tmplogs" || exit 1; fi
     # TODO: tag/label buildx storage so things can be deleted with fine filters
     maybe_show_logs "$tmplogs"
@@ -360,13 +361,9 @@ send() {
   tmux send-keys " $* && tmux select-layout even-vertical && exit" C-m
 }
 
-
-    # '&&' '[[ $(expr $(date +%s) - $(stat -c %Y' /home/pete/.cargo/bin/cargo-green ')) -lt 3 ]]' \
-
-
 gitdir=$(realpath "$(dirname "$(dirname "$0")")")
 send \
-  CARGO_TARGET_DIR=$install_dir cargo install --locked --frozen --offline --force --root=$install_dir --path="$gitdir"/cargo-green \
+  CARGO_TARGET_DIR=$install_dir $CARGO install --locked --frozen --offline --force --root=$install_dir --path="$gitdir"/cargo-green \
     '&&' touch "$tmpgooo".installed \
     '&&' "rm $tmplogs >/dev/null 2>&1; touch $tmplogs; tail -f $tmplogs; :"
 tmux select-layout even-vertical
@@ -382,7 +379,7 @@ as_env "$name_at_version"
 send \
   'until' '[[' -f "$tmpgooo".installed ']];' \
   'do' sleep '.1;' 'done' '&&' rm "$tmpgooo".* '&&' \
-    "${envvars[@]}" \cargo green -vv install --timings --jobs=${jobs:-1} --root=$tmpbins --locked --force "$(as_install "$name_at_version")" "$args" \
+    "${envvars[@]}" $CARGO green -vv install --timings --jobs=${jobs:-1} --root=$tmpbins --locked --force "$(as_install "$name_at_version")" "$args" \
   '&&' 'if' '[[' "$clean" '=' '1' ']];' 'then' docker buildx du --builder=supergreen --verbose '|' tee --append "$tmplogs" '||' 'exit' '1;' 'fi' \
   '&&' tmux kill-session -t "$session_name"
 tmux select-layout even-vertical
