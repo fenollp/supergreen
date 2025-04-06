@@ -1,8 +1,9 @@
 #!/bin/bash -eux
 set -o pipefail
 
+CARGO=${CARGO:-cargo}
 
-cargo install --locked --frozen --offline --force --path cargo-green/
+$CARGO install --locked --frozen --offline --force --path cargo-green/
 
 install_package=buildxargs@1.4.0
 install_root=$(mktemp -d)
@@ -14,7 +15,7 @@ export CARGOGREEN_LOG=trace
 export RUSTCBUILDX_LOG_PATH=$(mktemp) #TODO: change env name to CARGOGREEN_LOG_PATH
 export CARGO_TARGET_DIR=$(mktemp -d /tmp/hack-caching--XXXXXXX)
 
-cargo green supergreen env #TODO: change env names
+$CARGO green supergreen env #TODO: change env names
 
 git rm -f $CARGOGREEN_FINAL_PATH 2>/dev/null 1>&2 || true
 
@@ -36,7 +37,7 @@ echo
 
 
 rm -rf $CARGO_TARGET_DIR/* >/dev/null
-cargo green install --locked --frozen --offline --force $install_package --root=$install_root
+$CARGO green install --locked                            $install_package --root=$install_root
 strip_versioning_from_final_path
 git add $CARGOGREEN_FINAL_PATH
 ensure__rewrite_cratesio_index__works
@@ -64,7 +65,7 @@ echo
 export CARGOGREEN_BASE_IMAGE=docker-image://docker.io/library/rust:1.84.0-slim@sha256:0ec205a9abb049604cb085f2fdf7630f1a31dad1f7ad4986154a56501fb7ca77
 
 rm -rf $CARGO_TARGET_DIR/* >/dev/null
-cargo green install --locked --frozen --offline --force $install_package --root=$install_root
+$CARGO green install --locked --frozen --offline --force $install_package --root=$install_root
 strip_versioning_from_final_path
 git --no-pager diff -- $CARGOGREEN_FINAL_PATH
 cat <<'EOF' | diff -u <(git --no-pager diff -- $CARGOGREEN_FINAL_PATH | tail -n +6) -
@@ -93,7 +94,7 @@ echo
 # Changing CARGOGREEN_LOG_LEVEL shouldn't evict cache
 
 # rm -rf $CARGO_TARGET_DIR/* >/dev/null
-# cargo green +nightly install --locked --frozen --offline --force $install_package --root=$install_root
+# $CARGO green +nightly install --locked --frozen --offline --force $install_package --root=$install_root
 # strip_versioning_from_final_path
 # git --no-pager diff --color-words=. --exit-code -- $CARGOGREEN_FINAL_PATH
 
@@ -104,7 +105,7 @@ echo
 export CARGO_TARGET_DIR=$(mktemp -d /tmp/hack-caching--XXXXXXX)
 
 rm -rf $CARGO_TARGET_DIR/* >/dev/null
-cargo green install --locked --frozen --offline --force $install_package --root=$install_root
+$CARGO green install --locked --frozen --offline --force $install_package --root=$install_root
 strip_versioning_from_final_path
 ensure__rewrite_cratesio_index__works
 [[ $install_sha = $(compute_installed_bin_hash) ]] # change targetdir => no binary changes
