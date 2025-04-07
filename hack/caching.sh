@@ -82,6 +82,10 @@ ensure__rewrite_cratesio_index__works
 [[ $install_sha != $(compute_installed_bin_hash) ]] # change rustc => change final bin
 install_sha=$(compute_installed_bin_hash)
 
+# https://github.com/rust-lang/cargo/issues/10367#issuecomment-1053678306
+# > This is currently intentional behavior. There are situations where RUSTC changes, but we don't want that to trigger a full recompile. If one rustc emits the same version output as another, then cargo assumes they essentially behave the same, even if they are from different paths. I'm not sure this is something that can be changed without causing unwanted recompiles in some situations.
+#=> no changes to final path (except for that base image)
+
 echo Changing rustc does not change crates metadata
 echo
 
