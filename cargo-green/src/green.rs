@@ -16,7 +16,7 @@ struct GreenMetadata {
 #[serde(default)]
 #[serde(deny_unknown_fields)]
 #[serde(rename_all = "kebab-case")]
-pub(crate) struct InstallWith {
+pub(crate) struct Add {
     pub(crate) apk: Vec<String>,
     pub(crate) apt: Vec<String>,
     pub(crate) apt_get: Vec<String>,
@@ -80,20 +80,20 @@ pub(crate) struct Green {
     // NOTE: this doesn't (yet) accumulate dependencies' set-envs values!
     pub(crate) set_envs: Vec<String>,
 
-    // install-with.apt = [ "libpq-dev", "pkg-config" ]
-    // install-with.apk = [ "libpq-dev", "pkgconf" ]
+    // add.apt = [ "libpq-dev", "pkg-config" ]
+    // add.apk = [ "libpq-dev", "pkgconf" ]
     //
     // # These environment variables take precedence over any Cargo.toml settings:
-    // CARGOGREEN_INSTALL_WITH_APT='[ "libpq-dev", "pkg-config" ]'
-    pub(crate) install_with: InstallWith,
+    // CARGOGREEN_ADD_APT='[ "libpq-dev", "pkg-config" ]'
+    pub(crate) add: Add,
 }
 
 pub(crate) const ENV_BASE_IMAGE: &str = "CARGOGREEN_BASE_IMAGE";
 pub(crate) const ENV_BASE_IMAGE_INLINE: &str = "CARGOGREEN_BASE_IMAGE_INLINE";
 pub(crate) const ENV_FINAL_PATH: &str = "CARGOGREEN_FINAL_PATH";
-pub(crate) const ENV_INSTALL_WITH_APK: &str = "CARGOGREEN_INSTALL_WITH_APK";
-pub(crate) const ENV_INSTALL_WITH_APT: &str = "CARGOGREEN_INSTALL_WITH_APT";
-pub(crate) const ENV_INSTALL_WITH_APT_GET: &str = "CARGOGREEN_INSTALL_WITH_APT_GET";
+pub(crate) const ENV_ADD_APK: &str = "CARGOGREEN_ADD_APK";
+pub(crate) const ENV_ADD_APT: &str = "CARGOGREEN_ADD_APT";
+pub(crate) const ENV_ADD_APT_GET: &str = "CARGOGREEN_ADD_APT_GET";
 pub(crate) const ENV_SET_ENVS: &str = "CARGOGREEN_SET_ENVS";
 
 impl Green {
@@ -192,11 +192,11 @@ impl Green {
         }
 
         for (field, (var, setting)) in [
-            (&mut green.install_with.apk, (ENV_INSTALL_WITH_APK, "apk")),
-            (&mut green.install_with.apt, (ENV_INSTALL_WITH_APT, "apt")),
-            (&mut green.install_with.apt_get, (ENV_INSTALL_WITH_APT_GET, "apt-get")),
+            (&mut green.add.apk, (ENV_ADD_APK, "apk")),
+            (&mut green.add.apt, (ENV_ADD_APT, "apt")),
+            (&mut green.add.apt_get, (ENV_ADD_APT_GET, "apt-get")),
         ] {
-            let mut origin = format!("[metadata.green.install-with.{setting}]");
+            let mut origin = format!("[metadata.green.add.{setting}]");
             if let Ok(val) = env::var(var) {
                 origin = format!("${var}");
                 if val.is_empty() {
@@ -242,37 +242,34 @@ name = "test-package"
     //
 
     #[test]
-    fn metadata_green_install_with_ok() {
+    fn metadata_green_add_ok() {
         let manifest = Manifest::from_str(
             r#"
 [package]
 name = "test-package"
 
 [package.metadata.green]
-install-with.apt = [ "libpq-dev", "pkg-config" ]
-install-with.apt-get = [ "libpq-dev", "pkg-config" ]
-install-with.apk = [ "libpq-dev", "pkgconf" ]
+add.apt = [ "libpq-dev", "pkg-config" ]
+add.apt-get = [ "libpq-dev", "pkg-config" ]
+add.apk = [ "libpq-dev", "pkgconf" ]
 "#,
         )
         .unwrap();
         let green = Green::try_from_manifest(&manifest).unwrap();
-        assert_eq!(green.install_with.apt, vec!["libpq-dev".to_owned(), "pkg-config".to_owned()]);
-        assert_eq!(
-            green.install_with.apt_get,
-            vec!["libpq-dev".to_owned(), "pkg-config".to_owned()]
-        );
-        assert_eq!(green.install_with.apk, vec!["libpq-dev".to_owned(), "pkgconf".to_owned()]);
+        assert_eq!(green.add.apt, vec!["libpq-dev".to_owned(), "pkg-config".to_owned()]);
+        assert_eq!(green.add.apt_get, vec!["libpq-dev".to_owned(), "pkg-config".to_owned()]);
+        assert_eq!(green.add.apk, vec!["libpq-dev".to_owned(), "pkgconf".to_owned()]);
     }
 
     #[test_matrix(["apt", "apt-get", "apk"])]
-    fn metadata_green_install_with_empty_name(setting: &str) {
+    fn metadata_green_add_empty_name(setting: &str) {
         let manifest = Manifest::from_str(&format!(
             r#"
 [package]
 name = "test-package"
 
 [package.metadata.green]
-install-with.{setting} = [ "" ]
+add.{setting} = [ "" ]
 "#
         ))
         .unwrap();
@@ -281,14 +278,14 @@ install-with.{setting} = [ "" ]
     }
 
     #[test_matrix(["apt", "apt-get", "apk"])]
-    fn metadata_green_install_with_duplicates(setting: &str) {
+    fn metadata_green_add_duplicates(setting: &str) {
         let manifest = Manifest::from_str(&format!(
             r#"
 [package]
 name = "test-package"
 
 [package.metadata.green]
-install-with.{setting} = [ "a", "b", "a" ]
+add.{setting} = [ "a", "b", "a" ]
             "#
         ))
         .unwrap();

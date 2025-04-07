@@ -746,7 +746,7 @@ jobs:
     - run: docker buildx du --verbose
     - name: cargo install net=ON cache=OFF remote=OFF jobs=1
       run: |
-        CARGOGREEN_LOG=trace CARGOGREEN_FINAL_PATH=diesel_cli@2.1.1.Dockerfile RUSTCBUILDX_LOG_PATH=$PWD/logs.txt CARGO_TARGET_DIR=~/instst CARGOGREEN_INSTALL_WITH_APT="[\"libpq-dev\"]" \
+        CARGOGREEN_LOG=trace CARGOGREEN_FINAL_PATH=diesel_cli@2.1.1.Dockerfile RUSTCBUILDX_LOG_PATH=$PWD/logs.txt CARGO_TARGET_DIR=~/instst CARGOGREEN_ADD_APT="[\"libpq-dev\"]" \
           cargo green -vv install --jobs=1 --locked --force diesel_cli@2.1.1 --no-default-features --features=postgres |& tee _
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
@@ -800,7 +800,7 @@ jobs:
 
     - name: Ensure running the same command twice without modifications...
       run: |
-        CARGOGREEN_LOG=trace CARGOGREEN_FINAL_PATH=diesel_cli@2.1.1.Dockerfile RUSTCBUILDX_LOG_PATH=$PWD/logs.txt CARGO_TARGET_DIR=~/instst CARGOGREEN_INSTALL_WITH_APT="[\"libpq-dev\"]" \
+        CARGOGREEN_LOG=trace CARGOGREEN_FINAL_PATH=diesel_cli@2.1.1.Dockerfile RUSTCBUILDX_LOG_PATH=$PWD/logs.txt CARGO_TARGET_DIR=~/instst CARGOGREEN_ADD_APT="[\"libpq-dev\"]" \
           cargo green -vv install --jobs=1 --locked --force diesel_cli@2.1.1 --no-default-features --features=postgres |& tee _
     - name: ...doesn't recompile anything
       run: |
@@ -1066,7 +1066,7 @@ jobs:
     - run: docker buildx du --verbose
     - name: cargo install net=ON cache=OFF remote=OFF jobs=1
       run: |
-        CARGOGREEN_LOG=trace CARGOGREEN_FINAL_PATH=mussh@3.1.3.Dockerfile RUSTCBUILDX_LOG_PATH=$PWD/logs.txt CARGO_TARGET_DIR=~/instst CARGOGREEN_INSTALL_WITH_APT="[\"libsqlite3-dev\",\"libssl-dev\",\"zlib1g-dev\"]" \
+        CARGOGREEN_LOG=trace CARGOGREEN_FINAL_PATH=mussh@3.1.3.Dockerfile RUSTCBUILDX_LOG_PATH=$PWD/logs.txt CARGO_TARGET_DIR=~/instst CARGOGREEN_ADD_APT="[\"libsqlite3-dev\",\"libssl-dev\",\"zlib1g-dev\"]" \
           cargo green -vv install --jobs=1 --locked --force mussh@3.1.3  |& tee _
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
@@ -1120,7 +1120,7 @@ jobs:
 
     - name: Ensure running the same command twice without modifications...
       run: |
-        CARGOGREEN_LOG=trace CARGOGREEN_FINAL_PATH=mussh@3.1.3.Dockerfile RUSTCBUILDX_LOG_PATH=$PWD/logs.txt CARGO_TARGET_DIR=~/instst CARGOGREEN_INSTALL_WITH_APT="[\"libsqlite3-dev\",\"libssl-dev\",\"zlib1g-dev\"]" \
+        CARGOGREEN_LOG=trace CARGOGREEN_FINAL_PATH=mussh@3.1.3.Dockerfile RUSTCBUILDX_LOG_PATH=$PWD/logs.txt CARGO_TARGET_DIR=~/instst CARGOGREEN_ADD_APT="[\"libsqlite3-dev\",\"libssl-dev\",\"zlib1g-dev\"]" \
           cargo green -vv install --jobs=1 --locked --force mussh@3.1.3  |& tee _
     - name: ...doesn't recompile anything
       run: |

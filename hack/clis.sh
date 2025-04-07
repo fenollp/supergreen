@@ -168,17 +168,17 @@ as_install() {
 as_env() {
   local name_at_version=$1; shift
   case "$name_at_version" in
-    cargo-authors@*) envvars+=(CARGOGREEN_INSTALL_WITH_APT='"[\"libssl-dev\",\"zlib1g-dev\"]"') ;;
-    cargo-udeps@*) envvars+=(CARGOGREEN_INSTALL_WITH_APT='"[\"libssl-dev\",\"zlib1g-dev\"]"') ;;
+    cargo-authors@*) envvars+=(CARGOGREEN_ADD_APT='"[\"libssl-dev\",\"zlib1g-dev\"]"') ;;
+    cargo-udeps@*) envvars+=(CARGOGREEN_ADD_APT='"[\"libssl-dev\",\"zlib1g-dev\"]"') ;;
     dbcc@*) envvars+=(CARGOGREEN_SET_ENVS='"[\"TYPENUM_BUILD_CONSTS\",\"TYPENUM_BUILD_OP\"]"') ;;
-    diesel_cli@*) envvars+=(CARGOGREEN_INSTALL_WITH_APT='"[\"libpq-dev\"]"') ;;
+    diesel_cli@*) envvars+=(CARGOGREEN_ADD_APT='"[\"libpq-dev\"]"') ;;
     hickory-dns@*) envvars+=(CARGOGREEN_SET_ENVS='"[\"RING_CORE_PREFIX\"]"') ;;
-    mussh@*) envvars+=(CARGOGREEN_INSTALL_WITH_APT='"[\"libsqlite3-dev\",\"libssl-dev\",\"zlib1g-dev\"]"') ;;
+    mussh@*) envvars+=(CARGOGREEN_ADD_APT='"[\"libsqlite3-dev\",\"libssl-dev\",\"zlib1g-dev\"]"') ;;
     ntpd@*) envvars+=(CARGOGREEN_SET_ENVS='"[\"NTPD_RS_GIT_DATE\",\"NTPD_RS_GIT_REV\",\"RING_CORE_PREFIX\"]"') ;;
-    # cargo-bpf@*) envvars+=(CARGOGREEN_INSTALL_WITH_APT='"[\"libelf-dev\"]"') ;;
-    # privaxy@*) envvars+=(CARGOGREEN_INSTALL_WITH_APT='"[\"libssl-dev\",\"openssl\"]"' CARGOGREEN_SET_ENVS='"[\"DEP_OPENSSL_LIBRESSL_VERSION_NUMBER\",\"DEP_OPENSSL_VERSION_NUMBER\"]"' CARGOGREEN_BASE_IMAGE=docker-image://docker.io/library/rust:1) ;;
-    # shpool@*) envvars+=(CARGOGREEN_INSTALL_WITH_APT='"[\"libpam0g-dev\"]"') ;;
-    # torrust-index@*) envvars+=(CARGOGREEN_INSTALL_WITH_APT='"[\"libssl-dev\",\"zlib1g-dev\"]"' CARGOGREEN_SET_ENVS='"[\"MIME_TYPES_GENERATED_PATH\",\"RING_CORE_PREFIX\"]"') ;;
+    # cargo-bpf@*) envvars+=(CARGOGREEN_ADD_APT='"[\"libelf-dev\"]"') ;;
+    # privaxy@*) envvars+=(CARGOGREEN_ADD_APT='"[\"libssl-dev\",\"openssl\"]"' CARGOGREEN_SET_ENVS='"[\"DEP_OPENSSL_LIBRESSL_VERSION_NUMBER\",\"DEP_OPENSSL_VERSION_NUMBER\"]"' CARGOGREEN_BASE_IMAGE=docker-image://docker.io/library/rust:1) ;;
+    # shpool@*) envvars+=(CARGOGREEN_ADD_APT='"[\"libpam0g-dev\"]"') ;;
+    # torrust-index@*) envvars+=(CARGOGREEN_ADD_APT='"[\"libssl-dev\",\"zlib1g-dev\"]"' CARGOGREEN_SET_ENVS='"[\"MIME_TYPES_GENERATED_PATH\",\"RING_CORE_PREFIX\"]"') ;;
     *) ;;
   esac
 }

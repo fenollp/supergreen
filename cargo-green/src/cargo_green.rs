@@ -80,10 +80,7 @@ pub(crate) async fn main(cmd: &mut Command) -> Result<Green> {
         } else {
             base_image.block()
         };
-    if !green.install_with.apt_get.is_empty()
-        || !green.install_with.apt.is_empty()
-        || !green.install_with.apk.is_empty()
-    {
+    if !green.add.apt_get.is_empty() || !green.add.apt.is_empty() || !green.add.apk.is_empty() {
         with_network = true;
         base_image_block = format!(
             r#"
@@ -114,9 +111,9 @@ RUN \
      fi
 "#,
             xx = "tonistiigi/xx", //lock dis
-            apk = &green.install_with.apk.join(" "),
-            apt = &green.install_with.apt.join(" "),
-            apt_get = &green.install_with.apt_get.join(" "),
+            apk = &green.add.apk.join(" "),
+            apt = &green.add.apt.join(" "),
+            apt_get = &green.add.apt_get.join(" "),
         )[1..]
             .to_owned();
     }
