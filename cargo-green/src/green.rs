@@ -98,6 +98,7 @@ pub(crate) const ENV_SET_ENVS: &str = "CARGOGREEN_SET_ENVS";
 
 impl Green {
     // TODO: handle worskpace cfg + merging fields
+    // TODO: find a way to read cfg on `cargo install <non-local code>` cc https://github.com/rust-lang/cargo/issues/9700#issuecomment-2748617896
     pub(crate) fn try_new() -> Result<Self> {
         let manifest_path = find_manifest_path()?;
 
