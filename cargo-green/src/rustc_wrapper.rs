@@ -387,6 +387,7 @@ async fn do_wrap_rustc(
         (None, rustc_stage)
     };
     info!("picked {rustc_stage} for {input}");
+    let input = rewrite_cratesio_index(&input);
 
     let incremental_stage = Stage::try_new(format!("inc{extrafn}")).unwrap();
     let out_stage = Stage::try_new(format!("out{extrafn}")).unwrap();
@@ -571,7 +572,6 @@ async fn do_wrap_rustc(
         }
     }
 
-    let input = rewrite_cratesio_index(input.as_path());
     rustc_block.push_str(&format!("      rustc '{}' {input} \\\n", args.join("' '")));
     rustc_block.push_str(&format!("        1> >(sed 's/^/{MARK_STDOUT}/') \\\n"));
     rustc_block.push_str(&format!("        2> >(sed 's/^/{MARK_STDERR}/' >&2)\n"));
