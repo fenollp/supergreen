@@ -9,6 +9,8 @@ with_j=0 # TODO: 1 => adds jobs with -J (see cargo issue https://github.com/rust
 # Usage:  $0 ( <name@version> | <name> )  #=> cargo install name@version
 # Usage:  $0 ( build | test )             #=> cargo build ./cargo-green
 
+# TODO: test other runtimes: runc crun containerd buildkit-rootless
+# TODO: set -x in ci
 
 # TODO: https://crates.io/categories/command-line-utilities?sort=recent-updates
 declare -a nvs nvs_args
