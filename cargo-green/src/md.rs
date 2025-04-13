@@ -13,10 +13,13 @@ use crate::{
 
 #[cfg_attr(test, derive(Default))]
 #[derive(Clone, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub(crate) struct Md {
     pub(crate) this: String,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub(crate) deps: Vec<String>,
 
+    #[serde(default, skip_serializing_if = "BTreeSet::is_empty")]
     pub(crate) contexts: BTreeSet<BuildContext>,
 
     pub(crate) stages: Vec<DockerfileStage>,
