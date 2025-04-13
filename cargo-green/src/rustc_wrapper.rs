@@ -615,6 +615,7 @@ async fn do_wrap_rustc(
 
         info!("opening (RW) crate's md {md_path}");
         // TODO? suggest a `cargo clean` then fail
+        // TODO? drop these 'x == "debug"'
         if internal::log().map(|x| x == "debug").unwrap_or_default() {
             match fs::read_to_string(&md_path) {
                 Ok(existing) => pretty_assertions::assert_eq!(&existing, &md_ser),
