@@ -19,7 +19,7 @@ pub(crate) struct Md {
 
     pub(crate) contexts: BTreeSet<BuildContext>,
 
-    pub(crate) stages: BTreeSet<DockerfileStage>,
+    pub(crate) stages: Vec<DockerfileStage>,
 }
 impl FromStr for Md {
     type Err = toml::de::Error;
@@ -43,7 +43,7 @@ impl Md {
     }
 
     pub(crate) fn push_block(&mut self, name: &Stage, script: String) {
-        self.stages.insert(DockerfileStage { name: name.to_string(), script });
+        self.stages.push(DockerfileStage { name: name.to_string(), script });
     }
 
     pub(crate) fn append_blocks(
