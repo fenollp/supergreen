@@ -17,9 +17,19 @@ struct GreenMetadata {
 #[serde(deny_unknown_fields)]
 #[serde(rename_all = "kebab-case")]
 pub(crate) struct Add {
+    #[serde(skip_serializing_if = "Vec::is_empty")]
     pub(crate) apk: Vec<String>,
+    #[serde(skip_serializing_if = "Vec::is_empty")]
     pub(crate) apt: Vec<String>,
+    #[serde(skip_serializing_if = "Vec::is_empty")]
     pub(crate) apt_get: Vec<String>,
+}
+
+impl Add {
+    #[must_use]
+    fn is_empty(&self) -> bool {
+        self.apk.is_empty() && self.apt.is_empty() && self.apt_get.is_empty()
+    }
 }
 
 #[derive(Debug, Serialize, Deserialize, Default)]
@@ -47,6 +57,7 @@ pub(crate) struct Green {
     //
     // # This environment variable takes precedence over any Cargo.toml settings:
     // CARGOGREEN_BASE_IMAGE=docker-image://docker.io/library/rust:1-slim
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub(crate) base_image: Option<String>,
 
     // Sets the base Rust image for root package and all dependencies, unless themselves being configured differently.
@@ -63,6 +74,7 @@ pub(crate) struct Green {
     //
     // # This environment variable takes precedence over any Cargo.toml settings:
     // CARGOGREEN_BASE_IMAGE="FROM=rust:1 AS rust-base\nRUN --mount=from=some-context,target=/tmp/some-context cp -r /tmp/some-context ./\nRUN --mount=type=secret,id=aws\n"
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub(crate) base_image_inline: Option<String>,
 
     // Pass environment variables through to build runner.
@@ -78,6 +90,7 @@ pub(crate) struct Green {
     // CARGOGREEN_SET_ENVS="[\"GIT_AUTH_TOKEN\", \"TYPENUM_BUILD_CONSTS\", \"TYPENUM_BUILD_OP\"]"
     //
     // NOTE: this doesn't (yet) accumulate dependencies' set-envs values!
+    #[serde(skip_serializing_if = "Vec::is_empty")]
     pub(crate) set_envs: Vec<String>,
 
     // add.apt = [ "libpq-dev", "pkg-config" ]
@@ -85,6 +98,7 @@ pub(crate) struct Green {
     //
     // # These environment variables take precedence over any Cargo.toml settings:
     // CARGOGREEN_ADD_APT='[ "libpq-dev", "pkg-config" ]'
+    #[serde(skip_serializing_if = "Add::is_empty")]
     pub(crate) add: Add,
 }
 
