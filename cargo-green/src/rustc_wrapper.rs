@@ -499,13 +499,14 @@ async fn do_wrap_rustc(
 
             info!("opening (RO) extern md {extern_md_path}");
             let md_raw = fs::read_to_string(&extern_md_path).map_err(|e| {
+                warn!("failed reading Md {extern_md_path}: {e}");
                 if e.kind() == ErrorKind::NotFound {
                     return anyhow!(
                         r#"
                     Looks like `{PKG}` ran on an unkempt project. That's alright!
-                    Let's remove the current target directory (note: $CARGO_TARGET_DIR={target_dir})
+                    Let's remove the current $CARGO_TARGET_DIR {target_dir}
                     then run your command again.
-                "#,
+"#,
                         target_dir = env::var("CARGO_TARGET_DIR").unwrap_or("<unset>".to_owned()),
                     );
                 }
