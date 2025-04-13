@@ -594,6 +594,9 @@ async fn do_wrap_rustc(
     let mut out_block = format!("FROM scratch AS {out_stage}\n");
     out_block.push_str(&format!("COPY --from={rustc_stage} {out_dir}/*{extrafn}* /\n"));
     md.push_block(&out_stage, out_block);
+    // TODO? in Dockerfile, when using outputs:
+    // => skip the COPY (--mount=from=out-08c4d63ed4366a99)
+    //   => use the stage directly (--mount=from=dep-l-buildxargs-1.4.0-08c4d63ed4366a99)
 
     let md = md; // Drop mut
 
