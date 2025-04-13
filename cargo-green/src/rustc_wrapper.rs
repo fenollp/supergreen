@@ -625,6 +625,17 @@ async fn do_wrap_rustc(
         }
         fs::write(&md_path, md_ser)
             .map_err(|e| anyhow!("Failed creating crate's md {md_path}: {e}"))?;
+
+        if debug.is_some() {
+            info!("toml: {md_path}");
+            match fs::read_to_string(&md_path) {
+                Ok(data) => data,
+                Err(e) => e.to_string(),
+            }
+            .lines()
+            .filter(|x| !x.is_empty())
+            .for_each(|line| trace!("❯ {line}"));
+        }
     }
 
     let dockerfile = {
