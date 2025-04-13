@@ -98,6 +98,7 @@ pub(crate) struct Green {
     //
     // # These environment variables take precedence over any Cargo.toml settings:
     // CARGOGREEN_ADD_APT='[ "libpq-dev", "pkg-config" ]'
+    // FIXME: ===> use CSV instead of JSON
     #[serde(skip_serializing_if = "Add::is_empty")]
     pub(crate) add: Add,
 }

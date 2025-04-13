@@ -1,0 +1,153 @@
+#  use md formart as such:
+
+[metadata.green]
+use-toolchain-file = true # any other value or abscence means: don't take ./toolchain.toml into account
+# errors if no ./toolchain.toml exists (local to the package/crate anyway)
+# will be used for building this crate and all of its dependencies as well
+#=> will that be okay with deps that do provide their own deps/x/toolchain.toml?
+#==> check what cargo/rustc does, pretty sure cargo allows crate-specific +...
+#===> so, each such metadata field (= each crate in the deps tree) MAY add/reuse a toolchain
+#====> thus, each [metadata.green] section only concerns current crate (but crate's base image MAY be a reused stage)
+#actually not sure it'd make sense to have this field
+
+#=====> tho ignore some fields when not set on root package: `additional-build-arguments`, ...
+#======> tho has to be noted all that sugar the tool provides MAY change in impl (eg. rustup stage)
+
+#--non-co=existant with--
+
+
+[metadata.green.toolchain]
+# all that's defined in https://rust-lang.github.io/rustup/overrides.html#the-toolchain-file
+# https://docs.rs/rust-toolchain-file/0.1.1/rust_toolchain_file/toml/enum.ToolchainSection.html
+#note tho https://github.com/Speykious/cve-rs/blob/main/rust-toolchain.toml
+
+
+#-- anyway, also support (and non-co=existant with)--
+#-- anyway, also support--
+
+
+also-run = ["echo This script", "echo ..as &&-separated commands"] # as last stage of base image (see `also-run-stages` and `base-image`)
+
+also-run-stages = """
+RUN echo This script
+"""
+# as before-last (see `also-run` and `base-image`) stage of base image
+
+base-image = "docker-image://docker.io/library/rust:1-slim" # only allowed prefix, rest is passe-plat
+#overridable by setting $CARGOGREEN_BASE_IMAGE
+#see `also-run` and `base-image-inline` and `additional-build-arguments`
+# For remote builds, make sure this is accessible non-locally
+
+base-image-inline = """
+FROM rust:1 AS rust
+RUN --mount=from=some-context,target=/tmp/some-context cp -r /tmp/some-context ./
+RUN --mount=type=secret,id=aws
+"""
+# Fails if doesn't find r#"FROM [^ \n]+ AS rust\n"# (before first r#"\n"#) in base_image_inline:&str
+#tho allow setting "(# *syntax=[^\n]+\n)?FROM..."
+#actually that "FROM...AS rust" just has to appear, just not as a comment (well HEREDOC but that's... EVASION)
+#=> needs thought
+#==> Ducktape version <> ensure dump initially-mentioned pattern
+# passe-plat to dockerfiles, happens what happens.
+# Also suggest: "See also `additional-build-arguments`"
+# Note however carefully crafting crossplatform stages can be non-trivial.
+
+additional-build-arguments = [
+    "--build-context", "some-context=   ",
+    #seealso: docker docs page for `buildx build` args
+    "--ssh=default",
+    "--secret", "id=aws,src=$HOME/.aws/credentials", #note that's not the $HOME inside the build container
+]
+#appended (to the end of all build commands)
+#seealso: `base-image`
+#note: ignored when package != root
+#warn on cargo commands: `package` `install`
+
+set_envs = [ "GIT_AUTH_TOKEN" ] #eh check dis out: https://docs.docker.com/build/building/secrets/#git-authentication-for-remote-contexts
+#seealso: `crates`
+#forbid (maybe warn later) about setting CARGOGREEN_* vars (or RUSTCBUILDX_* ..)
+
+#wouldMAY be nice tho to have a package-manager -free way of:
+additional-system-packages = [ "libpq-dev", "pkg-config" ] # passe-plat (using ["quo","ted"] notation)
+#seealso: `additional-system-package-manager`
+additional-system-package-manager = "apt" # or apk or yum or ... (seealso `additional-system-packages`)
+#twin MUST be set/non-empty
+##can be empty only when base block was decided by `cargo-green`.
+#[metadata.green.package-manager.apt]
+#install = [ "" ]
+additional-system-packages.apt = [ "libpq-dev", "pkg-config" ]
+#use v
+# RUN \
+#     apt update \
+#  && DEBIAN_FRONTEND=noninteractive apt-get install --yes --no-install-recommends \
+#     libpq-dev \
+#     lld \
+#     make \
+#     pkg-config
+### https://github.com/tonistiigi/xx?tab=readme-ov-file#xx-apk-xx-apt-xx-apt-get---installing-packages-for-target-architecture
+#=> also: `cargo green supergreen conf {USAGE}` (like `... env` but for this toml [metadata.green] and print with comments as docs + --format=(toml|json))
+#xx-apt and xx-apt-get, xx-apk but that's it
+#: ARG TARGETPLATFORM
+#> RUN set -ex \
+#:   && if command -v ag >/dev/null 2>&1; then \
+#:        xx-apk add --no-cache {apk}; \
+#:      elif command -v apt 2&>1; then \
+#:        xx-apt install -y {apt}; \
+#:      else \
+#:        xx-apt-get install -y {apt}; \
+#:      fi
+
+
+
+# FROM --from=$BUILDPLATFORM rust AS mold
+# RUN \
+#     bin=mold \
+#  && url=https://github.com/rui314/$bin/releases \
+#  && lat=$(basename $(curl -#fSLo /dev/null -w '%{url_effective}' $url/latest)) \
+#  && targz=$bin-${lat#v*}-$(uname -m)-linux.tar.gz \
+#  && cd /tmp && rm -Iv -rf $bin-* && curl -#fSLo $targz $url/download/$lat/$targz && tar xvf $targz && mv -v $bin-*/bin/$bin /usr/local/bin/ \
+#  && $bin --version
+#=> gen this ^ for each v
+blablabla = [ "mold" ]
+precious =
+#ducktape: just support a very restricted list of strings
+#ducktape: disallow when base block wasn't auto-decided
+#=> multiplatform like `rustup`
+
+# FROM scratch AS rustup
+# ADD --chmod=0144 --checksum=sha256:a3339fb004c3d0bb9862ba0bce001861fe5cbde9c10d16591eb3f39ee6cd3e7f \
+#   https://static.rust-lang.org/rustup/archive/1.28.1/x86_64-unknown-linux-gnu/rustup-init /rustup-init
+#=>pre-provide for each base block generated
+#==> for each platform $BUILDPLATFORM
+#btw, note: https://github.com/rust-lang/rustup/issues/2686#issuecomment-832150042
+#> rustup-init -y --no-update-default-toolchain && rustup toolchain ensure .
+
+[metadata.green.cargo-subcommands.cargo-auditable] #no .'*' allowed; for now.
+install-with = ["--locked", "cargo-auditable"] #=> optimize impl, use binstall, ... on exact install-with match
+#seealso: `base-image`
+# passe-plat to ["cargo", "install", ...]
+
+# #not read when package != root
+# builder-image = "..."
+# cache-image = "..."
+# #incremental = "..."
+# #runner = "..."
+# runs-on-network = "..."
+# #=> overridables from CARGOGREEN_* envs
+# #not including overriding $syntax: ########## let's disallow this everywhere actually
+
+
+#--all usable with-- : meaning the above fields are defined by the same underlying struct for [metadata.green.crates.<name>.<version|*>]
+
+
+#[metadata.green]
+#pass_build_time_envs_through_for_all_crates_and_deps = [ "TYPENUM_BUILD_OP", "TYPENUM_BUILD_CONSTS" ]
+[metadata.green.crates.typenum.'*'] ### check that fmt's
+##error if vars are unset (not empty nor not-utf8), just checks existence when building crate.
+# std::env::vars_os().is_none()
+##print a note: "When building $crate, env $'blip' mentioned in $file appeared unset"
+set_envs = [ "TYPENUM_BUILD_OP", "TYPENUM_BUILD_CONSTS" ]
+##.'*' means all crates that match that exact name fully, of any version.
+##.'m.m.p' means crates of said name + of that exact version number.
+#actually#
+[metadata.green.packages.typenum.'*']
