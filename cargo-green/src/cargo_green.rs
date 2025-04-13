@@ -50,8 +50,9 @@ pub(crate) async fn main(cmd: &mut Command) -> Result<Green> {
     env::set_var("CARGOGREEN", "1");
 
     // Use local hashed image if one matching exists locally
+    let syntax = maybe_lock_image(internal::syntax().unwrap_or(DEFAULT_SYNTAX.to_owned())).await;
     // otherwise default to a hash found through some Web API
-    let syntax = fetch_digest(&internal::syntax().unwrap_or(DEFAULT_SYNTAX.to_owned())).await?;
+    let syntax = fetch_digest(&syntax).await?;
     env::set_var(internal::RUSTCBUILDX_SYNTAX, syntax);
     //TODO: no longer allow completely changing syntax=
     //actually just allow setting digest part => enforce prefix up to before '@'

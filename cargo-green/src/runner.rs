@@ -44,6 +44,9 @@ pub(crate) fn runner_cmd() -> Command {
     cmd
 }
 
+// TODO: make this work (read local digest) for frontend (=syntax) images
+// => looks like pulled but not --load'ed images (to Docker image store) digests don't show up
+// ==> find another way to hit local image/?? cache
 #[must_use]
 pub(crate) async fn maybe_lock_image(mut img: String) -> String {
     // Lock image, as podman(4.3.1) does not respect --pull=false (fully, anyway)
