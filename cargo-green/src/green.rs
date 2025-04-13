@@ -527,6 +527,11 @@ RUN exit 42
 //////////////////////////////////////////////////
 // https://lib.rs/crates/cargo_metadata
 // https://github.com/stormshield/cargo-ft/blob/d4ba5b048345ab4b21f7992cc6ed12afff7cc863/src/package/metadata.rs
+
+// from https://github.com/PRQL/prql/pull/3773/files
+// [profile.release.package.prql-compiler]
+// strip = "debuginfo"
+//=> look into how `[profile.release.package.PACKAGE]` settings are propagated
 //////////////////////////////////////////////////
 
 // use error_stack::{report, Context, ResultExt};
