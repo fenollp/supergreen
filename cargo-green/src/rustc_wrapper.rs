@@ -542,6 +542,7 @@ async fn do_wrap_rustc(
                 debug!("env is set: {var}={val}");
             }
             let val = match var.as_str() {
+                "CARGO_PKG_DESCRIPTION" => "FIXME".to_owned(),
                 "CARGO_MANIFEST_DIR" | "CARGO_MANIFEST_PATH" => {
                     rewrite_cratesio_index(Utf8Path::new(&val)).to_string()
                 }
