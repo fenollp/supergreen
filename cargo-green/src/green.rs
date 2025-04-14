@@ -114,17 +114,17 @@ pub(crate) const ENV_SET_ENVS: &str = "CARGOGREEN_SET_ENVS";
 impl Green {
     // TODO: handle worskpace cfg + merging fields
     // TODO: find a way to read cfg on `cargo install <non-local code>` cc https://github.com/rust-lang/cargo/issues/9700#issuecomment-2748617896
-    pub(crate) fn try_new() -> Result<Self> {
+    pub(crate) fn new_from_env_then_manifest() -> Result<Self> {
         let manifest_path = find_manifest_path()?;
 
         let manifest =
             Manifest::from_path(&manifest_path) //hmmmm this searches workspace tho
                 .with_context(|| anyhow!("Reading package manifest {manifest_path}"))?;
 
-        Self::try_from_manifest(&manifest)
+        Self::try_new(&manifest)
     }
 
-    pub(crate) fn try_from_manifest(manifest: &Manifest) -> Result<Self> {
+    fn try_new(manifest: &Manifest) -> Result<Self> {
         let mut green =
             if let Some(metadata) = manifest.package.as_ref().and_then(|x| x.metadata.as_ref()) {
                 let GreenMetadata { green } = toml::from_str(&toml::to_string(metadata)?)?;
@@ -234,33 +234,26 @@ impl Green {
     }
 }
 
-#[cfg(test)]
-mod tests {
-    use cargo_toml::Manifest;
-    use test_case::test_matrix;
-
-    use super::Green;
-
-    #[test]
-    fn metadata_green_ok() {
-        let manifest = Manifest::from_str(
-            r#"
+#[test]
+fn metadata_green_ok() {
+    let manifest = Manifest::from_str(
+        r#"
 [package]
 name = "test-package"
 
 [package.metadata.green]
 "#,
-        )
-        .unwrap();
-        Green::try_from_manifest(&manifest).unwrap();
-    }
+    )
+    .unwrap();
+    Green::try_new(&manifest).unwrap();
+}
 
-    //
+//
 
-    #[test]
-    fn metadata_green_add_ok() {
-        let manifest = Manifest::from_str(
-            r#"
+#[test]
+fn metadata_green_add_ok() {
+    let manifest = Manifest::from_str(
+        r#"
 [package]
 name = "test-package"
 
@@ -269,173 +262,175 @@ add.apt = [ "libpq-dev", "pkg-config" ]
 add.apt-get = [ "libpq-dev", "pkg-config" ]
 add.apk = [ "libpq-dev", "pkgconf" ]
 "#,
-        )
-        .unwrap();
-        let green = Green::try_from_manifest(&manifest).unwrap();
-        assert_eq!(green.add.apt, vec!["libpq-dev".to_owned(), "pkg-config".to_owned()]);
-        assert_eq!(green.add.apt_get, vec!["libpq-dev".to_owned(), "pkg-config".to_owned()]);
-        assert_eq!(green.add.apk, vec!["libpq-dev".to_owned(), "pkgconf".to_owned()]);
-    }
+    )
+    .unwrap();
+    let green = Green::try_new(&manifest).unwrap();
+    assert_eq!(green.add.apt, vec!["libpq-dev".to_owned(), "pkg-config".to_owned()]);
+    assert_eq!(green.add.apt_get, vec!["libpq-dev".to_owned(), "pkg-config".to_owned()]);
+    assert_eq!(green.add.apk, vec!["libpq-dev".to_owned(), "pkgconf".to_owned()]);
+}
 
-    #[test_matrix(["apt", "apt-get", "apk"])]
-    fn metadata_green_add_empty_name(setting: &str) {
-        let manifest = Manifest::from_str(&format!(
-            r#"
+#[cfg(test)]
+#[test_case::test_matrix(["apt", "apt-get", "apk"])]
+fn metadata_green_add_empty_name(setting: &str) {
+    let manifest = Manifest::from_str(&format!(
+        r#"
 [package]
 name = "test-package"
 
 [package.metadata.green]
 add.{setting} = [ "" ]
 "#
-        ))
-        .unwrap();
-        let err = Green::try_from_manifest(&manifest).err().unwrap().to_string();
-        assert!(err.contains("empty"));
-    }
+    ))
+    .unwrap();
+    let err = Green::try_new(&manifest).err().unwrap().to_string();
+    assert!(err.contains("empty"));
+}
 
-    #[test_matrix(["apt", "apt-get", "apk"])]
-    fn metadata_green_add_duplicates(setting: &str) {
-        let manifest = Manifest::from_str(&format!(
-            r#"
+#[cfg(test)]
+#[test_case::test_matrix(["apt", "apt-get", "apk"])]
+fn metadata_green_add_duplicates(setting: &str) {
+    let manifest = Manifest::from_str(&format!(
+        r#"
 [package]
 name = "test-package"
 
 [package.metadata.green]
 add.{setting} = [ "a", "b", "a" ]
             "#
-        ))
-        .unwrap();
-        let err = Green::try_from_manifest(&manifest).err().unwrap().to_string();
-        assert!(err.contains("duplicates"));
-    }
+    ))
+    .unwrap();
+    let err = Green::try_new(&manifest).err().unwrap().to_string();
+    assert!(err.contains("duplicates"));
+}
 
-    //
+//
 
-    #[test]
-    fn metadata_green_set_envs_ok() {
-        let manifest = Manifest::from_str(
-            r#"
+#[test]
+fn metadata_green_set_envs_ok() {
+    let manifest = Manifest::from_str(
+        r#"
 [package]
 name = "test-package"
 
 [package.metadata.green]
 set-envs = [ "GIT_AUTH_TOKEN", "TYPENUM_BUILD_CONSTS", "TYPENUM_BUILD_OP" ]
 "#,
-        )
-        .unwrap();
-        let green = Green::try_from_manifest(&manifest).unwrap();
-        assert_eq!(
-            green.set_envs,
-            vec![
-                "GIT_AUTH_TOKEN".to_owned(),
-                "TYPENUM_BUILD_CONSTS".to_owned(),
-                "TYPENUM_BUILD_OP".to_owned()
-            ]
-        );
-    }
+    )
+    .unwrap();
+    let green = Green::try_new(&manifest).unwrap();
+    assert_eq!(
+        green.set_envs,
+        vec![
+            "GIT_AUTH_TOKEN".to_owned(),
+            "TYPENUM_BUILD_CONSTS".to_owned(),
+            "TYPENUM_BUILD_OP".to_owned()
+        ]
+    );
+}
 
-    #[test]
-    fn metadata_green_set_envs_empty_var() {
-        let manifest = Manifest::from_str(
-            r#"
+#[test]
+fn metadata_green_set_envs_empty_var() {
+    let manifest = Manifest::from_str(
+        r#"
 [package]
 name = "test-package"
 
 [package.metadata.green]
 set-envs = [ "" ]
 "#,
-        )
-        .unwrap();
-        let err = Green::try_from_manifest(&manifest).err().unwrap().to_string();
-        assert!(err.contains("empty name"));
-    }
+    )
+    .unwrap();
+    let err = Green::try_new(&manifest).err().unwrap().to_string();
+    assert!(err.contains("empty name"));
+}
 
-    #[test]
-    fn metadata_green_set_envs_our_vars() {
-        let manifest = Manifest::from_str(
-            r#"
+#[test]
+fn metadata_green_set_envs_our_vars() {
+    let manifest = Manifest::from_str(
+        r#"
 [package]
 name = "test-package"
 
 [package.metadata.green]
 set-envs = [ "CARGOGREEN_LOG" ]
 "#,
-        )
-        .unwrap();
-        let err = Green::try_from_manifest(&manifest).err().unwrap().to_string();
-        assert!(err.contains("CARGOGREEN"));
-    }
+    )
+    .unwrap();
+    let err = Green::try_new(&manifest).err().unwrap().to_string();
+    assert!(err.contains("CARGOGREEN"));
+}
 
-    #[test]
-    fn metadata_green_set_envs_duplicates() {
-        let manifest = Manifest::from_str(
-            r#"
+#[test]
+fn metadata_green_set_envs_duplicates() {
+    let manifest = Manifest::from_str(
+        r#"
 [package]
 name = "test-package"
 
 [package.metadata.green]
 set-envs = [ "A", "B", "A" ]
 "#,
-        )
-        .unwrap();
-        let err = Green::try_from_manifest(&manifest).err().unwrap().to_string();
-        assert!(err.contains("duplicates"));
-    }
+    )
+    .unwrap();
+    let err = Green::try_new(&manifest).err().unwrap().to_string();
+    assert!(err.contains("duplicates"));
+}
 
-    //
+//
 
-    #[test]
-    fn metadata_green_base_image_ok() {
-        let manifest = Manifest::from_str(
-            r#"
+#[test]
+fn metadata_green_base_image_ok() {
+    let manifest = Manifest::from_str(
+        r#"
 [package]
 name = "test-package"
 
 [package.metadata.green]
 base-image = "docker-image://docker.io/library/rust:1"
 "#,
-        )
-        .unwrap();
-        let green = Green::try_from_manifest(&manifest).unwrap();
-        assert_eq!(green.base_image, Some("docker-image://docker.io/library/rust:1".to_owned()));
-    }
+    )
+    .unwrap();
+    let green = Green::try_new(&manifest).unwrap();
+    assert_eq!(green.base_image, Some("docker-image://docker.io/library/rust:1".to_owned()));
+}
 
-    #[test]
-    fn metadata_green_base_image_empty() {
-        let manifest = Manifest::from_str(
-            r#"
+#[test]
+fn metadata_green_base_image_empty() {
+    let manifest = Manifest::from_str(
+        r#"
 [package]
 name = "test-package"
 
 [package.metadata.green]
 base-image = ""
 "#,
-        )
-        .unwrap();
-        let err = Green::try_from_manifest(&manifest).err().unwrap().to_string();
-        assert!(err.contains("empty"));
-    }
+    )
+    .unwrap();
+    let err = Green::try_new(&manifest).err().unwrap().to_string();
+    assert!(err.contains("empty"));
+}
 
-    #[test]
-    fn metadata_green_base_image_bad_scheme() {
-        let manifest = Manifest::from_str(
-            r#"
+#[test]
+fn metadata_green_base_image_bad_scheme() {
+    let manifest = Manifest::from_str(
+        r#"
 [package]
 name = "test-package"
 
 [package.metadata.green]
 base-image = "docker.io/library/rust:1"
 "#,
-        )
-        .unwrap();
-        let err = Green::try_from_manifest(&manifest).err().unwrap().to_string();
-        assert!(err.contains("scheme"));
-    }
+    )
+    .unwrap();
+    let err = Green::try_new(&manifest).err().unwrap().to_string();
+    assert!(err.contains("scheme"));
+}
 
-    #[test]
-    fn metadata_green_base_image_and_inline() {
-        let manifest = Manifest::from_str(
-            r#"
+#[test]
+fn metadata_green_base_image_and_inline() {
+    let manifest = Manifest::from_str(
+        r#"
 [package]
 name = "test-package"
 
@@ -447,17 +442,17 @@ RUN --mount=from=some-context,target=/tmp/some-context cp -r /tmp/some-context .
 RUN --mount=type=secret,id=aws
 """
 "#,
-        )
-        .unwrap();
-        let err = Green::try_from_manifest(&manifest).err().unwrap().to_string();
-        assert!(err.contains("pick one"));
-    }
+    )
+    .unwrap();
+    let err = Green::try_new(&manifest).err().unwrap().to_string();
+    assert!(err.contains("pick one"));
+}
 
-    //
+//
 
-    #[test]
-    fn metadata_green_base_image_inline_ok() {
-        let manifest = Manifest::from_str(
+#[test]
+fn metadata_green_base_image_inline_ok() {
+    let manifest = Manifest::from_str(
             r#"
 [package]
 name = "test-package"
@@ -472,8 +467,8 @@ RUN --mount=type=secret,id=aws
 "#,
         )
         .unwrap();
-        let green = Green::try_from_manifest(&manifest).unwrap();
-        assert_eq!(
+    let green = Green::try_new(&manifest).unwrap();
+    assert_eq!(
             green.base_image_inline,
             Some(
                 r#"
@@ -485,28 +480,28 @@ RUN --mount=type=secret,id=aws
                     .to_owned()
             )
         );
-    }
+}
 
-    #[test]
-    fn metadata_green_base_image_inline_empty() {
-        let manifest = Manifest::from_str(
-            r#"
+#[test]
+fn metadata_green_base_image_inline_empty() {
+    let manifest = Manifest::from_str(
+        r#"
 [package]
 name = "test-package"
 
 [package.metadata.green]
 base-image-inline = ""
 "#,
-        )
-        .unwrap();
-        let err = Green::try_from_manifest(&manifest).err().unwrap().to_string();
-        assert!(err.contains("empty"));
-    }
+    )
+    .unwrap();
+    let err = Green::try_new(&manifest).err().unwrap().to_string();
+    assert!(err.contains("empty"));
+}
 
-    #[test]
-    fn metadata_green_base_image_inline_bad_stage() {
-        let manifest = Manifest::from_str(
-            r#"
+#[test]
+fn metadata_green_base_image_inline_bad_stage() {
+    let manifest = Manifest::from_str(
+        r#"
 [package]
 name = "test-package"
 
@@ -516,13 +511,12 @@ FROM xyz AS not-rust
 RUN exit 42
 """
 "#,
-        )
-        .unwrap();
-        let err = Green::try_from_manifest(&manifest).err().unwrap().to_string();
-        assert!(err.contains("provide"));
-        assert!(err.contains("stage"));
-        assert!(err.contains("'rust-base'"));
-    }
+    )
+    .unwrap();
+    let err = Green::try_new(&manifest).err().unwrap().to_string();
+    assert!(err.contains("provide"));
+    assert!(err.contains("stage"));
+    assert!(err.contains("'rust-base'"));
 }
 
 //////////////////////////////////////////////////

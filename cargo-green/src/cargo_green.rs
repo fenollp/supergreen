@@ -59,7 +59,7 @@ pub(crate) async fn main(cmd: &mut Command) -> Result<Green> {
     //TODO: also start a tokio race between local and remote syntax digest lookups
     // start very early in cargo-green, pick winner here.
 
-    let green = Green::try_new()?;
+    let green = Green::new_from_env_then_manifest()?;
 
     if let Some(ref path) = green.final_path {
         if let Some(dir) = path.parent() {
