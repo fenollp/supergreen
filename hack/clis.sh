@@ -192,7 +192,7 @@ cli() {
 
   envvars+=(CARGOGREEN_LOG=trace)
   envvars+=(CARGOGREEN_FINAL_PATH="$name_at_version.Dockerfile")
-  envvars+=(RUSTCBUILDX_LOG_PATH="\$PWD"/logs.txt)
+  envvars+=(CARGOGREEN_LOG_PATH="\$PWD"/logs.txt)
   envvars+=(CARGO_TARGET_DIR=~/instst)
   as_env "$name_at_version"
 
@@ -309,13 +309,13 @@ set -x
     echo "Logs: $tmplogs"
     CARGOGREEN_LOG=trace \
     CARGOGREEN_FINAL_PATH="$tmptrgt/cargo-green-fetched.Dockerfile" \
-    RUSTCBUILDX_LOG_PATH="$tmplogs" \
+    CARGOGREEN_LOG_PATH="$tmplogs" \
     RUSTCBUILDX_CACHE_IMAGE="${RUSTCBUILDX_CACHE_IMAGE:-}" \
     PATH=$install_dir/bin:"$PATH" \
       $CARGO green -v fetch
     CARGOGREEN_LOG=trace \
     CARGOGREEN_FINAL_PATH="$tmptrgt/cargo-green.Dockerfile" \
-    RUSTCBUILDX_LOG_PATH="$tmplogs" \
+    CARGOGREEN_LOG_PATH="$tmplogs" \
     RUSTCBUILDX_CACHE_IMAGE="${RUSTCBUILDX_CACHE_IMAGE:-}" \
     PATH=$install_dir/bin:"$PATH" \
     CARGO_TARGET_DIR="$tmptrgt" \
@@ -373,7 +373,7 @@ tmux split-window
 
 envvars=(CARGOGREEN_LOG=trace)
 envvars+=(CARGOGREEN_FINAL_PATH="$tmptrgt/$name_at_version.Dockerfile")
-envvars+=(RUSTCBUILDX_LOG_PATH="$tmplogs")
+envvars+=(CARGOGREEN_LOG_PATH="$tmplogs")
 envvars+=(RUSTCBUILDX_CACHE_IMAGE="${RUSTCBUILDX_CACHE_IMAGE:-}")
 envvars+=(PATH=$install_dir/bin:"$PATH")
 envvars+=(CARGO_TARGET_DIR="$tmptrgt")

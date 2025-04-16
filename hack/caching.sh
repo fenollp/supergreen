@@ -12,7 +12,7 @@ export CARGOGREEN_FINAL_PATH=./hack/$install_package.Dockerfile
 export CARGOGREEN_SYNTAX=docker-image://docker.io/docker/dockerfile:1@sha256:4c68376a702446fc3c79af22de146a148bc3367e73c25a5803d453b6b3f722fb
 export CARGOGREEN_BASE_IMAGE=docker-image://docker.io/library/rust:1.84.1-slim@sha256:69fbd6ab81b514580bc14f35323fecb09feba9e74c5944ece9a70d9a2a369df0
 export CARGOGREEN_LOG=trace
-export RUSTCBUILDX_LOG_PATH=$(mktemp) #TODO: change env name to CARGOGREEN_LOG_PATH
+export CARGOGREEN_LOG_PATH=$(mktemp)
 export CARGO_TARGET_DIR=$(mktemp -d /tmp/hack-caching--XXXXXXX)
 
 $CARGO green supergreen env #TODO: change env names
@@ -26,7 +26,7 @@ compute_installed_bin_hash() {
 	sha256sum $install_root/bin/${install_package%@*} | awk '{print $1}'
 }
 ensure__rewrite_cratesio_index__works() {
-	! grep -F '/index.crates.io-' $RUSTCBUILDX_LOG_PATH | grep -vE '/index.crates.io-0{16}|original args|env is set|opening .RO. crate tarball|picked'
+	! grep -F '/index.crates.io-' $CARGOGREEN_LOG_PATH | grep -vE '/index.crates.io-0{16}|original args|env is set|opening .RO. crate tarball|picked'
 }
 
 echo Sortons nos cartes!

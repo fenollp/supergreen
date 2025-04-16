@@ -12,11 +12,11 @@ use tokio::{process::Command, try_join};
 
 use crate::{
     cratesio::{self},
-    envs::{cache_image, incremental, internal, maybe_log},
+    envs::{cache_image, incremental, internal},
     extensions::ShowCmd,
     green::{Green, ENV_BASE_IMAGE},
     lockfile::{find_lockfile, locked_crates},
-    logging,
+    logging::{self, maybe_log, ENV_LOG, ENV_LOG_PATH},
     runner::{build, fetch_digest, maybe_lock_image, runner_cmd},
     stage::Stage,
     PKG, REPO, VSN,
@@ -31,17 +31,12 @@ pub(crate) const ENV_SYNTAX: &str = "CARGOGREEN_SYNTAX";
 pub(crate) async fn main(cmd: &mut Command) -> Result<Green> {
     // TODO: TUI above cargo output (? https://docs.rs/prodash )
 
-    if let Ok(log) = env::var("CARGOGREEN_LOG") {
-        let mut val = String::new();
-        for (var, def) in [
-            (internal::RUSTCBUILDX_LOG, log),
-            (internal::RUSTCBUILDX_LOG_PATH, "/tmp/cargo-green.log".to_owned()), // last
-        ] {
-            val = env::var(var).unwrap_or(def.to_owned());
-            cmd.env(var, &val);
-            env::set_var(var, &val);
-        }
-        let _ = OpenOptions::new().create(true).truncate(false).append(true).open(val);
+    if let Ok(log) = env::var(ENV_LOG) {
+        cmd.env(ENV_LOG, log);
+        let path = env::var(ENV_LOG_PATH).unwrap_or_else(|_| "/tmp/cargo-green.log".to_owned());
+        cmd.env(ENV_LOG_PATH, &path);
+        env::set_var(ENV_LOG_PATH, &path);
+        let _ = OpenOptions::new().create(true).truncate(false).append(true).open(path);
     }
 
     // RUSTCBUILDX and eponymous envs are handled by wrapper
@@ -177,9 +172,6 @@ RUN \
     if incremental() {
         cmd.env(internal::RUSTCBUILDX_INCREMENTAL, "1");
     }
-    // RUSTCBUILDX_LOG
-    // RUSTCBUILDX_LOG_PATH
-    // RUSTCBUILDX_LOG_STYLE
     cmd.env(ENV_RUNNER, &green.runner);
 
     // FIXME "multiplex conns to daemon" https://github.com/docker/buildx/issues/2564#issuecomment-2207435201
@@ -280,7 +272,7 @@ async fn try_removing_previous_builder(green: &Green, name: &str) {
 pub(crate) async fn fetch(green: Green) -> Result<()> {
     let syntax = green.syntax.trim_start_matches("docker-image://");
 
-    logging::setup("fetch", internal::RUSTCBUILDX_LOG, internal::RUSTCBUILDX_LOG_STYLE);
+    logging::setup("fetch");
     let _ = maybe_log();
     info!("{PKG}@{VSN} original args: {:?} pwd={:?}", env::args(), env::current_dir());
 

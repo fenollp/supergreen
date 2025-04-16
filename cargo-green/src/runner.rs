@@ -23,10 +23,10 @@ use tokio::{
 };
 
 use crate::{
-    envs::{cache_image, log_path, maybe_log, runs_on_network},
+    envs::{cache_image, runs_on_network},
     extensions::ShowCmd,
     green::Green,
-    logging::crate_type_for_logging,
+    logging::{crate_type_for_logging, maybe_log, ENV_LOG_PATH},
     md::BuildContext,
     stage::Stage,
 };
@@ -296,7 +296,7 @@ pub(crate) async fn build(
     // Something is very wrong here. Try to be helpful by logging some info about runner config:
     if !status.success() {
         if maybe_log().is_some() {
-            bail!("Runner failed. Check logs over at {}", log_path())
+            bail!("Runner failed. Check logs over at {}", env::var(ENV_LOG_PATH).unwrap())
         }
 
         // TODO: all these

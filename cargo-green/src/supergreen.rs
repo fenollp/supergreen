@@ -8,9 +8,10 @@ use tokio::io::BufReader;
 
 use crate::{
     cargo_green::{ENV_BUILDER_IMAGE, ENV_FINAL_PATH, ENV_RUNNER, ENV_SYNTAX},
-    envs::{cache_image, incremental, internal, log_path},
+    envs::{cache_image, incremental, internal},
     extensions::ShowCmd,
     green::{Green, ENV_BASE_IMAGE, ENV_BASE_IMAGE_INLINE},
+    logging::{ENV_LOG, ENV_LOG_PATH, ENV_LOG_STYLE},
     runner::runner_cmd,
 };
 
@@ -135,9 +136,9 @@ fn envs(green: Green, vars: Vec<String>) {
         (ENV_BUILDER_IMAGE, Some(green.builder_image)),
         (internal::RUSTCBUILDX_CACHE_IMAGE, cache_image().to_owned()),
         (internal::RUSTCBUILDX_INCREMENTAL, incremental().then_some("1".to_owned())),
-        (internal::RUSTCBUILDX_LOG, internal::log()),
-        (internal::RUSTCBUILDX_LOG_PATH, Some(log_path().to_owned())),
-        (internal::RUSTCBUILDX_LOG_STYLE, internal::log_style()),
+        (ENV_LOG, env::var(ENV_LOG).ok()),
+        (ENV_LOG_PATH, env::var(ENV_LOG_PATH).ok()),
+        (ENV_LOG_STYLE, env::var(ENV_LOG_STYLE).ok()),
         (ENV_RUNNER, Some(green.runner.clone())),
         (ENV_SYNTAX, Some(green.syntax)),
         (ENV_FINAL_PATH, green.final_path.map(|x| x.to_string())),

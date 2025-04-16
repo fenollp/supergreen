@@ -57,8 +57,8 @@ jobs:
     needs: bin
     env:
       CARGOGREEN_LOG: trace
+      CARGOGREEN_LOG_PATH: /home/runner/work/supergreen/logs.txt
       CARGOGREEN_FINAL_PATH: $GITHUB_JOB.Dockerfile
-      RUSTCBUILDX_LOG_PATH: /home/runner/work/supergreen/logs.txt
     steps:
     - run: docker info
     - run: docker buildx version
@@ -161,8 +161,8 @@ jobs:
     needs: bin
     env:
       CARGOGREEN_LOG: trace
+      CARGOGREEN_LOG_PATH: /home/runner/work/supergreen/logs.txt
       CARGOGREEN_FINAL_PATH: $GITHUB_JOB.Dockerfile
-      RUSTCBUILDX_LOG_PATH: /home/runner/work/supergreen/logs.txt
     steps:
     - run: docker info
     - run: docker buildx version
@@ -268,8 +268,8 @@ jobs:
     needs: bin
     env:
       CARGOGREEN_LOG: trace
+      CARGOGREEN_LOG_PATH: /home/runner/work/supergreen/logs.txt
       CARGOGREEN_FINAL_PATH: $GITHUB_JOB.Dockerfile
-      RUSTCBUILDX_LOG_PATH: /home/runner/work/supergreen/logs.txt
     steps:
     - run: docker info
     - run: docker buildx version
@@ -422,8 +422,8 @@ jobs:
     needs: bin
     env:
       CARGOGREEN_LOG: trace
+      CARGOGREEN_LOG_PATH: /home/runner/work/supergreen/logs.txt
       CARGOGREEN_FINAL_PATH: $GITHUB_JOB.Dockerfile
-      RUSTCBUILDX_LOG_PATH: /home/runner/work/supergreen/logs.txt
     steps:
     - run: docker info
     - run: docker buildx version
@@ -678,8 +678,8 @@ jobs:
     needs: bin
     env:
       CARGOGREEN_LOG: trace
+      CARGOGREEN_LOG_PATH: /home/runner/work/supergreen/logs.txt
       CARGOGREEN_FINAL_PATH: $GITHUB_JOB.Dockerfile
-      RUSTCBUILDX_LOG_PATH: /home/runner/work/supergreen/logs.txt
     steps:
     - run: docker info
     - run: docker buildx version
@@ -934,8 +934,8 @@ jobs:
     needs: bin
     env:
       CARGOGREEN_LOG: trace
+      CARGOGREEN_LOG_PATH: /home/runner/work/supergreen/logs.txt
       CARGOGREEN_FINAL_PATH: $GITHUB_JOB.Dockerfile
-      RUSTCBUILDX_LOG_PATH: /home/runner/work/supergreen/logs.txt
     steps:
     - run: docker info
     - run: docker buildx version
@@ -1134,8 +1134,8 @@ jobs:
     needs: bin
     env:
       CARGOGREEN_LOG: trace
+      CARGOGREEN_LOG_PATH: /home/runner/work/supergreen/logs.txt
       CARGOGREEN_FINAL_PATH: $GITHUB_JOB.Dockerfile
-      RUSTCBUILDX_LOG_PATH: /home/runner/work/supergreen/logs.txt
     steps:
     - run: docker info
     - run: docker buildx version
@@ -1278,8 +1278,8 @@ jobs:
     needs: bin
     env:
       CARGOGREEN_LOG: trace
+      CARGOGREEN_LOG_PATH: /home/runner/work/supergreen/logs.txt
       CARGOGREEN_FINAL_PATH: $GITHUB_JOB.Dockerfile
-      RUSTCBUILDX_LOG_PATH: /home/runner/work/supergreen/logs.txt
     steps:
     - run: docker info
     - run: docker buildx version

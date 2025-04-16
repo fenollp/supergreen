@@ -86,8 +86,8 @@ $(jobdef 'installs')
     needs: bin
     env:
       CARGOGREEN_LOG: trace
+      CARGOGREEN_LOG_PATH: /home/runner/work/supergreen/logs.txt
       CARGOGREEN_FINAL_PATH: \$GITHUB_JOB.Dockerfile
-      RUSTCBUILDX_LOG_PATH: /home/runner/work/supergreen/logs.txt
     steps:
 $(rundeps_versions)
 $(postbin_steps)
@@ -102,8 +102,8 @@ $(jobdef 'audits')
     needs: bin
     env:
       CARGOGREEN_LOG: trace
+      CARGOGREEN_LOG_PATH: /home/runner/work/supergreen/logs.txt
       CARGOGREEN_FINAL_PATH: \$GITHUB_JOB.Dockerfile
-      RUSTCBUILDX_LOG_PATH: /home/runner/work/supergreen/logs.txt
     steps:
 $(rundeps_versions)
 $(postbin_steps)
@@ -121,8 +121,8 @@ $(jobdef 'udeps')
     needs: bin
     env:
       CARGOGREEN_LOG: trace
+      CARGOGREEN_LOG_PATH: /home/runner/work/supergreen/logs.txt
       CARGOGREEN_FINAL_PATH: \$GITHUB_JOB.Dockerfile
-      RUSTCBUILDX_LOG_PATH: /home/runner/work/supergreen/logs.txt
     steps:
 $(rundeps_versions)
 $(postbin_steps $nightly)
@@ -144,8 +144,8 @@ $(jobdef 'builds')
     needs: bin
     env:
       CARGOGREEN_LOG: trace
+      CARGOGREEN_LOG_PATH: /home/runner/work/supergreen/logs.txt
       CARGOGREEN_FINAL_PATH: \$GITHUB_JOB.Dockerfile
-      RUSTCBUILDX_LOG_PATH: /home/runner/work/supergreen/logs.txt
     steps:
 $(rundeps_versions)
 $(postbin_steps)
@@ -173,8 +173,8 @@ $(jobdef 'tests')
     needs: bin
     env:
       CARGOGREEN_LOG: trace
+      CARGOGREEN_LOG_PATH: /home/runner/work/supergreen/logs.txt
       CARGOGREEN_FINAL_PATH: \$GITHUB_JOB.Dockerfile
-      RUSTCBUILDX_LOG_PATH: /home/runner/work/supergreen/logs.txt
     steps:
 $(rundeps_versions)
 $(postbin_steps)
@@ -202,8 +202,8 @@ $(jobdef 'checks')
     needs: bin
     env:
       CARGOGREEN_LOG: trace
+      CARGOGREEN_LOG_PATH: /home/runner/work/supergreen/logs.txt
       CARGOGREEN_FINAL_PATH: \$GITHUB_JOB.Dockerfile
-      RUSTCBUILDX_LOG_PATH: /home/runner/work/supergreen/logs.txt
     steps:
 $(rundeps_versions)
 $(postbin_steps)
@@ -226,8 +226,8 @@ $(jobdef 'packages')
     needs: bin
     env:
       CARGOGREEN_LOG: trace
+      CARGOGREEN_LOG_PATH: /home/runner/work/supergreen/logs.txt
       CARGOGREEN_FINAL_PATH: \$GITHUB_JOB.Dockerfile
-      RUSTCBUILDX_LOG_PATH: /home/runner/work/supergreen/logs.txt
     steps:
 $(rundeps_versions)
 $(postbin_steps)
@@ -245,8 +245,8 @@ $(jobdef 'clippy')
     needs: bin
     env:
       CARGOGREEN_LOG: trace
+      CARGOGREEN_LOG_PATH: /home/runner/work/supergreen/logs.txt
       CARGOGREEN_FINAL_PATH: \$GITHUB_JOB.Dockerfile
-      RUSTCBUILDX_LOG_PATH: /home/runner/work/supergreen/logs.txt
     steps:
 $(rundeps_versions)
 $(postbin_steps)

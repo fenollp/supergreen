@@ -16,10 +16,10 @@ use crate::{
     base::RUST,
     checkouts,
     cratesio::{self, rewrite_cratesio_index},
-    envs::{self, internal, maybe_log, pass_env, this},
+    envs::{self, internal, pass_env, this},
     extensions::{Popped, ShowCmd},
     green::Green,
-    logging::{self, crate_type_for_logging},
+    logging::{self, crate_type_for_logging, maybe_log, ENV_LOG},
     md::{BuildContext, Md},
     runner::{build, MARK_STDERR, MARK_STDOUT},
     rustc_arguments::{as_rustc, RustcArgs},
@@ -149,7 +149,7 @@ async fn wrap_rustc(
         format!("{krate_type} {krate_name} {krate_version}{extrafn}")
     };
 
-    logging::setup(&full_krate_id, internal::RUSTCBUILDX_LOG, internal::RUSTCBUILDX_LOG_STYLE);
+    logging::setup(&full_krate_id);
 
     info!("{PKG}@{VSN} original args: {arguments:?} pwd={pwd} st={st:?} green={green:?}");
 
@@ -618,8 +618,7 @@ async fn do_wrap_rustc(
 
         info!("opening (RW) crate's md {md_path}");
         // TODO? suggest a `cargo clean` then fail
-        // TODO? drop these 'x == "debug"'
-        if internal::log().map(|x| x == "debug").unwrap_or_default() {
+        if env::var(ENV_LOG).is_ok() {
             match fs::read_to_string(&md_path) {
                 Ok(existing) => pretty_assertions::assert_eq!(&existing, &md_ser),
                 Err(e) if e.kind() == ErrorKind::NotFound => {}
@@ -658,7 +657,7 @@ async fn do_wrap_rustc(
 
         info!("opening (RW) crate dockerfile {dockerfile}");
         // TODO? suggest a `cargo clean` then fail
-        if internal::log().map(|x| x == "debug").unwrap_or_default() {
+        if env::var(ENV_LOG).is_ok() {
             match fs::read_to_string(&dockerfile) {
                 Ok(existing) => pretty_assertions::assert_eq!(&existing, &header),
                 Err(e) if e.kind() == ErrorKind::NotFound => {}

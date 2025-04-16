@@ -1,9 +1,4 @@
-use std::{
-    fs::{File, OpenOptions},
-    sync::OnceLock,
-};
-
-use anyhow::{anyhow, Result};
+use std::sync::OnceLock;
 
 pub(crate) mod internal {
     use std::env;
@@ -11,9 +6,6 @@ pub(crate) mod internal {
     pub const RUSTCBUILDX: &str = "RUSTCBUILDX";
     pub const RUSTCBUILDX_CACHE_IMAGE: &str = "RUSTCBUILDX_CACHE_IMAGE";
     pub const RUSTCBUILDX_INCREMENTAL: &str = "RUSTCBUILDX_INCREMENTAL";
-    pub const RUSTCBUILDX_LOG: &str = "RUSTCBUILDX_LOG";
-    pub const RUSTCBUILDX_LOG_PATH: &str = "RUSTCBUILDX_LOG_PATH";
-    pub const RUSTCBUILDX_LOG_STYLE: &str = "RUSTCBUILDX_LOG_STYLE";
     pub const RUSTCBUILDX_RUNS_ON_NETWORK: &str = "RUSTCBUILDX_RUNS_ON_NETWORK";
 
     #[must_use]
@@ -27,18 +19,6 @@ pub(crate) mod internal {
     #[must_use]
     pub fn incremental() -> Option<String> {
         env::var(RUSTCBUILDX_INCREMENTAL).ok()
-    }
-    #[must_use]
-    pub fn log() -> Option<String> {
-        env::var(RUSTCBUILDX_LOG).ok()
-    }
-    #[must_use]
-    pub fn log_path() -> Option<String> {
-        env::var(RUSTCBUILDX_LOG_PATH).ok()
-    }
-    #[must_use]
-    pub fn log_style() -> Option<String> {
-        env::var(RUSTCBUILDX_LOG_STYLE).ok()
     }
     #[must_use]
     pub fn runs_on_network() -> Option<String> {
@@ -55,12 +35,6 @@ pub(crate) fn this() -> bool {
 pub(crate) fn incremental() -> bool {
     static ONCE: OnceLock<bool> = OnceLock::new();
     *ONCE.get_or_init(|| internal::incremental().map(|x| x == "1").unwrap_or_default())
-}
-
-#[must_use]
-pub(crate) fn log_path() -> &'static str {
-    static ONCE: OnceLock<String> = OnceLock::new();
-    ONCE.get_or_init(|| internal::log_path().unwrap_or("/tmp/rstcbldx_FIXME".to_owned()))
 }
 
 // A Docker image path with registry information.
@@ -98,17 +72,6 @@ pub(crate) fn runs_on_network() -> &'static str {
             ONCE.get().expect("just set network")
         }
     }
-}
-
-#[must_use]
-pub(crate) fn maybe_log() -> Option<fn() -> Result<File>> {
-    fn log_file() -> Result<File> {
-        let log_path = log_path();
-        let errf = |e| anyhow!("Failed opening (WA) log file {log_path}: {e}");
-        OpenOptions::new().create(true).append(true).open(log_path).map_err(errf)
-    }
-
-    internal::log().map(|x| !x.is_empty()).unwrap_or_default().then_some(log_file)
 }
 
 // https://doc.rust-lang.org/cargo/reference/environment-variables.html#environment-variables-cargo-sets-for-crates
