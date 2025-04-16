@@ -1,7 +1,23 @@
 use rustc_version::{Channel, Version, VersionMeta};
 use serde::{Deserialize, Serialize};
 
-pub(crate) const RUST: &str = "rust-base";
+use crate::green::Add;
+
+pub(crate) const RUST: &str = "rust-base"; //TODO: rename to RUST_STAGE
+
+const STABLE_RUST: &str = "docker-image://docker.io/library/rust:1-slim";
+const BASE_FOR_RUST: &str = "docker-image://docker.io/library/debian:stable-slim";
+
+#[test]
+fn rust_stage() {
+    use crate::stage::Stage;
+    assert_eq!(RUST, Stage::try_new(RUST).unwrap().to_string());
+}
+
+#[test]
+fn default_is_unset() {
+    assert!(BaseImage::default().is_unset());
+}
 
 #[derive(Debug, Serialize, Deserialize, Default)]
 #[serde(default)]
@@ -47,17 +63,7 @@ pub(crate) struct BaseImage {
     // CARGOGREEN_BASE_IMAGE="FROM=rust:1 AS rust-base\nRUN --mount=from=some-context,target=/tmp/some-context cp -r /tmp/some-context ./\nRUN --mount=type=secret,id=aws\n"
     #[serde(skip_serializing_if = "Option::is_none")]
     pub(crate) base_image_inline: Option<String>,
-
-    #[serde(skip)]
-    with_network: bool, //FIXME: CARGOGREEN_NETWORK
 }
-
-#[test]
-fn default_is_unset() {
-    assert!(BaseImage::default().is_unset());
-}
-
-const STABLE_RUST: &str = "docker-image://docker.io/library/rust:1-slim";
 
 impl BaseImage {
     #[must_use]
@@ -86,33 +92,28 @@ impl BaseImage {
             assert!(STABLE_RUST.contains(":1-"));
             return Some(Self::from_image(STABLE_RUST.replace(":1-", &format!(":{semver}-"))));
         }
-        const BASE_FOR_RUST: &str = "docker-image://docker.io/library/debian:stable-slim";
         commit_hash.zip(commit_date).map(|(commit, date)| Self {
             base_image: BASE_FOR_RUST.to_owned(),
-            with_network: true,
-            base_image_inline: Some(
-                RustcV { version: semver, commit, date, channel }.to_inline(BASE_FOR_RUST),
-            ),
+            base_image_inline: Some(RustcV { version: semver, commit, date, channel }.as_block()),
         })
     }
 
     #[must_use]
     pub(crate) fn lock_base_to(self, base_image: String) -> Self {
-        let base_image_inline = self.base_image_inline.map(|inline| {
+        let base_image_inline = self.base_image_inline.map(|block| {
             let from = self.base_image.trim_start_matches("docker-image://");
             let to = base_image.trim_start_matches("docker-image://");
-            inline.replace(&format!(" {from} "), &format!(" {to} "))
+            block.replace(&format!(" {from} "), &format!(" {to} "))
         });
-        Self { base_image, base_image_inline, ..self }
+        Self { base_image, base_image_inline }
     }
 
     #[must_use]
-    pub(crate) fn block(&self) -> (String, bool) {
-        let inline = self.base_image_inline.clone().unwrap_or_else(|| {
+    pub(crate) fn as_block(&self) -> String {
+        self.base_image_inline.clone().unwrap_or_else(|| {
             let base = self.base_image.trim_start_matches("docker-image://");
             format!("FROM --platform=$BUILDPLATFORM {base} AS {RUST}\n")
-        });
-        (inline, self.with_network)
+        })
     }
 }
 
@@ -128,12 +129,15 @@ struct RustcV {
 
 impl RustcV {
     #[must_use]
-    fn to_inline(&self, base: &str) -> String {
-        let base = base.trim_start_matches("docker-image://");
+    fn as_block(&self) -> String {
+        let base = BASE_FOR_RUST.trim_start_matches("docker-image://");
+
+        // TODO: dynamically resolve + cache this, if network is up.
+        let rustup_version = "1.28.1";
+        let rustup_checksum = "a3339fb004c3d0bb9862ba0bce001861fe5cbde9c10d16591eb3f39ee6cd3e7f";
 
         // FIXME: multiplatformify (using auto ARG.s) (use rustc_version::VersionMeta.host)
-
-        let RustcV { date, channel, .. } = self;
+        let host = "x86_64-unknown-linux-gnu";
 
         // have buildkit call rustc with `--target $(adapted $TARGETPLATFORM)`, if not given `--target`
         // `adapted` translates buildkit platform format to rustc's
@@ -153,8 +157,12 @@ impl RustcV {
         // RUN cargo build --target=$(xx-cargo --print-target-triple) --release --target-dir ./build && \
         //     xx-verify ./build/$(xx-cargo --print-target-triple)/release/hello_cargo
 
-        // TODO: use https://github.com/reproducible-containers/repro-sources-list.sh
+        // TODO: lock distro packages we install, somehow.
+        //   https://github.com/reproducible-containers/repro-sources-list.sh
+        //   https://github.com/reproducible-containers/repro-pkg-cache
+        //   https://github.com/reproducible-containers/repro-get
 
+        let RustcV { date, channel, .. } = self;
         let channel = match channel {
             Channel::Stable => "stable",
             Channel::Dev => "dev",
@@ -163,35 +171,31 @@ impl RustcV {
         };
 
         // Inspired from https://github.com/rust-lang/docker-rust/blob/d14e1ad7efeb270012b1a7e88fea699b1d1082f2/nightly/bullseye/slim/Dockerfile
+
+        let last_block = format!("FROM --platform=$BUILDPLATFORM {base} AS {RUST}");
+        assert!(BASE_FOR_RUST.contains("/debian:"));
+        let with_added = Add::with_apt(&["ca-certificates", "gcc", "libc6-dev"]);
+        let last_block = with_added.as_block(&last_block);
+
         format!(
             r#"
-FROM scratch AS rustup
-ADD --chmod=0755 --checksum=sha256:6aeece6993e902708983b209d04c0d1dbb14ebb405ddb87def578d41f920f56d \
-  https://static.rust-lang.org/rustup/archive/1.27.1/x86_64-unknown-linux-gnu/rustup-init /rustup-init
-FROM --platform=$BUILDPLATFORM {base} AS {RUST}
+FROM scratch AS rustup-{channel}-{date}
+ADD --chmod=0144 --checksum=sha256:{rustup_checksum} \
+  https://static.rust-lang.org/rustup/archive/{rustup_version}/{host}/rustup-init /rustup-init
+{last_block}
 ENV RUSTUP_HOME=/usr/local/rustup \
      CARGO_HOME=/usr/local/cargo \
            PATH=/usr/local/cargo/bin:$PATH
 RUN \
-    set -ux \
- && apt-get update \
- && apt-get install -y --no-install-recommends \
-      ca-certificates \
-      gcc \
-      libc6-dev
-RUN \
-  --mount=from=rustup,source=/rustup-init,target=/rustup-init \
-    set -ux \
- && /rustup-init -y --no-modify-path --profile minimal --default-toolchain {channel}-{date} --default-host x86_64-unknown-linux-gnu \
- && chmod -R a+w $RUSTUP_HOME $CARGO_HOME \
- && rustup --version \
- && cargo --version \
- && rustc --version \
- && apt-get remove -y --auto-remove \
- && rm -rf /var/lib/apt/lists/* \
-# clean up for reproducibility
- && rm -rf /var/log/* /var/cache/ldconfig/aux-cache
-"#
+ --mount=from=rustup-{channel}-{date},source=/rustup-init,target=/rustup-init \
+   set -eux \
+&& /rustup-init -y --no-modify-path --profile minimal --default-toolchain {channel}-{date} --default-host {host} \
+&& chmod -R a+w $RUSTUP_HOME $CARGO_HOME \
+&& rustup --version \
+&& cargo --version \
+&& rustc --version
+"#,
+            last_block = last_block.trim(),
         )
     }
 }
@@ -215,7 +219,6 @@ LLVM version: 18.1.7
     let res = BaseImage::from_rustcv(some_stable).unwrap();
     assert_eq!(res.base_image, "docker-image://docker.io/library/rust:1.80.0-slim");
     assert_eq!(res.base_image_inline, None);
-    assert!(!res.with_network);
 
     let some_nightly = version_meta_for(
         &r#"
@@ -232,5 +235,4 @@ LLVM version: 19.1.0
     let res = BaseImage::from_rustcv(some_nightly).unwrap();
     assert_eq!(res.base_image, "docker-image://docker.io/library/debian:stable-slim");
     assert!(res.base_image_inline.unwrap().contains(" docker.io/library/debian:stable-slim "));
-    assert!(res.with_network);
 }

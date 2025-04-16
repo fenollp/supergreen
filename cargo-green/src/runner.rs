@@ -1,7 +1,8 @@
 use std::{
     collections::BTreeSet,
-    env, fs,
-    fs::OpenOptions,
+    env,
+    fmt::Display,
+    fs::{self, OpenOptions},
     io::prelude::*,
     mem,
     process::{Output, Stdio},
@@ -23,7 +24,7 @@ use tokio::{
 };
 
 use crate::{
-    envs::{cache_image, runs_on_network},
+    envs::cache_image,
     extensions::ShowCmd,
     green::Green,
     logging::{crate_type_for_logging, maybe_log, ENV_LOG_PATH},
@@ -33,6 +34,24 @@ use crate::{
 
 pub(crate) const MARK_STDOUT: &str = "::STDOUT:: ";
 pub(crate) const MARK_STDERR: &str = "::STDERR:: ";
+
+#[derive(Debug, Copy, Clone)]
+pub(crate) enum Network {
+    None,
+    Default,
+    #[expect(unused)]
+    Host,
+}
+
+impl Display for Network {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::None => write!(f, "none"),
+            Self::Default => write!(f, "default"),
+            Self::Host => write!(f, "host"),
+        }
+    }
+}
 
 #[must_use]
 pub(crate) fn runner_cmd(green: &Green) -> Command {
@@ -106,6 +125,7 @@ pub(crate) async fn fetch_digest(img: &str) -> Result<String> {
 
 pub(crate) async fn build(
     green: &Green,
+    network: Network,
     dockerfile_path: &Utf8Path,
     target: Stage,
     contexts: &BTreeSet<BuildContext>,
@@ -210,8 +230,7 @@ pub(crate) async fn build(
 
     //TODO? --annotation=(PLATFORM=)KEY=VALUE
 
-    // TODO? pre-build rust stage with network, then never activate network ever.
-    cmd.arg(format!("--network={}", runs_on_network()));
+    cmd.arg(format!("--network={network}"));
 
     cmd.arg("--platform=local");
     cmd.arg("--pull=false");
@@ -348,7 +367,6 @@ pub(crate) async fn build(
         let _ = fs::copy(dockerfile_path, path)?;
 
         let mut file = OpenOptions::new().append(true).open(path)?;
-        writeln!(file)?;
         writeln!(file)?;
         write!(file, "# Pipe this file to")?;
         if !contexts.is_empty() {

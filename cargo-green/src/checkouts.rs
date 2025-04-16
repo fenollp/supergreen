@@ -29,7 +29,6 @@ pub(crate) async fn into_stage(
     };
 
     let dir = krate_manifest_dir.parent().unwrap().file_name().unwrap();
-
     let stage = Stage::try_new(format!("{CHECKOUTS_STAGE_PREFIX}{dir}-{commit}"))?;
 
     let repo = if krate_repository.ends_with(".git") {
@@ -44,8 +43,7 @@ FROM scratch AS {stage}
 ADD --keep-git-dir=false \
   {repo}#{commit} /
 "#,
-    )[1..]
-        .to_owned();
+    );
 
     Ok((stage, "/", krate_manifest_dir.into(), block))
 }

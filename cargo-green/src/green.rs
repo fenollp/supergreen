@@ -11,13 +11,14 @@ use crate::{
 };
 
 // Envs that override Cargo.toml settings
-pub(crate) const ENV_BASE_IMAGE: &str = "CARGOGREEN_BASE_IMAGE";
-pub(crate) const ENV_BASE_IMAGE_INLINE: &str = "CARGOGREEN_BASE_IMAGE_INLINE";
 pub(crate) const ENV_ADD_APK: &str = "CARGOGREEN_ADD_APK";
 pub(crate) const ENV_ADD_APT: &str = "CARGOGREEN_ADD_APT";
 pub(crate) const ENV_ADD_APT_GET: &str = "CARGOGREEN_ADD_APT_GET";
+pub(crate) const ENV_BASE_IMAGE: &str = "CARGOGREEN_BASE_IMAGE";
+pub(crate) const ENV_BASE_IMAGE_INLINE: &str = "CARGOGREEN_BASE_IMAGE_INLINE";
 pub(crate) const ENV_SET_ENVS: &str = "CARGOGREEN_SET_ENVS";
 
+/// Settings for building this package with `cargo-green`
 #[derive(Debug, Deserialize)]
 struct GreenMetadata {
     green: Green,
@@ -29,17 +30,62 @@ struct GreenMetadata {
 #[serde(rename_all = "kebab-case")]
 pub(crate) struct Add {
     #[serde(skip_serializing_if = "Vec::is_empty")]
-    pub(crate) apk: Vec<String>,
+    apk: Vec<String>,
     #[serde(skip_serializing_if = "Vec::is_empty")]
-    pub(crate) apt: Vec<String>,
+    apt: Vec<String>,
     #[serde(skip_serializing_if = "Vec::is_empty")]
-    pub(crate) apt_get: Vec<String>,
+    apt_get: Vec<String>,
 }
 
 impl Add {
     #[must_use]
+    pub(crate) fn with_apt(pkgs: &[&str]) -> Self {
+        Self { apt: pkgs.iter().map(|&x| x.to_owned()).collect(), ..Default::default() }
+    }
+
+    #[must_use]
     pub(crate) fn is_empty(&self) -> bool {
-        self.apk.is_empty() && self.apt.is_empty() && self.apt_get.is_empty()
+        let Self { apk, apt, apt_get } = self;
+        [apk, apt, apt_get].iter().all(|x| x.is_empty())
+    }
+
+    // TODO: pin major + lock by pulling
+    // TODO: more architectures
+    pub(crate) fn as_block(&self, last: &str) -> String {
+        const XX: &str = "docker.io/tonistiigi/xx:1.6.1@sha256:923441d7c25f1e2eb5789f82d987693c47b8ed987c4ab3b075d6ed2b5d6779a3";
+        format!(
+            r#"
+FROM --platform=$BUILDPLATFORM {XX} AS xx
+{last}
+ARG TARGETPLATFORM
+RUN \
+  --mount=from=xx,source=/usr/bin/xx-apk,target=/usr/bin/xx-apk \
+  --mount=from=xx,source=/usr/bin/xx-apt,target=/usr/bin/xx-apt \
+  --mount=from=xx,source=/usr/bin/xx-apt,target=/usr/bin/xx-apt-get \
+  --mount=from=xx,source=/usr/bin/xx-cc,target=/usr/bin/xx-c++ \
+  --mount=from=xx,source=/usr/bin/xx-cargo,target=/usr/bin/xx-cargo \
+  --mount=from=xx,source=/usr/bin/xx-cc,target=/usr/bin/xx-cc \
+  --mount=from=xx,source=/usr/bin/xx-cc,target=/usr/bin/xx-clang \
+  --mount=from=xx,source=/usr/bin/xx-cc,target=/usr/bin/xx-clang++ \
+  --mount=from=xx,source=/usr/bin/xx-go,target=/usr/bin/xx-go \
+  --mount=from=xx,source=/usr/bin/xx-info,target=/usr/bin/xx-info \
+  --mount=from=xx,source=/usr/bin/xx-ld-shas,target=/usr/bin/xx-ld-shas \
+  --mount=from=xx,source=/usr/bin/xx-verify,target=/usr/bin/xx-verify \
+  --mount=from=xx,source=/usr/bin/xx-windres,target=/usr/bin/xx-windres \
+    set -eux \
+ && if   command -v apk >/dev/null 2>&1; then \
+                                     xx-apk     add     --no-cache                 {apk}; \
+    elif command -v apt >/dev/null 2&>1; then \
+      DEBIAN_FRONTEND=noninteractive xx-apt     install --no-install-recommends -y {apt}; \
+    else \
+      DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y {apt_get}; \
+    fi
+"#,
+            last = last.trim(),
+            apk = self.apk.join(" "),
+            apt = self.apt.join(" "),
+            apt_get = self.apt_get.join(" "),
+        )
     }
 }
 
@@ -68,8 +114,9 @@ pub(crate) struct Green {
     //
     // # Use by setting this environment variable (no Cargo.toml setting):
     // CARGOGREEN_BUILDER_IMAGE="docker-image://docker.io/moby/buildkit:latest"
-    #[serde(skip_serializing_if = "str::is_empty")]
-    pub(crate) builder_image: String, //TODO? type(uri?)
+    // CARGOGREEN_BUILDER_IMAGE="docker-image://docker.io/moby/buildkit:buildx-stable-1"
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub(crate) builder_image: Option<String>, //TODO? type(uri?)
 
     // Write final Dockerfile to given path.
     //
@@ -133,10 +180,13 @@ impl Green {
             origin = format!("${ENV_BASE_IMAGE}");
             green.image = BaseImage::from_image(val);
         }
-        if !green.image.base_image.is_empty()
-            && !green.image.base_image.starts_with("docker-image://")
-        {
-            bail!("{origin} unsupported scheme: {:?}", green.image.base_image)
+        if !green.image.base_image.is_empty() {
+            if green.image.base_image != green.image.base_image.trim() {
+                bail!("{origin} has leading or trainling whitespace: {:?}", green.image.base_image)
+            }
+            if !green.image.base_image.starts_with("docker-image://") {
+                bail!("{origin} unsupported scheme: {:?}", green.image.base_image)
+            }
         }
 
         let mut origin = "[metadata.green.base-image-inline]".to_owned();

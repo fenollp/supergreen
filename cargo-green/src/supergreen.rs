@@ -133,7 +133,7 @@ fn envs(green: Green, vars: Vec<String>) {
         (internal::RUSTCBUILDX, internal::this()),
         (ENV_BASE_IMAGE, Some(green.image.base_image)),
         (ENV_BASE_IMAGE_INLINE, green.image.base_image_inline),
-        (ENV_BUILDER_IMAGE, Some(green.builder_image)),
+        (ENV_BUILDER_IMAGE, green.builder_image),
         (internal::RUSTCBUILDX_CACHE_IMAGE, cache_image().to_owned()),
         (internal::RUSTCBUILDX_INCREMENTAL, incremental().then_some("1".to_owned())),
         (ENV_LOG, env::var(ENV_LOG).ok()),

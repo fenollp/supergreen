@@ -254,7 +254,7 @@ mod tests {
     const PWD: &str = "$HOME/⺟/rustcbuildx.git";
 
     fn as_argument(arg: &str) -> String {
-        arg.to_owned().replace("$PWD", PWD).replace("$HOME", HOME)
+        arg.replace("$PWD", PWD).replace("$HOME", HOME)
     }
 
     fn as_arguments(args: &[&str]) -> Vec<String> {

@@ -11,13 +11,14 @@ use log::{debug, info, trace};
 use tokio::{process::Command, try_join};
 
 use crate::{
+    base::RUST,
     cratesio::{self},
     envs::{cache_image, incremental, internal},
     extensions::ShowCmd,
     green::{Green, ENV_BASE_IMAGE},
     lockfile::{find_lockfile, locked_crates},
     logging::{self, maybe_log, ENV_LOG, ENV_LOG_PATH},
-    runner::{build, fetch_digest, maybe_lock_image, runner_cmd},
+    runner::{build, fetch_digest, maybe_lock_image, runner_cmd, Network},
     stage::Stage,
     PKG, REPO, VSN,
 };
@@ -61,6 +62,7 @@ pub(crate) async fn main(cmd: &mut Command) -> Result<Green> {
     if !["docker", "none", "podman"].contains(&green.runner.as_str()) {
         bail!("${ENV_RUNNER} must be either 'docker', 'podman' or 'none' not {:?}", green.runner)
     }
+    cmd.env(ENV_RUNNER, &green.runner);
 
     const SYNTAX: &str = "docker-image://docker.io/docker/dockerfile:1";
     if !green.syntax.is_empty() {
@@ -71,21 +73,23 @@ pub(crate) async fn main(cmd: &mut Command) -> Result<Green> {
     green.syntax = maybe_lock_image(&green, &green.syntax).await;
     // otherwise default to a hash found through some Web API
     green.syntax = fetch_digest(&green.syntax).await?;
-    env::set_var(ENV_SYNTAX, &green.syntax);
+    env::set_var(ENV_SYNTAX, &green.syntax); // TODO? drop
     if !green.syntax.starts_with(SYNTAX) {
         // Enforce a known stable syntax + allow pinning to digest
         bail!("${ENV_SYNTAX} must be a digest of {SYNTAX}")
     }
 
-    const BUILDER_IMAGE: &str = "docker-image://docker.io/moby/buildkit:buildx-stable-1";
-    if !green.builder_image.is_empty() {
+    if green.builder_image.is_some() {
         bail!("${ENV_BUILDER_IMAGE} can only be set through the environment variable")
     }
-    green.builder_image = env::var(ENV_BUILDER_IMAGE).unwrap_or_else(|_| BUILDER_IMAGE.to_owned());
-    green.builder_image = maybe_lock_image(&green, &green.builder_image).await;
-    // FIXME: should be Option<_> and default to local builder
-    if !green.builder_image.starts_with("docker-image://") {
-        bail!("${ENV_BUILDER_IMAGE} must be a docker-image://")
+    if let Ok(builder_image) = env::var(ENV_BUILDER_IMAGE) {
+        let builder_image = maybe_lock_image(&green, &builder_image).await;
+        green.builder_image = Some(fetch_digest(&builder_image).await?);
+    }
+    if let Some(ref builder_image) = green.builder_image {
+        if !builder_image.starts_with("docker-image://") {
+            bail!("${ENV_BUILDER_IMAGE} must be a docker-image://")
+        }
     }
 
     if green.final_path.is_some() {
@@ -109,59 +113,17 @@ pub(crate) async fn main(cmd: &mut Command) -> Result<Green> {
     }
 
     if !green.image.base_image.contains('@') {
-        let base = fetch_digest(&green.image.base_image).await?;
+        let mut base = maybe_lock_image(&green, &green.image.base_image).await;
+        base = fetch_digest(&base).await?;
         green.image = green.image.lock_base_to(base);
     }
     env::set_var(ENV_BASE_IMAGE, &green.image.base_image); // TODO? drop
 
-    let (mut base_image_block, mut with_network) = green.image.block();
+    let mut finalized_block = green.image.as_block();
     if !green.add.is_empty() {
-        with_network = true;
-        base_image_block = format!(
-            r#"
-FROM --platform=$BUILDPLATFORM {xx} AS xx
-{base_image_block}
-ARG TARGETPLATFORM
-RUN \
-  --mount=from=xx,source=/usr/bin/xx-apk,target=/usr/bin/xx-apk \
-  --mount=from=xx,source=/usr/bin/xx-apt,target=/usr/bin/xx-apt \
-  --mount=from=xx,source=/usr/bin/xx-apt,target=/usr/bin/xx-apt-get \
-  --mount=from=xx,source=/usr/bin/xx-cc,target=/usr/bin/xx-c++ \
-  --mount=from=xx,source=/usr/bin/xx-cargo,target=/usr/bin/xx-cargo \
-  --mount=from=xx,source=/usr/bin/xx-cc,target=/usr/bin/xx-cc \
-  --mount=from=xx,source=/usr/bin/xx-cc,target=/usr/bin/xx-clang \
-  --mount=from=xx,source=/usr/bin/xx-cc,target=/usr/bin/xx-clang++ \
-  --mount=from=xx,source=/usr/bin/xx-go,target=/usr/bin/xx-go \
-  --mount=from=xx,source=/usr/bin/xx-info,target=/usr/bin/xx-info \
-  --mount=from=xx,source=/usr/bin/xx-ld-shas,target=/usr/bin/xx-ld-shas \
-  --mount=from=xx,source=/usr/bin/xx-verify,target=/usr/bin/xx-verify \
-  --mount=from=xx,source=/usr/bin/xx-windres,target=/usr/bin/xx-windres \
-    set -ex \
-  && if command -v apk >/dev/null 2>&1; then \
-       xx-apk add --no-cache {apk}; \
-     elif command -v apt 2&>1; then \
-      xx-apt install --no-install-recommends -y {apt}; \
-     else \
-      xx-apt-get install --no-install-recommends -y {apt_get}; \
-     fi
-"#,
-            xx = "tonistiigi/xx", //TODO: lock dis
-            apk = &green.add.apk.join(" "),
-            apt = &green.add.apt.join(" "),
-            apt_get = &green.add.apt_get.join(" "),
-        )[1..]
-            .to_owned();
+        finalized_block = green.add.as_block(&finalized_block);
     }
-    //todo: pre build base image here + no lifting io + fail with nice error display
-    env::set_var("RUSTCBUILDX_BASE_IMAGE_BLOCK_", base_image_block);
-    cmd.env(
-        internal::RUSTCBUILDX_RUNS_ON_NETWORK,
-        internal::runs_on_network()
-            .unwrap_or_else(|| if with_network { "default" } else { "none" }.to_owned()),
-    );
-    //TODO: CARGOGREEN_NETWORK= <unset> | default | none | host
-    //=> see also `base-image-inline`
-    //=> auto set to "default" when using `add.{apk,apt,apt-get}` and maybe others
+    green.image.base_image_inline = Some(finalized_block.trim().to_owned());
 
     // don't pull
     if let Some(val) = cache_image() {
@@ -172,7 +134,6 @@ RUN \
     if incremental() {
         cmd.env(internal::RUSTCBUILDX_INCREMENTAL, "1");
     }
-    cmd.env(ENV_RUNNER, &green.runner);
 
     // FIXME "multiplex conns to daemon" https://github.com/docker/buildx/issues/2564#issuecomment-2207435201
     // > If you do have docker context created already on ssh endpoint then you don't need to set the ssh address again on buildx create, you can use the context name or let it use the active context.
@@ -224,7 +185,8 @@ async fn setup_build_driver(green: &Green, name: &str) -> Result<()> {
         try_removing_previous_builder(green, name).await;
     }
 
-    let builder_image = green.builder_image.trim_start_matches("docker-image://");
+    let Some(ref builder_image) = green.builder_image else { return Ok(()) };
+    let builder_image = builder_image.trim_start_matches("docker-image://");
 
     let mut cmd = runner_cmd(green);
     cmd.args(["buildx", "create"])
@@ -269,6 +231,36 @@ async fn try_removing_previous_builder(green: &Green, name: &str) {
     let _ = cmd.status().await;
 }
 
+pub(crate) async fn maybe_prebuild_base(green: &Green) -> Result<()> {
+    let syntax = green.syntax.trim_start_matches("docker-image://");
+    let mut header = format!("# syntax={syntax}\n");
+    header.push_str("# check=error=true\n");
+    header.push_str(&format!("# Generated by {REPO} v{VSN}\n"));
+    header.push('\n');
+    header.push_str(green.image.base_image_inline.as_deref().expect(RUST));
+    header.push('\n');
+
+    let dockerfile_path: Utf8PathBuf = env::temp_dir().try_into()?;
+    let uniq = format!("{:#x}", crc32fast::hash(header.as_bytes())); //~ 0x..
+    let dockerfile_path = dockerfile_path.join(format!("{RUST}-{}.Dockerfile", &uniq[2..]));
+
+    if !dockerfile_path.exists() {
+        fs::write(&dockerfile_path, &header)
+            .map_err(|e| anyhow!("Failed creating dockerfile {dockerfile_path}: {e}"))?;
+
+        let stage = Stage::try_new(RUST).expect("rust stage");
+
+        if let Err(e) =
+            build(green, Network::Default, &dockerfile_path, stage, &[].into(), None).await
+        {
+            let _ = fs::remove_file(&dockerfile_path);
+            bail!("Unable to build {RUST}: {e}\n\n{header}")
+        }
+    }
+
+    Ok(())
+}
+
 pub(crate) async fn fetch(green: Green) -> Result<()> {
     let syntax = green.syntax.trim_start_matches("docker-image://");
 
@@ -300,10 +292,12 @@ pub(crate) async fn fetch(green: Green) -> Result<()> {
         let (name, version, hash) = &pkgs[0];
         debug!("will fetch crate {name}: {version}");
         dockerfile.push_str(&cratesio::add_step(name, version, hash));
+        dockerfile.push('\n');
 
         for (name, version, hash) in &pkgs[1..] {
             debug!("will fetch crate {name}: {version}");
             dockerfile.push_str(&cratesio::add_step(name, version, hash));
+            dockerfile.push('\n');
         }
     }
     dockerfile.push_str(&format!("FROM scratch AS {stage}\n"));
@@ -333,20 +327,23 @@ pub(crate) async fn fetch(green: Green) -> Result<()> {
     // TODO: pull images as part of that big Constainerfile we just stitched up
     //=> pull(..) builder image still, but/then use builder config for the other images + ADDs
     let noctx = [].into();
-    let ((), ()) = try_join!(pull(&green), build(&green, &dockerfile_path, stage, &noctx, None))?;
+    let ((), ()) = try_join!(
+        pull(&green),
+        build(&green, Network::None, &dockerfile_path, stage, &noctx, None)
+    )?;
     Ok(())
 }
 
 async fn pull(green: &Green) -> Result<()> {
     let imgs = [
-        (env::var(ENV_SYNTAX).ok(), green.syntax.as_str()),
-        (env::var(ENV_BASE_IMAGE).ok(), green.image.base_image.as_str()),
-        (env::var(ENV_BUILDER_IMAGE).ok(), green.builder_image.as_str()),
-        //FIXME: also pull xx image if needed
+        (env::var(ENV_SYNTAX).ok(), Some(green.syntax.as_str())),
+        (env::var(ENV_BASE_IMAGE).ok(), Some(green.image.base_image.as_str())),
+        (env::var(ENV_BUILDER_IMAGE).ok(), green.builder_image.as_deref()),
     ]; // NOTE: we don't pull cache_image()
 
-    let mut to_pull = Vec::with_capacity(imgs.len());
+    let mut to_pull = vec![];
     for (user_input, img) in imgs {
+        let Some(img) = img else { continue };
         let img = img.trim_start_matches("docker-image://");
         let img = if img.contains('@') && user_input.map(|x| !x.contains('@')).unwrap_or_default() {
             // Don't pull a locked image unless that's what's asked

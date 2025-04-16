@@ -6,7 +6,6 @@ pub(crate) mod internal {
     pub const RUSTCBUILDX: &str = "RUSTCBUILDX";
     pub const RUSTCBUILDX_CACHE_IMAGE: &str = "RUSTCBUILDX_CACHE_IMAGE";
     pub const RUSTCBUILDX_INCREMENTAL: &str = "RUSTCBUILDX_INCREMENTAL";
-    pub const RUSTCBUILDX_RUNS_ON_NETWORK: &str = "RUSTCBUILDX_RUNS_ON_NETWORK";
 
     #[must_use]
     pub fn this() -> Option<String> {
@@ -19,10 +18,6 @@ pub(crate) mod internal {
     #[must_use]
     pub fn incremental() -> Option<String> {
         env::var(RUSTCBUILDX_INCREMENTAL).ok()
-    }
-    #[must_use]
-    pub fn runs_on_network() -> Option<String> {
-        env::var(RUSTCBUILDX_RUNS_ON_NETWORK).ok()
     }
 }
 
@@ -59,19 +54,6 @@ pub(crate) fn cache_image() -> &'static Option<String> {
 
         val
     })
-}
-
-#[must_use]
-pub(crate) fn runs_on_network() -> &'static str {
-    static ONCE: OnceLock<String> = OnceLock::new();
-    match ONCE.get() {
-        Some(network) => network,
-        None => {
-            let network = internal::runs_on_network().unwrap_or_else(|| "none".to_owned());
-            let _ = ONCE.set(network);
-            ONCE.get().expect("just set network")
-        }
-    }
 }
 
 // https://doc.rust-lang.org/cargo/reference/environment-variables.html#environment-variables-cargo-sets-for-crates

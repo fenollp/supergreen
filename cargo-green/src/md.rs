@@ -24,29 +24,35 @@ pub(crate) struct Md {
 
     pub(crate) stages: Vec<DockerfileStage>,
 }
+
 impl FromStr for Md {
     type Err = toml::de::Error;
     fn from_str(md_raw: &str) -> Result<Self, Self::Err> {
         toml::de::from_str(md_raw)
     }
 }
+
 impl Md {
     #[must_use]
     pub(crate) fn new(this: &str) -> Self {
         Self { this: this.to_owned(), deps: vec![], contexts: [].into(), stages: [].into() }
     }
 
-    pub(crate) fn to_string_pretty(&self) -> Result<String, toml::ser::Error> {
-        toml::to_string_pretty(self)
+    pub(crate) fn to_string_pretty(&self) -> Result<String> {
+        if !self.stages.iter().any(|DockerfileStage { name, .. }| name == RUST) {
+            bail!("Md is missing root {RUST:?} stage")
+        }
+        toml::to_string_pretty(self).map_err(Into::into)
     }
 
     #[must_use]
-    pub(crate) fn rust_stage(&self) -> Option<DockerfileStage> {
-        self.stages.iter().find(|DockerfileStage { name, .. }| name == RUST).cloned()
+    pub(crate) fn rust_stage(&self) -> &DockerfileStage {
+        self.stages.iter().find(|DockerfileStage { name, .. }| name == RUST).unwrap()
     }
 
-    pub(crate) fn push_block(&mut self, name: &Stage, script: String) {
-        self.stages.push(DockerfileStage { name: name.to_string(), script });
+    pub(crate) fn push_block(&mut self, name: &Stage, block: String) {
+        self.stages
+            .push(DockerfileStage { name: name.to_string(), script: block.trim().to_owned() });
     }
 
     pub(crate) fn append_blocks(
@@ -70,12 +76,14 @@ impl Md {
             // Otherwise, write it back in
             dockerfile.push_str(script);
         }
+        dockerfile.push('\n');
 
         for DockerfileStage { name, script } in stages {
             if name == filter {
                 continue;
             }
             dockerfile.push_str(script);
+            dockerfile.push('\n');
         }
 
         Ok(())
@@ -110,7 +118,7 @@ impl Md {
 
 #[derive(Clone, Debug, Deserialize, Eq, Ord, PartialEq, PartialOrd, Serialize)]
 pub(crate) struct DockerfileStage {
-    pub(crate) name: String,
+    pub(crate) name: String, // TODO: type to Stage
     pub(crate) script: String,
 }
 
@@ -173,10 +181,9 @@ fn md_ser() {
         this: "711ba64e1183a234".to_owned(),
         deps: vec!["81529f4c2380d9ec".to_owned(), "88a4324b2aff6db9".to_owned()],
         contexts: [BuildContext { name: "rust".to_owned(), uri: "docker-image://docker.io/library/rust:1.77.2-slim@sha256:090d8d4e37850b349b59912647cc7a35c6a64dba8168f6998562f02483fa37d7".to_owned() }].into(),
-        ..Default::default()
+        stages:vec![DockerfileStage{ name: RUST.to_owned(), script: format!("FROM rust AS {RUST}") }],
     };
 
-    let ser = md.to_string_pretty().unwrap();
     pretty_assertions::assert_eq!(
         r#"
 this = "711ba64e1183a234"
@@ -184,13 +191,16 @@ deps = [
     "81529f4c2380d9ec",
     "88a4324b2aff6db9",
 ]
-stages = []
 
 [[contexts]]
 name = "rust"
 uri = "docker-image://docker.io/library/rust:1.77.2-slim@sha256:090d8d4e37850b349b59912647cc7a35c6a64dba8168f6998562f02483fa37d7"
+
+[[stages]]
+name = "rust-base"
+script = "FROM rust AS rust-base"
 "#[1..],
-        ser
+        md.to_string_pretty().unwrap()
     );
 }
 

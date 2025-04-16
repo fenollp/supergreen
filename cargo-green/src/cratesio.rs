@@ -37,6 +37,8 @@ pub(crate) async fn into_stage(
 
     const SRC: &str = "/extracted";
 
+    let add = add_step(name, version, &cratesio_hash);
+
     // On using tar: https://github.com/rust-lang/cargo/issues/3577#issuecomment-890693359
 
     let block = format!(
@@ -51,12 +53,11 @@ RUN \
     mkdir {SRC} \
  && tar zxf /crate --strip-components=1 -C {SRC}
 "#,
-        add = add_step(name, version, &cratesio_hash),
-    )[1..]
-        .to_owned();
+        add = add.trim(),
+    );
 
     // TODO: ask upstream `buildx/buildkit+podman` for a way to drop that RUN
-    //  => https://github.com/moby/buildkit/issues/4907
+    //  => TODO: impl --unpack: https://github.com/moby/buildkit/issues/4907
 
     // Otherwise:
 
@@ -74,6 +75,5 @@ pub(crate) fn add_step(name: &str, version: &str, hash: &str) -> String {
 ADD --chmod=0664 --checksum=sha256:{hash} \
   https://static.crates.io/crates/{name}/{name}-{version}.crate /crate
 "#
-    )[1..]
-        .to_owned()
+    )
 }

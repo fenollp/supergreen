@@ -118,6 +118,8 @@ async fn main() -> Result<()> {
     }
     cmd.args(args);
 
+    cargo_green::maybe_prebuild_base(&green).await?;
+
     //TODO: https://github.com/messense/cargo-options/blob/086d7470cae34b0e694a62237e258fbd35384e93/examples/cargo-mimic.rs
     // maybe https://lib.rs/crates/clap-cargo
 
