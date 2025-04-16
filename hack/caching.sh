@@ -51,8 +51,12 @@ echo
 #---
 
 
-rm -f $CARGO_TARGET_DIR/release/deps/${install_package%@*}-????????????????
-$(tail -n1 $CARGOGREEN_FINAL_PATH | cut -c2-) <$CARGOGREEN_FINAL_PATH
+rm $CARGO_TARGET_DIR/release/deps/${install_package%@*}-????????????????
+invocation=$(tail -n1 $CARGOGREEN_FINAL_PATH | cut -c2-)
+$invocation --call=check   <$CARGOGREEN_FINAL_PATH
+$invocation --call=outline <$CARGOGREEN_FINAL_PATH
+$invocation --call=targets <$CARGOGREEN_FINAL_PATH
+$invocation                <$CARGOGREEN_FINAL_PATH
 [[ $install_sha = $(sha256sum $CARGO_TARGET_DIR/release/deps/${install_package%@*}-???????????????? | awk '{print $1}') ]] # rebuild => no change
 
 echo Builds fine and in a standalone way
