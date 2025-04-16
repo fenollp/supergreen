@@ -77,7 +77,7 @@ cargo-green@0.6.0: Cargo plugin and $RUSTC_WRAPPER to sandbox & cache cargo buil
 
 Usage:
   cargo green supergreen env             Show used values
-  cargo green supergreen pull            Pulls images (respects $DOCKER_HOST)
+  cargo green fetch                      Pulls images (respects $DOCKER_HOST)
   cargo green supergreen push            Push cache image (all tags)
   cargo green supergreen -h | --help
   cargo green supergreen -V | --version

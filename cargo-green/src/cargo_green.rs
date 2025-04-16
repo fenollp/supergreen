@@ -6,8 +6,9 @@ use std::{
 
 use anyhow::{anyhow, bail, Result};
 use camino::{absolute_utf8, Utf8PathBuf};
+use futures::{stream::iter, StreamExt, TryStreamExt};
 use log::{debug, info, trace};
-use tokio::process::Command;
+use tokio::{process::Command, try_join};
 
 use crate::{
     cratesio::{self},
@@ -337,6 +338,75 @@ pub(crate) async fn fetch(green: Green) -> Result<()> {
     .filter(|x| !x.is_empty())
     .for_each(|line| trace!("❯ {line}"));
 
-    //TODO: + concurrently run with pull_images(&green)  +  drop supergreen pull
-    return build(&green, &dockerfile_path, stage, &[].into(), None).await;
+    // TODO: pull images as part of that big Constainerfile we just stitched up
+    //=> pull(..) builder image still, but/then use builder config for the other images + ADDs
+    let noctx = [].into();
+    let ((), ()) = try_join!(pull(&green), build(&green, &dockerfile_path, stage, &noctx, None))?;
+    Ok(())
+}
+
+async fn pull(green: &Green) -> Result<()> {
+    let imgs = [
+        (env::var(ENV_SYNTAX).ok(), green.syntax.as_str()),
+        (env::var(ENV_BASE_IMAGE).ok(), green.image.base_image.as_str()),
+        (env::var(ENV_BUILDER_IMAGE).ok(), green.builder_image.as_str()),
+        //FIXME: also pull xx image if needed
+    ]; // NOTE: we don't pull cache_image()
+
+    let mut to_pull = Vec::with_capacity(imgs.len());
+    for (user_input, img) in imgs {
+        let img = img.trim_start_matches("docker-image://");
+        let img = if img.contains('@') && user_input.map(|x| !x.contains('@')).unwrap_or_default() {
+            // Don't pull a locked image unless that's what's asked
+            // Otherwise, pull unlocked
+
+            // The only possible cases (user_input sets img)
+            // none + @ = trim
+            // none + _ = _
+            // s @  + @ = _
+            // s !  + @ = trim
+            trim_docker_image(img).expect("contains @")
+        } else {
+            img.to_owned()
+        };
+        to_pull.push(img);
+    }
+    pull_images(green, to_pull).await
+}
+
+#[must_use]
+fn trim_docker_image(x: &str) -> Option<String> {
+    let x = x.trim_start_matches("docker-image://");
+
+    let x =
+        if x.contains('@') { x.trim_end_matches(|c| c != '@').trim_end_matches('@') } else { x };
+
+    (!x.is_empty()).then(|| x.to_owned())
+}
+
+async fn pull_images(green: &Green, to_pull: Vec<String>) -> Result<()> {
+    // TODO: nice TUI that handles concurrent progress
+    iter(to_pull.into_iter())
+        .map(|img| async {
+            println!("Pulling {img}...");
+            do_pull(green, img).await
+        })
+        .buffer_unordered(10)
+        .try_collect()
+        .await
+}
+
+async fn do_pull(green: &Green, img: String) -> Result<()> {
+    let mut cmd = runner_cmd(green);
+    cmd.arg("pull").arg(&img);
+    let o = cmd
+        .spawn()
+        .map_err(|e| anyhow!("Failed to start {}: {e}", cmd.show()))?
+        .wait()
+        .await
+        .map_err(|e| anyhow!("Failed to call {}: {e}", cmd.show()))?;
+    if !o.success() {
+        bail!("Failed to pull {img}")
+    }
+    Ok(())
 }
