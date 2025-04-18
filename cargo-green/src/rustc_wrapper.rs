@@ -750,7 +750,8 @@ fn file_exists(path: &Utf8Path) -> Result<bool> {
     }
 }
 
-pub(crate) fn file_exists_and_is_not_empty(path: &Utf8Path) -> Result<bool> {
+// TODO: try and replace with path.exists()
+fn file_exists_and_is_not_empty(path: &Utf8Path) -> Result<bool> {
     match path.metadata().map(|md| md.is_file() && md.len() > 0) {
         Ok(b) => Ok(b),
         Err(e) if e.kind() == ErrorKind::NotFound => Ok(false),
@@ -818,7 +819,7 @@ fn copy_dir_all(src: &Utf8Path, dst: &Utf8Path) -> Result<()> {
 
     // Heuristic: test for existence of ./target/CACHEDIR.TAG
     // https://bford.info/cachedir/
-    if file_exists_and_is_not_empty(&src.join("CACHEDIR.TAG"))? {
+    if src.join("CACHEDIR.TAG").exists() {
         return Ok(()); // Skip copying ./target dir
     }
 

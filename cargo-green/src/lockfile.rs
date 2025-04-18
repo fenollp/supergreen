@@ -7,7 +7,7 @@ use pico_args::Arguments;
 use serde::Deserialize;
 use tokio::process::Command;
 
-use crate::{cargo, extensions::ShowCmd, pwd, rustc_wrapper::file_exists_and_is_not_empty};
+use crate::{cargo, extensions::ShowCmd, pwd};
 
 pub(crate) async fn locked_crates(
     manifest_path_lockfile: &Utf8Path,
@@ -30,7 +30,7 @@ pub(crate) async fn locked_crates(
 pub(crate) async fn find_lockfile() -> Result<Utf8PathBuf> {
     let manifest_path = cargo_locate_project(false).await?;
     let candidate = manifest_path.with_extension("lock");
-    if file_exists_and_is_not_empty(&candidate)? {
+    if candidate.exists() {
         return Ok(candidate);
     }
     let manifest_path = cargo_locate_project(true).await?;
@@ -56,7 +56,7 @@ fn find_toml_from_env() -> Result<Option<Utf8PathBuf>> {
     let package: Option<String> = args.opt_value_from_str(["-p", "--package"])?;
     if let Some(package) = package {
         let manifest_path = pwd().join(package).join("Cargo.toml");
-        if file_exists_and_is_not_empty(&manifest_path)? {
+        if manifest_path.exists() {
             return Ok(Some(manifest_path));
         }
     }
