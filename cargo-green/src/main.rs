@@ -1,7 +1,6 @@
 use std::{env, ffi::OsStr, path::PathBuf, process::exit};
 
 use anyhow::{anyhow, bail, Result};
-use log::warn;
 use tokio::process::Command;
 
 mod base;
@@ -91,7 +90,6 @@ async fn main() -> Result<()> {
             let var = "RUSTUP_TOOLCHAIN";
             if let Some(val) = env::var_os(var) {
                 if val != toolchain {
-                    warn!("Overriding {var}={val:?} to {toolchain:?} for `{PKG} +toolchain`");
                     println!("Overriding {var}={val:?} to {toolchain:?} for `{PKG} +toolchain`");
                 }
             }
