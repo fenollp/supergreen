@@ -7,7 +7,7 @@ use pico_args::Arguments;
 use serde::Deserialize;
 use tokio::process::Command;
 
-use crate::{extensions::ShowCmd, rustc_wrapper::file_exists_and_is_not_empty};
+use crate::{cargo, extensions::ShowCmd, rustc_wrapper::file_exists_and_is_not_empty};
 
 pub(crate) async fn locked_crates(
     manifest_path_lockfile: &Utf8Path,
@@ -69,7 +69,7 @@ fn find_toml_from_env() -> Result<Option<Utf8PathBuf>> {
 // https://doc.rust-lang.org/cargo/commands/cargo-locate-project.html
 // https://github.com/rust-lang/cargo/blob/3e96f1a28e47d4fd0f354b3a067d6322a8730cb6/src/bin/cargo/commands/locate_project.rs#L29
 async fn cargo_locate_project(at_workspace: bool) -> Result<Utf8PathBuf> {
-    let mut cmd = Command::new(env::var_os("CARGO").unwrap_or_else(|| "cargo".into()));
+    let mut cmd = Command::new(cargo());
     cmd.kill_on_drop(true);
 
     cmd.arg("locate-project");

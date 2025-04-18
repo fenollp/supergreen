@@ -1,4 +1,9 @@
-use std::{env, ffi::OsStr, path::PathBuf, process::exit};
+use std::{
+    env,
+    ffi::{OsStr, OsString},
+    path::PathBuf,
+    process::exit,
+};
 
 use anyhow::{anyhow, bail, Result};
 use tokio::process::Command;
@@ -46,6 +51,10 @@ const VSN: &str = env!("CARGO_PKG_VERSION");
 
 cargo_subcommand_metadata::description!(env!("CARGO_PKG_DESCRIPTION"));
 
+fn cargo() -> OsString {
+    env::var_os("CARGO").unwrap_or_else(|| "cargo".into())
+}
+
 #[tokio::main]
 async fn main() -> Result<()> {
     let mut args = env::args();
@@ -81,7 +90,7 @@ async fn main() -> Result<()> {
 
     let arg2 = args.next();
 
-    let mut cmd = Command::new(env::var_os("CARGO").unwrap_or_else(|| "cargo".into()));
+    let mut cmd = Command::new(cargo());
     cmd.kill_on_drop(true);
     cmd.env("RUSTC_WRAPPER", arg0);
     if let Some(ref arg2) = arg2 {
