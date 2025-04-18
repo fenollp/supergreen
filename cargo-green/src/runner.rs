@@ -36,7 +36,7 @@ pub(crate) const MARK_STDOUT: &str = "::STDOUT:: ";
 pub(crate) const MARK_STDERR: &str = "::STDERR:: ";
 
 #[derive(Debug, Copy, Clone)]
-pub(crate) enum Network {
+enum Network {
     None,
     Default,
     #[expect(unused)]
@@ -123,7 +123,33 @@ pub(crate) async fn fetch_digest(img: &str) -> Result<String> {
     Ok(format!("docker-image://{path}:{tag}@{digest}"))
 }
 
-pub(crate) async fn build(
+pub(crate) async fn build_cacheonly(
+    green: &Green,
+    dockerfile_path: &Utf8Path,
+    target: Stage,
+) -> Result<()> {
+    do_build(green, Network::None, dockerfile_path, target, &[].into(), None).await
+}
+
+pub(crate) async fn build_online(
+    green: &Green,
+    dockerfile_path: &Utf8Path,
+    target: Stage,
+) -> Result<()> {
+    do_build(green, Network::Default, dockerfile_path, target, &[].into(), None).await
+}
+
+pub(crate) async fn build_offline(
+    green: &Green,
+    dockerfile_path: &Utf8Path,
+    target: Stage,
+    contexts: &BTreeSet<BuildContext>,
+    out_dir: Option<&Utf8Path>,
+) -> Result<()> {
+    do_build(green, Network::None, dockerfile_path, target, contexts, out_dir).await
+}
+
+async fn do_build(
     green: &Green,
     network: Network,
     dockerfile_path: &Utf8Path,

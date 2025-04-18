@@ -20,7 +20,7 @@ use crate::{
     lockfile::{find_lockfile, locked_crates},
     logging::{self, maybe_log, ENV_LOG, ENV_LOG_PATH},
     pwd,
-    runner::{build, fetch_digest, maybe_lock_image, runner_cmd, Network},
+    runner::{build_cacheonly, build_online, fetch_digest, maybe_lock_image, runner_cmd},
     stage::Stage,
     tmp, PKG, REPO, VSN,
 };
@@ -248,7 +248,7 @@ pub(crate) async fn maybe_prebuild_base(green: &Green) -> Result<()> {
         .map_err(|e| anyhow!("Failed creating dockerfile {dockerfile_path}: {e}"))?;
 
     let stage = Stage::try_new(RUST).expect("rust stage");
-    build(green, Network::Default, &dockerfile_path, stage, &[].into(), None).await.map_err(|e| {
+    build_online(green, &dockerfile_path, stage).await.map_err(|e| {
         let _ = fs::remove_file(&dockerfile_path);
         anyhow!("{header}\n\nUnable to build {RUST}: {e}")
     })
@@ -333,10 +333,9 @@ pub(crate) async fn fetch(green: Green) -> Result<()> {
     .filter(|x| !x.is_empty())
     .for_each(|line| trace!("❯ {line}"));
 
-    let noctx = [].into();
     let ((), ()) = try_join!(
-        pull(&green, imgs), // NOTE: can't pull these from within build(..): they won't get --load'ed
-        build(&green, Network::None, &dockerfile_path, stage, &noctx, None)
+        pull(&green, imgs), // NOTE: can't pull these with build(..): they won't get --load'ed
+        build_cacheonly(&green, &dockerfile_path, stage)
     )?;
     Ok(())
 }
