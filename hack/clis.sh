@@ -170,17 +170,17 @@ as_install() {
 as_env() {
   local name_at_version=$1; shift
   case "$name_at_version" in
-    cargo-authors@*) envvars+=(CARGOGREEN_ADD_APT='"[\"libssl-dev\",\"zlib1g-dev\"]"') ;;
-    cargo-udeps@*) envvars+=(CARGOGREEN_ADD_APT='"[\"libssl-dev\",\"zlib1g-dev\"]"') ;;
-    dbcc@*) envvars+=(CARGOGREEN_SET_ENVS='"[\"TYPENUM_BUILD_CONSTS\",\"TYPENUM_BUILD_OP\"]"') ;;
-    diesel_cli@*) envvars+=(CARGOGREEN_ADD_APT='"[\"libpq-dev\"]"') ;;
-    hickory-dns@*) envvars+=(CARGOGREEN_SET_ENVS='"[\"RING_CORE_PREFIX\"]"') ;;
-    mussh@*) envvars+=(CARGOGREEN_ADD_APT='"[\"libsqlite3-dev\",\"libssl-dev\",\"zlib1g-dev\"]"') ;;
-    ntpd@*) envvars+=(CARGOGREEN_SET_ENVS='"[\"NTPD_RS_GIT_DATE\",\"NTPD_RS_GIT_REV\",\"RING_CORE_PREFIX\"]"') ;;
-    # cargo-bpf@*) envvars+=(CARGOGREEN_ADD_APT='"[\"libelf-dev\"]"') ;;
-    # privaxy@*) envvars+=(CARGOGREEN_ADD_APT='"[\"libssl-dev\",\"openssl\"]"' CARGOGREEN_SET_ENVS='"[\"DEP_OPENSSL_LIBRESSL_VERSION_NUMBER\",\"DEP_OPENSSL_VERSION_NUMBER\"]"' CARGOGREEN_BASE_IMAGE=docker-image://docker.io/library/rust:1) ;;
-    # shpool@*) envvars+=(CARGOGREEN_ADD_APT='"[\"libpam0g-dev\"]"') ;;
-    # torrust-index@*) envvars+=(CARGOGREEN_ADD_APT='"[\"libssl-dev\",\"zlib1g-dev\"]"' CARGOGREEN_SET_ENVS='"[\"MIME_TYPES_GENERATED_PATH\",\"RING_CORE_PREFIX\"]"') ;;
+    cargo-authors@*) envvars+=(CARGOGREEN_ADD_APT='libssl-dev,zlib1g-dev') ;;
+    cargo-udeps@*) envvars+=(CARGOGREEN_ADD_APT='libssl-dev,zlib1g-dev') ;;
+    dbcc@*) envvars+=(CARGOGREEN_SET_ENVS='TYPENUM_BUILD_CONSTS,TYPENUM_BUILD_OP') ;;
+    diesel_cli@*) envvars+=(CARGOGREEN_ADD_APT='libpq-dev') ;;
+    hickory-dns@*) envvars+=(CARGOGREEN_SET_ENVS='RING_CORE_PREFIX') ;;
+    mussh@*) envvars+=(CARGOGREEN_ADD_APT='libsqlite3-dev,libssl-dev,zlib1g-dev') ;;
+    ntpd@*) envvars+=(CARGOGREEN_SET_ENVS='NTPD_RS_GIT_DATE,NTPD_RS_GIT_REV,RING_CORE_PREFIX') ;;
+    # cargo-bpf@*) envvars+=(CARGOGREEN_ADD_APT='libelf-dev') ;;
+    # privaxy@*) envvars+=(CARGOGREEN_ADD_APT='libssl-dev,openssl' CARGOGREEN_SET_ENVS='DEP_OPENSSL_LIBRESSL_VERSION_NUMBER,DEP_OPENSSL_VERSION_NUMBER' CARGOGREEN_BASE_IMAGE=docker-image://docker.io/library/rust:1) ;;
+    # shpool@*) envvars+=(CARGOGREEN_ADD_APT='libpam0g-dev') ;;
+    # torrust-index@*) envvars+=(CARGOGREEN_ADD_APT='libssl-dev,zlib1g-dev' CARGOGREEN_SET_ENVS='MIME_TYPES_GENERATED_PATH,RING_CORE_PREFIX') ;;
     *) ;;
   esac
 }
@@ -191,9 +191,9 @@ cli() {
   local envvars=()
 
   envvars+=(CARGOGREEN_LOG=trace)
-  envvars+=(CARGOGREEN_FINAL_PATH="$name_at_version.Dockerfile")
   envvars+=(CARGOGREEN_LOG_PATH="\$PWD"/logs.txt)
-  envvars+=(CARGO_TARGET_DIR=~/instst)
+  envvars+=(CARGOGREEN_FINAL_PATH="$name_at_version.Dockerfile")
+  envvars+=(CARGO_TARGET_DIR="\$HOME"/instst)
   as_env "$name_at_version"
 
 	cat <<EOF
@@ -223,7 +223,7 @@ $(rundeps_versions)
 $(cache_usage)
     - name: cargo install net=ON cache=OFF remote=OFF jobs=$jobs
       run: |
-        ${envvars[@]} \\
+        env ${envvars[@]} \\
           cargo green -vv install --jobs=$jobs --locked --force $(as_install "$name_at_version") $@ |& tee _
 $(postconds _ logs.txt "$name_at_version.Dockerfile")
 $(cache_usage)
@@ -234,7 +234,7 @@ $(cache_usage)
 
     - name: Ensure running the same command twice without modifications...
       run: |
-        ${envvars[@]} \\
+        env ${envvars[@]} \\
           cargo green -vv install --jobs=$jobs --locked --force $(as_install "$name_at_version") $@ |& tee _
 $(postcond_fresh _ "$name_at_version.Dockerfile")
 $(postconds _ logs.txt "$name_at_version.Dockerfile")
@@ -308,14 +308,14 @@ set -x
     echo "Target dir: $tmptrgt"
     echo "Logs: $tmplogs"
     CARGOGREEN_LOG=trace \
-    CARGOGREEN_FINAL_PATH="$tmptrgt/cargo-green-fetched.Dockerfile" \
     CARGOGREEN_LOG_PATH="$tmplogs" \
+    CARGOGREEN_FINAL_PATH="$tmptrgt/cargo-green-fetched.Dockerfile" \
     RUSTCBUILDX_CACHE_IMAGE="${RUSTCBUILDX_CACHE_IMAGE:-}" \
     PATH=$install_dir/bin:"$PATH" \
       $CARGO green -v fetch
     CARGOGREEN_LOG=trace \
-    CARGOGREEN_FINAL_PATH="$tmptrgt/cargo-green.Dockerfile" \
     CARGOGREEN_LOG_PATH="$tmplogs" \
+    CARGOGREEN_FINAL_PATH="$tmptrgt/cargo-green.Dockerfile" \
     RUSTCBUILDX_CACHE_IMAGE="${RUSTCBUILDX_CACHE_IMAGE:-}" \
     PATH=$install_dir/bin:"$PATH" \
     CARGO_TARGET_DIR="$tmptrgt" \
@@ -372,8 +372,8 @@ tmux select-layout even-vertical
 tmux split-window
 
 envvars=(CARGOGREEN_LOG=trace)
-envvars+=(CARGOGREEN_FINAL_PATH="$tmptrgt/$name_at_version.Dockerfile")
 envvars+=(CARGOGREEN_LOG_PATH="$tmplogs")
+envvars+=(CARGOGREEN_FINAL_PATH="$tmptrgt/$name_at_version.Dockerfile")
 envvars+=(RUSTCBUILDX_CACHE_IMAGE="${RUSTCBUILDX_CACHE_IMAGE:-}")
 envvars+=(PATH=$install_dir/bin:"$PATH")
 envvars+=(CARGO_TARGET_DIR="$tmptrgt")

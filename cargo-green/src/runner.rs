@@ -485,7 +485,7 @@ where
             //   |
             //   = help: use `std::env::var("MIME_TYPES_GENERATED_PATH")` to read the variable at run time
             //   = note: this error originates in the macro `env` (in Nightly builds, run with -Z macro-backtrace for more info)
-            // => TODO: suggest    CARGOGREEN_SET_ENVS='"[\"MIME_TYPES_GENERATED_PATH\",\"RING_CORE_PREFIX\"]"') ;;
+            // => TODO: suggest    CARGOGREEN_SET_ENVS='MIME_TYPES_GENERATED_PATH RING_CORE_PREFIX'
 
             // I 25/03/31 22:33:29.519 X cargo 0.81.0-d28c49a0e79c24d1 rustc wrote /tmp/clis-cargo-udeps_0-1-50/release/build/cargo-d28c49a0e79c24d1/build_script_build-d28c49a0e79c24d1.d
             // D 25/03/31 22:33:29.665 X cargo 0.81.0-d28c49a0e79c24d1 ✖ #55 0.310 ::STDERR:: {"$message_type":"diagnostic","message":"linking with `cc` failed: exit status: 1","code":null,"level":"error",
@@ -532,7 +532,7 @@ where
             //           collect2: error: ld returned 1 exit status
             // => suggest "-lz":
             // [package.metadata.green]
-            // install-with.apt = [ "zlib1g-dev" ]
+            // add.apt = [ "zlib1g-dev" ]
         }
         debug!("Terminating {name} task {details:?}");
         drop(stdio);

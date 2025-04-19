@@ -1,5 +1,5 @@
 use core::str;
-use std::{collections::BTreeMap, env, io::Cursor, process::Stdio};
+use std::{env, io::Cursor, process::Stdio};
 
 use anyhow::{anyhow, bail, Result};
 use futures::stream::{iter, StreamExt, TryStreamExt};
@@ -10,7 +10,10 @@ use crate::{
     cargo_green::{ENV_BUILDER_IMAGE, ENV_FINAL_PATH, ENV_RUNNER, ENV_SYNTAX},
     envs::{cache_image, incremental, internal},
     extensions::ShowCmd,
-    green::{Green, ENV_BASE_IMAGE, ENV_BASE_IMAGE_INLINE},
+    green::{
+        Green, ENV_ADD_APK, ENV_ADD_APT, ENV_ADD_APT_GET, ENV_BASE_IMAGE, ENV_BASE_IMAGE_INLINE,
+        ENV_SET_ENVS,
+    },
     logging::{ENV_LOG, ENV_LOG_PATH, ENV_LOG_STYLE},
     runner::runner_cmd,
 };
@@ -129,39 +132,34 @@ async fn all_tags_of(green: &Green, img: &str) -> Result<Vec<String>> {
 }
 
 fn envs(green: Green, vars: Vec<String>) {
-    let all: BTreeMap<_, _> = [
+    let csv = |add: &[String]| (!add.is_empty()).then_some(add.join(","));
+    let all = vec![
         (internal::RUSTCBUILDX, internal::this()),
-        (ENV_BASE_IMAGE, Some(green.image.base_image)),
-        (ENV_BASE_IMAGE_INLINE, green.image.base_image_inline),
-        (ENV_BUILDER_IMAGE, green.builder_image),
         (internal::RUSTCBUILDX_CACHE_IMAGE, cache_image().to_owned()),
         (internal::RUSTCBUILDX_INCREMENTAL, incremental().then_some("1".to_owned())),
+        (ENV_ADD_APK, csv(&green.add.apk)),
+        (ENV_ADD_APT, csv(&green.add.apt)),
+        (ENV_ADD_APT_GET, csv(&green.add.apt_get)),
+        (ENV_BASE_IMAGE, Some(green.image.base_image.clone())),
+        (ENV_BASE_IMAGE_INLINE, green.image.base_image_inline.clone()),
+        (ENV_BUILDER_IMAGE, green.builder_image.clone()),
+        (ENV_FINAL_PATH, green.final_path.as_deref().map(ToString::to_string)),
         (ENV_LOG, env::var(ENV_LOG).ok()),
         (ENV_LOG_PATH, env::var(ENV_LOG_PATH).ok()),
         (ENV_LOG_STYLE, env::var(ENV_LOG_STYLE).ok()),
         (ENV_RUNNER, Some(green.runner.clone())),
+        (ENV_SET_ENVS, (!green.set_envs().is_empty()).then_some(green.set_envs())),
         (ENV_SYNTAX, Some(green.syntax)),
-        (ENV_FINAL_PATH, green.final_path.map(|x| x.to_string())),
-        // (ENV_ADD_APK, Some(green.add.apk)), FIXME: CSV
-        // (ENV_ADD_APT, Some(green.add.apt)), FIXME: CSV
-        // (ENV_ADD_APT_GET, Some(green.add.apt_get)), FIXME: CSV
-        // (ENV_SET_ENVS, Some(green.set_envs)), FIXME: CSV
-    ]
-    .into_iter()
-    .collect();
-
-    fn show(var: &str, o: Option<&str>) {
-        println!("{var}={}", o.unwrap_or_default());
-    }
+    ];
 
     let mut empty_vars = true;
     for var in vars {
-        if let Some(o) = all.get(&var.as_str()) {
-            show(&var, o.as_deref());
+        if let Some(o) = all.iter().find_map(|(k, v)| (k == &var).then_some(v)) {
+            println!("{}", o.as_deref().unwrap_or_default());
             empty_vars = false;
         }
     }
     if empty_vars {
-        all.into_iter().for_each(|(var, o)| show(var, o.as_deref()));
+        all.into_iter().for_each(|(var, o)| println!("{var}={:?}", o.unwrap_or_default()));
     }
 }

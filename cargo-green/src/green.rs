@@ -29,12 +29,35 @@ struct GreenMetadata {
 #[serde(deny_unknown_fields)]
 #[serde(rename_all = "kebab-case")]
 pub(crate) struct Add {
+    // Adds OS packages to the base image with `apk add`
+    //
+    // add.apk = [ "libpq-dev", "pkgconf" ]
+    //
+    // # This environment variable takes precedence over any Cargo.toml settings:
+    // # Note: values here are comma-separated.
+    // CARGOGREEN_ADD_APK="libpq-dev,pkg-conf"
     #[serde(skip_serializing_if = "Vec::is_empty")]
-    apk: Vec<String>,
+    pub(crate) apk: Vec<String>,
+
+    // Adds OS packages to the base image with `apt install`
+    //
+    // add.apt = [ "libpq-dev", "pkg-config" ]
+    //
+    // # This environment variable takes precedence over any Cargo.toml settings:
+    // # Note: values here are comma-separated.
+    // CARGOGREEN_ADD_APT="libpq-dev,pkg-config"
     #[serde(skip_serializing_if = "Vec::is_empty")]
-    apt: Vec<String>,
+    pub(crate) apt: Vec<String>,
+
+    // Adds OS packages to the base image with `apt-get install`
+    //
+    // add.apt-get = [ "libpq-dev", "pkg-config" ]
+    //
+    // # This environment variable takes precedence over any Cargo.toml settings:
+    // # Note: values here are comma-separated.
+    // CARGOGREEN_ADD_APT_GET="libpq-dev,pkg-config"
     #[serde(skip_serializing_if = "Vec::is_empty")]
-    apt_get: Vec<String>,
+    pub(crate) apt_get: Vec<String>,
 }
 
 impl Add {
@@ -74,17 +97,17 @@ RUN \
   --mount=from=xx,source=/usr/bin/xx-windres,target=/usr/bin/xx-windres \
     set -eux \
  && if   command -v apk >/dev/null 2>&1; then \
-                                     xx-apk     add     --no-cache                 {apk}; \
+                                     xx-apk     add     --no-cache                 '{apk}'; \
     elif command -v apt >/dev/null 2&>1; then \
-      DEBIAN_FRONTEND=noninteractive xx-apt     install --no-install-recommends -y {apt}; \
+      DEBIAN_FRONTEND=noninteractive xx-apt     install --no-install-recommends -y '{apt}'; \
     else \
-      DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y {apt_get}; \
+      DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '{apt_get}'; \
     fi
 "#,
             last = last.trim(),
-            apk = self.apk.join(" "),
-            apt = self.apt.join(" "),
-            apt_get = self.apt_get.join(" "),
+            apk = self.apk.join("' '"),
+            apt = self.apt.join("' '"),
+            apt_get = self.apt_get.join("' '"),
         )
     }
 }
@@ -131,27 +154,30 @@ pub(crate) struct Green {
     pub(crate) image: BaseImage,
 
     // Pass environment variables through to build runner.
-    // $CARGOGREEN_SET_ENVS overrides this setting.
     // See also:
     //   `packages`
+    //
     // May be useful if a build script exported some vars that a package then reads.
     // About $GIT_AUTH_TOKEN: https://docs.docker.com/build/building/secrets/#git-authentication-for-remote-contexts
     //
     // set-envs = [ "GIT_AUTH_TOKEN", "TYPENUM_BUILD_CONSTS", "TYPENUM_BUILD_OP" ]
     //
     // # This environment variable takes precedence over any Cargo.toml settings:
-    // CARGOGREEN_SET_ENVS="[\"GIT_AUTH_TOKEN\", \"TYPENUM_BUILD_CONSTS\", \"TYPENUM_BUILD_OP\"]"
+    // # Note: values here are comma-separated.
+    // CARGOGREEN_SET_ENVS="GIT_AUTH_TOKEN,TYPENUM_BUILD_CONSTS,TYPENUM_BUILD_OP"
     //
     // NOTE: this doesn't (yet) accumulate dependencies' set-envs values!
     #[serde(skip_serializing_if = "Vec::is_empty")]
     pub(crate) set_envs: Vec<String>,
 
-    // add.apt = [ "libpq-dev", "pkg-config" ]
-    // add.apk = [ "libpq-dev", "pkgconf" ]
+    // Add OS packages to the base image
+    // See also:
+    //   `add.apk`
+    //   `add.apt`
+    //   `add.apt-get`
     //
-    // # These environment variables take precedence over any Cargo.toml settings:
-    // CARGOGREEN_ADD_APT='[ "libpq-dev", "pkg-config" ]'
-    // FIXME: ===> use CSV instead of JSON
+    // # Inspect the resulting base image with:
+    // CARGOGREEN_ADD_APT=libssl-dev,zlib1g-dev cargo green supergreen env CARGOGREEN_BASE_IMAGE_INLINE
     #[serde(skip_serializing_if = "Add::is_empty")]
     pub(crate) add: Add,
 }
@@ -223,12 +249,11 @@ impl Green {
             if val.is_empty() {
                 bail!("{origin} is empty")
             }
-            green.set_envs =
-                serde_json::from_str(&val).map_err(|e| anyhow!("Failed parsing {origin}: {e}"))?;
+            green.set_envs = val.split(',').map(ToOwned::to_owned).collect();
         }
         if !green.set_envs.is_empty() {
-            if green.set_envs.iter().any(String::is_empty) {
-                bail!("{origin} contains empty names")
+            if green.set_envs.iter().any(|x| x.is_empty() || x.contains(' ') || x.trim() != x) {
+                bail!("{origin} contains empty names or whitespace")
             }
             if green.set_envs.iter().any(|var| var.starts_with("CARGOGREEN_")) {
                 bail!("{origin} contains CARGOGREEN_* names")
@@ -252,12 +277,11 @@ impl Green {
                 if val.is_empty() {
                     bail!("{origin} is empty")
                 }
-                *field = serde_json::from_str(&val)
-                    .map_err(|e| anyhow!("Failed parsing {origin}: {e}"))?;
+                *field = val.split(',').map(ToOwned::to_owned).collect();
             }
             if !field.is_empty() {
-                if field.iter().any(String::is_empty) {
-                    bail!("{origin} contains empty names")
+                if field.iter().any(|x| x.is_empty() || x.contains(' ') || x.trim() != x) {
+                    bail!("{origin} contains empty names or whitespace")
                 }
                 if field.len() != field.iter().collect::<HashSet<_>>().len() {
                     bail!("{origin} contains duplicates")
@@ -266,6 +290,11 @@ impl Green {
         }
 
         Ok(green)
+    }
+
+    #[must_use]
+    pub(crate) fn set_envs(&self) -> String {
+        self.set_envs.join(" ")
     }
 }
 
