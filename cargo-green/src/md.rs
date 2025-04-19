@@ -57,16 +57,10 @@ impl Md {
         self.stages.push(DockerfileStage { name: name.clone(), script: block.trim().to_owned() });
     }
 
-    pub(crate) fn append_blocks(
-        &self,
-        dockerfile: &mut String,
-        visited: &mut BTreeSet<Stage>,
-    ) -> Result<()> {
+    fn append_blocks(&self, dockerfile: &mut String, visited: &mut BTreeSet<Stage>) {
         let mut stages = self.stages.iter().filter(|DockerfileStage { name, .. }| *name != *RUST);
 
-        let Some(DockerfileStage { name, script }) = stages.next() else {
-            bail!("BUG: has to have at least one stage")
-        };
+        let DockerfileStage { name, script } = stages.next().expect("at least one stage");
 
         let mut filter = None;
         if name.starts_with(CHECKOUTS_STAGE_PREFIX) || name.starts_with(CRATESIO_STAGE_PREFIX) {
@@ -87,8 +81,6 @@ impl Md {
             dockerfile.push_str(script);
             dockerfile.push('\n');
         }
-
-        Ok(())
     }
 
     pub(crate) fn extend_from_externs(
@@ -115,6 +107,17 @@ impl Md {
         md_paths.truncate(md_paths.len() - 1); // pop last (it's self.this's empty path)
 
         Ok(md_paths)
+    }
+
+    pub(crate) fn block_along_with_predecessors(&self, mds: &[Md]) -> String {
+        let mut blocks = String::new();
+        let mut visited_cratesio_stages = BTreeSet::new();
+        for md in mds {
+            md.append_blocks(&mut blocks, &mut visited_cratesio_stages);
+            blocks.push('\n');
+        }
+        self.append_blocks(&mut blocks, &mut visited_cratesio_stages);
+        blocks
     }
 }
 

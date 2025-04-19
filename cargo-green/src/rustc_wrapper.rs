@@ -597,17 +597,17 @@ async fn do_wrap_rustc(
 
     let md = md; // Drop mut
 
-    let mut blocks = String::new();
-    let mut visited_cratesio_stages = BTreeSet::new();
-    for extern_md_path in extern_md_paths {
-        info!("opening (RO) extern's md {extern_md_path}");
-        let md_raw = fs::read_to_string(&extern_md_path)
-            .map_err(|e| anyhow!("Failed reading Md {extern_md_path}: {e}"))?;
-        let extern_md = Md::from_str(&md_raw)?;
-        extern_md.append_blocks(&mut blocks, &mut visited_cratesio_stages)?;
-        blocks.push('\n');
-    }
-    md.append_blocks(&mut blocks, &mut visited_cratesio_stages)?;
+    let blocks = md.block_along_with_predecessors(
+        &extern_md_paths
+            .into_iter()
+            .map(|extern_md_path| {
+                info!("opening (RO) extern's md {extern_md_path}");
+                let md_raw = fs::read_to_string(&extern_md_path)
+                    .map_err(|e| anyhow!("Failed reading Md {extern_md_path}: {e}"))?;
+                Ok(Md::from_str(&md_raw)?)
+            })
+            .collect::<Result<Vec<_>>>()?,
+    );
 
     {
         let md_path = target_path.join(format!("{crate_name}{extrafn}.toml"));
