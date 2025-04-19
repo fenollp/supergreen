@@ -14,6 +14,7 @@ use crate::{
     cratesio::{self},
     envs::{builder_image, cache_image, incremental, internal, maybe_log, runner, DEFAULT_SYNTAX},
     extensions::ShowCmd,
+    green::Green,
     lockfile::{find_lockfile, locked_crates},
     logging,
     runner::{build, fetch_digest, maybe_lock_image, runner_cmd},
@@ -21,10 +22,7 @@ use crate::{
     PKG, REPO, VSN,
 };
 
-pub(crate) async fn main(cmd: &mut Command) -> Result<()> {
-    // TODO read package.metadata.green
-    // https://lib.rs/crates/cargo_metadata
-    // https://github.com/stormshield/cargo-ft/blob/d4ba5b048345ab4b21f7992cc6ed12afff7cc863/src/package/metadata.rs
+pub(crate) async fn main(cmd: &mut Command) -> Result<Green> {
     // TODO: TUI above cargo output (? https://docs.rs/prodash )
 
     if let Ok(log) = env::var("CARGOGREEN_LOG") {
@@ -40,12 +38,16 @@ pub(crate) async fn main(cmd: &mut Command) -> Result<()> {
         let _ = OpenOptions::new().create(true).truncate(false).append(true).open(val);
     }
 
-    // RUSTCBUILDX is handled by `rustcbuildx`
+    // RUSTCBUILDX and eponymous envs are handled by wrapper
+    assert!(env::var("RUSTCBUILDX").is_err());
 
-    env::set_var("CARGOGREEN", "1");
+    // This exports vars so they will be accessible by later-spawned $RUSTC_WRAPPER.
 
     // Not calling envs::{syntax,base_image} directly so value isn't locked now.
     // Goal: produce only fully-locked Dockerfiles/TOMLs
+
+    assert!(env::var("CARGOGREEN").is_err());
+    env::set_var("CARGOGREEN", "1");
 
     let mut syntax = internal::syntax().unwrap_or_else(|| DEFAULT_SYNTAX.to_owned());
     // Use local hashed image if one matching exists locally
@@ -56,20 +58,71 @@ pub(crate) async fn main(cmd: &mut Command) -> Result<()> {
     }
     env::set_var(internal::RUSTCBUILDX_SYNTAX, syntax);
 
-    let mut base_image = BaseImage::from_rustc_v()?.maybe_lock_base().await;
+    let green = Green::try_new()?;
+
+    let mut base_image = if let Some(ref base_image) = green.base_image {
+        BaseImage::Image(base_image.clone())
+    } else {
+        BaseImage::from_rustc_v()?.maybe_lock_base().await
+    };
     let base = base_image.base();
     if !base.contains('@') {
         base_image = base_image.lock_base_to(fetch_digest(&base).await?);
     }
     env::set_var(internal::RUSTCBUILDX_BASE_IMAGE, base_image.base());
 
-    let base_image_block = base_image.block();
-    env::set_var("RUSTCBUILDX_BASE_IMAGE_BLOCK_", base_image_block.clone());
+    let (mut base_image_block, mut with_network) =
+        if let Some(ref base_image_inline) = green.base_image_inline {
+            (base_image_inline.clone(), true)
+        } else {
+            base_image.block()
+        };
+    if !green.install_with.apt_get.is_empty()
+        || !green.install_with.apt.is_empty()
+        || !green.install_with.apk.is_empty()
+    {
+        with_network = true;
+        base_image_block = format!(
+            r#"
+FROM --platform=$BUILDPLATFORM {xx} AS xx
+{base_image_block}
+ARG TARGETPLATFORM
+RUN \
+  --mount=from=xx,source=/usr/bin/xx-apk,target=/usr/bin/xx-apk \
+  --mount=from=xx,source=/usr/bin/xx-apt,target=/usr/bin/xx-apt \
+  --mount=from=xx,source=/usr/bin/xx-apt,target=/usr/bin/xx-apt-get \
+  --mount=from=xx,source=/usr/bin/xx-cc,target=/usr/bin/xx-c++ \
+  --mount=from=xx,source=/usr/bin/xx-cargo,target=/usr/bin/xx-cargo \
+  --mount=from=xx,source=/usr/bin/xx-cc,target=/usr/bin/xx-cc \
+  --mount=from=xx,source=/usr/bin/xx-cc,target=/usr/bin/xx-clang \
+  --mount=from=xx,source=/usr/bin/xx-cc,target=/usr/bin/xx-clang++ \
+  --mount=from=xx,source=/usr/bin/xx-go,target=/usr/bin/xx-go \
+  --mount=from=xx,source=/usr/bin/xx-info,target=/usr/bin/xx-info \
+  --mount=from=xx,source=/usr/bin/xx-ld-shas,target=/usr/bin/xx-ld-shas \
+  --mount=from=xx,source=/usr/bin/xx-verify,target=/usr/bin/xx-verify \
+  --mount=from=xx,source=/usr/bin/xx-windres,target=/usr/bin/xx-windres \
+    set -ex \
+  && if command -v apk >/dev/null 2>&1; then \
+       xx-apk add --no-cache {apk}; \
+     elif command -v apt 2&>1; then \
+      xx-apt install --no-install-recommends -y {apt}; \
+     else \
+      xx-apt-get install --no-install-recommends -y {apt_get}; \
+     fi
+"#,
+            xx = "tonistiigi/xx", //lock dis
+            apk = &green.install_with.apk.join(" "),
+            apt = &green.install_with.apt.join(" "),
+            apt_get = &green.install_with.apt_get.join(" "),
+        )[1..]
+            .to_owned();
+    }
+    //todo: pre build base image here + no lifting io + fail with nice error display
+    env::set_var("RUSTCBUILDX_BASE_IMAGE_BLOCK_", base_image_block);
     cmd.env(
         internal::RUSTCBUILDX_RUNS_ON_NETWORK,
-        internal::runs_on_network().unwrap_or_else(|| {
-            if base_image_block.contains(" apt-get ") { "default" } else { "none" }.to_owned()
-        }),
+        internal::runs_on_network()
+            .unwrap_or_else(|| if with_network { "default" } else { "none" }.to_owned()),
     );
 
     let builder_image = builder_image().await;
@@ -77,6 +130,7 @@ pub(crate) async fn main(cmd: &mut Command) -> Result<()> {
     // don't pull
     if let Some(val) = cache_image() {
         cmd.env(internal::RUSTCBUILDX_CACHE_IMAGE, val);
+        //TODO: $CARGOGREEN_IMAGE_CACHES? (comma separated)
     }
 
     if incremental() {
@@ -126,7 +180,7 @@ pub(crate) async fn main(cmd: &mut Command) -> Result<()> {
         // https://docs.docker.com/engine/security/protect-access/
     }
 
-    Ok(())
+    Ok(green)
 }
 
 // https://docs.docker.com/build/drivers/docker-container/

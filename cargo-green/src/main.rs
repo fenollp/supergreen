@@ -1,6 +1,6 @@
 use std::{env, ffi::OsStr, path::PathBuf, process::exit};
 
-use anyhow::{bail, Result};
+use anyhow::{anyhow, bail, Result};
 use envs::internal;
 use tokio::process::Command;
 
@@ -10,6 +10,7 @@ mod checkouts;
 mod cratesio;
 mod envs;
 mod extensions;
+mod green;
 mod lockfile;
 mod logging;
 mod md;
@@ -55,16 +56,23 @@ async fn main() -> Result<()> {
         bail!("This binary should be named `{PKG}`")
     }
 
+    const ENV_ROOT_PACKAGE_SETTINGS: &str = "CARGOGREEN_ROOT_PACKAGE_SETTINGS_";
+
     if let Ok(wrapper) = env::var("RUSTC_WRAPPER") {
         if PathBuf::from(&wrapper).file_name() != Some(OsStr::new(PKG)) {
             bail!("A $RUSTC_WRAPPER other than `{PKG}` is already set: {wrapper}")
         }
         // Now running as a subprocess
 
+        let green = env::var(ENV_ROOT_PACKAGE_SETTINGS)
+            .map_err(|_| anyhow!("BUG: ${ENV_ROOT_PACKAGE_SETTINGS} is unset"))?;
+        let green = serde_json::from_str(&green)
+            .map_err(|e| anyhow!("BUG: ${ENV_ROOT_PACKAGE_SETTINGS} is unreadable: {e}"))?;
+
         let arg0 = env::args().nth(1);
         let args = env::args().skip(1).collect();
         let vars = env::vars().collect();
-        return rustc_wrapper::main(arg0, args, vars).await;
+        return rustc_wrapper::main(green, arg0, args, vars).await;
     }
 
     if args.next().as_deref() != Some("green") {
@@ -82,13 +90,15 @@ async fn main() -> Result<()> {
         if let Some(toolchain) = arg.strip_prefix('+') {
             let var = "RUSTUP_TOOLCHAIN";
             if let Ok(val) = env::var(var) {
-                println!("Overriding {var}={val:?} to {toolchain:?} for `{PKG} +toolchain`");
+                if val != toolchain {
+                    println!("Overriding {var}={val:?} to {toolchain:?} for `{PKG} +toolchain`");
+                }
             }
             // Special handling: call was `cargo green +toolchain ..` (probably from `alias cargo='cargo green'`).
             // Normally, calls look like `cargo +toolchain green ..` but let's simplify alias creation!
             env::set_var(var, toolchain); // Informs `rustc -vV` when deciding base_image()
         } else {
-            cmd.arg(&arg);
+            cmd.arg(arg);
         }
     }
     cmd.args(args);
@@ -96,7 +106,8 @@ async fn main() -> Result<()> {
 
     cmd.env("RUSTC_WRAPPER", arg0);
 
-    cargo_green::main(&mut cmd).await?;
+    let green = cargo_green::main(&mut cmd).await?;
+    cmd.env(ENV_ROOT_PACKAGE_SETTINGS, serde_json::to_string(&green)?);
 
     let syntax = internal::syntax().expect("set in cargo_green::main");
 
@@ -114,6 +125,8 @@ async fn main() -> Result<()> {
         }
         Some(_) => {}
     }
+
+    //TODO: also for cfetch
 
     if !cmd.status().await?.success() {
         exit(1)

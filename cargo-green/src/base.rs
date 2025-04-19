@@ -22,7 +22,7 @@ pub(crate) enum BaseImage {
 }
 
 const STABLE_RUST: &str = "docker-image://docker.io/library/rust:1-slim";
-const BASE_FOR_RUST: &str = "docker-image://docker.io/library/debian:12-slim";
+const BASE_FOR_RUST: &str = "docker-image://docker.io/library/debian:stable-slim";
 
 #[test]
 fn test_from_rustc_v() {
@@ -133,12 +133,12 @@ impl BaseImage {
     }
 
     #[must_use]
-    pub(crate) fn block(&self) -> String {
+    pub(crate) fn block(&self) -> (String, bool) {
         let base = self.base();
         let base = base.trim_start_matches("docker-image://");
 
         match self {
-            Self::Image(_) => format!("FROM --platform=$BUILDPLATFORM {base} AS {RUST}\n"),
+            Self::Image(_) => (format!("FROM --platform=$BUILDPLATFORM {base} AS {RUST}\n"), false),
             Self::RustcV(RustcV { date, channel, .. }) => {
                 // TODO? maybe use commit & version as selector too?
 
@@ -154,8 +154,9 @@ impl BaseImage {
                 };
 
                 // Inspired from https://github.com/rust-lang/docker-rust/blob/d14e1ad7efeb270012b1a7e88fea699b1d1082f2/nightly/bullseye/slim/Dockerfile
-                format!(
-                    r#"
+                (
+                    format!(
+                        r#"
 FROM scratch AS rustup
 ADD --chmod=0755 --checksum=sha256:6aeece6993e902708983b209d04c0d1dbb14ebb405ddb87def578d41f920f56d \
   https://static.rust-lang.org/rustup/archive/1.27.1/x86_64-unknown-linux-gnu/rustup-init /rustup-init
@@ -183,6 +184,8 @@ RUN \
 # clean up for reproducibility
  && rm -rf /var/log/* /var/cache/ldconfig/aux-cache
 "#
+                    ),
+                    true,
                 )
             }
         }

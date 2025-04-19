@@ -21,18 +21,18 @@ declare -a nvs nvs_args
 ((i+=1)); nvs[i]=cargo-llvm-cov@0.5.36;       oks[i]=ok; nvs_args[i]=''
 ((i+=1)); nvs[i]=cargo-nextest@0.9.72;        oks[i]=ko; nvs_args[i]='' # .. environment variable `TARGET` not defined at compile time .. self_update-0.39.0
 ((i+=1)); nvs[i]=cross@0.2.5;                 oks[i]=ok; nvs_args[i]='--git https://github.com/cross-rs/cross.git --tag=v0.2.5 cross'
-((i+=1)); nvs[i]=diesel_cli@2.1.1;            oks[i]=ko; nvs_args[i]='--no-default-features --features=postgres' # /usr/bin/ld: cannot find -lpq: No such file or directory
+((i+=1)); nvs[i]=dbcc@2.2.1;                  oks[i]=ok; nvs_args[i]=''
+((i+=1)); nvs[i]=diesel_cli@2.1.1;            oks[i]=ok; nvs_args[i]='--no-default-features --features=postgres'
 ((i+=1)); nvs[i]=hickory-dns@0.25.0-alpha.1;  oks[i]=ok; nvs_args[i]='--features=dns-over-rustls'
-((i+=1)); nvs[i]=mussh@3.1.3;                 oks[i]=ko; nvs_args[i]='' # = note: /usr/bin/ld: cannot find -lsqlite3: No such file or directory (and -lssl -lcrypto -lz)
+((i+=1)); nvs[i]=mussh@3.1.3;                 oks[i]=ok; nvs_args[i]=''
 ((i+=1)); nvs[i]=ntpd@1.2.3;                  oks[i]=ok; nvs_args[i]=''
 ((i+=1)); nvs[i]=qcow2-rs@0.1.2;              oks[i]=ok; nvs_args[i]=''
 ((i+=1)); nvs[i]=ripgrep@14.1.0;              oks[i]=ok; nvs_args[i]=''
 ((i+=1)); nvs[i]=rublk@0.2.0;                 oks[i]=ok; nvs_args[i]=''
 ((i+=1)); nvs[i]=shpool@0.6.2;                oks[i]=ko; nvs_args[i]='' # sudo apt-get install libpam0g-dev
-((i+=1)); nvs[i]=solana-gossip@2.0.5;         oks[i]=ko; nvs_args[i]='' # error: environment variable `TYPENUM_BUILD_OP` not defined at compile time
 ((i+=1)); nvs[i]=statehub@0.14.10;            oks[i]=ko; nvs_args[i]='' # BUG: unexpected crate-type: 'cdylib'
-((i+=1)); nvs[i]=torrust-index@3.0.0-alpha.12; oks[i]=ko; nvs_args[i]='' # /usr/bin/ld: cannot find -lssl: No such file or directory
-((i+=1)); nvs[i]=cargo-authors@0.5.5;         oks[i]=ko; nvs_args[i]='' #               cannot find -lz: Missing libz
+((i+=1)); nvs[i]=torrust-index@3.0.0;         oks[i]=ko; nvs_args[i]='' # /usr/bin/ld: cannot find -lssl: No such file or directory
+((i+=1)); nvs[i]=cargo-authors@0.5.5;         oks[i]=ko; nvs_args[i]='' # ERROR: failed to solve: ResourceExhausted: ResourceExhausted: ResourceExhausted: ResourceExhausted: ResourceExhausted: grpc: received message larger than max (6653826 vs. 4194304)
 ((i+=1)); nvs[i]=vixargs@0.1.0;               oks[i]=ok; nvs_args[i]=''
 ((i+=1)); nvs[i]=cargo-config2@0.1.26;        oks[i]=ok; nvs_args[i]='--example=get'
 ((i+=1)); nvs[i]=privaxy@0.5.2;               oks[i]=ko; nvs_args[i]='--git https://github.com/Barre/privaxy.git --tag=v0.5.2 privaxy' # undefined reference to `__isoc23_strtol'\n          /usr/bin/ld: rand_unix.c:(.text.wait_random_seeded+0x204): undefined reference to `__isoc23_strtol'\n          collect2: error: ld returned 1 exit status\n          \n  = note: some `extern` functions couldn't be found; some native libraries may need to be installed or have their path specified\n  = note: use the `-l` flag to specify native libraries to link\n  = note: use the `cargo:rustc-link-lib` directive to specify the native libraries to link with Cargo (see https://doc.rust-lang.org/cargo/reference/build-scripts.html#rustc-link-lib
@@ -40,7 +40,6 @@ declare -a nvs nvs_args
 ((i+=1)); nvs[i]=miri@master;                 oks[i]=ko; nvs_args[i]='--git https://github.com/rust-lang/miri.git --rev=dcd2112' # can't find crate for `either`
 ((i+=1)); nvs[i]=zed@main;                    oks[i]=ko; nvs_args[i]='--git https://github.com/zed-industries/zed.git --tag=v0.149.5 zed' # The pkg-config command could not be found.
 ((i+=1)); nvs[i]=cargo-udeps@0.1.50;          oks[i]=ko; nvs_args[i]='' # The pkg-config command could not be found.
-((i+=1)); nvs[i]=rerun-cli@0.18.0;            oks[i]=ko; nvs_args[i]='' # environment variable `TYPENUM_BUILD_OP` not defined at compile time + TYPENUM_BUILD_CONSTS
 
 ((i+=1)); nvs[i]=mirai@main;                  oks[i]=ko; nvs_args[i]='--git https://github.com/facebookexperimental/MIRAI.git --tag=v1.1.9 checker'
 # error: could not find `checker` in https://github.com/facebookexperimental/MIRAI.git?tag=v1.1.9 with version `*`
@@ -165,6 +164,22 @@ as_install() {
   esac
 }
 
+as_env() {
+  local name_at_version=$1; shift
+  case "$name_at_version" in
+    cargo-authors@*) envvars+=(CARGOGREEN_INSTALL_WITH_APT='"[\"libssl-dev\",\"zlib1g-dev\"]"') ;;
+    dbcc@*) envvars+=(CARGOGREEN_SET_ENVS='"[\"TYPENUM_BUILD_CONSTS\",\"TYPENUM_BUILD_OP\"]"') ;;
+    diesel_cli@*) envvars+=(CARGOGREEN_INSTALL_WITH_APT='"[\"libpq-dev\",\"pkg-config\"]"') ;;
+    hickory-dns@*) envvars+=(CARGOGREEN_SET_ENVS='"[\"RING_CORE_PREFIX\"]"') ;;
+    mussh@*) envvars+=(CARGOGREEN_INSTALL_WITH_APT='"[\"libsqlite3-dev\",\"libssl-dev\",\"zlib1g-dev\"]"') ;;
+    ntpd@*) envvars+=(CARGOGREEN_SET_ENVS='"[\"NTPD_RS_GIT_DATE\",\"NTPD_RS_GIT_REV\",\"RING_CORE_PREFIX\"]"') ;;
+    # privaxy@*) envvars+=(CARGOGREEN_INSTALL_WITH_APT='"[\"libssl-dev\",\"openssl\"]"' CARGOGREEN_SET_ENVS='"[\"DEP_OPENSSL_LIBRESSL_VERSION_NUMBER\",\"DEP_OPENSSL_VERSION_NUMBER\"]"' CARGOGREEN_BASE_IMAGE=docker-image://docker.io/library/rust:1) ;;
+    # shpool@*) envvars+=(CARGOGREEN_INSTALL_WITH_APT='"[\"libpam0g-dev\"]"') ;;
+    # torrust-index@*) envvars+=(CARGOGREEN_INSTALL_WITH_APT='"[\"libssl-dev\",\"zlib1g-dev\"]"' CARGOGREEN_SET_ENVS='"[\"MIME_TYPES_GENERATED_PATH\",\"RING_CORE_PREFIX\"]"') ;;
+    *) ;;
+  esac
+}
+
 cli() {
 	local name_at_version=$1; shift
   local jobs=$1; shift
@@ -173,6 +188,7 @@ cli() {
   envvars+=(CARGOGREEN_LOG=trace)
   envvars+=(RUSTCBUILDX_LOG_PATH="\$PWD"/logs.txt)
   envvars+=(CARGO_TARGET_DIR=~/instst)
+  as_env "$name_at_version"
 
 	cat <<EOF
 $(jobdef "$(sed 's%@%_%g;s%\.%-%g' <<<"$name_at_version")$(if [[ "$jobs" != 1 ]]; then echo '-J'; fi)")
@@ -355,6 +371,7 @@ envvars+=(RUSTCBUILDX_LOG_PATH="$tmplogs")
 envvars+=(RUSTCBUILDX_CACHE_IMAGE="${RUSTCBUILDX_CACHE_IMAGE:-}")
 envvars+=(PATH=$install_dir/bin:"$PATH")
 envvars+=(CARGO_TARGET_DIR="$tmptrgt")
+as_env "$name_at_version"
 send \
   'until' '[[' -f "$tmpgooo".installed ']];' \
   'do' sleep '.1;' 'done' '&&' rm "$tmpgooo".* '&&' \

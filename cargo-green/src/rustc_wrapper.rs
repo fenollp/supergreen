@@ -16,8 +16,9 @@ use crate::{
     base::RUST,
     checkouts,
     cratesio::{self, rewrite_cratesio_index},
-    envs::{self, base_image, internal, maybe_log, pass_env, runner, syntax, this},
+    envs::{self, internal, maybe_log, pass_env, runner, syntax, this},
     extensions::{Popped, ShowCmd},
+    green::Green,
     logging::{self, crate_type_for_logging},
     md::{BuildContext, Md},
     runner::{build, MARK_STDERR, MARK_STDOUT},
@@ -30,6 +31,7 @@ use crate::{
 //       ourselves some trouble and assume std::path::{Path, PathBuf} are UTF-8.
 
 pub(crate) async fn main(
+    green: Green,
     arg0: Option<String>,
     args: Vec<String>,
     vars: BTreeMap<String, String>,
@@ -41,7 +43,7 @@ pub(crate) async fn main(
     // TODO: find a better heuristic to ensure `rustc` is rustc
     match &argz[..] {
         [rustc, "--crate-name", crate_name, ..] if rustc.ends_with("rustc") =>
-             wrap_rustc(crate_name, argv(1), call_rustc(rustc, argv(1))).await,
+             wrap_rustc(green, crate_name, argv(1), call_rustc(rustc, argv(1))).await,
         [driver, rustc, "-"|"--crate-name", ..] if rustc.ends_with("rustc") => {
             // TODO: wrap driver? + rustc
             // driver: e.g. $RUSTUP_HOME/toolchains/stable-x86_64-unknown-linux-gnu/bin/clippy-driver
@@ -111,6 +113,7 @@ async fn call_rustc(rustc: &str, args: Vec<String>) -> Result<()> {
 }
 
 async fn wrap_rustc(
+    green: Green,
     crate_name: &str,
     arguments: Vec<String>,
     fallback: impl Future<Output = Result<()>>,
@@ -148,9 +151,10 @@ async fn wrap_rustc(
 
     logging::setup(&full_krate_id, internal::RUSTCBUILDX_LOG, internal::RUSTCBUILDX_LOG_STYLE);
 
-    info!("{PKG}@{VSN} original args: {arguments:?} pwd={pwd} st={st:?}");
+    info!("{PKG}@{VSN} original args: {arguments:?} pwd={pwd} st={st:?} green={green:?}");
 
     do_wrap_rustc(
+        green,
         crate_name,
         &krate_name,
         krate_version,
@@ -170,6 +174,7 @@ async fn wrap_rustc(
 
 #[expect(clippy::too_many_arguments)]
 async fn do_wrap_rustc(
+    green: Green,
     crate_name: &str,
     krate_name: &str,
     krate_version: String,
@@ -223,16 +228,11 @@ async fn do_wrap_rustc(
     // A woodlegged way of passing around work cargo-green already did
     // TODO: merge both binaries into a single one
     // * so both versions always match
-    // * so passing data from cargo-green to wrapper cannot be interrupted/manipulated
     // * so RUSTCBUILDX_ envs turn into only CARGOGREEN_ envs?
     // * so config is driven only by cargo-green
     md.push_block(
         &Stage::try_new(RUST).expect("rust stage"),
-        if let Ok(base_block) = env::var("RUSTCBUILDX_BASE_IMAGE_BLOCK_") {
-            base_block
-        } else {
-            base_image().await.block()
-        },
+        env::var("RUSTCBUILDX_BASE_IMAGE_BLOCK_").expect("RUSTCBUILDX_BASE_IMAGE_BLOCK_"),
     );
 
     let ext = match crate_type.as_str() {
@@ -548,17 +548,12 @@ async fn do_wrap_rustc(
     }
     rustc_block.push_str("        RUSTCBUILDX=1 \\\n");
 
-    // TODO: find a way to discover these
-    // e.g? https://doc.rust-lang.org/cargo/reference/build-scripts.html#rerun-if-env-changed
-    // e.g. https://doc.rust-lang.org/cargo/reference/build-scripts.html#rustc-env
-    // but actually no! The cargo directives get emitted when running compiled build script,
-    // and this is handled by cargo, outside of the wrapper!
     // => cargo upstream issue "pass env vars read/wrote by build script on call to rustc"
-    //   => https://github.com/rust-lang/cargo/issues/14444#issuecomment-2305891696
-    for var in ["NTPD_RS_GIT_REV", "NTPD_RS_GIT_DATE", "RING_CORE_PREFIX"] {
-        if let Ok(v) = env::var(var) {
-            warn!("passing ${var}={v:?} env through");
-            rustc_block.push_str(&format!("        {var}={v:?} \\\n"));
+    // TODO whence https://github.com/rust-lang/cargo/issues/14444#issuecomment-2305891696
+    for var in &green.set_envs {
+        if let Some(val) = env::var_os(var) {
+            warn!("passing ${var}={val:?} env through");
+            rustc_block.push_str(&format!("        {var}={val:?} \\\n"));
         }
     }
 

@@ -1,31 +1,10 @@
 use std::{collections::HashSet, env};
 
 use anyhow::{anyhow, bail, Context, Result};
-use camino::{absolute_utf8, Utf8PathBuf};
 use cargo_toml::Manifest;
 use serde::{Deserialize, Serialize};
 
 use crate::{base::RUST, lockfile::find_manifest_path};
-
-// use std::fmt;
-
-// use error_stack::{report, Context, ResultExt};
-// use serde::{
-//     de,
-//     de::{MapAccess, SeqAccess},
-//     Deserialize, Deserializer,
-// };
-
-// #[derive(Debug, Clone, Eq, PartialEq, Parser)]
-// #[command(no_binary_name = true)]
-// #[command(styles = clap_cargo::style::CLAP_STYLING)]
-// #[group(skip)]
-// pub(crate) struct GreenCli {
-//     #[command(flatten)]
-//     pub manifest: clap_cargo::Manifest,
-// }
-
-//////////////////////////////////////////////////
 
 #[derive(Debug, Deserialize)]
 struct GreenMetadata {
@@ -36,7 +15,7 @@ struct GreenMetadata {
 #[serde(default)]
 #[serde(deny_unknown_fields)]
 #[serde(rename_all = "kebab-case")]
-pub(crate) struct AdditionalSystemPackages {
+pub(crate) struct InstallWith {
     pub(crate) apk: Vec<String>,
     pub(crate) apt: Vec<String>,
     pub(crate) apt_get: Vec<String>,
@@ -47,15 +26,6 @@ pub(crate) struct AdditionalSystemPackages {
 #[serde(deny_unknown_fields)]
 #[serde(rename_all = "kebab-case")]
 pub(crate) struct Green {
-    // Write final Dockerfile to given path.
-    //
-    // Helps e.g. create a Dockerfile with caching for dependencies.
-    //
-    // # Use by setting this environment variable (no Cargo.toml setting):
-    // CARGOGREEN_FINAL_PATH="Dockerfile"
-    #[serde(skip)]
-    pub(crate) final_path: Option<Utf8PathBuf>,
-
     // Sets the base Rust image, as an image URL.
     // See also:
     //   `also-run`
@@ -100,23 +70,19 @@ pub(crate) struct Green {
     // NOTE: this doesn't (yet) accumulate dependencies' set-envs values!
     pub(crate) set_envs: Vec<String>,
 
-    // additional-system-packages.apt = [ "libpq-dev", "pkg-config" ]
-    // additional-system-packages.apk = [ "libpq-dev", "pkgconf" ]
+    // install-with.apt = [ "libpq-dev", "pkg-config" ]
+    // install-with.apk = [ "libpq-dev", "pkgconf" ]
     //
     // # These environment variables take precedence over any Cargo.toml settings:
-    // CARGOGREEN_ADDITIONAL_SYSTEM_PACKAGES_APT='[ "libpq-dev", "pkg-config" ]'
-    pub(crate) additional_system_packages: AdditionalSystemPackages,
+    // CARGOGREEN_INSTALL_WITH_APT='[ "libpq-dev", "pkg-config" ]'
+    pub(crate) install_with: InstallWith,
 }
 
-pub(crate) const ENV_ADDITIONAL_SYSTEM_PACKAGES_APK: &str =
-    "CARGOGREEN_ADDITIONAL_SYSTEM_PACKAGES_APK"; // FIXME: shorter name
-pub(crate) const ENV_ADDITIONAL_SYSTEM_PACKAGES_APT: &str =
-    "CARGOGREEN_ADDITIONAL_SYSTEM_PACKAGES_APT"; // FIXME: shorter name
-pub(crate) const ENV_ADDITIONAL_SYSTEM_PACKAGES_APT_GET: &str =
-    "CARGOGREEN_ADDITIONAL_SYSTEM_PACKAGES_APT_GET"; // FIXME: shorter name
 pub(crate) const ENV_BASE_IMAGE: &str = "CARGOGREEN_BASE_IMAGE";
 pub(crate) const ENV_BASE_IMAGE_INLINE: &str = "CARGOGREEN_BASE_IMAGE_INLINE";
-pub(crate) const ENV_FINAL_PATH: &str = "CARGOGREEN_FINAL_PATH";
+pub(crate) const ENV_INSTALL_WITH_APK: &str = "CARGOGREEN_INSTALL_WITH_APK";
+pub(crate) const ENV_INSTALL_WITH_APT: &str = "CARGOGREEN_INSTALL_WITH_APT";
+pub(crate) const ENV_INSTALL_WITH_APT_GET: &str = "CARGOGREEN_INSTALL_WITH_APT_GET";
 pub(crate) const ENV_SET_ENVS: &str = "CARGOGREEN_SET_ENVS";
 
 impl Green {
@@ -139,20 +105,6 @@ impl Green {
             } else {
                 Self::default()
             };
-
-        // NOTE: only settable via env
-        // TODO? provide a way to export final as flatpack
-        let origin = format!("${ENV_FINAL_PATH}");
-        if let Ok(path) = env::var(ENV_FINAL_PATH) {
-            if path.is_empty() {
-                bail!("green: {origin} is empty")
-            }
-            if path == "-" {
-                bail!("green: {origin} must not be {path:?}")
-            }
-            let path = absolute_utf8(path).with_context(|| format!("Canonicalizing {origin}"))?;
-            green.final_path = Some(path);
-        }
 
         let mut origin = "[metadata.green.base-image]".to_owned();
         if let Ok(val) = env::var(ENV_BASE_IMAGE) {
@@ -215,20 +167,11 @@ impl Green {
         }
 
         for (field, (var, setting)) in [
-            (
-                &mut green.additional_system_packages.apk,
-                (ENV_ADDITIONAL_SYSTEM_PACKAGES_APK, "apk"),
-            ),
-            (
-                &mut green.additional_system_packages.apt,
-                (ENV_ADDITIONAL_SYSTEM_PACKAGES_APT, "apt"),
-            ),
-            (
-                &mut green.additional_system_packages.apt_get,
-                (ENV_ADDITIONAL_SYSTEM_PACKAGES_APT_GET, "apt-get"),
-            ),
+            (&mut green.install_with.apk, (ENV_INSTALL_WITH_APK, "apk")),
+            (&mut green.install_with.apt, (ENV_INSTALL_WITH_APT, "apt")),
+            (&mut green.install_with.apt_get, (ENV_INSTALL_WITH_APT_GET, "apt-get")),
         ] {
-            let mut origin = format!("[metadata.green.additional-system-packages.{setting}]");
+            let mut origin = format!("[metadata.green.install-with.{setting}]");
             if let Ok(val) = env::var(var) {
                 origin = format!("${var}");
                 if val.is_empty() {
@@ -274,43 +217,37 @@ name = "test-package"
     //
 
     #[test]
-    fn metadata_green_additional_system_packages_ok() {
+    fn metadata_green_install_with_ok() {
         let manifest = Manifest::from_str(
             r#"
 [package]
 name = "test-package"
 
 [package.metadata.green]
-additional-system-packages.apt = [ "libpq-dev", "pkg-config" ]
-additional-system-packages.apt-get = [ "libpq-dev", "pkg-config" ]
-additional-system-packages.apk = [ "libpq-dev", "pkgconf" ]
+install-with.apt = [ "libpq-dev", "pkg-config" ]
+install-with.apt-get = [ "libpq-dev", "pkg-config" ]
+install-with.apk = [ "libpq-dev", "pkgconf" ]
 "#,
         )
         .unwrap();
         let green = Green::try_from_manifest(&manifest).unwrap();
+        assert_eq!(green.install_with.apt, vec!["libpq-dev".to_owned(), "pkg-config".to_owned()]);
         assert_eq!(
-            green.additional_system_packages.apt,
+            green.install_with.apt_get,
             vec!["libpq-dev".to_owned(), "pkg-config".to_owned()]
         );
-        assert_eq!(
-            green.additional_system_packages.apt_get,
-            vec!["libpq-dev".to_owned(), "pkg-config".to_owned()]
-        );
-        assert_eq!(
-            green.additional_system_packages.apk,
-            vec!["libpq-dev".to_owned(), "pkgconf".to_owned()]
-        );
+        assert_eq!(green.install_with.apk, vec!["libpq-dev".to_owned(), "pkgconf".to_owned()]);
     }
 
     #[test_matrix(["apt", "apt-get", "apk"])]
-    fn metadata_green_additional_system_packages_empty_name(setting: &str) {
+    fn metadata_green_install_with_empty_name(setting: &str) {
         let manifest = Manifest::from_str(&format!(
             r#"
 [package]
 name = "test-package"
 
 [package.metadata.green]
-additional-system-packages.{setting} = [ "" ]
+install-with.{setting} = [ "" ]
 "#
         ))
         .unwrap();
@@ -319,14 +256,14 @@ additional-system-packages.{setting} = [ "" ]
     }
 
     #[test_matrix(["apt", "apt-get", "apk"])]
-    fn metadata_green_additional_system_packages_duplicates(setting: &str) {
+    fn metadata_green_install_with_duplicates(setting: &str) {
         let manifest = Manifest::from_str(&format!(
             r#"
 [package]
 name = "test-package"
 
 [package.metadata.green]
-additional-system-packages.{setting} = [ "a", "b", "a" ]
+install-with.{setting} = [ "a", "b", "a" ]
             "#
         ))
         .unwrap();
@@ -551,6 +488,25 @@ RUN exit 42
 }
 
 //////////////////////////////////////////////////
+// https://lib.rs/crates/cargo_metadata
+// https://github.com/stormshield/cargo-ft/blob/d4ba5b048345ab4b21f7992cc6ed12afff7cc863/src/package/metadata.rs
+//////////////////////////////////////////////////
+
+// use error_stack::{report, Context, ResultExt};
+// use serde::{
+//     de,
+//     de::{MapAccess, SeqAccess},
+//     Deserialize, Deserializer,
+// };
+
+// #[derive(Debug, Clone, Eq, PartialEq, Parser)]
+// #[command(no_binary_name = true)]
+// #[command(styles = clap_cargo::style::CLAP_STYLING)]
+// #[group(skip)]
+// pub(crate) struct GreenCli {
+//     #[command(flatten)]
+//     pub manifest: clap_cargo::Manifest,
+// }
 
 // #[cfg(test)]
 // mod tests;
