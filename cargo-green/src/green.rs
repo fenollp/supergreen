@@ -5,10 +5,7 @@ use camino::Utf8PathBuf;
 use cargo_toml::Manifest;
 use serde::{Deserialize, Serialize};
 
-use crate::{
-    base::{BaseImage, RUST},
-    lockfile::find_manifest_path,
-};
+use crate::{base::BaseImage, lockfile::find_manifest_path, stage::RST};
 
 // Envs that override Cargo.toml settings
 pub(crate) const ENV_ADD_APK: &str = "CARGOGREEN_ADD_APK";
@@ -226,10 +223,10 @@ impl Green {
             }
             // TODO: drop this requirement by allowing a `base-image-stage` override
             //FIXME: have to repeat base stage per stage actually => no naming constraint then anyway
-            if !base_image_inline.contains(&format!(" AS {RUST}\n"))
-                && !base_image_inline.contains(&format!(" as {RUST}\n"))
+            if !base_image_inline.contains(&format!(" AS {RST}\n"))
+                && !base_image_inline.contains(&format!(" as {RST}\n"))
             {
-                bail!("{origin} does not provide a stage named '{RUST}'")
+                bail!("{origin} does not provide a stage named '{RST}'")
             }
         }
 

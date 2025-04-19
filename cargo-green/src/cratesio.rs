@@ -2,7 +2,7 @@ use anyhow::{anyhow, Result};
 use camino::{Utf8Path, Utf8PathBuf};
 use log::{debug, info};
 
-use crate::{base::RUST, stage::Stage};
+use crate::stage::{Stage, RST};
 
 pub(crate) const CRATESIO_STAGE_PREFIX: &str = "cratesio-";
 pub(crate) const CRATESIO_INDEX: &str = "index.crates.io-0000000000000000";
@@ -47,9 +47,9 @@ FROM scratch AS {stage}
 {add}
 SHELL ["/usr/bin/dash", "-eux", "-c"]
 RUN \
-  --mount=from={RUST},src=/lib,dst=/lib \
-  --mount=from={RUST},src=/lib64,dst=/lib64 \
-  --mount=from={RUST},src=/usr,dst=/usr \
+  --mount=from={RST},src=/lib,dst=/lib \
+  --mount=from={RST},src=/lib64,dst=/lib64 \
+  --mount=from={RST},src=/usr,dst=/usr \
     mkdir {SRC} \
  && tar zxf /crate --strip-components=1 -C {SRC}
 "#,

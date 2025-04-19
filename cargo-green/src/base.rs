@@ -1,18 +1,10 @@
 use rustc_version::{Channel, Version, VersionMeta};
 use serde::{Deserialize, Serialize};
 
-use crate::green::Add;
-
-pub(crate) const RUST: &str = "rust-base"; //TODO: rename to RUST_STAGE
+use crate::{green::Add, stage::RST};
 
 const STABLE_RUST: &str = "docker-image://docker.io/library/rust:1-slim";
 const BASE_FOR_RUST: &str = "docker-image://docker.io/library/debian:stable-slim";
-
-#[test]
-fn rust_stage() {
-    use crate::stage::Stage;
-    assert_eq!(RUST, Stage::try_new(RUST).unwrap().to_string());
-}
 
 #[test]
 fn default_is_unset() {
@@ -112,7 +104,7 @@ impl BaseImage {
     pub(crate) fn as_block(&self) -> String {
         self.base_image_inline.clone().unwrap_or_else(|| {
             let base = self.base_image.trim_start_matches("docker-image://");
-            format!("FROM --platform=$BUILDPLATFORM {base} AS {RUST}\n")
+            format!("FROM --platform=$BUILDPLATFORM {base} AS {RST}\n")
         })
     }
 }
@@ -172,7 +164,7 @@ impl RustcV {
 
         // Inspired from https://github.com/rust-lang/docker-rust/blob/d14e1ad7efeb270012b1a7e88fea699b1d1082f2/nightly/bullseye/slim/Dockerfile
 
-        let last_block = format!("FROM --platform=$BUILDPLATFORM {base} AS {RUST}");
+        let last_block = format!("FROM --platform=$BUILDPLATFORM {base} AS {RST}");
         assert!(BASE_FOR_RUST.contains("/debian:"));
         let with_added = Add::with_apt(&["ca-certificates", "gcc", "libc6-dev"]);
         let last_block = with_added.as_block(&last_block);

@@ -35,12 +35,12 @@ env_logger.workspace = true
 futures.workspace = true
 home.workspace = true
 log.workspace = true
-nutype.workspace = true
+nutype = { workspace = true, features = [ "serde" ] }
 pico-args.workspace = true
-pretty_assertions.workspace = true # TODO: drop once !dbg
+pretty_assertions.workspace = true                    # TODO: drop once !dbg
 reqwest.workspace = true
 rustc_version.workspace = true
-rustflags.workspace = true         # TODO: drop once !dbg
+rustflags.workspace = true                            # TODO: drop once !dbg
 serde.workspace = true
 serde-jsonlines.workspace = true
 serde_json.workspace = true
