@@ -11,6 +11,7 @@ Cached & remote-ready Rust projects builder by forwarding `rustc` calls to [Buil
 Reads envs
 * [`$BUILDX_BUILDER`](https://docs.docker.com/build/building/variables/#buildx_builder)
 * `$CARGOGREEN_LOG`: sets `$RUSTCBUILDX_LOG` level
+* `$CARGOGREEN_FINAL_PATH`: if set, this file will end up with the final Dockerfile that reproduces the build
 * `$CARGOGREEN_REMOTE`: *reserved for now*
 * [`$DOCKER_HOST`](https://docs.docker.com/engine/reference/commandline/cli/#environment-variables)
 

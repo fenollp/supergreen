@@ -1,6 +1,7 @@
 use std::{collections::HashSet, env};
 
 use anyhow::{anyhow, bail, Context, Result};
+use camino::{absolute_utf8, Utf8PathBuf};
 use cargo_toml::Manifest;
 use serde::{Deserialize, Serialize};
 
@@ -26,6 +27,15 @@ pub(crate) struct InstallWith {
 #[serde(deny_unknown_fields)]
 #[serde(rename_all = "kebab-case")]
 pub(crate) struct Green {
+    // Write final Dockerfile to given path.
+    //
+    // Helps e.g. create a Dockerfile with caching for dependencies.
+    //
+    // # Use by setting this environment variable (no Cargo.toml setting):
+    // CARGOGREEN_FINAL_PATH="Dockerfile"
+    #[serde(skip)]
+    pub(crate) final_path: Option<Utf8PathBuf>,
+
     // Sets the base Rust image, as an image URL.
     // See also:
     //   `also-run`
@@ -80,6 +90,7 @@ pub(crate) struct Green {
 
 pub(crate) const ENV_BASE_IMAGE: &str = "CARGOGREEN_BASE_IMAGE";
 pub(crate) const ENV_BASE_IMAGE_INLINE: &str = "CARGOGREEN_BASE_IMAGE_INLINE";
+pub(crate) const ENV_FINAL_PATH: &str = "CARGOGREEN_FINAL_PATH";
 pub(crate) const ENV_INSTALL_WITH_APK: &str = "CARGOGREEN_INSTALL_WITH_APK";
 pub(crate) const ENV_INSTALL_WITH_APT: &str = "CARGOGREEN_INSTALL_WITH_APT";
 pub(crate) const ENV_INSTALL_WITH_APT_GET: &str = "CARGOGREEN_INSTALL_WITH_APT_GET";
@@ -105,6 +116,20 @@ impl Green {
             } else {
                 Self::default()
             };
+
+        // NOTE: only settable via env
+        // TODO? provide a way to export final as flatpack
+        let origin = format!("${ENV_FINAL_PATH}");
+        if let Ok(path) = env::var(ENV_FINAL_PATH) {
+            if path.is_empty() {
+                bail!("green: {origin} is empty")
+            }
+            if path == "-" {
+                bail!("green: {origin} must not be {path:?}")
+            }
+            let path = absolute_utf8(path).with_context(|| format!("Canonicalizing {origin}"))?;
+            green.final_path = Some(path);
+        }
 
         let mut origin = "[metadata.green.base-image]".to_owned();
         if let Ok(val) = env::var(ENV_BASE_IMAGE) {

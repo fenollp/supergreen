@@ -14,7 +14,7 @@ use crate::{
     cratesio::{self},
     envs::{builder_image, cache_image, incremental, internal, maybe_log, runner, DEFAULT_SYNTAX},
     extensions::ShowCmd,
-    green::Green,
+    green::{Green, ENV_FINAL_PATH},
     lockfile::{find_lockfile, locked_crates},
     logging,
     runner::{build, fetch_digest, maybe_lock_image, runner_cmd},
@@ -59,6 +59,13 @@ pub(crate) async fn main(cmd: &mut Command) -> Result<Green> {
     env::set_var(internal::RUSTCBUILDX_SYNTAX, syntax);
 
     let green = Green::try_new()?;
+
+    if let Some(ref path) = green.final_path {
+        if let Some(dir) = path.parent() {
+            fs::create_dir_all(dir).map_err(|e| anyhow!("Failed `mkdir -p {dir}`: {e}"))?;
+        }
+        cmd.env(ENV_FINAL_PATH, path);
+    }
 
     let mut base_image = if let Some(ref base_image) = green.base_image {
         BaseImage::Image(base_image.clone())

@@ -1,6 +1,9 @@
 use std::{
     collections::BTreeSet,
-    env, mem,
+    env, fs,
+    fs::OpenOptions,
+    io::prelude::*,
+    mem,
     process::{Output, Stdio},
     time::{Duration, Instant},
 };
@@ -215,14 +218,19 @@ pub(crate) async fn build(
         cmd.arg(format!("--build-context={name}={uri}"));
     }
 
-    cmd.arg(format!("--file={dockerfile_path}"));
+    let file_arg = format!("--file={dockerfile_path}");
+    cmd.arg(&file_arg);
 
     cmd.arg(dockerfile_path.parent().unwrap_or(dockerfile_path));
 
     let call = cmd.show();
-    let envs: Vec<_> = cmd.as_std().get_envs().map(|(k, v)| format!("{k:?}={v:?}")).collect();
+    let envs: Vec<_> = cmd
+        .as_std()
+        .get_envs()
+        .map(|(k, v)| format!("{}={:?}", k.to_string_lossy(), v.unwrap_or_default()))
+        .collect();
     let envs = envs.join(" ");
-    info!("Starting {call} (env: {envs:?})`");
+    info!("Starting {call} (env: {envs})");
 
     let errf = |e| anyhow!("Failed starting {call}: {e}");
     let start = Instant::now();
@@ -273,6 +281,25 @@ pub(crate) async fn build(
         let stdout = String::from_utf8_lossy(&stdout);
         let stderr = String::from_utf8_lossy(&stderr);
         bail!("Runner info: {status} [STDOUT {stdout}] [STDERR {stderr}]")
+    }
+
+    if let Ok(path) = env::var("CARGOGREEN_FINAL_PATH") {
+        info!("Writing final Dockerfile to {path}");
+
+        let _ = fs::copy(dockerfile_path, &path)?;
+
+        let mut file = OpenOptions::new().append(true).open(&path)?;
+        writeln!(file)?;
+        writeln!(file)?;
+        write!(file, "# Run this with:")?;
+        if !contexts.is_empty() {
+            //TODO: or additional-build-arguments
+            write!(file, " (not portable due to the need for local build contexts)")?;
+        }
+        writeln!(file, "\n# {envs} \\")?;
+        let call = &call[1..(call.len() - 1)]; // drops decorative backticks
+        let call = call.replace(&file_arg, &format!("--file={path}"));
+        writeln!(file, "#   {call}")?;
     }
 
     Ok(())

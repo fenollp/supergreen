@@ -106,7 +106,7 @@ jobs:
     - run: docker buildx du --verbose
     - name: cargo install net=ON cache=OFF remote=OFF jobs=1
       run: |
-        CARGOGREEN_LOG=trace RUSTCBUILDX_LOG_PATH=$PWD/logs.txt CARGO_TARGET_DIR=~/instst \
+        CARGOGREEN_LOG=trace CARGOGREEN_FINAL_PATH=buildxargs@master.Dockerfile RUSTCBUILDX_LOG_PATH=$PWD/logs.txt CARGO_TARGET_DIR=~/instst \
           cargo green -vv install --jobs=1 --locked --force buildxargs --git https://github.com/fenollp/buildxargs.git |& tee _
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
@@ -136,6 +136,16 @@ jobs:
     - if: ${{ failure() || success() }}
       name: cargo-green logs
       run: tail -n9999999 logs.txt ; echo >logs.txt
+
+    - if: ${{ failure() || success() }}
+      name: Maybe show final path diff
+      run: git --no-pager diff -- buildxargs@master.Dockerfile || true
+
+    - if: ${{ failure() || success() }}
+      name: Show final path
+      run: |
+        tail -n9999999 buildxargs@master.Dockerfile || true
+        git add buildxargs@master.Dockerfile || true
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
@@ -150,7 +160,7 @@ jobs:
 
     - name: Ensure running the same command twice without modifications...
       run: |
-        CARGOGREEN_LOG=trace RUSTCBUILDX_LOG_PATH=$PWD/logs.txt CARGO_TARGET_DIR=~/instst \
+        CARGOGREEN_LOG=trace CARGOGREEN_FINAL_PATH=buildxargs@master.Dockerfile RUSTCBUILDX_LOG_PATH=$PWD/logs.txt CARGO_TARGET_DIR=~/instst \
           cargo green -vv install --jobs=1 --locked --force buildxargs --git https://github.com/fenollp/buildxargs.git |& tee _
     - name: ...doesn't recompile anything
       run: |
@@ -159,6 +169,8 @@ jobs:
         grep Dirty     _                    && err=1
         grep Compiling _                    && err=1
         exit $err
+    - name: ...and shows same final path
+      run: git --no-pager diff --exit-code -- buildxargs@master.Dockerfile
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
@@ -187,6 +199,16 @@ jobs:
     - if: ${{ failure() || success() }}
       name: cargo-green logs
       run: tail -n9999999 logs.txt ; echo >logs.txt
+
+    - if: ${{ failure() || success() }}
+      name: Maybe show final path diff
+      run: git --no-pager diff -- buildxargs@master.Dockerfile || true
+
+    - if: ${{ failure() || success() }}
+      name: Show final path
+      run: |
+        tail -n9999999 buildxargs@master.Dockerfile || true
+        git add buildxargs@master.Dockerfile || true
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
@@ -244,7 +266,7 @@ jobs:
     - run: docker buildx du --verbose
     - name: cargo install net=ON cache=OFF remote=OFF jobs=1
       run: |
-        CARGOGREEN_LOG=trace RUSTCBUILDX_LOG_PATH=$PWD/logs.txt CARGO_TARGET_DIR=~/instst \
+        CARGOGREEN_LOG=trace CARGOGREEN_FINAL_PATH=cargo-llvm-cov@0.5.36.Dockerfile RUSTCBUILDX_LOG_PATH=$PWD/logs.txt CARGO_TARGET_DIR=~/instst \
           cargo green -vv install --jobs=1 --locked --force cargo-llvm-cov@0.5.36  |& tee _
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
@@ -274,6 +296,16 @@ jobs:
     - if: ${{ failure() || success() }}
       name: cargo-green logs
       run: tail -n9999999 logs.txt ; echo >logs.txt
+
+    - if: ${{ failure() || success() }}
+      name: Maybe show final path diff
+      run: git --no-pager diff -- cargo-llvm-cov@0.5.36.Dockerfile || true
+
+    - if: ${{ failure() || success() }}
+      name: Show final path
+      run: |
+        tail -n9999999 cargo-llvm-cov@0.5.36.Dockerfile || true
+        git add cargo-llvm-cov@0.5.36.Dockerfile || true
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
@@ -288,7 +320,7 @@ jobs:
 
     - name: Ensure running the same command twice without modifications...
       run: |
-        CARGOGREEN_LOG=trace RUSTCBUILDX_LOG_PATH=$PWD/logs.txt CARGO_TARGET_DIR=~/instst \
+        CARGOGREEN_LOG=trace CARGOGREEN_FINAL_PATH=cargo-llvm-cov@0.5.36.Dockerfile RUSTCBUILDX_LOG_PATH=$PWD/logs.txt CARGO_TARGET_DIR=~/instst \
           cargo green -vv install --jobs=1 --locked --force cargo-llvm-cov@0.5.36  |& tee _
     - name: ...doesn't recompile anything
       run: |
@@ -297,6 +329,8 @@ jobs:
         grep Dirty     _                    && err=1
         grep Compiling _                    && err=1
         exit $err
+    - name: ...and shows same final path
+      run: git --no-pager diff --exit-code -- cargo-llvm-cov@0.5.36.Dockerfile
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
@@ -325,6 +359,16 @@ jobs:
     - if: ${{ failure() || success() }}
       name: cargo-green logs
       run: tail -n9999999 logs.txt ; echo >logs.txt
+
+    - if: ${{ failure() || success() }}
+      name: Maybe show final path diff
+      run: git --no-pager diff -- cargo-llvm-cov@0.5.36.Dockerfile || true
+
+    - if: ${{ failure() || success() }}
+      name: Show final path
+      run: |
+        tail -n9999999 cargo-llvm-cov@0.5.36.Dockerfile || true
+        git add cargo-llvm-cov@0.5.36.Dockerfile || true
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
@@ -382,7 +426,7 @@ jobs:
     - run: docker buildx du --verbose
     - name: cargo install net=ON cache=OFF remote=OFF jobs=1
       run: |
-        CARGOGREEN_LOG=trace RUSTCBUILDX_LOG_PATH=$PWD/logs.txt CARGO_TARGET_DIR=~/instst \
+        CARGOGREEN_LOG=trace CARGOGREEN_FINAL_PATH=cross@0.2.5.Dockerfile RUSTCBUILDX_LOG_PATH=$PWD/logs.txt CARGO_TARGET_DIR=~/instst \
           cargo green -vv install --jobs=1 --locked --force cross@0.2.5 --git https://github.com/cross-rs/cross.git --tag=v0.2.5 cross |& tee _
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
@@ -412,6 +456,16 @@ jobs:
     - if: ${{ failure() || success() }}
       name: cargo-green logs
       run: tail -n9999999 logs.txt ; echo >logs.txt
+
+    - if: ${{ failure() || success() }}
+      name: Maybe show final path diff
+      run: git --no-pager diff -- cross@0.2.5.Dockerfile || true
+
+    - if: ${{ failure() || success() }}
+      name: Show final path
+      run: |
+        tail -n9999999 cross@0.2.5.Dockerfile || true
+        git add cross@0.2.5.Dockerfile || true
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
@@ -426,7 +480,7 @@ jobs:
 
     - name: Ensure running the same command twice without modifications...
       run: |
-        CARGOGREEN_LOG=trace RUSTCBUILDX_LOG_PATH=$PWD/logs.txt CARGO_TARGET_DIR=~/instst \
+        CARGOGREEN_LOG=trace CARGOGREEN_FINAL_PATH=cross@0.2.5.Dockerfile RUSTCBUILDX_LOG_PATH=$PWD/logs.txt CARGO_TARGET_DIR=~/instst \
           cargo green -vv install --jobs=1 --locked --force cross@0.2.5 --git https://github.com/cross-rs/cross.git --tag=v0.2.5 cross |& tee _
     - name: ...doesn't recompile anything
       run: |
@@ -435,6 +489,8 @@ jobs:
         grep Dirty     _                    && err=1
         grep Compiling _                    && err=1
         exit $err
+    - name: ...and shows same final path
+      run: git --no-pager diff --exit-code -- cross@0.2.5.Dockerfile
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
@@ -463,6 +519,16 @@ jobs:
     - if: ${{ failure() || success() }}
       name: cargo-green logs
       run: tail -n9999999 logs.txt ; echo >logs.txt
+
+    - if: ${{ failure() || success() }}
+      name: Maybe show final path diff
+      run: git --no-pager diff -- cross@0.2.5.Dockerfile || true
+
+    - if: ${{ failure() || success() }}
+      name: Show final path
+      run: |
+        tail -n9999999 cross@0.2.5.Dockerfile || true
+        git add cross@0.2.5.Dockerfile || true
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
@@ -520,7 +586,7 @@ jobs:
     - run: docker buildx du --verbose
     - name: cargo install net=ON cache=OFF remote=OFF jobs=1
       run: |
-        CARGOGREEN_LOG=trace RUSTCBUILDX_LOG_PATH=$PWD/logs.txt CARGO_TARGET_DIR=~/instst CARGOGREEN_SET_ENVS="[\"TYPENUM_BUILD_CONSTS\",\"TYPENUM_BUILD_OP\"]" \
+        CARGOGREEN_LOG=trace CARGOGREEN_FINAL_PATH=dbcc@2.2.1.Dockerfile RUSTCBUILDX_LOG_PATH=$PWD/logs.txt CARGO_TARGET_DIR=~/instst CARGOGREEN_SET_ENVS="[\"TYPENUM_BUILD_CONSTS\",\"TYPENUM_BUILD_OP\"]" \
           cargo green -vv install --jobs=1 --locked --force dbcc@2.2.1  |& tee _
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
@@ -550,6 +616,16 @@ jobs:
     - if: ${{ failure() || success() }}
       name: cargo-green logs
       run: tail -n9999999 logs.txt ; echo >logs.txt
+
+    - if: ${{ failure() || success() }}
+      name: Maybe show final path diff
+      run: git --no-pager diff -- dbcc@2.2.1.Dockerfile || true
+
+    - if: ${{ failure() || success() }}
+      name: Show final path
+      run: |
+        tail -n9999999 dbcc@2.2.1.Dockerfile || true
+        git add dbcc@2.2.1.Dockerfile || true
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
@@ -564,7 +640,7 @@ jobs:
 
     - name: Ensure running the same command twice without modifications...
       run: |
-        CARGOGREEN_LOG=trace RUSTCBUILDX_LOG_PATH=$PWD/logs.txt CARGO_TARGET_DIR=~/instst CARGOGREEN_SET_ENVS="[\"TYPENUM_BUILD_CONSTS\",\"TYPENUM_BUILD_OP\"]" \
+        CARGOGREEN_LOG=trace CARGOGREEN_FINAL_PATH=dbcc@2.2.1.Dockerfile RUSTCBUILDX_LOG_PATH=$PWD/logs.txt CARGO_TARGET_DIR=~/instst CARGOGREEN_SET_ENVS="[\"TYPENUM_BUILD_CONSTS\",\"TYPENUM_BUILD_OP\"]" \
           cargo green -vv install --jobs=1 --locked --force dbcc@2.2.1  |& tee _
     - name: ...doesn't recompile anything
       run: |
@@ -573,6 +649,8 @@ jobs:
         grep Dirty     _                    && err=1
         grep Compiling _                    && err=1
         exit $err
+    - name: ...and shows same final path
+      run: git --no-pager diff --exit-code -- dbcc@2.2.1.Dockerfile
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
@@ -601,6 +679,16 @@ jobs:
     - if: ${{ failure() || success() }}
       name: cargo-green logs
       run: tail -n9999999 logs.txt ; echo >logs.txt
+
+    - if: ${{ failure() || success() }}
+      name: Maybe show final path diff
+      run: git --no-pager diff -- dbcc@2.2.1.Dockerfile || true
+
+    - if: ${{ failure() || success() }}
+      name: Show final path
+      run: |
+        tail -n9999999 dbcc@2.2.1.Dockerfile || true
+        git add dbcc@2.2.1.Dockerfile || true
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
@@ -658,7 +746,7 @@ jobs:
     - run: docker buildx du --verbose
     - name: cargo install net=ON cache=OFF remote=OFF jobs=1
       run: |
-        CARGOGREEN_LOG=trace RUSTCBUILDX_LOG_PATH=$PWD/logs.txt CARGO_TARGET_DIR=~/instst CARGOGREEN_INSTALL_WITH_APT="[\"libpq-dev\",\"pkg-config\"]" \
+        CARGOGREEN_LOG=trace CARGOGREEN_FINAL_PATH=diesel_cli@2.1.1.Dockerfile RUSTCBUILDX_LOG_PATH=$PWD/logs.txt CARGO_TARGET_DIR=~/instst CARGOGREEN_INSTALL_WITH_APT="[\"libpq-dev\",\"pkg-config\"]" \
           cargo green -vv install --jobs=1 --locked --force diesel_cli@2.1.1 --no-default-features --features=postgres |& tee _
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
@@ -688,6 +776,16 @@ jobs:
     - if: ${{ failure() || success() }}
       name: cargo-green logs
       run: tail -n9999999 logs.txt ; echo >logs.txt
+
+    - if: ${{ failure() || success() }}
+      name: Maybe show final path diff
+      run: git --no-pager diff -- diesel_cli@2.1.1.Dockerfile || true
+
+    - if: ${{ failure() || success() }}
+      name: Show final path
+      run: |
+        tail -n9999999 diesel_cli@2.1.1.Dockerfile || true
+        git add diesel_cli@2.1.1.Dockerfile || true
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
@@ -702,7 +800,7 @@ jobs:
 
     - name: Ensure running the same command twice without modifications...
       run: |
-        CARGOGREEN_LOG=trace RUSTCBUILDX_LOG_PATH=$PWD/logs.txt CARGO_TARGET_DIR=~/instst CARGOGREEN_INSTALL_WITH_APT="[\"libpq-dev\",\"pkg-config\"]" \
+        CARGOGREEN_LOG=trace CARGOGREEN_FINAL_PATH=diesel_cli@2.1.1.Dockerfile RUSTCBUILDX_LOG_PATH=$PWD/logs.txt CARGO_TARGET_DIR=~/instst CARGOGREEN_INSTALL_WITH_APT="[\"libpq-dev\",\"pkg-config\"]" \
           cargo green -vv install --jobs=1 --locked --force diesel_cli@2.1.1 --no-default-features --features=postgres |& tee _
     - name: ...doesn't recompile anything
       run: |
@@ -711,6 +809,8 @@ jobs:
         grep Dirty     _                    && err=1
         grep Compiling _                    && err=1
         exit $err
+    - name: ...and shows same final path
+      run: git --no-pager diff --exit-code -- diesel_cli@2.1.1.Dockerfile
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
@@ -739,6 +839,16 @@ jobs:
     - if: ${{ failure() || success() }}
       name: cargo-green logs
       run: tail -n9999999 logs.txt ; echo >logs.txt
+
+    - if: ${{ failure() || success() }}
+      name: Maybe show final path diff
+      run: git --no-pager diff -- diesel_cli@2.1.1.Dockerfile || true
+
+    - if: ${{ failure() || success() }}
+      name: Show final path
+      run: |
+        tail -n9999999 diesel_cli@2.1.1.Dockerfile || true
+        git add diesel_cli@2.1.1.Dockerfile || true
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
@@ -796,7 +906,7 @@ jobs:
     - run: docker buildx du --verbose
     - name: cargo install net=ON cache=OFF remote=OFF jobs=1
       run: |
-        CARGOGREEN_LOG=trace RUSTCBUILDX_LOG_PATH=$PWD/logs.txt CARGO_TARGET_DIR=~/instst CARGOGREEN_SET_ENVS="[\"RING_CORE_PREFIX\"]" \
+        CARGOGREEN_LOG=trace CARGOGREEN_FINAL_PATH=hickory-dns@0.25.0-alpha.1.Dockerfile RUSTCBUILDX_LOG_PATH=$PWD/logs.txt CARGO_TARGET_DIR=~/instst CARGOGREEN_SET_ENVS="[\"RING_CORE_PREFIX\"]" \
           cargo green -vv install --jobs=1 --locked --force hickory-dns@0.25.0-alpha.1 --features=dns-over-rustls |& tee _
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
@@ -826,6 +936,16 @@ jobs:
     - if: ${{ failure() || success() }}
       name: cargo-green logs
       run: tail -n9999999 logs.txt ; echo >logs.txt
+
+    - if: ${{ failure() || success() }}
+      name: Maybe show final path diff
+      run: git --no-pager diff -- hickory-dns@0.25.0-alpha.1.Dockerfile || true
+
+    - if: ${{ failure() || success() }}
+      name: Show final path
+      run: |
+        tail -n9999999 hickory-dns@0.25.0-alpha.1.Dockerfile || true
+        git add hickory-dns@0.25.0-alpha.1.Dockerfile || true
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
@@ -840,7 +960,7 @@ jobs:
 
     - name: Ensure running the same command twice without modifications...
       run: |
-        CARGOGREEN_LOG=trace RUSTCBUILDX_LOG_PATH=$PWD/logs.txt CARGO_TARGET_DIR=~/instst CARGOGREEN_SET_ENVS="[\"RING_CORE_PREFIX\"]" \
+        CARGOGREEN_LOG=trace CARGOGREEN_FINAL_PATH=hickory-dns@0.25.0-alpha.1.Dockerfile RUSTCBUILDX_LOG_PATH=$PWD/logs.txt CARGO_TARGET_DIR=~/instst CARGOGREEN_SET_ENVS="[\"RING_CORE_PREFIX\"]" \
           cargo green -vv install --jobs=1 --locked --force hickory-dns@0.25.0-alpha.1 --features=dns-over-rustls |& tee _
     - name: ...doesn't recompile anything
       run: |
@@ -849,6 +969,8 @@ jobs:
         grep Dirty     _                    && err=1
         grep Compiling _                    && err=1
         exit $err
+    - name: ...and shows same final path
+      run: git --no-pager diff --exit-code -- hickory-dns@0.25.0-alpha.1.Dockerfile
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
@@ -877,6 +999,16 @@ jobs:
     - if: ${{ failure() || success() }}
       name: cargo-green logs
       run: tail -n9999999 logs.txt ; echo >logs.txt
+
+    - if: ${{ failure() || success() }}
+      name: Maybe show final path diff
+      run: git --no-pager diff -- hickory-dns@0.25.0-alpha.1.Dockerfile || true
+
+    - if: ${{ failure() || success() }}
+      name: Show final path
+      run: |
+        tail -n9999999 hickory-dns@0.25.0-alpha.1.Dockerfile || true
+        git add hickory-dns@0.25.0-alpha.1.Dockerfile || true
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
@@ -934,7 +1066,7 @@ jobs:
     - run: docker buildx du --verbose
     - name: cargo install net=ON cache=OFF remote=OFF jobs=1
       run: |
-        CARGOGREEN_LOG=trace RUSTCBUILDX_LOG_PATH=$PWD/logs.txt CARGO_TARGET_DIR=~/instst CARGOGREEN_INSTALL_WITH_APT="[\"libsqlite3-dev\",\"libssl-dev\",\"zlib1g-dev\"]" \
+        CARGOGREEN_LOG=trace CARGOGREEN_FINAL_PATH=mussh@3.1.3.Dockerfile RUSTCBUILDX_LOG_PATH=$PWD/logs.txt CARGO_TARGET_DIR=~/instst CARGOGREEN_INSTALL_WITH_APT="[\"libsqlite3-dev\",\"libssl-dev\",\"zlib1g-dev\"]" \
           cargo green -vv install --jobs=1 --locked --force mussh@3.1.3  |& tee _
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
@@ -964,6 +1096,16 @@ jobs:
     - if: ${{ failure() || success() }}
       name: cargo-green logs
       run: tail -n9999999 logs.txt ; echo >logs.txt
+
+    - if: ${{ failure() || success() }}
+      name: Maybe show final path diff
+      run: git --no-pager diff -- mussh@3.1.3.Dockerfile || true
+
+    - if: ${{ failure() || success() }}
+      name: Show final path
+      run: |
+        tail -n9999999 mussh@3.1.3.Dockerfile || true
+        git add mussh@3.1.3.Dockerfile || true
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
@@ -978,7 +1120,7 @@ jobs:
 
     - name: Ensure running the same command twice without modifications...
       run: |
-        CARGOGREEN_LOG=trace RUSTCBUILDX_LOG_PATH=$PWD/logs.txt CARGO_TARGET_DIR=~/instst CARGOGREEN_INSTALL_WITH_APT="[\"libsqlite3-dev\",\"libssl-dev\",\"zlib1g-dev\"]" \
+        CARGOGREEN_LOG=trace CARGOGREEN_FINAL_PATH=mussh@3.1.3.Dockerfile RUSTCBUILDX_LOG_PATH=$PWD/logs.txt CARGO_TARGET_DIR=~/instst CARGOGREEN_INSTALL_WITH_APT="[\"libsqlite3-dev\",\"libssl-dev\",\"zlib1g-dev\"]" \
           cargo green -vv install --jobs=1 --locked --force mussh@3.1.3  |& tee _
     - name: ...doesn't recompile anything
       run: |
@@ -987,6 +1129,8 @@ jobs:
         grep Dirty     _                    && err=1
         grep Compiling _                    && err=1
         exit $err
+    - name: ...and shows same final path
+      run: git --no-pager diff --exit-code -- mussh@3.1.3.Dockerfile
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
@@ -1015,6 +1159,16 @@ jobs:
     - if: ${{ failure() || success() }}
       name: cargo-green logs
       run: tail -n9999999 logs.txt ; echo >logs.txt
+
+    - if: ${{ failure() || success() }}
+      name: Maybe show final path diff
+      run: git --no-pager diff -- mussh@3.1.3.Dockerfile || true
+
+    - if: ${{ failure() || success() }}
+      name: Show final path
+      run: |
+        tail -n9999999 mussh@3.1.3.Dockerfile || true
+        git add mussh@3.1.3.Dockerfile || true
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
@@ -1072,7 +1226,7 @@ jobs:
     - run: docker buildx du --verbose
     - name: cargo install net=ON cache=OFF remote=OFF jobs=1
       run: |
-        CARGOGREEN_LOG=trace RUSTCBUILDX_LOG_PATH=$PWD/logs.txt CARGO_TARGET_DIR=~/instst CARGOGREEN_SET_ENVS="[\"NTPD_RS_GIT_DATE\",\"NTPD_RS_GIT_REV\",\"RING_CORE_PREFIX\"]" \
+        CARGOGREEN_LOG=trace CARGOGREEN_FINAL_PATH=ntpd@1.2.3.Dockerfile RUSTCBUILDX_LOG_PATH=$PWD/logs.txt CARGO_TARGET_DIR=~/instst CARGOGREEN_SET_ENVS="[\"NTPD_RS_GIT_DATE\",\"NTPD_RS_GIT_REV\",\"RING_CORE_PREFIX\"]" \
           cargo green -vv install --jobs=1 --locked --force ntpd@1.2.3  |& tee _
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
@@ -1102,6 +1256,16 @@ jobs:
     - if: ${{ failure() || success() }}
       name: cargo-green logs
       run: tail -n9999999 logs.txt ; echo >logs.txt
+
+    - if: ${{ failure() || success() }}
+      name: Maybe show final path diff
+      run: git --no-pager diff -- ntpd@1.2.3.Dockerfile || true
+
+    - if: ${{ failure() || success() }}
+      name: Show final path
+      run: |
+        tail -n9999999 ntpd@1.2.3.Dockerfile || true
+        git add ntpd@1.2.3.Dockerfile || true
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
@@ -1116,7 +1280,7 @@ jobs:
 
     - name: Ensure running the same command twice without modifications...
       run: |
-        CARGOGREEN_LOG=trace RUSTCBUILDX_LOG_PATH=$PWD/logs.txt CARGO_TARGET_DIR=~/instst CARGOGREEN_SET_ENVS="[\"NTPD_RS_GIT_DATE\",\"NTPD_RS_GIT_REV\",\"RING_CORE_PREFIX\"]" \
+        CARGOGREEN_LOG=trace CARGOGREEN_FINAL_PATH=ntpd@1.2.3.Dockerfile RUSTCBUILDX_LOG_PATH=$PWD/logs.txt CARGO_TARGET_DIR=~/instst CARGOGREEN_SET_ENVS="[\"NTPD_RS_GIT_DATE\",\"NTPD_RS_GIT_REV\",\"RING_CORE_PREFIX\"]" \
           cargo green -vv install --jobs=1 --locked --force ntpd@1.2.3  |& tee _
     - name: ...doesn't recompile anything
       run: |
@@ -1125,6 +1289,8 @@ jobs:
         grep Dirty     _                    && err=1
         grep Compiling _                    && err=1
         exit $err
+    - name: ...and shows same final path
+      run: git --no-pager diff --exit-code -- ntpd@1.2.3.Dockerfile
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
@@ -1153,6 +1319,16 @@ jobs:
     - if: ${{ failure() || success() }}
       name: cargo-green logs
       run: tail -n9999999 logs.txt ; echo >logs.txt
+
+    - if: ${{ failure() || success() }}
+      name: Maybe show final path diff
+      run: git --no-pager diff -- ntpd@1.2.3.Dockerfile || true
+
+    - if: ${{ failure() || success() }}
+      name: Show final path
+      run: |
+        tail -n9999999 ntpd@1.2.3.Dockerfile || true
+        git add ntpd@1.2.3.Dockerfile || true
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
@@ -1210,7 +1386,7 @@ jobs:
     - run: docker buildx du --verbose
     - name: cargo install net=ON cache=OFF remote=OFF jobs=1
       run: |
-        CARGOGREEN_LOG=trace RUSTCBUILDX_LOG_PATH=$PWD/logs.txt CARGO_TARGET_DIR=~/instst \
+        CARGOGREEN_LOG=trace CARGOGREEN_FINAL_PATH=qcow2-rs@0.1.2.Dockerfile RUSTCBUILDX_LOG_PATH=$PWD/logs.txt CARGO_TARGET_DIR=~/instst \
           cargo green -vv install --jobs=1 --locked --force qcow2-rs@0.1.2  |& tee _
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
@@ -1240,6 +1416,16 @@ jobs:
     - if: ${{ failure() || success() }}
       name: cargo-green logs
       run: tail -n9999999 logs.txt ; echo >logs.txt
+
+    - if: ${{ failure() || success() }}
+      name: Maybe show final path diff
+      run: git --no-pager diff -- qcow2-rs@0.1.2.Dockerfile || true
+
+    - if: ${{ failure() || success() }}
+      name: Show final path
+      run: |
+        tail -n9999999 qcow2-rs@0.1.2.Dockerfile || true
+        git add qcow2-rs@0.1.2.Dockerfile || true
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
@@ -1254,7 +1440,7 @@ jobs:
 
     - name: Ensure running the same command twice without modifications...
       run: |
-        CARGOGREEN_LOG=trace RUSTCBUILDX_LOG_PATH=$PWD/logs.txt CARGO_TARGET_DIR=~/instst \
+        CARGOGREEN_LOG=trace CARGOGREEN_FINAL_PATH=qcow2-rs@0.1.2.Dockerfile RUSTCBUILDX_LOG_PATH=$PWD/logs.txt CARGO_TARGET_DIR=~/instst \
           cargo green -vv install --jobs=1 --locked --force qcow2-rs@0.1.2  |& tee _
     - name: ...doesn't recompile anything
       run: |
@@ -1263,6 +1449,8 @@ jobs:
         grep Dirty     _                    && err=1
         grep Compiling _                    && err=1
         exit $err
+    - name: ...and shows same final path
+      run: git --no-pager diff --exit-code -- qcow2-rs@0.1.2.Dockerfile
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
@@ -1291,6 +1479,16 @@ jobs:
     - if: ${{ failure() || success() }}
       name: cargo-green logs
       run: tail -n9999999 logs.txt ; echo >logs.txt
+
+    - if: ${{ failure() || success() }}
+      name: Maybe show final path diff
+      run: git --no-pager diff -- qcow2-rs@0.1.2.Dockerfile || true
+
+    - if: ${{ failure() || success() }}
+      name: Show final path
+      run: |
+        tail -n9999999 qcow2-rs@0.1.2.Dockerfile || true
+        git add qcow2-rs@0.1.2.Dockerfile || true
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
@@ -1348,7 +1546,7 @@ jobs:
     - run: docker buildx du --verbose
     - name: cargo install net=ON cache=OFF remote=OFF jobs=1
       run: |
-        CARGOGREEN_LOG=trace RUSTCBUILDX_LOG_PATH=$PWD/logs.txt CARGO_TARGET_DIR=~/instst \
+        CARGOGREEN_LOG=trace CARGOGREEN_FINAL_PATH=ripgrep@14.1.0.Dockerfile RUSTCBUILDX_LOG_PATH=$PWD/logs.txt CARGO_TARGET_DIR=~/instst \
           cargo green -vv install --jobs=1 --locked --force ripgrep@14.1.0  |& tee _
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
@@ -1378,6 +1576,16 @@ jobs:
     - if: ${{ failure() || success() }}
       name: cargo-green logs
       run: tail -n9999999 logs.txt ; echo >logs.txt
+
+    - if: ${{ failure() || success() }}
+      name: Maybe show final path diff
+      run: git --no-pager diff -- ripgrep@14.1.0.Dockerfile || true
+
+    - if: ${{ failure() || success() }}
+      name: Show final path
+      run: |
+        tail -n9999999 ripgrep@14.1.0.Dockerfile || true
+        git add ripgrep@14.1.0.Dockerfile || true
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
@@ -1392,7 +1600,7 @@ jobs:
 
     - name: Ensure running the same command twice without modifications...
       run: |
-        CARGOGREEN_LOG=trace RUSTCBUILDX_LOG_PATH=$PWD/logs.txt CARGO_TARGET_DIR=~/instst \
+        CARGOGREEN_LOG=trace CARGOGREEN_FINAL_PATH=ripgrep@14.1.0.Dockerfile RUSTCBUILDX_LOG_PATH=$PWD/logs.txt CARGO_TARGET_DIR=~/instst \
           cargo green -vv install --jobs=1 --locked --force ripgrep@14.1.0  |& tee _
     - name: ...doesn't recompile anything
       run: |
@@ -1401,6 +1609,8 @@ jobs:
         grep Dirty     _                    && err=1
         grep Compiling _                    && err=1
         exit $err
+    - name: ...and shows same final path
+      run: git --no-pager diff --exit-code -- ripgrep@14.1.0.Dockerfile
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
@@ -1429,6 +1639,16 @@ jobs:
     - if: ${{ failure() || success() }}
       name: cargo-green logs
       run: tail -n9999999 logs.txt ; echo >logs.txt
+
+    - if: ${{ failure() || success() }}
+      name: Maybe show final path diff
+      run: git --no-pager diff -- ripgrep@14.1.0.Dockerfile || true
+
+    - if: ${{ failure() || success() }}
+      name: Show final path
+      run: |
+        tail -n9999999 ripgrep@14.1.0.Dockerfile || true
+        git add ripgrep@14.1.0.Dockerfile || true
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
@@ -1486,7 +1706,7 @@ jobs:
     - run: docker buildx du --verbose
     - name: cargo install net=ON cache=OFF remote=OFF jobs=1
       run: |
-        CARGOGREEN_LOG=trace RUSTCBUILDX_LOG_PATH=$PWD/logs.txt CARGO_TARGET_DIR=~/instst \
+        CARGOGREEN_LOG=trace CARGOGREEN_FINAL_PATH=rublk@0.2.0.Dockerfile RUSTCBUILDX_LOG_PATH=$PWD/logs.txt CARGO_TARGET_DIR=~/instst \
           cargo green -vv install --jobs=1 --locked --force rublk@0.2.0  |& tee _
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
@@ -1516,6 +1736,16 @@ jobs:
     - if: ${{ failure() || success() }}
       name: cargo-green logs
       run: tail -n9999999 logs.txt ; echo >logs.txt
+
+    - if: ${{ failure() || success() }}
+      name: Maybe show final path diff
+      run: git --no-pager diff -- rublk@0.2.0.Dockerfile || true
+
+    - if: ${{ failure() || success() }}
+      name: Show final path
+      run: |
+        tail -n9999999 rublk@0.2.0.Dockerfile || true
+        git add rublk@0.2.0.Dockerfile || true
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
@@ -1530,7 +1760,7 @@ jobs:
 
     - name: Ensure running the same command twice without modifications...
       run: |
-        CARGOGREEN_LOG=trace RUSTCBUILDX_LOG_PATH=$PWD/logs.txt CARGO_TARGET_DIR=~/instst \
+        CARGOGREEN_LOG=trace CARGOGREEN_FINAL_PATH=rublk@0.2.0.Dockerfile RUSTCBUILDX_LOG_PATH=$PWD/logs.txt CARGO_TARGET_DIR=~/instst \
           cargo green -vv install --jobs=1 --locked --force rublk@0.2.0  |& tee _
     - name: ...doesn't recompile anything
       run: |
@@ -1539,6 +1769,8 @@ jobs:
         grep Dirty     _                    && err=1
         grep Compiling _                    && err=1
         exit $err
+    - name: ...and shows same final path
+      run: git --no-pager diff --exit-code -- rublk@0.2.0.Dockerfile
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
@@ -1567,6 +1799,16 @@ jobs:
     - if: ${{ failure() || success() }}
       name: cargo-green logs
       run: tail -n9999999 logs.txt ; echo >logs.txt
+
+    - if: ${{ failure() || success() }}
+      name: Maybe show final path diff
+      run: git --no-pager diff -- rublk@0.2.0.Dockerfile || true
+
+    - if: ${{ failure() || success() }}
+      name: Show final path
+      run: |
+        tail -n9999999 rublk@0.2.0.Dockerfile || true
+        git add rublk@0.2.0.Dockerfile || true
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
@@ -1624,7 +1866,7 @@ jobs:
     - run: docker buildx du --verbose
     - name: cargo install net=ON cache=OFF remote=OFF jobs=1
       run: |
-        CARGOGREEN_LOG=trace RUSTCBUILDX_LOG_PATH=$PWD/logs.txt CARGO_TARGET_DIR=~/instst \
+        CARGOGREEN_LOG=trace CARGOGREEN_FINAL_PATH=vixargs@0.1.0.Dockerfile RUSTCBUILDX_LOG_PATH=$PWD/logs.txt CARGO_TARGET_DIR=~/instst \
           cargo green -vv install --jobs=1 --locked --force vixargs@0.1.0  |& tee _
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
@@ -1654,6 +1896,16 @@ jobs:
     - if: ${{ failure() || success() }}
       name: cargo-green logs
       run: tail -n9999999 logs.txt ; echo >logs.txt
+
+    - if: ${{ failure() || success() }}
+      name: Maybe show final path diff
+      run: git --no-pager diff -- vixargs@0.1.0.Dockerfile || true
+
+    - if: ${{ failure() || success() }}
+      name: Show final path
+      run: |
+        tail -n9999999 vixargs@0.1.0.Dockerfile || true
+        git add vixargs@0.1.0.Dockerfile || true
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
@@ -1668,7 +1920,7 @@ jobs:
 
     - name: Ensure running the same command twice without modifications...
       run: |
-        CARGOGREEN_LOG=trace RUSTCBUILDX_LOG_PATH=$PWD/logs.txt CARGO_TARGET_DIR=~/instst \
+        CARGOGREEN_LOG=trace CARGOGREEN_FINAL_PATH=vixargs@0.1.0.Dockerfile RUSTCBUILDX_LOG_PATH=$PWD/logs.txt CARGO_TARGET_DIR=~/instst \
           cargo green -vv install --jobs=1 --locked --force vixargs@0.1.0  |& tee _
     - name: ...doesn't recompile anything
       run: |
@@ -1677,6 +1929,8 @@ jobs:
         grep Dirty     _                    && err=1
         grep Compiling _                    && err=1
         exit $err
+    - name: ...and shows same final path
+      run: git --no-pager diff --exit-code -- vixargs@0.1.0.Dockerfile
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
@@ -1705,6 +1959,16 @@ jobs:
     - if: ${{ failure() || success() }}
       name: cargo-green logs
       run: tail -n9999999 logs.txt ; echo >logs.txt
+
+    - if: ${{ failure() || success() }}
+      name: Maybe show final path diff
+      run: git --no-pager diff -- vixargs@0.1.0.Dockerfile || true
+
+    - if: ${{ failure() || success() }}
+      name: Show final path
+      run: |
+        tail -n9999999 vixargs@0.1.0.Dockerfile || true
+        git add vixargs@0.1.0.Dockerfile || true
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
@@ -1762,7 +2026,7 @@ jobs:
     - run: docker buildx du --verbose
     - name: cargo install net=ON cache=OFF remote=OFF jobs=1
       run: |
-        CARGOGREEN_LOG=trace RUSTCBUILDX_LOG_PATH=$PWD/logs.txt CARGO_TARGET_DIR=~/instst \
+        CARGOGREEN_LOG=trace CARGOGREEN_FINAL_PATH=cargo-config2@0.1.26.Dockerfile RUSTCBUILDX_LOG_PATH=$PWD/logs.txt CARGO_TARGET_DIR=~/instst \
           cargo green -vv install --jobs=1 --locked --force cargo-config2@0.1.26 --example=get |& tee _
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
@@ -1792,6 +2056,16 @@ jobs:
     - if: ${{ failure() || success() }}
       name: cargo-green logs
       run: tail -n9999999 logs.txt ; echo >logs.txt
+
+    - if: ${{ failure() || success() }}
+      name: Maybe show final path diff
+      run: git --no-pager diff -- cargo-config2@0.1.26.Dockerfile || true
+
+    - if: ${{ failure() || success() }}
+      name: Show final path
+      run: |
+        tail -n9999999 cargo-config2@0.1.26.Dockerfile || true
+        git add cargo-config2@0.1.26.Dockerfile || true
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
@@ -1806,7 +2080,7 @@ jobs:
 
     - name: Ensure running the same command twice without modifications...
       run: |
-        CARGOGREEN_LOG=trace RUSTCBUILDX_LOG_PATH=$PWD/logs.txt CARGO_TARGET_DIR=~/instst \
+        CARGOGREEN_LOG=trace CARGOGREEN_FINAL_PATH=cargo-config2@0.1.26.Dockerfile RUSTCBUILDX_LOG_PATH=$PWD/logs.txt CARGO_TARGET_DIR=~/instst \
           cargo green -vv install --jobs=1 --locked --force cargo-config2@0.1.26 --example=get |& tee _
     - name: ...doesn't recompile anything
       run: |
@@ -1815,6 +2089,8 @@ jobs:
         grep Dirty     _                    && err=1
         grep Compiling _                    && err=1
         exit $err
+    - name: ...and shows same final path
+      run: git --no-pager diff --exit-code -- cargo-config2@0.1.26.Dockerfile
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
@@ -1843,6 +2119,16 @@ jobs:
     - if: ${{ failure() || success() }}
       name: cargo-green logs
       run: tail -n9999999 logs.txt ; echo >logs.txt
+
+    - if: ${{ failure() || success() }}
+      name: Maybe show final path diff
+      run: git --no-pager diff -- cargo-config2@0.1.26.Dockerfile || true
+
+    - if: ${{ failure() || success() }}
+      name: Show final path
+      run: |
+        tail -n9999999 cargo-config2@0.1.26.Dockerfile || true
+        git add cargo-config2@0.1.26.Dockerfile || true
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
