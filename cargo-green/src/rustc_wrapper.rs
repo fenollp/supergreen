@@ -517,9 +517,8 @@ async fn do_wrap_rustc(
     let extern_md_paths = md.extend_from_externs(extern_mds)?;
     info!("extern_md_paths: {} {extern_md_paths:?}", extern_md_paths.len());
 
-    for (name, source, target) in mounts {
-        rustc_block
-            .push_str(&format!("  --mount=from={name},target={target},source={source} \\\n"));
+    for (name, src, dst) in mounts {
+        rustc_block.push_str(&format!("  --mount=from={name},target={dst},source={src} \\\n"));
     }
 
     // Log a possible toolchain file contents (TODO: make per-crate base_image out of this)
