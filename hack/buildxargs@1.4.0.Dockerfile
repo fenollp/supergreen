@@ -25,7 +25,7 @@ RUN \
         CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/pico-args-0.5.0" \
         CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/pico-args-0.5.0/Cargo.toml" \
         CARGO_PKG_AUTHORS="Yevhenii Reizner <razrfalcon@gmail.com>" \
-        CARGO_PKG_DESCRIPTION=FIXME \
+        CARGO_PKG_DESCRIPTION="An ultra simple CLI arguments parser." \
         CARGO_PKG_HOMEPAGE= \
         CARGO_PKG_LICENSE="MIT" \
         CARGO_PKG_LICENSE_FILE= \
@@ -67,7 +67,7 @@ RUN \
         CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0" \
         CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0/Cargo.toml" \
         CARGO_PKG_AUTHORS="comex <comexk@gmail.com>:Fenhl <fenhl@fenhl.net>:Adrian Taylor <adetaylor@chromium.org>:Alex Touchet <alextouchet@outlook.com>:Daniel Parks <dp+git@oxidized.org>:Garrett Berg <googberg@gmail.com>" \
-        CARGO_PKG_DESCRIPTION=FIXME \
+        CARGO_PKG_DESCRIPTION="Split a string into shell words, like Python's shlex." \
         CARGO_PKG_HOMEPAGE= \
         CARGO_PKG_LICENSE="MIT OR Apache-2.0" \
         CARGO_PKG_LICENSE_FILE= \
@@ -111,7 +111,7 @@ RUN \
         CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/buildxargs-1.4.0" \
         CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/buildxargs-1.4.0/Cargo.toml" \
         CARGO_PKG_AUTHORS="Pierre Fenoll <pierrefenoll@gmail.com>" \
-        CARGO_PKG_DESCRIPTION=FIXME \
+        CARGO_PKG_DESCRIPTION="xargs for BuildKit with docker buildx bake" \
         CARGO_PKG_HOMEPAGE= \
         CARGO_PKG_LICENSE="MIT" \
         CARGO_PKG_LICENSE_FILE= \
@@ -149,7 +149,7 @@ RUN \
         CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/buildxargs-1.4.0" \
         CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/buildxargs-1.4.0/Cargo.toml" \
         CARGO_PKG_AUTHORS="Pierre Fenoll <pierrefenoll@gmail.com>" \
-        CARGO_PKG_DESCRIPTION=FIXME \
+        CARGO_PKG_DESCRIPTION="xargs for BuildKit with docker buildx bake" \
         CARGO_PKG_HOMEPAGE= \
         CARGO_PKG_LICENSE="MIT" \
         CARGO_PKG_LICENSE_FILE= \
