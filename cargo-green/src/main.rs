@@ -2,6 +2,7 @@ use std::{env, ffi::OsStr, path::PathBuf, process::exit};
 
 use anyhow::{anyhow, bail, Result};
 use envs::internal;
+use log::warn;
 use tokio::process::Command;
 
 mod base;
@@ -91,6 +92,7 @@ async fn main() -> Result<()> {
             let var = "RUSTUP_TOOLCHAIN";
             if let Some(val) = env::var_os(var) {
                 if val != toolchain {
+                    warn!("Overriding {var}={val:?} to {toolchain:?} for `{PKG} +toolchain`");
                     println!("Overriding {var}={val:?} to {toolchain:?} for `{PKG} +toolchain`");
                 }
             }
@@ -114,16 +116,13 @@ async fn main() -> Result<()> {
     //TODO: https://github.com/messense/cargo-options/blob/086d7470cae34b0e694a62237e258fbd35384e93/examples/cargo-mimic.rs
     // maybe https://lib.rs/crates/clap-cargo
 
-    match env::args().nth(2).as_deref() {
-        None => {}
-        Some("fetch") => {
-            // Runs actual `cargo fetch`
-            if !cmd.status().await?.success() {
-                exit(1)
-            }
-            return cargo_green::fetch(&syntax).await;
+    let command = env::args().nth(2);
+    if command.as_deref() == Some("fetch") {
+        // Runs actual `cargo fetch`
+        if !cmd.status().await?.success() {
+            exit(1)
         }
-        Some(_) => {}
+        return cargo_green::fetch(&syntax).await;
     }
 
     //TODO: also for cfetch

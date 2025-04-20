@@ -162,8 +162,10 @@ RUN \
 
     // https://docs.docker.com/build/building/variables/#buildx_builder
     if let Ok(ctx) = env::var("DOCKER_HOST") {
+        info!("$DOCKER_HOST is set to {ctx:?}");
         eprintln!("$DOCKER_HOST is set to {ctx:?}");
     } else if let Ok(ctx) = env::var("BUILDX_BUILDER") {
+        info!("$BUILDX_BUILDER is set to {ctx:?}");
         eprintln!("$BUILDX_BUILDER is set to {ctx:?}");
     } else if let Ok(remote) = env::var("CARGOGREEN_REMOTE") {
         //     // docker buildx create \
@@ -212,6 +214,7 @@ async fn setup_build_driver(name: &str, builder_image: &str) -> Result<()> {
     let envs: Vec<_> = cmd.as_std().get_envs().map(|(k, v)| format!("{k:?}={v:?}")).collect();
     let envs = envs.join(" ");
 
+    info!("Calling {call} (env: {envs:?})`");
     eprintln!("Calling {call} (env: {envs:?})`");
 
     let Output { status, stderr, .. } = cmd.output().await?;
@@ -235,6 +238,7 @@ async fn try_removing_previous_builder(name: &str) {
     let envs: Vec<_> = cmd.as_std().get_envs().map(|(k, v)| format!("{k:?}={v:?}")).collect();
     let envs = envs.join(" ");
 
+    info!("Calling {call} (env: {envs:?})`");
     eprintln!("Calling {call} (env: {envs:?})`");
 
     let _ = cmd.status().await;

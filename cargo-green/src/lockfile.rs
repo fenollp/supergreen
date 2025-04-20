@@ -30,7 +30,7 @@ pub(crate) async fn locked_crates(
 pub(crate) async fn find_lockfile() -> Result<Utf8PathBuf> {
     let manifest_path = cargo_locate_project(false).await?;
     let candidate = manifest_path.with_extension("lock");
-    if file_exists_and_is_not_empty(candidate.as_path())? {
+    if file_exists_and_is_not_empty(&candidate)? {
         return Ok(candidate);
     }
     let manifest_path = cargo_locate_project(true).await?;
@@ -57,7 +57,7 @@ fn find_toml_from_env() -> Result<Option<Utf8PathBuf>> {
     if let Some(package) = package {
         let manifest_path: Utf8PathBuf =
             env::current_dir()?.join(package).join("Cargo.toml").try_into()?;
-        if file_exists_and_is_not_empty(manifest_path.as_path())? {
+        if file_exists_and_is_not_empty(&manifest_path)? {
             return Ok(Some(manifest_path));
         }
     }

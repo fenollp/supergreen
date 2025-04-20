@@ -30,7 +30,7 @@ pub(crate) async fn into_stage(
     };
 
     info!("opening (RO) crate tarball {cratesio_cached}");
-    let cratesio_hash = sha256::try_async_digest(cratesio_cached.as_path()) //TODO: read from lockfile? cargo_metadata?
+    let cratesio_hash = sha256::try_async_digest(&cratesio_cached) //TODO: read from lockfile? cargo_metadata?
         .await
         .map_err(|e| anyhow!("Failed reading {cratesio_cached}: {e}"))?;
     debug!("crate sha256 for {stage}: {cratesio_hash}");

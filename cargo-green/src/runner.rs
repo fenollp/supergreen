@@ -238,7 +238,7 @@ pub(crate) async fn build(
         .map(|(k, v)| format!("{}={:?}", k.to_string_lossy(), v.unwrap_or_default()))
         .collect();
     let envs = envs.join(" ");
-    info!("Starting {call} (env: {envs})");
+    info!("Starting {call} (env: {envs}) with {dockerfile_path}");
 
     let errf = |e| anyhow!("Failed starting {call}: {e}");
     let start = Instant::now();
@@ -448,6 +448,7 @@ fn support_long_broken_json_lines() {
 
 fn fwd_stderr(msg: &str, buf: &mut String) {
     let show = |msg: &str| {
+        info!("(To cargo's STDERR): {msg}");
         eprintln!("{msg}");
 
         if let Some(file) = artifact_written(msg) {
@@ -480,6 +481,7 @@ fn fwd_stderr(msg: &str, buf: &mut String) {
 }
 
 fn fwd_stdout(msg: &str, #[expect(clippy::ptr_arg)] _buf: &mut String) {
+    info!("(To cargo's STDOUT): {msg}");
     println!("{msg}");
 }
 

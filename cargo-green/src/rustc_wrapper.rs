@@ -220,7 +220,7 @@ async fn do_wrap_rustc(
     // https://github.com/rust-lang/cargo/issues/12059#issuecomment-1537457492
     //   https://github.com/rust-lang/rust/issues/63012 : Tracking issue for -Z binary-dep-depinfo
     let mut all_externs = BTreeSet::new();
-    let externs_prefix = |part: &str| target_path.as_path().join(format!("externs_{part}"));
+    let externs_prefix = |part: &str| target_path.join(format!("externs_{part}"));
     let crate_externs = externs_prefix(&format!("{crate_name}{extrafn}"));
 
     let mut md = Md::new(&extrafn[1..]); // Drops leading dash
@@ -288,7 +288,7 @@ async fn do_wrap_rustc(
                 //   however some edge cases (at least 1) go through. That fix seems to bust cache on 2nd builds though v
 
                 if debug.is_some() {
-                    let deps_dir = target_path.as_path().join("deps");
+                    let deps_dir = target_path.join("deps");
                     info!("extern crate's extern matches {deps_dir}/lib*.*");
                     let listing = fs::read_dir(&deps_dir)
                         .map_err(|e| anyhow!("Failed reading directory {deps_dir}: {e}"))?
@@ -602,7 +602,7 @@ async fn do_wrap_rustc(
     md.append_blocks(&mut blocks, &mut visited_cratesio_stages)?;
 
     {
-        let md_path = target_path.as_path().join(format!("{crate_name}{extrafn}.toml"));
+        let md_path = target_path.join(format!("{crate_name}{extrafn}.toml"));
         let md_ser = md.to_string_pretty()?;
 
         info!("opening (RW) crate's md {md_path}");
@@ -623,7 +623,7 @@ async fn do_wrap_rustc(
         // => otherwise docker builder cache won't have the correct hit
         // https://rustc-dev-guide.rust-lang.org/backend/libs-and-metadata.html
         //=> a filename suffix with content hash?
-        let dockerfile = target_path.as_path().join(format!("{krate_name}{extrafn}.Dockerfile"));
+        let dockerfile = target_path.join(format!("{krate_name}{extrafn}.Dockerfile"));
 
         let syntax = syntax().await.trim_start_matches("docker-image://");
         let mut header = format!("# syntax={syntax}\n");
@@ -807,6 +807,7 @@ fn copy_dir_all(src: &Utf8Path, dst: &Utf8Path) -> Result<()> {
             }
             copy_dir_all(&fpath, &dst.join(fname))?;
         } else {
+            trace!("copying to {:?}: {fpath:?}", dst.join(fname));
             fs::copy(&fpath, dst.join(fname)).map_err(|e| {
                 anyhow!("Failed `cp {fpath:?} {dst:?}` ({:?}): {e}", entry.metadata())
             })?;
