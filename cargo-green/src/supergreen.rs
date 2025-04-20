@@ -169,10 +169,10 @@ async fn pull() -> Result<()> {
 #[must_use]
 fn trim_docker_image(x: &str) -> Option<String> {
     let x = x.trim_start_matches("docker-image://");
-    let x = x
-        .contains('@')
-        .then(|| x.trim_end_matches(|c| c != '@').trim_end_matches('@'))
-        .unwrap_or(x);
+
+    let x =
+        if x.contains('@') { x.trim_end_matches(|c| c != '@').trim_end_matches('@') } else { x };
+
     (!x.is_empty()).then(|| x.to_owned())
 }
 
