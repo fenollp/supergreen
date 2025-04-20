@@ -373,18 +373,8 @@ async fn do_wrap_rustc(
     } else {
         // Input is local code
 
-        let rustc_stage = if input.is_relative() {
-            &input
-        } else {
-            // e.g. $CARGO_HOME/git/checkouts/rustc-version-rs-de99f49481c38c43/48cf99e/src/lib.rs
-
-            //FIXME: try without thi branch
-            input
-                .strip_prefix(&pwd)
-                .map_err(|e| anyhow!("BUG: unexpected input {input:?} ({e})"))?
-        }
-        .to_string()
-        .replace(['/', '.'], "-");
+        assert!(input.is_relative());
+        let rustc_stage = input.as_str().replace(['/', '.'], "-");
 
         let rustc_stage = Stage::try_new(format!("cwd-{crate_id}-{rustc_stage}"))?;
         (None, rustc_stage)
