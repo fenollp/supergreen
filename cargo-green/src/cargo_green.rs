@@ -5,7 +5,7 @@ use std::{
 };
 
 use anyhow::{anyhow, bail, Result};
-use camino::{absolute_utf8, Utf8PathBuf};
+use camino::absolute_utf8;
 use futures::{stream::iter, StreamExt, TryStreamExt};
 use log::{debug, info, trace};
 use tokio::{process::Command, try_join};
@@ -16,11 +16,13 @@ use crate::{
     envs::{cache_image, incremental, internal},
     extensions::ShowCmd,
     green::{Green, ENV_BASE_IMAGE},
+    hash, hashed_args,
     lockfile::{find_lockfile, locked_crates},
     logging::{self, maybe_log, ENV_LOG, ENV_LOG_PATH},
+    pwd,
     runner::{build, fetch_digest, maybe_lock_image, runner_cmd, Network},
     stage::Stage,
-    PKG, REPO, VSN,
+    tmp, PKG, REPO, VSN,
 };
 
 // Env-only settings (no Cargo.toml equivalent setting)
@@ -34,9 +36,10 @@ pub(crate) async fn main(cmd: &mut Command) -> Result<Green> {
 
     if let Ok(log) = env::var(ENV_LOG) {
         cmd.env(ENV_LOG, log);
-        let path = env::var(ENV_LOG_PATH).unwrap_or_else(|_| "/tmp/cargo-green.log".to_owned());
-        cmd.env(ENV_LOG_PATH, &path);
+        let path = env::var(ENV_LOG_PATH)
+            .unwrap_or_else(|_| tmp().join(format!("{PKG}-{}.log", hashed_args())).to_string());
         env::set_var(ENV_LOG_PATH, &path);
+        cmd.env(ENV_LOG_PATH, &path);
         let _ = OpenOptions::new().create(true).truncate(false).append(true).open(path);
     }
 
@@ -240,25 +243,18 @@ pub(crate) async fn maybe_prebuild_base(green: &Green) -> Result<()> {
     header.push_str(green.image.base_image_inline.as_deref().expect(RUST));
     header.push('\n');
 
-    let dockerfile_path: Utf8PathBuf = env::temp_dir().try_into()?;
-    let uniq = format!("{:#x}", crc32fast::hash(header.as_bytes())); //~ 0x..
-    let dockerfile_path = dockerfile_path.join(format!("{RUST}-{}.Dockerfile", &uniq[2..]));
-
-    if !dockerfile_path.exists() {
-        fs::write(&dockerfile_path, &header)
-            .map_err(|e| anyhow!("Failed creating dockerfile {dockerfile_path}: {e}"))?;
-
-        let stage = Stage::try_new(RUST).expect("rust stage");
-
-        if let Err(e) =
-            build(green, Network::Default, &dockerfile_path, stage, &[].into(), None).await
-        {
-            let _ = fs::remove_file(&dockerfile_path);
-            bail!("Unable to build {RUST}: {e}\n\n{header}")
-        }
+    let dockerfile_path = tmp().join(format!("{PKG}-{RUST}-{}.Dockerfile", hash(&header)));
+    if dockerfile_path.exists() {
+        return Ok(());
     }
+    fs::write(&dockerfile_path, &header)
+        .map_err(|e| anyhow!("Failed creating dockerfile {dockerfile_path}: {e}"))?;
 
-    Ok(())
+    let stage = Stage::try_new(RUST).expect("rust stage");
+    build(green, Network::Default, &dockerfile_path, stage, &[].into(), None).await.map_err(|e| {
+        let _ = fs::remove_file(&dockerfile_path);
+        anyhow!("{header}\n\nUnable to build {RUST}: {e}")
+    })
 }
 
 pub(crate) async fn fetch(green: Green) -> Result<()> {
@@ -266,7 +262,7 @@ pub(crate) async fn fetch(green: Green) -> Result<()> {
 
     logging::setup("fetch");
     let _ = maybe_log();
-    info!("{PKG}@{VSN} original args: {:?} pwd={:?}", env::args(), env::current_dir());
+    info!("{PKG}@{VSN} original args: {:?} pwd={:?}", env::args(), pwd());
 
     let manifest_path_lockfile = find_lockfile().await?;
     debug!("using lockfile at {manifest_path_lockfile}");
@@ -305,10 +301,7 @@ pub(crate) async fn fetch(green: Green) -> Result<()> {
         dockerfile.push_str(&format!("COPY --from={} / /\n", stager(leaf)));
     }
 
-    let cfetch: Utf8PathBuf = env::temp_dir().join("cargo-fetch").try_into()?;
-    fs::create_dir_all(&cfetch).map_err(|e| anyhow!("Failed `mkdir -p {cfetch:?}`: {e}"))?;
-
-    let dockerfile_path = cfetch.join("Dockerfile");
+    let dockerfile_path = tmp().join(format!("{PKG}-fetch-{}.Dockerfile", hash(pwd().as_ref())));
     fs::write(&dockerfile_path, dockerfile)
         .map_err(|e| anyhow!("Failed creating dockerfile {dockerfile_path}: {e}"))?;
 

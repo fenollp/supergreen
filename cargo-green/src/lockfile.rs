@@ -1,4 +1,4 @@
-use std::{env, process::Output};
+use std::process::Output;
 
 use anyhow::{bail, Result};
 use camino::{Utf8Path, Utf8PathBuf};
@@ -7,7 +7,7 @@ use pico_args::Arguments;
 use serde::Deserialize;
 use tokio::process::Command;
 
-use crate::{cargo, extensions::ShowCmd, rustc_wrapper::file_exists_and_is_not_empty};
+use crate::{cargo, extensions::ShowCmd, pwd, rustc_wrapper::file_exists_and_is_not_empty};
 
 pub(crate) async fn locked_crates(
     manifest_path_lockfile: &Utf8Path,
@@ -41,7 +41,7 @@ pub(crate) fn find_manifest_path() -> Result<Utf8PathBuf> {
     if let Some(manifest_path) = find_toml_from_env()? {
         return Ok(manifest_path);
     }
-    Ok(env::current_dir()?.join("Cargo.toml").try_into()?)
+    Ok(pwd().join("Cargo.toml"))
 }
 
 fn find_toml_from_env() -> Result<Option<Utf8PathBuf>> {
@@ -55,8 +55,7 @@ fn find_toml_from_env() -> Result<Option<Utf8PathBuf>> {
     //FIXME: not true for cinstall
     let package: Option<String> = args.opt_value_from_str(["-p", "--package"])?;
     if let Some(package) = package {
-        let manifest_path: Utf8PathBuf =
-            env::current_dir()?.join(package).join("Cargo.toml").try_into()?;
+        let manifest_path = pwd().join(package).join("Cargo.toml");
         if file_exists_and_is_not_empty(&manifest_path)? {
             return Ok(Some(manifest_path));
         }

@@ -139,3 +139,23 @@ async fn main() -> Result<()> {
     }
     Ok(())
 }
+
+fn tmp() -> camino::Utf8PathBuf {
+    env::temp_dir().try_into().unwrap()
+}
+
+fn pwd() -> camino::Utf8PathBuf {
+    env::current_dir()
+        .expect("$PWD does not exist or is otherwise unreadable")
+        .try_into()
+        .expect("$PWD is not utf-8")
+}
+
+fn hash(string: &str) -> String {
+    let h = format!("{:#x}", crc32fast::hash(string.as_bytes())); //~ 0x..
+    h["0x".len()..].to_owned()
+}
+
+fn hashed_args() -> String {
+    hash(&env::args().collect::<Vec<_>>().join(" "))
+}

@@ -21,10 +21,11 @@ use crate::{
     green::Green,
     logging::{self, crate_type_for_logging, maybe_log, ENV_LOG},
     md::{BuildContext, Md},
+    pwd,
     runner::{build, Network, MARK_STDERR, MARK_STDOUT},
     rustc_arguments::{as_rustc, RustcArgs},
     stage::Stage,
-    PKG, REPO, VSN,
+    tmp, PKG, REPO, VSN,
 };
 
 // NOTE: this RUSTC_WRAPPER program only ever gets called by `cargo`, so we save
@@ -123,8 +124,7 @@ async fn wrap_rustc(
     }
     env::set_var(internal::RUSTCBUILDX, "1");
 
-    let pwd = env::current_dir().expect("Getting $PWD");
-    let pwd: Utf8PathBuf = pwd.try_into().expect("Encoding $PWD in UTF-8");
+    let pwd = pwd();
 
     let out_dir_var = env::var("OUT_DIR").ok();
     let (st, args) = as_rustc(&pwd, &arguments, out_dir_var.as_deref())?;
@@ -426,7 +426,7 @@ async fn do_wrap_rustc(
         None
     } else {
         // NOTE: we don't `rm -rf cwd_root`
-        let cwd_root = env::temp_dir().join(format!("{PKG}_{VSN}"));
+        let cwd_root = tmp().join(format!("{PKG}_{VSN}"));
         fs::create_dir_all(&cwd_root)
             .map_err(|e| anyhow!("Failed `mkdir -p {cwd_root:?}`: {e}"))?;
 
@@ -435,10 +435,6 @@ async fn do_wrap_rustc(
             .map_err(|e| anyhow!("Failed creating cwd dockerignore {ignore:?}: {e}"))?;
 
         let cwd_path = cwd_root.join(format!("CWD{extrafn}"));
-        let cwd_path: Utf8PathBuf = cwd_path
-            .clone()
-            .try_into()
-            .map_err(|e| anyhow!("cwd's {cwd_path:?} UTF-8 encoding is corrupted: {e}"))?;
 
         // TODO: --build-arg BUILDKIT_CONTEXT_KEEP_GIT_DIR=0 https://docs.docker.com/engine/reference/builder/#buildkit-built-in-build-args
         //   in Git case: do that ^ IFF remote URL + branch/tag/rev can be decided (a la cratesio optimization)
