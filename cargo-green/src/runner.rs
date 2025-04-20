@@ -23,9 +23,9 @@ use tokio::{
 };
 
 use crate::{
-    envs::{cache_image, log_path, maybe_log, runner, runs_on_network},
+    envs::{cache_image, log_path, maybe_log, runs_on_network},
     extensions::ShowCmd,
-    green::ENV_FINAL_PATH,
+    green::{Green, ENV_FINAL_PATH},
     logging::crate_type_for_logging,
     md::BuildContext,
     stage::Stage,
@@ -35,8 +35,8 @@ pub(crate) const MARK_STDOUT: &str = "::STDOUT:: ";
 pub(crate) const MARK_STDERR: &str = "::STDERR:: ";
 
 #[must_use]
-pub(crate) fn runner_cmd() -> Command {
-    let mut cmd = Command::new(runner());
+pub(crate) fn runner_cmd(green: &Green) -> Command {
+    let mut cmd = Command::new(&green.runner);
     cmd.kill_on_drop(true);
     cmd.stdin(Stdio::null());
     cmd.arg("--debug");
@@ -44,14 +44,12 @@ pub(crate) fn runner_cmd() -> Command {
     cmd
 }
 
-// TODO: make this work (read local digest) for frontend (=syntax) images
-// => looks like pulled but not --load'ed images (to Docker image store) digests don't show up
-// ==> find another way to hit local image/?? cache
+/// If given an un-pinned image URI, query local image cache for its digest.
+/// Returns the given URI, along with its digest if one was found.
 #[must_use]
-pub(crate) async fn maybe_lock_image(mut img: String) -> String {
-    // Lock image, as podman(4.3.1) does not respect --pull=false (fully, anyway)
+pub(crate) async fn maybe_lock_image(green: &Green, img: &str) -> String {
     if img.starts_with("docker-image://") && !img.contains("@sha256:") {
-        if let Some(line) = runner_cmd()
+        if let Some(line) = runner_cmd(green)
             .arg("inspect")
             .arg("--format={{index .RepoDigests 0}}")
             .arg(img.trim_start_matches("docker-image://"))
@@ -61,16 +59,17 @@ pub(crate) async fn maybe_lock_image(mut img: String) -> String {
             .and_then(|o| String::from_utf8(o.stdout).ok())
             .and_then(|x| x.lines().next().map(ToOwned::to_owned))
         {
-            img.push_str(line.trim_start_matches(|c| c != '@'));
+            let digest = line.trim_start_matches(|c| c != '@');
+            return format!("{img}{digest}");
         }
     }
-    img
+    img.to_owned()
 }
 
 pub(crate) async fn fetch_digest(img: &str) -> Result<String> {
     // e.g. docker-image://docker.io/library/rust:1.80.1-slim
     if !img.starts_with("docker-image://") {
-        bail!("Image missing 'docker-image' scheme: {img}")
+        bail!("Image missing 'docker-image' scheme: {img:?}")
     }
     if img.contains('@') {
         return Ok(img.to_owned());
@@ -106,13 +105,13 @@ pub(crate) async fn fetch_digest(img: &str) -> Result<String> {
 }
 
 pub(crate) async fn build(
-    command: &str,
+    green: &Green,
     dockerfile_path: &Utf8Path,
     target: Stage,
     contexts: &BTreeSet<BuildContext>,
     out_dir: Option<&Utf8Path>,
 ) -> Result<()> {
-    let mut cmd = Command::new(command);
+    let mut cmd = Command::new(&green.runner);
     cmd.arg("--debug");
     cmd.arg("build");
 
@@ -278,7 +277,7 @@ pub(crate) async fn build(
         (start.elapsed(), res)
     };
     let status = res.map_err(|e| anyhow!("Failed calling {call}: {e}"))?;
-    info!("command `{command} build` ran in {secs:?}: {status}");
+    info!("build ran in {secs:?}: {status}");
 
     let longish = Duration::from_secs(2);
     match join!(timeout(longish, out_task), timeout(longish, err_task)) {
@@ -303,7 +302,7 @@ pub(crate) async fn build(
         // * docker info
         // * docker buildx ls
 
-        let mut cmd = Command::new(command);
+        let mut cmd = Command::new(&green.runner);
         let cmd = cmd.kill_on_drop(true).arg("info");
         let Output { stdout, stderr, status } =
             cmd.output().await.map_err(|e| anyhow!("Failed starting {}: {e}", cmd.show()))?;

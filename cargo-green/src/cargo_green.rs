@@ -12,7 +12,7 @@ use tokio::process::Command;
 use crate::{
     base::BaseImage,
     cratesio::{self},
-    envs::{builder_image, cache_image, incremental, internal, maybe_log, runner, DEFAULT_SYNTAX},
+    envs::{builder_image, cache_image, incremental, internal, maybe_log, DEFAULT_SYNTAX},
     extensions::ShowCmd,
     green::{Green, ENV_FINAL_PATH},
     lockfile::{find_lockfile, locked_crates},
@@ -21,6 +21,9 @@ use crate::{
     stage::Stage,
     PKG, REPO, VSN,
 };
+
+// Env-only settings (no Cargo.toml equivalent setting)
+pub(crate) const ENV_RUNNER: &str = "CARGOGREEN_RUNNER";
 
 pub(crate) async fn main(cmd: &mut Command) -> Result<Green> {
     // TODO: TUI above cargo output (? https://docs.rs/prodash )
@@ -49,8 +52,20 @@ pub(crate) async fn main(cmd: &mut Command) -> Result<Green> {
     assert!(env::var_os("CARGOGREEN").is_none());
     env::set_var("CARGOGREEN", "1");
 
+    let mut green = Green::new_from_env_then_manifest()?;
+
+    // Setting runner first as it's needed by many calls
+    if !green.runner.is_empty() {
+        bail!("${ENV_RUNNER} can only be set through the environment variable")
+    }
+    green.runner = env::var(ENV_RUNNER).unwrap_or_else(|_| "docker".to_owned());
+    if !["docker", "none", "podman"].contains(&green.runner.as_str()) {
+        bail!("${ENV_RUNNER} must be either 'docker', 'podman' or 'none' not {:?}", green.runner)
+    }
+
     // Use local hashed image if one matching exists locally
-    let syntax = maybe_lock_image(internal::syntax().unwrap_or(DEFAULT_SYNTAX.to_owned())).await;
+    let syntax =
+        maybe_lock_image(&green, &internal::syntax().unwrap_or(DEFAULT_SYNTAX.to_owned())).await;
     // otherwise default to a hash found through some Web API
     let syntax = fetch_digest(&syntax).await?;
     env::set_var(internal::RUSTCBUILDX_SYNTAX, syntax);
@@ -71,7 +86,7 @@ pub(crate) async fn main(cmd: &mut Command) -> Result<Green> {
     let mut base_image = if let Some(ref base_image) = green.base_image {
         BaseImage::Image(base_image.clone())
     } else {
-        BaseImage::from_rustc_v()?.maybe_lock_base().await
+        BaseImage::from_rustc_v()?.maybe_lock_base(&green).await
     };
     let base = base_image.base();
     if !base.contains('@') {
@@ -133,7 +148,7 @@ RUN \
     //=> see also `base-image-inline`
     //=> auto set to "default" when using `add.{apk,apt,apt-get}` and maybe others
 
-    let builder_image = builder_image().await;
+    let builder_image = builder_image(&green).await;
 
     // don't pull
     if let Some(val) = cache_image() {
@@ -147,7 +162,7 @@ RUN \
     // RUSTCBUILDX_LOG
     // RUSTCBUILDX_LOG_PATH
     // RUSTCBUILDX_LOG_STYLE
-    cmd.env(internal::RUSTCBUILDX_RUNNER, runner());
+    cmd.env(ENV_RUNNER, &green.runner);
 
     // FIXME "multiplex conns to daemon" https://github.com/docker/buildx/issues/2564#issuecomment-2207435201
     // > If you do have docker context created already on ssh endpoint then you don't need to set the ssh address again on buildx create, you can use the context name or let it use the active context.
@@ -178,9 +193,8 @@ RUN \
         panic!("$CARGOGREEN_REMOTE is reserved but set to: {remote}");
     } else if false {
         // Images were pulled, we have to re-read their now-locked values now
-        let builder_image = maybe_lock_image(builder_image.to_owned()).await;
-        setup_build_driver("supergreen", builder_image.trim_start_matches("docker-image://"))
-            .await?; // FIXME? maybe_..
+        let builder_image = maybe_lock_image(&green, builder_image).await;
+        setup_build_driver(&green, "supergreen", &builder_image).await?; // FIXME? maybe_..
         env::set_var("BUILDX_BUILDER", "supergreen");
 
         // TODO? docker dial-stdio proxy
@@ -196,13 +210,15 @@ RUN \
 // https://docs.docker.com/build/drivers/docker-container/
 // https://docs.docker.com/build/drivers/remote/
 // https://docs.docker.com/build/drivers/kubernetes/
-async fn setup_build_driver(name: &str, builder_image: &str) -> Result<()> {
+async fn setup_build_driver(green: &Green, name: &str, builder_image: &str) -> Result<()> {
     if false {
         // TODO: reuse old state but try auto-upgrading builder impl
-        try_removing_previous_builder(name).await;
+        try_removing_previous_builder(green, name).await;
     }
 
-    let mut cmd = runner_cmd();
+    let builder_image = builder_image.trim_start_matches("docker-image://");
+
+    let mut cmd = runner_cmd(green);
     cmd.args(["buildx", "create"])
         .arg(format!("--name={name}"))
         .arg("--bootstrap")
@@ -229,8 +245,8 @@ async fn setup_build_driver(name: &str, builder_image: &str) -> Result<()> {
     Ok(())
 }
 
-async fn try_removing_previous_builder(name: &str) {
-    let mut cmd = runner_cmd();
+async fn try_removing_previous_builder(green: &Green, name: &str) {
+    let mut cmd = runner_cmd(green);
     cmd.args(["buildx", "rm", name, "--keep-state", "--force"])
         .stdout(Stdio::null())
         .stderr(Stdio::null());
@@ -245,7 +261,8 @@ async fn try_removing_previous_builder(name: &str) {
     let _ = cmd.status().await;
 }
 
-pub(crate) async fn fetch(syntax: &str) -> Result<()> {
+pub(crate) async fn fetch(green: Green) -> Result<()> {
+    let syntax = internal::syntax().unwrap();
     let syntax = syntax.trim_start_matches("docker-image://");
 
     logging::setup("fetch", internal::RUSTCBUILDX_LOG, internal::RUSTCBUILDX_LOG_STYLE);
@@ -306,5 +323,6 @@ pub(crate) async fn fetch(syntax: &str) -> Result<()> {
     .filter(|x| !x.is_empty())
     .for_each(|line| trace!("❯ {line}"));
 
-    return build(runner(), &dockerfile_path, stage, &[].into(), None).await;
+    //TODO: + concurrently run with pull_images(&green)  +  drop supergreen pull
+    return build(&green, &dockerfile_path, stage, &[].into(), None).await;
 }

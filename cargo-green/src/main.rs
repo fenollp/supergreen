@@ -1,7 +1,6 @@
 use std::{env, ffi::OsStr, path::PathBuf, process::exit};
 
 use anyhow::{anyhow, bail, Result};
-use envs::internal;
 use log::warn;
 use tokio::process::Command;
 
@@ -77,18 +76,18 @@ async fn main() -> Result<()> {
     }
 
     if args.next().as_deref() != Some("green") {
-        supergreen::help()?;
+        supergreen::help();
         exit(1)
     }
 
-    let mut cmd = Command::new(env::var_os("CARGO").unwrap_or_else(|| "cargo".into()));
-    if let Some(arg) = args.next() {
-        if arg == "supergreen" {
-            return supergreen::main(args.next().as_deref(), args.collect()).await;
-        }
+    let arg2 = args.next();
 
+    let mut cmd = Command::new(env::var_os("CARGO").unwrap_or_else(|| "cargo".into()));
+    cmd.kill_on_drop(true);
+    cmd.env("RUSTC_WRAPPER", arg0);
+    if let Some(ref arg2) = arg2 {
         // https://rust-lang.github.io/rustup/overrides.html#toolchain-override-shorthand
-        if let Some(toolchain) = arg.strip_prefix('+') {
+        if let Some(toolchain) = arg2.strip_prefix('+') {
             let var = "RUSTUP_TOOLCHAIN";
             if let Some(val) = env::var_os(var) {
                 if val != toolchain {
@@ -98,20 +97,19 @@ async fn main() -> Result<()> {
             }
             // Special handling: call was `cargo green +toolchain ..` (probably from `alias cargo='cargo green'`).
             // Normally, calls look like `cargo +toolchain green ..` but let's simplify alias creation!
-            env::set_var(var, toolchain); // Informs `rustc -vV` when deciding base_image()
+            env::set_var(var, toolchain); // Informs `rustc -vV` when deciding on base-image
         } else {
-            cmd.arg(arg);
+            cmd.arg(arg2);
         }
     }
-    cmd.args(args);
-    cmd.kill_on_drop(true);
-
-    cmd.env("RUSTC_WRAPPER", arg0);
 
     let green = cargo_green::main(&mut cmd).await?;
     cmd.env(ENV_ROOT_PACKAGE_SETTINGS, serde_json::to_string(&green)?);
 
-    let syntax = internal::syntax().expect("set in cargo_green::main");
+    if arg2.as_deref() == Some("supergreen") {
+        return supergreen::main(green, args.next().as_deref(), args.collect()).await;
+    }
+    cmd.args(args);
 
     //TODO: https://github.com/messense/cargo-options/blob/086d7470cae34b0e694a62237e258fbd35384e93/examples/cargo-mimic.rs
     // maybe https://lib.rs/crates/clap-cargo
@@ -122,7 +120,7 @@ async fn main() -> Result<()> {
         if !cmd.status().await?.success() {
             exit(1)
         }
-        return cargo_green::fetch(&syntax).await;
+        return cargo_green::fetch(green).await;
     }
 
     //TODO: also for cfetch

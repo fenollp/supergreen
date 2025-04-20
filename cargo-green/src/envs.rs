@@ -5,7 +5,7 @@ use std::{
 
 use anyhow::{anyhow, Result};
 
-use crate::{base::BaseImage, runner::maybe_lock_image};
+use crate::{base::BaseImage, green::Green, runner::maybe_lock_image};
 
 pub(crate) mod internal {
     use std::env;
@@ -18,7 +18,6 @@ pub(crate) mod internal {
     pub const RUSTCBUILDX_LOG: &str = "RUSTCBUILDX_LOG";
     pub const RUSTCBUILDX_LOG_PATH: &str = "RUSTCBUILDX_LOG_PATH";
     pub const RUSTCBUILDX_LOG_STYLE: &str = "RUSTCBUILDX_LOG_STYLE";
-    pub const RUSTCBUILDX_RUNNER: &str = "RUSTCBUILDX_RUNNER";
     pub const RUSTCBUILDX_RUNS_ON_NETWORK: &str = "RUSTCBUILDX_RUNS_ON_NETWORK";
     pub const RUSTCBUILDX_SYNTAX: &str = "RUSTCBUILDX_SYNTAX";
 
@@ -53,10 +52,6 @@ pub(crate) mod internal {
     #[must_use]
     pub fn log_style() -> Option<String> {
         env::var(RUSTCBUILDX_LOG_STYLE).ok()
-    }
-    #[must_use]
-    pub fn runner() -> Option<String> {
-        env::var(RUSTCBUILDX_RUNNER).ok()
     }
     #[must_use]
     pub fn runs_on_network() -> Option<String> {
@@ -104,32 +99,16 @@ pub(crate) fn log_path() -> &'static str {
     ONCE.get_or_init(|| internal::log_path().unwrap_or("/tmp/rstcbldx_FIXME".to_owned()))
 }
 
-#[must_use]
-pub(crate) fn runner() -> &'static str {
-    static ONCE: OnceLock<String> = OnceLock::new();
-    ONCE.get_or_init(|| {
-        let val = internal::runner().unwrap_or("docker".to_owned());
-        // TODO: Result<_> API on bad config
-        match val.as_str() {
-            "docker" => {}
-            "none" => {}
-            "podman" => {}
-            _ => panic!("${} MUST be either docker, podman or none", internal::RUSTCBUILDX_RUNNER),
-        }
-        val
-    })
-}
-
 // A Docker image or any build context, actually.
 #[must_use]
-pub(crate) async fn base_image() -> BaseImage {
+pub(crate) async fn base_image(green: &Green) -> BaseImage {
     static ONCE: OnceLock<BaseImage> = OnceLock::new();
     match ONCE.get() {
         Some(ctx) => ctx.clone(),
         None => {
             let ctx = BaseImage::from_rustc_v().unwrap();
 
-            let ctx = ctx.maybe_lock_base().await;
+            let ctx = ctx.maybe_lock_base(green).await;
 
             let _ = ONCE.set(ctx);
             ONCE.get().expect("just set base_image").clone()
@@ -177,13 +156,13 @@ pub(crate) fn runs_on_network() -> &'static str {
 pub(crate) const DEFAULT_SYNTAX: &str = "docker-image://docker.io/docker/dockerfile:1";
 
 #[must_use]
-pub(crate) async fn syntax() -> &'static str {
+pub(crate) async fn syntax(green: &Green) -> &'static str {
     static ONCE: OnceLock<String> = OnceLock::new();
     match ONCE.get() {
         Some(img) => img,
         None => {
             let img = internal::syntax().unwrap_or_else(|| DEFAULT_SYNTAX.to_owned());
-            let img = maybe_lock_image(img).await;
+            let img = maybe_lock_image(green, &img).await;
             let _ = ONCE.set(img);
             ONCE.get().expect("just set syntax")
         }
@@ -194,13 +173,13 @@ pub(crate) const DEFAULT_BUILDER_IMAGE: &str =
     "docker-image://docker.io/moby/buildkit:buildx-stable-1";
 
 #[must_use]
-pub(crate) async fn builder_image() -> &'static str {
+pub(crate) async fn builder_image(green: &Green) -> &'static str {
     static ONCE: OnceLock<String> = OnceLock::new();
     match ONCE.get() {
         Some(img) => img,
         None => {
             let img = internal::builder_image().unwrap_or_else(|| DEFAULT_BUILDER_IMAGE.to_owned());
-            let img = maybe_lock_image(img).await;
+            let img = maybe_lock_image(green, &img).await;
             let _ = ONCE.set(img);
             ONCE.get().expect("just set builder_image")
         }

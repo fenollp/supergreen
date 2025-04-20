@@ -37,6 +37,12 @@ impl Add {
 #[serde(deny_unknown_fields)]
 #[serde(rename_all = "kebab-case")]
 pub(crate) struct Green {
+    // Pick which executor to use: "docker" (default), "podman" or "none".
+    //
+    // # Use by setting this environment variable (no Cargo.toml setting):
+    // CARGOGREEN_RUNNER="docker"
+    pub(crate) runner: String, //TODO: type(enum)
+
     // Write final Dockerfile to given path.
     //
     // Helps e.g. create a Dockerfile with caching for dependencies.

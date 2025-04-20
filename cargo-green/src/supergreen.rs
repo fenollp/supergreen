@@ -7,10 +7,10 @@ use serde_jsonlines::AsyncBufReadJsonLines;
 use tokio::io::BufReader;
 
 use crate::{
-    envs::{
-        base_image, builder_image, cache_image, incremental, internal, log_path, runner, syntax,
-    },
+    cargo_green::ENV_RUNNER,
+    envs::{base_image, builder_image, cache_image, incremental, internal, log_path, syntax},
     extensions::ShowCmd,
+    green::Green,
     runner::runner_cmd,
 };
 
@@ -18,16 +18,17 @@ use crate::{
 
 // TODO: cargo green cache --keep-less-than=(1month|10GB)      Set $RUSTCBUILDX_CACHE_IMAGE to apply to tagged images.
 
-pub(crate) async fn main(arg1: Option<&str>, args: Vec<String>) -> Result<()> {
+// TODO: cli for stats (cache hit/miss/size/age/volume, existing available/selected runners, disk usage/free)
+
+pub(crate) async fn main(green: Green, arg1: Option<&str>, args: Vec<String>) -> Result<()> {
     match arg1 {
         None | Some("-h" | "--help" | "-V" | "--version") => help(),
-        Some("env") => envs(args).await,
-        Some("pull") => pull().await,
-        Some("push") => push().await,
-        Some(arg) => {
-            bail!("Unexpected supergreen command {arg:?}")
-        }
+        Some("env") => envs(green, args).await,
+        Some("pull") => return pull(green).await,
+        Some("push") => return push(green).await,
+        Some(arg) => bail!("Unexpected supergreen command {arg:?}"),
     }
+    Ok(())
 }
 
 //TODO: util to inspect + clear (+ push) build cache: docker buildx du --verbose
@@ -55,8 +56,7 @@ pub(crate) async fn main(arg1: Option<&str>, args: Vec<String>) -> Result<()> {
 // Last used:  2 days ago
 // Type:       source.git.checkout
 
-#[expect(clippy::unnecessary_wraps)]
-pub(crate) fn help() -> Result<()> {
+pub(crate) fn help() {
     println!(
         "{name} v{version}
 
@@ -76,19 +76,18 @@ Usage:
         repository = env!("CARGO_PKG_REPOSITORY"),
         description = env!("CARGO_PKG_DESCRIPTION"),
     );
-    Ok(())
 }
 
 // TODO: make it work for podman: https://github.com/containers/podman/issues/2369
 // TODO: have fun with https://github.com/console-rs/indicatif
-async fn push() -> Result<()> {
+async fn push(green: Green) -> Result<()> {
     let Some(img) = cache_image() else { return Ok(()) };
     let img = img.trim_start_matches("docker-image://");
-    let tags = all_tags_of(img).await?;
+    let tags = all_tags_of(&green, img).await?;
 
-    async fn do_push(tag: String, img: &str) -> Result<()> {
+    async fn do_push(green: &Green, tag: String, img: &str) -> Result<()> {
         println!("Pushing {img}:{tag}...");
-        let mut cmd = runner_cmd();
+        let mut cmd = runner_cmd(green);
         cmd.arg("push").arg(format!("{img}:{tag}")).stdout(Stdio::null()).stderr(Stdio::null());
 
         if let Ok(mut o) = cmd.spawn() {
@@ -102,15 +101,15 @@ async fn push() -> Result<()> {
         bail!("Pushing {img}:{tag} failed!")
     }
 
-    iter(tags).map(|tag| do_push(tag, img)).buffer_unordered(10).try_collect().await
+    iter(tags).map(|tag| do_push(&green, tag, img)).buffer_unordered(10).try_collect().await
 }
 
 // TODO: test with known tags
 // TODO: test docker.io/ prefix bug for the future
-async fn all_tags_of(img: &str) -> Result<Vec<String>> {
+async fn all_tags_of(green: &Green, img: &str) -> Result<Vec<String>> {
     // NOTE: https://github.com/moby/moby/issues/47809
     //   Meanwhile: just drop docker.io/ prefix
-    let mut cmd = runner_cmd();
+    let mut cmd = runner_cmd(green);
     cmd.arg("image")
         .arg("ls")
         .arg("--format=json")
@@ -129,18 +128,18 @@ async fn all_tags_of(img: &str) -> Result<Vec<String>> {
         .await)
 }
 
-async fn envs(vars: Vec<String>) -> Result<()> {
+async fn envs(green: Green, vars: Vec<String>) {
     let all: BTreeMap<_, _> = [
         (internal::RUSTCBUILDX, internal::this()),
-        (internal::RUSTCBUILDX_BASE_IMAGE, Some(base_image().await.base())),
-        (internal::RUSTCBUILDX_BUILDER_IMAGE, Some(builder_image().await.to_owned())),
+        (internal::RUSTCBUILDX_BASE_IMAGE, Some(base_image(&green).await.base())),
+        (internal::RUSTCBUILDX_BUILDER_IMAGE, Some(builder_image(&green).await.to_owned())),
         (internal::RUSTCBUILDX_CACHE_IMAGE, cache_image().to_owned()),
         (internal::RUSTCBUILDX_INCREMENTAL, incremental().then_some("1".to_owned())),
         (internal::RUSTCBUILDX_LOG, internal::log()),
         (internal::RUSTCBUILDX_LOG_PATH, Some(log_path().to_owned())),
         (internal::RUSTCBUILDX_LOG_STYLE, internal::log_style()),
-        (internal::RUSTCBUILDX_RUNNER, Some(runner().to_owned())),
-        (internal::RUSTCBUILDX_SYNTAX, Some(syntax().await.to_owned())),
+        (ENV_RUNNER, Some(green.runner.clone())),
+        (internal::RUSTCBUILDX_SYNTAX, Some(syntax(&green).await.to_owned())),
     ]
     .into_iter()
     .collect();
@@ -159,15 +158,13 @@ async fn envs(vars: Vec<String>) -> Result<()> {
     if empty_vars {
         all.into_iter().for_each(|(var, o)| show(var, &o));
     }
-
-    Ok(())
 }
 
-async fn pull() -> Result<()> {
+async fn pull(green: Green) -> Result<()> {
     let imgs = [
-        (internal::syntax(), syntax().await),
-        (internal::base_image(), &base_image().await.base()),
-        (internal::builder_image(), builder_image().await),
+        (internal::syntax(), syntax(&green).await),
+        (internal::base_image(), &base_image(&green).await.base()),
+        (internal::builder_image(), builder_image(&green).await),
     ]; // NOTE: we don't pull cache_image()
 
     let mut to_pull = Vec::with_capacity(imgs.len());
@@ -188,7 +185,7 @@ async fn pull() -> Result<()> {
         };
         to_pull.push(img);
     }
-    pull_images(to_pull).await
+    pull_images(green, to_pull).await
 }
 
 #[must_use]
@@ -201,20 +198,20 @@ fn trim_docker_image(x: &str) -> Option<String> {
     (!x.is_empty()).then(|| x.to_owned())
 }
 
-async fn pull_images(to_pull: Vec<String>) -> Result<()> {
+async fn pull_images(green: Green, to_pull: Vec<String>) -> Result<()> {
     // TODO: nice TUI that handles concurrent progress
     iter(to_pull.into_iter())
-        .map(|img| async move {
+        .map(|img| async {
             println!("Pulling {img}...");
-            do_pull(img).await
+            do_pull(&green, img).await
         })
         .buffer_unordered(10)
         .try_collect()
         .await
 }
 
-async fn do_pull(img: String) -> Result<()> {
-    let mut cmd = runner_cmd();
+async fn do_pull(green: &Green, img: String) -> Result<()> {
+    let mut cmd = runner_cmd(green);
     cmd.arg("pull").arg(&img);
     let o = cmd
         .spawn()

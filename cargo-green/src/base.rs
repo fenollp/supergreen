@@ -1,7 +1,7 @@
 use anyhow::{bail, Result};
 use rustc_version::{Channel, Version, VersionMeta};
 
-use crate::{envs::internal, runner::maybe_lock_image};
+use crate::{envs::internal, green::Green, runner::maybe_lock_image};
 
 pub(crate) const RUST: &str = "rust-base";
 
@@ -121,8 +121,8 @@ impl BaseImage {
         })
     }
 
-    pub(crate) async fn maybe_lock_base(self) -> Self {
-        self.clone().lock_base_to(maybe_lock_image(self.base()).await)
+    pub(crate) async fn maybe_lock_base(self, green: &Green) -> Self {
+        self.clone().lock_base_to(maybe_lock_image(green, &self.base()).await)
     }
 
     pub(crate) fn lock_base_to(self, base: String) -> Self {
