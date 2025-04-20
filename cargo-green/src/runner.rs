@@ -25,7 +25,7 @@ use tokio::{
 use crate::{
     envs::{cache_image, log_path, maybe_log, runs_on_network},
     extensions::ShowCmd,
-    green::{Green, ENV_FINAL_PATH},
+    green::Green,
     logging::crate_type_for_logging,
     md::BuildContext,
     stage::Stage,
@@ -126,6 +126,8 @@ pub(crate) async fn build(
     // Set SOURCE_DATE_EPOCH=$(git log -1 --pretty=%ct) for local code, and
     // set it to crates' birth date, in case it's a $HOME/.cargo/registry/cache/...crate
     // set it to the directory's birth date otherwise (should be a relative path to local files).
+    // see https://github.com/moby/buildkit/issues/3009#issuecomment-1721565511
+    //=> rewrite written files timestamps to not trip cargo's timekeeping
 
     // `--repro`
     // From https://github.com/docker-library/official-images/issues/16044
@@ -311,15 +313,15 @@ pub(crate) async fn build(
         bail!("Runner info: {status} [STDOUT {stdout}] [STDERR {stderr}]")
     }
 
-    if let Ok(path) = env::var(ENV_FINAL_PATH) {
+    if let Some(path) = green.final_path.as_deref() {
         info!("Writing final Dockerfile to {path}");
 
         //TODO: only write if final root pkg? => how to detect? parse cargo args?(:/)
         //TODO: use an atomic mv
 
-        let _ = fs::copy(dockerfile_path, &path)?;
+        let _ = fs::copy(dockerfile_path, path)?;
 
-        let mut file = OpenOptions::new().append(true).open(&path)?;
+        let mut file = OpenOptions::new().append(true).open(path)?;
         writeln!(file)?;
         writeln!(file)?;
         write!(file, "# Pipe this file to")?;

@@ -9,7 +9,7 @@ install_package=buildxargs@1.4.0
 install_root=$(mktemp -d)
 
 export CARGOGREEN_FINAL_PATH=./hack/$install_package.Dockerfile
-export RUSTCBUILDX_SYNTAX=docker-image://docker.io/docker/dockerfile:1@sha256:4c68376a702446fc3c79af22de146a148bc3367e73c25a5803d453b6b3f722fb # TODO: change env name
+export CARGOGREEN_SYNTAX=docker-image://docker.io/docker/dockerfile:1@sha256:4c68376a702446fc3c79af22de146a148bc3367e73c25a5803d453b6b3f722fb
 export CARGOGREEN_BASE_IMAGE=docker-image://docker.io/library/rust:1.84.1-slim@sha256:69fbd6ab81b514580bc14f35323fecb09feba9e74c5944ece9a70d9a2a369df0
 export CARGOGREEN_LOG=trace
 export RUSTCBUILDX_LOG_PATH=$(mktemp) #TODO: change env name to CARGOGREEN_LOG_PATH

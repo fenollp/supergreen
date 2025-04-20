@@ -7,10 +7,10 @@ use serde_jsonlines::AsyncBufReadJsonLines;
 use tokio::io::BufReader;
 
 use crate::{
-    cargo_green::ENV_RUNNER,
-    envs::{base_image, builder_image, cache_image, incremental, internal, log_path, syntax},
+    cargo_green::{ENV_BUILDER_IMAGE, ENV_FINAL_PATH, ENV_RUNNER, ENV_SYNTAX},
+    envs::{cache_image, incremental, internal, log_path},
     extensions::ShowCmd,
-    green::Green,
+    green::{Green, ENV_BASE_IMAGE, ENV_BASE_IMAGE_INLINE},
     runner::runner_cmd,
 };
 
@@ -23,7 +23,7 @@ use crate::{
 pub(crate) async fn main(green: Green, arg1: Option<&str>, args: Vec<String>) -> Result<()> {
     match arg1 {
         None | Some("-h" | "--help" | "-V" | "--version") => help(),
-        Some("env") => envs(green, args).await,
+        Some("env") => envs(green, args),
         Some("pull") => return pull(green).await,
         Some("push") => return push(green).await,
         Some(arg) => bail!("Unexpected supergreen command {arg:?}"),
@@ -128,43 +128,50 @@ async fn all_tags_of(green: &Green, img: &str) -> Result<Vec<String>> {
         .await)
 }
 
-async fn envs(green: Green, vars: Vec<String>) {
+fn envs(green: Green, vars: Vec<String>) {
     let all: BTreeMap<_, _> = [
         (internal::RUSTCBUILDX, internal::this()),
-        (internal::RUSTCBUILDX_BASE_IMAGE, Some(base_image(&green).await.base())),
-        (internal::RUSTCBUILDX_BUILDER_IMAGE, Some(builder_image(&green).await.to_owned())),
+        (ENV_BASE_IMAGE, Some(green.image.base_image)),
+        (ENV_BASE_IMAGE_INLINE, green.image.base_image_inline),
+        (ENV_BUILDER_IMAGE, Some(green.builder_image)),
         (internal::RUSTCBUILDX_CACHE_IMAGE, cache_image().to_owned()),
         (internal::RUSTCBUILDX_INCREMENTAL, incremental().then_some("1".to_owned())),
         (internal::RUSTCBUILDX_LOG, internal::log()),
         (internal::RUSTCBUILDX_LOG_PATH, Some(log_path().to_owned())),
         (internal::RUSTCBUILDX_LOG_STYLE, internal::log_style()),
         (ENV_RUNNER, Some(green.runner.clone())),
-        (internal::RUSTCBUILDX_SYNTAX, Some(syntax(&green).await.to_owned())),
+        (ENV_SYNTAX, Some(green.syntax)),
+        (ENV_FINAL_PATH, green.final_path.map(|x| x.to_string())),
+        // (ENV_ADD_APK, Some(green.add.apk)), FIXME: CSV
+        // (ENV_ADD_APT, Some(green.add.apt)), FIXME: CSV
+        // (ENV_ADD_APT_GET, Some(green.add.apt_get)), FIXME: CSV
+        // (ENV_SET_ENVS, Some(green.set_envs)), FIXME: CSV
     ]
     .into_iter()
     .collect();
 
-    fn show(var: &str, o: &Option<String>) {
-        println!("{var}={val}", val = o.as_deref().unwrap_or_default());
+    fn show(var: &str, o: Option<&str>) {
+        println!("{var}={}", o.unwrap_or_default());
     }
 
     let mut empty_vars = true;
     for var in vars {
         if let Some(o) = all.get(&var.as_str()) {
-            show(&var, o);
+            show(&var, o.as_deref());
             empty_vars = false;
         }
     }
     if empty_vars {
-        all.into_iter().for_each(|(var, o)| show(var, &o));
+        all.into_iter().for_each(|(var, o)| show(var, o.as_deref()));
     }
 }
 
 async fn pull(green: Green) -> Result<()> {
     let imgs = [
-        (internal::syntax(), syntax(&green).await),
-        (internal::base_image(), &base_image(&green).await.base()),
-        (internal::builder_image(), builder_image(&green).await),
+        (env::var(ENV_SYNTAX).ok(), green.syntax.as_str()),
+        (env::var(ENV_BASE_IMAGE).ok(), green.image.base_image.as_str()),
+        (env::var(ENV_BUILDER_IMAGE).ok(), green.builder_image.as_str()),
+        //FIXME: also pull xx image if needed
     ]; // NOTE: we don't pull cache_image()
 
     let mut to_pull = Vec::with_capacity(imgs.len());

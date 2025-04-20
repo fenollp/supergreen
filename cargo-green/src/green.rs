@@ -1,11 +1,22 @@
 use std::{collections::HashSet, env};
 
-use anyhow::{anyhow, bail, Context, Result};
-use camino::{absolute_utf8, Utf8PathBuf};
+use anyhow::{anyhow, bail, Result};
+use camino::Utf8PathBuf;
 use cargo_toml::Manifest;
 use serde::{Deserialize, Serialize};
 
-use crate::{base::RUST, lockfile::find_manifest_path};
+use crate::{
+    base::{BaseImage, RUST},
+    lockfile::find_manifest_path,
+};
+
+// Envs that override Cargo.toml settings
+pub(crate) const ENV_BASE_IMAGE: &str = "CARGOGREEN_BASE_IMAGE";
+pub(crate) const ENV_BASE_IMAGE_INLINE: &str = "CARGOGREEN_BASE_IMAGE_INLINE";
+pub(crate) const ENV_ADD_APK: &str = "CARGOGREEN_ADD_APK";
+pub(crate) const ENV_ADD_APT: &str = "CARGOGREEN_ADD_APT";
+pub(crate) const ENV_ADD_APT_GET: &str = "CARGOGREEN_ADD_APT_GET";
+pub(crate) const ENV_SET_ENVS: &str = "CARGOGREEN_SET_ENVS";
 
 #[derive(Debug, Deserialize)]
 struct GreenMetadata {
@@ -27,7 +38,7 @@ pub(crate) struct Add {
 
 impl Add {
     #[must_use]
-    fn is_empty(&self) -> bool {
+    pub(crate) fn is_empty(&self) -> bool {
         self.apk.is_empty() && self.apt.is_empty() && self.apt_get.is_empty()
     }
 }
@@ -43,45 +54,34 @@ pub(crate) struct Green {
     // CARGOGREEN_RUNNER="docker"
     pub(crate) runner: String, //TODO: type(enum)
 
+    // Sets which BuildKit frontend syntax to use.
+    //
+    // See https://docs.docker.com/build/buildkit/frontend/#stable-channel
+    //
+    // # Use by setting this environment variable (no Cargo.toml setting):
+    // CARGOGREEN_SYNTAX="docker-image://docker.io/docker/dockerfile:1"
+    pub(crate) syntax: String, //TODO? type(uri?)
+
+    // Sets which BuildKit builder to use.
+    //
+    // See https://docs.docker.com/build/builders/
+    //
+    // # Use by setting this environment variable (no Cargo.toml setting):
+    // CARGOGREEN_BUILDER_IMAGE="docker-image://docker.io/moby/buildkit:latest"
+    #[serde(skip_serializing_if = "str::is_empty")]
+    pub(crate) builder_image: String, //TODO? type(uri?)
+
     // Write final Dockerfile to given path.
     //
     // Helps e.g. create a Dockerfile with caching for dependencies.
     //
     // # Use by setting this environment variable (no Cargo.toml setting):
-    // CARGOGREEN_FINAL_PATH="Dockerfile"
-    #[serde(skip)]
+    // CARGOGREEN_FINAL_PATH="$PWD/my-bin@1.0.0.Dockerfile"
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub(crate) final_path: Option<Utf8PathBuf>,
 
-    // Sets the base Rust image, as an image URL.
-    // See also:
-    //   `also-run`
-    //   `base-image-inline`
-    //   `additional-build-arguments`
-    // For remote builds: make sure this is accessible non-locally.
-    //
-    // base-image = "docker-image://docker.io/library/rust:1-slim"
-    //
-    // # This environment variable takes precedence over any Cargo.toml settings:
-    // CARGOGREEN_BASE_IMAGE=docker-image://docker.io/library/rust:1-slim
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub(crate) base_image: Option<String>,
-
-    // Sets the base Rust image for root package and all dependencies, unless themselves being configured differently.
-    // See also:
-    //   `additional-build-arguments`
-    // In order to avoid unexpected changes, you may want to pin the image using an immutable digest.
-    // Note that carefully crafting crossplatform stages can be non-trivial.
-    //
-    // base-image-inline = """
-    // FROM --platform=$BUILDPLATFORM rust:1 AS rust-base
-    // RUN --mount=from=some-context,target=/tmp/some-context cp -r /tmp/some-context ./
-    // RUN --mount=type=secret,id=aws
-    // """
-    //
-    // # This environment variable takes precedence over any Cargo.toml settings:
-    // CARGOGREEN_BASE_IMAGE="FROM=rust:1 AS rust-base\nRUN --mount=from=some-context,target=/tmp/some-context cp -r /tmp/some-context ./\nRUN --mount=type=secret,id=aws\n"
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub(crate) base_image_inline: Option<String>,
+    #[serde(flatten)]
+    pub(crate) image: BaseImage,
 
     // Pass environment variables through to build runner.
     // $CARGOGREEN_SET_ENVS overrides this setting.
@@ -109,70 +109,42 @@ pub(crate) struct Green {
     pub(crate) add: Add,
 }
 
-pub(crate) const ENV_BASE_IMAGE: &str = "CARGOGREEN_BASE_IMAGE";
-pub(crate) const ENV_BASE_IMAGE_INLINE: &str = "CARGOGREEN_BASE_IMAGE_INLINE";
-pub(crate) const ENV_FINAL_PATH: &str = "CARGOGREEN_FINAL_PATH";
-pub(crate) const ENV_ADD_APK: &str = "CARGOGREEN_ADD_APK";
-pub(crate) const ENV_ADD_APT: &str = "CARGOGREEN_ADD_APT";
-pub(crate) const ENV_ADD_APT_GET: &str = "CARGOGREEN_ADD_APT_GET";
-pub(crate) const ENV_SET_ENVS: &str = "CARGOGREEN_SET_ENVS";
-
 impl Green {
     // TODO: handle worskpace cfg + merging fields
     // TODO: find a way to read cfg on `cargo install <non-local code>` cc https://github.com/rust-lang/cargo/issues/9700#issuecomment-2748617896
     pub(crate) fn new_from_env_then_manifest() -> Result<Self> {
         let manifest_path = find_manifest_path()?;
 
-        let manifest =
-            Manifest::from_path(&manifest_path) //hmmmm this searches workspace tho
-                .with_context(|| anyhow!("Reading package manifest {manifest_path}"))?;
+        let manifest = Manifest::from_path(&manifest_path)
+            .map_err(|e| anyhow!("Can't read package manifest {manifest_path}: {e}"))?;
 
-        Self::try_new(&manifest)
+        Self::try_new(manifest)
     }
 
-    fn try_new(manifest: &Manifest) -> Result<Self> {
-        let mut green =
-            if let Some(metadata) = manifest.package.as_ref().and_then(|x| x.metadata.as_ref()) {
-                let GreenMetadata { green } = toml::from_str(&toml::to_string(metadata)?)?;
-                green
-            } else {
-                Self::default()
-            };
-
-        // NOTE: only settable via env
-        // TODO? provide a way to export final as flatpack
-        let origin = format!("${ENV_FINAL_PATH}");
-        if let Ok(path) = env::var(ENV_FINAL_PATH) {
-            if path.is_empty() {
-                bail!("green: {origin} is empty")
-            }
-            if path == "-" {
-                bail!("green: {origin} must not be {path:?}")
-            }
-            let path = absolute_utf8(path).with_context(|| format!("Canonicalizing {origin}"))?;
-            green.final_path = Some(path);
+    fn try_new(manifest: Manifest) -> Result<Self> {
+        let mut green = Self::default();
+        if let Some(metadata) = manifest.package.and_then(|x| x.metadata) {
+            let GreenMetadata { green: from_manifest } = metadata.try_into()?;
+            green = from_manifest;
         }
 
         let mut origin = "[metadata.green.base-image]".to_owned();
         if let Ok(val) = env::var(ENV_BASE_IMAGE) {
             origin = format!("${ENV_BASE_IMAGE}");
-            green.base_image = Some(val);
+            green.image = BaseImage::from_image(val);
         }
-        if let Some(ref base_image) = green.base_image {
-            if base_image.is_empty() {
-                bail!("{origin} is empty")
-            }
-            if !base_image.starts_with("docker-image://") {
-                bail!("{origin} unsupported scheme")
-            }
+        if !green.image.base_image.is_empty()
+            && !green.image.base_image.starts_with("docker-image://")
+        {
+            bail!("{origin} unsupported scheme: {:?}", green.image.base_image)
         }
 
         let mut origin = "[metadata.green.base-image-inline]".to_owned();
         if let Ok(val) = env::var(ENV_BASE_IMAGE_INLINE) {
             origin = format!("${ENV_BASE_IMAGE_INLINE}");
-            green.base_image_inline = Some(val);
+            green.image.base_image_inline = Some(val);
         }
-        if let Some(ref base_image_inline) = green.base_image_inline {
+        if let Some(ref base_image_inline) = green.image.base_image_inline {
             if base_image_inline.is_empty() {
                 bail!("{origin} is empty")
             }
@@ -185,8 +157,14 @@ impl Green {
             }
         }
 
-        if green.base_image.is_some() && green.base_image_inline.is_some() {
-            bail!("[metadata.green.{{base-image or base-image-inline}}]? pick one")
+        if let Some(ref base_image_inline) = green.image.base_image_inline {
+            let base = green.image.base_image.trim_start_matches("docker-image://");
+            if base.is_empty() || !base_image_inline.contains(&format!(" {base} ")) {
+                bail!("Make sure to match [metadata.green.base-image] with the image URL used in [metadata.green.base-image-inline]")
+            }
+        }
+        if green.image.is_unset() {
+            green.image = BaseImage::from_local_rustc();
         }
 
         let mut origin = "[metadata.green.set-envs]".to_owned();
@@ -196,7 +174,7 @@ impl Green {
                 bail!("{origin} is empty")
             }
             green.set_envs =
-                serde_json::from_str(&val).with_context(|| format!("Parsing {origin}"))?;
+                serde_json::from_str(&val).map_err(|e| anyhow!("Failed parsing {origin}: {e}"))?;
         }
         if !green.set_envs.is_empty() {
             if green.set_envs.iter().any(String::is_empty) {
@@ -224,7 +202,8 @@ impl Green {
                 if val.is_empty() {
                     bail!("{origin} is empty")
                 }
-                *field = serde_json::from_str(&val).with_context(|| format!("Parsing {origin}"))?;
+                *field = serde_json::from_str(&val)
+                    .map_err(|e| anyhow!("Failed parsing {origin}: {e}"))?;
             }
             if !field.is_empty() {
                 if field.iter().any(String::is_empty) {
@@ -251,7 +230,7 @@ name = "test-package"
 "#,
     )
     .unwrap();
-    Green::try_new(&manifest).unwrap();
+    Green::try_new(manifest).unwrap();
 }
 
 //
@@ -270,7 +249,7 @@ add.apk = [ "libpq-dev", "pkgconf" ]
 "#,
     )
     .unwrap();
-    let green = Green::try_new(&manifest).unwrap();
+    let green = Green::try_new(manifest).unwrap();
     assert_eq!(green.add.apt, vec!["libpq-dev".to_owned(), "pkg-config".to_owned()]);
     assert_eq!(green.add.apt_get, vec!["libpq-dev".to_owned(), "pkg-config".to_owned()]);
     assert_eq!(green.add.apk, vec!["libpq-dev".to_owned(), "pkgconf".to_owned()]);
@@ -289,8 +268,8 @@ add.{setting} = [ "" ]
 "#
     ))
     .unwrap();
-    let err = Green::try_new(&manifest).err().unwrap().to_string();
-    assert!(err.contains("empty"));
+    let err = Green::try_new(manifest).err().unwrap().to_string();
+    assert!(err.contains("empty"), "In: {err}");
 }
 
 #[cfg(test)]
@@ -306,8 +285,8 @@ add.{setting} = [ "a", "b", "a" ]
             "#
     ))
     .unwrap();
-    let err = Green::try_new(&manifest).err().unwrap().to_string();
-    assert!(err.contains("duplicates"));
+    let err = Green::try_new(manifest).err().unwrap().to_string();
+    assert!(err.contains("duplicates"), "In: {err}");
 }
 
 //
@@ -324,7 +303,7 @@ set-envs = [ "GIT_AUTH_TOKEN", "TYPENUM_BUILD_CONSTS", "TYPENUM_BUILD_OP" ]
 "#,
     )
     .unwrap();
-    let green = Green::try_new(&manifest).unwrap();
+    let green = Green::try_new(manifest).unwrap();
     assert_eq!(
         green.set_envs,
         vec![
@@ -347,8 +326,8 @@ set-envs = [ "" ]
 "#,
     )
     .unwrap();
-    let err = Green::try_new(&manifest).err().unwrap().to_string();
-    assert!(err.contains("empty name"));
+    let err = Green::try_new(manifest).err().unwrap().to_string();
+    assert!(err.contains("empty name"), "In: {err}");
 }
 
 #[test]
@@ -363,8 +342,8 @@ set-envs = [ "CARGOGREEN_LOG" ]
 "#,
     )
     .unwrap();
-    let err = Green::try_new(&manifest).err().unwrap().to_string();
-    assert!(err.contains("CARGOGREEN"));
+    let err = Green::try_new(manifest).err().unwrap().to_string();
+    assert!(err.contains("CARGOGREEN"), "In: {err}");
 }
 
 #[test]
@@ -379,8 +358,8 @@ set-envs = [ "A", "B", "A" ]
 "#,
     )
     .unwrap();
-    let err = Green::try_new(&manifest).err().unwrap().to_string();
-    assert!(err.contains("duplicates"));
+    let err = Green::try_new(manifest).err().unwrap().to_string();
+    assert!(err.contains("duplicates"), "In: {err}");
 }
 
 //
@@ -397,24 +376,8 @@ base-image = "docker-image://docker.io/library/rust:1"
 "#,
     )
     .unwrap();
-    let green = Green::try_new(&manifest).unwrap();
-    assert_eq!(green.base_image, Some("docker-image://docker.io/library/rust:1".to_owned()));
-}
-
-#[test]
-fn metadata_green_base_image_empty() {
-    let manifest = Manifest::from_str(
-        r#"
-[package]
-name = "test-package"
-
-[package.metadata.green]
-base-image = ""
-"#,
-    )
-    .unwrap();
-    let err = Green::try_new(&manifest).err().unwrap().to_string();
-    assert!(err.contains("empty"));
+    let green = Green::try_new(manifest).unwrap();
+    assert_eq!(green.image.base_image, "docker-image://docker.io/library/rust:1");
 }
 
 #[test]
@@ -429,8 +392,8 @@ base-image = "docker.io/library/rust:1"
 "#,
     )
     .unwrap();
-    let err = Green::try_new(&manifest).err().unwrap().to_string();
-    assert!(err.contains("scheme"));
+    let err = Green::try_new(manifest).err().unwrap().to_string();
+    assert!(err.contains("scheme"), "In: {err}");
 }
 
 #[test]
@@ -450,8 +413,8 @@ RUN --mount=type=secret,id=aws
 "#,
     )
     .unwrap();
-    let err = Green::try_new(&manifest).err().unwrap().to_string();
-    assert!(err.contains("pick one"));
+    let err = Green::try_new(manifest).err().unwrap().to_string();
+    assert!(err.contains("to match"), "In: {err}");
 }
 
 //
@@ -464,6 +427,7 @@ fn metadata_green_base_image_inline_ok() {
 name = "test-package"
 
 [package.metadata.green]
+base-image = "docker-image://rust:1"
 base-image-inline = """
 # syntax = ghcr.io/reproducible-containers/buildkit-nix:v0.1.1@sha256:7d4c42a5c6baea2b21145589afa85e0862625e6779c89488987266b85e088021 <-- gets ignored
 FROM rust:1 AS rust-base
@@ -473,9 +437,9 @@ RUN --mount=type=secret,id=aws
 "#,
         )
         .unwrap();
-    let green = Green::try_new(&manifest).unwrap();
+    let green = Green::try_new(manifest).unwrap();
     assert_eq!(
-            green.base_image_inline,
+            green.image.base_image_inline,
             Some(
                 r#"
 # syntax = ghcr.io/reproducible-containers/buildkit-nix:v0.1.1@sha256:7d4c42a5c6baea2b21145589afa85e0862625e6779c89488987266b85e088021 <-- gets ignored
@@ -500,8 +464,8 @@ base-image-inline = ""
 "#,
     )
     .unwrap();
-    let err = Green::try_new(&manifest).err().unwrap().to_string();
-    assert!(err.contains("empty"));
+    let err = Green::try_new(manifest).err().unwrap().to_string();
+    assert!(err.contains("empty"), "In: {err}");
 }
 
 #[test]
@@ -519,20 +483,28 @@ RUN exit 42
 "#,
     )
     .unwrap();
-    let err = Green::try_new(&manifest).err().unwrap().to_string();
-    assert!(err.contains("provide"));
-    assert!(err.contains("stage"));
-    assert!(err.contains("'rust-base'"));
+    let err = Green::try_new(manifest).err().unwrap().to_string();
+    assert!(err.contains("provide"), "In: {err}");
+    assert!(err.contains("stage"), "In: {err}");
+    assert!(err.contains("'rust-base'"), "In: {err}");
 }
 
 //////////////////////////////////////////////////
-// https://lib.rs/crates/cargo_metadata
-// https://github.com/stormshield/cargo-ft/blob/d4ba5b048345ab4b21f7992cc6ed12afff7cc863/src/package/metadata.rs
-
 // from https://github.com/PRQL/prql/pull/3773/files
 // [profile.release.package.prql-compiler]
 // strip = "debuginfo"
 //=> look into how `[profile.release.package.PACKAGE]` settings are propagated
+
+// TODO: cli config / profiles https://github.com/rust-lang/cargo/wiki/Third-party-cargo-subcommands
+//   * https://docs.rs/figment/latest/figment/
+//   * https://lib.rs/crates/toml_edit
+//   * https://github.com/jdrouet/serde-toml-merge
+//   * https://crates.io/crates/toml-merge
+// https://github.com/cbourjau/cargo-with
+// https://github.com/RazrFalcon/cargo-bloat
+// https://lib.rs/crates/cargo_metadata
+// https://github.com/stormshield/cargo-ft/blob/d4ba5b048345ab4b21f7992cc6ed12afff7cc863/src/package/metadata.rs
+
 //////////////////////////////////////////////////
 
 // use error_stack::{report, Context, ResultExt};

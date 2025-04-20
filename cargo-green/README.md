@@ -16,7 +16,8 @@ Reads envs
 * [`$DOCKER_HOST`](https://docs.docker.com/engine/reference/commandline/cli/#environment-variables)
 
 * `$RUSTCBUILDX`
-* `$RUSTCBUILDX_BASE_IMAGE`
+* `$CARGOGREEN_BASE_IMAGE`
+* `$CARGOGREEN_BASE_IMAGE_INLINE`
 * `$RUSTCBUILDX_BUILDER_IMAGE`
 * `$RUSTCBUILDX_CACHE_IMAGE`
 * `$RUSTCBUILDX_INCREMENTAL`
@@ -25,7 +26,7 @@ Reads envs
 * `$RUSTCBUILDX_LOG_STYLE`
 * `$CARGOGREEN_RUNNER`
 * `$RUSTCBUILDX_RUNS_ON_NETWORK`
-* `$RUSTCBUILDX_SYNTAX`
+* `$CARGOGREEN_SYNTAX`
 
 Sets
 * [`$RUSTC_WRAPPER`](https://doc.rust-lang.org/cargo/reference/environment-variables.html#environment-variables-cargo-reads)

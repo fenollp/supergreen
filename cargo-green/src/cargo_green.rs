@@ -5,16 +5,15 @@ use std::{
 };
 
 use anyhow::{anyhow, bail, Result};
-use camino::Utf8PathBuf;
+use camino::{absolute_utf8, Utf8PathBuf};
 use log::{debug, info, trace};
 use tokio::process::Command;
 
 use crate::{
-    base::BaseImage,
     cratesio::{self},
-    envs::{builder_image, cache_image, incremental, internal, maybe_log, DEFAULT_SYNTAX},
+    envs::{cache_image, incremental, internal, maybe_log},
     extensions::ShowCmd,
-    green::{Green, ENV_FINAL_PATH},
+    green::{Green, ENV_BASE_IMAGE},
     lockfile::{find_lockfile, locked_crates},
     logging,
     runner::{build, fetch_digest, maybe_lock_image, runner_cmd},
@@ -23,7 +22,10 @@ use crate::{
 };
 
 // Env-only settings (no Cargo.toml equivalent setting)
+pub(crate) const ENV_BUILDER_IMAGE: &str = "CARGOGREEN_BUILDER_IMAGE";
+pub(crate) const ENV_FINAL_PATH: &str = "CARGOGREEN_FINAL_PATH";
 pub(crate) const ENV_RUNNER: &str = "CARGOGREEN_RUNNER";
+pub(crate) const ENV_SYNTAX: &str = "CARGOGREEN_SYNTAX";
 
 pub(crate) async fn main(cmd: &mut Command) -> Result<Green> {
     // TODO: TUI above cargo output (? https://docs.rs/prodash )
@@ -45,8 +47,9 @@ pub(crate) async fn main(cmd: &mut Command) -> Result<Green> {
     assert!(env::var_os("RUSTCBUILDX").is_none());
 
     // This exports vars so they will be accessible by later-spawned $RUSTC_WRAPPER.
+    // TODO: separate env reading from env setting.
+    // TODO: get from ENV..SETTINGS, avoid most env setting.
 
-    // Not calling envs::{syntax,base_image} directly so value isn't locked now.
     // Goal: produce only fully-locked Dockerfiles/TOMLs
 
     assert!(env::var_os("CARGOGREEN").is_none());
@@ -63,44 +66,60 @@ pub(crate) async fn main(cmd: &mut Command) -> Result<Green> {
         bail!("${ENV_RUNNER} must be either 'docker', 'podman' or 'none' not {:?}", green.runner)
     }
 
+    const SYNTAX: &str = "docker-image://docker.io/docker/dockerfile:1";
+    if !green.syntax.is_empty() {
+        bail!("${ENV_SYNTAX} can only be set through the environment variable")
+    }
+    green.syntax = env::var(ENV_SYNTAX).unwrap_or_else(|_| SYNTAX.to_owned());
     // Use local hashed image if one matching exists locally
-    let syntax =
-        maybe_lock_image(&green, &internal::syntax().unwrap_or(DEFAULT_SYNTAX.to_owned())).await;
+    green.syntax = maybe_lock_image(&green, &green.syntax).await;
     // otherwise default to a hash found through some Web API
-    let syntax = fetch_digest(&syntax).await?;
-    env::set_var(internal::RUSTCBUILDX_SYNTAX, syntax);
-    //TODO: no longer allow completely changing syntax=
-    //actually just allow setting digest part => enforce prefix up to before '@'
-    //TODO: also start a tokio race between local and remote syntax digest lookups
-    // start very early in cargo-green, pick winner here.
+    green.syntax = fetch_digest(&green.syntax).await?;
+    env::set_var(ENV_SYNTAX, &green.syntax);
+    if !green.syntax.starts_with(SYNTAX) {
+        // Enforce a known stable syntax + allow pinning to digest
+        bail!("${ENV_SYNTAX} must be a digest of {SYNTAX}")
+    }
 
-    let green = Green::new_from_env_then_manifest()?;
+    const BUILDER_IMAGE: &str = "docker-image://docker.io/moby/buildkit:buildx-stable-1";
+    if !green.builder_image.is_empty() {
+        bail!("${ENV_BUILDER_IMAGE} can only be set through the environment variable")
+    }
+    green.builder_image = env::var(ENV_BUILDER_IMAGE).unwrap_or_else(|_| BUILDER_IMAGE.to_owned());
+    green.builder_image = maybe_lock_image(&green, &green.builder_image).await;
+    // FIXME: should be Option<_> and default to local builder
+    if !green.builder_image.starts_with("docker-image://") {
+        bail!("${ENV_BUILDER_IMAGE} must be a docker-image://")
+    }
 
-    if let Some(ref path) = green.final_path {
+    if green.final_path.is_some() {
+        bail!("${ENV_FINAL_PATH} can only be set through the environment variable")
+    }
+    // NOTE: only settable via env
+    // TODO? provide a way to export final as flatpack
+    if let Ok(path) = env::var(ENV_FINAL_PATH) {
+        if path.is_empty() {
+            bail!("${ENV_FINAL_PATH} is empty")
+        }
+        if path == "-" {
+            bail!("${ENV_FINAL_PATH} must not be {path:?}")
+        }
+        let path = absolute_utf8(path)
+            .map_err(|e| anyhow!("Failed canonicalizing ${ENV_FINAL_PATH}: {e}"))?;
         if let Some(dir) = path.parent() {
             fs::create_dir_all(dir).map_err(|e| anyhow!("Failed `mkdir -p {dir}`: {e}"))?;
         }
-        cmd.env(ENV_FINAL_PATH, path);
+        green.final_path = Some(path);
     }
 
-    let mut base_image = if let Some(ref base_image) = green.base_image {
-        BaseImage::Image(base_image.clone())
-    } else {
-        BaseImage::from_rustc_v()?.maybe_lock_base(&green).await
-    };
-    let base = base_image.base();
-    if !base.contains('@') {
-        base_image = base_image.lock_base_to(fetch_digest(&base).await?);
+    if !green.image.base_image.contains('@') {
+        let base = fetch_digest(&green.image.base_image).await?;
+        green.image = green.image.lock_base_to(base);
     }
-    env::set_var(internal::RUSTCBUILDX_BASE_IMAGE, base_image.base());
+    env::set_var(ENV_BASE_IMAGE, &green.image.base_image); // TODO? drop
 
-    let (mut base_image_block, mut with_network) =
-        if let Some(ref base_image_inline) = green.base_image_inline {
-            (base_image_inline.clone(), true)
-        } else {
-            base_image.block()
-        };
-    if !green.add.apt_get.is_empty() || !green.add.apt.is_empty() || !green.add.apk.is_empty() {
+    let (mut base_image_block, mut with_network) = green.image.block();
+    if !green.add.is_empty() {
         with_network = true;
         base_image_block = format!(
             r#"
@@ -130,7 +149,7 @@ RUN \
       xx-apt-get install --no-install-recommends -y {apt_get}; \
      fi
 "#,
-            xx = "tonistiigi/xx", //lock dis
+            xx = "tonistiigi/xx", //TODO: lock dis
             apk = &green.add.apk.join(" "),
             apt = &green.add.apt.join(" "),
             apt_get = &green.add.apt_get.join(" "),
@@ -147,8 +166,6 @@ RUN \
     //TODO: CARGOGREEN_NETWORK= <unset> | default | none | host
     //=> see also `base-image-inline`
     //=> auto set to "default" when using `add.{apk,apt,apt-get}` and maybe others
-
-    let builder_image = builder_image(&green).await;
 
     // don't pull
     if let Some(val) = cache_image() {
@@ -192,9 +209,7 @@ RUN \
         //     env::set_var("DOCKER_CONTEXT", "supergreen"); //FIXME: ensure this gets passed down & used
         panic!("$CARGOGREEN_REMOTE is reserved but set to: {remote}");
     } else if false {
-        // Images were pulled, we have to re-read their now-locked values now
-        let builder_image = maybe_lock_image(&green, builder_image).await;
-        setup_build_driver(&green, "supergreen", &builder_image).await?; // FIXME? maybe_..
+        setup_build_driver(&green, "supergreen").await?; // FIXME? maybe_..
         env::set_var("BUILDX_BUILDER", "supergreen");
 
         // TODO? docker dial-stdio proxy
@@ -210,13 +225,13 @@ RUN \
 // https://docs.docker.com/build/drivers/docker-container/
 // https://docs.docker.com/build/drivers/remote/
 // https://docs.docker.com/build/drivers/kubernetes/
-async fn setup_build_driver(green: &Green, name: &str, builder_image: &str) -> Result<()> {
+async fn setup_build_driver(green: &Green, name: &str) -> Result<()> {
     if false {
         // TODO: reuse old state but try auto-upgrading builder impl
         try_removing_previous_builder(green, name).await;
     }
 
-    let builder_image = builder_image.trim_start_matches("docker-image://");
+    let builder_image = green.builder_image.trim_start_matches("docker-image://");
 
     let mut cmd = runner_cmd(green);
     cmd.args(["buildx", "create"])
@@ -262,8 +277,7 @@ async fn try_removing_previous_builder(green: &Green, name: &str) {
 }
 
 pub(crate) async fn fetch(green: Green) -> Result<()> {
-    let syntax = internal::syntax().unwrap();
-    let syntax = syntax.trim_start_matches("docker-image://");
+    let syntax = green.syntax.trim_start_matches("docker-image://");
 
     logging::setup("fetch", internal::RUSTCBUILDX_LOG, internal::RUSTCBUILDX_LOG_STYLE);
     let _ = maybe_log();
