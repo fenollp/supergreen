@@ -95,7 +95,6 @@ pub(crate) async fn main(cmd: &mut Command) -> Result<Green> {
     if green.final_path.is_some() {
         bail!("${ENV_FINAL_PATH} can only be set through the environment variable")
     }
-    // NOTE: only settable via env
     // TODO? provide a way to export final as flatpack
     if let Ok(path) = env::var(ENV_FINAL_PATH) {
         if path.is_empty() {
