@@ -13,6 +13,7 @@ pub(crate) const ENV_ADD_APT: &str = "CARGOGREEN_ADD_APT";
 pub(crate) const ENV_ADD_APT_GET: &str = "CARGOGREEN_ADD_APT_GET";
 pub(crate) const ENV_BASE_IMAGE: &str = "CARGOGREEN_BASE_IMAGE";
 pub(crate) const ENV_BASE_IMAGE_INLINE: &str = "CARGOGREEN_BASE_IMAGE_INLINE";
+pub(crate) const ENV_INCREMENTAL: &str = "CARGOGREEN_INCREMENTAL";
 pub(crate) const ENV_SET_ENVS: &str = "CARGOGREEN_SET_ENVS";
 
 /// Settings for building this package with `cargo-green`
@@ -126,6 +127,15 @@ pub(crate) struct Green {
     // CARGOGREEN_RUNNER="docker"
     pub(crate) runner: String, //TODO: type(enum)
 
+    // Whether to wrap incremental compilation, defaults to false.
+    //
+    // See https://doc.rust-lang.org/cargo/reference/config.html#buildincremental
+    //
+    // # Use by setting this environment variable (no Cargo.toml setting):
+    // CARGOGREEN_INCREMENTAL="1"
+    #[serde(skip_serializing_if = "<&bool as std::ops::Not>::not")]
+    pub(crate) incremental: bool,
+
     // Sets which BuildKit frontend syntax to use.
     //
     // See https://docs.docker.com/build/buildkit/frontend/#stable-channel
@@ -202,6 +212,10 @@ impl Green {
         if let Some(metadata) = manifest.package.and_then(|x| x.metadata) {
             let GreenMetadata { green: from_manifest } = metadata.try_into()?;
             green = from_manifest;
+        }
+
+        if let Ok(val) = env::var(ENV_INCREMENTAL) {
+            green.incremental = val == "1";
         }
 
         let mut origin = "[metadata.green.base-image]".to_owned();

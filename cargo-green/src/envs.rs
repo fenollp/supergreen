@@ -5,7 +5,6 @@ pub(crate) mod internal {
 
     pub const RUSTCBUILDX: &str = "RUSTCBUILDX";
     pub const RUSTCBUILDX_CACHE_IMAGE: &str = "RUSTCBUILDX_CACHE_IMAGE";
-    pub const RUSTCBUILDX_INCREMENTAL: &str = "RUSTCBUILDX_INCREMENTAL";
 
     #[must_use]
     pub fn this() -> Option<String> {
@@ -15,21 +14,11 @@ pub(crate) mod internal {
     pub fn cache_image() -> Option<String> {
         env::var(RUSTCBUILDX_CACHE_IMAGE).ok().and_then(|x| (!x.is_empty()).then_some(x))
     }
-    #[must_use]
-    pub fn incremental() -> Option<String> {
-        env::var(RUSTCBUILDX_INCREMENTAL).ok()
-    }
 }
 
 #[must_use]
 pub(crate) fn this() -> bool {
     internal::this().map(|x| x == "1").unwrap_or_default()
-}
-
-#[must_use]
-pub(crate) fn incremental() -> bool {
-    static ONCE: OnceLock<bool> = OnceLock::new();
-    *ONCE.get_or_init(|| internal::incremental().map(|x| x == "1").unwrap_or_default())
 }
 
 // A Docker image path with registry information.

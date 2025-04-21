@@ -15,7 +15,7 @@ use tokio::process::Command;
 use crate::{
     checkouts,
     cratesio::{self, rewrite_cratesio_index},
-    envs::{self, internal, pass_env, this},
+    envs::{internal, pass_env, this},
     extensions::{Popped, ShowCmd},
     green::Green,
     logging::{self, crate_type_for_logging, maybe_log, ENV_LOG},
@@ -190,7 +190,7 @@ async fn do_wrap_rustc(
 ) -> Result<()> {
     let debug = maybe_log();
 
-    let incremental = envs::incremental().then_some(incremental).flatten();
+    let incremental = green.incremental.then_some(incremental).flatten();
 
     // NOTE: not `out_dir`
     let crate_out = if let Some(crate_out) = out_dir_var {

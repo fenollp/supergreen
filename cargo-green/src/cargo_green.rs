@@ -12,7 +12,7 @@ use tokio::{process::Command, try_join};
 
 use crate::{
     cratesio::{self},
-    envs::{cache_image, incremental, internal},
+    envs::{cache_image, internal},
     extensions::ShowCmd,
     green::{Green, ENV_BASE_IMAGE},
     hash, hashed_args,
@@ -128,10 +128,6 @@ pub(crate) async fn main(cmd: &mut Command) -> Result<Green> {
     if let Some(val) = cache_image() {
         cmd.env(internal::RUSTCBUILDX_CACHE_IMAGE, val);
         //TODO: $CARGOGREEN_IMAGE_CACHES? (comma separated)
-    }
-
-    if incremental() {
-        cmd.env(internal::RUSTCBUILDX_INCREMENTAL, "1");
     }
 
     // FIXME "multiplex conns to daemon" https://github.com/docker/buildx/issues/2564#issuecomment-2207435201

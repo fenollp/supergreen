@@ -8,11 +8,11 @@ use tokio::io::BufReader;
 
 use crate::{
     cargo_green::{ENV_BUILDER_IMAGE, ENV_FINAL_PATH, ENV_RUNNER, ENV_SYNTAX},
-    envs::{cache_image, incremental, internal},
+    envs::{cache_image, internal},
     extensions::ShowCmd,
     green::{
         Green, ENV_ADD_APK, ENV_ADD_APT, ENV_ADD_APT_GET, ENV_BASE_IMAGE, ENV_BASE_IMAGE_INLINE,
-        ENV_SET_ENVS,
+        ENV_INCREMENTAL, ENV_SET_ENVS,
     },
     logging::{ENV_LOG, ENV_LOG_PATH, ENV_LOG_STYLE},
     runner::runner_cmd,
@@ -136,7 +136,7 @@ fn envs(green: Green, vars: Vec<String>) {
     let all = vec![
         (internal::RUSTCBUILDX, internal::this()),
         (internal::RUSTCBUILDX_CACHE_IMAGE, cache_image().to_owned()),
-        (internal::RUSTCBUILDX_INCREMENTAL, incremental().then_some("1".to_owned())),
+        (ENV_INCREMENTAL, green.incremental.then(|| "1".to_owned())),
         (ENV_ADD_APK, csv(&green.add.apk)),
         (ENV_ADD_APT, csv(&green.add.apt)),
         (ENV_ADD_APT_GET, csv(&green.add.apt_get)),
