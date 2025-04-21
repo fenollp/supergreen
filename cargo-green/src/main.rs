@@ -118,8 +118,6 @@ async fn main() -> Result<()> {
     }
     cmd.args(args);
 
-    cargo_green::maybe_prebuild_base(&green).await?;
-
     //TODO: https://github.com/messense/cargo-options/blob/086d7470cae34b0e694a62237e258fbd35384e93/examples/cargo-mimic.rs
     // maybe https://lib.rs/crates/clap-cargo
 
@@ -131,8 +129,11 @@ async fn main() -> Result<()> {
         }
         return cargo_green::fetch(green).await;
     }
+    // TODO: `cargo clean` (even when `--dry-run` ?): list+rm .log + cfetch & prebuilt Dockerfiles + ...
+    //=> introduce fn.s to easily keep track of these
 
-    //TODO: also for cfetch
+    // After fetch: fetch pulls which may turn prebuilding into wasted work.
+    cargo_green::maybe_prebuild_base(&green).await?;
 
     if !cmd.status().await?.success() {
         exit(1)

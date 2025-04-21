@@ -250,6 +250,7 @@ pub(crate) async fn maybe_prebuild_base(green: &Green) -> Result<()> {
     // Turns out --network is part of BuildKit's cache key, so an initial online build
     // won't cache hit on later offline builds.
     build_cacheonly(green, &dockerfile_path, RUST.clone()).await.map_err(|e| {
+        // TODO: catch ^C (and co.) to make sure file gets removed
         let _ = fs::remove_file(&dockerfile_path);
         anyhow!("{header}\n\nUnable to build {RST}: {e}")
     })
