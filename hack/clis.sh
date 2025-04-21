@@ -384,7 +384,7 @@ as_env "$name_at_version"
 send \
   'until' '[[' -f "$tmpgooo".installed ']];' \
   'do' sleep '.1;' 'done' '&&' rm "$tmpgooo".* '&&' \
-    "${envvars[@]}" $CARGO green -vv install --timings --jobs=${jobs:-1} --root=$tmpbins --locked --offline --force "$(as_install "$name_at_version")" "$args" \
+    "${envvars[@]}" $CARGO green -vv install --timings --jobs=${jobs:-1} --root=$tmpbins --locked --force "$(as_install "$name_at_version")" "$args" \
   '&&' 'if' '[[' "$clean" '=' '1' ']];' 'then' docker buildx du --builder=supergreen --verbose '|' tee --append "$tmplogs" '||' 'exit' '1;' 'fi' \
   '&&' tmux kill-session -t "$session_name"
 tmux select-layout even-vertical
