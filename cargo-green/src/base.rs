@@ -178,8 +178,8 @@ impl RustcV {
             // From https://github.com/rust-lang/docker-rust/blob/d14e1ad7efeb270012b1a7e88fea699b1d1082f2/nightly/alpine3.20/Dockerfile
             apk: vec!["ca-certificates".to_owned(), "gcc".to_owned()],
             // From https://github.com/rust-lang/docker-rust/blob/d14e1ad7efeb270012b1a7e88fea699b1d1082f2/nightly/bullseye/slim/Dockerfile
+            apt: vec!["ca-certificates".to_owned(), "gcc".to_owned(), "libc6-dev".to_owned()],
             apt_get: vec!["ca-certificates".to_owned(), "gcc".to_owned(), "libc6-dev".to_owned()],
-            ..Default::default()
         }
         .as_block(&format!("FROM --platform=$BUILDPLATFORM {base} AS {RST}"));
 
@@ -195,7 +195,7 @@ ENV RUSTUP_HOME=/usr/local/rustup \
 RUN \
  --mount=from=rustup-{channel}-{date},source=/rustup-init,target=/rustup-init \
    set -eux \
-&& /rustup-init -y --no-modify-path --profile minimal --default-toolchain {channel}-{date} --default-host {host} \
+&& /rustup-init --verbose -y --no-modify-path --profile minimal --default-toolchain {channel}-{date} --default-host {host} \
 && chmod -R a+w $RUSTUP_HOME $CARGO_HOME \
 && rustup --version \
 && cargo --version \

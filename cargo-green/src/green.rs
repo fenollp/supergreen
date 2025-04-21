@@ -98,12 +98,20 @@ RUN \
     fi
 "#,
             last = last.trim(),
-            apk = self.apk.join("' '"),
-            apt = self.apt.join("' '"),
-            apt_get = self.apt_get.join("' '"),
+            apk = quote_pkgs(&self.apk),
+            apt = quote_pkgs(&self.apt),
+            apt_get = quote_pkgs(&self.apt_get),
         );
 
         (Network::Default, block)
+    }
+}
+
+fn quote_pkgs(pkgs: &[String]) -> String {
+    if pkgs.is_empty() {
+        "<empty>".to_owned()
+    } else {
+        pkgs.join("' '")
     }
 }
 
@@ -247,8 +255,8 @@ impl Green {
             green.set_envs = val.split(',').map(ToOwned::to_owned).collect();
         }
         if !green.set_envs.is_empty() {
-            if green.set_envs.iter().any(|x| x.is_empty() || x.contains(' ') || x.trim() != x) {
-                bail!("{origin} contains empty names or whitespace")
+            if bad_names(&green.set_envs) {
+                bail!("{origin} contains empty names, quotes or whitespace")
             }
             if green.set_envs.iter().any(|var| var.starts_with("CARGOGREEN_")) {
                 bail!("{origin} contains CARGOGREEN_* names")
@@ -275,8 +283,8 @@ impl Green {
                 *field = val.split(',').map(ToOwned::to_owned).collect();
             }
             if !field.is_empty() {
-                if field.iter().any(|x| x.is_empty() || x.contains(' ') || x.trim() != x) {
-                    bail!("{origin} contains empty names or whitespace")
+                if bad_names(field) {
+                    bail!("{origin} contains empty names, quotes or whitespace")
                 }
                 if field.len() != field.iter().collect::<HashSet<_>>().len() {
                     bail!("{origin} contains duplicates")
@@ -291,6 +299,11 @@ impl Green {
     pub(crate) fn set_envs(&self) -> String {
         self.set_envs.join(" ")
     }
+}
+
+#[must_use]
+fn bad_names(names: &[String]) -> bool {
+    names.iter().any(|x| x.is_empty() || x.contains([' ', '\'', '"']) || x.trim() != x)
 }
 
 #[test]
