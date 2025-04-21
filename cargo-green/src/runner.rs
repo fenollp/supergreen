@@ -9,7 +9,7 @@ use std::{
 };
 
 use anyhow::{anyhow, bail, Result};
-use camino::{Utf8Path, Utf8PathBuf};
+use camino::Utf8Path;
 use log::{debug, info};
 use reqwest::Client as ReqwestClient;
 use serde::{Deserialize, Serialize};
@@ -84,11 +84,10 @@ pub(crate) async fn fetch_digest(img: &str) -> Result<String> {
         return Ok(img.to_owned());
     }
     let img = img.trim_start_matches("docker-image://");
-    let Some((path, tag)) = img.split_once(':') else { bail!("Image is missing a tag: {img}") };
-    let path: Utf8PathBuf = path.into();
-    let (dir, img) = match path.iter().collect::<Vec<_>>()[..] {
+    let (path, tag) = img.split_once(':').unwrap_or((img, "latest"));
+    let (dir, img) = match Utf8Path::new(path).iter().collect::<Vec<_>>()[..] {
         ["docker.io", dir, img] => (dir, img),
-        _ => bail!("BUG: unhandled image path {path}"),
+        _ => bail!("BUG: unhandled registry {img:?}"),
     };
 
     let txt = ReqwestClient::builder()
