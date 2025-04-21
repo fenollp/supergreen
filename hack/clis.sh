@@ -83,7 +83,7 @@ declare -a nvs nvs_args
 # ((i+=1)); nvs[i]=cargo-mutants@24.7.1;        oks[i]=ok; nvs_args[i]='' #
 # ((i+=1)); nvs[i]=binsider@0.2.0;              oks[i]=ok; nvs_args[i]='' #
 
-
+((i+=1)); nvs[i]=stu@0.7.1;                   oks[i]=ko; nvs_args[i]='' # BUG: unexpected crate-type: 'cdylib' error: could not compile `crc64fast-nvme` (lib)
 
 
 #TODO: not a cli but try users of https://github.com/dtolnay/watt
@@ -181,6 +181,7 @@ as_env() {
     # privaxy@*) envvars+=(CARGOGREEN_ADD_APT='libssl-dev,openssl' CARGOGREEN_SET_ENVS='DEP_OPENSSL_LIBRESSL_VERSION_NUMBER,DEP_OPENSSL_VERSION_NUMBER' CARGOGREEN_BASE_IMAGE=docker-image://docker.io/library/rust:1) ;;
     # shpool@*) envvars+=(CARGOGREEN_ADD_APT='libpam0g-dev') ;;
     # torrust-index@*) envvars+=(CARGOGREEN_ADD_APT='libssl-dev,zlib1g-dev' CARGOGREEN_SET_ENVS='MIME_TYPES_GENERATED_PATH,RING_CORE_PREFIX') ;;
+    # stu@*) envvars+=(CARGOGREEN_SET_ENVS=RING_CORE_PREFIX) ;;
     *) ;;
   esac
 }
