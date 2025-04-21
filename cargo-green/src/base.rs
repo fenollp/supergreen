@@ -1,7 +1,7 @@
 use rustc_version::{Channel, Version, VersionMeta};
 use serde::{Deserialize, Serialize};
 
-use crate::{green::Add, stage::RST};
+use crate::{green::Add, runner::Network, stage::RST};
 
 const STABLE_RUST: &str = "docker-image://docker.io/library/rust:1-slim";
 const BASE_FOR_RUST: &str = "docker-image://docker.io/library/debian:stable-slim";
@@ -16,6 +16,16 @@ fn default_is_unset() {
 #[serde(deny_unknown_fields)]
 #[serde(rename_all = "kebab-case")]
 pub(crate) struct BaseImage {
+    // Controls runner's `--network none (default) | default | host` setting.
+    //
+    // Set this to "default" if e.g. your `base-image-inline` calls curl or wget or installs some packages.
+    //
+    // # This environment variable takes precedence over any Cargo.toml settings:
+    // CARGOGREEN_WITH_NETWORK="none"
+    pub(crate) with_network: Network,
+    //TODO? maybe support $CARGO_NET_OFFLINE https://doc.rust-lang.org/cargo/reference/config.html#netoffline
+    //https://github.com/rust-lang/rustup/issues/4289
+
     // Sets the base Rust image, as an image URL.
     // See also:
     //   `also-run`
@@ -84,10 +94,9 @@ impl BaseImage {
             assert!(STABLE_RUST.contains(":1-"));
             return Some(Self::from_image(STABLE_RUST.replace(":1-", &format!(":{semver}-"))));
         }
-        commit_hash.zip(commit_date).map(|(commit, date)| Self {
-            base_image: BASE_FOR_RUST.to_owned(),
-            base_image_inline: Some(RustcV { version: semver, commit, date, channel }.as_block()),
-        })
+        commit_hash
+            .zip(commit_date)
+            .map(|(commit, date)| RustcV { version: semver, commit, date, channel }.as_base_image())
     }
 
     #[must_use]
@@ -97,15 +106,16 @@ impl BaseImage {
             let to = base_image.trim_start_matches("docker-image://");
             block.replace(&format!(" {from} "), &format!(" {to} "))
         });
-        Self { base_image, base_image_inline }
+        Self { base_image, base_image_inline, ..self }
     }
 
     #[must_use]
-    pub(crate) fn as_block(&self) -> String {
-        self.base_image_inline.clone().unwrap_or_else(|| {
+    pub(crate) fn as_block(&self) -> (Network, String) {
+        let block = self.base_image_inline.clone().unwrap_or_else(|| {
             let base = self.base_image.trim_start_matches("docker-image://");
             format!("FROM --platform=$BUILDPLATFORM {base} AS {RST}\n")
-        })
+        });
+        (self.with_network, block)
     }
 }
 
@@ -121,9 +131,7 @@ struct RustcV {
 
 impl RustcV {
     #[must_use]
-    fn as_block(&self) -> String {
-        let base = BASE_FOR_RUST.trim_start_matches("docker-image://");
-
+    fn as_base_image(&self) -> BaseImage {
         // TODO: dynamically resolve + cache this, if network is up.
         let rustup_version = "1.28.1";
         let rustup_checksum = "a3339fb004c3d0bb9862ba0bce001861fe5cbde9c10d16591eb3f39ee6cd3e7f";
@@ -162,19 +170,25 @@ impl RustcV {
             Channel::Nightly => "nightly",
         };
 
-        // Inspired from https://github.com/rust-lang/docker-rust/blob/d14e1ad7efeb270012b1a7e88fea699b1d1082f2/nightly/bullseye/slim/Dockerfile
+        let base_image = BASE_FOR_RUST.to_owned();
+        let base = base_image.trim_start_matches("docker-image://");
+        assert!(base.contains("/debian:"));
 
-        let last_block = format!("FROM --platform=$BUILDPLATFORM {base} AS {RST}");
-        assert!(BASE_FOR_RUST.contains("/debian:"));
-        let with_added = Add::with_apt(&["ca-certificates", "gcc", "libc6-dev"]);
-        let last_block = with_added.as_block(&last_block);
+        let (with_network, packages_block) = Add {
+            // From https://github.com/rust-lang/docker-rust/blob/d14e1ad7efeb270012b1a7e88fea699b1d1082f2/nightly/alpine3.20/Dockerfile
+            apk: vec!["ca-certificates".to_owned(), "gcc".to_owned()],
+            // From https://github.com/rust-lang/docker-rust/blob/d14e1ad7efeb270012b1a7e88fea699b1d1082f2/nightly/bullseye/slim/Dockerfile
+            apt_get: vec!["ca-certificates".to_owned(), "gcc".to_owned(), "libc6-dev".to_owned()],
+            ..Default::default()
+        }
+        .as_block(&format!("FROM --platform=$BUILDPLATFORM {base} AS {RST}"));
 
-        format!(
+        let block = format!(
             r#"
 FROM scratch AS rustup-{channel}-{date}
 ADD --chmod=0144 --checksum=sha256:{rustup_checksum} \
   https://static.rust-lang.org/rustup/archive/{rustup_version}/{host}/rustup-init /rustup-init
-{last_block}
+{packages_block}
 ENV RUSTUP_HOME=/usr/local/rustup \
      CARGO_HOME=/usr/local/cargo \
            PATH=/usr/local/cargo/bin:$PATH
@@ -187,8 +201,10 @@ RUN \
 && cargo --version \
 && rustc --version
 "#,
-            last_block = last_block.trim(),
-        )
+            packages_block = packages_block.trim(),
+        );
+
+        BaseImage { with_network, base_image, base_image_inline: Some(block) }
     }
 }
 
@@ -211,6 +227,7 @@ LLVM version: 18.1.7
     let res = BaseImage::from_rustcv(some_stable).unwrap();
     assert_eq!(res.base_image, "docker-image://docker.io/library/rust:1.80.0-slim");
     assert_eq!(res.base_image_inline, None);
+    assert_eq!(res.with_network, Network::None);
 
     let some_nightly = version_meta_for(
         &r#"
@@ -227,4 +244,5 @@ LLVM version: 19.1.0
     let res = BaseImage::from_rustcv(some_nightly).unwrap();
     assert_eq!(res.base_image, "docker-image://docker.io/library/debian:stable-slim");
     assert!(res.base_image_inline.unwrap().contains(" docker.io/library/debian:stable-slim "));
+    assert_eq!(res.with_network, Network::Default);
 }

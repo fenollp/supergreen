@@ -1,7 +1,6 @@
 use std::{
     collections::BTreeSet,
     env,
-    fmt::Display,
     fs::{self, OpenOptions},
     io::prelude::*,
     mem,
@@ -13,7 +12,7 @@ use anyhow::{anyhow, bail, Result};
 use camino::{Utf8Path, Utf8PathBuf};
 use log::{debug, info};
 use reqwest::Client as ReqwestClient;
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 use tokio::{
     io::{AsyncBufRead, AsyncBufReadExt, AsyncWriteExt, BufReader as TokioBufReader, Lines},
     join,
@@ -35,22 +34,14 @@ use crate::{
 pub(crate) const MARK_STDOUT: &str = "::STDOUT:: ";
 pub(crate) const MARK_STDERR: &str = "::STDERR:: ";
 
-#[derive(Debug, Copy, Clone)]
-enum Network {
+#[derive(Debug, Copy, Clone, Default, Serialize, Deserialize, Eq, PartialEq)]
+#[serde(deny_unknown_fields)]
+#[serde(rename_all = "kebab-case")]
+pub(crate) enum Network {
+    #[default]
     None,
     Default,
-    #[expect(unused)]
     Host,
-}
-
-impl Display for Network {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        match self {
-            Self::None => write!(f, "none"),
-            Self::Default => write!(f, "default"),
-            Self::Host => write!(f, "host"),
-        }
-    }
 }
 
 #[must_use]
@@ -128,30 +119,11 @@ pub(crate) async fn build_cacheonly(
     dockerfile_path: &Utf8Path,
     target: Stage,
 ) -> Result<()> {
-    do_build(green, Network::None, dockerfile_path, target, &[].into(), None).await
+    build(green, dockerfile_path, target, &[].into(), None).await
 }
 
-pub(crate) async fn build_online(
+pub(crate) async fn build(
     green: &Green,
-    dockerfile_path: &Utf8Path,
-    target: Stage,
-) -> Result<()> {
-    do_build(green, Network::Default, dockerfile_path, target, &[].into(), None).await
-}
-
-pub(crate) async fn build_offline(
-    green: &Green,
-    dockerfile_path: &Utf8Path,
-    target: Stage,
-    contexts: &BTreeSet<BuildContext>,
-    out_dir: Option<&Utf8Path>,
-) -> Result<()> {
-    do_build(green, Network::None, dockerfile_path, target, contexts, out_dir).await
-}
-
-async fn do_build(
-    green: &Green,
-    network: Network,
     dockerfile_path: &Utf8Path,
     target: Stage,
     contexts: &BTreeSet<BuildContext>,
@@ -256,7 +228,8 @@ async fn do_build(
 
     //TODO? --annotation=(PLATFORM=)KEY=VALUE
 
-    cmd.arg(format!("--network={network}"));
+    let network = serde_json::to_string(&green.image.with_network).unwrap();
+    cmd.arg(format!("--network={}", &network[1..(network.len() - 1)]));
 
     cmd.arg("--platform=local");
     cmd.arg("--pull=false");

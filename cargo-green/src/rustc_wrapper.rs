@@ -21,7 +21,7 @@ use crate::{
     logging::{self, crate_type_for_logging, maybe_log, ENV_LOG},
     md::{BuildContext, Md},
     pwd,
-    runner::{build_offline, MARK_STDERR, MARK_STDOUT},
+    runner::{build, MARK_STDERR, MARK_STDOUT},
     rustc_arguments::{as_rustc, RustcArgs},
     stage::{Stage, RST, RUST},
     tmp, PKG, REPO, VSN,
@@ -687,7 +687,7 @@ async fn do_wrap_rustc(
         info!("Runner disabled, falling back...");
         return fallback.await;
     }
-    let build = |stage, dir| build_offline(&green, &dockerfile, stage, &md.contexts, Some(dir));
+    let build = |stage, dir| build(&green, &dockerfile, stage, &md.contexts, Some(dir));
     let res = build(out_stage, &out_dir).await;
     if let Some(incremental) = res.is_ok().then_some(incremental).flatten() {
         let _ = build(incremental_stage, &incremental)

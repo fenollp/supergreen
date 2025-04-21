@@ -5,7 +5,7 @@ use camino::Utf8PathBuf;
 use cargo_toml::Manifest;
 use serde::{Deserialize, Serialize};
 
-use crate::{base::BaseImage, lockfile::find_manifest_path, stage::RST};
+use crate::{base::BaseImage, lockfile::find_manifest_path, runner::Network, stage::RST};
 
 // Envs that override Cargo.toml settings
 pub(crate) const ENV_ADD_APK: &str = "CARGOGREEN_ADD_APK";
@@ -59,11 +59,6 @@ pub(crate) struct Add {
 
 impl Add {
     #[must_use]
-    pub(crate) fn with_apt(pkgs: &[&str]) -> Self {
-        Self { apt: pkgs.iter().map(|&x| x.to_owned()).collect(), ..Default::default() }
-    }
-
-    #[must_use]
     pub(crate) fn is_empty(&self) -> bool {
         let Self { apk, apt, apt_get } = self;
         [apk, apt, apt_get].iter().all(|x| x.is_empty())
@@ -71,9 +66,10 @@ impl Add {
 
     // TODO: pin major + lock by pulling
     // TODO: more architectures
-    pub(crate) fn as_block(&self, last: &str) -> String {
+    pub(crate) fn as_block(&self, last: &str) -> (Network, String) {
         const XX: &str = "docker.io/tonistiigi/xx:1.6.1@sha256:923441d7c25f1e2eb5789f82d987693c47b8ed987c4ab3b075d6ed2b5d6779a3";
-        format!(
+
+        let block = format!(
             r#"
 FROM --platform=$BUILDPLATFORM {XX} AS xx
 {last}
@@ -105,7 +101,9 @@ RUN \
             apk = self.apk.join("' '"),
             apt = self.apt.join("' '"),
             apt_get = self.apt_get.join("' '"),
-        )
+        );
+
+        (Network::Default, block)
     }
 }
 

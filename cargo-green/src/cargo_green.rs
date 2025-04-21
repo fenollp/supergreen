@@ -19,7 +19,7 @@ use crate::{
     lockfile::{find_lockfile, locked_crates},
     logging::{self, maybe_log, ENV_LOG, ENV_LOG_PATH},
     pwd,
-    runner::{build_cacheonly, build_online, fetch_digest, maybe_lock_image, runner_cmd},
+    runner::{build_cacheonly, fetch_digest, maybe_lock_image, runner_cmd},
     stage::{Stage, RST, RUST},
     tmp, PKG, REPO, VSN,
 };
@@ -118,10 +118,11 @@ pub(crate) async fn main(cmd: &mut Command) -> Result<Green> {
         green.image = green.image.lock_base_to(base);
     }
 
-    let mut finalized_block = green.image.as_block();
+    let (mut with_network, mut finalized_block) = green.image.as_block();
     if !green.add.is_empty() {
-        finalized_block = green.add.as_block(&finalized_block);
+        (with_network, finalized_block) = green.add.as_block(&finalized_block);
     }
+    green.image.with_network = with_network;
     green.image.base_image_inline = Some(finalized_block.trim().to_owned());
 
     // don't pull
@@ -246,7 +247,9 @@ pub(crate) async fn maybe_prebuild_base(green: &Green) -> Result<()> {
     fs::write(&dockerfile_path, &header)
         .map_err(|e| anyhow!("Failed creating dockerfile {dockerfile_path}: {e}"))?;
 
-    build_online(green, &dockerfile_path, RUST.clone()).await.map_err(|e| {
+    // Turns out --network is part of BuildKit's cache key, so an initial online build
+    // won't cache hit on later offline builds.
+    build_cacheonly(green, &dockerfile_path, RUST.clone()).await.map_err(|e| {
         let _ = fs::remove_file(&dockerfile_path);
         anyhow!("{header}\n\nUnable to build {RST}: {e}")
     })
