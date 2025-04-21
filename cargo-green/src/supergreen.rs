@@ -132,7 +132,7 @@ async fn all_tags_of(green: &Green, img: &str) -> Result<Vec<String>> {
 }
 
 fn envs(green: Green, vars: Vec<String>) {
-    let csv = |add: &[String]| (!add.is_empty()).then_some(add.join(","));
+    let csv = |add: &[String]| (!add.is_empty()).then(|| add.join(","));
     let all = vec![
         (internal::RUSTCBUILDX, internal::this()),
         (internal::RUSTCBUILDX_CACHE_IMAGE, cache_image().to_owned()),
@@ -148,7 +148,7 @@ fn envs(green: Green, vars: Vec<String>) {
         (ENV_LOG_PATH, env::var(ENV_LOG_PATH).ok()),
         (ENV_LOG_STYLE, env::var(ENV_LOG_STYLE).ok()),
         (ENV_RUNNER, Some(green.runner.clone())),
-        (ENV_SET_ENVS, (!green.set_envs().is_empty()).then_some(green.set_envs())),
+        (ENV_SET_ENVS, csv(&green.set_envs)),
         (ENV_SYNTAX, Some(green.syntax)),
     ];
 

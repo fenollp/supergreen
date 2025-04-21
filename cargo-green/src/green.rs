@@ -294,11 +294,6 @@ impl Green {
 
         Ok(green)
     }
-
-    #[must_use]
-    pub(crate) fn set_envs(&self) -> String {
-        self.set_envs.join(" ")
-    }
 }
 
 #[must_use]
