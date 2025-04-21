@@ -19,6 +19,7 @@ use crate::{
     logging::{self, maybe_log, ENV_LOG, ENV_LOG_PATH},
     pwd,
     runner::{build_cacheonly, fetch_digest, maybe_lock_image, runner_cmd},
+    rustc_wrapper::ENV,
     stage::{Stage, RST, RUST},
     tmp, PKG, REPO, VSN,
 };
@@ -41,17 +42,9 @@ pub(crate) async fn main(cmd: &mut Command) -> Result<Green> {
         let _ = OpenOptions::new().create(true).truncate(false).append(true).open(path);
     }
 
-    // RUSTCBUILDX and eponymous envs are handled by wrapper
-    assert!(env::var_os("RUSTCBUILDX").is_none());
-
-    // This exports vars so they will be accessible by later-spawned $RUSTC_WRAPPER.
-    // TODO: separate env reading from env setting.
-    // TODO: get from ENV..SETTINGS, avoid most env setting.
+    assert!(env::var_os(ENV).is_none());
 
     // Goal: produce only fully-locked Dockerfiles/TOMLs
-
-    assert!(env::var_os("CARGOGREEN").is_none());
-    env::set_var("CARGOGREEN", "1");
 
     let mut green = Green::new_from_env_then_manifest()?;
 

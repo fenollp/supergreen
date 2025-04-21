@@ -1,19 +1,3 @@
-pub(crate) mod internal {
-    use std::env;
-
-    pub const RUSTCBUILDX: &str = "RUSTCBUILDX";
-
-    #[must_use]
-    pub fn this() -> Option<String> {
-        env::var(RUSTCBUILDX).ok()
-    }
-}
-
-#[must_use]
-pub(crate) fn this() -> bool {
-    internal::this().map(|x| x == "1").unwrap_or_default()
-}
-
 // https://doc.rust-lang.org/cargo/reference/environment-variables.html#environment-variables-cargo-sets-for-crates
 #[must_use]
 pub(crate) fn pass_env(var: &str) -> (bool, bool, bool) {

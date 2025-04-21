@@ -17,7 +17,7 @@ Reads envs
 * `$CARGOGREEN_REMOTE`: *reserved for now*
 * [`$DOCKER_HOST`](https://docs.docker.com/engine/reference/commandline/cli/#environment-variables)
 
-* `$RUSTCBUILDX`
+* `$CARGOGREEN`
 * `$CARGOGREEN_BASE_IMAGE`
 * `$CARGOGREEN_BASE_IMAGE_INLINE`
 * `$CARGOGREEN_BUILDER_IMAGE`

@@ -314,9 +314,6 @@ impl Green {
             if green.set_envs.iter().any(|var| var.starts_with("CARGOGREEN_")) {
                 bail!("{origin} contains CARGOGREEN_* names")
             }
-            if green.set_envs.iter().any(|var| var.starts_with("RUSTCBUILDX_")) {
-                bail!("{origin} contains RUSTCBUILDX_* names")
-            }
             if green.set_envs.len() != green.set_envs.iter().collect::<HashSet<_>>().len() {
                 bail!("{origin} contains duplicates")
             }
@@ -478,7 +475,7 @@ set-envs = [ "CARGOGREEN_LOG" ]
     )
     .unwrap();
     let err = Green::try_new(manifest).err().unwrap().to_string();
-    assert!(err.contains("CARGOGREEN"), "In: {err}");
+    assert!(err.contains(crate::rustc_wrapper::ENV), "In: {err}");
 }
 
 #[test]

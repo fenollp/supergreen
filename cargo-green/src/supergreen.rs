@@ -8,7 +8,6 @@ use tokio::io::BufReader;
 
 use crate::{
     cargo_green::{ENV_BUILDER_IMAGE, ENV_FINAL_PATH, ENV_RUNNER, ENV_SYNTAX},
-    envs::internal,
     extensions::ShowCmd,
     green::{
         Green, ENV_ADD_APK, ENV_ADD_APT, ENV_ADD_APT_GET, ENV_BASE_IMAGE, ENV_BASE_IMAGE_INLINE,
@@ -16,6 +15,7 @@ use crate::{
     },
     logging::{ENV_LOG, ENV_LOG_PATH, ENV_LOG_STYLE},
     runner::runner_cmd,
+    rustc_wrapper::ENV,
 };
 
 // TODO: tune logging verbosity https://docs.rs/clap-verbosity-flag/latest/clap_verbosity_flag/
@@ -140,16 +140,16 @@ async fn all_tags_of(green: &Green, img: &str) -> Result<Vec<String>> {
 fn envs(green: Green, vars: Vec<String>) {
     let csv = |add: &[String]| (!add.is_empty()).then(|| add.join(","));
     let all = vec![
-        (internal::RUSTCBUILDX, internal::this()),
-        (ENV_CACHE_IMAGES, csv(&green.cache_images)),
-        (ENV_INCREMENTAL, green.incremental.then(|| "1".to_owned())),
+        (ENV, env::var(ENV).ok()),
         (ENV_ADD_APK, csv(&green.add.apk)),
         (ENV_ADD_APT, csv(&green.add.apt)),
         (ENV_ADD_APT_GET, csv(&green.add.apt_get)),
         (ENV_BASE_IMAGE, Some(green.image.base_image.clone())),
         (ENV_BASE_IMAGE_INLINE, green.image.base_image_inline.clone()),
         (ENV_BUILDER_IMAGE, green.builder_image.clone()),
+        (ENV_CACHE_IMAGES, csv(&green.cache_images)),
         (ENV_FINAL_PATH, green.final_path.as_deref().map(ToString::to_string)),
+        (ENV_INCREMENTAL, green.incremental.then(|| "1".to_owned())),
         (ENV_LOG, env::var(ENV_LOG).ok()),
         (ENV_LOG_PATH, env::var(ENV_LOG_PATH).ok()),
         (ENV_LOG_STYLE, env::var(ENV_LOG_STYLE).ok()),

@@ -15,7 +15,7 @@ use tokio::process::Command;
 use crate::{
     checkouts,
     cratesio::{self, rewrite_cratesio_index},
-    envs::{internal, pass_env, this},
+    envs::pass_env,
     extensions::{Popped, ShowCmd},
     green::Green,
     logging::{self, crate_type_for_logging, maybe_log, ENV_LOG},
@@ -29,6 +29,8 @@ use crate::{
 
 // NOTE: this RUSTC_WRAPPER program only ever gets called by `cargo`, so we save
 //       ourselves some trouble and assume std::path::{Path, PathBuf} are UTF-8.
+
+pub(crate) const ENV: &str = "CARGOGREEN";
 
 pub(crate) async fn main(
     green: Green,
@@ -118,10 +120,8 @@ async fn wrap_rustc(
     arguments: Vec<String>,
     fallback: impl Future<Output = Result<()>>,
 ) -> Result<()> {
-    if this() {
-        panic!("It's turtles all the way down!")
-    }
-    env::set_var(internal::RUSTCBUILDX, "1");
+    assert!(env::var_os(ENV).is_none(), "It's turtles all the way down!");
+    env::set_var(ENV, "1");
 
     let pwd = pwd();
 
@@ -540,7 +540,7 @@ async fn do_wrap_rustc(
             rustc_block.push_str(&format!("        {var}={val} \\\n"));
         }
     }
-    rustc_block.push_str("        RUSTCBUILDX=1 \\\n");
+    rustc_block.push_str("        CARGOGREEN=1 \\\n");
 
     // => cargo upstream issue "pass env vars read/wrote by build script on call to rustc"
     // TODO whence https://github.com/rust-lang/cargo/issues/14444#issuecomment-2305891696
