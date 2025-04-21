@@ -13,6 +13,7 @@ pub(crate) const ENV_ADD_APT: &str = "CARGOGREEN_ADD_APT";
 pub(crate) const ENV_ADD_APT_GET: &str = "CARGOGREEN_ADD_APT_GET";
 pub(crate) const ENV_BASE_IMAGE: &str = "CARGOGREEN_BASE_IMAGE";
 pub(crate) const ENV_BASE_IMAGE_INLINE: &str = "CARGOGREEN_BASE_IMAGE_INLINE";
+pub(crate) const ENV_CACHE_IMAGES: &str = "CARGOGREEN_CACHE_IMAGES";
 pub(crate) const ENV_INCREMENTAL: &str = "CARGOGREEN_INCREMENTAL";
 pub(crate) const ENV_SET_ENVS: &str = "CARGOGREEN_SET_ENVS";
 
@@ -154,6 +155,19 @@ pub(crate) struct Green {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub(crate) builder_image: Option<String>, //TODO? type(uri?)
 
+    // Image paths with registry information.
+    //
+    // See type=registry at https://docs.docker.com/build/cache/backends/
+    //
+    // cache-images = [ "docker-image://my.org/team/my-project", "docker-image://some.org/global/cache" ]
+    //
+    // # Use by setting this environment variable (no Cargo.toml setting):
+    // # Note: values here are comma-separated.
+    // CARGOGREEN_CACHE_IMAGES="docker-image://my.org/team/my-project,docker-image://some.org/global/cache"
+    #[serde(skip_serializing_if = "Vec::is_empty")]
+    pub(crate) cache_images: Vec<String>, //TODO? type(uri?)
+    // TODO? error when registry is unreachable
+
     // Write final Dockerfile to given path.
     //
     // Helps e.g. create a Dockerfile with caching for dependencies.
@@ -216,6 +230,31 @@ impl Green {
 
         if let Ok(val) = env::var(ENV_INCREMENTAL) {
             green.incremental = val == "1";
+        }
+
+        let mut origin = "[metadata.green.cache-images]".to_owned();
+        if let Ok(val) = env::var(ENV_CACHE_IMAGES) {
+            origin = format!("${ENV_CACHE_IMAGES}");
+            green.cache_images = val.split(',').map(ToOwned::to_owned).collect();
+        }
+        if !green.cache_images.is_empty() {
+            if bad_names(&green.cache_images) {
+                bail!("{origin} contains empty names, quotes or whitespace")
+            }
+            if green.cache_images.len() != green.cache_images.iter().collect::<HashSet<_>>().len() {
+                bail!("{origin} contains duplicates")
+            }
+        }
+        for item in &green.cache_images {
+            if !item.starts_with("docker-image://") {
+                bail!("{origin} unsupported scheme: {item:?}")
+            }
+            if !item.trim_start_matches("docker-image://").contains('/') {
+                bail!("{origin} must contain a registry: {item:?}")
+            }
+            if item.trim_start_matches("docker-image://").contains([':', '@']) {
+                bail!("{origin} must not contain a tag nor digest: {item:?}")
+            }
         }
 
         let mut origin = "[metadata.green.base-image]".to_owned();

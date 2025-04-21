@@ -12,7 +12,6 @@ use tokio::{process::Command, try_join};
 
 use crate::{
     cratesio::{self},
-    envs::{cache_image, internal},
     extensions::ShowCmd,
     green::{Green, ENV_BASE_IMAGE},
     hash, hashed_args,
@@ -123,12 +122,6 @@ pub(crate) async fn main(cmd: &mut Command) -> Result<Green> {
     }
     green.image.with_network = with_network;
     green.image.base_image_inline = Some(finalized_block.trim().to_owned());
-
-    // don't pull
-    if let Some(val) = cache_image() {
-        cmd.env(internal::RUSTCBUILDX_CACHE_IMAGE, val);
-        //TODO: $CARGOGREEN_IMAGE_CACHES? (comma separated)
-    }
 
     // FIXME "multiplex conns to daemon" https://github.com/docker/buildx/issues/2564#issuecomment-2207435201
     // > If you do have docker context created already on ssh endpoint then you don't need to set the ssh address again on buildx create, you can use the context name or let it use the active context.

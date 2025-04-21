@@ -23,7 +23,6 @@ use tokio::{
 };
 
 use crate::{
-    envs::cache_image,
     extensions::ShowCmd,
     green::Green,
     logging::{crate_type_for_logging, maybe_log, ENV_LOG_PATH},
@@ -200,23 +199,27 @@ pub(crate) async fn build(
     // // [2024-04-09T07:55:39Z DEBUG lib-autocfg-72217d8ded4d7ec7@177912] ✖ Learn more at https://docs.docker.com/go/build-cache-backends/
     //TODO: experiment --cache-to=type=inline => try ,mode=max
 
-    if let Some(img) = cache_image() {
-        let img = img.trim_start_matches("docker-image://");
-        cmd.arg(format!(
-            "--cache-from=type=registry,ref={img}{}",
-            if false { ",mode=max" } else { "" } // TODO: env? builder call?
-        ));
+    if !green.cache_images.is_empty() {
+        for img in &green.cache_images {
+            let img = img.trim_start_matches("docker-image://");
+            let mode = if false { ",mode=max" } else { "" }; // TODO: env? builder call?
+            cmd.arg(format!("--cache-from=type=registry,ref={img}{mode}"));
 
-        let tag = target.to_string(); // TODO: include enough info for repro
-                                      // => rustc shortcommit, ..?
-                                      // Can buildx give list of all inputs? || short hash(dockerfile + call + envs)
-        cmd.arg(format!("--tag={img}:{tag}"));
-        let b = crate_type_for_logging("bin").to_ascii_lowercase();
-        if [format!("cwd-{b}-"), format!("dep-{b}-")].iter().any(|prefix| tag.starts_with(prefix)) {
-            cmd.arg(format!("--tag={img}:latest"));
+            let tag = target.as_str(); // TODO: include enough info for repro
+                                       // => rustc shortcommit, ..?
+                                       // Can buildx give list of all inputs? || short hash(dockerfile + call + envs)
+            cmd.arg(format!("--tag={img}:{tag}"));
+
+            let b = crate_type_for_logging("bin").to_ascii_lowercase();
+            if [format!("cwd-{b}-"), format!("dep-{b}-")]
+                .iter()
+                .any(|prefix| tag.starts_with(prefix))
+            {
+                cmd.arg(format!("--tag={img}:latest"));
+            }
         }
         cmd.arg("--build-arg=BUILDKIT_INLINE_CACHE=1"); // https://docs.docker.com/build/cache/backends/inline
-        cmd.arg("--load");
+        cmd.arg("--load"); //FIXME: this should not be needed
     }
 
     if false {

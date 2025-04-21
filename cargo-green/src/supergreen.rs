@@ -8,11 +8,11 @@ use tokio::io::BufReader;
 
 use crate::{
     cargo_green::{ENV_BUILDER_IMAGE, ENV_FINAL_PATH, ENV_RUNNER, ENV_SYNTAX},
-    envs::{cache_image, internal},
+    envs::internal,
     extensions::ShowCmd,
     green::{
         Green, ENV_ADD_APK, ENV_ADD_APT, ENV_ADD_APT_GET, ENV_BASE_IMAGE, ENV_BASE_IMAGE_INLINE,
-        ENV_INCREMENTAL, ENV_SET_ENVS,
+        ENV_CACHE_IMAGES, ENV_INCREMENTAL, ENV_SET_ENVS,
     },
     logging::{ENV_LOG, ENV_LOG_PATH, ENV_LOG_STYLE},
     runner::runner_cmd,
@@ -20,7 +20,7 @@ use crate::{
 
 // TODO: tune logging verbosity https://docs.rs/clap-verbosity-flag/latest/clap_verbosity_flag/
 
-// TODO: cargo green cache --keep-less-than=(1month|10GB)      Set $RUSTCBUILDX_CACHE_IMAGE to apply to tagged images.
+// TODO: cargo green cache --keep-less-than=(1month|10GB)      Set $CARGOGREEN_CACHE_IMAGES to apply to tagged images.
 
 // TODO: cli for stats (cache hit/miss/size/age/volume, existing available/selected runners, disk usage/free)
 
@@ -84,27 +84,33 @@ Usage:
 // TODO: make it work for podman: https://github.com/containers/podman/issues/2369
 // TODO: have fun with https://github.com/console-rs/indicatif
 async fn push(green: Green) -> Result<()> {
-    let Some(img) = cache_image() else { return Ok(()) };
-    let img = img.trim_start_matches("docker-image://");
-    let tags = all_tags_of(&green, img).await?;
+    for img in &green.cache_images {
+        let img = img.trim_start_matches("docker-image://");
+        let tags = all_tags_of(&green, img).await?;
 
-    async fn do_push(green: &Green, tag: String, img: &str) -> Result<()> {
-        println!("Pushing {img}:{tag}...");
-        let mut cmd = runner_cmd(green);
-        cmd.arg("push").arg(format!("{img}:{tag}")).stdout(Stdio::null()).stderr(Stdio::null());
+        async fn do_push(green: &Green, tag: String, img: &str) -> Result<()> {
+            println!("Pushing {img}:{tag}...");
+            let mut cmd = runner_cmd(green);
+            cmd.arg("push").arg(format!("{img}:{tag}")).stdout(Stdio::null()).stderr(Stdio::null());
 
-        if let Ok(mut o) = cmd.spawn() {
-            if let Ok(o) = o.wait().await {
-                if o.success() {
-                    println!("Pushing {img}:{tag}... done!");
-                    return Ok(());
+            if let Ok(mut o) = cmd.spawn() {
+                if let Ok(o) = o.wait().await {
+                    if o.success() {
+                        println!("Pushing {img}:{tag}... done!");
+                        return Ok(());
+                    }
                 }
             }
+            bail!("Pushing {img}:{tag} failed!")
         }
-        bail!("Pushing {img}:{tag} failed!")
-    }
 
-    iter(tags).map(|tag| do_push(&green, tag, img)).buffer_unordered(10).try_collect().await
+        iter(tags)
+            .map(|tag| do_push(&green, tag, img))
+            .buffer_unordered(10)
+            .try_collect::<()>()
+            .await?;
+    }
+    Ok(())
 }
 
 // TODO: test with known tags
@@ -135,7 +141,7 @@ fn envs(green: Green, vars: Vec<String>) {
     let csv = |add: &[String]| (!add.is_empty()).then(|| add.join(","));
     let all = vec![
         (internal::RUSTCBUILDX, internal::this()),
-        (internal::RUSTCBUILDX_CACHE_IMAGE, cache_image().to_owned()),
+        (ENV_CACHE_IMAGES, csv(&green.cache_images)),
         (ENV_INCREMENTAL, green.incremental.then(|| "1".to_owned())),
         (ENV_ADD_APK, csv(&green.add.apk)),
         (ENV_ADD_APT, csv(&green.add.apt)),

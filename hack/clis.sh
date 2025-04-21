@@ -184,6 +184,9 @@ as_env() {
     # stu@*) envvars+=(CARGOGREEN_SET_ENVS=RING_CORE_PREFIX) ;;
     *) ;;
   esac
+  if [[ -n "${CARGOGREEN_CACHE_IMAGES:-}" ]]; then
+    envvars+=(CARGOGREEN_CACHE_IMAGES="$CARGOGREEN_CACHE_IMAGES")
+  fi
 }
 
 cli() {
@@ -311,13 +314,11 @@ set -x
     CARGOGREEN_LOG=trace \
     CARGOGREEN_LOG_PATH="$tmplogs" \
     CARGOGREEN_FINAL_PATH="$tmptrgt/cargo-green-fetched.Dockerfile" \
-    RUSTCBUILDX_CACHE_IMAGE="${RUSTCBUILDX_CACHE_IMAGE:-}" \
     PATH=$install_dir/bin:"$PATH" \
       $CARGO green -v fetch
     CARGOGREEN_LOG=trace \
     CARGOGREEN_LOG_PATH="$tmplogs" \
     CARGOGREEN_FINAL_PATH="$tmptrgt/cargo-green.Dockerfile" \
-    RUSTCBUILDX_CACHE_IMAGE="${RUSTCBUILDX_CACHE_IMAGE:-}" \
     PATH=$install_dir/bin:"$PATH" \
     CARGO_TARGET_DIR="$tmptrgt" \
       $CARGO green -v $arg1 --jobs=${jobs:-$(nproc)} --all-targets --all-features --locked --frozen --offline -p cargo-green
@@ -375,7 +376,6 @@ tmux split-window
 envvars=(CARGOGREEN_LOG=trace)
 envvars+=(CARGOGREEN_LOG_PATH="$tmplogs")
 envvars+=(CARGOGREEN_FINAL_PATH="$tmptrgt/$name_at_version.Dockerfile")
-envvars+=(RUSTCBUILDX_CACHE_IMAGE="${RUSTCBUILDX_CACHE_IMAGE:-}")
 envvars+=(PATH=$install_dir/bin:"$PATH")
 envvars+=(CARGO_TARGET_DIR="$tmptrgt")
 envvars+=(CARGOGREEN_SYNTAX=docker-image://docker.io/docker/dockerfile:1@sha256:4c68376a702446fc3c79af22de146a148bc3367e73c25a5803d453b6b3f722fb)

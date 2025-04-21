@@ -1,48 +1,17 @@
-use std::sync::OnceLock;
-
 pub(crate) mod internal {
     use std::env;
 
     pub const RUSTCBUILDX: &str = "RUSTCBUILDX";
-    pub const RUSTCBUILDX_CACHE_IMAGE: &str = "RUSTCBUILDX_CACHE_IMAGE";
 
     #[must_use]
     pub fn this() -> Option<String> {
         env::var(RUSTCBUILDX).ok()
-    }
-    #[must_use]
-    pub fn cache_image() -> Option<String> {
-        env::var(RUSTCBUILDX_CACHE_IMAGE).ok().and_then(|x| (!x.is_empty()).then_some(x))
     }
 }
 
 #[must_use]
 pub(crate) fn this() -> bool {
     internal::this().map(|x| x == "1").unwrap_or_default()
-}
-
-// A Docker image path with registry information.
-#[must_use]
-pub(crate) fn cache_image() -> &'static Option<String> {
-    static ONCE: OnceLock<Option<String>> = OnceLock::new();
-    ONCE.get_or_init(|| {
-        let val = internal::cache_image();
-
-        if let Some(ref val) = val {
-            let var = internal::RUSTCBUILDX_CACHE_IMAGE;
-            if !val.starts_with("docker-image://") {
-                panic!("{var} must start with 'docker-image://'")
-            }
-            if !val.trim_start_matches("docker-image://").contains('/') {
-                panic!("{var} host must contain a registry'")
-            }
-        }
-
-        // no resolving needed
-        // TODO? although we may want to error e.g. when registry is unreachable
-
-        val
-    })
 }
 
 // https://doc.rust-lang.org/cargo/reference/environment-variables.html#environment-variables-cargo-sets-for-crates
