@@ -1,11 +1,14 @@
 use std::{
     env,
     ffi::{OsStr, OsString},
+    fs::OpenOptions,
     path::PathBuf,
     process::exit,
 };
 
 use anyhow::{anyhow, bail, Result};
+use logging::{ENV_LOG, ENV_LOG_PATH};
+use rustc_wrapper::ENV;
 use tokio::process::Command;
 
 mod base;
@@ -110,7 +113,22 @@ async fn main() -> Result<()> {
         }
     }
 
-    let green = cargo_green::main(&mut cmd).await?;
+    // TODO: TUI above cargo output (? https://docs.rs/prodash )
+
+    if let Ok(log) = env::var(ENV_LOG) {
+        cmd.env(ENV_LOG, log);
+        let path = env::var(ENV_LOG_PATH)
+            .unwrap_or_else(|_| tmp().join(format!("{PKG}-{}.log", hashed_args())).to_string());
+        env::set_var(ENV_LOG_PATH, &path);
+        cmd.env(ENV_LOG_PATH, &path);
+        let _ = OpenOptions::new().create(true).truncate(false).append(true).open(path);
+    }
+
+    assert!(env::var_os(ENV).is_none());
+
+    // Goal: produce only fully-locked Dockerfiles/TOMLs
+
+    let green = cargo_green::main().await?;
     cmd.env(ENV_ROOT_PACKAGE_SETTINGS, serde_json::to_string(&green)?);
 
     if arg2.as_deref() == Some("supergreen") {

@@ -1,6 +1,6 @@
 use std::{
     env,
-    fs::{self, OpenOptions},
+    fs::{self},
     process::{Output, Stdio},
 };
 
@@ -8,19 +8,18 @@ use anyhow::{anyhow, bail, Result};
 use camino::absolute_utf8;
 use futures::{stream::iter, StreamExt, TryStreamExt};
 use log::{debug, info, trace};
-use tokio::{process::Command, try_join};
+use tokio::try_join;
 
 use crate::{
     base::{ENV_BASE_IMAGE, ENV_WITH_NETWORK},
     cratesio::{self},
     extensions::ShowCmd,
     green::Green,
-    hash, hashed_args,
+    hash,
     lockfile::{find_lockfile, locked_crates},
-    logging::{self, maybe_log, ENV_LOG, ENV_LOG_PATH},
+    logging::{self, maybe_log},
     pwd,
     runner::{build_cacheonly, fetch_digest, maybe_lock_image, runner_cmd, Network},
-    rustc_wrapper::ENV,
     stage::{Stage, RST, RUST},
     tmp, PKG, REPO, VSN,
 };
@@ -31,22 +30,7 @@ pub(crate) const ENV_FINAL_PATH: &str = "CARGOGREEN_FINAL_PATH";
 pub(crate) const ENV_RUNNER: &str = "CARGOGREEN_RUNNER";
 pub(crate) const ENV_SYNTAX: &str = "CARGOGREEN_SYNTAX";
 
-pub(crate) async fn main(cmd: &mut Command) -> Result<Green> {
-    // TODO: TUI above cargo output (? https://docs.rs/prodash )
-
-    if let Ok(log) = env::var(ENV_LOG) {
-        cmd.env(ENV_LOG, log);
-        let path = env::var(ENV_LOG_PATH)
-            .unwrap_or_else(|_| tmp().join(format!("{PKG}-{}.log", hashed_args())).to_string());
-        env::set_var(ENV_LOG_PATH, &path);
-        cmd.env(ENV_LOG_PATH, &path);
-        let _ = OpenOptions::new().create(true).truncate(false).append(true).open(path);
-    }
-
-    assert!(env::var_os(ENV).is_none());
-
-    // Goal: produce only fully-locked Dockerfiles/TOMLs
-
+pub(crate) async fn main() -> Result<Green> {
     let mut green = Green::new_from_env_then_manifest()?;
 
     // Setting runner first as it's needed by many calls
