@@ -26,7 +26,11 @@ pub(crate) struct BaseImage {
     //TODO? maybe support $CARGO_NET_OFFLINE https://doc.rust-lang.org/cargo/reference/config.html#netoffline
     //https://github.com/rust-lang/rustup/issues/4289
 
-    // Sets the base Rust image, as an image URL.
+    // Sets the base Rust image, as an image URL (or any build context, actually).
+    //
+    // If needing additional envs to be passed to rustc or build script, set them in the base image.
+    // This can be done in that same config file with `base-image-inline`.
+    //
     // See also:
     //   `also-run`
     //   `base-image-inline`
@@ -35,23 +39,23 @@ pub(crate) struct BaseImage {
     //
     // base-image = "docker-image://docker.io/library/rust:1-slim"
     //
-    // # This environment variable takes precedence over any Cargo.toml settings:
-    // CARGOGREEN_BASE_IMAGE="docker-image://docker.io/library/rust:1-slim"
-    //
-    //TODO: rework this: v
-    // A Docker image or any build context, actually.
-    // If needing additional envs to be passed to rustc or buildrs, set them in the base image.
-    // CARGOGREEN_BASE_IMAGE must start with docker-image:// and image MUST be available on DOCKER_HOST e.g.:
+    // The value must start with docker-image:// and image must be available on the DOCKER_HOST, eg:
     // CARGOGREEN_BASE_IMAGE=docker-image://rustc_with_libs
-    // DOCKER_HOST=ssh://oomphy docker buildx build -t rustc_with_libs - <<EOF
+    // DOCKER_HOST=ssh://my-remote-builder docker buildx build -t rustc_with_libs - <<EOF
     // FROM docker.io/library/rust:1.69.0-slim-bookworm@sha256:8bdd28ef184d85c9b4932586af6280732780e806e5f452065420f2e783323ca3
     // RUN set -eux && apt update && apt install -y libpq-dev libssl3
+    // ENV KEY=value
     // EOF
+    //
+    // # This environment variable takes precedence over any Cargo.toml settings:
+    // CARGOGREEN_BASE_IMAGE="docker-image://docker.io/library/rust:1-slim"
     pub(crate) base_image: String, //TODO? url? docker-..://...
 
     // Sets the base Rust image for root package and all dependencies, unless themselves being configured differently.
     // See also:
+    //   `with-network`
     //   `additional-build-arguments`
+    //
     // In order to avoid unexpected changes, you may want to pin the image using an immutable digest.
     // Note that carefully crafting crossplatform stages can be non-trivial.
     //
@@ -60,6 +64,7 @@ pub(crate) struct BaseImage {
     // RUN --mount=from=some-context,target=/tmp/some-context cp -r /tmp/some-context ./
     // RUN --mount=type=secret,id=aws
     // """
+    // base-image = "docker-image://rust:1" # This must also be set so digest gets pinned automatically.
     //
     // # This environment variable takes precedence over any Cargo.toml settings:
     // CARGOGREEN_BASE_IMAGE="FROM=rust:1 AS rust-base\nRUN --mount=from=some-context,target=/tmp/some-context cp -r /tmp/some-context ./\nRUN --mount=type=secret,id=aws\n"
