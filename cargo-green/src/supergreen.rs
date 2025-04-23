@@ -7,11 +7,12 @@ use serde_jsonlines::AsyncBufReadJsonLines;
 use tokio::io::BufReader;
 
 use crate::{
+    base::{ENV_BASE_IMAGE, ENV_BASE_IMAGE_INLINE, ENV_WITH_NETWORK},
     cargo_green::{ENV_BUILDER_IMAGE, ENV_FINAL_PATH, ENV_RUNNER, ENV_SYNTAX},
     extensions::ShowCmd,
     green::{
-        Green, ENV_ADD_APK, ENV_ADD_APT, ENV_ADD_APT_GET, ENV_BASE_IMAGE, ENV_BASE_IMAGE_INLINE,
-        ENV_CACHE_IMAGES, ENV_INCREMENTAL, ENV_SET_ENVS,
+        Green, ENV_ADD_APK, ENV_ADD_APT, ENV_ADD_APT_GET, ENV_CACHE_IMAGES, ENV_INCREMENTAL,
+        ENV_SET_ENVS,
     },
     logging::{ENV_LOG, ENV_LOG_PATH, ENV_LOG_STYLE},
     runner::runner_cmd,
@@ -156,6 +157,7 @@ fn envs(green: Green, vars: Vec<String>) {
         (ENV_RUNNER, Some(green.runner.clone())),
         (ENV_SET_ENVS, csv(&green.set_envs)),
         (ENV_SYNTAX, Some(green.syntax)),
+        (ENV_WITH_NETWORK, Some(green.image.with_network.to_string())),
     ];
 
     let mut empty_vars = true;

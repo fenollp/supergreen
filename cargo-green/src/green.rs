@@ -5,14 +5,17 @@ use camino::Utf8PathBuf;
 use cargo_toml::Manifest;
 use serde::{Deserialize, Serialize};
 
-use crate::{base::BaseImage, lockfile::find_manifest_path, runner::Network, stage::RST};
+use crate::{
+    base::{BaseImage, ENV_BASE_IMAGE, ENV_BASE_IMAGE_INLINE},
+    lockfile::find_manifest_path,
+    runner::Network,
+    stage::RST,
+};
 
 // Envs that override Cargo.toml settings
 pub(crate) const ENV_ADD_APK: &str = "CARGOGREEN_ADD_APK";
 pub(crate) const ENV_ADD_APT: &str = "CARGOGREEN_ADD_APT";
 pub(crate) const ENV_ADD_APT_GET: &str = "CARGOGREEN_ADD_APT_GET";
-pub(crate) const ENV_BASE_IMAGE: &str = "CARGOGREEN_BASE_IMAGE";
-pub(crate) const ENV_BASE_IMAGE_INLINE: &str = "CARGOGREEN_BASE_IMAGE_INLINE";
 pub(crate) const ENV_CACHE_IMAGES: &str = "CARGOGREEN_CACHE_IMAGES";
 pub(crate) const ENV_INCREMENTAL: &str = "CARGOGREEN_INCREMENTAL";
 pub(crate) const ENV_SET_ENVS: &str = "CARGOGREEN_SET_ENVS";

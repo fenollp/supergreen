@@ -3,6 +3,11 @@ use serde::{Deserialize, Serialize};
 
 use crate::{green::Add, runner::Network, stage::RST};
 
+// Envs that override Cargo.toml settings
+pub(crate) const ENV_BASE_IMAGE: &str = "CARGOGREEN_BASE_IMAGE";
+pub(crate) const ENV_BASE_IMAGE_INLINE: &str = "CARGOGREEN_BASE_IMAGE_INLINE";
+pub(crate) const ENV_WITH_NETWORK: &str = "CARGOGREEN_WITH_NETWORK";
+
 const STABLE_RUST: &str = "docker-image://docker.io/library/rust:1-slim";
 const BASE_FOR_RUST: &str = "docker-image://docker.io/library/debian:stable-slim";
 
@@ -22,9 +27,11 @@ pub(crate) struct BaseImage {
     //
     // # This environment variable takes precedence over any Cargo.toml settings:
     // CARGOGREEN_WITH_NETWORK="none"
+    //
+    // Set to `none` when in $CARGO_NET_OFFLINE mode. See
+    //   * https://doc.rust-lang.org/cargo/reference/config.html#netoffline
+    //   * https://github.com/rust-lang/rustup/issues/4289
     pub(crate) with_network: Network,
-    //TODO? maybe support $CARGO_NET_OFFLINE https://doc.rust-lang.org/cargo/reference/config.html#netoffline
-    //https://github.com/rust-lang/rustup/issues/4289
 
     // Sets the base Rust image, as an image URL (or any build context, actually).
     //

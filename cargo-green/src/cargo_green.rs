@@ -11,14 +11,15 @@ use log::{debug, info, trace};
 use tokio::{process::Command, try_join};
 
 use crate::{
+    base::{ENV_BASE_IMAGE, ENV_WITH_NETWORK},
     cratesio::{self},
     extensions::ShowCmd,
-    green::{Green, ENV_BASE_IMAGE},
+    green::Green,
     hash, hashed_args,
     lockfile::{find_lockfile, locked_crates},
     logging::{self, maybe_log, ENV_LOG, ENV_LOG_PATH},
     pwd,
-    runner::{build_cacheonly, fetch_digest, maybe_lock_image, runner_cmd},
+    runner::{build_cacheonly, fetch_digest, maybe_lock_image, runner_cmd, Network},
     rustc_wrapper::ENV,
     stage::{Stage, RST, RUST},
     tmp, PKG, REPO, VSN,
@@ -115,6 +116,15 @@ pub(crate) async fn main(cmd: &mut Command) -> Result<Green> {
     }
     green.image.with_network = with_network;
     green.image.base_image_inline = Some(finalized_block.trim().to_owned());
+
+    if let Ok(val) = env::var(ENV_WITH_NETWORK) {
+        green.image.with_network = serde_json::from_str(&val)?;
+    }
+    if let Ok(val) = env::var("CARGO_NET_OFFLINE") {
+        if val == "1" {
+            green.image.with_network = Network::None;
+        }
+    }
 
     // FIXME "multiplex conns to daemon" https://github.com/docker/buildx/issues/2564#issuecomment-2207435201
     // > If you do have docker context created already on ssh endpoint then you don't need to set the ssh address again on buildx create, you can use the context name or let it use the active context.

@@ -1,6 +1,6 @@
 use std::{
     collections::BTreeSet,
-    env,
+    env, fmt,
     fs::{self, OpenOptions},
     io::prelude::*,
     mem,
@@ -41,6 +41,13 @@ pub(crate) enum Network {
     None,
     Default,
     Host,
+}
+
+impl fmt::Display for Network {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        let network = serde_json::to_string(self).unwrap();
+        write!(f, "{}", &network[1..(network.len() - 1)])
+    }
 }
 
 #[must_use]
@@ -230,8 +237,7 @@ pub(crate) async fn build(
 
     //TODO? --annotation=(PLATFORM=)KEY=VALUE
 
-    let network = serde_json::to_string(&green.image.with_network).unwrap();
-    cmd.arg(format!("--network={}", &network[1..(network.len() - 1)]));
+    cmd.arg(format!("--network={}", green.image.with_network));
 
     cmd.arg("--platform=local");
     cmd.arg("--pull=false");
