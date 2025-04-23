@@ -23,7 +23,7 @@ struct GreenMetadata {
     green: Green,
 }
 
-#[derive(Debug, Serialize, Deserialize, Default)]
+#[derive(Debug, Serialize, Deserialize, Default, PartialEq, Eq)]
 #[serde(default)]
 #[serde(deny_unknown_fields)]
 #[serde(rename_all = "kebab-case")]
@@ -117,7 +117,7 @@ fn quote_pkgs(pkgs: &[String]) -> String {
     }
 }
 
-#[derive(Debug, Serialize, Deserialize, Default)]
+#[derive(Debug, Serialize, Deserialize, Default, PartialEq, Eq)]
 #[serde(default)]
 #[serde(deny_unknown_fields)]
 #[serde(rename_all = "kebab-case")]
@@ -362,7 +362,10 @@ name = "test-package"
 "#,
     )
     .unwrap();
-    Green::try_new(manifest).unwrap();
+    let mut green = Green::try_new(manifest).unwrap();
+    assert!(!green.image.base_image.is_empty());
+    green.image.base_image = String::new();
+    assert_eq!(green, Green::default());
 }
 
 //
@@ -402,6 +405,40 @@ add.{setting} = [ "" ]
     .unwrap();
     let err = Green::try_new(manifest).err().unwrap().to_string();
     assert!(err.contains("empty"), "In: {err}");
+}
+
+#[cfg(test)]
+#[test_case::test_matrix(["apt", "apt-get", "apk"])]
+fn metadata_green_add_quotes(setting: &str) {
+    let manifest = Manifest::from_str(&format!(
+        r#"
+[package]
+name = "test-package"
+
+[package.metadata.green]
+add.{setting} = [ "'a'" ]
+"#
+    ))
+    .unwrap();
+    let err = Green::try_new(manifest).err().unwrap().to_string();
+    assert!(err.contains("quotes"), "In: {err}");
+}
+
+#[cfg(test)]
+#[test_case::test_matrix(["apt", "apt-get", "apk"])]
+fn metadata_green_add_whitespace(setting: &str) {
+    let manifest = Manifest::from_str(&format!(
+        r#"
+[package]
+name = "test-package"
+
+[package.metadata.green]
+add.{setting} = [ "a b" ]
+"#
+    ))
+    .unwrap();
+    let err = Green::try_new(manifest).err().unwrap().to_string();
+    assert!(err.contains("space"), "In: {err}");
 }
 
 #[cfg(test)]
@@ -463,6 +500,38 @@ set-envs = [ "" ]
 }
 
 #[test]
+fn metadata_green_set_envs_quotes() {
+    let manifest = Manifest::from_str(
+        r#"
+[package]
+name = "test-package"
+
+[package.metadata.green]
+set-envs = [ "'a'" ]
+"#,
+    )
+    .unwrap();
+    let err = Green::try_new(manifest).err().unwrap().to_string();
+    assert!(err.contains("quotes"), "In: {err}");
+}
+
+#[test]
+fn metadata_green_set_envs_whitespace() {
+    let manifest = Manifest::from_str(
+        r#"
+[package]
+name = "test-package"
+
+[package.metadata.green]
+set-envs = [ "A B" ]
+"#,
+    )
+    .unwrap();
+    let err = Green::try_new(manifest).err().unwrap().to_string();
+    assert!(err.contains("space"), "In: {err}");
+}
+
+#[test]
 fn metadata_green_set_envs_our_vars() {
     let manifest = Manifest::from_str(
         r#"
@@ -509,7 +578,14 @@ base-image = "docker-image://docker.io/library/rust:1"
     )
     .unwrap();
     let green = Green::try_new(manifest).unwrap();
-    assert_eq!(green.image.base_image, "docker-image://docker.io/library/rust:1");
+    assert_eq!(
+        green.image,
+        BaseImage {
+            base_image: "docker-image://docker.io/library/rust:1".to_owned(),
+            base_image_inline: None,
+            with_network: Network::None,
+        }
+    );
 }
 
 #[test]
@@ -526,6 +602,22 @@ base-image = "docker.io/library/rust:1"
     .unwrap();
     let err = Green::try_new(manifest).err().unwrap().to_string();
     assert!(err.contains("scheme"), "In: {err}");
+}
+
+#[test]
+fn metadata_green_base_image_whitespace() {
+    let manifest = Manifest::from_str(
+        r#"
+[package]
+name = "test-package"
+
+[package.metadata.green]
+base-image = " docker-image://docker.io/library/rust:1  "
+"#,
+    )
+    .unwrap();
+    let err = Green::try_new(manifest).err().unwrap().to_string();
+    assert!(err.contains("space"), "In: {err}");
 }
 
 #[test]
@@ -570,8 +662,8 @@ RUN --mount=type=secret,id=aws
         )
         .unwrap();
     let green = Green::try_new(manifest).unwrap();
-    assert_eq!(
-            green.image.base_image_inline,
+    assert_eq!(green.image, BaseImage{base_image: "docker-image://rust:1".to_owned(),
+        base_image_inline:
             Some(
                 r#"
 # syntax = ghcr.io/reproducible-containers/buildkit-nix:v0.1.1@sha256:7d4c42a5c6baea2b21145589afa85e0862625e6779c89488987266b85e088021 <-- gets ignored
@@ -580,8 +672,44 @@ RUN --mount=from=some-context,target=/tmp/some-context cp -r /tmp/some-context .
 RUN --mount=type=secret,id=aws
 "#[1..]
                     .to_owned()
-            )
-        );
+            ),
+            with_network: Network::None,
+        });
+}
+
+#[test]
+fn metadata_green_base_image_inline_with_network_ok() {
+    let manifest = Manifest::from_str(
+            r#"
+[package]
+name = "test-package"
+
+[package.metadata.green]
+base-image = "docker-image://rust:1"
+with-network = "default"
+base-image-inline = """
+# syntax = ghcr.io/reproducible-containers/buildkit-nix:v0.1.1@sha256:7d4c42a5c6baea2b21145589afa85e0862625e6779c89488987266b85e088021 <-- gets ignored
+FROM rust:1 AS rust-base
+RUN --mount=from=some-context,target=/tmp/some-context cp -r /tmp/some-context ./
+RUN --mount=type=secret,id=aws
+"""
+"#,
+        )
+        .unwrap();
+    let green = Green::try_new(manifest).unwrap();
+    assert_eq!(green.image, BaseImage{base_image: "docker-image://rust:1".to_owned(),
+        base_image_inline:
+            Some(
+                r#"
+# syntax = ghcr.io/reproducible-containers/buildkit-nix:v0.1.1@sha256:7d4c42a5c6baea2b21145589afa85e0862625e6779c89488987266b85e088021 <-- gets ignored
+FROM rust:1 AS rust-base
+RUN --mount=from=some-context,target=/tmp/some-context cp -r /tmp/some-context ./
+RUN --mount=type=secret,id=aws
+"#[1..]
+                    .to_owned()
+            ),
+            with_network: Network::Default,
+        });
 }
 
 #[test]
@@ -620,6 +748,119 @@ RUN exit 42
     assert!(err.contains("stage"), "In: {err}");
     assert!(err.contains("'rust-base'"), "In: {err}");
 }
+
+//
+
+#[test]
+fn metadata_green_cache_images_ok() {
+    let manifest = Manifest::from_str(
+        r#"
+[package]
+name = "test-package"
+
+[package.metadata.green]
+cache-images = [
+  "docker-image://some-registry.com/dir/image",
+  "docker-image://other.registry/dir2/image3",
+]
+"#,
+    )
+    .unwrap();
+    let green = Green::try_new(manifest).unwrap();
+    assert_eq!(
+        green.cache_images,
+        vec![
+            "docker-image://some-registry.com/dir/image",
+            "docker-image://other.registry/dir2/image3"
+        ]
+    );
+}
+
+#[test]
+fn metadata_green_cache_images_dupes() {
+    let manifest = Manifest::from_str(
+        r#"
+[package]
+name = "test-package"
+
+[package.metadata.green]
+cache-images = [
+  "docker-image://some-registry.com/dir/image",
+  "docker-image://other.registry/dir2/image3",
+  "docker-image://some-registry.com/dir/image",
+]
+"#,
+    )
+    .unwrap();
+    let err = Green::try_new(manifest).err().unwrap().to_string();
+    assert!(err.contains("duplicates"), "In: {err}");
+}
+
+#[test]
+fn metadata_green_cache_images_bad_names() {
+    let manifest = Manifest::from_str(
+        r#"
+[package]
+name = "test-package"
+
+[package.metadata.green]
+cache-images = ["", "docker-image://some-registry.com/dir/image 'docker-image://other.registry/dir2/image3'"]
+"#,
+    )
+    .unwrap();
+    let err = Green::try_new(manifest).err().unwrap().to_string();
+    assert!(err.contains("names"), "In: {err}");
+}
+
+#[test]
+fn metadata_green_cache_images_bad_scheme() {
+    let manifest = Manifest::from_str(
+        r#"
+[package]
+name = "test-package"
+
+[package.metadata.green]
+cache-images = ["some-registry.com/dir/image"]
+"#,
+    )
+    .unwrap();
+    let err = Green::try_new(manifest).err().unwrap().to_string();
+    assert!(err.contains("scheme"), "In: {err}");
+}
+
+#[test]
+fn metadata_green_cache_images_bad_registry() {
+    let manifest = Manifest::from_str(
+        r#"
+[package]
+name = "test-package"
+
+[package.metadata.green]
+cache-images = ["docker-image://image"]
+"#,
+    )
+    .unwrap();
+    let err = Green::try_new(manifest).err().unwrap().to_string();
+    assert!(err.contains("registry"), "In: {err}");
+}
+
+#[test]
+fn metadata_green_cache_images_bad_image() {
+    let manifest = Manifest::from_str(
+        r#"
+[package]
+name = "test-package"
+
+[package.metadata.green]
+cache-images = ["docker-image://some-registry.com/dir/image:sometag"]
+"#,
+    )
+    .unwrap();
+    let err = Green::try_new(manifest).err().unwrap().to_string();
+    assert!(err.contains("tag"), "In: {err}");
+}
+
+//
 
 //////////////////////////////////////////////////
 // from https://github.com/PRQL/prql/pull/3773/files
