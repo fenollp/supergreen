@@ -36,6 +36,23 @@ pub(crate) const MARK_STDERR: &str = "::STDERR:: ";
 #[derive(Debug, Copy, Clone, Default, Serialize, Deserialize, Eq, PartialEq)]
 #[serde(deny_unknown_fields)]
 #[serde(rename_all = "kebab-case")]
+pub(crate) enum Runner {
+    #[default]
+    Docker,
+    Podman,
+    None,
+}
+
+impl fmt::Display for Runner {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        let runner = serde_json::to_string(self).unwrap();
+        write!(f, "{}", &runner[1..(runner.len() - 1)])
+    }
+}
+
+#[derive(Debug, Copy, Clone, Default, Serialize, Deserialize, Eq, PartialEq)]
+#[serde(deny_unknown_fields)]
+#[serde(rename_all = "kebab-case")]
 pub(crate) enum Network {
     #[default]
     None,
@@ -52,8 +69,8 @@ impl fmt::Display for Network {
 
 #[must_use]
 pub(crate) fn runner_cmd(green: &Green) -> Command {
-    let mut cmd = Command::new(&green.runner);
-    cmd.kill_on_drop(true);
+    let mut cmd = Command::new(green.runner.to_string());
+    cmd.kill_on_drop(true); // Makes sure the underlying OS process dies with us
     cmd.stdin(Stdio::null());
     cmd.arg("--debug");
     // TODO: use env_clear https://docs.rs/tokio/latest/tokio/process/struct.Command.html#method.env_clear => pass all buildkit/docker/moby/podman envs explicitly
@@ -134,12 +151,8 @@ pub(crate) async fn build(
     contexts: &BTreeSet<BuildContext>,
     out_dir: Option<&Utf8Path>,
 ) -> Result<()> {
-    let mut cmd = Command::new(&green.runner);
-    cmd.arg("--debug");
+    let mut cmd = runner_cmd(green);
     cmd.arg("build");
-
-    // Makes sure the underlying OS process dies with us
-    cmd.kill_on_drop(true);
 
     // Makes sure that the BuildKit builder is used by either runner
     cmd.env("DOCKER_BUILDKIT", "1");
@@ -356,7 +369,7 @@ pub(crate) async fn build(
         // * docker info
         // * docker buildx ls
 
-        let mut cmd = Command::new(&green.runner);
+        let mut cmd = Command::new(green.runner.to_string());
         let cmd = cmd.kill_on_drop(true).arg("info");
         let Output { stdout, stderr, status } =
             cmd.output().await.map_err(|e| anyhow!("Failed starting {}: {e}", cmd.show()))?;

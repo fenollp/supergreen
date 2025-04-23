@@ -8,7 +8,7 @@ use serde::{Deserialize, Serialize};
 use crate::{
     base::{BaseImage, ENV_BASE_IMAGE, ENV_BASE_IMAGE_INLINE},
     lockfile::find_manifest_path,
-    runner::Network,
+    runner::{Network, Runner},
     stage::RST,
 };
 
@@ -129,7 +129,7 @@ pub(crate) struct Green {
     //
     // # Use by setting this environment variable (no Cargo.toml setting):
     // CARGOGREEN_RUNNER="docker"
-    pub(crate) runner: String, //TODO: type(enum)
+    pub(crate) runner: Runner,
 
     // Whether to wrap incremental compilation, defaults to false.
     //

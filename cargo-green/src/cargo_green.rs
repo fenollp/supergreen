@@ -19,7 +19,7 @@ use crate::{
     lockfile::{find_lockfile, locked_crates},
     logging::{self, maybe_log},
     pwd,
-    runner::{build_cacheonly, fetch_digest, maybe_lock_image, runner_cmd, Network},
+    runner::{build_cacheonly, fetch_digest, maybe_lock_image, runner_cmd, Network, Runner},
     stage::{Stage, RST, RUST},
     tmp, PKG, REPO, VSN,
 };
@@ -34,12 +34,11 @@ pub(crate) async fn main() -> Result<Green> {
     let mut green = Green::new_from_env_then_manifest()?;
 
     // Setting runner first as it's needed by many calls
-    if !green.runner.is_empty() {
+    if green.runner != Runner::default() {
         bail!("${ENV_RUNNER} can only be set through the environment variable")
     }
-    green.runner = env::var(ENV_RUNNER).unwrap_or_else(|_| "docker".to_owned());
-    if !["docker", "none", "podman"].contains(&green.runner.as_str()) {
-        bail!("${ENV_RUNNER} must be either 'docker', 'podman' or 'none' not {:?}", green.runner)
+    if let Ok(val) = env::var(ENV_RUNNER) {
+        green.runner = serde_json::from_str(&val)?;
     }
 
     const SYNTAX: &str = "docker-image://docker.io/docker/dockerfile:1";

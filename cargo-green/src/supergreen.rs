@@ -154,7 +154,7 @@ fn envs(green: Green, vars: Vec<String>) {
         (ENV_LOG, env::var(ENV_LOG).ok()),
         (ENV_LOG_PATH, env::var(ENV_LOG_PATH).ok()),
         (ENV_LOG_STYLE, env::var(ENV_LOG_STYLE).ok()),
-        (ENV_RUNNER, Some(green.runner.clone())),
+        (ENV_RUNNER, Some(green.runner.to_string())),
         (ENV_SET_ENVS, csv(&green.set_envs)),
         (ENV_SYNTAX, Some(green.syntax)),
         (ENV_WITH_NETWORK, Some(green.image.with_network.to_string())),

@@ -21,7 +21,7 @@ use crate::{
     logging::{self, crate_type_for_logging, maybe_log, ENV_LOG},
     md::{BuildContext, Md},
     pwd,
-    runner::{build, MARK_STDERR, MARK_STDOUT},
+    runner::{build, Runner, MARK_STDERR, MARK_STDOUT},
     rustc_arguments::{as_rustc, RustcArgs},
     stage::{Stage, RST, RUST},
     tmp, PKG, REPO, VSN,
@@ -683,7 +683,7 @@ async fn do_wrap_rustc(
     // https://github.com/tugglecore/rust-tracing-primer
     // TODO: `cargo green -v{N+1} ..` starts a TUI showing colored logs on above `cargo -v{N} ..`
 
-    if green.runner == "none" {
+    if green.runner == Runner::None {
         info!("Runner disabled, falling back...");
         return fallback.await;
     }
