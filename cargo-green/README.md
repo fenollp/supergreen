@@ -8,26 +8,46 @@ Cached & remote-ready Rust projects builder by forwarding `rustc` calls to [Buil
 
 ## Configuration
 
-Reads envs
-* [`$BUILDX_BUILDER`](https://docs.docker.com/build/building/variables/#buildx_builder)
-* `$CARGOGREEN_LOG`: equivalent to `$RUST_LOG` (and doesn't conflict with `cargo`'s)
-* `$CARGOGREEN_LOG_PATH`
-* `$CARGOGREEN_LOG_STYLE`
+Reads envs (show values with `cargo green supergreen env`)
+* `$CARGOGREEN_ADD_APK`: `add.apk` TOML setting
+* `$CARGOGREEN_ADD_APT_GET`: `add.apt-get` TOML setting
+* `$CARGOGREEN_ADD_APT`: `add.apt` TOML setting
+* `$CARGOGREEN_BASE_IMAGE_INLINE`: `base-image-inline` TOML setting
+* `$CARGOGREEN_BASE_IMAGE`: `base-image` TOML setting
+* `$CARGOGREEN_BUILDER_IMAGE`: image to use when creating builder container
+* `$CARGOGREEN_CACHE_IMAGES`: `cache-images` TOML setting
 * `$CARGOGREEN_FINAL_PATH`: if set, this file will end up with the final Dockerfile that reproduces the build
+* `$CARGOGREEN_INCREMENTAL`: `incremental` TOML setting
+* `$CARGOGREEN_LOG_PATH`: logfile path
+* `$CARGOGREEN_LOG_STYLE`
+* `$CARGOGREEN_LOG`: equivalent to `$RUST_LOG` (and doesn't conflict with `cargo`'s)
 * `$CARGOGREEN_REMOTE`: *reserved for now*
-* [`$DOCKER_HOST`](https://docs.docker.com/engine/reference/commandline/cli/#environment-variables)
+* `$CARGOGREEN_RUNNER`: use `docker` or `podman` or `none` as build runner
+* `$CARGOGREEN_SET_ENVS`: `set-envs` TOML setting
+* `$CARGOGREEN_SYNTAX`: use a `dockerfile:1`-derived BuildKit frontend
+* `$CARGOGREEN_WITH_NETWORK`: `with-network` TOML setting
 
-* `$CARGOGREEN`
-* `$CARGOGREEN_BASE_IMAGE`
-* `$CARGOGREEN_BASE_IMAGE_INLINE`
-* `$CARGOGREEN_BUILDER_IMAGE`
-* `$CARGOGREEN_CACHE_IMAGES`
-* `$CARGOGREEN_INCREMENTAL`
-* `$CARGOGREEN_RUNNER`
-* `$CARGOGREEN_SYNTAX`
+Also [passes these envs through to the runner](https://docs.docker.com/engine/reference/commandline/cli/#environment-variables):
+* `BUILDKIT_PROGRESS`
+* [`$BUILDX_BUILDER`](https://docs.docker.com/build/building/variables/#buildx_builder)
+* `DOCKER_API_VERSION`
+* `DOCKER_CERT_PATH`
+* `DOCKER_CONFIG`
+* `DOCKER_CONTENT_TRUST_SERVER`
+* `DOCKER_CONTENT_TRUST`
+* `DOCKER_CONTEXT`
+* `DOCKER_DEFAULT_PLATFORM`
+* `DOCKER_HIDE_LEGACY_COMMANDS`
+* [`$DOCKER_HOST`](https://docs.docker.com/engine/reference/commandline/cli/#environment-variables)
+* `DOCKER_TLS_VERIFY`
+* `DOCKER_TLS`
+* `HTTP_PROXY`
+* `HTTPS_PROXY`
+* `NO_PROXY`
 
 Sets
 * [`$RUSTC_WRAPPER`](https://doc.rust-lang.org/cargo/reference/environment-variables.html#environment-variables-cargo-reads)
+* `$CARGOGREEN=1`
 
 
 ## Usage

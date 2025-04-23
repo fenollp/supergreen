@@ -125,6 +125,7 @@ async fn main() -> Result<()> {
     }
 
     assert!(env::var_os(ENV).is_none());
+    assert!(env::var_os(ENV_ROOT_PACKAGE_SETTINGS).is_none());
 
     // Goal: produce only fully-locked Dockerfiles/TOMLs
 
