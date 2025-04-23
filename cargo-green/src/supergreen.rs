@@ -15,7 +15,6 @@ use crate::{
         ENV_SET_ENVS,
     },
     logging::{ENV_LOG, ENV_LOG_PATH, ENV_LOG_STYLE},
-    runner::runner_cmd,
     rustc_wrapper::ENV,
 };
 
@@ -91,7 +90,7 @@ async fn push(green: Green) -> Result<()> {
 
         async fn do_push(green: &Green, tag: String, img: &str) -> Result<()> {
             println!("Pushing {img}:{tag}...");
-            let mut cmd = runner_cmd(green);
+            let mut cmd = green.runner.as_cmd();
             cmd.arg("push").arg(format!("{img}:{tag}")).stdout(Stdio::null()).stderr(Stdio::null());
 
             if let Ok(mut o) = cmd.spawn() {
@@ -119,7 +118,7 @@ async fn push(green: Green) -> Result<()> {
 async fn all_tags_of(green: &Green, img: &str) -> Result<Vec<String>> {
     // NOTE: https://github.com/moby/moby/issues/47809
     //   Meanwhile: just drop docker.io/ prefix
-    let mut cmd = runner_cmd(green);
+    let mut cmd = green.runner.as_cmd();
     cmd.arg("image")
         .arg("ls")
         .arg("--format=json")

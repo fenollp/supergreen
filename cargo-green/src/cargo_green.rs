@@ -19,7 +19,7 @@ use crate::{
     lockfile::{find_lockfile, locked_crates},
     logging::{self, maybe_log},
     pwd,
-    runner::{build_cacheonly, fetch_digest, maybe_lock_image, runner_cmd, Network, Runner},
+    runner::{build_cacheonly, fetch_digest, maybe_lock_image, Network, Runner},
     stage::{Stage, RST, RUST},
     tmp, PKG, REPO, VSN,
 };
@@ -162,7 +162,7 @@ async fn setup_build_driver(green: &Green, name: &str) -> Result<()> {
     let Some(ref builder_image) = green.builder_image else { return Ok(()) };
     let builder_image = builder_image.trim_start_matches("docker-image://");
 
-    let mut cmd = runner_cmd(green);
+    let mut cmd = green.runner.as_cmd();
     cmd.args(["buildx", "create"])
         .arg(format!("--name={name}"))
         .arg("--bootstrap")
@@ -190,7 +190,7 @@ async fn setup_build_driver(green: &Green, name: &str) -> Result<()> {
 }
 
 async fn try_removing_previous_builder(green: &Green, name: &str) {
-    let mut cmd = runner_cmd(green);
+    let mut cmd = green.runner.as_cmd();
     cmd.args(["buildx", "rm", name, "--keep-state", "--force"])
         .stdout(Stdio::null())
         .stderr(Stdio::null());
@@ -362,7 +362,7 @@ async fn pull_images(green: &Green, to_pull: Vec<String>) -> Result<()> {
 }
 
 async fn do_pull(green: &Green, img: String) -> Result<()> {
-    let mut cmd = runner_cmd(green);
+    let mut cmd = green.runner.as_cmd();
     cmd.arg("pull").arg(&img);
     let o = cmd
         .spawn()

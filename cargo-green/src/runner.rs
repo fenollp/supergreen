@@ -43,6 +43,28 @@ pub(crate) enum Runner {
     None,
 }
 
+impl Runner {
+    pub(crate) fn as_cmd(&self) -> Command {
+        self.as_debug_cmd(true)
+    }
+
+    pub(crate) fn as_nondbg_cmd(&self) -> Command {
+        self.as_debug_cmd(false)
+    }
+
+    #[must_use]
+    fn as_debug_cmd(&self, debug: bool) -> Command {
+        let mut cmd = Command::new(self.to_string());
+        cmd.kill_on_drop(true); // Makes sure the underlying OS process dies with us
+        cmd.stdin(Stdio::null());
+        if debug {
+            cmd.arg("--debug");
+        }
+        // TODO: use env_clear https://docs.rs/tokio/latest/tokio/process/struct.Command.html#method.env_clear => pass all buildkit/docker/moby/podman envs explicitly
+        cmd
+    }
+}
+
 impl fmt::Display for Runner {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         let runner = serde_json::to_string(self).unwrap();
@@ -67,22 +89,14 @@ impl fmt::Display for Network {
     }
 }
 
-#[must_use]
-pub(crate) fn runner_cmd(green: &Green) -> Command {
-    let mut cmd = Command::new(green.runner.to_string());
-    cmd.kill_on_drop(true); // Makes sure the underlying OS process dies with us
-    cmd.stdin(Stdio::null());
-    cmd.arg("--debug");
-    // TODO: use env_clear https://docs.rs/tokio/latest/tokio/process/struct.Command.html#method.env_clear => pass all buildkit/docker/moby/podman envs explicitly
-    cmd
-}
-
 /// If given an un-pinned image URI, query local image cache for its digest.
 /// Returns the given URI, along with its digest if one was found.
 #[must_use]
 pub(crate) async fn maybe_lock_image(green: &Green, img: &str) -> String {
     if img.starts_with("docker-image://") && !img.contains("@sha256:") {
-        if let Some(line) = runner_cmd(green)
+        if let Some(line) = green
+            .runner
+            .as_cmd()
             .arg("inspect")
             .arg("--format={{index .RepoDigests 0}}")
             .arg(img.trim_start_matches("docker-image://"))
@@ -151,7 +165,7 @@ pub(crate) async fn build(
     contexts: &BTreeSet<BuildContext>,
     out_dir: Option<&Utf8Path>,
 ) -> Result<()> {
-    let mut cmd = runner_cmd(green);
+    let mut cmd = green.runner.as_cmd();
     cmd.arg("build");
 
     // Makes sure that the BuildKit builder is used by either runner
@@ -369,8 +383,8 @@ pub(crate) async fn build(
         // * docker info
         // * docker buildx ls
 
-        let mut cmd = Command::new(green.runner.to_string());
-        let cmd = cmd.kill_on_drop(true).arg("info");
+        let mut cmd = green.runner.as_nondbg_cmd();
+        cmd.arg("info");
         let Output { stdout, stderr, status } =
             cmd.output().await.map_err(|e| anyhow!("Failed starting {}: {e}", cmd.show()))?;
         let stdout = String::from_utf8_lossy(&stdout);
