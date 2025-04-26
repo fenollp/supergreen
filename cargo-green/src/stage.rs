@@ -1,5 +1,6 @@
 use std::sync::LazyLock;
 
+use anyhow::{bail, Error, Result};
 use nutype::nutype;
 
 pub(crate) const RST: &str = "rust-base"; // Twin, for Display
@@ -14,10 +15,20 @@ fn rust_stage() {
 
 #[nutype(
     sanitize(with = oci_name),
-    validate(predicate = tag_name),
+    validate(error = Error, with = tag_name),
     derive(Clone, Debug, Display, Deref, TryFrom, Serialize, Deserialize, Eq, PartialEq, Ord, PartialOrd))
 ]
 pub(crate) struct Stage(String);
+
+fn tag_name(name: &str) -> Result<()> {
+    if name.starts_with(['-', '.']) {
+        bail!("Starts with dot or dash")
+    }
+    if !(1..=128).contains(&name.len()) {
+        bail!("Is longer than 128 chars or empty")
+    }
+    Ok(())
+}
 
 #[must_use]
 fn oci_name(name: String) -> String {
@@ -30,11 +41,6 @@ fn oci_name(name: String) -> String {
 #[must_use]
 fn is_alnum_dot_underscore(c: char) -> bool {
     "._".contains(c) || c.is_alphanumeric()
-}
-
-#[must_use]
-fn tag_name(name: &str) -> bool {
-    !name.starts_with(['-', '.']) && (1..=128).contains(&name.len())
 }
 
 #[test]
