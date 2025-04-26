@@ -157,7 +157,17 @@ pub(crate) async fn build_cacheonly(
     build(green, dockerfile_path, target, &[].into(), None).await
 }
 
-pub(crate) async fn build(
+pub(crate) async fn build_out(
+    green: &Green,
+    dockerfile_path: &Utf8Path,
+    target: Stage,
+    contexts: &BTreeSet<BuildContext>,
+    out_dir: &Utf8Path,
+) -> Result<()> {
+    build(green, dockerfile_path, target, contexts, Some(out_dir)).await
+}
+
+async fn build(
     green: &Green,
     dockerfile_path: &Utf8Path,
     target: Stage,
