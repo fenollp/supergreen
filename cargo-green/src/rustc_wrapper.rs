@@ -283,7 +283,7 @@ async fn do_wrap_rustc(
             for transitive in BufReader::new(fd).lines().map_while(Result::ok) {
                 let guard = externs_prefix(&format!("{transitive}_proc-macro"));
                 info!("checking (RO) extern's guard {guard}");
-                let ext = if file_exists(&guard)? { "so" } else { &ext };
+                let ext = if guard.exists() { "so" } else { &ext };
                 let actual_extern = format!("lib{transitive}.{ext}");
                 all_externs.insert(actual_extern.clone());
 
@@ -722,14 +722,6 @@ fn safeify(val: String) -> String {
 #[test]
 fn test_safeify() {
     assert_eq!(safeify("$VAR=val".to_owned()), "\"\\$VAR=val\"".to_owned());
-}
-
-fn file_exists(path: &Utf8Path) -> Result<bool> {
-    match path.metadata().map(|md| md.is_file()) {
-        Ok(b) => Ok(b),
-        Err(e) if e.kind() == ErrorKind::NotFound => Ok(false),
-        Err(e) => Err(anyhow!("Failed to `stat {path}`: {e}")),
-    }
 }
 
 #[test]
