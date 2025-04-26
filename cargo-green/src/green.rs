@@ -7,6 +7,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::{
     base::{BaseImage, ENV_BASE_IMAGE, ENV_BASE_IMAGE_INLINE},
+    image_uri::ImageUri,
     lockfile::find_manifest_path,
     runner::{Network, Runner},
     stage::RST,
@@ -146,7 +147,7 @@ pub(crate) struct Green {
     //
     // # Use by setting this environment variable (no Cargo.toml setting):
     // CARGOGREEN_SYNTAX="docker-image://docker.io/docker/dockerfile:1"
-    pub(crate) syntax: String, //TODO? type(uri?)
+    pub(crate) syntax: ImageUri,
 
     // Sets which BuildKit builder to use.
     //
@@ -156,7 +157,7 @@ pub(crate) struct Green {
     // CARGOGREEN_BUILDER_IMAGE="docker-image://docker.io/moby/buildkit:latest"
     // CARGOGREEN_BUILDER_IMAGE="docker-image://docker.io/moby/buildkit:buildx-stable-1"
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub(crate) builder_image: Option<String>, //TODO? type(uri?)
+    pub(crate) builder_image: Option<ImageUri>,
 
     // Image paths with registry information.
     //
@@ -168,7 +169,7 @@ pub(crate) struct Green {
     // # Note: values here are comma-separated.
     // CARGOGREEN_CACHE_IMAGES="docker-image://my.org/team/my-project,docker-image://some.org/global/cache"
     #[serde(skip_serializing_if = "Vec::is_empty")]
-    pub(crate) cache_images: Vec<String>, //TODO? type(uri?)
+    pub(crate) cache_images: Vec<ImageUri>,
     // TODO? error when registry is unreachable
 
     // Write final Dockerfile to given path.
@@ -238,40 +239,26 @@ impl Green {
         let mut origin = "[metadata.green.cache-images]".to_owned();
         if let Ok(val) = env::var(ENV_CACHE_IMAGES) {
             origin = format!("${ENV_CACHE_IMAGES}");
-            green.cache_images = val.split(',').map(ToOwned::to_owned).collect();
+            green.cache_images = val
+                .split(',')
+                .map(|x| ImageUri::try_new(x).map_err(|e| anyhow!("{origin} {e}")))
+                .collect::<Result<_>>()?;
         }
-        if !green.cache_images.is_empty() {
-            if bad_names(&green.cache_images) {
-                bail!("{origin} contains empty names, quotes or whitespace")
-            }
-            if green.cache_images.len() != green.cache_images.iter().collect::<HashSet<_>>().len() {
-                bail!("{origin} contains duplicates")
-            }
+        if green.cache_images.len() != green.cache_images.iter().collect::<HashSet<_>>().len() {
+            bail!("{origin} contains duplicates")
         }
         for item in &green.cache_images {
-            if !item.starts_with("docker-image://") {
-                bail!("{origin} unsupported scheme: {item:?}")
-            }
-            if !item.trim_start_matches("docker-image://").contains('/') {
+            if !item.noscheme().contains('/') {
                 bail!("{origin} must contain a registry: {item:?}")
             }
-            if item.trim_start_matches("docker-image://").contains([':', '@']) {
+            if item.tagged() || item.locked() {
                 bail!("{origin} must not contain a tag nor digest: {item:?}")
             }
         }
 
-        let mut origin = "[metadata.green.base-image]".to_owned();
         if let Ok(val) = env::var(ENV_BASE_IMAGE) {
-            origin = format!("${ENV_BASE_IMAGE}");
+            let val = val.try_into().map_err(|e| anyhow!("${ENV_BASE_IMAGE} {e}"))?;
             green.image = BaseImage::from_image(val);
-        }
-        if !green.image.base_image.is_empty() {
-            if green.image.base_image != green.image.base_image.trim() {
-                bail!("{origin} has leading or trainling whitespace: {:?}", green.image.base_image)
-            }
-            if !green.image.base_image.starts_with("docker-image://") {
-                bail!("{origin} unsupported scheme: {:?}", green.image.base_image)
-            }
         }
 
         let mut origin = "[metadata.green.base-image-inline]".to_owned();
@@ -293,7 +280,7 @@ impl Green {
         }
 
         if let Some(ref base_image_inline) = green.image.base_image_inline {
-            let base = green.image.base_image.trim_start_matches("docker-image://");
+            let base = green.image.base_image.noscheme();
             if base.is_empty() || !base_image_inline.contains(&format!(" {base} ")) {
                 bail!("Make sure to match [metadata.green.base-image] with the image URL used in [metadata.green.base-image-inline]")
             }
@@ -367,7 +354,8 @@ name = "test-package"
     .unwrap();
     let mut green = Green::try_new(manifest).unwrap();
     assert!(!green.image.base_image.is_empty());
-    green.image.base_image = String::new();
+    green.image.base_image = ImageUri::default();
+    assert!(green.image.base_image.is_empty());
     assert_eq!(green, Green::default());
 }
 
@@ -584,7 +572,7 @@ base-image = "docker-image://docker.io/library/rust:1"
     assert_eq!(
         green.image,
         BaseImage {
-            base_image: "docker-image://docker.io/library/rust:1".to_owned(),
+            base_image: ImageUri::std("rust:1"),
             base_image_inline: None,
             with_network: Network::None,
         }
@@ -665,7 +653,8 @@ RUN --mount=type=secret,id=aws
         )
         .unwrap();
     let green = Green::try_new(manifest).unwrap();
-    assert_eq!(green.image, BaseImage{base_image: "docker-image://rust:1".to_owned(),
+    assert_eq!(green.image, BaseImage {
+        base_image: ImageUri::try_new("docker-image://rust:1").unwrap(),
         base_image_inline:
             Some(
                 r#"
@@ -700,7 +689,8 @@ RUN --mount=type=secret,id=aws
         )
         .unwrap();
     let green = Green::try_new(manifest).unwrap();
-    assert_eq!(green.image, BaseImage{base_image: "docker-image://rust:1".to_owned(),
+    assert_eq!(green.image, BaseImage {
+        base_image: ImageUri::try_new("docker-image://rust:1").unwrap(),
         base_image_inline:
             Some(
                 r#"
@@ -773,8 +763,8 @@ cache-images = [
     assert_eq!(
         green.cache_images,
         vec![
-            "docker-image://some-registry.com/dir/image",
-            "docker-image://other.registry/dir2/image3"
+            ImageUri::try_new("docker-image://some-registry.com/dir/image").unwrap(),
+            ImageUri::try_new("docker-image://other.registry/dir2/image3").unwrap(),
         ]
     );
 }
@@ -807,7 +797,7 @@ fn metadata_green_cache_images_bad_names() {
 name = "test-package"
 
 [package.metadata.green]
-cache-images = ["", "docker-image://some-registry.com/dir/image 'docker-image://other.registry/dir2/image3'"]
+cache-images = ["docker-image://some-registry.com/dir/image 'docker-image://other.registry/dir2/image3'", ""]
 "#,
     )
     .unwrap();

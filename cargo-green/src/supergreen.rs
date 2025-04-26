@@ -14,6 +14,7 @@ use crate::{
         Green, ENV_ADD_APK, ENV_ADD_APT, ENV_ADD_APT_GET, ENV_CACHE_IMAGES, ENV_INCREMENTAL,
         ENV_SET_ENVS,
     },
+    image_uri::ImageUri,
     logging::{ENV_LOG, ENV_LOG_PATH, ENV_LOG_STYLE},
     rustc_wrapper::ENV,
 };
@@ -85,7 +86,7 @@ Usage:
 // TODO: have fun with https://github.com/console-rs/indicatif
 async fn push(green: Green) -> Result<()> {
     for img in &green.cache_images {
-        let img = img.trim_start_matches("docker-image://");
+        let img = img.noscheme();
         let tags = all_tags_of(&green, img).await?;
 
         async fn do_push(green: &Green, tag: String, img: &str) -> Result<()> {
@@ -138,16 +139,23 @@ async fn all_tags_of(green: &Green, img: &str) -> Result<Vec<String>> {
 }
 
 fn envs(green: Green, vars: Vec<String>) {
-    let csv = |add: &[String]| (!add.is_empty()).then(|| add.join(","));
+    fn csv(xs: &[String]) -> Option<String> {
+        (!xs.is_empty()).then(|| xs.join(","))
+    }
+
+    fn csv_uris(xs: &[ImageUri]) -> Option<String> {
+        csv(&xs.iter().map(ToString::to_string).collect::<Vec<_>>())
+    }
+
     let all = vec![
         (ENV, env::var(ENV).ok()),
         (ENV_ADD_APK, csv(&green.add.apk)),
         (ENV_ADD_APT, csv(&green.add.apt)),
         (ENV_ADD_APT_GET, csv(&green.add.apt_get)),
-        (ENV_BASE_IMAGE, Some(green.image.base_image.clone())),
+        (ENV_BASE_IMAGE, Some(green.image.base_image.to_string())),
         (ENV_BASE_IMAGE_INLINE, green.image.base_image_inline.clone()),
-        (ENV_BUILDER_IMAGE, green.builder_image.clone()),
-        (ENV_CACHE_IMAGES, csv(&green.cache_images)),
+        (ENV_BUILDER_IMAGE, green.builder_image.map(|x| x.to_string())),
+        (ENV_CACHE_IMAGES, csv_uris(&green.cache_images)),
         (ENV_FINAL_PATH, green.final_path.as_deref().map(ToString::to_string)),
         (ENV_INCREMENTAL, green.incremental.then(|| "1".to_owned())),
         (ENV_LOG, env::var(ENV_LOG).ok()),
@@ -155,7 +163,7 @@ fn envs(green: Green, vars: Vec<String>) {
         (ENV_LOG_STYLE, env::var(ENV_LOG_STYLE).ok()),
         (ENV_RUNNER, Some(green.runner.to_string())),
         (ENV_SET_ENVS, csv(&green.set_envs)),
-        (ENV_SYNTAX, Some(green.syntax)),
+        (ENV_SYNTAX, Some(green.syntax.to_string())),
         (ENV_WITH_NETWORK, Some(green.image.with_network.to_string())),
     ];
 

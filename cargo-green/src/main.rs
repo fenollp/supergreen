@@ -18,6 +18,7 @@ mod cratesio;
 mod envs;
 mod extensions;
 mod green;
+mod image_uri;
 mod lockfile;
 mod logging;
 mod md;

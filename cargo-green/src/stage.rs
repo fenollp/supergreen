@@ -12,10 +12,6 @@ fn rust_stage() {
     assert_ne!(format!("{RUST:?}"), "rust-base");
 }
 
-// TODO newtype Image = String (better: enum)
-//      for docker-image://docker.io/... (_: variant)
-//          make ToString impl panic if value not fully locked
-
 #[nutype(
     sanitize(with = oci_name),
     validate(predicate = tag_name),

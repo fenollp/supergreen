@@ -25,6 +25,7 @@ use tokio::{
 use crate::{
     extensions::ShowCmd,
     green::Green,
+    image_uri::ImageUri,
     logging::{crate_type_for_logging, maybe_log, ENV_LOG_PATH},
     md::BuildContext,
     stage::Stage,
@@ -92,39 +93,36 @@ impl fmt::Display for Network {
 /// If given an un-pinned image URI, query local image cache for its digest.
 /// Returns the given URI, along with its digest if one was found.
 #[must_use]
-pub(crate) async fn maybe_lock_image(green: &Green, img: &str) -> String {
-    if img.starts_with("docker-image://") && !img.contains("@sha256:") {
+pub(crate) async fn maybe_lock_image(green: &Green, img: &ImageUri) -> ImageUri {
+    if !img.locked() {
         if let Some(line) = green
             .runner
             .as_cmd()
             .arg("inspect")
             .arg("--format={{index .RepoDigests 0}}")
-            .arg(img.trim_start_matches("docker-image://"))
+            .arg(img.noscheme())
             .output()
             .await
             .ok()
             .and_then(|o| String::from_utf8(o.stdout).ok())
             .and_then(|x| x.lines().next().map(ToOwned::to_owned))
         {
-            let digest = line.trim_start_matches(|c| c != '@');
-            return format!("{img}{digest}");
+            // NOTE: `inspect` does not keep tag: host/dir/name@sha256:digest (no :tag@)
+            let digested =
+                ImageUri::try_new(format!("docker-image://{line}")).expect("inspect's output");
+            return img.lock(digested.digest());
         }
     }
     img.to_owned()
 }
 
-pub(crate) async fn fetch_digest(img: &str) -> Result<String> {
-    // e.g. docker-image://docker.io/library/rust:1.80.1-slim
-    if !img.starts_with("docker-image://") {
-        bail!("Image missing 'docker-image' scheme: {img:?}")
-    }
-    if img.contains('@') {
+pub(crate) async fn fetch_digest(img: &ImageUri) -> Result<ImageUri> {
+    if img.locked() {
         return Ok(img.to_owned());
     }
-    let img = img.trim_start_matches("docker-image://");
-    let (path, tag) = img.split_once(':').unwrap_or((img, "latest"));
-    let (dir, img) = match Utf8Path::new(path).iter().collect::<Vec<_>>()[..] {
-        ["docker.io", dir, img] => (dir, img),
+    let (path, tag) = img.path_and_tag();
+    let (dir, slug) = match Utf8Path::new(path).iter().collect::<Vec<_>>()[..] {
+        ["docker.io", dir, slug] => (dir, slug),
         _ => bail!("BUG: unhandled registry {img:?}"),
     };
 
@@ -132,7 +130,7 @@ pub(crate) async fn fetch_digest(img: &str) -> Result<String> {
         .connect_timeout(Duration::from_secs(4))
         .build()
         .map_err(|e| anyhow!("HTTP client's config/TLS failed: {e}"))?
-        .get(format!("https://registry.hub.docker.com/v2/repositories/{dir}/{img}/tags/{tag}"))
+        .get(format!("https://registry.hub.docker.com/v2/repositories/{dir}/{slug}/tags/{tag}"))
         .send()
         .await
         .map_err(|e| anyhow!("Failed to reach Docker Hub's registry: {e}"))?
@@ -146,8 +144,9 @@ pub(crate) async fn fetch_digest(img: &str) -> Result<String> {
     }
     let RegistryResponse { digest } = serde_json::from_str(&txt)
         .map_err(|e| anyhow!("Failed to decode response from registry: {e}"))?;
+    // digest ~ sha256:..
 
-    Ok(format!("docker-image://{path}:{tag}@{digest}"))
+    Ok(img.lock(&digest))
 }
 
 pub(crate) async fn build_cacheonly(
@@ -236,7 +235,7 @@ pub(crate) async fn build(
 
     if !green.cache_images.is_empty() {
         for img in &green.cache_images {
-            let img = img.trim_start_matches("docker-image://");
+            let img = img.noscheme();
             let mode = if false { ",mode=max" } else { "" }; // TODO: env? builder call?
             cmd.arg(format!("--cache-from=type=registry,ref={img}{mode}"));
 

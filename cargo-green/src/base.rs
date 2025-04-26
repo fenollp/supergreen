@@ -1,15 +1,17 @@
+use std::sync::LazyLock;
+
 use rustc_version::{Channel, Version, VersionMeta};
 use serde::{Deserialize, Serialize};
 
-use crate::{green::Add, runner::Network, stage::RST};
+use crate::{green::Add, image_uri::ImageUri, runner::Network, stage::RST};
 
 // Envs that override Cargo.toml settings
 pub(crate) const ENV_BASE_IMAGE: &str = "CARGOGREEN_BASE_IMAGE";
 pub(crate) const ENV_BASE_IMAGE_INLINE: &str = "CARGOGREEN_BASE_IMAGE_INLINE";
 pub(crate) const ENV_WITH_NETWORK: &str = "CARGOGREEN_WITH_NETWORK";
 
-const STABLE_RUST: &str = "docker-image://docker.io/library/rust:1-slim";
-const BASE_FOR_RUST: &str = "docker-image://docker.io/library/debian:stable-slim";
+static STABLE_RUST: LazyLock<ImageUri> = LazyLock::new(|| ImageUri::std("rust:1-slim"));
+static BASE_FOR_RUST: LazyLock<ImageUri> = LazyLock::new(|| ImageUri::std("debian:stable-slim"));
 
 #[test]
 fn default_is_unset() {
@@ -56,7 +58,7 @@ pub(crate) struct BaseImage {
     //
     // # This environment variable takes precedence over any Cargo.toml settings:
     // CARGOGREEN_BASE_IMAGE="docker-image://docker.io/library/rust:1-slim"
-    pub(crate) base_image: String, //TODO? url? docker-..://...
+    pub(crate) base_image: ImageUri,
 
     // Sets the base Rust image for root package and all dependencies, unless themselves being configured differently.
     // See also:
@@ -81,7 +83,7 @@ pub(crate) struct BaseImage {
 
 impl BaseImage {
     #[must_use]
-    pub(crate) fn from_image(base_image: String) -> Self {
+    pub(crate) fn from_image(base_image: ImageUri) -> Self {
         Self { base_image, ..Default::default() }
     }
 
@@ -104,7 +106,8 @@ impl BaseImage {
     ) -> Option<Self> {
         if channel == Channel::Stable {
             assert!(STABLE_RUST.contains(":1-"));
-            return Some(Self::from_image(STABLE_RUST.replace(":1-", &format!(":{semver}-"))));
+            let minored = STABLE_RUST.as_str().replace(":1-", &format!(":{semver}-"));
+            return Some(Self::from_image(minored.try_into().unwrap()));
         }
         commit_hash
             .zip(commit_date)
@@ -112,10 +115,10 @@ impl BaseImage {
     }
 
     #[must_use]
-    pub(crate) fn lock_base_to(self, base_image: String) -> Self {
+    pub(crate) fn lock_base_to(self, base_image: ImageUri) -> Self {
         let base_image_inline = self.base_image_inline.map(|block| {
-            let from = self.base_image.trim_start_matches("docker-image://");
-            let to = base_image.trim_start_matches("docker-image://");
+            let from = self.base_image.noscheme();
+            let to = base_image.noscheme();
             block.replace(&format!(" {from} "), &format!(" {to} "))
         });
         Self { base_image, base_image_inline, ..self }
@@ -124,7 +127,7 @@ impl BaseImage {
     #[must_use]
     pub(crate) fn as_block(&self) -> (Network, String) {
         let block = self.base_image_inline.clone().unwrap_or_else(|| {
-            let base = self.base_image.trim_start_matches("docker-image://");
+            let base = self.base_image.noscheme();
             format!("FROM --platform=$BUILDPLATFORM {base} AS {RST}\n")
         });
         (self.with_network, block)
@@ -183,7 +186,7 @@ impl RustcV {
         };
 
         let base_image = BASE_FOR_RUST.to_owned();
-        let base = base_image.trim_start_matches("docker-image://");
+        let base = base_image.noscheme();
         assert!(base.contains("/debian:"));
 
         let (with_network, packages_block) = Add {
@@ -237,7 +240,7 @@ LLVM version: 18.1.7
     )
     .unwrap();
     let res = BaseImage::from_rustcv(some_stable).unwrap();
-    assert_eq!(res.base_image, "docker-image://docker.io/library/rust:1.80.0-slim");
+    assert_eq!(res.base_image, ImageUri::std("rust:1.80.0-slim"));
     assert_eq!(res.base_image_inline, None);
     assert_eq!(res.with_network, Network::None);
 
@@ -254,7 +257,7 @@ LLVM version: 19.1.0
     )
     .unwrap();
     let res = BaseImage::from_rustcv(some_nightly).unwrap();
-    assert_eq!(res.base_image, "docker-image://docker.io/library/debian:stable-slim");
+    assert_eq!(res.base_image, ImageUri::std("debian:stable-slim"));
     assert!(res.base_image_inline.unwrap().contains(" docker.io/library/debian:stable-slim "));
     assert_eq!(res.with_network, Network::Default);
 }
