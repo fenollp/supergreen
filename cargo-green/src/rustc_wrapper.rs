@@ -276,7 +276,7 @@ async fn do_wrap_rustc(
 
         let xtern_crate_externs = externs_prefix(xtern);
         info!("checking (RO) extern's externs {xtern_crate_externs}");
-        if file_exists_and_is_not_empty(&xtern_crate_externs)? {
+        if xtern_crate_externs.exists() {
             info!("opening (RO) crate externs {xtern_crate_externs}");
             let fd = File::open(&xtern_crate_externs)
                 .map_err(|e| anyhow!("Failed to `cat {xtern_crate_externs}`: {e}"))?;
@@ -316,14 +316,16 @@ async fn do_wrap_rustc(
         }
     }
     info!("checking (RO) externs {crate_externs}");
-    if !file_exists_and_is_not_empty(&crate_externs)? {
+    if !crate_externs.exists() {
         let mut shorts = String::new();
         for short_extern in &short_externs {
             shorts.push_str(&format!("{short_extern}\n"));
         }
-        info!("writing (RW) externs to {crate_externs}");
-        fs::write(&crate_externs, shorts)
-            .map_err(|e| anyhow!("Failed creating crate externs {crate_externs}: {e}"))?;
+        if !shorts.is_empty() {
+            info!("writing (RW) externs to {crate_externs}");
+            fs::write(&crate_externs, shorts)
+                .map_err(|e| anyhow!("Failed creating crate externs {crate_externs}: {e}"))?;
+        }
     }
     let all_externs = all_externs;
     info!("crate_externs: {crate_externs}");
@@ -727,15 +729,6 @@ fn file_exists(path: &Utf8Path) -> Result<bool> {
         Ok(b) => Ok(b),
         Err(e) if e.kind() == ErrorKind::NotFound => Ok(false),
         Err(e) => Err(anyhow!("Failed to `stat {path}`: {e}")),
-    }
-}
-
-// TODO: try and replace with path.exists()
-fn file_exists_and_is_not_empty(path: &Utf8Path) -> Result<bool> {
-    match path.metadata().map(|md| md.is_file() && md.len() > 0) {
-        Ok(b) => Ok(b),
-        Err(e) if e.kind() == ErrorKind::NotFound => Ok(false),
-        Err(e) => Err(anyhow!("Failed to `test -s {path}`: {e}")),
     }
 }
 
