@@ -33,8 +33,11 @@ pub(crate) fn setup(target: &str) {
 pub(crate) fn maybe_log() -> Option<fn() -> Result<File>> {
     fn log_file() -> Result<File> {
         let log_path = env::var(ENV_LOG_PATH).expect("set log path earlier");
-        let errf = |e| anyhow!("Failed opening (WA) log file {log_path}: {e}");
-        OpenOptions::new().create(true).append(true).open(&log_path).map_err(errf)
+        OpenOptions::new()
+            .create(true)
+            .append(true)
+            .open(&log_path)
+            .map_err(|e| anyhow!("Failed opening (WA) log file {log_path}: {e}"))
     }
 
     env::var(ENV_LOG).ok().map(|x| !x.is_empty()).unwrap_or_default().then_some(log_file)

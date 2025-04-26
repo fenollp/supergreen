@@ -52,7 +52,7 @@ fn find_toml_from_env() -> Result<Option<Utf8PathBuf>> {
         return Ok(Some(manifest_path.into()));
     }
 
-    //FIXME: not true for cinstall
+    //FIXME: not true for cinstall cf https://github.com/rust-lang/cargo/issues/9700
     let package: Option<String> = args.opt_value_from_str(["-p", "--package"])?;
     if let Some(package) = package {
         let manifest_path = pwd().join(package).join("Cargo.toml");

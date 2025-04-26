@@ -278,8 +278,8 @@ async fn do_wrap_rustc(
         info!("checking (RO) extern's externs {xtern_crate_externs}");
         if file_exists_and_is_not_empty(&xtern_crate_externs)? {
             info!("opening (RO) crate externs {xtern_crate_externs}");
-            let errf = |e| anyhow!("Failed to `cat {xtern_crate_externs}`: {e}");
-            let fd = File::open(&xtern_crate_externs).map_err(errf)?;
+            let fd = File::open(&xtern_crate_externs)
+                .map_err(|e| anyhow!("Failed to `cat {xtern_crate_externs}`: {e}"))?;
             for transitive in BufReader::new(fd).lines().map_while(Result::ok) {
                 let guard = externs_prefix(&format!("{transitive}_proc-macro"));
                 info!("checking (RO) extern's guard {guard}");
@@ -322,8 +322,8 @@ async fn do_wrap_rustc(
             shorts.push_str(&format!("{short_extern}\n"));
         }
         info!("writing (RW) externs to {crate_externs}");
-        let errf = |e| anyhow!("Failed creating crate externs {crate_externs}: {e}");
-        fs::write(&crate_externs, shorts).map_err(errf)?;
+        fs::write(&crate_externs, shorts)
+            .map_err(|e| anyhow!("Failed creating crate externs {crate_externs}: {e}"))?;
     }
     let all_externs = all_externs;
     info!("crate_externs: {crate_externs}");

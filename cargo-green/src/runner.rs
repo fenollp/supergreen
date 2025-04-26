@@ -232,6 +232,8 @@ pub(crate) async fn build(
     // // [2024-04-09T07:55:39Z DEBUG lib-autocfg-72217d8ded4d7ec7@177912] ✖ Learn more at https://docs.docker.com/go/build-cache-backends/
     //TODO: experiment --cache-to=type=inline => try ,mode=max
 
+    //TODO: include --target platform in image tag
+
     if !green.cache_images.is_empty() {
         for img in &green.cache_images {
             let img = img.trim_start_matches("docker-image://");
@@ -299,9 +301,8 @@ pub(crate) async fn build(
     let envs = envs.join(" ");
     info!("Starting {call} (env: {envs}) with {dockerfile_path}");
 
-    let errf = |e| anyhow!("Failed starting {call}: {e}");
     let start = Instant::now();
-    let mut child = cmd.spawn().map_err(errf)?;
+    let mut child = cmd.spawn().map_err(|e| anyhow!("Failed starting {call}: {e}"))?;
 
     spawn({
         let dockerfile_path = dockerfile_path.to_owned();
