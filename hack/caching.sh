@@ -95,6 +95,11 @@ echo
 
 
 # Adding -vv => s/'--cap-lints' 'allow'/'--cap-lints' 'warn'/g
+# TODO: cargo -vv test != cargo test: => the rustc flags will change => Dockerfile needs new cache key
+# => otherwise docker builder cache won't have the correct hit
+# https://rustc-dev-guide.rust-lang.org/backend/libs-and-metadata.html
+#=> a filename suffix with content hash?
+
 # Adding +nightly => changes '-C' 'metadata=' and '-C' 'extra-filename='
 # Changing CARGOGREEN_LOG_LEVEL shouldn't evict cache
 

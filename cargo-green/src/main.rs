@@ -15,6 +15,7 @@ mod add;
 mod base_image;
 mod cargo_green;
 mod checkouts;
+mod containerfile;
 mod cratesio;
 mod envs;
 mod ext;

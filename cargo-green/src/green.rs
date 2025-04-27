@@ -10,6 +10,7 @@ use crate::runner::Network;
 use crate::{
     add::{Add, ENV_ADD_APK, ENV_ADD_APT, ENV_ADD_APT_GET},
     base_image::{BaseImage, ENV_BASE_IMAGE, ENV_BASE_IMAGE_INLINE},
+    containerfile::Containerfile,
     image_uri::ImageUri,
     lockfile::find_manifest_path,
     runner::Runner,
@@ -120,6 +121,10 @@ pub(crate) struct Green {
 }
 
 impl Green {
+    pub(crate) fn new_containerfile(&self) -> Containerfile {
+        Containerfile::with_syntax(&self.syntax)
+    }
+
     // TODO: handle worskpace cfg + merging fields
     // TODO: find a way to read cfg on `cargo install <non-local code>` cc https://github.com/rust-lang/cargo/issues/9700#issuecomment-2748617896
     pub(crate) fn new_from_env_then_manifest() -> Result<Self> {
