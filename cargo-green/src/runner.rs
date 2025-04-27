@@ -10,7 +10,7 @@ use std::{
 };
 
 use anyhow::{anyhow, bail, Result};
-use camino::Utf8Path;
+use camino::{Utf8Path, Utf8PathBuf};
 use log::{debug, info};
 use reqwest::Client as ReqwestClient;
 use serde::{Deserialize, Serialize};
@@ -398,11 +398,10 @@ async fn build(
     if let Some((out_task, err_task)) = handles {
         let longish = Duration::from_secs(2);
         match join!(timeout(longish, out_task), timeout(longish, err_task)) {
-            (Ok(Ok(Ok(_))), Ok(Ok(Ok(written)))) => {
-                if !written.is_empty() {
-                    info!("rustc wrote {} files:", written.len());
-                    for f in written {
-                        let f = Utf8Path::new(&f);
+            (Ok(Ok(Ok(_))), Ok(Ok(Ok(acc)))) => {
+                if !acc.written.is_empty() {
+                    info!("rustc wrote {} files:", acc.written.len());
+                    for f in acc.written {
                         info!(
                             "metadata for {f:?}: {:?}",
                             f.metadata().map(|fmd| format!(
@@ -486,7 +485,7 @@ fn fwd<R>(
     name: &'static str,
     badge: &'static str,
     mark: &'static str,
-) -> JoinHandle<Result<Vec<String>>>
+) -> JoinHandle<Result<Accumulated>>
 where
     R: AsyncBufRead + Unpin + Send + 'static,
 {
@@ -496,7 +495,7 @@ where
     spawn(async move {
         let mut buf = String::new();
         let mut details: Vec<String> = vec![];
-        let mut written: Vec<String> = vec![];
+        let mut acc = Accumulated::default();
         let mut first = true;
         loop {
             let maybe_line = stdio.next_line().await;
@@ -513,12 +512,12 @@ where
             debug!("{badge} {}", strip_ansi_escapes(&line));
 
             if let Some(msg) = lift_stdio(&line, mark) {
-                fwder(msg, &mut buf, &mut written);
+                fwder(msg, &mut buf, &mut acc);
             }
 
             // //warning: panic message contains an unused formatting placeholder
             // //--> /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.36/build.rs:191:17
-            // => un-rewrite /index.crates.io-0000000000000000/ in cargo messages
+            // FIXME un-rewrite /index.crates.io-0000000000000000/ in cargo messages
             // => also in .d files
             // cache should be ok (cargo's point of view) if written right after green's build(..) call
 
@@ -626,8 +625,13 @@ where
         }
         debug!("Terminating {name} task {details:?}");
         drop(stdio);
-        Ok(written)
+        Ok(acc)
     })
+}
+
+#[derive(Debug, Default)]
+struct Accumulated {
+    written: Vec<Utf8PathBuf>,
 }
 
 #[test]
@@ -638,19 +642,19 @@ fn support_long_broken_json_lines() {
         r#"#42 1.313 ::STDERR:: }"#,
     ];
     let mut buf = String::new();
-    let mut written = vec![];
+    let mut acc = Accumulated::default();
 
     let msg = lift_stdio(lines[0], MARK_STDERR);
     assert_eq!(msg, Some(r#"{"$message_type":"artifact","artifact":"/tmp/thing","emit":"link""#));
-    fwd_stderr(msg.unwrap(), &mut buf, &mut written);
+    fwd_stderr(msg.unwrap(), &mut buf, &mut acc);
     assert_eq!(buf, r#"{"$message_type":"artifact","artifact":"/tmp/thing","emit":"link""#);
-    assert_eq!(written, Vec::<String>::new());
+    assert_eq!(acc.written, Vec::<String>::new());
 
     let msg = lift_stdio(lines[1], MARK_STDERR);
     assert_eq!(msg, Some("}"));
-    fwd_stderr(msg.unwrap(), &mut buf, &mut written);
+    fwd_stderr(msg.unwrap(), &mut buf, &mut acc);
     assert_eq!(buf, "");
-    assert_eq!(written, vec!["/tmp/thing".to_owned()]);
+    assert_eq!(acc.written, vec![Utf8PathBuf::from("/tmp/thing")]);
 
     // Then fwd_stderr
     // calls artifact_written(r#"{"$message_type":"artifact","artifact":"/tmp/thing","emit":"link"}"#)
@@ -658,13 +662,13 @@ fn support_long_broken_json_lines() {
     assertx::assert_logs_contain_in_order!(logs, log::Level::Info => "rustc wrote /tmp/thing");
 }
 
-fn fwd_stderr(msg: &str, buf: &mut String, written: &mut Vec<String>) {
+fn fwd_stderr(msg: &str, buf: &mut String, acc: &mut Accumulated) {
     let mut show = |msg: &str| {
         info!("(To cargo's STDERR): {msg}");
         eprintln!("{msg}");
 
         if let Some(file) = artifact_written(msg) {
-            written.push(file.to_owned());
+            acc.written.push(file.into());
             info!("rustc wrote {file}");
         }
     };
@@ -692,11 +696,7 @@ fn fwd_stderr(msg: &str, buf: &mut String, written: &mut Vec<String>) {
     }
 }
 
-fn fwd_stdout(
-    msg: &str,
-    #[expect(clippy::ptr_arg)] _buf: &mut String,
-    #[expect(clippy::ptr_arg)] _written: &mut Vec<String>,
-) {
+fn fwd_stdout(msg: &str, #[expect(clippy::ptr_arg)] _buf: &mut String, _acc: &mut Accumulated) {
     info!("(To cargo's STDOUT): {msg}");
     println!("{msg}");
 }
