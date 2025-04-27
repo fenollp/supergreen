@@ -5,7 +5,7 @@ use anyhow::{bail, Context, Result};
 use camino::{Utf8Path, Utf8PathBuf};
 use tokio::process::Command;
 
-use crate::{extensions::ShowCmd, stage::Stage};
+use crate::{ext::ShowCmd, stage::Stage};
 
 pub(crate) const CHECKOUTS_STAGE_PREFIX: &str = "checkout-";
 

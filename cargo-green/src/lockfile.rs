@@ -7,7 +7,7 @@ use pico_args::Arguments;
 use serde::Deserialize;
 use tokio::process::Command;
 
-use crate::{cargo, extensions::ShowCmd, pwd};
+use crate::{cargo, ext::ShowCmd, pwd};
 
 pub(crate) async fn locked_crates(
     manifest_path_lockfile: &Utf8Path,

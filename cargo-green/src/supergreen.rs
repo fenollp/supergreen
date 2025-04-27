@@ -9,7 +9,7 @@ use tokio::io::BufReader;
 use crate::{
     base::{ENV_BASE_IMAGE, ENV_BASE_IMAGE_INLINE, ENV_WITH_NETWORK},
     cargo_green::{ENV_BUILDER_IMAGE, ENV_FINAL_PATH, ENV_RUNNER, ENV_SYNTAX},
-    extensions::ShowCmd,
+    ext::ShowCmd,
     green::{
         Green, ENV_ADD_APK, ENV_ADD_APT, ENV_ADD_APT_GET, ENV_CACHE_IMAGES, ENV_INCREMENTAL,
         ENV_SET_ENVS,

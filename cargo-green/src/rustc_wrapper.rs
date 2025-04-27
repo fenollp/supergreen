@@ -16,7 +16,7 @@ use crate::{
     checkouts,
     cratesio::{self, rewrite_cratesio_index},
     envs::pass_env,
-    extensions::{Popped, ShowCmd},
+    ext::{Popped, ShowCmd},
     green::Green,
     logging::{self, crate_type_for_logging, maybe_log, ENV_LOG},
     md::{BuildContext, Md},

@@ -16,7 +16,7 @@ mod cargo_green;
 mod checkouts;
 mod cratesio;
 mod envs;
-mod extensions;
+mod ext;
 mod green;
 mod image_uri;
 mod lockfile;

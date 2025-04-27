@@ -13,7 +13,7 @@ use tokio::try_join;
 use crate::{
     base::{ENV_BASE_IMAGE, ENV_WITH_NETWORK},
     cratesio::{self},
-    extensions::ShowCmd,
+    ext::ShowCmd,
     green::Green,
     hash,
     image_uri::{ImageUri, SYNTAX},

@@ -3,7 +3,7 @@ use std::collections::BTreeSet;
 use anyhow::{bail, Result};
 use camino::{Utf8Path, Utf8PathBuf};
 
-use crate::extensions::Popped;
+use crate::ext::Popped;
 
 pub(crate) const ALL_CRATE_TYPES: &[&str] =
     &["bin", "lib", "rlib", "dylib", "cdylib", "staticlib", "proc-macro"];

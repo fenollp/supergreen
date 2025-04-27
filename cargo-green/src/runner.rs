@@ -24,7 +24,7 @@ use tokio::{
 };
 
 use crate::{
-    extensions::ShowCmd,
+    ext::ShowCmd,
     green::Green,
     image_uri::ImageUri,
     logging::{crate_type_for_logging, maybe_log, ENV_LOG_PATH},
