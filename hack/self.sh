@@ -32,8 +32,7 @@ $(restore_bin-artifacts)
         restore-keys: \${{ github.job }}-\${{ runner.os }}-cargo-deps-
 
     - run: cargo fetch
-    - name: Envs
-      run: cargo green supergreen env
+    - run: cargo green supergreen env
 EOF
 }
 
@@ -85,6 +84,7 @@ $(rundeps_versions)
 $(jobdef 'installs')
     needs: bin
     env:
+      RUST_BACKTRACE: 1
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: /home/runner/work/supergreen/logs.txt
       CARGOGREEN_FINAL_PATH: \$GITHUB_JOB.Dockerfile
@@ -101,6 +101,7 @@ $(cache_usage)
 $(jobdef 'audits')
     needs: bin
     env:
+      RUST_BACKTRACE: 1
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: /home/runner/work/supergreen/logs.txt
       CARGOGREEN_FINAL_PATH: \$GITHUB_JOB.Dockerfile
@@ -120,6 +121,7 @@ $(cache_usage)
 $(jobdef 'udeps')
     needs: bin
     env:
+      RUST_BACKTRACE: 1
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: /home/runner/work/supergreen/logs.txt
       CARGOGREEN_FINAL_PATH: \$GITHUB_JOB.Dockerfile
@@ -143,6 +145,7 @@ $(cache_usage)
 $(jobdef 'builds')
     needs: bin
     env:
+      RUST_BACKTRACE: 1
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: /home/runner/work/supergreen/logs.txt
       CARGOGREEN_FINAL_PATH: \$GITHUB_JOB.Dockerfile
@@ -172,6 +175,7 @@ $(cache_usage)
 $(jobdef 'tests')
     needs: bin
     env:
+      RUST_BACKTRACE: 1
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: /home/runner/work/supergreen/logs.txt
       CARGOGREEN_FINAL_PATH: \$GITHUB_JOB.Dockerfile
@@ -201,6 +205,7 @@ $(cache_usage)
 $(jobdef 'checks')
     needs: bin
     env:
+      RUST_BACKTRACE: 1
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: /home/runner/work/supergreen/logs.txt
       CARGOGREEN_FINAL_PATH: \$GITHUB_JOB.Dockerfile
@@ -225,6 +230,7 @@ $(cache_usage)
 $(jobdef 'packages')
     needs: bin
     env:
+      RUST_BACKTRACE: 1
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: /home/runner/work/supergreen/logs.txt
       CARGOGREEN_FINAL_PATH: \$GITHUB_JOB.Dockerfile
@@ -244,6 +250,7 @@ $(cache_usage)
 $(jobdef 'clippy')
     needs: bin
     env:
+      RUST_BACKTRACE: 1
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: /home/runner/work/supergreen/logs.txt
       CARGOGREEN_FINAL_PATH: \$GITHUB_JOB.Dockerfile

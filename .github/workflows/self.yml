@@ -56,6 +56,7 @@ jobs:
         shell: bash -euo pipefail {0}
     needs: bin
     env:
+      RUST_BACKTRACE: 1
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: /home/runner/work/supergreen/logs.txt
       CARGOGREEN_FINAL_PATH: $GITHUB_JOB.Dockerfile
@@ -95,8 +96,7 @@ jobs:
         restore-keys: ${{ github.job }}-${{ runner.os }}-cargo-deps-
 
     - run: cargo fetch
-    - name: Envs
-      run: cargo green supergreen env
+    - run: cargo green supergreen env
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
@@ -160,6 +160,7 @@ jobs:
         shell: bash -euo pipefail {0}
     needs: bin
     env:
+      RUST_BACKTRACE: 1
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: /home/runner/work/supergreen/logs.txt
       CARGOGREEN_FINAL_PATH: $GITHUB_JOB.Dockerfile
@@ -199,8 +200,7 @@ jobs:
         restore-keys: ${{ github.job }}-${{ runner.os }}-cargo-deps-
 
     - run: cargo fetch
-    - name: Envs
-      run: cargo green supergreen env
+    - run: cargo green supergreen env
     - uses: taiki-e/install-action@v2
       with:
         tool: cargo-audit
@@ -267,6 +267,7 @@ jobs:
         shell: bash -euo pipefail {0}
     needs: bin
     env:
+      RUST_BACKTRACE: 1
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: /home/runner/work/supergreen/logs.txt
       CARGOGREEN_FINAL_PATH: $GITHUB_JOB.Dockerfile
@@ -306,8 +307,7 @@ jobs:
         restore-keys: ${{ github.job }}-${{ runner.os }}-cargo-deps-
 
     - run: cargo fetch
-    - name: Envs
-      run: cargo green supergreen env
+    - run: cargo green supergreen env
     - uses: taiki-e/install-action@v2
       with:
         tool: cargo-udeps
@@ -421,6 +421,7 @@ jobs:
         shell: bash -euo pipefail {0}
     needs: bin
     env:
+      RUST_BACKTRACE: 1
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: /home/runner/work/supergreen/logs.txt
       CARGOGREEN_FINAL_PATH: $GITHUB_JOB.Dockerfile
@@ -460,8 +461,7 @@ jobs:
         restore-keys: ${{ github.job }}-${{ runner.os }}-cargo-deps-
 
     - run: cargo fetch
-    - name: Envs
-      run: cargo green supergreen env
+    - run: cargo green supergreen env
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
@@ -677,6 +677,7 @@ jobs:
         shell: bash -euo pipefail {0}
     needs: bin
     env:
+      RUST_BACKTRACE: 1
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: /home/runner/work/supergreen/logs.txt
       CARGOGREEN_FINAL_PATH: $GITHUB_JOB.Dockerfile
@@ -716,8 +717,7 @@ jobs:
         restore-keys: ${{ github.job }}-${{ runner.os }}-cargo-deps-
 
     - run: cargo fetch
-    - name: Envs
-      run: cargo green supergreen env
+    - run: cargo green supergreen env
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
@@ -933,6 +933,7 @@ jobs:
         shell: bash -euo pipefail {0}
     needs: bin
     env:
+      RUST_BACKTRACE: 1
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: /home/runner/work/supergreen/logs.txt
       CARGOGREEN_FINAL_PATH: $GITHUB_JOB.Dockerfile
@@ -972,8 +973,7 @@ jobs:
         restore-keys: ${{ github.job }}-${{ runner.os }}-cargo-deps-
 
     - run: cargo fetch
-    - name: Envs
-      run: cargo green supergreen env
+    - run: cargo green supergreen env
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
@@ -1133,6 +1133,7 @@ jobs:
         shell: bash -euo pipefail {0}
     needs: bin
     env:
+      RUST_BACKTRACE: 1
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: /home/runner/work/supergreen/logs.txt
       CARGOGREEN_FINAL_PATH: $GITHUB_JOB.Dockerfile
@@ -1172,8 +1173,7 @@ jobs:
         restore-keys: ${{ github.job }}-${{ runner.os }}-cargo-deps-
 
     - run: cargo fetch
-    - name: Envs
-      run: cargo green supergreen env
+    - run: cargo green supergreen env
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
@@ -1277,6 +1277,7 @@ jobs:
         shell: bash -euo pipefail {0}
     needs: bin
     env:
+      RUST_BACKTRACE: 1
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: /home/runner/work/supergreen/logs.txt
       CARGOGREEN_FINAL_PATH: $GITHUB_JOB.Dockerfile
@@ -1316,8 +1317,7 @@ jobs:
         restore-keys: ${{ github.job }}-${{ runner.os }}-cargo-deps-
 
     - run: cargo fetch
-    - name: Envs
-      run: cargo green supergreen env
+    - run: cargo green supergreen env
     - run: rustup component add clippy
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
