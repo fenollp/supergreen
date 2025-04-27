@@ -249,18 +249,6 @@ pub(crate) async fn fetch(green: Green) -> Result<()> {
         (env::var(ENV_BUILDER_IMAGE).ok(), green.builder_image.as_ref()),
     ]; // NOTE: we don't pull ENV_CACHE_IMAGES
 
-    let dockerfile_path = {
-        let pkgs: Vec<_> = packages.iter().map(|(n, v, h)| format!("{n} {v} {h}\n")).collect();
-        let hashed = pkgs.join(" ") + format!("{imgs:?}").as_str();
-        let hashed = hash(&hashed);
-        tmp().join(format!("{PKG}-fetch-{hashed}.Dockerfile"))
-    };
-
-    info!("checking the existence of {dockerfile_path}");
-    if dockerfile_path.exists() {
-        return Ok(());
-    }
-
     let stage = Stage::try_new("cargo-fetch")?;
     let stager = |i| format!("{stage}-{i}");
 
@@ -292,6 +280,15 @@ pub(crate) async fn fetch(green: Green) -> Result<()> {
         dockerfile.push_str(&format!("COPY --from={} / /\n", stager(leaf)));
     }
 
+    let dockerfile_path = {
+        let hashed = hash(&(hash(&dockerfile) + &format!("{imgs:?}")));
+        tmp().join(format!("{PKG}-fetch-{hashed}.Dockerfile"))
+    };
+    info!("checking the existence of {dockerfile_path}");
+    if dockerfile_path.exists() {
+        return Ok(());
+    }
+
     fs::write(&dockerfile_path, dockerfile)
         .map_err(|e| anyhow!("Failed creating dockerfile {dockerfile_path}: {e}"))?;
 
@@ -310,7 +307,12 @@ pub(crate) async fn fetch(green: Green) -> Result<()> {
     let ((), ()) = try_join!(
         pull(&green, imgs), // NOTE: can't pull these with build(..): they won't get --load'ed
         build_cacheonly(&green, &dockerfile_path, stage)
-    )?;
+    )
+    .inspect_err(|_| {
+        // TODO: catch ^C (and co.) to make sure file gets removed
+        let _ = fs::remove_file(&dockerfile_path);
+        let _ = fs::remove_file(&ignore);
+    })?;
     Ok(())
 }
 
