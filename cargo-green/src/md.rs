@@ -25,7 +25,7 @@ pub(crate) struct Md {
     #[serde(default, skip_serializing_if = "BTreeSet::is_empty")]
     pub(crate) contexts: BTreeSet<BuildContext>,
 
-    stages: Vec<DockerfileStage>,
+    stages: Vec<NamedStage>,
 }
 
 impl FromStr for Md {
@@ -42,7 +42,7 @@ impl Md {
     }
 
     pub(crate) fn to_string_pretty(&self) -> Result<String> {
-        if !self.stages.iter().any(|DockerfileStage { name, .. }| *name == *RUST) {
+        if !self.stages.iter().any(|NamedStage { name, .. }| *name == *RUST) {
             bail!("Md is missing root stage {RST}")
         }
         toml::to_string_pretty(self).map_err(Into::into)
@@ -50,17 +50,17 @@ impl Md {
 
     #[must_use]
     pub(crate) fn rust_stage(&self) -> &str {
-        &self.stages.iter().find(|DockerfileStage { name, .. }| *name == *RUST).unwrap().script
+        &self.stages.iter().find(|NamedStage { name, .. }| *name == *RUST).unwrap().script
     }
 
     pub(crate) fn push_block(&mut self, name: &Stage, block: String) {
-        self.stages.push(DockerfileStage { name: name.clone(), script: block.trim().to_owned() });
+        self.stages.push(NamedStage { name: name.clone(), script: block.trim().to_owned() });
     }
 
     fn append_blocks(&self, dockerfile: &mut String, visited: &mut BTreeSet<Stage>) {
-        let mut stages = self.stages.iter().filter(|DockerfileStage { name, .. }| *name != *RUST);
+        let mut stages = self.stages.iter().filter(|NamedStage { name, .. }| *name != *RUST);
 
-        let DockerfileStage { name, script } = stages.next().expect("at least one stage");
+        let NamedStage { name, script } = stages.next().expect("at least one stage");
 
         let mut filter = None;
         if name.starts_with(CHECKOUTS_STAGE_PREFIX) || name.starts_with(CRATESIO_STAGE_PREFIX) {
@@ -74,7 +74,7 @@ impl Md {
         }
         dockerfile.push('\n');
 
-        for DockerfileStage { name, script } in stages {
+        for NamedStage { name, script } in stages {
             if Some(name) == filter {
                 continue;
             }
@@ -122,7 +122,7 @@ impl Md {
 }
 
 #[derive(Debug, Serialize, Deserialize)]
-struct DockerfileStage {
+struct NamedStage {
     name: Stage,
     script: String,
 }
@@ -189,7 +189,7 @@ fn md_ser() {
             uri: "/some/local/path".into(),
         }]
         .into(),
-        stages: vec![DockerfileStage { name: RUST.clone(), script: format!("FROM rust AS {RST}") }],
+        stages: vec![NamedStage { name: RUST.clone(), script: format!("FROM rust AS {RST}") }],
     };
 
     pretty_assertions::assert_eq!(
