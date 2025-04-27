@@ -24,6 +24,7 @@ use tokio::{
 };
 
 use crate::{
+    add::ENV_ADD_APT,
     ext::ShowCmd,
     green::{Green, ENV_SET_ENVS},
     image_uri::ImageUri,
@@ -399,20 +400,9 @@ async fn build(
     if let Some((out_task, err_task)) = handles {
         let longish = Duration::from_secs(2);
         match join!(timeout(longish, out_task), timeout(longish, err_task)) {
-            (Ok(Ok(Ok(_))), Ok(Ok(Ok(Accumulated { written, missing_env: _ })))) => {
+            (Ok(Ok(Ok(_))), Ok(Ok(Ok(Accumulated { written, envs: _, libs: _ })))) => {
                 if !written.is_empty() {
-                    info!("rustc wrote {} files:", written.len());
-                    for f in written {
-                        info!(
-                            "metadata for {f:?}: {:?}",
-                            f.metadata().map(|fmd| format!(
-                                "created:{c:?} accessed:{a:?} modified:{m:?}",
-                                c = fmd.created(),
-                                a = fmd.accessed(),
-                                m = fmd.modified(),
-                            ))
-                        );
-                    }
+                    log_written_files_metadata(&written);
                 }
             }
             (Ok(Ok(Err(e))), _) | (_, Ok(Ok(Err(e)))) => {
@@ -469,6 +459,21 @@ async fn build(
     }
 
     Ok(())
+}
+
+fn log_written_files_metadata(written: &[Utf8PathBuf]) {
+    info!("rustc wrote {} files:", written.len());
+    for f in written {
+        info!(
+            "metadata for {f:?}: {:?}",
+            f.metadata().map(|fmd| format!(
+                "created:{c:?} accessed:{a:?} modified:{m:?}",
+                c = fmd.created(),
+                a = fmd.accessed(),
+                m = fmd.modified(),
+            ))
+        );
+    }
 }
 
 #[must_use]
@@ -537,53 +542,6 @@ where
             } else if line.ends_with(" CACHED") {
                 cacheds += 1;
             }
-
-            // I 25/03/31 22:33:29.519 X cargo 0.81.0-d28c49a0e79c24d1 rustc wrote /tmp/clis-cargo-udeps_0-1-50/release/build/cargo-d28c49a0e79c24d1/build_script_build-d28c49a0e79c24d1.d
-            // D 25/03/31 22:33:29.665 X cargo 0.81.0-d28c49a0e79c24d1 ✖ #55 0.310 ::STDERR:: {"$message_type":"diagnostic","message":"linking with `cc` failed: exit status: 1","code":null,"level":"error",
-            // "spans":[],"children":[{"message":"LC_ALL=\"C\" PATH=\"/usr/local/rustup/toolchains/1.85.0-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/bin:/usr/local/cargo/bin:/usr/local/s
-            // bin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\" VSLANG=\"1033\" \"cc\" \"-m64\" \"/tmp/rustcaqBYLY/symbols.o\" \"<5 object files omitted>\" \"-Wl,--as-needed\" \"-Wl,-Bstatic\" \"/tmp/cli
-            // s-cargo-udeps_0-1-50/release/deps/{libtar-abaf872bda85c202.rlib,libfiletime-fe7a973ce74b2e13.rlib,liblibc-bea4c89311b7f903.rlib,libflate2-949eb855661d0057.rlib,liblibz_sys-7c0f9d8ec45388e2.r
-            // lib,libcrc32fast-df9d3a277d606584.rlib,libcfg_if-902bdc8a7a06a77f.rlib}\" \"/usr/local/rustup/toolchains/1.85.0-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/{libstd-6273
-            // 572f18644c87.rlib,libpanic_unwind-267e668abf74a283.rlib,libobject-ec6154ccae37a33e.rlib,libmemchr-500edd5521c440d4.rlib,libaddr2line-86d8d9428792e8ef.rlib,libgimli-10f06487503767c2.rlib,libr
-            // ustc_demangle-6a38424de1e5bca5.rlib,libstd_detect-de9763ea1c19dca3.rlib,libhashbrown-a7f5bb2f736d3c49.rlib,librustc_std_workspace_alloc-7e368919bdc4a44c.rlib,libminiz_oxide-376454d49910c786.
-            // rlib,libadler-fa99f5692b5dce85.rlib,libunwind-91cafdaf16f7fe40.rlib,libcfg_if-f7ee3f1ea78d9dae.rlib,liblibc-d3a35665f881365a.rlib,liballoc-715bc629a88bca60.rlib,librustc_std_workspace_core-a
-            // e70165d1278cff7.rlib,libcore-406129d0e3fbc101.rlib,libcompiler_builtins-1af05515ab19524a.rlib}\" \"-Wl,-Bdynamic\" \"-lz\" \"-lgcc_s\" \"-lutil\" \"-lrt\" \"-lpthread\" \"-lm\" \"-ldl\" \"-l
-            // c\" \"-Wl,--eh-frame-hdr\" \"-Wl,-z,noexecstack\" \"-L\" \"/usr/local/rustup/toolchains/1.85.0-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib\" \"-o\" \"/tmp/clis-cargo-ud
-            // eps_0-1-50/release/build/cargo-d28c49a0e79c24d1/build_script_build-d28c49a0e79c24d1\" \"-Wl,--gc-sections\" \"-pie\" \"-Wl,-z,relro,-z,now\" \"-Wl,--strip-all\" \"-nodefaultlibs\"","code":nu
-            // ll,"level":"note","spans":[],"children":[],"rendered":null},{"message":"some arguments are omitted. use `--verbose` to show all linker arguments","code":null,"level":"note","spans":[],"child
-            // ren":[],"rendered":null},{"message":"/usr/bin/ld: cannot find -lz: No such file or directory\ncollect2: error: ld returned 1 exit status\n","code":null,"level":"note","spans":[],"children":[
-            // ],"rendered":null}],"rendered":"error: linking with `cc` failed: exit status: 1\n  |\n  = note: LC_ALL=\"C\" PATH=\"/usr/local/rustup/toolchains/1.85.0-x86_64-unknown-linux-gnu/lib/rustlib/x
-            // 86_64-unknown-linux-gnu/bin:/usr/local/cargo/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\" VSLANG=\"1033\" \"cc\" \"-m64\" \"/tmp/rustcaqBYLY/symbols.o\" \"<5 object fil
-            // es omitted>\" \"-Wl,--as-needed\" \"-Wl,-Bstatic\" \"/tmp/clis-cargo-udeps_0-1-50/release/deps/{libtar-abaf872bda85c202.rlib,libfiletime-fe7a973ce74b2e13.rlib,liblibc-bea4c89311b7f903.rlib,l
-            // ibflate2-949eb855661d0057.rlib,liblibz_sys-7c0f9d8ec45388e2.rlib,libcrc32fast-df9d3a277d606584.rlib,libcfg_if-902bdc8a7a06a77f.rlib}\" \"/usr/local/rustup/toolchains/1.85.0-x86_64-unknown-li
-            // nux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/{libstd-6273572f18644c87.rlib,libpanic_unwind-267e668abf74a283.rlib,libobject-ec6154ccae37a33e.rlib,libmemchr-500edd5521c440d4.rlib,libaddr2l
-            // ine-86d8d9428792e8ef.rlib,libgimli-10f06487503767c2.rlib,librustc_demangle-6a38424de1e5bca5.rlib,libstd_detect-de9763ea1c19dca3.rlib,libhashbrown-a7f5bb2f736d3c49.rlib,librustc_std_workspace
-            // _alloc-7e368919bdc4a44c.rlib,libminiz_oxide-376454d49910c786.rlib,libadler-fa99f5692b5dce85.rlib,libunwind-91cafdaf16f7fe40.rlib,libcfg_if-f7ee3f1ea78d9dae.rlib,liblibc-d3a35665f881365a.rlib
-            // ,liballoc-715bc629a88bca60.rlib,librustc_std_workspace_core-ae70165d1278cff7.rlib,libcore-406129d0e3fbc101.rlib,libcompiler_builtins-1af05515ab19524a.rlib}\" \"-Wl,-Bdynamic\" \"-lz\" \"-lgc
-            // c_s\" \"-lutil\" \"-lrt\" \"-lpthread\" \"-lm\" \"-ldl\" \"-lc\" \"-Wl,--eh-frame-hdr\" \"-Wl,-z,noexecstack\" \"-L\" \"/usr/local/rustup/toolchains/1.85.0-x86_64-unknown-linux-gnu/lib/rustl
-            // ib/x86_64-unknown-linux-gnu/lib\" \"-o\" \"/tmp/clis-cargo-udeps_0-1-50/release/build/cargo-d28c49a0e79c24d1/build_script_build-d28c49a0e79c24d1\" \"-Wl,--gc-sections\" \"-pie\" \"-Wl,-z,rel
-            // ro,-z,now\" \"-Wl,--strip-all\" \"-nodefaultlibs\"\n  = note: some arguments are omitted. use `--verbose` to show all linker arguments\n  = note: /usr/bin/ld: cannot find -lz: No such file o
-            // r directory\n          collect2: error: ld returned 1 exit status\n          \n\n"}
-            // D 25/03/31 22:33:29.665 X cargo 0.81.0-d28c49a0e79c24d1 ✖ #55 0.326 ::STDERR:: {"$message_type":"diagnostic","message":"aborting due to 1 previous error","code":null,"level":"error","spans":
-            // [],"children":[],"rendered":"error: aborting due to 1 previous error\n\n"}
-            // error: linking with `cc` failed: exit status: 1
-            //   |
-            //   = note: LC_ALL="C" PATH="/usr/local/rustup/toolchains/1.85.0-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/bin:/usr/local/cargo/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin
-            // :/usr/bin:/sbin:/bin" VSLANG="1033" "cc" "-m64" "/tmp/rustcaqBYLY/symbols.o" "<5 object files omitted>" "-Wl,--as-needed" "-Wl,-Bstatic" "/tmp/clis-cargo-udeps_0-1-50/release/deps/{libtar-ab
-            // af872bda85c202.rlib,libfiletime-fe7a973ce74b2e13.rlib,liblibc-bea4c89311b7f903.rlib,libflate2-949eb855661d0057.rlib,liblibz_sys-7c0f9d8ec45388e2.rlib,libcrc32fast-df9d3a277d606584.rlib,libcf
-            // g_if-902bdc8a7a06a77f.rlib}" "/usr/local/rustup/toolchains/1.85.0-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/{libstd-6273572f18644c87.rlib,libpanic_unwind-267e668abf74
-            // a283.rlib,libobject-ec6154ccae37a33e.rlib,libmemchr-500edd5521c440d4.rlib,libaddr2line-86d8d9428792e8ef.rlib,libgimli-10f06487503767c2.rlib,librustc_demangle-6a38424de1e5bca5.rlib,libstd_det
-            // ect-de9763ea1c19dca3.rlib,libhashbrown-a7f5bb2f736d3c49.rlib,librustc_std_workspace_alloc-7e368919bdc4a44c.rlib,libminiz_oxide-376454d49910c786.rlib,libadler-fa99f5692b5dce85.rlib,libunwind-
-            // 91cafdaf16f7fe40.rlib,libcfg_if-f7ee3f1ea78d9dae.rlib,liblibc-d3a35665f881365a.rlib,liballoc-715bc629a88bca60.rlib,librustc_std_workspace_core-ae70165d1278cff7.rlib,libcore-406129d0e3fbc101.
-            // rlib,libcompiler_builtins-1af05515ab19524a.rlib}" "-Wl,-Bdynamic" "-lz" "-lgcc_s" "-lutil" "-lrt" "-lpthread" "-lm" "-ldl" "-lc" "-Wl,--eh-frame-hdr" "-Wl,-z,noexecstack" "-L" "/usr/local/ru
-            // stup/toolchains/1.85.0-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib" "-o" "/tmp/clis-cargo-udeps_0-1-50/release/build/cargo-d28c49a0e79c24d1/build_script_build-d28c49a0e
-            // 79c24d1" "-Wl,--gc-sections" "-pie" "-Wl,-z,relro,-z,now" "-Wl,--strip-all" "-nodefaultlibs"
-            //   = note: some arguments are omitted. use `--verbose` to show all linker arguments
-            //   = note: /usr/bin/ld: cannot find -lz: No such file or directory
-            //           collect2: error: ld returned 1 exit status
-            // => suggest "-lz":
-            // [package.metadata.green]
-            // add.apt = [ "zlib1g-dev" ]
         }
         debug!("Terminating {name} task CACHED:{cacheds} DONE:{dones} {details:?}");
         drop(stdio);
@@ -594,7 +552,8 @@ where
 #[derive(Debug, Default)]
 struct Accumulated {
     written: Vec<Utf8PathBuf>,
-    missing_env: BTreeSet<String>,
+    envs: BTreeSet<String>,
+    libs: BTreeSet<String>,
 }
 
 #[test]
@@ -635,9 +594,18 @@ fn fwd_stderr(msg: &str, buf: &mut String, acc: &mut Accumulated) {
         let mut msg = msg.to_owned();
 
         if let Some(var) = env_not_comptime_defined(&msg) {
-            if acc.missing_env.insert(var.to_owned()) {
+            if acc.envs.insert(var.to_owned()) {
                 if let Some(new_msg) = suggest_set_envs(var, &msg) {
                     info!("suggesting to passthrough missing env with set-envs {var:?}");
+                    msg = new_msg;
+                }
+            }
+        }
+
+        if let Some(lib) = lib_not_found(&msg) {
+            if acc.libs.insert(lib.to_owned()) {
+                if let Some(new_msg) = suggest_add(lib, &msg) {
+                    info!("suggesting to add lib to base image {lib:?}");
                     msg = new_msg;
                 }
             }
@@ -715,7 +683,217 @@ fn artifact_written(msg: &str) -> Option<&str> {
     }
 }
 
-// Matches (ANSII colors dropped) '''"rendered":"error: environment variable `[^`]+` not defined at compile time'''
+#[must_use]
+fn suggest(original: &str, suggestion: &str, msg: &str) -> Option<String> {
+    let mut data: serde_json::Value = serde_json::from_str(msg).ok()?;
+    let rendered = data.get_mut("rendered")?;
+    let txt = rendered.as_str()?;
+
+    // '= ' is an ANSI colors -safe choice of separator
+    let existing = txt.split("= ").find(|help| help.contains(original))?;
+
+    let mut to = existing.to_owned();
+    to.push_str("= ");
+    to.push_str(&existing.replace(original, suggestion));
+
+    *rendered = serde_json::json!(txt.replace(existing, &to));
+    serde_json::to_string(&data).ok()
+}
+
+// Matches (ANSI colors dropped) '''= note: /usr/bin/ld: cannot find -lpq: No such file or directory'''
+#[must_use]
+fn lib_not_found(msg: &str) -> Option<&str> {
+    if let Some((_, rhs)) = msg.split_once(r#"cannot find -l"#) {
+        if let Some((lib, _)) = rhs.split_once(": No such file or directory") {
+            return Some(lib);
+        }
+    }
+    None
+}
+
+// TODO: cleanup how this suggestion appears
+#[must_use]
+fn suggest_add(lib: &str, msg: &str) -> Option<String> {
+    let original = format!("cannot find -l{lib}: No such file or directory");
+
+    let lib = match lib {
+        "z" => "zlib1g-dev".to_owned(),
+        _ => format!("lib{lib}-dev"),
+    };
+    let suggestion = format!(
+        r#"add `{lib:?}` to either ${ENV_ADD_APT} (apk, apt-get) or to this crate's or your root crate's [package.metadata.green.add] apt list ({PKG})"#
+    );
+
+    suggest(&original, &suggestion, msg)
+}
+
+#[test]
+fn suggesting_add() {
+    let input = roundtrip(
+        r#"
+{
+    "$message_type": "diagnostic",
+    "message": "linking with `cc` failed: exit status: 1",
+    "code": null,
+    "level": "error",
+    "spans": [],
+    "children": [
+        {
+            "message": " \"cc\" \"-m64\" \"/tmp/rustc7H5UYy/symbols.o\" \"<17 object files omitted>\" \"-Wl,--as-needed\" \"-Wl,-Bstatic\" \"/tmp/clis-diesel_cli_2-1-1/release/deps/{libdiffy-5f350840256b90b3.rlib,libnu_ansi_term-ecef502768b2f22a.rlib,liboverload-45aafc635a57cff1.rlib,liburl-036f69e82fdcf501.rlib,libidna-ffbc39c7a5d1e77c.rlib,libunicode_normalization-da6cfe0b315d21ba.rlib,libtinyvec-0e7c6d99fc4ecd2c.rlib,libtinyvec_macros-9126bcde4c5f1615.rlib,libunicode_bidi-23766e683251f25e.rlib,libform_urlencoded-ed0427b193415122.rlib,libpercent_encoding-a9ca6250cc102bd0.rlib,libmatches-27d9c5e1e6de7509.rlib,libdotenvy-9fa159acfce4885d.rlib,libchrono-4d3d56d73bf46ec0.rlib,libiana_time_zone-5ed377f5b3d451ef.rlib,libnum_integer-82fb0132f8b53906.rlib,libnum_traits-2f9bcd2a0c30dcff.rlib,libheck-40dbaec9d09d443f.rlib,libdiesel_table_macro_syntax-9f09f66c20aa386f.rlib,libsyn-abced2e57ae6b47a.rlib,libquote-6740271d31439b66.rlib,libproc_macro2-ae7c4c38eaf4593c.rlib,libunicode_ident-aa12b7412dfc4c29.rlib}.rlib\" \"<sysroot>/lib/rustlib/x86_64-unknown-linux-gnu/lib/{libproc_macro-*}.rlib\" \"/tmp/clis-diesel_cli_2-1-1/release/deps/{libclap_complete-2bc2ccaa5088f99a.rlib,libdiesel_migrations-8a52bbbeef5e01db.rlib,libmigrations_internals-52b495bc29f74724.rlib,libtoml-c89277bcdcbf47a1.rlib,libtoml_edit-5bbd23cd7ed53a4f.rlib,libserde_spanned-333f86fbbb2cb152.rlib,libindexmap-6b2daab44e782afb.rlib,libhashbrown-c275e17bff8ef48e.rlib,libwinnow-5ed65ae865e1214b.rlib,libtoml_datetime-69f07545405ed040.rlib,libdiesel-8a4b75e5cbe6865c.rlib,libitoa-f0986793f4dc0c4b.rlib,libbitflags-e95363e9370d640e.rlib,libbyteorder-62ae682b1bf4015e.rlib,libpq_sys-4db52583e4ef9bff.rlib,libserde_regex-b49f06d76e9ca5eb.rlib,libregex-51a29a962320663c.rlib,libaho_corasick-ec90a4b45e50196f.rlib,libmemchr-35aa984256b2a6dc.rlib,libregex_syntax-f2754ca68026052b.rlib,libclap-6885138d353f613d.rlib,libclap_builder-64fd68ff56e9c3b1.rlib,libstrsim-6185e9224c6e4564.rlib,libanstream-d6e3047ceacd4591.rlib,libanstyle_query-5a9f17d21dd97f4e.rlib,libis_terminal-c352a962fc4f6cab.rlib,librustix-2b2c39f9f9d03b14.rlib,liblinux_raw_sys-f6a722b30bf667ab.rlib,libio_lifetimes-a415eef40056a286.rlib,liblibc-859d6bf52555fe98.rlib,libanstyle-587cffdda4d8c45a.rlib,libcolorchoice-6d2fdffc0ac55bb0.rlib,libanstyle_parse-1e447f4b0544156a.rlib,libutf8parse-811cc7a6fc8bc58b.rlib,libclap_lex-c13afce077d893db.rlib,libbitflags-852662162838ab1a.rlib,libonce_cell-c147a48c1dcf8469.rlib,libserde-fa2e373f0760a32a.rlib}.rlib\" \"<sysroot>/lib/rustlib/x86_64-unknown-linux-gnu/lib/{libstd-*,libpanic_unwind-*,libobject-*,libmemchr-*,libaddr2line-*,libgimli-*,librustc_demangle-*,libstd_detect-*,libhashbrown-*,librustc_std_workspace_alloc-*,libminiz_oxide-*,libadler2-*,libunwind-*,libcfg_if-*,liblibc-*,liballoc-*,librustc_std_workspace_core-*,libcore-*,libcompiler_builtins-*}.rlib\" \"-Wl,-Bdynamic\" \"-lpq\" \"-lgcc_s\" \"-lutil\" \"-lrt\" \"-lpthread\" \"-lm\" \"-ldl\" \"-lc\" \"-Wl,--eh-frame-hdr\" \"-Wl,-z,noexecstack\" \"-L\" \"/usr/lib/x86_64-linux-gnu\" \"-L\" \"<sysroot>/lib/rustlib/x86_64-unknown-linux-gnu/lib\" \"-o\" \"/tmp/clis-diesel_cli_2-1-1/release/deps/diesel-6a254b742936f321\" \"-Wl,--gc-sections\" \"-pie\" \"-Wl,-z,relro,-z,now\" \"-Wl,-O1\" \"-Wl,--strip-debug\" \"-nodefaultlibs\"",
+            "code": null,
+            "level": "note",
+            "spans": [],
+            "children": [],
+            "rendered": null
+        },
+        {
+            "message": "some arguments are omitted. use `--verbose` to show all linker arguments",
+            "code": null,
+            "level": "note",
+            "spans": [],
+            "children": [],
+            "rendered": null
+        },
+        {
+            "message": "/usr/bin/ld: cannot find -lpq: No such file or directory\ncollect2: error: ld returned 1 exit status\n",
+            "code": null,
+            "level": "note",
+            "spans": [],
+            "children": [],
+            "rendered": null
+        }
+    ],
+    "rendered": "error: linking with `cc` failed: exit status: 1\n  |\n  = note:  \"cc\" \"-m64\" \"/tmp/rustc7H5UYy/symbols.o\" \"<17 object files omitted>\" \"-Wl,--as-needed\" \"-Wl,-Bstatic\" \"/tmp/clis-diesel_cli_2-1-1/release/deps/{libdiffy-5f350840256b90b3.rlib,libnu_ansi_term-ecef502768b2f22a.rlib,liboverload-45aafc635a57cff1.rlib,liburl-036f69e82fdcf501.rlib,libidna-ffbc39c7a5d1e77c.rlib,libunicode_normalization-da6cfe0b315d21ba.rlib,libtinyvec-0e7c6d99fc4ecd2c.rlib,libtinyvec_macros-9126bcde4c5f1615.rlib,libunicode_bidi-23766e683251f25e.rlib,libform_urlencoded-ed0427b193415122.rlib,libpercent_encoding-a9ca6250cc102bd0.rlib,libmatches-27d9c5e1e6de7509.rlib,libdotenvy-9fa159acfce4885d.rlib,libchrono-4d3d56d73bf46ec0.rlib,libiana_time_zone-5ed377f5b3d451ef.rlib,libnum_integer-82fb0132f8b53906.rlib,libnum_traits-2f9bcd2a0c30dcff.rlib,libheck-40dbaec9d09d443f.rlib,libdiesel_table_macro_syntax-9f09f66c20aa386f.rlib,libsyn-abced2e57ae6b47a.rlib,libquote-6740271d31439b66.rlib,libproc_macro2-ae7c4c38eaf4593c.rlib,libunicode_ident-aa12b7412dfc4c29.rlib}.rlib\" \"<sysroot>/lib/rustlib/x86_64-unknown-linux-gnu/lib/{libproc_macro-*}.rlib\" \"/tmp/clis-diesel_cli_2-1-1/release/deps/{libclap_complete-2bc2ccaa5088f99a.rlib,libdiesel_migrations-8a52bbbeef5e01db.rlib,libmigrations_internals-52b495bc29f74724.rlib,libtoml-c89277bcdcbf47a1.rlib,libtoml_edit-5bbd23cd7ed53a4f.rlib,libserde_spanned-333f86fbbb2cb152.rlib,libindexmap-6b2daab44e782afb.rlib,libhashbrown-c275e17bff8ef48e.rlib,libwinnow-5ed65ae865e1214b.rlib,libtoml_datetime-69f07545405ed040.rlib,libdiesel-8a4b75e5cbe6865c.rlib,libitoa-f0986793f4dc0c4b.rlib,libbitflags-e95363e9370d640e.rlib,libbyteorder-62ae682b1bf4015e.rlib,libpq_sys-4db52583e4ef9bff.rlib,libserde_regex-b49f06d76e9ca5eb.rlib,libregex-51a29a962320663c.rlib,libaho_corasick-ec90a4b45e50196f.rlib,libmemchr-35aa984256b2a6dc.rlib,libregex_syntax-f2754ca68026052b.rlib,libclap-6885138d353f613d.rlib,libclap_builder-64fd68ff56e9c3b1.rlib,libstrsim-6185e9224c6e4564.rlib,libanstream-d6e3047ceacd4591.rlib,libanstyle_query-5a9f17d21dd97f4e.rlib,libis_terminal-c352a962fc4f6cab.rlib,librustix-2b2c39f9f9d03b14.rlib,liblinux_raw_sys-f6a722b30bf667ab.rlib,libio_lifetimes-a415eef40056a286.rlib,liblibc-859d6bf52555fe98.rlib,libanstyle-587cffdda4d8c45a.rlib,libcolorchoice-6d2fdffc0ac55bb0.rlib,libanstyle_parse-1e447f4b0544156a.rlib,libutf8parse-811cc7a6fc8bc58b.rlib,libclap_lex-c13afce077d893db.rlib,libbitflags-852662162838ab1a.rlib,libonce_cell-c147a48c1dcf8469.rlib,libserde-fa2e373f0760a32a.rlib}.rlib\" \"<sysroot>/lib/rustlib/x86_64-unknown-linux-gnu/lib/{libstd-*,libpanic_unwind-*,libobject-*,libmemchr-*,libaddr2line-*,libgimli-*,librustc_demangle-*,libstd_detect-*,libhashbrown-*,librustc_std_workspace_alloc-*,libminiz_oxide-*,libadler2-*,libunwind-*,libcfg_if-*,liblibc-*,liballoc-*,librustc_std_workspace_core-*,libcore-*,libcompiler_builtins-*}.rlib\" \"-Wl,-Bdynamic\" \"-lpq\" \"-lgcc_s\" \"-lutil\" \"-lrt\" \"-lpthread\" \"-lm\" \"-ldl\" \"-lc\" \"-Wl,--eh-frame-hdr\" \"-Wl,-z,noexecstack\" \"-L\" \"/usr/lib/x86_64-linux-gnu\" \"-L\" \"<sysroot>/lib/rustlib/x86_64-unknown-linux-gnu/lib\" \"-o\" \"/tmp/clis-diesel_cli_2-1-1/release/deps/diesel-6a254b742936f321\" \"-Wl,--gc-sections\" \"-pie\" \"-Wl,-z,relro,-z,now\" \"-Wl,-O1\" \"-Wl,--strip-debug\" \"-nodefaultlibs\"\n  = note: some arguments are omitted. use `--verbose` to show all linker arguments\n  = note: /usr/bin/ld: cannot find -lpq: No such file or directory\n          collect2: error: ld returned 1 exit status\n          \n\n"
+}"#,
+    );
+
+    let output = roundtrip(
+        r#"
+{
+    "$message_type": "diagnostic",
+    "message": "linking with `cc` failed: exit status: 1",
+    "code": null,
+    "level": "error",
+    "spans": [],
+    "children": [
+        {
+            "message": " \"cc\" \"-m64\" \"/tmp/rustc7H5UYy/symbols.o\" \"<17 object files omitted>\" \"-Wl,--as-needed\" \"-Wl,-Bstatic\" \"/tmp/clis-diesel_cli_2-1-1/release/deps/{libdiffy-5f350840256b90b3.rlib,libnu_ansi_term-ecef502768b2f22a.rlib,liboverload-45aafc635a57cff1.rlib,liburl-036f69e82fdcf501.rlib,libidna-ffbc39c7a5d1e77c.rlib,libunicode_normalization-da6cfe0b315d21ba.rlib,libtinyvec-0e7c6d99fc4ecd2c.rlib,libtinyvec_macros-9126bcde4c5f1615.rlib,libunicode_bidi-23766e683251f25e.rlib,libform_urlencoded-ed0427b193415122.rlib,libpercent_encoding-a9ca6250cc102bd0.rlib,libmatches-27d9c5e1e6de7509.rlib,libdotenvy-9fa159acfce4885d.rlib,libchrono-4d3d56d73bf46ec0.rlib,libiana_time_zone-5ed377f5b3d451ef.rlib,libnum_integer-82fb0132f8b53906.rlib,libnum_traits-2f9bcd2a0c30dcff.rlib,libheck-40dbaec9d09d443f.rlib,libdiesel_table_macro_syntax-9f09f66c20aa386f.rlib,libsyn-abced2e57ae6b47a.rlib,libquote-6740271d31439b66.rlib,libproc_macro2-ae7c4c38eaf4593c.rlib,libunicode_ident-aa12b7412dfc4c29.rlib}.rlib\" \"<sysroot>/lib/rustlib/x86_64-unknown-linux-gnu/lib/{libproc_macro-*}.rlib\" \"/tmp/clis-diesel_cli_2-1-1/release/deps/{libclap_complete-2bc2ccaa5088f99a.rlib,libdiesel_migrations-8a52bbbeef5e01db.rlib,libmigrations_internals-52b495bc29f74724.rlib,libtoml-c89277bcdcbf47a1.rlib,libtoml_edit-5bbd23cd7ed53a4f.rlib,libserde_spanned-333f86fbbb2cb152.rlib,libindexmap-6b2daab44e782afb.rlib,libhashbrown-c275e17bff8ef48e.rlib,libwinnow-5ed65ae865e1214b.rlib,libtoml_datetime-69f07545405ed040.rlib,libdiesel-8a4b75e5cbe6865c.rlib,libitoa-f0986793f4dc0c4b.rlib,libbitflags-e95363e9370d640e.rlib,libbyteorder-62ae682b1bf4015e.rlib,libpq_sys-4db52583e4ef9bff.rlib,libserde_regex-b49f06d76e9ca5eb.rlib,libregex-51a29a962320663c.rlib,libaho_corasick-ec90a4b45e50196f.rlib,libmemchr-35aa984256b2a6dc.rlib,libregex_syntax-f2754ca68026052b.rlib,libclap-6885138d353f613d.rlib,libclap_builder-64fd68ff56e9c3b1.rlib,libstrsim-6185e9224c6e4564.rlib,libanstream-d6e3047ceacd4591.rlib,libanstyle_query-5a9f17d21dd97f4e.rlib,libis_terminal-c352a962fc4f6cab.rlib,librustix-2b2c39f9f9d03b14.rlib,liblinux_raw_sys-f6a722b30bf667ab.rlib,libio_lifetimes-a415eef40056a286.rlib,liblibc-859d6bf52555fe98.rlib,libanstyle-587cffdda4d8c45a.rlib,libcolorchoice-6d2fdffc0ac55bb0.rlib,libanstyle_parse-1e447f4b0544156a.rlib,libutf8parse-811cc7a6fc8bc58b.rlib,libclap_lex-c13afce077d893db.rlib,libbitflags-852662162838ab1a.rlib,libonce_cell-c147a48c1dcf8469.rlib,libserde-fa2e373f0760a32a.rlib}.rlib\" \"<sysroot>/lib/rustlib/x86_64-unknown-linux-gnu/lib/{libstd-*,libpanic_unwind-*,libobject-*,libmemchr-*,libaddr2line-*,libgimli-*,librustc_demangle-*,libstd_detect-*,libhashbrown-*,librustc_std_workspace_alloc-*,libminiz_oxide-*,libadler2-*,libunwind-*,libcfg_if-*,liblibc-*,liballoc-*,librustc_std_workspace_core-*,libcore-*,libcompiler_builtins-*}.rlib\" \"-Wl,-Bdynamic\" \"-lpq\" \"-lgcc_s\" \"-lutil\" \"-lrt\" \"-lpthread\" \"-lm\" \"-ldl\" \"-lc\" \"-Wl,--eh-frame-hdr\" \"-Wl,-z,noexecstack\" \"-L\" \"/usr/lib/x86_64-linux-gnu\" \"-L\" \"<sysroot>/lib/rustlib/x86_64-unknown-linux-gnu/lib\" \"-o\" \"/tmp/clis-diesel_cli_2-1-1/release/deps/diesel-6a254b742936f321\" \"-Wl,--gc-sections\" \"-pie\" \"-Wl,-z,relro,-z,now\" \"-Wl,-O1\" \"-Wl,--strip-debug\" \"-nodefaultlibs\"",
+            "code": null,
+            "level": "note",
+            "spans": [],
+            "children": [],
+            "rendered": null
+        },
+        {
+            "message": "some arguments are omitted. use `--verbose` to show all linker arguments",
+            "code": null,
+            "level": "note",
+            "spans": [],
+            "children": [],
+            "rendered": null
+        },
+        {
+            "message": "/usr/bin/ld: cannot find -lpq: No such file or directory\ncollect2: error: ld returned 1 exit status\n",
+            "code": null,
+            "level": "note",
+            "spans": [],
+            "children": [],
+            "rendered": null
+        }
+    ],
+    "rendered": "error: linking with `cc` failed: exit status: 1\n  |\n  = note:  \"cc\" \"-m64\" \"/tmp/rustc7H5UYy/symbols.o\" \"<17 object files omitted>\" \"-Wl,--as-needed\" \"-Wl,-Bstatic\" \"/tmp/clis-diesel_cli_2-1-1/release/deps/{libdiffy-5f350840256b90b3.rlib,libnu_ansi_term-ecef502768b2f22a.rlib,liboverload-45aafc635a57cff1.rlib,liburl-036f69e82fdcf501.rlib,libidna-ffbc39c7a5d1e77c.rlib,libunicode_normalization-da6cfe0b315d21ba.rlib,libtinyvec-0e7c6d99fc4ecd2c.rlib,libtinyvec_macros-9126bcde4c5f1615.rlib,libunicode_bidi-23766e683251f25e.rlib,libform_urlencoded-ed0427b193415122.rlib,libpercent_encoding-a9ca6250cc102bd0.rlib,libmatches-27d9c5e1e6de7509.rlib,libdotenvy-9fa159acfce4885d.rlib,libchrono-4d3d56d73bf46ec0.rlib,libiana_time_zone-5ed377f5b3d451ef.rlib,libnum_integer-82fb0132f8b53906.rlib,libnum_traits-2f9bcd2a0c30dcff.rlib,libheck-40dbaec9d09d443f.rlib,libdiesel_table_macro_syntax-9f09f66c20aa386f.rlib,libsyn-abced2e57ae6b47a.rlib,libquote-6740271d31439b66.rlib,libproc_macro2-ae7c4c38eaf4593c.rlib,libunicode_ident-aa12b7412dfc4c29.rlib}.rlib\" \"<sysroot>/lib/rustlib/x86_64-unknown-linux-gnu/lib/{libproc_macro-*}.rlib\" \"/tmp/clis-diesel_cli_2-1-1/release/deps/{libclap_complete-2bc2ccaa5088f99a.rlib,libdiesel_migrations-8a52bbbeef5e01db.rlib,libmigrations_internals-52b495bc29f74724.rlib,libtoml-c89277bcdcbf47a1.rlib,libtoml_edit-5bbd23cd7ed53a4f.rlib,libserde_spanned-333f86fbbb2cb152.rlib,libindexmap-6b2daab44e782afb.rlib,libhashbrown-c275e17bff8ef48e.rlib,libwinnow-5ed65ae865e1214b.rlib,libtoml_datetime-69f07545405ed040.rlib,libdiesel-8a4b75e5cbe6865c.rlib,libitoa-f0986793f4dc0c4b.rlib,libbitflags-e95363e9370d640e.rlib,libbyteorder-62ae682b1bf4015e.rlib,libpq_sys-4db52583e4ef9bff.rlib,libserde_regex-b49f06d76e9ca5eb.rlib,libregex-51a29a962320663c.rlib,libaho_corasick-ec90a4b45e50196f.rlib,libmemchr-35aa984256b2a6dc.rlib,libregex_syntax-f2754ca68026052b.rlib,libclap-6885138d353f613d.rlib,libclap_builder-64fd68ff56e9c3b1.rlib,libstrsim-6185e9224c6e4564.rlib,libanstream-d6e3047ceacd4591.rlib,libanstyle_query-5a9f17d21dd97f4e.rlib,libis_terminal-c352a962fc4f6cab.rlib,librustix-2b2c39f9f9d03b14.rlib,liblinux_raw_sys-f6a722b30bf667ab.rlib,libio_lifetimes-a415eef40056a286.rlib,liblibc-859d6bf52555fe98.rlib,libanstyle-587cffdda4d8c45a.rlib,libcolorchoice-6d2fdffc0ac55bb0.rlib,libanstyle_parse-1e447f4b0544156a.rlib,libutf8parse-811cc7a6fc8bc58b.rlib,libclap_lex-c13afce077d893db.rlib,libbitflags-852662162838ab1a.rlib,libonce_cell-c147a48c1dcf8469.rlib,libserde-fa2e373f0760a32a.rlib}.rlib\" \"<sysroot>/lib/rustlib/x86_64-unknown-linux-gnu/lib/{libstd-*,libpanic_unwind-*,libobject-*,libmemchr-*,libaddr2line-*,libgimli-*,librustc_demangle-*,libstd_detect-*,libhashbrown-*,librustc_std_workspace_alloc-*,libminiz_oxide-*,libadler2-*,libunwind-*,libcfg_if-*,liblibc-*,liballoc-*,librustc_std_workspace_core-*,libcore-*,libcompiler_builtins-*}.rlib\" \"-Wl,-Bdynamic\" \"-lpq\" \"-lgcc_s\" \"-lutil\" \"-lrt\" \"-lpthread\" \"-lm\" \"-ldl\" \"-lc\" \"-Wl,--eh-frame-hdr\" \"-Wl,-z,noexecstack\" \"-L\" \"/usr/lib/x86_64-linux-gnu\" \"-L\" \"<sysroot>/lib/rustlib/x86_64-unknown-linux-gnu/lib\" \"-o\" \"/tmp/clis-diesel_cli_2-1-1/release/deps/diesel-6a254b742936f321\" \"-Wl,--gc-sections\" \"-pie\" \"-Wl,-z,relro,-z,now\" \"-Wl,-O1\" \"-Wl,--strip-debug\" \"-nodefaultlibs\"\n  = note: some arguments are omitted. use `--verbose` to show all linker arguments\n  = note: /usr/bin/ld: cannot find -lpq: No such file or directory\n          collect2: error: ld returned 1 exit status\n          \n\n= note: /usr/bin/ld: add `\"libpq-dev\"` to either $CARGOGREEN_ADD_APT (apk, apt-get) or to this crate's or your root crate's [package.metadata.green.add] apt list (cargo-green)\n          collect2: error: ld returned 1 exit status\n          \n\n"
+}"#,
+    );
+
+    assert_eq!(lib_not_found(&input), Some("pq"));
+
+    pretty_assertions::assert_eq!(roundtrip(&suggest_add("pq", &input).unwrap()), output);
+}
+
+#[test]
+fn suggesting_add_ansi() {
+    let input = roundtrip(
+        r#"
+{
+    "$message_type": "diagnostic",
+    "message": "linking with `cc` failed: exit status: 1",
+    "code": null,
+    "level": "error",
+    "spans": [],
+    "children": [
+        {
+            "message": " \"cc\" \"-m64\" \"/tmp/rustc7H5UYy/symbols.o\" \"<17 object files omitted>\" \"-Wl,--as-needed\" \"-Wl,-Bstatic\" \"/tmp/clis-diesel_cli_2-1-1/release/deps/{libdiffy-5f350840256b90b3.rlib,libnu_ansi_term-ecef502768b2f22a.rlib,liboverload-45aafc635a57cff1.rlib,liburl-036f69e82fdcf501.rlib,libidna-ffbc39c7a5d1e77c.rlib,libunicode_normalization-da6cfe0b315d21ba.rlib,libtinyvec-0e7c6d99fc4ecd2c.rlib,libtinyvec_macros-9126bcde4c5f1615.rlib,libunicode_bidi-23766e683251f25e.rlib,libform_urlencoded-ed0427b193415122.rlib,libpercent_encoding-a9ca6250cc102bd0.rlib,libmatches-27d9c5e1e6de7509.rlib,libdotenvy-9fa159acfce4885d.rlib,libchrono-4d3d56d73bf46ec0.rlib,libiana_time_zone-5ed377f5b3d451ef.rlib,libnum_integer-82fb0132f8b53906.rlib,libnum_traits-2f9bcd2a0c30dcff.rlib,libheck-40dbaec9d09d443f.rlib,libdiesel_table_macro_syntax-9f09f66c20aa386f.rlib,libsyn-abced2e57ae6b47a.rlib,libquote-6740271d31439b66.rlib,libproc_macro2-ae7c4c38eaf4593c.rlib,libunicode_ident-aa12b7412dfc4c29.rlib}.rlib\" \"<sysroot>/lib/rustlib/x86_64-unknown-linux-gnu/lib/{libproc_macro-*}.rlib\" \"/tmp/clis-diesel_cli_2-1-1/release/deps/{libclap_complete-2bc2ccaa5088f99a.rlib,libdiesel_migrations-8a52bbbeef5e01db.rlib,libmigrations_internals-52b495bc29f74724.rlib,libtoml-c89277bcdcbf47a1.rlib,libtoml_edit-5bbd23cd7ed53a4f.rlib,libserde_spanned-333f86fbbb2cb152.rlib,libindexmap-6b2daab44e782afb.rlib,libhashbrown-c275e17bff8ef48e.rlib,libwinnow-5ed65ae865e1214b.rlib,libtoml_datetime-69f07545405ed040.rlib,libdiesel-8a4b75e5cbe6865c.rlib,libitoa-f0986793f4dc0c4b.rlib,libbitflags-e95363e9370d640e.rlib,libbyteorder-62ae682b1bf4015e.rlib,libpq_sys-4db52583e4ef9bff.rlib,libserde_regex-b49f06d76e9ca5eb.rlib,libregex-51a29a962320663c.rlib,libaho_corasick-ec90a4b45e50196f.rlib,libmemchr-35aa984256b2a6dc.rlib,libregex_syntax-f2754ca68026052b.rlib,libclap-6885138d353f613d.rlib,libclap_builder-64fd68ff56e9c3b1.rlib,libstrsim-6185e9224c6e4564.rlib,libanstream-d6e3047ceacd4591.rlib,libanstyle_query-5a9f17d21dd97f4e.rlib,libis_terminal-c352a962fc4f6cab.rlib,librustix-2b2c39f9f9d03b14.rlib,liblinux_raw_sys-f6a722b30bf667ab.rlib,libio_lifetimes-a415eef40056a286.rlib,liblibc-859d6bf52555fe98.rlib,libanstyle-587cffdda4d8c45a.rlib,libcolorchoice-6d2fdffc0ac55bb0.rlib,libanstyle_parse-1e447f4b0544156a.rlib,libutf8parse-811cc7a6fc8bc58b.rlib,libclap_lex-c13afce077d893db.rlib,libbitflags-852662162838ab1a.rlib,libonce_cell-c147a48c1dcf8469.rlib,libserde-fa2e373f0760a32a.rlib}.rlib\" \"<sysroot>/lib/rustlib/x86_64-unknown-linux-gnu/lib/{libstd-*,libpanic_unwind-*,libobject-*,libmemchr-*,libaddr2line-*,libgimli-*,librustc_demangle-*,libstd_detect-*,libhashbrown-*,librustc_std_workspace_alloc-*,libminiz_oxide-*,libadler2-*,libunwind-*,libcfg_if-*,liblibc-*,liballoc-*,librustc_std_workspace_core-*,libcore-*,libcompiler_builtins-*}.rlib\" \"-Wl,-Bdynamic\" \"-lpq\" \"-lgcc_s\" \"-lutil\" \"-lrt\" \"-lpthread\" \"-lm\" \"-ldl\" \"-lc\" \"-Wl,--eh-frame-hdr\" \"-Wl,-z,noexecstack\" \"-L\" \"/usr/lib/x86_64-linux-gnu\" \"-L\" \"<sysroot>/lib/rustlib/x86_64-unknown-linux-gnu/lib\" \"-o\" \"/tmp/clis-diesel_cli_2-1-1/release/deps/diesel-6a254b742936f321\" \"-Wl,--gc-sections\" \"-pie\" \"-Wl,-z,relro,-z,now\" \"-Wl,-O1\" \"-Wl,--strip-debug\" \"-nodefaultlibs\"",
+            "code": null,
+            "level": "note",
+            "spans": [],
+            "children": [],
+            "rendered": null
+        },
+        {
+            "message": "some arguments are omitted. use `--verbose` to show all linker arguments",
+            "code": null,
+            "level": "note",
+            "spans": [],
+            "children": [],
+            "rendered": null
+        },
+        {
+            "message": "/usr/bin/ld: cannot find -lpq: No such file or directory\ncollect2: error: ld returned 1 exit status\n",
+            "code": null,
+            "level": "note",
+            "spans": [],
+            "children": [],
+            "rendered": null
+        }
+    ],
+    "rendered": "\u001b[0m\u001b[1m\u001b[38;5;9merror\u001b[0m\u001b[0m\u001b[1m: linking with `cc` failed: exit status: 1\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m:  \"cc\" \"-m64\" \"/tmp/rustc7H5UYy/symbols.o\" \"<17 object files omitted>\" \"-Wl,--as-needed\" \"-Wl,-Bstatic\" \"/tmp/clis-diesel_cli_2-1-1/release/deps/{libdiffy-5f350840256b90b3.rlib,libnu_ansi_term-ecef502768b2f22a.rlib,liboverload-45aafc635a57cff1.rlib,liburl-036f69e82fdcf501.rlib,libidna-ffbc39c7a5d1e77c.rlib,libunicode_normalization-da6cfe0b315d21ba.rlib,libtinyvec-0e7c6d99fc4ecd2c.rlib,libtinyvec_macros-9126bcde4c5f1615.rlib,libunicode_bidi-23766e683251f25e.rlib,libform_urlencoded-ed0427b193415122.rlib,libpercent_encoding-a9ca6250cc102bd0.rlib,libmatches-27d9c5e1e6de7509.rlib,libdotenvy-9fa159acfce4885d.rlib,libchrono-4d3d56d73bf46ec0.rlib,libiana_time_zone-5ed377f5b3d451ef.rlib,libnum_integer-82fb0132f8b53906.rlib,libnum_traits-2f9bcd2a0c30dcff.rlib,libheck-40dbaec9d09d443f.rlib,libdiesel_table_macro_syntax-9f09f66c20aa386f.rlib,libsyn-abced2e57ae6b47a.rlib,libquote-6740271d31439b66.rlib,libproc_macro2-ae7c4c38eaf4593c.rlib,libunicode_ident-aa12b7412dfc4c29.rlib}.rlib\" \"<sysroot>/lib/rustlib/x86_64-unknown-linux-gnu/lib/{libproc_macro-*}.rlib\" \"/tmp/clis-diesel_cli_2-1-1/release/deps/{libclap_complete-2bc2ccaa5088f99a.rlib,libdiesel_migrations-8a52bbbeef5e01db.rlib,libmigrations_internals-52b495bc29f74724.rlib,libtoml-c89277bcdcbf47a1.rlib,libtoml_edit-5bbd23cd7ed53a4f.rlib,libserde_spanned-333f86fbbb2cb152.rlib,libindexmap-6b2daab44e782afb.rlib,libhashbrown-c275e17bff8ef48e.rlib,libwinnow-5ed65ae865e1214b.rlib,libtoml_datetime-69f07545405ed040.rlib,libdiesel-8a4b75e5cbe6865c.rlib,libitoa-f0986793f4dc0c4b.rlib,libbitflags-e95363e9370d640e.rlib,libbyteorder-62ae682b1bf4015e.rlib,libpq_sys-4db52583e4ef9bff.rlib,libserde_regex-b49f06d76e9ca5eb.rlib,libregex-51a29a962320663c.rlib,libaho_corasick-ec90a4b45e50196f.rlib,libmemchr-35aa984256b2a6dc.rlib,libregex_syntax-f2754ca68026052b.rlib,libclap-6885138d353f613d.rlib,libclap_builder-64fd68ff56e9c3b1.rlib,libstrsim-6185e9224c6e4564.rlib,libanstream-d6e3047ceacd4591.rlib,libanstyle_query-5a9f17d21dd97f4e.rlib,libis_terminal-c352a962fc4f6cab.rlib,librustix-2b2c39f9f9d03b14.rlib,liblinux_raw_sys-f6a722b30bf667ab.rlib,libio_lifetimes-a415eef40056a286.rlib,liblibc-859d6bf52555fe98.rlib,libanstyle-587cffdda4d8c45a.rlib,libcolorchoice-6d2fdffc0ac55bb0.rlib,libanstyle_parse-1e447f4b0544156a.rlib,libutf8parse-811cc7a6fc8bc58b.rlib,libclap_lex-c13afce077d893db.rlib,libbitflags-852662162838ab1a.rlib,libonce_cell-c147a48c1dcf8469.rlib,libserde-fa2e373f0760a32a.rlib}.rlib\" \"<sysroot>/lib/rustlib/x86_64-unknown-linux-gnu/lib/{libstd-*,libpanic_unwind-*,libobject-*,libmemchr-*,libaddr2line-*,libgimli-*,librustc_demangle-*,libstd_detect-*,libhashbrown-*,librustc_std_workspace_alloc-*,libminiz_oxide-*,libadler2-*,libunwind-*,libcfg_if-*,liblibc-*,liballoc-*,librustc_std_workspace_core-*,libcore-*,libcompiler_builtins-*}.rlib\" \"-Wl,-Bdynamic\" \"-lpq\" \"-lgcc_s\" \"-lutil\" \"-lrt\" \"-lpthread\" \"-lm\" \"-ldl\" \"-lc\" \"-Wl,--eh-frame-hdr\" \"-Wl,-z,noexecstack\" \"-L\" \"/usr/lib/x86_64-linux-gnu\" \"-L\" \"<sysroot>/lib/rustlib/x86_64-unknown-linux-gnu/lib\" \"-o\" \"/tmp/clis-diesel_cli_2-1-1/release/deps/diesel-6a254b742936f321\" \"-Wl,--gc-sections\" \"-pie\" \"-Wl,-z,relro,-z,now\" \"-Wl,-O1\" \"-Wl,--strip-debug\" \"-nodefaultlibs\"\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: some arguments are omitted. use `--verbose` to show all linker arguments\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: /usr/bin/ld: cannot find -lpq: No such file or directory\u001b[0m\n\u001b[0m          collect2: error: ld returned 1 exit status\u001b[0m\n\u001b[0m          \u001b[0m\n\n"
+}"#,
+    );
+
+    let output = roundtrip(
+        r#"
+{
+    "$message_type": "diagnostic",
+    "message": "linking with `cc` failed: exit status: 1",
+    "code": null,
+    "level": "error",
+    "spans": [],
+    "children": [
+        {
+            "message": " \"cc\" \"-m64\" \"/tmp/rustc7H5UYy/symbols.o\" \"<17 object files omitted>\" \"-Wl,--as-needed\" \"-Wl,-Bstatic\" \"/tmp/clis-diesel_cli_2-1-1/release/deps/{libdiffy-5f350840256b90b3.rlib,libnu_ansi_term-ecef502768b2f22a.rlib,liboverload-45aafc635a57cff1.rlib,liburl-036f69e82fdcf501.rlib,libidna-ffbc39c7a5d1e77c.rlib,libunicode_normalization-da6cfe0b315d21ba.rlib,libtinyvec-0e7c6d99fc4ecd2c.rlib,libtinyvec_macros-9126bcde4c5f1615.rlib,libunicode_bidi-23766e683251f25e.rlib,libform_urlencoded-ed0427b193415122.rlib,libpercent_encoding-a9ca6250cc102bd0.rlib,libmatches-27d9c5e1e6de7509.rlib,libdotenvy-9fa159acfce4885d.rlib,libchrono-4d3d56d73bf46ec0.rlib,libiana_time_zone-5ed377f5b3d451ef.rlib,libnum_integer-82fb0132f8b53906.rlib,libnum_traits-2f9bcd2a0c30dcff.rlib,libheck-40dbaec9d09d443f.rlib,libdiesel_table_macro_syntax-9f09f66c20aa386f.rlib,libsyn-abced2e57ae6b47a.rlib,libquote-6740271d31439b66.rlib,libproc_macro2-ae7c4c38eaf4593c.rlib,libunicode_ident-aa12b7412dfc4c29.rlib}.rlib\" \"<sysroot>/lib/rustlib/x86_64-unknown-linux-gnu/lib/{libproc_macro-*}.rlib\" \"/tmp/clis-diesel_cli_2-1-1/release/deps/{libclap_complete-2bc2ccaa5088f99a.rlib,libdiesel_migrations-8a52bbbeef5e01db.rlib,libmigrations_internals-52b495bc29f74724.rlib,libtoml-c89277bcdcbf47a1.rlib,libtoml_edit-5bbd23cd7ed53a4f.rlib,libserde_spanned-333f86fbbb2cb152.rlib,libindexmap-6b2daab44e782afb.rlib,libhashbrown-c275e17bff8ef48e.rlib,libwinnow-5ed65ae865e1214b.rlib,libtoml_datetime-69f07545405ed040.rlib,libdiesel-8a4b75e5cbe6865c.rlib,libitoa-f0986793f4dc0c4b.rlib,libbitflags-e95363e9370d640e.rlib,libbyteorder-62ae682b1bf4015e.rlib,libpq_sys-4db52583e4ef9bff.rlib,libserde_regex-b49f06d76e9ca5eb.rlib,libregex-51a29a962320663c.rlib,libaho_corasick-ec90a4b45e50196f.rlib,libmemchr-35aa984256b2a6dc.rlib,libregex_syntax-f2754ca68026052b.rlib,libclap-6885138d353f613d.rlib,libclap_builder-64fd68ff56e9c3b1.rlib,libstrsim-6185e9224c6e4564.rlib,libanstream-d6e3047ceacd4591.rlib,libanstyle_query-5a9f17d21dd97f4e.rlib,libis_terminal-c352a962fc4f6cab.rlib,librustix-2b2c39f9f9d03b14.rlib,liblinux_raw_sys-f6a722b30bf667ab.rlib,libio_lifetimes-a415eef40056a286.rlib,liblibc-859d6bf52555fe98.rlib,libanstyle-587cffdda4d8c45a.rlib,libcolorchoice-6d2fdffc0ac55bb0.rlib,libanstyle_parse-1e447f4b0544156a.rlib,libutf8parse-811cc7a6fc8bc58b.rlib,libclap_lex-c13afce077d893db.rlib,libbitflags-852662162838ab1a.rlib,libonce_cell-c147a48c1dcf8469.rlib,libserde-fa2e373f0760a32a.rlib}.rlib\" \"<sysroot>/lib/rustlib/x86_64-unknown-linux-gnu/lib/{libstd-*,libpanic_unwind-*,libobject-*,libmemchr-*,libaddr2line-*,libgimli-*,librustc_demangle-*,libstd_detect-*,libhashbrown-*,librustc_std_workspace_alloc-*,libminiz_oxide-*,libadler2-*,libunwind-*,libcfg_if-*,liblibc-*,liballoc-*,librustc_std_workspace_core-*,libcore-*,libcompiler_builtins-*}.rlib\" \"-Wl,-Bdynamic\" \"-lpq\" \"-lgcc_s\" \"-lutil\" \"-lrt\" \"-lpthread\" \"-lm\" \"-ldl\" \"-lc\" \"-Wl,--eh-frame-hdr\" \"-Wl,-z,noexecstack\" \"-L\" \"/usr/lib/x86_64-linux-gnu\" \"-L\" \"<sysroot>/lib/rustlib/x86_64-unknown-linux-gnu/lib\" \"-o\" \"/tmp/clis-diesel_cli_2-1-1/release/deps/diesel-6a254b742936f321\" \"-Wl,--gc-sections\" \"-pie\" \"-Wl,-z,relro,-z,now\" \"-Wl,-O1\" \"-Wl,--strip-debug\" \"-nodefaultlibs\"",
+            "code": null,
+            "level": "note",
+            "spans": [],
+            "children": [],
+            "rendered": null
+        },
+        {
+            "message": "some arguments are omitted. use `--verbose` to show all linker arguments",
+            "code": null,
+            "level": "note",
+            "spans": [],
+            "children": [],
+            "rendered": null
+        },
+        {
+            "message": "/usr/bin/ld: cannot find -lpq: No such file or directory\ncollect2: error: ld returned 1 exit status\n",
+            "code": null,
+            "level": "note",
+            "spans": [],
+            "children": [],
+            "rendered": null
+        }
+    ],
+    "rendered": "\u001b[0m\u001b[1m\u001b[38;5;9merror\u001b[0m\u001b[0m\u001b[1m: linking with `cc` failed: exit status: 1\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m:  \"cc\" \"-m64\" \"/tmp/rustc7H5UYy/symbols.o\" \"<17 object files omitted>\" \"-Wl,--as-needed\" \"-Wl,-Bstatic\" \"/tmp/clis-diesel_cli_2-1-1/release/deps/{libdiffy-5f350840256b90b3.rlib,libnu_ansi_term-ecef502768b2f22a.rlib,liboverload-45aafc635a57cff1.rlib,liburl-036f69e82fdcf501.rlib,libidna-ffbc39c7a5d1e77c.rlib,libunicode_normalization-da6cfe0b315d21ba.rlib,libtinyvec-0e7c6d99fc4ecd2c.rlib,libtinyvec_macros-9126bcde4c5f1615.rlib,libunicode_bidi-23766e683251f25e.rlib,libform_urlencoded-ed0427b193415122.rlib,libpercent_encoding-a9ca6250cc102bd0.rlib,libmatches-27d9c5e1e6de7509.rlib,libdotenvy-9fa159acfce4885d.rlib,libchrono-4d3d56d73bf46ec0.rlib,libiana_time_zone-5ed377f5b3d451ef.rlib,libnum_integer-82fb0132f8b53906.rlib,libnum_traits-2f9bcd2a0c30dcff.rlib,libheck-40dbaec9d09d443f.rlib,libdiesel_table_macro_syntax-9f09f66c20aa386f.rlib,libsyn-abced2e57ae6b47a.rlib,libquote-6740271d31439b66.rlib,libproc_macro2-ae7c4c38eaf4593c.rlib,libunicode_ident-aa12b7412dfc4c29.rlib}.rlib\" \"<sysroot>/lib/rustlib/x86_64-unknown-linux-gnu/lib/{libproc_macro-*}.rlib\" \"/tmp/clis-diesel_cli_2-1-1/release/deps/{libclap_complete-2bc2ccaa5088f99a.rlib,libdiesel_migrations-8a52bbbeef5e01db.rlib,libmigrations_internals-52b495bc29f74724.rlib,libtoml-c89277bcdcbf47a1.rlib,libtoml_edit-5bbd23cd7ed53a4f.rlib,libserde_spanned-333f86fbbb2cb152.rlib,libindexmap-6b2daab44e782afb.rlib,libhashbrown-c275e17bff8ef48e.rlib,libwinnow-5ed65ae865e1214b.rlib,libtoml_datetime-69f07545405ed040.rlib,libdiesel-8a4b75e5cbe6865c.rlib,libitoa-f0986793f4dc0c4b.rlib,libbitflags-e95363e9370d640e.rlib,libbyteorder-62ae682b1bf4015e.rlib,libpq_sys-4db52583e4ef9bff.rlib,libserde_regex-b49f06d76e9ca5eb.rlib,libregex-51a29a962320663c.rlib,libaho_corasick-ec90a4b45e50196f.rlib,libmemchr-35aa984256b2a6dc.rlib,libregex_syntax-f2754ca68026052b.rlib,libclap-6885138d353f613d.rlib,libclap_builder-64fd68ff56e9c3b1.rlib,libstrsim-6185e9224c6e4564.rlib,libanstream-d6e3047ceacd4591.rlib,libanstyle_query-5a9f17d21dd97f4e.rlib,libis_terminal-c352a962fc4f6cab.rlib,librustix-2b2c39f9f9d03b14.rlib,liblinux_raw_sys-f6a722b30bf667ab.rlib,libio_lifetimes-a415eef40056a286.rlib,liblibc-859d6bf52555fe98.rlib,libanstyle-587cffdda4d8c45a.rlib,libcolorchoice-6d2fdffc0ac55bb0.rlib,libanstyle_parse-1e447f4b0544156a.rlib,libutf8parse-811cc7a6fc8bc58b.rlib,libclap_lex-c13afce077d893db.rlib,libbitflags-852662162838ab1a.rlib,libonce_cell-c147a48c1dcf8469.rlib,libserde-fa2e373f0760a32a.rlib}.rlib\" \"<sysroot>/lib/rustlib/x86_64-unknown-linux-gnu/lib/{libstd-*,libpanic_unwind-*,libobject-*,libmemchr-*,libaddr2line-*,libgimli-*,librustc_demangle-*,libstd_detect-*,libhashbrown-*,librustc_std_workspace_alloc-*,libminiz_oxide-*,libadler2-*,libunwind-*,libcfg_if-*,liblibc-*,liballoc-*,librustc_std_workspace_core-*,libcore-*,libcompiler_builtins-*}.rlib\" \"-Wl,-Bdynamic\" \"-lpq\" \"-lgcc_s\" \"-lutil\" \"-lrt\" \"-lpthread\" \"-lm\" \"-ldl\" \"-lc\" \"-Wl,--eh-frame-hdr\" \"-Wl,-z,noexecstack\" \"-L\" \"/usr/lib/x86_64-linux-gnu\" \"-L\" \"<sysroot>/lib/rustlib/x86_64-unknown-linux-gnu/lib\" \"-o\" \"/tmp/clis-diesel_cli_2-1-1/release/deps/diesel-6a254b742936f321\" \"-Wl,--gc-sections\" \"-pie\" \"-Wl,-z,relro,-z,now\" \"-Wl,-O1\" \"-Wl,--strip-debug\" \"-nodefaultlibs\"\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: some arguments are omitted. use `--verbose` to show all linker arguments\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: /usr/bin/ld: cannot find -lpq: No such file or directory\u001b[0m\n\u001b[0m          collect2: error: ld returned 1 exit status\u001b[0m\n\u001b[0m          \u001b[0m\n\n= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: /usr/bin/ld: add `\"libpq-dev\"` to either $CARGOGREEN_ADD_APT (apk, apt-get) or to this crate's or your root crate's [package.metadata.green.add] apt list (cargo-green)\u001b[0m\n\u001b[0m          collect2: error: ld returned 1 exit status\u001b[0m\n\u001b[0m          \u001b[0m\n\n"
+}"#,
+    );
+
+    assert_eq!(lib_not_found(&input), Some("pq"));
+
+    pretty_assertions::assert_eq!(roundtrip(&suggest_add("pq", &input).unwrap()), output);
+}
+
+// Matches (ANSI colors dropped) '''"rendered":"error: environment variable `[^`]+` not defined at compile time'''
 #[must_use]
 fn env_not_comptime_defined(msg: &str) -> Option<&str> {
     if let Some((_, rhs)) = msg.split_once(r#"environment variable `"#) {
@@ -732,20 +910,7 @@ fn suggest_set_envs(var: &str, msg: &str) -> Option<String> {
     let suggestion = format!(
         r#"add `"{var}"` to either ${ENV_SET_ENVS} or to this crate's or your root crate's [package.metadata.green] set-envs list ({PKG})"#
     );
-
-    let mut data: serde_json::Value = serde_json::from_str(msg).ok()?;
-    let rendered = data.get_mut("rendered")?;
-    let txt = rendered.as_str()?;
-
-    // '= ' is an ANSII colors -safe choice of separator
-    let existing = txt.split("= ").find(|help| help.contains(&original))?;
-
-    let mut to = existing.to_owned();
-    to.push_str("= ");
-    to.push_str(&existing.replace(&original, &suggestion));
-
-    *rendered = serde_json::json!(txt.replace(existing, &to));
-    serde_json::to_string(&data).ok()
+    suggest(&original, &suggestion, msg)
 }
 
 #[cfg(test)]
@@ -755,7 +920,7 @@ fn roundtrip(json: &str) -> String {
 }
 
 #[test]
-fn set_envs() {
+fn suggesting_set_envs() {
     let input = roundtrip(
         r#"
 {
@@ -929,7 +1094,7 @@ fn set_envs() {
 }
 
 #[test]
-fn set_envs_ansii() {
+fn suggesting_set_envs_ansi() {
     let input = roundtrip(
         r#"
 {
