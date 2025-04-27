@@ -5,18 +5,18 @@ use camino::Utf8PathBuf;
 use cargo_toml::Manifest;
 use serde::{Deserialize, Serialize};
 
+#[cfg(test)]
+use crate::runner::Network;
 use crate::{
+    add::{Add, ENV_ADD_APK, ENV_ADD_APT, ENV_ADD_APT_GET},
     base_image::{BaseImage, ENV_BASE_IMAGE, ENV_BASE_IMAGE_INLINE},
     image_uri::ImageUri,
     lockfile::find_manifest_path,
-    runner::{Network, Runner},
+    runner::Runner,
     stage::RST,
 };
 
 // Envs that override Cargo.toml settings
-pub(crate) const ENV_ADD_APK: &str = "CARGOGREEN_ADD_APK";
-pub(crate) const ENV_ADD_APT: &str = "CARGOGREEN_ADD_APT";
-pub(crate) const ENV_ADD_APT_GET: &str = "CARGOGREEN_ADD_APT_GET";
 pub(crate) const ENV_CACHE_IMAGES: &str = "CARGOGREEN_CACHE_IMAGES";
 pub(crate) const ENV_INCREMENTAL: &str = "CARGOGREEN_INCREMENTAL";
 pub(crate) const ENV_SET_ENVS: &str = "CARGOGREEN_SET_ENVS";
@@ -25,100 +25,6 @@ pub(crate) const ENV_SET_ENVS: &str = "CARGOGREEN_SET_ENVS";
 #[derive(Debug, Deserialize)]
 struct GreenMetadata {
     green: Green,
-}
-
-#[derive(Debug, Serialize, Deserialize, Default, PartialEq, Eq)]
-#[serde(default)]
-#[serde(deny_unknown_fields)]
-#[serde(rename_all = "kebab-case")]
-pub(crate) struct Add {
-    // Adds OS packages to the base image with `apk add`
-    //
-    // add.apk = [ "libpq-dev", "pkgconf" ]
-    //
-    // # This environment variable takes precedence over any Cargo.toml settings:
-    // # Note: values here are comma-separated.
-    // CARGOGREEN_ADD_APK="libpq-dev,pkg-conf"
-    #[serde(skip_serializing_if = "Vec::is_empty")]
-    pub(crate) apk: Vec<String>,
-
-    // Adds OS packages to the base image with `apt install`
-    //
-    // add.apt = [ "libpq-dev", "pkg-config" ]
-    //
-    // # This environment variable takes precedence over any Cargo.toml settings:
-    // # Note: values here are comma-separated.
-    // CARGOGREEN_ADD_APT="libpq-dev,pkg-config"
-    #[serde(skip_serializing_if = "Vec::is_empty")]
-    pub(crate) apt: Vec<String>,
-
-    // Adds OS packages to the base image with `apt-get install`
-    //
-    // add.apt-get = [ "libpq-dev", "pkg-config" ]
-    //
-    // # This environment variable takes precedence over any Cargo.toml settings:
-    // # Note: values here are comma-separated.
-    // CARGOGREEN_ADD_APT_GET="libpq-dev,pkg-config"
-    #[serde(skip_serializing_if = "Vec::is_empty")]
-    pub(crate) apt_get: Vec<String>,
-}
-
-impl Add {
-    #[must_use]
-    pub(crate) fn is_empty(&self) -> bool {
-        let Self { apk, apt, apt_get } = self;
-        [apk, apt, apt_get].iter().all(|x| x.is_empty())
-    }
-
-    // TODO: pin major + lock by pulling
-    // TODO: more architectures
-    pub(crate) fn as_block(&self, last: &str) -> (Network, String) {
-        const XX: &str = "docker.io/tonistiigi/xx:1.6.1@sha256:923441d7c25f1e2eb5789f82d987693c47b8ed987c4ab3b075d6ed2b5d6779a3";
-
-        let block = format!(
-            r#"
-FROM --platform=$BUILDPLATFORM {XX} AS xx
-{last}
-ARG TARGETPLATFORM
-RUN \
-  --mount=from=xx,source=/usr/bin/xx-apk,target=/usr/bin/xx-apk \
-  --mount=from=xx,source=/usr/bin/xx-apt,target=/usr/bin/xx-apt \
-  --mount=from=xx,source=/usr/bin/xx-apt,target=/usr/bin/xx-apt-get \
-  --mount=from=xx,source=/usr/bin/xx-cc,target=/usr/bin/xx-c++ \
-  --mount=from=xx,source=/usr/bin/xx-cargo,target=/usr/bin/xx-cargo \
-  --mount=from=xx,source=/usr/bin/xx-cc,target=/usr/bin/xx-cc \
-  --mount=from=xx,source=/usr/bin/xx-cc,target=/usr/bin/xx-clang \
-  --mount=from=xx,source=/usr/bin/xx-cc,target=/usr/bin/xx-clang++ \
-  --mount=from=xx,source=/usr/bin/xx-go,target=/usr/bin/xx-go \
-  --mount=from=xx,source=/usr/bin/xx-info,target=/usr/bin/xx-info \
-  --mount=from=xx,source=/usr/bin/xx-ld-shas,target=/usr/bin/xx-ld-shas \
-  --mount=from=xx,source=/usr/bin/xx-verify,target=/usr/bin/xx-verify \
-  --mount=from=xx,source=/usr/bin/xx-windres,target=/usr/bin/xx-windres \
-    set -eux \
- && if   command -v apk >/dev/null 2>&1; then \
-                                     xx-apk     add     --no-cache                 '{apk}'; \
-    elif command -v apt >/dev/null 2&>1; then \
-      DEBIAN_FRONTEND=noninteractive xx-apt     install --no-install-recommends -y '{apt}'; \
-    else \
-      DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '{apt_get}'; \
-    fi
-"#,
-            last = last.trim(),
-            apk = quote_pkgs(&self.apk),
-            apt = quote_pkgs(&self.apt),
-            apt_get = quote_pkgs(&self.apt_get),
-        );
-
-        (Network::Default, block)
-    }
-}
-
-fn quote_pkgs(pkgs: &[String]) -> String {
-    if pkgs.is_empty() {
-        "<none>".to_owned()
-    } else {
-        pkgs.join("' '")
-    }
 }
 
 #[derive(Debug, Serialize, Deserialize, Default, PartialEq, Eq)]
