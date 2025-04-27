@@ -25,11 +25,12 @@ use tokio::{
 
 use crate::{
     ext::ShowCmd,
-    green::Green,
+    green::{Green, ENV_SET_ENVS},
     image_uri::ImageUri,
     logging::{crate_type_for_logging, maybe_log, ENV_LOG_PATH},
     md::BuildContext,
     stage::Stage,
+    PKG,
 };
 
 pub(crate) const MARK_STDOUT: &str = "::STDOUT:: ";
@@ -398,10 +399,10 @@ async fn build(
     if let Some((out_task, err_task)) = handles {
         let longish = Duration::from_secs(2);
         match join!(timeout(longish, out_task), timeout(longish, err_task)) {
-            (Ok(Ok(Ok(_))), Ok(Ok(Ok(acc)))) => {
-                if !acc.written.is_empty() {
-                    info!("rustc wrote {} files:", acc.written.len());
-                    for f in acc.written {
+            (Ok(Ok(Ok(_))), Ok(Ok(Ok(Accumulated { written, missing_env: _ })))) => {
+                if !written.is_empty() {
+                    info!("rustc wrote {} files:", written.len());
+                    for f in written {
                         info!(
                             "metadata for {f:?}: {:?}",
                             f.metadata().map(|fmd| format!(
@@ -537,29 +538,6 @@ where
                 cacheds += 1;
             }
 
-            // D 25/03/30 03:30:33.891 L mime_guess 2.0.5-d2ac06fbe540be6e ✖ #30 0.265 ::STDERR:: {"$message_type":"diagnostic","message":"environment variable `MIME_TYPES_GENERATED_PATH` not defined at co
-            // mpile time","code":null,"level":"error","spans":[{"file_name":"/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/mime_guess-2.0.5/src/impl_bin_search.rs","byte_start":62,"byte_
-            // end":95,"line_start":4,"line_end":4,"column_start":10,"column_end":43,"is_primary":true,"text":[{"text":"include!(env!(\"MIME_TYPES_GENERATED_PATH\"));","highlight_start":10,"highlight_end":
-            // 43}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":{"span":{"file_name":"/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/mime_guess-2.
-            // 0.5/src/impl_bin_search.rs","byte_start":62,"byte_end":95,"line_start":4,"line_end":4,"column_start":10,"column_end":43,"is_primary":false,"text":[{"text":"include!(env!(\"MIME_TYPES_GENERAT
-            // ED_PATH\"));","highlight_start":10,"highlight_end":43}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null},"macro_decl_name":"env!","def_site_span":{
-            // "file_name":"/rustc/4d91de4e48198da2e33413efdcd9cd2cc0c46688/library/core/src/macros/mod.rs","byte_start":38805,"byte_end":38821,"line_start":1101,"line_end":1101,"column_start":5,"column_en
-            // d":21,"is_primary":false,"text":[],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}}}],"children":[{"message":"use `std::env::var(\"MIME_TYPES_GENERATED_PATH\")` to read the variable at run time","code":null,"level":"help","spans":[],"children":[],"rendered":null}],"rendered":"error: environment variable `MIME_TYPES_GENERATED_PATH` not
-            //  defined at compile time\n --> /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/mime_guess-2.0.5/src/impl_bin_search.rs:4:10\n  |\n4 | include!(env!(\"MIME_TYPES_GENERATED_PAT
-            // H\"));\n  |          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  |\n  = help: use `std::env::var(\"MIME_TYPES_GENERATED_PATH\")` to read the variable at run time\n  = note: this error originates in
-            //  the macro `env` (in Nightly builds, run with -Z macro-backtrace for more info)\n\n"}
-            // D 25/03/30 03:30:33.891 L mime_guess 2.0.5-d2ac06fbe540be6e ✖ #30 0.265 ::STDERR:: {"$message_type":"artifact","artifact":"/tmp/clis-torrust-index_3-0-0-alpha-12/release/deps/mime_guess-d2ac
-            // 06fbe540be6e.d","emit":"dep-info"}
-            // I 25/03/30 03:30:33.891 L mime_guess 2.0.5-d2ac06fbe540be6e rustc wrote /tmp/clis-torrust-index_3-0-0-alpha-12/release/deps/mime_guess-d2ac06fbe540be6e.d
-            // D 25/03/30 03:30:33.891 L mime_guess 2.0.5-d2ac06fbe540be6e ✖ #30 0.265 ::STDERR::
-            // g=-fuse-ld=/usr/local/bin/mold`                                                                              error: environment variable `MIME_TYPES_GENERATED_PATH` not defined at compile time                                                                                                            --> /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/mime_guess-2.0.5/src/impl_bin_search.rs:4:10                                                                               |
-            // 4 | include!(env!("MIME_TYPES_GENERATED_PATH"));
-            //   |          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-            //   |
-            //   = help: use `std::env::var("MIME_TYPES_GENERATED_PATH")` to read the variable at run time
-            //   = note: this error originates in the macro `env` (in Nightly builds, run with -Z macro-backtrace for more info)
-            // => TODO: suggest    CARGOGREEN_SET_ENVS='MIME_TYPES_GENERATED_PATH RING_CORE_PREFIX'
-
             // I 25/03/31 22:33:29.519 X cargo 0.81.0-d28c49a0e79c24d1 rustc wrote /tmp/clis-cargo-udeps_0-1-50/release/build/cargo-d28c49a0e79c24d1/build_script_build-d28c49a0e79c24d1.d
             // D 25/03/31 22:33:29.665 X cargo 0.81.0-d28c49a0e79c24d1 ✖ #55 0.310 ::STDERR:: {"$message_type":"diagnostic","message":"linking with `cc` failed: exit status: 1","code":null,"level":"error",
             // "spans":[],"children":[{"message":"LC_ALL=\"C\" PATH=\"/usr/local/rustup/toolchains/1.85.0-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/bin:/usr/local/cargo/bin:/usr/local/s
@@ -616,6 +594,7 @@ where
 #[derive(Debug, Default)]
 struct Accumulated {
     written: Vec<Utf8PathBuf>,
+    missing_env: BTreeSet<String>,
 }
 
 #[test]
@@ -648,14 +627,26 @@ fn support_long_broken_json_lines() {
 
 fn fwd_stderr(msg: &str, buf: &mut String, acc: &mut Accumulated) {
     let mut show = |msg: &str| {
-        info!("(To cargo's STDERR): {msg}");
-        eprintln!("{msg}");
-
         if let Some(file) = artifact_written(msg) {
             acc.written.push(file.into());
             info!("rustc wrote {file}");
         }
+
+        let mut msg = msg.to_owned();
+
+        if let Some(var) = env_not_comptime_defined(&msg) {
+            if acc.missing_env.insert(var.to_owned()) {
+                if let Some(new_msg) = suggest_set_envs(var, &msg) {
+                    info!("suggesting to passthrough missing env with set-envs {var:?}");
+                    msg = new_msg;
+                }
+            }
+        }
+
+        info!("(To STDERR for cargo): {msg}");
+        eprintln!("{msg}");
     };
+
     match (buf.is_empty(), msg.starts_with('{'), msg.ends_with('}')) {
         (true, true, true) => show(msg), // json
         (true, true, false) => buf.push_str(msg),
@@ -707,7 +698,7 @@ fn stdio_passthrough_from_runner() {
     );
 }
 
-// Maybe replace with actual JSON deserialization
+// TODO? replace with actual JSON deserialization
 #[must_use]
 fn artifact_written(msg: &str) -> Option<&str> {
     let mut z = msg.split('"');
@@ -722,6 +713,393 @@ fn artifact_written(msg: &str) -> Option<&str> {
         }
         (a, b, c) = (b, c, z.next());
     }
+}
+
+// Matches (ANSII colors dropped) '''"rendered":"error: environment variable `[^`]+` not defined at compile time'''
+#[must_use]
+fn env_not_comptime_defined(msg: &str) -> Option<&str> {
+    if let Some((_, rhs)) = msg.split_once(r#"environment variable `"#) {
+        if let Some((var, _)) = rhs.split_once("` not defined at compile time") {
+            return Some(var);
+        }
+    }
+    None
+}
+
+#[must_use]
+fn suggest_set_envs(var: &str, msg: &str) -> Option<String> {
+    let original = format!(r#"use `std::env::var("{var}")` to read the variable at run time"#);
+    let suggestion = format!(
+        r#"add `"{var}"` to either ${ENV_SET_ENVS} or to this crate's or your root crate's [package.metadata.green] set-envs list ({PKG})"#
+    );
+
+    let mut data: serde_json::Value = serde_json::from_str(msg).ok()?;
+    let rendered = data.get_mut("rendered")?;
+    let txt = rendered.as_str()?;
+
+    // '= ' is an ANSII colors -safe choice of separator
+    let existing = txt.split("= ").find(|help| help.contains(&original))?;
+
+    let mut to = existing.to_owned();
+    to.push_str("= ");
+    to.push_str(&existing.replace(&original, &suggestion));
+
+    *rendered = serde_json::json!(txt.replace(existing, &to));
+    serde_json::to_string(&data).ok()
+}
+
+#[cfg(test)]
+fn roundtrip(json: &str) -> String {
+    let msg: serde_json::Value = serde_json::from_str(json).unwrap();
+    serde_json::to_string_pretty(&msg).unwrap()
+}
+
+#[test]
+fn set_envs() {
+    let input = roundtrip(
+        r#"
+{
+    "$message_type": "diagnostic",
+    "message": "environment variable `MIME_TYPES_GENERATED_PATH` not defined at compile time",
+    "code": null,
+    "level": "error",
+    "spans": [
+        {
+            "file_name": "/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/mime_guess-2.0.5/src/impl_bin_search.rs",
+            "byte_start": 62,
+            "byte_end": 95,
+            "line_start": 4,
+            "line_end": 4,
+            "column_start": 10,
+            "column_end": 43,
+            "is_primary": true,
+            "text": [
+                {
+                    "text": "include!(env!(\"MIME_TYPES_GENERATED_PATH\"));",
+                    "highlight_start": 10,
+                    "highlight_end": 43
+                }
+            ],
+            "label": null,
+            "suggested_replacement": null,
+            "suggestion_applicability": null,
+            "expansion": {
+                "span": {
+                    "file_name": "/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/mime_guess-2.0.5/src/impl_bin_search.rs",
+                    "byte_start": 62,
+                    "byte_end": 95,
+                    "line_start": 4,
+                    "line_end": 4,
+                    "column_start": 10,
+                    "column_end": 43,
+                    "is_primary": false,
+                    "text": [
+                        {
+                            "text": "include!(env!(\"MIME_TYPES_GENERATED_PATH\"));",
+                            "highlight_start": 10,
+                            "highlight_end": 43
+                        }
+                    ],
+                    "label": null,
+                    "suggested_replacement": null,
+                    "suggestion_applicability": null,
+                    "expansion": null
+                },
+                "macro_decl_name": "env!",
+                "def_site_span": {
+                    "file_name": "/rustc/4d91de4e48198da2e33413efdcd9cd2cc0c46688/library/core/src/macros/mod.rs",
+                    "byte_start": 38805,
+                    "byte_end": 38821,
+                    "line_start": 1101,
+                    "line_end": 1101,
+                    "column_start": 5,
+                    "column_end": 21,
+                    "is_primary": false,
+                    "text": [],
+                    "label": null,
+                    "suggested_replacement": null,
+                    "suggestion_applicability": null,
+                    "expansion": null
+                }
+            }
+        }
+    ],
+    "children": [
+        {
+            "message": "use `std::env::var(\"MIME_TYPES_GENERATED_PATH\")` to read the variable at run time",
+            "code": null,
+            "level": "help",
+            "spans": [],
+            "children": [],
+            "rendered": null
+        }
+    ],
+    "rendered": "error: environment variable `MIME_TYPES_GENERATED_PATH` not defined at compile time\n --> /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/mime_guess-2.0.5/src/impl_bin_search.rs:4:10\n  |\n4 | include!(env!(\"MIME_TYPES_GENERATED_PATH\"));\n  |          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  |\n  = help: use `std::env::var(\"MIME_TYPES_GENERATED_PATH\")` to read the variable at run time\n  = note: this error originates in the macro `env` (in Nightly builds, run with -Z macro-backtrace for more info)\n\n"
+}"#,
+    );
+
+    let output = roundtrip(
+        r#"
+{
+    "$message_type": "diagnostic",
+    "message": "environment variable `MIME_TYPES_GENERATED_PATH` not defined at compile time",
+    "code": null,
+    "level": "error",
+    "spans": [
+        {
+            "file_name": "/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/mime_guess-2.0.5/src/impl_bin_search.rs",
+            "byte_start": 62,
+            "byte_end": 95,
+            "line_start": 4,
+            "line_end": 4,
+            "column_start": 10,
+            "column_end": 43,
+            "is_primary": true,
+            "text": [
+                {
+                    "text": "include!(env!(\"MIME_TYPES_GENERATED_PATH\"));",
+                    "highlight_start": 10,
+                    "highlight_end": 43
+                }
+            ],
+            "label": null,
+            "suggested_replacement": null,
+            "suggestion_applicability": null,
+            "expansion": {
+                "span": {
+                    "file_name": "/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/mime_guess-2.0.5/src/impl_bin_search.rs",
+                    "byte_start": 62,
+                    "byte_end": 95,
+                    "line_start": 4,
+                    "line_end": 4,
+                    "column_start": 10,
+                    "column_end": 43,
+                    "is_primary": false,
+                    "text": [
+                        {
+                            "text": "include!(env!(\"MIME_TYPES_GENERATED_PATH\"));",
+                            "highlight_start": 10,
+                            "highlight_end": 43
+                        }
+                    ],
+                    "label": null,
+                    "suggested_replacement": null,
+                    "suggestion_applicability": null,
+                    "expansion": null
+                },
+                "macro_decl_name": "env!",
+                "def_site_span": {
+                    "file_name": "/rustc/4d91de4e48198da2e33413efdcd9cd2cc0c46688/library/core/src/macros/mod.rs",
+                    "byte_start": 38805,
+                    "byte_end": 38821,
+                    "line_start": 1101,
+                    "line_end": 1101,
+                    "column_start": 5,
+                    "column_end": 21,
+                    "is_primary": false,
+                    "text": [],
+                    "label": null,
+                    "suggested_replacement": null,
+                    "suggestion_applicability": null,
+                    "expansion": null
+                }
+            }
+        }
+    ],
+    "children": [
+        {
+            "message": "use `std::env::var(\"MIME_TYPES_GENERATED_PATH\")` to read the variable at run time",
+            "code": null,
+            "level": "help",
+            "spans": [],
+            "children": [],
+            "rendered": null
+        }
+    ],
+    "rendered": "error: environment variable `MIME_TYPES_GENERATED_PATH` not defined at compile time\n --> /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/mime_guess-2.0.5/src/impl_bin_search.rs:4:10\n  |\n4 | include!(env!(\"MIME_TYPES_GENERATED_PATH\"));\n  |          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  |\n  = help: use `std::env::var(\"MIME_TYPES_GENERATED_PATH\")` to read the variable at run time\n  = help: add `\"MIME_TYPES_GENERATED_PATH\"` to either $CARGOGREEN_SET_ENVS or to this crate's or your root crate's [package.metadata.green] set-envs list (cargo-green)\n  = note: this error originates in the macro `env` (in Nightly builds, run with -Z macro-backtrace for more info)\n\n"
+}"#,
+    );
+
+    assert_eq!(env_not_comptime_defined(&input), Some("MIME_TYPES_GENERATED_PATH"));
+
+    pretty_assertions::assert_eq!(
+        roundtrip(&suggest_set_envs("MIME_TYPES_GENERATED_PATH", &input).unwrap()),
+        output
+    );
+}
+
+#[test]
+fn set_envs_ansii() {
+    let input = roundtrip(
+        r#"
+{
+    "$message_type": "diagnostic",
+    "message": "environment variable `TYPENUM_BUILD_OP` not defined at compile time",
+    "code": null,
+    "level": "error",
+    "spans": [
+        {
+            "file_name": "/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/typenum-1.12.0/src/lib.rs",
+            "byte_start": 2460,
+            "byte_end": 2484,
+            "line_start": 76,
+            "line_end": 76,
+            "column_start": 14,
+            "column_end": 38,
+            "is_primary": true,
+            "text": [
+                {
+                    "text": "    include!(env!(\"TYPENUM_BUILD_OP\"));",
+                    "highlight_start": 14,
+                    "highlight_end": 38
+                }
+            ],
+            "label": null,
+            "suggested_replacement": null,
+            "suggestion_applicability": null,
+            "expansion": {
+                "span": {
+                    "file_name": "/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/typenum-1.12.0/src/lib.rs",
+                    "byte_start": 2460,
+                    "byte_end": 2484,
+                    "line_start": 76,
+                    "line_end": 76,
+                    "column_start": 14,
+                    "column_end": 38,
+                    "is_primary": false,
+                    "text": [
+                        {
+                            "text": "    include!(env!(\"TYPENUM_BUILD_OP\"));",
+                            "highlight_start": 14,
+                            "highlight_end": 38
+                        }
+                    ],
+                    "label": null,
+                    "suggested_replacement": null,
+                    "suggestion_applicability": null,
+                    "expansion": null
+                },
+                "macro_decl_name": "env!",
+                "def_site_span":
+                {
+                    "file_name": "/rustc/05f9846f893b09a1be1fc8560e33fc3c815cfecb/library/core/src/macros/mod.rs",
+                    "byte_start": 40546,
+                    "byte_end": 40562,
+                    "line_start": 1164,
+                    "line_end": 1164,
+                    "column_start": 5,
+                    "column_end": 21,
+                    "is_primary": false,
+                    "text": [],
+                    "label": null,
+                    "suggested_replacement": null,
+                    "suggestion_applicability": null,
+                    "expansion": null
+                }
+            }
+        }
+    ],
+    "children": [
+        {
+            "message": "use `std::env::var(\"TYPENUM_BUILD_OP\")` to read the variable at run time",
+            "code": null,
+            "level": "help",
+            "spans": [],
+            "children": [],
+            "rendered": null
+        }
+    ],
+    "rendered": "\u001b[0m\u001b[1m\u001b[38;5;9merror\u001b[0m\u001b[0m\u001b[1m: environment variable `TYPENUM_BUILD_OP` not defined at compile time\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/typenum-1.12.0/src/lib.rs:76:14\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m76\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    include!(env!(\"TYPENUM_BUILD_OP\"));\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m              \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;9m^^^^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: use `std::env::var(\"TYPENUM_BUILD_OP\")` to read the variable at run time\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: this error originates in the macro `env` (in Nightly builds, run with -Z macro-backtrace for more info)\u001b[0m\n\n"
+}"#,
+    );
+
+    let output = roundtrip(
+        r#"{
+    "$message_type": "diagnostic",
+    "message": "environment variable `TYPENUM_BUILD_OP` not defined at compile time",
+    "code": null,
+    "level": "error",
+    "spans": [
+        {
+            "file_name": "/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/typenum-1.12.0/src/lib.rs",
+            "byte_start": 2460,
+            "byte_end": 2484,
+            "line_start": 76,
+            "line_end": 76,
+            "column_start": 14,
+            "column_end": 38,
+            "is_primary": true,
+            "text": [
+                {
+                    "text": "    include!(env!(\"TYPENUM_BUILD_OP\"));",
+                    "highlight_start": 14,
+                    "highlight_end": 38
+                }
+            ],
+            "label": null,
+            "suggested_replacement": null,
+            "suggestion_applicability": null,
+            "expansion": {
+                "span": {
+                    "file_name": "/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/typenum-1.12.0/src/lib.rs",
+                    "byte_start": 2460,
+                    "byte_end": 2484,
+                    "line_start": 76,
+                    "line_end": 76,
+                    "column_start": 14,
+                    "column_end": 38,
+                    "is_primary": false,
+                    "text": [
+                        {
+                            "text": "    include!(env!(\"TYPENUM_BUILD_OP\"));",
+                            "highlight_start": 14,
+                            "highlight_end": 38
+                        }
+                    ],
+                    "label": null,
+                    "suggested_replacement": null,
+                    "suggestion_applicability": null,
+                    "expansion": null
+                },
+                "macro_decl_name": "env!",
+                "def_site_span": {
+                    "file_name": "/rustc/05f9846f893b09a1be1fc8560e33fc3c815cfecb/library/core/src/macros/mod.rs",
+                    "byte_start": 40546,
+                    "byte_end": 40562,
+                    "line_start": 1164,
+                    "line_end": 1164,
+                    "column_start": 5,
+                    "column_end": 21,
+                    "is_primary": false,
+                    "text": [],
+                    "label": null,
+                    "suggested_replacement": null,
+                    "suggestion_applicability": null,
+                    "expansion": null
+                }
+            }
+        }
+    ],
+    "children": [
+        {
+            "message": "use `std::env::var(\"TYPENUM_BUILD_OP\")` to read the variable at run time",
+            "code": null,
+            "level": "help",
+            "spans": [],
+            "children": [],
+            "rendered": null
+        }
+    ],
+    "rendered": "\u001b[0m\u001b[1m\u001b[38;5;9merror\u001b[0m\u001b[0m\u001b[1m: environment variable `TYPENUM_BUILD_OP` not defined at compile time\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/typenum-1.12.0/src/lib.rs:76:14\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m76\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    include!(env!(\"TYPENUM_BUILD_OP\"));\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m              \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;9m^^^^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: use `std::env::var(\"TYPENUM_BUILD_OP\")` to read the variable at run time\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: add `\"TYPENUM_BUILD_OP\"` to either $CARGOGREEN_SET_ENVS or to this crate's or your root crate's [package.metadata.green] set-envs list (cargo-green)\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: this error originates in the macro `env` (in Nightly builds, run with -Z macro-backtrace for more info)\u001b[0m\n\n"
+}"#,
+    );
+
+    assert_eq!(env_not_comptime_defined(&input), Some("TYPENUM_BUILD_OP"));
+
+    pretty_assertions::assert_eq!(
+        roundtrip(&suggest_set_envs("TYPENUM_BUILD_OP", &input).unwrap()),
+        output
+    );
 }
 
 #[must_use]
