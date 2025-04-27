@@ -495,6 +495,8 @@ where
     spawn(async move {
         let mut buf = String::new();
         let mut details: Vec<String> = vec![];
+        let mut dones = 0;
+        let mut cacheds = 0;
         let mut acc = Accumulated::default();
         let mut first = true;
         loop {
@@ -522,36 +524,18 @@ where
             // cache should be ok (cargo's point of view) if written right after green's build(..) call
 
             // Show data transfers (Bytes, maybe also timings?)
-            let pattern = " transferring ";
-            for (idx, _pattern) in line.as_str().match_indices(pattern) {
-                let detail = line[(pattern.len() + idx)..].trim_end_matches(" done");
+            const PATTERN: &str = " transferring ";
+            for (idx, _pattern) in line.as_str().match_indices(PATTERN) {
+                let detail = line[(PATTERN.len() + idx)..].trim_end_matches(" done");
                 details.push(detail.to_owned());
             }
 
-            //TODO: count DONEs and CACHEDs
-            // D 25/03/31 23:21:11.702 L winnow 0.7.3-2a24a5220012bbd8 ✖ #0 building with "default" instance using docker driver                                                           01:21:12 [46/1876]
-            // D 25/03/31 23:21:11.702 L winnow 0.7.3-2a24a5220012bbd8 ✖ #1 [internal] load build definition from Dockerfile
-            // D 25/03/31 23:21:11.702 L winnow 0.7.3-2a24a5220012bbd8 ✖ #1 transferring dockerfile: 6.92kB done
-            // D 25/03/31 23:21:11.702 L winnow 0.7.3-2a24a5220012bbd8 ✖ #1 DONE 0.0s
-            // D 25/03/31 23:21:11.702 L winnow 0.7.3-2a24a5220012bbd8 ✖ #2 resolve image config for docker-image://docker.io/docker/dockerfile:1@sha256:4c68376a702446fc3c79af22de146a148bc3367e73c25a5803d453b6b3f722fb
-            // D 25/03/31 23:21:11.702 L winnow 0.7.3-2a24a5220012bbd8 ✖ #2 DONE 0.0s
-            // D 25/03/31 23:21:11.702 L winnow 0.7.3-2a24a5220012bbd8 ✖ #3 docker-image://docker.io/docker/dockerfile:1@sha256:4c68376a702446fc3c79af22de146a148bc3367e73c25a5803d453b6b3f722fb
-            // D 25/03/31 23:21:11.702 L winnow 0.7.3-2a24a5220012bbd8 ✖ #3 CACHED
-            // D 25/03/31 23:21:11.702 L winnow 0.7.3-2a24a5220012bbd8 ✖ #4 [internal] load metadata for docker.io/library/rust:1.85.0-slim@sha256:1829c432be4a592f3021501334d3fcca24f238432b13306a4e62669dec538e52
-            // D 25/03/31 23:21:11.852 L winnow 0.7.3-2a24a5220012bbd8 ✖ #4 DONE 0.0s
-            // D 25/03/31 23:21:11.852 L winnow 0.7.3-2a24a5220012bbd8 ✖ #5 [internal] load metadata for docker.io/tonistiigi/xx:latest
-            // D 25/03/31 23:21:11.852 L winnow 0.7.3-2a24a5220012bbd8 ✖ #5 DONE 0.0s
-            // D 25/03/31 23:21:11.852 L winnow 0.7.3-2a24a5220012bbd8 ✖ #6 [internal] load .dockerignore
-            // D 25/03/31 23:21:11.852 L winnow 0.7.3-2a24a5220012bbd8 ✖ #6 transferring context: 2B done
-            // D 25/03/31 23:21:11.852 L winnow 0.7.3-2a24a5220012bbd8 ✖ #6 DONE 0.0s
-            // D 25/03/31 23:21:11.852 L winnow 0.7.3-2a24a5220012bbd8 ✖ #7 [xx 1/1] FROM docker.io/tonistiigi/xx:latest
-            // D 25/03/31 23:21:11.852 L winnow 0.7.3-2a24a5220012bbd8 ✖ #7 DONE 0.0s
-            // D 25/03/31 23:21:11.852 L winnow 0.7.3-2a24a5220012bbd8 ✖ #8 [rust-base 1/2] FROM docker.io/library/rust:1.85.0-slim@sha256:1829c432be4a592f3021501334d3fcca24f238432b13306a4e62669dec538e52
-            // D 25/03/31 23:21:11.852 L winnow 0.7.3-2a24a5220012bbd8 ✖ #8 DONE 0.0s
-            // D 25/03/31 23:21:11.852 L winnow 0.7.3-2a24a5220012bbd8 ✖ #9 [dep-l-winnow-0.7.3-2a24a5220012bbd8 1/3] WORKDIR /tmp/clis-cargo-udeps_0-1-55/release/deps
-            // D 25/03/31 23:21:11.852 L winnow 0.7.3-2a24a5220012bbd8 ✖ #9 CACHED
-            // D 25/03/31 23:21:11.852 L winnow 0.7.3-2a24a5220012bbd8 ✖ #10 [cratesio-winnow-0.7.3 1/2] ADD --chmod=0664 --checksum=sha256:0e7f4ea97f6f78012141bcdb6a216b2609f0979ada50b20ca5b52dde2eac2bb1   https://static.crates.io/crates/winnow/winnow-0.7.3.crate /crate
-            // D 25/03/31 23:21:11.852 L winnow 0.7.3-2a24a5220012bbd8 ✖ #10 CACHED
+            // Count DONEs and CACHEDs
+            if line.contains(" DONE ") {
+                dones += 1;
+            } else if line.ends_with(" CACHED") {
+                cacheds += 1;
+            }
 
             // D 25/03/30 03:30:33.891 L mime_guess 2.0.5-d2ac06fbe540be6e ✖ #30 0.265 ::STDERR:: {"$message_type":"diagnostic","message":"environment variable `MIME_TYPES_GENERATED_PATH` not defined at co
             // mpile time","code":null,"level":"error","spans":[{"file_name":"/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/mime_guess-2.0.5/src/impl_bin_search.rs","byte_start":62,"byte_
@@ -623,7 +607,7 @@ where
             // [package.metadata.green]
             // add.apt = [ "zlib1g-dev" ]
         }
-        debug!("Terminating {name} task {details:?}");
+        debug!("Terminating {name} task CACHED:{cacheds} DONE:{dones} {details:?}");
         drop(stdio);
         Ok(acc)
     })
