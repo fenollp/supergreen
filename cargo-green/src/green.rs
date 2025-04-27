@@ -115,7 +115,7 @@ RUN \
 
 fn quote_pkgs(pkgs: &[String]) -> String {
     if pkgs.is_empty() {
-        "<empty>".to_owned()
+        "<none>".to_owned()
     } else {
         pkgs.join("' '")
     }
