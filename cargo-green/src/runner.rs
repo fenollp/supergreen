@@ -5,6 +5,7 @@ use std::{
     io::prelude::*,
     mem,
     process::{Output, Stdio},
+    str::FromStr,
     time::{Duration, Instant},
 };
 
@@ -68,8 +69,30 @@ impl Runner {
 
 impl fmt::Display for Runner {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        let runner = serde_json::to_string(self).unwrap();
-        write!(f, "{}", &runner[1..(runner.len() - 1)])
+        match self {
+            Self::Docker => write!(f, "docker"),
+            Self::Podman => write!(f, "podman"),
+            Self::None => write!(f, "none"),
+        }
+    }
+}
+
+impl FromStr for Runner {
+    type Err = anyhow::Error;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "docker" => Ok(Self::Docker),
+            "podman" => Ok(Self::Podman),
+            "none" => Ok(Self::None),
+            _ => {
+                let all: Vec<_> = [Self::Docker, Self::Podman, Self::None]
+                    .into_iter()
+                    .map(|x| x.to_string())
+                    .collect();
+                bail!("Runner must be one of {all:?}")
+            }
+        }
     }
 }
 
@@ -85,8 +108,30 @@ pub(crate) enum Network {
 
 impl fmt::Display for Network {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        let network = serde_json::to_string(self).unwrap();
-        write!(f, "{}", &network[1..(network.len() - 1)])
+        match self {
+            Self::None => write!(f, "none"),
+            Self::Default => write!(f, "default"),
+            Self::Host => write!(f, "host"),
+        }
+    }
+}
+
+impl FromStr for Network {
+    type Err = anyhow::Error;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "none" => Ok(Self::None),
+            "default" => Ok(Self::Default),
+            "host" => Ok(Self::Host),
+            _ => {
+                let all: Vec<_> = [Self::None, Self::Default, Self::Host]
+                    .into_iter()
+                    .map(|x| x.to_string())
+                    .collect();
+                bail!("Network must be one of {all:?}")
+            }
+        }
     }
 }
 

@@ -39,7 +39,7 @@ pub(crate) async fn main() -> Result<Green> {
         bail!("${ENV_RUNNER} can only be set through the environment variable")
     }
     if let Ok(val) = env::var(ENV_RUNNER) {
-        green.runner = serde_json::from_str(&val)?;
+        green.runner = val.parse().map_err(|e| anyhow!("${ENV_RUNNER} {e}"))?;
     }
 
     if !green.syntax.is_empty() {
@@ -101,7 +101,7 @@ pub(crate) async fn main() -> Result<Green> {
     assert!(!green.image.base_image.is_empty(), "BUG: base_image set to {SYNTAX:?}");
 
     if let Ok(val) = env::var(ENV_WITH_NETWORK) {
-        green.image.with_network = serde_json::from_str(&val)?;
+        green.image.with_network = val.parse().map_err(|e| anyhow!("${ENV_WITH_NETWORK} {e}"))?;
     }
     if let Ok(val) = env::var("CARGO_NET_OFFLINE") {
         if val == "1" {
