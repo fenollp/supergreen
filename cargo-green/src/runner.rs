@@ -104,6 +104,7 @@ pub(crate) async fn maybe_lock_image(green: &Green, img: &ImageUri) -> ImageUri 
             .output()
             .await
             .ok()
+            .and_then(|o| o.status.success().then_some(o))
             .and_then(|o| String::from_utf8(o.stdout).ok())
             .and_then(|x| x.lines().next().map(ToOwned::to_owned))
         {
