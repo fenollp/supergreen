@@ -5,9 +5,11 @@ source $(realpath "$(dirname "$0")")/ck.sh
 
 with_j=0 # TODO: 1 => adds jobs with -J (see cargo issue https://github.com/rust-lang/cargo/issues/13889)
 
-# Usage:  $0                              #=> generate CI
-# Usage:  $0 ( <name@version> | <name> )  #=> cargo install name@version
-# Usage:  $0 ( build | test )             #=> cargo build ./cargo-green
+# Usage:           $0                                      #=> generate CI
+# Usage:           $0 ( <name@version> | <name> ) [clean]  #=> cargo install name@version
+# Usage:           $0 ( build | test )            [clean]  #=> cargo build ./cargo-green
+# Usage:    jobs=1 $0 ..                                   #=> cargo --jobs=$jobs
+# Usage: offline=1 $0 ..                                   #=> cargo --frozen (defaults to just: --locked)
 
 # TODO: test other runtimes: runc crun containerd buildkit-rootless
 # TODO: set -x in ci
@@ -282,6 +284,8 @@ arg1=$1; shift
 modifier=${1:-0}
 
 clean=0; if [[ "$modifier" = 'clean' ]]; then clean=1; fi
+jobs=${jobs:-$(nproc)}
+frozen=--locked ; [[ "${offline:-}" = '1' ]] && frozen=--frozen
 
 install_dir=/tmp/cargo-green
 CARGO=${CARGO:-cargo}
@@ -303,7 +307,7 @@ set -x
     tmplogs=$tmptrgt.logs.txt
     mkdir -p "$tmptrgt"
     if [[ "$clean" = '1' ]]; then rm -rf "$tmptrgt" || exit 1; fi
-    CARGO_TARGET_DIR=$install_dir $CARGO install --locked --frozen --offline --force --root=$install_dir --path="$PWD"/cargo-green
+    CARGO_TARGET_DIR=$install_dir $CARGO install $frozen --force --root=$install_dir --path="$PWD"/cargo-green
     ls -lha $install_dir/bin/cargo-green
     rm $tmplogs >/dev/null 2>&1 || true
     touch $tmplogs
@@ -321,7 +325,7 @@ set -x
     CARGOGREEN_FINAL_PATH="$tmptrgt/cargo-green.Dockerfile" \
     PATH=$install_dir/bin:"$PATH" \
     CARGO_TARGET_DIR="$tmptrgt" \
-      $CARGO green -v $arg1 --jobs=${jobs:-$(nproc)} --all-targets --all-features --locked --frozen --offline -p cargo-green
+      $CARGO green -v $arg1 --jobs=$jobs --all-targets --all-features $frozen -p cargo-green
     #if [[ "$clean" = 1 ]]; then docker buildx du --builder=supergreen --verbose | tee --append "$tmplogs" || exit 1; fi
     # TODO: tag/label buildx storage so things can be deleted with fine filters
     maybe_show_logs "$tmplogs"
@@ -367,7 +371,8 @@ send() {
 
 gitdir=$(realpath "$(dirname "$(dirname "$0")")")
 send \
-  CARGO_TARGET_DIR=$install_dir $CARGO install --locked --frozen --offline --force --root=$install_dir --path="$gitdir"/cargo-green \
+  set -x \
+    '&&' CARGO_TARGET_DIR=$install_dir $CARGO install $frozen --force --root=$install_dir --path="$gitdir"/cargo-green \
     '&&' touch "$tmpgooo".installed \
     '&&' "rm $tmplogs >/dev/null 2>&1; touch $tmplogs; tail -f $tmplogs; :"
 tmux select-layout even-vertical
@@ -382,9 +387,8 @@ envvars+=(CARGOGREEN_SYNTAX=docker-image://docker.io/docker/dockerfile:1@sha256:
 envvars+=(CARGOGREEN_BASE_IMAGE=docker-image://docker.io/library/rust:1.86.0-slim@sha256:3f391b0678a6e0c88fd26f13e399c9c515ac47354e3cadfee7daee3b21651a4f)
 as_env "$name_at_version"
 send \
-  'until' '[[' -f "$tmpgooo".installed ']];' \
-  'do' sleep '.1;' 'done' '&&' rm "$tmpgooo".* '&&' \
-    "${envvars[@]}" $CARGO green -vv install --timings --jobs=${jobs:-1} --root=$tmpbins --locked --force "$(as_install "$name_at_version")" "$args" \
+  'until' '[[' -f "$tmpgooo".installed ']];' 'do' sleep '.1;' 'done' '&&' rm "$tmpgooo".* \
+  '&&' "${envvars[@]}" $CARGO green -vv install --timings --jobs=$jobs --root=$tmpbins $frozen --force "$(as_install "$name_at_version")" "$args" \
   '&&' 'if' '[[' "$clean" '=' '1' ']];' 'then' docker buildx du --builder=supergreen --verbose '|' tee --append "$tmplogs" '||' 'exit' '1;' 'fi' \
   '&&' tmux kill-session -t "$session_name"
 tmux select-layout even-vertical
