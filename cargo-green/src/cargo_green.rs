@@ -11,7 +11,7 @@ use log::{debug, info, trace};
 use tokio::try_join;
 
 use crate::{
-    base::{ENV_BASE_IMAGE, ENV_WITH_NETWORK},
+    base_image::{ENV_BASE_IMAGE, ENV_WITH_NETWORK},
     cratesio::{self},
     ext::ShowCmd,
     green::Green,

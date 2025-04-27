@@ -11,7 +11,7 @@ use logging::{ENV_LOG, ENV_LOG_PATH};
 use rustc_wrapper::ENV;
 use tokio::process::Command;
 
-mod base;
+mod base_image;
 mod cargo_green;
 mod checkouts;
 mod cratesio;

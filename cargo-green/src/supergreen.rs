@@ -7,7 +7,7 @@ use serde_jsonlines::AsyncBufReadJsonLines;
 use tokio::io::BufReader;
 
 use crate::{
-    base::{ENV_BASE_IMAGE, ENV_BASE_IMAGE_INLINE, ENV_WITH_NETWORK},
+    base_image::{ENV_BASE_IMAGE, ENV_BASE_IMAGE_INLINE, ENV_WITH_NETWORK},
     cargo_green::{ENV_BUILDER_IMAGE, ENV_FINAL_PATH, ENV_RUNNER, ENV_SYNTAX},
     ext::ShowCmd,
     green::{

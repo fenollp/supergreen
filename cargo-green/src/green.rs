@@ -6,7 +6,7 @@ use cargo_toml::Manifest;
 use serde::{Deserialize, Serialize};
 
 use crate::{
-    base::{BaseImage, ENV_BASE_IMAGE, ENV_BASE_IMAGE_INLINE},
+    base_image::{BaseImage, ENV_BASE_IMAGE, ENV_BASE_IMAGE_INLINE},
     image_uri::ImageUri,
     lockfile::find_manifest_path,
     runner::{Network, Runner},
