@@ -4,7 +4,6 @@ use log::{debug, info};
 
 use crate::stage::{Stage, RST};
 
-pub(crate) const CRATESIO_STAGE_PREFIX: &str = "cratesio-";
 pub(crate) const CRATESIO_INDEX: &str = "index.crates.io-0000000000000000";
 
 #[must_use]
@@ -19,7 +18,7 @@ pub(crate) async fn into_stage(
     version: &str,
     krate_manifest_dir: &Utf8Path,
 ) -> Result<(Stage, &'static str, Utf8PathBuf, String)> {
-    let stage = Stage::try_new(format!("{CRATESIO_STAGE_PREFIX}{name}-{version}"))?;
+    let stage = Stage::cratesio(name, version)?;
 
     let cratesio_extracted =
         cargo_home.join(format!("registry/src/{CRATESIO_INDEX}/{name}-{version}"));

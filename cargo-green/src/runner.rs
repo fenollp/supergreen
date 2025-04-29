@@ -289,24 +289,21 @@ async fn build(
     // // [2024-04-09T07:55:39Z DEBUG lib-autocfg-72217d8ded4d7ec7@177912] ✖ Learn more at https://docs.docker.com/go/build-cache-backends/
     //TODO: experiment --cache-to=type=inline => try ,mode=max
 
-    //TODO: include --target platform in image tag
-
     if !green.cache_images.is_empty() {
         for img in &green.cache_images {
             let img = img.noscheme();
             let mode = if false { ",mode=max" } else { "" }; // TODO: env? builder call?
             cmd.arg(format!("--cache-from=type=registry,ref={img}{mode}"));
 
-            let tag = target.as_str(); // TODO: include enough info for repro
-                                       // => rustc shortcommit, ..?
-                                       // Can buildx give list of all inputs? || short hash(dockerfile + call + envs)
-            cmd.arg(format!("--tag={img}:{tag}"));
+            // TODO: include enough info for repro
+            // => rustc shortcommit, ..?
+            // Can buildx give list of all inputs? || short hash(dockerfile + call + envs)
+            //TODO: include --target=platform in image tag, per: https://github.com/docker/buildx/discussions/1382
+            cmd.arg(format!("--tag={img}:{target}"));
 
-            let b = crate_type_for_logging("bin").to_ascii_lowercase();
-            if [format!("cwd-{b}-"), format!("dep-{b}-")]
-                .iter()
-                .any(|prefix| tag.starts_with(prefix))
-            {
+            // TODO? additionally filter for only root package
+            assert_eq!('b', crate_type_for_logging("bin").to_ascii_lowercase());
+            if target.trim_start_matches(|c| c != '-').starts_with("-b-") {
                 cmd.arg(format!("--tag={img}:latest"));
             }
         }

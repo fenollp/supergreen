@@ -7,11 +7,7 @@ use camino::Utf8PathBuf;
 use serde::{Deserialize, Serialize};
 use szyk::{sort, Node};
 
-use crate::{
-    checkouts::CHECKOUTS_STAGE_PREFIX,
-    cratesio::CRATESIO_STAGE_PREFIX,
-    stage::{Stage, RST, RUST},
-};
+use crate::stage::{Stage, RST, RUST};
 
 #[cfg_attr(test, derive(Default))]
 #[derive(Deserialize, Serialize)]
@@ -63,7 +59,7 @@ impl Md {
         let NamedStage { name, script } = stages.next().expect("at least one stage");
 
         let mut filter = None;
-        if name.starts_with(CHECKOUTS_STAGE_PREFIX) || name.starts_with(CRATESIO_STAGE_PREFIX) {
+        if name.is_remote() {
             filter = Some(name);
             if visited.insert(name.to_owned()) {
                 dockerfile.push_str(script);
@@ -169,13 +165,7 @@ pub(crate) struct BuildContext {
 impl BuildContext {
     #[must_use]
     pub(crate) fn is_readonly_mount(&self) -> bool {
-        [
-            CRATESIO_STAGE_PREFIX,
-            "cwd-",
-            "crate_out-", // TODO: link this to the build script it's coming from
-        ]
-        .iter()
-        .any(|prefix| self.name.starts_with(prefix))
+        self.name.is_mount()
     }
 }
 

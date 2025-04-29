@@ -244,7 +244,7 @@ pub(crate) async fn fetch(green: Green) -> Result<()> {
         (env::var(ENV_BUILDER_IMAGE).ok(), green.builder_image.as_ref()),
     ]; // NOTE: we don't pull ENV_CACHE_IMAGES
 
-    let stage = Stage::try_new("cargo-fetch")?;
+    let stage = Stage::new("cargo-fetch").unwrap();
     let stager = |i| format!("{stage}-{i}");
 
     let mut containerfile = green.new_containerfile();

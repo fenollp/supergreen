@@ -1,10 +1,10 @@
 use std::sync::LazyLock;
 
-use anyhow::{bail, Error, Result};
+use anyhow::{anyhow, bail, Error, Result};
 use nutype::nutype;
 
 pub(crate) const RST: &str = "rust-base"; // Twin, for Display
-pub(crate) static RUST: LazyLock<Stage> = LazyLock::new(|| Stage::try_new(RST).expect(RST));
+pub(crate) static RUST: LazyLock<Stage> = LazyLock::new(|| Stage::new(RST).unwrap());
 
 #[test]
 fn rust_stage() {
@@ -19,6 +19,55 @@ fn rust_stage() {
     derive(Clone, Debug, Display, Deref, TryFrom, Serialize, Deserialize, Eq, PartialEq, Ord, PartialOrd))
 ]
 pub(crate) struct Stage(String);
+
+impl Stage {
+    pub(crate) fn new(name: &str) -> Result<Self> {
+        Self::try_new(name).map_err(|e| anyhow!("BUG: not stageable {name:?}: {e}"))
+    }
+
+    pub(crate) fn dep(crate_id: &str) -> Result<Self> {
+        Self::new(&format!("dep-{crate_id}"))
+    }
+
+    pub(crate) fn local(crate_id: &str) -> Result<Self> {
+        Self::new(&format!("pkg-{crate_id}"))
+    }
+
+    pub(crate) fn local_mount(extrafn: &str) -> Result<Self> {
+        Self::new(&format!("cwd{extrafn}"))
+    }
+
+    pub(crate) fn crate_out(extrafn_nodash: &str) -> Result<Self> {
+        Self::new(&format!("crate_out-{extrafn_nodash}"))
+    }
+
+    #[must_use]
+    pub(crate) fn is_mount(&self) -> bool {
+        self.starts_with("cwd-") || self.starts_with("crate_out-")
+    }
+
+    // TODO: link this to the build script it's coming from
+    pub(crate) fn cratesio(name: &str, version: &str) -> Result<Self> {
+        Self::new(&format!("cratesio-{name}-{version}"))
+    }
+
+    pub(crate) fn checkout(dir: &str, commit: &str) -> Result<Self> {
+        Self::new(&format!("checkout-{dir}-{commit}"))
+    }
+
+    #[must_use]
+    pub(crate) fn is_remote(&self) -> bool {
+        self.starts_with("cratesio-") || self.starts_with("checkout-")
+    }
+
+    pub(crate) fn incremental(extrafn: &str) -> Result<Self> {
+        Self::new(&format!("inc{extrafn}"))
+    }
+
+    pub(crate) fn output(extrafn_nodash: &str) -> Result<Self> {
+        Self::new(&format!("out-{extrafn_nodash}"))
+    }
+}
 
 fn tag_name(name: &str) -> Result<()> {
     if name.starts_with(['-', '.']) {
@@ -41,6 +90,42 @@ fn oci_name(name: String) -> String {
 #[must_use]
 fn is_alnum_dot_underscore(c: char) -> bool {
     "._".contains(c) || c.is_alphanumeric()
+}
+
+#[test]
+fn stages() {
+    let local_mount = Stage::local_mount("-9d1546e4763fe483").unwrap();
+    let crate_out = Stage::crate_out("9d1546e4763fe483").unwrap();
+    let cratesio = Stage::cratesio("syn", "1.0.46").unwrap();
+    let checkout =
+        Stage::checkout("buildxargs-76dd4ee9dadcdcf0", "df9b810011cd416b8e3fc02911f2f496acb8475e")
+            .unwrap();
+
+    let stages = [
+        (
+            Stage::dep("l-buildxargs-1.4.0-b4243835fd7aaf9f").unwrap(),
+            "dep-l-buildxargs-1.4.0-b4243835fd7aaf9f",
+        ),
+        (
+            Stage::local("t-cargo-green-0.11.0-8555e1723d7ec5eb").unwrap(),
+            "pkg-t-cargo-green-0.11.0-8555e1723d7ec5eb",
+        ),
+        (local_mount.clone(), "cwd-9d1546e4763fe483"),
+        (crate_out.clone(), "crate_out-9d1546e4763fe483"),
+        (cratesio.clone(), "cratesio-syn-1.0.46"),
+        (
+            checkout.clone(),
+            "checkout-buildxargs-76dd4ee9dadcdcf0-df9b810011cd416b8e3fc02911f2f496acb8475e",
+        ),
+        (Stage::incremental("-9d1546e4763fe483").unwrap(), "inc-9d1546e4763fe483"),
+        (Stage::output("9d1546e4763fe483").unwrap(), "out-9d1546e4763fe483"),
+    ];
+
+    for (stage, sname) in stages {
+        assert_eq!(stage.is_mount(), [&local_mount, &crate_out].contains(&&stage));
+        assert_eq!(stage.to_string(), sname);
+        assert_eq!(stage.is_remote(), [&cratesio, &checkout].contains(&&stage));
+    }
 }
 
 #[test]

@@ -7,8 +7,8 @@ use tokio::process::Command;
 
 use crate::{ext::ShowCmd, stage::Stage};
 
-pub(crate) const CHECKOUTS_STAGE_PREFIX: &str = "checkout-";
-
+// https://docs.docker.com/reference/dockerfile/#add---keep-git-dir
+// --build-arg BUILDKIT_CONTEXT_KEEP_GIT_DIR=0 https://docs.docker.com/engine/reference/builder/#buildkit-built-in-build-args
 pub(crate) async fn into_stage(
     krate_manifest_dir: &Utf8Path,
     krate_repository: &str,
@@ -29,7 +29,7 @@ pub(crate) async fn into_stage(
     };
 
     let dir = krate_manifest_dir.parent().unwrap().file_name().unwrap();
-    let stage = Stage::try_new(format!("{CHECKOUTS_STAGE_PREFIX}{dir}-{commit}"))?;
+    let stage = Stage::checkout(dir, &commit)?;
 
     let repo = if krate_repository.ends_with(".git") {
         krate_repository

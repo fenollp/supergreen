@@ -361,7 +361,7 @@ async fn do_wrap_rustc(
                 .await?;
         md.push_block(&stage, block);
 
-        (Some((stage, Some(src), dst)), Stage::try_new(format!("dep-{crate_id}"))?)
+        (Some((stage, Some(src), dst)), Stage::dep(&crate_id)?)
     } else if !krate_repository.is_empty()
         && krate_manifest_dir.starts_with(cargo_home.join("git/checkouts"))
     {
@@ -371,21 +371,18 @@ async fn do_wrap_rustc(
             checkouts::into_stage(krate_manifest_dir, &krate_repository).await?;
         md.push_block(&stage, block);
 
-        (Some((stage, Some(src), dst)), Stage::try_new(format!("dep-{crate_id}"))?)
+        (Some((stage, Some(src), dst)), Stage::dep(&crate_id)?)
     } else {
         // Input is local code
 
-        assert!(input.is_relative());
-        let rustc_stage = input.as_str().replace(['/', '.'], "-");
-
-        let rustc_stage = Stage::try_new(format!("cwd-{crate_id}-{rustc_stage}"))?;
-        (None, rustc_stage)
+        assert!(input.is_relative(), "BUG: input isn't relative: {input:?}");
+        (None, Stage::local(&crate_id)?)
     };
     info!("picked {rustc_stage} for {input}");
     let input = rewrite_cratesio_index(&input);
 
-    let incremental_stage = Stage::try_new(format!("inc{extrafn}")).unwrap();
-    let out_stage = Stage::try_new(format!("out{extrafn}")).unwrap();
+    let incremental_stage = Stage::incremental(&extrafn)?;
+    let out_stage = Stage::output(&extrafn[1..])?; // Drops leading dash
 
     let mut rustc_block = String::new();
     rustc_block.push_str(&format!("FROM {RST} AS {rustc_stage}\n"));
@@ -419,10 +416,6 @@ async fn do_wrap_rustc(
 
         let cwd_path = cwd_root.join(format!("CWD{extrafn}"));
 
-        // TODO: --build-arg BUILDKIT_CONTEXT_KEEP_GIT_DIR=0 https://docs.docker.com/engine/reference/builder/#buildkit-built-in-build-args
-        //   in Git case: do that ^ IFF remote URL + branch/tag/rev can be decided (a la cratesio optimization)
-        // https://docs.docker.com/reference/dockerfile/#add---keep-git-dir
-
         info!(
             "copying all {}files under {pwd} to {cwd_path}",
             if pwd.join(".git").is_dir() { "git " } else { "" }
@@ -445,13 +438,12 @@ async fn do_wrap_rustc(
         // TODO: do better to avoid copying >1 times local work dir on each cargo call => context-mount local content-addressed tarball?
         // test|cargo-green|0.8.0|f273b3fc9f002200] copying all git files under $HOME/wefwefwef/supergreen.git to /tmp/cargo-green_0.8.0/CWDf273b3fc9f002200
         // bin|cargo-green|0.8.0|efe5575298075b07] copying all git files under $HOME/wefwefwef/supergreen.git to /tmp/cargo-green_0.8.0/CWDefe5575298075b07
-        let cwd_stage = Stage::try_new(format!("cwd{extrafn}")).unwrap();
+        let cwd_stage = Stage::local_mount(&extrafn)?;
 
-        // rustc_block.push_str(&format!("WORKDIR {pwd}\n"));
         rustc_block.push_str(&format!("COPY --from={cwd_stage} / .\n"));
         rustc_block.push_str("RUN \\\n");
 
-        Some((cwd_path, cwd_stage))
+        Some((cwd_stage, cwd_path))
     };
 
     if let Some(crate_out) = crate_out.as_deref() {
@@ -461,7 +453,7 @@ async fn do_wrap_rustc(
 
     md.contexts = [
         input_mount.and_then(|(name, src, dst)| src.is_none().then_some((name, dst))),
-        cwd.map(|(cwd, cwd_stage)| (cwd_stage, cwd)),
+        cwd,
         crate_out.map(|crate_out| (crate_out_name(&crate_out), crate_out)),
     ]
     .into_iter()
@@ -693,7 +685,7 @@ fn toml_path_and_stage_for_rlib() {
     let xtern = "libstrsim-8ed1051e7e58e636.rlib";
     let res = toml_path_and_stage(xtern, "./target/path".into()).unwrap();
     assert_eq!(res.0, "./target/path/strsim-8ed1051e7e58e636.toml".to_owned());
-    assert_eq!(res.1, "out-8ed1051e7e58e636".to_owned());
+    assert_eq!(res.1, "out-8ed1051e7e58e636".try_into().unwrap());
 }
 
 #[test]
@@ -701,7 +693,7 @@ fn toml_path_and_stage_for_libc() {
     let xtern = "liblibc-c53783e3f8edcfe4.rmeta";
     let res = toml_path_and_stage(xtern, "./target/path".into()).unwrap();
     assert_eq!(res.0, "./target/path/libc-c53783e3f8edcfe4.toml".to_owned());
-    assert_eq!(res.1, "out-c53783e3f8edcfe4".to_owned());
+    assert_eq!(res.1, "out-c53783e3f8edcfe4".try_into().unwrap());
 }
 
 #[test]
@@ -709,15 +701,15 @@ fn toml_path_and_stage_for_weird_extension() {
     let xtern = "libthing-131283e3f8edcfe4.a.2.c";
     let res = toml_path_and_stage(xtern, "./target/path".into()).unwrap();
     assert_eq!(res.0, "./target/path/thing-131283e3f8edcfe4.toml".to_owned());
-    assert_eq!(res.1, "out-131283e3f8edcfe4".to_owned());
+    assert_eq!(res.1, "out-131283e3f8edcfe4".try_into().unwrap());
 }
 
 #[must_use]
-fn toml_path_and_stage(xtern: &str, target_path: &Utf8Path) -> Option<(Utf8PathBuf, String)> {
+fn toml_path_and_stage(xtern: &str, target_path: &Utf8Path) -> Option<(Utf8PathBuf, Stage)> {
     // TODO: drop stripping ^lib
     assert!(xtern.starts_with("lib"), "BUG: unexpected xtern format: {xtern}");
     let pa = xtern.strip_prefix("lib").and_then(|x| x.split_once('.')).map(|(x, _)| x);
-    let st = pa.and_then(|x| x.split_once('-')).map(|(_, x)| format!("out-{x}"));
+    let st = pa.and_then(|x| x.split_once('-')).map(|(_, x)| Stage::output(x).unwrap());
     let pa = pa.map(|x| target_path.join(format!("{x}.toml")));
     pa.zip(st)
 }
@@ -734,10 +726,8 @@ fn crate_out_name(name: &Utf8Path) -> Stage {
     name.parent()
         .and_then(|x| x.file_name())
         .and_then(|x| x.rsplit_once('-'))
-        .map(|(_, x)| x)
-        .map(|x| format!("crate_out-{x}"))
+        .map(|(_, x)| Stage::crate_out(x))
         .expect("PROOF: suffix is /out")
-        .try_into()
         .expect("PROOF: out dir path format")
 }
 
