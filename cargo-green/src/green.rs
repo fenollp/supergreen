@@ -15,18 +15,13 @@ use crate::{
     lockfile::find_manifest_path,
     runner::Runner,
     stage::RST,
+    PKG,
 };
 
 // Envs that override Cargo.toml settings
 pub(crate) const ENV_CACHE_IMAGES: &str = "CARGOGREEN_CACHE_IMAGES";
 pub(crate) const ENV_INCREMENTAL: &str = "CARGOGREEN_INCREMENTAL";
 pub(crate) const ENV_SET_ENVS: &str = "CARGOGREEN_SET_ENVS";
-
-/// Settings for building this package with `cargo-green`
-#[derive(Debug, Deserialize)]
-struct GreenMetadata {
-    green: Green,
-}
 
 #[derive(Debug, Serialize, Deserialize, Default, PartialEq, Eq)]
 #[serde(default)]
@@ -128,19 +123,25 @@ impl Green {
     // TODO: handle worskpace cfg + merging fields
     // TODO: find a way to read cfg on `cargo install <non-local code>` cc https://github.com/rust-lang/cargo/issues/9700#issuecomment-2748617896
     pub(crate) fn new_from_env_then_manifest() -> Result<Self> {
-        let manifest_path = find_manifest_path()?;
+        let manifest_path =
+            find_manifest_path().map_err(|e| anyhow!("Can't find package manifest: {e}"))?;
 
         let manifest = Manifest::from_path(&manifest_path)
             .map_err(|e| anyhow!("Can't read package manifest {manifest_path}: {e}"))?;
 
-        Self::try_new(manifest)
+        Self::try_new(manifest).map_err(|e| anyhow!("Failed reading {PKG} configuration: {e}"))
     }
 
     fn try_new(manifest: Manifest) -> Result<Self> {
         let mut green = Self::default();
         if let Some(metadata) = manifest.package.and_then(|x| x.metadata) {
-            let GreenMetadata { green: from_manifest } = metadata.try_into()?;
-            green = from_manifest;
+            #[derive(Deserialize, Default)]
+            struct GreenMetadata {
+                green: Option<Green>,
+            }
+            if let GreenMetadata { green: Some(from_manifest) } = metadata.try_into()? {
+                green = from_manifest;
+            }
         }
 
         if let Ok(val) = env::var(ENV_INCREMENTAL) {
@@ -252,16 +253,17 @@ fn bad_names(names: &[String]) -> bool {
     names.iter().any(|x| x.is_empty() || x.contains([' ', '\'', '"']) || x.trim() != x)
 }
 
-#[test]
-fn metadata_green_ok() {
-    let manifest = Manifest::from_str(
+#[cfg(test)]
+#[test_case::test_matrix(["", "[package.metadata.green]", "[package.metadata.other]"])]
+fn metadata_green_ok(conf: &str) {
+    let manifest = Manifest::from_str(&format!(
         r#"
 [package]
 name = "test-package"
 
-[package.metadata.green]
-"#,
-    )
+{conf}
+"#
+    ))
     .unwrap();
     let mut green = Green::try_new(manifest).unwrap();
     assert!(!green.image.base_image.is_empty());
