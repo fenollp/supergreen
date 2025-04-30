@@ -3,7 +3,7 @@ set -o pipefail
 
 CARGO=${CARGO:-cargo}
 
-$CARGO install --locked --frozen --offline --force --path cargo-green/
+$CARGO install --locked --force --path cargo-green/
 
 install_package=buildxargs@1.4.0
 install_root=$(mktemp -d)
@@ -12,6 +12,7 @@ export CARGOGREEN_FINAL_PATH=./hack/$install_package.Dockerfile
 export CARGOGREEN_SYNTAX=docker-image://docker.io/docker/dockerfile:1@sha256:4c68376a702446fc3c79af22de146a148bc3367e73c25a5803d453b6b3f722fb
 export CARGOGREEN_BASE_IMAGE=docker-image://docker.io/library/rust:1.84.1-slim@sha256:69fbd6ab81b514580bc14f35323fecb09feba9e74c5944ece9a70d9a2a369df0
 export CARGOGREEN_LOG=trace
+export CARGOGREEN_LOG_PATH=/tmp/cargo-green--hack-caching--$install_package.log
 export CARGO_TARGET_DIR=/tmp/cargo-green--hack-caching--target-dir
 mkdir -p $CARGO_TARGET_DIR
 rm -rf $CARGO_TARGET_DIR/*
@@ -19,10 +20,11 @@ rm -rf $CARGO_TARGET_DIR/*
 $CARGO green supergreen env
 
 compute_installed_bin_hash() {
+	$install_root/bin/${install_package%@*} --help >/dev/null
 	sha256sum $install_root/bin/${install_package%@*} | awk '{print $1}'
 }
 ensure__rewrite_cratesio_index__works() {
-	! grep -F '/index.crates.io-' /tmp/cargo-green.log | grep -vE '/index.crates.io-0{16}|original args|env is set|opening .RO. crate tarball|picked'
+	! grep -F '/index.crates.io-' $CARGOGREEN_LOG_PATH | grep -vE '/index.crates.io-0{16}|original args|env is set|opening .RO. crate tarball|picked'
 }
 
 echo Sortons nos cartes!
@@ -112,9 +114,9 @@ echo
 
 
 old_target_dir=$CARGO_TARGET_DIR
+rm -rf $old_target_dir/* >/dev/null
 export CARGO_TARGET_DIR=/tmp/cargo-green--hack-caching
 mkdir -p $CARGO_TARGET_DIR
-rm -rf $CARGO_TARGET_DIR/*
 
 rm -rf $CARGO_TARGET_DIR/* >/dev/null
 $CARGO green install --locked --frozen --offline --force $install_package --root=$install_root
