@@ -436,10 +436,11 @@ async fn build(
         bail!("Runner info: {status} [STDOUT {stdout}] [STDERR {stderr}]")
     }
 
-    if let Some(path) = green.final_path.as_deref() {
+    // NOTE: using $CARGO_PRIMARY_PACKAGE still makes >1 hits in rustc calls history: lib + bin, at least.
+    if let Some((_, path)) = env::var("CARGO_PRIMARY_PACKAGE").ok().zip(green.final_path.as_deref())
+    {
         info!("Writing final Dockerfile to {path}");
 
-        //TODO: only write if final root pkg? => how to detect? parse cargo args?(:/)
         //TODO: use an atomic mv
 
         let _ = fs::copy(dockerfile_path, path)?;
