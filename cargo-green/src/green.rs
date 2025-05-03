@@ -535,7 +535,7 @@ name = "test-package"
 base-image = "docker-image://docker.io/library/rust:1"
 base-image-inline = """
 FROM rust:1 AS rust-base
-RUN --mount=from=some-context,target=/tmp/some-context cp -r /tmp/some-context ./
+RUN --mount=from=some-context,dst=/tmp/some-context cp -r /tmp/some-context ./
 RUN --mount=type=secret,id=aws
 """
 "#,
@@ -559,7 +559,7 @@ base-image = "docker-image://rust:1"
 base-image-inline = """
 # syntax = ghcr.io/reproducible-containers/buildkit-nix:v0.1.1@sha256:7d4c42a5c6baea2b21145589afa85e0862625e6779c89488987266b85e088021 <-- gets ignored
 FROM rust:1 AS rust-base
-RUN --mount=from=some-context,target=/tmp/some-context cp -r /tmp/some-context ./
+RUN --mount=from=some-context,dst=/tmp/some-context cp -r /tmp/some-context ./
 RUN --mount=type=secret,id=aws
 """
 "#,
@@ -573,7 +573,7 @@ RUN --mount=type=secret,id=aws
                 r#"
 # syntax = ghcr.io/reproducible-containers/buildkit-nix:v0.1.1@sha256:7d4c42a5c6baea2b21145589afa85e0862625e6779c89488987266b85e088021 <-- gets ignored
 FROM rust:1 AS rust-base
-RUN --mount=from=some-context,target=/tmp/some-context cp -r /tmp/some-context ./
+RUN --mount=from=some-context,dst=/tmp/some-context cp -r /tmp/some-context ./
 RUN --mount=type=secret,id=aws
 "#[1..]
                     .to_owned()
@@ -595,7 +595,7 @@ with-network = "default"
 base-image-inline = """
 # syntax = ghcr.io/reproducible-containers/buildkit-nix:v0.1.1@sha256:7d4c42a5c6baea2b21145589afa85e0862625e6779c89488987266b85e088021 <-- gets ignored
 FROM rust:1 AS rust-base
-RUN --mount=from=some-context,target=/tmp/some-context cp -r /tmp/some-context ./
+RUN --mount=from=some-context,dst=/tmp/some-context cp -r /tmp/some-context ./
 RUN --mount=type=secret,id=aws
 """
 "#,
@@ -609,7 +609,7 @@ RUN --mount=type=secret,id=aws
                 r#"
 # syntax = ghcr.io/reproducible-containers/buildkit-nix:v0.1.1@sha256:7d4c42a5c6baea2b21145589afa85e0862625e6779c89488987266b85e088021 <-- gets ignored
 FROM rust:1 AS rust-base
-RUN --mount=from=some-context,target=/tmp/some-context cp -r /tmp/some-context ./
+RUN --mount=from=some-context,dst=/tmp/some-context cp -r /tmp/some-context ./
 RUN --mount=type=secret,id=aws
 "#[1..]
                     .to_owned()

@@ -61,19 +61,19 @@ FROM --platform=$BUILDPLATFORM {XX} AS xx
 {last}
 ARG TARGETPLATFORM
 RUN \
-  --mount=from=xx,source=/usr/bin/xx-apk,target=/usr/bin/xx-apk \
-  --mount=from=xx,source=/usr/bin/xx-apt,target=/usr/bin/xx-apt \
-  --mount=from=xx,source=/usr/bin/xx-apt,target=/usr/bin/xx-apt-get \
-  --mount=from=xx,source=/usr/bin/xx-cc,target=/usr/bin/xx-c++ \
-  --mount=from=xx,source=/usr/bin/xx-cargo,target=/usr/bin/xx-cargo \
-  --mount=from=xx,source=/usr/bin/xx-cc,target=/usr/bin/xx-cc \
-  --mount=from=xx,source=/usr/bin/xx-cc,target=/usr/bin/xx-clang \
-  --mount=from=xx,source=/usr/bin/xx-cc,target=/usr/bin/xx-clang++ \
-  --mount=from=xx,source=/usr/bin/xx-go,target=/usr/bin/xx-go \
-  --mount=from=xx,source=/usr/bin/xx-info,target=/usr/bin/xx-info \
-  --mount=from=xx,source=/usr/bin/xx-ld-shas,target=/usr/bin/xx-ld-shas \
-  --mount=from=xx,source=/usr/bin/xx-verify,target=/usr/bin/xx-verify \
-  --mount=from=xx,source=/usr/bin/xx-windres,target=/usr/bin/xx-windres \
+  --mount=from=xx,source=/usr/bin/xx-apk,dst=/usr/bin/xx-apk \
+  --mount=from=xx,source=/usr/bin/xx-apt,dst=/usr/bin/xx-apt \
+  --mount=from=xx,source=/usr/bin/xx-apt,dst=/usr/bin/xx-apt-get \
+  --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-c++ \
+  --mount=from=xx,source=/usr/bin/xx-cargo,dst=/usr/bin/xx-cargo \
+  --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-cc \
+  --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-clang \
+  --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-clang++ \
+  --mount=from=xx,source=/usr/bin/xx-go,dst=/usr/bin/xx-go \
+  --mount=from=xx,source=/usr/bin/xx-info,dst=/usr/bin/xx-info \
+  --mount=from=xx,source=/usr/bin/xx-ld-shas,dst=/usr/bin/xx-ld-shas \
+  --mount=from=xx,source=/usr/bin/xx-verify,dst=/usr/bin/xx-verify \
+  --mount=from=xx,source=/usr/bin/xx-windres,dst=/usr/bin/xx-windres \
     set -eux \
  && if   command -v apk >/dev/null 2>&1; then \
                                      xx-apk     add     --no-cache                 '{apk}'; \

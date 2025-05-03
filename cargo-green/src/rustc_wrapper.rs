@@ -367,11 +367,11 @@ async fn do_wrap_rustc(
     {
         // Input is of a git checked out dep
 
-        let (stage, src, dst, block) =
+        let (stage, dst, block) =
             checkouts::into_stage(krate_manifest_dir, &krate_repository).await?;
         md.push_block(&stage, block);
 
-        (Some((stage, Some(src), dst)), Stage::dep(&crate_id)?)
+        (Some((stage, None, dst)), Stage::dep(&crate_id)?)
     } else {
         // Input is local code
 
@@ -398,10 +398,10 @@ async fn do_wrap_rustc(
         rustc_block.push_str(&format!("WORKDIR {incremental}\n"));
     }
 
-    let cwd = if let Some((name, src, target)) = input_mount.as_ref() {
+    let cwd = if let Some((name, src, dst)) = input_mount.as_ref() {
         rustc_block.push_str("RUN \\\n");
         let source = src.map(|src| format!(",source={src}")).unwrap_or_default();
-        rustc_block.push_str(&format!("  --mount=from={name}{source},target={target} \\\n"));
+        rustc_block.push_str(&format!("  --mount=from={name}{source},dst={dst} \\\n"));
 
         None
     } else {
@@ -424,7 +424,7 @@ async fn do_wrap_rustc(
         copy_dir_all(&pwd, &cwd_path)?; //TODO: atomic mv
 
         // TODO: --mount=bind each file one by one => drop temp dir ctx (needs [multiple] `mkdir -p`[s] first though)
-        // This doesn't work: rustc_block.push_str(&format!("  --mount=from=cwd,target={pwd} \\\n"));
+        // This doesn't work: rustc_block.push_str(&format!("  --mount=from=cwd,dst={pwd} \\\n"));
         // ✖ 0.040 runc run failed: unable to start container process: error during container init:
         //     error mounting "/var/lib/docker/tmp/buildkit-mount1189821268/libaho_corasick-b99b6e1b4f09cbff.rlib"
         //     to rootfs at "/home/runner/work/rustcbuildx/rustcbuildx/target/debug/deps/libaho_corasick-b99b6e1b4f09cbff.rlib":
@@ -448,7 +448,7 @@ async fn do_wrap_rustc(
 
     if let Some(crate_out) = crate_out.as_deref() {
         let named = crate_out_name(crate_out);
-        rustc_block.push_str(&format!("  --mount=from={named},target={crate_out} \\\n"));
+        rustc_block.push_str(&format!("  --mount=from={named},dst={crate_out} \\\n"));
     }
 
     md.contexts = [
@@ -502,7 +502,7 @@ async fn do_wrap_rustc(
     info!("extern_md_paths: {} {extern_md_paths:?}", extern_md_paths.len());
 
     for (name, src, dst) in mounts {
-        rustc_block.push_str(&format!("  --mount=from={name},target={dst},source={src} \\\n"));
+        rustc_block.push_str(&format!("  --mount=from={name},dst={dst},source={src} \\\n"));
     }
 
     // Log a possible toolchain file contents (TODO: make per-crate base_image out of this)

@@ -70,13 +70,13 @@ pub(crate) struct BaseImage {
     //
     // base-image-inline = """
     // FROM --platform=$BUILDPLATFORM rust:1 AS rust-base
-    // RUN --mount=from=some-context,target=/tmp/some-context cp -r /tmp/some-context ./
+    // RUN --mount=from=some-context,dst=/tmp/some-context cp -r /tmp/some-context ./
     // RUN --mount=type=secret,id=aws
     // """
     // base-image = "docker-image://rust:1" # This must also be set so digest gets pinned automatically.
     //
     // # This environment variable takes precedence over any Cargo.toml settings:
-    // CARGOGREEN_BASE_IMAGE="FROM=rust:1 AS rust-base\nRUN --mount=from=some-context,target=/tmp/some-context cp -r /tmp/some-context ./\nRUN --mount=type=secret,id=aws\n"
+    // CARGOGREEN_BASE_IMAGE="FROM=rust:1 AS rust-base\nRUN --mount=from=some-context,dst=/tmp/some-context cp -r /tmp/some-context ./\nRUN --mount=type=secret,id=aws\n"
     #[serde(skip_serializing_if = "Option::is_none")]
     pub(crate) base_image_inline: Option<String>,
 }
@@ -208,7 +208,7 @@ ENV RUSTUP_HOME=/usr/local/rustup \
      CARGO_HOME=/usr/local/cargo \
            PATH=/usr/local/cargo/bin:$PATH
 RUN \
- --mount=from=rustup-{channel}-{date},source=/rustup-init,target=/rustup-init \
+ --mount=from=rustup-{channel}-{date},source=/rustup-init,dst=/rustup-init \
    set -eux \
 && /rustup-init --verbose -y --no-modify-path --profile minimal --default-toolchain {channel}-{date} --default-host {host} \
 && chmod -R a+w $RUSTUP_HOME $CARGO_HOME \

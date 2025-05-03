@@ -12,7 +12,7 @@ use crate::{ext::ShowCmd, stage::Stage};
 pub(crate) async fn into_stage(
     krate_manifest_dir: &Utf8Path,
     krate_repository: &str,
-) -> Result<(Stage, &'static str, Utf8PathBuf, String)> {
+) -> Result<(Stage, Utf8PathBuf, String)> {
     let commit = {
         let short = krate_manifest_dir.file_name().unwrap();
 
@@ -45,5 +45,5 @@ ADD --keep-git-dir=false \
 "#,
     );
 
-    Ok((stage, "/", krate_manifest_dir.to_owned(), block))
+    Ok((stage, krate_manifest_dir.to_owned(), block))
 }

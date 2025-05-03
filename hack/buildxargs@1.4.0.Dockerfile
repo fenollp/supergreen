@@ -18,7 +18,7 @@ FROM rust-base AS dep-l-pico-args-0.5.0-dbd8a5e9b242e75a
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/cargo-green--hack-caching/release/deps
 RUN \
-  --mount=from=cratesio-pico-args-0.5.0,source=/extracted,target=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/pico-args-0.5.0 \
+  --mount=from=cratesio-pico-args-0.5.0,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/pico-args-0.5.0 \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="pico_args" \
@@ -60,7 +60,7 @@ FROM rust-base AS dep-l-shlex-1.3.0-7473b97bf23d696c
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/cargo-green--hack-caching/release/deps
 RUN \
-  --mount=from=cratesio-shlex-1.3.0,source=/extracted,target=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0 \
+  --mount=from=cratesio-shlex-1.3.0,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0 \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="shlex" \
@@ -102,9 +102,9 @@ FROM rust-base AS dep-l-buildxargs-1.4.0-b4243835fd7aaf9f
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/cargo-green--hack-caching/release/deps
 RUN \
-  --mount=from=cratesio-buildxargs-1.4.0,source=/extracted,target=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/buildxargs-1.4.0 \
-  --mount=from=out-dbd8a5e9b242e75a,target=/tmp/cargo-green--hack-caching/release/deps/libpico_args-dbd8a5e9b242e75a.rmeta,source=/libpico_args-dbd8a5e9b242e75a.rmeta \
-  --mount=from=out-7473b97bf23d696c,target=/tmp/cargo-green--hack-caching/release/deps/libshlex-7473b97bf23d696c.rmeta,source=/libshlex-7473b97bf23d696c.rmeta \
+  --mount=from=cratesio-buildxargs-1.4.0,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/buildxargs-1.4.0 \
+  --mount=from=out-dbd8a5e9b242e75a,dst=/tmp/cargo-green--hack-caching/release/deps/libpico_args-dbd8a5e9b242e75a.rmeta,source=/libpico_args-dbd8a5e9b242e75a.rmeta \
+  --mount=from=out-7473b97bf23d696c,dst=/tmp/cargo-green--hack-caching/release/deps/libshlex-7473b97bf23d696c.rmeta,source=/libshlex-7473b97bf23d696c.rmeta \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="buildxargs" \
@@ -138,10 +138,10 @@ FROM rust-base AS dep-b-buildxargs-1.4.0-68f2214769fd28b1
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/cargo-green--hack-caching/release/deps
 RUN \
-  --mount=from=cratesio-buildxargs-1.4.0,source=/extracted,target=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/buildxargs-1.4.0 \
-  --mount=from=out-b4243835fd7aaf9f,target=/tmp/cargo-green--hack-caching/release/deps/libbuildxargs-b4243835fd7aaf9f.rlib,source=/libbuildxargs-b4243835fd7aaf9f.rlib \
-  --mount=from=out-dbd8a5e9b242e75a,target=/tmp/cargo-green--hack-caching/release/deps/libpico_args-dbd8a5e9b242e75a.rlib,source=/libpico_args-dbd8a5e9b242e75a.rlib \
-  --mount=from=out-7473b97bf23d696c,target=/tmp/cargo-green--hack-caching/release/deps/libshlex-7473b97bf23d696c.rlib,source=/libshlex-7473b97bf23d696c.rlib \
+  --mount=from=cratesio-buildxargs-1.4.0,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/buildxargs-1.4.0 \
+  --mount=from=out-b4243835fd7aaf9f,dst=/tmp/cargo-green--hack-caching/release/deps/libbuildxargs-b4243835fd7aaf9f.rlib,source=/libbuildxargs-b4243835fd7aaf9f.rlib \
+  --mount=from=out-dbd8a5e9b242e75a,dst=/tmp/cargo-green--hack-caching/release/deps/libpico_args-dbd8a5e9b242e75a.rlib,source=/libpico_args-dbd8a5e9b242e75a.rlib \
+  --mount=from=out-7473b97bf23d696c,dst=/tmp/cargo-green--hack-caching/release/deps/libshlex-7473b97bf23d696c.rlib,source=/libshlex-7473b97bf23d696c.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_BIN_NAME="buildxargs" \
