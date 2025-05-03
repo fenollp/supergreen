@@ -281,6 +281,7 @@ async fn build(
     if false {
         cmd.arg("--no-cache");
         //NOTE: --no-cache-filter target1,target2 --no-cache-filter=target3 (&&)
+        // TODO: 'id~=REGEXP as per https://github.com/containerd/containerd/blob/20fc2cf8ec70c5c02cd2f1bbe431bc19b2c622a3/pkg/filters/parser.go#L36
     }
 
     //     cmd.arg(format!("--cache-to=type=registry,ref={img},mode=max,compression=zstd,force-compression=true,oci-mediatypes=true"));

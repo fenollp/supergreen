@@ -45,5 +45,5 @@ ADD --keep-git-dir=false \
 "#,
     );
 
-    Ok((stage, "/", krate_manifest_dir.into(), block))
+    Ok((stage, "/", krate_manifest_dir.to_owned(), block))
 }

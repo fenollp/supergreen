@@ -19,8 +19,7 @@ rm -rf $CARGO_TARGET_DIR/*
 
 $CARGO green supergreen env
 
-compute_installed_bin_hash() {
-	$install_root/bin/${install_package%@*} --help >/dev/null
+compute_installed_bin_sha256() {
 	sha256sum $install_root/bin/${install_package%@*} | awk '{print $1}'
 }
 ensure__rewrite_cratesio_index__works() {
@@ -38,7 +37,8 @@ rm -rf $CARGO_TARGET_DIR/* >/dev/null
 $CARGO green install --locked                            $install_package --root=$install_root
 git add $CARGOGREEN_FINAL_PATH
 ensure__rewrite_cratesio_index__works
-install_sha=$(compute_installed_bin_hash)
+$install_root/bin/${install_package%@*} --help >/dev/null
+install_sha=$(compute_installed_bin_sha256)
 
 grep -A2 '# Pipe this file to:' $CARGOGREEN_FINAL_PATH
 echo Builds fine
@@ -54,6 +54,7 @@ $invocation --call=check   <$CARGOGREEN_FINAL_PATH
 $invocation --call=outline <$CARGOGREEN_FINAL_PATH
 $invocation --call=targets <$CARGOGREEN_FINAL_PATH
 $invocation                <$CARGOGREEN_FINAL_PATH
+$CARGO_TARGET_DIR/release/deps/${install_package%@*}-???????????????? --help >/dev/null
 [[ $install_sha = $(sha256sum $CARGO_TARGET_DIR/release/deps/${install_package%@*}-???????????????? | awk '{print $1}') ]] # rebuild => no change
 
 echo Builds fine and in a standalone way
@@ -82,8 +83,9 @@ cat <<EOF | diff -u - <(git --no-pager diff -- $CARGOGREEN_FINAL_PATH | tail -n+
 EOF
 git add $CARGOGREEN_FINAL_PATH
 ensure__rewrite_cratesio_index__works
-[[ $install_sha != $(compute_installed_bin_hash) ]] # change rustc => change final bin
-install_sha=$(compute_installed_bin_hash)
+$install_root/bin/${install_package%@*} --help >/dev/null
+[[ $install_sha != $(compute_installed_bin_sha256) ]] # change rustc => change final bin
+install_sha=$(compute_installed_bin_sha256)
 
 # https://github.com/rust-lang/cargo/issues/10367#issuecomment-1053678306
 # > This is currently intentional behavior. There are situations where RUSTC changes, but we don't want that to trigger a full recompile. If one rustc emits the same version output as another, then cargo assumes they essentially behave the same, even if they are from different paths. I'm not sure this is something that can be changed without causing unwanted recompiles in some situations.
@@ -130,7 +132,8 @@ $CARGO green install --locked --frozen --offline --force $install_package --root
 # EOF
 unset old_target_dir
 ensure__rewrite_cratesio_index__works
-[[ $install_sha = $(compute_installed_bin_hash) ]] # change targetdir => no binary changes
+$install_root/bin/${install_package%@*} --help >/dev/null
+[[ $install_sha = $(compute_installed_bin_sha256) ]] # change targetdir => no binary changes
 # git --no-pager diff -- $CARGOGREEN_FINAL_PATH
 git add $CARGOGREEN_FINAL_PATH
 

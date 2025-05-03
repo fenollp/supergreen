@@ -4,11 +4,10 @@ members = [
 ]
 resolver = "2"
 
-[workspace.metadata.green]
-base-image-inline = """
-RUN exit 42
-"""
-
+# [workspace.metadata.green]
+# base-image-inline = """
+# RUN exit 42
+# """
 
 [workspace.package]
 authors = [ "Pierre Fenoll <pierrefenoll@gmail.com>" ]
