@@ -14,7 +14,7 @@ use tokio::process::Command;
 
 use crate::{
     checkouts,
-    cratesio::{self, rewrite_cratesio_index},
+    cratesio::{self, hide_cratesio_index /*, VIRTUAL_INDEX_PART*/},
     envs::pass_env,
     ext::{Popped, ShowCmd},
     green::Green,
@@ -379,7 +379,7 @@ async fn do_wrap_rustc(
         (None, Stage::local(&crate_id)?)
     };
     info!("picked {rustc_stage} for {input}");
-    let input = rewrite_cratesio_index(&input);
+    let input = hide_cratesio_index(&input);
 
     let incremental_stage = Stage::incremental(&extrafn)?;
     let out_stage = Stage::output(&extrafn[1..])?; // Drops leading dash
@@ -527,7 +527,7 @@ async fn do_wrap_rustc(
             }
             let val = match var.as_str() {
                 "CARGO_MANIFEST_DIR" | "CARGO_MANIFEST_PATH" => {
-                    rewrite_cratesio_index(Utf8Path::new(&val)).to_string()
+                    hide_cratesio_index(Utf8Path::new(&val)).to_string()
                 }
                 _ => val,
             };
@@ -566,6 +566,7 @@ async fn do_wrap_rustc(
     rustc_block.push_str(&format!("      rustc '{}' {input} \\\n", args.join("' '")));
     rustc_block.push_str(&format!("        1> >(sed 's/^/{MARK_STDOUT}/') \\\n"));
     rustc_block.push_str(&format!("        2> >(sed 's/^/{MARK_STDERR}/' >&2)\n"));
+    // rustc_block.push_str(&format!("RUN for f in {out_dir}/*{extrafn}*; do <$f sed 's%index.crates.io-[a-f0-9]{{16}}%{VIRTUAL_INDEX_PART}%g' >$f~ && mv $f~ $f ; done\n"));
     md.push_block(&rustc_stage, rustc_block);
 
     if let Some(ref incremental) = incremental {
@@ -581,8 +582,6 @@ async fn do_wrap_rustc(
     // => skip the COPY (--mount=from=out-08c4d63ed4366a99)
     //   => use the stage directly (--mount=from=dep-l-buildxargs-1.4.0-08c4d63ed4366a99)
 
-    let md = md; // Drop mut
-
     let blocks = md.block_along_with_predecessors(
         &extern_md_paths
             .into_iter()
@@ -595,13 +594,13 @@ async fn do_wrap_rustc(
             .collect::<Result<Vec<_>>>()?,
     );
 
+    let md_path = target_path.join(format!("{crate_name}{extrafn}.toml"));
     {
-        let md_path = target_path.join(format!("{crate_name}{extrafn}.toml"));
-        let md_ser = md.to_string_pretty()?;
-
         info!("opening (RW) crate's md {md_path}");
-        fs::write(&md_path, md_ser)
+        fs::write(&md_path, md.to_string_pretty()?)
             .map_err(|e| anyhow!("Failed creating crate's md {md_path}: {e}"))?;
+
+        //TODO? read md.writes if md_path exists already???
 
         if debug.is_some() {
             info!("toml: {md_path}");
@@ -638,24 +637,55 @@ async fn do_wrap_rustc(
         return fallback.await;
     }
     let build = |stage, dir| build_out(&green, &containerfile, stage, &md.contexts, dir);
-    let res = build(out_stage, &out_dir).await;
-    if let Some(incremental) = res.is_ok().then_some(incremental).flatten() {
-        let _ = build(incremental_stage, &incremental)
-            .await
-            .inspect_err(|e| warn!("Error building incremental data: {e}"));
-    }
+    match build(out_stage, &out_dir).await {
+        Ok(writes) => {
+            // for file in &writes {
+            //     // if file.extension() == Some("d") {
 
-    if let Err(e) = res {
-        warn!("Falling back due to {e}");
-        if debug.is_none() {
-            // Bubble up actual error & outputs
-            return fallback
-                .await
-                .inspect(|()| eprintln!("BUG: {PKG} should not have encountered this error: {e}"));
+            //     // Error: Failed reading .d /tmp/cargo-green--hack-caching--target-dir/release/deps/libshlex-7473b97bf23d696c.rmeta: stream did not contain valid UTF-8
+
+            //     info!("opening (RO) written .d {file}");
+            //     let bin = fs::read(file)
+            //         // let txt = fs::read_to_string(file)
+            //         .map_err(|e| anyhow!("Failed reading .d {file}: {e}"))?;
+            //     // let new_txt = unhide_cratesio_index(&txt);
+            //     let new_bin = crate::cratesio::unhide_cratesio_index_bytes(&bin);
+            //     // if new_txt != txt {
+            //     if new_bin != bin {
+            //         info!("opening (RW) written .d {file}");
+            //         // let _: () = fs::write(file, new_txt)
+            //         let _: () = fs::write(file, new_bin)
+            //             .map_err(|e| anyhow!("Failed overwriting .d {file}: {e}"))?;
+            //     }
+            //     // }
+            // }
+            if !writes.is_empty() {
+                md.writes = writes;
+                info!("re-opening (RW) crate's md {md_path}");
+                fs::write(&md_path, md.to_string_pretty()?)
+                    .map_err(|e| anyhow!("Failed editing crate's md {md_path}: {e}"))?;
+
+                //TODO: also update containerfile => read mdpath if exists
+                //TODO: set final path here
+
+                //TODO: feature EXPERIMENT__REWRITE_CRATESIO_INDEX_IN_FILES
+                //with? https://github.com/fenollp/supergreen/commit/2a90105598bab655f4a105a8c35e1841a8be9dff
+            }
+
+            if let Some(incremental) = incremental {
+                if let Err(e) = build(incremental_stage, &incremental).await {
+                    warn!("Error building incremental data: {e}");
+                }
+            }
+            Ok(())
         }
-        return Err(e);
+        Err(e) if debug.is_none() => {
+            warn!("Falling back due to {e}");
+            let _: () = fallback.await?; // Bubble up actual error
+            bail!("BUG: {PKG} should not have encountered this error: {e}")
+        }
+        Err(e) => Err(e),
     }
-    Ok(())
 }
 
 #[must_use]
