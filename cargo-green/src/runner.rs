@@ -24,6 +24,7 @@ use tokio::{
 
 use crate::{
     add::ENV_ADD_APT,
+    cratesio::unhide_cratesio_index,
     ext::ShowCmd,
     green::{Green, ENV_SET_ENVS},
     image_uri::ImageUri,
@@ -523,12 +524,6 @@ where
                 fwder(msg, &mut buf, &mut acc);
             }
 
-            // //warning: panic message contains an unused formatting placeholder
-            // //--> /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.36/build.rs:191:17
-            // FIXME un-rewrite /index.crates.io-0000000000000000/ in cargo messages
-            // => also in .d files
-            // cache should be ok (cargo's point of view) if written right after green's build(..) call
-
             // Show data transfers (Bytes, maybe also timings?)
             const PATTERN: &str = " transferring ";
             for (idx, _pattern) in line.as_str().match_indices(PATTERN) {
@@ -561,6 +556,7 @@ struct Accumulated {
 #[test]
 fn support_long_broken_json_lines() {
     let logs = assertx::setup_logging_test();
+    crate::cratesio::set_some_index_part();
     let lines = [
         r#"#42 1.312 ::STDERR:: {"$message_type":"artifact","artifact":"/tmp/thing","emit":"link""#,
         r#"#42 1.313 ::STDERR:: }"#,
@@ -588,12 +584,12 @@ fn support_long_broken_json_lines() {
 
 fn fwd_stderr(msg: &str, buf: &mut String, acc: &mut Accumulated) {
     let mut show = |msg: &str| {
-        if let Some(file) = artifact_written(msg) {
+        let mut msg = unhide_cratesio_index(msg);
+
+        if let Some(file) = artifact_written(&msg) {
             acc.written.push(file.into());
             info!("rustc wrote {file}");
         }
-
-        let mut msg = msg.to_owned();
 
         if let Some(var) = env_not_comptime_defined(&msg) {
             if acc.envs.insert(var.to_owned()) {

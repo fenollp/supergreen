@@ -1,15 +1,52 @@
+use std::sync::OnceLock;
+
 use anyhow::{anyhow, Result};
 use camino::{Utf8Path, Utf8PathBuf};
 use log::{debug, info};
 
 use crate::stage::{Stage, RST};
 
-pub(crate) const CRATESIO_INDEX: &str = "index.crates.io-0000000000000000";
+pub(crate) const VIRTUAL_INDEX_PART: &str = "index.crates.io-0000000000000000";
+
+static INDEX_PART: OnceLock<String> = OnceLock::new(); //FIXME: in Md, because reused.
+
+#[cfg(test)]
+pub(crate) fn set_some_index_part() {
+    let _ = INDEX_PART.get_or_init(|| "index.crates.io-0123456789abcdef".to_owned());
+}
+
+/// Sets `INDEX_PART` on first call for the duration of the $RUSTC_WRAPPER process.
+#[must_use]
+pub(crate) fn hide_cratesio_index(path: &Utf8Path) -> Utf8PathBuf {
+    let prefix = VIRTUAL_INDEX_PART.trim_end_matches('0');
+    path.iter()
+        .map(|part| {
+            if part.starts_with(prefix) {
+                let _ = INDEX_PART.get_or_init(|| part.to_owned());
+
+                VIRTUAL_INDEX_PART
+            } else {
+                part
+            }
+        })
+        .collect()
+}
 
 #[must_use]
-pub(crate) fn rewrite_cratesio_index(path: &Utf8Path) -> Utf8PathBuf {
-    let prefix = CRATESIO_INDEX.trim_end_matches('0');
-    path.iter().map(|part| if part.starts_with(prefix) { CRATESIO_INDEX } else { part }).collect()
+pub(crate) fn unhide_cratesio_index(txt: &str) -> String {
+    if let Some(actual) = INDEX_PART.get() {
+        return txt.replace(VIRTUAL_INDEX_PART, actual);
+    }
+    txt.to_owned()
+}
+
+#[must_use]
+pub(crate) fn unhide_cratesio_index_bytes(txt: &[u8]) -> Vec<u8> {
+    use bstr::ByteSlice;
+    if let Some(actual) = INDEX_PART.get() {
+        return txt.replace(VIRTUAL_INDEX_PART, actual);
+    }
+    txt.to_owned()
 }
 
 pub(crate) async fn into_stage(
@@ -21,7 +58,7 @@ pub(crate) async fn into_stage(
     let stage = Stage::cratesio(name, version)?;
 
     let cratesio_extracted =
-        cargo_home.join(format!("registry/src/{CRATESIO_INDEX}/{name}-{version}"));
+        cargo_home.join(format!("registry/src/{VIRTUAL_INDEX_PART}/{name}-{version}"));
     let cratesio_cached = {
         // e.g. CARGO_MANIFEST_DIR="$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/pico-args-0.5.0"
         let cratesio_index = krate_manifest_dir.parent().unwrap().file_name().unwrap();

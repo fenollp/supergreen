@@ -14,7 +14,7 @@ use tokio::process::Command;
 
 use crate::{
     checkouts,
-    cratesio::{self, rewrite_cratesio_index},
+    cratesio::{self, hide_cratesio_index /*, VIRTUAL_INDEX_PART*/},
     ext::ShowCmd,
     green::Green,
     logging::{self, crate_type_for_logging, maybe_log},
@@ -274,7 +274,7 @@ async fn do_wrap_rustc(
         (None, Stage::local(&crate_id)?)
     };
     info!("picked {rustc_stage} for {input}");
-    let input = rewrite_cratesio_index(&input);
+    let input = hide_cratesio_index(&input);
 
     let incremental_stage = Stage::incremental(&extrafn)?;
     let out_stage = Stage::output(&extrafn[1..])?; // Drops leading dash
@@ -401,6 +401,7 @@ async fn do_wrap_rustc(
     rustc_block.push_str(&format!("      rustc '{}' {input} \\\n", args.join("' '")));
     rustc_block.push_str(&format!("        1> >(sed 's/^/{MARK_STDOUT}/') \\\n"));
     rustc_block.push_str(&format!("        2> >(sed 's/^/{MARK_STDERR}/' >&2)\n"));
+    // rustc_block.push_str(&format!("RUN for f in {out_dir}/*{extrafn}*; do <$f sed 's%index.crates.io-[a-f0-9]{{16}}%{VIRTUAL_INDEX_PART}%g' >$f~ && mv $f~ $f ; done\n"));
     md.push_block(&rustc_stage, rustc_block);
 
     if let Some(ref incremental) = incremental {
@@ -446,6 +447,30 @@ async fn do_wrap_rustc(
     let build = |stage, dir| build_out(&green, &containerfile_path, stage, contexts, dir);
     match build(out_stage, &out_dir).await {
         Ok(Effects { call, envs, written, stdout, stderr }) => {
+            for file in &written {
+                // if file.extension() == Some("d") {
+
+                // Error: Failed reading .d /tmp/cargo-green--hack-caching--target-dir/release/deps/libshlex-7473b97bf23d696c.rmeta: stream did not contain valid UTF-8
+
+                info!("opening (RO) written {file}");
+                let bin = fs::read(file)
+                    // let txt = fs::read_to_string(file)
+                    .map_err(|e| anyhow!("Failed reading {file}: {e}"))?;
+                // let new_txt = unhide_cratesio_index(&txt);
+                let new_bin = crate::cratesio::unhide_cratesio_index_bytes(&bin);
+                // if new_txt != txt {
+                if new_bin != bin {
+                    info!("opening (RW) written {file}");
+                    // let _: () = fs::write(file, new_txt)
+                    let _: () = fs::write(file, new_bin)
+                        .map_err(|e| anyhow!("Failed overwriting {file}: {e}"))?;
+                }
+                // }
+            }
+
+            //TODO: feature EXPERIMENT__REWRITE_CRATESIO_INDEX_IN_FILES
+            //with? https://github.com/fenollp/supergreen/commit/2a90105598bab655f4a105a8c35e1841a8be9dff
+
             if !written.is_empty() || !stdout.is_empty() || !stderr.is_empty() {
                 md.writes = written
                     .into_iter()
@@ -638,7 +663,7 @@ fn fmap_env((var, val): (String, String), buildrs: bool) -> Option<(String, Stri
         }
         let val = match var.as_str() {
             "CARGO_MANIFEST_DIR" | "CARGO_MANIFEST_PATH" => {
-                rewrite_cratesio_index(Utf8Path::new(&val)).to_string()
+                hide_cratesio_index(Utf8Path::new(&val)).to_string()
             }
             "TERM" => return None,
             _ => val,
