@@ -5,42 +5,46 @@ source $(realpath "$(dirname "$0")")/ck.sh
 
 with_j=0 # TODO: 1 => adds jobs with -J (see cargo issue https://github.com/rust-lang/cargo/issues/13889)
 
-# Usage:  $0                              #=> generate CI
-# Usage:  $0 ( <name@version> | <name> )  #=> cargo install name@version
-# Usage:  $0 ( build | test )             #=> cargo build ./cargo-green
+# Usage:           $0                                      #=> generate CI
+# Usage:           $0 ( <name@version> | <name> ) [clean]  #=> cargo install name@version
+# Usage:           $0 ( build | test )            [clean]  #=> cargo build ./cargo-green
+# Usage:    jobs=1 $0 ..                                   #=> cargo --jobs=$jobs
+# Usage: offline=1 $0 ..                                   #=> cargo --frozen (defaults to just: --locked)
 
+# TODO: test other runtimes: runc crun containerd buildkit-rootless
+# TODO: set -x in ci
 
 # TODO: https://crates.io/categories/command-line-utilities?sort=recent-updates
 declare -a nvs nvs_args
    i=0  ; nvs[i]=buildxargs@master;           oks[i]=ok; nvs_args[i]='--git https://github.com/fenollp/buildxargs.git'
 ((i+=1)); nvs[i]=cargo-audit@0.21.1;          oks[i]=ko; nvs_args[i]='--features=fix' # TODO: re-ok when GitHub Actions runners update to patched BuildKit (>=v0.20)
-((i+=1)); nvs[i]=cargo-bpf@2.3.0;             oks[i]=ko; nvs_args[i]='' # Package libelf was not found in the pkg-config search path.
+((i+=1)); nvs[i]=cargo-bpf@2.3.0;             oks[i]=ko; nvs_args[i]='' # (No libelf-dev installed on host) (Wrapper compiles successfully) Build script fails to run: Running `CARGO=.. .../bpf-sys-c62ba29dc4f555d9/build-script-build` ... error: gelf.h: No such file => TODO: see about overriding RUSTC_LINKER=/usr/bin/clang
 ((i+=1)); nvs[i]=cargo-deny@0.16.1;           oks[i]=ko; nvs_args[i]='' # TODO: re-ok when GitHub Actions runners update to patched BuildKit (>=v0.20)
 ((i+=1)); nvs[i]=cargo-fuzz@0.12.0;           oks[i]=ko; nvs_args[i]='' # .. environment variable `TARGET_PLATFORM` not defined at compile time .. current_platform-0.2.0 + HOST_PLATFORM
 ((i+=1)); nvs[i]=cargo-green@main;            oks[i]=ok; nvs_args[i]='--git https://github.com/fenollp/supergreen.git --branch=main cargo-green'
 ((i+=1)); nvs[i]=cargo-llvm-cov@0.5.36;       oks[i]=ok; nvs_args[i]=''
 ((i+=1)); nvs[i]=cargo-nextest@0.9.72;        oks[i]=ko; nvs_args[i]='' # .. environment variable `TARGET` not defined at compile time .. self_update-0.39.0
 ((i+=1)); nvs[i]=cross@0.2.5;                 oks[i]=ok; nvs_args[i]='--git https://github.com/cross-rs/cross.git --tag=v0.2.5 cross'
-((i+=1)); nvs[i]=diesel_cli@2.1.1;            oks[i]=ko; nvs_args[i]='--no-default-features --features=postgres' # /usr/bin/ld: cannot find -lpq: No such file or directory
+((i+=1)); nvs[i]=dbcc@2.2.1;                  oks[i]=ok; nvs_args[i]=''
+((i+=1)); nvs[i]=diesel_cli@2.1.1;            oks[i]=ok; nvs_args[i]='--no-default-features --features=postgres'
 ((i+=1)); nvs[i]=hickory-dns@0.25.0-alpha.1;  oks[i]=ok; nvs_args[i]='--features=dns-over-rustls'
-((i+=1)); nvs[i]=mussh@3.1.3;                 oks[i]=ko; nvs_args[i]='' # = note: /usr/bin/ld: cannot find -lsqlite3: No such file or directory (and -lssl -lcrypto -lz)
+((i+=1)); nvs[i]=mussh@3.1.3;                 oks[i]=ok; nvs_args[i]=''
 ((i+=1)); nvs[i]=ntpd@1.2.3;                  oks[i]=ok; nvs_args[i]=''
 ((i+=1)); nvs[i]=qcow2-rs@0.1.2;              oks[i]=ok; nvs_args[i]=''
 ((i+=1)); nvs[i]=ripgrep@14.1.0;              oks[i]=ok; nvs_args[i]=''
 ((i+=1)); nvs[i]=rublk@0.2.0;                 oks[i]=ok; nvs_args[i]=''
 ((i+=1)); nvs[i]=shpool@0.6.2;                oks[i]=ko; nvs_args[i]='' # sudo apt-get install libpam0g-dev
-((i+=1)); nvs[i]=solana-gossip@2.0.5;         oks[i]=ko; nvs_args[i]='' # error: environment variable `TYPENUM_BUILD_OP` not defined at compile time
 ((i+=1)); nvs[i]=statehub@0.14.10;            oks[i]=ko; nvs_args[i]='' # BUG: unexpected crate-type: 'cdylib'
-((i+=1)); nvs[i]=torrust-index@3.0.0-alpha.12; oks[i]=ko; nvs_args[i]='' # /usr/bin/ld: cannot find -lssl: No such file or directory
-((i+=1)); nvs[i]=cargo-authors@0.5.5;         oks[i]=ko; nvs_args[i]='' #               cannot find -lz: Missing libz
+((i+=1)); nvs[i]=torrust-index@3.0.0;         oks[i]=ko; nvs_args[i]='' # /usr/bin/ld: cannot find -lssl: No such file or directory
+((i+=1)); nvs[i]=cargo-authors@0.5.5;         oks[i]=ko; nvs_args[i]='' # ERROR: failed to solve: ResourceExhausted: ResourceExhausted: ResourceExhausted: ResourceExhausted: ResourceExhausted: grpc: received message larger than max (6653826 vs. 4194304)
 ((i+=1)); nvs[i]=vixargs@0.1.0;               oks[i]=ok; nvs_args[i]=''
 ((i+=1)); nvs[i]=cargo-config2@0.1.26;        oks[i]=ok; nvs_args[i]='--example=get'
 ((i+=1)); nvs[i]=privaxy@0.5.2;               oks[i]=ko; nvs_args[i]='--git https://github.com/Barre/privaxy.git --tag=v0.5.2 privaxy' # undefined reference to `__isoc23_strtol'\n          /usr/bin/ld: rand_unix.c:(.text.wait_random_seeded+0x204): undefined reference to `__isoc23_strtol'\n          collect2: error: ld returned 1 exit status\n          \n  = note: some `extern` functions couldn't be found; some native libraries may need to be installed or have their path specified\n  = note: use the `-l` flag to specify native libraries to link\n  = note: use the `cargo:rustc-link-lib` directive to specify the native libraries to link with Cargo (see https://doc.rust-lang.org/cargo/reference/build-scripts.html#rustc-link-lib
 
 ((i+=1)); nvs[i]=miri@master;                 oks[i]=ko; nvs_args[i]='--git https://github.com/rust-lang/miri.git --rev=dcd2112' # can't find crate for `either`
-((i+=1)); nvs[i]=zed@main;                    oks[i]=ko; nvs_args[i]='--git https://github.com/zed-industries/zed.git --tag=v0.149.5 zed' # The pkg-config command could not be found.
-((i+=1)); nvs[i]=cargo-udeps@0.1.50;          oks[i]=ko; nvs_args[i]='' # The pkg-config command could not be found.
-((i+=1)); nvs[i]=rerun-cli@0.18.0;            oks[i]=ko; nvs_args[i]='' # environment variable `TYPENUM_BUILD_OP` not defined at compile time + TYPENUM_BUILD_CONSTS
+((i+=1)); nvs[i]=zed@main;                    oks[i]=ko; nvs_args[i]='--git https://github.com/zed-industries/zed.git --tag=v0.179.5 zed' # error: could not download file from 'https://static.rust-lang.org/dist/channel-rust-1.85.toml.sha256'
+((i+=1)); nvs[i]=verso@main;                  oks[i]=ko; nvs_args[i]='--git https://github.com/versotile-org/verso.git --rev 62e3085 verso' # error: could not download file from 'https://static.rust-lang.org/dist/channel-rust-1.85.0.toml.sha256'
+((i+=1)); nvs[i]=cargo-udeps@0.1.55;          oks[i]=hm; nvs_args[i]=''
 
 ((i+=1)); nvs[i]=mirai@main;                  oks[i]=ko; nvs_args[i]='--git https://github.com/facebookexperimental/MIRAI.git --tag=v1.1.9 checker'
 # error: could not find `checker` in https://github.com/facebookexperimental/MIRAI.git?tag=v1.1.9 with version `*`
@@ -81,7 +85,7 @@ declare -a nvs nvs_args
 # ((i+=1)); nvs[i]=cargo-mutants@24.7.1;        oks[i]=ok; nvs_args[i]='' #
 # ((i+=1)); nvs[i]=binsider@0.2.0;              oks[i]=ok; nvs_args[i]='' #
 
-
+((i+=1)); nvs[i]=stu@0.7.1;                   oks[i]=ko; nvs_args[i]='' # BUG: unexpected crate-type: 'cdylib' error: could not compile `crc64fast-nvme` (lib)
 
 
 #TODO: not a cli but try users of https://github.com/dtolnay/watt
@@ -165,14 +169,38 @@ as_install() {
   esac
 }
 
+as_env() {
+  local name_at_version=$1; shift
+  case "$name_at_version" in
+    cargo-authors@*) envvars+=(CARGOGREEN_ADD_APT='libssl-dev,zlib1g-dev') ;;
+    cargo-udeps@*) envvars+=(CARGOGREEN_ADD_APT='libssl-dev,zlib1g-dev') ;;
+    dbcc@*) envvars+=(CARGOGREEN_SET_ENVS='TYPENUM_BUILD_CONSTS,TYPENUM_BUILD_OP') ;;
+    diesel_cli@*) envvars+=(CARGOGREEN_ADD_APT='libpq-dev') ;;
+    hickory-dns@*) envvars+=(CARGOGREEN_SET_ENVS='RING_CORE_PREFIX') ;;
+    mussh@*) envvars+=(CARGOGREEN_ADD_APT='libsqlite3-dev,libssl-dev,zlib1g-dev') ;;
+    ntpd@*) envvars+=(CARGOGREEN_SET_ENVS='NTPD_RS_GIT_DATE,NTPD_RS_GIT_REV,RING_CORE_PREFIX') ;;
+    # cargo-bpf@*) envvars+=(CARGOGREEN_ADD_APT='libelf-dev') ;;
+    # privaxy@*) envvars+=(CARGOGREEN_ADD_APT='libssl-dev,openssl' CARGOGREEN_SET_ENVS='DEP_OPENSSL_LIBRESSL_VERSION_NUMBER,DEP_OPENSSL_VERSION_NUMBER' CARGOGREEN_BASE_IMAGE=docker-image://docker.io/library/rust:1) ;;
+    # shpool@*) envvars+=(CARGOGREEN_ADD_APT='libpam0g-dev') ;;
+    # torrust-index@*) envvars+=(CARGOGREEN_ADD_APT='libssl-dev,zlib1g-dev' CARGOGREEN_SET_ENVS='MIME_TYPES_GENERATED_PATH,RING_CORE_PREFIX') ;;
+    # stu@*) envvars+=(CARGOGREEN_SET_ENVS=RING_CORE_PREFIX) ;;
+    *) ;;
+  esac
+  if [[ -n "${CARGOGREEN_CACHE_IMAGES:-}" ]]; then
+    envvars+=(CARGOGREEN_CACHE_IMAGES="$CARGOGREEN_CACHE_IMAGES")
+  fi
+}
+
 cli() {
 	local name_at_version=$1; shift
   local jobs=$1; shift
   local envvars=()
 
   envvars+=(CARGOGREEN_LOG=trace)
-  envvars+=(RUSTCBUILDX_LOG_PATH="\$PWD"/logs.txt)
-  envvars+=(CARGO_TARGET_DIR=~/instst)
+  envvars+=(CARGOGREEN_LOG_PATH="\$PWD"/logs.txt)
+  envvars+=(CARGOGREEN_FINAL_PATH="$name_at_version.Dockerfile")
+  envvars+=(CARGO_TARGET_DIR="\$HOME"/instst)
+  as_env "$name_at_version"
 
 	cat <<EOF
 $(jobdef "$(sed 's%@%_%g;s%\.%-%g' <<<"$name_at_version")$(if [[ "$jobs" != 1 ]]; then echo '-J'; fi)")
@@ -201,7 +229,7 @@ $(rundeps_versions)
 $(cache_usage)
     - name: cargo install net=ON cache=OFF remote=OFF jobs=$jobs
       run: |
-        ${envvars[@]} \\
+        env ${envvars[@]} \\
           cargo green -vv install --jobs=$jobs --locked --force $(as_install "$name_at_version") $@ |& tee _
 $(postconds _ logs.txt "$name_at_version.Dockerfile")
 $(cache_usage)
@@ -212,7 +240,7 @@ $(cache_usage)
 
     - name: Ensure running the same command twice without modifications...
       run: |
-        ${envvars[@]} \\
+        env ${envvars[@]} \\
           cargo green -vv install --jobs=$jobs --locked --force $(as_install "$name_at_version") $@ |& tee _
 $(postcond_fresh _ "$name_at_version.Dockerfile")
 $(postconds _ logs.txt "$name_at_version.Dockerfile")
@@ -256,14 +284,17 @@ arg1=$1; shift
 modifier=${1:-0}
 
 clean=0; if [[ "$modifier" = 'clean' ]]; then clean=1; fi
+jobs=${jobs:-$(nproc)}
+frozen=--locked ; [[ "${offline:-}" = '1' ]] && frozen=--frozen
 
 install_dir=/tmp/cargo-green
+CARGO=${CARGO:-cargo}
 
 # Special first arg handling..
 case "$arg1" in
   ok)
     for i in "${!nvs[@]}"; do
-      [[ "${oks[$i]}" = 'ok' ]] || continue
+      case "${oks[$i]}" in ok|hm) ;; *) continue ;; esac
       nv=${nvs[$i]}
       "$0" "${nv#*@}" "$modifier"
     done
@@ -276,7 +307,7 @@ set -x
     tmplogs=$tmptrgt.logs.txt
     mkdir -p "$tmptrgt"
     if [[ "$clean" = '1' ]]; then rm -rf "$tmptrgt" || exit 1; fi
-    CARGO_TARGET_DIR=$install_dir cargo install --locked --frozen --offline --force --root=$install_dir --path="$PWD"/cargo-green
+    CARGO_TARGET_DIR=$install_dir $CARGO install $frozen --force --root=$install_dir --path="$PWD"/cargo-green
     ls -lha $install_dir/bin/cargo-green
     rm $tmplogs >/dev/null 2>&1 || true
     touch $tmplogs
@@ -285,16 +316,16 @@ set -x
     echo "Target dir: $tmptrgt"
     echo "Logs: $tmplogs"
     CARGOGREEN_LOG=trace \
-    RUSTCBUILDX_LOG_PATH="$tmplogs" \
-    RUSTCBUILDX_CACHE_IMAGE="${RUSTCBUILDX_CACHE_IMAGE:-}" \
+    CARGOGREEN_LOG_PATH="$tmplogs" \
+    CARGOGREEN_FINAL_PATH="$tmptrgt/cargo-green-fetched.Dockerfile" \
     PATH=$install_dir/bin:"$PATH" \
-      \cargo green -v fetch
+      $CARGO green -v fetch
     CARGOGREEN_LOG=trace \
-    RUSTCBUILDX_LOG_PATH="$tmplogs" \
-    RUSTCBUILDX_CACHE_IMAGE="${RUSTCBUILDX_CACHE_IMAGE:-}" \
+    CARGOGREEN_LOG_PATH="$tmplogs" \
+    CARGOGREEN_FINAL_PATH="$tmptrgt/cargo-green.Dockerfile" \
     PATH=$install_dir/bin:"$PATH" \
     CARGO_TARGET_DIR="$tmptrgt" \
-      \cargo green -v $arg1 --jobs=${jobs:-$(nproc)} --all-targets --all-features --locked --frozen --offline -p cargo-green
+      $CARGO green -v $arg1 --jobs=$jobs --all-targets --all-features $frozen -p cargo-green
     #if [[ "$clean" = 1 ]]; then docker buildx du --builder=supergreen --verbose | tee --append "$tmplogs" || exit 1; fi
     # TODO: tag/label buildx storage so things can be deleted with fine filters
     maybe_show_logs "$tmplogs"
@@ -338,27 +369,26 @@ send() {
   tmux send-keys " $* && tmux select-layout even-vertical && exit" C-m
 }
 
-
-    # '&&' '[[ $(expr $(date +%s) - $(stat -c %Y' /home/pete/.cargo/bin/cargo-green ')) -lt 3 ]]' \
-
-
 gitdir=$(realpath "$(dirname "$(dirname "$0")")")
 send \
-  CARGO_TARGET_DIR=$install_dir cargo install --locked --frozen --offline --force --root=$install_dir --path="$gitdir"/cargo-green \
+  set -x \
+    '&&' CARGO_TARGET_DIR=$install_dir $CARGO install $frozen --force --root=$install_dir --path="$gitdir"/cargo-green \
     '&&' touch "$tmpgooo".installed \
     '&&' "rm $tmplogs >/dev/null 2>&1; touch $tmplogs; tail -f $tmplogs; :"
 tmux select-layout even-vertical
 tmux split-window
 
 envvars=(CARGOGREEN_LOG=trace)
-envvars+=(RUSTCBUILDX_LOG_PATH="$tmplogs")
-envvars+=(RUSTCBUILDX_CACHE_IMAGE="${RUSTCBUILDX_CACHE_IMAGE:-}")
+envvars+=(CARGOGREEN_LOG_PATH="$tmplogs")
+envvars+=(CARGOGREEN_FINAL_PATH="$tmptrgt/$name_at_version.Dockerfile")
 envvars+=(PATH=$install_dir/bin:"$PATH")
 envvars+=(CARGO_TARGET_DIR="$tmptrgt")
+envvars+=(CARGOGREEN_SYNTAX=docker-image://docker.io/docker/dockerfile:1@sha256:4c68376a702446fc3c79af22de146a148bc3367e73c25a5803d453b6b3f722fb)
+envvars+=(CARGOGREEN_BASE_IMAGE=docker-image://docker.io/library/rust:1.86.0-slim@sha256:3f391b0678a6e0c88fd26f13e399c9c515ac47354e3cadfee7daee3b21651a4f)
+as_env "$name_at_version"
 send \
-  'until' '[[' -f "$tmpgooo".installed ']];' \
-  'do' sleep '.1;' 'done' '&&' rm "$tmpgooo".* '&&' \
-    "${envvars[@]}" \cargo green -vv install --timings --jobs=${jobs:-1} --root=$tmpbins --locked --force "$(as_install "$name_at_version")" "$args" \
+  'until' '[[' -f "$tmpgooo".installed ']];' 'do' sleep '.1;' 'done' '&&' rm "$tmpgooo".* \
+  '&&' "${envvars[@]}" $CARGO green -vv install --timings --jobs=$jobs --root=$tmpbins $frozen --force "$(as_install "$name_at_version")" "$args" \
   '&&' 'if' '[[' "$clean" '=' '1' ']];' 'then' docker buildx du --builder=supergreen --verbose '|' tee --append "$tmplogs" '||' 'exit' '1;' 'fi' \
   '&&' tmux kill-session -t "$session_name"
 tmux select-layout even-vertical

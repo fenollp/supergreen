@@ -32,8 +32,7 @@ $(restore_bin-artifacts)
         restore-keys: \${{ github.job }}-\${{ runner.os }}-cargo-deps-
 
     - run: cargo fetch
-    - name: Envs
-      run: cargo green supergreen env
+    - run: cargo green supergreen env
 EOF
 }
 
@@ -85,23 +84,27 @@ $(rundeps_versions)
 $(jobdef 'installs')
     needs: bin
     env:
+      RUST_BACKTRACE: 1
       CARGOGREEN_LOG: trace
-      RUSTCBUILDX_LOG_PATH: /home/runner/work/supergreen/logs.txt
+      CARGOGREEN_LOG_PATH: /home/runner/work/supergreen/logs.txt
+      CARGOGREEN_FINAL_PATH: \$GITHUB_JOB.Dockerfile
     steps:
 $(rundeps_versions)
 $(postbin_steps)
 $(cache_usage)
     - name: cargo install net=ON cache=OFF remote=OFF jobs=1
       run: cargo green -vv install --jobs=1 --locked --force --path=./cargo-green |& tee ../_
-$(postconds ../_ ../logs.txt)
+$(postconds ../_ ../logs.txt '$CARGOGREEN_FINAL_PATH')
 $(cache_usage)
 
 
 $(jobdef 'audits')
     needs: bin
     env:
+      RUST_BACKTRACE: 1
       CARGOGREEN_LOG: trace
-      RUSTCBUILDX_LOG_PATH: /home/runner/work/supergreen/logs.txt
+      CARGOGREEN_LOG_PATH: /home/runner/work/supergreen/logs.txt
+      CARGOGREEN_FINAL_PATH: \$GITHUB_JOB.Dockerfile
     steps:
 $(rundeps_versions)
 $(postbin_steps)
@@ -111,15 +114,17 @@ $(postbin_steps)
 $(cache_usage)
     - name: cargo audit net=ON cache=OFF remote=OFF
       run: cargo green -vv audit |& tee ../_
-$(postconds ../_ ../logs.txt)
+$(postconds ../_ ../logs.txt '$CARGOGREEN_FINAL_PATH')
 $(cache_usage)
 
 
 $(jobdef 'udeps')
     needs: bin
     env:
+      RUST_BACKTRACE: 1
       CARGOGREEN_LOG: trace
-      RUSTCBUILDX_LOG_PATH: /home/runner/work/supergreen/logs.txt
+      CARGOGREEN_LOG_PATH: /home/runner/work/supergreen/logs.txt
+      CARGOGREEN_FINAL_PATH: \$GITHUB_JOB.Dockerfile
     steps:
 $(rundeps_versions)
 $(postbin_steps $nightly)
@@ -129,116 +134,126 @@ $(postbin_steps $nightly)
 $(cache_usage)
     - name: cargo +$nightly green udeps --all-targets --jobs=1 cache=OFF remote=OFF
       run: cargo +$nightly green udeps --all-targets --jobs=1 |& tee ../_
-$(postconds ../_ ../logs.txt)
+$(postconds ../_ ../logs.txt '$CARGOGREEN_FINAL_PATH')
 $(cache_usage)
     - name: Again, with +toolchain to cargo-green
       run: cargo green +$nightly udeps --all-targets --jobs=1 |& tee ../_
-$(postconds ../_ ../logs.txt)
+$(postconds ../_ ../logs.txt '$CARGOGREEN_FINAL_PATH')
 $(cache_usage)
 
 
 $(jobdef 'builds')
     needs: bin
     env:
+      RUST_BACKTRACE: 1
       CARGOGREEN_LOG: trace
-      RUSTCBUILDX_LOG_PATH: /home/runner/work/supergreen/logs.txt
+      CARGOGREEN_LOG_PATH: /home/runner/work/supergreen/logs.txt
+      CARGOGREEN_FINAL_PATH: \$GITHUB_JOB.Dockerfile
     steps:
 $(rundeps_versions)
 $(postbin_steps)
 $(cache_usage)
     - name: cargo fetch
       run: cargo green -vv fetch |& tee ../_
-$(postconds ../_ ../logs.txt)
+$(postconds ../_ ../logs.txt '$CARGOGREEN_FINAL_PATH')
     - name: cargo build net=OFF cache=OFF remote=OFF jobs=1
       run: cargo green -vv build --jobs=1 --all-targets --all-features --locked --frozen --offline |& tee ../_
-$(postconds ../_ ../logs.txt)
+$(postconds ../_ ../logs.txt '$CARGOGREEN_FINAL_PATH')
 $(cache_usage)
     - name: Ensure running the same command twice without modifications...
       run: cargo green -vv build --jobs=1 --all-targets --all-features --locked --frozen --offline |& tee ../_
-$(postcond_fresh ../_)
-$(postconds ../_ ../logs.txt)
+$(postcond_fresh ../_ '$CARGOGREEN_FINAL_PATH')
+$(postconds ../_ ../logs.txt '$CARGOGREEN_FINAL_PATH')
 $(cache_usage)
     - name: Ensure running the same command thrice without modifications (jobs>1)...
       run: cargo green -vv build --jobs=\$(nproc) --all-targets --all-features --locked --frozen --offline |& tee ../_
-$(postcond_fresh ../_)
-$(postconds ../_ ../logs.txt)
+$(postcond_fresh ../_ '$CARGOGREEN_FINAL_PATH')
+$(postconds ../_ ../logs.txt '$CARGOGREEN_FINAL_PATH')
 $(cache_usage)
 
 
 $(jobdef 'tests')
     needs: bin
     env:
+      RUST_BACKTRACE: 1
       CARGOGREEN_LOG: trace
-      RUSTCBUILDX_LOG_PATH: /home/runner/work/supergreen/logs.txt
+      CARGOGREEN_LOG_PATH: /home/runner/work/supergreen/logs.txt
+      CARGOGREEN_FINAL_PATH: \$GITHUB_JOB.Dockerfile
     steps:
 $(rundeps_versions)
 $(postbin_steps)
 $(cache_usage)
     - name: cargo fetch
       run: cargo green -vv fetch |& tee ../_
-$(postconds ../_ ../logs.txt)
+$(postconds ../_ ../logs.txt '$CARGOGREEN_FINAL_PATH')
     - name: cargo test net=OFF cache=OFF remote=OFF jobs=1
       run: cargo green -vv test --jobs=1 --all-targets --all-features --locked --frozen --offline |& tee ../_
-$(postconds ../_ ../logs.txt)
+$(postconds ../_ ../logs.txt '$CARGOGREEN_FINAL_PATH')
 $(cache_usage)
     - name: Ensure running the same command twice without modifications...
       run: cargo green -vv test --jobs=1 --all-targets --all-features --locked --frozen --offline |& tee ../_
-$(postcond_fresh ../_)
-$(postconds ../_ ../logs.txt)
+$(postcond_fresh ../_ '$CARGOGREEN_FINAL_PATH')
+$(postconds ../_ ../logs.txt '$CARGOGREEN_FINAL_PATH')
 $(cache_usage)
     - name: Ensure running the same command thrice without modifications (jobs>1)...
       run: cargo green -vv test --jobs=\$(nproc) --all-targets --all-features --locked --frozen --offline |& tee ../_
-$(postcond_fresh ../_)
-$(postconds ../_ ../logs.txt)
+$(postcond_fresh ../_ '$CARGOGREEN_FINAL_PATH')
+$(postconds ../_ ../logs.txt '$CARGOGREEN_FINAL_PATH')
 $(cache_usage)
 
 
 $(jobdef 'checks')
     needs: bin
     env:
+      RUST_BACKTRACE: 1
       CARGOGREEN_LOG: trace
-      RUSTCBUILDX_LOG_PATH: /home/runner/work/supergreen/logs.txt
+      CARGOGREEN_LOG_PATH: /home/runner/work/supergreen/logs.txt
+      CARGOGREEN_FINAL_PATH: \$GITHUB_JOB.Dockerfile
     steps:
 $(rundeps_versions)
 $(postbin_steps)
 $(cache_usage)
     - name: cargo fetch
       run: cargo green -vv fetch |& tee ../_
-$(postconds ../_ ../logs.txt)
+$(postconds ../_ ../logs.txt '$CARGOGREEN_FINAL_PATH')
     - name: cargo check net=OFF cache=OFF remote=OFF jobs=\$(nproc)
       run: cargo green -vv check --jobs=\$(nproc) --all-targets --all-features --locked --frozen --offline |& tee ../_
-$(postconds ../_ ../logs.txt)
+$(postconds ../_ ../logs.txt '$CARGOGREEN_FINAL_PATH')
 $(cache_usage)
     - name: Ensure running the same command twice without modifications...
       run: cargo green -vv check --jobs=1 --all-targets --all-features --locked --frozen --offline |& tee ../_
-$(postcond_fresh ../_)
-$(postconds ../_ ../logs.txt)
+$(postcond_fresh ../_ '$CARGOGREEN_FINAL_PATH')
+$(postconds ../_ ../logs.txt '$CARGOGREEN_FINAL_PATH')
 $(cache_usage)
 
 
 $(jobdef 'packages')
     needs: bin
     env:
+      RUST_BACKTRACE: 1
       CARGOGREEN_LOG: trace
-      RUSTCBUILDX_LOG_PATH: /home/runner/work/supergreen/logs.txt
+      CARGOGREEN_LOG_PATH: /home/runner/work/supergreen/logs.txt
+      CARGOGREEN_FINAL_PATH: \$GITHUB_JOB.Dockerfile
     steps:
 $(rundeps_versions)
 $(postbin_steps)
 $(cache_usage)
     - name: cargo fetch
       run: cargo green -vv fetch |& tee ../_
-$(postconds ../_ ../logs.txt)
+$(postconds ../_ ../logs.txt '$CARGOGREEN_FINAL_PATH')
     - name: cargo package net=OFF cache=OFF remote=OFF jobs=1
       run: cargo green -vv package --jobs=1 --all-features --locked --frozen --offline |& tee ../_
-$(postconds ../_ ../logs.txt)
+$(postconds ../_ ../logs.txt '$CARGOGREEN_FINAL_PATH')
 $(cache_usage)
 
 
 $(jobdef 'clippy')
     needs: bin
     env:
+      RUST_BACKTRACE: 1
       CARGOGREEN_LOG: trace
-      RUSTCBUILDX_LOG_PATH: /home/runner/work/supergreen/logs.txt
+      CARGOGREEN_LOG_PATH: /home/runner/work/supergreen/logs.txt
+      CARGOGREEN_FINAL_PATH: \$GITHUB_JOB.Dockerfile
     steps:
 $(rundeps_versions)
 $(postbin_steps)
@@ -246,14 +261,14 @@ $(postbin_steps)
 $(cache_usage)
     - name: cargo fetch
       run: cargo green -vv fetch
-$(postconds ../_ ../logs.txt)
+$(postconds ../_ ../logs.txt '$CARGOGREEN_FINAL_PATH')
     - name: cargo clippy net=OFF cache=OFF remote=OFF jobs=1
       run: cargo green -vv clippy --jobs=1 --all-targets --all-features --locked --frozen --offline |& tee ../_
-$(postconds ../_ ../logs.txt)
+$(postconds ../_ ../logs.txt '$CARGOGREEN_FINAL_PATH')
 $(cache_usage)
     - name: Ensure running the same command twice without modifications...
       run: cargo green -vv clippy --jobs=\$(nproc) --all-targets --all-features --locked --frozen --offline |& tee ../_
-$(postcond_fresh ../_)
-$(postconds ../_ ../logs.txt)
+$(postcond_fresh ../_ '$CARGOGREEN_FINAL_PATH')
+$(postconds ../_ ../logs.txt '$CARGOGREEN_FINAL_PATH')
 $(cache_usage)
 EOF

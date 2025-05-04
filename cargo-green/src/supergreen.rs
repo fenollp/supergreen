@@ -1,5 +1,5 @@
 use core::str;
-use std::{collections::BTreeMap, env, io::Cursor, process::Stdio};
+use std::{env, io::Cursor, process::Stdio};
 
 use anyhow::{anyhow, bail, Result};
 use futures::stream::{iter, StreamExt, TryStreamExt};
@@ -7,31 +7,58 @@ use serde_jsonlines::AsyncBufReadJsonLines;
 use tokio::io::BufReader;
 
 use crate::{
-    envs::{
-        base_image, builder_image, cache_image, incremental, internal, log_path, runner, syntax,
-    },
-    extensions::ShowCmd,
-    runner::runner_cmd,
+    add::{ENV_ADD_APK, ENV_ADD_APT, ENV_ADD_APT_GET},
+    base_image::{ENV_BASE_IMAGE, ENV_BASE_IMAGE_INLINE, ENV_WITH_NETWORK},
+    cargo_green::{ENV_BUILDER_IMAGE, ENV_FINAL_PATH, ENV_RUNNER, ENV_SYNTAX},
+    ext::ShowCmd,
+    green::{Green, ENV_CACHE_IMAGES, ENV_INCREMENTAL, ENV_SET_ENVS},
+    image_uri::ImageUri,
+    logging::{ENV_LOG, ENV_LOG_PATH, ENV_LOG_STYLE},
+    rustc_wrapper::ENV,
 };
 
 // TODO: tune logging verbosity https://docs.rs/clap-verbosity-flag/latest/clap_verbosity_flag/
 
-// TODO: cargo green cache --keep-less-than=(1month|10GB)      Set $RUSTCBUILDX_CACHE_IMAGE to apply to tagged images.
+// TODO: cargo green cache --keep-less-than=(1month|10GB)      Set $CARGOGREEN_CACHE_IMAGES to apply to tagged images.
 
-pub(crate) async fn main(arg1: Option<&str>, args: Vec<String>) -> Result<()> {
+// TODO: cli for stats (cache hit/miss/size/age/volume, existing available/selected runners, disk usage/free)
+
+pub(crate) async fn main(green: Green, arg1: Option<&str>, args: Vec<String>) -> Result<()> {
     match arg1 {
         None | Some("-h" | "--help" | "-V" | "--version") => help(),
-        Some("env") => envs(args).await,
-        Some("pull") => pull().await,
-        Some("push") => push().await,
-        Some(arg) => {
-            bail!("Unexpected supergreen command {arg:?}")
-        }
+        Some("env") => envs(green, args),
+        Some("push") => return push(green).await,
+        Some(arg) => bail!("Unexpected supergreen command {arg:?}"),
     }
+    Ok(())
 }
 
-#[expect(clippy::unnecessary_wraps)]
-pub(crate) fn help() -> Result<()> {
+//TODO: util to inspect + clear (+ push) build cache: docker buildx du --verbose
+//TODO: prune command (use filters) https://github.com/docker/buildx/pull/2473
+//      ~ 🤖 docker buildx du --verbose --filter type=frontend
+// ID:     peng2elrcincm360vextha1zz
+// Created at: 2025-03-30 16:26:19.48787607 +0000 UTC
+// Mutable:    false
+// Reclaimable:    true
+// Shared:     false
+// Size:       0B
+// Description:    pulled from docker.io/docker/dockerfile:1@sha256:4c68376a702446fc3c79af22de146a148bc3367e73c25a5803d453b6b3f722fb
+// Usage count:    1
+// Last used:  2 days ago
+// Type:       frontend
+//      ~ 🤖 docker buildx du --verbose --filter type=source.git.checkout
+// ID:     9serb7k61zusy8vf6x7k4yp2f
+// Created at: 2025-03-30 16:26:22.145481847 +0000 UTC
+// Mutable:    true
+// Reclaimable:    true
+// Shared:     false
+// Size:       41.58kB
+// Description:    git snapshot for https://github.com/fenollp/buildxargs.git#df9b810011cd416b8e3fc02911f2f496acb8475e
+// Usage count:    1
+// Last used:  2 days ago
+// Type:       source.git.checkout
+
+pub(crate) fn help() {
     println!(
         "{name} v{version}
 
@@ -41,7 +68,7 @@ pub(crate) fn help() -> Result<()> {
 
 Usage:
   cargo green supergreen env             Show used values
-  cargo green supergreen pull            Pulls images (respects $DOCKER_HOST)
+  cargo green fetch                      Pulls images (respects $DOCKER_HOST)
   cargo green supergreen push            Push cache image (all tags)
   cargo green supergreen -h | --help
   cargo green supergreen -V | --version
@@ -51,41 +78,46 @@ Usage:
         repository = env!("CARGO_PKG_REPOSITORY"),
         description = env!("CARGO_PKG_DESCRIPTION"),
     );
-    Ok(())
 }
 
 // TODO: make it work for podman: https://github.com/containers/podman/issues/2369
 // TODO: have fun with https://github.com/console-rs/indicatif
-async fn push() -> Result<()> {
-    let Some(img) = cache_image() else { return Ok(()) };
-    let img = img.trim_start_matches("docker-image://");
-    let tags = all_tags_of(img).await?;
+async fn push(green: Green) -> Result<()> {
+    for img in &green.cache_images {
+        let img = img.noscheme();
+        let tags = all_tags_of(&green, img).await?;
 
-    async fn do_push(tag: String, img: &str) -> Result<()> {
-        println!("Pushing {img}:{tag}...");
-        let mut cmd = runner_cmd();
-        cmd.arg("push").arg(format!("{img}:{tag}")).stdout(Stdio::null()).stderr(Stdio::null());
+        async fn do_push(green: &Green, tag: String, img: &str) -> Result<()> {
+            println!("Pushing {img}:{tag}...");
+            let mut cmd = green.runner.as_cmd();
+            cmd.arg("push").arg(format!("{img}:{tag}")).stdout(Stdio::null()).stderr(Stdio::null());
 
-        if let Ok(mut o) = cmd.spawn() {
-            if let Ok(o) = o.wait().await {
-                if o.success() {
-                    println!("Pushing {img}:{tag}... done!");
-                    return Ok(());
+            if let Ok(mut o) = cmd.spawn() {
+                if let Ok(o) = o.wait().await {
+                    if o.success() {
+                        println!("Pushing {img}:{tag}... done!");
+                        return Ok(());
+                    }
                 }
             }
+            bail!("Pushing {img}:{tag} failed!")
         }
-        bail!("Pushing {img}:{tag} failed!")
-    }
 
-    iter(tags).map(|tag| do_push(tag, img)).buffer_unordered(10).try_collect().await
+        iter(tags)
+            .map(|tag| do_push(&green, tag, img))
+            .buffer_unordered(10)
+            .try_collect::<()>()
+            .await?;
+    }
+    Ok(())
 }
 
 // TODO: test with known tags
 // TODO: test docker.io/ prefix bug for the future
-async fn all_tags_of(img: &str) -> Result<Vec<String>> {
+async fn all_tags_of(green: &Green, img: &str) -> Result<Vec<String>> {
     // NOTE: https://github.com/moby/moby/issues/47809
     //   Meanwhile: just drop docker.io/ prefix
-    let mut cmd = runner_cmd();
+    let mut cmd = green.runner.as_cmd();
     cmd.arg("image")
         .arg("ls")
         .arg("--format=json")
@@ -104,101 +136,43 @@ async fn all_tags_of(img: &str) -> Result<Vec<String>> {
         .await)
 }
 
-async fn envs(vars: Vec<String>) -> Result<()> {
-    let all: BTreeMap<_, _> = [
-        (internal::RUSTCBUILDX, internal::this()),
-        (internal::RUSTCBUILDX_BASE_IMAGE, Some(base_image().await.base())),
-        (internal::RUSTCBUILDX_BUILDER_IMAGE, Some(builder_image().await.to_owned())),
-        (internal::RUSTCBUILDX_CACHE_IMAGE, cache_image().to_owned()),
-        (internal::RUSTCBUILDX_INCREMENTAL, incremental().then_some("1".to_owned())),
-        (internal::RUSTCBUILDX_LOG, internal::log()),
-        (internal::RUSTCBUILDX_LOG_PATH, Some(log_path().to_owned())),
-        (internal::RUSTCBUILDX_LOG_STYLE, internal::log_style()),
-        (internal::RUSTCBUILDX_RUNNER, Some(runner().to_owned())),
-        (internal::RUSTCBUILDX_SYNTAX, Some(syntax().await.to_owned())),
-    ]
-    .into_iter()
-    .collect();
-
-    fn show(var: &str, o: &Option<String>) {
-        println!("{var}={val}", val = o.as_deref().unwrap_or_default());
+fn envs(green: Green, vars: Vec<String>) {
+    fn csv(xs: &[String]) -> Option<String> {
+        (!xs.is_empty()).then(|| xs.join(","))
     }
+
+    fn csv_uris(xs: &[ImageUri]) -> Option<String> {
+        csv(&xs.iter().map(ToString::to_string).collect::<Vec<_>>())
+    }
+
+    let all = vec![
+        (ENV, env::var(ENV).ok()),
+        (ENV_ADD_APK, csv(&green.add.apk)),
+        (ENV_ADD_APT, csv(&green.add.apt)),
+        (ENV_ADD_APT_GET, csv(&green.add.apt_get)),
+        (ENV_BASE_IMAGE, Some(green.image.base_image.to_string())),
+        (ENV_BASE_IMAGE_INLINE, green.image.base_image_inline.clone()),
+        (ENV_BUILDER_IMAGE, green.builder_image.map(|x| x.to_string())),
+        (ENV_CACHE_IMAGES, csv_uris(&green.cache_images)),
+        (ENV_FINAL_PATH, green.final_path.as_deref().map(ToString::to_string)),
+        (ENV_INCREMENTAL, green.incremental.then(|| "1".to_owned())),
+        (ENV_LOG, env::var(ENV_LOG).ok()),
+        (ENV_LOG_PATH, env::var(ENV_LOG_PATH).ok()),
+        (ENV_LOG_STYLE, env::var(ENV_LOG_STYLE).ok()),
+        (ENV_RUNNER, Some(green.runner.to_string())),
+        (ENV_SET_ENVS, csv(&green.set_envs)),
+        (ENV_SYNTAX, Some(green.syntax.to_string())),
+        (ENV_WITH_NETWORK, Some(green.image.with_network.to_string())),
+    ];
 
     let mut empty_vars = true;
     for var in vars {
-        if let Some(o) = all.get(&var.as_str()) {
-            show(&var, o);
+        if let Some(o) = all.iter().find_map(|(k, v)| (k == &var).then_some(v)) {
+            println!("{}", o.as_deref().unwrap_or_default());
             empty_vars = false;
         }
     }
     if empty_vars {
-        all.into_iter().for_each(|(var, o)| show(var, &o));
+        all.into_iter().for_each(|(var, o)| println!("{var}={:?}", o.unwrap_or_default()));
     }
-
-    Ok(())
-}
-
-async fn pull() -> Result<()> {
-    let imgs = [
-        (internal::syntax(), syntax().await),
-        (internal::base_image(), &base_image().await.base()),
-        (internal::builder_image(), builder_image().await),
-    ]; // NOTE: we don't pull cache_image()
-
-    let mut to_pull = Vec::with_capacity(imgs.len());
-    for (user_input, img) in imgs {
-        let img = img.trim_start_matches("docker-image://");
-        let img = if img.contains('@') && user_input.map(|x| !x.contains('@')).unwrap_or_default() {
-            // Don't pull a locked image unless that's what's asked
-            // Otherwise, pull unlocked
-
-            // The only possible cases (user_input sets img)
-            // none + @ = trim
-            // none + _ = _
-            // s @  + @ = _
-            // s !  + @ = trim
-            trim_docker_image(img).expect("contains @")
-        } else {
-            img.to_owned()
-        };
-        to_pull.push(img);
-    }
-    pull_images(to_pull).await
-}
-
-#[must_use]
-fn trim_docker_image(x: &str) -> Option<String> {
-    let x = x.trim_start_matches("docker-image://");
-    let x = x
-        .contains('@')
-        .then(|| x.trim_end_matches(|c| c != '@').trim_end_matches('@'))
-        .unwrap_or(x);
-    (!x.is_empty()).then(|| x.to_owned())
-}
-
-async fn pull_images(to_pull: Vec<String>) -> Result<()> {
-    // TODO: nice TUI that handles concurrent progress
-    iter(to_pull.into_iter())
-        .map(|img| async move {
-            println!("Pulling {img}...");
-            do_pull(img).await
-        })
-        .buffer_unordered(10)
-        .try_collect()
-        .await
-}
-
-async fn do_pull(img: String) -> Result<()> {
-    let mut cmd = runner_cmd();
-    cmd.arg("pull").arg(&img);
-    let o = cmd
-        .spawn()
-        .map_err(|e| anyhow!("Failed to start {}: {e}", cmd.show()))?
-        .wait()
-        .await
-        .map_err(|e| anyhow!("Failed to call {}: {e}", cmd.show()))?;
-    if !o.success() {
-        bail!("Failed to pull {img}")
-    }
-    Ok(())
 }

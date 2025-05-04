@@ -7,59 +7,60 @@ use camino::Utf8PathBuf;
 use serde::{Deserialize, Serialize};
 use szyk::{sort, Node};
 
-use crate::{
-    base::RUST, checkouts::CHECKOUTS_STAGE_PREFIX, cratesio::CRATESIO_STAGE_PREFIX, stage::Stage,
-};
+use crate::stage::{Stage, RST, RUST};
 
 #[cfg_attr(test, derive(Default))]
-#[derive(Clone, Deserialize, Serialize)]
+#[derive(Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
 pub(crate) struct Md {
     pub(crate) this: String,
+
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub(crate) deps: Vec<String>,
 
+    #[serde(default, skip_serializing_if = "BTreeSet::is_empty")]
     pub(crate) contexts: BTreeSet<BuildContext>,
 
-    pub(crate) stages: BTreeSet<DockerfileStage>,
+    stages: Vec<NamedStage>,
 }
+
 impl FromStr for Md {
     type Err = toml::de::Error;
     fn from_str(md_raw: &str) -> Result<Self, Self::Err> {
         toml::de::from_str(md_raw)
     }
 }
+
 impl Md {
     #[must_use]
     pub(crate) fn new(this: &str) -> Self {
         Self { this: this.to_owned(), deps: vec![], contexts: [].into(), stages: [].into() }
     }
 
-    pub(crate) fn to_string_pretty(&self) -> Result<String, toml::ser::Error> {
-        toml::to_string_pretty(self)
+    pub(crate) fn to_string_pretty(&self) -> Result<String> {
+        if !self.stages.iter().any(|NamedStage { name, .. }| *name == *RUST) {
+            bail!("Md is missing root stage {RST}")
+        }
+        toml::to_string_pretty(self).map_err(Into::into)
     }
 
     #[must_use]
-    pub(crate) fn rust_stage(&self) -> Option<DockerfileStage> {
-        self.stages.iter().find(|DockerfileStage { name, .. }| name == RUST).cloned()
+    pub(crate) fn rust_stage(&self) -> &str {
+        &self.stages.iter().find(|NamedStage { name, .. }| *name == *RUST).unwrap().script
     }
 
-    pub(crate) fn push_block(&mut self, name: &Stage, script: String) {
-        self.stages.insert(DockerfileStage { name: name.to_string(), script });
+    pub(crate) fn push_block(&mut self, name: &Stage, block: String) {
+        self.stages.push(NamedStage { name: name.clone(), script: block.trim().to_owned() });
     }
 
-    pub(crate) fn append_blocks(
-        &self,
-        dockerfile: &mut String,
-        visited: &mut BTreeSet<String>,
-    ) -> Result<()> {
-        let mut stages = self.stages.iter().filter(|DockerfileStage { name, .. }| name != RUST);
+    fn append_blocks(&self, dockerfile: &mut String, visited: &mut BTreeSet<Stage>) {
+        let mut stages = self.stages.iter().filter(|NamedStage { name, .. }| *name != *RUST);
 
-        let Some(DockerfileStage { name, script }) = stages.next() else {
-            bail!("BUG: has to have at least one stage")
-        };
+        let NamedStage { name, script } = stages.next().expect("at least one stage");
 
-        let mut filter = ""; // not an actual stage name
-        if name.starts_with(CHECKOUTS_STAGE_PREFIX) || name.starts_with(CRATESIO_STAGE_PREFIX) {
-            filter = name;
+        let mut filter = None;
+        if name.is_remote() {
+            filter = Some(name);
             if visited.insert(name.to_owned()) {
                 dockerfile.push_str(script);
             }
@@ -67,15 +68,15 @@ impl Md {
             // Otherwise, write it back in
             dockerfile.push_str(script);
         }
+        dockerfile.push('\n');
 
-        for DockerfileStage { name, script } in stages {
-            if name == filter {
+        for NamedStage { name, script } in stages {
+            if Some(name) == filter {
                 continue;
             }
             dockerfile.push_str(script);
+            dockerfile.push('\n');
         }
-
-        Ok(())
     }
 
     pub(crate) fn extend_from_externs(
@@ -103,12 +104,23 @@ impl Md {
 
         Ok(md_paths)
     }
+
+    pub(crate) fn block_along_with_predecessors(&self, mds: &[Md]) -> String {
+        let mut blocks = String::new();
+        let mut visited_cratesio_stages = BTreeSet::new();
+        for md in mds {
+            md.append_blocks(&mut blocks, &mut visited_cratesio_stages);
+            blocks.push('\n');
+        }
+        self.append_blocks(&mut blocks, &mut visited_cratesio_stages);
+        blocks
+    }
 }
 
-#[derive(Clone, Debug, Deserialize, Eq, Ord, PartialEq, PartialOrd, Serialize)]
-pub(crate) struct DockerfileStage {
-    pub(crate) name: String,
-    pub(crate) script: String,
+#[derive(Debug, Serialize, Deserialize)]
+struct NamedStage {
+    name: Stage,
+    script: String,
 }
 
 // pub(crate) const HDR: &str = "# ";
@@ -143,24 +155,17 @@ fn dec_decs() {
     assert_eq!(enc(as_dec), format!("{as_hex}"));
 }
 
-#[derive(Clone, Debug, Deserialize, Eq, Ord, PartialEq, PartialOrd, Serialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, Eq, PartialEq, Ord, PartialOrd)]
 pub(crate) struct BuildContext {
-    pub(crate) name: String, // TODO: constrain with Docker stage name pattern
-    pub(crate) uri: String,  // TODO: constrain with Docker build-context URIs
+    pub(crate) name: Stage,
+    /// Actually any BuildKit ctx works, we just only use local paths.
+    pub(crate) uri: Utf8PathBuf,
 }
+
 impl BuildContext {
     #[must_use]
     pub(crate) fn is_readonly_mount(&self) -> bool {
-        self.name.starts_with(CRATESIO_STAGE_PREFIX) ||
-        self.name.starts_with("cwd-") ||
-         // TODO: link this to the build script it's coming from
-         self.name.starts_with("crate_out-")
-    }
-}
-
-impl From<(String, String)> for BuildContext {
-    fn from((name, uri): (String, String)) -> Self {
-        Self { name, uri }
+        self.name.is_mount()
     }
 }
 
@@ -169,11 +174,14 @@ fn md_ser() {
     let md = Md {
         this: "711ba64e1183a234".to_owned(),
         deps: vec!["81529f4c2380d9ec".to_owned(), "88a4324b2aff6db9".to_owned()],
-        contexts: [BuildContext { name: "rust".to_owned(), uri: "docker-image://docker.io/library/rust:1.77.2-slim@sha256:090d8d4e37850b349b59912647cc7a35c6a64dba8168f6998562f02483fa37d7".to_owned() }].into(),
-        ..Default::default()
+        contexts: [BuildContext {
+            name: "rust".try_into().unwrap(),
+            uri: "/some/local/path".into(),
+        }]
+        .into(),
+        stages: vec![NamedStage { name: RUST.clone(), script: format!("FROM rust AS {RST}") }],
     };
 
-    let ser = md.to_string_pretty().unwrap();
     pretty_assertions::assert_eq!(
         r#"
 this = "711ba64e1183a234"
@@ -181,63 +189,61 @@ deps = [
     "81529f4c2380d9ec",
     "88a4324b2aff6db9",
 ]
-stages = []
 
 [[contexts]]
 name = "rust"
-uri = "docker-image://docker.io/library/rust:1.77.2-slim@sha256:090d8d4e37850b349b59912647cc7a35c6a64dba8168f6998562f02483fa37d7"
+uri = "/some/local/path"
+
+[[stages]]
+name = "rust-base"
+script = "FROM rust AS rust-base"
 "#[1..],
-        ser
+        md.to_string_pretty().unwrap()
     );
 }
 
 #[test]
 fn md_utils() {
-    use crate::base::RUST;
-
-    const LONG:&str= "docker-image://docker.io/library/rust:1.69.0-slim@sha256:8b85a8a6bf7ed968e24bab2eae6f390d2c9c8dbed791d3547fef584000f48f9e";
-
-    let origin = &format!(
-        r#"this = "9494aa6093cd94c9"
+    let origin = &r#"
+this = "9494aa6093cd94c9"
 deps = ["0dc1fe2644e3176a"]
 contexts = [
-  {{ name = "rust-base", uri = {LONG:?} }},
-  {{ name = "input_src_lib_rs--rustversion-1.0.9", uri = "/home/maison/.cargo/registry/src/github.com-1ecc6299db9ec823/rustversion-1.0.9" }},
-  {{ name = "crate_out-...", uri = "/home/maison/code/thing.git/target/debug/build/rustversion-ae69baa7face5565/out" }},
-  {{ name = "cwd-5b79a479b19b5f41", uri = "/tmp/CWD5b79a479b19b5f41" }},
+  { name = "input_src_lib_rs--rustversion-1.0.9", uri = "/home/maison/.cargo/registry/src/github.com-1ecc6299db9ec823/rustversion-1.0.9" },
+  { name = "crate_out-...", uri = "/home/maison/code/thing.git/target/debug/build/rustversion-ae69baa7face5565/out" },
+  { name = "cwd-5b79a479b19b5f41", uri = "/tmp/CWD5b79a479b19b5f41" },
 ]
 stages = []
-"#
-    );
+"#[1..];
 
     let this = "9494aa6093cd94c9".to_owned();
     let deps = vec!["0dc1fe2644e3176a".to_owned()];
     let contexts = [
-        BuildContext { name: RUST.to_owned(), uri: LONG.to_owned() },
         BuildContext {
-            name: "input_src_lib_rs--rustversion-1.0.9".to_owned(),
+            name: "input_src_lib_rs--rustversion-1.0.9".try_into().unwrap(),
             uri: "/home/maison/.cargo/registry/src/github.com-1ecc6299db9ec823/rustversion-1.0.9"
-                .to_owned(),
+                .into(),
         },
         BuildContext {
-            name: "crate_out-...".to_owned(),
+            name: "crate_out-...".try_into().unwrap(),
             uri: "/home/maison/code/thing.git/target/debug/build/rustversion-ae69baa7face5565/out"
-                .to_owned(),
+                .into(),
         },
         BuildContext {
-            name: "cwd-5b79a479b19b5f41".to_owned(),
-            uri: "/tmp/CWD5b79a479b19b5f41".to_owned(),
+            name: "cwd-5b79a479b19b5f41".try_into().unwrap(),
+            uri: "/tmp/CWD5b79a479b19b5f41".into(),
         },
     ];
     let md = Md::from_str(origin).unwrap();
     assert_eq!(md.this, this);
     assert_eq!(md.deps, deps);
-    assert_eq!(md.contexts, contexts.clone().into());
+    dbg!(&md.contexts);
+    pretty_assertions::assert_eq!(md.contexts, contexts.clone().into());
 
     let used: Vec<_> = contexts.into_iter().filter(BuildContext::is_readonly_mount).collect();
+    dbg!(&used);
+    assert_eq!(used.len(), 2);
     assert_eq!(&used[0].name[..10], "crate_out-");
     assert_eq!(&used[1].name[..4], "cwd-");
-    assert_eq!(used.len(), 2);
 }
 
 #[test]

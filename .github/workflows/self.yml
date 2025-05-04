@@ -56,8 +56,10 @@ jobs:
         shell: bash -euo pipefail {0}
     needs: bin
     env:
+      RUST_BACKTRACE: 1
       CARGOGREEN_LOG: trace
-      RUSTCBUILDX_LOG_PATH: /home/runner/work/supergreen/logs.txt
+      CARGOGREEN_LOG_PATH: /home/runner/work/supergreen/logs.txt
+      CARGOGREEN_FINAL_PATH: $GITHUB_JOB.Dockerfile
     steps:
     - run: docker info
     - run: docker buildx version
@@ -94,8 +96,7 @@ jobs:
         restore-keys: ${{ github.job }}-${{ runner.os }}-cargo-deps-
 
     - run: cargo fetch
-    - name: Envs
-      run: cargo green supergreen env
+    - run: cargo green supergreen env
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
@@ -133,6 +134,16 @@ jobs:
     - if: ${{ failure() || success() }}
       name: cargo-green logs
       run: tail -n9999999 ../logs.txt ; echo >../logs.txt
+
+    - if: ${{ failure() || success() }}
+      name: Maybe show final path diff
+      run: git --no-pager diff -- $CARGOGREEN_FINAL_PATH || true
+
+    - if: ${{ failure() || success() }}
+      name: Show final path
+      run: |
+        tail -n9999999 $CARGOGREEN_FINAL_PATH || true
+        git add $CARGOGREEN_FINAL_PATH || true
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
@@ -149,8 +160,10 @@ jobs:
         shell: bash -euo pipefail {0}
     needs: bin
     env:
+      RUST_BACKTRACE: 1
       CARGOGREEN_LOG: trace
-      RUSTCBUILDX_LOG_PATH: /home/runner/work/supergreen/logs.txt
+      CARGOGREEN_LOG_PATH: /home/runner/work/supergreen/logs.txt
+      CARGOGREEN_FINAL_PATH: $GITHUB_JOB.Dockerfile
     steps:
     - run: docker info
     - run: docker buildx version
@@ -187,8 +200,7 @@ jobs:
         restore-keys: ${{ github.job }}-${{ runner.os }}-cargo-deps-
 
     - run: cargo fetch
-    - name: Envs
-      run: cargo green supergreen env
+    - run: cargo green supergreen env
     - uses: taiki-e/install-action@v2
       with:
         tool: cargo-audit
@@ -229,6 +241,16 @@ jobs:
     - if: ${{ failure() || success() }}
       name: cargo-green logs
       run: tail -n9999999 ../logs.txt ; echo >../logs.txt
+
+    - if: ${{ failure() || success() }}
+      name: Maybe show final path diff
+      run: git --no-pager diff -- $CARGOGREEN_FINAL_PATH || true
+
+    - if: ${{ failure() || success() }}
+      name: Show final path
+      run: |
+        tail -n9999999 $CARGOGREEN_FINAL_PATH || true
+        git add $CARGOGREEN_FINAL_PATH || true
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
@@ -245,8 +267,10 @@ jobs:
         shell: bash -euo pipefail {0}
     needs: bin
     env:
+      RUST_BACKTRACE: 1
       CARGOGREEN_LOG: trace
-      RUSTCBUILDX_LOG_PATH: /home/runner/work/supergreen/logs.txt
+      CARGOGREEN_LOG_PATH: /home/runner/work/supergreen/logs.txt
+      CARGOGREEN_FINAL_PATH: $GITHUB_JOB.Dockerfile
     steps:
     - run: docker info
     - run: docker buildx version
@@ -283,8 +307,7 @@ jobs:
         restore-keys: ${{ github.job }}-${{ runner.os }}-cargo-deps-
 
     - run: cargo fetch
-    - name: Envs
-      run: cargo green supergreen env
+    - run: cargo green supergreen env
     - uses: taiki-e/install-action@v2
       with:
         tool: cargo-udeps
@@ -325,6 +348,16 @@ jobs:
     - if: ${{ failure() || success() }}
       name: cargo-green logs
       run: tail -n9999999 ../logs.txt ; echo >../logs.txt
+
+    - if: ${{ failure() || success() }}
+      name: Maybe show final path diff
+      run: git --no-pager diff -- $CARGOGREEN_FINAL_PATH || true
+
+    - if: ${{ failure() || success() }}
+      name: Show final path
+      run: |
+        tail -n9999999 $CARGOGREEN_FINAL_PATH || true
+        git add $CARGOGREEN_FINAL_PATH || true
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
@@ -362,6 +395,16 @@ jobs:
     - if: ${{ failure() || success() }}
       name: cargo-green logs
       run: tail -n9999999 ../logs.txt ; echo >../logs.txt
+
+    - if: ${{ failure() || success() }}
+      name: Maybe show final path diff
+      run: git --no-pager diff -- $CARGOGREEN_FINAL_PATH || true
+
+    - if: ${{ failure() || success() }}
+      name: Show final path
+      run: |
+        tail -n9999999 $CARGOGREEN_FINAL_PATH || true
+        git add $CARGOGREEN_FINAL_PATH || true
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
@@ -378,8 +421,10 @@ jobs:
         shell: bash -euo pipefail {0}
     needs: bin
     env:
+      RUST_BACKTRACE: 1
       CARGOGREEN_LOG: trace
-      RUSTCBUILDX_LOG_PATH: /home/runner/work/supergreen/logs.txt
+      CARGOGREEN_LOG_PATH: /home/runner/work/supergreen/logs.txt
+      CARGOGREEN_FINAL_PATH: $GITHUB_JOB.Dockerfile
     steps:
     - run: docker info
     - run: docker buildx version
@@ -416,8 +461,7 @@ jobs:
         restore-keys: ${{ github.job }}-${{ runner.os }}-cargo-deps-
 
     - run: cargo fetch
-    - name: Envs
-      run: cargo green supergreen env
+    - run: cargo green supergreen env
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
@@ -455,6 +499,16 @@ jobs:
     - if: ${{ failure() || success() }}
       name: cargo-green logs
       run: tail -n9999999 ../logs.txt ; echo >../logs.txt
+
+    - if: ${{ failure() || success() }}
+      name: Maybe show final path diff
+      run: git --no-pager diff -- $CARGOGREEN_FINAL_PATH || true
+
+    - if: ${{ failure() || success() }}
+      name: Show final path
+      run: |
+        tail -n9999999 $CARGOGREEN_FINAL_PATH || true
+        git add $CARGOGREEN_FINAL_PATH || true
     - name: cargo build net=OFF cache=OFF remote=OFF jobs=1
       run: cargo green -vv build --jobs=1 --all-targets --all-features --locked --frozen --offline |& tee ../_
     - if: ${{ failure() || success() }}
@@ -485,6 +539,16 @@ jobs:
     - if: ${{ failure() || success() }}
       name: cargo-green logs
       run: tail -n9999999 ../logs.txt ; echo >../logs.txt
+
+    - if: ${{ failure() || success() }}
+      name: Maybe show final path diff
+      run: git --no-pager diff -- $CARGOGREEN_FINAL_PATH || true
+
+    - if: ${{ failure() || success() }}
+      name: Show final path
+      run: |
+        tail -n9999999 $CARGOGREEN_FINAL_PATH || true
+        git add $CARGOGREEN_FINAL_PATH || true
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
@@ -501,6 +565,8 @@ jobs:
         grep Dirty     ../_                    && err=1
         grep Compiling ../_                    && err=1
         exit $err
+    - name: ...and shows same final path
+      run: git --no-pager diff --exit-code -- $CARGOGREEN_FINAL_PATH
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
@@ -529,6 +595,16 @@ jobs:
     - if: ${{ failure() || success() }}
       name: cargo-green logs
       run: tail -n9999999 ../logs.txt ; echo >../logs.txt
+
+    - if: ${{ failure() || success() }}
+      name: Maybe show final path diff
+      run: git --no-pager diff -- $CARGOGREEN_FINAL_PATH || true
+
+    - if: ${{ failure() || success() }}
+      name: Show final path
+      run: |
+        tail -n9999999 $CARGOGREEN_FINAL_PATH || true
+        git add $CARGOGREEN_FINAL_PATH || true
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
@@ -545,6 +621,8 @@ jobs:
         grep Dirty     ../_                    && err=1
         grep Compiling ../_                    && err=1
         exit $err
+    - name: ...and shows same final path
+      run: git --no-pager diff --exit-code -- $CARGOGREEN_FINAL_PATH
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
@@ -573,6 +651,16 @@ jobs:
     - if: ${{ failure() || success() }}
       name: cargo-green logs
       run: tail -n9999999 ../logs.txt ; echo >../logs.txt
+
+    - if: ${{ failure() || success() }}
+      name: Maybe show final path diff
+      run: git --no-pager diff -- $CARGOGREEN_FINAL_PATH || true
+
+    - if: ${{ failure() || success() }}
+      name: Show final path
+      run: |
+        tail -n9999999 $CARGOGREEN_FINAL_PATH || true
+        git add $CARGOGREEN_FINAL_PATH || true
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
@@ -589,8 +677,10 @@ jobs:
         shell: bash -euo pipefail {0}
     needs: bin
     env:
+      RUST_BACKTRACE: 1
       CARGOGREEN_LOG: trace
-      RUSTCBUILDX_LOG_PATH: /home/runner/work/supergreen/logs.txt
+      CARGOGREEN_LOG_PATH: /home/runner/work/supergreen/logs.txt
+      CARGOGREEN_FINAL_PATH: $GITHUB_JOB.Dockerfile
     steps:
     - run: docker info
     - run: docker buildx version
@@ -627,8 +717,7 @@ jobs:
         restore-keys: ${{ github.job }}-${{ runner.os }}-cargo-deps-
 
     - run: cargo fetch
-    - name: Envs
-      run: cargo green supergreen env
+    - run: cargo green supergreen env
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
@@ -666,6 +755,16 @@ jobs:
     - if: ${{ failure() || success() }}
       name: cargo-green logs
       run: tail -n9999999 ../logs.txt ; echo >../logs.txt
+
+    - if: ${{ failure() || success() }}
+      name: Maybe show final path diff
+      run: git --no-pager diff -- $CARGOGREEN_FINAL_PATH || true
+
+    - if: ${{ failure() || success() }}
+      name: Show final path
+      run: |
+        tail -n9999999 $CARGOGREEN_FINAL_PATH || true
+        git add $CARGOGREEN_FINAL_PATH || true
     - name: cargo test net=OFF cache=OFF remote=OFF jobs=1
       run: cargo green -vv test --jobs=1 --all-targets --all-features --locked --frozen --offline |& tee ../_
     - if: ${{ failure() || success() }}
@@ -696,6 +795,16 @@ jobs:
     - if: ${{ failure() || success() }}
       name: cargo-green logs
       run: tail -n9999999 ../logs.txt ; echo >../logs.txt
+
+    - if: ${{ failure() || success() }}
+      name: Maybe show final path diff
+      run: git --no-pager diff -- $CARGOGREEN_FINAL_PATH || true
+
+    - if: ${{ failure() || success() }}
+      name: Show final path
+      run: |
+        tail -n9999999 $CARGOGREEN_FINAL_PATH || true
+        git add $CARGOGREEN_FINAL_PATH || true
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
@@ -712,6 +821,8 @@ jobs:
         grep Dirty     ../_                    && err=1
         grep Compiling ../_                    && err=1
         exit $err
+    - name: ...and shows same final path
+      run: git --no-pager diff --exit-code -- $CARGOGREEN_FINAL_PATH
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
@@ -740,6 +851,16 @@ jobs:
     - if: ${{ failure() || success() }}
       name: cargo-green logs
       run: tail -n9999999 ../logs.txt ; echo >../logs.txt
+
+    - if: ${{ failure() || success() }}
+      name: Maybe show final path diff
+      run: git --no-pager diff -- $CARGOGREEN_FINAL_PATH || true
+
+    - if: ${{ failure() || success() }}
+      name: Show final path
+      run: |
+        tail -n9999999 $CARGOGREEN_FINAL_PATH || true
+        git add $CARGOGREEN_FINAL_PATH || true
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
@@ -756,6 +877,8 @@ jobs:
         grep Dirty     ../_                    && err=1
         grep Compiling ../_                    && err=1
         exit $err
+    - name: ...and shows same final path
+      run: git --no-pager diff --exit-code -- $CARGOGREEN_FINAL_PATH
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
@@ -784,6 +907,16 @@ jobs:
     - if: ${{ failure() || success() }}
       name: cargo-green logs
       run: tail -n9999999 ../logs.txt ; echo >../logs.txt
+
+    - if: ${{ failure() || success() }}
+      name: Maybe show final path diff
+      run: git --no-pager diff -- $CARGOGREEN_FINAL_PATH || true
+
+    - if: ${{ failure() || success() }}
+      name: Show final path
+      run: |
+        tail -n9999999 $CARGOGREEN_FINAL_PATH || true
+        git add $CARGOGREEN_FINAL_PATH || true
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
@@ -800,8 +933,10 @@ jobs:
         shell: bash -euo pipefail {0}
     needs: bin
     env:
+      RUST_BACKTRACE: 1
       CARGOGREEN_LOG: trace
-      RUSTCBUILDX_LOG_PATH: /home/runner/work/supergreen/logs.txt
+      CARGOGREEN_LOG_PATH: /home/runner/work/supergreen/logs.txt
+      CARGOGREEN_FINAL_PATH: $GITHUB_JOB.Dockerfile
     steps:
     - run: docker info
     - run: docker buildx version
@@ -838,8 +973,7 @@ jobs:
         restore-keys: ${{ github.job }}-${{ runner.os }}-cargo-deps-
 
     - run: cargo fetch
-    - name: Envs
-      run: cargo green supergreen env
+    - run: cargo green supergreen env
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
@@ -877,6 +1011,16 @@ jobs:
     - if: ${{ failure() || success() }}
       name: cargo-green logs
       run: tail -n9999999 ../logs.txt ; echo >../logs.txt
+
+    - if: ${{ failure() || success() }}
+      name: Maybe show final path diff
+      run: git --no-pager diff -- $CARGOGREEN_FINAL_PATH || true
+
+    - if: ${{ failure() || success() }}
+      name: Show final path
+      run: |
+        tail -n9999999 $CARGOGREEN_FINAL_PATH || true
+        git add $CARGOGREEN_FINAL_PATH || true
     - name: cargo check net=OFF cache=OFF remote=OFF jobs=$(nproc)
       run: cargo green -vv check --jobs=$(nproc) --all-targets --all-features --locked --frozen --offline |& tee ../_
     - if: ${{ failure() || success() }}
@@ -907,6 +1051,16 @@ jobs:
     - if: ${{ failure() || success() }}
       name: cargo-green logs
       run: tail -n9999999 ../logs.txt ; echo >../logs.txt
+
+    - if: ${{ failure() || success() }}
+      name: Maybe show final path diff
+      run: git --no-pager diff -- $CARGOGREEN_FINAL_PATH || true
+
+    - if: ${{ failure() || success() }}
+      name: Show final path
+      run: |
+        tail -n9999999 $CARGOGREEN_FINAL_PATH || true
+        git add $CARGOGREEN_FINAL_PATH || true
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
@@ -923,6 +1077,8 @@ jobs:
         grep Dirty     ../_                    && err=1
         grep Compiling ../_                    && err=1
         exit $err
+    - name: ...and shows same final path
+      run: git --no-pager diff --exit-code -- $CARGOGREEN_FINAL_PATH
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
@@ -951,6 +1107,16 @@ jobs:
     - if: ${{ failure() || success() }}
       name: cargo-green logs
       run: tail -n9999999 ../logs.txt ; echo >../logs.txt
+
+    - if: ${{ failure() || success() }}
+      name: Maybe show final path diff
+      run: git --no-pager diff -- $CARGOGREEN_FINAL_PATH || true
+
+    - if: ${{ failure() || success() }}
+      name: Show final path
+      run: |
+        tail -n9999999 $CARGOGREEN_FINAL_PATH || true
+        git add $CARGOGREEN_FINAL_PATH || true
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
@@ -967,8 +1133,10 @@ jobs:
         shell: bash -euo pipefail {0}
     needs: bin
     env:
+      RUST_BACKTRACE: 1
       CARGOGREEN_LOG: trace
-      RUSTCBUILDX_LOG_PATH: /home/runner/work/supergreen/logs.txt
+      CARGOGREEN_LOG_PATH: /home/runner/work/supergreen/logs.txt
+      CARGOGREEN_FINAL_PATH: $GITHUB_JOB.Dockerfile
     steps:
     - run: docker info
     - run: docker buildx version
@@ -1005,8 +1173,7 @@ jobs:
         restore-keys: ${{ github.job }}-${{ runner.os }}-cargo-deps-
 
     - run: cargo fetch
-    - name: Envs
-      run: cargo green supergreen env
+    - run: cargo green supergreen env
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
@@ -1044,6 +1211,16 @@ jobs:
     - if: ${{ failure() || success() }}
       name: cargo-green logs
       run: tail -n9999999 ../logs.txt ; echo >../logs.txt
+
+    - if: ${{ failure() || success() }}
+      name: Maybe show final path diff
+      run: git --no-pager diff -- $CARGOGREEN_FINAL_PATH || true
+
+    - if: ${{ failure() || success() }}
+      name: Show final path
+      run: |
+        tail -n9999999 $CARGOGREEN_FINAL_PATH || true
+        git add $CARGOGREEN_FINAL_PATH || true
     - name: cargo package net=OFF cache=OFF remote=OFF jobs=1
       run: cargo green -vv package --jobs=1 --all-features --locked --frozen --offline |& tee ../_
     - if: ${{ failure() || success() }}
@@ -1074,6 +1251,16 @@ jobs:
     - if: ${{ failure() || success() }}
       name: cargo-green logs
       run: tail -n9999999 ../logs.txt ; echo >../logs.txt
+
+    - if: ${{ failure() || success() }}
+      name: Maybe show final path diff
+      run: git --no-pager diff -- $CARGOGREEN_FINAL_PATH || true
+
+    - if: ${{ failure() || success() }}
+      name: Show final path
+      run: |
+        tail -n9999999 $CARGOGREEN_FINAL_PATH || true
+        git add $CARGOGREEN_FINAL_PATH || true
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
@@ -1090,8 +1277,10 @@ jobs:
         shell: bash -euo pipefail {0}
     needs: bin
     env:
+      RUST_BACKTRACE: 1
       CARGOGREEN_LOG: trace
-      RUSTCBUILDX_LOG_PATH: /home/runner/work/supergreen/logs.txt
+      CARGOGREEN_LOG_PATH: /home/runner/work/supergreen/logs.txt
+      CARGOGREEN_FINAL_PATH: $GITHUB_JOB.Dockerfile
     steps:
     - run: docker info
     - run: docker buildx version
@@ -1128,8 +1317,7 @@ jobs:
         restore-keys: ${{ github.job }}-${{ runner.os }}-cargo-deps-
 
     - run: cargo fetch
-    - name: Envs
-      run: cargo green supergreen env
+    - run: cargo green supergreen env
     - run: rustup component add clippy
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
@@ -1168,6 +1356,16 @@ jobs:
     - if: ${{ failure() || success() }}
       name: cargo-green logs
       run: tail -n9999999 ../logs.txt ; echo >../logs.txt
+
+    - if: ${{ failure() || success() }}
+      name: Maybe show final path diff
+      run: git --no-pager diff -- $CARGOGREEN_FINAL_PATH || true
+
+    - if: ${{ failure() || success() }}
+      name: Show final path
+      run: |
+        tail -n9999999 $CARGOGREEN_FINAL_PATH || true
+        git add $CARGOGREEN_FINAL_PATH || true
     - name: cargo clippy net=OFF cache=OFF remote=OFF jobs=1
       run: cargo green -vv clippy --jobs=1 --all-targets --all-features --locked --frozen --offline |& tee ../_
     - if: ${{ failure() || success() }}
@@ -1198,6 +1396,16 @@ jobs:
     - if: ${{ failure() || success() }}
       name: cargo-green logs
       run: tail -n9999999 ../logs.txt ; echo >../logs.txt
+
+    - if: ${{ failure() || success() }}
+      name: Maybe show final path diff
+      run: git --no-pager diff -- $CARGOGREEN_FINAL_PATH || true
+
+    - if: ${{ failure() || success() }}
+      name: Show final path
+      run: |
+        tail -n9999999 $CARGOGREEN_FINAL_PATH || true
+        git add $CARGOGREEN_FINAL_PATH || true
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
@@ -1214,6 +1422,8 @@ jobs:
         grep Dirty     ../_                    && err=1
         grep Compiling ../_                    && err=1
         exit $err
+    - name: ...and shows same final path
+      run: git --no-pager diff --exit-code -- $CARGOGREEN_FINAL_PATH
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
@@ -1242,6 +1452,16 @@ jobs:
     - if: ${{ failure() || success() }}
       name: cargo-green logs
       run: tail -n9999999 ../logs.txt ; echo >../logs.txt
+
+    - if: ${{ failure() || success() }}
+      name: Maybe show final path diff
+      run: git --no-pager diff -- $CARGOGREEN_FINAL_PATH || true
+
+    - if: ${{ failure() || success() }}
+      name: Show final path
+      run: |
+        tail -n9999999 $CARGOGREEN_FINAL_PATH || true
+        git add $CARGOGREEN_FINAL_PATH || true
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose

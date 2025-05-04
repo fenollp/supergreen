@@ -4,6 +4,11 @@ members = [
 ]
 resolver = "2"
 
+# [workspace.metadata.green]
+# base-image-inline = """
+# RUN exit 42
+# """
+
 [workspace.package]
 authors = [ "Pierre Fenoll <pierrefenoll@gmail.com>" ]
 categories = [
@@ -30,12 +35,17 @@ assertx = { version = "1", features = [ "logging" ] }
 camino = { version = "1", features = [ "serde1" ] }
 cargo-lock = "10"
 cargo-subcommand-metadata = "0, >=0.1"
+cargo_toml = "0, >=0.21"
 chrono = { version = "0, >=0.4", default-features = false, features = [ "now" ] }
+# clap = { version = "4", features = [ "derive" ] }
+# clap-cargo = { version = "0, >=0.15", features = [ "cargo_metadata", "clap" ] }
+crc32fast = "1"
 env_logger = "0, >=0.11"
 futures = "0, >=0.3"
 home = "0, >=0.5"
 log = "0, >=0.4"
 nutype = "0, >=0.4"
+pico-args = { version = "0, >=0.5", features = [ "eq-separator" ] }
 pretty_assertions = "1"
 reqwest = { version = "0, >=0.12", default-features = false, features = [ "rustls-tls" ] }
 rustc_version = "0, >=0.4"
@@ -45,6 +55,7 @@ serde-jsonlines = { version = "0, >=0.6", features = [ "async" ] }
 serde_json = "1"
 sha256 = "1"
 szyk = "1"
+test-case = "3"
 tokio = { version = "1", features = [ "io-util", "macros", "process", "rt-multi-thread", "time" ] }
 toml = "0, >=0.8"
 url = "2"

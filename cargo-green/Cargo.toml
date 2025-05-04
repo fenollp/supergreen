@@ -9,6 +9,8 @@ name = "cargo-green"
 repository.workspace = true
 version.workspace = true
 
+#[package.metadata.green]
+
 # [profile.release]
 # codegen-units = 1
 # Try tuning rustc codegen options to optimize for speed (suggest mold?)
@@ -24,16 +26,21 @@ anyhow.workspace = true
 camino.workspace = true
 cargo-lock.workspace = true
 cargo-subcommand-metadata.workspace = true
+cargo_toml.workspace = true
 chrono.workspace = true
+# clap.workspace = true
+# clap-cargo.workspace = true
+crc32fast.workspace = true
 env_logger.workspace = true
 futures.workspace = true
 home.workspace = true
 log.workspace = true
-nutype.workspace = true
-pretty_assertions.workspace = true         # TODO: drop once !dbg
+nutype = { workspace = true, features = [ "serde" ] }
+pico-args.workspace = true
+pretty_assertions.workspace = true                    # TODO: drop once !dbg
 reqwest.workspace = true
 rustc_version.workspace = true
-rustflags.workspace = true                 # TODO: drop once !dbg
+rustflags.workspace = true                            # TODO: drop once !dbg
 serde.workspace = true
 serde-jsonlines.workspace = true
 serde_json.workspace = true
@@ -45,3 +52,4 @@ url.workspace = true
 
 [dev-dependencies]
 assertx.workspace = true
+test-case.workspace = true

@@ -5,14 +5,14 @@ use anyhow::{bail, Context, Result};
 use camino::{Utf8Path, Utf8PathBuf};
 use tokio::process::Command;
 
-use crate::{extensions::ShowCmd, stage::Stage};
+use crate::{ext::ShowCmd, stage::Stage};
 
-pub(crate) const CHECKOUTS_STAGE_PREFIX: &str = "checkout-";
-
+// https://docs.docker.com/reference/dockerfile/#add---keep-git-dir
+// --build-arg BUILDKIT_CONTEXT_KEEP_GIT_DIR=0 https://docs.docker.com/engine/reference/builder/#buildkit-built-in-build-args
 pub(crate) async fn into_stage(
     krate_manifest_dir: &Utf8Path,
     krate_repository: &str,
-) -> Result<(Stage, &'static str, Utf8PathBuf, String)> {
+) -> Result<(Stage, Utf8PathBuf, String)> {
     let commit = {
         let short = krate_manifest_dir.file_name().unwrap();
 
@@ -29,8 +29,7 @@ pub(crate) async fn into_stage(
     };
 
     let dir = krate_manifest_dir.parent().unwrap().file_name().unwrap();
-
-    let stage = Stage::try_new(format!("{CHECKOUTS_STAGE_PREFIX}{dir}-{commit}"))?;
+    let stage = Stage::checkout(dir, &commit)?;
 
     let repo = if krate_repository.ends_with(".git") {
         krate_repository
@@ -44,8 +43,7 @@ FROM scratch AS {stage}
 ADD --keep-git-dir=false \
   {repo}#{commit} /
 "#,
-    )[1..]
-        .to_owned();
+    );
 
-    Ok((stage, "/", krate_manifest_dir.into(), block))
+    Ok((stage, krate_manifest_dir.to_owned(), block))
 }

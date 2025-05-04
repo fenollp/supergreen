@@ -3,7 +3,7 @@ use std::collections::BTreeSet;
 use anyhow::{bail, Result};
 use camino::{Utf8Path, Utf8PathBuf};
 
-use crate::extensions::Popped;
+use crate::ext::Popped;
 
 pub(crate) const ALL_CRATE_TYPES: &[&str] =
     &["bin", "lib", "rlib", "dylib", "cdylib", "staticlib", "proc-macro"];
@@ -44,7 +44,7 @@ pub(crate) struct RustcArgs {
 pub(crate) fn as_rustc(
     pwd: &Utf8Path,
     arguments: &[String],
-    out_dir_var: Option<&str>,
+    out_dir_var: Option<&Utf8Path>,
 ) -> Result<(RustcArgs, Vec<String>)> {
     let mut args = vec![];
 
@@ -191,7 +191,7 @@ pub(crate) fn as_rustc(
         // We may as well get metadata from the input Rust file: $HOME/work/supergreen/supergreen/target/debug/build/slab-b0340a0384800aca/build-script-build
         // TODO: decide which to use
 
-        let mut out_dir = Utf8PathBuf::from(out_dir);
+        let mut out_dir = out_dir.to_owned();
         assert_eq!(out_dir.file_name(), Some("out"));
         let exploded = out_dir.iter().rev().take(4).collect::<Vec<_>>();
         match exploded[..] {
@@ -246,6 +246,7 @@ fn target_path_from_out_dir() {
 
 #[cfg(test)]
 mod tests {
+    use camino::Utf8PathBuf;
     use pretty_assertions::assert_eq;
 
     use super::{as_rustc, RustcArgs};
@@ -254,7 +255,7 @@ mod tests {
     const PWD: &str = "$HOME/⺟/rustcbuildx.git";
 
     fn as_argument(arg: &str) -> String {
-        arg.to_owned().replace("$PWD", PWD).replace("$HOME", HOME)
+        arg.replace("$PWD", PWD).replace("$HOME", HOME)
     }
 
     fn as_arguments(args: &[&str]) -> Vec<String> {
@@ -760,10 +761,11 @@ mod tests {
             "$HOME/work/supergreen/supergreen/target/debug/build/slab-b0340a0384800aca/build-script-build",
         ]);
 
-        let out_dir_var =
-            Some("$HOME/work/supergreen/supergreen/target/debug/build/slab-94793bb2b78c57b5/out");
+        let out_dir_var = Some(Utf8PathBuf::from(
+            "$HOME/work/supergreen/supergreen/target/debug/build/slab-94793bb2b78c57b5/out",
+        ));
 
-        let (st, args) = as_rustc(PWD.into(), &arguments, out_dir_var).unwrap();
+        let (st, args) = as_rustc(PWD.into(), &arguments, out_dir_var.as_deref()).unwrap();
 
         assert_eq!(
             st,

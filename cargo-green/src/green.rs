@@ -1,13 +1,790 @@
 use std::{collections::HashSet, env};
 
-use anyhow::{anyhow, bail, Context, Result};
-use camino::{absolute_utf8, Utf8PathBuf};
+use anyhow::{anyhow, bail, Result};
+use camino::Utf8PathBuf;
 use cargo_toml::Manifest;
 use serde::{Deserialize, Serialize};
 
-use crate::{base::RUST, lockfile::find_manifest_path};
+#[cfg(test)]
+use crate::runner::Network;
+use crate::{
+    add::{Add, ENV_ADD_APK, ENV_ADD_APT, ENV_ADD_APT_GET},
+    base_image::{BaseImage, ENV_BASE_IMAGE, ENV_BASE_IMAGE_INLINE},
+    containerfile::Containerfile,
+    image_uri::ImageUri,
+    lockfile::find_manifest_path,
+    runner::Runner,
+    stage::RST,
+    PKG,
+};
 
-// use std::fmt;
+// Envs that override Cargo.toml settings
+pub(crate) const ENV_CACHE_IMAGES: &str = "CARGOGREEN_CACHE_IMAGES";
+pub(crate) const ENV_INCREMENTAL: &str = "CARGOGREEN_INCREMENTAL";
+pub(crate) const ENV_SET_ENVS: &str = "CARGOGREEN_SET_ENVS";
+
+#[derive(Debug, Serialize, Deserialize, Default, PartialEq, Eq)]
+#[serde(default)]
+#[serde(deny_unknown_fields)]
+#[serde(rename_all = "kebab-case")]
+pub(crate) struct Green {
+    // Pick which executor to use: "docker" (default), "podman" or "none".
+    //
+    // # Use by setting this environment variable (no Cargo.toml setting):
+    // CARGOGREEN_RUNNER="docker"
+    pub(crate) runner: Runner,
+
+    // Whether to wrap incremental compilation, defaults to false.
+    //
+    // See https://doc.rust-lang.org/cargo/reference/config.html#buildincremental
+    //
+    // # Use by setting this environment variable (no Cargo.toml setting):
+    // CARGOGREEN_INCREMENTAL="1"
+    #[serde(skip_serializing_if = "<&bool as std::ops::Not>::not")]
+    pub(crate) incremental: bool,
+
+    // Sets which BuildKit frontend syntax to use.
+    //
+    // See https://docs.docker.com/build/buildkit/frontend/#stable-channel
+    //
+    // # Use by setting this environment variable (no Cargo.toml setting):
+    // CARGOGREEN_SYNTAX="docker-image://docker.io/docker/dockerfile:1"
+    pub(crate) syntax: ImageUri,
+
+    // Sets which BuildKit builder to use.
+    //
+    // See https://docs.docker.com/build/builders/
+    //
+    // # Use by setting this environment variable (no Cargo.toml setting):
+    // CARGOGREEN_BUILDER_IMAGE="docker-image://docker.io/moby/buildkit:latest"
+    // CARGOGREEN_BUILDER_IMAGE="docker-image://docker.io/moby/buildkit:buildx-stable-1"
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub(crate) builder_image: Option<ImageUri>,
+
+    // Image paths with registry information.
+    //
+    // See type=registry at https://docs.docker.com/build/cache/backends/
+    //
+    // cache-images = [ "docker-image://my.org/team/my-project", "docker-image://some.org/global/cache" ]
+    //
+    // # Use by setting this environment variable (no Cargo.toml setting):
+    // # Note: values here are comma-separated.
+    // CARGOGREEN_CACHE_IMAGES="docker-image://my.org/team/my-project,docker-image://some.org/global/cache"
+    #[serde(skip_serializing_if = "Vec::is_empty")]
+    pub(crate) cache_images: Vec<ImageUri>,
+    // TODO? error when registry is unreachable
+
+    // Write final Dockerfile to given path.
+    //
+    // Helps e.g. create a Dockerfile with caching for dependencies.
+    //
+    // # Use by setting this environment variable (no Cargo.toml setting):
+    // CARGOGREEN_FINAL_PATH="$PWD/my-bin@1.0.0.Dockerfile"
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub(crate) final_path: Option<Utf8PathBuf>,
+
+    #[serde(flatten)]
+    pub(crate) image: BaseImage,
+
+    // Pass environment variables through to build runner.
+    // See also:
+    //   `packages`
+    //
+    // May be useful if a build script exported some vars that a package then reads.
+    // About $GIT_AUTH_TOKEN: https://docs.docker.com/build/building/secrets/#git-authentication-for-remote-contexts
+    //
+    // set-envs = [ "GIT_AUTH_TOKEN", "TYPENUM_BUILD_CONSTS", "TYPENUM_BUILD_OP" ]
+    //
+    // # This environment variable takes precedence over any Cargo.toml settings:
+    // # Note: values here are comma-separated.
+    // CARGOGREEN_SET_ENVS="GIT_AUTH_TOKEN,TYPENUM_BUILD_CONSTS,TYPENUM_BUILD_OP"
+    //
+    // NOTE: this doesn't (yet) accumulate dependencies' set-envs values!
+    #[serde(skip_serializing_if = "Vec::is_empty")]
+    pub(crate) set_envs: Vec<String>,
+
+    // Add OS packages to the base image
+    // See also:
+    //   `add.apk`
+    //   `add.apt`
+    //   `add.apt-get`
+    //
+    // # Inspect the resulting base image with:
+    // CARGOGREEN_ADD_APT=libssl-dev,zlib1g-dev cargo green supergreen env CARGOGREEN_BASE_IMAGE_INLINE
+    #[serde(skip_serializing_if = "Add::is_empty")]
+    pub(crate) add: Add,
+}
+
+impl Green {
+    pub(crate) fn new_containerfile(&self) -> Containerfile {
+        Containerfile::with_syntax(&self.syntax)
+    }
+
+    // TODO: handle worskpace cfg + merging fields
+    // TODO: find a way to read cfg on `cargo install <non-local code>` cc https://github.com/rust-lang/cargo/issues/9700#issuecomment-2748617896
+    pub(crate) fn new_from_env_then_manifest() -> Result<Self> {
+        let manifest_path =
+            find_manifest_path().map_err(|e| anyhow!("Can't find package manifest: {e}"))?;
+
+        let manifest = Manifest::from_path(&manifest_path)
+            .map_err(|e| anyhow!("Can't read package manifest {manifest_path}: {e}"))?;
+
+        Self::try_new(manifest).map_err(|e| anyhow!("Failed reading {PKG} configuration: {e}"))
+    }
+
+    fn try_new(manifest: Manifest) -> Result<Self> {
+        let mut green = Self::default();
+        if let Some(metadata) = manifest.package.and_then(|x| x.metadata) {
+            #[derive(Deserialize, Default)]
+            struct GreenMetadata {
+                green: Option<Green>,
+            }
+            if let GreenMetadata { green: Some(from_manifest) } = metadata.try_into()? {
+                green = from_manifest;
+            }
+        }
+
+        if let Ok(val) = env::var(ENV_INCREMENTAL) {
+            green.incremental = val == "1";
+        }
+
+        let mut origin = "[metadata.green.cache-images]".to_owned();
+        if let Ok(val) = env::var(ENV_CACHE_IMAGES) {
+            origin = format!("${ENV_CACHE_IMAGES}");
+            green.cache_images = val
+                .split(',')
+                .map(|x| ImageUri::try_new(x).map_err(|e| anyhow!("{origin} {e}")))
+                .collect::<Result<_>>()?;
+        }
+        if green.cache_images.len() != green.cache_images.iter().collect::<HashSet<_>>().len() {
+            bail!("{origin} contains duplicates")
+        }
+        for item in &green.cache_images {
+            if !item.noscheme().contains('/') {
+                bail!("{origin} must contain a registry: {item:?}")
+            }
+            if item.tagged() || item.locked() {
+                bail!("{origin} must not contain a tag nor digest: {item:?}")
+            }
+        }
+
+        if let Ok(val) = env::var(ENV_BASE_IMAGE) {
+            let val = val.try_into().map_err(|e| anyhow!("${ENV_BASE_IMAGE} {e}"))?;
+            green.image = BaseImage::from_image(val);
+        }
+
+        let mut origin = "[metadata.green.base-image-inline]".to_owned();
+        if let Ok(val) = env::var(ENV_BASE_IMAGE_INLINE) {
+            origin = format!("${ENV_BASE_IMAGE_INLINE}");
+            green.image.base_image_inline = Some(val);
+        }
+        if let Some(ref base_image_inline) = green.image.base_image_inline {
+            if base_image_inline.is_empty() {
+                bail!("{origin} is empty")
+            }
+            // TODO: drop this requirement by allowing a `base-image-stage` override
+            //FIXME: have to repeat base stage per stage actually => no naming constraint then anyway
+            if !base_image_inline.contains(&format!(" AS {RST}\n"))
+                && !base_image_inline.contains(&format!(" as {RST}\n"))
+            {
+                bail!("{origin} does not provide a stage named '{RST}'")
+            }
+        }
+
+        if let Some(ref base_image_inline) = green.image.base_image_inline {
+            let base = green.image.base_image.noscheme();
+            if base.is_empty() || !base_image_inline.contains(&format!(" {base} ")) {
+                bail!("Make sure to match [metadata.green.base-image] with the image URL used in [metadata.green.base-image-inline]")
+            }
+        }
+        if green.image.is_unset() {
+            green.image = BaseImage::from_local_rustc();
+        }
+
+        let mut origin = "[metadata.green.set-envs]".to_owned();
+        if let Ok(val) = env::var(ENV_SET_ENVS) {
+            origin = format!("${ENV_SET_ENVS}");
+            if val.is_empty() {
+                bail!("{origin} is empty")
+            }
+            green.set_envs = val.split(',').map(ToOwned::to_owned).collect();
+        }
+        if !green.set_envs.is_empty() {
+            if bad_names(&green.set_envs) {
+                bail!("{origin} contains empty names, quotes or whitespace")
+            }
+            if green.set_envs.iter().any(|var| var.starts_with("CARGOGREEN_")) {
+                bail!("{origin} contains CARGOGREEN_* names")
+            }
+            if green.set_envs.len() != green.set_envs.iter().collect::<HashSet<_>>().len() {
+                bail!("{origin} contains duplicates")
+            }
+        }
+
+        for (field, (var, setting)) in [
+            (&mut green.add.apk, (ENV_ADD_APK, "apk")),
+            (&mut green.add.apt, (ENV_ADD_APT, "apt")),
+            (&mut green.add.apt_get, (ENV_ADD_APT_GET, "apt-get")),
+        ] {
+            let mut origin = format!("[metadata.green.add.{setting}]");
+            if let Ok(val) = env::var(var) {
+                origin = format!("${var}");
+                if val.is_empty() {
+                    bail!("{origin} is empty")
+                }
+                *field = val.split(',').map(ToOwned::to_owned).collect();
+            }
+            if !field.is_empty() {
+                if bad_names(field) {
+                    bail!("{origin} contains empty names, quotes or whitespace")
+                }
+                if field.len() != field.iter().collect::<HashSet<_>>().len() {
+                    bail!("{origin} contains duplicates")
+                }
+            }
+        }
+
+        Ok(green)
+    }
+}
+
+#[must_use]
+fn bad_names(names: &[String]) -> bool {
+    names.iter().any(|x| x.is_empty() || x.contains([' ', '\'', '"']) || x.trim() != x)
+}
+
+#[cfg(test)]
+#[test_case::test_matrix(["", "[package.metadata.green]", "[package.metadata.other]"])]
+fn metadata_green_ok(conf: &str) {
+    let manifest = Manifest::from_str(&format!(
+        r#"
+[package]
+name = "test-package"
+
+{conf}
+"#
+    ))
+    .unwrap();
+    let mut green = Green::try_new(manifest).unwrap();
+    assert!(!green.image.base_image.is_empty());
+    green.image.base_image = ImageUri::default();
+    assert!(green.image.base_image.is_empty());
+    assert_eq!(green, Green::default());
+}
+
+//
+
+#[test]
+fn metadata_green_add_ok() {
+    let manifest = Manifest::from_str(
+        r#"
+[package]
+name = "test-package"
+
+[package.metadata.green]
+add.apt = [ "libpq-dev", "pkg-config" ]
+add.apt-get = [ "libpq-dev", "pkg-config" ]
+add.apk = [ "libpq-dev", "pkgconf" ]
+"#,
+    )
+    .unwrap();
+    let green = Green::try_new(manifest).unwrap();
+    assert_eq!(green.add.apt, vec!["libpq-dev".to_owned(), "pkg-config".to_owned()]);
+    assert_eq!(green.add.apt_get, vec!["libpq-dev".to_owned(), "pkg-config".to_owned()]);
+    assert_eq!(green.add.apk, vec!["libpq-dev".to_owned(), "pkgconf".to_owned()]);
+}
+
+#[cfg(test)]
+#[test_case::test_matrix(["apt", "apt-get", "apk"])]
+fn metadata_green_add_empty_name(setting: &str) {
+    let manifest = Manifest::from_str(&format!(
+        r#"
+[package]
+name = "test-package"
+
+[package.metadata.green]
+add.{setting} = [ "" ]
+"#
+    ))
+    .unwrap();
+    let err = Green::try_new(manifest).err().unwrap().to_string();
+    assert!(err.contains("empty"), "In: {err}");
+}
+
+#[cfg(test)]
+#[test_case::test_matrix(["apt", "apt-get", "apk"])]
+fn metadata_green_add_quotes(setting: &str) {
+    let manifest = Manifest::from_str(&format!(
+        r#"
+[package]
+name = "test-package"
+
+[package.metadata.green]
+add.{setting} = [ "'a'" ]
+"#
+    ))
+    .unwrap();
+    let err = Green::try_new(manifest).err().unwrap().to_string();
+    assert!(err.contains("quotes"), "In: {err}");
+}
+
+#[cfg(test)]
+#[test_case::test_matrix(["apt", "apt-get", "apk"])]
+fn metadata_green_add_whitespace(setting: &str) {
+    let manifest = Manifest::from_str(&format!(
+        r#"
+[package]
+name = "test-package"
+
+[package.metadata.green]
+add.{setting} = [ "a b" ]
+"#
+    ))
+    .unwrap();
+    let err = Green::try_new(manifest).err().unwrap().to_string();
+    assert!(err.contains("space"), "In: {err}");
+}
+
+#[cfg(test)]
+#[test_case::test_matrix(["apt", "apt-get", "apk"])]
+fn metadata_green_add_duplicates(setting: &str) {
+    let manifest = Manifest::from_str(&format!(
+        r#"
+[package]
+name = "test-package"
+
+[package.metadata.green]
+add.{setting} = [ "a", "b", "a" ]
+            "#
+    ))
+    .unwrap();
+    let err = Green::try_new(manifest).err().unwrap().to_string();
+    assert!(err.contains("duplicates"), "In: {err}");
+}
+
+//
+
+#[test]
+fn metadata_green_set_envs_ok() {
+    let manifest = Manifest::from_str(
+        r#"
+[package]
+name = "test-package"
+
+[package.metadata.green]
+set-envs = [ "GIT_AUTH_TOKEN", "TYPENUM_BUILD_CONSTS", "TYPENUM_BUILD_OP" ]
+"#,
+    )
+    .unwrap();
+    let green = Green::try_new(manifest).unwrap();
+    assert_eq!(
+        green.set_envs,
+        vec![
+            "GIT_AUTH_TOKEN".to_owned(),
+            "TYPENUM_BUILD_CONSTS".to_owned(),
+            "TYPENUM_BUILD_OP".to_owned()
+        ]
+    );
+}
+
+#[test]
+fn metadata_green_set_envs_empty_var() {
+    let manifest = Manifest::from_str(
+        r#"
+[package]
+name = "test-package"
+
+[package.metadata.green]
+set-envs = [ "" ]
+"#,
+    )
+    .unwrap();
+    let err = Green::try_new(manifest).err().unwrap().to_string();
+    assert!(err.contains("empty name"), "In: {err}");
+}
+
+#[test]
+fn metadata_green_set_envs_quotes() {
+    let manifest = Manifest::from_str(
+        r#"
+[package]
+name = "test-package"
+
+[package.metadata.green]
+set-envs = [ "'a'" ]
+"#,
+    )
+    .unwrap();
+    let err = Green::try_new(manifest).err().unwrap().to_string();
+    assert!(err.contains("quotes"), "In: {err}");
+}
+
+#[test]
+fn metadata_green_set_envs_whitespace() {
+    let manifest = Manifest::from_str(
+        r#"
+[package]
+name = "test-package"
+
+[package.metadata.green]
+set-envs = [ "A B" ]
+"#,
+    )
+    .unwrap();
+    let err = Green::try_new(manifest).err().unwrap().to_string();
+    assert!(err.contains("space"), "In: {err}");
+}
+
+#[test]
+fn metadata_green_set_envs_our_vars() {
+    let manifest = Manifest::from_str(
+        r#"
+[package]
+name = "test-package"
+
+[package.metadata.green]
+set-envs = [ "CARGOGREEN_LOG" ]
+"#,
+    )
+    .unwrap();
+    let err = Green::try_new(manifest).err().unwrap().to_string();
+    assert!(err.contains(crate::rustc_wrapper::ENV), "In: {err}");
+}
+
+#[test]
+fn metadata_green_set_envs_duplicates() {
+    let manifest = Manifest::from_str(
+        r#"
+[package]
+name = "test-package"
+
+[package.metadata.green]
+set-envs = [ "A", "B", "A" ]
+"#,
+    )
+    .unwrap();
+    let err = Green::try_new(manifest).err().unwrap().to_string();
+    assert!(err.contains("duplicates"), "In: {err}");
+}
+
+//
+
+#[test]
+fn metadata_green_base_image_ok() {
+    let manifest = Manifest::from_str(
+        r#"
+[package]
+name = "test-package"
+
+[package.metadata.green]
+base-image = "docker-image://docker.io/library/rust:1"
+"#,
+    )
+    .unwrap();
+    let green = Green::try_new(manifest).unwrap();
+    assert_eq!(
+        green.image,
+        BaseImage {
+            base_image: ImageUri::std("rust:1"),
+            base_image_inline: None,
+            with_network: Network::None,
+        }
+    );
+}
+
+#[test]
+fn metadata_green_base_image_bad_scheme() {
+    let manifest = Manifest::from_str(
+        r#"
+[package]
+name = "test-package"
+
+[package.metadata.green]
+base-image = "docker.io/library/rust:1"
+"#,
+    )
+    .unwrap();
+    let err = Green::try_new(manifest).err().unwrap().to_string();
+    assert!(err.contains("scheme"), "In: {err}");
+}
+
+#[test]
+fn metadata_green_base_image_whitespace() {
+    let manifest = Manifest::from_str(
+        r#"
+[package]
+name = "test-package"
+
+[package.metadata.green]
+base-image = " docker-image://docker.io/library/rust:1  "
+"#,
+    )
+    .unwrap();
+    let err = Green::try_new(manifest).err().unwrap().to_string();
+    assert!(err.contains("space"), "In: {err}");
+}
+
+#[test]
+fn metadata_green_base_image_and_inline() {
+    let manifest = Manifest::from_str(
+        r#"
+[package]
+name = "test-package"
+
+[package.metadata.green]
+base-image = "docker-image://docker.io/library/rust:1"
+base-image-inline = """
+FROM rust:1 AS rust-base
+RUN --mount=from=some-context,dst=/tmp/some-context cp -r /tmp/some-context ./
+RUN --mount=type=secret,id=aws
+"""
+"#,
+    )
+    .unwrap();
+    let err = Green::try_new(manifest).err().unwrap().to_string();
+    assert!(err.contains("to match"), "In: {err}");
+}
+
+//
+
+#[test]
+fn metadata_green_base_image_inline_ok() {
+    let manifest = Manifest::from_str(
+            r#"
+[package]
+name = "test-package"
+
+[package.metadata.green]
+base-image = "docker-image://rust:1"
+base-image-inline = """
+# syntax = ghcr.io/reproducible-containers/buildkit-nix:v0.1.1@sha256:7d4c42a5c6baea2b21145589afa85e0862625e6779c89488987266b85e088021 <-- gets ignored
+FROM rust:1 AS rust-base
+RUN --mount=from=some-context,dst=/tmp/some-context cp -r /tmp/some-context ./
+RUN --mount=type=secret,id=aws
+"""
+"#,
+        )
+        .unwrap();
+    let green = Green::try_new(manifest).unwrap();
+    assert_eq!(green.image, BaseImage {
+        base_image: ImageUri::try_new("docker-image://rust:1").unwrap(),
+        base_image_inline:
+            Some(
+                r#"
+# syntax = ghcr.io/reproducible-containers/buildkit-nix:v0.1.1@sha256:7d4c42a5c6baea2b21145589afa85e0862625e6779c89488987266b85e088021 <-- gets ignored
+FROM rust:1 AS rust-base
+RUN --mount=from=some-context,dst=/tmp/some-context cp -r /tmp/some-context ./
+RUN --mount=type=secret,id=aws
+"#[1..]
+                    .to_owned()
+            ),
+            with_network: Network::None,
+        });
+}
+
+#[test]
+fn metadata_green_base_image_inline_with_network_ok() {
+    let manifest = Manifest::from_str(
+            r#"
+[package]
+name = "test-package"
+
+[package.metadata.green]
+base-image = "docker-image://rust:1"
+with-network = "default"
+base-image-inline = """
+# syntax = ghcr.io/reproducible-containers/buildkit-nix:v0.1.1@sha256:7d4c42a5c6baea2b21145589afa85e0862625e6779c89488987266b85e088021 <-- gets ignored
+FROM rust:1 AS rust-base
+RUN --mount=from=some-context,dst=/tmp/some-context cp -r /tmp/some-context ./
+RUN --mount=type=secret,id=aws
+"""
+"#,
+        )
+        .unwrap();
+    let green = Green::try_new(manifest).unwrap();
+    assert_eq!(green.image, BaseImage {
+        base_image: ImageUri::try_new("docker-image://rust:1").unwrap(),
+        base_image_inline:
+            Some(
+                r#"
+# syntax = ghcr.io/reproducible-containers/buildkit-nix:v0.1.1@sha256:7d4c42a5c6baea2b21145589afa85e0862625e6779c89488987266b85e088021 <-- gets ignored
+FROM rust:1 AS rust-base
+RUN --mount=from=some-context,dst=/tmp/some-context cp -r /tmp/some-context ./
+RUN --mount=type=secret,id=aws
+"#[1..]
+                    .to_owned()
+            ),
+            with_network: Network::Default,
+        });
+}
+
+#[test]
+fn metadata_green_base_image_inline_empty() {
+    let manifest = Manifest::from_str(
+        r#"
+[package]
+name = "test-package"
+
+[package.metadata.green]
+base-image-inline = ""
+"#,
+    )
+    .unwrap();
+    let err = Green::try_new(manifest).err().unwrap().to_string();
+    assert!(err.contains("empty"), "In: {err}");
+}
+
+#[test]
+fn metadata_green_base_image_inline_bad_stage() {
+    let manifest = Manifest::from_str(
+        r#"
+[package]
+name = "test-package"
+
+[package.metadata.green]
+base-image-inline = """
+FROM xyz AS not-rust
+RUN exit 42
+"""
+"#,
+    )
+    .unwrap();
+    let err = Green::try_new(manifest).err().unwrap().to_string();
+    assert!(err.contains("provide"), "In: {err}");
+    assert!(err.contains("stage"), "In: {err}");
+    assert!(err.contains("'rust-base'"), "In: {err}");
+}
+
+//
+
+#[test]
+fn metadata_green_cache_images_ok() {
+    let manifest = Manifest::from_str(
+        r#"
+[package]
+name = "test-package"
+
+[package.metadata.green]
+cache-images = [
+  "docker-image://some-registry.com/dir/image",
+  "docker-image://other.registry/dir2/image3",
+]
+"#,
+    )
+    .unwrap();
+    let green = Green::try_new(manifest).unwrap();
+    assert_eq!(
+        green.cache_images,
+        vec![
+            ImageUri::try_new("docker-image://some-registry.com/dir/image").unwrap(),
+            ImageUri::try_new("docker-image://other.registry/dir2/image3").unwrap(),
+        ]
+    );
+}
+
+#[test]
+fn metadata_green_cache_images_dupes() {
+    let manifest = Manifest::from_str(
+        r#"
+[package]
+name = "test-package"
+
+[package.metadata.green]
+cache-images = [
+  "docker-image://some-registry.com/dir/image",
+  "docker-image://other.registry/dir2/image3",
+  "docker-image://some-registry.com/dir/image",
+]
+"#,
+    )
+    .unwrap();
+    let err = Green::try_new(manifest).err().unwrap().to_string();
+    assert!(err.contains("duplicates"), "In: {err}");
+}
+
+#[test]
+fn metadata_green_cache_images_bad_names() {
+    let manifest = Manifest::from_str(
+        r#"
+[package]
+name = "test-package"
+
+[package.metadata.green]
+cache-images = ["docker-image://some-registry.com/dir/image 'docker-image://other.registry/dir2/image3'", ""]
+"#,
+    )
+    .unwrap();
+    let err = Green::try_new(manifest).err().unwrap().to_string();
+    assert!(err.contains("names"), "In: {err}");
+}
+
+#[test]
+fn metadata_green_cache_images_bad_scheme() {
+    let manifest = Manifest::from_str(
+        r#"
+[package]
+name = "test-package"
+
+[package.metadata.green]
+cache-images = ["some-registry.com/dir/image"]
+"#,
+    )
+    .unwrap();
+    let err = Green::try_new(manifest).err().unwrap().to_string();
+    assert!(err.contains("scheme"), "In: {err}");
+}
+
+#[test]
+fn metadata_green_cache_images_bad_registry() {
+    let manifest = Manifest::from_str(
+        r#"
+[package]
+name = "test-package"
+
+[package.metadata.green]
+cache-images = ["docker-image://image"]
+"#,
+    )
+    .unwrap();
+    let err = Green::try_new(manifest).err().unwrap().to_string();
+    assert!(err.contains("registry"), "In: {err}");
+}
+
+#[test]
+fn metadata_green_cache_images_bad_image() {
+    let manifest = Manifest::from_str(
+        r#"
+[package]
+name = "test-package"
+
+[package.metadata.green]
+cache-images = ["docker-image://some-registry.com/dir/image:sometag"]
+"#,
+    )
+    .unwrap();
+    let err = Green::try_new(manifest).err().unwrap().to_string();
+    assert!(err.contains("tag"), "In: {err}");
+}
+
+//
+
+//////////////////////////////////////////////////
+// from https://github.com/PRQL/prql/pull/3773/files
+// [profile.release.package.prql-compiler]
+// strip = "debuginfo"
+//=> look into how `[profile.release.package.PACKAGE]` settings are propagated
+
+// TODO: cli config / profiles https://github.com/rust-lang/cargo/wiki/Third-party-cargo-subcommands
+//   * https://docs.rs/figment/latest/figment/
+//   * https://lib.rs/crates/toml_edit
+//   * https://github.com/jdrouet/serde-toml-merge
+//   * https://crates.io/crates/toml-merge
+// https://github.com/cbourjau/cargo-with
+// https://github.com/RazrFalcon/cargo-bloat
+// https://lib.rs/crates/cargo_metadata
+// https://github.com/stormshield/cargo-ft/blob/d4ba5b048345ab4b21f7992cc6ed12afff7cc863/src/package/metadata.rs
+
+//////////////////////////////////////////////////
 
 // use error_stack::{report, Context, ResultExt};
 // use serde::{
@@ -24,533 +801,6 @@ use crate::{base::RUST, lockfile::find_manifest_path};
 //     #[command(flatten)]
 //     pub manifest: clap_cargo::Manifest,
 // }
-
-//////////////////////////////////////////////////
-
-#[derive(Debug, Deserialize)]
-struct GreenMetadata {
-    green: Green,
-}
-
-#[derive(Debug, Serialize, Deserialize, Default)]
-#[serde(default)]
-#[serde(deny_unknown_fields)]
-#[serde(rename_all = "kebab-case")]
-pub(crate) struct AdditionalSystemPackages {
-    pub(crate) apk: Vec<String>,
-    pub(crate) apt: Vec<String>,
-    pub(crate) apt_get: Vec<String>,
-}
-
-#[derive(Debug, Serialize, Deserialize, Default)]
-#[serde(default)]
-#[serde(deny_unknown_fields)]
-#[serde(rename_all = "kebab-case")]
-pub(crate) struct Green {
-    // Write final Dockerfile to given path.
-    //
-    // Helps e.g. create a Dockerfile with caching for dependencies.
-    //
-    // # Use by setting this environment variable (no Cargo.toml setting):
-    // CARGOGREEN_FINAL_PATH="Dockerfile"
-    #[serde(skip)]
-    pub(crate) final_path: Option<Utf8PathBuf>,
-
-    // Sets the base Rust image, as an image URL.
-    // See also:
-    //   `also-run`
-    //   `base-image-inline`
-    //   `additional-build-arguments`
-    // For remote builds: make sure this is accessible non-locally.
-    //
-    // base-image = "docker-image://docker.io/library/rust:1-slim"
-    //
-    // # This environment variable takes precedence over any Cargo.toml settings:
-    // CARGOGREEN_BASE_IMAGE=docker-image://docker.io/library/rust:1-slim
-    pub(crate) base_image: Option<String>,
-
-    // Sets the base Rust image for root package and all dependencies, unless themselves being configured differently.
-    // See also:
-    //   `additional-build-arguments`
-    // In order to avoid unexpected changes, you may want to pin the image using an immutable digest.
-    // Note that carefully crafting crossplatform stages can be non-trivial.
-    //
-    // base-image-inline = """
-    // FROM --platform=$BUILDPLATFORM rust:1 AS rust-base
-    // RUN --mount=from=some-context,target=/tmp/some-context cp -r /tmp/some-context ./
-    // RUN --mount=type=secret,id=aws
-    // """
-    //
-    // # This environment variable takes precedence over any Cargo.toml settings:
-    // CARGOGREEN_BASE_IMAGE="FROM=rust:1 AS rust-base\nRUN --mount=from=some-context,target=/tmp/some-context cp -r /tmp/some-context ./\nRUN --mount=type=secret,id=aws\n"
-    pub(crate) base_image_inline: Option<String>,
-
-    // Pass environment variables through to build runner.
-    // $CARGOGREEN_SET_ENVS overrides this setting.
-    // See also:
-    //   `packages`
-    // May be useful if a build script exported some vars that a package then reads.
-    // About $GIT_AUTH_TOKEN: https://docs.docker.com/build/building/secrets/#git-authentication-for-remote-contexts
-    //
-    // set-envs = [ "GIT_AUTH_TOKEN", "TYPENUM_BUILD_CONSTS", "TYPENUM_BUILD_OP" ]
-    //
-    // # This environment variable takes precedence over any Cargo.toml settings:
-    // CARGOGREEN_SET_ENVS="[\"GIT_AUTH_TOKEN\", \"TYPENUM_BUILD_CONSTS\", \"TYPENUM_BUILD_OP\"]"
-    //
-    // NOTE: this doesn't (yet) accumulate dependencies' set-envs values!
-    pub(crate) set_envs: Vec<String>,
-
-    // additional-system-packages.apt = [ "libpq-dev", "pkg-config" ]
-    // additional-system-packages.apk = [ "libpq-dev", "pkgconf" ]
-    //
-    // # These environment variables take precedence over any Cargo.toml settings:
-    // CARGOGREEN_ADDITIONAL_SYSTEM_PACKAGES_APT='[ "libpq-dev", "pkg-config" ]'
-    pub(crate) additional_system_packages: AdditionalSystemPackages,
-}
-
-pub(crate) const ENV_ADDITIONAL_SYSTEM_PACKAGES_APK: &str =
-    "CARGOGREEN_ADDITIONAL_SYSTEM_PACKAGES_APK"; // FIXME: shorter name
-pub(crate) const ENV_ADDITIONAL_SYSTEM_PACKAGES_APT: &str =
-    "CARGOGREEN_ADDITIONAL_SYSTEM_PACKAGES_APT"; // FIXME: shorter name
-pub(crate) const ENV_ADDITIONAL_SYSTEM_PACKAGES_APT_GET: &str =
-    "CARGOGREEN_ADDITIONAL_SYSTEM_PACKAGES_APT_GET"; // FIXME: shorter name
-pub(crate) const ENV_BASE_IMAGE: &str = "CARGOGREEN_BASE_IMAGE";
-pub(crate) const ENV_BASE_IMAGE_INLINE: &str = "CARGOGREEN_BASE_IMAGE_INLINE";
-pub(crate) const ENV_FINAL_PATH: &str = "CARGOGREEN_FINAL_PATH";
-pub(crate) const ENV_SET_ENVS: &str = "CARGOGREEN_SET_ENVS";
-
-impl Green {
-    // TODO: handle worskpace cfg + merging fields
-    pub(crate) fn try_new() -> Result<Self> {
-        let manifest_path = find_manifest_path()?;
-
-        let manifest =
-            Manifest::from_path(&manifest_path) //hmmmm this searches workspace tho
-                .with_context(|| anyhow!("Reading package manifest {manifest_path}"))?;
-
-        Self::try_from_manifest(&manifest)
-    }
-
-    pub(crate) fn try_from_manifest(manifest: &Manifest) -> Result<Self> {
-        let mut green =
-            if let Some(metadata) = manifest.package.as_ref().and_then(|x| x.metadata.as_ref()) {
-                let GreenMetadata { green } = toml::from_str(&toml::to_string(metadata)?)?;
-                green
-            } else {
-                Self::default()
-            };
-
-        // NOTE: only settable via env
-        // TODO? provide a way to export final as flatpack
-        let origin = format!("${ENV_FINAL_PATH}");
-        if let Ok(path) = env::var(ENV_FINAL_PATH) {
-            if path.is_empty() {
-                bail!("green: {origin} is empty")
-            }
-            if path == "-" {
-                bail!("green: {origin} must not be {path:?}")
-            }
-            let path = absolute_utf8(path).with_context(|| format!("Canonicalizing {origin}"))?;
-            green.final_path = Some(path);
-        }
-
-        let mut origin = "[metadata.green.base-image]".to_owned();
-        if let Ok(val) = env::var(ENV_BASE_IMAGE) {
-            origin = format!("${ENV_BASE_IMAGE}");
-            green.base_image = Some(val);
-        }
-        if let Some(ref base_image) = green.base_image {
-            if base_image.is_empty() {
-                bail!("{origin} is empty")
-            }
-            if !base_image.starts_with("docker-image://") {
-                bail!("{origin} unsupported scheme")
-            }
-        }
-
-        let mut origin = "[metadata.green.base-image-inline]".to_owned();
-        if let Ok(val) = env::var(ENV_BASE_IMAGE_INLINE) {
-            origin = format!("${ENV_BASE_IMAGE_INLINE}");
-            green.base_image_inline = Some(val);
-        }
-        if let Some(ref base_image_inline) = green.base_image_inline {
-            if base_image_inline.is_empty() {
-                bail!("{origin} is empty")
-            }
-            // TODO: drop this requirement by allowing a `base-image-stage` override
-            //FIXME: have to repeat base stage per stage actually => no naming constraint then anyway
-            if !base_image_inline.contains(&format!(" AS {RUST}\n"))
-                && !base_image_inline.contains(&format!(" as {RUST}\n"))
-            {
-                bail!("{origin} does not provide a stage named '{RUST}'")
-            }
-        }
-
-        if green.base_image.is_some() && green.base_image_inline.is_some() {
-            bail!("[metadata.green.{{base-image or base-image-inline}}]? pick one")
-        }
-
-        let mut origin = "[metadata.green.set-envs]".to_owned();
-        if let Ok(val) = env::var(ENV_SET_ENVS) {
-            origin = format!("${ENV_SET_ENVS}");
-            if val.is_empty() {
-                bail!("{origin} is empty")
-            }
-            green.set_envs =
-                serde_json::from_str(&val).with_context(|| format!("Parsing {origin}"))?;
-        }
-        if !green.set_envs.is_empty() {
-            if green.set_envs.iter().any(String::is_empty) {
-                bail!("{origin} contains empty names")
-            }
-            if green.set_envs.iter().any(|var| var.starts_with("CARGOGREEN_")) {
-                bail!("{origin} contains CARGOGREEN_* names")
-            }
-            if green.set_envs.iter().any(|var| var.starts_with("RUSTCBUILDX_")) {
-                bail!("{origin} contains RUSTCBUILDX_* names")
-            }
-            if green.set_envs.len() != green.set_envs.iter().collect::<HashSet<_>>().len() {
-                bail!("{origin} contains duplicates")
-            }
-        }
-
-        for (field, (var, setting)) in [
-            (
-                &mut green.additional_system_packages.apk,
-                (ENV_ADDITIONAL_SYSTEM_PACKAGES_APK, "apk"),
-            ),
-            (
-                &mut green.additional_system_packages.apt,
-                (ENV_ADDITIONAL_SYSTEM_PACKAGES_APT, "apt"),
-            ),
-            (
-                &mut green.additional_system_packages.apt_get,
-                (ENV_ADDITIONAL_SYSTEM_PACKAGES_APT_GET, "apt-get"),
-            ),
-        ] {
-            let mut origin = format!("[metadata.green.additional-system-packages.{setting}]");
-            if let Ok(val) = env::var(var) {
-                origin = format!("${var}");
-                if val.is_empty() {
-                    bail!("{origin} is empty")
-                }
-                *field = serde_json::from_str(&val).with_context(|| format!("Parsing {origin}"))?;
-            }
-            if !field.is_empty() {
-                if field.iter().any(String::is_empty) {
-                    bail!("{origin} contains empty names")
-                }
-                if field.len() != field.iter().collect::<HashSet<_>>().len() {
-                    bail!("{origin} contains duplicates")
-                }
-            }
-        }
-
-        Ok(green)
-    }
-}
-
-#[cfg(test)]
-mod tests {
-    use cargo_toml::Manifest;
-    use test_case::test_matrix;
-
-    use super::Green;
-
-    #[test]
-    fn metadata_green_ok() {
-        let manifest = Manifest::from_str(
-            r#"
-[package]
-name = "test-package"
-
-[package.metadata.green]
-"#,
-        )
-        .unwrap();
-        Green::try_from_manifest(&manifest).unwrap();
-    }
-
-    //
-
-    #[test]
-    fn metadata_green_additional_system_packages_ok() {
-        let manifest = Manifest::from_str(
-            r#"
-[package]
-name = "test-package"
-
-[package.metadata.green]
-additional-system-packages.apt = [ "libpq-dev", "pkg-config" ]
-additional-system-packages.apt-get = [ "libpq-dev", "pkg-config" ]
-additional-system-packages.apk = [ "libpq-dev", "pkgconf" ]
-"#,
-        )
-        .unwrap();
-        let green = Green::try_from_manifest(&manifest).unwrap();
-        assert_eq!(
-            green.additional_system_packages.apt,
-            vec!["libpq-dev".to_owned(), "pkg-config".to_owned()]
-        );
-        assert_eq!(
-            green.additional_system_packages.apt_get,
-            vec!["libpq-dev".to_owned(), "pkg-config".to_owned()]
-        );
-        assert_eq!(
-            green.additional_system_packages.apk,
-            vec!["libpq-dev".to_owned(), "pkgconf".to_owned()]
-        );
-    }
-
-    #[test_matrix(["apt", "apt-get", "apk"])]
-    fn metadata_green_additional_system_packages_empty_name(setting: &str) {
-        let manifest = Manifest::from_str(&format!(
-            r#"
-[package]
-name = "test-package"
-
-[package.metadata.green]
-additional-system-packages.{setting} = [ "" ]
-"#
-        ))
-        .unwrap();
-        let err = Green::try_from_manifest(&manifest).err().unwrap().to_string();
-        assert!(err.contains("empty"));
-    }
-
-    #[test_matrix(["apt", "apt-get", "apk"])]
-    fn metadata_green_additional_system_packages_duplicates(setting: &str) {
-        let manifest = Manifest::from_str(&format!(
-            r#"
-[package]
-name = "test-package"
-
-[package.metadata.green]
-additional-system-packages.{setting} = [ "a", "b", "a" ]
-            "#
-        ))
-        .unwrap();
-        let err = Green::try_from_manifest(&manifest).err().unwrap().to_string();
-        assert!(err.contains("duplicates"));
-    }
-
-    //
-
-    #[test]
-    fn metadata_green_set_envs_ok() {
-        let manifest = Manifest::from_str(
-            r#"
-[package]
-name = "test-package"
-
-[package.metadata.green]
-set-envs = [ "GIT_AUTH_TOKEN", "TYPENUM_BUILD_CONSTS", "TYPENUM_BUILD_OP" ]
-"#,
-        )
-        .unwrap();
-        let green = Green::try_from_manifest(&manifest).unwrap();
-        assert_eq!(
-            green.set_envs,
-            vec![
-                "GIT_AUTH_TOKEN".to_owned(),
-                "TYPENUM_BUILD_CONSTS".to_owned(),
-                "TYPENUM_BUILD_OP".to_owned()
-            ]
-        );
-    }
-
-    #[test]
-    fn metadata_green_set_envs_empty_var() {
-        let manifest = Manifest::from_str(
-            r#"
-[package]
-name = "test-package"
-
-[package.metadata.green]
-set-envs = [ "" ]
-"#,
-        )
-        .unwrap();
-        let err = Green::try_from_manifest(&manifest).err().unwrap().to_string();
-        assert!(err.contains("empty name"));
-    }
-
-    #[test]
-    fn metadata_green_set_envs_our_vars() {
-        let manifest = Manifest::from_str(
-            r#"
-[package]
-name = "test-package"
-
-[package.metadata.green]
-set-envs = [ "CARGOGREEN_LOG" ]
-"#,
-        )
-        .unwrap();
-        let err = Green::try_from_manifest(&manifest).err().unwrap().to_string();
-        assert!(err.contains("CARGOGREEN"));
-    }
-
-    #[test]
-    fn metadata_green_set_envs_duplicates() {
-        let manifest = Manifest::from_str(
-            r#"
-[package]
-name = "test-package"
-
-[package.metadata.green]
-set-envs = [ "A", "B", "A" ]
-"#,
-        )
-        .unwrap();
-        let err = Green::try_from_manifest(&manifest).err().unwrap().to_string();
-        assert!(err.contains("duplicates"));
-    }
-
-    //
-
-    #[test]
-    fn metadata_green_base_image_ok() {
-        let manifest = Manifest::from_str(
-            r#"
-[package]
-name = "test-package"
-
-[package.metadata.green]
-base-image = "docker-image://docker.io/library/rust:1"
-"#,
-        )
-        .unwrap();
-        let green = Green::try_from_manifest(&manifest).unwrap();
-        assert_eq!(green.base_image, Some("docker-image://docker.io/library/rust:1".to_owned()));
-    }
-
-    #[test]
-    fn metadata_green_base_image_empty() {
-        let manifest = Manifest::from_str(
-            r#"
-[package]
-name = "test-package"
-
-[package.metadata.green]
-base-image = ""
-"#,
-        )
-        .unwrap();
-        let err = Green::try_from_manifest(&manifest).err().unwrap().to_string();
-        assert!(err.contains("empty"));
-    }
-
-    #[test]
-    fn metadata_green_base_image_bad_scheme() {
-        let manifest = Manifest::from_str(
-            r#"
-[package]
-name = "test-package"
-
-[package.metadata.green]
-base-image = "docker.io/library/rust:1"
-"#,
-        )
-        .unwrap();
-        let err = Green::try_from_manifest(&manifest).err().unwrap().to_string();
-        assert!(err.contains("scheme"));
-    }
-
-    #[test]
-    fn metadata_green_base_image_and_inline() {
-        let manifest = Manifest::from_str(
-            r#"
-[package]
-name = "test-package"
-
-[package.metadata.green]
-base-image = "docker-image://docker.io/library/rust:1"
-base-image-inline = """
-FROM rust:1 AS rust-base
-RUN --mount=from=some-context,target=/tmp/some-context cp -r /tmp/some-context ./
-RUN --mount=type=secret,id=aws
-"""
-"#,
-        )
-        .unwrap();
-        let err = Green::try_from_manifest(&manifest).err().unwrap().to_string();
-        assert!(err.contains("pick one"));
-    }
-
-    //
-
-    #[test]
-    fn metadata_green_base_image_inline_ok() {
-        let manifest = Manifest::from_str(
-            r#"
-[package]
-name = "test-package"
-
-[package.metadata.green]
-base-image-inline = """
-# syntax = ghcr.io/reproducible-containers/buildkit-nix:v0.1.1@sha256:7d4c42a5c6baea2b21145589afa85e0862625e6779c89488987266b85e088021 <-- gets ignored
-FROM rust:1 AS rust-base
-RUN --mount=from=some-context,target=/tmp/some-context cp -r /tmp/some-context ./
-RUN --mount=type=secret,id=aws
-"""
-"#,
-        )
-        .unwrap();
-        let green = Green::try_from_manifest(&manifest).unwrap();
-        assert_eq!(
-            green.base_image_inline,
-            Some(
-                r#"
-# syntax = ghcr.io/reproducible-containers/buildkit-nix:v0.1.1@sha256:7d4c42a5c6baea2b21145589afa85e0862625e6779c89488987266b85e088021 <-- gets ignored
-FROM rust:1 AS rust-base
-RUN --mount=from=some-context,target=/tmp/some-context cp -r /tmp/some-context ./
-RUN --mount=type=secret,id=aws
-"#[1..]
-                    .to_owned()
-            )
-        );
-    }
-
-    #[test]
-    fn metadata_green_base_image_inline_empty() {
-        let manifest = Manifest::from_str(
-            r#"
-[package]
-name = "test-package"
-
-[package.metadata.green]
-base-image-inline = ""
-"#,
-        )
-        .unwrap();
-        let err = Green::try_from_manifest(&manifest).err().unwrap().to_string();
-        assert!(err.contains("empty"));
-    }
-
-    #[test]
-    fn metadata_green_base_image_inline_bad_stage() {
-        let manifest = Manifest::from_str(
-            r#"
-[package]
-name = "test-package"
-
-[package.metadata.green]
-base-image-inline = """
-FROM xyz AS not-rust
-RUN exit 42
-"""
-"#,
-        )
-        .unwrap();
-        let err = Green::try_from_manifest(&manifest).err().unwrap().to_string();
-        assert!(err.contains("provide"));
-        assert!(err.contains("stage"));
-        assert!(err.contains("'rust-base'"));
-    }
-}
-
-//////////////////////////////////////////////////
 
 // #[cfg(test)]
 // mod tests;

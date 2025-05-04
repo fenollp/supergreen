@@ -2,9 +2,8 @@ use anyhow::{anyhow, Result};
 use camino::{Utf8Path, Utf8PathBuf};
 use log::{debug, info};
 
-use crate::{base::RUST, stage::Stage};
+use crate::stage::{Stage, RST};
 
-pub(crate) const CRATESIO_STAGE_PREFIX: &str = "cratesio-";
 pub(crate) const CRATESIO_INDEX: &str = "index.crates.io-0000000000000000";
 
 #[must_use]
@@ -19,7 +18,7 @@ pub(crate) async fn into_stage(
     version: &str,
     krate_manifest_dir: &Utf8Path,
 ) -> Result<(Stage, &'static str, Utf8PathBuf, String)> {
-    let stage = Stage::try_new(format!("{CRATESIO_STAGE_PREFIX}{name}-{version}"))?;
+    let stage = Stage::cratesio(name, version)?;
 
     let cratesio_extracted =
         cargo_home.join(format!("registry/src/{CRATESIO_INDEX}/{name}-{version}"));
@@ -30,12 +29,14 @@ pub(crate) async fn into_stage(
     };
 
     info!("opening (RO) crate tarball {cratesio_cached}");
-    let cratesio_hash = sha256::try_async_digest(cratesio_cached.as_path()) //TODO: read from lockfile? cargo_metadata?
+    let cratesio_hash = sha256::try_async_digest(&cratesio_cached) //TODO: read from lockfile? cargo_metadata?
         .await
         .map_err(|e| anyhow!("Failed reading {cratesio_cached}: {e}"))?;
     debug!("crate sha256 for {stage}: {cratesio_hash}");
 
     const SRC: &str = "/extracted";
+
+    let add = add_step(name, version, &cratesio_hash);
 
     // On using tar: https://github.com/rust-lang/cargo/issues/3577#issuecomment-890693359
 
@@ -45,18 +46,17 @@ FROM scratch AS {stage}
 {add}
 SHELL ["/usr/bin/dash", "-eux", "-c"]
 RUN \
-  --mount=from={RUST},src=/lib,dst=/lib \
-  --mount=from={RUST},src=/lib64,dst=/lib64 \
-  --mount=from={RUST},src=/usr,dst=/usr \
+  --mount=from={RST},src=/lib,dst=/lib \
+  --mount=from={RST},src=/lib64,dst=/lib64 \
+  --mount=from={RST},src=/usr,dst=/usr \
     mkdir {SRC} \
  && tar zxf /crate --strip-components=1 -C {SRC}
 "#,
-        add = add_step(name, version, &cratesio_hash),
-    )[1..]
-        .to_owned();
+        add = add.trim(),
+    );
 
     // TODO: ask upstream `buildx/buildkit+podman` for a way to drop that RUN
-    //  => https://github.com/moby/buildkit/issues/4907
+    //  => TODO: impl --unpack: https://github.com/moby/buildkit/issues/4907
 
     // Otherwise:
 
@@ -74,6 +74,5 @@ pub(crate) fn add_step(name: &str, version: &str, hash: &str) -> String {
 ADD --chmod=0664 --checksum=sha256:{hash} \
   https://static.crates.io/crates/{name}/{name}-{version}.crate /crate
 "#
-    )[1..]
-        .to_owned()
+    )
 }
