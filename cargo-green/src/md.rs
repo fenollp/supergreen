@@ -22,6 +22,9 @@ pub(crate) struct Md {
     pub(crate) contexts: BTreeSet<BuildContext>,
 
     stages: Vec<NamedStage>,
+
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub(crate) writes: Vec<Utf8PathBuf>,
 }
 
 impl FromStr for Md {
@@ -34,7 +37,13 @@ impl FromStr for Md {
 impl Md {
     #[must_use]
     pub(crate) fn new(this: &str) -> Self {
-        Self { this: this.to_owned(), deps: vec![], contexts: [].into(), stages: [].into() }
+        Self {
+            this: this.to_owned(),
+            deps: vec![],
+            contexts: [].into(),
+            stages: [].into(),
+            writes: vec![],
+        }
     }
 
     pub(crate) fn to_string_pretty(&self) -> Result<String> {
@@ -180,6 +189,14 @@ fn md_ser() {
         }]
         .into(),
         stages: vec![NamedStage { name: RUST.clone(), script: format!("FROM rust AS {RST}") }],
+        writes: [
+            "/tmp/clis-cargo-authors_0-5-5/release/deps/primeorder-06397107ab8300fa.d",
+            "/tmp/clis-cargo-authors_0-5-5/release/deps/libprimeorder-06397107ab8300fa.rmeta",
+            "/tmp/clis-cargo-authors_0-5-5/release/deps/libprimeorder-06397107ab8300fa.rlib",
+        ]
+        .into_iter()
+        .map(Utf8PathBuf::from)
+        .collect(),
     };
 
     pretty_assertions::assert_eq!(
@@ -188,6 +205,11 @@ this = "711ba64e1183a234"
 deps = [
     "81529f4c2380d9ec",
     "88a4324b2aff6db9",
+]
+writes = [
+    "/tmp/clis-cargo-authors_0-5-5/release/deps/primeorder-06397107ab8300fa.d",
+    "/tmp/clis-cargo-authors_0-5-5/release/deps/libprimeorder-06397107ab8300fa.rmeta",
+    "/tmp/clis-cargo-authors_0-5-5/release/deps/libprimeorder-06397107ab8300fa.rlib",
 ]
 
 [[contexts]]
