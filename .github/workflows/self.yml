@@ -566,6 +566,7 @@ jobs:
         grep Compiling ../_                    && err=1
         exit $err
     - name: ...and shows same final path
+      if: ${{ failure() || success() }}
       run: git --no-pager diff --exit-code -- $CARGOGREEN_FINAL_PATH
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
@@ -622,6 +623,7 @@ jobs:
         grep Compiling ../_                    && err=1
         exit $err
     - name: ...and shows same final path
+      if: ${{ failure() || success() }}
       run: git --no-pager diff --exit-code -- $CARGOGREEN_FINAL_PATH
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
@@ -822,6 +824,7 @@ jobs:
         grep Compiling ../_                    && err=1
         exit $err
     - name: ...and shows same final path
+      if: ${{ failure() || success() }}
       run: git --no-pager diff --exit-code -- $CARGOGREEN_FINAL_PATH
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
@@ -878,6 +881,7 @@ jobs:
         grep Compiling ../_                    && err=1
         exit $err
     - name: ...and shows same final path
+      if: ${{ failure() || success() }}
       run: git --no-pager diff --exit-code -- $CARGOGREEN_FINAL_PATH
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
@@ -1078,6 +1082,7 @@ jobs:
         grep Compiling ../_                    && err=1
         exit $err
     - name: ...and shows same final path
+      if: ${{ failure() || success() }}
       run: git --no-pager diff --exit-code -- $CARGOGREEN_FINAL_PATH
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
@@ -1423,6 +1428,7 @@ jobs:
         grep Compiling ../_                    && err=1
         exit $err
     - name: ...and shows same final path
+      if: ${{ failure() || success() }}
       run: git --no-pager diff --exit-code -- $CARGOGREEN_FINAL_PATH
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322

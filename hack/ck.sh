@@ -72,6 +72,7 @@ cat <<EOF
         grep Compiling $cargologs                    && err=1
         exit \$err
     - name: ...and shows same final path
+      if: \${{ failure() || success() }}
       run: git --no-pager diff --exit-code -- $finalpath
 EOF
 }
