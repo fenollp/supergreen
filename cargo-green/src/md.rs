@@ -1,6 +1,6 @@
 // Our own MetaData utils
 
-use std::{env, fs, io::ErrorKind, str::FromStr};
+use std::{fs, io::ErrorKind, str::FromStr};
 
 use anyhow::{anyhow, bail, Result};
 use camino::{Utf8Path, Utf8PathBuf};
@@ -11,6 +11,7 @@ use szyk::{sort, Node};
 
 use crate::{
     logging::maybe_log,
+    rustc_wrapper::{mask_target_dir, TARGET_DIR},
     stage::{Stage, RST, RUST},
     PKG,
 };
@@ -56,7 +57,7 @@ impl Md {
     }
 
     pub(crate) fn from_file(path: &Utf8Path) -> Result<Self> {
-        info!("opening (RO) md {path}");
+        info!("opening (RO) md {}", mask_target_dir(path));
         let txt = fs::read_to_string(path).map_err(|e| {
             if e.kind() == ErrorKind::NotFound {
                 warn!("couldn't find Md, unexpectedly: suggesting a clean slate");
@@ -66,7 +67,7 @@ impl Md {
     Let's remove the current $CARGO_TARGET_DIR {target_dir}
     then run your command again.
 "#,
-                    target_dir = env::var("CARGO_TARGET_DIR").unwrap_or_default(),
+                    target_dir = TARGET_DIR.as_path(),
                 );
             }
 
