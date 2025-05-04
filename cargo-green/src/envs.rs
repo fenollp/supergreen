@@ -22,10 +22,10 @@ pub(crate) fn pass_env(var: &str) -> (bool, bool, bool) {
         "CARGO_BUILD_RUSTC_WORKSPACE_WRAPPER",
         "CARGO_BUILD_RUSTC_WRAPPER",
         "CARGO_BUILD_RUSTDOC",
-        "CARGO_BUILD_TARGET_DIR",
+        // "CARGO_BUILD_TARGET_DIR",
         "CARGO_HOME",      // TODO? drop
         "CARGO_MAKEFLAGS", // TODO: probably drop
-        "CARGO_TARGET_DIR",
+        // "CARGO_TARGET_DIR",
         "LD_LIBRARY_PATH", // TODO: probably drop
         "RUSTC_WRAPPER",
         "RUSTC_WORKSPACE_WRAPPER",
