@@ -5,6 +5,7 @@ use std::{
     future::Future,
     io::{BufRead, BufReader, ErrorKind},
     str::FromStr,
+    sync::LazyLock,
 };
 
 use anyhow::{anyhow, bail, Result};
@@ -31,6 +32,39 @@ use crate::{
 //       ourselves some trouble and assume std::path::{Path, PathBuf} are UTF-8.
 
 pub(crate) const ENV: &str = "CARGOGREEN";
+
+pub(crate) const REWRITE_TARGETDIR: bool = true; // FIXME: finish experiment
+pub(crate) const VIRTUAL_TARGET_DIR: &str = "/target";
+pub(crate) static TARGET_DIR: LazyLock<Utf8PathBuf> = LazyLock::new(|| {
+    env::var("CARGO_TARGET_DIR")
+        .expect("BUG: $CARGO_TARGET_DIR is unset (or not utf-8 encoded)")
+        .into()
+});
+
+pub(crate) fn replace_target_dir_str(txt: &str, from: &str, to: &str) -> String {
+    if REWRITE_TARGETDIR {
+        txt.replace(from, to)
+    } else {
+        txt.to_owned()
+    }
+}
+
+fn replace_target_dir_with(path: &Utf8Path, replacement: &str) -> Utf8PathBuf {
+    if !REWRITE_TARGETDIR {
+        return path.to_owned();
+    }
+    path.strip_prefix(TARGET_DIR.as_path())
+        .map(|path| Utf8Path::new(replacement).join(path))
+        .unwrap_or_else(|_| path.to_owned())
+}
+
+fn mask_target_dir(path: &Utf8Path) -> Utf8PathBuf {
+    replace_target_dir_with(path, "$CARGO_TARGET_DIR")
+}
+
+fn virtual_target_dir(path: &Utf8Path) -> Utf8PathBuf {
+    replace_target_dir_with(path, VIRTUAL_TARGET_DIR)
+}
 
 pub(crate) async fn main(
     green: Green,
@@ -195,7 +229,7 @@ async fn do_wrap_rustc(
     // NOTE: not `out_dir`
     let crate_out = if let Some(crate_out) = out_dir_var {
         if crate_out.file_name() == Some("out") {
-            info!("listing (RO) crate_out contents {crate_out}");
+            info!("listing (RO) crate_out contents {}", mask_target_dir(&crate_out));
             let listing = fs::read_dir(&crate_out)
                 .map_err(|e| anyhow!("Failed reading crate_out dir {crate_out}: {e}"))?;
             let count = listing
@@ -217,7 +251,6 @@ async fn do_wrap_rustc(
                 let ignore = Utf8PathBuf::from(&crate_out).popped(1).join(".dockerignore");
                 fs::write(&ignore, "")
                     .map_err(|e| anyhow!("Failed creating crate_out dockerignore {ignore}: {e}"))?;
-
                 Some(crate_out)
             } else {
                 None
@@ -233,7 +266,8 @@ async fn do_wrap_rustc(
     //   https://github.com/rust-lang/rust/issues/63012 : Tracking issue for -Z binary-dep-depinfo
     let mut all_externs = BTreeSet::new();
     let externs_prefix = |part: &str| target_path.join(format!("externs_{part}"));
-    let crate_externs = externs_prefix(&format!("{crate_name}{extrafn}"));
+    let crate_name_n_extra = format!("{crate_name}{extrafn}");
+    let crate_externs = externs_prefix(&crate_name_n_extra);
 
     let mut md = Md::new(&extrafn[1..]); // Drops leading dash
     md.push_block(&RUST, green.image.base_image_inline.clone().unwrap());
@@ -247,10 +281,11 @@ async fn do_wrap_rustc(
     // > [rmeta] is created if the --emit=metadata CLI option is used.
     let ext = if emit.contains("metadata") { "rmeta".to_owned() } else { ext };
 
+    // This way crates that depend on this know they must require it as .so
     if crate_type == "proc-macro" {
-        // This way crates that depend on this know they must require it as .so
-        let guard = format!("{crate_externs}_proc-macro"); // FIXME: store this bit of info in md file
-        info!("opening (RW) {guard}");
+        // FIXME: store this bit of info in md file
+        let guard = externs_prefix(&format!("{crate_name_n_extra}_proc-macro"));
+        info!("opening (RW) guard {}", mask_target_dir(&guard));
         fs::write(&guard, "").map_err(|e| anyhow!("Failed to `touch {guard}`: {e}"))?;
     };
 
@@ -275,14 +310,14 @@ async fn do_wrap_rustc(
         short_externs.insert(xtern.to_owned());
 
         let xtern_crate_externs = externs_prefix(xtern);
-        info!("checking (RO) extern's externs {xtern_crate_externs}");
+        info!("checking (RO) extern's externs {}", mask_target_dir(&xtern_crate_externs));
         if xtern_crate_externs.exists() {
-            info!("opening (RO) crate externs {xtern_crate_externs}");
+            info!("opening (RO) crate externs {}", mask_target_dir(&xtern_crate_externs));
             let fd = File::open(&xtern_crate_externs)
                 .map_err(|e| anyhow!("Failed to `cat {xtern_crate_externs}`: {e}"))?;
             for transitive in BufReader::new(fd).lines().map_while(Result::ok) {
                 let guard = externs_prefix(&format!("{transitive}_proc-macro"));
-                info!("checking (RO) extern's guard {guard}");
+                info!("checking (RO) extern's guard {}", mask_target_dir(&guard));
                 let ext = if guard.exists() { "so" } else { &ext };
                 let actual_extern = format!("lib{transitive}.{ext}");
                 all_externs.insert(actual_extern.clone());
@@ -292,7 +327,7 @@ async fn do_wrap_rustc(
 
                 if debug.is_some() {
                     let deps_dir = target_path.join("deps");
-                    info!("extern crate's extern matches {deps_dir}/lib*.*");
+                    info!("extern crate's extern matches {}/lib*.*", mask_target_dir(&deps_dir));
                     let listing = fs::read_dir(&deps_dir)
                         .map_err(|e| anyhow!("Failed reading directory {deps_dir}: {e}"))?
                         .filter_map(Result::ok)
@@ -315,20 +350,20 @@ async fn do_wrap_rustc(
             }
         }
     }
-    info!("checking (RO) externs {crate_externs}");
+    info!("checking (RO) externs {}", mask_target_dir(&crate_externs));
     if !crate_externs.exists() {
         let mut shorts = String::new();
         for short_extern in &short_externs {
             shorts.push_str(&format!("{short_extern}\n"));
         }
         if !shorts.is_empty() {
-            info!("writing (RW) externs to {crate_externs}");
+            info!("writing (RW) externs to {}", mask_target_dir(&crate_externs));
             fs::write(&crate_externs, shorts)
                 .map_err(|e| anyhow!("Failed creating crate externs {crate_externs}: {e}"))?;
         }
     }
     let all_externs = all_externs;
-    info!("crate_externs: {crate_externs}");
+    info!("crate_externs: {}", mask_target_dir(&crate_externs));
     if debug.is_some() {
         match fs::read_to_string(&crate_externs) {
             Ok(data) => data,
@@ -384,10 +419,10 @@ async fn do_wrap_rustc(
     let incremental_stage = Stage::incremental(&extrafn)?;
     let out_stage = Stage::output(&extrafn[1..])?; // Drops leading dash
 
-    let mut rustc_block = String::new();
+    let mut rustc_block = String::new(); //TODO: rename 'build' (rustc_stage|block) / 'built' (out_stage)
     rustc_block.push_str(&format!("FROM {RST} AS {rustc_stage}\n"));
     rustc_block.push_str(&format!("SHELL {:?}\n", ["/bin/bash", "-eux", "-c"]));
-    rustc_block.push_str(&format!("WORKDIR {out_dir}\n"));
+    rustc_block.push_str(&format!("WORKDIR {}\n", virtual_target_dir(&out_dir)));
     if !pwd.starts_with(cargo_home.join("registry/src")) {
         // Essentially match the same-ish path that points to crates-io paths.
         // Experiment showed that git-check'ed-out crates didn't like: // if !pwd.starts_with(&cargo_home) {
@@ -448,7 +483,8 @@ async fn do_wrap_rustc(
 
     if let Some(crate_out) = crate_out.as_deref() {
         let named = crate_out_name(crate_out);
-        rustc_block.push_str(&format!("  --mount=from={named},dst={crate_out} \\\n"));
+        let mount = virtual_target_dir(crate_out);
+        rustc_block.push_str(&format!("  --mount=from={named},dst={mount} \\\n"));
     }
 
     md.contexts = [
@@ -459,7 +495,7 @@ async fn do_wrap_rustc(
     .into_iter()
     .flatten()
     .map(|(name, uri)| BuildContext { name, uri })
-    .inspect(|BuildContext { name, uri }| info!("loading {name:?}: {uri}"))
+    .inspect(|BuildContext { name, uri }| info!("loading {name:?}: {}", mask_target_dir(uri)))
     .collect();
     info!("loading {} Docker contexts", md.contexts.len());
 
@@ -476,9 +512,13 @@ async fn do_wrap_rustc(
             else {
                 bail!("Unexpected extern name format: {xtern}")
             };
-            mounts.push((xtern_stage, format!("/{xtern}"), format!("{target_path}/deps/{xtern}")));
+            mounts.push((
+                xtern_stage,
+                format!("/{xtern}"),
+                virtual_target_dir(&target_path).join("deps").join(xtern),
+            ));
 
-            info!("opening (RO) extern md {extern_md_path}");
+            info!("opening (RO) extern md {}", mask_target_dir(&extern_md_path));
             let md_raw = fs::read_to_string(&extern_md_path).map_err(|e| {
                 warn!("failed reading Md {extern_md_path}: {e}");
                 if e.kind() == ErrorKind::NotFound {
@@ -488,7 +528,7 @@ async fn do_wrap_rustc(
                     Let's remove the current $CARGO_TARGET_DIR {target_dir}
                     then run your command again.
 "#,
-                        target_dir = env::var("CARGO_TARGET_DIR").unwrap_or("<unset>".to_owned()),
+                        target_dir = TARGET_DIR.as_path(),
                     );
                 }
                 anyhow!("Failed reading Md {extern_md_path}: {e}")
@@ -499,7 +539,11 @@ async fn do_wrap_rustc(
         })
         .collect::<Result<Vec<_>>>()?;
     let extern_md_paths = md.extend_from_externs(extern_mds)?;
-    info!("extern_md_paths: {} {extern_md_paths:?}", extern_md_paths.len());
+    info!(
+        "extern_md_paths: {} {:?}",
+        extern_md_paths.len(),
+        extern_md_paths.iter().map(|x| mask_target_dir(x)).collect::<Vec<_>>()
+    );
 
     for (name, src, dst) in mounts {
         rustc_block.push_str(&format!("  --mount=from={name},dst={dst},source={src} \\\n"));
@@ -529,6 +573,14 @@ async fn do_wrap_rustc(
                 "CARGO_MANIFEST_DIR" | "CARGO_MANIFEST_PATH" => {
                     rewrite_cratesio_index(Utf8Path::new(&val)).to_string()
                 }
+                "CARGO_TARGET_DIR" | "CARGO_BUILD_TARGET_DIR" => {
+                    virtual_target_dir(Utf8Path::new(&val)).to_string()
+                }
+                // TODO: a constant $CARGO_TARGET_DIR possible solution is to wrap build script as it runs,
+                // ie. controlling all outputs. This should help: https://github.com/trailofbits/build-wrap/blob/d7f43b76e655e43755f68e28e9d729b4ed1dd115/src/wrapper.rs#L29
+                //(dbcc)=> Dirty typenum v1.12.0: stale, https://github.com/rust-lang/cargo/blob/7987d4bfe683267ba179b42af55891badde3ccbf/src/cargo/core/compiler/fingerprint/mod.rs#L2030
+                //=> /tmp/clis-dbcc_2-2-1/release/deps/typenum-32188cb0392f25b9.d
+                "OUT_DIR" => virtual_target_dir(Utf8Path::new(&val)).to_string(),
                 _ => val,
             };
             rustc_block.push_str(&format!("        {var}={val} \\\n"));
@@ -539,7 +591,8 @@ async fn do_wrap_rustc(
     // => cargo upstream issue "pass env vars read/wrote by build script on call to rustc"
     // TODO whence https://github.com/rust-lang/cargo/issues/14444#issuecomment-2305891696
     for var in &green.set_envs {
-        if let Some(val) = env::var_os(var) {
+        if let Ok(val) = env::var(var) {
+            let val = replace_target_dir_str(&val, TARGET_DIR.as_str(), VIRTUAL_TARGET_DIR);
             warn!("passing ${var}={val:?} env through");
             rustc_block.push_str(&format!("        {var}={val:?} \\\n"));
         }
@@ -563,7 +616,13 @@ async fn do_wrap_rustc(
         }
     }
 
-    rustc_block.push_str(&format!("      rustc '{}' {input} \\\n", args.join("' '")));
+    rustc_block.push_str(&format!(
+        "      rustc '{}' {input} \\\n",
+        args.into_iter()
+            .map(|ref x| replace_target_dir_str(x, TARGET_DIR.as_str(), VIRTUAL_TARGET_DIR))
+            .collect::<Vec<_>>()
+            .join("' '")
+    ));
     rustc_block.push_str(&format!("        1> >(sed 's/^/{MARK_STDOUT}/') \\\n"));
     rustc_block.push_str(&format!("        2> >(sed 's/^/{MARK_STDERR}/' >&2)\n"));
     md.push_block(&rustc_stage, rustc_block);
@@ -575,7 +634,10 @@ async fn do_wrap_rustc(
     }
 
     let mut out_block = format!("FROM scratch AS {out_stage}\n");
-    out_block.push_str(&format!("COPY --from={rustc_stage} {out_dir}/*{extrafn}* /\n"));
+    out_block.push_str(&format!(
+        "COPY --from={rustc_stage} {out_dir}/*{extrafn}* /\n",
+        out_dir = virtual_target_dir(&out_dir)
+    ));
     md.push_block(&out_stage, out_block);
     // TODO? in Dockerfile, when using outputs:
     // => skip the COPY (--mount=from=out-08c4d63ed4366a99)
@@ -587,7 +649,7 @@ async fn do_wrap_rustc(
         &extern_md_paths
             .into_iter()
             .map(|extern_md_path| {
-                info!("opening (RO) extern's md {extern_md_path}");
+                info!("opening (RO) extern's md {}", mask_target_dir(&extern_md_path));
                 let md_raw = fs::read_to_string(&extern_md_path)
                     .map_err(|e| anyhow!("Failed reading Md {extern_md_path}: {e}"))?;
                 Ok(Md::from_str(&md_raw)?)
@@ -599,7 +661,7 @@ async fn do_wrap_rustc(
         let md_path = target_path.join(format!("{crate_name}{extrafn}.toml"));
         let md_ser = md.to_string_pretty()?;
 
-        info!("opening (RW) crate's md {md_path}");
+        info!("opening (RW) crate's md {}", mask_target_dir(&md_path));
         // TODO? suggest a `cargo clean` then fail
         if env::var(ENV_LOG).is_ok() {
             match fs::read_to_string(&md_path) {
