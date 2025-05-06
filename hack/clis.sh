@@ -198,7 +198,7 @@ cli() {
 
   envvars+=(CARGOGREEN_LOG=trace)
   envvars+=(CARGOGREEN_LOG_PATH="\$PWD"/logs.txt)
-  envvars+=(CARGOGREEN_FINAL_PATH="$name_at_version.Dockerfile")
+  envvars+=(CARGOGREEN_FINAL_PATH=recipes/"$name_at_version.Dockerfile")
   envvars+=(CARGO_TARGET_DIR="\$HOME"/instst)
   as_env "$name_at_version"
 
