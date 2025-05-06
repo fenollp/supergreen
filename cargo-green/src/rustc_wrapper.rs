@@ -27,6 +27,9 @@ use crate::{
     tmp, PKG, VSN,
 };
 
+pub(crate) const ENV_EXECUTE_BUILDRS: &str = "CARGOGREEN_EXECUTE_BUILDRS_";
+const WRAP_BUILDRS: bool = true; // FIXME: finish experiment
+
 // NOTE: this RUSTC_WRAPPER program only ever gets called by `cargo`, so we save
 //       ourselves some trouble and assume std::path::{Path, PathBuf} are UTF-8.
 
@@ -114,6 +117,252 @@ async fn call_rustc(rustc: &str, args: Vec<String>) -> Result<()> {
     Ok(())
 }
 
+pub(crate) async fn exec_buildrs(green: Green, exe: Utf8PathBuf) -> Result<()> {
+    assert!(env::var_os(ENV).is_none(), "It's turtles all the way down!");
+    env::set_var(ENV, "1");
+
+    let krate_name = env::var("CARGO_PKG_NAME").expect("$CARGO_PKG_NAME");
+
+    let krate_version = env::var("CARGO_PKG_VERSION").expect("$CARGO_PKG_VERSION");
+
+    // exe: /target/release/build/proc-macro2-2f938e044e3f79bf/build-script-build
+    let Some((previous_md_path, previous_extra)) = || -> Option<_> {
+        // name: build_script_build
+        let name = exe.file_name()?.replace('-', "_");
+        // target_path: /target/release/build/proc-macro2-2f938e044e3f79bf
+        let target_path = exe.parent()?;
+        // extra: -2f938e044e3f79bf
+        let extra = target_path.file_name()?.trim_start_matches(&krate_name).to_owned();
+        // target_path: /target/release
+        let target_path = target_path.parent()?.parent()?;
+        // /target/release/build_script_build-2f938e044e3f79bf.toml
+        Some((target_path.join(format!("{name}{extra}.toml")), extra))
+    }() else {
+        bail!("BUG: malformed buildrs exe {exe:?}")
+    };
+
+    // $OUT_DIR: /target/release/build/proc-macro2-b97492fdd0201a99/out
+    let out_dir_var: Utf8PathBuf = env::var("OUT_DIR").expect("$OUT_DIR").into();
+    let Some((md_path, extra)) = || -> Option<_> {
+        // name: proc-macro2-b97492fdd0201a99
+        let name = out_dir_var.parent()?.file_name()?;
+        // extra: -b97492fdd0201a99
+        let extra = name.trim_start_matches(&krate_name).to_owned();
+        // /target/release/proc-macro2-b97492fdd0201a99.toml
+        Some((previous_md_path.with_file_name(format!("{name}.toml")), extra))
+    }() else {
+        bail!("BUG: malformed $OUT_DIR {out_dir_var:?}")
+    };
+
+    let full_krate_id = format!("Z {krate_name} {krate_version}{extra}");
+    logging::setup(&full_krate_id);
+
+    info!("{PKG}@{VSN} original args: {exe:?} green={green:?}");
+
+    do_exec_buildrs(
+        green,
+        &krate_name,
+        krate_version,
+        full_krate_id.replace(' ', "-"),
+        out_dir_var,
+        exe,
+        previous_md_path,
+        previous_extra,
+        md_path,
+        extra,
+    )
+    .await
+    .inspect_err(|e| error!("Error: {e}"))
+}
+
+#[expect(clippy::too_many_arguments)]
+async fn do_exec_buildrs(
+    green: Green,
+    krate_name: &str,
+    krate_version: String,
+    crate_id: String,
+    out_dir_var: Utf8PathBuf,
+    exe: Utf8PathBuf,
+    previous_md_path: Utf8PathBuf,
+    previous_extra: String,
+    md_path: Utf8PathBuf,
+    extra: String,
+) -> Result<()> {
+    let debug = maybe_log();
+
+    let run_stage = Stage::try_new(format!("run-{crate_id}"))?;
+    let out_stage = Stage::try_new(format!("ran{extra}"))?;
+
+    let code_stage = Stage::try_new(format!("cratesio-{krate_name}-{krate_version}"))?; // FIXME
+    let code_mount_src = "/extracted"; //FIXME
+    let code_mount_dst = format!("/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/{krate_name}-{krate_version}"); //FIXME
+
+    let previous_out_stage = Stage::try_new(format!("out{previous_extra}"))?; //FIXME
+    let previous_out_dst = {
+        let name = exe.file_name().expect("PROOF: already ensured path has file_name");
+        let name = name.replacen('-', "_", 2);
+        format!("/{name}{previous_extra}")
+    };
+
+    let mut md = Md::new(&extra[1..]); // Drops leading dash
+    md.push_block(&RUST, green.image.base_image_inline.clone().unwrap());
+
+    let mut run_block = String::new();
+    run_block.push_str(&format!("FROM {RST} AS {run_stage}\n"));
+    run_block.push_str(&format!("SHELL {:?}\n", ["/bin/bash", "-eux", "-c"]));
+    run_block.push_str(&format!("WORKDIR {out_dir_var}\n"));
+    run_block.push_str("RUN \\\n");
+    run_block.push_str(&format!(
+        "  --mount=from={code_stage},source={code_mount_src},dst={code_mount_dst} \\\n"
+    ));
+    run_block.push_str(&format!(
+        "  --mount=from={previous_out_stage},source={previous_out_dst},dst={exe} \\\n"
+    ));
+    run_block.push_str(&format!("    env CARGO={:?} \\\n", "$(which cargo)"));
+    for (var, val) in env::vars() {
+        let (pass, skip, only_buildrs) = pass_env(&var);
+        if pass || only_buildrs {
+            if skip {
+                debug!("not forwarding env: {var}={val}");
+                continue;
+            }
+            let val = safeify(val);
+            if var == "CARGO_ENCODED_RUSTFLAGS" {
+                let dec: Vec<_> = rustflags::from_env().collect();
+                debug!("env is set: {var}={val} ({dec:?})");
+            } else {
+                debug!("env is set: {var}={val}");
+            }
+            let val = match var.as_str() {
+                "CARGO_PKG_DESCRIPTION" => "FIXME".to_owned(),
+                "CARGO_MANIFEST_DIR" | "CARGO_MANIFEST_PATH" => {
+                    rewrite_cratesio_index(Utf8Path::new(&val)).to_string()
+                }
+                "TERM" => continue,
+                "RUSTC" => "rustc".to_owned(), // Rewrite host rustc so the base_image one can be used
+                // "CARGO_TARGET_DIR" | "CARGO_BUILD_TARGET_DIR" => {
+                //     virtual_target_dir(Utf8Path::new(&val)).to_string()
+                // }
+                // // // TODO: a constant $CARGO_TARGET_DIR possible solution is to wrap build script as it runs,
+                // // // ie. controlling all outputs. This should help: https://github.com/trailofbits/build-wrap/blob/d7f43b76e655e43755f68e28e9d729b4ed1dd115/src/wrapper.rs#L29
+                // // //(dbcc)=> Dirty typenum v1.12.0: stale, https://github.com/rust-lang/cargo/blob/7987d4bfe683267ba179b42af55891badde3ccbf/src/cargo/core/compiler/fingerprint/mod.rs#L2030
+                // // //=> /tmp/clis-dbcc_2-2-1/release/deps/typenum-32188cb0392f25b9.d
+                // "OUT_DIR" => virtual_target_dir(Utf8Path::new(&val)).to_string(),
+                "CARGO_TARGET_DIR" | "CARGO_BUILD_TARGET_DIR" => continue,
+                "OUT_DIR" => val,
+                _ => val,
+            };
+            run_block.push_str(&format!("        {var}={val} \\\n"));
+        }
+    }
+    run_block.push_str("        RUSTCBUILDX=1 \\\n");
+    for var in &green.set_envs {
+        if let Ok(val) = env::var(var) {
+            // let val = replace_target_dir_str(&val, TARGET_DIR.as_str(), VIRTUAL_TARGET_DIR);
+            warn!("passing ${var}={val:?} env through");
+            run_block.push_str(&format!("        {var}={val:?} \\\n"));
+        }
+    }
+    run_block.push_str(&format!("        {ENV_EXECUTE_BUILDRS}= \\\n"));
+    run_block.push_str(&format!("      {exe} \\\n"));
+    run_block.push_str(&format!("        1> >(sed 's/^/{MARK_STDOUT}/') \\\n"));
+    run_block.push_str(&format!("        2> >(sed 's/^/{MARK_STDERR}/' >&2)\n"));
+    md.push_block(&run_stage, run_block);
+
+    let mut out_block = String::new();
+    out_block.push_str(&format!("FROM scratch AS {out_stage}\n"));
+    out_block.push_str(&format!("COPY --from={run_stage} {out_dir_var}/*{extra}* /\n"));
+    md.push_block(&out_stage, out_block);
+
+    let md = md; // Drop mut
+
+    info!("opening (RO) buildrs (building) md {previous_md_path}");
+    let md_raw = fs::read_to_string(&previous_md_path)
+        .map_err(|e| anyhow!("Failed reading Md {previous_md_path}: {e}"))?;
+    let previous_md = Md::from_str(&md_raw)?;
+    if !previous_md.deps.is_empty() {
+        //FIXME: read/import/topolosort .deps
+        panic!(">>> {md_raw}")
+    }
+    let blocks = md.block_along_with_predecessors(&[previous_md]);
+
+    {
+        let md_ser = md.to_string_pretty()?;
+
+        info!("opening (RW) buildrs (executing) md {md_path}");
+        // TODO? suggest a `cargo clean` then fail
+        if env::var(ENV_LOG).is_ok() {
+            match fs::read_to_string(&md_path) {
+                Ok(existing) => pretty_assertions::assert_eq!(&existing, &md_ser),
+                Err(e) if e.kind() == ErrorKind::NotFound => {}
+                Err(e) => bail!("Failed reading {md_path}: {e}"),
+            }
+        }
+        fs::write(&md_path, md_ser)
+            .map_err(|e| anyhow!("Failed creating crate's md {md_path}: {e}"))?;
+
+        if debug.is_some() {
+            info!("toml: {md_path}");
+            match fs::read_to_string(&md_path) {
+                Ok(data) => data,
+                Err(e) => e.to_string(),
+            }
+            .lines()
+            .filter(|x| !x.is_empty())
+            .for_each(|line| trace!("❯ {line}"));
+        }
+    }
+
+    let containerfile = {
+        let path = md_path.with_extension("Dockerfile");
+
+        let mut containerfile = green.new_containerfile();
+        containerfile.pushln(md.rust_stage());
+        containerfile.nl();
+        containerfile.push(&blocks);
+        containerfile.write_to(&path)?;
+
+        path
+    };
+
+    fs::create_dir_all(&out_dir_var)
+        .map_err(|e| anyhow!("Failed to `mkdir -p {out_dir_var}`: {e}"))?;
+
+    let fallback = async move {
+        let mut cmd = Command::new(&exe);
+        let cmd = cmd.kill_on_drop(true);
+        // Do not unset ENV_EXECUTE_BUILDRS
+        let status = cmd
+            .spawn()
+            .map_err(|e| anyhow!("Failed to spawn {}: {e}", cmd.show()))?
+            .wait()
+            .await
+            .map_err(|e| anyhow!("Failed to wait {}: {e}", cmd.show()))?;
+        if !status.success() {
+            bail!("Failed in execute_buildrs")
+        }
+        Ok(())
+    };
+
+    if green.runner == Runner::None {
+        info!("Runner disabled, falling back...");
+        return fallback.await;
+    }
+    let res = build_out(&green, &containerfile, out_stage, &md.contexts, &out_dir_var).await;
+
+    if let Err(e) = res {
+        warn!("Falling back due to {e}");
+        if debug.is_none() {
+            // Bubble up actual error & outputs
+            return fallback
+                .await
+                .inspect(|()| eprintln!("BUG: {PKG} should not have encountered this error: {e}"));
+        }
+        return Err(e);
+    }
+    Ok(())
+}
+
 async fn wrap_rustc(
     green: Green,
     crate_name: &str,
@@ -129,7 +378,7 @@ async fn wrap_rustc(
 
     let (st, args) = as_rustc(&pwd, &arguments, out_dir_var.as_deref())?;
 
-    let buildrs = crate_name == "build_script_build";
+    let buildrs = ["build_script_build", "build_script_main"].contains(&crate_name);
     // NOTE: krate_name != crate_name: Gets named build_script_build + s/-/_/g + may actually be a different name
     let krate_name = env::var("CARGO_PKG_NAME").expect("$CARGO_PKG_NAME");
 
@@ -509,6 +758,35 @@ async fn do_wrap_rustc(
     rustc_block.push_str("    { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \\\n");
     //fixme? prefix with ::rustc-toolchain::
 
+    if WRAP_BUILDRS && buildrs {
+        // TODO: {extrafn} STDIO consts
+        // TODO: this won't work with e.g. tokio-decorated main fns (async + decorator needs duplicating)
+
+        rustc_block.push_str(&format!(
+            r#"    {{ \
+        cat {input} | sed 's/fn main/fn actual{uniq}_main/' >{input}~ && mv {input}~ {input} ; \
+        {{ \
+          echo ; \
+          echo 'fn main() {{' ; \
+          echo '    use std::env::{{args_os, var_os}};' ; \
+          echo '    if var_os("{ENV_EXECUTE_BUILDRS}").is_none() {{' ; \
+          echo '        use std::process::{{Command, Stdio}};' ; \
+          echo '        let mut cmd = Command::new("{PKG}");' ; \
+          echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+          echo '        cmd.env("{ENV_EXECUTE_BUILDRS}", args_os().next().expect("{PKG}: getting buildrs arg0"));' ; \
+          echo '        let res = cmd.spawn().expect("{PKG}: spawning buildrs").wait().expect("{PKG}: running builds");' ; \
+          echo '        assert!(res.success());' ; \
+          echo '    }} else {{' ; \
+          echo '        actual{uniq}_main()' ; \
+          echo '    }}' ; \
+          echo '}}' ; \
+        }} >>{input} ; \
+    }} && \
+"#,
+            uniq = extrafn.replace('-', "_"),
+        ));
+    }
+
     rustc_block.push_str(&format!("    env CARGO={:?} \\\n", "$(which cargo)"));
 
     for (var, val) in env::vars() {
@@ -526,9 +804,18 @@ async fn do_wrap_rustc(
                 debug!("env is set: {var}={val}");
             }
             let val = match var.as_str() {
+                "CARGO_PKG_DESCRIPTION" => "FIXME".to_owned(),
                 "CARGO_MANIFEST_DIR" | "CARGO_MANIFEST_PATH" => {
                     rewrite_cratesio_index(Utf8Path::new(&val)).to_string()
                 }
+                // "CARGO_TARGET_DIR" | "CARGO_BUILD_TARGET_DIR" => {
+                //     virtual_target_dir(Utf8Path::new(&val)).to_string()
+                // }
+                // // TODO: a constant $CARGO_TARGET_DIR possible solution is to wrap build script as it runs,
+                // // ie. controlling all outputs. This should help: https://github.com/trailofbits/build-wrap/blob/d7f43b76e655e43755f68e28e9d729b4ed1dd115/src/wrapper.rs#L29
+                // //(dbcc)=> Dirty typenum v1.12.0: stale, https://github.com/rust-lang/cargo/blob/7987d4bfe683267ba179b42af55891badde3ccbf/src/cargo/core/compiler/fingerprint/mod.rs#L2030
+                // //=> /tmp/clis-dbcc_2-2-1/release/deps/typenum-32188cb0392f25b9.d
+                // "OUT_DIR" => virtual_target_dir(Utf8Path::new(&val)).to_string(),
                 _ => val,
             };
             rustc_block.push_str(&format!("        {var}={val} \\\n"));

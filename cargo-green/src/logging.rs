@@ -33,11 +33,8 @@ pub(crate) fn setup(target: &str) {
 pub(crate) fn maybe_log() -> Option<fn() -> Result<File>> {
     fn log_file() -> Result<File> {
         let log_path = env::var(ENV_LOG_PATH).expect("set log path earlier");
-        OpenOptions::new()
-            .create(true)
-            .append(true)
-            .open(&log_path)
-            .map_err(|e| anyhow!("Failed opening (WA) log file {log_path}: {e}"))
+        let errf = |e| anyhow!("Failed opening (WA) log file {log_path}: {e}");
+        OpenOptions::new().create(true).append(true).open(&log_path).map_err(errf)
     }
 
     env::var(ENV_LOG).ok().map(|x| !x.is_empty()).unwrap_or_default().then_some(log_file)
@@ -67,5 +64,6 @@ fn unique_krate_types() {
 
     let all: HashSet<_> = ALL_CRATE_TYPES.iter().map(|ty| crate_type_for_logging(ty)).collect();
     assert_eq!(ALL_CRATE_TYPES.len(), all.len());
-    assert!(!all.contains(&'X')); // for build scripts
+    assert!(!all.contains(&'X')); // for building build scripts
+    assert!(!all.contains(&'Z')); // for executing build scripts
 }
