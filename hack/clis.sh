@@ -198,12 +198,13 @@ cli() {
 
   envvars+=(CARGOGREEN_LOG=trace)
   envvars+=(CARGOGREEN_LOG_PATH="\$PWD"/logs.txt)
-  envvars+=(CARGOGREEN_FINAL_PATH=recipes/"$name_at_version.Dockerfile")
   envvars+=(CARGO_TARGET_DIR="\$HOME"/instst)
   as_env "$name_at_version"
 
 	cat <<EOF
 $(jobdef "$(sed 's%@%_%g;s%\.%-%g' <<<"$name_at_version")$(if [[ "$jobs" != 1 ]]; then echo '-J'; fi)")
+    env:
+      CARGOGREEN_FINAL_PATH: recipes/$name_at_version.Dockerfile
     needs: bin
     steps:
     - uses: actions-rs/toolchain@v1
@@ -231,8 +232,10 @@ $(cache_usage)
       run: |
         env ${envvars[@]} \\
           cargo green -vv install --jobs=$jobs --locked --force $(as_install "$name_at_version") $@ |& tee _
-$(postconds _ logs.txt "$name_at_version.Dockerfile")
+$(postconds _ logs.txt)
 $(cache_usage)
+
+git diff exit code \$CARGOGREEN_FINAL_PATH
 
     - name: Target dir disk usage
       if: \${{ failure() || success() }}
@@ -242,8 +245,8 @@ $(cache_usage)
       run: |
         env ${envvars[@]} \\
           cargo green -vv install --jobs=$jobs --locked --force $(as_install "$name_at_version") $@ |& tee _
-$(postcond_fresh _ "$name_at_version.Dockerfile")
-$(postconds _ logs.txt "$name_at_version.Dockerfile")
+$(postcond_fresh _)
+$(postconds _ logs.txt)
 $(cache_usage)
 
     - name: Target dir disk usage

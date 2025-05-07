@@ -94,7 +94,7 @@ $(postbin_steps)
 $(cache_usage)
     - name: cargo install net=ON cache=OFF remote=OFF jobs=1
       run: cargo green -vv install --jobs=1 --locked --force --path=./cargo-green |& tee ../_
-$(postconds ../_ ../logs.txt '$CARGOGREEN_FINAL_PATH')
+$(postconds ../_ ../logs.txt)
 $(cache_usage)
 
 
@@ -114,7 +114,7 @@ $(postbin_steps)
 $(cache_usage)
     - name: cargo audit net=ON cache=OFF remote=OFF
       run: cargo green -vv audit |& tee ../_
-$(postconds ../_ ../logs.txt '$CARGOGREEN_FINAL_PATH')
+$(postconds ../_ ../logs.txt)
 $(cache_usage)
 
 
@@ -134,11 +134,11 @@ $(postbin_steps $nightly)
 $(cache_usage)
     - name: cargo +$nightly green udeps --all-targets --jobs=1 cache=OFF remote=OFF
       run: cargo +$nightly green udeps --all-targets --jobs=1 |& tee ../_
-$(postconds ../_ ../logs.txt '$CARGOGREEN_FINAL_PATH')
+$(postconds ../_ ../logs.txt)
 $(cache_usage)
     - name: Again, with +toolchain to cargo-green
       run: cargo green +$nightly udeps --all-targets --jobs=1 |& tee ../_
-$(postconds ../_ ../logs.txt '$CARGOGREEN_FINAL_PATH')
+$(postconds ../_ ../logs.txt)
 $(cache_usage)
 
 
@@ -155,20 +155,20 @@ $(postbin_steps)
 $(cache_usage)
     - name: cargo fetch
       run: cargo green -vv fetch |& tee ../_
-$(postconds ../_ ../logs.txt '$CARGOGREEN_FINAL_PATH')
+$(postconds ../_ ../logs.txt)
     - name: cargo build net=OFF cache=OFF remote=OFF jobs=1
       run: cargo green -vv build --jobs=1 --all-targets --all-features --locked --frozen --offline |& tee ../_
-$(postconds ../_ ../logs.txt '$CARGOGREEN_FINAL_PATH')
+$(postconds ../_ ../logs.txt)
 $(cache_usage)
     - name: Ensure running the same command twice without modifications...
       run: cargo green -vv build --jobs=1 --all-targets --all-features --locked --frozen --offline |& tee ../_
-$(postcond_fresh ../_ '$CARGOGREEN_FINAL_PATH')
-$(postconds ../_ ../logs.txt '$CARGOGREEN_FINAL_PATH')
+$(postcond_fresh ../_)
+$(postconds ../_ ../logs.txt)
 $(cache_usage)
     - name: Ensure running the same command thrice without modifications (jobs>1)...
       run: cargo green -vv build --jobs=\$(nproc) --all-targets --all-features --locked --frozen --offline |& tee ../_
-$(postcond_fresh ../_ '$CARGOGREEN_FINAL_PATH')
-$(postconds ../_ ../logs.txt '$CARGOGREEN_FINAL_PATH')
+$(postcond_fresh ../_)
+$(postconds ../_ ../logs.txt)
 $(cache_usage)
 
 
@@ -185,20 +185,20 @@ $(postbin_steps)
 $(cache_usage)
     - name: cargo fetch
       run: cargo green -vv fetch |& tee ../_
-$(postconds ../_ ../logs.txt '$CARGOGREEN_FINAL_PATH')
+$(postconds ../_ ../logs.txt)
     - name: cargo test net=OFF cache=OFF remote=OFF jobs=1
       run: cargo green -vv test --jobs=1 --all-targets --all-features --locked --frozen --offline |& tee ../_
-$(postconds ../_ ../logs.txt '$CARGOGREEN_FINAL_PATH')
+$(postconds ../_ ../logs.txt)
 $(cache_usage)
     - name: Ensure running the same command twice without modifications...
       run: cargo green -vv test --jobs=1 --all-targets --all-features --locked --frozen --offline |& tee ../_
-$(postcond_fresh ../_ '$CARGOGREEN_FINAL_PATH')
-$(postconds ../_ ../logs.txt '$CARGOGREEN_FINAL_PATH')
+$(postcond_fresh ../_)
+$(postconds ../_ ../logs.txt)
 $(cache_usage)
     - name: Ensure running the same command thrice without modifications (jobs>1)...
       run: cargo green -vv test --jobs=\$(nproc) --all-targets --all-features --locked --frozen --offline |& tee ../_
-$(postcond_fresh ../_ '$CARGOGREEN_FINAL_PATH')
-$(postconds ../_ ../logs.txt '$CARGOGREEN_FINAL_PATH')
+$(postcond_fresh ../_)
+$(postconds ../_ ../logs.txt)
 $(cache_usage)
 
 
@@ -215,15 +215,15 @@ $(postbin_steps)
 $(cache_usage)
     - name: cargo fetch
       run: cargo green -vv fetch |& tee ../_
-$(postconds ../_ ../logs.txt '$CARGOGREEN_FINAL_PATH')
+$(postconds ../_ ../logs.txt)
     - name: cargo check net=OFF cache=OFF remote=OFF jobs=\$(nproc)
       run: cargo green -vv check --jobs=\$(nproc) --all-targets --all-features --locked --frozen --offline |& tee ../_
-$(postconds ../_ ../logs.txt '$CARGOGREEN_FINAL_PATH')
+$(postconds ../_ ../logs.txt)
 $(cache_usage)
     - name: Ensure running the same command twice without modifications...
       run: cargo green -vv check --jobs=1 --all-targets --all-features --locked --frozen --offline |& tee ../_
-$(postcond_fresh ../_ '$CARGOGREEN_FINAL_PATH')
-$(postconds ../_ ../logs.txt '$CARGOGREEN_FINAL_PATH')
+$(postcond_fresh ../_)
+$(postconds ../_ ../logs.txt)
 $(cache_usage)
 
 
@@ -240,10 +240,10 @@ $(postbin_steps)
 $(cache_usage)
     - name: cargo fetch
       run: cargo green -vv fetch |& tee ../_
-$(postconds ../_ ../logs.txt '$CARGOGREEN_FINAL_PATH')
+$(postconds ../_ ../logs.txt)
     - name: cargo package net=OFF cache=OFF remote=OFF jobs=1
       run: cargo green -vv package --jobs=1 --all-features --locked --frozen --offline |& tee ../_
-$(postconds ../_ ../logs.txt '$CARGOGREEN_FINAL_PATH')
+$(postconds ../_ ../logs.txt)
 $(cache_usage)
 
 
@@ -261,14 +261,14 @@ $(postbin_steps)
 $(cache_usage)
     - name: cargo fetch
       run: cargo green -vv fetch
-$(postconds ../_ ../logs.txt '$CARGOGREEN_FINAL_PATH')
+$(postconds ../_ ../logs.txt)
     - name: cargo clippy net=OFF cache=OFF remote=OFF jobs=1
       run: cargo green -vv clippy --jobs=1 --all-targets --all-features --locked --frozen --offline |& tee ../_
-$(postconds ../_ ../logs.txt '$CARGOGREEN_FINAL_PATH')
+$(postconds ../_ ../logs.txt)
 $(cache_usage)
     - name: Ensure running the same command twice without modifications...
       run: cargo green -vv clippy --jobs=\$(nproc) --all-targets --all-features --locked --frozen --offline |& tee ../_
-$(postcond_fresh ../_ '$CARGOGREEN_FINAL_PATH')
-$(postconds ../_ ../logs.txt '$CARGOGREEN_FINAL_PATH')
+$(postcond_fresh ../_)
+$(postconds ../_ ../logs.txt)
 $(cache_usage)
 EOF

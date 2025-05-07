@@ -136,14 +136,12 @@ jobs:
       run: tail -n9999999 ../logs.txt ; echo >../logs.txt
 
     - if: ${{ failure() || success() }}
-      name: Maybe show final path diff
-      run: git --no-pager diff -- $CARGOGREEN_FINAL_PATH || true
+      name: FIXME FINAL
+      run: cat $CARGOGREEN_FINAL_PATH
 
     - if: ${{ failure() || success() }}
-      name: Show final path
-      run: |
-        tail -n9999999 $CARGOGREEN_FINAL_PATH || true
-        git add $CARGOGREEN_FINAL_PATH || true
+      name: Maybe show final path diff
+      run: git --no-pager diff --exit-code -- $CARGOGREEN_FINAL_PATH
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
@@ -243,14 +241,12 @@ jobs:
       run: tail -n9999999 ../logs.txt ; echo >../logs.txt
 
     - if: ${{ failure() || success() }}
-      name: Maybe show final path diff
-      run: git --no-pager diff -- $CARGOGREEN_FINAL_PATH || true
+      name: FIXME FINAL
+      run: cat $CARGOGREEN_FINAL_PATH
 
     - if: ${{ failure() || success() }}
-      name: Show final path
-      run: |
-        tail -n9999999 $CARGOGREEN_FINAL_PATH || true
-        git add $CARGOGREEN_FINAL_PATH || true
+      name: Maybe show final path diff
+      run: git --no-pager diff --exit-code -- $CARGOGREEN_FINAL_PATH
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
@@ -350,14 +346,12 @@ jobs:
       run: tail -n9999999 ../logs.txt ; echo >../logs.txt
 
     - if: ${{ failure() || success() }}
-      name: Maybe show final path diff
-      run: git --no-pager diff -- $CARGOGREEN_FINAL_PATH || true
+      name: FIXME FINAL
+      run: cat $CARGOGREEN_FINAL_PATH
 
     - if: ${{ failure() || success() }}
-      name: Show final path
-      run: |
-        tail -n9999999 $CARGOGREEN_FINAL_PATH || true
-        git add $CARGOGREEN_FINAL_PATH || true
+      name: Maybe show final path diff
+      run: git --no-pager diff --exit-code -- $CARGOGREEN_FINAL_PATH
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
@@ -397,14 +391,12 @@ jobs:
       run: tail -n9999999 ../logs.txt ; echo >../logs.txt
 
     - if: ${{ failure() || success() }}
-      name: Maybe show final path diff
-      run: git --no-pager diff -- $CARGOGREEN_FINAL_PATH || true
+      name: FIXME FINAL
+      run: cat $CARGOGREEN_FINAL_PATH
 
     - if: ${{ failure() || success() }}
-      name: Show final path
-      run: |
-        tail -n9999999 $CARGOGREEN_FINAL_PATH || true
-        git add $CARGOGREEN_FINAL_PATH || true
+      name: Maybe show final path diff
+      run: git --no-pager diff --exit-code -- $CARGOGREEN_FINAL_PATH
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
@@ -501,14 +493,12 @@ jobs:
       run: tail -n9999999 ../logs.txt ; echo >../logs.txt
 
     - if: ${{ failure() || success() }}
-      name: Maybe show final path diff
-      run: git --no-pager diff -- $CARGOGREEN_FINAL_PATH || true
+      name: FIXME FINAL
+      run: cat $CARGOGREEN_FINAL_PATH
 
     - if: ${{ failure() || success() }}
-      name: Show final path
-      run: |
-        tail -n9999999 $CARGOGREEN_FINAL_PATH || true
-        git add $CARGOGREEN_FINAL_PATH || true
+      name: Maybe show final path diff
+      run: git --no-pager diff --exit-code -- $CARGOGREEN_FINAL_PATH
     - name: cargo build net=OFF cache=OFF remote=OFF jobs=1
       run: cargo green -vv build --jobs=1 --all-targets --all-features --locked --frozen --offline |& tee ../_
     - if: ${{ failure() || success() }}
@@ -541,14 +531,12 @@ jobs:
       run: tail -n9999999 ../logs.txt ; echo >../logs.txt
 
     - if: ${{ failure() || success() }}
-      name: Maybe show final path diff
-      run: git --no-pager diff -- $CARGOGREEN_FINAL_PATH || true
+      name: FIXME FINAL
+      run: cat $CARGOGREEN_FINAL_PATH
 
     - if: ${{ failure() || success() }}
-      name: Show final path
-      run: |
-        tail -n9999999 $CARGOGREEN_FINAL_PATH || true
-        git add $CARGOGREEN_FINAL_PATH || true
+      name: Maybe show final path diff
+      run: git --no-pager diff --exit-code -- $CARGOGREEN_FINAL_PATH
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
@@ -565,8 +553,6 @@ jobs:
         grep Dirty     ../_                    && err=1
         grep Compiling ../_                    && err=1
         exit $err
-    - name: ...and shows same final path
-      run: git --no-pager diff --exit-code -- $CARGOGREEN_FINAL_PATH
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
@@ -597,14 +583,12 @@ jobs:
       run: tail -n9999999 ../logs.txt ; echo >../logs.txt
 
     - if: ${{ failure() || success() }}
-      name: Maybe show final path diff
-      run: git --no-pager diff -- $CARGOGREEN_FINAL_PATH || true
+      name: FIXME FINAL
+      run: cat $CARGOGREEN_FINAL_PATH
 
     - if: ${{ failure() || success() }}
-      name: Show final path
-      run: |
-        tail -n9999999 $CARGOGREEN_FINAL_PATH || true
-        git add $CARGOGREEN_FINAL_PATH || true
+      name: Maybe show final path diff
+      run: git --no-pager diff --exit-code -- $CARGOGREEN_FINAL_PATH
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
@@ -621,8 +605,6 @@ jobs:
         grep Dirty     ../_                    && err=1
         grep Compiling ../_                    && err=1
         exit $err
-    - name: ...and shows same final path
-      run: git --no-pager diff --exit-code -- $CARGOGREEN_FINAL_PATH
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
@@ -653,14 +635,12 @@ jobs:
       run: tail -n9999999 ../logs.txt ; echo >../logs.txt
 
     - if: ${{ failure() || success() }}
-      name: Maybe show final path diff
-      run: git --no-pager diff -- $CARGOGREEN_FINAL_PATH || true
+      name: FIXME FINAL
+      run: cat $CARGOGREEN_FINAL_PATH
 
     - if: ${{ failure() || success() }}
-      name: Show final path
-      run: |
-        tail -n9999999 $CARGOGREEN_FINAL_PATH || true
-        git add $CARGOGREEN_FINAL_PATH || true
+      name: Maybe show final path diff
+      run: git --no-pager diff --exit-code -- $CARGOGREEN_FINAL_PATH
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
@@ -757,14 +737,12 @@ jobs:
       run: tail -n9999999 ../logs.txt ; echo >../logs.txt
 
     - if: ${{ failure() || success() }}
-      name: Maybe show final path diff
-      run: git --no-pager diff -- $CARGOGREEN_FINAL_PATH || true
+      name: FIXME FINAL
+      run: cat $CARGOGREEN_FINAL_PATH
 
     - if: ${{ failure() || success() }}
-      name: Show final path
-      run: |
-        tail -n9999999 $CARGOGREEN_FINAL_PATH || true
-        git add $CARGOGREEN_FINAL_PATH || true
+      name: Maybe show final path diff
+      run: git --no-pager diff --exit-code -- $CARGOGREEN_FINAL_PATH
     - name: cargo test net=OFF cache=OFF remote=OFF jobs=1
       run: cargo green -vv test --jobs=1 --all-targets --all-features --locked --frozen --offline |& tee ../_
     - if: ${{ failure() || success() }}
@@ -797,14 +775,12 @@ jobs:
       run: tail -n9999999 ../logs.txt ; echo >../logs.txt
 
     - if: ${{ failure() || success() }}
-      name: Maybe show final path diff
-      run: git --no-pager diff -- $CARGOGREEN_FINAL_PATH || true
+      name: FIXME FINAL
+      run: cat $CARGOGREEN_FINAL_PATH
 
     - if: ${{ failure() || success() }}
-      name: Show final path
-      run: |
-        tail -n9999999 $CARGOGREEN_FINAL_PATH || true
-        git add $CARGOGREEN_FINAL_PATH || true
+      name: Maybe show final path diff
+      run: git --no-pager diff --exit-code -- $CARGOGREEN_FINAL_PATH
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
@@ -821,8 +797,6 @@ jobs:
         grep Dirty     ../_                    && err=1
         grep Compiling ../_                    && err=1
         exit $err
-    - name: ...and shows same final path
-      run: git --no-pager diff --exit-code -- $CARGOGREEN_FINAL_PATH
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
@@ -853,14 +827,12 @@ jobs:
       run: tail -n9999999 ../logs.txt ; echo >../logs.txt
 
     - if: ${{ failure() || success() }}
-      name: Maybe show final path diff
-      run: git --no-pager diff -- $CARGOGREEN_FINAL_PATH || true
+      name: FIXME FINAL
+      run: cat $CARGOGREEN_FINAL_PATH
 
     - if: ${{ failure() || success() }}
-      name: Show final path
-      run: |
-        tail -n9999999 $CARGOGREEN_FINAL_PATH || true
-        git add $CARGOGREEN_FINAL_PATH || true
+      name: Maybe show final path diff
+      run: git --no-pager diff --exit-code -- $CARGOGREEN_FINAL_PATH
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
@@ -877,8 +849,6 @@ jobs:
         grep Dirty     ../_                    && err=1
         grep Compiling ../_                    && err=1
         exit $err
-    - name: ...and shows same final path
-      run: git --no-pager diff --exit-code -- $CARGOGREEN_FINAL_PATH
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
@@ -909,14 +879,12 @@ jobs:
       run: tail -n9999999 ../logs.txt ; echo >../logs.txt
 
     - if: ${{ failure() || success() }}
-      name: Maybe show final path diff
-      run: git --no-pager diff -- $CARGOGREEN_FINAL_PATH || true
+      name: FIXME FINAL
+      run: cat $CARGOGREEN_FINAL_PATH
 
     - if: ${{ failure() || success() }}
-      name: Show final path
-      run: |
-        tail -n9999999 $CARGOGREEN_FINAL_PATH || true
-        git add $CARGOGREEN_FINAL_PATH || true
+      name: Maybe show final path diff
+      run: git --no-pager diff --exit-code -- $CARGOGREEN_FINAL_PATH
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
@@ -1013,14 +981,12 @@ jobs:
       run: tail -n9999999 ../logs.txt ; echo >../logs.txt
 
     - if: ${{ failure() || success() }}
-      name: Maybe show final path diff
-      run: git --no-pager diff -- $CARGOGREEN_FINAL_PATH || true
+      name: FIXME FINAL
+      run: cat $CARGOGREEN_FINAL_PATH
 
     - if: ${{ failure() || success() }}
-      name: Show final path
-      run: |
-        tail -n9999999 $CARGOGREEN_FINAL_PATH || true
-        git add $CARGOGREEN_FINAL_PATH || true
+      name: Maybe show final path diff
+      run: git --no-pager diff --exit-code -- $CARGOGREEN_FINAL_PATH
     - name: cargo check net=OFF cache=OFF remote=OFF jobs=$(nproc)
       run: cargo green -vv check --jobs=$(nproc) --all-targets --all-features --locked --frozen --offline |& tee ../_
     - if: ${{ failure() || success() }}
@@ -1053,14 +1019,12 @@ jobs:
       run: tail -n9999999 ../logs.txt ; echo >../logs.txt
 
     - if: ${{ failure() || success() }}
-      name: Maybe show final path diff
-      run: git --no-pager diff -- $CARGOGREEN_FINAL_PATH || true
+      name: FIXME FINAL
+      run: cat $CARGOGREEN_FINAL_PATH
 
     - if: ${{ failure() || success() }}
-      name: Show final path
-      run: |
-        tail -n9999999 $CARGOGREEN_FINAL_PATH || true
-        git add $CARGOGREEN_FINAL_PATH || true
+      name: Maybe show final path diff
+      run: git --no-pager diff --exit-code -- $CARGOGREEN_FINAL_PATH
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
@@ -1077,8 +1041,6 @@ jobs:
         grep Dirty     ../_                    && err=1
         grep Compiling ../_                    && err=1
         exit $err
-    - name: ...and shows same final path
-      run: git --no-pager diff --exit-code -- $CARGOGREEN_FINAL_PATH
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
@@ -1109,14 +1071,12 @@ jobs:
       run: tail -n9999999 ../logs.txt ; echo >../logs.txt
 
     - if: ${{ failure() || success() }}
-      name: Maybe show final path diff
-      run: git --no-pager diff -- $CARGOGREEN_FINAL_PATH || true
+      name: FIXME FINAL
+      run: cat $CARGOGREEN_FINAL_PATH
 
     - if: ${{ failure() || success() }}
-      name: Show final path
-      run: |
-        tail -n9999999 $CARGOGREEN_FINAL_PATH || true
-        git add $CARGOGREEN_FINAL_PATH || true
+      name: Maybe show final path diff
+      run: git --no-pager diff --exit-code -- $CARGOGREEN_FINAL_PATH
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
@@ -1213,14 +1173,12 @@ jobs:
       run: tail -n9999999 ../logs.txt ; echo >../logs.txt
 
     - if: ${{ failure() || success() }}
-      name: Maybe show final path diff
-      run: git --no-pager diff -- $CARGOGREEN_FINAL_PATH || true
+      name: FIXME FINAL
+      run: cat $CARGOGREEN_FINAL_PATH
 
     - if: ${{ failure() || success() }}
-      name: Show final path
-      run: |
-        tail -n9999999 $CARGOGREEN_FINAL_PATH || true
-        git add $CARGOGREEN_FINAL_PATH || true
+      name: Maybe show final path diff
+      run: git --no-pager diff --exit-code -- $CARGOGREEN_FINAL_PATH
     - name: cargo package net=OFF cache=OFF remote=OFF jobs=1
       run: cargo green -vv package --jobs=1 --all-features --locked --frozen --offline |& tee ../_
     - if: ${{ failure() || success() }}
@@ -1253,14 +1211,12 @@ jobs:
       run: tail -n9999999 ../logs.txt ; echo >../logs.txt
 
     - if: ${{ failure() || success() }}
-      name: Maybe show final path diff
-      run: git --no-pager diff -- $CARGOGREEN_FINAL_PATH || true
+      name: FIXME FINAL
+      run: cat $CARGOGREEN_FINAL_PATH
 
     - if: ${{ failure() || success() }}
-      name: Show final path
-      run: |
-        tail -n9999999 $CARGOGREEN_FINAL_PATH || true
-        git add $CARGOGREEN_FINAL_PATH || true
+      name: Maybe show final path diff
+      run: git --no-pager diff --exit-code -- $CARGOGREEN_FINAL_PATH
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
@@ -1358,14 +1314,12 @@ jobs:
       run: tail -n9999999 ../logs.txt ; echo >../logs.txt
 
     - if: ${{ failure() || success() }}
-      name: Maybe show final path diff
-      run: git --no-pager diff -- $CARGOGREEN_FINAL_PATH || true
+      name: FIXME FINAL
+      run: cat $CARGOGREEN_FINAL_PATH
 
     - if: ${{ failure() || success() }}
-      name: Show final path
-      run: |
-        tail -n9999999 $CARGOGREEN_FINAL_PATH || true
-        git add $CARGOGREEN_FINAL_PATH || true
+      name: Maybe show final path diff
+      run: git --no-pager diff --exit-code -- $CARGOGREEN_FINAL_PATH
     - name: cargo clippy net=OFF cache=OFF remote=OFF jobs=1
       run: cargo green -vv clippy --jobs=1 --all-targets --all-features --locked --frozen --offline |& tee ../_
     - if: ${{ failure() || success() }}
@@ -1398,14 +1352,12 @@ jobs:
       run: tail -n9999999 ../logs.txt ; echo >../logs.txt
 
     - if: ${{ failure() || success() }}
-      name: Maybe show final path diff
-      run: git --no-pager diff -- $CARGOGREEN_FINAL_PATH || true
+      name: FIXME FINAL
+      run: cat $CARGOGREEN_FINAL_PATH
 
     - if: ${{ failure() || success() }}
-      name: Show final path
-      run: |
-        tail -n9999999 $CARGOGREEN_FINAL_PATH || true
-        git add $CARGOGREEN_FINAL_PATH || true
+      name: Maybe show final path diff
+      run: git --no-pager diff --exit-code -- $CARGOGREEN_FINAL_PATH
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
@@ -1422,8 +1374,6 @@ jobs:
         grep Dirty     ../_                    && err=1
         grep Compiling ../_                    && err=1
         exit $err
-    - name: ...and shows same final path
-      run: git --no-pager diff --exit-code -- $CARGOGREEN_FINAL_PATH
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
@@ -1454,14 +1404,12 @@ jobs:
       run: tail -n9999999 ../logs.txt ; echo >../logs.txt
 
     - if: ${{ failure() || success() }}
-      name: Maybe show final path diff
-      run: git --no-pager diff -- $CARGOGREEN_FINAL_PATH || true
+      name: FIXME FINAL
+      run: cat $CARGOGREEN_FINAL_PATH
 
     - if: ${{ failure() || success() }}
-      name: Show final path
-      run: |
-        tail -n9999999 $CARGOGREEN_FINAL_PATH || true
-        git add $CARGOGREEN_FINAL_PATH || true
+      name: Maybe show final path diff
+      run: git --no-pager diff --exit-code -- $CARGOGREEN_FINAL_PATH
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose

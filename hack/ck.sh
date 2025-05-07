@@ -61,7 +61,6 @@ EOF
 
 postcond_fresh() {
     local cargologs=$1; shift
-    local finalpath=$1; shift
     [[ $# -eq 0 ]]
 cat <<EOF
     - name: ...doesn't recompile anything
@@ -71,8 +70,6 @@ cat <<EOF
         grep Dirty     $cargologs                    && err=1
         grep Compiling $cargologs                    && err=1
         exit \$err
-    - name: ...and shows same final path
-      run: git --no-pager diff --exit-code -- $finalpath
 EOF
 }
 
@@ -80,7 +77,6 @@ EOF
 postconds() {
     local cargologs=$1; shift
     local greenlogs=$1; shift
-    local finalpath=$1; shift
     [[ $# -eq 0 ]]
 cat <<EOF
     - if: \${{ failure() || success() }}
@@ -113,13 +109,11 @@ cat <<EOF
       run: tail -n9999999 $greenlogs ; echo >$greenlogs
 
     - if: \${{ failure() || success() }}
-      name: Maybe show final path diff
-      run: git --no-pager diff -- $finalpath || true
+      name: FIXME FINAL
+      run: cat \$CARGOGREEN_FINAL_PATH
 
     - if: \${{ failure() || success() }}
-      name: Show final path
-      run: |
-        tail -n9999999 $finalpath || true
-        git add $finalpath || true
+      name: Maybe show final path diff
+      run: git --no-pager diff --exit-code -- \$CARGOGREEN_FINAL_PATH
 EOF
 }
