@@ -108,11 +108,11 @@ cat <<EOF
       name: cargo-green logs
       run: tail -n9999999 $greenlogs ; echo >$greenlogs
 
-    - if: \${{ failure() || success() }}
+    - if: \${{ failure() || success() }} && env.CARGOGREEN_FINAL_PATH != ''
       name: FIXME FINAL
       run: cat \$CARGOGREEN_FINAL_PATH
 
-    - if: \${{ failure() || success() }}
+    - if: \${{ failure() || success() }} && env.CARGOGREEN_FINAL_PATH != ''
       name: Maybe show final path diff
       run: git --no-pager diff --exit-code -- \$CARGOGREEN_FINAL_PATH
 EOF

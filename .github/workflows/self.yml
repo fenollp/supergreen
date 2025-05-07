@@ -59,7 +59,7 @@ jobs:
       RUST_BACKTRACE: 1
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: /home/runner/work/supergreen/logs.txt
-      CARGOGREEN_FINAL_PATH: $GITHUB_JOB.Dockerfile
+    # CARGOGREEN_FINAL_PATH: recipes/installs.Dockerfile
     steps:
     - run: docker info
     - run: docker buildx version
@@ -135,11 +135,11 @@ jobs:
       name: cargo-green logs
       run: tail -n9999999 ../logs.txt ; echo >../logs.txt
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ failure() || success() }} && env.CARGOGREEN_FINAL_PATH != ''
       name: FIXME FINAL
       run: cat $CARGOGREEN_FINAL_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ failure() || success() }} && env.CARGOGREEN_FINAL_PATH != ''
       name: Maybe show final path diff
       run: git --no-pager diff --exit-code -- $CARGOGREEN_FINAL_PATH
     - run: sudo du -sh /var/lib/docker
@@ -161,7 +161,7 @@ jobs:
       RUST_BACKTRACE: 1
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: /home/runner/work/supergreen/logs.txt
-      CARGOGREEN_FINAL_PATH: $GITHUB_JOB.Dockerfile
+    # CARGOGREEN_FINAL_PATH: recipes/audits.Dockerfile
     steps:
     - run: docker info
     - run: docker buildx version
@@ -240,11 +240,11 @@ jobs:
       name: cargo-green logs
       run: tail -n9999999 ../logs.txt ; echo >../logs.txt
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ failure() || success() }} && env.CARGOGREEN_FINAL_PATH != ''
       name: FIXME FINAL
       run: cat $CARGOGREEN_FINAL_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ failure() || success() }} && env.CARGOGREEN_FINAL_PATH != ''
       name: Maybe show final path diff
       run: git --no-pager diff --exit-code -- $CARGOGREEN_FINAL_PATH
     - run: sudo du -sh /var/lib/docker
@@ -266,7 +266,7 @@ jobs:
       RUST_BACKTRACE: 1
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: /home/runner/work/supergreen/logs.txt
-      CARGOGREEN_FINAL_PATH: $GITHUB_JOB.Dockerfile
+    # CARGOGREEN_FINAL_PATH: recipes/udeps.Dockerfile
     steps:
     - run: docker info
     - run: docker buildx version
@@ -345,11 +345,11 @@ jobs:
       name: cargo-green logs
       run: tail -n9999999 ../logs.txt ; echo >../logs.txt
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ failure() || success() }} && env.CARGOGREEN_FINAL_PATH != ''
       name: FIXME FINAL
       run: cat $CARGOGREEN_FINAL_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ failure() || success() }} && env.CARGOGREEN_FINAL_PATH != ''
       name: Maybe show final path diff
       run: git --no-pager diff --exit-code -- $CARGOGREEN_FINAL_PATH
     - run: sudo du -sh /var/lib/docker
@@ -390,11 +390,11 @@ jobs:
       name: cargo-green logs
       run: tail -n9999999 ../logs.txt ; echo >../logs.txt
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ failure() || success() }} && env.CARGOGREEN_FINAL_PATH != ''
       name: FIXME FINAL
       run: cat $CARGOGREEN_FINAL_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ failure() || success() }} && env.CARGOGREEN_FINAL_PATH != ''
       name: Maybe show final path diff
       run: git --no-pager diff --exit-code -- $CARGOGREEN_FINAL_PATH
     - run: sudo du -sh /var/lib/docker
@@ -416,7 +416,7 @@ jobs:
       RUST_BACKTRACE: 1
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: /home/runner/work/supergreen/logs.txt
-      CARGOGREEN_FINAL_PATH: $GITHUB_JOB.Dockerfile
+    # CARGOGREEN_FINAL_PATH: recipes/builds.Dockerfile
     steps:
     - run: docker info
     - run: docker buildx version
@@ -492,11 +492,11 @@ jobs:
       name: cargo-green logs
       run: tail -n9999999 ../logs.txt ; echo >../logs.txt
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ failure() || success() }} && env.CARGOGREEN_FINAL_PATH != ''
       name: FIXME FINAL
       run: cat $CARGOGREEN_FINAL_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ failure() || success() }} && env.CARGOGREEN_FINAL_PATH != ''
       name: Maybe show final path diff
       run: git --no-pager diff --exit-code -- $CARGOGREEN_FINAL_PATH
     - name: cargo build net=OFF cache=OFF remote=OFF jobs=1
@@ -530,11 +530,11 @@ jobs:
       name: cargo-green logs
       run: tail -n9999999 ../logs.txt ; echo >../logs.txt
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ failure() || success() }} && env.CARGOGREEN_FINAL_PATH != ''
       name: FIXME FINAL
       run: cat $CARGOGREEN_FINAL_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ failure() || success() }} && env.CARGOGREEN_FINAL_PATH != ''
       name: Maybe show final path diff
       run: git --no-pager diff --exit-code -- $CARGOGREEN_FINAL_PATH
     - run: sudo du -sh /var/lib/docker
@@ -582,11 +582,11 @@ jobs:
       name: cargo-green logs
       run: tail -n9999999 ../logs.txt ; echo >../logs.txt
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ failure() || success() }} && env.CARGOGREEN_FINAL_PATH != ''
       name: FIXME FINAL
       run: cat $CARGOGREEN_FINAL_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ failure() || success() }} && env.CARGOGREEN_FINAL_PATH != ''
       name: Maybe show final path diff
       run: git --no-pager diff --exit-code -- $CARGOGREEN_FINAL_PATH
     - run: sudo du -sh /var/lib/docker
@@ -634,11 +634,11 @@ jobs:
       name: cargo-green logs
       run: tail -n9999999 ../logs.txt ; echo >../logs.txt
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ failure() || success() }} && env.CARGOGREEN_FINAL_PATH != ''
       name: FIXME FINAL
       run: cat $CARGOGREEN_FINAL_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ failure() || success() }} && env.CARGOGREEN_FINAL_PATH != ''
       name: Maybe show final path diff
       run: git --no-pager diff --exit-code -- $CARGOGREEN_FINAL_PATH
     - run: sudo du -sh /var/lib/docker
@@ -660,7 +660,7 @@ jobs:
       RUST_BACKTRACE: 1
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: /home/runner/work/supergreen/logs.txt
-      CARGOGREEN_FINAL_PATH: $GITHUB_JOB.Dockerfile
+    # CARGOGREEN_FINAL_PATH: recipes/tests.Dockerfile
     steps:
     - run: docker info
     - run: docker buildx version
@@ -736,11 +736,11 @@ jobs:
       name: cargo-green logs
       run: tail -n9999999 ../logs.txt ; echo >../logs.txt
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ failure() || success() }} && env.CARGOGREEN_FINAL_PATH != ''
       name: FIXME FINAL
       run: cat $CARGOGREEN_FINAL_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ failure() || success() }} && env.CARGOGREEN_FINAL_PATH != ''
       name: Maybe show final path diff
       run: git --no-pager diff --exit-code -- $CARGOGREEN_FINAL_PATH
     - name: cargo test net=OFF cache=OFF remote=OFF jobs=1
@@ -774,11 +774,11 @@ jobs:
       name: cargo-green logs
       run: tail -n9999999 ../logs.txt ; echo >../logs.txt
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ failure() || success() }} && env.CARGOGREEN_FINAL_PATH != ''
       name: FIXME FINAL
       run: cat $CARGOGREEN_FINAL_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ failure() || success() }} && env.CARGOGREEN_FINAL_PATH != ''
       name: Maybe show final path diff
       run: git --no-pager diff --exit-code -- $CARGOGREEN_FINAL_PATH
     - run: sudo du -sh /var/lib/docker
@@ -826,11 +826,11 @@ jobs:
       name: cargo-green logs
       run: tail -n9999999 ../logs.txt ; echo >../logs.txt
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ failure() || success() }} && env.CARGOGREEN_FINAL_PATH != ''
       name: FIXME FINAL
       run: cat $CARGOGREEN_FINAL_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ failure() || success() }} && env.CARGOGREEN_FINAL_PATH != ''
       name: Maybe show final path diff
       run: git --no-pager diff --exit-code -- $CARGOGREEN_FINAL_PATH
     - run: sudo du -sh /var/lib/docker
@@ -878,11 +878,11 @@ jobs:
       name: cargo-green logs
       run: tail -n9999999 ../logs.txt ; echo >../logs.txt
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ failure() || success() }} && env.CARGOGREEN_FINAL_PATH != ''
       name: FIXME FINAL
       run: cat $CARGOGREEN_FINAL_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ failure() || success() }} && env.CARGOGREEN_FINAL_PATH != ''
       name: Maybe show final path diff
       run: git --no-pager diff --exit-code -- $CARGOGREEN_FINAL_PATH
     - run: sudo du -sh /var/lib/docker
@@ -904,7 +904,7 @@ jobs:
       RUST_BACKTRACE: 1
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: /home/runner/work/supergreen/logs.txt
-      CARGOGREEN_FINAL_PATH: $GITHUB_JOB.Dockerfile
+    # CARGOGREEN_FINAL_PATH: recipes/checks.Dockerfile
     steps:
     - run: docker info
     - run: docker buildx version
@@ -980,11 +980,11 @@ jobs:
       name: cargo-green logs
       run: tail -n9999999 ../logs.txt ; echo >../logs.txt
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ failure() || success() }} && env.CARGOGREEN_FINAL_PATH != ''
       name: FIXME FINAL
       run: cat $CARGOGREEN_FINAL_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ failure() || success() }} && env.CARGOGREEN_FINAL_PATH != ''
       name: Maybe show final path diff
       run: git --no-pager diff --exit-code -- $CARGOGREEN_FINAL_PATH
     - name: cargo check net=OFF cache=OFF remote=OFF jobs=$(nproc)
@@ -1018,11 +1018,11 @@ jobs:
       name: cargo-green logs
       run: tail -n9999999 ../logs.txt ; echo >../logs.txt
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ failure() || success() }} && env.CARGOGREEN_FINAL_PATH != ''
       name: FIXME FINAL
       run: cat $CARGOGREEN_FINAL_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ failure() || success() }} && env.CARGOGREEN_FINAL_PATH != ''
       name: Maybe show final path diff
       run: git --no-pager diff --exit-code -- $CARGOGREEN_FINAL_PATH
     - run: sudo du -sh /var/lib/docker
@@ -1070,11 +1070,11 @@ jobs:
       name: cargo-green logs
       run: tail -n9999999 ../logs.txt ; echo >../logs.txt
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ failure() || success() }} && env.CARGOGREEN_FINAL_PATH != ''
       name: FIXME FINAL
       run: cat $CARGOGREEN_FINAL_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ failure() || success() }} && env.CARGOGREEN_FINAL_PATH != ''
       name: Maybe show final path diff
       run: git --no-pager diff --exit-code -- $CARGOGREEN_FINAL_PATH
     - run: sudo du -sh /var/lib/docker
@@ -1096,7 +1096,7 @@ jobs:
       RUST_BACKTRACE: 1
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: /home/runner/work/supergreen/logs.txt
-      CARGOGREEN_FINAL_PATH: $GITHUB_JOB.Dockerfile
+    # CARGOGREEN_FINAL_PATH: recipes/packages.Dockerfile
     steps:
     - run: docker info
     - run: docker buildx version
@@ -1172,11 +1172,11 @@ jobs:
       name: cargo-green logs
       run: tail -n9999999 ../logs.txt ; echo >../logs.txt
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ failure() || success() }} && env.CARGOGREEN_FINAL_PATH != ''
       name: FIXME FINAL
       run: cat $CARGOGREEN_FINAL_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ failure() || success() }} && env.CARGOGREEN_FINAL_PATH != ''
       name: Maybe show final path diff
       run: git --no-pager diff --exit-code -- $CARGOGREEN_FINAL_PATH
     - name: cargo package net=OFF cache=OFF remote=OFF jobs=1
@@ -1210,11 +1210,11 @@ jobs:
       name: cargo-green logs
       run: tail -n9999999 ../logs.txt ; echo >../logs.txt
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ failure() || success() }} && env.CARGOGREEN_FINAL_PATH != ''
       name: FIXME FINAL
       run: cat $CARGOGREEN_FINAL_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ failure() || success() }} && env.CARGOGREEN_FINAL_PATH != ''
       name: Maybe show final path diff
       run: git --no-pager diff --exit-code -- $CARGOGREEN_FINAL_PATH
     - run: sudo du -sh /var/lib/docker
@@ -1236,7 +1236,7 @@ jobs:
       RUST_BACKTRACE: 1
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: /home/runner/work/supergreen/logs.txt
-      CARGOGREEN_FINAL_PATH: $GITHUB_JOB.Dockerfile
+    # CARGOGREEN_FINAL_PATH: recipes/clippy.Dockerfile
     steps:
     - run: docker info
     - run: docker buildx version
@@ -1313,11 +1313,11 @@ jobs:
       name: cargo-green logs
       run: tail -n9999999 ../logs.txt ; echo >../logs.txt
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ failure() || success() }} && env.CARGOGREEN_FINAL_PATH != ''
       name: FIXME FINAL
       run: cat $CARGOGREEN_FINAL_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ failure() || success() }} && env.CARGOGREEN_FINAL_PATH != ''
       name: Maybe show final path diff
       run: git --no-pager diff --exit-code -- $CARGOGREEN_FINAL_PATH
     - name: cargo clippy net=OFF cache=OFF remote=OFF jobs=1
@@ -1351,11 +1351,11 @@ jobs:
       name: cargo-green logs
       run: tail -n9999999 ../logs.txt ; echo >../logs.txt
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ failure() || success() }} && env.CARGOGREEN_FINAL_PATH != ''
       name: FIXME FINAL
       run: cat $CARGOGREEN_FINAL_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ failure() || success() }} && env.CARGOGREEN_FINAL_PATH != ''
       name: Maybe show final path diff
       run: git --no-pager diff --exit-code -- $CARGOGREEN_FINAL_PATH
     - run: sudo du -sh /var/lib/docker
@@ -1403,11 +1403,11 @@ jobs:
       name: cargo-green logs
       run: tail -n9999999 ../logs.txt ; echo >../logs.txt
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ failure() || success() }} && env.CARGOGREEN_FINAL_PATH != ''
       name: FIXME FINAL
       run: cat $CARGOGREEN_FINAL_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ failure() || success() }} && env.CARGOGREEN_FINAL_PATH != ''
       name: Maybe show final path diff
       run: git --no-pager diff --exit-code -- $CARGOGREEN_FINAL_PATH
     - run: sudo du -sh /var/lib/docker

@@ -11,7 +11,7 @@ nightly=nightly-2025-02-09
 postbin_steps() {
     local toolchain=${1:-stable}; shift
     [[ $# -eq 0 ]]
-cat <<EOF
+    cat <<EOF
     - uses: actions-rs/toolchain@v1
       with:
         profile: minimal
@@ -33,6 +33,20 @@ $(restore_bin-artifacts)
 
     - run: cargo fetch
     - run: cargo green supergreen env
+EOF
+}
+
+bin_jobdef() {
+    local name=$1; shift
+    [[ $# -eq 0 ]]
+    cat <<EOF
+$(jobdef "$name")
+    needs: bin
+    env:
+      RUST_BACKTRACE: 1
+      CARGOGREEN_LOG: trace
+      CARGOGREEN_LOG_PATH: /home/runner/work/supergreen/logs.txt
+    # CARGOGREEN_FINAL_PATH: recipes/$name.Dockerfile
 EOF
 }
 
@@ -81,13 +95,7 @@ $(rundeps_versions)
         path: /home/runner/.cargo/bin/cargo-green
 
 
-$(jobdef 'installs')
-    needs: bin
-    env:
-      RUST_BACKTRACE: 1
-      CARGOGREEN_LOG: trace
-      CARGOGREEN_LOG_PATH: /home/runner/work/supergreen/logs.txt
-      CARGOGREEN_FINAL_PATH: \$GITHUB_JOB.Dockerfile
+$(bin_jobdef 'installs')
     steps:
 $(rundeps_versions)
 $(postbin_steps)
@@ -98,13 +106,7 @@ $(postconds ../_ ../logs.txt)
 $(cache_usage)
 
 
-$(jobdef 'audits')
-    needs: bin
-    env:
-      RUST_BACKTRACE: 1
-      CARGOGREEN_LOG: trace
-      CARGOGREEN_LOG_PATH: /home/runner/work/supergreen/logs.txt
-      CARGOGREEN_FINAL_PATH: \$GITHUB_JOB.Dockerfile
+$(bin_jobdef 'audits')
     steps:
 $(rundeps_versions)
 $(postbin_steps)
@@ -118,13 +120,7 @@ $(postconds ../_ ../logs.txt)
 $(cache_usage)
 
 
-$(jobdef 'udeps')
-    needs: bin
-    env:
-      RUST_BACKTRACE: 1
-      CARGOGREEN_LOG: trace
-      CARGOGREEN_LOG_PATH: /home/runner/work/supergreen/logs.txt
-      CARGOGREEN_FINAL_PATH: \$GITHUB_JOB.Dockerfile
+$(bin_jobdef 'udeps')
     steps:
 $(rundeps_versions)
 $(postbin_steps $nightly)
@@ -142,13 +138,7 @@ $(postconds ../_ ../logs.txt)
 $(cache_usage)
 
 
-$(jobdef 'builds')
-    needs: bin
-    env:
-      RUST_BACKTRACE: 1
-      CARGOGREEN_LOG: trace
-      CARGOGREEN_LOG_PATH: /home/runner/work/supergreen/logs.txt
-      CARGOGREEN_FINAL_PATH: \$GITHUB_JOB.Dockerfile
+$(bin_jobdef 'builds')
     steps:
 $(rundeps_versions)
 $(postbin_steps)
@@ -172,13 +162,7 @@ $(postconds ../_ ../logs.txt)
 $(cache_usage)
 
 
-$(jobdef 'tests')
-    needs: bin
-    env:
-      RUST_BACKTRACE: 1
-      CARGOGREEN_LOG: trace
-      CARGOGREEN_LOG_PATH: /home/runner/work/supergreen/logs.txt
-      CARGOGREEN_FINAL_PATH: \$GITHUB_JOB.Dockerfile
+$(bin_jobdef 'tests')
     steps:
 $(rundeps_versions)
 $(postbin_steps)
@@ -202,13 +186,7 @@ $(postconds ../_ ../logs.txt)
 $(cache_usage)
 
 
-$(jobdef 'checks')
-    needs: bin
-    env:
-      RUST_BACKTRACE: 1
-      CARGOGREEN_LOG: trace
-      CARGOGREEN_LOG_PATH: /home/runner/work/supergreen/logs.txt
-      CARGOGREEN_FINAL_PATH: \$GITHUB_JOB.Dockerfile
+$(bin_jobdef 'checks')
     steps:
 $(rundeps_versions)
 $(postbin_steps)
@@ -227,13 +205,7 @@ $(postconds ../_ ../logs.txt)
 $(cache_usage)
 
 
-$(jobdef 'packages')
-    needs: bin
-    env:
-      RUST_BACKTRACE: 1
-      CARGOGREEN_LOG: trace
-      CARGOGREEN_LOG_PATH: /home/runner/work/supergreen/logs.txt
-      CARGOGREEN_FINAL_PATH: \$GITHUB_JOB.Dockerfile
+$(bin_jobdef 'packages')
     steps:
 $(rundeps_versions)
 $(postbin_steps)
@@ -247,13 +219,7 @@ $(postconds ../_ ../logs.txt)
 $(cache_usage)
 
 
-$(jobdef 'clippy')
-    needs: bin
-    env:
-      RUST_BACKTRACE: 1
-      CARGOGREEN_LOG: trace
-      CARGOGREEN_LOG_PATH: /home/runner/work/supergreen/logs.txt
-      CARGOGREEN_FINAL_PATH: \$GITHUB_JOB.Dockerfile
+$(bin_jobdef 'clippy')
     steps:
 $(rundeps_versions)
 $(postbin_steps)
