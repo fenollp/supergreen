@@ -139,11 +139,11 @@ jobs:
       name: cargo-green logs
       run: tail -n9999999 logs.txt ; echo >logs.txt
 
-    - if: ${{ failure() || success() }} && env.CARGOGREEN_FINAL_PATH != ''
+    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' }}
       name: FIXME FINAL
       run: cat $CARGOGREEN_FINAL_PATH
 
-    - if: ${{ failure() || success() }} && env.CARGOGREEN_FINAL_PATH != ''
+    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' }}
       name: Maybe show final path diff
       run: git --no-pager diff --exit-code -- $CARGOGREEN_FINAL_PATH
     - run: sudo du -sh /var/lib/docker
@@ -200,11 +200,11 @@ git diff exit code $CARGOGREEN_FINAL_PATH
       name: cargo-green logs
       run: tail -n9999999 logs.txt ; echo >logs.txt
 
-    - if: ${{ failure() || success() }} && env.CARGOGREEN_FINAL_PATH != ''
+    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' }}
       name: FIXME FINAL
       run: cat $CARGOGREEN_FINAL_PATH
 
-    - if: ${{ failure() || success() }} && env.CARGOGREEN_FINAL_PATH != ''
+    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' }}
       name: Maybe show final path diff
       run: git --no-pager diff --exit-code -- $CARGOGREEN_FINAL_PATH
     - run: sudo du -sh /var/lib/docker
@@ -297,11 +297,11 @@ git diff exit code $CARGOGREEN_FINAL_PATH
       name: cargo-green logs
       run: tail -n9999999 logs.txt ; echo >logs.txt
 
-    - if: ${{ failure() || success() }} && env.CARGOGREEN_FINAL_PATH != ''
+    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' }}
       name: FIXME FINAL
       run: cat $CARGOGREEN_FINAL_PATH
 
-    - if: ${{ failure() || success() }} && env.CARGOGREEN_FINAL_PATH != ''
+    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' }}
       name: Maybe show final path diff
       run: git --no-pager diff --exit-code -- $CARGOGREEN_FINAL_PATH
     - run: sudo du -sh /var/lib/docker
@@ -358,11 +358,11 @@ git diff exit code $CARGOGREEN_FINAL_PATH
       name: cargo-green logs
       run: tail -n9999999 logs.txt ; echo >logs.txt
 
-    - if: ${{ failure() || success() }} && env.CARGOGREEN_FINAL_PATH != ''
+    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' }}
       name: FIXME FINAL
       run: cat $CARGOGREEN_FINAL_PATH
 
-    - if: ${{ failure() || success() }} && env.CARGOGREEN_FINAL_PATH != ''
+    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' }}
       name: Maybe show final path diff
       run: git --no-pager diff --exit-code -- $CARGOGREEN_FINAL_PATH
     - run: sudo du -sh /var/lib/docker
@@ -455,11 +455,11 @@ git diff exit code $CARGOGREEN_FINAL_PATH
       name: cargo-green logs
       run: tail -n9999999 logs.txt ; echo >logs.txt
 
-    - if: ${{ failure() || success() }} && env.CARGOGREEN_FINAL_PATH != ''
+    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' }}
       name: FIXME FINAL
       run: cat $CARGOGREEN_FINAL_PATH
 
-    - if: ${{ failure() || success() }} && env.CARGOGREEN_FINAL_PATH != ''
+    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' }}
       name: Maybe show final path diff
       run: git --no-pager diff --exit-code -- $CARGOGREEN_FINAL_PATH
     - run: sudo du -sh /var/lib/docker
@@ -516,11 +516,11 @@ git diff exit code $CARGOGREEN_FINAL_PATH
       name: cargo-green logs
       run: tail -n9999999 logs.txt ; echo >logs.txt
 
-    - if: ${{ failure() || success() }} && env.CARGOGREEN_FINAL_PATH != ''
+    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' }}
       name: FIXME FINAL
       run: cat $CARGOGREEN_FINAL_PATH
 
-    - if: ${{ failure() || success() }} && env.CARGOGREEN_FINAL_PATH != ''
+    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' }}
       name: Maybe show final path diff
       run: git --no-pager diff --exit-code -- $CARGOGREEN_FINAL_PATH
     - run: sudo du -sh /var/lib/docker
@@ -613,11 +613,11 @@ git diff exit code $CARGOGREEN_FINAL_PATH
       name: cargo-green logs
       run: tail -n9999999 logs.txt ; echo >logs.txt
 
-    - if: ${{ failure() || success() }} && env.CARGOGREEN_FINAL_PATH != ''
+    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' }}
       name: FIXME FINAL
       run: cat $CARGOGREEN_FINAL_PATH
 
-    - if: ${{ failure() || success() }} && env.CARGOGREEN_FINAL_PATH != ''
+    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' }}
       name: Maybe show final path diff
       run: git --no-pager diff --exit-code -- $CARGOGREEN_FINAL_PATH
     - run: sudo du -sh /var/lib/docker
@@ -674,11 +674,11 @@ git diff exit code $CARGOGREEN_FINAL_PATH
       name: cargo-green logs
       run: tail -n9999999 logs.txt ; echo >logs.txt
 
-    - if: ${{ failure() || success() }} && env.CARGOGREEN_FINAL_PATH != ''
+    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' }}
       name: FIXME FINAL
       run: cat $CARGOGREEN_FINAL_PATH
 
-    - if: ${{ failure() || success() }} && env.CARGOGREEN_FINAL_PATH != ''
+    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' }}
       name: Maybe show final path diff
       run: git --no-pager diff --exit-code -- $CARGOGREEN_FINAL_PATH
     - run: sudo du -sh /var/lib/docker
@@ -771,11 +771,11 @@ git diff exit code $CARGOGREEN_FINAL_PATH
       name: cargo-green logs
       run: tail -n9999999 logs.txt ; echo >logs.txt
 
-    - if: ${{ failure() || success() }} && env.CARGOGREEN_FINAL_PATH != ''
+    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' }}
       name: FIXME FINAL
       run: cat $CARGOGREEN_FINAL_PATH
 
-    - if: ${{ failure() || success() }} && env.CARGOGREEN_FINAL_PATH != ''
+    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' }}
       name: Maybe show final path diff
       run: git --no-pager diff --exit-code -- $CARGOGREEN_FINAL_PATH
     - run: sudo du -sh /var/lib/docker
@@ -832,11 +832,11 @@ git diff exit code $CARGOGREEN_FINAL_PATH
       name: cargo-green logs
       run: tail -n9999999 logs.txt ; echo >logs.txt
 
-    - if: ${{ failure() || success() }} && env.CARGOGREEN_FINAL_PATH != ''
+    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' }}
       name: FIXME FINAL
       run: cat $CARGOGREEN_FINAL_PATH
 
-    - if: ${{ failure() || success() }} && env.CARGOGREEN_FINAL_PATH != ''
+    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' }}
       name: Maybe show final path diff
       run: git --no-pager diff --exit-code -- $CARGOGREEN_FINAL_PATH
     - run: sudo du -sh /var/lib/docker
@@ -929,11 +929,11 @@ git diff exit code $CARGOGREEN_FINAL_PATH
       name: cargo-green logs
       run: tail -n9999999 logs.txt ; echo >logs.txt
 
-    - if: ${{ failure() || success() }} && env.CARGOGREEN_FINAL_PATH != ''
+    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' }}
       name: FIXME FINAL
       run: cat $CARGOGREEN_FINAL_PATH
 
-    - if: ${{ failure() || success() }} && env.CARGOGREEN_FINAL_PATH != ''
+    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' }}
       name: Maybe show final path diff
       run: git --no-pager diff --exit-code -- $CARGOGREEN_FINAL_PATH
     - run: sudo du -sh /var/lib/docker
@@ -990,11 +990,11 @@ git diff exit code $CARGOGREEN_FINAL_PATH
       name: cargo-green logs
       run: tail -n9999999 logs.txt ; echo >logs.txt
 
-    - if: ${{ failure() || success() }} && env.CARGOGREEN_FINAL_PATH != ''
+    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' }}
       name: FIXME FINAL
       run: cat $CARGOGREEN_FINAL_PATH
 
-    - if: ${{ failure() || success() }} && env.CARGOGREEN_FINAL_PATH != ''
+    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' }}
       name: Maybe show final path diff
       run: git --no-pager diff --exit-code -- $CARGOGREEN_FINAL_PATH
     - run: sudo du -sh /var/lib/docker
@@ -1087,11 +1087,11 @@ git diff exit code $CARGOGREEN_FINAL_PATH
       name: cargo-green logs
       run: tail -n9999999 logs.txt ; echo >logs.txt
 
-    - if: ${{ failure() || success() }} && env.CARGOGREEN_FINAL_PATH != ''
+    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' }}
       name: FIXME FINAL
       run: cat $CARGOGREEN_FINAL_PATH
 
-    - if: ${{ failure() || success() }} && env.CARGOGREEN_FINAL_PATH != ''
+    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' }}
       name: Maybe show final path diff
       run: git --no-pager diff --exit-code -- $CARGOGREEN_FINAL_PATH
     - run: sudo du -sh /var/lib/docker
@@ -1148,11 +1148,11 @@ git diff exit code $CARGOGREEN_FINAL_PATH
       name: cargo-green logs
       run: tail -n9999999 logs.txt ; echo >logs.txt
 
-    - if: ${{ failure() || success() }} && env.CARGOGREEN_FINAL_PATH != ''
+    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' }}
       name: FIXME FINAL
       run: cat $CARGOGREEN_FINAL_PATH
 
-    - if: ${{ failure() || success() }} && env.CARGOGREEN_FINAL_PATH != ''
+    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' }}
       name: Maybe show final path diff
       run: git --no-pager diff --exit-code -- $CARGOGREEN_FINAL_PATH
     - run: sudo du -sh /var/lib/docker
@@ -1245,11 +1245,11 @@ git diff exit code $CARGOGREEN_FINAL_PATH
       name: cargo-green logs
       run: tail -n9999999 logs.txt ; echo >logs.txt
 
-    - if: ${{ failure() || success() }} && env.CARGOGREEN_FINAL_PATH != ''
+    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' }}
       name: FIXME FINAL
       run: cat $CARGOGREEN_FINAL_PATH
 
-    - if: ${{ failure() || success() }} && env.CARGOGREEN_FINAL_PATH != ''
+    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' }}
       name: Maybe show final path diff
       run: git --no-pager diff --exit-code -- $CARGOGREEN_FINAL_PATH
     - run: sudo du -sh /var/lib/docker
@@ -1306,11 +1306,11 @@ git diff exit code $CARGOGREEN_FINAL_PATH
       name: cargo-green logs
       run: tail -n9999999 logs.txt ; echo >logs.txt
 
-    - if: ${{ failure() || success() }} && env.CARGOGREEN_FINAL_PATH != ''
+    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' }}
       name: FIXME FINAL
       run: cat $CARGOGREEN_FINAL_PATH
 
-    - if: ${{ failure() || success() }} && env.CARGOGREEN_FINAL_PATH != ''
+    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' }}
       name: Maybe show final path diff
       run: git --no-pager diff --exit-code -- $CARGOGREEN_FINAL_PATH
     - run: sudo du -sh /var/lib/docker
@@ -1403,11 +1403,11 @@ git diff exit code $CARGOGREEN_FINAL_PATH
       name: cargo-green logs
       run: tail -n9999999 logs.txt ; echo >logs.txt
 
-    - if: ${{ failure() || success() }} && env.CARGOGREEN_FINAL_PATH != ''
+    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' }}
       name: FIXME FINAL
       run: cat $CARGOGREEN_FINAL_PATH
 
-    - if: ${{ failure() || success() }} && env.CARGOGREEN_FINAL_PATH != ''
+    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' }}
       name: Maybe show final path diff
       run: git --no-pager diff --exit-code -- $CARGOGREEN_FINAL_PATH
     - run: sudo du -sh /var/lib/docker
@@ -1464,11 +1464,11 @@ git diff exit code $CARGOGREEN_FINAL_PATH
       name: cargo-green logs
       run: tail -n9999999 logs.txt ; echo >logs.txt
 
-    - if: ${{ failure() || success() }} && env.CARGOGREEN_FINAL_PATH != ''
+    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' }}
       name: FIXME FINAL
       run: cat $CARGOGREEN_FINAL_PATH
 
-    - if: ${{ failure() || success() }} && env.CARGOGREEN_FINAL_PATH != ''
+    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' }}
       name: Maybe show final path diff
       run: git --no-pager diff --exit-code -- $CARGOGREEN_FINAL_PATH
     - run: sudo du -sh /var/lib/docker
@@ -1561,11 +1561,11 @@ git diff exit code $CARGOGREEN_FINAL_PATH
       name: cargo-green logs
       run: tail -n9999999 logs.txt ; echo >logs.txt
 
-    - if: ${{ failure() || success() }} && env.CARGOGREEN_FINAL_PATH != ''
+    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' }}
       name: FIXME FINAL
       run: cat $CARGOGREEN_FINAL_PATH
 
-    - if: ${{ failure() || success() }} && env.CARGOGREEN_FINAL_PATH != ''
+    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' }}
       name: Maybe show final path diff
       run: git --no-pager diff --exit-code -- $CARGOGREEN_FINAL_PATH
     - run: sudo du -sh /var/lib/docker
@@ -1622,11 +1622,11 @@ git diff exit code $CARGOGREEN_FINAL_PATH
       name: cargo-green logs
       run: tail -n9999999 logs.txt ; echo >logs.txt
 
-    - if: ${{ failure() || success() }} && env.CARGOGREEN_FINAL_PATH != ''
+    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' }}
       name: FIXME FINAL
       run: cat $CARGOGREEN_FINAL_PATH
 
-    - if: ${{ failure() || success() }} && env.CARGOGREEN_FINAL_PATH != ''
+    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' }}
       name: Maybe show final path diff
       run: git --no-pager diff --exit-code -- $CARGOGREEN_FINAL_PATH
     - run: sudo du -sh /var/lib/docker
@@ -1719,11 +1719,11 @@ git diff exit code $CARGOGREEN_FINAL_PATH
       name: cargo-green logs
       run: tail -n9999999 logs.txt ; echo >logs.txt
 
-    - if: ${{ failure() || success() }} && env.CARGOGREEN_FINAL_PATH != ''
+    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' }}
       name: FIXME FINAL
       run: cat $CARGOGREEN_FINAL_PATH
 
-    - if: ${{ failure() || success() }} && env.CARGOGREEN_FINAL_PATH != ''
+    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' }}
       name: Maybe show final path diff
       run: git --no-pager diff --exit-code -- $CARGOGREEN_FINAL_PATH
     - run: sudo du -sh /var/lib/docker
@@ -1780,11 +1780,11 @@ git diff exit code $CARGOGREEN_FINAL_PATH
       name: cargo-green logs
       run: tail -n9999999 logs.txt ; echo >logs.txt
 
-    - if: ${{ failure() || success() }} && env.CARGOGREEN_FINAL_PATH != ''
+    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' }}
       name: FIXME FINAL
       run: cat $CARGOGREEN_FINAL_PATH
 
-    - if: ${{ failure() || success() }} && env.CARGOGREEN_FINAL_PATH != ''
+    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' }}
       name: Maybe show final path diff
       run: git --no-pager diff --exit-code -- $CARGOGREEN_FINAL_PATH
     - run: sudo du -sh /var/lib/docker
@@ -1877,11 +1877,11 @@ git diff exit code $CARGOGREEN_FINAL_PATH
       name: cargo-green logs
       run: tail -n9999999 logs.txt ; echo >logs.txt
 
-    - if: ${{ failure() || success() }} && env.CARGOGREEN_FINAL_PATH != ''
+    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' }}
       name: FIXME FINAL
       run: cat $CARGOGREEN_FINAL_PATH
 
-    - if: ${{ failure() || success() }} && env.CARGOGREEN_FINAL_PATH != ''
+    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' }}
       name: Maybe show final path diff
       run: git --no-pager diff --exit-code -- $CARGOGREEN_FINAL_PATH
     - run: sudo du -sh /var/lib/docker
@@ -1938,11 +1938,11 @@ git diff exit code $CARGOGREEN_FINAL_PATH
       name: cargo-green logs
       run: tail -n9999999 logs.txt ; echo >logs.txt
 
-    - if: ${{ failure() || success() }} && env.CARGOGREEN_FINAL_PATH != ''
+    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' }}
       name: FIXME FINAL
       run: cat $CARGOGREEN_FINAL_PATH
 
-    - if: ${{ failure() || success() }} && env.CARGOGREEN_FINAL_PATH != ''
+    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' }}
       name: Maybe show final path diff
       run: git --no-pager diff --exit-code -- $CARGOGREEN_FINAL_PATH
     - run: sudo du -sh /var/lib/docker
@@ -2035,11 +2035,11 @@ git diff exit code $CARGOGREEN_FINAL_PATH
       name: cargo-green logs
       run: tail -n9999999 logs.txt ; echo >logs.txt
 
-    - if: ${{ failure() || success() }} && env.CARGOGREEN_FINAL_PATH != ''
+    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' }}
       name: FIXME FINAL
       run: cat $CARGOGREEN_FINAL_PATH
 
-    - if: ${{ failure() || success() }} && env.CARGOGREEN_FINAL_PATH != ''
+    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' }}
       name: Maybe show final path diff
       run: git --no-pager diff --exit-code -- $CARGOGREEN_FINAL_PATH
     - run: sudo du -sh /var/lib/docker
@@ -2096,11 +2096,11 @@ git diff exit code $CARGOGREEN_FINAL_PATH
       name: cargo-green logs
       run: tail -n9999999 logs.txt ; echo >logs.txt
 
-    - if: ${{ failure() || success() }} && env.CARGOGREEN_FINAL_PATH != ''
+    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' }}
       name: FIXME FINAL
       run: cat $CARGOGREEN_FINAL_PATH
 
-    - if: ${{ failure() || success() }} && env.CARGOGREEN_FINAL_PATH != ''
+    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' }}
       name: Maybe show final path diff
       run: git --no-pager diff --exit-code -- $CARGOGREEN_FINAL_PATH
     - run: sudo du -sh /var/lib/docker
