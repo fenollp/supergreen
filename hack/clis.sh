@@ -242,6 +242,11 @@ $(cache_usage)
       run: |
         env ${envvars[@]} \\
           cargo green -vv install --jobs=$jobs --locked --force $(as_install "$name_at_version") $@ |& tee _
+    - uses: actions/upload-artifact@v4
+      name: Upload recipe
+      with:
+        name: $name_at_version.Dockerfile
+        path: \${{ env.CARGOGREEN_FINAL_PATH }}
 $(postconds _)
 $(cache_usage)
 

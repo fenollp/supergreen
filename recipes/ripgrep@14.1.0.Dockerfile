@@ -38,7 +38,6 @@ RUN \
         CARGO_PKG_VERSION_MINOR="7" \
         CARGO_PKG_VERSION_PATCH="1" \
         CARGO_PKG_VERSION_PRE= \
-        TERM="tmux-256color" \
         CARGOGREEN=1 \
       rustc '--crate-name' 'memchr' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--cfg' 'feature="alloc"' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "compiler_builtins", "core", "default", "libc", "logging", "rustc-dep-of-std", "std", "use_std"))' '-C' 'metadata=66a27ef031221cf7' '-C' 'extra-filename=-adb42ba8707327a5' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/memchr-2.7.1/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
@@ -81,7 +80,6 @@ RUN \
         CARGO_PKG_VERSION_MINOR="1" \
         CARGO_PKG_VERSION_PATCH="2" \
         CARGO_PKG_VERSION_PRE= \
-        TERM="tmux-256color" \
         CARGOGREEN=1 \
       rustc '--crate-name' 'aho_corasick' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--cfg' 'feature="default"' '--cfg' 'feature="perf-literal"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "logging", "perf-literal", "std"))' '-C' 'metadata=fd6c5ab01ec01921' '-C' 'extra-filename=-5340536e5cb2d54e' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--extern' 'memchr=/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-adb42ba8707327a5.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aho-corasick-1.1.2/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
@@ -125,7 +123,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH="79" \
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR="/tmp/clis-ripgrep_14-1-0/release/build/anyhow-2f2d7ac163162ce6/out" \
-        TERM="tmux-256color" \
         CARGOGREEN=1 \
       rustc '--crate-name' 'anyhow' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("backtrace", "default", "std"))' '-C' 'metadata=1054fa31eee7294e' '-C' 'extra-filename=-33de8a5702ede027' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--cap-lints' 'warn' '--cfg' 'std_backtrace' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.79/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
@@ -167,7 +164,6 @@ RUN \
         CARGO_PKG_VERSION_MINOR="8" \
         CARGO_PKG_VERSION_PATCH="2" \
         CARGO_PKG_VERSION_PRE= \
-        TERM="tmux-256color" \
         CARGOGREEN=1 \
       rustc '--crate-name' 'regex_syntax' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--cfg' 'feature="unicode"' '--cfg' 'feature="unicode-age"' '--cfg' 'feature="unicode-bool"' '--cfg' 'feature="unicode-case"' '--cfg' 'feature="unicode-gencat"' '--cfg' 'feature="unicode-perl"' '--cfg' 'feature="unicode-script"' '--cfg' 'feature="unicode-segment"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("arbitrary", "default", "std", "unicode", "unicode-age", "unicode-bool", "unicode-case", "unicode-gencat", "unicode-perl", "unicode-script", "unicode-segment"))' '-C' 'metadata=1428a91ae5678251' '-C' 'extra-filename=-466a1e2eaae23a81' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/regex-syntax-0.8.2/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
@@ -212,7 +208,6 @@ RUN \
         CARGO_PKG_VERSION_MINOR="4" \
         CARGO_PKG_VERSION_PATCH="3" \
         CARGO_PKG_VERSION_PRE= \
-        TERM="tmux-256color" \
         CARGOGREEN=1 \
       rustc '--crate-name' 'regex_automata' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--cfg' 'feature="alloc"' '--cfg' 'feature="default"' '--cfg' 'feature="dfa"' '--cfg' 'feature="dfa-build"' '--cfg' 'feature="dfa-onepass"' '--cfg' 'feature="dfa-search"' '--cfg' 'feature="hybrid"' '--cfg' 'feature="meta"' '--cfg' 'feature="nfa"' '--cfg' 'feature="nfa-backtrack"' '--cfg' 'feature="nfa-pikevm"' '--cfg' 'feature="nfa-thompson"' '--cfg' 'feature="perf"' '--cfg' 'feature="perf-inline"' '--cfg' 'feature="perf-literal"' '--cfg' 'feature="perf-literal-multisubstring"' '--cfg' 'feature="perf-literal-substring"' '--cfg' 'feature="std"' '--cfg' 'feature="syntax"' '--cfg' 'feature="unicode"' '--cfg' 'feature="unicode-age"' '--cfg' 'feature="unicode-bool"' '--cfg' 'feature="unicode-case"' '--cfg' 'feature="unicode-gencat"' '--cfg' 'feature="unicode-perl"' '--cfg' 'feature="unicode-script"' '--cfg' 'feature="unicode-segment"' '--cfg' 'feature="unicode-word-boundary"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "default", "dfa", "dfa-build", "dfa-onepass", "dfa-search", "hybrid", "internal-instrument", "internal-instrument-pikevm", "logging", "meta", "nfa", "nfa-backtrack", "nfa-pikevm", "nfa-thompson", "perf", "perf-inline", "perf-literal", "perf-literal-multisubstring", "perf-literal-substring", "std", "syntax", "unicode", "unicode-age", "unicode-bool", "unicode-case", "unicode-gencat", "unicode-perl", "unicode-script", "unicode-segment", "unicode-word-boundary"))' '-C' 'metadata=d92f6e148e42d91b' '-C' 'extra-filename=-9a2beda46ceea707' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--extern' 'aho_corasick=/tmp/clis-ripgrep_14-1-0/release/deps/libaho_corasick-5340536e5cb2d54e.rmeta' '--extern' 'memchr=/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-adb42ba8707327a5.rmeta' '--extern' 'regex_syntax=/tmp/clis-ripgrep_14-1-0/release/deps/libregex_syntax-466a1e2eaae23a81.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/regex-automata-0.4.3/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
@@ -258,7 +253,6 @@ RUN \
         CARGO_PKG_VERSION_MINOR="9" \
         CARGO_PKG_VERSION_PATCH="0" \
         CARGO_PKG_VERSION_PRE= \
-        TERM="tmux-256color" \
         CARGOGREEN=1 \
       rustc '--crate-name' 'bstr' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--cfg' 'feature="alloc"' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--cfg' 'feature="unicode"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "default", "serde", "std", "unicode"))' '-C' 'metadata=901f0f8c117a0961' '-C' 'extra-filename=-7b758be3ac86b5cc' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--extern' 'memchr=/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-adb42ba8707327a5.rmeta' '--extern' 'regex_automata=/tmp/clis-ripgrep_14-1-0/release/deps/libregex_automata-9a2beda46ceea707.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bstr-1.9.0/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
@@ -300,7 +294,6 @@ RUN \
         CARGO_PKG_VERSION_MINOR="0" \
         CARGO_PKG_VERSION_PATCH="0" \
         CARGO_PKG_VERSION_PRE= \
-        TERM="tmux-256color" \
         CARGOGREEN=1 \
       rustc '--crate-name' 'cfg_if' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("compiler_builtins", "core", "rustc-dep-of-std"))' '-C' 'metadata=6f446e6c7bcdb460' '-C' 'extra-filename=-753d2b929885af08' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/cfg-if-1.0.0/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
@@ -344,7 +337,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH="18" \
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR="/tmp/clis-ripgrep_14-1-0/release/build/crossbeam-utils-b4f61eb26ae45bb7/out" \
-        TERM="tmux-256color" \
         CARGOGREEN=1 \
       rustc '--crate-name' 'crossbeam_utils' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "loom", "nightly", "std"))' '-C' 'metadata=d59abc875a1d6085' '-C' 'extra-filename=-3e250caf6eda6310' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--extern' 'cfg_if=/tmp/clis-ripgrep_14-1-0/release/deps/libcfg_if-753d2b929885af08.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.18/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
@@ -388,7 +380,6 @@ RUN \
         CARGO_PKG_VERSION_MINOR="9" \
         CARGO_PKG_VERSION_PATCH="17" \
         CARGO_PKG_VERSION_PRE= \
-        TERM="tmux-256color" \
         CARGOGREEN=1 \
       rustc '--crate-name' 'crossbeam_epoch' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--cfg' 'feature="alloc"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "default", "loom", "loom-crate", "nightly", "std"))' '-C' 'metadata=389b277f4502940f' '-C' 'extra-filename=-86dadd2229faa446' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--extern' 'cfg_if=/tmp/clis-ripgrep_14-1-0/release/deps/libcfg_if-753d2b929885af08.rmeta' '--extern' 'crossbeam_utils=/tmp/clis-ripgrep_14-1-0/release/deps/libcrossbeam_utils-3e250caf6eda6310.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-epoch-0.9.17/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
@@ -433,7 +424,6 @@ RUN \
         CARGO_PKG_VERSION_MINOR="8" \
         CARGO_PKG_VERSION_PATCH="4" \
         CARGO_PKG_VERSION_PRE= \
-        TERM="tmux-256color" \
         CARGOGREEN=1 \
       rustc '--crate-name' 'crossbeam_deque' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--cfg' 'feature="crossbeam-epoch"' '--cfg' 'feature="crossbeam-utils"' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("crossbeam-epoch", "crossbeam-utils", "default", "std"))' '-C' 'metadata=01f447092fa3fac2' '-C' 'extra-filename=-95a620003bcd8a70' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--extern' 'cfg_if=/tmp/clis-ripgrep_14-1-0/release/deps/libcfg_if-753d2b929885af08.rmeta' '--extern' 'crossbeam_epoch=/tmp/clis-ripgrep_14-1-0/release/deps/libcrossbeam_epoch-86dadd2229faa446.rmeta' '--extern' 'crossbeam_utils=/tmp/clis-ripgrep_14-1-0/release/deps/libcrossbeam_utils-3e250caf6eda6310.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-deque-0.8.4/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
@@ -476,7 +466,6 @@ RUN \
         CARGO_PKG_VERSION_MINOR="8" \
         CARGO_PKG_VERSION_PATCH="33" \
         CARGO_PKG_VERSION_PRE= \
-        TERM="tmux-256color" \
         CARGOGREEN=1 \
       rustc '--crate-name' 'encoding_rs' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--cfg' 'feature="alloc"' '--cfg' 'feature="default"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "default", "fast-big5-hanzi-encode", "fast-gb-hanzi-encode", "fast-hangul-encode", "fast-hanja-encode", "fast-kanji-encode", "fast-legacy-encode", "less-slow-big5-hanzi-encode", "less-slow-gb-hanzi-encode", "less-slow-kanji-encode", "packed_simd", "serde", "simd-accel"))' '-C' 'metadata=020c8c238babbd81' '-C' 'extra-filename=-fbb66338cd25089f' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--extern' 'cfg_if=/tmp/clis-ripgrep_14-1-0/release/deps/libcfg_if-753d2b929885af08.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/encoding_rs-0.8.33/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
@@ -520,7 +509,6 @@ RUN \
         CARGO_PKG_VERSION_MINOR="1" \
         CARGO_PKG_VERSION_PATCH="7" \
         CARGO_PKG_VERSION_PRE= \
-        TERM="tmux-256color" \
         CARGOGREEN=1 \
       rustc '--crate-name' 'encoding_rs_io' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=0864ae6275286670' '-C' 'extra-filename=-2868ca728c95cba0' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--extern' 'encoding_rs=/tmp/clis-ripgrep_14-1-0/release/deps/libencoding_rs-fbb66338cd25089f.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/encoding_rs_io-0.1.7/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
@@ -562,7 +550,6 @@ RUN \
         CARGO_PKG_VERSION_MINOR="4" \
         CARGO_PKG_VERSION_PATCH="20" \
         CARGO_PKG_VERSION_PRE= \
-        TERM="tmux-256color" \
         CARGOGREEN=1 \
       rustc '--crate-name' 'log' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("kv_unstable", "kv_unstable_serde", "kv_unstable_std", "kv_unstable_sval", "max_level_debug", "max_level_error", "max_level_info", "max_level_off", "max_level_trace", "max_level_warn", "release_max_level_debug", "release_max_level_error", "release_max_level_info", "release_max_level_off", "release_max_level_trace", "release_max_level_warn", "serde", "std", "sval", "sval_ref", "value-bag"))' '-C' 'metadata=fd8a4285c9c34319' '-C' 'extra-filename=-1d0d72e4d1c0d996' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/log-0.4.20/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
@@ -610,7 +597,6 @@ RUN \
         CARGO_PKG_VERSION_MINOR="4" \
         CARGO_PKG_VERSION_PATCH="14" \
         CARGO_PKG_VERSION_PRE= \
-        TERM="tmux-256color" \
         CARGOGREEN=1 \
       rustc '--crate-name' 'globset' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--cfg' 'feature="default"' '--cfg' 'feature="log"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "log", "serde", "serde1", "simd-accel"))' '-C' 'metadata=c026c03cd8d4bbb2' '-C' 'extra-filename=-1fb8dca244613034' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--extern' 'aho_corasick=/tmp/clis-ripgrep_14-1-0/release/deps/libaho_corasick-5340536e5cb2d54e.rmeta' '--extern' 'bstr=/tmp/clis-ripgrep_14-1-0/release/deps/libbstr-7b758be3ac86b5cc.rmeta' '--extern' 'log=/tmp/clis-ripgrep_14-1-0/release/deps/liblog-1d0d72e4d1c0d996.rmeta' '--extern' 'regex_automata=/tmp/clis-ripgrep_14-1-0/release/deps/libregex_automata-9a2beda46ceea707.rmeta' '--extern' 'regex_syntax=/tmp/clis-ripgrep_14-1-0/release/deps/libregex_syntax-466a1e2eaae23a81.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/globset-0.4.14/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
@@ -653,7 +639,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH="151" \
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR="/tmp/clis-ripgrep_14-1-0/release/build/libc-09c536cb95db1d0c/out" \
-        TERM="tmux-256color" \
         CARGOGREEN=1 \
       rustc '--crate-name' 'libc' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("align", "const-extern-fn", "default", "extra_traits", "rustc-dep-of-std", "rustc-std-workspace-core", "std", "use_std"))' '-C' 'metadata=8336ff40690b796b' '-C' 'extra-filename=-7a2e0c4be073094d' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--cap-lints' 'warn' '--cfg' 'freebsd11' '--cfg' 'libc_priv_mod_use' '--cfg' 'libc_union' '--cfg' 'libc_const_size_of' '--cfg' 'libc_align' '--cfg' 'libc_int128' '--cfg' 'libc_core_cvoid' '--cfg' 'libc_packedN' '--cfg' 'libc_cfg_target_vendor' '--cfg' 'libc_non_exhaustive' '--cfg' 'libc_long_array' '--cfg' 'libc_ptr_addr_of' '--cfg' 'libc_underscore_const_names' '--cfg' 'libc_const_extern_fn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.151/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
@@ -695,7 +680,6 @@ RUN \
         CARGO_PKG_VERSION_MINOR="4" \
         CARGO_PKG_VERSION_PATCH="0" \
         CARGO_PKG_VERSION_PRE= \
-        TERM="tmux-256color" \
         CARGOGREEN=1 \
       rustc '--crate-name' 'termcolor' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=081a8e2bff1e32ca' '-C' 'extra-filename=-d9b2eb80ed68a4f1' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/termcolor-1.4.0/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
@@ -746,7 +730,6 @@ RUN \
         CARGO_PKG_VERSION_MINOR="1" \
         CARGO_PKG_VERSION_PATCH="10" \
         CARGO_PKG_VERSION_PRE= \
-        TERM="tmux-256color" \
         CARGOGREEN=1 \
       rustc '--crate-name' 'grep_cli' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=3eddcf0f07b27160' '-C' 'extra-filename=-f221077632338728' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--extern' 'bstr=/tmp/clis-ripgrep_14-1-0/release/deps/libbstr-7b758be3ac86b5cc.rmeta' '--extern' 'globset=/tmp/clis-ripgrep_14-1-0/release/deps/libglobset-1fb8dca244613034.rmeta' '--extern' 'libc=/tmp/clis-ripgrep_14-1-0/release/deps/liblibc-7a2e0c4be073094d.rmeta' '--extern' 'log=/tmp/clis-ripgrep_14-1-0/release/deps/liblog-1d0d72e4d1c0d996.rmeta' '--extern' 'termcolor=/tmp/clis-ripgrep_14-1-0/release/deps/libtermcolor-d9b2eb80ed68a4f1.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-cli-0.1.10/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
@@ -789,7 +772,6 @@ RUN \
         CARGO_PKG_VERSION_MINOR="1" \
         CARGO_PKG_VERSION_PATCH="7" \
         CARGO_PKG_VERSION_PRE= \
-        TERM="tmux-256color" \
         CARGOGREEN=1 \
       rustc '--crate-name' 'grep_matcher' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=b7eee68e6a0ed2df' '-C' 'extra-filename=-596f1ea16b4b9b82' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--extern' 'memchr=/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-adb42ba8707327a5.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-matcher-0.1.7/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
@@ -832,7 +814,6 @@ RUN \
         CARGO_PKG_VERSION_MINOR="9" \
         CARGO_PKG_VERSION_PATCH="3" \
         CARGO_PKG_VERSION_PRE= \
-        TERM="tmux-256color" \
         CARGOGREEN=1 \
       rustc '--crate-name' 'memmap2' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("stable_deref_trait"))' '-C' 'metadata=ed9d6b24ceadceb1' '-C' 'extra-filename=-13537cadaedbe82c' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--extern' 'libc=/tmp/clis-ripgrep_14-1-0/release/deps/liblibc-7a2e0c4be073094d.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/memmap2-0.9.3/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
@@ -886,7 +867,6 @@ RUN \
         CARGO_PKG_VERSION_MINOR="1" \
         CARGO_PKG_VERSION_PATCH="13" \
         CARGO_PKG_VERSION_PRE= \
-        TERM="tmux-256color" \
         CARGOGREEN=1 \
       rustc '--crate-name' 'grep_searcher' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("avx-accel", "simd-accel"))' '-C' 'metadata=247e5dfc4518c3e2' '-C' 'extra-filename=-f6a07e03ec33e774' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--extern' 'bstr=/tmp/clis-ripgrep_14-1-0/release/deps/libbstr-7b758be3ac86b5cc.rmeta' '--extern' 'encoding_rs=/tmp/clis-ripgrep_14-1-0/release/deps/libencoding_rs-fbb66338cd25089f.rmeta' '--extern' 'encoding_rs_io=/tmp/clis-ripgrep_14-1-0/release/deps/libencoding_rs_io-2868ca728c95cba0.rmeta' '--extern' 'grep_matcher=/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_matcher-596f1ea16b4b9b82.rmeta' '--extern' 'log=/tmp/clis-ripgrep_14-1-0/release/deps/liblog-1d0d72e4d1c0d996.rmeta' '--extern' 'memchr=/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-adb42ba8707327a5.rmeta' '--extern' 'memmap=/tmp/clis-ripgrep_14-1-0/release/deps/libmemmap2-13537cadaedbe82c.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-searcher-0.1.13/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
@@ -928,7 +908,6 @@ RUN \
         CARGO_PKG_VERSION_MINOR="0" \
         CARGO_PKG_VERSION_PATCH="10" \
         CARGO_PKG_VERSION_PRE= \
-        TERM="tmux-256color" \
         CARGOGREEN=1 \
       rustc '--crate-name' 'itoa' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("no-panic"))' '-C' 'metadata=8c0080ecedac377f' '-C' 'extra-filename=-45bc9a8c767998a3' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/itoa-1.0.10/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
@@ -970,7 +949,6 @@ RUN \
         CARGO_PKG_VERSION_MINOR="0" \
         CARGO_PKG_VERSION_PATCH="16" \
         CARGO_PKG_VERSION_PRE= \
-        TERM="tmux-256color" \
         CARGOGREEN=1 \
       rustc '--crate-name' 'ryu' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("no-panic", "small"))' '-C' 'metadata=6c688fa73f757302' '-C' 'extra-filename=-dee0a5cbed9fb560' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ryu-1.0.16/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
@@ -1013,7 +991,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH="195" \
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR="/tmp/clis-ripgrep_14-1-0/release/build/serde-9d43c8c5ff291739/out" \
-        TERM="tmux-256color" \
         CARGOGREEN=1 \
       rustc '--crate-name' 'serde' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "default", "derive", "rc", "serde_derive", "std", "unstable"))' '-C' 'metadata=783f01ab2cd777b4' '-C' 'extra-filename=-807cd1d448cab6a2' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.195/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
@@ -1059,7 +1036,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH="111" \
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR="/tmp/clis-ripgrep_14-1-0/release/build/serde_json-cdc73704e6607dac/out" \
-        TERM="tmux-256color" \
         CARGOGREEN=1 \
       rustc '--crate-name' 'serde_json' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "arbitrary_precision", "default", "float_roundtrip", "indexmap", "preserve_order", "raw_value", "std", "unbounded_depth"))' '-C' 'metadata=ae9344cb9599f880' '-C' 'extra-filename=-a959faeb0519951a' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--extern' 'itoa=/tmp/clis-ripgrep_14-1-0/release/deps/libitoa-45bc9a8c767998a3.rmeta' '--extern' 'ryu=/tmp/clis-ripgrep_14-1-0/release/deps/libryu-dee0a5cbed9fb560.rmeta' '--extern' 'serde=/tmp/clis-ripgrep_14-1-0/release/deps/libserde-807cd1d448cab6a2.rmeta' '--cap-lints' 'warn' '--cfg' 'limb_width_64' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.111/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
@@ -1119,7 +1095,6 @@ RUN \
         CARGO_PKG_VERSION_MINOR="2" \
         CARGO_PKG_VERSION_PATCH="1" \
         CARGO_PKG_VERSION_PRE= \
-        TERM="tmux-256color" \
         CARGOGREEN=1 \
       rustc '--crate-name' 'grep_printer' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--cfg' 'feature="default"' '--cfg' 'feature="serde"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "serde"))' '-C' 'metadata=fbf69dc2de0515e2' '-C' 'extra-filename=-3fe41b20d9ab71f1' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--extern' 'bstr=/tmp/clis-ripgrep_14-1-0/release/deps/libbstr-7b758be3ac86b5cc.rmeta' '--extern' 'grep_matcher=/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_matcher-596f1ea16b4b9b82.rmeta' '--extern' 'grep_searcher=/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_searcher-f6a07e03ec33e774.rmeta' '--extern' 'log=/tmp/clis-ripgrep_14-1-0/release/deps/liblog-1d0d72e4d1c0d996.rmeta' '--extern' 'serde=/tmp/clis-ripgrep_14-1-0/release/deps/libserde-807cd1d448cab6a2.rmeta' '--extern' 'serde_json=/tmp/clis-ripgrep_14-1-0/release/deps/libserde_json-a959faeb0519951a.rmeta' '--extern' 'termcolor=/tmp/clis-ripgrep_14-1-0/release/deps/libtermcolor-d9b2eb80ed68a4f1.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-printer-0.2.1/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
@@ -1168,7 +1143,6 @@ RUN \
         CARGO_PKG_VERSION_MINOR="1" \
         CARGO_PKG_VERSION_PATCH="12" \
         CARGO_PKG_VERSION_PRE= \
-        TERM="tmux-256color" \
         CARGOGREEN=1 \
       rustc '--crate-name' 'grep_regex' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=86cf10e2c4b90a3a' '-C' 'extra-filename=-e5b0d5ab375ee0ed' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--extern' 'bstr=/tmp/clis-ripgrep_14-1-0/release/deps/libbstr-7b758be3ac86b5cc.rmeta' '--extern' 'grep_matcher=/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_matcher-596f1ea16b4b9b82.rmeta' '--extern' 'log=/tmp/clis-ripgrep_14-1-0/release/deps/liblog-1d0d72e4d1c0d996.rmeta' '--extern' 'regex_automata=/tmp/clis-ripgrep_14-1-0/release/deps/libregex_automata-9a2beda46ceea707.rmeta' '--extern' 'regex_syntax=/tmp/clis-ripgrep_14-1-0/release/deps/libregex_syntax-466a1e2eaae23a81.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-regex-0.1.12/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
@@ -1232,7 +1206,6 @@ RUN \
         CARGO_PKG_VERSION_MINOR="3" \
         CARGO_PKG_VERSION_PATCH="1" \
         CARGO_PKG_VERSION_PRE= \
-        TERM="tmux-256color" \
         CARGOGREEN=1 \
       rustc '--crate-name' 'grep' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("avx-accel", "grep-pcre2", "pcre2", "simd-accel"))' '-C' 'metadata=c0d04f587b911132' '-C' 'extra-filename=-a151e4004a2bdf18' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--extern' 'grep_cli=/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_cli-f221077632338728.rmeta' '--extern' 'grep_matcher=/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_matcher-596f1ea16b4b9b82.rmeta' '--extern' 'grep_printer=/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_printer-3fe41b20d9ab71f1.rmeta' '--extern' 'grep_regex=/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_regex-e5b0d5ab375ee0ed.rmeta' '--extern' 'grep_searcher=/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_searcher-f6a07e03ec33e774.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-0.3.1/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
@@ -1274,7 +1247,6 @@ RUN \
         CARGO_PKG_VERSION_MINOR="0" \
         CARGO_PKG_VERSION_PATCH="6" \
         CARGO_PKG_VERSION_PRE= \
-        TERM="tmux-256color" \
         CARGOGREEN=1 \
       rustc '--crate-name' 'same_file' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=a21928134da930ba' '-C' 'extra-filename=-ec69732f6462a5c8' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/same-file-1.0.6/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
@@ -1317,7 +1289,6 @@ RUN \
         CARGO_PKG_VERSION_MINOR="4" \
         CARGO_PKG_VERSION_PATCH="0" \
         CARGO_PKG_VERSION_PRE= \
-        TERM="tmux-256color" \
         CARGOGREEN=1 \
       rustc '--crate-name' 'walkdir' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=34d9ed53f946bd2f' '-C' 'extra-filename=-cefc8f8ee9570ebf' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--extern' 'same_file=/tmp/clis-ripgrep_14-1-0/release/deps/libsame_file-ec69732f6462a5c8.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/walkdir-2.4.0/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
@@ -1372,7 +1343,6 @@ RUN \
         CARGO_PKG_VERSION_MINOR="4" \
         CARGO_PKG_VERSION_PATCH="22" \
         CARGO_PKG_VERSION_PRE= \
-        TERM="tmux-256color" \
         CARGOGREEN=1 \
       rustc '--crate-name' 'ignore' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("simd-accel"))' '-C' 'metadata=4eaece7f3c714ce1' '-C' 'extra-filename=-1bad64f900f0f16f' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--extern' 'crossbeam_deque=/tmp/clis-ripgrep_14-1-0/release/deps/libcrossbeam_deque-95a620003bcd8a70.rmeta' '--extern' 'globset=/tmp/clis-ripgrep_14-1-0/release/deps/libglobset-1fb8dca244613034.rmeta' '--extern' 'log=/tmp/clis-ripgrep_14-1-0/release/deps/liblog-1d0d72e4d1c0d996.rmeta' '--extern' 'memchr=/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-adb42ba8707327a5.rmeta' '--extern' 'regex_automata=/tmp/clis-ripgrep_14-1-0/release/deps/libregex_automata-9a2beda46ceea707.rmeta' '--extern' 'same_file=/tmp/clis-ripgrep_14-1-0/release/deps/libsame_file-ec69732f6462a5c8.rmeta' '--extern' 'walkdir=/tmp/clis-ripgrep_14-1-0/release/deps/libwalkdir-cefc8f8ee9570ebf.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ignore-0.4.22/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
@@ -1414,7 +1384,6 @@ RUN \
         CARGO_PKG_VERSION_MINOR="3" \
         CARGO_PKG_VERSION_PATCH="0" \
         CARGO_PKG_VERSION_PRE= \
-        TERM="tmux-256color" \
         CARGOGREEN=1 \
       rustc '--crate-name' 'lexopt' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=e134be141b2027ba' '-C' 'extra-filename=-a586d3385cb248cd' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/lexopt-0.3.0/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
@@ -1456,7 +1425,6 @@ RUN \
         CARGO_PKG_VERSION_MINOR="16" \
         CARGO_PKG_VERSION_PATCH="0" \
         CARGO_PKG_VERSION_PRE= \
-        TERM="tmux-256color" \
         CARGOGREEN=1 \
       rustc '--crate-name' 'textwrap' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "hyphenation", "smawk", "terminal_size", "unicode-linebreak", "unicode-width"))' '-C' 'metadata=0c1cb1a625bd3b75' '-C' 'extra-filename=-8eaff41a1c8ad575' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/textwrap-0.16.0/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
@@ -1533,7 +1501,6 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         CARGO_PRIMARY_PACKAGE="1" \
         OUT_DIR="/tmp/clis-ripgrep_14-1-0/release/build/ripgrep-009bac37b7ac9e72/out" \
-        TERM="tmux-256color" \
         CARGOGREEN=1 \
       rustc '--crate-name' 'rg' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'bin' '--emit' 'dep-info,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("pcre2", "simd-accel"))' '-C' 'metadata=54376c15554ad85b' '-C' 'extra-filename=-20871914d446d861' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--extern' 'anyhow=/tmp/clis-ripgrep_14-1-0/release/deps/libanyhow-33de8a5702ede027.rlib' '--extern' 'bstr=/tmp/clis-ripgrep_14-1-0/release/deps/libbstr-7b758be3ac86b5cc.rlib' '--extern' 'grep=/tmp/clis-ripgrep_14-1-0/release/deps/libgrep-a151e4004a2bdf18.rlib' '--extern' 'ignore=/tmp/clis-ripgrep_14-1-0/release/deps/libignore-1bad64f900f0f16f.rlib' '--extern' 'lexopt=/tmp/clis-ripgrep_14-1-0/release/deps/liblexopt-a586d3385cb248cd.rlib' '--extern' 'log=/tmp/clis-ripgrep_14-1-0/release/deps/liblog-1d0d72e4d1c0d996.rlib' '--extern' 'serde_json=/tmp/clis-ripgrep_14-1-0/release/deps/libserde_json-a959faeb0519951a.rlib' '--extern' 'termcolor=/tmp/clis-ripgrep_14-1-0/release/deps/libtermcolor-d9b2eb80ed68a4f1.rlib' '--extern' 'textwrap=/tmp/clis-ripgrep_14-1-0/release/deps/libtextwrap-8eaff41a1c8ad575.rlib' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ripgrep-14.1.0/crates/core/main.rs \
         1> >(sed 's/^/::STDOUT:: /') \
