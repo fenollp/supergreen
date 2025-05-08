@@ -281,7 +281,7 @@ if [[ $# = 0 ]]; then
   header
 
   for i in "${!nvs[@]}"; do
-    [[ "${oks[$i]}" = 'ok' ]] || continue
+    [[ "${oks[$i]}" = 'ko' ]] && continue
     name_at_version=${nvs["$i"]}
     case "$name_at_version" in
       cargo-green@*) continue ;;
