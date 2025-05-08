@@ -83,8 +83,7 @@ impl Md {
         &mut self,
         mds: Vec<(Utf8PathBuf, Self)>,
     ) -> Result<Vec<Utf8PathBuf>> {
-        self.contexts =
-            self.contexts.iter().cloned().filter(BuildContext::is_readonly_mount).collect();
+        self.contexts.retain(BuildContext::is_readonly_mount);
         let mut dag: Vec<_> = mds
             .into_iter()
             .map(|(md_path, md)| {
