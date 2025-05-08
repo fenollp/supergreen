@@ -67,8 +67,12 @@ jobs:
       run:
         shell: bash -euo pipefail {0}
     env:
+      CARGO_TARGET_DIR: /tmp/clis-buildxargs_master
+      CARGOGREEN_BASE_IMAGE: docker-image://docker.io/library/rust:1.86.0-slim@sha256:57d415bbd61ce11e2d5f73de068103c7bd9f3188dc132c97cef4a8f62989e944
       CARGOGREEN_FINAL_PATH: recipes/buildxargs@master.Dockerfile
-    needs: bin
+      CARGOGREEN_LOG: trace
+      CARGOGREEN_LOG_PATH: "$PWD"/logs.txt
+     needs: bin
     steps:
     - uses: actions-rs/toolchain@v1
       with:
@@ -95,9 +99,9 @@ jobs:
     - run: rustc -Vv
 
     - name: Envs
-      run: /home/runner/.cargo/bin/cargo-green green supergreen env
+      run: ~/.cargo/bin/cargo-green green supergreen env
     - name: Envs again
-      run: /home/runner/.cargo/bin/cargo-green green supergreen env
+      run: ~/.cargo/bin/cargo-green green supergreen env
 
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
@@ -108,7 +112,7 @@ jobs:
     - run: docker buildx du --verbose
     - name: cargo install net=ON cache=OFF remote=OFF jobs=1
       run: |
-        env CARGOGREEN_LOG=trace CARGOGREEN_LOG_PATH=$PWD/logs.txt CARGO_TARGET_DIR=/tmp/clis-buildxargs_master \
+        env  \
           cargo green -vv install --jobs=1 --locked --force buildxargs --git https://github.com/fenollp/buildxargs.git |& tee _
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
@@ -156,11 +160,11 @@ jobs:
 
     - name: Target dir disk usage
       if: ${{ failure() || success() }}
-      run: du -sh ~/instst
+      run: du -sh $CARGO_TARGET_DIR
 
     - name: Ensure running the same command twice without modifications...
       run: |
-        env CARGOGREEN_LOG=trace CARGOGREEN_LOG_PATH=$PWD/logs.txt CARGO_TARGET_DIR=/tmp/clis-buildxargs_master \
+        env  \
           cargo green -vv install --jobs=1 --locked --force buildxargs --git https://github.com/fenollp/buildxargs.git |& tee _
     - name: ...doesn't recompile anything
       run: |
@@ -215,7 +219,7 @@ jobs:
 
     - name: Target dir disk usage
       if: ${{ failure() || success() }}
-      run: du -sh ~/instst
+      run: du -sh $CARGO_TARGET_DIR
 
   cargo-llvm-cov_0-5-36:
     runs-on: ubuntu-latest
@@ -223,8 +227,12 @@ jobs:
       run:
         shell: bash -euo pipefail {0}
     env:
+      CARGO_TARGET_DIR: /tmp/clis-cargo-llvm-cov_0-5-36
+      CARGOGREEN_BASE_IMAGE: docker-image://docker.io/library/rust:1.86.0-slim@sha256:57d415bbd61ce11e2d5f73de068103c7bd9f3188dc132c97cef4a8f62989e944
       CARGOGREEN_FINAL_PATH: recipes/cargo-llvm-cov@0.5.36.Dockerfile
-    needs: bin
+      CARGOGREEN_LOG: trace
+      CARGOGREEN_LOG_PATH: "$PWD"/logs.txt
+     needs: bin
     steps:
     - uses: actions-rs/toolchain@v1
       with:
@@ -251,9 +259,9 @@ jobs:
     - run: rustc -Vv
 
     - name: Envs
-      run: /home/runner/.cargo/bin/cargo-green green supergreen env
+      run: ~/.cargo/bin/cargo-green green supergreen env
     - name: Envs again
-      run: /home/runner/.cargo/bin/cargo-green green supergreen env
+      run: ~/.cargo/bin/cargo-green green supergreen env
 
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
@@ -264,7 +272,7 @@ jobs:
     - run: docker buildx du --verbose
     - name: cargo install net=ON cache=OFF remote=OFF jobs=1
       run: |
-        env CARGOGREEN_LOG=trace CARGOGREEN_LOG_PATH=$PWD/logs.txt CARGO_TARGET_DIR=/tmp/clis-cargo-llvm-cov_0-5-36 \
+        env  \
           cargo green -vv install --jobs=1 --locked --force cargo-llvm-cov@0.5.36  |& tee _
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
@@ -312,11 +320,11 @@ jobs:
 
     - name: Target dir disk usage
       if: ${{ failure() || success() }}
-      run: du -sh ~/instst
+      run: du -sh $CARGO_TARGET_DIR
 
     - name: Ensure running the same command twice without modifications...
       run: |
-        env CARGOGREEN_LOG=trace CARGOGREEN_LOG_PATH=$PWD/logs.txt CARGO_TARGET_DIR=/tmp/clis-cargo-llvm-cov_0-5-36 \
+        env  \
           cargo green -vv install --jobs=1 --locked --force cargo-llvm-cov@0.5.36  |& tee _
     - name: ...doesn't recompile anything
       run: |
@@ -371,7 +379,7 @@ jobs:
 
     - name: Target dir disk usage
       if: ${{ failure() || success() }}
-      run: du -sh ~/instst
+      run: du -sh $CARGO_TARGET_DIR
 
   cross_0-2-5:
     runs-on: ubuntu-latest
@@ -379,8 +387,12 @@ jobs:
       run:
         shell: bash -euo pipefail {0}
     env:
+      CARGO_TARGET_DIR: /tmp/clis-cross_0-2-5
+      CARGOGREEN_BASE_IMAGE: docker-image://docker.io/library/rust:1.86.0-slim@sha256:57d415bbd61ce11e2d5f73de068103c7bd9f3188dc132c97cef4a8f62989e944
       CARGOGREEN_FINAL_PATH: recipes/cross@0.2.5.Dockerfile
-    needs: bin
+      CARGOGREEN_LOG: trace
+      CARGOGREEN_LOG_PATH: "$PWD"/logs.txt
+     needs: bin
     steps:
     - uses: actions-rs/toolchain@v1
       with:
@@ -407,9 +419,9 @@ jobs:
     - run: rustc -Vv
 
     - name: Envs
-      run: /home/runner/.cargo/bin/cargo-green green supergreen env
+      run: ~/.cargo/bin/cargo-green green supergreen env
     - name: Envs again
-      run: /home/runner/.cargo/bin/cargo-green green supergreen env
+      run: ~/.cargo/bin/cargo-green green supergreen env
 
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
@@ -420,7 +432,7 @@ jobs:
     - run: docker buildx du --verbose
     - name: cargo install net=ON cache=OFF remote=OFF jobs=1
       run: |
-        env CARGOGREEN_LOG=trace CARGOGREEN_LOG_PATH=$PWD/logs.txt CARGO_TARGET_DIR=/tmp/clis-cross_0-2-5 \
+        env  \
           cargo green -vv install --jobs=1 --locked --force cross@0.2.5 --git https://github.com/cross-rs/cross.git --tag=v0.2.5 cross |& tee _
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
@@ -468,11 +480,11 @@ jobs:
 
     - name: Target dir disk usage
       if: ${{ failure() || success() }}
-      run: du -sh ~/instst
+      run: du -sh $CARGO_TARGET_DIR
 
     - name: Ensure running the same command twice without modifications...
       run: |
-        env CARGOGREEN_LOG=trace CARGOGREEN_LOG_PATH=$PWD/logs.txt CARGO_TARGET_DIR=/tmp/clis-cross_0-2-5 \
+        env  \
           cargo green -vv install --jobs=1 --locked --force cross@0.2.5 --git https://github.com/cross-rs/cross.git --tag=v0.2.5 cross |& tee _
     - name: ...doesn't recompile anything
       run: |
@@ -527,7 +539,7 @@ jobs:
 
     - name: Target dir disk usage
       if: ${{ failure() || success() }}
-      run: du -sh ~/instst
+      run: du -sh $CARGO_TARGET_DIR
 
   dbcc_2-2-1:
     runs-on: ubuntu-latest
@@ -535,8 +547,12 @@ jobs:
       run:
         shell: bash -euo pipefail {0}
     env:
+      CARGO_TARGET_DIR: /tmp/clis-dbcc_2-2-1
+      CARGOGREEN_BASE_IMAGE: docker-image://docker.io/library/rust:1.86.0-slim@sha256:57d415bbd61ce11e2d5f73de068103c7bd9f3188dc132c97cef4a8f62989e944
       CARGOGREEN_FINAL_PATH: recipes/dbcc@2.2.1.Dockerfile
-    needs: bin
+      CARGOGREEN_LOG: trace
+      CARGOGREEN_LOG_PATH: "$PWD"/logs.txt
+     needs: bin
     steps:
     - uses: actions-rs/toolchain@v1
       with:
@@ -563,9 +579,9 @@ jobs:
     - run: rustc -Vv
 
     - name: Envs
-      run: /home/runner/.cargo/bin/cargo-green green supergreen env
+      run: ~/.cargo/bin/cargo-green green supergreen env
     - name: Envs again
-      run: /home/runner/.cargo/bin/cargo-green green supergreen env
+      run: ~/.cargo/bin/cargo-green green supergreen env
 
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
@@ -576,7 +592,7 @@ jobs:
     - run: docker buildx du --verbose
     - name: cargo install net=ON cache=OFF remote=OFF jobs=1
       run: |
-        env CARGOGREEN_LOG=trace CARGOGREEN_LOG_PATH=$PWD/logs.txt CARGO_TARGET_DIR=/tmp/clis-dbcc_2-2-1 CARGOGREEN_SET_ENVS=TYPENUM_BUILD_CONSTS,TYPENUM_BUILD_OP \
+        env CARGOGREEN_SET_ENVS=TYPENUM_BUILD_CONSTS,TYPENUM_BUILD_OP \
           cargo green -vv install --jobs=1 --locked --force dbcc@2.2.1  |& tee _
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
@@ -624,11 +640,11 @@ jobs:
 
     - name: Target dir disk usage
       if: ${{ failure() || success() }}
-      run: du -sh ~/instst
+      run: du -sh $CARGO_TARGET_DIR
 
     - name: Ensure running the same command twice without modifications...
       run: |
-        env CARGOGREEN_LOG=trace CARGOGREEN_LOG_PATH=$PWD/logs.txt CARGO_TARGET_DIR=/tmp/clis-dbcc_2-2-1 CARGOGREEN_SET_ENVS=TYPENUM_BUILD_CONSTS,TYPENUM_BUILD_OP \
+        env CARGOGREEN_SET_ENVS=TYPENUM_BUILD_CONSTS,TYPENUM_BUILD_OP \
           cargo green -vv install --jobs=1 --locked --force dbcc@2.2.1  |& tee _
     - name: ...doesn't recompile anything
       run: |
@@ -683,7 +699,7 @@ jobs:
 
     - name: Target dir disk usage
       if: ${{ failure() || success() }}
-      run: du -sh ~/instst
+      run: du -sh $CARGO_TARGET_DIR
 
   diesel_cli_2-1-1:
     runs-on: ubuntu-latest
@@ -691,8 +707,12 @@ jobs:
       run:
         shell: bash -euo pipefail {0}
     env:
+      CARGO_TARGET_DIR: /tmp/clis-diesel_cli_2-1-1
+      CARGOGREEN_BASE_IMAGE: docker-image://docker.io/library/rust:1.86.0-slim@sha256:57d415bbd61ce11e2d5f73de068103c7bd9f3188dc132c97cef4a8f62989e944
       CARGOGREEN_FINAL_PATH: recipes/diesel_cli@2.1.1.Dockerfile
-    needs: bin
+      CARGOGREEN_LOG: trace
+      CARGOGREEN_LOG_PATH: "$PWD"/logs.txt
+     needs: bin
     steps:
     - uses: actions-rs/toolchain@v1
       with:
@@ -719,9 +739,9 @@ jobs:
     - run: rustc -Vv
 
     - name: Envs
-      run: /home/runner/.cargo/bin/cargo-green green supergreen env
+      run: ~/.cargo/bin/cargo-green green supergreen env
     - name: Envs again
-      run: /home/runner/.cargo/bin/cargo-green green supergreen env
+      run: ~/.cargo/bin/cargo-green green supergreen env
 
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
@@ -732,7 +752,7 @@ jobs:
     - run: docker buildx du --verbose
     - name: cargo install net=ON cache=OFF remote=OFF jobs=1
       run: |
-        env CARGOGREEN_LOG=trace CARGOGREEN_LOG_PATH=$PWD/logs.txt CARGO_TARGET_DIR=/tmp/clis-diesel_cli_2-1-1 CARGOGREEN_ADD_APT=libpq-dev \
+        env CARGOGREEN_ADD_APT=libpq-dev \
           cargo green -vv install --jobs=1 --locked --force diesel_cli@2.1.1 --no-default-features --features=postgres |& tee _
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
@@ -780,11 +800,11 @@ jobs:
 
     - name: Target dir disk usage
       if: ${{ failure() || success() }}
-      run: du -sh ~/instst
+      run: du -sh $CARGO_TARGET_DIR
 
     - name: Ensure running the same command twice without modifications...
       run: |
-        env CARGOGREEN_LOG=trace CARGOGREEN_LOG_PATH=$PWD/logs.txt CARGO_TARGET_DIR=/tmp/clis-diesel_cli_2-1-1 CARGOGREEN_ADD_APT=libpq-dev \
+        env CARGOGREEN_ADD_APT=libpq-dev \
           cargo green -vv install --jobs=1 --locked --force diesel_cli@2.1.1 --no-default-features --features=postgres |& tee _
     - name: ...doesn't recompile anything
       run: |
@@ -839,7 +859,7 @@ jobs:
 
     - name: Target dir disk usage
       if: ${{ failure() || success() }}
-      run: du -sh ~/instst
+      run: du -sh $CARGO_TARGET_DIR
 
   hickory-dns_0-25-0-alpha-1:
     runs-on: ubuntu-latest
@@ -847,8 +867,12 @@ jobs:
       run:
         shell: bash -euo pipefail {0}
     env:
+      CARGO_TARGET_DIR: /tmp/clis-hickory-dns_0-25-0-alpha-1
+      CARGOGREEN_BASE_IMAGE: docker-image://docker.io/library/rust:1.86.0-slim@sha256:57d415bbd61ce11e2d5f73de068103c7bd9f3188dc132c97cef4a8f62989e944
       CARGOGREEN_FINAL_PATH: recipes/hickory-dns@0.25.0-alpha.1.Dockerfile
-    needs: bin
+      CARGOGREEN_LOG: trace
+      CARGOGREEN_LOG_PATH: "$PWD"/logs.txt
+     needs: bin
     steps:
     - uses: actions-rs/toolchain@v1
       with:
@@ -875,9 +899,9 @@ jobs:
     - run: rustc -Vv
 
     - name: Envs
-      run: /home/runner/.cargo/bin/cargo-green green supergreen env
+      run: ~/.cargo/bin/cargo-green green supergreen env
     - name: Envs again
-      run: /home/runner/.cargo/bin/cargo-green green supergreen env
+      run: ~/.cargo/bin/cargo-green green supergreen env
 
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
@@ -888,7 +912,7 @@ jobs:
     - run: docker buildx du --verbose
     - name: cargo install net=ON cache=OFF remote=OFF jobs=1
       run: |
-        env CARGOGREEN_LOG=trace CARGOGREEN_LOG_PATH=$PWD/logs.txt CARGO_TARGET_DIR=/tmp/clis-hickory-dns_0-25-0-alpha-1 CARGOGREEN_SET_ENVS=RING_CORE_PREFIX \
+        env CARGOGREEN_SET_ENVS=RING_CORE_PREFIX \
           cargo green -vv install --jobs=1 --locked --force hickory-dns@0.25.0-alpha.1 --features=dns-over-rustls |& tee _
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
@@ -936,11 +960,11 @@ jobs:
 
     - name: Target dir disk usage
       if: ${{ failure() || success() }}
-      run: du -sh ~/instst
+      run: du -sh $CARGO_TARGET_DIR
 
     - name: Ensure running the same command twice without modifications...
       run: |
-        env CARGOGREEN_LOG=trace CARGOGREEN_LOG_PATH=$PWD/logs.txt CARGO_TARGET_DIR=/tmp/clis-hickory-dns_0-25-0-alpha-1 CARGOGREEN_SET_ENVS=RING_CORE_PREFIX \
+        env CARGOGREEN_SET_ENVS=RING_CORE_PREFIX \
           cargo green -vv install --jobs=1 --locked --force hickory-dns@0.25.0-alpha.1 --features=dns-over-rustls |& tee _
     - name: ...doesn't recompile anything
       run: |
@@ -995,7 +1019,7 @@ jobs:
 
     - name: Target dir disk usage
       if: ${{ failure() || success() }}
-      run: du -sh ~/instst
+      run: du -sh $CARGO_TARGET_DIR
 
   mussh_3-1-3:
     runs-on: ubuntu-latest
@@ -1003,8 +1027,12 @@ jobs:
       run:
         shell: bash -euo pipefail {0}
     env:
+      CARGO_TARGET_DIR: /tmp/clis-mussh_3-1-3
+      CARGOGREEN_BASE_IMAGE: docker-image://docker.io/library/rust:1.86.0-slim@sha256:57d415bbd61ce11e2d5f73de068103c7bd9f3188dc132c97cef4a8f62989e944
       CARGOGREEN_FINAL_PATH: recipes/mussh@3.1.3.Dockerfile
-    needs: bin
+      CARGOGREEN_LOG: trace
+      CARGOGREEN_LOG_PATH: "$PWD"/logs.txt
+     needs: bin
     steps:
     - uses: actions-rs/toolchain@v1
       with:
@@ -1031,9 +1059,9 @@ jobs:
     - run: rustc -Vv
 
     - name: Envs
-      run: /home/runner/.cargo/bin/cargo-green green supergreen env
+      run: ~/.cargo/bin/cargo-green green supergreen env
     - name: Envs again
-      run: /home/runner/.cargo/bin/cargo-green green supergreen env
+      run: ~/.cargo/bin/cargo-green green supergreen env
 
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
@@ -1044,7 +1072,7 @@ jobs:
     - run: docker buildx du --verbose
     - name: cargo install net=ON cache=OFF remote=OFF jobs=1
       run: |
-        env CARGOGREEN_LOG=trace CARGOGREEN_LOG_PATH=$PWD/logs.txt CARGO_TARGET_DIR=/tmp/clis-mussh_3-1-3 CARGOGREEN_ADD_APT=libsqlite3-dev,libssl-dev,zlib1g-dev \
+        env CARGOGREEN_ADD_APT=libsqlite3-dev,libssl-dev,zlib1g-dev \
           cargo green -vv install --jobs=1 --locked --force mussh@3.1.3  |& tee _
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
@@ -1092,11 +1120,11 @@ jobs:
 
     - name: Target dir disk usage
       if: ${{ failure() || success() }}
-      run: du -sh ~/instst
+      run: du -sh $CARGO_TARGET_DIR
 
     - name: Ensure running the same command twice without modifications...
       run: |
-        env CARGOGREEN_LOG=trace CARGOGREEN_LOG_PATH=$PWD/logs.txt CARGO_TARGET_DIR=/tmp/clis-mussh_3-1-3 CARGOGREEN_ADD_APT=libsqlite3-dev,libssl-dev,zlib1g-dev \
+        env CARGOGREEN_ADD_APT=libsqlite3-dev,libssl-dev,zlib1g-dev \
           cargo green -vv install --jobs=1 --locked --force mussh@3.1.3  |& tee _
     - name: ...doesn't recompile anything
       run: |
@@ -1151,7 +1179,7 @@ jobs:
 
     - name: Target dir disk usage
       if: ${{ failure() || success() }}
-      run: du -sh ~/instst
+      run: du -sh $CARGO_TARGET_DIR
 
   ntpd_1-2-3:
     runs-on: ubuntu-latest
@@ -1159,8 +1187,12 @@ jobs:
       run:
         shell: bash -euo pipefail {0}
     env:
+      CARGO_TARGET_DIR: /tmp/clis-ntpd_1-2-3
+      CARGOGREEN_BASE_IMAGE: docker-image://docker.io/library/rust:1.86.0-slim@sha256:57d415bbd61ce11e2d5f73de068103c7bd9f3188dc132c97cef4a8f62989e944
       CARGOGREEN_FINAL_PATH: recipes/ntpd@1.2.3.Dockerfile
-    needs: bin
+      CARGOGREEN_LOG: trace
+      CARGOGREEN_LOG_PATH: "$PWD"/logs.txt
+     needs: bin
     steps:
     - uses: actions-rs/toolchain@v1
       with:
@@ -1187,9 +1219,9 @@ jobs:
     - run: rustc -Vv
 
     - name: Envs
-      run: /home/runner/.cargo/bin/cargo-green green supergreen env
+      run: ~/.cargo/bin/cargo-green green supergreen env
     - name: Envs again
-      run: /home/runner/.cargo/bin/cargo-green green supergreen env
+      run: ~/.cargo/bin/cargo-green green supergreen env
 
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
@@ -1200,7 +1232,7 @@ jobs:
     - run: docker buildx du --verbose
     - name: cargo install net=ON cache=OFF remote=OFF jobs=1
       run: |
-        env CARGOGREEN_LOG=trace CARGOGREEN_LOG_PATH=$PWD/logs.txt CARGO_TARGET_DIR=/tmp/clis-ntpd_1-2-3 CARGOGREEN_SET_ENVS=NTPD_RS_GIT_DATE,NTPD_RS_GIT_REV,RING_CORE_PREFIX \
+        env CARGOGREEN_SET_ENVS=NTPD_RS_GIT_DATE,NTPD_RS_GIT_REV,RING_CORE_PREFIX \
           cargo green -vv install --jobs=1 --locked --force ntpd@1.2.3  |& tee _
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
@@ -1248,11 +1280,11 @@ jobs:
 
     - name: Target dir disk usage
       if: ${{ failure() || success() }}
-      run: du -sh ~/instst
+      run: du -sh $CARGO_TARGET_DIR
 
     - name: Ensure running the same command twice without modifications...
       run: |
-        env CARGOGREEN_LOG=trace CARGOGREEN_LOG_PATH=$PWD/logs.txt CARGO_TARGET_DIR=/tmp/clis-ntpd_1-2-3 CARGOGREEN_SET_ENVS=NTPD_RS_GIT_DATE,NTPD_RS_GIT_REV,RING_CORE_PREFIX \
+        env CARGOGREEN_SET_ENVS=NTPD_RS_GIT_DATE,NTPD_RS_GIT_REV,RING_CORE_PREFIX \
           cargo green -vv install --jobs=1 --locked --force ntpd@1.2.3  |& tee _
     - name: ...doesn't recompile anything
       run: |
@@ -1307,7 +1339,7 @@ jobs:
 
     - name: Target dir disk usage
       if: ${{ failure() || success() }}
-      run: du -sh ~/instst
+      run: du -sh $CARGO_TARGET_DIR
 
   qcow2-rs_0-1-2:
     runs-on: ubuntu-latest
@@ -1315,8 +1347,12 @@ jobs:
       run:
         shell: bash -euo pipefail {0}
     env:
+      CARGO_TARGET_DIR: /tmp/clis-qcow2-rs_0-1-2
+      CARGOGREEN_BASE_IMAGE: docker-image://docker.io/library/rust:1.86.0-slim@sha256:57d415bbd61ce11e2d5f73de068103c7bd9f3188dc132c97cef4a8f62989e944
       CARGOGREEN_FINAL_PATH: recipes/qcow2-rs@0.1.2.Dockerfile
-    needs: bin
+      CARGOGREEN_LOG: trace
+      CARGOGREEN_LOG_PATH: "$PWD"/logs.txt
+     needs: bin
     steps:
     - uses: actions-rs/toolchain@v1
       with:
@@ -1343,9 +1379,9 @@ jobs:
     - run: rustc -Vv
 
     - name: Envs
-      run: /home/runner/.cargo/bin/cargo-green green supergreen env
+      run: ~/.cargo/bin/cargo-green green supergreen env
     - name: Envs again
-      run: /home/runner/.cargo/bin/cargo-green green supergreen env
+      run: ~/.cargo/bin/cargo-green green supergreen env
 
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
@@ -1356,7 +1392,7 @@ jobs:
     - run: docker buildx du --verbose
     - name: cargo install net=ON cache=OFF remote=OFF jobs=1
       run: |
-        env CARGOGREEN_LOG=trace CARGOGREEN_LOG_PATH=$PWD/logs.txt CARGO_TARGET_DIR=/tmp/clis-qcow2-rs_0-1-2 \
+        env  \
           cargo green -vv install --jobs=1 --locked --force qcow2-rs@0.1.2  |& tee _
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
@@ -1404,11 +1440,11 @@ jobs:
 
     - name: Target dir disk usage
       if: ${{ failure() || success() }}
-      run: du -sh ~/instst
+      run: du -sh $CARGO_TARGET_DIR
 
     - name: Ensure running the same command twice without modifications...
       run: |
-        env CARGOGREEN_LOG=trace CARGOGREEN_LOG_PATH=$PWD/logs.txt CARGO_TARGET_DIR=/tmp/clis-qcow2-rs_0-1-2 \
+        env  \
           cargo green -vv install --jobs=1 --locked --force qcow2-rs@0.1.2  |& tee _
     - name: ...doesn't recompile anything
       run: |
@@ -1463,7 +1499,7 @@ jobs:
 
     - name: Target dir disk usage
       if: ${{ failure() || success() }}
-      run: du -sh ~/instst
+      run: du -sh $CARGO_TARGET_DIR
 
   ripgrep_14-1-0:
     runs-on: ubuntu-latest
@@ -1471,8 +1507,12 @@ jobs:
       run:
         shell: bash -euo pipefail {0}
     env:
+      CARGO_TARGET_DIR: /tmp/clis-ripgrep_14-1-0
+      CARGOGREEN_BASE_IMAGE: docker-image://docker.io/library/rust:1.86.0-slim@sha256:57d415bbd61ce11e2d5f73de068103c7bd9f3188dc132c97cef4a8f62989e944
       CARGOGREEN_FINAL_PATH: recipes/ripgrep@14.1.0.Dockerfile
-    needs: bin
+      CARGOGREEN_LOG: trace
+      CARGOGREEN_LOG_PATH: "$PWD"/logs.txt
+     needs: bin
     steps:
     - uses: actions-rs/toolchain@v1
       with:
@@ -1499,9 +1539,9 @@ jobs:
     - run: rustc -Vv
 
     - name: Envs
-      run: /home/runner/.cargo/bin/cargo-green green supergreen env
+      run: ~/.cargo/bin/cargo-green green supergreen env
     - name: Envs again
-      run: /home/runner/.cargo/bin/cargo-green green supergreen env
+      run: ~/.cargo/bin/cargo-green green supergreen env
 
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
@@ -1512,7 +1552,7 @@ jobs:
     - run: docker buildx du --verbose
     - name: cargo install net=ON cache=OFF remote=OFF jobs=1
       run: |
-        env CARGOGREEN_LOG=trace CARGOGREEN_LOG_PATH=$PWD/logs.txt CARGO_TARGET_DIR=/tmp/clis-ripgrep_14-1-0 \
+        env  \
           cargo green -vv install --jobs=1 --locked --force ripgrep@14.1.0  |& tee _
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
@@ -1560,11 +1600,11 @@ jobs:
 
     - name: Target dir disk usage
       if: ${{ failure() || success() }}
-      run: du -sh ~/instst
+      run: du -sh $CARGO_TARGET_DIR
 
     - name: Ensure running the same command twice without modifications...
       run: |
-        env CARGOGREEN_LOG=trace CARGOGREEN_LOG_PATH=$PWD/logs.txt CARGO_TARGET_DIR=/tmp/clis-ripgrep_14-1-0 \
+        env  \
           cargo green -vv install --jobs=1 --locked --force ripgrep@14.1.0  |& tee _
     - name: ...doesn't recompile anything
       run: |
@@ -1619,7 +1659,7 @@ jobs:
 
     - name: Target dir disk usage
       if: ${{ failure() || success() }}
-      run: du -sh ~/instst
+      run: du -sh $CARGO_TARGET_DIR
 
   rublk_0-2-0:
     runs-on: ubuntu-latest
@@ -1627,8 +1667,12 @@ jobs:
       run:
         shell: bash -euo pipefail {0}
     env:
+      CARGO_TARGET_DIR: /tmp/clis-rublk_0-2-0
+      CARGOGREEN_BASE_IMAGE: docker-image://docker.io/library/rust:1.86.0-slim@sha256:57d415bbd61ce11e2d5f73de068103c7bd9f3188dc132c97cef4a8f62989e944
       CARGOGREEN_FINAL_PATH: recipes/rublk@0.2.0.Dockerfile
-    needs: bin
+      CARGOGREEN_LOG: trace
+      CARGOGREEN_LOG_PATH: "$PWD"/logs.txt
+     needs: bin
     steps:
     - uses: actions-rs/toolchain@v1
       with:
@@ -1655,9 +1699,9 @@ jobs:
     - run: rustc -Vv
 
     - name: Envs
-      run: /home/runner/.cargo/bin/cargo-green green supergreen env
+      run: ~/.cargo/bin/cargo-green green supergreen env
     - name: Envs again
-      run: /home/runner/.cargo/bin/cargo-green green supergreen env
+      run: ~/.cargo/bin/cargo-green green supergreen env
 
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
@@ -1668,7 +1712,7 @@ jobs:
     - run: docker buildx du --verbose
     - name: cargo install net=ON cache=OFF remote=OFF jobs=1
       run: |
-        env CARGOGREEN_LOG=trace CARGOGREEN_LOG_PATH=$PWD/logs.txt CARGO_TARGET_DIR=/tmp/clis-rublk_0-2-0 \
+        env  \
           cargo green -vv install --jobs=1 --locked --force rublk@0.2.0  |& tee _
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
@@ -1716,11 +1760,11 @@ jobs:
 
     - name: Target dir disk usage
       if: ${{ failure() || success() }}
-      run: du -sh ~/instst
+      run: du -sh $CARGO_TARGET_DIR
 
     - name: Ensure running the same command twice without modifications...
       run: |
-        env CARGOGREEN_LOG=trace CARGOGREEN_LOG_PATH=$PWD/logs.txt CARGO_TARGET_DIR=/tmp/clis-rublk_0-2-0 \
+        env  \
           cargo green -vv install --jobs=1 --locked --force rublk@0.2.0  |& tee _
     - name: ...doesn't recompile anything
       run: |
@@ -1775,7 +1819,7 @@ jobs:
 
     - name: Target dir disk usage
       if: ${{ failure() || success() }}
-      run: du -sh ~/instst
+      run: du -sh $CARGO_TARGET_DIR
 
   vixargs_0-1-0:
     runs-on: ubuntu-latest
@@ -1783,8 +1827,12 @@ jobs:
       run:
         shell: bash -euo pipefail {0}
     env:
+      CARGO_TARGET_DIR: /tmp/clis-vixargs_0-1-0
+      CARGOGREEN_BASE_IMAGE: docker-image://docker.io/library/rust:1.86.0-slim@sha256:57d415bbd61ce11e2d5f73de068103c7bd9f3188dc132c97cef4a8f62989e944
       CARGOGREEN_FINAL_PATH: recipes/vixargs@0.1.0.Dockerfile
-    needs: bin
+      CARGOGREEN_LOG: trace
+      CARGOGREEN_LOG_PATH: "$PWD"/logs.txt
+     needs: bin
     steps:
     - uses: actions-rs/toolchain@v1
       with:
@@ -1811,9 +1859,9 @@ jobs:
     - run: rustc -Vv
 
     - name: Envs
-      run: /home/runner/.cargo/bin/cargo-green green supergreen env
+      run: ~/.cargo/bin/cargo-green green supergreen env
     - name: Envs again
-      run: /home/runner/.cargo/bin/cargo-green green supergreen env
+      run: ~/.cargo/bin/cargo-green green supergreen env
 
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
@@ -1824,7 +1872,7 @@ jobs:
     - run: docker buildx du --verbose
     - name: cargo install net=ON cache=OFF remote=OFF jobs=1
       run: |
-        env CARGOGREEN_LOG=trace CARGOGREEN_LOG_PATH=$PWD/logs.txt CARGO_TARGET_DIR=/tmp/clis-vixargs_0-1-0 \
+        env  \
           cargo green -vv install --jobs=1 --locked --force vixargs@0.1.0  |& tee _
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
@@ -1872,11 +1920,11 @@ jobs:
 
     - name: Target dir disk usage
       if: ${{ failure() || success() }}
-      run: du -sh ~/instst
+      run: du -sh $CARGO_TARGET_DIR
 
     - name: Ensure running the same command twice without modifications...
       run: |
-        env CARGOGREEN_LOG=trace CARGOGREEN_LOG_PATH=$PWD/logs.txt CARGO_TARGET_DIR=/tmp/clis-vixargs_0-1-0 \
+        env  \
           cargo green -vv install --jobs=1 --locked --force vixargs@0.1.0  |& tee _
     - name: ...doesn't recompile anything
       run: |
@@ -1931,7 +1979,7 @@ jobs:
 
     - name: Target dir disk usage
       if: ${{ failure() || success() }}
-      run: du -sh ~/instst
+      run: du -sh $CARGO_TARGET_DIR
 
   cargo-config2_0-1-26:
     runs-on: ubuntu-latest
@@ -1939,8 +1987,12 @@ jobs:
       run:
         shell: bash -euo pipefail {0}
     env:
+      CARGO_TARGET_DIR: /tmp/clis-cargo-config2_0-1-26
+      CARGOGREEN_BASE_IMAGE: docker-image://docker.io/library/rust:1.86.0-slim@sha256:57d415bbd61ce11e2d5f73de068103c7bd9f3188dc132c97cef4a8f62989e944
       CARGOGREEN_FINAL_PATH: recipes/cargo-config2@0.1.26.Dockerfile
-    needs: bin
+      CARGOGREEN_LOG: trace
+      CARGOGREEN_LOG_PATH: "$PWD"/logs.txt
+     needs: bin
     steps:
     - uses: actions-rs/toolchain@v1
       with:
@@ -1967,9 +2019,9 @@ jobs:
     - run: rustc -Vv
 
     - name: Envs
-      run: /home/runner/.cargo/bin/cargo-green green supergreen env
+      run: ~/.cargo/bin/cargo-green green supergreen env
     - name: Envs again
-      run: /home/runner/.cargo/bin/cargo-green green supergreen env
+      run: ~/.cargo/bin/cargo-green green supergreen env
 
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
@@ -1980,7 +2032,7 @@ jobs:
     - run: docker buildx du --verbose
     - name: cargo install net=ON cache=OFF remote=OFF jobs=1
       run: |
-        env CARGOGREEN_LOG=trace CARGOGREEN_LOG_PATH=$PWD/logs.txt CARGO_TARGET_DIR=/tmp/clis-cargo-config2_0-1-26 \
+        env  \
           cargo green -vv install --jobs=1 --locked --force cargo-config2@0.1.26 --example=get |& tee _
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
@@ -2028,11 +2080,11 @@ jobs:
 
     - name: Target dir disk usage
       if: ${{ failure() || success() }}
-      run: du -sh ~/instst
+      run: du -sh $CARGO_TARGET_DIR
 
     - name: Ensure running the same command twice without modifications...
       run: |
-        env CARGOGREEN_LOG=trace CARGOGREEN_LOG_PATH=$PWD/logs.txt CARGO_TARGET_DIR=/tmp/clis-cargo-config2_0-1-26 \
+        env  \
           cargo green -vv install --jobs=1 --locked --force cargo-config2@0.1.26 --example=get |& tee _
     - name: ...doesn't recompile anything
       run: |
@@ -2087,5 +2139,5 @@ jobs:
 
     - name: Target dir disk usage
       if: ${{ failure() || success() }}
-      run: du -sh ~/instst
+      run: du -sh $CARGO_TARGET_DIR
 

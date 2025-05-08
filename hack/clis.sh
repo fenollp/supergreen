@@ -205,17 +205,17 @@ cli() {
   local name_at_version=$1; shift
   local jobs=$1; shift
   local envvars=()
-
-  envvars+=(CARGOGREEN_LOG=trace)
-  envvars+=(CARGOGREEN_LOG_PATH="\$PWD"/logs.txt)
-  envvars+=(CARGO_TARGET_DIR=/tmp/clis-$(slugify "$name_at_version"))
-  as_env "$name_at_version"
+ as_env "$name_at_version"
 
 	cat <<EOF
 $(jobdef "$(slugify "$name_at_version")$(if [[ "$jobs" != 1 ]]; then echo '-J'; fi)")
     env:
+      CARGO_TARGET_DIR: /tmp/clis-$(slugify "$name_at_version")
+      CARGOGREEN_BASE_IMAGE: docker-image://docker.io/library/rust:1.86.0-slim@sha256:57d415bbd61ce11e2d5f73de068103c7bd9f3188dc132c97cef4a8f62989e944
       CARGOGREEN_FINAL_PATH: recipes/$name_at_version.Dockerfile
-    needs: bin
+      CARGOGREEN_LOG: trace
+      CARGOGREEN_LOG_PATH: "\$PWD"/logs.txt
+     needs: bin
     steps:
     - uses: actions-rs/toolchain@v1
       with:
@@ -233,9 +233,9 @@ $(restore_bin-artifacts)
 $(rundeps_versions)
 
     - name: Envs
-      run: /home/runner/.cargo/bin/cargo-green green supergreen env
+      run: ~/.cargo/bin/cargo-green green supergreen env
     - name: Envs again
-      run: /home/runner/.cargo/bin/cargo-green green supergreen env
+      run: ~/.cargo/bin/cargo-green green supergreen env
 
 $(cache_usage)
     - name: cargo install net=ON cache=OFF remote=OFF jobs=$jobs
@@ -247,7 +247,7 @@ $(cache_usage)
 
     - name: Target dir disk usage
       if: \${{ failure() || success() }}
-      run: du -sh ~/instst
+      run: du -sh \$CARGO_TARGET_DIR
 
     - name: Ensure running the same command twice without modifications...
       run: |
@@ -259,7 +259,7 @@ $(cache_usage)
 
     - name: Target dir disk usage
       if: \${{ failure() || success() }}
-      run: du -sh ~/instst
+      run: du -sh \$CARGO_TARGET_DIR
 
 EOF
 }

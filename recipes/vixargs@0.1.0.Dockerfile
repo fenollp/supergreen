@@ -18,12 +18,12 @@ FROM rust-base AS dep-l-libc-0.2.112-51f4d6f8ad8042b3
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-vixargs_0-1-0/release/deps
 RUN \
-  --mount=from=cratesio-libc-0.2.112,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.112 \
+  --mount=from=cratesio-libc-0.2.112,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.112 \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="libc" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.112" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.112/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.112" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.112/Cargo.toml" \
         CARGO_PKG_AUTHORS="The Rust Project Developers" \
         CARGO_PKG_DESCRIPTION="Raw FFI bindings to platform libraries like libc.\n" \
         CARGO_PKG_HOMEPAGE="https://github.com/rust-lang/libc" \
@@ -41,7 +41,7 @@ RUN \
         OUT_DIR="/tmp/clis-vixargs_0-1-0/release/build/libc-9758313ef3fd049b/out" \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'libc' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("align", "const-extern-fn", "default", "extra_traits", "rustc-dep-of-std", "rustc-std-workspace-core", "std", "use_std"))' '-C' 'metadata=b4bf97bd5f32c90c' '-C' 'extra-filename=-51f4d6f8ad8042b3' '--out-dir' '/tmp/clis-vixargs_0-1-0/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-vixargs_0-1-0/release/deps' '--cap-lints' 'warn' '--cfg' 'freebsd11' '--cfg' 'libc_priv_mod_use' '--cfg' 'libc_union' '--cfg' 'libc_const_size_of' '--cfg' 'libc_align' '--cfg' 'libc_core_cvoid' '--cfg' 'libc_packedN' '--cfg' 'libc_cfg_target_vendor' '--cfg' 'libc_non_exhaustive' '--cfg' 'libc_ptr_addr_of' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.112/src/lib.rs \
+      rustc '--crate-name' 'libc' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("align", "const-extern-fn", "default", "extra_traits", "rustc-dep-of-std", "rustc-std-workspace-core", "std", "use_std"))' '-C' 'metadata=b4bf97bd5f32c90c' '-C' 'extra-filename=-51f4d6f8ad8042b3' '--out-dir' '/tmp/clis-vixargs_0-1-0/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-vixargs_0-1-0/release/deps' '--cap-lints' 'warn' '--cfg' 'freebsd11' '--cfg' 'libc_priv_mod_use' '--cfg' 'libc_union' '--cfg' 'libc_const_size_of' '--cfg' 'libc_align' '--cfg' 'libc_core_cvoid' '--cfg' 'libc_packedN' '--cfg' 'libc_cfg_target_vendor' '--cfg' 'libc_non_exhaustive' '--cfg' 'libc_ptr_addr_of' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.112/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-51f4d6f8ad8042b3
@@ -61,13 +61,13 @@ FROM rust-base AS dep-l-atty-0.2.14-d01e4f8c8b85bac0
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-vixargs_0-1-0/release/deps
 RUN \
-  --mount=from=cratesio-atty-0.2.14,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/atty-0.2.14 \
+  --mount=from=cratesio-atty-0.2.14,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/atty-0.2.14 \
   --mount=from=out-51f4d6f8ad8042b3,dst=/tmp/clis-vixargs_0-1-0/release/deps/liblibc-51f4d6f8ad8042b3.rmeta,source=/liblibc-51f4d6f8ad8042b3.rmeta \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="atty" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/atty-0.2.14" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/atty-0.2.14/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/atty-0.2.14" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/atty-0.2.14/Cargo.toml" \
         CARGO_PKG_AUTHORS="softprops <d.tangren@gmail.com>" \
         CARGO_PKG_DESCRIPTION="A simple interface for querying atty" \
         CARGO_PKG_HOMEPAGE="https://github.com/softprops/atty" \
@@ -84,7 +84,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'atty' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=c5dce50b7919e7c0' '-C' 'extra-filename=-d01e4f8c8b85bac0' '--out-dir' '/tmp/clis-vixargs_0-1-0/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-vixargs_0-1-0/release/deps' '--extern' 'libc=/tmp/clis-vixargs_0-1-0/release/deps/liblibc-51f4d6f8ad8042b3.rmeta' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/atty-0.2.14/src/lib.rs \
+      rustc '--crate-name' 'atty' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=c5dce50b7919e7c0' '-C' 'extra-filename=-d01e4f8c8b85bac0' '--out-dir' '/tmp/clis-vixargs_0-1-0/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-vixargs_0-1-0/release/deps' '--extern' 'libc=/tmp/clis-vixargs_0-1-0/release/deps/liblibc-51f4d6f8ad8042b3.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/atty-0.2.14/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-d01e4f8c8b85bac0
@@ -104,12 +104,12 @@ FROM rust-base AS dep-l-bitflags-1.3.2-852662162838ab1a
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-vixargs_0-1-0/release/deps
 RUN \
-  --mount=from=cratesio-bitflags-1.3.2,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/bitflags-1.3.2 \
+  --mount=from=cratesio-bitflags-1.3.2,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bitflags-1.3.2 \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="bitflags" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/bitflags-1.3.2" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/bitflags-1.3.2/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bitflags-1.3.2" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bitflags-1.3.2/Cargo.toml" \
         CARGO_PKG_AUTHORS="The Rust Project Developers" \
         CARGO_PKG_DESCRIPTION="A macro to generate structures which behave like bitflags.\n" \
         CARGO_PKG_HOMEPAGE="https://github.com/bitflags/bitflags" \
@@ -126,7 +126,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'bitflags' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="default"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("compiler_builtins", "core", "default", "example_generated", "rustc-dep-of-std"))' '-C' 'metadata=fd7cf2c4e10e9bde' '-C' 'extra-filename=-852662162838ab1a' '--out-dir' '/tmp/clis-vixargs_0-1-0/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-vixargs_0-1-0/release/deps' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/bitflags-1.3.2/src/lib.rs \
+      rustc '--crate-name' 'bitflags' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="default"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("compiler_builtins", "core", "default", "example_generated", "rustc-dep-of-std"))' '-C' 'metadata=fd7cf2c4e10e9bde' '-C' 'extra-filename=-852662162838ab1a' '--out-dir' '/tmp/clis-vixargs_0-1-0/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-vixargs_0-1-0/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bitflags-1.3.2/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-852662162838ab1a
@@ -146,13 +146,13 @@ FROM rust-base AS dep-l-num-traits-0.2.14-e2705aa4fbe4ea9c
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-vixargs_0-1-0/release/deps
 RUN \
-  --mount=from=cratesio-num-traits-0.2.14,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/num-traits-0.2.14 \
+  --mount=from=cratesio-num-traits-0.2.14,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-traits-0.2.14 \
   --mount=from=crate_out-1493ecc7e226836d,dst=/tmp/clis-vixargs_0-1-0/release/build/num-traits-1493ecc7e226836d/out \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="num_traits" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/num-traits-0.2.14" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/num-traits-0.2.14/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-traits-0.2.14" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-traits-0.2.14/Cargo.toml" \
         CARGO_PKG_AUTHORS="The Rust Project Developers" \
         CARGO_PKG_DESCRIPTION="Numeric traits for generic mathematics" \
         CARGO_PKG_HOMEPAGE="https://github.com/rust-num/num-traits" \
@@ -170,7 +170,7 @@ RUN \
         OUT_DIR="/tmp/clis-vixargs_0-1-0/release/build/num-traits-1493ecc7e226836d/out" \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'num_traits' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "i128", "libm", "std"))' '-C' 'metadata=13d04a9d6e12f50e' '-C' 'extra-filename=-e2705aa4fbe4ea9c' '--out-dir' '/tmp/clis-vixargs_0-1-0/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-vixargs_0-1-0/release/deps' '--cap-lints' 'warn' '--cfg' 'has_i128' '--cfg' 'has_to_int_unchecked' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/num-traits-0.2.14/src/lib.rs \
+      rustc '--crate-name' 'num_traits' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "i128", "libm", "std"))' '-C' 'metadata=13d04a9d6e12f50e' '-C' 'extra-filename=-e2705aa4fbe4ea9c' '--out-dir' '/tmp/clis-vixargs_0-1-0/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-vixargs_0-1-0/release/deps' '--cap-lints' 'warn' '--cfg' 'has_i128' '--cfg' 'has_to_int_unchecked' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-traits-0.2.14/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-e2705aa4fbe4ea9c
@@ -190,14 +190,14 @@ FROM rust-base AS dep-l-num-integer-0.1.44-17c523200619b366
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-vixargs_0-1-0/release/deps
 RUN \
-  --mount=from=cratesio-num-integer-0.1.44,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/num-integer-0.1.44 \
+  --mount=from=cratesio-num-integer-0.1.44,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-integer-0.1.44 \
   --mount=from=crate_out-1fc97b25f9e1b370,dst=/tmp/clis-vixargs_0-1-0/release/build/num-integer-1fc97b25f9e1b370/out \
   --mount=from=out-e2705aa4fbe4ea9c,dst=/tmp/clis-vixargs_0-1-0/release/deps/libnum_traits-e2705aa4fbe4ea9c.rmeta,source=/libnum_traits-e2705aa4fbe4ea9c.rmeta \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="num_integer" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/num-integer-0.1.44" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/num-integer-0.1.44/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-integer-0.1.44" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-integer-0.1.44/Cargo.toml" \
         CARGO_PKG_AUTHORS="The Rust Project Developers" \
         CARGO_PKG_DESCRIPTION="Integer traits and functions" \
         CARGO_PKG_HOMEPAGE="https://github.com/rust-num/num-integer" \
@@ -215,7 +215,7 @@ RUN \
         OUT_DIR="/tmp/clis-vixargs_0-1-0/release/build/num-integer-1fc97b25f9e1b370/out" \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'num_integer' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "i128", "std"))' '-C' 'metadata=b800c9896a6e3c5a' '-C' 'extra-filename=-17c523200619b366' '--out-dir' '/tmp/clis-vixargs_0-1-0/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-vixargs_0-1-0/release/deps' '--extern' 'num_traits=/tmp/clis-vixargs_0-1-0/release/deps/libnum_traits-e2705aa4fbe4ea9c.rmeta' '--cap-lints' 'warn' '--cfg' 'has_i128' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/num-integer-0.1.44/src/lib.rs \
+      rustc '--crate-name' 'num_integer' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "i128", "std"))' '-C' 'metadata=b800c9896a6e3c5a' '-C' 'extra-filename=-17c523200619b366' '--out-dir' '/tmp/clis-vixargs_0-1-0/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-vixargs_0-1-0/release/deps' '--extern' 'num_traits=/tmp/clis-vixargs_0-1-0/release/deps/libnum_traits-e2705aa4fbe4ea9c.rmeta' '--cap-lints' 'warn' '--cfg' 'has_i128' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-integer-0.1.44/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-17c523200619b366
@@ -235,13 +235,13 @@ FROM rust-base AS dep-l-time-0.1.44-e05ca921229b1e56
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-vixargs_0-1-0/release/deps
 RUN \
-  --mount=from=cratesio-time-0.1.44,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/time-0.1.44 \
+  --mount=from=cratesio-time-0.1.44,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/time-0.1.44 \
   --mount=from=out-51f4d6f8ad8042b3,dst=/tmp/clis-vixargs_0-1-0/release/deps/liblibc-51f4d6f8ad8042b3.rmeta,source=/liblibc-51f4d6f8ad8042b3.rmeta \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="time" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/time-0.1.44" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/time-0.1.44/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/time-0.1.44" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/time-0.1.44/Cargo.toml" \
         CARGO_PKG_AUTHORS="The Rust Project Developers" \
         CARGO_PKG_DESCRIPTION="Utilities for working with time-related functions in Rust.\n" \
         CARGO_PKG_HOMEPAGE="https://github.com/time-rs/time" \
@@ -258,7 +258,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'time' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("rustc-serialize"))' '-C' 'metadata=f0366c9fb41fe334' '-C' 'extra-filename=-e05ca921229b1e56' '--out-dir' '/tmp/clis-vixargs_0-1-0/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-vixargs_0-1-0/release/deps' '--extern' 'libc=/tmp/clis-vixargs_0-1-0/release/deps/liblibc-51f4d6f8ad8042b3.rmeta' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/time-0.1.44/src/lib.rs \
+      rustc '--crate-name' 'time' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("rustc-serialize"))' '-C' 'metadata=f0366c9fb41fe334' '-C' 'extra-filename=-e05ca921229b1e56' '--out-dir' '/tmp/clis-vixargs_0-1-0/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-vixargs_0-1-0/release/deps' '--extern' 'libc=/tmp/clis-vixargs_0-1-0/release/deps/liblibc-51f4d6f8ad8042b3.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/time-0.1.44/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-e05ca921229b1e56
@@ -278,7 +278,7 @@ FROM rust-base AS dep-l-chrono-0.4.19-cb3749c1302e1d37
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-vixargs_0-1-0/release/deps
 RUN \
-  --mount=from=cratesio-chrono-0.4.19,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/chrono-0.4.19 \
+  --mount=from=cratesio-chrono-0.4.19,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/chrono-0.4.19 \
   --mount=from=out-51f4d6f8ad8042b3,dst=/tmp/clis-vixargs_0-1-0/release/deps/liblibc-51f4d6f8ad8042b3.rmeta,source=/liblibc-51f4d6f8ad8042b3.rmeta \
   --mount=from=out-17c523200619b366,dst=/tmp/clis-vixargs_0-1-0/release/deps/libnum_integer-17c523200619b366.rmeta,source=/libnum_integer-17c523200619b366.rmeta \
   --mount=from=out-e2705aa4fbe4ea9c,dst=/tmp/clis-vixargs_0-1-0/release/deps/libnum_traits-e2705aa4fbe4ea9c.rmeta,source=/libnum_traits-e2705aa4fbe4ea9c.rmeta \
@@ -286,8 +286,8 @@ RUN \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="chrono" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/chrono-0.4.19" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/chrono-0.4.19/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/chrono-0.4.19" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/chrono-0.4.19/Cargo.toml" \
         CARGO_PKG_AUTHORS="Kang Seonghoon <public+rust@mearie.org>:Brandon W Maister <quodlibetor@gmail.com>" \
         CARGO_PKG_DESCRIPTION="Date and time library for Rust" \
         CARGO_PKG_HOMEPAGE="https://github.com/chronotope/chrono" \
@@ -304,7 +304,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'chrono' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="clock"' '--cfg' 'feature="default"' '--cfg' 'feature="libc"' '--cfg' 'feature="oldtime"' '--cfg' 'feature="std"' '--cfg' 'feature="time"' '--cfg' 'feature="winapi"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("__doctest", "__internal_bench", "alloc", "clock", "default", "js-sys", "libc", "oldtime", "pure-rust-locales", "rustc-serialize", "serde", "std", "time", "unstable-locales", "wasm-bindgen", "wasmbind", "winapi"))' '-C' 'metadata=8e63fae7a0ef0f1e' '-C' 'extra-filename=-cb3749c1302e1d37' '--out-dir' '/tmp/clis-vixargs_0-1-0/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-vixargs_0-1-0/release/deps' '--extern' 'libc=/tmp/clis-vixargs_0-1-0/release/deps/liblibc-51f4d6f8ad8042b3.rmeta' '--extern' 'num_integer=/tmp/clis-vixargs_0-1-0/release/deps/libnum_integer-17c523200619b366.rmeta' '--extern' 'num_traits=/tmp/clis-vixargs_0-1-0/release/deps/libnum_traits-e2705aa4fbe4ea9c.rmeta' '--extern' 'time=/tmp/clis-vixargs_0-1-0/release/deps/libtime-e05ca921229b1e56.rmeta' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/chrono-0.4.19/src/lib.rs \
+      rustc '--crate-name' 'chrono' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="clock"' '--cfg' 'feature="default"' '--cfg' 'feature="libc"' '--cfg' 'feature="oldtime"' '--cfg' 'feature="std"' '--cfg' 'feature="time"' '--cfg' 'feature="winapi"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("__doctest", "__internal_bench", "alloc", "clock", "default", "js-sys", "libc", "oldtime", "pure-rust-locales", "rustc-serialize", "serde", "std", "time", "unstable-locales", "wasm-bindgen", "wasmbind", "winapi"))' '-C' 'metadata=8e63fae7a0ef0f1e' '-C' 'extra-filename=-cb3749c1302e1d37' '--out-dir' '/tmp/clis-vixargs_0-1-0/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-vixargs_0-1-0/release/deps' '--extern' 'libc=/tmp/clis-vixargs_0-1-0/release/deps/liblibc-51f4d6f8ad8042b3.rmeta' '--extern' 'num_integer=/tmp/clis-vixargs_0-1-0/release/deps/libnum_integer-17c523200619b366.rmeta' '--extern' 'num_traits=/tmp/clis-vixargs_0-1-0/release/deps/libnum_traits-e2705aa4fbe4ea9c.rmeta' '--extern' 'time=/tmp/clis-vixargs_0-1-0/release/deps/libtime-e05ca921229b1e56.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/chrono-0.4.19/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-cb3749c1302e1d37
@@ -324,12 +324,12 @@ FROM rust-base AS dep-l-heck-0.4.0-8d16e2a30d2c3937
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-vixargs_0-1-0/release/deps
 RUN \
-  --mount=from=cratesio-heck-0.4.0,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/heck-0.4.0 \
+  --mount=from=cratesio-heck-0.4.0,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/heck-0.4.0 \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="heck" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/heck-0.4.0" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/heck-0.4.0/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/heck-0.4.0" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/heck-0.4.0/Cargo.toml" \
         CARGO_PKG_AUTHORS="Without Boats <woboats@gmail.com>" \
         CARGO_PKG_DESCRIPTION="heck is a case conversion library." \
         CARGO_PKG_HOMEPAGE="https://github.com/withoutboats/heck" \
@@ -346,7 +346,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'heck' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--cfg' 'feature="default"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "unicode", "unicode-segmentation"))' '-C' 'metadata=59cab3b668cfc8dd' '-C' 'extra-filename=-8d16e2a30d2c3937' '--out-dir' '/tmp/clis-vixargs_0-1-0/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-vixargs_0-1-0/release/deps' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/heck-0.4.0/src/lib.rs \
+      rustc '--crate-name' 'heck' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--cfg' 'feature="default"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "unicode", "unicode-segmentation"))' '-C' 'metadata=59cab3b668cfc8dd' '-C' 'extra-filename=-8d16e2a30d2c3937' '--out-dir' '/tmp/clis-vixargs_0-1-0/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-vixargs_0-1-0/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/heck-0.4.0/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-8d16e2a30d2c3937
@@ -366,12 +366,12 @@ FROM rust-base AS dep-l-unicode-xid-0.2.2-e34a25ad9bf96997
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-vixargs_0-1-0/release/deps
 RUN \
-  --mount=from=cratesio-unicode-xid-0.2.2,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/unicode-xid-0.2.2 \
+  --mount=from=cratesio-unicode-xid-0.2.2,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/unicode-xid-0.2.2 \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="unicode_xid" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/unicode-xid-0.2.2" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/unicode-xid-0.2.2/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/unicode-xid-0.2.2" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/unicode-xid-0.2.2/Cargo.toml" \
         CARGO_PKG_AUTHORS="erick.tryzelaar <erick.tryzelaar@gmail.com>:kwantam <kwantam@gmail.com>:Manish Goregaokar <manishsmail@gmail.com>" \
         CARGO_PKG_DESCRIPTION="Determine whether characters have the XID_Start\nor XID_Continue properties according to\nUnicode Standard Annex #31.\n" \
         CARGO_PKG_HOMEPAGE="https://github.com/unicode-rs/unicode-xid" \
@@ -388,7 +388,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'unicode_xid' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--cfg' 'feature="default"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("bench", "default", "no_std"))' '-C' 'metadata=f0643d123b3009ed' '-C' 'extra-filename=-e34a25ad9bf96997' '--out-dir' '/tmp/clis-vixargs_0-1-0/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-vixargs_0-1-0/release/deps' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/unicode-xid-0.2.2/src/lib.rs \
+      rustc '--crate-name' 'unicode_xid' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--cfg' 'feature="default"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("bench", "default", "no_std"))' '-C' 'metadata=f0643d123b3009ed' '-C' 'extra-filename=-e34a25ad9bf96997' '--out-dir' '/tmp/clis-vixargs_0-1-0/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-vixargs_0-1-0/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/unicode-xid-0.2.2/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-e34a25ad9bf96997
@@ -408,13 +408,13 @@ FROM rust-base AS dep-l-proc-macro2-1.0.36-b2cedd3adcc14b63
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-vixargs_0-1-0/release/deps
 RUN \
-  --mount=from=cratesio-proc-macro2-1.0.36,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.36 \
+  --mount=from=cratesio-proc-macro2-1.0.36,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.36 \
   --mount=from=out-e34a25ad9bf96997,dst=/tmp/clis-vixargs_0-1-0/release/deps/libunicode_xid-e34a25ad9bf96997.rmeta,source=/libunicode_xid-e34a25ad9bf96997.rmeta \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="proc_macro2" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.36" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.36/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.36" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.36/Cargo.toml" \
         CARGO_PKG_AUTHORS="David Tolnay <dtolnay@gmail.com>:Alex Crichton <alex@alexcrichton.com>" \
         CARGO_PKG_DESCRIPTION="A substitute implementation of the compiler's `proc_macro` API to decouple\ntoken-based libraries from the procedural macro use case.\n" \
         CARGO_PKG_HOMEPAGE= \
@@ -432,7 +432,7 @@ RUN \
         OUT_DIR="/tmp/clis-vixargs_0-1-0/release/build/proc-macro2-b97492fdd0201a99/out" \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'proc_macro2' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--cfg' 'feature="default"' '--cfg' 'feature="proc-macro"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "nightly", "proc-macro", "span-locations"))' '-C' 'metadata=c935dc3f5e0782dd' '-C' 'extra-filename=-b2cedd3adcc14b63' '--out-dir' '/tmp/clis-vixargs_0-1-0/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-vixargs_0-1-0/release/deps' '--extern' 'unicode_xid=/tmp/clis-vixargs_0-1-0/release/deps/libunicode_xid-e34a25ad9bf96997.rmeta' '--cap-lints' 'warn' '--cfg' 'use_proc_macro' '--cfg' 'wrap_proc_macro' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.36/src/lib.rs \
+      rustc '--crate-name' 'proc_macro2' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--cfg' 'feature="default"' '--cfg' 'feature="proc-macro"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "nightly", "proc-macro", "span-locations"))' '-C' 'metadata=c935dc3f5e0782dd' '-C' 'extra-filename=-b2cedd3adcc14b63' '--out-dir' '/tmp/clis-vixargs_0-1-0/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-vixargs_0-1-0/release/deps' '--extern' 'unicode_xid=/tmp/clis-vixargs_0-1-0/release/deps/libunicode_xid-e34a25ad9bf96997.rmeta' '--cap-lints' 'warn' '--cfg' 'use_proc_macro' '--cfg' 'wrap_proc_macro' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.36/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-b2cedd3adcc14b63
@@ -452,14 +452,14 @@ FROM rust-base AS dep-l-quote-1.0.14-f28d4275d05f184f
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-vixargs_0-1-0/release/deps
 RUN \
-  --mount=from=cratesio-quote-1.0.14,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.14 \
+  --mount=from=cratesio-quote-1.0.14,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.14 \
   --mount=from=out-b2cedd3adcc14b63,dst=/tmp/clis-vixargs_0-1-0/release/deps/libproc_macro2-b2cedd3adcc14b63.rmeta,source=/libproc_macro2-b2cedd3adcc14b63.rmeta \
   --mount=from=out-e34a25ad9bf96997,dst=/tmp/clis-vixargs_0-1-0/release/deps/libunicode_xid-e34a25ad9bf96997.rmeta,source=/libunicode_xid-e34a25ad9bf96997.rmeta \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="quote" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.14" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.14/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.14" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.14/Cargo.toml" \
         CARGO_PKG_AUTHORS="David Tolnay <dtolnay@gmail.com>" \
         CARGO_PKG_DESCRIPTION="Quasi-quoting macro quote!(...)" \
         CARGO_PKG_HOMEPAGE= \
@@ -476,7 +476,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'quote' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--cfg' 'feature="default"' '--cfg' 'feature="proc-macro"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "proc-macro"))' '-C' 'metadata=1433c1c282d163ef' '-C' 'extra-filename=-f28d4275d05f184f' '--out-dir' '/tmp/clis-vixargs_0-1-0/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-vixargs_0-1-0/release/deps' '--extern' 'proc_macro2=/tmp/clis-vixargs_0-1-0/release/deps/libproc_macro2-b2cedd3adcc14b63.rmeta' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.14/src/lib.rs \
+      rustc '--crate-name' 'quote' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--cfg' 'feature="default"' '--cfg' 'feature="proc-macro"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "proc-macro"))' '-C' 'metadata=1433c1c282d163ef' '-C' 'extra-filename=-f28d4275d05f184f' '--out-dir' '/tmp/clis-vixargs_0-1-0/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-vixargs_0-1-0/release/deps' '--extern' 'proc_macro2=/tmp/clis-vixargs_0-1-0/release/deps/libproc_macro2-b2cedd3adcc14b63.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.14/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-f28d4275d05f184f
@@ -496,15 +496,15 @@ FROM rust-base AS dep-p-proc-macro-error-attr-1.0.4-29cded0a6e7248a7
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-vixargs_0-1-0/release/deps
 RUN \
-  --mount=from=cratesio-proc-macro-error-attr-1.0.4,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro-error-attr-1.0.4 \
+  --mount=from=cratesio-proc-macro-error-attr-1.0.4,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro-error-attr-1.0.4 \
   --mount=from=out-b2cedd3adcc14b63,dst=/tmp/clis-vixargs_0-1-0/release/deps/libproc_macro2-b2cedd3adcc14b63.rlib,source=/libproc_macro2-b2cedd3adcc14b63.rlib \
   --mount=from=out-f28d4275d05f184f,dst=/tmp/clis-vixargs_0-1-0/release/deps/libquote-f28d4275d05f184f.rlib,source=/libquote-f28d4275d05f184f.rlib \
   --mount=from=out-e34a25ad9bf96997,dst=/tmp/clis-vixargs_0-1-0/release/deps/libunicode_xid-e34a25ad9bf96997.rlib,source=/libunicode_xid-e34a25ad9bf96997.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="proc_macro_error_attr" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro-error-attr-1.0.4" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro-error-attr-1.0.4/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro-error-attr-1.0.4" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro-error-attr-1.0.4/Cargo.toml" \
         CARGO_PKG_AUTHORS="CreepySkeleton <creepy-skeleton@yandex.ru>" \
         CARGO_PKG_DESCRIPTION="Attribute macro for proc-macro-error crate" \
         CARGO_PKG_HOMEPAGE= \
@@ -522,7 +522,7 @@ RUN \
         OUT_DIR="/tmp/clis-vixargs_0-1-0/release/build/proc-macro-error-attr-1e1b0f4dad1a43aa/out" \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'proc_macro_error_attr' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'proc-macro' '--emit' 'dep-info,link' '-C' 'prefer-dynamic' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=78d8992dc1e26196' '-C' 'extra-filename=-29cded0a6e7248a7' '--out-dir' '/tmp/clis-vixargs_0-1-0/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-vixargs_0-1-0/release/deps' '--extern' 'proc_macro2=/tmp/clis-vixargs_0-1-0/release/deps/libproc_macro2-b2cedd3adcc14b63.rlib' '--extern' 'quote=/tmp/clis-vixargs_0-1-0/release/deps/libquote-f28d4275d05f184f.rlib' '--extern' 'proc_macro' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro-error-attr-1.0.4/src/lib.rs \
+      rustc '--crate-name' 'proc_macro_error_attr' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'proc-macro' '--emit' 'dep-info,link' '-C' 'prefer-dynamic' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=78d8992dc1e26196' '-C' 'extra-filename=-29cded0a6e7248a7' '--out-dir' '/tmp/clis-vixargs_0-1-0/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-vixargs_0-1-0/release/deps' '--extern' 'proc_macro2=/tmp/clis-vixargs_0-1-0/release/deps/libproc_macro2-b2cedd3adcc14b63.rlib' '--extern' 'quote=/tmp/clis-vixargs_0-1-0/release/deps/libquote-f28d4275d05f184f.rlib' '--extern' 'proc_macro' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro-error-attr-1.0.4/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-29cded0a6e7248a7
@@ -542,15 +542,15 @@ FROM rust-base AS dep-l-syn-1.0.85-392f708f956a5e54
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-vixargs_0-1-0/release/deps
 RUN \
-  --mount=from=cratesio-syn-1.0.85,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/syn-1.0.85 \
+  --mount=from=cratesio-syn-1.0.85,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/syn-1.0.85 \
   --mount=from=out-b2cedd3adcc14b63,dst=/tmp/clis-vixargs_0-1-0/release/deps/libproc_macro2-b2cedd3adcc14b63.rmeta,source=/libproc_macro2-b2cedd3adcc14b63.rmeta \
   --mount=from=out-f28d4275d05f184f,dst=/tmp/clis-vixargs_0-1-0/release/deps/libquote-f28d4275d05f184f.rmeta,source=/libquote-f28d4275d05f184f.rmeta \
   --mount=from=out-e34a25ad9bf96997,dst=/tmp/clis-vixargs_0-1-0/release/deps/libunicode_xid-e34a25ad9bf96997.rmeta,source=/libunicode_xid-e34a25ad9bf96997.rmeta \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="syn" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/syn-1.0.85" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/syn-1.0.85/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/syn-1.0.85" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/syn-1.0.85/Cargo.toml" \
         CARGO_PKG_AUTHORS="David Tolnay <dtolnay@gmail.com>" \
         CARGO_PKG_DESCRIPTION="Parser for Rust source code" \
         CARGO_PKG_HOMEPAGE= \
@@ -568,7 +568,7 @@ RUN \
         OUT_DIR="/tmp/clis-vixargs_0-1-0/release/build/syn-89feb4d0b947d683/out" \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'syn' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--cfg' 'feature="clone-impls"' '--cfg' 'feature="default"' '--cfg' 'feature="derive"' '--cfg' 'feature="full"' '--cfg' 'feature="parsing"' '--cfg' 'feature="printing"' '--cfg' 'feature="proc-macro"' '--cfg' 'feature="quote"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("clone-impls", "default", "derive", "extra-traits", "fold", "full", "parsing", "printing", "proc-macro", "quote", "test", "visit", "visit-mut"))' '-C' 'metadata=cfa954cc6a62a1c4' '-C' 'extra-filename=-392f708f956a5e54' '--out-dir' '/tmp/clis-vixargs_0-1-0/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-vixargs_0-1-0/release/deps' '--extern' 'proc_macro2=/tmp/clis-vixargs_0-1-0/release/deps/libproc_macro2-b2cedd3adcc14b63.rmeta' '--extern' 'quote=/tmp/clis-vixargs_0-1-0/release/deps/libquote-f28d4275d05f184f.rmeta' '--extern' 'unicode_xid=/tmp/clis-vixargs_0-1-0/release/deps/libunicode_xid-e34a25ad9bf96997.rmeta' '--cap-lints' 'warn' '--cfg' 'syn_disable_nightly_tests' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/syn-1.0.85/src/lib.rs \
+      rustc '--crate-name' 'syn' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--cfg' 'feature="clone-impls"' '--cfg' 'feature="default"' '--cfg' 'feature="derive"' '--cfg' 'feature="full"' '--cfg' 'feature="parsing"' '--cfg' 'feature="printing"' '--cfg' 'feature="proc-macro"' '--cfg' 'feature="quote"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("clone-impls", "default", "derive", "extra-traits", "fold", "full", "parsing", "printing", "proc-macro", "quote", "test", "visit", "visit-mut"))' '-C' 'metadata=cfa954cc6a62a1c4' '-C' 'extra-filename=-392f708f956a5e54' '--out-dir' '/tmp/clis-vixargs_0-1-0/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-vixargs_0-1-0/release/deps' '--extern' 'proc_macro2=/tmp/clis-vixargs_0-1-0/release/deps/libproc_macro2-b2cedd3adcc14b63.rmeta' '--extern' 'quote=/tmp/clis-vixargs_0-1-0/release/deps/libquote-f28d4275d05f184f.rmeta' '--extern' 'unicode_xid=/tmp/clis-vixargs_0-1-0/release/deps/libunicode_xid-e34a25ad9bf96997.rmeta' '--cap-lints' 'warn' '--cfg' 'syn_disable_nightly_tests' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/syn-1.0.85/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-392f708f956a5e54
@@ -588,7 +588,7 @@ FROM rust-base AS dep-l-proc-macro-error-1.0.4-c594ae44c9e195ff
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-vixargs_0-1-0/release/deps
 RUN \
-  --mount=from=cratesio-proc-macro-error-1.0.4,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro-error-1.0.4 \
+  --mount=from=cratesio-proc-macro-error-1.0.4,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro-error-1.0.4 \
   --mount=from=out-b2cedd3adcc14b63,dst=/tmp/clis-vixargs_0-1-0/release/deps/libproc_macro2-b2cedd3adcc14b63.rmeta,source=/libproc_macro2-b2cedd3adcc14b63.rmeta \
   --mount=from=out-29cded0a6e7248a7,dst=/tmp/clis-vixargs_0-1-0/release/deps/libproc_macro_error_attr-29cded0a6e7248a7.so,source=/libproc_macro_error_attr-29cded0a6e7248a7.so \
   --mount=from=out-f28d4275d05f184f,dst=/tmp/clis-vixargs_0-1-0/release/deps/libquote-f28d4275d05f184f.rmeta,source=/libquote-f28d4275d05f184f.rmeta \
@@ -597,8 +597,8 @@ RUN \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="proc_macro_error" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro-error-1.0.4" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro-error-1.0.4/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro-error-1.0.4" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro-error-1.0.4/Cargo.toml" \
         CARGO_PKG_AUTHORS="CreepySkeleton <creepy-skeleton@yandex.ru>" \
         CARGO_PKG_DESCRIPTION="Almost drop-in replacement to panics in proc-macros" \
         CARGO_PKG_HOMEPAGE= \
@@ -616,7 +616,7 @@ RUN \
         OUT_DIR="/tmp/clis-vixargs_0-1-0/release/build/proc-macro-error-6eaef18ce6f02fa7/out" \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'proc_macro_error' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--cfg' 'feature="default"' '--cfg' 'feature="syn"' '--cfg' 'feature="syn-error"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "syn", "syn-error"))' '-C' 'metadata=dc41ccb04c192dea' '-C' 'extra-filename=-c594ae44c9e195ff' '--out-dir' '/tmp/clis-vixargs_0-1-0/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-vixargs_0-1-0/release/deps' '--extern' 'proc_macro_error_attr=/tmp/clis-vixargs_0-1-0/release/deps/libproc_macro_error_attr-29cded0a6e7248a7.so' '--extern' 'proc_macro2=/tmp/clis-vixargs_0-1-0/release/deps/libproc_macro2-b2cedd3adcc14b63.rmeta' '--extern' 'quote=/tmp/clis-vixargs_0-1-0/release/deps/libquote-f28d4275d05f184f.rmeta' '--extern' 'syn=/tmp/clis-vixargs_0-1-0/release/deps/libsyn-392f708f956a5e54.rmeta' '--cap-lints' 'warn' '--cfg' 'use_fallback' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro-error-1.0.4/src/lib.rs \
+      rustc '--crate-name' 'proc_macro_error' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--cfg' 'feature="default"' '--cfg' 'feature="syn"' '--cfg' 'feature="syn-error"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "syn", "syn-error"))' '-C' 'metadata=dc41ccb04c192dea' '-C' 'extra-filename=-c594ae44c9e195ff' '--out-dir' '/tmp/clis-vixargs_0-1-0/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-vixargs_0-1-0/release/deps' '--extern' 'proc_macro_error_attr=/tmp/clis-vixargs_0-1-0/release/deps/libproc_macro_error_attr-29cded0a6e7248a7.so' '--extern' 'proc_macro2=/tmp/clis-vixargs_0-1-0/release/deps/libproc_macro2-b2cedd3adcc14b63.rmeta' '--extern' 'quote=/tmp/clis-vixargs_0-1-0/release/deps/libquote-f28d4275d05f184f.rmeta' '--extern' 'syn=/tmp/clis-vixargs_0-1-0/release/deps/libsyn-392f708f956a5e54.rmeta' '--cap-lints' 'warn' '--cfg' 'use_fallback' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro-error-1.0.4/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-c594ae44c9e195ff
@@ -636,7 +636,7 @@ FROM rust-base AS dep-p-clap_derive-3.0.6-610669dc80431442
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-vixargs_0-1-0/release/deps
 RUN \
-  --mount=from=cratesio-clap_derive-3.0.6,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/clap_derive-3.0.6 \
+  --mount=from=cratesio-clap_derive-3.0.6,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/clap_derive-3.0.6 \
   --mount=from=out-8d16e2a30d2c3937,dst=/tmp/clis-vixargs_0-1-0/release/deps/libheck-8d16e2a30d2c3937.rlib,source=/libheck-8d16e2a30d2c3937.rlib \
   --mount=from=out-b2cedd3adcc14b63,dst=/tmp/clis-vixargs_0-1-0/release/deps/libproc_macro2-b2cedd3adcc14b63.rlib,source=/libproc_macro2-b2cedd3adcc14b63.rlib \
   --mount=from=out-c594ae44c9e195ff,dst=/tmp/clis-vixargs_0-1-0/release/deps/libproc_macro_error-c594ae44c9e195ff.rlib,source=/libproc_macro_error-c594ae44c9e195ff.rlib \
@@ -647,8 +647,8 @@ RUN \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="clap_derive" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/clap_derive-3.0.6" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/clap_derive-3.0.6/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/clap_derive-3.0.6" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/clap_derive-3.0.6/Cargo.toml" \
         CARGO_PKG_AUTHORS= \
         CARGO_PKG_DESCRIPTION="Parse command line argument by defining a struct, derive crate." \
         CARGO_PKG_HOMEPAGE= \
@@ -665,7 +665,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'clap_derive' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'proc-macro' '--emit' 'dep-info,link' '-C' 'prefer-dynamic' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--cfg' 'feature="default"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("debug", "default"))' '-C' 'metadata=192cb983bc0cb3e1' '-C' 'extra-filename=-610669dc80431442' '--out-dir' '/tmp/clis-vixargs_0-1-0/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-vixargs_0-1-0/release/deps' '--extern' 'heck=/tmp/clis-vixargs_0-1-0/release/deps/libheck-8d16e2a30d2c3937.rlib' '--extern' 'proc_macro_error=/tmp/clis-vixargs_0-1-0/release/deps/libproc_macro_error-c594ae44c9e195ff.rlib' '--extern' 'proc_macro2=/tmp/clis-vixargs_0-1-0/release/deps/libproc_macro2-b2cedd3adcc14b63.rlib' '--extern' 'quote=/tmp/clis-vixargs_0-1-0/release/deps/libquote-f28d4275d05f184f.rlib' '--extern' 'syn=/tmp/clis-vixargs_0-1-0/release/deps/libsyn-392f708f956a5e54.rlib' '--extern' 'proc_macro' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/clap_derive-3.0.6/src/lib.rs \
+      rustc '--crate-name' 'clap_derive' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'proc-macro' '--emit' 'dep-info,link' '-C' 'prefer-dynamic' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--cfg' 'feature="default"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("debug", "default"))' '-C' 'metadata=192cb983bc0cb3e1' '-C' 'extra-filename=-610669dc80431442' '--out-dir' '/tmp/clis-vixargs_0-1-0/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-vixargs_0-1-0/release/deps' '--extern' 'heck=/tmp/clis-vixargs_0-1-0/release/deps/libheck-8d16e2a30d2c3937.rlib' '--extern' 'proc_macro_error=/tmp/clis-vixargs_0-1-0/release/deps/libproc_macro_error-c594ae44c9e195ff.rlib' '--extern' 'proc_macro2=/tmp/clis-vixargs_0-1-0/release/deps/libproc_macro2-b2cedd3adcc14b63.rlib' '--extern' 'quote=/tmp/clis-vixargs_0-1-0/release/deps/libquote-f28d4275d05f184f.rlib' '--extern' 'syn=/tmp/clis-vixargs_0-1-0/release/deps/libsyn-392f708f956a5e54.rlib' '--extern' 'proc_macro' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/clap_derive-3.0.6/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-610669dc80431442
@@ -685,12 +685,12 @@ FROM rust-base AS dep-l-hashbrown-0.11.2-22caedd4ad0e0031
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-vixargs_0-1-0/release/deps
 RUN \
-  --mount=from=cratesio-hashbrown-0.11.2,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/hashbrown-0.11.2 \
+  --mount=from=cratesio-hashbrown-0.11.2,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/hashbrown-0.11.2 \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="hashbrown" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/hashbrown-0.11.2" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/hashbrown-0.11.2/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/hashbrown-0.11.2" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/hashbrown-0.11.2/Cargo.toml" \
         CARGO_PKG_AUTHORS="Amanieu d'Antras <amanieu@gmail.com>" \
         CARGO_PKG_DESCRIPTION="A Rust port of Google's SwissTable hash map" \
         CARGO_PKG_HOMEPAGE= \
@@ -707,7 +707,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'hashbrown' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="raw"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("ahash", "ahash-compile-time-rng", "alloc", "bumpalo", "compiler_builtins", "core", "default", "inline-more", "nightly", "raw", "rayon", "rustc-dep-of-std", "rustc-internal-api", "serde"))' '-C' 'metadata=684cea61a2adeb59' '-C' 'extra-filename=-22caedd4ad0e0031' '--out-dir' '/tmp/clis-vixargs_0-1-0/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-vixargs_0-1-0/release/deps' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/hashbrown-0.11.2/src/lib.rs \
+      rustc '--crate-name' 'hashbrown' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="raw"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("ahash", "ahash-compile-time-rng", "alloc", "bumpalo", "compiler_builtins", "core", "default", "inline-more", "nightly", "raw", "rayon", "rustc-dep-of-std", "rustc-internal-api", "serde"))' '-C' 'metadata=684cea61a2adeb59' '-C' 'extra-filename=-22caedd4ad0e0031' '--out-dir' '/tmp/clis-vixargs_0-1-0/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-vixargs_0-1-0/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/hashbrown-0.11.2/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-22caedd4ad0e0031
@@ -727,14 +727,14 @@ FROM rust-base AS dep-l-indexmap-1.8.0-ff40e60e0dbaf27e
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-vixargs_0-1-0/release/deps
 RUN \
-  --mount=from=cratesio-indexmap-1.8.0,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/indexmap-1.8.0 \
+  --mount=from=cratesio-indexmap-1.8.0,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/indexmap-1.8.0 \
   --mount=from=crate_out-70aaea97433c6837,dst=/tmp/clis-vixargs_0-1-0/release/build/indexmap-70aaea97433c6837/out \
   --mount=from=out-22caedd4ad0e0031,dst=/tmp/clis-vixargs_0-1-0/release/deps/libhashbrown-22caedd4ad0e0031.rmeta,source=/libhashbrown-22caedd4ad0e0031.rmeta \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="indexmap" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/indexmap-1.8.0" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/indexmap-1.8.0/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/indexmap-1.8.0" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/indexmap-1.8.0/Cargo.toml" \
         CARGO_PKG_AUTHORS="bluss:Josh Stone <cuviper@gmail.com>" \
         CARGO_PKG_DESCRIPTION="A hash table with consistent order and fast iteration.\n\nThe indexmap is a hash table where the iteration order of the key-value\npairs is independent of the hash values of the keys. It has the usual\nhash table functionality, it preserves insertion order except after\nremovals, and it allows lookup of its elements by either hash table key\nor numerical index. A corresponding hash set type is also provided.\n\nThis crate was initially published under the name ordermap, but it was renamed to\nindexmap.\n" \
         CARGO_PKG_HOMEPAGE= \
@@ -752,7 +752,7 @@ RUN \
         OUT_DIR="/tmp/clis-vixargs_0-1-0/release/build/indexmap-70aaea97433c6837/out" \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'indexmap' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("rayon", "rustc-rayon", "serde", "serde-1", "std", "test_debug", "test_low_transition_point"))' '-C' 'metadata=367b5cadbb628d8c' '-C' 'extra-filename=-ff40e60e0dbaf27e' '--out-dir' '/tmp/clis-vixargs_0-1-0/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-vixargs_0-1-0/release/deps' '--extern' 'hashbrown=/tmp/clis-vixargs_0-1-0/release/deps/libhashbrown-22caedd4ad0e0031.rmeta' '--cap-lints' 'warn' '--cfg' 'has_std' '--cfg' 'rustc_1_51' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/indexmap-1.8.0/src/lib.rs \
+      rustc '--crate-name' 'indexmap' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("rayon", "rustc-rayon", "serde", "serde-1", "std", "test_debug", "test_low_transition_point"))' '-C' 'metadata=367b5cadbb628d8c' '-C' 'extra-filename=-ff40e60e0dbaf27e' '--out-dir' '/tmp/clis-vixargs_0-1-0/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-vixargs_0-1-0/release/deps' '--extern' 'hashbrown=/tmp/clis-vixargs_0-1-0/release/deps/libhashbrown-22caedd4ad0e0031.rmeta' '--cap-lints' 'warn' '--cfg' 'has_std' '--cfg' 'rustc_1_51' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/indexmap-1.8.0/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-ff40e60e0dbaf27e
@@ -772,12 +772,12 @@ FROM rust-base AS dep-l-lazy_static-1.4.0-49434c819b4044f4
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-vixargs_0-1-0/release/deps
 RUN \
-  --mount=from=cratesio-lazy_static-1.4.0,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/lazy_static-1.4.0 \
+  --mount=from=cratesio-lazy_static-1.4.0,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/lazy_static-1.4.0 \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="lazy_static" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/lazy_static-1.4.0" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/lazy_static-1.4.0/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/lazy_static-1.4.0" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/lazy_static-1.4.0/Cargo.toml" \
         CARGO_PKG_AUTHORS="Marvin Löbel <loebel.marvin@gmail.com>" \
         CARGO_PKG_DESCRIPTION="A macro for declaring lazily evaluated statics in Rust." \
         CARGO_PKG_HOMEPAGE= \
@@ -794,7 +794,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'lazy_static' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("spin", "spin_no_std"))' '-C' 'metadata=41a5c3179e73440d' '-C' 'extra-filename=-49434c819b4044f4' '--out-dir' '/tmp/clis-vixargs_0-1-0/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-vixargs_0-1-0/release/deps' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/lazy_static-1.4.0/src/lib.rs \
+      rustc '--crate-name' 'lazy_static' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("spin", "spin_no_std"))' '-C' 'metadata=41a5c3179e73440d' '-C' 'extra-filename=-49434c819b4044f4' '--out-dir' '/tmp/clis-vixargs_0-1-0/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-vixargs_0-1-0/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/lazy_static-1.4.0/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-49434c819b4044f4
@@ -814,12 +814,12 @@ FROM rust-base AS dep-l-memchr-2.4.1-fe5945e55dd19cb6
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-vixargs_0-1-0/release/deps
 RUN \
-  --mount=from=cratesio-memchr-2.4.1,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/memchr-2.4.1 \
+  --mount=from=cratesio-memchr-2.4.1,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/memchr-2.4.1 \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="memchr" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/memchr-2.4.1" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/memchr-2.4.1/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/memchr-2.4.1" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/memchr-2.4.1/Cargo.toml" \
         CARGO_PKG_AUTHORS="Andrew Gallant <jamslam@gmail.com>:bluss" \
         CARGO_PKG_DESCRIPTION="Safe interface to memchr." \
         CARGO_PKG_HOMEPAGE="https://github.com/BurntSushi/memchr" \
@@ -837,7 +837,7 @@ RUN \
         OUT_DIR="/tmp/clis-vixargs_0-1-0/release/build/memchr-49b976b2f6171d80/out" \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'memchr' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("compiler_builtins", "core", "default", "libc", "rustc-dep-of-std", "std", "use_std"))' '-C' 'metadata=4d11dfa1155f57e1' '-C' 'extra-filename=-fe5945e55dd19cb6' '--out-dir' '/tmp/clis-vixargs_0-1-0/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-vixargs_0-1-0/release/deps' '--cap-lints' 'warn' '--cfg' 'memchr_runtime_simd' '--cfg' 'memchr_runtime_sse2' '--cfg' 'memchr_runtime_sse42' '--cfg' 'memchr_runtime_avx' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/memchr-2.4.1/src/lib.rs \
+      rustc '--crate-name' 'memchr' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("compiler_builtins", "core", "default", "libc", "rustc-dep-of-std", "std", "use_std"))' '-C' 'metadata=4d11dfa1155f57e1' '-C' 'extra-filename=-fe5945e55dd19cb6' '--out-dir' '/tmp/clis-vixargs_0-1-0/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-vixargs_0-1-0/release/deps' '--cap-lints' 'warn' '--cfg' 'memchr_runtime_simd' '--cfg' 'memchr_runtime_sse2' '--cfg' 'memchr_runtime_sse42' '--cfg' 'memchr_runtime_avx' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/memchr-2.4.1/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-fe5945e55dd19cb6
@@ -857,13 +857,13 @@ FROM rust-base AS dep-l-os_str_bytes-6.0.0-af45757e86c88d45
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-vixargs_0-1-0/release/deps
 RUN \
-  --mount=from=cratesio-os_str_bytes-6.0.0,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/os_str_bytes-6.0.0 \
+  --mount=from=cratesio-os_str_bytes-6.0.0,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/os_str_bytes-6.0.0 \
   --mount=from=out-fe5945e55dd19cb6,dst=/tmp/clis-vixargs_0-1-0/release/deps/libmemchr-fe5945e55dd19cb6.rmeta,source=/libmemchr-fe5945e55dd19cb6.rmeta \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="os_str_bytes" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/os_str_bytes-6.0.0" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/os_str_bytes-6.0.0/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/os_str_bytes-6.0.0" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/os_str_bytes-6.0.0/Cargo.toml" \
         CARGO_PKG_AUTHORS="dylni" \
         CARGO_PKG_DESCRIPTION="Utilities for converting between byte sequences and platform-native strings\n" \
         CARGO_PKG_HOMEPAGE= \
@@ -880,7 +880,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'os_str_bytes' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="default"' '--cfg' 'feature="memchr"' '--cfg' 'feature="raw_os_str"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "memchr", "print_bytes", "raw_os_str", "uniquote"))' '-C' 'metadata=ee2a68c49ee50f21' '-C' 'extra-filename=-af45757e86c88d45' '--out-dir' '/tmp/clis-vixargs_0-1-0/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-vixargs_0-1-0/release/deps' '--extern' 'memchr=/tmp/clis-vixargs_0-1-0/release/deps/libmemchr-fe5945e55dd19cb6.rmeta' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/os_str_bytes-6.0.0/src/lib.rs \
+      rustc '--crate-name' 'os_str_bytes' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="default"' '--cfg' 'feature="memchr"' '--cfg' 'feature="raw_os_str"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "memchr", "print_bytes", "raw_os_str", "uniquote"))' '-C' 'metadata=ee2a68c49ee50f21' '-C' 'extra-filename=-af45757e86c88d45' '--out-dir' '/tmp/clis-vixargs_0-1-0/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-vixargs_0-1-0/release/deps' '--extern' 'memchr=/tmp/clis-vixargs_0-1-0/release/deps/libmemchr-fe5945e55dd19cb6.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/os_str_bytes-6.0.0/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-af45757e86c88d45
@@ -900,12 +900,12 @@ FROM rust-base AS dep-l-strsim-0.10.0-6185e9224c6e4564
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-vixargs_0-1-0/release/deps
 RUN \
-  --mount=from=cratesio-strsim-0.10.0,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/strsim-0.10.0 \
+  --mount=from=cratesio-strsim-0.10.0,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/strsim-0.10.0 \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="strsim" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/strsim-0.10.0" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/strsim-0.10.0/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/strsim-0.10.0" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/strsim-0.10.0/Cargo.toml" \
         CARGO_PKG_AUTHORS="Danny Guo <danny@dannyguo.com>" \
         CARGO_PKG_DESCRIPTION="Implementations of string similarity metrics. Includes Hamming, Levenshtein,\nOSA, Damerau-Levenshtein, Jaro, Jaro-Winkler, and Sørensen-Dice.\n" \
         CARGO_PKG_HOMEPAGE="https://github.com/dguo/strsim-rs" \
@@ -922,7 +922,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'strsim' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=893a2fde8ffd8f95' '-C' 'extra-filename=-6185e9224c6e4564' '--out-dir' '/tmp/clis-vixargs_0-1-0/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-vixargs_0-1-0/release/deps' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/strsim-0.10.0/src/lib.rs \
+      rustc '--crate-name' 'strsim' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=893a2fde8ffd8f95' '-C' 'extra-filename=-6185e9224c6e4564' '--out-dir' '/tmp/clis-vixargs_0-1-0/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-vixargs_0-1-0/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/strsim-0.10.0/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-6185e9224c6e4564
@@ -942,12 +942,12 @@ FROM rust-base AS dep-l-termcolor-1.1.2-293856507126b9d4
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-vixargs_0-1-0/release/deps
 RUN \
-  --mount=from=cratesio-termcolor-1.1.2,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/termcolor-1.1.2 \
+  --mount=from=cratesio-termcolor-1.1.2,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/termcolor-1.1.2 \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="termcolor" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/termcolor-1.1.2" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/termcolor-1.1.2/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/termcolor-1.1.2" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/termcolor-1.1.2/Cargo.toml" \
         CARGO_PKG_AUTHORS="Andrew Gallant <jamslam@gmail.com>" \
         CARGO_PKG_DESCRIPTION="A simple cross platform library for writing colored text to a terminal.\n" \
         CARGO_PKG_HOMEPAGE="https://github.com/BurntSushi/termcolor" \
@@ -964,7 +964,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'termcolor' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=7f22a864f15d6ad7' '-C' 'extra-filename=-293856507126b9d4' '--out-dir' '/tmp/clis-vixargs_0-1-0/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-vixargs_0-1-0/release/deps' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/termcolor-1.1.2/src/lib.rs \
+      rustc '--crate-name' 'termcolor' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=7f22a864f15d6ad7' '-C' 'extra-filename=-293856507126b9d4' '--out-dir' '/tmp/clis-vixargs_0-1-0/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-vixargs_0-1-0/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/termcolor-1.1.2/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-293856507126b9d4
@@ -984,12 +984,12 @@ FROM rust-base AS dep-l-textwrap-0.14.2-e82ebe3480f0f372
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-vixargs_0-1-0/release/deps
 RUN \
-  --mount=from=cratesio-textwrap-0.14.2,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/textwrap-0.14.2 \
+  --mount=from=cratesio-textwrap-0.14.2,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/textwrap-0.14.2 \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="textwrap" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/textwrap-0.14.2" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/textwrap-0.14.2/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/textwrap-0.14.2" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/textwrap-0.14.2/Cargo.toml" \
         CARGO_PKG_AUTHORS="Martin Geisler <martin@geisler.net>" \
         CARGO_PKG_DESCRIPTION="Powerful library for word wrapping, indenting, and dedenting strings" \
         CARGO_PKG_HOMEPAGE= \
@@ -1006,7 +1006,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'textwrap' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "hyphenation", "smawk", "terminal_size", "unicode-linebreak", "unicode-width"))' '-C' 'metadata=9356525359a83603' '-C' 'extra-filename=-e82ebe3480f0f372' '--out-dir' '/tmp/clis-vixargs_0-1-0/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-vixargs_0-1-0/release/deps' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/textwrap-0.14.2/src/lib.rs \
+      rustc '--crate-name' 'textwrap' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "hyphenation", "smawk", "terminal_size", "unicode-linebreak", "unicode-width"))' '-C' 'metadata=9356525359a83603' '-C' 'extra-filename=-e82ebe3480f0f372' '--out-dir' '/tmp/clis-vixargs_0-1-0/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-vixargs_0-1-0/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/textwrap-0.14.2/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-e82ebe3480f0f372
@@ -1026,7 +1026,7 @@ FROM rust-base AS dep-l-clap-3.0.6-4c599b4257c9026f
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-vixargs_0-1-0/release/deps
 RUN \
-  --mount=from=cratesio-clap-3.0.6,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/clap-3.0.6 \
+  --mount=from=cratesio-clap-3.0.6,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/clap-3.0.6 \
   --mount=from=out-d01e4f8c8b85bac0,dst=/tmp/clis-vixargs_0-1-0/release/deps/libatty-d01e4f8c8b85bac0.rmeta,source=/libatty-d01e4f8c8b85bac0.rmeta \
   --mount=from=out-852662162838ab1a,dst=/tmp/clis-vixargs_0-1-0/release/deps/libbitflags-852662162838ab1a.rmeta,source=/libbitflags-852662162838ab1a.rmeta \
   --mount=from=out-610669dc80431442,dst=/tmp/clis-vixargs_0-1-0/release/deps/libclap_derive-610669dc80431442.so,source=/libclap_derive-610669dc80431442.so \
@@ -1049,8 +1049,8 @@ RUN \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="clap" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/clap-3.0.6" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/clap-3.0.6/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/clap-3.0.6" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/clap-3.0.6/Cargo.toml" \
         CARGO_PKG_AUTHORS= \
         CARGO_PKG_DESCRIPTION="A simple to use, efficient, and full-featured Command Line Argument Parser" \
         CARGO_PKG_HOMEPAGE= \
@@ -1067,7 +1067,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'clap' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="atty"' '--cfg' 'feature="clap_derive"' '--cfg' 'feature="color"' '--cfg' 'feature="default"' '--cfg' 'feature="derive"' '--cfg' 'feature="lazy_static"' '--cfg' 'feature="std"' '--cfg' 'feature="strsim"' '--cfg' 'feature="suggestions"' '--cfg' 'feature="termcolor"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("atty", "backtrace", "cargo", "clap_derive", "color", "debug", "default", "derive", "env", "lazy_static", "regex", "std", "strsim", "suggestions", "termcolor", "terminal_size", "unicase", "unicode", "unstable-doc", "unstable-grouped", "unstable-multicall", "unstable-replace", "wrap_help", "yaml", "yaml-rust"))' '-C' 'metadata=16d3afac71feb0e9' '-C' 'extra-filename=-4c599b4257c9026f' '--out-dir' '/tmp/clis-vixargs_0-1-0/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-vixargs_0-1-0/release/deps' '--extern' 'atty=/tmp/clis-vixargs_0-1-0/release/deps/libatty-d01e4f8c8b85bac0.rmeta' '--extern' 'bitflags=/tmp/clis-vixargs_0-1-0/release/deps/libbitflags-852662162838ab1a.rmeta' '--extern' 'clap_derive=/tmp/clis-vixargs_0-1-0/release/deps/libclap_derive-610669dc80431442.so' '--extern' 'indexmap=/tmp/clis-vixargs_0-1-0/release/deps/libindexmap-ff40e60e0dbaf27e.rmeta' '--extern' 'lazy_static=/tmp/clis-vixargs_0-1-0/release/deps/liblazy_static-49434c819b4044f4.rmeta' '--extern' 'os_str_bytes=/tmp/clis-vixargs_0-1-0/release/deps/libos_str_bytes-af45757e86c88d45.rmeta' '--extern' 'strsim=/tmp/clis-vixargs_0-1-0/release/deps/libstrsim-6185e9224c6e4564.rmeta' '--extern' 'termcolor=/tmp/clis-vixargs_0-1-0/release/deps/libtermcolor-293856507126b9d4.rmeta' '--extern' 'textwrap=/tmp/clis-vixargs_0-1-0/release/deps/libtextwrap-e82ebe3480f0f372.rmeta' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/clap-3.0.6/src/lib.rs \
+      rustc '--crate-name' 'clap' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="atty"' '--cfg' 'feature="clap_derive"' '--cfg' 'feature="color"' '--cfg' 'feature="default"' '--cfg' 'feature="derive"' '--cfg' 'feature="lazy_static"' '--cfg' 'feature="std"' '--cfg' 'feature="strsim"' '--cfg' 'feature="suggestions"' '--cfg' 'feature="termcolor"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("atty", "backtrace", "cargo", "clap_derive", "color", "debug", "default", "derive", "env", "lazy_static", "regex", "std", "strsim", "suggestions", "termcolor", "terminal_size", "unicase", "unicode", "unstable-doc", "unstable-grouped", "unstable-multicall", "unstable-replace", "wrap_help", "yaml", "yaml-rust"))' '-C' 'metadata=16d3afac71feb0e9' '-C' 'extra-filename=-4c599b4257c9026f' '--out-dir' '/tmp/clis-vixargs_0-1-0/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-vixargs_0-1-0/release/deps' '--extern' 'atty=/tmp/clis-vixargs_0-1-0/release/deps/libatty-d01e4f8c8b85bac0.rmeta' '--extern' 'bitflags=/tmp/clis-vixargs_0-1-0/release/deps/libbitflags-852662162838ab1a.rmeta' '--extern' 'clap_derive=/tmp/clis-vixargs_0-1-0/release/deps/libclap_derive-610669dc80431442.so' '--extern' 'indexmap=/tmp/clis-vixargs_0-1-0/release/deps/libindexmap-ff40e60e0dbaf27e.rmeta' '--extern' 'lazy_static=/tmp/clis-vixargs_0-1-0/release/deps/liblazy_static-49434c819b4044f4.rmeta' '--extern' 'os_str_bytes=/tmp/clis-vixargs_0-1-0/release/deps/libos_str_bytes-af45757e86c88d45.rmeta' '--extern' 'strsim=/tmp/clis-vixargs_0-1-0/release/deps/libstrsim-6185e9224c6e4564.rmeta' '--extern' 'termcolor=/tmp/clis-vixargs_0-1-0/release/deps/libtermcolor-293856507126b9d4.rmeta' '--extern' 'textwrap=/tmp/clis-vixargs_0-1-0/release/deps/libtextwrap-e82ebe3480f0f372.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/clap-3.0.6/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-4c599b4257c9026f
@@ -1087,7 +1087,7 @@ FROM rust-base AS dep-b-vixargs-0.1.0-048a11d2c28b4806
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-vixargs_0-1-0/release/deps
 RUN \
-  --mount=from=cratesio-vixargs-0.1.0,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/vixargs-0.1.0 \
+  --mount=from=cratesio-vixargs-0.1.0,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/vixargs-0.1.0 \
   --mount=from=out-d01e4f8c8b85bac0,dst=/tmp/clis-vixargs_0-1-0/release/deps/libatty-d01e4f8c8b85bac0.rlib,source=/libatty-d01e4f8c8b85bac0.rlib \
   --mount=from=out-852662162838ab1a,dst=/tmp/clis-vixargs_0-1-0/release/deps/libbitflags-852662162838ab1a.rlib,source=/libbitflags-852662162838ab1a.rlib \
   --mount=from=out-cb3749c1302e1d37,dst=/tmp/clis-vixargs_0-1-0/release/deps/libchrono-cb3749c1302e1d37.rlib,source=/libchrono-cb3749c1302e1d37.rlib \
@@ -1116,8 +1116,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_BIN_NAME="vixargs" \
         CARGO_CRATE_NAME="vixargs" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/vixargs-0.1.0" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/vixargs-0.1.0/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/vixargs-0.1.0" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/vixargs-0.1.0/Cargo.toml" \
         CARGO_PKG_AUTHORS="Pierre Fenoll <pierrefenoll@gmail.com>" \
         CARGO_PKG_DESCRIPTION="visual xargs executes one command per window pane" \
         CARGO_PKG_HOMEPAGE= \
@@ -1135,7 +1135,7 @@ RUN \
         CARGO_PRIMARY_PACKAGE="1" \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'vixargs' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'bin' '--emit' 'dep-info,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=dc7804a7ef2eeef9' '-C' 'extra-filename=-048a11d2c28b4806' '--out-dir' '/tmp/clis-vixargs_0-1-0/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-vixargs_0-1-0/release/deps' '--extern' 'chrono=/tmp/clis-vixargs_0-1-0/release/deps/libchrono-cb3749c1302e1d37.rlib' '--extern' 'clap=/tmp/clis-vixargs_0-1-0/release/deps/libclap-4c599b4257c9026f.rlib' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/vixargs-0.1.0/src/main.rs \
+      rustc '--crate-name' 'vixargs' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'bin' '--emit' 'dep-info,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=dc7804a7ef2eeef9' '-C' 'extra-filename=-048a11d2c28b4806' '--out-dir' '/tmp/clis-vixargs_0-1-0/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-vixargs_0-1-0/release/deps' '--extern' 'chrono=/tmp/clis-vixargs_0-1-0/release/deps/libchrono-cb3749c1302e1d37.rlib' '--extern' 'clap=/tmp/clis-vixargs_0-1-0/release/deps/libclap-4c599b4257c9026f.rlib' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/vixargs-0.1.0/src/main.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-048a11d2c28b4806

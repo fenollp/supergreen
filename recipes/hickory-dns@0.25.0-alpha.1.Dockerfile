@@ -18,12 +18,12 @@ FROM rust-base AS dep-l-cfg-if-1.0.0-642a9e511eeb712a
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-cfg-if-1.0.0,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/cfg-if-1.0.0 \
+  --mount=from=cratesio-cfg-if-1.0.0,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/cfg-if-1.0.0 \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="cfg_if" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/cfg-if-1.0.0" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/cfg-if-1.0.0/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/cfg-if-1.0.0" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/cfg-if-1.0.0/Cargo.toml" \
         CARGO_PKG_AUTHORS="Alex Crichton <alex@alexcrichton.com>" \
         CARGO_PKG_DESCRIPTION="A macro to ergonomically define an item depending on a large number of #[cfg]\nparameters. Structured like an if-else chain, the first matching branch is the\nitem that gets emitted.\n" \
         CARGO_PKG_HOMEPAGE="https://github.com/alexcrichton/cfg-if" \
@@ -40,7 +40,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'cfg_if' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("compiler_builtins", "core", "rustc-dep-of-std"))' '-C' 'metadata=f774a8b1a0b6ae97' '-C' 'extra-filename=-642a9e511eeb712a' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/cfg-if-1.0.0/src/lib.rs \
+      rustc '--crate-name' 'cfg_if' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("compiler_builtins", "core", "rustc-dep-of-std"))' '-C' 'metadata=f774a8b1a0b6ae97' '-C' 'extra-filename=-642a9e511eeb712a' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/cfg-if-1.0.0/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-642a9e511eeb712a
@@ -60,12 +60,12 @@ FROM rust-base AS dep-l-once_cell-1.19.0-330cfb3cbb7b43f5
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-once_cell-1.19.0,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/once_cell-1.19.0 \
+  --mount=from=cratesio-once_cell-1.19.0,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/once_cell-1.19.0 \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="once_cell" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/once_cell-1.19.0" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/once_cell-1.19.0/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/once_cell-1.19.0" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/once_cell-1.19.0/Cargo.toml" \
         CARGO_PKG_AUTHORS="Aleksey Kladov <aleksey.kladov@gmail.com>" \
         CARGO_PKG_DESCRIPTION="Single assignment cells and lazy values." \
         CARGO_PKG_HOMEPAGE= \
@@ -82,7 +82,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'once_cell' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="alloc"' '--cfg' 'feature="default"' '--cfg' 'feature="race"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "atomic-polyfill", "critical-section", "default", "parking_lot", "portable-atomic", "race", "std", "unstable"))' '-C' 'metadata=afc296a215691e24' '-C' 'extra-filename=-330cfb3cbb7b43f5' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/once_cell-1.19.0/src/lib.rs \
+      rustc '--crate-name' 'once_cell' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="alloc"' '--cfg' 'feature="default"' '--cfg' 'feature="race"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "atomic-polyfill", "critical-section", "default", "parking_lot", "portable-atomic", "race", "std", "unstable"))' '-C' 'metadata=afc296a215691e24' '-C' 'extra-filename=-330cfb3cbb7b43f5' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/once_cell-1.19.0/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-330cfb3cbb7b43f5
@@ -102,12 +102,12 @@ FROM rust-base AS dep-l-zerocopy-0.7.34-1a056a05a6958b68
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-zerocopy-0.7.34,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/zerocopy-0.7.34 \
+  --mount=from=cratesio-zerocopy-0.7.34,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zerocopy-0.7.34 \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="zerocopy" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/zerocopy-0.7.34" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/zerocopy-0.7.34/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zerocopy-0.7.34" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zerocopy-0.7.34/Cargo.toml" \
         CARGO_PKG_AUTHORS="Joshua Liebow-Feeser <joshlf@google.com>" \
         CARGO_PKG_DESCRIPTION="Utilities for zero-copy parsing and serialization" \
         CARGO_PKG_HOMEPAGE= \
@@ -124,7 +124,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'zerocopy' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="simd"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("__internal_use_only_features_that_work_on_stable", "alloc", "byteorder", "default", "derive", "simd", "simd-nightly", "zerocopy-derive"))' '-C' 'metadata=f75e80ca5af7e2c3' '-C' 'extra-filename=-1a056a05a6958b68' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/zerocopy-0.7.34/src/lib.rs \
+      rustc '--crate-name' 'zerocopy' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="simd"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("__internal_use_only_features_that_work_on_stable", "alloc", "byteorder", "default", "derive", "simd", "simd-nightly", "zerocopy-derive"))' '-C' 'metadata=f75e80ca5af7e2c3' '-C' 'extra-filename=-1a056a05a6958b68' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zerocopy-0.7.34/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-1a056a05a6958b68
@@ -144,15 +144,15 @@ FROM rust-base AS dep-l-ahash-0.8.11-b1a23cff02e478bf
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-ahash-0.8.11,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/ahash-0.8.11 \
+  --mount=from=cratesio-ahash-0.8.11,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ahash-0.8.11 \
   --mount=from=out-642a9e511eeb712a,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libcfg_if-642a9e511eeb712a.rmeta,source=/libcfg_if-642a9e511eeb712a.rmeta \
   --mount=from=out-330cfb3cbb7b43f5,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libonce_cell-330cfb3cbb7b43f5.rmeta,source=/libonce_cell-330cfb3cbb7b43f5.rmeta \
   --mount=from=out-1a056a05a6958b68,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libzerocopy-1a056a05a6958b68.rmeta,source=/libzerocopy-1a056a05a6958b68.rmeta \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="ahash" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/ahash-0.8.11" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/ahash-0.8.11/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ahash-0.8.11" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ahash-0.8.11/Cargo.toml" \
         CARGO_PKG_AUTHORS="Tom Kaitchuck <Tom.Kaitchuck@gmail.com>" \
         CARGO_PKG_DESCRIPTION="A non-cryptographic hash function using AES-NI for high performance" \
         CARGO_PKG_HOMEPAGE= \
@@ -170,7 +170,7 @@ RUN \
         OUT_DIR="/tmp/clis-hickory-dns_0-25-0-alpha-1/release/build/ahash-58a89f443596974f/out" \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'ahash' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("atomic-polyfill", "compile-time-rng", "const-random", "default", "getrandom", "nightly-arm-aes", "no-rng", "runtime-rng", "serde", "std"))' '-C' 'metadata=07d12dc1e2964968' '-C' 'extra-filename=-b1a23cff02e478bf' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'cfg_if=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libcfg_if-642a9e511eeb712a.rmeta' '--extern' 'once_cell=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libonce_cell-330cfb3cbb7b43f5.rmeta' '--extern' 'zerocopy=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libzerocopy-1a056a05a6958b68.rmeta' '--cap-lints' 'warn' '--cfg' 'feature="folded_multiply"' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/ahash-0.8.11/src/lib.rs \
+      rustc '--crate-name' 'ahash' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("atomic-polyfill", "compile-time-rng", "const-random", "default", "getrandom", "nightly-arm-aes", "no-rng", "runtime-rng", "serde", "std"))' '-C' 'metadata=07d12dc1e2964968' '-C' 'extra-filename=-b1a23cff02e478bf' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'cfg_if=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libcfg_if-642a9e511eeb712a.rmeta' '--extern' 'once_cell=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libonce_cell-330cfb3cbb7b43f5.rmeta' '--extern' 'zerocopy=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libzerocopy-1a056a05a6958b68.rmeta' '--cap-lints' 'warn' '--cfg' 'feature="folded_multiply"' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ahash-0.8.11/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-b1a23cff02e478bf
@@ -190,12 +190,12 @@ FROM rust-base AS dep-l-anstyle-1.0.7-a9f390b87e907aa5
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-anstyle-1.0.7,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/anstyle-1.0.7 \
+  --mount=from=cratesio-anstyle-1.0.7,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anstyle-1.0.7 \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="anstyle" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/anstyle-1.0.7" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/anstyle-1.0.7/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anstyle-1.0.7" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anstyle-1.0.7/Cargo.toml" \
         CARGO_PKG_AUTHORS= \
         CARGO_PKG_DESCRIPTION="ANSI text styling" \
         CARGO_PKG_HOMEPAGE="https://github.com/rust-cli/anstyle" \
@@ -212,7 +212,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'anstyle' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--warn' 'clippy::zero_sized_map_values' '--warn' 'clippy::wildcard_imports' '--warn' 'clippy::verbose_file_reads' '--warn' 'unused_qualifications' '--warn' 'unused_macro_rules' '--warn' 'unused_lifetimes' '--warn' 'unsafe_op_in_unsafe_fn' '--warn' 'unreachable_pub' '--warn' 'clippy::trait_duplication_in_bounds' '--warn' 'clippy::todo' '--warn' 'clippy::string_to_string' '--warn' 'clippy::string_lit_as_bytes' '--warn' 'clippy::string_add_assign' '--warn' 'clippy::string_add' '--warn' 'clippy::str_to_string' '--warn' 'clippy::single_match_else' '--warn' 'clippy::semicolon_if_nothing_returned' '--warn' 'clippy::self_named_module_files' '--warn' 'clippy::same_functions_in_if_condition' '--warn' 'rust_2018_idioms' '--warn' 'clippy::rest_pat_in_fully_bound_structs' '--warn' 'clippy::ref_option_ref' '--warn' 'clippy::redundant_feature_names' '--warn' 'clippy::rc_mutex' '--warn' 'clippy::ptr_as_ptr' '--warn' 'clippy::path_buf_push_overwrite' '--warn' 'clippy::negative_feature_names' '--warn' 'clippy::needless_for_each' '--warn' 'clippy::needless_continue' '--warn' 'clippy::mutex_integer' '--warn' 'clippy::mem_forget' '--warn' 'clippy::match_wildcard_for_single_variants' '--warn' 'clippy::macro_use_imports' '--warn' 'clippy::lossy_float_literal' '--warn' 'clippy::linkedlist' '--allow' 'clippy::let_and_return' '--warn' 'clippy::large_types_passed_by_value' '--warn' 'clippy::large_stack_arrays' '--warn' 'clippy::large_digit_groups' '--warn' 'clippy::items_after_statements' '--warn' 'clippy::invalid_upcast_comparisons' '--warn' 'clippy::infinite_loop' '--warn' 'clippy::inefficient_to_string' '--warn' 'clippy::inconsistent_struct_constructor' '--warn' 'clippy::imprecise_flops' '--warn' 'clippy::implicit_clone' '--allow' 'clippy::if_same_then_else' '--warn' 'clippy::from_iter_instead_of_collect' '--warn' 'clippy::fn_params_excessive_bools' '--warn' 'clippy::float_cmp_const' '--warn' 'clippy::flat_map_option' '--warn' 'clippy::filter_map_next' '--warn' 'clippy::fallible_impl_from' '--warn' 'clippy::explicit_into_iter_loop' '--warn' 'clippy::explicit_deref_methods' '--warn' 'clippy::expl_impl_clone_on_copy' '--warn' 'clippy::enum_glob_use' '--warn' 'clippy::empty_enum' '--warn' 'clippy::doc_markdown' '--warn' 'clippy::debug_assert_with_mut_call' '--warn' 'clippy::dbg_macro' '--warn' 'clippy::create_dir' '--allow' 'clippy::collapsible_else_if' '--warn' 'clippy::checked_conversions' '--allow' 'clippy::branches_sharing_code' '--allow' 'clippy::bool_assert_comparison' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "std"))' '-C' 'metadata=1c8e8af4f1151c51' '-C' 'extra-filename=-a9f390b87e907aa5' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/anstyle-1.0.7/src/lib.rs \
+      rustc '--crate-name' 'anstyle' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--warn' 'clippy::zero_sized_map_values' '--warn' 'clippy::wildcard_imports' '--warn' 'clippy::verbose_file_reads' '--warn' 'unused_qualifications' '--warn' 'unused_macro_rules' '--warn' 'unused_lifetimes' '--warn' 'unsafe_op_in_unsafe_fn' '--warn' 'unreachable_pub' '--warn' 'clippy::trait_duplication_in_bounds' '--warn' 'clippy::todo' '--warn' 'clippy::string_to_string' '--warn' 'clippy::string_lit_as_bytes' '--warn' 'clippy::string_add_assign' '--warn' 'clippy::string_add' '--warn' 'clippy::str_to_string' '--warn' 'clippy::single_match_else' '--warn' 'clippy::semicolon_if_nothing_returned' '--warn' 'clippy::self_named_module_files' '--warn' 'clippy::same_functions_in_if_condition' '--warn' 'rust_2018_idioms' '--warn' 'clippy::rest_pat_in_fully_bound_structs' '--warn' 'clippy::ref_option_ref' '--warn' 'clippy::redundant_feature_names' '--warn' 'clippy::rc_mutex' '--warn' 'clippy::ptr_as_ptr' '--warn' 'clippy::path_buf_push_overwrite' '--warn' 'clippy::negative_feature_names' '--warn' 'clippy::needless_for_each' '--warn' 'clippy::needless_continue' '--warn' 'clippy::mutex_integer' '--warn' 'clippy::mem_forget' '--warn' 'clippy::match_wildcard_for_single_variants' '--warn' 'clippy::macro_use_imports' '--warn' 'clippy::lossy_float_literal' '--warn' 'clippy::linkedlist' '--allow' 'clippy::let_and_return' '--warn' 'clippy::large_types_passed_by_value' '--warn' 'clippy::large_stack_arrays' '--warn' 'clippy::large_digit_groups' '--warn' 'clippy::items_after_statements' '--warn' 'clippy::invalid_upcast_comparisons' '--warn' 'clippy::infinite_loop' '--warn' 'clippy::inefficient_to_string' '--warn' 'clippy::inconsistent_struct_constructor' '--warn' 'clippy::imprecise_flops' '--warn' 'clippy::implicit_clone' '--allow' 'clippy::if_same_then_else' '--warn' 'clippy::from_iter_instead_of_collect' '--warn' 'clippy::fn_params_excessive_bools' '--warn' 'clippy::float_cmp_const' '--warn' 'clippy::flat_map_option' '--warn' 'clippy::filter_map_next' '--warn' 'clippy::fallible_impl_from' '--warn' 'clippy::explicit_into_iter_loop' '--warn' 'clippy::explicit_deref_methods' '--warn' 'clippy::expl_impl_clone_on_copy' '--warn' 'clippy::enum_glob_use' '--warn' 'clippy::empty_enum' '--warn' 'clippy::doc_markdown' '--warn' 'clippy::debug_assert_with_mut_call' '--warn' 'clippy::dbg_macro' '--warn' 'clippy::create_dir' '--allow' 'clippy::collapsible_else_if' '--warn' 'clippy::checked_conversions' '--allow' 'clippy::branches_sharing_code' '--allow' 'clippy::bool_assert_comparison' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "std"))' '-C' 'metadata=1c8e8af4f1151c51' '-C' 'extra-filename=-a9f390b87e907aa5' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anstyle-1.0.7/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-a9f390b87e907aa5
@@ -232,12 +232,12 @@ FROM rust-base AS dep-l-unicode-ident-1.0.12-a6900a9b5655f4c8
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-unicode-ident-1.0.12,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/unicode-ident-1.0.12 \
+  --mount=from=cratesio-unicode-ident-1.0.12,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/unicode-ident-1.0.12 \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="unicode_ident" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/unicode-ident-1.0.12" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/unicode-ident-1.0.12/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/unicode-ident-1.0.12" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/unicode-ident-1.0.12/Cargo.toml" \
         CARGO_PKG_AUTHORS="David Tolnay <dtolnay@gmail.com>" \
         CARGO_PKG_DESCRIPTION="Determine whether characters have the XID_Start or XID_Continue properties according to Unicode Standard Annex #31" \
         CARGO_PKG_HOMEPAGE= \
@@ -254,7 +254,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'unicode_ident' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=2f113e6ba7735965' '-C' 'extra-filename=-a6900a9b5655f4c8' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/unicode-ident-1.0.12/src/lib.rs \
+      rustc '--crate-name' 'unicode_ident' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=2f113e6ba7735965' '-C' 'extra-filename=-a6900a9b5655f4c8' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/unicode-ident-1.0.12/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-a6900a9b5655f4c8
@@ -274,14 +274,14 @@ FROM rust-base AS dep-l-proc-macro2-1.0.83-b2cfc86673b59c9a
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-proc-macro2-1.0.83,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.83 \
+  --mount=from=cratesio-proc-macro2-1.0.83,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.83 \
   --mount=from=crate_out-abae50358d391f2b,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/build/proc-macro2-abae50358d391f2b/out \
   --mount=from=out-a6900a9b5655f4c8,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libunicode_ident-a6900a9b5655f4c8.rmeta,source=/libunicode_ident-a6900a9b5655f4c8.rmeta \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="proc_macro2" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.83" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.83/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.83" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.83/Cargo.toml" \
         CARGO_PKG_AUTHORS="David Tolnay <dtolnay@gmail.com>:Alex Crichton <alex@alexcrichton.com>" \
         CARGO_PKG_DESCRIPTION="A substitute implementation of the compiler's `proc_macro` API to decouple token-based libraries from the procedural macro use case." \
         CARGO_PKG_HOMEPAGE= \
@@ -299,7 +299,7 @@ RUN \
         OUT_DIR="/tmp/clis-hickory-dns_0-25-0-alpha-1/release/build/proc-macro2-abae50358d391f2b/out" \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'proc_macro2' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--cfg' 'feature="default"' '--cfg' 'feature="proc-macro"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "nightly", "proc-macro", "span-locations"))' '-C' 'metadata=46b25729ea81604e' '-C' 'extra-filename=-b2cfc86673b59c9a' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'unicode_ident=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libunicode_ident-a6900a9b5655f4c8.rmeta' '--cap-lints' 'warn' '--cfg' 'wrap_proc_macro' '--check-cfg' 'cfg(fuzzing)' '--check-cfg' 'cfg(no_is_available)' '--check-cfg' 'cfg(no_literal_byte_character)' '--check-cfg' 'cfg(no_literal_c_string)' '--check-cfg' 'cfg(no_source_text)' '--check-cfg' 'cfg(proc_macro_span)' '--check-cfg' 'cfg(procmacro2_backtrace)' '--check-cfg' 'cfg(procmacro2_nightly_testing)' '--check-cfg' 'cfg(procmacro2_semver_exempt)' '--check-cfg' 'cfg(randomize_layout)' '--check-cfg' 'cfg(span_locations)' '--check-cfg' 'cfg(super_unstable)' '--check-cfg' 'cfg(wrap_proc_macro)' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.83/src/lib.rs \
+      rustc '--crate-name' 'proc_macro2' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--cfg' 'feature="default"' '--cfg' 'feature="proc-macro"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "nightly", "proc-macro", "span-locations"))' '-C' 'metadata=46b25729ea81604e' '-C' 'extra-filename=-b2cfc86673b59c9a' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'unicode_ident=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libunicode_ident-a6900a9b5655f4c8.rmeta' '--cap-lints' 'warn' '--cfg' 'wrap_proc_macro' '--check-cfg' 'cfg(fuzzing)' '--check-cfg' 'cfg(no_is_available)' '--check-cfg' 'cfg(no_literal_byte_character)' '--check-cfg' 'cfg(no_literal_c_string)' '--check-cfg' 'cfg(no_source_text)' '--check-cfg' 'cfg(proc_macro_span)' '--check-cfg' 'cfg(procmacro2_backtrace)' '--check-cfg' 'cfg(procmacro2_nightly_testing)' '--check-cfg' 'cfg(procmacro2_semver_exempt)' '--check-cfg' 'cfg(randomize_layout)' '--check-cfg' 'cfg(span_locations)' '--check-cfg' 'cfg(super_unstable)' '--check-cfg' 'cfg(wrap_proc_macro)' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.83/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-b2cfc86673b59c9a
@@ -319,14 +319,14 @@ FROM rust-base AS dep-l-quote-1.0.36-180f3b4ac22a8d2e
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-quote-1.0.36,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.36 \
+  --mount=from=cratesio-quote-1.0.36,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.36 \
   --mount=from=out-b2cfc86673b59c9a,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libproc_macro2-b2cfc86673b59c9a.rmeta,source=/libproc_macro2-b2cfc86673b59c9a.rmeta \
   --mount=from=out-a6900a9b5655f4c8,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libunicode_ident-a6900a9b5655f4c8.rmeta,source=/libunicode_ident-a6900a9b5655f4c8.rmeta \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="quote" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.36" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.36/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.36" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.36/Cargo.toml" \
         CARGO_PKG_AUTHORS="David Tolnay <dtolnay@gmail.com>" \
         CARGO_PKG_DESCRIPTION="Quasi-quoting macro quote!(...)" \
         CARGO_PKG_HOMEPAGE= \
@@ -343,7 +343,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'quote' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--cfg' 'feature="default"' '--cfg' 'feature="proc-macro"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "proc-macro"))' '-C' 'metadata=2e4ee4db2e956cca' '-C' 'extra-filename=-180f3b4ac22a8d2e' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'proc_macro2=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libproc_macro2-b2cfc86673b59c9a.rmeta' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.36/src/lib.rs \
+      rustc '--crate-name' 'quote' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--cfg' 'feature="default"' '--cfg' 'feature="proc-macro"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "proc-macro"))' '-C' 'metadata=2e4ee4db2e956cca' '-C' 'extra-filename=-180f3b4ac22a8d2e' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'proc_macro2=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libproc_macro2-b2cfc86673b59c9a.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.36/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-180f3b4ac22a8d2e
@@ -363,15 +363,15 @@ FROM rust-base AS dep-l-syn-2.0.65-812a3cc55dd704a3
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-syn-2.0.65,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/syn-2.0.65 \
+  --mount=from=cratesio-syn-2.0.65,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/syn-2.0.65 \
   --mount=from=out-b2cfc86673b59c9a,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libproc_macro2-b2cfc86673b59c9a.rmeta,source=/libproc_macro2-b2cfc86673b59c9a.rmeta \
   --mount=from=out-180f3b4ac22a8d2e,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libquote-180f3b4ac22a8d2e.rmeta,source=/libquote-180f3b4ac22a8d2e.rmeta \
   --mount=from=out-a6900a9b5655f4c8,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libunicode_ident-a6900a9b5655f4c8.rmeta,source=/libunicode_ident-a6900a9b5655f4c8.rmeta \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="syn" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/syn-2.0.65" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/syn-2.0.65/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/syn-2.0.65" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/syn-2.0.65/Cargo.toml" \
         CARGO_PKG_AUTHORS="David Tolnay <dtolnay@gmail.com>" \
         CARGO_PKG_DESCRIPTION="Parser for Rust source code" \
         CARGO_PKG_HOMEPAGE= \
@@ -388,7 +388,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'syn' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--cfg' 'feature="clone-impls"' '--cfg' 'feature="default"' '--cfg' 'feature="derive"' '--cfg' 'feature="extra-traits"' '--cfg' 'feature="full"' '--cfg' 'feature="parsing"' '--cfg' 'feature="printing"' '--cfg' 'feature="proc-macro"' '--cfg' 'feature="visit-mut"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("clone-impls", "default", "derive", "extra-traits", "fold", "full", "parsing", "printing", "proc-macro", "test", "visit", "visit-mut"))' '-C' 'metadata=eb5a4aecc24e4b58' '-C' 'extra-filename=-812a3cc55dd704a3' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'proc_macro2=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libproc_macro2-b2cfc86673b59c9a.rmeta' '--extern' 'quote=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libquote-180f3b4ac22a8d2e.rmeta' '--extern' 'unicode_ident=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libunicode_ident-a6900a9b5655f4c8.rmeta' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/syn-2.0.65/src/lib.rs \
+      rustc '--crate-name' 'syn' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--cfg' 'feature="clone-impls"' '--cfg' 'feature="default"' '--cfg' 'feature="derive"' '--cfg' 'feature="extra-traits"' '--cfg' 'feature="full"' '--cfg' 'feature="parsing"' '--cfg' 'feature="printing"' '--cfg' 'feature="proc-macro"' '--cfg' 'feature="visit-mut"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("clone-impls", "default", "derive", "extra-traits", "fold", "full", "parsing", "printing", "proc-macro", "test", "visit", "visit-mut"))' '-C' 'metadata=eb5a4aecc24e4b58' '-C' 'extra-filename=-812a3cc55dd704a3' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'proc_macro2=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libproc_macro2-b2cfc86673b59c9a.rmeta' '--extern' 'quote=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libquote-180f3b4ac22a8d2e.rmeta' '--extern' 'unicode_ident=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libunicode_ident-a6900a9b5655f4c8.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/syn-2.0.65/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-812a3cc55dd704a3
@@ -408,7 +408,7 @@ FROM rust-base AS dep-p-async-recursion-1.1.1-9dd3aead262695aa
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-async-recursion-1.1.1,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/async-recursion-1.1.1 \
+  --mount=from=cratesio-async-recursion-1.1.1,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/async-recursion-1.1.1 \
   --mount=from=out-b2cfc86673b59c9a,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libproc_macro2-b2cfc86673b59c9a.rlib,source=/libproc_macro2-b2cfc86673b59c9a.rlib \
   --mount=from=out-180f3b4ac22a8d2e,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libquote-180f3b4ac22a8d2e.rlib,source=/libquote-180f3b4ac22a8d2e.rlib \
   --mount=from=out-812a3cc55dd704a3,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libsyn-812a3cc55dd704a3.rlib,source=/libsyn-812a3cc55dd704a3.rlib \
@@ -416,8 +416,8 @@ RUN \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="async_recursion" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/async-recursion-1.1.1" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/async-recursion-1.1.1/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/async-recursion-1.1.1" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/async-recursion-1.1.1/Cargo.toml" \
         CARGO_PKG_AUTHORS="Robert Usher <266585+dcchut@users.noreply.github.com>" \
         CARGO_PKG_DESCRIPTION="Recursion for async functions" \
         CARGO_PKG_HOMEPAGE= \
@@ -434,7 +434,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'async_recursion' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'proc-macro' '--emit' 'dep-info,link' '-C' 'prefer-dynamic' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=3363ea3bb37413be' '-C' 'extra-filename=-9dd3aead262695aa' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'proc_macro2=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libproc_macro2-b2cfc86673b59c9a.rlib' '--extern' 'quote=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libquote-180f3b4ac22a8d2e.rlib' '--extern' 'syn=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libsyn-812a3cc55dd704a3.rlib' '--extern' 'proc_macro' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/async-recursion-1.1.1/src/lib.rs \
+      rustc '--crate-name' 'async_recursion' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'proc-macro' '--emit' 'dep-info,link' '-C' 'prefer-dynamic' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=3363ea3bb37413be' '-C' 'extra-filename=-9dd3aead262695aa' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'proc_macro2=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libproc_macro2-b2cfc86673b59c9a.rlib' '--extern' 'quote=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libquote-180f3b4ac22a8d2e.rlib' '--extern' 'syn=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libsyn-812a3cc55dd704a3.rlib' '--extern' 'proc_macro' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/async-recursion-1.1.1/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-9dd3aead262695aa
@@ -454,7 +454,7 @@ FROM rust-base AS dep-p-async-trait-0.1.80-688e1090a6b8baa3
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-async-trait-0.1.80,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/async-trait-0.1.80 \
+  --mount=from=cratesio-async-trait-0.1.80,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/async-trait-0.1.80 \
   --mount=from=out-b2cfc86673b59c9a,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libproc_macro2-b2cfc86673b59c9a.rlib,source=/libproc_macro2-b2cfc86673b59c9a.rlib \
   --mount=from=out-180f3b4ac22a8d2e,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libquote-180f3b4ac22a8d2e.rlib,source=/libquote-180f3b4ac22a8d2e.rlib \
   --mount=from=out-812a3cc55dd704a3,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libsyn-812a3cc55dd704a3.rlib,source=/libsyn-812a3cc55dd704a3.rlib \
@@ -462,8 +462,8 @@ RUN \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="async_trait" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/async-trait-0.1.80" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/async-trait-0.1.80/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/async-trait-0.1.80" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/async-trait-0.1.80/Cargo.toml" \
         CARGO_PKG_AUTHORS="David Tolnay <dtolnay@gmail.com>" \
         CARGO_PKG_DESCRIPTION="Type erasure for async trait methods" \
         CARGO_PKG_HOMEPAGE= \
@@ -480,7 +480,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'async_trait' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'proc-macro' '--emit' 'dep-info,link' '-C' 'prefer-dynamic' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=3af36e8ff8fc4d4a' '-C' 'extra-filename=-688e1090a6b8baa3' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'proc_macro2=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libproc_macro2-b2cfc86673b59c9a.rlib' '--extern' 'quote=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libquote-180f3b4ac22a8d2e.rlib' '--extern' 'syn=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libsyn-812a3cc55dd704a3.rlib' '--extern' 'proc_macro' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/async-trait-0.1.80/src/lib.rs \
+      rustc '--crate-name' 'async_trait' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'proc-macro' '--emit' 'dep-info,link' '-C' 'prefer-dynamic' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=3af36e8ff8fc4d4a' '-C' 'extra-filename=-688e1090a6b8baa3' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'proc_macro2=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libproc_macro2-b2cfc86673b59c9a.rlib' '--extern' 'quote=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libquote-180f3b4ac22a8d2e.rlib' '--extern' 'syn=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libsyn-812a3cc55dd704a3.rlib' '--extern' 'proc_macro' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/async-trait-0.1.80/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-688e1090a6b8baa3
@@ -500,12 +500,12 @@ FROM rust-base AS dep-l-base64-0.21.7-fc73ddee32601478
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-base64-0.21.7,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/base64-0.21.7 \
+  --mount=from=cratesio-base64-0.21.7,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/base64-0.21.7 \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="base64" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/base64-0.21.7" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/base64-0.21.7/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/base64-0.21.7" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/base64-0.21.7/Cargo.toml" \
         CARGO_PKG_AUTHORS="Alice Maz <alice@alicemaz.com>:Marshall Pierce <marshall@mpierce.org>" \
         CARGO_PKG_DESCRIPTION="encodes and decodes base64 as bytes or utf8" \
         CARGO_PKG_HOMEPAGE= \
@@ -522,7 +522,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'base64' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="alloc"' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "default", "std"))' '-C' 'metadata=f4de7b3da49dcbc4' '-C' 'extra-filename=-fc73ddee32601478' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/base64-0.21.7/src/lib.rs \
+      rustc '--crate-name' 'base64' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="alloc"' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "default", "std"))' '-C' 'metadata=f4de7b3da49dcbc4' '-C' 'extra-filename=-fc73ddee32601478' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/base64-0.21.7/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-fc73ddee32601478
@@ -542,7 +542,7 @@ FROM rust-base AS dep-p-serde_derive-1.0.202-8b18b537bd120f63
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-serde_derive-1.0.202,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/serde_derive-1.0.202 \
+  --mount=from=cratesio-serde_derive-1.0.202,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_derive-1.0.202 \
   --mount=from=out-b2cfc86673b59c9a,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libproc_macro2-b2cfc86673b59c9a.rlib,source=/libproc_macro2-b2cfc86673b59c9a.rlib \
   --mount=from=out-180f3b4ac22a8d2e,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libquote-180f3b4ac22a8d2e.rlib,source=/libquote-180f3b4ac22a8d2e.rlib \
   --mount=from=out-812a3cc55dd704a3,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libsyn-812a3cc55dd704a3.rlib,source=/libsyn-812a3cc55dd704a3.rlib \
@@ -550,8 +550,8 @@ RUN \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="serde_derive" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/serde_derive-1.0.202" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/serde_derive-1.0.202/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_derive-1.0.202" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_derive-1.0.202/Cargo.toml" \
         CARGO_PKG_AUTHORS="Erick Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>" \
         CARGO_PKG_DESCRIPTION="Macros 1.1 implementation of #[derive(Serialize, Deserialize)]" \
         CARGO_PKG_HOMEPAGE="https://serde.rs" \
@@ -568,7 +568,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'serde_derive' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'proc-macro' '--emit' 'dep-info,link' '-C' 'prefer-dynamic' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--cfg' 'feature="default"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "deserialize_in_place"))' '-C' 'metadata=1fed5465a70967d7' '-C' 'extra-filename=-8b18b537bd120f63' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'proc_macro2=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libproc_macro2-b2cfc86673b59c9a.rlib' '--extern' 'quote=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libquote-180f3b4ac22a8d2e.rlib' '--extern' 'syn=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libsyn-812a3cc55dd704a3.rlib' '--extern' 'proc_macro' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/serde_derive-1.0.202/src/lib.rs \
+      rustc '--crate-name' 'serde_derive' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'proc-macro' '--emit' 'dep-info,link' '-C' 'prefer-dynamic' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--cfg' 'feature="default"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "deserialize_in_place"))' '-C' 'metadata=1fed5465a70967d7' '-C' 'extra-filename=-8b18b537bd120f63' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'proc_macro2=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libproc_macro2-b2cfc86673b59c9a.rlib' '--extern' 'quote=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libquote-180f3b4ac22a8d2e.rlib' '--extern' 'syn=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libsyn-812a3cc55dd704a3.rlib' '--extern' 'proc_macro' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_derive-1.0.202/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-8b18b537bd120f63
@@ -588,7 +588,7 @@ FROM rust-base AS dep-l-serde-1.0.202-ceabefec0a6d61ca
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-serde-1.0.202,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.202 \
+  --mount=from=cratesio-serde-1.0.202,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.202 \
   --mount=from=out-b2cfc86673b59c9a,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libproc_macro2-b2cfc86673b59c9a.rmeta,source=/libproc_macro2-b2cfc86673b59c9a.rmeta \
   --mount=from=out-180f3b4ac22a8d2e,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libquote-180f3b4ac22a8d2e.rmeta,source=/libquote-180f3b4ac22a8d2e.rmeta \
   --mount=from=out-8b18b537bd120f63,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libserde_derive-8b18b537bd120f63.so,source=/libserde_derive-8b18b537bd120f63.so \
@@ -597,8 +597,8 @@ RUN \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="serde" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.202" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.202/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.202" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.202/Cargo.toml" \
         CARGO_PKG_AUTHORS="Erick Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>" \
         CARGO_PKG_DESCRIPTION="A generic serialization/deserialization framework" \
         CARGO_PKG_HOMEPAGE="https://serde.rs" \
@@ -616,7 +616,7 @@ RUN \
         OUT_DIR="/tmp/clis-hickory-dns_0-25-0-alpha-1/release/build/serde-14349c23c9aec4e1/out" \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'serde' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="default"' '--cfg' 'feature="derive"' '--cfg' 'feature="serde_derive"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "default", "derive", "rc", "serde_derive", "std", "unstable"))' '-C' 'metadata=22185f7a1bb52818' '-C' 'extra-filename=-ceabefec0a6d61ca' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'serde_derive=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libserde_derive-8b18b537bd120f63.so' '--cap-lints' 'warn' '--check-cfg' 'cfg(doc_cfg)' '--check-cfg' 'cfg(no_core_cstr)' '--check-cfg' 'cfg(no_core_num_saturating)' '--check-cfg' 'cfg(no_core_try_from)' '--check-cfg' 'cfg(no_float_copysign)' '--check-cfg' 'cfg(no_num_nonzero_signed)' '--check-cfg' 'cfg(no_relaxed_trait_bounds)' '--check-cfg' 'cfg(no_serde_derive)' '--check-cfg' 'cfg(no_std_atomic)' '--check-cfg' 'cfg(no_std_atomic64)' '--check-cfg' 'cfg(no_systemtime_checked_add)' '--check-cfg' 'cfg(no_target_has_atomic)' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.202/src/lib.rs \
+      rustc '--crate-name' 'serde' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="default"' '--cfg' 'feature="derive"' '--cfg' 'feature="serde_derive"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "default", "derive", "rc", "serde_derive", "std", "unstable"))' '-C' 'metadata=22185f7a1bb52818' '-C' 'extra-filename=-ceabefec0a6d61ca' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'serde_derive=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libserde_derive-8b18b537bd120f63.so' '--cap-lints' 'warn' '--check-cfg' 'cfg(doc_cfg)' '--check-cfg' 'cfg(no_core_cstr)' '--check-cfg' 'cfg(no_core_num_saturating)' '--check-cfg' 'cfg(no_core_try_from)' '--check-cfg' 'cfg(no_float_copysign)' '--check-cfg' 'cfg(no_num_nonzero_signed)' '--check-cfg' 'cfg(no_relaxed_trait_bounds)' '--check-cfg' 'cfg(no_serde_derive)' '--check-cfg' 'cfg(no_std_atomic)' '--check-cfg' 'cfg(no_std_atomic64)' '--check-cfg' 'cfg(no_systemtime_checked_add)' '--check-cfg' 'cfg(no_target_has_atomic)' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.202/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-ceabefec0a6d61ca
@@ -636,7 +636,7 @@ FROM rust-base AS dep-l-basic-toml-0.1.9-08a1118f9cca92d8
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-basic-toml-0.1.9,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/basic-toml-0.1.9 \
+  --mount=from=cratesio-basic-toml-0.1.9,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/basic-toml-0.1.9 \
   --mount=from=out-b2cfc86673b59c9a,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libproc_macro2-b2cfc86673b59c9a.rmeta,source=/libproc_macro2-b2cfc86673b59c9a.rmeta \
   --mount=from=out-180f3b4ac22a8d2e,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libquote-180f3b4ac22a8d2e.rmeta,source=/libquote-180f3b4ac22a8d2e.rmeta \
   --mount=from=out-ceabefec0a6d61ca,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libserde-ceabefec0a6d61ca.rmeta,source=/libserde-ceabefec0a6d61ca.rmeta \
@@ -646,8 +646,8 @@ RUN \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="basic_toml" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/basic-toml-0.1.9" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/basic-toml-0.1.9/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/basic-toml-0.1.9" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/basic-toml-0.1.9/Cargo.toml" \
         CARGO_PKG_AUTHORS="Alex Crichton <alex@alexcrichton.com>:David Tolnay <dtolnay@gmail.com>" \
         CARGO_PKG_DESCRIPTION="Minimal TOML library with few dependencies" \
         CARGO_PKG_HOMEPAGE= \
@@ -664,7 +664,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'basic_toml' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=e9537ad94e84af2c' '-C' 'extra-filename=-08a1118f9cca92d8' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'serde=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libserde-ceabefec0a6d61ca.rmeta' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/basic-toml-0.1.9/src/lib.rs \
+      rustc '--crate-name' 'basic_toml' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=e9537ad94e84af2c' '-C' 'extra-filename=-08a1118f9cca92d8' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'serde=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libserde-ceabefec0a6d61ca.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/basic-toml-0.1.9/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-08a1118f9cca92d8
@@ -684,12 +684,12 @@ FROM rust-base AS dep-l-bitflags-2.5.0-17a5f5c99a2a99e3
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-bitflags-2.5.0,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/bitflags-2.5.0 \
+  --mount=from=cratesio-bitflags-2.5.0,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bitflags-2.5.0 \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="bitflags" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/bitflags-2.5.0" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/bitflags-2.5.0/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bitflags-2.5.0" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bitflags-2.5.0/Cargo.toml" \
         CARGO_PKG_AUTHORS="The Rust Project Developers" \
         CARGO_PKG_DESCRIPTION="A macro to generate structures which behave like bitflags.\n" \
         CARGO_PKG_HOMEPAGE="https://github.com/bitflags/bitflags" \
@@ -706,7 +706,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'bitflags' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("arbitrary", "bytemuck", "compiler_builtins", "core", "example_generated", "rustc-dep-of-std", "serde", "std"))' '-C' 'metadata=a121413ae0058fa0' '-C' 'extra-filename=-17a5f5c99a2a99e3' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/bitflags-2.5.0/src/lib.rs \
+      rustc '--crate-name' 'bitflags' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("arbitrary", "bytemuck", "compiler_builtins", "core", "example_generated", "rustc-dep-of-std", "serde", "std"))' '-C' 'metadata=a121413ae0058fa0' '-C' 'extra-filename=-17a5f5c99a2a99e3' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bitflags-2.5.0/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-17a5f5c99a2a99e3
@@ -726,12 +726,12 @@ FROM rust-base AS dep-l-bytes-1.6.0-50244e9691b9a94b
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-bytes-1.6.0,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/bytes-1.6.0 \
+  --mount=from=cratesio-bytes-1.6.0,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bytes-1.6.0 \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="bytes" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/bytes-1.6.0" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/bytes-1.6.0/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bytes-1.6.0" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bytes-1.6.0/Cargo.toml" \
         CARGO_PKG_AUTHORS="Carl Lerche <me@carllerche.com>:Sean McArthur <sean@seanmonstar.com>" \
         CARGO_PKG_DESCRIPTION="Types and traits for working with bytes" \
         CARGO_PKG_HOMEPAGE= \
@@ -748,7 +748,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'bytes' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "serde", "std"))' '-C' 'metadata=eefdb7d6e7fd0e6f' '-C' 'extra-filename=-50244e9691b9a94b' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/bytes-1.6.0/src/lib.rs \
+      rustc '--crate-name' 'bytes' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "serde", "std"))' '-C' 'metadata=eefdb7d6e7fd0e6f' '-C' 'extra-filename=-50244e9691b9a94b' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bytes-1.6.0/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-50244e9691b9a94b
@@ -768,12 +768,12 @@ FROM rust-base AS dep-l-clap_lex-0.5.0-c13afce077d893db
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-clap_lex-0.5.0,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/clap_lex-0.5.0 \
+  --mount=from=cratesio-clap_lex-0.5.0,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/clap_lex-0.5.0 \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="clap_lex" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/clap_lex-0.5.0" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/clap_lex-0.5.0/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/clap_lex-0.5.0" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/clap_lex-0.5.0/Cargo.toml" \
         CARGO_PKG_AUTHORS= \
         CARGO_PKG_DESCRIPTION="Minimal, flexible command line parser" \
         CARGO_PKG_HOMEPAGE= \
@@ -790,7 +790,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'clap_lex' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=187c34bf2fbaff1b' '-C' 'extra-filename=-c13afce077d893db' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/clap_lex-0.5.0/src/lib.rs \
+      rustc '--crate-name' 'clap_lex' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=187c34bf2fbaff1b' '-C' 'extra-filename=-c13afce077d893db' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/clap_lex-0.5.0/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-c13afce077d893db
@@ -810,12 +810,12 @@ FROM rust-base AS dep-l-strsim-0.10.0-6185e9224c6e4564
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-strsim-0.10.0,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/strsim-0.10.0 \
+  --mount=from=cratesio-strsim-0.10.0,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/strsim-0.10.0 \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="strsim" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/strsim-0.10.0" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/strsim-0.10.0/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/strsim-0.10.0" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/strsim-0.10.0/Cargo.toml" \
         CARGO_PKG_AUTHORS="Danny Guo <danny@dannyguo.com>" \
         CARGO_PKG_DESCRIPTION="Implementations of string similarity metrics. Includes Hamming, Levenshtein,\nOSA, Damerau-Levenshtein, Jaro, Jaro-Winkler, and Sørensen-Dice.\n" \
         CARGO_PKG_HOMEPAGE="https://github.com/dguo/strsim-rs" \
@@ -832,7 +832,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'strsim' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=893a2fde8ffd8f95' '-C' 'extra-filename=-6185e9224c6e4564' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/strsim-0.10.0/src/lib.rs \
+      rustc '--crate-name' 'strsim' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=893a2fde8ffd8f95' '-C' 'extra-filename=-6185e9224c6e4564' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/strsim-0.10.0/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-6185e9224c6e4564
@@ -852,7 +852,7 @@ FROM rust-base AS dep-l-clap_builder-4.3.24-688ee797b0779736
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-clap_builder-4.3.24,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/clap_builder-4.3.24 \
+  --mount=from=cratesio-clap_builder-4.3.24,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/clap_builder-4.3.24 \
   --mount=from=out-a9f390b87e907aa5,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libanstyle-a9f390b87e907aa5.rmeta,source=/libanstyle-a9f390b87e907aa5.rmeta \
   --mount=from=out-c13afce077d893db,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libclap_lex-c13afce077d893db.rmeta,source=/libclap_lex-c13afce077d893db.rmeta \
   --mount=from=out-330cfb3cbb7b43f5,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libonce_cell-330cfb3cbb7b43f5.rmeta,source=/libonce_cell-330cfb3cbb7b43f5.rmeta \
@@ -860,8 +860,8 @@ RUN \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="clap_builder" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/clap_builder-4.3.24" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/clap_builder-4.3.24/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/clap_builder-4.3.24" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/clap_builder-4.3.24/Cargo.toml" \
         CARGO_PKG_AUTHORS= \
         CARGO_PKG_DESCRIPTION="A simple to use, efficient, and full-featured Command Line Argument Parser" \
         CARGO_PKG_HOMEPAGE= \
@@ -878,7 +878,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'clap_builder' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="cargo"' '--cfg' 'feature="error-context"' '--cfg' 'feature="help"' '--cfg' 'feature="std"' '--cfg' 'feature="suggestions"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("cargo", "color", "debug", "default", "deprecated", "env", "error-context", "help", "std", "string", "suggestions", "unicode", "unstable-doc", "unstable-styles", "unstable-v5", "usage", "wrap_help"))' '-C' 'metadata=d1e4889a567ac813' '-C' 'extra-filename=-688ee797b0779736' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'anstyle=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libanstyle-a9f390b87e907aa5.rmeta' '--extern' 'clap_lex=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libclap_lex-c13afce077d893db.rmeta' '--extern' 'once_cell=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libonce_cell-330cfb3cbb7b43f5.rmeta' '--extern' 'strsim=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libstrsim-6185e9224c6e4564.rmeta' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/clap_builder-4.3.24/src/lib.rs \
+      rustc '--crate-name' 'clap_builder' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="cargo"' '--cfg' 'feature="error-context"' '--cfg' 'feature="help"' '--cfg' 'feature="std"' '--cfg' 'feature="suggestions"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("cargo", "color", "debug", "default", "deprecated", "env", "error-context", "help", "std", "string", "suggestions", "unicode", "unstable-doc", "unstable-styles", "unstable-v5", "usage", "wrap_help"))' '-C' 'metadata=d1e4889a567ac813' '-C' 'extra-filename=-688ee797b0779736' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'anstyle=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libanstyle-a9f390b87e907aa5.rmeta' '--extern' 'clap_lex=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libclap_lex-c13afce077d893db.rmeta' '--extern' 'once_cell=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libonce_cell-330cfb3cbb7b43f5.rmeta' '--extern' 'strsim=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libstrsim-6185e9224c6e4564.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/clap_builder-4.3.24/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-688ee797b0779736
@@ -898,12 +898,12 @@ FROM rust-base AS dep-l-heck-0.4.1-ad5bbef1a9433eaf
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-heck-0.4.1,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/heck-0.4.1 \
+  --mount=from=cratesio-heck-0.4.1,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/heck-0.4.1 \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="heck" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/heck-0.4.1" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/heck-0.4.1/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/heck-0.4.1" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/heck-0.4.1/Cargo.toml" \
         CARGO_PKG_AUTHORS="Without Boats <woboats@gmail.com>" \
         CARGO_PKG_DESCRIPTION="heck is a case conversion library." \
         CARGO_PKG_HOMEPAGE="https://github.com/withoutboats/heck" \
@@ -920,7 +920,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'heck' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--cfg' 'feature="default"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "unicode", "unicode-segmentation"))' '-C' 'metadata=a7eceebcc0d13c4d' '-C' 'extra-filename=-ad5bbef1a9433eaf' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/heck-0.4.1/src/lib.rs \
+      rustc '--crate-name' 'heck' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--cfg' 'feature="default"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "unicode", "unicode-segmentation"))' '-C' 'metadata=a7eceebcc0d13c4d' '-C' 'extra-filename=-ad5bbef1a9433eaf' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/heck-0.4.1/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-ad5bbef1a9433eaf
@@ -940,7 +940,7 @@ FROM rust-base AS dep-p-clap_derive-4.3.12-d417cb773b861202
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-clap_derive-4.3.12,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/clap_derive-4.3.12 \
+  --mount=from=cratesio-clap_derive-4.3.12,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/clap_derive-4.3.12 \
   --mount=from=out-ad5bbef1a9433eaf,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libheck-ad5bbef1a9433eaf.rlib,source=/libheck-ad5bbef1a9433eaf.rlib \
   --mount=from=out-b2cfc86673b59c9a,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libproc_macro2-b2cfc86673b59c9a.rlib,source=/libproc_macro2-b2cfc86673b59c9a.rlib \
   --mount=from=out-180f3b4ac22a8d2e,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libquote-180f3b4ac22a8d2e.rlib,source=/libquote-180f3b4ac22a8d2e.rlib \
@@ -949,8 +949,8 @@ RUN \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="clap_derive" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/clap_derive-4.3.12" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/clap_derive-4.3.12/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/clap_derive-4.3.12" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/clap_derive-4.3.12/Cargo.toml" \
         CARGO_PKG_AUTHORS= \
         CARGO_PKG_DESCRIPTION="Parse command line argument by defining a struct, derive crate." \
         CARGO_PKG_HOMEPAGE= \
@@ -967,7 +967,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'clap_derive' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'proc-macro' '--emit' 'dep-info,link' '-C' 'prefer-dynamic' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--cfg' 'feature="default"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("debug", "default", "deprecated", "raw-deprecated", "unstable-v5"))' '-C' 'metadata=134da800f27271e2' '-C' 'extra-filename=-d417cb773b861202' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'heck=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libheck-ad5bbef1a9433eaf.rlib' '--extern' 'proc_macro2=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libproc_macro2-b2cfc86673b59c9a.rlib' '--extern' 'quote=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libquote-180f3b4ac22a8d2e.rlib' '--extern' 'syn=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libsyn-812a3cc55dd704a3.rlib' '--extern' 'proc_macro' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/clap_derive-4.3.12/src/lib.rs \
+      rustc '--crate-name' 'clap_derive' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'proc-macro' '--emit' 'dep-info,link' '-C' 'prefer-dynamic' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--cfg' 'feature="default"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("debug", "default", "deprecated", "raw-deprecated", "unstable-v5"))' '-C' 'metadata=134da800f27271e2' '-C' 'extra-filename=-d417cb773b861202' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'heck=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libheck-ad5bbef1a9433eaf.rlib' '--extern' 'proc_macro2=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libproc_macro2-b2cfc86673b59c9a.rlib' '--extern' 'quote=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libquote-180f3b4ac22a8d2e.rlib' '--extern' 'syn=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libsyn-812a3cc55dd704a3.rlib' '--extern' 'proc_macro' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/clap_derive-4.3.12/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-d417cb773b861202
@@ -987,7 +987,7 @@ FROM rust-base AS dep-l-clap-4.3.24-c6fee47f216942ba
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-clap-4.3.24,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/clap-4.3.24 \
+  --mount=from=cratesio-clap-4.3.24,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/clap-4.3.24 \
   --mount=from=out-a9f390b87e907aa5,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libanstyle-a9f390b87e907aa5.rmeta,source=/libanstyle-a9f390b87e907aa5.rmeta \
   --mount=from=out-688ee797b0779736,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libclap_builder-688ee797b0779736.rmeta,source=/libclap_builder-688ee797b0779736.rmeta \
   --mount=from=out-d417cb773b861202,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libclap_derive-d417cb773b861202.so,source=/libclap_derive-d417cb773b861202.so \
@@ -1002,8 +1002,8 @@ RUN \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="clap" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/clap-4.3.24" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/clap-4.3.24/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/clap-4.3.24" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/clap-4.3.24/Cargo.toml" \
         CARGO_PKG_AUTHORS= \
         CARGO_PKG_DESCRIPTION="A simple to use, efficient, and full-featured Command Line Argument Parser" \
         CARGO_PKG_HOMEPAGE= \
@@ -1020,7 +1020,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'clap' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="cargo"' '--cfg' 'feature="derive"' '--cfg' 'feature="help"' '--cfg' 'feature="std"' '--cfg' 'feature="suggestions"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("cargo", "color", "debug", "default", "deprecated", "derive", "env", "error-context", "help", "std", "string", "suggestions", "unicode", "unstable-doc", "unstable-styles", "unstable-v5", "usage", "wrap_help"))' '-C' 'metadata=536d9ffaa220f5be' '-C' 'extra-filename=-c6fee47f216942ba' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'clap_builder=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libclap_builder-688ee797b0779736.rmeta' '--extern' 'clap_derive=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libclap_derive-d417cb773b861202.so' '--extern' 'once_cell=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libonce_cell-330cfb3cbb7b43f5.rmeta' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/clap-4.3.24/src/lib.rs \
+      rustc '--crate-name' 'clap' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="cargo"' '--cfg' 'feature="derive"' '--cfg' 'feature="help"' '--cfg' 'feature="std"' '--cfg' 'feature="suggestions"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("cargo", "color", "debug", "default", "deprecated", "derive", "env", "error-context", "help", "std", "string", "suggestions", "unicode", "unstable-doc", "unstable-styles", "unstable-v5", "usage", "wrap_help"))' '-C' 'metadata=536d9ffaa220f5be' '-C' 'extra-filename=-c6fee47f216942ba' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'clap_builder=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libclap_builder-688ee797b0779736.rmeta' '--extern' 'clap_derive=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libclap_derive-d417cb773b861202.so' '--extern' 'once_cell=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libonce_cell-330cfb3cbb7b43f5.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/clap-4.3.24/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-c6fee47f216942ba
@@ -1040,12 +1040,12 @@ FROM rust-base AS dep-l-data-encoding-2.6.0-cd548921ca92e99b
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-data-encoding-2.6.0,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/data-encoding-2.6.0 \
+  --mount=from=cratesio-data-encoding-2.6.0,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/data-encoding-2.6.0 \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="data_encoding" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/data-encoding-2.6.0" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/data-encoding-2.6.0/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/data-encoding-2.6.0" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/data-encoding-2.6.0/Cargo.toml" \
         CARGO_PKG_AUTHORS="Julien Cretin <git@ia0.eu>" \
         CARGO_PKG_DESCRIPTION="Efficient and customizable data-encoding functions like base64, base32, and hex" \
         CARGO_PKG_HOMEPAGE= \
@@ -1062,7 +1062,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'data_encoding' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="alloc"' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "default", "std"))' '-C' 'metadata=3b0f5db6368309b7' '-C' 'extra-filename=-cd548921ca92e99b' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/data-encoding-2.6.0/src/lib.rs \
+      rustc '--crate-name' 'data_encoding' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="alloc"' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "default", "std"))' '-C' 'metadata=3b0f5db6368309b7' '-C' 'extra-filename=-cd548921ca92e99b' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/data-encoding-2.6.0/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-cd548921ca92e99b
@@ -1082,12 +1082,12 @@ FROM rust-base AS dep-l-powerfmt-0.2.0-c99dbe05b4a41ed4
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-powerfmt-0.2.0,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/powerfmt-0.2.0 \
+  --mount=from=cratesio-powerfmt-0.2.0,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/powerfmt-0.2.0 \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="powerfmt" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/powerfmt-0.2.0" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/powerfmt-0.2.0/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/powerfmt-0.2.0" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/powerfmt-0.2.0/Cargo.toml" \
         CARGO_PKG_AUTHORS="Jacob Pratt <jacob@jhpratt.dev>" \
         CARGO_PKG_DESCRIPTION="    `powerfmt` is a library that provides utilities for formatting values. This crate makes it\n    significantly easier to support filling to a minimum width with alignment, avoid heap\n    allocation, and avoid repetitive calculations.\n" \
         CARGO_PKG_HOMEPAGE= \
@@ -1104,7 +1104,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'powerfmt' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "default", "macros", "std"))' '-C' 'metadata=c7a4745c93bb095c' '-C' 'extra-filename=-c99dbe05b4a41ed4' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/powerfmt-0.2.0/src/lib.rs \
+      rustc '--crate-name' 'powerfmt' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "default", "macros", "std"))' '-C' 'metadata=c7a4745c93bb095c' '-C' 'extra-filename=-c99dbe05b4a41ed4' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/powerfmt-0.2.0/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-c99dbe05b4a41ed4
@@ -1124,13 +1124,13 @@ FROM rust-base AS dep-l-deranged-0.3.11-f5a132c6a4ea6047
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-deranged-0.3.11,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/deranged-0.3.11 \
+  --mount=from=cratesio-deranged-0.3.11,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/deranged-0.3.11 \
   --mount=from=out-c99dbe05b4a41ed4,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libpowerfmt-c99dbe05b4a41ed4.rmeta,source=/libpowerfmt-c99dbe05b4a41ed4.rmeta \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="deranged" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/deranged-0.3.11" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/deranged-0.3.11/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/deranged-0.3.11" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/deranged-0.3.11/Cargo.toml" \
         CARGO_PKG_AUTHORS="Jacob Pratt <jacob@jhpratt.dev>" \
         CARGO_PKG_DESCRIPTION="Ranged integers" \
         CARGO_PKG_HOMEPAGE= \
@@ -1147,7 +1147,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'deranged' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="alloc"' '--cfg' 'feature="powerfmt"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "default", "num", "powerfmt", "quickcheck", "rand", "serde", "std"))' '-C' 'metadata=6d47a60f1363737b' '-C' 'extra-filename=-f5a132c6a4ea6047' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'powerfmt=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libpowerfmt-c99dbe05b4a41ed4.rmeta' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/deranged-0.3.11/src/lib.rs \
+      rustc '--crate-name' 'deranged' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="alloc"' '--cfg' 'feature="powerfmt"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "default", "num", "powerfmt", "quickcheck", "rand", "serde", "std"))' '-C' 'metadata=6d47a60f1363737b' '-C' 'extra-filename=-f5a132c6a4ea6047' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'powerfmt=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libpowerfmt-c99dbe05b4a41ed4.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/deranged-0.3.11/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-f5a132c6a4ea6047
@@ -1167,12 +1167,12 @@ FROM rust-base AS dep-l-endian-type-0.1.2-b9425a3f51895912
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-endian-type-0.1.2,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/endian-type-0.1.2 \
+  --mount=from=cratesio-endian-type-0.1.2,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/endian-type-0.1.2 \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="endian_type" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/endian-type-0.1.2" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/endian-type-0.1.2/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/endian-type-0.1.2" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/endian-type-0.1.2/Cargo.toml" \
         CARGO_PKG_AUTHORS="Lolirofle <lolipopple@hotmail.com>" \
         CARGO_PKG_DESCRIPTION="Type safe wrappers for types with a defined byte order" \
         CARGO_PKG_HOMEPAGE="https://github.com/Lolirofle/endian-type" \
@@ -1189,7 +1189,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'endian_type' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=93e443a2eeb69f65' '-C' 'extra-filename=-b9425a3f51895912' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/endian-type-0.1.2/src/lib.rs \
+      rustc '--crate-name' 'endian_type' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=93e443a2eeb69f65' '-C' 'extra-filename=-b9425a3f51895912' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/endian-type-0.1.2/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-b9425a3f51895912
@@ -1209,7 +1209,7 @@ FROM rust-base AS dep-p-enum-as-inner-0.6.0-6d04612725c62e19
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-enum-as-inner-0.6.0,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/enum-as-inner-0.6.0 \
+  --mount=from=cratesio-enum-as-inner-0.6.0,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/enum-as-inner-0.6.0 \
   --mount=from=out-ad5bbef1a9433eaf,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libheck-ad5bbef1a9433eaf.rlib,source=/libheck-ad5bbef1a9433eaf.rlib \
   --mount=from=out-b2cfc86673b59c9a,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libproc_macro2-b2cfc86673b59c9a.rlib,source=/libproc_macro2-b2cfc86673b59c9a.rlib \
   --mount=from=out-180f3b4ac22a8d2e,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libquote-180f3b4ac22a8d2e.rlib,source=/libquote-180f3b4ac22a8d2e.rlib \
@@ -1218,8 +1218,8 @@ RUN \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="enum_as_inner" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/enum-as-inner-0.6.0" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/enum-as-inner-0.6.0/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/enum-as-inner-0.6.0" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/enum-as-inner-0.6.0/Cargo.toml" \
         CARGO_PKG_AUTHORS="Benjamin Fry <benjaminfry@me.com>" \
         CARGO_PKG_DESCRIPTION="A proc-macro for deriving inner field accessor functions on enums.\n" \
         CARGO_PKG_HOMEPAGE= \
@@ -1236,7 +1236,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'enum_as_inner' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'proc-macro' '--emit' 'dep-info,link' '-C' 'prefer-dynamic' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=2723dd575a8b5e0b' '-C' 'extra-filename=-6d04612725c62e19' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'heck=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libheck-ad5bbef1a9433eaf.rlib' '--extern' 'proc_macro2=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libproc_macro2-b2cfc86673b59c9a.rlib' '--extern' 'quote=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libquote-180f3b4ac22a8d2e.rlib' '--extern' 'syn=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libsyn-812a3cc55dd704a3.rlib' '--extern' 'proc_macro' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/enum-as-inner-0.6.0/src/lib.rs \
+      rustc '--crate-name' 'enum_as_inner' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'proc-macro' '--emit' 'dep-info,link' '-C' 'prefer-dynamic' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=2723dd575a8b5e0b' '-C' 'extra-filename=-6d04612725c62e19' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'heck=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libheck-ad5bbef1a9433eaf.rlib' '--extern' 'proc_macro2=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libproc_macro2-b2cfc86673b59c9a.rlib' '--extern' 'quote=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libquote-180f3b4ac22a8d2e.rlib' '--extern' 'syn=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libsyn-812a3cc55dd704a3.rlib' '--extern' 'proc_macro' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/enum-as-inner-0.6.0/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-6d04612725c62e19
@@ -1256,12 +1256,12 @@ FROM rust-base AS dep-l-fallible-iterator-0.3.0-a896fadc8e81d51c
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-fallible-iterator-0.3.0,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/fallible-iterator-0.3.0 \
+  --mount=from=cratesio-fallible-iterator-0.3.0,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/fallible-iterator-0.3.0 \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="fallible_iterator" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/fallible-iterator-0.3.0" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/fallible-iterator-0.3.0/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/fallible-iterator-0.3.0" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/fallible-iterator-0.3.0/Cargo.toml" \
         CARGO_PKG_AUTHORS="Steven Fackler <sfackler@gmail.com>" \
         CARGO_PKG_DESCRIPTION="Fallible iterator traits" \
         CARGO_PKG_HOMEPAGE= \
@@ -1278,7 +1278,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'fallible_iterator' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="alloc"' '--cfg' 'feature="default"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "default", "std"))' '-C' 'metadata=211eff510223e479' '-C' 'extra-filename=-a896fadc8e81d51c' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/fallible-iterator-0.3.0/src/lib.rs \
+      rustc '--crate-name' 'fallible_iterator' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="alloc"' '--cfg' 'feature="default"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "default", "std"))' '-C' 'metadata=211eff510223e479' '-C' 'extra-filename=-a896fadc8e81d51c' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/fallible-iterator-0.3.0/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-a896fadc8e81d51c
@@ -1298,12 +1298,12 @@ FROM rust-base AS dep-l-fallible-streaming-iterator-0.1.9-0bd9f5163eee2585
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-fallible-streaming-iterator-0.1.9,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/fallible-streaming-iterator-0.1.9 \
+  --mount=from=cratesio-fallible-streaming-iterator-0.1.9,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/fallible-streaming-iterator-0.1.9 \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="fallible_streaming_iterator" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/fallible-streaming-iterator-0.1.9" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/fallible-streaming-iterator-0.1.9/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/fallible-streaming-iterator-0.1.9" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/fallible-streaming-iterator-0.1.9/Cargo.toml" \
         CARGO_PKG_AUTHORS="Steven Fackler <sfackler@gmail.com>" \
         CARGO_PKG_DESCRIPTION="Fallible streaming iteration" \
         CARGO_PKG_HOMEPAGE= \
@@ -1320,7 +1320,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'fallible_streaming_iterator' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("std"))' '-C' 'metadata=40218ebfb268b9f0' '-C' 'extra-filename=-0bd9f5163eee2585' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/fallible-streaming-iterator-0.1.9/src/lib.rs \
+      rustc '--crate-name' 'fallible_streaming_iterator' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("std"))' '-C' 'metadata=40218ebfb268b9f0' '-C' 'extra-filename=-0bd9f5163eee2585' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/fallible-streaming-iterator-0.1.9/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-0bd9f5163eee2585
@@ -1340,12 +1340,12 @@ FROM rust-base AS dep-l-percent-encoding-2.3.1-a9430e27cc2cdede
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-percent-encoding-2.3.1,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/percent-encoding-2.3.1 \
+  --mount=from=cratesio-percent-encoding-2.3.1,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/percent-encoding-2.3.1 \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="percent_encoding" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/percent-encoding-2.3.1" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/percent-encoding-2.3.1/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/percent-encoding-2.3.1" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/percent-encoding-2.3.1/Cargo.toml" \
         CARGO_PKG_AUTHORS="The rust-url developers" \
         CARGO_PKG_DESCRIPTION="Percent encoding and decoding" \
         CARGO_PKG_HOMEPAGE= \
@@ -1362,7 +1362,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'percent_encoding' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="alloc"' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "default", "std"))' '-C' 'metadata=28531c7eaa2528e3' '-C' 'extra-filename=-a9430e27cc2cdede' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/percent-encoding-2.3.1/src/lib.rs \
+      rustc '--crate-name' 'percent_encoding' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="alloc"' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "default", "std"))' '-C' 'metadata=28531c7eaa2528e3' '-C' 'extra-filename=-a9430e27cc2cdede' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/percent-encoding-2.3.1/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-a9430e27cc2cdede
@@ -1382,13 +1382,13 @@ FROM rust-base AS dep-l-form_urlencoded-1.2.1-1fa58ff40b094e8a
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-form_urlencoded-1.2.1,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/form_urlencoded-1.2.1 \
+  --mount=from=cratesio-form_urlencoded-1.2.1,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/form_urlencoded-1.2.1 \
   --mount=from=out-a9430e27cc2cdede,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libpercent_encoding-a9430e27cc2cdede.rmeta,source=/libpercent_encoding-a9430e27cc2cdede.rmeta \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="form_urlencoded" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/form_urlencoded-1.2.1" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/form_urlencoded-1.2.1/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/form_urlencoded-1.2.1" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/form_urlencoded-1.2.1/Cargo.toml" \
         CARGO_PKG_AUTHORS="The rust-url developers" \
         CARGO_PKG_DESCRIPTION="Parser and serializer for the application/x-www-form-urlencoded syntax, as used by HTML forms." \
         CARGO_PKG_HOMEPAGE= \
@@ -1405,7 +1405,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'form_urlencoded' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="alloc"' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "default", "std"))' '-C' 'metadata=581ad1e2005173de' '-C' 'extra-filename=-1fa58ff40b094e8a' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'percent_encoding=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libpercent_encoding-a9430e27cc2cdede.rmeta' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/form_urlencoded-1.2.1/src/lib.rs \
+      rustc '--crate-name' 'form_urlencoded' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="alloc"' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "default", "std"))' '-C' 'metadata=581ad1e2005173de' '-C' 'extra-filename=-1fa58ff40b094e8a' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'percent_encoding=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libpercent_encoding-a9430e27cc2cdede.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/form_urlencoded-1.2.1/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-1fa58ff40b094e8a
@@ -1425,12 +1425,12 @@ FROM rust-base AS dep-l-futures-core-0.3.30-d33644073a44f49e
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-futures-core-0.3.30,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/futures-core-0.3.30 \
+  --mount=from=cratesio-futures-core-0.3.30,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/futures-core-0.3.30 \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="futures_core" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/futures-core-0.3.30" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/futures-core-0.3.30/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/futures-core-0.3.30" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/futures-core-0.3.30/Cargo.toml" \
         CARGO_PKG_AUTHORS= \
         CARGO_PKG_DESCRIPTION="The core traits and types in for the `futures` library.\n" \
         CARGO_PKG_HOMEPAGE="https://rust-lang.github.io/futures-rs" \
@@ -1447,7 +1447,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'futures_core' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="alloc"' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "cfg-target-has-atomic", "default", "portable-atomic", "std", "unstable"))' '-C' 'metadata=59eb21831d3d0d1c' '-C' 'extra-filename=-d33644073a44f49e' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/futures-core-0.3.30/src/lib.rs \
+      rustc '--crate-name' 'futures_core' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="alloc"' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "cfg-target-has-atomic", "default", "portable-atomic", "std", "unstable"))' '-C' 'metadata=59eb21831d3d0d1c' '-C' 'extra-filename=-d33644073a44f49e' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/futures-core-0.3.30/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-d33644073a44f49e
@@ -1467,13 +1467,13 @@ FROM rust-base AS dep-l-futures-channel-0.3.30-e6e3dc4c6158ba3c
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-futures-channel-0.3.30,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/futures-channel-0.3.30 \
+  --mount=from=cratesio-futures-channel-0.3.30,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/futures-channel-0.3.30 \
   --mount=from=out-d33644073a44f49e,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libfutures_core-d33644073a44f49e.rmeta,source=/libfutures_core-d33644073a44f49e.rmeta \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="futures_channel" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/futures-channel-0.3.30" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/futures-channel-0.3.30/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/futures-channel-0.3.30" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/futures-channel-0.3.30/Cargo.toml" \
         CARGO_PKG_AUTHORS= \
         CARGO_PKG_DESCRIPTION="Channels for asynchronous communication using futures-rs.\n" \
         CARGO_PKG_HOMEPAGE="https://rust-lang.github.io/futures-rs" \
@@ -1490,7 +1490,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'futures_channel' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="alloc"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "cfg-target-has-atomic", "default", "futures-sink", "sink", "std", "unstable"))' '-C' 'metadata=e3aeb6fff0037017' '-C' 'extra-filename=-e6e3dc4c6158ba3c' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'futures_core=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libfutures_core-d33644073a44f49e.rmeta' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/futures-channel-0.3.30/src/lib.rs \
+      rustc '--crate-name' 'futures_channel' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="alloc"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "cfg-target-has-atomic", "default", "futures-sink", "sink", "std", "unstable"))' '-C' 'metadata=e3aeb6fff0037017' '-C' 'extra-filename=-e6e3dc4c6158ba3c' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'futures_core=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libfutures_core-d33644073a44f49e.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/futures-channel-0.3.30/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-e6e3dc4c6158ba3c
@@ -1510,12 +1510,12 @@ FROM rust-base AS dep-l-futures-io-0.3.30-c2848afe902b9743
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-futures-io-0.3.30,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/futures-io-0.3.30 \
+  --mount=from=cratesio-futures-io-0.3.30,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/futures-io-0.3.30 \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="futures_io" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/futures-io-0.3.30" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/futures-io-0.3.30/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/futures-io-0.3.30" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/futures-io-0.3.30/Cargo.toml" \
         CARGO_PKG_AUTHORS= \
         CARGO_PKG_DESCRIPTION="The `AsyncRead`, `AsyncWrite`, `AsyncSeek`, and `AsyncBufRead` traits for the futures-rs library.\n" \
         CARGO_PKG_HOMEPAGE="https://rust-lang.github.io/futures-rs" \
@@ -1532,7 +1532,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'futures_io' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "std", "unstable"))' '-C' 'metadata=309599a65ba7b85d' '-C' 'extra-filename=-c2848afe902b9743' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/futures-io-0.3.30/src/lib.rs \
+      rustc '--crate-name' 'futures_io' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "std", "unstable"))' '-C' 'metadata=309599a65ba7b85d' '-C' 'extra-filename=-c2848afe902b9743' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/futures-io-0.3.30/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-c2848afe902b9743
@@ -1552,12 +1552,12 @@ FROM rust-base AS dep-l-futures-sink-0.3.30-76c391dc94e2e033
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-futures-sink-0.3.30,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/futures-sink-0.3.30 \
+  --mount=from=cratesio-futures-sink-0.3.30,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/futures-sink-0.3.30 \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="futures_sink" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/futures-sink-0.3.30" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/futures-sink-0.3.30/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/futures-sink-0.3.30" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/futures-sink-0.3.30/Cargo.toml" \
         CARGO_PKG_AUTHORS= \
         CARGO_PKG_DESCRIPTION="The asynchronous `Sink` trait for the futures-rs library.\n" \
         CARGO_PKG_HOMEPAGE="https://rust-lang.github.io/futures-rs" \
@@ -1574,7 +1574,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'futures_sink' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="alloc"' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "default", "std"))' '-C' 'metadata=4fde813b82d76051' '-C' 'extra-filename=-76c391dc94e2e033' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/futures-sink-0.3.30/src/lib.rs \
+      rustc '--crate-name' 'futures_sink' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="alloc"' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "default", "std"))' '-C' 'metadata=4fde813b82d76051' '-C' 'extra-filename=-76c391dc94e2e033' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/futures-sink-0.3.30/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-76c391dc94e2e033
@@ -1594,12 +1594,12 @@ FROM rust-base AS dep-l-futures-task-0.3.30-5bb40bd1f5edf54d
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-futures-task-0.3.30,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/futures-task-0.3.30 \
+  --mount=from=cratesio-futures-task-0.3.30,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/futures-task-0.3.30 \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="futures_task" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/futures-task-0.3.30" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/futures-task-0.3.30/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/futures-task-0.3.30" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/futures-task-0.3.30/Cargo.toml" \
         CARGO_PKG_AUTHORS= \
         CARGO_PKG_DESCRIPTION="Tools for working with tasks.\n" \
         CARGO_PKG_HOMEPAGE="https://rust-lang.github.io/futures-rs" \
@@ -1616,7 +1616,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'futures_task' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="alloc"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "cfg-target-has-atomic", "default", "std", "unstable"))' '-C' 'metadata=89639bd8ca93fe02' '-C' 'extra-filename=-5bb40bd1f5edf54d' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/futures-task-0.3.30/src/lib.rs \
+      rustc '--crate-name' 'futures_task' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="alloc"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "cfg-target-has-atomic", "default", "std", "unstable"))' '-C' 'metadata=89639bd8ca93fe02' '-C' 'extra-filename=-5bb40bd1f5edf54d' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/futures-task-0.3.30/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-5bb40bd1f5edf54d
@@ -1636,12 +1636,12 @@ FROM rust-base AS dep-l-pin-project-lite-0.2.14-da209fbed6de9e9d
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-pin-project-lite-0.2.14,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/pin-project-lite-0.2.14 \
+  --mount=from=cratesio-pin-project-lite-0.2.14,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/pin-project-lite-0.2.14 \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="pin_project_lite" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/pin-project-lite-0.2.14" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/pin-project-lite-0.2.14/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/pin-project-lite-0.2.14" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/pin-project-lite-0.2.14/Cargo.toml" \
         CARGO_PKG_AUTHORS= \
         CARGO_PKG_DESCRIPTION="A lightweight version of pin-project written with declarative macros.\n" \
         CARGO_PKG_HOMEPAGE= \
@@ -1658,7 +1658,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'pin_project_lite' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--warn' 'unreachable_pub' '--warn' 'clippy::undocumented_unsafe_blocks' '--warn' 'clippy::transmute_undefined_repr' '--warn' 'clippy::trailing_empty_array' '--warn' 'single_use_lifetimes' '--warn' 'rust_2018_idioms' '--warn' 'clippy::pedantic' '--warn' 'non_ascii_idents' '--warn' 'clippy::inline_asm_x86_att_syntax' '--warn' 'improper_ctypes_definitions' '--warn' 'improper_ctypes' '--warn' 'clippy::default_union_representation' '--warn' 'clippy::as_ptr_cast_mut' '--warn' 'clippy::all' '--allow' 'clippy::type_complexity' '--allow' 'clippy::too_many_lines' '--allow' 'clippy::too_many_arguments' '--allow' 'clippy::struct_field_names' '--allow' 'clippy::struct_excessive_bools' '--allow' 'clippy::single_match_else' '--allow' 'clippy::single_match' '--allow' 'clippy::similar_names' '--allow' 'clippy::module_name_repetitions' '--allow' 'clippy::missing_errors_doc' '--allow' 'clippy::manual_range_contains' '--allow' 'clippy::manual_assert' '--allow' 'clippy::float_cmp' '--allow' 'clippy::doc_markdown' '--allow' 'clippy::declare_interior_mutable_const' '--allow' 'clippy::borrow_as_ptr' '--allow' 'clippy::bool_assert_comparison' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=4446bbbb89f9b38b' '-C' 'extra-filename=-da209fbed6de9e9d' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/pin-project-lite-0.2.14/src/lib.rs \
+      rustc '--crate-name' 'pin_project_lite' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--warn' 'unreachable_pub' '--warn' 'clippy::undocumented_unsafe_blocks' '--warn' 'clippy::transmute_undefined_repr' '--warn' 'clippy::trailing_empty_array' '--warn' 'single_use_lifetimes' '--warn' 'rust_2018_idioms' '--warn' 'clippy::pedantic' '--warn' 'non_ascii_idents' '--warn' 'clippy::inline_asm_x86_att_syntax' '--warn' 'improper_ctypes_definitions' '--warn' 'improper_ctypes' '--warn' 'clippy::default_union_representation' '--warn' 'clippy::as_ptr_cast_mut' '--warn' 'clippy::all' '--allow' 'clippy::type_complexity' '--allow' 'clippy::too_many_lines' '--allow' 'clippy::too_many_arguments' '--allow' 'clippy::struct_field_names' '--allow' 'clippy::struct_excessive_bools' '--allow' 'clippy::single_match_else' '--allow' 'clippy::single_match' '--allow' 'clippy::similar_names' '--allow' 'clippy::module_name_repetitions' '--allow' 'clippy::missing_errors_doc' '--allow' 'clippy::manual_range_contains' '--allow' 'clippy::manual_assert' '--allow' 'clippy::float_cmp' '--allow' 'clippy::doc_markdown' '--allow' 'clippy::declare_interior_mutable_const' '--allow' 'clippy::borrow_as_ptr' '--allow' 'clippy::bool_assert_comparison' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=4446bbbb89f9b38b' '-C' 'extra-filename=-da209fbed6de9e9d' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/pin-project-lite-0.2.14/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-da209fbed6de9e9d
@@ -1678,12 +1678,12 @@ FROM rust-base AS dep-l-pin-utils-0.1.0-2840304745122a95
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-pin-utils-0.1.0,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/pin-utils-0.1.0 \
+  --mount=from=cratesio-pin-utils-0.1.0,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/pin-utils-0.1.0 \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="pin_utils" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/pin-utils-0.1.0" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/pin-utils-0.1.0/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/pin-utils-0.1.0" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/pin-utils-0.1.0/Cargo.toml" \
         CARGO_PKG_AUTHORS="Josef Brandl <mail@josefbrandl.de>" \
         CARGO_PKG_DESCRIPTION="Utilities for pinning\n" \
         CARGO_PKG_HOMEPAGE= \
@@ -1700,7 +1700,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'pin_utils' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=c09f673a2d3f007a' '-C' 'extra-filename=-2840304745122a95' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/pin-utils-0.1.0/src/lib.rs \
+      rustc '--crate-name' 'pin_utils' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=c09f673a2d3f007a' '-C' 'extra-filename=-2840304745122a95' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/pin-utils-0.1.0/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-2840304745122a95
@@ -1720,12 +1720,12 @@ FROM rust-base AS dep-l-slab-0.4.9-fb901243d9248361
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-slab-0.4.9,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/slab-0.4.9 \
+  --mount=from=cratesio-slab-0.4.9,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/slab-0.4.9 \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="slab" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/slab-0.4.9" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/slab-0.4.9/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/slab-0.4.9" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/slab-0.4.9/Cargo.toml" \
         CARGO_PKG_AUTHORS="Carl Lerche <me@carllerche.com>" \
         CARGO_PKG_DESCRIPTION="Pre-allocated storage for a uniform data type" \
         CARGO_PKG_HOMEPAGE= \
@@ -1743,7 +1743,7 @@ RUN \
         OUT_DIR="/tmp/clis-hickory-dns_0-25-0-alpha-1/release/build/slab-1cbc18fc5a87c491/out" \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'slab' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "serde", "std"))' '-C' 'metadata=3782095e410000ff' '-C' 'extra-filename=-fb901243d9248361' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/slab-0.4.9/src/lib.rs \
+      rustc '--crate-name' 'slab' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "serde", "std"))' '-C' 'metadata=3782095e410000ff' '-C' 'extra-filename=-fb901243d9248361' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/slab-0.4.9/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-fb901243d9248361
@@ -1763,7 +1763,7 @@ FROM rust-base AS dep-l-futures-util-0.3.30-ff898060123f2ff4
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-futures-util-0.3.30,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/futures-util-0.3.30 \
+  --mount=from=cratesio-futures-util-0.3.30,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/futures-util-0.3.30 \
   --mount=from=out-d33644073a44f49e,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libfutures_core-d33644073a44f49e.rmeta,source=/libfutures_core-d33644073a44f49e.rmeta \
   --mount=from=out-5bb40bd1f5edf54d,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libfutures_task-5bb40bd1f5edf54d.rmeta,source=/libfutures_task-5bb40bd1f5edf54d.rmeta \
   --mount=from=out-da209fbed6de9e9d,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libpin_project_lite-da209fbed6de9e9d.rmeta,source=/libpin_project_lite-da209fbed6de9e9d.rmeta \
@@ -1772,8 +1772,8 @@ RUN \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="futures_util" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/futures-util-0.3.30" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/futures-util-0.3.30/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/futures-util-0.3.30" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/futures-util-0.3.30/Cargo.toml" \
         CARGO_PKG_AUTHORS= \
         CARGO_PKG_DESCRIPTION="Common utilities and extension traits for the futures-rs library.\n" \
         CARGO_PKG_HOMEPAGE="https://rust-lang.github.io/futures-rs" \
@@ -1790,7 +1790,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'futures_util' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="alloc"' '--cfg' 'feature="slab"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "async-await", "async-await-macro", "bilock", "cfg-target-has-atomic", "channel", "compat", "default", "futures-channel", "futures-io", "futures-macro", "futures-sink", "futures_01", "io", "io-compat", "memchr", "portable-atomic", "sink", "slab", "std", "tokio-io", "unstable", "write-all-vectored"))' '-C' 'metadata=c9cc5a0c87585b2a' '-C' 'extra-filename=-ff898060123f2ff4' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'futures_core=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libfutures_core-d33644073a44f49e.rmeta' '--extern' 'futures_task=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libfutures_task-5bb40bd1f5edf54d.rmeta' '--extern' 'pin_project_lite=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libpin_project_lite-da209fbed6de9e9d.rmeta' '--extern' 'pin_utils=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libpin_utils-2840304745122a95.rmeta' '--extern' 'slab=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libslab-fb901243d9248361.rmeta' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/futures-util-0.3.30/src/lib.rs \
+      rustc '--crate-name' 'futures_util' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="alloc"' '--cfg' 'feature="slab"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "async-await", "async-await-macro", "bilock", "cfg-target-has-atomic", "channel", "compat", "default", "futures-channel", "futures-io", "futures-macro", "futures-sink", "futures_01", "io", "io-compat", "memchr", "portable-atomic", "sink", "slab", "std", "tokio-io", "unstable", "write-all-vectored"))' '-C' 'metadata=c9cc5a0c87585b2a' '-C' 'extra-filename=-ff898060123f2ff4' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'futures_core=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libfutures_core-d33644073a44f49e.rmeta' '--extern' 'futures_task=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libfutures_task-5bb40bd1f5edf54d.rmeta' '--extern' 'pin_project_lite=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libpin_project_lite-da209fbed6de9e9d.rmeta' '--extern' 'pin_utils=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libpin_utils-2840304745122a95.rmeta' '--extern' 'slab=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libslab-fb901243d9248361.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/futures-util-0.3.30/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-ff898060123f2ff4
@@ -1810,12 +1810,12 @@ FROM rust-base AS dep-l-libc-0.2.155-ac4dd89498f52d23
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-libc-0.2.155,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.155 \
+  --mount=from=cratesio-libc-0.2.155,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.155 \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="libc" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.155" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.155/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.155" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.155/Cargo.toml" \
         CARGO_PKG_AUTHORS="The Rust Project Developers" \
         CARGO_PKG_DESCRIPTION="Raw FFI bindings to platform libraries like libc.\n" \
         CARGO_PKG_HOMEPAGE="https://github.com/rust-lang/libc" \
@@ -1833,7 +1833,7 @@ RUN \
         OUT_DIR="/tmp/clis-hickory-dns_0-25-0-alpha-1/release/build/libc-e347853a0b8e3262/out" \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'libc' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("align", "const-extern-fn", "default", "extra_traits", "rustc-dep-of-std", "rustc-std-workspace-core", "std", "use_std"))' '-C' 'metadata=f6bb218c1ccc899a' '-C' 'extra-filename=-ac4dd89498f52d23' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--cap-lints' 'warn' '--cfg' 'freebsd11' '--cfg' 'libc_priv_mod_use' '--cfg' 'libc_union' '--cfg' 'libc_const_size_of' '--cfg' 'libc_align' '--cfg' 'libc_int128' '--cfg' 'libc_core_cvoid' '--cfg' 'libc_packedN' '--cfg' 'libc_cfg_target_vendor' '--cfg' 'libc_non_exhaustive' '--cfg' 'libc_long_array' '--cfg' 'libc_ptr_addr_of' '--cfg' 'libc_underscore_const_names' '--cfg' 'libc_const_extern_fn' '--check-cfg' 'cfg(emscripten_new_stat_abi)' '--check-cfg' 'cfg(espidf_time64)' '--check-cfg' 'cfg(freebsd10)' '--check-cfg' 'cfg(freebsd11)' '--check-cfg' 'cfg(freebsd12)' '--check-cfg' 'cfg(freebsd13)' '--check-cfg' 'cfg(freebsd14)' '--check-cfg' 'cfg(freebsd15)' '--check-cfg' 'cfg(libc_align)' '--check-cfg' 'cfg(libc_cfg_target_vendor)' '--check-cfg' 'cfg(libc_const_extern_fn)' '--check-cfg' 'cfg(libc_const_extern_fn_unstable)' '--check-cfg' 'cfg(libc_const_size_of)' '--check-cfg' 'cfg(libc_core_cvoid)' '--check-cfg' 'cfg(libc_deny_warnings)' '--check-cfg' 'cfg(libc_int128)' '--check-cfg' 'cfg(libc_long_array)' '--check-cfg' 'cfg(libc_non_exhaustive)' '--check-cfg' 'cfg(libc_packedN)' '--check-cfg' 'cfg(libc_priv_mod_use)' '--check-cfg' 'cfg(libc_ptr_addr_of)' '--check-cfg' 'cfg(libc_thread_local)' '--check-cfg' 'cfg(libc_underscore_const_names)' '--check-cfg' 'cfg(libc_union)' '--check-cfg' 'cfg(target_os,values("switch","aix","ohos","hurd","visionos"))' '--check-cfg' 'cfg(target_env,values("illumos","wasi","aix","ohos"))' '--check-cfg' 'cfg(target_arch,values("loongarch64","mips32r6","mips64r6","csky"))' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.155/src/lib.rs \
+      rustc '--crate-name' 'libc' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("align", "const-extern-fn", "default", "extra_traits", "rustc-dep-of-std", "rustc-std-workspace-core", "std", "use_std"))' '-C' 'metadata=f6bb218c1ccc899a' '-C' 'extra-filename=-ac4dd89498f52d23' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--cap-lints' 'warn' '--cfg' 'freebsd11' '--cfg' 'libc_priv_mod_use' '--cfg' 'libc_union' '--cfg' 'libc_const_size_of' '--cfg' 'libc_align' '--cfg' 'libc_int128' '--cfg' 'libc_core_cvoid' '--cfg' 'libc_packedN' '--cfg' 'libc_cfg_target_vendor' '--cfg' 'libc_non_exhaustive' '--cfg' 'libc_long_array' '--cfg' 'libc_ptr_addr_of' '--cfg' 'libc_underscore_const_names' '--cfg' 'libc_const_extern_fn' '--check-cfg' 'cfg(emscripten_new_stat_abi)' '--check-cfg' 'cfg(espidf_time64)' '--check-cfg' 'cfg(freebsd10)' '--check-cfg' 'cfg(freebsd11)' '--check-cfg' 'cfg(freebsd12)' '--check-cfg' 'cfg(freebsd13)' '--check-cfg' 'cfg(freebsd14)' '--check-cfg' 'cfg(freebsd15)' '--check-cfg' 'cfg(libc_align)' '--check-cfg' 'cfg(libc_cfg_target_vendor)' '--check-cfg' 'cfg(libc_const_extern_fn)' '--check-cfg' 'cfg(libc_const_extern_fn_unstable)' '--check-cfg' 'cfg(libc_const_size_of)' '--check-cfg' 'cfg(libc_core_cvoid)' '--check-cfg' 'cfg(libc_deny_warnings)' '--check-cfg' 'cfg(libc_int128)' '--check-cfg' 'cfg(libc_long_array)' '--check-cfg' 'cfg(libc_non_exhaustive)' '--check-cfg' 'cfg(libc_packedN)' '--check-cfg' 'cfg(libc_priv_mod_use)' '--check-cfg' 'cfg(libc_ptr_addr_of)' '--check-cfg' 'cfg(libc_thread_local)' '--check-cfg' 'cfg(libc_underscore_const_names)' '--check-cfg' 'cfg(libc_union)' '--check-cfg' 'cfg(target_os,values("switch","aix","ohos","hurd","visionos"))' '--check-cfg' 'cfg(target_env,values("illumos","wasi","aix","ohos"))' '--check-cfg' 'cfg(target_arch,values("loongarch64","mips32r6","mips64r6","csky"))' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.155/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-ac4dd89498f52d23
@@ -1853,14 +1853,14 @@ FROM rust-base AS dep-l-getrandom-0.2.15-00fb84f4c9caa6e8
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-getrandom-0.2.15,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/getrandom-0.2.15 \
+  --mount=from=cratesio-getrandom-0.2.15,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/getrandom-0.2.15 \
   --mount=from=out-642a9e511eeb712a,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libcfg_if-642a9e511eeb712a.rmeta,source=/libcfg_if-642a9e511eeb712a.rmeta \
   --mount=from=out-ac4dd89498f52d23,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/liblibc-ac4dd89498f52d23.rmeta,source=/liblibc-ac4dd89498f52d23.rmeta \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="getrandom" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/getrandom-0.2.15" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/getrandom-0.2.15/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/getrandom-0.2.15" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/getrandom-0.2.15/Cargo.toml" \
         CARGO_PKG_AUTHORS="The Rand Project Developers" \
         CARGO_PKG_DESCRIPTION="A small cross-platform library for retrieving random data from system source" \
         CARGO_PKG_HOMEPAGE= \
@@ -1877,7 +1877,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'getrandom' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("compiler_builtins", "core", "custom", "js", "js-sys", "linux_disable_fallback", "rdrand", "rustc-dep-of-std", "std", "test-in-browser", "wasm-bindgen"))' '-C' 'metadata=b85a1c392b28b82e' '-C' 'extra-filename=-00fb84f4c9caa6e8' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'cfg_if=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libcfg_if-642a9e511eeb712a.rmeta' '--extern' 'libc=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/liblibc-ac4dd89498f52d23.rmeta' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/getrandom-0.2.15/src/lib.rs \
+      rustc '--crate-name' 'getrandom' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("compiler_builtins", "core", "custom", "js", "js-sys", "linux_disable_fallback", "rdrand", "rustc-dep-of-std", "std", "test-in-browser", "wasm-bindgen"))' '-C' 'metadata=b85a1c392b28b82e' '-C' 'extra-filename=-00fb84f4c9caa6e8' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'cfg_if=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libcfg_if-642a9e511eeb712a.rmeta' '--extern' 'libc=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/liblibc-ac4dd89498f52d23.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/getrandom-0.2.15/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-00fb84f4c9caa6e8
@@ -1897,7 +1897,7 @@ FROM rust-base AS dep-l-hashbrown-0.14.5-5a5354adc6954b04
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-hashbrown-0.14.5,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/hashbrown-0.14.5 \
+  --mount=from=cratesio-hashbrown-0.14.5,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/hashbrown-0.14.5 \
   --mount=from=out-b1a23cff02e478bf,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libahash-b1a23cff02e478bf.rmeta,source=/libahash-b1a23cff02e478bf.rmeta \
   --mount=from=out-642a9e511eeb712a,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libcfg_if-642a9e511eeb712a.rmeta,source=/libcfg_if-642a9e511eeb712a.rmeta \
   --mount=from=out-330cfb3cbb7b43f5,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libonce_cell-330cfb3cbb7b43f5.rmeta,source=/libonce_cell-330cfb3cbb7b43f5.rmeta \
@@ -1905,8 +1905,8 @@ RUN \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="hashbrown" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/hashbrown-0.14.5" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/hashbrown-0.14.5/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/hashbrown-0.14.5" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/hashbrown-0.14.5/Cargo.toml" \
         CARGO_PKG_AUTHORS="Amanieu d'Antras <amanieu@gmail.com>" \
         CARGO_PKG_DESCRIPTION="A Rust port of Google's SwissTable hash map" \
         CARGO_PKG_HOMEPAGE= \
@@ -1923,7 +1923,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'hashbrown' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="ahash"' '--cfg' 'feature="inline-more"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("ahash", "alloc", "allocator-api2", "compiler_builtins", "core", "default", "equivalent", "inline-more", "nightly", "raw", "rayon", "rkyv", "rustc-dep-of-std", "rustc-internal-api", "serde"))' '-C' 'metadata=95f3fbe9236b211c' '-C' 'extra-filename=-5a5354adc6954b04' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'ahash=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libahash-b1a23cff02e478bf.rmeta' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/hashbrown-0.14.5/src/lib.rs \
+      rustc '--crate-name' 'hashbrown' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="ahash"' '--cfg' 'feature="inline-more"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("ahash", "alloc", "allocator-api2", "compiler_builtins", "core", "default", "equivalent", "inline-more", "nightly", "raw", "rayon", "rkyv", "rustc-dep-of-std", "rustc-internal-api", "serde"))' '-C' 'metadata=95f3fbe9236b211c' '-C' 'extra-filename=-5a5354adc6954b04' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'ahash=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libahash-b1a23cff02e478bf.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/hashbrown-0.14.5/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-5a5354adc6954b04
@@ -1943,7 +1943,7 @@ FROM rust-base AS dep-l-hashlink-0.9.1-7ab7c019eabb7e4d
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-hashlink-0.9.1,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/hashlink-0.9.1 \
+  --mount=from=cratesio-hashlink-0.9.1,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/hashlink-0.9.1 \
   --mount=from=out-b1a23cff02e478bf,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libahash-b1a23cff02e478bf.rmeta,source=/libahash-b1a23cff02e478bf.rmeta \
   --mount=from=out-642a9e511eeb712a,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libcfg_if-642a9e511eeb712a.rmeta,source=/libcfg_if-642a9e511eeb712a.rmeta \
   --mount=from=out-5a5354adc6954b04,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libhashbrown-5a5354adc6954b04.rmeta,source=/libhashbrown-5a5354adc6954b04.rmeta \
@@ -1952,8 +1952,8 @@ RUN \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="hashlink" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/hashlink-0.9.1" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/hashlink-0.9.1/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/hashlink-0.9.1" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/hashlink-0.9.1/Cargo.toml" \
         CARGO_PKG_AUTHORS="kyren <kerriganw@gmail.com>" \
         CARGO_PKG_DESCRIPTION="HashMap-like containers that hold their key-value pairs in a user controllable order" \
         CARGO_PKG_HOMEPAGE= \
@@ -1970,7 +1970,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'hashlink' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("serde", "serde_impl"))' '-C' 'metadata=2f52c81737f56b9f' '-C' 'extra-filename=-7ab7c019eabb7e4d' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'hashbrown=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libhashbrown-5a5354adc6954b04.rmeta' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/hashlink-0.9.1/src/lib.rs \
+      rustc '--crate-name' 'hashlink' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("serde", "serde_impl"))' '-C' 'metadata=2f52c81737f56b9f' '-C' 'extra-filename=-7ab7c019eabb7e4d' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'hashbrown=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libhashbrown-5a5354adc6954b04.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/hashlink-0.9.1/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-7ab7c019eabb7e4d
@@ -1990,12 +1990,12 @@ FROM rust-base AS dep-l-tinyvec_macros-0.1.1-4a4962c99414941c
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-tinyvec_macros-0.1.1,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/tinyvec_macros-0.1.1 \
+  --mount=from=cratesio-tinyvec_macros-0.1.1,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/tinyvec_macros-0.1.1 \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="tinyvec_macros" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/tinyvec_macros-0.1.1" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/tinyvec_macros-0.1.1/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/tinyvec_macros-0.1.1" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/tinyvec_macros-0.1.1/Cargo.toml" \
         CARGO_PKG_AUTHORS="Soveu <marx.tomasz@gmail.com>" \
         CARGO_PKG_DESCRIPTION="Some macros for tiny containers" \
         CARGO_PKG_HOMEPAGE= \
@@ -2012,7 +2012,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'tinyvec_macros' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=93ef417b61dcc69e' '-C' 'extra-filename=-4a4962c99414941c' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/tinyvec_macros-0.1.1/src/lib.rs \
+      rustc '--crate-name' 'tinyvec_macros' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=93ef417b61dcc69e' '-C' 'extra-filename=-4a4962c99414941c' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/tinyvec_macros-0.1.1/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-4a4962c99414941c
@@ -2032,13 +2032,13 @@ FROM rust-base AS dep-l-tinyvec-1.6.0-854aea433f68745d
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-tinyvec-1.6.0,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/tinyvec-1.6.0 \
+  --mount=from=cratesio-tinyvec-1.6.0,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/tinyvec-1.6.0 \
   --mount=from=out-4a4962c99414941c,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libtinyvec_macros-4a4962c99414941c.rmeta,source=/libtinyvec_macros-4a4962c99414941c.rmeta \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="tinyvec" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/tinyvec-1.6.0" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/tinyvec-1.6.0/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/tinyvec-1.6.0" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/tinyvec-1.6.0/Cargo.toml" \
         CARGO_PKG_AUTHORS="Lokathor <zefria@gmail.com>" \
         CARGO_PKG_DESCRIPTION="`tinyvec` provides 100% safe vec-like data structures." \
         CARGO_PKG_HOMEPAGE= \
@@ -2055,7 +2055,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'tinyvec' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="alloc"' '--cfg' 'feature="default"' '--cfg' 'feature="tinyvec_macros"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "arbitrary", "default", "experimental_write_impl", "grab_spare_slice", "nightly_slice_partition_dedup", "real_blackbox", "rustc_1_40", "rustc_1_55", "rustc_1_57", "serde", "std", "tinyvec_macros"))' '-C' 'metadata=8f89fd25f11613d7' '-C' 'extra-filename=-854aea433f68745d' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'tinyvec_macros=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libtinyvec_macros-4a4962c99414941c.rmeta' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/tinyvec-1.6.0/src/lib.rs \
+      rustc '--crate-name' 'tinyvec' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="alloc"' '--cfg' 'feature="default"' '--cfg' 'feature="tinyvec_macros"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "arbitrary", "default", "experimental_write_impl", "grab_spare_slice", "nightly_slice_partition_dedup", "real_blackbox", "rustc_1_40", "rustc_1_55", "rustc_1_57", "serde", "std", "tinyvec_macros"))' '-C' 'metadata=8f89fd25f11613d7' '-C' 'extra-filename=-854aea433f68745d' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'tinyvec_macros=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libtinyvec_macros-4a4962c99414941c.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/tinyvec-1.6.0/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-854aea433f68745d
@@ -2075,12 +2075,12 @@ FROM rust-base AS dep-l-unicode-bidi-0.3.15-1f080d483393c6ab
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-unicode-bidi-0.3.15,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/unicode-bidi-0.3.15 \
+  --mount=from=cratesio-unicode-bidi-0.3.15,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/unicode-bidi-0.3.15 \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="unicode_bidi" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/unicode-bidi-0.3.15" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/unicode-bidi-0.3.15/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/unicode-bidi-0.3.15" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/unicode-bidi-0.3.15/Cargo.toml" \
         CARGO_PKG_AUTHORS="The Servo Project Developers" \
         CARGO_PKG_DESCRIPTION="Implementation of the Unicode Bidirectional Algorithm" \
         CARGO_PKG_HOMEPAGE= \
@@ -2097,7 +2097,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'unicode_bidi' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="hardcoded-data"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("bench_it", "default", "flame", "flame_it", "flamer", "hardcoded-data", "serde", "std", "unstable", "with_serde"))' '-C' 'metadata=0d86c3be01285db1' '-C' 'extra-filename=-1f080d483393c6ab' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/unicode-bidi-0.3.15/src/lib.rs \
+      rustc '--crate-name' 'unicode_bidi' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="hardcoded-data"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("bench_it", "default", "flame", "flame_it", "flamer", "hardcoded-data", "serde", "std", "unstable", "with_serde"))' '-C' 'metadata=0d86c3be01285db1' '-C' 'extra-filename=-1f080d483393c6ab' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/unicode-bidi-0.3.15/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-1f080d483393c6ab
@@ -2117,14 +2117,14 @@ FROM rust-base AS dep-l-unicode-normalization-0.1.23-275d649021a8f3ce
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-unicode-normalization-0.1.23,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/unicode-normalization-0.1.23 \
+  --mount=from=cratesio-unicode-normalization-0.1.23,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/unicode-normalization-0.1.23 \
   --mount=from=out-854aea433f68745d,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libtinyvec-854aea433f68745d.rmeta,source=/libtinyvec-854aea433f68745d.rmeta \
   --mount=from=out-4a4962c99414941c,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libtinyvec_macros-4a4962c99414941c.rmeta,source=/libtinyvec_macros-4a4962c99414941c.rmeta \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="unicode_normalization" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/unicode-normalization-0.1.23" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/unicode-normalization-0.1.23/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/unicode-normalization-0.1.23" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/unicode-normalization-0.1.23/Cargo.toml" \
         CARGO_PKG_AUTHORS="kwantam <kwantam@gmail.com>:Manish Goregaokar <manishsmail@gmail.com>" \
         CARGO_PKG_DESCRIPTION="This crate provides functions for normalization of\nUnicode strings, including Canonical and Compatible\nDecomposition and Recomposition, as described in\nUnicode Standard Annex #15.\n" \
         CARGO_PKG_HOMEPAGE="https://github.com/unicode-rs/unicode-normalization" \
@@ -2141,7 +2141,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'unicode_normalization' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "std"))' '-C' 'metadata=2b0b191fb81f97dc' '-C' 'extra-filename=-275d649021a8f3ce' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'tinyvec=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libtinyvec-854aea433f68745d.rmeta' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/unicode-normalization-0.1.23/src/lib.rs \
+      rustc '--crate-name' 'unicode_normalization' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "std"))' '-C' 'metadata=2b0b191fb81f97dc' '-C' 'extra-filename=-275d649021a8f3ce' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'tinyvec=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libtinyvec-854aea433f68745d.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/unicode-normalization-0.1.23/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-275d649021a8f3ce
@@ -2161,7 +2161,7 @@ FROM rust-base AS dep-l-idna-0.5.0-e3d8683b2ed3c28d
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-idna-0.5.0,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/idna-0.5.0 \
+  --mount=from=cratesio-idna-0.5.0,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/idna-0.5.0 \
   --mount=from=out-854aea433f68745d,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libtinyvec-854aea433f68745d.rmeta,source=/libtinyvec-854aea433f68745d.rmeta \
   --mount=from=out-4a4962c99414941c,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libtinyvec_macros-4a4962c99414941c.rmeta,source=/libtinyvec_macros-4a4962c99414941c.rmeta \
   --mount=from=out-1f080d483393c6ab,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libunicode_bidi-1f080d483393c6ab.rmeta,source=/libunicode_bidi-1f080d483393c6ab.rmeta \
@@ -2169,8 +2169,8 @@ RUN \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="idna" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/idna-0.5.0" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/idna-0.5.0/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/idna-0.5.0" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/idna-0.5.0/Cargo.toml" \
         CARGO_PKG_AUTHORS="The rust-url developers" \
         CARGO_PKG_DESCRIPTION="IDNA (Internationalizing Domain Names in Applications) and Punycode." \
         CARGO_PKG_HOMEPAGE= \
@@ -2187,7 +2187,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'idna' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="alloc"' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "default", "std"))' '-C' 'metadata=9b30ab53364f2019' '-C' 'extra-filename=-e3d8683b2ed3c28d' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'unicode_bidi=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libunicode_bidi-1f080d483393c6ab.rmeta' '--extern' 'unicode_normalization=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libunicode_normalization-275d649021a8f3ce.rmeta' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/idna-0.5.0/src/lib.rs \
+      rustc '--crate-name' 'idna' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="alloc"' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "default", "std"))' '-C' 'metadata=9b30ab53364f2019' '-C' 'extra-filename=-e3d8683b2ed3c28d' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'unicode_bidi=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libunicode_bidi-1f080d483393c6ab.rmeta' '--extern' 'unicode_normalization=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libunicode_normalization-275d649021a8f3ce.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/idna-0.5.0/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-e3d8683b2ed3c28d
@@ -2207,7 +2207,7 @@ FROM rust-base AS dep-l-ipnet-2.9.0-1ae33865903c85f3
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-ipnet-2.9.0,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/ipnet-2.9.0 \
+  --mount=from=cratesio-ipnet-2.9.0,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ipnet-2.9.0 \
   --mount=from=out-b2cfc86673b59c9a,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libproc_macro2-b2cfc86673b59c9a.rmeta,source=/libproc_macro2-b2cfc86673b59c9a.rmeta \
   --mount=from=out-180f3b4ac22a8d2e,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libquote-180f3b4ac22a8d2e.rmeta,source=/libquote-180f3b4ac22a8d2e.rmeta \
   --mount=from=out-ceabefec0a6d61ca,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libserde-ceabefec0a6d61ca.rmeta,source=/libserde-ceabefec0a6d61ca.rmeta \
@@ -2217,8 +2217,8 @@ RUN \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="ipnet" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/ipnet-2.9.0" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/ipnet-2.9.0/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ipnet-2.9.0" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ipnet-2.9.0/Cargo.toml" \
         CARGO_PKG_AUTHORS="Kris Price <kris@krisprice.nz>" \
         CARGO_PKG_DESCRIPTION="Provides types and useful methods for working with IPv4 and IPv6 network addresses, commonly called IP prefixes. The new `IpNet`, `Ipv4Net`, and `Ipv6Net` types build on the existing `IpAddr`, `Ipv4Addr`, and `Ipv6Addr` types already provided in Rust's standard library and align to their design to stay consistent. The module also provides useful traits that extend `Ipv4Addr` and `Ipv6Addr` with methods for `Add`, `Sub`, `BitAnd`, and `BitOr` operations. The module only uses stable feature so it is guaranteed to compile using the stable toolchain." \
         CARGO_PKG_HOMEPAGE= \
@@ -2235,7 +2235,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'ipnet' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="default"' '--cfg' 'feature="serde"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "heapless", "json", "schemars", "ser_as_str", "serde", "std"))' '-C' 'metadata=59e219d161db3307' '-C' 'extra-filename=-1ae33865903c85f3' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'serde=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libserde-ceabefec0a6d61ca.rmeta' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/ipnet-2.9.0/src/lib.rs \
+      rustc '--crate-name' 'ipnet' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="default"' '--cfg' 'feature="serde"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "heapless", "json", "schemars", "ser_as_str", "serde", "std"))' '-C' 'metadata=59e219d161db3307' '-C' 'extra-filename=-1ae33865903c85f3' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'serde=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libserde-ceabefec0a6d61ca.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ipnet-2.9.0/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-1ae33865903c85f3
@@ -2255,12 +2255,12 @@ FROM rust-base AS dep-l-log-0.4.21-7405012b21e0e01f
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-log-0.4.21,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/log-0.4.21 \
+  --mount=from=cratesio-log-0.4.21,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/log-0.4.21 \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="log" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/log-0.4.21" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/log-0.4.21/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/log-0.4.21" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/log-0.4.21/Cargo.toml" \
         CARGO_PKG_AUTHORS="The Rust Project Developers" \
         CARGO_PKG_DESCRIPTION="A lightweight logging facade for Rust\n" \
         CARGO_PKG_HOMEPAGE= \
@@ -2277,7 +2277,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'log' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("kv", "kv_serde", "kv_std", "kv_sval", "kv_unstable", "kv_unstable_serde", "kv_unstable_std", "kv_unstable_sval", "max_level_debug", "max_level_error", "max_level_info", "max_level_off", "max_level_trace", "max_level_warn", "release_max_level_debug", "release_max_level_error", "release_max_level_info", "release_max_level_off", "release_max_level_trace", "release_max_level_warn", "serde", "std", "sval", "sval_ref", "value-bag"))' '-C' 'metadata=e560afee748dde6e' '-C' 'extra-filename=-7405012b21e0e01f' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/log-0.4.21/src/lib.rs \
+      rustc '--crate-name' 'log' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("kv", "kv_serde", "kv_std", "kv_sval", "kv_unstable", "kv_unstable_serde", "kv_unstable_std", "kv_unstable_sval", "max_level_debug", "max_level_error", "max_level_info", "max_level_off", "max_level_trace", "max_level_warn", "release_max_level_debug", "release_max_level_error", "release_max_level_info", "release_max_level_off", "release_max_level_trace", "release_max_level_warn", "serde", "std", "sval", "sval_ref", "value-bag"))' '-C' 'metadata=e560afee748dde6e' '-C' 'extra-filename=-7405012b21e0e01f' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/log-0.4.21/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-7405012b21e0e01f
@@ -2297,13 +2297,13 @@ FROM rust-base AS dep-l-mio-0.8.11-c6dfc79e459af200
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-mio-0.8.11,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/mio-0.8.11 \
+  --mount=from=cratesio-mio-0.8.11,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/mio-0.8.11 \
   --mount=from=out-ac4dd89498f52d23,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/liblibc-ac4dd89498f52d23.rmeta,source=/liblibc-ac4dd89498f52d23.rmeta \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="mio" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/mio-0.8.11" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/mio-0.8.11/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/mio-0.8.11" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/mio-0.8.11/Cargo.toml" \
         CARGO_PKG_AUTHORS="Carl Lerche <me@carllerche.com>:Thomas de Zeeuw <thomasdezeeuw@gmail.com>:Tokio Contributors <team@tokio.rs>" \
         CARGO_PKG_DESCRIPTION="Lightweight non-blocking I/O." \
         CARGO_PKG_HOMEPAGE="https://github.com/tokio-rs/mio" \
@@ -2320,7 +2320,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'mio' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="net"' '--cfg' 'feature="os-ext"' '--cfg' 'feature="os-poll"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "log", "net", "os-ext", "os-poll"))' '-C' 'metadata=4481a9b8971fe568' '-C' 'extra-filename=-c6dfc79e459af200' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'libc=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/liblibc-ac4dd89498f52d23.rmeta' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/mio-0.8.11/src/lib.rs \
+      rustc '--crate-name' 'mio' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="net"' '--cfg' 'feature="os-ext"' '--cfg' 'feature="os-poll"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "log", "net", "os-ext", "os-poll"))' '-C' 'metadata=4481a9b8971fe568' '-C' 'extra-filename=-c6dfc79e459af200' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'libc=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/liblibc-ac4dd89498f52d23.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/mio-0.8.11/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-c6dfc79e459af200
@@ -2340,13 +2340,13 @@ FROM rust-base AS dep-l-num_cpus-1.16.0-4d0099b3e13d99bc
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-num_cpus-1.16.0,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/num_cpus-1.16.0 \
+  --mount=from=cratesio-num_cpus-1.16.0,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num_cpus-1.16.0 \
   --mount=from=out-ac4dd89498f52d23,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/liblibc-ac4dd89498f52d23.rmeta,source=/liblibc-ac4dd89498f52d23.rmeta \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="num_cpus" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/num_cpus-1.16.0" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/num_cpus-1.16.0/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num_cpus-1.16.0" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num_cpus-1.16.0/Cargo.toml" \
         CARGO_PKG_AUTHORS="Sean McArthur <sean@seanmonstar.com>" \
         CARGO_PKG_DESCRIPTION="Get the number of CPUs on a machine." \
         CARGO_PKG_HOMEPAGE= \
@@ -2363,7 +2363,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'num_cpus' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=9343f2e59e30aaf3' '-C' 'extra-filename=-4d0099b3e13d99bc' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'libc=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/liblibc-ac4dd89498f52d23.rmeta' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/num_cpus-1.16.0/src/lib.rs \
+      rustc '--crate-name' 'num_cpus' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=9343f2e59e30aaf3' '-C' 'extra-filename=-4d0099b3e13d99bc' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'libc=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/liblibc-ac4dd89498f52d23.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num_cpus-1.16.0/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-4d0099b3e13d99bc
@@ -2383,12 +2383,12 @@ FROM rust-base AS dep-l-openssl-probe-0.1.5-b7e2541f0bd0b1e4
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-openssl-probe-0.1.5,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/openssl-probe-0.1.5 \
+  --mount=from=cratesio-openssl-probe-0.1.5,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/openssl-probe-0.1.5 \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="openssl_probe" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/openssl-probe-0.1.5" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/openssl-probe-0.1.5/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/openssl-probe-0.1.5" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/openssl-probe-0.1.5/Cargo.toml" \
         CARGO_PKG_AUTHORS="Alex Crichton <alex@alexcrichton.com>" \
         CARGO_PKG_DESCRIPTION="Tool for helping to find SSL certificate locations on the system for OpenSSL\n" \
         CARGO_PKG_HOMEPAGE="https://github.com/alexcrichton/openssl-probe" \
@@ -2405,7 +2405,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'openssl_probe' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=aeffdc3a0f5740b3' '-C' 'extra-filename=-b7e2541f0bd0b1e4' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/openssl-probe-0.1.5/src/lib.rs \
+      rustc '--crate-name' 'openssl_probe' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=aeffdc3a0f5740b3' '-C' 'extra-filename=-b7e2541f0bd0b1e4' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/openssl-probe-0.1.5/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-b7e2541f0bd0b1e4
@@ -2425,12 +2425,12 @@ FROM rust-base AS dep-l-ppv-lite86-0.2.17-87400b3c7da4c4b0
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-ppv-lite86-0.2.17,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/ppv-lite86-0.2.17 \
+  --mount=from=cratesio-ppv-lite86-0.2.17,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ppv-lite86-0.2.17 \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="ppv_lite86" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/ppv-lite86-0.2.17" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/ppv-lite86-0.2.17/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ppv-lite86-0.2.17" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ppv-lite86-0.2.17/Cargo.toml" \
         CARGO_PKG_AUTHORS="The CryptoCorrosion Contributors" \
         CARGO_PKG_DESCRIPTION="Implementation of the crypto-simd API for x86" \
         CARGO_PKG_HOMEPAGE= \
@@ -2447,7 +2447,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'ppv_lite86' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="simd"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "no_simd", "simd", "std"))' '-C' 'metadata=aaf213b1c0f9fc76' '-C' 'extra-filename=-87400b3c7da4c4b0' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/ppv-lite86-0.2.17/src/lib.rs \
+      rustc '--crate-name' 'ppv_lite86' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="simd"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "no_simd", "simd", "std"))' '-C' 'metadata=aaf213b1c0f9fc76' '-C' 'extra-filename=-87400b3c7da4c4b0' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ppv-lite86-0.2.17/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-87400b3c7da4c4b0
@@ -2467,15 +2467,15 @@ FROM rust-base AS dep-l-rand_core-0.6.4-0d0a84b9d7c58f99
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-rand_core-0.6.4,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/rand_core-0.6.4 \
+  --mount=from=cratesio-rand_core-0.6.4,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rand_core-0.6.4 \
   --mount=from=out-642a9e511eeb712a,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libcfg_if-642a9e511eeb712a.rmeta,source=/libcfg_if-642a9e511eeb712a.rmeta \
   --mount=from=out-00fb84f4c9caa6e8,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libgetrandom-00fb84f4c9caa6e8.rmeta,source=/libgetrandom-00fb84f4c9caa6e8.rmeta \
   --mount=from=out-ac4dd89498f52d23,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/liblibc-ac4dd89498f52d23.rmeta,source=/liblibc-ac4dd89498f52d23.rmeta \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="rand_core" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/rand_core-0.6.4" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/rand_core-0.6.4/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rand_core-0.6.4" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rand_core-0.6.4/Cargo.toml" \
         CARGO_PKG_AUTHORS="The Rand Project Developers:The Rust Project Developers" \
         CARGO_PKG_DESCRIPTION="Core random number generator traits and tools for implementation.\n" \
         CARGO_PKG_HOMEPAGE="https://rust-random.github.io/book" \
@@ -2492,7 +2492,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'rand_core' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="alloc"' '--cfg' 'feature="getrandom"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "getrandom", "serde", "serde1", "std"))' '-C' 'metadata=3387514d18f28e83' '-C' 'extra-filename=-0d0a84b9d7c58f99' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'getrandom=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libgetrandom-00fb84f4c9caa6e8.rmeta' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/rand_core-0.6.4/src/lib.rs \
+      rustc '--crate-name' 'rand_core' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="alloc"' '--cfg' 'feature="getrandom"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "getrandom", "serde", "serde1", "std"))' '-C' 'metadata=3387514d18f28e83' '-C' 'extra-filename=-0d0a84b9d7c58f99' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'getrandom=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libgetrandom-00fb84f4c9caa6e8.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rand_core-0.6.4/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-0d0a84b9d7c58f99
@@ -2512,7 +2512,7 @@ FROM rust-base AS dep-l-rand_chacha-0.3.1-566a79afaebd7e8c
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-rand_chacha-0.3.1,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/rand_chacha-0.3.1 \
+  --mount=from=cratesio-rand_chacha-0.3.1,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rand_chacha-0.3.1 \
   --mount=from=out-642a9e511eeb712a,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libcfg_if-642a9e511eeb712a.rmeta,source=/libcfg_if-642a9e511eeb712a.rmeta \
   --mount=from=out-00fb84f4c9caa6e8,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libgetrandom-00fb84f4c9caa6e8.rmeta,source=/libgetrandom-00fb84f4c9caa6e8.rmeta \
   --mount=from=out-ac4dd89498f52d23,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/liblibc-ac4dd89498f52d23.rmeta,source=/liblibc-ac4dd89498f52d23.rmeta \
@@ -2521,8 +2521,8 @@ RUN \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="rand_chacha" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/rand_chacha-0.3.1" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/rand_chacha-0.3.1/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rand_chacha-0.3.1" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rand_chacha-0.3.1/Cargo.toml" \
         CARGO_PKG_AUTHORS="The Rand Project Developers:The Rust Project Developers:The CryptoCorrosion Contributors" \
         CARGO_PKG_DESCRIPTION="ChaCha random number generator\n" \
         CARGO_PKG_HOMEPAGE="https://rust-random.github.io/book" \
@@ -2539,7 +2539,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'rand_chacha' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "serde", "serde1", "simd", "std"))' '-C' 'metadata=f3ab709609c9e3db' '-C' 'extra-filename=-566a79afaebd7e8c' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'ppv_lite86=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libppv_lite86-87400b3c7da4c4b0.rmeta' '--extern' 'rand_core=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/librand_core-0d0a84b9d7c58f99.rmeta' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/rand_chacha-0.3.1/src/lib.rs \
+      rustc '--crate-name' 'rand_chacha' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "serde", "serde1", "simd", "std"))' '-C' 'metadata=f3ab709609c9e3db' '-C' 'extra-filename=-566a79afaebd7e8c' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'ppv_lite86=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libppv_lite86-87400b3c7da4c4b0.rmeta' '--extern' 'rand_core=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/librand_core-0d0a84b9d7c58f99.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rand_chacha-0.3.1/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-566a79afaebd7e8c
@@ -2559,7 +2559,7 @@ FROM rust-base AS dep-l-rand-0.8.5-06563e08af80a318
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-rand-0.8.5,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/rand-0.8.5 \
+  --mount=from=cratesio-rand-0.8.5,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rand-0.8.5 \
   --mount=from=out-642a9e511eeb712a,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libcfg_if-642a9e511eeb712a.rmeta,source=/libcfg_if-642a9e511eeb712a.rmeta \
   --mount=from=out-00fb84f4c9caa6e8,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libgetrandom-00fb84f4c9caa6e8.rmeta,source=/libgetrandom-00fb84f4c9caa6e8.rmeta \
   --mount=from=out-ac4dd89498f52d23,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/liblibc-ac4dd89498f52d23.rmeta,source=/liblibc-ac4dd89498f52d23.rmeta \
@@ -2569,8 +2569,8 @@ RUN \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="rand" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/rand-0.8.5" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/rand-0.8.5/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rand-0.8.5" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rand-0.8.5/Cargo.toml" \
         CARGO_PKG_AUTHORS="The Rand Project Developers:The Rust Project Developers" \
         CARGO_PKG_DESCRIPTION="Random number generators and other randomness functionality.\n" \
         CARGO_PKG_HOMEPAGE="https://rust-random.github.io/book" \
@@ -2587,7 +2587,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'rand' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="alloc"' '--cfg' 'feature="default"' '--cfg' 'feature="getrandom"' '--cfg' 'feature="libc"' '--cfg' 'feature="rand_chacha"' '--cfg' 'feature="std"' '--cfg' 'feature="std_rng"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "default", "getrandom", "libc", "log", "min_const_gen", "nightly", "packed_simd", "rand_chacha", "serde", "serde1", "simd_support", "small_rng", "std", "std_rng"))' '-C' 'metadata=26b2e4280c900bcf' '-C' 'extra-filename=-06563e08af80a318' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'libc=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/liblibc-ac4dd89498f52d23.rmeta' '--extern' 'rand_chacha=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/librand_chacha-566a79afaebd7e8c.rmeta' '--extern' 'rand_core=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/librand_core-0d0a84b9d7c58f99.rmeta' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/rand-0.8.5/src/lib.rs \
+      rustc '--crate-name' 'rand' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="alloc"' '--cfg' 'feature="default"' '--cfg' 'feature="getrandom"' '--cfg' 'feature="libc"' '--cfg' 'feature="rand_chacha"' '--cfg' 'feature="std"' '--cfg' 'feature="std_rng"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "default", "getrandom", "libc", "log", "min_const_gen", "nightly", "packed_simd", "rand_chacha", "serde", "serde1", "simd_support", "small_rng", "std", "std_rng"))' '-C' 'metadata=26b2e4280c900bcf' '-C' 'extra-filename=-06563e08af80a318' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'libc=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/liblibc-ac4dd89498f52d23.rmeta' '--extern' 'rand_chacha=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/librand_chacha-566a79afaebd7e8c.rmeta' '--extern' 'rand_core=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/librand_core-0d0a84b9d7c58f99.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rand-0.8.5/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-06563e08af80a318
@@ -2607,12 +2607,12 @@ FROM rust-base AS dep-l-spin-0.9.8-15ac156954d1d053
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-spin-0.9.8,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/spin-0.9.8 \
+  --mount=from=cratesio-spin-0.9.8,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/spin-0.9.8 \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="spin" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/spin-0.9.8" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/spin-0.9.8/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/spin-0.9.8" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/spin-0.9.8/Cargo.toml" \
         CARGO_PKG_AUTHORS="Mathijs van de Nes <git@mathijs.vd-nes.nl>:John Ericson <git@JohnEricson.me>:Joshua Barretto <joshua.s.barretto@gmail.com>" \
         CARGO_PKG_DESCRIPTION="Spin-based synchronization primitives" \
         CARGO_PKG_HOMEPAGE= \
@@ -2629,7 +2629,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'spin' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="once"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("barrier", "default", "fair_mutex", "lazy", "lock_api", "lock_api_crate", "mutex", "once", "portable-atomic", "portable_atomic", "rwlock", "spin_mutex", "std", "ticket_mutex", "use_ticket_mutex"))' '-C' 'metadata=60813e2ad9e2eb14' '-C' 'extra-filename=-15ac156954d1d053' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/spin-0.9.8/src/lib.rs \
+      rustc '--crate-name' 'spin' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="once"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("barrier", "default", "fair_mutex", "lazy", "lock_api", "lock_api_crate", "mutex", "once", "portable-atomic", "portable_atomic", "rwlock", "spin_mutex", "std", "ticket_mutex", "use_ticket_mutex"))' '-C' 'metadata=60813e2ad9e2eb14' '-C' 'extra-filename=-15ac156954d1d053' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/spin-0.9.8/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-15ac156954d1d053
@@ -2649,12 +2649,12 @@ FROM rust-base AS dep-l-untrusted-0.9.0-dec2dcd755ab8add
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-untrusted-0.9.0,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/untrusted-0.9.0 \
+  --mount=from=cratesio-untrusted-0.9.0,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/untrusted-0.9.0 \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="untrusted" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/untrusted-0.9.0" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/untrusted-0.9.0/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/untrusted-0.9.0" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/untrusted-0.9.0/Cargo.toml" \
         CARGO_PKG_AUTHORS="Brian Smith <brian@briansmith.org>" \
         CARGO_PKG_DESCRIPTION="Safe, fast, zero-panic, zero-crashing, zero-allocation parsing of untrusted inputs in Rust." \
         CARGO_PKG_HOMEPAGE= \
@@ -2671,7 +2671,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'untrusted' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=e184a6c513ada7de' '-C' 'extra-filename=-dec2dcd755ab8add' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/untrusted-0.9.0/src/lib.rs \
+      rustc '--crate-name' 'untrusted' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=e184a6c513ada7de' '-C' 'extra-filename=-dec2dcd755ab8add' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/untrusted-0.9.0/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-dec2dcd755ab8add
@@ -2691,7 +2691,7 @@ FROM rust-base AS dep-l-ring-0.17.8-51106b2ca0a18b4b
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-ring-0.17.8,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/ring-0.17.8 \
+  --mount=from=cratesio-ring-0.17.8,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ring-0.17.8 \
   --mount=from=crate_out-b4af30f1837a119d,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/build/ring-b4af30f1837a119d/out \
   --mount=from=out-642a9e511eeb712a,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libcfg_if-642a9e511eeb712a.rmeta,source=/libcfg_if-642a9e511eeb712a.rmeta \
   --mount=from=out-00fb84f4c9caa6e8,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libgetrandom-00fb84f4c9caa6e8.rmeta,source=/libgetrandom-00fb84f4c9caa6e8.rmeta \
@@ -2701,8 +2701,8 @@ RUN \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="ring" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/ring-0.17.8" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/ring-0.17.8/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ring-0.17.8" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ring-0.17.8/Cargo.toml" \
         CARGO_PKG_AUTHORS="Brian Smith <brian@briansmith.org>" \
         CARGO_PKG_DESCRIPTION="Safe, fast, small crypto using Rust." \
         CARGO_PKG_HOMEPAGE= \
@@ -2721,7 +2721,7 @@ RUN \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
         RING_CORE_PREFIX="ring_core_0_17_8_" \
-      rustc '--crate-name' 'ring' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="alloc"' '--cfg' 'feature="default"' '--cfg' 'feature="dev_urandom_fallback"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "default", "dev_urandom_fallback", "less-safe-getrandom-custom-or-rdrand", "slow_tests", "std", "test_logging", "unstable-testing-arm-no-hw", "unstable-testing-arm-no-neon", "wasm32_unknown_unknown_js"))' '-C' 'metadata=c2f277f9f4150513' '-C' 'extra-filename=-51106b2ca0a18b4b' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'cfg_if=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libcfg_if-642a9e511eeb712a.rmeta' '--extern' 'getrandom=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libgetrandom-00fb84f4c9caa6e8.rmeta' '--extern' 'spin=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libspin-15ac156954d1d053.rmeta' '--extern' 'untrusted=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libuntrusted-dec2dcd755ab8add.rmeta' '--cap-lints' 'warn' '-L' 'native=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/build/ring-b4af30f1837a119d/out' '-l' 'static=ring_core_0_17_8_' '-l' 'static=ring_core_0_17_8_test' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/ring-0.17.8/src/lib.rs \
+      rustc '--crate-name' 'ring' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="alloc"' '--cfg' 'feature="default"' '--cfg' 'feature="dev_urandom_fallback"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "default", "dev_urandom_fallback", "less-safe-getrandom-custom-or-rdrand", "slow_tests", "std", "test_logging", "unstable-testing-arm-no-hw", "unstable-testing-arm-no-neon", "wasm32_unknown_unknown_js"))' '-C' 'metadata=c2f277f9f4150513' '-C' 'extra-filename=-51106b2ca0a18b4b' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'cfg_if=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libcfg_if-642a9e511eeb712a.rmeta' '--extern' 'getrandom=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libgetrandom-00fb84f4c9caa6e8.rmeta' '--extern' 'spin=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libspin-15ac156954d1d053.rmeta' '--extern' 'untrusted=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libuntrusted-dec2dcd755ab8add.rmeta' '--cap-lints' 'warn' '-L' 'native=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/build/ring-b4af30f1837a119d/out' '-l' 'static=ring_core_0_17_8_' '-l' 'static=ring_core_0_17_8_test' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ring-0.17.8/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-51106b2ca0a18b4b
@@ -2741,7 +2741,7 @@ FROM rust-base AS dep-l-sct-0.7.1-85db5656bd35d7ea
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-sct-0.7.1,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/sct-0.7.1 \
+  --mount=from=cratesio-sct-0.7.1,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/sct-0.7.1 \
   --mount=from=out-642a9e511eeb712a,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libcfg_if-642a9e511eeb712a.rmeta,source=/libcfg_if-642a9e511eeb712a.rmeta \
   --mount=from=out-00fb84f4c9caa6e8,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libgetrandom-00fb84f4c9caa6e8.rmeta,source=/libgetrandom-00fb84f4c9caa6e8.rmeta \
   --mount=from=out-ac4dd89498f52d23,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/liblibc-ac4dd89498f52d23.rmeta,source=/liblibc-ac4dd89498f52d23.rmeta \
@@ -2751,8 +2751,8 @@ RUN \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="sct" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/sct-0.7.1" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/sct-0.7.1/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/sct-0.7.1" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/sct-0.7.1/Cargo.toml" \
         CARGO_PKG_AUTHORS="Joseph Birr-Pixton <jpixton@gmail.com>" \
         CARGO_PKG_DESCRIPTION="Certificate transparency SCT verification library" \
         CARGO_PKG_HOMEPAGE="https://github.com/rustls/sct.rs" \
@@ -2769,7 +2769,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'sct' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=8ac21fad3296b065' '-C' 'extra-filename=-85db5656bd35d7ea' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'ring=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libring-51106b2ca0a18b4b.rmeta' '--extern' 'untrusted=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libuntrusted-dec2dcd755ab8add.rmeta' '--cap-lints' 'warn' '-L' 'native=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/build/ring-b4af30f1837a119d/out' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/sct-0.7.1/src/lib.rs \
+      rustc '--crate-name' 'sct' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=8ac21fad3296b065' '-C' 'extra-filename=-85db5656bd35d7ea' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'ring=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libring-51106b2ca0a18b4b.rmeta' '--extern' 'untrusted=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libuntrusted-dec2dcd755ab8add.rmeta' '--cap-lints' 'warn' '-L' 'native=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/build/ring-b4af30f1837a119d/out' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/sct-0.7.1/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-85db5656bd35d7ea
@@ -2789,7 +2789,7 @@ FROM rust-base AS dep-l-rustls-webpki-0.101.7-4133466106db4627
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-rustls-webpki-0.101.7,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/rustls-webpki-0.101.7 \
+  --mount=from=cratesio-rustls-webpki-0.101.7,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustls-webpki-0.101.7 \
   --mount=from=out-642a9e511eeb712a,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libcfg_if-642a9e511eeb712a.rmeta,source=/libcfg_if-642a9e511eeb712a.rmeta \
   --mount=from=out-00fb84f4c9caa6e8,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libgetrandom-00fb84f4c9caa6e8.rmeta,source=/libgetrandom-00fb84f4c9caa6e8.rmeta \
   --mount=from=out-ac4dd89498f52d23,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/liblibc-ac4dd89498f52d23.rmeta,source=/liblibc-ac4dd89498f52d23.rmeta \
@@ -2799,8 +2799,8 @@ RUN \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="webpki" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/rustls-webpki-0.101.7" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/rustls-webpki-0.101.7/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustls-webpki-0.101.7" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustls-webpki-0.101.7/Cargo.toml" \
         CARGO_PKG_AUTHORS= \
         CARGO_PKG_DESCRIPTION="Web PKI X.509 Certificate Verification." \
         CARGO_PKG_HOMEPAGE= \
@@ -2817,7 +2817,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'webpki' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="alloc"' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "default", "std"))' '-C' 'metadata=984392ac1410f7fd' '-C' 'extra-filename=-4133466106db4627' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'ring=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libring-51106b2ca0a18b4b.rmeta' '--extern' 'untrusted=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libuntrusted-dec2dcd755ab8add.rmeta' '--cap-lints' 'warn' '-L' 'native=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/build/ring-b4af30f1837a119d/out' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/rustls-webpki-0.101.7/src/lib.rs \
+      rustc '--crate-name' 'webpki' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="alloc"' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "default", "std"))' '-C' 'metadata=984392ac1410f7fd' '-C' 'extra-filename=-4133466106db4627' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'ring=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libring-51106b2ca0a18b4b.rmeta' '--extern' 'untrusted=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libuntrusted-dec2dcd755ab8add.rmeta' '--cap-lints' 'warn' '-L' 'native=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/build/ring-b4af30f1837a119d/out' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustls-webpki-0.101.7/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-4133466106db4627
@@ -2837,7 +2837,7 @@ FROM rust-base AS dep-l-rustls-0.21.12-946240332397fd14
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-rustls-0.21.12,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/rustls-0.21.12 \
+  --mount=from=cratesio-rustls-0.21.12,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustls-0.21.12 \
   --mount=from=out-642a9e511eeb712a,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libcfg_if-642a9e511eeb712a.rmeta,source=/libcfg_if-642a9e511eeb712a.rmeta \
   --mount=from=out-00fb84f4c9caa6e8,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libgetrandom-00fb84f4c9caa6e8.rmeta,source=/libgetrandom-00fb84f4c9caa6e8.rmeta \
   --mount=from=out-ac4dd89498f52d23,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/liblibc-ac4dd89498f52d23.rmeta,source=/liblibc-ac4dd89498f52d23.rmeta \
@@ -2850,8 +2850,8 @@ RUN \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="rustls" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/rustls-0.21.12" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/rustls-0.21.12/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustls-0.21.12" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustls-0.21.12/Cargo.toml" \
         CARGO_PKG_AUTHORS= \
         CARGO_PKG_DESCRIPTION="Rustls is a modern TLS library written in Rust." \
         CARGO_PKG_HOMEPAGE="https://github.com/rustls/rustls" \
@@ -2869,7 +2869,7 @@ RUN \
         OUT_DIR="/tmp/clis-hickory-dns_0-25-0-alpha-1/release/build/rustls-f430789fceec2f15/out" \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'rustls' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="default"' '--cfg' 'feature="log"' '--cfg' 'feature="logging"' '--cfg' 'feature="tls12"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("dangerous_configuration", "default", "log", "logging", "quic", "read_buf", "rustversion", "secret_extraction", "tls12"))' '-C' 'metadata=6fd4e7026582907e' '-C' 'extra-filename=-946240332397fd14' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'log=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/liblog-7405012b21e0e01f.rmeta' '--extern' 'ring=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libring-51106b2ca0a18b4b.rmeta' '--extern' 'webpki=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libwebpki-4133466106db4627.rmeta' '--extern' 'sct=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libsct-85db5656bd35d7ea.rmeta' '--cap-lints' 'warn' '-L' 'native=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/build/ring-b4af30f1837a119d/out' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/rustls-0.21.12/src/lib.rs \
+      rustc '--crate-name' 'rustls' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="default"' '--cfg' 'feature="log"' '--cfg' 'feature="logging"' '--cfg' 'feature="tls12"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("dangerous_configuration", "default", "log", "logging", "quic", "read_buf", "rustversion", "secret_extraction", "tls12"))' '-C' 'metadata=6fd4e7026582907e' '-C' 'extra-filename=-946240332397fd14' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'log=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/liblog-7405012b21e0e01f.rmeta' '--extern' 'ring=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libring-51106b2ca0a18b4b.rmeta' '--extern' 'webpki=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libwebpki-4133466106db4627.rmeta' '--extern' 'sct=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libsct-85db5656bd35d7ea.rmeta' '--cap-lints' 'warn' '-L' 'native=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/build/ring-b4af30f1837a119d/out' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustls-0.21.12/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-946240332397fd14
@@ -2889,13 +2889,13 @@ FROM rust-base AS dep-l-rustls-pemfile-1.0.4-5badce5d154dc6ad
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-rustls-pemfile-1.0.4,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/rustls-pemfile-1.0.4 \
+  --mount=from=cratesio-rustls-pemfile-1.0.4,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustls-pemfile-1.0.4 \
   --mount=from=out-fc73ddee32601478,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libbase64-fc73ddee32601478.rmeta,source=/libbase64-fc73ddee32601478.rmeta \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="rustls_pemfile" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/rustls-pemfile-1.0.4" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/rustls-pemfile-1.0.4/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustls-pemfile-1.0.4" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustls-pemfile-1.0.4/Cargo.toml" \
         CARGO_PKG_AUTHORS= \
         CARGO_PKG_DESCRIPTION="Basic .pem file parser for keys and certificates" \
         CARGO_PKG_HOMEPAGE="https://github.com/rustls/pemfile" \
@@ -2912,7 +2912,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'rustls_pemfile' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=044135a043f3cb1c' '-C' 'extra-filename=-5badce5d154dc6ad' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'base64=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libbase64-fc73ddee32601478.rmeta' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/rustls-pemfile-1.0.4/src/lib.rs \
+      rustc '--crate-name' 'rustls_pemfile' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=044135a043f3cb1c' '-C' 'extra-filename=-5badce5d154dc6ad' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'base64=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libbase64-fc73ddee32601478.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustls-pemfile-1.0.4/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-5badce5d154dc6ad
@@ -2932,15 +2932,15 @@ FROM rust-base AS dep-l-rustls-native-certs-0.6.3-30863195e86b4112
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-rustls-native-certs-0.6.3,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/rustls-native-certs-0.6.3 \
+  --mount=from=cratesio-rustls-native-certs-0.6.3,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustls-native-certs-0.6.3 \
   --mount=from=out-fc73ddee32601478,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libbase64-fc73ddee32601478.rmeta,source=/libbase64-fc73ddee32601478.rmeta \
   --mount=from=out-b7e2541f0bd0b1e4,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libopenssl_probe-b7e2541f0bd0b1e4.rmeta,source=/libopenssl_probe-b7e2541f0bd0b1e4.rmeta \
   --mount=from=out-5badce5d154dc6ad,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/librustls_pemfile-5badce5d154dc6ad.rmeta,source=/librustls_pemfile-5badce5d154dc6ad.rmeta \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="rustls_native_certs" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/rustls-native-certs-0.6.3" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/rustls-native-certs-0.6.3/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustls-native-certs-0.6.3" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustls-native-certs-0.6.3/Cargo.toml" \
         CARGO_PKG_AUTHORS= \
         CARGO_PKG_DESCRIPTION="rustls-native-certs allows rustls to use the platform native certificate store" \
         CARGO_PKG_HOMEPAGE="https://github.com/ctz/rustls-native-certs" \
@@ -2957,7 +2957,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'rustls_native_certs' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=d47800736359f853' '-C' 'extra-filename=-30863195e86b4112' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'openssl_probe=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libopenssl_probe-b7e2541f0bd0b1e4.rmeta' '--extern' 'rustls_pemfile=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/librustls_pemfile-5badce5d154dc6ad.rmeta' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/rustls-native-certs-0.6.3/src/lib.rs \
+      rustc '--crate-name' 'rustls_native_certs' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=d47800736359f853' '-C' 'extra-filename=-30863195e86b4112' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'openssl_probe=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libopenssl_probe-b7e2541f0bd0b1e4.rmeta' '--extern' 'rustls_pemfile=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/librustls_pemfile-5badce5d154dc6ad.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustls-native-certs-0.6.3/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-30863195e86b4112
@@ -2977,13 +2977,13 @@ FROM rust-base AS dep-l-socket2-0.5.7-49d2400640d75436
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-socket2-0.5.7,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/socket2-0.5.7 \
+  --mount=from=cratesio-socket2-0.5.7,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/socket2-0.5.7 \
   --mount=from=out-ac4dd89498f52d23,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/liblibc-ac4dd89498f52d23.rmeta,source=/liblibc-ac4dd89498f52d23.rmeta \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="socket2" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/socket2-0.5.7" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/socket2-0.5.7/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/socket2-0.5.7" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/socket2-0.5.7/Cargo.toml" \
         CARGO_PKG_AUTHORS="Alex Crichton <alex@alexcrichton.com>:Thomas de Zeeuw <thomasdezeeuw@gmail.com>" \
         CARGO_PKG_DESCRIPTION="Utilities for handling networking sockets with a maximal amount of configuration\npossible intended.\n" \
         CARGO_PKG_HOMEPAGE="https://github.com/rust-lang/socket2" \
@@ -3000,7 +3000,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'socket2' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="all"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("all"))' '-C' 'metadata=f9cf30be7cc8aee9' '-C' 'extra-filename=-49d2400640d75436' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'libc=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/liblibc-ac4dd89498f52d23.rmeta' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/socket2-0.5.7/src/lib.rs \
+      rustc '--crate-name' 'socket2' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="all"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("all"))' '-C' 'metadata=f9cf30be7cc8aee9' '-C' 'extra-filename=-49d2400640d75436' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'libc=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/liblibc-ac4dd89498f52d23.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/socket2-0.5.7/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-49d2400640d75436
@@ -3020,7 +3020,7 @@ FROM rust-base AS dep-p-thiserror-impl-1.0.61-4ad441ce7df3f5b0
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-thiserror-impl-1.0.61,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/thiserror-impl-1.0.61 \
+  --mount=from=cratesio-thiserror-impl-1.0.61,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thiserror-impl-1.0.61 \
   --mount=from=out-b2cfc86673b59c9a,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libproc_macro2-b2cfc86673b59c9a.rlib,source=/libproc_macro2-b2cfc86673b59c9a.rlib \
   --mount=from=out-180f3b4ac22a8d2e,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libquote-180f3b4ac22a8d2e.rlib,source=/libquote-180f3b4ac22a8d2e.rlib \
   --mount=from=out-812a3cc55dd704a3,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libsyn-812a3cc55dd704a3.rlib,source=/libsyn-812a3cc55dd704a3.rlib \
@@ -3028,8 +3028,8 @@ RUN \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="thiserror_impl" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/thiserror-impl-1.0.61" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/thiserror-impl-1.0.61/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thiserror-impl-1.0.61" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thiserror-impl-1.0.61/Cargo.toml" \
         CARGO_PKG_AUTHORS="David Tolnay <dtolnay@gmail.com>" \
         CARGO_PKG_DESCRIPTION="Implementation detail of the `thiserror` crate" \
         CARGO_PKG_HOMEPAGE= \
@@ -3046,7 +3046,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'thiserror_impl' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'proc-macro' '--emit' 'dep-info,link' '-C' 'prefer-dynamic' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=43ad0b501c391ad4' '-C' 'extra-filename=-4ad441ce7df3f5b0' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'proc_macro2=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libproc_macro2-b2cfc86673b59c9a.rlib' '--extern' 'quote=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libquote-180f3b4ac22a8d2e.rlib' '--extern' 'syn=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libsyn-812a3cc55dd704a3.rlib' '--extern' 'proc_macro' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/thiserror-impl-1.0.61/src/lib.rs \
+      rustc '--crate-name' 'thiserror_impl' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'proc-macro' '--emit' 'dep-info,link' '-C' 'prefer-dynamic' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=43ad0b501c391ad4' '-C' 'extra-filename=-4ad441ce7df3f5b0' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'proc_macro2=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libproc_macro2-b2cfc86673b59c9a.rlib' '--extern' 'quote=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libquote-180f3b4ac22a8d2e.rlib' '--extern' 'syn=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libsyn-812a3cc55dd704a3.rlib' '--extern' 'proc_macro' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thiserror-impl-1.0.61/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-4ad441ce7df3f5b0
@@ -3066,7 +3066,7 @@ FROM rust-base AS dep-l-thiserror-1.0.61-0775a6b20280dc57
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-thiserror-1.0.61,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/thiserror-1.0.61 \
+  --mount=from=cratesio-thiserror-1.0.61,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thiserror-1.0.61 \
   --mount=from=crate_out-05ef0c7c9ae8803b,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/build/thiserror-05ef0c7c9ae8803b/out \
   --mount=from=out-b2cfc86673b59c9a,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libproc_macro2-b2cfc86673b59c9a.rmeta,source=/libproc_macro2-b2cfc86673b59c9a.rmeta \
   --mount=from=out-180f3b4ac22a8d2e,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libquote-180f3b4ac22a8d2e.rmeta,source=/libquote-180f3b4ac22a8d2e.rmeta \
@@ -3076,8 +3076,8 @@ RUN \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="thiserror" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/thiserror-1.0.61" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/thiserror-1.0.61/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thiserror-1.0.61" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thiserror-1.0.61/Cargo.toml" \
         CARGO_PKG_AUTHORS="David Tolnay <dtolnay@gmail.com>" \
         CARGO_PKG_DESCRIPTION="derive(Error)" \
         CARGO_PKG_HOMEPAGE= \
@@ -3095,7 +3095,7 @@ RUN \
         OUT_DIR="/tmp/clis-hickory-dns_0-25-0-alpha-1/release/build/thiserror-05ef0c7c9ae8803b/out" \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'thiserror' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=1e6df0cda89a4c5e' '-C' 'extra-filename=-0775a6b20280dc57' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'thiserror_impl=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libthiserror_impl-4ad441ce7df3f5b0.so' '--cap-lints' 'warn' '--check-cfg' 'cfg(error_generic_member_access)' '--check-cfg' 'cfg(thiserror_nightly_testing)' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/thiserror-1.0.61/src/lib.rs \
+      rustc '--crate-name' 'thiserror' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=1e6df0cda89a4c5e' '-C' 'extra-filename=-0775a6b20280dc57' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'thiserror_impl=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libthiserror_impl-4ad441ce7df3f5b0.so' '--cap-lints' 'warn' '--check-cfg' 'cfg(error_generic_member_access)' '--check-cfg' 'cfg(thiserror_nightly_testing)' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thiserror-1.0.61/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-0775a6b20280dc57
@@ -3115,7 +3115,7 @@ FROM rust-base AS dep-p-tokio-macros-2.2.0-ad35b3ecac48af28
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-tokio-macros-2.2.0,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/tokio-macros-2.2.0 \
+  --mount=from=cratesio-tokio-macros-2.2.0,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/tokio-macros-2.2.0 \
   --mount=from=out-b2cfc86673b59c9a,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libproc_macro2-b2cfc86673b59c9a.rlib,source=/libproc_macro2-b2cfc86673b59c9a.rlib \
   --mount=from=out-180f3b4ac22a8d2e,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libquote-180f3b4ac22a8d2e.rlib,source=/libquote-180f3b4ac22a8d2e.rlib \
   --mount=from=out-812a3cc55dd704a3,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libsyn-812a3cc55dd704a3.rlib,source=/libsyn-812a3cc55dd704a3.rlib \
@@ -3123,8 +3123,8 @@ RUN \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="tokio_macros" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/tokio-macros-2.2.0" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/tokio-macros-2.2.0/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/tokio-macros-2.2.0" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/tokio-macros-2.2.0/Cargo.toml" \
         CARGO_PKG_AUTHORS="Tokio Contributors <team@tokio.rs>" \
         CARGO_PKG_DESCRIPTION="Tokio's proc macros.\n" \
         CARGO_PKG_HOMEPAGE="https://tokio.rs" \
@@ -3141,7 +3141,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'tokio_macros' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'proc-macro' '--emit' 'dep-info,link' '-C' 'prefer-dynamic' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=fd59cb293ce59562' '-C' 'extra-filename=-ad35b3ecac48af28' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'proc_macro2=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libproc_macro2-b2cfc86673b59c9a.rlib' '--extern' 'quote=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libquote-180f3b4ac22a8d2e.rlib' '--extern' 'syn=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libsyn-812a3cc55dd704a3.rlib' '--extern' 'proc_macro' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/tokio-macros-2.2.0/src/lib.rs \
+      rustc '--crate-name' 'tokio_macros' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'proc-macro' '--emit' 'dep-info,link' '-C' 'prefer-dynamic' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=fd59cb293ce59562' '-C' 'extra-filename=-ad35b3ecac48af28' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'proc_macro2=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libproc_macro2-b2cfc86673b59c9a.rlib' '--extern' 'quote=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libquote-180f3b4ac22a8d2e.rlib' '--extern' 'syn=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libsyn-812a3cc55dd704a3.rlib' '--extern' 'proc_macro' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/tokio-macros-2.2.0/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-ad35b3ecac48af28
@@ -3161,7 +3161,7 @@ FROM rust-base AS dep-l-tokio-1.37.0-79aa4352b389ce42
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-tokio-1.37.0,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/tokio-1.37.0 \
+  --mount=from=cratesio-tokio-1.37.0,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/tokio-1.37.0 \
   --mount=from=out-50244e9691b9a94b,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libbytes-50244e9691b9a94b.rmeta,source=/libbytes-50244e9691b9a94b.rmeta \
   --mount=from=out-ac4dd89498f52d23,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/liblibc-ac4dd89498f52d23.rmeta,source=/liblibc-ac4dd89498f52d23.rmeta \
   --mount=from=out-c6dfc79e459af200,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libmio-c6dfc79e459af200.rmeta,source=/libmio-c6dfc79e459af200.rmeta \
@@ -3176,8 +3176,8 @@ RUN \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="tokio" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/tokio-1.37.0" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/tokio-1.37.0/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/tokio-1.37.0" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/tokio-1.37.0/Cargo.toml" \
         CARGO_PKG_AUTHORS="Tokio Contributors <team@tokio.rs>" \
         CARGO_PKG_DESCRIPTION="An event-driven, non-blocking I/O platform for writing asynchronous I/O\nbacked applications.\n" \
         CARGO_PKG_HOMEPAGE="https://tokio.rs" \
@@ -3194,7 +3194,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'tokio' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="bytes"' '--cfg' 'feature="default"' '--cfg' 'feature="io-util"' '--cfg' 'feature="libc"' '--cfg' 'feature="macros"' '--cfg' 'feature="mio"' '--cfg' 'feature="net"' '--cfg' 'feature="num_cpus"' '--cfg' 'feature="rt"' '--cfg' 'feature="rt-multi-thread"' '--cfg' 'feature="socket2"' '--cfg' 'feature="sync"' '--cfg' 'feature="time"' '--cfg' 'feature="tokio-macros"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("bytes", "default", "fs", "full", "io-std", "io-util", "libc", "macros", "mio", "net", "num_cpus", "parking_lot", "process", "rt", "rt-multi-thread", "signal", "signal-hook-registry", "socket2", "sync", "test-util", "time", "tokio-macros", "tracing", "windows-sys"))' '-C' 'metadata=436999f0521bbb61' '-C' 'extra-filename=-79aa4352b389ce42' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'bytes=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libbytes-50244e9691b9a94b.rmeta' '--extern' 'libc=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/liblibc-ac4dd89498f52d23.rmeta' '--extern' 'mio=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libmio-c6dfc79e459af200.rmeta' '--extern' 'num_cpus=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libnum_cpus-4d0099b3e13d99bc.rmeta' '--extern' 'pin_project_lite=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libpin_project_lite-da209fbed6de9e9d.rmeta' '--extern' 'socket2=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libsocket2-49d2400640d75436.rmeta' '--extern' 'tokio_macros=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libtokio_macros-ad35b3ecac48af28.so' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/tokio-1.37.0/src/lib.rs \
+      rustc '--crate-name' 'tokio' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="bytes"' '--cfg' 'feature="default"' '--cfg' 'feature="io-util"' '--cfg' 'feature="libc"' '--cfg' 'feature="macros"' '--cfg' 'feature="mio"' '--cfg' 'feature="net"' '--cfg' 'feature="num_cpus"' '--cfg' 'feature="rt"' '--cfg' 'feature="rt-multi-thread"' '--cfg' 'feature="socket2"' '--cfg' 'feature="sync"' '--cfg' 'feature="time"' '--cfg' 'feature="tokio-macros"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("bytes", "default", "fs", "full", "io-std", "io-util", "libc", "macros", "mio", "net", "num_cpus", "parking_lot", "process", "rt", "rt-multi-thread", "signal", "signal-hook-registry", "socket2", "sync", "test-util", "time", "tokio-macros", "tracing", "windows-sys"))' '-C' 'metadata=436999f0521bbb61' '-C' 'extra-filename=-79aa4352b389ce42' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'bytes=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libbytes-50244e9691b9a94b.rmeta' '--extern' 'libc=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/liblibc-ac4dd89498f52d23.rmeta' '--extern' 'mio=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libmio-c6dfc79e459af200.rmeta' '--extern' 'num_cpus=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libnum_cpus-4d0099b3e13d99bc.rmeta' '--extern' 'pin_project_lite=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libpin_project_lite-da209fbed6de9e9d.rmeta' '--extern' 'socket2=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libsocket2-49d2400640d75436.rmeta' '--extern' 'tokio_macros=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libtokio_macros-ad35b3ecac48af28.so' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/tokio-1.37.0/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-79aa4352b389ce42
@@ -3214,7 +3214,7 @@ FROM rust-base AS dep-l-tokio-rustls-0.24.1-276f52514b3ea657
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-tokio-rustls-0.24.1,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/tokio-rustls-0.24.1 \
+  --mount=from=cratesio-tokio-rustls-0.24.1,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/tokio-rustls-0.24.1 \
   --mount=from=out-50244e9691b9a94b,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libbytes-50244e9691b9a94b.rmeta,source=/libbytes-50244e9691b9a94b.rmeta \
   --mount=from=out-642a9e511eeb712a,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libcfg_if-642a9e511eeb712a.rmeta,source=/libcfg_if-642a9e511eeb712a.rmeta \
   --mount=from=out-00fb84f4c9caa6e8,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libgetrandom-00fb84f4c9caa6e8.rmeta,source=/libgetrandom-00fb84f4c9caa6e8.rmeta \
@@ -3239,8 +3239,8 @@ RUN \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="tokio_rustls" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/tokio-rustls-0.24.1" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/tokio-rustls-0.24.1/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/tokio-rustls-0.24.1" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/tokio-rustls-0.24.1/Cargo.toml" \
         CARGO_PKG_AUTHORS= \
         CARGO_PKG_DESCRIPTION="Asynchronous TLS/SSL streams for Tokio using Rustls." \
         CARGO_PKG_HOMEPAGE="https://github.com/rustls/tokio-rustls" \
@@ -3257,7 +3257,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'tokio_rustls' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="default"' '--cfg' 'feature="early-data"' '--cfg' 'feature="logging"' '--cfg' 'feature="tls12"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("dangerous_configuration", "default", "early-data", "logging", "secret_extraction", "tls12"))' '-C' 'metadata=f2f38f77f6fc4698' '-C' 'extra-filename=-276f52514b3ea657' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'rustls=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/librustls-946240332397fd14.rmeta' '--extern' 'tokio=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libtokio-79aa4352b389ce42.rmeta' '--cap-lints' 'warn' '-L' 'native=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/build/ring-b4af30f1837a119d/out' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/tokio-rustls-0.24.1/src/lib.rs \
+      rustc '--crate-name' 'tokio_rustls' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="default"' '--cfg' 'feature="early-data"' '--cfg' 'feature="logging"' '--cfg' 'feature="tls12"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("dangerous_configuration", "default", "early-data", "logging", "secret_extraction", "tls12"))' '-C' 'metadata=f2f38f77f6fc4698' '-C' 'extra-filename=-276f52514b3ea657' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'rustls=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/librustls-946240332397fd14.rmeta' '--extern' 'tokio=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libtokio-79aa4352b389ce42.rmeta' '--cap-lints' 'warn' '-L' 'native=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/build/ring-b4af30f1837a119d/out' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/tokio-rustls-0.24.1/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-276f52514b3ea657
@@ -3277,7 +3277,7 @@ FROM rust-base AS dep-p-tracing-attributes-0.1.27-f0323b121600b0b7
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-tracing-attributes-0.1.27,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/tracing-attributes-0.1.27 \
+  --mount=from=cratesio-tracing-attributes-0.1.27,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/tracing-attributes-0.1.27 \
   --mount=from=out-b2cfc86673b59c9a,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libproc_macro2-b2cfc86673b59c9a.rlib,source=/libproc_macro2-b2cfc86673b59c9a.rlib \
   --mount=from=out-180f3b4ac22a8d2e,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libquote-180f3b4ac22a8d2e.rlib,source=/libquote-180f3b4ac22a8d2e.rlib \
   --mount=from=out-812a3cc55dd704a3,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libsyn-812a3cc55dd704a3.rlib,source=/libsyn-812a3cc55dd704a3.rlib \
@@ -3285,8 +3285,8 @@ RUN \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="tracing_attributes" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/tracing-attributes-0.1.27" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/tracing-attributes-0.1.27/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/tracing-attributes-0.1.27" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/tracing-attributes-0.1.27/Cargo.toml" \
         CARGO_PKG_AUTHORS="Tokio Contributors <team@tokio.rs>:Eliza Weisman <eliza@buoyant.io>:David Barsky <dbarsky@amazon.com>" \
         CARGO_PKG_DESCRIPTION="Procedural macro attributes for automatically instrumenting functions.\n" \
         CARGO_PKG_HOMEPAGE="https://tokio.rs" \
@@ -3303,7 +3303,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'tracing_attributes' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'proc-macro' '--emit' 'dep-info,link' '-C' 'prefer-dynamic' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("async-await"))' '-C' 'metadata=93bb11ac7c2c752f' '-C' 'extra-filename=-f0323b121600b0b7' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'proc_macro2=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libproc_macro2-b2cfc86673b59c9a.rlib' '--extern' 'quote=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libquote-180f3b4ac22a8d2e.rlib' '--extern' 'syn=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libsyn-812a3cc55dd704a3.rlib' '--extern' 'proc_macro' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/tracing-attributes-0.1.27/src/lib.rs \
+      rustc '--crate-name' 'tracing_attributes' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'proc-macro' '--emit' 'dep-info,link' '-C' 'prefer-dynamic' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("async-await"))' '-C' 'metadata=93bb11ac7c2c752f' '-C' 'extra-filename=-f0323b121600b0b7' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'proc_macro2=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libproc_macro2-b2cfc86673b59c9a.rlib' '--extern' 'quote=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libquote-180f3b4ac22a8d2e.rlib' '--extern' 'syn=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libsyn-812a3cc55dd704a3.rlib' '--extern' 'proc_macro' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/tracing-attributes-0.1.27/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-f0323b121600b0b7
@@ -3323,13 +3323,13 @@ FROM rust-base AS dep-l-tracing-core-0.1.32-ee47408ff1d8db93
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-tracing-core-0.1.32,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/tracing-core-0.1.32 \
+  --mount=from=cratesio-tracing-core-0.1.32,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/tracing-core-0.1.32 \
   --mount=from=out-330cfb3cbb7b43f5,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libonce_cell-330cfb3cbb7b43f5.rmeta,source=/libonce_cell-330cfb3cbb7b43f5.rmeta \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="tracing_core" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/tracing-core-0.1.32" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/tracing-core-0.1.32/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/tracing-core-0.1.32" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/tracing-core-0.1.32/Cargo.toml" \
         CARGO_PKG_AUTHORS="Tokio Contributors <team@tokio.rs>" \
         CARGO_PKG_DESCRIPTION="Core primitives for application-level tracing.\n" \
         CARGO_PKG_HOMEPAGE="https://tokio.rs" \
@@ -3346,7 +3346,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'tracing_core' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="default"' '--cfg' 'feature="once_cell"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "once_cell", "std", "valuable"))' '-C' 'metadata=c213b90b405fae5b' '-C' 'extra-filename=-ee47408ff1d8db93' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'once_cell=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libonce_cell-330cfb3cbb7b43f5.rmeta' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/tracing-core-0.1.32/src/lib.rs \
+      rustc '--crate-name' 'tracing_core' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="default"' '--cfg' 'feature="once_cell"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "once_cell", "std", "valuable"))' '-C' 'metadata=c213b90b405fae5b' '-C' 'extra-filename=-ee47408ff1d8db93' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'once_cell=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libonce_cell-330cfb3cbb7b43f5.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/tracing-core-0.1.32/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-ee47408ff1d8db93
@@ -3366,7 +3366,7 @@ FROM rust-base AS dep-l-tracing-0.1.40-566b844940427fbc
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-tracing-0.1.40,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/tracing-0.1.40 \
+  --mount=from=cratesio-tracing-0.1.40,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/tracing-0.1.40 \
   --mount=from=out-330cfb3cbb7b43f5,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libonce_cell-330cfb3cbb7b43f5.rmeta,source=/libonce_cell-330cfb3cbb7b43f5.rmeta \
   --mount=from=out-da209fbed6de9e9d,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libpin_project_lite-da209fbed6de9e9d.rmeta,source=/libpin_project_lite-da209fbed6de9e9d.rmeta \
   --mount=from=out-b2cfc86673b59c9a,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libproc_macro2-b2cfc86673b59c9a.rmeta,source=/libproc_macro2-b2cfc86673b59c9a.rmeta \
@@ -3378,8 +3378,8 @@ RUN \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="tracing" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/tracing-0.1.40" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/tracing-0.1.40/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/tracing-0.1.40" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/tracing-0.1.40/Cargo.toml" \
         CARGO_PKG_AUTHORS="Eliza Weisman <eliza@buoyant.io>:Tokio Contributors <team@tokio.rs>" \
         CARGO_PKG_DESCRIPTION="Application-level tracing for Rust.\n" \
         CARGO_PKG_HOMEPAGE="https://tokio.rs" \
@@ -3396,7 +3396,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'tracing' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="attributes"' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--cfg' 'feature="tracing-attributes"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("async-await", "attributes", "default", "log", "log-always", "max_level_debug", "max_level_error", "max_level_info", "max_level_off", "max_level_trace", "max_level_warn", "release_max_level_debug", "release_max_level_error", "release_max_level_info", "release_max_level_off", "release_max_level_trace", "release_max_level_warn", "std", "tracing-attributes", "valuable"))' '-C' 'metadata=6c7df1604fcc45bb' '-C' 'extra-filename=-566b844940427fbc' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'pin_project_lite=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libpin_project_lite-da209fbed6de9e9d.rmeta' '--extern' 'tracing_attributes=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libtracing_attributes-f0323b121600b0b7.so' '--extern' 'tracing_core=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libtracing_core-ee47408ff1d8db93.rmeta' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/tracing-0.1.40/src/lib.rs \
+      rustc '--crate-name' 'tracing' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="attributes"' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--cfg' 'feature="tracing-attributes"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("async-await", "attributes", "default", "log", "log-always", "max_level_debug", "max_level_error", "max_level_info", "max_level_off", "max_level_trace", "max_level_warn", "release_max_level_debug", "release_max_level_error", "release_max_level_info", "release_max_level_off", "release_max_level_trace", "release_max_level_warn", "std", "tracing-attributes", "valuable"))' '-C' 'metadata=6c7df1604fcc45bb' '-C' 'extra-filename=-566b844940427fbc' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'pin_project_lite=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libpin_project_lite-da209fbed6de9e9d.rmeta' '--extern' 'tracing_attributes=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libtracing_attributes-f0323b121600b0b7.so' '--extern' 'tracing_core=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libtracing_core-ee47408ff1d8db93.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/tracing-0.1.40/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-566b844940427fbc
@@ -3416,7 +3416,7 @@ FROM rust-base AS dep-l-url-2.5.0-ff0ba4e5a285e07d
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-url-2.5.0,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/url-2.5.0 \
+  --mount=from=cratesio-url-2.5.0,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/url-2.5.0 \
   --mount=from=out-1fa58ff40b094e8a,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libform_urlencoded-1fa58ff40b094e8a.rmeta,source=/libform_urlencoded-1fa58ff40b094e8a.rmeta \
   --mount=from=out-e3d8683b2ed3c28d,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libidna-e3d8683b2ed3c28d.rmeta,source=/libidna-e3d8683b2ed3c28d.rmeta \
   --mount=from=out-a9430e27cc2cdede,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libpercent_encoding-a9430e27cc2cdede.rmeta,source=/libpercent_encoding-a9430e27cc2cdede.rmeta \
@@ -3433,8 +3433,8 @@ RUN \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="url" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/url-2.5.0" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/url-2.5.0/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/url-2.5.0" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/url-2.5.0/Cargo.toml" \
         CARGO_PKG_AUTHORS="The rust-url developers" \
         CARGO_PKG_DESCRIPTION="URL library for Rust, based on the WHATWG URL Standard" \
         CARGO_PKG_HOMEPAGE= \
@@ -3451,7 +3451,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'url' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="default"' '--cfg' 'feature="serde"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("debugger_visualizer", "default", "expose_internals", "serde"))' '-C' 'metadata=ad8662fa4ea2d338' '-C' 'extra-filename=-ff0ba4e5a285e07d' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'form_urlencoded=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libform_urlencoded-1fa58ff40b094e8a.rmeta' '--extern' 'idna=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libidna-e3d8683b2ed3c28d.rmeta' '--extern' 'percent_encoding=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libpercent_encoding-a9430e27cc2cdede.rmeta' '--extern' 'serde=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libserde-ceabefec0a6d61ca.rmeta' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/url-2.5.0/src/lib.rs \
+      rustc '--crate-name' 'url' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="default"' '--cfg' 'feature="serde"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("debugger_visualizer", "default", "expose_internals", "serde"))' '-C' 'metadata=ad8662fa4ea2d338' '-C' 'extra-filename=-ff0ba4e5a285e07d' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'form_urlencoded=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libform_urlencoded-1fa58ff40b094e8a.rmeta' '--extern' 'idna=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libidna-e3d8683b2ed3c28d.rmeta' '--extern' 'percent_encoding=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libpercent_encoding-a9430e27cc2cdede.rmeta' '--extern' 'serde=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libserde-ceabefec0a6d61ca.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/url-2.5.0/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-ff0ba4e5a285e07d
@@ -3471,7 +3471,7 @@ FROM rust-base AS dep-l-hickory-proto-0.25.0-alpha.1-d268433833bdfec5
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-hickory-proto-0.25.0-alpha.1,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/hickory-proto-0.25.0-alpha.1 \
+  --mount=from=cratesio-hickory-proto-0.25.0-alpha.1,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/hickory-proto-0.25.0-alpha.1 \
   --mount=from=out-9dd3aead262695aa,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libasync_recursion-9dd3aead262695aa.so,source=/libasync_recursion-9dd3aead262695aa.so \
   --mount=from=out-688e1090a6b8baa3,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libasync_trait-688e1090a6b8baa3.so,source=/libasync_trait-688e1090a6b8baa3.so \
   --mount=from=out-fc73ddee32601478,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libbase64-fc73ddee32601478.rmeta,source=/libbase64-fc73ddee32601478.rmeta \
@@ -3535,8 +3535,8 @@ RUN \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="hickory_proto" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/hickory-proto-0.25.0-alpha.1" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/hickory-proto-0.25.0-alpha.1/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/hickory-proto-0.25.0-alpha.1" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/hickory-proto-0.25.0-alpha.1/Cargo.toml" \
         CARGO_PKG_AUTHORS="The contributors to Hickory DNS" \
         CARGO_PKG_DESCRIPTION="Hickory DNS is a safe and secure DNS library. This is the foundational DNS protocol library for all Hickory DNS projects.\n" \
         CARGO_PKG_HOMEPAGE="https://hickory-dns.org/" \
@@ -3553,7 +3553,7 @@ RUN \
         CARGO_PKG_VERSION_PRE="alpha.1" \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'hickory_proto' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="bitflags"' '--cfg' 'feature="dns-over-rustls"' '--cfg' 'feature="dns-over-tls"' '--cfg' 'feature="dnssec"' '--cfg' 'feature="dnssec-ring"' '--cfg' 'feature="native-certs"' '--cfg' 'feature="ring"' '--cfg' 'feature="rustls"' '--cfg' 'feature="rustls-pemfile"' '--cfg' 'feature="serde"' '--cfg' 'feature="serde-config"' '--cfg' 'feature="text-parsing"' '--cfg' 'feature="tokio"' '--cfg' 'feature="tokio-runtime"' '--cfg' 'feature="tokio-rustls"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("backtrace", "bitflags", "bytes", "default", "dns-over-h3", "dns-over-https", "dns-over-https-rustls", "dns-over-native-tls", "dns-over-openssl", "dns-over-quic", "dns-over-rustls", "dns-over-tls", "dnssec", "dnssec-openssl", "dnssec-ring", "h2", "h3", "h3-quinn", "http", "js-sys", "mdns", "native-certs", "native-tls", "openssl", "quinn", "ring", "rustls", "rustls-pemfile", "serde", "serde-config", "socket2", "testing", "text-parsing", "tokio", "tokio-native-tls", "tokio-openssl", "tokio-runtime", "tokio-rustls", "wasm-bindgen", "wasm-bindgen-crate", "webpki-roots"))' '-C' 'metadata=e38e1233a6feb1a5' '-C' 'extra-filename=-d268433833bdfec5' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'async_recursion=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libasync_recursion-9dd3aead262695aa.so' '--extern' 'async_trait=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libasync_trait-688e1090a6b8baa3.so' '--extern' 'bitflags=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libbitflags-17a5f5c99a2a99e3.rmeta' '--extern' 'cfg_if=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libcfg_if-642a9e511eeb712a.rmeta' '--extern' 'data_encoding=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libdata_encoding-cd548921ca92e99b.rmeta' '--extern' 'enum_as_inner=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libenum_as_inner-6d04612725c62e19.so' '--extern' 'futures_channel=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libfutures_channel-e6e3dc4c6158ba3c.rmeta' '--extern' 'futures_io=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libfutures_io-c2848afe902b9743.rmeta' '--extern' 'futures_util=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libfutures_util-ff898060123f2ff4.rmeta' '--extern' 'idna=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libidna-e3d8683b2ed3c28d.rmeta' '--extern' 'ipnet=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libipnet-1ae33865903c85f3.rmeta' '--extern' 'once_cell=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libonce_cell-330cfb3cbb7b43f5.rmeta' '--extern' 'rand=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/librand-06563e08af80a318.rmeta' '--extern' 'ring=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libring-51106b2ca0a18b4b.rmeta' '--extern' 'rustls=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/librustls-946240332397fd14.rmeta' '--extern' 'rustls_native_certs=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/librustls_native_certs-30863195e86b4112.rmeta' '--extern' 'rustls_pemfile=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/librustls_pemfile-5badce5d154dc6ad.rmeta' '--extern' 'serde=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libserde-ceabefec0a6d61ca.rmeta' '--extern' 'thiserror=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libthiserror-0775a6b20280dc57.rmeta' '--extern' 'tinyvec=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libtinyvec-854aea433f68745d.rmeta' '--extern' 'tokio=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libtokio-79aa4352b389ce42.rmeta' '--extern' 'tokio_rustls=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libtokio_rustls-276f52514b3ea657.rmeta' '--extern' 'tracing=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libtracing-566b844940427fbc.rmeta' '--extern' 'url=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/liburl-ff0ba4e5a285e07d.rmeta' '--cap-lints' 'warn' '-L' 'native=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/build/ring-b4af30f1837a119d/out' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/hickory-proto-0.25.0-alpha.1/src/lib.rs \
+      rustc '--crate-name' 'hickory_proto' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="bitflags"' '--cfg' 'feature="dns-over-rustls"' '--cfg' 'feature="dns-over-tls"' '--cfg' 'feature="dnssec"' '--cfg' 'feature="dnssec-ring"' '--cfg' 'feature="native-certs"' '--cfg' 'feature="ring"' '--cfg' 'feature="rustls"' '--cfg' 'feature="rustls-pemfile"' '--cfg' 'feature="serde"' '--cfg' 'feature="serde-config"' '--cfg' 'feature="text-parsing"' '--cfg' 'feature="tokio"' '--cfg' 'feature="tokio-runtime"' '--cfg' 'feature="tokio-rustls"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("backtrace", "bitflags", "bytes", "default", "dns-over-h3", "dns-over-https", "dns-over-https-rustls", "dns-over-native-tls", "dns-over-openssl", "dns-over-quic", "dns-over-rustls", "dns-over-tls", "dnssec", "dnssec-openssl", "dnssec-ring", "h2", "h3", "h3-quinn", "http", "js-sys", "mdns", "native-certs", "native-tls", "openssl", "quinn", "ring", "rustls", "rustls-pemfile", "serde", "serde-config", "socket2", "testing", "text-parsing", "tokio", "tokio-native-tls", "tokio-openssl", "tokio-runtime", "tokio-rustls", "wasm-bindgen", "wasm-bindgen-crate", "webpki-roots"))' '-C' 'metadata=e38e1233a6feb1a5' '-C' 'extra-filename=-d268433833bdfec5' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'async_recursion=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libasync_recursion-9dd3aead262695aa.so' '--extern' 'async_trait=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libasync_trait-688e1090a6b8baa3.so' '--extern' 'bitflags=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libbitflags-17a5f5c99a2a99e3.rmeta' '--extern' 'cfg_if=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libcfg_if-642a9e511eeb712a.rmeta' '--extern' 'data_encoding=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libdata_encoding-cd548921ca92e99b.rmeta' '--extern' 'enum_as_inner=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libenum_as_inner-6d04612725c62e19.so' '--extern' 'futures_channel=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libfutures_channel-e6e3dc4c6158ba3c.rmeta' '--extern' 'futures_io=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libfutures_io-c2848afe902b9743.rmeta' '--extern' 'futures_util=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libfutures_util-ff898060123f2ff4.rmeta' '--extern' 'idna=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libidna-e3d8683b2ed3c28d.rmeta' '--extern' 'ipnet=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libipnet-1ae33865903c85f3.rmeta' '--extern' 'once_cell=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libonce_cell-330cfb3cbb7b43f5.rmeta' '--extern' 'rand=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/librand-06563e08af80a318.rmeta' '--extern' 'ring=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libring-51106b2ca0a18b4b.rmeta' '--extern' 'rustls=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/librustls-946240332397fd14.rmeta' '--extern' 'rustls_native_certs=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/librustls_native_certs-30863195e86b4112.rmeta' '--extern' 'rustls_pemfile=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/librustls_pemfile-5badce5d154dc6ad.rmeta' '--extern' 'serde=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libserde-ceabefec0a6d61ca.rmeta' '--extern' 'thiserror=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libthiserror-0775a6b20280dc57.rmeta' '--extern' 'tinyvec=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libtinyvec-854aea433f68745d.rmeta' '--extern' 'tokio=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libtokio-79aa4352b389ce42.rmeta' '--extern' 'tokio_rustls=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libtokio_rustls-276f52514b3ea657.rmeta' '--extern' 'tracing=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libtracing-566b844940427fbc.rmeta' '--extern' 'url=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/liburl-ff0ba4e5a285e07d.rmeta' '--cap-lints' 'warn' '-L' 'native=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/build/ring-b4af30f1837a119d/out' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/hickory-proto-0.25.0-alpha.1/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-d268433833bdfec5
@@ -3573,12 +3573,12 @@ FROM rust-base AS dep-l-smallvec-1.13.2-d566e34028d47484
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-smallvec-1.13.2,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/smallvec-1.13.2 \
+  --mount=from=cratesio-smallvec-1.13.2,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/smallvec-1.13.2 \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="smallvec" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/smallvec-1.13.2" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/smallvec-1.13.2/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/smallvec-1.13.2" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/smallvec-1.13.2/Cargo.toml" \
         CARGO_PKG_AUTHORS="The Servo Project Developers" \
         CARGO_PKG_DESCRIPTION="'Small vector' optimization: store up to a small number of items on the stack" \
         CARGO_PKG_HOMEPAGE= \
@@ -3595,7 +3595,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'smallvec' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("arbitrary", "const_generics", "const_new", "debugger_visualizer", "drain_filter", "drain_keep_rest", "may_dangle", "serde", "specialization", "union", "write"))' '-C' 'metadata=232ae73459a6faf6' '-C' 'extra-filename=-d566e34028d47484' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/smallvec-1.13.2/src/lib.rs \
+      rustc '--crate-name' 'smallvec' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("arbitrary", "const_generics", "const_new", "debugger_visualizer", "drain_filter", "drain_keep_rest", "may_dangle", "serde", "specialization", "union", "write"))' '-C' 'metadata=232ae73459a6faf6' '-C' 'extra-filename=-d566e34028d47484' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/smallvec-1.13.2/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-d566e34028d47484
@@ -3615,13 +3615,13 @@ FROM rust-base AS dep-l-nibble_vec-0.1.0-a774d69fe29ea5a8
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-nibble_vec-0.1.0,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/nibble_vec-0.1.0 \
+  --mount=from=cratesio-nibble_vec-0.1.0,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nibble_vec-0.1.0 \
   --mount=from=out-d566e34028d47484,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libsmallvec-d566e34028d47484.rmeta,source=/libsmallvec-d566e34028d47484.rmeta \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="nibble_vec" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/nibble_vec-0.1.0" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/nibble_vec-0.1.0/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nibble_vec-0.1.0" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nibble_vec-0.1.0/Cargo.toml" \
         CARGO_PKG_AUTHORS="Michael Sproul <micsproul@gmail.com>" \
         CARGO_PKG_DESCRIPTION="Vector data-structure for half-byte values." \
         CARGO_PKG_HOMEPAGE= \
@@ -3638,7 +3638,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'nibble_vec' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=f6461673daadbcb3' '-C' 'extra-filename=-a774d69fe29ea5a8' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'smallvec=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libsmallvec-d566e34028d47484.rmeta' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/nibble_vec-0.1.0/src/lib.rs \
+      rustc '--crate-name' 'nibble_vec' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=f6461673daadbcb3' '-C' 'extra-filename=-a774d69fe29ea5a8' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'smallvec=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libsmallvec-d566e34028d47484.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nibble_vec-0.1.0/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-a774d69fe29ea5a8
@@ -3658,15 +3658,15 @@ FROM rust-base AS dep-l-radix_trie-0.2.1-32049c6f0e0b2ffb
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-radix_trie-0.2.1,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/radix_trie-0.2.1 \
+  --mount=from=cratesio-radix_trie-0.2.1,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/radix_trie-0.2.1 \
   --mount=from=out-b9425a3f51895912,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libendian_type-b9425a3f51895912.rmeta,source=/libendian_type-b9425a3f51895912.rmeta \
   --mount=from=out-a774d69fe29ea5a8,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libnibble_vec-a774d69fe29ea5a8.rmeta,source=/libnibble_vec-a774d69fe29ea5a8.rmeta \
   --mount=from=out-d566e34028d47484,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libsmallvec-d566e34028d47484.rmeta,source=/libsmallvec-d566e34028d47484.rmeta \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="radix_trie" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/radix_trie-0.2.1" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/radix_trie-0.2.1/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/radix_trie-0.2.1" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/radix_trie-0.2.1/Cargo.toml" \
         CARGO_PKG_AUTHORS="Michael Sproul <micsproul@gmail.com>" \
         CARGO_PKG_DESCRIPTION="Generic radix trie data-structure." \
         CARGO_PKG_HOMEPAGE= \
@@ -3683,7 +3683,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'radix_trie' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("serde"))' '-C' 'metadata=34602c8923230d40' '-C' 'extra-filename=-32049c6f0e0b2ffb' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'endian_type=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libendian_type-b9425a3f51895912.rmeta' '--extern' 'nibble_vec=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libnibble_vec-a774d69fe29ea5a8.rmeta' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/radix_trie-0.2.1/src/lib.rs \
+      rustc '--crate-name' 'radix_trie' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("serde"))' '-C' 'metadata=34602c8923230d40' '-C' 'extra-filename=-32049c6f0e0b2ffb' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'endian_type=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libendian_type-b9425a3f51895912.rmeta' '--extern' 'nibble_vec=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libnibble_vec-a774d69fe29ea5a8.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/radix_trie-0.2.1/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-32049c6f0e0b2ffb
@@ -3703,7 +3703,7 @@ FROM rust-base AS dep-l-hickory-client-0.25.0-alpha.1-d113de970b54e9cb
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-hickory-client-0.25.0-alpha.1,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/hickory-client-0.25.0-alpha.1 \
+  --mount=from=cratesio-hickory-client-0.25.0-alpha.1,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/hickory-client-0.25.0-alpha.1 \
   --mount=from=out-9dd3aead262695aa,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libasync_recursion-9dd3aead262695aa.so,source=/libasync_recursion-9dd3aead262695aa.so \
   --mount=from=out-688e1090a6b8baa3,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libasync_trait-688e1090a6b8baa3.so,source=/libasync_trait-688e1090a6b8baa3.so \
   --mount=from=out-fc73ddee32601478,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libbase64-fc73ddee32601478.rmeta,source=/libbase64-fc73ddee32601478.rmeta \
@@ -3772,8 +3772,8 @@ RUN \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="hickory_client" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/hickory-client-0.25.0-alpha.1" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/hickory-client-0.25.0-alpha.1/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/hickory-client-0.25.0-alpha.1" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/hickory-client-0.25.0-alpha.1/Cargo.toml" \
         CARGO_PKG_AUTHORS="The contributors to Hickory DNS" \
         CARGO_PKG_DESCRIPTION="Hickory DNS is a safe and secure DNS library. This is the Client library with DNSSEC support.\n DNSSEC with NSEC validation for negative records, is complete. The client supports\n dynamic DNS with SIG0 authenticated requests, implementing easy to use high level\n functions. Hickory DNS is based on the Tokio and Futures libraries, which means\n it should be easily integrated into other software that also use those\n libraries.\n" \
         CARGO_PKG_HOMEPAGE="https://hickory-dns.org/" \
@@ -3790,7 +3790,7 @@ RUN \
         CARGO_PKG_VERSION_PRE="alpha.1" \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'hickory_client' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="dns-over-rustls"' '--cfg' 'feature="dns-over-tls"' '--cfg' 'feature="dnssec"' '--cfg' 'feature="dnssec-ring"' '--cfg' 'feature="native-certs"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("backtrace", "dns-over-https", "dns-over-https-openssl", "dns-over-https-rustls", "dns-over-native-tls", "dns-over-openssl", "dns-over-quic", "dns-over-rustls", "dns-over-tls", "dnssec", "dnssec-openssl", "dnssec-ring", "mdns", "native-certs", "rustls", "serde", "serde-config", "webpki-roots"))' '-C' 'metadata=7a5cf59745f9a393' '-C' 'extra-filename=-d113de970b54e9cb' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'cfg_if=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libcfg_if-642a9e511eeb712a.rmeta' '--extern' 'data_encoding=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libdata_encoding-cd548921ca92e99b.rmeta' '--extern' 'futures_channel=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libfutures_channel-e6e3dc4c6158ba3c.rmeta' '--extern' 'futures_util=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libfutures_util-ff898060123f2ff4.rmeta' '--extern' 'hickory_proto=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libhickory_proto-d268433833bdfec5.rmeta' '--extern' 'once_cell=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libonce_cell-330cfb3cbb7b43f5.rmeta' '--extern' 'radix_trie=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libradix_trie-32049c6f0e0b2ffb.rmeta' '--extern' 'rand=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/librand-06563e08af80a318.rmeta' '--extern' 'thiserror=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libthiserror-0775a6b20280dc57.rmeta' '--extern' 'tokio=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libtokio-79aa4352b389ce42.rmeta' '--extern' 'tracing=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libtracing-566b844940427fbc.rmeta' '--cap-lints' 'warn' '-L' 'native=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/build/ring-b4af30f1837a119d/out' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/hickory-client-0.25.0-alpha.1/src/lib.rs \
+      rustc '--crate-name' 'hickory_client' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="dns-over-rustls"' '--cfg' 'feature="dns-over-tls"' '--cfg' 'feature="dnssec"' '--cfg' 'feature="dnssec-ring"' '--cfg' 'feature="native-certs"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("backtrace", "dns-over-https", "dns-over-https-openssl", "dns-over-https-rustls", "dns-over-native-tls", "dns-over-openssl", "dns-over-quic", "dns-over-rustls", "dns-over-tls", "dnssec", "dnssec-openssl", "dnssec-ring", "mdns", "native-certs", "rustls", "serde", "serde-config", "webpki-roots"))' '-C' 'metadata=7a5cf59745f9a393' '-C' 'extra-filename=-d113de970b54e9cb' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'cfg_if=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libcfg_if-642a9e511eeb712a.rmeta' '--extern' 'data_encoding=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libdata_encoding-cd548921ca92e99b.rmeta' '--extern' 'futures_channel=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libfutures_channel-e6e3dc4c6158ba3c.rmeta' '--extern' 'futures_util=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libfutures_util-ff898060123f2ff4.rmeta' '--extern' 'hickory_proto=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libhickory_proto-d268433833bdfec5.rmeta' '--extern' 'once_cell=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libonce_cell-330cfb3cbb7b43f5.rmeta' '--extern' 'radix_trie=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libradix_trie-32049c6f0e0b2ffb.rmeta' '--extern' 'rand=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/librand-06563e08af80a318.rmeta' '--extern' 'thiserror=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libthiserror-0775a6b20280dc57.rmeta' '--extern' 'tokio=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libtokio-79aa4352b389ce42.rmeta' '--extern' 'tracing=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libtracing-566b844940427fbc.rmeta' '--cap-lints' 'warn' '-L' 'native=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/build/ring-b4af30f1837a119d/out' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/hickory-client-0.25.0-alpha.1/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-d113de970b54e9cb
@@ -3810,12 +3810,12 @@ FROM rust-base AS dep-l-match_cfg-0.1.0-a30be12e5d0930b1
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-match_cfg-0.1.0,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/match_cfg-0.1.0 \
+  --mount=from=cratesio-match_cfg-0.1.0,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/match_cfg-0.1.0 \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="match_cfg" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/match_cfg-0.1.0" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/match_cfg-0.1.0/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/match_cfg-0.1.0" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/match_cfg-0.1.0/Cargo.toml" \
         CARGO_PKG_AUTHORS="gnzlbg <gonzalobg88@gmail.com>" \
         CARGO_PKG_DESCRIPTION="A convenience macro to ergonomically define an item depending on a large number\nof `#[cfg]` parameters. Structured like match statement, the first matching\nbranch is the item that gets emitted.\n" \
         CARGO_PKG_HOMEPAGE="https://github.com/gnzlbg/match_cfg" \
@@ -3832,7 +3832,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'match_cfg' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="default"' '--cfg' 'feature="use_core"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "use_core"))' '-C' 'metadata=eb51357649e7925f' '-C' 'extra-filename=-a30be12e5d0930b1' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/match_cfg-0.1.0/src/lib.rs \
+      rustc '--crate-name' 'match_cfg' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="default"' '--cfg' 'feature="use_core"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "use_core"))' '-C' 'metadata=eb51357649e7925f' '-C' 'extra-filename=-a30be12e5d0930b1' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/match_cfg-0.1.0/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-a30be12e5d0930b1
@@ -3852,14 +3852,14 @@ FROM rust-base AS dep-l-hostname-0.3.1-26351b84812cbc21
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-hostname-0.3.1,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/hostname-0.3.1 \
+  --mount=from=cratesio-hostname-0.3.1,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/hostname-0.3.1 \
   --mount=from=out-ac4dd89498f52d23,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/liblibc-ac4dd89498f52d23.rmeta,source=/liblibc-ac4dd89498f52d23.rmeta \
   --mount=from=out-a30be12e5d0930b1,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libmatch_cfg-a30be12e5d0930b1.rmeta,source=/libmatch_cfg-a30be12e5d0930b1.rmeta \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="hostname" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/hostname-0.3.1" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/hostname-0.3.1/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/hostname-0.3.1" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/hostname-0.3.1/Cargo.toml" \
         CARGO_PKG_AUTHORS="fengcen <fengcen.love@gmail.com>:svartalf <self@svartalf.info>" \
         CARGO_PKG_DESCRIPTION="Cross-platform system's host name functions" \
         CARGO_PKG_HOMEPAGE= \
@@ -3876,7 +3876,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'hostname' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="default"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "set"))' '-C' 'metadata=2961a34fb6c9d772' '-C' 'extra-filename=-26351b84812cbc21' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'libc=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/liblibc-ac4dd89498f52d23.rmeta' '--extern' 'match_cfg=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libmatch_cfg-a30be12e5d0930b1.rmeta' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/hostname-0.3.1/src/lib.rs \
+      rustc '--crate-name' 'hostname' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="default"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "set"))' '-C' 'metadata=2961a34fb6c9d772' '-C' 'extra-filename=-26351b84812cbc21' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'libc=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/liblibc-ac4dd89498f52d23.rmeta' '--extern' 'match_cfg=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libmatch_cfg-a30be12e5d0930b1.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/hostname-0.3.1/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-26351b84812cbc21
@@ -3896,12 +3896,12 @@ FROM rust-base AS dep-l-linked-hash-map-0.5.6-ed5c0a6410937790
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-linked-hash-map-0.5.6,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/linked-hash-map-0.5.6 \
+  --mount=from=cratesio-linked-hash-map-0.5.6,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/linked-hash-map-0.5.6 \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="linked_hash_map" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/linked-hash-map-0.5.6" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/linked-hash-map-0.5.6/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/linked-hash-map-0.5.6" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/linked-hash-map-0.5.6/Cargo.toml" \
         CARGO_PKG_AUTHORS="Stepan Koltsov <stepan.koltsov@gmail.com>:Andrew Paseltiner <apaseltiner@gmail.com>" \
         CARGO_PKG_DESCRIPTION="A HashMap wrapper that holds key-value pairs in insertion order" \
         CARGO_PKG_HOMEPAGE="https://github.com/contain-rs/linked-hash-map" \
@@ -3918,7 +3918,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'linked_hash_map' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("heapsize", "heapsize_impl", "nightly", "serde", "serde_impl"))' '-C' 'metadata=6faba33615487674' '-C' 'extra-filename=-ed5c0a6410937790' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/linked-hash-map-0.5.6/src/lib.rs \
+      rustc '--crate-name' 'linked_hash_map' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("heapsize", "heapsize_impl", "nightly", "serde", "serde_impl"))' '-C' 'metadata=6faba33615487674' '-C' 'extra-filename=-ed5c0a6410937790' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/linked-hash-map-0.5.6/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-ed5c0a6410937790
@@ -3938,12 +3938,12 @@ FROM rust-base AS dep-l-scopeguard-1.2.0-817d7de66a00129a
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-scopeguard-1.2.0,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/scopeguard-1.2.0 \
+  --mount=from=cratesio-scopeguard-1.2.0,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/scopeguard-1.2.0 \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="scopeguard" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/scopeguard-1.2.0" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/scopeguard-1.2.0/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/scopeguard-1.2.0" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/scopeguard-1.2.0/Cargo.toml" \
         CARGO_PKG_AUTHORS="bluss" \
         CARGO_PKG_DESCRIPTION="A RAII scope guard that will run a given closure when it goes out of scope,\neven if the code between panics (assuming unwinding panic).\n\nDefines the macros `defer!`, `defer_on_unwind!`, `defer_on_success!` as\nshorthands for guards with one of the implemented strategies.\n" \
         CARGO_PKG_HOMEPAGE= \
@@ -3960,7 +3960,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'scopeguard' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "use_std"))' '-C' 'metadata=7130270c04ca018b' '-C' 'extra-filename=-817d7de66a00129a' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/scopeguard-1.2.0/src/lib.rs \
+      rustc '--crate-name' 'scopeguard' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "use_std"))' '-C' 'metadata=7130270c04ca018b' '-C' 'extra-filename=-817d7de66a00129a' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/scopeguard-1.2.0/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-817d7de66a00129a
@@ -3980,13 +3980,13 @@ FROM rust-base AS dep-l-lock_api-0.4.12-cc1ea632725a9bd8
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-lock_api-0.4.12,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/lock_api-0.4.12 \
+  --mount=from=cratesio-lock_api-0.4.12,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/lock_api-0.4.12 \
   --mount=from=out-817d7de66a00129a,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libscopeguard-817d7de66a00129a.rmeta,source=/libscopeguard-817d7de66a00129a.rmeta \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="lock_api" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/lock_api-0.4.12" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/lock_api-0.4.12/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/lock_api-0.4.12" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/lock_api-0.4.12/Cargo.toml" \
         CARGO_PKG_AUTHORS="Amanieu d'Antras <amanieu@gmail.com>" \
         CARGO_PKG_DESCRIPTION="Wrappers to create fully-featured Mutex and RwLock types. Compatible with no_std." \
         CARGO_PKG_HOMEPAGE= \
@@ -4004,7 +4004,7 @@ RUN \
         OUT_DIR="/tmp/clis-hickory-dns_0-25-0-alpha-1/release/build/lock_api-ec80f752be272a6c/out" \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'lock_api' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="atomic_usize"' '--cfg' 'feature="default"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("arc_lock", "atomic_usize", "default", "nightly", "owning_ref", "serde"))' '-C' 'metadata=468db14eac87011f' '-C' 'extra-filename=-cc1ea632725a9bd8' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'scopeguard=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libscopeguard-817d7de66a00129a.rmeta' '--cap-lints' 'warn' '--cfg' 'has_const_fn_trait_bound' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/lock_api-0.4.12/src/lib.rs \
+      rustc '--crate-name' 'lock_api' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="atomic_usize"' '--cfg' 'feature="default"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("arc_lock", "atomic_usize", "default", "nightly", "owning_ref", "serde"))' '-C' 'metadata=468db14eac87011f' '-C' 'extra-filename=-cc1ea632725a9bd8' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'scopeguard=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libscopeguard-817d7de66a00129a.rmeta' '--cap-lints' 'warn' '--cfg' 'has_const_fn_trait_bound' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/lock_api-0.4.12/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-cc1ea632725a9bd8
@@ -4024,13 +4024,13 @@ FROM rust-base AS dep-l-lru-cache-0.1.2-39d062ea8694588a
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-lru-cache-0.1.2,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/lru-cache-0.1.2 \
+  --mount=from=cratesio-lru-cache-0.1.2,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/lru-cache-0.1.2 \
   --mount=from=out-ed5c0a6410937790,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/liblinked_hash_map-ed5c0a6410937790.rmeta,source=/liblinked_hash_map-ed5c0a6410937790.rmeta \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="lru_cache" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/lru-cache-0.1.2" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/lru-cache-0.1.2/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/lru-cache-0.1.2" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/lru-cache-0.1.2/Cargo.toml" \
         CARGO_PKG_AUTHORS="Stepan Koltsov <stepan.koltsov@gmail.com>" \
         CARGO_PKG_DESCRIPTION="A cache that holds a limited number of key-value pairs" \
         CARGO_PKG_HOMEPAGE="https://github.com/contain-rs/lru-cache" \
@@ -4047,7 +4047,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'lru_cache' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("heapsize", "heapsize_impl"))' '-C' 'metadata=5e56547db080f0ad' '-C' 'extra-filename=-39d062ea8694588a' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'linked_hash_map=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/liblinked_hash_map-ed5c0a6410937790.rmeta' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/lru-cache-0.1.2/src/lib.rs \
+      rustc '--crate-name' 'lru_cache' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("heapsize", "heapsize_impl"))' '-C' 'metadata=5e56547db080f0ad' '-C' 'extra-filename=-39d062ea8694588a' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'linked_hash_map=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/liblinked_hash_map-ed5c0a6410937790.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/lru-cache-0.1.2/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-39d062ea8694588a
@@ -4067,15 +4067,15 @@ FROM rust-base AS dep-l-parking_lot_core-0.9.10-5f0e71115d4bfd6b
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-parking_lot_core-0.9.10,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/parking_lot_core-0.9.10 \
+  --mount=from=cratesio-parking_lot_core-0.9.10,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/parking_lot_core-0.9.10 \
   --mount=from=out-642a9e511eeb712a,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libcfg_if-642a9e511eeb712a.rmeta,source=/libcfg_if-642a9e511eeb712a.rmeta \
   --mount=from=out-ac4dd89498f52d23,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/liblibc-ac4dd89498f52d23.rmeta,source=/liblibc-ac4dd89498f52d23.rmeta \
   --mount=from=out-d566e34028d47484,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libsmallvec-d566e34028d47484.rmeta,source=/libsmallvec-d566e34028d47484.rmeta \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="parking_lot_core" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/parking_lot_core-0.9.10" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/parking_lot_core-0.9.10/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/parking_lot_core-0.9.10" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/parking_lot_core-0.9.10/Cargo.toml" \
         CARGO_PKG_AUTHORS="Amanieu d'Antras <amanieu@gmail.com>" \
         CARGO_PKG_DESCRIPTION="An advanced API for creating custom synchronization primitives." \
         CARGO_PKG_HOMEPAGE= \
@@ -4093,7 +4093,7 @@ RUN \
         OUT_DIR="/tmp/clis-hickory-dns_0-25-0-alpha-1/release/build/parking_lot_core-3e1e31ffa0827c4d/out" \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'parking_lot_core' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("backtrace", "deadlock_detection", "nightly", "petgraph", "thread-id"))' '-C' 'metadata=03a9c397c32e868e' '-C' 'extra-filename=-5f0e71115d4bfd6b' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'cfg_if=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libcfg_if-642a9e511eeb712a.rmeta' '--extern' 'libc=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/liblibc-ac4dd89498f52d23.rmeta' '--extern' 'smallvec=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libsmallvec-d566e34028d47484.rmeta' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/parking_lot_core-0.9.10/src/lib.rs \
+      rustc '--crate-name' 'parking_lot_core' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("backtrace", "deadlock_detection", "nightly", "petgraph", "thread-id"))' '-C' 'metadata=03a9c397c32e868e' '-C' 'extra-filename=-5f0e71115d4bfd6b' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'cfg_if=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libcfg_if-642a9e511eeb712a.rmeta' '--extern' 'libc=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/liblibc-ac4dd89498f52d23.rmeta' '--extern' 'smallvec=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libsmallvec-d566e34028d47484.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/parking_lot_core-0.9.10/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-5f0e71115d4bfd6b
@@ -4113,7 +4113,7 @@ FROM rust-base AS dep-l-parking_lot-0.12.2-7672e24a31957314
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-parking_lot-0.12.2,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/parking_lot-0.12.2 \
+  --mount=from=cratesio-parking_lot-0.12.2,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/parking_lot-0.12.2 \
   --mount=from=out-642a9e511eeb712a,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libcfg_if-642a9e511eeb712a.rmeta,source=/libcfg_if-642a9e511eeb712a.rmeta \
   --mount=from=out-ac4dd89498f52d23,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/liblibc-ac4dd89498f52d23.rmeta,source=/liblibc-ac4dd89498f52d23.rmeta \
   --mount=from=out-cc1ea632725a9bd8,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/liblock_api-cc1ea632725a9bd8.rmeta,source=/liblock_api-cc1ea632725a9bd8.rmeta \
@@ -4123,8 +4123,8 @@ RUN \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="parking_lot" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/parking_lot-0.12.2" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/parking_lot-0.12.2/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/parking_lot-0.12.2" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/parking_lot-0.12.2/Cargo.toml" \
         CARGO_PKG_AUTHORS="Amanieu d'Antras <amanieu@gmail.com>" \
         CARGO_PKG_DESCRIPTION="More compact and efficient implementations of the standard synchronization primitives." \
         CARGO_PKG_HOMEPAGE= \
@@ -4141,7 +4141,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'parking_lot' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="default"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("arc_lock", "deadlock_detection", "default", "hardware-lock-elision", "nightly", "owning_ref", "send_guard", "serde"))' '-C' 'metadata=d15b4ad7c68f1dc5' '-C' 'extra-filename=-7672e24a31957314' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'lock_api=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/liblock_api-cc1ea632725a9bd8.rmeta' '--extern' 'parking_lot_core=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libparking_lot_core-5f0e71115d4bfd6b.rmeta' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/parking_lot-0.12.2/src/lib.rs \
+      rustc '--crate-name' 'parking_lot' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="default"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("arc_lock", "deadlock_detection", "default", "hardware-lock-elision", "nightly", "owning_ref", "send_guard", "serde"))' '-C' 'metadata=d15b4ad7c68f1dc5' '-C' 'extra-filename=-7672e24a31957314' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'lock_api=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/liblock_api-cc1ea632725a9bd8.rmeta' '--extern' 'parking_lot_core=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libparking_lot_core-5f0e71115d4bfd6b.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/parking_lot-0.12.2/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-7672e24a31957314
@@ -4161,12 +4161,12 @@ FROM rust-base AS dep-l-quick-error-1.2.3-740ab1765e9d0746
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-quick-error-1.2.3,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/quick-error-1.2.3 \
+  --mount=from=cratesio-quick-error-1.2.3,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quick-error-1.2.3 \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="quick_error" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/quick-error-1.2.3" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/quick-error-1.2.3/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quick-error-1.2.3" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quick-error-1.2.3/Cargo.toml" \
         CARGO_PKG_AUTHORS="Paul Colomiets <paul@colomiets.name>:Colin Kiegel <kiegel@gmx.de>" \
         CARGO_PKG_DESCRIPTION="    A macro which makes error types pleasant to write.\n" \
         CARGO_PKG_HOMEPAGE="http://github.com/tailhook/quick-error" \
@@ -4183,7 +4183,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'quick_error' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=55ff0ffe965b7f06' '-C' 'extra-filename=-740ab1765e9d0746' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/quick-error-1.2.3/src/lib.rs \
+      rustc '--crate-name' 'quick_error' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=55ff0ffe965b7f06' '-C' 'extra-filename=-740ab1765e9d0746' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quick-error-1.2.3/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-740ab1765e9d0746
@@ -4203,7 +4203,7 @@ FROM rust-base AS dep-l-resolv-conf-0.7.0-e27d16e0e31d2c3e
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-resolv-conf-0.7.0,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/resolv-conf-0.7.0 \
+  --mount=from=cratesio-resolv-conf-0.7.0,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/resolv-conf-0.7.0 \
   --mount=from=out-26351b84812cbc21,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libhostname-26351b84812cbc21.rmeta,source=/libhostname-26351b84812cbc21.rmeta \
   --mount=from=out-ac4dd89498f52d23,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/liblibc-ac4dd89498f52d23.rmeta,source=/liblibc-ac4dd89498f52d23.rmeta \
   --mount=from=out-a30be12e5d0930b1,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libmatch_cfg-a30be12e5d0930b1.rmeta,source=/libmatch_cfg-a30be12e5d0930b1.rmeta \
@@ -4211,8 +4211,8 @@ RUN \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="resolv_conf" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/resolv-conf-0.7.0" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/resolv-conf-0.7.0/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/resolv-conf-0.7.0" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/resolv-conf-0.7.0/Cargo.toml" \
         CARGO_PKG_AUTHORS="paul@colomiets.name" \
         CARGO_PKG_DESCRIPTION="    The resolv.conf file parser\n" \
         CARGO_PKG_HOMEPAGE="http://github.com/tailhook/resolv-conf" \
@@ -4229,7 +4229,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'resolv_conf' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="hostname"' '--cfg' 'feature="system"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("hostname", "system"))' '-C' 'metadata=0eaeadbc39c02c99' '-C' 'extra-filename=-e27d16e0e31d2c3e' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'hostname=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libhostname-26351b84812cbc21.rmeta' '--extern' 'quick_error=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libquick_error-740ab1765e9d0746.rmeta' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/resolv-conf-0.7.0/src/lib.rs \
+      rustc '--crate-name' 'resolv_conf' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="hostname"' '--cfg' 'feature="system"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("hostname", "system"))' '-C' 'metadata=0eaeadbc39c02c99' '-C' 'extra-filename=-e27d16e0e31d2c3e' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'hostname=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libhostname-26351b84812cbc21.rmeta' '--extern' 'quick_error=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libquick_error-740ab1765e9d0746.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/resolv-conf-0.7.0/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-e27d16e0e31d2c3e
@@ -4249,7 +4249,7 @@ FROM rust-base AS dep-l-hickory-resolver-0.25.0-alpha.1-e3730ec3be8d1437
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-hickory-resolver-0.25.0-alpha.1,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/hickory-resolver-0.25.0-alpha.1 \
+  --mount=from=cratesio-hickory-resolver-0.25.0-alpha.1,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/hickory-resolver-0.25.0-alpha.1 \
   --mount=from=out-9dd3aead262695aa,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libasync_recursion-9dd3aead262695aa.so,source=/libasync_recursion-9dd3aead262695aa.so \
   --mount=from=out-688e1090a6b8baa3,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libasync_trait-688e1090a6b8baa3.so,source=/libasync_trait-688e1090a6b8baa3.so \
   --mount=from=out-fc73ddee32601478,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libbase64-fc73ddee32601478.rmeta,source=/libbase64-fc73ddee32601478.rmeta \
@@ -4325,8 +4325,8 @@ RUN \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="hickory_resolver" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/hickory-resolver-0.25.0-alpha.1" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/hickory-resolver-0.25.0-alpha.1/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/hickory-resolver-0.25.0-alpha.1" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/hickory-resolver-0.25.0-alpha.1/Cargo.toml" \
         CARGO_PKG_AUTHORS="The contributors to Hickory DNS" \
         CARGO_PKG_DESCRIPTION="Hickory DNS is a safe and secure DNS library. This Resolver library  uses the Client library to perform all DNS queries. The Resolver is intended to be a high-level library for any DNS record resolution see Resolver and AsyncResolver for supported resolution types. The Client can be used for other queries.\n" \
         CARGO_PKG_HOMEPAGE="https://hickory-dns.org/" \
@@ -4343,7 +4343,7 @@ RUN \
         CARGO_PKG_VERSION_PRE="alpha.1" \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'hickory_resolver' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="dns-over-rustls"' '--cfg' 'feature="dns-over-tls"' '--cfg' 'feature="dnssec"' '--cfg' 'feature="dnssec-ring"' '--cfg' 'feature="ipconfig"' '--cfg' 'feature="native-certs"' '--cfg' 'feature="resolv-conf"' '--cfg' 'feature="rustls"' '--cfg' 'feature="serde"' '--cfg' 'feature="serde-config"' '--cfg' 'feature="system-config"' '--cfg' 'feature="tokio"' '--cfg' 'feature="tokio-runtime"' '--cfg' 'feature="tokio-rustls"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "dns-over-h3", "dns-over-https", "dns-over-https-rustls", "dns-over-native-tls", "dns-over-openssl", "dns-over-quic", "dns-over-rustls", "dns-over-tls", "dnssec", "dnssec-openssl", "dnssec-ring", "ipconfig", "native-certs", "resolv-conf", "rustls", "serde", "serde-config", "system-config", "testing", "tokio", "tokio-native-tls", "tokio-openssl", "tokio-runtime", "tokio-rustls", "webpki-roots"))' '-C' 'metadata=a540af69ea1e101c' '-C' 'extra-filename=-e3730ec3be8d1437' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'cfg_if=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libcfg_if-642a9e511eeb712a.rmeta' '--extern' 'futures_util=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libfutures_util-ff898060123f2ff4.rmeta' '--extern' 'hickory_proto=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libhickory_proto-d268433833bdfec5.rmeta' '--extern' 'lru_cache=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/liblru_cache-39d062ea8694588a.rmeta' '--extern' 'once_cell=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libonce_cell-330cfb3cbb7b43f5.rmeta' '--extern' 'parking_lot=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libparking_lot-7672e24a31957314.rmeta' '--extern' 'rand=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/librand-06563e08af80a318.rmeta' '--extern' 'resolv_conf=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libresolv_conf-e27d16e0e31d2c3e.rmeta' '--extern' 'rustls=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/librustls-946240332397fd14.rmeta' '--extern' 'rustls_native_certs=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/librustls_native_certs-30863195e86b4112.rmeta' '--extern' 'serde=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libserde-ceabefec0a6d61ca.rmeta' '--extern' 'smallvec=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libsmallvec-d566e34028d47484.rmeta' '--extern' 'thiserror=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libthiserror-0775a6b20280dc57.rmeta' '--extern' 'tokio=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libtokio-79aa4352b389ce42.rmeta' '--extern' 'tokio_rustls=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libtokio_rustls-276f52514b3ea657.rmeta' '--extern' 'tracing=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libtracing-566b844940427fbc.rmeta' '--cap-lints' 'warn' '-L' 'native=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/build/ring-b4af30f1837a119d/out' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/hickory-resolver-0.25.0-alpha.1/src/lib.rs \
+      rustc '--crate-name' 'hickory_resolver' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="dns-over-rustls"' '--cfg' 'feature="dns-over-tls"' '--cfg' 'feature="dnssec"' '--cfg' 'feature="dnssec-ring"' '--cfg' 'feature="ipconfig"' '--cfg' 'feature="native-certs"' '--cfg' 'feature="resolv-conf"' '--cfg' 'feature="rustls"' '--cfg' 'feature="serde"' '--cfg' 'feature="serde-config"' '--cfg' 'feature="system-config"' '--cfg' 'feature="tokio"' '--cfg' 'feature="tokio-runtime"' '--cfg' 'feature="tokio-rustls"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "dns-over-h3", "dns-over-https", "dns-over-https-rustls", "dns-over-native-tls", "dns-over-openssl", "dns-over-quic", "dns-over-rustls", "dns-over-tls", "dnssec", "dnssec-openssl", "dnssec-ring", "ipconfig", "native-certs", "resolv-conf", "rustls", "serde", "serde-config", "system-config", "testing", "tokio", "tokio-native-tls", "tokio-openssl", "tokio-runtime", "tokio-rustls", "webpki-roots"))' '-C' 'metadata=a540af69ea1e101c' '-C' 'extra-filename=-e3730ec3be8d1437' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'cfg_if=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libcfg_if-642a9e511eeb712a.rmeta' '--extern' 'futures_util=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libfutures_util-ff898060123f2ff4.rmeta' '--extern' 'hickory_proto=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libhickory_proto-d268433833bdfec5.rmeta' '--extern' 'lru_cache=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/liblru_cache-39d062ea8694588a.rmeta' '--extern' 'once_cell=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libonce_cell-330cfb3cbb7b43f5.rmeta' '--extern' 'parking_lot=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libparking_lot-7672e24a31957314.rmeta' '--extern' 'rand=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/librand-06563e08af80a318.rmeta' '--extern' 'resolv_conf=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libresolv_conf-e27d16e0e31d2c3e.rmeta' '--extern' 'rustls=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/librustls-946240332397fd14.rmeta' '--extern' 'rustls_native_certs=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/librustls_native_certs-30863195e86b4112.rmeta' '--extern' 'serde=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libserde-ceabefec0a6d61ca.rmeta' '--extern' 'smallvec=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libsmallvec-d566e34028d47484.rmeta' '--extern' 'thiserror=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libthiserror-0775a6b20280dc57.rmeta' '--extern' 'tokio=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libtokio-79aa4352b389ce42.rmeta' '--extern' 'tokio_rustls=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libtokio_rustls-276f52514b3ea657.rmeta' '--extern' 'tracing=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libtracing-566b844940427fbc.rmeta' '--cap-lints' 'warn' '-L' 'native=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/build/ring-b4af30f1837a119d/out' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/hickory-resolver-0.25.0-alpha.1/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-e3730ec3be8d1437
@@ -4363,12 +4363,12 @@ FROM rust-base AS dep-l-itoa-1.0.11-64072cd3efbea8e9
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-itoa-1.0.11,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/itoa-1.0.11 \
+  --mount=from=cratesio-itoa-1.0.11,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/itoa-1.0.11 \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="itoa" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/itoa-1.0.11" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/itoa-1.0.11/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/itoa-1.0.11" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/itoa-1.0.11/Cargo.toml" \
         CARGO_PKG_AUTHORS="David Tolnay <dtolnay@gmail.com>" \
         CARGO_PKG_DESCRIPTION="Fast integer primitive to string conversion" \
         CARGO_PKG_HOMEPAGE= \
@@ -4385,7 +4385,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'itoa' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("no-panic"))' '-C' 'metadata=2d3c6ff08e17fc95' '-C' 'extra-filename=-64072cd3efbea8e9' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/itoa-1.0.11/src/lib.rs \
+      rustc '--crate-name' 'itoa' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("no-panic"))' '-C' 'metadata=2d3c6ff08e17fc95' '-C' 'extra-filename=-64072cd3efbea8e9' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/itoa-1.0.11/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-64072cd3efbea8e9
@@ -4405,13 +4405,13 @@ FROM rust-base AS dep-l-libsqlite3-sys-0.28.0-15c9aa903d4224ed
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-libsqlite3-sys-0.28.0,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/libsqlite3-sys-0.28.0 \
+  --mount=from=cratesio-libsqlite3-sys-0.28.0,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libsqlite3-sys-0.28.0 \
   --mount=from=crate_out-7aab3b2d00efe93c,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/build/libsqlite3-sys-7aab3b2d00efe93c/out \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="libsqlite3_sys" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/libsqlite3-sys-0.28.0" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/libsqlite3-sys-0.28.0/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libsqlite3-sys-0.28.0" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libsqlite3-sys-0.28.0/Cargo.toml" \
         CARGO_PKG_AUTHORS="The rusqlite developers" \
         CARGO_PKG_DESCRIPTION="Native bindings to the libsqlite3 library" \
         CARGO_PKG_HOMEPAGE= \
@@ -4429,7 +4429,7 @@ RUN \
         OUT_DIR="/tmp/clis-hickory-dns_0-25-0-alpha-1/release/build/libsqlite3-sys-7aab3b2d00efe93c/out" \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'libsqlite3_sys' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="bundled"' '--cfg' 'feature="bundled_bindings"' '--cfg' 'feature="cc"' '--cfg' 'feature="default"' '--cfg' 'feature="min_sqlite_version_3_14_0"' '--cfg' 'feature="pkg-config"' '--cfg' 'feature="vcpkg"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("bindgen", "buildtime_bindgen", "bundled", "bundled-sqlcipher", "bundled-sqlcipher-vendored-openssl", "bundled-windows", "bundled_bindings", "cc", "default", "in_gecko", "loadable_extension", "min_sqlite_version_3_14_0", "openssl-sys", "pkg-config", "prettyplease", "preupdate_hook", "quote", "session", "sqlcipher", "syn", "unlock_notify", "vcpkg", "wasm32-wasi-vfs", "with-asan"))' '-C' 'metadata=8b020b0c98cf0863' '-C' 'extra-filename=-15c9aa903d4224ed' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--cap-lints' 'warn' '-L' 'native=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/build/libsqlite3-sys-7aab3b2d00efe93c/out' '-l' 'static=sqlite3' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/libsqlite3-sys-0.28.0/src/lib.rs \
+      rustc '--crate-name' 'libsqlite3_sys' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="bundled"' '--cfg' 'feature="bundled_bindings"' '--cfg' 'feature="cc"' '--cfg' 'feature="default"' '--cfg' 'feature="min_sqlite_version_3_14_0"' '--cfg' 'feature="pkg-config"' '--cfg' 'feature="vcpkg"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("bindgen", "buildtime_bindgen", "bundled", "bundled-sqlcipher", "bundled-sqlcipher-vendored-openssl", "bundled-windows", "bundled_bindings", "cc", "default", "in_gecko", "loadable_extension", "min_sqlite_version_3_14_0", "openssl-sys", "pkg-config", "prettyplease", "preupdate_hook", "quote", "session", "sqlcipher", "syn", "unlock_notify", "vcpkg", "wasm32-wasi-vfs", "with-asan"))' '-C' 'metadata=8b020b0c98cf0863' '-C' 'extra-filename=-15c9aa903d4224ed' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--cap-lints' 'warn' '-L' 'native=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/build/libsqlite3-sys-7aab3b2d00efe93c/out' '-l' 'static=sqlite3' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libsqlite3-sys-0.28.0/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-15c9aa903d4224ed
@@ -4449,12 +4449,12 @@ FROM rust-base AS dep-l-num-conv-0.1.0-732e2ada889bf950
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-num-conv-0.1.0,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/num-conv-0.1.0 \
+  --mount=from=cratesio-num-conv-0.1.0,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-conv-0.1.0 \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="num_conv" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/num-conv-0.1.0" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/num-conv-0.1.0/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-conv-0.1.0" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-conv-0.1.0/Cargo.toml" \
         CARGO_PKG_AUTHORS="Jacob Pratt <jacob@jhpratt.dev>" \
         CARGO_PKG_DESCRIPTION="`num_conv` is a crate to convert between integer types without using `as` casts. This provides\nbetter certainty when refactoring, makes the exact behavior of code more explicit, and allows using\nturbofish syntax.\n" \
         CARGO_PKG_HOMEPAGE= \
@@ -4471,7 +4471,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'num_conv' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--warn' 'unused' '--warn' 'unreachable-pub' '--deny' 'clippy::std-instead-of-core' '--warn' 'missing-docs' '--deny' 'clippy::alloc-instead-of-core' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=07106530b8730b26' '-C' 'extra-filename=-732e2ada889bf950' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/num-conv-0.1.0/src/lib.rs \
+      rustc '--crate-name' 'num_conv' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--warn' 'unused' '--warn' 'unreachable-pub' '--deny' 'clippy::std-instead-of-core' '--warn' 'missing-docs' '--deny' 'clippy::alloc-instead-of-core' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=07106530b8730b26' '-C' 'extra-filename=-732e2ada889bf950' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-conv-0.1.0/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-732e2ada889bf950
@@ -4482,12 +4482,12 @@ FROM rust-base AS dep-l-num-conv-0.1.0-aeb7953b74f39339
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-num-conv-0.1.0,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/num-conv-0.1.0 \
+  --mount=from=cratesio-num-conv-0.1.0,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-conv-0.1.0 \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="num_conv" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/num-conv-0.1.0" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/num-conv-0.1.0/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-conv-0.1.0" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-conv-0.1.0/Cargo.toml" \
         CARGO_PKG_AUTHORS="Jacob Pratt <jacob@jhpratt.dev>" \
         CARGO_PKG_DESCRIPTION="`num_conv` is a crate to convert between integer types without using `as` casts. This provides\nbetter certainty when refactoring, makes the exact behavior of code more explicit, and allows using\nturbofish syntax.\n" \
         CARGO_PKG_HOMEPAGE= \
@@ -4504,7 +4504,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'num_conv' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'embed-bitcode=no' '--warn' 'unused' '--warn' 'unreachable-pub' '--deny' 'clippy::std-instead-of-core' '--warn' 'missing-docs' '--deny' 'clippy::alloc-instead-of-core' '-C' 'debug-assertions=off' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=80300e2a0c1f8218' '-C' 'extra-filename=-aeb7953b74f39339' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/num-conv-0.1.0/src/lib.rs \
+      rustc '--crate-name' 'num_conv' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'embed-bitcode=no' '--warn' 'unused' '--warn' 'unreachable-pub' '--deny' 'clippy::std-instead-of-core' '--warn' 'missing-docs' '--deny' 'clippy::alloc-instead-of-core' '-C' 'debug-assertions=off' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=80300e2a0c1f8218' '-C' 'extra-filename=-aeb7953b74f39339' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-conv-0.1.0/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-aeb7953b74f39339
@@ -4524,12 +4524,12 @@ FROM rust-base AS dep-l-num-traits-0.2.19-1896f52a3de1a299
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-num-traits-0.2.19,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/num-traits-0.2.19 \
+  --mount=from=cratesio-num-traits-0.2.19,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-traits-0.2.19 \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="num_traits" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/num-traits-0.2.19" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/num-traits-0.2.19/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-traits-0.2.19" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-traits-0.2.19/Cargo.toml" \
         CARGO_PKG_AUTHORS="The Rust Project Developers" \
         CARGO_PKG_DESCRIPTION="Numeric traits for generic mathematics" \
         CARGO_PKG_HOMEPAGE="https://github.com/rust-num/num-traits" \
@@ -4547,7 +4547,7 @@ RUN \
         OUT_DIR="/tmp/clis-hickory-dns_0-25-0-alpha-1/release/build/num-traits-5896435d6961e19d/out" \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'num_traits' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "i128", "libm", "std"))' '-C' 'metadata=56b2a000b8c1d2d3' '-C' 'extra-filename=-1896f52a3de1a299' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/num-traits-0.2.19/src/lib.rs \
+      rustc '--crate-name' 'num_traits' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "i128", "libm", "std"))' '-C' 'metadata=56b2a000b8c1d2d3' '-C' 'extra-filename=-1896f52a3de1a299' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-traits-0.2.19/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-1896f52a3de1a299
@@ -4567,7 +4567,7 @@ FROM rust-base AS dep-l-prefix-trie-0.3.0-37734febb74e62aa
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-prefix-trie-0.3.0,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/prefix-trie-0.3.0 \
+  --mount=from=cratesio-prefix-trie-0.3.0,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/prefix-trie-0.3.0 \
   --mount=from=out-1ae33865903c85f3,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libipnet-1ae33865903c85f3.rmeta,source=/libipnet-1ae33865903c85f3.rmeta \
   --mount=from=out-1896f52a3de1a299,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libnum_traits-1896f52a3de1a299.rmeta,source=/libnum_traits-1896f52a3de1a299.rmeta \
   --mount=from=out-b2cfc86673b59c9a,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libproc_macro2-b2cfc86673b59c9a.rmeta,source=/libproc_macro2-b2cfc86673b59c9a.rmeta \
@@ -4579,8 +4579,8 @@ RUN \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="prefix_trie" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/prefix-trie-0.3.0" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/prefix-trie-0.3.0/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/prefix-trie-0.3.0" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/prefix-trie-0.3.0/Cargo.toml" \
         CARGO_PKG_AUTHORS= \
         CARGO_PKG_DESCRIPTION="Prefix trie datastructure (both a set and a map) that provides exact and longest-prefix matches." \
         CARGO_PKG_HOMEPAGE="https://github.com/tiborschneider/prefix-trie" \
@@ -4597,7 +4597,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'prefix_trie' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="default"' '--cfg' 'feature="ipnet"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "ipnet", "ipnetwork", "serde"))' '-C' 'metadata=177815bf2c306924' '-C' 'extra-filename=-37734febb74e62aa' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'ipnet=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libipnet-1ae33865903c85f3.rmeta' '--extern' 'num_traits=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libnum_traits-1896f52a3de1a299.rmeta' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/prefix-trie-0.3.0/src/lib.rs \
+      rustc '--crate-name' 'prefix_trie' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="default"' '--cfg' 'feature="ipnet"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "ipnet", "ipnetwork", "serde"))' '-C' 'metadata=177815bf2c306924' '-C' 'extra-filename=-37734febb74e62aa' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'ipnet=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libipnet-1ae33865903c85f3.rmeta' '--extern' 'num_traits=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libnum_traits-1896f52a3de1a299.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/prefix-trie-0.3.0/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-37734febb74e62aa
@@ -4617,12 +4617,12 @@ FROM rust-base AS dep-l-time-core-0.1.2-0766e58b62001240
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-time-core-0.1.2,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/time-core-0.1.2 \
+  --mount=from=cratesio-time-core-0.1.2,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/time-core-0.1.2 \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="time_core" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/time-core-0.1.2" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/time-core-0.1.2/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/time-core-0.1.2" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/time-core-0.1.2/Cargo.toml" \
         CARGO_PKG_AUTHORS="Jacob Pratt <open-source@jhpratt.dev>:Time contributors" \
         CARGO_PKG_DESCRIPTION="This crate is an implementation detail and should not be relied upon directly." \
         CARGO_PKG_HOMEPAGE= \
@@ -4639,7 +4639,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'time_core' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=0e08e6d0c03e1d80' '-C' 'extra-filename=-0766e58b62001240' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/time-core-0.1.2/src/lib.rs \
+      rustc '--crate-name' 'time_core' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=0e08e6d0c03e1d80' '-C' 'extra-filename=-0766e58b62001240' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/time-core-0.1.2/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-0766e58b62001240
@@ -4650,12 +4650,12 @@ FROM rust-base AS dep-l-time-core-0.1.2-b93042f7c88e79a2
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-time-core-0.1.2,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/time-core-0.1.2 \
+  --mount=from=cratesio-time-core-0.1.2,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/time-core-0.1.2 \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="time_core" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/time-core-0.1.2" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/time-core-0.1.2/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/time-core-0.1.2" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/time-core-0.1.2/Cargo.toml" \
         CARGO_PKG_AUTHORS="Jacob Pratt <open-source@jhpratt.dev>:Time contributors" \
         CARGO_PKG_DESCRIPTION="This crate is an implementation detail and should not be relied upon directly." \
         CARGO_PKG_HOMEPAGE= \
@@ -4672,7 +4672,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'time_core' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=a7aa89bc07e90caa' '-C' 'extra-filename=-b93042f7c88e79a2' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/time-core-0.1.2/src/lib.rs \
+      rustc '--crate-name' 'time_core' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=a7aa89bc07e90caa' '-C' 'extra-filename=-b93042f7c88e79a2' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/time-core-0.1.2/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-b93042f7c88e79a2
@@ -4692,14 +4692,14 @@ FROM rust-base AS dep-p-time-macros-0.2.18-5e4ea2afc3639c7d
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-time-macros-0.2.18,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/time-macros-0.2.18 \
+  --mount=from=cratesio-time-macros-0.2.18,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/time-macros-0.2.18 \
   --mount=from=out-aeb7953b74f39339,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libnum_conv-aeb7953b74f39339.rlib,source=/libnum_conv-aeb7953b74f39339.rlib \
   --mount=from=out-b93042f7c88e79a2,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libtime_core-b93042f7c88e79a2.rlib,source=/libtime_core-b93042f7c88e79a2.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="time_macros" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/time-macros-0.2.18" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/time-macros-0.2.18/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/time-macros-0.2.18" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/time-macros-0.2.18/Cargo.toml" \
         CARGO_PKG_AUTHORS="Jacob Pratt <open-source@jhpratt.dev>:Time contributors" \
         CARGO_PKG_DESCRIPTION="    Procedural macros for the time crate.\n    This crate is an implementation detail and should not be relied upon directly.\n" \
         CARGO_PKG_HOMEPAGE= \
@@ -4716,7 +4716,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'time_macros' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'proc-macro' '--emit' 'dep-info,link' '-C' 'prefer-dynamic' '-C' 'embed-bitcode=no' '--warn' 'variant-size-differences' '--warn' 'clippy::use-debug' '--warn' 'clippy::unwrap-used' '--warn' 'clippy::unwrap-in-result' '--warn' 'unused-qualifications' '--warn' 'unused-lifetimes' '--warn' 'unused-import-braces' '--warn' 'unused' '--deny' 'unstable-syntax-pre-expansion' '--deny' 'unsafe-op-in-unsafe-fn' '--warn' 'unreachable-pub' '--warn' 'clippy::unnested-or-patterns' '--deny' 'unnameable-test-items' '--warn' 'clippy::uninlined-format-args' '--warn' 'clippy::unimplemented' '--warn' 'rustdoc::unescaped-backticks' '--deny' 'clippy::undocumented-unsafe-blocks' '--deny' 'unconditional-recursion' '--warn' 'trivial-numeric-casts' '--warn' 'trivial-casts' '--warn' 'clippy::todo' '--deny' 'temporary-cstring-as-ptr' '--deny' 'suspicious-double-ref-op' '--deny' 'clippy::std-instead-of-core' '--warn' 'single-use-lifetimes' '--warn' 'clippy::semicolon-outside-block' '--warn' 'rustdoc::private-doc-tests' '--warn' 'clippy::print-stdout' '--deny' 'overlapping-range-endpoints' '--deny' 'opaque-hidden-inferred-bound' '--warn' 'clippy::obfuscated-if-else' '--warn' 'clippy::nursery' '--warn' 'noop-method-call' '--deny' 'non-ascii-idents' '--deny' 'named-arguments-used-positionally' '--warn' 'clippy::missing-enforced-import-renames' '--warn' 'clippy::missing-docs-in-private-items' '--warn' 'missing-docs' '--warn' 'missing-debug-implementations' '--warn' 'missing-copy-implementations' '--warn' 'missing-abi' '--warn' 'meta-variable-misuse' '--warn' 'clippy::manual-let-else' '--warn' 'macro-use-extern-crate' '--warn' 'let-underscore' '--warn' 'keyword-idents' '--deny' 'invalid-value' '--deny' 'invalid-reference-casting' '--deny' 'invalid-nan-comparisons' '--deny' 'invalid-macro-export-arguments' '--deny' 'invalid-from-utf8' '--deny' 'improper-ctypes-definitions' '--deny' 'improper-ctypes' '--deny' 'hidden-glob-reexports' '--warn' 'clippy::get-unwrap' '--deny' 'future-incompatible' '--warn' 'clippy::explicit-auto-deref' '--deny' 'drop-bounds' '--deny' 'deref-nullptr' '--warn' 'clippy::decimal-literal-representation' '--warn' 'clippy::dbg-macro' '--deny' 'const-item-mutation' '--deny' 'clashing-extern-declarations' '--deny' 'ambiguous-glob-reexports' '--deny' 'clippy::alloc-instead-of-core' '--warn' 'clippy::all' '--warn' 'unstable-name-collisions' '--allow' 'clippy::redundant-pub-crate' '--allow' 'clippy::option-if-let-else' '-C' 'debug-assertions=off' '--cfg' 'feature="formatting"' '--cfg' 'feature="parsing"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("formatting", "large-dates", "parsing", "serde"))' '-C' 'metadata=ff659ddd94cfe0a4' '-C' 'extra-filename=-5e4ea2afc3639c7d' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'num_conv=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libnum_conv-aeb7953b74f39339.rlib' '--extern' 'time_core=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libtime_core-b93042f7c88e79a2.rlib' '--extern' 'proc_macro' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/time-macros-0.2.18/src/lib.rs \
+      rustc '--crate-name' 'time_macros' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'proc-macro' '--emit' 'dep-info,link' '-C' 'prefer-dynamic' '-C' 'embed-bitcode=no' '--warn' 'variant-size-differences' '--warn' 'clippy::use-debug' '--warn' 'clippy::unwrap-used' '--warn' 'clippy::unwrap-in-result' '--warn' 'unused-qualifications' '--warn' 'unused-lifetimes' '--warn' 'unused-import-braces' '--warn' 'unused' '--deny' 'unstable-syntax-pre-expansion' '--deny' 'unsafe-op-in-unsafe-fn' '--warn' 'unreachable-pub' '--warn' 'clippy::unnested-or-patterns' '--deny' 'unnameable-test-items' '--warn' 'clippy::uninlined-format-args' '--warn' 'clippy::unimplemented' '--warn' 'rustdoc::unescaped-backticks' '--deny' 'clippy::undocumented-unsafe-blocks' '--deny' 'unconditional-recursion' '--warn' 'trivial-numeric-casts' '--warn' 'trivial-casts' '--warn' 'clippy::todo' '--deny' 'temporary-cstring-as-ptr' '--deny' 'suspicious-double-ref-op' '--deny' 'clippy::std-instead-of-core' '--warn' 'single-use-lifetimes' '--warn' 'clippy::semicolon-outside-block' '--warn' 'rustdoc::private-doc-tests' '--warn' 'clippy::print-stdout' '--deny' 'overlapping-range-endpoints' '--deny' 'opaque-hidden-inferred-bound' '--warn' 'clippy::obfuscated-if-else' '--warn' 'clippy::nursery' '--warn' 'noop-method-call' '--deny' 'non-ascii-idents' '--deny' 'named-arguments-used-positionally' '--warn' 'clippy::missing-enforced-import-renames' '--warn' 'clippy::missing-docs-in-private-items' '--warn' 'missing-docs' '--warn' 'missing-debug-implementations' '--warn' 'missing-copy-implementations' '--warn' 'missing-abi' '--warn' 'meta-variable-misuse' '--warn' 'clippy::manual-let-else' '--warn' 'macro-use-extern-crate' '--warn' 'let-underscore' '--warn' 'keyword-idents' '--deny' 'invalid-value' '--deny' 'invalid-reference-casting' '--deny' 'invalid-nan-comparisons' '--deny' 'invalid-macro-export-arguments' '--deny' 'invalid-from-utf8' '--deny' 'improper-ctypes-definitions' '--deny' 'improper-ctypes' '--deny' 'hidden-glob-reexports' '--warn' 'clippy::get-unwrap' '--deny' 'future-incompatible' '--warn' 'clippy::explicit-auto-deref' '--deny' 'drop-bounds' '--deny' 'deref-nullptr' '--warn' 'clippy::decimal-literal-representation' '--warn' 'clippy::dbg-macro' '--deny' 'const-item-mutation' '--deny' 'clashing-extern-declarations' '--deny' 'ambiguous-glob-reexports' '--deny' 'clippy::alloc-instead-of-core' '--warn' 'clippy::all' '--warn' 'unstable-name-collisions' '--allow' 'clippy::redundant-pub-crate' '--allow' 'clippy::option-if-let-else' '-C' 'debug-assertions=off' '--cfg' 'feature="formatting"' '--cfg' 'feature="parsing"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("formatting", "large-dates", "parsing", "serde"))' '-C' 'metadata=ff659ddd94cfe0a4' '-C' 'extra-filename=-5e4ea2afc3639c7d' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'num_conv=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libnum_conv-aeb7953b74f39339.rlib' '--extern' 'time_core=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libtime_core-b93042f7c88e79a2.rlib' '--extern' 'proc_macro' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/time-macros-0.2.18/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-5e4ea2afc3639c7d
@@ -4736,7 +4736,7 @@ FROM rust-base AS dep-l-time-0.3.36-0e970d9e2c503d31
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-time-0.3.36,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/time-0.3.36 \
+  --mount=from=cratesio-time-0.3.36,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/time-0.3.36 \
   --mount=from=out-f5a132c6a4ea6047,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libderanged-f5a132c6a4ea6047.rmeta,source=/libderanged-f5a132c6a4ea6047.rmeta \
   --mount=from=out-64072cd3efbea8e9,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libitoa-64072cd3efbea8e9.rmeta,source=/libitoa-64072cd3efbea8e9.rmeta \
   --mount=from=out-732e2ada889bf950,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libnum_conv-732e2ada889bf950.rmeta,source=/libnum_conv-732e2ada889bf950.rmeta \
@@ -4748,8 +4748,8 @@ RUN \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="time" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/time-0.3.36" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/time-0.3.36/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/time-0.3.36" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/time-0.3.36/Cargo.toml" \
         CARGO_PKG_AUTHORS="Jacob Pratt <open-source@jhpratt.dev>:Time contributors" \
         CARGO_PKG_DESCRIPTION="Date and time library. Fully interoperable with the standard library. Mostly compatible with #![no_std]." \
         CARGO_PKG_HOMEPAGE="https://time-rs.github.io" \
@@ -4766,7 +4766,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'time' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--warn' 'variant-size-differences' '--warn' 'clippy::use-debug' '--warn' 'clippy::unwrap-used' '--warn' 'clippy::unwrap-in-result' '--warn' 'unused-qualifications' '--warn' 'unused-lifetimes' '--warn' 'unused-import-braces' '--warn' 'unused' '--deny' 'unstable-syntax-pre-expansion' '--deny' 'unsafe-op-in-unsafe-fn' '--warn' 'unreachable-pub' '--warn' 'clippy::unnested-or-patterns' '--deny' 'unnameable-test-items' '--warn' 'clippy::uninlined-format-args' '--warn' 'clippy::unimplemented' '--warn' 'rustdoc::unescaped-backticks' '--deny' 'clippy::undocumented-unsafe-blocks' '--deny' 'unconditional-recursion' '--warn' 'trivial-numeric-casts' '--warn' 'trivial-casts' '--warn' 'clippy::todo' '--deny' 'temporary-cstring-as-ptr' '--deny' 'suspicious-double-ref-op' '--deny' 'clippy::std-instead-of-core' '--warn' 'single-use-lifetimes' '--warn' 'clippy::semicolon-outside-block' '--warn' 'rustdoc::private-doc-tests' '--warn' 'clippy::print-stdout' '--deny' 'overlapping-range-endpoints' '--deny' 'opaque-hidden-inferred-bound' '--warn' 'clippy::obfuscated-if-else' '--warn' 'clippy::nursery' '--warn' 'noop-method-call' '--deny' 'non-ascii-idents' '--deny' 'named-arguments-used-positionally' '--warn' 'clippy::missing-enforced-import-renames' '--warn' 'clippy::missing-docs-in-private-items' '--warn' 'missing-docs' '--warn' 'missing-debug-implementations' '--warn' 'missing-copy-implementations' '--warn' 'missing-abi' '--warn' 'meta-variable-misuse' '--warn' 'clippy::manual-let-else' '--warn' 'macro-use-extern-crate' '--warn' 'let-underscore' '--warn' 'keyword-idents' '--deny' 'invalid-value' '--deny' 'invalid-reference-casting' '--deny' 'invalid-nan-comparisons' '--deny' 'invalid-macro-export-arguments' '--deny' 'invalid-from-utf8' '--deny' 'improper-ctypes-definitions' '--deny' 'improper-ctypes' '--deny' 'hidden-glob-reexports' '--warn' 'clippy::get-unwrap' '--deny' 'future-incompatible' '--warn' 'clippy::explicit-auto-deref' '--deny' 'drop-bounds' '--deny' 'deref-nullptr' '--warn' 'clippy::decimal-literal-representation' '--warn' 'clippy::dbg-macro' '--deny' 'const-item-mutation' '--deny' 'clashing-extern-declarations' '--deny' 'ambiguous-glob-reexports' '--deny' 'clippy::alloc-instead-of-core' '--warn' 'clippy::all' '--warn' 'unstable-name-collisions' '--allow' 'clippy::redundant-pub-crate' '--allow' 'clippy::option-if-let-else' '--cfg' 'feature="alloc"' '--cfg' 'feature="default"' '--cfg' 'feature="formatting"' '--cfg' 'feature="macros"' '--cfg' 'feature="parsing"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "default", "formatting", "large-dates", "local-offset", "macros", "parsing", "quickcheck", "rand", "serde", "serde-human-readable", "serde-well-known", "std", "wasm-bindgen"))' '-C' 'metadata=932e277fb3bf16ea' '-C' 'extra-filename=-0e970d9e2c503d31' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'deranged=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libderanged-f5a132c6a4ea6047.rmeta' '--extern' 'itoa=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libitoa-64072cd3efbea8e9.rmeta' '--extern' 'num_conv=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libnum_conv-732e2ada889bf950.rmeta' '--extern' 'powerfmt=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libpowerfmt-c99dbe05b4a41ed4.rmeta' '--extern' 'time_core=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libtime_core-0766e58b62001240.rmeta' '--extern' 'time_macros=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libtime_macros-5e4ea2afc3639c7d.so' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/time-0.3.36/src/lib.rs \
+      rustc '--crate-name' 'time' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--warn' 'variant-size-differences' '--warn' 'clippy::use-debug' '--warn' 'clippy::unwrap-used' '--warn' 'clippy::unwrap-in-result' '--warn' 'unused-qualifications' '--warn' 'unused-lifetimes' '--warn' 'unused-import-braces' '--warn' 'unused' '--deny' 'unstable-syntax-pre-expansion' '--deny' 'unsafe-op-in-unsafe-fn' '--warn' 'unreachable-pub' '--warn' 'clippy::unnested-or-patterns' '--deny' 'unnameable-test-items' '--warn' 'clippy::uninlined-format-args' '--warn' 'clippy::unimplemented' '--warn' 'rustdoc::unescaped-backticks' '--deny' 'clippy::undocumented-unsafe-blocks' '--deny' 'unconditional-recursion' '--warn' 'trivial-numeric-casts' '--warn' 'trivial-casts' '--warn' 'clippy::todo' '--deny' 'temporary-cstring-as-ptr' '--deny' 'suspicious-double-ref-op' '--deny' 'clippy::std-instead-of-core' '--warn' 'single-use-lifetimes' '--warn' 'clippy::semicolon-outside-block' '--warn' 'rustdoc::private-doc-tests' '--warn' 'clippy::print-stdout' '--deny' 'overlapping-range-endpoints' '--deny' 'opaque-hidden-inferred-bound' '--warn' 'clippy::obfuscated-if-else' '--warn' 'clippy::nursery' '--warn' 'noop-method-call' '--deny' 'non-ascii-idents' '--deny' 'named-arguments-used-positionally' '--warn' 'clippy::missing-enforced-import-renames' '--warn' 'clippy::missing-docs-in-private-items' '--warn' 'missing-docs' '--warn' 'missing-debug-implementations' '--warn' 'missing-copy-implementations' '--warn' 'missing-abi' '--warn' 'meta-variable-misuse' '--warn' 'clippy::manual-let-else' '--warn' 'macro-use-extern-crate' '--warn' 'let-underscore' '--warn' 'keyword-idents' '--deny' 'invalid-value' '--deny' 'invalid-reference-casting' '--deny' 'invalid-nan-comparisons' '--deny' 'invalid-macro-export-arguments' '--deny' 'invalid-from-utf8' '--deny' 'improper-ctypes-definitions' '--deny' 'improper-ctypes' '--deny' 'hidden-glob-reexports' '--warn' 'clippy::get-unwrap' '--deny' 'future-incompatible' '--warn' 'clippy::explicit-auto-deref' '--deny' 'drop-bounds' '--deny' 'deref-nullptr' '--warn' 'clippy::decimal-literal-representation' '--warn' 'clippy::dbg-macro' '--deny' 'const-item-mutation' '--deny' 'clashing-extern-declarations' '--deny' 'ambiguous-glob-reexports' '--deny' 'clippy::alloc-instead-of-core' '--warn' 'clippy::all' '--warn' 'unstable-name-collisions' '--allow' 'clippy::redundant-pub-crate' '--allow' 'clippy::option-if-let-else' '--cfg' 'feature="alloc"' '--cfg' 'feature="default"' '--cfg' 'feature="formatting"' '--cfg' 'feature="macros"' '--cfg' 'feature="parsing"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "default", "formatting", "large-dates", "local-offset", "macros", "parsing", "quickcheck", "rand", "serde", "serde-human-readable", "serde-well-known", "std", "wasm-bindgen"))' '-C' 'metadata=932e277fb3bf16ea' '-C' 'extra-filename=-0e970d9e2c503d31' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'deranged=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libderanged-f5a132c6a4ea6047.rmeta' '--extern' 'itoa=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libitoa-64072cd3efbea8e9.rmeta' '--extern' 'num_conv=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libnum_conv-732e2ada889bf950.rmeta' '--extern' 'powerfmt=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libpowerfmt-c99dbe05b4a41ed4.rmeta' '--extern' 'time_core=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libtime_core-0766e58b62001240.rmeta' '--extern' 'time_macros=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libtime_macros-5e4ea2afc3639c7d.so' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/time-0.3.36/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-0e970d9e2c503d31
@@ -4786,7 +4786,7 @@ FROM rust-base AS dep-l-rusqlite-0.31.0-1332dda8bde3ad94
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-rusqlite-0.31.0,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/rusqlite-0.31.0 \
+  --mount=from=cratesio-rusqlite-0.31.0,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rusqlite-0.31.0 \
   --mount=from=out-b1a23cff02e478bf,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libahash-b1a23cff02e478bf.rmeta,source=/libahash-b1a23cff02e478bf.rmeta \
   --mount=from=out-17a5f5c99a2a99e3,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libbitflags-17a5f5c99a2a99e3.rmeta,source=/libbitflags-17a5f5c99a2a99e3.rmeta \
   --mount=from=out-642a9e511eeb712a,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libcfg_if-642a9e511eeb712a.rmeta,source=/libcfg_if-642a9e511eeb712a.rmeta \
@@ -4810,8 +4810,8 @@ RUN \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="rusqlite" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/rusqlite-0.31.0" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/rusqlite-0.31.0/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rusqlite-0.31.0" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rusqlite-0.31.0/Cargo.toml" \
         CARGO_PKG_AUTHORS="The rusqlite developers" \
         CARGO_PKG_DESCRIPTION="Ergonomic wrapper for SQLite" \
         CARGO_PKG_HOMEPAGE= \
@@ -4828,7 +4828,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'rusqlite' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="bundled"' '--cfg' 'feature="modern_sqlite"' '--cfg' 'feature="time"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("array", "backup", "blob", "buildtime_bindgen", "bundled", "bundled-full", "bundled-sqlcipher", "bundled-sqlcipher-vendored-openssl", "bundled-windows", "chrono", "collation", "column_decltype", "csv", "csvtab", "extra_check", "functions", "hooks", "i128_blob", "in_gecko", "limits", "load_extension", "loadable_extension", "modern-full", "modern_sqlite", "release_memory", "rusqlite-macros", "serde_json", "serialize", "series", "session", "sqlcipher", "time", "trace", "unlock_notify", "url", "uuid", "vtab", "wasm32-wasi-vfs", "window", "with-asan"))' '-C' 'metadata=4484d7156a06c3d1' '-C' 'extra-filename=-1332dda8bde3ad94' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'bitflags=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libbitflags-17a5f5c99a2a99e3.rmeta' '--extern' 'fallible_iterator=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libfallible_iterator-a896fadc8e81d51c.rmeta' '--extern' 'fallible_streaming_iterator=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libfallible_streaming_iterator-0bd9f5163eee2585.rmeta' '--extern' 'hashlink=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libhashlink-7ab7c019eabb7e4d.rmeta' '--extern' 'libsqlite3_sys=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/liblibsqlite3_sys-15c9aa903d4224ed.rmeta' '--extern' 'smallvec=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libsmallvec-d566e34028d47484.rmeta' '--extern' 'time=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libtime-0e970d9e2c503d31.rmeta' '--cap-lints' 'warn' '-L' 'native=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/build/libsqlite3-sys-7aab3b2d00efe93c/out' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/rusqlite-0.31.0/src/lib.rs \
+      rustc '--crate-name' 'rusqlite' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="bundled"' '--cfg' 'feature="modern_sqlite"' '--cfg' 'feature="time"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("array", "backup", "blob", "buildtime_bindgen", "bundled", "bundled-full", "bundled-sqlcipher", "bundled-sqlcipher-vendored-openssl", "bundled-windows", "chrono", "collation", "column_decltype", "csv", "csvtab", "extra_check", "functions", "hooks", "i128_blob", "in_gecko", "limits", "load_extension", "loadable_extension", "modern-full", "modern_sqlite", "release_memory", "rusqlite-macros", "serde_json", "serialize", "series", "session", "sqlcipher", "time", "trace", "unlock_notify", "url", "uuid", "vtab", "wasm32-wasi-vfs", "window", "with-asan"))' '-C' 'metadata=4484d7156a06c3d1' '-C' 'extra-filename=-1332dda8bde3ad94' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'bitflags=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libbitflags-17a5f5c99a2a99e3.rmeta' '--extern' 'fallible_iterator=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libfallible_iterator-a896fadc8e81d51c.rmeta' '--extern' 'fallible_streaming_iterator=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libfallible_streaming_iterator-0bd9f5163eee2585.rmeta' '--extern' 'hashlink=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libhashlink-7ab7c019eabb7e4d.rmeta' '--extern' 'libsqlite3_sys=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/liblibsqlite3_sys-15c9aa903d4224ed.rmeta' '--extern' 'smallvec=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libsmallvec-d566e34028d47484.rmeta' '--extern' 'time=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libtime-0e970d9e2c503d31.rmeta' '--cap-lints' 'warn' '-L' 'native=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/build/libsqlite3-sys-7aab3b2d00efe93c/out' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rusqlite-0.31.0/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-1332dda8bde3ad94
@@ -4848,7 +4848,7 @@ FROM rust-base AS dep-l-tokio-util-0.7.11-0195a60ffe79b4b3
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-tokio-util-0.7.11,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/tokio-util-0.7.11 \
+  --mount=from=cratesio-tokio-util-0.7.11,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/tokio-util-0.7.11 \
   --mount=from=out-50244e9691b9a94b,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libbytes-50244e9691b9a94b.rmeta,source=/libbytes-50244e9691b9a94b.rmeta \
   --mount=from=out-d33644073a44f49e,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libfutures_core-d33644073a44f49e.rmeta,source=/libfutures_core-d33644073a44f49e.rmeta \
   --mount=from=out-76c391dc94e2e033,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libfutures_sink-76c391dc94e2e033.rmeta,source=/libfutures_sink-76c391dc94e2e033.rmeta \
@@ -4866,8 +4866,8 @@ RUN \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="tokio_util" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/tokio-util-0.7.11" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/tokio-util-0.7.11/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/tokio-util-0.7.11" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/tokio-util-0.7.11/Cargo.toml" \
         CARGO_PKG_AUTHORS="Tokio Contributors <team@tokio.rs>" \
         CARGO_PKG_DESCRIPTION="Additional utilities for working with Tokio.\n" \
         CARGO_PKG_HOMEPAGE="https://tokio.rs" \
@@ -4884,7 +4884,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'tokio_util' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="default"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("__docs_rs", "codec", "compat", "default", "full", "futures-io", "futures-util", "hashbrown", "io", "io-util", "net", "rt", "slab", "time", "tracing"))' '-C' 'metadata=b8f8f995d256293f' '-C' 'extra-filename=-0195a60ffe79b4b3' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'bytes=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libbytes-50244e9691b9a94b.rmeta' '--extern' 'futures_core=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libfutures_core-d33644073a44f49e.rmeta' '--extern' 'futures_sink=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libfutures_sink-76c391dc94e2e033.rmeta' '--extern' 'pin_project_lite=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libpin_project_lite-da209fbed6de9e9d.rmeta' '--extern' 'tokio=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libtokio-79aa4352b389ce42.rmeta' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/tokio-util-0.7.11/src/lib.rs \
+      rustc '--crate-name' 'tokio_util' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="default"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("__docs_rs", "codec", "compat", "default", "full", "futures-io", "futures-util", "hashbrown", "io", "io-util", "net", "rt", "slab", "time", "tracing"))' '-C' 'metadata=b8f8f995d256293f' '-C' 'extra-filename=-0195a60ffe79b4b3' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'bytes=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libbytes-50244e9691b9a94b.rmeta' '--extern' 'futures_core=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libfutures_core-d33644073a44f49e.rmeta' '--extern' 'futures_sink=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libfutures_sink-76c391dc94e2e033.rmeta' '--extern' 'pin_project_lite=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libpin_project_lite-da209fbed6de9e9d.rmeta' '--extern' 'tokio=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libtokio-79aa4352b389ce42.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/tokio-util-0.7.11/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-0195a60ffe79b4b3
@@ -4904,7 +4904,7 @@ FROM rust-base AS dep-l-hickory-server-0.25.0-alpha.1-e06532f1a8b92799
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-hickory-server-0.25.0-alpha.1,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/hickory-server-0.25.0-alpha.1 \
+  --mount=from=cratesio-hickory-server-0.25.0-alpha.1,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/hickory-server-0.25.0-alpha.1 \
   --mount=from=out-b1a23cff02e478bf,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libahash-b1a23cff02e478bf.rmeta,source=/libahash-b1a23cff02e478bf.rmeta \
   --mount=from=out-9dd3aead262695aa,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libasync_recursion-9dd3aead262695aa.so,source=/libasync_recursion-9dd3aead262695aa.so \
   --mount=from=out-688e1090a6b8baa3,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libasync_trait-688e1090a6b8baa3.so,source=/libasync_trait-688e1090a6b8baa3.so \
@@ -5003,8 +5003,8 @@ RUN \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="hickory_server" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/hickory-server-0.25.0-alpha.1" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/hickory-server-0.25.0-alpha.1/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/hickory-server-0.25.0-alpha.1" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/hickory-server-0.25.0-alpha.1/Cargo.toml" \
         CARGO_PKG_AUTHORS="The contributors to Hickory DNS" \
         CARGO_PKG_DESCRIPTION="Hickory DNS is a safe and secure DNS server with DNSSEC support.\n Eventually this could be a replacement for BIND9. The DNSSEC support allows\n for live signing of all records, in it does not currently support\n records signed offline. The server supports dynamic DNS with SIG0 authenticated\n requests. Hickory DNS is based on the Tokio and Futures libraries, which means\n it should be easily integrated into other software that also use those\n libraries.\n" \
         CARGO_PKG_HOMEPAGE="https://hickory-dns.org/" \
@@ -5021,7 +5021,7 @@ RUN \
         CARGO_PKG_VERSION_PRE="alpha.1" \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'hickory_server' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="dns-over-rustls"' '--cfg' 'feature="dns-over-tls"' '--cfg' 'feature="dnssec"' '--cfg' 'feature="dnssec-ring"' '--cfg' 'feature="hickory-resolver"' '--cfg' 'feature="native-certs"' '--cfg' 'feature="resolver"' '--cfg' 'feature="rusqlite"' '--cfg' 'feature="rustls"' '--cfg' 'feature="sqlite"' '--cfg' 'feature="tokio-rustls"' '--cfg' 'feature="toml"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("backtrace", "dns-over-h3", "dns-over-https", "dns-over-https-rustls", "dns-over-openssl", "dns-over-quic", "dns-over-rustls", "dns-over-tls", "dnssec", "dnssec-openssl", "dnssec-ring", "h2", "h3", "h3-quinn", "hickory-recursor", "hickory-resolver", "http", "native-certs", "openssl", "recursor", "resolver", "rusqlite", "rustls", "sqlite", "testing", "tls", "tls-openssl", "tokio-openssl", "tokio-rustls", "toml", "webpki-roots"))' '-C' 'metadata=6ce56088718b73f6' '-C' 'extra-filename=-e06532f1a8b92799' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'async_trait=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libasync_trait-688e1090a6b8baa3.so' '--extern' 'basic_toml=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libbasic_toml-08a1118f9cca92d8.rmeta' '--extern' 'bytes=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libbytes-50244e9691b9a94b.rmeta' '--extern' 'cfg_if=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libcfg_if-642a9e511eeb712a.rmeta' '--extern' 'enum_as_inner=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libenum_as_inner-6d04612725c62e19.so' '--extern' 'futures_util=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libfutures_util-ff898060123f2ff4.rmeta' '--extern' 'hickory_proto=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libhickory_proto-d268433833bdfec5.rmeta' '--extern' 'hickory_resolver=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libhickory_resolver-e3730ec3be8d1437.rmeta' '--extern' 'ipnet=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libipnet-1ae33865903c85f3.rmeta' '--extern' 'prefix_trie=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libprefix_trie-37734febb74e62aa.rmeta' '--extern' 'rusqlite=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/librusqlite-1332dda8bde3ad94.rmeta' '--extern' 'rustls=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/librustls-946240332397fd14.rmeta' '--extern' 'serde=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libserde-ceabefec0a6d61ca.rmeta' '--extern' 'thiserror=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libthiserror-0775a6b20280dc57.rmeta' '--extern' 'time=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libtime-0e970d9e2c503d31.rmeta' '--extern' 'tokio=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libtokio-79aa4352b389ce42.rmeta' '--extern' 'tokio_rustls=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libtokio_rustls-276f52514b3ea657.rmeta' '--extern' 'tokio_util=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libtokio_util-0195a60ffe79b4b3.rmeta' '--extern' 'tracing=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libtracing-566b844940427fbc.rmeta' '--cap-lints' 'warn' '-L' 'native=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/build/ring-b4af30f1837a119d/out' '-L' 'native=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/build/libsqlite3-sys-7aab3b2d00efe93c/out' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/hickory-server-0.25.0-alpha.1/src/lib.rs \
+      rustc '--crate-name' 'hickory_server' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="dns-over-rustls"' '--cfg' 'feature="dns-over-tls"' '--cfg' 'feature="dnssec"' '--cfg' 'feature="dnssec-ring"' '--cfg' 'feature="hickory-resolver"' '--cfg' 'feature="native-certs"' '--cfg' 'feature="resolver"' '--cfg' 'feature="rusqlite"' '--cfg' 'feature="rustls"' '--cfg' 'feature="sqlite"' '--cfg' 'feature="tokio-rustls"' '--cfg' 'feature="toml"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("backtrace", "dns-over-h3", "dns-over-https", "dns-over-https-rustls", "dns-over-openssl", "dns-over-quic", "dns-over-rustls", "dns-over-tls", "dnssec", "dnssec-openssl", "dnssec-ring", "h2", "h3", "h3-quinn", "hickory-recursor", "hickory-resolver", "http", "native-certs", "openssl", "recursor", "resolver", "rusqlite", "rustls", "sqlite", "testing", "tls", "tls-openssl", "tokio-openssl", "tokio-rustls", "toml", "webpki-roots"))' '-C' 'metadata=6ce56088718b73f6' '-C' 'extra-filename=-e06532f1a8b92799' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'async_trait=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libasync_trait-688e1090a6b8baa3.so' '--extern' 'basic_toml=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libbasic_toml-08a1118f9cca92d8.rmeta' '--extern' 'bytes=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libbytes-50244e9691b9a94b.rmeta' '--extern' 'cfg_if=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libcfg_if-642a9e511eeb712a.rmeta' '--extern' 'enum_as_inner=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libenum_as_inner-6d04612725c62e19.so' '--extern' 'futures_util=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libfutures_util-ff898060123f2ff4.rmeta' '--extern' 'hickory_proto=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libhickory_proto-d268433833bdfec5.rmeta' '--extern' 'hickory_resolver=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libhickory_resolver-e3730ec3be8d1437.rmeta' '--extern' 'ipnet=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libipnet-1ae33865903c85f3.rmeta' '--extern' 'prefix_trie=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libprefix_trie-37734febb74e62aa.rmeta' '--extern' 'rusqlite=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/librusqlite-1332dda8bde3ad94.rmeta' '--extern' 'rustls=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/librustls-946240332397fd14.rmeta' '--extern' 'serde=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libserde-ceabefec0a6d61ca.rmeta' '--extern' 'thiserror=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libthiserror-0775a6b20280dc57.rmeta' '--extern' 'time=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libtime-0e970d9e2c503d31.rmeta' '--extern' 'tokio=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libtokio-79aa4352b389ce42.rmeta' '--extern' 'tokio_rustls=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libtokio_rustls-276f52514b3ea657.rmeta' '--extern' 'tokio_util=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libtokio_util-0195a60ffe79b4b3.rmeta' '--extern' 'tracing=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libtracing-566b844940427fbc.rmeta' '--cap-lints' 'warn' '-L' 'native=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/build/ring-b4af30f1837a119d/out' '-L' 'native=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/build/libsqlite3-sys-7aab3b2d00efe93c/out' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/hickory-server-0.25.0-alpha.1/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-e06532f1a8b92799
@@ -5041,12 +5041,12 @@ FROM rust-base AS dep-l-lazy_static-1.4.0-49434c819b4044f4
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-lazy_static-1.4.0,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/lazy_static-1.4.0 \
+  --mount=from=cratesio-lazy_static-1.4.0,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/lazy_static-1.4.0 \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="lazy_static" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/lazy_static-1.4.0" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/lazy_static-1.4.0/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/lazy_static-1.4.0" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/lazy_static-1.4.0/Cargo.toml" \
         CARGO_PKG_AUTHORS="Marvin Löbel <loebel.marvin@gmail.com>" \
         CARGO_PKG_DESCRIPTION="A macro for declaring lazily evaluated statics in Rust." \
         CARGO_PKG_HOMEPAGE= \
@@ -5063,7 +5063,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'lazy_static' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("spin", "spin_no_std"))' '-C' 'metadata=41a5c3179e73440d' '-C' 'extra-filename=-49434c819b4044f4' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/lazy_static-1.4.0/src/lib.rs \
+      rustc '--crate-name' 'lazy_static' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("spin", "spin_no_std"))' '-C' 'metadata=41a5c3179e73440d' '-C' 'extra-filename=-49434c819b4044f4' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/lazy_static-1.4.0/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-49434c819b4044f4
@@ -5083,12 +5083,12 @@ FROM rust-base AS dep-l-regex-syntax-0.6.29-92d2f147b28e22ee
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-regex-syntax-0.6.29,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/regex-syntax-0.6.29 \
+  --mount=from=cratesio-regex-syntax-0.6.29,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/regex-syntax-0.6.29 \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="regex_syntax" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/regex-syntax-0.6.29" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/regex-syntax-0.6.29/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/regex-syntax-0.6.29" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/regex-syntax-0.6.29/Cargo.toml" \
         CARGO_PKG_AUTHORS="The Rust Project Developers" \
         CARGO_PKG_DESCRIPTION="A regular expression parser." \
         CARGO_PKG_HOMEPAGE="https://github.com/rust-lang/regex" \
@@ -5105,7 +5105,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'regex_syntax' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="default"' '--cfg' 'feature="unicode"' '--cfg' 'feature="unicode-age"' '--cfg' 'feature="unicode-bool"' '--cfg' 'feature="unicode-case"' '--cfg' 'feature="unicode-gencat"' '--cfg' 'feature="unicode-perl"' '--cfg' 'feature="unicode-script"' '--cfg' 'feature="unicode-segment"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "unicode", "unicode-age", "unicode-bool", "unicode-case", "unicode-gencat", "unicode-perl", "unicode-script", "unicode-segment"))' '-C' 'metadata=db0edd1b5373a5be' '-C' 'extra-filename=-92d2f147b28e22ee' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/regex-syntax-0.6.29/src/lib.rs \
+      rustc '--crate-name' 'regex_syntax' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="default"' '--cfg' 'feature="unicode"' '--cfg' 'feature="unicode-age"' '--cfg' 'feature="unicode-bool"' '--cfg' 'feature="unicode-case"' '--cfg' 'feature="unicode-gencat"' '--cfg' 'feature="unicode-perl"' '--cfg' 'feature="unicode-script"' '--cfg' 'feature="unicode-segment"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "unicode", "unicode-age", "unicode-bool", "unicode-case", "unicode-gencat", "unicode-perl", "unicode-script", "unicode-segment"))' '-C' 'metadata=db0edd1b5373a5be' '-C' 'extra-filename=-92d2f147b28e22ee' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/regex-syntax-0.6.29/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-92d2f147b28e22ee
@@ -5125,13 +5125,13 @@ FROM rust-base AS dep-l-regex-automata-0.1.10-e9f79f90aa686e88
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-regex-automata-0.1.10,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/regex-automata-0.1.10 \
+  --mount=from=cratesio-regex-automata-0.1.10,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/regex-automata-0.1.10 \
   --mount=from=out-92d2f147b28e22ee,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libregex_syntax-92d2f147b28e22ee.rmeta,source=/libregex_syntax-92d2f147b28e22ee.rmeta \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="regex_automata" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/regex-automata-0.1.10" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/regex-automata-0.1.10/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/regex-automata-0.1.10" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/regex-automata-0.1.10/Cargo.toml" \
         CARGO_PKG_AUTHORS="Andrew Gallant <jamslam@gmail.com>" \
         CARGO_PKG_DESCRIPTION="Automata construction and matching using regular expressions." \
         CARGO_PKG_HOMEPAGE="https://github.com/BurntSushi/regex-automata" \
@@ -5148,7 +5148,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'regex_automata' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="default"' '--cfg' 'feature="regex-syntax"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "fst", "regex-syntax", "std", "transducer"))' '-C' 'metadata=78f65d53ab5ba115' '-C' 'extra-filename=-e9f79f90aa686e88' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'regex_syntax=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libregex_syntax-92d2f147b28e22ee.rmeta' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/regex-automata-0.1.10/src/lib.rs \
+      rustc '--crate-name' 'regex_automata' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="default"' '--cfg' 'feature="regex-syntax"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "fst", "regex-syntax", "std", "transducer"))' '-C' 'metadata=78f65d53ab5ba115' '-C' 'extra-filename=-e9f79f90aa686e88' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'regex_syntax=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libregex_syntax-92d2f147b28e22ee.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/regex-automata-0.1.10/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-e9f79f90aa686e88
@@ -5168,14 +5168,14 @@ FROM rust-base AS dep-l-matchers-0.1.0-52a7c28fb4ef7fd6
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-matchers-0.1.0,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/matchers-0.1.0 \
+  --mount=from=cratesio-matchers-0.1.0,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/matchers-0.1.0 \
   --mount=from=out-e9f79f90aa686e88,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libregex_automata-e9f79f90aa686e88.rmeta,source=/libregex_automata-e9f79f90aa686e88.rmeta \
   --mount=from=out-92d2f147b28e22ee,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libregex_syntax-92d2f147b28e22ee.rmeta,source=/libregex_syntax-92d2f147b28e22ee.rmeta \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="matchers" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/matchers-0.1.0" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/matchers-0.1.0/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/matchers-0.1.0" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/matchers-0.1.0/Cargo.toml" \
         CARGO_PKG_AUTHORS="Eliza Weisman <eliza@buoyant.io>" \
         CARGO_PKG_DESCRIPTION="Regex matching on character and byte streams.\n" \
         CARGO_PKG_HOMEPAGE="https://github.com/hawkw/matchers" \
@@ -5192,7 +5192,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'matchers' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=d09f0e6aedb5395a' '-C' 'extra-filename=-52a7c28fb4ef7fd6' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'regex_automata=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libregex_automata-e9f79f90aa686e88.rmeta' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/matchers-0.1.0/src/lib.rs \
+      rustc '--crate-name' 'matchers' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=d09f0e6aedb5395a' '-C' 'extra-filename=-52a7c28fb4ef7fd6' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'regex_automata=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libregex_automata-e9f79f90aa686e88.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/matchers-0.1.0/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-52a7c28fb4ef7fd6
@@ -5212,12 +5212,12 @@ FROM rust-base AS dep-l-overload-0.1.1-45aafc635a57cff1
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-overload-0.1.1,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/overload-0.1.1 \
+  --mount=from=cratesio-overload-0.1.1,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/overload-0.1.1 \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="overload" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/overload-0.1.1" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/overload-0.1.1/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/overload-0.1.1" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/overload-0.1.1/Cargo.toml" \
         CARGO_PKG_AUTHORS="Daniel Salvadori <danaugrs@gmail.com>" \
         CARGO_PKG_DESCRIPTION="Provides a macro to simplify operator overloading." \
         CARGO_PKG_HOMEPAGE= \
@@ -5234,7 +5234,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'overload' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=4c018e9f6ab20139' '-C' 'extra-filename=-45aafc635a57cff1' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/overload-0.1.1/src/lib.rs \
+      rustc '--crate-name' 'overload' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=4c018e9f6ab20139' '-C' 'extra-filename=-45aafc635a57cff1' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/overload-0.1.1/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-45aafc635a57cff1
@@ -5254,13 +5254,13 @@ FROM rust-base AS dep-l-nu-ansi-term-0.46.0-ecef502768b2f22a
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-nu-ansi-term-0.46.0,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/nu-ansi-term-0.46.0 \
+  --mount=from=cratesio-nu-ansi-term-0.46.0,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nu-ansi-term-0.46.0 \
   --mount=from=out-45aafc635a57cff1,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/liboverload-45aafc635a57cff1.rmeta,source=/liboverload-45aafc635a57cff1.rmeta \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="nu_ansi_term" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/nu-ansi-term-0.46.0" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/nu-ansi-term-0.46.0/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nu-ansi-term-0.46.0" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nu-ansi-term-0.46.0/Cargo.toml" \
         CARGO_PKG_AUTHORS="ogham@bsago.me:Ryan Scheel (Havvy) <ryan.havvy@gmail.com>:Josh Triplett <josh@joshtriplett.org>:The Nushell Project Developers" \
         CARGO_PKG_DESCRIPTION="Library for ANSI terminal colors and styles (bold, underline)" \
         CARGO_PKG_HOMEPAGE= \
@@ -5277,7 +5277,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'nu_ansi_term' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("derive_serde_style", "serde"))' '-C' 'metadata=97ff9102a3ba1599' '-C' 'extra-filename=-ecef502768b2f22a' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'overload=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/liboverload-45aafc635a57cff1.rmeta' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/nu-ansi-term-0.46.0/src/lib.rs \
+      rustc '--crate-name' 'nu_ansi_term' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("derive_serde_style", "serde"))' '-C' 'metadata=97ff9102a3ba1599' '-C' 'extra-filename=-ecef502768b2f22a' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'overload=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/liboverload-45aafc635a57cff1.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nu-ansi-term-0.46.0/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-ecef502768b2f22a
@@ -5297,12 +5297,12 @@ FROM rust-base AS dep-l-regex-syntax-0.8.3-fec15f937eb320f5
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-regex-syntax-0.8.3,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/regex-syntax-0.8.3 \
+  --mount=from=cratesio-regex-syntax-0.8.3,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/regex-syntax-0.8.3 \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="regex_syntax" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/regex-syntax-0.8.3" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/regex-syntax-0.8.3/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/regex-syntax-0.8.3" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/regex-syntax-0.8.3/Cargo.toml" \
         CARGO_PKG_AUTHORS="The Rust Project Developers:Andrew Gallant <jamslam@gmail.com>" \
         CARGO_PKG_DESCRIPTION="A regular expression parser." \
         CARGO_PKG_HOMEPAGE= \
@@ -5319,7 +5319,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'regex_syntax' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="std"' '--cfg' 'feature="unicode-case"' '--cfg' 'feature="unicode-perl"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("arbitrary", "default", "std", "unicode", "unicode-age", "unicode-bool", "unicode-case", "unicode-gencat", "unicode-perl", "unicode-script", "unicode-segment"))' '-C' 'metadata=0227f190ba12c931' '-C' 'extra-filename=-fec15f937eb320f5' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/regex-syntax-0.8.3/src/lib.rs \
+      rustc '--crate-name' 'regex_syntax' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="std"' '--cfg' 'feature="unicode-case"' '--cfg' 'feature="unicode-perl"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("arbitrary", "default", "std", "unicode", "unicode-age", "unicode-bool", "unicode-case", "unicode-gencat", "unicode-perl", "unicode-script", "unicode-segment"))' '-C' 'metadata=0227f190ba12c931' '-C' 'extra-filename=-fec15f937eb320f5' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/regex-syntax-0.8.3/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-fec15f937eb320f5
@@ -5339,13 +5339,13 @@ FROM rust-base AS dep-l-regex-automata-0.4.6-26d3ef0ecd1a4d19
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-regex-automata-0.4.6,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/regex-automata-0.4.6 \
+  --mount=from=cratesio-regex-automata-0.4.6,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/regex-automata-0.4.6 \
   --mount=from=out-fec15f937eb320f5,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libregex_syntax-fec15f937eb320f5.rmeta,source=/libregex_syntax-fec15f937eb320f5.rmeta \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="regex_automata" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/regex-automata-0.4.6" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/regex-automata-0.4.6/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/regex-automata-0.4.6" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/regex-automata-0.4.6/Cargo.toml" \
         CARGO_PKG_AUTHORS="The Rust Project Developers:Andrew Gallant <jamslam@gmail.com>" \
         CARGO_PKG_DESCRIPTION="Automata construction and matching using regular expressions." \
         CARGO_PKG_HOMEPAGE= \
@@ -5362,7 +5362,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'regex_automata' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="alloc"' '--cfg' 'feature="meta"' '--cfg' 'feature="nfa-pikevm"' '--cfg' 'feature="nfa-thompson"' '--cfg' 'feature="std"' '--cfg' 'feature="syntax"' '--cfg' 'feature="unicode-case"' '--cfg' 'feature="unicode-perl"' '--cfg' 'feature="unicode-word-boundary"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "default", "dfa", "dfa-build", "dfa-onepass", "dfa-search", "hybrid", "internal-instrument", "internal-instrument-pikevm", "logging", "meta", "nfa", "nfa-backtrack", "nfa-pikevm", "nfa-thompson", "perf", "perf-inline", "perf-literal", "perf-literal-multisubstring", "perf-literal-substring", "std", "syntax", "unicode", "unicode-age", "unicode-bool", "unicode-case", "unicode-gencat", "unicode-perl", "unicode-script", "unicode-segment", "unicode-word-boundary"))' '-C' 'metadata=850c0fcfc28f57b9' '-C' 'extra-filename=-26d3ef0ecd1a4d19' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'regex_syntax=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libregex_syntax-fec15f937eb320f5.rmeta' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/regex-automata-0.4.6/src/lib.rs \
+      rustc '--crate-name' 'regex_automata' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="alloc"' '--cfg' 'feature="meta"' '--cfg' 'feature="nfa-pikevm"' '--cfg' 'feature="nfa-thompson"' '--cfg' 'feature="std"' '--cfg' 'feature="syntax"' '--cfg' 'feature="unicode-case"' '--cfg' 'feature="unicode-perl"' '--cfg' 'feature="unicode-word-boundary"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "default", "dfa", "dfa-build", "dfa-onepass", "dfa-search", "hybrid", "internal-instrument", "internal-instrument-pikevm", "logging", "meta", "nfa", "nfa-backtrack", "nfa-pikevm", "nfa-thompson", "perf", "perf-inline", "perf-literal", "perf-literal-multisubstring", "perf-literal-substring", "std", "syntax", "unicode", "unicode-age", "unicode-bool", "unicode-case", "unicode-gencat", "unicode-perl", "unicode-script", "unicode-segment", "unicode-word-boundary"))' '-C' 'metadata=850c0fcfc28f57b9' '-C' 'extra-filename=-26d3ef0ecd1a4d19' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'regex_syntax=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libregex_syntax-fec15f937eb320f5.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/regex-automata-0.4.6/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-26d3ef0ecd1a4d19
@@ -5382,14 +5382,14 @@ FROM rust-base AS dep-l-regex-1.10.4-1bcb2e89bb5f9e40
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-regex-1.10.4,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/regex-1.10.4 \
+  --mount=from=cratesio-regex-1.10.4,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/regex-1.10.4 \
   --mount=from=out-26d3ef0ecd1a4d19,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libregex_automata-26d3ef0ecd1a4d19.rmeta,source=/libregex_automata-26d3ef0ecd1a4d19.rmeta \
   --mount=from=out-fec15f937eb320f5,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libregex_syntax-fec15f937eb320f5.rmeta,source=/libregex_syntax-fec15f937eb320f5.rmeta \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="regex" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/regex-1.10.4" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/regex-1.10.4/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/regex-1.10.4" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/regex-1.10.4/Cargo.toml" \
         CARGO_PKG_AUTHORS="The Rust Project Developers:Andrew Gallant <jamslam@gmail.com>" \
         CARGO_PKG_DESCRIPTION="An implementation of regular expressions for Rust. This implementation uses\nfinite automata and guarantees linear time matching on all inputs.\n" \
         CARGO_PKG_HOMEPAGE="https://github.com/rust-lang/regex" \
@@ -5406,7 +5406,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'regex' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="std"' '--cfg' 'feature="unicode-case"' '--cfg' 'feature="unicode-perl"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "logging", "pattern", "perf", "perf-backtrack", "perf-cache", "perf-dfa", "perf-dfa-full", "perf-inline", "perf-literal", "perf-onepass", "std", "unicode", "unicode-age", "unicode-bool", "unicode-case", "unicode-gencat", "unicode-perl", "unicode-script", "unicode-segment", "unstable", "use_std"))' '-C' 'metadata=b5a9f6179cfbfe64' '-C' 'extra-filename=-1bcb2e89bb5f9e40' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'regex_automata=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libregex_automata-26d3ef0ecd1a4d19.rmeta' '--extern' 'regex_syntax=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libregex_syntax-fec15f937eb320f5.rmeta' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/regex-1.10.4/src/lib.rs \
+      rustc '--crate-name' 'regex' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="std"' '--cfg' 'feature="unicode-case"' '--cfg' 'feature="unicode-perl"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "logging", "pattern", "perf", "perf-backtrack", "perf-cache", "perf-dfa", "perf-dfa-full", "perf-inline", "perf-literal", "perf-onepass", "std", "unicode", "unicode-age", "unicode-bool", "unicode-case", "unicode-gencat", "unicode-perl", "unicode-script", "unicode-segment", "unstable", "use_std"))' '-C' 'metadata=b5a9f6179cfbfe64' '-C' 'extra-filename=-1bcb2e89bb5f9e40' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'regex_automata=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libregex_automata-26d3ef0ecd1a4d19.rmeta' '--extern' 'regex_syntax=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libregex_syntax-fec15f937eb320f5.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/regex-1.10.4/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-1bcb2e89bb5f9e40
@@ -5426,13 +5426,13 @@ FROM rust-base AS dep-l-sharded-slab-0.1.7-7f09d0ee7f2858fc
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-sharded-slab-0.1.7,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/sharded-slab-0.1.7 \
+  --mount=from=cratesio-sharded-slab-0.1.7,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/sharded-slab-0.1.7 \
   --mount=from=out-49434c819b4044f4,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/liblazy_static-49434c819b4044f4.rmeta,source=/liblazy_static-49434c819b4044f4.rmeta \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="sharded_slab" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/sharded-slab-0.1.7" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/sharded-slab-0.1.7/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/sharded-slab-0.1.7" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/sharded-slab-0.1.7/Cargo.toml" \
         CARGO_PKG_AUTHORS="Eliza Weisman <eliza@buoyant.io>" \
         CARGO_PKG_DESCRIPTION="A lock-free concurrent slab.\n" \
         CARGO_PKG_HOMEPAGE="https://github.com/hawkw/sharded-slab" \
@@ -5449,7 +5449,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'sharded_slab' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("loom"))' '-C' 'metadata=cb2b78a23727d65e' '-C' 'extra-filename=-7f09d0ee7f2858fc' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'lazy_static=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/liblazy_static-49434c819b4044f4.rmeta' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/sharded-slab-0.1.7/src/lib.rs \
+      rustc '--crate-name' 'sharded_slab' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("loom"))' '-C' 'metadata=cb2b78a23727d65e' '-C' 'extra-filename=-7f09d0ee7f2858fc' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'lazy_static=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/liblazy_static-49434c819b4044f4.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/sharded-slab-0.1.7/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-7f09d0ee7f2858fc
@@ -5469,14 +5469,14 @@ FROM rust-base AS dep-l-thread_local-1.1.8-ebfcd36379810be5
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-thread_local-1.1.8,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/thread_local-1.1.8 \
+  --mount=from=cratesio-thread_local-1.1.8,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thread_local-1.1.8 \
   --mount=from=out-642a9e511eeb712a,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libcfg_if-642a9e511eeb712a.rmeta,source=/libcfg_if-642a9e511eeb712a.rmeta \
   --mount=from=out-330cfb3cbb7b43f5,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libonce_cell-330cfb3cbb7b43f5.rmeta,source=/libonce_cell-330cfb3cbb7b43f5.rmeta \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="thread_local" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/thread_local-1.1.8" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/thread_local-1.1.8/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thread_local-1.1.8" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thread_local-1.1.8/Cargo.toml" \
         CARGO_PKG_AUTHORS="Amanieu d'Antras <amanieu@gmail.com>" \
         CARGO_PKG_DESCRIPTION="Per-object thread-local storage" \
         CARGO_PKG_HOMEPAGE= \
@@ -5493,7 +5493,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'thread_local' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("nightly"))' '-C' 'metadata=40f6b266d7a2c112' '-C' 'extra-filename=-ebfcd36379810be5' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'cfg_if=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libcfg_if-642a9e511eeb712a.rmeta' '--extern' 'once_cell=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libonce_cell-330cfb3cbb7b43f5.rmeta' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/thread_local-1.1.8/src/lib.rs \
+      rustc '--crate-name' 'thread_local' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("nightly"))' '-C' 'metadata=40f6b266d7a2c112' '-C' 'extra-filename=-ebfcd36379810be5' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'cfg_if=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libcfg_if-642a9e511eeb712a.rmeta' '--extern' 'once_cell=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libonce_cell-330cfb3cbb7b43f5.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thread_local-1.1.8/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-ebfcd36379810be5
@@ -5513,15 +5513,15 @@ FROM rust-base AS dep-l-tracing-log-0.2.0-40357f84bfbb80f5
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-tracing-log-0.2.0,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/tracing-log-0.2.0 \
+  --mount=from=cratesio-tracing-log-0.2.0,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/tracing-log-0.2.0 \
   --mount=from=out-7405012b21e0e01f,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/liblog-7405012b21e0e01f.rmeta,source=/liblog-7405012b21e0e01f.rmeta \
   --mount=from=out-330cfb3cbb7b43f5,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libonce_cell-330cfb3cbb7b43f5.rmeta,source=/libonce_cell-330cfb3cbb7b43f5.rmeta \
   --mount=from=out-ee47408ff1d8db93,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libtracing_core-ee47408ff1d8db93.rmeta,source=/libtracing_core-ee47408ff1d8db93.rmeta \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="tracing_log" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/tracing-log-0.2.0" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/tracing-log-0.2.0/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/tracing-log-0.2.0" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/tracing-log-0.2.0/Cargo.toml" \
         CARGO_PKG_AUTHORS="Tokio Contributors <team@tokio.rs>" \
         CARGO_PKG_DESCRIPTION="Provides compatibility between `tracing` and the `log` crate.\n" \
         CARGO_PKG_HOMEPAGE="https://tokio.rs" \
@@ -5538,7 +5538,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'tracing_log' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="log-tracer"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("ahash", "default", "interest-cache", "log-tracer", "lru", "std"))' '-C' 'metadata=941ad36bb876366f' '-C' 'extra-filename=-40357f84bfbb80f5' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'log=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/liblog-7405012b21e0e01f.rmeta' '--extern' 'once_cell=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libonce_cell-330cfb3cbb7b43f5.rmeta' '--extern' 'tracing_core=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libtracing_core-ee47408ff1d8db93.rmeta' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/tracing-log-0.2.0/src/lib.rs \
+      rustc '--crate-name' 'tracing_log' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="log-tracer"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("ahash", "default", "interest-cache", "log-tracer", "lru", "std"))' '-C' 'metadata=941ad36bb876366f' '-C' 'extra-filename=-40357f84bfbb80f5' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'log=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/liblog-7405012b21e0e01f.rmeta' '--extern' 'once_cell=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libonce_cell-330cfb3cbb7b43f5.rmeta' '--extern' 'tracing_core=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libtracing_core-ee47408ff1d8db93.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/tracing-log-0.2.0/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-40357f84bfbb80f5
@@ -5558,7 +5558,7 @@ FROM rust-base AS dep-l-tracing-subscriber-0.3.18-22613a9333b901e9
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-tracing-subscriber-0.3.18,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/tracing-subscriber-0.3.18 \
+  --mount=from=cratesio-tracing-subscriber-0.3.18,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/tracing-subscriber-0.3.18 \
   --mount=from=out-642a9e511eeb712a,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libcfg_if-642a9e511eeb712a.rmeta,source=/libcfg_if-642a9e511eeb712a.rmeta \
   --mount=from=out-49434c819b4044f4,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/liblazy_static-49434c819b4044f4.rmeta,source=/liblazy_static-49434c819b4044f4.rmeta \
   --mount=from=out-7405012b21e0e01f,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/liblog-7405012b21e0e01f.rmeta,source=/liblog-7405012b21e0e01f.rmeta \
@@ -5586,8 +5586,8 @@ RUN \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="tracing_subscriber" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/tracing-subscriber-0.3.18" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/tracing-subscriber-0.3.18/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/tracing-subscriber-0.3.18" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/tracing-subscriber-0.3.18/Cargo.toml" \
         CARGO_PKG_AUTHORS="Eliza Weisman <eliza@buoyant.io>:David Barsky <me@davidbarsky.com>:Tokio Contributors <team@tokio.rs>" \
         CARGO_PKG_DESCRIPTION="Utilities for implementing and composing `tracing` subscribers.\n" \
         CARGO_PKG_HOMEPAGE="https://tokio.rs" \
@@ -5604,7 +5604,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'tracing_subscriber' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="alloc"' '--cfg' 'feature="ansi"' '--cfg' 'feature="default"' '--cfg' 'feature="env-filter"' '--cfg' 'feature="fmt"' '--cfg' 'feature="matchers"' '--cfg' 'feature="nu-ansi-term"' '--cfg' 'feature="once_cell"' '--cfg' 'feature="regex"' '--cfg' 'feature="registry"' '--cfg' 'feature="sharded-slab"' '--cfg' 'feature="smallvec"' '--cfg' 'feature="std"' '--cfg' 'feature="thread_local"' '--cfg' 'feature="tracing"' '--cfg' 'feature="tracing-log"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "ansi", "chrono", "default", "env-filter", "fmt", "json", "local-time", "matchers", "nu-ansi-term", "once_cell", "parking_lot", "regex", "registry", "serde", "serde_json", "sharded-slab", "smallvec", "std", "thread_local", "time", "tracing", "tracing-log", "tracing-serde", "valuable", "valuable-serde", "valuable_crate"))' '-C' 'metadata=e7807217349bee7b' '-C' 'extra-filename=-22613a9333b901e9' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'matchers=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libmatchers-52a7c28fb4ef7fd6.rmeta' '--extern' 'nu_ansi_term=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libnu_ansi_term-ecef502768b2f22a.rmeta' '--extern' 'once_cell=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libonce_cell-330cfb3cbb7b43f5.rmeta' '--extern' 'regex=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libregex-1bcb2e89bb5f9e40.rmeta' '--extern' 'sharded_slab=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libsharded_slab-7f09d0ee7f2858fc.rmeta' '--extern' 'smallvec=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libsmallvec-d566e34028d47484.rmeta' '--extern' 'thread_local=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libthread_local-ebfcd36379810be5.rmeta' '--extern' 'tracing=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libtracing-566b844940427fbc.rmeta' '--extern' 'tracing_core=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libtracing_core-ee47408ff1d8db93.rmeta' '--extern' 'tracing_log=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libtracing_log-40357f84bfbb80f5.rmeta' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/tracing-subscriber-0.3.18/src/lib.rs \
+      rustc '--crate-name' 'tracing_subscriber' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="alloc"' '--cfg' 'feature="ansi"' '--cfg' 'feature="default"' '--cfg' 'feature="env-filter"' '--cfg' 'feature="fmt"' '--cfg' 'feature="matchers"' '--cfg' 'feature="nu-ansi-term"' '--cfg' 'feature="once_cell"' '--cfg' 'feature="regex"' '--cfg' 'feature="registry"' '--cfg' 'feature="sharded-slab"' '--cfg' 'feature="smallvec"' '--cfg' 'feature="std"' '--cfg' 'feature="thread_local"' '--cfg' 'feature="tracing"' '--cfg' 'feature="tracing-log"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "ansi", "chrono", "default", "env-filter", "fmt", "json", "local-time", "matchers", "nu-ansi-term", "once_cell", "parking_lot", "regex", "registry", "serde", "serde_json", "sharded-slab", "smallvec", "std", "thread_local", "time", "tracing", "tracing-log", "tracing-serde", "valuable", "valuable-serde", "valuable_crate"))' '-C' 'metadata=e7807217349bee7b' '-C' 'extra-filename=-22613a9333b901e9' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'matchers=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libmatchers-52a7c28fb4ef7fd6.rmeta' '--extern' 'nu_ansi_term=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libnu_ansi_term-ecef502768b2f22a.rmeta' '--extern' 'once_cell=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libonce_cell-330cfb3cbb7b43f5.rmeta' '--extern' 'regex=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libregex-1bcb2e89bb5f9e40.rmeta' '--extern' 'sharded_slab=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libsharded_slab-7f09d0ee7f2858fc.rmeta' '--extern' 'smallvec=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libsmallvec-d566e34028d47484.rmeta' '--extern' 'thread_local=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libthread_local-ebfcd36379810be5.rmeta' '--extern' 'tracing=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libtracing-566b844940427fbc.rmeta' '--extern' 'tracing_core=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libtracing_core-ee47408ff1d8db93.rmeta' '--extern' 'tracing_log=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libtracing_log-40357f84bfbb80f5.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/tracing-subscriber-0.3.18/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-22613a9333b901e9
@@ -5624,7 +5624,7 @@ FROM rust-base AS dep-b-hickory-dns-0.25.0-alpha.1-e8e9c81d8738bb3c
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps
 RUN \
-  --mount=from=cratesio-hickory-dns-0.25.0-alpha.1,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/hickory-dns-0.25.0-alpha.1 \
+  --mount=from=cratesio-hickory-dns-0.25.0-alpha.1,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/hickory-dns-0.25.0-alpha.1 \
   --mount=from=out-b1a23cff02e478bf,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libahash-b1a23cff02e478bf.rlib,source=/libahash-b1a23cff02e478bf.rlib \
   --mount=from=out-a9f390b87e907aa5,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libanstyle-a9f390b87e907aa5.rlib,source=/libanstyle-a9f390b87e907aa5.rlib \
   --mount=from=out-9dd3aead262695aa,dst=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libasync_recursion-9dd3aead262695aa.so,source=/libasync_recursion-9dd3aead262695aa.so \
@@ -5748,8 +5748,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_BIN_NAME="hickory-dns" \
         CARGO_CRATE_NAME="hickory_dns" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/hickory-dns-0.25.0-alpha.1" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/hickory-dns-0.25.0-alpha.1/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/hickory-dns-0.25.0-alpha.1" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/hickory-dns-0.25.0-alpha.1/Cargo.toml" \
         CARGO_PKG_AUTHORS="The contributors to Hickory DNS" \
         CARGO_PKG_DESCRIPTION="Hickory DNS is a safe and secure DNS server with DNSSEC support.\n Eventually this could be a replacement for BIND9. The DNSSEC support allows\n for live signing of all records, in it does not currently support\n records signed offline. The server supports dynamic DNS with SIG0 authenticated\n requests. Hickory DNS is based on the Tokio and Futures libraries, which means\n it should be easily integrated into other software that also use those\n libraries.\n" \
         CARGO_PKG_HOMEPAGE="https://hickory-dns.org/" \
@@ -5767,7 +5767,7 @@ RUN \
         CARGO_PRIMARY_PACKAGE="1" \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'hickory_dns' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'bin' '--emit' 'dep-info,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="ascii-art"' '--cfg' 'feature="default"' '--cfg' 'feature="dns-over-rustls"' '--cfg' 'feature="dns-over-tls"' '--cfg' 'feature="dnssec"' '--cfg' 'feature="dnssec-ring"' '--cfg' 'feature="native-certs"' '--cfg' 'feature="resolver"' '--cfg' 'feature="rustls"' '--cfg' 'feature="sqlite"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("ascii-art", "default", "dns-over-h3", "dns-over-https", "dns-over-https-rustls", "dns-over-openssl", "dns-over-quic", "dns-over-rustls", "dns-over-tls", "dnssec", "dnssec-openssl", "dnssec-ring", "native-certs", "recursor", "resolver", "rustls", "sqlite", "tls", "tls-openssl", "webpki-roots"))' '-C' 'metadata=90c420e39af44497' '-C' 'extra-filename=-e8e9c81d8738bb3c' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'clap=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libclap-c6fee47f216942ba.rlib' '--extern' 'futures_util=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libfutures_util-ff898060123f2ff4.rlib' '--extern' 'hickory_client=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libhickory_client-d113de970b54e9cb.rlib' '--extern' 'hickory_proto=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libhickory_proto-d268433833bdfec5.rlib' '--extern' 'hickory_server=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libhickory_server-e06532f1a8b92799.rlib' '--extern' 'rustls=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/librustls-946240332397fd14.rlib' '--extern' 'time=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libtime-0e970d9e2c503d31.rlib' '--extern' 'tokio=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libtokio-79aa4352b389ce42.rlib' '--extern' 'tracing=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libtracing-566b844940427fbc.rlib' '--extern' 'tracing_subscriber=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libtracing_subscriber-22613a9333b901e9.rlib' '--cap-lints' 'warn' '-L' 'native=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/build/ring-b4af30f1837a119d/out' '-L' 'native=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/build/libsqlite3-sys-7aab3b2d00efe93c/out' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/hickory-dns-0.25.0-alpha.1/src/hickory-dns.rs \
+      rustc '--crate-name' 'hickory_dns' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'bin' '--emit' 'dep-info,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="ascii-art"' '--cfg' 'feature="default"' '--cfg' 'feature="dns-over-rustls"' '--cfg' 'feature="dns-over-tls"' '--cfg' 'feature="dnssec"' '--cfg' 'feature="dnssec-ring"' '--cfg' 'feature="native-certs"' '--cfg' 'feature="resolver"' '--cfg' 'feature="rustls"' '--cfg' 'feature="sqlite"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("ascii-art", "default", "dns-over-h3", "dns-over-https", "dns-over-https-rustls", "dns-over-openssl", "dns-over-quic", "dns-over-rustls", "dns-over-tls", "dnssec", "dnssec-openssl", "dnssec-ring", "native-certs", "recursor", "resolver", "rustls", "sqlite", "tls", "tls-openssl", "webpki-roots"))' '-C' 'metadata=90c420e39af44497' '-C' 'extra-filename=-e8e9c81d8738bb3c' '--out-dir' '/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps' '--extern' 'clap=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libclap-c6fee47f216942ba.rlib' '--extern' 'futures_util=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libfutures_util-ff898060123f2ff4.rlib' '--extern' 'hickory_client=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libhickory_client-d113de970b54e9cb.rlib' '--extern' 'hickory_proto=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libhickory_proto-d268433833bdfec5.rlib' '--extern' 'hickory_server=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libhickory_server-e06532f1a8b92799.rlib' '--extern' 'rustls=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/librustls-946240332397fd14.rlib' '--extern' 'time=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libtime-0e970d9e2c503d31.rlib' '--extern' 'tokio=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libtokio-79aa4352b389ce42.rlib' '--extern' 'tracing=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libtracing-566b844940427fbc.rlib' '--extern' 'tracing_subscriber=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/libtracing_subscriber-22613a9333b901e9.rlib' '--cap-lints' 'warn' '-L' 'native=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/build/ring-b4af30f1837a119d/out' '-L' 'native=/tmp/clis-hickory-dns_0-25-0-alpha-1/release/build/libsqlite3-sys-7aab3b2d00efe93c/out' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/hickory-dns-0.25.0-alpha.1/src/hickory-dns.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-e8e9c81d8738bb3c

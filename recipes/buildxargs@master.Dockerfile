@@ -18,12 +18,12 @@ FROM rust-base AS dep-l-pico-args-0.5.0-dbd8a5e9b242e75a
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-buildxargs_master/release/deps
 RUN \
-  --mount=from=cratesio-pico-args-0.5.0,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/pico-args-0.5.0 \
+  --mount=from=cratesio-pico-args-0.5.0,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/pico-args-0.5.0 \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="pico_args" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/pico-args-0.5.0" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/pico-args-0.5.0/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/pico-args-0.5.0" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/pico-args-0.5.0/Cargo.toml" \
         CARGO_PKG_AUTHORS="Yevhenii Reizner <razrfalcon@gmail.com>" \
         CARGO_PKG_DESCRIPTION="An ultra simple CLI arguments parser." \
         CARGO_PKG_HOMEPAGE= \
@@ -40,7 +40,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'pico_args' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="default"' '--cfg' 'feature="eq-separator"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("combined-flags", "default", "eq-separator", "short-space-opt"))' '-C' 'metadata=735182ed74090f67' '-C' 'extra-filename=-dbd8a5e9b242e75a' '--out-dir' '/tmp/clis-buildxargs_master/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-buildxargs_master/release/deps' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/pico-args-0.5.0/src/lib.rs \
+      rustc '--crate-name' 'pico_args' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="default"' '--cfg' 'feature="eq-separator"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("combined-flags", "default", "eq-separator", "short-space-opt"))' '-C' 'metadata=735182ed74090f67' '-C' 'extra-filename=-dbd8a5e9b242e75a' '--out-dir' '/tmp/clis-buildxargs_master/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-buildxargs_master/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/pico-args-0.5.0/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-dbd8a5e9b242e75a
@@ -60,12 +60,12 @@ FROM rust-base AS dep-l-shlex-1.3.0-7473b97bf23d696c
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-buildxargs_master/release/deps
 RUN \
-  --mount=from=cratesio-shlex-1.3.0,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0 \
+  --mount=from=cratesio-shlex-1.3.0,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0 \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="shlex" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0/Cargo.toml" \
         CARGO_PKG_AUTHORS="comex <comexk@gmail.com>:Fenhl <fenhl@fenhl.net>:Adrian Taylor <adetaylor@chromium.org>:Alex Touchet <alextouchet@outlook.com>:Daniel Parks <dp+git@oxidized.org>:Garrett Berg <googberg@gmail.com>" \
         CARGO_PKG_DESCRIPTION="Split a string into shell words, like Python's shlex." \
         CARGO_PKG_HOMEPAGE= \
@@ -82,7 +82,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         TERM="tmux-256color" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'shlex' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "std"))' '-C' 'metadata=54c2f0a338814297' '-C' 'extra-filename=-7473b97bf23d696c' '--out-dir' '/tmp/clis-buildxargs_master/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-buildxargs_master/release/deps' '--cap-lints' 'warn' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0/src/lib.rs \
+      rustc '--crate-name' 'shlex' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "std"))' '-C' 'metadata=54c2f0a338814297' '-C' 'extra-filename=-7473b97bf23d696c' '--out-dir' '/tmp/clis-buildxargs_master/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-buildxargs_master/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-7473b97bf23d696c
@@ -94,16 +94,16 @@ ADD --keep-git-dir=false \
 FROM rust-base AS dep-l-buildxargs-1.4.0-d0bf0da69a6fc5a6
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-buildxargs_master/release/deps
-WORKDIR /home/pete/.cargo/git/checkouts/buildxargs-76dd4ee9dadcdcf0/df9b810
+WORKDIR /home/runner/.cargo/git/checkouts/buildxargs-76dd4ee9dadcdcf0/df9b810
 RUN \
-  --mount=from=checkout-buildxargs-76dd4ee9dadcdcf0-df9b810011cd416b8e3fc02911f2f496acb8475e,dst=/home/pete/.cargo/git/checkouts/buildxargs-76dd4ee9dadcdcf0/df9b810 \
+  --mount=from=checkout-buildxargs-76dd4ee9dadcdcf0-df9b810011cd416b8e3fc02911f2f496acb8475e,dst=/home/runner/.cargo/git/checkouts/buildxargs-76dd4ee9dadcdcf0/df9b810 \
   --mount=from=out-dbd8a5e9b242e75a,dst=/tmp/clis-buildxargs_master/release/deps/libpico_args-dbd8a5e9b242e75a.rmeta,source=/libpico_args-dbd8a5e9b242e75a.rmeta \
   --mount=from=out-7473b97bf23d696c,dst=/tmp/clis-buildxargs_master/release/deps/libshlex-7473b97bf23d696c.rmeta,source=/libshlex-7473b97bf23d696c.rmeta \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="buildxargs" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/git/checkouts/buildxargs-76dd4ee9dadcdcf0/df9b810" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/git/checkouts/buildxargs-76dd4ee9dadcdcf0/df9b810/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/git/checkouts/buildxargs-76dd4ee9dadcdcf0/df9b810" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/git/checkouts/buildxargs-76dd4ee9dadcdcf0/df9b810/Cargo.toml" \
         CARGO_PKG_AUTHORS="Pierre Fenoll <pierrefenoll@gmail.com>" \
         CARGO_PKG_DESCRIPTION="xargs for BuildKit with docker buildx bake" \
         CARGO_PKG_HOMEPAGE= \
@@ -131,9 +131,9 @@ COPY --from=dep-l-buildxargs-1.4.0-d0bf0da69a6fc5a6 /tmp/clis-buildxargs_master/
 FROM rust-base AS dep-b-buildxargs-1.4.0-f0103a9a239b54ce
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-buildxargs_master/release/deps
-WORKDIR /home/pete/.cargo/git/checkouts/buildxargs-76dd4ee9dadcdcf0/df9b810
+WORKDIR /home/runner/.cargo/git/checkouts/buildxargs-76dd4ee9dadcdcf0/df9b810
 RUN \
-  --mount=from=checkout-buildxargs-76dd4ee9dadcdcf0-df9b810011cd416b8e3fc02911f2f496acb8475e,dst=/home/pete/.cargo/git/checkouts/buildxargs-76dd4ee9dadcdcf0/df9b810 \
+  --mount=from=checkout-buildxargs-76dd4ee9dadcdcf0-df9b810011cd416b8e3fc02911f2f496acb8475e,dst=/home/runner/.cargo/git/checkouts/buildxargs-76dd4ee9dadcdcf0/df9b810 \
   --mount=from=out-d0bf0da69a6fc5a6,dst=/tmp/clis-buildxargs_master/release/deps/libbuildxargs-d0bf0da69a6fc5a6.rlib,source=/libbuildxargs-d0bf0da69a6fc5a6.rlib \
   --mount=from=out-dbd8a5e9b242e75a,dst=/tmp/clis-buildxargs_master/release/deps/libpico_args-dbd8a5e9b242e75a.rlib,source=/libpico_args-dbd8a5e9b242e75a.rlib \
   --mount=from=out-7473b97bf23d696c,dst=/tmp/clis-buildxargs_master/release/deps/libshlex-7473b97bf23d696c.rlib,source=/libshlex-7473b97bf23d696c.rlib \
@@ -141,8 +141,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_BIN_NAME="buildxargs" \
         CARGO_CRATE_NAME="buildxargs" \
-        CARGO_MANIFEST_DIR="/home/pete/.cargo/git/checkouts/buildxargs-76dd4ee9dadcdcf0/df9b810" \
-        CARGO_MANIFEST_PATH="/home/pete/.cargo/git/checkouts/buildxargs-76dd4ee9dadcdcf0/df9b810/Cargo.toml" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/git/checkouts/buildxargs-76dd4ee9dadcdcf0/df9b810" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/git/checkouts/buildxargs-76dd4ee9dadcdcf0/df9b810/Cargo.toml" \
         CARGO_PKG_AUTHORS="Pierre Fenoll <pierrefenoll@gmail.com>" \
         CARGO_PKG_DESCRIPTION="xargs for BuildKit with docker buildx bake" \
         CARGO_PKG_HOMEPAGE= \
@@ -168,4 +168,4 @@ COPY --from=dep-b-buildxargs-1.4.0-f0103a9a239b54ce /tmp/clis-buildxargs_master/
 
 # Pipe this file to (not portable due to usage of local build contexts):
 # DOCKER_BUILDKIT="1" \
-#   docker --debug build --network=none --platform=local --pull=false --target=out-f0103a9a239b54ce --output=type=local,dest=/tmp/clis-buildxargs_master/release/deps --build-context=checkout-buildxargs-76dd4ee9dadcdcf0-df9b810011cd416b8e3fc02911f2f496acb8475e=/home/pete/.cargo/git/checkouts/buildxargs-76dd4ee9dadcdcf0/df9b810 -
+#   docker --debug build --network=none --platform=local --pull=false --target=out-f0103a9a239b54ce --output=type=local,dest=/tmp/clis-buildxargs_master/release/deps --build-context=checkout-buildxargs-76dd4ee9dadcdcf0-df9b810011cd416b8e3fc02911f2f496acb8475e=/home/runner/.cargo/git/checkouts/buildxargs-76dd4ee9dadcdcf0/df9b810 -
