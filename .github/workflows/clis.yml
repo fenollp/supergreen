@@ -53,8 +53,6 @@ jobs:
     - name: Compile HEAD cargo-green
       run: |
         CARGO_TARGET_DIR=~/instmp cargo install --locked --force --path=./cargo-green
-    - run: ls -lha ~/instmp/release/
-    - run: ls -lha /home/runner/.cargo/bin/
 
     - uses: actions/upload-artifact@v4
       with:
@@ -97,6 +95,7 @@ jobs:
     - run: docker buildx build --help
     - run: podman version || true
     - run: rustc -Vv
+    - run: docker buildx prune --all --force
 
     - name: Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
@@ -106,9 +105,8 @@ jobs:
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
-    - run: |
-        docker buildx du | head || true
-        docker buildx du | tail || true
+    - run: docker buildx du | head || true
+    - run: docker buildx du | tail || true
     - run: docker buildx du --verbose
     - name: cargo install net=ON cache=OFF remote=OFF jobs=1
       run: |
@@ -154,9 +152,8 @@ jobs:
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
-    - run: |
-        docker buildx du | head || true
-        docker buildx du | tail || true
+    - run: docker buildx du | head || true
+    - run: docker buildx du | tail || true
     - run: docker buildx du --verbose
 
     - name: Target dir disk usage
@@ -209,9 +206,8 @@ jobs:
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
-    - run: |
-        docker buildx du | head || true
-        docker buildx du | tail || true
+    - run: docker buildx du | head || true
+    - run: docker buildx du | tail || true
     - run: docker buildx du --verbose
 
     - name: Target dir disk usage
@@ -254,6 +250,7 @@ jobs:
     - run: docker buildx build --help
     - run: podman version || true
     - run: rustc -Vv
+    - run: docker buildx prune --all --force
 
     - name: Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
@@ -263,9 +260,8 @@ jobs:
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
-    - run: |
-        docker buildx du | head || true
-        docker buildx du | tail || true
+    - run: docker buildx du | head || true
+    - run: docker buildx du | tail || true
     - run: docker buildx du --verbose
     - name: cargo install net=ON cache=OFF remote=OFF jobs=1
       run: |
@@ -311,9 +307,8 @@ jobs:
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
-    - run: |
-        docker buildx du | head || true
-        docker buildx du | tail || true
+    - run: docker buildx du | head || true
+    - run: docker buildx du | tail || true
     - run: docker buildx du --verbose
 
     - name: Target dir disk usage
@@ -366,9 +361,8 @@ jobs:
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
-    - run: |
-        docker buildx du | head || true
-        docker buildx du | tail || true
+    - run: docker buildx du | head || true
+    - run: docker buildx du | tail || true
     - run: docker buildx du --verbose
 
     - name: Target dir disk usage
@@ -411,6 +405,7 @@ jobs:
     - run: docker buildx build --help
     - run: podman version || true
     - run: rustc -Vv
+    - run: docker buildx prune --all --force
 
     - name: Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
@@ -420,9 +415,8 @@ jobs:
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
-    - run: |
-        docker buildx du | head || true
-        docker buildx du | tail || true
+    - run: docker buildx du | head || true
+    - run: docker buildx du | tail || true
     - run: docker buildx du --verbose
     - name: cargo install net=ON cache=OFF remote=OFF jobs=1
       run: |
@@ -468,9 +462,8 @@ jobs:
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
-    - run: |
-        docker buildx du | head || true
-        docker buildx du | tail || true
+    - run: docker buildx du | head || true
+    - run: docker buildx du | tail || true
     - run: docker buildx du --verbose
 
     - name: Target dir disk usage
@@ -523,9 +516,8 @@ jobs:
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
-    - run: |
-        docker buildx du | head || true
-        docker buildx du | tail || true
+    - run: docker buildx du | head || true
+    - run: docker buildx du | tail || true
     - run: docker buildx du --verbose
 
     - name: Target dir disk usage
@@ -568,6 +560,7 @@ jobs:
     - run: docker buildx build --help
     - run: podman version || true
     - run: rustc -Vv
+    - run: docker buildx prune --all --force
 
     - name: Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
@@ -577,9 +570,8 @@ jobs:
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
-    - run: |
-        docker buildx du | head || true
-        docker buildx du | tail || true
+    - run: docker buildx du | head || true
+    - run: docker buildx du | tail || true
     - run: docker buildx du --verbose
     - name: cargo install net=ON cache=OFF remote=OFF jobs=1
       run: |
@@ -625,9 +617,8 @@ jobs:
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
-    - run: |
-        docker buildx du | head || true
-        docker buildx du | tail || true
+    - run: docker buildx du | head || true
+    - run: docker buildx du | tail || true
     - run: docker buildx du --verbose
 
     - name: Target dir disk usage
@@ -680,9 +671,8 @@ jobs:
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
-    - run: |
-        docker buildx du | head || true
-        docker buildx du | tail || true
+    - run: docker buildx du | head || true
+    - run: docker buildx du | tail || true
     - run: docker buildx du --verbose
 
     - name: Target dir disk usage
@@ -725,6 +715,7 @@ jobs:
     - run: docker buildx build --help
     - run: podman version || true
     - run: rustc -Vv
+    - run: docker buildx prune --all --force
 
     - name: Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
@@ -734,9 +725,8 @@ jobs:
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
-    - run: |
-        docker buildx du | head || true
-        docker buildx du | tail || true
+    - run: docker buildx du | head || true
+    - run: docker buildx du | tail || true
     - run: docker buildx du --verbose
     - name: cargo install net=ON cache=OFF remote=OFF jobs=1
       run: |
@@ -782,9 +772,8 @@ jobs:
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
-    - run: |
-        docker buildx du | head || true
-        docker buildx du | tail || true
+    - run: docker buildx du | head || true
+    - run: docker buildx du | tail || true
     - run: docker buildx du --verbose
 
     - name: Target dir disk usage
@@ -837,9 +826,8 @@ jobs:
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
-    - run: |
-        docker buildx du | head || true
-        docker buildx du | tail || true
+    - run: docker buildx du | head || true
+    - run: docker buildx du | tail || true
     - run: docker buildx du --verbose
 
     - name: Target dir disk usage
@@ -882,6 +870,7 @@ jobs:
     - run: docker buildx build --help
     - run: podman version || true
     - run: rustc -Vv
+    - run: docker buildx prune --all --force
 
     - name: Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
@@ -891,9 +880,8 @@ jobs:
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
-    - run: |
-        docker buildx du | head || true
-        docker buildx du | tail || true
+    - run: docker buildx du | head || true
+    - run: docker buildx du | tail || true
     - run: docker buildx du --verbose
     - name: cargo install net=ON cache=OFF remote=OFF jobs=1
       run: |
@@ -939,9 +927,8 @@ jobs:
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
-    - run: |
-        docker buildx du | head || true
-        docker buildx du | tail || true
+    - run: docker buildx du | head || true
+    - run: docker buildx du | tail || true
     - run: docker buildx du --verbose
 
     - name: Target dir disk usage
@@ -994,9 +981,8 @@ jobs:
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
-    - run: |
-        docker buildx du | head || true
-        docker buildx du | tail || true
+    - run: docker buildx du | head || true
+    - run: docker buildx du | tail || true
     - run: docker buildx du --verbose
 
     - name: Target dir disk usage
@@ -1039,6 +1025,7 @@ jobs:
     - run: docker buildx build --help
     - run: podman version || true
     - run: rustc -Vv
+    - run: docker buildx prune --all --force
 
     - name: Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
@@ -1048,9 +1035,8 @@ jobs:
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
-    - run: |
-        docker buildx du | head || true
-        docker buildx du | tail || true
+    - run: docker buildx du | head || true
+    - run: docker buildx du | tail || true
     - run: docker buildx du --verbose
     - name: cargo install net=ON cache=OFF remote=OFF jobs=1
       run: |
@@ -1096,9 +1082,8 @@ jobs:
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
-    - run: |
-        docker buildx du | head || true
-        docker buildx du | tail || true
+    - run: docker buildx du | head || true
+    - run: docker buildx du | tail || true
     - run: docker buildx du --verbose
 
     - name: Target dir disk usage
@@ -1151,9 +1136,8 @@ jobs:
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
-    - run: |
-        docker buildx du | head || true
-        docker buildx du | tail || true
+    - run: docker buildx du | head || true
+    - run: docker buildx du | tail || true
     - run: docker buildx du --verbose
 
     - name: Target dir disk usage
@@ -1196,6 +1180,7 @@ jobs:
     - run: docker buildx build --help
     - run: podman version || true
     - run: rustc -Vv
+    - run: docker buildx prune --all --force
 
     - name: Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
@@ -1205,9 +1190,8 @@ jobs:
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
-    - run: |
-        docker buildx du | head || true
-        docker buildx du | tail || true
+    - run: docker buildx du | head || true
+    - run: docker buildx du | tail || true
     - run: docker buildx du --verbose
     - name: cargo install net=ON cache=OFF remote=OFF jobs=1
       run: |
@@ -1253,9 +1237,8 @@ jobs:
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
-    - run: |
-        docker buildx du | head || true
-        docker buildx du | tail || true
+    - run: docker buildx du | head || true
+    - run: docker buildx du | tail || true
     - run: docker buildx du --verbose
 
     - name: Target dir disk usage
@@ -1308,9 +1291,8 @@ jobs:
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
-    - run: |
-        docker buildx du | head || true
-        docker buildx du | tail || true
+    - run: docker buildx du | head || true
+    - run: docker buildx du | tail || true
     - run: docker buildx du --verbose
 
     - name: Target dir disk usage
@@ -1353,6 +1335,7 @@ jobs:
     - run: docker buildx build --help
     - run: podman version || true
     - run: rustc -Vv
+    - run: docker buildx prune --all --force
 
     - name: Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
@@ -1362,9 +1345,8 @@ jobs:
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
-    - run: |
-        docker buildx du | head || true
-        docker buildx du | tail || true
+    - run: docker buildx du | head || true
+    - run: docker buildx du | tail || true
     - run: docker buildx du --verbose
     - name: cargo install net=ON cache=OFF remote=OFF jobs=1
       run: |
@@ -1410,9 +1392,8 @@ jobs:
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
-    - run: |
-        docker buildx du | head || true
-        docker buildx du | tail || true
+    - run: docker buildx du | head || true
+    - run: docker buildx du | tail || true
     - run: docker buildx du --verbose
 
     - name: Target dir disk usage
@@ -1465,9 +1446,8 @@ jobs:
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
-    - run: |
-        docker buildx du | head || true
-        docker buildx du | tail || true
+    - run: docker buildx du | head || true
+    - run: docker buildx du | tail || true
     - run: docker buildx du --verbose
 
     - name: Target dir disk usage
@@ -1510,6 +1490,7 @@ jobs:
     - run: docker buildx build --help
     - run: podman version || true
     - run: rustc -Vv
+    - run: docker buildx prune --all --force
 
     - name: Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
@@ -1519,9 +1500,8 @@ jobs:
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
-    - run: |
-        docker buildx du | head || true
-        docker buildx du | tail || true
+    - run: docker buildx du | head || true
+    - run: docker buildx du | tail || true
     - run: docker buildx du --verbose
     - name: cargo install net=ON cache=OFF remote=OFF jobs=1
       run: |
@@ -1567,9 +1547,8 @@ jobs:
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
-    - run: |
-        docker buildx du | head || true
-        docker buildx du | tail || true
+    - run: docker buildx du | head || true
+    - run: docker buildx du | tail || true
     - run: docker buildx du --verbose
 
     - name: Target dir disk usage
@@ -1622,9 +1601,8 @@ jobs:
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
-    - run: |
-        docker buildx du | head || true
-        docker buildx du | tail || true
+    - run: docker buildx du | head || true
+    - run: docker buildx du | tail || true
     - run: docker buildx du --verbose
 
     - name: Target dir disk usage
@@ -1667,6 +1645,7 @@ jobs:
     - run: docker buildx build --help
     - run: podman version || true
     - run: rustc -Vv
+    - run: docker buildx prune --all --force
 
     - name: Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
@@ -1676,9 +1655,8 @@ jobs:
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
-    - run: |
-        docker buildx du | head || true
-        docker buildx du | tail || true
+    - run: docker buildx du | head || true
+    - run: docker buildx du | tail || true
     - run: docker buildx du --verbose
     - name: cargo install net=ON cache=OFF remote=OFF jobs=1
       run: |
@@ -1724,9 +1702,8 @@ jobs:
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
-    - run: |
-        docker buildx du | head || true
-        docker buildx du | tail || true
+    - run: docker buildx du | head || true
+    - run: docker buildx du | tail || true
     - run: docker buildx du --verbose
 
     - name: Target dir disk usage
@@ -1779,9 +1756,8 @@ jobs:
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
-    - run: |
-        docker buildx du | head || true
-        docker buildx du | tail || true
+    - run: docker buildx du | head || true
+    - run: docker buildx du | tail || true
     - run: docker buildx du --verbose
 
     - name: Target dir disk usage
@@ -1824,6 +1800,7 @@ jobs:
     - run: docker buildx build --help
     - run: podman version || true
     - run: rustc -Vv
+    - run: docker buildx prune --all --force
 
     - name: Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
@@ -1833,9 +1810,8 @@ jobs:
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
-    - run: |
-        docker buildx du | head || true
-        docker buildx du | tail || true
+    - run: docker buildx du | head || true
+    - run: docker buildx du | tail || true
     - run: docker buildx du --verbose
     - name: cargo install net=ON cache=OFF remote=OFF jobs=1
       run: |
@@ -1881,9 +1857,8 @@ jobs:
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
-    - run: |
-        docker buildx du | head || true
-        docker buildx du | tail || true
+    - run: docker buildx du | head || true
+    - run: docker buildx du | tail || true
     - run: docker buildx du --verbose
 
     - name: Target dir disk usage
@@ -1936,9 +1911,8 @@ jobs:
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
-    - run: |
-        docker buildx du | head || true
-        docker buildx du | tail || true
+    - run: docker buildx du | head || true
+    - run: docker buildx du | tail || true
     - run: docker buildx du --verbose
 
     - name: Target dir disk usage
@@ -1981,6 +1955,7 @@ jobs:
     - run: docker buildx build --help
     - run: podman version || true
     - run: rustc -Vv
+    - run: docker buildx prune --all --force
 
     - name: Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
@@ -1990,9 +1965,8 @@ jobs:
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
-    - run: |
-        docker buildx du | head || true
-        docker buildx du | tail || true
+    - run: docker buildx du | head || true
+    - run: docker buildx du | tail || true
     - run: docker buildx du --verbose
     - name: cargo install net=ON cache=OFF remote=OFF jobs=1
       run: |
@@ -2038,9 +2012,8 @@ jobs:
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
-    - run: |
-        docker buildx du | head || true
-        docker buildx du | tail || true
+    - run: docker buildx du | head || true
+    - run: docker buildx du | tail || true
     - run: docker buildx du --verbose
 
     - name: Target dir disk usage
@@ -2093,9 +2066,8 @@ jobs:
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
-    - run: |
-        docker buildx du | head || true
-        docker buildx du | tail || true
+    - run: docker buildx du | head || true
+    - run: docker buildx du | tail || true
     - run: docker buildx du --verbose
 
     - name: Target dir disk usage
@@ -2138,6 +2110,7 @@ jobs:
     - run: docker buildx build --help
     - run: podman version || true
     - run: rustc -Vv
+    - run: docker buildx prune --all --force
 
     - name: Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
@@ -2147,9 +2120,8 @@ jobs:
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
-    - run: |
-        docker buildx du | head || true
-        docker buildx du | tail || true
+    - run: docker buildx du | head || true
+    - run: docker buildx du | tail || true
     - run: docker buildx du --verbose
     - name: cargo install net=ON cache=OFF remote=OFF jobs=1
       run: |
@@ -2195,9 +2167,8 @@ jobs:
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
-    - run: |
-        docker buildx du | head || true
-        docker buildx du | tail || true
+    - run: docker buildx du | head || true
+    - run: docker buildx du | tail || true
     - run: docker buildx du --verbose
 
     - name: Target dir disk usage
@@ -2250,9 +2221,8 @@ jobs:
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
-    - run: |
-        docker buildx du | head || true
-        docker buildx du | tail || true
+    - run: docker buildx du | head || true
+    - run: docker buildx du | tail || true
     - run: docker buildx du --verbose
 
     - name: Target dir disk usage

@@ -14,6 +14,7 @@ jobs:
     - run: docker buildx build --help
     - run: podman version || true
     - run: rustc -Vv
+    - run: docker buildx prune --all --force
     - uses: actions-rs/toolchain@v1
       with:
         profile: minimal
@@ -66,6 +67,7 @@ jobs:
     - run: docker buildx build --help
     - run: podman version || true
     - run: rustc -Vv
+    - run: docker buildx prune --all --force
     - uses: actions-rs/toolchain@v1
       with:
         profile: minimal
@@ -100,9 +102,8 @@ jobs:
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
-    - run: |
-        docker buildx du | head || true
-        docker buildx du | tail || true
+    - run: docker buildx du | head || true
+    - run: docker buildx du | tail || true
     - run: docker buildx du --verbose
     - name: cargo install net=ON cache=OFF remote=OFF jobs=1
       run: cargo green -vv install --jobs=1 --locked --force --path=./cargo-green |& tee ../_
@@ -141,9 +142,8 @@ jobs:
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
-    - run: |
-        docker buildx du | head || true
-        docker buildx du | tail || true
+    - run: docker buildx du | head || true
+    - run: docker buildx du | tail || true
     - run: docker buildx du --verbose
 
 
@@ -164,6 +164,7 @@ jobs:
     - run: docker buildx build --help
     - run: podman version || true
     - run: rustc -Vv
+    - run: docker buildx prune --all --force
     - uses: actions-rs/toolchain@v1
       with:
         profile: minimal
@@ -201,9 +202,8 @@ jobs:
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
-    - run: |
-        docker buildx du | head || true
-        docker buildx du | tail || true
+    - run: docker buildx du | head || true
+    - run: docker buildx du | tail || true
     - run: docker buildx du --verbose
     - name: cargo audit net=ON cache=OFF remote=OFF
       run: cargo green -vv audit |& tee ../_
@@ -242,9 +242,8 @@ jobs:
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
-    - run: |
-        docker buildx du | head || true
-        docker buildx du | tail || true
+    - run: docker buildx du | head || true
+    - run: docker buildx du | tail || true
     - run: docker buildx du --verbose
 
 
@@ -265,6 +264,7 @@ jobs:
     - run: docker buildx build --help
     - run: podman version || true
     - run: rustc -Vv
+    - run: docker buildx prune --all --force
     - uses: actions-rs/toolchain@v1
       with:
         profile: minimal
@@ -302,9 +302,8 @@ jobs:
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
-    - run: |
-        docker buildx du | head || true
-        docker buildx du | tail || true
+    - run: docker buildx du | head || true
+    - run: docker buildx du | tail || true
     - run: docker buildx du --verbose
     - name: cargo +nightly-2025-02-09 green udeps --all-targets --jobs=1 cache=OFF remote=OFF
       run: cargo +nightly-2025-02-09 green udeps --all-targets --jobs=1 |& tee ../_
@@ -343,9 +342,8 @@ jobs:
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
-    - run: |
-        docker buildx du | head || true
-        docker buildx du | tail || true
+    - run: docker buildx du | head || true
+    - run: docker buildx du | tail || true
     - run: docker buildx du --verbose
     - name: Again, with +toolchain to cargo-green
       run: cargo green +nightly-2025-02-09 udeps --all-targets --jobs=1 |& tee ../_
@@ -384,9 +382,8 @@ jobs:
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
-    - run: |
-        docker buildx du | head || true
-        docker buildx du | tail || true
+    - run: docker buildx du | head || true
+    - run: docker buildx du | tail || true
     - run: docker buildx du --verbose
 
 
@@ -407,6 +404,7 @@ jobs:
     - run: docker buildx build --help
     - run: podman version || true
     - run: rustc -Vv
+    - run: docker buildx prune --all --force
     - uses: actions-rs/toolchain@v1
       with:
         profile: minimal
@@ -441,9 +439,8 @@ jobs:
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
-    - run: |
-        docker buildx du | head || true
-        docker buildx du | tail || true
+    - run: docker buildx du | head || true
+    - run: docker buildx du | tail || true
     - run: docker buildx du --verbose
     - name: cargo fetch
       run: cargo green -vv fetch |& tee ../_
@@ -516,9 +513,8 @@ jobs:
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
-    - run: |
-        docker buildx du | head || true
-        docker buildx du | tail || true
+    - run: docker buildx du | head || true
+    - run: docker buildx du | tail || true
     - run: docker buildx du --verbose
     - name: Ensure running the same command twice without modifications...
       run: cargo green -vv build --jobs=1 --all-targets --all-features --locked --frozen --offline |& tee ../_
@@ -564,9 +560,8 @@ jobs:
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
-    - run: |
-        docker buildx du | head || true
-        docker buildx du | tail || true
+    - run: docker buildx du | head || true
+    - run: docker buildx du | tail || true
     - run: docker buildx du --verbose
     - name: Ensure running the same command thrice without modifications (jobs>1)...
       run: cargo green -vv build --jobs=$(nproc) --all-targets --all-features --locked --frozen --offline |& tee ../_
@@ -612,9 +607,8 @@ jobs:
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
-    - run: |
-        docker buildx du | head || true
-        docker buildx du | tail || true
+    - run: docker buildx du | head || true
+    - run: docker buildx du | tail || true
     - run: docker buildx du --verbose
 
 
@@ -635,6 +629,7 @@ jobs:
     - run: docker buildx build --help
     - run: podman version || true
     - run: rustc -Vv
+    - run: docker buildx prune --all --force
     - uses: actions-rs/toolchain@v1
       with:
         profile: minimal
@@ -669,9 +664,8 @@ jobs:
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
-    - run: |
-        docker buildx du | head || true
-        docker buildx du | tail || true
+    - run: docker buildx du | head || true
+    - run: docker buildx du | tail || true
     - run: docker buildx du --verbose
     - name: cargo fetch
       run: cargo green -vv fetch |& tee ../_
@@ -744,9 +738,8 @@ jobs:
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
-    - run: |
-        docker buildx du | head || true
-        docker buildx du | tail || true
+    - run: docker buildx du | head || true
+    - run: docker buildx du | tail || true
     - run: docker buildx du --verbose
     - name: Ensure running the same command twice without modifications...
       run: cargo green -vv test --jobs=1 --all-targets --all-features --locked --frozen --offline |& tee ../_
@@ -792,9 +785,8 @@ jobs:
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
-    - run: |
-        docker buildx du | head || true
-        docker buildx du | tail || true
+    - run: docker buildx du | head || true
+    - run: docker buildx du | tail || true
     - run: docker buildx du --verbose
     - name: Ensure running the same command thrice without modifications (jobs>1)...
       run: cargo green -vv test --jobs=$(nproc) --all-targets --all-features --locked --frozen --offline |& tee ../_
@@ -840,9 +832,8 @@ jobs:
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
-    - run: |
-        docker buildx du | head || true
-        docker buildx du | tail || true
+    - run: docker buildx du | head || true
+    - run: docker buildx du | tail || true
     - run: docker buildx du --verbose
 
 
@@ -863,6 +854,7 @@ jobs:
     - run: docker buildx build --help
     - run: podman version || true
     - run: rustc -Vv
+    - run: docker buildx prune --all --force
     - uses: actions-rs/toolchain@v1
       with:
         profile: minimal
@@ -897,9 +889,8 @@ jobs:
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
-    - run: |
-        docker buildx du | head || true
-        docker buildx du | tail || true
+    - run: docker buildx du | head || true
+    - run: docker buildx du | tail || true
     - run: docker buildx du --verbose
     - name: cargo fetch
       run: cargo green -vv fetch |& tee ../_
@@ -972,9 +963,8 @@ jobs:
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
-    - run: |
-        docker buildx du | head || true
-        docker buildx du | tail || true
+    - run: docker buildx du | head || true
+    - run: docker buildx du | tail || true
     - run: docker buildx du --verbose
     - name: Ensure running the same command twice without modifications...
       run: cargo green -vv check --jobs=1 --all-targets --all-features --locked --frozen --offline |& tee ../_
@@ -1020,9 +1010,8 @@ jobs:
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
-    - run: |
-        docker buildx du | head || true
-        docker buildx du | tail || true
+    - run: docker buildx du | head || true
+    - run: docker buildx du | tail || true
     - run: docker buildx du --verbose
 
 
@@ -1043,6 +1032,7 @@ jobs:
     - run: docker buildx build --help
     - run: podman version || true
     - run: rustc -Vv
+    - run: docker buildx prune --all --force
     - uses: actions-rs/toolchain@v1
       with:
         profile: minimal
@@ -1077,9 +1067,8 @@ jobs:
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
-    - run: |
-        docker buildx du | head || true
-        docker buildx du | tail || true
+    - run: docker buildx du | head || true
+    - run: docker buildx du | tail || true
     - run: docker buildx du --verbose
     - name: cargo fetch
       run: cargo green -vv fetch |& tee ../_
@@ -1152,9 +1141,8 @@ jobs:
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
-    - run: |
-        docker buildx du | head || true
-        docker buildx du | tail || true
+    - run: docker buildx du | head || true
+    - run: docker buildx du | tail || true
     - run: docker buildx du --verbose
 
 
@@ -1175,6 +1163,7 @@ jobs:
     - run: docker buildx build --help
     - run: podman version || true
     - run: rustc -Vv
+    - run: docker buildx prune --all --force
     - uses: actions-rs/toolchain@v1
       with:
         profile: minimal
@@ -1210,9 +1199,8 @@ jobs:
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
-    - run: |
-        docker buildx du | head || true
-        docker buildx du | tail || true
+    - run: docker buildx du | head || true
+    - run: docker buildx du | tail || true
     - run: docker buildx du --verbose
     - name: cargo fetch
       run: cargo green -vv fetch
@@ -1285,9 +1273,8 @@ jobs:
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
-    - run: |
-        docker buildx du | head || true
-        docker buildx du | tail || true
+    - run: docker buildx du | head || true
+    - run: docker buildx du | tail || true
     - run: docker buildx du --verbose
     - name: Ensure running the same command twice without modifications...
       run: cargo green -vv clippy --jobs=$(nproc) --all-targets --all-features --locked --frozen --offline |& tee ../_
@@ -1333,7 +1320,6 @@ jobs:
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
-    - run: |
-        docker buildx du | head || true
-        docker buildx du | tail || true
+    - run: docker buildx du | head || true
+    - run: docker buildx du | tail || true
     - run: docker buildx du --verbose

@@ -41,6 +41,7 @@ rundeps_versions() {
     - run: docker buildx build --help
     - run: podman version || true
     - run: rustc -Vv
+    - run: docker buildx prune --all --force
 EOF
 }
 
@@ -51,9 +52,8 @@ cache_usage() {
     - run: sudo du -sh /var/lib/docker
     - run: docker system df
     - run: docker system df --verbose
-    - run: |
-        docker buildx du | head || true
-        docker buildx du | tail || true
+    - run: docker buildx du | head || true
+    - run: docker buildx du | tail || true
     - run: docker buildx du --verbose
 EOF
 }
