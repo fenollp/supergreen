@@ -58,7 +58,7 @@ jobs:
     env:
       RUST_BACKTRACE: 1
       CARGOGREEN_LOG: trace
-      CARGOGREEN_LOG_PATH: /home/runner/work/supergreen/logs.txt
+      CARGOGREEN_LOG_PATH: logs.txt
     # CARGOGREEN_FINAL_PATH: recipes/installs.Dockerfile
     steps:
     - run: docker info
@@ -114,26 +114,26 @@ jobs:
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
       run: |
-        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' ../logs.txt
+        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
 
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> there's some panic!s
       run: |
-        ! grep -C20 -F ' panicked at ' ../logs.txt
+        ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
 
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> there's some BUGs
       run: |
-        ! grep -C20 -F 'BUG: ' ../logs.txt
+        ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
 
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> here's relevant logs
       run: |
-        ! grep -C20 -F ' >>> ' ../logs.txt
+        ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
 
     - if: ${{ failure() || success() }}
       name: cargo-green logs
-      run: tail -n9999999 ../logs.txt ; echo >../logs.txt
+      run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
 
     - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' }}
       name: FIXME FINAL
@@ -160,7 +160,7 @@ jobs:
     env:
       RUST_BACKTRACE: 1
       CARGOGREEN_LOG: trace
-      CARGOGREEN_LOG_PATH: /home/runner/work/supergreen/logs.txt
+      CARGOGREEN_LOG_PATH: logs.txt
     # CARGOGREEN_FINAL_PATH: recipes/audits.Dockerfile
     steps:
     - run: docker info
@@ -219,26 +219,26 @@ jobs:
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
       run: |
-        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' ../logs.txt
+        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
 
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> there's some panic!s
       run: |
-        ! grep -C20 -F ' panicked at ' ../logs.txt
+        ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
 
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> there's some BUGs
       run: |
-        ! grep -C20 -F 'BUG: ' ../logs.txt
+        ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
 
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> here's relevant logs
       run: |
-        ! grep -C20 -F ' >>> ' ../logs.txt
+        ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
 
     - if: ${{ failure() || success() }}
       name: cargo-green logs
-      run: tail -n9999999 ../logs.txt ; echo >../logs.txt
+      run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
 
     - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' }}
       name: FIXME FINAL
@@ -265,7 +265,7 @@ jobs:
     env:
       RUST_BACKTRACE: 1
       CARGOGREEN_LOG: trace
-      CARGOGREEN_LOG_PATH: /home/runner/work/supergreen/logs.txt
+      CARGOGREEN_LOG_PATH: logs.txt
     # CARGOGREEN_FINAL_PATH: recipes/udeps.Dockerfile
     steps:
     - run: docker info
@@ -324,26 +324,26 @@ jobs:
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
       run: |
-        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' ../logs.txt
+        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
 
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> there's some panic!s
       run: |
-        ! grep -C20 -F ' panicked at ' ../logs.txt
+        ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
 
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> there's some BUGs
       run: |
-        ! grep -C20 -F 'BUG: ' ../logs.txt
+        ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
 
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> here's relevant logs
       run: |
-        ! grep -C20 -F ' >>> ' ../logs.txt
+        ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
 
     - if: ${{ failure() || success() }}
       name: cargo-green logs
-      run: tail -n9999999 ../logs.txt ; echo >../logs.txt
+      run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
 
     - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' }}
       name: FIXME FINAL
@@ -369,26 +369,26 @@ jobs:
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
       run: |
-        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' ../logs.txt
+        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
 
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> there's some panic!s
       run: |
-        ! grep -C20 -F ' panicked at ' ../logs.txt
+        ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
 
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> there's some BUGs
       run: |
-        ! grep -C20 -F 'BUG: ' ../logs.txt
+        ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
 
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> here's relevant logs
       run: |
-        ! grep -C20 -F ' >>> ' ../logs.txt
+        ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
 
     - if: ${{ failure() || success() }}
       name: cargo-green logs
-      run: tail -n9999999 ../logs.txt ; echo >../logs.txt
+      run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
 
     - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' }}
       name: FIXME FINAL
@@ -415,7 +415,7 @@ jobs:
     env:
       RUST_BACKTRACE: 1
       CARGOGREEN_LOG: trace
-      CARGOGREEN_LOG_PATH: /home/runner/work/supergreen/logs.txt
+      CARGOGREEN_LOG_PATH: logs.txt
     # CARGOGREEN_FINAL_PATH: recipes/builds.Dockerfile
     steps:
     - run: docker info
@@ -471,26 +471,26 @@ jobs:
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
       run: |
-        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' ../logs.txt
+        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
 
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> there's some panic!s
       run: |
-        ! grep -C20 -F ' panicked at ' ../logs.txt
+        ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
 
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> there's some BUGs
       run: |
-        ! grep -C20 -F 'BUG: ' ../logs.txt
+        ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
 
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> here's relevant logs
       run: |
-        ! grep -C20 -F ' >>> ' ../logs.txt
+        ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
 
     - if: ${{ failure() || success() }}
       name: cargo-green logs
-      run: tail -n9999999 ../logs.txt ; echo >../logs.txt
+      run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
 
     - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' }}
       name: FIXME FINAL
@@ -509,26 +509,26 @@ jobs:
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
       run: |
-        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' ../logs.txt
+        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
 
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> there's some panic!s
       run: |
-        ! grep -C20 -F ' panicked at ' ../logs.txt
+        ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
 
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> there's some BUGs
       run: |
-        ! grep -C20 -F 'BUG: ' ../logs.txt
+        ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
 
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> here's relevant logs
       run: |
-        ! grep -C20 -F ' >>> ' ../logs.txt
+        ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
 
     - if: ${{ failure() || success() }}
       name: cargo-green logs
-      run: tail -n9999999 ../logs.txt ; echo >../logs.txt
+      run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
 
     - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' }}
       name: FIXME FINAL
@@ -561,26 +561,26 @@ jobs:
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
       run: |
-        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' ../logs.txt
+        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
 
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> there's some panic!s
       run: |
-        ! grep -C20 -F ' panicked at ' ../logs.txt
+        ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
 
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> there's some BUGs
       run: |
-        ! grep -C20 -F 'BUG: ' ../logs.txt
+        ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
 
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> here's relevant logs
       run: |
-        ! grep -C20 -F ' >>> ' ../logs.txt
+        ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
 
     - if: ${{ failure() || success() }}
       name: cargo-green logs
-      run: tail -n9999999 ../logs.txt ; echo >../logs.txt
+      run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
 
     - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' }}
       name: FIXME FINAL
@@ -613,26 +613,26 @@ jobs:
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
       run: |
-        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' ../logs.txt
+        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
 
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> there's some panic!s
       run: |
-        ! grep -C20 -F ' panicked at ' ../logs.txt
+        ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
 
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> there's some BUGs
       run: |
-        ! grep -C20 -F 'BUG: ' ../logs.txt
+        ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
 
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> here's relevant logs
       run: |
-        ! grep -C20 -F ' >>> ' ../logs.txt
+        ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
 
     - if: ${{ failure() || success() }}
       name: cargo-green logs
-      run: tail -n9999999 ../logs.txt ; echo >../logs.txt
+      run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
 
     - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' }}
       name: FIXME FINAL
@@ -659,7 +659,7 @@ jobs:
     env:
       RUST_BACKTRACE: 1
       CARGOGREEN_LOG: trace
-      CARGOGREEN_LOG_PATH: /home/runner/work/supergreen/logs.txt
+      CARGOGREEN_LOG_PATH: logs.txt
     # CARGOGREEN_FINAL_PATH: recipes/tests.Dockerfile
     steps:
     - run: docker info
@@ -715,26 +715,26 @@ jobs:
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
       run: |
-        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' ../logs.txt
+        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
 
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> there's some panic!s
       run: |
-        ! grep -C20 -F ' panicked at ' ../logs.txt
+        ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
 
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> there's some BUGs
       run: |
-        ! grep -C20 -F 'BUG: ' ../logs.txt
+        ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
 
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> here's relevant logs
       run: |
-        ! grep -C20 -F ' >>> ' ../logs.txt
+        ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
 
     - if: ${{ failure() || success() }}
       name: cargo-green logs
-      run: tail -n9999999 ../logs.txt ; echo >../logs.txt
+      run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
 
     - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' }}
       name: FIXME FINAL
@@ -753,26 +753,26 @@ jobs:
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
       run: |
-        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' ../logs.txt
+        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
 
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> there's some panic!s
       run: |
-        ! grep -C20 -F ' panicked at ' ../logs.txt
+        ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
 
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> there's some BUGs
       run: |
-        ! grep -C20 -F 'BUG: ' ../logs.txt
+        ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
 
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> here's relevant logs
       run: |
-        ! grep -C20 -F ' >>> ' ../logs.txt
+        ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
 
     - if: ${{ failure() || success() }}
       name: cargo-green logs
-      run: tail -n9999999 ../logs.txt ; echo >../logs.txt
+      run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
 
     - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' }}
       name: FIXME FINAL
@@ -805,26 +805,26 @@ jobs:
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
       run: |
-        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' ../logs.txt
+        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
 
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> there's some panic!s
       run: |
-        ! grep -C20 -F ' panicked at ' ../logs.txt
+        ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
 
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> there's some BUGs
       run: |
-        ! grep -C20 -F 'BUG: ' ../logs.txt
+        ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
 
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> here's relevant logs
       run: |
-        ! grep -C20 -F ' >>> ' ../logs.txt
+        ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
 
     - if: ${{ failure() || success() }}
       name: cargo-green logs
-      run: tail -n9999999 ../logs.txt ; echo >../logs.txt
+      run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
 
     - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' }}
       name: FIXME FINAL
@@ -857,26 +857,26 @@ jobs:
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
       run: |
-        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' ../logs.txt
+        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
 
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> there's some panic!s
       run: |
-        ! grep -C20 -F ' panicked at ' ../logs.txt
+        ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
 
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> there's some BUGs
       run: |
-        ! grep -C20 -F 'BUG: ' ../logs.txt
+        ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
 
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> here's relevant logs
       run: |
-        ! grep -C20 -F ' >>> ' ../logs.txt
+        ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
 
     - if: ${{ failure() || success() }}
       name: cargo-green logs
-      run: tail -n9999999 ../logs.txt ; echo >../logs.txt
+      run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
 
     - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' }}
       name: FIXME FINAL
@@ -903,7 +903,7 @@ jobs:
     env:
       RUST_BACKTRACE: 1
       CARGOGREEN_LOG: trace
-      CARGOGREEN_LOG_PATH: /home/runner/work/supergreen/logs.txt
+      CARGOGREEN_LOG_PATH: logs.txt
     # CARGOGREEN_FINAL_PATH: recipes/checks.Dockerfile
     steps:
     - run: docker info
@@ -959,26 +959,26 @@ jobs:
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
       run: |
-        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' ../logs.txt
+        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
 
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> there's some panic!s
       run: |
-        ! grep -C20 -F ' panicked at ' ../logs.txt
+        ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
 
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> there's some BUGs
       run: |
-        ! grep -C20 -F 'BUG: ' ../logs.txt
+        ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
 
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> here's relevant logs
       run: |
-        ! grep -C20 -F ' >>> ' ../logs.txt
+        ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
 
     - if: ${{ failure() || success() }}
       name: cargo-green logs
-      run: tail -n9999999 ../logs.txt ; echo >../logs.txt
+      run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
 
     - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' }}
       name: FIXME FINAL
@@ -997,26 +997,26 @@ jobs:
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
       run: |
-        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' ../logs.txt
+        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
 
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> there's some panic!s
       run: |
-        ! grep -C20 -F ' panicked at ' ../logs.txt
+        ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
 
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> there's some BUGs
       run: |
-        ! grep -C20 -F 'BUG: ' ../logs.txt
+        ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
 
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> here's relevant logs
       run: |
-        ! grep -C20 -F ' >>> ' ../logs.txt
+        ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
 
     - if: ${{ failure() || success() }}
       name: cargo-green logs
-      run: tail -n9999999 ../logs.txt ; echo >../logs.txt
+      run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
 
     - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' }}
       name: FIXME FINAL
@@ -1049,26 +1049,26 @@ jobs:
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
       run: |
-        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' ../logs.txt
+        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
 
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> there's some panic!s
       run: |
-        ! grep -C20 -F ' panicked at ' ../logs.txt
+        ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
 
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> there's some BUGs
       run: |
-        ! grep -C20 -F 'BUG: ' ../logs.txt
+        ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
 
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> here's relevant logs
       run: |
-        ! grep -C20 -F ' >>> ' ../logs.txt
+        ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
 
     - if: ${{ failure() || success() }}
       name: cargo-green logs
-      run: tail -n9999999 ../logs.txt ; echo >../logs.txt
+      run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
 
     - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' }}
       name: FIXME FINAL
@@ -1095,7 +1095,7 @@ jobs:
     env:
       RUST_BACKTRACE: 1
       CARGOGREEN_LOG: trace
-      CARGOGREEN_LOG_PATH: /home/runner/work/supergreen/logs.txt
+      CARGOGREEN_LOG_PATH: logs.txt
     # CARGOGREEN_FINAL_PATH: recipes/packages.Dockerfile
     steps:
     - run: docker info
@@ -1151,26 +1151,26 @@ jobs:
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
       run: |
-        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' ../logs.txt
+        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
 
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> there's some panic!s
       run: |
-        ! grep -C20 -F ' panicked at ' ../logs.txt
+        ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
 
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> there's some BUGs
       run: |
-        ! grep -C20 -F 'BUG: ' ../logs.txt
+        ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
 
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> here's relevant logs
       run: |
-        ! grep -C20 -F ' >>> ' ../logs.txt
+        ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
 
     - if: ${{ failure() || success() }}
       name: cargo-green logs
-      run: tail -n9999999 ../logs.txt ; echo >../logs.txt
+      run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
 
     - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' }}
       name: FIXME FINAL
@@ -1189,26 +1189,26 @@ jobs:
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
       run: |
-        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' ../logs.txt
+        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
 
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> there's some panic!s
       run: |
-        ! grep -C20 -F ' panicked at ' ../logs.txt
+        ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
 
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> there's some BUGs
       run: |
-        ! grep -C20 -F 'BUG: ' ../logs.txt
+        ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
 
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> here's relevant logs
       run: |
-        ! grep -C20 -F ' >>> ' ../logs.txt
+        ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
 
     - if: ${{ failure() || success() }}
       name: cargo-green logs
-      run: tail -n9999999 ../logs.txt ; echo >../logs.txt
+      run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
 
     - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' }}
       name: FIXME FINAL
@@ -1235,7 +1235,7 @@ jobs:
     env:
       RUST_BACKTRACE: 1
       CARGOGREEN_LOG: trace
-      CARGOGREEN_LOG_PATH: /home/runner/work/supergreen/logs.txt
+      CARGOGREEN_LOG_PATH: logs.txt
     # CARGOGREEN_FINAL_PATH: recipes/clippy.Dockerfile
     steps:
     - run: docker info
@@ -1292,26 +1292,26 @@ jobs:
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
       run: |
-        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' ../logs.txt
+        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
 
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> there's some panic!s
       run: |
-        ! grep -C20 -F ' panicked at ' ../logs.txt
+        ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
 
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> there's some BUGs
       run: |
-        ! grep -C20 -F 'BUG: ' ../logs.txt
+        ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
 
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> here's relevant logs
       run: |
-        ! grep -C20 -F ' >>> ' ../logs.txt
+        ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
 
     - if: ${{ failure() || success() }}
       name: cargo-green logs
-      run: tail -n9999999 ../logs.txt ; echo >../logs.txt
+      run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
 
     - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' }}
       name: FIXME FINAL
@@ -1330,26 +1330,26 @@ jobs:
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
       run: |
-        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' ../logs.txt
+        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
 
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> there's some panic!s
       run: |
-        ! grep -C20 -F ' panicked at ' ../logs.txt
+        ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
 
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> there's some BUGs
       run: |
-        ! grep -C20 -F 'BUG: ' ../logs.txt
+        ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
 
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> here's relevant logs
       run: |
-        ! grep -C20 -F ' >>> ' ../logs.txt
+        ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
 
     - if: ${{ failure() || success() }}
       name: cargo-green logs
-      run: tail -n9999999 ../logs.txt ; echo >../logs.txt
+      run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
 
     - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' }}
       name: FIXME FINAL
@@ -1382,26 +1382,26 @@ jobs:
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
       run: |
-        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' ../logs.txt
+        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
 
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> there's some panic!s
       run: |
-        ! grep -C20 -F ' panicked at ' ../logs.txt
+        ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
 
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> there's some BUGs
       run: |
-        ! grep -C20 -F 'BUG: ' ../logs.txt
+        ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
 
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> here's relevant logs
       run: |
-        ! grep -C20 -F ' >>> ' ../logs.txt
+        ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
 
     - if: ${{ failure() || success() }}
       name: cargo-green logs
-      run: tail -n9999999 ../logs.txt ; echo >../logs.txt
+      run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
 
     - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' }}
       name: FIXME FINAL
