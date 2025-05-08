@@ -7,6 +7,7 @@ with_j=0 # TODO: 1 => adds jobs with -J (see cargo issue https://github.com/rust
 
 # Usage:           $0                                      #=> generate CI
 # Usage:           $0 ( <name@version> | <name> ) [clean]  #=> cargo install name@version
+# Usage:           $0   ok                        [clean]  #=> cargo install all working bins
 # Usage:           $0 ( build | test )            [clean]  #=> cargo build ./cargo-green
 # Usage:    jobs=1 $0 ..                                   #=> cargo --jobs=$jobs
 # Usage: offline=1 $0 ..                                   #=> cargo --frozen (defaults to just: --locked)
@@ -102,6 +103,7 @@ declare -a nvs nvs_args
 #TODO: look into "writing rust tests inside tmux sessions"
 
 header() {
+  [[ $# -eq 0 ]]
 	cat <<EOF
 on: [push]
 name: CLIs
@@ -163,6 +165,7 @@ EOF
 
 as_install() {
   local name_at_version=$1; shift
+  [[ $# -eq 0 ]]
   case "$name_at_version" in
     *@main | *@master) echo "${name_at_version%@*}" ;;
     *) echo "$name_at_version" ;;
@@ -171,6 +174,7 @@ as_install() {
 
 as_env() {
   local name_at_version=$1; shift
+  [[ $# -eq 0 ]]
   case "$name_at_version" in
     cargo-authors@*) envvars+=(CARGOGREEN_ADD_APT='libssl-dev,zlib1g-dev') ;;
     cargo-udeps@*) envvars+=(CARGOGREEN_ADD_APT='libssl-dev,zlib1g-dev') ;;
@@ -191,18 +195,24 @@ as_env() {
   fi
 }
 
+slugify() {
+  local name_at_version=$1; shift
+  [[ $# -eq 0 ]]
+  sed 's%@%_%g;s%\.%-%g' <<<"$name_at_version"
+}
+
 cli() {
-	local name_at_version=$1; shift
+  local name_at_version=$1; shift
   local jobs=$1; shift
   local envvars=()
 
   envvars+=(CARGOGREEN_LOG=trace)
   envvars+=(CARGOGREEN_LOG_PATH="\$PWD"/logs.txt)
-  envvars+=(CARGO_TARGET_DIR="\$HOME"/instst)
+  envvars+=(CARGO_TARGET_DIR=/tmp/clis-$(slugify "$name_at_version"))
   as_env "$name_at_version"
 
 	cat <<EOF
-$(jobdef "$(sed 's%@%_%g;s%\.%-%g' <<<"$name_at_version")$(if [[ "$jobs" != 1 ]]; then echo '-J'; fi)")
+$(jobdef "$(slugify "$name_at_version")$(if [[ "$jobs" != 1 ]]; then echo '-J'; fi)")
     env:
       CARGOGREEN_FINAL_PATH: recipes/$name_at_version.Dockerfile
     needs: bin
@@ -258,11 +268,12 @@ EOF
 
 maybe_show_logs() {
   local logfile=$1; shift
+  [[ $# -eq 0 ]]
   case "$(wc "$logfile")" in '0 0 0 '*) ;;
                                      *) $PAGER "$logfile" ;; esac
 }
 
-# No args: try many combinations, sequentially
+# No args: generate CI file
 if [[ $# = 0 ]]; then
   header
 
@@ -295,6 +306,7 @@ CARGO=${CARGO:-cargo}
 
 # Special first arg handling..
 case "$arg1" in
+  # Try all, sequentially
   ok)
     for i in "${!nvs[@]}"; do
       case "${oks[$i]}" in ok|hm) ;; *) continue ;; esac
@@ -354,7 +366,7 @@ fi
 name_at_version=${nvs[$i]}
 args=${nvs_args[$i]}
 
-session_name=$(sed 's%@%_%g;s%\.%-%g' <<<"$name_at_version")
+session_name=$(slugify "$name_at_version")
 tmptrgt=/tmp/clis-$session_name
 tmplogs=$tmptrgt.logs.txt
 tmpgooo=$tmptrgt.state
@@ -383,7 +395,7 @@ tmux split-window
 
 envvars=(CARGOGREEN_LOG=trace)
 envvars+=(CARGOGREEN_LOG_PATH="$tmplogs")
-envvars+=(CARGOGREEN_FINAL_PATH="$tmptrgt/$name_at_version.Dockerfile")
+envvars+=(CARGOGREEN_FINAL_PATH="recipes/$name_at_version.Dockerfile")
 envvars+=(PATH=$install_dir/bin:"$PATH")
 envvars+=(CARGO_TARGET_DIR="$tmptrgt")
 envvars+=(CARGOGREEN_SYNTAX=docker-image://docker.io/docker/dockerfile:1@sha256:4c68376a702446fc3c79af22de146a148bc3367e73c25a5803d453b6b3f722fb)
