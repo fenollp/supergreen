@@ -214,8 +214,8 @@ $(jobdef "$(slugify "$name_at_version")$(if [[ "$jobs" != 1 ]]; then echo '-J'; 
       CARGOGREEN_BASE_IMAGE: docker-image://docker.io/library/rust:1.86.0-slim@sha256:57d415bbd61ce11e2d5f73de068103c7bd9f3188dc132c97cef4a8f62989e944
       CARGOGREEN_FINAL_PATH: recipes/$name_at_version.Dockerfile
       CARGOGREEN_LOG: trace
-      CARGOGREEN_LOG_PATH: "\$PWD"/logs.txt
-     needs: bin
+      CARGOGREEN_LOG_PATH: \$PWD/logs.txt
+    needs: bin
     steps:
     - uses: actions-rs/toolchain@v1
       with:

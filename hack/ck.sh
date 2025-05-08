@@ -82,7 +82,7 @@ cat <<EOF
     - if: \${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
-        ! grep -C20 -F "thread 'main' panicked at src/cargo/util/dependency_queue.rs:" $cargologs
+        ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' $cargologs
 
     - if: \${{ failure() || success() }}
       name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
