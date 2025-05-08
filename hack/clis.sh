@@ -245,8 +245,6 @@ $(cache_usage)
 $(postconds _ logs.txt)
 $(cache_usage)
 
-git diff exit code \$CARGOGREEN_FINAL_PATH
-
     - name: Target dir disk usage
       if: \${{ failure() || success() }}
       run: du -sh ~/instst
