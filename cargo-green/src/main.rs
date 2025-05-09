@@ -122,6 +122,8 @@ async fn main() -> Result<()> {
         cmd.env(ENV_LOG, log);
         let path = env::var(ENV_LOG_PATH)
             .unwrap_or_else(|_| tmp().join(format!("{PKG}-{}.log", hashed_args())).to_string());
+        let path = camino::absolute_utf8(path)
+            .map_err(|e| anyhow!("Failed canonicalizing ${ENV_LOG_PATH}: {e}"))?;
         env::set_var(ENV_LOG_PATH, &path);
         cmd.env(ENV_LOG_PATH, &path);
         let _ = OpenOptions::new().create(true).truncate(false).append(true).open(path);
