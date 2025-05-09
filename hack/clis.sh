@@ -209,7 +209,6 @@ cli() {
 $(jobdef "$(slugify "$name_at_version")$(if [[ "$jobs" != 1 ]]; then echo '-J'; fi)")
     env:
       CARGO_TARGET_DIR: /tmp/clis-$(slugify "$name_at_version")
-      CARGOGREEN_BASE_IMAGE: docker-image://docker.io/library/rust:1.86.0-slim@sha256:3f391b0678a6e0c88fd26f13e399c9c515ac47354e3cadfee7daee3b21651a4f  # FIXME: drop
       CARGOGREEN_FINAL_PATH: recipes/$name_at_version.Dockerfile
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
