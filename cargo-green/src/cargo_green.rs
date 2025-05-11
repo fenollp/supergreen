@@ -5,7 +5,6 @@ use std::{
 };
 
 use anyhow::{anyhow, bail, Result};
-use camino::absolute_utf8;
 use futures::{stream::iter, StreamExt, TryStreamExt};
 use log::{debug, info};
 use tokio::try_join;
@@ -77,7 +76,7 @@ pub(crate) async fn main() -> Result<Green> {
         if path == "-" {
             bail!("${ENV_FINAL_PATH} must not be {path:?}")
         }
-        let path = absolute_utf8(path)
+        let path = camino::absolute_utf8(path)
             .map_err(|e| anyhow!("Failed canonicalizing ${ENV_FINAL_PATH}: {e}"))?;
         if let Some(dir) = path.parent() {
             fs::create_dir_all(dir).map_err(|e| anyhow!("Failed `mkdir -p {dir}`: {e}"))?;
