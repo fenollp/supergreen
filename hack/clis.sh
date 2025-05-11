@@ -7,6 +7,7 @@ with_j=0 # TODO: 1 => adds jobs with -J (see cargo issue https://github.com/rust
 
 # Usage:           $0                                      #=> generate CI
 # Usage:           $0 ( <name@version> | <name> ) [clean]  #=> cargo install name@version
+# Usage:           $0   ok                        [clean]  #=> cargo install all working bins
 # Usage:           $0 ( build | test )            [clean]  #=> cargo build ./cargo-green
 # Usage:    jobs=1 $0 ..                                   #=> cargo --jobs=$jobs
 # Usage: offline=1 $0 ..                                   #=> cargo --frozen (defaults to just: --locked)
@@ -102,6 +103,7 @@ declare -a nvs nvs_args
 #TODO: look into "writing rust tests inside tmux sessions"
 
 header() {
+  [[ $# -eq 0 ]]
 	cat <<EOF
 on: [push]
 name: CLIs
@@ -150,8 +152,6 @@ $(jobdef 'bin')
     - name: Compile HEAD cargo-green
       run: |
         CARGO_TARGET_DIR=~/instmp cargo install --locked --force --path=./cargo-green
-    - run: ls -lha ~/instmp/release/
-    - run: ls -lha /home/runner/.cargo/bin/
 
     - uses: actions/upload-artifact@v4
       with:
@@ -163,6 +163,7 @@ EOF
 
 as_install() {
   local name_at_version=$1; shift
+  [[ $# -eq 0 ]]
   case "$name_at_version" in
     *@main | *@master) echo "${name_at_version%@*}" ;;
     *) echo "$name_at_version" ;;
@@ -171,6 +172,7 @@ as_install() {
 
 as_env() {
   local name_at_version=$1; shift
+  [[ $# -eq 0 ]]
   case "$name_at_version" in
     cargo-authors@*) envvars+=(CARGOGREEN_ADD_APT='libssl-dev,zlib1g-dev') ;;
     cargo-udeps@*) envvars+=(CARGOGREEN_ADD_APT='libssl-dev,zlib1g-dev') ;;
@@ -191,19 +193,37 @@ as_env() {
   fi
 }
 
+slugify() {
+  local name_at_version=$1; shift
+  [[ $# -eq 0 ]]
+  sed 's%@%_%g;s%\.%-%g' <<<"$name_at_version"
+}
+
+ntpd_locked_commit=c7945250c378f65f65b2a75748132edf75063b3b  # Any value, just fixed.
+ntpd_locked_date=2025-05-09                                  # Time of commit
+
 cli() {
-	local name_at_version=$1; shift
+  local name_at_version=$1; shift
   local jobs=$1; shift
   local envvars=()
-
-  envvars+=(CARGOGREEN_LOG=trace)
-  envvars+=(CARGOGREEN_LOG_PATH="\$PWD"/logs.txt)
-  envvars+=(CARGOGREEN_FINAL_PATH="$name_at_version.Dockerfile")
-  envvars+=(CARGO_TARGET_DIR="\$HOME"/instst)
-  as_env "$name_at_version"
+ as_env "$name_at_version"
 
 	cat <<EOF
-$(jobdef "$(sed 's%@%_%g;s%\.%-%g' <<<"$name_at_version")$(if [[ "$jobs" != 1 ]]; then echo '-J'; fi)")
+$(jobdef "$(slugify "$name_at_version")$(if [[ "$jobs" != 1 ]]; then echo '-J'; fi)")
+    env:
+      CARGO_TARGET_DIR: /tmp/clis-$(slugify "$name_at_version")
+      CARGOGREEN_FINAL_PATH: recipes/$name_at_version.Dockerfile
+      CARGOGREEN_LOG: trace
+      CARGOGREEN_LOG_PATH: logs.txt
+$(
+  case "$name_at_version" in
+    ntpd@*)
+      printf '      NTPD_RS_GIT_REV: %s\n' "$ntpd_locked_commit"
+      printf '      NTPD_RS_GIT_DATE: %s\n' "$ntpd_locked_date"
+      ;;
+    *) ;;
+  esac
+)
     needs: bin
     steps:
     - uses: actions-rs/toolchain@v1
@@ -222,49 +242,55 @@ $(restore_bin-artifacts)
 $(rundeps_versions)
 
     - name: Envs
-      run: /home/runner/.cargo/bin/cargo-green green supergreen env
+      run: ~/.cargo/bin/cargo-green green supergreen env
     - name: Envs again
-      run: /home/runner/.cargo/bin/cargo-green green supergreen env
+      run: ~/.cargo/bin/cargo-green green supergreen env
 
 $(cache_usage)
     - name: cargo install net=ON cache=OFF remote=OFF jobs=$jobs
       run: |
         env ${envvars[@]} \\
           cargo green -vv install --jobs=$jobs --locked --force $(as_install "$name_at_version") $@ |& tee _
-$(postconds _ logs.txt "$name_at_version.Dockerfile")
+    - uses: actions/upload-artifact@v4
+      name: Upload recipe
+      with:
+        name: $name_at_version.Dockerfile
+        path: \${{ env.CARGOGREEN_FINAL_PATH }}
+$(postconds _)
 $(cache_usage)
 
     - name: Target dir disk usage
       if: \${{ failure() || success() }}
-      run: du -sh ~/instst
+      run: du -sh \$CARGO_TARGET_DIR
 
     - name: Ensure running the same command twice without modifications...
       run: |
         env ${envvars[@]} \\
           cargo green -vv install --jobs=$jobs --locked --force $(as_install "$name_at_version") $@ |& tee _
-$(postcond_fresh _ "$name_at_version.Dockerfile")
-$(postconds _ logs.txt "$name_at_version.Dockerfile")
+$(postcond_fresh _)
+$(postconds _)
 $(cache_usage)
 
     - name: Target dir disk usage
       if: \${{ failure() || success() }}
-      run: du -sh ~/instst
+      run: du -sh \$CARGO_TARGET_DIR
 
 EOF
 }
 
 maybe_show_logs() {
   local logfile=$1; shift
+  [[ $# -eq 0 ]]
   case "$(wc "$logfile")" in '0 0 0 '*) ;;
                                      *) $PAGER "$logfile" ;; esac
 }
 
-# No args: try many combinations, sequentially
+# No args: generate CI file
 if [[ $# = 0 ]]; then
   header
 
   for i in "${!nvs[@]}"; do
-    [[ "${oks[$i]}" = 'ok' ]] || continue
+    [[ "${oks[$i]}" = 'ko' ]] && continue
     name_at_version=${nvs["$i"]}
     case "$name_at_version" in
       cargo-green@*) continue ;;
@@ -292,6 +318,7 @@ CARGO=${CARGO:-cargo}
 
 # Special first arg handling..
 case "$arg1" in
+  # Try all, sequentially
   ok)
     for i in "${!nvs[@]}"; do
       case "${oks[$i]}" in ok|hm) ;; *) continue ;; esac
@@ -351,7 +378,7 @@ fi
 name_at_version=${nvs[$i]}
 args=${nvs_args[$i]}
 
-session_name=$(sed 's%@%_%g;s%\.%-%g' <<<"$name_at_version")
+session_name=$(slugify "$name_at_version")
 tmptrgt=/tmp/clis-$session_name
 tmplogs=$tmptrgt.logs.txt
 tmpgooo=$tmptrgt.state
@@ -380,14 +407,15 @@ tmux split-window
 
 envvars=(CARGOGREEN_LOG=trace)
 envvars+=(CARGOGREEN_LOG_PATH="$tmplogs")
-envvars+=(CARGOGREEN_FINAL_PATH="$tmptrgt/$name_at_version.Dockerfile")
 envvars+=(PATH=$install_dir/bin:"$PATH")
 envvars+=(CARGO_TARGET_DIR="$tmptrgt")
-envvars+=(CARGOGREEN_SYNTAX=docker-image://docker.io/docker/dockerfile:1@sha256:4c68376a702446fc3c79af22de146a148bc3367e73c25a5803d453b6b3f722fb)
-envvars+=(CARGOGREEN_BASE_IMAGE=docker-image://docker.io/library/rust:1.86.0-slim@sha256:3f391b0678a6e0c88fd26f13e399c9c515ac47354e3cadfee7daee3b21651a4f)
+# envvars+=(CARGOGREEN_FINAL_PATH=recipes/$name_at_version.Dockerfile)
+# envvars+=(CARGOGREEN_SYNTAX=docker-image://docker.io/docker/dockerfile:1@sha256:4c68376a702446fc3c79af22de146a148bc3367e73c25a5803d453b6b3f722fb)
+# envvars+=(CARGOGREEN_BASE_IMAGE=docker-image://docker.io/library/rust:1.86.0-slim@sha256:3f391b0678a6e0c88fd26f13e399c9c515ac47354e3cadfee7daee3b21651a4f)
 as_env "$name_at_version"
 send \
   'until' '[[' -f "$tmpgooo".installed ']];' 'do' sleep '.1;' 'done' '&&' rm "$tmpgooo".* \
+  '&&' 'case' "$name_at_version" 'in' ntpd'@*)' export NTPD_RS_GIT_REV=$ntpd_locked_commit '&&' export NTPD_RS_GIT_DATE=$ntpd_locked_date ';;' '*)' ';;' 'esac' \
   '&&' "${envvars[@]}" $CARGO green -vv install --timings --jobs=$jobs --root=$tmpbins $frozen --force "$(as_install "$name_at_version")" "$args" \
   '&&' 'if' '[[' "$clean" '=' '1' ']];' 'then' docker buildx du --builder=supergreen --verbose '|' tee --append "$tmplogs" '||' 'exit' '1;' 'fi' \
   '&&' tmux kill-session -t "$session_name"
