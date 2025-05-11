@@ -18,7 +18,7 @@ use crate::{
     envs::pass_env,
     ext::{Popped, ShowCmd},
     green::Green,
-    logging::{self, crate_type_for_logging, maybe_log, ENV_LOG},
+    logging::{self, crate_type_for_logging, maybe_log},
     md::{BuildContext, Md},
     pwd,
     runner::{build_out, Runner, MARK_STDERR, MARK_STDOUT},
@@ -600,14 +600,6 @@ async fn do_wrap_rustc(
         let md_ser = md.to_string_pretty()?;
 
         info!("opening (RW) crate's md {md_path}");
-        // TODO? suggest a `cargo clean` then fail
-        if env::var(ENV_LOG).is_ok() {
-            match fs::read_to_string(&md_path) {
-                Ok(existing) => pretty_assertions::assert_eq!(&existing, &md_ser),
-                Err(e) if e.kind() == ErrorKind::NotFound => {}
-                Err(e) => bail!("Failed reading {md_path}: {e}"),
-            }
-        }
         fs::write(&md_path, md_ser)
             .map_err(|e| anyhow!("Failed creating crate's md {md_path}: {e}"))?;
 

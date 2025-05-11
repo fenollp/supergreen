@@ -1,6 +1,6 @@
-use std::{fs, io::ErrorKind};
+use std::fs;
 
-use anyhow::{anyhow, bail, Result};
+use anyhow::{anyhow, Result};
 use camino::Utf8Path;
 use log::{info, trace};
 
@@ -40,16 +40,6 @@ impl Containerfile {
 
     pub(crate) fn write_to(&self, path: &Utf8Path) -> Result<()> {
         info!("opening (RW) containerfile {path}");
-
-        // TODO? suggest a `cargo clean` then fail
-        if maybe_log().is_some() {
-            match fs::read_to_string(path) {
-                Ok(existing) => pretty_assertions::assert_eq!(&existing, &self.script),
-                Err(e) if e.kind() == ErrorKind::NotFound => {}
-                Err(e) => bail!("Failed reading {path}: {e}"),
-            }
-        }
-
         fs::write(path, &self.script).map_err(|e| anyhow!("Failed creating {path}: {e}"))?;
 
         let ignore = format!("{path}.dockerignore");
