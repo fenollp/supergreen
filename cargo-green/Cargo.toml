@@ -37,7 +37,6 @@ home.workspace = true
 log.workspace = true
 nutype = { workspace = true, features = [ "serde" ] }
 pico-args.workspace = true
-pretty_assertions.workspace = true                    # TODO: drop once !dbg
 reqwest.workspace = true
 rustc_version.workspace = true
 rustflags.workspace = true                            # TODO: drop once !dbg
@@ -52,4 +51,5 @@ url.workspace = true
 
 [dev-dependencies]
 assertx.workspace = true
+pretty_assertions.workspace = true
 test-case.workspace = true
