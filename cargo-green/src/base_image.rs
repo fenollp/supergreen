@@ -128,6 +128,7 @@ impl BaseImage {
     pub(crate) fn as_block(&self) -> (Network, String) {
         let block = self.base_image_inline.clone().unwrap_or_else(|| {
             let base = self.base_image.noscheme();
+            // TODO? ARG RUST_BASE=myorg/myapp:latest \n FROM $RUST_BASE (+ similar for non-stable imgs)
             format!("FROM --platform=$BUILDPLATFORM {base} AS {RST}\n")
         });
         (self.with_network, block)

@@ -2,7 +2,7 @@
 
 use std::{collections::BTreeSet, str::FromStr};
 
-use anyhow::{bail, Result};
+use anyhow::{anyhow, bail, Result};
 use camino::Utf8PathBuf;
 use serde::{Deserialize, Serialize};
 use szyk::{sort, Node};
@@ -83,6 +83,7 @@ impl Md {
         &mut self,
         mds: Vec<(Utf8PathBuf, Self)>,
     ) -> Result<Vec<Utf8PathBuf>> {
+        self.contexts.retain(BuildContext::is_readonly_mount);
         let mut dag: Vec<_> = mds
             .into_iter()
             .map(|(md_path, md)| {
@@ -96,10 +97,8 @@ impl Md {
         let this = dec(&self.this);
         dag.push(Node::new(this, decs(&self.deps), "".into()));
 
-        let mut md_paths = match sort(&dag, this) {
-            Ok(ordering) => ordering,
-            Err(e) => bail!("Failed topolosorting {}: {e:?}", self.this),
-        };
+        let mut md_paths =
+            sort(&dag, this).map_err(|e| anyhow!("Failed topolosorting {}: {e:?}", self.this))?;
         md_paths.truncate(md_paths.len() - 1); // pop last (it's self.this's empty path)
 
         Ok(md_paths)
