@@ -1,10 +1,8 @@
 use std::{
-    collections::{BTreeMap, BTreeSet},
+    collections::{BTreeMap, BTreeSet, HashMap},
     env,
-    fs::{self, File},
+    fs::{self},
     future::Future,
-    io::{BufRead, BufReader, ErrorKind},
-    str::FromStr,
 };
 
 use anyhow::{anyhow, bail, Result};
@@ -229,14 +227,24 @@ async fn do_wrap_rustc(
         None
     };
 
-    // https://github.com/rust-lang/cargo/issues/12059#issuecomment-1537457492
-    //   https://github.com/rust-lang/rust/issues/63012 : Tracking issue for -Z binary-dep-depinfo
-    let mut all_externs = BTreeSet::new();
-    let externs_prefix = |part: &str| target_path.join(format!("externs_{part}"));
-    let crate_externs = externs_prefix(&format!("{crate_name}{extrafn}"));
+    let mut mds = HashMap::<Utf8PathBuf, Md>::new(); // A file cache
 
     let mut md = Md::new(&extrafn[1..]); // Drops leading dash
     md.push_block(&RUST, green.image.base_image_inline.clone().unwrap());
+
+    // NOTE how we're using BOTH {crate_name} and {krate_name}
+    //      => TODO: just use {extrafn}
+    //      => TODO: consolidate both as a single file
+    let md_path = target_path.join(format!("{crate_name}{extrafn}.toml"));
+    let containerfile_path = target_path.join(format!("{krate_name}{extrafn}.Dockerfile"));
+    let md_pather = |part: &str| target_path.join(format!("{part}.toml"));
+
+    // https://github.com/rust-lang/cargo/issues/12059#issuecomment-1537457492
+    //   https://github.com/rust-lang/rust/issues/63012 : Tracking issue for -Z binary-dep-depinfo
+    let mut all_externs = BTreeSet::new();
+
+    // This way crates that depend on this know they must require it as .so
+    md.is_proc_macro = crate_type == "proc-macro";
 
     let ext = match crate_type.as_str() {
         "lib" => "rmeta".to_owned(),
@@ -247,15 +255,8 @@ async fn do_wrap_rustc(
     // > [rmeta] is created if the --emit=metadata CLI option is used.
     let ext = if emit.contains("metadata") { "rmeta".to_owned() } else { ext };
 
-    if crate_type == "proc-macro" {
-        // This way crates that depend on this know they must require it as .so
-        let guard = format!("{crate_externs}_proc-macro"); // FIXME: store this bit of info in md file
-        info!("opening (RW) {guard}");
-        fs::write(&guard, "").map_err(|e| anyhow!("Failed to `touch {guard}`: {e}"))?;
-    };
-
-    let mut short_externs = BTreeSet::new();
-    for xtern in &externs {
+    for xtern in externs {
+        trace!("❯ extern {xtern}");
         all_externs.insert(xtern.clone());
 
         if !xtern.starts_with("lib") {
@@ -269,75 +270,29 @@ async fn do_wrap_rustc(
         } else if xtern.ends_with(".so") {
             xtern.strip_suffix(".so")
         } else {
-            bail!("CONTRACT: cargo gave unexpected extern: {xtern:?}")
+            bail!("BUG: cargo gave unexpected extern: {xtern:?}")
         }
         .expect("PROOF: all cases match");
-        short_externs.insert(xtern.to_owned());
+        trace!("❯ short extern {xtern}");
+        md.short_externs.insert(xtern.to_owned());
 
-        let xtern_crate_externs = externs_prefix(xtern);
-        info!("checking (RO) extern's externs {xtern_crate_externs}");
-        if xtern_crate_externs.exists() {
-            info!("opening (RO) crate externs {xtern_crate_externs}");
-            let fd = File::open(&xtern_crate_externs)
-                .map_err(|e| anyhow!("Failed to `cat {xtern_crate_externs}`: {e}"))?;
-            for transitive in BufReader::new(fd).lines().map_while(Result::ok) {
-                let guard = externs_prefix(&format!("{transitive}_proc-macro"));
-                info!("checking (RO) extern's guard {guard}");
-                let ext = if guard.exists() { "so" } else { &ext };
-                let actual_extern = format!("lib{transitive}.{ext}");
-                all_externs.insert(actual_extern.clone());
+        let short_extern_md = md_pather(xtern);
+        info!("checking (RO) extern's externs {short_extern_md}");
+        if short_extern_md.exists() {
+            let short_extern_md = get_or_read(&mut mds, &short_extern_md)?;
+            for transitive in short_extern_md.short_externs {
+                let guard_md = get_or_read(&mut mds, &md_pather(&transitive))?;
+                let ext = if guard_md.is_proc_macro { "so" } else { &ext };
 
-                // ^ this algo tried to "keep track" of actual paths to transitive deps artifacts
-                //   however some edge cases (at least 1) go through. That fix seems to bust cache on 2nd builds though v
+                trace!("❯ extern lib{transitive}.{ext}");
+                all_externs.insert(format!("lib{transitive}.{ext}"));
 
-                if debug.is_some() {
-                    let deps_dir = target_path.join("deps");
-                    info!("extern crate's extern matches {deps_dir}/lib*.*");
-                    let listing = fs::read_dir(&deps_dir)
-                        .map_err(|e| anyhow!("Failed reading directory {deps_dir}: {e}"))?
-                        .filter_map(Result::ok)
-                        .filter_map(|p| {
-                            let p = p.path();
-                            p.file_name().map(|p| p.to_string_lossy().to_string())
-                        })
-                        .filter(|p| p.contains(&transitive))
-                        .filter(|p| !p.ends_with(&format!("{transitive}.d")))
-                        .map(|p| p.to_string())
-                        .collect::<Vec<_>>();
-                    if listing != vec![actual_extern.clone()] {
-                        warn!("instead of [{actual_extern}], listing found {listing:?}");
-                    }
-                    //all_externs.extend(listing.into_iter());
-                    // TODO: move to after for loop
-                }
-
-                short_externs.insert(transitive);
+                trace!("❯ short extern {xtern}");
+                md.short_externs.insert(transitive);
             }
         }
     }
-    info!("checking (RO) externs {crate_externs}");
-    if !crate_externs.exists() {
-        let mut shorts = String::new();
-        for short_extern in &short_externs {
-            shorts.push_str(&format!("{short_extern}\n"));
-        }
-        if !shorts.is_empty() {
-            info!("writing (RW) externs to {crate_externs}");
-            fs::write(&crate_externs, shorts)
-                .map_err(|e| anyhow!("Failed creating crate externs {crate_externs}: {e}"))?;
-        }
-    }
-    let all_externs = all_externs;
-    info!("crate_externs: {crate_externs}");
-    if debug.is_some() {
-        match fs::read_to_string(&crate_externs) {
-            Ok(data) => data,
-            Err(e) => e.to_string(),
-        }
-        .lines()
-        .filter(|x| !x.is_empty())
-        .for_each(|line| trace!("❯ {line}"));
-    }
+    let all_externs = all_externs; // Drops mut
 
     fs::create_dir_all(&out_dir).map_err(|e| anyhow!("Failed to `mkdir -p {out_dir}`: {e}"))?;
     if let Some(ref incremental) = incremental {
@@ -463,11 +418,6 @@ async fn do_wrap_rustc(
     .collect();
     info!("loading {} Docker contexts", md.contexts.len());
 
-    debug!("all_externs = {all_externs:?}");
-    if externs.len() > all_externs.len() {
-        bail!("BUG: (externs, all_externs) = {:?}", (externs.len(), all_externs.len()))
-    }
-
     let mut mounts = Vec::with_capacity(all_externs.len());
     let extern_mds = all_externs
         .into_iter()
@@ -478,23 +428,7 @@ async fn do_wrap_rustc(
             };
             mounts.push((xtern_stage, format!("/{xtern}"), format!("{target_path}/deps/{xtern}")));
 
-            info!("opening (RO) extern md {extern_md_path}");
-            let md_raw = fs::read_to_string(&extern_md_path).map_err(|e| {
-                warn!("failed reading Md {extern_md_path}: {e}");
-                if e.kind() == ErrorKind::NotFound {
-                    return anyhow!(
-                        r#"
-                    Looks like `{PKG}` ran on an unkempt project. That's alright!
-                    Let's remove the current $CARGO_TARGET_DIR {target_dir}
-                    then run your command again.
-"#,
-                        target_dir = env::var("CARGO_TARGET_DIR").unwrap_or("<unset>".to_owned()),
-                    );
-                }
-                anyhow!("Failed reading Md {extern_md_path}: {e}")
-            })?;
-
-            let extern_md = Md::from_str(&md_raw)?;
+            let extern_md = get_or_read(&mut mds, &extern_md_path)?;
             Ok((extern_md_path, extern_md))
         })
         .collect::<Result<Vec<_>>>()?;
@@ -586,46 +520,19 @@ async fn do_wrap_rustc(
     let blocks = md.block_along_with_predecessors(
         &extern_md_paths
             .into_iter()
-            .map(|extern_md_path| {
-                info!("opening (RO) extern's md {extern_md_path}");
-                let md_raw = fs::read_to_string(&extern_md_path)
-                    .map_err(|e| anyhow!("Failed reading Md {extern_md_path}: {e}"))?;
-                Ok(Md::from_str(&md_raw)?)
-            })
+            .map(|extern_md_path| get_or_read(&mut mds, &extern_md_path))
             .collect::<Result<Vec<_>>>()?,
     );
 
-    {
-        let md_path = target_path.join(format!("{crate_name}{extrafn}.toml"));
-        let md_ser = md.to_string_pretty()?;
+    md.write_to(&md_path)?;
+    drop(md_path);
 
-        info!("opening (RW) crate's md {md_path}");
-        fs::write(&md_path, md_ser)
-            .map_err(|e| anyhow!("Failed creating crate's md {md_path}: {e}"))?;
-
-        if debug.is_some() {
-            info!("toml: {md_path}");
-            match fs::read_to_string(&md_path) {
-                Ok(data) => data,
-                Err(e) => e.to_string(),
-            }
-            .lines()
-            .filter(|x| !x.is_empty())
-            .for_each(|line| trace!("❯ {line}"));
-        }
-    }
-
-    let containerfile = {
-        let path = target_path.join(format!("{krate_name}{extrafn}.Dockerfile"));
-
-        let mut containerfile = green.new_containerfile();
-        containerfile.pushln(md.rust_stage());
-        containerfile.nl();
-        containerfile.push(&blocks);
-        containerfile.write_to(&path)?;
-
-        path
-    };
+    let mut containerfile = green.new_containerfile();
+    containerfile.pushln(md.rust_stage());
+    containerfile.nl();
+    containerfile.push(&blocks);
+    containerfile.write_to(&containerfile_path)?;
+    drop(containerfile);
 
     // TODO: use tracing instead:
     // https://docs.rs/tracing-subscriber/latest/tracing_subscriber/fmt/struct.Subscriber.html
@@ -637,7 +544,7 @@ async fn do_wrap_rustc(
         info!("Runner disabled, falling back...");
         return fallback.await;
     }
-    let build = |stage, dir| build_out(&green, &containerfile, stage, &md.contexts, dir);
+    let build = |stage, dir| build_out(&green, &containerfile_path, stage, &md.contexts, dir);
     let res = build(out_stage, &out_dir).await;
     if let Some(incremental) = res.is_ok().then_some(incremental).flatten() {
         let _ = build(incremental_stage, &incremental)
@@ -656,6 +563,15 @@ async fn do_wrap_rustc(
         return Err(e);
     }
     Ok(())
+}
+
+fn get_or_read(mds: &mut HashMap<Utf8PathBuf, Md>, path: &Utf8Path) -> Result<Md> {
+    if let Some(md) = mds.get(path) {
+        return Ok(md.clone());
+    }
+    let md = Md::from_file(path)?;
+    let _ = mds.insert(path.to_path_buf(), md.clone());
+    Ok(md)
 }
 
 #[must_use]
@@ -724,13 +640,16 @@ fn crate_out_name(name: &Utf8Path) -> Stage {
 }
 
 fn copy_dir_all(src: &Utf8Path, dst: &Utf8Path) -> Result<()> {
+    debug!("copy_dir_all: checking (RO) {dst}");
     if dst.exists() {
         return Ok(());
     }
 
     // Heuristic: test for existence of ./target/CACHEDIR.TAG
     // https://bford.info/cachedir/
-    if src.join("CACHEDIR.TAG").exists() {
+    let cachedir = src.join("CACHEDIR.TAG");
+    debug!("copy_dir_all: checking (RO) {cachedir}");
+    if cachedir.exists() {
         return Ok(()); // Skip copying ./target dir
     }
 
