@@ -1,7 +1,8 @@
 #!/bin/bash -eu
 set -o pipefail
 
-source $(realpath "$(dirname "$0")")/ck.sh
+repo_root=$(realpath "$(dirname "$(dirname "$0")")")
+source "$repo_root"/hack/ck.sh
 
 with_j=0 # TODO: 1 => adds jobs with -J (see cargo issue https://github.com/rust-lang/cargo/issues/13889)
 
@@ -313,7 +314,7 @@ clean=0; if [[ "$modifier" = 'clean' ]]; then clean=1; fi
 jobs=${jobs:-$(nproc)}
 frozen=--locked ; [[ "${offline:-}" = '1' ]] && frozen=--frozen
 
-install_dir=/tmp/cargo-green
+install_dir=$repo_root/target
 CARGO=${CARGO:-cargo}
 
 # Special first arg handling..
