@@ -14,7 +14,7 @@ use crate::{
     checkouts,
     cratesio::{self, rewrite_cratesio_index},
     envs::pass_env,
-    ext::{Popped, ShowCmd},
+    ext::ShowCmd,
     green::Green,
     logging::{self, crate_type_for_logging, maybe_log},
     md::{BuildContext, Md},
@@ -170,6 +170,41 @@ async fn wrap_rustc(
     .inspect_err(|e| error!("Error: {e}"))
 }
 
+fn crate_out_dir(out_dir_var: Option<Utf8PathBuf>) -> Result<Option<Utf8PathBuf>> {
+    let Some(crate_out) = out_dir_var else { return Ok(None) };
+    assert_eq!(crate_out.file_name(), Some("out"), "BUG: unexpected $OUT_DIR={crate_out} format");
+
+    info!("listing (RO) crate_out contents {crate_out}");
+    let listing = fs::read_dir(&crate_out)
+        .map_err(|e| anyhow!("Failed reading crate_out dir {crate_out}: {e}"))?;
+
+    let count = listing
+        .map_while(Result::ok)
+        .inspect(|f| {
+            info!(
+                "metadata for {f:?}: {:?}",
+                f.metadata().map(|fmd| format!(
+                    "created:{c:?} accessed:{a:?} modified:{m:?}",
+                    c = fmd.created(),
+                    a = fmd.accessed(),
+                    m = fmd.modified(),
+                ))
+            );
+        })
+        .count();
+
+    // Dir empty => mount can be dropped
+    if count == 0 {
+        return Ok(None);
+    }
+
+    let ignore = crate_out.with_file_name(".dockerignore");
+    fs::write(&ignore, "")
+        .map_err(|e| anyhow!("Failed creating crate_out dockerignore {ignore}: {e}"))?;
+
+    Ok(Some(crate_out))
+}
+
 #[expect(clippy::too_many_arguments)]
 async fn do_wrap_rustc(
     green: Green,
@@ -190,42 +225,7 @@ async fn do_wrap_rustc(
 
     let incremental = green.incremental.then_some(incremental).flatten();
 
-    // NOTE: not `out_dir`
-    let crate_out = if let Some(crate_out) = out_dir_var {
-        if crate_out.file_name() == Some("out") {
-            info!("listing (RO) crate_out contents {crate_out}");
-            let listing = fs::read_dir(&crate_out)
-                .map_err(|e| anyhow!("Failed reading crate_out dir {crate_out}: {e}"))?;
-            let count = listing
-                .map_while(Result::ok)
-                .map(|f| {
-                    info!(
-                        "metadata for {f:?}: {:?}",
-                        f.metadata().map(|fmd| format!(
-                            "created:{c:?} accessed:{a:?} modified:{m:?}",
-                            c = fmd.created(),
-                            a = fmd.accessed(),
-                            m = fmd.modified(),
-                        ))
-                    );
-                })
-                .count();
-            // crate_out dir empty => mount can be dropped
-            if count != 0 {
-                let ignore = Utf8PathBuf::from(&crate_out).popped(1).join(".dockerignore");
-                fs::write(&ignore, "")
-                    .map_err(|e| anyhow!("Failed creating crate_out dockerignore {ignore}: {e}"))?;
-
-                Some(crate_out)
-            } else {
-                None
-            }
-        } else {
-            None
-        }
-    } else {
-        None
-    };
+    let crate_out = crate_out_dir(out_dir_var)?;
 
     let mut mds = HashMap::<Utf8PathBuf, Md>::new(); // A file cache
 
