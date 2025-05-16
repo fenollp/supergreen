@@ -211,6 +211,11 @@ cli() {
 
 	cat <<EOF
 $(jobdef "$(slugify "$name_at_version")$(if [[ "$jobs" != 1 ]]; then echo '-J'; fi)")
+    strategy:
+      matrix:
+        toolchain:
+        - stable
+        - 1.86.0
     env:
       CARGO_TARGET_DIR: /tmp/clis-$(slugify "$name_at_version")
       CARGOGREEN_FINAL_PATH: recipes/$name_at_version.Dockerfile
@@ -230,7 +235,7 @@ $(
     - uses: actions-rs/toolchain@v1
       with:
         profile: minimal
-        toolchain: stable
+        toolchain: \${{ matrix.toolchain }}
 $(
 	case "$name_at_version" in
 		cargo-llvm-cov@*) printf '    - run: rustup component add llvm-tools-preview\n' ;;
@@ -252,7 +257,8 @@ $(cache_usage)
       run: |
         env ${envvars[@]} \\
           cargo green -vv install --jobs=$jobs --locked --force $(as_install "$name_at_version") $@ |& tee _
-    - uses: actions/upload-artifact@v4
+    - if: \${{ matrix.toolchain != 'stable' }}
+      uses: actions/upload-artifact@v4
       name: Upload recipe
       with:
         name: $name_at_version.Dockerfile
