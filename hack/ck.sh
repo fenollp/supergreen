@@ -15,13 +15,13 @@ EOF
 }
 
 
-restore_bin-artifacts() {
+restore_bin() {
     [[ $# -eq 0 ]]
     cat <<EOF
     - name: Retrieve saved bin
       uses: actions/download-artifact@v4
       with:
-        name: bin-artifacts
+        name: cargo-green
 
     - name: Install saved bin
       shell: bash -eu {0}

@@ -156,7 +156,7 @@ $(jobdef 'bin')
 
     - uses: actions/upload-artifact@v4
       with:
-        name: bin-artifacts
+        name: cargo-green
         path: /home/runner/.cargo/bin/cargo-green
 
 EOF
@@ -243,7 +243,7 @@ $(
 	esac
 )
 
-$(restore_bin-artifacts)
+$(restore_bin)
     - uses: actions/checkout@v4
 $(rundeps_versions)
 
