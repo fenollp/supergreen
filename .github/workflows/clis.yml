@@ -56,7 +56,7 @@ jobs:
 
     - uses: actions/upload-artifact@v4
       with:
-        name: bin-artifacts
+        name: cargo-green
         path: /home/runner/.cargo/bin/cargo-green
 
   buildxargs_master:
@@ -87,7 +87,7 @@ jobs:
     - name: Retrieve saved bin
       uses: actions/download-artifact@v4
       with:
-        name: bin-artifacts
+        name: cargo-green
 
     - name: Install saved bin
       shell: bash -eu {0}
@@ -259,7 +259,7 @@ jobs:
     - name: Retrieve saved bin
       uses: actions/download-artifact@v4
       with:
-        name: bin-artifacts
+        name: cargo-green
 
     - name: Install saved bin
       shell: bash -eu {0}
@@ -431,7 +431,7 @@ jobs:
     - name: Retrieve saved bin
       uses: actions/download-artifact@v4
       with:
-        name: bin-artifacts
+        name: cargo-green
 
     - name: Install saved bin
       shell: bash -eu {0}
@@ -603,7 +603,7 @@ jobs:
     - name: Retrieve saved bin
       uses: actions/download-artifact@v4
       with:
-        name: bin-artifacts
+        name: cargo-green
 
     - name: Install saved bin
       shell: bash -eu {0}
@@ -775,7 +775,7 @@ jobs:
     - name: Retrieve saved bin
       uses: actions/download-artifact@v4
       with:
-        name: bin-artifacts
+        name: cargo-green
 
     - name: Install saved bin
       shell: bash -eu {0}
@@ -947,7 +947,7 @@ jobs:
     - name: Retrieve saved bin
       uses: actions/download-artifact@v4
       with:
-        name: bin-artifacts
+        name: cargo-green
 
     - name: Install saved bin
       shell: bash -eu {0}
@@ -1119,7 +1119,7 @@ jobs:
     - name: Retrieve saved bin
       uses: actions/download-artifact@v4
       with:
-        name: bin-artifacts
+        name: cargo-green
 
     - name: Install saved bin
       shell: bash -eu {0}
@@ -1292,7 +1292,7 @@ jobs:
     - name: Retrieve saved bin
       uses: actions/download-artifact@v4
       with:
-        name: bin-artifacts
+        name: cargo-green
 
     - name: Install saved bin
       shell: bash -eu {0}
@@ -1464,7 +1464,7 @@ jobs:
     - name: Retrieve saved bin
       uses: actions/download-artifact@v4
       with:
-        name: bin-artifacts
+        name: cargo-green
 
     - name: Install saved bin
       shell: bash -eu {0}
@@ -1636,7 +1636,7 @@ jobs:
     - name: Retrieve saved bin
       uses: actions/download-artifact@v4
       with:
-        name: bin-artifacts
+        name: cargo-green
 
     - name: Install saved bin
       shell: bash -eu {0}
@@ -1808,7 +1808,7 @@ jobs:
     - name: Retrieve saved bin
       uses: actions/download-artifact@v4
       with:
-        name: bin-artifacts
+        name: cargo-green
 
     - name: Install saved bin
       shell: bash -eu {0}
@@ -1980,7 +1980,7 @@ jobs:
     - name: Retrieve saved bin
       uses: actions/download-artifact@v4
       with:
-        name: bin-artifacts
+        name: cargo-green
 
     - name: Install saved bin
       shell: bash -eu {0}
@@ -2152,7 +2152,7 @@ jobs:
     - name: Retrieve saved bin
       uses: actions/download-artifact@v4
       with:
-        name: bin-artifacts
+        name: cargo-green
 
     - name: Install saved bin
       shell: bash -eu {0}
@@ -2324,7 +2324,7 @@ jobs:
     - name: Retrieve saved bin
       uses: actions/download-artifact@v4
       with:
-        name: bin-artifacts
+        name: cargo-green
 
     - name: Install saved bin
       shell: bash -eu {0}
