@@ -142,14 +142,12 @@ impl Md {
         &mut self,
         mds: Vec<(Utf8PathBuf, Self)>,
     ) -> Result<Vec<Utf8PathBuf>> {
-        self.contexts.retain(BuildContext::is_readonly_mount);
         let mut dag: Vec<_> = mds
             .into_iter()
             .map(|(md_path, md)| {
                 let this = dec(&md.this);
                 self.deps.push(md.this);
-                self.contexts
-                    .extend(md.contexts.into_iter().filter(BuildContext::is_readonly_mount));
+                self.contexts.extend(md.contexts);
                 Node::new(this, decs(&md.deps), md_path)
             })
             .collect();
@@ -219,13 +217,6 @@ pub(crate) struct BuildContext {
     pub(crate) name: Stage,
     /// Actually any BuildKit ctx works, we just only use local paths.
     pub(crate) uri: Utf8PathBuf,
-}
-
-impl BuildContext {
-    #[must_use]
-    pub(crate) fn is_readonly_mount(&self) -> bool {
-        self.name.is_mount()
-    }
 }
 
 #[test]
@@ -308,12 +299,6 @@ stages = []
     assert_eq!(md.deps, deps);
     dbg!(&md.contexts);
     pretty_assertions::assert_eq!(md.contexts, contexts.clone().into());
-
-    let used: Vec<_> = contexts.into_iter().filter(BuildContext::is_readonly_mount).collect();
-    dbg!(&used);
-    assert_eq!(used.len(), 2);
-    assert_eq!(&used[0].name[..10], "crate_out-");
-    assert_eq!(&used[1].name[..4], "cwd-");
 }
 
 #[test]

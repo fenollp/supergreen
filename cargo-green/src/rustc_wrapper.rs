@@ -406,16 +406,12 @@ async fn do_wrap_rustc(
         rustc_block.push_str(&format!("  --mount=from={named},dst={crate_out} \\\n"));
     }
 
-    md.contexts = [
-        input_mount.and_then(|(name, src, dst)| src.is_none().then_some((name, dst))),
-        cwd,
-        crate_out.map(|crate_out| (crate_out_name(&crate_out), crate_out)),
-    ]
-    .into_iter()
-    .flatten()
-    .map(|(name, uri)| BuildContext { name, uri })
-    .inspect(|BuildContext { name, uri }| info!("loading {name:?}: {uri}"))
-    .collect();
+    md.contexts = [cwd, crate_out.map(|crate_out| (crate_out_name(&crate_out), crate_out))]
+        .into_iter()
+        .flatten()
+        .map(|(name, uri)| BuildContext { name, uri })
+        .inspect(|BuildContext { name, uri }| info!("loading {name:?}: {uri}"))
+        .collect();
     info!("loading {} Docker contexts", md.contexts.len());
 
     let mut mounts = Vec::with_capacity(all_externs.len());
