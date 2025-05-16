@@ -41,11 +41,6 @@ impl Stage {
         Self::new(&format!("crate_out-{extrafn_nodash}"))
     }
 
-    #[must_use]
-    pub(crate) fn is_mount(&self) -> bool {
-        self.starts_with("cwd-") || self.starts_with("crate_out-")
-    }
-
     // TODO: link this to the build script it's coming from
     pub(crate) fn cratesio(name: &str, version: &str) -> Result<Self> {
         Self::new(&format!("cratesio-{name}-{version}"))
@@ -122,7 +117,6 @@ fn stages() {
     ];
 
     for (stage, sname) in stages {
-        assert_eq!(stage.is_mount(), [&local_mount, &crate_out].contains(&&stage));
         assert_eq!(stage.to_string(), sname);
         assert_eq!(stage.is_remote(), [&cratesio, &checkout].contains(&&stage));
     }
