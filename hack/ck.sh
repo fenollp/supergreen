@@ -107,7 +107,7 @@ cat <<EOF
       name: cargo-green logs
       run: tail -n9999999 \$CARGOGREEN_LOG_PATH ; echo >\$CARGOGREEN_LOG_PATH
 
-    - if: \${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' }}
+    - if: \${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != 'stable' }}
       name: Maybe show final path diff
       run: |
         case "\$GITHUB_JOB" in
