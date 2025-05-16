@@ -227,72 +227,11 @@ async fn do_wrap_rustc(
 
     let crate_out = crate_out_dir(out_dir_var)?;
 
-    let mut mds = HashMap::<Utf8PathBuf, Md>::new(); // A file cache
-
     let mut md = Md::new(&extrafn[1..]); // Drops leading dash
     md.push_block(&RUST, green.image.base_image_inline.clone().unwrap());
 
-    // NOTE how we're using BOTH {crate_name} and {krate_name}
-    //      => TODO: just use {extrafn}
-    //      => TODO: consolidate both as a single file
-    let md_path = target_path.join(format!("{crate_name}{extrafn}.toml"));
-    let containerfile_path = target_path.join(format!("{krate_name}{extrafn}.Dockerfile"));
-    let md_pather = |part: &str| target_path.join(format!("{part}.toml"));
-
-    // https://github.com/rust-lang/cargo/issues/12059#issuecomment-1537457492
-    //   https://github.com/rust-lang/rust/issues/63012 : Tracking issue for -Z binary-dep-depinfo
-    let mut all_externs = BTreeSet::new();
-
     // This way crates that depend on this know they must require it as .so
     md.is_proc_macro = crate_type == "proc-macro";
-
-    let ext = match crate_type.as_str() {
-        "lib" => "rmeta".to_owned(),
-        "bin" | "rlib" | "test" | "proc-macro" => "rlib".to_owned(),
-        _ => bail!("BUG: unexpected crate-type: '{crate_type}'"),
-    };
-    // https://rustc-dev-guide.rust-lang.org/backend/libs-and-metadata.html#rmeta
-    // > [rmeta] is created if the --emit=metadata CLI option is used.
-    let ext = if emit.contains("metadata") { "rmeta".to_owned() } else { ext };
-
-    for xtern in externs {
-        trace!("❯ extern {xtern}");
-        all_externs.insert(xtern.clone());
-
-        if !xtern.starts_with("lib") {
-            bail!("BUG: expected extern to match ^lib: {xtern}")
-        }
-        let xtern = xtern.strip_prefix("lib").expect("PROOF: ~ ^lib");
-        let xtern = if xtern.ends_with(".rlib") {
-            xtern.strip_suffix(".rlib")
-        } else if xtern.ends_with(".rmeta") {
-            xtern.strip_suffix(".rmeta")
-        } else if xtern.ends_with(".so") {
-            xtern.strip_suffix(".so")
-        } else {
-            bail!("BUG: cargo gave unexpected extern: {xtern:?}")
-        }
-        .expect("PROOF: all cases match");
-        trace!("❯ short extern {xtern}");
-        md.short_externs.insert(xtern.to_owned());
-
-        let short_extern_md = md_pather(xtern);
-        info!("checking (RO) extern's externs {short_extern_md}");
-        if short_extern_md.exists() {
-            let short_extern_md = get_or_read(&mut mds, &short_extern_md)?;
-            for transitive in short_extern_md.short_externs {
-                let guard_md = get_or_read(&mut mds, &md_pather(&transitive))?;
-                let ext = if guard_md.is_proc_macro { "so" } else { &ext };
-
-                trace!("❯ extern lib{transitive}.{ext}");
-                all_externs.insert(format!("lib{transitive}.{ext}"));
-
-                trace!("❯ short extern {xtern}");
-                md.short_externs.insert(transitive);
-            }
-        }
-    }
-    let all_externs = all_externs; // Drops mut
 
     fs::create_dir_all(&out_dir).map_err(|e| anyhow!("Failed to `mkdir -p {out_dir}`: {e}"))?;
     if let Some(ref incremental) = incremental {
@@ -414,24 +353,10 @@ async fn do_wrap_rustc(
         .collect();
     info!("loading {} Docker contexts", md.contexts.len());
 
-    let mut mounts = Vec::with_capacity(all_externs.len());
-    let extern_mds = all_externs
-        .into_iter()
-        .map(|xtern| {
-            let Some((extern_md_path, xtern_stage)) = toml_path_and_stage(&xtern, &target_path)
-            else {
-                bail!("Unexpected extern name format: {xtern}")
-            };
-            mounts.push((xtern_stage, format!("/{xtern}"), format!("{target_path}/deps/{xtern}")));
+    let (mounts, mds) =
+        assemble_build_dependencies(&mut md, &crate_type, &emit, externs, &target_path)?;
 
-            let extern_md = get_or_read(&mut mds, &extern_md_path)?;
-            Ok((extern_md_path, extern_md))
-        })
-        .collect::<Result<Vec<_>>>()?;
-    let extern_md_paths = md.extend_from_externs(extern_mds)?;
-    info!("extern_md_paths: {} {extern_md_paths:?}", extern_md_paths.len());
-
-    for (name, src, dst) in mounts {
+    for NamedMount { name, src, dst } in mounts {
         rustc_block.push_str(&format!("  --mount=from={name},dst={dst},source={src} \\\n"));
     }
 
@@ -511,22 +436,20 @@ async fn do_wrap_rustc(
     // => skip the COPY (--mount=from=out-08c4d63ed4366a99)
     //   => use the stage directly (--mount=from=dep-l-buildxargs-1.4.0-08c4d63ed4366a99)
 
+    // NOTE how we're using BOTH {crate_name} and {krate_name}
+    //      => TODO: just use {extrafn}
+    //      => TODO: consolidate both as a single file
+    let md_path = target_path.join(format!("{crate_name}{extrafn}.toml"));
+    let containerfile_path = target_path.join(format!("{krate_name}{extrafn}.Dockerfile"));
+
     let md = md; // Drop mut
-
-    let blocks = md.block_along_with_predecessors(
-        &extern_md_paths
-            .into_iter()
-            .map(|extern_md_path| get_or_read(&mut mds, &extern_md_path))
-            .collect::<Result<Vec<_>>>()?,
-    );
-
     md.write_to(&md_path)?;
     drop(md_path);
 
     let mut containerfile = green.new_containerfile();
     containerfile.pushln(md.rust_stage());
     containerfile.nl();
-    containerfile.push(&blocks);
+    containerfile.push(&md.block_along_with_predecessors(&mds));
     containerfile.write_to(&containerfile_path)?;
     drop(containerfile);
 
@@ -559,6 +482,105 @@ async fn do_wrap_rustc(
         return Err(e);
     }
     Ok(())
+}
+
+struct NamedMount {
+    name: Stage,
+    src: Utf8PathBuf,
+    dst: Utf8PathBuf,
+}
+
+fn assemble_build_dependencies(
+    md: &mut Md,
+    crate_type: &str,
+    emit: &str,
+    externs: BTreeSet<String>,
+    target_path: &Utf8Path,
+) -> Result<(Vec<NamedMount>, Vec<Md>)> {
+    let mut mds = HashMap::<Utf8PathBuf, Md>::new(); // A file cache
+
+    let md_pather = |part: &str| target_path.join(format!("{part}.toml"));
+
+    // https://github.com/rust-lang/cargo/issues/12059#issuecomment-1537457492
+    //   https://github.com/rust-lang/rust/issues/63012 : Tracking issue for -Z binary-dep-depinfo
+    let mut all_externs = BTreeSet::new();
+
+    let ext = match crate_type {
+        "lib" => "rmeta".to_owned(),
+        "bin" | "rlib" | "test" | "proc-macro" => "rlib".to_owned(),
+        _ => bail!("BUG: unexpected crate-type: '{crate_type}'"),
+    };
+    // https://rustc-dev-guide.rust-lang.org/backend/libs-and-metadata.html#rmeta
+    // > [rmeta] is created if the --emit=metadata CLI option is used.
+    let ext = if emit.contains("metadata") { "rmeta".to_owned() } else { ext };
+
+    for xtern in externs {
+        trace!("❯ extern {xtern}");
+        all_externs.insert(xtern.clone());
+
+        if !xtern.starts_with("lib") {
+            bail!("BUG: expected extern to match ^lib: {xtern}")
+        }
+        let xtern = xtern.strip_prefix("lib").expect("PROOF: ~ ^lib");
+        let xtern = if xtern.ends_with(".rlib") {
+            xtern.strip_suffix(".rlib")
+        } else if xtern.ends_with(".rmeta") {
+            xtern.strip_suffix(".rmeta")
+        } else if xtern.ends_with(".so") {
+            xtern.strip_suffix(".so")
+        } else {
+            bail!("BUG: cargo gave unexpected extern: {xtern:?}")
+        }
+        .expect("PROOF: all cases match");
+        trace!("❯ short extern {xtern}");
+        md.short_externs.insert(xtern.to_owned());
+
+        let short_extern_md = md_pather(xtern);
+        info!("checking (RO) extern's externs {short_extern_md}");
+        if short_extern_md.exists() {
+            let short_extern_md = get_or_read(&mut mds, &short_extern_md)?;
+            for transitive in short_extern_md.short_externs {
+                let guard_md = get_or_read(&mut mds, &md_pather(&transitive))?;
+                let ext = if guard_md.is_proc_macro { "so" } else { &ext };
+
+                trace!("❯ extern lib{transitive}.{ext}");
+                all_externs.insert(format!("lib{transitive}.{ext}"));
+
+                trace!("❯ short extern {xtern}");
+                md.short_externs.insert(transitive);
+            }
+        }
+    }
+
+    let mut mounts = Vec::with_capacity(all_externs.len());
+    let extern_mds_and_paths = all_externs
+        .into_iter()
+        .map(|xtern| {
+            let Some((extern_md_path, xtern_stage)) = toml_path_and_stage(&xtern, target_path)
+            else {
+                bail!("Unexpected extern name format: {xtern}")
+            };
+            let mount = NamedMount {
+                name: xtern_stage,
+                src: format!("/{xtern}").into(),
+                dst: target_path.join("deps").join(xtern),
+            };
+            mounts.push(mount);
+
+            let extern_md = get_or_read(&mut mds, &extern_md_path)?;
+            Ok((extern_md_path, extern_md))
+        })
+        .collect::<Result<Vec<_>>>()?;
+
+    let extern_md_paths = md.extend_from_externs(extern_mds_and_paths)?;
+    info!("extern_md_paths: {} {extern_md_paths:?}", extern_md_paths.len());
+
+    let mds = extern_md_paths
+        .into_iter()
+        .map(|extern_md_path| get_or_read(&mut mds, &extern_md_path))
+        .collect::<Result<Vec<_>>>()?;
+
+    Ok((mounts, mds))
 }
 
 fn get_or_read(mds: &mut HashMap<Utf8PathBuf, Md>, path: &Utf8Path) -> Result<Md> {
