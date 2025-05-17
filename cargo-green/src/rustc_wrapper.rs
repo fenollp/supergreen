@@ -1,5 +1,5 @@
 use std::{
-    collections::{BTreeMap, BTreeSet, HashMap},
+    collections::{BTreeMap, HashMap},
     env,
     fs::{self},
     future::Future,
@@ -7,6 +7,7 @@ use std::{
 
 use anyhow::{anyhow, bail, Result};
 use camino::{Utf8Path, Utf8PathBuf};
+use indexmap::IndexSet;
 use log::{debug, error, info, trace, warn};
 use tokio::process::Command;
 
@@ -494,7 +495,7 @@ fn assemble_build_dependencies(
     md: &mut Md,
     crate_type: &str,
     emit: &str,
-    externs: BTreeSet<String>,
+    externs: IndexSet<String>,
     target_path: &Utf8Path,
 ) -> Result<(Vec<NamedMount>, Vec<Md>)> {
     let mut mds = HashMap::<Utf8PathBuf, Md>::new(); // A file cache
@@ -503,7 +504,7 @@ fn assemble_build_dependencies(
 
     // https://github.com/rust-lang/cargo/issues/12059#issuecomment-1537457492
     //   https://github.com/rust-lang/rust/issues/63012 : Tracking issue for -Z binary-dep-depinfo
-    let mut all_externs = BTreeSet::new();
+    let mut all_externs = IndexSet::new();
 
     let ext = match crate_type {
         "lib" => "rmeta".to_owned(),

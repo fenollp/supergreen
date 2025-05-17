@@ -1,9 +1,10 @@
 // Our own MetaData utils
 
-use std::{collections::BTreeSet, env, fs, io::ErrorKind, str::FromStr};
+use std::{env, fs, io::ErrorKind, str::FromStr};
 
 use anyhow::{anyhow, bail, Result};
 use camino::{Utf8Path, Utf8PathBuf};
+use indexmap::IndexSet;
 use log::{info, trace, warn};
 use serde::{Deserialize, Serialize};
 use szyk::{sort, Node};
@@ -23,13 +24,13 @@ pub(crate) struct Md {
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub(crate) deps: Vec<String>,
 
-    #[serde(default, skip_serializing_if = "BTreeSet::is_empty")]
-    pub(crate) short_externs: BTreeSet<String>,
+    #[serde(default, skip_serializing_if = "IndexSet::is_empty")]
+    pub(crate) short_externs: IndexSet<String>,
     #[serde(default, skip_serializing_if = "<&bool as std::ops::Not>::not")]
     pub(crate) is_proc_macro: bool,
 
-    #[serde(default, skip_serializing_if = "BTreeSet::is_empty")]
-    pub(crate) contexts: BTreeSet<BuildContext>,
+    #[serde(default, skip_serializing_if = "IndexSet::is_empty")]
+    pub(crate) contexts: IndexSet<BuildContext>,
 
     stages: Vec<NamedStage>,
 }
@@ -112,7 +113,7 @@ impl Md {
         self.stages.push(NamedStage { name: name.clone(), script: block.trim().to_owned() });
     }
 
-    fn append_blocks(&self, dockerfile: &mut String, visited: &mut BTreeSet<Stage>) {
+    fn append_blocks(&self, dockerfile: &mut String, visited: &mut IndexSet<Stage>) {
         let mut stages = self.stages.iter().filter(|NamedStage { name, .. }| *name != *RUST);
 
         let NamedStage { name, script } = stages.next().expect("at least one stage");
@@ -164,7 +165,7 @@ impl Md {
 
     pub(crate) fn block_along_with_predecessors(&self, mds: &[Md]) -> String {
         let mut blocks = String::new();
-        let mut visited_cratesio_stages = BTreeSet::new();
+        let mut visited_cratesio_stages = IndexSet::new();
         for md in mds {
             md.append_blocks(&mut blocks, &mut visited_cratesio_stages);
             blocks.push('\n');
@@ -212,7 +213,7 @@ fn dec_decs() {
     assert_eq!(enc(as_dec), format!("{as_hex}"));
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, Eq, PartialEq, Ord, PartialOrd)]
+#[derive(Debug, Clone, Serialize, Deserialize, Eq, PartialEq, Ord, PartialOrd, Hash)]
 pub(crate) struct BuildContext {
     pub(crate) name: Stage,
     /// Actually any BuildKit ctx works, we just only use local paths.
