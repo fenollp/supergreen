@@ -14,7 +14,6 @@ use tokio::process::Command;
 use crate::{
     checkouts,
     cratesio::{self, rewrite_cratesio_index},
-    envs::pass_env,
     ext::ShowCmd,
     green::Green,
     logging::{self, crate_type_for_logging, maybe_log},
@@ -128,7 +127,7 @@ async fn wrap_rustc(
 
     let (st, args) = as_rustc(&pwd, &arguments, out_dir_var.as_deref())?;
 
-    let buildrs = crate_name == "build_script_build";
+    let buildrs = ["build_script_build", "build_script_main"].contains(&crate_name);
     // NOTE: krate_name != crate_name: Gets named build_script_build + s/-/_/g + may actually be a different name
     let krate_name = env::var("CARGO_PKG_NAME").expect("$CARGO_PKG_NAME");
 
@@ -367,31 +366,10 @@ async fn do_wrap_rustc(
 
     rustc_block.push_str(&format!("    env CARGO={:?} \\\n", "$(which cargo)"));
 
-    for (var, val) in env::vars() {
-        let (pass, skip, only_buildrs) = pass_env(&var);
-        if pass || (buildrs && only_buildrs) {
-            if skip {
-                debug!("not forwarding env: {var}={val}");
-                continue;
-            }
-            let val = safeify(val);
-            if var == "CARGO_ENCODED_RUSTFLAGS" {
-                let dec: Vec<_> = rustflags::from_env().collect();
-                debug!("env is set: {var}={val} ({dec:?})");
-            } else {
-                debug!("env is set: {var}={val}");
-            }
-            let val = match var.as_str() {
-                "CARGO_MANIFEST_DIR" | "CARGO_MANIFEST_PATH" => {
-                    rewrite_cratesio_index(Utf8Path::new(&val)).to_string()
-                }
-                _ => val,
-            };
-            rustc_block.push_str(&format!("        {var}={val} \\\n"));
-        }
+    for (var, val) in env::vars().filter_map(|kv| fmap_env(kv, buildrs)) {
+        rustc_block.push_str(&format!("        {var}={val} \\\n"));
     }
     rustc_block.push_str("        CARGOGREEN=1 \\\n");
-
     // => cargo upstream issue "pass env vars read/wrote by build script on call to rustc"
     // TODO whence https://github.com/rust-lang/cargo/issues/14444#issuecomment-2305891696
     for var in &green.set_envs {
@@ -591,6 +569,84 @@ fn get_or_read(mds: &mut HashMap<Utf8PathBuf, Md>, path: &Utf8Path) -> Result<Md
     let md = Md::from_file(path)?;
     let _ = mds.insert(path.to_path_buf(), md.clone());
     Ok(md)
+}
+
+fn fmap_env((var, val): (String, String), buildrs: bool) -> Option<(String, String)> {
+    let (pass, skip, only_buildrs) = pass_env(&var);
+    if pass || (buildrs && only_buildrs) {
+        if skip {
+            debug!("not forwarding env: {var}={val}");
+            return None;
+        }
+        let val = safeify(val);
+        if var == "CARGO_ENCODED_RUSTFLAGS" {
+            let dec: Vec<_> = rustflags::from_env().collect();
+            debug!("env is set: {var}={val} ({dec:?})");
+        } else {
+            debug!("env is set: {var}={val}");
+        }
+        let val = match var.as_str() {
+            "CARGO_MANIFEST_DIR" | "CARGO_MANIFEST_PATH" => {
+                rewrite_cratesio_index(Utf8Path::new(&val)).to_string()
+            }
+            _ => val,
+        };
+        return Some((var, val));
+    }
+    None
+}
+
+// https://doc.rust-lang.org/cargo/reference/environment-variables.html#environment-variables-cargo-sets-for-crates
+#[must_use]
+fn pass_env(var: &str) -> (bool, bool, bool) {
+    // Thanks https://github.com/cross-rs/cross/blob/44011c8854cb2eaac83b173cc323220ccdff18ea/src/docker/shared.rs#L969
+    let passthrough = [
+        "http_proxy",
+        "TERM",
+        "RUSTDOCFLAGS",
+        "RUSTFLAGS",
+        "BROWSER",
+        "HTTPS_PROXY",
+        "HTTP_TIMEOUT",
+        "https_proxy",
+        "QEMU_STRACE",
+        // Not here but set in RUN script: CARGO, PATH, ...
+        "OUT_DIR", // (Only set during compilation.)
+    ];
+    // TODO: vvv drop what can be dropped vvv
+    let skiplist = [
+        "CARGO_BUILD_JOBS",
+        "CARGO_BUILD_RUSTC",
+        "CARGO_BUILD_RUSTC_WORKSPACE_WRAPPER",
+        "CARGO_BUILD_RUSTC_WRAPPER",
+        "CARGO_BUILD_RUSTDOC",
+        "CARGO_BUILD_TARGET_DIR",
+        "CARGO_HOME",      // TODO? drop
+        "CARGO_MAKEFLAGS", // TODO: probably drop
+        "CARGO_TARGET_DIR",
+        "LD_LIBRARY_PATH", // TODO: probably drop
+        "RUSTC_WRAPPER",
+        "RUSTC_WORKSPACE_WRAPPER",
+    ];
+    let buildrs_only = [
+        "DEBUG",
+        "HOST",
+        "NUM_JOBS",
+        "OPT_LEVEL",
+        "OUT_DIR",
+        "PROFILE",
+        "RUSTC",
+        "RUSTC_LINKER",
+        "RUSTC_WRAPPER",
+        "RUSTC_WORKSPACE_WRAPPER",
+        "RUSTDOC",
+        "TARGET",
+    ];
+    (
+        var.starts_with("CARGO_") || passthrough.contains(&var),
+        skiplist.contains(&var),
+        var.starts_with("DEP_") || buildrs_only.contains(&var),
+    )
 }
 
 #[must_use]
