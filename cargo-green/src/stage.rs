@@ -16,7 +16,7 @@ fn rust_stage() {
 #[nutype(
     sanitize(with = oci_name),
     validate(error = Error, with = tag_name),
-    derive(Clone, Debug, Display, Deref, TryFrom, Serialize, Deserialize, Eq, PartialEq, Ord, PartialOrd))
+    derive(Clone, Debug, Display, Deref, TryFrom, Serialize, Deserialize, Eq, PartialEq, Ord, PartialOrd, Hash))
 ]
 pub(crate) struct Stage(String);
 
