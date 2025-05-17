@@ -1,7 +1,6 @@
-use std::collections::BTreeSet;
-
 use anyhow::{bail, Result};
 use camino::{Utf8Path, Utf8PathBuf};
+use indexmap::IndexSet;
 
 use crate::ext::Popped;
 
@@ -23,7 +22,7 @@ pub(crate) struct RustcArgs {
     pub(crate) emit: String,
 
     /// 0..: --extern=EXTERN | --extern EXTERN
-    pub(crate) externs: BTreeSet<String>,
+    pub(crate) externs: IndexSet<String>,
 
     /// 1: -C extra-filename=EXTRAFN e.g. "-710b4516f388a5e4"
     pub(crate) extrafn: String,
