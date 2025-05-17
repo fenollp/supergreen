@@ -1,16 +1,22 @@
 // Our own MetaData utils
 
-use std::{collections::BTreeSet, str::FromStr};
+use std::{env, fs, io::ErrorKind, str::FromStr};
 
 use anyhow::{anyhow, bail, Result};
-use camino::Utf8PathBuf;
+use camino::{Utf8Path, Utf8PathBuf};
+use indexmap::IndexSet;
+use log::{info, trace, warn};
 use serde::{Deserialize, Serialize};
 use szyk::{sort, Node};
 
-use crate::stage::{Stage, RST, RUST};
+use crate::{
+    logging::maybe_log,
+    stage::{Stage, RST, RUST},
+    PKG,
+};
 
 #[cfg_attr(test, derive(Default))]
-#[derive(Deserialize, Serialize)]
+#[derive(Clone, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub(crate) struct Md {
     pub(crate) this: String,
@@ -18,8 +24,13 @@ pub(crate) struct Md {
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub(crate) deps: Vec<String>,
 
-    #[serde(default, skip_serializing_if = "BTreeSet::is_empty")]
-    pub(crate) contexts: BTreeSet<BuildContext>,
+    #[serde(default, skip_serializing_if = "IndexSet::is_empty")]
+    pub(crate) short_externs: IndexSet<String>,
+    #[serde(default, skip_serializing_if = "<&bool as std::ops::Not>::not")]
+    pub(crate) is_proc_macro: bool,
+
+    #[serde(default, skip_serializing_if = "IndexSet::is_empty")]
+    pub(crate) contexts: IndexSet<BuildContext>,
 
     stages: Vec<NamedStage>,
 }
@@ -34,10 +45,59 @@ impl FromStr for Md {
 impl Md {
     #[must_use]
     pub(crate) fn new(this: &str) -> Self {
-        Self { this: this.to_owned(), deps: vec![], contexts: [].into(), stages: [].into() }
+        Self {
+            this: this.to_owned(),
+            deps: vec![],
+            short_externs: [].into(),
+            is_proc_macro: false,
+            contexts: [].into(),
+            stages: vec![],
+        }
     }
 
-    pub(crate) fn to_string_pretty(&self) -> Result<String> {
+    pub(crate) fn from_file(path: &Utf8Path) -> Result<Self> {
+        info!("opening (RO) md {path}");
+        let txt = fs::read_to_string(path).map_err(|e| {
+            if e.kind() == ErrorKind::NotFound {
+                warn!("couldn't find Md, unexpectedly: suggesting a clean slate");
+                return anyhow!(
+                    r#"
+    Looks like `{PKG}` ran on an unkempt project. That's alright!
+    Let's remove the current $CARGO_TARGET_DIR {target_dir}
+    then run your command again.
+"#,
+                    target_dir = env::var("CARGO_TARGET_DIR").unwrap_or_default(),
+                );
+            }
+
+            anyhow!("Failed reading Md {path}: {e}")
+        })?;
+
+        Self::from_str(&txt).map_err(|e| anyhow!("Failed deserializing Md {path}: {e}"))
+    }
+
+    pub(crate) fn write_to(&self, path: &Utf8Path) -> Result<()> {
+        let md_ser =
+            self.to_string_pretty().map_err(|e| anyhow!("Failed serializing Md {path}: {e}"))?;
+
+        info!("opening (RW) Md {path}");
+        fs::write(path, md_ser).map_err(|e| anyhow!("Failed creating {path}: {e}"))?;
+
+        if maybe_log().is_some() {
+            info!("Md: {path}");
+            match fs::read_to_string(path) {
+                Ok(data) => data,
+                Err(e) => e.to_string(),
+            }
+            .lines()
+            .filter(|x| !x.is_empty())
+            .for_each(|line| trace!("❯ {line}"));
+        }
+
+        Ok(())
+    }
+
+    fn to_string_pretty(&self) -> Result<String> {
         if !self.stages.iter().any(|NamedStage { name, .. }| *name == *RUST) {
             bail!("Md is missing root stage {RST}")
         }
@@ -53,7 +113,7 @@ impl Md {
         self.stages.push(NamedStage { name: name.clone(), script: block.trim().to_owned() });
     }
 
-    fn append_blocks(&self, dockerfile: &mut String, visited: &mut BTreeSet<Stage>) {
+    fn append_blocks(&self, dockerfile: &mut String, visited: &mut IndexSet<Stage>) {
         let mut stages = self.stages.iter().filter(|NamedStage { name, .. }| *name != *RUST);
 
         let NamedStage { name, script } = stages.next().expect("at least one stage");
@@ -83,14 +143,12 @@ impl Md {
         &mut self,
         mds: Vec<(Utf8PathBuf, Self)>,
     ) -> Result<Vec<Utf8PathBuf>> {
-        self.contexts.retain(BuildContext::is_readonly_mount);
         let mut dag: Vec<_> = mds
             .into_iter()
             .map(|(md_path, md)| {
                 let this = dec(&md.this);
                 self.deps.push(md.this);
-                self.contexts
-                    .extend(md.contexts.into_iter().filter(BuildContext::is_readonly_mount));
+                self.contexts.extend(md.contexts);
                 Node::new(this, decs(&md.deps), md_path)
             })
             .collect();
@@ -99,14 +157,15 @@ impl Md {
 
         let mut md_paths =
             sort(&dag, this).map_err(|e| anyhow!("Failed topolosorting {}: {e:?}", self.this))?;
-        md_paths.truncate(md_paths.len() - 1); // pop last (it's self.this's empty path)
+        let last = md_paths.pop();
+        assert_eq!(last.as_deref(), Some("".into()), "BUG: it's self.this's empty path");
 
         Ok(md_paths)
     }
 
     pub(crate) fn block_along_with_predecessors(&self, mds: &[Md]) -> String {
         let mut blocks = String::new();
-        let mut visited_cratesio_stages = BTreeSet::new();
+        let mut visited_cratesio_stages = IndexSet::new();
         for md in mds {
             md.append_blocks(&mut blocks, &mut visited_cratesio_stages);
             blocks.push('\n');
@@ -116,7 +175,7 @@ impl Md {
     }
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 struct NamedStage {
     name: Stage,
     script: String,
@@ -154,18 +213,11 @@ fn dec_decs() {
     assert_eq!(enc(as_dec), format!("{as_hex}"));
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, Eq, PartialEq, Ord, PartialOrd)]
+#[derive(Debug, Clone, Serialize, Deserialize, Eq, PartialEq, Ord, PartialOrd, Hash)]
 pub(crate) struct BuildContext {
     pub(crate) name: Stage,
     /// Actually any BuildKit ctx works, we just only use local paths.
     pub(crate) uri: Utf8PathBuf,
-}
-
-impl BuildContext {
-    #[must_use]
-    pub(crate) fn is_readonly_mount(&self) -> bool {
-        self.name.is_mount()
-    }
 }
 
 #[test]
@@ -173,6 +225,12 @@ fn md_ser() {
     let md = Md {
         this: "711ba64e1183a234".to_owned(),
         deps: vec!["81529f4c2380d9ec".to_owned(), "88a4324b2aff6db9".to_owned()],
+        short_externs: [
+            "pico_args-b8c41dbf50ca5479".to_owned(),
+            "shlex-96a741f581f4126a".to_owned(),
+        ]
+        .into(),
+        is_proc_macro: true,
         contexts: [BuildContext {
             name: "rust".try_into().unwrap(),
             uri: "/some/local/path".into(),
@@ -188,6 +246,11 @@ deps = [
     "81529f4c2380d9ec",
     "88a4324b2aff6db9",
 ]
+short_externs = [
+    "pico_args-b8c41dbf50ca5479",
+    "shlex-96a741f581f4126a",
+]
+is_proc_macro = true
 
 [[contexts]]
 name = "rust"
@@ -237,12 +300,6 @@ stages = []
     assert_eq!(md.deps, deps);
     dbg!(&md.contexts);
     pretty_assertions::assert_eq!(md.contexts, contexts.clone().into());
-
-    let used: Vec<_> = contexts.into_iter().filter(BuildContext::is_readonly_mount).collect();
-    dbg!(&used);
-    assert_eq!(used.len(), 2);
-    assert_eq!(&used[0].name[..10], "crate_out-");
-    assert_eq!(&used[1].name[..4], "cwd-");
 }
 
 #[test]

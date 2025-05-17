@@ -1,7 +1,8 @@
 #!/bin/bash -eu
 set -o pipefail
 
-source $(realpath "$(dirname "$0")")/ck.sh
+repo_root=$(realpath "$(dirname "$(dirname "$0")")")
+source "$repo_root"/hack/ck.sh
 
 with_j=0 # TODO: 1 => adds jobs with -J (see cargo issue https://github.com/rust-lang/cargo/issues/13889)
 
@@ -155,7 +156,7 @@ $(jobdef 'bin')
 
     - uses: actions/upload-artifact@v4
       with:
-        name: bin-artifacts
+        name: cargo-green
         path: /home/runner/.cargo/bin/cargo-green
 
 EOF
@@ -210,6 +211,12 @@ cli() {
 
 	cat <<EOF
 $(jobdef "$(slugify "$name_at_version")$(if [[ "$jobs" != 1 ]]; then echo '-J'; fi)")
+    strategy:
+      matrix:
+        toolchain:
+        - stable
+        - 1.86.0
+    if: \${{ matrix.toolchain != 'stable' || github.ref == 'refs/heads/main' }}
     env:
       CARGO_TARGET_DIR: /tmp/clis-$(slugify "$name_at_version")
       CARGOGREEN_FINAL_PATH: recipes/$name_at_version.Dockerfile
@@ -229,7 +236,7 @@ $(
     - uses: actions-rs/toolchain@v1
       with:
         profile: minimal
-        toolchain: stable
+        toolchain: \${{ matrix.toolchain }}
 $(
 	case "$name_at_version" in
 		cargo-llvm-cov@*) printf '    - run: rustup component add llvm-tools-preview\n' ;;
@@ -237,7 +244,7 @@ $(
 	esac
 )
 
-$(restore_bin-artifacts)
+$(restore_bin)
     - uses: actions/checkout@v4
 $(rundeps_versions)
 
@@ -251,7 +258,8 @@ $(cache_usage)
       run: |
         env ${envvars[@]} \\
           cargo green -vv install --jobs=$jobs --locked --force $(as_install "$name_at_version") $@ |& tee _
-    - uses: actions/upload-artifact@v4
+    - if: \${{ matrix.toolchain != 'stable' }}
+      uses: actions/upload-artifact@v4
       name: Upload recipe
       with:
         name: $name_at_version.Dockerfile
@@ -313,7 +321,7 @@ clean=0; if [[ "$modifier" = 'clean' ]]; then clean=1; fi
 jobs=${jobs:-$(nproc)}
 frozen=--locked ; [[ "${offline:-}" = '1' ]] && frozen=--frozen
 
-install_dir=/tmp/cargo-green
+install_dir=$repo_root/target
 CARGO=${CARGO:-cargo}
 
 # Special first arg handling..

@@ -1,5 +1,4 @@
 use std::{
-    collections::BTreeSet,
     env, fmt,
     fs::{self, OpenOptions},
     io::prelude::*,
@@ -11,6 +10,7 @@ use std::{
 
 use anyhow::{anyhow, bail, Result};
 use camino::{Utf8Path, Utf8PathBuf};
+use indexmap::IndexSet;
 use log::{debug, info};
 use reqwest::Client as ReqwestClient;
 use serde::{Deserialize, Serialize};
@@ -209,7 +209,7 @@ pub(crate) async fn build_out(
     green: &Green,
     dockerfile_path: &Utf8Path,
     target: Stage,
-    contexts: &BTreeSet<BuildContext>,
+    contexts: &IndexSet<BuildContext>,
     out_dir: &Utf8Path,
 ) -> Result<()> {
     build(green, dockerfile_path, target, contexts, Some(out_dir)).await
@@ -219,7 +219,7 @@ async fn build(
     green: &Green,
     dockerfile_path: &Utf8Path,
     target: Stage,
-    contexts: &BTreeSet<BuildContext>,
+    contexts: &IndexSet<BuildContext>,
     out_dir: Option<&Utf8Path>,
 ) -> Result<()> {
     let mut cmd = green.runner.as_cmd();
@@ -551,8 +551,8 @@ where
 #[derive(Debug, Default)]
 struct Accumulated {
     written: Vec<Utf8PathBuf>,
-    envs: BTreeSet<String>,
-    libs: BTreeSet<String>,
+    envs: IndexSet<String>,
+    libs: IndexSet<String>,
 }
 
 #[test]

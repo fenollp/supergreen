@@ -15,13 +15,13 @@ EOF
 }
 
 
-restore_bin-artifacts() {
+restore_bin() {
     [[ $# -eq 0 ]]
     cat <<EOF
     - name: Retrieve saved bin
       uses: actions/download-artifact@v4
       with:
-        name: bin-artifacts
+        name: cargo-green
 
     - name: Install saved bin
       shell: bash -eu {0}
@@ -107,7 +107,7 @@ cat <<EOF
       name: cargo-green logs
       run: tail -n9999999 \$CARGOGREEN_LOG_PATH ; echo >\$CARGOGREEN_LOG_PATH
 
-    - if: \${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' }}
+    - if: \${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != 'stable' }}
       name: Maybe show final path diff
       run: |
         case "\$GITHUB_JOB" in

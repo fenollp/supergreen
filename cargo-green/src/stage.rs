@@ -16,7 +16,7 @@ fn rust_stage() {
 #[nutype(
     sanitize(with = oci_name),
     validate(error = Error, with = tag_name),
-    derive(Clone, Debug, Display, Deref, TryFrom, Serialize, Deserialize, Eq, PartialEq, Ord, PartialOrd))
+    derive(Clone, Debug, Display, Deref, TryFrom, Serialize, Deserialize, Eq, PartialEq, Ord, PartialOrd, Hash))
 ]
 pub(crate) struct Stage(String);
 
@@ -39,11 +39,6 @@ impl Stage {
 
     pub(crate) fn crate_out(extrafn_nodash: &str) -> Result<Self> {
         Self::new(&format!("crate_out-{extrafn_nodash}"))
-    }
-
-    #[must_use]
-    pub(crate) fn is_mount(&self) -> bool {
-        self.starts_with("cwd-") || self.starts_with("crate_out-")
     }
 
     // TODO: link this to the build script it's coming from
@@ -122,7 +117,6 @@ fn stages() {
     ];
 
     for (stage, sname) in stages {
-        assert_eq!(stage.is_mount(), [&local_mount, &crate_out].contains(&&stage));
         assert_eq!(stage.to_string(), sname);
         assert_eq!(stage.is_remote(), [&cratesio, &checkout].contains(&&stage));
     }

@@ -37,6 +37,7 @@ cargo-lock = "10"
 cargo-subcommand-metadata = "0, >=0.1"
 cargo_toml = "0, >=0.21"
 chrono = { version = "0, >=0.4", default-features = false, features = [ "now" ] }
+indexmap = { version = "2", features = [ "serde" ] }
 # clap = { version = "4", features = [ "derive" ] }
 # clap-cargo = { version = "0, >=0.15", features = [ "cargo_metadata", "clap" ] }
 crc32fast = "1"
