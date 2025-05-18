@@ -239,7 +239,7 @@ async fn do_exec_buildrs(
             Ok((xtern_md_path, xtern_md))
         })
         .collect::<Result<_>>()?;
-    //md.short_externs.push(previous_md as short xtern) FIXME?? MAY counter assemble+outdirvar
+    // md.short_externs.push(previous_md as short xtern) FIXME?? MAY counter assemble+outdirvar
     extern_mds_and_paths.push((previous_md_path, previous_md));
     let extern_md_paths = md.sort_deps(extern_mds_and_paths)?;
     info!("extern_md_paths: {} {extern_md_paths:?}", extern_md_paths.len());
@@ -381,41 +381,6 @@ async fn wrap_rustc(
     .inspect_err(|e| error!("Error: {e}"))
 }
 
-fn crate_out_dir(out_dir_var: Option<Utf8PathBuf>) -> Result<Option<Utf8PathBuf>> {
-    let Some(crate_out) = out_dir_var else { return Ok(None) };
-    assert_eq!(crate_out.file_name(), Some("out"), "BUG: unexpected $OUT_DIR={crate_out} format");
-
-    info!("listing (RO) crate_out contents {crate_out}");
-    let listing = fs::read_dir(&crate_out)
-        .map_err(|e| anyhow!("Failed reading crate_out dir {crate_out}: {e}"))?;
-
-    let count = listing
-        .map_while(Result::ok)
-        .inspect(|f| {
-            info!(
-                "metadata for {f:?}: {:?}",
-                f.metadata().map(|fmd| format!(
-                    "created:{c:?} accessed:{a:?} modified:{m:?}",
-                    c = fmd.created(),
-                    a = fmd.accessed(),
-                    m = fmd.modified(),
-                ))
-            );
-        })
-        .count();
-
-    // Dir empty => mount can be dropped
-    if count == 0 {
-        return Ok(None);
-    }
-
-    let ignore = crate_out.with_file_name(".dockerignore");
-    fs::write(&ignore, "")
-        .map_err(|e| anyhow!("Failed creating crate_out dockerignore {ignore}: {e}"))?;
-
-    Ok(Some(crate_out))
-}
-
 #[expect(clippy::too_many_arguments)]
 async fn do_wrap_rustc(
     green: Green,
@@ -552,12 +517,7 @@ async fn do_wrap_rustc(
         Some((cwd_stage, cwd_path))
     };
 
-    // if let Some(crate_out) = crate_out.as_deref() {
-    //     let named = crate_out_name(crate_out);
-    //     rustc_block.push_str(&format!("  --mount=from={named},dst={crate_out} \\\n"));
-    // }
-
-    md.contexts = [cwd /*crate_out.map(|crate_out| (crate_out_name(&crate_out), crate_out))*/]
+    md.contexts = [cwd]
         .into_iter()
         .flatten()
         .map(|(name, uri)| BuildContext { name, uri })
@@ -742,6 +702,8 @@ fn assemble_build_dependencies(
     // > [rmeta] is created if the --emit=metadata CLI option is used.
     let ext = if emit.contains("metadata") { "rmeta".to_owned() } else { ext };
 
+    let mut extern_mds_and_paths = vec![];
+
     for xtern in externs {
         trace!("❯ extern {xtern}");
         all_externs.insert(xtern.clone());
@@ -768,6 +730,7 @@ fn assemble_build_dependencies(
         //TODO?drop exists check
         if extern_md.exists() {
             let extern_md = get_or_read(&mut mds, &extern_md)?;
+
             for transitive in extern_md.short_externs {
                 let guard_md = get_or_read(&mut mds, &md_pather(&transitive))?;
                 let ext = if guard_md.is_proc_macro { "so" } else { &ext };
@@ -778,36 +741,53 @@ fn assemble_build_dependencies(
                 trace!("❯ short extern {transitive}");
                 md.short_externs.insert(transitive);
             }
+
+            for buildrs_result in &extern_md.buildrs_results {
+                let br_md_path = md_pather(buildrs_result);
+                let br_md = get_or_read(&mut mds, &br_md_path)?;
+                for dep in &br_md.deps {
+                    let mut dep_md_path = md_pather(&format!("*-{dep}"));
+                    for (i, p) in glob::glob(dep_md_path.as_str()).unwrap().enumerate() {
+                        assert_eq!(i, 0, ">>> {p:?}");
+                        dep_md_path = p.unwrap().try_into().unwrap();
+                    }
+                    let dep_md = get_or_read(&mut mds, &dep_md_path)?;
+                    extern_mds_and_paths.push((dep_md_path, dep_md));
+                }
+                extern_mds_and_paths.push((br_md_path, br_md));
+            }
         }
     }
 
     let mut mounts = Vec::with_capacity(all_externs.len());
-    let mut extern_mds_and_paths = all_externs
-        .into_iter()
-        .map(|xtern| {
-            let Some((extern_md_path, xtern_stage)) = toml_path_and_stage(&xtern, target_path)
-            else {
-                bail!("Unexpected extern name format: {xtern}")
-            };
-            let mount = NamedMount {
-                name: xtern_stage,
-                src: format!("/{xtern}").into(),
-                dst: target_path.join("deps").join(xtern),
-            };
-            mounts.push(mount);
+    for xtern in all_externs {
+        // let mut extern_mds_and_paths = all_externs
+        //     .into_iter()
+        //     .map(|xtern| {
+        let Some((extern_md_path, name)) = toml_path_and_stage(&xtern, target_path) else {
+            bail!("Unexpected extern name format: {xtern}")
+        };
+        let mount = NamedMount {
+            name,
+            src: format!("/{xtern}").into(),
+            dst: target_path.join("deps").join(xtern),
+        };
+        mounts.push(mount);
 
-            let extern_md = get_or_read(&mut mds, &extern_md_path)?;
-            Ok((extern_md_path, extern_md))
-        })
-        .collect::<Result<Vec<_>>>()?;
-
+        let extern_md = get_or_read(&mut mds, &extern_md_path)?;
+        // Ok((extern_md_path, extern_md))
+        extern_mds_and_paths.push((extern_md_path, extern_md));
+        // })
+        // .collect::<Result<Vec<_>>>()?;
+    }
     if let Some(out_dir) = out_dir_var {
         assert_eq!(out_dir.file_name(), Some("out"), "BUG: unexpected $OUT_DIR={out_dir} format");
         // With OUT_DIR="/tmp/clis-vixargs_0-1-0/release/build/proc-macro-error-attr-de2f43c37de3bfce/out"
         //   => proc-macro-error-attr-de2f43c37de3bfce
         let z_dep = out_dir.parent().unwrap().file_name().unwrap();
 
-        md.short_externs.insert(z_dep.to_owned());
+        // md.short_externs.insert(z_dep.to_owned());
+        md.buildrs_results.insert(z_dep.to_owned());
 
         let z_dep_md_path = md_pather(z_dep);
         let z_dep_md = get_or_read(&mut mds, &z_dep_md_path)?;
@@ -825,9 +805,24 @@ fn assemble_build_dependencies(
         info!("and adding that buildrs dep: {x_dep_md:?}");
         extern_mds_and_paths.push((x_dep_md_path, x_dep_md));
 
-        md.short_externs.insert(x_dep);
+        // md.short_externs.insert(x_dep);
 
         extern_mds_and_paths.push((z_dep_md_path, z_dep_md));
+    }
+
+    for buildrs_result in &md.buildrs_results {
+        let br_md_path = md_pather(buildrs_result);
+        let br_md = get_or_read(&mut mds, &br_md_path)?;
+        for dep in &br_md.deps {
+            let mut dep_md_path = md_pather(&format!("*-{dep}"));
+            for (i, p) in glob::glob(dep_md_path.as_str()).unwrap().enumerate() {
+                assert_eq!(i, 0, ">>> {p:?}");
+                dep_md_path = p.unwrap().try_into().unwrap();
+            }
+            let dep_md = get_or_read(&mut mds, &dep_md_path)?;
+            extern_mds_and_paths.push((dep_md_path, dep_md));
+        }
+        extern_mds_and_paths.push((br_md_path, br_md));
     }
 
     let extern_md_paths = md.sort_deps(extern_mds_and_paths)?;
@@ -987,23 +982,6 @@ fn toml_path_and_stage(xtern: &str, target_path: &Utf8Path) -> Option<(Utf8PathB
     let st = pa.and_then(|x| x.split_once('-')).map(|(_, x)| Stage::output(x).unwrap());
     let pa = pa.map(|x| target_path.join(format!("{x}.toml")));
     pa.zip(st)
-}
-
-#[test]
-fn crate_out_name_for_some_pkg() {
-    let crate_out = Utf8Path::new("/home/maison/target/debug/build/quote-adce79444856d618/out");
-    let res = crate_out_name(crate_out);
-    assert_eq!(res, "crate_out-adce79444856d618".try_into().unwrap());
-}
-
-#[must_use]
-fn crate_out_name(name: &Utf8Path) -> Stage {
-    name.parent()
-        .and_then(|x| x.file_name())
-        .and_then(|x| x.rsplit_once('-'))
-        .map(|(_, x)| Stage::crate_out(x))
-        .expect("PROOF: suffix is /out")
-        .expect("PROOF: out dir path format")
 }
 
 fn copy_dir_all(src: &Utf8Path, dst: &Utf8Path) -> Result<()> {

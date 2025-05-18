@@ -26,6 +26,10 @@ pub(crate) struct Md {
 
     #[serde(default, skip_serializing_if = "IndexSet::is_empty")]
     pub(crate) short_externs: IndexSet<String>,
+
+    #[serde(default, skip_serializing_if = "IndexSet::is_empty")]
+    pub(crate) buildrs_results: IndexSet<String>,
+
     #[serde(default, skip_serializing_if = "<&bool as std::ops::Not>::not")]
     pub(crate) is_proc_macro: bool,
 
@@ -49,6 +53,7 @@ impl Md {
             this: this.to_owned(),
             deps: vec![],
             short_externs: [].into(),
+            buildrs_results: [].into(),
             is_proc_macro: false,
             contexts: [].into(),
             stages: vec![],
@@ -228,6 +233,7 @@ fn md_ser() {
             "shlex-96a741f581f4126a".to_owned(),
         ]
         .into(),
+        buildrs_results: ["proc-macro2-a2ba26818f759606".to_owned()].into(),
         is_proc_macro: true,
         contexts: [BuildContext {
             name: "rust".try_into().unwrap(),
@@ -248,6 +254,7 @@ short_externs = [
     "pico_args-b8c41dbf50ca5479",
     "shlex-96a741f581f4126a",
 ]
+buildrs_results = ["proc-macro2-a2ba26818f759606"]
 is_proc_macro = true
 
 [[contexts]]
