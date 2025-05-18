@@ -191,9 +191,9 @@ async fn do_exec_buildrs(
     let run_stage = Stage::try_new(format!("run-{crate_id}"))?;
     let out_stage = Stage::try_new(format!("ran{extra}"))?;
 
-    let code_stage = Stage::try_new(format!("cratesio-{krate_name}-{krate_version}"))?; // FIXME
-    let code_mount_src = "/extracted"; //FIXME
-    let code_mount_dst = format!("/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/{krate_name}-{krate_version}"); //FIXME
+    // let code_stage = Stage::try_new(format!("cratesio-{krate_name}-{krate_version}"))?; // FIXME
+    // let code_mount_src = "/extracted"; //FIXME
+    // let code_mount_dst = format!("/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/{krate_name}-{krate_version}"); //FIXME
 
     let previous_out_stage = Stage::try_new(format!("out{previous_extra}"))?; //FIXME
     let previous_out_dst = {
@@ -210,12 +210,45 @@ async fn do_exec_buildrs(
     run_block.push_str(&format!("SHELL {:?}\n", ["/bin/bash", "-eux", "-c"]));
     run_block.push_str(&format!("WORKDIR {out_dir_var}\n"));
     run_block.push_str("RUN \\\n");
-    run_block.push_str(&format!(
-        "  --mount=from={code_stage},source={code_mount_src},dst={code_mount_dst} \\\n"
-    ));
+    // run_block.push_str(&format!(
+    //     "  --mount=from={code_stage},source={code_mount_src},dst={code_mount_dst} \\\n"
+    // ));
     run_block.push_str(&format!(
         "  --mount=from={previous_out_stage},source={previous_out_dst},dst={exe} \\\n"
     ));
+
+    let mut mds = HashMap::<Utf8PathBuf, Md>::new(); // A file cache
+
+    let previous_md = get_or_read(&mut mds, &previous_md_path)?;
+    trace!(">>> previous_md_path = {previous_md_path}");
+    trace!(">>> previous_md      = {previous_md:?}");
+    // let target_path = previous_md_path.parent().unwrap();
+    // let (mounts, mut mds) =
+    //     assemble_build_dependencies(&mut md, "bin", "dep-info,link", [].into(), target_path)?;
+    // mds.push(previous_md);
+    // for NamedMount { name, src, dst } in mounts {
+    //     run_block.push_str(&format!("  --mount=from={name},dst={dst},source={src} \\\n"));
+    // }
+
+    let mut extern_mds_and_paths: Vec<_> = previous_md
+        .short_externs
+        .iter()
+        .map(|xtern| -> Result<_> {
+            let xtern_md_path = previous_md_path.with_file_name(format!("{xtern}.toml"));
+            let xtern_md = get_or_read(&mut mds, &xtern_md_path)?;
+            Ok((xtern_md_path, xtern_md))
+        })
+        .collect::<Result<_>>()?;
+    //md.short_externs.push(previous_md as short xtern) FIXME?? MAY counter assemble+outdirvar
+    extern_mds_and_paths.push((previous_md_path, previous_md));
+    let extern_md_paths = md.sort_deps(extern_mds_and_paths)?;
+    info!("extern_md_paths: {} {extern_md_paths:?}", extern_md_paths.len());
+
+    let mds = extern_md_paths
+        .into_iter()
+        .map(|extern_md_path| get_or_read(&mut mds, &extern_md_path))
+        .collect::<Result<Vec<_>>>()?;
+
     run_block.push_str(&format!("    env CARGO={:?} \\\n", "$(which cargo)"));
     for (var, val) in env::vars().filter_map(|kv| fmap_env(kv, true)) {
         run_block.push_str(&format!("        {var}={val} \\\n"));
@@ -236,7 +269,7 @@ async fn do_exec_buildrs(
 
     let mut out_block = String::new();
     out_block.push_str(&format!("FROM scratch AS {out_stage}\n"));
-    out_block.push_str(&format!("COPY --from={run_stage} {out_dir_var}/*{extra}* /\n"));
+    out_block.push_str(&format!("COPY --from={run_stage} {out_dir_var}/* /\n"));
     md.push_block(&out_stage, out_block);
 
     let containerfile_path = md_path.with_extension("Dockerfile");
@@ -245,17 +278,10 @@ async fn do_exec_buildrs(
     md.write_to(&md_path)?;
     drop(md_path);
 
-    let previous_md = Md::from_file(&previous_md_path)?;
-    if !previous_md.deps.is_empty() {
-        //FIXME: read/import/topolosort .deps
-        panic!(">>> {previous_md:?}")
-    }
-    let blocks = md.block_along_with_predecessors(&[previous_md]);
-
     let mut containerfile = green.new_containerfile();
     containerfile.pushln(md.rust_stage());
     containerfile.nl();
-    containerfile.push(&blocks);
+    containerfile.push(&md.block_along_with_predecessors(&mds));
     containerfile.write_to(&containerfile_path)?;
     drop(containerfile);
 
@@ -410,7 +436,7 @@ async fn do_wrap_rustc(
 
     let incremental = green.incremental.then_some(incremental).flatten();
 
-    let crate_out = crate_out_dir(out_dir_var)?;
+    // let crate_out = crate_out_dir(out_dir_var)?;
 
     let mut md = Md::new(&extrafn[1..]); // Drops leading dash
     md.push_block(&RUST, green.image.base_image_inline.clone().unwrap());
@@ -526,21 +552,27 @@ async fn do_wrap_rustc(
         Some((cwd_stage, cwd_path))
     };
 
-    if let Some(crate_out) = crate_out.as_deref() {
-        let named = crate_out_name(crate_out);
-        rustc_block.push_str(&format!("  --mount=from={named},dst={crate_out} \\\n"));
-    }
+    // if let Some(crate_out) = crate_out.as_deref() {
+    //     let named = crate_out_name(crate_out);
+    //     rustc_block.push_str(&format!("  --mount=from={named},dst={crate_out} \\\n"));
+    // }
 
-    md.contexts = [cwd, crate_out.map(|crate_out| (crate_out_name(&crate_out), crate_out))]
+    md.contexts = [cwd /*crate_out.map(|crate_out| (crate_out_name(&crate_out), crate_out))*/]
         .into_iter()
         .flatten()
         .map(|(name, uri)| BuildContext { name, uri })
         .inspect(|BuildContext { name, uri }| info!("loading {name:?}: {uri}"))
         .collect();
-    info!("loading {} Docker contexts", md.contexts.len());
+    info!("loading {} build contexts", md.contexts.len());
 
-    let (mounts, mds) =
-        assemble_build_dependencies(&mut md, &crate_type, &emit, externs, &target_path)?;
+    let (mounts, mds) = assemble_build_dependencies(
+        &mut md,
+        &crate_type,
+        &emit,
+        externs,
+        out_dir_var,
+        &target_path,
+    )?;
 
     for NamedMount { name, src, dst } in mounts {
         rustc_block.push_str(&format!("  --mount=from={name},dst={dst},source={src} \\\n"));
@@ -678,6 +710,7 @@ async fn do_wrap_rustc(
     Ok(())
 }
 
+#[derive(Debug)]
 struct NamedMount {
     name: Stage,
     src: Utf8PathBuf,
@@ -689,6 +722,7 @@ fn assemble_build_dependencies(
     crate_type: &str,
     emit: &str,
     externs: IndexSet<String>,
+    out_dir_var: Option<Utf8PathBuf>,
     target_path: &Utf8Path,
 ) -> Result<(Vec<NamedMount>, Vec<Md>)> {
     let mut mds = HashMap::<Utf8PathBuf, Md>::new(); // A file cache
@@ -729,25 +763,26 @@ fn assemble_build_dependencies(
         trace!("❯ short extern {xtern}");
         md.short_externs.insert(xtern.to_owned());
 
-        let short_extern_md = md_pather(xtern);
-        info!("checking (RO) extern's externs {short_extern_md}");
-        if short_extern_md.exists() {
-            let short_extern_md = get_or_read(&mut mds, &short_extern_md)?;
-            for transitive in short_extern_md.short_externs {
+        let extern_md = md_pather(xtern);
+        info!("checking (RO) extern's externs {extern_md}");
+        //TODO?drop exists check
+        if extern_md.exists() {
+            let extern_md = get_or_read(&mut mds, &extern_md)?;
+            for transitive in extern_md.short_externs {
                 let guard_md = get_or_read(&mut mds, &md_pather(&transitive))?;
                 let ext = if guard_md.is_proc_macro { "so" } else { &ext };
 
                 trace!("❯ extern lib{transitive}.{ext}");
                 all_externs.insert(format!("lib{transitive}.{ext}"));
 
-                trace!("❯ short extern {xtern}");
+                trace!("❯ short extern {transitive}");
                 md.short_externs.insert(transitive);
             }
         }
     }
 
     let mut mounts = Vec::with_capacity(all_externs.len());
-    let extern_mds_and_paths = all_externs
+    let mut extern_mds_and_paths = all_externs
         .into_iter()
         .map(|xtern| {
             let Some((extern_md_path, xtern_stage)) = toml_path_and_stage(&xtern, target_path)
@@ -766,7 +801,36 @@ fn assemble_build_dependencies(
         })
         .collect::<Result<Vec<_>>>()?;
 
-    let extern_md_paths = md.extend_from_externs(extern_mds_and_paths)?;
+    if let Some(out_dir) = out_dir_var {
+        assert_eq!(out_dir.file_name(), Some("out"), "BUG: unexpected $OUT_DIR={out_dir} format");
+        // With OUT_DIR="/tmp/clis-vixargs_0-1-0/release/build/proc-macro-error-attr-de2f43c37de3bfce/out"
+        //   => proc-macro-error-attr-de2f43c37de3bfce
+        let z_dep = out_dir.parent().unwrap().file_name().unwrap();
+
+        md.short_externs.insert(z_dep.to_owned());
+
+        let z_dep_md_path = md_pather(z_dep);
+        let z_dep_md = get_or_read(&mut mds, &z_dep_md_path)?;
+        let out_dir_mount =
+            NamedMount { name: z_dep_md.last_stage(), src: "/".into(), dst: out_dir };
+        info!("also mounting buildrs out dir {out_dir_mount:?} from {z_dep_md:?}");
+        mounts.push(out_dir_mount);
+
+        info!("and adding that buildrs dep");
+        // build_script_build-422764cb03f8177b
+        assert_eq!(z_dep_md.deps.len(), 1);
+        let x_dep = format!("build_script_build-{}", z_dep_md.deps[0]);
+        let x_dep_md_path = md_pather(&x_dep);
+        let x_dep_md = get_or_read(&mut mds, &x_dep_md_path)?;
+        info!("and adding that buildrs dep: {x_dep_md:?}");
+        extern_mds_and_paths.push((x_dep_md_path, x_dep_md));
+
+        md.short_externs.insert(x_dep);
+
+        extern_mds_and_paths.push((z_dep_md_path, z_dep_md));
+    }
+
+    let extern_md_paths = md.sort_deps(extern_mds_and_paths)?;
     info!("extern_md_paths: {} {extern_md_paths:?}", extern_md_paths.len());
 
     let mds = extern_md_paths
@@ -982,3 +1046,4 @@ fn copy_dir_all(src: &Utf8Path, dst: &Utf8Path) -> Result<()> {
     }
     Ok(())
 }
+//

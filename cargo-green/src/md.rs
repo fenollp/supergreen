@@ -7,7 +7,7 @@ use camino::{Utf8Path, Utf8PathBuf};
 use indexmap::IndexSet;
 use log::{info, trace, warn};
 use serde::{Deserialize, Serialize};
-use szyk::{sort, Node};
+use szyk::{sort, Node, TopsortError};
 
 use crate::{
     logging::maybe_log,
@@ -84,7 +84,6 @@ impl Md {
         fs::write(path, md_ser).map_err(|e| anyhow!("Failed creating {path}: {e}"))?;
 
         if maybe_log().is_some() {
-            info!("Md: {path}");
             match fs::read_to_string(path) {
                 Ok(data) => data,
                 Err(e) => e.to_string(),
@@ -107,6 +106,11 @@ impl Md {
     #[must_use]
     pub(crate) fn rust_stage(&self) -> &str {
         &self.stages.iter().find(|NamedStage { name, .. }| *name == *RUST).unwrap().script
+    }
+
+    #[must_use]
+    pub(crate) fn last_stage(&self) -> Stage {
+        self.stages.last().unwrap().name.clone()
     }
 
     pub(crate) fn push_block(&mut self, name: &Stage, block: String) {
@@ -139,10 +143,7 @@ impl Md {
         }
     }
 
-    pub(crate) fn extend_from_externs(
-        &mut self,
-        mds: Vec<(Utf8PathBuf, Self)>,
-    ) -> Result<Vec<Utf8PathBuf>> {
+    pub(crate) fn sort_deps(&mut self, mds: Vec<(Utf8PathBuf, Self)>) -> Result<Vec<Utf8PathBuf>> {
         let mut dag: Vec<_> = mds
             .into_iter()
             .map(|(md_path, md)| {
@@ -155,8 +156,14 @@ impl Md {
         let this = dec(&self.this);
         dag.push(Node::new(this, decs(&self.deps), "".into()));
 
-        let mut md_paths =
-            sort(&dag, this).map_err(|e| anyhow!("Failed topolosorting {}: {e:?}", self.this))?;
+        let mut md_paths = sort(&dag, this).map_err(|e| match e {
+            TopsortError::TargetNotFound(x) => {
+                anyhow!("Failed topolosorting {}: {} not found", self.this, enc(x))
+            }
+            TopsortError::CyclicDependency(x) => {
+                anyhow!("Failed topolosorting {}: cyclic {}", self.this, enc(x))
+            }
+        })?;
         let last = md_paths.pop();
         assert_eq!(last.as_deref(), Some("".into()), "BUG: it's self.this's empty path");
 
@@ -181,15 +188,10 @@ struct NamedStage {
     script: String,
 }
 
-// pub(crate) const HDR: &str = "# ";
-
-// # syntax = ..
-// # this = "x"
-// # mnt = ["y", "z"]
-// # contexts = [
-// #   { name = "a", uri = "b" },
-// # ]
-// FROM ..
+#[must_use]
+fn enc(metadata: u64) -> String {
+    format!("{metadata:#x}").trim_start_matches("0x").to_owned()
+}
 
 #[must_use]
 fn dec(x: impl AsRef<str>) -> u64 {
@@ -203,10 +205,6 @@ fn decs(xs: &[String]) -> Vec<u64> {
 
 #[test]
 fn dec_decs() {
-    fn enc(metadata: u64) -> String {
-        format!("{metadata:#x}").trim_start_matches("0x").to_owned()
-    }
-
     let as_hex = "dab737da4696ee62".to_owned();
     let as_dec = 15760126831633034850;
     assert_eq!(dec(&as_hex), as_dec);
