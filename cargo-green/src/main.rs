@@ -1,7 +1,7 @@
 use std::{
     env,
     ffi::{OsStr, OsString},
-    fs::OpenOptions,
+    fs::{self, OpenOptions},
     path::PathBuf,
     process::exit,
 };
@@ -154,6 +154,23 @@ async fn main() -> Result<()> {
     }
     // TODO: `cargo clean` (even when `--dry-run` ?): list+rm .log + cfetch & prebuilt Dockerfiles + ...
     //=> introduce fn.s to easily keep track of these
+
+    //FIXME: check precedence
+    let target_dir = if let Ok(target_dir) = env::var("CARGO_TARGET_DIR") {
+        target_dir
+    } else if let Some(target_dir) = {
+        let mut args = pico_args::Arguments::from_env();
+        args.opt_value_from_str("--target-dir")?
+    } {
+        target_dir
+    } else if command.as_deref() == Some("install") {
+        tmp().join(hashed_args()).to_string()
+    } else {
+        pwd().join("target").to_string()
+    };
+    fs::create_dir_all(&target_dir)?;
+    cmd.env("CARGO_TARGET_DIR", &target_dir);
+    env::set_var("CARGO_TARGET_DIR", target_dir);
 
     // After fetch: fetch pulls which may turn prebuilding into wasted work.
     cargo_green::maybe_prebuild_base(&green).await?;

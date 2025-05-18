@@ -30,6 +30,7 @@ use crate::{
     image_uri::ImageUri,
     logging::{crate_type_for_logging, maybe_log, ENV_LOG_PATH},
     md::BuildContext,
+    rustc_wrapper::{replace_target_dir_str, TARGET_DIR, VIRTUAL_TARGET_DIR},
     stage::Stage,
     PKG,
 };
@@ -497,6 +498,7 @@ where
     debug!("Starting {name} task {badge}");
     let start = Instant::now();
     let fwder = if mark == MARK_STDOUT { fwd_stdout } else { fwd_stderr };
+    let target_dir = TARGET_DIR.as_path();
     spawn(async move {
         let mut buf = String::new();
         let mut details: Vec<String> = vec![];
@@ -519,7 +521,7 @@ where
             debug!("{badge} {}", strip_ansi_escapes(&line));
 
             if let Some(msg) = lift_stdio(&line, mark) {
-                fwder(msg, &mut buf, &mut acc);
+                fwder(target_dir, msg, &mut buf, &mut acc);
             }
 
             // //warning: panic message contains an unused formatting placeholder
@@ -557,40 +559,47 @@ struct Accumulated {
 
 #[test]
 fn support_long_broken_json_lines() {
+    use crate::rustc_wrapper::REWRITE_TARGETDIR;
+
     let logs = assertx::setup_logging_test();
     let lines = [
-        r#"#42 1.312 ::STDERR:: {"$message_type":"artifact","artifact":"/tmp/thing","emit":"link""#,
-        r#"#42 1.313 ::STDERR:: }"#,
+        r#"#42 1.312 ::STDERR:: {"$message_type":"artifact","artifact":"/target/thing""#,
+        r#"#42 1.313 ::STDERR:: ,"emit":"link"}"#,
     ];
+    let target_dir = Utf8Path::new("/tmp");
     let mut buf = String::new();
     let mut acc = Accumulated::default();
 
     let msg = lift_stdio(lines[0], MARK_STDERR);
-    assert_eq!(msg, Some(r#"{"$message_type":"artifact","artifact":"/tmp/thing","emit":"link""#));
-    fwd_stderr(msg.unwrap(), &mut buf, &mut acc);
-    assert_eq!(buf, r#"{"$message_type":"artifact","artifact":"/tmp/thing","emit":"link""#);
+    assert_eq!(msg, Some(r#"{"$message_type":"artifact","artifact":"/target/thing""#));
+    fwd_stderr(target_dir, msg.unwrap(), &mut buf, &mut acc);
+    assert_eq!(buf, r#"{"$message_type":"artifact","artifact":"/target/thing""#);
     assert_eq!(acc.written, Vec::<String>::new());
 
     let msg = lift_stdio(lines[1], MARK_STDERR);
-    assert_eq!(msg, Some("}"));
-    fwd_stderr(msg.unwrap(), &mut buf, &mut acc);
+    assert_eq!(msg, Some(r#","emit":"link"}"#));
+    fwd_stderr(target_dir, msg.unwrap(), &mut buf, &mut acc);
     assert_eq!(buf, "");
-    assert_eq!(acc.written, vec![Utf8PathBuf::from("/tmp/thing")]);
 
-    // Then fwd_stderr
-    // calls artifact_written(r#"{"$message_type":"artifact","artifact":"/tmp/thing","emit":"link"}"#)
-    // which returns Some("/tmp/thing")
-    assertx::assert_logs_contain_in_order!(logs, log::Level::Info => "rustc wrote /tmp/thing");
+    if REWRITE_TARGETDIR {
+        assert_eq!(acc.written, vec!["/tmp/thing".to_owned()]);
+
+        assertx::assert_logs_contain_in_order!(logs, log::Level::Info => "rustc wrote /tmp/thing");
+    } else {
+        assert_eq!(acc.written, vec!["/target/thing".to_owned()]);
+
+        assertx::assert_logs_contain_in_order!(logs, log::Level::Info => "rustc wrote /target/thing");
+    }
 }
 
-fn fwd_stderr(msg: &str, buf: &mut String, acc: &mut Accumulated) {
+fn fwd_stderr(target_dir: &Utf8Path, msg: &str, buf: &mut String, acc: &mut Accumulated) {
     let mut show = |msg: &str| {
-        if let Some(file) = artifact_written(msg) {
+        let mut msg = replace_target_dir_str(msg, VIRTUAL_TARGET_DIR, target_dir.as_str());
+
+        if let Some(file) = artifact_written(&msg) {
             acc.written.push(file.into());
             info!("rustc wrote {file}");
         }
-
-        let mut msg = msg.to_owned();
 
         if let Some(var) = env_not_comptime_defined(&msg) {
             if acc.envs.insert(var.to_owned()) {
@@ -638,7 +647,12 @@ fn fwd_stderr(msg: &str, buf: &mut String, acc: &mut Accumulated) {
     }
 }
 
-fn fwd_stdout(msg: &str, #[expect(clippy::ptr_arg)] _buf: &mut String, _acc: &mut Accumulated) {
+fn fwd_stdout(
+    _target_dir: &Utf8Path,
+    msg: &str,
+    #[expect(clippy::ptr_arg)] _buf: &mut String,
+    _acc: &mut Accumulated,
+) {
     info!("(To cargo's STDOUT): {msg}");
     println!("{msg}");
 }

@@ -122,20 +122,19 @@ mkdir -p $CARGO_TARGET_DIR
 
 rm -rf $CARGO_TARGET_DIR/* >/dev/null
 $CARGO green install --locked --frozen --offline --force $install_package --root=$install_root
-#TODO: rewrite target dir between host and build(..) calls
-# git --no-pager diff -- $CARGOGREEN_FINAL_PATH
-# cat <<'EOF' | diff -u - <(git --no-pager diff -- $CARGOGREEN_FINAL_PATH | tail -n+7)
-#  # Pipe this file to:
-#  # DOCKER_BUILDKIT="1" \
-# -#   docker --debug build --network=none --platform=local --pull=false --target=out-68f2214769fd28b1 --output=type=local,dest=/tmp/cargo-green--hack-caching--target-dir/release/deps -
-# +#   docker --debug build --network=none --platform=local --pull=false --target=out-68f2214769fd28b1 --output=type=local,dest=/tmp/cargo-green--hack-caching/release/deps -
-# EOF
+git --no-pager diff -- $CARGOGREEN_FINAL_PATH
+cat <<'EOF' | diff -u - <(git --no-pager diff -- $CARGOGREEN_FINAL_PATH | tail -n+7)
+ # Pipe this file to:
+ # DOCKER_BUILDKIT="1" \
+-#   docker --debug build --network=none --platform=local --pull=false --target=out-39127c16f4d70192 --output=type=local,dest=/tmp/cargo-green--hack-caching--target-dir/release/deps -
++#   docker --debug build --network=none --platform=local --pull=false --target=out-39127c16f4d70192 --output=type=local,dest=/tmp/cargo-green--hack-caching/release/deps -
+EOF
 unset old_target_dir
 ensure__rewrite_cratesio_index__works
 $install_root/bin/${install_package%@*} --help >/dev/null
 [[ $install_sha = $(compute_installed_bin_sha256) ]] # change targetdir => no binary changes
-# git --no-pager diff -- $CARGOGREEN_FINAL_PATH
+git --no-pager diff -- $CARGOGREEN_FINAL_PATH
 git add $CARGOGREEN_FINAL_PATH
 
-echo Changing CARGO_TARGET_DIR tho.... TODO: replace target dir in final path with e.g. /target/ or '/target/$target_triple/'
+echo Changing CARGO_TARGET_DIR only changes runner call!
 echo
