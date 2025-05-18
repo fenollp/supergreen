@@ -120,6 +120,11 @@ impl Md {
         &self.stages.iter().find(|NamedStage { name, .. }| *name == *RUST).unwrap().script
     }
 
+    #[must_use]
+    pub(crate) fn last_stage(&self) -> Stage {
+        self.stages.last().unwrap().name.clone()
+    }
+
     pub(crate) fn push_block(&mut self, name: &Stage, block: String) {
         self.stages.insert(NamedStage { name: name.clone(), script: block.trim().to_owned() });
     }
