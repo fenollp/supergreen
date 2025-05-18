@@ -796,14 +796,14 @@ fn assemble_build_dependencies(
         info!("also mounting buildrs out dir {out_dir_mount:?} from {z_dep_md:?}");
         mounts.push(out_dir_mount);
 
-        info!("and adding that buildrs dep");
-        // build_script_build-422764cb03f8177b
-        assert_eq!(z_dep_md.deps.len(), 1);
-        let x_dep = format!("build_script_build-{}", z_dep_md.deps[0]);
-        let x_dep_md_path = md_pather(&x_dep);
-        let x_dep_md = get_or_read(&mut mds, &x_dep_md_path)?;
-        info!("and adding that buildrs dep: {x_dep_md:?}");
-        extern_mds_and_paths.push((x_dep_md_path, x_dep_md));
+        // info!("and adding that buildrs dep");
+        // // build_script_build-422764cb03f8177b
+        // assert_eq!(z_dep_md.deps.len(), 1);
+        // let x_dep = format!("build_script_build-{}", z_dep_md.deps[0]);
+        // let x_dep_md_path = md_pather(&x_dep);
+        // let x_dep_md = get_or_read(&mut mds, &x_dep_md_path)?;
+        // info!("and adding that buildrs dep: {x_dep_md:?}");
+        // extern_mds_and_paths.push((x_dep_md_path, x_dep_md));
 
         // md.short_externs.insert(x_dep);
 
