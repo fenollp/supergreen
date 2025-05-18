@@ -480,7 +480,8 @@ async fn do_wrap_rustc(
     let cwd = if let Some((name, src, dst)) = input_mount.as_ref() {
         rustc_block.push_str("RUN \\\n");
         let source = src.map(|src| format!(",source={src}")).unwrap_or_default();
-        rustc_block.push_str(&format!("  --mount=from={name}{source},dst={dst} \\\n"));
+        let rw = buildrs.then_some(",rw").unwrap_or_default();
+        rustc_block.push_str(&format!("  --mount=from={name}{source},dst={dst}{rw} \\\n"));
 
         None
     } else {
