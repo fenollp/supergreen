@@ -160,8 +160,8 @@ pub(crate) async fn exec_buildrs(green: Green, exe: Utf8PathBuf) -> Result<()> {
 
     do_exec_buildrs(
         green,
-        &krate_name,
-        krate_version,
+        // &krate_name,
+        // krate_version,
         full_krate_id.replace(' ', "-"),
         out_dir_var,
         exe,
@@ -177,8 +177,8 @@ pub(crate) async fn exec_buildrs(green: Green, exe: Utf8PathBuf) -> Result<()> {
 #[expect(clippy::too_many_arguments)]
 async fn do_exec_buildrs(
     green: Green,
-    krate_name: &str,
-    krate_version: String,
+    // krate_name: &str,
+    // krate_version: String,
     crate_id: String,
     out_dir_var: Utf8PathBuf,
     exe: Utf8PathBuf,
@@ -910,7 +910,7 @@ fn fmap_env((var, val): (String, String), buildrs: bool) -> Option<(String, Stri
             debug!("env is set: {var}={val}");
         }
         let val = match var.as_str() {
-            "CARGO_PKG_DESCRIPTION" => "FIXME".to_owned(),
+            // "CARGO_PKG_DESCRIPTION" => "FIXME".to_owned(),
             "CARGO_MANIFEST_DIR" | "CARGO_MANIFEST_PATH" => {
                 rewrite_cratesio_index(Utf8Path::new(&val)).to_string()
             }
