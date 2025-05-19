@@ -21,8 +21,8 @@ use crate::{
 pub(crate) struct Md {
     pub(crate) this: String,
 
-    #[serde(default, skip_serializing_if = "Vec::is_empty")]
-    pub(crate) deps: Vec<String>,
+    #[serde(default, skip_serializing_if = "IndexSet::is_empty")]
+    pub(crate) deps: IndexSet<String>,
 
     #[serde(default, skip_serializing_if = "IndexSet::is_empty")]
     pub(crate) short_externs: IndexSet<String>,
@@ -32,7 +32,7 @@ pub(crate) struct Md {
     #[serde(default, skip_serializing_if = "IndexSet::is_empty")]
     pub(crate) contexts: IndexSet<BuildContext>,
 
-    stages: Vec<NamedStage>,
+    stages: IndexSet<NamedStage>,
 }
 
 impl FromStr for Md {
@@ -47,11 +47,11 @@ impl Md {
     pub(crate) fn new(this: &str) -> Self {
         Self {
             this: this.to_owned(),
-            deps: vec![],
+            deps: [].into(),
             short_externs: [].into(),
             is_proc_macro: false,
             contexts: [].into(),
-            stages: vec![],
+            stages: [].into(),
         }
     }
 
@@ -110,7 +110,7 @@ impl Md {
     }
 
     pub(crate) fn push_block(&mut self, name: &Stage, block: String) {
-        self.stages.push(NamedStage { name: name.clone(), script: block.trim().to_owned() });
+        self.stages.insert(NamedStage { name: name.clone(), script: block.trim().to_owned() });
     }
 
     fn append_blocks(&self, dockerfile: &mut String, visited: &mut IndexSet<Stage>) {
@@ -144,7 +144,7 @@ impl Md {
             .into_iter()
             .map(|(md_path, md)| {
                 let this = dec(&md.this);
-                self.deps.push(md.this);
+                self.deps.insert(md.this);
                 self.contexts.extend(md.contexts);
                 Node::new(this, decs(&md.deps), md_path)
             })
@@ -178,7 +178,7 @@ impl Md {
     }
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash)]
 struct NamedStage {
     name: Stage,
     script: String,
@@ -195,8 +195,8 @@ fn dec(x: impl AsRef<str>) -> u64 {
 }
 
 #[must_use]
-fn decs(xs: &[String]) -> Vec<u64> {
-    xs.iter().map(dec).collect()
+fn decs(xs: &IndexSet<String>) -> Vec<u64> {
+    xs.into_iter().map(dec).collect()
 }
 
 #[test]
@@ -218,7 +218,7 @@ pub(crate) struct BuildContext {
 fn md_ser() {
     let md = Md {
         this: "711ba64e1183a234".to_owned(),
-        deps: vec!["81529f4c2380d9ec".to_owned(), "88a4324b2aff6db9".to_owned()],
+        deps: ["81529f4c2380d9ec".to_owned(), "88a4324b2aff6db9".to_owned()].into(),
         short_externs: [
             "pico_args-b8c41dbf50ca5479".to_owned(),
             "shlex-96a741f581f4126a".to_owned(),
@@ -230,7 +230,7 @@ fn md_ser() {
             uri: "/some/local/path".into(),
         }]
         .into(),
-        stages: vec![NamedStage { name: RUST.clone(), script: format!("FROM rust AS {RST}") }],
+        stages: [NamedStage { name: RUST.clone(), script: format!("FROM rust AS {RST}") }].into(),
     };
 
     pretty_assertions::assert_eq!(
@@ -272,7 +272,7 @@ stages = []
 "#[1..];
 
     let this = "9494aa6093cd94c9".to_owned();
-    let deps = vec!["0dc1fe2644e3176a".to_owned()];
+    let deps = ["0dc1fe2644e3176a".to_owned()].into();
     let contexts = [
         BuildContext {
             name: "input_src_lib_rs--rustversion-1.0.9".try_into().unwrap(),
