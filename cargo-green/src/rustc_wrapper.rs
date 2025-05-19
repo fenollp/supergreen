@@ -742,20 +742,21 @@ fn assemble_build_dependencies(
                 md.short_externs.insert(transitive);
             }
 
-            for buildrs_result in &extern_md.buildrs_results {
-                let br_md_path = md_pather(buildrs_result);
-                let br_md = get_or_read(&mut mds, &br_md_path)?;
-                for dep in &br_md.deps {
-                    let mut dep_md_path = md_pather(&format!("*-{dep}"));
-                    for (i, p) in glob::glob(dep_md_path.as_str()).unwrap().enumerate() {
-                        assert_eq!(i, 0, ">>> {p:?}");
-                        dep_md_path = p.unwrap().try_into().unwrap();
-                    }
-                    let dep_md = get_or_read(&mut mds, &dep_md_path)?;
-                    extern_mds_and_paths.push((dep_md_path, dep_md));
-                }
-                extern_mds_and_paths.push((br_md_path, br_md));
-            }
+            // for buildrs_result in &extern_md.buildrs_results {
+            //     let br_md_path = md_pather(buildrs_result);
+            //     let br_md = get_or_read(&mut mds, &br_md_path)?;
+            //     for dep in &br_md.deps {
+            //         let mut dep_md_path = md_pather(&format!("*-{dep}"));
+            //         for (i, p) in glob::glob(dep_md_path.as_str()).unwrap().enumerate() {
+            //             assert_eq!(i, 0, ">>> {p:?}");
+            //             dep_md_path = p.unwrap().try_into().unwrap();
+            //         }
+            //         let dep_md = get_or_read(&mut mds, &dep_md_path)?;
+            //         extern_mds_and_paths.push((dep_md_path, dep_md));
+            //     }
+            //     extern_mds_and_paths.push((br_md_path, br_md));
+            // }
+            md.buildrs_results.extend(extern_md.buildrs_results);
         }
     }
 
