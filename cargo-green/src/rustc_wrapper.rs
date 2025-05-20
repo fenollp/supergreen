@@ -221,8 +221,8 @@ async fn do_exec_buildrs(
     let mut mds = HashMap::<Utf8PathBuf, Md>::new(); // A file cache
 
     let previous_md = get_or_read(&mut mds, &previous_md_path)?;
-    trace!(">>> previous_md_path = {previous_md_path}");
-    trace!(">>> previous_md      = {previous_md:?}");
+    trace!(">>>previous_md_path = {previous_md_path}");
+    trace!(">>>previous_md      = {previous_md:?}");
     // let target_path = previous_md_path.parent().unwrap();
     // let (mounts, mut mds) =
     //     assemble_build_dependencies(&mut md, "bin", "dep-info,link", [].into(), target_path)?;
