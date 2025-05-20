@@ -44,7 +44,7 @@ RUN \
         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.79" \
         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.79/Cargo.toml" \
         CARGO_PKG_AUTHORS="David Tolnay <dtolnay@gmail.com>" \
-        CARGO_PKG_DESCRIPTION=FIXME \
+        CARGO_PKG_DESCRIPTION="Flexible concrete Error type built on std::error::Error" \
         CARGO_PKG_HOMEPAGE= \
         CARGO_PKG_LICENSE="MIT OR Apache-2.0" \
         CARGO_PKG_LICENSE_FILE= \
@@ -89,7 +89,7 @@ RUN \
         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.79" \
         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.79/Cargo.toml" \
         CARGO_PKG_AUTHORS="David Tolnay <dtolnay@gmail.com>" \
-        CARGO_PKG_DESCRIPTION=FIXME \
+        CARGO_PKG_DESCRIPTION="Flexible concrete Error type built on std::error::Error" \
         CARGO_PKG_HOMEPAGE= \
         CARGO_PKG_LICENSE="MIT OR Apache-2.0" \
         CARGO_PKG_LICENSE_FILE= \
@@ -132,7 +132,7 @@ RUN \
         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.79" \
         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.79/Cargo.toml" \
         CARGO_PKG_AUTHORS="David Tolnay <dtolnay@gmail.com>" \
-        CARGO_PKG_DESCRIPTION=FIXME \
+        CARGO_PKG_DESCRIPTION="Flexible concrete Error type built on std::error::Error" \
         CARGO_PKG_HOMEPAGE= \
         CARGO_PKG_LICENSE="MIT OR Apache-2.0" \
         CARGO_PKG_LICENSE_FILE= \
@@ -174,7 +174,7 @@ RUN \
         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/memchr-2.7.1" \
         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/memchr-2.7.1/Cargo.toml" \
         CARGO_PKG_AUTHORS="Andrew Gallant <jamslam@gmail.com>:bluss" \
-        CARGO_PKG_DESCRIPTION=FIXME \
+        CARGO_PKG_DESCRIPTION="Provides extremely fast (uses SIMD on x86_64, aarch64 and wasm32) routines for\n1, 2 or 3 byte search and single substring search.\n" \
         CARGO_PKG_HOMEPAGE="https://github.com/BurntSushi/memchr" \
         CARGO_PKG_LICENSE="Unlicense OR MIT" \
         CARGO_PKG_LICENSE_FILE= \
@@ -216,7 +216,7 @@ RUN \
         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aho-corasick-1.1.2" \
         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aho-corasick-1.1.2/Cargo.toml" \
         CARGO_PKG_AUTHORS="Andrew Gallant <jamslam@gmail.com>" \
-        CARGO_PKG_DESCRIPTION=FIXME \
+        CARGO_PKG_DESCRIPTION="Fast multiple substring searching." \
         CARGO_PKG_HOMEPAGE="https://github.com/BurntSushi/aho-corasick" \
         CARGO_PKG_LICENSE="Unlicense OR MIT" \
         CARGO_PKG_LICENSE_FILE= \
@@ -257,7 +257,7 @@ RUN \
         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/regex-syntax-0.8.2" \
         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/regex-syntax-0.8.2/Cargo.toml" \
         CARGO_PKG_AUTHORS="The Rust Project Developers:Andrew Gallant <jamslam@gmail.com>" \
-        CARGO_PKG_DESCRIPTION=FIXME \
+        CARGO_PKG_DESCRIPTION="A regular expression parser." \
         CARGO_PKG_HOMEPAGE= \
         CARGO_PKG_LICENSE="MIT OR Apache-2.0" \
         CARGO_PKG_LICENSE_FILE= \
@@ -301,7 +301,7 @@ RUN \
         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/regex-automata-0.4.3" \
         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/regex-automata-0.4.3/Cargo.toml" \
         CARGO_PKG_AUTHORS="The Rust Project Developers:Andrew Gallant <jamslam@gmail.com>" \
-        CARGO_PKG_DESCRIPTION=FIXME \
+        CARGO_PKG_DESCRIPTION="Automata construction and matching using regular expressions." \
         CARGO_PKG_HOMEPAGE= \
         CARGO_PKG_LICENSE="MIT OR Apache-2.0" \
         CARGO_PKG_LICENSE_FILE= \
@@ -346,7 +346,7 @@ RUN \
         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bstr-1.9.0" \
         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bstr-1.9.0/Cargo.toml" \
         CARGO_PKG_AUTHORS="Andrew Gallant <jamslam@gmail.com>" \
-        CARGO_PKG_DESCRIPTION=FIXME \
+        CARGO_PKG_DESCRIPTION="A string type that is not required to be valid UTF-8." \
         CARGO_PKG_HOMEPAGE="https://github.com/BurntSushi/bstr" \
         CARGO_PKG_LICENSE="MIT OR Apache-2.0" \
         CARGO_PKG_LICENSE_FILE= \
@@ -387,7 +387,7 @@ RUN \
         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/log-0.4.20" \
         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/log-0.4.20/Cargo.toml" \
         CARGO_PKG_AUTHORS="The Rust Project Developers" \
-        CARGO_PKG_DESCRIPTION=FIXME \
+        CARGO_PKG_DESCRIPTION="A lightweight logging facade for Rust\n" \
         CARGO_PKG_HOMEPAGE= \
         CARGO_PKG_LICENSE="MIT OR Apache-2.0" \
         CARGO_PKG_LICENSE_FILE= \
@@ -434,7 +434,7 @@ RUN \
         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/globset-0.4.14" \
         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/globset-0.4.14/Cargo.toml" \
         CARGO_PKG_AUTHORS="Andrew Gallant <jamslam@gmail.com>" \
-        CARGO_PKG_DESCRIPTION=FIXME \
+        CARGO_PKG_DESCRIPTION="Cross platform single glob and glob set matching. Glob set matching is the\nprocess of matching one or more glob patterns against a single candidate path\nsimultaneously, and returning all of the globs that matched.\n" \
         CARGO_PKG_HOMEPAGE="https://github.com/BurntSushi/ripgrep/tree/master/crates/globset" \
         CARGO_PKG_LICENSE="Unlicense OR MIT" \
         CARGO_PKG_LICENSE_FILE= \
@@ -494,7 +494,7 @@ RUN \
         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.151" \
         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.151/Cargo.toml" \
         CARGO_PKG_AUTHORS="The Rust Project Developers" \
-        CARGO_PKG_DESCRIPTION=FIXME \
+        CARGO_PKG_DESCRIPTION="Raw FFI bindings to platform libraries like libc.\n" \
         CARGO_PKG_HOMEPAGE="https://github.com/rust-lang/libc" \
         CARGO_PKG_LICENSE="MIT OR Apache-2.0" \
         CARGO_PKG_LICENSE_FILE= \
@@ -539,7 +539,7 @@ RUN \
         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.151" \
         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.151/Cargo.toml" \
         CARGO_PKG_AUTHORS="The Rust Project Developers" \
-        CARGO_PKG_DESCRIPTION=FIXME \
+        CARGO_PKG_DESCRIPTION="Raw FFI bindings to platform libraries like libc.\n" \
         CARGO_PKG_HOMEPAGE="https://github.com/rust-lang/libc" \
         CARGO_PKG_LICENSE="MIT OR Apache-2.0" \
         CARGO_PKG_LICENSE_FILE= \
@@ -582,7 +582,7 @@ RUN \
         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.151" \
         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.151/Cargo.toml" \
         CARGO_PKG_AUTHORS="The Rust Project Developers" \
-        CARGO_PKG_DESCRIPTION=FIXME \
+        CARGO_PKG_DESCRIPTION="Raw FFI bindings to platform libraries like libc.\n" \
         CARGO_PKG_HOMEPAGE="https://github.com/rust-lang/libc" \
         CARGO_PKG_LICENSE="MIT OR Apache-2.0" \
         CARGO_PKG_LICENSE_FILE= \
@@ -624,7 +624,7 @@ RUN \
         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/termcolor-1.4.0" \
         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/termcolor-1.4.0/Cargo.toml" \
         CARGO_PKG_AUTHORS="Andrew Gallant <jamslam@gmail.com>" \
-        CARGO_PKG_DESCRIPTION=FIXME \
+        CARGO_PKG_DESCRIPTION="A simple cross platform library for writing colored text to a terminal.\n" \
         CARGO_PKG_HOMEPAGE="https://github.com/BurntSushi/termcolor" \
         CARGO_PKG_LICENSE="Unlicense OR MIT" \
         CARGO_PKG_LICENSE_FILE= \
@@ -674,7 +674,7 @@ RUN \
         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-cli-0.1.10" \
         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-cli-0.1.10/Cargo.toml" \
         CARGO_PKG_AUTHORS="Andrew Gallant <jamslam@gmail.com>" \
-        CARGO_PKG_DESCRIPTION=FIXME \
+        CARGO_PKG_DESCRIPTION="Utilities for search oriented command line applications.\n" \
         CARGO_PKG_HOMEPAGE="https://github.com/BurntSushi/ripgrep/tree/master/crates/cli" \
         CARGO_PKG_LICENSE="Unlicense OR MIT" \
         CARGO_PKG_LICENSE_FILE= \
@@ -716,7 +716,7 @@ RUN \
         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-matcher-0.1.7" \
         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-matcher-0.1.7/Cargo.toml" \
         CARGO_PKG_AUTHORS="Andrew Gallant <jamslam@gmail.com>" \
-        CARGO_PKG_DESCRIPTION=FIXME \
+        CARGO_PKG_DESCRIPTION="A trait for regular expressions, with a focus on line oriented search.\n" \
         CARGO_PKG_HOMEPAGE="https://github.com/BurntSushi/ripgrep/tree/master/crates/matcher" \
         CARGO_PKG_LICENSE="Unlicense OR MIT" \
         CARGO_PKG_LICENSE_FILE= \
@@ -757,7 +757,7 @@ RUN \
         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/cfg-if-1.0.0" \
         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/cfg-if-1.0.0/Cargo.toml" \
         CARGO_PKG_AUTHORS="Alex Crichton <alex@alexcrichton.com>" \
-        CARGO_PKG_DESCRIPTION=FIXME \
+        CARGO_PKG_DESCRIPTION="A macro to ergonomically define an item depending on a large number of #[cfg]\nparameters. Structured like an if-else chain, the first matching branch is the\nitem that gets emitted.\n" \
         CARGO_PKG_HOMEPAGE="https://github.com/alexcrichton/cfg-if" \
         CARGO_PKG_LICENSE="MIT/Apache-2.0" \
         CARGO_PKG_LICENSE_FILE= \
@@ -799,7 +799,7 @@ RUN \
         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/encoding_rs-0.8.33" \
         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/encoding_rs-0.8.33/Cargo.toml" \
         CARGO_PKG_AUTHORS="Henri Sivonen <hsivonen@hsivonen.fi>" \
-        CARGO_PKG_DESCRIPTION=FIXME \
+        CARGO_PKG_DESCRIPTION="A Gecko-oriented implementation of the Encoding Standard" \
         CARGO_PKG_HOMEPAGE="https://docs.rs/encoding_rs/" \
         CARGO_PKG_LICENSE="(Apache-2.0 OR MIT) AND BSD-3-Clause" \
         CARGO_PKG_LICENSE_FILE= \
@@ -842,7 +842,7 @@ RUN \
         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/encoding_rs_io-0.1.7" \
         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/encoding_rs_io-0.1.7/Cargo.toml" \
         CARGO_PKG_AUTHORS="Andrew Gallant <jamslam@gmail.com>" \
-        CARGO_PKG_DESCRIPTION=FIXME \
+        CARGO_PKG_DESCRIPTION="Streaming transcoding for encoding_rs" \
         CARGO_PKG_HOMEPAGE= \
         CARGO_PKG_LICENSE="MIT OR Apache-2.0" \
         CARGO_PKG_LICENSE_FILE= \
@@ -884,7 +884,7 @@ RUN \
         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/memmap2-0.9.3" \
         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/memmap2-0.9.3/Cargo.toml" \
         CARGO_PKG_AUTHORS="Dan Burkert <dan@danburkert.com>:Yevhenii Reizner <razrfalcon@gmail.com>" \
-        CARGO_PKG_DESCRIPTION=FIXME \
+        CARGO_PKG_DESCRIPTION="Cross-platform Rust API for memory-mapped file IO" \
         CARGO_PKG_HOMEPAGE= \
         CARGO_PKG_LICENSE="MIT OR Apache-2.0" \
         CARGO_PKG_LICENSE_FILE= \
@@ -937,7 +937,7 @@ RUN \
         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-searcher-0.1.13" \
         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-searcher-0.1.13/Cargo.toml" \
         CARGO_PKG_AUTHORS="Andrew Gallant <jamslam@gmail.com>" \
-        CARGO_PKG_DESCRIPTION=FIXME \
+        CARGO_PKG_DESCRIPTION="Fast line oriented regex searching as a library.\n" \
         CARGO_PKG_HOMEPAGE="https://github.com/BurntSushi/ripgrep/tree/master/crates/searcher" \
         CARGO_PKG_LICENSE="Unlicense OR MIT" \
         CARGO_PKG_LICENSE_FILE= \
@@ -997,7 +997,7 @@ RUN \
         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.195" \
         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.195/Cargo.toml" \
         CARGO_PKG_AUTHORS="Erick Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>" \
-        CARGO_PKG_DESCRIPTION=FIXME \
+        CARGO_PKG_DESCRIPTION="A generic serialization/deserialization framework" \
         CARGO_PKG_HOMEPAGE="https://serde.rs" \
         CARGO_PKG_LICENSE="MIT OR Apache-2.0" \
         CARGO_PKG_LICENSE_FILE= \
@@ -1042,7 +1042,7 @@ RUN \
         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.195" \
         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.195/Cargo.toml" \
         CARGO_PKG_AUTHORS="Erick Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>" \
-        CARGO_PKG_DESCRIPTION=FIXME \
+        CARGO_PKG_DESCRIPTION="A generic serialization/deserialization framework" \
         CARGO_PKG_HOMEPAGE="https://serde.rs" \
         CARGO_PKG_LICENSE="MIT OR Apache-2.0" \
         CARGO_PKG_LICENSE_FILE= \
@@ -1085,7 +1085,7 @@ RUN \
         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.195" \
         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.195/Cargo.toml" \
         CARGO_PKG_AUTHORS="Erick Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>" \
-        CARGO_PKG_DESCRIPTION=FIXME \
+        CARGO_PKG_DESCRIPTION="A generic serialization/deserialization framework" \
         CARGO_PKG_HOMEPAGE="https://serde.rs" \
         CARGO_PKG_LICENSE="MIT OR Apache-2.0" \
         CARGO_PKG_LICENSE_FILE= \
@@ -1127,7 +1127,7 @@ RUN \
         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/itoa-1.0.10" \
         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/itoa-1.0.10/Cargo.toml" \
         CARGO_PKG_AUTHORS="David Tolnay <dtolnay@gmail.com>" \
-        CARGO_PKG_DESCRIPTION=FIXME \
+        CARGO_PKG_DESCRIPTION="Fast integer primitive to string conversion" \
         CARGO_PKG_HOMEPAGE= \
         CARGO_PKG_LICENSE="MIT OR Apache-2.0" \
         CARGO_PKG_LICENSE_FILE= \
@@ -1168,7 +1168,7 @@ RUN \
         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ryu-1.0.16" \
         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ryu-1.0.16/Cargo.toml" \
         CARGO_PKG_AUTHORS="David Tolnay <dtolnay@gmail.com>" \
-        CARGO_PKG_DESCRIPTION=FIXME \
+        CARGO_PKG_DESCRIPTION="Fast floating point to string conversion" \
         CARGO_PKG_HOMEPAGE= \
         CARGO_PKG_LICENSE="Apache-2.0 OR BSL-1.0" \
         CARGO_PKG_LICENSE_FILE= \
@@ -1228,7 +1228,7 @@ RUN \
         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.111" \
         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.111/Cargo.toml" \
         CARGO_PKG_AUTHORS="Erick Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>" \
-        CARGO_PKG_DESCRIPTION=FIXME \
+        CARGO_PKG_DESCRIPTION="A JSON serialization file format" \
         CARGO_PKG_HOMEPAGE= \
         CARGO_PKG_LICENSE="MIT OR Apache-2.0" \
         CARGO_PKG_LICENSE_FILE= \
@@ -1273,7 +1273,7 @@ RUN \
         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.111" \
         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.111/Cargo.toml" \
         CARGO_PKG_AUTHORS="Erick Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>" \
-        CARGO_PKG_DESCRIPTION=FIXME \
+        CARGO_PKG_DESCRIPTION="A JSON serialization file format" \
         CARGO_PKG_HOMEPAGE= \
         CARGO_PKG_LICENSE="MIT OR Apache-2.0" \
         CARGO_PKG_LICENSE_FILE= \
@@ -1319,7 +1319,7 @@ RUN \
         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.111" \
         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.111/Cargo.toml" \
         CARGO_PKG_AUTHORS="Erick Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>" \
-        CARGO_PKG_DESCRIPTION=FIXME \
+        CARGO_PKG_DESCRIPTION="A JSON serialization file format" \
         CARGO_PKG_HOMEPAGE= \
         CARGO_PKG_LICENSE="MIT OR Apache-2.0" \
         CARGO_PKG_LICENSE_FILE= \
@@ -1379,7 +1379,7 @@ RUN \
         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-printer-0.2.1" \
         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-printer-0.2.1/Cargo.toml" \
         CARGO_PKG_AUTHORS="Andrew Gallant <jamslam@gmail.com>" \
-        CARGO_PKG_DESCRIPTION=FIXME \
+        CARGO_PKG_DESCRIPTION="An implementation of the grep crate's Sink trait that provides standard\nprinting of search results, similar to grep itself.\n" \
         CARGO_PKG_HOMEPAGE="https://github.com/BurntSushi/ripgrep/tree/master/crates/printer" \
         CARGO_PKG_LICENSE="Unlicense OR MIT" \
         CARGO_PKG_LICENSE_FILE= \
@@ -1427,7 +1427,7 @@ RUN \
         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-regex-0.1.12" \
         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-regex-0.1.12/Cargo.toml" \
         CARGO_PKG_AUTHORS="Andrew Gallant <jamslam@gmail.com>" \
-        CARGO_PKG_DESCRIPTION=FIXME \
+        CARGO_PKG_DESCRIPTION="Use Rust's regex library with the 'grep' crate.\n" \
         CARGO_PKG_HOMEPAGE="https://github.com/BurntSushi/ripgrep/tree/master/crates/regex" \
         CARGO_PKG_LICENSE="Unlicense OR MIT" \
         CARGO_PKG_LICENSE_FILE= \
@@ -1490,7 +1490,7 @@ RUN \
         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-0.3.1" \
         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-0.3.1/Cargo.toml" \
         CARGO_PKG_AUTHORS="Andrew Gallant <jamslam@gmail.com>" \
-        CARGO_PKG_DESCRIPTION=FIXME \
+        CARGO_PKG_DESCRIPTION="Fast line oriented regex searching as a library.\n" \
         CARGO_PKG_HOMEPAGE="https://github.com/BurntSushi/ripgrep/tree/master/crates/grep" \
         CARGO_PKG_LICENSE="Unlicense OR MIT" \
         CARGO_PKG_LICENSE_FILE= \
@@ -1550,7 +1550,7 @@ RUN \
         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.18" \
         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.18/Cargo.toml" \
         CARGO_PKG_AUTHORS= \
-        CARGO_PKG_DESCRIPTION=FIXME \
+        CARGO_PKG_DESCRIPTION="Utilities for concurrent programming" \
         CARGO_PKG_HOMEPAGE="https://github.com/crossbeam-rs/crossbeam/tree/master/crossbeam-utils" \
         CARGO_PKG_LICENSE="MIT OR Apache-2.0" \
         CARGO_PKG_LICENSE_FILE= \
@@ -1594,7 +1594,7 @@ RUN \
         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.18" \
         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.18/Cargo.toml" \
         CARGO_PKG_AUTHORS= \
-        CARGO_PKG_DESCRIPTION=FIXME \
+        CARGO_PKG_DESCRIPTION="Utilities for concurrent programming" \
         CARGO_PKG_HOMEPAGE="https://github.com/crossbeam-rs/crossbeam/tree/master/crossbeam-utils" \
         CARGO_PKG_LICENSE="MIT OR Apache-2.0" \
         CARGO_PKG_LICENSE_FILE= \
@@ -1638,7 +1638,7 @@ RUN \
         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.18" \
         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.18/Cargo.toml" \
         CARGO_PKG_AUTHORS= \
-        CARGO_PKG_DESCRIPTION=FIXME \
+        CARGO_PKG_DESCRIPTION="Utilities for concurrent programming" \
         CARGO_PKG_HOMEPAGE="https://github.com/crossbeam-rs/crossbeam/tree/master/crossbeam-utils" \
         CARGO_PKG_LICENSE="MIT OR Apache-2.0" \
         CARGO_PKG_LICENSE_FILE= \
@@ -1682,7 +1682,7 @@ RUN \
         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-epoch-0.9.17" \
         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-epoch-0.9.17/Cargo.toml" \
         CARGO_PKG_AUTHORS= \
-        CARGO_PKG_DESCRIPTION=FIXME \
+        CARGO_PKG_DESCRIPTION="Epoch-based garbage collection" \
         CARGO_PKG_HOMEPAGE="https://github.com/crossbeam-rs/crossbeam/tree/master/crossbeam-epoch" \
         CARGO_PKG_LICENSE="MIT OR Apache-2.0" \
         CARGO_PKG_LICENSE_FILE= \
@@ -1726,7 +1726,7 @@ RUN \
         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-deque-0.8.4" \
         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-deque-0.8.4/Cargo.toml" \
         CARGO_PKG_AUTHORS= \
-        CARGO_PKG_DESCRIPTION=FIXME \
+        CARGO_PKG_DESCRIPTION="Concurrent work-stealing deque" \
         CARGO_PKG_HOMEPAGE="https://github.com/crossbeam-rs/crossbeam/tree/master/crossbeam-deque" \
         CARGO_PKG_LICENSE="MIT OR Apache-2.0" \
         CARGO_PKG_LICENSE_FILE= \
@@ -1767,7 +1767,7 @@ RUN \
         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/same-file-1.0.6" \
         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/same-file-1.0.6/Cargo.toml" \
         CARGO_PKG_AUTHORS="Andrew Gallant <jamslam@gmail.com>" \
-        CARGO_PKG_DESCRIPTION=FIXME \
+        CARGO_PKG_DESCRIPTION="A simple crate for determining whether two file paths point to the same file.\n" \
         CARGO_PKG_HOMEPAGE="https://github.com/BurntSushi/same-file" \
         CARGO_PKG_LICENSE="Unlicense/MIT" \
         CARGO_PKG_LICENSE_FILE= \
@@ -1809,7 +1809,7 @@ RUN \
         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/walkdir-2.4.0" \
         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/walkdir-2.4.0/Cargo.toml" \
         CARGO_PKG_AUTHORS="Andrew Gallant <jamslam@gmail.com>" \
-        CARGO_PKG_DESCRIPTION=FIXME \
+        CARGO_PKG_DESCRIPTION="Recursively walk a directory." \
         CARGO_PKG_HOMEPAGE="https://github.com/BurntSushi/walkdir" \
         CARGO_PKG_LICENSE="Unlicense/MIT" \
         CARGO_PKG_LICENSE_FILE= \
@@ -1863,7 +1863,7 @@ RUN \
         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ignore-0.4.22" \
         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ignore-0.4.22/Cargo.toml" \
         CARGO_PKG_AUTHORS="Andrew Gallant <jamslam@gmail.com>" \
-        CARGO_PKG_DESCRIPTION=FIXME \
+        CARGO_PKG_DESCRIPTION="A fast library for efficiently matching ignore files such as `.gitignore`\nagainst file paths.\n" \
         CARGO_PKG_HOMEPAGE="https://github.com/BurntSushi/ripgrep/tree/master/crates/ignore" \
         CARGO_PKG_LICENSE="Unlicense OR MIT" \
         CARGO_PKG_LICENSE_FILE= \
@@ -1904,7 +1904,7 @@ RUN \
         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/lexopt-0.3.0" \
         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/lexopt-0.3.0/Cargo.toml" \
         CARGO_PKG_AUTHORS="Jan Verbeek <jan.verbeek@posteo.nl>" \
-        CARGO_PKG_DESCRIPTION=FIXME \
+        CARGO_PKG_DESCRIPTION="Minimalist pedantic command line parser" \
         CARGO_PKG_HOMEPAGE= \
         CARGO_PKG_LICENSE="MIT" \
         CARGO_PKG_LICENSE_FILE= \
@@ -1945,7 +1945,7 @@ RUN \
         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/textwrap-0.16.0" \
         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/textwrap-0.16.0/Cargo.toml" \
         CARGO_PKG_AUTHORS="Martin Geisler <martin@geisler.net>" \
-        CARGO_PKG_DESCRIPTION=FIXME \
+        CARGO_PKG_DESCRIPTION="Library for word wrapping, indenting, and dedenting strings. Has optional support for Unicode and emojis as well as machine hyphenation." \
         CARGO_PKG_HOMEPAGE= \
         CARGO_PKG_LICENSE="MIT" \
         CARGO_PKG_LICENSE_FILE= \
@@ -2005,7 +2005,7 @@ RUN \
         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ripgrep-14.1.0" \
         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ripgrep-14.1.0/Cargo.toml" \
         CARGO_PKG_AUTHORS="Andrew Gallant <jamslam@gmail.com>" \
-        CARGO_PKG_DESCRIPTION=FIXME \
+        CARGO_PKG_DESCRIPTION="ripgrep is a line-oriented search tool that recursively searches the current\ndirectory for a regex pattern while respecting gitignore rules. ripgrep has\nfirst class support on Windows, macOS and Linux.\n" \
         CARGO_PKG_HOMEPAGE="https://github.com/BurntSushi/ripgrep" \
         CARGO_PKG_LICENSE="Unlicense OR MIT" \
         CARGO_PKG_LICENSE_FILE= \
@@ -2049,7 +2049,7 @@ RUN \
         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ripgrep-14.1.0" \
         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ripgrep-14.1.0/Cargo.toml" \
         CARGO_PKG_AUTHORS="Andrew Gallant <jamslam@gmail.com>" \
-        CARGO_PKG_DESCRIPTION=FIXME \
+        CARGO_PKG_DESCRIPTION="ripgrep is a line-oriented search tool that recursively searches the current\ndirectory for a regex pattern while respecting gitignore rules. ripgrep has\nfirst class support on Windows, macOS and Linux.\n" \
         CARGO_PKG_HOMEPAGE="https://github.com/BurntSushi/ripgrep" \
         CARGO_PKG_LICENSE="Unlicense OR MIT" \
         CARGO_PKG_LICENSE_FILE= \
@@ -2125,7 +2125,7 @@ RUN \
         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ripgrep-14.1.0" \
         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ripgrep-14.1.0/Cargo.toml" \
         CARGO_PKG_AUTHORS="Andrew Gallant <jamslam@gmail.com>" \
-        CARGO_PKG_DESCRIPTION=FIXME \
+        CARGO_PKG_DESCRIPTION="ripgrep is a line-oriented search tool that recursively searches the current\ndirectory for a regex pattern while respecting gitignore rules. ripgrep has\nfirst class support on Windows, macOS and Linux.\n" \
         CARGO_PKG_HOMEPAGE="https://github.com/BurntSushi/ripgrep" \
         CARGO_PKG_LICENSE="Unlicense OR MIT" \
         CARGO_PKG_LICENSE_FILE= \
