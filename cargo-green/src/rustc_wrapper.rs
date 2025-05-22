@@ -25,6 +25,9 @@ use crate::{
     tmp, PKG, VSN,
 };
 
+pub(crate) const ENV_EXECUTE_BUILDRS: &str = "CARGOGREEN_EXECUTE_BUILDRS_";
+const WRAP_BUILDRS: bool = true; // FIXME: finish experiment
+
 // NOTE: this RUSTC_WRAPPER program only ever gets called by `cargo`, so we save
 //       ourselves some trouble and assume std::path::{Path, PathBuf} are UTF-8.
 
@@ -112,6 +115,214 @@ async fn call_rustc(rustc: &str, args: Vec<String>) -> Result<()> {
     Ok(())
 }
 
+pub(crate) async fn exec_buildrs(green: Green, exe: Utf8PathBuf) -> Result<()> {
+    assert!(env::var_os(ENV).is_none(), "It's turtles all the way down!");
+    env::set_var(ENV, "1");
+
+    let krate_name = env::var("CARGO_PKG_NAME").expect("$CARGO_PKG_NAME");
+
+    let krate_version = env::var("CARGO_PKG_VERSION").expect("$CARGO_PKG_VERSION");
+
+    // exe: /target/release/build/proc-macro2-2f938e044e3f79bf/build-script-build
+    let Some((previous_md_path, previous_extra)) = || -> Option<_> {
+        // name: build_script_build
+        let name = exe.file_name()?.replace('-', "_");
+        // target_path: /target/release/build/proc-macro2-2f938e044e3f79bf
+        let target_path = exe.parent()?;
+        // extra: -2f938e044e3f79bf
+        let extra = target_path.file_name()?.trim_start_matches(&krate_name).to_owned();
+        // target_path: /target/release
+        let target_path = target_path.parent()?.parent()?;
+        // /target/release/build_script_build-2f938e044e3f79bf.toml
+        Some((target_path.join(format!("{name}{extra}.toml")), extra))
+    }() else {
+        bail!("BUG: malformed buildrs exe {exe:?}")
+    };
+
+    // $OUT_DIR: /target/release/build/proc-macro2-b97492fdd0201a99/out
+    let out_dir_var: Utf8PathBuf = env::var("OUT_DIR").expect("$OUT_DIR").into();
+    let Some((md_path, extra)) = || -> Option<_> {
+        // name: proc-macro2-b97492fdd0201a99
+        let name = out_dir_var.parent()?.file_name()?;
+        // extra: -b97492fdd0201a99
+        let extra = name.trim_start_matches(&krate_name).to_owned();
+        // /target/release/proc-macro2-b97492fdd0201a99.toml
+        Some((previous_md_path.with_file_name(format!("{name}.toml")), extra))
+    }() else {
+        bail!("BUG: malformed $OUT_DIR {out_dir_var:?}")
+    };
+
+    let full_krate_id = format!("Z {krate_name} {krate_version}{extra}");
+    logging::setup(&full_krate_id);
+
+    info!("{PKG}@{VSN} original args: {exe:?} green={green:?}");
+
+    do_exec_buildrs(
+        green,
+        // &krate_name,
+        // krate_version,
+        full_krate_id.replace(' ', "-"),
+        out_dir_var,
+        exe,
+        previous_md_path,
+        previous_extra,
+        md_path,
+        extra,
+    )
+    .await
+    .inspect_err(|e| error!("Error: {e}"))
+}
+
+#[expect(clippy::too_many_arguments)]
+async fn do_exec_buildrs(
+    green: Green,
+    // krate_name: &str,
+    // krate_version: String,
+    crate_id: String,
+    out_dir_var: Utf8PathBuf,
+    exe: Utf8PathBuf,
+    previous_md_path: Utf8PathBuf,
+    previous_extra: String,
+    md_path: Utf8PathBuf,
+    extra: String,
+) -> Result<()> {
+    let debug = maybe_log();
+
+    let run_stage = Stage::try_new(format!("run-{crate_id}"))?;
+    let out_stage = Stage::try_new(format!("ran{extra}"))?;
+
+    // let code_stage = Stage::try_new(format!("cratesio-{krate_name}-{krate_version}"))?; // FIXME
+    // let code_mount_src = "/extracted"; //FIXME
+    // let code_mount_dst = format!("/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/{krate_name}-{krate_version}"); //FIXME
+
+    let previous_out_stage = Stage::try_new(format!("out{previous_extra}"))?; //FIXME
+    let previous_out_dst = {
+        let name = exe.file_name().expect("PROOF: already ensured path has file_name");
+        let name = name.replacen('-', "_", 2);
+        format!("/{name}{previous_extra}")
+    };
+
+    let mut md = Md::new(&extra[1..]); // Drops leading dash
+    md.push_block(&RUST, green.image.base_image_inline.clone().unwrap());
+
+    let mut run_block = String::new();
+    run_block.push_str(&format!("FROM {RST} AS {run_stage}\n"));
+    run_block.push_str(&format!("SHELL {:?}\n", ["/bin/bash", "-eux", "-c"]));
+    run_block.push_str(&format!("WORKDIR {out_dir_var}\n"));
+    run_block.push_str("RUN \\\n");
+    // run_block.push_str(&format!(
+    //     "  --mount=from={code_stage},source={code_mount_src},dst={code_mount_dst} \\\n"
+    // ));
+    run_block.push_str(&format!(
+        "  --mount=from={previous_out_stage},source={previous_out_dst},dst={exe} \\\n"
+    ));
+
+    let mut mds = HashMap::<Utf8PathBuf, Md>::new(); // A file cache
+
+    let previous_md = get_or_read(&mut mds, &previous_md_path)?;
+    trace!(">>>previous_md_path = {previous_md_path}");
+    trace!(">>>previous_md      = {previous_md:?}");
+    // let target_path = previous_md_path.parent().unwrap();
+    // let (mounts, mut mds) =
+    //     assemble_build_dependencies(&mut md, "bin", "dep-info,link", [].into(), target_path)?;
+    // mds.push(previous_md);
+    // for NamedMount { name, src, dst } in mounts {
+    //     run_block.push_str(&format!("  --mount=from={name},dst={dst},source={src} \\\n"));
+    // }
+
+    let mut extern_mds_and_paths: Vec<_> = previous_md
+        .short_externs
+        .iter()
+        .map(|xtern| -> Result<_> {
+            let xtern_md_path = previous_md_path.with_file_name(format!("{xtern}.toml"));
+            let xtern_md = get_or_read(&mut mds, &xtern_md_path)?;
+            Ok((xtern_md_path, xtern_md))
+        })
+        .collect::<Result<_>>()?;
+    // md.short_externs.push(previous_md as short xtern) FIXME?? MAY counter assemble+outdirvar
+    extern_mds_and_paths.push((previous_md_path, previous_md));
+    let extern_md_paths = md.sort_deps(extern_mds_and_paths)?;
+    info!("extern_md_paths: {} {extern_md_paths:?}", extern_md_paths.len());
+
+    let mds = extern_md_paths
+        .into_iter()
+        .map(|extern_md_path| get_or_read(&mut mds, &extern_md_path))
+        .collect::<Result<Vec<_>>>()?;
+
+    run_block.push_str(&format!("    env CARGO={:?} \\\n", "$(which cargo)"));
+    for (var, val) in env::vars().filter_map(|kv| fmap_env(kv, true)) {
+        run_block.push_str(&format!("        {var}={val} \\\n"));
+    }
+    run_block.push_str(&format!("        {ENV}=1 \\\n"));
+    for var in &green.set_envs {
+        if let Ok(val) = env::var(var) {
+            // let val = replace_target_dir_str(&val, TARGET_DIR.as_str(), VIRTUAL_TARGET_DIR);
+            warn!("passing ${var}={val:?} env through");
+            run_block.push_str(&format!("        {var}={val:?} \\\n"));
+        }
+    }
+    run_block.push_str(&format!("        {ENV_EXECUTE_BUILDRS}= \\\n"));
+    run_block.push_str(&format!("      {exe} \\\n"));
+    run_block.push_str(&format!("        1> >(sed 's/^/{MARK_STDOUT}/') \\\n"));
+    run_block.push_str(&format!("        2> >(sed 's/^/{MARK_STDERR}/' >&2)\n"));
+    md.push_block(&run_stage, run_block);
+
+    let mut out_block = String::new();
+    out_block.push_str(&format!("FROM scratch AS {out_stage}\n"));
+    out_block.push_str(&format!("COPY --from={run_stage} {out_dir_var}/* /\n"));
+    md.push_block(&out_stage, out_block);
+
+    let containerfile_path = md_path.with_extension("Dockerfile");
+
+    let md = md; // Drop mut
+    md.write_to(&md_path)?;
+    drop(md_path);
+
+    let mut containerfile = green.new_containerfile();
+    containerfile.pushln(md.rust_stage());
+    containerfile.nl();
+    containerfile.push(&md.block_along_with_predecessors(&mds));
+    containerfile.write_to(&containerfile_path)?;
+    drop(containerfile);
+
+    fs::create_dir_all(&out_dir_var)
+        .map_err(|e| anyhow!("Failed to `mkdir -p {out_dir_var}`: {e}"))?;
+
+    let fallback = async move {
+        let mut cmd = Command::new(&exe);
+        let cmd = cmd.kill_on_drop(true);
+        // Do not unset ENV_EXECUTE_BUILDRS
+        let status = cmd
+            .spawn()
+            .map_err(|e| anyhow!("Failed to spawn {}: {e}", cmd.show()))?
+            .wait()
+            .await
+            .map_err(|e| anyhow!("Failed to wait {}: {e}", cmd.show()))?;
+        if !status.success() {
+            bail!("Failed in execute_buildrs")
+        }
+        Ok(())
+    };
+
+    if green.runner == Runner::None {
+        info!("Runner disabled, falling back...");
+        return fallback.await;
+    }
+    let res = build_out(&green, &containerfile_path, out_stage, &md.contexts, &out_dir_var).await;
+
+    if let Err(e) = res {
+        warn!("Falling back due to {e}");
+        if debug.is_none() {
+            // Bubble up actual error & outputs
+            return fallback
+                .await
+                .inspect(|()| eprintln!("BUG: {PKG} should not have encountered this error: {e}"));
+        }
+        return Err(e);
+    }
+    Ok(())
+}
+
 async fn wrap_rustc(
     green: Green,
     crate_name: &str,
@@ -170,41 +381,6 @@ async fn wrap_rustc(
     .inspect_err(|e| error!("Error: {e}"))
 }
 
-fn crate_out_dir(out_dir_var: Option<Utf8PathBuf>) -> Result<Option<Utf8PathBuf>> {
-    let Some(crate_out) = out_dir_var else { return Ok(None) };
-    assert_eq!(crate_out.file_name(), Some("out"), "BUG: unexpected $OUT_DIR={crate_out} format");
-
-    info!("listing (RO) crate_out contents {crate_out}");
-    let listing = fs::read_dir(&crate_out)
-        .map_err(|e| anyhow!("Failed reading crate_out dir {crate_out}: {e}"))?;
-
-    let count = listing
-        .map_while(Result::ok)
-        .inspect(|f| {
-            info!(
-                "metadata for {f:?}: {:?}",
-                f.metadata().map(|fmd| format!(
-                    "created:{c:?} accessed:{a:?} modified:{m:?}",
-                    c = fmd.created(),
-                    a = fmd.accessed(),
-                    m = fmd.modified(),
-                ))
-            );
-        })
-        .count();
-
-    // Dir empty => mount can be dropped
-    if count == 0 {
-        return Ok(None);
-    }
-
-    let ignore = crate_out.with_file_name(".dockerignore");
-    fs::write(&ignore, "")
-        .map_err(|e| anyhow!("Failed creating crate_out dockerignore {ignore}: {e}"))?;
-
-    Ok(Some(crate_out))
-}
-
 #[expect(clippy::too_many_arguments)]
 async fn do_wrap_rustc(
     green: Green,
@@ -225,7 +401,7 @@ async fn do_wrap_rustc(
 
     let incremental = green.incremental.then_some(incremental).flatten();
 
-    let crate_out = crate_out_dir(out_dir_var)?;
+    // let crate_out = crate_out_dir(out_dir_var)?;
 
     let mut md = Md::new(&extrafn[1..]); // Drops leading dash
     md.push_block(&RUST, green.image.base_image_inline.clone().unwrap());
@@ -295,7 +471,8 @@ async fn do_wrap_rustc(
     let cwd = if let Some((name, src, dst)) = input_mount.as_ref() {
         rustc_block.push_str("RUN \\\n");
         let source = src.map(|src| format!(",source={src}")).unwrap_or_default();
-        rustc_block.push_str(&format!("  --mount=from={name}{source},dst={dst} \\\n"));
+        let rw = buildrs.then_some(",rw").unwrap_or_default();
+        rustc_block.push_str(&format!("  --mount=from={name}{source},dst={dst}{rw} \\\n"));
 
         None
     } else {
@@ -340,21 +517,22 @@ async fn do_wrap_rustc(
         Some((cwd_stage, cwd_path))
     };
 
-    if let Some(crate_out) = crate_out.as_deref() {
-        let named = crate_out_name(crate_out);
-        rustc_block.push_str(&format!("  --mount=from={named},dst={crate_out} \\\n"));
-    }
-
-    md.contexts = [cwd, crate_out.map(|crate_out| (crate_out_name(&crate_out), crate_out))]
+    md.contexts = [cwd]
         .into_iter()
         .flatten()
         .map(|(name, uri)| BuildContext { name, uri })
         .inspect(|BuildContext { name, uri }| info!("loading {name:?}: {uri}"))
         .collect();
-    info!("loading {} Docker contexts", md.contexts.len());
+    info!("loading {} build contexts", md.contexts.len());
 
-    let (mounts, mds) =
-        assemble_build_dependencies(&mut md, &crate_type, &emit, externs, &target_path)?;
+    let (mounts, mds) = assemble_build_dependencies(
+        &mut md,
+        &crate_type,
+        &emit,
+        externs,
+        out_dir_var,
+        &target_path,
+    )?;
 
     for NamedMount { name, src, dst } in mounts {
         rustc_block.push_str(&format!("  --mount=from={name},dst={dst},source={src} \\\n"));
@@ -364,12 +542,41 @@ async fn do_wrap_rustc(
     rustc_block.push_str("    { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \\\n");
     //fixme? prefix with ::rustc-toolchain::
 
+    if WRAP_BUILDRS && buildrs {
+        // TODO: {extrafn} STDIO consts
+        // TODO: this won't work with e.g. tokio-decorated main fns (async + decorator needs duplicating)
+
+        rustc_block.push_str(&format!(
+            r#"    {{ \
+        cat {input} | sed 's/fn main/fn actual{uniq}_main/' >{input}~ && mv {input}~ {input} ; \
+        {{ \
+          echo ; \
+          echo 'fn main() {{' ; \
+          echo '    use std::env::{{args_os, var_os}};' ; \
+          echo '    if var_os("{ENV_EXECUTE_BUILDRS}").is_none() {{' ; \
+          echo '        use std::process::{{Command, Stdio}};' ; \
+          echo '        let mut cmd = Command::new("{PKG}");' ; \
+          echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+          echo '        cmd.env("{ENV_EXECUTE_BUILDRS}", args_os().next().expect("{PKG}: getting buildrs arg0"));' ; \
+          echo '        let res = cmd.spawn().expect("{PKG}: spawning buildrs").wait().expect("{PKG}: running builds");' ; \
+          echo '        assert!(res.success());' ; \
+          echo '    }} else {{' ; \
+          echo '        actual{uniq}_main()' ; \
+          echo '    }}' ; \
+          echo '}}' ; \
+        }} >>{input} ; \
+    }} && \
+"#,
+            uniq = extrafn.replace('-', "_"),
+        ));
+    }
+
     rustc_block.push_str(&format!("    env CARGO={:?} \\\n", "$(which cargo)"));
 
     for (var, val) in env::vars().filter_map(|kv| fmap_env(kv, buildrs)) {
         rustc_block.push_str(&format!("        {var}={val} \\\n"));
     }
-    rustc_block.push_str("        CARGOGREEN=1 \\\n");
+    rustc_block.push_str(&format!("        {ENV}=1 \\\n"));
     // => cargo upstream issue "pass env vars read/wrote by build script on call to rustc"
     // TODO whence https://github.com/rust-lang/cargo/issues/14444#issuecomment-2305891696
     for var in &green.set_envs {
@@ -463,6 +670,7 @@ async fn do_wrap_rustc(
     Ok(())
 }
 
+#[derive(Debug)]
 struct NamedMount {
     name: Stage,
     src: Utf8PathBuf,
@@ -474,6 +682,7 @@ fn assemble_build_dependencies(
     crate_type: &str,
     emit: &str,
     externs: IndexSet<String>,
+    out_dir_var: Option<Utf8PathBuf>,
     target_path: &Utf8Path,
 ) -> Result<(Vec<NamedMount>, Vec<Md>)> {
     let mut mds = HashMap::<Utf8PathBuf, Md>::new(); // A file cache
@@ -492,6 +701,8 @@ fn assemble_build_dependencies(
     // https://rustc-dev-guide.rust-lang.org/backend/libs-and-metadata.html#rmeta
     // > [rmeta] is created if the --emit=metadata CLI option is used.
     let ext = if emit.contains("metadata") { "rmeta".to_owned() } else { ext };
+
+    let mut extern_mds_and_paths = vec![];
 
     for xtern in externs {
         trace!("❯ extern {xtern}");
@@ -514,44 +725,119 @@ fn assemble_build_dependencies(
         trace!("❯ short extern {xtern}");
         md.short_externs.insert(xtern.to_owned());
 
-        let short_extern_md = md_pather(xtern);
-        info!("checking (RO) extern's externs {short_extern_md}");
-        if short_extern_md.exists() {
-            let short_extern_md = get_or_read(&mut mds, &short_extern_md)?;
-            for transitive in short_extern_md.short_externs {
+        let extern_md = md_pather(xtern);
+        info!("checking (RO) extern's externs {extern_md}");
+        //TODO?drop exists check
+        if extern_md.exists() {
+            let extern_md = get_or_read(&mut mds, &extern_md)?;
+
+            for transitive in extern_md.short_externs {
                 let guard_md = get_or_read(&mut mds, &md_pather(&transitive))?;
                 let ext = if guard_md.is_proc_macro { "so" } else { &ext };
 
                 trace!("❯ extern lib{transitive}.{ext}");
                 all_externs.insert(format!("lib{transitive}.{ext}"));
 
-                trace!("❯ short extern {xtern}");
+                trace!("❯ short extern {transitive}");
                 md.short_externs.insert(transitive);
             }
+
+            // for buildrs_result in &extern_md.buildrs_results {
+            //     let br_md_path = md_pather(buildrs_result);
+            //     let br_md = get_or_read(&mut mds, &br_md_path)?;
+            //     for dep in &br_md.deps {
+            //         let mut dep_md_path = md_pather(&format!("*-{dep}"));
+            //         for (i, p) in glob::glob(dep_md_path.as_str()).unwrap().enumerate() {
+            //             assert_eq!(i, 0, ">>> {p:?}");
+            //             dep_md_path = p.unwrap().try_into().unwrap();
+            //         }
+            //         let dep_md = get_or_read(&mut mds, &dep_md_path)?;
+            //         extern_mds_and_paths.push((dep_md_path, dep_md));
+            //     }
+            //     extern_mds_and_paths.push((br_md_path, br_md));
+            // }
+            md.buildrs_results.extend(extern_md.buildrs_results);
         }
     }
 
     let mut mounts = Vec::with_capacity(all_externs.len());
-    let extern_mds_and_paths = all_externs
-        .into_iter()
-        .map(|xtern| {
-            let Some((extern_md_path, xtern_stage)) = toml_path_and_stage(&xtern, target_path)
-            else {
-                bail!("Unexpected extern name format: {xtern}")
-            };
-            let mount = NamedMount {
-                name: xtern_stage,
-                src: format!("/{xtern}").into(),
-                dst: target_path.join("deps").join(xtern),
-            };
-            mounts.push(mount);
+    for xtern in all_externs {
+        // let mut extern_mds_and_paths = all_externs
+        //     .into_iter()
+        //     .map(|xtern| {
+        let Some((extern_md_path, name)) = toml_path_and_stage(&xtern, target_path) else {
+            bail!("Unexpected extern name format: {xtern}")
+        };
+        let mount = NamedMount {
+            name,
+            src: format!("/{xtern}").into(),
+            dst: target_path.join("deps").join(xtern),
+        };
+        mounts.push(mount);
 
-            let extern_md = get_or_read(&mut mds, &extern_md_path)?;
-            Ok((extern_md_path, extern_md))
-        })
-        .collect::<Result<Vec<_>>>()?;
+        let extern_md = get_or_read(&mut mds, &extern_md_path)?;
+        // Ok((extern_md_path, extern_md))
+        extern_mds_and_paths.push((extern_md_path, extern_md));
+        // })
+        // .collect::<Result<Vec<_>>>()?;
+    }
+    if let Some(out_dir) = out_dir_var {
+        assert_eq!(out_dir.file_name(), Some("out"), "BUG: unexpected $OUT_DIR={out_dir} format");
+        // With OUT_DIR="/tmp/clis-vixargs_0-1-0/release/build/proc-macro-error-attr-de2f43c37de3bfce/out"
+        //   => proc-macro-error-attr-de2f43c37de3bfce
+        let z_dep = out_dir.parent().unwrap().file_name().unwrap();
 
-    let extern_md_paths = md.extend_from_externs(extern_mds_and_paths)?;
+        // md.short_externs.insert(z_dep.to_owned());
+        md.buildrs_results.insert(z_dep.to_owned());
+
+        let z_dep_md_path = md_pather(z_dep);
+        let z_dep_md = get_or_read(&mut mds, &z_dep_md_path)?;
+        let out_dir_mount =
+            NamedMount { name: z_dep_md.last_stage(), src: "/".into(), dst: out_dir };
+        info!("also mounting buildrs out dir {out_dir_mount:?} from {z_dep_md:?}");
+        mounts.push(out_dir_mount);
+
+        // info!("and adding that buildrs dep");
+        // // build_script_build-422764cb03f8177b
+        // assert_eq!(z_dep_md.deps.len(), 1);
+        // let x_dep = format!("build_script_build-{}", z_dep_md.deps[0]);
+        // let x_dep_md_path = md_pather(&x_dep);
+        // let x_dep_md = get_or_read(&mut mds, &x_dep_md_path)?;
+        // info!("and adding that buildrs dep: {x_dep_md:?}");
+        // extern_mds_and_paths.push((x_dep_md_path, x_dep_md));
+
+        // md.short_externs.insert(x_dep);
+
+        extern_mds_and_paths.push((z_dep_md_path, z_dep_md));
+    }
+
+    for buildrs_result in &md.buildrs_results {
+        let br_md_path = md_pather(buildrs_result);
+        let br_md = get_or_read(&mut mds, &br_md_path)?;
+        for dep in &br_md.deps {
+            let mut dep_md_path = md_pather(&format!("*-{dep}"));
+            for (i, p) in glob::glob(dep_md_path.as_str()).unwrap().enumerate() {
+                assert_eq!(i, 0, ">>> {p:?}");
+                dep_md_path = p.unwrap().try_into().unwrap();
+            }
+            let dep_md = get_or_read(&mut mds, &dep_md_path)?;
+
+            for dep in &dep_md.deps {
+                let mut dep_md_path = md_pather(&format!("*-{dep}"));
+                for (i, p) in glob::glob(dep_md_path.as_str()).unwrap().enumerate() {
+                    assert_eq!(i, 0, ">>> {p:?}");
+                    dep_md_path = p.unwrap().try_into().unwrap();
+                }
+                let dep_md = get_or_read(&mut mds, &dep_md_path)?;
+                extern_mds_and_paths.push((dep_md_path, dep_md));
+            }
+
+            extern_mds_and_paths.push((dep_md_path, dep_md));
+        }
+        extern_mds_and_paths.push((br_md_path, br_md));
+    }
+
+    let extern_md_paths = md.sort_deps(extern_mds_and_paths)?;
     info!("extern_md_paths: {} {extern_md_paths:?}", extern_md_paths.len());
 
     let mds = extern_md_paths
@@ -586,9 +872,22 @@ fn fmap_env((var, val): (String, String), buildrs: bool) -> Option<(String, Stri
             debug!("env is set: {var}={val}");
         }
         let val = match var.as_str() {
+            // "CARGO_PKG_DESCRIPTION" => "FIXME".to_owned(),
             "CARGO_MANIFEST_DIR" | "CARGO_MANIFEST_PATH" => {
                 rewrite_cratesio_index(Utf8Path::new(&val)).to_string()
             }
+            "TERM" => return None,
+            "RUSTC" => "rustc".to_owned(), // Rewrite host rustc so the base_image one can be used
+            // "CARGO_TARGET_DIR" | "CARGO_BUILD_TARGET_DIR" => {
+            //     virtual_target_dir(Utf8Path::new(&val)).to_string()
+            // }
+            // // TODO: a constant $CARGO_TARGET_DIR possible solution is to wrap build script as it runs,
+            // // ie. controlling all outputs. This should help: https://github.com/trailofbits/build-wrap/blob/d7f43b76e655e43755f68e28e9d729b4ed1dd115/src/wrapper.rs#L29
+            // //(dbcc)=> Dirty typenum v1.12.0: stale, https://github.com/rust-lang/cargo/blob/7987d4bfe683267ba179b42af55891badde3ccbf/src/cargo/core/compiler/fingerprint/mod.rs#L2030
+            // //=> /tmp/clis-dbcc_2-2-1/release/deps/typenum-32188cb0392f25b9.d
+            // "OUT_DIR" => virtual_target_dir(Utf8Path::new(&val)).to_string(),
+            "CARGO_TARGET_DIR" | "CARGO_BUILD_TARGET_DIR" => return None,
+            "OUT_DIR" => val,
             _ => val,
         };
         return Some((var, val));
@@ -697,23 +996,6 @@ fn toml_path_and_stage(xtern: &str, target_path: &Utf8Path) -> Option<(Utf8PathB
     pa.zip(st)
 }
 
-#[test]
-fn crate_out_name_for_some_pkg() {
-    let crate_out = Utf8Path::new("/home/maison/target/debug/build/quote-adce79444856d618/out");
-    let res = crate_out_name(crate_out);
-    assert_eq!(res, "crate_out-adce79444856d618".try_into().unwrap());
-}
-
-#[must_use]
-fn crate_out_name(name: &Utf8Path) -> Stage {
-    name.parent()
-        .and_then(|x| x.file_name())
-        .and_then(|x| x.rsplit_once('-'))
-        .map(|(_, x)| Stage::crate_out(x))
-        .expect("PROOF: suffix is /out")
-        .expect("PROOF: out dir path format")
-}
-
 fn copy_dir_all(src: &Utf8Path, dst: &Utf8Path) -> Result<()> {
     debug!("copy_dir_all: checking (RO) {dst}");
     if dst.exists() {
@@ -754,3 +1036,4 @@ fn copy_dir_all(src: &Utf8Path, dst: &Utf8Path) -> Result<()> {
     }
     Ok(())
 }
+//

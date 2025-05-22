@@ -40,6 +40,7 @@ pub(crate) async fn into_stage(
 
     // On using tar: https://github.com/rust-lang/cargo/issues/3577#issuecomment-890693359
 
+    //TODO: move extracting to lower stage
     let block = format!(
         r#"
 FROM scratch AS {stage}
