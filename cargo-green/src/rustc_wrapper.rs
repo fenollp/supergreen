@@ -821,6 +821,17 @@ fn assemble_build_dependencies(
                 dep_md_path = p.unwrap().try_into().unwrap();
             }
             let dep_md = get_or_read(&mut mds, &dep_md_path)?;
+
+            for dep in &dep_md.deps {
+                let mut dep_md_path = md_pather(&format!("*-{dep}"));
+                for (i, p) in glob::glob(dep_md_path.as_str()).unwrap().enumerate() {
+                    assert_eq!(i, 0, ">>> {p:?}");
+                    dep_md_path = p.unwrap().try_into().unwrap();
+                }
+                let dep_md = get_or_read(&mut mds, &dep_md_path)?;
+                extern_mds_and_paths.push((dep_md_path, dep_md));
+            }
+
             extern_mds_and_paths.push((dep_md_path, dep_md));
         }
         extern_mds_and_paths.push((br_md_path, br_md));
