@@ -402,8 +402,6 @@ async fn do_wrap_rustc(
 
     let incremental = green.incremental.then_some(incremental).flatten();
 
-    // let crate_out = crate_out_dir(out_dir_var)?;
-
     let mut md = Md::new(&extrafn[1..]); // Drops leading dash
     md.push_block(&RUST, green.image.base_image_inline.clone().unwrap());
 
