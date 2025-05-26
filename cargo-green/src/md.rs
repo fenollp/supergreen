@@ -16,7 +16,7 @@ use crate::{
 };
 
 #[cfg_attr(test, derive(Default))]
-#[derive(Clone, Deserialize, Serialize)]
+#[derive(Debug, Clone, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub(crate) struct Md {
     pub(crate) this: String,
@@ -84,7 +84,6 @@ impl Md {
         fs::write(path, md_ser).map_err(|e| anyhow!("Failed creating {path}: {e}"))?;
 
         if maybe_log().is_some() {
-            info!("Md: {path}");
             match fs::read_to_string(path) {
                 Ok(data) => data,
                 Err(e) => e.to_string(),

@@ -351,7 +351,7 @@ async fn do_wrap_rustc(
         .map(|(name, uri)| BuildContext { name, uri })
         .inspect(|BuildContext { name, uri }| info!("loading {name:?}: {uri}"))
         .collect();
-    info!("loading {} Docker contexts", md.contexts.len());
+    info!("loading {} build contexts", md.contexts.len());
 
     let (mounts, mds) =
         assemble_build_dependencies(&mut md, &crate_type, &emit, externs, &target_path)?;
@@ -369,7 +369,7 @@ async fn do_wrap_rustc(
     for (var, val) in env::vars().filter_map(|kv| fmap_env(kv, buildrs)) {
         rustc_block.push_str(&format!("        {var}={val} \\\n"));
     }
-    rustc_block.push_str("        CARGOGREEN=1 \\\n");
+    rustc_block.push_str(&format!("        {ENV}=1 \\\n"));
     // => cargo upstream issue "pass env vars read/wrote by build script on call to rustc"
     // TODO whence https://github.com/rust-lang/cargo/issues/14444#issuecomment-2305891696
     for var in &green.set_envs {
@@ -463,6 +463,7 @@ async fn do_wrap_rustc(
     Ok(())
 }
 
+#[derive(Debug)]
 struct NamedMount {
     name: Stage,
     src: Utf8PathBuf,
@@ -514,20 +515,18 @@ fn assemble_build_dependencies(
         trace!("❯ short extern {xtern}");
         md.short_externs.insert(xtern.to_owned());
 
-        let short_extern_md = md_pather(xtern);
-        info!("checking (RO) extern's externs {short_extern_md}");
-        if short_extern_md.exists() {
-            let short_extern_md = get_or_read(&mut mds, &short_extern_md)?;
-            for transitive in short_extern_md.short_externs {
-                let guard_md = get_or_read(&mut mds, &md_pather(&transitive))?;
-                let ext = if guard_md.is_proc_macro { "so" } else { &ext };
+        let extern_md = md_pather(xtern);
+        info!("checking (RO) extern's externs {extern_md}");
+        let extern_md = get_or_read(&mut mds, &extern_md)?;
+        for transitive in extern_md.short_externs {
+            let guard_md = get_or_read(&mut mds, &md_pather(&transitive))?;
+            let ext = if guard_md.is_proc_macro { "so" } else { &ext };
 
-                trace!("❯ extern lib{transitive}.{ext}");
-                all_externs.insert(format!("lib{transitive}.{ext}"));
+            trace!("❯ extern lib{transitive}.{ext}");
+            all_externs.insert(format!("lib{transitive}.{ext}"));
 
-                trace!("❯ short extern {xtern}");
-                md.short_externs.insert(transitive);
-            }
+            trace!("❯ short extern {transitive}");
+            md.short_externs.insert(transitive);
         }
     }
 
@@ -589,6 +588,7 @@ fn fmap_env((var, val): (String, String), buildrs: bool) -> Option<(String, Stri
             "CARGO_MANIFEST_DIR" | "CARGO_MANIFEST_PATH" => {
                 rewrite_cratesio_index(Utf8Path::new(&val)).to_string()
             }
+            "TERM" => return None,
             _ => val,
         };
         return Some((var, val));
