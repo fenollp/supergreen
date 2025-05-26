@@ -294,7 +294,7 @@ async fn do_wrap_rustc(
 
     let cwd = if let Some((name, src, dst)) = input_mount.as_ref() {
         rustc_block.push_str("RUN \\\n");
-        let source = src.map(|src| format!(",source={src}")).unwrap_or_default();
+        let source = src.as_deref().map(|src| format!(",source={src}")).unwrap_or_default();
         rustc_block.push_str(&format!("  --mount=from={name}{source},dst={dst} \\\n"));
 
         None

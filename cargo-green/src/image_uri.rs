@@ -4,7 +4,7 @@ use anyhow::{bail, Error, Result};
 use nutype::nutype;
 
 pub(crate) static SYNTAX: LazyLock<ImageUri> =
-    LazyLock::new(|| ImageUri::try_new("docker-image://docker.io/docker/dockerfile:1").unwrap());
+    LazyLock::new(|| ImageUri::try_new("docker-image://docker.io/docker/dockerfile:1.17").unwrap());
 
 #[nutype(
     default = SYNTAX.as_str(),
