@@ -551,7 +551,7 @@ fn assemble_build_dependencies(
         })
         .collect::<Result<Vec<_>>>()?;
 
-    let extern_md_paths = md.extend_from_externs(extern_mds_and_paths)?;
+    let extern_md_paths = md.sort_deps(extern_mds_and_paths)?;
     info!("extern_md_paths: {} {extern_md_paths:?}", extern_md_paths.len());
 
     let mds = extern_md_paths
