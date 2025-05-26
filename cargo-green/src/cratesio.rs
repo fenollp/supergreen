@@ -2,7 +2,7 @@ use anyhow::{anyhow, Result};
 use camino::{Utf8Path, Utf8PathBuf};
 use log::{debug, info};
 
-use crate::stage::{Stage, RST};
+use crate::stage::Stage;
 
 pub(crate) const CRATESIO_INDEX: &str = "index.crates.io-0000000000000000";
 
@@ -17,7 +17,7 @@ pub(crate) async fn into_stage(
     name: &str,
     version: &str,
     krate_manifest_dir: &Utf8Path,
-) -> Result<(Stage, &'static str, Utf8PathBuf, String)> {
+) -> Result<(Stage, String, Utf8PathBuf, String)> {
     let stage = Stage::cratesio(name, version)?;
 
     let cratesio_extracted =
@@ -34,45 +34,25 @@ pub(crate) async fn into_stage(
         .map_err(|e| anyhow!("Failed reading {cratesio_cached}: {e}"))?;
     debug!("crate sha256 for {stage}: {cratesio_hash}");
 
-    const SRC: &str = "/extracted";
-
     let add = add_step(name, version, &cratesio_hash);
-
-    // On using tar: https://github.com/rust-lang/cargo/issues/3577#issuecomment-890693359
 
     let block = format!(
         r#"
 FROM scratch AS {stage}
 {add}
-SHELL ["/usr/bin/dash", "-eux", "-c"]
-RUN \
-  --mount=from={RST},src=/lib,dst=/lib \
-  --mount=from={RST},src=/lib64,dst=/lib64 \
-  --mount=from={RST},src=/usr,dst=/usr \
-    mkdir {SRC} \
- && tar zxf /crate --strip-components=1 -C {SRC}
 "#,
         add = add.trim(),
     );
 
-    // TODO: ask upstream `buildx/buildkit+podman` for a way to drop that RUN
-    //  => TODO: impl --unpack: https://github.com/moby/buildkit/issues/4907
-
-    // Otherwise:
-
-    // TODO: ask upstream `rustc` if it could be able to take a .crate archive as input
-    //=> would remove that `RUN tar` step + stage dep on RUST (=> scratch)
-    //  => https://github.com/rust-lang/cargo/issues/14373
-
-    Ok((stage, SRC, cratesio_extracted, block))
+    Ok((stage, format!("/{name}-{version}"), cratesio_extracted, block))
 }
 
 #[must_use]
 pub(crate) fn add_step(name: &str, version: &str, hash: &str) -> String {
     format!(
         r#"
-ADD --chmod=0664 --checksum=sha256:{hash} \
-  https://static.crates.io/crates/{name}/{name}-{version}.crate /crate
+ADD --chmod=0664 --unpack=true --checksum=sha256:{hash} \
+  https://static.crates.io/crates/{name}/{name}-{version}.crate /
 "#
     )
 }
