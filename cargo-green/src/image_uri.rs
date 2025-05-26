@@ -4,10 +4,11 @@ use anyhow::{bail, Error, Result};
 use nutype::nutype;
 
 pub(crate) static SYNTAX_PREFIX: LazyLock<ImageUri> =
-    LazyLock::new(|| ImageUri::try_new("docker-image://docker.io/docker/dockerfile:1").unwrap());
+    // LazyLock::new(|| ImageUri::try_new("docker-image://docker.io/docker/dockerfile:1").unwrap());
+    LazyLock::new(|| ImageUri::try_new("docker-image://docker.io/docker/dockerfile").unwrap());
 
 pub(crate) static SYNTAX_DEFAULT: LazyLock<ImageUri> = LazyLock::new(|| {
-    ImageUri::try_new("docker-image://docker.io/docker/dockerfile:1.16-labs").unwrap()
+    ImageUri::try_new("docker-image://docker.io/docker/dockerfile-upstream:master-labs").unwrap()
 });
 
 #[nutype(
