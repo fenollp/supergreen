@@ -3,11 +3,15 @@ use std::sync::LazyLock;
 use anyhow::{bail, Error, Result};
 use nutype::nutype;
 
-pub(crate) static SYNTAX: LazyLock<ImageUri> =
+pub(crate) static SYNTAX_PREFIX: LazyLock<ImageUri> =
     LazyLock::new(|| ImageUri::try_new("docker-image://docker.io/docker/dockerfile:1").unwrap());
 
+pub(crate) static SYNTAX_DEFAULT: LazyLock<ImageUri> = LazyLock::new(|| {
+    ImageUri::try_new("docker-image://docker.io/docker/dockerfile:1.16-labs").unwrap()
+});
+
 #[nutype(
-    default = SYNTAX.as_str(),
+    default = SYNTAX_DEFAULT.as_str(),
     validate(error = Error, with = docker_image_uri),
     derive(Clone, Debug, Default, Display, Deref, TryFrom, Serialize, Deserialize, Eq, PartialEq, Hash))
 ]
@@ -38,7 +42,7 @@ impl ImageUri {
 
     #[must_use]
     pub(crate) fn is_empty(&self) -> bool {
-        self.as_str() == SYNTAX.as_str()
+        self.as_str() == SYNTAX_DEFAULT.as_str()
     }
 
     #[must_use]
@@ -48,7 +52,7 @@ impl ImageUri {
 
     #[must_use]
     pub(crate) fn stable_syntax_frontend(&self) -> bool {
-        self.starts_with(SYNTAX.as_str())
+        self.starts_with(SYNTAX_PREFIX.as_str())
     }
 
     #[must_use]
@@ -88,4 +92,9 @@ impl ImageUri {
         let colons = self.noscheme().chars().filter(|c| *c == ':').count();
         colons == if self.locked() { 2 } else { 1 }
     }
+}
+
+#[test]
+fn syntax_frontend() {
+    assert!(SYNTAX_DEFAULT.stable_syntax_frontend());
 }

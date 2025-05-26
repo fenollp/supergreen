@@ -24,7 +24,7 @@ Reads envs (show values with `cargo green supergreen env`)
 * `$CARGOGREEN_REMOTE`: *reserved for now*
 * `$CARGOGREEN_RUNNER`: use `docker` or `podman` or `none` as build runner
 * `$CARGOGREEN_SET_ENVS`: `set-envs` TOML setting
-* `$CARGOGREEN_SYNTAX`: use a `dockerfile:1`-derived BuildKit frontend
+* `$CARGOGREEN_SYNTAX`: use a [`dockerfile:1`](https://hub.docker.com/r/docker/dockerfile)-derived BuildKit frontend
 * `$CARGOGREEN_WITH_NETWORK`: `with-network` TOML setting
 
 Also [passes these envs through to the runner](https://docs.docker.com/engine/reference/commandline/cli/#environment-variables):

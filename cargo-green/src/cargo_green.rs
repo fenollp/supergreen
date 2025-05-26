@@ -15,7 +15,7 @@ use crate::{
     ext::ShowCmd,
     green::Green,
     hash,
-    image_uri::{ImageUri, SYNTAX},
+    image_uri::{ImageUri, SYNTAX_DEFAULT, SYNTAX_PREFIX},
     lockfile::{find_lockfile, locked_crates},
     logging::{self, maybe_log},
     pwd,
@@ -53,7 +53,7 @@ pub(crate) async fn main() -> Result<Green> {
     green.syntax = fetch_digest(&green.syntax).await?;
     if !green.syntax.stable_syntax_frontend() {
         // Enforce a known stable syntax + allow pinning to digest
-        bail!("${ENV_SYNTAX} must be a digest of {}", SYNTAX.as_str())
+        bail!("${ENV_SYNTAX} must be a digest of {}", SYNTAX_PREFIX.as_str())
     }
 
     if green.builder_image.is_some() {
@@ -97,7 +97,7 @@ pub(crate) async fn main() -> Result<Green> {
     green.image.with_network = with_network;
     green.image.base_image_inline = Some(finalized_block.trim().to_owned());
 
-    assert!(!green.image.base_image.is_empty(), "BUG: base_image set to {SYNTAX:?}");
+    assert!(!green.image.base_image.is_empty(), "BUG: base_image set to {SYNTAX_DEFAULT:?}");
 
     if let Ok(val) = env::var(ENV_WITH_NETWORK) {
         green.image.with_network = val.parse().map_err(|e| anyhow!("${ENV_WITH_NETWORK} {e}"))?;
