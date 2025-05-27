@@ -15,17 +15,17 @@ use crate::{
     PKG,
 };
 
-#[cfg_attr(test, derive(Default))]
 #[derive(Debug, Clone, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub(crate) struct Md {
-    pub(crate) this: String,
+    this: MdId,
 
     #[serde(default, skip_serializing_if = "IndexSet::is_empty")]
-    pub(crate) deps: IndexSet<String>,
+    deps: IndexSet<MdId>,
 
     #[serde(default, skip_serializing_if = "IndexSet::is_empty")]
     pub(crate) short_externs: IndexSet<String>,
+
     #[serde(default, skip_serializing_if = "<&bool as std::ops::Not>::not")]
     pub(crate) is_proc_macro: bool,
 
@@ -46,7 +46,7 @@ impl Md {
     #[must_use]
     pub(crate) fn new(this: &str) -> Self {
         Self {
-            this: this.to_owned(),
+            this: MdId(this.to_owned()),
             deps: [].into(),
             short_externs: [].into(),
             is_proc_macro: false,
@@ -142,21 +142,24 @@ impl Md {
         let mut dag: Vec<_> = mds
             .into_iter()
             .map(|(md_path, md)| {
-                let this = dec(&md.this);
+                let this = md.this.as_u64();
                 self.deps.insert(md.this);
                 self.contexts.extend(md.contexts);
-                Node::new(this, decs(&md.deps), md_path)
+                Node::new(this, md.deps.as_u64s(), md_path)
             })
             .collect();
-        let this = dec(&self.this);
-        dag.push(Node::new(this, decs(&self.deps), "".into()));
+        let this = self.this.as_u64();
+        dag.push(Node::new(this, self.deps.as_u64s(), "".into()));
 
-        let mut md_paths = sort(&dag, this).map_err(|e| match e {
-            TopsortError::TargetNotFound(x) => {
-                anyhow!("Failed topolosorting {}: {} not found", self.this, enc(x))
-            }
-            TopsortError::CyclicDependency(x) => {
-                anyhow!("Failed topolosorting {}: cyclic {}", self.this, enc(x))
+        let mut md_paths = sort(&dag, this).map_err(|e| {
+            let this = &self.this.0;
+            match e {
+                TopsortError::TargetNotFound(x) => {
+                    anyhow!("Failed topolosorting {this}: {} not found", MdId::from_u64(x).0)
+                }
+                TopsortError::CyclicDependency(x) => {
+                    anyhow!("Failed topolosorting {this}: cyclic {}", MdId::from_u64(x).0)
+                }
             }
         })?;
         let last = md_paths.pop();
@@ -183,29 +186,6 @@ struct NamedStage {
     script: String,
 }
 
-#[must_use]
-fn enc(metadata: u64) -> String {
-    format!("{metadata:#x}").trim_start_matches("0x").to_owned()
-}
-
-#[must_use]
-fn dec(x: impl AsRef<str>) -> u64 {
-    u64::from_str_radix(x.as_ref(), 16).expect("16-digit hex str")
-}
-
-#[must_use]
-fn decs(xs: &IndexSet<String>) -> Vec<u64> {
-    xs.into_iter().map(dec).collect()
-}
-
-#[test]
-fn dec_decs() {
-    let as_hex = "dab737da4696ee62".to_owned();
-    let as_dec = 15760126831633034850;
-    assert_eq!(dec(&as_hex), as_dec);
-    assert_eq!(enc(as_dec), format!("{as_hex}"));
-}
-
 #[derive(Debug, Clone, Serialize, Deserialize, Eq, PartialEq, Ord, PartialOrd, Hash)]
 pub(crate) struct BuildContext {
     pub(crate) name: Stage,
@@ -213,11 +193,46 @@ pub(crate) struct BuildContext {
     pub(crate) uri: Utf8PathBuf,
 }
 
+#[derive(Debug, Clone, Deserialize, Serialize, Eq, PartialEq, Hash)]
+struct MdId(String);
+
+impl MdId {
+    #[must_use]
+    fn from_u64(metadata: u64) -> Self {
+        Self(format!("{metadata:#x}").trim_start_matches("0x").to_owned())
+    }
+
+    #[must_use]
+    fn as_u64(&self) -> u64 {
+        u64::from_str_radix(self.0.as_ref(), 16).expect("16-digit hex str")
+    }
+}
+
+trait MdIdsExt {
+    #[must_use]
+    fn as_u64s(&self) -> Vec<u64>;
+}
+
+impl MdIdsExt for IndexSet<MdId> {
+    fn as_u64s(&self) -> Vec<u64> {
+        self.into_iter().map(MdId::as_u64).collect()
+    }
+}
+
+#[test]
+fn dec_decs() {
+    let as_hex = MdId("dab737da4696ee62".to_owned());
+    let as_dec = 15760126831633034850;
+    assert_eq!(as_hex.as_u64(), as_dec);
+    assert_eq!(MdId::from_u64(as_dec), as_hex);
+    assert_eq!(MdId::from_u64(MdId::from_u64(as_dec).as_u64()).as_u64(), as_dec);
+}
+
 #[test]
 fn md_ser() {
     let md = Md {
-        this: "711ba64e1183a234".to_owned(),
-        deps: ["81529f4c2380d9ec".to_owned(), "88a4324b2aff6db9".to_owned()].into(),
+        this: MdId("711ba64e1183a234".to_owned()),
+        deps: [MdId("81529f4c2380d9ec".to_owned()), MdId("88a4324b2aff6db9".to_owned())].into(),
         short_externs: [
             "pico_args-b8c41dbf50ca5479".to_owned(),
             "shlex-96a741f581f4126a".to_owned(),
@@ -270,8 +285,8 @@ contexts = [
 stages = []
 "#[1..];
 
-    let this = "9494aa6093cd94c9".to_owned();
-    let deps = ["0dc1fe2644e3176a".to_owned()].into();
+    let this = MdId("9494aa6093cd94c9".to_owned());
+    let deps = [MdId("0dc1fe2644e3176a".to_owned())].into();
     let contexts = [
         BuildContext {
             name: "input_src_lib_rs--rustversion-1.0.9".try_into().unwrap(),

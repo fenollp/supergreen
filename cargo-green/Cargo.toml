@@ -9,7 +9,14 @@ name = "cargo-green"
 repository.workspace = true
 version.workspace = true
 
-#[package.metadata.green]
+# [package.metadata.green]
+# base-image = "docker-image://blabla"
+# base-image-inline = """
+# FROM blabla AS rust-base
+# RUN exit 42
+# """
+# # base-image-inline.workspace = true
+# # set-envs = [ "AW" ]
 
 # [profile.release]
 # codegen-units = 1
