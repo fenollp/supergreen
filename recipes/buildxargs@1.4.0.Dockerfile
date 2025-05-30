@@ -169,6 +169,80 @@ RUN \
 FROM scratch AS out-39127c16f4d70192
 COPY --from=dep-b-buildxargs-1.4.0-39127c16f4d70192 /tmp/cargo-green--hack-caching/release/deps/*-39127c16f4d70192* /
 
+## this = "39127c16f4d70192"
+## deps = [
+##     "d78f4de4a17f92cd",
+##     "b8c41dbf50ca5479",
+##     "96a741f581f4126a",
+## ]
+## short_externs = [
+##     "buildxargs-d78f4de4a17f92cd",
+##     "pico_args-b8c41dbf50ca5479",
+##     "shlex-96a741f581f4126a",
+## ]
+## 
+## [[stages]]
+## name = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.84.0-slim@sha256:0ec205a9abb049604cb085f2fdf7630f1a31dad1f7ad4986154a56501fb7ca77 AS rust-base"
+## 
+## [[stages]]
+## name = "cratesio-buildxargs-1.4.0"
+## script = '''
+## FROM scratch AS cratesio-buildxargs-1.4.0
+## ADD --chmod=0664 --checksum=sha256:56c336e07f5bce0be9c8d586b0fd1093827363c460be439a81731a9e2c28dc3f \
+##   https://static.crates.io/crates/buildxargs/buildxargs-1.4.0.crate /crate
+## SHELL ["/usr/bin/dash", "-eux", "-c"]
+## RUN \
+##   --mount=from=rust-base,src=/lib,dst=/lib \
+##   --mount=from=rust-base,src=/lib64,dst=/lib64 \
+##   --mount=from=rust-base,src=/usr,dst=/usr \
+##     mkdir /extracted \
+##  && tar zxf /crate --strip-components=1 -C /extracted'''
+## 
+## [[stages]]
+## name = "dep-b-buildxargs-1.4.0-39127c16f4d70192"
+## script = '''
+## FROM rust-base AS dep-b-buildxargs-1.4.0-39127c16f4d70192
+## SHELL ["/bin/bash", "-eux", "-c"]
+## WORKDIR /tmp/cargo-green--hack-caching/release/deps
+## RUN \
+##   --mount=from=cratesio-buildxargs-1.4.0,source=/extracted,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/buildxargs-1.4.0 \
+##   --mount=from=out-d78f4de4a17f92cd,dst=/tmp/cargo-green--hack-caching/release/deps/libbuildxargs-d78f4de4a17f92cd.rlib,source=/libbuildxargs-d78f4de4a17f92cd.rlib \
+##   --mount=from=out-b8c41dbf50ca5479,dst=/tmp/cargo-green--hack-caching/release/deps/libpico_args-b8c41dbf50ca5479.rlib,source=/libpico_args-b8c41dbf50ca5479.rlib \
+##   --mount=from=out-96a741f581f4126a,dst=/tmp/cargo-green--hack-caching/release/deps/libshlex-96a741f581f4126a.rlib,source=/libshlex-96a741f581f4126a.rlib \
+##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
+##     env CARGO="$(which cargo)" \
+##         CARGO_BIN_NAME="buildxargs" \
+##         CARGO_CRATE_NAME="buildxargs" \
+##         CARGO_MANIFEST_DIR="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/buildxargs-1.4.0" \
+##         CARGO_MANIFEST_PATH="/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/buildxargs-1.4.0/Cargo.toml" \
+##         CARGO_PKG_AUTHORS="Pierre Fenoll <pierrefenoll@gmail.com>" \
+##         CARGO_PKG_DESCRIPTION="xargs for BuildKit with docker buildx bake" \
+##         CARGO_PKG_HOMEPAGE= \
+##         CARGO_PKG_LICENSE="MIT" \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME="buildxargs" \
+##         CARGO_PKG_README="README.md" \
+##         CARGO_PKG_REPOSITORY="https://github.com/fenollp/buildxargs" \
+##         CARGO_PKG_RUST_VERSION= \
+##         CARGO_PKG_VERSION="1.4.0" \
+##         CARGO_PKG_VERSION_MAJOR="1" \
+##         CARGO_PKG_VERSION_MINOR="4" \
+##         CARGO_PKG_VERSION_PATCH="0" \
+##         CARGO_PKG_VERSION_PRE= \
+##         CARGO_PRIMARY_PACKAGE="1" \
+##         CARGO_SBOM_PATH= \
+##         CARGOGREEN=1 \
+##       rustc '--crate-name' 'buildxargs' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--diagnostic-width' '190' '--crate-type' 'bin' '--emit' 'dep-info,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=afebe456ed549d51' '-C' 'extra-filename=-39127c16f4d70192' '--out-dir' '/tmp/cargo-green--hack-caching/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/cargo-green--hack-caching/release/deps' '--extern' 'buildxargs=/tmp/cargo-green--hack-caching/release/deps/libbuildxargs-d78f4de4a17f92cd.rlib' '--extern' 'pico_args=/tmp/cargo-green--hack-caching/release/deps/libpico_args-b8c41dbf50ca5479.rlib' '--extern' 'shlex=/tmp/cargo-green--hack-caching/release/deps/libshlex-96a741f581f4126a.rlib' '--cap-lints' 'allow' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/buildxargs-1.4.0/src/main.rs \
+##         1> >(sed 's/^/::STDOUT:: /') \
+##         2> >(sed 's/^/::STDERR:: /' >&2)'''
+## 
+## [[stages]]
+## name = "out-39127c16f4d70192"
+## script = """
+## FROM scratch AS out-39127c16f4d70192
+## COPY --from=dep-b-buildxargs-1.4.0-39127c16f4d70192 /tmp/cargo-green--hack-caching/release/deps/*-39127c16f4d70192* /"""
+
 # Pipe this file to:
 # DOCKER_BUILDKIT="1" \
 #   docker --debug build --network=none --platform=local --pull=false --target=out-39127c16f4d70192 --output=type=local,dest=/tmp/cargo-green--hack-caching/release/deps -

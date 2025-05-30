@@ -1,7 +1,6 @@
 use std::{
     env, fmt,
-    fs::{self, OpenOptions},
-    io::prelude::*,
+    fs::{self},
     mem,
     process::{Output, Stdio},
     str::FromStr,
@@ -197,32 +196,34 @@ pub(crate) async fn fetch_digest(img: &ImageUri) -> Result<ImageUri> {
     Ok(img.lock(&digest))
 }
 
-#[derive(Debug, Default)]
+#[derive(Debug)]
 pub(crate) struct Effects {
+    pub(crate) call: String,
+    pub(crate) envs: String,
     pub(crate) written: Vec<Utf8PathBuf>,
 }
 
 pub(crate) async fn build_cacheonly(
     green: &Green,
-    dockerfile_path: &Utf8Path,
+    containerfile_path: &Utf8Path,
     target: Stage,
 ) -> Result<()> {
-    build(green, dockerfile_path, target, &[].into(), None).await.map(|_| ())
+    build(green, containerfile_path, target, &[].into(), None).await.map(|_| ())
 }
 
 pub(crate) async fn build_out(
     green: &Green,
-    dockerfile_path: &Utf8Path,
+    containerfile_path: &Utf8Path,
     target: Stage,
     contexts: &IndexSet<BuildContext>,
     out_dir: &Utf8Path,
 ) -> Result<Effects> {
-    build(green, dockerfile_path, target, contexts, Some(out_dir)).await
+    build(green, containerfile_path, target, contexts, Some(out_dir)).await
 }
 
 async fn build(
     green: &Green,
-    dockerfile_path: &Utf8Path,
+    containerfile_path: &Utf8Path,
     target: Stage,
     contexts: &IndexSet<BuildContext>,
     out_dir: Option<&Utf8Path>,
@@ -359,17 +360,17 @@ async fn build(
         .map(|(k, v)| format!("{}={:?}", k.to_string_lossy(), v.unwrap_or_default()))
         .collect();
     let envs = envs.join(" ");
-    info!("Starting {call} (env: {envs}) with {dockerfile_path}");
+    info!("Starting {call} (env: {envs}) with {containerfile_path}");
 
     let start = Instant::now();
     let mut child = cmd.spawn().map_err(|e| anyhow!("Failed starting {call}: {e}"))?;
 
     spawn({
-        let dockerfile_path = dockerfile_path.to_owned();
+        let containerfile_path = containerfile_path.to_owned();
         let mut stdin = child.stdin.take().expect("started");
         async move {
             // TODO: buffered IO
-            let contents = fs::read_to_string(&dockerfile_path).expect("Piping Dockerfile");
+            let contents = fs::read_to_string(&containerfile_path).expect("Piping Dockerfile");
             stdin.write_all(contents.as_bytes()).await.expect("Writing to STDIN");
         }
     });
@@ -400,7 +401,12 @@ async fn build(
     let status = res.map_err(|e| anyhow!("Failed calling {call}: {e}"))?;
     info!("build ran in {secs:?}: {status}");
 
-    let mut effects = Effects::default();
+    let mut effects = Effects {
+        call: call[1..(call.len() - 1)].to_owned(), // drops decorative backticks
+        envs,
+        written: vec![],
+    };
+
     if let Some((out_task, err_task)) = handles {
         let longish = Duration::from_secs(2);
         match join!(timeout(longish, out_task), timeout(longish, err_task)) {
@@ -441,27 +447,6 @@ async fn build(
         let stdout = String::from_utf8_lossy(&stdout);
         let stderr = String::from_utf8_lossy(&stderr);
         bail!("Runner info: {status} [STDOUT {stdout}] [STDERR {stderr}]")
-    }
-
-    // NOTE: using $CARGO_PRIMARY_PACKAGE still makes >1 hits in rustc calls history: lib + bin, at least.
-    if let Some((_, path)) = env::var("CARGO_PRIMARY_PACKAGE").ok().zip(green.final_path.as_deref())
-    {
-        info!("Writing final Dockerfile to {path}");
-
-        //TODO: use an atomic mv
-
-        let _ = fs::copy(dockerfile_path, path)?;
-
-        let mut file = OpenOptions::new().append(true).open(path)?;
-        writeln!(file)?;
-        write!(file, "# Pipe this file to")?;
-        if !contexts.is_empty() {
-            //TODO: or additional-build-arguments
-            write!(file, " (not portable due to usage of local build contexts)")?;
-        }
-        writeln!(file, ":\n# {envs} \\")?;
-        let call = &call[1..(call.len() - 1)]; // drops decorative backticks
-        writeln!(file, "#   {call}")?;
     }
 
     Ok(effects)
