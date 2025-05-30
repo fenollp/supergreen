@@ -1,8 +1,9 @@
 use std::{
     collections::{BTreeMap, HashMap},
     env,
-    fs::{self},
+    fs::{self, OpenOptions},
     future::Future,
+    io::Write,
 };
 
 use anyhow::{anyhow, bail, Result};
@@ -440,31 +441,73 @@ async fn do_wrap_rustc(
         info!("Runner disabled, falling back...");
         return fallback.await;
     }
-    let build = |stage, dir| build_out(&green, &containerfile_path, stage, &md.contexts, dir);
+
+    let contexts = &md.contexts;
+    let build = |stage, dir| build_out(&green, &containerfile_path, stage, contexts, dir);
     match build(out_stage, &out_dir).await {
-        Ok(Effects { written }) => {
+        Ok(Effects { call, envs, written }) => {
             if !written.is_empty() {
                 md.writes = written;
                 info!("re-opening (RW) crate's md {md_path}");
                 md.write_to(&md_path)?;
             }
 
-            if let Some(incremental) = incremental {
-                if let Err(e) = build(incremental_stage, &incremental).await {
-                    warn!("Error building incremental data: {e}");
-                }
-            }
-            Ok(())
+            maybe_write_final_path(&green, &containerfile_path, &md_path, contexts, &call, &envs)
+                .map_err(|e| anyhow!("Failed producing final path: {e}"))?;
         }
         Err(e) if debug.is_none() => {
             warn!("Falling back due to {e}");
             // Bubble up actual error & outputs
-            fallback
+            return fallback
                 .await
-                .inspect(|()| eprintln!("BUG: {PKG} should not have encountered this error: {e}"))
+                .inspect(|()| eprintln!("BUG: {PKG} should not have encountered this error: {e}"));
         }
-        Err(e) => Err(e),
+        Err(e) => return Err(e),
     }
+
+    if let Some(incremental) = incremental {
+        if let Err(e) = build(incremental_stage, &incremental).await {
+            warn!("Error building incremental data: {e}");
+            return Err(e);
+        }
+    }
+
+    Ok(())
+}
+
+// NOTE: using $CARGO_PRIMARY_PACKAGE still makes >1 hits in rustc calls history: lib + bin, at least.
+fn maybe_write_final_path(
+    green: &Green,
+    containerfile_path: &Utf8Path,
+    md_path: &Utf8Path,
+    contexts: &IndexSet<BuildContext>,
+    call: &str,
+    envs: &str,
+) -> Result<()> {
+    if let Some(path) = green.final_path.as_deref() {
+        if env::var("CARGO_PRIMARY_PACKAGE").is_ok() {
+            info!("writing (RW) final path {path}");
+
+            let _ = fs::copy(containerfile_path, path)?; //TODO: use an atomic mv
+
+            let mut file = OpenOptions::new().append(true).open(path)?;
+            writeln!(file)?;
+
+            for md_line in fs::read_to_string(md_path)?.lines() {
+                writeln!(file, "## {md_line}")?;
+            }
+            writeln!(file)?;
+
+            write!(file, "# Pipe this file to")?;
+            if !contexts.is_empty() {
+                //TODO: or additional-build-arguments
+                write!(file, " (not portable due to usage of local build contexts)")?;
+            }
+            writeln!(file, ":\n# {envs} \\")?;
+            writeln!(file, "#   {call}")?;
+        }
+    }
+    Ok(())
 }
 
 #[derive(Debug)]
