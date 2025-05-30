@@ -33,6 +33,9 @@ pub(crate) struct Md {
     pub(crate) contexts: IndexSet<BuildContext>,
 
     stages: IndexSet<NamedStage>,
+
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub(crate) writes: Vec<Utf8PathBuf>,
 }
 
 impl FromStr for Md {
@@ -52,6 +55,7 @@ impl Md {
             is_proc_macro: false,
             contexts: [].into(),
             stages: [].into(),
+            writes: vec![],
         }
     }
 
@@ -245,6 +249,12 @@ fn md_ser() {
         }]
         .into(),
         stages: [NamedStage { name: RUST.clone(), script: format!("FROM rust AS {RST}") }].into(),
+        writes: vec![
+            "/tmp/clis-cargo-authors_0-5-5/release/deps/primeorder-06397107ab8300fa.d".into(),
+            "/tmp/clis-cargo-authors_0-5-5/release/deps/libprimeorder-06397107ab8300fa.rmeta"
+                .into(),
+            "/tmp/clis-cargo-authors_0-5-5/release/deps/libprimeorder-06397107ab8300fa.rlib".into(),
+        ],
     };
 
     pretty_assertions::assert_eq!(
@@ -259,6 +269,11 @@ short_externs = [
     "shlex-96a741f581f4126a",
 ]
 is_proc_macro = true
+writes = [
+    "/tmp/clis-cargo-authors_0-5-5/release/deps/primeorder-06397107ab8300fa.d",
+    "/tmp/clis-cargo-authors_0-5-5/release/deps/libprimeorder-06397107ab8300fa.rmeta",
+    "/tmp/clis-cargo-authors_0-5-5/release/deps/libprimeorder-06397107ab8300fa.rlib",
+]
 
 [[contexts]]
 name = "rust"

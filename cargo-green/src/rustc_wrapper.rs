@@ -19,7 +19,7 @@ use crate::{
     logging::{self, crate_type_for_logging, maybe_log},
     md::{BuildContext, Md},
     pwd,
-    runner::{build_out, Runner, MARK_STDERR, MARK_STDOUT},
+    runner::{build_out, Effects, Runner, MARK_STDERR, MARK_STDOUT},
     rustc_arguments::{as_rustc, RustcArgs},
     stage::{Stage, RST, RUST},
     tmp, PKG, VSN,
@@ -421,9 +421,7 @@ async fn do_wrap_rustc(
     let md_path = target_path.join(format!("{crate_name}{extrafn}.toml"));
     let containerfile_path = target_path.join(format!("{krate_name}{extrafn}.Dockerfile"));
 
-    let md = md; // Drop mut
     md.write_to(&md_path)?;
-    drop(md_path);
 
     let mut containerfile = green.new_containerfile();
     containerfile.pushln(md.rust_stage());
@@ -443,24 +441,30 @@ async fn do_wrap_rustc(
         return fallback.await;
     }
     let build = |stage, dir| build_out(&green, &containerfile_path, stage, &md.contexts, dir);
-    let res = build(out_stage, &out_dir).await;
-    if let Some(incremental) = res.is_ok().then_some(incremental).flatten() {
-        let _ = build(incremental_stage, &incremental)
-            .await
-            .inspect_err(|e| warn!("Error building incremental data: {e}"));
-    }
+    match build(out_stage, &out_dir).await {
+        Ok(Effects { written }) => {
+            if !written.is_empty() {
+                md.writes = written;
+                info!("re-opening (RW) crate's md {md_path}");
+                md.write_to(&md_path)?;
+            }
 
-    if let Err(e) = res {
-        warn!("Falling back due to {e}");
-        if debug.is_none() {
-            // Bubble up actual error & outputs
-            return fallback
-                .await
-                .inspect(|()| eprintln!("BUG: {PKG} should not have encountered this error: {e}"));
+            if let Some(incremental) = incremental {
+                if let Err(e) = build(incremental_stage, &incremental).await {
+                    warn!("Error building incremental data: {e}");
+                }
+            }
+            Ok(())
         }
-        return Err(e);
+        Err(e) if debug.is_none() => {
+            warn!("Falling back due to {e}");
+            // Bubble up actual error & outputs
+            fallback
+                .await
+                .inspect(|()| eprintln!("BUG: {PKG} should not have encountered this error: {e}"))
+        }
+        Err(e) => Err(e),
     }
-    Ok(())
 }
 
 #[derive(Debug)]

@@ -197,12 +197,17 @@ pub(crate) async fn fetch_digest(img: &ImageUri) -> Result<ImageUri> {
     Ok(img.lock(&digest))
 }
 
+#[derive(Debug, Default)]
+pub(crate) struct Effects {
+    pub(crate) written: Vec<Utf8PathBuf>,
+}
+
 pub(crate) async fn build_cacheonly(
     green: &Green,
     dockerfile_path: &Utf8Path,
     target: Stage,
 ) -> Result<()> {
-    build(green, dockerfile_path, target, &[].into(), None).await
+    build(green, dockerfile_path, target, &[].into(), None).await.map(|_| ())
 }
 
 pub(crate) async fn build_out(
@@ -211,7 +216,7 @@ pub(crate) async fn build_out(
     target: Stage,
     contexts: &IndexSet<BuildContext>,
     out_dir: &Utf8Path,
-) -> Result<()> {
+) -> Result<Effects> {
     build(green, dockerfile_path, target, contexts, Some(out_dir)).await
 }
 
@@ -221,7 +226,7 @@ async fn build(
     target: Stage,
     contexts: &IndexSet<BuildContext>,
     out_dir: Option<&Utf8Path>,
-) -> Result<()> {
+) -> Result<Effects> {
     let mut cmd = green.runner.as_cmd();
     cmd.arg("build");
 
@@ -395,12 +400,14 @@ async fn build(
     let status = res.map_err(|e| anyhow!("Failed calling {call}: {e}"))?;
     info!("build ran in {secs:?}: {status}");
 
+    let mut effects = Effects::default();
     if let Some((out_task, err_task)) = handles {
         let longish = Duration::from_secs(2);
         match join!(timeout(longish, out_task), timeout(longish, err_task)) {
             (Ok(Ok(Ok(_))), Ok(Ok(Ok(Accumulated { written, envs: _, libs: _ })))) => {
                 if !written.is_empty() {
                     log_written_files_metadata(&written);
+                    effects.written = written;
                 }
             }
             (Ok(Ok(Err(e))), _) | (_, Ok(Ok(Err(e)))) => {
@@ -457,7 +464,7 @@ async fn build(
         writeln!(file, "#   {call}")?;
     }
 
-    Ok(())
+    Ok(effects)
 }
 
 fn log_written_files_metadata(written: &[Utf8PathBuf]) {
