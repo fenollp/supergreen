@@ -6,7 +6,7 @@ jobs:
     name: tests
     runs-on: ubuntu-latest
     steps:
-    - uses: actions-rs/toolchain@v1
+    - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
         profile: minimal
         toolchain: stable
@@ -37,7 +37,7 @@ jobs:
     name: fmt
     runs-on: ubuntu-latest
     steps:
-    - uses: actions-rs/toolchain@v1
+    - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
         profile: minimal
         toolchain: nightly
@@ -49,7 +49,7 @@ jobs:
     name: clippy
     runs-on: ubuntu-latest
     steps:
-    - uses: actions-rs/toolchain@v1
+    - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
         profile: minimal
         toolchain: stable

@@ -13,9 +13,9 @@ jobs:
     - run: docker buildx version
     - run: docker buildx build --help
     - run: podman version || true
-    - run: rustc -Vv
+    - run: cargo -Vv
     - run: docker buildx prune --all --force
-    - uses: actions-rs/toolchain@v1
+    - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
         profile: minimal
         toolchain: stable
@@ -60,18 +60,19 @@ jobs:
       RUST_BACKTRACE: 1
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
-    # CARGOGREEN_FINAL_PATH: recipes/installs.Dockerfile
     steps:
     - run: docker info
     - run: docker buildx version
     - run: docker buildx build --help
     - run: podman version || true
-    - run: rustc -Vv
+    - run: cargo -Vv
     - run: docker buildx prune --all --force
-    - uses: actions-rs/toolchain@v1
+    - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
         profile: minimal
         toolchain: stable
+        cache: false
+        rustflags: ''
 
     - name: Retrieve saved bin
       uses: actions/download-artifact@v4
@@ -106,7 +107,13 @@ jobs:
     - run: docker buildx du | tail || true
     - run: docker buildx du --verbose
     - name: cargo install net=ON cache=OFF remote=OFF jobs=1
-      run: cargo green -vv install --jobs=1 --locked --force --path=./cargo-green |& tee ../_
+      run: |
+        unset CARGO_INCREMENTAL
+        unset CARGO_PROFILE_DEV_DEBUG
+        unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
+        unset CARGO_TERM_COLOR
+        unset CARGO_UNSTABLE_SPARSE_REGISTRY
+        cargo green -vv install --jobs=1 --locked --force --path=./cargo-green |& tee ../_
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
@@ -162,18 +169,19 @@ jobs:
       RUST_BACKTRACE: 1
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
-    # CARGOGREEN_FINAL_PATH: recipes/audits.Dockerfile
     steps:
     - run: docker info
     - run: docker buildx version
     - run: docker buildx build --help
     - run: podman version || true
-    - run: rustc -Vv
+    - run: cargo -Vv
     - run: docker buildx prune --all --force
-    - uses: actions-rs/toolchain@v1
+    - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
         profile: minimal
         toolchain: stable
+        cache: false
+        rustflags: ''
 
     - name: Retrieve saved bin
       uses: actions/download-artifact@v4
@@ -211,7 +219,13 @@ jobs:
     - run: docker buildx du | tail || true
     - run: docker buildx du --verbose
     - name: cargo audit net=ON cache=OFF remote=OFF
-      run: cargo green -vv audit |& tee ../_
+      run: |
+        unset CARGO_INCREMENTAL
+        unset CARGO_PROFILE_DEV_DEBUG
+        unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
+        unset CARGO_TERM_COLOR
+        unset CARGO_UNSTABLE_SPARSE_REGISTRY
+        cargo green -vv audit |& tee ../_
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
@@ -267,18 +281,19 @@ jobs:
       RUST_BACKTRACE: 1
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
-    # CARGOGREEN_FINAL_PATH: recipes/udeps.Dockerfile
     steps:
     - run: docker info
     - run: docker buildx version
     - run: docker buildx build --help
     - run: podman version || true
-    - run: rustc -Vv
+    - run: cargo -Vv
     - run: docker buildx prune --all --force
-    - uses: actions-rs/toolchain@v1
+    - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
         profile: minimal
         toolchain: nightly-2025-02-09
+        cache: false
+        rustflags: ''
 
     - name: Retrieve saved bin
       uses: actions/download-artifact@v4
@@ -316,7 +331,13 @@ jobs:
     - run: docker buildx du | tail || true
     - run: docker buildx du --verbose
     - name: cargo +nightly-2025-02-09 green udeps --all-targets --jobs=1 cache=OFF remote=OFF
-      run: cargo +nightly-2025-02-09 green udeps --all-targets --jobs=1 |& tee ../_
+      run: |
+        unset CARGO_INCREMENTAL
+        unset CARGO_PROFILE_DEV_DEBUG
+        unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
+        unset CARGO_TERM_COLOR
+        unset CARGO_UNSTABLE_SPARSE_REGISTRY
+        cargo +nightly-2025-02-09 green udeps --all-targets --jobs=1 |& tee ../_
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
@@ -361,7 +382,13 @@ jobs:
     - run: docker buildx du | tail || true
     - run: docker buildx du --verbose
     - name: Again, with +toolchain to cargo-green
-      run: cargo green +nightly-2025-02-09 udeps --all-targets --jobs=1 |& tee ../_
+      run: |
+        unset CARGO_INCREMENTAL
+        unset CARGO_PROFILE_DEV_DEBUG
+        unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
+        unset CARGO_TERM_COLOR
+        unset CARGO_UNSTABLE_SPARSE_REGISTRY
+        cargo green +nightly-2025-02-09 udeps --all-targets --jobs=1 |& tee ../_
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
@@ -417,18 +444,19 @@ jobs:
       RUST_BACKTRACE: 1
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
-    # CARGOGREEN_FINAL_PATH: recipes/builds.Dockerfile
     steps:
     - run: docker info
     - run: docker buildx version
     - run: docker buildx build --help
     - run: podman version || true
-    - run: rustc -Vv
+    - run: cargo -Vv
     - run: docker buildx prune --all --force
-    - uses: actions-rs/toolchain@v1
+    - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
         profile: minimal
         toolchain: stable
+        cache: false
+        rustflags: ''
 
     - name: Retrieve saved bin
       uses: actions/download-artifact@v4
@@ -463,7 +491,13 @@ jobs:
     - run: docker buildx du | tail || true
     - run: docker buildx du --verbose
     - name: cargo fetch
-      run: cargo green -vv fetch |& tee ../_
+      run: |
+        unset CARGO_INCREMENTAL
+        unset CARGO_PROFILE_DEV_DEBUG
+        unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
+        unset CARGO_TERM_COLOR
+        unset CARGO_UNSTABLE_SPARSE_REGISTRY
+        cargo green -vv fetch |& tee ../_
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
@@ -502,7 +536,13 @@ jobs:
         esac
         git --no-pager diff --exit-code -I '^# Generated by' -I ' AS rust-base$' -I '^# syntax=docker.io/docker/dockerfile:1@' -- $CARGOGREEN_FINAL_PATH
     - name: cargo build net=OFF cache=OFF remote=OFF jobs=1
-      run: cargo green -vv build --jobs=1 --all-targets --all-features --locked --frozen --offline |& tee ../_
+      run: |
+        unset CARGO_INCREMENTAL
+        unset CARGO_PROFILE_DEV_DEBUG
+        unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
+        unset CARGO_TERM_COLOR
+        unset CARGO_UNSTABLE_SPARSE_REGISTRY
+        cargo green -vv build --jobs=1 --all-targets --all-features --locked --frozen --offline |& tee ../_
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
@@ -547,7 +587,13 @@ jobs:
     - run: docker buildx du | tail || true
     - run: docker buildx du --verbose
     - name: Ensure running the same command twice without modifications...
-      run: cargo green -vv build --jobs=1 --all-targets --all-features --locked --frozen --offline |& tee ../_
+      run: |
+        unset CARGO_INCREMENTAL
+        unset CARGO_PROFILE_DEV_DEBUG
+        unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
+        unset CARGO_TERM_COLOR
+        unset CARGO_UNSTABLE_SPARSE_REGISTRY
+        cargo green -vv build --jobs=1 --all-targets --all-features --locked --frozen --offline |& tee ../_
     - name: ...doesn't recompile anything
       run: |
         err=0
@@ -599,7 +645,13 @@ jobs:
     - run: docker buildx du | tail || true
     - run: docker buildx du --verbose
     - name: Ensure running the same command thrice without modifications (jobs>1)...
-      run: cargo green -vv build --jobs=$(nproc) --all-targets --all-features --locked --frozen --offline |& tee ../_
+      run: |
+        unset CARGO_INCREMENTAL
+        unset CARGO_PROFILE_DEV_DEBUG
+        unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
+        unset CARGO_TERM_COLOR
+        unset CARGO_UNSTABLE_SPARSE_REGISTRY
+        cargo green -vv build --jobs=$(nproc) --all-targets --all-features --locked --frozen --offline |& tee ../_
     - name: ...doesn't recompile anything
       run: |
         err=0
@@ -662,18 +714,19 @@ jobs:
       RUST_BACKTRACE: 1
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
-    # CARGOGREEN_FINAL_PATH: recipes/tests.Dockerfile
     steps:
     - run: docker info
     - run: docker buildx version
     - run: docker buildx build --help
     - run: podman version || true
-    - run: rustc -Vv
+    - run: cargo -Vv
     - run: docker buildx prune --all --force
-    - uses: actions-rs/toolchain@v1
+    - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
         profile: minimal
         toolchain: stable
+        cache: false
+        rustflags: ''
 
     - name: Retrieve saved bin
       uses: actions/download-artifact@v4
@@ -708,7 +761,13 @@ jobs:
     - run: docker buildx du | tail || true
     - run: docker buildx du --verbose
     - name: cargo fetch
-      run: cargo green -vv fetch |& tee ../_
+      run: |
+        unset CARGO_INCREMENTAL
+        unset CARGO_PROFILE_DEV_DEBUG
+        unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
+        unset CARGO_TERM_COLOR
+        unset CARGO_UNSTABLE_SPARSE_REGISTRY
+        cargo green -vv fetch |& tee ../_
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
@@ -747,7 +806,13 @@ jobs:
         esac
         git --no-pager diff --exit-code -I '^# Generated by' -I ' AS rust-base$' -I '^# syntax=docker.io/docker/dockerfile:1@' -- $CARGOGREEN_FINAL_PATH
     - name: cargo test net=OFF cache=OFF remote=OFF jobs=1
-      run: cargo green -vv test --jobs=1 --all-targets --all-features --locked --frozen --offline |& tee ../_
+      run: |
+        unset CARGO_INCREMENTAL
+        unset CARGO_PROFILE_DEV_DEBUG
+        unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
+        unset CARGO_TERM_COLOR
+        unset CARGO_UNSTABLE_SPARSE_REGISTRY
+        cargo green -vv test --jobs=1 --all-targets --all-features --locked --frozen --offline |& tee ../_
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
@@ -792,7 +857,13 @@ jobs:
     - run: docker buildx du | tail || true
     - run: docker buildx du --verbose
     - name: Ensure running the same command twice without modifications...
-      run: cargo green -vv test --jobs=1 --all-targets --all-features --locked --frozen --offline |& tee ../_
+      run: |
+        unset CARGO_INCREMENTAL
+        unset CARGO_PROFILE_DEV_DEBUG
+        unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
+        unset CARGO_TERM_COLOR
+        unset CARGO_UNSTABLE_SPARSE_REGISTRY
+        cargo green -vv test --jobs=1 --all-targets --all-features --locked --frozen --offline |& tee ../_
     - name: ...doesn't recompile anything
       run: |
         err=0
@@ -844,7 +915,13 @@ jobs:
     - run: docker buildx du | tail || true
     - run: docker buildx du --verbose
     - name: Ensure running the same command thrice without modifications (jobs>1)...
-      run: cargo green -vv test --jobs=$(nproc) --all-targets --all-features --locked --frozen --offline |& tee ../_
+      run: |
+        unset CARGO_INCREMENTAL
+        unset CARGO_PROFILE_DEV_DEBUG
+        unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
+        unset CARGO_TERM_COLOR
+        unset CARGO_UNSTABLE_SPARSE_REGISTRY
+        cargo green -vv test --jobs=$(nproc) --all-targets --all-features --locked --frozen --offline |& tee ../_
     - name: ...doesn't recompile anything
       run: |
         err=0
@@ -907,18 +984,19 @@ jobs:
       RUST_BACKTRACE: 1
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
-    # CARGOGREEN_FINAL_PATH: recipes/checks.Dockerfile
     steps:
     - run: docker info
     - run: docker buildx version
     - run: docker buildx build --help
     - run: podman version || true
-    - run: rustc -Vv
+    - run: cargo -Vv
     - run: docker buildx prune --all --force
-    - uses: actions-rs/toolchain@v1
+    - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
         profile: minimal
         toolchain: stable
+        cache: false
+        rustflags: ''
 
     - name: Retrieve saved bin
       uses: actions/download-artifact@v4
@@ -953,7 +1031,13 @@ jobs:
     - run: docker buildx du | tail || true
     - run: docker buildx du --verbose
     - name: cargo fetch
-      run: cargo green -vv fetch |& tee ../_
+      run: |
+        unset CARGO_INCREMENTAL
+        unset CARGO_PROFILE_DEV_DEBUG
+        unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
+        unset CARGO_TERM_COLOR
+        unset CARGO_UNSTABLE_SPARSE_REGISTRY
+        cargo green -vv fetch |& tee ../_
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
@@ -992,7 +1076,13 @@ jobs:
         esac
         git --no-pager diff --exit-code -I '^# Generated by' -I ' AS rust-base$' -I '^# syntax=docker.io/docker/dockerfile:1@' -- $CARGOGREEN_FINAL_PATH
     - name: cargo check net=OFF cache=OFF remote=OFF jobs=$(nproc)
-      run: cargo green -vv check --jobs=$(nproc) --all-targets --all-features --locked --frozen --offline |& tee ../_
+      run: |
+        unset CARGO_INCREMENTAL
+        unset CARGO_PROFILE_DEV_DEBUG
+        unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
+        unset CARGO_TERM_COLOR
+        unset CARGO_UNSTABLE_SPARSE_REGISTRY
+        cargo green -vv check --jobs=$(nproc) --all-targets --all-features --locked --frozen --offline |& tee ../_
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
@@ -1037,7 +1127,13 @@ jobs:
     - run: docker buildx du | tail || true
     - run: docker buildx du --verbose
     - name: Ensure running the same command twice without modifications...
-      run: cargo green -vv check --jobs=1 --all-targets --all-features --locked --frozen --offline |& tee ../_
+      run: |
+        unset CARGO_INCREMENTAL
+        unset CARGO_PROFILE_DEV_DEBUG
+        unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
+        unset CARGO_TERM_COLOR
+        unset CARGO_UNSTABLE_SPARSE_REGISTRY
+        cargo green -vv check --jobs=1 --all-targets --all-features --locked --frozen --offline |& tee ../_
     - name: ...doesn't recompile anything
       run: |
         err=0
@@ -1100,18 +1196,19 @@ jobs:
       RUST_BACKTRACE: 1
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
-    # CARGOGREEN_FINAL_PATH: recipes/packages.Dockerfile
     steps:
     - run: docker info
     - run: docker buildx version
     - run: docker buildx build --help
     - run: podman version || true
-    - run: rustc -Vv
+    - run: cargo -Vv
     - run: docker buildx prune --all --force
-    - uses: actions-rs/toolchain@v1
+    - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
         profile: minimal
         toolchain: stable
+        cache: false
+        rustflags: ''
 
     - name: Retrieve saved bin
       uses: actions/download-artifact@v4
@@ -1146,7 +1243,13 @@ jobs:
     - run: docker buildx du | tail || true
     - run: docker buildx du --verbose
     - name: cargo fetch
-      run: cargo green -vv fetch |& tee ../_
+      run: |
+        unset CARGO_INCREMENTAL
+        unset CARGO_PROFILE_DEV_DEBUG
+        unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
+        unset CARGO_TERM_COLOR
+        unset CARGO_UNSTABLE_SPARSE_REGISTRY
+        cargo green -vv fetch |& tee ../_
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
@@ -1185,7 +1288,13 @@ jobs:
         esac
         git --no-pager diff --exit-code -I '^# Generated by' -I ' AS rust-base$' -I '^# syntax=docker.io/docker/dockerfile:1@' -- $CARGOGREEN_FINAL_PATH
     - name: cargo package net=OFF cache=OFF remote=OFF jobs=1
-      run: cargo green -vv package --jobs=1 --all-features --locked --frozen --offline |& tee ../_
+      run: |
+        unset CARGO_INCREMENTAL
+        unset CARGO_PROFILE_DEV_DEBUG
+        unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
+        unset CARGO_TERM_COLOR
+        unset CARGO_UNSTABLE_SPARSE_REGISTRY
+        cargo green -vv package --jobs=1 --all-features --locked --frozen --offline |& tee ../_
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
@@ -1241,18 +1350,19 @@ jobs:
       RUST_BACKTRACE: 1
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
-    # CARGOGREEN_FINAL_PATH: recipes/clippy.Dockerfile
     steps:
     - run: docker info
     - run: docker buildx version
     - run: docker buildx build --help
     - run: podman version || true
-    - run: rustc -Vv
+    - run: cargo -Vv
     - run: docker buildx prune --all --force
-    - uses: actions-rs/toolchain@v1
+    - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
         profile: minimal
         toolchain: stable
+        cache: false
+        rustflags: ''
 
     - name: Retrieve saved bin
       uses: actions/download-artifact@v4
@@ -1288,7 +1398,13 @@ jobs:
     - run: docker buildx du | tail || true
     - run: docker buildx du --verbose
     - name: cargo fetch
-      run: cargo green -vv fetch
+      run: |
+        unset CARGO_INCREMENTAL
+        unset CARGO_PROFILE_DEV_DEBUG
+        unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
+        unset CARGO_TERM_COLOR
+        unset CARGO_UNSTABLE_SPARSE_REGISTRY
+        cargo green -vv fetch
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
@@ -1327,7 +1443,13 @@ jobs:
         esac
         git --no-pager diff --exit-code -I '^# Generated by' -I ' AS rust-base$' -I '^# syntax=docker.io/docker/dockerfile:1@' -- $CARGOGREEN_FINAL_PATH
     - name: cargo clippy net=OFF cache=OFF remote=OFF jobs=1
-      run: cargo green -vv clippy --jobs=1 --all-targets --all-features --locked --frozen --offline |& tee ../_
+      run: |
+        unset CARGO_INCREMENTAL
+        unset CARGO_PROFILE_DEV_DEBUG
+        unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
+        unset CARGO_TERM_COLOR
+        unset CARGO_UNSTABLE_SPARSE_REGISTRY
+        cargo green -vv clippy --jobs=1 --all-targets --all-features --locked --frozen --offline |& tee ../_
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
@@ -1372,7 +1494,13 @@ jobs:
     - run: docker buildx du | tail || true
     - run: docker buildx du --verbose
     - name: Ensure running the same command twice without modifications...
-      run: cargo green -vv clippy --jobs=$(nproc) --all-targets --all-features --locked --frozen --offline |& tee ../_
+      run: |
+        unset CARGO_INCREMENTAL
+        unset CARGO_PROFILE_DEV_DEBUG
+        unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
+        unset CARGO_TERM_COLOR
+        unset CARGO_UNSTABLE_SPARSE_REGISTRY
+        cargo green -vv clippy --jobs=$(nproc) --all-targets --all-features --locked --frozen --offline |& tee ../_
     - name: ...doesn't recompile anything
       run: |
         err=0
