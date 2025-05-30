@@ -125,7 +125,7 @@ $(jobdef 'meta-check')
 
 $(jobdef 'bin')
     steps:
-    - uses: actions-rs/toolchain@v1
+    - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
         profile: minimal
         toolchain: stable
@@ -232,10 +232,19 @@ $(
 )
     needs: bin
     steps:
-    - uses: actions-rs/toolchain@v1
+    - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
         profile: minimal
         toolchain: \${{ matrix.toolchain }}
+        cache: false
+        rustflags: ''
+    - name: Unset envs set by toolchain action
+      run: |
+        unset CARGO_INCREMENTAL
+        unset CARGO_PROFILE_DEV_DEBUG
+        unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
+        unset CARGO_TERM_COLOR
+        unset CARGO_UNSTABLE_SPARSE_REGISTRY
 $(
 	case "$name_at_version" in
 		cargo-llvm-cov@*) printf '    - run: rustup component add llvm-tools-preview\n' ;;
@@ -249,12 +258,15 @@ $(rundeps_versions)
 
     - name: Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
+    - if: \${{ matrix.toolchain != 'stable' }}
+      run: ~/.cargo/bin/cargo-green green supergreen env CARGOGREEN_BASE_IMAGE | grep '\${{ matrix.toolchain }}'
     - name: Envs again
       run: ~/.cargo/bin/cargo-green green supergreen env
 
 $(cache_usage)
     - name: cargo install net=ON cache=OFF remote=OFF jobs=$jobs
       run: |
+$(unset_action_envs)
         env ${envvars[@]} \\
           cargo green -vv install --jobs=$jobs --locked --force $(as_install "$name_at_version") $@ |& tee _
     - if: \${{ matrix.toolchain != 'stable' }}
@@ -272,6 +284,7 @@ $(cache_usage)
 
     - name: Ensure running the same command twice without modifications...
       run: |
+$(unset_action_envs)
         env ${envvars[@]} \\
           cargo green -vv install --jobs=$jobs --locked --force $(as_install "$name_at_version") $@ |& tee _
 $(postcond_fresh _)
