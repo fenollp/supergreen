@@ -283,6 +283,7 @@ $(cache_usage)
       run: du -sh \$CARGO_TARGET_DIR
 
     - name: Ensure running the same command twice without modifications...
+      if: \${{ failure() || success() }}
       run: |
 $(unset_action_envs)
         env ${envvars[@]} \\
@@ -424,6 +425,8 @@ send \
     '&&' "rm $tmplogs >/dev/null 2>&1; touch $tmplogs; tail -f $tmplogs; :"
 tmux select-layout even-vertical
 tmux split-window
+
+# RUSTFLAGS="--remap-path-prefix=$tmptrgt="
 
 envvars=(CARGOGREEN_LOG=trace)
 envvars+=(CARGOGREEN_LOG_PATH="$tmplogs")
