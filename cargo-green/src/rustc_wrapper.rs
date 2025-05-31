@@ -447,7 +447,10 @@ async fn do_wrap_rustc(
     match build(out_stage, &out_dir).await {
         Ok(Effects { call, envs, written, stdout, stderr }) => {
             if !written.is_empty() || !stdout.is_empty() || !stderr.is_empty() {
-                md.writes = written;
+                md.writes = written
+                    .into_iter()
+                    .map(|x| x.strip_prefix(&target_path).unwrap().to_owned())
+                    .collect();
                 md.stdout = stdout;
                 md.stderr = stderr;
                 info!("re-opening (RW) crate's md {md_path}");

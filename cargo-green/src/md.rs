@@ -258,10 +258,9 @@ fn md_ser() {
         .into(),
         stages: [NamedStage { name: RUST.clone(), script: format!("FROM rust AS {RST}") }].into(),
         writes: vec![
-            "/tmp/clis-cargo-authors_0-5-5/release/deps/primeorder-06397107ab8300fa.d".into(),
-            "/tmp/clis-cargo-authors_0-5-5/release/deps/libprimeorder-06397107ab8300fa.rmeta"
-                .into(),
-            "/tmp/clis-cargo-authors_0-5-5/release/deps/libprimeorder-06397107ab8300fa.rlib".into(),
+            "deps/primeorder-06397107ab8300fa.d".into(),
+            "deps/libprimeorder-06397107ab8300fa.rmeta".into(),
+            "deps/libprimeorder-06397107ab8300fa.rlib".into(),
         ],
         stdout: vec![],
         stderr: vec![],
@@ -280,9 +279,9 @@ short_externs = [
 ]
 is_proc_macro = true
 writes = [
-    "/tmp/clis-cargo-authors_0-5-5/release/deps/primeorder-06397107ab8300fa.d",
-    "/tmp/clis-cargo-authors_0-5-5/release/deps/libprimeorder-06397107ab8300fa.rmeta",
-    "/tmp/clis-cargo-authors_0-5-5/release/deps/libprimeorder-06397107ab8300fa.rlib",
+    "deps/primeorder-06397107ab8300fa.d",
+    "deps/libprimeorder-06397107ab8300fa.rmeta",
+    "deps/libprimeorder-06397107ab8300fa.rlib",
 ]
 
 [[contexts]]
