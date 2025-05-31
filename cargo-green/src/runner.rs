@@ -201,6 +201,8 @@ pub(crate) struct Effects {
     pub(crate) call: String,
     pub(crate) envs: String,
     pub(crate) written: Vec<Utf8PathBuf>,
+    pub(crate) stdout: Vec<String>,
+    pub(crate) stderr: Vec<String>,
 }
 
 pub(crate) async fn build_cacheonly(
@@ -405,12 +407,19 @@ async fn build(
         call: call[1..(call.len() - 1)].to_owned(), // drops decorative backticks
         envs,
         written: vec![],
+        stdout: vec![],
+        stderr: vec![],
     };
 
     if let Some((out_task, err_task)) = handles {
         let longish = Duration::from_secs(2);
         match join!(timeout(longish, out_task), timeout(longish, err_task)) {
-            (Ok(Ok(Ok(_))), Ok(Ok(Ok(Accumulated { written, envs: _, libs: _ })))) => {
+            (
+                Ok(Ok(Ok(Accumulated { stdout, .. }))),
+                Ok(Ok(Ok(Accumulated { written, stderr, .. }))),
+            ) => {
+                effects.stdout = stdout;
+                effects.stderr = stderr;
                 if !written.is_empty() {
                     log_written_files_metadata(&written);
                     effects.written = written;
@@ -545,6 +554,8 @@ struct Accumulated {
     written: Vec<Utf8PathBuf>,
     envs: IndexSet<String>,
     libs: IndexSet<String>,
+    stdout: Vec<String>,
+    stderr: Vec<String>,
 }
 
 #[test]
@@ -604,6 +615,7 @@ fn fwd_stderr(msg: &str, buf: &mut String, acc: &mut Accumulated) {
 
         info!("(To STDERR for cargo): {msg}");
         eprintln!("{msg}");
+        acc.stderr.push(msg);
     };
 
     match (buf.is_empty(), msg.starts_with('{'), msg.ends_with('}')) {
@@ -630,9 +642,10 @@ fn fwd_stderr(msg: &str, buf: &mut String, acc: &mut Accumulated) {
     }
 }
 
-fn fwd_stdout(msg: &str, #[expect(clippy::ptr_arg)] _buf: &mut String, _acc: &mut Accumulated) {
+fn fwd_stdout(msg: &str, #[expect(clippy::ptr_arg)] _buf: &mut String, acc: &mut Accumulated) {
     info!("(To cargo's STDOUT): {msg}");
     println!("{msg}");
+    acc.stdout.push(msg.to_owned());
 }
 
 #[test]

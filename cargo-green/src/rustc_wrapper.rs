@@ -445,9 +445,11 @@ async fn do_wrap_rustc(
     let contexts = &md.contexts;
     let build = |stage, dir| build_out(&green, &containerfile_path, stage, contexts, dir);
     match build(out_stage, &out_dir).await {
-        Ok(Effects { call, envs, written }) => {
-            if !written.is_empty() {
+        Ok(Effects { call, envs, written, stdout, stderr }) => {
+            if !written.is_empty() || !stdout.is_empty() || !stderr.is_empty() {
                 md.writes = written;
+                md.stdout = stdout;
+                md.stderr = stderr;
                 info!("re-opening (RW) crate's md {md_path}");
                 md.write_to(&md_path)?;
             }

@@ -36,6 +36,12 @@ pub(crate) struct Md {
 
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub(crate) writes: Vec<Utf8PathBuf>,
+
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub(crate) stdout: Vec<String>,
+
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub(crate) stderr: Vec<String>,
 }
 
 impl FromStr for Md {
@@ -56,6 +62,8 @@ impl Md {
             contexts: [].into(),
             stages: [].into(),
             writes: vec![],
+            stdout: vec![],
+            stderr: vec![],
         }
     }
 
@@ -255,6 +263,8 @@ fn md_ser() {
                 .into(),
             "/tmp/clis-cargo-authors_0-5-5/release/deps/libprimeorder-06397107ab8300fa.rlib".into(),
         ],
+        stdout: vec![],
+        stderr: vec![],
     };
 
     pretty_assertions::assert_eq!(
