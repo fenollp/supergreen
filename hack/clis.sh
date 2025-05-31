@@ -211,6 +211,7 @@ cli() {
 
 	cat <<EOF
 $(jobdef "$(slugify "$name_at_version")$(if [[ "$jobs" != 1 ]]; then echo '-J'; fi)")
+    continue-on-error: \${{ matrix.toolchain != 'stable' }}
     strategy:
       matrix:
         toolchain:
