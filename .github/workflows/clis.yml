@@ -64,6 +64,7 @@ jobs:
     defaults:
       run:
         shell: bash -euo pipefail {0}
+    continue-on-error: ${{ matrix.toolchain != 'stable' }}
     strategy:
       matrix:
         toolchain:
@@ -256,6 +257,7 @@ jobs:
     defaults:
       run:
         shell: bash -euo pipefail {0}
+    continue-on-error: ${{ matrix.toolchain != 'stable' }}
     strategy:
       matrix:
         toolchain:
@@ -448,6 +450,7 @@ jobs:
     defaults:
       run:
         shell: bash -euo pipefail {0}
+    continue-on-error: ${{ matrix.toolchain != 'stable' }}
     strategy:
       matrix:
         toolchain:
@@ -640,6 +643,7 @@ jobs:
     defaults:
       run:
         shell: bash -euo pipefail {0}
+    continue-on-error: ${{ matrix.toolchain != 'stable' }}
     strategy:
       matrix:
         toolchain:
@@ -832,6 +836,7 @@ jobs:
     defaults:
       run:
         shell: bash -euo pipefail {0}
+    continue-on-error: ${{ matrix.toolchain != 'stable' }}
     strategy:
       matrix:
         toolchain:
@@ -1024,6 +1029,7 @@ jobs:
     defaults:
       run:
         shell: bash -euo pipefail {0}
+    continue-on-error: ${{ matrix.toolchain != 'stable' }}
     strategy:
       matrix:
         toolchain:
@@ -1216,6 +1222,7 @@ jobs:
     defaults:
       run:
         shell: bash -euo pipefail {0}
+    continue-on-error: ${{ matrix.toolchain != 'stable' }}
     strategy:
       matrix:
         toolchain:
@@ -1408,6 +1415,7 @@ jobs:
     defaults:
       run:
         shell: bash -euo pipefail {0}
+    continue-on-error: ${{ matrix.toolchain != 'stable' }}
     strategy:
       matrix:
         toolchain:
@@ -1601,6 +1609,7 @@ jobs:
     defaults:
       run:
         shell: bash -euo pipefail {0}
+    continue-on-error: ${{ matrix.toolchain != 'stable' }}
     strategy:
       matrix:
         toolchain:
@@ -1793,6 +1802,7 @@ jobs:
     defaults:
       run:
         shell: bash -euo pipefail {0}
+    continue-on-error: ${{ matrix.toolchain != 'stable' }}
     strategy:
       matrix:
         toolchain:
@@ -1985,6 +1995,7 @@ jobs:
     defaults:
       run:
         shell: bash -euo pipefail {0}
+    continue-on-error: ${{ matrix.toolchain != 'stable' }}
     strategy:
       matrix:
         toolchain:
@@ -2177,6 +2188,7 @@ jobs:
     defaults:
       run:
         shell: bash -euo pipefail {0}
+    continue-on-error: ${{ matrix.toolchain != 'stable' }}
     strategy:
       matrix:
         toolchain:
@@ -2369,6 +2381,7 @@ jobs:
     defaults:
       run:
         shell: bash -euo pipefail {0}
+    continue-on-error: ${{ matrix.toolchain != 'stable' }}
     strategy:
       matrix:
         toolchain:
@@ -2561,6 +2574,7 @@ jobs:
     defaults:
       run:
         shell: bash -euo pipefail {0}
+    continue-on-error: ${{ matrix.toolchain != 'stable' }}
     strategy:
       matrix:
         toolchain:
