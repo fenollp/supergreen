@@ -2613,8 +2613,12 @@ COPY --from=dep-b-dbcc-2.2.1-6cd0852da8e8bf94 /tmp/clis-dbcc_2-2-1/release/deps/
 ##     "proc_macro_error_attr-5abbb4d0b3e50e85",
 ## ]
 ## writes = [
-##     "/tmp/clis-dbcc_2-2-1/release/deps/dbcc-6cd0852da8e8bf94.d",
-##     "/tmp/clis-dbcc_2-2-1/release/deps/dbcc-6cd0852da8e8bf94",
+##     "deps/dbcc-6cd0852da8e8bf94.d",
+##     "deps/dbcc-6cd0852da8e8bf94",
+## ]
+## stderr = [
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-dbcc_2-2-1/release/deps/dbcc-6cd0852da8e8bf94.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-dbcc_2-2-1/release/deps/dbcc-6cd0852da8e8bf94","emit":"link"}',
 ## ]
 ## 
 ## [[contexts]]

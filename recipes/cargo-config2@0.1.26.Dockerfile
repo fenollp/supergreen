@@ -1981,8 +1981,12 @@ COPY --from=dep-b-cargo-config2-0.1.26-7f1152613c0fe452 /tmp/clis-cargo-config2_
 ##     "toml-47794b0189eacf56",
 ## ]
 ## writes = [
-##     "/tmp/clis-cargo-config2_0-1-26/release/examples/get-7f1152613c0fe452.d",
-##     "/tmp/clis-cargo-config2_0-1-26/release/examples/get-7f1152613c0fe452",
+##     "examples/get-7f1152613c0fe452.d",
+##     "examples/get-7f1152613c0fe452",
+## ]
+## stderr = [
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-cargo-config2_0-1-26/release/examples/get-7f1152613c0fe452.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-cargo-config2_0-1-26/release/examples/get-7f1152613c0fe452","emit":"link"}',
 ## ]
 ## 
 ## [[contexts]]

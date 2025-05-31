@@ -1578,8 +1578,12 @@ COPY --from=dep-b-ripgrep-14.1.0-16aebc92c4aced68 /tmp/clis-ripgrep_14-1-0/relea
 ##     "textwrap-f2419d4872a2993a",
 ## ]
 ## writes = [
-##     "/tmp/clis-ripgrep_14-1-0/release/deps/rg-16aebc92c4aced68.d",
-##     "/tmp/clis-ripgrep_14-1-0/release/deps/rg-16aebc92c4aced68",
+##     "deps/rg-16aebc92c4aced68.d",
+##     "deps/rg-16aebc92c4aced68",
+## ]
+## stderr = [
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_14-1-0/release/deps/rg-16aebc92c4aced68.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_14-1-0/release/deps/rg-16aebc92c4aced68","emit":"link"}',
 ## ]
 ## 
 ## [[contexts]]

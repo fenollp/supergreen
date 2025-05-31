@@ -1170,8 +1170,12 @@ COPY --from=dep-b-vixargs-0.1.0-70c6fd04a2406fd3 /tmp/clis-vixargs_0-1-0/release
 ##     "textwrap-80d15ef5c9163fba",
 ## ]
 ## writes = [
-##     "/tmp/clis-vixargs_0-1-0/release/deps/vixargs-70c6fd04a2406fd3.d",
-##     "/tmp/clis-vixargs_0-1-0/release/deps/vixargs-70c6fd04a2406fd3",
+##     "deps/vixargs-70c6fd04a2406fd3.d",
+##     "deps/vixargs-70c6fd04a2406fd3",
+## ]
+## stderr = [
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-vixargs_0-1-0/release/deps/vixargs-70c6fd04a2406fd3.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-vixargs_0-1-0/release/deps/vixargs-70c6fd04a2406fd3","emit":"link"}',
 ## ]
 ## 
 ## [[contexts]]
