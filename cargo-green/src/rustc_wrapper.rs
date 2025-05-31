@@ -870,7 +870,7 @@ fn assemble_build_dependencies(
             let dep_md = get_or_read(&mut mds, &dep_md_path)?;
 
             for dep in &dep_md.deps {
-                let mut dep_md_path = md_pather(&format!("*-{dep}"));
+                let mut dep_md_path = md_pather(&format!("*-{}", dep.0));
                 for (i, p) in glob::glob(dep_md_path.as_str()).unwrap().enumerate() {
                     assert_eq!(i, 0, ">>> {p:?}");
                     dep_md_path = p.unwrap().try_into().unwrap();
