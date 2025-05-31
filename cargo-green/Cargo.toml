@@ -38,6 +38,7 @@ chrono.workspace = true
 indexmap.workspace = true
 # clap.workspace = true
 # clap-cargo.workspace = true
+bstr.workspace = true
 crc32fast.workspace = true
 env_logger.workspace = true
 futures.workspace = true
