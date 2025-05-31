@@ -3702,8 +3702,12 @@ COPY --from=dep-b-diesel_cli-2.1.1-b1813ff1177530ed /tmp/clis-diesel_cli_2-1-1/r
 ##     "tinyvec_macros-bc99fad3aeab9fdf",
 ## ]
 ## writes = [
-##     "/tmp/clis-diesel_cli_2-1-1/release/deps/diesel-b1813ff1177530ed.d",
-##     "/tmp/clis-diesel_cli_2-1-1/release/deps/diesel-b1813ff1177530ed",
+##     "deps/diesel-b1813ff1177530ed.d",
+##     "deps/diesel-b1813ff1177530ed",
+## ]
+## stderr = [
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-1-1/release/deps/diesel-b1813ff1177530ed.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-1-1/release/deps/diesel-b1813ff1177530ed","emit":"link"}',
 ## ]
 ## 
 ## [[contexts]]

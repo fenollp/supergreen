@@ -174,8 +174,12 @@ COPY --from=dep-b-buildxargs-1.4.0-4245cb92e8e8c024 /tmp/clis-buildxargs_master/
 ##     "shlex-ab0e05b376045caf",
 ## ]
 ## writes = [
-##     "/tmp/clis-buildxargs_master/release/deps/buildxargs-4245cb92e8e8c024.d",
-##     "/tmp/clis-buildxargs_master/release/deps/buildxargs-4245cb92e8e8c024",
+##     "deps/buildxargs-4245cb92e8e8c024.d",
+##     "deps/buildxargs-4245cb92e8e8c024",
+## ]
+## stderr = [
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-buildxargs_master/release/deps/buildxargs-4245cb92e8e8c024.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-buildxargs_master/release/deps/buildxargs-4245cb92e8e8c024","emit":"link"}',
 ## ]
 ## 
 ## [[stages]]

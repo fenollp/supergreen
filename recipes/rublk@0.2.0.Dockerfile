@@ -7487,8 +7487,12 @@ COPY --from=dep-b-rublk-0.2.0-f2659b339d1d9afb /tmp/clis-rublk_0-2-0/release/dep
 ##     "memoffset-c797780f91d0f12a",
 ## ]
 ## writes = [
-##     "/tmp/clis-rublk_0-2-0/release/deps/rublk-f2659b339d1d9afb.d",
-##     "/tmp/clis-rublk_0-2-0/release/deps/rublk-f2659b339d1d9afb",
+##     "deps/rublk-f2659b339d1d9afb.d",
+##     "deps/rublk-f2659b339d1d9afb",
+## ]
+## stderr = [
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-rublk_0-2-0/release/deps/rublk-f2659b339d1d9afb.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-rublk_0-2-0/release/deps/rublk-f2659b339d1d9afb","emit":"link"}',
 ## ]
 ## 
 ## [[contexts]]

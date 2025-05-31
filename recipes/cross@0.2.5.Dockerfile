@@ -2894,8 +2894,12 @@ COPY --from=dep-b-cross-0.2.5-cbcdb302cda04185 /tmp/clis-cross_0-2-5/release/dep
 ##     "either-6ca4b8940d08185a",
 ## ]
 ## writes = [
-##     "/tmp/clis-cross_0-2-5/release/deps/cross_util-cbcdb302cda04185.d",
-##     "/tmp/clis-cross_0-2-5/release/deps/cross_util-cbcdb302cda04185",
+##     "deps/cross_util-cbcdb302cda04185.d",
+##     "deps/cross_util-cbcdb302cda04185",
+## ]
+## stderr = [
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-cross_0-2-5/release/deps/cross_util-cbcdb302cda04185.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-cross_0-2-5/release/deps/cross_util-cbcdb302cda04185","emit":"link"}',
 ## ]
 ## 
 ## [[contexts]]

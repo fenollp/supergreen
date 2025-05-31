@@ -18130,8 +18130,12 @@ COPY --from=dep-b-cargo-udeps-0.1.55-98154924a65e5753 /tmp/clis-cargo-udeps_0-1-
 ##     "nu_ansi_term-f21327b77195a6a7",
 ## ]
 ## writes = [
-##     "/tmp/clis-cargo-udeps_0-1-55/release/deps/cargo_udeps-98154924a65e5753.d",
-##     "/tmp/clis-cargo-udeps_0-1-55/release/deps/cargo_udeps-98154924a65e5753",
+##     "deps/cargo_udeps-98154924a65e5753.d",
+##     "deps/cargo_udeps-98154924a65e5753",
+## ]
+## stderr = [
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-cargo-udeps_0-1-55/release/deps/cargo_udeps-98154924a65e5753.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-cargo-udeps_0-1-55/release/deps/cargo_udeps-98154924a65e5753","emit":"link"}',
 ## ]
 ## 
 ## [[contexts]]

@@ -3526,8 +3526,12 @@ COPY --from=dep-b-qcow2-rs-0.1.2-aae81d819d383e78 /tmp/clis-qcow2-rs_0-1-2/relea
 ##     "socket2-570b139c3ac51dec",
 ## ]
 ## writes = [
-##     "/tmp/clis-qcow2-rs_0-1-2/release/deps/qcow2-aae81d819d383e78.d",
-##     "/tmp/clis-qcow2-rs_0-1-2/release/deps/qcow2-aae81d819d383e78",
+##     "deps/qcow2-aae81d819d383e78.d",
+##     "deps/qcow2-aae81d819d383e78",
+## ]
+## stderr = [
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-qcow2-rs_0-1-2/release/deps/qcow2-aae81d819d383e78.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-qcow2-rs_0-1-2/release/deps/qcow2-aae81d819d383e78","emit":"link"}',
 ## ]
 ## 
 ## [[contexts]]

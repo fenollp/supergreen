@@ -5897,8 +5897,12 @@ COPY --from=dep-b-hickory-dns-0.25.0-alpha.1-cdc081ff2016c6aa /tmp/clis-hickory-
 ##     "tracing_log-fb7fae2e3366cafc",
 ## ]
 ## writes = [
-##     "/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/hickory_dns-cdc081ff2016c6aa.d",
-##     "/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/hickory_dns-cdc081ff2016c6aa",
+##     "deps/hickory_dns-cdc081ff2016c6aa.d",
+##     "deps/hickory_dns-cdc081ff2016c6aa",
+## ]
+## stderr = [
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/hickory_dns-cdc081ff2016c6aa.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-hickory-dns_0-25-0-alpha-1/release/deps/hickory_dns-cdc081ff2016c6aa","emit":"link"}',
 ## ]
 ## 
 ## [[contexts]]
