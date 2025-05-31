@@ -40,6 +40,7 @@ pub(crate) async fn into_stage(
 
     // On using tar: https://github.com/rust-lang/cargo/issues/3577#issuecomment-890693359
 
+    //TODO: move extracting to lower stage
     let block = format!(
         r#"
 FROM scratch AS {stage}
@@ -55,23 +56,16 @@ RUN \
         add = add.trim(),
     );
 
-    // TODO: ask upstream `buildx/buildkit+podman` for a way to drop that RUN
-    //  => TODO: impl --unpack: https://github.com/moby/buildkit/issues/4907
-
-    // Otherwise:
-
-    // TODO: ask upstream `rustc` if it could be able to take a .crate archive as input
-    //=> would remove that `RUN tar` step + stage dep on RUST (=> scratch)
-    //  => https://github.com/rust-lang/cargo/issues/14373
-
     Ok((stage, SRC, cratesio_extracted, block))
 }
+
+// https://github.com/moby/buildkit/pull/5991#issuecomment-2910103519
 
 #[must_use]
 pub(crate) fn add_step(name: &str, version: &str, hash: &str) -> String {
     format!(
         r#"
-ADD --chmod=0664 --checksum=sha256:{hash} \
+ADD --chmod=0664 --unpack=true --checksum=sha256:{hash} \
   https://static.crates.io/crates/{name}/{name}-{version}.crate /crate
 "#
     )
