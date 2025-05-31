@@ -422,6 +422,7 @@ async fn do_wrap_rustc(
     let md_path = target_path.join(format!("{crate_name}{extrafn}.toml"));
     let containerfile_path = target_path.join(format!("{krate_name}{extrafn}.Dockerfile"));
 
+    let old_md = Md::from_file(&md_path).ok();
     md.write_to(&md_path)?;
 
     let mut containerfile = green.new_containerfile();
@@ -446,7 +447,11 @@ async fn do_wrap_rustc(
     let build = |stage, dir| build_out(&green, &containerfile_path, stage, contexts, dir);
     match build(out_stage, &out_dir).await {
         Ok(Effects { call, envs, written, stdout, stderr }) => {
-            if !written.is_empty() || !stdout.is_empty() || !stderr.is_empty() {
+            if written.is_empty() && stdout.is_empty() && stderr.is_empty() {
+                if let Some(Md { writes, stdout, .. }) = old_md {
+                    panic!("\n>>> \n{writes:?}\n{stdout:?}\n")
+                }
+            } else {
                 md.writes = written
                     .into_iter()
                     .map(|x| x.strip_prefix(&target_path).unwrap().to_owned())
