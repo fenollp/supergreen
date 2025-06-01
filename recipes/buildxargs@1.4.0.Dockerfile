@@ -180,14 +180,6 @@ COPY --from=dep-b-buildxargs-1.4.0-39127c16f4d70192 /tmp/cargo-green--hack-cachi
 ##     "pico_args-b8c41dbf50ca5479",
 ##     "shlex-96a741f581f4126a",
 ## ]
-## writes = [
-##     "deps/buildxargs-39127c16f4d70192.d",
-##     "deps/buildxargs-39127c16f4d70192",
-## ]
-## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/cargo-green--hack-caching/release/deps/buildxargs-39127c16f4d70192.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/cargo-green--hack-caching/release/deps/buildxargs-39127c16f4d70192","emit":"link"}',
-## ]
 ## 
 ## [[stages]]
 ## name = "rust-base"

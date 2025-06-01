@@ -399,8 +399,8 @@ async fn do_wrap_rustc(
     }
 
     rustc_block.push_str(&format!("      rustc '{}' {input} \\\n", args.join("' '")));
-    rustc_block.push_str(&format!("        1> >(sed 's/^/{MARK_STDOUT}/') \\\n"));
-    rustc_block.push_str(&format!("        2> >(sed 's/^/{MARK_STDERR}/' >&2)\n"));
+    rustc_block.push_str(&format!("        1> >/stdout{extrafn} \\\n"));
+    rustc_block.push_str(&format!("        2> >/stderr{extrafn}\n"));
     md.push_block(&rustc_stage, rustc_block);
 
     if let Some(ref incremental) = incremental {
@@ -411,6 +411,7 @@ async fn do_wrap_rustc(
 
     let mut out_block = format!("FROM scratch AS {out_stage}\n");
     out_block.push_str(&format!("COPY --from={rustc_stage} {out_dir}/*{extrafn}* /\n"));
+    out_block.push_str(&format!("COPY --from={rustc_stage} /stderr{extrafn} /stdout{extrafn} /\n"));
     md.push_block(&out_stage, out_block);
     // TODO? in Dockerfile, when using outputs:
     // => skip the COPY (--mount=from=out-08c4d63ed4366a99)
@@ -422,6 +423,7 @@ async fn do_wrap_rustc(
     let md_path = target_path.join(format!("{crate_name}{extrafn}.toml"));
     let containerfile_path = target_path.join(format!("{krate_name}{extrafn}.Dockerfile"));
 
+    let old_md = Md::from_file(&md_path).ok();
     md.write_to(&md_path)?;
 
     let mut containerfile = green.new_containerfile();
@@ -446,7 +448,11 @@ async fn do_wrap_rustc(
     let build = |stage, dir| build_out(&green, &containerfile_path, stage, contexts, dir);
     match build(out_stage, &out_dir).await {
         Ok(Effects { call, envs, written, stdout, stderr }) => {
-            if !written.is_empty() || !stdout.is_empty() || !stderr.is_empty() {
+            if written.is_empty() && stdout.is_empty() && stderr.is_empty() {
+                if let Some(Md { writes, stdout, .. }) = old_md {
+                    panic!("\n>>> \n{writes:?}\n{stdout:?}\n")
+                }
+            } else {
                 md.writes = written
                     .into_iter()
                     .map(|x| x.strip_prefix(&target_path).unwrap().to_owned())
