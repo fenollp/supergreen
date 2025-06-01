@@ -22,6 +22,12 @@ pub(crate) struct Md {
 
     #[serde(default, skip_serializing_if = "IndexSet::is_empty")]
     externs: IndexSet<MountExtern>,
+=======
+    needs: IndexSet<MdId>,
+
+    #[serde(default, skip_serializing_if = "IndexSet::is_empty")]
+    pub(crate) mounts: IndexSet<MountFrom>,
+>>>>>>> 804fe4d (not quite)
 
     #[serde(default, skip_serializing_if = "IndexSet::is_empty")]
     deps: IndexSet<MdId>,
@@ -179,12 +185,15 @@ impl Md {
         let exclude_rmeta_when_not_needed =
             |xtern: &Utf8Path| if no_rmetas { !xtern.as_str().ends_with(".rmeta") } else { true };
 
+        let mut extern_mds_and_paths = vec![];
+
         for xtern in externs {
             // E.g. libproc_macro2-e44df32b5d502568.rmeta
             // E.g. libunicode_xid-c443c88a44e24bc6.rlib
             trace!("❯ extern {xtern}");
 
             // E.g. c443c88a44e24bc6
+<<<<<<< HEAD
             let Some(xtern) = xtern.split(['-', '.']).nth(1) else {
                 bail!("BUG: expected extern to match ^lib[^.-]+-<mdid>.[^.]+$: {xtern}")
             };
@@ -220,6 +229,99 @@ impl Md {
         }
 
         let extern_md_paths = self.sort_deps(extern_mds_and_paths)?;
+=======
+            let Some(xtern_mdid) = xtern.split(['-', '.']).nth(1) else {
+                bail!("BUG: expected extern to match ^lib[^.-]+-<mdid>.[^.]+$: {xtern}")
+            };
+
+            let extern_md_path = target_path.join(format!("{xtern_mdid}.toml")); //TODO: .path(target_path)
+            info!("checking (RO) extern's Md {extern_md_path}");
+            let extern_md = get_or_read(&mut mds, &extern_md_path)?;
+
+            let from = Stage::output(xtern_mdid)?; //TODO: swap arg type
+            self.mounts.extend(
+                extern_md
+                    .writes
+                    .iter()
+                    .filter(|w: &&Utf8PathBuf| !w.as_str().ends_with(".d"))
+                    .map(|w| w.file_name().unwrap().to_owned())
+                    .filter(|w: &String| w.ends_with(&format!(".{ext}")))
+                    .map(|xtern: String| MountFrom {
+                        from: from.clone(),
+                        src: format!("/{xtern}").into(),
+                        dst: target_path.join("deps").join(xtern),
+                    }),
+            );
+
+            let xtern_mdid = MdId(xtern_mdid.to_owned());
+            self.needs.insert(xtern_mdid);
+
+            for dep in &extern_md.needs {
+                let dep_md_path = target_path.join(format!("{}.toml", dep.0));
+                let dep_md = get_or_read(&mut mds, &dep_md_path)?;
+                // let ext = if guard_md.is_proc_macro { "so" } else { &ext };
+
+                // trace!("❯ extern lib{transitive}.{ext}");
+                // all_externs.insert(format!("lib{transitive}.{ext}"));
+                let from = Stage::output(&dep.0)?; //TODO: swap arg type
+                self.mounts.extend(
+                    dep_md
+                        .writes
+                        .iter()
+                        .filter(|w: &&Utf8PathBuf| !w.as_str().ends_with(".d"))
+                        .map(|w| w.file_name().unwrap().to_owned())
+                        .filter(|w: &String| w.ends_with(&format!(".{ext}")))
+                        .map(|xtern: String| MountFrom {
+                            from: from.clone(),
+                            src: format!("/{xtern}").into(),
+                            dst: target_path.join("deps").join(xtern),
+                        }),
+                );
+
+                extern_mds_and_paths.push((dep_md_path, dep_md));
+
+                trace!("❯ needs dep {}", dep.0);
+                self.needs.insert(dep.clone());
+            }
+
+            extern_mds_and_paths.push((extern_md_path, extern_md));
+        }
+
+        let extern_md_paths = self.sort_deps(extern_mds_and_paths)?;
+        // let extern_md_paths = {
+        //     let mut dag: Vec<_> = extern_mds_and_paths
+        //         .into_iter()
+        //         .map(|(md_path, md)| {
+        //             let this = md.this.as_u64();
+        //             self.needs.insert(md.this);
+        //             self.contexts.extend(md.contexts);
+
+        //             // for need in &md.needs {}
+
+        //             Node::new(this, md.needs.as_u64s(), md_path)
+        //         })
+        //         .collect();
+        //     let this = self.this.as_u64();
+        //     dag.push(Node::new(this, self.needs.as_u64s(), "".into()));
+
+        //     let mut md_paths = sort(&dag, this).map_err(|e| {
+        //         let this = &self.this.0;
+        //         match e {
+        //             TopsortError::TargetNotFound(x) => {
+        //                 anyhow!("Failed topolosorting {this}: {} not found", MdId::from_u64(x).0)
+        //             }
+        //             TopsortError::CyclicDependency(x) => {
+        //                 anyhow!("Failed topolosorting {this}: cyclic {}", MdId::from_u64(x).0)
+        //             }
+        //         }
+        //     })?;
+        //     let last = md_paths.pop();
+        //     assert_eq!(last.as_deref(), Some("".into()), "BUG: it's self.this's empty path");
+
+        //     md_paths
+        // };
+
+>>>>>>> 804fe4d (not quite)
         info!("extern_md_paths: {}", extern_md_paths.len());
 
         let mds = extern_md_paths
@@ -303,6 +405,28 @@ impl std::hash::Hash for MountExtern {
         H: std::hash::Hasher,
     {
         self.xtern.hash(state);
+    }
+
+pub(crate) struct MountFrom {
+    pub(crate) from: Stage,
+    pub(crate) src: Utf8PathBuf,
+    pub(crate) dst: Utf8PathBuf,
+}
+
+/// For use by IndexSet
+impl PartialEq for MountFrom {
+    fn eq(&self, other: &Self) -> bool {
+        self.dst == other.dst
+    }
+}
+
+/// For use by IndexSet
+impl std::hash::Hash for MountFrom {
+    fn hash<H>(&self, state: &mut H)
+    where
+        H: std::hash::Hasher,
+    {
+        self.dst.hash(state);
     }
 }
 
@@ -428,6 +552,10 @@ fn md_ser() {
     pretty_assertions::assert_eq!(
         r#"
 this = "711ba64e1183a234"
+needs = [
+    "81529f4c2380d9ec",
+    "88a4324b2aff6db9",
+]
 deps = [
     "81529f4c2380d9ec",
     "88a4324b2aff6db9",

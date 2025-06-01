@@ -128,7 +128,7 @@ async fn wrap_rustc(
     let (st, args) = as_rustc(&pwd, &arguments, out_dir_var.as_deref())?;
 
     let buildrs = ["build_script_build", "build_script_main"].contains(&crate_name);
-    // NOTE: krate_name != crate_name: Gets named build_script_build + s/-/_/g + may actually be a different name
+
     let krate_name = env::var("CARGO_PKG_NAME").expect("$CARGO_PKG_NAME");
 
     let krate_version = env::var("CARGO_PKG_VERSION").expect("$CARGO_PKG_VERSION");
