@@ -336,6 +336,8 @@ async fn build(
     cmd.arg(format!("--target={target}"));
     if let Some(out_dir) = out_dir {
         cmd.arg(format!("--output=type=local,dest={out_dir}"));
+    //--output type=local,dest=.../stderr-{extrafn}
+    //--output type=local,dest=.../stdout-{extrafn}
     } else {
         // https://docs.docker.com/build/exporters/#cache-only-export
         cmd.arg("--output=type=cacheonly");
