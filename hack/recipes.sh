@@ -1,7 +1,9 @@
 #!/bin/bash -eu
 set -o pipefail
 
-gh run download --pattern '*.Dockerfile'
+branch=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
+runID=$(gh run list --branch "$branch" --limit 1 --workflow CLIs --json databaseId --jq '.[].databaseId')
+gh run download "$runID" --pattern '*.Dockerfile'
 
 for f in *.Dockerfile/*.Dockerfile; do
 	echo $f
