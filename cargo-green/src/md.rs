@@ -190,11 +190,11 @@ impl Md {
                 bail!("BUG: expected extern to match ^lib[^.-]+-<mdid>.[^.]+$: {xtern}")
             };
 
-            let extern_md_path = target_path.join(format!("{xtern_mdid}.toml"));
+            let extern_md_path = target_path.join(format!("{xtern_mdid}.toml")); //TODO: .path(target_path)
             info!("checking (RO) extern's Md {extern_md_path}");
             let extern_md = get_or_read(&mut mds, &extern_md_path)?;
 
-            let from = Stage::output(xtern_mdid)?;
+            let from = Stage::output(xtern_mdid)?; //TODO: swap arg type
             self.mounts.extend(
                 extern_md
                     .writes
@@ -211,6 +211,34 @@ impl Md {
 
             let xtern_mdid = MdId(xtern_mdid.to_owned());
             self.needs.insert(xtern_mdid);
+
+            for dep in &extern_md.needs {
+                let dep_md_path = target_path.join(format!("{}.toml", dep.0));
+                let dep_md = get_or_read(&mut mds, &dep_md_path)?;
+                // let ext = if guard_md.is_proc_macro { "so" } else { &ext };
+
+                // trace!("❯ extern lib{transitive}.{ext}");
+                // all_externs.insert(format!("lib{transitive}.{ext}"));
+                let from = Stage::output(&dep.0)?; //TODO: swap arg type
+                self.mounts.extend(
+                    dep_md
+                        .writes
+                        .iter()
+                        .filter(|w: &&Utf8PathBuf| !w.as_str().ends_with(".d"))
+                        .map(|w| w.file_name().unwrap().to_owned())
+                        .filter(|w: &String| w.ends_with(&format!(".{ext}")))
+                        .map(|xtern: String| MountFrom {
+                            from: from.clone(),
+                            src: format!("/{xtern}").into(),
+                            dst: target_path.join("deps").join(xtern),
+                        }),
+                );
+
+                extern_mds_and_paths.push((dep_md_path, dep_md));
+
+                trace!("❯ needs dep {}", dep.0);
+                self.needs.insert(dep.clone());
+            }
 
             extern_mds_and_paths.push((extern_md_path, extern_md));
         }

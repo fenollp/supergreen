@@ -485,6 +485,41 @@ async fn do_wrap_rustc(
     Ok(())
 }
 
+// NOTE: using $CARGO_PRIMARY_PACKAGE still makes >1 hits in rustc calls history: lib + bin, at least.
+fn maybe_write_final_path(
+    green: &Green,
+    containerfile_path: &Utf8Path,
+    md_path: &Utf8Path,
+    contexts: &IndexSet<BuildContext>,
+    call: &str,
+    envs: &str,
+) -> Result<()> {
+    if let Some(path) = green.final_path.as_deref() {
+        if maybe_log().is_some() || env::var("CARGO_PRIMARY_PACKAGE").is_ok() {
+            info!("writing (RW) final path {path}");
+
+            let _ = fs::copy(containerfile_path, path)?; //TODO: use an atomic mv
+
+            let mut file = OpenOptions::new().append(true).open(path)?;
+            writeln!(file)?;
+
+            for md_line in fs::read_to_string(md_path)?.lines() {
+                writeln!(file, "## {md_line}")?;
+            }
+            writeln!(file)?;
+
+            write!(file, "# Pipe this file to")?;
+            if !contexts.is_empty() {
+                //TODO: or additional-build-arguments
+                write!(file, " (not portable due to usage of local build contexts)")?;
+            }
+            writeln!(file, ":\n# {envs} \\")?;
+            writeln!(file, "#   {call}")?;
+        }
+    }
+    Ok(())
+}
+
 #[derive(Debug)]
 struct NamedMount {
     name: Stage,
@@ -516,44 +551,11 @@ fn assemble_build_dependencies(
     // > [rmeta] is created if the --emit=metadata CLI option is used.
     let ext = if emit.contains("metadata") { "rmeta".to_owned() } else { ext };
 
-    let mut needs = IndexSet::new();
-    let mut mounts = vec![];
-    let mut extern_mds_and_paths = vec![];
-
     for xtern in externs {
         trace!("❯ extern {xtern}");
         // E.g. libproc_macro2-e44df32b5d502568.rmeta
         // E.g. libunicode_xid-c443c88a44e24bc6.rlib
         all_externs.insert(xtern.clone());
-
-        // E.g. c443c88a44e24bc6
-        let Some(xtern_mdid) = xtern.rsplit_terminator(['-', '.']).nth(2) else {
-            bail!("BUG: expected extern to match ^lib[^.-]+-<mdid>.[^.]+$: {xtern}")
-        };
-
-        let extern_md_path = target_path.join(format!("{xtern_mdid}.toml"));
-        info!("checking (RO) extern's Md {extern_md_path}");
-        let extern_md = get_or_read(&mut mds, &extern_md_path)?;
-
-        let from = Stage::output(xtern_mdid)?;
-        mounts.extend(
-            extern_md
-                .writes
-                .iter()
-                .filter(|w: &&Utf8PathBuf| !w.as_str().ends_with(".d"))
-                .map(|w| w.file_name().unwrap().to_owned())
-                .filter(|w: &String| w.ends_with(&format!(".{ext}")))
-                .map(|xtern: String| NamedMount {
-                    name: from.clone(), //FIXME: rename field + type
-                    src: format!("/{xtern}").into(),
-                    dst: target_path.join("deps").join(xtern),
-                }),
-        );
-
-        let xtern_mdid = MdId(xtern_mdid.to_owned());
-        needs.insert(xtern_mdid);
-
-        extern_mds_and_paths.push((extern_md_path, extern_md));
 
         if !xtern.starts_with("lib") {
             bail!("BUG: expected extern to match ^lib: {xtern}")
@@ -576,18 +578,6 @@ fn assemble_build_dependencies(
         info!("checking (RO) extern's externs {extern_md}");
         let extern_md = get_or_read(&mut mds, &extern_md)?;
 
-        if false {
-            for wrote in extern_md.writes {
-                if wrote.as_str().ends_with(".d") {
-                    continue;
-                }
-                if ext == "rlib" && wrote.as_str().ends_with(".rmeta") {
-                    continue;
-                }
-                //=> wrote ~ deps/libbla-34234.rlib => mount
-            }
-        }
-
         for transitive in extern_md.short_externs {
             let guard_md = get_or_read(&mut mds, &md_pather(&transitive))?;
             let ext = if guard_md.is_proc_macro { "so" } else { &ext };
@@ -600,25 +590,25 @@ fn assemble_build_dependencies(
         }
     }
 
-    // let mut mounts = Vec::with_capacity(all_externs.len());
-    // let extern_mds_and_paths = all_externs
-    //     .into_iter()
-    //     .map(|xtern| {
-    //         let Some((extern_md_path, xtern_stage)) = toml_path_and_stage(&xtern, target_path)
-    //         else {
-    //             bail!("Unexpected extern name format: {xtern}")
-    //         };
-    //         let mount = NamedMount {
-    //             name: xtern_stage,
-    //             src: format!("/{xtern}").into(),
-    //             dst: target_path.join("deps").join(xtern),
-    //         };
-    //         mounts.push(mount);
+    let mut mounts = Vec::with_capacity(all_externs.len());
+    let extern_mds_and_paths = all_externs
+        .into_iter()
+        .map(|xtern| {
+            let Some((extern_md_path, xtern_stage)) = toml_path_and_stage(&xtern, target_path)
+            else {
+                bail!("Unexpected extern name format: {xtern}")
+            };
+            let mount = NamedMount {
+                name: xtern_stage,
+                src: format!("/{xtern}").into(),
+                dst: target_path.join("deps").join(xtern),
+            };
+            mounts.push(mount);
 
-    //         let extern_md = get_or_read(&mut mds, &extern_md_path)?;
-    //         Ok((extern_md_path, extern_md))
-    //     })
-    //     .collect::<Result<Vec<_>>>()?;
+            let extern_md = get_or_read(&mut mds, &extern_md_path)?;
+            Ok((extern_md_path, extern_md))
+        })
+        .collect::<Result<Vec<_>>>()?;
 
     let extern_md_paths = md.sort_deps(extern_mds_and_paths)?;
     info!("extern_md_paths: {} {extern_md_paths:?}", extern_md_paths.len());
