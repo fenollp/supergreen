@@ -14,12 +14,118 @@ RUN \
   --mount=from=rust-base,src=/usr,dst=/usr \
     mkdir /extracted \
  && tar zxf /crate --strip-components=1 -C /extracted
+FROM rust-base AS dep-x-anyhow-1.0.79-81caa63e9549e8cc
+SHELL ["/bin/bash", "-eux", "-c"]
+WORKDIR /tmp/clis-ripgrep_14-1-0/release/build/anyhow-81caa63e9549e8cc
+RUN \
+  --mount=from=cratesio-anyhow-1.0.79,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.79,rw \
+    { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
+    { \
+        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.79/build.rs | sed 's/fn main/fn actual_81caa63e9549e8cc_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.79/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.79/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.79/build.rs ; \
+        { \
+          echo ; \
+          echo 'fn main() {' ; \
+          echo '    use std::env::{args_os, var_os};' ; \
+          echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+          echo '        use std::process::{Command, Stdio};' ; \
+          echo '        let mut cmd = Command::new("cargo-green");' ; \
+          echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+          echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+          echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+          echo '        assert!(res.success());' ; \
+          echo '    } else {' ; \
+          echo '        actual_81caa63e9549e8cc_main()' ; \
+          echo '    }' ; \
+          echo '}' ; \
+        } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.79/build.rs ; \
+    } && \
+    env CARGO="$(which cargo)" \
+        CARGO_CRATE_NAME="build_script_build" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.79" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.79/Cargo.toml" \
+        CARGO_PKG_AUTHORS="David Tolnay <dtolnay@gmail.com>" \
+        CARGO_PKG_DESCRIPTION="Flexible concrete Error type built on std::error::Error" \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE="MIT OR Apache-2.0" \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME="anyhow" \
+        CARGO_PKG_README="README.md" \
+        CARGO_PKG_REPOSITORY="https://github.com/dtolnay/anyhow" \
+        CARGO_PKG_RUST_VERSION="1.39" \
+        CARGO_PKG_VERSION="1.0.79" \
+        CARGO_PKG_VERSION_MAJOR="1" \
+        CARGO_PKG_VERSION_MINOR="0" \
+        CARGO_PKG_VERSION_PATCH="79" \
+        CARGO_PKG_VERSION_PRE= \
+        CARGOGREEN=1 \
+      rustc '--crate-name' 'build_script_build' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'bin' '--emit' 'dep-info,link' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("backtrace", "default", "std"))' '-C' 'metadata=3ca3421db3f8f501' '-C' 'extra-filename=-81caa63e9549e8cc' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/build/anyhow-81caa63e9549e8cc' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.79/build.rs \
+        1> >(sed 's/^/::STDOUT:: /') \
+        2> >(sed 's/^/::STDERR:: /' >&2)
+FROM scratch AS out-81caa63e9549e8cc
+COPY --from=dep-x-anyhow-1.0.79-81caa63e9549e8cc /tmp/clis-ripgrep_14-1-0/release/build/anyhow-81caa63e9549e8cc/*-81caa63e9549e8cc* /
+
+FROM rust-base AS run-z-anyhow-1.0.79-467b075ea0bb0ef8
+SHELL ["/bin/bash", "-eux", "-c"]
+WORKDIR /tmp/clis-ripgrep_14-1-0/release/build/anyhow-467b075ea0bb0ef8/out
+RUN \
+  --mount=from=out-81caa63e9549e8cc,source=/build_script_build-81caa63e9549e8cc,dst=/tmp/clis-ripgrep_14-1-0/release/build/anyhow-81caa63e9549e8cc/build-script-build \
+    env CARGO="$(which cargo)" \
+        CARGO_CFG_FEATURE="default,std" \
+        CARGO_CFG_PANIC="unwind" \
+        CARGO_CFG_TARGET_ABI= \
+        CARGO_CFG_TARGET_ARCH="x86_64" \
+        CARGO_CFG_TARGET_ENDIAN="little" \
+        CARGO_CFG_TARGET_ENV="gnu" \
+        CARGO_CFG_TARGET_FAMILY="unix" \
+        CARGO_CFG_TARGET_FEATURE="fxsr,sse,sse2" \
+        CARGO_CFG_TARGET_HAS_ATOMIC="16,32,64,8,ptr" \
+        CARGO_CFG_TARGET_OS="linux" \
+        CARGO_CFG_TARGET_POINTER_WIDTH="64" \
+        CARGO_CFG_TARGET_VENDOR="unknown" \
+        CARGO_CFG_UNIX= \
+        CARGO_ENCODED_RUSTFLAGS= \
+        CARGO_FEATURE_DEFAULT="1" \
+        CARGO_FEATURE_STD="1" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.79" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.79/Cargo.toml" \
+        CARGO_PKG_AUTHORS="David Tolnay <dtolnay@gmail.com>" \
+        CARGO_PKG_DESCRIPTION="Flexible concrete Error type built on std::error::Error" \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE="MIT OR Apache-2.0" \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME="anyhow" \
+        CARGO_PKG_README="README.md" \
+        CARGO_PKG_REPOSITORY="https://github.com/dtolnay/anyhow" \
+        CARGO_PKG_RUST_VERSION="1.39" \
+        CARGO_PKG_VERSION="1.0.79" \
+        CARGO_PKG_VERSION_MAJOR="1" \
+        CARGO_PKG_VERSION_MINOR="0" \
+        CARGO_PKG_VERSION_PATCH="79" \
+        CARGO_PKG_VERSION_PRE= \
+        DEBUG="true" \
+        HOST="x86_64-unknown-linux-gnu" \
+        NUM_JOBS="1" \
+        OPT_LEVEL="3" \
+        OUT_DIR="/tmp/clis-ripgrep_14-1-0/release/build/anyhow-467b075ea0bb0ef8/out" \
+        PROFILE="release" \
+        RUSTC=rustc \
+        RUSTDOC="/home/runner/.rustup/toolchains/1.86.0-x86_64-unknown-linux-gnu/bin/rustdoc" \
+        TARGET="x86_64-unknown-linux-gnu" \
+        CARGOGREEN=1 \
+        CARGOGREEN_EXECUTE_BUILDRS_= \
+      /tmp/clis-ripgrep_14-1-0/release/build/anyhow-81caa63e9549e8cc/build-script-build \
+        1> >(sed 's/^/::STDOUT:: /') \
+        2> >(sed 's/^/::STDERR:: /' >&2)
+FROM scratch AS ran-467b075ea0bb0ef8
+COPY --from=run-z-anyhow-1.0.79-467b075ea0bb0ef8 /tmp/clis-ripgrep_14-1-0/release/build/anyhow-467b075ea0bb0ef8/out/* /
+
+
 FROM rust-base AS dep-l-anyhow-1.0.79-95e5d8a0e52ba465
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 RUN \
   --mount=from=cratesio-anyhow-1.0.79,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.79 \
-  --mount=from=crate_out-467b075ea0bb0ef8,dst=/tmp/clis-ripgrep_14-1-0/release/build/anyhow-467b075ea0bb0ef8/out \
+  --mount=from=ran-467b075ea0bb0ef8,dst=/tmp/clis-ripgrep_14-1-0/release/build/anyhow-467b075ea0bb0ef8/out,source=/ \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="anyhow" \
@@ -41,7 +147,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR="/tmp/clis-ripgrep_14-1-0/release/build/anyhow-467b075ea0bb0ef8/out" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'anyhow' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("backtrace", "default", "std"))' '-C' 'metadata=1054fa31eee7294e' '-C' 'extra-filename=-95e5d8a0e52ba465' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--cap-lints' 'warn' '--cfg' 'std_backtrace' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.79/src/lib.rs \
+      rustc '--crate-name' 'anyhow' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("backtrace", "default", "std"))' '-C' 'metadata=1054fa31eee7294e' '-C' 'extra-filename=-95e5d8a0e52ba465' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.79/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-95e5d8a0e52ba465
@@ -358,11 +464,118 @@ RUN \
   --mount=from=rust-base,src=/usr,dst=/usr \
     mkdir /extracted \
  && tar zxf /crate --strip-components=1 -C /extracted
+FROM rust-base AS dep-x-libc-0.2.151-3d8dd47aaf26aec4
+SHELL ["/bin/bash", "-eux", "-c"]
+WORKDIR /tmp/clis-ripgrep_14-1-0/release/build/libc-3d8dd47aaf26aec4
+RUN \
+  --mount=from=cratesio-libc-0.2.151,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.151,rw \
+    { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
+    { \
+        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.151/build.rs | sed 's/fn main/fn actual_3d8dd47aaf26aec4_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.151/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.151/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.151/build.rs ; \
+        { \
+          echo ; \
+          echo 'fn main() {' ; \
+          echo '    use std::env::{args_os, var_os};' ; \
+          echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+          echo '        use std::process::{Command, Stdio};' ; \
+          echo '        let mut cmd = Command::new("cargo-green");' ; \
+          echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+          echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+          echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+          echo '        assert!(res.success());' ; \
+          echo '    } else {' ; \
+          echo '        actual_3d8dd47aaf26aec4_main()' ; \
+          echo '    }' ; \
+          echo '}' ; \
+        } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.151/build.rs ; \
+    } && \
+    env CARGO="$(which cargo)" \
+        CARGO_CRATE_NAME="build_script_build" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.151" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.151/Cargo.toml" \
+        CARGO_PKG_AUTHORS="The Rust Project Developers" \
+        CARGO_PKG_DESCRIPTION="Raw FFI bindings to platform libraries like libc.\n" \
+        CARGO_PKG_HOMEPAGE="https://github.com/rust-lang/libc" \
+        CARGO_PKG_LICENSE="MIT OR Apache-2.0" \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME="libc" \
+        CARGO_PKG_README="README.md" \
+        CARGO_PKG_REPOSITORY="https://github.com/rust-lang/libc" \
+        CARGO_PKG_RUST_VERSION= \
+        CARGO_PKG_VERSION="0.2.151" \
+        CARGO_PKG_VERSION_MAJOR="0" \
+        CARGO_PKG_VERSION_MINOR="2" \
+        CARGO_PKG_VERSION_PATCH="151" \
+        CARGO_PKG_VERSION_PRE= \
+        CARGOGREEN=1 \
+      rustc '--crate-name' 'build_script_build' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'bin' '--emit' 'dep-info,link' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("align", "const-extern-fn", "default", "extra_traits", "rustc-dep-of-std", "rustc-std-workspace-core", "std", "use_std"))' '-C' 'metadata=bfdbc5ab194702c9' '-C' 'extra-filename=-3d8dd47aaf26aec4' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/build/libc-3d8dd47aaf26aec4' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.151/build.rs \
+        1> >(sed 's/^/::STDOUT:: /') \
+        2> >(sed 's/^/::STDERR:: /' >&2)
+FROM scratch AS out-3d8dd47aaf26aec4
+COPY --from=dep-x-libc-0.2.151-3d8dd47aaf26aec4 /tmp/clis-ripgrep_14-1-0/release/build/libc-3d8dd47aaf26aec4/*-3d8dd47aaf26aec4* /
+
+FROM rust-base AS run-z-libc-0.2.151-55a341dfb67ba45f
+SHELL ["/bin/bash", "-eux", "-c"]
+WORKDIR /tmp/clis-ripgrep_14-1-0/release/build/libc-55a341dfb67ba45f/out
+RUN \
+  --mount=from=out-3d8dd47aaf26aec4,source=/build_script_build-3d8dd47aaf26aec4,dst=/tmp/clis-ripgrep_14-1-0/release/build/libc-3d8dd47aaf26aec4/build-script-build \
+    env CARGO="$(which cargo)" \
+        CARGO_CFG_FEATURE="default,std" \
+        CARGO_CFG_PANIC="unwind" \
+        CARGO_CFG_TARGET_ABI= \
+        CARGO_CFG_TARGET_ARCH="x86_64" \
+        CARGO_CFG_TARGET_ENDIAN="little" \
+        CARGO_CFG_TARGET_ENV="gnu" \
+        CARGO_CFG_TARGET_FAMILY="unix" \
+        CARGO_CFG_TARGET_FEATURE="fxsr,sse,sse2" \
+        CARGO_CFG_TARGET_HAS_ATOMIC="16,32,64,8,ptr" \
+        CARGO_CFG_TARGET_OS="linux" \
+        CARGO_CFG_TARGET_POINTER_WIDTH="64" \
+        CARGO_CFG_TARGET_VENDOR="unknown" \
+        CARGO_CFG_UNIX= \
+        CARGO_ENCODED_RUSTFLAGS= \
+        CARGO_FEATURE_DEFAULT="1" \
+        CARGO_FEATURE_STD="1" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.151" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.151/Cargo.toml" \
+        CARGO_PKG_AUTHORS="The Rust Project Developers" \
+        CARGO_PKG_DESCRIPTION="Raw FFI bindings to platform libraries like libc.\n" \
+        CARGO_PKG_HOMEPAGE="https://github.com/rust-lang/libc" \
+        CARGO_PKG_LICENSE="MIT OR Apache-2.0" \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME="libc" \
+        CARGO_PKG_README="README.md" \
+        CARGO_PKG_REPOSITORY="https://github.com/rust-lang/libc" \
+        CARGO_PKG_RUST_VERSION= \
+        CARGO_PKG_VERSION="0.2.151" \
+        CARGO_PKG_VERSION_MAJOR="0" \
+        CARGO_PKG_VERSION_MINOR="2" \
+        CARGO_PKG_VERSION_PATCH="151" \
+        CARGO_PKG_VERSION_PRE= \
+        DEBUG="true" \
+        HOST="x86_64-unknown-linux-gnu" \
+        NUM_JOBS="1" \
+        OPT_LEVEL="3" \
+        OUT_DIR="/tmp/clis-ripgrep_14-1-0/release/build/libc-55a341dfb67ba45f/out" \
+        PROFILE="release" \
+        RUSTC=rustc \
+        RUSTDOC="/home/runner/.rustup/toolchains/1.86.0-x86_64-unknown-linux-gnu/bin/rustdoc" \
+        TARGET="x86_64-unknown-linux-gnu" \
+        CARGOGREEN=1 \
+        CARGOGREEN_EXECUTE_BUILDRS_= \
+      /tmp/clis-ripgrep_14-1-0/release/build/libc-3d8dd47aaf26aec4/build-script-build \
+        1> >(sed 's/^/::STDOUT:: /') \
+        2> >(sed 's/^/::STDERR:: /' >&2)
+FROM scratch AS ran-55a341dfb67ba45f
+COPY --from=run-z-libc-0.2.151-55a341dfb67ba45f /tmp/clis-ripgrep_14-1-0/release/build/libc-55a341dfb67ba45f/out/* /
+
+
 FROM rust-base AS dep-l-libc-0.2.151-b1dcb66edfd0e8a0
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 RUN \
   --mount=from=cratesio-libc-0.2.151,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.151 \
+  --mount=from=ran-55a341dfb67ba45f,dst=/tmp/clis-ripgrep_14-1-0/release/build/libc-55a341dfb67ba45f/out,source=/ \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="libc" \
@@ -384,7 +597,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR="/tmp/clis-ripgrep_14-1-0/release/build/libc-55a341dfb67ba45f/out" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'libc' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("align", "const-extern-fn", "default", "extra_traits", "rustc-dep-of-std", "rustc-std-workspace-core", "std", "use_std"))' '-C' 'metadata=8336ff40690b796b' '-C' 'extra-filename=-b1dcb66edfd0e8a0' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--cap-lints' 'warn' '--cfg' 'freebsd11' '--cfg' 'libc_priv_mod_use' '--cfg' 'libc_union' '--cfg' 'libc_const_size_of' '--cfg' 'libc_align' '--cfg' 'libc_int128' '--cfg' 'libc_core_cvoid' '--cfg' 'libc_packedN' '--cfg' 'libc_cfg_target_vendor' '--cfg' 'libc_non_exhaustive' '--cfg' 'libc_long_array' '--cfg' 'libc_ptr_addr_of' '--cfg' 'libc_underscore_const_names' '--cfg' 'libc_const_extern_fn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.151/src/lib.rs \
+      rustc '--crate-name' 'libc' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("align", "const-extern-fn", "default", "extra_traits", "rustc-dep-of-std", "rustc-std-workspace-core", "std", "use_std"))' '-C' 'metadata=8336ff40690b796b' '-C' 'extra-filename=-b1dcb66edfd0e8a0' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.151/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-b1dcb66edfd0e8a0
@@ -754,11 +967,118 @@ RUN \
   --mount=from=rust-base,src=/usr,dst=/usr \
     mkdir /extracted \
  && tar zxf /crate --strip-components=1 -C /extracted
+FROM rust-base AS dep-x-serde-1.0.195-a03c69887ab9597a
+SHELL ["/bin/bash", "-eux", "-c"]
+WORKDIR /tmp/clis-ripgrep_14-1-0/release/build/serde-a03c69887ab9597a
+RUN \
+  --mount=from=cratesio-serde-1.0.195,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.195,rw \
+    { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
+    { \
+        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.195/build.rs | sed 's/fn main/fn actual_a03c69887ab9597a_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.195/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.195/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.195/build.rs ; \
+        { \
+          echo ; \
+          echo 'fn main() {' ; \
+          echo '    use std::env::{args_os, var_os};' ; \
+          echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+          echo '        use std::process::{Command, Stdio};' ; \
+          echo '        let mut cmd = Command::new("cargo-green");' ; \
+          echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+          echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+          echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+          echo '        assert!(res.success());' ; \
+          echo '    } else {' ; \
+          echo '        actual_a03c69887ab9597a_main()' ; \
+          echo '    }' ; \
+          echo '}' ; \
+        } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.195/build.rs ; \
+    } && \
+    env CARGO="$(which cargo)" \
+        CARGO_CRATE_NAME="build_script_build" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.195" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.195/Cargo.toml" \
+        CARGO_PKG_AUTHORS="Erick Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>" \
+        CARGO_PKG_DESCRIPTION="A generic serialization/deserialization framework" \
+        CARGO_PKG_HOMEPAGE="https://serde.rs" \
+        CARGO_PKG_LICENSE="MIT OR Apache-2.0" \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME="serde" \
+        CARGO_PKG_README="crates-io.md" \
+        CARGO_PKG_REPOSITORY="https://github.com/serde-rs/serde" \
+        CARGO_PKG_RUST_VERSION="1.31" \
+        CARGO_PKG_VERSION="1.0.195" \
+        CARGO_PKG_VERSION_MAJOR="1" \
+        CARGO_PKG_VERSION_MINOR="0" \
+        CARGO_PKG_VERSION_PATCH="195" \
+        CARGO_PKG_VERSION_PRE= \
+        CARGOGREEN=1 \
+      rustc '--crate-name' 'build_script_build' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'bin' '--emit' 'dep-info,link' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "default", "derive", "rc", "serde_derive", "std", "unstable"))' '-C' 'metadata=e6b659fd28597b3c' '-C' 'extra-filename=-a03c69887ab9597a' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/build/serde-a03c69887ab9597a' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.195/build.rs \
+        1> >(sed 's/^/::STDOUT:: /') \
+        2> >(sed 's/^/::STDERR:: /' >&2)
+FROM scratch AS out-a03c69887ab9597a
+COPY --from=dep-x-serde-1.0.195-a03c69887ab9597a /tmp/clis-ripgrep_14-1-0/release/build/serde-a03c69887ab9597a/*-a03c69887ab9597a* /
+
+FROM rust-base AS run-z-serde-1.0.195-f726cc681a30a037
+SHELL ["/bin/bash", "-eux", "-c"]
+WORKDIR /tmp/clis-ripgrep_14-1-0/release/build/serde-f726cc681a30a037/out
+RUN \
+  --mount=from=out-a03c69887ab9597a,source=/build_script_build-a03c69887ab9597a,dst=/tmp/clis-ripgrep_14-1-0/release/build/serde-a03c69887ab9597a/build-script-build \
+    env CARGO="$(which cargo)" \
+        CARGO_CFG_FEATURE="default,std" \
+        CARGO_CFG_PANIC="unwind" \
+        CARGO_CFG_TARGET_ABI= \
+        CARGO_CFG_TARGET_ARCH="x86_64" \
+        CARGO_CFG_TARGET_ENDIAN="little" \
+        CARGO_CFG_TARGET_ENV="gnu" \
+        CARGO_CFG_TARGET_FAMILY="unix" \
+        CARGO_CFG_TARGET_FEATURE="fxsr,sse,sse2" \
+        CARGO_CFG_TARGET_HAS_ATOMIC="16,32,64,8,ptr" \
+        CARGO_CFG_TARGET_OS="linux" \
+        CARGO_CFG_TARGET_POINTER_WIDTH="64" \
+        CARGO_CFG_TARGET_VENDOR="unknown" \
+        CARGO_CFG_UNIX= \
+        CARGO_ENCODED_RUSTFLAGS= \
+        CARGO_FEATURE_DEFAULT="1" \
+        CARGO_FEATURE_STD="1" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.195" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.195/Cargo.toml" \
+        CARGO_PKG_AUTHORS="Erick Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>" \
+        CARGO_PKG_DESCRIPTION="A generic serialization/deserialization framework" \
+        CARGO_PKG_HOMEPAGE="https://serde.rs" \
+        CARGO_PKG_LICENSE="MIT OR Apache-2.0" \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME="serde" \
+        CARGO_PKG_README="crates-io.md" \
+        CARGO_PKG_REPOSITORY="https://github.com/serde-rs/serde" \
+        CARGO_PKG_RUST_VERSION="1.31" \
+        CARGO_PKG_VERSION="1.0.195" \
+        CARGO_PKG_VERSION_MAJOR="1" \
+        CARGO_PKG_VERSION_MINOR="0" \
+        CARGO_PKG_VERSION_PATCH="195" \
+        CARGO_PKG_VERSION_PRE= \
+        DEBUG="true" \
+        HOST="x86_64-unknown-linux-gnu" \
+        NUM_JOBS="1" \
+        OPT_LEVEL="3" \
+        OUT_DIR="/tmp/clis-ripgrep_14-1-0/release/build/serde-f726cc681a30a037/out" \
+        PROFILE="release" \
+        RUSTC=rustc \
+        RUSTDOC="/home/runner/.rustup/toolchains/1.86.0-x86_64-unknown-linux-gnu/bin/rustdoc" \
+        TARGET="x86_64-unknown-linux-gnu" \
+        CARGOGREEN=1 \
+        CARGOGREEN_EXECUTE_BUILDRS_= \
+      /tmp/clis-ripgrep_14-1-0/release/build/serde-a03c69887ab9597a/build-script-build \
+        1> >(sed 's/^/::STDOUT:: /') \
+        2> >(sed 's/^/::STDERR:: /' >&2)
+FROM scratch AS ran-f726cc681a30a037
+COPY --from=run-z-serde-1.0.195-f726cc681a30a037 /tmp/clis-ripgrep_14-1-0/release/build/serde-f726cc681a30a037/out/* /
+
+
 FROM rust-base AS dep-l-serde-1.0.195-6342957ddc692e98
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 RUN \
   --mount=from=cratesio-serde-1.0.195,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.195 \
+  --mount=from=ran-f726cc681a30a037,dst=/tmp/clis-ripgrep_14-1-0/release/build/serde-f726cc681a30a037/out,source=/ \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="serde" \
@@ -878,6 +1198,112 @@ RUN \
   --mount=from=rust-base,src=/usr,dst=/usr \
     mkdir /extracted \
  && tar zxf /crate --strip-components=1 -C /extracted
+FROM rust-base AS dep-x-serde_json-1.0.111-27c7c5bd612eb316
+SHELL ["/bin/bash", "-eux", "-c"]
+WORKDIR /tmp/clis-ripgrep_14-1-0/release/build/serde_json-27c7c5bd612eb316
+RUN \
+  --mount=from=cratesio-serde_json-1.0.111,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.111,rw \
+    { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
+    { \
+        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.111/build.rs | sed 's/fn main/fn actual_27c7c5bd612eb316_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.111/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.111/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.111/build.rs ; \
+        { \
+          echo ; \
+          echo 'fn main() {' ; \
+          echo '    use std::env::{args_os, var_os};' ; \
+          echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+          echo '        use std::process::{Command, Stdio};' ; \
+          echo '        let mut cmd = Command::new("cargo-green");' ; \
+          echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+          echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+          echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+          echo '        assert!(res.success());' ; \
+          echo '    } else {' ; \
+          echo '        actual_27c7c5bd612eb316_main()' ; \
+          echo '    }' ; \
+          echo '}' ; \
+        } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.111/build.rs ; \
+    } && \
+    env CARGO="$(which cargo)" \
+        CARGO_CRATE_NAME="build_script_build" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.111" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.111/Cargo.toml" \
+        CARGO_PKG_AUTHORS="Erick Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>" \
+        CARGO_PKG_DESCRIPTION="A JSON serialization file format" \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE="MIT OR Apache-2.0" \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME="serde_json" \
+        CARGO_PKG_README="README.md" \
+        CARGO_PKG_REPOSITORY="https://github.com/serde-rs/json" \
+        CARGO_PKG_RUST_VERSION="1.56" \
+        CARGO_PKG_VERSION="1.0.111" \
+        CARGO_PKG_VERSION_MAJOR="1" \
+        CARGO_PKG_VERSION_MINOR="0" \
+        CARGO_PKG_VERSION_PATCH="111" \
+        CARGO_PKG_VERSION_PRE= \
+        CARGOGREEN=1 \
+      rustc '--crate-name' 'build_script_build' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'bin' '--emit' 'dep-info,link' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "arbitrary_precision", "default", "float_roundtrip", "indexmap", "preserve_order", "raw_value", "std", "unbounded_depth"))' '-C' 'metadata=36ee99f14702dc19' '-C' 'extra-filename=-27c7c5bd612eb316' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/build/serde_json-27c7c5bd612eb316' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.111/build.rs \
+        1> >(sed 's/^/::STDOUT:: /') \
+        2> >(sed 's/^/::STDERR:: /' >&2)
+FROM scratch AS out-27c7c5bd612eb316
+COPY --from=dep-x-serde_json-1.0.111-27c7c5bd612eb316 /tmp/clis-ripgrep_14-1-0/release/build/serde_json-27c7c5bd612eb316/*-27c7c5bd612eb316* /
+
+FROM rust-base AS run-z-serde_json-1.0.111-e342084f7a7099ad
+SHELL ["/bin/bash", "-eux", "-c"]
+WORKDIR /tmp/clis-ripgrep_14-1-0/release/build/serde_json-e342084f7a7099ad/out
+RUN \
+  --mount=from=out-27c7c5bd612eb316,source=/build_script_build-27c7c5bd612eb316,dst=/tmp/clis-ripgrep_14-1-0/release/build/serde_json-27c7c5bd612eb316/build-script-build \
+    env CARGO="$(which cargo)" \
+        CARGO_CFG_FEATURE="default,std" \
+        CARGO_CFG_PANIC="unwind" \
+        CARGO_CFG_TARGET_ABI= \
+        CARGO_CFG_TARGET_ARCH="x86_64" \
+        CARGO_CFG_TARGET_ENDIAN="little" \
+        CARGO_CFG_TARGET_ENV="gnu" \
+        CARGO_CFG_TARGET_FAMILY="unix" \
+        CARGO_CFG_TARGET_FEATURE="fxsr,sse,sse2" \
+        CARGO_CFG_TARGET_HAS_ATOMIC="16,32,64,8,ptr" \
+        CARGO_CFG_TARGET_OS="linux" \
+        CARGO_CFG_TARGET_POINTER_WIDTH="64" \
+        CARGO_CFG_TARGET_VENDOR="unknown" \
+        CARGO_CFG_UNIX= \
+        CARGO_ENCODED_RUSTFLAGS= \
+        CARGO_FEATURE_DEFAULT="1" \
+        CARGO_FEATURE_STD="1" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.111" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.111/Cargo.toml" \
+        CARGO_PKG_AUTHORS="Erick Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>" \
+        CARGO_PKG_DESCRIPTION="A JSON serialization file format" \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE="MIT OR Apache-2.0" \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME="serde_json" \
+        CARGO_PKG_README="README.md" \
+        CARGO_PKG_REPOSITORY="https://github.com/serde-rs/json" \
+        CARGO_PKG_RUST_VERSION="1.56" \
+        CARGO_PKG_VERSION="1.0.111" \
+        CARGO_PKG_VERSION_MAJOR="1" \
+        CARGO_PKG_VERSION_MINOR="0" \
+        CARGO_PKG_VERSION_PATCH="111" \
+        CARGO_PKG_VERSION_PRE= \
+        DEBUG="true" \
+        HOST="x86_64-unknown-linux-gnu" \
+        NUM_JOBS="1" \
+        OPT_LEVEL="3" \
+        OUT_DIR="/tmp/clis-ripgrep_14-1-0/release/build/serde_json-e342084f7a7099ad/out" \
+        PROFILE="release" \
+        RUSTC=rustc \
+        RUSTDOC="/home/runner/.rustup/toolchains/1.86.0-x86_64-unknown-linux-gnu/bin/rustdoc" \
+        TARGET="x86_64-unknown-linux-gnu" \
+        CARGOGREEN=1 \
+        CARGOGREEN_EXECUTE_BUILDRS_= \
+      /tmp/clis-ripgrep_14-1-0/release/build/serde_json-27c7c5bd612eb316/build-script-build \
+        1> >(sed 's/^/::STDOUT:: /') \
+        2> >(sed 's/^/::STDERR:: /' >&2)
+FROM scratch AS ran-e342084f7a7099ad
+COPY --from=run-z-serde_json-1.0.111-e342084f7a7099ad /tmp/clis-ripgrep_14-1-0/release/build/serde_json-e342084f7a7099ad/out/* /
+
+
 FROM rust-base AS dep-l-serde_json-1.0.111-f1456127761f5765
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
@@ -886,6 +1312,7 @@ RUN \
   --mount=from=out-2b4528a4fd57cfaf,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libitoa-2b4528a4fd57cfaf.rmeta,source=/libitoa-2b4528a4fd57cfaf.rmeta \
   --mount=from=out-a994c87db442418d,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libryu-a994c87db442418d.rmeta,source=/libryu-a994c87db442418d.rmeta \
   --mount=from=out-6342957ddc692e98,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libserde-6342957ddc692e98.rmeta,source=/libserde-6342957ddc692e98.rmeta \
+  --mount=from=ran-e342084f7a7099ad,dst=/tmp/clis-ripgrep_14-1-0/release/build/serde_json-e342084f7a7099ad/out,source=/ \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="serde_json" \
@@ -907,7 +1334,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR="/tmp/clis-ripgrep_14-1-0/release/build/serde_json-e342084f7a7099ad/out" \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'serde_json' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "arbitrary_precision", "default", "float_roundtrip", "indexmap", "preserve_order", "raw_value", "std", "unbounded_depth"))' '-C' 'metadata=ae9344cb9599f880' '-C' 'extra-filename=-f1456127761f5765' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--extern' 'itoa=/tmp/clis-ripgrep_14-1-0/release/deps/libitoa-2b4528a4fd57cfaf.rmeta' '--extern' 'ryu=/tmp/clis-ripgrep_14-1-0/release/deps/libryu-a994c87db442418d.rmeta' '--extern' 'serde=/tmp/clis-ripgrep_14-1-0/release/deps/libserde-6342957ddc692e98.rmeta' '--cap-lints' 'warn' '--cfg' 'limb_width_64' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.111/src/lib.rs \
+      rustc '--crate-name' 'serde_json' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "arbitrary_precision", "default", "float_roundtrip", "indexmap", "preserve_order", "raw_value", "std", "unbounded_depth"))' '-C' 'metadata=ae9344cb9599f880' '-C' 'extra-filename=-f1456127761f5765' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--extern' 'itoa=/tmp/clis-ripgrep_14-1-0/release/deps/libitoa-2b4528a4fd57cfaf.rmeta' '--extern' 'ryu=/tmp/clis-ripgrep_14-1-0/release/deps/libryu-a994c87db442418d.rmeta' '--extern' 'serde=/tmp/clis-ripgrep_14-1-0/release/deps/libserde-6342957ddc692e98.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.111/src/lib.rs \
         1> >(sed 's/^/::STDOUT:: /') \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-f1456127761f5765
@@ -1093,12 +1520,118 @@ RUN \
   --mount=from=rust-base,src=/usr,dst=/usr \
     mkdir /extracted \
  && tar zxf /crate --strip-components=1 -C /extracted
+FROM rust-base AS dep-x-crossbeam-utils-0.8.18-348c38b952bb91e1
+SHELL ["/bin/bash", "-eux", "-c"]
+WORKDIR /tmp/clis-ripgrep_14-1-0/release/build/crossbeam-utils-348c38b952bb91e1
+RUN \
+  --mount=from=cratesio-crossbeam-utils-0.8.18,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.18,rw \
+    { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
+    { \
+        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.18/build.rs | sed 's/fn main/fn actual_348c38b952bb91e1_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.18/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.18/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.18/build.rs ; \
+        { \
+          echo ; \
+          echo 'fn main() {' ; \
+          echo '    use std::env::{args_os, var_os};' ; \
+          echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+          echo '        use std::process::{Command, Stdio};' ; \
+          echo '        let mut cmd = Command::new("cargo-green");' ; \
+          echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+          echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+          echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+          echo '        assert!(res.success());' ; \
+          echo '    } else {' ; \
+          echo '        actual_348c38b952bb91e1_main()' ; \
+          echo '    }' ; \
+          echo '}' ; \
+        } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.18/build.rs ; \
+    } && \
+    env CARGO="$(which cargo)" \
+        CARGO_CRATE_NAME="build_script_build" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.18" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.18/Cargo.toml" \
+        CARGO_PKG_AUTHORS= \
+        CARGO_PKG_DESCRIPTION="Utilities for concurrent programming" \
+        CARGO_PKG_HOMEPAGE="https://github.com/crossbeam-rs/crossbeam/tree/master/crossbeam-utils" \
+        CARGO_PKG_LICENSE="MIT OR Apache-2.0" \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME="crossbeam-utils" \
+        CARGO_PKG_README="README.md" \
+        CARGO_PKG_REPOSITORY="https://github.com/crossbeam-rs/crossbeam" \
+        CARGO_PKG_RUST_VERSION="1.60" \
+        CARGO_PKG_VERSION="0.8.18" \
+        CARGO_PKG_VERSION_MAJOR="0" \
+        CARGO_PKG_VERSION_MINOR="8" \
+        CARGO_PKG_VERSION_PATCH="18" \
+        CARGO_PKG_VERSION_PRE= \
+        CARGOGREEN=1 \
+      rustc '--crate-name' 'build_script_build' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'bin' '--emit' 'dep-info,link' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "loom", "nightly", "std"))' '-C' 'metadata=60e0648518c7bc05' '-C' 'extra-filename=-348c38b952bb91e1' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/build/crossbeam-utils-348c38b952bb91e1' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.18/build.rs \
+        1> >(sed 's/^/::STDOUT:: /') \
+        2> >(sed 's/^/::STDERR:: /' >&2)
+FROM scratch AS out-348c38b952bb91e1
+COPY --from=dep-x-crossbeam-utils-0.8.18-348c38b952bb91e1 /tmp/clis-ripgrep_14-1-0/release/build/crossbeam-utils-348c38b952bb91e1/*-348c38b952bb91e1* /
+
+FROM rust-base AS run-z-crossbeam-utils-0.8.18-439d3918fdca29b3
+SHELL ["/bin/bash", "-eux", "-c"]
+WORKDIR /tmp/clis-ripgrep_14-1-0/release/build/crossbeam-utils-439d3918fdca29b3/out
+RUN \
+  --mount=from=out-348c38b952bb91e1,source=/build_script_build-348c38b952bb91e1,dst=/tmp/clis-ripgrep_14-1-0/release/build/crossbeam-utils-348c38b952bb91e1/build-script-build \
+    env CARGO="$(which cargo)" \
+        CARGO_CFG_FEATURE="std" \
+        CARGO_CFG_PANIC="unwind" \
+        CARGO_CFG_TARGET_ABI= \
+        CARGO_CFG_TARGET_ARCH="x86_64" \
+        CARGO_CFG_TARGET_ENDIAN="little" \
+        CARGO_CFG_TARGET_ENV="gnu" \
+        CARGO_CFG_TARGET_FAMILY="unix" \
+        CARGO_CFG_TARGET_FEATURE="fxsr,sse,sse2" \
+        CARGO_CFG_TARGET_HAS_ATOMIC="16,32,64,8,ptr" \
+        CARGO_CFG_TARGET_OS="linux" \
+        CARGO_CFG_TARGET_POINTER_WIDTH="64" \
+        CARGO_CFG_TARGET_VENDOR="unknown" \
+        CARGO_CFG_UNIX= \
+        CARGO_ENCODED_RUSTFLAGS= \
+        CARGO_FEATURE_STD="1" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.18" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.18/Cargo.toml" \
+        CARGO_PKG_AUTHORS= \
+        CARGO_PKG_DESCRIPTION="Utilities for concurrent programming" \
+        CARGO_PKG_HOMEPAGE="https://github.com/crossbeam-rs/crossbeam/tree/master/crossbeam-utils" \
+        CARGO_PKG_LICENSE="MIT OR Apache-2.0" \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME="crossbeam-utils" \
+        CARGO_PKG_README="README.md" \
+        CARGO_PKG_REPOSITORY="https://github.com/crossbeam-rs/crossbeam" \
+        CARGO_PKG_RUST_VERSION="1.60" \
+        CARGO_PKG_VERSION="0.8.18" \
+        CARGO_PKG_VERSION_MAJOR="0" \
+        CARGO_PKG_VERSION_MINOR="8" \
+        CARGO_PKG_VERSION_PATCH="18" \
+        CARGO_PKG_VERSION_PRE= \
+        DEBUG="true" \
+        HOST="x86_64-unknown-linux-gnu" \
+        NUM_JOBS="1" \
+        OPT_LEVEL="3" \
+        OUT_DIR="/tmp/clis-ripgrep_14-1-0/release/build/crossbeam-utils-439d3918fdca29b3/out" \
+        PROFILE="release" \
+        RUSTC=rustc \
+        RUSTDOC="/home/runner/.rustup/toolchains/1.86.0-x86_64-unknown-linux-gnu/bin/rustdoc" \
+        TARGET="x86_64-unknown-linux-gnu" \
+        CARGOGREEN=1 \
+        CARGOGREEN_EXECUTE_BUILDRS_= \
+      /tmp/clis-ripgrep_14-1-0/release/build/crossbeam-utils-348c38b952bb91e1/build-script-build \
+        1> >(sed 's/^/::STDOUT:: /') \
+        2> >(sed 's/^/::STDERR:: /' >&2)
+FROM scratch AS ran-439d3918fdca29b3
+COPY --from=run-z-crossbeam-utils-0.8.18-439d3918fdca29b3 /tmp/clis-ripgrep_14-1-0/release/build/crossbeam-utils-439d3918fdca29b3/out/* /
+
+
 FROM rust-base AS dep-l-crossbeam-utils-0.8.18-1ae807b4b6e713ec
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 RUN \
   --mount=from=cratesio-crossbeam-utils-0.8.18,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.18 \
   --mount=from=out-98d40c6178a8b60f,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libcfg_if-98d40c6178a8b60f.rmeta,source=/libcfg_if-98d40c6178a8b60f.rmeta \
+  --mount=from=ran-439d3918fdca29b3,dst=/tmp/clis-ripgrep_14-1-0/release/build/crossbeam-utils-439d3918fdca29b3/out,source=/ \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="crossbeam_utils" \
@@ -1442,6 +1975,111 @@ RUN \
   --mount=from=rust-base,src=/usr,dst=/usr \
     mkdir /extracted \
  && tar zxf /crate --strip-components=1 -C /extracted
+FROM rust-base AS dep-x-ripgrep-14.1.0-685d9bf33cdd054d
+SHELL ["/bin/bash", "-eux", "-c"]
+WORKDIR /tmp/clis-ripgrep_14-1-0/release/build/ripgrep-685d9bf33cdd054d
+RUN \
+  --mount=from=cratesio-ripgrep-14.1.0,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ripgrep-14.1.0,rw \
+    { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
+    { \
+        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ripgrep-14.1.0/build.rs | sed 's/fn main/fn actual_685d9bf33cdd054d_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ripgrep-14.1.0/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ripgrep-14.1.0/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ripgrep-14.1.0/build.rs ; \
+        { \
+          echo ; \
+          echo 'fn main() {' ; \
+          echo '    use std::env::{args_os, var_os};' ; \
+          echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+          echo '        use std::process::{Command, Stdio};' ; \
+          echo '        let mut cmd = Command::new("cargo-green");' ; \
+          echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+          echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+          echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+          echo '        assert!(res.success());' ; \
+          echo '    } else {' ; \
+          echo '        actual_685d9bf33cdd054d_main()' ; \
+          echo '    }' ; \
+          echo '}' ; \
+        } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ripgrep-14.1.0/build.rs ; \
+    } && \
+    env CARGO="$(which cargo)" \
+        CARGO_CRATE_NAME="build_script_build" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ripgrep-14.1.0" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ripgrep-14.1.0/Cargo.toml" \
+        CARGO_PKG_AUTHORS="Andrew Gallant <jamslam@gmail.com>" \
+        CARGO_PKG_DESCRIPTION="ripgrep is a line-oriented search tool that recursively searches the current\ndirectory for a regex pattern while respecting gitignore rules. ripgrep has\nfirst class support on Windows, macOS and Linux.\n" \
+        CARGO_PKG_HOMEPAGE="https://github.com/BurntSushi/ripgrep" \
+        CARGO_PKG_LICENSE="Unlicense OR MIT" \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME="ripgrep" \
+        CARGO_PKG_README="README.md" \
+        CARGO_PKG_REPOSITORY="https://github.com/BurntSushi/ripgrep" \
+        CARGO_PKG_RUST_VERSION="1.72" \
+        CARGO_PKG_VERSION="14.1.0" \
+        CARGO_PKG_VERSION_MAJOR="14" \
+        CARGO_PKG_VERSION_MINOR="1" \
+        CARGO_PKG_VERSION_PATCH="0" \
+        CARGO_PKG_VERSION_PRE= \
+        CARGO_PRIMARY_PACKAGE="1" \
+        CARGOGREEN=1 \
+      rustc '--crate-name' 'build_script_build' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'bin' '--emit' 'dep-info,link' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("pcre2", "simd-accel"))' '-C' 'metadata=bc7143c7866ff643' '-C' 'extra-filename=-685d9bf33cdd054d' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/build/ripgrep-685d9bf33cdd054d' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ripgrep-14.1.0/build.rs \
+        1> >(sed 's/^/::STDOUT:: /') \
+        2> >(sed 's/^/::STDERR:: /' >&2)
+FROM scratch AS out-685d9bf33cdd054d
+COPY --from=dep-x-ripgrep-14.1.0-685d9bf33cdd054d /tmp/clis-ripgrep_14-1-0/release/build/ripgrep-685d9bf33cdd054d/*-685d9bf33cdd054d* /
+
+FROM rust-base AS run-z-ripgrep-14.1.0-1084277c6abc9b3a
+SHELL ["/bin/bash", "-eux", "-c"]
+WORKDIR /tmp/clis-ripgrep_14-1-0/release/build/ripgrep-1084277c6abc9b3a/out
+RUN \
+  --mount=from=out-685d9bf33cdd054d,source=/build_script_build-685d9bf33cdd054d,dst=/tmp/clis-ripgrep_14-1-0/release/build/ripgrep-685d9bf33cdd054d/build-script-build \
+    env CARGO="$(which cargo)" \
+        CARGO_CFG_FEATURE= \
+        CARGO_CFG_PANIC="unwind" \
+        CARGO_CFG_TARGET_ABI= \
+        CARGO_CFG_TARGET_ARCH="x86_64" \
+        CARGO_CFG_TARGET_ENDIAN="little" \
+        CARGO_CFG_TARGET_ENV="gnu" \
+        CARGO_CFG_TARGET_FAMILY="unix" \
+        CARGO_CFG_TARGET_FEATURE="fxsr,sse,sse2" \
+        CARGO_CFG_TARGET_HAS_ATOMIC="16,32,64,8,ptr" \
+        CARGO_CFG_TARGET_OS="linux" \
+        CARGO_CFG_TARGET_POINTER_WIDTH="64" \
+        CARGO_CFG_TARGET_VENDOR="unknown" \
+        CARGO_CFG_UNIX= \
+        CARGO_ENCODED_RUSTFLAGS= \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ripgrep-14.1.0" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ripgrep-14.1.0/Cargo.toml" \
+        CARGO_PKG_AUTHORS="Andrew Gallant <jamslam@gmail.com>" \
+        CARGO_PKG_DESCRIPTION="ripgrep is a line-oriented search tool that recursively searches the current\ndirectory for a regex pattern while respecting gitignore rules. ripgrep has\nfirst class support on Windows, macOS and Linux.\n" \
+        CARGO_PKG_HOMEPAGE="https://github.com/BurntSushi/ripgrep" \
+        CARGO_PKG_LICENSE="Unlicense OR MIT" \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME="ripgrep" \
+        CARGO_PKG_README="README.md" \
+        CARGO_PKG_REPOSITORY="https://github.com/BurntSushi/ripgrep" \
+        CARGO_PKG_RUST_VERSION="1.72" \
+        CARGO_PKG_VERSION="14.1.0" \
+        CARGO_PKG_VERSION_MAJOR="14" \
+        CARGO_PKG_VERSION_MINOR="1" \
+        CARGO_PKG_VERSION_PATCH="0" \
+        CARGO_PKG_VERSION_PRE= \
+        DEBUG="true" \
+        HOST="x86_64-unknown-linux-gnu" \
+        NUM_JOBS="1" \
+        OPT_LEVEL="3" \
+        OUT_DIR="/tmp/clis-ripgrep_14-1-0/release/build/ripgrep-1084277c6abc9b3a/out" \
+        PROFILE="release" \
+        RUSTC=rustc \
+        RUSTDOC="/home/runner/.rustup/toolchains/1.86.0-x86_64-unknown-linux-gnu/bin/rustdoc" \
+        TARGET="x86_64-unknown-linux-gnu" \
+        CARGOGREEN=1 \
+        CARGOGREEN_EXECUTE_BUILDRS_= \
+      /tmp/clis-ripgrep_14-1-0/release/build/ripgrep-685d9bf33cdd054d/build-script-build \
+        1> >(sed 's/^/::STDOUT:: /') \
+        2> >(sed 's/^/::STDERR:: /' >&2)
+FROM scratch AS ran-1084277c6abc9b3a
+COPY --from=run-z-ripgrep-14.1.0-1084277c6abc9b3a /tmp/clis-ripgrep_14-1-0/release/build/ripgrep-1084277c6abc9b3a/out/* /
+
+
 FROM rust-base AS dep-b-ripgrep-14.1.0-16aebc92c4aced68
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
@@ -1479,6 +2117,7 @@ RUN \
   --mount=from=out-345a7495356295f2,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libwalkdir-345a7495356295f2.rlib,source=/libwalkdir-345a7495356295f2.rlib \
   --mount=from=out-17f37e7bd1b70087,dst=/tmp/clis-ripgrep_14-1-0/release/deps/liblexopt-17f37e7bd1b70087.rlib,source=/liblexopt-17f37e7bd1b70087.rlib \
   --mount=from=out-f2419d4872a2993a,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libtextwrap-f2419d4872a2993a.rlib,source=/libtextwrap-f2419d4872a2993a.rlib \
+  --mount=from=ran-1084277c6abc9b3a,dst=/tmp/clis-ripgrep_14-1-0/release/build/ripgrep-1084277c6abc9b3a/out,source=/ \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_BIN_NAME="rg" \
@@ -1542,6 +2181,18 @@ COPY --from=dep-b-ripgrep-14.1.0-16aebc92c4aced68 /tmp/clis-ripgrep_14-1-0/relea
 ##     "345a7495356295f2",
 ##     "17f37e7bd1b70087",
 ##     "f2419d4872a2993a",
+##     "1084277c6abc9b3a",
+##     "81caa63e9549e8cc",
+##     "467b075ea0bb0ef8",
+##     "3d8dd47aaf26aec4",
+##     "55a341dfb67ba45f",
+##     "a03c69887ab9597a",
+##     "f726cc681a30a037",
+##     "27c7c5bd612eb316",
+##     "e342084f7a7099ad",
+##     "348c38b952bb91e1",
+##     "439d3918fdca29b3",
+##     "685d9bf33cdd054d",
 ## ]
 ## short_externs = [
 ##     "anyhow-95e5d8a0e52ba465",
@@ -1577,6 +2228,14 @@ COPY --from=dep-b-ripgrep-14.1.0-16aebc92c4aced68 /tmp/clis-ripgrep_14-1-0/relea
 ##     "lexopt-17f37e7bd1b70087",
 ##     "textwrap-f2419d4872a2993a",
 ## ]
+## buildrs_results = [
+##     "anyhow-467b075ea0bb0ef8",
+##     "libc-55a341dfb67ba45f",
+##     "serde-f726cc681a30a037",
+##     "serde_json-e342084f7a7099ad",
+##     "crossbeam-utils-439d3918fdca29b3",
+##     "ripgrep-1084277c6abc9b3a",
+## ]
 ## writes = [
 ##     "deps/rg-16aebc92c4aced68.d",
 ##     "deps/rg-16aebc92c4aced68",
@@ -1585,10 +2244,6 @@ COPY --from=dep-b-ripgrep-14.1.0-16aebc92c4aced68 /tmp/clis-ripgrep_14-1-0/relea
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_14-1-0/release/deps/rg-16aebc92c4aced68.d","emit":"dep-info"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_14-1-0/release/deps/rg-16aebc92c4aced68","emit":"link"}',
 ## ]
-## 
-## [[contexts]]
-## name = "crate_out-467b075ea0bb0ef8"
-## uri = "/tmp/clis-ripgrep_14-1-0/release/build/anyhow-467b075ea0bb0ef8/out"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -1648,6 +2303,7 @@ COPY --from=dep-b-ripgrep-14.1.0-16aebc92c4aced68 /tmp/clis-ripgrep_14-1-0/relea
 ##   --mount=from=out-345a7495356295f2,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libwalkdir-345a7495356295f2.rlib,source=/libwalkdir-345a7495356295f2.rlib \
 ##   --mount=from=out-17f37e7bd1b70087,dst=/tmp/clis-ripgrep_14-1-0/release/deps/liblexopt-17f37e7bd1b70087.rlib,source=/liblexopt-17f37e7bd1b70087.rlib \
 ##   --mount=from=out-f2419d4872a2993a,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libtextwrap-f2419d4872a2993a.rlib,source=/libtextwrap-f2419d4872a2993a.rlib \
+##   --mount=from=ran-1084277c6abc9b3a,dst=/tmp/clis-ripgrep_14-1-0/release/build/ripgrep-1084277c6abc9b3a/out,source=/ \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_BIN_NAME="rg" \
@@ -1681,6 +2337,6 @@ COPY --from=dep-b-ripgrep-14.1.0-16aebc92c4aced68 /tmp/clis-ripgrep_14-1-0/relea
 ## FROM scratch AS out-16aebc92c4aced68
 ## COPY --from=dep-b-ripgrep-14.1.0-16aebc92c4aced68 /tmp/clis-ripgrep_14-1-0/release/deps/*-16aebc92c4aced68* /"""
 
-# Pipe this file to (not portable due to usage of local build contexts):
+# Pipe this file to:
 # DOCKER_BUILDKIT="1" \
-#   docker --debug build --network=none --platform=local --pull=false --target=out-16aebc92c4aced68 --output=type=local,dest=/tmp/clis-ripgrep_14-1-0/release/deps --build-context=crate_out-467b075ea0bb0ef8=/tmp/clis-ripgrep_14-1-0/release/build/anyhow-467b075ea0bb0ef8/out -
+#   docker --debug build --network=none --platform=local --pull=false --target=out-16aebc92c4aced68 --output=type=local,dest=/tmp/clis-ripgrep_14-1-0/release/deps -
