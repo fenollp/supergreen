@@ -37,11 +37,15 @@ pub(crate) async fn find_lockfile() -> Result<Utf8PathBuf> {
     Ok(manifest_path.with_extension("lock"))
 }
 
-pub(crate) fn find_manifest_path() -> Result<Utf8PathBuf> {
+pub(crate) fn find_manifest_path() -> Result<Option<Utf8PathBuf>> {
     if let Some(manifest_path) = find_toml_from_env()? {
-        return Ok(manifest_path);
+        return Ok(Some(manifest_path));
     }
-    Ok(pwd().join("Cargo.toml"))
+    let manifest_path = pwd().join("Cargo.toml"); // TODO: ?
+    if manifest_path.exists() {
+        return Ok(Some(manifest_path));
+    }
+    Ok(None)
 }
 
 fn find_toml_from_env() -> Result<Option<Utf8PathBuf>> {

@@ -123,18 +123,26 @@ impl Green {
     // TODO: handle worskpace cfg + merging fields
     // TODO: find a way to read cfg on `cargo install <non-local code>` cc https://github.com/rust-lang/cargo/issues/9700#issuecomment-2748617896
     pub(crate) fn new_from_env_then_manifest() -> Result<Self> {
-        let manifest_path =
-            find_manifest_path().map_err(|e| anyhow!("Can't find package manifest: {e}"))?;
-
-        let manifest = Manifest::from_path(&manifest_path)
-            .map_err(|e| anyhow!("Can't read package manifest {manifest_path}: {e}"))?;
+        let manifest = if let Some(manifest_path) =
+            find_manifest_path().map_err(|e| anyhow!("Can't find package manifest: {e}"))?
+        {
+            let manifest = Manifest::from_path(&manifest_path)
+                .map_err(|e| anyhow!("Can't read package manifest {manifest_path}: {e}"))?;
+            Some(manifest)
+        } else {
+            None
+        };
 
         Self::try_new(manifest).map_err(|e| anyhow!("Failed reading {PKG} configuration: {e}"))
     }
 
-    fn try_new(manifest: Manifest) -> Result<Self> {
+    fn try_new(manifest: Option<Manifest>) -> Result<Self> {
         let mut green = Self::default();
-        if let Some(metadata) = manifest.package.and_then(|x| x.metadata) {
+        if let Some(Manifest {
+            package: Some(cargo_toml::Package { metadata: Some(metadata), .. }),
+            ..
+        }) = manifest
+        {
             #[derive(Deserialize, Default)]
             struct GreenMetadata {
                 green: Option<Green>,
@@ -265,7 +273,7 @@ name = "test-package"
 "#
     ))
     .unwrap();
-    let mut green = Green::try_new(manifest).unwrap();
+    let mut green = Green::try_new(Some(manifest)).unwrap();
     assert!(!green.image.base_image.is_empty());
     green.image.base_image = ImageUri::default();
     assert!(green.image.base_image.is_empty());
@@ -288,7 +296,7 @@ add.apk = [ "libpq-dev", "pkgconf" ]
 "#,
     )
     .unwrap();
-    let green = Green::try_new(manifest).unwrap();
+    let green = Green::try_new(Some(manifest)).unwrap();
     assert_eq!(green.add.apt, vec!["libpq-dev".to_owned(), "pkg-config".to_owned()]);
     assert_eq!(green.add.apt_get, vec!["libpq-dev".to_owned(), "pkg-config".to_owned()]);
     assert_eq!(green.add.apk, vec!["libpq-dev".to_owned(), "pkgconf".to_owned()]);
@@ -307,7 +315,7 @@ add.{setting} = [ "" ]
 "#
     ))
     .unwrap();
-    let err = Green::try_new(manifest).err().unwrap().to_string();
+    let err = Green::try_new(Some(manifest)).err().unwrap().to_string();
     assert!(err.contains("empty"), "In: {err}");
 }
 
@@ -324,7 +332,7 @@ add.{setting} = [ "'a'" ]
 "#
     ))
     .unwrap();
-    let err = Green::try_new(manifest).err().unwrap().to_string();
+    let err = Green::try_new(Some(manifest)).err().unwrap().to_string();
     assert!(err.contains("quotes"), "In: {err}");
 }
 
@@ -341,7 +349,7 @@ add.{setting} = [ "a b" ]
 "#
     ))
     .unwrap();
-    let err = Green::try_new(manifest).err().unwrap().to_string();
+    let err = Green::try_new(Some(manifest)).err().unwrap().to_string();
     assert!(err.contains("space"), "In: {err}");
 }
 
@@ -358,7 +366,7 @@ add.{setting} = [ "a", "b", "a" ]
             "#
     ))
     .unwrap();
-    let err = Green::try_new(manifest).err().unwrap().to_string();
+    let err = Green::try_new(Some(manifest)).err().unwrap().to_string();
     assert!(err.contains("duplicates"), "In: {err}");
 }
 
@@ -376,7 +384,7 @@ set-envs = [ "GIT_AUTH_TOKEN", "TYPENUM_BUILD_CONSTS", "TYPENUM_BUILD_OP" ]
 "#,
     )
     .unwrap();
-    let green = Green::try_new(manifest).unwrap();
+    let green = Green::try_new(Some(manifest)).unwrap();
     assert_eq!(
         green.set_envs,
         vec![
@@ -399,7 +407,7 @@ set-envs = [ "" ]
 "#,
     )
     .unwrap();
-    let err = Green::try_new(manifest).err().unwrap().to_string();
+    let err = Green::try_new(Some(manifest)).err().unwrap().to_string();
     assert!(err.contains("empty name"), "In: {err}");
 }
 
@@ -415,7 +423,7 @@ set-envs = [ "'a'" ]
 "#,
     )
     .unwrap();
-    let err = Green::try_new(manifest).err().unwrap().to_string();
+    let err = Green::try_new(Some(manifest)).err().unwrap().to_string();
     assert!(err.contains("quotes"), "In: {err}");
 }
 
@@ -431,7 +439,7 @@ set-envs = [ "A B" ]
 "#,
     )
     .unwrap();
-    let err = Green::try_new(manifest).err().unwrap().to_string();
+    let err = Green::try_new(Some(manifest)).err().unwrap().to_string();
     assert!(err.contains("space"), "In: {err}");
 }
 
@@ -447,7 +455,7 @@ set-envs = [ "CARGOGREEN_LOG" ]
 "#,
     )
     .unwrap();
-    let err = Green::try_new(manifest).err().unwrap().to_string();
+    let err = Green::try_new(Some(manifest)).err().unwrap().to_string();
     assert!(err.contains(crate::rustc_wrapper::ENV), "In: {err}");
 }
 
@@ -463,7 +471,7 @@ set-envs = [ "A", "B", "A" ]
 "#,
     )
     .unwrap();
-    let err = Green::try_new(manifest).err().unwrap().to_string();
+    let err = Green::try_new(Some(manifest)).err().unwrap().to_string();
     assert!(err.contains("duplicates"), "In: {err}");
 }
 
@@ -481,7 +489,7 @@ base-image = "docker-image://docker.io/library/rust:1"
 "#,
     )
     .unwrap();
-    let green = Green::try_new(manifest).unwrap();
+    let green = Green::try_new(Some(manifest)).unwrap();
     assert_eq!(
         green.image,
         BaseImage {
@@ -504,7 +512,7 @@ base-image = "docker.io/library/rust:1"
 "#,
     )
     .unwrap();
-    let err = Green::try_new(manifest).err().unwrap().to_string();
+    let err = Green::try_new(Some(manifest)).err().unwrap().to_string();
     assert!(err.contains("scheme"), "In: {err}");
 }
 
@@ -520,7 +528,7 @@ base-image = " docker-image://docker.io/library/rust:1  "
 "#,
     )
     .unwrap();
-    let err = Green::try_new(manifest).err().unwrap().to_string();
+    let err = Green::try_new(Some(manifest)).err().unwrap().to_string();
     assert!(err.contains("space"), "In: {err}");
 }
 
@@ -541,7 +549,7 @@ RUN --mount=type=secret,id=aws
 "#,
     )
     .unwrap();
-    let err = Green::try_new(manifest).err().unwrap().to_string();
+    let err = Green::try_new(Some(manifest)).err().unwrap().to_string();
     assert!(err.contains("to match"), "In: {err}");
 }
 
@@ -565,7 +573,7 @@ RUN --mount=type=secret,id=aws
 "#,
         )
         .unwrap();
-    let green = Green::try_new(manifest).unwrap();
+    let green = Green::try_new(Some(manifest)).unwrap();
     assert_eq!(green.image, BaseImage {
         base_image: ImageUri::try_new("docker-image://rust:1").unwrap(),
         base_image_inline:
@@ -601,7 +609,7 @@ RUN --mount=type=secret,id=aws
 "#,
         )
         .unwrap();
-    let green = Green::try_new(manifest).unwrap();
+    let green = Green::try_new(Some(manifest)).unwrap();
     assert_eq!(green.image, BaseImage {
         base_image: ImageUri::try_new("docker-image://rust:1").unwrap(),
         base_image_inline:
@@ -630,7 +638,7 @@ base-image-inline = ""
 "#,
     )
     .unwrap();
-    let err = Green::try_new(manifest).err().unwrap().to_string();
+    let err = Green::try_new(Some(manifest)).err().unwrap().to_string();
     assert!(err.contains("empty"), "In: {err}");
 }
 
@@ -649,7 +657,7 @@ RUN exit 42
 "#,
     )
     .unwrap();
-    let err = Green::try_new(manifest).err().unwrap().to_string();
+    let err = Green::try_new(Some(manifest)).err().unwrap().to_string();
     assert!(err.contains("provide"), "In: {err}");
     assert!(err.contains("stage"), "In: {err}");
     assert!(err.contains("'rust-base'"), "In: {err}");
@@ -672,7 +680,7 @@ cache-images = [
 "#,
     )
     .unwrap();
-    let green = Green::try_new(manifest).unwrap();
+    let green = Green::try_new(Some(manifest)).unwrap();
     assert_eq!(
         green.cache_images,
         vec![
@@ -698,7 +706,7 @@ cache-images = [
 "#,
     )
     .unwrap();
-    let err = Green::try_new(manifest).err().unwrap().to_string();
+    let err = Green::try_new(Some(manifest)).err().unwrap().to_string();
     assert!(err.contains("duplicates"), "In: {err}");
 }
 
@@ -714,7 +722,7 @@ cache-images = ["docker-image://some-registry.com/dir/image 'docker-image://othe
 "#,
     )
     .unwrap();
-    let err = Green::try_new(manifest).err().unwrap().to_string();
+    let err = Green::try_new(Some(manifest)).err().unwrap().to_string();
     assert!(err.contains("names"), "In: {err}");
 }
 
@@ -730,7 +738,7 @@ cache-images = ["some-registry.com/dir/image"]
 "#,
     )
     .unwrap();
-    let err = Green::try_new(manifest).err().unwrap().to_string();
+    let err = Green::try_new(Some(manifest)).err().unwrap().to_string();
     assert!(err.contains("scheme"), "In: {err}");
 }
 
@@ -746,7 +754,7 @@ cache-images = ["docker-image://image"]
 "#,
     )
     .unwrap();
-    let err = Green::try_new(manifest).err().unwrap().to_string();
+    let err = Green::try_new(Some(manifest)).err().unwrap().to_string();
     assert!(err.contains("registry"), "In: {err}");
 }
 
@@ -762,7 +770,7 @@ cache-images = ["docker-image://some-registry.com/dir/image:sometag"]
 "#,
     )
     .unwrap();
-    let err = Green::try_new(manifest).err().unwrap().to_string();
+    let err = Green::try_new(Some(manifest)).err().unwrap().to_string();
     assert!(err.contains("tag"), "In: {err}");
 }
 
