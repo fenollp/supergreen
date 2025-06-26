@@ -89,6 +89,7 @@ Syncs `./recipes/*.Dockerfile` files.
 
 ### `./hack/caching.sh`
 Verifies properties about caching crates & granularity.
+> docker buildx prune --all --force
 
 ### `./hack/hit.sh`
 Estimate of amount of crates reused through compilation of `./recipes/` `--> ~5%`!
