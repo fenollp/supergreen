@@ -186,6 +186,12 @@ impl Md {
         for md in mds {
             md.append_blocks(&mut blocks, &mut visited_cratesio_stages);
             blocks.push('\n');
+            for line in toml::to_string_pretty(md).expect("previously enc").lines() {
+                blocks.push_str("## ");
+                blocks.push_str(line);
+                blocks.push('\n');
+            }
+            blocks.push('\n');
         }
         self.append_blocks(&mut blocks, &mut visited_cratesio_stages);
         blocks

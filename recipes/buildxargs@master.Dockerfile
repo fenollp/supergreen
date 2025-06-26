@@ -45,6 +45,74 @@ RUN \
 FROM scratch AS out-ef1ec1c562398afc
 COPY --from=dep-l-pico-args-0.5.0-ef1ec1c562398afc /tmp/clis-buildxargs_master/release/deps/*-ef1ec1c562398afc* /
 
+## this = "ef1ec1c562398afc"
+## writes = [
+##     "deps/pico_args-ef1ec1c562398afc.d",
+##     "deps/libpico_args-ef1ec1c562398afc.rmeta",
+##     "deps/libpico_args-ef1ec1c562398afc.rlib",
+## ]
+## stderr = [
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-buildxargs_master/release/deps/pico_args-ef1ec1c562398afc.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-buildxargs_master/release/deps/libpico_args-ef1ec1c562398afc.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-buildxargs_master/release/deps/libpico_args-ef1ec1c562398afc.rlib","emit":"link"}',
+## ]
+## 
+## [[stages]]
+## name = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.86.0-slim@sha256:57d415bbd61ce11e2d5f73de068103c7bd9f3188dc132c97cef4a8f62989e944 AS rust-base"
+## 
+## [[stages]]
+## name = "cratesio-pico-args-0.5.0"
+## script = '''
+## FROM scratch AS cratesio-pico-args-0.5.0
+## ADD --chmod=0664 --checksum=sha256:5be167a7af36ee22fe3115051bc51f6e6c7054c9348e28deb4f49bd6f705a315 \
+##   https://static.crates.io/crates/pico-args/pico-args-0.5.0.crate /crate
+## SHELL ["/usr/bin/dash", "-eux", "-c"]
+## RUN \
+##   --mount=from=rust-base,src=/lib,dst=/lib \
+##   --mount=from=rust-base,src=/lib64,dst=/lib64 \
+##   --mount=from=rust-base,src=/usr,dst=/usr \
+##     mkdir /extracted \
+##  && tar zxf /crate --strip-components=1 -C /extracted'''
+## 
+## [[stages]]
+## name = "dep-l-pico-args-0.5.0-ef1ec1c562398afc"
+## script = '''
+## FROM rust-base AS dep-l-pico-args-0.5.0-ef1ec1c562398afc
+## SHELL ["/bin/bash", "-eux", "-c"]
+## WORKDIR /tmp/clis-buildxargs_master/release/deps
+## RUN \
+##   --mount=from=cratesio-pico-args-0.5.0,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/pico-args-0.5.0 \
+##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CRATE_NAME="pico_args" \
+##         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/pico-args-0.5.0" \
+##         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/pico-args-0.5.0/Cargo.toml" \
+##         CARGO_PKG_AUTHORS="Yevhenii Reizner <razrfalcon@gmail.com>" \
+##         CARGO_PKG_DESCRIPTION="An ultra simple CLI arguments parser." \
+##         CARGO_PKG_HOMEPAGE= \
+##         CARGO_PKG_LICENSE="MIT" \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME="pico-args" \
+##         CARGO_PKG_README="README.md" \
+##         CARGO_PKG_REPOSITORY="https://github.com/RazrFalcon/pico-args" \
+##         CARGO_PKG_RUST_VERSION= \
+##         CARGO_PKG_VERSION="0.5.0" \
+##         CARGO_PKG_VERSION_MAJOR="0" \
+##         CARGO_PKG_VERSION_MINOR="5" \
+##         CARGO_PKG_VERSION_PATCH="0" \
+##         CARGO_PKG_VERSION_PRE= \
+##         CARGOGREEN=1 \
+##       rustc '--crate-name' 'pico_args' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="default"' '--cfg' 'feature="eq-separator"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("combined-flags", "default", "eq-separator", "short-space-opt"))' '-C' 'metadata=735182ed74090f67' '-C' 'extra-filename=-ef1ec1c562398afc' '--out-dir' '/tmp/clis-buildxargs_master/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-buildxargs_master/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/pico-args-0.5.0/src/lib.rs \
+##         1> >(sed 's/^/::STDOUT:: /') \
+##         2> >(sed 's/^/::STDERR:: /' >&2)'''
+## 
+## [[stages]]
+## name = "out-ef1ec1c562398afc"
+## script = """
+## FROM scratch AS out-ef1ec1c562398afc
+## COPY --from=dep-l-pico-args-0.5.0-ef1ec1c562398afc /tmp/clis-buildxargs_master/release/deps/*-ef1ec1c562398afc* /"""
+
 FROM scratch AS cratesio-shlex-1.3.0
 ADD --chmod=0664 --checksum=sha256:0fda2ff0d084019ba4d7c6f371c95d8fd75ce3524c3cb8fb653a3023f6323e64 \
   https://static.crates.io/crates/shlex/shlex-1.3.0.crate /crate
@@ -86,6 +154,76 @@ RUN \
 FROM scratch AS out-ab0e05b376045caf
 COPY --from=dep-l-shlex-1.3.0-ab0e05b376045caf /tmp/clis-buildxargs_master/release/deps/*-ab0e05b376045caf* /
 
+## this = "ab0e05b376045caf"
+## writes = [
+##     "deps/shlex-ab0e05b376045caf.d",
+##     "deps/libshlex-ab0e05b376045caf.rmeta",
+##     "deps/libshlex-ab0e05b376045caf.rlib",
+## ]
+## stderr = [
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-buildxargs_master/release/deps/shlex-ab0e05b376045caf.d","emit":"dep-info"}',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `manual_codegen_check`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0/src/bytes.rs","byte_start":13988,"byte_end":14008,"line_start":353,"line_end":353,"column_start":12,"column_end":32,"is_primary":true,"text":[{"text":"#[cfg_attr(manual_codegen_check, inline(never))]","highlight_start":12,"highlight_end":32}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"expected names are: `docsrs`, `feature`, and `test` and 31 more","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(manual_codegen_check)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(manual_codegen_check)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"`#[warn(unexpected_cfgs)]` on by default","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `manual_codegen_check`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0/src/bytes.rs:353:12\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m353\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m#[cfg_attr(manual_codegen_check, inline(never))]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m            \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: expected names are: `docsrs`, `feature`, and `test` and 31 more\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(manual_codegen_check)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(manual_codegen_check)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: `#[warn(unexpected_cfgs)]` on by default\u001b[0m\n\n"}''',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-buildxargs_master/release/deps/libshlex-ab0e05b376045caf.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-buildxargs_master/release/deps/libshlex-ab0e05b376045caf.rlib","emit":"link"}',
+##     '{"$message_type":"diagnostic","message":"1 warning emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 1 warning emitted\u001b[0m\n\n"}',
+## ]
+## 
+## [[stages]]
+## name = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.86.0-slim@sha256:57d415bbd61ce11e2d5f73de068103c7bd9f3188dc132c97cef4a8f62989e944 AS rust-base"
+## 
+## [[stages]]
+## name = "cratesio-shlex-1.3.0"
+## script = '''
+## FROM scratch AS cratesio-shlex-1.3.0
+## ADD --chmod=0664 --checksum=sha256:0fda2ff0d084019ba4d7c6f371c95d8fd75ce3524c3cb8fb653a3023f6323e64 \
+##   https://static.crates.io/crates/shlex/shlex-1.3.0.crate /crate
+## SHELL ["/usr/bin/dash", "-eux", "-c"]
+## RUN \
+##   --mount=from=rust-base,src=/lib,dst=/lib \
+##   --mount=from=rust-base,src=/lib64,dst=/lib64 \
+##   --mount=from=rust-base,src=/usr,dst=/usr \
+##     mkdir /extracted \
+##  && tar zxf /crate --strip-components=1 -C /extracted'''
+## 
+## [[stages]]
+## name = "dep-l-shlex-1.3.0-ab0e05b376045caf"
+## script = '''
+## FROM rust-base AS dep-l-shlex-1.3.0-ab0e05b376045caf
+## SHELL ["/bin/bash", "-eux", "-c"]
+## WORKDIR /tmp/clis-buildxargs_master/release/deps
+## RUN \
+##   --mount=from=cratesio-shlex-1.3.0,source=/extracted,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0 \
+##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CRATE_NAME="shlex" \
+##         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0" \
+##         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0/Cargo.toml" \
+##         CARGO_PKG_AUTHORS="comex <comexk@gmail.com>:Fenhl <fenhl@fenhl.net>:Adrian Taylor <adetaylor@chromium.org>:Alex Touchet <alextouchet@outlook.com>:Daniel Parks <dp+git@oxidized.org>:Garrett Berg <googberg@gmail.com>" \
+##         CARGO_PKG_DESCRIPTION="Split a string into shell words, like Python's shlex." \
+##         CARGO_PKG_HOMEPAGE= \
+##         CARGO_PKG_LICENSE="MIT OR Apache-2.0" \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME="shlex" \
+##         CARGO_PKG_README="README.md" \
+##         CARGO_PKG_REPOSITORY="https://github.com/comex/rust-shlex" \
+##         CARGO_PKG_RUST_VERSION="1.46.0" \
+##         CARGO_PKG_VERSION="1.3.0" \
+##         CARGO_PKG_VERSION_MAJOR="1" \
+##         CARGO_PKG_VERSION_MINOR="3" \
+##         CARGO_PKG_VERSION_PATCH="0" \
+##         CARGO_PKG_VERSION_PRE= \
+##         CARGOGREEN=1 \
+##       rustc '--crate-name' 'shlex' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "std"))' '-C' 'metadata=54c2f0a338814297' '-C' 'extra-filename=-ab0e05b376045caf' '--out-dir' '/tmp/clis-buildxargs_master/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-buildxargs_master/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0/src/lib.rs \
+##         1> >(sed 's/^/::STDOUT:: /') \
+##         2> >(sed 's/^/::STDERR:: /' >&2)'''
+## 
+## [[stages]]
+## name = "out-ab0e05b376045caf"
+## script = """
+## FROM scratch AS out-ab0e05b376045caf
+## COPY --from=dep-l-shlex-1.3.0-ab0e05b376045caf /tmp/clis-buildxargs_master/release/deps/*-ab0e05b376045caf* /"""
+
 FROM scratch AS checkout-buildxargs-76dd4ee9dadcdcf0-df9b810011cd416b8e3fc02911f2f496acb8475e
 ADD --keep-git-dir=false \
   https://github.com/fenollp/buildxargs.git#df9b810011cd416b8e3fc02911f2f496acb8475e /
@@ -123,6 +261,79 @@ RUN \
         2> >(sed 's/^/::STDERR:: /' >&2)
 FROM scratch AS out-42615e6c7f87c749
 COPY --from=dep-l-buildxargs-1.4.0-42615e6c7f87c749 /tmp/clis-buildxargs_master/release/deps/*-42615e6c7f87c749* /
+
+## this = "42615e6c7f87c749"
+## deps = [
+##     "ef1ec1c562398afc",
+##     "ab0e05b376045caf",
+## ]
+## short_externs = [
+##     "pico_args-ef1ec1c562398afc",
+##     "shlex-ab0e05b376045caf",
+## ]
+## writes = [
+##     "deps/buildxargs-42615e6c7f87c749.d",
+##     "deps/libbuildxargs-42615e6c7f87c749.rmeta",
+##     "deps/libbuildxargs-42615e6c7f87c749.rlib",
+## ]
+## stderr = [
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-buildxargs_master/release/deps/buildxargs-42615e6c7f87c749.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-buildxargs_master/release/deps/libbuildxargs-42615e6c7f87c749.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-buildxargs_master/release/deps/libbuildxargs-42615e6c7f87c749.rlib","emit":"link"}',
+## ]
+## 
+## [[stages]]
+## name = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.86.0-slim@sha256:57d415bbd61ce11e2d5f73de068103c7bd9f3188dc132c97cef4a8f62989e944 AS rust-base"
+## 
+## [[stages]]
+## name = "checkout-buildxargs-76dd4ee9dadcdcf0-df9b810011cd416b8e3fc02911f2f496acb8475e"
+## script = '''
+## FROM scratch AS checkout-buildxargs-76dd4ee9dadcdcf0-df9b810011cd416b8e3fc02911f2f496acb8475e
+## ADD --keep-git-dir=false \
+##   https://github.com/fenollp/buildxargs.git#df9b810011cd416b8e3fc02911f2f496acb8475e /'''
+## 
+## [[stages]]
+## name = "dep-l-buildxargs-1.4.0-42615e6c7f87c749"
+## script = '''
+## FROM rust-base AS dep-l-buildxargs-1.4.0-42615e6c7f87c749
+## SHELL ["/bin/bash", "-eux", "-c"]
+## WORKDIR /tmp/clis-buildxargs_master/release/deps
+## WORKDIR /home/runner/.cargo/git/checkouts/buildxargs-76dd4ee9dadcdcf0/df9b810
+## RUN \
+##   --mount=from=checkout-buildxargs-76dd4ee9dadcdcf0-df9b810011cd416b8e3fc02911f2f496acb8475e,dst=/home/runner/.cargo/git/checkouts/buildxargs-76dd4ee9dadcdcf0/df9b810 \
+##   --mount=from=out-ef1ec1c562398afc,dst=/tmp/clis-buildxargs_master/release/deps/libpico_args-ef1ec1c562398afc.rmeta,source=/libpico_args-ef1ec1c562398afc.rmeta \
+##   --mount=from=out-ab0e05b376045caf,dst=/tmp/clis-buildxargs_master/release/deps/libshlex-ab0e05b376045caf.rmeta,source=/libshlex-ab0e05b376045caf.rmeta \
+##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CRATE_NAME="buildxargs" \
+##         CARGO_MANIFEST_DIR="/home/runner/.cargo/git/checkouts/buildxargs-76dd4ee9dadcdcf0/df9b810" \
+##         CARGO_MANIFEST_PATH="/home/runner/.cargo/git/checkouts/buildxargs-76dd4ee9dadcdcf0/df9b810/Cargo.toml" \
+##         CARGO_PKG_AUTHORS="Pierre Fenoll <pierrefenoll@gmail.com>" \
+##         CARGO_PKG_DESCRIPTION="xargs for BuildKit with docker buildx bake" \
+##         CARGO_PKG_HOMEPAGE= \
+##         CARGO_PKG_LICENSE="MIT" \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME="buildxargs" \
+##         CARGO_PKG_README="README.md" \
+##         CARGO_PKG_REPOSITORY="https://github.com/fenollp/buildxargs" \
+##         CARGO_PKG_RUST_VERSION= \
+##         CARGO_PKG_VERSION="1.4.0" \
+##         CARGO_PKG_VERSION_MAJOR="1" \
+##         CARGO_PKG_VERSION_MINOR="4" \
+##         CARGO_PKG_VERSION_PATCH="0" \
+##         CARGO_PKG_VERSION_PRE= \
+##         CARGO_PRIMARY_PACKAGE="1" \
+##         CARGOGREEN=1 \
+##       rustc '--crate-name' 'buildxargs' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=39cb79e74912484c' '-C' 'extra-filename=-42615e6c7f87c749' '--out-dir' '/tmp/clis-buildxargs_master/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-buildxargs_master/release/deps' '--extern' 'pico_args=/tmp/clis-buildxargs_master/release/deps/libpico_args-ef1ec1c562398afc.rmeta' '--extern' 'shlex=/tmp/clis-buildxargs_master/release/deps/libshlex-ab0e05b376045caf.rmeta' src/lib.rs \
+##         1> >(sed 's/^/::STDOUT:: /') \
+##         2> >(sed 's/^/::STDERR:: /' >&2)'''
+## 
+## [[stages]]
+## name = "out-42615e6c7f87c749"
+## script = """
+## FROM scratch AS out-42615e6c7f87c749
+## COPY --from=dep-l-buildxargs-1.4.0-42615e6c7f87c749 /tmp/clis-buildxargs_master/release/deps/*-42615e6c7f87c749* /"""
 
 
 FROM rust-base AS dep-b-buildxargs-1.4.0-4245cb92e8e8c024
