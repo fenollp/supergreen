@@ -73,4 +73,48 @@ Faster Rust builds!
 
 
 ## Hacking
-See `./hack/`
+
+### `./hack/cli.sh ...`
+```shell
+Usage:           $0                                      #=> generate CI
+Usage:           $0 ( <name@version> | <name> ) [clean]  #=> cargo install name@version
+Usage:           $0   ok                        [clean]  #=> cargo install all working bins
+Usage:           $0 ( build | test )            [clean]  #=> cargo build ./cargo-green
+Usage:    jobs=1 $0 ..                                   #=> cargo --jobs=$jobs
+Usage: offline=1 $0 ..                                   #=> cargo --frozen (defaults to just: --locked)
+```
+
+### `./hack/recipes.sh`
+Syncs `./recipes/*.Dockerfile` files.
+
+### `./hack/caching.sh`
+Verifies properties about caching crates & granularity.
+
+### `./hack/hit.sh`
+Estimate of amount of crates reused through compilation of `./recipes/` `--> ~5%`!
+Expecting more with larger/more representative corpus + smart locking of transitive deps.
+```
+recipes/buildxargs@1.4.0.Dockerfile
+8< 8< 8<
+3: dep-l-utf8parse-0.2.1-522ff71b25340e24
+5: dep-l-bitflags-1.3.2-70ce9f1f2fa253bc
+5: dep-l-strsim-0.10.0-fd42a4ea370e31ec
+5: dep-l-unicode-ident-1.0.12-4c1dc76c11b3deb8
+6: dep-l-cfg-if-1.0.0-da34da6838abd7f1
+
+Total recipes: 15
+Total stages: 1065
+Stages in common: 58
+5.44%
+```
+
+### When `git-bisect`ing
+```make
+all:
+	cargo +nightly fmt --all
+	./hack/clis.sh | tee .github/workflows/clis.yml
+	./hack/self.sh | tee .github/workflows/self.yml
+	CARGO_TARGET_DIR=$${CARGO_TARGET_DIR:-target/clippy} cargo clippy --locked --frozen --offline --all-targets --all-features -- --no-deps -W clippy::cast_lossless -W clippy::redundant_closure_for_method_calls -W clippy::str_to_string -W clippy::unnecessary_wraps
+	RUST_MIN_STACK=8000000 cargo nextest run --all-targets --all-features --locked --frozen --offline --no-fail-fast
+	git --no-pager diff --exit-code
+```

@@ -9,7 +9,7 @@ for file in "${!files[@]}"; do
     echo $file
     while read -r h; do
         ((stages["$h"]++)) || true
-    done < <(grep -E ' AS [^ ]+[-][a-f0-9]{16}' $file | grep -vF scratch | awk '{print $4}')
+    done < <(grep -E ' AS [^ ]+[-][a-f0-9]{16}' $file | grep -vF scratch | grep -vF '##' | awk '{print $4}')
 done
 total=${#stages[@]}
 
