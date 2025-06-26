@@ -496,20 +496,22 @@ fn maybe_write_final_path(
             let _ = fs::copy(containerfile_path, path)?; //TODO: use an atomic mv
 
             let mut file = OpenOptions::new().append(true).open(path)?;
-            writeln!(file)?;
+            let mut fbuf = String::new();
+            fbuf.push('\n');
 
             for md_line in fs::read_to_string(md_path)?.lines() {
-                writeln!(file, "## {md_line}")?;
+                Md::comment_pretty(md_line, &mut fbuf);
             }
-            writeln!(file)?;
+            fbuf.push('\n');
 
-            write!(file, "# Pipe this file to")?;
+            fbuf.push_str("# Pipe this file to");
             if !contexts.is_empty() {
                 //TODO: or additional-build-arguments
-                write!(file, " (not portable due to usage of local build contexts)")?;
+                fbuf.push_str(" (not portable due to usage of local build contexts)");
             }
-            writeln!(file, ":\n# {envs} \\")?;
-            writeln!(file, "#   {call}")?;
+            fbuf.push_str(&format!(":\n# {envs} \\\n"));
+            fbuf.push_str(&format!("#   {call}\n"));
+            write!(file, "{fbuf}")?;
         }
     }
     Ok(())

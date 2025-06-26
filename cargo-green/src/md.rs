@@ -180,6 +180,15 @@ impl Md {
         Ok(md_paths)
     }
 
+    pub(crate) fn comment_pretty(line: &str, buf: &mut String) {
+        buf.push_str("## ");
+        let max = usize::from(u16::MAX) - "## ".len() - '\n'.len_utf8();
+        let max = std::cmp::min(max, line.len());
+        buf.push_str(&line[..max]);
+        buf.push('\n');
+        //> dockerfile line greater than max allowed size of 65535
+    }
+
     pub(crate) fn block_along_with_predecessors(&self, mds: &[Md]) -> String {
         let mut blocks = String::new();
         let mut visited_cratesio_stages = IndexSet::new();
@@ -187,9 +196,7 @@ impl Md {
             md.append_blocks(&mut blocks, &mut visited_cratesio_stages);
             blocks.push('\n');
             for line in toml::to_string_pretty(md).expect("previously enc").lines() {
-                blocks.push_str("## ");
-                blocks.push_str(line);
-                blocks.push('\n');
+                Self::comment_pretty(line, &mut blocks);
             }
             blocks.push('\n');
         }

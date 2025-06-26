@@ -277,11 +277,23 @@ COPY --from=dep-l-buildxargs-1.4.0-d78f4de4a17f92cd /tmp/cargo-green--hack-cachi
 ##     "shlex-96a741f581f4126a",
 ## ]
 ## writes = [
+##     "deps/pico_args-b8c41dbf50ca5479.d",
+##     "deps/libpico_args-b8c41dbf50ca5479.rmeta",
+##     "deps/libpico_args-b8c41dbf50ca5479.rlib",
+##     "deps/shlex-96a741f581f4126a.d",
+##     "deps/libshlex-96a741f581f4126a.rmeta",
+##     "deps/libshlex-96a741f581f4126a.rlib",
 ##     "deps/buildxargs-d78f4de4a17f92cd.d",
 ##     "deps/libbuildxargs-d78f4de4a17f92cd.rmeta",
 ##     "deps/libbuildxargs-d78f4de4a17f92cd.rlib",
 ## ]
 ## stderr = [
+##     '{"$message_type":"artifact","artifact":"/tmp/cargo-green--hack-caching/release/deps/pico_args-b8c41dbf50ca5479.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/cargo-green--hack-caching/release/deps/libpico_args-b8c41dbf50ca5479.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/cargo-green--hack-caching/release/deps/libpico_args-b8c41dbf50ca5479.rlib","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/cargo-green--hack-caching/release/deps/shlex-96a741f581f4126a.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/cargo-green--hack-caching/release/deps/libshlex-96a741f581f4126a.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/cargo-green--hack-caching/release/deps/libshlex-96a741f581f4126a.rlib","emit":"link"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/cargo-green--hack-caching/release/deps/buildxargs-d78f4de4a17f92cd.d","emit":"dep-info"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/cargo-green--hack-caching/release/deps/libbuildxargs-d78f4de4a17f92cd.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/cargo-green--hack-caching/release/deps/libbuildxargs-d78f4de4a17f92cd.rlib","emit":"link"}',
