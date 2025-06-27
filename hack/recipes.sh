@@ -22,6 +22,6 @@ for f in *.Dockerfile/*.Dockerfile; do
 		--ignore-matching-lines='^# syntax=docker.io/docker/dockerfile:1@' \
 		--ignore-matching-lines="^##     '\{" \
 		-- $f; then
-		git checkout -- $f
+		git checkout -- $f || continue
 	fi
 done
