@@ -2376,7 +2376,7 @@ jobs:
       if: ${{ failure() || success() }}
       run: du -sh $CARGO_TARGET_DIR
 
-  cargo-config2_0-1-26:
+  cargo-config2_0-1-34:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -2388,8 +2388,8 @@ jobs:
         - stable
         - 1.86.0
     env:
-      CARGO_TARGET_DIR: /tmp/clis-cargo-config2_0-1-26
-      CARGOGREEN_FINAL_PATH: recipes/cargo-config2@0.1.26.Dockerfile
+      CARGO_TARGET_DIR: /tmp/clis-cargo-config2_0-1-34
+      CARGOGREEN_FINAL_PATH: recipes/cargo-config2@0.1.34.Dockerfile
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
 
@@ -2450,12 +2450,12 @@ jobs:
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env  \
-          cargo green -vv install --jobs=1 --locked --force cargo-config2@0.1.26 --example=get |& tee _
+          cargo green -vv install --jobs=1 --locked --force cargo-config2@0.1.34 --example=get |& tee _
     - if: ${{ matrix.toolchain != 'stable' }}
       uses: actions/upload-artifact@v4
       name: Upload recipe
       with:
-        name: cargo-config2@0.1.26.Dockerfile
+        name: cargo-config2@0.1.34.Dockerfile
         path: ${{ env.CARGOGREEN_FINAL_PATH }}
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
@@ -2513,7 +2513,7 @@ jobs:
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env  \
-          cargo green -vv install --jobs=1 --locked --force cargo-config2@0.1.26 --example=get |& tee _
+          cargo green -vv install --jobs=1 --locked --force cargo-config2@0.1.34 --example=get |& tee _
     - name: ...doesn't recompile anything
       run: |
         err=0

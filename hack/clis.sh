@@ -40,7 +40,7 @@ declare -a nvs nvs_args
 ((i+=1)); nvs[i]=torrust-index@3.0.0;         oks[i]=ko; nvs_args[i]='' # /usr/bin/ld: cannot find -lssl: No such file or directory
 ((i+=1)); nvs[i]=cargo-authors@0.5.5;         oks[i]=ko; nvs_args[i]='' # ERROR: failed to solve: ResourceExhausted: ResourceExhausted: ResourceExhausted: ResourceExhausted: ResourceExhausted: grpc: received message larger than max (6653826 vs. 4194304)
 ((i+=1)); nvs[i]=vixargs@0.1.0;               oks[i]=ok; nvs_args[i]=''
-((i+=1)); nvs[i]=cargo-config2@0.1.26;        oks[i]=ok; nvs_args[i]='--example=get'
+((i+=1)); nvs[i]=cargo-config2@0.1.34;        oks[i]=ok; nvs_args[i]='--example=get'
 ((i+=1)); nvs[i]=privaxy@0.5.2;               oks[i]=ko; nvs_args[i]='--git https://github.com/Barre/privaxy.git --tag=v0.5.2 privaxy' # undefined reference to `__isoc23_strtol'\n          /usr/bin/ld: rand_unix.c:(.text.wait_random_seeded+0x204): undefined reference to `__isoc23_strtol'\n          collect2: error: ld returned 1 exit status\n          \n  = note: some `extern` functions couldn't be found; some native libraries may need to be installed or have their path specified\n  = note: use the `-l` flag to specify native libraries to link\n  = note: use the `cargo:rustc-link-lib` directive to specify the native libraries to link with Cargo (see https://doc.rust-lang.org/cargo/reference/build-scripts.html#rustc-link-lib
 
 ((i+=1)); nvs[i]=miri@master;                 oks[i]=ko; nvs_args[i]='--git https://github.com/rust-lang/miri.git --rev=dcd2112' # can't find crate for `either`
