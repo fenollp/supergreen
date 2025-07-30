@@ -355,17 +355,17 @@ async fn build(
         cmd.stdout(Stdio::piped()).stderr(Stdio::piped());
     }
 
-    let call = cmd.show();
+    let call = cmd.show_unquoted();
     let envs: Vec<_> = cmd
         .as_std()
         .get_envs()
         .map(|(k, v)| format!("{}={:?}", k.to_string_lossy(), v.unwrap_or_default()))
         .collect();
     let envs = envs.join(" ");
-    info!("Starting {call} (env: {envs}) with {containerfile_path}");
+    info!("Starting `{envs} {call} <{containerfile_path}`");
 
     let start = Instant::now();
-    let mut child = cmd.spawn().map_err(|e| anyhow!("Failed starting {call}: {e}"))?;
+    let mut child = cmd.spawn().map_err(|e| anyhow!("Failed starting `{call}`: {e}"))?;
 
     spawn({
         let containerfile_path = containerfile_path.to_owned();
@@ -400,16 +400,10 @@ async fn build(
         let res = child.wait().await;
         (start.elapsed(), res)
     };
-    let status = res.map_err(|e| anyhow!("Failed calling {call}: {e}"))?;
+    let status = res.map_err(|e| anyhow!("Failed calling `{call}`: {e}"))?;
     info!("build ran in {secs:?}: {status}");
 
-    let mut effects = Effects {
-        call: call[1..(call.len() - 1)].to_owned(), // drops decorative backticks
-        envs,
-        written: vec![],
-        stdout: vec![],
-        stderr: vec![],
-    };
+    let mut effects = Effects { call, envs, written: vec![], stdout: vec![], stderr: vec![] };
 
     if let Some((out_task, err_task)) = handles {
         let longish = Duration::from_secs(2);
