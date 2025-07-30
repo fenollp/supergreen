@@ -28,13 +28,18 @@ impl Popped for std::path::PathBuf {
 
 pub(crate) trait ShowCmd {
     #[must_use]
-    fn show(&self) -> String;
+    fn show_unquoted(&self) -> String;
+
+    #[must_use]
+    fn show(&self) -> String {
+        format!("`{}`", self.show_unquoted())
+    }
 }
 
 impl ShowCmd for std::process::Command {
-    fn show(&self) -> String {
+    fn show_unquoted(&self) -> String {
         format!(
-            "`{command} {args}`",
+            "{command} {args}",
             command = self.get_program().to_string_lossy(),
             args = self
                 .get_args()
@@ -46,7 +51,7 @@ impl ShowCmd for std::process::Command {
 }
 
 impl ShowCmd for tokio::process::Command {
-    fn show(&self) -> String {
-        self.as_std().show()
+    fn show_unquoted(&self) -> String {
+        self.as_std().show_unquoted()
     }
 }
