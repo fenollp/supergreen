@@ -50,10 +50,10 @@ echo
 
 rm $CARGO_TARGET_DIR/release/deps/${install_package%@*}-????????????????
 invocation=$(tail -n1 $CARGOGREEN_FINAL_PATH | cut -c2-)
-$invocation --call=check   <$CARGOGREEN_FINAL_PATH
-$invocation --call=outline <$CARGOGREEN_FINAL_PATH
-$invocation --call=targets <$CARGOGREEN_FINAL_PATH
-$invocation                <$CARGOGREEN_FINAL_PATH
+$invocation --call=format=json,check   <$CARGOGREEN_FINAL_PATH | jq | grep -vE '"Iy' | jq
+$invocation --call=format=json,outline <$CARGOGREEN_FINAL_PATH | jq | grep -vE '"Iy' | jq
+$invocation --call=format=json,targets <$CARGOGREEN_FINAL_PATH | jq | grep -vE '"Iy' | jq
+$invocation                            <$CARGOGREEN_FINAL_PATH
 $CARGO_TARGET_DIR/release/deps/${install_package%@*}-???????????????? --help >/dev/null
 [[ $install_sha = $(sha256sum $CARGO_TARGET_DIR/release/deps/${install_package%@*}-???????????????? | awk '{print $1}') ]] # rebuild => no change
 
