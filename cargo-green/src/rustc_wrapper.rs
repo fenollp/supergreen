@@ -20,7 +20,7 @@ use crate::{
     logging::{self, crate_type_for_logging, maybe_log},
     md::{BuildContext, Md},
     pwd,
-    runner::{build_out, Effects, Runner, MARK_STDERR, MARK_STDOUT},
+    runner::{build_out, Effects, Runner},
     rustc_arguments::{as_rustc, RustcArgs},
     stage::{Stage, RST, RUST},
     tmp, PKG, VSN,
@@ -399,8 +399,10 @@ async fn do_wrap_rustc(
     }
 
     rustc_block.push_str(&format!("      rustc '{}' {input} \\\n", args.join("' '")));
-    rustc_block.push_str(&format!("        1> >(sed 's/^/{MARK_STDOUT}/') \\\n"));
-    rustc_block.push_str(&format!("        2> >(sed 's/^/{MARK_STDERR}/' >&2)\n"));
+    //=> out-{extrafn} => outstage already constains hash.
+    //=> no mark
+    rustc_block.push_str(&format!("        1> >(tee {out_dir}/stdout) \\\n"));
+    rustc_block.push_str(&format!("        2> >(tee {out_dir}/stderr >&2)\n"));
     md.push_block(&rustc_stage, rustc_block);
 
     if let Some(ref incremental) = incremental {
@@ -410,7 +412,10 @@ async fn do_wrap_rustc(
     }
 
     let mut out_block = format!("FROM scratch AS {out_stage}\n");
+    // out_block
+    //     .push_str(&format!("COPY --from={rustc_stage} {out_dir}/*{extrafn}* {out_dir}/std* /\n"));
     out_block.push_str(&format!("COPY --from={rustc_stage} {out_dir}/*{extrafn}* /\n"));
+    out_block.push_str(&format!("COPY --from={rustc_stage} {out_dir}/std* /\n"));
     md.push_block(&out_stage, out_block);
     // TODO? in Dockerfile, when using outputs:
     // => skip the COPY (--mount=from=out-08c4d63ed4366a99)

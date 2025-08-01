@@ -40,8 +40,8 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
       rustc '--crate-name' 'pico_args' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="default"' '--cfg' 'feature="eq-separator"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("combined-flags", "default", "eq-separator", "short-space-opt"))' '-C' 'metadata=735182ed74090f67' '-C' 'extra-filename=-ef1ec1c562398afc' '--out-dir' '/tmp/clis-buildxargs_master/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-buildxargs_master/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/pico-args-0.5.0/src/lib.rs \
-        1> >(sed 's/^/::STDOUT:: /') \
-        2> >(sed 's/^/::STDERR:: /' >&2)
+        1> >(tee /tmp/clis-buildxargs_master/release/deps/out-ef1ec1c562398afc-stdout) \
+        2> >(tee /tmp/clis-buildxargs_master/release/deps/out-ef1ec1c562398afc-stderr >&2)
 FROM scratch AS out-ef1ec1c562398afc
 COPY --from=dep-l-pico-args-0.5.0-ef1ec1c562398afc /tmp/clis-buildxargs_master/release/deps/*-ef1ec1c562398afc* /
 
@@ -104,8 +104,8 @@ COPY --from=dep-l-pico-args-0.5.0-ef1ec1c562398afc /tmp/clis-buildxargs_master/r
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
 ##       rustc '--crate-name' 'pico_args' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="default"' '--cfg' 'feature="eq-separator"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("combined-flags", "default", "eq-separator", "short-space-opt"))' '-C' 'metadata=735182ed74090f67' '-C' 'extra-filename=-ef1ec1c562398afc' '--out-dir' '/tmp/clis-buildxargs_master/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-buildxargs_master/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/pico-args-0.5.0/src/lib.rs \
-##         1> >(sed 's/^/::STDOUT:: /') \
-##         2> >(sed 's/^/::STDERR:: /' >&2)'''
+##         1> >(tee /tmp/clis-buildxargs_master/release/deps/out-ef1ec1c562398afc-stdout) \
+##         2> >(tee /tmp/clis-buildxargs_master/release/deps/out-ef1ec1c562398afc-stderr >&2)'''
 ## 
 ## [[stages]]
 ## name = "out-ef1ec1c562398afc"
@@ -149,8 +149,8 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
       rustc '--crate-name' 'shlex' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "std"))' '-C' 'metadata=54c2f0a338814297' '-C' 'extra-filename=-ab0e05b376045caf' '--out-dir' '/tmp/clis-buildxargs_master/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-buildxargs_master/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0/src/lib.rs \
-        1> >(sed 's/^/::STDOUT:: /') \
-        2> >(sed 's/^/::STDERR:: /' >&2)
+        1> >(tee /tmp/clis-buildxargs_master/release/deps/out-ab0e05b376045caf-stdout) \
+        2> >(tee /tmp/clis-buildxargs_master/release/deps/out-ab0e05b376045caf-stderr >&2)
 FROM scratch AS out-ab0e05b376045caf
 COPY --from=dep-l-shlex-1.3.0-ab0e05b376045caf /tmp/clis-buildxargs_master/release/deps/*-ab0e05b376045caf* /
 
@@ -215,8 +215,8 @@ COPY --from=dep-l-shlex-1.3.0-ab0e05b376045caf /tmp/clis-buildxargs_master/relea
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
 ##       rustc '--crate-name' 'shlex' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "std"))' '-C' 'metadata=54c2f0a338814297' '-C' 'extra-filename=-ab0e05b376045caf' '--out-dir' '/tmp/clis-buildxargs_master/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-buildxargs_master/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0/src/lib.rs \
-##         1> >(sed 's/^/::STDOUT:: /') \
-##         2> >(sed 's/^/::STDERR:: /' >&2)'''
+##         1> >(tee /tmp/clis-buildxargs_master/release/deps/out-ab0e05b376045caf-stdout) \
+##         2> >(tee /tmp/clis-buildxargs_master/release/deps/out-ab0e05b376045caf-stderr >&2)'''
 ## 
 ## [[stages]]
 ## name = "out-ab0e05b376045caf"
@@ -257,8 +257,8 @@ RUN \
         CARGO_PRIMARY_PACKAGE="1" \
         CARGOGREEN=1 \
       rustc '--crate-name' 'buildxargs' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=39cb79e74912484c' '-C' 'extra-filename=-42615e6c7f87c749' '--out-dir' '/tmp/clis-buildxargs_master/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-buildxargs_master/release/deps' '--extern' 'pico_args=/tmp/clis-buildxargs_master/release/deps/libpico_args-ef1ec1c562398afc.rmeta' '--extern' 'shlex=/tmp/clis-buildxargs_master/release/deps/libshlex-ab0e05b376045caf.rmeta' src/lib.rs \
-        1> >(sed 's/^/::STDOUT:: /') \
-        2> >(sed 's/^/::STDERR:: /' >&2)
+        1> >(tee /tmp/clis-buildxargs_master/release/deps/out-42615e6c7f87c749-stdout) \
+        2> >(tee /tmp/clis-buildxargs_master/release/deps/out-42615e6c7f87c749-stderr >&2)
 FROM scratch AS out-42615e6c7f87c749
 COPY --from=dep-l-buildxargs-1.4.0-42615e6c7f87c749 /tmp/clis-buildxargs_master/release/deps/*-42615e6c7f87c749* /
 
@@ -326,8 +326,8 @@ COPY --from=dep-l-buildxargs-1.4.0-42615e6c7f87c749 /tmp/clis-buildxargs_master/
 ##         CARGO_PRIMARY_PACKAGE="1" \
 ##         CARGOGREEN=1 \
 ##       rustc '--crate-name' 'buildxargs' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=39cb79e74912484c' '-C' 'extra-filename=-42615e6c7f87c749' '--out-dir' '/tmp/clis-buildxargs_master/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-buildxargs_master/release/deps' '--extern' 'pico_args=/tmp/clis-buildxargs_master/release/deps/libpico_args-ef1ec1c562398afc.rmeta' '--extern' 'shlex=/tmp/clis-buildxargs_master/release/deps/libshlex-ab0e05b376045caf.rmeta' src/lib.rs \
-##         1> >(sed 's/^/::STDOUT:: /') \
-##         2> >(sed 's/^/::STDERR:: /' >&2)'''
+##         1> >(tee /tmp/clis-buildxargs_master/release/deps/out-42615e6c7f87c749-stdout) \
+##         2> >(tee /tmp/clis-buildxargs_master/release/deps/out-42615e6c7f87c749-stderr >&2)'''
 ## 
 ## [[stages]]
 ## name = "out-42615e6c7f87c749"
@@ -368,8 +368,8 @@ RUN \
         CARGO_PRIMARY_PACKAGE="1" \
         CARGOGREEN=1 \
       rustc '--crate-name' 'buildxargs' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'bin' '--emit' 'dep-info,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=a2ad5b1299c6ff1c' '-C' 'extra-filename=-4245cb92e8e8c024' '--out-dir' '/tmp/clis-buildxargs_master/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-buildxargs_master/release/deps' '--extern' 'buildxargs=/tmp/clis-buildxargs_master/release/deps/libbuildxargs-42615e6c7f87c749.rlib' '--extern' 'pico_args=/tmp/clis-buildxargs_master/release/deps/libpico_args-ef1ec1c562398afc.rlib' '--extern' 'shlex=/tmp/clis-buildxargs_master/release/deps/libshlex-ab0e05b376045caf.rlib' src/main.rs \
-        1> >(sed 's/^/::STDOUT:: /') \
-        2> >(sed 's/^/::STDERR:: /' >&2)
+        1> >(tee /tmp/clis-buildxargs_master/release/deps/out-4245cb92e8e8c024-stdout) \
+        2> >(tee /tmp/clis-buildxargs_master/release/deps/out-4245cb92e8e8c024-stderr >&2)
 FROM scratch AS out-4245cb92e8e8c024
 COPY --from=dep-b-buildxargs-1.4.0-4245cb92e8e8c024 /tmp/clis-buildxargs_master/release/deps/*-4245cb92e8e8c024* /
 
@@ -439,8 +439,8 @@ COPY --from=dep-b-buildxargs-1.4.0-4245cb92e8e8c024 /tmp/clis-buildxargs_master/
 ##         CARGO_PRIMARY_PACKAGE="1" \
 ##         CARGOGREEN=1 \
 ##       rustc '--crate-name' 'buildxargs' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'bin' '--emit' 'dep-info,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=a2ad5b1299c6ff1c' '-C' 'extra-filename=-4245cb92e8e8c024' '--out-dir' '/tmp/clis-buildxargs_master/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-buildxargs_master/release/deps' '--extern' 'buildxargs=/tmp/clis-buildxargs_master/release/deps/libbuildxargs-42615e6c7f87c749.rlib' '--extern' 'pico_args=/tmp/clis-buildxargs_master/release/deps/libpico_args-ef1ec1c562398afc.rlib' '--extern' 'shlex=/tmp/clis-buildxargs_master/release/deps/libshlex-ab0e05b376045caf.rlib' src/main.rs \
-##         1> >(sed 's/^/::STDOUT:: /') \
-##         2> >(sed 's/^/::STDERR:: /' >&2)'''
+##         1> >(tee /tmp/clis-buildxargs_master/release/deps/out-4245cb92e8e8c024-stdout) \
+##         2> >(tee /tmp/clis-buildxargs_master/release/deps/out-4245cb92e8e8c024-stderr >&2)'''
 ## 
 ## [[stages]]
 ## name = "out-4245cb92e8e8c024"
