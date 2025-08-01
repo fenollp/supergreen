@@ -2,6 +2,7 @@ use std::{
     env, fmt,
     fs::{self},
     mem,
+    ops::Not,
     process::{Output, Stdio},
     str::FromStr,
     time::{Duration, Instant},
@@ -14,17 +15,18 @@ use log::{debug, info};
 use reqwest::Client as ReqwestClient;
 use serde::{Deserialize, Serialize};
 use tokio::{
+    fs::File as TokioFile,
     io::{AsyncBufRead, AsyncBufReadExt, AsyncWriteExt, BufReader as TokioBufReader, Lines},
     join,
     process::Command,
     spawn,
     task::JoinHandle,
-    time::{error::Elapsed, timeout},
+    time::error::Elapsed,
 };
 
 use crate::{
     add::ENV_ADD_APT,
-    ext::ShowCmd,
+    ext::{timeout, ShowCmd},
     green::{Green, ENV_SET_ENVS},
     image_uri::ImageUri,
     logging::{crate_type_for_logging, maybe_log, ENV_LOG_PATH},
@@ -32,9 +34,6 @@ use crate::{
     stage::Stage,
     PKG,
 };
-
-pub(crate) const MARK_STDOUT: &str = "::STDOUT:: ";
-pub(crate) const MARK_STDERR: &str = "::STDERR:: ";
 
 #[derive(Debug, Copy, Clone, Default, Serialize, Deserialize, Eq, PartialEq)]
 #[serde(deny_unknown_fields)]
@@ -297,6 +296,7 @@ async fn build(
     // // [2024-04-09T07:55:39Z DEBUG lib-autocfg-72217d8ded4d7ec7@177912] ✖ Switch to a different driver, or turn on the containerd image store, and try again.
     // // [2024-04-09T07:55:39Z DEBUG lib-autocfg-72217d8ded4d7ec7@177912] ✖ Learn more at https://docs.docker.com/go/build-cache-backends/
     //TODO: experiment --cache-to=type=inline => try ,mode=max
+    //ignore-error=true
 
     if !green.cache_images.is_empty() {
         for img in &green.cache_images {
@@ -383,17 +383,39 @@ async fn build(
     info!("Started as pid={pid} in {:?}", start.elapsed());
 
     let handles = if out_dir.is_some() {
-        let out = TokioBufReader::new(child.stdout.take().expect("started")).lines();
-        let err = TokioBufReader::new(child.stderr.take().expect("started")).lines();
+        let mut lines = TokioBufReader::new(child.stdout.take().expect("started")).lines();
+        let dbg_out = spawn(async move {
+            while let Some(line) = lines.next_line().await.expect("stdout") {
+                if line.is_empty() {
+                    continue;
+                }
+                info!("➤ {line}");
+            }
+        });
 
-        // TODO: try rawjson progress mode + find podman equivalent?
-        // TODO: set these when --builder is ready https://stackoverflow.com/a/75632518/1418165
-        let out_task = fwd(out, "stdout", "➤", MARK_STDOUT);
-        let err_task = fwd(err, "stderr", "✖", MARK_STDERR);
-        Some((out_task, err_task))
+        let mut lines = TokioBufReader::new(child.stderr.take().expect("started")).lines();
+        let dbg_err = spawn(async move {
+            while let Some(line) = lines.next_line().await.expect("stderr") {
+                if line.is_empty() {
+                    continue;
+                }
+                info!("✖ {line}");
+            }
+        });
+
+        Some((dbg_out, dbg_err))
     } else {
         None
     };
+
+    // NOTE: storing STDOUT+STDERR within output stage,
+    //   as `cargo` relies on messages given through STDERR.
+    //     Reading stdio as it comes through via the runner's logging is indeed the faster solution,
+    //   however, it appears non-deterministic (cargo 1.87). Or maybe it's only due
+    //   to the runner clipping log output (see https://stackoverflow.com/a/75632518/1418165
+    //   and https://github.com/moby/buildkit/pull/1754/files on how `--builder` may help).
+    //   Also, the `rawjson` "progress mode" may be a simpler log-output to rely on. But then, what about `podman`?
+    // TODO? look back into processing logs on the fly
 
     let (secs, res) = {
         let start = Instant::now();
@@ -403,11 +425,38 @@ async fn build(
     let status = res.map_err(|e| anyhow!("Failed calling `{call}`: {e}"))?;
     info!("build ran in {secs:?}: {status}");
 
-    let mut effects = Effects { call, envs, written: vec![], stdout: vec![], stderr: vec![] };
+    if let Some((dbg_out, dbg_err)) = handles {
+        match join!(timeout(dbg_out), timeout(dbg_err)) {
+            (Ok(Ok(())), Ok(Ok(()))) => {}
+            (e1, e2) => bail!("BUG: STDIO forwarding crashed: {e1:?} | {e2:?}"),
+        }
+    }
+    drop(child);
 
-    if let Some((out_task, err_task)) = handles {
-        let longish = Duration::from_secs(2);
-        match join!(timeout(longish, out_task), timeout(longish, err_task)) {
+    //also: write all output to mem first? and then to disk (except stdio files)
+
+    //for now just use --jobs=1
+
+    let mut effects = Effects { call, envs, written: vec![], stdout: vec![], stderr: vec![] };
+    if let Some(out_dir) = out_dir {
+        async fn stdio_lines(
+            target: &Stage,
+            out_dir: &Utf8Path,
+            stdio: &'static str,
+        ) -> Result<Lines<TokioBufReader<TokioFile>>> {
+            let o = out_dir.join(stdio);
+            TokioFile::open(&o)
+                .await
+                .map_err(|e| anyhow!("Failed reading {target} {o}: {e}"))
+                .map(|o| TokioBufReader::new(o).lines())
+        }
+
+        let out = stdio_lines(&target, out_dir, "stdout").await?;
+        let err = stdio_lines(&target, out_dir, "stderr").await?;
+
+        let out_task = fwd(out, "stdout", "➤", fwd_stdout);
+        let err_task = fwd(err, "stderr", "✖", fwd_stderr);
+        match join!(timeout(out_task), timeout(err_task)) {
             (
                 Ok(Ok(Ok(Accumulated { stdout, .. }))),
                 Ok(Ok(Ok(Accumulated { written, stderr, .. }))),
@@ -426,11 +475,10 @@ async fn build(
                 bail!("BUG: spawning STDIO forwarding crashed: {e}")
             }
             (Err(Elapsed { .. }), _) | (_, Err(Elapsed { .. })) => {
-                bail!("BUG: STDIO forwarding got crickets for {longish:?}")
+                bail!("BUG: STDIO forwarding got crickets for some time")
             }
         }
     }
-    drop(child);
 
     // Something is very wrong here. Try to be helpful by logging some info about runner config:
     if !status.success() {
@@ -484,14 +532,13 @@ fn fwd<R>(
     mut stdio: Lines<R>,
     name: &'static str,
     badge: &'static str,
-    mark: &'static str,
+    fwder: impl Fn(&str, &mut String, &mut Accumulated) + Send + 'static,
 ) -> JoinHandle<Result<Accumulated>>
 where
     R: AsyncBufRead + Unpin + Send + 'static,
 {
-    debug!("Starting {name} task {badge}");
+    debug!("Reading {name} file {badge}");
     let start = Instant::now();
-    let fwder = if mark == MARK_STDOUT { fwd_stdout } else { fwd_stderr };
     spawn(async move {
         let mut buf = String::new();
         let mut details: Vec<String> = vec![];
@@ -513,7 +560,7 @@ where
 
             debug!("{badge} {}", strip_ansi_escapes(&line));
 
-            if let Some(msg) = lift_stdio(&line, mark) {
+            if let Some(msg) = lift_stdio(&line) {
                 fwder(msg, &mut buf, &mut acc);
             }
 
@@ -556,19 +603,19 @@ struct Accumulated {
 fn support_long_broken_json_lines() {
     let logs = assertx::setup_logging_test();
     let lines = [
-        r#"#42 1.312 ::STDERR:: {"$message_type":"artifact","artifact":"/tmp/thing","emit":"link""#,
-        r#"#42 1.313 ::STDERR:: }"#,
+        r#"#42 1.312 {"$message_type":"artifact","artifact":"/tmp/thing","emit":"link""#,
+        r#"#42 1.313 }"#,
     ];
     let mut buf = String::new();
     let mut acc = Accumulated::default();
 
-    let msg = lift_stdio(lines[0], MARK_STDERR);
+    let msg = lift_stdio(lines[0]);
     assert_eq!(msg, Some(r#"{"$message_type":"artifact","artifact":"/tmp/thing","emit":"link""#));
     fwd_stderr(msg.unwrap(), &mut buf, &mut acc);
     assert_eq!(buf, r#"{"$message_type":"artifact","artifact":"/tmp/thing","emit":"link""#);
     assert_eq!(acc.written, Vec::<String>::new());
 
-    let msg = lift_stdio(lines[1], MARK_STDERR);
+    let msg = lift_stdio(lines[1]);
     assert_eq!(msg, Some("}"));
     fwd_stderr(msg.unwrap(), &mut buf, &mut acc);
     assert_eq!(buf, "");
@@ -644,12 +691,12 @@ fn fwd_stdout(msg: &str, #[expect(clippy::ptr_arg)] _buf: &mut String, acc: &mut
 
 #[test]
 fn stdio_passthrough_from_runner() {
-    assert_eq!(lift_stdio("#47 1.714 ::STDOUT:: hi!", MARK_STDOUT), Some("hi!"));
+    assert_eq!(lift_stdio("#47 1.714 hi!"), Some("hi!"));
     let lines = [
-        r#"#47 1.714 ::STDERR:: {"$message_type":"artifact","artifact":"/tmp/clis-vixargs_0-1-0/release/deps/libclap_derive-fcea659dae5440c4.so","emit":"link"}"#,
-        r#"#47 1.714 ::STDERR:: {"$message_type":"diagnostic","message":"2 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"warning: 2 warnings emitted\n\n"}"#,
-        r#"#47 1.714 ::STDOUT:: hi!"#,
-    ].into_iter().map(|line| lift_stdio(line, MARK_STDERR));
+        r#"#47 1.714 {"$message_type":"artifact","artifact":"/tmp/clis-vixargs_0-1-0/release/deps/libclap_derive-fcea659dae5440c4.so","emit":"link"}"#,
+        r#"#47 1.714 {"$message_type":"diagnostic","message":"2 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"warning: 2 warnings emitted\n\n"}"#,
+        r#"#47 1.714 hi!"#,
+    ].into_iter().map(|line| lift_stdio(line));
     assert_eq!(
         lines.collect::<Vec<_>>(),
         vec![
@@ -659,7 +706,7 @@ fn stdio_passthrough_from_runner() {
             Some(
                 r#"{"$message_type":"diagnostic","message":"2 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"warning: 2 warnings emitted\n\n"}"#
             ),
-            None,
+            Some("hi!"),
         ]
     );
 }
@@ -1266,11 +1313,9 @@ fn suggesting_set_envs_ansi() {
 }
 
 #[must_use]
-fn lift_stdio<'a>(line: &'a str, mark: &'static str) -> Option<&'a str> {
+fn lift_stdio(line: &str) -> Option<&str> {
     // Docker builds running shell code usually start like: #47 0.057
     let line = line.trim_start_matches(|c| ['#', '.', ' '].contains(&c) || c.is_ascii_digit());
-    let msg = line.trim_start_matches(mark);
-    let cut = msg.len() != line.len();
-    let msg = msg.trim();
-    (cut && !msg.is_empty()).then_some(msg)
+    let msg = line.trim();
+    msg.is_empty().not().then_some(msg)
 }
