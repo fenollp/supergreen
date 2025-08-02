@@ -433,30 +433,15 @@ async fn build(
     }
     drop(child);
 
-    //also: write all output to mem first? and then to disk (except stdio files)
-
-    //for now just use --jobs=1
-
     let mut effects = Effects { call, envs, written: vec![], stdout: vec![], stderr: vec![] };
     if let Some(out_dir) = out_dir {
-        async fn stdio_lines(
-            target: &Stage,
-            out_dir: &Utf8Path,
-            stdio: &'static str,
-        ) -> Result<Lines<TokioBufReader<TokioFile>>> {
-            let o = out_dir.join(stdio);
-            TokioFile::open(&o)
-                .await
-                .map_err(|e| anyhow!("Failed reading {target} {o}: {e}"))
-                .map(|o| TokioBufReader::new(o).lines())
-        }
+        let out_path = stdio_path(&target, out_dir, "stdout");
+        let err_path = stdio_path(&target, out_dir, "stderr");
+        //TODO? write all output to mem first? and then to disk (except stdio files)
 
-        let out = stdio_lines(&target, out_dir, "stdout").await?;
-        let err = stdio_lines(&target, out_dir, "stderr").await?;
-
-        let out_task = fwd(out, "stdout", "➤", fwd_stdout);
-        let err_task = fwd(err, "stderr", "✖", fwd_stderr);
-        match join!(timeout(out_task), timeout(err_task)) {
+        let out = fwd(stdio_lines(&out_path).await?, "➤", fwd_stdout);
+        let err = fwd(stdio_lines(&err_path).await?, "✖", fwd_stderr);
+        match join!(timeout(out), timeout(err)) {
             (
                 Ok(Ok(Ok(Accumulated { stdout, .. }))),
                 Ok(Ok(Ok(Accumulated { written, stderr, .. }))),
@@ -478,6 +463,8 @@ async fn build(
                 bail!("BUG: STDIO forwarding got crickets for some time")
             }
         }
+        fs::remove_file(&out_path).map_err(|e| anyhow!("Failed `rm {out_path}`: {e}"))?;
+        fs::remove_file(&err_path).map_err(|e| anyhow!("Failed `rm {err_path}`: {e}"))?;
     }
 
     // Something is very wrong here. Try to be helpful by logging some info about runner config:
@@ -501,6 +488,17 @@ async fn build(
     }
 
     Ok(effects)
+}
+
+fn stdio_path(target: &Stage, out_dir: &Utf8Path, stdio: &'static str) -> Utf8PathBuf {
+    out_dir.join(format!("{target}-{stdio}"))
+}
+
+async fn stdio_lines(stdio: &Utf8Path) -> Result<Lines<TokioBufReader<TokioFile>>> {
+    TokioFile::open(&stdio)
+        .await
+        .map_err(|e| anyhow!("Failed reading {stdio}: {e}"))
+        .map(|stdio| TokioBufReader::new(stdio).lines())
 }
 
 fn log_written_files_metadata(written: &[Utf8PathBuf]) {
@@ -530,14 +528,13 @@ fn strip_ansi_escapes(line: &str) -> String {
 #[must_use]
 fn fwd<R>(
     mut stdio: Lines<R>,
-    name: &'static str,
     badge: &'static str,
     fwder: impl Fn(&str, &mut String, &mut Accumulated) + Send + 'static,
 ) -> JoinHandle<Result<Accumulated>>
 where
     R: AsyncBufRead + Unpin + Send + 'static,
 {
-    debug!("Reading {name} file {badge}");
+    debug!("Reading {badge} file");
     let start = Instant::now();
     spawn(async move {
         let mut buf = String::new();
@@ -550,9 +547,9 @@ where
             let maybe_line = stdio.next_line().await;
             if first {
                 first = false;
-                debug!("Time To First Line for task {name}: {:?}", start.elapsed());
+                debug!("Time To First Line for task {badge}: {:?}", start.elapsed());
             }
-            let line = maybe_line.map_err(|e| anyhow!("Failed during piping of {name}: {e:?}"))?;
+            let line = maybe_line.map_err(|e| anyhow!("Failed during piping of {badge}: {e:?}"))?;
             let Some(line) = line else { break };
             if line.is_empty() {
                 continue;
@@ -584,7 +581,7 @@ where
                 cacheds += 1;
             }
         }
-        debug!("Terminating {name} task CACHED:{cacheds} DONE:{dones} {details:?}");
+        debug!("Terminating {badge} task CACHED:{cacheds} DONE:{dones} {details:?}");
         drop(stdio);
         Ok(acc)
     })
