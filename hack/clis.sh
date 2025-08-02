@@ -197,7 +197,7 @@ as_env() {
 slugify() {
   local name_at_version=$1; shift
   [[ $# -eq 0 ]]
-  sed 's%@%_%g;s%\.%-%g' <<<"$name_at_version"
+  sed 's%@%_%g;s%\.%-%g;s%/%%g;s%:%%g' <<<"$name_at_version"
 }
 
 ntpd_locked_commit=c7945250c378f65f65b2a75748132edf75063b3b  # Any value, just fixed.
@@ -399,7 +399,7 @@ fi
 name_at_version=${nvs[$i]}
 args=${nvs_args[$i]}
 
-session_name=$(slugify "$name_at_version")
+session_name=$(slugify "$name_at_version")$(slugify "${DOCKER_HOST:-_}")
 tmptrgt=/tmp/clis-$session_name
 tmplogs=$tmptrgt.logs.txt
 tmpgooo=$tmptrgt.state
