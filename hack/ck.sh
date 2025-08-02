@@ -89,6 +89,11 @@ cat <<EOF
         ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' \$CARGOGREEN_LOG_PATH
 
     - if: \${{ failure() || success() }}
+      name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
+      run: |
+        ! grep -C20 -F 'connection error: COMPRESSION_ERROR' \$CARGOGREEN_LOG_PATH
+
+    - if: \${{ failure() || success() }}
       name: 🔴 =means=> there's some panic!s
       run: |
         ! grep -C20 -F ' panicked at ' \$CARGOGREEN_LOG_PATH
