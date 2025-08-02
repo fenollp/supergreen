@@ -16,7 +16,7 @@ use reqwest::Client as ReqwestClient;
 use serde::{Deserialize, Serialize};
 use tokio::{
     fs::File as TokioFile,
-    io::{AsyncBufRead, AsyncBufReadExt, AsyncWriteExt, BufReader as TokioBufReader, Lines},
+    io::{copy, AsyncBufRead, AsyncBufReadExt, BufReader as TokioBufReader, Lines},
     join,
     process::Command,
     spawn,
@@ -206,25 +206,25 @@ pub(crate) struct Effects {
 
 pub(crate) async fn build_cacheonly(
     green: &Green,
-    containerfile_path: &Utf8Path,
+    containerfile: &Utf8Path,
     target: Stage,
 ) -> Result<()> {
-    build(green, containerfile_path, target, &[].into(), None).await.map(|_| ())
+    build(green, containerfile, target, &[].into(), None).await.map(|_| ())
 }
 
 pub(crate) async fn build_out(
     green: &Green,
-    containerfile_path: &Utf8Path,
+    containerfile: &Utf8Path,
     target: Stage,
     contexts: &IndexSet<BuildContext>,
     out_dir: &Utf8Path,
 ) -> Result<Effects> {
-    build(green, containerfile_path, target, contexts, Some(out_dir)).await
+    build(green, containerfile, target, contexts, Some(out_dir)).await
 }
 
 async fn build(
     green: &Green,
-    containerfile_path: &Utf8Path,
+    containerfile: &Utf8Path,
     target: Stage,
     contexts: &IndexSet<BuildContext>,
     out_dir: Option<&Utf8Path>,
@@ -362,18 +362,21 @@ async fn build(
         .map(|(k, v)| format!("{}={:?}", k.to_string_lossy(), v.unwrap_or_default()))
         .collect();
     let envs = envs.join(" ");
-    info!("Starting `{envs} {call} <{containerfile_path}`");
+    info!("Starting `{envs} {call} <{containerfile}`");
 
     let start = Instant::now();
     let mut child = cmd.spawn().map_err(|e| anyhow!("Failed starting `{call}`: {e}"))?;
 
     spawn({
-        let containerfile_path = containerfile_path.to_owned();
+        let containerfile = containerfile.to_owned();
         let mut stdin = child.stdin.take().expect("started");
         async move {
-            // TODO: buffered IO
-            let contents = fs::read_to_string(&containerfile_path).expect("Piping Dockerfile");
-            stdin.write_all(contents.as_bytes()).await.expect("Writing to STDIN");
+            let mut reader = TokioFile::open(&containerfile)
+                .await
+                .map_err(|e| anyhow!("Failed opening (RO) {containerfile}: {e}"))?;
+            copy(&mut reader, &mut stdin)
+                .await
+                .map_err(|e| anyhow!("Failed piping {containerfile}: {e}"))
         }
     });
 
