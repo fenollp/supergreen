@@ -16,7 +16,7 @@ use reqwest::Client as ReqwestClient;
 use serde::{Deserialize, Serialize};
 use tokio::{
     fs::File as TokioFile,
-    io::{copy, AsyncBufRead, AsyncBufReadExt, BufReader as TokioBufReader, Lines},
+    io::{AsyncBufRead, AsyncBufReadExt, AsyncWriteExt, BufReader as TokioBufReader, Lines},
     join,
     process::Command,
     spawn,
@@ -374,12 +374,21 @@ async fn build(
         let containerfile = containerfile.to_owned();
         let mut stdin = child.stdin.take().expect("started");
         async move {
-            let mut reader = TokioFile::open(&containerfile)
+            let reader = TokioFile::open(&containerfile)
                 .await
                 .map_err(|e| anyhow!("Failed opening (RO) {containerfile}: {e}"))?;
-            copy(&mut reader, &mut stdin)
-                .await
-                .map_err(|e| anyhow!("Failed piping {containerfile}: {e}"))
+            let mut lines = TokioBufReader::new(reader).lines();
+            while let Some(line) = lines.next_line().await.expect("stdin") {
+                if line.starts_with("## ") {
+                    continue;
+                }
+                stdin
+                    .write_all(line.as_bytes())
+                    .await
+                    .map_err(|e| anyhow!("Failed piping {containerfile}: {e}"))?;
+                let _ = stdin.write_u8(b'\n').await;
+            }
+            Ok::<_, anyhow::Error>(())
         }
     });
 
