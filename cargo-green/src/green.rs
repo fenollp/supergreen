@@ -1,8 +1,15 @@
-use std::{collections::HashSet, env};
+use std::{
+    collections::HashSet,
+    env,
+    fs::{self, OpenOptions},
+    io::Write,
+};
 
 use anyhow::{anyhow, bail, Result};
-use camino::Utf8PathBuf;
+use camino::{Utf8Path, Utf8PathBuf};
 use cargo_toml::Manifest;
+use indexmap::IndexSet;
+use log::info;
 use serde::{Deserialize, Serialize};
 
 #[cfg(test)]
@@ -13,6 +20,7 @@ use crate::{
     containerfile::Containerfile,
     image_uri::ImageUri,
     lockfile::find_manifest_path,
+    md::{BuildContext, Md},
     runner::Runner,
     stage::RST,
     PKG,
@@ -74,14 +82,23 @@ pub(crate) struct Green {
     pub(crate) cache_images: Vec<ImageUri>,
     // TODO? error when registry is unreachable
 
-    // Write final Dockerfile to given path.
+    // Write final containerfile to given path.
     //
-    // Helps e.g. create a Dockerfile with caching for dependencies.
+    // Helps e.g. create a containerfile of e.g. a binary to use for best caching of dependencies.
     //
     // # Use by setting this environment variable (no Cargo.toml setting):
     // CARGOGREEN_FINAL_PATH="$PWD/my-bin@1.0.0.Dockerfile"
     #[serde(skip_serializing_if = "Option::is_none")]
     pub(crate) final_path: Option<Utf8PathBuf>,
+
+    // Write final containerfile on every rustc call.
+    //
+    // Helps e.g. debug builds failing too early.
+    //
+    // # Use by setting this environment variable (no Cargo.toml setting):
+    // CARGOGREEN_FINAL_PATH_NONPRIMARY="1"
+    #[serde(skip_serializing_if = "<&bool as std::ops::Not>::not")]
+    pub(crate) final_path_nonprimary: bool,
 
     #[serde(flatten)]
     pub(crate) image: BaseImage,
@@ -253,6 +270,57 @@ impl Green {
         }
 
         Ok(green)
+    }
+
+    // NOTE: using $CARGO_PRIMARY_PACKAGE still makes >1 hits in rustc calls history: lib + bin, at least.
+    pub(crate) fn maybe_write_final_path(
+        &self,
+        containerfile_path: &Utf8Path,
+        contexts: &IndexSet<BuildContext>,
+        call: &str,
+        envs: &str,
+    ) -> Result<()> {
+        if let Some(path) = self.final_path.as_deref() {
+            if self.final_path_nonprimary || env::var("CARGO_PRIMARY_PACKAGE").is_ok() {
+                info!("writing (RW) final path {path}");
+
+                let _ = fs::copy(containerfile_path, path)?;
+
+                let mut fbuf = String::new();
+
+                fbuf.push('\n');
+                fbuf.push_str("# Pipe this file to");
+                if !contexts.is_empty() {
+                    //TODO: or additional-build-arguments
+                    fbuf.push_str(" (not portable due to usage of local build contexts)");
+                }
+                fbuf.push_str(&format!(":\n# {envs} \\\n"));
+                fbuf.push_str(&format!("#   {call}\n"));
+
+                let mut file = OpenOptions::new().append(true).open(path)?;
+                write!(file, "{fbuf}")?;
+            }
+        }
+        Ok(())
+    }
+
+    pub(crate) fn maybe_append_to_final_path(&self, md_path: &Utf8Path) -> Result<()> {
+        if let Some(path) = self.final_path.as_deref() {
+            if self.final_path_nonprimary || env::var("CARGO_PRIMARY_PACKAGE").is_ok() {
+                info!("appending (AW) to final path {path}");
+
+                let mut fbuf = String::new();
+
+                fbuf.push('\n');
+                for md_line in fs::read_to_string(md_path)?.lines() {
+                    Md::comment_pretty(md_line, &mut fbuf);
+                }
+
+                let mut file = OpenOptions::new().append(true).open(path)?;
+                write!(file, "{fbuf}")?;
+            }
+        }
+        Ok(())
     }
 }
 

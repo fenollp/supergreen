@@ -9,7 +9,9 @@ use tokio::io::BufReader;
 use crate::{
     add::{ENV_ADD_APK, ENV_ADD_APT, ENV_ADD_APT_GET},
     base_image::{ENV_BASE_IMAGE, ENV_BASE_IMAGE_INLINE, ENV_WITH_NETWORK},
-    cargo_green::{ENV_BUILDER_IMAGE, ENV_FINAL_PATH, ENV_RUNNER, ENV_SYNTAX},
+    cargo_green::{
+        ENV_BUILDER_IMAGE, ENV_FINAL_PATH, ENV_FINAL_PATH_NONPRIMARY, ENV_RUNNER, ENV_SYNTAX,
+    },
     ext::ShowCmd,
     green::{Green, ENV_CACHE_IMAGES, ENV_INCREMENTAL, ENV_SET_ENVS},
     image_uri::ImageUri,
@@ -155,6 +157,7 @@ fn envs(green: Green, vars: Vec<String>) {
         (ENV_BUILDER_IMAGE, green.builder_image.map(|x| x.to_string())),
         (ENV_CACHE_IMAGES, csv_uris(&green.cache_images)),
         (ENV_FINAL_PATH, green.final_path.as_deref().map(ToString::to_string)),
+        (ENV_FINAL_PATH_NONPRIMARY, green.final_path_nonprimary.then(|| "1".to_owned())),
         (ENV_INCREMENTAL, green.incremental.then(|| "1".to_owned())),
         (ENV_LOG, env::var(ENV_LOG).ok()),
         (ENV_LOG_PATH, env::var(ENV_LOG_PATH).ok()),

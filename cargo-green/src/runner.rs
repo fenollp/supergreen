@@ -197,8 +197,6 @@ pub(crate) async fn fetch_digest(img: &ImageUri) -> Result<ImageUri> {
 
 #[derive(Debug)]
 pub(crate) struct Effects {
-    pub(crate) call: String,
-    pub(crate) envs: String,
     pub(crate) written: Vec<Utf8PathBuf>,
     pub(crate) stdout: Vec<String>,
     pub(crate) stderr: Vec<String>,
@@ -209,7 +207,7 @@ pub(crate) async fn build_cacheonly(
     containerfile: &Utf8Path,
     target: Stage,
 ) -> Result<()> {
-    build(green, containerfile, target, &[].into(), None).await.map(|_| ())
+    build(green, containerfile, target, &[].into(), None).await.2.map(|_| ())
 }
 
 pub(crate) async fn build_out(
@@ -218,7 +216,7 @@ pub(crate) async fn build_out(
     target: Stage,
     contexts: &IndexSet<BuildContext>,
     out_dir: &Utf8Path,
-) -> Result<Effects> {
+) -> (String, String, Result<Effects>) {
     build(green, containerfile, target, contexts, Some(out_dir)).await
 }
 
@@ -228,7 +226,9 @@ async fn build(
     target: Stage,
     contexts: &IndexSet<BuildContext>,
     out_dir: Option<&Utf8Path>,
-) -> Result<Effects> {
+) -> (String, String, Result<Effects>) {
+    let rtrn = |e| ("".to_owned(), "".to_owned(), Err(e));
+
     let mut cmd = green.runner.as_cmd();
     cmd.arg("build");
 
@@ -365,7 +365,10 @@ async fn build(
     info!("Starting `{envs} {call} <{containerfile}`");
 
     let start = Instant::now();
-    let mut child = cmd.spawn().map_err(|e| anyhow!("Failed starting `{call}`: {e}"))?;
+    let mut child = match cmd.spawn() {
+        Ok(child) => child,
+        Err(e) => return rtrn(anyhow!("Failed starting `{call}`: {e}")),
+    };
 
     spawn({
         let containerfile = containerfile.to_owned();
@@ -425,25 +428,37 @@ async fn build(
         let res = child.wait().await;
         (start.elapsed(), res)
     };
-    let status = res.map_err(|e| anyhow!("Failed calling `{call}`: {e}"))?;
+    let status = match res {
+        Ok(status) => status,
+        Err(e) => return rtrn(anyhow!("Failed calling `{call}`: {e}")),
+    };
     info!("build ran in {secs:?}: {status}");
 
     if let Some((dbg_out, dbg_err)) = handles {
         match join!(timeout(dbg_out), timeout(dbg_err)) {
             (Ok(Ok(())), Ok(Ok(()))) => {}
-            (e1, e2) => bail!("BUG: STDIO forwarding crashed: {e1:?} | {e2:?}"),
+            (e1, e2) => return rtrn(anyhow!("BUG: STDIO forwarding crashed: {e1:?} | {e2:?}")),
         }
     }
     drop(child);
 
-    let mut effects = Effects { call, envs, written: vec![], stdout: vec![], stderr: vec![] };
+    let mut effects = Effects { written: vec![], stdout: vec![], stderr: vec![] };
     if let Some(out_dir) = out_dir {
         let out_path = stdio_path(&target, out_dir, "stdout");
         let err_path = stdio_path(&target, out_dir, "stderr");
         //TODO? write all output to mem first? and then to disk (except stdio files)
 
-        let out = fwd(stdio_lines(&out_path).await?, "➤", fwd_stdout);
-        let err = fwd(stdio_lines(&err_path).await?, "✖", fwd_stderr);
+        let out = match stdio_lines(&out_path).await {
+            Ok(out) => out,
+            Err(e) => return rtrn(e),
+        };
+        let err = match stdio_lines(&err_path).await {
+            Ok(err) => err,
+            Err(e) => return rtrn(e),
+        };
+
+        let out = fwd(out, "➤", fwd_stdout);
+        let err = fwd(err, "✖", fwd_stderr);
         match join!(timeout(out), timeout(err)) {
             (
                 Ok(Ok(Ok(Accumulated { stdout, .. }))),
@@ -457,23 +472,30 @@ async fn build(
                 }
             }
             (Ok(Ok(Err(e))), _) | (_, Ok(Ok(Err(e)))) => {
-                bail!("BUG: STDIO forwarding crashed: {e}")
+                return rtrn(anyhow!("BUG: STDIO forwarding crashed: {e}"))
             }
             (Ok(Err(e)), _) | (_, Ok(Err(e))) => {
-                bail!("BUG: spawning STDIO forwarding crashed: {e}")
+                return rtrn(anyhow!("BUG: spawning STDIO forwarding crashed: {e}"))
             }
             (Err(Elapsed { .. }), _) | (_, Err(Elapsed { .. })) => {
-                bail!("BUG: STDIO forwarding got crickets for some time")
+                return rtrn(anyhow!("BUG: STDIO forwarding got crickets for some time"))
             }
         }
-        fs::remove_file(&out_path).map_err(|e| anyhow!("Failed `rm {out_path}`: {e}"))?;
-        fs::remove_file(&err_path).map_err(|e| anyhow!("Failed `rm {err_path}`: {e}"))?;
+        if let Err(e) = fs::remove_file(&out_path) {
+            return rtrn(anyhow!("Failed `rm {out_path}`: {e}"));
+        }
+        if let Err(e) = fs::remove_file(&err_path) {
+            return rtrn(anyhow!("Failed `rm {err_path}`: {e}"));
+        }
     }
 
     // Something is very wrong here. Try to be helpful by logging some info about runner config:
     if !status.success() {
         if maybe_log().is_some() {
-            bail!("Runner failed. Check logs over at {}", env::var(ENV_LOG_PATH).unwrap())
+            return rtrn(anyhow!(
+                "Runner failed. Check logs over at {}",
+                env::var(ENV_LOG_PATH).unwrap()
+            ));
         }
 
         // TODO: all these
@@ -483,14 +505,16 @@ async fn build(
 
         let mut cmd = green.runner.as_nondbg_cmd();
         cmd.arg("info");
-        let Output { stdout, stderr, status } =
-            cmd.output().await.map_err(|e| anyhow!("Failed starting {}: {e}", cmd.show()))?;
+        let (stdout, stderr, status) = match cmd.output().await {
+            Ok(Output { stdout, stderr, status }) => (stdout, stderr, status),
+            Err(e) => return rtrn(anyhow!("Failed starting {}: {e}", cmd.show())),
+        };
         let stdout = String::from_utf8_lossy(&stdout);
         let stderr = String::from_utf8_lossy(&stderr);
-        bail!("Runner info: {status} [STDOUT {stdout}] [STDERR {stderr}]")
+        return rtrn(anyhow!("Runner info: {status} [STDOUT {stdout}] [STDERR {stderr}]"));
     }
 
-    Ok(effects)
+    (call, envs, Ok(effects))
 }
 
 fn stdio_path(target: &Stage, out_dir: &Utf8Path, stdio: &'static str) -> Utf8PathBuf {
