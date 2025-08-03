@@ -27,6 +27,7 @@ use crate::{
 // Env-only settings (no Cargo.toml equivalent setting)
 pub(crate) const ENV_BUILDER_IMAGE: &str = "CARGOGREEN_BUILDER_IMAGE";
 pub(crate) const ENV_FINAL_PATH: &str = "CARGOGREEN_FINAL_PATH";
+pub(crate) const ENV_FINAL_PATH_NONPRIMARY: &str = "CARGOGREEN_FINAL_PATH_NONPRIMARY";
 pub(crate) const ENV_RUNNER: &str = "CARGOGREEN_RUNNER";
 pub(crate) const ENV_SYNTAX: &str = "CARGOGREEN_SYNTAX";
 
@@ -82,6 +83,18 @@ pub(crate) async fn main() -> Result<Green> {
             fs::create_dir_all(dir).map_err(|e| anyhow!("Failed `mkdir -p {dir}`: {e}"))?;
         }
         green.final_path = Some(path);
+    }
+    if green.final_path_nonprimary {
+        bail!("${ENV_FINAL_PATH_NONPRIMARY} can only be set through the environment variable")
+    }
+    if let Ok(v) = env::var(ENV_FINAL_PATH_NONPRIMARY) {
+        if v.is_empty() {
+            bail!("${ENV_FINAL_PATH_NONPRIMARY} is empty")
+        }
+        if v != "1" {
+            bail!("${ENV_FINAL_PATH_NONPRIMARY} must only be '1'")
+        }
+        green.final_path_nonprimary = true;
     }
 
     if !green.image.base_image.locked() {

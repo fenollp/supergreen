@@ -1,9 +1,8 @@
 use std::{
     collections::{BTreeMap, HashMap},
     env,
-    fs::{self, OpenOptions},
+    fs::{self},
     future::Future,
-    io::Write,
 };
 
 use anyhow::{anyhow, bail, Result};
@@ -444,8 +443,13 @@ async fn do_wrap_rustc(
 
     let contexts = &md.contexts;
     let build = |stage, dir| build_out(&green, &containerfile_path, stage, contexts, dir);
-    match build(out_stage, &out_dir).await {
-        Ok(Effects { call, envs, written, stdout, stderr }) => {
+    let (call, envs, built) = build(out_stage, &out_dir).await;
+    green
+        .maybe_write_final_path(&containerfile_path, contexts, &call, &envs)
+        .map_err(|e| anyhow!("Failed producing final path: {e}"))?;
+
+    match built {
+        Ok(Effects { written, stdout, stderr }) => {
             if !written.is_empty() || !stdout.is_empty() || !stderr.is_empty() {
                 md.writes = written
                     .into_iter()
@@ -457,8 +461,9 @@ async fn do_wrap_rustc(
                 md.write_to(&md_path)?;
             }
 
-            maybe_write_final_path(&green, &containerfile_path, &md_path, contexts, &call, &envs)
-                .map_err(|e| anyhow!("Failed producing final path: {e}"))?;
+            green
+                .maybe_append_to_final_path(&md_path)
+                .map_err(|e| anyhow!("Failed finishing final path: {e}"))?;
         }
         Err(e) if debug.is_none() => {
             warn!("Falling back due to {e}");
@@ -471,49 +476,12 @@ async fn do_wrap_rustc(
     }
 
     if let Some(incremental) = incremental {
-        if let Err(e) = build(incremental_stage, &incremental).await {
+        if let (_, _, Err(e)) = build(incremental_stage, &incremental).await {
             warn!("Error building incremental data: {e}");
             return Err(e);
         }
     }
 
-    Ok(())
-}
-
-// NOTE: using $CARGO_PRIMARY_PACKAGE still makes >1 hits in rustc calls history: lib + bin, at least.
-fn maybe_write_final_path(
-    green: &Green,
-    containerfile_path: &Utf8Path,
-    md_path: &Utf8Path,
-    contexts: &IndexSet<BuildContext>,
-    call: &str,
-    envs: &str,
-) -> Result<()> {
-    if let Some(path) = green.final_path.as_deref() {
-        if env::var("CARGO_PRIMARY_PACKAGE").is_ok() {
-            info!("writing (RW) final path {path}");
-
-            let _ = fs::copy(containerfile_path, path)?; //TODO: use an atomic mv
-
-            let mut file = OpenOptions::new().append(true).open(path)?;
-            let mut fbuf = String::new();
-            fbuf.push('\n');
-
-            for md_line in fs::read_to_string(md_path)?.lines() {
-                Md::comment_pretty(md_line, &mut fbuf);
-            }
-            fbuf.push('\n');
-
-            fbuf.push_str("# Pipe this file to");
-            if !contexts.is_empty() {
-                //TODO: or additional-build-arguments
-                fbuf.push_str(" (not portable due to usage of local build contexts)");
-            }
-            fbuf.push_str(&format!(":\n# {envs} \\\n"));
-            fbuf.push_str(&format!("#   {call}\n"));
-            write!(file, "{fbuf}")?;
-        }
-    }
     Ok(())
 }
 

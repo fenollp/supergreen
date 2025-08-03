@@ -49,7 +49,7 @@ echo
 
 
 rm $CARGO_TARGET_DIR/release/deps/${install_package%@*}-????????????????
-invocation=$(tail -n1 $CARGOGREEN_FINAL_PATH | cut -c2-)
+invocation=$(grep -vE '^## ' $CARGOGREEN_FINAL_PATH | tail -n2 | cut -c2- | head -n1)
 $invocation --call=format=json,check   <$CARGOGREEN_FINAL_PATH | jq | grep -vE '"Iy' | jq
 $invocation --call=format=json,outline <$CARGOGREEN_FINAL_PATH | jq | grep -vE '"Iy' | jq
 $invocation --call=format=json,targets <$CARGOGREEN_FINAL_PATH | jq | grep -vE '"Iy' | jq
