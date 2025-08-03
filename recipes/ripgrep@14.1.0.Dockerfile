@@ -4489,6 +4489,10 @@ RUN \
 FROM scratch AS out-16aebc92c4aced68
 COPY --from=dep-b-ripgrep-14.1.0-16aebc92c4aced68 /tmp/clis-ripgrep_14-1-0/release/deps/*-16aebc92c4aced68* /
 
+# Pipe this file to (not portable due to usage of local build contexts):
+# DOCKER_BUILDKIT="1" \
+#   docker --debug build --network=none --platform=local --pull=false --target=out-16aebc92c4aced68 --output=type=local,dest=/tmp/clis-ripgrep_14-1-0/release/deps --build-context=crate_out-467b075ea0bb0ef8=/tmp/clis-ripgrep_14-1-0/release/build/anyhow-467b075ea0bb0ef8/out -
+
 ## this = "16aebc92c4aced68"
 ## deps = [
 ##     "95e5d8a0e52ba465",
@@ -4661,7 +4665,3 @@ COPY --from=dep-b-ripgrep-14.1.0-16aebc92c4aced68 /tmp/clis-ripgrep_14-1-0/relea
 ## script = """
 ## FROM scratch AS out-16aebc92c4aced68
 ## COPY --from=dep-b-ripgrep-14.1.0-16aebc92c4aced68 /tmp/clis-ripgrep_14-1-0/release/deps/*-16aebc92c4aced68* /"""
-
-# Pipe this file to (not portable due to usage of local build contexts):
-# DOCKER_BUILDKIT="1" \
-#   docker --debug build --network=none --platform=local --pull=false --target=out-16aebc92c4aced68 --output=type=local,dest=/tmp/clis-ripgrep_14-1-0/release/deps --build-context=crate_out-467b075ea0bb0ef8=/tmp/clis-ripgrep_14-1-0/release/build/anyhow-467b075ea0bb0ef8/out -

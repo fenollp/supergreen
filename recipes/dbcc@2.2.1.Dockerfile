@@ -7821,6 +7821,10 @@ RUN \
 FROM scratch AS out-6cd0852da8e8bf94
 COPY --from=dep-b-dbcc-2.2.1-6cd0852da8e8bf94 /tmp/clis-dbcc_2-2-1/release/deps/*-6cd0852da8e8bf94* /
 
+# Pipe this file to (not portable due to usage of local build contexts):
+# DOCKER_BUILDKIT="1" \
+#   docker --debug build --network=none --platform=local --pull=false --target=out-6cd0852da8e8bf94 --output=type=local,dest=/tmp/clis-dbcc_2-2-1/release/deps --build-context=crate_out-3cf9e442dfddd505=/tmp/clis-dbcc_2-2-1/release/build/typenum-3cf9e442dfddd505/out -
+
 ## this = "6cd0852da8e8bf94"
 ## deps = [
 ##     "90ca44a8caf54d0f",
@@ -8061,7 +8065,3 @@ COPY --from=dep-b-dbcc-2.2.1-6cd0852da8e8bf94 /tmp/clis-dbcc_2-2-1/release/deps/
 ## script = """
 ## FROM scratch AS out-6cd0852da8e8bf94
 ## COPY --from=dep-b-dbcc-2.2.1-6cd0852da8e8bf94 /tmp/clis-dbcc_2-2-1/release/deps/*-6cd0852da8e8bf94* /"""
-
-# Pipe this file to (not portable due to usage of local build contexts):
-# DOCKER_BUILDKIT="1" \
-#   docker --debug build --network=none --platform=local --pull=false --target=out-6cd0852da8e8bf94 --output=type=local,dest=/tmp/clis-dbcc_2-2-1/release/deps --build-context=crate_out-3cf9e442dfddd505=/tmp/clis-dbcc_2-2-1/release/build/typenum-3cf9e442dfddd505/out -

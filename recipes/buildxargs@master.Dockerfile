@@ -373,6 +373,10 @@ RUN \
 FROM scratch AS out-4245cb92e8e8c024
 COPY --from=dep-b-buildxargs-1.4.0-4245cb92e8e8c024 /tmp/clis-buildxargs_master/release/deps/*-4245cb92e8e8c024* /
 
+# Pipe this file to:
+# DOCKER_BUILDKIT="1" \
+#   docker --debug build --network=none --platform=local --pull=false --target=out-4245cb92e8e8c024 --output=type=local,dest=/tmp/clis-buildxargs_master/release/deps -
+
 ## this = "4245cb92e8e8c024"
 ## deps = [
 ##     "42615e6c7f87c749",
@@ -447,7 +451,3 @@ COPY --from=dep-b-buildxargs-1.4.0-4245cb92e8e8c024 /tmp/clis-buildxargs_master/
 ## script = """
 ## FROM scratch AS out-4245cb92e8e8c024
 ## COPY --from=dep-b-buildxargs-1.4.0-4245cb92e8e8c024 /tmp/clis-buildxargs_master/release/deps/*-4245cb92e8e8c024* /"""
-
-# Pipe this file to:
-# DOCKER_BUILDKIT="1" \
-#   docker --debug build --network=none --platform=local --pull=false --target=out-4245cb92e8e8c024 --output=type=local,dest=/tmp/clis-buildxargs_master/release/deps -
