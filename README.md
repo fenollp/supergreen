@@ -54,6 +54,7 @@ Faster Rust builds!
 ## Upstream issues & patches
 * [ ] [`rust`: Compile a crate from its source archive directly](https://github.com/rust-lang/rust/issues/128884)
 * [ ] [`cargo`: Tell `rustc` wrappers which envs to pass through to allow env sandboxing](https://github.com/rust-lang/cargo/issues/14444)
+* [ ] [`buildkit`: `docker/dockerfile` image tags are late](https://github.com/moby/buildkit/issues/6118)
 * TODO
   1. buildkit flags to prefix stdout and stderr progress
   1. buildkit flag to disable dockerignore and save disk read

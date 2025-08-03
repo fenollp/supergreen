@@ -9,7 +9,7 @@ install_package=buildxargs@1.4.0
 install_root=$(mktemp -d)
 
 export CARGOGREEN_FINAL_PATH=./recipes/$install_package.Dockerfile
-export CARGOGREEN_SYNTAX=docker-image://docker.io/docker/dockerfile:1@sha256:4c68376a702446fc3c79af22de146a148bc3367e73c25a5803d453b6b3f722fb
+export CARGOGREEN_SYNTAX=docker-image://docker.io/docker/dockerfile:1.17@sha256:38387523653efa0039f8e1c89bb74a30504e76ee9f565e25c9a09841f9427b05
 export CARGOGREEN_BASE_IMAGE=docker-image://docker.io/library/rust:1.84.1-slim@sha256:69fbd6ab81b514580bc14f35323fecb09feba9e74c5944ece9a70d9a2a369df0
 export CARGOGREEN_LOG=trace
 export CARGOGREEN_LOG_PATH=/tmp/cargo-green--hack-caching--$install_package.log
@@ -79,7 +79,7 @@ cat <<EOF | diff -u - <(git --no-pager diff --ignore-matching-lines='^##' -- $CA
 +FROM --platform=\$BUILDPLATFORM docker.io/library/rust:1.84.0-slim@sha256:0ec205a9abb049604cb085f2fdf7630f1a31dad1f7ad4986154a56501fb7ca77 AS rust-base
  
  FROM scratch AS cratesio-pico-args-0.5.0
- ADD --chmod=0664 --checksum=sha256:5be167a7af36ee22fe3115051bc51f6e6c7054c9348e28deb4f49bd6f705a315 \\
+ ADD --chmod=0664 --unpack=true --checksum=sha256:5be167a7af36ee22fe3115051bc51f6e6c7054c9348e28deb4f49bd6f705a315 \\
 EOF
 git add $CARGOGREEN_FINAL_PATH
 ensure__rewrite_cratesio_index__works
