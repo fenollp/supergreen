@@ -55,8 +55,12 @@ Faster Rust builds!
 * [ ] [`rust`: Compile a crate from its source archive directly](https://github.com/rust-lang/rust/issues/128884)
 * [ ] [`cargo`: Tell `rustc` wrappers which envs to pass through to allow env sandboxing](https://github.com/rust-lang/cargo/issues/14444)
 * [ ] [`buildkit`: `docker/dockerfile` image tags are late](https://github.com/moby/buildkit/issues/6118)
+* gRPC buffers too small
+  * [x] [`buildkit`: Build function: ResourceExhausted: grpc: received message larger than max (_ vs. 4194304)](https://github.com/moby/buildkit/issues/5217)
+  * [x] [`buildx`: `ResourceExhausted: grpc: received message larger than max (_ vs. 4194304)`](https://github.com/docker/buildx/issues/2453)
+  * [ ] [`buildkit`: remote `docker buildx build` with large dockerfile gives `trying to send message larger than max (22482550 vs. 16777216)` error](https://github.com/moby/buildkit/issues/6097)
+* [x] [`buildkit`: Support extracting `ADD --checksum=.. https://.. ..`](https://github.com/moby/buildkit/issues/4907)
 * TODO
-  1. buildkit flags to prefix stdout and stderr progress
   1. buildkit flag to disable dockerignore and save disk read
     * --ignore-file (closed) https://github.com/moby/moby/issues/12886
     * --no-ignore-file
