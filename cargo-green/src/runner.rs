@@ -20,6 +20,7 @@ use tokio::{
     join,
     process::Command,
     spawn,
+    sync::oneshot,
     task::JoinHandle,
     time::error::Elapsed,
 };
@@ -397,6 +398,9 @@ async fn build(
     let pid = child.id().unwrap_or_default();
     info!("Started as pid={pid} in {:?}", start.elapsed());
 
+    let (tx_err, mut rx_err) = oneshot::channel();
+    let mut tx_err = Some(tx_err);
+
     let handles = if out_dir.is_some() {
         let mut lines = TokioBufReader::new(child.stdout.take().expect("started")).lines();
         let dbg_out = spawn(async move {
@@ -415,6 +419,11 @@ async fn build(
                     continue;
                 }
                 info!("✖ {line}");
+                if line.starts_with("ERROR: ") {
+                    if let Some(tx_err) = tx_err.take() {
+                        let _ = tx_err.send(line.trim_start_matches("ERROR: ").to_owned());
+                    }
+                }
             }
         });
 
@@ -457,13 +466,16 @@ async fn build(
         let err_path = stdio_path(&target, out_dir, "stderr");
         //TODO? write all output to mem first? and then to disk (except stdio files)
 
-        let out = match stdio_lines(&out_path).await {
-            Ok(out) => out,
-            Err(e) => return rtrn(e),
-        };
-        let err = match stdio_lines(&err_path).await {
-            Ok(err) => err,
-            Err(e) => return rtrn(e),
+        let both = async {
+            let out = stdio_lines(&out_path).await?;
+            let err = stdio_lines(&err_path).await?;
+            Ok((out, err))
+        }
+        .await;
+        let (out, err) = match (both, rx_err.try_recv()) {
+            (Ok((out, err)), _) => (out, err),
+            (Err(_), Ok(e)) => return rtrn(anyhow!("Runner: {e}")),
+            (Err(e), _) => return rtrn(e),
         };
 
         let out = fwd(out, "➤", fwd_stdout);
