@@ -10587,7 +10587,7 @@ COPY --from=dep-l-ntpd-1.2.3-7974610cfc5e520c /tmp/clis-ntpd_1-2-3/release/deps/
 ## COPY --from=dep-l-ntpd-1.2.3-7974610cfc5e520c /tmp/clis-ntpd_1-2-3/release/deps/*-7974610cfc5e520c* /"""
 
 
-FROM rust-base AS dep-b-ntpd-1.2.3-9f13a6685c086725
+FROM rust-base AS dep-b-ntpd-1.2.3-88b4a2cd7d00f909
 SHELL ["/bin/bash", "-eux", "-c"]
 WORKDIR /tmp/clis-ntpd_1-2-3/release/deps
 RUN \
@@ -10668,8 +10668,8 @@ RUN \
   --mount=from=out-6893ca5c870c6e37,dst=/tmp/clis-ntpd_1-2-3/release/deps/libthread_local-6893ca5c870c6e37.rlib,source=/libthread_local-6893ca5c870c6e37.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
-        CARGO_BIN_NAME="ntp-metrics-exporter" \
-        CARGO_CRATE_NAME="ntp_metrics_exporter" \
+        CARGO_BIN_NAME="ntp-daemon" \
+        CARGO_CRATE_NAME="ntp_daemon" \
         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ntpd-1.2.3" \
         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ntpd-1.2.3/Cargo.toml" \
         CARGO_PKG_AUTHORS= \
@@ -10691,13 +10691,17 @@ RUN \
         CARGOGREEN=1 \
         NTPD_RS_GIT_DATE="2025-05-09" \
         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
-      rustc '--crate-name' 'ntp_metrics_exporter' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'bin' '--emit' 'dep-info,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="default"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "hardware-timestamping", "unstable_ntpv5", "unstable_nts-pool"))' '-C' 'metadata=74593f1134395130' '-C' 'extra-filename=-9f13a6685c086725' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'async_trait=/tmp/clis-ntpd_1-2-3/release/deps/libasync_trait-2b00e18c8782890c.so' '--extern' 'clock_steering=/tmp/clis-ntpd_1-2-3/release/deps/libclock_steering-7adc6d6ce8be0538.rlib' '--extern' 'libc=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rlib' '--extern' 'ntp_proto=/tmp/clis-ntpd_1-2-3/release/deps/libntp_proto-5a810c5444456e7d.rlib' '--extern' 'ntpd=/tmp/clis-ntpd_1-2-3/release/deps/libntpd-7974610cfc5e520c.rlib' '--extern' 'rand=/tmp/clis-ntpd_1-2-3/release/deps/librand-5161209caf71d483.rlib' '--extern' 'rustls=/tmp/clis-ntpd_1-2-3/release/deps/librustls-fd2c262888e3ecb5.rlib' '--extern' 'rustls_native_certs=/tmp/clis-ntpd_1-2-3/release/deps/librustls_native_certs-9a69f5c8c648a58b.rlib' '--extern' 'rustls_pemfile=/tmp/clis-ntpd_1-2-3/release/deps/librustls_pemfile-e86acdc6389f12a9.rlib' '--extern' 'serde=/tmp/clis-ntpd_1-2-3/release/deps/libserde-986325a49dffbcd1.rlib' '--extern' 'serde_json=/tmp/clis-ntpd_1-2-3/release/deps/libserde_json-2a345737f765283a.rlib' '--extern' 'timestamped_socket=/tmp/clis-ntpd_1-2-3/release/deps/libtimestamped_socket-2f59881207cd7c68.rlib' '--extern' 'tokio=/tmp/clis-ntpd_1-2-3/release/deps/libtokio-e6ed429a0a7450c0.rlib' '--extern' 'toml=/tmp/clis-ntpd_1-2-3/release/deps/libtoml-7b6c235fb7422577.rlib' '--extern' 'tracing=/tmp/clis-ntpd_1-2-3/release/deps/libtracing-7d2675bffdb63c95.rlib' '--extern' 'tracing_subscriber=/tmp/clis-ntpd_1-2-3/release/deps/libtracing_subscriber-63f992d9454962cc.rlib' '--cap-lints' 'warn' '-L' 'native=/tmp/clis-ntpd_1-2-3/release/build/ring-a0b19822430eae69/out' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ntpd-1.2.3/bin/ntp-metrics-exporter.rs \
-        1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-9f13a6685c086725-stdout) \
-        2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-9f13a6685c086725-stderr >&2)
-FROM scratch AS out-9f13a6685c086725
-COPY --from=dep-b-ntpd-1.2.3-9f13a6685c086725 /tmp/clis-ntpd_1-2-3/release/deps/*-9f13a6685c086725* /
+      rustc '--crate-name' 'ntp_daemon' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'bin' '--emit' 'dep-info,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="default"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "hardware-timestamping", "unstable_ntpv5", "unstable_nts-pool"))' '-C' 'metadata=52cef03e832d528d' '-C' 'extra-filename=-88b4a2cd7d00f909' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'async_trait=/tmp/clis-ntpd_1-2-3/release/deps/libasync_trait-2b00e18c8782890c.so' '--extern' 'clock_steering=/tmp/clis-ntpd_1-2-3/release/deps/libclock_steering-7adc6d6ce8be0538.rlib' '--extern' 'libc=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rlib' '--extern' 'ntp_proto=/tmp/clis-ntpd_1-2-3/release/deps/libntp_proto-5a810c5444456e7d.rlib' '--extern' 'ntpd=/tmp/clis-ntpd_1-2-3/release/deps/libntpd-7974610cfc5e520c.rlib' '--extern' 'rand=/tmp/clis-ntpd_1-2-3/release/deps/librand-5161209caf71d483.rlib' '--extern' 'rustls=/tmp/clis-ntpd_1-2-3/release/deps/librustls-fd2c262888e3ecb5.rlib' '--extern' 'rustls_native_certs=/tmp/clis-ntpd_1-2-3/release/deps/librustls_native_certs-9a69f5c8c648a58b.rlib' '--extern' 'rustls_pemfile=/tmp/clis-ntpd_1-2-3/release/deps/librustls_pemfile-e86acdc6389f12a9.rlib' '--extern' 'serde=/tmp/clis-ntpd_1-2-3/release/deps/libserde-986325a49dffbcd1.rlib' '--extern' 'serde_json=/tmp/clis-ntpd_1-2-3/release/deps/libserde_json-2a345737f765283a.rlib' '--extern' 'timestamped_socket=/tmp/clis-ntpd_1-2-3/release/deps/libtimestamped_socket-2f59881207cd7c68.rlib' '--extern' 'tokio=/tmp/clis-ntpd_1-2-3/release/deps/libtokio-e6ed429a0a7450c0.rlib' '--extern' 'toml=/tmp/clis-ntpd_1-2-3/release/deps/libtoml-7b6c235fb7422577.rlib' '--extern' 'tracing=/tmp/clis-ntpd_1-2-3/release/deps/libtracing-7d2675bffdb63c95.rlib' '--extern' 'tracing_subscriber=/tmp/clis-ntpd_1-2-3/release/deps/libtracing_subscriber-63f992d9454962cc.rlib' '--cap-lints' 'warn' '-L' 'native=/tmp/clis-ntpd_1-2-3/release/build/ring-a0b19822430eae69/out' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ntpd-1.2.3/bin/ntp-daemon.rs \
+        1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-88b4a2cd7d00f909-stdout) \
+        2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-88b4a2cd7d00f909-stderr >&2)
+FROM scratch AS out-88b4a2cd7d00f909
+COPY --from=dep-b-ntpd-1.2.3-88b4a2cd7d00f909 /tmp/clis-ntpd_1-2-3/release/deps/*-88b4a2cd7d00f909* /
 
-## this = "9f13a6685c086725"
+# Pipe this file to (not portable due to usage of local build contexts):
+# DOCKER_BUILDKIT="1" \
+#   docker --debug build --network=none --platform=local --pull=false --target=out-88b4a2cd7d00f909 --output=type=local,dest=/tmp/clis-ntpd_1-2-3/release/deps --build-context=crate_out-e5fe159846b3109b=/tmp/clis-ntpd_1-2-3/release/build/proc-macro2-e5fe159846b3109b/out --build-context=crate_out-a7d381539c9ce48d=/tmp/clis-ntpd_1-2-3/release/build/typenum-a7d381539c9ce48d/out --build-context=crate_out-a0b19822430eae69=/tmp/clis-ntpd_1-2-3/release/build/ring-a0b19822430eae69/out -
+
+## this = "88b4a2cd7d00f909"
 ## deps = [
 ##     "2b00e18c8782890c",
 ##     "4be32d01ee2a9db1",
@@ -10851,12 +10855,12 @@ COPY --from=dep-b-ntpd-1.2.3-9f13a6685c086725 /tmp/clis-ntpd_1-2-3/release/deps/
 ##     "thread_local-6893ca5c870c6e37",
 ## ]
 ## writes = [
-##     "deps/ntp_metrics_exporter-9f13a6685c086725.d",
-##     "deps/ntp_metrics_exporter-9f13a6685c086725",
+##     "deps/ntp_daemon-88b4a2cd7d00f909.d",
+##     "deps/ntp_daemon-88b4a2cd7d00f909",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-2-3/release/deps/ntp_metrics_exporter-9f13a6685c086725.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-2-3/release/deps/ntp_metrics_exporter-9f13a6685c086725","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-2-3/release/deps/ntp_daemon-88b4a2cd7d00f909.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-2-3/release/deps/ntp_daemon-88b4a2cd7d00f909","emit":"link"}',
 ## ]
 ## 
 ## [[contexts]]
@@ -10890,9 +10894,9 @@ COPY --from=dep-b-ntpd-1.2.3-9f13a6685c086725 /tmp/clis-ntpd_1-2-3/release/deps/
 ##  && tar zxf /crate --strip-components=1 -C /extracted'''
 ## 
 ## [[stages]]
-## name = "dep-b-ntpd-1.2.3-9f13a6685c086725"
+## name = "dep-b-ntpd-1.2.3-88b4a2cd7d00f909"
 ## script = '''
-## FROM rust-base AS dep-b-ntpd-1.2.3-9f13a6685c086725
+## FROM rust-base AS dep-b-ntpd-1.2.3-88b4a2cd7d00f909
 ## SHELL ["/bin/bash", "-eux", "-c"]
 ## WORKDIR /tmp/clis-ntpd_1-2-3/release/deps
 ## RUN \
@@ -10973,8 +10977,8 @@ COPY --from=dep-b-ntpd-1.2.3-9f13a6685c086725 /tmp/clis-ntpd_1-2-3/release/deps/
 ##   --mount=from=out-6893ca5c870c6e37,dst=/tmp/clis-ntpd_1-2-3/release/deps/libthread_local-6893ca5c870c6e37.rlib,source=/libthread_local-6893ca5c870c6e37.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
-##         CARGO_BIN_NAME="ntp-metrics-exporter" \
-##         CARGO_CRATE_NAME="ntp_metrics_exporter" \
+##         CARGO_BIN_NAME="ntp-daemon" \
+##         CARGO_CRATE_NAME="ntp_daemon" \
 ##         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ntpd-1.2.3" \
 ##         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ntpd-1.2.3/Cargo.toml" \
 ##         CARGO_PKG_AUTHORS= \
@@ -10996,16 +11000,12 @@ COPY --from=dep-b-ntpd-1.2.3-9f13a6685c086725 /tmp/clis-ntpd_1-2-3/release/deps/
 ##         CARGOGREEN=1 \
 ##         NTPD_RS_GIT_DATE="2025-05-09" \
 ##         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
-##       rustc '--crate-name' 'ntp_metrics_exporter' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'bin' '--emit' 'dep-info,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="default"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "hardware-timestamping", "unstable_ntpv5", "unstable_nts-pool"))' '-C' 'metadata=74593f1134395130' '-C' 'extra-filename=-9f13a6685c086725' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'async_trait=/tmp/clis-ntpd_1-2-3/release/deps/libasync_trait-2b00e18c8782890c.so' '--extern' 'clock_steering=/tmp/clis-ntpd_1-2-3/release/deps/libclock_steering-7adc6d6ce8be0538.rlib' '--extern' 'libc=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rlib' '--extern' 'ntp_proto=/tmp/clis-ntpd_1-2-3/release/deps/libntp_proto-5a810c5444456e7d.rlib' '--extern' 'ntpd=/tmp/clis-ntpd_1-2-3/release/deps/libntpd-7974610cfc5e520c.rlib' '--extern' 'rand=/tmp/clis-ntpd_1-2-3/release/deps/librand-5161209caf71d483.rlib' '--extern' 'rustls=/tmp/clis-ntpd_1-2-3/release/deps/librustls-fd2c262888e3ecb5.rlib' '--extern' 'rustls_native_certs=/tmp/clis-ntpd_1-2-3/release/deps/librustls_native_certs-9a69f5c8c648a58b.rlib' '--extern' 'rustls_pemfile=/tmp/clis-ntpd_1-2-3/release/deps/librustls_pemfile-e86acdc6389f12a9.rlib' '--extern' 'serde=/tmp/clis-ntpd_1-2-3/release/deps/libserde-986325a49dffbcd1.rlib' '--extern' 'serde_json=/tmp/clis-ntpd_1-2-3/release/deps/libserde_json-2a345737f765283a.rlib' '--extern' 'timestamped_socket=/tmp/clis-ntpd_1-2-3/release/deps/libtimestamped_socket-2f59881207cd7c68.rlib' '--extern' 'tokio=/tmp/clis-ntpd_1-2-3/release/deps/libtokio-e6ed429a0a7450c0.rlib' '--extern' 'toml=/tmp/clis-ntpd_1-2-3/release/deps/libtoml-7b6c235fb7422577.rlib' '--extern' 'tracing=/tmp/clis-ntpd_1-2-3/release/deps/libtracing-7d2675bffdb63c95.rlib' '--extern' 'tracing_subscriber=/tmp/clis-ntpd_1-2-3/release/deps/libtracing_subscriber-63f992d9454962cc.rlib' '--cap-lints' 'warn' '-L' 'native=/tmp/clis-ntpd_1-2-3/release/build/ring-a0b19822430eae69/out' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ntpd-1.2.3/bin/ntp-metrics-exporter.rs \
-##         1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-9f13a6685c086725-stdout) \
-##         2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-9f13a6685c086725-stderr >&2)'''
+##       rustc '--crate-name' 'ntp_daemon' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'bin' '--emit' 'dep-info,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="default"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "hardware-timestamping", "unstable_ntpv5", "unstable_nts-pool"))' '-C' 'metadata=52cef03e832d528d' '-C' 'extra-filename=-88b4a2cd7d00f909' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'async_trait=/tmp/clis-ntpd_1-2-3/release/deps/libasync_trait-2b00e18c8782890c.so' '--extern' 'clock_steering=/tmp/clis-ntpd_1-2-3/release/deps/libclock_steering-7adc6d6ce8be0538.rlib' '--extern' 'libc=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rlib' '--extern' 'ntp_proto=/tmp/clis-ntpd_1-2-3/release/deps/libntp_proto-5a810c5444456e7d.rlib' '--extern' 'ntpd=/tmp/clis-ntpd_1-2-3/release/deps/libntpd-7974610cfc5e520c.rlib' '--extern' 'rand=/tmp/clis-ntpd_1-2-3/release/deps/librand-5161209caf71d483.rlib' '--extern' 'rustls=/tmp/clis-ntpd_1-2-3/release/deps/librustls-fd2c262888e3ecb5.rlib' '--extern' 'rustls_native_certs=/tmp/clis-ntpd_1-2-3/release/deps/librustls_native_certs-9a69f5c8c648a58b.rlib' '--extern' 'rustls_pemfile=/tmp/clis-ntpd_1-2-3/release/deps/librustls_pemfile-e86acdc6389f12a9.rlib' '--extern' 'serde=/tmp/clis-ntpd_1-2-3/release/deps/libserde-986325a49dffbcd1.rlib' '--extern' 'serde_json=/tmp/clis-ntpd_1-2-3/release/deps/libserde_json-2a345737f765283a.rlib' '--extern' 'timestamped_socket=/tmp/clis-ntpd_1-2-3/release/deps/libtimestamped_socket-2f59881207cd7c68.rlib' '--extern' 'tokio=/tmp/clis-ntpd_1-2-3/release/deps/libtokio-e6ed429a0a7450c0.rlib' '--extern' 'toml=/tmp/clis-ntpd_1-2-3/release/deps/libtoml-7b6c235fb7422577.rlib' '--extern' 'tracing=/tmp/clis-ntpd_1-2-3/release/deps/libtracing-7d2675bffdb63c95.rlib' '--extern' 'tracing_subscriber=/tmp/clis-ntpd_1-2-3/release/deps/libtracing_subscriber-63f992d9454962cc.rlib' '--cap-lints' 'warn' '-L' 'native=/tmp/clis-ntpd_1-2-3/release/build/ring-a0b19822430eae69/out' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ntpd-1.2.3/bin/ntp-daemon.rs \
+##         1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-88b4a2cd7d00f909-stdout) \
+##         2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-88b4a2cd7d00f909-stderr >&2)'''
 ## 
 ## [[stages]]
-## name = "out-9f13a6685c086725"
+## name = "out-88b4a2cd7d00f909"
 ## script = """
-## FROM scratch AS out-9f13a6685c086725
-## COPY --from=dep-b-ntpd-1.2.3-9f13a6685c086725 /tmp/clis-ntpd_1-2-3/release/deps/*-9f13a6685c086725* /"""
-
-# Pipe this file to (not portable due to usage of local build contexts):
-# DOCKER_BUILDKIT="1" \
-#   docker --debug build --network=none --platform=local --pull=false --target=out-9f13a6685c086725 --output=type=local,dest=/tmp/clis-ntpd_1-2-3/release/deps --build-context=crate_out-e5fe159846b3109b=/tmp/clis-ntpd_1-2-3/release/build/proc-macro2-e5fe159846b3109b/out --build-context=crate_out-a7d381539c9ce48d=/tmp/clis-ntpd_1-2-3/release/build/typenum-a7d381539c9ce48d/out --build-context=crate_out-a0b19822430eae69=/tmp/clis-ntpd_1-2-3/release/build/ring-a0b19822430eae69/out -
+## FROM scratch AS out-88b4a2cd7d00f909
+## COPY --from=dep-b-ntpd-1.2.3-88b4a2cd7d00f909 /tmp/clis-ntpd_1-2-3/release/deps/*-88b4a2cd7d00f909* /"""
