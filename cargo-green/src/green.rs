@@ -275,7 +275,7 @@ impl Green {
     // NOTE: using $CARGO_PRIMARY_PACKAGE still makes >1 hits in rustc calls history: lib + bin, at least.
     pub(crate) fn maybe_write_final_path(
         &self,
-        containerfile_path: &Utf8Path,
+        containerfile: &Utf8Path,
         contexts: &IndexSet<BuildContext>,
         call: &str,
         envs: &str,
@@ -284,7 +284,7 @@ impl Green {
             if self.final_path_nonprimary || env::var("CARGO_PRIMARY_PACKAGE").is_ok() {
                 info!("writing (RW) final path {path}");
 
-                let _ = fs::copy(containerfile_path, path)?;
+                let _ = fs::copy(containerfile, path)?;
 
                 let mut fbuf = String::new();
 
@@ -295,7 +295,7 @@ impl Green {
                     fbuf.push_str(" (not portable due to usage of local build contexts)");
                 }
                 fbuf.push_str(&format!(":\n# {envs} \\\n"));
-                fbuf.push_str(&format!("#   {call}\n"));
+                fbuf.push_str(&format!("#   {call} <{}\n", containerfile.file_name().unwrap()));
 
                 let mut file = OpenOptions::new().append(true).open(path)?;
                 write!(file, "{fbuf}")?;
