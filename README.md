@@ -40,6 +40,8 @@ Faster Rust builds!
 * [ ] integrate with shipping OCI images
 * [ ] share cache with the World cf. [`user-wide-cache`](https://rust-lang.github.io/rust-project-goals/2024h2/user-wide-cache.html)
   * [x] never rebuild a dep (for a given version of `rustc`, ...)
+    * [x] ensure finest cache granularity (crate-level)
+    * [x] free users from cache key built from `Cargo.lock` (changes on every release cut!)
   * [ ] share cache with other projects on local machine
     * [ ] fix `WORKDIR`s + rewrite paths with `remap-path-prefix` 
   * [ ] share cache with CI and team
@@ -49,6 +51,7 @@ Faster Rust builds!
 * [ ] suggest a global cache -faciliting configuration profile
 * [ ] integrate with `cross`
   * [ ] build for a non-local target
+  * [ ] run/test for a non-local target (with `cross`'s same caveats ie. QEMU)
 
 
 ## Upstream issues & patches
@@ -62,14 +65,14 @@ Faster Rust builds!
 * [x] [`buildkit`: Support extracting `ADD --checksum=.. https://.. ..`](https://github.com/moby/buildkit/issues/4907)
 * TODO
   1. buildkit flag to disable dockerignore and save disk read
-    * --ignore-file (closed) https://github.com/moby/moby/issues/12886
+    * --ignore-file (closed) [Add support for specifying .dockerignore file with -i/--ignore](https://github.com/moby/moby/issues/12886)
     * --no-ignore-file
   1. docker build support multiple input files
     * --file-part
     * >=1 stage per Dockerfile part file
       * order doesn't matter: order is fixed when consolidation happens (internally)
   1. cargo + docker
-    * https://github.com/rust-lang/cargo/issues/2644#issuecomment-2304774192
+    * [cargo build --dependencies-only](https://github.com/rust-lang/cargo/issues/2644#issuecomment-2304774192)
 
 
 ## Origins

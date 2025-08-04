@@ -123,13 +123,41 @@ which cargo-green
 ```
 
 
+## Alternatives
+In no particular order:
+* **ipetkov**'s `crane`: [A Nix library for building cargo projects. Never build twice thanks to incremental artifact caching.](https://github.com/ipetkov/crane)
+  * [crane.dev](https://crane.dev/)
+  * `=>` Very complete! Relies on `nix` tools and language.
+* **Mozilla**'s `sccache`: [sccache - Shared Compilation Cache](https://github.com/mozilla/sccache)
+  * [Cargo Book ~ Build cache ~ Shared cache](https://doc.rust-lang.org/cargo/reference/build-cache.html#shared-cache)
+  * `=>` Relies on everyone having the same paths and doesn't cache all crate types.
+* **LukeMathWalker**'s `cargo-chef`: [A cargo-subcommand to speed up Rust Docker builds using Docker layer caching.](https://github.com/LukeMathWalker/cargo-chef)
+  * [5x Faster Rust Docker Builds with cargo-chef](https://www.lpalmieri.com/posts/fast-rust-docker-builds/)
+  * `=>` Relies on everyone having the same paths + cache isn't crate-granular.
+* **Bazel**'s `rules_rust`: [Rules Rust](https://bazelbuild.github.io/rules_rust/)
+  * [Building a Rust workspace with Bazel](https://www.tweag.io/blog/2023-07-27-building-rust-workspace-with-bazel/)
+  * [Rust rules for Bazel](https://github.com/bazelbuild/rules_rust)
+  * `=>` Replaces `cargo` with `bazel`.
+* **sgeisler**'s `cargo-remote`: [cargo subcommand to compile rust projects remotely](https://github.com/sgeisler/cargo-remote)
+  * [Building on a remote server](https://www.reddit.com/r/rust/comments/im7bb1/building_on_a_remote_server/)
+  * `=>` Uses `rsync` and `ssh`; *seems unmaintained*.
+* **Swatinem**'s `rust-cache`: [A GitHub Action that implements smart caching for rust/cargo projects](https://github.com/Swatinem/rust-cache)
+  * `=>` A GitHub Action.
+* **cross-rs**'s `cargo-cross`: [“Zero setup” cross compilation and “cross testing” of Rust crates](https://github.com/cross-rs/cross)
+  * Look at all these (compilation + testing) [Supported targets](https://github.com/cross-rs/cross#supported-targets)!
+  * Remote building and caching with [Data Volumes](https://github.com/cross-rs/cross/blob/main/docs/remote.md#data-volumes)
+  * `=>` *seldomly* maintained but a lifesaver for cross compilation.
+See also this article on what `cargo-green` does (perfect layering):
+* [Better support of Docker layer caching in Cargo](https://hackmd.io/@kobzol/S17NS71bh)
+  * [Exploring the problem of faster Cargo Docker builds](https://www.reddit.com/r/rust/comments/126xeyx/exploring_the_problem_of_faster_cargo_docker/)
+  * [Another reddit discussion](https://www.reddit.com/r/rust/comments/126whnc/better_support_of_docker_layer_caching_in_cargo/)
+
+
 ### En vrac
 * Proposal: c8d: expose contentstore API #44369 https://github.com/moby/moby/issues/44369
 *  Incremental export transfer #1224 https://github.com/moby/buildkit/issues/1224
 * "sending tarball" takes a long time even when the image already exists #107 https://github.com/docker/buildx/issues/107
-*  mount=type=cache more in-depth explanation? #1673 https://github.com/moby/buildkit/issues/1673
 * Build drivers https://docs.docker.com/build/drivers/
-*  Race condition when using cache-mounts with multi-arch builds. #549 https://github.com/docker/buildx/issues/549
 * https://docs.docker.com/build/ci/github-actions/configure-builder/#max-parallelism
 * https://docs.docker.com/engine/reference/builder/#buildkit-built-in-build-args
 * https://github.com/moby/buildkit#export-cache
@@ -174,3 +202,4 @@ which cargo-green
 * [Is just me or Rust is too heavy for my computer to handle?](https://www.reddit.com/r/rust/comments/1f6bvw3/is_just_me_or_rust_is_too_heavy_for_my_computer/)
 * [Doesn't detect Docker Rootless #4](https://github.com/TheLarkInn/is-docker/issues/4)
 * [Using S3 as a container registry](https://ochagavia.nl/blog/using-s3-as-a-container-registry/)
+* [What's the best practice for caching compilation of Rust dependencies?](https://www.reddit.com/r/rust/comments/sunme5/whats_the_best_practice_for_caching_compilation/)
