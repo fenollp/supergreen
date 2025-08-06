@@ -3,10 +3,8 @@ use std::sync::LazyLock;
 use anyhow::{bail, Error, Result};
 use nutype::nutype;
 
-pub(crate) static SYNTAX: LazyLock<ImageUri> = LazyLock::new(|| {
-    // TODO: s/1.17/1/ whence https://github.com/moby/buildkit/issues/6118
-    ImageUri::try_new("docker-image://docker.io/docker/dockerfile:1.17").unwrap()
-});
+pub(crate) static SYNTAX: LazyLock<ImageUri> =
+    LazyLock::new(|| ImageUri::try_new("docker-image://docker.io/docker/dockerfile:1").unwrap());
 
 #[nutype(
     default = SYNTAX.as_str(),
