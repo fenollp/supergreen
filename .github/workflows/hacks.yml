@@ -1,0 +1,50 @@
+on: [push]
+name: Hacks
+jobs:
+
+
+  hit:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - run: ./hack/hit.sh
+
+
+  caching:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash -euo pipefail {0}
+    steps:
+    - run: docker info
+    - run: docker buildx version
+    - run: docker buildx build --help
+    - run: podman version || true
+    - run: cargo -Vv
+    - run: docker buildx prune --all --force
+    - uses: actions-rust-lang/setup-rust-toolchain@v1
+      with:
+        profile: minimal
+        toolchain: stable
+
+    - uses: actions/checkout@v4
+
+    - name: Cache `cargo fetch`
+      uses: actions/cache@v4
+      with:
+        path: |
+          ~/.cargo/registry/index/
+          ~/.cargo/registry/cache/
+          ~/.cargo/git/db/
+        key: ${{ github.job }}-${{ runner.os }}-cargo-deps-${{ hashFiles('**/Cargo.lock') }}
+        restore-keys: ${{ github.job }}-${{ runner.os }}-cargo-deps-
+
+    - name: Cache `cargo install`
+      uses: actions/cache@v4
+      with:
+        path: ~/instmp
+        key: ${{ runner.os }}-cargo-install-${{ hashFiles('**/Cargo.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-cargo-install-
+
+    - run: ./hack/caching.sh
