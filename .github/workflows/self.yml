@@ -75,7 +75,7 @@ jobs:
         rustflags: ''
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v5
       with:
         name: cargo-green
 
@@ -189,7 +189,7 @@ jobs:
         rustflags: ''
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v5
       with:
         name: cargo-green
 
@@ -306,7 +306,7 @@ jobs:
         rustflags: ''
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v5
       with:
         name: cargo-green
 
@@ -479,7 +479,7 @@ jobs:
         rustflags: ''
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v5
       with:
         name: cargo-green
 
@@ -769,7 +769,7 @@ jobs:
         rustflags: ''
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v5
       with:
         name: cargo-green
 
@@ -1059,7 +1059,7 @@ jobs:
         rustflags: ''
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v5
       with:
         name: cargo-green
 
@@ -1286,7 +1286,7 @@ jobs:
         rustflags: ''
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v5
       with:
         name: cargo-green
 
@@ -1450,7 +1450,7 @@ jobs:
         rustflags: ''
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v5
       with:
         name: cargo-green
 
