@@ -19,7 +19,7 @@ restore_bin() {
     [[ $# -eq 0 ]]
     cat <<EOF
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v5
       with:
         name: cargo-green
 
