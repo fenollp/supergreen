@@ -163,13 +163,14 @@ pub(crate) async fn maybe_lock_image(green: &Green, img: &ImageUri) -> ImageUri 
     img.to_owned()
 }
 
+/// If given an un-pinned image URI, query remote image API for its digest.
 pub(crate) async fn fetch_digest(img: &ImageUri) -> Result<ImageUri> {
     if img.locked() {
         return Ok(img.to_owned());
     }
     let (path, tag) = img.path_and_tag();
-    let (dir, slug) = match Utf8Path::new(path).iter().collect::<Vec<_>>()[..] {
-        ["docker.io", dir, slug] => (dir, slug),
+    let (ns, slug) = match Utf8Path::new(path).iter().collect::<Vec<_>>()[..] {
+        ["docker.io", ns, slug] => (ns, slug),
         _ => bail!("BUG: unhandled registry {img:?}"),
     };
 
@@ -177,7 +178,7 @@ pub(crate) async fn fetch_digest(img: &ImageUri) -> Result<ImageUri> {
         .connect_timeout(Duration::from_secs(4))
         .build()
         .map_err(|e| anyhow!("HTTP client's config/TLS failed: {e}"))?
-        .get(format!("https://registry.hub.docker.com/v2/repositories/{dir}/{slug}/tags/{tag}"))
+        .get(format!("https://registry.hub.docker.com/v2/repositories/{ns}/{slug}/tags/{tag}"))
         .send()
         .await
         .map_err(|e| anyhow!("Failed to reach Docker Hub's registry: {e}"))?
@@ -190,7 +191,10 @@ pub(crate) async fn fetch_digest(img: &ImageUri) -> Result<ImageUri> {
         digest: String,
     }
     let RegistryResponse { digest } = serde_json::from_str(&txt)
-        .map_err(|e| anyhow!("Failed to decode response from registry: {e}"))?;
+        // NOTE: library images can take a few days to appear, after a Rust release:
+        // Error: Failed to decode response from registry: missing field `digest` at line 1 column 130
+        // {"message":"httperror 404: tag '1.89.0-slim' not found","errinfo":{"namespace":"library","repository":"rust","tag":"1.89.0-slim"}}
+        .map_err(|e| anyhow!("Failed to decode response from registry: {e}\n{txt}"))?;
     // digest ~ sha256:..
 
     Ok(img.lock(&digest))
