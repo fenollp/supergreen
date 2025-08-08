@@ -88,8 +88,8 @@ impl FromStr for Runner {
             "none" => Ok(Self::None),
             _ => {
                 let all: Vec<_> = [Self::Docker, Self::Podman, Self::None]
-                    .into_iter()
-                    .map(|x| x.to_string())
+                    .iter()
+                    .map(ToString::to_string)
                     .collect();
                 bail!("Runner must be one of {all:?}")
             }
@@ -136,12 +136,15 @@ impl FromStr for Network {
     }
 }
 
-/// If given an un-pinned image URI, query local image cache for its digest.
-/// Returns the given URI, along with its digest if one was found.
-#[must_use]
-pub(crate) async fn maybe_lock_image(green: &Green, img: &ImageUri) -> ImageUri {
-    if !img.locked() {
-        if let Some(line) = green
+impl Green {
+    /// If given an un-pinned image URI, query local image cache for its digest.
+    /// Returns the given URI, along with its digest if one was found.
+    #[must_use]
+    pub(crate) async fn maybe_lock_image(&self, img: &ImageUri) -> ImageUri {
+        if img.locked() {
+            return img.to_owned();
+        }
+        let Some(line) = self
             .runner
             .as_cmd()
             .arg("inspect")
@@ -153,14 +156,14 @@ pub(crate) async fn maybe_lock_image(green: &Green, img: &ImageUri) -> ImageUri 
             .and_then(|o| o.status.success().then_some(o))
             .and_then(|o| String::from_utf8(o.stdout).ok())
             .and_then(|x| x.lines().next().map(ToOwned::to_owned))
-        {
-            // NOTE: `inspect` does not keep tag: host/dir/name@sha256:digest (no :tag@)
-            let digested =
-                ImageUri::try_new(format!("docker-image://{line}")).expect("inspect's output");
-            return img.lock(digested.digest());
-        }
+        else {
+            return img.to_owned();
+        };
+        // NOTE: `inspect` does not keep tag: host/dir/name@sha256:digest (no :tag@)
+        let digested =
+            ImageUri::try_new(format!("docker-image://{line}")).expect("inspect's output");
+        img.lock(digested.digest())
     }
-    img.to_owned()
 }
 
 /// If given an un-pinned image URI, query remote image API for its digest.
