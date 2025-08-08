@@ -182,7 +182,6 @@ See also this article on what `cargo-green` does (perfect layering):
 *  Unsafe fields #3458 https://github.com/rust-lang/rfcs/pull/3458
 *  Warning when large binary files are included into the bundle #9058 https://github.com/rust-lang/cargo/issues/9058
 *  Hermetic build mode #9506 https://github.com/rust-lang/cargo/issues/9506
-*  Consider making the src cache read-only. #9455 https://github.com/rust-lang/cargo/issues/9455
 *  Feature Request static asserts #2790 https://github.com/rust-lang/rfcs/issues/2790
 * greater supply chain attack risk due to large dependency trees? https://www.reddit.com/r/rust/comments/102yz60/greater_supply_chain_attack_risk_due_to_large/
   * https://github.com/rust-secure-code/cargo-supply-chain
