@@ -19,7 +19,7 @@ use crate::{
     lockfile::{find_lockfile, locked_crates},
     logging::{self, maybe_log},
     pwd,
-    runner::{build_cacheonly, fetch_digest, maybe_lock_image, Network, Runner},
+    runner::{build_cacheonly, fetch_digest, Network, Runner},
     stage::{Stage, RST, RUST},
     tmp, PKG, VSN,
 };
@@ -42,6 +42,16 @@ pub(crate) async fn main() -> Result<Green> {
         green.runner = val.parse().map_err(|e| anyhow!("${ENV_RUNNER} {e}"))?;
     }
 
+    // Then builder_image as it's needed by cmd calls
+    if green.builder_image.is_some() {
+        bail!("${ENV_BUILDER_IMAGE} can only be set through the environment variable")
+    }
+    if let Ok(builder_image) = env::var(ENV_BUILDER_IMAGE) {
+        let img = builder_image.try_into().map_err(|e| anyhow!("${ENV_BUILDER_IMAGE} {e}"))?;
+        // Don't use 'maybe_lock_image', only 'fetch_digest': cmd uses builder.
+        green.builder_image = Some(fetch_digest(&img).await?);
+    }
+
     if !green.syntax.is_empty() {
         bail!("${ENV_SYNTAX} can only be set through the environment variable")
     }
@@ -49,21 +59,12 @@ pub(crate) async fn main() -> Result<Green> {
         green.syntax = syntax.try_into().map_err(|e| anyhow!("${ENV_SYNTAX} {e}"))?;
     }
     // Use local hashed image if one matching exists locally
-    green.syntax = maybe_lock_image(&green, &green.syntax).await;
+    green.syntax = green.maybe_lock_image(&green.syntax).await;
     // otherwise default to a hash found through some Web API
     green.syntax = fetch_digest(&green.syntax).await?;
     if !green.syntax.stable_syntax_frontend() {
         // Enforce a known stable syntax + allow pinning to digest
         bail!("${ENV_SYNTAX} must be a digest of {}", SYNTAX.as_str())
-    }
-
-    if green.builder_image.is_some() {
-        bail!("${ENV_BUILDER_IMAGE} can only be set through the environment variable")
-    }
-    if let Ok(builder_image) = env::var(ENV_BUILDER_IMAGE) {
-        let img = builder_image.try_into().map_err(|e| anyhow!("${ENV_BUILDER_IMAGE} {e}"))?;
-        let builder_image = maybe_lock_image(&green, &img).await;
-        green.builder_image = Some(fetch_digest(&builder_image).await?);
     }
 
     if green.final_path.is_some() {
@@ -98,7 +99,7 @@ pub(crate) async fn main() -> Result<Green> {
     }
 
     if !green.image.base_image.locked() {
-        let mut base = maybe_lock_image(&green, &green.image.base_image).await;
+        let mut base = green.maybe_lock_image(&green.image.base_image).await;
         base = fetch_digest(&base).await?;
         green.image = green.image.lock_base_to(base);
     }
