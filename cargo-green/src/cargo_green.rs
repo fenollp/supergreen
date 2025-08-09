@@ -7,6 +7,7 @@ use std::{
 use anyhow::{anyhow, bail, Result};
 use futures::{stream::iter, StreamExt, TryStreamExt};
 use log::{debug, info};
+use serde::Deserialize;
 use tokio::try_join;
 
 use crate::{
@@ -30,6 +31,13 @@ pub(crate) const ENV_FINAL_PATH: &str = "CARGOGREEN_FINAL_PATH";
 pub(crate) const ENV_FINAL_PATH_NONPRIMARY: &str = "CARGOGREEN_FINAL_PATH_NONPRIMARY";
 pub(crate) const ENV_RUNNER: &str = "CARGOGREEN_RUNNER";
 pub(crate) const ENV_SYNTAX: &str = "CARGOGREEN_SYNTAX";
+
+// Envs from BuildKit/Buildx/Docker/Podman that we read
+const BUILDKIT_HOST: &str = "BUILDKIT_HOST";
+pub(crate) const BUILDX_BUILDER: &str = "BUILDX_BUILDER";
+pub(crate) const DOCKER_BUILDKIT: &str = "DOCKER_BUILDKIT";
+pub(crate) const DOCKER_CONTEXT: &str = "DOCKER_CONTEXT";
+pub(crate) const DOCKER_HOST: &str = "DOCKER_HOST";
 
 pub(crate) async fn main() -> Result<Green> {
     let mut green = Green::new_from_env_then_manifest()?;
@@ -122,6 +130,12 @@ pub(crate) async fn main() -> Result<Green> {
         }
     }
 
+    // TODO? docker dial-stdio proxy
+    // https://github.com/docker/cli/blob/9bb1a62735174e9220d84fecc056a0ef8a1fc26f/cli/command/system/dial_stdio.go
+
+    // https://docs.docker.com/engine/context/working-with-contexts/
+    // https://docs.docker.com/engine/security/protect-access/
+
     // FIXME "multiplex conns to daemon" https://github.com/docker/buildx/issues/2564#issuecomment-2207435201
     // > If you do have docker context created already on ssh endpoint then you don't need to set the ssh address again on buildx create, you can use the context name or let it use the active context.
 
@@ -134,89 +148,229 @@ pub(crate) async fn main() -> Result<Green> {
     // https://crates.io/crates/async-ssh2-tokio
     // https://crates.io/crates/russh
 
-    // https://docs.docker.com/build/building/variables/#buildx_builder
-    if let Ok(ctx) = env::var("DOCKER_HOST") {
-        info!("$DOCKER_HOST is set to {ctx:?}");
-        eprintln!("$DOCKER_HOST is set to {ctx:?}");
-    } else if let Ok(ctx) = env::var("BUILDX_BUILDER") {
-        info!("$BUILDX_BUILDER is set to {ctx:?}");
-        eprintln!("$BUILDX_BUILDER is set to {ctx:?}");
-    } else if let Ok(remote) = env::var("CARGOGREEN_REMOTE") {
-        //     // docker buildx create \
-        //     //   --name supergreen \
-        //     //   --driver remote \
-        //     //   tcp://localhost:1234
-        //     //{remote}
-        //     env::set_var("DOCKER_CONTEXT", "supergreen"); //FIXME: ensure this gets passed down & used
-        panic!("$CARGOGREEN_REMOTE is reserved but set to: {remote}");
-    } else if false {
-        setup_build_driver(&green, "supergreen").await?; // FIXME? maybe_..
-        env::set_var("BUILDX_BUILDER", "supergreen");
-
-        // TODO? docker dial-stdio proxy
-        // https://github.com/docker/cli/blob/9bb1a62735174e9220d84fecc056a0ef8a1fc26f/cli/command/system/dial_stdio.go
-
-        // https://docs.docker.com/engine/context/working-with-contexts/
-        // https://docs.docker.com/engine/security/protect-access/
+    // Cf. https://docs.docker.com/build/buildkit/#getting-started
+    if env::var(DOCKER_BUILDKIT).is_ok_and(|x| x != "1") {
+        bail!("This requires ${DOCKER_BUILDKIT}=1")
     }
+
+    // Cf. https://docs.docker.com/engine/security/protect-access/
+    if let Ok(val) = env::var(DOCKER_HOST) {
+        info!("${DOCKER_HOST} is set to {val:?}");
+        eprintln!("${DOCKER_HOST} is set to {val:?}");
+    }
+
+    // Cf. https://docs.docker.com/reference/cli/docker/#environment-variables
+    if let Ok(val) = env::var(DOCKER_CONTEXT) {
+        info!("${DOCKER_CONTEXT} is set to {val:?}");
+        eprintln!("${DOCKER_CONTEXT} is set to {val:?}");
+    }
+
+    // Cf. https://docs.docker.com/build/building/variables/#buildkit_host
+    let buildkit_host = env::var(BUILDKIT_HOST);
+    if let Ok(ref val) = buildkit_host {
+        info!("${BUILDKIT_HOST} is set to {val:?}");
+        eprintln!("${BUILDKIT_HOST} is set to {val:?}");
+    }
+
+    if green.builder_name.is_some() {
+        bail!("builder-name can only be set through the environment variable")
+    }
+    let builder = env::var(BUILDX_BUILDER).ok();
+    if let Some(ref name) = builder {
+        info!("${BUILDX_BUILDER} is set to {name:?}");
+        eprintln!("${BUILDX_BUILDER} is set to {name:?}");
+
+        if !name.is_empty() {
+            if let Ok(val) = buildkit_host {
+                bail!("Overriding ${BUILDKIT_HOST}={val:?} while setting ${BUILDX_BUILDER}={name:?} is unsupported")
+            }
+        }
+    }
+
+    //CARGOGREEN_REMOTES ~= CCSV: host=URL;URL
+    //=> colon CSV
+    //=> keys= host,ca,cert,key,skip-tls-verify + name,description,from (enforce!)
+    //=> when only URL given: craft name
+    //error if creating fails || creating existing name but different values
+    //error if given builder does not have exactly these remotes (ESC name,description,from)
+    //error if any of these is also set: DOCKER_HOST, DOCKER_CONTEXT, BUILDKIT_HOST
+    //docker context create --help
+    //
+    // docker context create amd64 --docker host=ssh://root@x.x.x.220
+    // docker context create arm64 --docker host=ssh://root@x.x.x.72
+    // docker buildx create --name multiarch-builder amd64 [--platform linux/amd64]
+    // docker buildx create --name multiarch-builder --append arm64 [--platform linux/arm64]
+    // docker buildx build --builder multiarch-builder -t dustinrue/buildx-example --platform linux/amd64,linux/arm64,linux/arm/v6 .
+    // https://dustinrue.com/2021/12/using-a-remote-docker-engine-with-buildx/
+
+    green.maybe_setup_builder(builder).await?;
 
     Ok(green)
 }
 
-// https://docs.docker.com/build/drivers/docker-container/
-// https://docs.docker.com/build/drivers/remote/
-// https://docs.docker.com/build/drivers/kubernetes/
-async fn setup_build_driver(green: &Green, name: &str) -> Result<()> {
-    if false {
-        // TODO: reuse old state but try auto-upgrading builder impl
-        try_removing_previous_builder(green, name).await;
-    }
+impl Green {
+    async fn maybe_setup_builder(&mut self, env: Option<String>) -> Result<()> {
+        // const BUILDER: &str = "supergreen";
 
-    let Some(ref builder_image) = green.builder_image else { return Ok(()) };
-    let builder_image = builder_image.noscheme();
+        let managed = match env.as_deref() {
+            None => true,
+            Some("") => return Ok(()),
+            Some(name @ "supergreen") => false,
+            Some(name) => {
+                //FIXME: list options of builder=> is max mode available?
+                self.builder_name = Some(name.to_owned());
+                return Ok(());
+            }
+        };
 
-    let mut cmd = green.runner.as_cmd();
-    cmd.args(["buildx", "create"])
-        .arg(format!("--name={name}"))
-        .arg("--bootstrap")
-        .arg("--driver=docker-container")
-        .arg(format!("--driver-opt=image={builder_image}"))
-        .stdout(Stdio::null())
-        .stderr(Stdio::null());
+        let builder = self.list_builders().await?.into_iter().find(|b| b.name == "supergreen");
+        if let Some(existing) = builder {
+            //if builder exists and builder_image is set, but doesnt match existing, and env.is_some() (= not managed) => error "builderimage doesnt match builder's image" (note: digest matching)
+            //else (if builder is unset = env.is_none()): re-create builder.
 
-    let call = cmd.show();
-    let envs: Vec<_> = cmd.as_std().get_envs().map(|(k, v)| format!("{k:?}={v:?}")).collect();
-    let envs = envs.join(" ");
+            //if ~~default builder image, and~~ builder exists, and buildkit tags shows newer version, and env.is_none(): re-create builder
+            //else (builder name is set): print warning + upgrade command (CLI)
 
-    info!("Calling {call} (env: {envs:?})`");
-    eprintln!("Calling {call} (env: {envs:?})`");
+            // when re-creating, first try --keep-state, but if that fails
+            //   try cleaning that state + create fresh
 
-    let Output { status, stderr, .. } = cmd.output().await?;
-    if !status.success() {
-        let stderr = String::from_utf8_lossy(&stderr);
-        if !stderr.starts_with(r#"ERROR: existing instance for "supergreen""#) {
-            bail!("BUG: failed to create builder: {stderr}")
+            if env.is_some() {
+            } else {
+            }
+            let badimg = env.is_some() && existing.nodes.iter().any(|n| n.driver_opt_image);
+            // let old= existing.
+        } else if env.is_some() {
+            bail!("${BUILDX_BUILDER}=supergreen does not exist")
         }
+
+        self.builder_name = Some("supergreen".to_owned());
+
+        //match existing on:
+        //  .Name == "supergreen" (= {name})
+        //decide to delete to upgrade if any of:
+        //  no .Nodes.DriverOpts.image match? pinned image_builder
+        //  naaaaah, use:
+        //  ..........Version (semver) => how to fetch version from image_builder?
+        if false {
+            // TODO: reuse old state but try auto-upgrading builder impl
+            try_removing_previous_builder(green, name).await;
+        }
+
+        let mut cmd = green.cmd();
+        cmd.args(["buildx", "create"])
+            // .stdout(Stdio::null())
+            // .stderr(Stdio::null())
+            .arg(format!("--name={name}"))
+            .arg("--bootstrap")
+            .arg("--driver=docker-container");
+        if let Some(ref builder_image) = green.builder_image {
+            //def=  docker.io/moby/buildkit:buildx-stable-1
+            //fixme? fetch_digest (even of default) in green.rs init step?
+            let builder_image = builder_image.noscheme();
+            cmd.arg(format!("--driver-opt=image={builder_image}"));
+        }
+
+        let call = cmd.show_unquoted();
+        let envs: Vec<_> = cmd
+            .as_std()
+            .get_envs()
+            .map(|(k, v)| format!("{}={:?}", k.to_string_lossy(), v.unwrap_or_default()))
+            .collect();
+        let envs = envs.join(" ");
+
+        info!("Calling `{envs} {call}`");
+        eprintln!("Calling `{envs} {call}`");
+
+        let Output { status, stderr, .. } =
+            cmd.output().await.map_err(|e| anyhow!("Failed to spawn `{envs} {call}`: {e}"))?;
+        if !status.success() {
+            let stderr = String::from_utf8_lossy(&stderr);
+            if !stderr.starts_with("ERROR: existing instance for \"") {
+                bail!("BUG: failed to create builder: {stderr}")
+            }
+        }
+
+        Ok(())
     }
 
-    Ok(())
+    async fn list_builders(&self) -> Result<Vec<BuildxBuilder>> {
+        let mut cmd = self.cmd();
+        cmd.args(["buildx", "ls", "--format=json"]);
+
+        let call = cmd.show_unquoted();
+        let envs: Vec<_> = cmd
+            .as_std()
+            .get_envs()
+            .map(|(k, v)| format!("{}={:?}", k.to_string_lossy(), v.unwrap_or_default()))
+            .collect();
+        let envs = envs.join(" ");
+
+        info!("Calling `{envs} {call}`");
+        // eprintln!("Calling `{envs} {call}`");
+
+        let Output { status, stderr, stdout } =
+            cmd.output().await.map_err(|e| anyhow!("Failed to spawn `{envs} {call}`: {e}"))?;
+        let stdout = String::from_utf8_lossy(&stdout);
+        if !status.success() {
+            let stderr = String::from_utf8_lossy(&stderr);
+            // Stacking STDIOs as I have no clue how this can fail
+            bail!("Failed listing builders: {stderr}{stdout}")
+        }
+
+        let builders = serde_json::from_str(&stdout)
+            .map_err(|e| anyhow!("Failed to decode builders list: {e}\n{stdout}"))?;
+
+        Ok(builders)
+    }
+
+    async fn try_removing_previous_builder(green: &Green, name: &str) {
+        let mut cmd = green.cmd();
+        cmd.args(["buildx", "rm", name, "--keep-state", "--force"])
+            .stdout(Stdio::null())
+            .stderr(Stdio::null());
+
+        let call = cmd.show_unquoted();
+        let envs: Vec<_> = cmd
+            .as_std()
+            .get_envs()
+            .map(|(k, v)| format!("{}={:?}", k.to_string_lossy(), v.unwrap_or_default()))
+            .collect();
+        let envs = envs.join(" ");
+
+        info!("Calling `{envs} {call}`");
+        eprintln!("Calling `{envs} {call}`");
+
+        let _ = cmd.status().await;
+    }
 }
 
-async fn try_removing_previous_builder(green: &Green, name: &str) {
-    let mut cmd = green.runner.as_cmd();
-    cmd.args(["buildx", "rm", name, "--keep-state", "--force"])
-        .stdout(Stdio::null())
-        .stderr(Stdio::null());
-
-    let call = cmd.show();
-    let envs: Vec<_> = cmd.as_std().get_envs().map(|(k, v)| format!("{k:?}={v:?}")).collect();
-    let envs = envs.join(" ");
-
-    info!("Calling {call} (env: {envs:?})`");
-    eprintln!("Calling {call} (env: {envs:?})`");
-
-    let _ = cmd.status().await;
+#[derive(Deserialize)]
+struct BuildxBuilder {
+    name: String,
+    driver: String, // Not an enum: future-proof (docker, docker-container, ..)
+    nodes: Vec<BuilderNode>,
 }
+
+#[derive(Deserialize)]
+struct BuilderNode {
+    driver_opt_image: Option<String>, // An ImageUri without ^docker-image://
+    version: Option<String>,
+}
+
+// git ls-remote https://github.com/moby/buildkit.git |ag /tags/ |ag -v dockerfile |awk '{print $2}' |sort -Vu
+// new        >? current: is current too old, and need upgrading?
+// v0.1.1     >? v0.1.0 => no: patch isn't enough (let's save cache)
+// v1.1.1     >? v1.1.0 => yes: major bump
+// v0.2.0-rc1 >? v0.1.1 => no: RC
+// v0.2.0     >? v0.1.1 => yes: minor bump
+//=> actually, always try upgrading to non-RC latest > current
+//==> but be silent and continue if no Internet (call to list versions failed)
+
+/*
+130 65s supergreen.git ca-ching λ docker run --rm -it  docker.io/moby/buildkit:buildx-stable-1@sha256:832fa7aa1eb3deb56fa62ae933bfa42dad9a83ff4824dbbaf173b49c722b59d0 --version
+buildkitd github.com/moby/buildkit v0.22.0 13cf07c97baebd3d5603feecc03f5a46ac98d2a5
+     supergreen.git ca-ching λ
+*/
 
 pub(crate) async fn maybe_prebuild_base(green: &Green) -> Result<()> {
     let mut containerfile = green.new_containerfile();
@@ -332,7 +486,7 @@ async fn pull_images(green: &Green, to_pull: Vec<ImageUri>) -> Result<()> {
 
 async fn do_pull(green: &Green, img: ImageUri) -> Result<()> {
     println!("Pulling {img}...");
-    let mut cmd = green.runner.as_cmd();
+    let mut cmd = green.cmd();
     cmd.arg("pull").arg(img.noscheme());
     let o = cmd
         .spawn()

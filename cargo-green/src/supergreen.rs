@@ -1,8 +1,13 @@
 use core::str;
-use std::{env, io::Cursor, process::Stdio};
+use std::{
+    env,
+    io::Cursor,
+    process::{Output, Stdio},
+};
 
 use anyhow::{anyhow, bail, Result};
 use futures::stream::{iter, StreamExt, TryStreamExt};
+use log::info;
 use serde_jsonlines::AsyncBufReadJsonLines;
 use tokio::io::BufReader;
 
@@ -10,13 +15,15 @@ use crate::{
     add::{ENV_ADD_APK, ENV_ADD_APT, ENV_ADD_APT_GET},
     base_image::{ENV_BASE_IMAGE, ENV_BASE_IMAGE_INLINE, ENV_WITH_NETWORK},
     cargo_green::{
-        ENV_BUILDER_IMAGE, ENV_FINAL_PATH, ENV_FINAL_PATH_NONPRIMARY, ENV_RUNNER, ENV_SYNTAX,
+        DOCKER_HOST, ENV_BUILDER_IMAGE, ENV_FINAL_PATH, ENV_FINAL_PATH_NONPRIMARY, ENV_RUNNER,
+        ENV_SYNTAX,
     },
     ext::ShowCmd,
     green::{Green, ENV_CACHE_IMAGES, ENV_INCREMENTAL, ENV_SET_ENVS},
     image_uri::ImageUri,
     logging::{ENV_LOG, ENV_LOG_PATH, ENV_LOG_STYLE},
     rustc_wrapper::ENV,
+    PKG, REPO, VSN,
 };
 
 // TODO: tune logging verbosity https://docs.rs/clap-verbosity-flag/latest/clap_verbosity_flag/
@@ -62,22 +69,19 @@ pub(crate) async fn main(green: Green, arg1: Option<&str>, args: Vec<String>) ->
 
 pub(crate) fn help() {
     println!(
-        "{name} v{version}
+        "{PKG} v{VSN}
 
         {description}
 
-    {repository}
+    {REPO}
 
 Usage:
   cargo green supergreen env             Show used values
-  cargo green fetch                      Pulls images (respects $DOCKER_HOST)
+  cargo green fetch                      Pulls images (respects ${DOCKER_HOST})
   cargo green supergreen push            Push cache image (all tags)
   cargo green supergreen -h | --help
   cargo green supergreen -V | --version
 ",
-        name = env!("CARGO_PKG_NAME"),
-        version = env!("CARGO_PKG_VERSION"),
-        repository = env!("CARGO_PKG_REPOSITORY"),
         description = env!("CARGO_PKG_DESCRIPTION"),
     );
 }
@@ -91,7 +95,7 @@ async fn push(green: Green) -> Result<()> {
 
         async fn do_push(green: &Green, tag: String, img: &str) -> Result<()> {
             println!("Pushing {img}:{tag}...");
-            let mut cmd = green.runner.as_cmd();
+            let mut cmd = green.cmd();
             cmd.arg("push").arg(format!("{img}:{tag}")).stdout(Stdio::null()).stderr(Stdio::null());
 
             if let Ok(mut o) = cmd.spawn() {
@@ -119,16 +123,30 @@ async fn push(green: Green) -> Result<()> {
 async fn all_tags_of(green: &Green, img: &str) -> Result<Vec<String>> {
     // NOTE: https://github.com/moby/moby/issues/47809
     //   Meanwhile: just drop docker.io/ prefix
-    let mut cmd = green.runner.as_cmd();
+    let mut cmd = green.cmd();
     cmd.arg("image")
         .arg("ls")
         .arg("--format=json")
         .arg(format!("--filter=reference={}:*", img.trim_start_matches("docker.io/")));
-    let o = cmd.output().await.map_err(|e| anyhow!("Failed calling {}: {e}", cmd.show()))?;
-    if !o.status.success() {
+
+    let call = cmd.show_unquoted();
+    let envs: Vec<_> = cmd
+        .as_std()
+        .get_envs()
+        .map(|(k, v)| format!("{}={:?}", k.to_string_lossy(), v.unwrap_or_default()))
+        .collect();
+    let envs = envs.join(" ");
+
+    info!("Calling `{envs} {call}`");
+
+    let Output { status, stdout, .. } =
+        cmd.output().await.map_err(|e| anyhow!("Failed to spawn `{envs} {call}`: {e}"))?;
+    if !status.success() {
         bail!("Failed to list tags of image {img}")
     }
-    Ok(BufReader::new(Cursor::new(str::from_utf8(&o.stdout).unwrap()))
+    let stdout = String::from_utf8_lossy(&stdout);
+
+    Ok(BufReader::new(Cursor::new(stdout.to_string()))
         .json_lines()
         .filter_map(|x| async move { x.ok() })
         .filter_map(|x: serde_json::Value| async move {
