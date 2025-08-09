@@ -47,6 +47,7 @@ FROM scratch AS {stage}
     Ok((stage, format!("/{name}-{version}"), cratesio_extracted, block))
 }
 
+// [Consider making the src cache read-only](https://github.com/rust-lang/cargo/issues/9455)
 #[must_use]
 pub(crate) fn add_step(name: &str, version: &str, hash: &str) -> String {
     format!(
