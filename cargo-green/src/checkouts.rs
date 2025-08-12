@@ -1,8 +1,9 @@
 use core::str;
 use std::process::Output;
 
-use anyhow::{bail, Context, Result};
+use anyhow::{anyhow, bail, Result};
 use camino::{Utf8Path, Utf8PathBuf};
+use log::info;
 use tokio::process::Command;
 
 use crate::{ext::ShowCmd, stage::Stage};
@@ -21,10 +22,24 @@ pub(crate) async fn into_stage(
         let mut cmd = Command::new("git");
         cmd.kill_on_drop(true);
         cmd.args(["rev-parse", "HEAD"]);
-        let Output { stdout, stderr, .. } = cmd.output().await?;
-        let commit = str::from_utf8(&stdout).context("parsing git stdout")?.trim();
+
+        let call = cmd.show_unquoted();
+        let envs: Vec<_> = cmd
+            .as_std()
+            .get_envs()
+            .map(|(k, v)| format!("{}={:?}", k.to_string_lossy(), v.unwrap_or_default()))
+            .collect();
+        let envs = envs.join(" ");
+
+        info!("Calling `{envs} {call}`");
+
+        let Output { stdout, stderr, .. } =
+            cmd.output().await.map_err(|e| anyhow!("Failed to spawn `{envs} {call}`: {e}"))?;
+        let stdout = String::from_utf8_lossy(&stdout);
+
+        let commit = stdout.trim();
         if commit.is_empty() {
-            bail!("{} failed: {stderr:?}", cmd.show())
+            bail!("`{envs} {call}` failed: {stderr:?}")
         }
         assert!(commit.starts_with(short));
         commit.to_owned()

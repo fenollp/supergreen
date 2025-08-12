@@ -1,8 +1,9 @@
 use std::process::Output;
 
-use anyhow::{bail, Result};
+use anyhow::{anyhow, bail, Result};
 use camino::{Utf8Path, Utf8PathBuf};
 use cargo_lock::{Lockfile, Package, SourceId};
+use log::info;
 use pico_args::Arguments;
 use serde::Deserialize;
 use tokio::process::Command;
@@ -84,9 +85,14 @@ async fn cargo_locate_project(at_workspace: bool) -> Result<Utf8PathBuf> {
         cmd.arg("--workspace");
     }
 
-    let Output { stderr, stdout, status } = cmd.output().await?;
+    let call = cmd.show();
+    info!("Calling {call}");
+
+    let Output { stderr, stdout, status } =
+        cmd.output().await.map_err(|e| anyhow!("Failed to spawn {call}: {e}"))?;
     if !status.success() || !stderr.is_empty() {
-        bail!("{} failed: {:?}", cmd.show(), String::from_utf8_lossy(&stderr))
+        let stderr = String::from_utf8_lossy(&stderr);
+        bail!("{} failed: {stderr:?}", cmd.show())
     }
 
     #[derive(Debug, Deserialize)]
