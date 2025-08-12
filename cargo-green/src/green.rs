@@ -76,8 +76,7 @@ pub(crate) struct Green {
     // See https://docs.docker.com/build/builders/
     //
     // # Use by setting this environment variable (no Cargo.toml setting):
-    // CARGOGREEN_BUILDER_IMAGE="docker-image://docker.io/moby/buildkit:buildx-stable-1"
-    // CARGOGREEN_BUILDER_IMAGE="docker-image://docker.io/moby/buildkit:buildx-stable-1-rootless"
+    // CARGOGREEN_BUILDER_IMAGE="docker-image://docker.io/moby/buildkit:latest"
     #[serde(skip_serializing_if = "Option::is_none")]
     pub(crate) builder_image: Option<ImageUri>,
 

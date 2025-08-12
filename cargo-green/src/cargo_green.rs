@@ -2,6 +2,7 @@ use std::{
     env,
     fs::{self},
     process::Output,
+    sync::LazyLock,
 };
 
 use anyhow::{anyhow, bail, Result};
@@ -17,7 +18,7 @@ use crate::{
     ext::ShowCmd,
     green::Green,
     hash,
-    image_uri::{ImageUri, SYNTAX},
+    image_uri::{ImageUri, BUILDKIT, SYNTAX},
     lockfile::{find_lockfile, locked_crates},
     logging::{self, maybe_log},
     pwd,
@@ -242,17 +243,18 @@ impl Green {
 
             //if ~~default builder image, and~~ builder exists, and buildkit tags shows newer version, and env.is_none(): re-create builder
             //else (builder name is set): print warning + upgrade command (CLI)
-            if !existing.uses_version_newer_or_equal_to(LATEST_BUILDKIT) {
+            if !existing.uses_version_newer_or_equal_to(&LATEST_BUILDKIT) {
                 if managed {
                     recreate = true;
                 } else {
                     eprintln!(
                         "
-Existing ${BUILDX_BUILDER}={NAME:?} runs a BuildKit version older than v{LATEST_BUILDKIT}
+Existing ${BUILDX_BUILDER}={NAME:?} runs a BuildKit version older than v{latest}
 Maybe try to remove and re-create your builder with:
-  docker buildx rm {NAME} --keep-state
+    docker buildx rm {NAME} --keep-state
 then run your cargo command again.
-"
+",
+                        latest = LATEST_BUILDKIT.as_str(),
                     );
                 }
             }
@@ -273,7 +275,6 @@ then run your cargo command again.
         }
 
         self.builder_name = Some(NAME.to_owned());
-
         Ok(())
     }
 
@@ -286,10 +287,7 @@ then run your cargo command again.
         let img = if let Some(ref builder_image) = self.builder_image {
             builder_image.clone()
         } else {
-            //fixme: move to dedicated module + #[test] try_into
-            //+note TODO: move to rootless
-            const DEFAULT: &str = "docker-image://docker.io/moby/buildkit:buildx-stable-1";
-            fetch_digest(&DEFAULT.try_into().expect("oh it's valid")).await?
+            fetch_digest(&BUILDKIT).await?
         };
         cmd.arg(format!("--driver-opt=image={}", img.noscheme()));
 
@@ -457,25 +455,25 @@ impl BuildxBuilder {
         })
     }
 
-    fn uses_version_newer_or_equal_to(&self, latest: &str) -> bool {
-        let latest = Version::from(latest).expect("we #[test] this");
+    fn uses_version_newer_or_equal_to(&self, latest: &Version) -> bool {
         self.nodes.iter().any(|BuilderNode { version, .. }| {
             version.as_deref().is_some_and(|v| {
                 let v = v.trim_start_matches('v');
-                Version::from(v).is_some_and(|v| v >= latest)
+                Version::from(v).is_some_and(|ref v| v >= latest)
             })
         })
     }
 }
 
+/// Not a Release Candidate
+/// https://github.com/moby/buildkit/tags
+static LATEST_BUILDKIT: LazyLock<Version> =
+    LazyLock::new(|| Version::from(include_str!("latest_buildkit.txt").trim()).unwrap());
+
 #[test]
 fn uses_version_newer_or_equal_to() {
-    let latest = Version::from(LATEST_BUILDKIT).unwrap();
-    assert!(Version::from("0.24").is_some_and(|v| v >= latest));
+    assert!(Version::from("2").is_some_and(|ref v| v >= &LATEST_BUILDKIT));
 }
-
-// https://github.com/moby/buildkit/tags
-const LATEST_BUILDKIT: &str = "0.23.2"; // Not a Release Candidate
 
 pub(crate) async fn maybe_prebuild_base(green: &Green) -> Result<()> {
     let mut containerfile = green.new_containerfile();

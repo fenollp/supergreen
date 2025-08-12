@@ -10,6 +10,17 @@ jobs:
     - run: ./hack/hit.sh
 
 
+  latest_buildkit:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash -euo pipefail {0}
+    steps:
+    - uses: actions/checkout@v5
+    - run: ./hack/latest_buildkit.sh | tee cargo-green/src/latest_buildkit.txt
+    - run: git --no-pager diff --exit-code
+
+
   caching:
     runs-on: ubuntu-latest
     defaults:
