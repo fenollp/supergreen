@@ -211,10 +211,12 @@ pub(crate) async fn main() -> Result<Green> {
 
 impl Green {
     async fn maybe_setup_builder(&mut self, env: Option<String>) -> Result<()> {
+        const NAME: &str = "supergreen";
+
         let managed = match env.as_deref() {
             None => true,
             Some("") => return Ok(()),
-            Some("supergreen") => false,
+            Some(NAME) => false,
             Some(name) => {
                 self.builder_maxready =
                     self.find_builder(name).await?.is_some_and(|b| b.driver != "docker"); // Hopes for BUILDER_DRIVER
@@ -223,7 +225,7 @@ impl Green {
             }
         };
 
-        let builder = self.find_builder("supergreen").await?;
+        let builder = self.find_builder(NAME).await?;
         if let Some(existing) = builder {
             let mut recreate = false;
 
@@ -232,7 +234,7 @@ impl Green {
             if let Some(ref img) = self.builder_image {
                 if !existing.uses_image(img) {
                     if !managed {
-                        bail!("Existing ${BUILDX_BUILDER}=supergreen does not match ${ENV_BUILDER_IMAGE}={img:?}")
+                        bail!("Existing ${BUILDX_BUILDER}={NAME:?} does not match ${ENV_BUILDER_IMAGE}={img:?}")
                     }
                     recreate = true;
                 }
@@ -246,9 +248,9 @@ impl Green {
                 } else {
                     eprintln!(
                         "
-Existing ${BUILDX_BUILDER}=supergreen runs a BuildKit version older than v{LATEST_BUILDKIT}
+Existing ${BUILDX_BUILDER}={NAME:?} runs a BuildKit version older than v{LATEST_BUILDKIT}
 Maybe try to remove and re-create your builder with:
-  docker buildx rm supergreen --keep-state
+  docker buildx rm {NAME} --keep-state
 then run your cargo command again.
 "
                     );
@@ -257,20 +259,20 @@ then run your cargo command again.
 
             if recreate {
                 // First try keeping state...
-                if self.try_removing_builder("supergreen", true).await.is_err() {
+                if self.try_removing_builder(NAME, true).await.is_err() {
                     // ...then stop messing about...
-                    self.try_removing_builder("supergreen", false).await?;
+                    self.try_removing_builder(NAME, false).await?;
                 }
                 // ...and create afresh.
-                self.create_builder("supergreen").await?;
+                self.create_builder(NAME).await?;
             }
         } else if !managed {
             bail!("${BUILDX_BUILDER}=supergreen does not exist")
         } else {
-            self.create_builder("supergreen").await?;
+            self.create_builder(NAME).await?;
         }
 
-        self.builder_name = Some("supergreen".to_owned());
+        self.builder_name = Some(NAME.to_owned());
 
         Ok(())
     }
