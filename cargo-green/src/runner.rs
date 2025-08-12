@@ -309,8 +309,14 @@ async fn build(
     if !green.cache_images.is_empty() {
         for img in &green.cache_images {
             let img = img.noscheme();
-            let mode = if false { ",mode=max" } else { "" }; // TODO: env? builder call?
-            cmd.arg(format!("--cache-from=type=registry,ref={img}{mode}"));
+            cmd.arg(format!(
+                "--cache-from=type=registry,ref={img}{mode}",
+                mode = if green.builder_maxready { ",mode=max" } else { "" }
+            ));
+
+            if green.builder_maxready {
+                continue;
+            }
 
             // TODO: include enough info for repro
             // => rustc shortcommit, ..?
@@ -324,8 +330,10 @@ async fn build(
                 cmd.arg(format!("--tag={img}:latest"));
             }
         }
-        cmd.arg("--build-arg=BUILDKIT_INLINE_CACHE=1"); // https://docs.docker.com/build/cache/backends/inline
-        cmd.arg("--load"); //FIXME: this should not be needed
+        if !green.builder_maxready {
+            cmd.arg("--build-arg=BUILDKIT_INLINE_CACHE=1"); // https://docs.docker.com/build/cache/backends/inline
+            cmd.arg("--load"); //FIXME: this should not be needed
+        }
     }
 
     if false {
