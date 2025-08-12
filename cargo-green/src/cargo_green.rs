@@ -244,11 +244,14 @@ impl Green {
                 if managed {
                     recreate = true;
                 } else {
-                    let mut w = format!("Existing ${BUILDX_BUILDER}=supergreen runs a BuildKit version older than v{LATEST_BUILDKIT}\n");
-                    w.push_str("Maybe try to remove and re-create your builder with:\n");
-                    w.push_str("  docker buildx rm supergreen --keep-state\n");
-                    w.push_str("then run your cargo command again.");
-                    eprintln!("{w}");
+                    eprintln!(
+                        "
+Existing ${BUILDX_BUILDER}=supergreen runs a BuildKit version older than v{LATEST_BUILDKIT}
+Maybe try to remove and re-create your builder with:
+  docker buildx rm supergreen --keep-state
+then run your cargo command again.
+"
+                    );
                 }
             }
 
@@ -261,43 +264,15 @@ impl Green {
                 // ...and create afresh.
                 self.create_builder("supergreen").await?;
             }
-        } else if env.is_some() {
+        } else if !managed {
             bail!("${BUILDX_BUILDER}=supergreen does not exist")
+        } else {
+            self.create_builder("supergreen").await?;
         }
 
         self.builder_name = Some("supergreen".to_owned());
 
         Ok(())
-    }
-
-    async fn find_builder(&self, name: &str) -> Result<Option<BuildxBuilder>> {
-        let mut cmd = self.cmd();
-        cmd.args(["buildx", "ls", "--format=json"]);
-
-        let call = cmd.show_unquoted();
-        let envs: Vec<_> = cmd
-            .as_std()
-            .get_envs()
-            .map(|(k, v)| format!("{}={:?}", k.to_string_lossy(), v.unwrap_or_default()))
-            .collect();
-        let envs = envs.join(" ");
-
-        info!("Calling `{envs} {call}`");
-        // eprintln!("Calling `{envs} {call}`");
-
-        let Output { status, stderr, stdout } =
-            cmd.output().await.map_err(|e| anyhow!("Failed to spawn `{envs} {call}`: {e}"))?;
-        let stdout = String::from_utf8_lossy(&stdout);
-        if !status.success() {
-            let stderr = String::from_utf8_lossy(&stderr);
-            // Stacking STDIOs as I have no clue how this can fail
-            bail!("Failed listing builders: {stderr}{stdout}")
-        }
-
-        let builders: Vec<BuildxBuilder> = serde_json::from_str(&stdout)
-            .map_err(|e| anyhow!("Failed to decode builders list: {e}\n{stdout}"))?;
-
-        Ok(builders.into_iter().find(|b| b.name == name))
     }
 
     async fn create_builder(&self, name: &str) -> Result<()> {
@@ -364,14 +339,103 @@ impl Green {
         }
         Ok(())
     }
+
+    async fn find_builder(&self, name: &str) -> Result<Option<BuildxBuilder>> {
+        let mut cmd = self.cmd();
+        cmd.args(["buildx", "ls", "--format=json"]);
+
+        let call = cmd.show_unquoted();
+        let envs: Vec<_> = cmd
+            .as_std()
+            .get_envs()
+            .map(|(k, v)| format!("{}={:?}", k.to_string_lossy(), v.unwrap_or_default()))
+            .collect();
+        let envs = envs.join(" ");
+
+        info!("Calling `{envs} {call}`");
+        eprintln!("Calling `{envs} {call}`");
+
+        let Output { status, stderr, stdout } =
+            cmd.output().await.map_err(|e| anyhow!("Failed to spawn `{envs} {call}`: {e}"))?;
+        let stdout = String::from_utf8_lossy(&stdout);
+        if !status.success() {
+            let stderr = String::from_utf8_lossy(&stderr);
+            // Stacking STDIOs as I have no clue how this can fail
+            bail!("Failed listing builders: {stderr}{stdout}")
+        }
+
+        find_builder(name, &stdout)
+    }
+}
+
+fn find_builder(name: &str, json: &str) -> Result<Option<BuildxBuilder>> {
+    let builders = json
+        .lines()
+        .map(|line| {
+            let builder: BuildxBuilder = serde_json::from_str(line)?;
+            Ok(builder)
+        })
+        .collect::<Result<Vec<_>>>()
+        .map_err(|e| anyhow!("Failed to decode builders list: {e}\n{json}"))?;
+
+    Ok(builders.into_iter().find(|b| b.name == name))
+}
+
+#[test]
+fn find_builders() {
+    let json_bla = r#"
+{"Current":false,"Driver":"docker-container","Dynamic":false,"LastActivity":"2025-08-09T11:39:54Z","Name":"bla","Nodes":[{"DriverOpts":{"image":"docker.io/moby/buildkit:buildx-stable-1"},"Endpoint":"unix:///var/run/docker.sock","Flags":["--allow-insecure-entitlement=network.host"],"GCPolicy":[{"all":false,"filter":["type==source.local,type==exec.cachemount,type==source.git.checkout"],"keepDuration":172800000000000,"maxUsedSpace":512000000,"minFreeSpace":0,"reservedSpace":0},{"all":false,"filter":null,"keepDuration":5184000000000000,"maxUsedSpace":100000000000,"minFreeSpace":94000000000,"reservedSpace":10000000000},{"all":false,"filter":null,"keepDuration":0,"maxUsedSpace":100000000000,"minFreeSpace":94000000000,"reservedSpace":10000000000},{"all":true,"filter":null,"keepDuration":0,"maxUsedSpace":100000000000,"minFreeSpace":94000000000,"reservedSpace":10000000000}],"IDs":["zh05kd8qdrkor9k2h15br199l"],"Labels":{"org.mobyproject.buildkit.worker.executor":"oci","org.mobyproject.buildkit.worker.hostname":"3cc514a6ea5c","org.mobyproject.buildkit.worker.network":"host","org.mobyproject.buildkit.worker.oci.process-mode":"sandbox","org.mobyproject.buildkit.worker.selinux.enabled":"false","org.mobyproject.buildkit.worker.snapshotter":"overlayfs"},"Name":"bla0","Platforms":["linux/amd64","linux/amd64/v2","linux/amd64/v3","linux/amd64/v4","linux/386"],"Status":"running","Version":"v0.22.0"}]}
+    "#;
+    assert_eq!(find_builder("beepboop", json_bla.trim()).unwrap(), None);
+    assert_eq!(
+        find_builder("bla", json_bla.trim()).unwrap().unwrap(),
+        BuildxBuilder {
+            name: "bla".to_owned(),
+            driver: BUILDER_DRIVER.to_owned(),
+            nodes: vec![BuilderNode {
+                version: Some("v0.22.0".to_owned()),
+                driver_opts: Some(DriverOpts {
+                    image: Some("docker.io/moby/buildkit:buildx-stable-1".to_owned()),
+                }),
+            }],
+        }
+    );
+
+    let json_default = r#"
+{"Current":true,"Driver":"docker","Dynamic":false,"LastActivity":"2025-08-11T13:30:33Z","Name":"default","Nodes":[{"Endpoint":"default","GCPolicy":[{"all":false,"filter":["type==source.local,type==exec.cachemount,type==source.git.checkout"],"keepDuration":172800000000000,"maxUsedSpace":6494262707,"minFreeSpace":0,"reservedSpace":0},{"all":false,"filter":null,"keepDuration":5184000000000000,"maxUsedSpace":6000000000,"minFreeSpace":24000000000,"reservedSpace":47000000000},{"all":false,"filter":null,"keepDuration":0,"maxUsedSpace":6000000000,"minFreeSpace":24000000000,"reservedSpace":47000000000},{"all":true,"filter":null,"keepDuration":0,"maxUsedSpace":6000000000,"minFreeSpace":24000000000,"reservedSpace":47000000000}],"IDs":["4ff1ee7f-a3ff-4df0-ad6e-9d0162ddbda5"],"Labels":{"org.mobyproject.buildkit.worker.moby.host-gateway-ip":"172.17.0.1"},"Name":"default","Platforms":["linux/amd64","linux/amd64/v2","linux/amd64/v3","linux/amd64/v4","linux/386"],"Status":"running","Version":"v0.23.2"}]}
+    "#;
+    assert_eq!(
+        find_builder("default", json_default.trim()).unwrap().unwrap(),
+        BuildxBuilder {
+            name: "default".to_owned(),
+            driver: "docker".to_owned(),
+            nodes: vec![BuilderNode { version: Some("v0.23.2".to_owned()), driver_opts: None }],
+        }
+    );
 }
 
 // https://docs.docker.com/build/builders/drivers/docker-container/#qemu
 // https://docs.docker.com/build/cache/backends/
 const BUILDER_DRIVER: &str = "docker-container";
 
+#[derive(Deserialize)]
+#[cfg_attr(test, derive(Debug, PartialEq))]
+#[serde(rename_all = "PascalCase")]
+struct BuilderNode {
+    driver_opts: Option<DriverOpts>,
+    version: Option<String>,
+}
+
+#[derive(Deserialize)]
+#[cfg_attr(test, derive(Debug, PartialEq))]
+struct DriverOpts {
+    image: Option<String>, // An ImageUri without ^docker-image://
+}
+
 // https://docs.docker.com/build/builders/drivers/
 #[derive(Deserialize)]
+#[cfg_attr(test, derive(Debug, PartialEq))]
+#[serde(rename_all = "PascalCase")]
 struct BuildxBuilder {
     name: String,
     driver: String, // Not an enum: future-proof (docker, docker-container, ..)
@@ -380,12 +444,14 @@ struct BuildxBuilder {
 
 impl BuildxBuilder {
     fn uses_image(&self, img: &ImageUri) -> bool {
-        self.nodes.iter().any(|BuilderNode { driver_opt_image, .. }| {
-            if driver_opt_image.as_ref().is_some_and(|i| i.contains('@')) {
-                driver_opt_image.as_deref() == Some(img.noscheme())
-            } else {
-                driver_opt_image.as_deref() == Some(img.unlocked().noscheme())
-            }
+        self.nodes.iter().any(|BuilderNode { driver_opts, .. }| {
+            driver_opts.iter().any(|DriverOpts { image }| {
+                if image.as_ref().is_some_and(|i| i.contains('@')) {
+                    image.as_deref() == Some(img.noscheme())
+                } else {
+                    image.as_deref() == Some(img.unlocked().noscheme())
+                }
+            })
         })
     }
 
@@ -406,29 +472,8 @@ fn uses_version_newer_or_equal_to() {
     assert!(Version::from("0.24").is_some_and(|v| v >= latest));
 }
 
-#[derive(Deserialize)]
-struct BuilderNode {
-    driver_opt_image: Option<String>, // An ImageUri without ^docker-image://
-    version: Option<String>,
-}
-
 // https://github.com/moby/buildkit/tags
-const LATEST_BUILDKIT: &str = "0.23.2";
-
-// git ls-remote https://github.com/moby/buildkit.git |ag /tags/ |ag -v dockerfile |awk '{print $2}' |sort -Vu
-// new        >? current: is current too old, and need upgrading?
-// v0.1.1     >? v0.1.0 => no: patch isn't enough (let's save cache)
-// v1.1.1     >? v1.1.0 => yes: major bump
-// v0.2.0-rc1 >? v0.1.1 => no: RC
-// v0.2.0     >? v0.1.1 => yes: minor bump
-//=> actually, always try upgrading to non-RC latest > current
-//==> but be silent and continue if no Internet (call to list versions failed)
-
-/*
-130 65s supergreen.git ca-ching λ docker run --rm -it  docker.io/moby/buildkit:buildx-stable-1@sha256:832fa7aa1eb3deb56fa62ae933bfa42dad9a83ff4824dbbaf173b49c722b59d0 --version
-buildkitd github.com/moby/buildkit v0.22.0 13cf07c97baebd3d5603feecc03f5a46ac98d2a5
-     supergreen.git ca-ching λ
-*/
+const LATEST_BUILDKIT: &str = "0.23.2"; // Not a Release Candidate
 
 pub(crate) async fn maybe_prebuild_base(green: &Green) -> Result<()> {
     let mut containerfile = green.new_containerfile();
