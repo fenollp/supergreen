@@ -6,6 +6,10 @@ use nutype::nutype;
 pub(crate) static SYNTAX: LazyLock<ImageUri> =
     LazyLock::new(|| ImageUri::try_new("docker-image://docker.io/docker/dockerfile:1").unwrap());
 
+/// TODO: move to :rootless
+pub(crate) static BUILDKIT: LazyLock<ImageUri> =
+    LazyLock::new(|| ImageUri::try_new("docker-image://docker.io/moby/buildkit:latest").unwrap());
+
 #[nutype(
     default = SYNTAX.as_str(),
     validate(error = Error, with = docker_image_uri),
