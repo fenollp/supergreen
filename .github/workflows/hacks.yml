@@ -6,7 +6,7 @@ jobs:
   hit:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
     - run: ./hack/hit.sh
 
 
@@ -27,7 +27,7 @@ jobs:
         profile: minimal
         toolchain: stable
 
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
 
     - name: Cache `cargo fetch`
       uses: actions/cache@v4
