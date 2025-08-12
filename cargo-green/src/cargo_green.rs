@@ -414,8 +414,8 @@ fn find_builders() {
     );
 }
 
-// https://docs.docker.com/build/builders/drivers/docker-container/#qemu
-// https://docs.docker.com/build/cache/backends/
+/// https://docs.docker.com/build/builders/drivers/docker-container/#qemu
+/// https://docs.docker.com/build/cache/backends/
 const BUILDER_DRIVER: &str = "docker-container";
 
 #[derive(Deserialize)]
@@ -429,16 +429,18 @@ struct BuilderNode {
 #[derive(Deserialize)]
 #[cfg_attr(test, derive(Debug, PartialEq))]
 struct DriverOpts {
-    image: Option<String>, // An ImageUri without ^docker-image://
+    /// An ImageUri without ^docker-image://
+    image: Option<String>,
 }
 
-// https://docs.docker.com/build/builders/drivers/
+/// https://docs.docker.com/build/builders/drivers/
 #[derive(Deserialize)]
 #[cfg_attr(test, derive(Debug, PartialEq))]
 #[serde(rename_all = "PascalCase")]
 struct BuildxBuilder {
     name: String,
-    driver: String, // Not an enum: future-proof (docker, docker-container, ..)
+    /// Not an enum: future-proof (docker, docker-container, ..)
+    driver: String,
     nodes: Vec<BuilderNode>,
 }
 
