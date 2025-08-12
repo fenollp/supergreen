@@ -259,7 +259,7 @@ impl Green {
                     self.try_removing_builder("supergreen", false).await?;
                 }
                 // ...and create afresh.
-                self.create_builder("supergreen", img).await?;
+                self.create_builder("supergreen").await?;
             }
         } else if env.is_some() {
             bail!("${BUILDX_BUILDER}=supergreen does not exist")
@@ -300,17 +300,21 @@ impl Green {
         Ok(builders.into_iter().find(|b| b.name == name))
     }
 
-    async fn create_builder(&self, name: &str, img: &ImageUri) -> Result<()> {
+    async fn create_builder(&self, name: &str) -> Result<()> {
         let mut cmd = self.cmd();
         cmd.args(["buildx", "create", "--bootstrap"])
             .args(["--name", name])
             .arg(format!("--driver={BUILDER_DRIVER}"));
-        if let Some(ref builder_image) = self.builder_image {
-            //def=  docker.io/moby/buildkit:buildx-stable-1
-            //fixme? fetch_digest (even of default) in green.rs init step?
-            let builder_image = builder_image.noscheme();
-            cmd.arg(format!("--driver-opt=image={builder_image}"));
-        }
+
+        let img = if let Some(ref builder_image) = self.builder_image {
+            builder_image.clone()
+        } else {
+            //fixme: move to dedicated module + #[test] try_into
+            //+note TODO: move to rootless
+            const DEFAULT: &str = "docker-image://docker.io/moby/buildkit:buildx-stable-1";
+            fetch_digest(&DEFAULT.try_into().expect("oh it's valid")).await?
+        };
+        cmd.arg(format!("--driver-opt=image={}", img.noscheme()));
 
         let call = cmd.show_unquoted();
         let envs: Vec<_> = cmd
