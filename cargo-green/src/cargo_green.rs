@@ -368,6 +368,7 @@ then run your cargo command again.
     }
 }
 
+#[inline]
 fn find_builder(name: &str, json: &str) -> Result<Option<BuildxBuilder>> {
     let builders = json
         .lines()

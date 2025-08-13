@@ -178,6 +178,8 @@ impl FromStr for Network {
 impl Green {
     /// If given an un-pinned image URI, query local image cache for its digest.
     /// Returns the given URI, along with its digest if one was found.
+    ///
+    /// https://docs.docker.com/dhi/core-concepts/digests/
     #[must_use]
     pub(crate) async fn maybe_lock_image(&self, img: &ImageUri) -> ImageUri {
         if img.locked() {
@@ -195,13 +197,146 @@ impl Green {
             .and_then(|o| String::from_utf8(o.stdout).ok())
             .and_then(|x| x.lines().next().map(ToOwned::to_owned))
         else {
-            return img.to_owned();
+            return self.lock_from_builder_cache(img).await;
         };
         // NOTE: `inspect` does not keep tag: host/dir/name@sha256:digest (no :tag@)
         let digested =
             ImageUri::try_new(format!("docker-image://{line}")).expect("inspect's output");
         img.lock(digested.digest())
     }
+
+    /// Read digest from builder cache, then maybe from default cache.
+    /// Goal is to have a completely offline mode by default, after a `cargo green fetch`.
+    #[must_use]
+    async fn lock_from_builder_cache(&self, img: &ImageUri) -> ImageUri {
+        let mut cmd = self.cmd();
+        // TODO: use --filter=...
+        cmd.args(["buildx", "du", "--verbose"]).arg(img.noscheme());
+
+        let call = cmd.show_unquoted();
+        let envs: Vec<_> = cmd
+            .as_std()
+            .get_envs()
+            .map(|(k, v)| format!("{}={:?}", k.to_string_lossy(), v.unwrap_or_default()))
+            .collect();
+        let envs = envs.join(" ");
+
+        info!("Calling `{envs} {call}`");
+        eprintln!("Calling `{envs} {call}`");
+
+        let Ok(Output { status, stdout, .. }) = cmd.output().await else { return img.to_owned() };
+        if !status.success() {
+            return img.to_owned();
+        }
+
+        let Some(digest) = Self::lock_from_builder_cache_workaround(stdout, img.as_str()) else {
+            return img.to_owned();
+        };
+        img.lock(&digest)
+    }
+
+    #[inline]
+    fn lock_from_builder_cache_workaround(stdout: Vec<u8>, img: &str) -> Option<String> {
+        String::from_utf8_lossy(&stdout)
+            .lines()
+            .find(|line| line.contains(img))
+            .into_iter()
+            .filter_map(|line| line.split("pulled from ").nth(1))
+            .map(ToOwned::to_owned)
+            .next()
+    }
+
+    #[expect(unused)]
+    /// NOTE: [Getting an image's digest fast, within a docker-container builder](https://github.com/docker/buildx/discussions/3363)
+    ///
+    /// https://docs.docker.com/reference/cli/docker/buildx/imagetools/inspect/
+    #[must_use]
+    async fn lock_from_imagetools_inspect(&self, img: &ImageUri) -> ImageUri {
+        let mut cmd = self.cmd();
+        cmd.args(["buildx", "imagetools", "inspect", "--format={{json .Manifest.Digest}}"])
+            .arg(img.noscheme());
+
+        let call = cmd.show_unquoted();
+        let envs: Vec<_> = cmd
+            .as_std()
+            .get_envs()
+            .map(|(k, v)| format!("{}={:?}", k.to_string_lossy(), v.unwrap_or_default()))
+            .collect();
+        let envs = envs.join(" ");
+
+        info!("Calling `{envs} {call}`");
+        eprintln!("Calling `{envs} {call}`");
+
+        let Ok(Output { status, stdout, .. }) = cmd.output().await else { return img.to_owned() };
+        if !status.success() {
+            return img.to_owned();
+        }
+
+        let stdout = String::from_utf8_lossy(&stdout);
+        let Ok(digest) = serde_json::from_str::<&str>(&stdout) else { return img.to_owned() };
+        img.lock(digest)
+    }
+}
+
+#[test]
+fn lock_from_builder_cache() {
+    let stdout = r#"
+Usage count:    1
+Last used:  6 days ago
+Type:       regular
+
+ID:     dyoo0ez6aq47esc1lu7gij20a
+Created at: 2025-08-12 13:04:40.696682772 +0000 UTC
+Mutable:    false
+Reclaimable:    true
+Shared:     false
+Size:       113.5MB
+Description:    pulled from docker.io/library/rust:1.89.0-slim@sha256:33219ca58c0dd38571fd3f87172b5bce2d9f3eb6f27e6e75efe12381836f71fa
+Usage count:    1
+Last used:  23 hours ago
+Type:       regular
+
+ID:     oh4oqsqhza04qmigihf500umv
+Parent:     kzzqilxarp9d70nbuyfv84gw4
+Created at: 2025-08-06 15:31:47.876484706 +0000 UTC
+Mutable:    false
+Reclaimable:    true
+Shared:     false
+--
+Last used:  6 days ago
+Type:       regular
+
+ID:     ohxhekyoshxip5l5hnd3th9jb
+Parent:     dyoo0ez6aq47esc1lu7gij20a
+Created at: 2025-08-12 13:04:40.701102099 +0000 UTC
+Mutable:    false
+Reclaimable:    true
+Shared:     false
+Size:       1.09GB
+Description:    pulled from docker.io/library/rust:1.89.0-slim@sha256:33219ca58c0dd38571fd3f87172b5bce2d9f3eb6f27e6e75efe12381836f71fa
+Usage count:    11
+Last used:  23 hours ago
+Type:       regular
+
+Reclaimable:    3.69GB
+Total:      3.69GB
+"#;
+    let res = "docker.io/library/rust:1.89.0-slim@sha256:33219ca58c0dd38571fd3f87172b5bce2d9f3eb6f27e6e75efe12381836f71fa";
+    assert_eq!(
+        Green::lock_from_builder_cache_workaround(stdout.as_bytes().to_vec(), "rust:1.89.0-slim"),
+        Some(res.to_owned())
+    );
+    assert_eq!(
+        Green::lock_from_builder_cache_workaround(
+            stdout.as_bytes().to_vec(),
+            "docker.io/library/rust:1.89.0-slim"
+        ),
+        Some(res.to_owned())
+    );
+    assert_eq!(
+        Green::lock_from_builder_cache_workaround(stdout.as_bytes().to_vec(), "blaaaa"),
+        None
+    );
 }
 
 /// If given an un-pinned image URI, query remote image API for its digest.
