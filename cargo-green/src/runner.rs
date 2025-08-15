@@ -176,42 +176,32 @@ impl FromStr for Network {
 }
 
 impl Green {
-    /// If given an un-pinned image URI, query local image cache for its digest.
-    /// Returns the given URI, along with its digest if one was found.
-    ///
-    /// https://docs.docker.com/dhi/core-concepts/digests/
-    #[must_use]
-    pub(crate) async fn maybe_lock_image(&self, img: &ImageUri) -> ImageUri {
-        if img.locked() {
-            return img.to_owned();
-        }
-        let Some(line) = self
-            .cmd()
-            .arg("inspect")
-            .arg("--format={{index .RepoDigests 0}}")
-            .arg(img.noscheme())
-            .output()
-            .await
-            .ok()
-            .and_then(|o| o.status.success().then_some(o))
-            .and_then(|o| String::from_utf8(o.stdout).ok())
-            .and_then(|x| x.lines().next().map(ToOwned::to_owned))
-        else {
-            return self.lock_from_builder_cache(img).await;
-        };
-        // NOTE: `inspect` does not keep tag: host/dir/name@sha256:digest (no :tag@)
-        let digested =
-            ImageUri::try_new(format!("docker-image://{line}")).expect("inspect's output");
-        img.lock(digested.digest())
-    }
-
     /// Read digest from builder cache, then maybe from default cache.
     /// Goal is to have a completely offline mode by default, after a `cargo green fetch`.
     #[must_use]
-    async fn lock_from_builder_cache(&self, img: &ImageUri) -> ImageUri {
+    pub(crate) async fn maybe_lock_image(&self, img: &ImageUri) -> ImageUri {
+        if !img.locked() {
+            if let Some(locked) = self.maybe_lock_from_builder_cache(img).await {
+                return locked;
+            }
+            if let Some(locked) = self.maybe_lock_from_image_cache(img).await {
+                return locked;
+            }
+        }
+        img.to_owned()
+    }
+
+    /// Reads from builder build cache if any, and falls back to image cache.
+    ///
+    /// https://docs.docker.com/reference/cli/docker/buildx/imagetools/inspect/
+    /// => docker buildx imagetools inspect --format={{json .Manifest.Digest}} img.noscheme()
+    ///   Only fetches remote though, and takes ages compared to fetch_digest!
+    /// See [Getting an image's digest fast, within a docker-container builder](https://github.com/docker/buildx/discussions/3363)
+    #[must_use]
+    async fn maybe_lock_from_builder_cache(&self, img: &ImageUri) -> Option<ImageUri> {
         let mut cmd = self.cmd();
         // TODO: use --filter=...
-        cmd.args(["buildx", "du", "--verbose"]).arg(img.noscheme());
+        cmd.args(["buildx", "du", "--verbose", "--filter=type=regular"]);
 
         let call = cmd.show_unquoted();
         let envs: Vec<_> = cmd
@@ -224,18 +214,16 @@ impl Green {
         info!("Calling `{envs} {call}`");
         eprintln!("Calling `{envs} {call}`");
 
-        let Ok(Output { status, stdout, .. }) = cmd.output().await else { return img.to_owned() };
-        if !status.success() {
-            return img.to_owned();
-        }
-
-        let Some(digest) = Self::lock_from_builder_cache_workaround(stdout, img.as_str()) else {
-            return img.to_owned();
-        };
-        img.lock(&digest)
+        cmd.output().await.ok().and_then(|o| o.status.success().then_some(o.stdout)).and_then(
+            |stdout| {
+                Self::lock_from_builder_cache_workaround(stdout, img.as_str())
+                    .map(|digest| img.lock(&digest))
+            },
+        )
     }
 
     #[inline]
+    #[must_use]
     fn lock_from_builder_cache_workaround(stdout: Vec<u8>, img: &str) -> Option<String> {
         String::from_utf8_lossy(&stdout)
             .lines()
@@ -246,15 +234,14 @@ impl Green {
             .next()
     }
 
-    #[expect(unused)]
-    /// NOTE: [Getting an image's digest fast, within a docker-container builder](https://github.com/docker/buildx/discussions/3363)
+    /// If given an un-pinned image URI, query local image cache for its digest.
+    /// Returns the given URI, along with its digest if one was found.
     ///
-    /// https://docs.docker.com/reference/cli/docker/buildx/imagetools/inspect/
+    /// https://docs.docker.com/dhi/core-concepts/digests/
     #[must_use]
-    async fn lock_from_imagetools_inspect(&self, img: &ImageUri) -> ImageUri {
+    async fn maybe_lock_from_image_cache(&self, img: &ImageUri) -> Option<ImageUri> {
         let mut cmd = self.cmd();
-        cmd.args(["buildx", "imagetools", "inspect", "--format={{json .Manifest.Digest}}"])
-            .arg(img.noscheme());
+        cmd.arg("inspect").arg("--format={{index .RepoDigests 0}}").arg(img.noscheme());
 
         let call = cmd.show_unquoted();
         let envs: Vec<_> = cmd
@@ -267,14 +254,17 @@ impl Green {
         info!("Calling `{envs} {call}`");
         eprintln!("Calling `{envs} {call}`");
 
-        let Ok(Output { status, stdout, .. }) = cmd.output().await else { return img.to_owned() };
-        if !status.success() {
-            return img.to_owned();
-        }
-
-        let stdout = String::from_utf8_lossy(&stdout);
-        let Ok(digest) = serde_json::from_str::<&str>(&stdout) else { return img.to_owned() };
-        img.lock(digest)
+        cmd.output()
+            .await
+            .ok()
+            .and_then(|o| o.status.success().then_some(o))
+            .and_then(|o| String::from_utf8(o.stdout).ok())
+            .and_then(|x| {
+                x.lines().next().and_then(|line|
+                 // NOTE: `inspect` does not keep tag: host/dir/name@sha256:digest (no :tag@)
+                     ImageUri::try_new(format!("docker-image://{line}")).ok())
+            })
+            .map(|digested| img.lock(digested.digest()))
     }
 }
 
