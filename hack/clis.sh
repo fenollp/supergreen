@@ -113,7 +113,7 @@ jobs:
 
 $(jobdef 'meta-check')
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
     - run: ./hack/clis.sh | tee .github/workflows/clis.yml
     - run: ./hack/self.sh | tee .github/workflows/self.yml
     - run: git --no-pager diff --exit-code
@@ -130,7 +130,7 @@ $(jobdef 'bin')
         profile: minimal
         toolchain: stable
 
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
 
     - name: Cache \`cargo fetch\`
       uses: actions/cache@v4
@@ -254,7 +254,7 @@ $(
 )
 
 $(restore_bin)
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
 $(rundeps_versions)
 
     - name: Envs

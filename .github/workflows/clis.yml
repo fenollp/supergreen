@@ -9,7 +9,7 @@ jobs:
       run:
         shell: bash -euo pipefail {0}
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
     - run: ./hack/clis.sh | tee .github/workflows/clis.yml
     - run: ./hack/self.sh | tee .github/workflows/self.yml
     - run: git --no-pager diff --exit-code
@@ -30,7 +30,7 @@ jobs:
         profile: minimal
         toolchain: stable
 
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
 
     - name: Cache `cargo fetch`
       uses: actions/cache@v4
@@ -94,7 +94,7 @@ jobs:
 
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v5
       with:
         name: cargo-green
 
@@ -104,7 +104,7 @@ jobs:
         chmod +x ./cargo-green
         { ! ./cargo-green --version ; } | grep cargo-green
         mv ./cargo-green ~/.cargo/bin/
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
     - run: docker info
     - run: docker buildx version
     - run: docker buildx build --help
@@ -297,7 +297,7 @@ jobs:
     - run: rustup component add llvm-tools-preview
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v5
       with:
         name: cargo-green
 
@@ -307,7 +307,7 @@ jobs:
         chmod +x ./cargo-green
         { ! ./cargo-green --version ; } | grep cargo-green
         mv ./cargo-green ~/.cargo/bin/
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
     - run: docker info
     - run: docker buildx version
     - run: docker buildx build --help
@@ -500,7 +500,7 @@ jobs:
 
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v5
       with:
         name: cargo-green
 
@@ -510,7 +510,7 @@ jobs:
         chmod +x ./cargo-green
         { ! ./cargo-green --version ; } | grep cargo-green
         mv ./cargo-green ~/.cargo/bin/
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
     - run: docker info
     - run: docker buildx version
     - run: docker buildx build --help
@@ -703,7 +703,7 @@ jobs:
 
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v5
       with:
         name: cargo-green
 
@@ -713,7 +713,7 @@ jobs:
         chmod +x ./cargo-green
         { ! ./cargo-green --version ; } | grep cargo-green
         mv ./cargo-green ~/.cargo/bin/
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
     - run: docker info
     - run: docker buildx version
     - run: docker buildx build --help
@@ -906,7 +906,7 @@ jobs:
 
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v5
       with:
         name: cargo-green
 
@@ -916,7 +916,7 @@ jobs:
         chmod +x ./cargo-green
         { ! ./cargo-green --version ; } | grep cargo-green
         mv ./cargo-green ~/.cargo/bin/
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
     - run: docker info
     - run: docker buildx version
     - run: docker buildx build --help
@@ -1109,7 +1109,7 @@ jobs:
 
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v5
       with:
         name: cargo-green
 
@@ -1119,7 +1119,7 @@ jobs:
         chmod +x ./cargo-green
         { ! ./cargo-green --version ; } | grep cargo-green
         mv ./cargo-green ~/.cargo/bin/
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
     - run: docker info
     - run: docker buildx version
     - run: docker buildx build --help
@@ -1312,7 +1312,7 @@ jobs:
 
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v5
       with:
         name: cargo-green
 
@@ -1322,7 +1322,7 @@ jobs:
         chmod +x ./cargo-green
         { ! ./cargo-green --version ; } | grep cargo-green
         mv ./cargo-green ~/.cargo/bin/
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
     - run: docker info
     - run: docker buildx version
     - run: docker buildx build --help
@@ -1516,7 +1516,7 @@ jobs:
 
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v5
       with:
         name: cargo-green
 
@@ -1526,7 +1526,7 @@ jobs:
         chmod +x ./cargo-green
         { ! ./cargo-green --version ; } | grep cargo-green
         mv ./cargo-green ~/.cargo/bin/
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
     - run: docker info
     - run: docker buildx version
     - run: docker buildx build --help
@@ -1719,7 +1719,7 @@ jobs:
 
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v5
       with:
         name: cargo-green
 
@@ -1729,7 +1729,7 @@ jobs:
         chmod +x ./cargo-green
         { ! ./cargo-green --version ; } | grep cargo-green
         mv ./cargo-green ~/.cargo/bin/
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
     - run: docker info
     - run: docker buildx version
     - run: docker buildx build --help
@@ -1922,7 +1922,7 @@ jobs:
 
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v5
       with:
         name: cargo-green
 
@@ -1932,7 +1932,7 @@ jobs:
         chmod +x ./cargo-green
         { ! ./cargo-green --version ; } | grep cargo-green
         mv ./cargo-green ~/.cargo/bin/
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
     - run: docker info
     - run: docker buildx version
     - run: docker buildx build --help
@@ -2125,7 +2125,7 @@ jobs:
 
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v5
       with:
         name: cargo-green
 
@@ -2135,7 +2135,7 @@ jobs:
         chmod +x ./cargo-green
         { ! ./cargo-green --version ; } | grep cargo-green
         mv ./cargo-green ~/.cargo/bin/
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
     - run: docker info
     - run: docker buildx version
     - run: docker buildx build --help
@@ -2328,7 +2328,7 @@ jobs:
 
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v5
       with:
         name: cargo-green
 
@@ -2338,7 +2338,7 @@ jobs:
         chmod +x ./cargo-green
         { ! ./cargo-green --version ; } | grep cargo-green
         mv ./cargo-green ~/.cargo/bin/
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
     - run: docker info
     - run: docker buildx version
     - run: docker buildx build --help
@@ -2531,7 +2531,7 @@ jobs:
 
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v5
       with:
         name: cargo-green
 
@@ -2541,7 +2541,7 @@ jobs:
         chmod +x ./cargo-green
         { ! ./cargo-green --version ; } | grep cargo-green
         mv ./cargo-green ~/.cargo/bin/
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
     - run: docker info
     - run: docker buildx version
     - run: docker buildx build --help
@@ -2734,7 +2734,7 @@ jobs:
 
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v5
       with:
         name: cargo-green
 
@@ -2744,7 +2744,7 @@ jobs:
         chmod +x ./cargo-green
         { ! ./cargo-green --version ; } | grep cargo-green
         mv ./cargo-green ~/.cargo/bin/
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
     - run: docker info
     - run: docker buildx version
     - run: docker buildx build --help

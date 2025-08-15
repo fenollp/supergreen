@@ -20,7 +20,7 @@ jobs:
         profile: minimal
         toolchain: stable
 
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
 
     - name: Cache `cargo fetch`
       uses: actions/cache@v4
@@ -75,7 +75,7 @@ jobs:
         rustflags: ''
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v5
       with:
         name: cargo-green
 
@@ -86,7 +86,7 @@ jobs:
         { ! ./cargo-green --version ; } | grep cargo-green
         mv ./cargo-green ~/.cargo/bin/
 
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
 
     - name: Cache `cargo fetch`
       uses: actions/cache@v4
@@ -189,7 +189,7 @@ jobs:
         rustflags: ''
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v5
       with:
         name: cargo-green
 
@@ -200,7 +200,7 @@ jobs:
         { ! ./cargo-green --version ; } | grep cargo-green
         mv ./cargo-green ~/.cargo/bin/
 
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
 
     - name: Cache `cargo fetch`
       uses: actions/cache@v4
@@ -306,7 +306,7 @@ jobs:
         rustflags: ''
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v5
       with:
         name: cargo-green
 
@@ -317,7 +317,7 @@ jobs:
         { ! ./cargo-green --version ; } | grep cargo-green
         mv ./cargo-green ~/.cargo/bin/
 
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
 
     - name: Cache `cargo fetch`
       uses: actions/cache@v4
@@ -479,7 +479,7 @@ jobs:
         rustflags: ''
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v5
       with:
         name: cargo-green
 
@@ -490,7 +490,7 @@ jobs:
         { ! ./cargo-green --version ; } | grep cargo-green
         mv ./cargo-green ~/.cargo/bin/
 
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
 
     - name: Cache `cargo fetch`
       uses: actions/cache@v4
@@ -769,7 +769,7 @@ jobs:
         rustflags: ''
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v5
       with:
         name: cargo-green
 
@@ -780,7 +780,7 @@ jobs:
         { ! ./cargo-green --version ; } | grep cargo-green
         mv ./cargo-green ~/.cargo/bin/
 
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
 
     - name: Cache `cargo fetch`
       uses: actions/cache@v4
@@ -1059,7 +1059,7 @@ jobs:
         rustflags: ''
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v5
       with:
         name: cargo-green
 
@@ -1070,7 +1070,7 @@ jobs:
         { ! ./cargo-green --version ; } | grep cargo-green
         mv ./cargo-green ~/.cargo/bin/
 
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
 
     - name: Cache `cargo fetch`
       uses: actions/cache@v4
@@ -1286,7 +1286,7 @@ jobs:
         rustflags: ''
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v5
       with:
         name: cargo-green
 
@@ -1297,7 +1297,7 @@ jobs:
         { ! ./cargo-green --version ; } | grep cargo-green
         mv ./cargo-green ~/.cargo/bin/
 
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
 
     - name: Cache `cargo fetch`
       uses: actions/cache@v4
@@ -1450,7 +1450,7 @@ jobs:
         rustflags: ''
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v5
       with:
         name: cargo-green
 
@@ -1461,7 +1461,7 @@ jobs:
         { ! ./cargo-green --version ; } | grep cargo-green
         mv ./cargo-green ~/.cargo/bin/
 
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
 
     - name: Cache `cargo fetch`
       uses: actions/cache@v4

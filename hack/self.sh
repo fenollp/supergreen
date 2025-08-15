@@ -21,7 +21,7 @@ postbin_steps() {
 
 $(restore_bin)
 
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
 
     - name: Cache \`cargo fetch\`
       uses: actions/cache@v4
@@ -66,7 +66,7 @@ $(rundeps_versions)
         profile: minimal
         toolchain: stable
 
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
 
     - name: Cache \`cargo fetch\`
       uses: actions/cache@v4
