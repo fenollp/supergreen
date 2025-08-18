@@ -212,21 +212,22 @@ pub(crate) async fn main() -> Result<Green> {
 
 impl Green {
     async fn maybe_setup_builder(&mut self, env: Option<String>) -> Result<()> {
-        const NAME: &str = "supergreen";
-
-        let managed = match env.as_deref() {
-            None => true,
-            Some("") => return Ok(()),
-            Some(NAME) => false,
+        let (managed, name) = match env.as_deref() {
+            None | Some("supergreen") => (true, "supergreen"),
+            Some("") => {
+                if let Some(ref img) = self.builder_image {
+                    bail!("Not using a builder, however ${ENV_BUILDER_IMAGE}={img:?} is set")
+                }
+                return Ok(());
+            }
             Some(name) => {
                 self.builder_maxready =
                     self.find_builder(name).await?.is_some_and(|b| b.driver != "docker"); // Hopes for BUILDER_DRIVER
-                self.builder_name = Some(name.to_owned());
-                return Ok(());
+                (false, name)
             }
         };
 
-        let builder = self.find_builder(NAME).await?;
+        let builder = self.find_builder(name).await?;
         if let Some(existing) = builder {
             let mut recreate = false;
 
@@ -235,7 +236,7 @@ impl Green {
             if let Some(ref img) = self.builder_image {
                 if !existing.uses_image(img) {
                     if !managed {
-                        bail!("Existing ${BUILDX_BUILDER}={NAME:?} does not match ${ENV_BUILDER_IMAGE}={img:?}")
+                        bail!("Existing ${BUILDX_BUILDER}={name:?} does not match ${ENV_BUILDER_IMAGE}={img:?}")
                     }
                     recreate = true;
                 }
@@ -249,9 +250,9 @@ impl Green {
                 } else {
                     eprintln!(
                         "
-Existing ${BUILDX_BUILDER}={NAME:?} runs a BuildKit version older than v{latest}
+Existing ${BUILDX_BUILDER}={name:?} runs a BuildKit version older than v{latest}
 Maybe try to remove and re-create your builder with:
-    docker buildx rm {NAME} --keep-state
+    docker buildx rm {name} --keep-state
 then run your cargo command again.
 ",
                         latest = LATEST_BUILDKIT.as_str(),
@@ -261,20 +262,20 @@ then run your cargo command again.
 
             if recreate {
                 // First try keeping state...
-                if self.try_removing_builder(NAME, true).await.is_err() {
+                if self.try_removing_builder(name, true).await.is_err() {
                     // ...then stop messing about...
-                    self.try_removing_builder(NAME, false).await?;
+                    self.try_removing_builder(name, false).await?;
                 }
                 // ...and create afresh.
-                self.create_builder(NAME).await?;
+                self.create_builder(name).await?;
             }
         } else if !managed {
             bail!("${BUILDX_BUILDER}=supergreen does not exist")
         } else {
-            self.create_builder(NAME).await?;
+            self.create_builder(name).await?;
         }
 
-        self.builder_name = Some(NAME.to_owned());
+        self.builder_name = Some(name.to_owned());
         Ok(())
     }
 
