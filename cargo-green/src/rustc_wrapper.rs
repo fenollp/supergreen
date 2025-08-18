@@ -280,7 +280,7 @@ async fn do_wrap_rustc(
 
     let mut rustc_block = String::new();
     rustc_block.push_str(&format!("FROM {RST} AS {rustc_stage}\n"));
-    rustc_block.push_str(&format!("SHELL {:?}\n", ["/bin/bash", "-eux", "-c"]));
+    rustc_block.push_str(&format!("SHELL {:?}\n", ["/bin/bash", "-euxo", "pipefail", "-c"]));
     rustc_block.push_str(&format!("WORKDIR {out_dir}\n"));
     if !pwd.starts_with(cargo_home.join("registry/src")) {
         // Essentially match the same-ish path that points to crates-io paths.
