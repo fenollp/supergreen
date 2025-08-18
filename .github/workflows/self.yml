@@ -301,7 +301,7 @@ jobs:
     - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
         profile: minimal
-        toolchain: nightly-2025-02-09
+        toolchain: nightly-2025-08-06
         cache: false
         rustflags: ''
 
@@ -340,14 +340,14 @@ jobs:
     - run: docker buildx du | head || true
     - run: docker buildx du | tail || true
     - run: docker buildx du --verbose
-    - name: cargo +nightly-2025-02-09 green udeps --all-targets --jobs=1 cache=OFF remote=OFF
+    - name: cargo +nightly-2025-08-06 green udeps --all-targets --jobs=1 cache=OFF remote=OFF
       run: |
         unset CARGO_INCREMENTAL
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
-        cargo +nightly-2025-02-09 green udeps --all-targets --jobs=1 |& tee ../_
+        cargo +nightly-2025-08-06 green udeps --all-targets --jobs=1 |& tee ../_
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
@@ -403,7 +403,7 @@ jobs:
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
-        cargo green +nightly-2025-02-09 udeps --all-targets --jobs=1 |& tee ../_
+        cargo green +nightly-2025-08-06 udeps --all-targets --jobs=1 |& tee ../_
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
