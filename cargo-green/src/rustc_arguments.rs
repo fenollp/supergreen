@@ -102,6 +102,13 @@ pub(crate) fn as_rustc(
             _ => {}
         }
 
+        // Skip passing info on Terminal window size
+        // https://doc.rust-lang.org/beta/rustc/command-line-arguments.html#--diagnostic-width-specify-the-terminal-width-for-diagnostics
+        if key == "--diagnostic-width" && !val.is_empty() {
+            (s_e, key) = (false, "".to_owned());
+            continue;
+        }
+
         match key.as_str() {
             "-C" => match val.split_once('=') {
                 Some(("extra-filename", v)) => {
@@ -325,7 +332,7 @@ mod tests {
                 "--edition", "2021",
                 "--error-format", "json",
                 "--json", "diagnostic-rendered-ansi,artifacts,future-incompat",
-                "--diagnostic-width", "211",
+                // "--diagnostic-width", "211",
                 "--crate-type", "bin",
                 "--emit", "dep-info,link",
                 "-C", "embed-bitcode=no",
@@ -409,7 +416,7 @@ mod tests {
                 "--edition", "2021",
                 "--error-format", "json",
                 "--json", "diagnostic-rendered-ansi,artifacts,future-incompat",
-                "--diagnostic-width", "347",
+                // "--diagnostic-width", "347",
                 "--emit", "dep-info,link",
                 "-C", "embed-bitcode=no",
                 "-C", "debuginfo=2",
@@ -482,7 +489,7 @@ mod tests {
                 "--edition", "2021",
                 "--error-format", "json",
                 "--json", "diagnostic-rendered-ansi,artifacts,future-incompat",
-                "--diagnostic-width", "211",
+                // "--diagnostic-width", "211",
                 "--crate-type", "bin",
                 "--emit", "dep-info,link",
                 "-C", "embed-bitcode=no",
@@ -554,7 +561,7 @@ mod tests {
                 "--edition", "2021",
                 "--error-format", "json",
                 "--json", "diagnostic-rendered-ansi,artifacts,future-incompat",
-                "--diagnostic-width", "211",
+                // "--diagnostic-width", "211",
                 "--crate-type", "proc-macro",
                 "--emit", "dep-info,link",
                 "-C", "prefer-dynamic",
@@ -625,7 +632,7 @@ mod tests {
                 "--edition", "2021",
                 "--error-format", "json",
                 "--json", "diagnostic-rendered-ansi,artifacts,future-incompat",
-                "--diagnostic-width", "211",
+                // "--diagnostic-width", "211",
                 "--crate-type", "bin",
                 "--emit", "dep-info,link",
                 "-C", "embed-bitcode=no",
