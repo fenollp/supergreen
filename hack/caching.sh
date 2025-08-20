@@ -3,6 +3,17 @@ set -o pipefail
 
 CARGO=${CARGO:-cargo}
 
+# Usually auto-set by actions-rust-lang/setup-rust-toolchain@v1
+# https://github.com/actions-rust-lang/setup-rust-toolchain/blob/fb51252c7ba57d633bc668f941da052e410add48/action.yml#L105
+unset CARGO_INCREMENTAL
+unset CARGO_PROFILE_DEV_DEBUG
+unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
+unset CARGO_TERM_COLOR
+unset CARGO_UNSTABLE_SPARSE_REGISTRY
+unset RUST_BACKTRACE
+unset RUSTFLAGS
+
+export CARGO_TARGET_DIR=$(realpath "$(dirname "$(dirname "$0")")")/target
 $CARGO install --locked --force --path cargo-green/
 
 install_package=buildxargs@1.4.0
