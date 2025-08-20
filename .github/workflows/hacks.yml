@@ -18,7 +18,7 @@ jobs:
     steps:
     - uses: actions/checkout@v5
     - run: ./hack/latest_buildkit.sh | tee cargo-green/src/latest_buildkit.txt
-    - run: git --no-pager diff --exit-code
+    - run: git --no-pager diff --exit-code -- cargo-green/src/latest_buildkit.txt
 
 
   caching:
