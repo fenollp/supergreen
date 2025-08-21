@@ -52,6 +52,61 @@ pub(crate) async fn main() -> Result<Green> {
         green.runner = val.parse().map_err(|e| anyhow!("${ENV_RUNNER} {e}"))?;
     }
 
+    // Cf. https://docs.docker.com/build/buildkit/#getting-started
+    if env::var(DOCKER_BUILDKIT).is_ok_and(|x| x != "1") {
+        bail!("This requires ${DOCKER_BUILDKIT}=1")
+    }
+
+    // Cf. https://docs.docker.com/engine/security/protect-access/
+    if let Ok(val) = env::var(DOCKER_HOST) {
+        info!("${DOCKER_HOST} is set to {val:?}");
+        eprintln!("${DOCKER_HOST} is set to {val:?}");
+    }
+
+    // Cf. https://docs.docker.com/reference/cli/docker/#environment-variables
+    if let Ok(val) = env::var(DOCKER_CONTEXT) {
+        info!("${DOCKER_CONTEXT} is set to {val:?}");
+        eprintln!("${DOCKER_CONTEXT} is set to {val:?}");
+    }
+
+    // Cf. https://docs.docker.com/build/building/variables/#buildkit_host
+    let buildkit_host = env::var(BUILDKIT_HOST);
+    if let Ok(ref val) = buildkit_host {
+        info!("${BUILDKIT_HOST} is set to {val:?}");
+        eprintln!("${BUILDKIT_HOST} is set to {val:?}");
+    }
+
+    if green.builder_name.is_some() {
+        bail!("builder-name can only be set through the environment variable")
+    }
+    let builder = env::var(BUILDX_BUILDER).ok();
+    if let Some(ref name) = builder {
+        info!("${BUILDX_BUILDER} is set to {name:?}");
+        eprintln!("${BUILDX_BUILDER} is set to {name:?}");
+
+        if !name.is_empty() {
+            if let Ok(val) = buildkit_host {
+                bail!("Overriding ${BUILDKIT_HOST}={val:?} while setting ${BUILDX_BUILDER}={name:?} is unsupported")
+            }
+        }
+    }
+
+    //CARGOGREEN_REMOTES ~= CCSV: host=URL;URL
+    //=> colon CSV
+    //=> keys= host,ca,cert,key,skip-tls-verify + name,description,from (enforce!)
+    //=> when only URL given: craft name
+    //error if creating fails || creating existing name but different values
+    //error if given builder does not have exactly these remotes (ESC name,description,from)
+    //error if any of these is also set: DOCKER_HOST, DOCKER_CONTEXT, BUILDKIT_HOST
+    //docker context create --help
+    //
+    // docker context create amd64 --docker host=ssh://root@x.x.x.220
+    // docker context create arm64 --docker host=ssh://root@x.x.x.72
+    // docker buildx create --name multiarch-builder amd64 [--platform linux/amd64]
+    // docker buildx create --name multiarch-builder --append arm64 [--platform linux/arm64]
+    // docker buildx build --builder multiarch-builder -t dustinrue/buildx-example --platform linux/amd64,linux/arm64,linux/arm/v6 .
+    // https://dustinrue.com/2021/12/using-a-remote-docker-engine-with-buildx/
+
     // Then builder_image as it's needed by cmd calls
     if green.builder_image.is_some() {
         bail!("${ENV_BUILDER_IMAGE} can only be set through the environment variable")
@@ -61,6 +116,8 @@ pub(crate) async fn main() -> Result<Green> {
         // Don't use 'maybe_lock_image', only 'fetch_digest': cmd uses builder.
         green.builder_image = Some(fetch_digest(&img).await?);
     }
+
+    green.maybe_setup_builder(builder).await?;
 
     if !green.syntax.is_empty() {
         bail!("${ENV_SYNTAX} can only be set through the environment variable")
@@ -149,63 +206,6 @@ pub(crate) async fn main() -> Result<Green> {
 
     // https://crates.io/crates/async-ssh2-tokio
     // https://crates.io/crates/russh
-
-    // Cf. https://docs.docker.com/build/buildkit/#getting-started
-    if env::var(DOCKER_BUILDKIT).is_ok_and(|x| x != "1") {
-        bail!("This requires ${DOCKER_BUILDKIT}=1")
-    }
-
-    // Cf. https://docs.docker.com/engine/security/protect-access/
-    if let Ok(val) = env::var(DOCKER_HOST) {
-        info!("${DOCKER_HOST} is set to {val:?}");
-        eprintln!("${DOCKER_HOST} is set to {val:?}");
-    }
-
-    // Cf. https://docs.docker.com/reference/cli/docker/#environment-variables
-    if let Ok(val) = env::var(DOCKER_CONTEXT) {
-        info!("${DOCKER_CONTEXT} is set to {val:?}");
-        eprintln!("${DOCKER_CONTEXT} is set to {val:?}");
-    }
-
-    // Cf. https://docs.docker.com/build/building/variables/#buildkit_host
-    let buildkit_host = env::var(BUILDKIT_HOST);
-    if let Ok(ref val) = buildkit_host {
-        info!("${BUILDKIT_HOST} is set to {val:?}");
-        eprintln!("${BUILDKIT_HOST} is set to {val:?}");
-    }
-
-    if green.builder_name.is_some() {
-        bail!("builder-name can only be set through the environment variable")
-    }
-    let builder = env::var(BUILDX_BUILDER).ok();
-    if let Some(ref name) = builder {
-        info!("${BUILDX_BUILDER} is set to {name:?}");
-        eprintln!("${BUILDX_BUILDER} is set to {name:?}");
-
-        if !name.is_empty() {
-            if let Ok(val) = buildkit_host {
-                bail!("Overriding ${BUILDKIT_HOST}={val:?} while setting ${BUILDX_BUILDER}={name:?} is unsupported")
-            }
-        }
-    }
-
-    //CARGOGREEN_REMOTES ~= CCSV: host=URL;URL
-    //=> colon CSV
-    //=> keys= host,ca,cert,key,skip-tls-verify + name,description,from (enforce!)
-    //=> when only URL given: craft name
-    //error if creating fails || creating existing name but different values
-    //error if given builder does not have exactly these remotes (ESC name,description,from)
-    //error if any of these is also set: DOCKER_HOST, DOCKER_CONTEXT, BUILDKIT_HOST
-    //docker context create --help
-    //
-    // docker context create amd64 --docker host=ssh://root@x.x.x.220
-    // docker context create arm64 --docker host=ssh://root@x.x.x.72
-    // docker buildx create --name multiarch-builder amd64 [--platform linux/amd64]
-    // docker buildx create --name multiarch-builder --append arm64 [--platform linux/arm64]
-    // docker buildx build --builder multiarch-builder -t dustinrue/buildx-example --platform linux/amd64,linux/arm64,linux/arm/v6 .
-    // https://dustinrue.com/2021/12/using-a-remote-docker-engine-with-buildx/
-
-    green.maybe_setup_builder(builder).await?;
 
     Ok(green)
 }
