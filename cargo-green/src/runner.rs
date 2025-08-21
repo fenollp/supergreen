@@ -201,8 +201,9 @@ impl Green {
     #[must_use]
     async fn maybe_lock_from_builder_cache(&self, img: &ImageUri) -> Option<ImageUri> {
         let mut cmd = self.cmd();
-        // TODO: use --filter=...
-        cmd.args(["buildx", "du", "--verbose", "--filter=type=regular"]);
+        cmd.args(["buildx", "du", "--verbose"]);
+        cmd.arg("--filter=type=regular");
+        cmd.arg("--filter=description~=pulled.from");
 
         let call = cmd.show_unquoted();
         let envs: Vec<_> = cmd
