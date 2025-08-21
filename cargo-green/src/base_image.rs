@@ -185,6 +185,8 @@ impl RustcV {
             Channel::Beta => "beta",
             Channel::Nightly => "nightly",
         };
+        //=> sub fn that takes "{channel}-{date}" in, because rustup takes somewhat-freeform toolchain specs
+        //==> $RUSTUP_TOOLCHAIN https://rust-lang.github.io/rustup/environment-variables.html
 
         let base_image = BASE_FOR_RUST.to_owned();
         let base = base_image.noscheme();
