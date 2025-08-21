@@ -16,6 +16,8 @@ pub(crate) async fn into_stage(
     let commit = {
         let short = krate_manifest_dir.file_name().unwrap();
 
+        // TODO: replace execve with pure Rust impl, e.g. gitoxide
+
         let mut cmd = Command::new("git");
         cmd.kill_on_drop(true);
         cmd.args(["rev-parse", "HEAD"]);
