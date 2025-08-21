@@ -223,6 +223,10 @@ impl Green {
             }
         }
         if green.image.is_unset() {
+            //CARGOGREEN_USE=<a rustup toolchain>
+            //CARGOGREEN_TOOLCHAIN=<a rustup toolchain> MOUCH BETTA
+            // https://rust-lang.github.io/rustup/concepts/toolchains.html#toolchain-specification
+            // if set use it, else:
             green.image = BaseImage::from_local_rustc();
         }
 
