@@ -179,17 +179,16 @@ impl FromStr for Network {
 impl Green {
     /// Read digest from builder cache, then maybe from default cache.
     /// Goal is to have a completely offline mode by default, after a `cargo green fetch`.
-    #[must_use]
-    pub(crate) async fn maybe_lock_image(&self, img: &ImageUri) -> ImageUri {
+    pub(crate) async fn maybe_lock_image(&self, img: &ImageUri) -> Result<ImageUri> {
         if !img.locked() {
-            if let Some(locked) = self.maybe_lock_from_builder_cache(img).await {
-                return locked;
+            if let Some(locked) = self.maybe_lock_from_builder_cache(img).await? {
+                return Ok(locked);
             }
-            if let Some(locked) = self.maybe_lock_from_image_cache(img).await {
-                return locked;
+            if let Some(locked) = self.maybe_lock_from_image_cache(img).await? {
+                return Ok(locked);
             }
         }
-        img.to_owned()
+        Ok(img.to_owned())
     }
 
     /// Reads from builder build cache if any, and falls back to image cache.
@@ -198,8 +197,7 @@ impl Green {
     /// => docker buildx imagetools inspect --format={{json .Manifest.Digest}} img.noscheme()
     ///   Only fetches remote though, and takes ages compared to fetch_digest!
     /// See [Getting an image's digest fast, within a docker-container builder](https://github.com/docker/buildx/discussions/3363)
-    #[must_use]
-    async fn maybe_lock_from_builder_cache(&self, img: &ImageUri) -> Option<ImageUri> {
+    async fn maybe_lock_from_builder_cache(&self, img: &ImageUri) -> Result<Option<ImageUri>> {
         let mut cmd = self.cmd();
         cmd.args(["buildx", "du", "--verbose"]);
         cmd.arg("--filter=type=regular");
@@ -216,52 +214,20 @@ impl Green {
         info!("Calling `{envs} {call}`");
         eprintln!("Calling `{envs} {call}`");
 
-        cmd.output().await.ok().and_then(|o| o.status.success().then_some(o.stdout)).and_then(
-            |stdout| {
-                Self::lock_from_builder_cache_workaround(stdout, img.as_str())
-                    .map(|digest| img.lock(&digest))
-            },
-        )
-    }
-
-    #[inline]
-    #[must_use]
-    fn lock_from_builder_cache_workaround(stdout: Vec<u8>, img: &str) -> Option<String> {
-        let mut by_created_at = vec![];
-        #[expect(unused_assignments)]
-        let mut one = None;
-        let (mut two, mut three, mut four, mut five, mut six) = [None; _].into();
-        for nxt in String::from_utf8_lossy(&stdout).lines().filter(|line| !line.trim().is_empty()) {
-            (one, two, three, four, five, six) = (two, three, four, five, six, Some(nxt));
-            let Some((lhs, (_, (_, (_, (_, rhs)))))) =
-                one.zip(two.zip(three.zip(four.zip(five.zip(six)))))
-            else {
-                continue;
-            };
-
-            let created_at = "Created at:";
-            if !lhs.contains(created_at) || !rhs.contains(img) {
-                continue;
-            }
-            let Some(created_at) = lhs.split(created_at).nth(1).map(str::trim) else { continue };
-            let Some((created_at, _)) =
-                DateTime::parse_and_remainder(created_at, "%Y-%m-%d %H:%M:%S%.9f %z").ok()
-            else {
-                continue;
-            };
-            let Some(pulled_from) = rhs.split("pulled from ").nth(1) else { continue };
-            by_created_at.push((created_at, pulled_from.to_owned()));
+        let Output { status, stdout, stderr } =
+            cmd.output().await.map_err(|e| anyhow!("Failed to spawn `{envs} {call}`: {e}"))?;
+        if !status.success() {
+            let stderr = String::from_utf8_lossy(&stderr);
+            bail!("Failed to query builder cache: {stderr}")
         }
-        by_created_at.sort_by(|(a, _), (b, _)| a.cmp(b));
-        by_created_at.pop().map(|(_, x)| x)
+        Ok(lock_from_builder_cache_workaround(stdout, img.as_str()).map(|digest| img.lock(&digest)))
     }
 
     /// If given an un-pinned image URI, query local image cache for its digest.
     /// Returns the given URI, along with its digest if one was found.
     ///
     /// https://docs.docker.com/dhi/core-concepts/digests/
-    #[must_use]
-    async fn maybe_lock_from_image_cache(&self, img: &ImageUri) -> Option<ImageUri> {
+    async fn maybe_lock_from_image_cache(&self, img: &ImageUri) -> Result<Option<ImageUri>> {
         let mut cmd = self.cmd();
         cmd.arg("inspect").arg("--format={{index .RepoDigests 0}}").arg(img.noscheme());
 
@@ -276,18 +242,52 @@ impl Green {
         info!("Calling `{envs} {call}`");
         eprintln!("Calling `{envs} {call}`");
 
-        cmd.output()
-            .await
-            .ok()
-            .and_then(|o| o.status.success().then_some(o))
-            .and_then(|o| String::from_utf8(o.stdout).ok())
-            .and_then(|x| {
-                x.lines().next().and_then(|line|
-                 // NOTE: `inspect` does not keep tag: host/dir/name@sha256:digest (no :tag@)
-                     ImageUri::try_new(format!("docker-image://{line}")).ok())
-            })
-            .map(|digested| img.lock(digested.digest()))
+        let Output { status, stdout, stderr } =
+            cmd.output().await.map_err(|e| anyhow!("Failed to spawn `{envs} {call}`: {e}"))?;
+        if !status.success() {
+            let stderr = String::from_utf8_lossy(&stderr);
+            bail!("BUG: failed to inspect image cache: {stderr}")
+        }
+
+        Ok(String::from_utf8_lossy(&stdout)
+            .lines()
+            .next()
+            .and_then(|line| ImageUri::try_new(format!("docker-image://{line}")).ok())
+            // NOTE: `inspect` does not keep tag: host/dir/name@sha256:digest (no :tag@)
+            .map(|digested| img.lock(digested.digest())))
     }
+}
+
+#[inline]
+#[must_use]
+fn lock_from_builder_cache_workaround(stdout: Vec<u8>, img: &str) -> Option<String> {
+    let mut by_created_at = vec![];
+    #[expect(unused_assignments)]
+    let mut one = None;
+    let (mut two, mut three, mut four, mut five, mut six) = [None; _].into();
+    for nxt in String::from_utf8_lossy(&stdout).lines().filter(|line| !line.trim().is_empty()) {
+        (one, two, three, four, five, six) = (two, three, four, five, six, Some(nxt));
+        let Some((lhs, (_, (_, (_, (_, rhs)))))) =
+            one.zip(two.zip(three.zip(four.zip(five.zip(six)))))
+        else {
+            continue;
+        };
+
+        let created_at = "Created at:";
+        if !lhs.contains(created_at) || !rhs.contains(img) {
+            continue;
+        }
+        let Some(created_at) = lhs.split(created_at).nth(1).map(str::trim) else { continue };
+        let Some((created_at, _)) =
+            DateTime::parse_and_remainder(created_at, "%Y-%m-%d %H:%M:%S%.9f %z").ok()
+        else {
+            continue;
+        };
+        let Some(pulled_from) = rhs.split("pulled from ").nth(1) else { continue };
+        by_created_at.push((created_at, pulled_from.to_owned()));
+    }
+    by_created_at.sort_by(|(a, _), (b, _)| a.cmp(b));
+    by_created_at.pop().map(|(_, x)| x)
 }
 
 #[test]
@@ -335,20 +335,17 @@ Total:      3.69GB
 "#;
     let res = "docker.io/library/rust:1.89.0-slim@sha256:33219ca58c0dd38571fd3f87172b5bce2d9f3eb6f27e6e75efe12381836f71fa";
     assert_eq!(
-        Green::lock_from_builder_cache_workaround(stdout.as_bytes().to_vec(), "rust:1.89.0-slim"),
+        lock_from_builder_cache_workaround(stdout.as_bytes().to_vec(), "rust:1.89.0-slim"),
         Some(res.to_owned())
     );
     assert_eq!(
-        Green::lock_from_builder_cache_workaround(
+        lock_from_builder_cache_workaround(
             stdout.as_bytes().to_vec(),
             "docker.io/library/rust:1.89.0-slim"
         ),
         Some(res.to_owned())
     );
-    assert_eq!(
-        Green::lock_from_builder_cache_workaround(stdout.as_bytes().to_vec(), "blaaaa"),
-        None
-    );
+    assert_eq!(lock_from_builder_cache_workaround(stdout.as_bytes().to_vec(), "blaaaa"), None);
 }
 
 #[test]
@@ -416,7 +413,7 @@ Type:       regular
 "#;
     let res = "docker.io/library/rust:1.89.0-slim@sha256:2ff54dd21007d5ee97026fadad80598e66136a43adc5687078d796d958bd58fb";
     assert_eq!(
-        Green::lock_from_builder_cache_workaround(multiple.as_bytes().to_vec(), "rust:1.89.0-slim"),
+        lock_from_builder_cache_workaround(multiple.as_bytes().to_vec(), "rust:1.89.0-slim"),
         Some(res.to_owned())
     );
 }
