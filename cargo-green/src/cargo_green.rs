@@ -276,7 +276,7 @@ then run your cargo command again.
                 self.create_builder(name).await?;
             }
         } else if !managed {
-            bail!("${BUILDX_BUILDER}=supergreen does not exist")
+            bail!("${BUILDX_BUILDER}={name} does not exist")
         } else {
             self.create_builder(name).await?;
         }
