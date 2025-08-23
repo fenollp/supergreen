@@ -21,7 +21,10 @@ use crate::{
     lockfile::{find_lockfile, locked_crates},
     logging::{self, maybe_log},
     pwd,
-    runner::{build_cacheonly, fetch_digest, Network, Runner},
+    runner::{
+        self, build_cacheonly, fetch_digest, Network, Runner, BUILDKIT_HOST, BUILDX_BUILDER,
+        DOCKER_BUILDKIT, DOCKER_CONTEXT, DOCKER_HOST,
+    },
     stage::{Stage, RST, RUST},
     tmp, PKG, VSN,
 };
@@ -32,13 +35,6 @@ pub(crate) const ENV_FINAL_PATH: &str = "CARGOGREEN_FINAL_PATH";
 pub(crate) const ENV_FINAL_PATH_NONPRIMARY: &str = "CARGOGREEN_FINAL_PATH_NONPRIMARY";
 pub(crate) const ENV_RUNNER: &str = "CARGOGREEN_RUNNER";
 pub(crate) const ENV_SYNTAX: &str = "CARGOGREEN_SYNTAX";
-
-// Envs from BuildKit/Buildx/Docker/Podman that we read
-const BUILDKIT_HOST: &str = "BUILDKIT_HOST";
-pub(crate) const BUILDX_BUILDER: &str = "BUILDX_BUILDER";
-pub(crate) const DOCKER_BUILDKIT: &str = "DOCKER_BUILDKIT";
-pub(crate) const DOCKER_CONTEXT: &str = "DOCKER_CONTEXT";
-pub(crate) const DOCKER_HOST: &str = "DOCKER_HOST";
 
 pub(crate) async fn main() -> Result<Green> {
     let mut green = Green::new_from_env_then_manifest()?;
@@ -51,26 +47,32 @@ pub(crate) async fn main() -> Result<Green> {
         green.runner = val.parse().map_err(|e| anyhow!("${ENV_RUNNER}={val:?} {e}"))?;
     }
 
+    // Read runner's envs only once and disallow conf overrides
+    if !green.runner_envs.is_empty() {
+        bail!("'runner_envs' setting cannot be set")
+    }
+    green.runner_envs = runner::envs();
+
     // Cf. https://docs.docker.com/build/buildkit/#getting-started
-    if env::var(DOCKER_BUILDKIT).is_ok_and(|x| x != "1") {
+    if green.runner_envs.get(DOCKER_BUILDKIT).is_some_and(|x| x != "1") {
         bail!("This requires ${DOCKER_BUILDKIT}=1")
     }
 
     // Cf. https://docs.docker.com/engine/security/protect-access/
-    if let Ok(val) = env::var(DOCKER_HOST) {
+    if let Some(val) = green.runner_envs.get(DOCKER_HOST) {
         info!("${DOCKER_HOST} is set to {val:?}");
         eprintln!("${DOCKER_HOST} is set to {val:?}");
     }
 
     // Cf. https://docs.docker.com/reference/cli/docker/#environment-variables
-    if let Ok(val) = env::var(DOCKER_CONTEXT) {
+    if let Some(val) = green.runner_envs.get(DOCKER_CONTEXT) {
         info!("${DOCKER_CONTEXT} is set to {val:?}");
         eprintln!("${DOCKER_CONTEXT} is set to {val:?}");
     }
 
     // Cf. https://docs.docker.com/build/building/variables/#buildkit_host
-    let buildkit_host = env::var(BUILDKIT_HOST);
-    if let Ok(ref val) = buildkit_host {
+    let buildkit_host = green.runner_envs.get(BUILDKIT_HOST);
+    if let Some(val) = buildkit_host {
         info!("${BUILDKIT_HOST} is set to {val:?}");
         eprintln!("${BUILDKIT_HOST} is set to {val:?}");
     }
@@ -78,13 +80,13 @@ pub(crate) async fn main() -> Result<Green> {
     if green.builder_name.is_some() {
         bail!("builder-name can only be set through the environment variable")
     }
-    let builder = env::var(BUILDX_BUILDER).ok();
-    if let Some(ref name) = builder {
+    let builder = green.runner_envs.get(BUILDX_BUILDER);
+    if let Some(name) = builder {
         info!("${BUILDX_BUILDER} is set to {name:?}");
         eprintln!("${BUILDX_BUILDER} is set to {name:?}");
 
         if !name.is_empty() {
-            if let Ok(val) = buildkit_host {
+            if let Some(val) = buildkit_host {
                 bail!("Overriding ${BUILDKIT_HOST}={val:?} while setting ${BUILDX_BUILDER}={name:?} is unsupported")
             }
         }
@@ -119,7 +121,7 @@ pub(crate) async fn main() -> Result<Green> {
         green.builder_image = Some(fetch_digest(&img).await?);
     }
 
-    green.maybe_setup_builder(builder).await?;
+    green.maybe_setup_builder(builder.cloned()).await?;
 
     if !green.syntax.is_empty() {
         bail!("${ENV_SYNTAX} can only be set through the environment variable")

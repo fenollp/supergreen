@@ -10,13 +10,13 @@ use crate::{
     add::{ENV_ADD_APK, ENV_ADD_APT, ENV_ADD_APT_GET},
     base_image::{ENV_BASE_IMAGE, ENV_BASE_IMAGE_INLINE, ENV_WITH_NETWORK},
     cargo_green::{
-        DOCKER_HOST, ENV_BUILDER_IMAGE, ENV_FINAL_PATH, ENV_FINAL_PATH_NONPRIMARY, ENV_RUNNER,
-        ENV_SYNTAX,
+        ENV_BUILDER_IMAGE, ENV_FINAL_PATH, ENV_FINAL_PATH_NONPRIMARY, ENV_RUNNER, ENV_SYNTAX,
     },
     ext::CommandExt,
     green::{Green, ENV_CACHE_IMAGES, ENV_INCREMENTAL, ENV_SET_ENVS},
     image_uri::ImageUri,
     logging::{ENV_LOG, ENV_LOG_PATH, ENV_LOG_STYLE},
+    runner::DOCKER_HOST,
     rustc_wrapper::ENV,
     PKG, REPO, VSN,
 };

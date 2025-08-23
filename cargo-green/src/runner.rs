@@ -1,4 +1,5 @@
 use std::{
+    collections::HashMap,
     env,
     ffi::OsStr,
     fmt,
@@ -7,6 +8,7 @@ use std::{
     ops::Not,
     process::Stdio,
     str::FromStr,
+    sync::LazyLock,
     time::{Duration, Instant},
 };
 
@@ -30,7 +32,6 @@ use tokio::{
 
 use crate::{
     add::ENV_ADD_APT,
-    cargo_green::{BUILDX_BUILDER, DOCKER_BUILDKIT, DOCKER_CONTEXT, DOCKER_HOST},
     ext::{timeout, CommandExt},
     green::{Green, ENV_SET_ENVS},
     image_uri::ImageUri,
@@ -39,6 +40,87 @@ use crate::{
     stage::Stage,
     PKG,
 };
+
+// Envs from BuildKit/Buildx/Docker/Podman that we read
+const BUILDKIT_COLORS: &str = "BUILDKIT_COLORS";
+pub(crate) const BUILDKIT_HOST: &str = "BUILDKIT_HOST";
+const BUILDKIT_PROGRESS: &str = "BUILDKIT_PROGRESS";
+const BUILDKIT_TTY_LOG_LINES: &str = "BUILDKIT_TTY_LOG_LINES";
+pub(crate) const BUILDX_BUILDER: &str = "BUILDX_BUILDER";
+const BUILDX_CPU_PROFILE: &str = "BUILDX_CPU_PROFILE";
+const BUILDX_MEM_PROFILE: &str = "BUILDX_MEM_PROFILE";
+pub(crate) const DOCKER_BUILDKIT: &str = "DOCKER_BUILDKIT";
+pub(crate) const DOCKER_CONTEXT: &str = "DOCKER_CONTEXT";
+const DOCKER_DEFAULT_PLATFORM: &str = "DOCKER_DEFAULT_PLATFORM";
+const DOCKER_HIDE_LEGACY_COMMANDS: &str = "DOCKER_HIDE_LEGACY_COMMANDS";
+pub(crate) const DOCKER_HOST: &str = "DOCKER_HOST";
+
+/// Read envs used by runner, once.
+/// https://docs.docker.com/engine/reference/commandline/cli/#environment-variables
+/// https://docs.docker.com/build/building/variables/#build-tool-configuration-variables
+pub(crate) fn envs() -> HashMap<String, String> {
+    [
+        BUILDKIT_COLORS,
+        BUILDKIT_HOST,
+        BUILDKIT_PROGRESS,
+        BUILDKIT_TTY_LOG_LINES,
+        "BUILDX_BAKE_GIT_AUTH_HEADER",
+        "BUILDX_BAKE_GIT_AUTH_TOKEN",
+        "BUILDX_BAKE_GIT_SSH",
+        BUILDX_BUILDER,
+        DOCKER_BUILDKIT,
+        "BUILDX_CONFIG",
+        BUILDX_CPU_PROFILE,
+        "BUILDX_EXPERIMENTAL",
+        "BUILDX_GIT_CHECK_DIRTY",
+        "BUILDX_GIT_INFO",
+        "BUILDX_GIT_LABELS",
+        BUILDX_MEM_PROFILE,
+        "BUILDX_METADATA_PROVENANCE",
+        "BUILDX_METADATA_WARNINGS",
+        "BUILDX_NO_DEFAULT_ATTESTATIONS",
+        "BUILDX_NO_DEFAULT_LOAD",
+        "DOCKER_API_VERSION",
+        "DOCKER_CERT_PATH",
+        "DOCKER_CONFIG",
+        "DOCKER_CONTENT_TRUST",
+        "DOCKER_CONTENT_TRUST_SERVER",
+        DOCKER_CONTEXT,
+        DOCKER_DEFAULT_PLATFORM,
+        DOCKER_HIDE_LEGACY_COMMANDS,
+        DOCKER_HOST,
+        "DOCKER_TLS",
+        "DOCKER_TLS_VERIFY",
+        "EXPERIMENTAL_BUILDKIT_SOURCE_POLICY",
+        "HTTP_PROXY",  //TODO: hinders reproducibility
+        "HTTPS_PROXY", //TODO: hinders reproducibility
+        "NO_PROXY",    //TODO: hinders reproducibility
+    ]
+    .into_iter()
+    .filter_map(|k| env::var(k).ok().map(|v| (k.to_owned(), v)))
+    .collect()
+}
+
+/// Strip out envs that don't affect a build's outputs:
+static BUILD_UNALTERING_ENVS: LazyLock<Vec<&OsStr>> = LazyLock::new(|| {
+    [
+        BUILDKIT_COLORS,
+        BUILDKIT_HOST,
+        BUILDKIT_PROGRESS,
+        BUILDKIT_TTY_LOG_LINES,
+        BUILDX_BUILDER,
+        BUILDX_CPU_PROFILE,
+        BUILDX_MEM_PROFILE,
+        DOCKER_BUILDKIT,
+        DOCKER_CONTEXT,
+        DOCKER_DEFAULT_PLATFORM,
+        DOCKER_HIDE_LEGACY_COMMANDS,
+        DOCKER_HOST,
+    ]
+    .into_iter()
+    .map(OsStr::new)
+    .collect()
+});
 
 #[derive(Debug, Copy, Clone, Default, Serialize, Deserialize, Eq, PartialEq)]
 #[serde(deny_unknown_fields)]
@@ -103,34 +185,12 @@ impl Green {
             cmd.env(BUILDX_BUILDER, name);
         }
 
-        //FIXME: only read these envs once, at first call, pass them through Green.
-
-        // https://docs.docker.com/build/building/variables/#build-tool-configuration-variables
-        //also these ^
-
-        // https://docs.docker.com/engine/reference/commandline/cli/#environment-variables
-        for var in [
-            "BUILDKIT_PROGRESS",
-            // BUILDX_BUILDER, => special handling
-            "DOCKER_API_VERSION",
-            "DOCKER_CERT_PATH",
-            "DOCKER_CONFIG",
-            "DOCKER_CONTENT_TRUST",
-            "DOCKER_CONTENT_TRUST_SERVER",
-            DOCKER_CONTEXT,
-            "DOCKER_DEFAULT_PLATFORM",
-            "DOCKER_HIDE_LEGACY_COMMANDS",
-            DOCKER_HOST,
-            "DOCKER_TLS",
-            "DOCKER_TLS_VERIFY",
-            "HTTP_PROXY",  //TODO: hinders reproducibility
-            "HTTPS_PROXY", //TODO: hinders reproducibility
-            "NO_PROXY",    //TODO: hinders reproducibility
-        ] {
-            if let Ok(val) = env::var(var) {
-                info!("passing through runner setting: ${var}={val:?}");
-                cmd.env(var, val);
+        for (var, val) in &self.runner_envs {
+            if [BUILDX_BUILDER, DOCKER_BUILDKIT].contains(&var.as_str()) {
+                continue;
             }
+            info!("passing through runner setting: ${var}={val:?}");
+            cmd.env(var, val);
         }
 
         cmd
@@ -575,11 +635,7 @@ async fn build(
     let call = cmd.show_unquoted();
     let envs = cmd.envs_string(&[]);
     info!("Starting `{envs} {call} <{containerfile}`");
-    let envs = cmd.envs_string(&[
-        OsStr::new(BUILDX_BUILDER),
-        OsStr::new(DOCKER_CONTEXT),
-        OsStr::new(DOCKER_HOST),
-    ]);
+    let envs = cmd.envs_string(&BUILD_UNALTERING_ENVS);
 
     let start = Instant::now();
     let mut child = match cmd.spawn() {

@@ -1,5 +1,5 @@
 use std::{
-    collections::HashSet,
+    collections::{HashMap, HashSet},
     env,
     fs::{self, OpenOptions},
     io::Write,
@@ -41,6 +41,10 @@ pub(crate) struct Green {
     // # Use by setting this environment variable (no Cargo.toml setting):
     // CARGOGREEN_RUNNER="docker"
     pub(crate) runner: Runner,
+
+    // Snapshot of runner's envs. Not user-settable.
+    #[serde(skip_serializing_if = "HashMap::is_empty")]
+    pub(crate) runner_envs: HashMap<String, String>,
 
     // Whether to wrap incremental compilation, defaults to false.
     //
