@@ -48,7 +48,7 @@ pub(crate) async fn main() -> Result<Green> {
         bail!("${ENV_RUNNER} can only be set through the environment variable")
     }
     if let Ok(val) = env::var(ENV_RUNNER) {
-        green.runner = val.parse().map_err(|e| anyhow!("${ENV_RUNNER} {e}"))?;
+        green.runner = val.parse().map_err(|e| anyhow!("${ENV_RUNNER}={val:?} {e}"))?;
     }
 
     // Cf. https://docs.docker.com/build/buildkit/#getting-started
@@ -111,7 +111,10 @@ pub(crate) async fn main() -> Result<Green> {
         bail!("${ENV_BUILDER_IMAGE} can only be set through the environment variable")
     }
     if let Ok(builder_image) = env::var(ENV_BUILDER_IMAGE) {
-        let img = builder_image.try_into().map_err(|e| anyhow!("${ENV_BUILDER_IMAGE} {e}"))?;
+        let img = builder_image
+            .clone()
+            .try_into()
+            .map_err(|e| anyhow!("${ENV_BUILDER_IMAGE}={builder_image:?} {e}"))?;
         // Don't use 'maybe_lock_image', only 'fetch_digest': cmd uses builder.
         green.builder_image = Some(fetch_digest(&img).await?);
     }
@@ -122,7 +125,8 @@ pub(crate) async fn main() -> Result<Green> {
         bail!("${ENV_SYNTAX} can only be set through the environment variable")
     }
     if let Ok(syntax) = env::var(ENV_SYNTAX) {
-        green.syntax = syntax.try_into().map_err(|e| anyhow!("${ENV_SYNTAX} {e}"))?;
+        green.syntax =
+            syntax.clone().try_into().map_err(|e| anyhow!("${ENV_SYNTAX}={syntax:?} {e}"))?;
     }
     // Use local hashed image if one matching exists locally
     green.syntax = green
@@ -186,7 +190,8 @@ pub(crate) async fn main() -> Result<Green> {
     assert!(!green.image.base_image.is_empty(), "BUG: base_image set to {SYNTAX:?}");
 
     if let Ok(val) = env::var(ENV_WITH_NETWORK) {
-        green.image.with_network = val.parse().map_err(|e| anyhow!("${ENV_WITH_NETWORK} {e}"))?;
+        green.image.with_network =
+            val.parse().map_err(|e| anyhow!("${ENV_WITH_NETWORK}={val:?} {e}"))?;
     }
     if let Ok(val) = env::var("CARGO_NET_OFFLINE") {
         if val == "1" {
