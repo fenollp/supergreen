@@ -282,6 +282,9 @@ impl Green {
         let (succeeded, stdout, stderr) = cmd.exec().await?;
         if !succeeded {
             let stderr = String::from_utf8_lossy(&stderr);
+            if stderr.contains("No such object") {
+                return Ok(None);
+            }
             bail!("BUG: failed to inspect image cache: {stderr}")
         }
 
