@@ -1,12 +1,10 @@
 use core::str;
-use std::process::Output;
 
-use anyhow::{anyhow, bail, Result};
+use anyhow::{bail, Result};
 use camino::{Utf8Path, Utf8PathBuf};
-use log::info;
 use tokio::process::Command;
 
-use crate::{ext::ShowCmd, stage::Stage};
+use crate::{ext::CommandExt, stage::Stage};
 
 // https://docs.docker.com/reference/dockerfile/#add---keep-git-dir
 // --build-arg BUILDKIT_CONTEXT_KEEP_GIT_DIR=0 https://docs.docker.com/engine/reference/builder/#buildkit-built-in-build-args
@@ -23,23 +21,11 @@ pub(crate) async fn into_stage(
         cmd.kill_on_drop(true);
         cmd.args(["rev-parse", "HEAD"]);
 
-        let call = cmd.show_unquoted();
-        let envs: Vec<_> = cmd
-            .as_std()
-            .get_envs()
-            .map(|(k, v)| format!("{}={:?}", k.to_string_lossy(), v.unwrap_or_default()))
-            .collect();
-        let envs = envs.join(" ");
-
-        info!("Calling `{envs} {call}`");
-
-        let Output { stdout, stderr, .. } =
-            cmd.output().await.map_err(|e| anyhow!("Failed to spawn `{envs} {call}`: {e}"))?;
+        let (_, stdout, _) = cmd.exec().await?;
         let stdout = String::from_utf8_lossy(&stdout);
-
         let commit = stdout.trim();
         if commit.is_empty() {
-            bail!("`{envs} {call}` failed: {stderr:?}")
+            bail!("Failed reading HEAD commit hash from {krate_manifest_dir}")
         }
         assert!(commit.starts_with(short));
         commit.to_owned()

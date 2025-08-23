@@ -1,7 +1,6 @@
 use std::{
     env,
     fs::{self},
-    process::Output,
     sync::LazyLock,
 };
 
@@ -15,7 +14,7 @@ use version_compare::Version;
 use crate::{
     base_image::{ENV_BASE_IMAGE, ENV_WITH_NETWORK},
     cratesio::{self},
-    ext::ShowCmd,
+    ext::CommandExt,
     green::Green,
     hash,
     image_uri::{ImageUri, BUILDKIT, SYNTAX},
@@ -289,7 +288,7 @@ then run your cargo command again.
         let mut cmd = self.cmd();
         cmd.args(["buildx", "create", "--bootstrap"])
             .args(["--name", name])
-            .arg(format!("--driver={BUILDER_DRIVER}"));
+            .args(["--driver", BUILDER_DRIVER]);
 
         let img = if let Some(ref builder_image) = self.builder_image {
             builder_image.clone()
@@ -298,20 +297,8 @@ then run your cargo command again.
         };
         cmd.arg(format!("--driver-opt=image={}", img.noscheme()));
 
-        let call = cmd.show_unquoted();
-        let envs: Vec<_> = cmd
-            .as_std()
-            .get_envs()
-            .map(|(k, v)| format!("{}={:?}", k.to_string_lossy(), v.unwrap_or_default()))
-            .collect();
-        let envs = envs.join(" ");
-
-        info!("Calling `{envs} {call}`");
-        eprintln!("Calling `{envs} {call}`");
-
-        let Output { status, stderr, .. } =
-            cmd.output().await.map_err(|e| anyhow!("Failed to spawn `{envs} {call}`: {e}"))?;
-        if !status.success() {
+        let (succeeded, _, stderr) = cmd.exec().await?;
+        if !succeeded {
             let stderr = String::from_utf8_lossy(&stderr);
             bail!("BUG: failed to create builder: {stderr}")
         }
@@ -327,20 +314,8 @@ then run your cargo command again.
             cmd.arg("--force");
         }
 
-        let call = cmd.show_unquoted();
-        let envs: Vec<_> = cmd
-            .as_std()
-            .get_envs()
-            .map(|(k, v)| format!("{}={:?}", k.to_string_lossy(), v.unwrap_or_default()))
-            .collect();
-        let envs = envs.join(" ");
-
-        info!("Calling `{envs} {call}`");
-        eprintln!("Calling `{envs} {call}`");
-
-        let Output { status, stderr, .. } =
-            cmd.output().await.map_err(|e| anyhow!("Failed to spawn `{envs} {call}`: {e}"))?;
-        if !status.success() {
+        let (succeeded, _, stderr) = cmd.exec().await?;
+        if !succeeded {
             let stderr = String::from_utf8_lossy(&stderr);
             bail!("Failed to remove builder {name}: {stderr}")
         }
@@ -351,21 +326,9 @@ then run your cargo command again.
         let mut cmd = self.cmd();
         cmd.args(["buildx", "ls", "--format=json"]);
 
-        let call = cmd.show_unquoted();
-        let envs: Vec<_> = cmd
-            .as_std()
-            .get_envs()
-            .map(|(k, v)| format!("{}={:?}", k.to_string_lossy(), v.unwrap_or_default()))
-            .collect();
-        let envs = envs.join(" ");
-
-        info!("Calling `{envs} {call}`");
-        eprintln!("Calling `{envs} {call}`");
-
-        let Output { status, stderr, stdout } =
-            cmd.output().await.map_err(|e| anyhow!("Failed to spawn `{envs} {call}`: {e}"))?;
+        let (succeeded, stdout, stderr) = cmd.exec().await?;
         let stdout = String::from_utf8_lossy(&stdout);
-        if !status.success() {
+        if !succeeded {
             let stderr = String::from_utf8_lossy(&stderr);
             // Stacking STDIOs as I have no clue how this can fail
             bail!("Failed listing builders: {stderr}{stdout}")
@@ -379,10 +342,7 @@ then run your cargo command again.
 fn find_builder(name: &str, json: &str) -> Result<Option<BuildxBuilder>> {
     let builders = json
         .lines()
-        .map(|line| {
-            let builder: BuildxBuilder = serde_json::from_str(line)?;
-            Ok(builder)
-        })
+        .map(|line| serde_json::from_str::<BuildxBuilder>(line).map_err(Into::into))
         .collect::<Result<Vec<_>>>()
         .map_err(|e| anyhow!("Failed to decode builders list: {e}\n{json}"))?;
 
@@ -601,13 +561,8 @@ async fn do_pull(green: &Green, img: ImageUri) -> Result<()> {
     println!("Pulling {img}...");
     let mut cmd = green.cmd();
     cmd.arg("pull").arg(img.noscheme());
-    let o = cmd
-        .spawn()
-        .map_err(|e| anyhow!("Failed to start {}: {e}", cmd.show()))?
-        .wait()
-        .await
-        .map_err(|e| anyhow!("Failed to call {}: {e}", cmd.show()))?;
-    if !o.success() {
+    let (succeeded, _, _) = cmd.exec().await?;
+    if !succeeded {
         bail!("Failed to pull {img}")
     }
     Ok(())

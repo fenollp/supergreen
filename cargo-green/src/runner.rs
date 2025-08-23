@@ -5,7 +5,7 @@ use std::{
     fs::{self},
     mem,
     ops::Not,
-    process::{Output, Stdio},
+    process::Stdio,
     str::FromStr,
     time::{Duration, Instant},
 };
@@ -31,7 +31,7 @@ use tokio::{
 use crate::{
     add::ENV_ADD_APT,
     cargo_green::{BUILDX_BUILDER, DOCKER_BUILDKIT, DOCKER_CONTEXT, DOCKER_HOST},
-    ext::{timeout, ShowCmd},
+    ext::{timeout, CommandExt},
     green::{Green, ENV_SET_ENVS},
     image_uri::ImageUri,
     logging::{crate_type_for_logging, maybe_log, ENV_LOG_PATH},
@@ -203,20 +203,8 @@ impl Green {
         cmd.arg("--filter=type=regular");
         cmd.arg("--filter=description~=pulled.from");
 
-        let call = cmd.show_unquoted();
-        let envs: Vec<_> = cmd
-            .as_std()
-            .get_envs()
-            .map(|(k, v)| format!("{}={:?}", k.to_string_lossy(), v.unwrap_or_default()))
-            .collect();
-        let envs = envs.join(" ");
-
-        info!("Calling `{envs} {call}`");
-        eprintln!("Calling `{envs} {call}`");
-
-        let Output { status, stdout, stderr } =
-            cmd.output().await.map_err(|e| anyhow!("Failed to spawn `{envs} {call}`: {e}"))?;
-        if !status.success() {
+        let (succeeded, stdout, stderr) = cmd.exec().await?;
+        if !succeeded {
             let stderr = String::from_utf8_lossy(&stderr);
             bail!("Failed to query builder cache: {stderr}")
         }
@@ -231,20 +219,8 @@ impl Green {
         let mut cmd = self.cmd();
         cmd.arg("inspect").arg("--format={{index .RepoDigests 0}}").arg(img.noscheme());
 
-        let call = cmd.show_unquoted();
-        let envs: Vec<_> = cmd
-            .as_std()
-            .get_envs()
-            .map(|(k, v)| format!("{}={:?}", k.to_string_lossy(), v.unwrap_or_default()))
-            .collect();
-        let envs = envs.join(" ");
-
-        info!("Calling `{envs} {call}`");
-        eprintln!("Calling `{envs} {call}`");
-
-        let Output { status, stdout, stderr } =
-            cmd.output().await.map_err(|e| anyhow!("Failed to spawn `{envs} {call}`: {e}"))?;
-        if !status.success() {
+        let (succeeded, stdout, stderr) = cmd.exec().await?;
+        if !succeeded {
             let stderr = String::from_utf8_lossy(&stderr);
             bail!("BUG: failed to inspect image cache: {stderr}")
         }
@@ -597,23 +573,13 @@ async fn build(
     }
 
     let call = cmd.show_unquoted();
-    let envs: Vec<_> = cmd
-        .as_std()
-        .get_envs()
-        .map(|(k, v)| format!("{}={:?}", k.to_string_lossy(), v.unwrap_or_default()))
-        .collect();
-    let envs = envs.join(" ");
+    let envs = cmd.envs_string(&[]);
     info!("Starting `{envs} {call} <{containerfile}`");
-    let envs: Vec<_> = cmd
-        .as_std()
-        .get_envs()
-        .filter(|(k, _)| {
-            ![OsStr::new(BUILDX_BUILDER), OsStr::new(DOCKER_CONTEXT), OsStr::new(DOCKER_HOST)]
-                .contains(k)
-        })
-        .map(|(k, v)| format!("{}={:?}", k.to_string_lossy(), v.unwrap_or_default()))
-        .collect();
-    let envs = envs.join(" ");
+    let envs = cmd.envs_string(&[
+        OsStr::new(BUILDX_BUILDER),
+        OsStr::new(DOCKER_CONTEXT),
+        OsStr::new(DOCKER_HOST),
+    ]);
 
     let start = Instant::now();
     let mut child = match cmd.spawn() {
@@ -776,13 +742,13 @@ async fn build(
 
         let mut cmd = green.cmd_nodbg();
         cmd.arg("info");
-        let (stdout, stderr, status) = match cmd.output().await {
-            Ok(Output { stdout, stderr, status }) => (stdout, stderr, status),
-            Err(e) => return rtrn(anyhow!("Failed starting {}: {e}", cmd.show())),
+        let (succeeded, stdout, stderr) = match cmd.exec().await {
+            Ok((succeeded, stdout, stderr)) => (succeeded, stdout, stderr),
+            Err(e) => return rtrn(e),
         };
         let stdout = String::from_utf8_lossy(&stdout);
         let stderr = String::from_utf8_lossy(&stderr);
-        return rtrn(anyhow!("Runner info: {status} [STDOUT {stdout}] [STDERR {stderr}]"));
+        return rtrn(anyhow!("Runner info: {succeeded} [STDOUT {stdout}] [STDERR {stderr}]"));
     }
 
     (call, envs, Ok(effects))

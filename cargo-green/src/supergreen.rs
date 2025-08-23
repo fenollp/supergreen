@@ -1,13 +1,8 @@
 use core::str;
-use std::{
-    env,
-    io::Cursor,
-    process::{Output, Stdio},
-};
+use std::{env, io::Cursor, process::Stdio};
 
-use anyhow::{anyhow, bail, Result};
+use anyhow::{bail, Result};
 use futures::stream::{iter, StreamExt, TryStreamExt};
-use log::info;
 use serde_jsonlines::AsyncBufReadJsonLines;
 use tokio::io::BufReader;
 
@@ -18,7 +13,7 @@ use crate::{
         DOCKER_HOST, ENV_BUILDER_IMAGE, ENV_FINAL_PATH, ENV_FINAL_PATH_NONPRIMARY, ENV_RUNNER,
         ENV_SYNTAX,
     },
-    ext::ShowCmd,
+    ext::CommandExt,
     green::{Green, ENV_CACHE_IMAGES, ENV_INCREMENTAL, ENV_SET_ENVS},
     image_uri::ImageUri,
     logging::{ENV_LOG, ENV_LOG_PATH, ENV_LOG_STYLE},
@@ -124,25 +119,13 @@ async fn all_tags_of(green: &Green, img: &str) -> Result<Vec<String>> {
     // NOTE: https://github.com/moby/moby/issues/47809
     //   Meanwhile: just drop docker.io/ prefix
     let mut cmd = green.cmd();
-    cmd.arg("image")
-        .arg("ls")
-        .arg("--format=json")
-        .arg(format!("--filter=reference={}:*", img.trim_start_matches("docker.io/")));
+    cmd.args(["image", "ls", "--format=json"]);
+    cmd.arg(format!("--filter=reference={}:*", img.trim_start_matches("docker.io/")));
 
-    let call = cmd.show_unquoted();
-    let envs: Vec<_> = cmd
-        .as_std()
-        .get_envs()
-        .map(|(k, v)| format!("{}={:?}", k.to_string_lossy(), v.unwrap_or_default()))
-        .collect();
-    let envs = envs.join(" ");
-
-    info!("Calling `{envs} {call}`");
-
-    let Output { status, stdout, .. } =
-        cmd.output().await.map_err(|e| anyhow!("Failed to spawn `{envs} {call}`: {e}"))?;
-    if !status.success() {
-        bail!("Failed to list tags of image {img}")
+    let (succeeded, stdout, stderr) = cmd.exec().await?;
+    if !succeeded {
+        let stderr = String::from_utf8_lossy(&stderr);
+        bail!("Failed to list tags of image {img}: {stderr}")
     }
     let stdout = String::from_utf8_lossy(&stdout);
 
