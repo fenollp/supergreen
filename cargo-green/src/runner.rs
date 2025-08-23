@@ -14,7 +14,6 @@ use std::{
 
 use anyhow::{anyhow, bail, Result};
 use camino::{Utf8Path, Utf8PathBuf};
-use chrono::DateTime;
 use indexmap::IndexSet;
 use log::{debug, info};
 use reqwest::Client as ReqwestClient;
@@ -32,6 +31,7 @@ use tokio::{
 
 use crate::{
     add::ENV_ADD_APT,
+    du::lock_from_builder_cache,
     ext::{timeout, CommandExt},
     green::{Green, ENV_SET_ENVS},
     image_uri::ImageUri,
@@ -239,15 +239,16 @@ impl Green {
     /// Read digest from builder cache, then maybe from default cache.
     /// Goal is to have a completely offline mode by default, after a `cargo green fetch`.
     pub(crate) async fn maybe_lock_image(&self, img: &ImageUri) -> Result<ImageUri> {
-        if !img.locked() {
-            if let Some(locked) = self.maybe_lock_from_builder_cache(img).await? {
-                return Ok(locked);
-            }
-            if let Some(locked) = self.maybe_lock_from_image_cache(img).await? {
-                return Ok(locked);
-            }
+        if img.locked() {
+            return Ok(img.to_owned());
         }
-        Ok(img.to_owned())
+        if let Some(locked) = self.maybe_lock_from_builder_cache(img).await? {
+            return Ok(locked);
+        }
+        if let Some(locked) = self.maybe_lock_from_image_cache(img).await? {
+            return Ok(locked);
+        }
+        bail!("Could not find a digest for image {}", img.noscheme())
     }
 
     /// Reads from builder build cache if any, and falls back to image cache.
@@ -267,7 +268,7 @@ impl Green {
             let stderr = String::from_utf8_lossy(&stderr);
             bail!("Failed to query builder cache: {stderr}")
         }
-        Ok(lock_from_builder_cache_workaround(stdout, img.as_str()).map(|digest| img.lock(&digest)))
+        Ok(lock_from_builder_cache(stdout, img.noscheme()).map(|digest| img.lock(&digest)))
     }
 
     /// If given an un-pinned image URI, query local image cache for its digest.
@@ -294,166 +295,6 @@ impl Green {
             // NOTE: `inspect` does not keep tag: host/dir/name@sha256:digest (no :tag@)
             .map(|digested| img.lock(digested.digest())))
     }
-}
-
-#[inline]
-#[must_use]
-fn lock_from_builder_cache_workaround(stdout: Vec<u8>, img: &str) -> Option<String> {
-    let mut by_created_at = vec![];
-    #[expect(unused_assignments)]
-    let mut one = None;
-    let (mut two, mut three, mut four, mut five, mut six) = [None; _].into();
-    for nxt in String::from_utf8_lossy(&stdout).lines().filter(|line| !line.trim().is_empty()) {
-        (one, two, three, four, five, six) = (two, three, four, five, six, Some(nxt));
-        let Some((lhs, (_, (_, (_, (_, rhs)))))) =
-            one.zip(two.zip(three.zip(four.zip(five.zip(six)))))
-        else {
-            continue;
-        };
-
-        let created_at = "Created at:";
-        if !lhs.contains(created_at) || !rhs.contains(img) {
-            continue;
-        }
-        let Some(created_at) = lhs.split(created_at).nth(1).map(str::trim) else { continue };
-        let Some((created_at, _)) =
-            DateTime::parse_and_remainder(created_at, "%Y-%m-%d %H:%M:%S%.9f %z").ok()
-        else {
-            continue;
-        };
-        let Some(pulled_from) = rhs.split("pulled from ").nth(1) else { continue };
-        by_created_at.push((created_at, pulled_from.to_owned()));
-    }
-    by_created_at.sort_by(|(a, _), (b, _)| a.cmp(b));
-    by_created_at.pop().map(|(_, x)| x)
-}
-
-#[test]
-fn lock_from_builder_cache() {
-    let stdout = r#"
-Usage count:    1
-Last used:  6 days ago
-Type:       regular
-
-ID:     dyoo0ez6aq47esc1lu7gij20a
-Created at: 2025-08-12 13:04:40.696682772 +0000 UTC
-Mutable:    false
-Reclaimable:    true
-Shared:     false
-Size:       113.5MB
-Description:    pulled from docker.io/library/rust:1.89.0-slim@sha256:33219ca58c0dd38571fd3f87172b5bce2d9f3eb6f27e6e75efe12381836f71fa
-Usage count:    1
-Last used:  23 hours ago
-Type:       regular
-
-ID:     oh4oqsqhza04qmigihf500umv
-Parent:     kzzqilxarp9d70nbuyfv84gw4
-Created at: 2025-08-06 15:31:47.876484706 +0000 UTC
-Mutable:    false
-Reclaimable:    true
-Shared:     false
---
-Last used:  6 days ago
-Type:       regular
-
-ID:     ohxhekyoshxip5l5hnd3th9jb
-Parent:     dyoo0ez6aq47esc1lu7gij20a
-Created at: 2025-08-12 13:04:40.701102099 +0000 UTC
-Mutable:    false
-Reclaimable:    true
-Shared:     false
-Size:       1.09GB
-Description:    pulled from docker.io/library/rust:1.89.0-slim@sha256:33219ca58c0dd38571fd3f87172b5bce2d9f3eb6f27e6e75efe12381836f71fa
-Usage count:    11
-Last used:  23 hours ago
-Type:       regular
-
-Reclaimable:    3.69GB
-Total:      3.69GB
-"#;
-    let res = "docker.io/library/rust:1.89.0-slim@sha256:33219ca58c0dd38571fd3f87172b5bce2d9f3eb6f27e6e75efe12381836f71fa";
-    assert_eq!(
-        lock_from_builder_cache_workaround(stdout.as_bytes().to_vec(), "rust:1.89.0-slim"),
-        Some(res.to_owned())
-    );
-    assert_eq!(
-        lock_from_builder_cache_workaround(
-            stdout.as_bytes().to_vec(),
-            "docker.io/library/rust:1.89.0-slim"
-        ),
-        Some(res.to_owned())
-    );
-    assert_eq!(lock_from_builder_cache_workaround(stdout.as_bytes().to_vec(), "blaaaa"), None);
-}
-
-#[test]
-fn lock_from_builder_cache_multiple() {
-    let multiple = r#"
-Shared:     false
-Last used:  8 days ago
-Type:       regular
-
-ID:     dyoo0ez6aq47esc1lu7gij20a
-Created at: 2025-08-12 13:04:40.696682772 +0000 UTC
-Mutable:    false
-Reclaimable:    true
-Shared:     false
-Size:       113.5MB
-Description:    pulled from docker.io/library/rust:1.89.0-slim@sha256:33219ca58c0dd38571fd3f87172b5bce2d9f3eb6f27e6e75efe12381836f71fa
-Usage count:    1
-Last used:  42 hours ago
-Type:       regular
-
-ID:     re241lo0ymzrzzhdpam8nlrlh
-Created at: 2025-08-13 12:56:45.856142994 +0000 UTC
-Mutable:    false
-Reclaimable:    true
-Shared:     false
-Size:       113.5MB
-Description:    pulled from docker.io/library/rust:1.89.0-slim@sha256:2ff54dd21007d5ee97026fadad80598e66136a43adc5687078d796d958bd58fb
-Usage count:    1
-Last used:  18 hours ago
-Type:       regular
-
-ID:     oh4oqsqhza04qmigihf500umv
-Parent:     kzzqilxarp9d70nbuyfv84gw4
-Created at: 2025-08-06 15:31:47.876484706 +0000 UTC
-Mutable:    false
-Reclaimable:    true
-Shared:     false
-Last used:  7 days ago
-Type:       regular
-
-ID:     zx37wzeg6qh755h9vitile8b2
-Parent:     re241lo0ymzrzzhdpam8nlrlh
-Created at: 2025-08-13 12:56:45.859601066 +0000 UTC
-Mutable:    false
-Reclaimable:    true
-Shared:     false
-Size:       1.09GB
-Description:    pulled from docker.io/library/rust:1.89.0-slim@sha256:2ff54dd21007d5ee97026fadad80598e66136a43adc5687078d796d958bd58fb
-Usage count:    5
-Last used:  17 hours ago
-Type:       regular
-
-ID:     ohxhekyoshxip5l5hnd3th9jb
-Parent:     dyoo0ez6aq47esc1lu7gij20a
-Created at: 2025-08-12 13:04:40.701102099 +0000 UTC
-Mutable:    false
-Reclaimable:    true
-Shared:     false
-Size:       1.09GB
-Description:    pulled from docker.io/library/rust:1.89.0-slim@sha256:33219ca58c0dd38571fd3f87172b5bce2d9f3eb6f27e6e75efe12381836f71fa
-Usage count:    11
-Last used:  41 hours ago
-Type:       regular
-
-"#;
-    let res = "docker.io/library/rust:1.89.0-slim@sha256:2ff54dd21007d5ee97026fadad80598e66136a43adc5687078d796d958bd58fb";
-    assert_eq!(
-        lock_from_builder_cache_workaround(multiple.as_bytes().to_vec(), "rust:1.89.0-slim"),
-        Some(res.to_owned())
-    );
 }
 
 /// If given an un-pinned image URI, query remote image API for its digest.
