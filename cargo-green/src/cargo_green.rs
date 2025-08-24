@@ -53,6 +53,8 @@ pub(crate) async fn main() -> Result<Green> {
     }
     green.runner_envs = runner::envs();
 
+    let builders = green.list_builders().await?;
+
     // Cf. https://docs.docker.com/build/buildkit/#getting-started
     if green.runner_envs.get(DOCKER_BUILDKIT).is_some_and(|x| x != "1") {
         bail!("This requires ${DOCKER_BUILDKIT}=1")
@@ -121,7 +123,7 @@ pub(crate) async fn main() -> Result<Green> {
         green.builder_image = Some(fetch_digest(&img).await?);
     }
 
-    green.maybe_setup_builder(builder.cloned()).await?;
+    green.maybe_setup_builder(builder.cloned(), &builders).await?;
 
     if !green.syntax.is_empty() {
         bail!("${ENV_SYNTAX} can only be set through the environment variable")
@@ -223,7 +225,11 @@ pub(crate) async fn main() -> Result<Green> {
 }
 
 impl Green {
-    async fn maybe_setup_builder(&mut self, env: Option<String>) -> Result<()> {
+    async fn maybe_setup_builder(
+        &mut self,
+        env: Option<String>,
+        builders: &[BuildxBuilder],
+    ) -> Result<()> {
         let (managed, name) = match env.as_deref() {
             None | Some("supergreen") => (true, "supergreen"),
             Some("") => {
@@ -235,8 +241,7 @@ impl Green {
             Some(name) => (false, name),
         };
 
-        let builder = self.find_builder(name).await?;
-        if let Some(existing) = builder {
+        if let Some(existing) = find_builder(name, builders) {
             let mut recreate = false;
 
             //if builder exists and builder_image is set, but doesnt match existing, and env.is_some() (= not managed) => error "builderimage doesnt match builder's image" (note: digest matching)
@@ -283,8 +288,7 @@ then run your cargo command again.
             self.create_builder(name).await?;
         }
 
-        self.builder_maxready =
-            self.find_builder(name).await?.is_some_and(|b| b.driver != "docker"); // Hopes for BUILDER_DRIVER
+        self.builder_maxready = find_builder(name, builders).is_some_and(|b| b.driver != "docker"); // Hopes for BUILDER_DRIVER
         self.builder_name = Some(name.to_owned());
         Ok(())
     }
@@ -327,10 +331,9 @@ then run your cargo command again.
         Ok(())
     }
 
-    async fn find_builder(&self, name: &str) -> Result<Option<BuildxBuilder>> {
+    async fn list_builders(&self) -> Result<Vec<BuildxBuilder>> {
         let mut cmd = self.cmd();
         cmd.args(["buildx", "ls", "--format=json"]);
-
         let (succeeded, stdout, stderr) = cmd.exec().await?;
         let stdout = String::from_utf8_lossy(&stdout);
         if !succeeded {
@@ -338,20 +341,22 @@ then run your cargo command again.
             // Stacking STDIOs as I have no clue how this can fail
             bail!("Failed listing builders: {stderr}{stdout}")
         }
-
-        find_builder(name, &stdout)
+        parse_builders(&stdout)
     }
 }
 
 #[inline]
-fn find_builder(name: &str, json: &str) -> Result<Option<BuildxBuilder>> {
-    let builders = json
-        .lines()
+fn parse_builders(json: &str) -> Result<Vec<BuildxBuilder>> {
+    json.lines()
         .map(|line| serde_json::from_str::<BuildxBuilder>(line).map_err(Into::into))
         .collect::<Result<Vec<_>>>()
-        .map_err(|e| anyhow!("Failed to decode builders list: {e}\n{json}"))?;
+        .map_err(|e| anyhow!("Failed to decode builders list: {e}\n{json}"))
+}
 
-    Ok(builders.into_iter().find(|b| b.name == name))
+#[inline]
+#[must_use]
+fn find_builder<'a>(name: &str, builders: &'a [BuildxBuilder]) -> Option<&'a BuildxBuilder> {
+    builders.iter().find(|b| b.name == name)
 }
 
 #[test]
@@ -359,10 +364,11 @@ fn find_builders() {
     let json_bla = r#"
 {"Current":false,"Driver":"docker-container","Dynamic":false,"LastActivity":"2025-08-09T11:39:54Z","Name":"bla","Nodes":[{"DriverOpts":{"image":"docker.io/moby/buildkit:buildx-stable-1"},"Endpoint":"unix:///var/run/docker.sock","Flags":["--allow-insecure-entitlement=network.host"],"GCPolicy":[{"all":false,"filter":["type==source.local,type==exec.cachemount,type==source.git.checkout"],"keepDuration":172800000000000,"maxUsedSpace":512000000,"minFreeSpace":0,"reservedSpace":0},{"all":false,"filter":null,"keepDuration":5184000000000000,"maxUsedSpace":100000000000,"minFreeSpace":94000000000,"reservedSpace":10000000000},{"all":false,"filter":null,"keepDuration":0,"maxUsedSpace":100000000000,"minFreeSpace":94000000000,"reservedSpace":10000000000},{"all":true,"filter":null,"keepDuration":0,"maxUsedSpace":100000000000,"minFreeSpace":94000000000,"reservedSpace":10000000000}],"IDs":["zh05kd8qdrkor9k2h15br199l"],"Labels":{"org.mobyproject.buildkit.worker.executor":"oci","org.mobyproject.buildkit.worker.hostname":"3cc514a6ea5c","org.mobyproject.buildkit.worker.network":"host","org.mobyproject.buildkit.worker.oci.process-mode":"sandbox","org.mobyproject.buildkit.worker.selinux.enabled":"false","org.mobyproject.buildkit.worker.snapshotter":"overlayfs"},"Name":"bla0","Platforms":["linux/amd64","linux/amd64/v2","linux/amd64/v3","linux/amd64/v4","linux/386"],"Status":"running","Version":"v0.22.0"}]}
     "#;
-    assert_eq!(find_builder("beepboop", json_bla.trim()).unwrap(), None);
+    let builders_bla = parse_builders(json_bla.trim()).unwrap();
+    assert_eq!(find_builder("beepboop", &builders_bla), None);
     assert_eq!(
-        find_builder("bla", json_bla.trim()).unwrap().unwrap(),
-        BuildxBuilder {
+        find_builder("bla", &builders_bla).unwrap(),
+        &BuildxBuilder {
             name: "bla".to_owned(),
             driver: BUILDER_DRIVER.to_owned(),
             nodes: vec![BuilderNode {
@@ -377,9 +383,10 @@ fn find_builders() {
     let json_default = r#"
 {"Current":true,"Driver":"docker","Dynamic":false,"LastActivity":"2025-08-11T13:30:33Z","Name":"default","Nodes":[{"Endpoint":"default","GCPolicy":[{"all":false,"filter":["type==source.local,type==exec.cachemount,type==source.git.checkout"],"keepDuration":172800000000000,"maxUsedSpace":6494262707,"minFreeSpace":0,"reservedSpace":0},{"all":false,"filter":null,"keepDuration":5184000000000000,"maxUsedSpace":6000000000,"minFreeSpace":24000000000,"reservedSpace":47000000000},{"all":false,"filter":null,"keepDuration":0,"maxUsedSpace":6000000000,"minFreeSpace":24000000000,"reservedSpace":47000000000},{"all":true,"filter":null,"keepDuration":0,"maxUsedSpace":6000000000,"minFreeSpace":24000000000,"reservedSpace":47000000000}],"IDs":["4ff1ee7f-a3ff-4df0-ad6e-9d0162ddbda5"],"Labels":{"org.mobyproject.buildkit.worker.moby.host-gateway-ip":"172.17.0.1"},"Name":"default","Platforms":["linux/amd64","linux/amd64/v2","linux/amd64/v3","linux/amd64/v4","linux/386"],"Status":"running","Version":"v0.23.2"}]}
     "#;
+    let builders_default = parse_builders(json_default.trim()).unwrap();
     assert_eq!(
-        find_builder("default", json_default.trim()).unwrap().unwrap(),
-        BuildxBuilder {
+        find_builder("default", &builders_default).unwrap(),
+        &BuildxBuilder {
             name: "default".to_owned(),
             driver: "docker".to_owned(),
             nodes: vec![BuilderNode { version: Some("v0.23.2".to_owned()), driver_opts: None }],
