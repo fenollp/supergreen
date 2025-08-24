@@ -118,14 +118,13 @@ Type:       regular
 Reclaimable:    3.69GB
 Total:      3.69GB
 "#;
-    let res = "docker.io/library/rust:1.89.0-slim@sha256:33219ca58c0dd38571fd3f87172b5bce2d9f3eb6f27e6e75efe12381836f71fa";
     assert_eq!(
         lock_from_builder_cache(stdout.as_bytes().to_vec(), "rust:1.89.0-slim"),
-        Some(res.to_owned())
+        Some("sha256:33219ca58c0dd38571fd3f87172b5bce2d9f3eb6f27e6e75efe12381836f71fa".to_owned())
     );
     assert_eq!(
         lock_from_builder_cache(stdout.as_bytes().to_vec(), "docker.io/library/rust:1.89.0-slim"),
-        Some(res.to_owned())
+        Some("sha256:33219ca58c0dd38571fd3f87172b5bce2d9f3eb6f27e6e75efe12381836f71fa".to_owned())
     );
     assert_eq!(lock_from_builder_cache(stdout.as_bytes().to_vec(), "blaaaa"), None);
 }
@@ -190,9 +189,8 @@ Last used:  41 hours ago
 Type:       regular
 
 "#;
-    let res = "docker.io/library/rust:1.89.0-slim@sha256:2ff54dd21007d5ee97026fadad80598e66136a43adc5687078d796d958bd58fb";
     assert_eq!(
         lock_from_builder_cache(multiple.as_bytes().to_vec(), "rust:1.89.0-slim"),
-        Some(res.to_owned())
+        Some("sha256:2ff54dd21007d5ee97026fadad80598e66136a43adc5687078d796d958bd58fb".to_owned())
     );
 }
