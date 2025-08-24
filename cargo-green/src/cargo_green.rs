@@ -125,8 +125,6 @@ pub(crate) async fn main() -> Result<Green> {
 
     green.maybe_setup_builder(builder.cloned(), &builders).await?;
 
-    let cached = green.images_in_builder_cache().await?;
-
     if !green.syntax.is_empty() {
         bail!("${ENV_SYNTAX} can only be set through the environment variable")
     }
@@ -136,7 +134,7 @@ pub(crate) async fn main() -> Result<Green> {
     }
     // Use local hashed image if one matching exists locally
     green.syntax = green
-        .maybe_lock_image(&green.syntax, &cached)
+        .maybe_lock_image(&green.syntax)
         .await
         .map_err(|e| anyhow!("Failed locking {}: {e}", green.syntax))?;
     // otherwise default to a hash found through some Web API
@@ -179,7 +177,7 @@ pub(crate) async fn main() -> Result<Green> {
 
     if !green.image.base_image.locked() {
         let mut base = green
-            .maybe_lock_image(&green.image.base_image, &cached)
+            .maybe_lock_image(&green.image.base_image)
             .await
             .map_err(|e| anyhow!("Failed locking {}: {e}", green.image.base_image))?;
         base = fetch_digest(&base).await?;

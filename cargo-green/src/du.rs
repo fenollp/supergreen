@@ -1,3 +1,5 @@
+use std::sync::OnceLock;
+
 use anyhow::{bail, Result};
 use chrono::{DateTime, FixedOffset};
 use log::warn;
@@ -63,7 +65,14 @@ fn parse_buildx_du_kvs(stdout: &[u8]) -> Vec<Du> {
 }
 
 impl Green {
-    pub(crate) async fn images_in_builder_cache(&self) -> Result<Vec<Du>> {
+    pub(crate) async fn images_in_builder_cache(&self) -> Result<&'static [Du]> {
+        static ARRAY: OnceLock<Vec<Du>> = OnceLock::new();
+        let got = ARRAY.get();
+
+        if let Some(got) = got {
+            return Ok(got);
+        }
+
         let mut cmd = self.cmd();
         cmd.args(["buildx", "du", "--verbose"]);
         cmd.arg("--filter=type=regular");
@@ -73,10 +82,13 @@ impl Green {
             let stderr = String::from_utf8_lossy(&stderr);
             bail!("Failed to query builder cache: {stderr}")
         }
-        Ok(parse_images(&stdout))
+        let got = parse_images(&stdout);
+        let _ = ARRAY.set(got);
+        Ok(ARRAY.get().unwrap())
     }
 }
 
+#[must_use]
 fn parse_images(stdout: &[u8]) -> Vec<Du> {
     let mut dus = parse_buildx_du_kvs(stdout);
     dus.sort_by(|Du { created_at: a, .. }, Du { created_at: b, .. }| b.cmp(a));

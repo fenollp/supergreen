@@ -31,7 +31,7 @@ use tokio::{
 
 use crate::{
     add::ENV_ADD_APT,
-    du::{lock_from_builder_cache, Du},
+    du::lock_from_builder_cache,
     ext::{timeout, CommandExt},
     green::{Green, ENV_SET_ENVS},
     image_uri::ImageUri,
@@ -238,11 +238,11 @@ impl FromStr for Network {
 impl Green {
     /// Read digest from builder cache, then maybe from default cache.
     /// Goal is to have a completely offline mode by default, after a `cargo green fetch`.
-    pub(crate) async fn maybe_lock_image(&self, img: &ImageUri, cached: &[Du]) -> Result<ImageUri> {
+    pub(crate) async fn maybe_lock_image(&self, img: &ImageUri) -> Result<ImageUri> {
         if img.locked() {
             return Ok(img.to_owned());
         }
-        if let Some(locked) = self.maybe_lock_from_builder_cache(img, cached) {
+        if let Some(locked) = self.maybe_lock_from_builder_cache(img).await? {
             return Ok(locked);
         }
         if let Some(locked) = self.maybe_lock_from_image_cache(img).await? {
@@ -257,8 +257,9 @@ impl Green {
     /// => docker buildx imagetools inspect --format={{json .Manifest.Digest}} img.noscheme()
     ///   Only fetches remote though, and takes ages compared to fetch_digest!
     /// See [Getting an image's digest fast, within a docker-container builder](https://github.com/docker/buildx/discussions/3363)
-    fn maybe_lock_from_builder_cache(&self, img: &ImageUri, cached: &[Du]) -> Option<ImageUri> {
-        lock_from_builder_cache(img.noscheme(), cached).map(|digest| img.lock(digest))
+    async fn maybe_lock_from_builder_cache(&self, img: &ImageUri) -> Result<Option<ImageUri>> {
+        let cached = self.images_in_builder_cache().await?;
+        Ok(lock_from_builder_cache(img.noscheme(), cached).map(|digest| img.lock(digest)))
     }
 
     /// If given an un-pinned image URI, query local image cache for its digest.
