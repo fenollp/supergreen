@@ -31,7 +31,7 @@ use tokio::{
 
 use crate::{
     add::ENV_ADD_APT,
-    du::lock_from_builder_cache,
+    du::{lock_from_builder_cache, Du},
     ext::{timeout, CommandExt},
     green::{Green, ENV_SET_ENVS},
     image_uri::ImageUri,
@@ -238,11 +238,11 @@ impl FromStr for Network {
 impl Green {
     /// Read digest from builder cache, then maybe from default cache.
     /// Goal is to have a completely offline mode by default, after a `cargo green fetch`.
-    pub(crate) async fn maybe_lock_image(&self, img: &ImageUri) -> Result<ImageUri> {
+    pub(crate) async fn maybe_lock_image(&self, img: &ImageUri, cached: &[Du]) -> Result<ImageUri> {
         if img.locked() {
             return Ok(img.to_owned());
         }
-        if let Some(locked) = self.maybe_lock_from_builder_cache(img).await? {
+        if let Some(locked) = self.maybe_lock_from_builder_cache(img, cached) {
             return Ok(locked);
         }
         if let Some(locked) = self.maybe_lock_from_image_cache(img).await? {
@@ -257,18 +257,8 @@ impl Green {
     /// => docker buildx imagetools inspect --format={{json .Manifest.Digest}} img.noscheme()
     ///   Only fetches remote though, and takes ages compared to fetch_digest!
     /// See [Getting an image's digest fast, within a docker-container builder](https://github.com/docker/buildx/discussions/3363)
-    async fn maybe_lock_from_builder_cache(&self, img: &ImageUri) -> Result<Option<ImageUri>> {
-        let mut cmd = self.cmd();
-        cmd.args(["buildx", "du", "--verbose"]);
-        cmd.arg("--filter=type=regular");
-        cmd.arg("--filter=description~=pulled.from");
-
-        let (succeeded, stdout, stderr) = cmd.exec().await?;
-        if !succeeded {
-            let stderr = String::from_utf8_lossy(&stderr);
-            bail!("Failed to query builder cache: {stderr}")
-        }
-        Ok(lock_from_builder_cache(stdout, img.noscheme()).map(|digest| img.lock(&digest)))
+    fn maybe_lock_from_builder_cache(&self, img: &ImageUri, cached: &[Du]) -> Option<ImageUri> {
+        lock_from_builder_cache(img.noscheme(), cached).map(|digest| img.lock(digest))
     }
 
     /// If given an un-pinned image URI, query local image cache for its digest.

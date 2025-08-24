@@ -1,5 +1,8 @@
+use anyhow::{bail, Result};
 use chrono::{DateTime, FixedOffset};
 use log::warn;
+
+use crate::{ext::CommandExt, green::Green};
 
 #[derive(Debug, Default)]
 pub(crate) struct Du {
@@ -59,17 +62,36 @@ fn parse_buildx_du_kvs(stdout: &[u8]) -> Vec<Du> {
     dus
 }
 
-#[inline]
-#[must_use]
-pub(crate) fn lock_from_builder_cache(stdout: Vec<u8>, img: &str) -> Option<String> {
-    let mut dus = parse_buildx_du_kvs(&stdout);
+impl Green {
+    pub(crate) async fn images_in_builder_cache(&self) -> Result<Vec<Du>> {
+        let mut cmd = self.cmd();
+        cmd.args(["buildx", "du", "--verbose"]);
+        cmd.arg("--filter=type=regular");
+        cmd.arg("--filter=description~=pulled.from");
+        let (succeeded, stdout, stderr) = cmd.exec().await?;
+        if !succeeded {
+            let stderr = String::from_utf8_lossy(&stderr);
+            bail!("Failed to query builder cache: {stderr}")
+        }
+        Ok(parse_images(&stdout))
+    }
+}
+
+fn parse_images(stdout: &[u8]) -> Vec<Du> {
+    let mut dus = parse_buildx_du_kvs(stdout);
     dus.sort_by(|Du { created_at: a, .. }, Du { created_at: b, .. }| b.cmp(a));
     dus.dedup_by_key(|Du { description, .. }| description.to_owned());
-    dus.into_iter()
-        .filter_map(|Du { description, .. }| {
-            description.contains(img).then(|| {
-                description.trim_start_matches(|c| c != '@').trim_start_matches('@').to_owned()
-            })
+    dus
+}
+
+#[inline]
+#[must_use]
+pub(crate) fn lock_from_builder_cache<'a>(img: &str, cached: &'a [Du]) -> Option<&'a str> {
+    cached
+        .iter()
+        .filter(|&Du { description, .. }| description.contains(img))
+        .map(|Du { description, .. }| {
+            description.trim_start_matches(|c| c != '@').trim_start_matches('@')
         })
         .next()
 }
@@ -118,15 +140,16 @@ Type:       regular
 Reclaimable:    3.69GB
 Total:      3.69GB
 "#;
+    let cached = parse_images(stdout.as_bytes());
     assert_eq!(
-        lock_from_builder_cache(stdout.as_bytes().to_vec(), "rust:1.89.0-slim"),
-        Some("sha256:33219ca58c0dd38571fd3f87172b5bce2d9f3eb6f27e6e75efe12381836f71fa".to_owned())
+        lock_from_builder_cache("rust:1.89.0-slim", &cached),
+        Some("sha256:33219ca58c0dd38571fd3f87172b5bce2d9f3eb6f27e6e75efe12381836f71fa")
     );
     assert_eq!(
-        lock_from_builder_cache(stdout.as_bytes().to_vec(), "docker.io/library/rust:1.89.0-slim"),
-        Some("sha256:33219ca58c0dd38571fd3f87172b5bce2d9f3eb6f27e6e75efe12381836f71fa".to_owned())
+        lock_from_builder_cache("docker.io/library/rust:1.89.0-slim", &cached),
+        Some("sha256:33219ca58c0dd38571fd3f87172b5bce2d9f3eb6f27e6e75efe12381836f71fa")
     );
-    assert_eq!(lock_from_builder_cache(stdout.as_bytes().to_vec(), "blaaaa"), None);
+    assert_eq!(lock_from_builder_cache("blaaaa", &cached), None);
 }
 
 #[test]
@@ -189,8 +212,9 @@ Last used:  41 hours ago
 Type:       regular
 
 "#;
+    let cached = parse_images(multiple.as_bytes());
     assert_eq!(
-        lock_from_builder_cache(multiple.as_bytes().to_vec(), "rust:1.89.0-slim"),
-        Some("sha256:2ff54dd21007d5ee97026fadad80598e66136a43adc5687078d796d958bd58fb".to_owned())
+        lock_from_builder_cache("rust:1.89.0-slim", &cached),
+        Some("sha256:2ff54dd21007d5ee97026fadad80598e66136a43adc5687078d796d958bd58fb")
     );
 }
