@@ -6,7 +6,7 @@ use std::{
 
 use anyhow::{anyhow, bail, Result};
 use futures::{stream::iter, StreamExt, TryStreamExt};
-use log::{debug, info};
+use log::{debug, info, warn};
 use serde::Deserialize;
 use tokio::try_join;
 use version_compare::Version;
@@ -232,11 +232,7 @@ impl Green {
                 }
                 return Ok(());
             }
-            Some(name) => {
-                self.builder_maxready =
-                    self.find_builder(name).await?.is_some_and(|b| b.driver != "docker"); // Hopes for BUILDER_DRIVER
-                (false, name)
-            }
+            Some(name) => (false, name),
         };
 
         let builder = self.find_builder(name).await?;
@@ -287,6 +283,8 @@ then run your cargo command again.
             self.create_builder(name).await?;
         }
 
+        self.builder_maxready =
+            self.find_builder(name).await?.is_some_and(|b| b.driver != "docker"); // Hopes for BUILDER_DRIVER
         self.builder_name = Some(name.to_owned());
         Ok(())
     }
@@ -456,19 +454,29 @@ pub(crate) async fn maybe_prebuild_base(green: &Green) -> Result<()> {
     let mut containerfile = green.new_containerfile();
     containerfile.pushln(green.image.base_image_inline.as_deref().unwrap());
 
-    let path = tmp().join(format!("{PKG}-{RST}-{}.Dockerfile", containerfile.hashed()));
-    if path.exists() {
+    let fname = format!("{PKG}-{RST}-{}.Dockerfile", containerfile.hashed());
+    let sentinel = tmp().join(format!("{fname}.done"));
+    info!("checking the existence of {sentinel}");
+    if sentinel.exists() {
         return Ok(());
     }
+
+    let path = tmp().join(fname);
     containerfile.write_to(&path)?;
 
     // Turns out --network is part of BuildKit's cache key, so an initial online build
     // won't cache hit on later offline builds.
-    build_cacheonly(green, &path, RUST.clone()).await.map_err(|e| {
-        // TODO: catch ^C (and co.) to make sure file gets removed
-        let containerfile = containerfile.remove_from(&path);
-        anyhow!("{containerfile}\n\nUnable to build {RST}: {e}")
-    })
+    build_cacheonly(green, &path, RUST.clone())
+        .await
+        .inspect(|_| {
+            if let Err(e) = fs::write(&sentinel, "") {
+                warn!("Failed creating sentinel {sentinel}: {e}")
+            }
+        })
+        .map_err(|e| {
+            let containerfile = containerfile.remove_from(&path);
+            anyhow!("{containerfile}\n\nUnable to build {RST}: {e}")
+        })
 }
 
 pub(crate) async fn fetch(green: Green) -> Result<()> {
@@ -481,20 +489,39 @@ pub(crate) async fn fetch(green: Green) -> Result<()> {
 
     let packages = locked_crates(&manifest_path_lockfile).await?;
     info!("found {} packages", packages.len());
-    if packages.is_empty() {
-        return Ok(());
-    }
 
-    let imgs = vec![
+    let imgs: Vec<_> = [
+        // NOTE: we don't pull ENV_CACHE_IMAGES
         (env::var(ENV_SYNTAX).ok(), Some(&green.syntax)),
         (env::var(ENV_BASE_IMAGE).ok(), Some(&green.image.base_image)),
         (env::var(ENV_BUILDER_IMAGE).ok(), green.builder_image.as_ref()),
-    ]; // NOTE: we don't pull ENV_CACHE_IMAGES
+    ]
+    .into_iter()
+    .filter_map(|(user_input, img)| img.map(|img| (user_input, img)))
+    .map(|(user_input, img)| {
+        if img.locked() && user_input.map(|x| !x.contains("@sha256:")).unwrap_or(true) {
+            // Don't pull a locked image unless that's what's asked
+            // Otherwise, pull unlocked
+
+            img.unlocked()
+        } else {
+            img.to_owned()
+        }
+    })
+    .collect();
+
+    let mut containerfile = green.new_containerfile();
+
+    let imger = |img: &str| img.replace(['/', ':'], "-");
+    let ddb = !green.builder_maxready; // using !maxready as a proxy for "using default docker builder"
+
+    for img in imgs.iter().filter(|_| !ddb) {
+        let img = img.noscheme();
+        containerfile.push(&format!("FROM --platform=$BUILDPLATFORM {img} AS {}\n", imger(img)));
+    }
 
     let stage = Stage::new("cargo-fetch").unwrap();
     let stager = |i| format!("{stage}-{i}");
-
-    let mut containerfile = green.new_containerfile();
 
     let mut leaves = 0;
     // 127: https://github.com/docker/docs/issues/8230
@@ -517,47 +544,51 @@ pub(crate) async fn fetch(green: Green) -> Result<()> {
         containerfile.push(&format!("COPY --from={} / /\n", stager(leaf)));
     }
 
-    let path = {
-        let hashed = hash(&(containerfile.hashed() + &format!("{imgs:?}")));
-        tmp().join(format!("{PKG}-fetch-{hashed}.Dockerfile"))
-    };
-    info!("checking the existence of {path}");
-    if path.exists() {
+    for img in imgs.iter().filter(|_| !ddb) {
+        let imgd = imger(img.noscheme());
+        containerfile.push(&format!("COPY --from={imgd} / /{imgd}\n"));
+    }
+
+    let fname = format!(
+        "{PKG}-fetch-{}.Dockerfile",
+        hash(&(containerfile.hashed() + &format!("{imgs:?}")))
+    );
+    let sentinel = tmp().join(format!("{fname}.done"));
+    info!("checking the existence of {sentinel}");
+    if sentinel.exists() {
         return Ok(());
     }
+
+    let path = tmp().join(fname);
     containerfile.write_to(&path)?;
 
-    let ((), ()) = try_join!(
-        pull(&green, imgs), // NOTE: can't pull these with build(..): they won't get --load'ed
-        build_cacheonly(&green, &path, stage)
-    )
-    .inspect_err(|_| {
-        // TODO: catch ^C (and co.) to make sure file gets removed
-        let _ = containerfile.remove_from(&path);
+    let imgs_is_empty = imgs.is_empty();
+
+    let load_to_docker = async {
+        if imgs_is_empty || !ddb {
+            return Ok(());
+        }
+        pull(&green, imgs).await // NOTE: can't pull these with build(..): they won't get --load'ed
+    };
+
+    let cache_packages = async {
+        if packages.is_empty() && (imgs_is_empty || ddb) {
+            return Ok(());
+        }
+        build_cacheonly(&green, &path, stage).await
+    };
+
+    let ((), ()) = try_join!(load_to_docker, cache_packages).inspect(|_| {
+        if let Err(e) = fs::write(&sentinel, "") {
+            warn!("Failed creating sentinel {sentinel}: {e}")
+        }
     })?;
     Ok(())
 }
 
-async fn pull(green: &Green, imgs: Vec<(Option<String>, Option<&ImageUri>)>) -> Result<()> {
-    let mut to_pull = vec![];
-    for (user_input, img) in imgs {
-        let Some(img) = img else { continue };
-        let img = if img.locked() && user_input.map(|x| !x.contains("@sha256:")).unwrap_or(true) {
-            // Don't pull a locked image unless that's what's asked
-            // Otherwise, pull unlocked
-
-            img.unlocked()
-        } else {
-            img.to_owned()
-        };
-        to_pull.push(img);
-    }
-    pull_images(green, to_pull).await
-}
-
-async fn pull_images(green: &Green, to_pull: Vec<ImageUri>) -> Result<()> {
+async fn pull(green: &Green, imgs: Vec<ImageUri>) -> Result<()> {
     // TODO: nice TUI that handles concurrent progress
-    iter(to_pull.into_iter())
+    iter(imgs.into_iter())
         .map(|img| async { do_pull(green, img).await })
         .buffer_unordered(10)
         .try_collect()
@@ -568,8 +599,13 @@ async fn do_pull(green: &Green, img: ImageUri) -> Result<()> {
     println!("Pulling {img}...");
     let mut cmd = green.cmd();
     cmd.arg("pull").arg(img.noscheme());
-    let (succeeded, _, _) = cmd.exec().await?;
-    if !succeeded {
+    let o = cmd
+        .spawn()
+        .map_err(|e| anyhow!("Failed to start {}: {e}", cmd.show()))?
+        .wait()
+        .await
+        .map_err(|e| anyhow!("Failed to call {}: {e}", cmd.show()))?;
+    if !o.success() {
         bail!("Failed to pull {img}")
     }
     Ok(())
