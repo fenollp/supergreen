@@ -248,7 +248,7 @@ impl Green {
         if let Some(locked) = self.maybe_lock_from_image_cache(img).await? {
             return Ok(locked);
         }
-        bail!("Could not find a digest for image {}", img.noscheme())
+        Ok(img.to_owned())
     }
 
     /// Reads from builder build cache if any, and falls back to image cache.
