@@ -1,5 +1,5 @@
 use std::{
-    collections::HashSet,
+    collections::{HashMap, HashSet},
     env,
     fs::{self, OpenOptions},
     io::Write,
@@ -42,6 +42,10 @@ pub(crate) struct Green {
     // CARGOGREEN_RUNNER="docker"
     pub(crate) runner: Runner,
 
+    // Snapshot of runner's envs. Not user-settable.
+    #[serde(skip_serializing_if = "HashMap::is_empty")]
+    pub(crate) runner_envs: HashMap<String, String>,
+
     // Whether to wrap incremental compilation, defaults to false.
     //
     // See https://doc.rust-lang.org/cargo/reference/config.html#buildincremental
@@ -51,6 +55,35 @@ pub(crate) struct Green {
     #[serde(skip_serializing_if = "<&bool as std::ops::Not>::not")]
     pub(crate) incremental: bool,
 
+    // Sets which BuildKit builder to use, through $BUILDX_BUILDER.
+    //
+    // See https://docs.docker.com/build/building/variables/#buildx_builder
+    // Also: https://docs.docker.com/build/drivers/docker-container/
+    // Also: https://docs.docker.com/build/drivers/remote/
+    // Also: https://docs.docker.com/build/drivers/kubernetes/
+    //
+    // * Unset: creates & handles a builder named "supergreen". Upgrades it if too old, while trying to keep old cached data
+    // * Set to "": skips using a builder
+    // * Set to "supergreen": uses existing and just warns if too old (FIXME suggest upgrade cmd)
+    // * Set: use that as builder, no questions asked
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub(crate) builder_name: Option<String>,
+
+    //=>store which driver kind this is
+    #[serde(skip_serializing_if = "<&bool as std::ops::Not>::not")]
+    pub(crate) builder_maxready: bool,
+
+    //====> probs make a pub(crate) builder: Builder (name, image, version? args?, latest=v0.22.0?)
+
+    // Sets which BuildKit builder version to use.
+    //
+    // See https://docs.docker.com/build/builders/
+    //
+    // # Use by setting this environment variable (no Cargo.toml setting):
+    // CARGOGREEN_BUILDER_IMAGE="docker-image://docker.io/moby/buildkit:latest"
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub(crate) builder_image: Option<ImageUri>,
+
     // Sets which BuildKit frontend syntax to use.
     //
     // See https://docs.docker.com/build/buildkit/frontend/#stable-channel
@@ -58,16 +91,6 @@ pub(crate) struct Green {
     // # Use by setting this environment variable (no Cargo.toml setting):
     // CARGOGREEN_SYNTAX="docker-image://docker.io/docker/dockerfile:1"
     pub(crate) syntax: ImageUri,
-
-    // Sets which BuildKit builder to use.
-    //
-    // See https://docs.docker.com/build/builders/
-    //
-    // # Use by setting this environment variable (no Cargo.toml setting):
-    // CARGOGREEN_BUILDER_IMAGE="docker-image://docker.io/moby/buildkit:latest"
-    // CARGOGREEN_BUILDER_IMAGE="docker-image://docker.io/moby/buildkit:buildx-stable-1"
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub(crate) builder_image: Option<ImageUri>,
 
     // Image paths with registry information.
     //

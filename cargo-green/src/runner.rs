@@ -1,10 +1,14 @@
 use std::{
-    env, fmt,
+    collections::HashMap,
+    env,
+    ffi::OsStr,
+    fmt,
     fs::{self},
     mem,
     ops::Not,
-    process::{Output, Stdio},
+    process::Stdio,
     str::FromStr,
+    sync::LazyLock,
     time::{Duration, Instant},
 };
 
@@ -27,7 +31,8 @@ use tokio::{
 
 use crate::{
     add::ENV_ADD_APT,
-    ext::{timeout, ShowCmd},
+    du::lock_from_builder_cache,
+    ext::{timeout, CommandExt},
     green::{Green, ENV_SET_ENVS},
     image_uri::ImageUri,
     logging::{crate_type_for_logging, maybe_log, ENV_LOG_PATH},
@@ -35,6 +40,86 @@ use crate::{
     stage::Stage,
     PKG,
 };
+
+// Envs from BuildKit/Buildx/Docker/Podman that we read
+const BUILDKIT_COLORS: &str = "BUILDKIT_COLORS";
+pub(crate) const BUILDKIT_HOST: &str = "BUILDKIT_HOST";
+const BUILDKIT_PROGRESS: &str = "BUILDKIT_PROGRESS";
+const BUILDKIT_TTY_LOG_LINES: &str = "BUILDKIT_TTY_LOG_LINES";
+pub(crate) const BUILDX_BUILDER: &str = "BUILDX_BUILDER";
+const BUILDX_CPU_PROFILE: &str = "BUILDX_CPU_PROFILE";
+const BUILDX_MEM_PROFILE: &str = "BUILDX_MEM_PROFILE";
+pub(crate) const DOCKER_BUILDKIT: &str = "DOCKER_BUILDKIT";
+pub(crate) const DOCKER_CONTEXT: &str = "DOCKER_CONTEXT";
+const DOCKER_DEFAULT_PLATFORM: &str = "DOCKER_DEFAULT_PLATFORM";
+const DOCKER_HIDE_LEGACY_COMMANDS: &str = "DOCKER_HIDE_LEGACY_COMMANDS";
+pub(crate) const DOCKER_HOST: &str = "DOCKER_HOST";
+
+/// Read envs used by runner, once.
+/// https://docs.docker.com/engine/reference/commandline/cli/#environment-variables
+/// https://docs.docker.com/build/building/variables/#build-tool-configuration-variables
+pub(crate) fn envs() -> HashMap<String, String> {
+    [
+        BUILDKIT_COLORS,
+        BUILDKIT_HOST,
+        BUILDKIT_PROGRESS,
+        BUILDKIT_TTY_LOG_LINES,
+        "BUILDX_BAKE_GIT_AUTH_HEADER",
+        "BUILDX_BAKE_GIT_AUTH_TOKEN",
+        "BUILDX_BAKE_GIT_SSH",
+        BUILDX_BUILDER,
+        DOCKER_BUILDKIT,
+        "BUILDX_CONFIG",
+        BUILDX_CPU_PROFILE,
+        "BUILDX_EXPERIMENTAL",
+        "BUILDX_GIT_CHECK_DIRTY",
+        "BUILDX_GIT_INFO",
+        "BUILDX_GIT_LABELS",
+        BUILDX_MEM_PROFILE,
+        "BUILDX_METADATA_PROVENANCE",
+        "BUILDX_METADATA_WARNINGS",
+        "BUILDX_NO_DEFAULT_ATTESTATIONS",
+        "BUILDX_NO_DEFAULT_LOAD",
+        "DOCKER_API_VERSION",
+        "DOCKER_CERT_PATH",
+        "DOCKER_CONFIG",
+        "DOCKER_CONTENT_TRUST",
+        "DOCKER_CONTENT_TRUST_SERVER",
+        DOCKER_CONTEXT,
+        DOCKER_DEFAULT_PLATFORM,
+        DOCKER_HIDE_LEGACY_COMMANDS,
+        DOCKER_HOST,
+        "DOCKER_TLS",
+        "DOCKER_TLS_VERIFY",
+        "EXPERIMENTAL_BUILDKIT_SOURCE_POLICY",
+        "HTTP_PROXY",  //TODO: hinders reproducibility
+        "HTTPS_PROXY", //TODO: hinders reproducibility
+        "NO_PROXY",    //TODO: hinders reproducibility
+    ]
+    .into_iter()
+    .filter_map(|k| env::var(k).ok().map(|v| (k.to_owned(), v)))
+    .collect()
+}
+
+/// Strip out envs that don't affect a build's outputs:
+static BUILD_UNALTERING_ENVS: LazyLock<Vec<&OsStr>> = LazyLock::new(|| {
+    [
+        BUILDKIT_COLORS,
+        BUILDKIT_HOST,
+        BUILDKIT_PROGRESS,
+        BUILDKIT_TTY_LOG_LINES,
+        BUILDX_BUILDER,
+        BUILDX_CPU_PROFILE,
+        BUILDX_MEM_PROFILE,
+        DOCKER_CONTEXT,
+        DOCKER_DEFAULT_PLATFORM,
+        DOCKER_HIDE_LEGACY_COMMANDS,
+        DOCKER_HOST,
+    ]
+    .into_iter()
+    .map(OsStr::new)
+    .collect()
+});
 
 #[derive(Debug, Copy, Clone, Default, Serialize, Deserialize, Eq, PartialEq)]
 #[serde(deny_unknown_fields)]
@@ -44,28 +129,6 @@ pub(crate) enum Runner {
     Docker,
     Podman,
     None,
-}
-
-impl Runner {
-    pub(crate) fn as_cmd(&self) -> Command {
-        self.as_debug_cmd(true)
-    }
-
-    pub(crate) fn as_nondbg_cmd(&self) -> Command {
-        self.as_debug_cmd(false)
-    }
-
-    #[must_use]
-    fn as_debug_cmd(&self, debug: bool) -> Command {
-        let mut cmd = Command::new(self.to_string());
-        cmd.kill_on_drop(true); // Makes sure the underlying OS process dies with us
-        cmd.stdin(Stdio::null());
-        if debug {
-            cmd.arg("--debug");
-        }
-        // TODO: use env_clear https://docs.rs/tokio/latest/tokio/process/struct.Command.html#method.env_clear => pass all buildkit/docker/moby/podman envs explicitly
-        cmd
-    }
 }
 
 impl fmt::Display for Runner {
@@ -88,12 +151,48 @@ impl FromStr for Runner {
             "none" => Ok(Self::None),
             _ => {
                 let all: Vec<_> = [Self::Docker, Self::Podman, Self::None]
-                    .into_iter()
-                    .map(|x| x.to_string())
+                    .iter()
+                    .map(ToString::to_string)
                     .collect();
                 bail!("Runner must be one of {all:?}")
             }
         }
+    }
+}
+
+impl Green {
+    pub(crate) fn cmd(&self) -> Command {
+        self.as_debug_cmd(true)
+    }
+
+    pub(crate) fn cmd_nodbg(&self) -> Command {
+        self.as_debug_cmd(false)
+    }
+
+    #[must_use]
+    fn as_debug_cmd(&self, debug: bool) -> Command {
+        let mut cmd = Command::new(self.runner.to_string());
+        cmd.kill_on_drop(true); // Underlying OS process dies with us
+        cmd.stdin(Stdio::null());
+        if debug {
+            cmd.arg("--debug");
+        }
+        cmd.env_clear(); // Pass all envs explicitly only
+        cmd.env(DOCKER_BUILDKIT, "1"); // BuildKit is used by either runner
+
+        if let Some(ref name) = self.builder_name {
+            cmd.env(BUILDX_BUILDER, name);
+        }
+
+        for (var, val) in &self.runner_envs {
+            if [BUILDX_BUILDER, DOCKER_BUILDKIT].contains(&var.as_str()) {
+                continue;
+            }
+            info!("passing through runner setting: ${var}={val:?}");
+            cmd.env(var, val);
+        }
+
+        cmd
     }
 }
 
@@ -136,31 +235,57 @@ impl FromStr for Network {
     }
 }
 
-/// If given an un-pinned image URI, query local image cache for its digest.
-/// Returns the given URI, along with its digest if one was found.
-#[must_use]
-pub(crate) async fn maybe_lock_image(green: &Green, img: &ImageUri) -> ImageUri {
-    if !img.locked() {
-        if let Some(line) = green
-            .runner
-            .as_cmd()
-            .arg("inspect")
-            .arg("--format={{index .RepoDigests 0}}")
-            .arg(img.noscheme())
-            .output()
-            .await
-            .ok()
-            .and_then(|o| o.status.success().then_some(o))
-            .and_then(|o| String::from_utf8(o.stdout).ok())
-            .and_then(|x| x.lines().next().map(ToOwned::to_owned))
-        {
-            // NOTE: `inspect` does not keep tag: host/dir/name@sha256:digest (no :tag@)
-            let digested =
-                ImageUri::try_new(format!("docker-image://{line}")).expect("inspect's output");
-            return img.lock(digested.digest());
+impl Green {
+    /// Read digest from builder cache, then maybe from default cache.
+    /// Goal is to have a completely offline mode by default, after a `cargo green fetch`.
+    pub(crate) async fn maybe_lock_image(&self, img: &ImageUri) -> Result<ImageUri> {
+        if img.locked() {
+            return Ok(img.to_owned());
         }
+        if let Some(locked) = self.maybe_lock_from_builder_cache(img).await? {
+            return Ok(locked);
+        }
+        if let Some(locked) = self.maybe_lock_from_image_cache(img).await? {
+            return Ok(locked);
+        }
+        Ok(img.to_owned())
     }
-    img.to_owned()
+
+    /// Reads from builder build cache if any, and falls back to image cache.
+    ///
+    /// https://docs.docker.com/reference/cli/docker/buildx/imagetools/inspect/
+    /// => docker buildx imagetools inspect --format={{json .Manifest.Digest}} img.noscheme()
+    ///   Only fetches remote though, and takes ages compared to fetch_digest!
+    /// See [Getting an image's digest fast, within a docker-container builder](https://github.com/docker/buildx/discussions/3363)
+    async fn maybe_lock_from_builder_cache(&self, img: &ImageUri) -> Result<Option<ImageUri>> {
+        let cached = self.images_in_builder_cache().await?;
+        Ok(lock_from_builder_cache(img.noscheme(), cached).map(|digest| img.lock(digest)))
+    }
+
+    /// If given an un-pinned image URI, query local image cache for its digest.
+    /// Returns the given URI, along with its digest if one was found.
+    ///
+    /// https://docs.docker.com/dhi/core-concepts/digests/
+    async fn maybe_lock_from_image_cache(&self, img: &ImageUri) -> Result<Option<ImageUri>> {
+        let mut cmd = self.cmd();
+        cmd.arg("inspect").arg("--format={{index .RepoDigests 0}}").arg(img.noscheme());
+
+        let (succeeded, stdout, stderr) = cmd.exec().await?;
+        if !succeeded {
+            let stderr = String::from_utf8_lossy(&stderr);
+            if stderr.contains("No such object") {
+                return Ok(None);
+            }
+            bail!("BUG: failed to inspect image cache: {stderr}")
+        }
+
+        Ok(String::from_utf8_lossy(&stdout)
+            .lines()
+            .next()
+            .and_then(|line| ImageUri::try_new(format!("docker-image://{line}")).ok())
+            // NOTE: `inspect` does not keep tag: host/dir/name@sha256:digest (no :tag@)
+            .map(|digested| img.lock(digested.digest())))
+    }
 }
 
 /// If given an un-pinned image URI, query remote image API for its digest.
@@ -234,11 +359,8 @@ async fn build(
 ) -> (String, String, Result<Effects>) {
     let rtrn = |e| ("".to_owned(), "".to_owned(), Err(e));
 
-    let mut cmd = green.runner.as_cmd();
+    let mut cmd = green.cmd();
     cmd.arg("build");
-
-    // Makes sure that the BuildKit builder is used by either runner
-    cmd.env("DOCKER_BUILDKIT", "1");
 
     //TODO: (use if set) cmd.env("SOURCE_DATE_EPOCH", "0"); // https://reproducible-builds.org/docs/source-date-epoch
     // https://github.com/moby/buildkit/blob/master/docs/build-repro.md#source_date_epoch
@@ -266,30 +388,6 @@ async fn build(
     // $ diffoci diff gcc@sha256:f97e2719cd5138c932a814ca43f3ca7b33fde866e182e7d76d8391ec0b05091f gcc:local
     // ...
 
-    // https://docs.docker.com/engine/reference/commandline/cli/#environment-variables
-    for var in [
-        "BUILDKIT_PROGRESS",
-        "BUILDX_BUILDER", //
-        "DOCKER_API_VERSION",
-        "DOCKER_CERT_PATH",
-        "DOCKER_CONFIG",
-        "DOCKER_CONTENT_TRUST",
-        "DOCKER_CONTENT_TRUST_SERVER",
-        "DOCKER_CONTEXT",
-        "DOCKER_DEFAULT_PLATFORM",
-        "DOCKER_HIDE_LEGACY_COMMANDS",
-        "DOCKER_HOST",
-        "DOCKER_TLS",
-        "DOCKER_TLS_VERIFY",
-        "HTTP_PROXY",
-        "HTTPS_PROXY",
-        "NO_PROXY",
-    ] {
-        if let Ok(val) = env::var(var) {
-            cmd.env(var, val);
-        }
-    }
-
     if false {
         cmd.arg("--no-cache");
         //NOTE: --no-cache-filter target1,target2 --no-cache-filter=target3 (&&)
@@ -306,8 +404,14 @@ async fn build(
     if !green.cache_images.is_empty() {
         for img in &green.cache_images {
             let img = img.noscheme();
-            let mode = if false { ",mode=max" } else { "" }; // TODO: env? builder call?
-            cmd.arg(format!("--cache-from=type=registry,ref={img}{mode}"));
+            cmd.arg(format!(
+                "--cache-from=type=registry,ref={img}{mode}",
+                mode = if green.builder_maxready { ",mode=max" } else { "" }
+            ));
+
+            if green.builder_maxready {
+                continue;
+            }
 
             // TODO: include enough info for repro
             // => rustc shortcommit, ..?
@@ -321,8 +425,10 @@ async fn build(
                 cmd.arg(format!("--tag={img}:latest"));
             }
         }
-        cmd.arg("--build-arg=BUILDKIT_INLINE_CACHE=1"); // https://docs.docker.com/build/cache/backends/inline
-        cmd.arg("--load"); //FIXME: this should not be needed
+        if !green.builder_maxready {
+            cmd.arg("--build-arg=BUILDKIT_INLINE_CACHE=1"); // https://docs.docker.com/build/cache/backends/inline
+            cmd.arg("--load"); //FIXME: this should not be needed
+        }
     }
 
     if false {
@@ -361,13 +467,9 @@ async fn build(
     }
 
     let call = cmd.show_unquoted();
-    let envs: Vec<_> = cmd
-        .as_std()
-        .get_envs()
-        .map(|(k, v)| format!("{}={:?}", k.to_string_lossy(), v.unwrap_or_default()))
-        .collect();
-    let envs = envs.join(" ");
+    let envs = cmd.envs_string(&[]);
     info!("Starting `{envs} {call} <{containerfile}`");
+    let envs = cmd.envs_string(&BUILD_UNALTERING_ENVS);
 
     let start = Instant::now();
     let mut child = match cmd.spawn() {
@@ -528,15 +630,15 @@ async fn build(
         // * docker info
         // * docker buildx ls
 
-        let mut cmd = green.runner.as_nondbg_cmd();
+        let mut cmd = green.cmd_nodbg();
         cmd.arg("info");
-        let (stdout, stderr, status) = match cmd.output().await {
-            Ok(Output { stdout, stderr, status }) => (stdout, stderr, status),
-            Err(e) => return rtrn(anyhow!("Failed starting {}: {e}", cmd.show())),
+        let (succeeded, stdout, stderr) = match cmd.exec().await {
+            Ok((succeeded, stdout, stderr)) => (succeeded, stdout, stderr),
+            Err(e) => return rtrn(e),
         };
         let stdout = String::from_utf8_lossy(&stdout);
         let stderr = String::from_utf8_lossy(&stderr);
-        return rtrn(anyhow!("Runner info: {status} [STDOUT {stdout}] [STDERR {stderr}]"));
+        return rtrn(anyhow!("Runner info: {succeeded} [STDOUT {stdout}] [STDERR {stderr}]"));
     }
 
     (call, envs, Ok(effects))

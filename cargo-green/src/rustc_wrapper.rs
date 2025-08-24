@@ -14,7 +14,7 @@ use tokio::process::Command;
 use crate::{
     checkouts,
     cratesio::{self, rewrite_cratesio_index},
-    ext::ShowCmd,
+    ext::CommandExt,
     green::Green,
     logging::{self, crate_type_for_logging, maybe_log},
     md::{BuildContext, Md},
