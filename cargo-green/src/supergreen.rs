@@ -155,7 +155,7 @@ fn envs(green: Green, vars: Vec<String>) {
         (ENV_ADD_APT_GET, csv(&green.add.apt_get)),
         (ENV_BASE_IMAGE, Some(green.image.base_image.to_string())),
         (ENV_BASE_IMAGE_INLINE, green.image.base_image_inline.clone()),
-        (ENV_BUILDER_IMAGE, green.builder_image.map(|x| x.to_string())),
+        (ENV_BUILDER_IMAGE, green.builder.image.map(|x| x.to_string())),
         (ENV_CACHE_IMAGES, csv_uris(&green.cache_images)),
         (ENV_FINAL_PATH, green.final_path.as_deref().map(ToString::to_string)),
         (ENV_FINAL_PATH_NONPRIMARY, green.final_path_nonprimary.then(|| "1".to_owned())),

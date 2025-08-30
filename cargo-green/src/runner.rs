@@ -180,7 +180,7 @@ impl Green {
         cmd.env_clear(); // Pass all envs explicitly only
         cmd.env(DOCKER_BUILDKIT, "1"); // BuildKit is used by either runner
 
-        if let Some(ref name) = self.builder_name {
+        if let Some(ref name) = self.builder.name {
             cmd.env(BUILDX_BUILDER, name);
         }
 
@@ -402,14 +402,15 @@ async fn build(
     //ignore-error=true
 
     if !green.cache_images.is_empty() {
+        let maxready = green.builder.has_maxready();
         for img in &green.cache_images {
             let img = img.noscheme();
             cmd.arg(format!(
                 "--cache-from=type=registry,ref={img}{mode}",
-                mode = if green.builder_maxready { ",mode=max" } else { "" }
+                mode = if maxready { ",mode=max" } else { "" }
             ));
 
-            if green.builder_maxready {
+            if maxready {
                 continue;
             }
 
@@ -425,7 +426,7 @@ async fn build(
                 cmd.arg(format!("--tag={img}:latest"));
             }
         }
-        if !green.builder_maxready {
+        if !maxready {
             cmd.arg("--build-arg=BUILDKIT_INLINE_CACHE=1"); // https://docs.docker.com/build/cache/backends/inline
             cmd.arg("--load"); //FIXME: this should not be needed
         }

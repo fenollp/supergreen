@@ -17,6 +17,7 @@ use crate::runner::Network;
 use crate::{
     add::{Add, ENV_ADD_APK, ENV_ADD_APT, ENV_ADD_APT_GET},
     base_image::{BaseImage, ENV_BASE_IMAGE, ENV_BASE_IMAGE_INLINE},
+    builder::Builder,
     containerfile::Containerfile,
     image_uri::ImageUri,
     lockfile::find_manifest_path,
@@ -55,34 +56,8 @@ pub(crate) struct Green {
     #[serde(skip_serializing_if = "<&bool as std::ops::Not>::not")]
     pub(crate) incremental: bool,
 
-    // Sets which BuildKit builder to use, through $BUILDX_BUILDER.
-    //
-    // See https://docs.docker.com/build/building/variables/#buildx_builder
-    // Also: https://docs.docker.com/build/drivers/docker-container/
-    // Also: https://docs.docker.com/build/drivers/remote/
-    // Also: https://docs.docker.com/build/drivers/kubernetes/
-    //
-    // * Unset: creates & handles a builder named "supergreen". Upgrades it if too old, while trying to keep old cached data
-    // * Set to "": skips using a builder
-    // * Set to "supergreen": uses existing and just warns if too old (FIXME suggest upgrade cmd)
-    // * Set: use that as builder, no questions asked
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub(crate) builder_name: Option<String>,
-
-    //=>store which driver kind this is
-    #[serde(skip_serializing_if = "<&bool as std::ops::Not>::not")]
-    pub(crate) builder_maxready: bool,
-
-    //====> probs make a pub(crate) builder: Builder (name, image, version? args?, latest=v0.22.0?)
-
-    // Sets which BuildKit builder version to use.
-    //
-    // See https://docs.docker.com/build/builders/
-    //
-    // # Use by setting this environment variable (no Cargo.toml setting):
-    // CARGOGREEN_BUILDER_IMAGE="docker-image://docker.io/moby/buildkit:latest"
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub(crate) builder_image: Option<ImageUri>,
+    #[serde(flatten)]
+    pub(crate) builder: Builder,
 
     // Sets which BuildKit frontend syntax to use.
     //

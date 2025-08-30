@@ -13,6 +13,7 @@ use tokio::process::Command;
 
 mod add;
 mod base_image;
+mod builder;
 mod cargo_green;
 mod checkouts;
 mod containerfile;
