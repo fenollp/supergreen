@@ -1,11 +1,10 @@
 use core::str;
-use std::process::Output;
 
-use anyhow::{bail, Context, Result};
+use anyhow::{bail, Result};
 use camino::{Utf8Path, Utf8PathBuf};
 use tokio::process::Command;
 
-use crate::{ext::ShowCmd, stage::Stage};
+use crate::{ext::CommandExt, stage::Stage};
 
 // https://docs.docker.com/reference/dockerfile/#add---keep-git-dir
 // --build-arg BUILDKIT_CONTEXT_KEEP_GIT_DIR=0 https://docs.docker.com/engine/reference/builder/#buildkit-built-in-build-args
@@ -21,10 +20,12 @@ pub(crate) async fn into_stage(
         let mut cmd = Command::new("git");
         cmd.kill_on_drop(true);
         cmd.args(["rev-parse", "HEAD"]);
-        let Output { stdout, stderr, .. } = cmd.output().await?;
-        let commit = str::from_utf8(&stdout).context("parsing git stdout")?.trim();
+
+        let (_, stdout, _) = cmd.exec().await?;
+        let stdout = String::from_utf8_lossy(&stdout);
+        let commit = stdout.trim();
         if commit.is_empty() {
-            bail!("{} failed: {stderr:?}", cmd.show())
+            bail!("Failed reading HEAD commit hash from {krate_manifest_dir}")
         }
         assert!(commit.starts_with(short));
         commit.to_owned()

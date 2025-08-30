@@ -73,6 +73,9 @@ Faster Rust builds!
       * order doesn't matter: order is fixed when consolidation happens (internally)
   1. cargo + docker
     * [cargo build --dependencies-only](https://github.com/rust-lang/cargo/issues/2644#issuecomment-2304774192)
+* [Getting an image's digest fast, within a docker-container builder](https://github.com/docker/buildx/discussions/3363)
+  * [Inspect image manifest without pushing to registry or load to local docker daemon](https://github.com/moby/buildkit/issues/4854)
+  * [Proposal: introduce enhanced image resolution gateway API](https://github.com/moby/buildkit/issues/2944)
 
 
 ## Origins
