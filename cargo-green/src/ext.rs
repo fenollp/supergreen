@@ -48,24 +48,19 @@ pub(crate) trait CommandExt {
     fn envs_string(&self, except: &[&OsStr]) -> String;
 
     #[must_use]
-    fn show_unquoted(&self) -> String;
-
-    #[must_use]
-    fn show(&self) -> String {
-        format!("`{}`", self.show_unquoted())
-    }
+    fn show(&self) -> String;
 }
 
 impl CommandExt for tokio::process::Command {
     async fn exec(&mut self) -> Result<(bool, Vec<u8>, Vec<u8>)> {
-        let call = self.show_unquoted();
+        let call = self.show();
         let envs = self.envs_string(&[]);
 
-        info!("Calling `{envs} {call}`");
-        eprintln!("Calling `{envs} {call}`");
+        info!("Calling {envs} {call}");
+        eprintln!("Calling {envs} {call}");
 
         let Output { status, stdout, stderr } =
-            self.output().await.map_err(|e| anyhow!("Failed to spawn `{envs} {call}`: {e}"))?;
+            self.output().await.map_err(|e| anyhow!("Failed to spawn {envs} {call}: {e}"))?;
 
         Ok((status.success(), stdout, stderr))
     }
@@ -79,7 +74,7 @@ impl CommandExt for tokio::process::Command {
             .join(" ")
     }
 
-    fn show_unquoted(&self) -> String {
+    fn show(&self) -> String {
         let this = self.as_std();
         format!(
             "{command} {args}",

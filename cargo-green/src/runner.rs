@@ -465,9 +465,8 @@ async fn build(
         cmd.stdout(Stdio::piped()).stderr(Stdio::piped());
     }
 
-    let call = cmd.show_unquoted();
-    let envs = cmd.envs_string(&[]);
-    info!("Starting `{envs} {call} <{containerfile}`");
+    let call = cmd.show();
+    info!("Starting `{envs} {call} <{containerfile}`", envs = cmd.envs_string(&[]));
     let envs = cmd.envs_string(&BUILD_UNALTERING_ENVS);
 
     let start = Instant::now();
