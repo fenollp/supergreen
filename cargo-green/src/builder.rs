@@ -152,6 +152,11 @@ then run your cargo command again.
             self.create_builder(name).await?;
         }
 
+        if self.builder.image.is_none() {
+            // Only informational: only used through showing envs values
+            self.builder.image = builder.map(|b| b.first_image()).flatten();
+        }
+
         self.builder.driver = builder.map(|b| b.driver.parse().expect("infaillible"));
         self.builder.name = Some(name.to_owned());
         Ok(())
@@ -306,5 +311,19 @@ impl BuildxBuilder {
                 Version::from(v).is_some_and(|ref v| v >= latest)
             })
         })
+    }
+
+    fn first_image(&self) -> Option<ImageUri> {
+        let mut imgs: Vec<_> = self
+            .nodes
+            .iter()
+            .map(|n| n.driver_opts.as_ref().map(|o| o.image.clone()))
+            .flatten()
+            .flatten()
+            .filter_map(|img| ImageUri::try_from(format!("docker-image://{img}")).ok())
+            .collect();
+        imgs.sort();
+        imgs.dedup();
+        imgs.first().cloned()
     }
 }

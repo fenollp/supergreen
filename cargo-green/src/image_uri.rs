@@ -9,7 +9,7 @@ pub(crate) static SYNTAX: LazyLock<ImageUri> =
 #[nutype(
     default = SYNTAX.as_str(),
     validate(error = Error, with = docker_image_uri),
-    derive(Clone, Debug, Default, Display, Deref, TryFrom, Serialize, Deserialize, Eq, PartialEq, Hash))
+    derive(Clone, Debug, Default, Display, Deref, TryFrom, Serialize, Deserialize, Eq, PartialEq, Ord, PartialOrd, Hash))
 ]
 pub(crate) struct ImageUri(String);
 
