@@ -27,6 +27,10 @@ use crate::{
 
 // TODO: cli for stats (cache hit/miss/size/age/volume, existing available/selected runners, disk usage/free)
 
+//TODO: cli to show cfg'd builder
+
+//TODO: cli shows builder's jaeger: BUILDX_BUILDER=supergreen docker buildx history trace --addr 127.0.0.1:5452
+
 pub(crate) async fn main(green: Green, arg1: Option<&str>, args: Vec<String>) -> Result<()> {
     match arg1 {
         None | Some("-h" | "--help" | "-V" | "--version") => help(),
