@@ -242,10 +242,11 @@ impl Green {
         if img.locked() {
             return Ok(img.to_owned());
         }
-        if let Some(locked) = self.maybe_lock_from_builder_cache(img).await? {
+        let errer = |e| anyhow!("Failed locking {img}: {e}");
+        if let Some(locked) = self.maybe_lock_from_builder_cache(img).await.map_err(errer)? {
             return Ok(locked);
         }
-        if let Some(locked) = self.maybe_lock_from_image_cache(img).await? {
+        if let Some(locked) = self.maybe_lock_from_image_cache(img).await.map_err(errer)? {
             return Ok(locked);
         }
         Ok(img.to_owned())
@@ -293,36 +294,41 @@ pub(crate) async fn fetch_digest(img: &ImageUri) -> Result<ImageUri> {
     if img.locked() {
         return Ok(img.to_owned());
     }
-    let (path, tag) = img.path_and_tag();
-    let (ns, slug) = match Utf8Path::new(path).iter().collect::<Vec<_>>()[..] {
-        ["docker.io", ns, slug] => (ns, slug),
-        _ => bail!("BUG: unhandled registry {img:?}"),
-    };
 
-    let txt = ReqwestClient::builder()
-        .connect_timeout(Duration::from_secs(4))
-        .build()
-        .map_err(|e| anyhow!("HTTP client's config/TLS failed: {e}"))?
-        .get(format!("https://registry.hub.docker.com/v2/repositories/{ns}/{slug}/tags/{tag}"))
-        .send()
-        .await
-        .map_err(|e| anyhow!("Failed to reach Docker Hub's registry: {e}"))?
-        .text()
-        .await
-        .map_err(|e| anyhow!("Failed to read response from registry: {e}"))?;
+    async fn actual(img: &ImageUri) -> Result<ImageUri> {
+        let (path, tag) = img.path_and_tag();
+        let (ns, slug) = match Utf8Path::new(path).iter().collect::<Vec<_>>()[..] {
+            ["docker.io", ns, slug] => (ns, slug),
+            _ => bail!("BUG: unhandled registry {img:?}"),
+        };
 
-    #[derive(Deserialize)]
-    struct RegistryResponse {
-        digest: String,
+        let txt = ReqwestClient::builder()
+            .connect_timeout(Duration::from_secs(4))
+            .build()
+            .map_err(|e| anyhow!("HTTP client's config/TLS failed: {e}"))?
+            .get(format!("https://registry.hub.docker.com/v2/repositories/{ns}/{slug}/tags/{tag}"))
+            .send()
+            .await
+            .map_err(|e| anyhow!("Failed to reach Docker Hub's registry: {e}"))?
+            .text()
+            .await
+            .map_err(|e| anyhow!("Failed to read response from registry: {e}"))?;
+
+        #[derive(Deserialize)]
+        struct RegistryResponse {
+            digest: String,
+        }
+        let RegistryResponse { digest } = serde_json::from_str(&txt)
+            // NOTE: library images can take a few days to appear, after a Rust release:
+            // Error: Failed to decode response from registry: missing field `digest` at line 1 column 130
+            // {"message":"httperror 404: tag '1.89.0-slim' not found","errinfo":{"namespace":"library","repository":"rust","tag":"1.89.0-slim"}}
+            .map_err(|e| anyhow!("Failed to decode response from registry: {e}\n{txt}"))?;
+        // digest ~ sha256:..
+
+        Ok(img.lock(&digest))
     }
-    let RegistryResponse { digest } = serde_json::from_str(&txt)
-        // NOTE: library images can take a few days to appear, after a Rust release:
-        // Error: Failed to decode response from registry: missing field `digest` at line 1 column 130
-        // {"message":"httperror 404: tag '1.89.0-slim' not found","errinfo":{"namespace":"library","repository":"rust","tag":"1.89.0-slim"}}
-        .map_err(|e| anyhow!("Failed to decode response from registry: {e}\n{txt}"))?;
-    // digest ~ sha256:..
 
-    Ok(img.lock(&digest))
+    actual(img).await.map_err(|e| anyhow!("Failed getting digest for {img}: {e}"))
 }
 
 #[derive(Debug)]

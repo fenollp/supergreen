@@ -50,8 +50,6 @@ pub(crate) async fn main() -> Result<Green> {
     }
     green.runner_envs = runner::envs();
 
-    let builders = green.list_builders().await?;
-
     // Cf. https://docs.docker.com/build/buildkit/#getting-started
     if green.runner_envs.get(DOCKER_BUILDKIT).is_some_and(|x| x != "1") {
         bail!("This requires ${DOCKER_BUILDKIT}=1")
@@ -107,7 +105,7 @@ pub(crate) async fn main() -> Result<Green> {
     // docker buildx build --builder multiarch-builder -t dustinrue/buildx-example --platform linux/amd64,linux/arm64,linux/arm/v6 .
     // https://dustinrue.com/2021/12/using-a-remote-docker-engine-with-buildx/
 
-    // Then builder_image as it's needed by cmd calls
+    // Then the builder: needed by cmd calls
     if green.builder.image.is_some() {
         bail!("${ENV_BUILDER_IMAGE} can only be set through the environment variable")
     }
@@ -120,7 +118,7 @@ pub(crate) async fn main() -> Result<Green> {
         green.builder.image = Some(fetch_digest(&img).await?);
     }
 
-    green.maybe_setup_builder(builder.cloned(), &builders).await?;
+    green.maybe_setup_builder(builder.cloned()).await?;
 
     if !green.syntax.is_empty() {
         bail!("${ENV_SYNTAX} can only be set through the environment variable")
@@ -130,10 +128,7 @@ pub(crate) async fn main() -> Result<Green> {
             syntax.clone().try_into().map_err(|e| anyhow!("${ENV_SYNTAX}={syntax:?} {e}"))?;
     }
     // Use local hashed image if one matching exists locally
-    green.syntax = green
-        .maybe_lock_image(&green.syntax)
-        .await
-        .map_err(|e| anyhow!("Failed locking {}: {e}", green.syntax))?;
+    green.syntax = green.maybe_lock_image(&green.syntax).await?;
     // otherwise default to a hash found through some Web API
     green.syntax = fetch_digest(&green.syntax).await?;
     if !green.syntax.stable_syntax_frontend() {
@@ -173,10 +168,7 @@ pub(crate) async fn main() -> Result<Green> {
     }
 
     if !green.image.base_image.locked() {
-        let mut base = green
-            .maybe_lock_image(&green.image.base_image)
-            .await
-            .map_err(|e| anyhow!("Failed locking {}: {e}", green.image.base_image))?;
+        let mut base = green.maybe_lock_image(&green.image.base_image).await?;
         base = fetch_digest(&base).await?;
         green.image = green.image.lock_base_to(base);
     }

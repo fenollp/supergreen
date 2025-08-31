@@ -95,11 +95,7 @@ impl Builder {
 }
 
 impl Green {
-    pub(crate) async fn maybe_setup_builder(
-        &mut self,
-        env: Option<String>,
-        builders: &[BuildxBuilder],
-    ) -> Result<()> {
+    pub(crate) async fn maybe_setup_builder(&mut self, env: Option<String>) -> Result<()> {
         let (managed, name) = match env.as_deref() {
             None | Some("supergreen") => (true, "supergreen"),
             Some("") => {
@@ -111,7 +107,8 @@ impl Green {
             Some(name) => (false, name),
         };
 
-        let builder = find_builder(name, builders);
+        let builders = self.list_builders().await?;
+        let builder = find_builder(name, &builders);
         if let Some(existing) = builder {
             let mut recreate = false;
 
@@ -160,7 +157,7 @@ then run your cargo command again.
         Ok(())
     }
 
-    async fn create_builder(&self, name: &str) -> Result<()> {
+    async fn create_builder(&mut self, name: &str) -> Result<()> {
         let mut cmd = self.cmd();
         cmd.args(["buildx", "create", "--bootstrap"])
             .args(["--name", name])
@@ -178,6 +175,8 @@ then run your cargo command again.
             let stderr = String::from_utf8_lossy(&stderr);
             bail!("BUG: failed to create builder: {stderr}")
         }
+
+        self.builder.image = Some(img);
         Ok(())
     }
 
@@ -198,7 +197,7 @@ then run your cargo command again.
         Ok(())
     }
 
-    pub(crate) async fn list_builders(&self) -> Result<Vec<BuildxBuilder>> {
+    async fn list_builders(&self) -> Result<Vec<BuildxBuilder>> {
         let mut cmd = self.cmd();
         cmd.args(["buildx", "ls", "--format=json"]);
         let (succeeded, stdout, stderr) = cmd.exec().await?;
@@ -280,7 +279,7 @@ struct DriverOpts {
 #[derive(Deserialize)]
 #[cfg_attr(test, derive(Debug, PartialEq))]
 #[serde(rename_all = "PascalCase")]
-pub(crate) struct BuildxBuilder {
+struct BuildxBuilder {
     name: String,
     /// Not an enum: future-proof (docker, docker-container, ..)
     driver: String,
