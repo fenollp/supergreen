@@ -104,6 +104,10 @@ pub(crate) async fn main() -> Result<Green> {
     // docker buildx create --name multiarch-builder --append arm64 [--platform linux/arm64]
     // docker buildx build --builder multiarch-builder -t dustinrue/buildx-example --platform linux/amd64,linux/arm64,linux/arm/v6 .
     // https://dustinrue.com/2021/12/using-a-remote-docker-engine-with-buildx/
+    //
+    // https://github.com/moby/buildkit/issues/4268#issuecomment-2128464135
+    // docker buildx create --name amd64-builder --driver docker-container --platform linux/amd64 ssh://user@remote-machine
+    // docker buildx build --builder amd64-builder --load .
 
     // Then the builder: needed by cmd calls
     if green.builder.image.is_some() {
