@@ -35,7 +35,7 @@ use crate::{
     ext::{timeout, CommandExt},
     green::{Green, ENV_SET_ENVS},
     image_uri::ImageUri,
-    logging::{crate_type_for_logging, maybe_log, ENV_LOG_PATH},
+    logging::{crate_type_for_logging, ENV_LOG_PATH},
     md::BuildContext,
     stage::Stage,
     PKG,
@@ -616,27 +616,18 @@ async fn build(
 
     // Something is very wrong here. Try to be helpful by logging some info about runner config:
     if !status.success() {
-        if maybe_log().is_some() {
-            return rtrn(anyhow!(
-                "Runner failed. Check logs over at {}",
-                env::var(ENV_LOG_PATH).unwrap()
-            ));
-        }
-
-        // TODO: all these
-        // * docker buildx version
-        // * docker info
-        // * docker buildx ls
-
-        let mut cmd = green.cmd();
-        cmd.arg("info");
-        let (succeeded, stdout, stderr) = match cmd.exec().await {
-            Ok((succeeded, stdout, stderr)) => (succeeded, stdout, stderr),
-            Err(e) => return rtrn(e),
-        };
-        let stdout = String::from_utf8_lossy(&stdout);
-        let stderr = String::from_utf8_lossy(&stderr);
-        return rtrn(anyhow!("Runner info: {succeeded} [STDOUT {stdout}] [STDERR {stderr}]"));
+        let logs =
+            env::var(ENV_LOG_PATH).map(|val| format!("\nCheck logs at {val}")).unwrap_or_default();
+        return rtrn(anyhow!(
+            "Runner failed.{logs}
+Please report an issue along with information from the following:
+* {runner} buildx version
+* {runner} info
+* {runner} buildx ls
+* cargo green supergreen env
+",
+            runner = green.runner,
+        ));
     }
 
     (call, envs, Ok(effects))
