@@ -4,7 +4,7 @@ set -o pipefail
 repo_root=$(realpath "$(dirname "$(dirname "$0")")")
 source "$repo_root"/hack/ck.sh
 
-with_j=0 # TODO: 1 => adds jobs with -J (see "assertion failed: edges.remove(&key)" https://github.com/rust-lang/cargo/issues/13889)
+with_j=1 # TODO: 1 => adds jobs with -J (see "assertion failed: edges.remove(&key)" https://github.com/rust-lang/cargo/issues/13889)
 
 # Usage:           $0                              #=> generate CI
 #
