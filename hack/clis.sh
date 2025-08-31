@@ -4,8 +4,6 @@ set -o pipefail
 repo_root=$(realpath "$(dirname "$(dirname "$0")")")
 source "$repo_root"/hack/ck.sh
 
-with_j=1 # TODO: 1 => adds jobs with -J (see "assertion failed: edges.remove(&key)" https://github.com/rust-lang/cargo/issues/13889)
-
 # Usage:           $0                              #=> generate CI
 #
 # Usage:           $0 ( <name@version> | <name> )  #=> cargo install name@version
@@ -219,7 +217,7 @@ cli() {
  as_env "$name_at_version"
 
 	cat <<EOF
-$(jobdef "$(slugify "$name_at_version")$(if [[ "$jobs" != 1 ]]; then echo '-J'; fi)")
+$(jobdef "$(slugify "$name_at_version")_$jobs")
     continue-on-error: \${{ matrix.toolchain != 'stable' }}
     strategy:
       matrix:
@@ -325,11 +323,8 @@ if [[ $# = 0 ]]; then
     case "$name_at_version" in
       cargo-green@*) continue ;;
     esac
-    cli "$name_at_version" 1 "${nvs_args["$i"]}"
-    if [[ $with_j = 1 ]]; then
-      # 3: https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners/about-github-hosted-runners#standard-github-hosted-runners-for-public-repositories
-      cli "$name_at_version" 3 "${nvs_args["$i"]}"
-    fi
+    # 3: https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners/about-github-hosted-runners#standard-github-hosted-runners-for-public-repositories
+    cli "$name_at_version" 3 "${nvs_args["$i"]}"
   done
 
   exit
