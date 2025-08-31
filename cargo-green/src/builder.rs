@@ -154,7 +154,7 @@ then run your cargo command again.
 
         if self.builder.image.is_none() {
             // Only informational: only used through showing envs values
-            self.builder.image = builder.map(|b| b.first_image()).flatten();
+            self.builder.image = builder.and_then(BuildxBuilder::first_image);
         }
 
         self.builder.driver = builder.map(|b| b.driver.parse().expect("infaillible"));
@@ -317,8 +317,7 @@ impl BuildxBuilder {
         let mut imgs: Vec<_> = self
             .nodes
             .iter()
-            .map(|n| n.driver_opts.as_ref().map(|o| o.image.clone()))
-            .flatten()
+            .filter_map(|n| n.driver_opts.as_ref().map(|o| o.image.clone()))
             .flatten()
             .filter_map(|img| ImageUri::try_from(format!("docker-image://{img}")).ok())
             .collect();
