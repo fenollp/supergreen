@@ -161,20 +161,12 @@ impl FromStr for Runner {
 }
 
 impl Green {
-    pub(crate) fn cmd(&self) -> Command {
-        self.as_debug_cmd(true)
-    }
-
-    pub(crate) fn cmd_nodbg(&self) -> Command {
-        self.as_debug_cmd(false)
-    }
-
     #[must_use]
-    fn as_debug_cmd(&self, debug: bool) -> Command {
+    pub(crate) fn cmd(&self) -> Command {
         let mut cmd = Command::new(self.runner.to_string());
         cmd.kill_on_drop(true); // Underlying OS process dies with us
         cmd.stdin(Stdio::null());
-        if debug {
+        if false {
             cmd.arg("--debug");
         }
         cmd.env_clear(); // Pass all envs explicitly only
@@ -637,7 +629,7 @@ async fn build(
         // * docker info
         // * docker buildx ls
 
-        let mut cmd = green.cmd_nodbg();
+        let mut cmd = green.cmd();
         cmd.arg("info");
         let (succeeded, stdout, stderr) = match cmd.exec().await {
             Ok((succeeded, stdout, stderr)) => (succeeded, stdout, stderr),
