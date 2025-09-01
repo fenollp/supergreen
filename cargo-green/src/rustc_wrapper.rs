@@ -19,7 +19,7 @@ use crate::{
     logging::{self, crate_type_for_logging, maybe_log},
     md::{BuildContext, Md},
     pwd,
-    runner::{build_out, Effects, Runner},
+    runner::{build_out, Effects, Runner, ERRCODE, STDERR, STDOUT},
     rustc_arguments::{as_rustc, RustcArgs},
     stage::{Stage, RST, RUST},
     tmp, PKG, VSN,
@@ -398,8 +398,10 @@ async fn do_wrap_rustc(
     }
 
     rustc_block.push_str(&format!("      rustc '{}' {input} \\\n", args.join("' '")));
-    rustc_block.push_str(&format!("        1> >(tee {out_dir}/{out_stage}-stdout) \\\n"));
-    rustc_block.push_str(&format!("        2> >(tee {out_dir}/{out_stage}-stderr >&2)\n"));
+    //TODO: see if subshell and tee call can be dropped
+    rustc_block.push_str(&format!("        1> >(tee    {out_dir}/{out_stage}-{STDOUT}) \\\n"));
+    rustc_block.push_str(&format!("        2> >(tee    {out_dir}/{out_stage}-{STDERR} >&2) \\\n"));
+    rustc_block.push_str(&format!("        || echo $? >{out_dir}/{out_stage}-{ERRCODE}\n"));
     md.push_block(&rustc_stage, rustc_block);
 
     if let Some(ref incremental) = incremental {

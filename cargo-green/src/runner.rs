@@ -4,6 +4,7 @@ use std::{
     ffi::OsStr,
     fmt,
     fs::{self},
+    io::ErrorKind,
     mem,
     ops::Not,
     process::Stdio,
@@ -24,7 +25,7 @@ use tokio::{
     join,
     process::Command,
     spawn,
-    sync::oneshot,
+    sync::oneshot::{self, error::TryRecvError},
     task::JoinHandle,
     time::error::Elapsed,
 };
@@ -40,6 +41,10 @@ use crate::{
     stage::Stage,
     PKG,
 };
+
+pub(crate) const ERRCODE: &str = "errcode";
+pub(crate) const STDERR: &str = "stderr";
+pub(crate) const STDOUT: &str = "stdout";
 
 // Envs from BuildKit/Buildx/Docker/Podman that we read
 const BUILDKIT_COLORS: &str = "BUILDKIT_COLORS";
@@ -483,7 +488,7 @@ async fn build(
                 .await
                 .map_err(|e| anyhow!("Failed opening (RO) {containerfile}: {e}"))?;
             let mut lines = TokioBufReader::new(reader).lines();
-            while let Some(line) = lines.next_line().await.expect("stdin") {
+            while let Ok(Some(line)) = lines.next_line().await {
                 if line.starts_with("## ") {
                     continue;
                 }
@@ -506,28 +511,54 @@ async fn build(
     let mut tx_err = Some(tx_err);
 
     let handles = if out_dir.is_some() {
-        let mut lines = TokioBufReader::new(child.stdout.take().expect("started")).lines();
-        let dbg_out = spawn(async move {
-            while let Some(line) = lines.next_line().await.expect("stdout") {
-                if line.is_empty() {
-                    continue;
+        let dbg_out = spawn({
+            let mut lines = TokioBufReader::new(child.stdout.take().expect("started")).lines();
+            async move {
+                while let Ok(Some(line)) = lines.next_line().await {
+                    let line = strip_ansi_escapes(&line);
+                    if line.is_empty() {
+                        continue;
+                    }
+                    info!("➤ {line}");
                 }
-                info!("➤ {line}");
             }
         });
 
-        let mut lines = TokioBufReader::new(child.stderr.take().expect("started")).lines();
-        let dbg_err = spawn(async move {
-            while let Some(line) = lines.next_line().await.expect("stderr") {
-                if line.is_empty() {
-                    continue;
-                }
-                info!("✖ {line}");
-                if line.starts_with("ERROR: ") {
-                    if let Some(tx_err) = tx_err.take() {
-                        let _ = tx_err.send(line.trim_start_matches("ERROR: ").to_owned());
+        let dbg_err = spawn({
+            let mut lines = TokioBufReader::new(child.stderr.take().expect("started")).lines();
+            async move {
+                let mut details: Vec<String> = vec![];
+                let mut dones = 0;
+                let mut cacheds = 0;
+                while let Ok(Some(line)) = lines.next_line().await {
+                    let line = strip_ansi_escapes(&line);
+                    if line.is_empty() {
+                        continue;
+                    }
+                    info!("✖ {line}");
+
+                    // Capture some approximate stats the runner gives us
+
+                    if line.starts_with("ERROR: ") {
+                        if let Some(tx_err) = tx_err.take() {
+                            let _ = tx_err.send(line.trim_start_matches("ERROR: ").to_owned());
+                        }
+                    }
+
+                    // Show data transfers (Bytes, maybe also timings?)
+                    for (idx, pattern) in line.as_str().match_indices(" transferring ") {
+                        let detail = line[(pattern.len() + idx)..].trim_end_matches(" done");
+                        details.push(detail.to_owned());
+                    }
+
+                    // Count DONEs and CACHEDs
+                    if line.contains(" DONE ") {
+                        dones += 1;
+                    } else if line.ends_with(" CACHED") {
+                        cacheds += 1;
                     }
                 }
+                info!("Terminating task CACHED:{cacheds} DONE:{dones} {details:?}");
             }
         });
 
@@ -543,7 +574,6 @@ async fn build(
     //   to the runner clipping log output (see https://stackoverflow.com/a/75632518/1418165
     //   and https://github.com/moby/buildkit/pull/1754/files on how `--builder` may help).
     //   Also, the `rawjson` "progress mode" may be a simpler log-output to rely on. But then, what about `podman`?
-    // TODO? look back into processing logs on the fly
 
     let (secs, res) = {
         let start = Instant::now();
@@ -566,9 +596,28 @@ async fn build(
 
     let mut effects = Effects { written: vec![], stdout: vec![], stderr: vec![] };
     if let Some(out_dir) = out_dir {
-        let out_path = stdio_path(&target, out_dir, "stdout");
-        let err_path = stdio_path(&target, out_dir, "stderr");
+        fn stdio_path(target: &Stage, out_dir: &Utf8Path, stdio: &'static str) -> Utf8PathBuf {
+            out_dir.join(format!("{target}-{stdio}"))
+        }
+
         //TODO? write all output to mem first? and then to disk (except stdio files)
+        let out_path = stdio_path(&target, out_dir, STDOUT);
+        let err_path = stdio_path(&target, out_dir, STDERR);
+        let rcd_path = stdio_path(&target, out_dir, ERRCODE);
+
+        // Read errorcode output file first, and check for build error. NOTE:
+        // * if call to rustc fails, the file will exist but the build will complete.
+        // * if the call doesn't fail, the file isn't created.
+        // * if the build fails that's a bug, and no files will be outputed.
+        let errcode = match (TokioFile::open(&rcd_path).await, rx_err.try_recv()) {
+            (Ok(errcode), _) => {
+                let line = TokioBufReader::new(errcode).lines().next_line().await;
+                line.ok().flatten().and_then(|x| x.parse::<i8>().ok())
+            }
+            (_, Ok(e)) => return rtrn(anyhow!("Runner BUG: {e}")),
+            (Err(e), Err(TryRecvError::Closed)) if e.kind() == ErrorKind::NotFound => None,
+            (Err(a), Err(b)) => unreachable!("either {a} | {b}"),
+        };
 
         let both = async {
             let out = stdio_lines(&out_path).await?;
@@ -576,10 +625,9 @@ async fn build(
             Ok((out, err))
         }
         .await;
-        let (out, err) = match (both, rx_err.try_recv()) {
-            (Ok((out, err)), _) => (out, err),
-            (Err(_), Ok(e)) => return rtrn(anyhow!("Runner: {e}")),
-            (Err(e), _) => return rtrn(e),
+        let (out, err) = match both {
+            Ok((out, err)) => (out, err),
+            Err(e) => return rtrn(e),
         };
 
         let out = fwd(out, "➤", fwd_stdout);
@@ -587,13 +635,17 @@ async fn build(
         match join!(timeout(out), timeout(err)) {
             (
                 Ok(Ok(Ok(Accumulated { stdout, .. }))),
-                Ok(Ok(Ok(Accumulated { written, stderr, .. }))),
+                Ok(Ok(Ok(Accumulated { written, stderr, envs, libs, .. }))),
             ) => {
+                info!("Suggested {PKG}-specific config: envs:{} libs:{}", envs.len(), libs.len());
                 effects.stdout = stdout;
                 effects.stderr = stderr;
                 if !written.is_empty() {
                     log_written_files_metadata(&written);
                     effects.written = written;
+                }
+                if let Some(errcode) = errcode {
+                    return rtrn(anyhow!("Runner failed with exit code {errcode}"));
                 }
             }
             (Ok(Ok(Err(e))), _) | (_, Ok(Ok(Err(e)))) => {
@@ -633,10 +685,6 @@ Please report an issue along with information from the following:
     (call, envs, Ok(effects))
 }
 
-fn stdio_path(target: &Stage, out_dir: &Utf8Path, stdio: &'static str) -> Utf8PathBuf {
-    out_dir.join(format!("{target}-{stdio}"))
-}
-
 async fn stdio_lines(stdio: &Utf8Path) -> Result<Lines<TokioBufReader<TokioFile>>> {
     TokioFile::open(&stdio)
         .await
@@ -659,6 +707,7 @@ fn log_written_files_metadata(written: &[Utf8PathBuf]) {
     }
 }
 
+#[inline]
 #[must_use]
 fn strip_ansi_escapes(line: &str) -> String {
     line.replace("\\u001b[0m", "")
@@ -681,9 +730,6 @@ where
     let start = Instant::now();
     spawn(async move {
         let mut buf = String::new();
-        let mut details: Vec<String> = vec![];
-        let mut dones = 0;
-        let mut cacheds = 0;
         let mut acc = Accumulated::default();
         let mut first = true;
         loop {
@@ -709,28 +755,14 @@ where
             // FIXME un-rewrite /index.crates.io-0000000000000000/ in cargo messages
             // => also in .d files
             // cache should be ok (cargo's point of view) if written right after green's build(..) call
-
-            // Show data transfers (Bytes, maybe also timings?)
-            const PATTERN: &str = " transferring ";
-            for (idx, _pattern) in line.as_str().match_indices(PATTERN) {
-                let detail = line[(PATTERN.len() + idx)..].trim_end_matches(" done");
-                details.push(detail.to_owned());
-            }
-
-            // Count DONEs and CACHEDs
-            if line.contains(" DONE ") {
-                dones += 1;
-            } else if line.ends_with(" CACHED") {
-                cacheds += 1;
-            }
         }
-        debug!("Terminating {badge} task CACHED:{cacheds} DONE:{dones} {details:?}");
+        debug!("Terminating {badge} task");
         drop(stdio);
         Ok(acc)
     })
 }
 
-#[derive(Debug, Default)]
+#[derive(Default)]
 struct Accumulated {
     written: Vec<Utf8PathBuf>,
     envs: IndexSet<String>,
