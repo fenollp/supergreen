@@ -299,11 +299,11 @@ pub(crate) async fn fetch(green: Green) -> Result<()> {
 
         let (name, version, hash) = &pkgs[0];
         debug!("will fetch crate {name}: {version}");
-        containerfile.pushln(&cratesio::add_step(name, version, hash));
+        containerfile.pushln(cratesio::add_step(name, version, hash).trim());
 
         for (name, version, hash) in &pkgs[1..] {
             debug!("will fetch crate {name}: {version}");
-            containerfile.pushln(&cratesio::add_step(name, version, hash));
+            containerfile.pushln(cratesio::add_step(name, version, hash).trim());
         }
     }
     containerfile.push(&format!("FROM scratch AS {stage}\n"));
