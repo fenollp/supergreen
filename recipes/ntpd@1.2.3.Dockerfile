@@ -35,8 +35,9 @@ RUN \
         NTPD_RS_GIT_DATE="2025-05-09" \
         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
       rustc '--crate-name' 'unicode_ident' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=2f113e6ba7735965' '-C' 'extra-filename=-4c1dc76c11b3deb8' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/unicode-ident-1.0.12/src/lib.rs \
-        1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-4c1dc76c11b3deb8-stdout) \
-        2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-4c1dc76c11b3deb8-stderr >&2)
+        1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-4c1dc76c11b3deb8-stdout) \
+        2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-4c1dc76c11b3deb8-stderr >&2) \
+        || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-4c1dc76c11b3deb8-errcode
 FROM scratch AS out-4c1dc76c11b3deb8
 COPY --from=dep-l-unicode-ident-1.0.12-4c1dc76c11b3deb8 /tmp/clis-ntpd_1-2-3/release/deps/*-4c1dc76c11b3deb8* /
 
@@ -94,8 +95,9 @@ COPY --from=dep-l-unicode-ident-1.0.12-4c1dc76c11b3deb8 /tmp/clis-ntpd_1-2-3/rel
 ##         NTPD_RS_GIT_DATE="2025-05-09" \
 ##         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
 ##       rustc '--crate-name' 'unicode_ident' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=2f113e6ba7735965' '-C' 'extra-filename=-4c1dc76c11b3deb8' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/unicode-ident-1.0.12/src/lib.rs \
-##         1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-4c1dc76c11b3deb8-stdout) \
-##         2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-4c1dc76c11b3deb8-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-4c1dc76c11b3deb8-stdout) \
+##         2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-4c1dc76c11b3deb8-stderr >&2) \
+##         || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-4c1dc76c11b3deb8-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-4c1dc76c11b3deb8"
@@ -137,8 +139,9 @@ RUN \
         NTPD_RS_GIT_DATE="2025-05-09" \
         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
       rustc '--crate-name' 'proc_macro2' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--cfg' 'feature="default"' '--cfg' 'feature="proc-macro"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "nightly", "proc-macro", "span-locations"))' '-C' 'metadata=f69b9a81d204e3b5' '-C' 'extra-filename=-4be32d01ee2a9db1' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'unicode_ident=/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rmeta' '--cap-lints' 'warn' '--cfg' 'wrap_proc_macro' '--check-cfg' 'cfg(fuzzing)' '--check-cfg' 'cfg(no_is_available)' '--check-cfg' 'cfg(no_literal_byte_character)' '--check-cfg' 'cfg(no_literal_c_string)' '--check-cfg' 'cfg(no_source_text)' '--check-cfg' 'cfg(proc_macro_span)' '--check-cfg' 'cfg(procmacro2_backtrace)' '--check-cfg' 'cfg(procmacro2_nightly_testing)' '--check-cfg' 'cfg(procmacro2_semver_exempt)' '--check-cfg' 'cfg(randomize_layout)' '--check-cfg' 'cfg(span_locations)' '--check-cfg' 'cfg(super_unstable)' '--check-cfg' 'cfg(wrap_proc_macro)' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.86/src/lib.rs \
-        1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-4be32d01ee2a9db1-stdout) \
-        2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-4be32d01ee2a9db1-stderr >&2)
+        1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-4be32d01ee2a9db1-stdout) \
+        2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-4be32d01ee2a9db1-stderr >&2) \
+        || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-4be32d01ee2a9db1-errcode
 FROM scratch AS out-4be32d01ee2a9db1
 COPY --from=dep-l-proc-macro2-1.0.86-4be32d01ee2a9db1 /tmp/clis-ntpd_1-2-3/release/deps/*-4be32d01ee2a9db1* /
 
@@ -205,8 +208,9 @@ COPY --from=dep-l-proc-macro2-1.0.86-4be32d01ee2a9db1 /tmp/clis-ntpd_1-2-3/relea
 ##         NTPD_RS_GIT_DATE="2025-05-09" \
 ##         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
 ##       rustc '--crate-name' 'proc_macro2' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--cfg' 'feature="default"' '--cfg' 'feature="proc-macro"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "nightly", "proc-macro", "span-locations"))' '-C' 'metadata=f69b9a81d204e3b5' '-C' 'extra-filename=-4be32d01ee2a9db1' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'unicode_ident=/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rmeta' '--cap-lints' 'warn' '--cfg' 'wrap_proc_macro' '--check-cfg' 'cfg(fuzzing)' '--check-cfg' 'cfg(no_is_available)' '--check-cfg' 'cfg(no_literal_byte_character)' '--check-cfg' 'cfg(no_literal_c_string)' '--check-cfg' 'cfg(no_source_text)' '--check-cfg' 'cfg(proc_macro_span)' '--check-cfg' 'cfg(procmacro2_backtrace)' '--check-cfg' 'cfg(procmacro2_nightly_testing)' '--check-cfg' 'cfg(procmacro2_semver_exempt)' '--check-cfg' 'cfg(randomize_layout)' '--check-cfg' 'cfg(span_locations)' '--check-cfg' 'cfg(super_unstable)' '--check-cfg' 'cfg(wrap_proc_macro)' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.86/src/lib.rs \
-##         1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-4be32d01ee2a9db1-stdout) \
-##         2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-4be32d01ee2a9db1-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-4be32d01ee2a9db1-stdout) \
+##         2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-4be32d01ee2a9db1-stderr >&2) \
+##         || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-4be32d01ee2a9db1-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-4be32d01ee2a9db1"
@@ -247,8 +251,9 @@ RUN \
         NTPD_RS_GIT_DATE="2025-05-09" \
         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
       rustc '--crate-name' 'quote' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--cfg' 'feature="default"' '--cfg' 'feature="proc-macro"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "proc-macro"))' '-C' 'metadata=0783606bca663170' '-C' 'extra-filename=-36ed05d339fc79f9' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'proc_macro2=/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.36/src/lib.rs \
-        1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-36ed05d339fc79f9-stdout) \
-        2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-36ed05d339fc79f9-stderr >&2)
+        1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-36ed05d339fc79f9-stdout) \
+        2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-36ed05d339fc79f9-stderr >&2) \
+        || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-36ed05d339fc79f9-errcode
 FROM scratch AS out-36ed05d339fc79f9
 COPY --from=dep-l-quote-1.0.36-36ed05d339fc79f9 /tmp/clis-ntpd_1-2-3/release/deps/*-36ed05d339fc79f9* /
 
@@ -320,8 +325,9 @@ COPY --from=dep-l-quote-1.0.36-36ed05d339fc79f9 /tmp/clis-ntpd_1-2-3/release/dep
 ##         NTPD_RS_GIT_DATE="2025-05-09" \
 ##         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
 ##       rustc '--crate-name' 'quote' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--cfg' 'feature="default"' '--cfg' 'feature="proc-macro"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "proc-macro"))' '-C' 'metadata=0783606bca663170' '-C' 'extra-filename=-36ed05d339fc79f9' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'proc_macro2=/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.36/src/lib.rs \
-##         1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-36ed05d339fc79f9-stdout) \
-##         2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-36ed05d339fc79f9-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-36ed05d339fc79f9-stdout) \
+##         2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-36ed05d339fc79f9-stderr >&2) \
+##         || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-36ed05d339fc79f9-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-36ed05d339fc79f9"
@@ -363,8 +369,9 @@ RUN \
         NTPD_RS_GIT_DATE="2025-05-09" \
         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
       rustc '--crate-name' 'syn' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--cfg' 'feature="clone-impls"' '--cfg' 'feature="default"' '--cfg' 'feature="derive"' '--cfg' 'feature="extra-traits"' '--cfg' 'feature="full"' '--cfg' 'feature="parsing"' '--cfg' 'feature="printing"' '--cfg' 'feature="proc-macro"' '--cfg' 'feature="visit-mut"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("clone-impls", "default", "derive", "extra-traits", "fold", "full", "parsing", "printing", "proc-macro", "test", "visit", "visit-mut"))' '-C' 'metadata=041ba5612439ef91' '-C' 'extra-filename=-5c1d3e18a7dfcf78' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'proc_macro2=/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rmeta' '--extern' 'quote=/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rmeta' '--extern' 'unicode_ident=/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/syn-2.0.70/src/lib.rs \
-        1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-5c1d3e18a7dfcf78-stdout) \
-        2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-5c1d3e18a7dfcf78-stderr >&2)
+        1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-5c1d3e18a7dfcf78-stdout) \
+        2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-5c1d3e18a7dfcf78-stderr >&2) \
+        || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-5c1d3e18a7dfcf78-errcode
 FROM scratch AS out-5c1d3e18a7dfcf78
 COPY --from=dep-l-syn-2.0.70-5c1d3e18a7dfcf78 /tmp/clis-ntpd_1-2-3/release/deps/*-5c1d3e18a7dfcf78* /
 
@@ -439,8 +446,9 @@ COPY --from=dep-l-syn-2.0.70-5c1d3e18a7dfcf78 /tmp/clis-ntpd_1-2-3/release/deps/
 ##         NTPD_RS_GIT_DATE="2025-05-09" \
 ##         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
 ##       rustc '--crate-name' 'syn' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--cfg' 'feature="clone-impls"' '--cfg' 'feature="default"' '--cfg' 'feature="derive"' '--cfg' 'feature="extra-traits"' '--cfg' 'feature="full"' '--cfg' 'feature="parsing"' '--cfg' 'feature="printing"' '--cfg' 'feature="proc-macro"' '--cfg' 'feature="visit-mut"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("clone-impls", "default", "derive", "extra-traits", "fold", "full", "parsing", "printing", "proc-macro", "test", "visit", "visit-mut"))' '-C' 'metadata=041ba5612439ef91' '-C' 'extra-filename=-5c1d3e18a7dfcf78' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'proc_macro2=/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rmeta' '--extern' 'quote=/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rmeta' '--extern' 'unicode_ident=/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/syn-2.0.70/src/lib.rs \
-##         1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-5c1d3e18a7dfcf78-stdout) \
-##         2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-5c1d3e18a7dfcf78-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-5c1d3e18a7dfcf78-stdout) \
+##         2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-5c1d3e18a7dfcf78-stderr >&2) \
+##         || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-5c1d3e18a7dfcf78-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-5c1d3e18a7dfcf78"
@@ -483,8 +491,9 @@ RUN \
         NTPD_RS_GIT_DATE="2025-05-09" \
         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
       rustc '--crate-name' 'async_trait' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'proc-macro' '--emit' 'dep-info,link' '-C' 'prefer-dynamic' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=68f7bd92250192cb' '-C' 'extra-filename=-2b00e18c8782890c' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'proc_macro2=/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rlib' '--extern' 'quote=/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rlib' '--extern' 'syn=/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rlib' '--extern' 'proc_macro' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/async-trait-0.1.81/src/lib.rs \
-        1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-2b00e18c8782890c-stdout) \
-        2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-2b00e18c8782890c-stderr >&2)
+        1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-2b00e18c8782890c-stdout) \
+        2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-2b00e18c8782890c-stderr >&2) \
+        || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-2b00e18c8782890c-errcode
 FROM scratch AS out-2b00e18c8782890c
 COPY --from=dep-p-async-trait-0.1.81-2b00e18c8782890c /tmp/clis-ntpd_1-2-3/release/deps/*-2b00e18c8782890c* /
 
@@ -561,8 +570,9 @@ COPY --from=dep-p-async-trait-0.1.81-2b00e18c8782890c /tmp/clis-ntpd_1-2-3/relea
 ##         NTPD_RS_GIT_DATE="2025-05-09" \
 ##         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
 ##       rustc '--crate-name' 'async_trait' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'proc-macro' '--emit' 'dep-info,link' '-C' 'prefer-dynamic' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=68f7bd92250192cb' '-C' 'extra-filename=-2b00e18c8782890c' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'proc_macro2=/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rlib' '--extern' 'quote=/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rlib' '--extern' 'syn=/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rlib' '--extern' 'proc_macro' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/async-trait-0.1.81/src/lib.rs \
-##         1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-2b00e18c8782890c-stdout) \
-##         2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-2b00e18c8782890c-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-2b00e18c8782890c-stdout) \
+##         2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-2b00e18c8782890c-stderr >&2) \
+##         || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-2b00e18c8782890c-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-2b00e18c8782890c"
@@ -602,8 +612,9 @@ RUN \
         NTPD_RS_GIT_DATE="2025-05-09" \
         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
       rustc '--crate-name' 'libc' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("align", "const-extern-fn", "default", "extra_traits", "rustc-dep-of-std", "rustc-std-workspace-core", "std", "use_std"))' '-C' 'metadata=f6bb218c1ccc899a' '-C' 'extra-filename=-a7905fdc410bdfce' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--cap-lints' 'warn' '--cfg' 'freebsd11' '--cfg' 'libc_priv_mod_use' '--cfg' 'libc_union' '--cfg' 'libc_const_size_of' '--cfg' 'libc_align' '--cfg' 'libc_int128' '--cfg' 'libc_core_cvoid' '--cfg' 'libc_packedN' '--cfg' 'libc_cfg_target_vendor' '--cfg' 'libc_non_exhaustive' '--cfg' 'libc_long_array' '--cfg' 'libc_ptr_addr_of' '--cfg' 'libc_underscore_const_names' '--cfg' 'libc_const_extern_fn' '--check-cfg' 'cfg(emscripten_new_stat_abi)' '--check-cfg' 'cfg(espidf_time64)' '--check-cfg' 'cfg(freebsd10)' '--check-cfg' 'cfg(freebsd11)' '--check-cfg' 'cfg(freebsd12)' '--check-cfg' 'cfg(freebsd13)' '--check-cfg' 'cfg(freebsd14)' '--check-cfg' 'cfg(freebsd15)' '--check-cfg' 'cfg(libc_align)' '--check-cfg' 'cfg(libc_cfg_target_vendor)' '--check-cfg' 'cfg(libc_const_extern_fn)' '--check-cfg' 'cfg(libc_const_extern_fn_unstable)' '--check-cfg' 'cfg(libc_const_size_of)' '--check-cfg' 'cfg(libc_core_cvoid)' '--check-cfg' 'cfg(libc_deny_warnings)' '--check-cfg' 'cfg(libc_int128)' '--check-cfg' 'cfg(libc_long_array)' '--check-cfg' 'cfg(libc_non_exhaustive)' '--check-cfg' 'cfg(libc_packedN)' '--check-cfg' 'cfg(libc_priv_mod_use)' '--check-cfg' 'cfg(libc_ptr_addr_of)' '--check-cfg' 'cfg(libc_thread_local)' '--check-cfg' 'cfg(libc_underscore_const_names)' '--check-cfg' 'cfg(libc_union)' '--check-cfg' 'cfg(target_os,values("switch","aix","ohos","hurd","visionos"))' '--check-cfg' 'cfg(target_env,values("illumos","wasi","aix","ohos"))' '--check-cfg' 'cfg(target_arch,values("loongarch64","mips32r6","mips64r6","csky"))' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.155/src/lib.rs \
-        1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-a7905fdc410bdfce-stdout) \
-        2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-a7905fdc410bdfce-stderr >&2)
+        1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-a7905fdc410bdfce-stdout) \
+        2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-a7905fdc410bdfce-stderr >&2) \
+        || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-a7905fdc410bdfce-errcode
 FROM scratch AS out-a7905fdc410bdfce
 COPY --from=dep-l-libc-0.2.155-a7905fdc410bdfce /tmp/clis-ntpd_1-2-3/release/deps/*-a7905fdc410bdfce* /
 
@@ -671,8 +682,9 @@ COPY --from=dep-l-libc-0.2.155-a7905fdc410bdfce /tmp/clis-ntpd_1-2-3/release/dep
 ##         NTPD_RS_GIT_DATE="2025-05-09" \
 ##         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
 ##       rustc '--crate-name' 'libc' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("align", "const-extern-fn", "default", "extra_traits", "rustc-dep-of-std", "rustc-std-workspace-core", "std", "use_std"))' '-C' 'metadata=f6bb218c1ccc899a' '-C' 'extra-filename=-a7905fdc410bdfce' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--cap-lints' 'warn' '--cfg' 'freebsd11' '--cfg' 'libc_priv_mod_use' '--cfg' 'libc_union' '--cfg' 'libc_const_size_of' '--cfg' 'libc_align' '--cfg' 'libc_int128' '--cfg' 'libc_core_cvoid' '--cfg' 'libc_packedN' '--cfg' 'libc_cfg_target_vendor' '--cfg' 'libc_non_exhaustive' '--cfg' 'libc_long_array' '--cfg' 'libc_ptr_addr_of' '--cfg' 'libc_underscore_const_names' '--cfg' 'libc_const_extern_fn' '--check-cfg' 'cfg(emscripten_new_stat_abi)' '--check-cfg' 'cfg(espidf_time64)' '--check-cfg' 'cfg(freebsd10)' '--check-cfg' 'cfg(freebsd11)' '--check-cfg' 'cfg(freebsd12)' '--check-cfg' 'cfg(freebsd13)' '--check-cfg' 'cfg(freebsd14)' '--check-cfg' 'cfg(freebsd15)' '--check-cfg' 'cfg(libc_align)' '--check-cfg' 'cfg(libc_cfg_target_vendor)' '--check-cfg' 'cfg(libc_const_extern_fn)' '--check-cfg' 'cfg(libc_const_extern_fn_unstable)' '--check-cfg' 'cfg(libc_const_size_of)' '--check-cfg' 'cfg(libc_core_cvoid)' '--check-cfg' 'cfg(libc_deny_warnings)' '--check-cfg' 'cfg(libc_int128)' '--check-cfg' 'cfg(libc_long_array)' '--check-cfg' 'cfg(libc_non_exhaustive)' '--check-cfg' 'cfg(libc_packedN)' '--check-cfg' 'cfg(libc_priv_mod_use)' '--check-cfg' 'cfg(libc_ptr_addr_of)' '--check-cfg' 'cfg(libc_thread_local)' '--check-cfg' 'cfg(libc_underscore_const_names)' '--check-cfg' 'cfg(libc_union)' '--check-cfg' 'cfg(target_os,values("switch","aix","ohos","hurd","visionos"))' '--check-cfg' 'cfg(target_env,values("illumos","wasi","aix","ohos"))' '--check-cfg' 'cfg(target_arch,values("loongarch64","mips32r6","mips64r6","csky"))' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.155/src/lib.rs \
-##         1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-a7905fdc410bdfce-stdout) \
-##         2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-a7905fdc410bdfce-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-a7905fdc410bdfce-stdout) \
+##         2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-a7905fdc410bdfce-stderr >&2) \
+##         || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-a7905fdc410bdfce-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-a7905fdc410bdfce"
@@ -712,8 +724,9 @@ RUN \
         NTPD_RS_GIT_DATE="2025-05-09" \
         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
       rustc '--crate-name' 'clock_steering' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=210adb2d4103acd4' '-C' 'extra-filename=-7adc6d6ce8be0538' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'libc=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/clock-steering-0.2.1/src/lib.rs \
-        1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-7adc6d6ce8be0538-stdout) \
-        2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-7adc6d6ce8be0538-stderr >&2)
+        1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-7adc6d6ce8be0538-stdout) \
+        2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-7adc6d6ce8be0538-stderr >&2) \
+        || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-7adc6d6ce8be0538-errcode
 FROM scratch AS out-7adc6d6ce8be0538
 COPY --from=dep-l-clock-steering-0.2.1-7adc6d6ce8be0538 /tmp/clis-ntpd_1-2-3/release/deps/*-7adc6d6ce8be0538* /
 
@@ -774,8 +787,9 @@ COPY --from=dep-l-clock-steering-0.2.1-7adc6d6ce8be0538 /tmp/clis-ntpd_1-2-3/rel
 ##         NTPD_RS_GIT_DATE="2025-05-09" \
 ##         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
 ##       rustc '--crate-name' 'clock_steering' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=210adb2d4103acd4' '-C' 'extra-filename=-7adc6d6ce8be0538' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'libc=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/clock-steering-0.2.1/src/lib.rs \
-##         1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-7adc6d6ce8be0538-stdout) \
-##         2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-7adc6d6ce8be0538-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-7adc6d6ce8be0538-stdout) \
+##         2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-7adc6d6ce8be0538-stderr >&2) \
+##         || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-7adc6d6ce8be0538-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-7adc6d6ce8be0538"
@@ -816,8 +830,9 @@ RUN \
         NTPD_RS_GIT_DATE="2025-05-09" \
         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
       rustc '--crate-name' 'typenum' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("const-generics", "force_unix_path_separator", "i128", "no_std", "scale-info", "scale_info", "strict"))' '-C' 'metadata=29442973fe73a131' '-C' 'extra-filename=-981b1f3c4161234a' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/typenum-1.17.0/src/lib.rs \
-        1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-981b1f3c4161234a-stdout) \
-        2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-981b1f3c4161234a-stderr >&2)
+        1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-981b1f3c4161234a-stdout) \
+        2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-981b1f3c4161234a-stderr >&2) \
+        || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-981b1f3c4161234a-errcode
 FROM scratch AS out-981b1f3c4161234a
 COPY --from=dep-l-typenum-1.17.0-981b1f3c4161234a /tmp/clis-ntpd_1-2-3/release/deps/*-981b1f3c4161234a* /
 
@@ -888,8 +903,9 @@ COPY --from=dep-l-typenum-1.17.0-981b1f3c4161234a /tmp/clis-ntpd_1-2-3/release/d
 ##         NTPD_RS_GIT_DATE="2025-05-09" \
 ##         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
 ##       rustc '--crate-name' 'typenum' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("const-generics", "force_unix_path_separator", "i128", "no_std", "scale-info", "scale_info", "strict"))' '-C' 'metadata=29442973fe73a131' '-C' 'extra-filename=-981b1f3c4161234a' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/typenum-1.17.0/src/lib.rs \
-##         1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-981b1f3c4161234a-stdout) \
-##         2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-981b1f3c4161234a-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-981b1f3c4161234a-stdout) \
+##         2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-981b1f3c4161234a-stderr >&2) \
+##         || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-981b1f3c4161234a-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-981b1f3c4161234a"
@@ -930,8 +946,9 @@ RUN \
         NTPD_RS_GIT_DATE="2025-05-09" \
         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
       rustc '--crate-name' 'generic_array' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="more_lengths"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("more_lengths", "serde", "zeroize"))' '-C' 'metadata=f4c2a838184dee55' '-C' 'extra-filename=-2d6ea4fd5d7ef666' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'typenum=/tmp/clis-ntpd_1-2-3/release/deps/libtypenum-981b1f3c4161234a.rmeta' '--cap-lints' 'warn' '--cfg' 'relaxed_coherence' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/generic-array-0.14.7/src/lib.rs \
-        1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-2d6ea4fd5d7ef666-stdout) \
-        2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-2d6ea4fd5d7ef666-stderr >&2)
+        1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-2d6ea4fd5d7ef666-stdout) \
+        2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-2d6ea4fd5d7ef666-stderr >&2) \
+        || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-2d6ea4fd5d7ef666-errcode
 FROM scratch AS out-2d6ea4fd5d7ef666
 COPY --from=dep-l-generic-array-0.14.7-2d6ea4fd5d7ef666 /tmp/clis-ntpd_1-2-3/release/deps/*-2d6ea4fd5d7ef666* /
 
@@ -1002,8 +1019,9 @@ COPY --from=dep-l-generic-array-0.14.7-2d6ea4fd5d7ef666 /tmp/clis-ntpd_1-2-3/rel
 ##         NTPD_RS_GIT_DATE="2025-05-09" \
 ##         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
 ##       rustc '--crate-name' 'generic_array' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="more_lengths"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("more_lengths", "serde", "zeroize"))' '-C' 'metadata=f4c2a838184dee55' '-C' 'extra-filename=-2d6ea4fd5d7ef666' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'typenum=/tmp/clis-ntpd_1-2-3/release/deps/libtypenum-981b1f3c4161234a.rmeta' '--cap-lints' 'warn' '--cfg' 'relaxed_coherence' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/generic-array-0.14.7/src/lib.rs \
-##         1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-2d6ea4fd5d7ef666-stdout) \
-##         2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-2d6ea4fd5d7ef666-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-2d6ea4fd5d7ef666-stdout) \
+##         2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-2d6ea4fd5d7ef666-stderr >&2) \
+##         || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-2d6ea4fd5d7ef666-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-2d6ea4fd5d7ef666"
@@ -1042,8 +1060,9 @@ RUN \
         NTPD_RS_GIT_DATE="2025-05-09" \
         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
       rustc '--crate-name' 'cfg_if' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("compiler_builtins", "core", "rustc-dep-of-std"))' '-C' 'metadata=f774a8b1a0b6ae97' '-C' 'extra-filename=-da34da6838abd7f1' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/cfg-if-1.0.0/src/lib.rs \
-        1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-da34da6838abd7f1-stdout) \
-        2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-da34da6838abd7f1-stderr >&2)
+        1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-da34da6838abd7f1-stdout) \
+        2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-da34da6838abd7f1-stderr >&2) \
+        || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-da34da6838abd7f1-errcode
 FROM scratch AS out-da34da6838abd7f1
 COPY --from=dep-l-cfg-if-1.0.0-da34da6838abd7f1 /tmp/clis-ntpd_1-2-3/release/deps/*-da34da6838abd7f1* /
 
@@ -1101,8 +1120,9 @@ COPY --from=dep-l-cfg-if-1.0.0-da34da6838abd7f1 /tmp/clis-ntpd_1-2-3/release/dep
 ##         NTPD_RS_GIT_DATE="2025-05-09" \
 ##         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
 ##       rustc '--crate-name' 'cfg_if' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("compiler_builtins", "core", "rustc-dep-of-std"))' '-C' 'metadata=f774a8b1a0b6ae97' '-C' 'extra-filename=-da34da6838abd7f1' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/cfg-if-1.0.0/src/lib.rs \
-##         1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-da34da6838abd7f1-stdout) \
-##         2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-da34da6838abd7f1-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-da34da6838abd7f1-stdout) \
+##         2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-da34da6838abd7f1-stderr >&2) \
+##         || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-da34da6838abd7f1-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-da34da6838abd7f1"
@@ -1143,8 +1163,9 @@ RUN \
         NTPD_RS_GIT_DATE="2025-05-09" \
         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
       rustc '--crate-name' 'getrandom' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("compiler_builtins", "core", "custom", "js", "js-sys", "linux_disable_fallback", "rdrand", "rustc-dep-of-std", "std", "test-in-browser", "wasm-bindgen"))' '-C' 'metadata=b85a1c392b28b82e' '-C' 'extra-filename=-84473f2ddfbb434a' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'cfg_if=/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rmeta' '--extern' 'libc=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/getrandom-0.2.15/src/lib.rs \
-        1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-84473f2ddfbb434a-stdout) \
-        2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-84473f2ddfbb434a-stderr >&2)
+        1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-84473f2ddfbb434a-stdout) \
+        2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-84473f2ddfbb434a-stderr >&2) \
+        || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-84473f2ddfbb434a-errcode
 FROM scratch AS out-84473f2ddfbb434a
 COPY --from=dep-l-getrandom-0.2.15-84473f2ddfbb434a /tmp/clis-ntpd_1-2-3/release/deps/*-84473f2ddfbb434a* /
 
@@ -1212,8 +1233,9 @@ COPY --from=dep-l-getrandom-0.2.15-84473f2ddfbb434a /tmp/clis-ntpd_1-2-3/release
 ##         NTPD_RS_GIT_DATE="2025-05-09" \
 ##         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
 ##       rustc '--crate-name' 'getrandom' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("compiler_builtins", "core", "custom", "js", "js-sys", "linux_disable_fallback", "rdrand", "rustc-dep-of-std", "std", "test-in-browser", "wasm-bindgen"))' '-C' 'metadata=b85a1c392b28b82e' '-C' 'extra-filename=-84473f2ddfbb434a' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'cfg_if=/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rmeta' '--extern' 'libc=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/getrandom-0.2.15/src/lib.rs \
-##         1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-84473f2ddfbb434a-stdout) \
-##         2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-84473f2ddfbb434a-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-84473f2ddfbb434a-stdout) \
+##         2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-84473f2ddfbb434a-stderr >&2) \
+##         || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-84473f2ddfbb434a-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-84473f2ddfbb434a"
@@ -1255,8 +1277,9 @@ RUN \
         NTPD_RS_GIT_DATE="2025-05-09" \
         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
       rustc '--crate-name' 'rand_core' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="alloc"' '--cfg' 'feature="getrandom"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "getrandom", "serde", "serde1", "std"))' '-C' 'metadata=3387514d18f28e83' '-C' 'extra-filename=-434e8a9dd58e4456' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'getrandom=/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rand_core-0.6.4/src/lib.rs \
-        1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-434e8a9dd58e4456-stdout) \
-        2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-434e8a9dd58e4456-stderr >&2)
+        1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-434e8a9dd58e4456-stdout) \
+        2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-434e8a9dd58e4456-stderr >&2) \
+        || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-434e8a9dd58e4456-errcode
 FROM scratch AS out-434e8a9dd58e4456
 COPY --from=dep-l-rand_core-0.6.4-434e8a9dd58e4456 /tmp/clis-ntpd_1-2-3/release/deps/*-434e8a9dd58e4456* /
 
@@ -1334,8 +1357,9 @@ COPY --from=dep-l-rand_core-0.6.4-434e8a9dd58e4456 /tmp/clis-ntpd_1-2-3/release/
 ##         NTPD_RS_GIT_DATE="2025-05-09" \
 ##         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
 ##       rustc '--crate-name' 'rand_core' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="alloc"' '--cfg' 'feature="getrandom"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "getrandom", "serde", "serde1", "std"))' '-C' 'metadata=3387514d18f28e83' '-C' 'extra-filename=-434e8a9dd58e4456' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'getrandom=/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rand_core-0.6.4/src/lib.rs \
-##         1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-434e8a9dd58e4456-stdout) \
-##         2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-434e8a9dd58e4456-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-434e8a9dd58e4456-stdout) \
+##         2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-434e8a9dd58e4456-stderr >&2) \
+##         || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-434e8a9dd58e4456-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-434e8a9dd58e4456"
@@ -1380,8 +1404,9 @@ RUN \
         NTPD_RS_GIT_DATE="2025-05-09" \
         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
       rustc '--crate-name' 'crypto_common' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="getrandom"' '--cfg' 'feature="rand_core"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("getrandom", "rand_core", "std"))' '-C' 'metadata=a8e6e0e0c15f42ae' '-C' 'extra-filename=-1009fce94369ad6b' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'generic_array=/tmp/clis-ntpd_1-2-3/release/deps/libgeneric_array-2d6ea4fd5d7ef666.rmeta' '--extern' 'rand_core=/tmp/clis-ntpd_1-2-3/release/deps/librand_core-434e8a9dd58e4456.rmeta' '--extern' 'typenum=/tmp/clis-ntpd_1-2-3/release/deps/libtypenum-981b1f3c4161234a.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crypto-common-0.1.6/src/lib.rs \
-        1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-1009fce94369ad6b-stdout) \
-        2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-1009fce94369ad6b-stderr >&2)
+        1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-1009fce94369ad6b-stdout) \
+        2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-1009fce94369ad6b-stderr >&2) \
+        || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-1009fce94369ad6b-errcode
 FROM scratch AS out-1009fce94369ad6b
 COPY --from=dep-l-crypto-common-0.1.6-1009fce94369ad6b /tmp/clis-ntpd_1-2-3/release/deps/*-1009fce94369ad6b* /
 
@@ -1465,8 +1490,9 @@ COPY --from=dep-l-crypto-common-0.1.6-1009fce94369ad6b /tmp/clis-ntpd_1-2-3/rele
 ##         NTPD_RS_GIT_DATE="2025-05-09" \
 ##         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
 ##       rustc '--crate-name' 'crypto_common' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="getrandom"' '--cfg' 'feature="rand_core"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("getrandom", "rand_core", "std"))' '-C' 'metadata=a8e6e0e0c15f42ae' '-C' 'extra-filename=-1009fce94369ad6b' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'generic_array=/tmp/clis-ntpd_1-2-3/release/deps/libgeneric_array-2d6ea4fd5d7ef666.rmeta' '--extern' 'rand_core=/tmp/clis-ntpd_1-2-3/release/deps/librand_core-434e8a9dd58e4456.rmeta' '--extern' 'typenum=/tmp/clis-ntpd_1-2-3/release/deps/libtypenum-981b1f3c4161234a.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crypto-common-0.1.6/src/lib.rs \
-##         1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-1009fce94369ad6b-stdout) \
-##         2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-1009fce94369ad6b-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-1009fce94369ad6b-stdout) \
+##         2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-1009fce94369ad6b-stderr >&2) \
+##         || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-1009fce94369ad6b-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-1009fce94369ad6b"
@@ -1512,8 +1538,9 @@ RUN \
         NTPD_RS_GIT_DATE="2025-05-09" \
         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
       rustc '--crate-name' 'aead' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="alloc"' '--cfg' 'feature="default"' '--cfg' 'feature="getrandom"' '--cfg' 'feature="rand_core"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "arrayvec", "blobby", "bytes", "default", "dev", "getrandom", "heapless", "rand_core", "std", "stream"))' '-C' 'metadata=f12b97cd59057afb' '-C' 'extra-filename=-2ba1712ad50273ba' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'crypto_common=/tmp/clis-ntpd_1-2-3/release/deps/libcrypto_common-1009fce94369ad6b.rmeta' '--extern' 'generic_array=/tmp/clis-ntpd_1-2-3/release/deps/libgeneric_array-2d6ea4fd5d7ef666.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aead-0.5.2/src/lib.rs \
-        1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-2ba1712ad50273ba-stdout) \
-        2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-2ba1712ad50273ba-stderr >&2)
+        1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-2ba1712ad50273ba-stdout) \
+        2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-2ba1712ad50273ba-stderr >&2) \
+        || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-2ba1712ad50273ba-errcode
 FROM scratch AS out-2ba1712ad50273ba
 COPY --from=dep-l-aead-0.5.2-2ba1712ad50273ba /tmp/clis-ntpd_1-2-3/release/deps/*-2ba1712ad50273ba* /
 
@@ -1600,8 +1627,9 @@ COPY --from=dep-l-aead-0.5.2-2ba1712ad50273ba /tmp/clis-ntpd_1-2-3/release/deps/
 ##         NTPD_RS_GIT_DATE="2025-05-09" \
 ##         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
 ##       rustc '--crate-name' 'aead' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="alloc"' '--cfg' 'feature="default"' '--cfg' 'feature="getrandom"' '--cfg' 'feature="rand_core"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "arrayvec", "blobby", "bytes", "default", "dev", "getrandom", "heapless", "rand_core", "std", "stream"))' '-C' 'metadata=f12b97cd59057afb' '-C' 'extra-filename=-2ba1712ad50273ba' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'crypto_common=/tmp/clis-ntpd_1-2-3/release/deps/libcrypto_common-1009fce94369ad6b.rmeta' '--extern' 'generic_array=/tmp/clis-ntpd_1-2-3/release/deps/libgeneric_array-2d6ea4fd5d7ef666.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aead-0.5.2/src/lib.rs \
-##         1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-2ba1712ad50273ba-stdout) \
-##         2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-2ba1712ad50273ba-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-2ba1712ad50273ba-stdout) \
+##         2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-2ba1712ad50273ba-stderr >&2) \
+##         || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-2ba1712ad50273ba-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-2ba1712ad50273ba"
@@ -1642,8 +1670,9 @@ RUN \
         NTPD_RS_GIT_DATE="2025-05-09" \
         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
       rustc '--crate-name' 'inout' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("block-padding", "std"))' '-C' 'metadata=028d39a374e5d943' '-C' 'extra-filename=-56f37e149446be27' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'generic_array=/tmp/clis-ntpd_1-2-3/release/deps/libgeneric_array-2d6ea4fd5d7ef666.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/inout-0.1.3/src/lib.rs \
-        1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-56f37e149446be27-stdout) \
-        2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-56f37e149446be27-stderr >&2)
+        1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-56f37e149446be27-stdout) \
+        2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-56f37e149446be27-stderr >&2) \
+        || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-56f37e149446be27-errcode
 FROM scratch AS out-56f37e149446be27
 COPY --from=dep-l-inout-0.1.3-56f37e149446be27 /tmp/clis-ntpd_1-2-3/release/deps/*-56f37e149446be27* /
 
@@ -1715,8 +1744,9 @@ COPY --from=dep-l-inout-0.1.3-56f37e149446be27 /tmp/clis-ntpd_1-2-3/release/deps
 ##         NTPD_RS_GIT_DATE="2025-05-09" \
 ##         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
 ##       rustc '--crate-name' 'inout' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("block-padding", "std"))' '-C' 'metadata=028d39a374e5d943' '-C' 'extra-filename=-56f37e149446be27' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'generic_array=/tmp/clis-ntpd_1-2-3/release/deps/libgeneric_array-2d6ea4fd5d7ef666.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/inout-0.1.3/src/lib.rs \
-##         1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-56f37e149446be27-stdout) \
-##         2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-56f37e149446be27-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-56f37e149446be27-stdout) \
+##         2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-56f37e149446be27-stderr >&2) \
+##         || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-56f37e149446be27-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-56f37e149446be27"
@@ -1763,8 +1793,9 @@ RUN \
         NTPD_RS_GIT_DATE="2025-05-09" \
         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
       rustc '--crate-name' 'cipher' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "blobby", "block-padding", "dev", "rand_core", "std", "zeroize"))' '-C' 'metadata=443f4e0dfc99dcb5' '-C' 'extra-filename=-ca1baada07864a60' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'crypto_common=/tmp/clis-ntpd_1-2-3/release/deps/libcrypto_common-1009fce94369ad6b.rmeta' '--extern' 'inout=/tmp/clis-ntpd_1-2-3/release/deps/libinout-56f37e149446be27.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/cipher-0.4.4/src/lib.rs \
-        1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-ca1baada07864a60-stdout) \
-        2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-ca1baada07864a60-stderr >&2)
+        1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-ca1baada07864a60-stdout) \
+        2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-ca1baada07864a60-stderr >&2) \
+        || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-ca1baada07864a60-errcode
 FROM scratch AS out-ca1baada07864a60
 COPY --from=dep-l-cipher-0.4.4-ca1baada07864a60 /tmp/clis-ntpd_1-2-3/release/deps/*-ca1baada07864a60* /
 
@@ -1854,8 +1885,9 @@ COPY --from=dep-l-cipher-0.4.4-ca1baada07864a60 /tmp/clis-ntpd_1-2-3/release/dep
 ##         NTPD_RS_GIT_DATE="2025-05-09" \
 ##         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
 ##       rustc '--crate-name' 'cipher' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "blobby", "block-padding", "dev", "rand_core", "std", "zeroize"))' '-C' 'metadata=443f4e0dfc99dcb5' '-C' 'extra-filename=-ca1baada07864a60' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'crypto_common=/tmp/clis-ntpd_1-2-3/release/deps/libcrypto_common-1009fce94369ad6b.rmeta' '--extern' 'inout=/tmp/clis-ntpd_1-2-3/release/deps/libinout-56f37e149446be27.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/cipher-0.4.4/src/lib.rs \
-##         1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-ca1baada07864a60-stdout) \
-##         2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-ca1baada07864a60-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-ca1baada07864a60-stdout) \
+##         2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-ca1baada07864a60-stderr >&2) \
+##         || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-ca1baada07864a60-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-ca1baada07864a60"
@@ -1894,8 +1926,9 @@ RUN \
         NTPD_RS_GIT_DATE="2025-05-09" \
         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
       rustc '--crate-name' 'cpufeatures' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=a24ec131d35758fa' '-C' 'extra-filename=-4ab791033e58debd' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/cpufeatures-0.2.12/src/lib.rs \
-        1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-4ab791033e58debd-stdout) \
-        2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-4ab791033e58debd-stderr >&2)
+        1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-4ab791033e58debd-stdout) \
+        2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-4ab791033e58debd-stderr >&2) \
+        || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-4ab791033e58debd-errcode
 FROM scratch AS out-4ab791033e58debd
 COPY --from=dep-l-cpufeatures-0.2.12-4ab791033e58debd /tmp/clis-ntpd_1-2-3/release/deps/*-4ab791033e58debd* /
 
@@ -1953,8 +1986,9 @@ COPY --from=dep-l-cpufeatures-0.2.12-4ab791033e58debd /tmp/clis-ntpd_1-2-3/relea
 ##         NTPD_RS_GIT_DATE="2025-05-09" \
 ##         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
 ##       rustc '--crate-name' 'cpufeatures' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=a24ec131d35758fa' '-C' 'extra-filename=-4ab791033e58debd' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/cpufeatures-0.2.12/src/lib.rs \
-##         1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-4ab791033e58debd-stdout) \
-##         2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-4ab791033e58debd-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-4ab791033e58debd-stdout) \
+##         2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-4ab791033e58debd-stderr >&2) \
+##         || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-4ab791033e58debd-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-4ab791033e58debd"
@@ -2003,8 +2037,9 @@ RUN \
         NTPD_RS_GIT_DATE="2025-05-09" \
         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
       rustc '--crate-name' 'aes' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("hazmat", "zeroize"))' '-C' 'metadata=a904c92e53e4b1cb' '-C' 'extra-filename=-81c9db97d7f9be78' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'cfg_if=/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rmeta' '--extern' 'cipher=/tmp/clis-ntpd_1-2-3/release/deps/libcipher-ca1baada07864a60.rmeta' '--extern' 'cpufeatures=/tmp/clis-ntpd_1-2-3/release/deps/libcpufeatures-4ab791033e58debd.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aes-0.8.4/src/lib.rs \
-        1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-81c9db97d7f9be78-stdout) \
-        2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-81c9db97d7f9be78-stderr >&2)
+        1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-81c9db97d7f9be78-stdout) \
+        2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-81c9db97d7f9be78-stderr >&2) \
+        || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-81c9db97d7f9be78-errcode
 FROM scratch AS out-81c9db97d7f9be78
 COPY --from=dep-l-aes-0.8.4-81c9db97d7f9be78 /tmp/clis-ntpd_1-2-3/release/deps/*-81c9db97d7f9be78* /
 
@@ -2137,8 +2172,9 @@ COPY --from=dep-l-aes-0.8.4-81c9db97d7f9be78 /tmp/clis-ntpd_1-2-3/release/deps/*
 ##         NTPD_RS_GIT_DATE="2025-05-09" \
 ##         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
 ##       rustc '--crate-name' 'aes' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("hazmat", "zeroize"))' '-C' 'metadata=a904c92e53e4b1cb' '-C' 'extra-filename=-81c9db97d7f9be78' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'cfg_if=/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rmeta' '--extern' 'cipher=/tmp/clis-ntpd_1-2-3/release/deps/libcipher-ca1baada07864a60.rmeta' '--extern' 'cpufeatures=/tmp/clis-ntpd_1-2-3/release/deps/libcpufeatures-4ab791033e58debd.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aes-0.8.4/src/lib.rs \
-##         1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-81c9db97d7f9be78-stdout) \
-##         2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-81c9db97d7f9be78-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-81c9db97d7f9be78-stdout) \
+##         2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-81c9db97d7f9be78-stderr >&2) \
+##         || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-81c9db97d7f9be78-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-81c9db97d7f9be78"
@@ -2179,8 +2215,9 @@ RUN \
         NTPD_RS_GIT_DATE="2025-05-09" \
         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
       rustc '--crate-name' 'dbl' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=83352f6957298b08' '-C' 'extra-filename=-19f9a0f198045bc5' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'generic_array=/tmp/clis-ntpd_1-2-3/release/deps/libgeneric_array-2d6ea4fd5d7ef666.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/dbl-0.3.2/src/lib.rs \
-        1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-19f9a0f198045bc5-stdout) \
-        2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-19f9a0f198045bc5-stderr >&2)
+        1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-19f9a0f198045bc5-stdout) \
+        2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-19f9a0f198045bc5-stderr >&2) \
+        || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-19f9a0f198045bc5-errcode
 FROM scratch AS out-19f9a0f198045bc5
 COPY --from=dep-l-dbl-0.3.2-19f9a0f198045bc5 /tmp/clis-ntpd_1-2-3/release/deps/*-19f9a0f198045bc5* /
 
@@ -2252,8 +2289,9 @@ COPY --from=dep-l-dbl-0.3.2-19f9a0f198045bc5 /tmp/clis-ntpd_1-2-3/release/deps/*
 ##         NTPD_RS_GIT_DATE="2025-05-09" \
 ##         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
 ##       rustc '--crate-name' 'dbl' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=83352f6957298b08' '-C' 'extra-filename=-19f9a0f198045bc5' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'generic_array=/tmp/clis-ntpd_1-2-3/release/deps/libgeneric_array-2d6ea4fd5d7ef666.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/dbl-0.3.2/src/lib.rs \
-##         1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-19f9a0f198045bc5-stdout) \
-##         2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-19f9a0f198045bc5-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-19f9a0f198045bc5-stdout) \
+##         2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-19f9a0f198045bc5-stderr >&2) \
+##         || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-19f9a0f198045bc5-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-19f9a0f198045bc5"
@@ -2294,8 +2332,9 @@ RUN \
         NTPD_RS_GIT_DATE="2025-05-09" \
         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
       rustc '--crate-name' 'block_buffer' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=c34575ffbc27f6c1' '-C' 'extra-filename=-bc12f6e8b62af3c6' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'generic_array=/tmp/clis-ntpd_1-2-3/release/deps/libgeneric_array-2d6ea4fd5d7ef666.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/block-buffer-0.10.4/src/lib.rs \
-        1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-bc12f6e8b62af3c6-stdout) \
-        2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-bc12f6e8b62af3c6-stderr >&2)
+        1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-bc12f6e8b62af3c6-stdout) \
+        2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-bc12f6e8b62af3c6-stderr >&2) \
+        || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-bc12f6e8b62af3c6-errcode
 FROM scratch AS out-bc12f6e8b62af3c6
 COPY --from=dep-l-block-buffer-0.10.4-bc12f6e8b62af3c6 /tmp/clis-ntpd_1-2-3/release/deps/*-bc12f6e8b62af3c6* /
 
@@ -2367,8 +2406,9 @@ COPY --from=dep-l-block-buffer-0.10.4-bc12f6e8b62af3c6 /tmp/clis-ntpd_1-2-3/rele
 ##         NTPD_RS_GIT_DATE="2025-05-09" \
 ##         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
 ##       rustc '--crate-name' 'block_buffer' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=c34575ffbc27f6c1' '-C' 'extra-filename=-bc12f6e8b62af3c6' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'generic_array=/tmp/clis-ntpd_1-2-3/release/deps/libgeneric_array-2d6ea4fd5d7ef666.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/block-buffer-0.10.4/src/lib.rs \
-##         1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-bc12f6e8b62af3c6-stdout) \
-##         2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-bc12f6e8b62af3c6-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-bc12f6e8b62af3c6-stdout) \
+##         2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-bc12f6e8b62af3c6-stderr >&2) \
+##         || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-bc12f6e8b62af3c6-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-bc12f6e8b62af3c6"
@@ -2407,8 +2447,9 @@ RUN \
         NTPD_RS_GIT_DATE="2025-05-09" \
         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
       rustc '--crate-name' 'subtle' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("const-generics", "core_hint_black_box", "default", "i128", "nightly", "std"))' '-C' 'metadata=9243ede5932f6852' '-C' 'extra-filename=-8b6e21d4a5a6c6ed' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/subtle-2.6.1/src/lib.rs \
-        1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-8b6e21d4a5a6c6ed-stdout) \
-        2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-8b6e21d4a5a6c6ed-stderr >&2)
+        1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-8b6e21d4a5a6c6ed-stdout) \
+        2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-8b6e21d4a5a6c6ed-stderr >&2) \
+        || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-8b6e21d4a5a6c6ed-errcode
 FROM scratch AS out-8b6e21d4a5a6c6ed
 COPY --from=dep-l-subtle-2.6.1-8b6e21d4a5a6c6ed /tmp/clis-ntpd_1-2-3/release/deps/*-8b6e21d4a5a6c6ed* /
 
@@ -2466,8 +2507,9 @@ COPY --from=dep-l-subtle-2.6.1-8b6e21d4a5a6c6ed /tmp/clis-ntpd_1-2-3/release/dep
 ##         NTPD_RS_GIT_DATE="2025-05-09" \
 ##         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
 ##       rustc '--crate-name' 'subtle' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("const-generics", "core_hint_black_box", "default", "i128", "nightly", "std"))' '-C' 'metadata=9243ede5932f6852' '-C' 'extra-filename=-8b6e21d4a5a6c6ed' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/subtle-2.6.1/src/lib.rs \
-##         1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-8b6e21d4a5a6c6ed-stdout) \
-##         2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-8b6e21d4a5a6c6ed-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-8b6e21d4a5a6c6ed-stdout) \
+##         2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-8b6e21d4a5a6c6ed-stderr >&2) \
+##         || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-8b6e21d4a5a6c6ed-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-8b6e21d4a5a6c6ed"
@@ -2515,8 +2557,9 @@ RUN \
         NTPD_RS_GIT_DATE="2025-05-09" \
         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
       rustc '--crate-name' 'digest' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="alloc"' '--cfg' 'feature="block-buffer"' '--cfg' 'feature="core-api"' '--cfg' 'feature="default"' '--cfg' 'feature="mac"' '--cfg' 'feature="std"' '--cfg' 'feature="subtle"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "blobby", "block-buffer", "const-oid", "core-api", "default", "dev", "mac", "oid", "rand_core", "std", "subtle"))' '-C' 'metadata=13ce549efcf8978b' '-C' 'extra-filename=-65e96f3f500a3098' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'block_buffer=/tmp/clis-ntpd_1-2-3/release/deps/libblock_buffer-bc12f6e8b62af3c6.rmeta' '--extern' 'crypto_common=/tmp/clis-ntpd_1-2-3/release/deps/libcrypto_common-1009fce94369ad6b.rmeta' '--extern' 'subtle=/tmp/clis-ntpd_1-2-3/release/deps/libsubtle-8b6e21d4a5a6c6ed.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/digest-0.10.7/src/lib.rs \
-        1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-65e96f3f500a3098-stdout) \
-        2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-65e96f3f500a3098-stderr >&2)
+        1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-65e96f3f500a3098-stdout) \
+        2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-65e96f3f500a3098-stderr >&2) \
+        || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-65e96f3f500a3098-errcode
 FROM scratch AS out-65e96f3f500a3098
 COPY --from=dep-l-digest-0.10.7-65e96f3f500a3098 /tmp/clis-ntpd_1-2-3/release/deps/*-65e96f3f500a3098* /
 
@@ -2609,8 +2652,9 @@ COPY --from=dep-l-digest-0.10.7-65e96f3f500a3098 /tmp/clis-ntpd_1-2-3/release/de
 ##         NTPD_RS_GIT_DATE="2025-05-09" \
 ##         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
 ##       rustc '--crate-name' 'digest' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="alloc"' '--cfg' 'feature="block-buffer"' '--cfg' 'feature="core-api"' '--cfg' 'feature="default"' '--cfg' 'feature="mac"' '--cfg' 'feature="std"' '--cfg' 'feature="subtle"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "blobby", "block-buffer", "const-oid", "core-api", "default", "dev", "mac", "oid", "rand_core", "std", "subtle"))' '-C' 'metadata=13ce549efcf8978b' '-C' 'extra-filename=-65e96f3f500a3098' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'block_buffer=/tmp/clis-ntpd_1-2-3/release/deps/libblock_buffer-bc12f6e8b62af3c6.rmeta' '--extern' 'crypto_common=/tmp/clis-ntpd_1-2-3/release/deps/libcrypto_common-1009fce94369ad6b.rmeta' '--extern' 'subtle=/tmp/clis-ntpd_1-2-3/release/deps/libsubtle-8b6e21d4a5a6c6ed.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/digest-0.10.7/src/lib.rs \
-##         1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-65e96f3f500a3098-stdout) \
-##         2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-65e96f3f500a3098-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-65e96f3f500a3098-stdout) \
+##         2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-65e96f3f500a3098-stderr >&2) \
+##         || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-65e96f3f500a3098-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-65e96f3f500a3098"
@@ -2662,8 +2706,9 @@ RUN \
         NTPD_RS_GIT_DATE="2025-05-09" \
         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
       rustc '--crate-name' 'cmac' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("std", "zeroize"))' '-C' 'metadata=c52bec0dc9f3e628' '-C' 'extra-filename=-568874dfd4c5be74' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'cipher=/tmp/clis-ntpd_1-2-3/release/deps/libcipher-ca1baada07864a60.rmeta' '--extern' 'dbl=/tmp/clis-ntpd_1-2-3/release/deps/libdbl-19f9a0f198045bc5.rmeta' '--extern' 'digest=/tmp/clis-ntpd_1-2-3/release/deps/libdigest-65e96f3f500a3098.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/cmac-0.7.2/src/lib.rs \
-        1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-568874dfd4c5be74-stdout) \
-        2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-568874dfd4c5be74-stderr >&2)
+        1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-568874dfd4c5be74-stdout) \
+        2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-568874dfd4c5be74-stderr >&2) \
+        || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-568874dfd4c5be74-errcode
 FROM scratch AS out-568874dfd4c5be74
 COPY --from=dep-l-cmac-0.7.2-568874dfd4c5be74 /tmp/clis-ntpd_1-2-3/release/deps/*-568874dfd4c5be74* /
 
@@ -2768,8 +2813,9 @@ COPY --from=dep-l-cmac-0.7.2-568874dfd4c5be74 /tmp/clis-ntpd_1-2-3/release/deps/
 ##         NTPD_RS_GIT_DATE="2025-05-09" \
 ##         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
 ##       rustc '--crate-name' 'cmac' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("std", "zeroize"))' '-C' 'metadata=c52bec0dc9f3e628' '-C' 'extra-filename=-568874dfd4c5be74' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'cipher=/tmp/clis-ntpd_1-2-3/release/deps/libcipher-ca1baada07864a60.rmeta' '--extern' 'dbl=/tmp/clis-ntpd_1-2-3/release/deps/libdbl-19f9a0f198045bc5.rmeta' '--extern' 'digest=/tmp/clis-ntpd_1-2-3/release/deps/libdigest-65e96f3f500a3098.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/cmac-0.7.2/src/lib.rs \
-##         1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-568874dfd4c5be74-stdout) \
-##         2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-568874dfd4c5be74-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-568874dfd4c5be74-stdout) \
+##         2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-568874dfd4c5be74-stderr >&2) \
+##         || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-568874dfd4c5be74-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-568874dfd4c5be74"
@@ -2817,8 +2863,9 @@ RUN \
         NTPD_RS_GIT_DATE="2025-05-09" \
         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
       rustc '--crate-name' 'ctr' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "block-padding", "std", "zeroize"))' '-C' 'metadata=2c6c0332443a0ff8' '-C' 'extra-filename=-aca4c84266bacfb7' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'cipher=/tmp/clis-ntpd_1-2-3/release/deps/libcipher-ca1baada07864a60.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ctr-0.9.2/src/lib.rs \
-        1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-aca4c84266bacfb7-stdout) \
-        2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-aca4c84266bacfb7-stderr >&2)
+        1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-aca4c84266bacfb7-stdout) \
+        2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-aca4c84266bacfb7-stderr >&2) \
+        || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-aca4c84266bacfb7-errcode
 FROM scratch AS out-aca4c84266bacfb7
 COPY --from=dep-l-ctr-0.9.2-aca4c84266bacfb7 /tmp/clis-ntpd_1-2-3/release/deps/*-aca4c84266bacfb7* /
 
@@ -2911,8 +2958,9 @@ COPY --from=dep-l-ctr-0.9.2-aca4c84266bacfb7 /tmp/clis-ntpd_1-2-3/release/deps/*
 ##         NTPD_RS_GIT_DATE="2025-05-09" \
 ##         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
 ##       rustc '--crate-name' 'ctr' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "block-padding", "std", "zeroize"))' '-C' 'metadata=2c6c0332443a0ff8' '-C' 'extra-filename=-aca4c84266bacfb7' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'cipher=/tmp/clis-ntpd_1-2-3/release/deps/libcipher-ca1baada07864a60.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ctr-0.9.2/src/lib.rs \
-##         1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-aca4c84266bacfb7-stdout) \
-##         2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-aca4c84266bacfb7-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-aca4c84266bacfb7-stdout) \
+##         2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-aca4c84266bacfb7-stderr >&2) \
+##         || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-aca4c84266bacfb7-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-aca4c84266bacfb7"
@@ -2951,8 +2999,9 @@ RUN \
         NTPD_RS_GIT_DATE="2025-05-09" \
         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
       rustc '--crate-name' 'zeroize' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="alloc"' '--cfg' 'feature="default"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("aarch64", "alloc", "default", "derive", "serde", "simd", "std", "zeroize_derive"))' '-C' 'metadata=9cd21aaddf191e91' '-C' 'extra-filename=-caf2b0ffe78763b7' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zeroize-1.8.1/src/lib.rs \
-        1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-caf2b0ffe78763b7-stdout) \
-        2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-caf2b0ffe78763b7-stderr >&2)
+        1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-caf2b0ffe78763b7-stdout) \
+        2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-caf2b0ffe78763b7-stderr >&2) \
+        || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-caf2b0ffe78763b7-errcode
 FROM scratch AS out-caf2b0ffe78763b7
 COPY --from=dep-l-zeroize-1.8.1-caf2b0ffe78763b7 /tmp/clis-ntpd_1-2-3/release/deps/*-caf2b0ffe78763b7* /
 
@@ -3014,8 +3063,9 @@ COPY --from=dep-l-zeroize-1.8.1-caf2b0ffe78763b7 /tmp/clis-ntpd_1-2-3/release/de
 ##         NTPD_RS_GIT_DATE="2025-05-09" \
 ##         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
 ##       rustc '--crate-name' 'zeroize' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="alloc"' '--cfg' 'feature="default"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("aarch64", "alloc", "default", "derive", "serde", "simd", "std", "zeroize_derive"))' '-C' 'metadata=9cd21aaddf191e91' '-C' 'extra-filename=-caf2b0ffe78763b7' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zeroize-1.8.1/src/lib.rs \
-##         1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-caf2b0ffe78763b7-stdout) \
-##         2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-caf2b0ffe78763b7-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-caf2b0ffe78763b7-stdout) \
+##         2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-caf2b0ffe78763b7-stderr >&2) \
+##         || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-caf2b0ffe78763b7-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-caf2b0ffe78763b7"
@@ -3073,8 +3123,9 @@ RUN \
         NTPD_RS_GIT_DATE="2025-05-09" \
         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
       rustc '--crate-name' 'aes_siv' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="alloc"' '--cfg' 'feature="default"' '--cfg' 'feature="getrandom"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "default", "getrandom", "heapless", "pmac", "std", "stream"))' '-C' 'metadata=7a478ad10112b33f' '-C' 'extra-filename=-e0325614c1d7d6ab' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'aead=/tmp/clis-ntpd_1-2-3/release/deps/libaead-2ba1712ad50273ba.rmeta' '--extern' 'aes=/tmp/clis-ntpd_1-2-3/release/deps/libaes-81c9db97d7f9be78.rmeta' '--extern' 'cipher=/tmp/clis-ntpd_1-2-3/release/deps/libcipher-ca1baada07864a60.rmeta' '--extern' 'cmac=/tmp/clis-ntpd_1-2-3/release/deps/libcmac-568874dfd4c5be74.rmeta' '--extern' 'ctr=/tmp/clis-ntpd_1-2-3/release/deps/libctr-aca4c84266bacfb7.rmeta' '--extern' 'dbl=/tmp/clis-ntpd_1-2-3/release/deps/libdbl-19f9a0f198045bc5.rmeta' '--extern' 'digest=/tmp/clis-ntpd_1-2-3/release/deps/libdigest-65e96f3f500a3098.rmeta' '--extern' 'zeroize=/tmp/clis-ntpd_1-2-3/release/deps/libzeroize-caf2b0ffe78763b7.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aes-siv-0.7.0/src/lib.rs \
-        1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-e0325614c1d7d6ab-stdout) \
-        2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-e0325614c1d7d6ab-stderr >&2)
+        1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-e0325614c1d7d6ab-stdout) \
+        2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-e0325614c1d7d6ab-stderr >&2) \
+        || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-e0325614c1d7d6ab-errcode
 FROM scratch AS out-e0325614c1d7d6ab
 COPY --from=dep-l-aes-siv-0.7.0-e0325614c1d7d6ab /tmp/clis-ntpd_1-2-3/release/deps/*-e0325614c1d7d6ab* /
 
@@ -3197,8 +3248,9 @@ COPY --from=dep-l-aes-siv-0.7.0-e0325614c1d7d6ab /tmp/clis-ntpd_1-2-3/release/de
 ##         NTPD_RS_GIT_DATE="2025-05-09" \
 ##         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
 ##       rustc '--crate-name' 'aes_siv' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="alloc"' '--cfg' 'feature="default"' '--cfg' 'feature="getrandom"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "default", "getrandom", "heapless", "pmac", "std", "stream"))' '-C' 'metadata=7a478ad10112b33f' '-C' 'extra-filename=-e0325614c1d7d6ab' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'aead=/tmp/clis-ntpd_1-2-3/release/deps/libaead-2ba1712ad50273ba.rmeta' '--extern' 'aes=/tmp/clis-ntpd_1-2-3/release/deps/libaes-81c9db97d7f9be78.rmeta' '--extern' 'cipher=/tmp/clis-ntpd_1-2-3/release/deps/libcipher-ca1baada07864a60.rmeta' '--extern' 'cmac=/tmp/clis-ntpd_1-2-3/release/deps/libcmac-568874dfd4c5be74.rmeta' '--extern' 'ctr=/tmp/clis-ntpd_1-2-3/release/deps/libctr-aca4c84266bacfb7.rmeta' '--extern' 'dbl=/tmp/clis-ntpd_1-2-3/release/deps/libdbl-19f9a0f198045bc5.rmeta' '--extern' 'digest=/tmp/clis-ntpd_1-2-3/release/deps/libdigest-65e96f3f500a3098.rmeta' '--extern' 'zeroize=/tmp/clis-ntpd_1-2-3/release/deps/libzeroize-caf2b0ffe78763b7.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aes-siv-0.7.0/src/lib.rs \
-##         1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-e0325614c1d7d6ab-stdout) \
-##         2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-e0325614c1d7d6ab-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-e0325614c1d7d6ab-stdout) \
+##         2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-e0325614c1d7d6ab-stderr >&2) \
+##         || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-e0325614c1d7d6ab-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-e0325614c1d7d6ab"
@@ -3247,8 +3299,9 @@ RUN \
         NTPD_RS_GIT_DATE="2025-05-09" \
         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
       rustc '--crate-name' 'md5' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("asm", "default", "force-soft", "loongarch64_asm", "md5-asm", "oid", "std"))' '-C' 'metadata=e3e8f62ce0227785' '-C' 'extra-filename=-f0775f4337e7a668' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'cfg_if=/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rmeta' '--extern' 'digest=/tmp/clis-ntpd_1-2-3/release/deps/libdigest-65e96f3f500a3098.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/md-5-0.10.6/src/lib.rs \
-        1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-f0775f4337e7a668-stdout) \
-        2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-f0775f4337e7a668-stderr >&2)
+        1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-f0775f4337e7a668-stdout) \
+        2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-f0775f4337e7a668-stderr >&2) \
+        || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-f0775f4337e7a668-errcode
 FROM scratch AS out-f0775f4337e7a668
 COPY --from=dep-l-md-5-0.10.6-f0775f4337e7a668 /tmp/clis-ntpd_1-2-3/release/deps/*-f0775f4337e7a668* /
 
@@ -3344,8 +3397,9 @@ COPY --from=dep-l-md-5-0.10.6-f0775f4337e7a668 /tmp/clis-ntpd_1-2-3/release/deps
 ##         NTPD_RS_GIT_DATE="2025-05-09" \
 ##         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
 ##       rustc '--crate-name' 'md5' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("asm", "default", "force-soft", "loongarch64_asm", "md5-asm", "oid", "std"))' '-C' 'metadata=e3e8f62ce0227785' '-C' 'extra-filename=-f0775f4337e7a668' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'cfg_if=/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rmeta' '--extern' 'digest=/tmp/clis-ntpd_1-2-3/release/deps/libdigest-65e96f3f500a3098.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/md-5-0.10.6/src/lib.rs \
-##         1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-f0775f4337e7a668-stdout) \
-##         2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-f0775f4337e7a668-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-f0775f4337e7a668-stdout) \
+##         2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-f0775f4337e7a668-stderr >&2) \
+##         || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-f0775f4337e7a668-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-f0775f4337e7a668"
@@ -3384,8 +3438,9 @@ RUN \
         NTPD_RS_GIT_DATE="2025-05-09" \
         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
       rustc '--crate-name' 'ppv_lite86' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="simd"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "no_simd", "simd", "std"))' '-C' 'metadata=aaf213b1c0f9fc76' '-C' 'extra-filename=-af198cb5433f3d0c' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ppv-lite86-0.2.17/src/lib.rs \
-        1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-af198cb5433f3d0c-stdout) \
-        2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-af198cb5433f3d0c-stderr >&2)
+        1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-af198cb5433f3d0c-stdout) \
+        2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-af198cb5433f3d0c-stderr >&2) \
+        || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-af198cb5433f3d0c-errcode
 FROM scratch AS out-af198cb5433f3d0c
 COPY --from=dep-l-ppv-lite86-0.2.17-af198cb5433f3d0c /tmp/clis-ntpd_1-2-3/release/deps/*-af198cb5433f3d0c* /
 
@@ -3443,8 +3498,9 @@ COPY --from=dep-l-ppv-lite86-0.2.17-af198cb5433f3d0c /tmp/clis-ntpd_1-2-3/releas
 ##         NTPD_RS_GIT_DATE="2025-05-09" \
 ##         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
 ##       rustc '--crate-name' 'ppv_lite86' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="simd"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "no_simd", "simd", "std"))' '-C' 'metadata=aaf213b1c0f9fc76' '-C' 'extra-filename=-af198cb5433f3d0c' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ppv-lite86-0.2.17/src/lib.rs \
-##         1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-af198cb5433f3d0c-stdout) \
-##         2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-af198cb5433f3d0c-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-af198cb5433f3d0c-stdout) \
+##         2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-af198cb5433f3d0c-stderr >&2) \
+##         || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-af198cb5433f3d0c-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-af198cb5433f3d0c"
@@ -3488,8 +3544,9 @@ RUN \
         NTPD_RS_GIT_DATE="2025-05-09" \
         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
       rustc '--crate-name' 'rand_chacha' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "serde", "serde1", "simd", "std"))' '-C' 'metadata=f3ab709609c9e3db' '-C' 'extra-filename=-8e2f025dcc32e9af' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'ppv_lite86=/tmp/clis-ntpd_1-2-3/release/deps/libppv_lite86-af198cb5433f3d0c.rmeta' '--extern' 'rand_core=/tmp/clis-ntpd_1-2-3/release/deps/librand_core-434e8a9dd58e4456.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rand_chacha-0.3.1/src/lib.rs \
-        1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-8e2f025dcc32e9af-stdout) \
-        2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-8e2f025dcc32e9af-stderr >&2)
+        1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-8e2f025dcc32e9af-stdout) \
+        2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-8e2f025dcc32e9af-stderr >&2) \
+        || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-8e2f025dcc32e9af-errcode
 FROM scratch AS out-8e2f025dcc32e9af
 COPY --from=dep-l-rand_chacha-0.3.1-8e2f025dcc32e9af /tmp/clis-ntpd_1-2-3/release/deps/*-8e2f025dcc32e9af* /
 
@@ -3566,8 +3623,9 @@ COPY --from=dep-l-rand_chacha-0.3.1-8e2f025dcc32e9af /tmp/clis-ntpd_1-2-3/releas
 ##         NTPD_RS_GIT_DATE="2025-05-09" \
 ##         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
 ##       rustc '--crate-name' 'rand_chacha' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "serde", "serde1", "simd", "std"))' '-C' 'metadata=f3ab709609c9e3db' '-C' 'extra-filename=-8e2f025dcc32e9af' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'ppv_lite86=/tmp/clis-ntpd_1-2-3/release/deps/libppv_lite86-af198cb5433f3d0c.rmeta' '--extern' 'rand_core=/tmp/clis-ntpd_1-2-3/release/deps/librand_core-434e8a9dd58e4456.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rand_chacha-0.3.1/src/lib.rs \
-##         1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-8e2f025dcc32e9af-stdout) \
-##         2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-8e2f025dcc32e9af-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-8e2f025dcc32e9af-stdout) \
+##         2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-8e2f025dcc32e9af-stderr >&2) \
+##         || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-8e2f025dcc32e9af-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-8e2f025dcc32e9af"
@@ -3612,8 +3670,9 @@ RUN \
         NTPD_RS_GIT_DATE="2025-05-09" \
         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
       rustc '--crate-name' 'rand' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="alloc"' '--cfg' 'feature="default"' '--cfg' 'feature="getrandom"' '--cfg' 'feature="libc"' '--cfg' 'feature="rand_chacha"' '--cfg' 'feature="std"' '--cfg' 'feature="std_rng"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "default", "getrandom", "libc", "log", "min_const_gen", "nightly", "packed_simd", "rand_chacha", "serde", "serde1", "simd_support", "small_rng", "std", "std_rng"))' '-C' 'metadata=26b2e4280c900bcf' '-C' 'extra-filename=-5161209caf71d483' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'libc=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rmeta' '--extern' 'rand_chacha=/tmp/clis-ntpd_1-2-3/release/deps/librand_chacha-8e2f025dcc32e9af.rmeta' '--extern' 'rand_core=/tmp/clis-ntpd_1-2-3/release/deps/librand_core-434e8a9dd58e4456.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rand-0.8.5/src/lib.rs \
-        1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-5161209caf71d483-stdout) \
-        2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-5161209caf71d483-stderr >&2)
+        1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-5161209caf71d483-stdout) \
+        2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-5161209caf71d483-stderr >&2) \
+        || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-5161209caf71d483-errcode
 FROM scratch AS out-5161209caf71d483
 COPY --from=dep-l-rand-0.8.5-5161209caf71d483 /tmp/clis-ntpd_1-2-3/release/deps/*-5161209caf71d483* /
 
@@ -3720,8 +3779,9 @@ COPY --from=dep-l-rand-0.8.5-5161209caf71d483 /tmp/clis-ntpd_1-2-3/release/deps/
 ##         NTPD_RS_GIT_DATE="2025-05-09" \
 ##         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
 ##       rustc '--crate-name' 'rand' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="alloc"' '--cfg' 'feature="default"' '--cfg' 'feature="getrandom"' '--cfg' 'feature="libc"' '--cfg' 'feature="rand_chacha"' '--cfg' 'feature="std"' '--cfg' 'feature="std_rng"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "default", "getrandom", "libc", "log", "min_const_gen", "nightly", "packed_simd", "rand_chacha", "serde", "serde1", "simd_support", "small_rng", "std", "std_rng"))' '-C' 'metadata=26b2e4280c900bcf' '-C' 'extra-filename=-5161209caf71d483' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'libc=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rmeta' '--extern' 'rand_chacha=/tmp/clis-ntpd_1-2-3/release/deps/librand_chacha-8e2f025dcc32e9af.rmeta' '--extern' 'rand_core=/tmp/clis-ntpd_1-2-3/release/deps/librand_core-434e8a9dd58e4456.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rand-0.8.5/src/lib.rs \
-##         1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-5161209caf71d483-stdout) \
-##         2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-5161209caf71d483-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-5161209caf71d483-stdout) \
+##         2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-5161209caf71d483-stderr >&2) \
+##         || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-5161209caf71d483-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-5161209caf71d483"
@@ -3760,8 +3820,9 @@ RUN \
         NTPD_RS_GIT_DATE="2025-05-09" \
         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
       rustc '--crate-name' 'log' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("kv", "kv_serde", "kv_std", "kv_sval", "kv_unstable", "kv_unstable_serde", "kv_unstable_std", "kv_unstable_sval", "max_level_debug", "max_level_error", "max_level_info", "max_level_off", "max_level_trace", "max_level_warn", "release_max_level_debug", "release_max_level_error", "release_max_level_info", "release_max_level_off", "release_max_level_trace", "release_max_level_warn", "serde", "std", "sval", "sval_ref", "value-bag"))' '-C' 'metadata=23b03b2578bfc130' '-C' 'extra-filename=-b564a3159bfcf688' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/log-0.4.22/src/lib.rs \
-        1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-b564a3159bfcf688-stdout) \
-        2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-b564a3159bfcf688-stderr >&2)
+        1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-b564a3159bfcf688-stdout) \
+        2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-b564a3159bfcf688-stderr >&2) \
+        || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-b564a3159bfcf688-errcode
 FROM scratch AS out-b564a3159bfcf688
 COPY --from=dep-l-log-0.4.22-b564a3159bfcf688 /tmp/clis-ntpd_1-2-3/release/deps/*-b564a3159bfcf688* /
 
@@ -3819,8 +3880,9 @@ COPY --from=dep-l-log-0.4.22-b564a3159bfcf688 /tmp/clis-ntpd_1-2-3/release/deps/
 ##         NTPD_RS_GIT_DATE="2025-05-09" \
 ##         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
 ##       rustc '--crate-name' 'log' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("kv", "kv_serde", "kv_std", "kv_sval", "kv_unstable", "kv_unstable_serde", "kv_unstable_std", "kv_unstable_sval", "max_level_debug", "max_level_error", "max_level_info", "max_level_off", "max_level_trace", "max_level_warn", "release_max_level_debug", "release_max_level_error", "release_max_level_info", "release_max_level_off", "release_max_level_trace", "release_max_level_warn", "serde", "std", "sval", "sval_ref", "value-bag"))' '-C' 'metadata=23b03b2578bfc130' '-C' 'extra-filename=-b564a3159bfcf688' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/log-0.4.22/src/lib.rs \
-##         1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-b564a3159bfcf688-stdout) \
-##         2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-b564a3159bfcf688-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-b564a3159bfcf688-stdout) \
+##         2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-b564a3159bfcf688-stderr >&2) \
+##         || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-b564a3159bfcf688-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-b564a3159bfcf688"
@@ -3859,8 +3921,9 @@ RUN \
         NTPD_RS_GIT_DATE="2025-05-09" \
         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
       rustc '--crate-name' 'once_cell' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="alloc"' '--cfg' 'feature="default"' '--cfg' 'feature="race"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "atomic-polyfill", "critical-section", "default", "parking_lot", "portable-atomic", "race", "std", "unstable"))' '-C' 'metadata=afc296a215691e24' '-C' 'extra-filename=-6ed51fafe322ecba' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/once_cell-1.19.0/src/lib.rs \
-        1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-6ed51fafe322ecba-stdout) \
-        2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-6ed51fafe322ecba-stderr >&2)
+        1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-6ed51fafe322ecba-stdout) \
+        2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-6ed51fafe322ecba-stderr >&2) \
+        || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-6ed51fafe322ecba-errcode
 FROM scratch AS out-6ed51fafe322ecba
 COPY --from=dep-l-once_cell-1.19.0-6ed51fafe322ecba /tmp/clis-ntpd_1-2-3/release/deps/*-6ed51fafe322ecba* /
 
@@ -3918,8 +3981,9 @@ COPY --from=dep-l-once_cell-1.19.0-6ed51fafe322ecba /tmp/clis-ntpd_1-2-3/release
 ##         NTPD_RS_GIT_DATE="2025-05-09" \
 ##         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
 ##       rustc '--crate-name' 'once_cell' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="alloc"' '--cfg' 'feature="default"' '--cfg' 'feature="race"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "atomic-polyfill", "critical-section", "default", "parking_lot", "portable-atomic", "race", "std", "unstable"))' '-C' 'metadata=afc296a215691e24' '-C' 'extra-filename=-6ed51fafe322ecba' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/once_cell-1.19.0/src/lib.rs \
-##         1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-6ed51fafe322ecba-stdout) \
-##         2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-6ed51fafe322ecba-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-6ed51fafe322ecba-stdout) \
+##         2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-6ed51fafe322ecba-stderr >&2) \
+##         || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-6ed51fafe322ecba-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-6ed51fafe322ecba"
@@ -3958,8 +4022,9 @@ RUN \
         NTPD_RS_GIT_DATE="2025-05-09" \
         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
       rustc '--crate-name' 'spin' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="once"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("barrier", "default", "fair_mutex", "lazy", "lock_api", "lock_api_crate", "mutex", "once", "portable-atomic", "portable_atomic", "rwlock", "spin_mutex", "std", "ticket_mutex", "use_ticket_mutex"))' '-C' 'metadata=60813e2ad9e2eb14' '-C' 'extra-filename=-126f99f44d356e93' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/spin-0.9.8/src/lib.rs \
-        1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-126f99f44d356e93-stdout) \
-        2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-126f99f44d356e93-stderr >&2)
+        1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-126f99f44d356e93-stdout) \
+        2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-126f99f44d356e93-stderr >&2) \
+        || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-126f99f44d356e93-errcode
 FROM scratch AS out-126f99f44d356e93
 COPY --from=dep-l-spin-0.9.8-126f99f44d356e93 /tmp/clis-ntpd_1-2-3/release/deps/*-126f99f44d356e93* /
 
@@ -4017,8 +4082,9 @@ COPY --from=dep-l-spin-0.9.8-126f99f44d356e93 /tmp/clis-ntpd_1-2-3/release/deps/
 ##         NTPD_RS_GIT_DATE="2025-05-09" \
 ##         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
 ##       rustc '--crate-name' 'spin' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="once"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("barrier", "default", "fair_mutex", "lazy", "lock_api", "lock_api_crate", "mutex", "once", "portable-atomic", "portable_atomic", "rwlock", "spin_mutex", "std", "ticket_mutex", "use_ticket_mutex"))' '-C' 'metadata=60813e2ad9e2eb14' '-C' 'extra-filename=-126f99f44d356e93' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/spin-0.9.8/src/lib.rs \
-##         1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-126f99f44d356e93-stdout) \
-##         2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-126f99f44d356e93-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-126f99f44d356e93-stdout) \
+##         2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-126f99f44d356e93-stderr >&2) \
+##         || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-126f99f44d356e93-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-126f99f44d356e93"
@@ -4057,8 +4123,9 @@ RUN \
         NTPD_RS_GIT_DATE="2025-05-09" \
         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
       rustc '--crate-name' 'untrusted' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=e184a6c513ada7de' '-C' 'extra-filename=-2cf0189e0a6f5785' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/untrusted-0.9.0/src/lib.rs \
-        1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-2cf0189e0a6f5785-stdout) \
-        2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-2cf0189e0a6f5785-stderr >&2)
+        1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-2cf0189e0a6f5785-stdout) \
+        2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-2cf0189e0a6f5785-stderr >&2) \
+        || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-2cf0189e0a6f5785-errcode
 FROM scratch AS out-2cf0189e0a6f5785
 COPY --from=dep-l-untrusted-0.9.0-2cf0189e0a6f5785 /tmp/clis-ntpd_1-2-3/release/deps/*-2cf0189e0a6f5785* /
 
@@ -4116,8 +4183,9 @@ COPY --from=dep-l-untrusted-0.9.0-2cf0189e0a6f5785 /tmp/clis-ntpd_1-2-3/release/
 ##         NTPD_RS_GIT_DATE="2025-05-09" \
 ##         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
 ##       rustc '--crate-name' 'untrusted' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=e184a6c513ada7de' '-C' 'extra-filename=-2cf0189e0a6f5785' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/untrusted-0.9.0/src/lib.rs \
-##         1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-2cf0189e0a6f5785-stdout) \
-##         2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-2cf0189e0a6f5785-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-2cf0189e0a6f5785-stdout) \
+##         2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-2cf0189e0a6f5785-stderr >&2) \
+##         || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-2cf0189e0a6f5785-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-2cf0189e0a6f5785"
@@ -4164,8 +4232,9 @@ RUN \
         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
         RING_CORE_PREFIX="ring_core_0_17_8_" \
       rustc '--crate-name' 'ring' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="alloc"' '--cfg' 'feature="default"' '--cfg' 'feature="dev_urandom_fallback"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "default", "dev_urandom_fallback", "less-safe-getrandom-custom-or-rdrand", "slow_tests", "std", "test_logging", "unstable-testing-arm-no-hw", "unstable-testing-arm-no-neon", "wasm32_unknown_unknown_js"))' '-C' 'metadata=978176b97882da5c' '-C' 'extra-filename=-162d4bd1f192637c' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'cfg_if=/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rmeta' '--extern' 'getrandom=/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rmeta' '--extern' 'spin=/tmp/clis-ntpd_1-2-3/release/deps/libspin-126f99f44d356e93.rmeta' '--extern' 'untrusted=/tmp/clis-ntpd_1-2-3/release/deps/libuntrusted-2cf0189e0a6f5785.rmeta' '--cap-lints' 'warn' '-L' 'native=/tmp/clis-ntpd_1-2-3/release/build/ring-a0b19822430eae69/out' '-l' 'static=ring_core_0_17_8_' '-l' 'static=ring_core_0_17_8_test' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ring-0.17.8/src/lib.rs \
-        1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-162d4bd1f192637c-stdout) \
-        2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-162d4bd1f192637c-stderr >&2)
+        1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-162d4bd1f192637c-stdout) \
+        2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-162d4bd1f192637c-stderr >&2) \
+        || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-162d4bd1f192637c-errcode
 FROM scratch AS out-162d4bd1f192637c
 COPY --from=dep-l-ring-0.17.8-162d4bd1f192637c /tmp/clis-ntpd_1-2-3/release/deps/*-162d4bd1f192637c* /
 
@@ -4251,8 +4320,9 @@ COPY --from=dep-l-ring-0.17.8-162d4bd1f192637c /tmp/clis-ntpd_1-2-3/release/deps
 ##         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
 ##         RING_CORE_PREFIX="ring_core_0_17_8_" \
 ##       rustc '--crate-name' 'ring' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="alloc"' '--cfg' 'feature="default"' '--cfg' 'feature="dev_urandom_fallback"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "default", "dev_urandom_fallback", "less-safe-getrandom-custom-or-rdrand", "slow_tests", "std", "test_logging", "unstable-testing-arm-no-hw", "unstable-testing-arm-no-neon", "wasm32_unknown_unknown_js"))' '-C' 'metadata=978176b97882da5c' '-C' 'extra-filename=-162d4bd1f192637c' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'cfg_if=/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rmeta' '--extern' 'getrandom=/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rmeta' '--extern' 'spin=/tmp/clis-ntpd_1-2-3/release/deps/libspin-126f99f44d356e93.rmeta' '--extern' 'untrusted=/tmp/clis-ntpd_1-2-3/release/deps/libuntrusted-2cf0189e0a6f5785.rmeta' '--cap-lints' 'warn' '-L' 'native=/tmp/clis-ntpd_1-2-3/release/build/ring-a0b19822430eae69/out' '-l' 'static=ring_core_0_17_8_' '-l' 'static=ring_core_0_17_8_test' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ring-0.17.8/src/lib.rs \
-##         1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-162d4bd1f192637c-stdout) \
-##         2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-162d4bd1f192637c-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-162d4bd1f192637c-stdout) \
+##         2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-162d4bd1f192637c-stderr >&2) \
+##         || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-162d4bd1f192637c-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-162d4bd1f192637c"
@@ -4291,8 +4361,9 @@ RUN \
         NTPD_RS_GIT_DATE="2025-05-09" \
         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
       rustc '--crate-name' 'rustls_pki_types' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="alloc"' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "default", "std", "web", "web-time"))' '-C' 'metadata=658233308e04b69e' '-C' 'extra-filename=-0bd417676bde33fe' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustls-pki-types-1.7.0/src/lib.rs \
-        1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-0bd417676bde33fe-stdout) \
-        2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-0bd417676bde33fe-stderr >&2)
+        1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-0bd417676bde33fe-stdout) \
+        2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-0bd417676bde33fe-stderr >&2) \
+        || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-0bd417676bde33fe-errcode
 FROM scratch AS out-0bd417676bde33fe
 COPY --from=dep-l-rustls-pki-types-1.7.0-0bd417676bde33fe /tmp/clis-ntpd_1-2-3/release/deps/*-0bd417676bde33fe* /
 
@@ -4352,8 +4423,9 @@ COPY --from=dep-l-rustls-pki-types-1.7.0-0bd417676bde33fe /tmp/clis-ntpd_1-2-3/r
 ##         NTPD_RS_GIT_DATE="2025-05-09" \
 ##         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
 ##       rustc '--crate-name' 'rustls_pki_types' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="alloc"' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "default", "std", "web", "web-time"))' '-C' 'metadata=658233308e04b69e' '-C' 'extra-filename=-0bd417676bde33fe' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustls-pki-types-1.7.0/src/lib.rs \
-##         1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-0bd417676bde33fe-stdout) \
-##         2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-0bd417676bde33fe-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-0bd417676bde33fe-stdout) \
+##         2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-0bd417676bde33fe-stderr >&2) \
+##         || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-0bd417676bde33fe-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-0bd417676bde33fe"
@@ -4399,8 +4471,9 @@ RUN \
         NTPD_RS_GIT_DATE="2025-05-09" \
         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
       rustc '--crate-name' 'webpki' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="alloc"' '--cfg' 'feature="ring"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "aws_lc_rs", "default", "ring", "std"))' '-C' 'metadata=fcb50671f0ac0aef' '-C' 'extra-filename=-0b45a7938c797eef' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'ring=/tmp/clis-ntpd_1-2-3/release/deps/libring-162d4bd1f192637c.rmeta' '--extern' 'pki_types=/tmp/clis-ntpd_1-2-3/release/deps/librustls_pki_types-0bd417676bde33fe.rmeta' '--extern' 'untrusted=/tmp/clis-ntpd_1-2-3/release/deps/libuntrusted-2cf0189e0a6f5785.rmeta' '--cap-lints' 'warn' '-L' 'native=/tmp/clis-ntpd_1-2-3/release/build/ring-a0b19822430eae69/out' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustls-webpki-0.102.5/src/lib.rs \
-        1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-0b45a7938c797eef-stdout) \
-        2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-0b45a7938c797eef-stderr >&2)
+        1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-0b45a7938c797eef-stdout) \
+        2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-0b45a7938c797eef-stderr >&2) \
+        || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-0b45a7938c797eef-errcode
 FROM scratch AS out-0b45a7938c797eef
 COPY --from=dep-l-rustls-webpki-0.102.5-0b45a7938c797eef /tmp/clis-ntpd_1-2-3/release/deps/*-0b45a7938c797eef* /
 
@@ -4487,8 +4560,9 @@ COPY --from=dep-l-rustls-webpki-0.102.5-0b45a7938c797eef /tmp/clis-ntpd_1-2-3/re
 ##         NTPD_RS_GIT_DATE="2025-05-09" \
 ##         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
 ##       rustc '--crate-name' 'webpki' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="alloc"' '--cfg' 'feature="ring"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "aws_lc_rs", "default", "ring", "std"))' '-C' 'metadata=fcb50671f0ac0aef' '-C' 'extra-filename=-0b45a7938c797eef' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'ring=/tmp/clis-ntpd_1-2-3/release/deps/libring-162d4bd1f192637c.rmeta' '--extern' 'pki_types=/tmp/clis-ntpd_1-2-3/release/deps/librustls_pki_types-0bd417676bde33fe.rmeta' '--extern' 'untrusted=/tmp/clis-ntpd_1-2-3/release/deps/libuntrusted-2cf0189e0a6f5785.rmeta' '--cap-lints' 'warn' '-L' 'native=/tmp/clis-ntpd_1-2-3/release/build/ring-a0b19822430eae69/out' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustls-webpki-0.102.5/src/lib.rs \
-##         1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-0b45a7938c797eef-stdout) \
-##         2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-0b45a7938c797eef-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-0b45a7938c797eef-stdout) \
+##         2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-0b45a7938c797eef-stderr >&2) \
+##         || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-0b45a7938c797eef-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-0b45a7938c797eef"
@@ -4540,8 +4614,9 @@ RUN \
         NTPD_RS_GIT_DATE="2025-05-09" \
         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
       rustc '--crate-name' 'rustls' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="log"' '--cfg' 'feature="logging"' '--cfg' 'feature="ring"' '--cfg' 'feature="std"' '--cfg' 'feature="tls12"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("aws-lc-rs", "aws_lc_rs", "brotli", "default", "fips", "hashbrown", "log", "logging", "read_buf", "ring", "rustversion", "std", "tls12", "zlib"))' '-C' 'metadata=0f5ddfd1f042597f' '-C' 'extra-filename=-fd2c262888e3ecb5' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'log=/tmp/clis-ntpd_1-2-3/release/deps/liblog-b564a3159bfcf688.rmeta' '--extern' 'once_cell=/tmp/clis-ntpd_1-2-3/release/deps/libonce_cell-6ed51fafe322ecba.rmeta' '--extern' 'ring=/tmp/clis-ntpd_1-2-3/release/deps/libring-162d4bd1f192637c.rmeta' '--extern' 'pki_types=/tmp/clis-ntpd_1-2-3/release/deps/librustls_pki_types-0bd417676bde33fe.rmeta' '--extern' 'webpki=/tmp/clis-ntpd_1-2-3/release/deps/libwebpki-0b45a7938c797eef.rmeta' '--extern' 'subtle=/tmp/clis-ntpd_1-2-3/release/deps/libsubtle-8b6e21d4a5a6c6ed.rmeta' '--extern' 'zeroize=/tmp/clis-ntpd_1-2-3/release/deps/libzeroize-caf2b0ffe78763b7.rmeta' '--cap-lints' 'warn' '-L' 'native=/tmp/clis-ntpd_1-2-3/release/build/ring-a0b19822430eae69/out' '--check-cfg' 'cfg(bench)' '--check-cfg' 'cfg(read_buf)' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustls-0.23.11/src/lib.rs \
-        1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-fd2c262888e3ecb5-stdout) \
-        2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-fd2c262888e3ecb5-stderr >&2)
+        1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-fd2c262888e3ecb5-stdout) \
+        2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-fd2c262888e3ecb5-stderr >&2) \
+        || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-fd2c262888e3ecb5-errcode
 FROM scratch AS out-fd2c262888e3ecb5
 COPY --from=dep-l-rustls-0.23.11-fd2c262888e3ecb5 /tmp/clis-ntpd_1-2-3/release/deps/*-fd2c262888e3ecb5* /
 
@@ -4646,8 +4721,9 @@ COPY --from=dep-l-rustls-0.23.11-fd2c262888e3ecb5 /tmp/clis-ntpd_1-2-3/release/d
 ##         NTPD_RS_GIT_DATE="2025-05-09" \
 ##         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
 ##       rustc '--crate-name' 'rustls' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="log"' '--cfg' 'feature="logging"' '--cfg' 'feature="ring"' '--cfg' 'feature="std"' '--cfg' 'feature="tls12"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("aws-lc-rs", "aws_lc_rs", "brotli", "default", "fips", "hashbrown", "log", "logging", "read_buf", "ring", "rustversion", "std", "tls12", "zlib"))' '-C' 'metadata=0f5ddfd1f042597f' '-C' 'extra-filename=-fd2c262888e3ecb5' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'log=/tmp/clis-ntpd_1-2-3/release/deps/liblog-b564a3159bfcf688.rmeta' '--extern' 'once_cell=/tmp/clis-ntpd_1-2-3/release/deps/libonce_cell-6ed51fafe322ecba.rmeta' '--extern' 'ring=/tmp/clis-ntpd_1-2-3/release/deps/libring-162d4bd1f192637c.rmeta' '--extern' 'pki_types=/tmp/clis-ntpd_1-2-3/release/deps/librustls_pki_types-0bd417676bde33fe.rmeta' '--extern' 'webpki=/tmp/clis-ntpd_1-2-3/release/deps/libwebpki-0b45a7938c797eef.rmeta' '--extern' 'subtle=/tmp/clis-ntpd_1-2-3/release/deps/libsubtle-8b6e21d4a5a6c6ed.rmeta' '--extern' 'zeroize=/tmp/clis-ntpd_1-2-3/release/deps/libzeroize-caf2b0ffe78763b7.rmeta' '--cap-lints' 'warn' '-L' 'native=/tmp/clis-ntpd_1-2-3/release/build/ring-a0b19822430eae69/out' '--check-cfg' 'cfg(bench)' '--check-cfg' 'cfg(read_buf)' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustls-0.23.11/src/lib.rs \
-##         1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-fd2c262888e3ecb5-stdout) \
-##         2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-fd2c262888e3ecb5-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-fd2c262888e3ecb5-stdout) \
+##         2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-fd2c262888e3ecb5-stderr >&2) \
+##         || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-fd2c262888e3ecb5-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-fd2c262888e3ecb5"
@@ -4690,8 +4766,9 @@ RUN \
         NTPD_RS_GIT_DATE="2025-05-09" \
         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
       rustc '--crate-name' 'serde_derive' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'proc-macro' '--emit' 'dep-info,link' '-C' 'prefer-dynamic' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--cfg' 'feature="default"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "deserialize_in_place"))' '-C' 'metadata=f57af49d134c85f7' '-C' 'extra-filename=-b74741511dfa898a' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'proc_macro2=/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rlib' '--extern' 'quote=/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rlib' '--extern' 'syn=/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rlib' '--extern' 'proc_macro' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_derive-1.0.204/src/lib.rs \
-        1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-b74741511dfa898a-stdout) \
-        2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-b74741511dfa898a-stderr >&2)
+        1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-b74741511dfa898a-stdout) \
+        2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-b74741511dfa898a-stderr >&2) \
+        || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-b74741511dfa898a-errcode
 FROM scratch AS out-b74741511dfa898a
 COPY --from=dep-p-serde_derive-1.0.204-b74741511dfa898a /tmp/clis-ntpd_1-2-3/release/deps/*-b74741511dfa898a* /
 
@@ -4768,8 +4845,9 @@ COPY --from=dep-p-serde_derive-1.0.204-b74741511dfa898a /tmp/clis-ntpd_1-2-3/rel
 ##         NTPD_RS_GIT_DATE="2025-05-09" \
 ##         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
 ##       rustc '--crate-name' 'serde_derive' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'proc-macro' '--emit' 'dep-info,link' '-C' 'prefer-dynamic' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--cfg' 'feature="default"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "deserialize_in_place"))' '-C' 'metadata=f57af49d134c85f7' '-C' 'extra-filename=-b74741511dfa898a' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'proc_macro2=/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rlib' '--extern' 'quote=/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rlib' '--extern' 'syn=/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rlib' '--extern' 'proc_macro' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_derive-1.0.204/src/lib.rs \
-##         1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-b74741511dfa898a-stdout) \
-##         2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-b74741511dfa898a-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-b74741511dfa898a-stdout) \
+##         2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-b74741511dfa898a-stderr >&2) \
+##         || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-b74741511dfa898a-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-b74741511dfa898a"
@@ -4814,8 +4892,9 @@ RUN \
         NTPD_RS_GIT_DATE="2025-05-09" \
         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
       rustc '--crate-name' 'serde' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="default"' '--cfg' 'feature="derive"' '--cfg' 'feature="serde_derive"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "default", "derive", "rc", "serde_derive", "std", "unstable"))' '-C' 'metadata=7bea8907baa99a52' '-C' 'extra-filename=-986325a49dffbcd1' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'serde_derive=/tmp/clis-ntpd_1-2-3/release/deps/libserde_derive-b74741511dfa898a.so' '--cap-lints' 'warn' '--check-cfg' 'cfg(no_core_cstr)' '--check-cfg' 'cfg(no_core_num_saturating)' '--check-cfg' 'cfg(no_core_try_from)' '--check-cfg' 'cfg(no_diagnostic_namespace)' '--check-cfg' 'cfg(no_float_copysign)' '--check-cfg' 'cfg(no_num_nonzero_signed)' '--check-cfg' 'cfg(no_relaxed_trait_bounds)' '--check-cfg' 'cfg(no_serde_derive)' '--check-cfg' 'cfg(no_std_atomic)' '--check-cfg' 'cfg(no_std_atomic64)' '--check-cfg' 'cfg(no_systemtime_checked_add)' '--check-cfg' 'cfg(no_target_has_atomic)' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.204/src/lib.rs \
-        1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-986325a49dffbcd1-stdout) \
-        2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-986325a49dffbcd1-stderr >&2)
+        1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-986325a49dffbcd1-stdout) \
+        2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-986325a49dffbcd1-stderr >&2) \
+        || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-986325a49dffbcd1-errcode
 FROM scratch AS out-986325a49dffbcd1
 COPY --from=dep-l-serde-1.0.204-986325a49dffbcd1 /tmp/clis-ntpd_1-2-3/release/deps/*-986325a49dffbcd1* /
 
@@ -4897,8 +4976,9 @@ COPY --from=dep-l-serde-1.0.204-986325a49dffbcd1 /tmp/clis-ntpd_1-2-3/release/de
 ##         NTPD_RS_GIT_DATE="2025-05-09" \
 ##         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
 ##       rustc '--crate-name' 'serde' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="default"' '--cfg' 'feature="derive"' '--cfg' 'feature="serde_derive"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "default", "derive", "rc", "serde_derive", "std", "unstable"))' '-C' 'metadata=7bea8907baa99a52' '-C' 'extra-filename=-986325a49dffbcd1' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'serde_derive=/tmp/clis-ntpd_1-2-3/release/deps/libserde_derive-b74741511dfa898a.so' '--cap-lints' 'warn' '--check-cfg' 'cfg(no_core_cstr)' '--check-cfg' 'cfg(no_core_num_saturating)' '--check-cfg' 'cfg(no_core_try_from)' '--check-cfg' 'cfg(no_diagnostic_namespace)' '--check-cfg' 'cfg(no_float_copysign)' '--check-cfg' 'cfg(no_num_nonzero_signed)' '--check-cfg' 'cfg(no_relaxed_trait_bounds)' '--check-cfg' 'cfg(no_serde_derive)' '--check-cfg' 'cfg(no_std_atomic)' '--check-cfg' 'cfg(no_std_atomic64)' '--check-cfg' 'cfg(no_systemtime_checked_add)' '--check-cfg' 'cfg(no_target_has_atomic)' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.204/src/lib.rs \
-##         1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-986325a49dffbcd1-stdout) \
-##         2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-986325a49dffbcd1-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-986325a49dffbcd1-stdout) \
+##         2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-986325a49dffbcd1-stderr >&2) \
+##         || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-986325a49dffbcd1-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-986325a49dffbcd1"
@@ -4937,8 +5017,9 @@ RUN \
         NTPD_RS_GIT_DATE="2025-05-09" \
         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
       rustc '--crate-name' 'pin_project_lite' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--warn' 'unreachable_pub' '--warn' 'clippy::undocumented_unsafe_blocks' '--warn' 'clippy::transmute_undefined_repr' '--warn' 'clippy::trailing_empty_array' '--warn' 'single_use_lifetimes' '--warn' 'rust_2018_idioms' '--warn' 'clippy::pedantic' '--warn' 'non_ascii_idents' '--warn' 'clippy::inline_asm_x86_att_syntax' '--warn' 'improper_ctypes_definitions' '--warn' 'improper_ctypes' '--warn' 'clippy::default_union_representation' '--warn' 'clippy::as_ptr_cast_mut' '--warn' 'clippy::all' '--allow' 'clippy::type_complexity' '--allow' 'clippy::too_many_lines' '--allow' 'clippy::too_many_arguments' '--allow' 'clippy::struct_field_names' '--allow' 'clippy::struct_excessive_bools' '--allow' 'clippy::single_match_else' '--allow' 'clippy::single_match' '--allow' 'clippy::similar_names' '--allow' 'clippy::module_name_repetitions' '--allow' 'clippy::missing_errors_doc' '--allow' 'clippy::manual_range_contains' '--allow' 'clippy::manual_assert' '--allow' 'clippy::float_cmp' '--allow' 'clippy::doc_markdown' '--allow' 'clippy::declare_interior_mutable_const' '--allow' 'clippy::borrow_as_ptr' '--allow' 'clippy::bool_assert_comparison' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=4446bbbb89f9b38b' '-C' 'extra-filename=-32982cb980ef9328' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/pin-project-lite-0.2.14/src/lib.rs \
-        1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-32982cb980ef9328-stdout) \
-        2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-32982cb980ef9328-stderr >&2)
+        1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-32982cb980ef9328-stdout) \
+        2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-32982cb980ef9328-stderr >&2) \
+        || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-32982cb980ef9328-errcode
 FROM scratch AS out-32982cb980ef9328
 COPY --from=dep-l-pin-project-lite-0.2.14-32982cb980ef9328 /tmp/clis-ntpd_1-2-3/release/deps/*-32982cb980ef9328* /
 
@@ -4996,8 +5077,9 @@ COPY --from=dep-l-pin-project-lite-0.2.14-32982cb980ef9328 /tmp/clis-ntpd_1-2-3/
 ##         NTPD_RS_GIT_DATE="2025-05-09" \
 ##         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
 ##       rustc '--crate-name' 'pin_project_lite' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--warn' 'unreachable_pub' '--warn' 'clippy::undocumented_unsafe_blocks' '--warn' 'clippy::transmute_undefined_repr' '--warn' 'clippy::trailing_empty_array' '--warn' 'single_use_lifetimes' '--warn' 'rust_2018_idioms' '--warn' 'clippy::pedantic' '--warn' 'non_ascii_idents' '--warn' 'clippy::inline_asm_x86_att_syntax' '--warn' 'improper_ctypes_definitions' '--warn' 'improper_ctypes' '--warn' 'clippy::default_union_representation' '--warn' 'clippy::as_ptr_cast_mut' '--warn' 'clippy::all' '--allow' 'clippy::type_complexity' '--allow' 'clippy::too_many_lines' '--allow' 'clippy::too_many_arguments' '--allow' 'clippy::struct_field_names' '--allow' 'clippy::struct_excessive_bools' '--allow' 'clippy::single_match_else' '--allow' 'clippy::single_match' '--allow' 'clippy::similar_names' '--allow' 'clippy::module_name_repetitions' '--allow' 'clippy::missing_errors_doc' '--allow' 'clippy::manual_range_contains' '--allow' 'clippy::manual_assert' '--allow' 'clippy::float_cmp' '--allow' 'clippy::doc_markdown' '--allow' 'clippy::declare_interior_mutable_const' '--allow' 'clippy::borrow_as_ptr' '--allow' 'clippy::bool_assert_comparison' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=4446bbbb89f9b38b' '-C' 'extra-filename=-32982cb980ef9328' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/pin-project-lite-0.2.14/src/lib.rs \
-##         1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-32982cb980ef9328-stdout) \
-##         2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-32982cb980ef9328-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-32982cb980ef9328-stdout) \
+##         2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-32982cb980ef9328-stderr >&2) \
+##         || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-32982cb980ef9328-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-32982cb980ef9328"
@@ -5040,8 +5122,9 @@ RUN \
         NTPD_RS_GIT_DATE="2025-05-09" \
         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
       rustc '--crate-name' 'tracing_attributes' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'proc-macro' '--emit' 'dep-info,link' '-C' 'prefer-dynamic' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("async-await"))' '-C' 'metadata=1e71a38898867952' '-C' 'extra-filename=-ff2e92028461b3cf' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'proc_macro2=/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rlib' '--extern' 'quote=/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rlib' '--extern' 'syn=/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rlib' '--extern' 'proc_macro' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/tracing-attributes-0.1.27/src/lib.rs \
-        1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-ff2e92028461b3cf-stdout) \
-        2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-ff2e92028461b3cf-stderr >&2)
+        1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-ff2e92028461b3cf-stdout) \
+        2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-ff2e92028461b3cf-stderr >&2) \
+        || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-ff2e92028461b3cf-errcode
 FROM scratch AS out-ff2e92028461b3cf
 COPY --from=dep-p-tracing-attributes-0.1.27-ff2e92028461b3cf /tmp/clis-ntpd_1-2-3/release/deps/*-ff2e92028461b3cf* /
 
@@ -5120,8 +5203,9 @@ COPY --from=dep-p-tracing-attributes-0.1.27-ff2e92028461b3cf /tmp/clis-ntpd_1-2-
 ##         NTPD_RS_GIT_DATE="2025-05-09" \
 ##         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
 ##       rustc '--crate-name' 'tracing_attributes' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'proc-macro' '--emit' 'dep-info,link' '-C' 'prefer-dynamic' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("async-await"))' '-C' 'metadata=1e71a38898867952' '-C' 'extra-filename=-ff2e92028461b3cf' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'proc_macro2=/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rlib' '--extern' 'quote=/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rlib' '--extern' 'syn=/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rlib' '--extern' 'proc_macro' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/tracing-attributes-0.1.27/src/lib.rs \
-##         1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-ff2e92028461b3cf-stdout) \
-##         2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-ff2e92028461b3cf-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-ff2e92028461b3cf-stdout) \
+##         2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-ff2e92028461b3cf-stderr >&2) \
+##         || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-ff2e92028461b3cf-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-ff2e92028461b3cf"
@@ -5161,8 +5245,9 @@ RUN \
         NTPD_RS_GIT_DATE="2025-05-09" \
         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
       rustc '--crate-name' 'tracing_core' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="once_cell"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "once_cell", "std", "valuable"))' '-C' 'metadata=7b5e5968a572b562' '-C' 'extra-filename=-100f3fe23952e4be' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'once_cell=/tmp/clis-ntpd_1-2-3/release/deps/libonce_cell-6ed51fafe322ecba.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/tracing-core-0.1.32/src/lib.rs \
-        1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-100f3fe23952e4be-stdout) \
-        2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-100f3fe23952e4be-stderr >&2)
+        1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-100f3fe23952e4be-stdout) \
+        2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-100f3fe23952e4be-stderr >&2) \
+        || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-100f3fe23952e4be-errcode
 FROM scratch AS out-100f3fe23952e4be
 COPY --from=dep-l-tracing-core-0.1.32-100f3fe23952e4be /tmp/clis-ntpd_1-2-3/release/deps/*-100f3fe23952e4be* /
 
@@ -5234,8 +5319,9 @@ COPY --from=dep-l-tracing-core-0.1.32-100f3fe23952e4be /tmp/clis-ntpd_1-2-3/rele
 ##         NTPD_RS_GIT_DATE="2025-05-09" \
 ##         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
 ##       rustc '--crate-name' 'tracing_core' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="once_cell"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "once_cell", "std", "valuable"))' '-C' 'metadata=7b5e5968a572b562' '-C' 'extra-filename=-100f3fe23952e4be' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'once_cell=/tmp/clis-ntpd_1-2-3/release/deps/libonce_cell-6ed51fafe322ecba.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/tracing-core-0.1.32/src/lib.rs \
-##         1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-100f3fe23952e4be-stdout) \
-##         2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-100f3fe23952e4be-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-100f3fe23952e4be-stdout) \
+##         2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-100f3fe23952e4be-stderr >&2) \
+##         || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-100f3fe23952e4be-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-100f3fe23952e4be"
@@ -5283,8 +5369,9 @@ RUN \
         NTPD_RS_GIT_DATE="2025-05-09" \
         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
       rustc '--crate-name' 'tracing' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="attributes"' '--cfg' 'feature="default"' '--cfg' 'feature="log"' '--cfg' 'feature="std"' '--cfg' 'feature="tracing-attributes"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("async-await", "attributes", "default", "log", "log-always", "max_level_debug", "max_level_error", "max_level_info", "max_level_off", "max_level_trace", "max_level_warn", "release_max_level_debug", "release_max_level_error", "release_max_level_info", "release_max_level_off", "release_max_level_trace", "release_max_level_warn", "std", "tracing-attributes", "valuable"))' '-C' 'metadata=4c23ddf93bdc0ed1' '-C' 'extra-filename=-7d2675bffdb63c95' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'log=/tmp/clis-ntpd_1-2-3/release/deps/liblog-b564a3159bfcf688.rmeta' '--extern' 'pin_project_lite=/tmp/clis-ntpd_1-2-3/release/deps/libpin_project_lite-32982cb980ef9328.rmeta' '--extern' 'tracing_attributes=/tmp/clis-ntpd_1-2-3/release/deps/libtracing_attributes-ff2e92028461b3cf.so' '--extern' 'tracing_core=/tmp/clis-ntpd_1-2-3/release/deps/libtracing_core-100f3fe23952e4be.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/tracing-0.1.40/src/lib.rs \
-        1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-7d2675bffdb63c95-stdout) \
-        2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-7d2675bffdb63c95-stderr >&2)
+        1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-7d2675bffdb63c95-stdout) \
+        2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-7d2675bffdb63c95-stderr >&2) \
+        || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-7d2675bffdb63c95-errcode
 FROM scratch AS out-7d2675bffdb63c95
 COPY --from=dep-l-tracing-0.1.40-7d2675bffdb63c95 /tmp/clis-ntpd_1-2-3/release/deps/*-7d2675bffdb63c95* /
 
@@ -5379,8 +5466,9 @@ COPY --from=dep-l-tracing-0.1.40-7d2675bffdb63c95 /tmp/clis-ntpd_1-2-3/release/d
 ##         NTPD_RS_GIT_DATE="2025-05-09" \
 ##         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
 ##       rustc '--crate-name' 'tracing' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="attributes"' '--cfg' 'feature="default"' '--cfg' 'feature="log"' '--cfg' 'feature="std"' '--cfg' 'feature="tracing-attributes"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("async-await", "attributes", "default", "log", "log-always", "max_level_debug", "max_level_error", "max_level_info", "max_level_off", "max_level_trace", "max_level_warn", "release_max_level_debug", "release_max_level_error", "release_max_level_info", "release_max_level_off", "release_max_level_trace", "release_max_level_warn", "std", "tracing-attributes", "valuable"))' '-C' 'metadata=4c23ddf93bdc0ed1' '-C' 'extra-filename=-7d2675bffdb63c95' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'log=/tmp/clis-ntpd_1-2-3/release/deps/liblog-b564a3159bfcf688.rmeta' '--extern' 'pin_project_lite=/tmp/clis-ntpd_1-2-3/release/deps/libpin_project_lite-32982cb980ef9328.rmeta' '--extern' 'tracing_attributes=/tmp/clis-ntpd_1-2-3/release/deps/libtracing_attributes-ff2e92028461b3cf.so' '--extern' 'tracing_core=/tmp/clis-ntpd_1-2-3/release/deps/libtracing_core-100f3fe23952e4be.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/tracing-0.1.40/src/lib.rs \
-##         1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-7d2675bffdb63c95-stdout) \
-##         2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-7d2675bffdb63c95-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-7d2675bffdb63c95-stdout) \
+##         2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-7d2675bffdb63c95-stderr >&2) \
+##         || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-7d2675bffdb63c95-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-7d2675bffdb63c95"
@@ -5461,8 +5549,9 @@ RUN \
         NTPD_RS_GIT_DATE="2025-05-09" \
         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
       rustc '--crate-name' 'ntp_proto' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="__internal-api"' '--cfg' 'feature="default"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("__internal-api", "__internal-fuzz", "__internal-test", "arbitrary", "default", "ntpv5", "nts-pool"))' '-C' 'metadata=8d11cd7892aac378' '-C' 'extra-filename=-5a810c5444456e7d' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'aead=/tmp/clis-ntpd_1-2-3/release/deps/libaead-2ba1712ad50273ba.rmeta' '--extern' 'aes_siv=/tmp/clis-ntpd_1-2-3/release/deps/libaes_siv-e0325614c1d7d6ab.rmeta' '--extern' 'md5=/tmp/clis-ntpd_1-2-3/release/deps/libmd5-f0775f4337e7a668.rmeta' '--extern' 'rand=/tmp/clis-ntpd_1-2-3/release/deps/librand-5161209caf71d483.rmeta' '--extern' 'rustls=/tmp/clis-ntpd_1-2-3/release/deps/librustls-fd2c262888e3ecb5.rmeta' '--extern' 'serde=/tmp/clis-ntpd_1-2-3/release/deps/libserde-986325a49dffbcd1.rmeta' '--extern' 'tracing=/tmp/clis-ntpd_1-2-3/release/deps/libtracing-7d2675bffdb63c95.rmeta' '--extern' 'zeroize=/tmp/clis-ntpd_1-2-3/release/deps/libzeroize-caf2b0ffe78763b7.rmeta' '--cap-lints' 'warn' '-L' 'native=/tmp/clis-ntpd_1-2-3/release/build/ring-a0b19822430eae69/out' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ntp-proto-1.2.3/src/lib.rs \
-        1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-5a810c5444456e7d-stdout) \
-        2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-5a810c5444456e7d-stderr >&2)
+        1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-5a810c5444456e7d-stdout) \
+        2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-5a810c5444456e7d-stderr >&2) \
+        || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-5a810c5444456e7d-errcode
 FROM scratch AS out-5a810c5444456e7d
 COPY --from=dep-l-ntp-proto-1.2.3-5a810c5444456e7d /tmp/clis-ntpd_1-2-3/release/deps/*-5a810c5444456e7d* /
 
@@ -5662,8 +5751,9 @@ COPY --from=dep-l-ntp-proto-1.2.3-5a810c5444456e7d /tmp/clis-ntpd_1-2-3/release/
 ##         NTPD_RS_GIT_DATE="2025-05-09" \
 ##         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
 ##       rustc '--crate-name' 'ntp_proto' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="__internal-api"' '--cfg' 'feature="default"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("__internal-api", "__internal-fuzz", "__internal-test", "arbitrary", "default", "ntpv5", "nts-pool"))' '-C' 'metadata=8d11cd7892aac378' '-C' 'extra-filename=-5a810c5444456e7d' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'aead=/tmp/clis-ntpd_1-2-3/release/deps/libaead-2ba1712ad50273ba.rmeta' '--extern' 'aes_siv=/tmp/clis-ntpd_1-2-3/release/deps/libaes_siv-e0325614c1d7d6ab.rmeta' '--extern' 'md5=/tmp/clis-ntpd_1-2-3/release/deps/libmd5-f0775f4337e7a668.rmeta' '--extern' 'rand=/tmp/clis-ntpd_1-2-3/release/deps/librand-5161209caf71d483.rmeta' '--extern' 'rustls=/tmp/clis-ntpd_1-2-3/release/deps/librustls-fd2c262888e3ecb5.rmeta' '--extern' 'serde=/tmp/clis-ntpd_1-2-3/release/deps/libserde-986325a49dffbcd1.rmeta' '--extern' 'tracing=/tmp/clis-ntpd_1-2-3/release/deps/libtracing-7d2675bffdb63c95.rmeta' '--extern' 'zeroize=/tmp/clis-ntpd_1-2-3/release/deps/libzeroize-caf2b0ffe78763b7.rmeta' '--cap-lints' 'warn' '-L' 'native=/tmp/clis-ntpd_1-2-3/release/build/ring-a0b19822430eae69/out' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ntp-proto-1.2.3/src/lib.rs \
-##         1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-5a810c5444456e7d-stdout) \
-##         2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-5a810c5444456e7d-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-5a810c5444456e7d-stdout) \
+##         2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-5a810c5444456e7d-stderr >&2) \
+##         || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-5a810c5444456e7d-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-5a810c5444456e7d"
@@ -5702,8 +5792,9 @@ RUN \
         NTPD_RS_GIT_DATE="2025-05-09" \
         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
       rustc '--crate-name' 'openssl_probe' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=aeffdc3a0f5740b3' '-C' 'extra-filename=-0ee236ae7bf0c632' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/openssl-probe-0.1.5/src/lib.rs \
-        1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-0ee236ae7bf0c632-stdout) \
-        2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-0ee236ae7bf0c632-stderr >&2)
+        1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-0ee236ae7bf0c632-stdout) \
+        2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-0ee236ae7bf0c632-stderr >&2) \
+        || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-0ee236ae7bf0c632-errcode
 FROM scratch AS out-0ee236ae7bf0c632
 COPY --from=dep-l-openssl-probe-0.1.5-0ee236ae7bf0c632 /tmp/clis-ntpd_1-2-3/release/deps/*-0ee236ae7bf0c632* /
 
@@ -5761,8 +5852,9 @@ COPY --from=dep-l-openssl-probe-0.1.5-0ee236ae7bf0c632 /tmp/clis-ntpd_1-2-3/rele
 ##         NTPD_RS_GIT_DATE="2025-05-09" \
 ##         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
 ##       rustc '--crate-name' 'openssl_probe' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=aeffdc3a0f5740b3' '-C' 'extra-filename=-0ee236ae7bf0c632' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/openssl-probe-0.1.5/src/lib.rs \
-##         1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-0ee236ae7bf0c632-stdout) \
-##         2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-0ee236ae7bf0c632-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-0ee236ae7bf0c632-stdout) \
+##         2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-0ee236ae7bf0c632-stderr >&2) \
+##         || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-0ee236ae7bf0c632-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-0ee236ae7bf0c632"
@@ -5801,8 +5893,9 @@ RUN \
         NTPD_RS_GIT_DATE="2025-05-09" \
         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
       rustc '--crate-name' 'base64' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="alloc"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "default", "std"))' '-C' 'metadata=33815964528ad9c4' '-C' 'extra-filename=-b08e25582a8fdf7e' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/base64-0.22.1/src/lib.rs \
-        1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-b08e25582a8fdf7e-stdout) \
-        2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-b08e25582a8fdf7e-stderr >&2)
+        1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-b08e25582a8fdf7e-stdout) \
+        2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-b08e25582a8fdf7e-stderr >&2) \
+        || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-b08e25582a8fdf7e-errcode
 FROM scratch AS out-b08e25582a8fdf7e
 COPY --from=dep-l-base64-0.22.1-b08e25582a8fdf7e /tmp/clis-ntpd_1-2-3/release/deps/*-b08e25582a8fdf7e* /
 
@@ -5862,8 +5955,9 @@ COPY --from=dep-l-base64-0.22.1-b08e25582a8fdf7e /tmp/clis-ntpd_1-2-3/release/de
 ##         NTPD_RS_GIT_DATE="2025-05-09" \
 ##         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
 ##       rustc '--crate-name' 'base64' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="alloc"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "default", "std"))' '-C' 'metadata=33815964528ad9c4' '-C' 'extra-filename=-b08e25582a8fdf7e' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/base64-0.22.1/src/lib.rs \
-##         1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-b08e25582a8fdf7e-stdout) \
-##         2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-b08e25582a8fdf7e-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-b08e25582a8fdf7e-stdout) \
+##         2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-b08e25582a8fdf7e-stderr >&2) \
+##         || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-b08e25582a8fdf7e-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-b08e25582a8fdf7e"
@@ -5904,8 +5998,9 @@ RUN \
         NTPD_RS_GIT_DATE="2025-05-09" \
         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
       rustc '--crate-name' 'rustls_pemfile' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "std"))' '-C' 'metadata=983a903aa0d60059' '-C' 'extra-filename=-e86acdc6389f12a9' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'base64=/tmp/clis-ntpd_1-2-3/release/deps/libbase64-b08e25582a8fdf7e.rmeta' '--extern' 'pki_types=/tmp/clis-ntpd_1-2-3/release/deps/librustls_pki_types-0bd417676bde33fe.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustls-pemfile-2.1.2/src/lib.rs \
-        1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-e86acdc6389f12a9-stdout) \
-        2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-e86acdc6389f12a9-stderr >&2)
+        1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-e86acdc6389f12a9-stdout) \
+        2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-e86acdc6389f12a9-stderr >&2) \
+        || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-e86acdc6389f12a9-errcode
 FROM scratch AS out-e86acdc6389f12a9
 COPY --from=dep-l-rustls-pemfile-2.1.2-e86acdc6389f12a9 /tmp/clis-ntpd_1-2-3/release/deps/*-e86acdc6389f12a9* /
 
@@ -5973,8 +6068,9 @@ COPY --from=dep-l-rustls-pemfile-2.1.2-e86acdc6389f12a9 /tmp/clis-ntpd_1-2-3/rel
 ##         NTPD_RS_GIT_DATE="2025-05-09" \
 ##         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
 ##       rustc '--crate-name' 'rustls_pemfile' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "std"))' '-C' 'metadata=983a903aa0d60059' '-C' 'extra-filename=-e86acdc6389f12a9' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'base64=/tmp/clis-ntpd_1-2-3/release/deps/libbase64-b08e25582a8fdf7e.rmeta' '--extern' 'pki_types=/tmp/clis-ntpd_1-2-3/release/deps/librustls_pki_types-0bd417676bde33fe.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustls-pemfile-2.1.2/src/lib.rs \
-##         1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-e86acdc6389f12a9-stdout) \
-##         2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-e86acdc6389f12a9-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-e86acdc6389f12a9-stdout) \
+##         2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-e86acdc6389f12a9-stderr >&2) \
+##         || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-e86acdc6389f12a9-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-e86acdc6389f12a9"
@@ -6017,8 +6113,9 @@ RUN \
         NTPD_RS_GIT_DATE="2025-05-09" \
         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
       rustc '--crate-name' 'rustls_native_certs' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=e8a82754a751336b' '-C' 'extra-filename=-9a69f5c8c648a58b' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'openssl_probe=/tmp/clis-ntpd_1-2-3/release/deps/libopenssl_probe-0ee236ae7bf0c632.rmeta' '--extern' 'rustls_pemfile=/tmp/clis-ntpd_1-2-3/release/deps/librustls_pemfile-e86acdc6389f12a9.rmeta' '--extern' 'pki_types=/tmp/clis-ntpd_1-2-3/release/deps/librustls_pki_types-0bd417676bde33fe.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustls-native-certs-0.7.1/src/lib.rs \
-        1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-9a69f5c8c648a58b-stdout) \
-        2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-9a69f5c8c648a58b-stderr >&2)
+        1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-9a69f5c8c648a58b-stdout) \
+        2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-9a69f5c8c648a58b-stderr >&2) \
+        || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-9a69f5c8c648a58b-errcode
 FROM scratch AS out-9a69f5c8c648a58b
 COPY --from=dep-l-rustls-native-certs-0.7.1-9a69f5c8c648a58b /tmp/clis-ntpd_1-2-3/release/deps/*-9a69f5c8c648a58b* /
 
@@ -6092,8 +6189,9 @@ COPY --from=dep-l-rustls-native-certs-0.7.1-9a69f5c8c648a58b /tmp/clis-ntpd_1-2-
 ##         NTPD_RS_GIT_DATE="2025-05-09" \
 ##         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
 ##       rustc '--crate-name' 'rustls_native_certs' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=e8a82754a751336b' '-C' 'extra-filename=-9a69f5c8c648a58b' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'openssl_probe=/tmp/clis-ntpd_1-2-3/release/deps/libopenssl_probe-0ee236ae7bf0c632.rmeta' '--extern' 'rustls_pemfile=/tmp/clis-ntpd_1-2-3/release/deps/librustls_pemfile-e86acdc6389f12a9.rmeta' '--extern' 'pki_types=/tmp/clis-ntpd_1-2-3/release/deps/librustls_pki_types-0bd417676bde33fe.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustls-native-certs-0.7.1/src/lib.rs \
-##         1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-9a69f5c8c648a58b-stdout) \
-##         2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-9a69f5c8c648a58b-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-9a69f5c8c648a58b-stdout) \
+##         2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-9a69f5c8c648a58b-stderr >&2) \
+##         || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-9a69f5c8c648a58b-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-9a69f5c8c648a58b"
@@ -6132,8 +6230,9 @@ RUN \
         NTPD_RS_GIT_DATE="2025-05-09" \
         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
       rustc '--crate-name' 'itoa' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("no-panic"))' '-C' 'metadata=2d3c6ff08e17fc95' '-C' 'extra-filename=-95ec35c9faa8fa43' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/itoa-1.0.11/src/lib.rs \
-        1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-95ec35c9faa8fa43-stdout) \
-        2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-95ec35c9faa8fa43-stderr >&2)
+        1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-95ec35c9faa8fa43-stdout) \
+        2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-95ec35c9faa8fa43-stderr >&2) \
+        || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-95ec35c9faa8fa43-errcode
 FROM scratch AS out-95ec35c9faa8fa43
 COPY --from=dep-l-itoa-1.0.11-95ec35c9faa8fa43 /tmp/clis-ntpd_1-2-3/release/deps/*-95ec35c9faa8fa43* /
 
@@ -6191,8 +6290,9 @@ COPY --from=dep-l-itoa-1.0.11-95ec35c9faa8fa43 /tmp/clis-ntpd_1-2-3/release/deps
 ##         NTPD_RS_GIT_DATE="2025-05-09" \
 ##         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
 ##       rustc '--crate-name' 'itoa' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("no-panic"))' '-C' 'metadata=2d3c6ff08e17fc95' '-C' 'extra-filename=-95ec35c9faa8fa43' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/itoa-1.0.11/src/lib.rs \
-##         1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-95ec35c9faa8fa43-stdout) \
-##         2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-95ec35c9faa8fa43-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-95ec35c9faa8fa43-stdout) \
+##         2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-95ec35c9faa8fa43-stderr >&2) \
+##         || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-95ec35c9faa8fa43-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-95ec35c9faa8fa43"
@@ -6231,8 +6331,9 @@ RUN \
         NTPD_RS_GIT_DATE="2025-05-09" \
         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
       rustc '--crate-name' 'ryu' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("no-panic", "small"))' '-C' 'metadata=b513255835a8ab16' '-C' 'extra-filename=-56a874feb6525857' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ryu-1.0.18/src/lib.rs \
-        1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-56a874feb6525857-stdout) \
-        2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-56a874feb6525857-stderr >&2)
+        1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-56a874feb6525857-stdout) \
+        2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-56a874feb6525857-stderr >&2) \
+        || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-56a874feb6525857-errcode
 FROM scratch AS out-56a874feb6525857
 COPY --from=dep-l-ryu-1.0.18-56a874feb6525857 /tmp/clis-ntpd_1-2-3/release/deps/*-56a874feb6525857* /
 
@@ -6290,8 +6391,9 @@ COPY --from=dep-l-ryu-1.0.18-56a874feb6525857 /tmp/clis-ntpd_1-2-3/release/deps/
 ##         NTPD_RS_GIT_DATE="2025-05-09" \
 ##         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
 ##       rustc '--crate-name' 'ryu' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("no-panic", "small"))' '-C' 'metadata=b513255835a8ab16' '-C' 'extra-filename=-56a874feb6525857' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ryu-1.0.18/src/lib.rs \
-##         1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-56a874feb6525857-stdout) \
-##         2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-56a874feb6525857-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-56a874feb6525857-stdout) \
+##         2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-56a874feb6525857-stderr >&2) \
+##         || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-56a874feb6525857-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-56a874feb6525857"
@@ -6339,8 +6441,9 @@ RUN \
         NTPD_RS_GIT_DATE="2025-05-09" \
         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
       rustc '--crate-name' 'serde_json' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "arbitrary_precision", "default", "float_roundtrip", "indexmap", "preserve_order", "raw_value", "std", "unbounded_depth"))' '-C' 'metadata=5c5e8e1a9dda7ff4' '-C' 'extra-filename=-2a345737f765283a' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'itoa=/tmp/clis-ntpd_1-2-3/release/deps/libitoa-95ec35c9faa8fa43.rmeta' '--extern' 'ryu=/tmp/clis-ntpd_1-2-3/release/deps/libryu-56a874feb6525857.rmeta' '--extern' 'serde=/tmp/clis-ntpd_1-2-3/release/deps/libserde-986325a49dffbcd1.rmeta' '--cap-lints' 'warn' '--cfg' 'limb_width_64' '--check-cfg' 'cfg(limb_width_32)' '--check-cfg' 'cfg(limb_width_64)' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.120/src/lib.rs \
-        1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-2a345737f765283a-stdout) \
-        2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-2a345737f765283a-stderr >&2)
+        1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-2a345737f765283a-stdout) \
+        2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-2a345737f765283a-stderr >&2) \
+        || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-2a345737f765283a-errcode
 FROM scratch AS out-2a345737f765283a
 COPY --from=dep-l-serde_json-1.0.120-2a345737f765283a /tmp/clis-ntpd_1-2-3/release/deps/*-2a345737f765283a* /
 
@@ -6431,8 +6534,9 @@ COPY --from=dep-l-serde_json-1.0.120-2a345737f765283a /tmp/clis-ntpd_1-2-3/relea
 ##         NTPD_RS_GIT_DATE="2025-05-09" \
 ##         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
 ##       rustc '--crate-name' 'serde_json' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "arbitrary_precision", "default", "float_roundtrip", "indexmap", "preserve_order", "raw_value", "std", "unbounded_depth"))' '-C' 'metadata=5c5e8e1a9dda7ff4' '-C' 'extra-filename=-2a345737f765283a' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'itoa=/tmp/clis-ntpd_1-2-3/release/deps/libitoa-95ec35c9faa8fa43.rmeta' '--extern' 'ryu=/tmp/clis-ntpd_1-2-3/release/deps/libryu-56a874feb6525857.rmeta' '--extern' 'serde=/tmp/clis-ntpd_1-2-3/release/deps/libserde-986325a49dffbcd1.rmeta' '--cap-lints' 'warn' '--cfg' 'limb_width_64' '--check-cfg' 'cfg(limb_width_32)' '--check-cfg' 'cfg(limb_width_64)' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.120/src/lib.rs \
-##         1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-2a345737f765283a-stdout) \
-##         2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-2a345737f765283a-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-2a345737f765283a-stdout) \
+##         2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-2a345737f765283a-stderr >&2) \
+##         || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-2a345737f765283a-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-2a345737f765283a"
@@ -6471,8 +6575,9 @@ RUN \
         NTPD_RS_GIT_DATE="2025-05-09" \
         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
       rustc '--crate-name' 'bytes' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "serde", "std"))' '-C' 'metadata=eefdb7d6e7fd0e6f' '-C' 'extra-filename=-17cf73a7d3f13d95' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bytes-1.6.0/src/lib.rs \
-        1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-17cf73a7d3f13d95-stdout) \
-        2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-17cf73a7d3f13d95-stderr >&2)
+        1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-17cf73a7d3f13d95-stdout) \
+        2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-17cf73a7d3f13d95-stderr >&2) \
+        || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-17cf73a7d3f13d95-errcode
 FROM scratch AS out-17cf73a7d3f13d95
 COPY --from=dep-l-bytes-1.6.0-17cf73a7d3f13d95 /tmp/clis-ntpd_1-2-3/release/deps/*-17cf73a7d3f13d95* /
 
@@ -6539,8 +6644,9 @@ COPY --from=dep-l-bytes-1.6.0-17cf73a7d3f13d95 /tmp/clis-ntpd_1-2-3/release/deps
 ##         NTPD_RS_GIT_DATE="2025-05-09" \
 ##         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
 ##       rustc '--crate-name' 'bytes' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "serde", "std"))' '-C' 'metadata=eefdb7d6e7fd0e6f' '-C' 'extra-filename=-17cf73a7d3f13d95' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bytes-1.6.0/src/lib.rs \
-##         1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-17cf73a7d3f13d95-stdout) \
-##         2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-17cf73a7d3f13d95-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-17cf73a7d3f13d95-stdout) \
+##         2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-17cf73a7d3f13d95-stderr >&2) \
+##         || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-17cf73a7d3f13d95-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-17cf73a7d3f13d95"
@@ -6580,8 +6686,9 @@ RUN \
         NTPD_RS_GIT_DATE="2025-05-09" \
         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
       rustc '--crate-name' 'mio' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="net"' '--cfg' 'feature="os-ext"' '--cfg' 'feature="os-poll"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "log", "net", "os-ext", "os-poll"))' '-C' 'metadata=4481a9b8971fe568' '-C' 'extra-filename=-57de3125ece5b1fd' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'libc=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/mio-0.8.11/src/lib.rs \
-        1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-57de3125ece5b1fd-stdout) \
-        2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-57de3125ece5b1fd-stderr >&2)
+        1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-57de3125ece5b1fd-stdout) \
+        2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-57de3125ece5b1fd-stderr >&2) \
+        || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-57de3125ece5b1fd-errcode
 FROM scratch AS out-57de3125ece5b1fd
 COPY --from=dep-l-mio-0.8.11-57de3125ece5b1fd /tmp/clis-ntpd_1-2-3/release/deps/*-57de3125ece5b1fd* /
 
@@ -6675,8 +6782,9 @@ COPY --from=dep-l-mio-0.8.11-57de3125ece5b1fd /tmp/clis-ntpd_1-2-3/release/deps/
 ##         NTPD_RS_GIT_DATE="2025-05-09" \
 ##         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
 ##       rustc '--crate-name' 'mio' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="net"' '--cfg' 'feature="os-ext"' '--cfg' 'feature="os-poll"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "log", "net", "os-ext", "os-poll"))' '-C' 'metadata=4481a9b8971fe568' '-C' 'extra-filename=-57de3125ece5b1fd' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'libc=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/mio-0.8.11/src/lib.rs \
-##         1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-57de3125ece5b1fd-stdout) \
-##         2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-57de3125ece5b1fd-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-57de3125ece5b1fd-stdout) \
+##         2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-57de3125ece5b1fd-stderr >&2) \
+##         || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-57de3125ece5b1fd-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-57de3125ece5b1fd"
@@ -6716,8 +6824,9 @@ RUN \
         NTPD_RS_GIT_DATE="2025-05-09" \
         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
       rustc '--crate-name' 'num_cpus' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=9343f2e59e30aaf3' '-C' 'extra-filename=-516d6049f106f6a2' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'libc=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num_cpus-1.16.0/src/lib.rs \
-        1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-516d6049f106f6a2-stdout) \
-        2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-516d6049f106f6a2-stderr >&2)
+        1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-516d6049f106f6a2-stdout) \
+        2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-516d6049f106f6a2-stderr >&2) \
+        || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-516d6049f106f6a2-errcode
 FROM scratch AS out-516d6049f106f6a2
 COPY --from=dep-l-num_cpus-1.16.0-516d6049f106f6a2 /tmp/clis-ntpd_1-2-3/release/deps/*-516d6049f106f6a2* /
 
@@ -6781,8 +6890,9 @@ COPY --from=dep-l-num_cpus-1.16.0-516d6049f106f6a2 /tmp/clis-ntpd_1-2-3/release/
 ##         NTPD_RS_GIT_DATE="2025-05-09" \
 ##         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
 ##       rustc '--crate-name' 'num_cpus' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=9343f2e59e30aaf3' '-C' 'extra-filename=-516d6049f106f6a2' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'libc=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num_cpus-1.16.0/src/lib.rs \
-##         1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-516d6049f106f6a2-stdout) \
-##         2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-516d6049f106f6a2-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-516d6049f106f6a2-stdout) \
+##         2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-516d6049f106f6a2-stderr >&2) \
+##         || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-516d6049f106f6a2-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-516d6049f106f6a2"
@@ -6822,8 +6932,9 @@ RUN \
         NTPD_RS_GIT_DATE="2025-05-09" \
         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
       rustc '--crate-name' 'socket2' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="all"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("all"))' '-C' 'metadata=f9cf30be7cc8aee9' '-C' 'extra-filename=-4f06700ac893bf17' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'libc=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/socket2-0.5.7/src/lib.rs \
-        1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-4f06700ac893bf17-stdout) \
-        2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-4f06700ac893bf17-stderr >&2)
+        1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-4f06700ac893bf17-stdout) \
+        2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-4f06700ac893bf17-stderr >&2) \
+        || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-4f06700ac893bf17-errcode
 FROM scratch AS out-4f06700ac893bf17
 COPY --from=dep-l-socket2-0.5.7-4f06700ac893bf17 /tmp/clis-ntpd_1-2-3/release/deps/*-4f06700ac893bf17* /
 
@@ -6884,8 +6995,9 @@ COPY --from=dep-l-socket2-0.5.7-4f06700ac893bf17 /tmp/clis-ntpd_1-2-3/release/de
 ##         NTPD_RS_GIT_DATE="2025-05-09" \
 ##         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
 ##       rustc '--crate-name' 'socket2' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="all"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("all"))' '-C' 'metadata=f9cf30be7cc8aee9' '-C' 'extra-filename=-4f06700ac893bf17' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'libc=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/socket2-0.5.7/src/lib.rs \
-##         1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-4f06700ac893bf17-stdout) \
-##         2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-4f06700ac893bf17-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-4f06700ac893bf17-stdout) \
+##         2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-4f06700ac893bf17-stderr >&2) \
+##         || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-4f06700ac893bf17-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-4f06700ac893bf17"
@@ -6928,8 +7040,9 @@ RUN \
         NTPD_RS_GIT_DATE="2025-05-09" \
         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
       rustc '--crate-name' 'tokio_macros' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'proc-macro' '--emit' 'dep-info,link' '-C' 'prefer-dynamic' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=53658764caaf4b55' '-C' 'extra-filename=-56d9f1f76b7466fe' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'proc_macro2=/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rlib' '--extern' 'quote=/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rlib' '--extern' 'syn=/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rlib' '--extern' 'proc_macro' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/tokio-macros-2.3.0/src/lib.rs \
-        1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-56d9f1f76b7466fe-stdout) \
-        2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-56d9f1f76b7466fe-stderr >&2)
+        1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-56d9f1f76b7466fe-stdout) \
+        2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-56d9f1f76b7466fe-stderr >&2) \
+        || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-56d9f1f76b7466fe-errcode
 FROM scratch AS out-56d9f1f76b7466fe
 COPY --from=dep-p-tokio-macros-2.3.0-56d9f1f76b7466fe /tmp/clis-ntpd_1-2-3/release/deps/*-56d9f1f76b7466fe* /
 
@@ -7006,8 +7119,9 @@ COPY --from=dep-p-tokio-macros-2.3.0-56d9f1f76b7466fe /tmp/clis-ntpd_1-2-3/relea
 ##         NTPD_RS_GIT_DATE="2025-05-09" \
 ##         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
 ##       rustc '--crate-name' 'tokio_macros' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'proc-macro' '--emit' 'dep-info,link' '-C' 'prefer-dynamic' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=53658764caaf4b55' '-C' 'extra-filename=-56d9f1f76b7466fe' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'proc_macro2=/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rlib' '--extern' 'quote=/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rlib' '--extern' 'syn=/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rlib' '--extern' 'proc_macro' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/tokio-macros-2.3.0/src/lib.rs \
-##         1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-56d9f1f76b7466fe-stdout) \
-##         2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-56d9f1f76b7466fe-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-56d9f1f76b7466fe-stdout) \
+##         2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-56d9f1f76b7466fe-stderr >&2) \
+##         || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-56d9f1f76b7466fe-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-56d9f1f76b7466fe"
@@ -7057,8 +7171,9 @@ RUN \
         NTPD_RS_GIT_DATE="2025-05-09" \
         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
       rustc '--crate-name' 'tokio' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="bytes"' '--cfg' 'feature="default"' '--cfg' 'feature="fs"' '--cfg' 'feature="io-std"' '--cfg' 'feature="io-util"' '--cfg' 'feature="libc"' '--cfg' 'feature="macros"' '--cfg' 'feature="mio"' '--cfg' 'feature="net"' '--cfg' 'feature="num_cpus"' '--cfg' 'feature="rt"' '--cfg' 'feature="rt-multi-thread"' '--cfg' 'feature="socket2"' '--cfg' 'feature="sync"' '--cfg' 'feature="time"' '--cfg' 'feature="tokio-macros"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("bytes", "default", "fs", "full", "io-std", "io-util", "libc", "macros", "mio", "net", "num_cpus", "parking_lot", "process", "rt", "rt-multi-thread", "signal", "signal-hook-registry", "socket2", "sync", "test-util", "time", "tokio-macros", "tracing", "windows-sys"))' '-C' 'metadata=24e72a8c8e4c2f2f' '-C' 'extra-filename=-e6ed429a0a7450c0' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'bytes=/tmp/clis-ntpd_1-2-3/release/deps/libbytes-17cf73a7d3f13d95.rmeta' '--extern' 'libc=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rmeta' '--extern' 'mio=/tmp/clis-ntpd_1-2-3/release/deps/libmio-57de3125ece5b1fd.rmeta' '--extern' 'num_cpus=/tmp/clis-ntpd_1-2-3/release/deps/libnum_cpus-516d6049f106f6a2.rmeta' '--extern' 'pin_project_lite=/tmp/clis-ntpd_1-2-3/release/deps/libpin_project_lite-32982cb980ef9328.rmeta' '--extern' 'socket2=/tmp/clis-ntpd_1-2-3/release/deps/libsocket2-4f06700ac893bf17.rmeta' '--extern' 'tokio_macros=/tmp/clis-ntpd_1-2-3/release/deps/libtokio_macros-56d9f1f76b7466fe.so' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/tokio-1.38.1/src/lib.rs \
-        1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-e6ed429a0a7450c0-stdout) \
-        2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-e6ed429a0a7450c0-stderr >&2)
+        1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-e6ed429a0a7450c0-stdout) \
+        2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-e6ed429a0a7450c0-stderr >&2) \
+        || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-e6ed429a0a7450c0-errcode
 FROM scratch AS out-e6ed429a0a7450c0
 COPY --from=dep-l-tokio-1.38.1-e6ed429a0a7450c0 /tmp/clis-ntpd_1-2-3/release/deps/*-e6ed429a0a7450c0* /
 
@@ -7157,8 +7272,9 @@ COPY --from=dep-l-tokio-1.38.1-e6ed429a0a7450c0 /tmp/clis-ntpd_1-2-3/release/dep
 ##         NTPD_RS_GIT_DATE="2025-05-09" \
 ##         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
 ##       rustc '--crate-name' 'tokio' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="bytes"' '--cfg' 'feature="default"' '--cfg' 'feature="fs"' '--cfg' 'feature="io-std"' '--cfg' 'feature="io-util"' '--cfg' 'feature="libc"' '--cfg' 'feature="macros"' '--cfg' 'feature="mio"' '--cfg' 'feature="net"' '--cfg' 'feature="num_cpus"' '--cfg' 'feature="rt"' '--cfg' 'feature="rt-multi-thread"' '--cfg' 'feature="socket2"' '--cfg' 'feature="sync"' '--cfg' 'feature="time"' '--cfg' 'feature="tokio-macros"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("bytes", "default", "fs", "full", "io-std", "io-util", "libc", "macros", "mio", "net", "num_cpus", "parking_lot", "process", "rt", "rt-multi-thread", "signal", "signal-hook-registry", "socket2", "sync", "test-util", "time", "tokio-macros", "tracing", "windows-sys"))' '-C' 'metadata=24e72a8c8e4c2f2f' '-C' 'extra-filename=-e6ed429a0a7450c0' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'bytes=/tmp/clis-ntpd_1-2-3/release/deps/libbytes-17cf73a7d3f13d95.rmeta' '--extern' 'libc=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rmeta' '--extern' 'mio=/tmp/clis-ntpd_1-2-3/release/deps/libmio-57de3125ece5b1fd.rmeta' '--extern' 'num_cpus=/tmp/clis-ntpd_1-2-3/release/deps/libnum_cpus-516d6049f106f6a2.rmeta' '--extern' 'pin_project_lite=/tmp/clis-ntpd_1-2-3/release/deps/libpin_project_lite-32982cb980ef9328.rmeta' '--extern' 'socket2=/tmp/clis-ntpd_1-2-3/release/deps/libsocket2-4f06700ac893bf17.rmeta' '--extern' 'tokio_macros=/tmp/clis-ntpd_1-2-3/release/deps/libtokio_macros-56d9f1f76b7466fe.so' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/tokio-1.38.1/src/lib.rs \
-##         1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-e6ed429a0a7450c0-stdout) \
-##         2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-e6ed429a0a7450c0-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-e6ed429a0a7450c0-stdout) \
+##         2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-e6ed429a0a7450c0-stderr >&2) \
+##         || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-e6ed429a0a7450c0-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-e6ed429a0a7450c0"
@@ -7216,8 +7332,9 @@ RUN \
         NTPD_RS_GIT_DATE="2025-05-09" \
         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
       rustc '--crate-name' 'timestamped_socket' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="default"' '--cfg' 'feature="serde"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "serde"))' '-C' 'metadata=e415123c57a7dbdb' '-C' 'extra-filename=-2f59881207cd7c68' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'libc=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rmeta' '--extern' 'serde=/tmp/clis-ntpd_1-2-3/release/deps/libserde-986325a49dffbcd1.rmeta' '--extern' 'tokio=/tmp/clis-ntpd_1-2-3/release/deps/libtokio-e6ed429a0a7450c0.rmeta' '--extern' 'tracing=/tmp/clis-ntpd_1-2-3/release/deps/libtracing-7d2675bffdb63c95.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/timestamped-socket-0.2.2/src/lib.rs \
-        1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-2f59881207cd7c68-stdout) \
-        2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-2f59881207cd7c68-stderr >&2)
+        1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-2f59881207cd7c68-stdout) \
+        2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-2f59881207cd7c68-stderr >&2) \
+        || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-2f59881207cd7c68-errcode
 FROM scratch AS out-2f59881207cd7c68
 COPY --from=dep-l-timestamped-socket-0.2.2-2f59881207cd7c68 /tmp/clis-ntpd_1-2-3/release/deps/*-2f59881207cd7c68* /
 
@@ -7340,8 +7457,9 @@ COPY --from=dep-l-timestamped-socket-0.2.2-2f59881207cd7c68 /tmp/clis-ntpd_1-2-3
 ##         NTPD_RS_GIT_DATE="2025-05-09" \
 ##         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
 ##       rustc '--crate-name' 'timestamped_socket' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="default"' '--cfg' 'feature="serde"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "serde"))' '-C' 'metadata=e415123c57a7dbdb' '-C' 'extra-filename=-2f59881207cd7c68' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'libc=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rmeta' '--extern' 'serde=/tmp/clis-ntpd_1-2-3/release/deps/libserde-986325a49dffbcd1.rmeta' '--extern' 'tokio=/tmp/clis-ntpd_1-2-3/release/deps/libtokio-e6ed429a0a7450c0.rmeta' '--extern' 'tracing=/tmp/clis-ntpd_1-2-3/release/deps/libtracing-7d2675bffdb63c95.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/timestamped-socket-0.2.2/src/lib.rs \
-##         1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-2f59881207cd7c68-stdout) \
-##         2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-2f59881207cd7c68-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-2f59881207cd7c68-stdout) \
+##         2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-2f59881207cd7c68-stderr >&2) \
+##         || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-2f59881207cd7c68-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-2f59881207cd7c68"
@@ -7386,8 +7504,9 @@ RUN \
         NTPD_RS_GIT_DATE="2025-05-09" \
         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
       rustc '--crate-name' 'serde_spanned' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--warn' 'clippy::zero_sized_map_values' '--warn' 'clippy::wildcard_imports' '--warn' 'clippy::verbose_file_reads' '--warn' 'unused_qualifications' '--warn' 'unused_macro_rules' '--warn' 'unused_lifetimes' '--warn' 'unsafe_op_in_unsafe_fn' '--warn' 'unreachable_pub' '--warn' 'clippy::trait_duplication_in_bounds' '--warn' 'clippy::todo' '--warn' 'clippy::string_to_string' '--warn' 'clippy::string_lit_as_bytes' '--warn' 'clippy::string_add_assign' '--warn' 'clippy::string_add' '--warn' 'clippy::str_to_string' '--warn' 'clippy::single_match_else' '--warn' 'clippy::semicolon_if_nothing_returned' '--warn' 'clippy::self_named_module_files' '--warn' 'clippy::same_functions_in_if_condition' '--warn' 'rust_2018_idioms' '--warn' 'clippy::rest_pat_in_fully_bound_structs' '--warn' 'clippy::ref_option_ref' '--warn' 'clippy::redundant_feature_names' '--warn' 'clippy::rc_mutex' '--warn' 'clippy::ptr_as_ptr' '--warn' 'clippy::path_buf_push_overwrite' '--warn' 'clippy::negative_feature_names' '--warn' 'clippy::needless_for_each' '--warn' 'clippy::needless_continue' '--warn' 'clippy::mutex_integer' '--warn' 'clippy::mem_forget' '--warn' 'clippy::match_wildcard_for_single_variants' '--warn' 'clippy::macro_use_imports' '--warn' 'clippy::lossy_float_literal' '--warn' 'clippy::linkedlist' '--allow' 'clippy::let_and_return' '--warn' 'clippy::large_types_passed_by_value' '--warn' 'clippy::large_stack_arrays' '--warn' 'clippy::large_digit_groups' '--warn' 'clippy::items_after_statements' '--warn' 'clippy::invalid_upcast_comparisons' '--warn' 'clippy::infinite_loop' '--warn' 'clippy::inefficient_to_string' '--warn' 'clippy::inconsistent_struct_constructor' '--warn' 'clippy::imprecise_flops' '--warn' 'clippy::implicit_clone' '--allow' 'clippy::if_same_then_else' '--warn' 'clippy::from_iter_instead_of_collect' '--warn' 'clippy::fn_params_excessive_bools' '--warn' 'clippy::float_cmp_const' '--warn' 'clippy::flat_map_option' '--warn' 'clippy::filter_map_next' '--warn' 'clippy::fallible_impl_from' '--warn' 'clippy::explicit_into_iter_loop' '--warn' 'clippy::explicit_deref_methods' '--warn' 'clippy::expl_impl_clone_on_copy' '--warn' 'clippy::enum_glob_use' '--warn' 'clippy::empty_enum' '--warn' 'clippy::doc_markdown' '--warn' 'clippy::debug_assert_with_mut_call' '--warn' 'clippy::dbg_macro' '--warn' 'clippy::create_dir' '--allow' 'clippy::collapsible_else_if' '--warn' 'clippy::checked_conversions' '--allow' 'clippy::branches_sharing_code' '--allow' 'clippy::bool_assert_comparison' '--cfg' 'feature="serde"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("serde"))' '-C' 'metadata=0805a12f69e48c18' '-C' 'extra-filename=-dc39aa05fabf8bb2' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'serde=/tmp/clis-ntpd_1-2-3/release/deps/libserde-986325a49dffbcd1.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_spanned-0.6.6/src/lib.rs \
-        1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-dc39aa05fabf8bb2-stdout) \
-        2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-dc39aa05fabf8bb2-stderr >&2)
+        1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-dc39aa05fabf8bb2-stdout) \
+        2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-dc39aa05fabf8bb2-stderr >&2) \
+        || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-dc39aa05fabf8bb2-errcode
 FROM scratch AS out-dc39aa05fabf8bb2
 COPY --from=dep-l-serde_spanned-0.6.6-dc39aa05fabf8bb2 /tmp/clis-ntpd_1-2-3/release/deps/*-dc39aa05fabf8bb2* /
 
@@ -7471,8 +7590,9 @@ COPY --from=dep-l-serde_spanned-0.6.6-dc39aa05fabf8bb2 /tmp/clis-ntpd_1-2-3/rele
 ##         NTPD_RS_GIT_DATE="2025-05-09" \
 ##         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
 ##       rustc '--crate-name' 'serde_spanned' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--warn' 'clippy::zero_sized_map_values' '--warn' 'clippy::wildcard_imports' '--warn' 'clippy::verbose_file_reads' '--warn' 'unused_qualifications' '--warn' 'unused_macro_rules' '--warn' 'unused_lifetimes' '--warn' 'unsafe_op_in_unsafe_fn' '--warn' 'unreachable_pub' '--warn' 'clippy::trait_duplication_in_bounds' '--warn' 'clippy::todo' '--warn' 'clippy::string_to_string' '--warn' 'clippy::string_lit_as_bytes' '--warn' 'clippy::string_add_assign' '--warn' 'clippy::string_add' '--warn' 'clippy::str_to_string' '--warn' 'clippy::single_match_else' '--warn' 'clippy::semicolon_if_nothing_returned' '--warn' 'clippy::self_named_module_files' '--warn' 'clippy::same_functions_in_if_condition' '--warn' 'rust_2018_idioms' '--warn' 'clippy::rest_pat_in_fully_bound_structs' '--warn' 'clippy::ref_option_ref' '--warn' 'clippy::redundant_feature_names' '--warn' 'clippy::rc_mutex' '--warn' 'clippy::ptr_as_ptr' '--warn' 'clippy::path_buf_push_overwrite' '--warn' 'clippy::negative_feature_names' '--warn' 'clippy::needless_for_each' '--warn' 'clippy::needless_continue' '--warn' 'clippy::mutex_integer' '--warn' 'clippy::mem_forget' '--warn' 'clippy::match_wildcard_for_single_variants' '--warn' 'clippy::macro_use_imports' '--warn' 'clippy::lossy_float_literal' '--warn' 'clippy::linkedlist' '--allow' 'clippy::let_and_return' '--warn' 'clippy::large_types_passed_by_value' '--warn' 'clippy::large_stack_arrays' '--warn' 'clippy::large_digit_groups' '--warn' 'clippy::items_after_statements' '--warn' 'clippy::invalid_upcast_comparisons' '--warn' 'clippy::infinite_loop' '--warn' 'clippy::inefficient_to_string' '--warn' 'clippy::inconsistent_struct_constructor' '--warn' 'clippy::imprecise_flops' '--warn' 'clippy::implicit_clone' '--allow' 'clippy::if_same_then_else' '--warn' 'clippy::from_iter_instead_of_collect' '--warn' 'clippy::fn_params_excessive_bools' '--warn' 'clippy::float_cmp_const' '--warn' 'clippy::flat_map_option' '--warn' 'clippy::filter_map_next' '--warn' 'clippy::fallible_impl_from' '--warn' 'clippy::explicit_into_iter_loop' '--warn' 'clippy::explicit_deref_methods' '--warn' 'clippy::expl_impl_clone_on_copy' '--warn' 'clippy::enum_glob_use' '--warn' 'clippy::empty_enum' '--warn' 'clippy::doc_markdown' '--warn' 'clippy::debug_assert_with_mut_call' '--warn' 'clippy::dbg_macro' '--warn' 'clippy::create_dir' '--allow' 'clippy::collapsible_else_if' '--warn' 'clippy::checked_conversions' '--allow' 'clippy::branches_sharing_code' '--allow' 'clippy::bool_assert_comparison' '--cfg' 'feature="serde"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("serde"))' '-C' 'metadata=0805a12f69e48c18' '-C' 'extra-filename=-dc39aa05fabf8bb2' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'serde=/tmp/clis-ntpd_1-2-3/release/deps/libserde-986325a49dffbcd1.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_spanned-0.6.6/src/lib.rs \
-##         1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-dc39aa05fabf8bb2-stdout) \
-##         2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-dc39aa05fabf8bb2-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-dc39aa05fabf8bb2-stdout) \
+##         2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-dc39aa05fabf8bb2-stderr >&2) \
+##         || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-dc39aa05fabf8bb2-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-dc39aa05fabf8bb2"
@@ -7517,8 +7637,9 @@ RUN \
         NTPD_RS_GIT_DATE="2025-05-09" \
         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
       rustc '--crate-name' 'toml_datetime' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--warn' 'clippy::zero_sized_map_values' '--warn' 'clippy::wildcard_imports' '--warn' 'clippy::verbose_file_reads' '--warn' 'unused_qualifications' '--warn' 'unused_macro_rules' '--warn' 'unused_lifetimes' '--warn' 'unsafe_op_in_unsafe_fn' '--warn' 'unreachable_pub' '--warn' 'clippy::trait_duplication_in_bounds' '--warn' 'clippy::todo' '--warn' 'clippy::string_to_string' '--warn' 'clippy::string_lit_as_bytes' '--warn' 'clippy::string_add_assign' '--warn' 'clippy::string_add' '--warn' 'clippy::str_to_string' '--warn' 'clippy::single_match_else' '--warn' 'clippy::semicolon_if_nothing_returned' '--warn' 'clippy::self_named_module_files' '--warn' 'clippy::same_functions_in_if_condition' '--warn' 'rust_2018_idioms' '--warn' 'clippy::rest_pat_in_fully_bound_structs' '--warn' 'clippy::ref_option_ref' '--warn' 'clippy::redundant_feature_names' '--warn' 'clippy::rc_mutex' '--warn' 'clippy::ptr_as_ptr' '--warn' 'clippy::path_buf_push_overwrite' '--warn' 'clippy::negative_feature_names' '--warn' 'clippy::needless_for_each' '--warn' 'clippy::needless_continue' '--warn' 'clippy::mutex_integer' '--warn' 'clippy::mem_forget' '--warn' 'clippy::match_wildcard_for_single_variants' '--warn' 'clippy::macro_use_imports' '--warn' 'clippy::lossy_float_literal' '--warn' 'clippy::linkedlist' '--allow' 'clippy::let_and_return' '--warn' 'clippy::large_types_passed_by_value' '--warn' 'clippy::large_stack_arrays' '--warn' 'clippy::large_digit_groups' '--warn' 'clippy::items_after_statements' '--warn' 'clippy::invalid_upcast_comparisons' '--warn' 'clippy::infinite_loop' '--warn' 'clippy::inefficient_to_string' '--warn' 'clippy::inconsistent_struct_constructor' '--warn' 'clippy::imprecise_flops' '--warn' 'clippy::implicit_clone' '--allow' 'clippy::if_same_then_else' '--warn' 'clippy::from_iter_instead_of_collect' '--warn' 'clippy::fn_params_excessive_bools' '--warn' 'clippy::float_cmp_const' '--warn' 'clippy::flat_map_option' '--warn' 'clippy::filter_map_next' '--warn' 'clippy::fallible_impl_from' '--warn' 'clippy::explicit_into_iter_loop' '--warn' 'clippy::explicit_deref_methods' '--warn' 'clippy::expl_impl_clone_on_copy' '--warn' 'clippy::enum_glob_use' '--warn' 'clippy::empty_enum' '--warn' 'clippy::doc_markdown' '--warn' 'clippy::debug_assert_with_mut_call' '--warn' 'clippy::dbg_macro' '--warn' 'clippy::create_dir' '--allow' 'clippy::collapsible_else_if' '--warn' 'clippy::checked_conversions' '--allow' 'clippy::branches_sharing_code' '--allow' 'clippy::bool_assert_comparison' '--cfg' 'feature="serde"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("serde"))' '-C' 'metadata=1a18b6c1b16f8abd' '-C' 'extra-filename=-f1d69a8e9c76a596' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'serde=/tmp/clis-ntpd_1-2-3/release/deps/libserde-986325a49dffbcd1.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/toml_datetime-0.6.6/src/lib.rs \
-        1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-f1d69a8e9c76a596-stdout) \
-        2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-f1d69a8e9c76a596-stderr >&2)
+        1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-f1d69a8e9c76a596-stdout) \
+        2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-f1d69a8e9c76a596-stderr >&2) \
+        || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-f1d69a8e9c76a596-errcode
 FROM scratch AS out-f1d69a8e9c76a596
 COPY --from=dep-l-toml_datetime-0.6.6-f1d69a8e9c76a596 /tmp/clis-ntpd_1-2-3/release/deps/*-f1d69a8e9c76a596* /
 
@@ -7602,8 +7723,9 @@ COPY --from=dep-l-toml_datetime-0.6.6-f1d69a8e9c76a596 /tmp/clis-ntpd_1-2-3/rele
 ##         NTPD_RS_GIT_DATE="2025-05-09" \
 ##         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
 ##       rustc '--crate-name' 'toml_datetime' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--warn' 'clippy::zero_sized_map_values' '--warn' 'clippy::wildcard_imports' '--warn' 'clippy::verbose_file_reads' '--warn' 'unused_qualifications' '--warn' 'unused_macro_rules' '--warn' 'unused_lifetimes' '--warn' 'unsafe_op_in_unsafe_fn' '--warn' 'unreachable_pub' '--warn' 'clippy::trait_duplication_in_bounds' '--warn' 'clippy::todo' '--warn' 'clippy::string_to_string' '--warn' 'clippy::string_lit_as_bytes' '--warn' 'clippy::string_add_assign' '--warn' 'clippy::string_add' '--warn' 'clippy::str_to_string' '--warn' 'clippy::single_match_else' '--warn' 'clippy::semicolon_if_nothing_returned' '--warn' 'clippy::self_named_module_files' '--warn' 'clippy::same_functions_in_if_condition' '--warn' 'rust_2018_idioms' '--warn' 'clippy::rest_pat_in_fully_bound_structs' '--warn' 'clippy::ref_option_ref' '--warn' 'clippy::redundant_feature_names' '--warn' 'clippy::rc_mutex' '--warn' 'clippy::ptr_as_ptr' '--warn' 'clippy::path_buf_push_overwrite' '--warn' 'clippy::negative_feature_names' '--warn' 'clippy::needless_for_each' '--warn' 'clippy::needless_continue' '--warn' 'clippy::mutex_integer' '--warn' 'clippy::mem_forget' '--warn' 'clippy::match_wildcard_for_single_variants' '--warn' 'clippy::macro_use_imports' '--warn' 'clippy::lossy_float_literal' '--warn' 'clippy::linkedlist' '--allow' 'clippy::let_and_return' '--warn' 'clippy::large_types_passed_by_value' '--warn' 'clippy::large_stack_arrays' '--warn' 'clippy::large_digit_groups' '--warn' 'clippy::items_after_statements' '--warn' 'clippy::invalid_upcast_comparisons' '--warn' 'clippy::infinite_loop' '--warn' 'clippy::inefficient_to_string' '--warn' 'clippy::inconsistent_struct_constructor' '--warn' 'clippy::imprecise_flops' '--warn' 'clippy::implicit_clone' '--allow' 'clippy::if_same_then_else' '--warn' 'clippy::from_iter_instead_of_collect' '--warn' 'clippy::fn_params_excessive_bools' '--warn' 'clippy::float_cmp_const' '--warn' 'clippy::flat_map_option' '--warn' 'clippy::filter_map_next' '--warn' 'clippy::fallible_impl_from' '--warn' 'clippy::explicit_into_iter_loop' '--warn' 'clippy::explicit_deref_methods' '--warn' 'clippy::expl_impl_clone_on_copy' '--warn' 'clippy::enum_glob_use' '--warn' 'clippy::empty_enum' '--warn' 'clippy::doc_markdown' '--warn' 'clippy::debug_assert_with_mut_call' '--warn' 'clippy::dbg_macro' '--warn' 'clippy::create_dir' '--allow' 'clippy::collapsible_else_if' '--warn' 'clippy::checked_conversions' '--allow' 'clippy::branches_sharing_code' '--allow' 'clippy::bool_assert_comparison' '--cfg' 'feature="serde"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("serde"))' '-C' 'metadata=1a18b6c1b16f8abd' '-C' 'extra-filename=-f1d69a8e9c76a596' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'serde=/tmp/clis-ntpd_1-2-3/release/deps/libserde-986325a49dffbcd1.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/toml_datetime-0.6.6/src/lib.rs \
-##         1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-f1d69a8e9c76a596-stdout) \
-##         2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-f1d69a8e9c76a596-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-f1d69a8e9c76a596-stdout) \
+##         2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-f1d69a8e9c76a596-stderr >&2) \
+##         || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-f1d69a8e9c76a596-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-f1d69a8e9c76a596"
@@ -7642,8 +7764,9 @@ RUN \
         NTPD_RS_GIT_DATE="2025-05-09" \
         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
       rustc '--crate-name' 'equivalent' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=fba4660c1979297c' '-C' 'extra-filename=-bd5b9404126e35a1' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/equivalent-1.0.1/src/lib.rs \
-        1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-bd5b9404126e35a1-stdout) \
-        2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-bd5b9404126e35a1-stderr >&2)
+        1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-bd5b9404126e35a1-stdout) \
+        2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-bd5b9404126e35a1-stderr >&2) \
+        || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-bd5b9404126e35a1-errcode
 FROM scratch AS out-bd5b9404126e35a1
 COPY --from=dep-l-equivalent-1.0.1-bd5b9404126e35a1 /tmp/clis-ntpd_1-2-3/release/deps/*-bd5b9404126e35a1* /
 
@@ -7701,8 +7824,9 @@ COPY --from=dep-l-equivalent-1.0.1-bd5b9404126e35a1 /tmp/clis-ntpd_1-2-3/release
 ##         NTPD_RS_GIT_DATE="2025-05-09" \
 ##         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
 ##       rustc '--crate-name' 'equivalent' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=fba4660c1979297c' '-C' 'extra-filename=-bd5b9404126e35a1' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/equivalent-1.0.1/src/lib.rs \
-##         1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-bd5b9404126e35a1-stdout) \
-##         2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-bd5b9404126e35a1-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-bd5b9404126e35a1-stdout) \
+##         2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-bd5b9404126e35a1-stderr >&2) \
+##         || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-bd5b9404126e35a1-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-bd5b9404126e35a1"
@@ -7741,8 +7865,9 @@ RUN \
         NTPD_RS_GIT_DATE="2025-05-09" \
         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
       rustc '--crate-name' 'hashbrown' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="raw"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("ahash", "alloc", "allocator-api2", "compiler_builtins", "core", "default", "equivalent", "inline-more", "nightly", "raw", "rayon", "rkyv", "rustc-dep-of-std", "rustc-internal-api", "serde"))' '-C' 'metadata=01ffcb5aa3c3b771' '-C' 'extra-filename=-8bb46fd37d0b1c2d' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/hashbrown-0.14.5/src/lib.rs \
-        1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-8bb46fd37d0b1c2d-stdout) \
-        2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-8bb46fd37d0b1c2d-stderr >&2)
+        1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-8bb46fd37d0b1c2d-stdout) \
+        2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-8bb46fd37d0b1c2d-stderr >&2) \
+        || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-8bb46fd37d0b1c2d-errcode
 FROM scratch AS out-8bb46fd37d0b1c2d
 COPY --from=dep-l-hashbrown-0.14.5-8bb46fd37d0b1c2d /tmp/clis-ntpd_1-2-3/release/deps/*-8bb46fd37d0b1c2d* /
 
@@ -7800,8 +7925,9 @@ COPY --from=dep-l-hashbrown-0.14.5-8bb46fd37d0b1c2d /tmp/clis-ntpd_1-2-3/release
 ##         NTPD_RS_GIT_DATE="2025-05-09" \
 ##         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
 ##       rustc '--crate-name' 'hashbrown' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="raw"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("ahash", "alloc", "allocator-api2", "compiler_builtins", "core", "default", "equivalent", "inline-more", "nightly", "raw", "rayon", "rkyv", "rustc-dep-of-std", "rustc-internal-api", "serde"))' '-C' 'metadata=01ffcb5aa3c3b771' '-C' 'extra-filename=-8bb46fd37d0b1c2d' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/hashbrown-0.14.5/src/lib.rs \
-##         1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-8bb46fd37d0b1c2d-stdout) \
-##         2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-8bb46fd37d0b1c2d-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-8bb46fd37d0b1c2d-stdout) \
+##         2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-8bb46fd37d0b1c2d-stderr >&2) \
+##         || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-8bb46fd37d0b1c2d-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-8bb46fd37d0b1c2d"
@@ -7842,8 +7968,9 @@ RUN \
         NTPD_RS_GIT_DATE="2025-05-09" \
         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
       rustc '--crate-name' 'indexmap' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--allow' 'clippy::style' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("arbitrary", "borsh", "default", "quickcheck", "rayon", "rustc-rayon", "serde", "std", "test_debug"))' '-C' 'metadata=ba3428f64f949e8b' '-C' 'extra-filename=-bd5f37b7de678bd9' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'equivalent=/tmp/clis-ntpd_1-2-3/release/deps/libequivalent-bd5b9404126e35a1.rmeta' '--extern' 'hashbrown=/tmp/clis-ntpd_1-2-3/release/deps/libhashbrown-8bb46fd37d0b1c2d.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/indexmap-2.2.6/src/lib.rs \
-        1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-bd5f37b7de678bd9-stdout) \
-        2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-bd5f37b7de678bd9-stderr >&2)
+        1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-bd5f37b7de678bd9-stdout) \
+        2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-bd5f37b7de678bd9-stderr >&2) \
+        || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-bd5f37b7de678bd9-errcode
 FROM scratch AS out-bd5f37b7de678bd9
 COPY --from=dep-l-indexmap-2.2.6-bd5f37b7de678bd9 /tmp/clis-ntpd_1-2-3/release/deps/*-bd5f37b7de678bd9* /
 
@@ -7911,8 +8038,9 @@ COPY --from=dep-l-indexmap-2.2.6-bd5f37b7de678bd9 /tmp/clis-ntpd_1-2-3/release/d
 ##         NTPD_RS_GIT_DATE="2025-05-09" \
 ##         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
 ##       rustc '--crate-name' 'indexmap' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--allow' 'clippy::style' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("arbitrary", "borsh", "default", "quickcheck", "rayon", "rustc-rayon", "serde", "std", "test_debug"))' '-C' 'metadata=ba3428f64f949e8b' '-C' 'extra-filename=-bd5f37b7de678bd9' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'equivalent=/tmp/clis-ntpd_1-2-3/release/deps/libequivalent-bd5b9404126e35a1.rmeta' '--extern' 'hashbrown=/tmp/clis-ntpd_1-2-3/release/deps/libhashbrown-8bb46fd37d0b1c2d.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/indexmap-2.2.6/src/lib.rs \
-##         1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-bd5f37b7de678bd9-stdout) \
-##         2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-bd5f37b7de678bd9-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-bd5f37b7de678bd9-stdout) \
+##         2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-bd5f37b7de678bd9-stderr >&2) \
+##         || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-bd5f37b7de678bd9-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-bd5f37b7de678bd9"
@@ -7951,8 +8079,9 @@ RUN \
         NTPD_RS_GIT_DATE="2025-05-09" \
         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
       rustc '--crate-name' 'winnow' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--warn' 'clippy::zero_sized_map_values' '--allow' 'clippy::wildcard_imports' '--warn' 'clippy::verbose_file_reads' '--warn' 'unused_macro_rules' '--warn' 'unused_lifetimes' '--warn' 'unsafe_op_in_unsafe_fn' '--warn' 'unreachable_pub' '--warn' 'clippy::trait_duplication_in_bounds' '--warn' 'clippy::todo' '--warn' 'clippy::string_to_string' '--warn' 'clippy::string_lit_as_bytes' '--warn' 'clippy::string_add_assign' '--warn' 'clippy::string_add' '--warn' 'clippy::str_to_string' '--allow' 'clippy::single_match_else' '--warn' 'clippy::semicolon_if_nothing_returned' '--warn' 'clippy::same_functions_in_if_condition' '--warn' 'rust_2018_idioms' '--warn' 'clippy::rest_pat_in_fully_bound_structs' '--warn' 'clippy::ref_option_ref' '--warn' 'clippy::redundant_feature_names' '--warn' 'clippy::rc_mutex' '--warn' 'clippy::ptr_as_ptr' '--warn' 'clippy::path_buf_push_overwrite' '--warn' 'clippy::negative_feature_names' '--warn' 'clippy::needless_for_each' '--warn' 'clippy::needless_continue' '--warn' 'clippy::mutex_integer' '--warn' 'clippy::mem_forget' '--warn' 'clippy::match_wildcard_for_single_variants' '--warn' 'clippy::macro_use_imports' '--warn' 'clippy::lossy_float_literal' '--warn' 'clippy::linkedlist' '--allow' 'clippy::let_and_return' '--warn' 'clippy::large_types_passed_by_value' '--warn' 'clippy::large_stack_arrays' '--warn' 'clippy::large_digit_groups' '--warn' 'clippy::invalid_upcast_comparisons' '--warn' 'clippy::infinite_loop' '--warn' 'clippy::inefficient_to_string' '--warn' 'clippy::inconsistent_struct_constructor' '--warn' 'clippy::imprecise_flops' '--warn' 'clippy::implicit_clone' '--allow' 'clippy::if_same_then_else' '--warn' 'clippy::from_iter_instead_of_collect' '--warn' 'clippy::fn_params_excessive_bools' '--warn' 'clippy::float_cmp_const' '--warn' 'clippy::flat_map_option' '--warn' 'clippy::filter_map_next' '--warn' 'clippy::fallible_impl_from' '--warn' 'clippy::explicit_into_iter_loop' '--warn' 'clippy::explicit_deref_methods' '--warn' 'clippy::expl_impl_clone_on_copy' '--warn' 'clippy::enum_glob_use' '--warn' 'clippy::empty_enum' '--warn' 'clippy::doc_markdown' '--warn' 'clippy::debug_assert_with_mut_call' '--warn' 'clippy::dbg_macro' '--warn' 'clippy::create_dir' '--allow' 'clippy::collapsible_else_if' '--warn' 'clippy::checked_conversions' '--allow' 'clippy::branches_sharing_code' '--allow' 'clippy::bool_assert_comparison' '--cfg' 'feature="alloc"' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "debug", "default", "simd", "std", "unstable-doc", "unstable-recover"))' '-C' 'metadata=39d8324d856151ee' '-C' 'extra-filename=-f45e6953436548b2' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/winnow-0.6.13/src/lib.rs \
-        1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-f45e6953436548b2-stdout) \
-        2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-f45e6953436548b2-stderr >&2)
+        1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-f45e6953436548b2-stdout) \
+        2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-f45e6953436548b2-stderr >&2) \
+        || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-f45e6953436548b2-errcode
 FROM scratch AS out-f45e6953436548b2
 COPY --from=dep-l-winnow-0.6.13-f45e6953436548b2 /tmp/clis-ntpd_1-2-3/release/deps/*-f45e6953436548b2* /
 
@@ -8034,8 +8163,9 @@ COPY --from=dep-l-winnow-0.6.13-f45e6953436548b2 /tmp/clis-ntpd_1-2-3/release/de
 ##         NTPD_RS_GIT_DATE="2025-05-09" \
 ##         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
 ##       rustc '--crate-name' 'winnow' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--warn' 'clippy::zero_sized_map_values' '--allow' 'clippy::wildcard_imports' '--warn' 'clippy::verbose_file_reads' '--warn' 'unused_macro_rules' '--warn' 'unused_lifetimes' '--warn' 'unsafe_op_in_unsafe_fn' '--warn' 'unreachable_pub' '--warn' 'clippy::trait_duplication_in_bounds' '--warn' 'clippy::todo' '--warn' 'clippy::string_to_string' '--warn' 'clippy::string_lit_as_bytes' '--warn' 'clippy::string_add_assign' '--warn' 'clippy::string_add' '--warn' 'clippy::str_to_string' '--allow' 'clippy::single_match_else' '--warn' 'clippy::semicolon_if_nothing_returned' '--warn' 'clippy::same_functions_in_if_condition' '--warn' 'rust_2018_idioms' '--warn' 'clippy::rest_pat_in_fully_bound_structs' '--warn' 'clippy::ref_option_ref' '--warn' 'clippy::redundant_feature_names' '--warn' 'clippy::rc_mutex' '--warn' 'clippy::ptr_as_ptr' '--warn' 'clippy::path_buf_push_overwrite' '--warn' 'clippy::negative_feature_names' '--warn' 'clippy::needless_for_each' '--warn' 'clippy::needless_continue' '--warn' 'clippy::mutex_integer' '--warn' 'clippy::mem_forget' '--warn' 'clippy::match_wildcard_for_single_variants' '--warn' 'clippy::macro_use_imports' '--warn' 'clippy::lossy_float_literal' '--warn' 'clippy::linkedlist' '--allow' 'clippy::let_and_return' '--warn' 'clippy::large_types_passed_by_value' '--warn' 'clippy::large_stack_arrays' '--warn' 'clippy::large_digit_groups' '--warn' 'clippy::invalid_upcast_comparisons' '--warn' 'clippy::infinite_loop' '--warn' 'clippy::inefficient_to_string' '--warn' 'clippy::inconsistent_struct_constructor' '--warn' 'clippy::imprecise_flops' '--warn' 'clippy::implicit_clone' '--allow' 'clippy::if_same_then_else' '--warn' 'clippy::from_iter_instead_of_collect' '--warn' 'clippy::fn_params_excessive_bools' '--warn' 'clippy::float_cmp_const' '--warn' 'clippy::flat_map_option' '--warn' 'clippy::filter_map_next' '--warn' 'clippy::fallible_impl_from' '--warn' 'clippy::explicit_into_iter_loop' '--warn' 'clippy::explicit_deref_methods' '--warn' 'clippy::expl_impl_clone_on_copy' '--warn' 'clippy::enum_glob_use' '--warn' 'clippy::empty_enum' '--warn' 'clippy::doc_markdown' '--warn' 'clippy::debug_assert_with_mut_call' '--warn' 'clippy::dbg_macro' '--warn' 'clippy::create_dir' '--allow' 'clippy::collapsible_else_if' '--warn' 'clippy::checked_conversions' '--allow' 'clippy::branches_sharing_code' '--allow' 'clippy::bool_assert_comparison' '--cfg' 'feature="alloc"' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "debug", "default", "simd", "std", "unstable-doc", "unstable-recover"))' '-C' 'metadata=39d8324d856151ee' '-C' 'extra-filename=-f45e6953436548b2' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/winnow-0.6.13/src/lib.rs \
-##         1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-f45e6953436548b2-stdout) \
-##         2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-f45e6953436548b2-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-f45e6953436548b2-stdout) \
+##         2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-f45e6953436548b2-stderr >&2) \
+##         || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-f45e6953436548b2-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-f45e6953436548b2"
@@ -8086,8 +8216,9 @@ RUN \
         NTPD_RS_GIT_DATE="2025-05-09" \
         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
       rustc '--crate-name' 'toml_edit' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--warn' 'clippy::zero_sized_map_values' '--warn' 'clippy::wildcard_imports' '--warn' 'clippy::verbose_file_reads' '--warn' 'unused_qualifications' '--warn' 'unused_macro_rules' '--warn' 'unused_lifetimes' '--warn' 'unsafe_op_in_unsafe_fn' '--warn' 'unreachable_pub' '--warn' 'clippy::trait_duplication_in_bounds' '--warn' 'clippy::todo' '--warn' 'clippy::string_to_string' '--warn' 'clippy::string_lit_as_bytes' '--warn' 'clippy::string_add_assign' '--warn' 'clippy::string_add' '--warn' 'clippy::str_to_string' '--warn' 'clippy::single_match_else' '--warn' 'clippy::semicolon_if_nothing_returned' '--warn' 'clippy::self_named_module_files' '--warn' 'clippy::same_functions_in_if_condition' '--warn' 'rust_2018_idioms' '--warn' 'clippy::rest_pat_in_fully_bound_structs' '--warn' 'clippy::ref_option_ref' '--warn' 'clippy::redundant_feature_names' '--warn' 'clippy::rc_mutex' '--warn' 'clippy::ptr_as_ptr' '--warn' 'clippy::path_buf_push_overwrite' '--warn' 'clippy::negative_feature_names' '--warn' 'clippy::needless_for_each' '--warn' 'clippy::needless_continue' '--warn' 'clippy::mutex_integer' '--warn' 'clippy::mem_forget' '--warn' 'clippy::match_wildcard_for_single_variants' '--warn' 'clippy::macro_use_imports' '--warn' 'clippy::lossy_float_literal' '--warn' 'clippy::linkedlist' '--allow' 'clippy::let_and_return' '--warn' 'clippy::large_types_passed_by_value' '--warn' 'clippy::large_stack_arrays' '--warn' 'clippy::large_digit_groups' '--warn' 'clippy::items_after_statements' '--warn' 'clippy::invalid_upcast_comparisons' '--warn' 'clippy::infinite_loop' '--warn' 'clippy::inefficient_to_string' '--warn' 'clippy::inconsistent_struct_constructor' '--warn' 'clippy::imprecise_flops' '--warn' 'clippy::implicit_clone' '--allow' 'clippy::if_same_then_else' '--warn' 'clippy::from_iter_instead_of_collect' '--warn' 'clippy::fn_params_excessive_bools' '--warn' 'clippy::float_cmp_const' '--warn' 'clippy::flat_map_option' '--warn' 'clippy::filter_map_next' '--warn' 'clippy::fallible_impl_from' '--warn' 'clippy::explicit_into_iter_loop' '--warn' 'clippy::explicit_deref_methods' '--warn' 'clippy::expl_impl_clone_on_copy' '--warn' 'clippy::enum_glob_use' '--warn' 'clippy::empty_enum' '--warn' 'clippy::doc_markdown' '--warn' 'clippy::debug_assert_with_mut_call' '--warn' 'clippy::dbg_macro' '--warn' 'clippy::create_dir' '--allow' 'clippy::collapsible_else_if' '--warn' 'clippy::checked_conversions' '--allow' 'clippy::branches_sharing_code' '--allow' 'clippy::bool_assert_comparison' '--cfg' 'feature="parse"' '--cfg' 'feature="serde"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "display", "parse", "perf", "serde", "unbounded"))' '-C' 'metadata=42b680f1345ad443' '-C' 'extra-filename=-90c6c24e7a16fdd6' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'indexmap=/tmp/clis-ntpd_1-2-3/release/deps/libindexmap-bd5f37b7de678bd9.rmeta' '--extern' 'serde=/tmp/clis-ntpd_1-2-3/release/deps/libserde-986325a49dffbcd1.rmeta' '--extern' 'serde_spanned=/tmp/clis-ntpd_1-2-3/release/deps/libserde_spanned-dc39aa05fabf8bb2.rmeta' '--extern' 'toml_datetime=/tmp/clis-ntpd_1-2-3/release/deps/libtoml_datetime-f1d69a8e9c76a596.rmeta' '--extern' 'winnow=/tmp/clis-ntpd_1-2-3/release/deps/libwinnow-f45e6953436548b2.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/toml_edit-0.22.16/src/lib.rs \
-        1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-90c6c24e7a16fdd6-stdout) \
-        2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-90c6c24e7a16fdd6-stderr >&2)
+        1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-90c6c24e7a16fdd6-stdout) \
+        2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-90c6c24e7a16fdd6-stderr >&2) \
+        || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-90c6c24e7a16fdd6-errcode
 FROM scratch AS out-90c6c24e7a16fdd6
 COPY --from=dep-l-toml_edit-0.22.16-90c6c24e7a16fdd6 /tmp/clis-ntpd_1-2-3/release/deps/*-90c6c24e7a16fdd6* /
 
@@ -8203,8 +8334,9 @@ COPY --from=dep-l-toml_edit-0.22.16-90c6c24e7a16fdd6 /tmp/clis-ntpd_1-2-3/releas
 ##         NTPD_RS_GIT_DATE="2025-05-09" \
 ##         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
 ##       rustc '--crate-name' 'toml_edit' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--warn' 'clippy::zero_sized_map_values' '--warn' 'clippy::wildcard_imports' '--warn' 'clippy::verbose_file_reads' '--warn' 'unused_qualifications' '--warn' 'unused_macro_rules' '--warn' 'unused_lifetimes' '--warn' 'unsafe_op_in_unsafe_fn' '--warn' 'unreachable_pub' '--warn' 'clippy::trait_duplication_in_bounds' '--warn' 'clippy::todo' '--warn' 'clippy::string_to_string' '--warn' 'clippy::string_lit_as_bytes' '--warn' 'clippy::string_add_assign' '--warn' 'clippy::string_add' '--warn' 'clippy::str_to_string' '--warn' 'clippy::single_match_else' '--warn' 'clippy::semicolon_if_nothing_returned' '--warn' 'clippy::self_named_module_files' '--warn' 'clippy::same_functions_in_if_condition' '--warn' 'rust_2018_idioms' '--warn' 'clippy::rest_pat_in_fully_bound_structs' '--warn' 'clippy::ref_option_ref' '--warn' 'clippy::redundant_feature_names' '--warn' 'clippy::rc_mutex' '--warn' 'clippy::ptr_as_ptr' '--warn' 'clippy::path_buf_push_overwrite' '--warn' 'clippy::negative_feature_names' '--warn' 'clippy::needless_for_each' '--warn' 'clippy::needless_continue' '--warn' 'clippy::mutex_integer' '--warn' 'clippy::mem_forget' '--warn' 'clippy::match_wildcard_for_single_variants' '--warn' 'clippy::macro_use_imports' '--warn' 'clippy::lossy_float_literal' '--warn' 'clippy::linkedlist' '--allow' 'clippy::let_and_return' '--warn' 'clippy::large_types_passed_by_value' '--warn' 'clippy::large_stack_arrays' '--warn' 'clippy::large_digit_groups' '--warn' 'clippy::items_after_statements' '--warn' 'clippy::invalid_upcast_comparisons' '--warn' 'clippy::infinite_loop' '--warn' 'clippy::inefficient_to_string' '--warn' 'clippy::inconsistent_struct_constructor' '--warn' 'clippy::imprecise_flops' '--warn' 'clippy::implicit_clone' '--allow' 'clippy::if_same_then_else' '--warn' 'clippy::from_iter_instead_of_collect' '--warn' 'clippy::fn_params_excessive_bools' '--warn' 'clippy::float_cmp_const' '--warn' 'clippy::flat_map_option' '--warn' 'clippy::filter_map_next' '--warn' 'clippy::fallible_impl_from' '--warn' 'clippy::explicit_into_iter_loop' '--warn' 'clippy::explicit_deref_methods' '--warn' 'clippy::expl_impl_clone_on_copy' '--warn' 'clippy::enum_glob_use' '--warn' 'clippy::empty_enum' '--warn' 'clippy::doc_markdown' '--warn' 'clippy::debug_assert_with_mut_call' '--warn' 'clippy::dbg_macro' '--warn' 'clippy::create_dir' '--allow' 'clippy::collapsible_else_if' '--warn' 'clippy::checked_conversions' '--allow' 'clippy::branches_sharing_code' '--allow' 'clippy::bool_assert_comparison' '--cfg' 'feature="parse"' '--cfg' 'feature="serde"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "display", "parse", "perf", "serde", "unbounded"))' '-C' 'metadata=42b680f1345ad443' '-C' 'extra-filename=-90c6c24e7a16fdd6' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'indexmap=/tmp/clis-ntpd_1-2-3/release/deps/libindexmap-bd5f37b7de678bd9.rmeta' '--extern' 'serde=/tmp/clis-ntpd_1-2-3/release/deps/libserde-986325a49dffbcd1.rmeta' '--extern' 'serde_spanned=/tmp/clis-ntpd_1-2-3/release/deps/libserde_spanned-dc39aa05fabf8bb2.rmeta' '--extern' 'toml_datetime=/tmp/clis-ntpd_1-2-3/release/deps/libtoml_datetime-f1d69a8e9c76a596.rmeta' '--extern' 'winnow=/tmp/clis-ntpd_1-2-3/release/deps/libwinnow-f45e6953436548b2.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/toml_edit-0.22.16/src/lib.rs \
-##         1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-90c6c24e7a16fdd6-stdout) \
-##         2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-90c6c24e7a16fdd6-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-90c6c24e7a16fdd6-stdout) \
+##         2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-90c6c24e7a16fdd6-stderr >&2) \
+##         || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-90c6c24e7a16fdd6-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-90c6c24e7a16fdd6"
@@ -8256,8 +8388,9 @@ RUN \
         NTPD_RS_GIT_DATE="2025-05-09" \
         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
       rustc '--crate-name' 'toml' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--warn' 'clippy::zero_sized_map_values' '--warn' 'clippy::wildcard_imports' '--warn' 'clippy::verbose_file_reads' '--warn' 'unused_qualifications' '--warn' 'unused_macro_rules' '--warn' 'unused_lifetimes' '--warn' 'unsafe_op_in_unsafe_fn' '--warn' 'unreachable_pub' '--warn' 'clippy::trait_duplication_in_bounds' '--warn' 'clippy::todo' '--warn' 'clippy::string_to_string' '--warn' 'clippy::string_lit_as_bytes' '--warn' 'clippy::string_add_assign' '--warn' 'clippy::string_add' '--warn' 'clippy::str_to_string' '--warn' 'clippy::single_match_else' '--warn' 'clippy::semicolon_if_nothing_returned' '--warn' 'clippy::self_named_module_files' '--warn' 'clippy::same_functions_in_if_condition' '--warn' 'rust_2018_idioms' '--warn' 'clippy::rest_pat_in_fully_bound_structs' '--warn' 'clippy::ref_option_ref' '--warn' 'clippy::redundant_feature_names' '--warn' 'clippy::rc_mutex' '--warn' 'clippy::ptr_as_ptr' '--warn' 'clippy::path_buf_push_overwrite' '--warn' 'clippy::negative_feature_names' '--warn' 'clippy::needless_for_each' '--warn' 'clippy::needless_continue' '--warn' 'clippy::mutex_integer' '--warn' 'clippy::mem_forget' '--warn' 'clippy::match_wildcard_for_single_variants' '--warn' 'clippy::macro_use_imports' '--warn' 'clippy::lossy_float_literal' '--warn' 'clippy::linkedlist' '--allow' 'clippy::let_and_return' '--warn' 'clippy::large_types_passed_by_value' '--warn' 'clippy::large_stack_arrays' '--warn' 'clippy::large_digit_groups' '--warn' 'clippy::items_after_statements' '--warn' 'clippy::invalid_upcast_comparisons' '--warn' 'clippy::infinite_loop' '--warn' 'clippy::inefficient_to_string' '--warn' 'clippy::inconsistent_struct_constructor' '--warn' 'clippy::imprecise_flops' '--warn' 'clippy::implicit_clone' '--allow' 'clippy::if_same_then_else' '--warn' 'clippy::from_iter_instead_of_collect' '--warn' 'clippy::fn_params_excessive_bools' '--warn' 'clippy::float_cmp_const' '--warn' 'clippy::flat_map_option' '--warn' 'clippy::filter_map_next' '--warn' 'clippy::fallible_impl_from' '--warn' 'clippy::explicit_into_iter_loop' '--warn' 'clippy::explicit_deref_methods' '--warn' 'clippy::expl_impl_clone_on_copy' '--warn' 'clippy::enum_glob_use' '--warn' 'clippy::empty_enum' '--warn' 'clippy::doc_markdown' '--warn' 'clippy::debug_assert_with_mut_call' '--warn' 'clippy::dbg_macro' '--warn' 'clippy::create_dir' '--allow' 'clippy::collapsible_else_if' '--warn' 'clippy::checked_conversions' '--allow' 'clippy::branches_sharing_code' '--allow' 'clippy::bool_assert_comparison' '--cfg' 'feature="parse"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "display", "indexmap", "parse", "preserve_order"))' '-C' 'metadata=cf2ebbc3f5e123cf' '-C' 'extra-filename=-7b6c235fb7422577' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'serde=/tmp/clis-ntpd_1-2-3/release/deps/libserde-986325a49dffbcd1.rmeta' '--extern' 'serde_spanned=/tmp/clis-ntpd_1-2-3/release/deps/libserde_spanned-dc39aa05fabf8bb2.rmeta' '--extern' 'toml_datetime=/tmp/clis-ntpd_1-2-3/release/deps/libtoml_datetime-f1d69a8e9c76a596.rmeta' '--extern' 'toml_edit=/tmp/clis-ntpd_1-2-3/release/deps/libtoml_edit-90c6c24e7a16fdd6.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/toml-0.8.15/src/lib.rs \
-        1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-7b6c235fb7422577-stdout) \
-        2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-7b6c235fb7422577-stderr >&2)
+        1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-7b6c235fb7422577-stdout) \
+        2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-7b6c235fb7422577-stderr >&2) \
+        || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-7b6c235fb7422577-errcode
 FROM scratch AS out-7b6c235fb7422577
 COPY --from=dep-l-toml-0.8.15-7b6c235fb7422577 /tmp/clis-ntpd_1-2-3/release/deps/*-7b6c235fb7422577* /
 
@@ -8364,8 +8497,9 @@ COPY --from=dep-l-toml-0.8.15-7b6c235fb7422577 /tmp/clis-ntpd_1-2-3/release/deps
 ##         NTPD_RS_GIT_DATE="2025-05-09" \
 ##         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
 ##       rustc '--crate-name' 'toml' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--warn' 'clippy::zero_sized_map_values' '--warn' 'clippy::wildcard_imports' '--warn' 'clippy::verbose_file_reads' '--warn' 'unused_qualifications' '--warn' 'unused_macro_rules' '--warn' 'unused_lifetimes' '--warn' 'unsafe_op_in_unsafe_fn' '--warn' 'unreachable_pub' '--warn' 'clippy::trait_duplication_in_bounds' '--warn' 'clippy::todo' '--warn' 'clippy::string_to_string' '--warn' 'clippy::string_lit_as_bytes' '--warn' 'clippy::string_add_assign' '--warn' 'clippy::string_add' '--warn' 'clippy::str_to_string' '--warn' 'clippy::single_match_else' '--warn' 'clippy::semicolon_if_nothing_returned' '--warn' 'clippy::self_named_module_files' '--warn' 'clippy::same_functions_in_if_condition' '--warn' 'rust_2018_idioms' '--warn' 'clippy::rest_pat_in_fully_bound_structs' '--warn' 'clippy::ref_option_ref' '--warn' 'clippy::redundant_feature_names' '--warn' 'clippy::rc_mutex' '--warn' 'clippy::ptr_as_ptr' '--warn' 'clippy::path_buf_push_overwrite' '--warn' 'clippy::negative_feature_names' '--warn' 'clippy::needless_for_each' '--warn' 'clippy::needless_continue' '--warn' 'clippy::mutex_integer' '--warn' 'clippy::mem_forget' '--warn' 'clippy::match_wildcard_for_single_variants' '--warn' 'clippy::macro_use_imports' '--warn' 'clippy::lossy_float_literal' '--warn' 'clippy::linkedlist' '--allow' 'clippy::let_and_return' '--warn' 'clippy::large_types_passed_by_value' '--warn' 'clippy::large_stack_arrays' '--warn' 'clippy::large_digit_groups' '--warn' 'clippy::items_after_statements' '--warn' 'clippy::invalid_upcast_comparisons' '--warn' 'clippy::infinite_loop' '--warn' 'clippy::inefficient_to_string' '--warn' 'clippy::inconsistent_struct_constructor' '--warn' 'clippy::imprecise_flops' '--warn' 'clippy::implicit_clone' '--allow' 'clippy::if_same_then_else' '--warn' 'clippy::from_iter_instead_of_collect' '--warn' 'clippy::fn_params_excessive_bools' '--warn' 'clippy::float_cmp_const' '--warn' 'clippy::flat_map_option' '--warn' 'clippy::filter_map_next' '--warn' 'clippy::fallible_impl_from' '--warn' 'clippy::explicit_into_iter_loop' '--warn' 'clippy::explicit_deref_methods' '--warn' 'clippy::expl_impl_clone_on_copy' '--warn' 'clippy::enum_glob_use' '--warn' 'clippy::empty_enum' '--warn' 'clippy::doc_markdown' '--warn' 'clippy::debug_assert_with_mut_call' '--warn' 'clippy::dbg_macro' '--warn' 'clippy::create_dir' '--allow' 'clippy::collapsible_else_if' '--warn' 'clippy::checked_conversions' '--allow' 'clippy::branches_sharing_code' '--allow' 'clippy::bool_assert_comparison' '--cfg' 'feature="parse"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "display", "indexmap", "parse", "preserve_order"))' '-C' 'metadata=cf2ebbc3f5e123cf' '-C' 'extra-filename=-7b6c235fb7422577' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'serde=/tmp/clis-ntpd_1-2-3/release/deps/libserde-986325a49dffbcd1.rmeta' '--extern' 'serde_spanned=/tmp/clis-ntpd_1-2-3/release/deps/libserde_spanned-dc39aa05fabf8bb2.rmeta' '--extern' 'toml_datetime=/tmp/clis-ntpd_1-2-3/release/deps/libtoml_datetime-f1d69a8e9c76a596.rmeta' '--extern' 'toml_edit=/tmp/clis-ntpd_1-2-3/release/deps/libtoml_edit-90c6c24e7a16fdd6.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/toml-0.8.15/src/lib.rs \
-##         1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-7b6c235fb7422577-stdout) \
-##         2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-7b6c235fb7422577-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-7b6c235fb7422577-stdout) \
+##         2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-7b6c235fb7422577-stderr >&2) \
+##         || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-7b6c235fb7422577-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-7b6c235fb7422577"
@@ -8404,8 +8538,9 @@ RUN \
         NTPD_RS_GIT_DATE="2025-05-09" \
         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
       rustc '--crate-name' 'overload' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=4c018e9f6ab20139' '-C' 'extra-filename=-94fa3b5a5c6dc522' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/overload-0.1.1/src/lib.rs \
-        1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-94fa3b5a5c6dc522-stdout) \
-        2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-94fa3b5a5c6dc522-stderr >&2)
+        1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-94fa3b5a5c6dc522-stdout) \
+        2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-94fa3b5a5c6dc522-stderr >&2) \
+        || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-94fa3b5a5c6dc522-errcode
 FROM scratch AS out-94fa3b5a5c6dc522
 COPY --from=dep-l-overload-0.1.1-94fa3b5a5c6dc522 /tmp/clis-ntpd_1-2-3/release/deps/*-94fa3b5a5c6dc522* /
 
@@ -8463,8 +8598,9 @@ COPY --from=dep-l-overload-0.1.1-94fa3b5a5c6dc522 /tmp/clis-ntpd_1-2-3/release/d
 ##         NTPD_RS_GIT_DATE="2025-05-09" \
 ##         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
 ##       rustc '--crate-name' 'overload' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=4c018e9f6ab20139' '-C' 'extra-filename=-94fa3b5a5c6dc522' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/overload-0.1.1/src/lib.rs \
-##         1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-94fa3b5a5c6dc522-stdout) \
-##         2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-94fa3b5a5c6dc522-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-94fa3b5a5c6dc522-stdout) \
+##         2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-94fa3b5a5c6dc522-stderr >&2) \
+##         || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-94fa3b5a5c6dc522-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-94fa3b5a5c6dc522"
@@ -8504,8 +8640,9 @@ RUN \
         NTPD_RS_GIT_DATE="2025-05-09" \
         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
       rustc '--crate-name' 'nu_ansi_term' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("derive_serde_style", "serde"))' '-C' 'metadata=97ff9102a3ba1599' '-C' 'extra-filename=-c42192675aa050dd' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'overload=/tmp/clis-ntpd_1-2-3/release/deps/liboverload-94fa3b5a5c6dc522.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nu-ansi-term-0.46.0/src/lib.rs \
-        1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-c42192675aa050dd-stdout) \
-        2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-c42192675aa050dd-stderr >&2)
+        1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-c42192675aa050dd-stdout) \
+        2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-c42192675aa050dd-stderr >&2) \
+        || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-c42192675aa050dd-errcode
 FROM scratch AS out-c42192675aa050dd
 COPY --from=dep-l-nu-ansi-term-0.46.0-c42192675aa050dd /tmp/clis-ntpd_1-2-3/release/deps/*-c42192675aa050dd* /
 
@@ -8568,8 +8705,9 @@ COPY --from=dep-l-nu-ansi-term-0.46.0-c42192675aa050dd /tmp/clis-ntpd_1-2-3/rele
 ##         NTPD_RS_GIT_DATE="2025-05-09" \
 ##         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
 ##       rustc '--crate-name' 'nu_ansi_term' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("derive_serde_style", "serde"))' '-C' 'metadata=97ff9102a3ba1599' '-C' 'extra-filename=-c42192675aa050dd' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'overload=/tmp/clis-ntpd_1-2-3/release/deps/liboverload-94fa3b5a5c6dc522.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nu-ansi-term-0.46.0/src/lib.rs \
-##         1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-c42192675aa050dd-stdout) \
-##         2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-c42192675aa050dd-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-c42192675aa050dd-stdout) \
+##         2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-c42192675aa050dd-stderr >&2) \
+##         || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-c42192675aa050dd-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-c42192675aa050dd"
@@ -8608,8 +8746,9 @@ RUN \
         NTPD_RS_GIT_DATE="2025-05-09" \
         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
       rustc '--crate-name' 'lazy_static' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("spin", "spin_no_std"))' '-C' 'metadata=e07f8572ff794986' '-C' 'extra-filename=-f91da618dd3f72e5' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/lazy_static-1.5.0/src/lib.rs \
-        1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-f91da618dd3f72e5-stdout) \
-        2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-f91da618dd3f72e5-stderr >&2)
+        1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-f91da618dd3f72e5-stdout) \
+        2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-f91da618dd3f72e5-stderr >&2) \
+        || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-f91da618dd3f72e5-errcode
 FROM scratch AS out-f91da618dd3f72e5
 COPY --from=dep-l-lazy_static-1.5.0-f91da618dd3f72e5 /tmp/clis-ntpd_1-2-3/release/deps/*-f91da618dd3f72e5* /
 
@@ -8669,8 +8808,9 @@ COPY --from=dep-l-lazy_static-1.5.0-f91da618dd3f72e5 /tmp/clis-ntpd_1-2-3/releas
 ##         NTPD_RS_GIT_DATE="2025-05-09" \
 ##         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
 ##       rustc '--crate-name' 'lazy_static' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("spin", "spin_no_std"))' '-C' 'metadata=e07f8572ff794986' '-C' 'extra-filename=-f91da618dd3f72e5' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/lazy_static-1.5.0/src/lib.rs \
-##         1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-f91da618dd3f72e5-stdout) \
-##         2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-f91da618dd3f72e5-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-f91da618dd3f72e5-stdout) \
+##         2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-f91da618dd3f72e5-stderr >&2) \
+##         || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-f91da618dd3f72e5-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-f91da618dd3f72e5"
@@ -8710,8 +8850,9 @@ RUN \
         NTPD_RS_GIT_DATE="2025-05-09" \
         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
       rustc '--crate-name' 'sharded_slab' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("loom"))' '-C' 'metadata=4ef5b49d9aea40b3' '-C' 'extra-filename=-b9545388d9527f67' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'lazy_static=/tmp/clis-ntpd_1-2-3/release/deps/liblazy_static-f91da618dd3f72e5.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/sharded-slab-0.1.7/src/lib.rs \
-        1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-b9545388d9527f67-stdout) \
-        2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-b9545388d9527f67-stderr >&2)
+        1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-b9545388d9527f67-stdout) \
+        2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-b9545388d9527f67-stderr >&2) \
+        || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-b9545388d9527f67-errcode
 FROM scratch AS out-b9545388d9527f67
 COPY --from=dep-l-sharded-slab-0.1.7-b9545388d9527f67 /tmp/clis-ntpd_1-2-3/release/deps/*-b9545388d9527f67* /
 
@@ -8878,8 +9019,9 @@ COPY --from=dep-l-sharded-slab-0.1.7-b9545388d9527f67 /tmp/clis-ntpd_1-2-3/relea
 ##         NTPD_RS_GIT_DATE="2025-05-09" \
 ##         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
 ##       rustc '--crate-name' 'sharded_slab' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("loom"))' '-C' 'metadata=4ef5b49d9aea40b3' '-C' 'extra-filename=-b9545388d9527f67' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'lazy_static=/tmp/clis-ntpd_1-2-3/release/deps/liblazy_static-f91da618dd3f72e5.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/sharded-slab-0.1.7/src/lib.rs \
-##         1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-b9545388d9527f67-stdout) \
-##         2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-b9545388d9527f67-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-b9545388d9527f67-stdout) \
+##         2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-b9545388d9527f67-stderr >&2) \
+##         || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-b9545388d9527f67-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-b9545388d9527f67"
@@ -8920,8 +9062,9 @@ RUN \
         NTPD_RS_GIT_DATE="2025-05-09" \
         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
       rustc '--crate-name' 'thread_local' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("nightly"))' '-C' 'metadata=40f6b266d7a2c112' '-C' 'extra-filename=-6893ca5c870c6e37' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'cfg_if=/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rmeta' '--extern' 'once_cell=/tmp/clis-ntpd_1-2-3/release/deps/libonce_cell-6ed51fafe322ecba.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thread_local-1.1.8/src/lib.rs \
-        1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-6893ca5c870c6e37-stdout) \
-        2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-6893ca5c870c6e37-stderr >&2)
+        1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-6893ca5c870c6e37-stdout) \
+        2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-6893ca5c870c6e37-stderr >&2) \
+        || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-6893ca5c870c6e37-errcode
 FROM scratch AS out-6893ca5c870c6e37
 COPY --from=dep-l-thread_local-1.1.8-6893ca5c870c6e37 /tmp/clis-ntpd_1-2-3/release/deps/*-6893ca5c870c6e37* /
 
@@ -8992,8 +9135,9 @@ COPY --from=dep-l-thread_local-1.1.8-6893ca5c870c6e37 /tmp/clis-ntpd_1-2-3/relea
 ##         NTPD_RS_GIT_DATE="2025-05-09" \
 ##         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
 ##       rustc '--crate-name' 'thread_local' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("nightly"))' '-C' 'metadata=40f6b266d7a2c112' '-C' 'extra-filename=-6893ca5c870c6e37' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'cfg_if=/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rmeta' '--extern' 'once_cell=/tmp/clis-ntpd_1-2-3/release/deps/libonce_cell-6ed51fafe322ecba.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thread_local-1.1.8/src/lib.rs \
-##         1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-6893ca5c870c6e37-stdout) \
-##         2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-6893ca5c870c6e37-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-6893ca5c870c6e37-stdout) \
+##         2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-6893ca5c870c6e37-stderr >&2) \
+##         || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-6893ca5c870c6e37-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-6893ca5c870c6e37"
@@ -9040,8 +9184,9 @@ RUN \
         NTPD_RS_GIT_DATE="2025-05-09" \
         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
       rustc '--crate-name' 'tracing_subscriber' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="alloc"' '--cfg' 'feature="ansi"' '--cfg' 'feature="fmt"' '--cfg' 'feature="nu-ansi-term"' '--cfg' 'feature="registry"' '--cfg' 'feature="sharded-slab"' '--cfg' 'feature="std"' '--cfg' 'feature="thread_local"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "ansi", "chrono", "default", "env-filter", "fmt", "json", "local-time", "matchers", "nu-ansi-term", "once_cell", "parking_lot", "regex", "registry", "serde", "serde_json", "sharded-slab", "smallvec", "std", "thread_local", "time", "tracing", "tracing-log", "tracing-serde", "valuable", "valuable-serde", "valuable_crate"))' '-C' 'metadata=47149c4da5c68ff3' '-C' 'extra-filename=-63f992d9454962cc' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'nu_ansi_term=/tmp/clis-ntpd_1-2-3/release/deps/libnu_ansi_term-c42192675aa050dd.rmeta' '--extern' 'sharded_slab=/tmp/clis-ntpd_1-2-3/release/deps/libsharded_slab-b9545388d9527f67.rmeta' '--extern' 'thread_local=/tmp/clis-ntpd_1-2-3/release/deps/libthread_local-6893ca5c870c6e37.rmeta' '--extern' 'tracing_core=/tmp/clis-ntpd_1-2-3/release/deps/libtracing_core-100f3fe23952e4be.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/tracing-subscriber-0.3.18/src/lib.rs \
-        1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-63f992d9454962cc-stdout) \
-        2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-63f992d9454962cc-stderr >&2)
+        1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-63f992d9454962cc-stdout) \
+        2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-63f992d9454962cc-stderr >&2) \
+        || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-63f992d9454962cc-errcode
 FROM scratch AS out-63f992d9454962cc
 COPY --from=dep-l-tracing-subscriber-0.3.18-63f992d9454962cc /tmp/clis-ntpd_1-2-3/release/deps/*-63f992d9454962cc* /
 
@@ -9130,8 +9275,9 @@ COPY --from=dep-l-tracing-subscriber-0.3.18-63f992d9454962cc /tmp/clis-ntpd_1-2-
 ##         NTPD_RS_GIT_DATE="2025-05-09" \
 ##         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
 ##       rustc '--crate-name' 'tracing_subscriber' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="alloc"' '--cfg' 'feature="ansi"' '--cfg' 'feature="fmt"' '--cfg' 'feature="nu-ansi-term"' '--cfg' 'feature="registry"' '--cfg' 'feature="sharded-slab"' '--cfg' 'feature="std"' '--cfg' 'feature="thread_local"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "ansi", "chrono", "default", "env-filter", "fmt", "json", "local-time", "matchers", "nu-ansi-term", "once_cell", "parking_lot", "regex", "registry", "serde", "serde_json", "sharded-slab", "smallvec", "std", "thread_local", "time", "tracing", "tracing-log", "tracing-serde", "valuable", "valuable-serde", "valuable_crate"))' '-C' 'metadata=47149c4da5c68ff3' '-C' 'extra-filename=-63f992d9454962cc' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'nu_ansi_term=/tmp/clis-ntpd_1-2-3/release/deps/libnu_ansi_term-c42192675aa050dd.rmeta' '--extern' 'sharded_slab=/tmp/clis-ntpd_1-2-3/release/deps/libsharded_slab-b9545388d9527f67.rmeta' '--extern' 'thread_local=/tmp/clis-ntpd_1-2-3/release/deps/libthread_local-6893ca5c870c6e37.rmeta' '--extern' 'tracing_core=/tmp/clis-ntpd_1-2-3/release/deps/libtracing_core-100f3fe23952e4be.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/tracing-subscriber-0.3.18/src/lib.rs \
-##         1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-63f992d9454962cc-stdout) \
-##         2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-63f992d9454962cc-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-63f992d9454962cc-stdout) \
+##         2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-63f992d9454962cc-stderr >&2) \
+##         || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-63f992d9454962cc-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-63f992d9454962cc"
@@ -9245,8 +9391,9 @@ RUN \
         NTPD_RS_GIT_DATE="2025-05-09" \
         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
       rustc '--crate-name' 'ntpd' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="default"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "hardware-timestamping", "unstable_ntpv5", "unstable_nts-pool"))' '-C' 'metadata=6a632aca8f277a0f' '-C' 'extra-filename=-7974610cfc5e520c' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'async_trait=/tmp/clis-ntpd_1-2-3/release/deps/libasync_trait-2b00e18c8782890c.so' '--extern' 'clock_steering=/tmp/clis-ntpd_1-2-3/release/deps/libclock_steering-7adc6d6ce8be0538.rmeta' '--extern' 'libc=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rmeta' '--extern' 'ntp_proto=/tmp/clis-ntpd_1-2-3/release/deps/libntp_proto-5a810c5444456e7d.rmeta' '--extern' 'rand=/tmp/clis-ntpd_1-2-3/release/deps/librand-5161209caf71d483.rmeta' '--extern' 'rustls=/tmp/clis-ntpd_1-2-3/release/deps/librustls-fd2c262888e3ecb5.rmeta' '--extern' 'rustls_native_certs=/tmp/clis-ntpd_1-2-3/release/deps/librustls_native_certs-9a69f5c8c648a58b.rmeta' '--extern' 'rustls_pemfile=/tmp/clis-ntpd_1-2-3/release/deps/librustls_pemfile-e86acdc6389f12a9.rmeta' '--extern' 'serde=/tmp/clis-ntpd_1-2-3/release/deps/libserde-986325a49dffbcd1.rmeta' '--extern' 'serde_json=/tmp/clis-ntpd_1-2-3/release/deps/libserde_json-2a345737f765283a.rmeta' '--extern' 'timestamped_socket=/tmp/clis-ntpd_1-2-3/release/deps/libtimestamped_socket-2f59881207cd7c68.rmeta' '--extern' 'tokio=/tmp/clis-ntpd_1-2-3/release/deps/libtokio-e6ed429a0a7450c0.rmeta' '--extern' 'toml=/tmp/clis-ntpd_1-2-3/release/deps/libtoml-7b6c235fb7422577.rmeta' '--extern' 'tracing=/tmp/clis-ntpd_1-2-3/release/deps/libtracing-7d2675bffdb63c95.rmeta' '--extern' 'tracing_subscriber=/tmp/clis-ntpd_1-2-3/release/deps/libtracing_subscriber-63f992d9454962cc.rmeta' '--cap-lints' 'warn' '-L' 'native=/tmp/clis-ntpd_1-2-3/release/build/ring-a0b19822430eae69/out' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ntpd-1.2.3/src/lib.rs \
-        1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-7974610cfc5e520c-stdout) \
-        2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-7974610cfc5e520c-stderr >&2)
+        1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-7974610cfc5e520c-stdout) \
+        2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-7974610cfc5e520c-stderr >&2) \
+        || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-7974610cfc5e520c-errcode
 FROM scratch AS out-7974610cfc5e520c
 COPY --from=dep-l-ntpd-1.2.3-7974610cfc5e520c /tmp/clis-ntpd_1-2-3/release/deps/*-7974610cfc5e520c* /
 
@@ -9541,8 +9688,9 @@ COPY --from=dep-l-ntpd-1.2.3-7974610cfc5e520c /tmp/clis-ntpd_1-2-3/release/deps/
 ##         NTPD_RS_GIT_DATE="2025-05-09" \
 ##         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
 ##       rustc '--crate-name' 'ntpd' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="default"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "hardware-timestamping", "unstable_ntpv5", "unstable_nts-pool"))' '-C' 'metadata=6a632aca8f277a0f' '-C' 'extra-filename=-7974610cfc5e520c' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'async_trait=/tmp/clis-ntpd_1-2-3/release/deps/libasync_trait-2b00e18c8782890c.so' '--extern' 'clock_steering=/tmp/clis-ntpd_1-2-3/release/deps/libclock_steering-7adc6d6ce8be0538.rmeta' '--extern' 'libc=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rmeta' '--extern' 'ntp_proto=/tmp/clis-ntpd_1-2-3/release/deps/libntp_proto-5a810c5444456e7d.rmeta' '--extern' 'rand=/tmp/clis-ntpd_1-2-3/release/deps/librand-5161209caf71d483.rmeta' '--extern' 'rustls=/tmp/clis-ntpd_1-2-3/release/deps/librustls-fd2c262888e3ecb5.rmeta' '--extern' 'rustls_native_certs=/tmp/clis-ntpd_1-2-3/release/deps/librustls_native_certs-9a69f5c8c648a58b.rmeta' '--extern' 'rustls_pemfile=/tmp/clis-ntpd_1-2-3/release/deps/librustls_pemfile-e86acdc6389f12a9.rmeta' '--extern' 'serde=/tmp/clis-ntpd_1-2-3/release/deps/libserde-986325a49dffbcd1.rmeta' '--extern' 'serde_json=/tmp/clis-ntpd_1-2-3/release/deps/libserde_json-2a345737f765283a.rmeta' '--extern' 'timestamped_socket=/tmp/clis-ntpd_1-2-3/release/deps/libtimestamped_socket-2f59881207cd7c68.rmeta' '--extern' 'tokio=/tmp/clis-ntpd_1-2-3/release/deps/libtokio-e6ed429a0a7450c0.rmeta' '--extern' 'toml=/tmp/clis-ntpd_1-2-3/release/deps/libtoml-7b6c235fb7422577.rmeta' '--extern' 'tracing=/tmp/clis-ntpd_1-2-3/release/deps/libtracing-7d2675bffdb63c95.rmeta' '--extern' 'tracing_subscriber=/tmp/clis-ntpd_1-2-3/release/deps/libtracing_subscriber-63f992d9454962cc.rmeta' '--cap-lints' 'warn' '-L' 'native=/tmp/clis-ntpd_1-2-3/release/build/ring-a0b19822430eae69/out' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ntpd-1.2.3/src/lib.rs \
-##         1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-7974610cfc5e520c-stdout) \
-##         2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-7974610cfc5e520c-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-7974610cfc5e520c-stdout) \
+##         2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-7974610cfc5e520c-stderr >&2) \
+##         || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-7974610cfc5e520c-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-7974610cfc5e520c"
@@ -9656,8 +9804,9 @@ RUN \
         NTPD_RS_GIT_DATE="2025-05-09" \
         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
       rustc '--crate-name' 'ntp_daemon' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'bin' '--emit' 'dep-info,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="default"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "hardware-timestamping", "unstable_ntpv5", "unstable_nts-pool"))' '-C' 'metadata=52cef03e832d528d' '-C' 'extra-filename=-88b4a2cd7d00f909' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'async_trait=/tmp/clis-ntpd_1-2-3/release/deps/libasync_trait-2b00e18c8782890c.so' '--extern' 'clock_steering=/tmp/clis-ntpd_1-2-3/release/deps/libclock_steering-7adc6d6ce8be0538.rlib' '--extern' 'libc=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rlib' '--extern' 'ntp_proto=/tmp/clis-ntpd_1-2-3/release/deps/libntp_proto-5a810c5444456e7d.rlib' '--extern' 'ntpd=/tmp/clis-ntpd_1-2-3/release/deps/libntpd-7974610cfc5e520c.rlib' '--extern' 'rand=/tmp/clis-ntpd_1-2-3/release/deps/librand-5161209caf71d483.rlib' '--extern' 'rustls=/tmp/clis-ntpd_1-2-3/release/deps/librustls-fd2c262888e3ecb5.rlib' '--extern' 'rustls_native_certs=/tmp/clis-ntpd_1-2-3/release/deps/librustls_native_certs-9a69f5c8c648a58b.rlib' '--extern' 'rustls_pemfile=/tmp/clis-ntpd_1-2-3/release/deps/librustls_pemfile-e86acdc6389f12a9.rlib' '--extern' 'serde=/tmp/clis-ntpd_1-2-3/release/deps/libserde-986325a49dffbcd1.rlib' '--extern' 'serde_json=/tmp/clis-ntpd_1-2-3/release/deps/libserde_json-2a345737f765283a.rlib' '--extern' 'timestamped_socket=/tmp/clis-ntpd_1-2-3/release/deps/libtimestamped_socket-2f59881207cd7c68.rlib' '--extern' 'tokio=/tmp/clis-ntpd_1-2-3/release/deps/libtokio-e6ed429a0a7450c0.rlib' '--extern' 'toml=/tmp/clis-ntpd_1-2-3/release/deps/libtoml-7b6c235fb7422577.rlib' '--extern' 'tracing=/tmp/clis-ntpd_1-2-3/release/deps/libtracing-7d2675bffdb63c95.rlib' '--extern' 'tracing_subscriber=/tmp/clis-ntpd_1-2-3/release/deps/libtracing_subscriber-63f992d9454962cc.rlib' '--cap-lints' 'warn' '-L' 'native=/tmp/clis-ntpd_1-2-3/release/build/ring-a0b19822430eae69/out' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ntpd-1.2.3/bin/ntp-daemon.rs \
-        1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-88b4a2cd7d00f909-stdout) \
-        2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-88b4a2cd7d00f909-stderr >&2)
+        1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-88b4a2cd7d00f909-stdout) \
+        2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-88b4a2cd7d00f909-stderr >&2) \
+        || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-88b4a2cd7d00f909-errcode
 FROM scratch AS out-88b4a2cd7d00f909
 COPY --from=dep-b-ntpd-1.2.3-88b4a2cd7d00f909 /tmp/clis-ntpd_1-2-3/release/deps/*-88b4a2cd7d00f909* /
 
@@ -9958,8 +10107,9 @@ COPY --from=dep-b-ntpd-1.2.3-88b4a2cd7d00f909 /tmp/clis-ntpd_1-2-3/release/deps/
 ##         NTPD_RS_GIT_DATE="2025-05-09" \
 ##         NTPD_RS_GIT_REV="c7945250c378f65f65b2a75748132edf75063b3b" \
 ##       rustc '--crate-name' 'ntp_daemon' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'bin' '--emit' 'dep-info,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="default"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "hardware-timestamping", "unstable_ntpv5", "unstable_nts-pool"))' '-C' 'metadata=52cef03e832d528d' '-C' 'extra-filename=-88b4a2cd7d00f909' '--out-dir' '/tmp/clis-ntpd_1-2-3/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-2-3/release/deps' '--extern' 'async_trait=/tmp/clis-ntpd_1-2-3/release/deps/libasync_trait-2b00e18c8782890c.so' '--extern' 'clock_steering=/tmp/clis-ntpd_1-2-3/release/deps/libclock_steering-7adc6d6ce8be0538.rlib' '--extern' 'libc=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rlib' '--extern' 'ntp_proto=/tmp/clis-ntpd_1-2-3/release/deps/libntp_proto-5a810c5444456e7d.rlib' '--extern' 'ntpd=/tmp/clis-ntpd_1-2-3/release/deps/libntpd-7974610cfc5e520c.rlib' '--extern' 'rand=/tmp/clis-ntpd_1-2-3/release/deps/librand-5161209caf71d483.rlib' '--extern' 'rustls=/tmp/clis-ntpd_1-2-3/release/deps/librustls-fd2c262888e3ecb5.rlib' '--extern' 'rustls_native_certs=/tmp/clis-ntpd_1-2-3/release/deps/librustls_native_certs-9a69f5c8c648a58b.rlib' '--extern' 'rustls_pemfile=/tmp/clis-ntpd_1-2-3/release/deps/librustls_pemfile-e86acdc6389f12a9.rlib' '--extern' 'serde=/tmp/clis-ntpd_1-2-3/release/deps/libserde-986325a49dffbcd1.rlib' '--extern' 'serde_json=/tmp/clis-ntpd_1-2-3/release/deps/libserde_json-2a345737f765283a.rlib' '--extern' 'timestamped_socket=/tmp/clis-ntpd_1-2-3/release/deps/libtimestamped_socket-2f59881207cd7c68.rlib' '--extern' 'tokio=/tmp/clis-ntpd_1-2-3/release/deps/libtokio-e6ed429a0a7450c0.rlib' '--extern' 'toml=/tmp/clis-ntpd_1-2-3/release/deps/libtoml-7b6c235fb7422577.rlib' '--extern' 'tracing=/tmp/clis-ntpd_1-2-3/release/deps/libtracing-7d2675bffdb63c95.rlib' '--extern' 'tracing_subscriber=/tmp/clis-ntpd_1-2-3/release/deps/libtracing_subscriber-63f992d9454962cc.rlib' '--cap-lints' 'warn' '-L' 'native=/tmp/clis-ntpd_1-2-3/release/build/ring-a0b19822430eae69/out' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ntpd-1.2.3/bin/ntp-daemon.rs \
-##         1> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-88b4a2cd7d00f909-stdout) \
-##         2> >(tee /tmp/clis-ntpd_1-2-3/release/deps/out-88b4a2cd7d00f909-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-88b4a2cd7d00f909-stdout) \
+##         2> >(tee    /tmp/clis-ntpd_1-2-3/release/deps/out-88b4a2cd7d00f909-stderr >&2) \
+##         || echo $? >/tmp/clis-ntpd_1-2-3/release/deps/out-88b4a2cd7d00f909-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-88b4a2cd7d00f909"

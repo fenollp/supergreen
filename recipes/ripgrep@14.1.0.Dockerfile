@@ -35,8 +35,9 @@ RUN \
         OUT_DIR="/tmp/clis-ripgrep_14-1-0/release/build/anyhow-467b075ea0bb0ef8/out" \
         CARGOGREEN=1 \
       rustc '--crate-name' 'anyhow' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("backtrace", "default", "std"))' '-C' 'metadata=1054fa31eee7294e' '-C' 'extra-filename=-95e5d8a0e52ba465' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--cap-lints' 'warn' '--cfg' 'std_backtrace' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.79/src/lib.rs \
-        1> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-95e5d8a0e52ba465-stdout) \
-        2> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-95e5d8a0e52ba465-stderr >&2)
+        1> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-95e5d8a0e52ba465-stdout) \
+        2> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-95e5d8a0e52ba465-stderr >&2) \
+        || echo $? >/tmp/clis-ripgrep_14-1-0/release/deps/out-95e5d8a0e52ba465-errcode
 FROM scratch AS out-95e5d8a0e52ba465
 COPY --from=dep-l-anyhow-1.0.79-95e5d8a0e52ba465 /tmp/clis-ripgrep_14-1-0/release/deps/*-95e5d8a0e52ba465* /
 
@@ -194,8 +195,9 @@ COPY --from=dep-l-anyhow-1.0.79-95e5d8a0e52ba465 /tmp/clis-ripgrep_14-1-0/releas
 ##         OUT_DIR="/tmp/clis-ripgrep_14-1-0/release/build/anyhow-467b075ea0bb0ef8/out" \
 ##         CARGOGREEN=1 \
 ##       rustc '--crate-name' 'anyhow' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("backtrace", "default", "std"))' '-C' 'metadata=1054fa31eee7294e' '-C' 'extra-filename=-95e5d8a0e52ba465' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--cap-lints' 'warn' '--cfg' 'std_backtrace' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.79/src/lib.rs \
-##         1> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-95e5d8a0e52ba465-stdout) \
-##         2> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-95e5d8a0e52ba465-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-95e5d8a0e52ba465-stdout) \
+##         2> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-95e5d8a0e52ba465-stderr >&2) \
+##         || echo $? >/tmp/clis-ripgrep_14-1-0/release/deps/out-95e5d8a0e52ba465-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-95e5d8a0e52ba465"
@@ -232,8 +234,9 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
       rustc '--crate-name' 'memchr' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--cfg' 'feature="alloc"' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "compiler_builtins", "core", "default", "libc", "logging", "rustc-dep-of-std", "std", "use_std"))' '-C' 'metadata=66a27ef031221cf7' '-C' 'extra-filename=-3d9021aec125798d' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/memchr-2.7.1/src/lib.rs \
-        1> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-3d9021aec125798d-stdout) \
-        2> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-3d9021aec125798d-stderr >&2)
+        1> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-3d9021aec125798d-stdout) \
+        2> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-3d9021aec125798d-stderr >&2) \
+        || echo $? >/tmp/clis-ripgrep_14-1-0/release/deps/out-3d9021aec125798d-errcode
 FROM scratch AS out-3d9021aec125798d
 COPY --from=dep-l-memchr-2.7.1-3d9021aec125798d /tmp/clis-ripgrep_14-1-0/release/deps/*-3d9021aec125798d* /
 
@@ -291,8 +294,9 @@ COPY --from=dep-l-memchr-2.7.1-3d9021aec125798d /tmp/clis-ripgrep_14-1-0/release
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
 ##       rustc '--crate-name' 'memchr' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--cfg' 'feature="alloc"' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "compiler_builtins", "core", "default", "libc", "logging", "rustc-dep-of-std", "std", "use_std"))' '-C' 'metadata=66a27ef031221cf7' '-C' 'extra-filename=-3d9021aec125798d' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/memchr-2.7.1/src/lib.rs \
-##         1> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-3d9021aec125798d-stdout) \
-##         2> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-3d9021aec125798d-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-3d9021aec125798d-stdout) \
+##         2> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-3d9021aec125798d-stderr >&2) \
+##         || echo $? >/tmp/clis-ripgrep_14-1-0/release/deps/out-3d9021aec125798d-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-3d9021aec125798d"
@@ -330,8 +334,9 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
       rustc '--crate-name' 'aho_corasick' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--cfg' 'feature="default"' '--cfg' 'feature="perf-literal"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "logging", "perf-literal", "std"))' '-C' 'metadata=fd6c5ab01ec01921' '-C' 'extra-filename=-2a2c3bf3a2b335e0' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--extern' 'memchr=/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aho-corasick-1.1.2/src/lib.rs \
-        1> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-2a2c3bf3a2b335e0-stdout) \
-        2> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-2a2c3bf3a2b335e0-stderr >&2)
+        1> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-2a2c3bf3a2b335e0-stdout) \
+        2> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-2a2c3bf3a2b335e0-stderr >&2) \
+        || echo $? >/tmp/clis-ripgrep_14-1-0/release/deps/out-2a2c3bf3a2b335e0-errcode
 FROM scratch AS out-2a2c3bf3a2b335e0
 COPY --from=dep-l-aho-corasick-1.1.2-2a2c3bf3a2b335e0 /tmp/clis-ripgrep_14-1-0/release/deps/*-2a2c3bf3a2b335e0* /
 
@@ -402,8 +407,9 @@ COPY --from=dep-l-aho-corasick-1.1.2-2a2c3bf3a2b335e0 /tmp/clis-ripgrep_14-1-0/r
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
 ##       rustc '--crate-name' 'aho_corasick' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--cfg' 'feature="default"' '--cfg' 'feature="perf-literal"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "logging", "perf-literal", "std"))' '-C' 'metadata=fd6c5ab01ec01921' '-C' 'extra-filename=-2a2c3bf3a2b335e0' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--extern' 'memchr=/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aho-corasick-1.1.2/src/lib.rs \
-##         1> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-2a2c3bf3a2b335e0-stdout) \
-##         2> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-2a2c3bf3a2b335e0-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-2a2c3bf3a2b335e0-stdout) \
+##         2> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-2a2c3bf3a2b335e0-stderr >&2) \
+##         || echo $? >/tmp/clis-ripgrep_14-1-0/release/deps/out-2a2c3bf3a2b335e0-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-2a2c3bf3a2b335e0"
@@ -440,8 +446,9 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
       rustc '--crate-name' 'regex_syntax' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--cfg' 'feature="unicode"' '--cfg' 'feature="unicode-age"' '--cfg' 'feature="unicode-bool"' '--cfg' 'feature="unicode-case"' '--cfg' 'feature="unicode-gencat"' '--cfg' 'feature="unicode-perl"' '--cfg' 'feature="unicode-script"' '--cfg' 'feature="unicode-segment"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("arbitrary", "default", "std", "unicode", "unicode-age", "unicode-bool", "unicode-case", "unicode-gencat", "unicode-perl", "unicode-script", "unicode-segment"))' '-C' 'metadata=1428a91ae5678251' '-C' 'extra-filename=-0d361157f8cdd0fe' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/regex-syntax-0.8.2/src/lib.rs \
-        1> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-0d361157f8cdd0fe-stdout) \
-        2> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-0d361157f8cdd0fe-stderr >&2)
+        1> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-0d361157f8cdd0fe-stdout) \
+        2> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-0d361157f8cdd0fe-stderr >&2) \
+        || echo $? >/tmp/clis-ripgrep_14-1-0/release/deps/out-0d361157f8cdd0fe-errcode
 FROM scratch AS out-0d361157f8cdd0fe
 COPY --from=dep-l-regex-syntax-0.8.2-0d361157f8cdd0fe /tmp/clis-ripgrep_14-1-0/release/deps/*-0d361157f8cdd0fe* /
 
@@ -499,8 +506,9 @@ COPY --from=dep-l-regex-syntax-0.8.2-0d361157f8cdd0fe /tmp/clis-ripgrep_14-1-0/r
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
 ##       rustc '--crate-name' 'regex_syntax' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--cfg' 'feature="unicode"' '--cfg' 'feature="unicode-age"' '--cfg' 'feature="unicode-bool"' '--cfg' 'feature="unicode-case"' '--cfg' 'feature="unicode-gencat"' '--cfg' 'feature="unicode-perl"' '--cfg' 'feature="unicode-script"' '--cfg' 'feature="unicode-segment"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("arbitrary", "default", "std", "unicode", "unicode-age", "unicode-bool", "unicode-case", "unicode-gencat", "unicode-perl", "unicode-script", "unicode-segment"))' '-C' 'metadata=1428a91ae5678251' '-C' 'extra-filename=-0d361157f8cdd0fe' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/regex-syntax-0.8.2/src/lib.rs \
-##         1> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-0d361157f8cdd0fe-stdout) \
-##         2> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-0d361157f8cdd0fe-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-0d361157f8cdd0fe-stdout) \
+##         2> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-0d361157f8cdd0fe-stderr >&2) \
+##         || echo $? >/tmp/clis-ripgrep_14-1-0/release/deps/out-0d361157f8cdd0fe-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-0d361157f8cdd0fe"
@@ -540,8 +548,9 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
       rustc '--crate-name' 'regex_automata' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--cfg' 'feature="alloc"' '--cfg' 'feature="default"' '--cfg' 'feature="dfa"' '--cfg' 'feature="dfa-build"' '--cfg' 'feature="dfa-onepass"' '--cfg' 'feature="dfa-search"' '--cfg' 'feature="hybrid"' '--cfg' 'feature="meta"' '--cfg' 'feature="nfa"' '--cfg' 'feature="nfa-backtrack"' '--cfg' 'feature="nfa-pikevm"' '--cfg' 'feature="nfa-thompson"' '--cfg' 'feature="perf"' '--cfg' 'feature="perf-inline"' '--cfg' 'feature="perf-literal"' '--cfg' 'feature="perf-literal-multisubstring"' '--cfg' 'feature="perf-literal-substring"' '--cfg' 'feature="std"' '--cfg' 'feature="syntax"' '--cfg' 'feature="unicode"' '--cfg' 'feature="unicode-age"' '--cfg' 'feature="unicode-bool"' '--cfg' 'feature="unicode-case"' '--cfg' 'feature="unicode-gencat"' '--cfg' 'feature="unicode-perl"' '--cfg' 'feature="unicode-script"' '--cfg' 'feature="unicode-segment"' '--cfg' 'feature="unicode-word-boundary"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "default", "dfa", "dfa-build", "dfa-onepass", "dfa-search", "hybrid", "internal-instrument", "internal-instrument-pikevm", "logging", "meta", "nfa", "nfa-backtrack", "nfa-pikevm", "nfa-thompson", "perf", "perf-inline", "perf-literal", "perf-literal-multisubstring", "perf-literal-substring", "std", "syntax", "unicode", "unicode-age", "unicode-bool", "unicode-case", "unicode-gencat", "unicode-perl", "unicode-script", "unicode-segment", "unicode-word-boundary"))' '-C' 'metadata=d92f6e148e42d91b' '-C' 'extra-filename=-54c30116fcd4ea92' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--extern' 'aho_corasick=/tmp/clis-ripgrep_14-1-0/release/deps/libaho_corasick-2a2c3bf3a2b335e0.rmeta' '--extern' 'memchr=/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rmeta' '--extern' 'regex_syntax=/tmp/clis-ripgrep_14-1-0/release/deps/libregex_syntax-0d361157f8cdd0fe.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/regex-automata-0.4.3/src/lib.rs \
-        1> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-54c30116fcd4ea92-stdout) \
-        2> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-54c30116fcd4ea92-stderr >&2)
+        1> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-54c30116fcd4ea92-stdout) \
+        2> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-54c30116fcd4ea92-stderr >&2) \
+        || echo $? >/tmp/clis-ripgrep_14-1-0/release/deps/out-54c30116fcd4ea92-errcode
 FROM scratch AS out-54c30116fcd4ea92
 COPY --from=dep-l-regex-automata-0.4.3-54c30116fcd4ea92 /tmp/clis-ripgrep_14-1-0/release/deps/*-54c30116fcd4ea92* /
 
@@ -618,8 +627,9 @@ COPY --from=dep-l-regex-automata-0.4.3-54c30116fcd4ea92 /tmp/clis-ripgrep_14-1-0
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
 ##       rustc '--crate-name' 'regex_automata' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--cfg' 'feature="alloc"' '--cfg' 'feature="default"' '--cfg' 'feature="dfa"' '--cfg' 'feature="dfa-build"' '--cfg' 'feature="dfa-onepass"' '--cfg' 'feature="dfa-search"' '--cfg' 'feature="hybrid"' '--cfg' 'feature="meta"' '--cfg' 'feature="nfa"' '--cfg' 'feature="nfa-backtrack"' '--cfg' 'feature="nfa-pikevm"' '--cfg' 'feature="nfa-thompson"' '--cfg' 'feature="perf"' '--cfg' 'feature="perf-inline"' '--cfg' 'feature="perf-literal"' '--cfg' 'feature="perf-literal-multisubstring"' '--cfg' 'feature="perf-literal-substring"' '--cfg' 'feature="std"' '--cfg' 'feature="syntax"' '--cfg' 'feature="unicode"' '--cfg' 'feature="unicode-age"' '--cfg' 'feature="unicode-bool"' '--cfg' 'feature="unicode-case"' '--cfg' 'feature="unicode-gencat"' '--cfg' 'feature="unicode-perl"' '--cfg' 'feature="unicode-script"' '--cfg' 'feature="unicode-segment"' '--cfg' 'feature="unicode-word-boundary"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "default", "dfa", "dfa-build", "dfa-onepass", "dfa-search", "hybrid", "internal-instrument", "internal-instrument-pikevm", "logging", "meta", "nfa", "nfa-backtrack", "nfa-pikevm", "nfa-thompson", "perf", "perf-inline", "perf-literal", "perf-literal-multisubstring", "perf-literal-substring", "std", "syntax", "unicode", "unicode-age", "unicode-bool", "unicode-case", "unicode-gencat", "unicode-perl", "unicode-script", "unicode-segment", "unicode-word-boundary"))' '-C' 'metadata=d92f6e148e42d91b' '-C' 'extra-filename=-54c30116fcd4ea92' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--extern' 'aho_corasick=/tmp/clis-ripgrep_14-1-0/release/deps/libaho_corasick-2a2c3bf3a2b335e0.rmeta' '--extern' 'memchr=/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rmeta' '--extern' 'regex_syntax=/tmp/clis-ripgrep_14-1-0/release/deps/libregex_syntax-0d361157f8cdd0fe.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/regex-automata-0.4.3/src/lib.rs \
-##         1> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-54c30116fcd4ea92-stdout) \
-##         2> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-54c30116fcd4ea92-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-54c30116fcd4ea92-stdout) \
+##         2> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-54c30116fcd4ea92-stderr >&2) \
+##         || echo $? >/tmp/clis-ripgrep_14-1-0/release/deps/out-54c30116fcd4ea92-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-54c30116fcd4ea92"
@@ -660,8 +670,9 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
       rustc '--crate-name' 'bstr' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--cfg' 'feature="alloc"' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--cfg' 'feature="unicode"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "default", "serde", "std", "unicode"))' '-C' 'metadata=901f0f8c117a0961' '-C' 'extra-filename=-f6b551c518280772' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--extern' 'memchr=/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rmeta' '--extern' 'regex_automata=/tmp/clis-ripgrep_14-1-0/release/deps/libregex_automata-54c30116fcd4ea92.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bstr-1.9.0/src/lib.rs \
-        1> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-f6b551c518280772-stdout) \
-        2> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-f6b551c518280772-stderr >&2)
+        1> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-f6b551c518280772-stdout) \
+        2> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-f6b551c518280772-stderr >&2) \
+        || echo $? >/tmp/clis-ripgrep_14-1-0/release/deps/out-f6b551c518280772-errcode
 FROM scratch AS out-f6b551c518280772
 COPY --from=dep-l-bstr-1.9.0-f6b551c518280772 /tmp/clis-ripgrep_14-1-0/release/deps/*-f6b551c518280772* /
 
@@ -735,8 +746,9 @@ COPY --from=dep-l-bstr-1.9.0-f6b551c518280772 /tmp/clis-ripgrep_14-1-0/release/d
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
 ##       rustc '--crate-name' 'bstr' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--cfg' 'feature="alloc"' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--cfg' 'feature="unicode"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "default", "serde", "std", "unicode"))' '-C' 'metadata=901f0f8c117a0961' '-C' 'extra-filename=-f6b551c518280772' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--extern' 'memchr=/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rmeta' '--extern' 'regex_automata=/tmp/clis-ripgrep_14-1-0/release/deps/libregex_automata-54c30116fcd4ea92.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bstr-1.9.0/src/lib.rs \
-##         1> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-f6b551c518280772-stdout) \
-##         2> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-f6b551c518280772-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-f6b551c518280772-stdout) \
+##         2> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-f6b551c518280772-stderr >&2) \
+##         || echo $? >/tmp/clis-ripgrep_14-1-0/release/deps/out-f6b551c518280772-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-f6b551c518280772"
@@ -773,8 +785,9 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
       rustc '--crate-name' 'log' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("kv_unstable", "kv_unstable_serde", "kv_unstable_std", "kv_unstable_sval", "max_level_debug", "max_level_error", "max_level_info", "max_level_off", "max_level_trace", "max_level_warn", "release_max_level_debug", "release_max_level_error", "release_max_level_info", "release_max_level_off", "release_max_level_trace", "release_max_level_warn", "serde", "std", "sval", "sval_ref", "value-bag"))' '-C' 'metadata=fd8a4285c9c34319' '-C' 'extra-filename=-45d1068292014e63' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/log-0.4.20/src/lib.rs \
-        1> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-45d1068292014e63-stdout) \
-        2> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-45d1068292014e63-stderr >&2)
+        1> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-45d1068292014e63-stdout) \
+        2> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-45d1068292014e63-stderr >&2) \
+        || echo $? >/tmp/clis-ripgrep_14-1-0/release/deps/out-45d1068292014e63-errcode
 FROM scratch AS out-45d1068292014e63
 COPY --from=dep-l-log-0.4.20-45d1068292014e63 /tmp/clis-ripgrep_14-1-0/release/deps/*-45d1068292014e63* /
 
@@ -833,8 +846,9 @@ COPY --from=dep-l-log-0.4.20-45d1068292014e63 /tmp/clis-ripgrep_14-1-0/release/d
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
 ##       rustc '--crate-name' 'log' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("kv_unstable", "kv_unstable_serde", "kv_unstable_std", "kv_unstable_sval", "max_level_debug", "max_level_error", "max_level_info", "max_level_off", "max_level_trace", "max_level_warn", "release_max_level_debug", "release_max_level_error", "release_max_level_info", "release_max_level_off", "release_max_level_trace", "release_max_level_warn", "serde", "std", "sval", "sval_ref", "value-bag"))' '-C' 'metadata=fd8a4285c9c34319' '-C' 'extra-filename=-45d1068292014e63' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/log-0.4.20/src/lib.rs \
-##         1> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-45d1068292014e63-stdout) \
-##         2> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-45d1068292014e63-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-45d1068292014e63-stdout) \
+##         2> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-45d1068292014e63-stderr >&2) \
+##         || echo $? >/tmp/clis-ripgrep_14-1-0/release/deps/out-45d1068292014e63-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-45d1068292014e63"
@@ -877,8 +891,9 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
       rustc '--crate-name' 'globset' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--cfg' 'feature="default"' '--cfg' 'feature="log"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "log", "serde", "serde1", "simd-accel"))' '-C' 'metadata=c026c03cd8d4bbb2' '-C' 'extra-filename=-14504da8f25a4dbf' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--extern' 'aho_corasick=/tmp/clis-ripgrep_14-1-0/release/deps/libaho_corasick-2a2c3bf3a2b335e0.rmeta' '--extern' 'bstr=/tmp/clis-ripgrep_14-1-0/release/deps/libbstr-f6b551c518280772.rmeta' '--extern' 'log=/tmp/clis-ripgrep_14-1-0/release/deps/liblog-45d1068292014e63.rmeta' '--extern' 'regex_automata=/tmp/clis-ripgrep_14-1-0/release/deps/libregex_automata-54c30116fcd4ea92.rmeta' '--extern' 'regex_syntax=/tmp/clis-ripgrep_14-1-0/release/deps/libregex_syntax-0d361157f8cdd0fe.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/globset-0.4.14/src/lib.rs \
-        1> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-14504da8f25a4dbf-stdout) \
-        2> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-14504da8f25a4dbf-stderr >&2)
+        1> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-14504da8f25a4dbf-stdout) \
+        2> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-14504da8f25a4dbf-stderr >&2) \
+        || echo $? >/tmp/clis-ripgrep_14-1-0/release/deps/out-14504da8f25a4dbf-errcode
 FROM scratch AS out-14504da8f25a4dbf
 COPY --from=dep-l-globset-0.4.14-14504da8f25a4dbf /tmp/clis-ripgrep_14-1-0/release/deps/*-14504da8f25a4dbf* /
 
@@ -956,8 +971,9 @@ COPY --from=dep-l-globset-0.4.14-14504da8f25a4dbf /tmp/clis-ripgrep_14-1-0/relea
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
 ##       rustc '--crate-name' 'globset' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--cfg' 'feature="default"' '--cfg' 'feature="log"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "log", "serde", "serde1", "simd-accel"))' '-C' 'metadata=c026c03cd8d4bbb2' '-C' 'extra-filename=-14504da8f25a4dbf' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--extern' 'aho_corasick=/tmp/clis-ripgrep_14-1-0/release/deps/libaho_corasick-2a2c3bf3a2b335e0.rmeta' '--extern' 'bstr=/tmp/clis-ripgrep_14-1-0/release/deps/libbstr-f6b551c518280772.rmeta' '--extern' 'log=/tmp/clis-ripgrep_14-1-0/release/deps/liblog-45d1068292014e63.rmeta' '--extern' 'regex_automata=/tmp/clis-ripgrep_14-1-0/release/deps/libregex_automata-54c30116fcd4ea92.rmeta' '--extern' 'regex_syntax=/tmp/clis-ripgrep_14-1-0/release/deps/libregex_syntax-0d361157f8cdd0fe.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/globset-0.4.14/src/lib.rs \
-##         1> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-14504da8f25a4dbf-stdout) \
-##         2> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-14504da8f25a4dbf-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-14504da8f25a4dbf-stdout) \
+##         2> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-14504da8f25a4dbf-stderr >&2) \
+##         || echo $? >/tmp/clis-ripgrep_14-1-0/release/deps/out-14504da8f25a4dbf-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-14504da8f25a4dbf"
@@ -995,8 +1011,9 @@ RUN \
         OUT_DIR="/tmp/clis-ripgrep_14-1-0/release/build/libc-55a341dfb67ba45f/out" \
         CARGOGREEN=1 \
       rustc '--crate-name' 'libc' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("align", "const-extern-fn", "default", "extra_traits", "rustc-dep-of-std", "rustc-std-workspace-core", "std", "use_std"))' '-C' 'metadata=8336ff40690b796b' '-C' 'extra-filename=-b1dcb66edfd0e8a0' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--cap-lints' 'warn' '--cfg' 'freebsd11' '--cfg' 'libc_priv_mod_use' '--cfg' 'libc_union' '--cfg' 'libc_const_size_of' '--cfg' 'libc_align' '--cfg' 'libc_int128' '--cfg' 'libc_core_cvoid' '--cfg' 'libc_packedN' '--cfg' 'libc_cfg_target_vendor' '--cfg' 'libc_non_exhaustive' '--cfg' 'libc_long_array' '--cfg' 'libc_ptr_addr_of' '--cfg' 'libc_underscore_const_names' '--cfg' 'libc_const_extern_fn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.151/src/lib.rs \
-        1> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-b1dcb66edfd0e8a0-stdout) \
-        2> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-b1dcb66edfd0e8a0-stderr >&2)
+        1> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-b1dcb66edfd0e8a0-stdout) \
+        2> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-b1dcb66edfd0e8a0-stderr >&2) \
+        || echo $? >/tmp/clis-ripgrep_14-1-0/release/deps/out-b1dcb66edfd0e8a0-errcode
 FROM scratch AS out-b1dcb66edfd0e8a0
 COPY --from=dep-l-libc-0.2.151-b1dcb66edfd0e8a0 /tmp/clis-ripgrep_14-1-0/release/deps/*-b1dcb66edfd0e8a0* /
 
@@ -1120,8 +1137,9 @@ COPY --from=dep-l-libc-0.2.151-b1dcb66edfd0e8a0 /tmp/clis-ripgrep_14-1-0/release
 ##         OUT_DIR="/tmp/clis-ripgrep_14-1-0/release/build/libc-55a341dfb67ba45f/out" \
 ##         CARGOGREEN=1 \
 ##       rustc '--crate-name' 'libc' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("align", "const-extern-fn", "default", "extra_traits", "rustc-dep-of-std", "rustc-std-workspace-core", "std", "use_std"))' '-C' 'metadata=8336ff40690b796b' '-C' 'extra-filename=-b1dcb66edfd0e8a0' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--cap-lints' 'warn' '--cfg' 'freebsd11' '--cfg' 'libc_priv_mod_use' '--cfg' 'libc_union' '--cfg' 'libc_const_size_of' '--cfg' 'libc_align' '--cfg' 'libc_int128' '--cfg' 'libc_core_cvoid' '--cfg' 'libc_packedN' '--cfg' 'libc_cfg_target_vendor' '--cfg' 'libc_non_exhaustive' '--cfg' 'libc_long_array' '--cfg' 'libc_ptr_addr_of' '--cfg' 'libc_underscore_const_names' '--cfg' 'libc_const_extern_fn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.151/src/lib.rs \
-##         1> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-b1dcb66edfd0e8a0-stdout) \
-##         2> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-b1dcb66edfd0e8a0-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-b1dcb66edfd0e8a0-stdout) \
+##         2> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-b1dcb66edfd0e8a0-stderr >&2) \
+##         || echo $? >/tmp/clis-ripgrep_14-1-0/release/deps/out-b1dcb66edfd0e8a0-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-b1dcb66edfd0e8a0"
@@ -1158,8 +1176,9 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
       rustc '--crate-name' 'termcolor' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=081a8e2bff1e32ca' '-C' 'extra-filename=-59ae8e7772deaa56' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/termcolor-1.4.0/src/lib.rs \
-        1> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-59ae8e7772deaa56-stdout) \
-        2> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-59ae8e7772deaa56-stderr >&2)
+        1> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-59ae8e7772deaa56-stdout) \
+        2> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-59ae8e7772deaa56-stderr >&2) \
+        || echo $? >/tmp/clis-ripgrep_14-1-0/release/deps/out-59ae8e7772deaa56-errcode
 FROM scratch AS out-59ae8e7772deaa56
 COPY --from=dep-l-termcolor-1.4.0-59ae8e7772deaa56 /tmp/clis-ripgrep_14-1-0/release/deps/*-59ae8e7772deaa56* /
 
@@ -1215,8 +1234,9 @@ COPY --from=dep-l-termcolor-1.4.0-59ae8e7772deaa56 /tmp/clis-ripgrep_14-1-0/rele
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
 ##       rustc '--crate-name' 'termcolor' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=081a8e2bff1e32ca' '-C' 'extra-filename=-59ae8e7772deaa56' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/termcolor-1.4.0/src/lib.rs \
-##         1> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-59ae8e7772deaa56-stdout) \
-##         2> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-59ae8e7772deaa56-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-59ae8e7772deaa56-stdout) \
+##         2> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-59ae8e7772deaa56-stderr >&2) \
+##         || echo $? >/tmp/clis-ripgrep_14-1-0/release/deps/out-59ae8e7772deaa56-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-59ae8e7772deaa56"
@@ -1262,8 +1282,9 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
       rustc '--crate-name' 'grep_cli' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=3eddcf0f07b27160' '-C' 'extra-filename=-8da8357e778092ce' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--extern' 'bstr=/tmp/clis-ripgrep_14-1-0/release/deps/libbstr-f6b551c518280772.rmeta' '--extern' 'globset=/tmp/clis-ripgrep_14-1-0/release/deps/libglobset-14504da8f25a4dbf.rmeta' '--extern' 'libc=/tmp/clis-ripgrep_14-1-0/release/deps/liblibc-b1dcb66edfd0e8a0.rmeta' '--extern' 'log=/tmp/clis-ripgrep_14-1-0/release/deps/liblog-45d1068292014e63.rmeta' '--extern' 'termcolor=/tmp/clis-ripgrep_14-1-0/release/deps/libtermcolor-59ae8e7772deaa56.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-cli-0.1.10/src/lib.rs \
-        1> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-8da8357e778092ce-stdout) \
-        2> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-8da8357e778092ce-stderr >&2)
+        1> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-8da8357e778092ce-stdout) \
+        2> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-8da8357e778092ce-stderr >&2) \
+        || echo $? >/tmp/clis-ripgrep_14-1-0/release/deps/out-8da8357e778092ce-errcode
 FROM scratch AS out-8da8357e778092ce
 COPY --from=dep-l-grep-cli-0.1.10-8da8357e778092ce /tmp/clis-ripgrep_14-1-0/release/deps/*-8da8357e778092ce* /
 
@@ -1350,8 +1371,9 @@ COPY --from=dep-l-grep-cli-0.1.10-8da8357e778092ce /tmp/clis-ripgrep_14-1-0/rele
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
 ##       rustc '--crate-name' 'grep_cli' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=3eddcf0f07b27160' '-C' 'extra-filename=-8da8357e778092ce' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--extern' 'bstr=/tmp/clis-ripgrep_14-1-0/release/deps/libbstr-f6b551c518280772.rmeta' '--extern' 'globset=/tmp/clis-ripgrep_14-1-0/release/deps/libglobset-14504da8f25a4dbf.rmeta' '--extern' 'libc=/tmp/clis-ripgrep_14-1-0/release/deps/liblibc-b1dcb66edfd0e8a0.rmeta' '--extern' 'log=/tmp/clis-ripgrep_14-1-0/release/deps/liblog-45d1068292014e63.rmeta' '--extern' 'termcolor=/tmp/clis-ripgrep_14-1-0/release/deps/libtermcolor-59ae8e7772deaa56.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-cli-0.1.10/src/lib.rs \
-##         1> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-8da8357e778092ce-stdout) \
-##         2> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-8da8357e778092ce-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-8da8357e778092ce-stdout) \
+##         2> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-8da8357e778092ce-stderr >&2) \
+##         || echo $? >/tmp/clis-ripgrep_14-1-0/release/deps/out-8da8357e778092ce-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-8da8357e778092ce"
@@ -1389,8 +1411,9 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
       rustc '--crate-name' 'grep_matcher' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=b7eee68e6a0ed2df' '-C' 'extra-filename=-7517975d791c1423' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--extern' 'memchr=/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-matcher-0.1.7/src/lib.rs \
-        1> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-7517975d791c1423-stdout) \
-        2> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-7517975d791c1423-stderr >&2)
+        1> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-7517975d791c1423-stdout) \
+        2> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-7517975d791c1423-stderr >&2) \
+        || echo $? >/tmp/clis-ripgrep_14-1-0/release/deps/out-7517975d791c1423-errcode
 FROM scratch AS out-7517975d791c1423
 COPY --from=dep-l-grep-matcher-0.1.7-7517975d791c1423 /tmp/clis-ripgrep_14-1-0/release/deps/*-7517975d791c1423* /
 
@@ -1449,8 +1472,9 @@ COPY --from=dep-l-grep-matcher-0.1.7-7517975d791c1423 /tmp/clis-ripgrep_14-1-0/r
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
 ##       rustc '--crate-name' 'grep_matcher' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=b7eee68e6a0ed2df' '-C' 'extra-filename=-7517975d791c1423' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--extern' 'memchr=/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-matcher-0.1.7/src/lib.rs \
-##         1> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-7517975d791c1423-stdout) \
-##         2> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-7517975d791c1423-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-7517975d791c1423-stdout) \
+##         2> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-7517975d791c1423-stderr >&2) \
+##         || echo $? >/tmp/clis-ripgrep_14-1-0/release/deps/out-7517975d791c1423-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-7517975d791c1423"
@@ -1487,8 +1511,9 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
       rustc '--crate-name' 'cfg_if' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("compiler_builtins", "core", "rustc-dep-of-std"))' '-C' 'metadata=6f446e6c7bcdb460' '-C' 'extra-filename=-98d40c6178a8b60f' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/cfg-if-1.0.0/src/lib.rs \
-        1> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-98d40c6178a8b60f-stdout) \
-        2> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-98d40c6178a8b60f-stderr >&2)
+        1> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-98d40c6178a8b60f-stdout) \
+        2> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-98d40c6178a8b60f-stderr >&2) \
+        || echo $? >/tmp/clis-ripgrep_14-1-0/release/deps/out-98d40c6178a8b60f-errcode
 FROM scratch AS out-98d40c6178a8b60f
 COPY --from=dep-l-cfg-if-1.0.0-98d40c6178a8b60f /tmp/clis-ripgrep_14-1-0/release/deps/*-98d40c6178a8b60f* /
 
@@ -1544,8 +1569,9 @@ COPY --from=dep-l-cfg-if-1.0.0-98d40c6178a8b60f /tmp/clis-ripgrep_14-1-0/release
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
 ##       rustc '--crate-name' 'cfg_if' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("compiler_builtins", "core", "rustc-dep-of-std"))' '-C' 'metadata=6f446e6c7bcdb460' '-C' 'extra-filename=-98d40c6178a8b60f' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/cfg-if-1.0.0/src/lib.rs \
-##         1> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-98d40c6178a8b60f-stdout) \
-##         2> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-98d40c6178a8b60f-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-98d40c6178a8b60f-stdout) \
+##         2> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-98d40c6178a8b60f-stderr >&2) \
+##         || echo $? >/tmp/clis-ripgrep_14-1-0/release/deps/out-98d40c6178a8b60f-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-98d40c6178a8b60f"
@@ -1583,8 +1609,9 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
       rustc '--crate-name' 'encoding_rs' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--cfg' 'feature="alloc"' '--cfg' 'feature="default"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "default", "fast-big5-hanzi-encode", "fast-gb-hanzi-encode", "fast-hangul-encode", "fast-hanja-encode", "fast-kanji-encode", "fast-legacy-encode", "less-slow-big5-hanzi-encode", "less-slow-gb-hanzi-encode", "less-slow-kanji-encode", "packed_simd", "serde", "simd-accel"))' '-C' 'metadata=020c8c238babbd81' '-C' 'extra-filename=-71f95fee6544e787' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--extern' 'cfg_if=/tmp/clis-ripgrep_14-1-0/release/deps/libcfg_if-98d40c6178a8b60f.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/encoding_rs-0.8.33/src/lib.rs \
-        1> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-71f95fee6544e787-stdout) \
-        2> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-71f95fee6544e787-stderr >&2)
+        1> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-71f95fee6544e787-stdout) \
+        2> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-71f95fee6544e787-stderr >&2) \
+        || echo $? >/tmp/clis-ripgrep_14-1-0/release/deps/out-71f95fee6544e787-errcode
 FROM scratch AS out-71f95fee6544e787
 COPY --from=dep-l-encoding_rs-0.8.33-71f95fee6544e787 /tmp/clis-ripgrep_14-1-0/release/deps/*-71f95fee6544e787* /
 
@@ -1671,8 +1698,9 @@ COPY --from=dep-l-encoding_rs-0.8.33-71f95fee6544e787 /tmp/clis-ripgrep_14-1-0/r
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
 ##       rustc '--crate-name' 'encoding_rs' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--cfg' 'feature="alloc"' '--cfg' 'feature="default"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "default", "fast-big5-hanzi-encode", "fast-gb-hanzi-encode", "fast-hangul-encode", "fast-hanja-encode", "fast-kanji-encode", "fast-legacy-encode", "less-slow-big5-hanzi-encode", "less-slow-gb-hanzi-encode", "less-slow-kanji-encode", "packed_simd", "serde", "simd-accel"))' '-C' 'metadata=020c8c238babbd81' '-C' 'extra-filename=-71f95fee6544e787' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--extern' 'cfg_if=/tmp/clis-ripgrep_14-1-0/release/deps/libcfg_if-98d40c6178a8b60f.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/encoding_rs-0.8.33/src/lib.rs \
-##         1> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-71f95fee6544e787-stdout) \
-##         2> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-71f95fee6544e787-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-71f95fee6544e787-stdout) \
+##         2> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-71f95fee6544e787-stderr >&2) \
+##         || echo $? >/tmp/clis-ripgrep_14-1-0/release/deps/out-71f95fee6544e787-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-71f95fee6544e787"
@@ -1711,8 +1739,9 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
       rustc '--crate-name' 'encoding_rs_io' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=0864ae6275286670' '-C' 'extra-filename=-1f57e01234da7cf8' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--extern' 'encoding_rs=/tmp/clis-ripgrep_14-1-0/release/deps/libencoding_rs-71f95fee6544e787.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/encoding_rs_io-0.1.7/src/lib.rs \
-        1> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-1f57e01234da7cf8-stdout) \
-        2> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-1f57e01234da7cf8-stderr >&2)
+        1> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-1f57e01234da7cf8-stdout) \
+        2> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-1f57e01234da7cf8-stderr >&2) \
+        || echo $? >/tmp/clis-ripgrep_14-1-0/release/deps/out-1f57e01234da7cf8-errcode
 FROM scratch AS out-1f57e01234da7cf8
 COPY --from=dep-l-encoding_rs_io-0.1.7-1f57e01234da7cf8 /tmp/clis-ripgrep_14-1-0/release/deps/*-1f57e01234da7cf8* /
 
@@ -1778,8 +1807,9 @@ COPY --from=dep-l-encoding_rs_io-0.1.7-1f57e01234da7cf8 /tmp/clis-ripgrep_14-1-0
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
 ##       rustc '--crate-name' 'encoding_rs_io' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=0864ae6275286670' '-C' 'extra-filename=-1f57e01234da7cf8' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--extern' 'encoding_rs=/tmp/clis-ripgrep_14-1-0/release/deps/libencoding_rs-71f95fee6544e787.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/encoding_rs_io-0.1.7/src/lib.rs \
-##         1> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-1f57e01234da7cf8-stdout) \
-##         2> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-1f57e01234da7cf8-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-1f57e01234da7cf8-stdout) \
+##         2> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-1f57e01234da7cf8-stderr >&2) \
+##         || echo $? >/tmp/clis-ripgrep_14-1-0/release/deps/out-1f57e01234da7cf8-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-1f57e01234da7cf8"
@@ -1817,8 +1847,9 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
       rustc '--crate-name' 'memmap2' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("stable_deref_trait"))' '-C' 'metadata=ed9d6b24ceadceb1' '-C' 'extra-filename=-21c841a4e972790f' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--extern' 'libc=/tmp/clis-ripgrep_14-1-0/release/deps/liblibc-b1dcb66edfd0e8a0.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/memmap2-0.9.3/src/lib.rs \
-        1> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-21c841a4e972790f-stdout) \
-        2> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-21c841a4e972790f-stderr >&2)
+        1> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-21c841a4e972790f-stdout) \
+        2> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-21c841a4e972790f-stderr >&2) \
+        || echo $? >/tmp/clis-ripgrep_14-1-0/release/deps/out-21c841a4e972790f-errcode
 FROM scratch AS out-21c841a4e972790f
 COPY --from=dep-l-memmap2-0.9.3-21c841a4e972790f /tmp/clis-ripgrep_14-1-0/release/deps/*-21c841a4e972790f* /
 
@@ -1877,8 +1908,9 @@ COPY --from=dep-l-memmap2-0.9.3-21c841a4e972790f /tmp/clis-ripgrep_14-1-0/releas
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
 ##       rustc '--crate-name' 'memmap2' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("stable_deref_trait"))' '-C' 'metadata=ed9d6b24ceadceb1' '-C' 'extra-filename=-21c841a4e972790f' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--extern' 'libc=/tmp/clis-ripgrep_14-1-0/release/deps/liblibc-b1dcb66edfd0e8a0.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/memmap2-0.9.3/src/lib.rs \
-##         1> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-21c841a4e972790f-stdout) \
-##         2> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-21c841a4e972790f-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-21c841a4e972790f-stdout) \
+##         2> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-21c841a4e972790f-stderr >&2) \
+##         || echo $? >/tmp/clis-ripgrep_14-1-0/release/deps/out-21c841a4e972790f-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-21c841a4e972790f"
@@ -1927,8 +1959,9 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
       rustc '--crate-name' 'grep_searcher' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("avx-accel", "simd-accel"))' '-C' 'metadata=247e5dfc4518c3e2' '-C' 'extra-filename=-6fc004d41272f596' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--extern' 'bstr=/tmp/clis-ripgrep_14-1-0/release/deps/libbstr-f6b551c518280772.rmeta' '--extern' 'encoding_rs=/tmp/clis-ripgrep_14-1-0/release/deps/libencoding_rs-71f95fee6544e787.rmeta' '--extern' 'encoding_rs_io=/tmp/clis-ripgrep_14-1-0/release/deps/libencoding_rs_io-1f57e01234da7cf8.rmeta' '--extern' 'grep_matcher=/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_matcher-7517975d791c1423.rmeta' '--extern' 'log=/tmp/clis-ripgrep_14-1-0/release/deps/liblog-45d1068292014e63.rmeta' '--extern' 'memchr=/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rmeta' '--extern' 'memmap=/tmp/clis-ripgrep_14-1-0/release/deps/libmemmap2-21c841a4e972790f.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-searcher-0.1.13/src/lib.rs \
-        1> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-6fc004d41272f596-stdout) \
-        2> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-6fc004d41272f596-stderr >&2)
+        1> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-6fc004d41272f596-stdout) \
+        2> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-6fc004d41272f596-stderr >&2) \
+        || echo $? >/tmp/clis-ripgrep_14-1-0/release/deps/out-6fc004d41272f596-errcode
 FROM scratch AS out-6fc004d41272f596
 COPY --from=dep-l-grep-searcher-0.1.13-6fc004d41272f596 /tmp/clis-ripgrep_14-1-0/release/deps/*-6fc004d41272f596* /
 
@@ -2024,8 +2057,9 @@ COPY --from=dep-l-grep-searcher-0.1.13-6fc004d41272f596 /tmp/clis-ripgrep_14-1-0
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
 ##       rustc '--crate-name' 'grep_searcher' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("avx-accel", "simd-accel"))' '-C' 'metadata=247e5dfc4518c3e2' '-C' 'extra-filename=-6fc004d41272f596' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--extern' 'bstr=/tmp/clis-ripgrep_14-1-0/release/deps/libbstr-f6b551c518280772.rmeta' '--extern' 'encoding_rs=/tmp/clis-ripgrep_14-1-0/release/deps/libencoding_rs-71f95fee6544e787.rmeta' '--extern' 'encoding_rs_io=/tmp/clis-ripgrep_14-1-0/release/deps/libencoding_rs_io-1f57e01234da7cf8.rmeta' '--extern' 'grep_matcher=/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_matcher-7517975d791c1423.rmeta' '--extern' 'log=/tmp/clis-ripgrep_14-1-0/release/deps/liblog-45d1068292014e63.rmeta' '--extern' 'memchr=/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rmeta' '--extern' 'memmap=/tmp/clis-ripgrep_14-1-0/release/deps/libmemmap2-21c841a4e972790f.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-searcher-0.1.13/src/lib.rs \
-##         1> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-6fc004d41272f596-stdout) \
-##         2> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-6fc004d41272f596-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-6fc004d41272f596-stdout) \
+##         2> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-6fc004d41272f596-stderr >&2) \
+##         || echo $? >/tmp/clis-ripgrep_14-1-0/release/deps/out-6fc004d41272f596-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-6fc004d41272f596"
@@ -2063,8 +2097,9 @@ RUN \
         OUT_DIR="/tmp/clis-ripgrep_14-1-0/release/build/serde-f726cc681a30a037/out" \
         CARGOGREEN=1 \
       rustc '--crate-name' 'serde' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "default", "derive", "rc", "serde_derive", "std", "unstable"))' '-C' 'metadata=783f01ab2cd777b4' '-C' 'extra-filename=-6342957ddc692e98' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.195/src/lib.rs \
-        1> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-6342957ddc692e98-stdout) \
-        2> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-6342957ddc692e98-stderr >&2)
+        1> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-6342957ddc692e98-stdout) \
+        2> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-6342957ddc692e98-stderr >&2) \
+        || echo $? >/tmp/clis-ripgrep_14-1-0/release/deps/out-6342957ddc692e98-errcode
 FROM scratch AS out-6342957ddc692e98
 COPY --from=dep-l-serde-1.0.195-6342957ddc692e98 /tmp/clis-ripgrep_14-1-0/release/deps/*-6342957ddc692e98* /
 
@@ -2244,8 +2279,9 @@ COPY --from=dep-l-serde-1.0.195-6342957ddc692e98 /tmp/clis-ripgrep_14-1-0/releas
 ##         OUT_DIR="/tmp/clis-ripgrep_14-1-0/release/build/serde-f726cc681a30a037/out" \
 ##         CARGOGREEN=1 \
 ##       rustc '--crate-name' 'serde' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "default", "derive", "rc", "serde_derive", "std", "unstable"))' '-C' 'metadata=783f01ab2cd777b4' '-C' 'extra-filename=-6342957ddc692e98' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.195/src/lib.rs \
-##         1> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-6342957ddc692e98-stdout) \
-##         2> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-6342957ddc692e98-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-6342957ddc692e98-stdout) \
+##         2> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-6342957ddc692e98-stderr >&2) \
+##         || echo $? >/tmp/clis-ripgrep_14-1-0/release/deps/out-6342957ddc692e98-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-6342957ddc692e98"
@@ -2282,8 +2318,9 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
       rustc '--crate-name' 'itoa' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("no-panic"))' '-C' 'metadata=8c0080ecedac377f' '-C' 'extra-filename=-2b4528a4fd57cfaf' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/itoa-1.0.10/src/lib.rs \
-        1> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-2b4528a4fd57cfaf-stdout) \
-        2> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-2b4528a4fd57cfaf-stderr >&2)
+        1> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-2b4528a4fd57cfaf-stdout) \
+        2> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-2b4528a4fd57cfaf-stderr >&2) \
+        || echo $? >/tmp/clis-ripgrep_14-1-0/release/deps/out-2b4528a4fd57cfaf-errcode
 FROM scratch AS out-2b4528a4fd57cfaf
 COPY --from=dep-l-itoa-1.0.10-2b4528a4fd57cfaf /tmp/clis-ripgrep_14-1-0/release/deps/*-2b4528a4fd57cfaf* /
 
@@ -2339,8 +2376,9 @@ COPY --from=dep-l-itoa-1.0.10-2b4528a4fd57cfaf /tmp/clis-ripgrep_14-1-0/release/
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
 ##       rustc '--crate-name' 'itoa' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("no-panic"))' '-C' 'metadata=8c0080ecedac377f' '-C' 'extra-filename=-2b4528a4fd57cfaf' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/itoa-1.0.10/src/lib.rs \
-##         1> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-2b4528a4fd57cfaf-stdout) \
-##         2> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-2b4528a4fd57cfaf-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-2b4528a4fd57cfaf-stdout) \
+##         2> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-2b4528a4fd57cfaf-stderr >&2) \
+##         || echo $? >/tmp/clis-ripgrep_14-1-0/release/deps/out-2b4528a4fd57cfaf-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-2b4528a4fd57cfaf"
@@ -2377,8 +2415,9 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
       rustc '--crate-name' 'ryu' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("no-panic", "small"))' '-C' 'metadata=6c688fa73f757302' '-C' 'extra-filename=-a994c87db442418d' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ryu-1.0.16/src/lib.rs \
-        1> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-a994c87db442418d-stdout) \
-        2> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-a994c87db442418d-stderr >&2)
+        1> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-a994c87db442418d-stdout) \
+        2> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-a994c87db442418d-stderr >&2) \
+        || echo $? >/tmp/clis-ripgrep_14-1-0/release/deps/out-a994c87db442418d-errcode
 FROM scratch AS out-a994c87db442418d
 COPY --from=dep-l-ryu-1.0.16-a994c87db442418d /tmp/clis-ripgrep_14-1-0/release/deps/*-a994c87db442418d* /
 
@@ -2434,8 +2473,9 @@ COPY --from=dep-l-ryu-1.0.16-a994c87db442418d /tmp/clis-ripgrep_14-1-0/release/d
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
 ##       rustc '--crate-name' 'ryu' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("no-panic", "small"))' '-C' 'metadata=6c688fa73f757302' '-C' 'extra-filename=-a994c87db442418d' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ryu-1.0.16/src/lib.rs \
-##         1> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-a994c87db442418d-stdout) \
-##         2> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-a994c87db442418d-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-a994c87db442418d-stdout) \
+##         2> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-a994c87db442418d-stderr >&2) \
+##         || echo $? >/tmp/clis-ripgrep_14-1-0/release/deps/out-a994c87db442418d-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-a994c87db442418d"
@@ -2476,8 +2516,9 @@ RUN \
         OUT_DIR="/tmp/clis-ripgrep_14-1-0/release/build/serde_json-e342084f7a7099ad/out" \
         CARGOGREEN=1 \
       rustc '--crate-name' 'serde_json' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "arbitrary_precision", "default", "float_roundtrip", "indexmap", "preserve_order", "raw_value", "std", "unbounded_depth"))' '-C' 'metadata=ae9344cb9599f880' '-C' 'extra-filename=-f1456127761f5765' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--extern' 'itoa=/tmp/clis-ripgrep_14-1-0/release/deps/libitoa-2b4528a4fd57cfaf.rmeta' '--extern' 'ryu=/tmp/clis-ripgrep_14-1-0/release/deps/libryu-a994c87db442418d.rmeta' '--extern' 'serde=/tmp/clis-ripgrep_14-1-0/release/deps/libserde-6342957ddc692e98.rmeta' '--cap-lints' 'warn' '--cfg' 'limb_width_64' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.111/src/lib.rs \
-        1> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-f1456127761f5765-stdout) \
-        2> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-f1456127761f5765-stderr >&2)
+        1> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-f1456127761f5765-stdout) \
+        2> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-f1456127761f5765-stderr >&2) \
+        || echo $? >/tmp/clis-ripgrep_14-1-0/release/deps/out-f1456127761f5765-errcode
 FROM scratch AS out-f1456127761f5765
 COPY --from=dep-l-serde_json-1.0.111-f1456127761f5765 /tmp/clis-ripgrep_14-1-0/release/deps/*-f1456127761f5765* /
 
@@ -2547,8 +2588,9 @@ COPY --from=dep-l-serde_json-1.0.111-f1456127761f5765 /tmp/clis-ripgrep_14-1-0/r
 ##         OUT_DIR="/tmp/clis-ripgrep_14-1-0/release/build/serde_json-e342084f7a7099ad/out" \
 ##         CARGOGREEN=1 \
 ##       rustc '--crate-name' 'serde_json' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "arbitrary_precision", "default", "float_roundtrip", "indexmap", "preserve_order", "raw_value", "std", "unbounded_depth"))' '-C' 'metadata=ae9344cb9599f880' '-C' 'extra-filename=-f1456127761f5765' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--extern' 'itoa=/tmp/clis-ripgrep_14-1-0/release/deps/libitoa-2b4528a4fd57cfaf.rmeta' '--extern' 'ryu=/tmp/clis-ripgrep_14-1-0/release/deps/libryu-a994c87db442418d.rmeta' '--extern' 'serde=/tmp/clis-ripgrep_14-1-0/release/deps/libserde-6342957ddc692e98.rmeta' '--cap-lints' 'warn' '--cfg' 'limb_width_64' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.111/src/lib.rs \
-##         1> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-f1456127761f5765-stdout) \
-##         2> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-f1456127761f5765-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-f1456127761f5765-stdout) \
+##         2> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-f1456127761f5765-stderr >&2) \
+##         || echo $? >/tmp/clis-ripgrep_14-1-0/release/deps/out-f1456127761f5765-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-f1456127761f5765"
@@ -2603,8 +2645,9 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
       rustc '--crate-name' 'grep_printer' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--cfg' 'feature="default"' '--cfg' 'feature="serde"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "serde"))' '-C' 'metadata=fbf69dc2de0515e2' '-C' 'extra-filename=-0e4d9ea7a0184dd5' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--extern' 'bstr=/tmp/clis-ripgrep_14-1-0/release/deps/libbstr-f6b551c518280772.rmeta' '--extern' 'grep_matcher=/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_matcher-7517975d791c1423.rmeta' '--extern' 'grep_searcher=/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_searcher-6fc004d41272f596.rmeta' '--extern' 'log=/tmp/clis-ripgrep_14-1-0/release/deps/liblog-45d1068292014e63.rmeta' '--extern' 'serde=/tmp/clis-ripgrep_14-1-0/release/deps/libserde-6342957ddc692e98.rmeta' '--extern' 'serde_json=/tmp/clis-ripgrep_14-1-0/release/deps/libserde_json-f1456127761f5765.rmeta' '--extern' 'termcolor=/tmp/clis-ripgrep_14-1-0/release/deps/libtermcolor-59ae8e7772deaa56.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-printer-0.2.1/src/lib.rs \
-        1> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-0e4d9ea7a0184dd5-stdout) \
-        2> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-0e4d9ea7a0184dd5-stderr >&2)
+        1> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-0e4d9ea7a0184dd5-stdout) \
+        2> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-0e4d9ea7a0184dd5-stderr >&2) \
+        || echo $? >/tmp/clis-ripgrep_14-1-0/release/deps/out-0e4d9ea7a0184dd5-errcode
 FROM scratch AS out-0e4d9ea7a0184dd5
 COPY --from=dep-l-grep-printer-0.2.1-0e4d9ea7a0184dd5 /tmp/clis-ripgrep_14-1-0/release/deps/*-0e4d9ea7a0184dd5* /
 
@@ -2718,8 +2761,9 @@ COPY --from=dep-l-grep-printer-0.2.1-0e4d9ea7a0184dd5 /tmp/clis-ripgrep_14-1-0/r
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
 ##       rustc '--crate-name' 'grep_printer' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--cfg' 'feature="default"' '--cfg' 'feature="serde"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "serde"))' '-C' 'metadata=fbf69dc2de0515e2' '-C' 'extra-filename=-0e4d9ea7a0184dd5' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--extern' 'bstr=/tmp/clis-ripgrep_14-1-0/release/deps/libbstr-f6b551c518280772.rmeta' '--extern' 'grep_matcher=/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_matcher-7517975d791c1423.rmeta' '--extern' 'grep_searcher=/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_searcher-6fc004d41272f596.rmeta' '--extern' 'log=/tmp/clis-ripgrep_14-1-0/release/deps/liblog-45d1068292014e63.rmeta' '--extern' 'serde=/tmp/clis-ripgrep_14-1-0/release/deps/libserde-6342957ddc692e98.rmeta' '--extern' 'serde_json=/tmp/clis-ripgrep_14-1-0/release/deps/libserde_json-f1456127761f5765.rmeta' '--extern' 'termcolor=/tmp/clis-ripgrep_14-1-0/release/deps/libtermcolor-59ae8e7772deaa56.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-printer-0.2.1/src/lib.rs \
-##         1> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-0e4d9ea7a0184dd5-stdout) \
-##         2> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-0e4d9ea7a0184dd5-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-0e4d9ea7a0184dd5-stdout) \
+##         2> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-0e4d9ea7a0184dd5-stderr >&2) \
+##         || echo $? >/tmp/clis-ripgrep_14-1-0/release/deps/out-0e4d9ea7a0184dd5-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-0e4d9ea7a0184dd5"
@@ -2763,8 +2807,9 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
       rustc '--crate-name' 'grep_regex' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=86cf10e2c4b90a3a' '-C' 'extra-filename=-c08c56633b958d0c' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--extern' 'bstr=/tmp/clis-ripgrep_14-1-0/release/deps/libbstr-f6b551c518280772.rmeta' '--extern' 'grep_matcher=/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_matcher-7517975d791c1423.rmeta' '--extern' 'log=/tmp/clis-ripgrep_14-1-0/release/deps/liblog-45d1068292014e63.rmeta' '--extern' 'regex_automata=/tmp/clis-ripgrep_14-1-0/release/deps/libregex_automata-54c30116fcd4ea92.rmeta' '--extern' 'regex_syntax=/tmp/clis-ripgrep_14-1-0/release/deps/libregex_syntax-0d361157f8cdd0fe.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-regex-0.1.12/src/lib.rs \
-        1> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-c08c56633b958d0c-stdout) \
-        2> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-c08c56633b958d0c-stderr >&2)
+        1> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-c08c56633b958d0c-stdout) \
+        2> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-c08c56633b958d0c-stderr >&2) \
+        || echo $? >/tmp/clis-ripgrep_14-1-0/release/deps/out-c08c56633b958d0c-errcode
 FROM scratch AS out-c08c56633b958d0c
 COPY --from=dep-l-grep-regex-0.1.12-c08c56633b958d0c /tmp/clis-ripgrep_14-1-0/release/deps/*-c08c56633b958d0c* /
 
@@ -2845,8 +2890,9 @@ COPY --from=dep-l-grep-regex-0.1.12-c08c56633b958d0c /tmp/clis-ripgrep_14-1-0/re
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
 ##       rustc '--crate-name' 'grep_regex' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=86cf10e2c4b90a3a' '-C' 'extra-filename=-c08c56633b958d0c' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--extern' 'bstr=/tmp/clis-ripgrep_14-1-0/release/deps/libbstr-f6b551c518280772.rmeta' '--extern' 'grep_matcher=/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_matcher-7517975d791c1423.rmeta' '--extern' 'log=/tmp/clis-ripgrep_14-1-0/release/deps/liblog-45d1068292014e63.rmeta' '--extern' 'regex_automata=/tmp/clis-ripgrep_14-1-0/release/deps/libregex_automata-54c30116fcd4ea92.rmeta' '--extern' 'regex_syntax=/tmp/clis-ripgrep_14-1-0/release/deps/libregex_syntax-0d361157f8cdd0fe.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-regex-0.1.12/src/lib.rs \
-##         1> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-c08c56633b958d0c-stdout) \
-##         2> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-c08c56633b958d0c-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-c08c56633b958d0c-stdout) \
+##         2> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-c08c56633b958d0c-stderr >&2) \
+##         || echo $? >/tmp/clis-ripgrep_14-1-0/release/deps/out-c08c56633b958d0c-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-c08c56633b958d0c"
@@ -2905,8 +2951,9 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
       rustc '--crate-name' 'grep' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("avx-accel", "grep-pcre2", "pcre2", "simd-accel"))' '-C' 'metadata=c0d04f587b911132' '-C' 'extra-filename=-9e71f2809112d472' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--extern' 'grep_cli=/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_cli-8da8357e778092ce.rmeta' '--extern' 'grep_matcher=/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_matcher-7517975d791c1423.rmeta' '--extern' 'grep_printer=/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_printer-0e4d9ea7a0184dd5.rmeta' '--extern' 'grep_regex=/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_regex-c08c56633b958d0c.rmeta' '--extern' 'grep_searcher=/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_searcher-6fc004d41272f596.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-0.3.1/src/lib.rs \
-        1> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-9e71f2809112d472-stdout) \
-        2> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-9e71f2809112d472-stderr >&2)
+        1> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-9e71f2809112d472-stdout) \
+        2> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-9e71f2809112d472-stderr >&2) \
+        || echo $? >/tmp/clis-ripgrep_14-1-0/release/deps/out-9e71f2809112d472-errcode
 FROM scratch AS out-9e71f2809112d472
 COPY --from=dep-l-grep-0.3.1-9e71f2809112d472 /tmp/clis-ripgrep_14-1-0/release/deps/*-9e71f2809112d472* /
 
@@ -3032,8 +3079,9 @@ COPY --from=dep-l-grep-0.3.1-9e71f2809112d472 /tmp/clis-ripgrep_14-1-0/release/d
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
 ##       rustc '--crate-name' 'grep' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("avx-accel", "grep-pcre2", "pcre2", "simd-accel"))' '-C' 'metadata=c0d04f587b911132' '-C' 'extra-filename=-9e71f2809112d472' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--extern' 'grep_cli=/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_cli-8da8357e778092ce.rmeta' '--extern' 'grep_matcher=/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_matcher-7517975d791c1423.rmeta' '--extern' 'grep_printer=/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_printer-0e4d9ea7a0184dd5.rmeta' '--extern' 'grep_regex=/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_regex-c08c56633b958d0c.rmeta' '--extern' 'grep_searcher=/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_searcher-6fc004d41272f596.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-0.3.1/src/lib.rs \
-##         1> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-9e71f2809112d472-stdout) \
-##         2> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-9e71f2809112d472-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-9e71f2809112d472-stdout) \
+##         2> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-9e71f2809112d472-stderr >&2) \
+##         || echo $? >/tmp/clis-ripgrep_14-1-0/release/deps/out-9e71f2809112d472-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-9e71f2809112d472"
@@ -3072,8 +3120,9 @@ RUN \
         OUT_DIR="/tmp/clis-ripgrep_14-1-0/release/build/crossbeam-utils-439d3918fdca29b3/out" \
         CARGOGREEN=1 \
       rustc '--crate-name' 'crossbeam_utils' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "loom", "nightly", "std"))' '-C' 'metadata=d59abc875a1d6085' '-C' 'extra-filename=-1ae807b4b6e713ec' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--extern' 'cfg_if=/tmp/clis-ripgrep_14-1-0/release/deps/libcfg_if-98d40c6178a8b60f.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.18/src/lib.rs \
-        1> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-1ae807b4b6e713ec-stdout) \
-        2> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-1ae807b4b6e713ec-stderr >&2)
+        1> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-1ae807b4b6e713ec-stdout) \
+        2> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-1ae807b4b6e713ec-stderr >&2) \
+        || echo $? >/tmp/clis-ripgrep_14-1-0/release/deps/out-1ae807b4b6e713ec-errcode
 FROM scratch AS out-1ae807b4b6e713ec
 COPY --from=dep-l-crossbeam-utils-0.8.18-1ae807b4b6e713ec /tmp/clis-ripgrep_14-1-0/release/deps/*-1ae807b4b6e713ec* /
 
@@ -3178,8 +3227,9 @@ COPY --from=dep-l-crossbeam-utils-0.8.18-1ae807b4b6e713ec /tmp/clis-ripgrep_14-1
 ##         OUT_DIR="/tmp/clis-ripgrep_14-1-0/release/build/crossbeam-utils-439d3918fdca29b3/out" \
 ##         CARGOGREEN=1 \
 ##       rustc '--crate-name' 'crossbeam_utils' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "loom", "nightly", "std"))' '-C' 'metadata=d59abc875a1d6085' '-C' 'extra-filename=-1ae807b4b6e713ec' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--extern' 'cfg_if=/tmp/clis-ripgrep_14-1-0/release/deps/libcfg_if-98d40c6178a8b60f.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.18/src/lib.rs \
-##         1> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-1ae807b4b6e713ec-stdout) \
-##         2> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-1ae807b4b6e713ec-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-1ae807b4b6e713ec-stdout) \
+##         2> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-1ae807b4b6e713ec-stderr >&2) \
+##         || echo $? >/tmp/clis-ripgrep_14-1-0/release/deps/out-1ae807b4b6e713ec-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-1ae807b4b6e713ec"
@@ -3218,8 +3268,9 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
       rustc '--crate-name' 'crossbeam_epoch' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--cfg' 'feature="alloc"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "default", "loom", "loom-crate", "nightly", "std"))' '-C' 'metadata=389b277f4502940f' '-C' 'extra-filename=-e4df21448919a796' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--extern' 'cfg_if=/tmp/clis-ripgrep_14-1-0/release/deps/libcfg_if-98d40c6178a8b60f.rmeta' '--extern' 'crossbeam_utils=/tmp/clis-ripgrep_14-1-0/release/deps/libcrossbeam_utils-1ae807b4b6e713ec.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-epoch-0.9.17/src/lib.rs \
-        1> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-e4df21448919a796-stdout) \
-        2> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-e4df21448919a796-stderr >&2)
+        1> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-e4df21448919a796-stdout) \
+        2> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-e4df21448919a796-stderr >&2) \
+        || echo $? >/tmp/clis-ripgrep_14-1-0/release/deps/out-e4df21448919a796-errcode
 FROM scratch AS out-e4df21448919a796
 COPY --from=dep-l-crossbeam-epoch-0.9.17-e4df21448919a796 /tmp/clis-ripgrep_14-1-0/release/deps/*-e4df21448919a796* /
 
@@ -3306,8 +3357,9 @@ COPY --from=dep-l-crossbeam-epoch-0.9.17-e4df21448919a796 /tmp/clis-ripgrep_14-1
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
 ##       rustc '--crate-name' 'crossbeam_epoch' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--cfg' 'feature="alloc"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "default", "loom", "loom-crate", "nightly", "std"))' '-C' 'metadata=389b277f4502940f' '-C' 'extra-filename=-e4df21448919a796' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--extern' 'cfg_if=/tmp/clis-ripgrep_14-1-0/release/deps/libcfg_if-98d40c6178a8b60f.rmeta' '--extern' 'crossbeam_utils=/tmp/clis-ripgrep_14-1-0/release/deps/libcrossbeam_utils-1ae807b4b6e713ec.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-epoch-0.9.17/src/lib.rs \
-##         1> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-e4df21448919a796-stdout) \
-##         2> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-e4df21448919a796-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-e4df21448919a796-stdout) \
+##         2> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-e4df21448919a796-stderr >&2) \
+##         || echo $? >/tmp/clis-ripgrep_14-1-0/release/deps/out-e4df21448919a796-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-e4df21448919a796"
@@ -3347,8 +3399,9 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
       rustc '--crate-name' 'crossbeam_deque' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--cfg' 'feature="crossbeam-epoch"' '--cfg' 'feature="crossbeam-utils"' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("crossbeam-epoch", "crossbeam-utils", "default", "std"))' '-C' 'metadata=01f447092fa3fac2' '-C' 'extra-filename=-0deb1c425e6f6d70' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--extern' 'cfg_if=/tmp/clis-ripgrep_14-1-0/release/deps/libcfg_if-98d40c6178a8b60f.rmeta' '--extern' 'crossbeam_epoch=/tmp/clis-ripgrep_14-1-0/release/deps/libcrossbeam_epoch-e4df21448919a796.rmeta' '--extern' 'crossbeam_utils=/tmp/clis-ripgrep_14-1-0/release/deps/libcrossbeam_utils-1ae807b4b6e713ec.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-deque-0.8.4/src/lib.rs \
-        1> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-0deb1c425e6f6d70-stdout) \
-        2> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-0deb1c425e6f6d70-stderr >&2)
+        1> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-0deb1c425e6f6d70-stdout) \
+        2> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-0deb1c425e6f6d70-stderr >&2) \
+        || echo $? >/tmp/clis-ripgrep_14-1-0/release/deps/out-0deb1c425e6f6d70-errcode
 FROM scratch AS out-0deb1c425e6f6d70
 COPY --from=dep-l-crossbeam-deque-0.8.4-0deb1c425e6f6d70 /tmp/clis-ripgrep_14-1-0/release/deps/*-0deb1c425e6f6d70* /
 
@@ -3417,8 +3470,9 @@ COPY --from=dep-l-crossbeam-deque-0.8.4-0deb1c425e6f6d70 /tmp/clis-ripgrep_14-1-
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
 ##       rustc '--crate-name' 'crossbeam_deque' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--cfg' 'feature="crossbeam-epoch"' '--cfg' 'feature="crossbeam-utils"' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("crossbeam-epoch", "crossbeam-utils", "default", "std"))' '-C' 'metadata=01f447092fa3fac2' '-C' 'extra-filename=-0deb1c425e6f6d70' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--extern' 'cfg_if=/tmp/clis-ripgrep_14-1-0/release/deps/libcfg_if-98d40c6178a8b60f.rmeta' '--extern' 'crossbeam_epoch=/tmp/clis-ripgrep_14-1-0/release/deps/libcrossbeam_epoch-e4df21448919a796.rmeta' '--extern' 'crossbeam_utils=/tmp/clis-ripgrep_14-1-0/release/deps/libcrossbeam_utils-1ae807b4b6e713ec.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-deque-0.8.4/src/lib.rs \
-##         1> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-0deb1c425e6f6d70-stdout) \
-##         2> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-0deb1c425e6f6d70-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-0deb1c425e6f6d70-stdout) \
+##         2> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-0deb1c425e6f6d70-stderr >&2) \
+##         || echo $? >/tmp/clis-ripgrep_14-1-0/release/deps/out-0deb1c425e6f6d70-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-0deb1c425e6f6d70"
@@ -3455,8 +3509,9 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
       rustc '--crate-name' 'same_file' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=a21928134da930ba' '-C' 'extra-filename=-880cd61c1f851a7b' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/same-file-1.0.6/src/lib.rs \
-        1> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-880cd61c1f851a7b-stdout) \
-        2> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-880cd61c1f851a7b-stderr >&2)
+        1> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-880cd61c1f851a7b-stdout) \
+        2> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-880cd61c1f851a7b-stderr >&2) \
+        || echo $? >/tmp/clis-ripgrep_14-1-0/release/deps/out-880cd61c1f851a7b-errcode
 FROM scratch AS out-880cd61c1f851a7b
 COPY --from=dep-l-same-file-1.0.6-880cd61c1f851a7b /tmp/clis-ripgrep_14-1-0/release/deps/*-880cd61c1f851a7b* /
 
@@ -3514,8 +3569,9 @@ COPY --from=dep-l-same-file-1.0.6-880cd61c1f851a7b /tmp/clis-ripgrep_14-1-0/rele
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
 ##       rustc '--crate-name' 'same_file' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=a21928134da930ba' '-C' 'extra-filename=-880cd61c1f851a7b' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/same-file-1.0.6/src/lib.rs \
-##         1> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-880cd61c1f851a7b-stdout) \
-##         2> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-880cd61c1f851a7b-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-880cd61c1f851a7b-stdout) \
+##         2> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-880cd61c1f851a7b-stderr >&2) \
+##         || echo $? >/tmp/clis-ripgrep_14-1-0/release/deps/out-880cd61c1f851a7b-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-880cd61c1f851a7b"
@@ -3553,8 +3609,9 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
       rustc '--crate-name' 'walkdir' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=34d9ed53f946bd2f' '-C' 'extra-filename=-345a7495356295f2' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--extern' 'same_file=/tmp/clis-ripgrep_14-1-0/release/deps/libsame_file-880cd61c1f851a7b.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/walkdir-2.4.0/src/lib.rs \
-        1> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-345a7495356295f2-stdout) \
-        2> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-345a7495356295f2-stderr >&2)
+        1> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-345a7495356295f2-stdout) \
+        2> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-345a7495356295f2-stderr >&2) \
+        || echo $? >/tmp/clis-ripgrep_14-1-0/release/deps/out-345a7495356295f2-errcode
 FROM scratch AS out-345a7495356295f2
 COPY --from=dep-l-walkdir-2.4.0-345a7495356295f2 /tmp/clis-ripgrep_14-1-0/release/deps/*-345a7495356295f2* /
 
@@ -3613,8 +3670,9 @@ COPY --from=dep-l-walkdir-2.4.0-345a7495356295f2 /tmp/clis-ripgrep_14-1-0/releas
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
 ##       rustc '--crate-name' 'walkdir' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=34d9ed53f946bd2f' '-C' 'extra-filename=-345a7495356295f2' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--extern' 'same_file=/tmp/clis-ripgrep_14-1-0/release/deps/libsame_file-880cd61c1f851a7b.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/walkdir-2.4.0/src/lib.rs \
-##         1> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-345a7495356295f2-stdout) \
-##         2> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-345a7495356295f2-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-345a7495356295f2-stdout) \
+##         2> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-345a7495356295f2-stderr >&2) \
+##         || echo $? >/tmp/clis-ripgrep_14-1-0/release/deps/out-345a7495356295f2-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-345a7495356295f2"
@@ -3664,8 +3722,9 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
       rustc '--crate-name' 'ignore' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("simd-accel"))' '-C' 'metadata=4eaece7f3c714ce1' '-C' 'extra-filename=-95c296cdf92c1819' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--extern' 'crossbeam_deque=/tmp/clis-ripgrep_14-1-0/release/deps/libcrossbeam_deque-0deb1c425e6f6d70.rmeta' '--extern' 'globset=/tmp/clis-ripgrep_14-1-0/release/deps/libglobset-14504da8f25a4dbf.rmeta' '--extern' 'log=/tmp/clis-ripgrep_14-1-0/release/deps/liblog-45d1068292014e63.rmeta' '--extern' 'memchr=/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rmeta' '--extern' 'regex_automata=/tmp/clis-ripgrep_14-1-0/release/deps/libregex_automata-54c30116fcd4ea92.rmeta' '--extern' 'same_file=/tmp/clis-ripgrep_14-1-0/release/deps/libsame_file-880cd61c1f851a7b.rmeta' '--extern' 'walkdir=/tmp/clis-ripgrep_14-1-0/release/deps/libwalkdir-345a7495356295f2.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ignore-0.4.22/src/lib.rs \
-        1> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-95c296cdf92c1819-stdout) \
-        2> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-95c296cdf92c1819-stderr >&2)
+        1> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-95c296cdf92c1819-stdout) \
+        2> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-95c296cdf92c1819-stderr >&2) \
+        || echo $? >/tmp/clis-ripgrep_14-1-0/release/deps/out-95c296cdf92c1819-errcode
 FROM scratch AS out-95c296cdf92c1819
 COPY --from=dep-l-ignore-0.4.22-95c296cdf92c1819 /tmp/clis-ripgrep_14-1-0/release/deps/*-95c296cdf92c1819* /
 
@@ -3764,8 +3823,9 @@ COPY --from=dep-l-ignore-0.4.22-95c296cdf92c1819 /tmp/clis-ripgrep_14-1-0/releas
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
 ##       rustc '--crate-name' 'ignore' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("simd-accel"))' '-C' 'metadata=4eaece7f3c714ce1' '-C' 'extra-filename=-95c296cdf92c1819' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--extern' 'crossbeam_deque=/tmp/clis-ripgrep_14-1-0/release/deps/libcrossbeam_deque-0deb1c425e6f6d70.rmeta' '--extern' 'globset=/tmp/clis-ripgrep_14-1-0/release/deps/libglobset-14504da8f25a4dbf.rmeta' '--extern' 'log=/tmp/clis-ripgrep_14-1-0/release/deps/liblog-45d1068292014e63.rmeta' '--extern' 'memchr=/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rmeta' '--extern' 'regex_automata=/tmp/clis-ripgrep_14-1-0/release/deps/libregex_automata-54c30116fcd4ea92.rmeta' '--extern' 'same_file=/tmp/clis-ripgrep_14-1-0/release/deps/libsame_file-880cd61c1f851a7b.rmeta' '--extern' 'walkdir=/tmp/clis-ripgrep_14-1-0/release/deps/libwalkdir-345a7495356295f2.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ignore-0.4.22/src/lib.rs \
-##         1> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-95c296cdf92c1819-stdout) \
-##         2> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-95c296cdf92c1819-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-95c296cdf92c1819-stdout) \
+##         2> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-95c296cdf92c1819-stderr >&2) \
+##         || echo $? >/tmp/clis-ripgrep_14-1-0/release/deps/out-95c296cdf92c1819-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-95c296cdf92c1819"
@@ -3802,8 +3862,9 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
       rustc '--crate-name' 'lexopt' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=e134be141b2027ba' '-C' 'extra-filename=-17f37e7bd1b70087' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/lexopt-0.3.0/src/lib.rs \
-        1> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-17f37e7bd1b70087-stdout) \
-        2> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-17f37e7bd1b70087-stderr >&2)
+        1> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-17f37e7bd1b70087-stdout) \
+        2> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-17f37e7bd1b70087-stderr >&2) \
+        || echo $? >/tmp/clis-ripgrep_14-1-0/release/deps/out-17f37e7bd1b70087-errcode
 FROM scratch AS out-17f37e7bd1b70087
 COPY --from=dep-l-lexopt-0.3.0-17f37e7bd1b70087 /tmp/clis-ripgrep_14-1-0/release/deps/*-17f37e7bd1b70087* /
 
@@ -3859,8 +3920,9 @@ COPY --from=dep-l-lexopt-0.3.0-17f37e7bd1b70087 /tmp/clis-ripgrep_14-1-0/release
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
 ##       rustc '--crate-name' 'lexopt' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=e134be141b2027ba' '-C' 'extra-filename=-17f37e7bd1b70087' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/lexopt-0.3.0/src/lib.rs \
-##         1> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-17f37e7bd1b70087-stdout) \
-##         2> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-17f37e7bd1b70087-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-17f37e7bd1b70087-stdout) \
+##         2> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-17f37e7bd1b70087-stderr >&2) \
+##         || echo $? >/tmp/clis-ripgrep_14-1-0/release/deps/out-17f37e7bd1b70087-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-17f37e7bd1b70087"
@@ -3897,8 +3959,9 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
       rustc '--crate-name' 'textwrap' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "hyphenation", "smawk", "terminal_size", "unicode-linebreak", "unicode-width"))' '-C' 'metadata=0c1cb1a625bd3b75' '-C' 'extra-filename=-f2419d4872a2993a' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/textwrap-0.16.0/src/lib.rs \
-        1> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-f2419d4872a2993a-stdout) \
-        2> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-f2419d4872a2993a-stderr >&2)
+        1> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-f2419d4872a2993a-stdout) \
+        2> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-f2419d4872a2993a-stderr >&2) \
+        || echo $? >/tmp/clis-ripgrep_14-1-0/release/deps/out-f2419d4872a2993a-errcode
 FROM scratch AS out-f2419d4872a2993a
 COPY --from=dep-l-textwrap-0.16.0-f2419d4872a2993a /tmp/clis-ripgrep_14-1-0/release/deps/*-f2419d4872a2993a* /
 
@@ -3956,8 +4019,9 @@ COPY --from=dep-l-textwrap-0.16.0-f2419d4872a2993a /tmp/clis-ripgrep_14-1-0/rele
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
 ##       rustc '--crate-name' 'textwrap' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "hyphenation", "smawk", "terminal_size", "unicode-linebreak", "unicode-width"))' '-C' 'metadata=0c1cb1a625bd3b75' '-C' 'extra-filename=-f2419d4872a2993a' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/textwrap-0.16.0/src/lib.rs \
-##         1> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-f2419d4872a2993a-stdout) \
-##         2> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-f2419d4872a2993a-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-f2419d4872a2993a-stdout) \
+##         2> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-f2419d4872a2993a-stderr >&2) \
+##         || echo $? >/tmp/clis-ripgrep_14-1-0/release/deps/out-f2419d4872a2993a-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-f2419d4872a2993a"
@@ -4029,8 +4093,9 @@ RUN \
         OUT_DIR="/tmp/clis-ripgrep_14-1-0/release/build/ripgrep-1084277c6abc9b3a/out" \
         CARGOGREEN=1 \
       rustc '--crate-name' 'rg' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'bin' '--emit' 'dep-info,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("pcre2", "simd-accel"))' '-C' 'metadata=54376c15554ad85b' '-C' 'extra-filename=-16aebc92c4aced68' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--extern' 'anyhow=/tmp/clis-ripgrep_14-1-0/release/deps/libanyhow-95e5d8a0e52ba465.rlib' '--extern' 'bstr=/tmp/clis-ripgrep_14-1-0/release/deps/libbstr-f6b551c518280772.rlib' '--extern' 'grep=/tmp/clis-ripgrep_14-1-0/release/deps/libgrep-9e71f2809112d472.rlib' '--extern' 'ignore=/tmp/clis-ripgrep_14-1-0/release/deps/libignore-95c296cdf92c1819.rlib' '--extern' 'lexopt=/tmp/clis-ripgrep_14-1-0/release/deps/liblexopt-17f37e7bd1b70087.rlib' '--extern' 'log=/tmp/clis-ripgrep_14-1-0/release/deps/liblog-45d1068292014e63.rlib' '--extern' 'serde_json=/tmp/clis-ripgrep_14-1-0/release/deps/libserde_json-f1456127761f5765.rlib' '--extern' 'termcolor=/tmp/clis-ripgrep_14-1-0/release/deps/libtermcolor-59ae8e7772deaa56.rlib' '--extern' 'textwrap=/tmp/clis-ripgrep_14-1-0/release/deps/libtextwrap-f2419d4872a2993a.rlib' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ripgrep-14.1.0/crates/core/main.rs \
-        1> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-16aebc92c4aced68-stdout) \
-        2> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-16aebc92c4aced68-stderr >&2)
+        1> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-16aebc92c4aced68-stdout) \
+        2> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-16aebc92c4aced68-stderr >&2) \
+        || echo $? >/tmp/clis-ripgrep_14-1-0/release/deps/out-16aebc92c4aced68-errcode
 FROM scratch AS out-16aebc92c4aced68
 COPY --from=dep-b-ripgrep-14.1.0-16aebc92c4aced68 /tmp/clis-ripgrep_14-1-0/release/deps/*-16aebc92c4aced68* /
 
@@ -4195,8 +4260,9 @@ COPY --from=dep-b-ripgrep-14.1.0-16aebc92c4aced68 /tmp/clis-ripgrep_14-1-0/relea
 ##         OUT_DIR="/tmp/clis-ripgrep_14-1-0/release/build/ripgrep-1084277c6abc9b3a/out" \
 ##         CARGOGREEN=1 \
 ##       rustc '--crate-name' 'rg' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'bin' '--emit' 'dep-info,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '-C' 'debuginfo=1' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("pcre2", "simd-accel"))' '-C' 'metadata=54376c15554ad85b' '-C' 'extra-filename=-16aebc92c4aced68' '--out-dir' '/tmp/clis-ripgrep_14-1-0/release/deps' '-L' 'dependency=/tmp/clis-ripgrep_14-1-0/release/deps' '--extern' 'anyhow=/tmp/clis-ripgrep_14-1-0/release/deps/libanyhow-95e5d8a0e52ba465.rlib' '--extern' 'bstr=/tmp/clis-ripgrep_14-1-0/release/deps/libbstr-f6b551c518280772.rlib' '--extern' 'grep=/tmp/clis-ripgrep_14-1-0/release/deps/libgrep-9e71f2809112d472.rlib' '--extern' 'ignore=/tmp/clis-ripgrep_14-1-0/release/deps/libignore-95c296cdf92c1819.rlib' '--extern' 'lexopt=/tmp/clis-ripgrep_14-1-0/release/deps/liblexopt-17f37e7bd1b70087.rlib' '--extern' 'log=/tmp/clis-ripgrep_14-1-0/release/deps/liblog-45d1068292014e63.rlib' '--extern' 'serde_json=/tmp/clis-ripgrep_14-1-0/release/deps/libserde_json-f1456127761f5765.rlib' '--extern' 'termcolor=/tmp/clis-ripgrep_14-1-0/release/deps/libtermcolor-59ae8e7772deaa56.rlib' '--extern' 'textwrap=/tmp/clis-ripgrep_14-1-0/release/deps/libtextwrap-f2419d4872a2993a.rlib' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ripgrep-14.1.0/crates/core/main.rs \
-##         1> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-16aebc92c4aced68-stdout) \
-##         2> >(tee /tmp/clis-ripgrep_14-1-0/release/deps/out-16aebc92c4aced68-stderr >&2)'''
+##         1> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-16aebc92c4aced68-stdout) \
+##         2> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-16aebc92c4aced68-stderr >&2) \
+##         || echo $? >/tmp/clis-ripgrep_14-1-0/release/deps/out-16aebc92c4aced68-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-16aebc92c4aced68"
