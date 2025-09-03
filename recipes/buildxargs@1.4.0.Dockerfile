@@ -33,8 +33,9 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
       rustc '--crate-name' 'pico_args' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="default"' '--cfg' 'feature="eq-separator"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("combined-flags", "default", "eq-separator", "short-space-opt"))' '-C' 'metadata=9dbc4a789cc0af62' '-C' 'extra-filename=-2483323735be5258' '--out-dir' '/tmp/cargo-green--hack-caching/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/cargo-green--hack-caching/release/deps' '--cap-lints' 'allow' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/pico-args-0.5.0/src/lib.rs \
-        1> >(tee /tmp/cargo-green--hack-caching/release/deps/out-2483323735be5258-stdout) \
-        2> >(tee /tmp/cargo-green--hack-caching/release/deps/out-2483323735be5258-stderr >&2)
+        1> >(tee    /tmp/cargo-green--hack-caching/release/deps/out-2483323735be5258-stdout) \
+        2> >(tee    /tmp/cargo-green--hack-caching/release/deps/out-2483323735be5258-stderr >&2) \
+        || echo $? >/tmp/cargo-green--hack-caching/release/deps/out-2483323735be5258-errcode
 FROM scratch AS out-2483323735be5258
 COPY --from=dep-l-pico-args-0.5.0-2483323735be5258 /tmp/cargo-green--hack-caching/release/deps/*-2483323735be5258* /
 
@@ -90,8 +91,9 @@ COPY --from=dep-l-pico-args-0.5.0-2483323735be5258 /tmp/cargo-green--hack-cachin
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
 ##       rustc '--crate-name' 'pico_args' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="default"' '--cfg' 'feature="eq-separator"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("combined-flags", "default", "eq-separator", "short-space-opt"))' '-C' 'metadata=9dbc4a789cc0af62' '-C' 'extra-filename=-2483323735be5258' '--out-dir' '/tmp/cargo-green--hack-caching/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/cargo-green--hack-caching/release/deps' '--cap-lints' 'allow' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/pico-args-0.5.0/src/lib.rs \
-##         1> >(tee /tmp/cargo-green--hack-caching/release/deps/out-2483323735be5258-stdout) \
-##         2> >(tee /tmp/cargo-green--hack-caching/release/deps/out-2483323735be5258-stderr >&2)'''
+##         1> >(tee    /tmp/cargo-green--hack-caching/release/deps/out-2483323735be5258-stdout) \
+##         2> >(tee    /tmp/cargo-green--hack-caching/release/deps/out-2483323735be5258-stderr >&2) \
+##         || echo $? >/tmp/cargo-green--hack-caching/release/deps/out-2483323735be5258-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-2483323735be5258"
@@ -128,8 +130,9 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
       rustc '--crate-name' 'shlex' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "std"))' '-C' 'metadata=ec2cff61da3c8f82' '-C' 'extra-filename=-4598484aae949190' '--out-dir' '/tmp/cargo-green--hack-caching/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/cargo-green--hack-caching/release/deps' '--cap-lints' 'allow' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0/src/lib.rs \
-        1> >(tee /tmp/cargo-green--hack-caching/release/deps/out-4598484aae949190-stdout) \
-        2> >(tee /tmp/cargo-green--hack-caching/release/deps/out-4598484aae949190-stderr >&2)
+        1> >(tee    /tmp/cargo-green--hack-caching/release/deps/out-4598484aae949190-stdout) \
+        2> >(tee    /tmp/cargo-green--hack-caching/release/deps/out-4598484aae949190-stderr >&2) \
+        || echo $? >/tmp/cargo-green--hack-caching/release/deps/out-4598484aae949190-errcode
 FROM scratch AS out-4598484aae949190
 COPY --from=dep-l-shlex-1.3.0-4598484aae949190 /tmp/cargo-green--hack-caching/release/deps/*-4598484aae949190* /
 
@@ -185,8 +188,9 @@ COPY --from=dep-l-shlex-1.3.0-4598484aae949190 /tmp/cargo-green--hack-caching/re
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
 ##       rustc '--crate-name' 'shlex' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "std"))' '-C' 'metadata=ec2cff61da3c8f82' '-C' 'extra-filename=-4598484aae949190' '--out-dir' '/tmp/cargo-green--hack-caching/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/cargo-green--hack-caching/release/deps' '--cap-lints' 'allow' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0/src/lib.rs \
-##         1> >(tee /tmp/cargo-green--hack-caching/release/deps/out-4598484aae949190-stdout) \
-##         2> >(tee /tmp/cargo-green--hack-caching/release/deps/out-4598484aae949190-stderr >&2)'''
+##         1> >(tee    /tmp/cargo-green--hack-caching/release/deps/out-4598484aae949190-stdout) \
+##         2> >(tee    /tmp/cargo-green--hack-caching/release/deps/out-4598484aae949190-stderr >&2) \
+##         || echo $? >/tmp/cargo-green--hack-caching/release/deps/out-4598484aae949190-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-4598484aae949190"
@@ -227,8 +231,9 @@ RUN \
         CARGO_SBOM_PATH= \
         CARGOGREEN=1 \
       rustc '--crate-name' 'buildxargs' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=3d815ec957a29c8c' '-C' 'extra-filename=-ced9b99b61cb3612' '--out-dir' '/tmp/cargo-green--hack-caching/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/cargo-green--hack-caching/release/deps' '--extern' 'pico_args=/tmp/cargo-green--hack-caching/release/deps/libpico_args-2483323735be5258.rmeta' '--extern' 'shlex=/tmp/cargo-green--hack-caching/release/deps/libshlex-4598484aae949190.rmeta' '--cap-lints' 'allow' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/buildxargs-1.4.0/src/lib.rs \
-        1> >(tee /tmp/cargo-green--hack-caching/release/deps/out-ced9b99b61cb3612-stdout) \
-        2> >(tee /tmp/cargo-green--hack-caching/release/deps/out-ced9b99b61cb3612-stderr >&2)
+        1> >(tee    /tmp/cargo-green--hack-caching/release/deps/out-ced9b99b61cb3612-stdout) \
+        2> >(tee    /tmp/cargo-green--hack-caching/release/deps/out-ced9b99b61cb3612-stderr >&2) \
+        || echo $? >/tmp/cargo-green--hack-caching/release/deps/out-ced9b99b61cb3612-errcode
 FROM scratch AS out-ced9b99b61cb3612
 COPY --from=dep-l-buildxargs-1.4.0-ced9b99b61cb3612 /tmp/cargo-green--hack-caching/release/deps/*-ced9b99b61cb3612* /
 
@@ -296,8 +301,9 @@ COPY --from=dep-l-buildxargs-1.4.0-ced9b99b61cb3612 /tmp/cargo-green--hack-cachi
 ##         CARGO_SBOM_PATH= \
 ##         CARGOGREEN=1 \
 ##       rustc '--crate-name' 'buildxargs' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=3d815ec957a29c8c' '-C' 'extra-filename=-ced9b99b61cb3612' '--out-dir' '/tmp/cargo-green--hack-caching/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/cargo-green--hack-caching/release/deps' '--extern' 'pico_args=/tmp/cargo-green--hack-caching/release/deps/libpico_args-2483323735be5258.rmeta' '--extern' 'shlex=/tmp/cargo-green--hack-caching/release/deps/libshlex-4598484aae949190.rmeta' '--cap-lints' 'allow' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/buildxargs-1.4.0/src/lib.rs \
-##         1> >(tee /tmp/cargo-green--hack-caching/release/deps/out-ced9b99b61cb3612-stdout) \
-##         2> >(tee /tmp/cargo-green--hack-caching/release/deps/out-ced9b99b61cb3612-stderr >&2)'''
+##         1> >(tee    /tmp/cargo-green--hack-caching/release/deps/out-ced9b99b61cb3612-stdout) \
+##         2> >(tee    /tmp/cargo-green--hack-caching/release/deps/out-ced9b99b61cb3612-stderr >&2) \
+##         || echo $? >/tmp/cargo-green--hack-caching/release/deps/out-ced9b99b61cb3612-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-ced9b99b61cb3612"
@@ -338,14 +344,15 @@ RUN \
         CARGO_SBOM_PATH= \
         CARGOGREEN=1 \
       rustc '--crate-name' 'buildxargs' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'bin' '--emit' 'dep-info,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=3373ee4d0a4e7c31' '-C' 'extra-filename=-472f8fe7198494df' '--out-dir' '/tmp/cargo-green--hack-caching/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/cargo-green--hack-caching/release/deps' '--extern' 'buildxargs=/tmp/cargo-green--hack-caching/release/deps/libbuildxargs-ced9b99b61cb3612.rlib' '--extern' 'pico_args=/tmp/cargo-green--hack-caching/release/deps/libpico_args-2483323735be5258.rlib' '--extern' 'shlex=/tmp/cargo-green--hack-caching/release/deps/libshlex-4598484aae949190.rlib' '--cap-lints' 'allow' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/buildxargs-1.4.0/src/main.rs \
-        1> >(tee /tmp/cargo-green--hack-caching/release/deps/out-472f8fe7198494df-stdout) \
-        2> >(tee /tmp/cargo-green--hack-caching/release/deps/out-472f8fe7198494df-stderr >&2)
+        1> >(tee    /tmp/cargo-green--hack-caching/release/deps/out-472f8fe7198494df-stdout) \
+        2> >(tee    /tmp/cargo-green--hack-caching/release/deps/out-472f8fe7198494df-stderr >&2) \
+        || echo $? >/tmp/cargo-green--hack-caching/release/deps/out-472f8fe7198494df-errcode
 FROM scratch AS out-472f8fe7198494df
 COPY --from=dep-b-buildxargs-1.4.0-472f8fe7198494df /tmp/cargo-green--hack-caching/release/deps/*-472f8fe7198494df* /
 
 # Pipe this file to:
 # DOCKER_BUILDKIT="1" \
-#   docker --debug build --network=none --platform=local --pull=false --target=out-472f8fe7198494df --output=type=local,dest=/tmp/cargo-green--hack-caching/release/deps - <buildxargs-472f8fe7198494df.Dockerfile
+#   docker build --network=none --platform=local --pull=false --target=out-472f8fe7198494df --output=type=local,dest=/tmp/cargo-green--hack-caching/release/deps - <buildxargs-472f8fe7198494df.Dockerfile
 
 ## this = "472f8fe7198494df"
 ## deps = [
@@ -413,8 +420,9 @@ COPY --from=dep-b-buildxargs-1.4.0-472f8fe7198494df /tmp/cargo-green--hack-cachi
 ##         CARGO_SBOM_PATH= \
 ##         CARGOGREEN=1 \
 ##       rustc '--crate-name' 'buildxargs' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'bin' '--emit' 'dep-info,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=3373ee4d0a4e7c31' '-C' 'extra-filename=-472f8fe7198494df' '--out-dir' '/tmp/cargo-green--hack-caching/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/cargo-green--hack-caching/release/deps' '--extern' 'buildxargs=/tmp/cargo-green--hack-caching/release/deps/libbuildxargs-ced9b99b61cb3612.rlib' '--extern' 'pico_args=/tmp/cargo-green--hack-caching/release/deps/libpico_args-2483323735be5258.rlib' '--extern' 'shlex=/tmp/cargo-green--hack-caching/release/deps/libshlex-4598484aae949190.rlib' '--cap-lints' 'allow' /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/buildxargs-1.4.0/src/main.rs \
-##         1> >(tee /tmp/cargo-green--hack-caching/release/deps/out-472f8fe7198494df-stdout) \
-##         2> >(tee /tmp/cargo-green--hack-caching/release/deps/out-472f8fe7198494df-stderr >&2)'''
+##         1> >(tee    /tmp/cargo-green--hack-caching/release/deps/out-472f8fe7198494df-stdout) \
+##         2> >(tee    /tmp/cargo-green--hack-caching/release/deps/out-472f8fe7198494df-stderr >&2) \
+##         || echo $? >/tmp/cargo-green--hack-caching/release/deps/out-472f8fe7198494df-errcode'''
 ## 
 ## [[stages]]
 ## name = "out-472f8fe7198494df"

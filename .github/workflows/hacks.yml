@@ -10,6 +10,17 @@ jobs:
     - run: ./hack/hit.sh
 
 
+  latest_buildkit:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash -euo pipefail {0}
+    steps:
+    - uses: actions/checkout@v5
+    - run: ./hack/latest_buildkit.sh | tee cargo-green/src/latest_buildkit.txt
+    - run: git --no-pager diff --exit-code -- cargo-green/src/latest_buildkit.txt
+
+
   caching:
     runs-on: ubuntu-latest
     defaults:
@@ -47,5 +58,16 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-cargo-install-
 
-    - run: ./hack/caching.sh
+    - run: |
+            # Usually auto-set by actions-rust-lang/setup-rust-toolchain@v1
+            # https://github.com/actions-rust-lang/setup-rust-toolchain/blob/fb51252c7ba57d633bc668f941da052e410add48/action.yml#L105
+            unset CARGO_INCREMENTAL
+            unset CARGO_PROFILE_DEV_DEBUG
+            unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
+            unset CARGO_TERM_COLOR
+            unset CARGO_UNSTABLE_SPARSE_REGISTRY
+            unset RUST_BACKTRACE
+            unset RUSTFLAGS
+
+            ./hack/caching.sh
     # - run: git --no-pager diff --cached --exit-code -- recipes/buildxargs@1.4.0.Dockerfile  #TODO: enable whence https://github.com/fenollp/supergreen/pull/151

@@ -59,7 +59,7 @@ jobs:
         name: cargo-green
         path: /home/runner/.cargo/bin/cargo-green
 
-  buildxargs_master:
+  buildxargs_master_3:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -125,7 +125,7 @@ jobs:
     - run: docker buildx du | head || true
     - run: docker buildx du | tail || true
     - run: docker buildx du --verbose
-    - name: cargo install net=ON cache=OFF remote=OFF jobs=1
+    - name: cargo install net=ON cache=OFF remote=OFF jobs=3
       run: |
         unset CARGO_INCREMENTAL
         unset CARGO_PROFILE_DEV_DEBUG
@@ -133,7 +133,7 @@ jobs:
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env  \
-          cargo green -vv install --jobs=1 --locked --force buildxargs --git https://github.com/fenollp/buildxargs.git |& tee _
+          cargo green -vv install --jobs=3 --locked --force buildxargs --git https://github.com/fenollp/buildxargs.git |& tee _
     - if: ${{ matrix.toolchain != 'stable' }}
       uses: actions/upload-artifact@v4
       name: Upload recipe
@@ -201,7 +201,7 @@ jobs:
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env  \
-          cargo green -vv install --jobs=1 --locked --force buildxargs --git https://github.com/fenollp/buildxargs.git |& tee _
+          cargo green -vv install --jobs=3 --locked --force buildxargs --git https://github.com/fenollp/buildxargs.git |& tee _
     - name: ...doesn't recompile anything
       run: |
         err=0
@@ -262,7 +262,7 @@ jobs:
       if: ${{ failure() || success() }}
       run: du -sh $CARGO_TARGET_DIR
 
-  cargo-llvm-cov_0-5-36:
+  cargo-llvm-cov_0-5-36_3:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -328,7 +328,7 @@ jobs:
     - run: docker buildx du | head || true
     - run: docker buildx du | tail || true
     - run: docker buildx du --verbose
-    - name: cargo install net=ON cache=OFF remote=OFF jobs=1
+    - name: cargo install net=ON cache=OFF remote=OFF jobs=3
       run: |
         unset CARGO_INCREMENTAL
         unset CARGO_PROFILE_DEV_DEBUG
@@ -336,7 +336,7 @@ jobs:
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env  \
-          cargo green -vv install --jobs=1 --locked --force cargo-llvm-cov@0.5.36  |& tee _
+          cargo green -vv install --jobs=3 --locked --force cargo-llvm-cov@0.5.36  |& tee _
     - if: ${{ matrix.toolchain != 'stable' }}
       uses: actions/upload-artifact@v4
       name: Upload recipe
@@ -404,7 +404,7 @@ jobs:
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env  \
-          cargo green -vv install --jobs=1 --locked --force cargo-llvm-cov@0.5.36  |& tee _
+          cargo green -vv install --jobs=3 --locked --force cargo-llvm-cov@0.5.36  |& tee _
     - name: ...doesn't recompile anything
       run: |
         err=0
@@ -465,7 +465,7 @@ jobs:
       if: ${{ failure() || success() }}
       run: du -sh $CARGO_TARGET_DIR
 
-  cross_0-2-5:
+  cross_0-2-5_3:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -531,7 +531,7 @@ jobs:
     - run: docker buildx du | head || true
     - run: docker buildx du | tail || true
     - run: docker buildx du --verbose
-    - name: cargo install net=ON cache=OFF remote=OFF jobs=1
+    - name: cargo install net=ON cache=OFF remote=OFF jobs=3
       run: |
         unset CARGO_INCREMENTAL
         unset CARGO_PROFILE_DEV_DEBUG
@@ -539,7 +539,7 @@ jobs:
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env  \
-          cargo green -vv install --jobs=1 --locked --force cross@0.2.5 --git https://github.com/cross-rs/cross.git --tag=v0.2.5 cross |& tee _
+          cargo green -vv install --jobs=3 --locked --force cross@0.2.5 --git https://github.com/cross-rs/cross.git --tag=v0.2.5 cross |& tee _
     - if: ${{ matrix.toolchain != 'stable' }}
       uses: actions/upload-artifact@v4
       name: Upload recipe
@@ -607,7 +607,7 @@ jobs:
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env  \
-          cargo green -vv install --jobs=1 --locked --force cross@0.2.5 --git https://github.com/cross-rs/cross.git --tag=v0.2.5 cross |& tee _
+          cargo green -vv install --jobs=3 --locked --force cross@0.2.5 --git https://github.com/cross-rs/cross.git --tag=v0.2.5 cross |& tee _
     - name: ...doesn't recompile anything
       run: |
         err=0
@@ -668,7 +668,7 @@ jobs:
       if: ${{ failure() || success() }}
       run: du -sh $CARGO_TARGET_DIR
 
-  dbcc_2-2-1:
+  dbcc_2-2-1_3:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -734,7 +734,7 @@ jobs:
     - run: docker buildx du | head || true
     - run: docker buildx du | tail || true
     - run: docker buildx du --verbose
-    - name: cargo install net=ON cache=OFF remote=OFF jobs=1
+    - name: cargo install net=ON cache=OFF remote=OFF jobs=3
       run: |
         unset CARGO_INCREMENTAL
         unset CARGO_PROFILE_DEV_DEBUG
@@ -742,7 +742,7 @@ jobs:
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env CARGOGREEN_SET_ENVS=TYPENUM_BUILD_CONSTS,TYPENUM_BUILD_OP \
-          cargo green -vv install --jobs=1 --locked --force dbcc@2.2.1  |& tee _
+          cargo green -vv install --jobs=3 --locked --force dbcc@2.2.1  |& tee _
     - if: ${{ matrix.toolchain != 'stable' }}
       uses: actions/upload-artifact@v4
       name: Upload recipe
@@ -810,7 +810,7 @@ jobs:
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env CARGOGREEN_SET_ENVS=TYPENUM_BUILD_CONSTS,TYPENUM_BUILD_OP \
-          cargo green -vv install --jobs=1 --locked --force dbcc@2.2.1  |& tee _
+          cargo green -vv install --jobs=3 --locked --force dbcc@2.2.1  |& tee _
     - name: ...doesn't recompile anything
       run: |
         err=0
@@ -871,7 +871,7 @@ jobs:
       if: ${{ failure() || success() }}
       run: du -sh $CARGO_TARGET_DIR
 
-  diesel_cli_2-1-1:
+  diesel_cli_2-1-1_3:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -937,7 +937,7 @@ jobs:
     - run: docker buildx du | head || true
     - run: docker buildx du | tail || true
     - run: docker buildx du --verbose
-    - name: cargo install net=ON cache=OFF remote=OFF jobs=1
+    - name: cargo install net=ON cache=OFF remote=OFF jobs=3
       run: |
         unset CARGO_INCREMENTAL
         unset CARGO_PROFILE_DEV_DEBUG
@@ -945,7 +945,7 @@ jobs:
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env CARGOGREEN_ADD_APT=libpq-dev \
-          cargo green -vv install --jobs=1 --locked --force diesel_cli@2.1.1 --no-default-features --features=postgres |& tee _
+          cargo green -vv install --jobs=3 --locked --force diesel_cli@2.1.1 --no-default-features --features=postgres |& tee _
     - if: ${{ matrix.toolchain != 'stable' }}
       uses: actions/upload-artifact@v4
       name: Upload recipe
@@ -1013,7 +1013,7 @@ jobs:
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env CARGOGREEN_ADD_APT=libpq-dev \
-          cargo green -vv install --jobs=1 --locked --force diesel_cli@2.1.1 --no-default-features --features=postgres |& tee _
+          cargo green -vv install --jobs=3 --locked --force diesel_cli@2.1.1 --no-default-features --features=postgres |& tee _
     - name: ...doesn't recompile anything
       run: |
         err=0
@@ -1074,7 +1074,7 @@ jobs:
       if: ${{ failure() || success() }}
       run: du -sh $CARGO_TARGET_DIR
 
-  hickory-dns_0-25-0-alpha-1:
+  hickory-dns_0-25-0-alpha-1_3:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -1140,7 +1140,7 @@ jobs:
     - run: docker buildx du | head || true
     - run: docker buildx du | tail || true
     - run: docker buildx du --verbose
-    - name: cargo install net=ON cache=OFF remote=OFF jobs=1
+    - name: cargo install net=ON cache=OFF remote=OFF jobs=3
       run: |
         unset CARGO_INCREMENTAL
         unset CARGO_PROFILE_DEV_DEBUG
@@ -1148,7 +1148,7 @@ jobs:
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env CARGOGREEN_SET_ENVS=RING_CORE_PREFIX \
-          cargo green -vv install --jobs=1 --locked --force hickory-dns@0.25.0-alpha.1 --features=dns-over-rustls |& tee _
+          cargo green -vv install --jobs=3 --locked --force hickory-dns@0.25.0-alpha.1 --features=dns-over-rustls |& tee _
     - if: ${{ matrix.toolchain != 'stable' }}
       uses: actions/upload-artifact@v4
       name: Upload recipe
@@ -1216,7 +1216,7 @@ jobs:
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env CARGOGREEN_SET_ENVS=RING_CORE_PREFIX \
-          cargo green -vv install --jobs=1 --locked --force hickory-dns@0.25.0-alpha.1 --features=dns-over-rustls |& tee _
+          cargo green -vv install --jobs=3 --locked --force hickory-dns@0.25.0-alpha.1 --features=dns-over-rustls |& tee _
     - name: ...doesn't recompile anything
       run: |
         err=0
@@ -1277,7 +1277,7 @@ jobs:
       if: ${{ failure() || success() }}
       run: du -sh $CARGO_TARGET_DIR
 
-  mussh_3-1-3:
+  mussh_3-1-3_3:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -1343,7 +1343,7 @@ jobs:
     - run: docker buildx du | head || true
     - run: docker buildx du | tail || true
     - run: docker buildx du --verbose
-    - name: cargo install net=ON cache=OFF remote=OFF jobs=1
+    - name: cargo install net=ON cache=OFF remote=OFF jobs=3
       run: |
         unset CARGO_INCREMENTAL
         unset CARGO_PROFILE_DEV_DEBUG
@@ -1351,7 +1351,7 @@ jobs:
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env CARGOGREEN_ADD_APT=libsqlite3-dev,libssl-dev,zlib1g-dev \
-          cargo green -vv install --jobs=1 --locked --force mussh@3.1.3  |& tee _
+          cargo green -vv install --jobs=3 --locked --force mussh@3.1.3  |& tee _
     - if: ${{ matrix.toolchain != 'stable' }}
       uses: actions/upload-artifact@v4
       name: Upload recipe
@@ -1419,7 +1419,7 @@ jobs:
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env CARGOGREEN_ADD_APT=libsqlite3-dev,libssl-dev,zlib1g-dev \
-          cargo green -vv install --jobs=1 --locked --force mussh@3.1.3  |& tee _
+          cargo green -vv install --jobs=3 --locked --force mussh@3.1.3  |& tee _
     - name: ...doesn't recompile anything
       run: |
         err=0
@@ -1480,7 +1480,7 @@ jobs:
       if: ${{ failure() || success() }}
       run: du -sh $CARGO_TARGET_DIR
 
-  ntpd_1-2-3:
+  ntpd_1-2-3_3:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -1547,7 +1547,7 @@ jobs:
     - run: docker buildx du | head || true
     - run: docker buildx du | tail || true
     - run: docker buildx du --verbose
-    - name: cargo install net=ON cache=OFF remote=OFF jobs=1
+    - name: cargo install net=ON cache=OFF remote=OFF jobs=3
       run: |
         unset CARGO_INCREMENTAL
         unset CARGO_PROFILE_DEV_DEBUG
@@ -1555,7 +1555,7 @@ jobs:
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env CARGOGREEN_SET_ENVS=NTPD_RS_GIT_DATE,NTPD_RS_GIT_REV,RING_CORE_PREFIX \
-          cargo green -vv install --jobs=1 --locked --force ntpd@1.2.3  |& tee _
+          cargo green -vv install --jobs=3 --locked --force ntpd@1.2.3  |& tee _
     - if: ${{ matrix.toolchain != 'stable' }}
       uses: actions/upload-artifact@v4
       name: Upload recipe
@@ -1623,7 +1623,7 @@ jobs:
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env CARGOGREEN_SET_ENVS=NTPD_RS_GIT_DATE,NTPD_RS_GIT_REV,RING_CORE_PREFIX \
-          cargo green -vv install --jobs=1 --locked --force ntpd@1.2.3  |& tee _
+          cargo green -vv install --jobs=3 --locked --force ntpd@1.2.3  |& tee _
     - name: ...doesn't recompile anything
       run: |
         err=0
@@ -1684,7 +1684,7 @@ jobs:
       if: ${{ failure() || success() }}
       run: du -sh $CARGO_TARGET_DIR
 
-  qcow2-rs_0-1-2:
+  qcow2-rs_0-1-2_3:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -1750,7 +1750,7 @@ jobs:
     - run: docker buildx du | head || true
     - run: docker buildx du | tail || true
     - run: docker buildx du --verbose
-    - name: cargo install net=ON cache=OFF remote=OFF jobs=1
+    - name: cargo install net=ON cache=OFF remote=OFF jobs=3
       run: |
         unset CARGO_INCREMENTAL
         unset CARGO_PROFILE_DEV_DEBUG
@@ -1758,7 +1758,7 @@ jobs:
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env  \
-          cargo green -vv install --jobs=1 --locked --force qcow2-rs@0.1.2  |& tee _
+          cargo green -vv install --jobs=3 --locked --force qcow2-rs@0.1.2  |& tee _
     - if: ${{ matrix.toolchain != 'stable' }}
       uses: actions/upload-artifact@v4
       name: Upload recipe
@@ -1826,7 +1826,7 @@ jobs:
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env  \
-          cargo green -vv install --jobs=1 --locked --force qcow2-rs@0.1.2  |& tee _
+          cargo green -vv install --jobs=3 --locked --force qcow2-rs@0.1.2  |& tee _
     - name: ...doesn't recompile anything
       run: |
         err=0
@@ -1887,7 +1887,7 @@ jobs:
       if: ${{ failure() || success() }}
       run: du -sh $CARGO_TARGET_DIR
 
-  ripgrep_14-1-0:
+  ripgrep_14-1-0_3:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -1953,7 +1953,7 @@ jobs:
     - run: docker buildx du | head || true
     - run: docker buildx du | tail || true
     - run: docker buildx du --verbose
-    - name: cargo install net=ON cache=OFF remote=OFF jobs=1
+    - name: cargo install net=ON cache=OFF remote=OFF jobs=3
       run: |
         unset CARGO_INCREMENTAL
         unset CARGO_PROFILE_DEV_DEBUG
@@ -1961,7 +1961,7 @@ jobs:
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env  \
-          cargo green -vv install --jobs=1 --locked --force ripgrep@14.1.0  |& tee _
+          cargo green -vv install --jobs=3 --locked --force ripgrep@14.1.0  |& tee _
     - if: ${{ matrix.toolchain != 'stable' }}
       uses: actions/upload-artifact@v4
       name: Upload recipe
@@ -2029,7 +2029,7 @@ jobs:
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env  \
-          cargo green -vv install --jobs=1 --locked --force ripgrep@14.1.0  |& tee _
+          cargo green -vv install --jobs=3 --locked --force ripgrep@14.1.0  |& tee _
     - name: ...doesn't recompile anything
       run: |
         err=0
@@ -2090,7 +2090,7 @@ jobs:
       if: ${{ failure() || success() }}
       run: du -sh $CARGO_TARGET_DIR
 
-  rublk_0-2-0:
+  rublk_0-2-0_3:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -2156,7 +2156,7 @@ jobs:
     - run: docker buildx du | head || true
     - run: docker buildx du | tail || true
     - run: docker buildx du --verbose
-    - name: cargo install net=ON cache=OFF remote=OFF jobs=1
+    - name: cargo install net=ON cache=OFF remote=OFF jobs=3
       run: |
         unset CARGO_INCREMENTAL
         unset CARGO_PROFILE_DEV_DEBUG
@@ -2164,7 +2164,7 @@ jobs:
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env  \
-          cargo green -vv install --jobs=1 --locked --force rublk@0.2.0  |& tee _
+          cargo green -vv install --jobs=3 --locked --force rublk@0.2.0  |& tee _
     - if: ${{ matrix.toolchain != 'stable' }}
       uses: actions/upload-artifact@v4
       name: Upload recipe
@@ -2232,7 +2232,7 @@ jobs:
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env  \
-          cargo green -vv install --jobs=1 --locked --force rublk@0.2.0  |& tee _
+          cargo green -vv install --jobs=3 --locked --force rublk@0.2.0  |& tee _
     - name: ...doesn't recompile anything
       run: |
         err=0
@@ -2293,7 +2293,7 @@ jobs:
       if: ${{ failure() || success() }}
       run: du -sh $CARGO_TARGET_DIR
 
-  vixargs_0-1-0:
+  vixargs_0-1-0_3:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -2359,7 +2359,7 @@ jobs:
     - run: docker buildx du | head || true
     - run: docker buildx du | tail || true
     - run: docker buildx du --verbose
-    - name: cargo install net=ON cache=OFF remote=OFF jobs=1
+    - name: cargo install net=ON cache=OFF remote=OFF jobs=3
       run: |
         unset CARGO_INCREMENTAL
         unset CARGO_PROFILE_DEV_DEBUG
@@ -2367,7 +2367,7 @@ jobs:
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env  \
-          cargo green -vv install --jobs=1 --locked --force vixargs@0.1.0  |& tee _
+          cargo green -vv install --jobs=3 --locked --force vixargs@0.1.0  |& tee _
     - if: ${{ matrix.toolchain != 'stable' }}
       uses: actions/upload-artifact@v4
       name: Upload recipe
@@ -2435,7 +2435,7 @@ jobs:
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env  \
-          cargo green -vv install --jobs=1 --locked --force vixargs@0.1.0  |& tee _
+          cargo green -vv install --jobs=3 --locked --force vixargs@0.1.0  |& tee _
     - name: ...doesn't recompile anything
       run: |
         err=0
@@ -2496,7 +2496,7 @@ jobs:
       if: ${{ failure() || success() }}
       run: du -sh $CARGO_TARGET_DIR
 
-  cargo-config2_0-1-34:
+  cargo-config2_0-1-34_3:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -2562,7 +2562,7 @@ jobs:
     - run: docker buildx du | head || true
     - run: docker buildx du | tail || true
     - run: docker buildx du --verbose
-    - name: cargo install net=ON cache=OFF remote=OFF jobs=1
+    - name: cargo install net=ON cache=OFF remote=OFF jobs=3
       run: |
         unset CARGO_INCREMENTAL
         unset CARGO_PROFILE_DEV_DEBUG
@@ -2570,7 +2570,7 @@ jobs:
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env  \
-          cargo green -vv install --jobs=1 --locked --force cargo-config2@0.1.34 --example=get |& tee _
+          cargo green -vv install --jobs=3 --locked --force cargo-config2@0.1.34 --example=get |& tee _
     - if: ${{ matrix.toolchain != 'stable' }}
       uses: actions/upload-artifact@v4
       name: Upload recipe
@@ -2638,7 +2638,7 @@ jobs:
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env  \
-          cargo green -vv install --jobs=1 --locked --force cargo-config2@0.1.34 --example=get |& tee _
+          cargo green -vv install --jobs=3 --locked --force cargo-config2@0.1.34 --example=get |& tee _
     - name: ...doesn't recompile anything
       run: |
         err=0
@@ -2699,7 +2699,7 @@ jobs:
       if: ${{ failure() || success() }}
       run: du -sh $CARGO_TARGET_DIR
 
-  cargo-udeps_0-1-55:
+  cargo-udeps_0-1-55_3:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -2765,7 +2765,7 @@ jobs:
     - run: docker buildx du | head || true
     - run: docker buildx du | tail || true
     - run: docker buildx du --verbose
-    - name: cargo install net=ON cache=OFF remote=OFF jobs=1
+    - name: cargo install net=ON cache=OFF remote=OFF jobs=3
       run: |
         unset CARGO_INCREMENTAL
         unset CARGO_PROFILE_DEV_DEBUG
@@ -2773,7 +2773,7 @@ jobs:
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env CARGOGREEN_ADD_APT=libssl-dev,zlib1g-dev \
-          cargo green -vv install --jobs=1 --locked --force cargo-udeps@0.1.55  |& tee _
+          cargo green -vv install --jobs=3 --locked --force cargo-udeps@0.1.55  |& tee _
     - if: ${{ matrix.toolchain != 'stable' }}
       uses: actions/upload-artifact@v4
       name: Upload recipe
@@ -2841,7 +2841,7 @@ jobs:
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env CARGOGREEN_ADD_APT=libssl-dev,zlib1g-dev \
-          cargo green -vv install --jobs=1 --locked --force cargo-udeps@0.1.55  |& tee _
+          cargo green -vv install --jobs=3 --locked --force cargo-udeps@0.1.55  |& tee _
     - name: ...doesn't recompile anything
       run: |
         err=0

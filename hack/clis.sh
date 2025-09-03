@@ -4,16 +4,23 @@ set -o pipefail
 repo_root=$(realpath "$(dirname "$(dirname "$0")")")
 source "$repo_root"/hack/ck.sh
 
-with_j=0 # TODO: 1 => adds jobs with -J (see cargo issue https://github.com/rust-lang/cargo/issues/13889)
+# Usage:           $0                              #=> generate CI
+#
+# Usage:           $0 ( <name@version> | <name> )  #=> cargo install name@version
+# Usage:           $0   ok                         #=> cargo install all working bins
+#
+# Usage:           $0 ( build | test )             #=> cargo build ./cargo-green
+#
+# Usage:    jobs=1 $0 ..                           #=> cargo --jobs=$jobs
+# Usage: offline=1 $0 ..                           #=> cargo --frozen (defaults to just: --locked)
+# Usage:    rmrf=1 $0 ..                           #=> rm -rf $CARGO_TARGET_DIR/*; cargo ...
+# Usage:   reset=1 $0 ..                           #=> docker buildx rm $BUILDX_BUILDER; cargo ...
+# Usage:   clean=1 $0 ..                           #=> Both reset=1 + rmrf=1
+#
+# Usage:    DOCKER_HOST=.. $0 ..                   #=> Overrides machine
+# Usage: BUILDX_BUILDER=.. $0 ..                   #=> Overrides builder (set to "empty" to set BUILDX_BUILDER='')
 
-# Usage:           $0                                      #=> generate CI
-# Usage:           $0 ( <name@version> | <name> ) [clean]  #=> cargo install name@version
-# Usage:           $0   ok                        [clean]  #=> cargo install all working bins
-# Usage:           $0 ( build | test )            [clean]  #=> cargo build ./cargo-green
-# Usage:    jobs=1 $0 ..                                   #=> cargo --jobs=$jobs
-# Usage: offline=1 $0 ..                                   #=> cargo --frozen (defaults to just: --locked)
-
-# TODO: test other runtimes: runc crun containerd buildkit-rootless
+# TODO: test other runtimes: runc crun containerd buildkit-rootless lima colima
 # TODO: set -x in ci
 
 # TODO: https://crates.io/categories/command-line-utilities?sort=recent-updates
@@ -210,7 +217,7 @@ cli() {
  as_env "$name_at_version"
 
 	cat <<EOF
-$(jobdef "$(slugify "$name_at_version")$(if [[ "$jobs" != 1 ]]; then echo '-J'; fi)")
+$(jobdef "$(slugify "$name_at_version")_$jobs")
     continue-on-error: \${{ matrix.toolchain != 'stable' }}
     strategy:
       matrix:
@@ -316,11 +323,8 @@ if [[ $# = 0 ]]; then
     case "$name_at_version" in
       cargo-green@*) continue ;;
     esac
-    cli "$name_at_version" 1 "${nvs_args["$i"]}"
-    if [[ $with_j = 1 ]]; then
-      # 3: https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners/about-github-hosted-runners#standard-github-hosted-runners-for-public-repositories
-      cli "$name_at_version" 3 "${nvs_args["$i"]}"
-    fi
+    # 3: https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners/about-github-hosted-runners#standard-github-hosted-runners-for-public-repositories
+    cli "$name_at_version" 3 "${nvs_args["$i"]}"
   done
 
   exit
@@ -328,11 +332,18 @@ fi
 
 
 arg1=$1; shift
-modifier=${1:-0}
 
-clean=0; if [[ "$modifier" = 'clean' ]]; then clean=1; fi
+rmrf=${rmrf:-0}
+reset=${reset:-0}
+[[ "${clean:-0}" = 1 ]] && rmrf=1 && reset=1
 jobs=${jobs:-$(nproc)}
 frozen=--locked ; [[ "${offline:-}" = '1' ]] && frozen=--frozen
+
+case "${BUILDX_BUILDER:-}" in
+  '') BUILDX_BUILDER=supergreen ;;
+  'empty') BUILDX_BUILDER= ;;
+  *) ;;
+esac
 
 install_dir=$repo_root/target
 CARGO=${CARGO:-cargo}
@@ -344,7 +355,7 @@ case "$arg1" in
     for i in "${!nvs[@]}"; do
       case "${oks[$i]}" in ok|hm) ;; *) continue ;; esac
       nv=${nvs[$i]}
-      "$0" "${nv#*@}" "$modifier"
+      "$0" "${nv#*@}"
     done
     exit $? ;;
 
@@ -354,7 +365,8 @@ set -x
     tmptrgt=$PWD/target/tmp-$arg1
     tmplogs=$tmptrgt.logs.txt
     mkdir -p "$tmptrgt"
-    if [[ "$clean" = '1' ]]; then rm -rf "$tmptrgt" || exit 1; fi
+    if [[ "$rmrf" = '1' ]]; then rm -rf "$tmptrgt"/* || exit 1; fi
+    if [[ "$reset" = 1 ]]; then docker buildx rm "$BUILDX_BUILDER" --force || exit 1; fi
     CARGO_TARGET_DIR=$install_dir $CARGO install $frozen --force --root=$install_dir --path="$PWD"/cargo-green
     ls -lha $install_dir/bin/cargo-green
     rm $tmplogs >/dev/null 2>&1 || true
@@ -374,8 +386,6 @@ set -x
     PATH=$install_dir/bin:"$PATH" \
     CARGO_TARGET_DIR="$tmptrgt" \
       $CARGO green -v $arg1 --jobs=$jobs --all-targets --all-features $frozen -p cargo-green
-    #if [[ "$clean" = 1 ]]; then docker buildx du --builder=supergreen --verbose | tee --append "$tmplogs" || exit 1; fi
-    # TODO: tag/label buildx storage so things can be deleted with fine filters
     maybe_show_logs "$tmplogs"
     exit ;;
 esac
@@ -405,8 +415,8 @@ tmplogs=$tmptrgt.logs.txt
 tmpgooo=$tmptrgt.state
 tmpbins=/tmp
 
-if [[ "$clean" = '1' ]]; then
-  rm -rf "$tmptrgt"
+if [[ "$rmrf" = '1' ]]; then
+  rm -rf "$tmptrgt"/*
 fi
 
 rm -f "$tmpgooo".*
@@ -436,9 +446,9 @@ envvars+=(CARGO_TARGET_DIR="$tmptrgt")
 as_env "$name_at_version"
 send \
   'until' '[[' -f "$tmpgooo".installed ']];' 'do' sleep '.1;' 'done' '&&' rm "$tmpgooo".* \
+  '&&' 'if' '[[' "$reset" '=' '1' ']];' 'then' docker buildx rm "$BUILDX_BUILDER" --force '||' 'exit' '1;' 'fi' \
   '&&' 'case' "$name_at_version" 'in' ntpd'@*)' export NTPD_RS_GIT_REV=$ntpd_locked_commit '&&' export NTPD_RS_GIT_DATE=$ntpd_locked_date ';;' '*)' ';;' 'esac' \
   '&&' "${envvars[@]}" $CARGO green -vv install --timings --jobs=$jobs --root=$tmpbins $frozen --force "$(as_install "$name_at_version")" "$args" \
-  '&&' 'if' '[[' "$clean" '=' '1' ']];' 'then' docker buildx du --builder=supergreen --verbose '|' tee --append "$tmplogs" '||' 'exit' '1;' 'fi' \
   '&&' tmux kill-session -t "$session_name"
 tmux select-layout even-vertical
 

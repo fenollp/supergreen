@@ -1,5 +1,3 @@
-use std::process::Output;
-
 use anyhow::{bail, Result};
 use camino::{Utf8Path, Utf8PathBuf};
 use cargo_lock::{Lockfile, Package, SourceId};
@@ -7,7 +5,7 @@ use pico_args::Arguments;
 use serde::Deserialize;
 use tokio::process::Command;
 
-use crate::{cargo, ext::ShowCmd, pwd};
+use crate::{cargo, ext::CommandExt, pwd};
 
 pub(crate) async fn locked_crates(
     manifest_path_lockfile: &Utf8Path,
@@ -84,9 +82,10 @@ async fn cargo_locate_project(at_workspace: bool) -> Result<Utf8PathBuf> {
         cmd.arg("--workspace");
     }
 
-    let Output { stderr, stdout, status } = cmd.output().await?;
-    if !status.success() || !stderr.is_empty() {
-        bail!("{} failed: {:?}", cmd.show(), String::from_utf8_lossy(&stderr))
+    let (succeeded, stdout, stderr) = cmd.exec().await?;
+    if !succeeded || !stderr.is_empty() {
+        let stderr = String::from_utf8_lossy(&stderr);
+        bail!("{} failed: {stderr:?}", cmd.show())
     }
 
     #[derive(Debug, Deserialize)]

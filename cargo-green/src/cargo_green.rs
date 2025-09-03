@@ -1,25 +1,27 @@
 use std::{
     env,
     fs::{self},
-    process::{Output, Stdio},
 };
 
 use anyhow::{anyhow, bail, Result};
 use futures::{stream::iter, StreamExt, TryStreamExt};
-use log::{debug, info};
+use log::{debug, info, warn};
 use tokio::try_join;
 
 use crate::{
     base_image::{ENV_BASE_IMAGE, ENV_WITH_NETWORK},
     cratesio::{self},
-    ext::ShowCmd,
+    ext::CommandExt,
     green::Green,
     hash,
     image_uri::{ImageUri, SYNTAX},
     lockfile::{find_lockfile, locked_crates},
     logging::{self, maybe_log},
     pwd,
-    runner::{build_cacheonly, fetch_digest, maybe_lock_image, Network, Runner},
+    runner::{
+        self, build_cacheonly, fetch_digest, Network, Runner, BUILDKIT_HOST, BUILDX_BUILDER,
+        DOCKER_BUILDKIT, DOCKER_CONTEXT, DOCKER_HOST,
+    },
     stage::{Stage, RST, RUST},
     tmp, PKG, VSN,
 };
@@ -39,31 +41,103 @@ pub(crate) async fn main() -> Result<Green> {
         bail!("${ENV_RUNNER} can only be set through the environment variable")
     }
     if let Ok(val) = env::var(ENV_RUNNER) {
-        green.runner = val.parse().map_err(|e| anyhow!("${ENV_RUNNER} {e}"))?;
+        green.runner = val.parse().map_err(|e| anyhow!("${ENV_RUNNER}={val:?} {e}"))?;
     }
+
+    // Read runner's envs only once and disallow conf overrides
+    if !green.runner_envs.is_empty() {
+        bail!("'runner_envs' setting cannot be set")
+    }
+    green.runner_envs = runner::envs();
+
+    // Cf. https://docs.docker.com/build/buildkit/#getting-started
+    if green.runner_envs.get(DOCKER_BUILDKIT).is_some_and(|x| x != "1") {
+        bail!("This requires ${DOCKER_BUILDKIT}=1")
+    }
+
+    // Cf. https://docs.docker.com/engine/security/protect-access/
+    if let Some(val) = green.runner_envs.get(DOCKER_HOST) {
+        info!("${DOCKER_HOST} is set to {val:?}");
+        eprintln!("${DOCKER_HOST} is set to {val:?}");
+    }
+
+    // Cf. https://docs.docker.com/reference/cli/docker/#environment-variables
+    if let Some(val) = green.runner_envs.get(DOCKER_CONTEXT) {
+        info!("${DOCKER_CONTEXT} is set to {val:?}");
+        eprintln!("${DOCKER_CONTEXT} is set to {val:?}");
+    }
+
+    // Cf. https://docs.docker.com/build/building/variables/#buildkit_host
+    let buildkit_host = green.runner_envs.get(BUILDKIT_HOST);
+    if let Some(val) = buildkit_host {
+        info!("${BUILDKIT_HOST} is set to {val:?}");
+        eprintln!("${BUILDKIT_HOST} is set to {val:?}");
+    }
+
+    if green.builder.name.is_some() {
+        bail!("builder-name can only be set through the environment variable")
+    }
+    let builder = green.runner_envs.get(BUILDX_BUILDER);
+    if let Some(name) = builder {
+        info!("${BUILDX_BUILDER} is set to {name:?}");
+        eprintln!("${BUILDX_BUILDER} is set to {name:?}");
+
+        if !name.is_empty() {
+            if let Some(val) = buildkit_host {
+                bail!("Overriding ${BUILDKIT_HOST}={val:?} while setting ${BUILDX_BUILDER}={name:?} is unsupported")
+            }
+        }
+    }
+
+    //CARGOGREEN_REMOTES ~= CCSV: host=URL;URL
+    //=> colon CSV
+    //=> keys= host,ca,cert,key,skip-tls-verify + name,description,from (enforce!)
+    //=> when only URL given: craft name
+    //error if creating fails || creating existing name but different values
+    //error if given builder does not have exactly these remotes (ESC name,description,from)
+    //error if any of these is also set: DOCKER_HOST, DOCKER_CONTEXT, BUILDKIT_HOST
+    //docker context create --help
+    //
+    // docker context create amd64 --docker host=ssh://root@x.x.x.220
+    // docker context create arm64 --docker host=ssh://root@x.x.x.72
+    // docker buildx create --name multiarch-builder amd64 [--platform linux/amd64]
+    // docker buildx create --name multiarch-builder --append arm64 [--platform linux/arm64]
+    // docker buildx build --builder multiarch-builder -t dustinrue/buildx-example --platform linux/amd64,linux/arm64,linux/arm/v6 .
+    // https://dustinrue.com/2021/12/using-a-remote-docker-engine-with-buildx/
+    //
+    // https://github.com/moby/buildkit/issues/4268#issuecomment-2128464135
+    // docker buildx create --name amd64-builder --driver docker-container --platform linux/amd64 ssh://user@remote-machine
+    // docker buildx build --builder amd64-builder --load .
+
+    // Then the builder: needed by cmd calls
+    if green.builder.image.is_some() {
+        bail!("${ENV_BUILDER_IMAGE} can only be set through the environment variable")
+    }
+    if let Ok(builder_image) = env::var(ENV_BUILDER_IMAGE) {
+        let img = builder_image
+            .clone()
+            .try_into()
+            .map_err(|e| anyhow!("${ENV_BUILDER_IMAGE}={builder_image:?} {e}"))?;
+        // Don't use 'maybe_lock_image', only 'fetch_digest': cmd uses builder.
+        green.builder.image = Some(fetch_digest(&img).await?);
+    }
+
+    green.maybe_setup_builder(builder.cloned()).await?;
 
     if !green.syntax.is_empty() {
         bail!("${ENV_SYNTAX} can only be set through the environment variable")
     }
     if let Ok(syntax) = env::var(ENV_SYNTAX) {
-        green.syntax = syntax.try_into().map_err(|e| anyhow!("${ENV_SYNTAX} {e}"))?;
+        green.syntax =
+            syntax.clone().try_into().map_err(|e| anyhow!("${ENV_SYNTAX}={syntax:?} {e}"))?;
     }
     // Use local hashed image if one matching exists locally
-    green.syntax = maybe_lock_image(&green, &green.syntax).await;
+    green.syntax = green.maybe_lock_image(&green.syntax).await?;
     // otherwise default to a hash found through some Web API
     green.syntax = fetch_digest(&green.syntax).await?;
     if !green.syntax.stable_syntax_frontend() {
         // Enforce a known stable syntax + allow pinning to digest
         bail!("${ENV_SYNTAX} must be a digest of {}", SYNTAX.as_str())
-    }
-
-    if green.builder_image.is_some() {
-        bail!("${ENV_BUILDER_IMAGE} can only be set through the environment variable")
-    }
-    if let Ok(builder_image) = env::var(ENV_BUILDER_IMAGE) {
-        let img = builder_image.try_into().map_err(|e| anyhow!("${ENV_BUILDER_IMAGE} {e}"))?;
-        let builder_image = maybe_lock_image(&green, &img).await;
-        green.builder_image = Some(fetch_digest(&builder_image).await?);
     }
 
     if green.final_path.is_some() {
@@ -98,7 +172,7 @@ pub(crate) async fn main() -> Result<Green> {
     }
 
     if !green.image.base_image.locked() {
-        let mut base = maybe_lock_image(&green, &green.image.base_image).await;
+        let mut base = green.maybe_lock_image(&green.image.base_image).await?;
         base = fetch_digest(&base).await?;
         green.image = green.image.lock_base_to(base);
     }
@@ -113,13 +187,20 @@ pub(crate) async fn main() -> Result<Green> {
     assert!(!green.image.base_image.is_empty(), "BUG: base_image set to {SYNTAX:?}");
 
     if let Ok(val) = env::var(ENV_WITH_NETWORK) {
-        green.image.with_network = val.parse().map_err(|e| anyhow!("${ENV_WITH_NETWORK} {e}"))?;
+        green.image.with_network =
+            val.parse().map_err(|e| anyhow!("${ENV_WITH_NETWORK}={val:?} {e}"))?;
     }
     if let Ok(val) = env::var("CARGO_NET_OFFLINE") {
         if val == "1" {
             green.image.with_network = Network::None;
         }
     }
+
+    // TODO? docker dial-stdio proxy
+    // https://github.com/docker/cli/blob/9bb1a62735174e9220d84fecc056a0ef8a1fc26f/cli/command/system/dial_stdio.go
+
+    // https://docs.docker.com/engine/context/working-with-contexts/
+    // https://docs.docker.com/engine/security/protect-access/
 
     // FIXME "multiplex conns to daemon" https://github.com/docker/buildx/issues/2564#issuecomment-2207435201
     // > If you do have docker context created already on ssh endpoint then you don't need to set the ssh address again on buildx create, you can use the context name or let it use the active context.
@@ -133,107 +214,36 @@ pub(crate) async fn main() -> Result<Green> {
     // https://crates.io/crates/async-ssh2-tokio
     // https://crates.io/crates/russh
 
-    // https://docs.docker.com/build/building/variables/#buildx_builder
-    if let Ok(ctx) = env::var("DOCKER_HOST") {
-        info!("$DOCKER_HOST is set to {ctx:?}");
-        eprintln!("$DOCKER_HOST is set to {ctx:?}");
-    } else if let Ok(ctx) = env::var("BUILDX_BUILDER") {
-        info!("$BUILDX_BUILDER is set to {ctx:?}");
-        eprintln!("$BUILDX_BUILDER is set to {ctx:?}");
-    } else if let Ok(remote) = env::var("CARGOGREEN_REMOTE") {
-        //     // docker buildx create \
-        //     //   --name supergreen \
-        //     //   --driver remote \
-        //     //   tcp://localhost:1234
-        //     //{remote}
-        //     env::set_var("DOCKER_CONTEXT", "supergreen"); //FIXME: ensure this gets passed down & used
-        panic!("$CARGOGREEN_REMOTE is reserved but set to: {remote}");
-    } else if false {
-        setup_build_driver(&green, "supergreen").await?; // FIXME? maybe_..
-        env::set_var("BUILDX_BUILDER", "supergreen");
-
-        // TODO? docker dial-stdio proxy
-        // https://github.com/docker/cli/blob/9bb1a62735174e9220d84fecc056a0ef8a1fc26f/cli/command/system/dial_stdio.go
-
-        // https://docs.docker.com/engine/context/working-with-contexts/
-        // https://docs.docker.com/engine/security/protect-access/
-    }
-
     Ok(green)
-}
-
-// https://docs.docker.com/build/drivers/docker-container/
-// https://docs.docker.com/build/drivers/remote/
-// https://docs.docker.com/build/drivers/kubernetes/
-async fn setup_build_driver(green: &Green, name: &str) -> Result<()> {
-    if false {
-        // TODO: reuse old state but try auto-upgrading builder impl
-        try_removing_previous_builder(green, name).await;
-    }
-
-    let Some(ref builder_image) = green.builder_image else { return Ok(()) };
-    let builder_image = builder_image.noscheme();
-
-    let mut cmd = green.runner.as_cmd();
-    cmd.args(["buildx", "create"])
-        .arg(format!("--name={name}"))
-        .arg("--bootstrap")
-        .arg("--driver=docker-container")
-        .arg(format!("--driver-opt=image={builder_image}"))
-        .stdout(Stdio::null())
-        .stderr(Stdio::null());
-
-    let call = cmd.show();
-    let envs: Vec<_> = cmd.as_std().get_envs().map(|(k, v)| format!("{k:?}={v:?}")).collect();
-    let envs = envs.join(" ");
-
-    info!("Calling {call} (env: {envs:?})`");
-    eprintln!("Calling {call} (env: {envs:?})`");
-
-    let Output { status, stderr, .. } = cmd.output().await?;
-    if !status.success() {
-        let stderr = String::from_utf8_lossy(&stderr);
-        if !stderr.starts_with(r#"ERROR: existing instance for "supergreen""#) {
-            bail!("BUG: failed to create builder: {stderr}")
-        }
-    }
-
-    Ok(())
-}
-
-async fn try_removing_previous_builder(green: &Green, name: &str) {
-    let mut cmd = green.runner.as_cmd();
-    cmd.args(["buildx", "rm", name, "--keep-state", "--force"])
-        .stdout(Stdio::null())
-        .stderr(Stdio::null());
-
-    let call = cmd.show();
-    let envs: Vec<_> = cmd.as_std().get_envs().map(|(k, v)| format!("{k:?}={v:?}")).collect();
-    let envs = envs.join(" ");
-
-    info!("Calling {call} (env: {envs:?})`");
-    eprintln!("Calling {call} (env: {envs:?})`");
-
-    let _ = cmd.status().await;
 }
 
 pub(crate) async fn maybe_prebuild_base(green: &Green) -> Result<()> {
     let mut containerfile = green.new_containerfile();
     containerfile.pushln(green.image.base_image_inline.as_deref().unwrap());
 
-    let path = tmp().join(format!("{PKG}-{RST}-{}.Dockerfile", containerfile.hashed()));
-    if path.exists() {
+    let fname = format!("{PKG}-{RST}-{}.Dockerfile", containerfile.hashed());
+    let sentinel = tmp().join(format!("{fname}.done"));
+    info!("checking the existence of {sentinel}");
+    if sentinel.exists() {
         return Ok(());
     }
+
+    let path = tmp().join(fname);
     containerfile.write_to(&path)?;
 
     // Turns out --network is part of BuildKit's cache key, so an initial online build
     // won't cache hit on later offline builds.
-    build_cacheonly(green, &path, RUST.clone()).await.map_err(|e| {
-        // TODO: catch ^C (and co.) to make sure file gets removed
-        let containerfile = containerfile.remove_from(&path);
-        anyhow!("{containerfile}\n\nUnable to build {RST}: {e}")
-    })
+    build_cacheonly(green, &path, RUST.clone())
+        .await
+        .inspect(|_| {
+            if let Err(e) = fs::write(&sentinel, "") {
+                warn!("Failed creating sentinel {sentinel}: {e}")
+            }
+        })
+        .map_err(|e| {
+            let containerfile = containerfile.remove_from(&path);
+            anyhow!("{containerfile}\n\nUnable to build {RST}: {e}")
+        })
 }
 
 pub(crate) async fn fetch(green: Green) -> Result<()> {
@@ -246,20 +256,39 @@ pub(crate) async fn fetch(green: Green) -> Result<()> {
 
     let packages = locked_crates(&manifest_path_lockfile).await?;
     info!("found {} packages", packages.len());
-    if packages.is_empty() {
-        return Ok(());
-    }
 
-    let imgs = vec![
+    let imgs: Vec<_> = [
+        // NOTE: we don't pull ENV_CACHE_IMAGES
         (env::var(ENV_SYNTAX).ok(), Some(&green.syntax)),
         (env::var(ENV_BASE_IMAGE).ok(), Some(&green.image.base_image)),
-        (env::var(ENV_BUILDER_IMAGE).ok(), green.builder_image.as_ref()),
-    ]; // NOTE: we don't pull ENV_CACHE_IMAGES
+        (env::var(ENV_BUILDER_IMAGE).ok(), green.builder.image.as_ref()),
+    ]
+    .into_iter()
+    .filter_map(|(user_input, img)| img.map(|img| (user_input, img)))
+    .map(|(user_input, img)| {
+        if img.locked() && user_input.map(|x| !x.contains("@sha256:")).unwrap_or(true) {
+            // Don't pull a locked image unless that's what's asked
+            // Otherwise, pull unlocked
+
+            img.unlocked()
+        } else {
+            img.to_owned()
+        }
+    })
+    .collect();
+
+    let mut containerfile = green.new_containerfile();
+
+    let imger = |img: &str| img.replace(['/', ':'], "-");
+    let ddb = green.builder.is_default();
+
+    for img in imgs.iter().filter(|_| !ddb) {
+        let img = img.noscheme();
+        containerfile.push(&format!("FROM --platform=$BUILDPLATFORM {img} AS {}\n", imger(img)));
+    }
 
     let stage = Stage::new("cargo-fetch").unwrap();
     let stager = |i| format!("{stage}-{i}");
-
-    let mut containerfile = green.new_containerfile();
 
     let mut leaves = 0;
     // 127: https://github.com/docker/docs/issues/8230
@@ -270,11 +299,11 @@ pub(crate) async fn fetch(green: Green) -> Result<()> {
 
         let (name, version, hash) = &pkgs[0];
         debug!("will fetch crate {name}: {version}");
-        containerfile.pushln(&cratesio::add_step(name, version, hash));
+        containerfile.pushln(cratesio::add_step(name, version, hash).trim());
 
         for (name, version, hash) in &pkgs[1..] {
             debug!("will fetch crate {name}: {version}");
-            containerfile.pushln(&cratesio::add_step(name, version, hash));
+            containerfile.pushln(cratesio::add_step(name, version, hash).trim());
         }
     }
     containerfile.push(&format!("FROM scratch AS {stage}\n"));
@@ -282,47 +311,51 @@ pub(crate) async fn fetch(green: Green) -> Result<()> {
         containerfile.push(&format!("COPY --from={} / /\n", stager(leaf)));
     }
 
-    let path = {
-        let hashed = hash(&(containerfile.hashed() + &format!("{imgs:?}")));
-        tmp().join(format!("{PKG}-fetch-{hashed}.Dockerfile"))
-    };
-    info!("checking the existence of {path}");
-    if path.exists() {
+    for img in imgs.iter().filter(|_| !ddb) {
+        let imgd = imger(img.noscheme());
+        containerfile.push(&format!("COPY --from={imgd} / /{imgd}\n"));
+    }
+
+    let fname = format!(
+        "{PKG}-fetch-{}.Dockerfile",
+        hash(&(containerfile.hashed() + &format!("{imgs:?}")))
+    );
+    let sentinel = tmp().join(format!("{fname}.done"));
+    info!("checking the existence of {sentinel}");
+    if sentinel.exists() {
         return Ok(());
     }
+
+    let path = tmp().join(fname);
     containerfile.write_to(&path)?;
 
-    let ((), ()) = try_join!(
-        pull(&green, imgs), // NOTE: can't pull these with build(..): they won't get --load'ed
-        build_cacheonly(&green, &path, stage)
-    )
-    .inspect_err(|_| {
-        // TODO: catch ^C (and co.) to make sure file gets removed
-        let _ = containerfile.remove_from(&path);
+    let imgs_is_empty = imgs.is_empty();
+
+    let load_to_docker = async {
+        if imgs_is_empty || !ddb {
+            return Ok(());
+        }
+        pull(&green, imgs).await // NOTE: can't pull these with build(..): they won't get --load'ed
+    };
+
+    let cache_packages = async {
+        if packages.is_empty() && (imgs_is_empty || ddb) {
+            return Ok(());
+        }
+        build_cacheonly(&green, &path, stage).await
+    };
+
+    let ((), ()) = try_join!(load_to_docker, cache_packages).inspect(|_| {
+        if let Err(e) = fs::write(&sentinel, "") {
+            warn!("Failed creating sentinel {sentinel}: {e}")
+        }
     })?;
     Ok(())
 }
 
-async fn pull(green: &Green, imgs: Vec<(Option<String>, Option<&ImageUri>)>) -> Result<()> {
-    let mut to_pull = vec![];
-    for (user_input, img) in imgs {
-        let Some(img) = img else { continue };
-        let img = if img.locked() && user_input.map(|x| !x.contains("@sha256:")).unwrap_or(true) {
-            // Don't pull a locked image unless that's what's asked
-            // Otherwise, pull unlocked
-
-            img.unlocked()
-        } else {
-            img.to_owned()
-        };
-        to_pull.push(img);
-    }
-    pull_images(green, to_pull).await
-}
-
-async fn pull_images(green: &Green, to_pull: Vec<ImageUri>) -> Result<()> {
+async fn pull(green: &Green, imgs: Vec<ImageUri>) -> Result<()> {
     // TODO: nice TUI that handles concurrent progress
-    iter(to_pull.into_iter())
+    iter(imgs.into_iter())
         .map(|img| async { do_pull(green, img).await })
         .buffer_unordered(10)
         .try_collect()
@@ -331,7 +364,7 @@ async fn pull_images(green: &Green, to_pull: Vec<ImageUri>) -> Result<()> {
 
 async fn do_pull(green: &Green, img: ImageUri) -> Result<()> {
     println!("Pulling {img}...");
-    let mut cmd = green.runner.as_cmd();
+    let mut cmd = green.cmd();
     cmd.arg("pull").arg(img.noscheme());
     let o = cmd
         .spawn()

@@ -1,5 +1,5 @@
 use std::{
-    collections::HashSet,
+    collections::{HashMap, HashSet},
     env,
     fs::{self, OpenOptions},
     io::Write,
@@ -17,6 +17,7 @@ use crate::runner::Network;
 use crate::{
     add::{Add, ENV_ADD_APK, ENV_ADD_APT, ENV_ADD_APT_GET},
     base_image::{BaseImage, ENV_BASE_IMAGE, ENV_BASE_IMAGE_INLINE},
+    builder::Builder,
     containerfile::Containerfile,
     image_uri::ImageUri,
     lockfile::find_manifest_path,
@@ -42,6 +43,10 @@ pub(crate) struct Green {
     // CARGOGREEN_RUNNER="docker"
     pub(crate) runner: Runner,
 
+    // Snapshot of runner's envs. Not user-settable.
+    #[serde(skip_serializing_if = "HashMap::is_empty")]
+    pub(crate) runner_envs: HashMap<String, String>,
+
     // Whether to wrap incremental compilation, defaults to false.
     //
     // See https://doc.rust-lang.org/cargo/reference/config.html#buildincremental
@@ -51,6 +56,9 @@ pub(crate) struct Green {
     #[serde(skip_serializing_if = "<&bool as std::ops::Not>::not")]
     pub(crate) incremental: bool,
 
+    #[serde(flatten)]
+    pub(crate) builder: Builder,
+
     // Sets which BuildKit frontend syntax to use.
     //
     // See https://docs.docker.com/build/buildkit/frontend/#stable-channel
@@ -58,16 +66,6 @@ pub(crate) struct Green {
     // # Use by setting this environment variable (no Cargo.toml setting):
     // CARGOGREEN_SYNTAX="docker-image://docker.io/docker/dockerfile:1"
     pub(crate) syntax: ImageUri,
-
-    // Sets which BuildKit builder to use.
-    //
-    // See https://docs.docker.com/build/builders/
-    //
-    // # Use by setting this environment variable (no Cargo.toml setting):
-    // CARGOGREEN_BUILDER_IMAGE="docker-image://docker.io/moby/buildkit:latest"
-    // CARGOGREEN_BUILDER_IMAGE="docker-image://docker.io/moby/buildkit:buildx-stable-1"
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub(crate) builder_image: Option<ImageUri>,
 
     // Image paths with registry information.
     //
