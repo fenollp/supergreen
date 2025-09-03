@@ -7,7 +7,7 @@ use std::{
     io::ErrorKind,
     mem,
     ops::Not,
-    process::Stdio,
+    process::{ExitStatus, Stdio},
     str::FromStr,
     sync::LazyLock,
     time::{Duration, Instant},
@@ -474,11 +474,39 @@ async fn build(
     info!("Starting `{envs} {call} <{containerfile}`", envs = cmd.envs_string(&[]));
     let envs = cmd.envs_string(&BUILD_UNALTERING_ENVS);
 
-    let start = Instant::now();
-    let mut child = match cmd.spawn() {
-        Ok(child) => child,
-        Err(e) => return rtrn(anyhow!("Failed starting `{call}`: {e}")),
+    let (status, effects) = match run_build(cmd, &call, containerfile, target, out_dir).await {
+        Ok((status, effects)) => (status, effects),
+        Err(e) => return rtrn(e),
     };
+
+    // Something is very wrong here. Try to be helpful by logging some info about runner config:
+    if !status.success() {
+        let logs =
+            env::var(ENV_LOG_PATH).map(|val| format!("\nCheck logs at {val}")).unwrap_or_default();
+        return rtrn(anyhow!(
+            "Runner failed.{logs}
+Please report an issue along with information from the following:
+* {runner} buildx version
+* {runner} info
+* {runner} buildx ls
+* cargo green supergreen env
+",
+            runner = green.runner,
+        ));
+    }
+
+    (call, envs, Ok(effects))
+}
+
+async fn run_build(
+    mut cmd: Command,
+    call: &str,
+    containerfile: &Utf8Path,
+    target: Stage,
+    out_dir: Option<&Utf8Path>,
+) -> Result<(ExitStatus, Effects)> {
+    let start = Instant::now();
+    let mut child = cmd.spawn().map_err(|e| anyhow!("Failed starting `{call}`: {e}"))?;
 
     spawn({
         let containerfile = containerfile.to_owned();
@@ -580,16 +608,13 @@ async fn build(
         let res = child.wait().await;
         (start.elapsed(), res)
     };
-    let status = match res {
-        Ok(status) => status,
-        Err(e) => return rtrn(anyhow!("Failed calling `{call}`: {e}")),
-    };
+    let status = res.map_err(|e| anyhow!("Failed calling `{call}`: {e}"))?;
     info!("build ran in {secs:?}: {status}");
 
     if let Some((dbg_out, dbg_err)) = handles {
         match join!(timeout(dbg_out), timeout(dbg_err)) {
             (Ok(Ok(())), Ok(Ok(()))) => {}
-            (e1, e2) => return rtrn(anyhow!("BUG: STDIO forwarding crashed: {e1:?} | {e2:?}")),
+            (e1, e2) => bail!("BUG: STDIO forwarding crashed: {e1:?} | {e2:?}"),
         }
     }
     drop(child);
@@ -614,28 +639,25 @@ async fn build(
                 let line = TokioBufReader::new(errcode).lines().next_line().await;
                 line.ok().flatten().and_then(|x| x.parse::<i8>().ok())
             }
-            (_, Ok(e)) => return rtrn(anyhow!("Runner BUG: {e}")),
+            (_, Ok(e)) => bail!("Runner BUG: {e}"),
             (Err(e), Err(TryRecvError::Closed)) if e.kind() == ErrorKind::NotFound => None,
             (Err(a), Err(b)) => unreachable!("either {a} | {b}"),
         };
 
-        let both = async {
-            let out = stdio_lines(&out_path).await?;
-            let err = stdio_lines(&err_path).await?;
-            Ok((out, err))
+        async fn stdio_lines(stdio: &Utf8Path) -> Result<Lines<TokioBufReader<TokioFile>>> {
+            TokioFile::open(&stdio)
+                .await
+                .map_err(|e| anyhow!("Failed reading {stdio}: {e}"))
+                .map(|stdio| TokioBufReader::new(stdio).lines())
         }
-        .await;
-        let (out, err) = match both {
-            Ok((out, err)) => (out, err),
-            Err(e) => return rtrn(e),
-        };
 
-        let out = fwd(out, "➤", fwd_stdout);
-        let err = fwd(err, "✖", fwd_stderr);
+        let out = fwd(stdio_lines(&out_path).await?, "➤", fwd_stdout);
+        let err = fwd(stdio_lines(&err_path).await?, "✖", fwd_stderr);
+
         match join!(timeout(out), timeout(err)) {
             (
                 Ok(Ok(Ok(Accumulated { stdout, .. }))),
-                Ok(Ok(Ok(Accumulated { written, stderr, envs, libs, .. }))),
+                Ok(Ok(Ok(Accumulated { stderr, written, envs, libs, .. }))),
             ) => {
                 info!("Suggested {PKG}-specific config: envs:{} libs:{}", envs.len(), libs.len());
                 effects.stdout = stdout;
@@ -645,51 +667,28 @@ async fn build(
                     effects.written = written;
                 }
                 if let Some(errcode) = errcode {
-                    return rtrn(anyhow!("Runner failed with exit code {errcode}"));
+                    bail!("Runner failed with exit code {errcode}")
                 }
             }
             (Ok(Ok(Err(e))), _) | (_, Ok(Ok(Err(e)))) => {
-                return rtrn(anyhow!("BUG: STDIO forwarding crashed: {e}"))
+                bail!("BUG: STDIO forwarding crashed: {e}")
             }
             (Ok(Err(e)), _) | (_, Ok(Err(e))) => {
-                return rtrn(anyhow!("BUG: spawning STDIO forwarding crashed: {e}"))
+                bail!("BUG: spawning STDIO forwarding crashed: {e}")
             }
             (Err(Elapsed { .. }), _) | (_, Err(Elapsed { .. })) => {
-                return rtrn(anyhow!("BUG: STDIO forwarding got crickets for some time"))
+                bail!("BUG: STDIO forwarding got crickets for some time")
             }
         }
         if let Err(e) = fs::remove_file(&out_path) {
-            return rtrn(anyhow!("Failed `rm {out_path}`: {e}"));
+            bail!("Failed `rm {out_path}`: {e}")
         }
         if let Err(e) = fs::remove_file(&err_path) {
-            return rtrn(anyhow!("Failed `rm {err_path}`: {e}"));
+            bail!("Failed `rm {err_path}`: {e}")
         }
     }
 
-    // Something is very wrong here. Try to be helpful by logging some info about runner config:
-    if !status.success() {
-        let logs =
-            env::var(ENV_LOG_PATH).map(|val| format!("\nCheck logs at {val}")).unwrap_or_default();
-        return rtrn(anyhow!(
-            "Runner failed.{logs}
-Please report an issue along with information from the following:
-* {runner} buildx version
-* {runner} info
-* {runner} buildx ls
-* cargo green supergreen env
-",
-            runner = green.runner,
-        ));
-    }
-
-    (call, envs, Ok(effects))
-}
-
-async fn stdio_lines(stdio: &Utf8Path) -> Result<Lines<TokioBufReader<TokioFile>>> {
-    TokioFile::open(&stdio)
-        .await
-        .map_err(|e| anyhow!("Failed reading {stdio}: {e}"))
-        .map(|stdio| TokioBufReader::new(stdio).lines())
+    Ok((status, effects))
 }
 
 fn log_written_files_metadata(written: &[Utf8PathBuf]) {
