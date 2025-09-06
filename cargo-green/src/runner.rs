@@ -126,6 +126,9 @@ static BUILD_UNALTERING_ENVS: LazyLock<Vec<&OsStr>> = LazyLock::new(|| {
     .collect()
 });
 
+/// Strip out flags that don't affect a build's outputs:
+static BUILD_UNALTERING_FLAGS: &[&str] = &["--cache-from=", "--cache-to="];
+
 #[derive(Debug, Copy, Clone, Default, Serialize, Deserialize, Eq, PartialEq)]
 #[serde(deny_unknown_fields)]
 #[serde(rename_all = "kebab-case")]
@@ -472,6 +475,11 @@ async fn build(
 
     let call = cmd.show();
     info!("Starting `{envs} {call} <{containerfile}`", envs = cmd.envs_string(&[]));
+    let call = call
+        .split_whitespace()
+        .filter(|flag| !BUILD_UNALTERING_FLAGS.iter().any(|prefix| flag.contains(prefix)))
+        .collect::<Vec<_>>()
+        .join(" ");
     let envs = cmd.envs_string(&BUILD_UNALTERING_ENVS);
 
     let (status, effects) = match run_build(cmd, &call, containerfile, target, out_dir).await {
