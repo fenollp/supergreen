@@ -27,7 +27,7 @@ source "$repo_root"/hack/ck.sh
 # TODO: https://crates.io/categories/command-line-utilities?sort=recent-updates
 declare -a nvs nvs_args
    i=0  ; nvs[i]=buildxargs@master;           oks[i]=ok; nvs_args[i]='--git https://github.com/fenollp/buildxargs.git'
-((i+=1)); nvs[i]=cargo-audit@0.21.1;          oks[i]=ko; nvs_args[i]='--features=fix' # TODO: re-ok when GitHub Actions runners update to patched BuildKit (>=v0.20)
+((i+=1)); nvs[i]=cargo-audit@0.21.1;          oks[i]=ko; nvs_args[i]='--features=fix' # TODO: re-ok when GitHub Actions runners update to patched BuildKit (>=v0.20)   environment variable `RING_CORE_PREFIX` not defined at compile time
 ((i+=1)); nvs[i]=cargo-bpf@2.3.0;             oks[i]=ko; nvs_args[i]='' # (No libelf-dev installed on host) (Wrapper compiles successfully) Build script fails to run: Running `CARGO=.. .../bpf-sys-c62ba29dc4f555d9/build-script-build` ... error: gelf.h: No such file => TODO: see about overriding RUSTC_LINKER=/usr/bin/clang
 ((i+=1)); nvs[i]=cargo-deny@0.16.1;           oks[i]=ko; nvs_args[i]='' # TODO: re-ok when GitHub Actions runners update to patched BuildKit (>=v0.20)
 ((i+=1)); nvs[i]=cargo-fuzz@0.12.0;           oks[i]=ko; nvs_args[i]='' # .. environment variable `TARGET_PLATFORM` not defined at compile time .. current_platform-0.2.0 + HOST_PLATFORM

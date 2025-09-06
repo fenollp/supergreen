@@ -19,6 +19,8 @@ mkdir -p $CARGO_TARGET_DIR
 rm -rf $CARGO_TARGET_DIR/*
 
 $CARGO green supergreen env
+#$CARGO +1.84.1 green supergreen env
+#TODO: make sure that setting CARGOGREEN_BASE_IMAGE is authoritative on the extrafn hash ie.=> local install gets also overriden
 
 compute_installed_bin_sha256() {
 	sha256sum $install_root/bin/${install_package%@*} | awk '{print $1}'
