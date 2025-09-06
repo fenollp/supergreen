@@ -112,7 +112,7 @@ declare -a nvs nvs_args
 
 header() {
   [[ $# -eq 0 ]]
-	cat <<EOF
+  cat <<EOF
 on: [push]
 name: CLIs
 jobs:
@@ -139,15 +139,18 @@ $(jobdef 'bin')
 
     - uses: actions/checkout@v5
 
-    - name: Cache \`cargo fetch\`
+$(while read -r name path; do
+  cat <<EOW
+    - name: Cache \`cargo fetch\` $name
       uses: actions/cache@v4
       with:
-        path: |
-          ~/.cargo/registry/index/
-          ~/.cargo/registry/cache/
-          ~/.cargo/git/db/
-        key: \${{ github.job }}-\${{ runner.os }}-cargo-deps-\${{ hashFiles('**/Cargo.lock') }}
-        restore-keys: \${{ github.job }}-\${{ runner.os }}-cargo-deps-
+        path: $path
+        key: \${{ github.job }}-\${{ runner.os }}-cargo-deps-$name-\${{ hashFiles('**/Cargo.lock') }}
+        restore-keys: \${{ github.job }}-\${{ runner.os }}-cargo-deps-$name-
+
+EOW
+  done < <(printf '%s ~/.cargo/registry/index/\n%s ~/.cargo/registry/cache/\n%s ~/.cargo/git/db/\n' index cache gitdb)
+)
 
     - name: Cache \`cargo install\`
       uses: actions/cache@v4
