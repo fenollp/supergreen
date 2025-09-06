@@ -9,7 +9,6 @@ use log::{debug, info, warn};
 use tokio::try_join;
 
 use crate::{
-    base_image::{ENV_BASE_IMAGE, ENV_WITH_NETWORK},
     build::fetch_digest,
     cratesio::{self},
     ext::CommandExt,
@@ -20,27 +19,52 @@ use crate::{
     logging::{self, maybe_log},
     network::Network,
     pwd,
-    runner::{Runner, BUILDKIT_HOST, BUILDX_BUILDER, DOCKER_BUILDKIT, DOCKER_CONTEXT, DOCKER_HOST},
+    runner::{Runner, BUILDKIT_HOST, DOCKER_BUILDKIT, DOCKER_CONTEXT, DOCKER_HOST},
     stage::{Stage, RST, RUST},
-    tmp, PKG, VSN,
+    tmp, BUILDX_BUILDER, PKG, VSN,
 };
 
-// Env-only settings (no Cargo.toml equivalent setting)
-pub(crate) const ENV_BUILDER_IMAGE: &str = "CARGOGREEN_BUILDER_IMAGE";
-pub(crate) const ENV_FINAL_PATH: &str = "CARGOGREEN_FINAL_PATH";
-pub(crate) const ENV_FINAL_PATH_NONPRIMARY: &str = "CARGOGREEN_FINAL_PATH_NONPRIMARY";
-pub(crate) const ENV_RUNNER: &str = "CARGOGREEN_RUNNER";
-pub(crate) const ENV_SYNTAX_IMAGE: &str = "CARGOGREEN_SYNTAX_IMAGE";
+#[macro_export]
+macro_rules! ENV_BUILDER_IMAGE {
+    () => {
+        "CARGOGREEN_BUILDER_IMAGE"
+    };
+}
+
+macro_rules! ENV_FINAL_PATH {
+    () => {
+        "CARGOGREEN_FINAL_PATH"
+    };
+}
+
+macro_rules! ENV_FINAL_PATH_NONPRIMARY {
+    () => {
+        "CARGOGREEN_FINAL_PATH_NONPRIMARY"
+    };
+}
+
+macro_rules! ENV_RUNNER {
+    () => {
+        "CARGOGREEN_RUNNER"
+    };
+}
+
+macro_rules! ENV_SYNTAX_IMAGE {
+    () => {
+        "CARGOGREEN_SYNTAX_IMAGE"
+    };
+}
 
 pub(crate) async fn main() -> Result<Green> {
     let mut green = Green::new_from_env_then_manifest()?;
 
     // Setting runner first as it's needed by many calls
+    let mut var = ENV_RUNNER!();
     if green.runner != Runner::default() {
-        bail!("${ENV_RUNNER} can only be set through the environment variable")
+        bail!("${var} can only be set through the environment variable")
     }
-    if let Ok(val) = env::var(ENV_RUNNER) {
-        green.runner = val.parse().map_err(|e| anyhow!("${ENV_RUNNER}={val:?} {e}"))?;
+    if let Ok(val) = env::var(var) {
+        green.runner = val.parse().map_err(|e| anyhow!("${var}={val:?} {e}"))?;
     }
 
     // Read runner's envs only once and disallow conf overrides
@@ -73,17 +97,18 @@ pub(crate) async fn main() -> Result<Green> {
         eprintln!("${BUILDKIT_HOST} is set to {val:?}");
     }
 
+    var = BUILDX_BUILDER!();
     if green.builder.name.is_some() {
         bail!("builder-name can only be set through the environment variable")
     }
-    let builder = green.runner_envs.get(BUILDX_BUILDER);
+    let builder = green.runner_envs.get(var);
     if let Some(name) = builder {
-        info!("${BUILDX_BUILDER} is set to {name:?}");
-        eprintln!("${BUILDX_BUILDER} is set to {name:?}");
+        info!("${var} is set to {name:?}");
+        eprintln!("${var} is set to {name:?}");
 
         if !name.is_empty() {
             if let Some(val) = buildkit_host {
-                bail!("Overriding ${BUILDKIT_HOST}={val:?} while setting ${BUILDX_BUILDER}={name:?} is unsupported")
+                bail!("Overriding ${BUILDKIT_HOST}={val:?} while setting ${var}={name:?} is unsupported")
             }
         }
     }
@@ -113,28 +138,27 @@ pub(crate) async fn main() -> Result<Green> {
     //https://dev.to/aboozar/build-docker-multi-platform-image-using-buildx-remote-builder-node-5631
 
     // Then the builder: needed by cmd calls
+    var = ENV_BUILDER_IMAGE!();
     if green.builder.image.is_some() {
-        bail!("${ENV_BUILDER_IMAGE} can only be set through the environment variable")
+        bail!("${var} can only be set through the environment variable")
     }
-    if let Ok(builder_image) = env::var(ENV_BUILDER_IMAGE) {
+    if let Ok(builder_image) = env::var(var) {
         let img = builder_image
             .as_str()
             .try_into()
-            .map_err(|e| anyhow!("${ENV_BUILDER_IMAGE}={builder_image:?} {e}"))?;
+            .map_err(|e| anyhow!("${var}={builder_image:?} {e}"))?;
         // Don't use 'maybe_lock_image', only 'fetch_digest': cmd uses builder.
         green.builder.image = Some(fetch_digest(&img).await?);
     }
 
     green.maybe_setup_builder(builder.cloned()).await?;
 
+    var = ENV_SYNTAX_IMAGE!();
     if !green.syntax.is_empty() {
-        bail!("${ENV_SYNTAX_IMAGE} can only be set through the environment variable")
+        bail!("${var} can only be set through the environment variable")
     }
-    if let Ok(syntax) = env::var(ENV_SYNTAX_IMAGE) {
-        green.syntax = syntax
-            .as_str()
-            .try_into()
-            .map_err(|e| anyhow!("${ENV_SYNTAX_IMAGE}={syntax:?} {e}"))?;
+    if let Ok(syntax) = env::var(var) {
+        green.syntax = syntax.as_str().try_into().map_err(|e| anyhow!("${var}={syntax:?} {e}"))?;
     }
     // Use local hashed image if one matching exists locally
     green.syntax = green.maybe_lock_image(&green.syntax).await?;
@@ -142,36 +166,39 @@ pub(crate) async fn main() -> Result<Green> {
     green.syntax = fetch_digest(&green.syntax).await?;
     if !green.syntax.stable_syntax_frontend() {
         // Enforce a known stable syntax + allow pinning to digest
-        bail!("${ENV_SYNTAX_IMAGE} must be a digest of {}", SYNTAX_IMAGE.as_str())
+        bail!("${var} must be a digest of {}", SYNTAX_IMAGE.as_str())
     }
 
+    var = ENV_FINAL_PATH!();
     if green.final_path.is_some() {
-        bail!("${ENV_FINAL_PATH} can only be set through the environment variable")
+        bail!("${var} can only be set through the environment variable")
     }
     // TODO? provide a way to export final as flatpack
-    if let Ok(path) = env::var(ENV_FINAL_PATH) {
+    if let Ok(path) = env::var(var) {
         if path.is_empty() {
-            bail!("${ENV_FINAL_PATH} is empty")
+            bail!("${var} is empty")
         }
         if path == "-" {
-            bail!("${ENV_FINAL_PATH} must not be {path:?}")
+            bail!("${var} must not be {path:?}")
         }
         let path = camino::absolute_utf8(path)
-            .map_err(|e| anyhow!("Failed canonicalizing ${ENV_FINAL_PATH}: {e}"))?;
+            .map_err(|e| anyhow!("Failed canonicalizing ${var}: {e}"))?;
         if let Some(dir) = path.parent() {
             fs::create_dir_all(dir).map_err(|e| anyhow!("Failed `mkdir -p {dir}`: {e}"))?;
         }
         green.final_path = Some(path);
     }
+
+    var = ENV_FINAL_PATH_NONPRIMARY!();
     if green.final_path_nonprimary {
-        bail!("${ENV_FINAL_PATH_NONPRIMARY} can only be set through the environment variable")
+        bail!("${var} can only be set through the environment variable")
     }
-    if let Ok(v) = env::var(ENV_FINAL_PATH_NONPRIMARY) {
+    if let Ok(v) = env::var(var) {
         if v.is_empty() {
-            bail!("${ENV_FINAL_PATH_NONPRIMARY} is empty")
+            bail!("${var} is empty")
         }
         if v != "1" {
-            bail!("${ENV_FINAL_PATH_NONPRIMARY} must only be '1'")
+            bail!("${var} must only be '1'")
         }
         green.final_path_nonprimary = true;
     }
@@ -191,9 +218,9 @@ pub(crate) async fn main() -> Result<Green> {
 
     assert!(!green.image.base_image.is_empty(), "BUG: base_image set to {SYNTAX_IMAGE:?}");
 
-    if let Ok(val) = env::var(ENV_WITH_NETWORK) {
-        green.image.with_network =
-            val.parse().map_err(|e| anyhow!("${ENV_WITH_NETWORK}={val:?} {e}"))?;
+    var = ENV_WITH_NETWORK!();
+    if let Ok(val) = env::var(var) {
+        green.image.with_network = val.parse().map_err(|e| anyhow!("${var}={val:?} {e}"))?;
     }
     if let Ok(val) = env::var("CARGO_NET_OFFLINE") {
         if val == "1" {
@@ -265,9 +292,9 @@ pub(crate) async fn fetch(green: Green) -> Result<()> {
 
     let imgs: Vec<_> = [
         // NOTE: we don't pull ENV_CACHE_IMAGES
-        (env::var(ENV_SYNTAX_IMAGE).ok(), Some(&green.syntax)),
-        (env::var(ENV_BASE_IMAGE).ok(), Some(&green.image.base_image)),
-        (env::var(ENV_BUILDER_IMAGE).ok(), green.builder.image.as_ref()),
+        (env::var(ENV_SYNTAX_IMAGE!()).ok(), Some(&green.syntax)),
+        (env::var(ENV_BASE_IMAGE!()).ok(), Some(&green.image.base_image)),
+        (env::var(ENV_BUILDER_IMAGE!()).ok(), green.builder.image.as_ref()),
     ]
     .into_iter()
     .filter_map(|(user_input, img)| img.map(|img| (user_input, img)))

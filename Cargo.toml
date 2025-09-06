@@ -56,6 +56,7 @@ serde-jsonlines = { version = "0, >=0.6", features = [ "async" ] }
 serde_json = "1"
 sha256 = "1"
 szyk = "1"
+termimad = { version = "0, >=0.34", default-features = false }
 test-case = "3"
 tokio = { version = "1", features = [ "io-util", "macros", "process", "rt-multi-thread", "time" ] }
 toml = "0, >=0.8"
