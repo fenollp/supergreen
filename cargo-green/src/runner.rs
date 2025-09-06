@@ -15,7 +15,6 @@ const BUILDKIT_COLORS: &str = "BUILDKIT_COLORS";
 pub(crate) const BUILDKIT_HOST: &str = "BUILDKIT_HOST";
 const BUILDKIT_PROGRESS: &str = "BUILDKIT_PROGRESS";
 const BUILDKIT_TTY_LOG_LINES: &str = "BUILDKIT_TTY_LOG_LINES";
-pub(crate) const BUILDX_BUILDER: &str = "BUILDX_BUILDER";
 const BUILDX_CPU_PROFILE: &str = "BUILDX_CPU_PROFILE";
 const BUILDX_MEM_PROFILE: &str = "BUILDX_MEM_PROFILE";
 pub(crate) const DOCKER_BUILDKIT: &str = "DOCKER_BUILDKIT";
@@ -23,6 +22,13 @@ pub(crate) const DOCKER_CONTEXT: &str = "DOCKER_CONTEXT";
 const DOCKER_DEFAULT_PLATFORM: &str = "DOCKER_DEFAULT_PLATFORM";
 const DOCKER_HIDE_LEGACY_COMMANDS: &str = "DOCKER_HIDE_LEGACY_COMMANDS";
 pub(crate) const DOCKER_HOST: &str = "DOCKER_HOST";
+
+#[macro_export]
+macro_rules! BUILDX_BUILDER {
+    () => {
+        "BUILDX_BUILDER"
+    };
+}
 
 impl Runner {
     /// Read envs used by runner, once.
@@ -38,7 +44,7 @@ impl Runner {
             "BUILDX_BAKE_GIT_AUTH_HEADER",
             "BUILDX_BAKE_GIT_AUTH_TOKEN",
             "BUILDX_BAKE_GIT_SSH",
-            BUILDX_BUILDER,
+            BUILDX_BUILDER!(),
             DOCKER_BUILDKIT,
             "BUILDX_CONFIG",
             BUILDX_CPU_PROFILE,
@@ -80,7 +86,7 @@ impl Runner {
                 BUILDKIT_HOST,
                 BUILDKIT_PROGRESS,
                 BUILDKIT_TTY_LOG_LINES,
-                BUILDX_BUILDER,
+                BUILDX_BUILDER!(),
                 BUILDX_CPU_PROFILE,
                 BUILDX_MEM_PROFILE,
                 DOCKER_CONTEXT,
@@ -114,11 +120,11 @@ impl Green {
         cmd.env(DOCKER_BUILDKIT, "1"); // BuildKit is used by either runner
 
         if let Some(ref name) = self.builder.name {
-            cmd.env(BUILDX_BUILDER, name);
+            cmd.env(BUILDX_BUILDER!(), name);
         }
 
         for (var, val) in &self.runner_envs {
-            if [BUILDX_BUILDER, DOCKER_BUILDKIT].contains(&var.as_str()) {
+            if [BUILDX_BUILDER!(), DOCKER_BUILDKIT].contains(&var.as_str()) {
                 continue;
             }
             info!("passing through runner setting: ${var}={val:?}");

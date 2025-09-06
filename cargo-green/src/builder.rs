@@ -7,8 +7,8 @@ use serde::{Deserialize, Serialize};
 use version_compare::Version;
 
 use crate::{
-    build::fetch_digest, cargo_green::ENV_BUILDER_IMAGE, ext::CommandExt, green::Green,
-    image_uri::ImageUri, runner::BUILDX_BUILDER, tmp,
+    build::fetch_digest, ext::CommandExt, green::Green, image_uri::ImageUri, tmp, BUILDX_BUILDER,
+    ENV_BUILDER_IMAGE,
 };
 
 /// TODO: move to `:rootless`
@@ -55,18 +55,17 @@ impl FromStr for Driver {
 #[serde(deny_unknown_fields)]
 #[serde(rename_all = "kebab-case")]
 pub(crate) struct Builder {
-    /// Sets which BuildKit builder to use, through `$BUILDX_BUILDER`.
-    ///
-    /// See <https://docs.docker.com/build/building/variables/#buildx_builder>
-    ///
-    /// * Unset: creates & handles a builder named `"supergreen"`. Upgrades it if too old, while trying to keep old cached data
-    /// * Set to `""`: skips using a builder
-    /// * Set to `"supergreen"`: uses existing and just warns if too old
-    /// * Set: use that as builder, no questions asked
+    #[doc = include_str!(concat!("../docs/",BUILDX_BUILDER!(),".md"))]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub(crate) name: Option<String>,
 
+    #[doc = include_str!(concat!("../docs/",ENV_BUILDER_IMAGE!(),".md"))]
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub(crate) image: Option<ImageUri>,
+
     /// Shows which driver the configured builder uses.
+    ///
+    /// Defaults to [BUILDER_DRIVER].
     ///
     /// See <https://docs.docker.com/build/drivers/>
     /// * <https://docs.docker.com/build/drivers/docker-container/>
@@ -74,17 +73,6 @@ pub(crate) struct Builder {
     /// * <https://docs.docker.com/build/drivers/kubernetes/>
     #[serde(skip_serializing_if = "Option::is_none")]
     pub(crate) driver: Option<Driver>,
-
-    /// Sets which BuildKit builder version to use.
-    ///
-    /// See <https://docs.docker.com/build/builders/>
-    ///
-    /// *Use by setting this environment variable (no `Cargo.toml` setting):*
-    /// ```shell
-    /// CARGOGREEN_BUILDER_IMAGE="docker-image://docker.io/moby/buildkit:latest"
-    /// ```
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub(crate) image: Option<ImageUri>,
 }
 
 impl Builder {
@@ -103,7 +91,7 @@ impl Green {
             None | Some("supergreen") => (true, "supergreen"),
             Some("") => {
                 if let Some(ref img) = self.builder.image {
-                    bail!("Not using a builder, however ${ENV_BUILDER_IMAGE}={img:?} is set")
+                    bail!("Not using a builder, however ${}={img:?} is set", ENV_BUILDER_IMAGE!())
                 }
                 return Ok(());
             }
@@ -119,7 +107,11 @@ impl Green {
             if let Some(ref img) = self.builder.image {
                 if !existing.uses_image(img) {
                     if !managed {
-                        bail!("Existing ${BUILDX_BUILDER}={name:?} does not match ${ENV_BUILDER_IMAGE}={img:?}")
+                        bail!(
+                            "Existing ${}={name:?} does not match ${}={img:?}",
+                            BUILDX_BUILDER!(),
+                            ENV_BUILDER_IMAGE!()
+                        )
                     }
                     recreate = true;
                 }
@@ -131,11 +123,12 @@ impl Green {
                 } else {
                     eprintln!(
                         "
-Existing ${BUILDX_BUILDER}={name:?} runs a BuildKit version older than v{latest}
+Existing ${var}={name:?} runs a BuildKit version older than v{latest}
 Maybe try to remove and re-create your builder with:
     docker buildx rm {name} --keep-state
 then run your cargo command again.
 ",
+                        var = BUILDX_BUILDER!(),
                         latest = LATEST_BUILDKIT.as_str(),
                     );
                 }
@@ -151,7 +144,7 @@ then run your cargo command again.
                 self.create_builder(name).await?;
             }
         } else if !managed {
-            bail!("${BUILDX_BUILDER}={name} does not exist")
+            bail!("${}={name} does not exist", BUILDX_BUILDER!())
         } else {
             self.create_builder(name).await?;
         }

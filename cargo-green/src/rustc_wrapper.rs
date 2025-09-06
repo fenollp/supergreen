@@ -28,7 +28,11 @@ use crate::{
 // NOTE: this RUSTC_WRAPPER program only ever gets called by `cargo`, so we save
 //       ourselves some trouble and assume std::path::{Path, PathBuf} are UTF-8.
 
-pub(crate) const ENV: &str = "CARGOGREEN";
+macro_rules! ENV {
+    () => {
+        "CARGOGREEN"
+    };
+}
 
 pub(crate) async fn main(
     green: Green,
@@ -118,8 +122,8 @@ async fn wrap_rustc(
     arguments: Vec<String>,
     fallback: impl Future<Output = Result<()>>,
 ) -> Result<()> {
-    assert!(env::var_os(ENV).is_none(), "It's turtles all the way down!");
-    env::set_var(ENV, "1");
+    assert!(env::var_os(ENV!()).is_none(), "It's turtles all the way down!");
+    env::set_var(ENV!(), "1");
 
     let pwd = pwd();
 
@@ -359,7 +363,7 @@ async fn do_wrap_rustc(
     for (var, val) in env::vars().filter_map(|kv| fmap_env(kv, buildrs)) {
         rustc_block.push_str(&format!("        {var}={val} \\\n"));
     }
-    rustc_block.push_str(&format!("        {ENV}=1 \\\n"));
+    rustc_block.push_str(&format!("        {}=1 \\\n", ENV!()));
     // => cargo upstream issue "pass env vars read/wrote by build script on call to rustc"
     // TODO whence https://github.com/rust-lang/cargo/issues/14444#issuecomment-2305891696
     for var in &green.set_envs {

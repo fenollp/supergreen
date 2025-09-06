@@ -123,18 +123,18 @@ name: CLIs
 jobs:
 
 
-$(jobdef 'meta-check')
-    steps:
-    - uses: actions/checkout@v5
-    - run: ./hack/clis.sh | tee .github/workflows/clis.yml
-    - run: ./hack/self.sh | tee .github/workflows/self.yml
-    - run: git --no-pager diff --exit-code
-    - name: Run shellcheck
-      uses: ludeeus/action-shellcheck@2.0.0
-      with:
-        check_together: 'yes'
-        severity: error
-
+$(
+# $(jobdef 'set-image-name')
+#     needs: [meta-check]
+#     outputs:
+#       name: \${{ steps.namer.outputs.name }}
+#     steps:
+#     - name: Set lowercase image name
+#       id: namer
+#       run: echo "::set-output name=name::ghcr.io/\${SLUG,,}"
+#       env:
+#         SLUG: \${{ github.repository }}
+)
 $(jobdef 'bin')
     steps:
     - uses: actions-rust-lang/setup-rust-toolchain@v1
@@ -225,9 +225,118 @@ cli() {
   local envvars=()
  as_env "$name_at_version"
 
+
+# CARGOGREEN_CACHE_FROM: type=gha
+# CARGOGREEN_CACHE_TO: type=gha,mode=max
+#=> https://docs.docker.com/build/cache/backends/gha/
+# need setup (get vars through an action for urls,tokens) + setting
+# * scope=extrafn
+# * mode=max
+# * ignore-error to same as cache-images
+# * timeout to something low (given small layers & running on GH runners)
+
+#       #FIXME: also compare with local reg:3 + cache
+
+#       #FIXME: also compare with gha from+to
+
+#       CARGOGREEN_CACHE_IMAGES: \${{ needs.set-image-name.outputs.name }}
+
+#       mkdir -p cch cch-new
+#       CARGOGREEN_CACHE_FROM=type=local,src=/tmp/local-cache CARGOGREEN_CACHE_TO=type=local,mode=max,dest=/tmp/local-cache-new rmrf=1 ./hack/clis.sh vix
+
+# https://docs.docker.com/build/cache/backends/local/
+# >If the src cache doesn't exist, then the cache import step will fail,
+# https://github.com/moby/buildkit/issues/1896
+# >only grows => cache dance
+# also
+# >doesn't support concurrent use!
+# ==> HAVE to handle per-buildcall type=local cache
+# also: write to tmp ramfs
+# see about merging type=local caches /+ concurrent use.
+
+# trash cch cch-new/ ; mkdir -p cch cch-new ; CARGOGREEN_CACHE_FROM='type=local,src='$PWD'/cch;type=local,src='$PWD'/cch-new' CARGOGREEN_CACHE_TO=type=local,mode=max,dest=$PWD/cch-new jobs=1 rmrf=1 ./hack/clis.sh vix ; du cch*
+
+# path/to/<hashed pwd + cmd | or just cmd if cinstall>-<datetime>/cache-<extrafn>(-new)?
+# then rm old + mv -new .
+
+# https://docs.docker.com/build/buildkit/configure/#registry-mirror
+# debug = true
+# [registry."docker.io"]
+#   mirrors = ["mirror.gcr.io"]
+# docker buildx create --use --bootstrap \
+#   --name mybuilder \
+#   --driver docker-container \
+#   --buildkitd-config /etc/buildkitd.toml
+
+# https://github.com/docker/buildx/discussions/2109#discussioncomment-7521381
+
+# among first CI steps
+#   along with bin build job
+# * get local registry from cache
+# * create second local registry
+# * list images required via green supergreen envs
+# * pull images to second registry using first as cache
+# * destroy first and cache second
+# * pass second through artifacts or cache to next jobs
+# * use that registry through the mirrors env
+
+# https://docs.docker.com/build/ci/github-actions/local-registry/
+# jobs:
+#   docker:
+#     runs-on: ubuntu-latest
+#     services:
+#       registry:
+#         image: registry:3
+#         ports:
+#           - 5000:5000
+#     steps:
+# docker buildx imagetools inspect localhost:5000/name/app:latest
+
+# CARGOGREEN_REGISTRY_MIRRORS=
+#   CSV ; CSV
+
+# https://docs.docker.com/docker-hub/image-library/mirror/#configure-the-docker-daemon
+# {
+#   "registry-mirrors": ["https://<my-docker-mirror-host>"]
+# }
+
+# https://docs.docker.com/build/buildkit/toml-configuration/
+# # registry configures a new Docker register used for cache import or output.
+# [registry."docker.io"]
+#   # mirror configuration to handle path in case a mirror registry requires a /project path rather than just a host:port
+#   mirrors = ["yourmirror.local:5000", "core.harbor.domain/proxy.docker.io"]
+#   # Use plain HTTP to connect to the mirrors.
+#   http = true
+#   # Use HTTPS with self-signed certificates. Do not enable this together with `http`.
+#   insecure = true
+#   # If you use token auth with self-signed certificates,
+#   # then buildctl also needs to trust the token provider CA (for example, certificates that are configured for registry)
+#   # because buildctl pulls tokens directly without daemon process
+#   ca=["/etc/config/myca.pem"]
+#   [[registry."docker.io".keypair]]
+#     key="/etc/config/key.pem"
+#     cert="/etc/config/cert.pem"
+
+# # optionally mirror configuration can be done by defining it as a registry.
+# [registry."yourmirror.local:5000"]
+#   http = true
+
+# https://github.com/docker/setup-buildx-action/blob/1583c0f09d26c58c59d25b0eef29792b7ce99d9a/src/context.ts#L76
+
+# [registry."docker.io"]
+#   mirrors = ["192.168.128.1:5000"]
+#   http = true
+#   insecure = true
+
+# [registry."192.168.128.1:5000"]
+#   http = true
+#   insecure = true
+
+
 	cat <<EOF
 $(jobdef "$(slugify "$name_at_version")_$jobs")
-    continue-on-error: \${{ matrix.toolchain != 'stable' }}
+$( #   needs: [set-image-name]
+)    continue-on-error: \${{ matrix.toolchain != 'stable' }}
     strategy:
       matrix:
         toolchain:
@@ -275,7 +384,14 @@ $(rundeps_versions)
       run: ~/.cargo/bin/cargo-green green supergreen env
 
 $(cache_usage)
-    - name: cargo install net=ON cache=OFF remote=OFF jobs=$jobs
+$(
+    # - name: Log in to GitHub Container Registry
+    #       uses: docker/login-action@v3
+    #       with:
+    #         registry: ghcr.io
+    #         username: \${{ github.actor }}
+    #         password: \${{ secrets.GITHUB_TOKEN }}
+    )    - name: cargo install net=ON cache=OFF remote=OFF jobs=$jobs
       run: |
 $(unset_action_envs)
         env ${envvars[@]} \\

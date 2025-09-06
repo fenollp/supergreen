@@ -1,4 +1,4 @@
-use crate::{add::ENV_ADD_APT, green::ENV_SET_ENVS, PKG};
+use crate::PKG;
 
 #[must_use]
 fn suggest(original: &str, suggestion: &str, msg: &str) -> Option<String> {
@@ -38,7 +38,8 @@ pub(crate) fn suggest_add(lib: &str, msg: &str) -> Option<String> {
         _ => format!("lib{lib}-dev"),
     };
     let suggestion = format!(
-        r#"{PKG}: add `{lib:?}` to either ${ENV_ADD_APT} (apk, apt-get) or to this crate's or your root crate's [package.metadata.green.add] apt list"#
+        r#"{PKG}: add `{lib:?}` to either ${apt} (apk, apt-get) or to this crate's or your root crate's [package.metadata.green.add] apt list"#,
+        apt = ENV_ADD_APT!(),
     );
 
     suggest(&original, &suggestion, msg)
@@ -225,7 +226,8 @@ pub(crate) fn env_not_comptime_defined(msg: &str) -> Option<&str> {
 pub(crate) fn suggest_set_envs(var: &str, msg: &str) -> Option<String> {
     let original = format!(r#"use `std::env::var("{var}")` to read the variable at run time"#);
     let suggestion = format!(
-        r#"{PKG}: add `"{var}"` to either ${ENV_SET_ENVS} or to this crate's or your root crate's [package.metadata.green] set-envs list"#
+        r#"{PKG}: add `"{var}"` to either ${set} or to this crate's or your root crate's [package.metadata.green] set-envs list"#,
+        set = ENV_SET_ENVS!(),
     );
     suggest(&original, &suggestion, msg)
 }

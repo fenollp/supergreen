@@ -2,55 +2,38 @@ use serde::{Deserialize, Serialize};
 
 use crate::network::Network;
 
-// Envs that override Cargo.toml settings
-pub(crate) const ENV_ADD_APK: &str = "CARGOGREEN_ADD_APK";
-pub(crate) const ENV_ADD_APT: &str = "CARGOGREEN_ADD_APT";
-pub(crate) const ENV_ADD_APT_GET: &str = "CARGOGREEN_ADD_APT_GET";
+macro_rules! ENV_ADD_APK {
+    () => {
+        "CARGOGREEN_ADD_APK"
+    };
+}
+
+macro_rules! ENV_ADD_APT {
+    () => {
+        "CARGOGREEN_ADD_APT"
+    };
+}
+
+macro_rules! ENV_ADD_APT_GET {
+    () => {
+        "CARGOGREEN_ADD_APT_GET"
+    };
+}
 
 #[derive(Debug, Serialize, Deserialize, Default, PartialEq, Eq)]
 #[serde(default)]
 #[serde(deny_unknown_fields)]
 #[serde(rename_all = "kebab-case")]
 pub(crate) struct Add {
-    /// Adds OS packages to the base image with `apk add`, serialized as CSV.
-    ///
-    /// ```toml
-    /// add.apk = [ "libpq-dev", "pkgconf" ]
-    /// ```
-    ///
-    /// *This environment variable takes precedence over any `Cargo.toml` settings:*
-    /// ```shell
-    /// # Note: values here are comma-separated.
-    /// CARGOGREEN_ADD_APK="libpq-dev,pkg-conf"
-    /// ```
+    #[doc = include_str!(concat!("../docs/",ENV_ADD_APK!(),".md"))]
     #[serde(skip_serializing_if = "Vec::is_empty")]
     pub(crate) apk: Vec<String>,
 
-    /// Adds OS packages to the base image with `apt install`, serialized as CSV.
-    ///
-    /// ```toml
-    /// add.apt = [ "libpq-dev", "pkg-config" ]
-    /// ```
-    ///
-    /// *This environment variable takes precedence over any `Cargo.toml` settings:*
-    /// ```shell
-    /// # Note: values here are comma-separated.
-    /// CARGOGREEN_ADD_APT="libpq-dev,pkg-config"
-    /// ```
+    #[doc = include_str!(concat!("../docs/",ENV_ADD_APT!(),".md"))]
     #[serde(skip_serializing_if = "Vec::is_empty")]
     pub(crate) apt: Vec<String>,
 
-    /// Adds OS packages to the base image with `apt-get install`, serialized as CSV.
-    ///
-    /// ```toml
-    /// add.apt-get = [ "libpq-dev", "pkg-config" ]
-    /// ```
-    ///
-    /// *This environment variable takes precedence over any `Cargo.toml` settings:*
-    /// ```shell
-    /// # Note: values here are comma-separated.
-    /// CARGOGREEN_ADD_APT_GET="libpq-dev,pkg-config"
-    /// ```
+    #[doc = include_str!(concat!("../docs/",ENV_ADD_APT_GET!(),".md"))]
     #[serde(skip_serializing_if = "Vec::is_empty")]
     pub(crate) apt_get: Vec<String>,
 }
