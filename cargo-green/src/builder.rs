@@ -1,6 +1,7 @@
 use std::{str::FromStr, sync::LazyLock};
 
 use anyhow::{anyhow, bail, Result};
+use log::info;
 use serde::{Deserialize, Serialize};
 use version_compare::Version;
 
@@ -109,6 +110,7 @@ impl Green {
 
         let builders = self.list_builders().await?;
         let builder = find_builder(name, &builders);
+        info!("found builder {builder:?}");
         if let Some(existing) = builder {
             let mut recreate = false;
 
@@ -265,24 +267,24 @@ fn find_builders() {
     );
 }
 
-#[derive(Deserialize)]
-#[cfg_attr(test, derive(Debug, PartialEq))]
+#[derive(Debug, Deserialize)]
+#[cfg_attr(test, derive(PartialEq))]
 #[serde(rename_all = "PascalCase")]
 struct BuilderNode {
     driver_opts: Option<DriverOpts>,
     version: Option<String>,
 }
 
-#[derive(Deserialize)]
-#[cfg_attr(test, derive(Debug, PartialEq))]
+#[derive(Debug, Deserialize)]
+#[cfg_attr(test, derive(PartialEq))]
 struct DriverOpts {
     /// An ImageUri without ^docker-image://
     image: Option<String>,
 }
 
 /// https://docs.docker.com/build/builders/drivers/
-#[derive(Deserialize)]
-#[cfg_attr(test, derive(Debug, PartialEq))]
+#[derive(Debug, Deserialize)]
+#[cfg_attr(test, derive(PartialEq))]
 #[serde(rename_all = "PascalCase")]
 struct BuildxBuilder {
     name: String,
