@@ -243,20 +243,25 @@ impl Green {
             // TODO: 'id~=REGEXP as per https://github.com/containerd/containerd/blob/20fc2cf8ec70c5c02cd2f1bbe431bc19b2c622a3/pkg/filters/parser.go#L36
         }
 
-        //     cmd.arg(format!("--cache-to=type=registry,ref={img},mode=max,compression=zstd,force-compression=true,oci-mediatypes=true"));
+        for img in self.cache_from_images.iter().chain(self.cache_images.iter()) {
+            let img = img.noscheme();
+            cmd.arg(format!("--cache-from=type=registry,ref={img}"));
+        }
+
         // // [2024-04-09T07:55:39Z DEBUG lib-autocfg-72217d8ded4d7ec7@177912] ✖ ERROR: Cache export is not supported for the docker driver.
         // // [2024-04-09T07:55:39Z DEBUG lib-autocfg-72217d8ded4d7ec7@177912] ✖ Switch to a different driver, or turn on the containerd image store, and try again.
         // // [2024-04-09T07:55:39Z DEBUG lib-autocfg-72217d8ded4d7ec7@177912] ✖ Learn more at https://docs.docker.com/go/build-cache-backends/
         //TODO: experiment --cache-to=type=inline => try ,mode=max
         //ignore-error=true
 
-        if !self.cache_images.is_empty() {
+        if !self.cache_to_images.is_empty() {
             let maxready = self.builder.has_maxready();
-            for img in &self.cache_images {
+            for img in &self.cache_to_images {
                 let img = img.noscheme();
                 cmd.arg(format!(
-                    "--cache-from=type=registry,ref={img}{mode}",
-                    mode = if maxready { ",mode=max" } else { "" }
+                    "--cache-to=type=registry,ref={img}{mode}{compression}",
+                    mode = if maxready { ",mode=max" } else { "" },
+                    compression = "", //TODO? compression=zstd,force-compression=true
                 ));
 
                 if maxready {
