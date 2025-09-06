@@ -56,6 +56,10 @@ pub(crate) struct Green {
     #[serde(skip_serializing_if = "<&bool as std::ops::Not>::not")]
     pub(crate) incremental: bool,
 
+    /// TODO: Environment variables will take precedence over TOML configuration.
+
+    /// TODO? switch all envs to TOML: cargo --config 'build.rustdocflags = ["--html-in-header", "header.html"]' …
+
     #[serde(flatten)]
     pub(crate) builder: Builder,
 
