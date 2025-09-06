@@ -244,6 +244,8 @@ $( #   needs: [set-image-name]
       CARGOGREEN_FINAL_PATH: recipes/$name_at_version.Dockerfile
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
+      CARGOGREEN_CACHE_FROM: type=gha
+      CARGOGREEN_CACHE_TO: type=gha,mode=max
 $(
 #       #FIXME: also compare with local reg:3 + cache
 

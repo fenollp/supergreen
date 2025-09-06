@@ -86,6 +86,9 @@ jobs:
       CARGOGREEN_FINAL_PATH: recipes/buildxargs@master.Dockerfile
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
+      CARGOGREEN_CACHE_FROM: type=gha
+      CARGOGREEN_CACHE_TO: type=gha,mode=max
+
 
     needs: bin
     steps:
@@ -289,6 +292,9 @@ jobs:
       CARGOGREEN_FINAL_PATH: recipes/cargo-llvm-cov@0.5.36.Dockerfile
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
+      CARGOGREEN_CACHE_FROM: type=gha
+      CARGOGREEN_CACHE_TO: type=gha,mode=max
+
 
     needs: bin
     steps:
@@ -492,6 +498,9 @@ jobs:
       CARGOGREEN_FINAL_PATH: recipes/cross@0.2.5.Dockerfile
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
+      CARGOGREEN_CACHE_FROM: type=gha
+      CARGOGREEN_CACHE_TO: type=gha,mode=max
+
 
     needs: bin
     steps:
@@ -695,6 +704,9 @@ jobs:
       CARGOGREEN_FINAL_PATH: recipes/dbcc@2.2.1.Dockerfile
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
+      CARGOGREEN_CACHE_FROM: type=gha
+      CARGOGREEN_CACHE_TO: type=gha,mode=max
+
 
     needs: bin
     steps:
@@ -898,6 +910,9 @@ jobs:
       CARGOGREEN_FINAL_PATH: recipes/diesel_cli@2.1.1.Dockerfile
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
+      CARGOGREEN_CACHE_FROM: type=gha
+      CARGOGREEN_CACHE_TO: type=gha,mode=max
+
 
     needs: bin
     steps:
@@ -1101,6 +1116,9 @@ jobs:
       CARGOGREEN_FINAL_PATH: recipes/hickory-dns@0.25.0-alpha.1.Dockerfile
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
+      CARGOGREEN_CACHE_FROM: type=gha
+      CARGOGREEN_CACHE_TO: type=gha,mode=max
+
 
     needs: bin
     steps:
@@ -1304,6 +1322,9 @@ jobs:
       CARGOGREEN_FINAL_PATH: recipes/mussh@3.1.3.Dockerfile
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
+      CARGOGREEN_CACHE_FROM: type=gha
+      CARGOGREEN_CACHE_TO: type=gha,mode=max
+
 
     needs: bin
     steps:
@@ -1507,6 +1528,9 @@ jobs:
       CARGOGREEN_FINAL_PATH: recipes/ntpd@1.2.3.Dockerfile
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
+      CARGOGREEN_CACHE_FROM: type=gha
+      CARGOGREEN_CACHE_TO: type=gha,mode=max
+
       NTPD_RS_GIT_REV: c7945250c378f65f65b2a75748132edf75063b3b
       NTPD_RS_GIT_DATE: 2025-05-09
     needs: bin
@@ -1711,6 +1735,9 @@ jobs:
       CARGOGREEN_FINAL_PATH: recipes/qcow2-rs@0.1.2.Dockerfile
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
+      CARGOGREEN_CACHE_FROM: type=gha
+      CARGOGREEN_CACHE_TO: type=gha,mode=max
+
 
     needs: bin
     steps:
@@ -1914,6 +1941,9 @@ jobs:
       CARGOGREEN_FINAL_PATH: recipes/ripgrep@14.1.0.Dockerfile
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
+      CARGOGREEN_CACHE_FROM: type=gha
+      CARGOGREEN_CACHE_TO: type=gha,mode=max
+
 
     needs: bin
     steps:
@@ -2117,6 +2147,9 @@ jobs:
       CARGOGREEN_FINAL_PATH: recipes/rublk@0.2.0.Dockerfile
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
+      CARGOGREEN_CACHE_FROM: type=gha
+      CARGOGREEN_CACHE_TO: type=gha,mode=max
+
 
     needs: bin
     steps:
@@ -2320,6 +2353,9 @@ jobs:
       CARGOGREEN_FINAL_PATH: recipes/vixargs@0.1.0.Dockerfile
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
+      CARGOGREEN_CACHE_FROM: type=gha
+      CARGOGREEN_CACHE_TO: type=gha,mode=max
+
 
     needs: bin
     steps:
@@ -2523,6 +2559,9 @@ jobs:
       CARGOGREEN_FINAL_PATH: recipes/cargo-config2@0.1.34.Dockerfile
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
+      CARGOGREEN_CACHE_FROM: type=gha
+      CARGOGREEN_CACHE_TO: type=gha,mode=max
+
 
     needs: bin
     steps:
@@ -2726,6 +2765,9 @@ jobs:
       CARGOGREEN_FINAL_PATH: recipes/cargo-udeps@0.1.55.Dockerfile
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
+      CARGOGREEN_CACHE_FROM: type=gha
+      CARGOGREEN_CACHE_TO: type=gha,mode=max
+
 
     needs: bin
     steps:
