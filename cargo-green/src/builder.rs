@@ -197,6 +197,16 @@ then run your cargo command again.
             fetch_digest(&BUILDKIT_IMAGE).await?
         };
         cmd.arg(format!("--driver-opt=image={}", img.noscheme()));
+        // buildkitd-flags: --debug
+        //=> docker logs $BUILDX_BUILDER
+        //=> grep "do request.+host="
+        //
+        // buildkitd-config-inline: |
+        //   [registry."docker.io"]
+        //   mirrors = ["mirror.gcr.io"]
+        //
+        // [worker.oci]
+        // max-parallelism = 4  # for low-powered machines
 
         let (succeeded, _, stderr) = cmd.exec().await?;
         if !succeeded {

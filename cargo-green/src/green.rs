@@ -61,6 +61,10 @@ pub(crate) struct Green {
     #[serde(skip_serializing_if = "<&bool as std::ops::Not>::not")]
     pub(crate) incremental: bool,
 
+    /// TODO: Environment variables will take precedence over TOML configuration.
+
+    /// TODO? switch all envs to TOML: cargo --config 'build.rustdocflags = ["--html-in-header", "header.html"]' …
+
     #[serde(flatten)]
     pub(crate) builder: Builder,
 
@@ -274,6 +278,7 @@ impl Green {
         if green.image.is_unset() {
             //CARGOGREEN_USE=<a rustup toolchain>
             //CARGOGREEN_TOOLCHAIN=<a rustup toolchain> MOUCH BETTA
+            // #TODO: CARGOGREEN_COMPONENT=toolchain=,target=,add=llvm-tools-preview;remove=
             // https://rust-lang.github.io/rustup/concepts/toolchains.html#toolchain-specification
             // if set use it, else:
             green.image = BaseImage::from_local_rustc();
