@@ -27,7 +27,7 @@ keywords = [
 ]
 license = "MIT"
 repository = "https://github.com/fenollp/supergreen"
-version = "0.17.0"
+version = "0.18.0"
 
 [workspace.dependencies]
 anyhow = "1"

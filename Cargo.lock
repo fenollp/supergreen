@@ -174,7 +174,7 @@ dependencies = [
 
 [[package]]
 name = "cargo-green"
-version = "0.17.0"
+version = "0.18.0"
 dependencies = [
  "anyhow",
  "assertx",
@@ -202,7 +202,7 @@ dependencies = [
  "szyk",
  "test-case",
  "tokio",
- "toml 0.9.5",
+ "toml 0.8.23",
  "url",
  "version-compare",
 ]
