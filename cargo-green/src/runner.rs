@@ -277,7 +277,22 @@ impl Green {
             if stderr.contains("No such object") {
                 return Ok(None);
             }
-            bail!("BUG: failed to inspect image cache: {stderr}")
+
+            let mut help = "";
+            if stderr.contains(" executable file not found in ")
+                && self.runner_envs.contains_key(DOCKER_HOST)
+            {
+                // TODO: find actual solutions to 'executable file not found in $PATH'
+                // error during connect: Get "http://docker.example.com/v1.51/containers/docker.io/docker/dockerfile:1/json": exec: "ssh": executable file not found in $PATH
+                // error during connect: Get "http://docker.example.com/v1.51/containers/json": command [ssh -o ConnectTimeout=30 -T -- gol docker system dial-stdio] has exited with exit status 127, make sure the URL is valid, and Docker 18.09 or later is installed on the remote host: stderr=bash: line 1: docker: command not found
+                help = r#"
+Maybe have a look at
+  https://stackoverflow.com/a/79474080/1418165
+  https://github.com/docker/for-mac/issues/4382#issuecomment-603031242
+"#
+                .trim();
+            }
+            bail!("BUG: failed to inspect image cache: {stderr}{help}")
         }
 
         Ok(String::from_utf8_lossy(&stdout)
