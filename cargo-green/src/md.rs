@@ -1,6 +1,6 @@
 // Our own MetaData utils
 
-use std::{env, fs, io::ErrorKind, str::FromStr};
+use std::{collections::HashMap, env, fs, io::ErrorKind, str::FromStr};
 
 use anyhow::{anyhow, bail, Result};
 use camino::{Utf8Path, Utf8PathBuf};
@@ -19,6 +19,12 @@ use crate::{
 #[serde(deny_unknown_fields)]
 pub(crate) struct Md {
     this: MdId,
+
+    #[serde(default, skip_serializing_if = "IndexSet::is_empty")]
+    needs: IndexSet<MdId>,
+
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub(crate) mounts: Vec<MountFrom>,
 
     #[serde(default, skip_serializing_if = "IndexSet::is_empty")]
     deps: IndexSet<MdId>,
@@ -56,6 +62,8 @@ impl Md {
     pub(crate) fn new(this: &str) -> Self {
         Self {
             this: MdId(this.to_owned()),
+            needs: [].into(),
+            mounts: vec![],
             deps: [].into(),
             short_externs: [].into(),
             is_proc_macro: false,
@@ -150,6 +158,135 @@ impl Md {
         }
     }
 
+    // https://github.com/rust-lang/cargo/issues/12059#issuecomment-1537457492
+    //   https://github.com/rust-lang/rust/issues/63012 : Tracking issue for -Z binary-dep-depinfo
+    pub(crate) fn assemble_build_dependencies(
+        &mut self,
+        crate_type: &str,
+        emit: &str,
+        externs: IndexSet<String>,
+        target_path: &Utf8Path,
+    ) -> Result<Vec<Self>> {
+        let mut mds = HashMap::<Utf8PathBuf, Self>::new(); // A file cache
+
+        let ext = match crate_type {
+            "lib" => "rmeta".to_owned(),
+            "bin" | "rlib" | "test" | "proc-macro" => "rlib".to_owned(),
+            _ => bail!("BUG: unexpected crate-type: '{crate_type}'"),
+        };
+        // https://rustc-dev-guide.rust-lang.org/backend/libs-and-metadata.html#rmeta
+        // > [rmeta] is created if the --emit=metadata CLI option is used.
+        let ext = if emit.contains("metadata") { "rmeta".to_owned() } else { ext };
+
+        let mut extern_mds_and_paths = vec![];
+
+        for xtern in externs {
+            // E.g. libproc_macro2-e44df32b5d502568.rmeta
+            // E.g. libunicode_xid-c443c88a44e24bc6.rlib
+            trace!("❯ extern {xtern}");
+
+            // E.g. c443c88a44e24bc6
+            let Some(xtern_mdid) = xtern.split(['-', '.']).nth(1) else {
+                bail!("BUG: expected extern to match ^lib[^.-]+-<mdid>.[^.]+$: {xtern}")
+            };
+
+            let extern_md_path = target_path.join(format!("{xtern_mdid}.toml")); //TODO: .path(target_path)
+            info!("checking (RO) extern's Md {extern_md_path}");
+            let extern_md = get_or_read(&mut mds, &extern_md_path)?;
+
+            let from = Stage::output(xtern_mdid)?; //TODO: swap arg type
+            self.mounts.extend(
+                extern_md
+                    .writes
+                    .iter()
+                    .filter(|w: &&Utf8PathBuf| !w.as_str().ends_with(".d"))
+                    .map(|w| w.file_name().unwrap().to_owned())
+                    .filter(|w: &String| w.ends_with(&format!(".{ext}")))
+                    .map(|xtern: String| MountFrom {
+                        from: from.clone(),
+                        src: format!("/{xtern}").into(),
+                        dst: target_path.join("deps").join(xtern),
+                    }),
+            );
+
+            let xtern_mdid = MdId(xtern_mdid.to_owned());
+            self.needs.insert(xtern_mdid);
+
+            for dep in &extern_md.needs {
+                let dep_md_path = target_path.join(format!("{}.toml", dep.0));
+                let dep_md = get_or_read(&mut mds, &dep_md_path)?;
+                // let ext = if guard_md.is_proc_macro { "so" } else { &ext };
+
+                // trace!("❯ extern lib{transitive}.{ext}");
+                // all_externs.insert(format!("lib{transitive}.{ext}"));
+                let from = Stage::output(&dep.0)?; //TODO: swap arg type
+                self.mounts.extend(
+                    dep_md
+                        .writes
+                        .iter()
+                        .filter(|w: &&Utf8PathBuf| !w.as_str().ends_with(".d"))
+                        .map(|w| w.file_name().unwrap().to_owned())
+                        .filter(|w: &String| w.ends_with(&format!(".{ext}")))
+                        .map(|xtern: String| MountFrom {
+                            from: from.clone(),
+                            src: format!("/{xtern}").into(),
+                            dst: target_path.join("deps").join(xtern),
+                        }),
+                );
+
+                extern_mds_and_paths.push((dep_md_path, dep_md));
+
+                trace!("❯ needs dep {}", dep.0);
+                self.needs.insert(dep.clone());
+            }
+
+            extern_mds_and_paths.push((extern_md_path, extern_md));
+        }
+
+        let extern_md_paths = self.sort_deps(extern_mds_and_paths)?;
+        // let extern_md_paths = {
+        //     let mut dag: Vec<_> = extern_mds_and_paths
+        //         .into_iter()
+        //         .map(|(md_path, md)| {
+        //             let this = md.this.as_u64();
+        //             self.needs.insert(md.this);
+        //             self.contexts.extend(md.contexts);
+
+        //             // for need in &md.needs {}
+
+        //             Node::new(this, md.needs.as_u64s(), md_path)
+        //         })
+        //         .collect();
+        //     let this = self.this.as_u64();
+        //     dag.push(Node::new(this, self.needs.as_u64s(), "".into()));
+
+        //     let mut md_paths = sort(&dag, this).map_err(|e| {
+        //         let this = &self.this.0;
+        //         match e {
+        //             TopsortError::TargetNotFound(x) => {
+        //                 anyhow!("Failed topolosorting {this}: {} not found", MdId::from_u64(x).0)
+        //             }
+        //             TopsortError::CyclicDependency(x) => {
+        //                 anyhow!("Failed topolosorting {this}: cyclic {}", MdId::from_u64(x).0)
+        //             }
+        //         }
+        //     })?;
+        //     let last = md_paths.pop();
+        //     assert_eq!(last.as_deref(), Some("".into()), "BUG: it's self.this's empty path");
+
+        //     md_paths
+        // };
+
+        info!("extern_md_paths: {}", extern_md_paths.len());
+
+        let mds = extern_md_paths
+            .into_iter()
+            .map(|extern_md_path| get_or_read(&mut mds, &extern_md_path))
+            .collect::<Result<Vec<_>>>()?;
+
+        Ok(mds)
+    }
+
     pub(crate) fn sort_deps(&mut self, mds: Vec<(Utf8PathBuf, Self)>) -> Result<Vec<Utf8PathBuf>> {
         let mut dag: Vec<_> = mds
             .into_iter()
@@ -157,6 +294,7 @@ impl Md {
                 let this = md.this.as_u64();
                 self.deps.insert(md.this);
                 self.contexts.extend(md.contexts);
+
                 Node::new(this, md.deps.as_u64s(), md_path)
             })
             .collect();
@@ -205,6 +343,22 @@ impl Md {
     }
 }
 
+#[derive(Debug, Clone, Deserialize, Serialize)]
+pub(crate) struct MountFrom {
+    pub(crate) from: Stage,
+    pub(crate) src: Utf8PathBuf,
+    pub(crate) dst: Utf8PathBuf,
+}
+
+fn get_or_read(mds: &mut HashMap<Utf8PathBuf, Md>, path: &Utf8Path) -> Result<Md> {
+    if let Some(md) = mds.get(path) {
+        return Ok(md.clone());
+    }
+    let md = Md::from_file(path)?;
+    let _ = mds.insert(path.to_path_buf(), md.clone());
+    Ok(md)
+}
+
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash)]
 struct NamedStage {
     name: Stage,
@@ -219,7 +373,11 @@ pub(crate) struct BuildContext {
 }
 
 #[derive(Debug, Clone, Deserialize, Serialize, Eq, PartialEq, Hash)]
-struct MdId(String);
+pub(crate) struct MdId(pub(crate) String); //FIXME: unpub
+
+//TODO: impl Display
+//TODO: .0 as u64 + Self::from_str
+//TODO: ::from_extrafn
 
 impl MdId {
     #[must_use]
@@ -257,6 +415,8 @@ fn dec_decs() {
 fn md_ser() {
     let md = Md {
         this: MdId("711ba64e1183a234".to_owned()),
+        needs: [MdId("81529f4c2380d9ec".to_owned()), MdId("88a4324b2aff6db9".to_owned())].into(),
+        mounts: vec![], //FIXME
         deps: [MdId("81529f4c2380d9ec".to_owned()), MdId("88a4324b2aff6db9".to_owned())].into(),
         short_externs: [
             "pico_args-b8c41dbf50ca5479".to_owned(),
@@ -282,6 +442,10 @@ fn md_ser() {
     pretty_assertions::assert_eq!(
         r#"
 this = "711ba64e1183a234"
+needs = [
+    "81529f4c2380d9ec",
+    "88a4324b2aff6db9",
+]
 deps = [
     "81529f4c2380d9ec",
     "88a4324b2aff6db9",

@@ -443,9 +443,10 @@ envvars=(CARGOGREEN_LOG=trace)
 envvars+=(CARGOGREEN_LOG_PATH="$tmplogs")
 envvars+=(PATH=$install_dir/bin:"$PATH")
 envvars+=(CARGO_TARGET_DIR="$tmptrgt")
-# envvars+=(CARGOGREEN_FINAL_PATH=recipes/$name_at_version.Dockerfile)
+envvars+=(CARGOGREEN_FINAL_PATH=recipes/$name_at_version.Dockerfile)
 # envvars+=(CARGOGREEN_SYNTAX=docker-image://docker.io/docker/dockerfile:1@sha256:4c68376a702446fc3c79af22de146a148bc3367e73c25a5803d453b6b3f722fb)
 # envvars+=(CARGOGREEN_BASE_IMAGE=docker-image://docker.io/library/rust:1.86.0-slim@sha256:3f391b0678a6e0c88fd26f13e399c9c515ac47354e3cadfee7daee3b21651a4f)
+envvars+=(CARGOGREEN_BASE_IMAGE=docker-image://docker.io/library/rust:1.86.0-slim)
 as_env "$name_at_version"
 send \
   'until' '[[' -f "$tmpgooo".installed ']];' 'do' sleep '.1;' 'done' '&&' rm "$tmpgooo".* \
