@@ -753,13 +753,8 @@ where
     spawn(async move {
         let mut buf = String::new();
         let mut acc = Accumulated::default();
-        let mut first = true;
         loop {
             let maybe_line = stdio.next_line().await;
-            if first {
-                first = false;
-                debug!("Time To First Line for task {badge}: {:?}", start.elapsed());
-            }
             let line = maybe_line.map_err(|e| anyhow!("Failed during piping of {badge}: {e:?}"))?;
             let Some(line) = line else { break };
             if line.is_empty() {
@@ -778,7 +773,7 @@ where
             // => also in .d files
             // cache should be ok (cargo's point of view) if written right after green's build(..) call
         }
-        debug!("Terminating {badge} task");
+        debug!("Task {badge} ran for {:?}", start.elapsed());
         drop(stdio);
         Ok(acc)
     })
