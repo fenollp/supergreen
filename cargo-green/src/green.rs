@@ -28,7 +28,11 @@ use crate::{
 };
 
 // Envs that override Cargo.toml settings
+pub(crate) const ENV_CACHE_FROM: &str = "CARGOGREEN_CACHE_FROM";
+pub(crate) const ENV_CACHE_FROM_IMAGES: &str = "CARGOGREEN_CACHE_FROM_IMAGES";
 pub(crate) const ENV_CACHE_IMAGES: &str = "CARGOGREEN_CACHE_IMAGES";
+pub(crate) const ENV_CACHE_TO: &str = "CARGOGREEN_CACHE_TO";
+pub(crate) const ENV_CACHE_TO_IMAGES: &str = "CARGOGREEN_CACHE_TO_IMAGES";
 pub(crate) const ENV_INCREMENTAL: &str = "CARGOGREEN_INCREMENTAL";
 pub(crate) const ENV_SET_ENVS: &str = "CARGOGREEN_SET_ENVS";
 
@@ -56,6 +60,10 @@ pub(crate) struct Green {
     #[serde(skip_serializing_if = "<&bool as std::ops::Not>::not")]
     pub(crate) incremental: bool,
 
+    /// TODO: Environment variables will take precedence over TOML configuration.
+
+    /// TODO? switch all envs to TOML: cargo --config 'build.rustdocflags = ["--html-in-header", "header.html"]' …
+
     #[serde(flatten)]
     pub(crate) builder: Builder,
 
@@ -67,18 +75,49 @@ pub(crate) struct Green {
     // CARGOGREEN_SYNTAX="docker-image://docker.io/docker/dockerfile:1"
     pub(crate) syntax: ImageUri,
 
-    // Image paths with registry information.
-    //
-    // See type=registry at https://docs.docker.com/build/cache/backends/
-    //
-    // cache-images = [ "docker-image://my.org/team/my-project", "docker-image://some.org/global/cache" ]
-    //
-    // # Use by setting this environment variable (no Cargo.toml setting):
-    // # Note: values here are comma-separated.
-    // CARGOGREEN_CACHE_IMAGES="docker-image://my.org/team/my-project,docker-image://some.org/global/cache"
+    /// Read cached data from image registries
+    ///
+    /// See https://docs.docker.com/build/cache/backends/registry/
+    ///
+    /// See also: [cache_to_images](Green:cache_to_images)
+    ///
+    /// ```toml
+    /// cache-from-images = [ "docker-image://my.org/team/my-project", "docker-image://some.org/global/cache" ]
+    /// ```
+    ///
+    /// ```shell
+    /// # Use by setting this environment variable (no Cargo.toml setting):
+    /// # Note: values here are comma-separated.
+    /// CARGOGREEN_CACHE_FROM_IMAGES="docker-image://my.org/team/my-project,docker-image://some.org/global/cache"
+    /// ```
+    #[serde(skip_serializing_if = "Vec::is_empty")]
+    pub(crate) cache_from_images: Vec<ImageUri>,
+
+    /// Write cached data to image registries
+    ///
+    /// See https://docs.docker.com/build/cache/backends/registry/
+    ///
+    /// See also: [cache_from_images](Green:cache_from_images)
+    #[serde(skip_serializing_if = "Vec::is_empty")]
+    pub(crate) cache_to_images: Vec<ImageUri>,
+
+    /// Both read and write cached data to and from image registries
+    ///
+    /// See https://docs.docker.com/build/cache/backends/registry/
+    ///
+    /// See also: [cache_from_images](Green:cache_from_images) [cache_to_images](Green:cache_to_images)
     #[serde(skip_serializing_if = "Vec::is_empty")]
     pub(crate) cache_images: Vec<ImageUri>,
-    // TODO? error when registry is unreachable
+
+    /// TODO? error when registry is unreachable =1:my.org;0:some.org 1|0
+
+    /// Semicolon separated CSV, when passed via env
+    #[serde(skip_serializing_if = "Vec::is_empty")]
+    pub(crate) cache_from: Vec<String>,
+
+    /// Semicolon separated CSV, when passed via env
+    #[serde(skip_serializing_if = "Vec::is_empty")]
+    pub(crate) cache_to: Vec<String>,
 
     // Write final containerfile to given path.
     //
@@ -171,23 +210,46 @@ impl Green {
             green.incremental = val == "1";
         }
 
-        let mut origin = "[metadata.green.cache-images]".to_owned();
-        if let Ok(val) = env::var(ENV_CACHE_IMAGES) {
-            origin = format!("${ENV_CACHE_IMAGES}");
-            green.cache_images = val
-                .split(',')
-                .map(|x| ImageUri::try_new(x).map_err(|e| anyhow!("{origin} {e}")))
-                .collect::<Result<_>>()?;
-        }
-        if green.cache_images.len() != green.cache_images.iter().collect::<HashSet<_>>().len() {
-            bail!("{origin} contains duplicates")
-        }
-        for item in &green.cache_images {
-            if !item.noscheme().contains('/') {
-                bail!("{origin} must contain a registry: {item:?}")
+        for (field, var, setting) in [
+            (&mut green.cache_from_images, ENV_CACHE_FROM_IMAGES, "cache-from-images"),
+            (&mut green.cache_to_images, ENV_CACHE_TO_IMAGES, "cache-to-images"),
+            (&mut green.cache_images, ENV_CACHE_IMAGES, "cache-images"),
+        ] {
+            let mut origin = format!("[metadata.green.{setting}]");
+            if let Ok(val) = env::var(var) {
+                origin = format!("${var}");
+                *field = val
+                    .split(',')
+                    .map(|x| ImageUri::try_new(x).map_err(|e| anyhow!("{origin} {e}")))
+                    .collect::<Result<_>>()?;
             }
-            if item.tagged() || item.locked() {
-                bail!("{origin} must not contain a tag nor digest: {item:?}")
+            if field.len() != field.iter().collect::<HashSet<_>>().len() {
+                bail!("{origin} contains duplicates")
+            }
+            for item in field {
+                if !item.noscheme().contains('/') {
+                    bail!("{origin} must contain a registry and namespace: {item:?}")
+                }
+                if item.tagged() || item.locked() {
+                    bail!("{origin} must not contain a tag nor digest: {item:?}")
+                }
+            }
+        }
+
+        for (field, var, setting) in [
+            (&mut green.cache_from, ENV_CACHE_FROM, "cache-from"),
+            (&mut green.cache_to, ENV_CACHE_TO, "cache-to"),
+        ] {
+            let mut origin = format!("[metadata.green.{setting}]");
+            if let Ok(val) = env::var(var) {
+                origin = format!("${var}");
+                *field = val.split(';').map(ToOwned::to_owned).collect();
+            }
+            if bad_names(field) {
+                bail!("{origin} contains empty names, quotes or whitespace")
+            }
+            if field.len() != field.iter().collect::<HashSet<_>>().len() {
+                bail!("{origin} contains duplicates")
             }
         }
 
@@ -736,14 +798,14 @@ RUN exit 42
 //
 
 #[test]
-fn metadata_green_cache_images_ok() {
+fn metadata_green_cache_from_images_ok() {
     let manifest = Manifest::from_str(
         r#"
 [package]
 name = "test-package"
 
 [package.metadata.green]
-cache-images = [
+cache-from-images = [
   "docker-image://some-registry.com/dir/image",
   "docker-image://other.registry/dir2/image3",
 ]
@@ -752,7 +814,7 @@ cache-images = [
     .unwrap();
     let green = Green::try_new(Some(manifest)).unwrap();
     assert_eq!(
-        green.cache_images,
+        green.cache_from_images,
         vec![
             ImageUri::try_new("docker-image://some-registry.com/dir/image").unwrap(),
             ImageUri::try_new("docker-image://other.registry/dir2/image3").unwrap(),
@@ -761,14 +823,14 @@ cache-images = [
 }
 
 #[test]
-fn metadata_green_cache_images_dupes() {
+fn metadata_green_cache_from_images_dupes() {
     let manifest = Manifest::from_str(
         r#"
 [package]
 name = "test-package"
 
 [package.metadata.green]
-cache-images = [
+cache-from-images = [
   "docker-image://some-registry.com/dir/image",
   "docker-image://other.registry/dir2/image3",
   "docker-image://some-registry.com/dir/image",
@@ -781,14 +843,14 @@ cache-images = [
 }
 
 #[test]
-fn metadata_green_cache_images_bad_names() {
+fn metadata_green_cache_from_images_bad_names() {
     let manifest = Manifest::from_str(
         r#"
 [package]
 name = "test-package"
 
 [package.metadata.green]
-cache-images = ["docker-image://some-registry.com/dir/image 'docker-image://other.registry/dir2/image3'", ""]
+cache-from-images = ["docker-image://some-registry.com/dir/image 'docker-image://other.registry/dir2/image3'", ""]
 "#,
     )
     .unwrap();
@@ -797,14 +859,14 @@ cache-images = ["docker-image://some-registry.com/dir/image 'docker-image://othe
 }
 
 #[test]
-fn metadata_green_cache_images_bad_scheme() {
+fn metadata_green_cache_from_images_bad_scheme() {
     let manifest = Manifest::from_str(
         r#"
 [package]
 name = "test-package"
 
 [package.metadata.green]
-cache-images = ["some-registry.com/dir/image"]
+cache-from-images = ["some-registry.com/dir/image"]
 "#,
     )
     .unwrap();
@@ -813,14 +875,14 @@ cache-images = ["some-registry.com/dir/image"]
 }
 
 #[test]
-fn metadata_green_cache_images_bad_registry() {
+fn metadata_green_cache_from_images_bad_registry() {
     let manifest = Manifest::from_str(
         r#"
 [package]
 name = "test-package"
 
 [package.metadata.green]
-cache-images = ["docker-image://image"]
+cache-from-images = ["docker-image://image"]
 "#,
     )
     .unwrap();
@@ -829,14 +891,14 @@ cache-images = ["docker-image://image"]
 }
 
 #[test]
-fn metadata_green_cache_images_bad_image() {
+fn metadata_green_cache_from_images_bad_image() {
     let manifest = Manifest::from_str(
         r#"
 [package]
 name = "test-package"
 
 [package.metadata.green]
-cache-images = ["docker-image://some-registry.com/dir/image:sometag"]
+cache-from-images = ["docker-image://some-registry.com/dir/image:sometag"]
 "#,
     )
     .unwrap();
