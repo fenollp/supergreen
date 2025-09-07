@@ -5,7 +5,6 @@ use std::{
     fmt,
     fs::{self},
     io::ErrorKind,
-    mem,
     ops::Not,
     process::{ExitStatus, Stdio},
     str::FromStr,
@@ -743,7 +742,7 @@ fn strip_ansi_escapes(line: &str) -> String {
 fn fwd<R>(
     mut stdio: Lines<R>,
     badge: &'static str,
-    fwder: impl Fn(&str, &mut String, &mut Accumulated) + Send + 'static,
+    fwd_std: impl Fn(&str, &mut Accumulated) + Send + 'static,
 ) -> JoinHandle<Result<Accumulated>>
 where
     R: AsyncBufRead + Unpin + Send + 'static,
@@ -751,7 +750,6 @@ where
     debug!("Reading {badge} file");
     let start = Instant::now();
     spawn(async move {
-        let mut buf = String::new();
         let mut acc = Accumulated::default();
         loop {
             let maybe_line = stdio.next_line().await;
@@ -764,7 +762,7 @@ where
             debug!("{badge} {}", strip_ansi_escapes(&line));
 
             if let Some(msg) = lift_stdio(&line) {
-                fwder(msg, &mut buf, &mut acc);
+                fwd_std(msg, &mut acc);
             }
 
             // //warning: panic message contains an unused formatting placeholder
@@ -788,88 +786,35 @@ struct Accumulated {
     stderr: Vec<String>,
 }
 
-#[test]
-fn support_long_broken_json_lines() {
-    let logs = assertx::setup_logging_test();
-    let lines = [
-        r#"#42 1.312 {"$message_type":"artifact","artifact":"/tmp/thing","emit":"link""#,
-        r#"#42 1.313 }"#,
-    ];
-    let mut buf = String::new();
-    let mut acc = Accumulated::default();
+fn fwd_stderr(msg: &str, acc: &mut Accumulated) {
+    if let Some(file) = artifact_written(msg) {
+        acc.written.push(file.into());
+        info!("rustc wrote {file}");
+    }
 
-    let msg = lift_stdio(lines[0]);
-    assert_eq!(msg, Some(r#"{"$message_type":"artifact","artifact":"/tmp/thing","emit":"link""#));
-    fwd_stderr(msg.unwrap(), &mut buf, &mut acc);
-    assert_eq!(buf, r#"{"$message_type":"artifact","artifact":"/tmp/thing","emit":"link""#);
-    assert_eq!(acc.written, Vec::<String>::new());
+    let mut msg = msg.to_owned();
 
-    let msg = lift_stdio(lines[1]);
-    assert_eq!(msg, Some("}"));
-    fwd_stderr(msg.unwrap(), &mut buf, &mut acc);
-    assert_eq!(buf, "");
-    assert_eq!(acc.written, vec![Utf8PathBuf::from("/tmp/thing")]);
-
-    // Then fwd_stderr
-    // calls artifact_written(r#"{"$message_type":"artifact","artifact":"/tmp/thing","emit":"link"}"#)
-    // which returns Some("/tmp/thing")
-    assertx::assert_logs_contain_in_order!(logs, log::Level::Info => "rustc wrote /tmp/thing");
-}
-
-fn fwd_stderr(msg: &str, buf: &mut String, acc: &mut Accumulated) {
-    let mut show = |msg: &str| {
-        if let Some(file) = artifact_written(msg) {
-            acc.written.push(file.into());
-            info!("rustc wrote {file}");
-        }
-
-        let mut msg = msg.to_owned();
-
-        if let Some(var) = env_not_comptime_defined(&msg) {
-            acc.envs.insert(var.to_owned());
-            if let Some(new_msg) = suggest_set_envs(var, &msg) {
-                info!("suggesting to passthrough missing env with set-envs {var:?}");
-                msg = new_msg;
-            }
-        }
-
-        if let Some(lib) = lib_not_found(&msg) {
-            acc.libs.insert(lib.to_owned());
-            if let Some(new_msg) = suggest_add(lib, &msg) {
-                info!("suggesting to add lib to base image {lib:?}");
-                msg = new_msg;
-            }
-        }
-
-        eprintln!("{msg}");
-        acc.stderr.push(msg);
-    };
-
-    match (buf.is_empty(), msg.starts_with('{'), msg.ends_with('}')) {
-        (true, true, true) => show(msg), // json
-        (true, true, false) => buf.push_str(msg),
-        (true, false, true) => show(msg),  // ?
-        (true, false, false) => show(msg), // text
-        (false, true, true) => {
-            show(&mem::take(buf));
-            show(msg) // json
-        }
-        (false, true, false) => {
-            show(&mem::take(buf));
-            buf.push_str(msg)
-        }
-        (false, false, true) => {
-            buf.push_str(msg);
-            show(&mem::take(buf));
-        }
-        (false, false, false) => {
-            show(&mem::take(buf));
-            show(msg) // text
+    if let Some(var) = env_not_comptime_defined(&msg) {
+        acc.envs.insert(var.to_owned());
+        if let Some(new_msg) = suggest_set_envs(var, &msg) {
+            info!("suggesting to passthrough missing env with set-envs {var:?}");
+            msg = new_msg;
         }
     }
+
+    if let Some(lib) = lib_not_found(&msg) {
+        acc.libs.insert(lib.to_owned());
+        if let Some(new_msg) = suggest_add(lib, &msg) {
+            info!("suggesting to add lib to base image {lib:?}");
+            msg = new_msg;
+        }
+    }
+
+    eprintln!("{msg}");
+    acc.stderr.push(msg);
 }
 
-fn fwd_stdout(msg: &str, #[expect(clippy::ptr_arg)] _buf: &mut String, acc: &mut Accumulated) {
+fn fwd_stdout(msg: &str, acc: &mut Accumulated) {
     info!("(To cargo's STDOUT): {msg}");
     println!("{msg}");
     acc.stdout.push(msg.to_owned());
@@ -897,21 +842,14 @@ fn stdio_passthrough_from_runner() {
     );
 }
 
-// TODO? replace with actual JSON deserialization
 #[must_use]
 fn artifact_written(msg: &str) -> Option<&str> {
-    let mut z = msg.split('"');
-    let mut a = z.next();
-    let mut b = z.next();
-    let mut c = z.next();
-    loop {
-        match (a, b, c) {
-            (Some("artifact"), Some(":"), Some(file)) => return Some(file),
-            (_, _, Some(_)) => {}
-            (_, _, None) => return None,
-        }
-        (a, b, c) = (b, c, z.next());
+    #[derive(Deserialize)]
+    struct Wrote<'a> {
+        artifact: Option<&'a str>,
     }
+    let wrote: Option<Wrote> = serde_json::from_str(msg).ok();
+    wrote.and_then(|Wrote { artifact }| artifact)
 }
 
 #[must_use]
@@ -1504,4 +1442,52 @@ fn lift_stdio(line: &str) -> Option<&str> {
     let line = line.trim_start_matches(|c| ['#', '.', ' '].contains(&c) || c.is_ascii_digit());
     let msg = line.trim();
     msg.is_empty().not().then_some(msg)
+}
+
+#[test]
+fn lifting_doesnt_miss_an_artifact() {
+    use log::Level;
+
+    let logs = assertx::setup_logging_test();
+    let lines = [
+        r#"#10 0.111 + cat ./rustc-toolchain ./rustc-toolchain.toml"#,
+        r#"#10 0.113 + true"#,
+        r#"#10 0.120 ++ which cargo"#,
+        r#"#10 0.123 + env CARGO=/usr/local/cargo/bin/cargo CARGO_CRATE_NAME=bitflags CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bitflags-0.4.0 CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bitflags-0.4.0/Cargo.toml 'CARGO_PKG_AUTHORS=The Rust Project Developers' 'CARGO_PKG_DESCRIPTION=A macro to generate structures which behave like bitflags.\n' CARGO_PKG_HOMEPAGE=https://github.com/rust-lang/bitflags CARGO_PKG_LICENSE=MIT/Apache-2.0 CARGO_PKG_LICENSE_FILE= CARGO_PKG_NAME=bitflags CARGO_PKG_README=README.md CARGO_PKG_REPOSITORY=https://github.com/rust-lang/bitflags CARGO_PKG_RUST_VERSION= CARGO_PKG_VERSION=0.4.0 CARGO_PKG_VERSION_MAJOR=0 CARGO_PKG_VERSION_MINOR=4 CARGO_PKG_VERSION_PATCH=0 CARGO_PKG_VERSION_PRE= CARGOGREEN=1 rustc --crate-name bitflags --edition 2015 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level=3 -C embed-bitcode=no --check-cfg 'cfg(docsrs,test)' --check-cfg 'cfg(feature, values("no_std"))' -C metadata=c40fd9a620d26196 -C extra-filename=-e976848f96abbbd4 --out-dir /tmp/clis-dbcc_2-2-1/release/deps -C strip=debuginfo -L dependency=/tmp/clis-dbcc_2-2-1/release/deps --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bitflags-0.4.0/src/lib.rs"#,
+        r#"#10 0.124 ++ tee /tmp/clis-dbcc_2-2-1/release/deps/out-e976848f96abbbd4-stdout"#,
+        r#"#10 0.125 ++ tee /tmp/clis-dbcc_2-2-1/release/deps/out-e976848f96abbbd4-stderr"#,
+        r#"#10 0.258 {"$message_type":"artifact","artifact":"/tmp/clis-dbcc_2-2-1/release/deps/bitflags-e976848f96abbbd4.d","emit":"dep-info"}"#,
+        r#"#10 0.259 {"$message_type":"diagnostic","message":"extern crate `std` is private and cannot be re-exported","code":{"code":"E0365","explanation":"Private modules cannot be publicly re-exported. This error indicates that you\nattempted to `pub use` a module that was not itself public.\n\nErroneous code example:\n\n```compile_fail,E0365\nmod foo {\n    pub const X: u32 = 1;\n}\n\npub use foo as foo2;\n\nfn main() {}\n```\n\nThe solution to this problem is to ensure that the module that you are\nre-exporting is itself marked with `pub`:\n\n```\npub mod foo {\n    pub const X: u32 = 1;\n}\n\npub use foo as foo2;\n\nfn main() {}\n```\n\nSee the [Use Declarations][use-declarations] section of the reference for\nmore information on this topic.\n\n[use-declarations]: https://doc.rust-lang.org/reference/items/use-declarations.html\n"},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bitflags-0.4.0/src/lib.rs","byte_start":1046,"byte_end":1059,"line_start":25,"line_end":25,"column_start":9,"column_end":22,"is_primary":true,"text":[{"text":"pub use std as __core;","highlight_start":9,"highlight_end":22}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"this was previously accepted by the compiler but is being phased out; it will become a hard error in a future release!","code":null,"level":"warning","spans":[],"children":[],"rendered":null},{"message":"for more information, see issue #127909 <https://github.com/rust-lang/rust/issues/127909>","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"`#[warn(pub_use_of_private_extern_crate)]` on by default","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"consider making the `extern crate` item publicly accessible","code":null,"level":"help","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bitflags-0.4.0/src/lib.rs","byte_start":0,"byte_end":0,"line_start":1,"line_end":1,"column_start":1,"column_end":1,"is_primary":true,"text":[],"label":null,"suggested_replacement":"pub ","suggestion_applicability":"MaybeIncorrect","expansion":null}],"children":[],"rendered":null}],"rendered":"warning[E0365]: extern crate `std` is private and cannot be re-exported\n  --> /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bitflags-0.4.0/src/lib.rs:25:9\n   |\n25 | pub use std as __core;\n   |         ^^^^^^^^^^^^^\n   |\n   = warning: this was previously accepted by the compiler but is being phased out; it will become a hard error in a future release!\n   = note: for more information, see issue #127909 <https://github.com/rust-lang/rust/issues/127909>\n   = note: `#[warn(pub_use_of_private_extern_crate)]` on by default\n\u001b[38;5;14mhelp: consider making the `extern crate` item publicly accessible\n   |\n1  | \u001b[38;5;10mpub // Copyright 2014 The Rust Project Developers. See the COPYRIGHT\n   | \u001b[38;5;10m+++\n\n"}"#,
+        r#"#10 0.262 {"$message_type":"artifact","artifact":"/tmp/clis-dbcc_2-2-1/release/deps/libbitflags-e976848f96abbbd4.rmeta","emit":"metadata"}"#,
+        r#"#10 0.276 {"$message_type":"artifact","artifact":"/tmp/clis-dbcc_2-2-1/release/deps/libbitflags-e976848f96abbbd4.rlib","emit":"link"}"#,
+        r#"#10 0.276 {"$message_type":"diagnostic","message":"1 warning emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"warning: 1 warning emitted\n\n"}"#,
+        r#"#10 0.276 {"$message_type":"diagnostic","message":"For more information about this error, try `rustc --explain E0365`.","code":null,"level":"failure-note","spans":[],"children":[],"rendered":"For more information about this error, try `rustc --explain E0365`.\n"}"#,
+        r#"#10 0.276 {"$message_type":"future_incompat","future_incompat_report":[{"diagnostic":{"$message_type":"diagnostic","message":"extern crate `std` is private and cannot be re-exported","code":{"code":"E0365","explanation":"Private modules cannot be publicly re-exported. This error indicates that you\nattempted to `pub use` a module that was not itself public.\n\nErroneous code example:\n\n```compile_fail,E0365\nmod foo {\n    pub const X: u32 = 1;\n}\n\npub use foo as foo2;\n\nfn main() {}\n```\n\nThe solution to this problem is to ensure that the module that you are\nre-exporting is itself marked with `pub`:\n\n```\npub mod foo {\n    pub const X: u32 = 1;\n}\n\npub use foo as foo2;\n\nfn main() {}\n```\n\nSee the [Use Declarations][use-declarations] section of the reference for\nmore information on this topic.\n\n[use-declarations]: https://doc.rust-lang.org/reference/items/use-declarations.html\n"},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bitflags-0.4.0/src/lib.rs","byte_start":1046,"byte_end":1059,"line_start":25,"line_end":25,"column_start":9,"column_end":22,"is_primary":true,"text":[{"text":"pub use std as __core;","highlight_start":9,"highlight_end":22}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"this was previously accepted by the compiler but is being phased out; it will become a hard error in a future release!","code":null,"level":"warning","spans":[],"children":[],"rendered":null},{"message":"for more information, see issue #127909 <https://github.com/rust-lang/rust/issues/127909>","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"`#[warn(pub_use_of_private_extern_crate)]` on by default","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"consider making the `extern crate` item publicly accessible","code":null,"level":"help","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bitflags-0.4.0/src/lib.rs","byte_start":0,"byte_end":0,"line_start":1,"line_end":1,"column_start":1,"column_end":1,"is_primary":true,"text":[],"label":null,"suggested_replacement":"pub ","suggestion_applicability":"MaybeIncorrect","expansion":null}],"children":[],"rendered":null}],"rendered":"warning[E0365]: extern crate `std` is private and cannot be re-exported\n  --> /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bitflags-0.4.0/src/lib.rs:25:9\n   |\n25 | pub use std as __core;\n   |         ^^^^^^^^^^^^^\n   |\n   = warning: this was previously accepted by the compiler but is being phased out; it will become a hard error in a future release!\n   = note: for more information, see issue #127909 <https://github.com/rust-lang/rust/issues/127909>\n   = note: `#[warn(pub_use_of_private_extern_crate)]` on by default\n\u001b[38;5;14mhelp: consider making the `extern crate` item publicly accessible\n   |\n1  | \u001b[38;5;10mpub // Copyright 2014 The Rust Project Developers. See the COPYRIGHT\n   | \u001b[38;5;10m+++\n\n"}}]}"#,
+        r#"#10 DONE 0.3s"#,
+        r#"#11 [out-e976848f96abbbd4 1/1] COPY --from=dep-l-bitflags-0.4.0-e976848f96abbbd4 /tmp/clis-dbcc_2-2-1/release/deps/*-e976848f96abbbd4* /"#,
+        r#"#11 DONE 0.0s"#,
+        r#"#12 exporting to client directory"#,
+        r#"#12 copying files 44.70kB done"#,
+        r#"#12 DONE 0.0s"#,
+    ];
+    let mut acc = Accumulated::default();
+
+    for line in lines {
+        let Some(msg) = lift_stdio(line) else { continue };
+        fwd_stderr(msg, &mut acc);
+    }
+
+    assert_eq!(
+        acc.written,
+        [
+            "/tmp/clis-dbcc_2-2-1/release/deps/bitflags-e976848f96abbbd4.d",
+            "/tmp/clis-dbcc_2-2-1/release/deps/libbitflags-e976848f96abbbd4.rmeta",
+            "/tmp/clis-dbcc_2-2-1/release/deps/libbitflags-e976848f96abbbd4.rlib"
+        ]
+    );
+
+    // Then fwd_stderr calls artifact_written which returns Some("/tmp/thing")
+    assertx::assert_logs_contain_in_order!(logs, Level::Info => "rustc wrote /tmp/clis-dbcc_2-2-1/release/deps/bitflags-e976848f96abbbd4.d");
+    assertx::assert_logs_contain_in_order!(logs, Level::Info => "rustc wrote /tmp/clis-dbcc_2-2-1/release/deps/libbitflags-e976848f96abbbd4.rmeta");
+    assertx::assert_logs_contain_in_order!(logs, Level::Info => "rustc wrote /tmp/clis-dbcc_2-2-1/release/deps/libbitflags-e976848f96abbbd4.rlib");
 }
