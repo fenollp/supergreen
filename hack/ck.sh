@@ -108,7 +108,7 @@ cat <<EOF
       run: |
         ! grep -C20 -F ' >>> ' \$CARGOGREEN_LOG_PATH
 
-    - if: \${{ failure() || success() }}
+    - if: \${{ failure() }}
       name: cargo-green logs
       run: tail -n9999999 \$CARGOGREEN_LOG_PATH ; echo >\$CARGOGREEN_LOG_PATH
 
