@@ -243,39 +243,39 @@ impl Md {
             extern_mds_and_paths.push((extern_md_path, extern_md));
         }
 
-        // let extern_md_paths = self.sort_deps(extern_mds_and_paths)?;
-        let extern_md_paths = {
-            let mut dag: Vec<_> = extern_mds_and_paths
-                .into_iter()
-                .map(|(md_path, md)| {
-                    let this = md.this.as_u64();
-                    self.needs.insert(md.this);
-                    self.contexts.extend(md.contexts);
+        let extern_md_paths = self.sort_deps(extern_mds_and_paths)?;
+        // let extern_md_paths = {
+        //     let mut dag: Vec<_> = extern_mds_and_paths
+        //         .into_iter()
+        //         .map(|(md_path, md)| {
+        //             let this = md.this.as_u64();
+        //             self.needs.insert(md.this);
+        //             self.contexts.extend(md.contexts);
 
-                    // for need in &md.needs {}
+        //             // for need in &md.needs {}
 
-                    Node::new(this, md.needs.as_u64s(), md_path)
-                })
-                .collect();
-            let this = self.this.as_u64();
-            dag.push(Node::new(this, self.needs.as_u64s(), "".into()));
+        //             Node::new(this, md.needs.as_u64s(), md_path)
+        //         })
+        //         .collect();
+        //     let this = self.this.as_u64();
+        //     dag.push(Node::new(this, self.needs.as_u64s(), "".into()));
 
-            let mut md_paths = sort(&dag, this).map_err(|e| {
-                let this = &self.this.0;
-                match e {
-                    TopsortError::TargetNotFound(x) => {
-                        anyhow!("Failed topolosorting {this}: {} not found", MdId::from_u64(x).0)
-                    }
-                    TopsortError::CyclicDependency(x) => {
-                        anyhow!("Failed topolosorting {this}: cyclic {}", MdId::from_u64(x).0)
-                    }
-                }
-            })?;
-            let last = md_paths.pop();
-            assert_eq!(last.as_deref(), Some("".into()), "BUG: it's self.this's empty path");
+        //     let mut md_paths = sort(&dag, this).map_err(|e| {
+        //         let this = &self.this.0;
+        //         match e {
+        //             TopsortError::TargetNotFound(x) => {
+        //                 anyhow!("Failed topolosorting {this}: {} not found", MdId::from_u64(x).0)
+        //             }
+        //             TopsortError::CyclicDependency(x) => {
+        //                 anyhow!("Failed topolosorting {this}: cyclic {}", MdId::from_u64(x).0)
+        //             }
+        //         }
+        //     })?;
+        //     let last = md_paths.pop();
+        //     assert_eq!(last.as_deref(), Some("".into()), "BUG: it's self.this's empty path");
 
-            md_paths
-        };
+        //     md_paths
+        // };
 
         info!("extern_md_paths: {}", extern_md_paths.len());
 
