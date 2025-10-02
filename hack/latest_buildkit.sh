@@ -8,6 +8,7 @@ git ls-remote https://github.com/moby/buildkit.git \
     | sort -Vu \
     | grep -vF rc \
     | grep -vF beta \
+    | grep -vF ^{} \
     | tail -n1 \
     | cut -d/ -f3 \
     | cut -dv -f2
