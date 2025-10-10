@@ -1,4 +1,4 @@
-#!/bin/bash -eu
+#!/usr/bin/env -S bash -eu
 set -o pipefail
 
 source $(realpath "$(dirname "$0")")/ck.sh
@@ -14,7 +14,6 @@ postbin_steps() {
     cat <<EOF
     - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
-        profile: minimal
         toolchain: $toolchain
         cache: false
         rustflags: ''
@@ -63,7 +62,6 @@ $(jobdef 'bin')
 $(rundeps_versions)
     - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
-        profile: minimal
         toolchain: stable
 
     - uses: actions/checkout@v5

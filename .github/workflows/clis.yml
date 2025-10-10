@@ -27,7 +27,6 @@ jobs:
     steps:
     - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
-        profile: minimal
         toolchain: stable
 
     - uses: actions/checkout@v5
@@ -91,7 +90,6 @@ jobs:
     steps:
     - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
-        profile: minimal
         toolchain: ${{ matrix.toolchain }}
         cache: false
         rustflags: ''
@@ -294,7 +292,6 @@ jobs:
     steps:
     - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
-        profile: minimal
         toolchain: ${{ matrix.toolchain }}
         cache: false
         rustflags: ''
@@ -497,7 +494,6 @@ jobs:
     steps:
     - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
-        profile: minimal
         toolchain: ${{ matrix.toolchain }}
         cache: false
         rustflags: ''
@@ -700,7 +696,6 @@ jobs:
     steps:
     - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
-        profile: minimal
         toolchain: ${{ matrix.toolchain }}
         cache: false
         rustflags: ''
@@ -903,7 +898,6 @@ jobs:
     steps:
     - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
-        profile: minimal
         toolchain: ${{ matrix.toolchain }}
         cache: false
         rustflags: ''
@@ -1106,7 +1100,6 @@ jobs:
     steps:
     - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
-        profile: minimal
         toolchain: ${{ matrix.toolchain }}
         cache: false
         rustflags: ''
@@ -1309,7 +1302,6 @@ jobs:
     steps:
     - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
-        profile: minimal
         toolchain: ${{ matrix.toolchain }}
         cache: false
         rustflags: ''
@@ -1513,7 +1505,6 @@ jobs:
     steps:
     - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
-        profile: minimal
         toolchain: ${{ matrix.toolchain }}
         cache: false
         rustflags: ''
@@ -1716,7 +1707,6 @@ jobs:
     steps:
     - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
-        profile: minimal
         toolchain: ${{ matrix.toolchain }}
         cache: false
         rustflags: ''
@@ -1919,7 +1909,6 @@ jobs:
     steps:
     - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
-        profile: minimal
         toolchain: ${{ matrix.toolchain }}
         cache: false
         rustflags: ''
@@ -2122,7 +2111,6 @@ jobs:
     steps:
     - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
-        profile: minimal
         toolchain: ${{ matrix.toolchain }}
         cache: false
         rustflags: ''
@@ -2325,7 +2313,6 @@ jobs:
     steps:
     - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
-        profile: minimal
         toolchain: ${{ matrix.toolchain }}
         cache: false
         rustflags: ''
@@ -2528,7 +2515,6 @@ jobs:
     steps:
     - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
-        profile: minimal
         toolchain: ${{ matrix.toolchain }}
         cache: false
         rustflags: ''
@@ -2731,7 +2717,6 @@ jobs:
     steps:
     - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
-        profile: minimal
         toolchain: ${{ matrix.toolchain }}
         cache: false
         rustflags: ''
