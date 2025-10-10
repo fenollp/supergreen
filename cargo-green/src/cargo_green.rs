@@ -19,8 +19,8 @@ use crate::{
     logging::{self, maybe_log},
     pwd,
     runner::{
-        self, build_cacheonly, fetch_digest, Network, Runner, BUILDKIT_HOST, BUILDX_BUILDER,
-        DOCKER_BUILDKIT, DOCKER_CONTEXT, DOCKER_HOST,
+        self, fetch_digest, Network, Runner, BUILDKIT_HOST, BUILDX_BUILDER, DOCKER_BUILDKIT,
+        DOCKER_CONTEXT, DOCKER_HOST,
     },
     stage::{Stage, RST, RUST},
     tmp, PKG, VSN,
@@ -233,7 +233,8 @@ pub(crate) async fn maybe_prebuild_base(green: &Green) -> Result<()> {
 
     // Turns out --network is part of BuildKit's cache key, so an initial online build
     // won't cache hit on later offline builds.
-    build_cacheonly(green, &path, RUST.clone())
+    green
+        .build_cacheonly(&path, RUST.clone())
         .await
         .inspect(|_| {
             if let Err(e) = fs::write(&sentinel, "") {
@@ -342,7 +343,7 @@ pub(crate) async fn fetch(green: Green) -> Result<()> {
         if packages.is_empty() && (imgs_is_empty || ddb) {
             return Ok(());
         }
-        build_cacheonly(&green, &path, stage).await
+        green.build_cacheonly(&path, stage).await
     };
 
     let ((), ()) = try_join!(load_to_docker, cache_packages).inspect(|_| {
