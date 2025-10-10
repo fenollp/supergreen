@@ -12,13 +12,14 @@ jobs:
 
   latest_buildkit:
     runs-on: ubuntu-latest
+    continue-on-error: true
     defaults:
       run:
         shell: bash -euo pipefail {0}
     steps:
     - uses: actions/checkout@v5
     - run: ./hack/latest_buildkit.sh | tee cargo-green/src/latest_buildkit.txt
-    - run: git --no-pager diff --exit-code -- cargo-green/src/latest_buildkit.txt
+    - run: git --no-pager diff --exit-code -- cargo-green/src/latest_buildkit.txt || echo "::warning file=cargo-green/src/latest_buildkit.txt,line=1,col=1::New version out"
 
 
   caching:
