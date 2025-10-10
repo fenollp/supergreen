@@ -1,4 +1,4 @@
-#!/bin/bash -eu
+#!/usr/bin/env -S bash -eu
 set -o pipefail
 
 repo_root=$(realpath "$(dirname "$(dirname "$0")")")
@@ -134,7 +134,6 @@ $(jobdef 'bin')
     steps:
     - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
-        profile: minimal
         toolchain: stable
 
     - uses: actions/checkout@v5
@@ -245,7 +244,6 @@ $(
     steps:
     - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
-        profile: minimal
         toolchain: \${{ matrix.toolchain }}
         cache: false
         rustflags: ''

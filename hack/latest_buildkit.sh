@@ -1,4 +1,4 @@
-#!/bin/bash -eu
+#!/usr/bin/env -S bash -eu
 set -o pipefail
 
 git ls-remote https://github.com/moby/buildkit.git \

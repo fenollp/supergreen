@@ -17,7 +17,6 @@ jobs:
     - run: docker buildx prune --all --force
     - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
-        profile: minimal
         toolchain: stable
 
     - uses: actions/checkout@v5
@@ -69,7 +68,6 @@ jobs:
     - run: docker buildx prune --all --force
     - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
-        profile: minimal
         toolchain: stable
         cache: false
         rustflags: ''
@@ -183,7 +181,6 @@ jobs:
     - run: docker buildx prune --all --force
     - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
-        profile: minimal
         toolchain: stable
         cache: false
         rustflags: ''
@@ -300,7 +297,6 @@ jobs:
     - run: docker buildx prune --all --force
     - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
-        profile: minimal
         toolchain: nightly-2025-08-06
         cache: false
         rustflags: ''
@@ -473,7 +469,6 @@ jobs:
     - run: docker buildx prune --all --force
     - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
-        profile: minimal
         toolchain: stable
         cache: false
         rustflags: ''
@@ -763,7 +758,6 @@ jobs:
     - run: docker buildx prune --all --force
     - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
-        profile: minimal
         toolchain: stable
         cache: false
         rustflags: ''
@@ -1053,7 +1047,6 @@ jobs:
     - run: docker buildx prune --all --force
     - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
-        profile: minimal
         toolchain: stable
         cache: false
         rustflags: ''
@@ -1280,7 +1273,6 @@ jobs:
     - run: docker buildx prune --all --force
     - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
-        profile: minimal
         toolchain: stable
         cache: false
         rustflags: ''
@@ -1444,7 +1436,6 @@ jobs:
     - run: docker buildx prune --all --force
     - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
-        profile: minimal
         toolchain: stable
         cache: false
         rustflags: ''

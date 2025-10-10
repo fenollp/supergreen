@@ -1,4 +1,4 @@
-#!/bin/bash -eux
+#!/usr/bin/env -S bash -eux
 set -o pipefail
 
 CARGO=${CARGO:-cargo}

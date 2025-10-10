@@ -1,4 +1,4 @@
-#!/bin/bash -eu
+#!/usr/bin/env -S bash -eu
 set -o pipefail
 
 branch=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
