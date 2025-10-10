@@ -94,7 +94,7 @@ async fn push(green: Green) -> Result<()> {
 
         async fn do_push(green: &Green, tag: String, img: &str) -> Result<()> {
             println!("Pushing {img}:{tag}...");
-            let mut cmd = green.cmd();
+            let mut cmd = green.cmd()?;
             cmd.arg("push").arg(format!("{img}:{tag}")).stdout(Stdio::null()).stderr(Stdio::null());
 
             if let Ok(mut o) = cmd.spawn() {
@@ -122,7 +122,7 @@ async fn push(green: Green) -> Result<()> {
 async fn all_tags_of(green: &Green, img: &str) -> Result<Vec<String>> {
     // NOTE: https://github.com/moby/moby/issues/47809
     //   Meanwhile: just drop docker.io/ prefix
-    let mut cmd = green.cmd();
+    let mut cmd = green.cmd()?;
     cmd.args(["image", "ls", "--format=json"]);
     cmd.arg(format!("--filter=reference={}:*", img.trim_start_matches("docker.io/")));
 

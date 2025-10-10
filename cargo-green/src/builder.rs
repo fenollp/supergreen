@@ -165,7 +165,7 @@ then run your cargo command again.
     }
 
     async fn create_builder(&mut self, name: &str) -> Result<()> {
-        let mut cmd = self.cmd();
+        let mut cmd = self.cmd()?;
         cmd.args(["buildx", "create", "--bootstrap"])
             .args(["--name", name])
             .args(["--driver", BUILDER_DRIVER]);
@@ -188,7 +188,7 @@ then run your cargo command again.
     }
 
     async fn try_removing_builder(&self, name: &str, keep_state: bool) -> Result<()> {
-        let mut cmd = self.cmd();
+        let mut cmd = self.cmd()?;
         cmd.args(["buildx", "rm", "--builder", name]);
         if keep_state {
             cmd.arg("--keep-state");
@@ -205,7 +205,7 @@ then run your cargo command again.
     }
 
     async fn list_builders(&self) -> Result<Vec<BuildxBuilder>> {
-        let mut cmd = self.cmd();
+        let mut cmd = self.cmd()?;
         cmd.args(["buildx", "ls", "--format=json"]);
         let (succeeded, stdout, stderr) = cmd.exec().await?;
         let stdout = String::from_utf8_lossy(&stdout);
