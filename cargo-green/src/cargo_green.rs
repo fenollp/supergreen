@@ -364,7 +364,7 @@ async fn pull(green: &Green, imgs: Vec<ImageUri>) -> Result<()> {
 
 async fn do_pull(green: &Green, img: ImageUri) -> Result<()> {
     println!("Pulling {img}...");
-    let mut cmd = green.cmd();
+    let mut cmd = green.cmd()?;
     cmd.arg("pull").arg(img.noscheme());
     let o = cmd
         .spawn()

@@ -73,7 +73,7 @@ impl Green {
             return Ok(got);
         }
 
-        let mut cmd = self.cmd();
+        let mut cmd = self.cmd()?;
         cmd.args(["buildx", "du", "--verbose"]);
         cmd.arg("--filter=type=regular");
         cmd.arg("--filter=description~=pulled.from");
