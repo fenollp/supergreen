@@ -19,7 +19,7 @@ use crate::{
     logging::{self, crate_type_for_logging, maybe_log},
     md::{BuildContext, Md},
     pwd,
-    runner::{build_out, Effects, Runner, ERRCODE, STDERR, STDOUT},
+    runner::{Effects, Runner, ERRCODE, STDERR, STDOUT},
     rustc_arguments::{as_rustc, RustcArgs},
     stage::{Stage, RST, RUST},
     tmp, PKG, VSN,
@@ -444,7 +444,7 @@ async fn do_wrap_rustc(
     }
 
     let contexts = &md.contexts;
-    let build = |stage, dir| build_out(&green, &containerfile_path, stage, contexts, dir);
+    let build = |stage, dir| green.build_out(&containerfile_path, stage, contexts, dir);
     let (call, envs, built) = build(out_stage, &out_dir).await;
     green
         .maybe_write_final_path(&containerfile_path, contexts, &call, &envs)

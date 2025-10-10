@@ -384,175 +384,179 @@ pub(crate) struct Effects {
     pub(crate) stderr: Vec<String>,
 }
 
-pub(crate) async fn build_cacheonly(
-    green: &Green,
-    containerfile: &Utf8Path,
-    target: Stage,
-) -> Result<()> {
-    build(green, containerfile, target, &[].into(), None).await.2.map(|_| ())
-}
-
-pub(crate) async fn build_out(
-    green: &Green,
-    containerfile: &Utf8Path,
-    target: Stage,
-    contexts: &IndexSet<BuildContext>,
-    out_dir: &Utf8Path,
-) -> (String, String, Result<Effects>) {
-    build(green, containerfile, target, contexts, Some(out_dir)).await
-}
-
-async fn build(
-    green: &Green,
-    containerfile: &Utf8Path,
-    target: Stage,
-    contexts: &IndexSet<BuildContext>,
-    out_dir: Option<&Utf8Path>,
-) -> (String, String, Result<Effects>) {
-    let rtrn = |e| ("".to_owned(), "".to_owned(), Err(e));
-
-    let mut cmd = match green.cmd() {
-        Ok(cmd) => cmd,
-        Err(e) => return rtrn(e),
-    };
-    cmd.arg("build");
-
-    //TODO: (use if set) cmd.env("SOURCE_DATE_EPOCH", "0"); // https://reproducible-builds.org/docs/source-date-epoch
-    // https://github.com/moby/buildkit/blob/master/docs/build-repro.md#source_date_epoch
-    // Set SOURCE_DATE_EPOCH=$(git log -1 --pretty=%ct) for local code, and
-    // set it to crates' birth date, in case it's a $HOME/.cargo/registry/cache/...crate
-    // set it to the directory's birth date otherwise (should be a relative path to local files).
-    // see https://github.com/moby/buildkit/issues/3009#issuecomment-1721565511
-    //=> rewrite written files timestamps to not trip cargo's timekeeping
-
-    // `--repro`
-    // From https://github.com/docker-library/official-images/issues/16044
-    // $ # "none://" is a filler for the build context arg
-    // $ docker buildx build \
-    //   --load \
-    //   -t gcc:local \
-    //   --repro from=gcc@sha256:f97e2719cd5138c932a814ca43f3ca7b33fde866e182e7d76d8391ec0b05091f \
-    //   none://
-    // ...
-    // [amd64] Using SLSA provenance sha256:7ecde97c24ea34e1409caf6e91123690fa62d1465ad08f638ebbd75dd381f08f
-    // [amd64] Importing Dockerfile blob embedded in the provenance
-    // [amd64] Importing build context https://github.com/docker-library/gcc.git#af458ec8254ef7ca3344f12631e2356b20b4a7f1:13
-    // [amd64] Importing build-arg SOURCE_DATE_EPOCH=1690467916
-    // [amd64] Importing buildpack-deps:bookworm from docker-image://buildpack-deps:bookworm@sha256:bccdd9ebd8dbbb95d41bb5d9de3f654f8cd03b57d65d090ac330d106c87d7ed
-    // ...
-    // $ diffoci diff gcc@sha256:f97e2719cd5138c932a814ca43f3ca7b33fde866e182e7d76d8391ec0b05091f gcc:local
-    // ...
-
-    if false {
-        cmd.arg("--no-cache");
-        //NOTE: --no-cache-filter target1,target2 --no-cache-filter=target3 (&&)
-        // TODO: 'id~=REGEXP as per https://github.com/containerd/containerd/blob/20fc2cf8ec70c5c02cd2f1bbe431bc19b2c622a3/pkg/filters/parser.go#L36
+impl Green {
+    pub(crate) async fn build_cacheonly(
+        &self,
+        containerfile: &Utf8Path,
+        target: Stage,
+    ) -> Result<()> {
+        self.build(containerfile, target, &[].into(), None).await.2.map(|_| ())
     }
 
-    //     cmd.arg(format!("--cache-to=type=registry,ref={img},mode=max,compression=zstd,force-compression=true,oci-mediatypes=true"));
-    // // [2024-04-09T07:55:39Z DEBUG lib-autocfg-72217d8ded4d7ec7@177912] ✖ ERROR: Cache export is not supported for the docker driver.
-    // // [2024-04-09T07:55:39Z DEBUG lib-autocfg-72217d8ded4d7ec7@177912] ✖ Switch to a different driver, or turn on the containerd image store, and try again.
-    // // [2024-04-09T07:55:39Z DEBUG lib-autocfg-72217d8ded4d7ec7@177912] ✖ Learn more at https://docs.docker.com/go/build-cache-backends/
-    //TODO: experiment --cache-to=type=inline => try ,mode=max
-    //ignore-error=true
+    pub(crate) async fn build_out(
+        &self,
+        containerfile: &Utf8Path,
+        target: Stage,
+        contexts: &IndexSet<BuildContext>,
+        out_dir: &Utf8Path,
+    ) -> (String, String, Result<Effects>) {
+        self.build(containerfile, target, contexts, Some(out_dir)).await
+    }
 
-    if !green.cache_images.is_empty() {
-        let maxready = green.builder.has_maxready();
-        for img in &green.cache_images {
-            let img = img.noscheme();
-            cmd.arg(format!(
-                "--cache-from=type=registry,ref={img}{mode}",
-                mode = if maxready { ",mode=max" } else { "" }
-            ));
+    async fn build(
+        &self,
+        containerfile: &Utf8Path,
+        target: Stage,
+        contexts: &IndexSet<BuildContext>,
+        out_dir: Option<&Utf8Path>,
+    ) -> (String, String, Result<Effects>) {
+        let rtrn = |e| ("".to_owned(), "".to_owned(), Err(e));
 
-            if maxready {
-                continue;
+        let mut cmd = match self.cmd() {
+            Ok(cmd) => cmd,
+            Err(e) => return rtrn(e),
+        };
+        cmd.arg("build");
+
+        //TODO: (use if set) cmd.env("SOURCE_DATE_EPOCH", "0"); // https://reproducible-builds.org/docs/source-date-epoch
+        // https://github.com/moby/buildkit/blob/master/docs/build-repro.md#source_date_epoch
+        // Set SOURCE_DATE_EPOCH=$(git log -1 --pretty=%ct) for local code, and
+        // set it to crates' birth date, in case it's a $HOME/.cargo/registry/cache/...crate
+        // set it to the directory's birth date otherwise (should be a relative path to local files).
+        // see https://github.com/moby/buildkit/issues/3009#issuecomment-1721565511
+        //=> rewrite written files timestamps to not trip cargo's timekeeping
+
+        // `--repro`
+        // From https://github.com/docker-library/official-images/issues/16044
+        // $ # "none://" is a filler for the build context arg
+        // $ docker buildx build \
+        //   --load \
+        //   -t gcc:local \
+        //   --repro from=gcc@sha256:f97e2719cd5138c932a814ca43f3ca7b33fde866e182e7d76d8391ec0b05091f \
+        //   none://
+        // ...
+        // [amd64] Using SLSA provenance sha256:7ecde97c24ea34e1409caf6e91123690fa62d1465ad08f638ebbd75dd381f08f
+        // [amd64] Importing Dockerfile blob embedded in the provenance
+        // [amd64] Importing build context https://github.com/docker-library/gcc.git#af458ec8254ef7ca3344f12631e2356b20b4a7f1:13
+        // [amd64] Importing build-arg SOURCE_DATE_EPOCH=1690467916
+        // [amd64] Importing buildpack-deps:bookworm from docker-image://buildpack-deps:bookworm@sha256:bccdd9ebd8dbbb95d41bb5d9de3f654f8cd03b57d65d090ac330d106c87d7ed
+        // ...
+        // $ diffoci diff gcc@sha256:f97e2719cd5138c932a814ca43f3ca7b33fde866e182e7d76d8391ec0b05091f gcc:local
+        // ...
+
+        if false {
+            cmd.arg("--no-cache");
+            //NOTE: --no-cache-filter target1,target2 --no-cache-filter=target3 (&&)
+            // TODO: 'id~=REGEXP as per https://github.com/containerd/containerd/blob/20fc2cf8ec70c5c02cd2f1bbe431bc19b2c622a3/pkg/filters/parser.go#L36
+        }
+
+        //     cmd.arg(format!("--cache-to=type=registry,ref={img},mode=max,compression=zstd,force-compression=true,oci-mediatypes=true"));
+        // // [2024-04-09T07:55:39Z DEBUG lib-autocfg-72217d8ded4d7ec7@177912] ✖ ERROR: Cache export is not supported for the docker driver.
+        // // [2024-04-09T07:55:39Z DEBUG lib-autocfg-72217d8ded4d7ec7@177912] ✖ Switch to a different driver, or turn on the containerd image store, and try again.
+        // // [2024-04-09T07:55:39Z DEBUG lib-autocfg-72217d8ded4d7ec7@177912] ✖ Learn more at https://docs.docker.com/go/build-cache-backends/
+        //TODO: experiment --cache-to=type=inline => try ,mode=max
+        //ignore-error=true
+
+        if !self.cache_images.is_empty() {
+            let maxready = self.builder.has_maxready();
+            for img in &self.cache_images {
+                let img = img.noscheme();
+                cmd.arg(format!(
+                    "--cache-from=type=registry,ref={img}{mode}",
+                    mode = if maxready { ",mode=max" } else { "" }
+                ));
+
+                if maxready {
+                    continue;
+                }
+
+                // TODO: include enough info for repro
+                // => rustc shortcommit, ..?
+                // Can buildx give list of all inputs? || short hash(dockerfile + call + envs)
+                //TODO: include --target=platform in image tag, per: https://github.com/docker/buildx/discussions/1382
+                cmd.arg(format!("--tag={img}:{target}"));
+
+                // TODO? additionally filter for only root package
+                assert_eq!('b', crate_type_for_logging("bin").to_ascii_lowercase());
+                if target.trim_start_matches(|c| c != '-').starts_with("-b-") {
+                    cmd.arg(format!("--tag={img}:latest"));
+                }
             }
-
-            // TODO: include enough info for repro
-            // => rustc shortcommit, ..?
-            // Can buildx give list of all inputs? || short hash(dockerfile + call + envs)
-            //TODO: include --target=platform in image tag, per: https://github.com/docker/buildx/discussions/1382
-            cmd.arg(format!("--tag={img}:{target}"));
-
-            // TODO? additionally filter for only root package
-            assert_eq!('b', crate_type_for_logging("bin").to_ascii_lowercase());
-            if target.trim_start_matches(|c| c != '-').starts_with("-b-") {
-                cmd.arg(format!("--tag={img}:latest"));
+            if !maxready {
+                cmd.arg("--build-arg=BUILDKIT_INLINE_CACHE=1"); // https://docs.docker.com/build/cache/backends/inline
+                cmd.arg("--load"); //FIXME: this should not be needed
             }
         }
-        if !maxready {
-            cmd.arg("--build-arg=BUILDKIT_INLINE_CACHE=1"); // https://docs.docker.com/build/cache/backends/inline
-            cmd.arg("--load"); //FIXME: this should not be needed
+
+        if false {
+            // TODO: https://docs.docker.com/build/attestations/
+            cmd.arg("--provenance=mode=max");
+            cmd.arg("--sbom=true");
         }
-    }
+        //cmd.arg("--metadata-file=/tmp/meta.json"); => {"buildx.build.ref": "default/default/o5c4435yz6o6xxxhdvekx5lmn"}
 
-    if false {
-        // TODO: https://docs.docker.com/build/attestations/
-        cmd.arg("--provenance=mode=max");
-        cmd.arg("--sbom=true");
-    }
-    //cmd.arg("--metadata-file=/tmp/meta.json"); => {"buildx.build.ref": "default/default/o5c4435yz6o6xxxhdvekx5lmn"}
+        //TODO? --annotation=(PLATFORM=)KEY=VALUE
 
-    //TODO? --annotation=(PLATFORM=)KEY=VALUE
+        cmd.arg(format!("--network={}", self.image.with_network));
 
-    cmd.arg(format!("--network={}", green.image.with_network));
+        cmd.arg("--platform=local");
+        cmd.arg("--pull=false");
+        cmd.arg(format!("--target={target}"));
+        if let Some(out_dir) = out_dir {
+            cmd.arg(format!("--output=type=local,dest={out_dir}"));
+        } else {
+            // https://docs.docker.com/build/exporters/#cache-only-export
+            cmd.arg("--output=type=cacheonly");
+        }
+        // cmd.arg("--build-arg=BUILDKIT_MULTI_PLATFORM=1"); // "deterministic output"? adds /linux_amd64/ to extracted cratesio
 
-    cmd.arg("--platform=local");
-    cmd.arg("--pull=false");
-    cmd.arg(format!("--target={target}"));
-    if let Some(out_dir) = out_dir {
-        cmd.arg(format!("--output=type=local,dest={out_dir}"));
-    } else {
-        // https://docs.docker.com/build/exporters/#cache-only-export
-        cmd.arg("--output=type=cacheonly");
-    }
-    // cmd.arg("--build-arg=BUILDKIT_MULTI_PLATFORM=1"); // "deterministic output"? adds /linux_amd64/ to extracted cratesio
+        // TODO: do without local Docker-compatible CLI
+        // https://github.com/pyaillet/doggy
+        // https://lib.rs/crates/bollard
 
-    // TODO: do without local Docker-compatible CLI
-    // https://github.com/pyaillet/doggy
-    // https://lib.rs/crates/bollard
+        for BuildContext { name, uri } in contexts {
+            cmd.arg(format!("--build-context={name}={uri}"));
+        }
 
-    for BuildContext { name, uri } in contexts {
-        cmd.arg(format!("--build-context={name}={uri}"));
-    }
+        cmd.arg("-").stdin(Stdio::piped()); // Pass Dockerfile via STDIN, this way there's no default filesystem context.
+        if out_dir.is_some() {
+            cmd.stdout(Stdio::piped()).stderr(Stdio::piped());
+        }
 
-    cmd.arg("-").stdin(Stdio::piped()); // Pass Dockerfile via STDIN, this way there's no default filesystem context.
-    if out_dir.is_some() {
-        cmd.stdout(Stdio::piped()).stderr(Stdio::piped());
-    }
+        let call = cmd.show();
+        info!("Starting `{envs} {call} <{containerfile}`", envs = cmd.envs_string(&[]));
+        let call = call
+            .split_whitespace()
+            .filter(|flag| !BUILD_UNALTERING_FLAGS.iter().any(|prefix| flag.contains(prefix)))
+            .collect::<Vec<_>>()
+            .join(" ")
+            .replace(cmd.as_std().get_program().to_str().unwrap(), &self.runner.to_string());
+        let envs = cmd.envs_string(&BUILD_UNALTERING_ENVS);
 
-    let call = cmd.show();
-    info!("Starting `{envs} {call} <{containerfile}`", envs = cmd.envs_string(&[]));
-    let call = call
-        .split_whitespace()
-        .filter(|flag| !BUILD_UNALTERING_FLAGS.iter().any(|prefix| flag.contains(prefix)))
-        .collect::<Vec<_>>()
-        .join(" ");
-    let envs = cmd.envs_string(&BUILD_UNALTERING_ENVS);
+        let (status, effects) = match run_build(cmd, &call, containerfile, target, out_dir).await {
+            Ok((status, effects)) => (status, effects),
+            Err(e) => return rtrn(e),
+        };
 
-    let (status, effects) = match run_build(cmd, &call, containerfile, target, out_dir).await {
-        Ok((status, effects)) => (status, effects),
-        Err(e) => return rtrn(e),
-    };
-
-    // Something is very wrong here. Try to be helpful by logging some info about runner config:
-    if !status.success() {
-        let logs =
-            env::var(ENV_LOG_PATH).map(|val| format!("\nCheck logs at {val}")).unwrap_or_default();
-        return rtrn(anyhow!(
-            "Runner failed.{logs}
+        // Something is very wrong here. Try to be helpful by logging some info about runner config:
+        if !status.success() {
+            let logs = env::var(ENV_LOG_PATH)
+                .map(|val| format!("\nCheck logs at {val}"))
+                .unwrap_or_default();
+            return rtrn(anyhow!(
+                "Runner failed.{logs}
 Please report an issue along with information from the following:
 * {runner} buildx version
 * {runner} info
 * {runner} buildx ls
 * cargo green supergreen env
 ",
-            runner = green.runner,
-        ));
-    }
+                runner = self.runner,
+            ));
+        }
 
-    (call, envs, Ok(effects))
+        (call, envs, Ok(effects))
+    }
 }
 
 async fn run_build(
