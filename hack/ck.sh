@@ -108,10 +108,6 @@ cat <<EOF
       run: |
         ! grep -C20 -F ' >>> ' \$CARGOGREEN_LOG_PATH
 
-    - if: \${{ failure() }}
-      name: cargo-green logs
-      run: tail -n9999999 \$CARGOGREEN_LOG_PATH ; echo >\$CARGOGREEN_LOG_PATH
-
     - if: \${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != 'stable' }}
       name: Maybe show final path diff
       run: |
@@ -125,6 +121,10 @@ cat <<EOF
           --ignore-matching-lines='^# syntax=docker.io/docker/dockerfile:1@' \
           --ignore-matching-lines="^##     '\\{" \
           -- \$CARGOGREEN_FINAL_PATH
+
+    - if: \${{ failure() }}
+      name: cargo-green logs
+      run: tail -n9999999 \$CARGOGREEN_LOG_PATH ; echo >\$CARGOGREEN_LOG_PATH
 EOF
 }
 
