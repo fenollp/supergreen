@@ -13,6 +13,7 @@ use tokio::process::Command;
 
 mod add;
 mod base_image;
+mod build;
 mod builder;
 mod cargo_green;
 mod checkouts;
@@ -25,6 +26,7 @@ mod image_uri;
 mod lockfile;
 mod logging;
 mod md;
+mod network;
 mod runner;
 mod rustc_arguments;
 mod rustc_wrapper;

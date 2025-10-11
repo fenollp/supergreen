@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-use crate::runner::Network;
+use crate::network::Network;
 
 // Envs that override Cargo.toml settings
 pub(crate) const ENV_ADD_APK: &str = "CARGOGREEN_ADD_APK";

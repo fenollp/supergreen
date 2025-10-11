@@ -6,11 +6,8 @@ use serde::{Deserialize, Serialize};
 use version_compare::Version;
 
 use crate::{
-    cargo_green::ENV_BUILDER_IMAGE,
-    ext::CommandExt,
-    green::Green,
-    image_uri::ImageUri,
-    runner::{fetch_digest, BUILDX_BUILDER},
+    build::fetch_digest, cargo_green::ENV_BUILDER_IMAGE, ext::CommandExt, green::Green,
+    image_uri::ImageUri, runner::BUILDX_BUILDER,
 };
 
 /// TODO: move to :rootless
