@@ -21,6 +21,7 @@ mod containerfile;
 mod cratesio;
 mod du;
 mod ext;
+mod r#final;
 mod green;
 mod image_uri;
 mod lockfile;
