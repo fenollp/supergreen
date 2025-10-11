@@ -233,7 +233,7 @@ pub(crate) async fn maybe_prebuild_base(green: &Green) -> Result<()> {
     // Turns out --network is part of BuildKit's cache key, so an initial online build
     // won't cache hit on later offline builds.
     green
-        .build_cacheonly(&path, RUST.clone())
+        .build_cacheonly(&path, &RUST)
         .await
         .inspect(|_| {
             if let Err(e) = fs::write(&sentinel, "") {
@@ -342,7 +342,7 @@ pub(crate) async fn fetch(green: Green) -> Result<()> {
         if packages.is_empty() && (imgs_is_empty || ddb) {
             return Ok(());
         }
-        green.build_cacheonly(&path, stage).await
+        green.build_cacheonly(&path, &stage).await
     };
 
     let ((), ()) = try_join!(load_to_docker, cache_packages).inspect(|_| {

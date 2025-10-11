@@ -54,7 +54,11 @@ impl Green {
         Ok(())
     }
 
-    pub(crate) fn maybe_append_to_final_path(&self, md_path: &Utf8Path) -> Result<()> {
+    pub(crate) fn maybe_append_to_final_path(
+        &self,
+        md_path: &Utf8Path,
+        final_stage: String,
+    ) -> Result<()> {
         if let Some(path) = self.should_write_final_path() {
             info!("appending (AW) to final path {path}");
 
@@ -64,6 +68,9 @@ impl Green {
             for md_line in fs::read_to_string(md_path)?.lines() {
                 Md::comment_pretty(md_line, &mut fbuf);
             }
+
+            fbuf.push('\n');
+            fbuf.push_str(&final_stage);
 
             let mut file = OpenOptions::new().append(true).open(path)?;
             write!(file, "{fbuf}")?;
