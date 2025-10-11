@@ -163,7 +163,7 @@ impl Green {
     pub(crate) async fn build_cacheonly(
         &self,
         containerfile: &Utf8Path,
-        target: Stage,
+        target: &Stage,
     ) -> Result<()> {
         self.build(containerfile, target, &[].into(), None).await.2.map(|_| ())
     }
@@ -171,7 +171,7 @@ impl Green {
     pub(crate) async fn build_out(
         &self,
         containerfile: &Utf8Path,
-        target: Stage,
+        target: &Stage,
         contexts: &IndexSet<BuildContext>,
         out_dir: &Utf8Path,
     ) -> (String, String, Result<Effects>) {
@@ -181,7 +181,7 @@ impl Green {
     async fn build(
         &self,
         containerfile: &Utf8Path,
-        target: Stage,
+        target: &Stage,
         contexts: &IndexSet<BuildContext>,
         out_dir: Option<&Utf8Path>,
     ) -> (String, String, Result<Effects>) {
@@ -303,6 +303,10 @@ impl Green {
         let call = call
             .split_whitespace()
             .filter(|flag| !self.runner.buildnoop_flags().any(|prefix| flag.contains(prefix)))
+            .filter(|flag| !flag.starts_with("--target="))
+            .filter(|flag| *flag != "--platform=local")
+            .filter(|flag| *flag != "--pull=false")
+            .map(|flag| if flag.starts_with("--output=") { "--output=." } else { flag })
             .collect::<Vec<_>>()
             .join(" ")
             .replace(cmd.as_std().get_program().to_str().unwrap(), &self.runner.to_string());
@@ -338,7 +342,7 @@ async fn run_build(
     mut cmd: Command,
     call: &str,
     containerfile: &Utf8Path,
-    target: Stage,
+    target: &Stage,
     out_dir: Option<&Utf8Path>,
 ) -> Result<(ExitStatus, Effects)> {
     let start = Instant::now();
@@ -462,9 +466,9 @@ async fn run_build(
         }
 
         //TODO? write all output to mem first? and then to disk (except stdio files)
-        let out_path = stdio_path(&target, out_dir, STDOUT);
-        let err_path = stdio_path(&target, out_dir, STDERR);
-        let rcd_path = stdio_path(&target, out_dir, ERRCODE);
+        let out_path = stdio_path(target, out_dir, STDOUT);
+        let err_path = stdio_path(target, out_dir, STDERR);
+        let rcd_path = stdio_path(target, out_dir, ERRCODE);
 
         // Read errorcode output file first, and check for build error. NOTE:
         // * if call to rustc fails, the file will exist but the build will complete.

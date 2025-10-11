@@ -446,7 +446,7 @@ async fn do_wrap_rustc(
 
     let contexts = &md.contexts;
     let build = |stage, dir| green.build_out(&containerfile_path, stage, contexts, dir);
-    let (call, envs, built) = build(out_stage, &out_dir).await;
+    let (call, envs, built) = build(&out_stage, &out_dir).await;
     green
         .maybe_write_final_path(&containerfile_path, contexts, &call, &envs)
         .map_err(|e| anyhow!("Failed producing final path: {e}"))?;
@@ -464,8 +464,22 @@ async fn do_wrap_rustc(
                 md.write_to(&md_path)?;
             }
 
+            let final_stage = format!(
+                "FROM scratch\n{}\n",
+                md.writes
+                    .iter()
+                    .filter_map(|f| f.file_name())
+                    .filter(|f| !f.ends_with(".d"))
+                    .filter(|f| f != &format!("{out_stage}-{STDOUT}"))
+                    .filter(|f| f != &format!("{out_stage}-{STDERR}"))
+                    .filter(|f| f != &format!("{out_stage}-{ERRCODE}"))
+                    .map(|f| format!("COPY --from={out_stage} /{f} /{}", f.replace(&extrafn, "")))
+                    .collect::<Vec<_>>()
+                    .join("\n")
+            );
+
             green
-                .maybe_append_to_final_path(&md_path)
+                .maybe_append_to_final_path(&md_path, final_stage)
                 .map_err(|e| anyhow!("Failed finishing final path: {e}"))?;
         }
         Err(e) if debug.is_none() => {
@@ -479,7 +493,7 @@ async fn do_wrap_rustc(
     }
 
     if let Some(incremental) = incremental {
-        if let (_, _, Err(e)) = build(incremental_stage, &incremental).await {
+        if let (_, _, Err(e)) = build(&incremental_stage, &incremental).await {
             warn!("Error building incremental data: {e}");
             return Err(e);
         }
