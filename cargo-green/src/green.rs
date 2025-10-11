@@ -13,7 +13,7 @@ use log::info;
 use serde::{Deserialize, Serialize};
 
 #[cfg(test)]
-use crate::runner::Network;
+use crate::network::Network;
 use crate::{
     add::{Add, ENV_ADD_APK, ENV_ADD_APT, ENV_ADD_APT_GET},
     base_image::{BaseImage, ENV_BASE_IMAGE, ENV_BASE_IMAGE_INLINE},

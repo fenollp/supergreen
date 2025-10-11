@@ -10,6 +10,7 @@ use tokio::try_join;
 
 use crate::{
     base_image::{ENV_BASE_IMAGE, ENV_WITH_NETWORK},
+    build::fetch_digest,
     cratesio::{self},
     ext::CommandExt,
     green::Green,
@@ -17,11 +18,9 @@ use crate::{
     image_uri::{ImageUri, SYNTAX},
     lockfile::{find_lockfile, locked_crates},
     logging::{self, maybe_log},
+    network::Network,
     pwd,
-    runner::{
-        self, fetch_digest, Network, Runner, BUILDKIT_HOST, BUILDX_BUILDER, DOCKER_BUILDKIT,
-        DOCKER_CONTEXT, DOCKER_HOST,
-    },
+    runner::{Runner, BUILDKIT_HOST, BUILDX_BUILDER, DOCKER_BUILDKIT, DOCKER_CONTEXT, DOCKER_HOST},
     stage::{Stage, RST, RUST},
     tmp, PKG, VSN,
 };
@@ -48,7 +47,7 @@ pub(crate) async fn main() -> Result<Green> {
     if !green.runner_envs.is_empty() {
         bail!("'runner_envs' setting cannot be set")
     }
-    green.runner_envs = runner::envs();
+    green.runner_envs = green.runner.envs();
 
     // Cf. https://docs.docker.com/build/buildkit/#getting-started
     if green.runner_envs.get(DOCKER_BUILDKIT).is_some_and(|x| x != "1") {

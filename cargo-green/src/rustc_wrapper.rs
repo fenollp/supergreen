@@ -12,6 +12,7 @@ use log::{debug, error, info, trace, warn};
 use tokio::process::Command;
 
 use crate::{
+    build::{Effects, ERRCODE, STDERR, STDOUT},
     checkouts,
     cratesio::{self, rewrite_cratesio_index},
     ext::CommandExt,
@@ -19,7 +20,7 @@ use crate::{
     logging::{self, crate_type_for_logging, maybe_log},
     md::{BuildContext, Md},
     pwd,
-    runner::{Effects, Runner, ERRCODE, STDERR, STDOUT},
+    runner::Runner,
     rustc_arguments::{as_rustc, RustcArgs},
     stage::{Stage, RST, RUST},
     tmp, PKG, VSN,

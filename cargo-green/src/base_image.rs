@@ -3,7 +3,7 @@ use std::sync::LazyLock;
 use rustc_version::{Channel, Version, VersionMeta};
 use serde::{Deserialize, Serialize};
 
-use crate::{add::Add, image_uri::ImageUri, runner::Network, stage::RST};
+use crate::{add::Add, image_uri::ImageUri, network::Network, stage::RST};
 
 // Envs that override Cargo.toml settings
 pub(crate) const ENV_BASE_IMAGE: &str = "CARGOGREEN_BASE_IMAGE";
