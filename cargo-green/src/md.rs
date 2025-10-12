@@ -1,6 +1,6 @@
 // Our own MetaData utils
 
-use std::{env, fs, io::ErrorKind, str::FromStr};
+use std::{collections::HashMap, env, fs, io::ErrorKind, str::FromStr};
 
 use anyhow::{anyhow, bail, Result};
 use camino::{Utf8Path, Utf8PathBuf};
@@ -150,6 +150,97 @@ impl Md {
         }
     }
 
+    // https://github.com/rust-lang/cargo/issues/12059#issuecomment-1537457492
+    //   https://github.com/rust-lang/rust/issues/63012 : Tracking issue for -Z binary-dep-depinfo
+    pub(crate) fn assemble_build_dependencies(
+        &mut self,
+        crate_type: &str,
+        emit: &str,
+        externs: IndexSet<String>,
+        target_path: &Utf8Path,
+    ) -> Result<(Vec<NamedMount>, Vec<Md>)> {
+        let mut mds = HashMap::<Utf8PathBuf, Md>::new(); // A file cache
+
+        let md_pather = |part: &str| target_path.join(format!("{part}.toml"));
+
+        let mut all_externs = IndexSet::new();
+
+        let ext = match crate_type {
+            "lib" => "rmeta".to_owned(),
+            "bin" | "rlib" | "test" | "proc-macro" => "rlib".to_owned(),
+            _ => bail!("BUG: unexpected crate-type: '{crate_type}'"),
+        };
+        // https://rustc-dev-guide.rust-lang.org/backend/libs-and-metadata.html#rmeta
+        // > [rmeta] is created if the --emit=metadata CLI option is used.
+        let ext = if emit.contains("metadata") { "rmeta".to_owned() } else { ext };
+
+        for xtern in externs {
+            trace!("❯ extern {xtern}");
+            all_externs.insert(xtern.clone());
+
+            if !xtern.starts_with("lib") {
+                bail!("BUG: expected extern to match ^lib: {xtern}")
+            }
+            let xtern = xtern.strip_prefix("lib").expect("PROOF: ~ ^lib");
+            let xtern = if xtern.ends_with(".rlib") {
+                xtern.strip_suffix(".rlib")
+            } else if xtern.ends_with(".rmeta") {
+                xtern.strip_suffix(".rmeta")
+            } else if xtern.ends_with(".so") {
+                xtern.strip_suffix(".so")
+            } else {
+                bail!("BUG: cargo gave unexpected extern: {xtern:?}")
+            }
+            .expect("PROOF: all cases match");
+            trace!("❯ short extern {xtern}");
+            self.short_externs.insert(xtern.to_owned());
+
+            let extern_md = md_pather(xtern);
+            info!("checking (RO) extern's externs {extern_md}");
+            let extern_md = get_or_read(&mut mds, &extern_md)?;
+            for transitive in extern_md.short_externs {
+                let guard_md = get_or_read(&mut mds, &md_pather(&transitive))?;
+                let ext = if guard_md.is_proc_macro { "so" } else { &ext };
+
+                trace!("❯ extern lib{transitive}.{ext}");
+                all_externs.insert(format!("lib{transitive}.{ext}"));
+
+                trace!("❯ short extern {transitive}");
+                self.short_externs.insert(transitive);
+            }
+        }
+
+        let mut mounts = Vec::with_capacity(all_externs.len());
+        let extern_mds_and_paths = all_externs
+            .into_iter()
+            .map(|xtern| {
+                let Some((extern_md_path, xtern_stage)) = toml_path_and_stage(&xtern, target_path)
+                else {
+                    bail!("Unexpected extern name format: {xtern}")
+                };
+                let mount = NamedMount {
+                    name: xtern_stage,
+                    src: format!("/{xtern}").into(),
+                    dst: target_path.join("deps").join(xtern),
+                };
+                mounts.push(mount);
+
+                let extern_md = get_or_read(&mut mds, &extern_md_path)?;
+                Ok((extern_md_path, extern_md))
+            })
+            .collect::<Result<Vec<_>>>()?;
+
+        let extern_md_paths = self.sort_deps(extern_mds_and_paths)?;
+        info!("extern_md_paths: {} {extern_md_paths:?}", extern_md_paths.len());
+
+        let mds = extern_md_paths
+            .into_iter()
+            .map(|extern_md_path| get_or_read(&mut mds, &extern_md_path))
+            .collect::<Result<Vec<_>>>()?;
+
+        Ok((mounts, mds))
+    }
+
     pub(crate) fn sort_deps(&mut self, mds: Vec<(Utf8PathBuf, Self)>) -> Result<Vec<Utf8PathBuf>> {
         let mut dag: Vec<_> = mds
             .into_iter()
@@ -205,6 +296,22 @@ impl Md {
     }
 }
 
+#[derive(Debug)]
+pub(crate) struct NamedMount {
+    pub(crate) name: Stage,
+    pub(crate) src: Utf8PathBuf,
+    pub(crate) dst: Utf8PathBuf,
+}
+
+fn get_or_read(mds: &mut HashMap<Utf8PathBuf, Md>, path: &Utf8Path) -> Result<Md> {
+    if let Some(md) = mds.get(path) {
+        return Ok(md.clone());
+    }
+    let md = Md::from_file(path)?;
+    let _ = mds.insert(path.to_path_buf(), md.clone());
+    Ok(md)
+}
+
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash)]
 struct NamedStage {
     name: Stage,
@@ -216,6 +323,40 @@ pub(crate) struct BuildContext {
     pub(crate) name: Stage,
     /// Actually any BuildKit ctx works, we just only use local paths.
     pub(crate) uri: Utf8PathBuf,
+}
+
+#[test]
+fn toml_path_and_stage_for_rlib() {
+    let xtern = "libstrsim-8ed1051e7e58e636.rlib";
+    let res = toml_path_and_stage(xtern, "./target/path".into()).unwrap();
+    assert_eq!(res.0, "./target/path/strsim-8ed1051e7e58e636.toml".to_owned());
+    assert_eq!(res.1, "out-8ed1051e7e58e636".try_into().unwrap());
+}
+
+#[test]
+fn toml_path_and_stage_for_libc() {
+    let xtern = "liblibc-c53783e3f8edcfe4.rmeta";
+    let res = toml_path_and_stage(xtern, "./target/path".into()).unwrap();
+    assert_eq!(res.0, "./target/path/libc-c53783e3f8edcfe4.toml".to_owned());
+    assert_eq!(res.1, "out-c53783e3f8edcfe4".try_into().unwrap());
+}
+
+#[test]
+fn toml_path_and_stage_for_weird_extension() {
+    let xtern = "libthing-131283e3f8edcfe4.a.2.c";
+    let res = toml_path_and_stage(xtern, "./target/path".into()).unwrap();
+    assert_eq!(res.0, "./target/path/thing-131283e3f8edcfe4.toml".to_owned());
+    assert_eq!(res.1, "out-131283e3f8edcfe4".try_into().unwrap());
+}
+
+#[must_use]
+fn toml_path_and_stage(xtern: &str, target_path: &Utf8Path) -> Option<(Utf8PathBuf, Stage)> {
+    // TODO: drop stripping ^lib
+    assert!(xtern.starts_with("lib"), "BUG: unexpected xtern format: {xtern}");
+    let pa = xtern.strip_prefix("lib").and_then(|x| x.split_once('.')).map(|(x, _)| x);
+    let st = pa.and_then(|x| x.split_once('-')).map(|(_, x)| Stage::output(x).unwrap());
+    let pa = pa.map(|x| target_path.join(format!("{x}.toml")));
+    pa.zip(st)
 }
 
 #[derive(Debug, Clone, Deserialize, Serialize, Eq, PartialEq, Hash)]
