@@ -210,7 +210,9 @@ WORKDIR /home/runner/.cargo/git/checkouts/buildxargs-76dd4ee9dadcdcf0/df9b810
 RUN \
   --mount=from=checkout-buildxargs-76dd4ee9dadcdcf0-df9b810011cd416b8e3fc02911f2f496acb8475e,dst=/home/runner/.cargo/git/checkouts/buildxargs-76dd4ee9dadcdcf0/df9b810 \
   --mount=from=out-ef1ec1c562398afc,dst=/tmp/clis-buildxargs_master/release/deps/libpico_args-ef1ec1c562398afc.rmeta,source=/libpico_args-ef1ec1c562398afc.rmeta \
+  --mount=from=out-ef1ec1c562398afc,dst=/tmp/clis-buildxargs_master/release/deps/libpico_args-ef1ec1c562398afc.rlib,source=/libpico_args-ef1ec1c562398afc.rlib \
   --mount=from=out-ab0e05b376045caf,dst=/tmp/clis-buildxargs_master/release/deps/libshlex-ab0e05b376045caf.rmeta,source=/libshlex-ab0e05b376045caf.rmeta \
+  --mount=from=out-ab0e05b376045caf,dst=/tmp/clis-buildxargs_master/release/deps/libshlex-ab0e05b376045caf.rlib,source=/libshlex-ab0e05b376045caf.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="buildxargs" \
@@ -245,8 +247,8 @@ COPY --from=dep-l-buildxargs-1.4.0-42615e6c7f87c749 /tmp/clis-buildxargs_master/
 ##     "ab0e05b376045caf",
 ## ]
 ## short_externs = [
-##     "pico_args-ef1ec1c562398afc",
-##     "shlex-ab0e05b376045caf",
+##     "ef1ec1c562398afc",
+##     "ab0e05b376045caf",
 ## ]
 ## writes = [
 ##     "deps/buildxargs-42615e6c7f87c749.d",
@@ -258,6 +260,26 @@ COPY --from=dep-l-buildxargs-1.4.0-42615e6c7f87c749 /tmp/clis-buildxargs_master/
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-buildxargs_master/release/deps/libbuildxargs-42615e6c7f87c749.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-buildxargs_master/release/deps/libbuildxargs-42615e6c7f87c749.rlib","emit":"link"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-ef1ec1c562398afc"
+## src = "/libpico_args-ef1ec1c562398afc.rmeta"
+## dst = "/tmp/clis-buildxargs_master/release/deps/libpico_args-ef1ec1c562398afc.rmeta"
+## 
+## [[mounts]]
+## from = "out-ef1ec1c562398afc"
+## src = "/libpico_args-ef1ec1c562398afc.rlib"
+## dst = "/tmp/clis-buildxargs_master/release/deps/libpico_args-ef1ec1c562398afc.rlib"
+## 
+## [[mounts]]
+## from = "out-ab0e05b376045caf"
+## src = "/libshlex-ab0e05b376045caf.rmeta"
+## dst = "/tmp/clis-buildxargs_master/release/deps/libshlex-ab0e05b376045caf.rmeta"
+## 
+## [[mounts]]
+## from = "out-ab0e05b376045caf"
+## src = "/libshlex-ab0e05b376045caf.rlib"
+## dst = "/tmp/clis-buildxargs_master/release/deps/libshlex-ab0e05b376045caf.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -280,7 +302,9 @@ COPY --from=dep-l-buildxargs-1.4.0-42615e6c7f87c749 /tmp/clis-buildxargs_master/
 ## RUN \
 ##   --mount=from=checkout-buildxargs-76dd4ee9dadcdcf0-df9b810011cd416b8e3fc02911f2f496acb8475e,dst=/home/runner/.cargo/git/checkouts/buildxargs-76dd4ee9dadcdcf0/df9b810 \
 ##   --mount=from=out-ef1ec1c562398afc,dst=/tmp/clis-buildxargs_master/release/deps/libpico_args-ef1ec1c562398afc.rmeta,source=/libpico_args-ef1ec1c562398afc.rmeta \
+##   --mount=from=out-ef1ec1c562398afc,dst=/tmp/clis-buildxargs_master/release/deps/libpico_args-ef1ec1c562398afc.rlib,source=/libpico_args-ef1ec1c562398afc.rlib \
 ##   --mount=from=out-ab0e05b376045caf,dst=/tmp/clis-buildxargs_master/release/deps/libshlex-ab0e05b376045caf.rmeta,source=/libshlex-ab0e05b376045caf.rmeta \
+##   --mount=from=out-ab0e05b376045caf,dst=/tmp/clis-buildxargs_master/release/deps/libshlex-ab0e05b376045caf.rlib,source=/libshlex-ab0e05b376045caf.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="buildxargs" \
@@ -320,8 +344,11 @@ WORKDIR /tmp/clis-buildxargs_master/release/deps
 WORKDIR /home/runner/.cargo/git/checkouts/buildxargs-76dd4ee9dadcdcf0/df9b810
 RUN \
   --mount=from=checkout-buildxargs-76dd4ee9dadcdcf0-df9b810011cd416b8e3fc02911f2f496acb8475e,dst=/home/runner/.cargo/git/checkouts/buildxargs-76dd4ee9dadcdcf0/df9b810 \
+  --mount=from=out-42615e6c7f87c749,dst=/tmp/clis-buildxargs_master/release/deps/libbuildxargs-42615e6c7f87c749.rmeta,source=/libbuildxargs-42615e6c7f87c749.rmeta \
   --mount=from=out-42615e6c7f87c749,dst=/tmp/clis-buildxargs_master/release/deps/libbuildxargs-42615e6c7f87c749.rlib,source=/libbuildxargs-42615e6c7f87c749.rlib \
+  --mount=from=out-ef1ec1c562398afc,dst=/tmp/clis-buildxargs_master/release/deps/libpico_args-ef1ec1c562398afc.rmeta,source=/libpico_args-ef1ec1c562398afc.rmeta \
   --mount=from=out-ef1ec1c562398afc,dst=/tmp/clis-buildxargs_master/release/deps/libpico_args-ef1ec1c562398afc.rlib,source=/libpico_args-ef1ec1c562398afc.rlib \
+  --mount=from=out-ab0e05b376045caf,dst=/tmp/clis-buildxargs_master/release/deps/libshlex-ab0e05b376045caf.rmeta,source=/libshlex-ab0e05b376045caf.rmeta \
   --mount=from=out-ab0e05b376045caf,dst=/tmp/clis-buildxargs_master/release/deps/libshlex-ab0e05b376045caf.rlib,source=/libshlex-ab0e05b376045caf.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
@@ -363,9 +390,9 @@ COPY --from=dep-b-buildxargs-1.4.0-4245cb92e8e8c024 /tmp/clis-buildxargs_master/
 ##     "ab0e05b376045caf",
 ## ]
 ## short_externs = [
-##     "buildxargs-42615e6c7f87c749",
-##     "pico_args-ef1ec1c562398afc",
-##     "shlex-ab0e05b376045caf",
+##     "42615e6c7f87c749",
+##     "ef1ec1c562398afc",
+##     "ab0e05b376045caf",
 ## ]
 ## writes = [
 ##     "deps/buildxargs-4245cb92e8e8c024.d",
@@ -375,6 +402,36 @@ COPY --from=dep-b-buildxargs-1.4.0-4245cb92e8e8c024 /tmp/clis-buildxargs_master/
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-buildxargs_master/release/deps/buildxargs-4245cb92e8e8c024.d","emit":"dep-info"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-buildxargs_master/release/deps/buildxargs-4245cb92e8e8c024","emit":"link"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-42615e6c7f87c749"
+## src = "/libbuildxargs-42615e6c7f87c749.rmeta"
+## dst = "/tmp/clis-buildxargs_master/release/deps/libbuildxargs-42615e6c7f87c749.rmeta"
+## 
+## [[mounts]]
+## from = "out-42615e6c7f87c749"
+## src = "/libbuildxargs-42615e6c7f87c749.rlib"
+## dst = "/tmp/clis-buildxargs_master/release/deps/libbuildxargs-42615e6c7f87c749.rlib"
+## 
+## [[mounts]]
+## from = "out-ef1ec1c562398afc"
+## src = "/libpico_args-ef1ec1c562398afc.rmeta"
+## dst = "/tmp/clis-buildxargs_master/release/deps/libpico_args-ef1ec1c562398afc.rmeta"
+## 
+## [[mounts]]
+## from = "out-ef1ec1c562398afc"
+## src = "/libpico_args-ef1ec1c562398afc.rlib"
+## dst = "/tmp/clis-buildxargs_master/release/deps/libpico_args-ef1ec1c562398afc.rlib"
+## 
+## [[mounts]]
+## from = "out-ab0e05b376045caf"
+## src = "/libshlex-ab0e05b376045caf.rmeta"
+## dst = "/tmp/clis-buildxargs_master/release/deps/libshlex-ab0e05b376045caf.rmeta"
+## 
+## [[mounts]]
+## from = "out-ab0e05b376045caf"
+## src = "/libshlex-ab0e05b376045caf.rlib"
+## dst = "/tmp/clis-buildxargs_master/release/deps/libshlex-ab0e05b376045caf.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -396,8 +453,11 @@ COPY --from=dep-b-buildxargs-1.4.0-4245cb92e8e8c024 /tmp/clis-buildxargs_master/
 ## WORKDIR /home/runner/.cargo/git/checkouts/buildxargs-76dd4ee9dadcdcf0/df9b810
 ## RUN \
 ##   --mount=from=checkout-buildxargs-76dd4ee9dadcdcf0-df9b810011cd416b8e3fc02911f2f496acb8475e,dst=/home/runner/.cargo/git/checkouts/buildxargs-76dd4ee9dadcdcf0/df9b810 \
+##   --mount=from=out-42615e6c7f87c749,dst=/tmp/clis-buildxargs_master/release/deps/libbuildxargs-42615e6c7f87c749.rmeta,source=/libbuildxargs-42615e6c7f87c749.rmeta \
 ##   --mount=from=out-42615e6c7f87c749,dst=/tmp/clis-buildxargs_master/release/deps/libbuildxargs-42615e6c7f87c749.rlib,source=/libbuildxargs-42615e6c7f87c749.rlib \
+##   --mount=from=out-ef1ec1c562398afc,dst=/tmp/clis-buildxargs_master/release/deps/libpico_args-ef1ec1c562398afc.rmeta,source=/libpico_args-ef1ec1c562398afc.rmeta \
 ##   --mount=from=out-ef1ec1c562398afc,dst=/tmp/clis-buildxargs_master/release/deps/libpico_args-ef1ec1c562398afc.rlib,source=/libpico_args-ef1ec1c562398afc.rlib \
+##   --mount=from=out-ab0e05b376045caf,dst=/tmp/clis-buildxargs_master/release/deps/libshlex-ab0e05b376045caf.rmeta,source=/libshlex-ab0e05b376045caf.rmeta \
 ##   --mount=from=out-ab0e05b376045caf,dst=/tmp/clis-buildxargs_master/release/deps/libshlex-ab0e05b376045caf.rlib,source=/libshlex-ab0e05b376045caf.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \

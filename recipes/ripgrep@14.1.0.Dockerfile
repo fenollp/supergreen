@@ -313,6 +313,7 @@ WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 RUN \
   --mount=from=cratesio-aho-corasick-1.1.2,source=/aho-corasick-1.1.2,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aho-corasick-1.1.2 \
   --mount=from=out-3d9021aec125798d,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rmeta,source=/libmemchr-3d9021aec125798d.rmeta \
+  --mount=from=out-3d9021aec125798d,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rlib,source=/libmemchr-3d9021aec125798d.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="aho_corasick" \
@@ -342,7 +343,7 @@ COPY --from=dep-l-aho-corasick-1.1.2-2a2c3bf3a2b335e0 /tmp/clis-ripgrep_14-1-0/r
 
 ## this = "2a2c3bf3a2b335e0"
 ## deps = ["3d9021aec125798d"]
-## short_externs = ["memchr-3d9021aec125798d"]
+## short_externs = ["3d9021aec125798d"]
 ## writes = [
 ##     "deps/aho_corasick-2a2c3bf3a2b335e0.d",
 ##     "deps/libaho_corasick-2a2c3bf3a2b335e0.rmeta",
@@ -366,6 +367,16 @@ COPY --from=dep-l-aho-corasick-1.1.2-2a2c3bf3a2b335e0 /tmp/clis-ripgrep_14-1-0/r
 ##     '{"$message_type":"diagnostic","message":"11 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 11 warnings emitted\u001b[0m\n\n"}',
 ## ]
 ## 
+## [[mounts]]
+## from = "out-3d9021aec125798d"
+## src = "/libmemchr-3d9021aec125798d.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rmeta"
+## 
+## [[mounts]]
+## from = "out-3d9021aec125798d"
+## src = "/libmemchr-3d9021aec125798d.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rlib"
+## 
 ## [[stages]]
 ## name = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.86.0-slim@sha256:57d415bbd61ce11e2d5f73de068103c7bd9f3188dc132c97cef4a8f62989e944 AS rust-base"
@@ -386,6 +397,7 @@ COPY --from=dep-l-aho-corasick-1.1.2-2a2c3bf3a2b335e0 /tmp/clis-ripgrep_14-1-0/r
 ## RUN \
 ##   --mount=from=cratesio-aho-corasick-1.1.2,source=/aho-corasick-1.1.2,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aho-corasick-1.1.2 \
 ##   --mount=from=out-3d9021aec125798d,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rmeta,source=/libmemchr-3d9021aec125798d.rmeta \
+##   --mount=from=out-3d9021aec125798d,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rlib,source=/libmemchr-3d9021aec125798d.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="aho_corasick" \
@@ -525,8 +537,11 @@ WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 RUN \
   --mount=from=cratesio-regex-automata-0.4.3,source=/regex-automata-0.4.3,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/regex-automata-0.4.3 \
   --mount=from=out-2a2c3bf3a2b335e0,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libaho_corasick-2a2c3bf3a2b335e0.rmeta,source=/libaho_corasick-2a2c3bf3a2b335e0.rmeta \
+  --mount=from=out-2a2c3bf3a2b335e0,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libaho_corasick-2a2c3bf3a2b335e0.rlib,source=/libaho_corasick-2a2c3bf3a2b335e0.rlib \
   --mount=from=out-3d9021aec125798d,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rmeta,source=/libmemchr-3d9021aec125798d.rmeta \
+  --mount=from=out-3d9021aec125798d,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rlib,source=/libmemchr-3d9021aec125798d.rlib \
   --mount=from=out-0d361157f8cdd0fe,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libregex_syntax-0d361157f8cdd0fe.rmeta,source=/libregex_syntax-0d361157f8cdd0fe.rmeta \
+  --mount=from=out-0d361157f8cdd0fe,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libregex_syntax-0d361157f8cdd0fe.rlib,source=/libregex_syntax-0d361157f8cdd0fe.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="regex_automata" \
@@ -561,9 +576,9 @@ COPY --from=dep-l-regex-automata-0.4.3-54c30116fcd4ea92 /tmp/clis-ripgrep_14-1-0
 ##     "0d361157f8cdd0fe",
 ## ]
 ## short_externs = [
-##     "aho_corasick-2a2c3bf3a2b335e0",
-##     "memchr-3d9021aec125798d",
-##     "regex_syntax-0d361157f8cdd0fe",
+##     "2a2c3bf3a2b335e0",
+##     "3d9021aec125798d",
+##     "0d361157f8cdd0fe",
 ## ]
 ## writes = [
 ##     "deps/regex_automata-54c30116fcd4ea92.d",
@@ -583,6 +598,36 @@ COPY --from=dep-l-regex-automata-0.4.3-54c30116fcd4ea92 /tmp/clis-ripgrep_14-1-0
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_14-1-0/release/deps/libregex_automata-54c30116fcd4ea92.rlib","emit":"link"}',
 ##     '{"$message_type":"diagnostic","message":"7 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 7 warnings emitted\u001b[0m\n\n"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-2a2c3bf3a2b335e0"
+## src = "/libaho_corasick-2a2c3bf3a2b335e0.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libaho_corasick-2a2c3bf3a2b335e0.rmeta"
+## 
+## [[mounts]]
+## from = "out-2a2c3bf3a2b335e0"
+## src = "/libaho_corasick-2a2c3bf3a2b335e0.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libaho_corasick-2a2c3bf3a2b335e0.rlib"
+## 
+## [[mounts]]
+## from = "out-3d9021aec125798d"
+## src = "/libmemchr-3d9021aec125798d.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rmeta"
+## 
+## [[mounts]]
+## from = "out-3d9021aec125798d"
+## src = "/libmemchr-3d9021aec125798d.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rlib"
+## 
+## [[mounts]]
+## from = "out-0d361157f8cdd0fe"
+## src = "/libregex_syntax-0d361157f8cdd0fe.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libregex_syntax-0d361157f8cdd0fe.rmeta"
+## 
+## [[mounts]]
+## from = "out-0d361157f8cdd0fe"
+## src = "/libregex_syntax-0d361157f8cdd0fe.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libregex_syntax-0d361157f8cdd0fe.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -604,8 +649,11 @@ COPY --from=dep-l-regex-automata-0.4.3-54c30116fcd4ea92 /tmp/clis-ripgrep_14-1-0
 ## RUN \
 ##   --mount=from=cratesio-regex-automata-0.4.3,source=/regex-automata-0.4.3,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/regex-automata-0.4.3 \
 ##   --mount=from=out-2a2c3bf3a2b335e0,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libaho_corasick-2a2c3bf3a2b335e0.rmeta,source=/libaho_corasick-2a2c3bf3a2b335e0.rmeta \
+##   --mount=from=out-2a2c3bf3a2b335e0,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libaho_corasick-2a2c3bf3a2b335e0.rlib,source=/libaho_corasick-2a2c3bf3a2b335e0.rlib \
 ##   --mount=from=out-3d9021aec125798d,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rmeta,source=/libmemchr-3d9021aec125798d.rmeta \
+##   --mount=from=out-3d9021aec125798d,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rlib,source=/libmemchr-3d9021aec125798d.rlib \
 ##   --mount=from=out-0d361157f8cdd0fe,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libregex_syntax-0d361157f8cdd0fe.rmeta,source=/libregex_syntax-0d361157f8cdd0fe.rmeta \
+##   --mount=from=out-0d361157f8cdd0fe,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libregex_syntax-0d361157f8cdd0fe.rlib,source=/libregex_syntax-0d361157f8cdd0fe.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="regex_automata" \
@@ -646,9 +694,13 @@ WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 RUN \
   --mount=from=cratesio-bstr-1.9.0,source=/bstr-1.9.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bstr-1.9.0 \
   --mount=from=out-3d9021aec125798d,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rmeta,source=/libmemchr-3d9021aec125798d.rmeta \
+  --mount=from=out-3d9021aec125798d,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rlib,source=/libmemchr-3d9021aec125798d.rlib \
   --mount=from=out-54c30116fcd4ea92,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libregex_automata-54c30116fcd4ea92.rmeta,source=/libregex_automata-54c30116fcd4ea92.rmeta \
+  --mount=from=out-54c30116fcd4ea92,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libregex_automata-54c30116fcd4ea92.rlib,source=/libregex_automata-54c30116fcd4ea92.rlib \
   --mount=from=out-2a2c3bf3a2b335e0,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libaho_corasick-2a2c3bf3a2b335e0.rmeta,source=/libaho_corasick-2a2c3bf3a2b335e0.rmeta \
+  --mount=from=out-2a2c3bf3a2b335e0,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libaho_corasick-2a2c3bf3a2b335e0.rlib,source=/libaho_corasick-2a2c3bf3a2b335e0.rlib \
   --mount=from=out-0d361157f8cdd0fe,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libregex_syntax-0d361157f8cdd0fe.rmeta,source=/libregex_syntax-0d361157f8cdd0fe.rmeta \
+  --mount=from=out-0d361157f8cdd0fe,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libregex_syntax-0d361157f8cdd0fe.rlib,source=/libregex_syntax-0d361157f8cdd0fe.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="bstr" \
@@ -684,10 +736,10 @@ COPY --from=dep-l-bstr-1.9.0-f6b551c518280772 /tmp/clis-ripgrep_14-1-0/release/d
 ##     "0d361157f8cdd0fe",
 ## ]
 ## short_externs = [
-##     "memchr-3d9021aec125798d",
-##     "regex_automata-54c30116fcd4ea92",
-##     "aho_corasick-2a2c3bf3a2b335e0",
-##     "regex_syntax-0d361157f8cdd0fe",
+##     "3d9021aec125798d",
+##     "54c30116fcd4ea92",
+##     "2a2c3bf3a2b335e0",
+##     "0d361157f8cdd0fe",
 ## ]
 ## writes = [
 ##     "deps/bstr-f6b551c518280772.d",
@@ -701,6 +753,46 @@ COPY --from=dep-l-bstr-1.9.0-f6b551c518280772 /tmp/clis-ripgrep_14-1-0/release/d
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_14-1-0/release/deps/libbstr-f6b551c518280772.rlib","emit":"link"}',
 ##     '{"$message_type":"diagnostic","message":"1 warning emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 1 warning emitted\u001b[0m\n\n"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-3d9021aec125798d"
+## src = "/libmemchr-3d9021aec125798d.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rmeta"
+## 
+## [[mounts]]
+## from = "out-3d9021aec125798d"
+## src = "/libmemchr-3d9021aec125798d.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rlib"
+## 
+## [[mounts]]
+## from = "out-54c30116fcd4ea92"
+## src = "/libregex_automata-54c30116fcd4ea92.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libregex_automata-54c30116fcd4ea92.rmeta"
+## 
+## [[mounts]]
+## from = "out-54c30116fcd4ea92"
+## src = "/libregex_automata-54c30116fcd4ea92.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libregex_automata-54c30116fcd4ea92.rlib"
+## 
+## [[mounts]]
+## from = "out-2a2c3bf3a2b335e0"
+## src = "/libaho_corasick-2a2c3bf3a2b335e0.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libaho_corasick-2a2c3bf3a2b335e0.rmeta"
+## 
+## [[mounts]]
+## from = "out-2a2c3bf3a2b335e0"
+## src = "/libaho_corasick-2a2c3bf3a2b335e0.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libaho_corasick-2a2c3bf3a2b335e0.rlib"
+## 
+## [[mounts]]
+## from = "out-0d361157f8cdd0fe"
+## src = "/libregex_syntax-0d361157f8cdd0fe.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libregex_syntax-0d361157f8cdd0fe.rmeta"
+## 
+## [[mounts]]
+## from = "out-0d361157f8cdd0fe"
+## src = "/libregex_syntax-0d361157f8cdd0fe.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libregex_syntax-0d361157f8cdd0fe.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -722,9 +814,13 @@ COPY --from=dep-l-bstr-1.9.0-f6b551c518280772 /tmp/clis-ripgrep_14-1-0/release/d
 ## RUN \
 ##   --mount=from=cratesio-bstr-1.9.0,source=/bstr-1.9.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bstr-1.9.0 \
 ##   --mount=from=out-3d9021aec125798d,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rmeta,source=/libmemchr-3d9021aec125798d.rmeta \
+##   --mount=from=out-3d9021aec125798d,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rlib,source=/libmemchr-3d9021aec125798d.rlib \
 ##   --mount=from=out-54c30116fcd4ea92,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libregex_automata-54c30116fcd4ea92.rmeta,source=/libregex_automata-54c30116fcd4ea92.rmeta \
+##   --mount=from=out-54c30116fcd4ea92,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libregex_automata-54c30116fcd4ea92.rlib,source=/libregex_automata-54c30116fcd4ea92.rlib \
 ##   --mount=from=out-2a2c3bf3a2b335e0,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libaho_corasick-2a2c3bf3a2b335e0.rmeta,source=/libaho_corasick-2a2c3bf3a2b335e0.rmeta \
+##   --mount=from=out-2a2c3bf3a2b335e0,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libaho_corasick-2a2c3bf3a2b335e0.rlib,source=/libaho_corasick-2a2c3bf3a2b335e0.rlib \
 ##   --mount=from=out-0d361157f8cdd0fe,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libregex_syntax-0d361157f8cdd0fe.rmeta,source=/libregex_syntax-0d361157f8cdd0fe.rmeta \
+##   --mount=from=out-0d361157f8cdd0fe,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libregex_syntax-0d361157f8cdd0fe.rlib,source=/libregex_syntax-0d361157f8cdd0fe.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="bstr" \
@@ -865,11 +961,17 @@ WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 RUN \
   --mount=from=cratesio-globset-0.4.14,source=/globset-0.4.14,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/globset-0.4.14 \
   --mount=from=out-2a2c3bf3a2b335e0,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libaho_corasick-2a2c3bf3a2b335e0.rmeta,source=/libaho_corasick-2a2c3bf3a2b335e0.rmeta \
+  --mount=from=out-2a2c3bf3a2b335e0,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libaho_corasick-2a2c3bf3a2b335e0.rlib,source=/libaho_corasick-2a2c3bf3a2b335e0.rlib \
   --mount=from=out-3d9021aec125798d,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rmeta,source=/libmemchr-3d9021aec125798d.rmeta \
+  --mount=from=out-3d9021aec125798d,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rlib,source=/libmemchr-3d9021aec125798d.rlib \
   --mount=from=out-f6b551c518280772,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libbstr-f6b551c518280772.rmeta,source=/libbstr-f6b551c518280772.rmeta \
+  --mount=from=out-f6b551c518280772,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libbstr-f6b551c518280772.rlib,source=/libbstr-f6b551c518280772.rlib \
   --mount=from=out-54c30116fcd4ea92,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libregex_automata-54c30116fcd4ea92.rmeta,source=/libregex_automata-54c30116fcd4ea92.rmeta \
+  --mount=from=out-54c30116fcd4ea92,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libregex_automata-54c30116fcd4ea92.rlib,source=/libregex_automata-54c30116fcd4ea92.rlib \
   --mount=from=out-0d361157f8cdd0fe,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libregex_syntax-0d361157f8cdd0fe.rmeta,source=/libregex_syntax-0d361157f8cdd0fe.rmeta \
+  --mount=from=out-0d361157f8cdd0fe,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libregex_syntax-0d361157f8cdd0fe.rlib,source=/libregex_syntax-0d361157f8cdd0fe.rlib \
   --mount=from=out-45d1068292014e63,dst=/tmp/clis-ripgrep_14-1-0/release/deps/liblog-45d1068292014e63.rmeta,source=/liblog-45d1068292014e63.rmeta \
+  --mount=from=out-45d1068292014e63,dst=/tmp/clis-ripgrep_14-1-0/release/deps/liblog-45d1068292014e63.rlib,source=/liblog-45d1068292014e63.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="globset" \
@@ -907,12 +1009,12 @@ COPY --from=dep-l-globset-0.4.14-14504da8f25a4dbf /tmp/clis-ripgrep_14-1-0/relea
 ##     "45d1068292014e63",
 ## ]
 ## short_externs = [
-##     "aho_corasick-2a2c3bf3a2b335e0",
-##     "memchr-3d9021aec125798d",
-##     "bstr-f6b551c518280772",
-##     "regex_automata-54c30116fcd4ea92",
-##     "regex_syntax-0d361157f8cdd0fe",
-##     "log-45d1068292014e63",
+##     "2a2c3bf3a2b335e0",
+##     "3d9021aec125798d",
+##     "f6b551c518280772",
+##     "54c30116fcd4ea92",
+##     "0d361157f8cdd0fe",
+##     "45d1068292014e63",
 ## ]
 ## writes = [
 ##     "deps/globset-14504da8f25a4dbf.d",
@@ -924,6 +1026,66 @@ COPY --from=dep-l-globset-0.4.14-14504da8f25a4dbf /tmp/clis-ripgrep_14-1-0/relea
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_14-1-0/release/deps/libglobset-14504da8f25a4dbf.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_14-1-0/release/deps/libglobset-14504da8f25a4dbf.rlib","emit":"link"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-2a2c3bf3a2b335e0"
+## src = "/libaho_corasick-2a2c3bf3a2b335e0.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libaho_corasick-2a2c3bf3a2b335e0.rmeta"
+## 
+## [[mounts]]
+## from = "out-2a2c3bf3a2b335e0"
+## src = "/libaho_corasick-2a2c3bf3a2b335e0.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libaho_corasick-2a2c3bf3a2b335e0.rlib"
+## 
+## [[mounts]]
+## from = "out-3d9021aec125798d"
+## src = "/libmemchr-3d9021aec125798d.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rmeta"
+## 
+## [[mounts]]
+## from = "out-3d9021aec125798d"
+## src = "/libmemchr-3d9021aec125798d.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rlib"
+## 
+## [[mounts]]
+## from = "out-f6b551c518280772"
+## src = "/libbstr-f6b551c518280772.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libbstr-f6b551c518280772.rmeta"
+## 
+## [[mounts]]
+## from = "out-f6b551c518280772"
+## src = "/libbstr-f6b551c518280772.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libbstr-f6b551c518280772.rlib"
+## 
+## [[mounts]]
+## from = "out-54c30116fcd4ea92"
+## src = "/libregex_automata-54c30116fcd4ea92.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libregex_automata-54c30116fcd4ea92.rmeta"
+## 
+## [[mounts]]
+## from = "out-54c30116fcd4ea92"
+## src = "/libregex_automata-54c30116fcd4ea92.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libregex_automata-54c30116fcd4ea92.rlib"
+## 
+## [[mounts]]
+## from = "out-0d361157f8cdd0fe"
+## src = "/libregex_syntax-0d361157f8cdd0fe.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libregex_syntax-0d361157f8cdd0fe.rmeta"
+## 
+## [[mounts]]
+## from = "out-0d361157f8cdd0fe"
+## src = "/libregex_syntax-0d361157f8cdd0fe.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libregex_syntax-0d361157f8cdd0fe.rlib"
+## 
+## [[mounts]]
+## from = "out-45d1068292014e63"
+## src = "/liblog-45d1068292014e63.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/liblog-45d1068292014e63.rmeta"
+## 
+## [[mounts]]
+## from = "out-45d1068292014e63"
+## src = "/liblog-45d1068292014e63.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/liblog-45d1068292014e63.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -945,11 +1107,17 @@ COPY --from=dep-l-globset-0.4.14-14504da8f25a4dbf /tmp/clis-ripgrep_14-1-0/relea
 ## RUN \
 ##   --mount=from=cratesio-globset-0.4.14,source=/globset-0.4.14,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/globset-0.4.14 \
 ##   --mount=from=out-2a2c3bf3a2b335e0,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libaho_corasick-2a2c3bf3a2b335e0.rmeta,source=/libaho_corasick-2a2c3bf3a2b335e0.rmeta \
+##   --mount=from=out-2a2c3bf3a2b335e0,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libaho_corasick-2a2c3bf3a2b335e0.rlib,source=/libaho_corasick-2a2c3bf3a2b335e0.rlib \
 ##   --mount=from=out-3d9021aec125798d,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rmeta,source=/libmemchr-3d9021aec125798d.rmeta \
+##   --mount=from=out-3d9021aec125798d,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rlib,source=/libmemchr-3d9021aec125798d.rlib \
 ##   --mount=from=out-f6b551c518280772,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libbstr-f6b551c518280772.rmeta,source=/libbstr-f6b551c518280772.rmeta \
+##   --mount=from=out-f6b551c518280772,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libbstr-f6b551c518280772.rlib,source=/libbstr-f6b551c518280772.rlib \
 ##   --mount=from=out-54c30116fcd4ea92,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libregex_automata-54c30116fcd4ea92.rmeta,source=/libregex_automata-54c30116fcd4ea92.rmeta \
+##   --mount=from=out-54c30116fcd4ea92,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libregex_automata-54c30116fcd4ea92.rlib,source=/libregex_automata-54c30116fcd4ea92.rlib \
 ##   --mount=from=out-0d361157f8cdd0fe,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libregex_syntax-0d361157f8cdd0fe.rmeta,source=/libregex_syntax-0d361157f8cdd0fe.rmeta \
+##   --mount=from=out-0d361157f8cdd0fe,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libregex_syntax-0d361157f8cdd0fe.rlib,source=/libregex_syntax-0d361157f8cdd0fe.rlib \
 ##   --mount=from=out-45d1068292014e63,dst=/tmp/clis-ripgrep_14-1-0/release/deps/liblog-45d1068292014e63.rmeta,source=/liblog-45d1068292014e63.rmeta \
+##   --mount=from=out-45d1068292014e63,dst=/tmp/clis-ripgrep_14-1-0/release/deps/liblog-45d1068292014e63.rlib,source=/liblog-45d1068292014e63.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="globset" \
@@ -1253,14 +1421,23 @@ WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 RUN \
   --mount=from=cratesio-grep-cli-0.1.10,source=/grep-cli-0.1.10,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-cli-0.1.10 \
   --mount=from=out-f6b551c518280772,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libbstr-f6b551c518280772.rmeta,source=/libbstr-f6b551c518280772.rmeta \
+  --mount=from=out-f6b551c518280772,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libbstr-f6b551c518280772.rlib,source=/libbstr-f6b551c518280772.rlib \
   --mount=from=out-3d9021aec125798d,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rmeta,source=/libmemchr-3d9021aec125798d.rmeta \
+  --mount=from=out-3d9021aec125798d,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rlib,source=/libmemchr-3d9021aec125798d.rlib \
   --mount=from=out-54c30116fcd4ea92,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libregex_automata-54c30116fcd4ea92.rmeta,source=/libregex_automata-54c30116fcd4ea92.rmeta \
+  --mount=from=out-54c30116fcd4ea92,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libregex_automata-54c30116fcd4ea92.rlib,source=/libregex_automata-54c30116fcd4ea92.rlib \
   --mount=from=out-2a2c3bf3a2b335e0,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libaho_corasick-2a2c3bf3a2b335e0.rmeta,source=/libaho_corasick-2a2c3bf3a2b335e0.rmeta \
+  --mount=from=out-2a2c3bf3a2b335e0,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libaho_corasick-2a2c3bf3a2b335e0.rlib,source=/libaho_corasick-2a2c3bf3a2b335e0.rlib \
   --mount=from=out-0d361157f8cdd0fe,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libregex_syntax-0d361157f8cdd0fe.rmeta,source=/libregex_syntax-0d361157f8cdd0fe.rmeta \
+  --mount=from=out-0d361157f8cdd0fe,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libregex_syntax-0d361157f8cdd0fe.rlib,source=/libregex_syntax-0d361157f8cdd0fe.rlib \
   --mount=from=out-14504da8f25a4dbf,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libglobset-14504da8f25a4dbf.rmeta,source=/libglobset-14504da8f25a4dbf.rmeta \
+  --mount=from=out-14504da8f25a4dbf,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libglobset-14504da8f25a4dbf.rlib,source=/libglobset-14504da8f25a4dbf.rlib \
   --mount=from=out-45d1068292014e63,dst=/tmp/clis-ripgrep_14-1-0/release/deps/liblog-45d1068292014e63.rmeta,source=/liblog-45d1068292014e63.rmeta \
+  --mount=from=out-45d1068292014e63,dst=/tmp/clis-ripgrep_14-1-0/release/deps/liblog-45d1068292014e63.rlib,source=/liblog-45d1068292014e63.rlib \
   --mount=from=out-b1dcb66edfd0e8a0,dst=/tmp/clis-ripgrep_14-1-0/release/deps/liblibc-b1dcb66edfd0e8a0.rmeta,source=/liblibc-b1dcb66edfd0e8a0.rmeta \
+  --mount=from=out-b1dcb66edfd0e8a0,dst=/tmp/clis-ripgrep_14-1-0/release/deps/liblibc-b1dcb66edfd0e8a0.rlib,source=/liblibc-b1dcb66edfd0e8a0.rlib \
   --mount=from=out-59ae8e7772deaa56,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libtermcolor-59ae8e7772deaa56.rmeta,source=/libtermcolor-59ae8e7772deaa56.rmeta \
+  --mount=from=out-59ae8e7772deaa56,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libtermcolor-59ae8e7772deaa56.rlib,source=/libtermcolor-59ae8e7772deaa56.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="grep_cli" \
@@ -1301,15 +1478,15 @@ COPY --from=dep-l-grep-cli-0.1.10-8da8357e778092ce /tmp/clis-ripgrep_14-1-0/rele
 ##     "59ae8e7772deaa56",
 ## ]
 ## short_externs = [
-##     "bstr-f6b551c518280772",
-##     "memchr-3d9021aec125798d",
-##     "regex_automata-54c30116fcd4ea92",
-##     "aho_corasick-2a2c3bf3a2b335e0",
-##     "regex_syntax-0d361157f8cdd0fe",
-##     "globset-14504da8f25a4dbf",
-##     "log-45d1068292014e63",
-##     "libc-b1dcb66edfd0e8a0",
-##     "termcolor-59ae8e7772deaa56",
+##     "f6b551c518280772",
+##     "3d9021aec125798d",
+##     "54c30116fcd4ea92",
+##     "2a2c3bf3a2b335e0",
+##     "0d361157f8cdd0fe",
+##     "14504da8f25a4dbf",
+##     "45d1068292014e63",
+##     "b1dcb66edfd0e8a0",
+##     "59ae8e7772deaa56",
 ## ]
 ## writes = [
 ##     "deps/grep_cli-8da8357e778092ce.d",
@@ -1321,6 +1498,96 @@ COPY --from=dep-l-grep-cli-0.1.10-8da8357e778092ce /tmp/clis-ripgrep_14-1-0/rele
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_cli-8da8357e778092ce.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_cli-8da8357e778092ce.rlib","emit":"link"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-f6b551c518280772"
+## src = "/libbstr-f6b551c518280772.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libbstr-f6b551c518280772.rmeta"
+## 
+## [[mounts]]
+## from = "out-f6b551c518280772"
+## src = "/libbstr-f6b551c518280772.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libbstr-f6b551c518280772.rlib"
+## 
+## [[mounts]]
+## from = "out-3d9021aec125798d"
+## src = "/libmemchr-3d9021aec125798d.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rmeta"
+## 
+## [[mounts]]
+## from = "out-3d9021aec125798d"
+## src = "/libmemchr-3d9021aec125798d.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rlib"
+## 
+## [[mounts]]
+## from = "out-54c30116fcd4ea92"
+## src = "/libregex_automata-54c30116fcd4ea92.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libregex_automata-54c30116fcd4ea92.rmeta"
+## 
+## [[mounts]]
+## from = "out-54c30116fcd4ea92"
+## src = "/libregex_automata-54c30116fcd4ea92.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libregex_automata-54c30116fcd4ea92.rlib"
+## 
+## [[mounts]]
+## from = "out-2a2c3bf3a2b335e0"
+## src = "/libaho_corasick-2a2c3bf3a2b335e0.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libaho_corasick-2a2c3bf3a2b335e0.rmeta"
+## 
+## [[mounts]]
+## from = "out-2a2c3bf3a2b335e0"
+## src = "/libaho_corasick-2a2c3bf3a2b335e0.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libaho_corasick-2a2c3bf3a2b335e0.rlib"
+## 
+## [[mounts]]
+## from = "out-0d361157f8cdd0fe"
+## src = "/libregex_syntax-0d361157f8cdd0fe.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libregex_syntax-0d361157f8cdd0fe.rmeta"
+## 
+## [[mounts]]
+## from = "out-0d361157f8cdd0fe"
+## src = "/libregex_syntax-0d361157f8cdd0fe.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libregex_syntax-0d361157f8cdd0fe.rlib"
+## 
+## [[mounts]]
+## from = "out-14504da8f25a4dbf"
+## src = "/libglobset-14504da8f25a4dbf.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libglobset-14504da8f25a4dbf.rmeta"
+## 
+## [[mounts]]
+## from = "out-14504da8f25a4dbf"
+## src = "/libglobset-14504da8f25a4dbf.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libglobset-14504da8f25a4dbf.rlib"
+## 
+## [[mounts]]
+## from = "out-45d1068292014e63"
+## src = "/liblog-45d1068292014e63.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/liblog-45d1068292014e63.rmeta"
+## 
+## [[mounts]]
+## from = "out-45d1068292014e63"
+## src = "/liblog-45d1068292014e63.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/liblog-45d1068292014e63.rlib"
+## 
+## [[mounts]]
+## from = "out-b1dcb66edfd0e8a0"
+## src = "/liblibc-b1dcb66edfd0e8a0.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/liblibc-b1dcb66edfd0e8a0.rmeta"
+## 
+## [[mounts]]
+## from = "out-b1dcb66edfd0e8a0"
+## src = "/liblibc-b1dcb66edfd0e8a0.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/liblibc-b1dcb66edfd0e8a0.rlib"
+## 
+## [[mounts]]
+## from = "out-59ae8e7772deaa56"
+## src = "/libtermcolor-59ae8e7772deaa56.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libtermcolor-59ae8e7772deaa56.rmeta"
+## 
+## [[mounts]]
+## from = "out-59ae8e7772deaa56"
+## src = "/libtermcolor-59ae8e7772deaa56.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libtermcolor-59ae8e7772deaa56.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -1342,14 +1609,23 @@ COPY --from=dep-l-grep-cli-0.1.10-8da8357e778092ce /tmp/clis-ripgrep_14-1-0/rele
 ## RUN \
 ##   --mount=from=cratesio-grep-cli-0.1.10,source=/grep-cli-0.1.10,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-cli-0.1.10 \
 ##   --mount=from=out-f6b551c518280772,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libbstr-f6b551c518280772.rmeta,source=/libbstr-f6b551c518280772.rmeta \
+##   --mount=from=out-f6b551c518280772,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libbstr-f6b551c518280772.rlib,source=/libbstr-f6b551c518280772.rlib \
 ##   --mount=from=out-3d9021aec125798d,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rmeta,source=/libmemchr-3d9021aec125798d.rmeta \
+##   --mount=from=out-3d9021aec125798d,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rlib,source=/libmemchr-3d9021aec125798d.rlib \
 ##   --mount=from=out-54c30116fcd4ea92,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libregex_automata-54c30116fcd4ea92.rmeta,source=/libregex_automata-54c30116fcd4ea92.rmeta \
+##   --mount=from=out-54c30116fcd4ea92,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libregex_automata-54c30116fcd4ea92.rlib,source=/libregex_automata-54c30116fcd4ea92.rlib \
 ##   --mount=from=out-2a2c3bf3a2b335e0,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libaho_corasick-2a2c3bf3a2b335e0.rmeta,source=/libaho_corasick-2a2c3bf3a2b335e0.rmeta \
+##   --mount=from=out-2a2c3bf3a2b335e0,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libaho_corasick-2a2c3bf3a2b335e0.rlib,source=/libaho_corasick-2a2c3bf3a2b335e0.rlib \
 ##   --mount=from=out-0d361157f8cdd0fe,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libregex_syntax-0d361157f8cdd0fe.rmeta,source=/libregex_syntax-0d361157f8cdd0fe.rmeta \
+##   --mount=from=out-0d361157f8cdd0fe,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libregex_syntax-0d361157f8cdd0fe.rlib,source=/libregex_syntax-0d361157f8cdd0fe.rlib \
 ##   --mount=from=out-14504da8f25a4dbf,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libglobset-14504da8f25a4dbf.rmeta,source=/libglobset-14504da8f25a4dbf.rmeta \
+##   --mount=from=out-14504da8f25a4dbf,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libglobset-14504da8f25a4dbf.rlib,source=/libglobset-14504da8f25a4dbf.rlib \
 ##   --mount=from=out-45d1068292014e63,dst=/tmp/clis-ripgrep_14-1-0/release/deps/liblog-45d1068292014e63.rmeta,source=/liblog-45d1068292014e63.rmeta \
+##   --mount=from=out-45d1068292014e63,dst=/tmp/clis-ripgrep_14-1-0/release/deps/liblog-45d1068292014e63.rlib,source=/liblog-45d1068292014e63.rlib \
 ##   --mount=from=out-b1dcb66edfd0e8a0,dst=/tmp/clis-ripgrep_14-1-0/release/deps/liblibc-b1dcb66edfd0e8a0.rmeta,source=/liblibc-b1dcb66edfd0e8a0.rmeta \
+##   --mount=from=out-b1dcb66edfd0e8a0,dst=/tmp/clis-ripgrep_14-1-0/release/deps/liblibc-b1dcb66edfd0e8a0.rlib,source=/liblibc-b1dcb66edfd0e8a0.rlib \
 ##   --mount=from=out-59ae8e7772deaa56,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libtermcolor-59ae8e7772deaa56.rmeta,source=/libtermcolor-59ae8e7772deaa56.rmeta \
+##   --mount=from=out-59ae8e7772deaa56,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libtermcolor-59ae8e7772deaa56.rlib,source=/libtermcolor-59ae8e7772deaa56.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="grep_cli" \
@@ -1390,6 +1666,7 @@ WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 RUN \
   --mount=from=cratesio-grep-matcher-0.1.7,source=/grep-matcher-0.1.7,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-matcher-0.1.7 \
   --mount=from=out-3d9021aec125798d,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rmeta,source=/libmemchr-3d9021aec125798d.rmeta \
+  --mount=from=out-3d9021aec125798d,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rlib,source=/libmemchr-3d9021aec125798d.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="grep_matcher" \
@@ -1419,7 +1696,7 @@ COPY --from=dep-l-grep-matcher-0.1.7-7517975d791c1423 /tmp/clis-ripgrep_14-1-0/r
 
 ## this = "7517975d791c1423"
 ## deps = ["3d9021aec125798d"]
-## short_externs = ["memchr-3d9021aec125798d"]
+## short_externs = ["3d9021aec125798d"]
 ## writes = [
 ##     "deps/grep_matcher-7517975d791c1423.d",
 ##     "deps/libgrep_matcher-7517975d791c1423.rmeta",
@@ -1430,6 +1707,16 @@ COPY --from=dep-l-grep-matcher-0.1.7-7517975d791c1423 /tmp/clis-ripgrep_14-1-0/r
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_matcher-7517975d791c1423.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_matcher-7517975d791c1423.rlib","emit":"link"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-3d9021aec125798d"
+## src = "/libmemchr-3d9021aec125798d.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rmeta"
+## 
+## [[mounts]]
+## from = "out-3d9021aec125798d"
+## src = "/libmemchr-3d9021aec125798d.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -1451,6 +1738,7 @@ COPY --from=dep-l-grep-matcher-0.1.7-7517975d791c1423 /tmp/clis-ripgrep_14-1-0/r
 ## RUN \
 ##   --mount=from=cratesio-grep-matcher-0.1.7,source=/grep-matcher-0.1.7,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-matcher-0.1.7 \
 ##   --mount=from=out-3d9021aec125798d,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rmeta,source=/libmemchr-3d9021aec125798d.rmeta \
+##   --mount=from=out-3d9021aec125798d,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rlib,source=/libmemchr-3d9021aec125798d.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="grep_matcher" \
@@ -1588,6 +1876,7 @@ WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 RUN \
   --mount=from=cratesio-encoding_rs-0.8.33,source=/encoding_rs-0.8.33,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/encoding_rs-0.8.33 \
   --mount=from=out-98d40c6178a8b60f,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libcfg_if-98d40c6178a8b60f.rmeta,source=/libcfg_if-98d40c6178a8b60f.rmeta \
+  --mount=from=out-98d40c6178a8b60f,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libcfg_if-98d40c6178a8b60f.rlib,source=/libcfg_if-98d40c6178a8b60f.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="encoding_rs" \
@@ -1617,7 +1906,7 @@ COPY --from=dep-l-encoding_rs-0.8.33-71f95fee6544e787 /tmp/clis-ripgrep_14-1-0/r
 
 ## this = "71f95fee6544e787"
 ## deps = ["98d40c6178a8b60f"]
-## short_externs = ["cfg_if-98d40c6178a8b60f"]
+## short_externs = ["98d40c6178a8b60f"]
 ## writes = [
 ##     "deps/encoding_rs-71f95fee6544e787.d",
 ##     "deps/libencoding_rs-71f95fee6544e787.rmeta",
@@ -1657,6 +1946,16 @@ COPY --from=dep-l-encoding_rs-0.8.33-71f95fee6544e787 /tmp/clis-ripgrep_14-1-0/r
 ##     '{"$message_type":"diagnostic","message":"27 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 27 warnings emitted\u001b[0m\n\n"}',
 ## ]
 ## 
+## [[mounts]]
+## from = "out-98d40c6178a8b60f"
+## src = "/libcfg_if-98d40c6178a8b60f.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libcfg_if-98d40c6178a8b60f.rmeta"
+## 
+## [[mounts]]
+## from = "out-98d40c6178a8b60f"
+## src = "/libcfg_if-98d40c6178a8b60f.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libcfg_if-98d40c6178a8b60f.rlib"
+## 
 ## [[stages]]
 ## name = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.86.0-slim@sha256:57d415bbd61ce11e2d5f73de068103c7bd9f3188dc132c97cef4a8f62989e944 AS rust-base"
@@ -1677,6 +1976,7 @@ COPY --from=dep-l-encoding_rs-0.8.33-71f95fee6544e787 /tmp/clis-ripgrep_14-1-0/r
 ## RUN \
 ##   --mount=from=cratesio-encoding_rs-0.8.33,source=/encoding_rs-0.8.33,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/encoding_rs-0.8.33 \
 ##   --mount=from=out-98d40c6178a8b60f,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libcfg_if-98d40c6178a8b60f.rmeta,source=/libcfg_if-98d40c6178a8b60f.rmeta \
+##   --mount=from=out-98d40c6178a8b60f,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libcfg_if-98d40c6178a8b60f.rlib,source=/libcfg_if-98d40c6178a8b60f.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="encoding_rs" \
@@ -1717,7 +2017,9 @@ WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 RUN \
   --mount=from=cratesio-encoding_rs_io-0.1.7,source=/encoding_rs_io-0.1.7,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/encoding_rs_io-0.1.7 \
   --mount=from=out-71f95fee6544e787,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libencoding_rs-71f95fee6544e787.rmeta,source=/libencoding_rs-71f95fee6544e787.rmeta \
+  --mount=from=out-71f95fee6544e787,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libencoding_rs-71f95fee6544e787.rlib,source=/libencoding_rs-71f95fee6544e787.rlib \
   --mount=from=out-98d40c6178a8b60f,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libcfg_if-98d40c6178a8b60f.rmeta,source=/libcfg_if-98d40c6178a8b60f.rmeta \
+  --mount=from=out-98d40c6178a8b60f,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libcfg_if-98d40c6178a8b60f.rlib,source=/libcfg_if-98d40c6178a8b60f.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="encoding_rs_io" \
@@ -1751,8 +2053,8 @@ COPY --from=dep-l-encoding_rs_io-0.1.7-1f57e01234da7cf8 /tmp/clis-ripgrep_14-1-0
 ##     "98d40c6178a8b60f",
 ## ]
 ## short_externs = [
-##     "encoding_rs-71f95fee6544e787",
-##     "cfg_if-98d40c6178a8b60f",
+##     "71f95fee6544e787",
+##     "98d40c6178a8b60f",
 ## ]
 ## writes = [
 ##     "deps/encoding_rs_io-1f57e01234da7cf8.d",
@@ -1764,6 +2066,26 @@ COPY --from=dep-l-encoding_rs_io-0.1.7-1f57e01234da7cf8 /tmp/clis-ripgrep_14-1-0
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_14-1-0/release/deps/libencoding_rs_io-1f57e01234da7cf8.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_14-1-0/release/deps/libencoding_rs_io-1f57e01234da7cf8.rlib","emit":"link"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-71f95fee6544e787"
+## src = "/libencoding_rs-71f95fee6544e787.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libencoding_rs-71f95fee6544e787.rmeta"
+## 
+## [[mounts]]
+## from = "out-71f95fee6544e787"
+## src = "/libencoding_rs-71f95fee6544e787.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libencoding_rs-71f95fee6544e787.rlib"
+## 
+## [[mounts]]
+## from = "out-98d40c6178a8b60f"
+## src = "/libcfg_if-98d40c6178a8b60f.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libcfg_if-98d40c6178a8b60f.rmeta"
+## 
+## [[mounts]]
+## from = "out-98d40c6178a8b60f"
+## src = "/libcfg_if-98d40c6178a8b60f.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libcfg_if-98d40c6178a8b60f.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -1785,7 +2107,9 @@ COPY --from=dep-l-encoding_rs_io-0.1.7-1f57e01234da7cf8 /tmp/clis-ripgrep_14-1-0
 ## RUN \
 ##   --mount=from=cratesio-encoding_rs_io-0.1.7,source=/encoding_rs_io-0.1.7,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/encoding_rs_io-0.1.7 \
 ##   --mount=from=out-71f95fee6544e787,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libencoding_rs-71f95fee6544e787.rmeta,source=/libencoding_rs-71f95fee6544e787.rmeta \
+##   --mount=from=out-71f95fee6544e787,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libencoding_rs-71f95fee6544e787.rlib,source=/libencoding_rs-71f95fee6544e787.rlib \
 ##   --mount=from=out-98d40c6178a8b60f,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libcfg_if-98d40c6178a8b60f.rmeta,source=/libcfg_if-98d40c6178a8b60f.rmeta \
+##   --mount=from=out-98d40c6178a8b60f,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libcfg_if-98d40c6178a8b60f.rlib,source=/libcfg_if-98d40c6178a8b60f.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="encoding_rs_io" \
@@ -1826,6 +2150,7 @@ WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 RUN \
   --mount=from=cratesio-memmap2-0.9.3,source=/memmap2-0.9.3,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/memmap2-0.9.3 \
   --mount=from=out-b1dcb66edfd0e8a0,dst=/tmp/clis-ripgrep_14-1-0/release/deps/liblibc-b1dcb66edfd0e8a0.rmeta,source=/liblibc-b1dcb66edfd0e8a0.rmeta \
+  --mount=from=out-b1dcb66edfd0e8a0,dst=/tmp/clis-ripgrep_14-1-0/release/deps/liblibc-b1dcb66edfd0e8a0.rlib,source=/liblibc-b1dcb66edfd0e8a0.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="memmap2" \
@@ -1855,7 +2180,7 @@ COPY --from=dep-l-memmap2-0.9.3-21c841a4e972790f /tmp/clis-ripgrep_14-1-0/releas
 
 ## this = "21c841a4e972790f"
 ## deps = ["b1dcb66edfd0e8a0"]
-## short_externs = ["libc-b1dcb66edfd0e8a0"]
+## short_externs = ["b1dcb66edfd0e8a0"]
 ## writes = [
 ##     "deps/memmap2-21c841a4e972790f.d",
 ##     "deps/libmemmap2-21c841a4e972790f.rmeta",
@@ -1866,6 +2191,16 @@ COPY --from=dep-l-memmap2-0.9.3-21c841a4e972790f /tmp/clis-ripgrep_14-1-0/releas
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_14-1-0/release/deps/libmemmap2-21c841a4e972790f.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_14-1-0/release/deps/libmemmap2-21c841a4e972790f.rlib","emit":"link"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-b1dcb66edfd0e8a0"
+## src = "/liblibc-b1dcb66edfd0e8a0.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/liblibc-b1dcb66edfd0e8a0.rmeta"
+## 
+## [[mounts]]
+## from = "out-b1dcb66edfd0e8a0"
+## src = "/liblibc-b1dcb66edfd0e8a0.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/liblibc-b1dcb66edfd0e8a0.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -1887,6 +2222,7 @@ COPY --from=dep-l-memmap2-0.9.3-21c841a4e972790f /tmp/clis-ripgrep_14-1-0/releas
 ## RUN \
 ##   --mount=from=cratesio-memmap2-0.9.3,source=/memmap2-0.9.3,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/memmap2-0.9.3 \
 ##   --mount=from=out-b1dcb66edfd0e8a0,dst=/tmp/clis-ripgrep_14-1-0/release/deps/liblibc-b1dcb66edfd0e8a0.rmeta,source=/liblibc-b1dcb66edfd0e8a0.rmeta \
+##   --mount=from=out-b1dcb66edfd0e8a0,dst=/tmp/clis-ripgrep_14-1-0/release/deps/liblibc-b1dcb66edfd0e8a0.rlib,source=/liblibc-b1dcb66edfd0e8a0.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="memmap2" \
@@ -1927,17 +2263,29 @@ WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 RUN \
   --mount=from=cratesio-grep-searcher-0.1.13,source=/grep-searcher-0.1.13,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-searcher-0.1.13 \
   --mount=from=out-f6b551c518280772,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libbstr-f6b551c518280772.rmeta,source=/libbstr-f6b551c518280772.rmeta \
+  --mount=from=out-f6b551c518280772,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libbstr-f6b551c518280772.rlib,source=/libbstr-f6b551c518280772.rlib \
   --mount=from=out-3d9021aec125798d,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rmeta,source=/libmemchr-3d9021aec125798d.rmeta \
+  --mount=from=out-3d9021aec125798d,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rlib,source=/libmemchr-3d9021aec125798d.rlib \
   --mount=from=out-54c30116fcd4ea92,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libregex_automata-54c30116fcd4ea92.rmeta,source=/libregex_automata-54c30116fcd4ea92.rmeta \
+  --mount=from=out-54c30116fcd4ea92,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libregex_automata-54c30116fcd4ea92.rlib,source=/libregex_automata-54c30116fcd4ea92.rlib \
   --mount=from=out-2a2c3bf3a2b335e0,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libaho_corasick-2a2c3bf3a2b335e0.rmeta,source=/libaho_corasick-2a2c3bf3a2b335e0.rmeta \
+  --mount=from=out-2a2c3bf3a2b335e0,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libaho_corasick-2a2c3bf3a2b335e0.rlib,source=/libaho_corasick-2a2c3bf3a2b335e0.rlib \
   --mount=from=out-0d361157f8cdd0fe,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libregex_syntax-0d361157f8cdd0fe.rmeta,source=/libregex_syntax-0d361157f8cdd0fe.rmeta \
+  --mount=from=out-0d361157f8cdd0fe,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libregex_syntax-0d361157f8cdd0fe.rlib,source=/libregex_syntax-0d361157f8cdd0fe.rlib \
   --mount=from=out-71f95fee6544e787,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libencoding_rs-71f95fee6544e787.rmeta,source=/libencoding_rs-71f95fee6544e787.rmeta \
+  --mount=from=out-71f95fee6544e787,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libencoding_rs-71f95fee6544e787.rlib,source=/libencoding_rs-71f95fee6544e787.rlib \
   --mount=from=out-98d40c6178a8b60f,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libcfg_if-98d40c6178a8b60f.rmeta,source=/libcfg_if-98d40c6178a8b60f.rmeta \
+  --mount=from=out-98d40c6178a8b60f,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libcfg_if-98d40c6178a8b60f.rlib,source=/libcfg_if-98d40c6178a8b60f.rlib \
   --mount=from=out-1f57e01234da7cf8,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libencoding_rs_io-1f57e01234da7cf8.rmeta,source=/libencoding_rs_io-1f57e01234da7cf8.rmeta \
+  --mount=from=out-1f57e01234da7cf8,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libencoding_rs_io-1f57e01234da7cf8.rlib,source=/libencoding_rs_io-1f57e01234da7cf8.rlib \
   --mount=from=out-7517975d791c1423,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_matcher-7517975d791c1423.rmeta,source=/libgrep_matcher-7517975d791c1423.rmeta \
+  --mount=from=out-7517975d791c1423,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_matcher-7517975d791c1423.rlib,source=/libgrep_matcher-7517975d791c1423.rlib \
   --mount=from=out-45d1068292014e63,dst=/tmp/clis-ripgrep_14-1-0/release/deps/liblog-45d1068292014e63.rmeta,source=/liblog-45d1068292014e63.rmeta \
+  --mount=from=out-45d1068292014e63,dst=/tmp/clis-ripgrep_14-1-0/release/deps/liblog-45d1068292014e63.rlib,source=/liblog-45d1068292014e63.rlib \
   --mount=from=out-21c841a4e972790f,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libmemmap2-21c841a4e972790f.rmeta,source=/libmemmap2-21c841a4e972790f.rmeta \
+  --mount=from=out-21c841a4e972790f,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libmemmap2-21c841a4e972790f.rlib,source=/libmemmap2-21c841a4e972790f.rlib \
   --mount=from=out-b1dcb66edfd0e8a0,dst=/tmp/clis-ripgrep_14-1-0/release/deps/liblibc-b1dcb66edfd0e8a0.rmeta,source=/liblibc-b1dcb66edfd0e8a0.rmeta \
+  --mount=from=out-b1dcb66edfd0e8a0,dst=/tmp/clis-ripgrep_14-1-0/release/deps/liblibc-b1dcb66edfd0e8a0.rlib,source=/liblibc-b1dcb66edfd0e8a0.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="grep_searcher" \
@@ -1981,18 +2329,18 @@ COPY --from=dep-l-grep-searcher-0.1.13-6fc004d41272f596 /tmp/clis-ripgrep_14-1-0
 ##     "b1dcb66edfd0e8a0",
 ## ]
 ## short_externs = [
-##     "bstr-f6b551c518280772",
-##     "memchr-3d9021aec125798d",
-##     "regex_automata-54c30116fcd4ea92",
-##     "aho_corasick-2a2c3bf3a2b335e0",
-##     "regex_syntax-0d361157f8cdd0fe",
-##     "encoding_rs-71f95fee6544e787",
-##     "cfg_if-98d40c6178a8b60f",
-##     "encoding_rs_io-1f57e01234da7cf8",
-##     "grep_matcher-7517975d791c1423",
-##     "log-45d1068292014e63",
-##     "memmap2-21c841a4e972790f",
-##     "libc-b1dcb66edfd0e8a0",
+##     "f6b551c518280772",
+##     "3d9021aec125798d",
+##     "54c30116fcd4ea92",
+##     "2a2c3bf3a2b335e0",
+##     "0d361157f8cdd0fe",
+##     "71f95fee6544e787",
+##     "98d40c6178a8b60f",
+##     "1f57e01234da7cf8",
+##     "7517975d791c1423",
+##     "45d1068292014e63",
+##     "21c841a4e972790f",
+##     "b1dcb66edfd0e8a0",
 ## ]
 ## writes = [
 ##     "deps/grep_searcher-6fc004d41272f596.d",
@@ -2004,6 +2352,126 @@ COPY --from=dep-l-grep-searcher-0.1.13-6fc004d41272f596 /tmp/clis-ripgrep_14-1-0
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_searcher-6fc004d41272f596.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_searcher-6fc004d41272f596.rlib","emit":"link"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-f6b551c518280772"
+## src = "/libbstr-f6b551c518280772.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libbstr-f6b551c518280772.rmeta"
+## 
+## [[mounts]]
+## from = "out-f6b551c518280772"
+## src = "/libbstr-f6b551c518280772.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libbstr-f6b551c518280772.rlib"
+## 
+## [[mounts]]
+## from = "out-3d9021aec125798d"
+## src = "/libmemchr-3d9021aec125798d.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rmeta"
+## 
+## [[mounts]]
+## from = "out-3d9021aec125798d"
+## src = "/libmemchr-3d9021aec125798d.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rlib"
+## 
+## [[mounts]]
+## from = "out-54c30116fcd4ea92"
+## src = "/libregex_automata-54c30116fcd4ea92.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libregex_automata-54c30116fcd4ea92.rmeta"
+## 
+## [[mounts]]
+## from = "out-54c30116fcd4ea92"
+## src = "/libregex_automata-54c30116fcd4ea92.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libregex_automata-54c30116fcd4ea92.rlib"
+## 
+## [[mounts]]
+## from = "out-2a2c3bf3a2b335e0"
+## src = "/libaho_corasick-2a2c3bf3a2b335e0.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libaho_corasick-2a2c3bf3a2b335e0.rmeta"
+## 
+## [[mounts]]
+## from = "out-2a2c3bf3a2b335e0"
+## src = "/libaho_corasick-2a2c3bf3a2b335e0.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libaho_corasick-2a2c3bf3a2b335e0.rlib"
+## 
+## [[mounts]]
+## from = "out-0d361157f8cdd0fe"
+## src = "/libregex_syntax-0d361157f8cdd0fe.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libregex_syntax-0d361157f8cdd0fe.rmeta"
+## 
+## [[mounts]]
+## from = "out-0d361157f8cdd0fe"
+## src = "/libregex_syntax-0d361157f8cdd0fe.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libregex_syntax-0d361157f8cdd0fe.rlib"
+## 
+## [[mounts]]
+## from = "out-71f95fee6544e787"
+## src = "/libencoding_rs-71f95fee6544e787.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libencoding_rs-71f95fee6544e787.rmeta"
+## 
+## [[mounts]]
+## from = "out-71f95fee6544e787"
+## src = "/libencoding_rs-71f95fee6544e787.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libencoding_rs-71f95fee6544e787.rlib"
+## 
+## [[mounts]]
+## from = "out-98d40c6178a8b60f"
+## src = "/libcfg_if-98d40c6178a8b60f.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libcfg_if-98d40c6178a8b60f.rmeta"
+## 
+## [[mounts]]
+## from = "out-98d40c6178a8b60f"
+## src = "/libcfg_if-98d40c6178a8b60f.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libcfg_if-98d40c6178a8b60f.rlib"
+## 
+## [[mounts]]
+## from = "out-1f57e01234da7cf8"
+## src = "/libencoding_rs_io-1f57e01234da7cf8.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libencoding_rs_io-1f57e01234da7cf8.rmeta"
+## 
+## [[mounts]]
+## from = "out-1f57e01234da7cf8"
+## src = "/libencoding_rs_io-1f57e01234da7cf8.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libencoding_rs_io-1f57e01234da7cf8.rlib"
+## 
+## [[mounts]]
+## from = "out-7517975d791c1423"
+## src = "/libgrep_matcher-7517975d791c1423.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_matcher-7517975d791c1423.rmeta"
+## 
+## [[mounts]]
+## from = "out-7517975d791c1423"
+## src = "/libgrep_matcher-7517975d791c1423.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_matcher-7517975d791c1423.rlib"
+## 
+## [[mounts]]
+## from = "out-45d1068292014e63"
+## src = "/liblog-45d1068292014e63.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/liblog-45d1068292014e63.rmeta"
+## 
+## [[mounts]]
+## from = "out-45d1068292014e63"
+## src = "/liblog-45d1068292014e63.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/liblog-45d1068292014e63.rlib"
+## 
+## [[mounts]]
+## from = "out-21c841a4e972790f"
+## src = "/libmemmap2-21c841a4e972790f.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libmemmap2-21c841a4e972790f.rmeta"
+## 
+## [[mounts]]
+## from = "out-21c841a4e972790f"
+## src = "/libmemmap2-21c841a4e972790f.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libmemmap2-21c841a4e972790f.rlib"
+## 
+## [[mounts]]
+## from = "out-b1dcb66edfd0e8a0"
+## src = "/liblibc-b1dcb66edfd0e8a0.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/liblibc-b1dcb66edfd0e8a0.rmeta"
+## 
+## [[mounts]]
+## from = "out-b1dcb66edfd0e8a0"
+## src = "/liblibc-b1dcb66edfd0e8a0.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/liblibc-b1dcb66edfd0e8a0.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -2025,17 +2493,29 @@ COPY --from=dep-l-grep-searcher-0.1.13-6fc004d41272f596 /tmp/clis-ripgrep_14-1-0
 ## RUN \
 ##   --mount=from=cratesio-grep-searcher-0.1.13,source=/grep-searcher-0.1.13,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-searcher-0.1.13 \
 ##   --mount=from=out-f6b551c518280772,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libbstr-f6b551c518280772.rmeta,source=/libbstr-f6b551c518280772.rmeta \
+##   --mount=from=out-f6b551c518280772,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libbstr-f6b551c518280772.rlib,source=/libbstr-f6b551c518280772.rlib \
 ##   --mount=from=out-3d9021aec125798d,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rmeta,source=/libmemchr-3d9021aec125798d.rmeta \
+##   --mount=from=out-3d9021aec125798d,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rlib,source=/libmemchr-3d9021aec125798d.rlib \
 ##   --mount=from=out-54c30116fcd4ea92,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libregex_automata-54c30116fcd4ea92.rmeta,source=/libregex_automata-54c30116fcd4ea92.rmeta \
+##   --mount=from=out-54c30116fcd4ea92,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libregex_automata-54c30116fcd4ea92.rlib,source=/libregex_automata-54c30116fcd4ea92.rlib \
 ##   --mount=from=out-2a2c3bf3a2b335e0,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libaho_corasick-2a2c3bf3a2b335e0.rmeta,source=/libaho_corasick-2a2c3bf3a2b335e0.rmeta \
+##   --mount=from=out-2a2c3bf3a2b335e0,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libaho_corasick-2a2c3bf3a2b335e0.rlib,source=/libaho_corasick-2a2c3bf3a2b335e0.rlib \
 ##   --mount=from=out-0d361157f8cdd0fe,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libregex_syntax-0d361157f8cdd0fe.rmeta,source=/libregex_syntax-0d361157f8cdd0fe.rmeta \
+##   --mount=from=out-0d361157f8cdd0fe,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libregex_syntax-0d361157f8cdd0fe.rlib,source=/libregex_syntax-0d361157f8cdd0fe.rlib \
 ##   --mount=from=out-71f95fee6544e787,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libencoding_rs-71f95fee6544e787.rmeta,source=/libencoding_rs-71f95fee6544e787.rmeta \
+##   --mount=from=out-71f95fee6544e787,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libencoding_rs-71f95fee6544e787.rlib,source=/libencoding_rs-71f95fee6544e787.rlib \
 ##   --mount=from=out-98d40c6178a8b60f,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libcfg_if-98d40c6178a8b60f.rmeta,source=/libcfg_if-98d40c6178a8b60f.rmeta \
+##   --mount=from=out-98d40c6178a8b60f,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libcfg_if-98d40c6178a8b60f.rlib,source=/libcfg_if-98d40c6178a8b60f.rlib \
 ##   --mount=from=out-1f57e01234da7cf8,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libencoding_rs_io-1f57e01234da7cf8.rmeta,source=/libencoding_rs_io-1f57e01234da7cf8.rmeta \
+##   --mount=from=out-1f57e01234da7cf8,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libencoding_rs_io-1f57e01234da7cf8.rlib,source=/libencoding_rs_io-1f57e01234da7cf8.rlib \
 ##   --mount=from=out-7517975d791c1423,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_matcher-7517975d791c1423.rmeta,source=/libgrep_matcher-7517975d791c1423.rmeta \
+##   --mount=from=out-7517975d791c1423,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_matcher-7517975d791c1423.rlib,source=/libgrep_matcher-7517975d791c1423.rlib \
 ##   --mount=from=out-45d1068292014e63,dst=/tmp/clis-ripgrep_14-1-0/release/deps/liblog-45d1068292014e63.rmeta,source=/liblog-45d1068292014e63.rmeta \
+##   --mount=from=out-45d1068292014e63,dst=/tmp/clis-ripgrep_14-1-0/release/deps/liblog-45d1068292014e63.rlib,source=/liblog-45d1068292014e63.rlib \
 ##   --mount=from=out-21c841a4e972790f,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libmemmap2-21c841a4e972790f.rmeta,source=/libmemmap2-21c841a4e972790f.rmeta \
+##   --mount=from=out-21c841a4e972790f,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libmemmap2-21c841a4e972790f.rlib,source=/libmemmap2-21c841a4e972790f.rlib \
 ##   --mount=from=out-b1dcb66edfd0e8a0,dst=/tmp/clis-ripgrep_14-1-0/release/deps/liblibc-b1dcb66edfd0e8a0.rmeta,source=/liblibc-b1dcb66edfd0e8a0.rmeta \
+##   --mount=from=out-b1dcb66edfd0e8a0,dst=/tmp/clis-ripgrep_14-1-0/release/deps/liblibc-b1dcb66edfd0e8a0.rlib,source=/liblibc-b1dcb66edfd0e8a0.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="grep_searcher" \
@@ -2492,8 +2972,11 @@ WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 RUN \
   --mount=from=cratesio-serde_json-1.0.111,source=/serde_json-1.0.111,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.111 \
   --mount=from=out-2b4528a4fd57cfaf,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libitoa-2b4528a4fd57cfaf.rmeta,source=/libitoa-2b4528a4fd57cfaf.rmeta \
+  --mount=from=out-2b4528a4fd57cfaf,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libitoa-2b4528a4fd57cfaf.rlib,source=/libitoa-2b4528a4fd57cfaf.rlib \
   --mount=from=out-a994c87db442418d,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libryu-a994c87db442418d.rmeta,source=/libryu-a994c87db442418d.rmeta \
+  --mount=from=out-a994c87db442418d,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libryu-a994c87db442418d.rlib,source=/libryu-a994c87db442418d.rlib \
   --mount=from=out-6342957ddc692e98,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libserde-6342957ddc692e98.rmeta,source=/libserde-6342957ddc692e98.rmeta \
+  --mount=from=out-6342957ddc692e98,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libserde-6342957ddc692e98.rlib,source=/libserde-6342957ddc692e98.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="serde_json" \
@@ -2529,9 +3012,9 @@ COPY --from=dep-l-serde_json-1.0.111-f1456127761f5765 /tmp/clis-ripgrep_14-1-0/r
 ##     "6342957ddc692e98",
 ## ]
 ## short_externs = [
-##     "itoa-2b4528a4fd57cfaf",
-##     "ryu-a994c87db442418d",
-##     "serde-6342957ddc692e98",
+##     "2b4528a4fd57cfaf",
+##     "a994c87db442418d",
+##     "6342957ddc692e98",
 ## ]
 ## writes = [
 ##     "deps/serde_json-f1456127761f5765.d",
@@ -2543,6 +3026,36 @@ COPY --from=dep-l-serde_json-1.0.111-f1456127761f5765 /tmp/clis-ripgrep_14-1-0/r
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_14-1-0/release/deps/libserde_json-f1456127761f5765.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_14-1-0/release/deps/libserde_json-f1456127761f5765.rlib","emit":"link"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-2b4528a4fd57cfaf"
+## src = "/libitoa-2b4528a4fd57cfaf.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libitoa-2b4528a4fd57cfaf.rmeta"
+## 
+## [[mounts]]
+## from = "out-2b4528a4fd57cfaf"
+## src = "/libitoa-2b4528a4fd57cfaf.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libitoa-2b4528a4fd57cfaf.rlib"
+## 
+## [[mounts]]
+## from = "out-a994c87db442418d"
+## src = "/libryu-a994c87db442418d.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libryu-a994c87db442418d.rmeta"
+## 
+## [[mounts]]
+## from = "out-a994c87db442418d"
+## src = "/libryu-a994c87db442418d.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libryu-a994c87db442418d.rlib"
+## 
+## [[mounts]]
+## from = "out-6342957ddc692e98"
+## src = "/libserde-6342957ddc692e98.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libserde-6342957ddc692e98.rmeta"
+## 
+## [[mounts]]
+## from = "out-6342957ddc692e98"
+## src = "/libserde-6342957ddc692e98.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libserde-6342957ddc692e98.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -2564,8 +3077,11 @@ COPY --from=dep-l-serde_json-1.0.111-f1456127761f5765 /tmp/clis-ripgrep_14-1-0/r
 ## RUN \
 ##   --mount=from=cratesio-serde_json-1.0.111,source=/serde_json-1.0.111,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.111 \
 ##   --mount=from=out-2b4528a4fd57cfaf,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libitoa-2b4528a4fd57cfaf.rmeta,source=/libitoa-2b4528a4fd57cfaf.rmeta \
+##   --mount=from=out-2b4528a4fd57cfaf,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libitoa-2b4528a4fd57cfaf.rlib,source=/libitoa-2b4528a4fd57cfaf.rlib \
 ##   --mount=from=out-a994c87db442418d,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libryu-a994c87db442418d.rmeta,source=/libryu-a994c87db442418d.rmeta \
+##   --mount=from=out-a994c87db442418d,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libryu-a994c87db442418d.rlib,source=/libryu-a994c87db442418d.rlib \
 ##   --mount=from=out-6342957ddc692e98,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libserde-6342957ddc692e98.rmeta,source=/libserde-6342957ddc692e98.rmeta \
+##   --mount=from=out-6342957ddc692e98,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libserde-6342957ddc692e98.rlib,source=/libserde-6342957ddc692e98.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="serde_json" \
@@ -2607,23 +3123,41 @@ WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 RUN \
   --mount=from=cratesio-grep-printer-0.2.1,source=/grep-printer-0.2.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-printer-0.2.1 \
   --mount=from=out-f6b551c518280772,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libbstr-f6b551c518280772.rmeta,source=/libbstr-f6b551c518280772.rmeta \
+  --mount=from=out-f6b551c518280772,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libbstr-f6b551c518280772.rlib,source=/libbstr-f6b551c518280772.rlib \
   --mount=from=out-3d9021aec125798d,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rmeta,source=/libmemchr-3d9021aec125798d.rmeta \
+  --mount=from=out-3d9021aec125798d,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rlib,source=/libmemchr-3d9021aec125798d.rlib \
   --mount=from=out-54c30116fcd4ea92,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libregex_automata-54c30116fcd4ea92.rmeta,source=/libregex_automata-54c30116fcd4ea92.rmeta \
+  --mount=from=out-54c30116fcd4ea92,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libregex_automata-54c30116fcd4ea92.rlib,source=/libregex_automata-54c30116fcd4ea92.rlib \
   --mount=from=out-2a2c3bf3a2b335e0,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libaho_corasick-2a2c3bf3a2b335e0.rmeta,source=/libaho_corasick-2a2c3bf3a2b335e0.rmeta \
+  --mount=from=out-2a2c3bf3a2b335e0,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libaho_corasick-2a2c3bf3a2b335e0.rlib,source=/libaho_corasick-2a2c3bf3a2b335e0.rlib \
   --mount=from=out-0d361157f8cdd0fe,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libregex_syntax-0d361157f8cdd0fe.rmeta,source=/libregex_syntax-0d361157f8cdd0fe.rmeta \
+  --mount=from=out-0d361157f8cdd0fe,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libregex_syntax-0d361157f8cdd0fe.rlib,source=/libregex_syntax-0d361157f8cdd0fe.rlib \
   --mount=from=out-7517975d791c1423,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_matcher-7517975d791c1423.rmeta,source=/libgrep_matcher-7517975d791c1423.rmeta \
+  --mount=from=out-7517975d791c1423,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_matcher-7517975d791c1423.rlib,source=/libgrep_matcher-7517975d791c1423.rlib \
   --mount=from=out-6fc004d41272f596,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_searcher-6fc004d41272f596.rmeta,source=/libgrep_searcher-6fc004d41272f596.rmeta \
+  --mount=from=out-6fc004d41272f596,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_searcher-6fc004d41272f596.rlib,source=/libgrep_searcher-6fc004d41272f596.rlib \
   --mount=from=out-71f95fee6544e787,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libencoding_rs-71f95fee6544e787.rmeta,source=/libencoding_rs-71f95fee6544e787.rmeta \
+  --mount=from=out-71f95fee6544e787,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libencoding_rs-71f95fee6544e787.rlib,source=/libencoding_rs-71f95fee6544e787.rlib \
   --mount=from=out-98d40c6178a8b60f,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libcfg_if-98d40c6178a8b60f.rmeta,source=/libcfg_if-98d40c6178a8b60f.rmeta \
+  --mount=from=out-98d40c6178a8b60f,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libcfg_if-98d40c6178a8b60f.rlib,source=/libcfg_if-98d40c6178a8b60f.rlib \
   --mount=from=out-1f57e01234da7cf8,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libencoding_rs_io-1f57e01234da7cf8.rmeta,source=/libencoding_rs_io-1f57e01234da7cf8.rmeta \
+  --mount=from=out-1f57e01234da7cf8,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libencoding_rs_io-1f57e01234da7cf8.rlib,source=/libencoding_rs_io-1f57e01234da7cf8.rlib \
   --mount=from=out-45d1068292014e63,dst=/tmp/clis-ripgrep_14-1-0/release/deps/liblog-45d1068292014e63.rmeta,source=/liblog-45d1068292014e63.rmeta \
+  --mount=from=out-45d1068292014e63,dst=/tmp/clis-ripgrep_14-1-0/release/deps/liblog-45d1068292014e63.rlib,source=/liblog-45d1068292014e63.rlib \
   --mount=from=out-21c841a4e972790f,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libmemmap2-21c841a4e972790f.rmeta,source=/libmemmap2-21c841a4e972790f.rmeta \
+  --mount=from=out-21c841a4e972790f,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libmemmap2-21c841a4e972790f.rlib,source=/libmemmap2-21c841a4e972790f.rlib \
   --mount=from=out-b1dcb66edfd0e8a0,dst=/tmp/clis-ripgrep_14-1-0/release/deps/liblibc-b1dcb66edfd0e8a0.rmeta,source=/liblibc-b1dcb66edfd0e8a0.rmeta \
+  --mount=from=out-b1dcb66edfd0e8a0,dst=/tmp/clis-ripgrep_14-1-0/release/deps/liblibc-b1dcb66edfd0e8a0.rlib,source=/liblibc-b1dcb66edfd0e8a0.rlib \
   --mount=from=out-6342957ddc692e98,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libserde-6342957ddc692e98.rmeta,source=/libserde-6342957ddc692e98.rmeta \
+  --mount=from=out-6342957ddc692e98,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libserde-6342957ddc692e98.rlib,source=/libserde-6342957ddc692e98.rlib \
   --mount=from=out-f1456127761f5765,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libserde_json-f1456127761f5765.rmeta,source=/libserde_json-f1456127761f5765.rmeta \
+  --mount=from=out-f1456127761f5765,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libserde_json-f1456127761f5765.rlib,source=/libserde_json-f1456127761f5765.rlib \
   --mount=from=out-2b4528a4fd57cfaf,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libitoa-2b4528a4fd57cfaf.rmeta,source=/libitoa-2b4528a4fd57cfaf.rmeta \
+  --mount=from=out-2b4528a4fd57cfaf,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libitoa-2b4528a4fd57cfaf.rlib,source=/libitoa-2b4528a4fd57cfaf.rlib \
   --mount=from=out-a994c87db442418d,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libryu-a994c87db442418d.rmeta,source=/libryu-a994c87db442418d.rmeta \
+  --mount=from=out-a994c87db442418d,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libryu-a994c87db442418d.rlib,source=/libryu-a994c87db442418d.rlib \
   --mount=from=out-59ae8e7772deaa56,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libtermcolor-59ae8e7772deaa56.rmeta,source=/libtermcolor-59ae8e7772deaa56.rmeta \
+  --mount=from=out-59ae8e7772deaa56,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libtermcolor-59ae8e7772deaa56.rlib,source=/libtermcolor-59ae8e7772deaa56.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="grep_printer" \
@@ -2673,24 +3207,24 @@ COPY --from=dep-l-grep-printer-0.2.1-0e4d9ea7a0184dd5 /tmp/clis-ripgrep_14-1-0/r
 ##     "59ae8e7772deaa56",
 ## ]
 ## short_externs = [
-##     "bstr-f6b551c518280772",
-##     "memchr-3d9021aec125798d",
-##     "regex_automata-54c30116fcd4ea92",
-##     "aho_corasick-2a2c3bf3a2b335e0",
-##     "regex_syntax-0d361157f8cdd0fe",
-##     "grep_matcher-7517975d791c1423",
-##     "grep_searcher-6fc004d41272f596",
-##     "encoding_rs-71f95fee6544e787",
-##     "cfg_if-98d40c6178a8b60f",
-##     "encoding_rs_io-1f57e01234da7cf8",
-##     "log-45d1068292014e63",
-##     "memmap2-21c841a4e972790f",
-##     "libc-b1dcb66edfd0e8a0",
-##     "serde-6342957ddc692e98",
-##     "serde_json-f1456127761f5765",
-##     "itoa-2b4528a4fd57cfaf",
-##     "ryu-a994c87db442418d",
-##     "termcolor-59ae8e7772deaa56",
+##     "f6b551c518280772",
+##     "3d9021aec125798d",
+##     "54c30116fcd4ea92",
+##     "2a2c3bf3a2b335e0",
+##     "0d361157f8cdd0fe",
+##     "7517975d791c1423",
+##     "6fc004d41272f596",
+##     "71f95fee6544e787",
+##     "98d40c6178a8b60f",
+##     "1f57e01234da7cf8",
+##     "45d1068292014e63",
+##     "21c841a4e972790f",
+##     "b1dcb66edfd0e8a0",
+##     "6342957ddc692e98",
+##     "f1456127761f5765",
+##     "2b4528a4fd57cfaf",
+##     "a994c87db442418d",
+##     "59ae8e7772deaa56",
 ## ]
 ## writes = [
 ##     "deps/grep_printer-0e4d9ea7a0184dd5.d",
@@ -2702,6 +3236,186 @@ COPY --from=dep-l-grep-printer-0.2.1-0e4d9ea7a0184dd5 /tmp/clis-ripgrep_14-1-0/r
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_printer-0e4d9ea7a0184dd5.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_printer-0e4d9ea7a0184dd5.rlib","emit":"link"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-f6b551c518280772"
+## src = "/libbstr-f6b551c518280772.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libbstr-f6b551c518280772.rmeta"
+## 
+## [[mounts]]
+## from = "out-f6b551c518280772"
+## src = "/libbstr-f6b551c518280772.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libbstr-f6b551c518280772.rlib"
+## 
+## [[mounts]]
+## from = "out-3d9021aec125798d"
+## src = "/libmemchr-3d9021aec125798d.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rmeta"
+## 
+## [[mounts]]
+## from = "out-3d9021aec125798d"
+## src = "/libmemchr-3d9021aec125798d.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rlib"
+## 
+## [[mounts]]
+## from = "out-54c30116fcd4ea92"
+## src = "/libregex_automata-54c30116fcd4ea92.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libregex_automata-54c30116fcd4ea92.rmeta"
+## 
+## [[mounts]]
+## from = "out-54c30116fcd4ea92"
+## src = "/libregex_automata-54c30116fcd4ea92.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libregex_automata-54c30116fcd4ea92.rlib"
+## 
+## [[mounts]]
+## from = "out-2a2c3bf3a2b335e0"
+## src = "/libaho_corasick-2a2c3bf3a2b335e0.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libaho_corasick-2a2c3bf3a2b335e0.rmeta"
+## 
+## [[mounts]]
+## from = "out-2a2c3bf3a2b335e0"
+## src = "/libaho_corasick-2a2c3bf3a2b335e0.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libaho_corasick-2a2c3bf3a2b335e0.rlib"
+## 
+## [[mounts]]
+## from = "out-0d361157f8cdd0fe"
+## src = "/libregex_syntax-0d361157f8cdd0fe.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libregex_syntax-0d361157f8cdd0fe.rmeta"
+## 
+## [[mounts]]
+## from = "out-0d361157f8cdd0fe"
+## src = "/libregex_syntax-0d361157f8cdd0fe.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libregex_syntax-0d361157f8cdd0fe.rlib"
+## 
+## [[mounts]]
+## from = "out-7517975d791c1423"
+## src = "/libgrep_matcher-7517975d791c1423.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_matcher-7517975d791c1423.rmeta"
+## 
+## [[mounts]]
+## from = "out-7517975d791c1423"
+## src = "/libgrep_matcher-7517975d791c1423.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_matcher-7517975d791c1423.rlib"
+## 
+## [[mounts]]
+## from = "out-6fc004d41272f596"
+## src = "/libgrep_searcher-6fc004d41272f596.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_searcher-6fc004d41272f596.rmeta"
+## 
+## [[mounts]]
+## from = "out-6fc004d41272f596"
+## src = "/libgrep_searcher-6fc004d41272f596.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_searcher-6fc004d41272f596.rlib"
+## 
+## [[mounts]]
+## from = "out-71f95fee6544e787"
+## src = "/libencoding_rs-71f95fee6544e787.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libencoding_rs-71f95fee6544e787.rmeta"
+## 
+## [[mounts]]
+## from = "out-71f95fee6544e787"
+## src = "/libencoding_rs-71f95fee6544e787.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libencoding_rs-71f95fee6544e787.rlib"
+## 
+## [[mounts]]
+## from = "out-98d40c6178a8b60f"
+## src = "/libcfg_if-98d40c6178a8b60f.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libcfg_if-98d40c6178a8b60f.rmeta"
+## 
+## [[mounts]]
+## from = "out-98d40c6178a8b60f"
+## src = "/libcfg_if-98d40c6178a8b60f.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libcfg_if-98d40c6178a8b60f.rlib"
+## 
+## [[mounts]]
+## from = "out-1f57e01234da7cf8"
+## src = "/libencoding_rs_io-1f57e01234da7cf8.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libencoding_rs_io-1f57e01234da7cf8.rmeta"
+## 
+## [[mounts]]
+## from = "out-1f57e01234da7cf8"
+## src = "/libencoding_rs_io-1f57e01234da7cf8.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libencoding_rs_io-1f57e01234da7cf8.rlib"
+## 
+## [[mounts]]
+## from = "out-45d1068292014e63"
+## src = "/liblog-45d1068292014e63.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/liblog-45d1068292014e63.rmeta"
+## 
+## [[mounts]]
+## from = "out-45d1068292014e63"
+## src = "/liblog-45d1068292014e63.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/liblog-45d1068292014e63.rlib"
+## 
+## [[mounts]]
+## from = "out-21c841a4e972790f"
+## src = "/libmemmap2-21c841a4e972790f.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libmemmap2-21c841a4e972790f.rmeta"
+## 
+## [[mounts]]
+## from = "out-21c841a4e972790f"
+## src = "/libmemmap2-21c841a4e972790f.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libmemmap2-21c841a4e972790f.rlib"
+## 
+## [[mounts]]
+## from = "out-b1dcb66edfd0e8a0"
+## src = "/liblibc-b1dcb66edfd0e8a0.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/liblibc-b1dcb66edfd0e8a0.rmeta"
+## 
+## [[mounts]]
+## from = "out-b1dcb66edfd0e8a0"
+## src = "/liblibc-b1dcb66edfd0e8a0.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/liblibc-b1dcb66edfd0e8a0.rlib"
+## 
+## [[mounts]]
+## from = "out-6342957ddc692e98"
+## src = "/libserde-6342957ddc692e98.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libserde-6342957ddc692e98.rmeta"
+## 
+## [[mounts]]
+## from = "out-6342957ddc692e98"
+## src = "/libserde-6342957ddc692e98.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libserde-6342957ddc692e98.rlib"
+## 
+## [[mounts]]
+## from = "out-f1456127761f5765"
+## src = "/libserde_json-f1456127761f5765.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libserde_json-f1456127761f5765.rmeta"
+## 
+## [[mounts]]
+## from = "out-f1456127761f5765"
+## src = "/libserde_json-f1456127761f5765.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libserde_json-f1456127761f5765.rlib"
+## 
+## [[mounts]]
+## from = "out-2b4528a4fd57cfaf"
+## src = "/libitoa-2b4528a4fd57cfaf.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libitoa-2b4528a4fd57cfaf.rmeta"
+## 
+## [[mounts]]
+## from = "out-2b4528a4fd57cfaf"
+## src = "/libitoa-2b4528a4fd57cfaf.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libitoa-2b4528a4fd57cfaf.rlib"
+## 
+## [[mounts]]
+## from = "out-a994c87db442418d"
+## src = "/libryu-a994c87db442418d.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libryu-a994c87db442418d.rmeta"
+## 
+## [[mounts]]
+## from = "out-a994c87db442418d"
+## src = "/libryu-a994c87db442418d.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libryu-a994c87db442418d.rlib"
+## 
+## [[mounts]]
+## from = "out-59ae8e7772deaa56"
+## src = "/libtermcolor-59ae8e7772deaa56.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libtermcolor-59ae8e7772deaa56.rmeta"
+## 
+## [[mounts]]
+## from = "out-59ae8e7772deaa56"
+## src = "/libtermcolor-59ae8e7772deaa56.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libtermcolor-59ae8e7772deaa56.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -2723,23 +3437,41 @@ COPY --from=dep-l-grep-printer-0.2.1-0e4d9ea7a0184dd5 /tmp/clis-ripgrep_14-1-0/r
 ## RUN \
 ##   --mount=from=cratesio-grep-printer-0.2.1,source=/grep-printer-0.2.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-printer-0.2.1 \
 ##   --mount=from=out-f6b551c518280772,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libbstr-f6b551c518280772.rmeta,source=/libbstr-f6b551c518280772.rmeta \
+##   --mount=from=out-f6b551c518280772,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libbstr-f6b551c518280772.rlib,source=/libbstr-f6b551c518280772.rlib \
 ##   --mount=from=out-3d9021aec125798d,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rmeta,source=/libmemchr-3d9021aec125798d.rmeta \
+##   --mount=from=out-3d9021aec125798d,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rlib,source=/libmemchr-3d9021aec125798d.rlib \
 ##   --mount=from=out-54c30116fcd4ea92,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libregex_automata-54c30116fcd4ea92.rmeta,source=/libregex_automata-54c30116fcd4ea92.rmeta \
+##   --mount=from=out-54c30116fcd4ea92,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libregex_automata-54c30116fcd4ea92.rlib,source=/libregex_automata-54c30116fcd4ea92.rlib \
 ##   --mount=from=out-2a2c3bf3a2b335e0,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libaho_corasick-2a2c3bf3a2b335e0.rmeta,source=/libaho_corasick-2a2c3bf3a2b335e0.rmeta \
+##   --mount=from=out-2a2c3bf3a2b335e0,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libaho_corasick-2a2c3bf3a2b335e0.rlib,source=/libaho_corasick-2a2c3bf3a2b335e0.rlib \
 ##   --mount=from=out-0d361157f8cdd0fe,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libregex_syntax-0d361157f8cdd0fe.rmeta,source=/libregex_syntax-0d361157f8cdd0fe.rmeta \
+##   --mount=from=out-0d361157f8cdd0fe,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libregex_syntax-0d361157f8cdd0fe.rlib,source=/libregex_syntax-0d361157f8cdd0fe.rlib \
 ##   --mount=from=out-7517975d791c1423,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_matcher-7517975d791c1423.rmeta,source=/libgrep_matcher-7517975d791c1423.rmeta \
+##   --mount=from=out-7517975d791c1423,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_matcher-7517975d791c1423.rlib,source=/libgrep_matcher-7517975d791c1423.rlib \
 ##   --mount=from=out-6fc004d41272f596,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_searcher-6fc004d41272f596.rmeta,source=/libgrep_searcher-6fc004d41272f596.rmeta \
+##   --mount=from=out-6fc004d41272f596,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_searcher-6fc004d41272f596.rlib,source=/libgrep_searcher-6fc004d41272f596.rlib \
 ##   --mount=from=out-71f95fee6544e787,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libencoding_rs-71f95fee6544e787.rmeta,source=/libencoding_rs-71f95fee6544e787.rmeta \
+##   --mount=from=out-71f95fee6544e787,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libencoding_rs-71f95fee6544e787.rlib,source=/libencoding_rs-71f95fee6544e787.rlib \
 ##   --mount=from=out-98d40c6178a8b60f,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libcfg_if-98d40c6178a8b60f.rmeta,source=/libcfg_if-98d40c6178a8b60f.rmeta \
+##   --mount=from=out-98d40c6178a8b60f,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libcfg_if-98d40c6178a8b60f.rlib,source=/libcfg_if-98d40c6178a8b60f.rlib \
 ##   --mount=from=out-1f57e01234da7cf8,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libencoding_rs_io-1f57e01234da7cf8.rmeta,source=/libencoding_rs_io-1f57e01234da7cf8.rmeta \
+##   --mount=from=out-1f57e01234da7cf8,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libencoding_rs_io-1f57e01234da7cf8.rlib,source=/libencoding_rs_io-1f57e01234da7cf8.rlib \
 ##   --mount=from=out-45d1068292014e63,dst=/tmp/clis-ripgrep_14-1-0/release/deps/liblog-45d1068292014e63.rmeta,source=/liblog-45d1068292014e63.rmeta \
+##   --mount=from=out-45d1068292014e63,dst=/tmp/clis-ripgrep_14-1-0/release/deps/liblog-45d1068292014e63.rlib,source=/liblog-45d1068292014e63.rlib \
 ##   --mount=from=out-21c841a4e972790f,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libmemmap2-21c841a4e972790f.rmeta,source=/libmemmap2-21c841a4e972790f.rmeta \
+##   --mount=from=out-21c841a4e972790f,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libmemmap2-21c841a4e972790f.rlib,source=/libmemmap2-21c841a4e972790f.rlib \
 ##   --mount=from=out-b1dcb66edfd0e8a0,dst=/tmp/clis-ripgrep_14-1-0/release/deps/liblibc-b1dcb66edfd0e8a0.rmeta,source=/liblibc-b1dcb66edfd0e8a0.rmeta \
+##   --mount=from=out-b1dcb66edfd0e8a0,dst=/tmp/clis-ripgrep_14-1-0/release/deps/liblibc-b1dcb66edfd0e8a0.rlib,source=/liblibc-b1dcb66edfd0e8a0.rlib \
 ##   --mount=from=out-6342957ddc692e98,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libserde-6342957ddc692e98.rmeta,source=/libserde-6342957ddc692e98.rmeta \
+##   --mount=from=out-6342957ddc692e98,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libserde-6342957ddc692e98.rlib,source=/libserde-6342957ddc692e98.rlib \
 ##   --mount=from=out-f1456127761f5765,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libserde_json-f1456127761f5765.rmeta,source=/libserde_json-f1456127761f5765.rmeta \
+##   --mount=from=out-f1456127761f5765,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libserde_json-f1456127761f5765.rlib,source=/libserde_json-f1456127761f5765.rlib \
 ##   --mount=from=out-2b4528a4fd57cfaf,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libitoa-2b4528a4fd57cfaf.rmeta,source=/libitoa-2b4528a4fd57cfaf.rmeta \
+##   --mount=from=out-2b4528a4fd57cfaf,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libitoa-2b4528a4fd57cfaf.rlib,source=/libitoa-2b4528a4fd57cfaf.rlib \
 ##   --mount=from=out-a994c87db442418d,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libryu-a994c87db442418d.rmeta,source=/libryu-a994c87db442418d.rmeta \
+##   --mount=from=out-a994c87db442418d,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libryu-a994c87db442418d.rlib,source=/libryu-a994c87db442418d.rlib \
 ##   --mount=from=out-59ae8e7772deaa56,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libtermcolor-59ae8e7772deaa56.rmeta,source=/libtermcolor-59ae8e7772deaa56.rmeta \
+##   --mount=from=out-59ae8e7772deaa56,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libtermcolor-59ae8e7772deaa56.rlib,source=/libtermcolor-59ae8e7772deaa56.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="grep_printer" \
@@ -2780,12 +3512,19 @@ WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 RUN \
   --mount=from=cratesio-grep-regex-0.1.12,source=/grep-regex-0.1.12,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-regex-0.1.12 \
   --mount=from=out-f6b551c518280772,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libbstr-f6b551c518280772.rmeta,source=/libbstr-f6b551c518280772.rmeta \
+  --mount=from=out-f6b551c518280772,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libbstr-f6b551c518280772.rlib,source=/libbstr-f6b551c518280772.rlib \
   --mount=from=out-3d9021aec125798d,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rmeta,source=/libmemchr-3d9021aec125798d.rmeta \
+  --mount=from=out-3d9021aec125798d,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rlib,source=/libmemchr-3d9021aec125798d.rlib \
   --mount=from=out-54c30116fcd4ea92,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libregex_automata-54c30116fcd4ea92.rmeta,source=/libregex_automata-54c30116fcd4ea92.rmeta \
+  --mount=from=out-54c30116fcd4ea92,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libregex_automata-54c30116fcd4ea92.rlib,source=/libregex_automata-54c30116fcd4ea92.rlib \
   --mount=from=out-2a2c3bf3a2b335e0,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libaho_corasick-2a2c3bf3a2b335e0.rmeta,source=/libaho_corasick-2a2c3bf3a2b335e0.rmeta \
+  --mount=from=out-2a2c3bf3a2b335e0,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libaho_corasick-2a2c3bf3a2b335e0.rlib,source=/libaho_corasick-2a2c3bf3a2b335e0.rlib \
   --mount=from=out-0d361157f8cdd0fe,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libregex_syntax-0d361157f8cdd0fe.rmeta,source=/libregex_syntax-0d361157f8cdd0fe.rmeta \
+  --mount=from=out-0d361157f8cdd0fe,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libregex_syntax-0d361157f8cdd0fe.rlib,source=/libregex_syntax-0d361157f8cdd0fe.rlib \
   --mount=from=out-7517975d791c1423,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_matcher-7517975d791c1423.rmeta,source=/libgrep_matcher-7517975d791c1423.rmeta \
+  --mount=from=out-7517975d791c1423,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_matcher-7517975d791c1423.rlib,source=/libgrep_matcher-7517975d791c1423.rlib \
   --mount=from=out-45d1068292014e63,dst=/tmp/clis-ripgrep_14-1-0/release/deps/liblog-45d1068292014e63.rmeta,source=/liblog-45d1068292014e63.rmeta \
+  --mount=from=out-45d1068292014e63,dst=/tmp/clis-ripgrep_14-1-0/release/deps/liblog-45d1068292014e63.rlib,source=/liblog-45d1068292014e63.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="grep_regex" \
@@ -2824,13 +3563,13 @@ COPY --from=dep-l-grep-regex-0.1.12-c08c56633b958d0c /tmp/clis-ripgrep_14-1-0/re
 ##     "45d1068292014e63",
 ## ]
 ## short_externs = [
-##     "bstr-f6b551c518280772",
-##     "memchr-3d9021aec125798d",
-##     "regex_automata-54c30116fcd4ea92",
-##     "aho_corasick-2a2c3bf3a2b335e0",
-##     "regex_syntax-0d361157f8cdd0fe",
-##     "grep_matcher-7517975d791c1423",
-##     "log-45d1068292014e63",
+##     "f6b551c518280772",
+##     "3d9021aec125798d",
+##     "54c30116fcd4ea92",
+##     "2a2c3bf3a2b335e0",
+##     "0d361157f8cdd0fe",
+##     "7517975d791c1423",
+##     "45d1068292014e63",
 ## ]
 ## writes = [
 ##     "deps/grep_regex-c08c56633b958d0c.d",
@@ -2842,6 +3581,76 @@ COPY --from=dep-l-grep-regex-0.1.12-c08c56633b958d0c /tmp/clis-ripgrep_14-1-0/re
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_regex-c08c56633b958d0c.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_regex-c08c56633b958d0c.rlib","emit":"link"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-f6b551c518280772"
+## src = "/libbstr-f6b551c518280772.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libbstr-f6b551c518280772.rmeta"
+## 
+## [[mounts]]
+## from = "out-f6b551c518280772"
+## src = "/libbstr-f6b551c518280772.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libbstr-f6b551c518280772.rlib"
+## 
+## [[mounts]]
+## from = "out-3d9021aec125798d"
+## src = "/libmemchr-3d9021aec125798d.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rmeta"
+## 
+## [[mounts]]
+## from = "out-3d9021aec125798d"
+## src = "/libmemchr-3d9021aec125798d.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rlib"
+## 
+## [[mounts]]
+## from = "out-54c30116fcd4ea92"
+## src = "/libregex_automata-54c30116fcd4ea92.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libregex_automata-54c30116fcd4ea92.rmeta"
+## 
+## [[mounts]]
+## from = "out-54c30116fcd4ea92"
+## src = "/libregex_automata-54c30116fcd4ea92.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libregex_automata-54c30116fcd4ea92.rlib"
+## 
+## [[mounts]]
+## from = "out-2a2c3bf3a2b335e0"
+## src = "/libaho_corasick-2a2c3bf3a2b335e0.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libaho_corasick-2a2c3bf3a2b335e0.rmeta"
+## 
+## [[mounts]]
+## from = "out-2a2c3bf3a2b335e0"
+## src = "/libaho_corasick-2a2c3bf3a2b335e0.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libaho_corasick-2a2c3bf3a2b335e0.rlib"
+## 
+## [[mounts]]
+## from = "out-0d361157f8cdd0fe"
+## src = "/libregex_syntax-0d361157f8cdd0fe.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libregex_syntax-0d361157f8cdd0fe.rmeta"
+## 
+## [[mounts]]
+## from = "out-0d361157f8cdd0fe"
+## src = "/libregex_syntax-0d361157f8cdd0fe.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libregex_syntax-0d361157f8cdd0fe.rlib"
+## 
+## [[mounts]]
+## from = "out-7517975d791c1423"
+## src = "/libgrep_matcher-7517975d791c1423.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_matcher-7517975d791c1423.rmeta"
+## 
+## [[mounts]]
+## from = "out-7517975d791c1423"
+## src = "/libgrep_matcher-7517975d791c1423.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_matcher-7517975d791c1423.rlib"
+## 
+## [[mounts]]
+## from = "out-45d1068292014e63"
+## src = "/liblog-45d1068292014e63.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/liblog-45d1068292014e63.rmeta"
+## 
+## [[mounts]]
+## from = "out-45d1068292014e63"
+## src = "/liblog-45d1068292014e63.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/liblog-45d1068292014e63.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -2863,12 +3672,19 @@ COPY --from=dep-l-grep-regex-0.1.12-c08c56633b958d0c /tmp/clis-ripgrep_14-1-0/re
 ## RUN \
 ##   --mount=from=cratesio-grep-regex-0.1.12,source=/grep-regex-0.1.12,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-regex-0.1.12 \
 ##   --mount=from=out-f6b551c518280772,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libbstr-f6b551c518280772.rmeta,source=/libbstr-f6b551c518280772.rmeta \
+##   --mount=from=out-f6b551c518280772,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libbstr-f6b551c518280772.rlib,source=/libbstr-f6b551c518280772.rlib \
 ##   --mount=from=out-3d9021aec125798d,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rmeta,source=/libmemchr-3d9021aec125798d.rmeta \
+##   --mount=from=out-3d9021aec125798d,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rlib,source=/libmemchr-3d9021aec125798d.rlib \
 ##   --mount=from=out-54c30116fcd4ea92,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libregex_automata-54c30116fcd4ea92.rmeta,source=/libregex_automata-54c30116fcd4ea92.rmeta \
+##   --mount=from=out-54c30116fcd4ea92,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libregex_automata-54c30116fcd4ea92.rlib,source=/libregex_automata-54c30116fcd4ea92.rlib \
 ##   --mount=from=out-2a2c3bf3a2b335e0,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libaho_corasick-2a2c3bf3a2b335e0.rmeta,source=/libaho_corasick-2a2c3bf3a2b335e0.rmeta \
+##   --mount=from=out-2a2c3bf3a2b335e0,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libaho_corasick-2a2c3bf3a2b335e0.rlib,source=/libaho_corasick-2a2c3bf3a2b335e0.rlib \
 ##   --mount=from=out-0d361157f8cdd0fe,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libregex_syntax-0d361157f8cdd0fe.rmeta,source=/libregex_syntax-0d361157f8cdd0fe.rmeta \
+##   --mount=from=out-0d361157f8cdd0fe,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libregex_syntax-0d361157f8cdd0fe.rlib,source=/libregex_syntax-0d361157f8cdd0fe.rlib \
 ##   --mount=from=out-7517975d791c1423,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_matcher-7517975d791c1423.rmeta,source=/libgrep_matcher-7517975d791c1423.rmeta \
+##   --mount=from=out-7517975d791c1423,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_matcher-7517975d791c1423.rlib,source=/libgrep_matcher-7517975d791c1423.rlib \
 ##   --mount=from=out-45d1068292014e63,dst=/tmp/clis-ripgrep_14-1-0/release/deps/liblog-45d1068292014e63.rmeta,source=/liblog-45d1068292014e63.rmeta \
+##   --mount=from=out-45d1068292014e63,dst=/tmp/clis-ripgrep_14-1-0/release/deps/liblog-45d1068292014e63.rlib,source=/liblog-45d1068292014e63.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="grep_regex" \
@@ -2909,27 +3725,49 @@ WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 RUN \
   --mount=from=cratesio-grep-0.3.1,source=/grep-0.3.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-0.3.1 \
   --mount=from=out-8da8357e778092ce,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_cli-8da8357e778092ce.rmeta,source=/libgrep_cli-8da8357e778092ce.rmeta \
+  --mount=from=out-8da8357e778092ce,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_cli-8da8357e778092ce.rlib,source=/libgrep_cli-8da8357e778092ce.rlib \
   --mount=from=out-f6b551c518280772,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libbstr-f6b551c518280772.rmeta,source=/libbstr-f6b551c518280772.rmeta \
+  --mount=from=out-f6b551c518280772,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libbstr-f6b551c518280772.rlib,source=/libbstr-f6b551c518280772.rlib \
   --mount=from=out-3d9021aec125798d,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rmeta,source=/libmemchr-3d9021aec125798d.rmeta \
+  --mount=from=out-3d9021aec125798d,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rlib,source=/libmemchr-3d9021aec125798d.rlib \
   --mount=from=out-54c30116fcd4ea92,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libregex_automata-54c30116fcd4ea92.rmeta,source=/libregex_automata-54c30116fcd4ea92.rmeta \
+  --mount=from=out-54c30116fcd4ea92,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libregex_automata-54c30116fcd4ea92.rlib,source=/libregex_automata-54c30116fcd4ea92.rlib \
   --mount=from=out-2a2c3bf3a2b335e0,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libaho_corasick-2a2c3bf3a2b335e0.rmeta,source=/libaho_corasick-2a2c3bf3a2b335e0.rmeta \
+  --mount=from=out-2a2c3bf3a2b335e0,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libaho_corasick-2a2c3bf3a2b335e0.rlib,source=/libaho_corasick-2a2c3bf3a2b335e0.rlib \
   --mount=from=out-0d361157f8cdd0fe,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libregex_syntax-0d361157f8cdd0fe.rmeta,source=/libregex_syntax-0d361157f8cdd0fe.rmeta \
+  --mount=from=out-0d361157f8cdd0fe,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libregex_syntax-0d361157f8cdd0fe.rlib,source=/libregex_syntax-0d361157f8cdd0fe.rlib \
   --mount=from=out-14504da8f25a4dbf,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libglobset-14504da8f25a4dbf.rmeta,source=/libglobset-14504da8f25a4dbf.rmeta \
+  --mount=from=out-14504da8f25a4dbf,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libglobset-14504da8f25a4dbf.rlib,source=/libglobset-14504da8f25a4dbf.rlib \
   --mount=from=out-45d1068292014e63,dst=/tmp/clis-ripgrep_14-1-0/release/deps/liblog-45d1068292014e63.rmeta,source=/liblog-45d1068292014e63.rmeta \
+  --mount=from=out-45d1068292014e63,dst=/tmp/clis-ripgrep_14-1-0/release/deps/liblog-45d1068292014e63.rlib,source=/liblog-45d1068292014e63.rlib \
   --mount=from=out-b1dcb66edfd0e8a0,dst=/tmp/clis-ripgrep_14-1-0/release/deps/liblibc-b1dcb66edfd0e8a0.rmeta,source=/liblibc-b1dcb66edfd0e8a0.rmeta \
+  --mount=from=out-b1dcb66edfd0e8a0,dst=/tmp/clis-ripgrep_14-1-0/release/deps/liblibc-b1dcb66edfd0e8a0.rlib,source=/liblibc-b1dcb66edfd0e8a0.rlib \
   --mount=from=out-59ae8e7772deaa56,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libtermcolor-59ae8e7772deaa56.rmeta,source=/libtermcolor-59ae8e7772deaa56.rmeta \
+  --mount=from=out-59ae8e7772deaa56,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libtermcolor-59ae8e7772deaa56.rlib,source=/libtermcolor-59ae8e7772deaa56.rlib \
   --mount=from=out-7517975d791c1423,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_matcher-7517975d791c1423.rmeta,source=/libgrep_matcher-7517975d791c1423.rmeta \
+  --mount=from=out-7517975d791c1423,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_matcher-7517975d791c1423.rlib,source=/libgrep_matcher-7517975d791c1423.rlib \
   --mount=from=out-0e4d9ea7a0184dd5,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_printer-0e4d9ea7a0184dd5.rmeta,source=/libgrep_printer-0e4d9ea7a0184dd5.rmeta \
+  --mount=from=out-0e4d9ea7a0184dd5,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_printer-0e4d9ea7a0184dd5.rlib,source=/libgrep_printer-0e4d9ea7a0184dd5.rlib \
   --mount=from=out-6fc004d41272f596,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_searcher-6fc004d41272f596.rmeta,source=/libgrep_searcher-6fc004d41272f596.rmeta \
+  --mount=from=out-6fc004d41272f596,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_searcher-6fc004d41272f596.rlib,source=/libgrep_searcher-6fc004d41272f596.rlib \
   --mount=from=out-71f95fee6544e787,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libencoding_rs-71f95fee6544e787.rmeta,source=/libencoding_rs-71f95fee6544e787.rmeta \
+  --mount=from=out-71f95fee6544e787,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libencoding_rs-71f95fee6544e787.rlib,source=/libencoding_rs-71f95fee6544e787.rlib \
   --mount=from=out-98d40c6178a8b60f,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libcfg_if-98d40c6178a8b60f.rmeta,source=/libcfg_if-98d40c6178a8b60f.rmeta \
+  --mount=from=out-98d40c6178a8b60f,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libcfg_if-98d40c6178a8b60f.rlib,source=/libcfg_if-98d40c6178a8b60f.rlib \
   --mount=from=out-1f57e01234da7cf8,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libencoding_rs_io-1f57e01234da7cf8.rmeta,source=/libencoding_rs_io-1f57e01234da7cf8.rmeta \
+  --mount=from=out-1f57e01234da7cf8,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libencoding_rs_io-1f57e01234da7cf8.rlib,source=/libencoding_rs_io-1f57e01234da7cf8.rlib \
   --mount=from=out-21c841a4e972790f,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libmemmap2-21c841a4e972790f.rmeta,source=/libmemmap2-21c841a4e972790f.rmeta \
+  --mount=from=out-21c841a4e972790f,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libmemmap2-21c841a4e972790f.rlib,source=/libmemmap2-21c841a4e972790f.rlib \
   --mount=from=out-6342957ddc692e98,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libserde-6342957ddc692e98.rmeta,source=/libserde-6342957ddc692e98.rmeta \
+  --mount=from=out-6342957ddc692e98,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libserde-6342957ddc692e98.rlib,source=/libserde-6342957ddc692e98.rlib \
   --mount=from=out-f1456127761f5765,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libserde_json-f1456127761f5765.rmeta,source=/libserde_json-f1456127761f5765.rmeta \
+  --mount=from=out-f1456127761f5765,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libserde_json-f1456127761f5765.rlib,source=/libserde_json-f1456127761f5765.rlib \
   --mount=from=out-2b4528a4fd57cfaf,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libitoa-2b4528a4fd57cfaf.rmeta,source=/libitoa-2b4528a4fd57cfaf.rmeta \
+  --mount=from=out-2b4528a4fd57cfaf,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libitoa-2b4528a4fd57cfaf.rlib,source=/libitoa-2b4528a4fd57cfaf.rlib \
   --mount=from=out-a994c87db442418d,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libryu-a994c87db442418d.rmeta,source=/libryu-a994c87db442418d.rmeta \
+  --mount=from=out-a994c87db442418d,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libryu-a994c87db442418d.rlib,source=/libryu-a994c87db442418d.rlib \
   --mount=from=out-c08c56633b958d0c,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_regex-c08c56633b958d0c.rmeta,source=/libgrep_regex-c08c56633b958d0c.rmeta \
+  --mount=from=out-c08c56633b958d0c,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_regex-c08c56633b958d0c.rlib,source=/libgrep_regex-c08c56633b958d0c.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="grep" \
@@ -2983,28 +3821,28 @@ COPY --from=dep-l-grep-0.3.1-9e71f2809112d472 /tmp/clis-ripgrep_14-1-0/release/d
 ##     "c08c56633b958d0c",
 ## ]
 ## short_externs = [
-##     "grep_cli-8da8357e778092ce",
-##     "bstr-f6b551c518280772",
-##     "memchr-3d9021aec125798d",
-##     "regex_automata-54c30116fcd4ea92",
-##     "aho_corasick-2a2c3bf3a2b335e0",
-##     "regex_syntax-0d361157f8cdd0fe",
-##     "globset-14504da8f25a4dbf",
-##     "log-45d1068292014e63",
-##     "libc-b1dcb66edfd0e8a0",
-##     "termcolor-59ae8e7772deaa56",
-##     "grep_matcher-7517975d791c1423",
-##     "grep_printer-0e4d9ea7a0184dd5",
-##     "grep_searcher-6fc004d41272f596",
-##     "encoding_rs-71f95fee6544e787",
-##     "cfg_if-98d40c6178a8b60f",
-##     "encoding_rs_io-1f57e01234da7cf8",
-##     "memmap2-21c841a4e972790f",
-##     "serde-6342957ddc692e98",
-##     "serde_json-f1456127761f5765",
-##     "itoa-2b4528a4fd57cfaf",
-##     "ryu-a994c87db442418d",
-##     "grep_regex-c08c56633b958d0c",
+##     "8da8357e778092ce",
+##     "f6b551c518280772",
+##     "3d9021aec125798d",
+##     "54c30116fcd4ea92",
+##     "2a2c3bf3a2b335e0",
+##     "0d361157f8cdd0fe",
+##     "14504da8f25a4dbf",
+##     "45d1068292014e63",
+##     "b1dcb66edfd0e8a0",
+##     "59ae8e7772deaa56",
+##     "7517975d791c1423",
+##     "0e4d9ea7a0184dd5",
+##     "6fc004d41272f596",
+##     "71f95fee6544e787",
+##     "98d40c6178a8b60f",
+##     "1f57e01234da7cf8",
+##     "21c841a4e972790f",
+##     "6342957ddc692e98",
+##     "f1456127761f5765",
+##     "2b4528a4fd57cfaf",
+##     "a994c87db442418d",
+##     "c08c56633b958d0c",
 ## ]
 ## writes = [
 ##     "deps/grep-9e71f2809112d472.d",
@@ -3016,6 +3854,226 @@ COPY --from=dep-l-grep-0.3.1-9e71f2809112d472 /tmp/clis-ripgrep_14-1-0/release/d
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_14-1-0/release/deps/libgrep-9e71f2809112d472.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_14-1-0/release/deps/libgrep-9e71f2809112d472.rlib","emit":"link"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-8da8357e778092ce"
+## src = "/libgrep_cli-8da8357e778092ce.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_cli-8da8357e778092ce.rmeta"
+## 
+## [[mounts]]
+## from = "out-8da8357e778092ce"
+## src = "/libgrep_cli-8da8357e778092ce.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_cli-8da8357e778092ce.rlib"
+## 
+## [[mounts]]
+## from = "out-f6b551c518280772"
+## src = "/libbstr-f6b551c518280772.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libbstr-f6b551c518280772.rmeta"
+## 
+## [[mounts]]
+## from = "out-f6b551c518280772"
+## src = "/libbstr-f6b551c518280772.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libbstr-f6b551c518280772.rlib"
+## 
+## [[mounts]]
+## from = "out-3d9021aec125798d"
+## src = "/libmemchr-3d9021aec125798d.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rmeta"
+## 
+## [[mounts]]
+## from = "out-3d9021aec125798d"
+## src = "/libmemchr-3d9021aec125798d.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rlib"
+## 
+## [[mounts]]
+## from = "out-54c30116fcd4ea92"
+## src = "/libregex_automata-54c30116fcd4ea92.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libregex_automata-54c30116fcd4ea92.rmeta"
+## 
+## [[mounts]]
+## from = "out-54c30116fcd4ea92"
+## src = "/libregex_automata-54c30116fcd4ea92.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libregex_automata-54c30116fcd4ea92.rlib"
+## 
+## [[mounts]]
+## from = "out-2a2c3bf3a2b335e0"
+## src = "/libaho_corasick-2a2c3bf3a2b335e0.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libaho_corasick-2a2c3bf3a2b335e0.rmeta"
+## 
+## [[mounts]]
+## from = "out-2a2c3bf3a2b335e0"
+## src = "/libaho_corasick-2a2c3bf3a2b335e0.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libaho_corasick-2a2c3bf3a2b335e0.rlib"
+## 
+## [[mounts]]
+## from = "out-0d361157f8cdd0fe"
+## src = "/libregex_syntax-0d361157f8cdd0fe.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libregex_syntax-0d361157f8cdd0fe.rmeta"
+## 
+## [[mounts]]
+## from = "out-0d361157f8cdd0fe"
+## src = "/libregex_syntax-0d361157f8cdd0fe.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libregex_syntax-0d361157f8cdd0fe.rlib"
+## 
+## [[mounts]]
+## from = "out-14504da8f25a4dbf"
+## src = "/libglobset-14504da8f25a4dbf.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libglobset-14504da8f25a4dbf.rmeta"
+## 
+## [[mounts]]
+## from = "out-14504da8f25a4dbf"
+## src = "/libglobset-14504da8f25a4dbf.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libglobset-14504da8f25a4dbf.rlib"
+## 
+## [[mounts]]
+## from = "out-45d1068292014e63"
+## src = "/liblog-45d1068292014e63.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/liblog-45d1068292014e63.rmeta"
+## 
+## [[mounts]]
+## from = "out-45d1068292014e63"
+## src = "/liblog-45d1068292014e63.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/liblog-45d1068292014e63.rlib"
+## 
+## [[mounts]]
+## from = "out-b1dcb66edfd0e8a0"
+## src = "/liblibc-b1dcb66edfd0e8a0.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/liblibc-b1dcb66edfd0e8a0.rmeta"
+## 
+## [[mounts]]
+## from = "out-b1dcb66edfd0e8a0"
+## src = "/liblibc-b1dcb66edfd0e8a0.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/liblibc-b1dcb66edfd0e8a0.rlib"
+## 
+## [[mounts]]
+## from = "out-59ae8e7772deaa56"
+## src = "/libtermcolor-59ae8e7772deaa56.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libtermcolor-59ae8e7772deaa56.rmeta"
+## 
+## [[mounts]]
+## from = "out-59ae8e7772deaa56"
+## src = "/libtermcolor-59ae8e7772deaa56.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libtermcolor-59ae8e7772deaa56.rlib"
+## 
+## [[mounts]]
+## from = "out-7517975d791c1423"
+## src = "/libgrep_matcher-7517975d791c1423.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_matcher-7517975d791c1423.rmeta"
+## 
+## [[mounts]]
+## from = "out-7517975d791c1423"
+## src = "/libgrep_matcher-7517975d791c1423.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_matcher-7517975d791c1423.rlib"
+## 
+## [[mounts]]
+## from = "out-0e4d9ea7a0184dd5"
+## src = "/libgrep_printer-0e4d9ea7a0184dd5.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_printer-0e4d9ea7a0184dd5.rmeta"
+## 
+## [[mounts]]
+## from = "out-0e4d9ea7a0184dd5"
+## src = "/libgrep_printer-0e4d9ea7a0184dd5.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_printer-0e4d9ea7a0184dd5.rlib"
+## 
+## [[mounts]]
+## from = "out-6fc004d41272f596"
+## src = "/libgrep_searcher-6fc004d41272f596.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_searcher-6fc004d41272f596.rmeta"
+## 
+## [[mounts]]
+## from = "out-6fc004d41272f596"
+## src = "/libgrep_searcher-6fc004d41272f596.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_searcher-6fc004d41272f596.rlib"
+## 
+## [[mounts]]
+## from = "out-71f95fee6544e787"
+## src = "/libencoding_rs-71f95fee6544e787.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libencoding_rs-71f95fee6544e787.rmeta"
+## 
+## [[mounts]]
+## from = "out-71f95fee6544e787"
+## src = "/libencoding_rs-71f95fee6544e787.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libencoding_rs-71f95fee6544e787.rlib"
+## 
+## [[mounts]]
+## from = "out-98d40c6178a8b60f"
+## src = "/libcfg_if-98d40c6178a8b60f.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libcfg_if-98d40c6178a8b60f.rmeta"
+## 
+## [[mounts]]
+## from = "out-98d40c6178a8b60f"
+## src = "/libcfg_if-98d40c6178a8b60f.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libcfg_if-98d40c6178a8b60f.rlib"
+## 
+## [[mounts]]
+## from = "out-1f57e01234da7cf8"
+## src = "/libencoding_rs_io-1f57e01234da7cf8.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libencoding_rs_io-1f57e01234da7cf8.rmeta"
+## 
+## [[mounts]]
+## from = "out-1f57e01234da7cf8"
+## src = "/libencoding_rs_io-1f57e01234da7cf8.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libencoding_rs_io-1f57e01234da7cf8.rlib"
+## 
+## [[mounts]]
+## from = "out-21c841a4e972790f"
+## src = "/libmemmap2-21c841a4e972790f.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libmemmap2-21c841a4e972790f.rmeta"
+## 
+## [[mounts]]
+## from = "out-21c841a4e972790f"
+## src = "/libmemmap2-21c841a4e972790f.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libmemmap2-21c841a4e972790f.rlib"
+## 
+## [[mounts]]
+## from = "out-6342957ddc692e98"
+## src = "/libserde-6342957ddc692e98.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libserde-6342957ddc692e98.rmeta"
+## 
+## [[mounts]]
+## from = "out-6342957ddc692e98"
+## src = "/libserde-6342957ddc692e98.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libserde-6342957ddc692e98.rlib"
+## 
+## [[mounts]]
+## from = "out-f1456127761f5765"
+## src = "/libserde_json-f1456127761f5765.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libserde_json-f1456127761f5765.rmeta"
+## 
+## [[mounts]]
+## from = "out-f1456127761f5765"
+## src = "/libserde_json-f1456127761f5765.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libserde_json-f1456127761f5765.rlib"
+## 
+## [[mounts]]
+## from = "out-2b4528a4fd57cfaf"
+## src = "/libitoa-2b4528a4fd57cfaf.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libitoa-2b4528a4fd57cfaf.rmeta"
+## 
+## [[mounts]]
+## from = "out-2b4528a4fd57cfaf"
+## src = "/libitoa-2b4528a4fd57cfaf.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libitoa-2b4528a4fd57cfaf.rlib"
+## 
+## [[mounts]]
+## from = "out-a994c87db442418d"
+## src = "/libryu-a994c87db442418d.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libryu-a994c87db442418d.rmeta"
+## 
+## [[mounts]]
+## from = "out-a994c87db442418d"
+## src = "/libryu-a994c87db442418d.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libryu-a994c87db442418d.rlib"
+## 
+## [[mounts]]
+## from = "out-c08c56633b958d0c"
+## src = "/libgrep_regex-c08c56633b958d0c.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_regex-c08c56633b958d0c.rmeta"
+## 
+## [[mounts]]
+## from = "out-c08c56633b958d0c"
+## src = "/libgrep_regex-c08c56633b958d0c.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_regex-c08c56633b958d0c.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -3037,27 +4095,49 @@ COPY --from=dep-l-grep-0.3.1-9e71f2809112d472 /tmp/clis-ripgrep_14-1-0/release/d
 ## RUN \
 ##   --mount=from=cratesio-grep-0.3.1,source=/grep-0.3.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-0.3.1 \
 ##   --mount=from=out-8da8357e778092ce,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_cli-8da8357e778092ce.rmeta,source=/libgrep_cli-8da8357e778092ce.rmeta \
+##   --mount=from=out-8da8357e778092ce,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_cli-8da8357e778092ce.rlib,source=/libgrep_cli-8da8357e778092ce.rlib \
 ##   --mount=from=out-f6b551c518280772,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libbstr-f6b551c518280772.rmeta,source=/libbstr-f6b551c518280772.rmeta \
+##   --mount=from=out-f6b551c518280772,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libbstr-f6b551c518280772.rlib,source=/libbstr-f6b551c518280772.rlib \
 ##   --mount=from=out-3d9021aec125798d,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rmeta,source=/libmemchr-3d9021aec125798d.rmeta \
+##   --mount=from=out-3d9021aec125798d,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rlib,source=/libmemchr-3d9021aec125798d.rlib \
 ##   --mount=from=out-54c30116fcd4ea92,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libregex_automata-54c30116fcd4ea92.rmeta,source=/libregex_automata-54c30116fcd4ea92.rmeta \
+##   --mount=from=out-54c30116fcd4ea92,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libregex_automata-54c30116fcd4ea92.rlib,source=/libregex_automata-54c30116fcd4ea92.rlib \
 ##   --mount=from=out-2a2c3bf3a2b335e0,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libaho_corasick-2a2c3bf3a2b335e0.rmeta,source=/libaho_corasick-2a2c3bf3a2b335e0.rmeta \
+##   --mount=from=out-2a2c3bf3a2b335e0,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libaho_corasick-2a2c3bf3a2b335e0.rlib,source=/libaho_corasick-2a2c3bf3a2b335e0.rlib \
 ##   --mount=from=out-0d361157f8cdd0fe,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libregex_syntax-0d361157f8cdd0fe.rmeta,source=/libregex_syntax-0d361157f8cdd0fe.rmeta \
+##   --mount=from=out-0d361157f8cdd0fe,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libregex_syntax-0d361157f8cdd0fe.rlib,source=/libregex_syntax-0d361157f8cdd0fe.rlib \
 ##   --mount=from=out-14504da8f25a4dbf,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libglobset-14504da8f25a4dbf.rmeta,source=/libglobset-14504da8f25a4dbf.rmeta \
+##   --mount=from=out-14504da8f25a4dbf,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libglobset-14504da8f25a4dbf.rlib,source=/libglobset-14504da8f25a4dbf.rlib \
 ##   --mount=from=out-45d1068292014e63,dst=/tmp/clis-ripgrep_14-1-0/release/deps/liblog-45d1068292014e63.rmeta,source=/liblog-45d1068292014e63.rmeta \
+##   --mount=from=out-45d1068292014e63,dst=/tmp/clis-ripgrep_14-1-0/release/deps/liblog-45d1068292014e63.rlib,source=/liblog-45d1068292014e63.rlib \
 ##   --mount=from=out-b1dcb66edfd0e8a0,dst=/tmp/clis-ripgrep_14-1-0/release/deps/liblibc-b1dcb66edfd0e8a0.rmeta,source=/liblibc-b1dcb66edfd0e8a0.rmeta \
+##   --mount=from=out-b1dcb66edfd0e8a0,dst=/tmp/clis-ripgrep_14-1-0/release/deps/liblibc-b1dcb66edfd0e8a0.rlib,source=/liblibc-b1dcb66edfd0e8a0.rlib \
 ##   --mount=from=out-59ae8e7772deaa56,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libtermcolor-59ae8e7772deaa56.rmeta,source=/libtermcolor-59ae8e7772deaa56.rmeta \
+##   --mount=from=out-59ae8e7772deaa56,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libtermcolor-59ae8e7772deaa56.rlib,source=/libtermcolor-59ae8e7772deaa56.rlib \
 ##   --mount=from=out-7517975d791c1423,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_matcher-7517975d791c1423.rmeta,source=/libgrep_matcher-7517975d791c1423.rmeta \
+##   --mount=from=out-7517975d791c1423,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_matcher-7517975d791c1423.rlib,source=/libgrep_matcher-7517975d791c1423.rlib \
 ##   --mount=from=out-0e4d9ea7a0184dd5,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_printer-0e4d9ea7a0184dd5.rmeta,source=/libgrep_printer-0e4d9ea7a0184dd5.rmeta \
+##   --mount=from=out-0e4d9ea7a0184dd5,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_printer-0e4d9ea7a0184dd5.rlib,source=/libgrep_printer-0e4d9ea7a0184dd5.rlib \
 ##   --mount=from=out-6fc004d41272f596,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_searcher-6fc004d41272f596.rmeta,source=/libgrep_searcher-6fc004d41272f596.rmeta \
+##   --mount=from=out-6fc004d41272f596,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_searcher-6fc004d41272f596.rlib,source=/libgrep_searcher-6fc004d41272f596.rlib \
 ##   --mount=from=out-71f95fee6544e787,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libencoding_rs-71f95fee6544e787.rmeta,source=/libencoding_rs-71f95fee6544e787.rmeta \
+##   --mount=from=out-71f95fee6544e787,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libencoding_rs-71f95fee6544e787.rlib,source=/libencoding_rs-71f95fee6544e787.rlib \
 ##   --mount=from=out-98d40c6178a8b60f,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libcfg_if-98d40c6178a8b60f.rmeta,source=/libcfg_if-98d40c6178a8b60f.rmeta \
+##   --mount=from=out-98d40c6178a8b60f,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libcfg_if-98d40c6178a8b60f.rlib,source=/libcfg_if-98d40c6178a8b60f.rlib \
 ##   --mount=from=out-1f57e01234da7cf8,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libencoding_rs_io-1f57e01234da7cf8.rmeta,source=/libencoding_rs_io-1f57e01234da7cf8.rmeta \
+##   --mount=from=out-1f57e01234da7cf8,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libencoding_rs_io-1f57e01234da7cf8.rlib,source=/libencoding_rs_io-1f57e01234da7cf8.rlib \
 ##   --mount=from=out-21c841a4e972790f,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libmemmap2-21c841a4e972790f.rmeta,source=/libmemmap2-21c841a4e972790f.rmeta \
+##   --mount=from=out-21c841a4e972790f,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libmemmap2-21c841a4e972790f.rlib,source=/libmemmap2-21c841a4e972790f.rlib \
 ##   --mount=from=out-6342957ddc692e98,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libserde-6342957ddc692e98.rmeta,source=/libserde-6342957ddc692e98.rmeta \
+##   --mount=from=out-6342957ddc692e98,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libserde-6342957ddc692e98.rlib,source=/libserde-6342957ddc692e98.rlib \
 ##   --mount=from=out-f1456127761f5765,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libserde_json-f1456127761f5765.rmeta,source=/libserde_json-f1456127761f5765.rmeta \
+##   --mount=from=out-f1456127761f5765,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libserde_json-f1456127761f5765.rlib,source=/libserde_json-f1456127761f5765.rlib \
 ##   --mount=from=out-2b4528a4fd57cfaf,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libitoa-2b4528a4fd57cfaf.rmeta,source=/libitoa-2b4528a4fd57cfaf.rmeta \
+##   --mount=from=out-2b4528a4fd57cfaf,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libitoa-2b4528a4fd57cfaf.rlib,source=/libitoa-2b4528a4fd57cfaf.rlib \
 ##   --mount=from=out-a994c87db442418d,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libryu-a994c87db442418d.rmeta,source=/libryu-a994c87db442418d.rmeta \
+##   --mount=from=out-a994c87db442418d,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libryu-a994c87db442418d.rlib,source=/libryu-a994c87db442418d.rlib \
 ##   --mount=from=out-c08c56633b958d0c,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_regex-c08c56633b958d0c.rmeta,source=/libgrep_regex-c08c56633b958d0c.rmeta \
+##   --mount=from=out-c08c56633b958d0c,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_regex-c08c56633b958d0c.rlib,source=/libgrep_regex-c08c56633b958d0c.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="grep" \
@@ -3098,6 +4178,7 @@ WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 RUN \
   --mount=from=cratesio-crossbeam-utils-0.8.18,source=/crossbeam-utils-0.8.18,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.18 \
   --mount=from=out-98d40c6178a8b60f,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libcfg_if-98d40c6178a8b60f.rmeta,source=/libcfg_if-98d40c6178a8b60f.rmeta \
+  --mount=from=out-98d40c6178a8b60f,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libcfg_if-98d40c6178a8b60f.rlib,source=/libcfg_if-98d40c6178a8b60f.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="crossbeam_utils" \
@@ -3128,7 +4209,7 @@ COPY --from=dep-l-crossbeam-utils-0.8.18-1ae807b4b6e713ec /tmp/clis-ripgrep_14-1
 
 ## this = "1ae807b4b6e713ec"
 ## deps = ["98d40c6178a8b60f"]
-## short_externs = ["cfg_if-98d40c6178a8b60f"]
+## short_externs = ["98d40c6178a8b60f"]
 ## writes = [
 ##     "deps/crossbeam_utils-1ae807b4b6e713ec.d",
 ##     "deps/libcrossbeam_utils-1ae807b4b6e713ec.rmeta",
@@ -3185,6 +4266,16 @@ COPY --from=dep-l-crossbeam-utils-0.8.18-1ae807b4b6e713ec /tmp/clis-ripgrep_14-1
 ##     '{"$message_type":"diagnostic","message":"44 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 44 warnings emitted\u001b[0m\n\n"}',
 ## ]
 ## 
+## [[mounts]]
+## from = "out-98d40c6178a8b60f"
+## src = "/libcfg_if-98d40c6178a8b60f.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libcfg_if-98d40c6178a8b60f.rmeta"
+## 
+## [[mounts]]
+## from = "out-98d40c6178a8b60f"
+## src = "/libcfg_if-98d40c6178a8b60f.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libcfg_if-98d40c6178a8b60f.rlib"
+## 
 ## [[stages]]
 ## name = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.86.0-slim@sha256:57d415bbd61ce11e2d5f73de068103c7bd9f3188dc132c97cef4a8f62989e944 AS rust-base"
@@ -3205,6 +4296,7 @@ COPY --from=dep-l-crossbeam-utils-0.8.18-1ae807b4b6e713ec /tmp/clis-ripgrep_14-1
 ## RUN \
 ##   --mount=from=cratesio-crossbeam-utils-0.8.18,source=/crossbeam-utils-0.8.18,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.18 \
 ##   --mount=from=out-98d40c6178a8b60f,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libcfg_if-98d40c6178a8b60f.rmeta,source=/libcfg_if-98d40c6178a8b60f.rmeta \
+##   --mount=from=out-98d40c6178a8b60f,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libcfg_if-98d40c6178a8b60f.rlib,source=/libcfg_if-98d40c6178a8b60f.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="crossbeam_utils" \
@@ -3246,7 +4338,9 @@ WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 RUN \
   --mount=from=cratesio-crossbeam-epoch-0.9.17,source=/crossbeam-epoch-0.9.17,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-epoch-0.9.17 \
   --mount=from=out-98d40c6178a8b60f,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libcfg_if-98d40c6178a8b60f.rmeta,source=/libcfg_if-98d40c6178a8b60f.rmeta \
+  --mount=from=out-98d40c6178a8b60f,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libcfg_if-98d40c6178a8b60f.rlib,source=/libcfg_if-98d40c6178a8b60f.rlib \
   --mount=from=out-1ae807b4b6e713ec,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libcrossbeam_utils-1ae807b4b6e713ec.rmeta,source=/libcrossbeam_utils-1ae807b4b6e713ec.rmeta \
+  --mount=from=out-1ae807b4b6e713ec,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libcrossbeam_utils-1ae807b4b6e713ec.rlib,source=/libcrossbeam_utils-1ae807b4b6e713ec.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="crossbeam_epoch" \
@@ -3280,8 +4374,8 @@ COPY --from=dep-l-crossbeam-epoch-0.9.17-e4df21448919a796 /tmp/clis-ripgrep_14-1
 ##     "1ae807b4b6e713ec",
 ## ]
 ## short_externs = [
-##     "cfg_if-98d40c6178a8b60f",
-##     "crossbeam_utils-1ae807b4b6e713ec",
+##     "98d40c6178a8b60f",
+##     "1ae807b4b6e713ec",
 ## ]
 ## writes = [
 ##     "deps/crossbeam_epoch-e4df21448919a796.d",
@@ -3315,6 +4409,26 @@ COPY --from=dep-l-crossbeam-epoch-0.9.17-e4df21448919a796 /tmp/clis-ripgrep_14-1
 ##     '{"$message_type":"diagnostic","message":"20 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 20 warnings emitted\u001b[0m\n\n"}',
 ## ]
 ## 
+## [[mounts]]
+## from = "out-98d40c6178a8b60f"
+## src = "/libcfg_if-98d40c6178a8b60f.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libcfg_if-98d40c6178a8b60f.rmeta"
+## 
+## [[mounts]]
+## from = "out-98d40c6178a8b60f"
+## src = "/libcfg_if-98d40c6178a8b60f.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libcfg_if-98d40c6178a8b60f.rlib"
+## 
+## [[mounts]]
+## from = "out-1ae807b4b6e713ec"
+## src = "/libcrossbeam_utils-1ae807b4b6e713ec.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libcrossbeam_utils-1ae807b4b6e713ec.rmeta"
+## 
+## [[mounts]]
+## from = "out-1ae807b4b6e713ec"
+## src = "/libcrossbeam_utils-1ae807b4b6e713ec.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libcrossbeam_utils-1ae807b4b6e713ec.rlib"
+## 
 ## [[stages]]
 ## name = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.86.0-slim@sha256:57d415bbd61ce11e2d5f73de068103c7bd9f3188dc132c97cef4a8f62989e944 AS rust-base"
@@ -3335,7 +4449,9 @@ COPY --from=dep-l-crossbeam-epoch-0.9.17-e4df21448919a796 /tmp/clis-ripgrep_14-1
 ## RUN \
 ##   --mount=from=cratesio-crossbeam-epoch-0.9.17,source=/crossbeam-epoch-0.9.17,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-epoch-0.9.17 \
 ##   --mount=from=out-98d40c6178a8b60f,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libcfg_if-98d40c6178a8b60f.rmeta,source=/libcfg_if-98d40c6178a8b60f.rmeta \
+##   --mount=from=out-98d40c6178a8b60f,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libcfg_if-98d40c6178a8b60f.rlib,source=/libcfg_if-98d40c6178a8b60f.rlib \
 ##   --mount=from=out-1ae807b4b6e713ec,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libcrossbeam_utils-1ae807b4b6e713ec.rmeta,source=/libcrossbeam_utils-1ae807b4b6e713ec.rmeta \
+##   --mount=from=out-1ae807b4b6e713ec,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libcrossbeam_utils-1ae807b4b6e713ec.rlib,source=/libcrossbeam_utils-1ae807b4b6e713ec.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="crossbeam_epoch" \
@@ -3376,8 +4492,11 @@ WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 RUN \
   --mount=from=cratesio-crossbeam-deque-0.8.4,source=/crossbeam-deque-0.8.4,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-deque-0.8.4 \
   --mount=from=out-98d40c6178a8b60f,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libcfg_if-98d40c6178a8b60f.rmeta,source=/libcfg_if-98d40c6178a8b60f.rmeta \
+  --mount=from=out-98d40c6178a8b60f,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libcfg_if-98d40c6178a8b60f.rlib,source=/libcfg_if-98d40c6178a8b60f.rlib \
   --mount=from=out-e4df21448919a796,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libcrossbeam_epoch-e4df21448919a796.rmeta,source=/libcrossbeam_epoch-e4df21448919a796.rmeta \
+  --mount=from=out-e4df21448919a796,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libcrossbeam_epoch-e4df21448919a796.rlib,source=/libcrossbeam_epoch-e4df21448919a796.rlib \
   --mount=from=out-1ae807b4b6e713ec,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libcrossbeam_utils-1ae807b4b6e713ec.rmeta,source=/libcrossbeam_utils-1ae807b4b6e713ec.rmeta \
+  --mount=from=out-1ae807b4b6e713ec,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libcrossbeam_utils-1ae807b4b6e713ec.rlib,source=/libcrossbeam_utils-1ae807b4b6e713ec.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="crossbeam_deque" \
@@ -3412,9 +4531,9 @@ COPY --from=dep-l-crossbeam-deque-0.8.4-0deb1c425e6f6d70 /tmp/clis-ripgrep_14-1-
 ##     "1ae807b4b6e713ec",
 ## ]
 ## short_externs = [
-##     "cfg_if-98d40c6178a8b60f",
-##     "crossbeam_epoch-e4df21448919a796",
-##     "crossbeam_utils-1ae807b4b6e713ec",
+##     "98d40c6178a8b60f",
+##     "e4df21448919a796",
+##     "1ae807b4b6e713ec",
 ## ]
 ## writes = [
 ##     "deps/crossbeam_deque-0deb1c425e6f6d70.d",
@@ -3426,6 +4545,36 @@ COPY --from=dep-l-crossbeam-deque-0.8.4-0deb1c425e6f6d70 /tmp/clis-ripgrep_14-1-
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_14-1-0/release/deps/libcrossbeam_deque-0deb1c425e6f6d70.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_14-1-0/release/deps/libcrossbeam_deque-0deb1c425e6f6d70.rlib","emit":"link"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-98d40c6178a8b60f"
+## src = "/libcfg_if-98d40c6178a8b60f.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libcfg_if-98d40c6178a8b60f.rmeta"
+## 
+## [[mounts]]
+## from = "out-98d40c6178a8b60f"
+## src = "/libcfg_if-98d40c6178a8b60f.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libcfg_if-98d40c6178a8b60f.rlib"
+## 
+## [[mounts]]
+## from = "out-e4df21448919a796"
+## src = "/libcrossbeam_epoch-e4df21448919a796.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libcrossbeam_epoch-e4df21448919a796.rmeta"
+## 
+## [[mounts]]
+## from = "out-e4df21448919a796"
+## src = "/libcrossbeam_epoch-e4df21448919a796.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libcrossbeam_epoch-e4df21448919a796.rlib"
+## 
+## [[mounts]]
+## from = "out-1ae807b4b6e713ec"
+## src = "/libcrossbeam_utils-1ae807b4b6e713ec.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libcrossbeam_utils-1ae807b4b6e713ec.rmeta"
+## 
+## [[mounts]]
+## from = "out-1ae807b4b6e713ec"
+## src = "/libcrossbeam_utils-1ae807b4b6e713ec.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libcrossbeam_utils-1ae807b4b6e713ec.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -3447,8 +4596,11 @@ COPY --from=dep-l-crossbeam-deque-0.8.4-0deb1c425e6f6d70 /tmp/clis-ripgrep_14-1-
 ## RUN \
 ##   --mount=from=cratesio-crossbeam-deque-0.8.4,source=/crossbeam-deque-0.8.4,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-deque-0.8.4 \
 ##   --mount=from=out-98d40c6178a8b60f,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libcfg_if-98d40c6178a8b60f.rmeta,source=/libcfg_if-98d40c6178a8b60f.rmeta \
+##   --mount=from=out-98d40c6178a8b60f,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libcfg_if-98d40c6178a8b60f.rlib,source=/libcfg_if-98d40c6178a8b60f.rlib \
 ##   --mount=from=out-e4df21448919a796,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libcrossbeam_epoch-e4df21448919a796.rmeta,source=/libcrossbeam_epoch-e4df21448919a796.rmeta \
+##   --mount=from=out-e4df21448919a796,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libcrossbeam_epoch-e4df21448919a796.rlib,source=/libcrossbeam_epoch-e4df21448919a796.rlib \
 ##   --mount=from=out-1ae807b4b6e713ec,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libcrossbeam_utils-1ae807b4b6e713ec.rmeta,source=/libcrossbeam_utils-1ae807b4b6e713ec.rmeta \
+##   --mount=from=out-1ae807b4b6e713ec,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libcrossbeam_utils-1ae807b4b6e713ec.rlib,source=/libcrossbeam_utils-1ae807b4b6e713ec.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="crossbeam_deque" \
@@ -3588,6 +4740,7 @@ WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 RUN \
   --mount=from=cratesio-walkdir-2.4.0,source=/walkdir-2.4.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/walkdir-2.4.0 \
   --mount=from=out-880cd61c1f851a7b,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libsame_file-880cd61c1f851a7b.rmeta,source=/libsame_file-880cd61c1f851a7b.rmeta \
+  --mount=from=out-880cd61c1f851a7b,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libsame_file-880cd61c1f851a7b.rlib,source=/libsame_file-880cd61c1f851a7b.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="walkdir" \
@@ -3617,7 +4770,7 @@ COPY --from=dep-l-walkdir-2.4.0-345a7495356295f2 /tmp/clis-ripgrep_14-1-0/releas
 
 ## this = "345a7495356295f2"
 ## deps = ["880cd61c1f851a7b"]
-## short_externs = ["same_file-880cd61c1f851a7b"]
+## short_externs = ["880cd61c1f851a7b"]
 ## writes = [
 ##     "deps/walkdir-345a7495356295f2.d",
 ##     "deps/libwalkdir-345a7495356295f2.rmeta",
@@ -3628,6 +4781,16 @@ COPY --from=dep-l-walkdir-2.4.0-345a7495356295f2 /tmp/clis-ripgrep_14-1-0/releas
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_14-1-0/release/deps/libwalkdir-345a7495356295f2.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_14-1-0/release/deps/libwalkdir-345a7495356295f2.rlib","emit":"link"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-880cd61c1f851a7b"
+## src = "/libsame_file-880cd61c1f851a7b.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libsame_file-880cd61c1f851a7b.rmeta"
+## 
+## [[mounts]]
+## from = "out-880cd61c1f851a7b"
+## src = "/libsame_file-880cd61c1f851a7b.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libsame_file-880cd61c1f851a7b.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -3649,6 +4812,7 @@ COPY --from=dep-l-walkdir-2.4.0-345a7495356295f2 /tmp/clis-ripgrep_14-1-0/releas
 ## RUN \
 ##   --mount=from=cratesio-walkdir-2.4.0,source=/walkdir-2.4.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/walkdir-2.4.0 \
 ##   --mount=from=out-880cd61c1f851a7b,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libsame_file-880cd61c1f851a7b.rmeta,source=/libsame_file-880cd61c1f851a7b.rmeta \
+##   --mount=from=out-880cd61c1f851a7b,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libsame_file-880cd61c1f851a7b.rlib,source=/libsame_file-880cd61c1f851a7b.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="walkdir" \
@@ -3689,18 +4853,31 @@ WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 RUN \
   --mount=from=cratesio-ignore-0.4.22,source=/ignore-0.4.22,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ignore-0.4.22 \
   --mount=from=out-0deb1c425e6f6d70,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libcrossbeam_deque-0deb1c425e6f6d70.rmeta,source=/libcrossbeam_deque-0deb1c425e6f6d70.rmeta \
+  --mount=from=out-0deb1c425e6f6d70,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libcrossbeam_deque-0deb1c425e6f6d70.rlib,source=/libcrossbeam_deque-0deb1c425e6f6d70.rlib \
   --mount=from=out-98d40c6178a8b60f,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libcfg_if-98d40c6178a8b60f.rmeta,source=/libcfg_if-98d40c6178a8b60f.rmeta \
+  --mount=from=out-98d40c6178a8b60f,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libcfg_if-98d40c6178a8b60f.rlib,source=/libcfg_if-98d40c6178a8b60f.rlib \
   --mount=from=out-e4df21448919a796,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libcrossbeam_epoch-e4df21448919a796.rmeta,source=/libcrossbeam_epoch-e4df21448919a796.rmeta \
+  --mount=from=out-e4df21448919a796,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libcrossbeam_epoch-e4df21448919a796.rlib,source=/libcrossbeam_epoch-e4df21448919a796.rlib \
   --mount=from=out-1ae807b4b6e713ec,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libcrossbeam_utils-1ae807b4b6e713ec.rmeta,source=/libcrossbeam_utils-1ae807b4b6e713ec.rmeta \
+  --mount=from=out-1ae807b4b6e713ec,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libcrossbeam_utils-1ae807b4b6e713ec.rlib,source=/libcrossbeam_utils-1ae807b4b6e713ec.rlib \
   --mount=from=out-14504da8f25a4dbf,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libglobset-14504da8f25a4dbf.rmeta,source=/libglobset-14504da8f25a4dbf.rmeta \
+  --mount=from=out-14504da8f25a4dbf,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libglobset-14504da8f25a4dbf.rlib,source=/libglobset-14504da8f25a4dbf.rlib \
   --mount=from=out-2a2c3bf3a2b335e0,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libaho_corasick-2a2c3bf3a2b335e0.rmeta,source=/libaho_corasick-2a2c3bf3a2b335e0.rmeta \
+  --mount=from=out-2a2c3bf3a2b335e0,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libaho_corasick-2a2c3bf3a2b335e0.rlib,source=/libaho_corasick-2a2c3bf3a2b335e0.rlib \
   --mount=from=out-3d9021aec125798d,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rmeta,source=/libmemchr-3d9021aec125798d.rmeta \
+  --mount=from=out-3d9021aec125798d,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rlib,source=/libmemchr-3d9021aec125798d.rlib \
   --mount=from=out-f6b551c518280772,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libbstr-f6b551c518280772.rmeta,source=/libbstr-f6b551c518280772.rmeta \
+  --mount=from=out-f6b551c518280772,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libbstr-f6b551c518280772.rlib,source=/libbstr-f6b551c518280772.rlib \
   --mount=from=out-54c30116fcd4ea92,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libregex_automata-54c30116fcd4ea92.rmeta,source=/libregex_automata-54c30116fcd4ea92.rmeta \
+  --mount=from=out-54c30116fcd4ea92,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libregex_automata-54c30116fcd4ea92.rlib,source=/libregex_automata-54c30116fcd4ea92.rlib \
   --mount=from=out-0d361157f8cdd0fe,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libregex_syntax-0d361157f8cdd0fe.rmeta,source=/libregex_syntax-0d361157f8cdd0fe.rmeta \
+  --mount=from=out-0d361157f8cdd0fe,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libregex_syntax-0d361157f8cdd0fe.rlib,source=/libregex_syntax-0d361157f8cdd0fe.rlib \
   --mount=from=out-45d1068292014e63,dst=/tmp/clis-ripgrep_14-1-0/release/deps/liblog-45d1068292014e63.rmeta,source=/liblog-45d1068292014e63.rmeta \
+  --mount=from=out-45d1068292014e63,dst=/tmp/clis-ripgrep_14-1-0/release/deps/liblog-45d1068292014e63.rlib,source=/liblog-45d1068292014e63.rlib \
   --mount=from=out-880cd61c1f851a7b,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libsame_file-880cd61c1f851a7b.rmeta,source=/libsame_file-880cd61c1f851a7b.rmeta \
+  --mount=from=out-880cd61c1f851a7b,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libsame_file-880cd61c1f851a7b.rlib,source=/libsame_file-880cd61c1f851a7b.rlib \
   --mount=from=out-345a7495356295f2,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libwalkdir-345a7495356295f2.rmeta,source=/libwalkdir-345a7495356295f2.rmeta \
+  --mount=from=out-345a7495356295f2,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libwalkdir-345a7495356295f2.rlib,source=/libwalkdir-345a7495356295f2.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="ignore" \
@@ -3745,19 +4922,19 @@ COPY --from=dep-l-ignore-0.4.22-95c296cdf92c1819 /tmp/clis-ripgrep_14-1-0/releas
 ##     "345a7495356295f2",
 ## ]
 ## short_externs = [
-##     "crossbeam_deque-0deb1c425e6f6d70",
-##     "cfg_if-98d40c6178a8b60f",
-##     "crossbeam_epoch-e4df21448919a796",
-##     "crossbeam_utils-1ae807b4b6e713ec",
-##     "globset-14504da8f25a4dbf",
-##     "aho_corasick-2a2c3bf3a2b335e0",
-##     "memchr-3d9021aec125798d",
-##     "bstr-f6b551c518280772",
-##     "regex_automata-54c30116fcd4ea92",
-##     "regex_syntax-0d361157f8cdd0fe",
-##     "log-45d1068292014e63",
-##     "same_file-880cd61c1f851a7b",
-##     "walkdir-345a7495356295f2",
+##     "0deb1c425e6f6d70",
+##     "98d40c6178a8b60f",
+##     "e4df21448919a796",
+##     "1ae807b4b6e713ec",
+##     "14504da8f25a4dbf",
+##     "2a2c3bf3a2b335e0",
+##     "3d9021aec125798d",
+##     "f6b551c518280772",
+##     "54c30116fcd4ea92",
+##     "0d361157f8cdd0fe",
+##     "45d1068292014e63",
+##     "880cd61c1f851a7b",
+##     "345a7495356295f2",
 ## ]
 ## writes = [
 ##     "deps/ignore-95c296cdf92c1819.d",
@@ -3769,6 +4946,136 @@ COPY --from=dep-l-ignore-0.4.22-95c296cdf92c1819 /tmp/clis-ripgrep_14-1-0/releas
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_14-1-0/release/deps/libignore-95c296cdf92c1819.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_14-1-0/release/deps/libignore-95c296cdf92c1819.rlib","emit":"link"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-0deb1c425e6f6d70"
+## src = "/libcrossbeam_deque-0deb1c425e6f6d70.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libcrossbeam_deque-0deb1c425e6f6d70.rmeta"
+## 
+## [[mounts]]
+## from = "out-0deb1c425e6f6d70"
+## src = "/libcrossbeam_deque-0deb1c425e6f6d70.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libcrossbeam_deque-0deb1c425e6f6d70.rlib"
+## 
+## [[mounts]]
+## from = "out-98d40c6178a8b60f"
+## src = "/libcfg_if-98d40c6178a8b60f.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libcfg_if-98d40c6178a8b60f.rmeta"
+## 
+## [[mounts]]
+## from = "out-98d40c6178a8b60f"
+## src = "/libcfg_if-98d40c6178a8b60f.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libcfg_if-98d40c6178a8b60f.rlib"
+## 
+## [[mounts]]
+## from = "out-e4df21448919a796"
+## src = "/libcrossbeam_epoch-e4df21448919a796.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libcrossbeam_epoch-e4df21448919a796.rmeta"
+## 
+## [[mounts]]
+## from = "out-e4df21448919a796"
+## src = "/libcrossbeam_epoch-e4df21448919a796.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libcrossbeam_epoch-e4df21448919a796.rlib"
+## 
+## [[mounts]]
+## from = "out-1ae807b4b6e713ec"
+## src = "/libcrossbeam_utils-1ae807b4b6e713ec.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libcrossbeam_utils-1ae807b4b6e713ec.rmeta"
+## 
+## [[mounts]]
+## from = "out-1ae807b4b6e713ec"
+## src = "/libcrossbeam_utils-1ae807b4b6e713ec.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libcrossbeam_utils-1ae807b4b6e713ec.rlib"
+## 
+## [[mounts]]
+## from = "out-14504da8f25a4dbf"
+## src = "/libglobset-14504da8f25a4dbf.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libglobset-14504da8f25a4dbf.rmeta"
+## 
+## [[mounts]]
+## from = "out-14504da8f25a4dbf"
+## src = "/libglobset-14504da8f25a4dbf.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libglobset-14504da8f25a4dbf.rlib"
+## 
+## [[mounts]]
+## from = "out-2a2c3bf3a2b335e0"
+## src = "/libaho_corasick-2a2c3bf3a2b335e0.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libaho_corasick-2a2c3bf3a2b335e0.rmeta"
+## 
+## [[mounts]]
+## from = "out-2a2c3bf3a2b335e0"
+## src = "/libaho_corasick-2a2c3bf3a2b335e0.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libaho_corasick-2a2c3bf3a2b335e0.rlib"
+## 
+## [[mounts]]
+## from = "out-3d9021aec125798d"
+## src = "/libmemchr-3d9021aec125798d.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rmeta"
+## 
+## [[mounts]]
+## from = "out-3d9021aec125798d"
+## src = "/libmemchr-3d9021aec125798d.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rlib"
+## 
+## [[mounts]]
+## from = "out-f6b551c518280772"
+## src = "/libbstr-f6b551c518280772.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libbstr-f6b551c518280772.rmeta"
+## 
+## [[mounts]]
+## from = "out-f6b551c518280772"
+## src = "/libbstr-f6b551c518280772.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libbstr-f6b551c518280772.rlib"
+## 
+## [[mounts]]
+## from = "out-54c30116fcd4ea92"
+## src = "/libregex_automata-54c30116fcd4ea92.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libregex_automata-54c30116fcd4ea92.rmeta"
+## 
+## [[mounts]]
+## from = "out-54c30116fcd4ea92"
+## src = "/libregex_automata-54c30116fcd4ea92.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libregex_automata-54c30116fcd4ea92.rlib"
+## 
+## [[mounts]]
+## from = "out-0d361157f8cdd0fe"
+## src = "/libregex_syntax-0d361157f8cdd0fe.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libregex_syntax-0d361157f8cdd0fe.rmeta"
+## 
+## [[mounts]]
+## from = "out-0d361157f8cdd0fe"
+## src = "/libregex_syntax-0d361157f8cdd0fe.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libregex_syntax-0d361157f8cdd0fe.rlib"
+## 
+## [[mounts]]
+## from = "out-45d1068292014e63"
+## src = "/liblog-45d1068292014e63.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/liblog-45d1068292014e63.rmeta"
+## 
+## [[mounts]]
+## from = "out-45d1068292014e63"
+## src = "/liblog-45d1068292014e63.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/liblog-45d1068292014e63.rlib"
+## 
+## [[mounts]]
+## from = "out-880cd61c1f851a7b"
+## src = "/libsame_file-880cd61c1f851a7b.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libsame_file-880cd61c1f851a7b.rmeta"
+## 
+## [[mounts]]
+## from = "out-880cd61c1f851a7b"
+## src = "/libsame_file-880cd61c1f851a7b.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libsame_file-880cd61c1f851a7b.rlib"
+## 
+## [[mounts]]
+## from = "out-345a7495356295f2"
+## src = "/libwalkdir-345a7495356295f2.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libwalkdir-345a7495356295f2.rmeta"
+## 
+## [[mounts]]
+## from = "out-345a7495356295f2"
+## src = "/libwalkdir-345a7495356295f2.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libwalkdir-345a7495356295f2.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -3790,18 +5097,31 @@ COPY --from=dep-l-ignore-0.4.22-95c296cdf92c1819 /tmp/clis-ripgrep_14-1-0/releas
 ## RUN \
 ##   --mount=from=cratesio-ignore-0.4.22,source=/ignore-0.4.22,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ignore-0.4.22 \
 ##   --mount=from=out-0deb1c425e6f6d70,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libcrossbeam_deque-0deb1c425e6f6d70.rmeta,source=/libcrossbeam_deque-0deb1c425e6f6d70.rmeta \
+##   --mount=from=out-0deb1c425e6f6d70,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libcrossbeam_deque-0deb1c425e6f6d70.rlib,source=/libcrossbeam_deque-0deb1c425e6f6d70.rlib \
 ##   --mount=from=out-98d40c6178a8b60f,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libcfg_if-98d40c6178a8b60f.rmeta,source=/libcfg_if-98d40c6178a8b60f.rmeta \
+##   --mount=from=out-98d40c6178a8b60f,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libcfg_if-98d40c6178a8b60f.rlib,source=/libcfg_if-98d40c6178a8b60f.rlib \
 ##   --mount=from=out-e4df21448919a796,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libcrossbeam_epoch-e4df21448919a796.rmeta,source=/libcrossbeam_epoch-e4df21448919a796.rmeta \
+##   --mount=from=out-e4df21448919a796,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libcrossbeam_epoch-e4df21448919a796.rlib,source=/libcrossbeam_epoch-e4df21448919a796.rlib \
 ##   --mount=from=out-1ae807b4b6e713ec,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libcrossbeam_utils-1ae807b4b6e713ec.rmeta,source=/libcrossbeam_utils-1ae807b4b6e713ec.rmeta \
+##   --mount=from=out-1ae807b4b6e713ec,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libcrossbeam_utils-1ae807b4b6e713ec.rlib,source=/libcrossbeam_utils-1ae807b4b6e713ec.rlib \
 ##   --mount=from=out-14504da8f25a4dbf,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libglobset-14504da8f25a4dbf.rmeta,source=/libglobset-14504da8f25a4dbf.rmeta \
+##   --mount=from=out-14504da8f25a4dbf,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libglobset-14504da8f25a4dbf.rlib,source=/libglobset-14504da8f25a4dbf.rlib \
 ##   --mount=from=out-2a2c3bf3a2b335e0,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libaho_corasick-2a2c3bf3a2b335e0.rmeta,source=/libaho_corasick-2a2c3bf3a2b335e0.rmeta \
+##   --mount=from=out-2a2c3bf3a2b335e0,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libaho_corasick-2a2c3bf3a2b335e0.rlib,source=/libaho_corasick-2a2c3bf3a2b335e0.rlib \
 ##   --mount=from=out-3d9021aec125798d,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rmeta,source=/libmemchr-3d9021aec125798d.rmeta \
+##   --mount=from=out-3d9021aec125798d,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rlib,source=/libmemchr-3d9021aec125798d.rlib \
 ##   --mount=from=out-f6b551c518280772,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libbstr-f6b551c518280772.rmeta,source=/libbstr-f6b551c518280772.rmeta \
+##   --mount=from=out-f6b551c518280772,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libbstr-f6b551c518280772.rlib,source=/libbstr-f6b551c518280772.rlib \
 ##   --mount=from=out-54c30116fcd4ea92,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libregex_automata-54c30116fcd4ea92.rmeta,source=/libregex_automata-54c30116fcd4ea92.rmeta \
+##   --mount=from=out-54c30116fcd4ea92,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libregex_automata-54c30116fcd4ea92.rlib,source=/libregex_automata-54c30116fcd4ea92.rlib \
 ##   --mount=from=out-0d361157f8cdd0fe,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libregex_syntax-0d361157f8cdd0fe.rmeta,source=/libregex_syntax-0d361157f8cdd0fe.rmeta \
+##   --mount=from=out-0d361157f8cdd0fe,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libregex_syntax-0d361157f8cdd0fe.rlib,source=/libregex_syntax-0d361157f8cdd0fe.rlib \
 ##   --mount=from=out-45d1068292014e63,dst=/tmp/clis-ripgrep_14-1-0/release/deps/liblog-45d1068292014e63.rmeta,source=/liblog-45d1068292014e63.rmeta \
+##   --mount=from=out-45d1068292014e63,dst=/tmp/clis-ripgrep_14-1-0/release/deps/liblog-45d1068292014e63.rlib,source=/liblog-45d1068292014e63.rlib \
 ##   --mount=from=out-880cd61c1f851a7b,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libsame_file-880cd61c1f851a7b.rmeta,source=/libsame_file-880cd61c1f851a7b.rmeta \
+##   --mount=from=out-880cd61c1f851a7b,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libsame_file-880cd61c1f851a7b.rlib,source=/libsame_file-880cd61c1f851a7b.rlib \
 ##   --mount=from=out-345a7495356295f2,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libwalkdir-345a7495356295f2.rmeta,source=/libwalkdir-345a7495356295f2.rmeta \
+##   --mount=from=out-345a7495356295f2,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libwalkdir-345a7495356295f2.rlib,source=/libwalkdir-345a7495356295f2.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="ignore" \
@@ -4037,37 +5357,69 @@ SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 RUN \
   --mount=from=cratesio-ripgrep-14.1.0,source=/ripgrep-14.1.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ripgrep-14.1.0 \
+  --mount=from=out-95e5d8a0e52ba465,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libanyhow-95e5d8a0e52ba465.rmeta,source=/libanyhow-95e5d8a0e52ba465.rmeta \
   --mount=from=out-95e5d8a0e52ba465,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libanyhow-95e5d8a0e52ba465.rlib,source=/libanyhow-95e5d8a0e52ba465.rlib \
+  --mount=from=out-f6b551c518280772,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libbstr-f6b551c518280772.rmeta,source=/libbstr-f6b551c518280772.rmeta \
   --mount=from=out-f6b551c518280772,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libbstr-f6b551c518280772.rlib,source=/libbstr-f6b551c518280772.rlib \
+  --mount=from=out-3d9021aec125798d,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rmeta,source=/libmemchr-3d9021aec125798d.rmeta \
   --mount=from=out-3d9021aec125798d,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rlib,source=/libmemchr-3d9021aec125798d.rlib \
+  --mount=from=out-54c30116fcd4ea92,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libregex_automata-54c30116fcd4ea92.rmeta,source=/libregex_automata-54c30116fcd4ea92.rmeta \
   --mount=from=out-54c30116fcd4ea92,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libregex_automata-54c30116fcd4ea92.rlib,source=/libregex_automata-54c30116fcd4ea92.rlib \
+  --mount=from=out-2a2c3bf3a2b335e0,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libaho_corasick-2a2c3bf3a2b335e0.rmeta,source=/libaho_corasick-2a2c3bf3a2b335e0.rmeta \
   --mount=from=out-2a2c3bf3a2b335e0,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libaho_corasick-2a2c3bf3a2b335e0.rlib,source=/libaho_corasick-2a2c3bf3a2b335e0.rlib \
+  --mount=from=out-0d361157f8cdd0fe,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libregex_syntax-0d361157f8cdd0fe.rmeta,source=/libregex_syntax-0d361157f8cdd0fe.rmeta \
   --mount=from=out-0d361157f8cdd0fe,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libregex_syntax-0d361157f8cdd0fe.rlib,source=/libregex_syntax-0d361157f8cdd0fe.rlib \
+  --mount=from=out-9e71f2809112d472,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libgrep-9e71f2809112d472.rmeta,source=/libgrep-9e71f2809112d472.rmeta \
   --mount=from=out-9e71f2809112d472,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libgrep-9e71f2809112d472.rlib,source=/libgrep-9e71f2809112d472.rlib \
+  --mount=from=out-8da8357e778092ce,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_cli-8da8357e778092ce.rmeta,source=/libgrep_cli-8da8357e778092ce.rmeta \
   --mount=from=out-8da8357e778092ce,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_cli-8da8357e778092ce.rlib,source=/libgrep_cli-8da8357e778092ce.rlib \
+  --mount=from=out-14504da8f25a4dbf,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libglobset-14504da8f25a4dbf.rmeta,source=/libglobset-14504da8f25a4dbf.rmeta \
   --mount=from=out-14504da8f25a4dbf,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libglobset-14504da8f25a4dbf.rlib,source=/libglobset-14504da8f25a4dbf.rlib \
+  --mount=from=out-45d1068292014e63,dst=/tmp/clis-ripgrep_14-1-0/release/deps/liblog-45d1068292014e63.rmeta,source=/liblog-45d1068292014e63.rmeta \
   --mount=from=out-45d1068292014e63,dst=/tmp/clis-ripgrep_14-1-0/release/deps/liblog-45d1068292014e63.rlib,source=/liblog-45d1068292014e63.rlib \
+  --mount=from=out-b1dcb66edfd0e8a0,dst=/tmp/clis-ripgrep_14-1-0/release/deps/liblibc-b1dcb66edfd0e8a0.rmeta,source=/liblibc-b1dcb66edfd0e8a0.rmeta \
   --mount=from=out-b1dcb66edfd0e8a0,dst=/tmp/clis-ripgrep_14-1-0/release/deps/liblibc-b1dcb66edfd0e8a0.rlib,source=/liblibc-b1dcb66edfd0e8a0.rlib \
+  --mount=from=out-59ae8e7772deaa56,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libtermcolor-59ae8e7772deaa56.rmeta,source=/libtermcolor-59ae8e7772deaa56.rmeta \
   --mount=from=out-59ae8e7772deaa56,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libtermcolor-59ae8e7772deaa56.rlib,source=/libtermcolor-59ae8e7772deaa56.rlib \
+  --mount=from=out-7517975d791c1423,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_matcher-7517975d791c1423.rmeta,source=/libgrep_matcher-7517975d791c1423.rmeta \
   --mount=from=out-7517975d791c1423,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_matcher-7517975d791c1423.rlib,source=/libgrep_matcher-7517975d791c1423.rlib \
+  --mount=from=out-0e4d9ea7a0184dd5,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_printer-0e4d9ea7a0184dd5.rmeta,source=/libgrep_printer-0e4d9ea7a0184dd5.rmeta \
   --mount=from=out-0e4d9ea7a0184dd5,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_printer-0e4d9ea7a0184dd5.rlib,source=/libgrep_printer-0e4d9ea7a0184dd5.rlib \
+  --mount=from=out-6fc004d41272f596,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_searcher-6fc004d41272f596.rmeta,source=/libgrep_searcher-6fc004d41272f596.rmeta \
   --mount=from=out-6fc004d41272f596,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_searcher-6fc004d41272f596.rlib,source=/libgrep_searcher-6fc004d41272f596.rlib \
+  --mount=from=out-71f95fee6544e787,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libencoding_rs-71f95fee6544e787.rmeta,source=/libencoding_rs-71f95fee6544e787.rmeta \
   --mount=from=out-71f95fee6544e787,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libencoding_rs-71f95fee6544e787.rlib,source=/libencoding_rs-71f95fee6544e787.rlib \
+  --mount=from=out-98d40c6178a8b60f,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libcfg_if-98d40c6178a8b60f.rmeta,source=/libcfg_if-98d40c6178a8b60f.rmeta \
   --mount=from=out-98d40c6178a8b60f,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libcfg_if-98d40c6178a8b60f.rlib,source=/libcfg_if-98d40c6178a8b60f.rlib \
+  --mount=from=out-1f57e01234da7cf8,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libencoding_rs_io-1f57e01234da7cf8.rmeta,source=/libencoding_rs_io-1f57e01234da7cf8.rmeta \
   --mount=from=out-1f57e01234da7cf8,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libencoding_rs_io-1f57e01234da7cf8.rlib,source=/libencoding_rs_io-1f57e01234da7cf8.rlib \
+  --mount=from=out-21c841a4e972790f,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libmemmap2-21c841a4e972790f.rmeta,source=/libmemmap2-21c841a4e972790f.rmeta \
   --mount=from=out-21c841a4e972790f,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libmemmap2-21c841a4e972790f.rlib,source=/libmemmap2-21c841a4e972790f.rlib \
+  --mount=from=out-6342957ddc692e98,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libserde-6342957ddc692e98.rmeta,source=/libserde-6342957ddc692e98.rmeta \
   --mount=from=out-6342957ddc692e98,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libserde-6342957ddc692e98.rlib,source=/libserde-6342957ddc692e98.rlib \
+  --mount=from=out-f1456127761f5765,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libserde_json-f1456127761f5765.rmeta,source=/libserde_json-f1456127761f5765.rmeta \
   --mount=from=out-f1456127761f5765,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libserde_json-f1456127761f5765.rlib,source=/libserde_json-f1456127761f5765.rlib \
+  --mount=from=out-2b4528a4fd57cfaf,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libitoa-2b4528a4fd57cfaf.rmeta,source=/libitoa-2b4528a4fd57cfaf.rmeta \
   --mount=from=out-2b4528a4fd57cfaf,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libitoa-2b4528a4fd57cfaf.rlib,source=/libitoa-2b4528a4fd57cfaf.rlib \
+  --mount=from=out-a994c87db442418d,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libryu-a994c87db442418d.rmeta,source=/libryu-a994c87db442418d.rmeta \
   --mount=from=out-a994c87db442418d,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libryu-a994c87db442418d.rlib,source=/libryu-a994c87db442418d.rlib \
+  --mount=from=out-c08c56633b958d0c,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_regex-c08c56633b958d0c.rmeta,source=/libgrep_regex-c08c56633b958d0c.rmeta \
   --mount=from=out-c08c56633b958d0c,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_regex-c08c56633b958d0c.rlib,source=/libgrep_regex-c08c56633b958d0c.rlib \
+  --mount=from=out-95c296cdf92c1819,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libignore-95c296cdf92c1819.rmeta,source=/libignore-95c296cdf92c1819.rmeta \
   --mount=from=out-95c296cdf92c1819,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libignore-95c296cdf92c1819.rlib,source=/libignore-95c296cdf92c1819.rlib \
+  --mount=from=out-0deb1c425e6f6d70,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libcrossbeam_deque-0deb1c425e6f6d70.rmeta,source=/libcrossbeam_deque-0deb1c425e6f6d70.rmeta \
   --mount=from=out-0deb1c425e6f6d70,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libcrossbeam_deque-0deb1c425e6f6d70.rlib,source=/libcrossbeam_deque-0deb1c425e6f6d70.rlib \
+  --mount=from=out-e4df21448919a796,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libcrossbeam_epoch-e4df21448919a796.rmeta,source=/libcrossbeam_epoch-e4df21448919a796.rmeta \
   --mount=from=out-e4df21448919a796,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libcrossbeam_epoch-e4df21448919a796.rlib,source=/libcrossbeam_epoch-e4df21448919a796.rlib \
+  --mount=from=out-1ae807b4b6e713ec,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libcrossbeam_utils-1ae807b4b6e713ec.rmeta,source=/libcrossbeam_utils-1ae807b4b6e713ec.rmeta \
   --mount=from=out-1ae807b4b6e713ec,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libcrossbeam_utils-1ae807b4b6e713ec.rlib,source=/libcrossbeam_utils-1ae807b4b6e713ec.rlib \
+  --mount=from=out-880cd61c1f851a7b,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libsame_file-880cd61c1f851a7b.rmeta,source=/libsame_file-880cd61c1f851a7b.rmeta \
   --mount=from=out-880cd61c1f851a7b,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libsame_file-880cd61c1f851a7b.rlib,source=/libsame_file-880cd61c1f851a7b.rlib \
+  --mount=from=out-345a7495356295f2,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libwalkdir-345a7495356295f2.rmeta,source=/libwalkdir-345a7495356295f2.rmeta \
   --mount=from=out-345a7495356295f2,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libwalkdir-345a7495356295f2.rlib,source=/libwalkdir-345a7495356295f2.rlib \
+  --mount=from=out-17f37e7bd1b70087,dst=/tmp/clis-ripgrep_14-1-0/release/deps/liblexopt-17f37e7bd1b70087.rmeta,source=/liblexopt-17f37e7bd1b70087.rmeta \
   --mount=from=out-17f37e7bd1b70087,dst=/tmp/clis-ripgrep_14-1-0/release/deps/liblexopt-17f37e7bd1b70087.rlib,source=/liblexopt-17f37e7bd1b70087.rlib \
+  --mount=from=out-f2419d4872a2993a,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libtextwrap-f2419d4872a2993a.rmeta,source=/libtextwrap-f2419d4872a2993a.rmeta \
   --mount=from=out-f2419d4872a2993a,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libtextwrap-f2419d4872a2993a.rlib,source=/libtextwrap-f2419d4872a2993a.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
@@ -4139,38 +5491,38 @@ COPY --from=dep-b-ripgrep-14.1.0-16aebc92c4aced68 /tmp/clis-ripgrep_14-1-0/relea
 ##     "f2419d4872a2993a",
 ## ]
 ## short_externs = [
-##     "anyhow-95e5d8a0e52ba465",
-##     "bstr-f6b551c518280772",
-##     "memchr-3d9021aec125798d",
-##     "regex_automata-54c30116fcd4ea92",
-##     "aho_corasick-2a2c3bf3a2b335e0",
-##     "regex_syntax-0d361157f8cdd0fe",
-##     "grep-9e71f2809112d472",
-##     "grep_cli-8da8357e778092ce",
-##     "globset-14504da8f25a4dbf",
-##     "log-45d1068292014e63",
-##     "libc-b1dcb66edfd0e8a0",
-##     "termcolor-59ae8e7772deaa56",
-##     "grep_matcher-7517975d791c1423",
-##     "grep_printer-0e4d9ea7a0184dd5",
-##     "grep_searcher-6fc004d41272f596",
-##     "encoding_rs-71f95fee6544e787",
-##     "cfg_if-98d40c6178a8b60f",
-##     "encoding_rs_io-1f57e01234da7cf8",
-##     "memmap2-21c841a4e972790f",
-##     "serde-6342957ddc692e98",
-##     "serde_json-f1456127761f5765",
-##     "itoa-2b4528a4fd57cfaf",
-##     "ryu-a994c87db442418d",
-##     "grep_regex-c08c56633b958d0c",
-##     "ignore-95c296cdf92c1819",
-##     "crossbeam_deque-0deb1c425e6f6d70",
-##     "crossbeam_epoch-e4df21448919a796",
-##     "crossbeam_utils-1ae807b4b6e713ec",
-##     "same_file-880cd61c1f851a7b",
-##     "walkdir-345a7495356295f2",
-##     "lexopt-17f37e7bd1b70087",
-##     "textwrap-f2419d4872a2993a",
+##     "95e5d8a0e52ba465",
+##     "f6b551c518280772",
+##     "3d9021aec125798d",
+##     "54c30116fcd4ea92",
+##     "2a2c3bf3a2b335e0",
+##     "0d361157f8cdd0fe",
+##     "9e71f2809112d472",
+##     "8da8357e778092ce",
+##     "14504da8f25a4dbf",
+##     "45d1068292014e63",
+##     "b1dcb66edfd0e8a0",
+##     "59ae8e7772deaa56",
+##     "7517975d791c1423",
+##     "0e4d9ea7a0184dd5",
+##     "6fc004d41272f596",
+##     "71f95fee6544e787",
+##     "98d40c6178a8b60f",
+##     "1f57e01234da7cf8",
+##     "21c841a4e972790f",
+##     "6342957ddc692e98",
+##     "f1456127761f5765",
+##     "2b4528a4fd57cfaf",
+##     "a994c87db442418d",
+##     "c08c56633b958d0c",
+##     "95c296cdf92c1819",
+##     "0deb1c425e6f6d70",
+##     "e4df21448919a796",
+##     "1ae807b4b6e713ec",
+##     "880cd61c1f851a7b",
+##     "345a7495356295f2",
+##     "17f37e7bd1b70087",
+##     "f2419d4872a2993a",
 ## ]
 ## writes = [
 ##     "deps/rg-16aebc92c4aced68.d",
@@ -4180,6 +5532,326 @@ COPY --from=dep-b-ripgrep-14.1.0-16aebc92c4aced68 /tmp/clis-ripgrep_14-1-0/relea
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_14-1-0/release/deps/rg-16aebc92c4aced68.d","emit":"dep-info"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_14-1-0/release/deps/rg-16aebc92c4aced68","emit":"link"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-95e5d8a0e52ba465"
+## src = "/libanyhow-95e5d8a0e52ba465.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libanyhow-95e5d8a0e52ba465.rmeta"
+## 
+## [[mounts]]
+## from = "out-95e5d8a0e52ba465"
+## src = "/libanyhow-95e5d8a0e52ba465.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libanyhow-95e5d8a0e52ba465.rlib"
+## 
+## [[mounts]]
+## from = "out-f6b551c518280772"
+## src = "/libbstr-f6b551c518280772.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libbstr-f6b551c518280772.rmeta"
+## 
+## [[mounts]]
+## from = "out-f6b551c518280772"
+## src = "/libbstr-f6b551c518280772.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libbstr-f6b551c518280772.rlib"
+## 
+## [[mounts]]
+## from = "out-3d9021aec125798d"
+## src = "/libmemchr-3d9021aec125798d.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rmeta"
+## 
+## [[mounts]]
+## from = "out-3d9021aec125798d"
+## src = "/libmemchr-3d9021aec125798d.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rlib"
+## 
+## [[mounts]]
+## from = "out-54c30116fcd4ea92"
+## src = "/libregex_automata-54c30116fcd4ea92.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libregex_automata-54c30116fcd4ea92.rmeta"
+## 
+## [[mounts]]
+## from = "out-54c30116fcd4ea92"
+## src = "/libregex_automata-54c30116fcd4ea92.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libregex_automata-54c30116fcd4ea92.rlib"
+## 
+## [[mounts]]
+## from = "out-2a2c3bf3a2b335e0"
+## src = "/libaho_corasick-2a2c3bf3a2b335e0.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libaho_corasick-2a2c3bf3a2b335e0.rmeta"
+## 
+## [[mounts]]
+## from = "out-2a2c3bf3a2b335e0"
+## src = "/libaho_corasick-2a2c3bf3a2b335e0.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libaho_corasick-2a2c3bf3a2b335e0.rlib"
+## 
+## [[mounts]]
+## from = "out-0d361157f8cdd0fe"
+## src = "/libregex_syntax-0d361157f8cdd0fe.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libregex_syntax-0d361157f8cdd0fe.rmeta"
+## 
+## [[mounts]]
+## from = "out-0d361157f8cdd0fe"
+## src = "/libregex_syntax-0d361157f8cdd0fe.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libregex_syntax-0d361157f8cdd0fe.rlib"
+## 
+## [[mounts]]
+## from = "out-9e71f2809112d472"
+## src = "/libgrep-9e71f2809112d472.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libgrep-9e71f2809112d472.rmeta"
+## 
+## [[mounts]]
+## from = "out-9e71f2809112d472"
+## src = "/libgrep-9e71f2809112d472.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libgrep-9e71f2809112d472.rlib"
+## 
+## [[mounts]]
+## from = "out-8da8357e778092ce"
+## src = "/libgrep_cli-8da8357e778092ce.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_cli-8da8357e778092ce.rmeta"
+## 
+## [[mounts]]
+## from = "out-8da8357e778092ce"
+## src = "/libgrep_cli-8da8357e778092ce.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_cli-8da8357e778092ce.rlib"
+## 
+## [[mounts]]
+## from = "out-14504da8f25a4dbf"
+## src = "/libglobset-14504da8f25a4dbf.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libglobset-14504da8f25a4dbf.rmeta"
+## 
+## [[mounts]]
+## from = "out-14504da8f25a4dbf"
+## src = "/libglobset-14504da8f25a4dbf.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libglobset-14504da8f25a4dbf.rlib"
+## 
+## [[mounts]]
+## from = "out-45d1068292014e63"
+## src = "/liblog-45d1068292014e63.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/liblog-45d1068292014e63.rmeta"
+## 
+## [[mounts]]
+## from = "out-45d1068292014e63"
+## src = "/liblog-45d1068292014e63.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/liblog-45d1068292014e63.rlib"
+## 
+## [[mounts]]
+## from = "out-b1dcb66edfd0e8a0"
+## src = "/liblibc-b1dcb66edfd0e8a0.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/liblibc-b1dcb66edfd0e8a0.rmeta"
+## 
+## [[mounts]]
+## from = "out-b1dcb66edfd0e8a0"
+## src = "/liblibc-b1dcb66edfd0e8a0.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/liblibc-b1dcb66edfd0e8a0.rlib"
+## 
+## [[mounts]]
+## from = "out-59ae8e7772deaa56"
+## src = "/libtermcolor-59ae8e7772deaa56.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libtermcolor-59ae8e7772deaa56.rmeta"
+## 
+## [[mounts]]
+## from = "out-59ae8e7772deaa56"
+## src = "/libtermcolor-59ae8e7772deaa56.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libtermcolor-59ae8e7772deaa56.rlib"
+## 
+## [[mounts]]
+## from = "out-7517975d791c1423"
+## src = "/libgrep_matcher-7517975d791c1423.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_matcher-7517975d791c1423.rmeta"
+## 
+## [[mounts]]
+## from = "out-7517975d791c1423"
+## src = "/libgrep_matcher-7517975d791c1423.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_matcher-7517975d791c1423.rlib"
+## 
+## [[mounts]]
+## from = "out-0e4d9ea7a0184dd5"
+## src = "/libgrep_printer-0e4d9ea7a0184dd5.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_printer-0e4d9ea7a0184dd5.rmeta"
+## 
+## [[mounts]]
+## from = "out-0e4d9ea7a0184dd5"
+## src = "/libgrep_printer-0e4d9ea7a0184dd5.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_printer-0e4d9ea7a0184dd5.rlib"
+## 
+## [[mounts]]
+## from = "out-6fc004d41272f596"
+## src = "/libgrep_searcher-6fc004d41272f596.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_searcher-6fc004d41272f596.rmeta"
+## 
+## [[mounts]]
+## from = "out-6fc004d41272f596"
+## src = "/libgrep_searcher-6fc004d41272f596.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_searcher-6fc004d41272f596.rlib"
+## 
+## [[mounts]]
+## from = "out-71f95fee6544e787"
+## src = "/libencoding_rs-71f95fee6544e787.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libencoding_rs-71f95fee6544e787.rmeta"
+## 
+## [[mounts]]
+## from = "out-71f95fee6544e787"
+## src = "/libencoding_rs-71f95fee6544e787.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libencoding_rs-71f95fee6544e787.rlib"
+## 
+## [[mounts]]
+## from = "out-98d40c6178a8b60f"
+## src = "/libcfg_if-98d40c6178a8b60f.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libcfg_if-98d40c6178a8b60f.rmeta"
+## 
+## [[mounts]]
+## from = "out-98d40c6178a8b60f"
+## src = "/libcfg_if-98d40c6178a8b60f.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libcfg_if-98d40c6178a8b60f.rlib"
+## 
+## [[mounts]]
+## from = "out-1f57e01234da7cf8"
+## src = "/libencoding_rs_io-1f57e01234da7cf8.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libencoding_rs_io-1f57e01234da7cf8.rmeta"
+## 
+## [[mounts]]
+## from = "out-1f57e01234da7cf8"
+## src = "/libencoding_rs_io-1f57e01234da7cf8.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libencoding_rs_io-1f57e01234da7cf8.rlib"
+## 
+## [[mounts]]
+## from = "out-21c841a4e972790f"
+## src = "/libmemmap2-21c841a4e972790f.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libmemmap2-21c841a4e972790f.rmeta"
+## 
+## [[mounts]]
+## from = "out-21c841a4e972790f"
+## src = "/libmemmap2-21c841a4e972790f.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libmemmap2-21c841a4e972790f.rlib"
+## 
+## [[mounts]]
+## from = "out-6342957ddc692e98"
+## src = "/libserde-6342957ddc692e98.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libserde-6342957ddc692e98.rmeta"
+## 
+## [[mounts]]
+## from = "out-6342957ddc692e98"
+## src = "/libserde-6342957ddc692e98.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libserde-6342957ddc692e98.rlib"
+## 
+## [[mounts]]
+## from = "out-f1456127761f5765"
+## src = "/libserde_json-f1456127761f5765.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libserde_json-f1456127761f5765.rmeta"
+## 
+## [[mounts]]
+## from = "out-f1456127761f5765"
+## src = "/libserde_json-f1456127761f5765.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libserde_json-f1456127761f5765.rlib"
+## 
+## [[mounts]]
+## from = "out-2b4528a4fd57cfaf"
+## src = "/libitoa-2b4528a4fd57cfaf.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libitoa-2b4528a4fd57cfaf.rmeta"
+## 
+## [[mounts]]
+## from = "out-2b4528a4fd57cfaf"
+## src = "/libitoa-2b4528a4fd57cfaf.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libitoa-2b4528a4fd57cfaf.rlib"
+## 
+## [[mounts]]
+## from = "out-a994c87db442418d"
+## src = "/libryu-a994c87db442418d.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libryu-a994c87db442418d.rmeta"
+## 
+## [[mounts]]
+## from = "out-a994c87db442418d"
+## src = "/libryu-a994c87db442418d.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libryu-a994c87db442418d.rlib"
+## 
+## [[mounts]]
+## from = "out-c08c56633b958d0c"
+## src = "/libgrep_regex-c08c56633b958d0c.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_regex-c08c56633b958d0c.rmeta"
+## 
+## [[mounts]]
+## from = "out-c08c56633b958d0c"
+## src = "/libgrep_regex-c08c56633b958d0c.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_regex-c08c56633b958d0c.rlib"
+## 
+## [[mounts]]
+## from = "out-95c296cdf92c1819"
+## src = "/libignore-95c296cdf92c1819.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libignore-95c296cdf92c1819.rmeta"
+## 
+## [[mounts]]
+## from = "out-95c296cdf92c1819"
+## src = "/libignore-95c296cdf92c1819.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libignore-95c296cdf92c1819.rlib"
+## 
+## [[mounts]]
+## from = "out-0deb1c425e6f6d70"
+## src = "/libcrossbeam_deque-0deb1c425e6f6d70.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libcrossbeam_deque-0deb1c425e6f6d70.rmeta"
+## 
+## [[mounts]]
+## from = "out-0deb1c425e6f6d70"
+## src = "/libcrossbeam_deque-0deb1c425e6f6d70.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libcrossbeam_deque-0deb1c425e6f6d70.rlib"
+## 
+## [[mounts]]
+## from = "out-e4df21448919a796"
+## src = "/libcrossbeam_epoch-e4df21448919a796.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libcrossbeam_epoch-e4df21448919a796.rmeta"
+## 
+## [[mounts]]
+## from = "out-e4df21448919a796"
+## src = "/libcrossbeam_epoch-e4df21448919a796.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libcrossbeam_epoch-e4df21448919a796.rlib"
+## 
+## [[mounts]]
+## from = "out-1ae807b4b6e713ec"
+## src = "/libcrossbeam_utils-1ae807b4b6e713ec.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libcrossbeam_utils-1ae807b4b6e713ec.rmeta"
+## 
+## [[mounts]]
+## from = "out-1ae807b4b6e713ec"
+## src = "/libcrossbeam_utils-1ae807b4b6e713ec.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libcrossbeam_utils-1ae807b4b6e713ec.rlib"
+## 
+## [[mounts]]
+## from = "out-880cd61c1f851a7b"
+## src = "/libsame_file-880cd61c1f851a7b.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libsame_file-880cd61c1f851a7b.rmeta"
+## 
+## [[mounts]]
+## from = "out-880cd61c1f851a7b"
+## src = "/libsame_file-880cd61c1f851a7b.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libsame_file-880cd61c1f851a7b.rlib"
+## 
+## [[mounts]]
+## from = "out-345a7495356295f2"
+## src = "/libwalkdir-345a7495356295f2.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libwalkdir-345a7495356295f2.rmeta"
+## 
+## [[mounts]]
+## from = "out-345a7495356295f2"
+## src = "/libwalkdir-345a7495356295f2.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libwalkdir-345a7495356295f2.rlib"
+## 
+## [[mounts]]
+## from = "out-17f37e7bd1b70087"
+## src = "/liblexopt-17f37e7bd1b70087.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/liblexopt-17f37e7bd1b70087.rmeta"
+## 
+## [[mounts]]
+## from = "out-17f37e7bd1b70087"
+## src = "/liblexopt-17f37e7bd1b70087.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/liblexopt-17f37e7bd1b70087.rlib"
+## 
+## [[mounts]]
+## from = "out-f2419d4872a2993a"
+## src = "/libtextwrap-f2419d4872a2993a.rmeta"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libtextwrap-f2419d4872a2993a.rmeta"
+## 
+## [[mounts]]
+## from = "out-f2419d4872a2993a"
+## src = "/libtextwrap-f2419d4872a2993a.rlib"
+## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libtextwrap-f2419d4872a2993a.rlib"
 ## 
 ## [[contexts]]
 ## name = "crate_out-467b075ea0bb0ef8"
@@ -4204,37 +5876,69 @@ COPY --from=dep-b-ripgrep-14.1.0-16aebc92c4aced68 /tmp/clis-ripgrep_14-1-0/relea
 ## WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 ## RUN \
 ##   --mount=from=cratesio-ripgrep-14.1.0,source=/ripgrep-14.1.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ripgrep-14.1.0 \
+##   --mount=from=out-95e5d8a0e52ba465,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libanyhow-95e5d8a0e52ba465.rmeta,source=/libanyhow-95e5d8a0e52ba465.rmeta \
 ##   --mount=from=out-95e5d8a0e52ba465,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libanyhow-95e5d8a0e52ba465.rlib,source=/libanyhow-95e5d8a0e52ba465.rlib \
+##   --mount=from=out-f6b551c518280772,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libbstr-f6b551c518280772.rmeta,source=/libbstr-f6b551c518280772.rmeta \
 ##   --mount=from=out-f6b551c518280772,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libbstr-f6b551c518280772.rlib,source=/libbstr-f6b551c518280772.rlib \
+##   --mount=from=out-3d9021aec125798d,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rmeta,source=/libmemchr-3d9021aec125798d.rmeta \
 ##   --mount=from=out-3d9021aec125798d,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rlib,source=/libmemchr-3d9021aec125798d.rlib \
+##   --mount=from=out-54c30116fcd4ea92,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libregex_automata-54c30116fcd4ea92.rmeta,source=/libregex_automata-54c30116fcd4ea92.rmeta \
 ##   --mount=from=out-54c30116fcd4ea92,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libregex_automata-54c30116fcd4ea92.rlib,source=/libregex_automata-54c30116fcd4ea92.rlib \
+##   --mount=from=out-2a2c3bf3a2b335e0,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libaho_corasick-2a2c3bf3a2b335e0.rmeta,source=/libaho_corasick-2a2c3bf3a2b335e0.rmeta \
 ##   --mount=from=out-2a2c3bf3a2b335e0,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libaho_corasick-2a2c3bf3a2b335e0.rlib,source=/libaho_corasick-2a2c3bf3a2b335e0.rlib \
+##   --mount=from=out-0d361157f8cdd0fe,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libregex_syntax-0d361157f8cdd0fe.rmeta,source=/libregex_syntax-0d361157f8cdd0fe.rmeta \
 ##   --mount=from=out-0d361157f8cdd0fe,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libregex_syntax-0d361157f8cdd0fe.rlib,source=/libregex_syntax-0d361157f8cdd0fe.rlib \
+##   --mount=from=out-9e71f2809112d472,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libgrep-9e71f2809112d472.rmeta,source=/libgrep-9e71f2809112d472.rmeta \
 ##   --mount=from=out-9e71f2809112d472,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libgrep-9e71f2809112d472.rlib,source=/libgrep-9e71f2809112d472.rlib \
+##   --mount=from=out-8da8357e778092ce,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_cli-8da8357e778092ce.rmeta,source=/libgrep_cli-8da8357e778092ce.rmeta \
 ##   --mount=from=out-8da8357e778092ce,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_cli-8da8357e778092ce.rlib,source=/libgrep_cli-8da8357e778092ce.rlib \
+##   --mount=from=out-14504da8f25a4dbf,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libglobset-14504da8f25a4dbf.rmeta,source=/libglobset-14504da8f25a4dbf.rmeta \
 ##   --mount=from=out-14504da8f25a4dbf,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libglobset-14504da8f25a4dbf.rlib,source=/libglobset-14504da8f25a4dbf.rlib \
+##   --mount=from=out-45d1068292014e63,dst=/tmp/clis-ripgrep_14-1-0/release/deps/liblog-45d1068292014e63.rmeta,source=/liblog-45d1068292014e63.rmeta \
 ##   --mount=from=out-45d1068292014e63,dst=/tmp/clis-ripgrep_14-1-0/release/deps/liblog-45d1068292014e63.rlib,source=/liblog-45d1068292014e63.rlib \
+##   --mount=from=out-b1dcb66edfd0e8a0,dst=/tmp/clis-ripgrep_14-1-0/release/deps/liblibc-b1dcb66edfd0e8a0.rmeta,source=/liblibc-b1dcb66edfd0e8a0.rmeta \
 ##   --mount=from=out-b1dcb66edfd0e8a0,dst=/tmp/clis-ripgrep_14-1-0/release/deps/liblibc-b1dcb66edfd0e8a0.rlib,source=/liblibc-b1dcb66edfd0e8a0.rlib \
+##   --mount=from=out-59ae8e7772deaa56,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libtermcolor-59ae8e7772deaa56.rmeta,source=/libtermcolor-59ae8e7772deaa56.rmeta \
 ##   --mount=from=out-59ae8e7772deaa56,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libtermcolor-59ae8e7772deaa56.rlib,source=/libtermcolor-59ae8e7772deaa56.rlib \
+##   --mount=from=out-7517975d791c1423,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_matcher-7517975d791c1423.rmeta,source=/libgrep_matcher-7517975d791c1423.rmeta \
 ##   --mount=from=out-7517975d791c1423,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_matcher-7517975d791c1423.rlib,source=/libgrep_matcher-7517975d791c1423.rlib \
+##   --mount=from=out-0e4d9ea7a0184dd5,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_printer-0e4d9ea7a0184dd5.rmeta,source=/libgrep_printer-0e4d9ea7a0184dd5.rmeta \
 ##   --mount=from=out-0e4d9ea7a0184dd5,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_printer-0e4d9ea7a0184dd5.rlib,source=/libgrep_printer-0e4d9ea7a0184dd5.rlib \
+##   --mount=from=out-6fc004d41272f596,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_searcher-6fc004d41272f596.rmeta,source=/libgrep_searcher-6fc004d41272f596.rmeta \
 ##   --mount=from=out-6fc004d41272f596,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_searcher-6fc004d41272f596.rlib,source=/libgrep_searcher-6fc004d41272f596.rlib \
+##   --mount=from=out-71f95fee6544e787,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libencoding_rs-71f95fee6544e787.rmeta,source=/libencoding_rs-71f95fee6544e787.rmeta \
 ##   --mount=from=out-71f95fee6544e787,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libencoding_rs-71f95fee6544e787.rlib,source=/libencoding_rs-71f95fee6544e787.rlib \
+##   --mount=from=out-98d40c6178a8b60f,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libcfg_if-98d40c6178a8b60f.rmeta,source=/libcfg_if-98d40c6178a8b60f.rmeta \
 ##   --mount=from=out-98d40c6178a8b60f,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libcfg_if-98d40c6178a8b60f.rlib,source=/libcfg_if-98d40c6178a8b60f.rlib \
+##   --mount=from=out-1f57e01234da7cf8,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libencoding_rs_io-1f57e01234da7cf8.rmeta,source=/libencoding_rs_io-1f57e01234da7cf8.rmeta \
 ##   --mount=from=out-1f57e01234da7cf8,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libencoding_rs_io-1f57e01234da7cf8.rlib,source=/libencoding_rs_io-1f57e01234da7cf8.rlib \
+##   --mount=from=out-21c841a4e972790f,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libmemmap2-21c841a4e972790f.rmeta,source=/libmemmap2-21c841a4e972790f.rmeta \
 ##   --mount=from=out-21c841a4e972790f,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libmemmap2-21c841a4e972790f.rlib,source=/libmemmap2-21c841a4e972790f.rlib \
+##   --mount=from=out-6342957ddc692e98,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libserde-6342957ddc692e98.rmeta,source=/libserde-6342957ddc692e98.rmeta \
 ##   --mount=from=out-6342957ddc692e98,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libserde-6342957ddc692e98.rlib,source=/libserde-6342957ddc692e98.rlib \
+##   --mount=from=out-f1456127761f5765,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libserde_json-f1456127761f5765.rmeta,source=/libserde_json-f1456127761f5765.rmeta \
 ##   --mount=from=out-f1456127761f5765,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libserde_json-f1456127761f5765.rlib,source=/libserde_json-f1456127761f5765.rlib \
+##   --mount=from=out-2b4528a4fd57cfaf,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libitoa-2b4528a4fd57cfaf.rmeta,source=/libitoa-2b4528a4fd57cfaf.rmeta \
 ##   --mount=from=out-2b4528a4fd57cfaf,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libitoa-2b4528a4fd57cfaf.rlib,source=/libitoa-2b4528a4fd57cfaf.rlib \
+##   --mount=from=out-a994c87db442418d,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libryu-a994c87db442418d.rmeta,source=/libryu-a994c87db442418d.rmeta \
 ##   --mount=from=out-a994c87db442418d,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libryu-a994c87db442418d.rlib,source=/libryu-a994c87db442418d.rlib \
+##   --mount=from=out-c08c56633b958d0c,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_regex-c08c56633b958d0c.rmeta,source=/libgrep_regex-c08c56633b958d0c.rmeta \
 ##   --mount=from=out-c08c56633b958d0c,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_regex-c08c56633b958d0c.rlib,source=/libgrep_regex-c08c56633b958d0c.rlib \
+##   --mount=from=out-95c296cdf92c1819,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libignore-95c296cdf92c1819.rmeta,source=/libignore-95c296cdf92c1819.rmeta \
 ##   --mount=from=out-95c296cdf92c1819,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libignore-95c296cdf92c1819.rlib,source=/libignore-95c296cdf92c1819.rlib \
+##   --mount=from=out-0deb1c425e6f6d70,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libcrossbeam_deque-0deb1c425e6f6d70.rmeta,source=/libcrossbeam_deque-0deb1c425e6f6d70.rmeta \
 ##   --mount=from=out-0deb1c425e6f6d70,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libcrossbeam_deque-0deb1c425e6f6d70.rlib,source=/libcrossbeam_deque-0deb1c425e6f6d70.rlib \
+##   --mount=from=out-e4df21448919a796,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libcrossbeam_epoch-e4df21448919a796.rmeta,source=/libcrossbeam_epoch-e4df21448919a796.rmeta \
 ##   --mount=from=out-e4df21448919a796,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libcrossbeam_epoch-e4df21448919a796.rlib,source=/libcrossbeam_epoch-e4df21448919a796.rlib \
+##   --mount=from=out-1ae807b4b6e713ec,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libcrossbeam_utils-1ae807b4b6e713ec.rmeta,source=/libcrossbeam_utils-1ae807b4b6e713ec.rmeta \
 ##   --mount=from=out-1ae807b4b6e713ec,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libcrossbeam_utils-1ae807b4b6e713ec.rlib,source=/libcrossbeam_utils-1ae807b4b6e713ec.rlib \
+##   --mount=from=out-880cd61c1f851a7b,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libsame_file-880cd61c1f851a7b.rmeta,source=/libsame_file-880cd61c1f851a7b.rmeta \
 ##   --mount=from=out-880cd61c1f851a7b,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libsame_file-880cd61c1f851a7b.rlib,source=/libsame_file-880cd61c1f851a7b.rlib \
+##   --mount=from=out-345a7495356295f2,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libwalkdir-345a7495356295f2.rmeta,source=/libwalkdir-345a7495356295f2.rmeta \
 ##   --mount=from=out-345a7495356295f2,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libwalkdir-345a7495356295f2.rlib,source=/libwalkdir-345a7495356295f2.rlib \
+##   --mount=from=out-17f37e7bd1b70087,dst=/tmp/clis-ripgrep_14-1-0/release/deps/liblexopt-17f37e7bd1b70087.rmeta,source=/liblexopt-17f37e7bd1b70087.rmeta \
 ##   --mount=from=out-17f37e7bd1b70087,dst=/tmp/clis-ripgrep_14-1-0/release/deps/liblexopt-17f37e7bd1b70087.rlib,source=/liblexopt-17f37e7bd1b70087.rlib \
+##   --mount=from=out-f2419d4872a2993a,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libtextwrap-f2419d4872a2993a.rmeta,source=/libtextwrap-f2419d4872a2993a.rmeta \
 ##   --mount=from=out-f2419d4872a2993a,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libtextwrap-f2419d4872a2993a.rlib,source=/libtextwrap-f2419d4872a2993a.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \

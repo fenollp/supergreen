@@ -1,6 +1,6 @@
 // Our own MetaData utils
 
-use std::{collections::HashMap, env, fs, io::ErrorKind, str::FromStr};
+use std::{collections::HashMap, env, fmt, fs, io::ErrorKind, str::FromStr};
 
 use anyhow::{anyhow, bail, Result};
 use camino::{Utf8Path, Utf8PathBuf};
@@ -21,10 +21,13 @@ pub(crate) struct Md {
     this: MdId,
 
     #[serde(default, skip_serializing_if = "IndexSet::is_empty")]
+    pub(crate) mounts: IndexSet<MountFrom>,
+
+    #[serde(default, skip_serializing_if = "IndexSet::is_empty")]
     deps: IndexSet<MdId>,
 
     #[serde(default, skip_serializing_if = "IndexSet::is_empty")]
-    pub(crate) short_externs: IndexSet<String>,
+    pub(crate) short_externs: IndexSet<MdId>,
 
     #[serde(default, skip_serializing_if = "<&bool as std::ops::Not>::not")]
     pub(crate) is_proc_macro: bool,
@@ -56,14 +59,15 @@ impl Md {
     pub(crate) fn new(this: &str) -> Self {
         Self {
             this: MdId(this.to_owned()),
-            deps: [].into(),
-            short_externs: [].into(),
+            mounts: IndexSet::default(),
+            deps: IndexSet::default(),
+            short_externs: IndexSet::default(),
             is_proc_macro: false,
-            contexts: [].into(),
-            stages: [].into(),
-            writes: vec![],
-            stdout: vec![],
-            stderr: vec![],
+            contexts: IndexSet::default(),
+            stages: IndexSet::default(),
+            writes: Vec::default(),
+            stdout: Vec::default(),
+            stderr: Vec::default(),
         }
     }
 
@@ -158,12 +162,8 @@ impl Md {
         emit: &str,
         externs: IndexSet<String>,
         target_path: &Utf8Path,
-    ) -> Result<(Vec<MountFrom>, Vec<Md>)> {
-        let mut mds = HashMap::<Utf8PathBuf, Md>::new(); // A file cache
-
-        let md_pather = |part: &str| target_path.join(format!("{part}.toml"));
-
-        let mut all_externs = IndexSet::new();
+    ) -> Result<Vec<Self>> {
+        let mut mds = HashMap::<Utf8PathBuf, Self>::new(); // A file cache
 
         let ext = match crate_type {
             "lib" => "rmeta".to_owned(),
@@ -174,71 +174,67 @@ impl Md {
         // > [rmeta] is created if the --emit=metadata CLI option is used.
         let ext = if emit.contains("metadata") { "rmeta".to_owned() } else { ext };
 
+        let mut extern_mds_and_paths = vec![];
+
         for xtern in externs {
+            // E.g. libproc_macro2-e44df32b5d502568.rmeta
+            // E.g. libunicode_xid-c443c88a44e24bc6.rlib
             trace!("❯ extern {xtern}");
-            all_externs.insert(xtern.clone());
 
-            if !xtern.starts_with("lib") {
-                bail!("BUG: expected extern to match ^lib: {xtern}")
-            }
-            let xtern = xtern.strip_prefix("lib").expect("PROOF: ~ ^lib");
-            let xtern = if xtern.ends_with(".rlib") {
-                xtern.strip_suffix(".rlib")
-            } else if xtern.ends_with(".rmeta") {
-                xtern.strip_suffix(".rmeta")
-            } else if xtern.ends_with(".so") {
-                xtern.strip_suffix(".so")
-            } else {
-                bail!("BUG: cargo gave unexpected extern: {xtern:?}")
-            }
-            .expect("PROOF: all cases match");
-            trace!("❯ short extern {xtern}");
-            self.short_externs.insert(xtern.to_owned());
+            // E.g. c443c88a44e24bc6
+            let Some(xtern_mdid) = xtern.split(['-', '.']).nth(1) else {
+                bail!("BUG: expected extern to match ^lib[^.-]+-<mdid>.[^.]+$: {xtern}")
+            };
+            let xtern_mdid = MdId(xtern_mdid.to_owned());
 
-            let extern_md = md_pather(xtern);
+            trace!("❯ short extern {xtern_mdid}");
+            self.short_externs.insert(xtern_mdid.clone()); //FIXME: rename xtern_mdid to xtern
+
+            let extern_md = target_path.join(format!("{xtern_mdid}.toml")); //FIXME: MdId.path(target_path)
             info!("checking (RO) extern's externs {extern_md}");
             let extern_md = get_or_read(&mut mds, &extern_md)?;
+
             for transitive in extern_md.short_externs {
-                let guard_md = get_or_read(&mut mds, &md_pather(&transitive))?;
+                let guard_md = target_path.join(format!("{transitive}.toml")); //FIXME: MdId.path(target_path)
+                let guard_md = get_or_read(&mut mds, &guard_md)?;
                 let ext = if guard_md.is_proc_macro { "so" } else { &ext };
 
                 trace!("❯ extern lib{transitive}.{ext}");
-                all_externs.insert(format!("lib{transitive}.{ext}"));
 
-                trace!("❯ short extern {transitive}");
+                trace!("❯ transitive short extern {transitive}");
                 self.short_externs.insert(transitive);
             }
         }
 
-        let mut mounts = Vec::with_capacity(all_externs.len());
-        let extern_mds_and_paths = all_externs
-            .into_iter()
-            .map(|xtern| {
-                let Some((extern_md_path, xtern_stage)) = toml_path_and_stage(&xtern, target_path)
-                else {
-                    bail!("Unexpected extern name format: {xtern}")
-                };
-                let mount = MountFrom {
-                    name: xtern_stage,
-                    src: format!("/{xtern}").into(),
-                    dst: target_path.join("deps").join(xtern),
-                };
-                mounts.push(mount);
-
-                let extern_md = get_or_read(&mut mds, &extern_md_path)?;
-                Ok((extern_md_path, extern_md))
-            })
-            .collect::<Result<Vec<_>>>()?;
+        for dep in &self.short_externs {
+            let dep_md_path = target_path.join(format!("{dep}.toml"));
+            let dep_md = get_or_read(&mut mds, &dep_md_path)?;
+            let dep_stage = Stage::output(&dep.0)?; //TODO: swap arg type
+            self.mounts.extend(
+                dep_md
+                    .writes
+                    .iter()
+                    .filter(|w: &&Utf8PathBuf| !w.as_str().ends_with(".d"))
+                    .map(|w| w.file_name().unwrap().to_owned())
+                    // .filter(|w: &String| w.ends_with(&format!(".{ext}")))
+                    .map(|xtern: String| MountFrom {
+                        from: dep_stage.clone(),
+                        src: format!("/{xtern}").into(),
+                        dst: target_path.join("deps").join(xtern),
+                    }),
+            );
+            extern_mds_and_paths.push((dep_md_path, dep_md));
+        }
 
         let extern_md_paths = self.sort_deps(extern_mds_and_paths)?;
-        info!("extern_md_paths: {} {extern_md_paths:?}", extern_md_paths.len());
+        info!("extern_md_paths: {}", extern_md_paths.len());
 
         let mds = extern_md_paths
             .into_iter()
             .map(|extern_md_path| get_or_read(&mut mds, &extern_md_path))
             .collect::<Result<Vec<_>>>()?;
 
-        Ok((mounts, mds))
+        Ok(mds)
     }
 
     pub(crate) fn sort_deps(&mut self, mds: Vec<(Utf8PathBuf, Self)>) -> Result<Vec<Utf8PathBuf>> {
@@ -280,7 +276,7 @@ impl Md {
         //> dockerfile line greater than max allowed size of 65535
     }
 
-    pub(crate) fn block_along_with_predecessors(&self, mds: &[Md]) -> String {
+    pub(crate) fn block_along_with_predecessors(&self, mds: &[Self]) -> String {
         let mut blocks = String::new();
         let mut visited_cratesio_stages = IndexSet::new();
         for md in mds {
@@ -296,11 +292,28 @@ impl Md {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone, Deserialize, Serialize, Eq)]
 pub(crate) struct MountFrom {
-    pub(crate) name: Stage,
+    pub(crate) from: Stage,
     pub(crate) src: Utf8PathBuf,
     pub(crate) dst: Utf8PathBuf,
+}
+
+/// For use by IndexSet
+impl PartialEq for MountFrom {
+    fn eq(&self, other: &Self) -> bool {
+        self.dst == other.dst
+    }
+}
+
+/// For use by IndexSet
+impl std::hash::Hash for MountFrom {
+    fn hash<H>(&self, state: &mut H)
+    where
+        H: std::hash::Hasher,
+    {
+        self.dst.hash(state);
+    }
 }
 
 fn get_or_read(mds: &mut HashMap<Utf8PathBuf, Md>, path: &Utf8Path) -> Result<Md> {
@@ -325,42 +338,12 @@ pub(crate) struct BuildContext {
     pub(crate) uri: Utf8PathBuf,
 }
 
-#[test]
-fn toml_path_and_stage_for_rlib() {
-    let xtern = "libstrsim-8ed1051e7e58e636.rlib";
-    let res = toml_path_and_stage(xtern, "./target/path".into()).unwrap();
-    assert_eq!(res.0, "./target/path/strsim-8ed1051e7e58e636.toml".to_owned());
-    assert_eq!(res.1, "out-8ed1051e7e58e636".try_into().unwrap());
-}
-
-#[test]
-fn toml_path_and_stage_for_libc() {
-    let xtern = "liblibc-c53783e3f8edcfe4.rmeta";
-    let res = toml_path_and_stage(xtern, "./target/path".into()).unwrap();
-    assert_eq!(res.0, "./target/path/libc-c53783e3f8edcfe4.toml".to_owned());
-    assert_eq!(res.1, "out-c53783e3f8edcfe4".try_into().unwrap());
-}
-
-#[test]
-fn toml_path_and_stage_for_weird_extension() {
-    let xtern = "libthing-131283e3f8edcfe4.a.2.c";
-    let res = toml_path_and_stage(xtern, "./target/path".into()).unwrap();
-    assert_eq!(res.0, "./target/path/thing-131283e3f8edcfe4.toml".to_owned());
-    assert_eq!(res.1, "out-131283e3f8edcfe4".try_into().unwrap());
-}
-
-#[must_use]
-fn toml_path_and_stage(xtern: &str, target_path: &Utf8Path) -> Option<(Utf8PathBuf, Stage)> {
-    // TODO: drop stripping ^lib
-    assert!(xtern.starts_with("lib"), "BUG: unexpected xtern format: {xtern}");
-    let pa = xtern.strip_prefix("lib").and_then(|x| x.split_once('.')).map(|(x, _)| x);
-    let st = pa.and_then(|x| x.split_once('-')).map(|(_, x)| Stage::output(x).unwrap());
-    let pa = pa.map(|x| target_path.join(format!("{x}.toml")));
-    pa.zip(st)
-}
-
 #[derive(Debug, Clone, Deserialize, Serialize, Eq, PartialEq, Hash)]
-struct MdId(String);
+pub(crate) struct MdId(pub(crate) String); //FIXME: unpub
+
+//TODO: impl Display
+//TODO: .0 as u64 + Self::from_str
+//TODO: ::from_extrafn
 
 impl MdId {
     #[must_use]
@@ -371,6 +354,12 @@ impl MdId {
     #[must_use]
     fn as_u64(&self) -> u64 {
         u64::from_str_radix(self.0.as_ref(), 16).expect("16-digit hex str")
+    }
+}
+
+impl fmt::Display for MdId {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "{}", self.0)
     }
 }
 
@@ -398,12 +387,11 @@ fn dec_decs() {
 fn md_ser() {
     let md = Md {
         this: MdId("711ba64e1183a234".to_owned()),
+        mounts: [MountFrom { from: RUST.clone(), src: "./blip".into(), dst: "/blop".into() }]
+            .into(),
         deps: [MdId("81529f4c2380d9ec".to_owned()), MdId("88a4324b2aff6db9".to_owned())].into(),
-        short_externs: [
-            "pico_args-b8c41dbf50ca5479".to_owned(),
-            "shlex-96a741f581f4126a".to_owned(),
-        ]
-        .into(),
+        short_externs: [MdId("b8c41dbf50ca5479".to_owned()), MdId("96a741f581f4126a".to_owned())]
+            .into(),
         is_proc_macro: true,
         contexts: [BuildContext {
             name: "rust".try_into().unwrap(),
@@ -428,8 +416,8 @@ deps = [
     "88a4324b2aff6db9",
 ]
 short_externs = [
-    "pico_args-b8c41dbf50ca5479",
-    "shlex-96a741f581f4126a",
+    "b8c41dbf50ca5479",
+    "96a741f581f4126a",
 ]
 is_proc_macro = true
 writes = [
@@ -437,6 +425,11 @@ writes = [
     "deps/libprimeorder-06397107ab8300fa.rmeta",
     "deps/libprimeorder-06397107ab8300fa.rlib",
 ]
+
+[[mounts]]
+from = "rust-base"
+src = "./blip"
+dst = "/blop"
 
 [[contexts]]
 name = "rust"

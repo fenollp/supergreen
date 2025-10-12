@@ -153,7 +153,6 @@ async fn wrap_rustc(
 
     do_wrap_rustc(
         green,
-        crate_name,
         &krate_name,
         krate_version,
         krate_manifest_dir,
@@ -208,7 +207,6 @@ fn crate_out_dir(out_dir_var: Option<Utf8PathBuf>) -> Result<Option<Utf8PathBuf>
 #[expect(clippy::too_many_arguments)]
 async fn do_wrap_rustc(
     green: Green,
-    crate_name: &str,
     krate_name: &str,
     krate_version: String,
     krate_manifest_dir: &Utf8Path,
@@ -353,10 +351,9 @@ async fn do_wrap_rustc(
         .collect();
     info!("loading {} build contexts", md.contexts.len());
 
-    let (mounts, mds) =
-        md.assemble_build_dependencies(&crate_type, &emit, externs, &target_path)?;
-    for MountFrom { name, src, dst } in mounts {
-        rustc_block.push_str(&format!("  --mount=from={name},dst={dst},source={src} \\\n"));
+    let mds = md.assemble_build_dependencies(&crate_type, &emit, externs, &target_path)?;
+    for MountFrom { from, src, dst } in &md.mounts {
+        rustc_block.push_str(&format!("  --mount=from={from},dst={dst},source={src} \\\n"));
     }
 
     // Log a possible toolchain file contents (TODO: make per-crate base_image out of this)
@@ -416,10 +413,7 @@ async fn do_wrap_rustc(
     // => skip the COPY (--mount=from=out-08c4d63ed4366a99)
     //   => use the stage directly (--mount=from=dep-l-buildxargs-1.4.0-08c4d63ed4366a99)
 
-    // NOTE how we're using BOTH {crate_name} and {krate_name}
-    //      => TODO: just use {extrafn}
-    //      => TODO: consolidate both as a single file
-    let md_path = target_path.join(format!("{crate_name}{extrafn}.toml"));
+    let md_path = target_path.join(format!("{}.toml", &extrafn[1..] /* Drops leading dash */));
     let containerfile_path = target_path.join(format!("{krate_name}{extrafn}.Dockerfile"));
 
     md.write_to(&md_path)?;

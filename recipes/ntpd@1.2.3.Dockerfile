@@ -115,6 +115,7 @@ RUN \
   --mount=from=cratesio-proc-macro2-1.0.86,source=/proc-macro2-1.0.86,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.86 \
   --mount=from=crate_out-e5fe159846b3109b,dst=/tmp/clis-ntpd_1-2-3/release/build/proc-macro2-e5fe159846b3109b/out \
   --mount=from=out-4c1dc76c11b3deb8,dst=/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rmeta,source=/libunicode_ident-4c1dc76c11b3deb8.rmeta \
+  --mount=from=out-4c1dc76c11b3deb8,dst=/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rlib,source=/libunicode_ident-4c1dc76c11b3deb8.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="proc_macro2" \
@@ -147,7 +148,7 @@ COPY --from=dep-l-proc-macro2-1.0.86-4be32d01ee2a9db1 /tmp/clis-ntpd_1-2-3/relea
 
 ## this = "4be32d01ee2a9db1"
 ## deps = ["4c1dc76c11b3deb8"]
-## short_externs = ["unicode_ident-4c1dc76c11b3deb8"]
+## short_externs = ["4c1dc76c11b3deb8"]
 ## writes = [
 ##     "deps/proc_macro2-4be32d01ee2a9db1.d",
 ##     "deps/libproc_macro2-4be32d01ee2a9db1.rmeta",
@@ -158,6 +159,16 @@ COPY --from=dep-l-proc-macro2-1.0.86-4be32d01ee2a9db1 /tmp/clis-ntpd_1-2-3/relea
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rlib","emit":"link"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-4c1dc76c11b3deb8"
+## src = "/libunicode_ident-4c1dc76c11b3deb8.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rmeta"
+## 
+## [[mounts]]
+## from = "out-4c1dc76c11b3deb8"
+## src = "/libunicode_ident-4c1dc76c11b3deb8.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rlib"
 ## 
 ## [[contexts]]
 ## name = "crate_out-e5fe159846b3109b"
@@ -184,6 +195,7 @@ COPY --from=dep-l-proc-macro2-1.0.86-4be32d01ee2a9db1 /tmp/clis-ntpd_1-2-3/relea
 ##   --mount=from=cratesio-proc-macro2-1.0.86,source=/proc-macro2-1.0.86,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.86 \
 ##   --mount=from=crate_out-e5fe159846b3109b,dst=/tmp/clis-ntpd_1-2-3/release/build/proc-macro2-e5fe159846b3109b/out \
 ##   --mount=from=out-4c1dc76c11b3deb8,dst=/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rmeta,source=/libunicode_ident-4c1dc76c11b3deb8.rmeta \
+##   --mount=from=out-4c1dc76c11b3deb8,dst=/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rlib,source=/libunicode_ident-4c1dc76c11b3deb8.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="proc_macro2" \
@@ -227,7 +239,9 @@ WORKDIR /tmp/clis-ntpd_1-2-3/release/deps
 RUN \
   --mount=from=cratesio-quote-1.0.36,source=/quote-1.0.36,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.36 \
   --mount=from=out-4be32d01ee2a9db1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rmeta,source=/libproc_macro2-4be32d01ee2a9db1.rmeta \
+  --mount=from=out-4be32d01ee2a9db1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rlib,source=/libproc_macro2-4be32d01ee2a9db1.rlib \
   --mount=from=out-4c1dc76c11b3deb8,dst=/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rmeta,source=/libunicode_ident-4c1dc76c11b3deb8.rmeta \
+  --mount=from=out-4c1dc76c11b3deb8,dst=/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rlib,source=/libunicode_ident-4c1dc76c11b3deb8.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="quote" \
@@ -263,8 +277,8 @@ COPY --from=dep-l-quote-1.0.36-36ed05d339fc79f9 /tmp/clis-ntpd_1-2-3/release/dep
 ##     "4c1dc76c11b3deb8",
 ## ]
 ## short_externs = [
-##     "proc_macro2-4be32d01ee2a9db1",
-##     "unicode_ident-4c1dc76c11b3deb8",
+##     "4be32d01ee2a9db1",
+##     "4c1dc76c11b3deb8",
 ## ]
 ## writes = [
 ##     "deps/quote-36ed05d339fc79f9.d",
@@ -276,6 +290,26 @@ COPY --from=dep-l-quote-1.0.36-36ed05d339fc79f9 /tmp/clis-ntpd_1-2-3/release/dep
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rlib","emit":"link"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-4be32d01ee2a9db1"
+## src = "/libproc_macro2-4be32d01ee2a9db1.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rmeta"
+## 
+## [[mounts]]
+## from = "out-4be32d01ee2a9db1"
+## src = "/libproc_macro2-4be32d01ee2a9db1.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rlib"
+## 
+## [[mounts]]
+## from = "out-4c1dc76c11b3deb8"
+## src = "/libunicode_ident-4c1dc76c11b3deb8.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rmeta"
+## 
+## [[mounts]]
+## from = "out-4c1dc76c11b3deb8"
+## src = "/libunicode_ident-4c1dc76c11b3deb8.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rlib"
 ## 
 ## [[contexts]]
 ## name = "crate_out-e5fe159846b3109b"
@@ -301,7 +335,9 @@ COPY --from=dep-l-quote-1.0.36-36ed05d339fc79f9 /tmp/clis-ntpd_1-2-3/release/dep
 ## RUN \
 ##   --mount=from=cratesio-quote-1.0.36,source=/quote-1.0.36,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.36 \
 ##   --mount=from=out-4be32d01ee2a9db1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rmeta,source=/libproc_macro2-4be32d01ee2a9db1.rmeta \
+##   --mount=from=out-4be32d01ee2a9db1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rlib,source=/libproc_macro2-4be32d01ee2a9db1.rlib \
 ##   --mount=from=out-4c1dc76c11b3deb8,dst=/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rmeta,source=/libunicode_ident-4c1dc76c11b3deb8.rmeta \
+##   --mount=from=out-4c1dc76c11b3deb8,dst=/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rlib,source=/libunicode_ident-4c1dc76c11b3deb8.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="quote" \
@@ -344,8 +380,11 @@ WORKDIR /tmp/clis-ntpd_1-2-3/release/deps
 RUN \
   --mount=from=cratesio-syn-2.0.70,source=/syn-2.0.70,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/syn-2.0.70 \
   --mount=from=out-4be32d01ee2a9db1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rmeta,source=/libproc_macro2-4be32d01ee2a9db1.rmeta \
+  --mount=from=out-4be32d01ee2a9db1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rlib,source=/libproc_macro2-4be32d01ee2a9db1.rlib \
   --mount=from=out-4c1dc76c11b3deb8,dst=/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rmeta,source=/libunicode_ident-4c1dc76c11b3deb8.rmeta \
+  --mount=from=out-4c1dc76c11b3deb8,dst=/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rlib,source=/libunicode_ident-4c1dc76c11b3deb8.rlib \
   --mount=from=out-36ed05d339fc79f9,dst=/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rmeta,source=/libquote-36ed05d339fc79f9.rmeta \
+  --mount=from=out-36ed05d339fc79f9,dst=/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rlib,source=/libquote-36ed05d339fc79f9.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="syn" \
@@ -382,9 +421,9 @@ COPY --from=dep-l-syn-2.0.70-5c1d3e18a7dfcf78 /tmp/clis-ntpd_1-2-3/release/deps/
 ##     "36ed05d339fc79f9",
 ## ]
 ## short_externs = [
-##     "proc_macro2-4be32d01ee2a9db1",
-##     "unicode_ident-4c1dc76c11b3deb8",
-##     "quote-36ed05d339fc79f9",
+##     "4be32d01ee2a9db1",
+##     "4c1dc76c11b3deb8",
+##     "36ed05d339fc79f9",
 ## ]
 ## writes = [
 ##     "deps/syn-5c1d3e18a7dfcf78.d",
@@ -396,6 +435,36 @@ COPY --from=dep-l-syn-2.0.70-5c1d3e18a7dfcf78 /tmp/clis-ntpd_1-2-3/release/deps/
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rlib","emit":"link"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-4be32d01ee2a9db1"
+## src = "/libproc_macro2-4be32d01ee2a9db1.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rmeta"
+## 
+## [[mounts]]
+## from = "out-4be32d01ee2a9db1"
+## src = "/libproc_macro2-4be32d01ee2a9db1.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rlib"
+## 
+## [[mounts]]
+## from = "out-4c1dc76c11b3deb8"
+## src = "/libunicode_ident-4c1dc76c11b3deb8.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rmeta"
+## 
+## [[mounts]]
+## from = "out-4c1dc76c11b3deb8"
+## src = "/libunicode_ident-4c1dc76c11b3deb8.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rlib"
+## 
+## [[mounts]]
+## from = "out-36ed05d339fc79f9"
+## src = "/libquote-36ed05d339fc79f9.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rmeta"
+## 
+## [[mounts]]
+## from = "out-36ed05d339fc79f9"
+## src = "/libquote-36ed05d339fc79f9.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rlib"
 ## 
 ## [[contexts]]
 ## name = "crate_out-e5fe159846b3109b"
@@ -421,8 +490,11 @@ COPY --from=dep-l-syn-2.0.70-5c1d3e18a7dfcf78 /tmp/clis-ntpd_1-2-3/release/deps/
 ## RUN \
 ##   --mount=from=cratesio-syn-2.0.70,source=/syn-2.0.70,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/syn-2.0.70 \
 ##   --mount=from=out-4be32d01ee2a9db1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rmeta,source=/libproc_macro2-4be32d01ee2a9db1.rmeta \
+##   --mount=from=out-4be32d01ee2a9db1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rlib,source=/libproc_macro2-4be32d01ee2a9db1.rlib \
 ##   --mount=from=out-4c1dc76c11b3deb8,dst=/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rmeta,source=/libunicode_ident-4c1dc76c11b3deb8.rmeta \
+##   --mount=from=out-4c1dc76c11b3deb8,dst=/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rlib,source=/libunicode_ident-4c1dc76c11b3deb8.rlib \
 ##   --mount=from=out-36ed05d339fc79f9,dst=/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rmeta,source=/libquote-36ed05d339fc79f9.rmeta \
+##   --mount=from=out-36ed05d339fc79f9,dst=/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rlib,source=/libquote-36ed05d339fc79f9.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="syn" \
@@ -464,9 +536,13 @@ SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 WORKDIR /tmp/clis-ntpd_1-2-3/release/deps
 RUN \
   --mount=from=cratesio-async-trait-0.1.81,source=/async-trait-0.1.81,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/async-trait-0.1.81 \
+  --mount=from=out-4be32d01ee2a9db1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rmeta,source=/libproc_macro2-4be32d01ee2a9db1.rmeta \
   --mount=from=out-4be32d01ee2a9db1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rlib,source=/libproc_macro2-4be32d01ee2a9db1.rlib \
+  --mount=from=out-4c1dc76c11b3deb8,dst=/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rmeta,source=/libunicode_ident-4c1dc76c11b3deb8.rmeta \
   --mount=from=out-4c1dc76c11b3deb8,dst=/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rlib,source=/libunicode_ident-4c1dc76c11b3deb8.rlib \
+  --mount=from=out-36ed05d339fc79f9,dst=/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rmeta,source=/libquote-36ed05d339fc79f9.rmeta \
   --mount=from=out-36ed05d339fc79f9,dst=/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rlib,source=/libquote-36ed05d339fc79f9.rlib \
+  --mount=from=out-5c1d3e18a7dfcf78,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rmeta,source=/libsyn-5c1d3e18a7dfcf78.rmeta \
   --mount=from=out-5c1d3e18a7dfcf78,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rlib,source=/libsyn-5c1d3e18a7dfcf78.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
@@ -505,10 +581,10 @@ COPY --from=dep-p-async-trait-0.1.81-2b00e18c8782890c /tmp/clis-ntpd_1-2-3/relea
 ##     "5c1d3e18a7dfcf78",
 ## ]
 ## short_externs = [
-##     "proc_macro2-4be32d01ee2a9db1",
-##     "unicode_ident-4c1dc76c11b3deb8",
-##     "quote-36ed05d339fc79f9",
-##     "syn-5c1d3e18a7dfcf78",
+##     "4be32d01ee2a9db1",
+##     "4c1dc76c11b3deb8",
+##     "36ed05d339fc79f9",
+##     "5c1d3e18a7dfcf78",
 ## ]
 ## is_proc_macro = true
 ## writes = [
@@ -519,6 +595,46 @@ COPY --from=dep-p-async-trait-0.1.81-2b00e18c8782890c /tmp/clis-ntpd_1-2-3/relea
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-2-3/release/deps/async_trait-2b00e18c8782890c.d","emit":"dep-info"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-2-3/release/deps/libasync_trait-2b00e18c8782890c.so","emit":"link"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-4be32d01ee2a9db1"
+## src = "/libproc_macro2-4be32d01ee2a9db1.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rmeta"
+## 
+## [[mounts]]
+## from = "out-4be32d01ee2a9db1"
+## src = "/libproc_macro2-4be32d01ee2a9db1.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rlib"
+## 
+## [[mounts]]
+## from = "out-4c1dc76c11b3deb8"
+## src = "/libunicode_ident-4c1dc76c11b3deb8.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rmeta"
+## 
+## [[mounts]]
+## from = "out-4c1dc76c11b3deb8"
+## src = "/libunicode_ident-4c1dc76c11b3deb8.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rlib"
+## 
+## [[mounts]]
+## from = "out-36ed05d339fc79f9"
+## src = "/libquote-36ed05d339fc79f9.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rmeta"
+## 
+## [[mounts]]
+## from = "out-36ed05d339fc79f9"
+## src = "/libquote-36ed05d339fc79f9.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rlib"
+## 
+## [[mounts]]
+## from = "out-5c1d3e18a7dfcf78"
+## src = "/libsyn-5c1d3e18a7dfcf78.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rmeta"
+## 
+## [[mounts]]
+## from = "out-5c1d3e18a7dfcf78"
+## src = "/libsyn-5c1d3e18a7dfcf78.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rlib"
 ## 
 ## [[contexts]]
 ## name = "crate_out-e5fe159846b3109b"
@@ -543,9 +659,13 @@ COPY --from=dep-p-async-trait-0.1.81-2b00e18c8782890c /tmp/clis-ntpd_1-2-3/relea
 ## WORKDIR /tmp/clis-ntpd_1-2-3/release/deps
 ## RUN \
 ##   --mount=from=cratesio-async-trait-0.1.81,source=/async-trait-0.1.81,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/async-trait-0.1.81 \
+##   --mount=from=out-4be32d01ee2a9db1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rmeta,source=/libproc_macro2-4be32d01ee2a9db1.rmeta \
 ##   --mount=from=out-4be32d01ee2a9db1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rlib,source=/libproc_macro2-4be32d01ee2a9db1.rlib \
+##   --mount=from=out-4c1dc76c11b3deb8,dst=/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rmeta,source=/libunicode_ident-4c1dc76c11b3deb8.rmeta \
 ##   --mount=from=out-4c1dc76c11b3deb8,dst=/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rlib,source=/libunicode_ident-4c1dc76c11b3deb8.rlib \
+##   --mount=from=out-36ed05d339fc79f9,dst=/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rmeta,source=/libquote-36ed05d339fc79f9.rmeta \
 ##   --mount=from=out-36ed05d339fc79f9,dst=/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rlib,source=/libquote-36ed05d339fc79f9.rlib \
+##   --mount=from=out-5c1d3e18a7dfcf78,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rmeta,source=/libsyn-5c1d3e18a7dfcf78.rmeta \
 ##   --mount=from=out-5c1d3e18a7dfcf78,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rlib,source=/libsyn-5c1d3e18a7dfcf78.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
@@ -701,6 +821,7 @@ WORKDIR /tmp/clis-ntpd_1-2-3/release/deps
 RUN \
   --mount=from=cratesio-clock-steering-0.2.1,source=/clock-steering-0.2.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/clock-steering-0.2.1 \
   --mount=from=out-a7905fdc410bdfce,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rmeta,source=/liblibc-a7905fdc410bdfce.rmeta \
+  --mount=from=out-a7905fdc410bdfce,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rlib,source=/liblibc-a7905fdc410bdfce.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="clock_steering" \
@@ -732,7 +853,7 @@ COPY --from=dep-l-clock-steering-0.2.1-7adc6d6ce8be0538 /tmp/clis-ntpd_1-2-3/rel
 
 ## this = "7adc6d6ce8be0538"
 ## deps = ["a7905fdc410bdfce"]
-## short_externs = ["libc-a7905fdc410bdfce"]
+## short_externs = ["a7905fdc410bdfce"]
 ## writes = [
 ##     "deps/clock_steering-7adc6d6ce8be0538.d",
 ##     "deps/libclock_steering-7adc6d6ce8be0538.rmeta",
@@ -743,6 +864,16 @@ COPY --from=dep-l-clock-steering-0.2.1-7adc6d6ce8be0538 /tmp/clis-ntpd_1-2-3/rel
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-2-3/release/deps/libclock_steering-7adc6d6ce8be0538.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-2-3/release/deps/libclock_steering-7adc6d6ce8be0538.rlib","emit":"link"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-a7905fdc410bdfce"
+## src = "/liblibc-a7905fdc410bdfce.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rmeta"
+## 
+## [[mounts]]
+## from = "out-a7905fdc410bdfce"
+## src = "/liblibc-a7905fdc410bdfce.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -764,6 +895,7 @@ COPY --from=dep-l-clock-steering-0.2.1-7adc6d6ce8be0538 /tmp/clis-ntpd_1-2-3/rel
 ## RUN \
 ##   --mount=from=cratesio-clock-steering-0.2.1,source=/clock-steering-0.2.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/clock-steering-0.2.1 \
 ##   --mount=from=out-a7905fdc410bdfce,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rmeta,source=/liblibc-a7905fdc410bdfce.rmeta \
+##   --mount=from=out-a7905fdc410bdfce,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rlib,source=/liblibc-a7905fdc410bdfce.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="clock_steering" \
@@ -922,6 +1054,7 @@ WORKDIR /tmp/clis-ntpd_1-2-3/release/deps
 RUN \
   --mount=from=cratesio-generic-array-0.14.7,source=/generic-array-0.14.7,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/generic-array-0.14.7 \
   --mount=from=out-981b1f3c4161234a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtypenum-981b1f3c4161234a.rmeta,source=/libtypenum-981b1f3c4161234a.rmeta \
+  --mount=from=out-981b1f3c4161234a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtypenum-981b1f3c4161234a.rlib,source=/libtypenum-981b1f3c4161234a.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="generic_array" \
@@ -954,7 +1087,7 @@ COPY --from=dep-l-generic-array-0.14.7-2d6ea4fd5d7ef666 /tmp/clis-ntpd_1-2-3/rel
 
 ## this = "2d6ea4fd5d7ef666"
 ## deps = ["981b1f3c4161234a"]
-## short_externs = ["typenum-981b1f3c4161234a"]
+## short_externs = ["981b1f3c4161234a"]
 ## writes = [
 ##     "deps/generic_array-2d6ea4fd5d7ef666.d",
 ##     "deps/libgeneric_array-2d6ea4fd5d7ef666.rmeta",
@@ -970,6 +1103,16 @@ COPY --from=dep-l-generic-array-0.14.7-2d6ea4fd5d7ef666 /tmp/clis-ntpd_1-2-3/rel
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-2-3/release/deps/libgeneric_array-2d6ea4fd5d7ef666.rlib","emit":"link"}',
 ##     '{"$message_type":"diagnostic","message":"4 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 4 warnings emitted\u001b[0m\n\n"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-981b1f3c4161234a"
+## src = "/libtypenum-981b1f3c4161234a.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libtypenum-981b1f3c4161234a.rmeta"
+## 
+## [[mounts]]
+## from = "out-981b1f3c4161234a"
+## src = "/libtypenum-981b1f3c4161234a.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libtypenum-981b1f3c4161234a.rlib"
 ## 
 ## [[contexts]]
 ## name = "crate_out-a7d381539c9ce48d"
@@ -995,6 +1138,7 @@ COPY --from=dep-l-generic-array-0.14.7-2d6ea4fd5d7ef666 /tmp/clis-ntpd_1-2-3/rel
 ## RUN \
 ##   --mount=from=cratesio-generic-array-0.14.7,source=/generic-array-0.14.7,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/generic-array-0.14.7 \
 ##   --mount=from=out-981b1f3c4161234a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtypenum-981b1f3c4161234a.rmeta,source=/libtypenum-981b1f3c4161234a.rmeta \
+##   --mount=from=out-981b1f3c4161234a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtypenum-981b1f3c4161234a.rlib,source=/libtypenum-981b1f3c4161234a.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="generic_array" \
@@ -1139,7 +1283,9 @@ WORKDIR /tmp/clis-ntpd_1-2-3/release/deps
 RUN \
   --mount=from=cratesio-getrandom-0.2.15,source=/getrandom-0.2.15,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/getrandom-0.2.15 \
   --mount=from=out-da34da6838abd7f1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rmeta,source=/libcfg_if-da34da6838abd7f1.rmeta \
+  --mount=from=out-da34da6838abd7f1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rlib,source=/libcfg_if-da34da6838abd7f1.rlib \
   --mount=from=out-a7905fdc410bdfce,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rmeta,source=/liblibc-a7905fdc410bdfce.rmeta \
+  --mount=from=out-a7905fdc410bdfce,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rlib,source=/liblibc-a7905fdc410bdfce.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="getrandom" \
@@ -1175,8 +1321,8 @@ COPY --from=dep-l-getrandom-0.2.15-84473f2ddfbb434a /tmp/clis-ntpd_1-2-3/release
 ##     "a7905fdc410bdfce",
 ## ]
 ## short_externs = [
-##     "cfg_if-da34da6838abd7f1",
-##     "libc-a7905fdc410bdfce",
+##     "da34da6838abd7f1",
+##     "a7905fdc410bdfce",
 ## ]
 ## writes = [
 ##     "deps/getrandom-84473f2ddfbb434a.d",
@@ -1188,6 +1334,26 @@ COPY --from=dep-l-getrandom-0.2.15-84473f2ddfbb434a /tmp/clis-ntpd_1-2-3/release
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rlib","emit":"link"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-da34da6838abd7f1"
+## src = "/libcfg_if-da34da6838abd7f1.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rmeta"
+## 
+## [[mounts]]
+## from = "out-da34da6838abd7f1"
+## src = "/libcfg_if-da34da6838abd7f1.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rlib"
+## 
+## [[mounts]]
+## from = "out-a7905fdc410bdfce"
+## src = "/liblibc-a7905fdc410bdfce.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rmeta"
+## 
+## [[mounts]]
+## from = "out-a7905fdc410bdfce"
+## src = "/liblibc-a7905fdc410bdfce.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -1209,7 +1375,9 @@ COPY --from=dep-l-getrandom-0.2.15-84473f2ddfbb434a /tmp/clis-ntpd_1-2-3/release
 ## RUN \
 ##   --mount=from=cratesio-getrandom-0.2.15,source=/getrandom-0.2.15,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/getrandom-0.2.15 \
 ##   --mount=from=out-da34da6838abd7f1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rmeta,source=/libcfg_if-da34da6838abd7f1.rmeta \
+##   --mount=from=out-da34da6838abd7f1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rlib,source=/libcfg_if-da34da6838abd7f1.rlib \
 ##   --mount=from=out-a7905fdc410bdfce,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rmeta,source=/liblibc-a7905fdc410bdfce.rmeta \
+##   --mount=from=out-a7905fdc410bdfce,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rlib,source=/liblibc-a7905fdc410bdfce.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="getrandom" \
@@ -1252,8 +1420,11 @@ WORKDIR /tmp/clis-ntpd_1-2-3/release/deps
 RUN \
   --mount=from=cratesio-rand_core-0.6.4,source=/rand_core-0.6.4,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rand_core-0.6.4 \
   --mount=from=out-84473f2ddfbb434a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rmeta,source=/libgetrandom-84473f2ddfbb434a.rmeta \
+  --mount=from=out-84473f2ddfbb434a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rlib,source=/libgetrandom-84473f2ddfbb434a.rlib \
   --mount=from=out-da34da6838abd7f1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rmeta,source=/libcfg_if-da34da6838abd7f1.rmeta \
+  --mount=from=out-da34da6838abd7f1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rlib,source=/libcfg_if-da34da6838abd7f1.rlib \
   --mount=from=out-a7905fdc410bdfce,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rmeta,source=/liblibc-a7905fdc410bdfce.rmeta \
+  --mount=from=out-a7905fdc410bdfce,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rlib,source=/liblibc-a7905fdc410bdfce.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="rand_core" \
@@ -1290,9 +1461,9 @@ COPY --from=dep-l-rand_core-0.6.4-434e8a9dd58e4456 /tmp/clis-ntpd_1-2-3/release/
 ##     "a7905fdc410bdfce",
 ## ]
 ## short_externs = [
-##     "getrandom-84473f2ddfbb434a",
-##     "cfg_if-da34da6838abd7f1",
-##     "libc-a7905fdc410bdfce",
+##     "84473f2ddfbb434a",
+##     "da34da6838abd7f1",
+##     "a7905fdc410bdfce",
 ## ]
 ## writes = [
 ##     "deps/rand_core-434e8a9dd58e4456.d",
@@ -1311,6 +1482,36 @@ COPY --from=dep-l-rand_core-0.6.4-434e8a9dd58e4456 /tmp/clis-ntpd_1-2-3/release/
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-2-3/release/deps/librand_core-434e8a9dd58e4456.rlib","emit":"link"}',
 ##     '{"$message_type":"diagnostic","message":"6 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 6 warnings emitted\u001b[0m\n\n"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-84473f2ddfbb434a"
+## src = "/libgetrandom-84473f2ddfbb434a.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rmeta"
+## 
+## [[mounts]]
+## from = "out-84473f2ddfbb434a"
+## src = "/libgetrandom-84473f2ddfbb434a.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rlib"
+## 
+## [[mounts]]
+## from = "out-da34da6838abd7f1"
+## src = "/libcfg_if-da34da6838abd7f1.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rmeta"
+## 
+## [[mounts]]
+## from = "out-da34da6838abd7f1"
+## src = "/libcfg_if-da34da6838abd7f1.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rlib"
+## 
+## [[mounts]]
+## from = "out-a7905fdc410bdfce"
+## src = "/liblibc-a7905fdc410bdfce.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rmeta"
+## 
+## [[mounts]]
+## from = "out-a7905fdc410bdfce"
+## src = "/liblibc-a7905fdc410bdfce.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -1332,8 +1533,11 @@ COPY --from=dep-l-rand_core-0.6.4-434e8a9dd58e4456 /tmp/clis-ntpd_1-2-3/release/
 ## RUN \
 ##   --mount=from=cratesio-rand_core-0.6.4,source=/rand_core-0.6.4,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rand_core-0.6.4 \
 ##   --mount=from=out-84473f2ddfbb434a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rmeta,source=/libgetrandom-84473f2ddfbb434a.rmeta \
+##   --mount=from=out-84473f2ddfbb434a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rlib,source=/libgetrandom-84473f2ddfbb434a.rlib \
 ##   --mount=from=out-da34da6838abd7f1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rmeta,source=/libcfg_if-da34da6838abd7f1.rmeta \
+##   --mount=from=out-da34da6838abd7f1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rlib,source=/libcfg_if-da34da6838abd7f1.rlib \
 ##   --mount=from=out-a7905fdc410bdfce,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rmeta,source=/liblibc-a7905fdc410bdfce.rmeta \
+##   --mount=from=out-a7905fdc410bdfce,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rlib,source=/liblibc-a7905fdc410bdfce.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="rand_core" \
@@ -1376,11 +1580,17 @@ WORKDIR /tmp/clis-ntpd_1-2-3/release/deps
 RUN \
   --mount=from=cratesio-crypto-common-0.1.6,source=/crypto-common-0.1.6,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crypto-common-0.1.6 \
   --mount=from=out-2d6ea4fd5d7ef666,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgeneric_array-2d6ea4fd5d7ef666.rmeta,source=/libgeneric_array-2d6ea4fd5d7ef666.rmeta \
+  --mount=from=out-2d6ea4fd5d7ef666,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgeneric_array-2d6ea4fd5d7ef666.rlib,source=/libgeneric_array-2d6ea4fd5d7ef666.rlib \
   --mount=from=out-981b1f3c4161234a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtypenum-981b1f3c4161234a.rmeta,source=/libtypenum-981b1f3c4161234a.rmeta \
+  --mount=from=out-981b1f3c4161234a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtypenum-981b1f3c4161234a.rlib,source=/libtypenum-981b1f3c4161234a.rlib \
   --mount=from=out-434e8a9dd58e4456,dst=/tmp/clis-ntpd_1-2-3/release/deps/librand_core-434e8a9dd58e4456.rmeta,source=/librand_core-434e8a9dd58e4456.rmeta \
+  --mount=from=out-434e8a9dd58e4456,dst=/tmp/clis-ntpd_1-2-3/release/deps/librand_core-434e8a9dd58e4456.rlib,source=/librand_core-434e8a9dd58e4456.rlib \
   --mount=from=out-84473f2ddfbb434a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rmeta,source=/libgetrandom-84473f2ddfbb434a.rmeta \
+  --mount=from=out-84473f2ddfbb434a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rlib,source=/libgetrandom-84473f2ddfbb434a.rlib \
   --mount=from=out-da34da6838abd7f1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rmeta,source=/libcfg_if-da34da6838abd7f1.rmeta \
+  --mount=from=out-da34da6838abd7f1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rlib,source=/libcfg_if-da34da6838abd7f1.rlib \
   --mount=from=out-a7905fdc410bdfce,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rmeta,source=/liblibc-a7905fdc410bdfce.rmeta \
+  --mount=from=out-a7905fdc410bdfce,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rlib,source=/liblibc-a7905fdc410bdfce.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="crypto_common" \
@@ -1420,12 +1630,12 @@ COPY --from=dep-l-crypto-common-0.1.6-1009fce94369ad6b /tmp/clis-ntpd_1-2-3/rele
 ##     "a7905fdc410bdfce",
 ## ]
 ## short_externs = [
-##     "generic_array-2d6ea4fd5d7ef666",
-##     "typenum-981b1f3c4161234a",
-##     "rand_core-434e8a9dd58e4456",
-##     "getrandom-84473f2ddfbb434a",
-##     "cfg_if-da34da6838abd7f1",
-##     "libc-a7905fdc410bdfce",
+##     "2d6ea4fd5d7ef666",
+##     "981b1f3c4161234a",
+##     "434e8a9dd58e4456",
+##     "84473f2ddfbb434a",
+##     "da34da6838abd7f1",
+##     "a7905fdc410bdfce",
 ## ]
 ## writes = [
 ##     "deps/crypto_common-1009fce94369ad6b.d",
@@ -1437,6 +1647,66 @@ COPY --from=dep-l-crypto-common-0.1.6-1009fce94369ad6b /tmp/clis-ntpd_1-2-3/rele
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-2-3/release/deps/libcrypto_common-1009fce94369ad6b.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-2-3/release/deps/libcrypto_common-1009fce94369ad6b.rlib","emit":"link"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-2d6ea4fd5d7ef666"
+## src = "/libgeneric_array-2d6ea4fd5d7ef666.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libgeneric_array-2d6ea4fd5d7ef666.rmeta"
+## 
+## [[mounts]]
+## from = "out-2d6ea4fd5d7ef666"
+## src = "/libgeneric_array-2d6ea4fd5d7ef666.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libgeneric_array-2d6ea4fd5d7ef666.rlib"
+## 
+## [[mounts]]
+## from = "out-981b1f3c4161234a"
+## src = "/libtypenum-981b1f3c4161234a.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libtypenum-981b1f3c4161234a.rmeta"
+## 
+## [[mounts]]
+## from = "out-981b1f3c4161234a"
+## src = "/libtypenum-981b1f3c4161234a.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libtypenum-981b1f3c4161234a.rlib"
+## 
+## [[mounts]]
+## from = "out-434e8a9dd58e4456"
+## src = "/librand_core-434e8a9dd58e4456.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/librand_core-434e8a9dd58e4456.rmeta"
+## 
+## [[mounts]]
+## from = "out-434e8a9dd58e4456"
+## src = "/librand_core-434e8a9dd58e4456.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/librand_core-434e8a9dd58e4456.rlib"
+## 
+## [[mounts]]
+## from = "out-84473f2ddfbb434a"
+## src = "/libgetrandom-84473f2ddfbb434a.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rmeta"
+## 
+## [[mounts]]
+## from = "out-84473f2ddfbb434a"
+## src = "/libgetrandom-84473f2ddfbb434a.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rlib"
+## 
+## [[mounts]]
+## from = "out-da34da6838abd7f1"
+## src = "/libcfg_if-da34da6838abd7f1.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rmeta"
+## 
+## [[mounts]]
+## from = "out-da34da6838abd7f1"
+## src = "/libcfg_if-da34da6838abd7f1.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rlib"
+## 
+## [[mounts]]
+## from = "out-a7905fdc410bdfce"
+## src = "/liblibc-a7905fdc410bdfce.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rmeta"
+## 
+## [[mounts]]
+## from = "out-a7905fdc410bdfce"
+## src = "/liblibc-a7905fdc410bdfce.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rlib"
 ## 
 ## [[contexts]]
 ## name = "crate_out-a7d381539c9ce48d"
@@ -1462,11 +1732,17 @@ COPY --from=dep-l-crypto-common-0.1.6-1009fce94369ad6b /tmp/clis-ntpd_1-2-3/rele
 ## RUN \
 ##   --mount=from=cratesio-crypto-common-0.1.6,source=/crypto-common-0.1.6,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crypto-common-0.1.6 \
 ##   --mount=from=out-2d6ea4fd5d7ef666,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgeneric_array-2d6ea4fd5d7ef666.rmeta,source=/libgeneric_array-2d6ea4fd5d7ef666.rmeta \
+##   --mount=from=out-2d6ea4fd5d7ef666,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgeneric_array-2d6ea4fd5d7ef666.rlib,source=/libgeneric_array-2d6ea4fd5d7ef666.rlib \
 ##   --mount=from=out-981b1f3c4161234a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtypenum-981b1f3c4161234a.rmeta,source=/libtypenum-981b1f3c4161234a.rmeta \
+##   --mount=from=out-981b1f3c4161234a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtypenum-981b1f3c4161234a.rlib,source=/libtypenum-981b1f3c4161234a.rlib \
 ##   --mount=from=out-434e8a9dd58e4456,dst=/tmp/clis-ntpd_1-2-3/release/deps/librand_core-434e8a9dd58e4456.rmeta,source=/librand_core-434e8a9dd58e4456.rmeta \
+##   --mount=from=out-434e8a9dd58e4456,dst=/tmp/clis-ntpd_1-2-3/release/deps/librand_core-434e8a9dd58e4456.rlib,source=/librand_core-434e8a9dd58e4456.rlib \
 ##   --mount=from=out-84473f2ddfbb434a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rmeta,source=/libgetrandom-84473f2ddfbb434a.rmeta \
+##   --mount=from=out-84473f2ddfbb434a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rlib,source=/libgetrandom-84473f2ddfbb434a.rlib \
 ##   --mount=from=out-da34da6838abd7f1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rmeta,source=/libcfg_if-da34da6838abd7f1.rmeta \
+##   --mount=from=out-da34da6838abd7f1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rlib,source=/libcfg_if-da34da6838abd7f1.rlib \
 ##   --mount=from=out-a7905fdc410bdfce,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rmeta,source=/liblibc-a7905fdc410bdfce.rmeta \
+##   --mount=from=out-a7905fdc410bdfce,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rlib,source=/liblibc-a7905fdc410bdfce.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="crypto_common" \
@@ -1509,12 +1785,19 @@ WORKDIR /tmp/clis-ntpd_1-2-3/release/deps
 RUN \
   --mount=from=cratesio-aead-0.5.2,source=/aead-0.5.2,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aead-0.5.2 \
   --mount=from=out-1009fce94369ad6b,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcrypto_common-1009fce94369ad6b.rmeta,source=/libcrypto_common-1009fce94369ad6b.rmeta \
+  --mount=from=out-1009fce94369ad6b,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcrypto_common-1009fce94369ad6b.rlib,source=/libcrypto_common-1009fce94369ad6b.rlib \
   --mount=from=out-2d6ea4fd5d7ef666,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgeneric_array-2d6ea4fd5d7ef666.rmeta,source=/libgeneric_array-2d6ea4fd5d7ef666.rmeta \
+  --mount=from=out-2d6ea4fd5d7ef666,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgeneric_array-2d6ea4fd5d7ef666.rlib,source=/libgeneric_array-2d6ea4fd5d7ef666.rlib \
   --mount=from=out-981b1f3c4161234a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtypenum-981b1f3c4161234a.rmeta,source=/libtypenum-981b1f3c4161234a.rmeta \
+  --mount=from=out-981b1f3c4161234a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtypenum-981b1f3c4161234a.rlib,source=/libtypenum-981b1f3c4161234a.rlib \
   --mount=from=out-434e8a9dd58e4456,dst=/tmp/clis-ntpd_1-2-3/release/deps/librand_core-434e8a9dd58e4456.rmeta,source=/librand_core-434e8a9dd58e4456.rmeta \
+  --mount=from=out-434e8a9dd58e4456,dst=/tmp/clis-ntpd_1-2-3/release/deps/librand_core-434e8a9dd58e4456.rlib,source=/librand_core-434e8a9dd58e4456.rlib \
   --mount=from=out-84473f2ddfbb434a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rmeta,source=/libgetrandom-84473f2ddfbb434a.rmeta \
+  --mount=from=out-84473f2ddfbb434a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rlib,source=/libgetrandom-84473f2ddfbb434a.rlib \
   --mount=from=out-da34da6838abd7f1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rmeta,source=/libcfg_if-da34da6838abd7f1.rmeta \
+  --mount=from=out-da34da6838abd7f1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rlib,source=/libcfg_if-da34da6838abd7f1.rlib \
   --mount=from=out-a7905fdc410bdfce,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rmeta,source=/liblibc-a7905fdc410bdfce.rmeta \
+  --mount=from=out-a7905fdc410bdfce,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rlib,source=/liblibc-a7905fdc410bdfce.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="aead" \
@@ -1555,13 +1838,13 @@ COPY --from=dep-l-aead-0.5.2-2ba1712ad50273ba /tmp/clis-ntpd_1-2-3/release/deps/
 ##     "a7905fdc410bdfce",
 ## ]
 ## short_externs = [
-##     "crypto_common-1009fce94369ad6b",
-##     "generic_array-2d6ea4fd5d7ef666",
-##     "typenum-981b1f3c4161234a",
-##     "rand_core-434e8a9dd58e4456",
-##     "getrandom-84473f2ddfbb434a",
-##     "cfg_if-da34da6838abd7f1",
-##     "libc-a7905fdc410bdfce",
+##     "1009fce94369ad6b",
+##     "2d6ea4fd5d7ef666",
+##     "981b1f3c4161234a",
+##     "434e8a9dd58e4456",
+##     "84473f2ddfbb434a",
+##     "da34da6838abd7f1",
+##     "a7905fdc410bdfce",
 ## ]
 ## writes = [
 ##     "deps/aead-2ba1712ad50273ba.d",
@@ -1573,6 +1856,76 @@ COPY --from=dep-l-aead-0.5.2-2ba1712ad50273ba /tmp/clis-ntpd_1-2-3/release/deps/
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-2-3/release/deps/libaead-2ba1712ad50273ba.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-2-3/release/deps/libaead-2ba1712ad50273ba.rlib","emit":"link"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-1009fce94369ad6b"
+## src = "/libcrypto_common-1009fce94369ad6b.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libcrypto_common-1009fce94369ad6b.rmeta"
+## 
+## [[mounts]]
+## from = "out-1009fce94369ad6b"
+## src = "/libcrypto_common-1009fce94369ad6b.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libcrypto_common-1009fce94369ad6b.rlib"
+## 
+## [[mounts]]
+## from = "out-2d6ea4fd5d7ef666"
+## src = "/libgeneric_array-2d6ea4fd5d7ef666.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libgeneric_array-2d6ea4fd5d7ef666.rmeta"
+## 
+## [[mounts]]
+## from = "out-2d6ea4fd5d7ef666"
+## src = "/libgeneric_array-2d6ea4fd5d7ef666.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libgeneric_array-2d6ea4fd5d7ef666.rlib"
+## 
+## [[mounts]]
+## from = "out-981b1f3c4161234a"
+## src = "/libtypenum-981b1f3c4161234a.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libtypenum-981b1f3c4161234a.rmeta"
+## 
+## [[mounts]]
+## from = "out-981b1f3c4161234a"
+## src = "/libtypenum-981b1f3c4161234a.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libtypenum-981b1f3c4161234a.rlib"
+## 
+## [[mounts]]
+## from = "out-434e8a9dd58e4456"
+## src = "/librand_core-434e8a9dd58e4456.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/librand_core-434e8a9dd58e4456.rmeta"
+## 
+## [[mounts]]
+## from = "out-434e8a9dd58e4456"
+## src = "/librand_core-434e8a9dd58e4456.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/librand_core-434e8a9dd58e4456.rlib"
+## 
+## [[mounts]]
+## from = "out-84473f2ddfbb434a"
+## src = "/libgetrandom-84473f2ddfbb434a.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rmeta"
+## 
+## [[mounts]]
+## from = "out-84473f2ddfbb434a"
+## src = "/libgetrandom-84473f2ddfbb434a.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rlib"
+## 
+## [[mounts]]
+## from = "out-da34da6838abd7f1"
+## src = "/libcfg_if-da34da6838abd7f1.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rmeta"
+## 
+## [[mounts]]
+## from = "out-da34da6838abd7f1"
+## src = "/libcfg_if-da34da6838abd7f1.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rlib"
+## 
+## [[mounts]]
+## from = "out-a7905fdc410bdfce"
+## src = "/liblibc-a7905fdc410bdfce.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rmeta"
+## 
+## [[mounts]]
+## from = "out-a7905fdc410bdfce"
+## src = "/liblibc-a7905fdc410bdfce.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rlib"
 ## 
 ## [[contexts]]
 ## name = "crate_out-a7d381539c9ce48d"
@@ -1598,12 +1951,19 @@ COPY --from=dep-l-aead-0.5.2-2ba1712ad50273ba /tmp/clis-ntpd_1-2-3/release/deps/
 ## RUN \
 ##   --mount=from=cratesio-aead-0.5.2,source=/aead-0.5.2,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aead-0.5.2 \
 ##   --mount=from=out-1009fce94369ad6b,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcrypto_common-1009fce94369ad6b.rmeta,source=/libcrypto_common-1009fce94369ad6b.rmeta \
+##   --mount=from=out-1009fce94369ad6b,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcrypto_common-1009fce94369ad6b.rlib,source=/libcrypto_common-1009fce94369ad6b.rlib \
 ##   --mount=from=out-2d6ea4fd5d7ef666,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgeneric_array-2d6ea4fd5d7ef666.rmeta,source=/libgeneric_array-2d6ea4fd5d7ef666.rmeta \
+##   --mount=from=out-2d6ea4fd5d7ef666,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgeneric_array-2d6ea4fd5d7ef666.rlib,source=/libgeneric_array-2d6ea4fd5d7ef666.rlib \
 ##   --mount=from=out-981b1f3c4161234a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtypenum-981b1f3c4161234a.rmeta,source=/libtypenum-981b1f3c4161234a.rmeta \
+##   --mount=from=out-981b1f3c4161234a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtypenum-981b1f3c4161234a.rlib,source=/libtypenum-981b1f3c4161234a.rlib \
 ##   --mount=from=out-434e8a9dd58e4456,dst=/tmp/clis-ntpd_1-2-3/release/deps/librand_core-434e8a9dd58e4456.rmeta,source=/librand_core-434e8a9dd58e4456.rmeta \
+##   --mount=from=out-434e8a9dd58e4456,dst=/tmp/clis-ntpd_1-2-3/release/deps/librand_core-434e8a9dd58e4456.rlib,source=/librand_core-434e8a9dd58e4456.rlib \
 ##   --mount=from=out-84473f2ddfbb434a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rmeta,source=/libgetrandom-84473f2ddfbb434a.rmeta \
+##   --mount=from=out-84473f2ddfbb434a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rlib,source=/libgetrandom-84473f2ddfbb434a.rlib \
 ##   --mount=from=out-da34da6838abd7f1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rmeta,source=/libcfg_if-da34da6838abd7f1.rmeta \
+##   --mount=from=out-da34da6838abd7f1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rlib,source=/libcfg_if-da34da6838abd7f1.rlib \
 ##   --mount=from=out-a7905fdc410bdfce,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rmeta,source=/liblibc-a7905fdc410bdfce.rmeta \
+##   --mount=from=out-a7905fdc410bdfce,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rlib,source=/liblibc-a7905fdc410bdfce.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="aead" \
@@ -1646,7 +2006,9 @@ WORKDIR /tmp/clis-ntpd_1-2-3/release/deps
 RUN \
   --mount=from=cratesio-inout-0.1.3,source=/inout-0.1.3,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/inout-0.1.3 \
   --mount=from=out-2d6ea4fd5d7ef666,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgeneric_array-2d6ea4fd5d7ef666.rmeta,source=/libgeneric_array-2d6ea4fd5d7ef666.rmeta \
+  --mount=from=out-2d6ea4fd5d7ef666,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgeneric_array-2d6ea4fd5d7ef666.rlib,source=/libgeneric_array-2d6ea4fd5d7ef666.rlib \
   --mount=from=out-981b1f3c4161234a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtypenum-981b1f3c4161234a.rmeta,source=/libtypenum-981b1f3c4161234a.rmeta \
+  --mount=from=out-981b1f3c4161234a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtypenum-981b1f3c4161234a.rlib,source=/libtypenum-981b1f3c4161234a.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="inout" \
@@ -1682,8 +2044,8 @@ COPY --from=dep-l-inout-0.1.3-56f37e149446be27 /tmp/clis-ntpd_1-2-3/release/deps
 ##     "981b1f3c4161234a",
 ## ]
 ## short_externs = [
-##     "generic_array-2d6ea4fd5d7ef666",
-##     "typenum-981b1f3c4161234a",
+##     "2d6ea4fd5d7ef666",
+##     "981b1f3c4161234a",
 ## ]
 ## writes = [
 ##     "deps/inout-56f37e149446be27.d",
@@ -1695,6 +2057,26 @@ COPY --from=dep-l-inout-0.1.3-56f37e149446be27 /tmp/clis-ntpd_1-2-3/release/deps
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-2-3/release/deps/libinout-56f37e149446be27.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-2-3/release/deps/libinout-56f37e149446be27.rlib","emit":"link"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-2d6ea4fd5d7ef666"
+## src = "/libgeneric_array-2d6ea4fd5d7ef666.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libgeneric_array-2d6ea4fd5d7ef666.rmeta"
+## 
+## [[mounts]]
+## from = "out-2d6ea4fd5d7ef666"
+## src = "/libgeneric_array-2d6ea4fd5d7ef666.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libgeneric_array-2d6ea4fd5d7ef666.rlib"
+## 
+## [[mounts]]
+## from = "out-981b1f3c4161234a"
+## src = "/libtypenum-981b1f3c4161234a.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libtypenum-981b1f3c4161234a.rmeta"
+## 
+## [[mounts]]
+## from = "out-981b1f3c4161234a"
+## src = "/libtypenum-981b1f3c4161234a.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libtypenum-981b1f3c4161234a.rlib"
 ## 
 ## [[contexts]]
 ## name = "crate_out-a7d381539c9ce48d"
@@ -1720,7 +2102,9 @@ COPY --from=dep-l-inout-0.1.3-56f37e149446be27 /tmp/clis-ntpd_1-2-3/release/deps
 ## RUN \
 ##   --mount=from=cratesio-inout-0.1.3,source=/inout-0.1.3,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/inout-0.1.3 \
 ##   --mount=from=out-2d6ea4fd5d7ef666,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgeneric_array-2d6ea4fd5d7ef666.rmeta,source=/libgeneric_array-2d6ea4fd5d7ef666.rmeta \
+##   --mount=from=out-2d6ea4fd5d7ef666,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgeneric_array-2d6ea4fd5d7ef666.rlib,source=/libgeneric_array-2d6ea4fd5d7ef666.rlib \
 ##   --mount=from=out-981b1f3c4161234a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtypenum-981b1f3c4161234a.rmeta,source=/libtypenum-981b1f3c4161234a.rmeta \
+##   --mount=from=out-981b1f3c4161234a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtypenum-981b1f3c4161234a.rlib,source=/libtypenum-981b1f3c4161234a.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="inout" \
@@ -1763,13 +2147,21 @@ WORKDIR /tmp/clis-ntpd_1-2-3/release/deps
 RUN \
   --mount=from=cratesio-cipher-0.4.4,source=/cipher-0.4.4,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/cipher-0.4.4 \
   --mount=from=out-1009fce94369ad6b,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcrypto_common-1009fce94369ad6b.rmeta,source=/libcrypto_common-1009fce94369ad6b.rmeta \
+  --mount=from=out-1009fce94369ad6b,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcrypto_common-1009fce94369ad6b.rlib,source=/libcrypto_common-1009fce94369ad6b.rlib \
   --mount=from=out-2d6ea4fd5d7ef666,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgeneric_array-2d6ea4fd5d7ef666.rmeta,source=/libgeneric_array-2d6ea4fd5d7ef666.rmeta \
+  --mount=from=out-2d6ea4fd5d7ef666,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgeneric_array-2d6ea4fd5d7ef666.rlib,source=/libgeneric_array-2d6ea4fd5d7ef666.rlib \
   --mount=from=out-981b1f3c4161234a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtypenum-981b1f3c4161234a.rmeta,source=/libtypenum-981b1f3c4161234a.rmeta \
+  --mount=from=out-981b1f3c4161234a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtypenum-981b1f3c4161234a.rlib,source=/libtypenum-981b1f3c4161234a.rlib \
   --mount=from=out-434e8a9dd58e4456,dst=/tmp/clis-ntpd_1-2-3/release/deps/librand_core-434e8a9dd58e4456.rmeta,source=/librand_core-434e8a9dd58e4456.rmeta \
+  --mount=from=out-434e8a9dd58e4456,dst=/tmp/clis-ntpd_1-2-3/release/deps/librand_core-434e8a9dd58e4456.rlib,source=/librand_core-434e8a9dd58e4456.rlib \
   --mount=from=out-84473f2ddfbb434a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rmeta,source=/libgetrandom-84473f2ddfbb434a.rmeta \
+  --mount=from=out-84473f2ddfbb434a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rlib,source=/libgetrandom-84473f2ddfbb434a.rlib \
   --mount=from=out-da34da6838abd7f1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rmeta,source=/libcfg_if-da34da6838abd7f1.rmeta \
+  --mount=from=out-da34da6838abd7f1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rlib,source=/libcfg_if-da34da6838abd7f1.rlib \
   --mount=from=out-a7905fdc410bdfce,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rmeta,source=/liblibc-a7905fdc410bdfce.rmeta \
+  --mount=from=out-a7905fdc410bdfce,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rlib,source=/liblibc-a7905fdc410bdfce.rlib \
   --mount=from=out-56f37e149446be27,dst=/tmp/clis-ntpd_1-2-3/release/deps/libinout-56f37e149446be27.rmeta,source=/libinout-56f37e149446be27.rmeta \
+  --mount=from=out-56f37e149446be27,dst=/tmp/clis-ntpd_1-2-3/release/deps/libinout-56f37e149446be27.rlib,source=/libinout-56f37e149446be27.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="cipher" \
@@ -1811,14 +2203,14 @@ COPY --from=dep-l-cipher-0.4.4-ca1baada07864a60 /tmp/clis-ntpd_1-2-3/release/dep
 ##     "56f37e149446be27",
 ## ]
 ## short_externs = [
-##     "crypto_common-1009fce94369ad6b",
-##     "generic_array-2d6ea4fd5d7ef666",
-##     "typenum-981b1f3c4161234a",
-##     "rand_core-434e8a9dd58e4456",
-##     "getrandom-84473f2ddfbb434a",
-##     "cfg_if-da34da6838abd7f1",
-##     "libc-a7905fdc410bdfce",
-##     "inout-56f37e149446be27",
+##     "1009fce94369ad6b",
+##     "2d6ea4fd5d7ef666",
+##     "981b1f3c4161234a",
+##     "434e8a9dd58e4456",
+##     "84473f2ddfbb434a",
+##     "da34da6838abd7f1",
+##     "a7905fdc410bdfce",
+##     "56f37e149446be27",
 ## ]
 ## writes = [
 ##     "deps/cipher-ca1baada07864a60.d",
@@ -1830,6 +2222,86 @@ COPY --from=dep-l-cipher-0.4.4-ca1baada07864a60 /tmp/clis-ntpd_1-2-3/release/dep
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-2-3/release/deps/libcipher-ca1baada07864a60.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-2-3/release/deps/libcipher-ca1baada07864a60.rlib","emit":"link"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-1009fce94369ad6b"
+## src = "/libcrypto_common-1009fce94369ad6b.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libcrypto_common-1009fce94369ad6b.rmeta"
+## 
+## [[mounts]]
+## from = "out-1009fce94369ad6b"
+## src = "/libcrypto_common-1009fce94369ad6b.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libcrypto_common-1009fce94369ad6b.rlib"
+## 
+## [[mounts]]
+## from = "out-2d6ea4fd5d7ef666"
+## src = "/libgeneric_array-2d6ea4fd5d7ef666.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libgeneric_array-2d6ea4fd5d7ef666.rmeta"
+## 
+## [[mounts]]
+## from = "out-2d6ea4fd5d7ef666"
+## src = "/libgeneric_array-2d6ea4fd5d7ef666.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libgeneric_array-2d6ea4fd5d7ef666.rlib"
+## 
+## [[mounts]]
+## from = "out-981b1f3c4161234a"
+## src = "/libtypenum-981b1f3c4161234a.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libtypenum-981b1f3c4161234a.rmeta"
+## 
+## [[mounts]]
+## from = "out-981b1f3c4161234a"
+## src = "/libtypenum-981b1f3c4161234a.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libtypenum-981b1f3c4161234a.rlib"
+## 
+## [[mounts]]
+## from = "out-434e8a9dd58e4456"
+## src = "/librand_core-434e8a9dd58e4456.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/librand_core-434e8a9dd58e4456.rmeta"
+## 
+## [[mounts]]
+## from = "out-434e8a9dd58e4456"
+## src = "/librand_core-434e8a9dd58e4456.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/librand_core-434e8a9dd58e4456.rlib"
+## 
+## [[mounts]]
+## from = "out-84473f2ddfbb434a"
+## src = "/libgetrandom-84473f2ddfbb434a.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rmeta"
+## 
+## [[mounts]]
+## from = "out-84473f2ddfbb434a"
+## src = "/libgetrandom-84473f2ddfbb434a.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rlib"
+## 
+## [[mounts]]
+## from = "out-da34da6838abd7f1"
+## src = "/libcfg_if-da34da6838abd7f1.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rmeta"
+## 
+## [[mounts]]
+## from = "out-da34da6838abd7f1"
+## src = "/libcfg_if-da34da6838abd7f1.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rlib"
+## 
+## [[mounts]]
+## from = "out-a7905fdc410bdfce"
+## src = "/liblibc-a7905fdc410bdfce.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rmeta"
+## 
+## [[mounts]]
+## from = "out-a7905fdc410bdfce"
+## src = "/liblibc-a7905fdc410bdfce.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rlib"
+## 
+## [[mounts]]
+## from = "out-56f37e149446be27"
+## src = "/libinout-56f37e149446be27.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libinout-56f37e149446be27.rmeta"
+## 
+## [[mounts]]
+## from = "out-56f37e149446be27"
+## src = "/libinout-56f37e149446be27.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libinout-56f37e149446be27.rlib"
 ## 
 ## [[contexts]]
 ## name = "crate_out-a7d381539c9ce48d"
@@ -1855,13 +2327,21 @@ COPY --from=dep-l-cipher-0.4.4-ca1baada07864a60 /tmp/clis-ntpd_1-2-3/release/dep
 ## RUN \
 ##   --mount=from=cratesio-cipher-0.4.4,source=/cipher-0.4.4,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/cipher-0.4.4 \
 ##   --mount=from=out-1009fce94369ad6b,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcrypto_common-1009fce94369ad6b.rmeta,source=/libcrypto_common-1009fce94369ad6b.rmeta \
+##   --mount=from=out-1009fce94369ad6b,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcrypto_common-1009fce94369ad6b.rlib,source=/libcrypto_common-1009fce94369ad6b.rlib \
 ##   --mount=from=out-2d6ea4fd5d7ef666,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgeneric_array-2d6ea4fd5d7ef666.rmeta,source=/libgeneric_array-2d6ea4fd5d7ef666.rmeta \
+##   --mount=from=out-2d6ea4fd5d7ef666,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgeneric_array-2d6ea4fd5d7ef666.rlib,source=/libgeneric_array-2d6ea4fd5d7ef666.rlib \
 ##   --mount=from=out-981b1f3c4161234a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtypenum-981b1f3c4161234a.rmeta,source=/libtypenum-981b1f3c4161234a.rmeta \
+##   --mount=from=out-981b1f3c4161234a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtypenum-981b1f3c4161234a.rlib,source=/libtypenum-981b1f3c4161234a.rlib \
 ##   --mount=from=out-434e8a9dd58e4456,dst=/tmp/clis-ntpd_1-2-3/release/deps/librand_core-434e8a9dd58e4456.rmeta,source=/librand_core-434e8a9dd58e4456.rmeta \
+##   --mount=from=out-434e8a9dd58e4456,dst=/tmp/clis-ntpd_1-2-3/release/deps/librand_core-434e8a9dd58e4456.rlib,source=/librand_core-434e8a9dd58e4456.rlib \
 ##   --mount=from=out-84473f2ddfbb434a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rmeta,source=/libgetrandom-84473f2ddfbb434a.rmeta \
+##   --mount=from=out-84473f2ddfbb434a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rlib,source=/libgetrandom-84473f2ddfbb434a.rlib \
 ##   --mount=from=out-da34da6838abd7f1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rmeta,source=/libcfg_if-da34da6838abd7f1.rmeta \
+##   --mount=from=out-da34da6838abd7f1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rlib,source=/libcfg_if-da34da6838abd7f1.rlib \
 ##   --mount=from=out-a7905fdc410bdfce,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rmeta,source=/liblibc-a7905fdc410bdfce.rmeta \
+##   --mount=from=out-a7905fdc410bdfce,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rlib,source=/liblibc-a7905fdc410bdfce.rlib \
 ##   --mount=from=out-56f37e149446be27,dst=/tmp/clis-ntpd_1-2-3/release/deps/libinout-56f37e149446be27.rmeta,source=/libinout-56f37e149446be27.rmeta \
+##   --mount=from=out-56f37e149446be27,dst=/tmp/clis-ntpd_1-2-3/release/deps/libinout-56f37e149446be27.rlib,source=/libinout-56f37e149446be27.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="cipher" \
@@ -2005,15 +2485,25 @@ WORKDIR /tmp/clis-ntpd_1-2-3/release/deps
 RUN \
   --mount=from=cratesio-aes-0.8.4,source=/aes-0.8.4,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aes-0.8.4 \
   --mount=from=out-da34da6838abd7f1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rmeta,source=/libcfg_if-da34da6838abd7f1.rmeta \
+  --mount=from=out-da34da6838abd7f1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rlib,source=/libcfg_if-da34da6838abd7f1.rlib \
   --mount=from=out-ca1baada07864a60,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcipher-ca1baada07864a60.rmeta,source=/libcipher-ca1baada07864a60.rmeta \
+  --mount=from=out-ca1baada07864a60,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcipher-ca1baada07864a60.rlib,source=/libcipher-ca1baada07864a60.rlib \
   --mount=from=out-1009fce94369ad6b,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcrypto_common-1009fce94369ad6b.rmeta,source=/libcrypto_common-1009fce94369ad6b.rmeta \
+  --mount=from=out-1009fce94369ad6b,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcrypto_common-1009fce94369ad6b.rlib,source=/libcrypto_common-1009fce94369ad6b.rlib \
   --mount=from=out-2d6ea4fd5d7ef666,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgeneric_array-2d6ea4fd5d7ef666.rmeta,source=/libgeneric_array-2d6ea4fd5d7ef666.rmeta \
+  --mount=from=out-2d6ea4fd5d7ef666,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgeneric_array-2d6ea4fd5d7ef666.rlib,source=/libgeneric_array-2d6ea4fd5d7ef666.rlib \
   --mount=from=out-981b1f3c4161234a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtypenum-981b1f3c4161234a.rmeta,source=/libtypenum-981b1f3c4161234a.rmeta \
+  --mount=from=out-981b1f3c4161234a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtypenum-981b1f3c4161234a.rlib,source=/libtypenum-981b1f3c4161234a.rlib \
   --mount=from=out-434e8a9dd58e4456,dst=/tmp/clis-ntpd_1-2-3/release/deps/librand_core-434e8a9dd58e4456.rmeta,source=/librand_core-434e8a9dd58e4456.rmeta \
+  --mount=from=out-434e8a9dd58e4456,dst=/tmp/clis-ntpd_1-2-3/release/deps/librand_core-434e8a9dd58e4456.rlib,source=/librand_core-434e8a9dd58e4456.rlib \
   --mount=from=out-84473f2ddfbb434a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rmeta,source=/libgetrandom-84473f2ddfbb434a.rmeta \
+  --mount=from=out-84473f2ddfbb434a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rlib,source=/libgetrandom-84473f2ddfbb434a.rlib \
   --mount=from=out-a7905fdc410bdfce,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rmeta,source=/liblibc-a7905fdc410bdfce.rmeta \
+  --mount=from=out-a7905fdc410bdfce,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rlib,source=/liblibc-a7905fdc410bdfce.rlib \
   --mount=from=out-56f37e149446be27,dst=/tmp/clis-ntpd_1-2-3/release/deps/libinout-56f37e149446be27.rmeta,source=/libinout-56f37e149446be27.rmeta \
+  --mount=from=out-56f37e149446be27,dst=/tmp/clis-ntpd_1-2-3/release/deps/libinout-56f37e149446be27.rlib,source=/libinout-56f37e149446be27.rlib \
   --mount=from=out-4ab791033e58debd,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcpufeatures-4ab791033e58debd.rmeta,source=/libcpufeatures-4ab791033e58debd.rmeta \
+  --mount=from=out-4ab791033e58debd,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcpufeatures-4ab791033e58debd.rlib,source=/libcpufeatures-4ab791033e58debd.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="aes" \
@@ -2057,16 +2547,16 @@ COPY --from=dep-l-aes-0.8.4-81c9db97d7f9be78 /tmp/clis-ntpd_1-2-3/release/deps/*
 ##     "4ab791033e58debd",
 ## ]
 ## short_externs = [
-##     "cfg_if-da34da6838abd7f1",
-##     "cipher-ca1baada07864a60",
-##     "crypto_common-1009fce94369ad6b",
-##     "generic_array-2d6ea4fd5d7ef666",
-##     "typenum-981b1f3c4161234a",
-##     "rand_core-434e8a9dd58e4456",
-##     "getrandom-84473f2ddfbb434a",
-##     "libc-a7905fdc410bdfce",
-##     "inout-56f37e149446be27",
-##     "cpufeatures-4ab791033e58debd",
+##     "da34da6838abd7f1",
+##     "ca1baada07864a60",
+##     "1009fce94369ad6b",
+##     "2d6ea4fd5d7ef666",
+##     "981b1f3c4161234a",
+##     "434e8a9dd58e4456",
+##     "84473f2ddfbb434a",
+##     "a7905fdc410bdfce",
+##     "56f37e149446be27",
+##     "4ab791033e58debd",
 ## ]
 ## writes = [
 ##     "deps/aes-81c9db97d7f9be78.d",
@@ -2116,6 +2606,106 @@ COPY --from=dep-l-aes-0.8.4-81c9db97d7f9be78 /tmp/clis-ntpd_1-2-3/release/deps/*
 ##     '{"$message_type":"diagnostic","message":"36 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 36 warnings emitted\u001b[0m\n\n"}',
 ## ]
 ## 
+## [[mounts]]
+## from = "out-da34da6838abd7f1"
+## src = "/libcfg_if-da34da6838abd7f1.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rmeta"
+## 
+## [[mounts]]
+## from = "out-da34da6838abd7f1"
+## src = "/libcfg_if-da34da6838abd7f1.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rlib"
+## 
+## [[mounts]]
+## from = "out-ca1baada07864a60"
+## src = "/libcipher-ca1baada07864a60.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libcipher-ca1baada07864a60.rmeta"
+## 
+## [[mounts]]
+## from = "out-ca1baada07864a60"
+## src = "/libcipher-ca1baada07864a60.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libcipher-ca1baada07864a60.rlib"
+## 
+## [[mounts]]
+## from = "out-1009fce94369ad6b"
+## src = "/libcrypto_common-1009fce94369ad6b.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libcrypto_common-1009fce94369ad6b.rmeta"
+## 
+## [[mounts]]
+## from = "out-1009fce94369ad6b"
+## src = "/libcrypto_common-1009fce94369ad6b.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libcrypto_common-1009fce94369ad6b.rlib"
+## 
+## [[mounts]]
+## from = "out-2d6ea4fd5d7ef666"
+## src = "/libgeneric_array-2d6ea4fd5d7ef666.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libgeneric_array-2d6ea4fd5d7ef666.rmeta"
+## 
+## [[mounts]]
+## from = "out-2d6ea4fd5d7ef666"
+## src = "/libgeneric_array-2d6ea4fd5d7ef666.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libgeneric_array-2d6ea4fd5d7ef666.rlib"
+## 
+## [[mounts]]
+## from = "out-981b1f3c4161234a"
+## src = "/libtypenum-981b1f3c4161234a.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libtypenum-981b1f3c4161234a.rmeta"
+## 
+## [[mounts]]
+## from = "out-981b1f3c4161234a"
+## src = "/libtypenum-981b1f3c4161234a.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libtypenum-981b1f3c4161234a.rlib"
+## 
+## [[mounts]]
+## from = "out-434e8a9dd58e4456"
+## src = "/librand_core-434e8a9dd58e4456.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/librand_core-434e8a9dd58e4456.rmeta"
+## 
+## [[mounts]]
+## from = "out-434e8a9dd58e4456"
+## src = "/librand_core-434e8a9dd58e4456.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/librand_core-434e8a9dd58e4456.rlib"
+## 
+## [[mounts]]
+## from = "out-84473f2ddfbb434a"
+## src = "/libgetrandom-84473f2ddfbb434a.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rmeta"
+## 
+## [[mounts]]
+## from = "out-84473f2ddfbb434a"
+## src = "/libgetrandom-84473f2ddfbb434a.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rlib"
+## 
+## [[mounts]]
+## from = "out-a7905fdc410bdfce"
+## src = "/liblibc-a7905fdc410bdfce.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rmeta"
+## 
+## [[mounts]]
+## from = "out-a7905fdc410bdfce"
+## src = "/liblibc-a7905fdc410bdfce.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rlib"
+## 
+## [[mounts]]
+## from = "out-56f37e149446be27"
+## src = "/libinout-56f37e149446be27.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libinout-56f37e149446be27.rmeta"
+## 
+## [[mounts]]
+## from = "out-56f37e149446be27"
+## src = "/libinout-56f37e149446be27.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libinout-56f37e149446be27.rlib"
+## 
+## [[mounts]]
+## from = "out-4ab791033e58debd"
+## src = "/libcpufeatures-4ab791033e58debd.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libcpufeatures-4ab791033e58debd.rmeta"
+## 
+## [[mounts]]
+## from = "out-4ab791033e58debd"
+## src = "/libcpufeatures-4ab791033e58debd.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libcpufeatures-4ab791033e58debd.rlib"
+## 
 ## [[contexts]]
 ## name = "crate_out-a7d381539c9ce48d"
 ## uri = "/tmp/clis-ntpd_1-2-3/release/build/typenum-a7d381539c9ce48d/out"
@@ -2140,15 +2730,25 @@ COPY --from=dep-l-aes-0.8.4-81c9db97d7f9be78 /tmp/clis-ntpd_1-2-3/release/deps/*
 ## RUN \
 ##   --mount=from=cratesio-aes-0.8.4,source=/aes-0.8.4,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aes-0.8.4 \
 ##   --mount=from=out-da34da6838abd7f1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rmeta,source=/libcfg_if-da34da6838abd7f1.rmeta \
+##   --mount=from=out-da34da6838abd7f1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rlib,source=/libcfg_if-da34da6838abd7f1.rlib \
 ##   --mount=from=out-ca1baada07864a60,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcipher-ca1baada07864a60.rmeta,source=/libcipher-ca1baada07864a60.rmeta \
+##   --mount=from=out-ca1baada07864a60,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcipher-ca1baada07864a60.rlib,source=/libcipher-ca1baada07864a60.rlib \
 ##   --mount=from=out-1009fce94369ad6b,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcrypto_common-1009fce94369ad6b.rmeta,source=/libcrypto_common-1009fce94369ad6b.rmeta \
+##   --mount=from=out-1009fce94369ad6b,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcrypto_common-1009fce94369ad6b.rlib,source=/libcrypto_common-1009fce94369ad6b.rlib \
 ##   --mount=from=out-2d6ea4fd5d7ef666,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgeneric_array-2d6ea4fd5d7ef666.rmeta,source=/libgeneric_array-2d6ea4fd5d7ef666.rmeta \
+##   --mount=from=out-2d6ea4fd5d7ef666,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgeneric_array-2d6ea4fd5d7ef666.rlib,source=/libgeneric_array-2d6ea4fd5d7ef666.rlib \
 ##   --mount=from=out-981b1f3c4161234a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtypenum-981b1f3c4161234a.rmeta,source=/libtypenum-981b1f3c4161234a.rmeta \
+##   --mount=from=out-981b1f3c4161234a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtypenum-981b1f3c4161234a.rlib,source=/libtypenum-981b1f3c4161234a.rlib \
 ##   --mount=from=out-434e8a9dd58e4456,dst=/tmp/clis-ntpd_1-2-3/release/deps/librand_core-434e8a9dd58e4456.rmeta,source=/librand_core-434e8a9dd58e4456.rmeta \
+##   --mount=from=out-434e8a9dd58e4456,dst=/tmp/clis-ntpd_1-2-3/release/deps/librand_core-434e8a9dd58e4456.rlib,source=/librand_core-434e8a9dd58e4456.rlib \
 ##   --mount=from=out-84473f2ddfbb434a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rmeta,source=/libgetrandom-84473f2ddfbb434a.rmeta \
+##   --mount=from=out-84473f2ddfbb434a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rlib,source=/libgetrandom-84473f2ddfbb434a.rlib \
 ##   --mount=from=out-a7905fdc410bdfce,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rmeta,source=/liblibc-a7905fdc410bdfce.rmeta \
+##   --mount=from=out-a7905fdc410bdfce,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rlib,source=/liblibc-a7905fdc410bdfce.rlib \
 ##   --mount=from=out-56f37e149446be27,dst=/tmp/clis-ntpd_1-2-3/release/deps/libinout-56f37e149446be27.rmeta,source=/libinout-56f37e149446be27.rmeta \
+##   --mount=from=out-56f37e149446be27,dst=/tmp/clis-ntpd_1-2-3/release/deps/libinout-56f37e149446be27.rlib,source=/libinout-56f37e149446be27.rlib \
 ##   --mount=from=out-4ab791033e58debd,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcpufeatures-4ab791033e58debd.rmeta,source=/libcpufeatures-4ab791033e58debd.rmeta \
+##   --mount=from=out-4ab791033e58debd,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcpufeatures-4ab791033e58debd.rlib,source=/libcpufeatures-4ab791033e58debd.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="aes" \
@@ -2191,7 +2791,9 @@ WORKDIR /tmp/clis-ntpd_1-2-3/release/deps
 RUN \
   --mount=from=cratesio-dbl-0.3.2,source=/dbl-0.3.2,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/dbl-0.3.2 \
   --mount=from=out-2d6ea4fd5d7ef666,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgeneric_array-2d6ea4fd5d7ef666.rmeta,source=/libgeneric_array-2d6ea4fd5d7ef666.rmeta \
+  --mount=from=out-2d6ea4fd5d7ef666,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgeneric_array-2d6ea4fd5d7ef666.rlib,source=/libgeneric_array-2d6ea4fd5d7ef666.rlib \
   --mount=from=out-981b1f3c4161234a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtypenum-981b1f3c4161234a.rmeta,source=/libtypenum-981b1f3c4161234a.rmeta \
+  --mount=from=out-981b1f3c4161234a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtypenum-981b1f3c4161234a.rlib,source=/libtypenum-981b1f3c4161234a.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="dbl" \
@@ -2227,8 +2829,8 @@ COPY --from=dep-l-dbl-0.3.2-19f9a0f198045bc5 /tmp/clis-ntpd_1-2-3/release/deps/*
 ##     "981b1f3c4161234a",
 ## ]
 ## short_externs = [
-##     "generic_array-2d6ea4fd5d7ef666",
-##     "typenum-981b1f3c4161234a",
+##     "2d6ea4fd5d7ef666",
+##     "981b1f3c4161234a",
 ## ]
 ## writes = [
 ##     "deps/dbl-19f9a0f198045bc5.d",
@@ -2240,6 +2842,26 @@ COPY --from=dep-l-dbl-0.3.2-19f9a0f198045bc5 /tmp/clis-ntpd_1-2-3/release/deps/*
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-2-3/release/deps/libdbl-19f9a0f198045bc5.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-2-3/release/deps/libdbl-19f9a0f198045bc5.rlib","emit":"link"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-2d6ea4fd5d7ef666"
+## src = "/libgeneric_array-2d6ea4fd5d7ef666.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libgeneric_array-2d6ea4fd5d7ef666.rmeta"
+## 
+## [[mounts]]
+## from = "out-2d6ea4fd5d7ef666"
+## src = "/libgeneric_array-2d6ea4fd5d7ef666.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libgeneric_array-2d6ea4fd5d7ef666.rlib"
+## 
+## [[mounts]]
+## from = "out-981b1f3c4161234a"
+## src = "/libtypenum-981b1f3c4161234a.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libtypenum-981b1f3c4161234a.rmeta"
+## 
+## [[mounts]]
+## from = "out-981b1f3c4161234a"
+## src = "/libtypenum-981b1f3c4161234a.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libtypenum-981b1f3c4161234a.rlib"
 ## 
 ## [[contexts]]
 ## name = "crate_out-a7d381539c9ce48d"
@@ -2265,7 +2887,9 @@ COPY --from=dep-l-dbl-0.3.2-19f9a0f198045bc5 /tmp/clis-ntpd_1-2-3/release/deps/*
 ## RUN \
 ##   --mount=from=cratesio-dbl-0.3.2,source=/dbl-0.3.2,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/dbl-0.3.2 \
 ##   --mount=from=out-2d6ea4fd5d7ef666,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgeneric_array-2d6ea4fd5d7ef666.rmeta,source=/libgeneric_array-2d6ea4fd5d7ef666.rmeta \
+##   --mount=from=out-2d6ea4fd5d7ef666,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgeneric_array-2d6ea4fd5d7ef666.rlib,source=/libgeneric_array-2d6ea4fd5d7ef666.rlib \
 ##   --mount=from=out-981b1f3c4161234a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtypenum-981b1f3c4161234a.rmeta,source=/libtypenum-981b1f3c4161234a.rmeta \
+##   --mount=from=out-981b1f3c4161234a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtypenum-981b1f3c4161234a.rlib,source=/libtypenum-981b1f3c4161234a.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="dbl" \
@@ -2308,7 +2932,9 @@ WORKDIR /tmp/clis-ntpd_1-2-3/release/deps
 RUN \
   --mount=from=cratesio-block-buffer-0.10.4,source=/block-buffer-0.10.4,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/block-buffer-0.10.4 \
   --mount=from=out-2d6ea4fd5d7ef666,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgeneric_array-2d6ea4fd5d7ef666.rmeta,source=/libgeneric_array-2d6ea4fd5d7ef666.rmeta \
+  --mount=from=out-2d6ea4fd5d7ef666,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgeneric_array-2d6ea4fd5d7ef666.rlib,source=/libgeneric_array-2d6ea4fd5d7ef666.rlib \
   --mount=from=out-981b1f3c4161234a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtypenum-981b1f3c4161234a.rmeta,source=/libtypenum-981b1f3c4161234a.rmeta \
+  --mount=from=out-981b1f3c4161234a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtypenum-981b1f3c4161234a.rlib,source=/libtypenum-981b1f3c4161234a.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="block_buffer" \
@@ -2344,8 +2970,8 @@ COPY --from=dep-l-block-buffer-0.10.4-bc12f6e8b62af3c6 /tmp/clis-ntpd_1-2-3/rele
 ##     "981b1f3c4161234a",
 ## ]
 ## short_externs = [
-##     "generic_array-2d6ea4fd5d7ef666",
-##     "typenum-981b1f3c4161234a",
+##     "2d6ea4fd5d7ef666",
+##     "981b1f3c4161234a",
 ## ]
 ## writes = [
 ##     "deps/block_buffer-bc12f6e8b62af3c6.d",
@@ -2357,6 +2983,26 @@ COPY --from=dep-l-block-buffer-0.10.4-bc12f6e8b62af3c6 /tmp/clis-ntpd_1-2-3/rele
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-2-3/release/deps/libblock_buffer-bc12f6e8b62af3c6.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-2-3/release/deps/libblock_buffer-bc12f6e8b62af3c6.rlib","emit":"link"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-2d6ea4fd5d7ef666"
+## src = "/libgeneric_array-2d6ea4fd5d7ef666.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libgeneric_array-2d6ea4fd5d7ef666.rmeta"
+## 
+## [[mounts]]
+## from = "out-2d6ea4fd5d7ef666"
+## src = "/libgeneric_array-2d6ea4fd5d7ef666.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libgeneric_array-2d6ea4fd5d7ef666.rlib"
+## 
+## [[mounts]]
+## from = "out-981b1f3c4161234a"
+## src = "/libtypenum-981b1f3c4161234a.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libtypenum-981b1f3c4161234a.rmeta"
+## 
+## [[mounts]]
+## from = "out-981b1f3c4161234a"
+## src = "/libtypenum-981b1f3c4161234a.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libtypenum-981b1f3c4161234a.rlib"
 ## 
 ## [[contexts]]
 ## name = "crate_out-a7d381539c9ce48d"
@@ -2382,7 +3028,9 @@ COPY --from=dep-l-block-buffer-0.10.4-bc12f6e8b62af3c6 /tmp/clis-ntpd_1-2-3/rele
 ## RUN \
 ##   --mount=from=cratesio-block-buffer-0.10.4,source=/block-buffer-0.10.4,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/block-buffer-0.10.4 \
 ##   --mount=from=out-2d6ea4fd5d7ef666,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgeneric_array-2d6ea4fd5d7ef666.rmeta,source=/libgeneric_array-2d6ea4fd5d7ef666.rmeta \
+##   --mount=from=out-2d6ea4fd5d7ef666,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgeneric_array-2d6ea4fd5d7ef666.rlib,source=/libgeneric_array-2d6ea4fd5d7ef666.rlib \
 ##   --mount=from=out-981b1f3c4161234a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtypenum-981b1f3c4161234a.rmeta,source=/libtypenum-981b1f3c4161234a.rmeta \
+##   --mount=from=out-981b1f3c4161234a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtypenum-981b1f3c4161234a.rlib,source=/libtypenum-981b1f3c4161234a.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="block_buffer" \
@@ -2526,14 +3174,23 @@ WORKDIR /tmp/clis-ntpd_1-2-3/release/deps
 RUN \
   --mount=from=cratesio-digest-0.10.7,source=/digest-0.10.7,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/digest-0.10.7 \
   --mount=from=out-bc12f6e8b62af3c6,dst=/tmp/clis-ntpd_1-2-3/release/deps/libblock_buffer-bc12f6e8b62af3c6.rmeta,source=/libblock_buffer-bc12f6e8b62af3c6.rmeta \
+  --mount=from=out-bc12f6e8b62af3c6,dst=/tmp/clis-ntpd_1-2-3/release/deps/libblock_buffer-bc12f6e8b62af3c6.rlib,source=/libblock_buffer-bc12f6e8b62af3c6.rlib \
   --mount=from=out-2d6ea4fd5d7ef666,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgeneric_array-2d6ea4fd5d7ef666.rmeta,source=/libgeneric_array-2d6ea4fd5d7ef666.rmeta \
+  --mount=from=out-2d6ea4fd5d7ef666,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgeneric_array-2d6ea4fd5d7ef666.rlib,source=/libgeneric_array-2d6ea4fd5d7ef666.rlib \
   --mount=from=out-981b1f3c4161234a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtypenum-981b1f3c4161234a.rmeta,source=/libtypenum-981b1f3c4161234a.rmeta \
+  --mount=from=out-981b1f3c4161234a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtypenum-981b1f3c4161234a.rlib,source=/libtypenum-981b1f3c4161234a.rlib \
   --mount=from=out-1009fce94369ad6b,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcrypto_common-1009fce94369ad6b.rmeta,source=/libcrypto_common-1009fce94369ad6b.rmeta \
+  --mount=from=out-1009fce94369ad6b,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcrypto_common-1009fce94369ad6b.rlib,source=/libcrypto_common-1009fce94369ad6b.rlib \
   --mount=from=out-434e8a9dd58e4456,dst=/tmp/clis-ntpd_1-2-3/release/deps/librand_core-434e8a9dd58e4456.rmeta,source=/librand_core-434e8a9dd58e4456.rmeta \
+  --mount=from=out-434e8a9dd58e4456,dst=/tmp/clis-ntpd_1-2-3/release/deps/librand_core-434e8a9dd58e4456.rlib,source=/librand_core-434e8a9dd58e4456.rlib \
   --mount=from=out-84473f2ddfbb434a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rmeta,source=/libgetrandom-84473f2ddfbb434a.rmeta \
+  --mount=from=out-84473f2ddfbb434a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rlib,source=/libgetrandom-84473f2ddfbb434a.rlib \
   --mount=from=out-da34da6838abd7f1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rmeta,source=/libcfg_if-da34da6838abd7f1.rmeta \
+  --mount=from=out-da34da6838abd7f1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rlib,source=/libcfg_if-da34da6838abd7f1.rlib \
   --mount=from=out-a7905fdc410bdfce,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rmeta,source=/liblibc-a7905fdc410bdfce.rmeta \
+  --mount=from=out-a7905fdc410bdfce,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rlib,source=/liblibc-a7905fdc410bdfce.rlib \
   --mount=from=out-8b6e21d4a5a6c6ed,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsubtle-8b6e21d4a5a6c6ed.rmeta,source=/libsubtle-8b6e21d4a5a6c6ed.rmeta \
+  --mount=from=out-8b6e21d4a5a6c6ed,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsubtle-8b6e21d4a5a6c6ed.rlib,source=/libsubtle-8b6e21d4a5a6c6ed.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="digest" \
@@ -2576,15 +3233,15 @@ COPY --from=dep-l-digest-0.10.7-65e96f3f500a3098 /tmp/clis-ntpd_1-2-3/release/de
 ##     "8b6e21d4a5a6c6ed",
 ## ]
 ## short_externs = [
-##     "block_buffer-bc12f6e8b62af3c6",
-##     "generic_array-2d6ea4fd5d7ef666",
-##     "typenum-981b1f3c4161234a",
-##     "crypto_common-1009fce94369ad6b",
-##     "rand_core-434e8a9dd58e4456",
-##     "getrandom-84473f2ddfbb434a",
-##     "cfg_if-da34da6838abd7f1",
-##     "libc-a7905fdc410bdfce",
-##     "subtle-8b6e21d4a5a6c6ed",
+##     "bc12f6e8b62af3c6",
+##     "2d6ea4fd5d7ef666",
+##     "981b1f3c4161234a",
+##     "1009fce94369ad6b",
+##     "434e8a9dd58e4456",
+##     "84473f2ddfbb434a",
+##     "da34da6838abd7f1",
+##     "a7905fdc410bdfce",
+##     "8b6e21d4a5a6c6ed",
 ## ]
 ## writes = [
 ##     "deps/digest-65e96f3f500a3098.d",
@@ -2596,6 +3253,96 @@ COPY --from=dep-l-digest-0.10.7-65e96f3f500a3098 /tmp/clis-ntpd_1-2-3/release/de
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-2-3/release/deps/libdigest-65e96f3f500a3098.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-2-3/release/deps/libdigest-65e96f3f500a3098.rlib","emit":"link"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-bc12f6e8b62af3c6"
+## src = "/libblock_buffer-bc12f6e8b62af3c6.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libblock_buffer-bc12f6e8b62af3c6.rmeta"
+## 
+## [[mounts]]
+## from = "out-bc12f6e8b62af3c6"
+## src = "/libblock_buffer-bc12f6e8b62af3c6.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libblock_buffer-bc12f6e8b62af3c6.rlib"
+## 
+## [[mounts]]
+## from = "out-2d6ea4fd5d7ef666"
+## src = "/libgeneric_array-2d6ea4fd5d7ef666.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libgeneric_array-2d6ea4fd5d7ef666.rmeta"
+## 
+## [[mounts]]
+## from = "out-2d6ea4fd5d7ef666"
+## src = "/libgeneric_array-2d6ea4fd5d7ef666.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libgeneric_array-2d6ea4fd5d7ef666.rlib"
+## 
+## [[mounts]]
+## from = "out-981b1f3c4161234a"
+## src = "/libtypenum-981b1f3c4161234a.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libtypenum-981b1f3c4161234a.rmeta"
+## 
+## [[mounts]]
+## from = "out-981b1f3c4161234a"
+## src = "/libtypenum-981b1f3c4161234a.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libtypenum-981b1f3c4161234a.rlib"
+## 
+## [[mounts]]
+## from = "out-1009fce94369ad6b"
+## src = "/libcrypto_common-1009fce94369ad6b.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libcrypto_common-1009fce94369ad6b.rmeta"
+## 
+## [[mounts]]
+## from = "out-1009fce94369ad6b"
+## src = "/libcrypto_common-1009fce94369ad6b.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libcrypto_common-1009fce94369ad6b.rlib"
+## 
+## [[mounts]]
+## from = "out-434e8a9dd58e4456"
+## src = "/librand_core-434e8a9dd58e4456.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/librand_core-434e8a9dd58e4456.rmeta"
+## 
+## [[mounts]]
+## from = "out-434e8a9dd58e4456"
+## src = "/librand_core-434e8a9dd58e4456.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/librand_core-434e8a9dd58e4456.rlib"
+## 
+## [[mounts]]
+## from = "out-84473f2ddfbb434a"
+## src = "/libgetrandom-84473f2ddfbb434a.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rmeta"
+## 
+## [[mounts]]
+## from = "out-84473f2ddfbb434a"
+## src = "/libgetrandom-84473f2ddfbb434a.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rlib"
+## 
+## [[mounts]]
+## from = "out-da34da6838abd7f1"
+## src = "/libcfg_if-da34da6838abd7f1.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rmeta"
+## 
+## [[mounts]]
+## from = "out-da34da6838abd7f1"
+## src = "/libcfg_if-da34da6838abd7f1.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rlib"
+## 
+## [[mounts]]
+## from = "out-a7905fdc410bdfce"
+## src = "/liblibc-a7905fdc410bdfce.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rmeta"
+## 
+## [[mounts]]
+## from = "out-a7905fdc410bdfce"
+## src = "/liblibc-a7905fdc410bdfce.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rlib"
+## 
+## [[mounts]]
+## from = "out-8b6e21d4a5a6c6ed"
+## src = "/libsubtle-8b6e21d4a5a6c6ed.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libsubtle-8b6e21d4a5a6c6ed.rmeta"
+## 
+## [[mounts]]
+## from = "out-8b6e21d4a5a6c6ed"
+## src = "/libsubtle-8b6e21d4a5a6c6ed.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libsubtle-8b6e21d4a5a6c6ed.rlib"
 ## 
 ## [[contexts]]
 ## name = "crate_out-a7d381539c9ce48d"
@@ -2621,14 +3368,23 @@ COPY --from=dep-l-digest-0.10.7-65e96f3f500a3098 /tmp/clis-ntpd_1-2-3/release/de
 ## RUN \
 ##   --mount=from=cratesio-digest-0.10.7,source=/digest-0.10.7,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/digest-0.10.7 \
 ##   --mount=from=out-bc12f6e8b62af3c6,dst=/tmp/clis-ntpd_1-2-3/release/deps/libblock_buffer-bc12f6e8b62af3c6.rmeta,source=/libblock_buffer-bc12f6e8b62af3c6.rmeta \
+##   --mount=from=out-bc12f6e8b62af3c6,dst=/tmp/clis-ntpd_1-2-3/release/deps/libblock_buffer-bc12f6e8b62af3c6.rlib,source=/libblock_buffer-bc12f6e8b62af3c6.rlib \
 ##   --mount=from=out-2d6ea4fd5d7ef666,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgeneric_array-2d6ea4fd5d7ef666.rmeta,source=/libgeneric_array-2d6ea4fd5d7ef666.rmeta \
+##   --mount=from=out-2d6ea4fd5d7ef666,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgeneric_array-2d6ea4fd5d7ef666.rlib,source=/libgeneric_array-2d6ea4fd5d7ef666.rlib \
 ##   --mount=from=out-981b1f3c4161234a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtypenum-981b1f3c4161234a.rmeta,source=/libtypenum-981b1f3c4161234a.rmeta \
+##   --mount=from=out-981b1f3c4161234a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtypenum-981b1f3c4161234a.rlib,source=/libtypenum-981b1f3c4161234a.rlib \
 ##   --mount=from=out-1009fce94369ad6b,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcrypto_common-1009fce94369ad6b.rmeta,source=/libcrypto_common-1009fce94369ad6b.rmeta \
+##   --mount=from=out-1009fce94369ad6b,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcrypto_common-1009fce94369ad6b.rlib,source=/libcrypto_common-1009fce94369ad6b.rlib \
 ##   --mount=from=out-434e8a9dd58e4456,dst=/tmp/clis-ntpd_1-2-3/release/deps/librand_core-434e8a9dd58e4456.rmeta,source=/librand_core-434e8a9dd58e4456.rmeta \
+##   --mount=from=out-434e8a9dd58e4456,dst=/tmp/clis-ntpd_1-2-3/release/deps/librand_core-434e8a9dd58e4456.rlib,source=/librand_core-434e8a9dd58e4456.rlib \
 ##   --mount=from=out-84473f2ddfbb434a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rmeta,source=/libgetrandom-84473f2ddfbb434a.rmeta \
+##   --mount=from=out-84473f2ddfbb434a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rlib,source=/libgetrandom-84473f2ddfbb434a.rlib \
 ##   --mount=from=out-da34da6838abd7f1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rmeta,source=/libcfg_if-da34da6838abd7f1.rmeta \
+##   --mount=from=out-da34da6838abd7f1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rlib,source=/libcfg_if-da34da6838abd7f1.rlib \
 ##   --mount=from=out-a7905fdc410bdfce,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rmeta,source=/liblibc-a7905fdc410bdfce.rmeta \
+##   --mount=from=out-a7905fdc410bdfce,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rlib,source=/liblibc-a7905fdc410bdfce.rlib \
 ##   --mount=from=out-8b6e21d4a5a6c6ed,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsubtle-8b6e21d4a5a6c6ed.rmeta,source=/libsubtle-8b6e21d4a5a6c6ed.rmeta \
+##   --mount=from=out-8b6e21d4a5a6c6ed,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsubtle-8b6e21d4a5a6c6ed.rlib,source=/libsubtle-8b6e21d4a5a6c6ed.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="digest" \
@@ -2671,18 +3427,31 @@ WORKDIR /tmp/clis-ntpd_1-2-3/release/deps
 RUN \
   --mount=from=cratesio-cmac-0.7.2,source=/cmac-0.7.2,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/cmac-0.7.2 \
   --mount=from=out-ca1baada07864a60,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcipher-ca1baada07864a60.rmeta,source=/libcipher-ca1baada07864a60.rmeta \
+  --mount=from=out-ca1baada07864a60,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcipher-ca1baada07864a60.rlib,source=/libcipher-ca1baada07864a60.rlib \
   --mount=from=out-1009fce94369ad6b,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcrypto_common-1009fce94369ad6b.rmeta,source=/libcrypto_common-1009fce94369ad6b.rmeta \
+  --mount=from=out-1009fce94369ad6b,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcrypto_common-1009fce94369ad6b.rlib,source=/libcrypto_common-1009fce94369ad6b.rlib \
   --mount=from=out-2d6ea4fd5d7ef666,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgeneric_array-2d6ea4fd5d7ef666.rmeta,source=/libgeneric_array-2d6ea4fd5d7ef666.rmeta \
+  --mount=from=out-2d6ea4fd5d7ef666,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgeneric_array-2d6ea4fd5d7ef666.rlib,source=/libgeneric_array-2d6ea4fd5d7ef666.rlib \
   --mount=from=out-981b1f3c4161234a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtypenum-981b1f3c4161234a.rmeta,source=/libtypenum-981b1f3c4161234a.rmeta \
+  --mount=from=out-981b1f3c4161234a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtypenum-981b1f3c4161234a.rlib,source=/libtypenum-981b1f3c4161234a.rlib \
   --mount=from=out-434e8a9dd58e4456,dst=/tmp/clis-ntpd_1-2-3/release/deps/librand_core-434e8a9dd58e4456.rmeta,source=/librand_core-434e8a9dd58e4456.rmeta \
+  --mount=from=out-434e8a9dd58e4456,dst=/tmp/clis-ntpd_1-2-3/release/deps/librand_core-434e8a9dd58e4456.rlib,source=/librand_core-434e8a9dd58e4456.rlib \
   --mount=from=out-84473f2ddfbb434a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rmeta,source=/libgetrandom-84473f2ddfbb434a.rmeta \
+  --mount=from=out-84473f2ddfbb434a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rlib,source=/libgetrandom-84473f2ddfbb434a.rlib \
   --mount=from=out-da34da6838abd7f1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rmeta,source=/libcfg_if-da34da6838abd7f1.rmeta \
+  --mount=from=out-da34da6838abd7f1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rlib,source=/libcfg_if-da34da6838abd7f1.rlib \
   --mount=from=out-a7905fdc410bdfce,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rmeta,source=/liblibc-a7905fdc410bdfce.rmeta \
+  --mount=from=out-a7905fdc410bdfce,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rlib,source=/liblibc-a7905fdc410bdfce.rlib \
   --mount=from=out-56f37e149446be27,dst=/tmp/clis-ntpd_1-2-3/release/deps/libinout-56f37e149446be27.rmeta,source=/libinout-56f37e149446be27.rmeta \
+  --mount=from=out-56f37e149446be27,dst=/tmp/clis-ntpd_1-2-3/release/deps/libinout-56f37e149446be27.rlib,source=/libinout-56f37e149446be27.rlib \
   --mount=from=out-19f9a0f198045bc5,dst=/tmp/clis-ntpd_1-2-3/release/deps/libdbl-19f9a0f198045bc5.rmeta,source=/libdbl-19f9a0f198045bc5.rmeta \
+  --mount=from=out-19f9a0f198045bc5,dst=/tmp/clis-ntpd_1-2-3/release/deps/libdbl-19f9a0f198045bc5.rlib,source=/libdbl-19f9a0f198045bc5.rlib \
   --mount=from=out-65e96f3f500a3098,dst=/tmp/clis-ntpd_1-2-3/release/deps/libdigest-65e96f3f500a3098.rmeta,source=/libdigest-65e96f3f500a3098.rmeta \
+  --mount=from=out-65e96f3f500a3098,dst=/tmp/clis-ntpd_1-2-3/release/deps/libdigest-65e96f3f500a3098.rlib,source=/libdigest-65e96f3f500a3098.rlib \
   --mount=from=out-bc12f6e8b62af3c6,dst=/tmp/clis-ntpd_1-2-3/release/deps/libblock_buffer-bc12f6e8b62af3c6.rmeta,source=/libblock_buffer-bc12f6e8b62af3c6.rmeta \
+  --mount=from=out-bc12f6e8b62af3c6,dst=/tmp/clis-ntpd_1-2-3/release/deps/libblock_buffer-bc12f6e8b62af3c6.rlib,source=/libblock_buffer-bc12f6e8b62af3c6.rlib \
   --mount=from=out-8b6e21d4a5a6c6ed,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsubtle-8b6e21d4a5a6c6ed.rmeta,source=/libsubtle-8b6e21d4a5a6c6ed.rmeta \
+  --mount=from=out-8b6e21d4a5a6c6ed,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsubtle-8b6e21d4a5a6c6ed.rlib,source=/libsubtle-8b6e21d4a5a6c6ed.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="cmac" \
@@ -2729,19 +3498,19 @@ COPY --from=dep-l-cmac-0.7.2-568874dfd4c5be74 /tmp/clis-ntpd_1-2-3/release/deps/
 ##     "8b6e21d4a5a6c6ed",
 ## ]
 ## short_externs = [
-##     "cipher-ca1baada07864a60",
-##     "crypto_common-1009fce94369ad6b",
-##     "generic_array-2d6ea4fd5d7ef666",
-##     "typenum-981b1f3c4161234a",
-##     "rand_core-434e8a9dd58e4456",
-##     "getrandom-84473f2ddfbb434a",
-##     "cfg_if-da34da6838abd7f1",
-##     "libc-a7905fdc410bdfce",
-##     "inout-56f37e149446be27",
-##     "dbl-19f9a0f198045bc5",
-##     "digest-65e96f3f500a3098",
-##     "block_buffer-bc12f6e8b62af3c6",
-##     "subtle-8b6e21d4a5a6c6ed",
+##     "ca1baada07864a60",
+##     "1009fce94369ad6b",
+##     "2d6ea4fd5d7ef666",
+##     "981b1f3c4161234a",
+##     "434e8a9dd58e4456",
+##     "84473f2ddfbb434a",
+##     "da34da6838abd7f1",
+##     "a7905fdc410bdfce",
+##     "56f37e149446be27",
+##     "19f9a0f198045bc5",
+##     "65e96f3f500a3098",
+##     "bc12f6e8b62af3c6",
+##     "8b6e21d4a5a6c6ed",
 ## ]
 ## writes = [
 ##     "deps/cmac-568874dfd4c5be74.d",
@@ -2753,6 +3522,136 @@ COPY --from=dep-l-cmac-0.7.2-568874dfd4c5be74 /tmp/clis-ntpd_1-2-3/release/deps/
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-2-3/release/deps/libcmac-568874dfd4c5be74.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-2-3/release/deps/libcmac-568874dfd4c5be74.rlib","emit":"link"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-ca1baada07864a60"
+## src = "/libcipher-ca1baada07864a60.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libcipher-ca1baada07864a60.rmeta"
+## 
+## [[mounts]]
+## from = "out-ca1baada07864a60"
+## src = "/libcipher-ca1baada07864a60.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libcipher-ca1baada07864a60.rlib"
+## 
+## [[mounts]]
+## from = "out-1009fce94369ad6b"
+## src = "/libcrypto_common-1009fce94369ad6b.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libcrypto_common-1009fce94369ad6b.rmeta"
+## 
+## [[mounts]]
+## from = "out-1009fce94369ad6b"
+## src = "/libcrypto_common-1009fce94369ad6b.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libcrypto_common-1009fce94369ad6b.rlib"
+## 
+## [[mounts]]
+## from = "out-2d6ea4fd5d7ef666"
+## src = "/libgeneric_array-2d6ea4fd5d7ef666.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libgeneric_array-2d6ea4fd5d7ef666.rmeta"
+## 
+## [[mounts]]
+## from = "out-2d6ea4fd5d7ef666"
+## src = "/libgeneric_array-2d6ea4fd5d7ef666.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libgeneric_array-2d6ea4fd5d7ef666.rlib"
+## 
+## [[mounts]]
+## from = "out-981b1f3c4161234a"
+## src = "/libtypenum-981b1f3c4161234a.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libtypenum-981b1f3c4161234a.rmeta"
+## 
+## [[mounts]]
+## from = "out-981b1f3c4161234a"
+## src = "/libtypenum-981b1f3c4161234a.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libtypenum-981b1f3c4161234a.rlib"
+## 
+## [[mounts]]
+## from = "out-434e8a9dd58e4456"
+## src = "/librand_core-434e8a9dd58e4456.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/librand_core-434e8a9dd58e4456.rmeta"
+## 
+## [[mounts]]
+## from = "out-434e8a9dd58e4456"
+## src = "/librand_core-434e8a9dd58e4456.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/librand_core-434e8a9dd58e4456.rlib"
+## 
+## [[mounts]]
+## from = "out-84473f2ddfbb434a"
+## src = "/libgetrandom-84473f2ddfbb434a.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rmeta"
+## 
+## [[mounts]]
+## from = "out-84473f2ddfbb434a"
+## src = "/libgetrandom-84473f2ddfbb434a.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rlib"
+## 
+## [[mounts]]
+## from = "out-da34da6838abd7f1"
+## src = "/libcfg_if-da34da6838abd7f1.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rmeta"
+## 
+## [[mounts]]
+## from = "out-da34da6838abd7f1"
+## src = "/libcfg_if-da34da6838abd7f1.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rlib"
+## 
+## [[mounts]]
+## from = "out-a7905fdc410bdfce"
+## src = "/liblibc-a7905fdc410bdfce.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rmeta"
+## 
+## [[mounts]]
+## from = "out-a7905fdc410bdfce"
+## src = "/liblibc-a7905fdc410bdfce.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rlib"
+## 
+## [[mounts]]
+## from = "out-56f37e149446be27"
+## src = "/libinout-56f37e149446be27.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libinout-56f37e149446be27.rmeta"
+## 
+## [[mounts]]
+## from = "out-56f37e149446be27"
+## src = "/libinout-56f37e149446be27.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libinout-56f37e149446be27.rlib"
+## 
+## [[mounts]]
+## from = "out-19f9a0f198045bc5"
+## src = "/libdbl-19f9a0f198045bc5.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libdbl-19f9a0f198045bc5.rmeta"
+## 
+## [[mounts]]
+## from = "out-19f9a0f198045bc5"
+## src = "/libdbl-19f9a0f198045bc5.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libdbl-19f9a0f198045bc5.rlib"
+## 
+## [[mounts]]
+## from = "out-65e96f3f500a3098"
+## src = "/libdigest-65e96f3f500a3098.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libdigest-65e96f3f500a3098.rmeta"
+## 
+## [[mounts]]
+## from = "out-65e96f3f500a3098"
+## src = "/libdigest-65e96f3f500a3098.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libdigest-65e96f3f500a3098.rlib"
+## 
+## [[mounts]]
+## from = "out-bc12f6e8b62af3c6"
+## src = "/libblock_buffer-bc12f6e8b62af3c6.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libblock_buffer-bc12f6e8b62af3c6.rmeta"
+## 
+## [[mounts]]
+## from = "out-bc12f6e8b62af3c6"
+## src = "/libblock_buffer-bc12f6e8b62af3c6.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libblock_buffer-bc12f6e8b62af3c6.rlib"
+## 
+## [[mounts]]
+## from = "out-8b6e21d4a5a6c6ed"
+## src = "/libsubtle-8b6e21d4a5a6c6ed.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libsubtle-8b6e21d4a5a6c6ed.rmeta"
+## 
+## [[mounts]]
+## from = "out-8b6e21d4a5a6c6ed"
+## src = "/libsubtle-8b6e21d4a5a6c6ed.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libsubtle-8b6e21d4a5a6c6ed.rlib"
 ## 
 ## [[contexts]]
 ## name = "crate_out-a7d381539c9ce48d"
@@ -2778,18 +3677,31 @@ COPY --from=dep-l-cmac-0.7.2-568874dfd4c5be74 /tmp/clis-ntpd_1-2-3/release/deps/
 ## RUN \
 ##   --mount=from=cratesio-cmac-0.7.2,source=/cmac-0.7.2,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/cmac-0.7.2 \
 ##   --mount=from=out-ca1baada07864a60,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcipher-ca1baada07864a60.rmeta,source=/libcipher-ca1baada07864a60.rmeta \
+##   --mount=from=out-ca1baada07864a60,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcipher-ca1baada07864a60.rlib,source=/libcipher-ca1baada07864a60.rlib \
 ##   --mount=from=out-1009fce94369ad6b,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcrypto_common-1009fce94369ad6b.rmeta,source=/libcrypto_common-1009fce94369ad6b.rmeta \
+##   --mount=from=out-1009fce94369ad6b,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcrypto_common-1009fce94369ad6b.rlib,source=/libcrypto_common-1009fce94369ad6b.rlib \
 ##   --mount=from=out-2d6ea4fd5d7ef666,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgeneric_array-2d6ea4fd5d7ef666.rmeta,source=/libgeneric_array-2d6ea4fd5d7ef666.rmeta \
+##   --mount=from=out-2d6ea4fd5d7ef666,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgeneric_array-2d6ea4fd5d7ef666.rlib,source=/libgeneric_array-2d6ea4fd5d7ef666.rlib \
 ##   --mount=from=out-981b1f3c4161234a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtypenum-981b1f3c4161234a.rmeta,source=/libtypenum-981b1f3c4161234a.rmeta \
+##   --mount=from=out-981b1f3c4161234a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtypenum-981b1f3c4161234a.rlib,source=/libtypenum-981b1f3c4161234a.rlib \
 ##   --mount=from=out-434e8a9dd58e4456,dst=/tmp/clis-ntpd_1-2-3/release/deps/librand_core-434e8a9dd58e4456.rmeta,source=/librand_core-434e8a9dd58e4456.rmeta \
+##   --mount=from=out-434e8a9dd58e4456,dst=/tmp/clis-ntpd_1-2-3/release/deps/librand_core-434e8a9dd58e4456.rlib,source=/librand_core-434e8a9dd58e4456.rlib \
 ##   --mount=from=out-84473f2ddfbb434a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rmeta,source=/libgetrandom-84473f2ddfbb434a.rmeta \
+##   --mount=from=out-84473f2ddfbb434a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rlib,source=/libgetrandom-84473f2ddfbb434a.rlib \
 ##   --mount=from=out-da34da6838abd7f1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rmeta,source=/libcfg_if-da34da6838abd7f1.rmeta \
+##   --mount=from=out-da34da6838abd7f1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rlib,source=/libcfg_if-da34da6838abd7f1.rlib \
 ##   --mount=from=out-a7905fdc410bdfce,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rmeta,source=/liblibc-a7905fdc410bdfce.rmeta \
+##   --mount=from=out-a7905fdc410bdfce,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rlib,source=/liblibc-a7905fdc410bdfce.rlib \
 ##   --mount=from=out-56f37e149446be27,dst=/tmp/clis-ntpd_1-2-3/release/deps/libinout-56f37e149446be27.rmeta,source=/libinout-56f37e149446be27.rmeta \
+##   --mount=from=out-56f37e149446be27,dst=/tmp/clis-ntpd_1-2-3/release/deps/libinout-56f37e149446be27.rlib,source=/libinout-56f37e149446be27.rlib \
 ##   --mount=from=out-19f9a0f198045bc5,dst=/tmp/clis-ntpd_1-2-3/release/deps/libdbl-19f9a0f198045bc5.rmeta,source=/libdbl-19f9a0f198045bc5.rmeta \
+##   --mount=from=out-19f9a0f198045bc5,dst=/tmp/clis-ntpd_1-2-3/release/deps/libdbl-19f9a0f198045bc5.rlib,source=/libdbl-19f9a0f198045bc5.rlib \
 ##   --mount=from=out-65e96f3f500a3098,dst=/tmp/clis-ntpd_1-2-3/release/deps/libdigest-65e96f3f500a3098.rmeta,source=/libdigest-65e96f3f500a3098.rmeta \
+##   --mount=from=out-65e96f3f500a3098,dst=/tmp/clis-ntpd_1-2-3/release/deps/libdigest-65e96f3f500a3098.rlib,source=/libdigest-65e96f3f500a3098.rlib \
 ##   --mount=from=out-bc12f6e8b62af3c6,dst=/tmp/clis-ntpd_1-2-3/release/deps/libblock_buffer-bc12f6e8b62af3c6.rmeta,source=/libblock_buffer-bc12f6e8b62af3c6.rmeta \
+##   --mount=from=out-bc12f6e8b62af3c6,dst=/tmp/clis-ntpd_1-2-3/release/deps/libblock_buffer-bc12f6e8b62af3c6.rlib,source=/libblock_buffer-bc12f6e8b62af3c6.rlib \
 ##   --mount=from=out-8b6e21d4a5a6c6ed,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsubtle-8b6e21d4a5a6c6ed.rmeta,source=/libsubtle-8b6e21d4a5a6c6ed.rmeta \
+##   --mount=from=out-8b6e21d4a5a6c6ed,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsubtle-8b6e21d4a5a6c6ed.rlib,source=/libsubtle-8b6e21d4a5a6c6ed.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="cmac" \
@@ -2832,14 +3744,23 @@ WORKDIR /tmp/clis-ntpd_1-2-3/release/deps
 RUN \
   --mount=from=cratesio-ctr-0.9.2,source=/ctr-0.9.2,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ctr-0.9.2 \
   --mount=from=out-ca1baada07864a60,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcipher-ca1baada07864a60.rmeta,source=/libcipher-ca1baada07864a60.rmeta \
+  --mount=from=out-ca1baada07864a60,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcipher-ca1baada07864a60.rlib,source=/libcipher-ca1baada07864a60.rlib \
   --mount=from=out-1009fce94369ad6b,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcrypto_common-1009fce94369ad6b.rmeta,source=/libcrypto_common-1009fce94369ad6b.rmeta \
+  --mount=from=out-1009fce94369ad6b,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcrypto_common-1009fce94369ad6b.rlib,source=/libcrypto_common-1009fce94369ad6b.rlib \
   --mount=from=out-2d6ea4fd5d7ef666,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgeneric_array-2d6ea4fd5d7ef666.rmeta,source=/libgeneric_array-2d6ea4fd5d7ef666.rmeta \
+  --mount=from=out-2d6ea4fd5d7ef666,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgeneric_array-2d6ea4fd5d7ef666.rlib,source=/libgeneric_array-2d6ea4fd5d7ef666.rlib \
   --mount=from=out-981b1f3c4161234a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtypenum-981b1f3c4161234a.rmeta,source=/libtypenum-981b1f3c4161234a.rmeta \
+  --mount=from=out-981b1f3c4161234a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtypenum-981b1f3c4161234a.rlib,source=/libtypenum-981b1f3c4161234a.rlib \
   --mount=from=out-434e8a9dd58e4456,dst=/tmp/clis-ntpd_1-2-3/release/deps/librand_core-434e8a9dd58e4456.rmeta,source=/librand_core-434e8a9dd58e4456.rmeta \
+  --mount=from=out-434e8a9dd58e4456,dst=/tmp/clis-ntpd_1-2-3/release/deps/librand_core-434e8a9dd58e4456.rlib,source=/librand_core-434e8a9dd58e4456.rlib \
   --mount=from=out-84473f2ddfbb434a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rmeta,source=/libgetrandom-84473f2ddfbb434a.rmeta \
+  --mount=from=out-84473f2ddfbb434a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rlib,source=/libgetrandom-84473f2ddfbb434a.rlib \
   --mount=from=out-da34da6838abd7f1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rmeta,source=/libcfg_if-da34da6838abd7f1.rmeta \
+  --mount=from=out-da34da6838abd7f1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rlib,source=/libcfg_if-da34da6838abd7f1.rlib \
   --mount=from=out-a7905fdc410bdfce,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rmeta,source=/liblibc-a7905fdc410bdfce.rmeta \
+  --mount=from=out-a7905fdc410bdfce,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rlib,source=/liblibc-a7905fdc410bdfce.rlib \
   --mount=from=out-56f37e149446be27,dst=/tmp/clis-ntpd_1-2-3/release/deps/libinout-56f37e149446be27.rmeta,source=/libinout-56f37e149446be27.rmeta \
+  --mount=from=out-56f37e149446be27,dst=/tmp/clis-ntpd_1-2-3/release/deps/libinout-56f37e149446be27.rlib,source=/libinout-56f37e149446be27.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="ctr" \
@@ -2882,15 +3803,15 @@ COPY --from=dep-l-ctr-0.9.2-aca4c84266bacfb7 /tmp/clis-ntpd_1-2-3/release/deps/*
 ##     "56f37e149446be27",
 ## ]
 ## short_externs = [
-##     "cipher-ca1baada07864a60",
-##     "crypto_common-1009fce94369ad6b",
-##     "generic_array-2d6ea4fd5d7ef666",
-##     "typenum-981b1f3c4161234a",
-##     "rand_core-434e8a9dd58e4456",
-##     "getrandom-84473f2ddfbb434a",
-##     "cfg_if-da34da6838abd7f1",
-##     "libc-a7905fdc410bdfce",
-##     "inout-56f37e149446be27",
+##     "ca1baada07864a60",
+##     "1009fce94369ad6b",
+##     "2d6ea4fd5d7ef666",
+##     "981b1f3c4161234a",
+##     "434e8a9dd58e4456",
+##     "84473f2ddfbb434a",
+##     "da34da6838abd7f1",
+##     "a7905fdc410bdfce",
+##     "56f37e149446be27",
 ## ]
 ## writes = [
 ##     "deps/ctr-aca4c84266bacfb7.d",
@@ -2902,6 +3823,96 @@ COPY --from=dep-l-ctr-0.9.2-aca4c84266bacfb7 /tmp/clis-ntpd_1-2-3/release/deps/*
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-2-3/release/deps/libctr-aca4c84266bacfb7.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-2-3/release/deps/libctr-aca4c84266bacfb7.rlib","emit":"link"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-ca1baada07864a60"
+## src = "/libcipher-ca1baada07864a60.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libcipher-ca1baada07864a60.rmeta"
+## 
+## [[mounts]]
+## from = "out-ca1baada07864a60"
+## src = "/libcipher-ca1baada07864a60.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libcipher-ca1baada07864a60.rlib"
+## 
+## [[mounts]]
+## from = "out-1009fce94369ad6b"
+## src = "/libcrypto_common-1009fce94369ad6b.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libcrypto_common-1009fce94369ad6b.rmeta"
+## 
+## [[mounts]]
+## from = "out-1009fce94369ad6b"
+## src = "/libcrypto_common-1009fce94369ad6b.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libcrypto_common-1009fce94369ad6b.rlib"
+## 
+## [[mounts]]
+## from = "out-2d6ea4fd5d7ef666"
+## src = "/libgeneric_array-2d6ea4fd5d7ef666.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libgeneric_array-2d6ea4fd5d7ef666.rmeta"
+## 
+## [[mounts]]
+## from = "out-2d6ea4fd5d7ef666"
+## src = "/libgeneric_array-2d6ea4fd5d7ef666.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libgeneric_array-2d6ea4fd5d7ef666.rlib"
+## 
+## [[mounts]]
+## from = "out-981b1f3c4161234a"
+## src = "/libtypenum-981b1f3c4161234a.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libtypenum-981b1f3c4161234a.rmeta"
+## 
+## [[mounts]]
+## from = "out-981b1f3c4161234a"
+## src = "/libtypenum-981b1f3c4161234a.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libtypenum-981b1f3c4161234a.rlib"
+## 
+## [[mounts]]
+## from = "out-434e8a9dd58e4456"
+## src = "/librand_core-434e8a9dd58e4456.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/librand_core-434e8a9dd58e4456.rmeta"
+## 
+## [[mounts]]
+## from = "out-434e8a9dd58e4456"
+## src = "/librand_core-434e8a9dd58e4456.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/librand_core-434e8a9dd58e4456.rlib"
+## 
+## [[mounts]]
+## from = "out-84473f2ddfbb434a"
+## src = "/libgetrandom-84473f2ddfbb434a.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rmeta"
+## 
+## [[mounts]]
+## from = "out-84473f2ddfbb434a"
+## src = "/libgetrandom-84473f2ddfbb434a.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rlib"
+## 
+## [[mounts]]
+## from = "out-da34da6838abd7f1"
+## src = "/libcfg_if-da34da6838abd7f1.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rmeta"
+## 
+## [[mounts]]
+## from = "out-da34da6838abd7f1"
+## src = "/libcfg_if-da34da6838abd7f1.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rlib"
+## 
+## [[mounts]]
+## from = "out-a7905fdc410bdfce"
+## src = "/liblibc-a7905fdc410bdfce.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rmeta"
+## 
+## [[mounts]]
+## from = "out-a7905fdc410bdfce"
+## src = "/liblibc-a7905fdc410bdfce.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rlib"
+## 
+## [[mounts]]
+## from = "out-56f37e149446be27"
+## src = "/libinout-56f37e149446be27.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libinout-56f37e149446be27.rmeta"
+## 
+## [[mounts]]
+## from = "out-56f37e149446be27"
+## src = "/libinout-56f37e149446be27.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libinout-56f37e149446be27.rlib"
 ## 
 ## [[contexts]]
 ## name = "crate_out-a7d381539c9ce48d"
@@ -2927,14 +3938,23 @@ COPY --from=dep-l-ctr-0.9.2-aca4c84266bacfb7 /tmp/clis-ntpd_1-2-3/release/deps/*
 ## RUN \
 ##   --mount=from=cratesio-ctr-0.9.2,source=/ctr-0.9.2,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ctr-0.9.2 \
 ##   --mount=from=out-ca1baada07864a60,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcipher-ca1baada07864a60.rmeta,source=/libcipher-ca1baada07864a60.rmeta \
+##   --mount=from=out-ca1baada07864a60,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcipher-ca1baada07864a60.rlib,source=/libcipher-ca1baada07864a60.rlib \
 ##   --mount=from=out-1009fce94369ad6b,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcrypto_common-1009fce94369ad6b.rmeta,source=/libcrypto_common-1009fce94369ad6b.rmeta \
+##   --mount=from=out-1009fce94369ad6b,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcrypto_common-1009fce94369ad6b.rlib,source=/libcrypto_common-1009fce94369ad6b.rlib \
 ##   --mount=from=out-2d6ea4fd5d7ef666,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgeneric_array-2d6ea4fd5d7ef666.rmeta,source=/libgeneric_array-2d6ea4fd5d7ef666.rmeta \
+##   --mount=from=out-2d6ea4fd5d7ef666,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgeneric_array-2d6ea4fd5d7ef666.rlib,source=/libgeneric_array-2d6ea4fd5d7ef666.rlib \
 ##   --mount=from=out-981b1f3c4161234a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtypenum-981b1f3c4161234a.rmeta,source=/libtypenum-981b1f3c4161234a.rmeta \
+##   --mount=from=out-981b1f3c4161234a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtypenum-981b1f3c4161234a.rlib,source=/libtypenum-981b1f3c4161234a.rlib \
 ##   --mount=from=out-434e8a9dd58e4456,dst=/tmp/clis-ntpd_1-2-3/release/deps/librand_core-434e8a9dd58e4456.rmeta,source=/librand_core-434e8a9dd58e4456.rmeta \
+##   --mount=from=out-434e8a9dd58e4456,dst=/tmp/clis-ntpd_1-2-3/release/deps/librand_core-434e8a9dd58e4456.rlib,source=/librand_core-434e8a9dd58e4456.rlib \
 ##   --mount=from=out-84473f2ddfbb434a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rmeta,source=/libgetrandom-84473f2ddfbb434a.rmeta \
+##   --mount=from=out-84473f2ddfbb434a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rlib,source=/libgetrandom-84473f2ddfbb434a.rlib \
 ##   --mount=from=out-da34da6838abd7f1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rmeta,source=/libcfg_if-da34da6838abd7f1.rmeta \
+##   --mount=from=out-da34da6838abd7f1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rlib,source=/libcfg_if-da34da6838abd7f1.rlib \
 ##   --mount=from=out-a7905fdc410bdfce,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rmeta,source=/liblibc-a7905fdc410bdfce.rmeta \
+##   --mount=from=out-a7905fdc410bdfce,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rlib,source=/liblibc-a7905fdc410bdfce.rlib \
 ##   --mount=from=out-56f37e149446be27,dst=/tmp/clis-ntpd_1-2-3/release/deps/libinout-56f37e149446be27.rmeta,source=/libinout-56f37e149446be27.rmeta \
+##   --mount=from=out-56f37e149446be27,dst=/tmp/clis-ntpd_1-2-3/release/deps/libinout-56f37e149446be27.rlib,source=/libinout-56f37e149446be27.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="ctr" \
@@ -3082,24 +4102,43 @@ WORKDIR /tmp/clis-ntpd_1-2-3/release/deps
 RUN \
   --mount=from=cratesio-aes-siv-0.7.0,source=/aes-siv-0.7.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aes-siv-0.7.0 \
   --mount=from=out-2ba1712ad50273ba,dst=/tmp/clis-ntpd_1-2-3/release/deps/libaead-2ba1712ad50273ba.rmeta,source=/libaead-2ba1712ad50273ba.rmeta \
+  --mount=from=out-2ba1712ad50273ba,dst=/tmp/clis-ntpd_1-2-3/release/deps/libaead-2ba1712ad50273ba.rlib,source=/libaead-2ba1712ad50273ba.rlib \
   --mount=from=out-1009fce94369ad6b,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcrypto_common-1009fce94369ad6b.rmeta,source=/libcrypto_common-1009fce94369ad6b.rmeta \
+  --mount=from=out-1009fce94369ad6b,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcrypto_common-1009fce94369ad6b.rlib,source=/libcrypto_common-1009fce94369ad6b.rlib \
   --mount=from=out-2d6ea4fd5d7ef666,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgeneric_array-2d6ea4fd5d7ef666.rmeta,source=/libgeneric_array-2d6ea4fd5d7ef666.rmeta \
+  --mount=from=out-2d6ea4fd5d7ef666,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgeneric_array-2d6ea4fd5d7ef666.rlib,source=/libgeneric_array-2d6ea4fd5d7ef666.rlib \
   --mount=from=out-981b1f3c4161234a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtypenum-981b1f3c4161234a.rmeta,source=/libtypenum-981b1f3c4161234a.rmeta \
+  --mount=from=out-981b1f3c4161234a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtypenum-981b1f3c4161234a.rlib,source=/libtypenum-981b1f3c4161234a.rlib \
   --mount=from=out-434e8a9dd58e4456,dst=/tmp/clis-ntpd_1-2-3/release/deps/librand_core-434e8a9dd58e4456.rmeta,source=/librand_core-434e8a9dd58e4456.rmeta \
+  --mount=from=out-434e8a9dd58e4456,dst=/tmp/clis-ntpd_1-2-3/release/deps/librand_core-434e8a9dd58e4456.rlib,source=/librand_core-434e8a9dd58e4456.rlib \
   --mount=from=out-84473f2ddfbb434a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rmeta,source=/libgetrandom-84473f2ddfbb434a.rmeta \
+  --mount=from=out-84473f2ddfbb434a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rlib,source=/libgetrandom-84473f2ddfbb434a.rlib \
   --mount=from=out-da34da6838abd7f1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rmeta,source=/libcfg_if-da34da6838abd7f1.rmeta \
+  --mount=from=out-da34da6838abd7f1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rlib,source=/libcfg_if-da34da6838abd7f1.rlib \
   --mount=from=out-a7905fdc410bdfce,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rmeta,source=/liblibc-a7905fdc410bdfce.rmeta \
+  --mount=from=out-a7905fdc410bdfce,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rlib,source=/liblibc-a7905fdc410bdfce.rlib \
   --mount=from=out-81c9db97d7f9be78,dst=/tmp/clis-ntpd_1-2-3/release/deps/libaes-81c9db97d7f9be78.rmeta,source=/libaes-81c9db97d7f9be78.rmeta \
+  --mount=from=out-81c9db97d7f9be78,dst=/tmp/clis-ntpd_1-2-3/release/deps/libaes-81c9db97d7f9be78.rlib,source=/libaes-81c9db97d7f9be78.rlib \
   --mount=from=out-ca1baada07864a60,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcipher-ca1baada07864a60.rmeta,source=/libcipher-ca1baada07864a60.rmeta \
+  --mount=from=out-ca1baada07864a60,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcipher-ca1baada07864a60.rlib,source=/libcipher-ca1baada07864a60.rlib \
   --mount=from=out-56f37e149446be27,dst=/tmp/clis-ntpd_1-2-3/release/deps/libinout-56f37e149446be27.rmeta,source=/libinout-56f37e149446be27.rmeta \
+  --mount=from=out-56f37e149446be27,dst=/tmp/clis-ntpd_1-2-3/release/deps/libinout-56f37e149446be27.rlib,source=/libinout-56f37e149446be27.rlib \
   --mount=from=out-4ab791033e58debd,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcpufeatures-4ab791033e58debd.rmeta,source=/libcpufeatures-4ab791033e58debd.rmeta \
+  --mount=from=out-4ab791033e58debd,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcpufeatures-4ab791033e58debd.rlib,source=/libcpufeatures-4ab791033e58debd.rlib \
   --mount=from=out-568874dfd4c5be74,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcmac-568874dfd4c5be74.rmeta,source=/libcmac-568874dfd4c5be74.rmeta \
+  --mount=from=out-568874dfd4c5be74,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcmac-568874dfd4c5be74.rlib,source=/libcmac-568874dfd4c5be74.rlib \
   --mount=from=out-19f9a0f198045bc5,dst=/tmp/clis-ntpd_1-2-3/release/deps/libdbl-19f9a0f198045bc5.rmeta,source=/libdbl-19f9a0f198045bc5.rmeta \
+  --mount=from=out-19f9a0f198045bc5,dst=/tmp/clis-ntpd_1-2-3/release/deps/libdbl-19f9a0f198045bc5.rlib,source=/libdbl-19f9a0f198045bc5.rlib \
   --mount=from=out-65e96f3f500a3098,dst=/tmp/clis-ntpd_1-2-3/release/deps/libdigest-65e96f3f500a3098.rmeta,source=/libdigest-65e96f3f500a3098.rmeta \
+  --mount=from=out-65e96f3f500a3098,dst=/tmp/clis-ntpd_1-2-3/release/deps/libdigest-65e96f3f500a3098.rlib,source=/libdigest-65e96f3f500a3098.rlib \
   --mount=from=out-bc12f6e8b62af3c6,dst=/tmp/clis-ntpd_1-2-3/release/deps/libblock_buffer-bc12f6e8b62af3c6.rmeta,source=/libblock_buffer-bc12f6e8b62af3c6.rmeta \
+  --mount=from=out-bc12f6e8b62af3c6,dst=/tmp/clis-ntpd_1-2-3/release/deps/libblock_buffer-bc12f6e8b62af3c6.rlib,source=/libblock_buffer-bc12f6e8b62af3c6.rlib \
   --mount=from=out-8b6e21d4a5a6c6ed,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsubtle-8b6e21d4a5a6c6ed.rmeta,source=/libsubtle-8b6e21d4a5a6c6ed.rmeta \
+  --mount=from=out-8b6e21d4a5a6c6ed,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsubtle-8b6e21d4a5a6c6ed.rlib,source=/libsubtle-8b6e21d4a5a6c6ed.rlib \
   --mount=from=out-aca4c84266bacfb7,dst=/tmp/clis-ntpd_1-2-3/release/deps/libctr-aca4c84266bacfb7.rmeta,source=/libctr-aca4c84266bacfb7.rmeta \
+  --mount=from=out-aca4c84266bacfb7,dst=/tmp/clis-ntpd_1-2-3/release/deps/libctr-aca4c84266bacfb7.rlib,source=/libctr-aca4c84266bacfb7.rlib \
   --mount=from=out-caf2b0ffe78763b7,dst=/tmp/clis-ntpd_1-2-3/release/deps/libzeroize-caf2b0ffe78763b7.rmeta,source=/libzeroize-caf2b0ffe78763b7.rmeta \
+  --mount=from=out-caf2b0ffe78763b7,dst=/tmp/clis-ntpd_1-2-3/release/deps/libzeroize-caf2b0ffe78763b7.rlib,source=/libzeroize-caf2b0ffe78763b7.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="aes_siv" \
@@ -3152,25 +4191,25 @@ COPY --from=dep-l-aes-siv-0.7.0-e0325614c1d7d6ab /tmp/clis-ntpd_1-2-3/release/de
 ##     "caf2b0ffe78763b7",
 ## ]
 ## short_externs = [
-##     "aead-2ba1712ad50273ba",
-##     "crypto_common-1009fce94369ad6b",
-##     "generic_array-2d6ea4fd5d7ef666",
-##     "typenum-981b1f3c4161234a",
-##     "rand_core-434e8a9dd58e4456",
-##     "getrandom-84473f2ddfbb434a",
-##     "cfg_if-da34da6838abd7f1",
-##     "libc-a7905fdc410bdfce",
-##     "aes-81c9db97d7f9be78",
-##     "cipher-ca1baada07864a60",
-##     "inout-56f37e149446be27",
-##     "cpufeatures-4ab791033e58debd",
-##     "cmac-568874dfd4c5be74",
-##     "dbl-19f9a0f198045bc5",
-##     "digest-65e96f3f500a3098",
-##     "block_buffer-bc12f6e8b62af3c6",
-##     "subtle-8b6e21d4a5a6c6ed",
-##     "ctr-aca4c84266bacfb7",
-##     "zeroize-caf2b0ffe78763b7",
+##     "2ba1712ad50273ba",
+##     "1009fce94369ad6b",
+##     "2d6ea4fd5d7ef666",
+##     "981b1f3c4161234a",
+##     "434e8a9dd58e4456",
+##     "84473f2ddfbb434a",
+##     "da34da6838abd7f1",
+##     "a7905fdc410bdfce",
+##     "81c9db97d7f9be78",
+##     "ca1baada07864a60",
+##     "56f37e149446be27",
+##     "4ab791033e58debd",
+##     "568874dfd4c5be74",
+##     "19f9a0f198045bc5",
+##     "65e96f3f500a3098",
+##     "bc12f6e8b62af3c6",
+##     "8b6e21d4a5a6c6ed",
+##     "aca4c84266bacfb7",
+##     "caf2b0ffe78763b7",
 ## ]
 ## writes = [
 ##     "deps/aes_siv-e0325614c1d7d6ab.d",
@@ -3182,6 +4221,196 @@ COPY --from=dep-l-aes-siv-0.7.0-e0325614c1d7d6ab /tmp/clis-ntpd_1-2-3/release/de
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-2-3/release/deps/libaes_siv-e0325614c1d7d6ab.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-2-3/release/deps/libaes_siv-e0325614c1d7d6ab.rlib","emit":"link"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-2ba1712ad50273ba"
+## src = "/libaead-2ba1712ad50273ba.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libaead-2ba1712ad50273ba.rmeta"
+## 
+## [[mounts]]
+## from = "out-2ba1712ad50273ba"
+## src = "/libaead-2ba1712ad50273ba.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libaead-2ba1712ad50273ba.rlib"
+## 
+## [[mounts]]
+## from = "out-1009fce94369ad6b"
+## src = "/libcrypto_common-1009fce94369ad6b.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libcrypto_common-1009fce94369ad6b.rmeta"
+## 
+## [[mounts]]
+## from = "out-1009fce94369ad6b"
+## src = "/libcrypto_common-1009fce94369ad6b.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libcrypto_common-1009fce94369ad6b.rlib"
+## 
+## [[mounts]]
+## from = "out-2d6ea4fd5d7ef666"
+## src = "/libgeneric_array-2d6ea4fd5d7ef666.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libgeneric_array-2d6ea4fd5d7ef666.rmeta"
+## 
+## [[mounts]]
+## from = "out-2d6ea4fd5d7ef666"
+## src = "/libgeneric_array-2d6ea4fd5d7ef666.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libgeneric_array-2d6ea4fd5d7ef666.rlib"
+## 
+## [[mounts]]
+## from = "out-981b1f3c4161234a"
+## src = "/libtypenum-981b1f3c4161234a.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libtypenum-981b1f3c4161234a.rmeta"
+## 
+## [[mounts]]
+## from = "out-981b1f3c4161234a"
+## src = "/libtypenum-981b1f3c4161234a.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libtypenum-981b1f3c4161234a.rlib"
+## 
+## [[mounts]]
+## from = "out-434e8a9dd58e4456"
+## src = "/librand_core-434e8a9dd58e4456.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/librand_core-434e8a9dd58e4456.rmeta"
+## 
+## [[mounts]]
+## from = "out-434e8a9dd58e4456"
+## src = "/librand_core-434e8a9dd58e4456.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/librand_core-434e8a9dd58e4456.rlib"
+## 
+## [[mounts]]
+## from = "out-84473f2ddfbb434a"
+## src = "/libgetrandom-84473f2ddfbb434a.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rmeta"
+## 
+## [[mounts]]
+## from = "out-84473f2ddfbb434a"
+## src = "/libgetrandom-84473f2ddfbb434a.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rlib"
+## 
+## [[mounts]]
+## from = "out-da34da6838abd7f1"
+## src = "/libcfg_if-da34da6838abd7f1.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rmeta"
+## 
+## [[mounts]]
+## from = "out-da34da6838abd7f1"
+## src = "/libcfg_if-da34da6838abd7f1.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rlib"
+## 
+## [[mounts]]
+## from = "out-a7905fdc410bdfce"
+## src = "/liblibc-a7905fdc410bdfce.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rmeta"
+## 
+## [[mounts]]
+## from = "out-a7905fdc410bdfce"
+## src = "/liblibc-a7905fdc410bdfce.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rlib"
+## 
+## [[mounts]]
+## from = "out-81c9db97d7f9be78"
+## src = "/libaes-81c9db97d7f9be78.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libaes-81c9db97d7f9be78.rmeta"
+## 
+## [[mounts]]
+## from = "out-81c9db97d7f9be78"
+## src = "/libaes-81c9db97d7f9be78.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libaes-81c9db97d7f9be78.rlib"
+## 
+## [[mounts]]
+## from = "out-ca1baada07864a60"
+## src = "/libcipher-ca1baada07864a60.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libcipher-ca1baada07864a60.rmeta"
+## 
+## [[mounts]]
+## from = "out-ca1baada07864a60"
+## src = "/libcipher-ca1baada07864a60.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libcipher-ca1baada07864a60.rlib"
+## 
+## [[mounts]]
+## from = "out-56f37e149446be27"
+## src = "/libinout-56f37e149446be27.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libinout-56f37e149446be27.rmeta"
+## 
+## [[mounts]]
+## from = "out-56f37e149446be27"
+## src = "/libinout-56f37e149446be27.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libinout-56f37e149446be27.rlib"
+## 
+## [[mounts]]
+## from = "out-4ab791033e58debd"
+## src = "/libcpufeatures-4ab791033e58debd.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libcpufeatures-4ab791033e58debd.rmeta"
+## 
+## [[mounts]]
+## from = "out-4ab791033e58debd"
+## src = "/libcpufeatures-4ab791033e58debd.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libcpufeatures-4ab791033e58debd.rlib"
+## 
+## [[mounts]]
+## from = "out-568874dfd4c5be74"
+## src = "/libcmac-568874dfd4c5be74.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libcmac-568874dfd4c5be74.rmeta"
+## 
+## [[mounts]]
+## from = "out-568874dfd4c5be74"
+## src = "/libcmac-568874dfd4c5be74.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libcmac-568874dfd4c5be74.rlib"
+## 
+## [[mounts]]
+## from = "out-19f9a0f198045bc5"
+## src = "/libdbl-19f9a0f198045bc5.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libdbl-19f9a0f198045bc5.rmeta"
+## 
+## [[mounts]]
+## from = "out-19f9a0f198045bc5"
+## src = "/libdbl-19f9a0f198045bc5.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libdbl-19f9a0f198045bc5.rlib"
+## 
+## [[mounts]]
+## from = "out-65e96f3f500a3098"
+## src = "/libdigest-65e96f3f500a3098.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libdigest-65e96f3f500a3098.rmeta"
+## 
+## [[mounts]]
+## from = "out-65e96f3f500a3098"
+## src = "/libdigest-65e96f3f500a3098.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libdigest-65e96f3f500a3098.rlib"
+## 
+## [[mounts]]
+## from = "out-bc12f6e8b62af3c6"
+## src = "/libblock_buffer-bc12f6e8b62af3c6.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libblock_buffer-bc12f6e8b62af3c6.rmeta"
+## 
+## [[mounts]]
+## from = "out-bc12f6e8b62af3c6"
+## src = "/libblock_buffer-bc12f6e8b62af3c6.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libblock_buffer-bc12f6e8b62af3c6.rlib"
+## 
+## [[mounts]]
+## from = "out-8b6e21d4a5a6c6ed"
+## src = "/libsubtle-8b6e21d4a5a6c6ed.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libsubtle-8b6e21d4a5a6c6ed.rmeta"
+## 
+## [[mounts]]
+## from = "out-8b6e21d4a5a6c6ed"
+## src = "/libsubtle-8b6e21d4a5a6c6ed.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libsubtle-8b6e21d4a5a6c6ed.rlib"
+## 
+## [[mounts]]
+## from = "out-aca4c84266bacfb7"
+## src = "/libctr-aca4c84266bacfb7.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libctr-aca4c84266bacfb7.rmeta"
+## 
+## [[mounts]]
+## from = "out-aca4c84266bacfb7"
+## src = "/libctr-aca4c84266bacfb7.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libctr-aca4c84266bacfb7.rlib"
+## 
+## [[mounts]]
+## from = "out-caf2b0ffe78763b7"
+## src = "/libzeroize-caf2b0ffe78763b7.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libzeroize-caf2b0ffe78763b7.rmeta"
+## 
+## [[mounts]]
+## from = "out-caf2b0ffe78763b7"
+## src = "/libzeroize-caf2b0ffe78763b7.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libzeroize-caf2b0ffe78763b7.rlib"
 ## 
 ## [[contexts]]
 ## name = "crate_out-a7d381539c9ce48d"
@@ -3207,24 +4436,43 @@ COPY --from=dep-l-aes-siv-0.7.0-e0325614c1d7d6ab /tmp/clis-ntpd_1-2-3/release/de
 ## RUN \
 ##   --mount=from=cratesio-aes-siv-0.7.0,source=/aes-siv-0.7.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aes-siv-0.7.0 \
 ##   --mount=from=out-2ba1712ad50273ba,dst=/tmp/clis-ntpd_1-2-3/release/deps/libaead-2ba1712ad50273ba.rmeta,source=/libaead-2ba1712ad50273ba.rmeta \
+##   --mount=from=out-2ba1712ad50273ba,dst=/tmp/clis-ntpd_1-2-3/release/deps/libaead-2ba1712ad50273ba.rlib,source=/libaead-2ba1712ad50273ba.rlib \
 ##   --mount=from=out-1009fce94369ad6b,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcrypto_common-1009fce94369ad6b.rmeta,source=/libcrypto_common-1009fce94369ad6b.rmeta \
+##   --mount=from=out-1009fce94369ad6b,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcrypto_common-1009fce94369ad6b.rlib,source=/libcrypto_common-1009fce94369ad6b.rlib \
 ##   --mount=from=out-2d6ea4fd5d7ef666,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgeneric_array-2d6ea4fd5d7ef666.rmeta,source=/libgeneric_array-2d6ea4fd5d7ef666.rmeta \
+##   --mount=from=out-2d6ea4fd5d7ef666,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgeneric_array-2d6ea4fd5d7ef666.rlib,source=/libgeneric_array-2d6ea4fd5d7ef666.rlib \
 ##   --mount=from=out-981b1f3c4161234a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtypenum-981b1f3c4161234a.rmeta,source=/libtypenum-981b1f3c4161234a.rmeta \
+##   --mount=from=out-981b1f3c4161234a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtypenum-981b1f3c4161234a.rlib,source=/libtypenum-981b1f3c4161234a.rlib \
 ##   --mount=from=out-434e8a9dd58e4456,dst=/tmp/clis-ntpd_1-2-3/release/deps/librand_core-434e8a9dd58e4456.rmeta,source=/librand_core-434e8a9dd58e4456.rmeta \
+##   --mount=from=out-434e8a9dd58e4456,dst=/tmp/clis-ntpd_1-2-3/release/deps/librand_core-434e8a9dd58e4456.rlib,source=/librand_core-434e8a9dd58e4456.rlib \
 ##   --mount=from=out-84473f2ddfbb434a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rmeta,source=/libgetrandom-84473f2ddfbb434a.rmeta \
+##   --mount=from=out-84473f2ddfbb434a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rlib,source=/libgetrandom-84473f2ddfbb434a.rlib \
 ##   --mount=from=out-da34da6838abd7f1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rmeta,source=/libcfg_if-da34da6838abd7f1.rmeta \
+##   --mount=from=out-da34da6838abd7f1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rlib,source=/libcfg_if-da34da6838abd7f1.rlib \
 ##   --mount=from=out-a7905fdc410bdfce,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rmeta,source=/liblibc-a7905fdc410bdfce.rmeta \
+##   --mount=from=out-a7905fdc410bdfce,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rlib,source=/liblibc-a7905fdc410bdfce.rlib \
 ##   --mount=from=out-81c9db97d7f9be78,dst=/tmp/clis-ntpd_1-2-3/release/deps/libaes-81c9db97d7f9be78.rmeta,source=/libaes-81c9db97d7f9be78.rmeta \
+##   --mount=from=out-81c9db97d7f9be78,dst=/tmp/clis-ntpd_1-2-3/release/deps/libaes-81c9db97d7f9be78.rlib,source=/libaes-81c9db97d7f9be78.rlib \
 ##   --mount=from=out-ca1baada07864a60,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcipher-ca1baada07864a60.rmeta,source=/libcipher-ca1baada07864a60.rmeta \
+##   --mount=from=out-ca1baada07864a60,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcipher-ca1baada07864a60.rlib,source=/libcipher-ca1baada07864a60.rlib \
 ##   --mount=from=out-56f37e149446be27,dst=/tmp/clis-ntpd_1-2-3/release/deps/libinout-56f37e149446be27.rmeta,source=/libinout-56f37e149446be27.rmeta \
+##   --mount=from=out-56f37e149446be27,dst=/tmp/clis-ntpd_1-2-3/release/deps/libinout-56f37e149446be27.rlib,source=/libinout-56f37e149446be27.rlib \
 ##   --mount=from=out-4ab791033e58debd,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcpufeatures-4ab791033e58debd.rmeta,source=/libcpufeatures-4ab791033e58debd.rmeta \
+##   --mount=from=out-4ab791033e58debd,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcpufeatures-4ab791033e58debd.rlib,source=/libcpufeatures-4ab791033e58debd.rlib \
 ##   --mount=from=out-568874dfd4c5be74,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcmac-568874dfd4c5be74.rmeta,source=/libcmac-568874dfd4c5be74.rmeta \
+##   --mount=from=out-568874dfd4c5be74,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcmac-568874dfd4c5be74.rlib,source=/libcmac-568874dfd4c5be74.rlib \
 ##   --mount=from=out-19f9a0f198045bc5,dst=/tmp/clis-ntpd_1-2-3/release/deps/libdbl-19f9a0f198045bc5.rmeta,source=/libdbl-19f9a0f198045bc5.rmeta \
+##   --mount=from=out-19f9a0f198045bc5,dst=/tmp/clis-ntpd_1-2-3/release/deps/libdbl-19f9a0f198045bc5.rlib,source=/libdbl-19f9a0f198045bc5.rlib \
 ##   --mount=from=out-65e96f3f500a3098,dst=/tmp/clis-ntpd_1-2-3/release/deps/libdigest-65e96f3f500a3098.rmeta,source=/libdigest-65e96f3f500a3098.rmeta \
+##   --mount=from=out-65e96f3f500a3098,dst=/tmp/clis-ntpd_1-2-3/release/deps/libdigest-65e96f3f500a3098.rlib,source=/libdigest-65e96f3f500a3098.rlib \
 ##   --mount=from=out-bc12f6e8b62af3c6,dst=/tmp/clis-ntpd_1-2-3/release/deps/libblock_buffer-bc12f6e8b62af3c6.rmeta,source=/libblock_buffer-bc12f6e8b62af3c6.rmeta \
+##   --mount=from=out-bc12f6e8b62af3c6,dst=/tmp/clis-ntpd_1-2-3/release/deps/libblock_buffer-bc12f6e8b62af3c6.rlib,source=/libblock_buffer-bc12f6e8b62af3c6.rlib \
 ##   --mount=from=out-8b6e21d4a5a6c6ed,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsubtle-8b6e21d4a5a6c6ed.rmeta,source=/libsubtle-8b6e21d4a5a6c6ed.rmeta \
+##   --mount=from=out-8b6e21d4a5a6c6ed,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsubtle-8b6e21d4a5a6c6ed.rlib,source=/libsubtle-8b6e21d4a5a6c6ed.rlib \
 ##   --mount=from=out-aca4c84266bacfb7,dst=/tmp/clis-ntpd_1-2-3/release/deps/libctr-aca4c84266bacfb7.rmeta,source=/libctr-aca4c84266bacfb7.rmeta \
+##   --mount=from=out-aca4c84266bacfb7,dst=/tmp/clis-ntpd_1-2-3/release/deps/libctr-aca4c84266bacfb7.rlib,source=/libctr-aca4c84266bacfb7.rlib \
 ##   --mount=from=out-caf2b0ffe78763b7,dst=/tmp/clis-ntpd_1-2-3/release/deps/libzeroize-caf2b0ffe78763b7.rmeta,source=/libzeroize-caf2b0ffe78763b7.rmeta \
+##   --mount=from=out-caf2b0ffe78763b7,dst=/tmp/clis-ntpd_1-2-3/release/deps/libzeroize-caf2b0ffe78763b7.rlib,source=/libzeroize-caf2b0ffe78763b7.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="aes_siv" \
@@ -3267,15 +4515,25 @@ WORKDIR /tmp/clis-ntpd_1-2-3/release/deps
 RUN \
   --mount=from=cratesio-md-5-0.10.6,source=/md-5-0.10.6,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/md-5-0.10.6 \
   --mount=from=out-da34da6838abd7f1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rmeta,source=/libcfg_if-da34da6838abd7f1.rmeta \
+  --mount=from=out-da34da6838abd7f1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rlib,source=/libcfg_if-da34da6838abd7f1.rlib \
   --mount=from=out-65e96f3f500a3098,dst=/tmp/clis-ntpd_1-2-3/release/deps/libdigest-65e96f3f500a3098.rmeta,source=/libdigest-65e96f3f500a3098.rmeta \
+  --mount=from=out-65e96f3f500a3098,dst=/tmp/clis-ntpd_1-2-3/release/deps/libdigest-65e96f3f500a3098.rlib,source=/libdigest-65e96f3f500a3098.rlib \
   --mount=from=out-bc12f6e8b62af3c6,dst=/tmp/clis-ntpd_1-2-3/release/deps/libblock_buffer-bc12f6e8b62af3c6.rmeta,source=/libblock_buffer-bc12f6e8b62af3c6.rmeta \
+  --mount=from=out-bc12f6e8b62af3c6,dst=/tmp/clis-ntpd_1-2-3/release/deps/libblock_buffer-bc12f6e8b62af3c6.rlib,source=/libblock_buffer-bc12f6e8b62af3c6.rlib \
   --mount=from=out-2d6ea4fd5d7ef666,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgeneric_array-2d6ea4fd5d7ef666.rmeta,source=/libgeneric_array-2d6ea4fd5d7ef666.rmeta \
+  --mount=from=out-2d6ea4fd5d7ef666,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgeneric_array-2d6ea4fd5d7ef666.rlib,source=/libgeneric_array-2d6ea4fd5d7ef666.rlib \
   --mount=from=out-981b1f3c4161234a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtypenum-981b1f3c4161234a.rmeta,source=/libtypenum-981b1f3c4161234a.rmeta \
+  --mount=from=out-981b1f3c4161234a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtypenum-981b1f3c4161234a.rlib,source=/libtypenum-981b1f3c4161234a.rlib \
   --mount=from=out-1009fce94369ad6b,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcrypto_common-1009fce94369ad6b.rmeta,source=/libcrypto_common-1009fce94369ad6b.rmeta \
+  --mount=from=out-1009fce94369ad6b,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcrypto_common-1009fce94369ad6b.rlib,source=/libcrypto_common-1009fce94369ad6b.rlib \
   --mount=from=out-434e8a9dd58e4456,dst=/tmp/clis-ntpd_1-2-3/release/deps/librand_core-434e8a9dd58e4456.rmeta,source=/librand_core-434e8a9dd58e4456.rmeta \
+  --mount=from=out-434e8a9dd58e4456,dst=/tmp/clis-ntpd_1-2-3/release/deps/librand_core-434e8a9dd58e4456.rlib,source=/librand_core-434e8a9dd58e4456.rlib \
   --mount=from=out-84473f2ddfbb434a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rmeta,source=/libgetrandom-84473f2ddfbb434a.rmeta \
+  --mount=from=out-84473f2ddfbb434a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rlib,source=/libgetrandom-84473f2ddfbb434a.rlib \
   --mount=from=out-a7905fdc410bdfce,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rmeta,source=/liblibc-a7905fdc410bdfce.rmeta \
+  --mount=from=out-a7905fdc410bdfce,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rlib,source=/liblibc-a7905fdc410bdfce.rlib \
   --mount=from=out-8b6e21d4a5a6c6ed,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsubtle-8b6e21d4a5a6c6ed.rmeta,source=/libsubtle-8b6e21d4a5a6c6ed.rmeta \
+  --mount=from=out-8b6e21d4a5a6c6ed,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsubtle-8b6e21d4a5a6c6ed.rlib,source=/libsubtle-8b6e21d4a5a6c6ed.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="md5" \
@@ -3319,16 +4577,16 @@ COPY --from=dep-l-md-5-0.10.6-f0775f4337e7a668 /tmp/clis-ntpd_1-2-3/release/deps
 ##     "8b6e21d4a5a6c6ed",
 ## ]
 ## short_externs = [
-##     "cfg_if-da34da6838abd7f1",
-##     "digest-65e96f3f500a3098",
-##     "block_buffer-bc12f6e8b62af3c6",
-##     "generic_array-2d6ea4fd5d7ef666",
-##     "typenum-981b1f3c4161234a",
-##     "crypto_common-1009fce94369ad6b",
-##     "rand_core-434e8a9dd58e4456",
-##     "getrandom-84473f2ddfbb434a",
-##     "libc-a7905fdc410bdfce",
-##     "subtle-8b6e21d4a5a6c6ed",
+##     "da34da6838abd7f1",
+##     "65e96f3f500a3098",
+##     "bc12f6e8b62af3c6",
+##     "2d6ea4fd5d7ef666",
+##     "981b1f3c4161234a",
+##     "1009fce94369ad6b",
+##     "434e8a9dd58e4456",
+##     "84473f2ddfbb434a",
+##     "a7905fdc410bdfce",
+##     "8b6e21d4a5a6c6ed",
 ## ]
 ## writes = [
 ##     "deps/md5-f0775f4337e7a668.d",
@@ -3340,6 +4598,106 @@ COPY --from=dep-l-md-5-0.10.6-f0775f4337e7a668 /tmp/clis-ntpd_1-2-3/release/deps
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-2-3/release/deps/libmd5-f0775f4337e7a668.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-2-3/release/deps/libmd5-f0775f4337e7a668.rlib","emit":"link"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-da34da6838abd7f1"
+## src = "/libcfg_if-da34da6838abd7f1.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rmeta"
+## 
+## [[mounts]]
+## from = "out-da34da6838abd7f1"
+## src = "/libcfg_if-da34da6838abd7f1.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rlib"
+## 
+## [[mounts]]
+## from = "out-65e96f3f500a3098"
+## src = "/libdigest-65e96f3f500a3098.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libdigest-65e96f3f500a3098.rmeta"
+## 
+## [[mounts]]
+## from = "out-65e96f3f500a3098"
+## src = "/libdigest-65e96f3f500a3098.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libdigest-65e96f3f500a3098.rlib"
+## 
+## [[mounts]]
+## from = "out-bc12f6e8b62af3c6"
+## src = "/libblock_buffer-bc12f6e8b62af3c6.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libblock_buffer-bc12f6e8b62af3c6.rmeta"
+## 
+## [[mounts]]
+## from = "out-bc12f6e8b62af3c6"
+## src = "/libblock_buffer-bc12f6e8b62af3c6.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libblock_buffer-bc12f6e8b62af3c6.rlib"
+## 
+## [[mounts]]
+## from = "out-2d6ea4fd5d7ef666"
+## src = "/libgeneric_array-2d6ea4fd5d7ef666.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libgeneric_array-2d6ea4fd5d7ef666.rmeta"
+## 
+## [[mounts]]
+## from = "out-2d6ea4fd5d7ef666"
+## src = "/libgeneric_array-2d6ea4fd5d7ef666.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libgeneric_array-2d6ea4fd5d7ef666.rlib"
+## 
+## [[mounts]]
+## from = "out-981b1f3c4161234a"
+## src = "/libtypenum-981b1f3c4161234a.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libtypenum-981b1f3c4161234a.rmeta"
+## 
+## [[mounts]]
+## from = "out-981b1f3c4161234a"
+## src = "/libtypenum-981b1f3c4161234a.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libtypenum-981b1f3c4161234a.rlib"
+## 
+## [[mounts]]
+## from = "out-1009fce94369ad6b"
+## src = "/libcrypto_common-1009fce94369ad6b.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libcrypto_common-1009fce94369ad6b.rmeta"
+## 
+## [[mounts]]
+## from = "out-1009fce94369ad6b"
+## src = "/libcrypto_common-1009fce94369ad6b.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libcrypto_common-1009fce94369ad6b.rlib"
+## 
+## [[mounts]]
+## from = "out-434e8a9dd58e4456"
+## src = "/librand_core-434e8a9dd58e4456.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/librand_core-434e8a9dd58e4456.rmeta"
+## 
+## [[mounts]]
+## from = "out-434e8a9dd58e4456"
+## src = "/librand_core-434e8a9dd58e4456.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/librand_core-434e8a9dd58e4456.rlib"
+## 
+## [[mounts]]
+## from = "out-84473f2ddfbb434a"
+## src = "/libgetrandom-84473f2ddfbb434a.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rmeta"
+## 
+## [[mounts]]
+## from = "out-84473f2ddfbb434a"
+## src = "/libgetrandom-84473f2ddfbb434a.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rlib"
+## 
+## [[mounts]]
+## from = "out-a7905fdc410bdfce"
+## src = "/liblibc-a7905fdc410bdfce.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rmeta"
+## 
+## [[mounts]]
+## from = "out-a7905fdc410bdfce"
+## src = "/liblibc-a7905fdc410bdfce.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rlib"
+## 
+## [[mounts]]
+## from = "out-8b6e21d4a5a6c6ed"
+## src = "/libsubtle-8b6e21d4a5a6c6ed.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libsubtle-8b6e21d4a5a6c6ed.rmeta"
+## 
+## [[mounts]]
+## from = "out-8b6e21d4a5a6c6ed"
+## src = "/libsubtle-8b6e21d4a5a6c6ed.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libsubtle-8b6e21d4a5a6c6ed.rlib"
 ## 
 ## [[contexts]]
 ## name = "crate_out-a7d381539c9ce48d"
@@ -3365,15 +4723,25 @@ COPY --from=dep-l-md-5-0.10.6-f0775f4337e7a668 /tmp/clis-ntpd_1-2-3/release/deps
 ## RUN \
 ##   --mount=from=cratesio-md-5-0.10.6,source=/md-5-0.10.6,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/md-5-0.10.6 \
 ##   --mount=from=out-da34da6838abd7f1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rmeta,source=/libcfg_if-da34da6838abd7f1.rmeta \
+##   --mount=from=out-da34da6838abd7f1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rlib,source=/libcfg_if-da34da6838abd7f1.rlib \
 ##   --mount=from=out-65e96f3f500a3098,dst=/tmp/clis-ntpd_1-2-3/release/deps/libdigest-65e96f3f500a3098.rmeta,source=/libdigest-65e96f3f500a3098.rmeta \
+##   --mount=from=out-65e96f3f500a3098,dst=/tmp/clis-ntpd_1-2-3/release/deps/libdigest-65e96f3f500a3098.rlib,source=/libdigest-65e96f3f500a3098.rlib \
 ##   --mount=from=out-bc12f6e8b62af3c6,dst=/tmp/clis-ntpd_1-2-3/release/deps/libblock_buffer-bc12f6e8b62af3c6.rmeta,source=/libblock_buffer-bc12f6e8b62af3c6.rmeta \
+##   --mount=from=out-bc12f6e8b62af3c6,dst=/tmp/clis-ntpd_1-2-3/release/deps/libblock_buffer-bc12f6e8b62af3c6.rlib,source=/libblock_buffer-bc12f6e8b62af3c6.rlib \
 ##   --mount=from=out-2d6ea4fd5d7ef666,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgeneric_array-2d6ea4fd5d7ef666.rmeta,source=/libgeneric_array-2d6ea4fd5d7ef666.rmeta \
+##   --mount=from=out-2d6ea4fd5d7ef666,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgeneric_array-2d6ea4fd5d7ef666.rlib,source=/libgeneric_array-2d6ea4fd5d7ef666.rlib \
 ##   --mount=from=out-981b1f3c4161234a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtypenum-981b1f3c4161234a.rmeta,source=/libtypenum-981b1f3c4161234a.rmeta \
+##   --mount=from=out-981b1f3c4161234a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtypenum-981b1f3c4161234a.rlib,source=/libtypenum-981b1f3c4161234a.rlib \
 ##   --mount=from=out-1009fce94369ad6b,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcrypto_common-1009fce94369ad6b.rmeta,source=/libcrypto_common-1009fce94369ad6b.rmeta \
+##   --mount=from=out-1009fce94369ad6b,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcrypto_common-1009fce94369ad6b.rlib,source=/libcrypto_common-1009fce94369ad6b.rlib \
 ##   --mount=from=out-434e8a9dd58e4456,dst=/tmp/clis-ntpd_1-2-3/release/deps/librand_core-434e8a9dd58e4456.rmeta,source=/librand_core-434e8a9dd58e4456.rmeta \
+##   --mount=from=out-434e8a9dd58e4456,dst=/tmp/clis-ntpd_1-2-3/release/deps/librand_core-434e8a9dd58e4456.rlib,source=/librand_core-434e8a9dd58e4456.rlib \
 ##   --mount=from=out-84473f2ddfbb434a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rmeta,source=/libgetrandom-84473f2ddfbb434a.rmeta \
+##   --mount=from=out-84473f2ddfbb434a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rlib,source=/libgetrandom-84473f2ddfbb434a.rlib \
 ##   --mount=from=out-a7905fdc410bdfce,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rmeta,source=/liblibc-a7905fdc410bdfce.rmeta \
+##   --mount=from=out-a7905fdc410bdfce,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rlib,source=/liblibc-a7905fdc410bdfce.rlib \
 ##   --mount=from=out-8b6e21d4a5a6c6ed,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsubtle-8b6e21d4a5a6c6ed.rmeta,source=/libsubtle-8b6e21d4a5a6c6ed.rmeta \
+##   --mount=from=out-8b6e21d4a5a6c6ed,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsubtle-8b6e21d4a5a6c6ed.rlib,source=/libsubtle-8b6e21d4a5a6c6ed.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="md5" \
@@ -3517,10 +4885,15 @@ WORKDIR /tmp/clis-ntpd_1-2-3/release/deps
 RUN \
   --mount=from=cratesio-rand_chacha-0.3.1,source=/rand_chacha-0.3.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rand_chacha-0.3.1 \
   --mount=from=out-af198cb5433f3d0c,dst=/tmp/clis-ntpd_1-2-3/release/deps/libppv_lite86-af198cb5433f3d0c.rmeta,source=/libppv_lite86-af198cb5433f3d0c.rmeta \
+  --mount=from=out-af198cb5433f3d0c,dst=/tmp/clis-ntpd_1-2-3/release/deps/libppv_lite86-af198cb5433f3d0c.rlib,source=/libppv_lite86-af198cb5433f3d0c.rlib \
   --mount=from=out-434e8a9dd58e4456,dst=/tmp/clis-ntpd_1-2-3/release/deps/librand_core-434e8a9dd58e4456.rmeta,source=/librand_core-434e8a9dd58e4456.rmeta \
+  --mount=from=out-434e8a9dd58e4456,dst=/tmp/clis-ntpd_1-2-3/release/deps/librand_core-434e8a9dd58e4456.rlib,source=/librand_core-434e8a9dd58e4456.rlib \
   --mount=from=out-84473f2ddfbb434a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rmeta,source=/libgetrandom-84473f2ddfbb434a.rmeta \
+  --mount=from=out-84473f2ddfbb434a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rlib,source=/libgetrandom-84473f2ddfbb434a.rlib \
   --mount=from=out-da34da6838abd7f1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rmeta,source=/libcfg_if-da34da6838abd7f1.rmeta \
+  --mount=from=out-da34da6838abd7f1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rlib,source=/libcfg_if-da34da6838abd7f1.rlib \
   --mount=from=out-a7905fdc410bdfce,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rmeta,source=/liblibc-a7905fdc410bdfce.rmeta \
+  --mount=from=out-a7905fdc410bdfce,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rlib,source=/liblibc-a7905fdc410bdfce.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="rand_chacha" \
@@ -3559,11 +4932,11 @@ COPY --from=dep-l-rand_chacha-0.3.1-8e2f025dcc32e9af /tmp/clis-ntpd_1-2-3/releas
 ##     "a7905fdc410bdfce",
 ## ]
 ## short_externs = [
-##     "ppv_lite86-af198cb5433f3d0c",
-##     "rand_core-434e8a9dd58e4456",
-##     "getrandom-84473f2ddfbb434a",
-##     "cfg_if-da34da6838abd7f1",
-##     "libc-a7905fdc410bdfce",
+##     "af198cb5433f3d0c",
+##     "434e8a9dd58e4456",
+##     "84473f2ddfbb434a",
+##     "da34da6838abd7f1",
+##     "a7905fdc410bdfce",
 ## ]
 ## writes = [
 ##     "deps/rand_chacha-8e2f025dcc32e9af.d",
@@ -3575,6 +4948,56 @@ COPY --from=dep-l-rand_chacha-0.3.1-8e2f025dcc32e9af /tmp/clis-ntpd_1-2-3/releas
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-2-3/release/deps/librand_chacha-8e2f025dcc32e9af.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-2-3/release/deps/librand_chacha-8e2f025dcc32e9af.rlib","emit":"link"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-af198cb5433f3d0c"
+## src = "/libppv_lite86-af198cb5433f3d0c.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libppv_lite86-af198cb5433f3d0c.rmeta"
+## 
+## [[mounts]]
+## from = "out-af198cb5433f3d0c"
+## src = "/libppv_lite86-af198cb5433f3d0c.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libppv_lite86-af198cb5433f3d0c.rlib"
+## 
+## [[mounts]]
+## from = "out-434e8a9dd58e4456"
+## src = "/librand_core-434e8a9dd58e4456.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/librand_core-434e8a9dd58e4456.rmeta"
+## 
+## [[mounts]]
+## from = "out-434e8a9dd58e4456"
+## src = "/librand_core-434e8a9dd58e4456.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/librand_core-434e8a9dd58e4456.rlib"
+## 
+## [[mounts]]
+## from = "out-84473f2ddfbb434a"
+## src = "/libgetrandom-84473f2ddfbb434a.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rmeta"
+## 
+## [[mounts]]
+## from = "out-84473f2ddfbb434a"
+## src = "/libgetrandom-84473f2ddfbb434a.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rlib"
+## 
+## [[mounts]]
+## from = "out-da34da6838abd7f1"
+## src = "/libcfg_if-da34da6838abd7f1.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rmeta"
+## 
+## [[mounts]]
+## from = "out-da34da6838abd7f1"
+## src = "/libcfg_if-da34da6838abd7f1.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rlib"
+## 
+## [[mounts]]
+## from = "out-a7905fdc410bdfce"
+## src = "/liblibc-a7905fdc410bdfce.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rmeta"
+## 
+## [[mounts]]
+## from = "out-a7905fdc410bdfce"
+## src = "/liblibc-a7905fdc410bdfce.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -3596,10 +5019,15 @@ COPY --from=dep-l-rand_chacha-0.3.1-8e2f025dcc32e9af /tmp/clis-ntpd_1-2-3/releas
 ## RUN \
 ##   --mount=from=cratesio-rand_chacha-0.3.1,source=/rand_chacha-0.3.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rand_chacha-0.3.1 \
 ##   --mount=from=out-af198cb5433f3d0c,dst=/tmp/clis-ntpd_1-2-3/release/deps/libppv_lite86-af198cb5433f3d0c.rmeta,source=/libppv_lite86-af198cb5433f3d0c.rmeta \
+##   --mount=from=out-af198cb5433f3d0c,dst=/tmp/clis-ntpd_1-2-3/release/deps/libppv_lite86-af198cb5433f3d0c.rlib,source=/libppv_lite86-af198cb5433f3d0c.rlib \
 ##   --mount=from=out-434e8a9dd58e4456,dst=/tmp/clis-ntpd_1-2-3/release/deps/librand_core-434e8a9dd58e4456.rmeta,source=/librand_core-434e8a9dd58e4456.rmeta \
+##   --mount=from=out-434e8a9dd58e4456,dst=/tmp/clis-ntpd_1-2-3/release/deps/librand_core-434e8a9dd58e4456.rlib,source=/librand_core-434e8a9dd58e4456.rlib \
 ##   --mount=from=out-84473f2ddfbb434a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rmeta,source=/libgetrandom-84473f2ddfbb434a.rmeta \
+##   --mount=from=out-84473f2ddfbb434a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rlib,source=/libgetrandom-84473f2ddfbb434a.rlib \
 ##   --mount=from=out-da34da6838abd7f1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rmeta,source=/libcfg_if-da34da6838abd7f1.rmeta \
+##   --mount=from=out-da34da6838abd7f1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rlib,source=/libcfg_if-da34da6838abd7f1.rlib \
 ##   --mount=from=out-a7905fdc410bdfce,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rmeta,source=/liblibc-a7905fdc410bdfce.rmeta \
+##   --mount=from=out-a7905fdc410bdfce,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rlib,source=/liblibc-a7905fdc410bdfce.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="rand_chacha" \
@@ -3642,11 +5070,17 @@ WORKDIR /tmp/clis-ntpd_1-2-3/release/deps
 RUN \
   --mount=from=cratesio-rand-0.8.5,source=/rand-0.8.5,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rand-0.8.5 \
   --mount=from=out-a7905fdc410bdfce,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rmeta,source=/liblibc-a7905fdc410bdfce.rmeta \
+  --mount=from=out-a7905fdc410bdfce,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rlib,source=/liblibc-a7905fdc410bdfce.rlib \
   --mount=from=out-8e2f025dcc32e9af,dst=/tmp/clis-ntpd_1-2-3/release/deps/librand_chacha-8e2f025dcc32e9af.rmeta,source=/librand_chacha-8e2f025dcc32e9af.rmeta \
+  --mount=from=out-8e2f025dcc32e9af,dst=/tmp/clis-ntpd_1-2-3/release/deps/librand_chacha-8e2f025dcc32e9af.rlib,source=/librand_chacha-8e2f025dcc32e9af.rlib \
   --mount=from=out-af198cb5433f3d0c,dst=/tmp/clis-ntpd_1-2-3/release/deps/libppv_lite86-af198cb5433f3d0c.rmeta,source=/libppv_lite86-af198cb5433f3d0c.rmeta \
+  --mount=from=out-af198cb5433f3d0c,dst=/tmp/clis-ntpd_1-2-3/release/deps/libppv_lite86-af198cb5433f3d0c.rlib,source=/libppv_lite86-af198cb5433f3d0c.rlib \
   --mount=from=out-434e8a9dd58e4456,dst=/tmp/clis-ntpd_1-2-3/release/deps/librand_core-434e8a9dd58e4456.rmeta,source=/librand_core-434e8a9dd58e4456.rmeta \
+  --mount=from=out-434e8a9dd58e4456,dst=/tmp/clis-ntpd_1-2-3/release/deps/librand_core-434e8a9dd58e4456.rlib,source=/librand_core-434e8a9dd58e4456.rlib \
   --mount=from=out-84473f2ddfbb434a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rmeta,source=/libgetrandom-84473f2ddfbb434a.rmeta \
+  --mount=from=out-84473f2ddfbb434a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rlib,source=/libgetrandom-84473f2ddfbb434a.rlib \
   --mount=from=out-da34da6838abd7f1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rmeta,source=/libcfg_if-da34da6838abd7f1.rmeta \
+  --mount=from=out-da34da6838abd7f1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rlib,source=/libcfg_if-da34da6838abd7f1.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="rand" \
@@ -3686,12 +5120,12 @@ COPY --from=dep-l-rand-0.8.5-5161209caf71d483 /tmp/clis-ntpd_1-2-3/release/deps/
 ##     "da34da6838abd7f1",
 ## ]
 ## short_externs = [
-##     "libc-a7905fdc410bdfce",
-##     "rand_chacha-8e2f025dcc32e9af",
-##     "ppv_lite86-af198cb5433f3d0c",
-##     "rand_core-434e8a9dd58e4456",
-##     "getrandom-84473f2ddfbb434a",
-##     "cfg_if-da34da6838abd7f1",
+##     "a7905fdc410bdfce",
+##     "8e2f025dcc32e9af",
+##     "af198cb5433f3d0c",
+##     "434e8a9dd58e4456",
+##     "84473f2ddfbb434a",
+##     "da34da6838abd7f1",
 ## ]
 ## writes = [
 ##     "deps/rand-5161209caf71d483.d",
@@ -3731,6 +5165,66 @@ COPY --from=dep-l-rand-0.8.5-5161209caf71d483 /tmp/clis-ntpd_1-2-3/release/deps/
 ##     '{"$message_type":"diagnostic","message":"26 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 26 warnings emitted\u001b[0m\n\n"}',
 ## ]
 ## 
+## [[mounts]]
+## from = "out-a7905fdc410bdfce"
+## src = "/liblibc-a7905fdc410bdfce.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rmeta"
+## 
+## [[mounts]]
+## from = "out-a7905fdc410bdfce"
+## src = "/liblibc-a7905fdc410bdfce.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rlib"
+## 
+## [[mounts]]
+## from = "out-8e2f025dcc32e9af"
+## src = "/librand_chacha-8e2f025dcc32e9af.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/librand_chacha-8e2f025dcc32e9af.rmeta"
+## 
+## [[mounts]]
+## from = "out-8e2f025dcc32e9af"
+## src = "/librand_chacha-8e2f025dcc32e9af.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/librand_chacha-8e2f025dcc32e9af.rlib"
+## 
+## [[mounts]]
+## from = "out-af198cb5433f3d0c"
+## src = "/libppv_lite86-af198cb5433f3d0c.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libppv_lite86-af198cb5433f3d0c.rmeta"
+## 
+## [[mounts]]
+## from = "out-af198cb5433f3d0c"
+## src = "/libppv_lite86-af198cb5433f3d0c.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libppv_lite86-af198cb5433f3d0c.rlib"
+## 
+## [[mounts]]
+## from = "out-434e8a9dd58e4456"
+## src = "/librand_core-434e8a9dd58e4456.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/librand_core-434e8a9dd58e4456.rmeta"
+## 
+## [[mounts]]
+## from = "out-434e8a9dd58e4456"
+## src = "/librand_core-434e8a9dd58e4456.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/librand_core-434e8a9dd58e4456.rlib"
+## 
+## [[mounts]]
+## from = "out-84473f2ddfbb434a"
+## src = "/libgetrandom-84473f2ddfbb434a.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rmeta"
+## 
+## [[mounts]]
+## from = "out-84473f2ddfbb434a"
+## src = "/libgetrandom-84473f2ddfbb434a.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rlib"
+## 
+## [[mounts]]
+## from = "out-da34da6838abd7f1"
+## src = "/libcfg_if-da34da6838abd7f1.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rmeta"
+## 
+## [[mounts]]
+## from = "out-da34da6838abd7f1"
+## src = "/libcfg_if-da34da6838abd7f1.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rlib"
+## 
 ## [[stages]]
 ## name = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.86.0-slim@sha256:57d415bbd61ce11e2d5f73de068103c7bd9f3188dc132c97cef4a8f62989e944 AS rust-base"
@@ -3751,11 +5245,17 @@ COPY --from=dep-l-rand-0.8.5-5161209caf71d483 /tmp/clis-ntpd_1-2-3/release/deps/
 ## RUN \
 ##   --mount=from=cratesio-rand-0.8.5,source=/rand-0.8.5,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rand-0.8.5 \
 ##   --mount=from=out-a7905fdc410bdfce,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rmeta,source=/liblibc-a7905fdc410bdfce.rmeta \
+##   --mount=from=out-a7905fdc410bdfce,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rlib,source=/liblibc-a7905fdc410bdfce.rlib \
 ##   --mount=from=out-8e2f025dcc32e9af,dst=/tmp/clis-ntpd_1-2-3/release/deps/librand_chacha-8e2f025dcc32e9af.rmeta,source=/librand_chacha-8e2f025dcc32e9af.rmeta \
+##   --mount=from=out-8e2f025dcc32e9af,dst=/tmp/clis-ntpd_1-2-3/release/deps/librand_chacha-8e2f025dcc32e9af.rlib,source=/librand_chacha-8e2f025dcc32e9af.rlib \
 ##   --mount=from=out-af198cb5433f3d0c,dst=/tmp/clis-ntpd_1-2-3/release/deps/libppv_lite86-af198cb5433f3d0c.rmeta,source=/libppv_lite86-af198cb5433f3d0c.rmeta \
+##   --mount=from=out-af198cb5433f3d0c,dst=/tmp/clis-ntpd_1-2-3/release/deps/libppv_lite86-af198cb5433f3d0c.rlib,source=/libppv_lite86-af198cb5433f3d0c.rlib \
 ##   --mount=from=out-434e8a9dd58e4456,dst=/tmp/clis-ntpd_1-2-3/release/deps/librand_core-434e8a9dd58e4456.rmeta,source=/librand_core-434e8a9dd58e4456.rmeta \
+##   --mount=from=out-434e8a9dd58e4456,dst=/tmp/clis-ntpd_1-2-3/release/deps/librand_core-434e8a9dd58e4456.rlib,source=/librand_core-434e8a9dd58e4456.rlib \
 ##   --mount=from=out-84473f2ddfbb434a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rmeta,source=/libgetrandom-84473f2ddfbb434a.rmeta \
+##   --mount=from=out-84473f2ddfbb434a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rlib,source=/libgetrandom-84473f2ddfbb434a.rlib \
 ##   --mount=from=out-da34da6838abd7f1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rmeta,source=/libcfg_if-da34da6838abd7f1.rmeta \
+##   --mount=from=out-da34da6838abd7f1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rlib,source=/libcfg_if-da34da6838abd7f1.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="rand" \
@@ -4203,10 +5703,15 @@ RUN \
   --mount=from=cratesio-ring-0.17.8,source=/ring-0.17.8,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ring-0.17.8 \
   --mount=from=crate_out-a0b19822430eae69,dst=/tmp/clis-ntpd_1-2-3/release/build/ring-a0b19822430eae69/out \
   --mount=from=out-da34da6838abd7f1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rmeta,source=/libcfg_if-da34da6838abd7f1.rmeta \
+  --mount=from=out-da34da6838abd7f1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rlib,source=/libcfg_if-da34da6838abd7f1.rlib \
   --mount=from=out-84473f2ddfbb434a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rmeta,source=/libgetrandom-84473f2ddfbb434a.rmeta \
+  --mount=from=out-84473f2ddfbb434a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rlib,source=/libgetrandom-84473f2ddfbb434a.rlib \
   --mount=from=out-a7905fdc410bdfce,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rmeta,source=/liblibc-a7905fdc410bdfce.rmeta \
+  --mount=from=out-a7905fdc410bdfce,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rlib,source=/liblibc-a7905fdc410bdfce.rlib \
   --mount=from=out-126f99f44d356e93,dst=/tmp/clis-ntpd_1-2-3/release/deps/libspin-126f99f44d356e93.rmeta,source=/libspin-126f99f44d356e93.rmeta \
+  --mount=from=out-126f99f44d356e93,dst=/tmp/clis-ntpd_1-2-3/release/deps/libspin-126f99f44d356e93.rlib,source=/libspin-126f99f44d356e93.rlib \
   --mount=from=out-2cf0189e0a6f5785,dst=/tmp/clis-ntpd_1-2-3/release/deps/libuntrusted-2cf0189e0a6f5785.rmeta,source=/libuntrusted-2cf0189e0a6f5785.rmeta \
+  --mount=from=out-2cf0189e0a6f5785,dst=/tmp/clis-ntpd_1-2-3/release/deps/libuntrusted-2cf0189e0a6f5785.rlib,source=/libuntrusted-2cf0189e0a6f5785.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="ring" \
@@ -4247,11 +5752,11 @@ COPY --from=dep-l-ring-0.17.8-162d4bd1f192637c /tmp/clis-ntpd_1-2-3/release/deps
 ##     "2cf0189e0a6f5785",
 ## ]
 ## short_externs = [
-##     "cfg_if-da34da6838abd7f1",
-##     "getrandom-84473f2ddfbb434a",
-##     "libc-a7905fdc410bdfce",
-##     "spin-126f99f44d356e93",
-##     "untrusted-2cf0189e0a6f5785",
+##     "da34da6838abd7f1",
+##     "84473f2ddfbb434a",
+##     "a7905fdc410bdfce",
+##     "126f99f44d356e93",
+##     "2cf0189e0a6f5785",
 ## ]
 ## writes = [
 ##     "deps/ring-162d4bd1f192637c.d",
@@ -4265,6 +5770,56 @@ COPY --from=dep-l-ring-0.17.8-162d4bd1f192637c /tmp/clis-ntpd_1-2-3/release/deps
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-2-3/release/deps/libring-162d4bd1f192637c.rlib","emit":"link"}',
 ##     '{"$message_type":"diagnostic","message":"1 warning emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 1 warning emitted\u001b[0m\n\n"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-da34da6838abd7f1"
+## src = "/libcfg_if-da34da6838abd7f1.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rmeta"
+## 
+## [[mounts]]
+## from = "out-da34da6838abd7f1"
+## src = "/libcfg_if-da34da6838abd7f1.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rlib"
+## 
+## [[mounts]]
+## from = "out-84473f2ddfbb434a"
+## src = "/libgetrandom-84473f2ddfbb434a.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rmeta"
+## 
+## [[mounts]]
+## from = "out-84473f2ddfbb434a"
+## src = "/libgetrandom-84473f2ddfbb434a.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rlib"
+## 
+## [[mounts]]
+## from = "out-a7905fdc410bdfce"
+## src = "/liblibc-a7905fdc410bdfce.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rmeta"
+## 
+## [[mounts]]
+## from = "out-a7905fdc410bdfce"
+## src = "/liblibc-a7905fdc410bdfce.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rlib"
+## 
+## [[mounts]]
+## from = "out-126f99f44d356e93"
+## src = "/libspin-126f99f44d356e93.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libspin-126f99f44d356e93.rmeta"
+## 
+## [[mounts]]
+## from = "out-126f99f44d356e93"
+## src = "/libspin-126f99f44d356e93.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libspin-126f99f44d356e93.rlib"
+## 
+## [[mounts]]
+## from = "out-2cf0189e0a6f5785"
+## src = "/libuntrusted-2cf0189e0a6f5785.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libuntrusted-2cf0189e0a6f5785.rmeta"
+## 
+## [[mounts]]
+## from = "out-2cf0189e0a6f5785"
+## src = "/libuntrusted-2cf0189e0a6f5785.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libuntrusted-2cf0189e0a6f5785.rlib"
 ## 
 ## [[contexts]]
 ## name = "crate_out-a0b19822430eae69"
@@ -4291,10 +5846,15 @@ COPY --from=dep-l-ring-0.17.8-162d4bd1f192637c /tmp/clis-ntpd_1-2-3/release/deps
 ##   --mount=from=cratesio-ring-0.17.8,source=/ring-0.17.8,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ring-0.17.8 \
 ##   --mount=from=crate_out-a0b19822430eae69,dst=/tmp/clis-ntpd_1-2-3/release/build/ring-a0b19822430eae69/out \
 ##   --mount=from=out-da34da6838abd7f1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rmeta,source=/libcfg_if-da34da6838abd7f1.rmeta \
+##   --mount=from=out-da34da6838abd7f1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rlib,source=/libcfg_if-da34da6838abd7f1.rlib \
 ##   --mount=from=out-84473f2ddfbb434a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rmeta,source=/libgetrandom-84473f2ddfbb434a.rmeta \
+##   --mount=from=out-84473f2ddfbb434a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rlib,source=/libgetrandom-84473f2ddfbb434a.rlib \
 ##   --mount=from=out-a7905fdc410bdfce,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rmeta,source=/liblibc-a7905fdc410bdfce.rmeta \
+##   --mount=from=out-a7905fdc410bdfce,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rlib,source=/liblibc-a7905fdc410bdfce.rlib \
 ##   --mount=from=out-126f99f44d356e93,dst=/tmp/clis-ntpd_1-2-3/release/deps/libspin-126f99f44d356e93.rmeta,source=/libspin-126f99f44d356e93.rmeta \
+##   --mount=from=out-126f99f44d356e93,dst=/tmp/clis-ntpd_1-2-3/release/deps/libspin-126f99f44d356e93.rlib,source=/libspin-126f99f44d356e93.rlib \
 ##   --mount=from=out-2cf0189e0a6f5785,dst=/tmp/clis-ntpd_1-2-3/release/deps/libuntrusted-2cf0189e0a6f5785.rmeta,source=/libuntrusted-2cf0189e0a6f5785.rmeta \
+##   --mount=from=out-2cf0189e0a6f5785,dst=/tmp/clis-ntpd_1-2-3/release/deps/libuntrusted-2cf0189e0a6f5785.rlib,source=/libuntrusted-2cf0189e0a6f5785.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="ring" \
@@ -4442,12 +6002,19 @@ WORKDIR /tmp/clis-ntpd_1-2-3/release/deps
 RUN \
   --mount=from=cratesio-rustls-webpki-0.102.5,source=/rustls-webpki-0.102.5,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustls-webpki-0.102.5 \
   --mount=from=out-162d4bd1f192637c,dst=/tmp/clis-ntpd_1-2-3/release/deps/libring-162d4bd1f192637c.rmeta,source=/libring-162d4bd1f192637c.rmeta \
+  --mount=from=out-162d4bd1f192637c,dst=/tmp/clis-ntpd_1-2-3/release/deps/libring-162d4bd1f192637c.rlib,source=/libring-162d4bd1f192637c.rlib \
   --mount=from=out-da34da6838abd7f1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rmeta,source=/libcfg_if-da34da6838abd7f1.rmeta \
+  --mount=from=out-da34da6838abd7f1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rlib,source=/libcfg_if-da34da6838abd7f1.rlib \
   --mount=from=out-84473f2ddfbb434a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rmeta,source=/libgetrandom-84473f2ddfbb434a.rmeta \
+  --mount=from=out-84473f2ddfbb434a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rlib,source=/libgetrandom-84473f2ddfbb434a.rlib \
   --mount=from=out-a7905fdc410bdfce,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rmeta,source=/liblibc-a7905fdc410bdfce.rmeta \
+  --mount=from=out-a7905fdc410bdfce,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rlib,source=/liblibc-a7905fdc410bdfce.rlib \
   --mount=from=out-126f99f44d356e93,dst=/tmp/clis-ntpd_1-2-3/release/deps/libspin-126f99f44d356e93.rmeta,source=/libspin-126f99f44d356e93.rmeta \
+  --mount=from=out-126f99f44d356e93,dst=/tmp/clis-ntpd_1-2-3/release/deps/libspin-126f99f44d356e93.rlib,source=/libspin-126f99f44d356e93.rlib \
   --mount=from=out-2cf0189e0a6f5785,dst=/tmp/clis-ntpd_1-2-3/release/deps/libuntrusted-2cf0189e0a6f5785.rmeta,source=/libuntrusted-2cf0189e0a6f5785.rmeta \
+  --mount=from=out-2cf0189e0a6f5785,dst=/tmp/clis-ntpd_1-2-3/release/deps/libuntrusted-2cf0189e0a6f5785.rlib,source=/libuntrusted-2cf0189e0a6f5785.rlib \
   --mount=from=out-0bd417676bde33fe,dst=/tmp/clis-ntpd_1-2-3/release/deps/librustls_pki_types-0bd417676bde33fe.rmeta,source=/librustls_pki_types-0bd417676bde33fe.rmeta \
+  --mount=from=out-0bd417676bde33fe,dst=/tmp/clis-ntpd_1-2-3/release/deps/librustls_pki_types-0bd417676bde33fe.rlib,source=/librustls_pki_types-0bd417676bde33fe.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="webpki" \
@@ -4488,13 +6055,13 @@ COPY --from=dep-l-rustls-webpki-0.102.5-0b45a7938c797eef /tmp/clis-ntpd_1-2-3/re
 ##     "0bd417676bde33fe",
 ## ]
 ## short_externs = [
-##     "ring-162d4bd1f192637c",
-##     "cfg_if-da34da6838abd7f1",
-##     "getrandom-84473f2ddfbb434a",
-##     "libc-a7905fdc410bdfce",
-##     "spin-126f99f44d356e93",
-##     "untrusted-2cf0189e0a6f5785",
-##     "rustls_pki_types-0bd417676bde33fe",
+##     "162d4bd1f192637c",
+##     "da34da6838abd7f1",
+##     "84473f2ddfbb434a",
+##     "a7905fdc410bdfce",
+##     "126f99f44d356e93",
+##     "2cf0189e0a6f5785",
+##     "0bd417676bde33fe",
 ## ]
 ## writes = [
 ##     "deps/webpki-0b45a7938c797eef.d",
@@ -4506,6 +6073,76 @@ COPY --from=dep-l-rustls-webpki-0.102.5-0b45a7938c797eef /tmp/clis-ntpd_1-2-3/re
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-2-3/release/deps/libwebpki-0b45a7938c797eef.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-2-3/release/deps/libwebpki-0b45a7938c797eef.rlib","emit":"link"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-162d4bd1f192637c"
+## src = "/libring-162d4bd1f192637c.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libring-162d4bd1f192637c.rmeta"
+## 
+## [[mounts]]
+## from = "out-162d4bd1f192637c"
+## src = "/libring-162d4bd1f192637c.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libring-162d4bd1f192637c.rlib"
+## 
+## [[mounts]]
+## from = "out-da34da6838abd7f1"
+## src = "/libcfg_if-da34da6838abd7f1.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rmeta"
+## 
+## [[mounts]]
+## from = "out-da34da6838abd7f1"
+## src = "/libcfg_if-da34da6838abd7f1.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rlib"
+## 
+## [[mounts]]
+## from = "out-84473f2ddfbb434a"
+## src = "/libgetrandom-84473f2ddfbb434a.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rmeta"
+## 
+## [[mounts]]
+## from = "out-84473f2ddfbb434a"
+## src = "/libgetrandom-84473f2ddfbb434a.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rlib"
+## 
+## [[mounts]]
+## from = "out-a7905fdc410bdfce"
+## src = "/liblibc-a7905fdc410bdfce.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rmeta"
+## 
+## [[mounts]]
+## from = "out-a7905fdc410bdfce"
+## src = "/liblibc-a7905fdc410bdfce.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rlib"
+## 
+## [[mounts]]
+## from = "out-126f99f44d356e93"
+## src = "/libspin-126f99f44d356e93.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libspin-126f99f44d356e93.rmeta"
+## 
+## [[mounts]]
+## from = "out-126f99f44d356e93"
+## src = "/libspin-126f99f44d356e93.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libspin-126f99f44d356e93.rlib"
+## 
+## [[mounts]]
+## from = "out-2cf0189e0a6f5785"
+## src = "/libuntrusted-2cf0189e0a6f5785.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libuntrusted-2cf0189e0a6f5785.rmeta"
+## 
+## [[mounts]]
+## from = "out-2cf0189e0a6f5785"
+## src = "/libuntrusted-2cf0189e0a6f5785.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libuntrusted-2cf0189e0a6f5785.rlib"
+## 
+## [[mounts]]
+## from = "out-0bd417676bde33fe"
+## src = "/librustls_pki_types-0bd417676bde33fe.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/librustls_pki_types-0bd417676bde33fe.rmeta"
+## 
+## [[mounts]]
+## from = "out-0bd417676bde33fe"
+## src = "/librustls_pki_types-0bd417676bde33fe.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/librustls_pki_types-0bd417676bde33fe.rlib"
 ## 
 ## [[contexts]]
 ## name = "crate_out-a0b19822430eae69"
@@ -4531,12 +6168,19 @@ COPY --from=dep-l-rustls-webpki-0.102.5-0b45a7938c797eef /tmp/clis-ntpd_1-2-3/re
 ## RUN \
 ##   --mount=from=cratesio-rustls-webpki-0.102.5,source=/rustls-webpki-0.102.5,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustls-webpki-0.102.5 \
 ##   --mount=from=out-162d4bd1f192637c,dst=/tmp/clis-ntpd_1-2-3/release/deps/libring-162d4bd1f192637c.rmeta,source=/libring-162d4bd1f192637c.rmeta \
+##   --mount=from=out-162d4bd1f192637c,dst=/tmp/clis-ntpd_1-2-3/release/deps/libring-162d4bd1f192637c.rlib,source=/libring-162d4bd1f192637c.rlib \
 ##   --mount=from=out-da34da6838abd7f1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rmeta,source=/libcfg_if-da34da6838abd7f1.rmeta \
+##   --mount=from=out-da34da6838abd7f1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rlib,source=/libcfg_if-da34da6838abd7f1.rlib \
 ##   --mount=from=out-84473f2ddfbb434a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rmeta,source=/libgetrandom-84473f2ddfbb434a.rmeta \
+##   --mount=from=out-84473f2ddfbb434a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rlib,source=/libgetrandom-84473f2ddfbb434a.rlib \
 ##   --mount=from=out-a7905fdc410bdfce,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rmeta,source=/liblibc-a7905fdc410bdfce.rmeta \
+##   --mount=from=out-a7905fdc410bdfce,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rlib,source=/liblibc-a7905fdc410bdfce.rlib \
 ##   --mount=from=out-126f99f44d356e93,dst=/tmp/clis-ntpd_1-2-3/release/deps/libspin-126f99f44d356e93.rmeta,source=/libspin-126f99f44d356e93.rmeta \
+##   --mount=from=out-126f99f44d356e93,dst=/tmp/clis-ntpd_1-2-3/release/deps/libspin-126f99f44d356e93.rlib,source=/libspin-126f99f44d356e93.rlib \
 ##   --mount=from=out-2cf0189e0a6f5785,dst=/tmp/clis-ntpd_1-2-3/release/deps/libuntrusted-2cf0189e0a6f5785.rmeta,source=/libuntrusted-2cf0189e0a6f5785.rmeta \
+##   --mount=from=out-2cf0189e0a6f5785,dst=/tmp/clis-ntpd_1-2-3/release/deps/libuntrusted-2cf0189e0a6f5785.rlib,source=/libuntrusted-2cf0189e0a6f5785.rlib \
 ##   --mount=from=out-0bd417676bde33fe,dst=/tmp/clis-ntpd_1-2-3/release/deps/librustls_pki_types-0bd417676bde33fe.rmeta,source=/librustls_pki_types-0bd417676bde33fe.rmeta \
+##   --mount=from=out-0bd417676bde33fe,dst=/tmp/clis-ntpd_1-2-3/release/deps/librustls_pki_types-0bd417676bde33fe.rlib,source=/librustls_pki_types-0bd417676bde33fe.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="webpki" \
@@ -4579,17 +6223,29 @@ WORKDIR /tmp/clis-ntpd_1-2-3/release/deps
 RUN \
   --mount=from=cratesio-rustls-0.23.11,source=/rustls-0.23.11,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustls-0.23.11 \
   --mount=from=out-b564a3159bfcf688,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblog-b564a3159bfcf688.rmeta,source=/liblog-b564a3159bfcf688.rmeta \
+  --mount=from=out-b564a3159bfcf688,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblog-b564a3159bfcf688.rlib,source=/liblog-b564a3159bfcf688.rlib \
   --mount=from=out-6ed51fafe322ecba,dst=/tmp/clis-ntpd_1-2-3/release/deps/libonce_cell-6ed51fafe322ecba.rmeta,source=/libonce_cell-6ed51fafe322ecba.rmeta \
+  --mount=from=out-6ed51fafe322ecba,dst=/tmp/clis-ntpd_1-2-3/release/deps/libonce_cell-6ed51fafe322ecba.rlib,source=/libonce_cell-6ed51fafe322ecba.rlib \
   --mount=from=out-162d4bd1f192637c,dst=/tmp/clis-ntpd_1-2-3/release/deps/libring-162d4bd1f192637c.rmeta,source=/libring-162d4bd1f192637c.rmeta \
+  --mount=from=out-162d4bd1f192637c,dst=/tmp/clis-ntpd_1-2-3/release/deps/libring-162d4bd1f192637c.rlib,source=/libring-162d4bd1f192637c.rlib \
   --mount=from=out-da34da6838abd7f1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rmeta,source=/libcfg_if-da34da6838abd7f1.rmeta \
+  --mount=from=out-da34da6838abd7f1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rlib,source=/libcfg_if-da34da6838abd7f1.rlib \
   --mount=from=out-84473f2ddfbb434a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rmeta,source=/libgetrandom-84473f2ddfbb434a.rmeta \
+  --mount=from=out-84473f2ddfbb434a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rlib,source=/libgetrandom-84473f2ddfbb434a.rlib \
   --mount=from=out-a7905fdc410bdfce,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rmeta,source=/liblibc-a7905fdc410bdfce.rmeta \
+  --mount=from=out-a7905fdc410bdfce,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rlib,source=/liblibc-a7905fdc410bdfce.rlib \
   --mount=from=out-126f99f44d356e93,dst=/tmp/clis-ntpd_1-2-3/release/deps/libspin-126f99f44d356e93.rmeta,source=/libspin-126f99f44d356e93.rmeta \
+  --mount=from=out-126f99f44d356e93,dst=/tmp/clis-ntpd_1-2-3/release/deps/libspin-126f99f44d356e93.rlib,source=/libspin-126f99f44d356e93.rlib \
   --mount=from=out-2cf0189e0a6f5785,dst=/tmp/clis-ntpd_1-2-3/release/deps/libuntrusted-2cf0189e0a6f5785.rmeta,source=/libuntrusted-2cf0189e0a6f5785.rmeta \
+  --mount=from=out-2cf0189e0a6f5785,dst=/tmp/clis-ntpd_1-2-3/release/deps/libuntrusted-2cf0189e0a6f5785.rlib,source=/libuntrusted-2cf0189e0a6f5785.rlib \
   --mount=from=out-0bd417676bde33fe,dst=/tmp/clis-ntpd_1-2-3/release/deps/librustls_pki_types-0bd417676bde33fe.rmeta,source=/librustls_pki_types-0bd417676bde33fe.rmeta \
+  --mount=from=out-0bd417676bde33fe,dst=/tmp/clis-ntpd_1-2-3/release/deps/librustls_pki_types-0bd417676bde33fe.rlib,source=/librustls_pki_types-0bd417676bde33fe.rlib \
   --mount=from=out-0b45a7938c797eef,dst=/tmp/clis-ntpd_1-2-3/release/deps/libwebpki-0b45a7938c797eef.rmeta,source=/libwebpki-0b45a7938c797eef.rmeta \
+  --mount=from=out-0b45a7938c797eef,dst=/tmp/clis-ntpd_1-2-3/release/deps/libwebpki-0b45a7938c797eef.rlib,source=/libwebpki-0b45a7938c797eef.rlib \
   --mount=from=out-8b6e21d4a5a6c6ed,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsubtle-8b6e21d4a5a6c6ed.rmeta,source=/libsubtle-8b6e21d4a5a6c6ed.rmeta \
+  --mount=from=out-8b6e21d4a5a6c6ed,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsubtle-8b6e21d4a5a6c6ed.rlib,source=/libsubtle-8b6e21d4a5a6c6ed.rlib \
   --mount=from=out-caf2b0ffe78763b7,dst=/tmp/clis-ntpd_1-2-3/release/deps/libzeroize-caf2b0ffe78763b7.rmeta,source=/libzeroize-caf2b0ffe78763b7.rmeta \
+  --mount=from=out-caf2b0ffe78763b7,dst=/tmp/clis-ntpd_1-2-3/release/deps/libzeroize-caf2b0ffe78763b7.rlib,source=/libzeroize-caf2b0ffe78763b7.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="rustls" \
@@ -4636,18 +6292,18 @@ COPY --from=dep-l-rustls-0.23.11-fd2c262888e3ecb5 /tmp/clis-ntpd_1-2-3/release/d
 ##     "caf2b0ffe78763b7",
 ## ]
 ## short_externs = [
-##     "log-b564a3159bfcf688",
-##     "once_cell-6ed51fafe322ecba",
-##     "ring-162d4bd1f192637c",
-##     "cfg_if-da34da6838abd7f1",
-##     "getrandom-84473f2ddfbb434a",
-##     "libc-a7905fdc410bdfce",
-##     "spin-126f99f44d356e93",
-##     "untrusted-2cf0189e0a6f5785",
-##     "rustls_pki_types-0bd417676bde33fe",
-##     "webpki-0b45a7938c797eef",
-##     "subtle-8b6e21d4a5a6c6ed",
-##     "zeroize-caf2b0ffe78763b7",
+##     "b564a3159bfcf688",
+##     "6ed51fafe322ecba",
+##     "162d4bd1f192637c",
+##     "da34da6838abd7f1",
+##     "84473f2ddfbb434a",
+##     "a7905fdc410bdfce",
+##     "126f99f44d356e93",
+##     "2cf0189e0a6f5785",
+##     "0bd417676bde33fe",
+##     "0b45a7938c797eef",
+##     "8b6e21d4a5a6c6ed",
+##     "caf2b0ffe78763b7",
 ## ]
 ## writes = [
 ##     "deps/rustls-fd2c262888e3ecb5.d",
@@ -4661,6 +6317,126 @@ COPY --from=dep-l-rustls-0.23.11-fd2c262888e3ecb5 /tmp/clis-ntpd_1-2-3/release/d
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-2-3/release/deps/librustls-fd2c262888e3ecb5.rlib","emit":"link"}',
 ##     '{"$message_type":"diagnostic","message":"1 warning emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 1 warning emitted\u001b[0m\n\n"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-b564a3159bfcf688"
+## src = "/liblog-b564a3159bfcf688.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/liblog-b564a3159bfcf688.rmeta"
+## 
+## [[mounts]]
+## from = "out-b564a3159bfcf688"
+## src = "/liblog-b564a3159bfcf688.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/liblog-b564a3159bfcf688.rlib"
+## 
+## [[mounts]]
+## from = "out-6ed51fafe322ecba"
+## src = "/libonce_cell-6ed51fafe322ecba.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libonce_cell-6ed51fafe322ecba.rmeta"
+## 
+## [[mounts]]
+## from = "out-6ed51fafe322ecba"
+## src = "/libonce_cell-6ed51fafe322ecba.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libonce_cell-6ed51fafe322ecba.rlib"
+## 
+## [[mounts]]
+## from = "out-162d4bd1f192637c"
+## src = "/libring-162d4bd1f192637c.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libring-162d4bd1f192637c.rmeta"
+## 
+## [[mounts]]
+## from = "out-162d4bd1f192637c"
+## src = "/libring-162d4bd1f192637c.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libring-162d4bd1f192637c.rlib"
+## 
+## [[mounts]]
+## from = "out-da34da6838abd7f1"
+## src = "/libcfg_if-da34da6838abd7f1.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rmeta"
+## 
+## [[mounts]]
+## from = "out-da34da6838abd7f1"
+## src = "/libcfg_if-da34da6838abd7f1.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rlib"
+## 
+## [[mounts]]
+## from = "out-84473f2ddfbb434a"
+## src = "/libgetrandom-84473f2ddfbb434a.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rmeta"
+## 
+## [[mounts]]
+## from = "out-84473f2ddfbb434a"
+## src = "/libgetrandom-84473f2ddfbb434a.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rlib"
+## 
+## [[mounts]]
+## from = "out-a7905fdc410bdfce"
+## src = "/liblibc-a7905fdc410bdfce.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rmeta"
+## 
+## [[mounts]]
+## from = "out-a7905fdc410bdfce"
+## src = "/liblibc-a7905fdc410bdfce.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rlib"
+## 
+## [[mounts]]
+## from = "out-126f99f44d356e93"
+## src = "/libspin-126f99f44d356e93.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libspin-126f99f44d356e93.rmeta"
+## 
+## [[mounts]]
+## from = "out-126f99f44d356e93"
+## src = "/libspin-126f99f44d356e93.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libspin-126f99f44d356e93.rlib"
+## 
+## [[mounts]]
+## from = "out-2cf0189e0a6f5785"
+## src = "/libuntrusted-2cf0189e0a6f5785.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libuntrusted-2cf0189e0a6f5785.rmeta"
+## 
+## [[mounts]]
+## from = "out-2cf0189e0a6f5785"
+## src = "/libuntrusted-2cf0189e0a6f5785.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libuntrusted-2cf0189e0a6f5785.rlib"
+## 
+## [[mounts]]
+## from = "out-0bd417676bde33fe"
+## src = "/librustls_pki_types-0bd417676bde33fe.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/librustls_pki_types-0bd417676bde33fe.rmeta"
+## 
+## [[mounts]]
+## from = "out-0bd417676bde33fe"
+## src = "/librustls_pki_types-0bd417676bde33fe.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/librustls_pki_types-0bd417676bde33fe.rlib"
+## 
+## [[mounts]]
+## from = "out-0b45a7938c797eef"
+## src = "/libwebpki-0b45a7938c797eef.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libwebpki-0b45a7938c797eef.rmeta"
+## 
+## [[mounts]]
+## from = "out-0b45a7938c797eef"
+## src = "/libwebpki-0b45a7938c797eef.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libwebpki-0b45a7938c797eef.rlib"
+## 
+## [[mounts]]
+## from = "out-8b6e21d4a5a6c6ed"
+## src = "/libsubtle-8b6e21d4a5a6c6ed.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libsubtle-8b6e21d4a5a6c6ed.rmeta"
+## 
+## [[mounts]]
+## from = "out-8b6e21d4a5a6c6ed"
+## src = "/libsubtle-8b6e21d4a5a6c6ed.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libsubtle-8b6e21d4a5a6c6ed.rlib"
+## 
+## [[mounts]]
+## from = "out-caf2b0ffe78763b7"
+## src = "/libzeroize-caf2b0ffe78763b7.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libzeroize-caf2b0ffe78763b7.rmeta"
+## 
+## [[mounts]]
+## from = "out-caf2b0ffe78763b7"
+## src = "/libzeroize-caf2b0ffe78763b7.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libzeroize-caf2b0ffe78763b7.rlib"
 ## 
 ## [[contexts]]
 ## name = "crate_out-a0b19822430eae69"
@@ -4686,17 +6462,29 @@ COPY --from=dep-l-rustls-0.23.11-fd2c262888e3ecb5 /tmp/clis-ntpd_1-2-3/release/d
 ## RUN \
 ##   --mount=from=cratesio-rustls-0.23.11,source=/rustls-0.23.11,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustls-0.23.11 \
 ##   --mount=from=out-b564a3159bfcf688,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblog-b564a3159bfcf688.rmeta,source=/liblog-b564a3159bfcf688.rmeta \
+##   --mount=from=out-b564a3159bfcf688,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblog-b564a3159bfcf688.rlib,source=/liblog-b564a3159bfcf688.rlib \
 ##   --mount=from=out-6ed51fafe322ecba,dst=/tmp/clis-ntpd_1-2-3/release/deps/libonce_cell-6ed51fafe322ecba.rmeta,source=/libonce_cell-6ed51fafe322ecba.rmeta \
+##   --mount=from=out-6ed51fafe322ecba,dst=/tmp/clis-ntpd_1-2-3/release/deps/libonce_cell-6ed51fafe322ecba.rlib,source=/libonce_cell-6ed51fafe322ecba.rlib \
 ##   --mount=from=out-162d4bd1f192637c,dst=/tmp/clis-ntpd_1-2-3/release/deps/libring-162d4bd1f192637c.rmeta,source=/libring-162d4bd1f192637c.rmeta \
+##   --mount=from=out-162d4bd1f192637c,dst=/tmp/clis-ntpd_1-2-3/release/deps/libring-162d4bd1f192637c.rlib,source=/libring-162d4bd1f192637c.rlib \
 ##   --mount=from=out-da34da6838abd7f1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rmeta,source=/libcfg_if-da34da6838abd7f1.rmeta \
+##   --mount=from=out-da34da6838abd7f1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rlib,source=/libcfg_if-da34da6838abd7f1.rlib \
 ##   --mount=from=out-84473f2ddfbb434a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rmeta,source=/libgetrandom-84473f2ddfbb434a.rmeta \
+##   --mount=from=out-84473f2ddfbb434a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rlib,source=/libgetrandom-84473f2ddfbb434a.rlib \
 ##   --mount=from=out-a7905fdc410bdfce,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rmeta,source=/liblibc-a7905fdc410bdfce.rmeta \
+##   --mount=from=out-a7905fdc410bdfce,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rlib,source=/liblibc-a7905fdc410bdfce.rlib \
 ##   --mount=from=out-126f99f44d356e93,dst=/tmp/clis-ntpd_1-2-3/release/deps/libspin-126f99f44d356e93.rmeta,source=/libspin-126f99f44d356e93.rmeta \
+##   --mount=from=out-126f99f44d356e93,dst=/tmp/clis-ntpd_1-2-3/release/deps/libspin-126f99f44d356e93.rlib,source=/libspin-126f99f44d356e93.rlib \
 ##   --mount=from=out-2cf0189e0a6f5785,dst=/tmp/clis-ntpd_1-2-3/release/deps/libuntrusted-2cf0189e0a6f5785.rmeta,source=/libuntrusted-2cf0189e0a6f5785.rmeta \
+##   --mount=from=out-2cf0189e0a6f5785,dst=/tmp/clis-ntpd_1-2-3/release/deps/libuntrusted-2cf0189e0a6f5785.rlib,source=/libuntrusted-2cf0189e0a6f5785.rlib \
 ##   --mount=from=out-0bd417676bde33fe,dst=/tmp/clis-ntpd_1-2-3/release/deps/librustls_pki_types-0bd417676bde33fe.rmeta,source=/librustls_pki_types-0bd417676bde33fe.rmeta \
+##   --mount=from=out-0bd417676bde33fe,dst=/tmp/clis-ntpd_1-2-3/release/deps/librustls_pki_types-0bd417676bde33fe.rlib,source=/librustls_pki_types-0bd417676bde33fe.rlib \
 ##   --mount=from=out-0b45a7938c797eef,dst=/tmp/clis-ntpd_1-2-3/release/deps/libwebpki-0b45a7938c797eef.rmeta,source=/libwebpki-0b45a7938c797eef.rmeta \
+##   --mount=from=out-0b45a7938c797eef,dst=/tmp/clis-ntpd_1-2-3/release/deps/libwebpki-0b45a7938c797eef.rlib,source=/libwebpki-0b45a7938c797eef.rlib \
 ##   --mount=from=out-8b6e21d4a5a6c6ed,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsubtle-8b6e21d4a5a6c6ed.rmeta,source=/libsubtle-8b6e21d4a5a6c6ed.rmeta \
+##   --mount=from=out-8b6e21d4a5a6c6ed,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsubtle-8b6e21d4a5a6c6ed.rlib,source=/libsubtle-8b6e21d4a5a6c6ed.rlib \
 ##   --mount=from=out-caf2b0ffe78763b7,dst=/tmp/clis-ntpd_1-2-3/release/deps/libzeroize-caf2b0ffe78763b7.rmeta,source=/libzeroize-caf2b0ffe78763b7.rmeta \
+##   --mount=from=out-caf2b0ffe78763b7,dst=/tmp/clis-ntpd_1-2-3/release/deps/libzeroize-caf2b0ffe78763b7.rlib,source=/libzeroize-caf2b0ffe78763b7.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="rustls" \
@@ -4739,9 +6527,13 @@ SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 WORKDIR /tmp/clis-ntpd_1-2-3/release/deps
 RUN \
   --mount=from=cratesio-serde_derive-1.0.204,source=/serde_derive-1.0.204,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_derive-1.0.204 \
+  --mount=from=out-4be32d01ee2a9db1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rmeta,source=/libproc_macro2-4be32d01ee2a9db1.rmeta \
   --mount=from=out-4be32d01ee2a9db1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rlib,source=/libproc_macro2-4be32d01ee2a9db1.rlib \
+  --mount=from=out-4c1dc76c11b3deb8,dst=/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rmeta,source=/libunicode_ident-4c1dc76c11b3deb8.rmeta \
   --mount=from=out-4c1dc76c11b3deb8,dst=/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rlib,source=/libunicode_ident-4c1dc76c11b3deb8.rlib \
+  --mount=from=out-36ed05d339fc79f9,dst=/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rmeta,source=/libquote-36ed05d339fc79f9.rmeta \
   --mount=from=out-36ed05d339fc79f9,dst=/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rlib,source=/libquote-36ed05d339fc79f9.rlib \
+  --mount=from=out-5c1d3e18a7dfcf78,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rmeta,source=/libsyn-5c1d3e18a7dfcf78.rmeta \
   --mount=from=out-5c1d3e18a7dfcf78,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rlib,source=/libsyn-5c1d3e18a7dfcf78.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
@@ -4780,10 +6572,10 @@ COPY --from=dep-p-serde_derive-1.0.204-b74741511dfa898a /tmp/clis-ntpd_1-2-3/rel
 ##     "5c1d3e18a7dfcf78",
 ## ]
 ## short_externs = [
-##     "proc_macro2-4be32d01ee2a9db1",
-##     "unicode_ident-4c1dc76c11b3deb8",
-##     "quote-36ed05d339fc79f9",
-##     "syn-5c1d3e18a7dfcf78",
+##     "4be32d01ee2a9db1",
+##     "4c1dc76c11b3deb8",
+##     "36ed05d339fc79f9",
+##     "5c1d3e18a7dfcf78",
 ## ]
 ## is_proc_macro = true
 ## writes = [
@@ -4794,6 +6586,46 @@ COPY --from=dep-p-serde_derive-1.0.204-b74741511dfa898a /tmp/clis-ntpd_1-2-3/rel
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-2-3/release/deps/serde_derive-b74741511dfa898a.d","emit":"dep-info"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-2-3/release/deps/libserde_derive-b74741511dfa898a.so","emit":"link"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-4be32d01ee2a9db1"
+## src = "/libproc_macro2-4be32d01ee2a9db1.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rmeta"
+## 
+## [[mounts]]
+## from = "out-4be32d01ee2a9db1"
+## src = "/libproc_macro2-4be32d01ee2a9db1.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rlib"
+## 
+## [[mounts]]
+## from = "out-4c1dc76c11b3deb8"
+## src = "/libunicode_ident-4c1dc76c11b3deb8.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rmeta"
+## 
+## [[mounts]]
+## from = "out-4c1dc76c11b3deb8"
+## src = "/libunicode_ident-4c1dc76c11b3deb8.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rlib"
+## 
+## [[mounts]]
+## from = "out-36ed05d339fc79f9"
+## src = "/libquote-36ed05d339fc79f9.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rmeta"
+## 
+## [[mounts]]
+## from = "out-36ed05d339fc79f9"
+## src = "/libquote-36ed05d339fc79f9.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rlib"
+## 
+## [[mounts]]
+## from = "out-5c1d3e18a7dfcf78"
+## src = "/libsyn-5c1d3e18a7dfcf78.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rmeta"
+## 
+## [[mounts]]
+## from = "out-5c1d3e18a7dfcf78"
+## src = "/libsyn-5c1d3e18a7dfcf78.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rlib"
 ## 
 ## [[contexts]]
 ## name = "crate_out-e5fe159846b3109b"
@@ -4818,9 +6650,13 @@ COPY --from=dep-p-serde_derive-1.0.204-b74741511dfa898a /tmp/clis-ntpd_1-2-3/rel
 ## WORKDIR /tmp/clis-ntpd_1-2-3/release/deps
 ## RUN \
 ##   --mount=from=cratesio-serde_derive-1.0.204,source=/serde_derive-1.0.204,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_derive-1.0.204 \
+##   --mount=from=out-4be32d01ee2a9db1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rmeta,source=/libproc_macro2-4be32d01ee2a9db1.rmeta \
 ##   --mount=from=out-4be32d01ee2a9db1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rlib,source=/libproc_macro2-4be32d01ee2a9db1.rlib \
+##   --mount=from=out-4c1dc76c11b3deb8,dst=/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rmeta,source=/libunicode_ident-4c1dc76c11b3deb8.rmeta \
 ##   --mount=from=out-4c1dc76c11b3deb8,dst=/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rlib,source=/libunicode_ident-4c1dc76c11b3deb8.rlib \
+##   --mount=from=out-36ed05d339fc79f9,dst=/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rmeta,source=/libquote-36ed05d339fc79f9.rmeta \
 ##   --mount=from=out-36ed05d339fc79f9,dst=/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rlib,source=/libquote-36ed05d339fc79f9.rlib \
+##   --mount=from=out-5c1d3e18a7dfcf78,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rmeta,source=/libsyn-5c1d3e18a7dfcf78.rmeta \
 ##   --mount=from=out-5c1d3e18a7dfcf78,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rlib,source=/libsyn-5c1d3e18a7dfcf78.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
@@ -4865,9 +6701,13 @@ RUN \
   --mount=from=cratesio-serde-1.0.204,source=/serde-1.0.204,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.204 \
   --mount=from=out-b74741511dfa898a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libserde_derive-b74741511dfa898a.so,source=/libserde_derive-b74741511dfa898a.so \
   --mount=from=out-4be32d01ee2a9db1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rmeta,source=/libproc_macro2-4be32d01ee2a9db1.rmeta \
+  --mount=from=out-4be32d01ee2a9db1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rlib,source=/libproc_macro2-4be32d01ee2a9db1.rlib \
   --mount=from=out-4c1dc76c11b3deb8,dst=/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rmeta,source=/libunicode_ident-4c1dc76c11b3deb8.rmeta \
+  --mount=from=out-4c1dc76c11b3deb8,dst=/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rlib,source=/libunicode_ident-4c1dc76c11b3deb8.rlib \
   --mount=from=out-36ed05d339fc79f9,dst=/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rmeta,source=/libquote-36ed05d339fc79f9.rmeta \
+  --mount=from=out-36ed05d339fc79f9,dst=/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rlib,source=/libquote-36ed05d339fc79f9.rlib \
   --mount=from=out-5c1d3e18a7dfcf78,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rmeta,source=/libsyn-5c1d3e18a7dfcf78.rmeta \
+  --mount=from=out-5c1d3e18a7dfcf78,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rlib,source=/libsyn-5c1d3e18a7dfcf78.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="serde" \
@@ -4907,11 +6747,11 @@ COPY --from=dep-l-serde-1.0.204-986325a49dffbcd1 /tmp/clis-ntpd_1-2-3/release/de
 ##     "5c1d3e18a7dfcf78",
 ## ]
 ## short_externs = [
-##     "serde_derive-b74741511dfa898a",
-##     "proc_macro2-4be32d01ee2a9db1",
-##     "unicode_ident-4c1dc76c11b3deb8",
-##     "quote-36ed05d339fc79f9",
-##     "syn-5c1d3e18a7dfcf78",
+##     "b74741511dfa898a",
+##     "4be32d01ee2a9db1",
+##     "4c1dc76c11b3deb8",
+##     "36ed05d339fc79f9",
+##     "5c1d3e18a7dfcf78",
 ## ]
 ## writes = [
 ##     "deps/serde-986325a49dffbcd1.d",
@@ -4923,6 +6763,51 @@ COPY --from=dep-l-serde-1.0.204-986325a49dffbcd1 /tmp/clis-ntpd_1-2-3/release/de
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-2-3/release/deps/libserde-986325a49dffbcd1.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-2-3/release/deps/libserde-986325a49dffbcd1.rlib","emit":"link"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-b74741511dfa898a"
+## src = "/libserde_derive-b74741511dfa898a.so"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libserde_derive-b74741511dfa898a.so"
+## 
+## [[mounts]]
+## from = "out-4be32d01ee2a9db1"
+## src = "/libproc_macro2-4be32d01ee2a9db1.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rmeta"
+## 
+## [[mounts]]
+## from = "out-4be32d01ee2a9db1"
+## src = "/libproc_macro2-4be32d01ee2a9db1.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rlib"
+## 
+## [[mounts]]
+## from = "out-4c1dc76c11b3deb8"
+## src = "/libunicode_ident-4c1dc76c11b3deb8.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rmeta"
+## 
+## [[mounts]]
+## from = "out-4c1dc76c11b3deb8"
+## src = "/libunicode_ident-4c1dc76c11b3deb8.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rlib"
+## 
+## [[mounts]]
+## from = "out-36ed05d339fc79f9"
+## src = "/libquote-36ed05d339fc79f9.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rmeta"
+## 
+## [[mounts]]
+## from = "out-36ed05d339fc79f9"
+## src = "/libquote-36ed05d339fc79f9.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rlib"
+## 
+## [[mounts]]
+## from = "out-5c1d3e18a7dfcf78"
+## src = "/libsyn-5c1d3e18a7dfcf78.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rmeta"
+## 
+## [[mounts]]
+## from = "out-5c1d3e18a7dfcf78"
+## src = "/libsyn-5c1d3e18a7dfcf78.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rlib"
 ## 
 ## [[contexts]]
 ## name = "crate_out-e5fe159846b3109b"
@@ -4949,9 +6834,13 @@ COPY --from=dep-l-serde-1.0.204-986325a49dffbcd1 /tmp/clis-ntpd_1-2-3/release/de
 ##   --mount=from=cratesio-serde-1.0.204,source=/serde-1.0.204,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.204 \
 ##   --mount=from=out-b74741511dfa898a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libserde_derive-b74741511dfa898a.so,source=/libserde_derive-b74741511dfa898a.so \
 ##   --mount=from=out-4be32d01ee2a9db1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rmeta,source=/libproc_macro2-4be32d01ee2a9db1.rmeta \
+##   --mount=from=out-4be32d01ee2a9db1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rlib,source=/libproc_macro2-4be32d01ee2a9db1.rlib \
 ##   --mount=from=out-4c1dc76c11b3deb8,dst=/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rmeta,source=/libunicode_ident-4c1dc76c11b3deb8.rmeta \
+##   --mount=from=out-4c1dc76c11b3deb8,dst=/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rlib,source=/libunicode_ident-4c1dc76c11b3deb8.rlib \
 ##   --mount=from=out-36ed05d339fc79f9,dst=/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rmeta,source=/libquote-36ed05d339fc79f9.rmeta \
+##   --mount=from=out-36ed05d339fc79f9,dst=/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rlib,source=/libquote-36ed05d339fc79f9.rlib \
 ##   --mount=from=out-5c1d3e18a7dfcf78,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rmeta,source=/libsyn-5c1d3e18a7dfcf78.rmeta \
+##   --mount=from=out-5c1d3e18a7dfcf78,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rlib,source=/libsyn-5c1d3e18a7dfcf78.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="serde" \
@@ -5095,9 +6984,13 @@ SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 WORKDIR /tmp/clis-ntpd_1-2-3/release/deps
 RUN \
   --mount=from=cratesio-tracing-attributes-0.1.27,source=/tracing-attributes-0.1.27,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/tracing-attributes-0.1.27 \
+  --mount=from=out-4be32d01ee2a9db1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rmeta,source=/libproc_macro2-4be32d01ee2a9db1.rmeta \
   --mount=from=out-4be32d01ee2a9db1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rlib,source=/libproc_macro2-4be32d01ee2a9db1.rlib \
+  --mount=from=out-4c1dc76c11b3deb8,dst=/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rmeta,source=/libunicode_ident-4c1dc76c11b3deb8.rmeta \
   --mount=from=out-4c1dc76c11b3deb8,dst=/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rlib,source=/libunicode_ident-4c1dc76c11b3deb8.rlib \
+  --mount=from=out-36ed05d339fc79f9,dst=/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rmeta,source=/libquote-36ed05d339fc79f9.rmeta \
   --mount=from=out-36ed05d339fc79f9,dst=/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rlib,source=/libquote-36ed05d339fc79f9.rlib \
+  --mount=from=out-5c1d3e18a7dfcf78,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rmeta,source=/libsyn-5c1d3e18a7dfcf78.rmeta \
   --mount=from=out-5c1d3e18a7dfcf78,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rlib,source=/libsyn-5c1d3e18a7dfcf78.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
@@ -5136,10 +7029,10 @@ COPY --from=dep-p-tracing-attributes-0.1.27-ff2e92028461b3cf /tmp/clis-ntpd_1-2-
 ##     "5c1d3e18a7dfcf78",
 ## ]
 ## short_externs = [
-##     "proc_macro2-4be32d01ee2a9db1",
-##     "unicode_ident-4c1dc76c11b3deb8",
-##     "quote-36ed05d339fc79f9",
-##     "syn-5c1d3e18a7dfcf78",
+##     "4be32d01ee2a9db1",
+##     "4c1dc76c11b3deb8",
+##     "36ed05d339fc79f9",
+##     "5c1d3e18a7dfcf78",
 ## ]
 ## is_proc_macro = true
 ## writes = [
@@ -5152,6 +7045,46 @@ COPY --from=dep-p-tracing-attributes-0.1.27-ff2e92028461b3cf /tmp/clis-ntpd_1-2-
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-2-3/release/deps/libtracing_attributes-ff2e92028461b3cf.so","emit":"link"}',
 ##     '{"$message_type":"diagnostic","message":"1 warning emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 1 warning emitted\u001b[0m\n\n"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-4be32d01ee2a9db1"
+## src = "/libproc_macro2-4be32d01ee2a9db1.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rmeta"
+## 
+## [[mounts]]
+## from = "out-4be32d01ee2a9db1"
+## src = "/libproc_macro2-4be32d01ee2a9db1.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rlib"
+## 
+## [[mounts]]
+## from = "out-4c1dc76c11b3deb8"
+## src = "/libunicode_ident-4c1dc76c11b3deb8.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rmeta"
+## 
+## [[mounts]]
+## from = "out-4c1dc76c11b3deb8"
+## src = "/libunicode_ident-4c1dc76c11b3deb8.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rlib"
+## 
+## [[mounts]]
+## from = "out-36ed05d339fc79f9"
+## src = "/libquote-36ed05d339fc79f9.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rmeta"
+## 
+## [[mounts]]
+## from = "out-36ed05d339fc79f9"
+## src = "/libquote-36ed05d339fc79f9.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rlib"
+## 
+## [[mounts]]
+## from = "out-5c1d3e18a7dfcf78"
+## src = "/libsyn-5c1d3e18a7dfcf78.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rmeta"
+## 
+## [[mounts]]
+## from = "out-5c1d3e18a7dfcf78"
+## src = "/libsyn-5c1d3e18a7dfcf78.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rlib"
 ## 
 ## [[contexts]]
 ## name = "crate_out-e5fe159846b3109b"
@@ -5176,9 +7109,13 @@ COPY --from=dep-p-tracing-attributes-0.1.27-ff2e92028461b3cf /tmp/clis-ntpd_1-2-
 ## WORKDIR /tmp/clis-ntpd_1-2-3/release/deps
 ## RUN \
 ##   --mount=from=cratesio-tracing-attributes-0.1.27,source=/tracing-attributes-0.1.27,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/tracing-attributes-0.1.27 \
+##   --mount=from=out-4be32d01ee2a9db1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rmeta,source=/libproc_macro2-4be32d01ee2a9db1.rmeta \
 ##   --mount=from=out-4be32d01ee2a9db1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rlib,source=/libproc_macro2-4be32d01ee2a9db1.rlib \
+##   --mount=from=out-4c1dc76c11b3deb8,dst=/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rmeta,source=/libunicode_ident-4c1dc76c11b3deb8.rmeta \
 ##   --mount=from=out-4c1dc76c11b3deb8,dst=/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rlib,source=/libunicode_ident-4c1dc76c11b3deb8.rlib \
+##   --mount=from=out-36ed05d339fc79f9,dst=/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rmeta,source=/libquote-36ed05d339fc79f9.rmeta \
 ##   --mount=from=out-36ed05d339fc79f9,dst=/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rlib,source=/libquote-36ed05d339fc79f9.rlib \
+##   --mount=from=out-5c1d3e18a7dfcf78,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rmeta,source=/libsyn-5c1d3e18a7dfcf78.rmeta \
 ##   --mount=from=out-5c1d3e18a7dfcf78,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rlib,source=/libsyn-5c1d3e18a7dfcf78.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
@@ -5222,6 +7159,7 @@ WORKDIR /tmp/clis-ntpd_1-2-3/release/deps
 RUN \
   --mount=from=cratesio-tracing-core-0.1.32,source=/tracing-core-0.1.32,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/tracing-core-0.1.32 \
   --mount=from=out-6ed51fafe322ecba,dst=/tmp/clis-ntpd_1-2-3/release/deps/libonce_cell-6ed51fafe322ecba.rmeta,source=/libonce_cell-6ed51fafe322ecba.rmeta \
+  --mount=from=out-6ed51fafe322ecba,dst=/tmp/clis-ntpd_1-2-3/release/deps/libonce_cell-6ed51fafe322ecba.rlib,source=/libonce_cell-6ed51fafe322ecba.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="tracing_core" \
@@ -5253,7 +7191,7 @@ COPY --from=dep-l-tracing-core-0.1.32-100f3fe23952e4be /tmp/clis-ntpd_1-2-3/rele
 
 ## this = "100f3fe23952e4be"
 ## deps = ["6ed51fafe322ecba"]
-## short_externs = ["once_cell-6ed51fafe322ecba"]
+## short_externs = ["6ed51fafe322ecba"]
 ## writes = [
 ##     "deps/tracing_core-100f3fe23952e4be.d",
 ##     "deps/libtracing_core-100f3fe23952e4be.rmeta",
@@ -5276,6 +7214,16 @@ COPY --from=dep-l-tracing-core-0.1.32-100f3fe23952e4be /tmp/clis-ntpd_1-2-3/rele
 ##     '{"$message_type":"diagnostic","message":"10 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 10 warnings emitted\u001b[0m\n\n"}',
 ## ]
 ## 
+## [[mounts]]
+## from = "out-6ed51fafe322ecba"
+## src = "/libonce_cell-6ed51fafe322ecba.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libonce_cell-6ed51fafe322ecba.rmeta"
+## 
+## [[mounts]]
+## from = "out-6ed51fafe322ecba"
+## src = "/libonce_cell-6ed51fafe322ecba.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libonce_cell-6ed51fafe322ecba.rlib"
+## 
 ## [[stages]]
 ## name = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.86.0-slim@sha256:57d415bbd61ce11e2d5f73de068103c7bd9f3188dc132c97cef4a8f62989e944 AS rust-base"
@@ -5296,6 +7244,7 @@ COPY --from=dep-l-tracing-core-0.1.32-100f3fe23952e4be /tmp/clis-ntpd_1-2-3/rele
 ## RUN \
 ##   --mount=from=cratesio-tracing-core-0.1.32,source=/tracing-core-0.1.32,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/tracing-core-0.1.32 \
 ##   --mount=from=out-6ed51fafe322ecba,dst=/tmp/clis-ntpd_1-2-3/release/deps/libonce_cell-6ed51fafe322ecba.rmeta,source=/libonce_cell-6ed51fafe322ecba.rmeta \
+##   --mount=from=out-6ed51fafe322ecba,dst=/tmp/clis-ntpd_1-2-3/release/deps/libonce_cell-6ed51fafe322ecba.rlib,source=/libonce_cell-6ed51fafe322ecba.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="tracing_core" \
@@ -5338,14 +7287,22 @@ WORKDIR /tmp/clis-ntpd_1-2-3/release/deps
 RUN \
   --mount=from=cratesio-tracing-0.1.40,source=/tracing-0.1.40,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/tracing-0.1.40 \
   --mount=from=out-b564a3159bfcf688,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblog-b564a3159bfcf688.rmeta,source=/liblog-b564a3159bfcf688.rmeta \
+  --mount=from=out-b564a3159bfcf688,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblog-b564a3159bfcf688.rlib,source=/liblog-b564a3159bfcf688.rlib \
   --mount=from=out-32982cb980ef9328,dst=/tmp/clis-ntpd_1-2-3/release/deps/libpin_project_lite-32982cb980ef9328.rmeta,source=/libpin_project_lite-32982cb980ef9328.rmeta \
+  --mount=from=out-32982cb980ef9328,dst=/tmp/clis-ntpd_1-2-3/release/deps/libpin_project_lite-32982cb980ef9328.rlib,source=/libpin_project_lite-32982cb980ef9328.rlib \
   --mount=from=out-ff2e92028461b3cf,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtracing_attributes-ff2e92028461b3cf.so,source=/libtracing_attributes-ff2e92028461b3cf.so \
   --mount=from=out-4be32d01ee2a9db1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rmeta,source=/libproc_macro2-4be32d01ee2a9db1.rmeta \
+  --mount=from=out-4be32d01ee2a9db1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rlib,source=/libproc_macro2-4be32d01ee2a9db1.rlib \
   --mount=from=out-4c1dc76c11b3deb8,dst=/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rmeta,source=/libunicode_ident-4c1dc76c11b3deb8.rmeta \
+  --mount=from=out-4c1dc76c11b3deb8,dst=/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rlib,source=/libunicode_ident-4c1dc76c11b3deb8.rlib \
   --mount=from=out-36ed05d339fc79f9,dst=/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rmeta,source=/libquote-36ed05d339fc79f9.rmeta \
+  --mount=from=out-36ed05d339fc79f9,dst=/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rlib,source=/libquote-36ed05d339fc79f9.rlib \
   --mount=from=out-5c1d3e18a7dfcf78,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rmeta,source=/libsyn-5c1d3e18a7dfcf78.rmeta \
+  --mount=from=out-5c1d3e18a7dfcf78,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rlib,source=/libsyn-5c1d3e18a7dfcf78.rlib \
   --mount=from=out-100f3fe23952e4be,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtracing_core-100f3fe23952e4be.rmeta,source=/libtracing_core-100f3fe23952e4be.rmeta \
+  --mount=from=out-100f3fe23952e4be,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtracing_core-100f3fe23952e4be.rlib,source=/libtracing_core-100f3fe23952e4be.rlib \
   --mount=from=out-6ed51fafe322ecba,dst=/tmp/clis-ntpd_1-2-3/release/deps/libonce_cell-6ed51fafe322ecba.rmeta,source=/libonce_cell-6ed51fafe322ecba.rmeta \
+  --mount=from=out-6ed51fafe322ecba,dst=/tmp/clis-ntpd_1-2-3/release/deps/libonce_cell-6ed51fafe322ecba.rlib,source=/libonce_cell-6ed51fafe322ecba.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="tracing" \
@@ -5388,15 +7345,15 @@ COPY --from=dep-l-tracing-0.1.40-7d2675bffdb63c95 /tmp/clis-ntpd_1-2-3/release/d
 ##     "6ed51fafe322ecba",
 ## ]
 ## short_externs = [
-##     "log-b564a3159bfcf688",
-##     "pin_project_lite-32982cb980ef9328",
-##     "tracing_attributes-ff2e92028461b3cf",
-##     "proc_macro2-4be32d01ee2a9db1",
-##     "unicode_ident-4c1dc76c11b3deb8",
-##     "quote-36ed05d339fc79f9",
-##     "syn-5c1d3e18a7dfcf78",
-##     "tracing_core-100f3fe23952e4be",
-##     "once_cell-6ed51fafe322ecba",
+##     "b564a3159bfcf688",
+##     "32982cb980ef9328",
+##     "ff2e92028461b3cf",
+##     "4be32d01ee2a9db1",
+##     "4c1dc76c11b3deb8",
+##     "36ed05d339fc79f9",
+##     "5c1d3e18a7dfcf78",
+##     "100f3fe23952e4be",
+##     "6ed51fafe322ecba",
 ## ]
 ## writes = [
 ##     "deps/tracing-7d2675bffdb63c95.d",
@@ -5410,6 +7367,91 @@ COPY --from=dep-l-tracing-0.1.40-7d2675bffdb63c95 /tmp/clis-ntpd_1-2-3/release/d
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-2-3/release/deps/libtracing-7d2675bffdb63c95.rlib","emit":"link"}',
 ##     '{"$message_type":"diagnostic","message":"1 warning emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 1 warning emitted\u001b[0m\n\n"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-b564a3159bfcf688"
+## src = "/liblog-b564a3159bfcf688.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/liblog-b564a3159bfcf688.rmeta"
+## 
+## [[mounts]]
+## from = "out-b564a3159bfcf688"
+## src = "/liblog-b564a3159bfcf688.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/liblog-b564a3159bfcf688.rlib"
+## 
+## [[mounts]]
+## from = "out-32982cb980ef9328"
+## src = "/libpin_project_lite-32982cb980ef9328.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libpin_project_lite-32982cb980ef9328.rmeta"
+## 
+## [[mounts]]
+## from = "out-32982cb980ef9328"
+## src = "/libpin_project_lite-32982cb980ef9328.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libpin_project_lite-32982cb980ef9328.rlib"
+## 
+## [[mounts]]
+## from = "out-ff2e92028461b3cf"
+## src = "/libtracing_attributes-ff2e92028461b3cf.so"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libtracing_attributes-ff2e92028461b3cf.so"
+## 
+## [[mounts]]
+## from = "out-4be32d01ee2a9db1"
+## src = "/libproc_macro2-4be32d01ee2a9db1.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rmeta"
+## 
+## [[mounts]]
+## from = "out-4be32d01ee2a9db1"
+## src = "/libproc_macro2-4be32d01ee2a9db1.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rlib"
+## 
+## [[mounts]]
+## from = "out-4c1dc76c11b3deb8"
+## src = "/libunicode_ident-4c1dc76c11b3deb8.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rmeta"
+## 
+## [[mounts]]
+## from = "out-4c1dc76c11b3deb8"
+## src = "/libunicode_ident-4c1dc76c11b3deb8.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rlib"
+## 
+## [[mounts]]
+## from = "out-36ed05d339fc79f9"
+## src = "/libquote-36ed05d339fc79f9.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rmeta"
+## 
+## [[mounts]]
+## from = "out-36ed05d339fc79f9"
+## src = "/libquote-36ed05d339fc79f9.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rlib"
+## 
+## [[mounts]]
+## from = "out-5c1d3e18a7dfcf78"
+## src = "/libsyn-5c1d3e18a7dfcf78.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rmeta"
+## 
+## [[mounts]]
+## from = "out-5c1d3e18a7dfcf78"
+## src = "/libsyn-5c1d3e18a7dfcf78.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rlib"
+## 
+## [[mounts]]
+## from = "out-100f3fe23952e4be"
+## src = "/libtracing_core-100f3fe23952e4be.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libtracing_core-100f3fe23952e4be.rmeta"
+## 
+## [[mounts]]
+## from = "out-100f3fe23952e4be"
+## src = "/libtracing_core-100f3fe23952e4be.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libtracing_core-100f3fe23952e4be.rlib"
+## 
+## [[mounts]]
+## from = "out-6ed51fafe322ecba"
+## src = "/libonce_cell-6ed51fafe322ecba.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libonce_cell-6ed51fafe322ecba.rmeta"
+## 
+## [[mounts]]
+## from = "out-6ed51fafe322ecba"
+## src = "/libonce_cell-6ed51fafe322ecba.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libonce_cell-6ed51fafe322ecba.rlib"
 ## 
 ## [[contexts]]
 ## name = "crate_out-e5fe159846b3109b"
@@ -5435,14 +7477,22 @@ COPY --from=dep-l-tracing-0.1.40-7d2675bffdb63c95 /tmp/clis-ntpd_1-2-3/release/d
 ## RUN \
 ##   --mount=from=cratesio-tracing-0.1.40,source=/tracing-0.1.40,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/tracing-0.1.40 \
 ##   --mount=from=out-b564a3159bfcf688,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblog-b564a3159bfcf688.rmeta,source=/liblog-b564a3159bfcf688.rmeta \
+##   --mount=from=out-b564a3159bfcf688,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblog-b564a3159bfcf688.rlib,source=/liblog-b564a3159bfcf688.rlib \
 ##   --mount=from=out-32982cb980ef9328,dst=/tmp/clis-ntpd_1-2-3/release/deps/libpin_project_lite-32982cb980ef9328.rmeta,source=/libpin_project_lite-32982cb980ef9328.rmeta \
+##   --mount=from=out-32982cb980ef9328,dst=/tmp/clis-ntpd_1-2-3/release/deps/libpin_project_lite-32982cb980ef9328.rlib,source=/libpin_project_lite-32982cb980ef9328.rlib \
 ##   --mount=from=out-ff2e92028461b3cf,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtracing_attributes-ff2e92028461b3cf.so,source=/libtracing_attributes-ff2e92028461b3cf.so \
 ##   --mount=from=out-4be32d01ee2a9db1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rmeta,source=/libproc_macro2-4be32d01ee2a9db1.rmeta \
+##   --mount=from=out-4be32d01ee2a9db1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rlib,source=/libproc_macro2-4be32d01ee2a9db1.rlib \
 ##   --mount=from=out-4c1dc76c11b3deb8,dst=/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rmeta,source=/libunicode_ident-4c1dc76c11b3deb8.rmeta \
+##   --mount=from=out-4c1dc76c11b3deb8,dst=/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rlib,source=/libunicode_ident-4c1dc76c11b3deb8.rlib \
 ##   --mount=from=out-36ed05d339fc79f9,dst=/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rmeta,source=/libquote-36ed05d339fc79f9.rmeta \
+##   --mount=from=out-36ed05d339fc79f9,dst=/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rlib,source=/libquote-36ed05d339fc79f9.rlib \
 ##   --mount=from=out-5c1d3e18a7dfcf78,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rmeta,source=/libsyn-5c1d3e18a7dfcf78.rmeta \
+##   --mount=from=out-5c1d3e18a7dfcf78,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rlib,source=/libsyn-5c1d3e18a7dfcf78.rlib \
 ##   --mount=from=out-100f3fe23952e4be,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtracing_core-100f3fe23952e4be.rmeta,source=/libtracing_core-100f3fe23952e4be.rmeta \
+##   --mount=from=out-100f3fe23952e4be,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtracing_core-100f3fe23952e4be.rlib,source=/libtracing_core-100f3fe23952e4be.rlib \
 ##   --mount=from=out-6ed51fafe322ecba,dst=/tmp/clis-ntpd_1-2-3/release/deps/libonce_cell-6ed51fafe322ecba.rmeta,source=/libonce_cell-6ed51fafe322ecba.rmeta \
+##   --mount=from=out-6ed51fafe322ecba,dst=/tmp/clis-ntpd_1-2-3/release/deps/libonce_cell-6ed51fafe322ecba.rlib,source=/libonce_cell-6ed51fafe322ecba.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="tracing" \
@@ -5485,47 +7535,87 @@ WORKDIR /tmp/clis-ntpd_1-2-3/release/deps
 RUN \
   --mount=from=cratesio-ntp-proto-1.2.3,source=/ntp-proto-1.2.3,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ntp-proto-1.2.3 \
   --mount=from=out-2ba1712ad50273ba,dst=/tmp/clis-ntpd_1-2-3/release/deps/libaead-2ba1712ad50273ba.rmeta,source=/libaead-2ba1712ad50273ba.rmeta \
+  --mount=from=out-2ba1712ad50273ba,dst=/tmp/clis-ntpd_1-2-3/release/deps/libaead-2ba1712ad50273ba.rlib,source=/libaead-2ba1712ad50273ba.rlib \
   --mount=from=out-1009fce94369ad6b,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcrypto_common-1009fce94369ad6b.rmeta,source=/libcrypto_common-1009fce94369ad6b.rmeta \
+  --mount=from=out-1009fce94369ad6b,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcrypto_common-1009fce94369ad6b.rlib,source=/libcrypto_common-1009fce94369ad6b.rlib \
   --mount=from=out-2d6ea4fd5d7ef666,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgeneric_array-2d6ea4fd5d7ef666.rmeta,source=/libgeneric_array-2d6ea4fd5d7ef666.rmeta \
+  --mount=from=out-2d6ea4fd5d7ef666,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgeneric_array-2d6ea4fd5d7ef666.rlib,source=/libgeneric_array-2d6ea4fd5d7ef666.rlib \
   --mount=from=out-981b1f3c4161234a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtypenum-981b1f3c4161234a.rmeta,source=/libtypenum-981b1f3c4161234a.rmeta \
+  --mount=from=out-981b1f3c4161234a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtypenum-981b1f3c4161234a.rlib,source=/libtypenum-981b1f3c4161234a.rlib \
   --mount=from=out-434e8a9dd58e4456,dst=/tmp/clis-ntpd_1-2-3/release/deps/librand_core-434e8a9dd58e4456.rmeta,source=/librand_core-434e8a9dd58e4456.rmeta \
+  --mount=from=out-434e8a9dd58e4456,dst=/tmp/clis-ntpd_1-2-3/release/deps/librand_core-434e8a9dd58e4456.rlib,source=/librand_core-434e8a9dd58e4456.rlib \
   --mount=from=out-84473f2ddfbb434a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rmeta,source=/libgetrandom-84473f2ddfbb434a.rmeta \
+  --mount=from=out-84473f2ddfbb434a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rlib,source=/libgetrandom-84473f2ddfbb434a.rlib \
   --mount=from=out-da34da6838abd7f1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rmeta,source=/libcfg_if-da34da6838abd7f1.rmeta \
+  --mount=from=out-da34da6838abd7f1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rlib,source=/libcfg_if-da34da6838abd7f1.rlib \
   --mount=from=out-a7905fdc410bdfce,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rmeta,source=/liblibc-a7905fdc410bdfce.rmeta \
+  --mount=from=out-a7905fdc410bdfce,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rlib,source=/liblibc-a7905fdc410bdfce.rlib \
   --mount=from=out-e0325614c1d7d6ab,dst=/tmp/clis-ntpd_1-2-3/release/deps/libaes_siv-e0325614c1d7d6ab.rmeta,source=/libaes_siv-e0325614c1d7d6ab.rmeta \
+  --mount=from=out-e0325614c1d7d6ab,dst=/tmp/clis-ntpd_1-2-3/release/deps/libaes_siv-e0325614c1d7d6ab.rlib,source=/libaes_siv-e0325614c1d7d6ab.rlib \
   --mount=from=out-81c9db97d7f9be78,dst=/tmp/clis-ntpd_1-2-3/release/deps/libaes-81c9db97d7f9be78.rmeta,source=/libaes-81c9db97d7f9be78.rmeta \
+  --mount=from=out-81c9db97d7f9be78,dst=/tmp/clis-ntpd_1-2-3/release/deps/libaes-81c9db97d7f9be78.rlib,source=/libaes-81c9db97d7f9be78.rlib \
   --mount=from=out-ca1baada07864a60,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcipher-ca1baada07864a60.rmeta,source=/libcipher-ca1baada07864a60.rmeta \
+  --mount=from=out-ca1baada07864a60,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcipher-ca1baada07864a60.rlib,source=/libcipher-ca1baada07864a60.rlib \
   --mount=from=out-56f37e149446be27,dst=/tmp/clis-ntpd_1-2-3/release/deps/libinout-56f37e149446be27.rmeta,source=/libinout-56f37e149446be27.rmeta \
+  --mount=from=out-56f37e149446be27,dst=/tmp/clis-ntpd_1-2-3/release/deps/libinout-56f37e149446be27.rlib,source=/libinout-56f37e149446be27.rlib \
   --mount=from=out-4ab791033e58debd,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcpufeatures-4ab791033e58debd.rmeta,source=/libcpufeatures-4ab791033e58debd.rmeta \
+  --mount=from=out-4ab791033e58debd,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcpufeatures-4ab791033e58debd.rlib,source=/libcpufeatures-4ab791033e58debd.rlib \
   --mount=from=out-568874dfd4c5be74,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcmac-568874dfd4c5be74.rmeta,source=/libcmac-568874dfd4c5be74.rmeta \
+  --mount=from=out-568874dfd4c5be74,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcmac-568874dfd4c5be74.rlib,source=/libcmac-568874dfd4c5be74.rlib \
   --mount=from=out-19f9a0f198045bc5,dst=/tmp/clis-ntpd_1-2-3/release/deps/libdbl-19f9a0f198045bc5.rmeta,source=/libdbl-19f9a0f198045bc5.rmeta \
+  --mount=from=out-19f9a0f198045bc5,dst=/tmp/clis-ntpd_1-2-3/release/deps/libdbl-19f9a0f198045bc5.rlib,source=/libdbl-19f9a0f198045bc5.rlib \
   --mount=from=out-65e96f3f500a3098,dst=/tmp/clis-ntpd_1-2-3/release/deps/libdigest-65e96f3f500a3098.rmeta,source=/libdigest-65e96f3f500a3098.rmeta \
+  --mount=from=out-65e96f3f500a3098,dst=/tmp/clis-ntpd_1-2-3/release/deps/libdigest-65e96f3f500a3098.rlib,source=/libdigest-65e96f3f500a3098.rlib \
   --mount=from=out-bc12f6e8b62af3c6,dst=/tmp/clis-ntpd_1-2-3/release/deps/libblock_buffer-bc12f6e8b62af3c6.rmeta,source=/libblock_buffer-bc12f6e8b62af3c6.rmeta \
+  --mount=from=out-bc12f6e8b62af3c6,dst=/tmp/clis-ntpd_1-2-3/release/deps/libblock_buffer-bc12f6e8b62af3c6.rlib,source=/libblock_buffer-bc12f6e8b62af3c6.rlib \
   --mount=from=out-8b6e21d4a5a6c6ed,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsubtle-8b6e21d4a5a6c6ed.rmeta,source=/libsubtle-8b6e21d4a5a6c6ed.rmeta \
+  --mount=from=out-8b6e21d4a5a6c6ed,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsubtle-8b6e21d4a5a6c6ed.rlib,source=/libsubtle-8b6e21d4a5a6c6ed.rlib \
   --mount=from=out-aca4c84266bacfb7,dst=/tmp/clis-ntpd_1-2-3/release/deps/libctr-aca4c84266bacfb7.rmeta,source=/libctr-aca4c84266bacfb7.rmeta \
+  --mount=from=out-aca4c84266bacfb7,dst=/tmp/clis-ntpd_1-2-3/release/deps/libctr-aca4c84266bacfb7.rlib,source=/libctr-aca4c84266bacfb7.rlib \
   --mount=from=out-caf2b0ffe78763b7,dst=/tmp/clis-ntpd_1-2-3/release/deps/libzeroize-caf2b0ffe78763b7.rmeta,source=/libzeroize-caf2b0ffe78763b7.rmeta \
+  --mount=from=out-caf2b0ffe78763b7,dst=/tmp/clis-ntpd_1-2-3/release/deps/libzeroize-caf2b0ffe78763b7.rlib,source=/libzeroize-caf2b0ffe78763b7.rlib \
   --mount=from=out-f0775f4337e7a668,dst=/tmp/clis-ntpd_1-2-3/release/deps/libmd5-f0775f4337e7a668.rmeta,source=/libmd5-f0775f4337e7a668.rmeta \
+  --mount=from=out-f0775f4337e7a668,dst=/tmp/clis-ntpd_1-2-3/release/deps/libmd5-f0775f4337e7a668.rlib,source=/libmd5-f0775f4337e7a668.rlib \
   --mount=from=out-5161209caf71d483,dst=/tmp/clis-ntpd_1-2-3/release/deps/librand-5161209caf71d483.rmeta,source=/librand-5161209caf71d483.rmeta \
+  --mount=from=out-5161209caf71d483,dst=/tmp/clis-ntpd_1-2-3/release/deps/librand-5161209caf71d483.rlib,source=/librand-5161209caf71d483.rlib \
   --mount=from=out-8e2f025dcc32e9af,dst=/tmp/clis-ntpd_1-2-3/release/deps/librand_chacha-8e2f025dcc32e9af.rmeta,source=/librand_chacha-8e2f025dcc32e9af.rmeta \
+  --mount=from=out-8e2f025dcc32e9af,dst=/tmp/clis-ntpd_1-2-3/release/deps/librand_chacha-8e2f025dcc32e9af.rlib,source=/librand_chacha-8e2f025dcc32e9af.rlib \
   --mount=from=out-af198cb5433f3d0c,dst=/tmp/clis-ntpd_1-2-3/release/deps/libppv_lite86-af198cb5433f3d0c.rmeta,source=/libppv_lite86-af198cb5433f3d0c.rmeta \
+  --mount=from=out-af198cb5433f3d0c,dst=/tmp/clis-ntpd_1-2-3/release/deps/libppv_lite86-af198cb5433f3d0c.rlib,source=/libppv_lite86-af198cb5433f3d0c.rlib \
   --mount=from=out-fd2c262888e3ecb5,dst=/tmp/clis-ntpd_1-2-3/release/deps/librustls-fd2c262888e3ecb5.rmeta,source=/librustls-fd2c262888e3ecb5.rmeta \
+  --mount=from=out-fd2c262888e3ecb5,dst=/tmp/clis-ntpd_1-2-3/release/deps/librustls-fd2c262888e3ecb5.rlib,source=/librustls-fd2c262888e3ecb5.rlib \
   --mount=from=out-b564a3159bfcf688,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblog-b564a3159bfcf688.rmeta,source=/liblog-b564a3159bfcf688.rmeta \
+  --mount=from=out-b564a3159bfcf688,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblog-b564a3159bfcf688.rlib,source=/liblog-b564a3159bfcf688.rlib \
   --mount=from=out-6ed51fafe322ecba,dst=/tmp/clis-ntpd_1-2-3/release/deps/libonce_cell-6ed51fafe322ecba.rmeta,source=/libonce_cell-6ed51fafe322ecba.rmeta \
+  --mount=from=out-6ed51fafe322ecba,dst=/tmp/clis-ntpd_1-2-3/release/deps/libonce_cell-6ed51fafe322ecba.rlib,source=/libonce_cell-6ed51fafe322ecba.rlib \
   --mount=from=out-162d4bd1f192637c,dst=/tmp/clis-ntpd_1-2-3/release/deps/libring-162d4bd1f192637c.rmeta,source=/libring-162d4bd1f192637c.rmeta \
+  --mount=from=out-162d4bd1f192637c,dst=/tmp/clis-ntpd_1-2-3/release/deps/libring-162d4bd1f192637c.rlib,source=/libring-162d4bd1f192637c.rlib \
   --mount=from=out-126f99f44d356e93,dst=/tmp/clis-ntpd_1-2-3/release/deps/libspin-126f99f44d356e93.rmeta,source=/libspin-126f99f44d356e93.rmeta \
+  --mount=from=out-126f99f44d356e93,dst=/tmp/clis-ntpd_1-2-3/release/deps/libspin-126f99f44d356e93.rlib,source=/libspin-126f99f44d356e93.rlib \
   --mount=from=out-2cf0189e0a6f5785,dst=/tmp/clis-ntpd_1-2-3/release/deps/libuntrusted-2cf0189e0a6f5785.rmeta,source=/libuntrusted-2cf0189e0a6f5785.rmeta \
+  --mount=from=out-2cf0189e0a6f5785,dst=/tmp/clis-ntpd_1-2-3/release/deps/libuntrusted-2cf0189e0a6f5785.rlib,source=/libuntrusted-2cf0189e0a6f5785.rlib \
   --mount=from=out-0bd417676bde33fe,dst=/tmp/clis-ntpd_1-2-3/release/deps/librustls_pki_types-0bd417676bde33fe.rmeta,source=/librustls_pki_types-0bd417676bde33fe.rmeta \
+  --mount=from=out-0bd417676bde33fe,dst=/tmp/clis-ntpd_1-2-3/release/deps/librustls_pki_types-0bd417676bde33fe.rlib,source=/librustls_pki_types-0bd417676bde33fe.rlib \
   --mount=from=out-0b45a7938c797eef,dst=/tmp/clis-ntpd_1-2-3/release/deps/libwebpki-0b45a7938c797eef.rmeta,source=/libwebpki-0b45a7938c797eef.rmeta \
+  --mount=from=out-0b45a7938c797eef,dst=/tmp/clis-ntpd_1-2-3/release/deps/libwebpki-0b45a7938c797eef.rlib,source=/libwebpki-0b45a7938c797eef.rlib \
   --mount=from=out-986325a49dffbcd1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libserde-986325a49dffbcd1.rmeta,source=/libserde-986325a49dffbcd1.rmeta \
+  --mount=from=out-986325a49dffbcd1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libserde-986325a49dffbcd1.rlib,source=/libserde-986325a49dffbcd1.rlib \
   --mount=from=out-b74741511dfa898a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libserde_derive-b74741511dfa898a.so,source=/libserde_derive-b74741511dfa898a.so \
   --mount=from=out-4be32d01ee2a9db1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rmeta,source=/libproc_macro2-4be32d01ee2a9db1.rmeta \
+  --mount=from=out-4be32d01ee2a9db1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rlib,source=/libproc_macro2-4be32d01ee2a9db1.rlib \
   --mount=from=out-4c1dc76c11b3deb8,dst=/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rmeta,source=/libunicode_ident-4c1dc76c11b3deb8.rmeta \
+  --mount=from=out-4c1dc76c11b3deb8,dst=/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rlib,source=/libunicode_ident-4c1dc76c11b3deb8.rlib \
   --mount=from=out-36ed05d339fc79f9,dst=/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rmeta,source=/libquote-36ed05d339fc79f9.rmeta \
+  --mount=from=out-36ed05d339fc79f9,dst=/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rlib,source=/libquote-36ed05d339fc79f9.rlib \
   --mount=from=out-5c1d3e18a7dfcf78,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rmeta,source=/libsyn-5c1d3e18a7dfcf78.rmeta \
+  --mount=from=out-5c1d3e18a7dfcf78,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rlib,source=/libsyn-5c1d3e18a7dfcf78.rlib \
   --mount=from=out-7d2675bffdb63c95,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtracing-7d2675bffdb63c95.rmeta,source=/libtracing-7d2675bffdb63c95.rmeta \
+  --mount=from=out-7d2675bffdb63c95,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtracing-7d2675bffdb63c95.rlib,source=/libtracing-7d2675bffdb63c95.rlib \
   --mount=from=out-32982cb980ef9328,dst=/tmp/clis-ntpd_1-2-3/release/deps/libpin_project_lite-32982cb980ef9328.rmeta,source=/libpin_project_lite-32982cb980ef9328.rmeta \
+  --mount=from=out-32982cb980ef9328,dst=/tmp/clis-ntpd_1-2-3/release/deps/libpin_project_lite-32982cb980ef9328.rlib,source=/libpin_project_lite-32982cb980ef9328.rlib \
   --mount=from=out-ff2e92028461b3cf,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtracing_attributes-ff2e92028461b3cf.so,source=/libtracing_attributes-ff2e92028461b3cf.so \
   --mount=from=out-100f3fe23952e4be,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtracing_core-100f3fe23952e4be.rmeta,source=/libtracing_core-100f3fe23952e4be.rmeta \
+  --mount=from=out-100f3fe23952e4be,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtracing_core-100f3fe23952e4be.rlib,source=/libtracing_core-100f3fe23952e4be.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="ntp_proto" \
@@ -5601,48 +7691,48 @@ COPY --from=dep-l-ntp-proto-1.2.3-5a810c5444456e7d /tmp/clis-ntpd_1-2-3/release/
 ##     "100f3fe23952e4be",
 ## ]
 ## short_externs = [
-##     "aead-2ba1712ad50273ba",
-##     "crypto_common-1009fce94369ad6b",
-##     "generic_array-2d6ea4fd5d7ef666",
-##     "typenum-981b1f3c4161234a",
-##     "rand_core-434e8a9dd58e4456",
-##     "getrandom-84473f2ddfbb434a",
-##     "cfg_if-da34da6838abd7f1",
-##     "libc-a7905fdc410bdfce",
-##     "aes_siv-e0325614c1d7d6ab",
-##     "aes-81c9db97d7f9be78",
-##     "cipher-ca1baada07864a60",
-##     "inout-56f37e149446be27",
-##     "cpufeatures-4ab791033e58debd",
-##     "cmac-568874dfd4c5be74",
-##     "dbl-19f9a0f198045bc5",
-##     "digest-65e96f3f500a3098",
-##     "block_buffer-bc12f6e8b62af3c6",
-##     "subtle-8b6e21d4a5a6c6ed",
-##     "ctr-aca4c84266bacfb7",
-##     "zeroize-caf2b0ffe78763b7",
-##     "md5-f0775f4337e7a668",
-##     "rand-5161209caf71d483",
-##     "rand_chacha-8e2f025dcc32e9af",
-##     "ppv_lite86-af198cb5433f3d0c",
-##     "rustls-fd2c262888e3ecb5",
-##     "log-b564a3159bfcf688",
-##     "once_cell-6ed51fafe322ecba",
-##     "ring-162d4bd1f192637c",
-##     "spin-126f99f44d356e93",
-##     "untrusted-2cf0189e0a6f5785",
-##     "rustls_pki_types-0bd417676bde33fe",
-##     "webpki-0b45a7938c797eef",
-##     "serde-986325a49dffbcd1",
-##     "serde_derive-b74741511dfa898a",
-##     "proc_macro2-4be32d01ee2a9db1",
-##     "unicode_ident-4c1dc76c11b3deb8",
-##     "quote-36ed05d339fc79f9",
-##     "syn-5c1d3e18a7dfcf78",
-##     "tracing-7d2675bffdb63c95",
-##     "pin_project_lite-32982cb980ef9328",
-##     "tracing_attributes-ff2e92028461b3cf",
-##     "tracing_core-100f3fe23952e4be",
+##     "2ba1712ad50273ba",
+##     "1009fce94369ad6b",
+##     "2d6ea4fd5d7ef666",
+##     "981b1f3c4161234a",
+##     "434e8a9dd58e4456",
+##     "84473f2ddfbb434a",
+##     "da34da6838abd7f1",
+##     "a7905fdc410bdfce",
+##     "e0325614c1d7d6ab",
+##     "81c9db97d7f9be78",
+##     "ca1baada07864a60",
+##     "56f37e149446be27",
+##     "4ab791033e58debd",
+##     "568874dfd4c5be74",
+##     "19f9a0f198045bc5",
+##     "65e96f3f500a3098",
+##     "bc12f6e8b62af3c6",
+##     "8b6e21d4a5a6c6ed",
+##     "aca4c84266bacfb7",
+##     "caf2b0ffe78763b7",
+##     "f0775f4337e7a668",
+##     "5161209caf71d483",
+##     "8e2f025dcc32e9af",
+##     "af198cb5433f3d0c",
+##     "fd2c262888e3ecb5",
+##     "b564a3159bfcf688",
+##     "6ed51fafe322ecba",
+##     "162d4bd1f192637c",
+##     "126f99f44d356e93",
+##     "2cf0189e0a6f5785",
+##     "0bd417676bde33fe",
+##     "0b45a7938c797eef",
+##     "986325a49dffbcd1",
+##     "b74741511dfa898a",
+##     "4be32d01ee2a9db1",
+##     "4c1dc76c11b3deb8",
+##     "36ed05d339fc79f9",
+##     "5c1d3e18a7dfcf78",
+##     "7d2675bffdb63c95",
+##     "32982cb980ef9328",
+##     "ff2e92028461b3cf",
+##     "100f3fe23952e4be",
 ## ]
 ## writes = [
 ##     "deps/ntp_proto-5a810c5444456e7d.d",
@@ -5654,6 +7744,416 @@ COPY --from=dep-l-ntp-proto-1.2.3-5a810c5444456e7d /tmp/clis-ntpd_1-2-3/release/
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-2-3/release/deps/libntp_proto-5a810c5444456e7d.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-2-3/release/deps/libntp_proto-5a810c5444456e7d.rlib","emit":"link"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-2ba1712ad50273ba"
+## src = "/libaead-2ba1712ad50273ba.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libaead-2ba1712ad50273ba.rmeta"
+## 
+## [[mounts]]
+## from = "out-2ba1712ad50273ba"
+## src = "/libaead-2ba1712ad50273ba.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libaead-2ba1712ad50273ba.rlib"
+## 
+## [[mounts]]
+## from = "out-1009fce94369ad6b"
+## src = "/libcrypto_common-1009fce94369ad6b.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libcrypto_common-1009fce94369ad6b.rmeta"
+## 
+## [[mounts]]
+## from = "out-1009fce94369ad6b"
+## src = "/libcrypto_common-1009fce94369ad6b.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libcrypto_common-1009fce94369ad6b.rlib"
+## 
+## [[mounts]]
+## from = "out-2d6ea4fd5d7ef666"
+## src = "/libgeneric_array-2d6ea4fd5d7ef666.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libgeneric_array-2d6ea4fd5d7ef666.rmeta"
+## 
+## [[mounts]]
+## from = "out-2d6ea4fd5d7ef666"
+## src = "/libgeneric_array-2d6ea4fd5d7ef666.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libgeneric_array-2d6ea4fd5d7ef666.rlib"
+## 
+## [[mounts]]
+## from = "out-981b1f3c4161234a"
+## src = "/libtypenum-981b1f3c4161234a.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libtypenum-981b1f3c4161234a.rmeta"
+## 
+## [[mounts]]
+## from = "out-981b1f3c4161234a"
+## src = "/libtypenum-981b1f3c4161234a.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libtypenum-981b1f3c4161234a.rlib"
+## 
+## [[mounts]]
+## from = "out-434e8a9dd58e4456"
+## src = "/librand_core-434e8a9dd58e4456.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/librand_core-434e8a9dd58e4456.rmeta"
+## 
+## [[mounts]]
+## from = "out-434e8a9dd58e4456"
+## src = "/librand_core-434e8a9dd58e4456.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/librand_core-434e8a9dd58e4456.rlib"
+## 
+## [[mounts]]
+## from = "out-84473f2ddfbb434a"
+## src = "/libgetrandom-84473f2ddfbb434a.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rmeta"
+## 
+## [[mounts]]
+## from = "out-84473f2ddfbb434a"
+## src = "/libgetrandom-84473f2ddfbb434a.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rlib"
+## 
+## [[mounts]]
+## from = "out-da34da6838abd7f1"
+## src = "/libcfg_if-da34da6838abd7f1.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rmeta"
+## 
+## [[mounts]]
+## from = "out-da34da6838abd7f1"
+## src = "/libcfg_if-da34da6838abd7f1.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rlib"
+## 
+## [[mounts]]
+## from = "out-a7905fdc410bdfce"
+## src = "/liblibc-a7905fdc410bdfce.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rmeta"
+## 
+## [[mounts]]
+## from = "out-a7905fdc410bdfce"
+## src = "/liblibc-a7905fdc410bdfce.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rlib"
+## 
+## [[mounts]]
+## from = "out-e0325614c1d7d6ab"
+## src = "/libaes_siv-e0325614c1d7d6ab.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libaes_siv-e0325614c1d7d6ab.rmeta"
+## 
+## [[mounts]]
+## from = "out-e0325614c1d7d6ab"
+## src = "/libaes_siv-e0325614c1d7d6ab.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libaes_siv-e0325614c1d7d6ab.rlib"
+## 
+## [[mounts]]
+## from = "out-81c9db97d7f9be78"
+## src = "/libaes-81c9db97d7f9be78.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libaes-81c9db97d7f9be78.rmeta"
+## 
+## [[mounts]]
+## from = "out-81c9db97d7f9be78"
+## src = "/libaes-81c9db97d7f9be78.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libaes-81c9db97d7f9be78.rlib"
+## 
+## [[mounts]]
+## from = "out-ca1baada07864a60"
+## src = "/libcipher-ca1baada07864a60.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libcipher-ca1baada07864a60.rmeta"
+## 
+## [[mounts]]
+## from = "out-ca1baada07864a60"
+## src = "/libcipher-ca1baada07864a60.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libcipher-ca1baada07864a60.rlib"
+## 
+## [[mounts]]
+## from = "out-56f37e149446be27"
+## src = "/libinout-56f37e149446be27.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libinout-56f37e149446be27.rmeta"
+## 
+## [[mounts]]
+## from = "out-56f37e149446be27"
+## src = "/libinout-56f37e149446be27.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libinout-56f37e149446be27.rlib"
+## 
+## [[mounts]]
+## from = "out-4ab791033e58debd"
+## src = "/libcpufeatures-4ab791033e58debd.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libcpufeatures-4ab791033e58debd.rmeta"
+## 
+## [[mounts]]
+## from = "out-4ab791033e58debd"
+## src = "/libcpufeatures-4ab791033e58debd.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libcpufeatures-4ab791033e58debd.rlib"
+## 
+## [[mounts]]
+## from = "out-568874dfd4c5be74"
+## src = "/libcmac-568874dfd4c5be74.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libcmac-568874dfd4c5be74.rmeta"
+## 
+## [[mounts]]
+## from = "out-568874dfd4c5be74"
+## src = "/libcmac-568874dfd4c5be74.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libcmac-568874dfd4c5be74.rlib"
+## 
+## [[mounts]]
+## from = "out-19f9a0f198045bc5"
+## src = "/libdbl-19f9a0f198045bc5.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libdbl-19f9a0f198045bc5.rmeta"
+## 
+## [[mounts]]
+## from = "out-19f9a0f198045bc5"
+## src = "/libdbl-19f9a0f198045bc5.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libdbl-19f9a0f198045bc5.rlib"
+## 
+## [[mounts]]
+## from = "out-65e96f3f500a3098"
+## src = "/libdigest-65e96f3f500a3098.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libdigest-65e96f3f500a3098.rmeta"
+## 
+## [[mounts]]
+## from = "out-65e96f3f500a3098"
+## src = "/libdigest-65e96f3f500a3098.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libdigest-65e96f3f500a3098.rlib"
+## 
+## [[mounts]]
+## from = "out-bc12f6e8b62af3c6"
+## src = "/libblock_buffer-bc12f6e8b62af3c6.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libblock_buffer-bc12f6e8b62af3c6.rmeta"
+## 
+## [[mounts]]
+## from = "out-bc12f6e8b62af3c6"
+## src = "/libblock_buffer-bc12f6e8b62af3c6.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libblock_buffer-bc12f6e8b62af3c6.rlib"
+## 
+## [[mounts]]
+## from = "out-8b6e21d4a5a6c6ed"
+## src = "/libsubtle-8b6e21d4a5a6c6ed.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libsubtle-8b6e21d4a5a6c6ed.rmeta"
+## 
+## [[mounts]]
+## from = "out-8b6e21d4a5a6c6ed"
+## src = "/libsubtle-8b6e21d4a5a6c6ed.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libsubtle-8b6e21d4a5a6c6ed.rlib"
+## 
+## [[mounts]]
+## from = "out-aca4c84266bacfb7"
+## src = "/libctr-aca4c84266bacfb7.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libctr-aca4c84266bacfb7.rmeta"
+## 
+## [[mounts]]
+## from = "out-aca4c84266bacfb7"
+## src = "/libctr-aca4c84266bacfb7.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libctr-aca4c84266bacfb7.rlib"
+## 
+## [[mounts]]
+## from = "out-caf2b0ffe78763b7"
+## src = "/libzeroize-caf2b0ffe78763b7.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libzeroize-caf2b0ffe78763b7.rmeta"
+## 
+## [[mounts]]
+## from = "out-caf2b0ffe78763b7"
+## src = "/libzeroize-caf2b0ffe78763b7.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libzeroize-caf2b0ffe78763b7.rlib"
+## 
+## [[mounts]]
+## from = "out-f0775f4337e7a668"
+## src = "/libmd5-f0775f4337e7a668.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libmd5-f0775f4337e7a668.rmeta"
+## 
+## [[mounts]]
+## from = "out-f0775f4337e7a668"
+## src = "/libmd5-f0775f4337e7a668.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libmd5-f0775f4337e7a668.rlib"
+## 
+## [[mounts]]
+## from = "out-5161209caf71d483"
+## src = "/librand-5161209caf71d483.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/librand-5161209caf71d483.rmeta"
+## 
+## [[mounts]]
+## from = "out-5161209caf71d483"
+## src = "/librand-5161209caf71d483.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/librand-5161209caf71d483.rlib"
+## 
+## [[mounts]]
+## from = "out-8e2f025dcc32e9af"
+## src = "/librand_chacha-8e2f025dcc32e9af.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/librand_chacha-8e2f025dcc32e9af.rmeta"
+## 
+## [[mounts]]
+## from = "out-8e2f025dcc32e9af"
+## src = "/librand_chacha-8e2f025dcc32e9af.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/librand_chacha-8e2f025dcc32e9af.rlib"
+## 
+## [[mounts]]
+## from = "out-af198cb5433f3d0c"
+## src = "/libppv_lite86-af198cb5433f3d0c.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libppv_lite86-af198cb5433f3d0c.rmeta"
+## 
+## [[mounts]]
+## from = "out-af198cb5433f3d0c"
+## src = "/libppv_lite86-af198cb5433f3d0c.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libppv_lite86-af198cb5433f3d0c.rlib"
+## 
+## [[mounts]]
+## from = "out-fd2c262888e3ecb5"
+## src = "/librustls-fd2c262888e3ecb5.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/librustls-fd2c262888e3ecb5.rmeta"
+## 
+## [[mounts]]
+## from = "out-fd2c262888e3ecb5"
+## src = "/librustls-fd2c262888e3ecb5.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/librustls-fd2c262888e3ecb5.rlib"
+## 
+## [[mounts]]
+## from = "out-b564a3159bfcf688"
+## src = "/liblog-b564a3159bfcf688.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/liblog-b564a3159bfcf688.rmeta"
+## 
+## [[mounts]]
+## from = "out-b564a3159bfcf688"
+## src = "/liblog-b564a3159bfcf688.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/liblog-b564a3159bfcf688.rlib"
+## 
+## [[mounts]]
+## from = "out-6ed51fafe322ecba"
+## src = "/libonce_cell-6ed51fafe322ecba.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libonce_cell-6ed51fafe322ecba.rmeta"
+## 
+## [[mounts]]
+## from = "out-6ed51fafe322ecba"
+## src = "/libonce_cell-6ed51fafe322ecba.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libonce_cell-6ed51fafe322ecba.rlib"
+## 
+## [[mounts]]
+## from = "out-162d4bd1f192637c"
+## src = "/libring-162d4bd1f192637c.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libring-162d4bd1f192637c.rmeta"
+## 
+## [[mounts]]
+## from = "out-162d4bd1f192637c"
+## src = "/libring-162d4bd1f192637c.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libring-162d4bd1f192637c.rlib"
+## 
+## [[mounts]]
+## from = "out-126f99f44d356e93"
+## src = "/libspin-126f99f44d356e93.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libspin-126f99f44d356e93.rmeta"
+## 
+## [[mounts]]
+## from = "out-126f99f44d356e93"
+## src = "/libspin-126f99f44d356e93.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libspin-126f99f44d356e93.rlib"
+## 
+## [[mounts]]
+## from = "out-2cf0189e0a6f5785"
+## src = "/libuntrusted-2cf0189e0a6f5785.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libuntrusted-2cf0189e0a6f5785.rmeta"
+## 
+## [[mounts]]
+## from = "out-2cf0189e0a6f5785"
+## src = "/libuntrusted-2cf0189e0a6f5785.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libuntrusted-2cf0189e0a6f5785.rlib"
+## 
+## [[mounts]]
+## from = "out-0bd417676bde33fe"
+## src = "/librustls_pki_types-0bd417676bde33fe.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/librustls_pki_types-0bd417676bde33fe.rmeta"
+## 
+## [[mounts]]
+## from = "out-0bd417676bde33fe"
+## src = "/librustls_pki_types-0bd417676bde33fe.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/librustls_pki_types-0bd417676bde33fe.rlib"
+## 
+## [[mounts]]
+## from = "out-0b45a7938c797eef"
+## src = "/libwebpki-0b45a7938c797eef.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libwebpki-0b45a7938c797eef.rmeta"
+## 
+## [[mounts]]
+## from = "out-0b45a7938c797eef"
+## src = "/libwebpki-0b45a7938c797eef.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libwebpki-0b45a7938c797eef.rlib"
+## 
+## [[mounts]]
+## from = "out-986325a49dffbcd1"
+## src = "/libserde-986325a49dffbcd1.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libserde-986325a49dffbcd1.rmeta"
+## 
+## [[mounts]]
+## from = "out-986325a49dffbcd1"
+## src = "/libserde-986325a49dffbcd1.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libserde-986325a49dffbcd1.rlib"
+## 
+## [[mounts]]
+## from = "out-b74741511dfa898a"
+## src = "/libserde_derive-b74741511dfa898a.so"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libserde_derive-b74741511dfa898a.so"
+## 
+## [[mounts]]
+## from = "out-4be32d01ee2a9db1"
+## src = "/libproc_macro2-4be32d01ee2a9db1.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rmeta"
+## 
+## [[mounts]]
+## from = "out-4be32d01ee2a9db1"
+## src = "/libproc_macro2-4be32d01ee2a9db1.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rlib"
+## 
+## [[mounts]]
+## from = "out-4c1dc76c11b3deb8"
+## src = "/libunicode_ident-4c1dc76c11b3deb8.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rmeta"
+## 
+## [[mounts]]
+## from = "out-4c1dc76c11b3deb8"
+## src = "/libunicode_ident-4c1dc76c11b3deb8.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rlib"
+## 
+## [[mounts]]
+## from = "out-36ed05d339fc79f9"
+## src = "/libquote-36ed05d339fc79f9.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rmeta"
+## 
+## [[mounts]]
+## from = "out-36ed05d339fc79f9"
+## src = "/libquote-36ed05d339fc79f9.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rlib"
+## 
+## [[mounts]]
+## from = "out-5c1d3e18a7dfcf78"
+## src = "/libsyn-5c1d3e18a7dfcf78.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rmeta"
+## 
+## [[mounts]]
+## from = "out-5c1d3e18a7dfcf78"
+## src = "/libsyn-5c1d3e18a7dfcf78.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rlib"
+## 
+## [[mounts]]
+## from = "out-7d2675bffdb63c95"
+## src = "/libtracing-7d2675bffdb63c95.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libtracing-7d2675bffdb63c95.rmeta"
+## 
+## [[mounts]]
+## from = "out-7d2675bffdb63c95"
+## src = "/libtracing-7d2675bffdb63c95.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libtracing-7d2675bffdb63c95.rlib"
+## 
+## [[mounts]]
+## from = "out-32982cb980ef9328"
+## src = "/libpin_project_lite-32982cb980ef9328.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libpin_project_lite-32982cb980ef9328.rmeta"
+## 
+## [[mounts]]
+## from = "out-32982cb980ef9328"
+## src = "/libpin_project_lite-32982cb980ef9328.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libpin_project_lite-32982cb980ef9328.rlib"
+## 
+## [[mounts]]
+## from = "out-ff2e92028461b3cf"
+## src = "/libtracing_attributes-ff2e92028461b3cf.so"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libtracing_attributes-ff2e92028461b3cf.so"
+## 
+## [[mounts]]
+## from = "out-100f3fe23952e4be"
+## src = "/libtracing_core-100f3fe23952e4be.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libtracing_core-100f3fe23952e4be.rmeta"
+## 
+## [[mounts]]
+## from = "out-100f3fe23952e4be"
+## src = "/libtracing_core-100f3fe23952e4be.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libtracing_core-100f3fe23952e4be.rlib"
 ## 
 ## [[contexts]]
 ## name = "crate_out-a7d381539c9ce48d"
@@ -5687,47 +8187,87 @@ COPY --from=dep-l-ntp-proto-1.2.3-5a810c5444456e7d /tmp/clis-ntpd_1-2-3/release/
 ## RUN \
 ##   --mount=from=cratesio-ntp-proto-1.2.3,source=/ntp-proto-1.2.3,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ntp-proto-1.2.3 \
 ##   --mount=from=out-2ba1712ad50273ba,dst=/tmp/clis-ntpd_1-2-3/release/deps/libaead-2ba1712ad50273ba.rmeta,source=/libaead-2ba1712ad50273ba.rmeta \
+##   --mount=from=out-2ba1712ad50273ba,dst=/tmp/clis-ntpd_1-2-3/release/deps/libaead-2ba1712ad50273ba.rlib,source=/libaead-2ba1712ad50273ba.rlib \
 ##   --mount=from=out-1009fce94369ad6b,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcrypto_common-1009fce94369ad6b.rmeta,source=/libcrypto_common-1009fce94369ad6b.rmeta \
+##   --mount=from=out-1009fce94369ad6b,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcrypto_common-1009fce94369ad6b.rlib,source=/libcrypto_common-1009fce94369ad6b.rlib \
 ##   --mount=from=out-2d6ea4fd5d7ef666,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgeneric_array-2d6ea4fd5d7ef666.rmeta,source=/libgeneric_array-2d6ea4fd5d7ef666.rmeta \
+##   --mount=from=out-2d6ea4fd5d7ef666,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgeneric_array-2d6ea4fd5d7ef666.rlib,source=/libgeneric_array-2d6ea4fd5d7ef666.rlib \
 ##   --mount=from=out-981b1f3c4161234a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtypenum-981b1f3c4161234a.rmeta,source=/libtypenum-981b1f3c4161234a.rmeta \
+##   --mount=from=out-981b1f3c4161234a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtypenum-981b1f3c4161234a.rlib,source=/libtypenum-981b1f3c4161234a.rlib \
 ##   --mount=from=out-434e8a9dd58e4456,dst=/tmp/clis-ntpd_1-2-3/release/deps/librand_core-434e8a9dd58e4456.rmeta,source=/librand_core-434e8a9dd58e4456.rmeta \
+##   --mount=from=out-434e8a9dd58e4456,dst=/tmp/clis-ntpd_1-2-3/release/deps/librand_core-434e8a9dd58e4456.rlib,source=/librand_core-434e8a9dd58e4456.rlib \
 ##   --mount=from=out-84473f2ddfbb434a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rmeta,source=/libgetrandom-84473f2ddfbb434a.rmeta \
+##   --mount=from=out-84473f2ddfbb434a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rlib,source=/libgetrandom-84473f2ddfbb434a.rlib \
 ##   --mount=from=out-da34da6838abd7f1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rmeta,source=/libcfg_if-da34da6838abd7f1.rmeta \
+##   --mount=from=out-da34da6838abd7f1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rlib,source=/libcfg_if-da34da6838abd7f1.rlib \
 ##   --mount=from=out-a7905fdc410bdfce,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rmeta,source=/liblibc-a7905fdc410bdfce.rmeta \
+##   --mount=from=out-a7905fdc410bdfce,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rlib,source=/liblibc-a7905fdc410bdfce.rlib \
 ##   --mount=from=out-e0325614c1d7d6ab,dst=/tmp/clis-ntpd_1-2-3/release/deps/libaes_siv-e0325614c1d7d6ab.rmeta,source=/libaes_siv-e0325614c1d7d6ab.rmeta \
+##   --mount=from=out-e0325614c1d7d6ab,dst=/tmp/clis-ntpd_1-2-3/release/deps/libaes_siv-e0325614c1d7d6ab.rlib,source=/libaes_siv-e0325614c1d7d6ab.rlib \
 ##   --mount=from=out-81c9db97d7f9be78,dst=/tmp/clis-ntpd_1-2-3/release/deps/libaes-81c9db97d7f9be78.rmeta,source=/libaes-81c9db97d7f9be78.rmeta \
+##   --mount=from=out-81c9db97d7f9be78,dst=/tmp/clis-ntpd_1-2-3/release/deps/libaes-81c9db97d7f9be78.rlib,source=/libaes-81c9db97d7f9be78.rlib \
 ##   --mount=from=out-ca1baada07864a60,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcipher-ca1baada07864a60.rmeta,source=/libcipher-ca1baada07864a60.rmeta \
+##   --mount=from=out-ca1baada07864a60,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcipher-ca1baada07864a60.rlib,source=/libcipher-ca1baada07864a60.rlib \
 ##   --mount=from=out-56f37e149446be27,dst=/tmp/clis-ntpd_1-2-3/release/deps/libinout-56f37e149446be27.rmeta,source=/libinout-56f37e149446be27.rmeta \
+##   --mount=from=out-56f37e149446be27,dst=/tmp/clis-ntpd_1-2-3/release/deps/libinout-56f37e149446be27.rlib,source=/libinout-56f37e149446be27.rlib \
 ##   --mount=from=out-4ab791033e58debd,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcpufeatures-4ab791033e58debd.rmeta,source=/libcpufeatures-4ab791033e58debd.rmeta \
+##   --mount=from=out-4ab791033e58debd,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcpufeatures-4ab791033e58debd.rlib,source=/libcpufeatures-4ab791033e58debd.rlib \
 ##   --mount=from=out-568874dfd4c5be74,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcmac-568874dfd4c5be74.rmeta,source=/libcmac-568874dfd4c5be74.rmeta \
+##   --mount=from=out-568874dfd4c5be74,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcmac-568874dfd4c5be74.rlib,source=/libcmac-568874dfd4c5be74.rlib \
 ##   --mount=from=out-19f9a0f198045bc5,dst=/tmp/clis-ntpd_1-2-3/release/deps/libdbl-19f9a0f198045bc5.rmeta,source=/libdbl-19f9a0f198045bc5.rmeta \
+##   --mount=from=out-19f9a0f198045bc5,dst=/tmp/clis-ntpd_1-2-3/release/deps/libdbl-19f9a0f198045bc5.rlib,source=/libdbl-19f9a0f198045bc5.rlib \
 ##   --mount=from=out-65e96f3f500a3098,dst=/tmp/clis-ntpd_1-2-3/release/deps/libdigest-65e96f3f500a3098.rmeta,source=/libdigest-65e96f3f500a3098.rmeta \
+##   --mount=from=out-65e96f3f500a3098,dst=/tmp/clis-ntpd_1-2-3/release/deps/libdigest-65e96f3f500a3098.rlib,source=/libdigest-65e96f3f500a3098.rlib \
 ##   --mount=from=out-bc12f6e8b62af3c6,dst=/tmp/clis-ntpd_1-2-3/release/deps/libblock_buffer-bc12f6e8b62af3c6.rmeta,source=/libblock_buffer-bc12f6e8b62af3c6.rmeta \
+##   --mount=from=out-bc12f6e8b62af3c6,dst=/tmp/clis-ntpd_1-2-3/release/deps/libblock_buffer-bc12f6e8b62af3c6.rlib,source=/libblock_buffer-bc12f6e8b62af3c6.rlib \
 ##   --mount=from=out-8b6e21d4a5a6c6ed,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsubtle-8b6e21d4a5a6c6ed.rmeta,source=/libsubtle-8b6e21d4a5a6c6ed.rmeta \
+##   --mount=from=out-8b6e21d4a5a6c6ed,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsubtle-8b6e21d4a5a6c6ed.rlib,source=/libsubtle-8b6e21d4a5a6c6ed.rlib \
 ##   --mount=from=out-aca4c84266bacfb7,dst=/tmp/clis-ntpd_1-2-3/release/deps/libctr-aca4c84266bacfb7.rmeta,source=/libctr-aca4c84266bacfb7.rmeta \
+##   --mount=from=out-aca4c84266bacfb7,dst=/tmp/clis-ntpd_1-2-3/release/deps/libctr-aca4c84266bacfb7.rlib,source=/libctr-aca4c84266bacfb7.rlib \
 ##   --mount=from=out-caf2b0ffe78763b7,dst=/tmp/clis-ntpd_1-2-3/release/deps/libzeroize-caf2b0ffe78763b7.rmeta,source=/libzeroize-caf2b0ffe78763b7.rmeta \
+##   --mount=from=out-caf2b0ffe78763b7,dst=/tmp/clis-ntpd_1-2-3/release/deps/libzeroize-caf2b0ffe78763b7.rlib,source=/libzeroize-caf2b0ffe78763b7.rlib \
 ##   --mount=from=out-f0775f4337e7a668,dst=/tmp/clis-ntpd_1-2-3/release/deps/libmd5-f0775f4337e7a668.rmeta,source=/libmd5-f0775f4337e7a668.rmeta \
+##   --mount=from=out-f0775f4337e7a668,dst=/tmp/clis-ntpd_1-2-3/release/deps/libmd5-f0775f4337e7a668.rlib,source=/libmd5-f0775f4337e7a668.rlib \
 ##   --mount=from=out-5161209caf71d483,dst=/tmp/clis-ntpd_1-2-3/release/deps/librand-5161209caf71d483.rmeta,source=/librand-5161209caf71d483.rmeta \
+##   --mount=from=out-5161209caf71d483,dst=/tmp/clis-ntpd_1-2-3/release/deps/librand-5161209caf71d483.rlib,source=/librand-5161209caf71d483.rlib \
 ##   --mount=from=out-8e2f025dcc32e9af,dst=/tmp/clis-ntpd_1-2-3/release/deps/librand_chacha-8e2f025dcc32e9af.rmeta,source=/librand_chacha-8e2f025dcc32e9af.rmeta \
+##   --mount=from=out-8e2f025dcc32e9af,dst=/tmp/clis-ntpd_1-2-3/release/deps/librand_chacha-8e2f025dcc32e9af.rlib,source=/librand_chacha-8e2f025dcc32e9af.rlib \
 ##   --mount=from=out-af198cb5433f3d0c,dst=/tmp/clis-ntpd_1-2-3/release/deps/libppv_lite86-af198cb5433f3d0c.rmeta,source=/libppv_lite86-af198cb5433f3d0c.rmeta \
+##   --mount=from=out-af198cb5433f3d0c,dst=/tmp/clis-ntpd_1-2-3/release/deps/libppv_lite86-af198cb5433f3d0c.rlib,source=/libppv_lite86-af198cb5433f3d0c.rlib \
 ##   --mount=from=out-fd2c262888e3ecb5,dst=/tmp/clis-ntpd_1-2-3/release/deps/librustls-fd2c262888e3ecb5.rmeta,source=/librustls-fd2c262888e3ecb5.rmeta \
+##   --mount=from=out-fd2c262888e3ecb5,dst=/tmp/clis-ntpd_1-2-3/release/deps/librustls-fd2c262888e3ecb5.rlib,source=/librustls-fd2c262888e3ecb5.rlib \
 ##   --mount=from=out-b564a3159bfcf688,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblog-b564a3159bfcf688.rmeta,source=/liblog-b564a3159bfcf688.rmeta \
+##   --mount=from=out-b564a3159bfcf688,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblog-b564a3159bfcf688.rlib,source=/liblog-b564a3159bfcf688.rlib \
 ##   --mount=from=out-6ed51fafe322ecba,dst=/tmp/clis-ntpd_1-2-3/release/deps/libonce_cell-6ed51fafe322ecba.rmeta,source=/libonce_cell-6ed51fafe322ecba.rmeta \
+##   --mount=from=out-6ed51fafe322ecba,dst=/tmp/clis-ntpd_1-2-3/release/deps/libonce_cell-6ed51fafe322ecba.rlib,source=/libonce_cell-6ed51fafe322ecba.rlib \
 ##   --mount=from=out-162d4bd1f192637c,dst=/tmp/clis-ntpd_1-2-3/release/deps/libring-162d4bd1f192637c.rmeta,source=/libring-162d4bd1f192637c.rmeta \
+##   --mount=from=out-162d4bd1f192637c,dst=/tmp/clis-ntpd_1-2-3/release/deps/libring-162d4bd1f192637c.rlib,source=/libring-162d4bd1f192637c.rlib \
 ##   --mount=from=out-126f99f44d356e93,dst=/tmp/clis-ntpd_1-2-3/release/deps/libspin-126f99f44d356e93.rmeta,source=/libspin-126f99f44d356e93.rmeta \
+##   --mount=from=out-126f99f44d356e93,dst=/tmp/clis-ntpd_1-2-3/release/deps/libspin-126f99f44d356e93.rlib,source=/libspin-126f99f44d356e93.rlib \
 ##   --mount=from=out-2cf0189e0a6f5785,dst=/tmp/clis-ntpd_1-2-3/release/deps/libuntrusted-2cf0189e0a6f5785.rmeta,source=/libuntrusted-2cf0189e0a6f5785.rmeta \
+##   --mount=from=out-2cf0189e0a6f5785,dst=/tmp/clis-ntpd_1-2-3/release/deps/libuntrusted-2cf0189e0a6f5785.rlib,source=/libuntrusted-2cf0189e0a6f5785.rlib \
 ##   --mount=from=out-0bd417676bde33fe,dst=/tmp/clis-ntpd_1-2-3/release/deps/librustls_pki_types-0bd417676bde33fe.rmeta,source=/librustls_pki_types-0bd417676bde33fe.rmeta \
+##   --mount=from=out-0bd417676bde33fe,dst=/tmp/clis-ntpd_1-2-3/release/deps/librustls_pki_types-0bd417676bde33fe.rlib,source=/librustls_pki_types-0bd417676bde33fe.rlib \
 ##   --mount=from=out-0b45a7938c797eef,dst=/tmp/clis-ntpd_1-2-3/release/deps/libwebpki-0b45a7938c797eef.rmeta,source=/libwebpki-0b45a7938c797eef.rmeta \
+##   --mount=from=out-0b45a7938c797eef,dst=/tmp/clis-ntpd_1-2-3/release/deps/libwebpki-0b45a7938c797eef.rlib,source=/libwebpki-0b45a7938c797eef.rlib \
 ##   --mount=from=out-986325a49dffbcd1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libserde-986325a49dffbcd1.rmeta,source=/libserde-986325a49dffbcd1.rmeta \
+##   --mount=from=out-986325a49dffbcd1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libserde-986325a49dffbcd1.rlib,source=/libserde-986325a49dffbcd1.rlib \
 ##   --mount=from=out-b74741511dfa898a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libserde_derive-b74741511dfa898a.so,source=/libserde_derive-b74741511dfa898a.so \
 ##   --mount=from=out-4be32d01ee2a9db1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rmeta,source=/libproc_macro2-4be32d01ee2a9db1.rmeta \
+##   --mount=from=out-4be32d01ee2a9db1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rlib,source=/libproc_macro2-4be32d01ee2a9db1.rlib \
 ##   --mount=from=out-4c1dc76c11b3deb8,dst=/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rmeta,source=/libunicode_ident-4c1dc76c11b3deb8.rmeta \
+##   --mount=from=out-4c1dc76c11b3deb8,dst=/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rlib,source=/libunicode_ident-4c1dc76c11b3deb8.rlib \
 ##   --mount=from=out-36ed05d339fc79f9,dst=/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rmeta,source=/libquote-36ed05d339fc79f9.rmeta \
+##   --mount=from=out-36ed05d339fc79f9,dst=/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rlib,source=/libquote-36ed05d339fc79f9.rlib \
 ##   --mount=from=out-5c1d3e18a7dfcf78,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rmeta,source=/libsyn-5c1d3e18a7dfcf78.rmeta \
+##   --mount=from=out-5c1d3e18a7dfcf78,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rlib,source=/libsyn-5c1d3e18a7dfcf78.rlib \
 ##   --mount=from=out-7d2675bffdb63c95,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtracing-7d2675bffdb63c95.rmeta,source=/libtracing-7d2675bffdb63c95.rmeta \
+##   --mount=from=out-7d2675bffdb63c95,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtracing-7d2675bffdb63c95.rlib,source=/libtracing-7d2675bffdb63c95.rlib \
 ##   --mount=from=out-32982cb980ef9328,dst=/tmp/clis-ntpd_1-2-3/release/deps/libpin_project_lite-32982cb980ef9328.rmeta,source=/libpin_project_lite-32982cb980ef9328.rmeta \
+##   --mount=from=out-32982cb980ef9328,dst=/tmp/clis-ntpd_1-2-3/release/deps/libpin_project_lite-32982cb980ef9328.rlib,source=/libpin_project_lite-32982cb980ef9328.rlib \
 ##   --mount=from=out-ff2e92028461b3cf,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtracing_attributes-ff2e92028461b3cf.so,source=/libtracing_attributes-ff2e92028461b3cf.so \
 ##   --mount=from=out-100f3fe23952e4be,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtracing_core-100f3fe23952e4be.rmeta,source=/libtracing_core-100f3fe23952e4be.rmeta \
+##   --mount=from=out-100f3fe23952e4be,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtracing_core-100f3fe23952e4be.rlib,source=/libtracing_core-100f3fe23952e4be.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="ntp_proto" \
@@ -5974,7 +8514,9 @@ WORKDIR /tmp/clis-ntpd_1-2-3/release/deps
 RUN \
   --mount=from=cratesio-rustls-pemfile-2.1.2,source=/rustls-pemfile-2.1.2,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustls-pemfile-2.1.2 \
   --mount=from=out-b08e25582a8fdf7e,dst=/tmp/clis-ntpd_1-2-3/release/deps/libbase64-b08e25582a8fdf7e.rmeta,source=/libbase64-b08e25582a8fdf7e.rmeta \
+  --mount=from=out-b08e25582a8fdf7e,dst=/tmp/clis-ntpd_1-2-3/release/deps/libbase64-b08e25582a8fdf7e.rlib,source=/libbase64-b08e25582a8fdf7e.rlib \
   --mount=from=out-0bd417676bde33fe,dst=/tmp/clis-ntpd_1-2-3/release/deps/librustls_pki_types-0bd417676bde33fe.rmeta,source=/librustls_pki_types-0bd417676bde33fe.rmeta \
+  --mount=from=out-0bd417676bde33fe,dst=/tmp/clis-ntpd_1-2-3/release/deps/librustls_pki_types-0bd417676bde33fe.rlib,source=/librustls_pki_types-0bd417676bde33fe.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="rustls_pemfile" \
@@ -6010,8 +8552,8 @@ COPY --from=dep-l-rustls-pemfile-2.1.2-e86acdc6389f12a9 /tmp/clis-ntpd_1-2-3/rel
 ##     "0bd417676bde33fe",
 ## ]
 ## short_externs = [
-##     "base64-b08e25582a8fdf7e",
-##     "rustls_pki_types-0bd417676bde33fe",
+##     "b08e25582a8fdf7e",
+##     "0bd417676bde33fe",
 ## ]
 ## writes = [
 ##     "deps/rustls_pemfile-e86acdc6389f12a9.d",
@@ -6023,6 +8565,26 @@ COPY --from=dep-l-rustls-pemfile-2.1.2-e86acdc6389f12a9 /tmp/clis-ntpd_1-2-3/rel
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-2-3/release/deps/librustls_pemfile-e86acdc6389f12a9.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-2-3/release/deps/librustls_pemfile-e86acdc6389f12a9.rlib","emit":"link"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-b08e25582a8fdf7e"
+## src = "/libbase64-b08e25582a8fdf7e.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libbase64-b08e25582a8fdf7e.rmeta"
+## 
+## [[mounts]]
+## from = "out-b08e25582a8fdf7e"
+## src = "/libbase64-b08e25582a8fdf7e.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libbase64-b08e25582a8fdf7e.rlib"
+## 
+## [[mounts]]
+## from = "out-0bd417676bde33fe"
+## src = "/librustls_pki_types-0bd417676bde33fe.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/librustls_pki_types-0bd417676bde33fe.rmeta"
+## 
+## [[mounts]]
+## from = "out-0bd417676bde33fe"
+## src = "/librustls_pki_types-0bd417676bde33fe.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/librustls_pki_types-0bd417676bde33fe.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -6044,7 +8606,9 @@ COPY --from=dep-l-rustls-pemfile-2.1.2-e86acdc6389f12a9 /tmp/clis-ntpd_1-2-3/rel
 ## RUN \
 ##   --mount=from=cratesio-rustls-pemfile-2.1.2,source=/rustls-pemfile-2.1.2,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustls-pemfile-2.1.2 \
 ##   --mount=from=out-b08e25582a8fdf7e,dst=/tmp/clis-ntpd_1-2-3/release/deps/libbase64-b08e25582a8fdf7e.rmeta,source=/libbase64-b08e25582a8fdf7e.rmeta \
+##   --mount=from=out-b08e25582a8fdf7e,dst=/tmp/clis-ntpd_1-2-3/release/deps/libbase64-b08e25582a8fdf7e.rlib,source=/libbase64-b08e25582a8fdf7e.rlib \
 ##   --mount=from=out-0bd417676bde33fe,dst=/tmp/clis-ntpd_1-2-3/release/deps/librustls_pki_types-0bd417676bde33fe.rmeta,source=/librustls_pki_types-0bd417676bde33fe.rmeta \
+##   --mount=from=out-0bd417676bde33fe,dst=/tmp/clis-ntpd_1-2-3/release/deps/librustls_pki_types-0bd417676bde33fe.rlib,source=/librustls_pki_types-0bd417676bde33fe.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="rustls_pemfile" \
@@ -6087,9 +8651,13 @@ WORKDIR /tmp/clis-ntpd_1-2-3/release/deps
 RUN \
   --mount=from=cratesio-rustls-native-certs-0.7.1,source=/rustls-native-certs-0.7.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustls-native-certs-0.7.1 \
   --mount=from=out-0ee236ae7bf0c632,dst=/tmp/clis-ntpd_1-2-3/release/deps/libopenssl_probe-0ee236ae7bf0c632.rmeta,source=/libopenssl_probe-0ee236ae7bf0c632.rmeta \
+  --mount=from=out-0ee236ae7bf0c632,dst=/tmp/clis-ntpd_1-2-3/release/deps/libopenssl_probe-0ee236ae7bf0c632.rlib,source=/libopenssl_probe-0ee236ae7bf0c632.rlib \
   --mount=from=out-e86acdc6389f12a9,dst=/tmp/clis-ntpd_1-2-3/release/deps/librustls_pemfile-e86acdc6389f12a9.rmeta,source=/librustls_pemfile-e86acdc6389f12a9.rmeta \
+  --mount=from=out-e86acdc6389f12a9,dst=/tmp/clis-ntpd_1-2-3/release/deps/librustls_pemfile-e86acdc6389f12a9.rlib,source=/librustls_pemfile-e86acdc6389f12a9.rlib \
   --mount=from=out-b08e25582a8fdf7e,dst=/tmp/clis-ntpd_1-2-3/release/deps/libbase64-b08e25582a8fdf7e.rmeta,source=/libbase64-b08e25582a8fdf7e.rmeta \
+  --mount=from=out-b08e25582a8fdf7e,dst=/tmp/clis-ntpd_1-2-3/release/deps/libbase64-b08e25582a8fdf7e.rlib,source=/libbase64-b08e25582a8fdf7e.rlib \
   --mount=from=out-0bd417676bde33fe,dst=/tmp/clis-ntpd_1-2-3/release/deps/librustls_pki_types-0bd417676bde33fe.rmeta,source=/librustls_pki_types-0bd417676bde33fe.rmeta \
+  --mount=from=out-0bd417676bde33fe,dst=/tmp/clis-ntpd_1-2-3/release/deps/librustls_pki_types-0bd417676bde33fe.rlib,source=/librustls_pki_types-0bd417676bde33fe.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="rustls_native_certs" \
@@ -6127,10 +8695,10 @@ COPY --from=dep-l-rustls-native-certs-0.7.1-9a69f5c8c648a58b /tmp/clis-ntpd_1-2-
 ##     "0bd417676bde33fe",
 ## ]
 ## short_externs = [
-##     "openssl_probe-0ee236ae7bf0c632",
-##     "rustls_pemfile-e86acdc6389f12a9",
-##     "base64-b08e25582a8fdf7e",
-##     "rustls_pki_types-0bd417676bde33fe",
+##     "0ee236ae7bf0c632",
+##     "e86acdc6389f12a9",
+##     "b08e25582a8fdf7e",
+##     "0bd417676bde33fe",
 ## ]
 ## writes = [
 ##     "deps/rustls_native_certs-9a69f5c8c648a58b.d",
@@ -6142,6 +8710,46 @@ COPY --from=dep-l-rustls-native-certs-0.7.1-9a69f5c8c648a58b /tmp/clis-ntpd_1-2-
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-2-3/release/deps/librustls_native_certs-9a69f5c8c648a58b.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-2-3/release/deps/librustls_native_certs-9a69f5c8c648a58b.rlib","emit":"link"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-0ee236ae7bf0c632"
+## src = "/libopenssl_probe-0ee236ae7bf0c632.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libopenssl_probe-0ee236ae7bf0c632.rmeta"
+## 
+## [[mounts]]
+## from = "out-0ee236ae7bf0c632"
+## src = "/libopenssl_probe-0ee236ae7bf0c632.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libopenssl_probe-0ee236ae7bf0c632.rlib"
+## 
+## [[mounts]]
+## from = "out-e86acdc6389f12a9"
+## src = "/librustls_pemfile-e86acdc6389f12a9.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/librustls_pemfile-e86acdc6389f12a9.rmeta"
+## 
+## [[mounts]]
+## from = "out-e86acdc6389f12a9"
+## src = "/librustls_pemfile-e86acdc6389f12a9.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/librustls_pemfile-e86acdc6389f12a9.rlib"
+## 
+## [[mounts]]
+## from = "out-b08e25582a8fdf7e"
+## src = "/libbase64-b08e25582a8fdf7e.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libbase64-b08e25582a8fdf7e.rmeta"
+## 
+## [[mounts]]
+## from = "out-b08e25582a8fdf7e"
+## src = "/libbase64-b08e25582a8fdf7e.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libbase64-b08e25582a8fdf7e.rlib"
+## 
+## [[mounts]]
+## from = "out-0bd417676bde33fe"
+## src = "/librustls_pki_types-0bd417676bde33fe.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/librustls_pki_types-0bd417676bde33fe.rmeta"
+## 
+## [[mounts]]
+## from = "out-0bd417676bde33fe"
+## src = "/librustls_pki_types-0bd417676bde33fe.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/librustls_pki_types-0bd417676bde33fe.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -6163,9 +8771,13 @@ COPY --from=dep-l-rustls-native-certs-0.7.1-9a69f5c8c648a58b /tmp/clis-ntpd_1-2-
 ## RUN \
 ##   --mount=from=cratesio-rustls-native-certs-0.7.1,source=/rustls-native-certs-0.7.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustls-native-certs-0.7.1 \
 ##   --mount=from=out-0ee236ae7bf0c632,dst=/tmp/clis-ntpd_1-2-3/release/deps/libopenssl_probe-0ee236ae7bf0c632.rmeta,source=/libopenssl_probe-0ee236ae7bf0c632.rmeta \
+##   --mount=from=out-0ee236ae7bf0c632,dst=/tmp/clis-ntpd_1-2-3/release/deps/libopenssl_probe-0ee236ae7bf0c632.rlib,source=/libopenssl_probe-0ee236ae7bf0c632.rlib \
 ##   --mount=from=out-e86acdc6389f12a9,dst=/tmp/clis-ntpd_1-2-3/release/deps/librustls_pemfile-e86acdc6389f12a9.rmeta,source=/librustls_pemfile-e86acdc6389f12a9.rmeta \
+##   --mount=from=out-e86acdc6389f12a9,dst=/tmp/clis-ntpd_1-2-3/release/deps/librustls_pemfile-e86acdc6389f12a9.rlib,source=/librustls_pemfile-e86acdc6389f12a9.rlib \
 ##   --mount=from=out-b08e25582a8fdf7e,dst=/tmp/clis-ntpd_1-2-3/release/deps/libbase64-b08e25582a8fdf7e.rmeta,source=/libbase64-b08e25582a8fdf7e.rmeta \
+##   --mount=from=out-b08e25582a8fdf7e,dst=/tmp/clis-ntpd_1-2-3/release/deps/libbase64-b08e25582a8fdf7e.rlib,source=/libbase64-b08e25582a8fdf7e.rlib \
 ##   --mount=from=out-0bd417676bde33fe,dst=/tmp/clis-ntpd_1-2-3/release/deps/librustls_pki_types-0bd417676bde33fe.rmeta,source=/librustls_pki_types-0bd417676bde33fe.rmeta \
+##   --mount=from=out-0bd417676bde33fe,dst=/tmp/clis-ntpd_1-2-3/release/deps/librustls_pki_types-0bd417676bde33fe.rlib,source=/librustls_pki_types-0bd417676bde33fe.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="rustls_native_certs" \
@@ -6410,13 +9022,20 @@ WORKDIR /tmp/clis-ntpd_1-2-3/release/deps
 RUN \
   --mount=from=cratesio-serde_json-1.0.120,source=/serde_json-1.0.120,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.120 \
   --mount=from=out-95ec35c9faa8fa43,dst=/tmp/clis-ntpd_1-2-3/release/deps/libitoa-95ec35c9faa8fa43.rmeta,source=/libitoa-95ec35c9faa8fa43.rmeta \
+  --mount=from=out-95ec35c9faa8fa43,dst=/tmp/clis-ntpd_1-2-3/release/deps/libitoa-95ec35c9faa8fa43.rlib,source=/libitoa-95ec35c9faa8fa43.rlib \
   --mount=from=out-56a874feb6525857,dst=/tmp/clis-ntpd_1-2-3/release/deps/libryu-56a874feb6525857.rmeta,source=/libryu-56a874feb6525857.rmeta \
+  --mount=from=out-56a874feb6525857,dst=/tmp/clis-ntpd_1-2-3/release/deps/libryu-56a874feb6525857.rlib,source=/libryu-56a874feb6525857.rlib \
   --mount=from=out-986325a49dffbcd1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libserde-986325a49dffbcd1.rmeta,source=/libserde-986325a49dffbcd1.rmeta \
+  --mount=from=out-986325a49dffbcd1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libserde-986325a49dffbcd1.rlib,source=/libserde-986325a49dffbcd1.rlib \
   --mount=from=out-b74741511dfa898a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libserde_derive-b74741511dfa898a.so,source=/libserde_derive-b74741511dfa898a.so \
   --mount=from=out-4be32d01ee2a9db1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rmeta,source=/libproc_macro2-4be32d01ee2a9db1.rmeta \
+  --mount=from=out-4be32d01ee2a9db1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rlib,source=/libproc_macro2-4be32d01ee2a9db1.rlib \
   --mount=from=out-4c1dc76c11b3deb8,dst=/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rmeta,source=/libunicode_ident-4c1dc76c11b3deb8.rmeta \
+  --mount=from=out-4c1dc76c11b3deb8,dst=/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rlib,source=/libunicode_ident-4c1dc76c11b3deb8.rlib \
   --mount=from=out-36ed05d339fc79f9,dst=/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rmeta,source=/libquote-36ed05d339fc79f9.rmeta \
+  --mount=from=out-36ed05d339fc79f9,dst=/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rlib,source=/libquote-36ed05d339fc79f9.rlib \
   --mount=from=out-5c1d3e18a7dfcf78,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rmeta,source=/libsyn-5c1d3e18a7dfcf78.rmeta \
+  --mount=from=out-5c1d3e18a7dfcf78,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rlib,source=/libsyn-5c1d3e18a7dfcf78.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="serde_json" \
@@ -6459,14 +9078,14 @@ COPY --from=dep-l-serde_json-1.0.120-2a345737f765283a /tmp/clis-ntpd_1-2-3/relea
 ##     "5c1d3e18a7dfcf78",
 ## ]
 ## short_externs = [
-##     "itoa-95ec35c9faa8fa43",
-##     "ryu-56a874feb6525857",
-##     "serde-986325a49dffbcd1",
-##     "serde_derive-b74741511dfa898a",
-##     "proc_macro2-4be32d01ee2a9db1",
-##     "unicode_ident-4c1dc76c11b3deb8",
-##     "quote-36ed05d339fc79f9",
-##     "syn-5c1d3e18a7dfcf78",
+##     "95ec35c9faa8fa43",
+##     "56a874feb6525857",
+##     "986325a49dffbcd1",
+##     "b74741511dfa898a",
+##     "4be32d01ee2a9db1",
+##     "4c1dc76c11b3deb8",
+##     "36ed05d339fc79f9",
+##     "5c1d3e18a7dfcf78",
 ## ]
 ## writes = [
 ##     "deps/serde_json-2a345737f765283a.d",
@@ -6478,6 +9097,81 @@ COPY --from=dep-l-serde_json-1.0.120-2a345737f765283a /tmp/clis-ntpd_1-2-3/relea
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-2-3/release/deps/libserde_json-2a345737f765283a.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-2-3/release/deps/libserde_json-2a345737f765283a.rlib","emit":"link"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-95ec35c9faa8fa43"
+## src = "/libitoa-95ec35c9faa8fa43.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libitoa-95ec35c9faa8fa43.rmeta"
+## 
+## [[mounts]]
+## from = "out-95ec35c9faa8fa43"
+## src = "/libitoa-95ec35c9faa8fa43.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libitoa-95ec35c9faa8fa43.rlib"
+## 
+## [[mounts]]
+## from = "out-56a874feb6525857"
+## src = "/libryu-56a874feb6525857.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libryu-56a874feb6525857.rmeta"
+## 
+## [[mounts]]
+## from = "out-56a874feb6525857"
+## src = "/libryu-56a874feb6525857.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libryu-56a874feb6525857.rlib"
+## 
+## [[mounts]]
+## from = "out-986325a49dffbcd1"
+## src = "/libserde-986325a49dffbcd1.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libserde-986325a49dffbcd1.rmeta"
+## 
+## [[mounts]]
+## from = "out-986325a49dffbcd1"
+## src = "/libserde-986325a49dffbcd1.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libserde-986325a49dffbcd1.rlib"
+## 
+## [[mounts]]
+## from = "out-b74741511dfa898a"
+## src = "/libserde_derive-b74741511dfa898a.so"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libserde_derive-b74741511dfa898a.so"
+## 
+## [[mounts]]
+## from = "out-4be32d01ee2a9db1"
+## src = "/libproc_macro2-4be32d01ee2a9db1.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rmeta"
+## 
+## [[mounts]]
+## from = "out-4be32d01ee2a9db1"
+## src = "/libproc_macro2-4be32d01ee2a9db1.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rlib"
+## 
+## [[mounts]]
+## from = "out-4c1dc76c11b3deb8"
+## src = "/libunicode_ident-4c1dc76c11b3deb8.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rmeta"
+## 
+## [[mounts]]
+## from = "out-4c1dc76c11b3deb8"
+## src = "/libunicode_ident-4c1dc76c11b3deb8.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rlib"
+## 
+## [[mounts]]
+## from = "out-36ed05d339fc79f9"
+## src = "/libquote-36ed05d339fc79f9.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rmeta"
+## 
+## [[mounts]]
+## from = "out-36ed05d339fc79f9"
+## src = "/libquote-36ed05d339fc79f9.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rlib"
+## 
+## [[mounts]]
+## from = "out-5c1d3e18a7dfcf78"
+## src = "/libsyn-5c1d3e18a7dfcf78.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rmeta"
+## 
+## [[mounts]]
+## from = "out-5c1d3e18a7dfcf78"
+## src = "/libsyn-5c1d3e18a7dfcf78.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rlib"
 ## 
 ## [[contexts]]
 ## name = "crate_out-e5fe159846b3109b"
@@ -6503,13 +9197,20 @@ COPY --from=dep-l-serde_json-1.0.120-2a345737f765283a /tmp/clis-ntpd_1-2-3/relea
 ## RUN \
 ##   --mount=from=cratesio-serde_json-1.0.120,source=/serde_json-1.0.120,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.120 \
 ##   --mount=from=out-95ec35c9faa8fa43,dst=/tmp/clis-ntpd_1-2-3/release/deps/libitoa-95ec35c9faa8fa43.rmeta,source=/libitoa-95ec35c9faa8fa43.rmeta \
+##   --mount=from=out-95ec35c9faa8fa43,dst=/tmp/clis-ntpd_1-2-3/release/deps/libitoa-95ec35c9faa8fa43.rlib,source=/libitoa-95ec35c9faa8fa43.rlib \
 ##   --mount=from=out-56a874feb6525857,dst=/tmp/clis-ntpd_1-2-3/release/deps/libryu-56a874feb6525857.rmeta,source=/libryu-56a874feb6525857.rmeta \
+##   --mount=from=out-56a874feb6525857,dst=/tmp/clis-ntpd_1-2-3/release/deps/libryu-56a874feb6525857.rlib,source=/libryu-56a874feb6525857.rlib \
 ##   --mount=from=out-986325a49dffbcd1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libserde-986325a49dffbcd1.rmeta,source=/libserde-986325a49dffbcd1.rmeta \
+##   --mount=from=out-986325a49dffbcd1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libserde-986325a49dffbcd1.rlib,source=/libserde-986325a49dffbcd1.rlib \
 ##   --mount=from=out-b74741511dfa898a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libserde_derive-b74741511dfa898a.so,source=/libserde_derive-b74741511dfa898a.so \
 ##   --mount=from=out-4be32d01ee2a9db1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rmeta,source=/libproc_macro2-4be32d01ee2a9db1.rmeta \
+##   --mount=from=out-4be32d01ee2a9db1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rlib,source=/libproc_macro2-4be32d01ee2a9db1.rlib \
 ##   --mount=from=out-4c1dc76c11b3deb8,dst=/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rmeta,source=/libunicode_ident-4c1dc76c11b3deb8.rmeta \
+##   --mount=from=out-4c1dc76c11b3deb8,dst=/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rlib,source=/libunicode_ident-4c1dc76c11b3deb8.rlib \
 ##   --mount=from=out-36ed05d339fc79f9,dst=/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rmeta,source=/libquote-36ed05d339fc79f9.rmeta \
+##   --mount=from=out-36ed05d339fc79f9,dst=/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rlib,source=/libquote-36ed05d339fc79f9.rlib \
 ##   --mount=from=out-5c1d3e18a7dfcf78,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rmeta,source=/libsyn-5c1d3e18a7dfcf78.rmeta \
+##   --mount=from=out-5c1d3e18a7dfcf78,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rlib,source=/libsyn-5c1d3e18a7dfcf78.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="serde_json" \
@@ -6663,6 +9364,7 @@ WORKDIR /tmp/clis-ntpd_1-2-3/release/deps
 RUN \
   --mount=from=cratesio-mio-0.8.11,source=/mio-0.8.11,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/mio-0.8.11 \
   --mount=from=out-a7905fdc410bdfce,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rmeta,source=/liblibc-a7905fdc410bdfce.rmeta \
+  --mount=from=out-a7905fdc410bdfce,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rlib,source=/liblibc-a7905fdc410bdfce.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="mio" \
@@ -6694,7 +9396,7 @@ COPY --from=dep-l-mio-0.8.11-57de3125ece5b1fd /tmp/clis-ntpd_1-2-3/release/deps/
 
 ## this = "57de3125ece5b1fd"
 ## deps = ["a7905fdc410bdfce"]
-## short_externs = ["libc-a7905fdc410bdfce"]
+## short_externs = ["a7905fdc410bdfce"]
 ## writes = [
 ##     "deps/mio-57de3125ece5b1fd.d",
 ##     "deps/libmio-57de3125ece5b1fd.rmeta",
@@ -6739,6 +9441,16 @@ COPY --from=dep-l-mio-0.8.11-57de3125ece5b1fd /tmp/clis-ntpd_1-2-3/release/deps/
 ##     '{"$message_type":"diagnostic","message":"32 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 32 warnings emitted\u001b[0m\n\n"}',
 ## ]
 ## 
+## [[mounts]]
+## from = "out-a7905fdc410bdfce"
+## src = "/liblibc-a7905fdc410bdfce.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rmeta"
+## 
+## [[mounts]]
+## from = "out-a7905fdc410bdfce"
+## src = "/liblibc-a7905fdc410bdfce.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rlib"
+## 
 ## [[stages]]
 ## name = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.86.0-slim@sha256:57d415bbd61ce11e2d5f73de068103c7bd9f3188dc132c97cef4a8f62989e944 AS rust-base"
@@ -6759,6 +9471,7 @@ COPY --from=dep-l-mio-0.8.11-57de3125ece5b1fd /tmp/clis-ntpd_1-2-3/release/deps/
 ## RUN \
 ##   --mount=from=cratesio-mio-0.8.11,source=/mio-0.8.11,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/mio-0.8.11 \
 ##   --mount=from=out-a7905fdc410bdfce,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rmeta,source=/liblibc-a7905fdc410bdfce.rmeta \
+##   --mount=from=out-a7905fdc410bdfce,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rlib,source=/liblibc-a7905fdc410bdfce.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="mio" \
@@ -6801,6 +9514,7 @@ WORKDIR /tmp/clis-ntpd_1-2-3/release/deps
 RUN \
   --mount=from=cratesio-num_cpus-1.16.0,source=/num_cpus-1.16.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num_cpus-1.16.0 \
   --mount=from=out-a7905fdc410bdfce,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rmeta,source=/liblibc-a7905fdc410bdfce.rmeta \
+  --mount=from=out-a7905fdc410bdfce,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rlib,source=/liblibc-a7905fdc410bdfce.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="num_cpus" \
@@ -6832,7 +9546,7 @@ COPY --from=dep-l-num_cpus-1.16.0-516d6049f106f6a2 /tmp/clis-ntpd_1-2-3/release/
 
 ## this = "516d6049f106f6a2"
 ## deps = ["a7905fdc410bdfce"]
-## short_externs = ["libc-a7905fdc410bdfce"]
+## short_externs = ["a7905fdc410bdfce"]
 ## writes = [
 ##     "deps/num_cpus-516d6049f106f6a2.d",
 ##     "deps/libnum_cpus-516d6049f106f6a2.rmeta",
@@ -6846,6 +9560,16 @@ COPY --from=dep-l-num_cpus-1.16.0-516d6049f106f6a2 /tmp/clis-ntpd_1-2-3/release/
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-2-3/release/deps/libnum_cpus-516d6049f106f6a2.rlib","emit":"link"}',
 ##     '{"$message_type":"diagnostic","message":"2 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 2 warnings emitted\u001b[0m\n\n"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-a7905fdc410bdfce"
+## src = "/liblibc-a7905fdc410bdfce.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rmeta"
+## 
+## [[mounts]]
+## from = "out-a7905fdc410bdfce"
+## src = "/liblibc-a7905fdc410bdfce.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -6867,6 +9591,7 @@ COPY --from=dep-l-num_cpus-1.16.0-516d6049f106f6a2 /tmp/clis-ntpd_1-2-3/release/
 ## RUN \
 ##   --mount=from=cratesio-num_cpus-1.16.0,source=/num_cpus-1.16.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num_cpus-1.16.0 \
 ##   --mount=from=out-a7905fdc410bdfce,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rmeta,source=/liblibc-a7905fdc410bdfce.rmeta \
+##   --mount=from=out-a7905fdc410bdfce,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rlib,source=/liblibc-a7905fdc410bdfce.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="num_cpus" \
@@ -6909,6 +9634,7 @@ WORKDIR /tmp/clis-ntpd_1-2-3/release/deps
 RUN \
   --mount=from=cratesio-socket2-0.5.7,source=/socket2-0.5.7,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/socket2-0.5.7 \
   --mount=from=out-a7905fdc410bdfce,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rmeta,source=/liblibc-a7905fdc410bdfce.rmeta \
+  --mount=from=out-a7905fdc410bdfce,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rlib,source=/liblibc-a7905fdc410bdfce.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="socket2" \
@@ -6940,7 +9666,7 @@ COPY --from=dep-l-socket2-0.5.7-4f06700ac893bf17 /tmp/clis-ntpd_1-2-3/release/de
 
 ## this = "4f06700ac893bf17"
 ## deps = ["a7905fdc410bdfce"]
-## short_externs = ["libc-a7905fdc410bdfce"]
+## short_externs = ["a7905fdc410bdfce"]
 ## writes = [
 ##     "deps/socket2-4f06700ac893bf17.d",
 ##     "deps/libsocket2-4f06700ac893bf17.rmeta",
@@ -6951,6 +9677,16 @@ COPY --from=dep-l-socket2-0.5.7-4f06700ac893bf17 /tmp/clis-ntpd_1-2-3/release/de
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-2-3/release/deps/libsocket2-4f06700ac893bf17.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-2-3/release/deps/libsocket2-4f06700ac893bf17.rlib","emit":"link"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-a7905fdc410bdfce"
+## src = "/liblibc-a7905fdc410bdfce.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rmeta"
+## 
+## [[mounts]]
+## from = "out-a7905fdc410bdfce"
+## src = "/liblibc-a7905fdc410bdfce.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -6972,6 +9708,7 @@ COPY --from=dep-l-socket2-0.5.7-4f06700ac893bf17 /tmp/clis-ntpd_1-2-3/release/de
 ## RUN \
 ##   --mount=from=cratesio-socket2-0.5.7,source=/socket2-0.5.7,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/socket2-0.5.7 \
 ##   --mount=from=out-a7905fdc410bdfce,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rmeta,source=/liblibc-a7905fdc410bdfce.rmeta \
+##   --mount=from=out-a7905fdc410bdfce,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rlib,source=/liblibc-a7905fdc410bdfce.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="socket2" \
@@ -7013,9 +9750,13 @@ SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 WORKDIR /tmp/clis-ntpd_1-2-3/release/deps
 RUN \
   --mount=from=cratesio-tokio-macros-2.3.0,source=/tokio-macros-2.3.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/tokio-macros-2.3.0 \
+  --mount=from=out-4be32d01ee2a9db1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rmeta,source=/libproc_macro2-4be32d01ee2a9db1.rmeta \
   --mount=from=out-4be32d01ee2a9db1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rlib,source=/libproc_macro2-4be32d01ee2a9db1.rlib \
+  --mount=from=out-4c1dc76c11b3deb8,dst=/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rmeta,source=/libunicode_ident-4c1dc76c11b3deb8.rmeta \
   --mount=from=out-4c1dc76c11b3deb8,dst=/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rlib,source=/libunicode_ident-4c1dc76c11b3deb8.rlib \
+  --mount=from=out-36ed05d339fc79f9,dst=/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rmeta,source=/libquote-36ed05d339fc79f9.rmeta \
   --mount=from=out-36ed05d339fc79f9,dst=/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rlib,source=/libquote-36ed05d339fc79f9.rlib \
+  --mount=from=out-5c1d3e18a7dfcf78,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rmeta,source=/libsyn-5c1d3e18a7dfcf78.rmeta \
   --mount=from=out-5c1d3e18a7dfcf78,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rlib,source=/libsyn-5c1d3e18a7dfcf78.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
@@ -7054,10 +9795,10 @@ COPY --from=dep-p-tokio-macros-2.3.0-56d9f1f76b7466fe /tmp/clis-ntpd_1-2-3/relea
 ##     "5c1d3e18a7dfcf78",
 ## ]
 ## short_externs = [
-##     "proc_macro2-4be32d01ee2a9db1",
-##     "unicode_ident-4c1dc76c11b3deb8",
-##     "quote-36ed05d339fc79f9",
-##     "syn-5c1d3e18a7dfcf78",
+##     "4be32d01ee2a9db1",
+##     "4c1dc76c11b3deb8",
+##     "36ed05d339fc79f9",
+##     "5c1d3e18a7dfcf78",
 ## ]
 ## is_proc_macro = true
 ## writes = [
@@ -7068,6 +9809,46 @@ COPY --from=dep-p-tokio-macros-2.3.0-56d9f1f76b7466fe /tmp/clis-ntpd_1-2-3/relea
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-2-3/release/deps/tokio_macros-56d9f1f76b7466fe.d","emit":"dep-info"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-2-3/release/deps/libtokio_macros-56d9f1f76b7466fe.so","emit":"link"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-4be32d01ee2a9db1"
+## src = "/libproc_macro2-4be32d01ee2a9db1.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rmeta"
+## 
+## [[mounts]]
+## from = "out-4be32d01ee2a9db1"
+## src = "/libproc_macro2-4be32d01ee2a9db1.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rlib"
+## 
+## [[mounts]]
+## from = "out-4c1dc76c11b3deb8"
+## src = "/libunicode_ident-4c1dc76c11b3deb8.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rmeta"
+## 
+## [[mounts]]
+## from = "out-4c1dc76c11b3deb8"
+## src = "/libunicode_ident-4c1dc76c11b3deb8.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rlib"
+## 
+## [[mounts]]
+## from = "out-36ed05d339fc79f9"
+## src = "/libquote-36ed05d339fc79f9.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rmeta"
+## 
+## [[mounts]]
+## from = "out-36ed05d339fc79f9"
+## src = "/libquote-36ed05d339fc79f9.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rlib"
+## 
+## [[mounts]]
+## from = "out-5c1d3e18a7dfcf78"
+## src = "/libsyn-5c1d3e18a7dfcf78.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rmeta"
+## 
+## [[mounts]]
+## from = "out-5c1d3e18a7dfcf78"
+## src = "/libsyn-5c1d3e18a7dfcf78.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rlib"
 ## 
 ## [[contexts]]
 ## name = "crate_out-e5fe159846b3109b"
@@ -7092,9 +9873,13 @@ COPY --from=dep-p-tokio-macros-2.3.0-56d9f1f76b7466fe /tmp/clis-ntpd_1-2-3/relea
 ## WORKDIR /tmp/clis-ntpd_1-2-3/release/deps
 ## RUN \
 ##   --mount=from=cratesio-tokio-macros-2.3.0,source=/tokio-macros-2.3.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/tokio-macros-2.3.0 \
+##   --mount=from=out-4be32d01ee2a9db1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rmeta,source=/libproc_macro2-4be32d01ee2a9db1.rmeta \
 ##   --mount=from=out-4be32d01ee2a9db1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rlib,source=/libproc_macro2-4be32d01ee2a9db1.rlib \
+##   --mount=from=out-4c1dc76c11b3deb8,dst=/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rmeta,source=/libunicode_ident-4c1dc76c11b3deb8.rmeta \
 ##   --mount=from=out-4c1dc76c11b3deb8,dst=/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rlib,source=/libunicode_ident-4c1dc76c11b3deb8.rlib \
+##   --mount=from=out-36ed05d339fc79f9,dst=/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rmeta,source=/libquote-36ed05d339fc79f9.rmeta \
 ##   --mount=from=out-36ed05d339fc79f9,dst=/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rlib,source=/libquote-36ed05d339fc79f9.rlib \
+##   --mount=from=out-5c1d3e18a7dfcf78,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rmeta,source=/libsyn-5c1d3e18a7dfcf78.rmeta \
 ##   --mount=from=out-5c1d3e18a7dfcf78,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rlib,source=/libsyn-5c1d3e18a7dfcf78.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
@@ -7138,16 +9923,26 @@ WORKDIR /tmp/clis-ntpd_1-2-3/release/deps
 RUN \
   --mount=from=cratesio-tokio-1.38.1,source=/tokio-1.38.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/tokio-1.38.1 \
   --mount=from=out-17cf73a7d3f13d95,dst=/tmp/clis-ntpd_1-2-3/release/deps/libbytes-17cf73a7d3f13d95.rmeta,source=/libbytes-17cf73a7d3f13d95.rmeta \
+  --mount=from=out-17cf73a7d3f13d95,dst=/tmp/clis-ntpd_1-2-3/release/deps/libbytes-17cf73a7d3f13d95.rlib,source=/libbytes-17cf73a7d3f13d95.rlib \
   --mount=from=out-a7905fdc410bdfce,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rmeta,source=/liblibc-a7905fdc410bdfce.rmeta \
+  --mount=from=out-a7905fdc410bdfce,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rlib,source=/liblibc-a7905fdc410bdfce.rlib \
   --mount=from=out-57de3125ece5b1fd,dst=/tmp/clis-ntpd_1-2-3/release/deps/libmio-57de3125ece5b1fd.rmeta,source=/libmio-57de3125ece5b1fd.rmeta \
+  --mount=from=out-57de3125ece5b1fd,dst=/tmp/clis-ntpd_1-2-3/release/deps/libmio-57de3125ece5b1fd.rlib,source=/libmio-57de3125ece5b1fd.rlib \
   --mount=from=out-516d6049f106f6a2,dst=/tmp/clis-ntpd_1-2-3/release/deps/libnum_cpus-516d6049f106f6a2.rmeta,source=/libnum_cpus-516d6049f106f6a2.rmeta \
+  --mount=from=out-516d6049f106f6a2,dst=/tmp/clis-ntpd_1-2-3/release/deps/libnum_cpus-516d6049f106f6a2.rlib,source=/libnum_cpus-516d6049f106f6a2.rlib \
   --mount=from=out-32982cb980ef9328,dst=/tmp/clis-ntpd_1-2-3/release/deps/libpin_project_lite-32982cb980ef9328.rmeta,source=/libpin_project_lite-32982cb980ef9328.rmeta \
+  --mount=from=out-32982cb980ef9328,dst=/tmp/clis-ntpd_1-2-3/release/deps/libpin_project_lite-32982cb980ef9328.rlib,source=/libpin_project_lite-32982cb980ef9328.rlib \
   --mount=from=out-4f06700ac893bf17,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsocket2-4f06700ac893bf17.rmeta,source=/libsocket2-4f06700ac893bf17.rmeta \
+  --mount=from=out-4f06700ac893bf17,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsocket2-4f06700ac893bf17.rlib,source=/libsocket2-4f06700ac893bf17.rlib \
   --mount=from=out-56d9f1f76b7466fe,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtokio_macros-56d9f1f76b7466fe.so,source=/libtokio_macros-56d9f1f76b7466fe.so \
   --mount=from=out-4be32d01ee2a9db1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rmeta,source=/libproc_macro2-4be32d01ee2a9db1.rmeta \
+  --mount=from=out-4be32d01ee2a9db1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rlib,source=/libproc_macro2-4be32d01ee2a9db1.rlib \
   --mount=from=out-4c1dc76c11b3deb8,dst=/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rmeta,source=/libunicode_ident-4c1dc76c11b3deb8.rmeta \
+  --mount=from=out-4c1dc76c11b3deb8,dst=/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rlib,source=/libunicode_ident-4c1dc76c11b3deb8.rlib \
   --mount=from=out-36ed05d339fc79f9,dst=/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rmeta,source=/libquote-36ed05d339fc79f9.rmeta \
+  --mount=from=out-36ed05d339fc79f9,dst=/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rlib,source=/libquote-36ed05d339fc79f9.rlib \
   --mount=from=out-5c1d3e18a7dfcf78,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rmeta,source=/libsyn-5c1d3e18a7dfcf78.rmeta \
+  --mount=from=out-5c1d3e18a7dfcf78,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rlib,source=/libsyn-5c1d3e18a7dfcf78.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="tokio" \
@@ -7192,17 +9987,17 @@ COPY --from=dep-l-tokio-1.38.1-e6ed429a0a7450c0 /tmp/clis-ntpd_1-2-3/release/dep
 ##     "5c1d3e18a7dfcf78",
 ## ]
 ## short_externs = [
-##     "bytes-17cf73a7d3f13d95",
-##     "libc-a7905fdc410bdfce",
-##     "mio-57de3125ece5b1fd",
-##     "num_cpus-516d6049f106f6a2",
-##     "pin_project_lite-32982cb980ef9328",
-##     "socket2-4f06700ac893bf17",
-##     "tokio_macros-56d9f1f76b7466fe",
-##     "proc_macro2-4be32d01ee2a9db1",
-##     "unicode_ident-4c1dc76c11b3deb8",
-##     "quote-36ed05d339fc79f9",
-##     "syn-5c1d3e18a7dfcf78",
+##     "17cf73a7d3f13d95",
+##     "a7905fdc410bdfce",
+##     "57de3125ece5b1fd",
+##     "516d6049f106f6a2",
+##     "32982cb980ef9328",
+##     "4f06700ac893bf17",
+##     "56d9f1f76b7466fe",
+##     "4be32d01ee2a9db1",
+##     "4c1dc76c11b3deb8",
+##     "36ed05d339fc79f9",
+##     "5c1d3e18a7dfcf78",
 ## ]
 ## writes = [
 ##     "deps/tokio-e6ed429a0a7450c0.d",
@@ -7214,6 +10009,111 @@ COPY --from=dep-l-tokio-1.38.1-e6ed429a0a7450c0 /tmp/clis-ntpd_1-2-3/release/dep
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-2-3/release/deps/libtokio-e6ed429a0a7450c0.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-2-3/release/deps/libtokio-e6ed429a0a7450c0.rlib","emit":"link"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-17cf73a7d3f13d95"
+## src = "/libbytes-17cf73a7d3f13d95.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libbytes-17cf73a7d3f13d95.rmeta"
+## 
+## [[mounts]]
+## from = "out-17cf73a7d3f13d95"
+## src = "/libbytes-17cf73a7d3f13d95.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libbytes-17cf73a7d3f13d95.rlib"
+## 
+## [[mounts]]
+## from = "out-a7905fdc410bdfce"
+## src = "/liblibc-a7905fdc410bdfce.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rmeta"
+## 
+## [[mounts]]
+## from = "out-a7905fdc410bdfce"
+## src = "/liblibc-a7905fdc410bdfce.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rlib"
+## 
+## [[mounts]]
+## from = "out-57de3125ece5b1fd"
+## src = "/libmio-57de3125ece5b1fd.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libmio-57de3125ece5b1fd.rmeta"
+## 
+## [[mounts]]
+## from = "out-57de3125ece5b1fd"
+## src = "/libmio-57de3125ece5b1fd.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libmio-57de3125ece5b1fd.rlib"
+## 
+## [[mounts]]
+## from = "out-516d6049f106f6a2"
+## src = "/libnum_cpus-516d6049f106f6a2.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libnum_cpus-516d6049f106f6a2.rmeta"
+## 
+## [[mounts]]
+## from = "out-516d6049f106f6a2"
+## src = "/libnum_cpus-516d6049f106f6a2.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libnum_cpus-516d6049f106f6a2.rlib"
+## 
+## [[mounts]]
+## from = "out-32982cb980ef9328"
+## src = "/libpin_project_lite-32982cb980ef9328.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libpin_project_lite-32982cb980ef9328.rmeta"
+## 
+## [[mounts]]
+## from = "out-32982cb980ef9328"
+## src = "/libpin_project_lite-32982cb980ef9328.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libpin_project_lite-32982cb980ef9328.rlib"
+## 
+## [[mounts]]
+## from = "out-4f06700ac893bf17"
+## src = "/libsocket2-4f06700ac893bf17.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libsocket2-4f06700ac893bf17.rmeta"
+## 
+## [[mounts]]
+## from = "out-4f06700ac893bf17"
+## src = "/libsocket2-4f06700ac893bf17.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libsocket2-4f06700ac893bf17.rlib"
+## 
+## [[mounts]]
+## from = "out-56d9f1f76b7466fe"
+## src = "/libtokio_macros-56d9f1f76b7466fe.so"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libtokio_macros-56d9f1f76b7466fe.so"
+## 
+## [[mounts]]
+## from = "out-4be32d01ee2a9db1"
+## src = "/libproc_macro2-4be32d01ee2a9db1.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rmeta"
+## 
+## [[mounts]]
+## from = "out-4be32d01ee2a9db1"
+## src = "/libproc_macro2-4be32d01ee2a9db1.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rlib"
+## 
+## [[mounts]]
+## from = "out-4c1dc76c11b3deb8"
+## src = "/libunicode_ident-4c1dc76c11b3deb8.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rmeta"
+## 
+## [[mounts]]
+## from = "out-4c1dc76c11b3deb8"
+## src = "/libunicode_ident-4c1dc76c11b3deb8.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rlib"
+## 
+## [[mounts]]
+## from = "out-36ed05d339fc79f9"
+## src = "/libquote-36ed05d339fc79f9.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rmeta"
+## 
+## [[mounts]]
+## from = "out-36ed05d339fc79f9"
+## src = "/libquote-36ed05d339fc79f9.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rlib"
+## 
+## [[mounts]]
+## from = "out-5c1d3e18a7dfcf78"
+## src = "/libsyn-5c1d3e18a7dfcf78.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rmeta"
+## 
+## [[mounts]]
+## from = "out-5c1d3e18a7dfcf78"
+## src = "/libsyn-5c1d3e18a7dfcf78.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rlib"
 ## 
 ## [[contexts]]
 ## name = "crate_out-e5fe159846b3109b"
@@ -7239,16 +10139,26 @@ COPY --from=dep-l-tokio-1.38.1-e6ed429a0a7450c0 /tmp/clis-ntpd_1-2-3/release/dep
 ## RUN \
 ##   --mount=from=cratesio-tokio-1.38.1,source=/tokio-1.38.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/tokio-1.38.1 \
 ##   --mount=from=out-17cf73a7d3f13d95,dst=/tmp/clis-ntpd_1-2-3/release/deps/libbytes-17cf73a7d3f13d95.rmeta,source=/libbytes-17cf73a7d3f13d95.rmeta \
+##   --mount=from=out-17cf73a7d3f13d95,dst=/tmp/clis-ntpd_1-2-3/release/deps/libbytes-17cf73a7d3f13d95.rlib,source=/libbytes-17cf73a7d3f13d95.rlib \
 ##   --mount=from=out-a7905fdc410bdfce,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rmeta,source=/liblibc-a7905fdc410bdfce.rmeta \
+##   --mount=from=out-a7905fdc410bdfce,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rlib,source=/liblibc-a7905fdc410bdfce.rlib \
 ##   --mount=from=out-57de3125ece5b1fd,dst=/tmp/clis-ntpd_1-2-3/release/deps/libmio-57de3125ece5b1fd.rmeta,source=/libmio-57de3125ece5b1fd.rmeta \
+##   --mount=from=out-57de3125ece5b1fd,dst=/tmp/clis-ntpd_1-2-3/release/deps/libmio-57de3125ece5b1fd.rlib,source=/libmio-57de3125ece5b1fd.rlib \
 ##   --mount=from=out-516d6049f106f6a2,dst=/tmp/clis-ntpd_1-2-3/release/deps/libnum_cpus-516d6049f106f6a2.rmeta,source=/libnum_cpus-516d6049f106f6a2.rmeta \
+##   --mount=from=out-516d6049f106f6a2,dst=/tmp/clis-ntpd_1-2-3/release/deps/libnum_cpus-516d6049f106f6a2.rlib,source=/libnum_cpus-516d6049f106f6a2.rlib \
 ##   --mount=from=out-32982cb980ef9328,dst=/tmp/clis-ntpd_1-2-3/release/deps/libpin_project_lite-32982cb980ef9328.rmeta,source=/libpin_project_lite-32982cb980ef9328.rmeta \
+##   --mount=from=out-32982cb980ef9328,dst=/tmp/clis-ntpd_1-2-3/release/deps/libpin_project_lite-32982cb980ef9328.rlib,source=/libpin_project_lite-32982cb980ef9328.rlib \
 ##   --mount=from=out-4f06700ac893bf17,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsocket2-4f06700ac893bf17.rmeta,source=/libsocket2-4f06700ac893bf17.rmeta \
+##   --mount=from=out-4f06700ac893bf17,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsocket2-4f06700ac893bf17.rlib,source=/libsocket2-4f06700ac893bf17.rlib \
 ##   --mount=from=out-56d9f1f76b7466fe,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtokio_macros-56d9f1f76b7466fe.so,source=/libtokio_macros-56d9f1f76b7466fe.so \
 ##   --mount=from=out-4be32d01ee2a9db1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rmeta,source=/libproc_macro2-4be32d01ee2a9db1.rmeta \
+##   --mount=from=out-4be32d01ee2a9db1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rlib,source=/libproc_macro2-4be32d01ee2a9db1.rlib \
 ##   --mount=from=out-4c1dc76c11b3deb8,dst=/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rmeta,source=/libunicode_ident-4c1dc76c11b3deb8.rmeta \
+##   --mount=from=out-4c1dc76c11b3deb8,dst=/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rlib,source=/libunicode_ident-4c1dc76c11b3deb8.rlib \
 ##   --mount=from=out-36ed05d339fc79f9,dst=/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rmeta,source=/libquote-36ed05d339fc79f9.rmeta \
+##   --mount=from=out-36ed05d339fc79f9,dst=/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rlib,source=/libquote-36ed05d339fc79f9.rlib \
 ##   --mount=from=out-5c1d3e18a7dfcf78,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rmeta,source=/libsyn-5c1d3e18a7dfcf78.rmeta \
+##   --mount=from=out-5c1d3e18a7dfcf78,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rlib,source=/libsyn-5c1d3e18a7dfcf78.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="tokio" \
@@ -7291,24 +10201,40 @@ WORKDIR /tmp/clis-ntpd_1-2-3/release/deps
 RUN \
   --mount=from=cratesio-timestamped-socket-0.2.2,source=/timestamped-socket-0.2.2,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/timestamped-socket-0.2.2 \
   --mount=from=out-a7905fdc410bdfce,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rmeta,source=/liblibc-a7905fdc410bdfce.rmeta \
+  --mount=from=out-a7905fdc410bdfce,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rlib,source=/liblibc-a7905fdc410bdfce.rlib \
   --mount=from=out-986325a49dffbcd1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libserde-986325a49dffbcd1.rmeta,source=/libserde-986325a49dffbcd1.rmeta \
+  --mount=from=out-986325a49dffbcd1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libserde-986325a49dffbcd1.rlib,source=/libserde-986325a49dffbcd1.rlib \
   --mount=from=out-b74741511dfa898a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libserde_derive-b74741511dfa898a.so,source=/libserde_derive-b74741511dfa898a.so \
   --mount=from=out-4be32d01ee2a9db1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rmeta,source=/libproc_macro2-4be32d01ee2a9db1.rmeta \
+  --mount=from=out-4be32d01ee2a9db1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rlib,source=/libproc_macro2-4be32d01ee2a9db1.rlib \
   --mount=from=out-4c1dc76c11b3deb8,dst=/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rmeta,source=/libunicode_ident-4c1dc76c11b3deb8.rmeta \
+  --mount=from=out-4c1dc76c11b3deb8,dst=/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rlib,source=/libunicode_ident-4c1dc76c11b3deb8.rlib \
   --mount=from=out-36ed05d339fc79f9,dst=/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rmeta,source=/libquote-36ed05d339fc79f9.rmeta \
+  --mount=from=out-36ed05d339fc79f9,dst=/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rlib,source=/libquote-36ed05d339fc79f9.rlib \
   --mount=from=out-5c1d3e18a7dfcf78,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rmeta,source=/libsyn-5c1d3e18a7dfcf78.rmeta \
+  --mount=from=out-5c1d3e18a7dfcf78,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rlib,source=/libsyn-5c1d3e18a7dfcf78.rlib \
   --mount=from=out-e6ed429a0a7450c0,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtokio-e6ed429a0a7450c0.rmeta,source=/libtokio-e6ed429a0a7450c0.rmeta \
+  --mount=from=out-e6ed429a0a7450c0,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtokio-e6ed429a0a7450c0.rlib,source=/libtokio-e6ed429a0a7450c0.rlib \
   --mount=from=out-17cf73a7d3f13d95,dst=/tmp/clis-ntpd_1-2-3/release/deps/libbytes-17cf73a7d3f13d95.rmeta,source=/libbytes-17cf73a7d3f13d95.rmeta \
+  --mount=from=out-17cf73a7d3f13d95,dst=/tmp/clis-ntpd_1-2-3/release/deps/libbytes-17cf73a7d3f13d95.rlib,source=/libbytes-17cf73a7d3f13d95.rlib \
   --mount=from=out-57de3125ece5b1fd,dst=/tmp/clis-ntpd_1-2-3/release/deps/libmio-57de3125ece5b1fd.rmeta,source=/libmio-57de3125ece5b1fd.rmeta \
+  --mount=from=out-57de3125ece5b1fd,dst=/tmp/clis-ntpd_1-2-3/release/deps/libmio-57de3125ece5b1fd.rlib,source=/libmio-57de3125ece5b1fd.rlib \
   --mount=from=out-516d6049f106f6a2,dst=/tmp/clis-ntpd_1-2-3/release/deps/libnum_cpus-516d6049f106f6a2.rmeta,source=/libnum_cpus-516d6049f106f6a2.rmeta \
+  --mount=from=out-516d6049f106f6a2,dst=/tmp/clis-ntpd_1-2-3/release/deps/libnum_cpus-516d6049f106f6a2.rlib,source=/libnum_cpus-516d6049f106f6a2.rlib \
   --mount=from=out-32982cb980ef9328,dst=/tmp/clis-ntpd_1-2-3/release/deps/libpin_project_lite-32982cb980ef9328.rmeta,source=/libpin_project_lite-32982cb980ef9328.rmeta \
+  --mount=from=out-32982cb980ef9328,dst=/tmp/clis-ntpd_1-2-3/release/deps/libpin_project_lite-32982cb980ef9328.rlib,source=/libpin_project_lite-32982cb980ef9328.rlib \
   --mount=from=out-4f06700ac893bf17,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsocket2-4f06700ac893bf17.rmeta,source=/libsocket2-4f06700ac893bf17.rmeta \
+  --mount=from=out-4f06700ac893bf17,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsocket2-4f06700ac893bf17.rlib,source=/libsocket2-4f06700ac893bf17.rlib \
   --mount=from=out-56d9f1f76b7466fe,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtokio_macros-56d9f1f76b7466fe.so,source=/libtokio_macros-56d9f1f76b7466fe.so \
   --mount=from=out-7d2675bffdb63c95,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtracing-7d2675bffdb63c95.rmeta,source=/libtracing-7d2675bffdb63c95.rmeta \
+  --mount=from=out-7d2675bffdb63c95,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtracing-7d2675bffdb63c95.rlib,source=/libtracing-7d2675bffdb63c95.rlib \
   --mount=from=out-b564a3159bfcf688,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblog-b564a3159bfcf688.rmeta,source=/liblog-b564a3159bfcf688.rmeta \
+  --mount=from=out-b564a3159bfcf688,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblog-b564a3159bfcf688.rlib,source=/liblog-b564a3159bfcf688.rlib \
   --mount=from=out-ff2e92028461b3cf,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtracing_attributes-ff2e92028461b3cf.so,source=/libtracing_attributes-ff2e92028461b3cf.so \
   --mount=from=out-100f3fe23952e4be,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtracing_core-100f3fe23952e4be.rmeta,source=/libtracing_core-100f3fe23952e4be.rmeta \
+  --mount=from=out-100f3fe23952e4be,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtracing_core-100f3fe23952e4be.rlib,source=/libtracing_core-100f3fe23952e4be.rlib \
   --mount=from=out-6ed51fafe322ecba,dst=/tmp/clis-ntpd_1-2-3/release/deps/libonce_cell-6ed51fafe322ecba.rmeta,source=/libonce_cell-6ed51fafe322ecba.rmeta \
+  --mount=from=out-6ed51fafe322ecba,dst=/tmp/clis-ntpd_1-2-3/release/deps/libonce_cell-6ed51fafe322ecba.rlib,source=/libonce_cell-6ed51fafe322ecba.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="timestamped_socket" \
@@ -7361,25 +10287,25 @@ COPY --from=dep-l-timestamped-socket-0.2.2-2f59881207cd7c68 /tmp/clis-ntpd_1-2-3
 ##     "6ed51fafe322ecba",
 ## ]
 ## short_externs = [
-##     "libc-a7905fdc410bdfce",
-##     "serde-986325a49dffbcd1",
-##     "serde_derive-b74741511dfa898a",
-##     "proc_macro2-4be32d01ee2a9db1",
-##     "unicode_ident-4c1dc76c11b3deb8",
-##     "quote-36ed05d339fc79f9",
-##     "syn-5c1d3e18a7dfcf78",
-##     "tokio-e6ed429a0a7450c0",
-##     "bytes-17cf73a7d3f13d95",
-##     "mio-57de3125ece5b1fd",
-##     "num_cpus-516d6049f106f6a2",
-##     "pin_project_lite-32982cb980ef9328",
-##     "socket2-4f06700ac893bf17",
-##     "tokio_macros-56d9f1f76b7466fe",
-##     "tracing-7d2675bffdb63c95",
-##     "log-b564a3159bfcf688",
-##     "tracing_attributes-ff2e92028461b3cf",
-##     "tracing_core-100f3fe23952e4be",
-##     "once_cell-6ed51fafe322ecba",
+##     "a7905fdc410bdfce",
+##     "986325a49dffbcd1",
+##     "b74741511dfa898a",
+##     "4be32d01ee2a9db1",
+##     "4c1dc76c11b3deb8",
+##     "36ed05d339fc79f9",
+##     "5c1d3e18a7dfcf78",
+##     "e6ed429a0a7450c0",
+##     "17cf73a7d3f13d95",
+##     "57de3125ece5b1fd",
+##     "516d6049f106f6a2",
+##     "32982cb980ef9328",
+##     "4f06700ac893bf17",
+##     "56d9f1f76b7466fe",
+##     "7d2675bffdb63c95",
+##     "b564a3159bfcf688",
+##     "ff2e92028461b3cf",
+##     "100f3fe23952e4be",
+##     "6ed51fafe322ecba",
 ## ]
 ## writes = [
 ##     "deps/timestamped_socket-2f59881207cd7c68.d",
@@ -7391,6 +10317,181 @@ COPY --from=dep-l-timestamped-socket-0.2.2-2f59881207cd7c68 /tmp/clis-ntpd_1-2-3
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-2-3/release/deps/libtimestamped_socket-2f59881207cd7c68.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-2-3/release/deps/libtimestamped_socket-2f59881207cd7c68.rlib","emit":"link"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-a7905fdc410bdfce"
+## src = "/liblibc-a7905fdc410bdfce.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rmeta"
+## 
+## [[mounts]]
+## from = "out-a7905fdc410bdfce"
+## src = "/liblibc-a7905fdc410bdfce.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rlib"
+## 
+## [[mounts]]
+## from = "out-986325a49dffbcd1"
+## src = "/libserde-986325a49dffbcd1.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libserde-986325a49dffbcd1.rmeta"
+## 
+## [[mounts]]
+## from = "out-986325a49dffbcd1"
+## src = "/libserde-986325a49dffbcd1.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libserde-986325a49dffbcd1.rlib"
+## 
+## [[mounts]]
+## from = "out-b74741511dfa898a"
+## src = "/libserde_derive-b74741511dfa898a.so"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libserde_derive-b74741511dfa898a.so"
+## 
+## [[mounts]]
+## from = "out-4be32d01ee2a9db1"
+## src = "/libproc_macro2-4be32d01ee2a9db1.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rmeta"
+## 
+## [[mounts]]
+## from = "out-4be32d01ee2a9db1"
+## src = "/libproc_macro2-4be32d01ee2a9db1.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rlib"
+## 
+## [[mounts]]
+## from = "out-4c1dc76c11b3deb8"
+## src = "/libunicode_ident-4c1dc76c11b3deb8.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rmeta"
+## 
+## [[mounts]]
+## from = "out-4c1dc76c11b3deb8"
+## src = "/libunicode_ident-4c1dc76c11b3deb8.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rlib"
+## 
+## [[mounts]]
+## from = "out-36ed05d339fc79f9"
+## src = "/libquote-36ed05d339fc79f9.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rmeta"
+## 
+## [[mounts]]
+## from = "out-36ed05d339fc79f9"
+## src = "/libquote-36ed05d339fc79f9.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rlib"
+## 
+## [[mounts]]
+## from = "out-5c1d3e18a7dfcf78"
+## src = "/libsyn-5c1d3e18a7dfcf78.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rmeta"
+## 
+## [[mounts]]
+## from = "out-5c1d3e18a7dfcf78"
+## src = "/libsyn-5c1d3e18a7dfcf78.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rlib"
+## 
+## [[mounts]]
+## from = "out-e6ed429a0a7450c0"
+## src = "/libtokio-e6ed429a0a7450c0.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libtokio-e6ed429a0a7450c0.rmeta"
+## 
+## [[mounts]]
+## from = "out-e6ed429a0a7450c0"
+## src = "/libtokio-e6ed429a0a7450c0.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libtokio-e6ed429a0a7450c0.rlib"
+## 
+## [[mounts]]
+## from = "out-17cf73a7d3f13d95"
+## src = "/libbytes-17cf73a7d3f13d95.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libbytes-17cf73a7d3f13d95.rmeta"
+## 
+## [[mounts]]
+## from = "out-17cf73a7d3f13d95"
+## src = "/libbytes-17cf73a7d3f13d95.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libbytes-17cf73a7d3f13d95.rlib"
+## 
+## [[mounts]]
+## from = "out-57de3125ece5b1fd"
+## src = "/libmio-57de3125ece5b1fd.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libmio-57de3125ece5b1fd.rmeta"
+## 
+## [[mounts]]
+## from = "out-57de3125ece5b1fd"
+## src = "/libmio-57de3125ece5b1fd.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libmio-57de3125ece5b1fd.rlib"
+## 
+## [[mounts]]
+## from = "out-516d6049f106f6a2"
+## src = "/libnum_cpus-516d6049f106f6a2.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libnum_cpus-516d6049f106f6a2.rmeta"
+## 
+## [[mounts]]
+## from = "out-516d6049f106f6a2"
+## src = "/libnum_cpus-516d6049f106f6a2.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libnum_cpus-516d6049f106f6a2.rlib"
+## 
+## [[mounts]]
+## from = "out-32982cb980ef9328"
+## src = "/libpin_project_lite-32982cb980ef9328.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libpin_project_lite-32982cb980ef9328.rmeta"
+## 
+## [[mounts]]
+## from = "out-32982cb980ef9328"
+## src = "/libpin_project_lite-32982cb980ef9328.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libpin_project_lite-32982cb980ef9328.rlib"
+## 
+## [[mounts]]
+## from = "out-4f06700ac893bf17"
+## src = "/libsocket2-4f06700ac893bf17.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libsocket2-4f06700ac893bf17.rmeta"
+## 
+## [[mounts]]
+## from = "out-4f06700ac893bf17"
+## src = "/libsocket2-4f06700ac893bf17.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libsocket2-4f06700ac893bf17.rlib"
+## 
+## [[mounts]]
+## from = "out-56d9f1f76b7466fe"
+## src = "/libtokio_macros-56d9f1f76b7466fe.so"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libtokio_macros-56d9f1f76b7466fe.so"
+## 
+## [[mounts]]
+## from = "out-7d2675bffdb63c95"
+## src = "/libtracing-7d2675bffdb63c95.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libtracing-7d2675bffdb63c95.rmeta"
+## 
+## [[mounts]]
+## from = "out-7d2675bffdb63c95"
+## src = "/libtracing-7d2675bffdb63c95.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libtracing-7d2675bffdb63c95.rlib"
+## 
+## [[mounts]]
+## from = "out-b564a3159bfcf688"
+## src = "/liblog-b564a3159bfcf688.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/liblog-b564a3159bfcf688.rmeta"
+## 
+## [[mounts]]
+## from = "out-b564a3159bfcf688"
+## src = "/liblog-b564a3159bfcf688.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/liblog-b564a3159bfcf688.rlib"
+## 
+## [[mounts]]
+## from = "out-ff2e92028461b3cf"
+## src = "/libtracing_attributes-ff2e92028461b3cf.so"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libtracing_attributes-ff2e92028461b3cf.so"
+## 
+## [[mounts]]
+## from = "out-100f3fe23952e4be"
+## src = "/libtracing_core-100f3fe23952e4be.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libtracing_core-100f3fe23952e4be.rmeta"
+## 
+## [[mounts]]
+## from = "out-100f3fe23952e4be"
+## src = "/libtracing_core-100f3fe23952e4be.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libtracing_core-100f3fe23952e4be.rlib"
+## 
+## [[mounts]]
+## from = "out-6ed51fafe322ecba"
+## src = "/libonce_cell-6ed51fafe322ecba.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libonce_cell-6ed51fafe322ecba.rmeta"
+## 
+## [[mounts]]
+## from = "out-6ed51fafe322ecba"
+## src = "/libonce_cell-6ed51fafe322ecba.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libonce_cell-6ed51fafe322ecba.rlib"
 ## 
 ## [[contexts]]
 ## name = "crate_out-e5fe159846b3109b"
@@ -7416,24 +10517,40 @@ COPY --from=dep-l-timestamped-socket-0.2.2-2f59881207cd7c68 /tmp/clis-ntpd_1-2-3
 ## RUN \
 ##   --mount=from=cratesio-timestamped-socket-0.2.2,source=/timestamped-socket-0.2.2,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/timestamped-socket-0.2.2 \
 ##   --mount=from=out-a7905fdc410bdfce,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rmeta,source=/liblibc-a7905fdc410bdfce.rmeta \
+##   --mount=from=out-a7905fdc410bdfce,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rlib,source=/liblibc-a7905fdc410bdfce.rlib \
 ##   --mount=from=out-986325a49dffbcd1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libserde-986325a49dffbcd1.rmeta,source=/libserde-986325a49dffbcd1.rmeta \
+##   --mount=from=out-986325a49dffbcd1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libserde-986325a49dffbcd1.rlib,source=/libserde-986325a49dffbcd1.rlib \
 ##   --mount=from=out-b74741511dfa898a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libserde_derive-b74741511dfa898a.so,source=/libserde_derive-b74741511dfa898a.so \
 ##   --mount=from=out-4be32d01ee2a9db1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rmeta,source=/libproc_macro2-4be32d01ee2a9db1.rmeta \
+##   --mount=from=out-4be32d01ee2a9db1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rlib,source=/libproc_macro2-4be32d01ee2a9db1.rlib \
 ##   --mount=from=out-4c1dc76c11b3deb8,dst=/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rmeta,source=/libunicode_ident-4c1dc76c11b3deb8.rmeta \
+##   --mount=from=out-4c1dc76c11b3deb8,dst=/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rlib,source=/libunicode_ident-4c1dc76c11b3deb8.rlib \
 ##   --mount=from=out-36ed05d339fc79f9,dst=/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rmeta,source=/libquote-36ed05d339fc79f9.rmeta \
+##   --mount=from=out-36ed05d339fc79f9,dst=/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rlib,source=/libquote-36ed05d339fc79f9.rlib \
 ##   --mount=from=out-5c1d3e18a7dfcf78,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rmeta,source=/libsyn-5c1d3e18a7dfcf78.rmeta \
+##   --mount=from=out-5c1d3e18a7dfcf78,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rlib,source=/libsyn-5c1d3e18a7dfcf78.rlib \
 ##   --mount=from=out-e6ed429a0a7450c0,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtokio-e6ed429a0a7450c0.rmeta,source=/libtokio-e6ed429a0a7450c0.rmeta \
+##   --mount=from=out-e6ed429a0a7450c0,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtokio-e6ed429a0a7450c0.rlib,source=/libtokio-e6ed429a0a7450c0.rlib \
 ##   --mount=from=out-17cf73a7d3f13d95,dst=/tmp/clis-ntpd_1-2-3/release/deps/libbytes-17cf73a7d3f13d95.rmeta,source=/libbytes-17cf73a7d3f13d95.rmeta \
+##   --mount=from=out-17cf73a7d3f13d95,dst=/tmp/clis-ntpd_1-2-3/release/deps/libbytes-17cf73a7d3f13d95.rlib,source=/libbytes-17cf73a7d3f13d95.rlib \
 ##   --mount=from=out-57de3125ece5b1fd,dst=/tmp/clis-ntpd_1-2-3/release/deps/libmio-57de3125ece5b1fd.rmeta,source=/libmio-57de3125ece5b1fd.rmeta \
+##   --mount=from=out-57de3125ece5b1fd,dst=/tmp/clis-ntpd_1-2-3/release/deps/libmio-57de3125ece5b1fd.rlib,source=/libmio-57de3125ece5b1fd.rlib \
 ##   --mount=from=out-516d6049f106f6a2,dst=/tmp/clis-ntpd_1-2-3/release/deps/libnum_cpus-516d6049f106f6a2.rmeta,source=/libnum_cpus-516d6049f106f6a2.rmeta \
+##   --mount=from=out-516d6049f106f6a2,dst=/tmp/clis-ntpd_1-2-3/release/deps/libnum_cpus-516d6049f106f6a2.rlib,source=/libnum_cpus-516d6049f106f6a2.rlib \
 ##   --mount=from=out-32982cb980ef9328,dst=/tmp/clis-ntpd_1-2-3/release/deps/libpin_project_lite-32982cb980ef9328.rmeta,source=/libpin_project_lite-32982cb980ef9328.rmeta \
+##   --mount=from=out-32982cb980ef9328,dst=/tmp/clis-ntpd_1-2-3/release/deps/libpin_project_lite-32982cb980ef9328.rlib,source=/libpin_project_lite-32982cb980ef9328.rlib \
 ##   --mount=from=out-4f06700ac893bf17,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsocket2-4f06700ac893bf17.rmeta,source=/libsocket2-4f06700ac893bf17.rmeta \
+##   --mount=from=out-4f06700ac893bf17,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsocket2-4f06700ac893bf17.rlib,source=/libsocket2-4f06700ac893bf17.rlib \
 ##   --mount=from=out-56d9f1f76b7466fe,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtokio_macros-56d9f1f76b7466fe.so,source=/libtokio_macros-56d9f1f76b7466fe.so \
 ##   --mount=from=out-7d2675bffdb63c95,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtracing-7d2675bffdb63c95.rmeta,source=/libtracing-7d2675bffdb63c95.rmeta \
+##   --mount=from=out-7d2675bffdb63c95,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtracing-7d2675bffdb63c95.rlib,source=/libtracing-7d2675bffdb63c95.rlib \
 ##   --mount=from=out-b564a3159bfcf688,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblog-b564a3159bfcf688.rmeta,source=/liblog-b564a3159bfcf688.rmeta \
+##   --mount=from=out-b564a3159bfcf688,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblog-b564a3159bfcf688.rlib,source=/liblog-b564a3159bfcf688.rlib \
 ##   --mount=from=out-ff2e92028461b3cf,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtracing_attributes-ff2e92028461b3cf.so,source=/libtracing_attributes-ff2e92028461b3cf.so \
 ##   --mount=from=out-100f3fe23952e4be,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtracing_core-100f3fe23952e4be.rmeta,source=/libtracing_core-100f3fe23952e4be.rmeta \
+##   --mount=from=out-100f3fe23952e4be,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtracing_core-100f3fe23952e4be.rlib,source=/libtracing_core-100f3fe23952e4be.rlib \
 ##   --mount=from=out-6ed51fafe322ecba,dst=/tmp/clis-ntpd_1-2-3/release/deps/libonce_cell-6ed51fafe322ecba.rmeta,source=/libonce_cell-6ed51fafe322ecba.rmeta \
+##   --mount=from=out-6ed51fafe322ecba,dst=/tmp/clis-ntpd_1-2-3/release/deps/libonce_cell-6ed51fafe322ecba.rlib,source=/libonce_cell-6ed51fafe322ecba.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="timestamped_socket" \
@@ -7476,11 +10593,16 @@ WORKDIR /tmp/clis-ntpd_1-2-3/release/deps
 RUN \
   --mount=from=cratesio-serde_spanned-0.6.6,source=/serde_spanned-0.6.6,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_spanned-0.6.6 \
   --mount=from=out-986325a49dffbcd1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libserde-986325a49dffbcd1.rmeta,source=/libserde-986325a49dffbcd1.rmeta \
+  --mount=from=out-986325a49dffbcd1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libserde-986325a49dffbcd1.rlib,source=/libserde-986325a49dffbcd1.rlib \
   --mount=from=out-b74741511dfa898a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libserde_derive-b74741511dfa898a.so,source=/libserde_derive-b74741511dfa898a.so \
   --mount=from=out-4be32d01ee2a9db1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rmeta,source=/libproc_macro2-4be32d01ee2a9db1.rmeta \
+  --mount=from=out-4be32d01ee2a9db1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rlib,source=/libproc_macro2-4be32d01ee2a9db1.rlib \
   --mount=from=out-4c1dc76c11b3deb8,dst=/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rmeta,source=/libunicode_ident-4c1dc76c11b3deb8.rmeta \
+  --mount=from=out-4c1dc76c11b3deb8,dst=/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rlib,source=/libunicode_ident-4c1dc76c11b3deb8.rlib \
   --mount=from=out-36ed05d339fc79f9,dst=/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rmeta,source=/libquote-36ed05d339fc79f9.rmeta \
+  --mount=from=out-36ed05d339fc79f9,dst=/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rlib,source=/libquote-36ed05d339fc79f9.rlib \
   --mount=from=out-5c1d3e18a7dfcf78,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rmeta,source=/libsyn-5c1d3e18a7dfcf78.rmeta \
+  --mount=from=out-5c1d3e18a7dfcf78,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rlib,source=/libsyn-5c1d3e18a7dfcf78.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="serde_spanned" \
@@ -7520,12 +10642,12 @@ COPY --from=dep-l-serde_spanned-0.6.6-dc39aa05fabf8bb2 /tmp/clis-ntpd_1-2-3/rele
 ##     "5c1d3e18a7dfcf78",
 ## ]
 ## short_externs = [
-##     "serde-986325a49dffbcd1",
-##     "serde_derive-b74741511dfa898a",
-##     "proc_macro2-4be32d01ee2a9db1",
-##     "unicode_ident-4c1dc76c11b3deb8",
-##     "quote-36ed05d339fc79f9",
-##     "syn-5c1d3e18a7dfcf78",
+##     "986325a49dffbcd1",
+##     "b74741511dfa898a",
+##     "4be32d01ee2a9db1",
+##     "4c1dc76c11b3deb8",
+##     "36ed05d339fc79f9",
+##     "5c1d3e18a7dfcf78",
 ## ]
 ## writes = [
 ##     "deps/serde_spanned-dc39aa05fabf8bb2.d",
@@ -7537,6 +10659,61 @@ COPY --from=dep-l-serde_spanned-0.6.6-dc39aa05fabf8bb2 /tmp/clis-ntpd_1-2-3/rele
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-2-3/release/deps/libserde_spanned-dc39aa05fabf8bb2.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-2-3/release/deps/libserde_spanned-dc39aa05fabf8bb2.rlib","emit":"link"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-986325a49dffbcd1"
+## src = "/libserde-986325a49dffbcd1.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libserde-986325a49dffbcd1.rmeta"
+## 
+## [[mounts]]
+## from = "out-986325a49dffbcd1"
+## src = "/libserde-986325a49dffbcd1.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libserde-986325a49dffbcd1.rlib"
+## 
+## [[mounts]]
+## from = "out-b74741511dfa898a"
+## src = "/libserde_derive-b74741511dfa898a.so"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libserde_derive-b74741511dfa898a.so"
+## 
+## [[mounts]]
+## from = "out-4be32d01ee2a9db1"
+## src = "/libproc_macro2-4be32d01ee2a9db1.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rmeta"
+## 
+## [[mounts]]
+## from = "out-4be32d01ee2a9db1"
+## src = "/libproc_macro2-4be32d01ee2a9db1.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rlib"
+## 
+## [[mounts]]
+## from = "out-4c1dc76c11b3deb8"
+## src = "/libunicode_ident-4c1dc76c11b3deb8.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rmeta"
+## 
+## [[mounts]]
+## from = "out-4c1dc76c11b3deb8"
+## src = "/libunicode_ident-4c1dc76c11b3deb8.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rlib"
+## 
+## [[mounts]]
+## from = "out-36ed05d339fc79f9"
+## src = "/libquote-36ed05d339fc79f9.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rmeta"
+## 
+## [[mounts]]
+## from = "out-36ed05d339fc79f9"
+## src = "/libquote-36ed05d339fc79f9.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rlib"
+## 
+## [[mounts]]
+## from = "out-5c1d3e18a7dfcf78"
+## src = "/libsyn-5c1d3e18a7dfcf78.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rmeta"
+## 
+## [[mounts]]
+## from = "out-5c1d3e18a7dfcf78"
+## src = "/libsyn-5c1d3e18a7dfcf78.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rlib"
 ## 
 ## [[contexts]]
 ## name = "crate_out-e5fe159846b3109b"
@@ -7562,11 +10739,16 @@ COPY --from=dep-l-serde_spanned-0.6.6-dc39aa05fabf8bb2 /tmp/clis-ntpd_1-2-3/rele
 ## RUN \
 ##   --mount=from=cratesio-serde_spanned-0.6.6,source=/serde_spanned-0.6.6,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_spanned-0.6.6 \
 ##   --mount=from=out-986325a49dffbcd1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libserde-986325a49dffbcd1.rmeta,source=/libserde-986325a49dffbcd1.rmeta \
+##   --mount=from=out-986325a49dffbcd1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libserde-986325a49dffbcd1.rlib,source=/libserde-986325a49dffbcd1.rlib \
 ##   --mount=from=out-b74741511dfa898a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libserde_derive-b74741511dfa898a.so,source=/libserde_derive-b74741511dfa898a.so \
 ##   --mount=from=out-4be32d01ee2a9db1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rmeta,source=/libproc_macro2-4be32d01ee2a9db1.rmeta \
+##   --mount=from=out-4be32d01ee2a9db1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rlib,source=/libproc_macro2-4be32d01ee2a9db1.rlib \
 ##   --mount=from=out-4c1dc76c11b3deb8,dst=/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rmeta,source=/libunicode_ident-4c1dc76c11b3deb8.rmeta \
+##   --mount=from=out-4c1dc76c11b3deb8,dst=/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rlib,source=/libunicode_ident-4c1dc76c11b3deb8.rlib \
 ##   --mount=from=out-36ed05d339fc79f9,dst=/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rmeta,source=/libquote-36ed05d339fc79f9.rmeta \
+##   --mount=from=out-36ed05d339fc79f9,dst=/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rlib,source=/libquote-36ed05d339fc79f9.rlib \
 ##   --mount=from=out-5c1d3e18a7dfcf78,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rmeta,source=/libsyn-5c1d3e18a7dfcf78.rmeta \
+##   --mount=from=out-5c1d3e18a7dfcf78,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rlib,source=/libsyn-5c1d3e18a7dfcf78.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="serde_spanned" \
@@ -7609,11 +10791,16 @@ WORKDIR /tmp/clis-ntpd_1-2-3/release/deps
 RUN \
   --mount=from=cratesio-toml_datetime-0.6.6,source=/toml_datetime-0.6.6,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/toml_datetime-0.6.6 \
   --mount=from=out-986325a49dffbcd1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libserde-986325a49dffbcd1.rmeta,source=/libserde-986325a49dffbcd1.rmeta \
+  --mount=from=out-986325a49dffbcd1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libserde-986325a49dffbcd1.rlib,source=/libserde-986325a49dffbcd1.rlib \
   --mount=from=out-b74741511dfa898a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libserde_derive-b74741511dfa898a.so,source=/libserde_derive-b74741511dfa898a.so \
   --mount=from=out-4be32d01ee2a9db1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rmeta,source=/libproc_macro2-4be32d01ee2a9db1.rmeta \
+  --mount=from=out-4be32d01ee2a9db1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rlib,source=/libproc_macro2-4be32d01ee2a9db1.rlib \
   --mount=from=out-4c1dc76c11b3deb8,dst=/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rmeta,source=/libunicode_ident-4c1dc76c11b3deb8.rmeta \
+  --mount=from=out-4c1dc76c11b3deb8,dst=/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rlib,source=/libunicode_ident-4c1dc76c11b3deb8.rlib \
   --mount=from=out-36ed05d339fc79f9,dst=/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rmeta,source=/libquote-36ed05d339fc79f9.rmeta \
+  --mount=from=out-36ed05d339fc79f9,dst=/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rlib,source=/libquote-36ed05d339fc79f9.rlib \
   --mount=from=out-5c1d3e18a7dfcf78,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rmeta,source=/libsyn-5c1d3e18a7dfcf78.rmeta \
+  --mount=from=out-5c1d3e18a7dfcf78,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rlib,source=/libsyn-5c1d3e18a7dfcf78.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="toml_datetime" \
@@ -7653,12 +10840,12 @@ COPY --from=dep-l-toml_datetime-0.6.6-f1d69a8e9c76a596 /tmp/clis-ntpd_1-2-3/rele
 ##     "5c1d3e18a7dfcf78",
 ## ]
 ## short_externs = [
-##     "serde-986325a49dffbcd1",
-##     "serde_derive-b74741511dfa898a",
-##     "proc_macro2-4be32d01ee2a9db1",
-##     "unicode_ident-4c1dc76c11b3deb8",
-##     "quote-36ed05d339fc79f9",
-##     "syn-5c1d3e18a7dfcf78",
+##     "986325a49dffbcd1",
+##     "b74741511dfa898a",
+##     "4be32d01ee2a9db1",
+##     "4c1dc76c11b3deb8",
+##     "36ed05d339fc79f9",
+##     "5c1d3e18a7dfcf78",
 ## ]
 ## writes = [
 ##     "deps/toml_datetime-f1d69a8e9c76a596.d",
@@ -7670,6 +10857,61 @@ COPY --from=dep-l-toml_datetime-0.6.6-f1d69a8e9c76a596 /tmp/clis-ntpd_1-2-3/rele
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-2-3/release/deps/libtoml_datetime-f1d69a8e9c76a596.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-2-3/release/deps/libtoml_datetime-f1d69a8e9c76a596.rlib","emit":"link"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-986325a49dffbcd1"
+## src = "/libserde-986325a49dffbcd1.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libserde-986325a49dffbcd1.rmeta"
+## 
+## [[mounts]]
+## from = "out-986325a49dffbcd1"
+## src = "/libserde-986325a49dffbcd1.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libserde-986325a49dffbcd1.rlib"
+## 
+## [[mounts]]
+## from = "out-b74741511dfa898a"
+## src = "/libserde_derive-b74741511dfa898a.so"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libserde_derive-b74741511dfa898a.so"
+## 
+## [[mounts]]
+## from = "out-4be32d01ee2a9db1"
+## src = "/libproc_macro2-4be32d01ee2a9db1.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rmeta"
+## 
+## [[mounts]]
+## from = "out-4be32d01ee2a9db1"
+## src = "/libproc_macro2-4be32d01ee2a9db1.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rlib"
+## 
+## [[mounts]]
+## from = "out-4c1dc76c11b3deb8"
+## src = "/libunicode_ident-4c1dc76c11b3deb8.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rmeta"
+## 
+## [[mounts]]
+## from = "out-4c1dc76c11b3deb8"
+## src = "/libunicode_ident-4c1dc76c11b3deb8.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rlib"
+## 
+## [[mounts]]
+## from = "out-36ed05d339fc79f9"
+## src = "/libquote-36ed05d339fc79f9.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rmeta"
+## 
+## [[mounts]]
+## from = "out-36ed05d339fc79f9"
+## src = "/libquote-36ed05d339fc79f9.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rlib"
+## 
+## [[mounts]]
+## from = "out-5c1d3e18a7dfcf78"
+## src = "/libsyn-5c1d3e18a7dfcf78.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rmeta"
+## 
+## [[mounts]]
+## from = "out-5c1d3e18a7dfcf78"
+## src = "/libsyn-5c1d3e18a7dfcf78.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rlib"
 ## 
 ## [[contexts]]
 ## name = "crate_out-e5fe159846b3109b"
@@ -7695,11 +10937,16 @@ COPY --from=dep-l-toml_datetime-0.6.6-f1d69a8e9c76a596 /tmp/clis-ntpd_1-2-3/rele
 ## RUN \
 ##   --mount=from=cratesio-toml_datetime-0.6.6,source=/toml_datetime-0.6.6,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/toml_datetime-0.6.6 \
 ##   --mount=from=out-986325a49dffbcd1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libserde-986325a49dffbcd1.rmeta,source=/libserde-986325a49dffbcd1.rmeta \
+##   --mount=from=out-986325a49dffbcd1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libserde-986325a49dffbcd1.rlib,source=/libserde-986325a49dffbcd1.rlib \
 ##   --mount=from=out-b74741511dfa898a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libserde_derive-b74741511dfa898a.so,source=/libserde_derive-b74741511dfa898a.so \
 ##   --mount=from=out-4be32d01ee2a9db1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rmeta,source=/libproc_macro2-4be32d01ee2a9db1.rmeta \
+##   --mount=from=out-4be32d01ee2a9db1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rlib,source=/libproc_macro2-4be32d01ee2a9db1.rlib \
 ##   --mount=from=out-4c1dc76c11b3deb8,dst=/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rmeta,source=/libunicode_ident-4c1dc76c11b3deb8.rmeta \
+##   --mount=from=out-4c1dc76c11b3deb8,dst=/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rlib,source=/libunicode_ident-4c1dc76c11b3deb8.rlib \
 ##   --mount=from=out-36ed05d339fc79f9,dst=/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rmeta,source=/libquote-36ed05d339fc79f9.rmeta \
+##   --mount=from=out-36ed05d339fc79f9,dst=/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rlib,source=/libquote-36ed05d339fc79f9.rlib \
 ##   --mount=from=out-5c1d3e18a7dfcf78,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rmeta,source=/libsyn-5c1d3e18a7dfcf78.rmeta \
+##   --mount=from=out-5c1d3e18a7dfcf78,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rlib,source=/libsyn-5c1d3e18a7dfcf78.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="toml_datetime" \
@@ -7944,7 +11191,9 @@ WORKDIR /tmp/clis-ntpd_1-2-3/release/deps
 RUN \
   --mount=from=cratesio-indexmap-2.2.6,source=/indexmap-2.2.6,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/indexmap-2.2.6 \
   --mount=from=out-bd5b9404126e35a1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libequivalent-bd5b9404126e35a1.rmeta,source=/libequivalent-bd5b9404126e35a1.rmeta \
+  --mount=from=out-bd5b9404126e35a1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libequivalent-bd5b9404126e35a1.rlib,source=/libequivalent-bd5b9404126e35a1.rlib \
   --mount=from=out-8bb46fd37d0b1c2d,dst=/tmp/clis-ntpd_1-2-3/release/deps/libhashbrown-8bb46fd37d0b1c2d.rmeta,source=/libhashbrown-8bb46fd37d0b1c2d.rmeta \
+  --mount=from=out-8bb46fd37d0b1c2d,dst=/tmp/clis-ntpd_1-2-3/release/deps/libhashbrown-8bb46fd37d0b1c2d.rlib,source=/libhashbrown-8bb46fd37d0b1c2d.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="indexmap" \
@@ -7980,8 +11229,8 @@ COPY --from=dep-l-indexmap-2.2.6-bd5f37b7de678bd9 /tmp/clis-ntpd_1-2-3/release/d
 ##     "8bb46fd37d0b1c2d",
 ## ]
 ## short_externs = [
-##     "equivalent-bd5b9404126e35a1",
-##     "hashbrown-8bb46fd37d0b1c2d",
+##     "bd5b9404126e35a1",
+##     "8bb46fd37d0b1c2d",
 ## ]
 ## writes = [
 ##     "deps/indexmap-bd5f37b7de678bd9.d",
@@ -7993,6 +11242,26 @@ COPY --from=dep-l-indexmap-2.2.6-bd5f37b7de678bd9 /tmp/clis-ntpd_1-2-3/release/d
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-2-3/release/deps/libindexmap-bd5f37b7de678bd9.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-2-3/release/deps/libindexmap-bd5f37b7de678bd9.rlib","emit":"link"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-bd5b9404126e35a1"
+## src = "/libequivalent-bd5b9404126e35a1.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libequivalent-bd5b9404126e35a1.rmeta"
+## 
+## [[mounts]]
+## from = "out-bd5b9404126e35a1"
+## src = "/libequivalent-bd5b9404126e35a1.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libequivalent-bd5b9404126e35a1.rlib"
+## 
+## [[mounts]]
+## from = "out-8bb46fd37d0b1c2d"
+## src = "/libhashbrown-8bb46fd37d0b1c2d.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libhashbrown-8bb46fd37d0b1c2d.rmeta"
+## 
+## [[mounts]]
+## from = "out-8bb46fd37d0b1c2d"
+## src = "/libhashbrown-8bb46fd37d0b1c2d.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libhashbrown-8bb46fd37d0b1c2d.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -8014,7 +11283,9 @@ COPY --from=dep-l-indexmap-2.2.6-bd5f37b7de678bd9 /tmp/clis-ntpd_1-2-3/release/d
 ## RUN \
 ##   --mount=from=cratesio-indexmap-2.2.6,source=/indexmap-2.2.6,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/indexmap-2.2.6 \
 ##   --mount=from=out-bd5b9404126e35a1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libequivalent-bd5b9404126e35a1.rmeta,source=/libequivalent-bd5b9404126e35a1.rmeta \
+##   --mount=from=out-bd5b9404126e35a1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libequivalent-bd5b9404126e35a1.rlib,source=/libequivalent-bd5b9404126e35a1.rlib \
 ##   --mount=from=out-8bb46fd37d0b1c2d,dst=/tmp/clis-ntpd_1-2-3/release/deps/libhashbrown-8bb46fd37d0b1c2d.rmeta,source=/libhashbrown-8bb46fd37d0b1c2d.rmeta \
+##   --mount=from=out-8bb46fd37d0b1c2d,dst=/tmp/clis-ntpd_1-2-3/release/deps/libhashbrown-8bb46fd37d0b1c2d.rlib,source=/libhashbrown-8bb46fd37d0b1c2d.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="indexmap" \
@@ -8182,17 +11453,28 @@ WORKDIR /tmp/clis-ntpd_1-2-3/release/deps
 RUN \
   --mount=from=cratesio-toml_edit-0.22.16,source=/toml_edit-0.22.16,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/toml_edit-0.22.16 \
   --mount=from=out-bd5f37b7de678bd9,dst=/tmp/clis-ntpd_1-2-3/release/deps/libindexmap-bd5f37b7de678bd9.rmeta,source=/libindexmap-bd5f37b7de678bd9.rmeta \
+  --mount=from=out-bd5f37b7de678bd9,dst=/tmp/clis-ntpd_1-2-3/release/deps/libindexmap-bd5f37b7de678bd9.rlib,source=/libindexmap-bd5f37b7de678bd9.rlib \
   --mount=from=out-bd5b9404126e35a1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libequivalent-bd5b9404126e35a1.rmeta,source=/libequivalent-bd5b9404126e35a1.rmeta \
+  --mount=from=out-bd5b9404126e35a1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libequivalent-bd5b9404126e35a1.rlib,source=/libequivalent-bd5b9404126e35a1.rlib \
   --mount=from=out-8bb46fd37d0b1c2d,dst=/tmp/clis-ntpd_1-2-3/release/deps/libhashbrown-8bb46fd37d0b1c2d.rmeta,source=/libhashbrown-8bb46fd37d0b1c2d.rmeta \
+  --mount=from=out-8bb46fd37d0b1c2d,dst=/tmp/clis-ntpd_1-2-3/release/deps/libhashbrown-8bb46fd37d0b1c2d.rlib,source=/libhashbrown-8bb46fd37d0b1c2d.rlib \
   --mount=from=out-986325a49dffbcd1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libserde-986325a49dffbcd1.rmeta,source=/libserde-986325a49dffbcd1.rmeta \
+  --mount=from=out-986325a49dffbcd1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libserde-986325a49dffbcd1.rlib,source=/libserde-986325a49dffbcd1.rlib \
   --mount=from=out-b74741511dfa898a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libserde_derive-b74741511dfa898a.so,source=/libserde_derive-b74741511dfa898a.so \
   --mount=from=out-4be32d01ee2a9db1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rmeta,source=/libproc_macro2-4be32d01ee2a9db1.rmeta \
+  --mount=from=out-4be32d01ee2a9db1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rlib,source=/libproc_macro2-4be32d01ee2a9db1.rlib \
   --mount=from=out-4c1dc76c11b3deb8,dst=/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rmeta,source=/libunicode_ident-4c1dc76c11b3deb8.rmeta \
+  --mount=from=out-4c1dc76c11b3deb8,dst=/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rlib,source=/libunicode_ident-4c1dc76c11b3deb8.rlib \
   --mount=from=out-36ed05d339fc79f9,dst=/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rmeta,source=/libquote-36ed05d339fc79f9.rmeta \
+  --mount=from=out-36ed05d339fc79f9,dst=/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rlib,source=/libquote-36ed05d339fc79f9.rlib \
   --mount=from=out-5c1d3e18a7dfcf78,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rmeta,source=/libsyn-5c1d3e18a7dfcf78.rmeta \
+  --mount=from=out-5c1d3e18a7dfcf78,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rlib,source=/libsyn-5c1d3e18a7dfcf78.rlib \
   --mount=from=out-dc39aa05fabf8bb2,dst=/tmp/clis-ntpd_1-2-3/release/deps/libserde_spanned-dc39aa05fabf8bb2.rmeta,source=/libserde_spanned-dc39aa05fabf8bb2.rmeta \
+  --mount=from=out-dc39aa05fabf8bb2,dst=/tmp/clis-ntpd_1-2-3/release/deps/libserde_spanned-dc39aa05fabf8bb2.rlib,source=/libserde_spanned-dc39aa05fabf8bb2.rlib \
   --mount=from=out-f1d69a8e9c76a596,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtoml_datetime-f1d69a8e9c76a596.rmeta,source=/libtoml_datetime-f1d69a8e9c76a596.rmeta \
+  --mount=from=out-f1d69a8e9c76a596,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtoml_datetime-f1d69a8e9c76a596.rlib,source=/libtoml_datetime-f1d69a8e9c76a596.rlib \
   --mount=from=out-f45e6953436548b2,dst=/tmp/clis-ntpd_1-2-3/release/deps/libwinnow-f45e6953436548b2.rmeta,source=/libwinnow-f45e6953436548b2.rmeta \
+  --mount=from=out-f45e6953436548b2,dst=/tmp/clis-ntpd_1-2-3/release/deps/libwinnow-f45e6953436548b2.rlib,source=/libwinnow-f45e6953436548b2.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="toml_edit" \
@@ -8238,18 +11520,18 @@ COPY --from=dep-l-toml_edit-0.22.16-90c6c24e7a16fdd6 /tmp/clis-ntpd_1-2-3/releas
 ##     "f45e6953436548b2",
 ## ]
 ## short_externs = [
-##     "indexmap-bd5f37b7de678bd9",
-##     "equivalent-bd5b9404126e35a1",
-##     "hashbrown-8bb46fd37d0b1c2d",
-##     "serde-986325a49dffbcd1",
-##     "serde_derive-b74741511dfa898a",
-##     "proc_macro2-4be32d01ee2a9db1",
-##     "unicode_ident-4c1dc76c11b3deb8",
-##     "quote-36ed05d339fc79f9",
-##     "syn-5c1d3e18a7dfcf78",
-##     "serde_spanned-dc39aa05fabf8bb2",
-##     "toml_datetime-f1d69a8e9c76a596",
-##     "winnow-f45e6953436548b2",
+##     "bd5f37b7de678bd9",
+##     "bd5b9404126e35a1",
+##     "8bb46fd37d0b1c2d",
+##     "986325a49dffbcd1",
+##     "b74741511dfa898a",
+##     "4be32d01ee2a9db1",
+##     "4c1dc76c11b3deb8",
+##     "36ed05d339fc79f9",
+##     "5c1d3e18a7dfcf78",
+##     "dc39aa05fabf8bb2",
+##     "f1d69a8e9c76a596",
+##     "f45e6953436548b2",
 ## ]
 ## writes = [
 ##     "deps/toml_edit-90c6c24e7a16fdd6.d",
@@ -8276,6 +11558,121 @@ COPY --from=dep-l-toml_edit-0.22.16-90c6c24e7a16fdd6 /tmp/clis-ntpd_1-2-3/releas
 ##     '{"$message_type":"diagnostic","message":"13 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 13 warnings emitted\u001b[0m\n\n"}',
 ## ]
 ## 
+## [[mounts]]
+## from = "out-bd5f37b7de678bd9"
+## src = "/libindexmap-bd5f37b7de678bd9.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libindexmap-bd5f37b7de678bd9.rmeta"
+## 
+## [[mounts]]
+## from = "out-bd5f37b7de678bd9"
+## src = "/libindexmap-bd5f37b7de678bd9.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libindexmap-bd5f37b7de678bd9.rlib"
+## 
+## [[mounts]]
+## from = "out-bd5b9404126e35a1"
+## src = "/libequivalent-bd5b9404126e35a1.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libequivalent-bd5b9404126e35a1.rmeta"
+## 
+## [[mounts]]
+## from = "out-bd5b9404126e35a1"
+## src = "/libequivalent-bd5b9404126e35a1.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libequivalent-bd5b9404126e35a1.rlib"
+## 
+## [[mounts]]
+## from = "out-8bb46fd37d0b1c2d"
+## src = "/libhashbrown-8bb46fd37d0b1c2d.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libhashbrown-8bb46fd37d0b1c2d.rmeta"
+## 
+## [[mounts]]
+## from = "out-8bb46fd37d0b1c2d"
+## src = "/libhashbrown-8bb46fd37d0b1c2d.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libhashbrown-8bb46fd37d0b1c2d.rlib"
+## 
+## [[mounts]]
+## from = "out-986325a49dffbcd1"
+## src = "/libserde-986325a49dffbcd1.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libserde-986325a49dffbcd1.rmeta"
+## 
+## [[mounts]]
+## from = "out-986325a49dffbcd1"
+## src = "/libserde-986325a49dffbcd1.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libserde-986325a49dffbcd1.rlib"
+## 
+## [[mounts]]
+## from = "out-b74741511dfa898a"
+## src = "/libserde_derive-b74741511dfa898a.so"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libserde_derive-b74741511dfa898a.so"
+## 
+## [[mounts]]
+## from = "out-4be32d01ee2a9db1"
+## src = "/libproc_macro2-4be32d01ee2a9db1.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rmeta"
+## 
+## [[mounts]]
+## from = "out-4be32d01ee2a9db1"
+## src = "/libproc_macro2-4be32d01ee2a9db1.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rlib"
+## 
+## [[mounts]]
+## from = "out-4c1dc76c11b3deb8"
+## src = "/libunicode_ident-4c1dc76c11b3deb8.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rmeta"
+## 
+## [[mounts]]
+## from = "out-4c1dc76c11b3deb8"
+## src = "/libunicode_ident-4c1dc76c11b3deb8.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rlib"
+## 
+## [[mounts]]
+## from = "out-36ed05d339fc79f9"
+## src = "/libquote-36ed05d339fc79f9.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rmeta"
+## 
+## [[mounts]]
+## from = "out-36ed05d339fc79f9"
+## src = "/libquote-36ed05d339fc79f9.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rlib"
+## 
+## [[mounts]]
+## from = "out-5c1d3e18a7dfcf78"
+## src = "/libsyn-5c1d3e18a7dfcf78.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rmeta"
+## 
+## [[mounts]]
+## from = "out-5c1d3e18a7dfcf78"
+## src = "/libsyn-5c1d3e18a7dfcf78.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rlib"
+## 
+## [[mounts]]
+## from = "out-dc39aa05fabf8bb2"
+## src = "/libserde_spanned-dc39aa05fabf8bb2.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libserde_spanned-dc39aa05fabf8bb2.rmeta"
+## 
+## [[mounts]]
+## from = "out-dc39aa05fabf8bb2"
+## src = "/libserde_spanned-dc39aa05fabf8bb2.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libserde_spanned-dc39aa05fabf8bb2.rlib"
+## 
+## [[mounts]]
+## from = "out-f1d69a8e9c76a596"
+## src = "/libtoml_datetime-f1d69a8e9c76a596.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libtoml_datetime-f1d69a8e9c76a596.rmeta"
+## 
+## [[mounts]]
+## from = "out-f1d69a8e9c76a596"
+## src = "/libtoml_datetime-f1d69a8e9c76a596.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libtoml_datetime-f1d69a8e9c76a596.rlib"
+## 
+## [[mounts]]
+## from = "out-f45e6953436548b2"
+## src = "/libwinnow-f45e6953436548b2.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libwinnow-f45e6953436548b2.rmeta"
+## 
+## [[mounts]]
+## from = "out-f45e6953436548b2"
+## src = "/libwinnow-f45e6953436548b2.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libwinnow-f45e6953436548b2.rlib"
+## 
 ## [[contexts]]
 ## name = "crate_out-e5fe159846b3109b"
 ## uri = "/tmp/clis-ntpd_1-2-3/release/build/proc-macro2-e5fe159846b3109b/out"
@@ -8300,17 +11697,28 @@ COPY --from=dep-l-toml_edit-0.22.16-90c6c24e7a16fdd6 /tmp/clis-ntpd_1-2-3/releas
 ## RUN \
 ##   --mount=from=cratesio-toml_edit-0.22.16,source=/toml_edit-0.22.16,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/toml_edit-0.22.16 \
 ##   --mount=from=out-bd5f37b7de678bd9,dst=/tmp/clis-ntpd_1-2-3/release/deps/libindexmap-bd5f37b7de678bd9.rmeta,source=/libindexmap-bd5f37b7de678bd9.rmeta \
+##   --mount=from=out-bd5f37b7de678bd9,dst=/tmp/clis-ntpd_1-2-3/release/deps/libindexmap-bd5f37b7de678bd9.rlib,source=/libindexmap-bd5f37b7de678bd9.rlib \
 ##   --mount=from=out-bd5b9404126e35a1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libequivalent-bd5b9404126e35a1.rmeta,source=/libequivalent-bd5b9404126e35a1.rmeta \
+##   --mount=from=out-bd5b9404126e35a1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libequivalent-bd5b9404126e35a1.rlib,source=/libequivalent-bd5b9404126e35a1.rlib \
 ##   --mount=from=out-8bb46fd37d0b1c2d,dst=/tmp/clis-ntpd_1-2-3/release/deps/libhashbrown-8bb46fd37d0b1c2d.rmeta,source=/libhashbrown-8bb46fd37d0b1c2d.rmeta \
+##   --mount=from=out-8bb46fd37d0b1c2d,dst=/tmp/clis-ntpd_1-2-3/release/deps/libhashbrown-8bb46fd37d0b1c2d.rlib,source=/libhashbrown-8bb46fd37d0b1c2d.rlib \
 ##   --mount=from=out-986325a49dffbcd1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libserde-986325a49dffbcd1.rmeta,source=/libserde-986325a49dffbcd1.rmeta \
+##   --mount=from=out-986325a49dffbcd1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libserde-986325a49dffbcd1.rlib,source=/libserde-986325a49dffbcd1.rlib \
 ##   --mount=from=out-b74741511dfa898a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libserde_derive-b74741511dfa898a.so,source=/libserde_derive-b74741511dfa898a.so \
 ##   --mount=from=out-4be32d01ee2a9db1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rmeta,source=/libproc_macro2-4be32d01ee2a9db1.rmeta \
+##   --mount=from=out-4be32d01ee2a9db1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rlib,source=/libproc_macro2-4be32d01ee2a9db1.rlib \
 ##   --mount=from=out-4c1dc76c11b3deb8,dst=/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rmeta,source=/libunicode_ident-4c1dc76c11b3deb8.rmeta \
+##   --mount=from=out-4c1dc76c11b3deb8,dst=/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rlib,source=/libunicode_ident-4c1dc76c11b3deb8.rlib \
 ##   --mount=from=out-36ed05d339fc79f9,dst=/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rmeta,source=/libquote-36ed05d339fc79f9.rmeta \
+##   --mount=from=out-36ed05d339fc79f9,dst=/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rlib,source=/libquote-36ed05d339fc79f9.rlib \
 ##   --mount=from=out-5c1d3e18a7dfcf78,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rmeta,source=/libsyn-5c1d3e18a7dfcf78.rmeta \
+##   --mount=from=out-5c1d3e18a7dfcf78,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rlib,source=/libsyn-5c1d3e18a7dfcf78.rlib \
 ##   --mount=from=out-dc39aa05fabf8bb2,dst=/tmp/clis-ntpd_1-2-3/release/deps/libserde_spanned-dc39aa05fabf8bb2.rmeta,source=/libserde_spanned-dc39aa05fabf8bb2.rmeta \
+##   --mount=from=out-dc39aa05fabf8bb2,dst=/tmp/clis-ntpd_1-2-3/release/deps/libserde_spanned-dc39aa05fabf8bb2.rlib,source=/libserde_spanned-dc39aa05fabf8bb2.rlib \
 ##   --mount=from=out-f1d69a8e9c76a596,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtoml_datetime-f1d69a8e9c76a596.rmeta,source=/libtoml_datetime-f1d69a8e9c76a596.rmeta \
+##   --mount=from=out-f1d69a8e9c76a596,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtoml_datetime-f1d69a8e9c76a596.rlib,source=/libtoml_datetime-f1d69a8e9c76a596.rlib \
 ##   --mount=from=out-f45e6953436548b2,dst=/tmp/clis-ntpd_1-2-3/release/deps/libwinnow-f45e6953436548b2.rmeta,source=/libwinnow-f45e6953436548b2.rmeta \
+##   --mount=from=out-f45e6953436548b2,dst=/tmp/clis-ntpd_1-2-3/release/deps/libwinnow-f45e6953436548b2.rlib,source=/libwinnow-f45e6953436548b2.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="toml_edit" \
@@ -8353,18 +11761,30 @@ WORKDIR /tmp/clis-ntpd_1-2-3/release/deps
 RUN \
   --mount=from=cratesio-toml-0.8.15,source=/toml-0.8.15,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/toml-0.8.15 \
   --mount=from=out-986325a49dffbcd1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libserde-986325a49dffbcd1.rmeta,source=/libserde-986325a49dffbcd1.rmeta \
+  --mount=from=out-986325a49dffbcd1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libserde-986325a49dffbcd1.rlib,source=/libserde-986325a49dffbcd1.rlib \
   --mount=from=out-b74741511dfa898a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libserde_derive-b74741511dfa898a.so,source=/libserde_derive-b74741511dfa898a.so \
   --mount=from=out-4be32d01ee2a9db1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rmeta,source=/libproc_macro2-4be32d01ee2a9db1.rmeta \
+  --mount=from=out-4be32d01ee2a9db1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rlib,source=/libproc_macro2-4be32d01ee2a9db1.rlib \
   --mount=from=out-4c1dc76c11b3deb8,dst=/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rmeta,source=/libunicode_ident-4c1dc76c11b3deb8.rmeta \
+  --mount=from=out-4c1dc76c11b3deb8,dst=/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rlib,source=/libunicode_ident-4c1dc76c11b3deb8.rlib \
   --mount=from=out-36ed05d339fc79f9,dst=/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rmeta,source=/libquote-36ed05d339fc79f9.rmeta \
+  --mount=from=out-36ed05d339fc79f9,dst=/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rlib,source=/libquote-36ed05d339fc79f9.rlib \
   --mount=from=out-5c1d3e18a7dfcf78,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rmeta,source=/libsyn-5c1d3e18a7dfcf78.rmeta \
+  --mount=from=out-5c1d3e18a7dfcf78,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rlib,source=/libsyn-5c1d3e18a7dfcf78.rlib \
   --mount=from=out-dc39aa05fabf8bb2,dst=/tmp/clis-ntpd_1-2-3/release/deps/libserde_spanned-dc39aa05fabf8bb2.rmeta,source=/libserde_spanned-dc39aa05fabf8bb2.rmeta \
+  --mount=from=out-dc39aa05fabf8bb2,dst=/tmp/clis-ntpd_1-2-3/release/deps/libserde_spanned-dc39aa05fabf8bb2.rlib,source=/libserde_spanned-dc39aa05fabf8bb2.rlib \
   --mount=from=out-f1d69a8e9c76a596,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtoml_datetime-f1d69a8e9c76a596.rmeta,source=/libtoml_datetime-f1d69a8e9c76a596.rmeta \
+  --mount=from=out-f1d69a8e9c76a596,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtoml_datetime-f1d69a8e9c76a596.rlib,source=/libtoml_datetime-f1d69a8e9c76a596.rlib \
   --mount=from=out-90c6c24e7a16fdd6,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtoml_edit-90c6c24e7a16fdd6.rmeta,source=/libtoml_edit-90c6c24e7a16fdd6.rmeta \
+  --mount=from=out-90c6c24e7a16fdd6,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtoml_edit-90c6c24e7a16fdd6.rlib,source=/libtoml_edit-90c6c24e7a16fdd6.rlib \
   --mount=from=out-bd5f37b7de678bd9,dst=/tmp/clis-ntpd_1-2-3/release/deps/libindexmap-bd5f37b7de678bd9.rmeta,source=/libindexmap-bd5f37b7de678bd9.rmeta \
+  --mount=from=out-bd5f37b7de678bd9,dst=/tmp/clis-ntpd_1-2-3/release/deps/libindexmap-bd5f37b7de678bd9.rlib,source=/libindexmap-bd5f37b7de678bd9.rlib \
   --mount=from=out-bd5b9404126e35a1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libequivalent-bd5b9404126e35a1.rmeta,source=/libequivalent-bd5b9404126e35a1.rmeta \
+  --mount=from=out-bd5b9404126e35a1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libequivalent-bd5b9404126e35a1.rlib,source=/libequivalent-bd5b9404126e35a1.rlib \
   --mount=from=out-8bb46fd37d0b1c2d,dst=/tmp/clis-ntpd_1-2-3/release/deps/libhashbrown-8bb46fd37d0b1c2d.rmeta,source=/libhashbrown-8bb46fd37d0b1c2d.rmeta \
+  --mount=from=out-8bb46fd37d0b1c2d,dst=/tmp/clis-ntpd_1-2-3/release/deps/libhashbrown-8bb46fd37d0b1c2d.rlib,source=/libhashbrown-8bb46fd37d0b1c2d.rlib \
   --mount=from=out-f45e6953436548b2,dst=/tmp/clis-ntpd_1-2-3/release/deps/libwinnow-f45e6953436548b2.rmeta,source=/libwinnow-f45e6953436548b2.rmeta \
+  --mount=from=out-f45e6953436548b2,dst=/tmp/clis-ntpd_1-2-3/release/deps/libwinnow-f45e6953436548b2.rlib,source=/libwinnow-f45e6953436548b2.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="toml" \
@@ -8411,19 +11831,19 @@ COPY --from=dep-l-toml-0.8.15-7b6c235fb7422577 /tmp/clis-ntpd_1-2-3/release/deps
 ##     "f45e6953436548b2",
 ## ]
 ## short_externs = [
-##     "serde-986325a49dffbcd1",
-##     "serde_derive-b74741511dfa898a",
-##     "proc_macro2-4be32d01ee2a9db1",
-##     "unicode_ident-4c1dc76c11b3deb8",
-##     "quote-36ed05d339fc79f9",
-##     "syn-5c1d3e18a7dfcf78",
-##     "serde_spanned-dc39aa05fabf8bb2",
-##     "toml_datetime-f1d69a8e9c76a596",
-##     "toml_edit-90c6c24e7a16fdd6",
-##     "indexmap-bd5f37b7de678bd9",
-##     "equivalent-bd5b9404126e35a1",
-##     "hashbrown-8bb46fd37d0b1c2d",
-##     "winnow-f45e6953436548b2",
+##     "986325a49dffbcd1",
+##     "b74741511dfa898a",
+##     "4be32d01ee2a9db1",
+##     "4c1dc76c11b3deb8",
+##     "36ed05d339fc79f9",
+##     "5c1d3e18a7dfcf78",
+##     "dc39aa05fabf8bb2",
+##     "f1d69a8e9c76a596",
+##     "90c6c24e7a16fdd6",
+##     "bd5f37b7de678bd9",
+##     "bd5b9404126e35a1",
+##     "8bb46fd37d0b1c2d",
+##     "f45e6953436548b2",
 ## ]
 ## writes = [
 ##     "deps/toml-7b6c235fb7422577.d",
@@ -8437,6 +11857,131 @@ COPY --from=dep-l-toml-0.8.15-7b6c235fb7422577 /tmp/clis-ntpd_1-2-3/release/deps
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-2-3/release/deps/libtoml-7b6c235fb7422577.rlib","emit":"link"}',
 ##     '{"$message_type":"diagnostic","message":"1 warning emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 1 warning emitted\u001b[0m\n\n"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-986325a49dffbcd1"
+## src = "/libserde-986325a49dffbcd1.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libserde-986325a49dffbcd1.rmeta"
+## 
+## [[mounts]]
+## from = "out-986325a49dffbcd1"
+## src = "/libserde-986325a49dffbcd1.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libserde-986325a49dffbcd1.rlib"
+## 
+## [[mounts]]
+## from = "out-b74741511dfa898a"
+## src = "/libserde_derive-b74741511dfa898a.so"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libserde_derive-b74741511dfa898a.so"
+## 
+## [[mounts]]
+## from = "out-4be32d01ee2a9db1"
+## src = "/libproc_macro2-4be32d01ee2a9db1.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rmeta"
+## 
+## [[mounts]]
+## from = "out-4be32d01ee2a9db1"
+## src = "/libproc_macro2-4be32d01ee2a9db1.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rlib"
+## 
+## [[mounts]]
+## from = "out-4c1dc76c11b3deb8"
+## src = "/libunicode_ident-4c1dc76c11b3deb8.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rmeta"
+## 
+## [[mounts]]
+## from = "out-4c1dc76c11b3deb8"
+## src = "/libunicode_ident-4c1dc76c11b3deb8.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rlib"
+## 
+## [[mounts]]
+## from = "out-36ed05d339fc79f9"
+## src = "/libquote-36ed05d339fc79f9.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rmeta"
+## 
+## [[mounts]]
+## from = "out-36ed05d339fc79f9"
+## src = "/libquote-36ed05d339fc79f9.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rlib"
+## 
+## [[mounts]]
+## from = "out-5c1d3e18a7dfcf78"
+## src = "/libsyn-5c1d3e18a7dfcf78.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rmeta"
+## 
+## [[mounts]]
+## from = "out-5c1d3e18a7dfcf78"
+## src = "/libsyn-5c1d3e18a7dfcf78.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rlib"
+## 
+## [[mounts]]
+## from = "out-dc39aa05fabf8bb2"
+## src = "/libserde_spanned-dc39aa05fabf8bb2.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libserde_spanned-dc39aa05fabf8bb2.rmeta"
+## 
+## [[mounts]]
+## from = "out-dc39aa05fabf8bb2"
+## src = "/libserde_spanned-dc39aa05fabf8bb2.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libserde_spanned-dc39aa05fabf8bb2.rlib"
+## 
+## [[mounts]]
+## from = "out-f1d69a8e9c76a596"
+## src = "/libtoml_datetime-f1d69a8e9c76a596.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libtoml_datetime-f1d69a8e9c76a596.rmeta"
+## 
+## [[mounts]]
+## from = "out-f1d69a8e9c76a596"
+## src = "/libtoml_datetime-f1d69a8e9c76a596.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libtoml_datetime-f1d69a8e9c76a596.rlib"
+## 
+## [[mounts]]
+## from = "out-90c6c24e7a16fdd6"
+## src = "/libtoml_edit-90c6c24e7a16fdd6.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libtoml_edit-90c6c24e7a16fdd6.rmeta"
+## 
+## [[mounts]]
+## from = "out-90c6c24e7a16fdd6"
+## src = "/libtoml_edit-90c6c24e7a16fdd6.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libtoml_edit-90c6c24e7a16fdd6.rlib"
+## 
+## [[mounts]]
+## from = "out-bd5f37b7de678bd9"
+## src = "/libindexmap-bd5f37b7de678bd9.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libindexmap-bd5f37b7de678bd9.rmeta"
+## 
+## [[mounts]]
+## from = "out-bd5f37b7de678bd9"
+## src = "/libindexmap-bd5f37b7de678bd9.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libindexmap-bd5f37b7de678bd9.rlib"
+## 
+## [[mounts]]
+## from = "out-bd5b9404126e35a1"
+## src = "/libequivalent-bd5b9404126e35a1.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libequivalent-bd5b9404126e35a1.rmeta"
+## 
+## [[mounts]]
+## from = "out-bd5b9404126e35a1"
+## src = "/libequivalent-bd5b9404126e35a1.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libequivalent-bd5b9404126e35a1.rlib"
+## 
+## [[mounts]]
+## from = "out-8bb46fd37d0b1c2d"
+## src = "/libhashbrown-8bb46fd37d0b1c2d.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libhashbrown-8bb46fd37d0b1c2d.rmeta"
+## 
+## [[mounts]]
+## from = "out-8bb46fd37d0b1c2d"
+## src = "/libhashbrown-8bb46fd37d0b1c2d.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libhashbrown-8bb46fd37d0b1c2d.rlib"
+## 
+## [[mounts]]
+## from = "out-f45e6953436548b2"
+## src = "/libwinnow-f45e6953436548b2.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libwinnow-f45e6953436548b2.rmeta"
+## 
+## [[mounts]]
+## from = "out-f45e6953436548b2"
+## src = "/libwinnow-f45e6953436548b2.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libwinnow-f45e6953436548b2.rlib"
 ## 
 ## [[contexts]]
 ## name = "crate_out-e5fe159846b3109b"
@@ -8462,18 +12007,30 @@ COPY --from=dep-l-toml-0.8.15-7b6c235fb7422577 /tmp/clis-ntpd_1-2-3/release/deps
 ## RUN \
 ##   --mount=from=cratesio-toml-0.8.15,source=/toml-0.8.15,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/toml-0.8.15 \
 ##   --mount=from=out-986325a49dffbcd1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libserde-986325a49dffbcd1.rmeta,source=/libserde-986325a49dffbcd1.rmeta \
+##   --mount=from=out-986325a49dffbcd1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libserde-986325a49dffbcd1.rlib,source=/libserde-986325a49dffbcd1.rlib \
 ##   --mount=from=out-b74741511dfa898a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libserde_derive-b74741511dfa898a.so,source=/libserde_derive-b74741511dfa898a.so \
 ##   --mount=from=out-4be32d01ee2a9db1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rmeta,source=/libproc_macro2-4be32d01ee2a9db1.rmeta \
+##   --mount=from=out-4be32d01ee2a9db1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rlib,source=/libproc_macro2-4be32d01ee2a9db1.rlib \
 ##   --mount=from=out-4c1dc76c11b3deb8,dst=/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rmeta,source=/libunicode_ident-4c1dc76c11b3deb8.rmeta \
+##   --mount=from=out-4c1dc76c11b3deb8,dst=/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rlib,source=/libunicode_ident-4c1dc76c11b3deb8.rlib \
 ##   --mount=from=out-36ed05d339fc79f9,dst=/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rmeta,source=/libquote-36ed05d339fc79f9.rmeta \
+##   --mount=from=out-36ed05d339fc79f9,dst=/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rlib,source=/libquote-36ed05d339fc79f9.rlib \
 ##   --mount=from=out-5c1d3e18a7dfcf78,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rmeta,source=/libsyn-5c1d3e18a7dfcf78.rmeta \
+##   --mount=from=out-5c1d3e18a7dfcf78,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rlib,source=/libsyn-5c1d3e18a7dfcf78.rlib \
 ##   --mount=from=out-dc39aa05fabf8bb2,dst=/tmp/clis-ntpd_1-2-3/release/deps/libserde_spanned-dc39aa05fabf8bb2.rmeta,source=/libserde_spanned-dc39aa05fabf8bb2.rmeta \
+##   --mount=from=out-dc39aa05fabf8bb2,dst=/tmp/clis-ntpd_1-2-3/release/deps/libserde_spanned-dc39aa05fabf8bb2.rlib,source=/libserde_spanned-dc39aa05fabf8bb2.rlib \
 ##   --mount=from=out-f1d69a8e9c76a596,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtoml_datetime-f1d69a8e9c76a596.rmeta,source=/libtoml_datetime-f1d69a8e9c76a596.rmeta \
+##   --mount=from=out-f1d69a8e9c76a596,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtoml_datetime-f1d69a8e9c76a596.rlib,source=/libtoml_datetime-f1d69a8e9c76a596.rlib \
 ##   --mount=from=out-90c6c24e7a16fdd6,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtoml_edit-90c6c24e7a16fdd6.rmeta,source=/libtoml_edit-90c6c24e7a16fdd6.rmeta \
+##   --mount=from=out-90c6c24e7a16fdd6,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtoml_edit-90c6c24e7a16fdd6.rlib,source=/libtoml_edit-90c6c24e7a16fdd6.rlib \
 ##   --mount=from=out-bd5f37b7de678bd9,dst=/tmp/clis-ntpd_1-2-3/release/deps/libindexmap-bd5f37b7de678bd9.rmeta,source=/libindexmap-bd5f37b7de678bd9.rmeta \
+##   --mount=from=out-bd5f37b7de678bd9,dst=/tmp/clis-ntpd_1-2-3/release/deps/libindexmap-bd5f37b7de678bd9.rlib,source=/libindexmap-bd5f37b7de678bd9.rlib \
 ##   --mount=from=out-bd5b9404126e35a1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libequivalent-bd5b9404126e35a1.rmeta,source=/libequivalent-bd5b9404126e35a1.rmeta \
+##   --mount=from=out-bd5b9404126e35a1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libequivalent-bd5b9404126e35a1.rlib,source=/libequivalent-bd5b9404126e35a1.rlib \
 ##   --mount=from=out-8bb46fd37d0b1c2d,dst=/tmp/clis-ntpd_1-2-3/release/deps/libhashbrown-8bb46fd37d0b1c2d.rmeta,source=/libhashbrown-8bb46fd37d0b1c2d.rmeta \
+##   --mount=from=out-8bb46fd37d0b1c2d,dst=/tmp/clis-ntpd_1-2-3/release/deps/libhashbrown-8bb46fd37d0b1c2d.rlib,source=/libhashbrown-8bb46fd37d0b1c2d.rlib \
 ##   --mount=from=out-f45e6953436548b2,dst=/tmp/clis-ntpd_1-2-3/release/deps/libwinnow-f45e6953436548b2.rmeta,source=/libwinnow-f45e6953436548b2.rmeta \
+##   --mount=from=out-f45e6953436548b2,dst=/tmp/clis-ntpd_1-2-3/release/deps/libwinnow-f45e6953436548b2.rlib,source=/libwinnow-f45e6953436548b2.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="toml" \
@@ -8617,6 +12174,7 @@ WORKDIR /tmp/clis-ntpd_1-2-3/release/deps
 RUN \
   --mount=from=cratesio-nu-ansi-term-0.46.0,source=/nu-ansi-term-0.46.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nu-ansi-term-0.46.0 \
   --mount=from=out-94fa3b5a5c6dc522,dst=/tmp/clis-ntpd_1-2-3/release/deps/liboverload-94fa3b5a5c6dc522.rmeta,source=/liboverload-94fa3b5a5c6dc522.rmeta \
+  --mount=from=out-94fa3b5a5c6dc522,dst=/tmp/clis-ntpd_1-2-3/release/deps/liboverload-94fa3b5a5c6dc522.rlib,source=/liboverload-94fa3b5a5c6dc522.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="nu_ansi_term" \
@@ -8648,7 +12206,7 @@ COPY --from=dep-l-nu-ansi-term-0.46.0-c42192675aa050dd /tmp/clis-ntpd_1-2-3/rele
 
 ## this = "c42192675aa050dd"
 ## deps = ["94fa3b5a5c6dc522"]
-## short_externs = ["overload-94fa3b5a5c6dc522"]
+## short_externs = ["94fa3b5a5c6dc522"]
 ## writes = [
 ##     "deps/nu_ansi_term-c42192675aa050dd.d",
 ##     "deps/libnu_ansi_term-c42192675aa050dd.rmeta",
@@ -8661,6 +12219,16 @@ COPY --from=dep-l-nu-ansi-term-0.46.0-c42192675aa050dd /tmp/clis-ntpd_1-2-3/rele
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-2-3/release/deps/libnu_ansi_term-c42192675aa050dd.rlib","emit":"link"}',
 ##     '{"$message_type":"diagnostic","message":"1 warning emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 1 warning emitted\u001b[0m\n\n"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-94fa3b5a5c6dc522"
+## src = "/liboverload-94fa3b5a5c6dc522.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/liboverload-94fa3b5a5c6dc522.rmeta"
+## 
+## [[mounts]]
+## from = "out-94fa3b5a5c6dc522"
+## src = "/liboverload-94fa3b5a5c6dc522.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/liboverload-94fa3b5a5c6dc522.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -8682,6 +12250,7 @@ COPY --from=dep-l-nu-ansi-term-0.46.0-c42192675aa050dd /tmp/clis-ntpd_1-2-3/rele
 ## RUN \
 ##   --mount=from=cratesio-nu-ansi-term-0.46.0,source=/nu-ansi-term-0.46.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nu-ansi-term-0.46.0 \
 ##   --mount=from=out-94fa3b5a5c6dc522,dst=/tmp/clis-ntpd_1-2-3/release/deps/liboverload-94fa3b5a5c6dc522.rmeta,source=/liboverload-94fa3b5a5c6dc522.rmeta \
+##   --mount=from=out-94fa3b5a5c6dc522,dst=/tmp/clis-ntpd_1-2-3/release/deps/liboverload-94fa3b5a5c6dc522.rlib,source=/liboverload-94fa3b5a5c6dc522.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="nu_ansi_term" \
@@ -8827,6 +12396,7 @@ WORKDIR /tmp/clis-ntpd_1-2-3/release/deps
 RUN \
   --mount=from=cratesio-sharded-slab-0.1.7,source=/sharded-slab-0.1.7,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/sharded-slab-0.1.7 \
   --mount=from=out-f91da618dd3f72e5,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblazy_static-f91da618dd3f72e5.rmeta,source=/liblazy_static-f91da618dd3f72e5.rmeta \
+  --mount=from=out-f91da618dd3f72e5,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblazy_static-f91da618dd3f72e5.rlib,source=/liblazy_static-f91da618dd3f72e5.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="sharded_slab" \
@@ -8858,7 +12428,7 @@ COPY --from=dep-l-sharded-slab-0.1.7-b9545388d9527f67 /tmp/clis-ntpd_1-2-3/relea
 
 ## this = "b9545388d9527f67"
 ## deps = ["f91da618dd3f72e5"]
-## short_externs = ["lazy_static-f91da618dd3f72e5"]
+## short_externs = ["f91da618dd3f72e5"]
 ## writes = [
 ##     "deps/sharded_slab-b9545388d9527f67.d",
 ##     "deps/libsharded_slab-b9545388d9527f67.rmeta",
@@ -8976,6 +12546,16 @@ COPY --from=dep-l-sharded-slab-0.1.7-b9545388d9527f67 /tmp/clis-ntpd_1-2-3/relea
 ##     '{"$message_type":"diagnostic","message":"105 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 105 warnings emitted\u001b[0m\n\n"}',
 ## ]
 ## 
+## [[mounts]]
+## from = "out-f91da618dd3f72e5"
+## src = "/liblazy_static-f91da618dd3f72e5.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/liblazy_static-f91da618dd3f72e5.rmeta"
+## 
+## [[mounts]]
+## from = "out-f91da618dd3f72e5"
+## src = "/liblazy_static-f91da618dd3f72e5.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/liblazy_static-f91da618dd3f72e5.rlib"
+## 
 ## [[stages]]
 ## name = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.86.0-slim@sha256:57d415bbd61ce11e2d5f73de068103c7bd9f3188dc132c97cef4a8f62989e944 AS rust-base"
@@ -8996,6 +12576,7 @@ COPY --from=dep-l-sharded-slab-0.1.7-b9545388d9527f67 /tmp/clis-ntpd_1-2-3/relea
 ## RUN \
 ##   --mount=from=cratesio-sharded-slab-0.1.7,source=/sharded-slab-0.1.7,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/sharded-slab-0.1.7 \
 ##   --mount=from=out-f91da618dd3f72e5,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblazy_static-f91da618dd3f72e5.rmeta,source=/liblazy_static-f91da618dd3f72e5.rmeta \
+##   --mount=from=out-f91da618dd3f72e5,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblazy_static-f91da618dd3f72e5.rlib,source=/liblazy_static-f91da618dd3f72e5.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="sharded_slab" \
@@ -9038,7 +12619,9 @@ WORKDIR /tmp/clis-ntpd_1-2-3/release/deps
 RUN \
   --mount=from=cratesio-thread_local-1.1.8,source=/thread_local-1.1.8,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thread_local-1.1.8 \
   --mount=from=out-da34da6838abd7f1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rmeta,source=/libcfg_if-da34da6838abd7f1.rmeta \
+  --mount=from=out-da34da6838abd7f1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rlib,source=/libcfg_if-da34da6838abd7f1.rlib \
   --mount=from=out-6ed51fafe322ecba,dst=/tmp/clis-ntpd_1-2-3/release/deps/libonce_cell-6ed51fafe322ecba.rmeta,source=/libonce_cell-6ed51fafe322ecba.rmeta \
+  --mount=from=out-6ed51fafe322ecba,dst=/tmp/clis-ntpd_1-2-3/release/deps/libonce_cell-6ed51fafe322ecba.rlib,source=/libonce_cell-6ed51fafe322ecba.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="thread_local" \
@@ -9074,8 +12657,8 @@ COPY --from=dep-l-thread_local-1.1.8-6893ca5c870c6e37 /tmp/clis-ntpd_1-2-3/relea
 ##     "6ed51fafe322ecba",
 ## ]
 ## short_externs = [
-##     "cfg_if-da34da6838abd7f1",
-##     "once_cell-6ed51fafe322ecba",
+##     "da34da6838abd7f1",
+##     "6ed51fafe322ecba",
 ## ]
 ## writes = [
 ##     "deps/thread_local-6893ca5c870c6e37.d",
@@ -9090,6 +12673,26 @@ COPY --from=dep-l-thread_local-1.1.8-6893ca5c870c6e37 /tmp/clis-ntpd_1-2-3/relea
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-2-3/release/deps/libthread_local-6893ca5c870c6e37.rlib","emit":"link"}',
 ##     '{"$message_type":"diagnostic","message":"2 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 2 warnings emitted\u001b[0m\n\n"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-da34da6838abd7f1"
+## src = "/libcfg_if-da34da6838abd7f1.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rmeta"
+## 
+## [[mounts]]
+## from = "out-da34da6838abd7f1"
+## src = "/libcfg_if-da34da6838abd7f1.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rlib"
+## 
+## [[mounts]]
+## from = "out-6ed51fafe322ecba"
+## src = "/libonce_cell-6ed51fafe322ecba.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libonce_cell-6ed51fafe322ecba.rmeta"
+## 
+## [[mounts]]
+## from = "out-6ed51fafe322ecba"
+## src = "/libonce_cell-6ed51fafe322ecba.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libonce_cell-6ed51fafe322ecba.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -9111,7 +12714,9 @@ COPY --from=dep-l-thread_local-1.1.8-6893ca5c870c6e37 /tmp/clis-ntpd_1-2-3/relea
 ## RUN \
 ##   --mount=from=cratesio-thread_local-1.1.8,source=/thread_local-1.1.8,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thread_local-1.1.8 \
 ##   --mount=from=out-da34da6838abd7f1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rmeta,source=/libcfg_if-da34da6838abd7f1.rmeta \
+##   --mount=from=out-da34da6838abd7f1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rlib,source=/libcfg_if-da34da6838abd7f1.rlib \
 ##   --mount=from=out-6ed51fafe322ecba,dst=/tmp/clis-ntpd_1-2-3/release/deps/libonce_cell-6ed51fafe322ecba.rmeta,source=/libonce_cell-6ed51fafe322ecba.rmeta \
+##   --mount=from=out-6ed51fafe322ecba,dst=/tmp/clis-ntpd_1-2-3/release/deps/libonce_cell-6ed51fafe322ecba.rlib,source=/libonce_cell-6ed51fafe322ecba.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="thread_local" \
@@ -9154,13 +12759,21 @@ WORKDIR /tmp/clis-ntpd_1-2-3/release/deps
 RUN \
   --mount=from=cratesio-tracing-subscriber-0.3.18,source=/tracing-subscriber-0.3.18,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/tracing-subscriber-0.3.18 \
   --mount=from=out-c42192675aa050dd,dst=/tmp/clis-ntpd_1-2-3/release/deps/libnu_ansi_term-c42192675aa050dd.rmeta,source=/libnu_ansi_term-c42192675aa050dd.rmeta \
+  --mount=from=out-c42192675aa050dd,dst=/tmp/clis-ntpd_1-2-3/release/deps/libnu_ansi_term-c42192675aa050dd.rlib,source=/libnu_ansi_term-c42192675aa050dd.rlib \
   --mount=from=out-94fa3b5a5c6dc522,dst=/tmp/clis-ntpd_1-2-3/release/deps/liboverload-94fa3b5a5c6dc522.rmeta,source=/liboverload-94fa3b5a5c6dc522.rmeta \
+  --mount=from=out-94fa3b5a5c6dc522,dst=/tmp/clis-ntpd_1-2-3/release/deps/liboverload-94fa3b5a5c6dc522.rlib,source=/liboverload-94fa3b5a5c6dc522.rlib \
   --mount=from=out-b9545388d9527f67,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsharded_slab-b9545388d9527f67.rmeta,source=/libsharded_slab-b9545388d9527f67.rmeta \
+  --mount=from=out-b9545388d9527f67,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsharded_slab-b9545388d9527f67.rlib,source=/libsharded_slab-b9545388d9527f67.rlib \
   --mount=from=out-f91da618dd3f72e5,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblazy_static-f91da618dd3f72e5.rmeta,source=/liblazy_static-f91da618dd3f72e5.rmeta \
+  --mount=from=out-f91da618dd3f72e5,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblazy_static-f91da618dd3f72e5.rlib,source=/liblazy_static-f91da618dd3f72e5.rlib \
   --mount=from=out-6893ca5c870c6e37,dst=/tmp/clis-ntpd_1-2-3/release/deps/libthread_local-6893ca5c870c6e37.rmeta,source=/libthread_local-6893ca5c870c6e37.rmeta \
+  --mount=from=out-6893ca5c870c6e37,dst=/tmp/clis-ntpd_1-2-3/release/deps/libthread_local-6893ca5c870c6e37.rlib,source=/libthread_local-6893ca5c870c6e37.rlib \
   --mount=from=out-da34da6838abd7f1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rmeta,source=/libcfg_if-da34da6838abd7f1.rmeta \
+  --mount=from=out-da34da6838abd7f1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rlib,source=/libcfg_if-da34da6838abd7f1.rlib \
   --mount=from=out-6ed51fafe322ecba,dst=/tmp/clis-ntpd_1-2-3/release/deps/libonce_cell-6ed51fafe322ecba.rmeta,source=/libonce_cell-6ed51fafe322ecba.rmeta \
+  --mount=from=out-6ed51fafe322ecba,dst=/tmp/clis-ntpd_1-2-3/release/deps/libonce_cell-6ed51fafe322ecba.rlib,source=/libonce_cell-6ed51fafe322ecba.rlib \
   --mount=from=out-100f3fe23952e4be,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtracing_core-100f3fe23952e4be.rmeta,source=/libtracing_core-100f3fe23952e4be.rmeta \
+  --mount=from=out-100f3fe23952e4be,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtracing_core-100f3fe23952e4be.rlib,source=/libtracing_core-100f3fe23952e4be.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="tracing_subscriber" \
@@ -9202,14 +12815,14 @@ COPY --from=dep-l-tracing-subscriber-0.3.18-63f992d9454962cc /tmp/clis-ntpd_1-2-
 ##     "100f3fe23952e4be",
 ## ]
 ## short_externs = [
-##     "nu_ansi_term-c42192675aa050dd",
-##     "overload-94fa3b5a5c6dc522",
-##     "sharded_slab-b9545388d9527f67",
-##     "lazy_static-f91da618dd3f72e5",
-##     "thread_local-6893ca5c870c6e37",
-##     "cfg_if-da34da6838abd7f1",
-##     "once_cell-6ed51fafe322ecba",
-##     "tracing_core-100f3fe23952e4be",
+##     "c42192675aa050dd",
+##     "94fa3b5a5c6dc522",
+##     "b9545388d9527f67",
+##     "f91da618dd3f72e5",
+##     "6893ca5c870c6e37",
+##     "da34da6838abd7f1",
+##     "6ed51fafe322ecba",
+##     "100f3fe23952e4be",
 ## ]
 ## writes = [
 ##     "deps/tracing_subscriber-63f992d9454962cc.d",
@@ -9224,6 +12837,86 @@ COPY --from=dep-l-tracing-subscriber-0.3.18-63f992d9454962cc /tmp/clis-ntpd_1-2-
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-2-3/release/deps/libtracing_subscriber-63f992d9454962cc.rlib","emit":"link"}',
 ##     '{"$message_type":"diagnostic","message":"2 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 2 warnings emitted\u001b[0m\n\n"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-c42192675aa050dd"
+## src = "/libnu_ansi_term-c42192675aa050dd.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libnu_ansi_term-c42192675aa050dd.rmeta"
+## 
+## [[mounts]]
+## from = "out-c42192675aa050dd"
+## src = "/libnu_ansi_term-c42192675aa050dd.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libnu_ansi_term-c42192675aa050dd.rlib"
+## 
+## [[mounts]]
+## from = "out-94fa3b5a5c6dc522"
+## src = "/liboverload-94fa3b5a5c6dc522.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/liboverload-94fa3b5a5c6dc522.rmeta"
+## 
+## [[mounts]]
+## from = "out-94fa3b5a5c6dc522"
+## src = "/liboverload-94fa3b5a5c6dc522.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/liboverload-94fa3b5a5c6dc522.rlib"
+## 
+## [[mounts]]
+## from = "out-b9545388d9527f67"
+## src = "/libsharded_slab-b9545388d9527f67.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libsharded_slab-b9545388d9527f67.rmeta"
+## 
+## [[mounts]]
+## from = "out-b9545388d9527f67"
+## src = "/libsharded_slab-b9545388d9527f67.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libsharded_slab-b9545388d9527f67.rlib"
+## 
+## [[mounts]]
+## from = "out-f91da618dd3f72e5"
+## src = "/liblazy_static-f91da618dd3f72e5.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/liblazy_static-f91da618dd3f72e5.rmeta"
+## 
+## [[mounts]]
+## from = "out-f91da618dd3f72e5"
+## src = "/liblazy_static-f91da618dd3f72e5.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/liblazy_static-f91da618dd3f72e5.rlib"
+## 
+## [[mounts]]
+## from = "out-6893ca5c870c6e37"
+## src = "/libthread_local-6893ca5c870c6e37.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libthread_local-6893ca5c870c6e37.rmeta"
+## 
+## [[mounts]]
+## from = "out-6893ca5c870c6e37"
+## src = "/libthread_local-6893ca5c870c6e37.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libthread_local-6893ca5c870c6e37.rlib"
+## 
+## [[mounts]]
+## from = "out-da34da6838abd7f1"
+## src = "/libcfg_if-da34da6838abd7f1.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rmeta"
+## 
+## [[mounts]]
+## from = "out-da34da6838abd7f1"
+## src = "/libcfg_if-da34da6838abd7f1.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rlib"
+## 
+## [[mounts]]
+## from = "out-6ed51fafe322ecba"
+## src = "/libonce_cell-6ed51fafe322ecba.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libonce_cell-6ed51fafe322ecba.rmeta"
+## 
+## [[mounts]]
+## from = "out-6ed51fafe322ecba"
+## src = "/libonce_cell-6ed51fafe322ecba.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libonce_cell-6ed51fafe322ecba.rlib"
+## 
+## [[mounts]]
+## from = "out-100f3fe23952e4be"
+## src = "/libtracing_core-100f3fe23952e4be.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libtracing_core-100f3fe23952e4be.rmeta"
+## 
+## [[mounts]]
+## from = "out-100f3fe23952e4be"
+## src = "/libtracing_core-100f3fe23952e4be.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libtracing_core-100f3fe23952e4be.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -9245,13 +12938,21 @@ COPY --from=dep-l-tracing-subscriber-0.3.18-63f992d9454962cc /tmp/clis-ntpd_1-2-
 ## RUN \
 ##   --mount=from=cratesio-tracing-subscriber-0.3.18,source=/tracing-subscriber-0.3.18,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/tracing-subscriber-0.3.18 \
 ##   --mount=from=out-c42192675aa050dd,dst=/tmp/clis-ntpd_1-2-3/release/deps/libnu_ansi_term-c42192675aa050dd.rmeta,source=/libnu_ansi_term-c42192675aa050dd.rmeta \
+##   --mount=from=out-c42192675aa050dd,dst=/tmp/clis-ntpd_1-2-3/release/deps/libnu_ansi_term-c42192675aa050dd.rlib,source=/libnu_ansi_term-c42192675aa050dd.rlib \
 ##   --mount=from=out-94fa3b5a5c6dc522,dst=/tmp/clis-ntpd_1-2-3/release/deps/liboverload-94fa3b5a5c6dc522.rmeta,source=/liboverload-94fa3b5a5c6dc522.rmeta \
+##   --mount=from=out-94fa3b5a5c6dc522,dst=/tmp/clis-ntpd_1-2-3/release/deps/liboverload-94fa3b5a5c6dc522.rlib,source=/liboverload-94fa3b5a5c6dc522.rlib \
 ##   --mount=from=out-b9545388d9527f67,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsharded_slab-b9545388d9527f67.rmeta,source=/libsharded_slab-b9545388d9527f67.rmeta \
+##   --mount=from=out-b9545388d9527f67,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsharded_slab-b9545388d9527f67.rlib,source=/libsharded_slab-b9545388d9527f67.rlib \
 ##   --mount=from=out-f91da618dd3f72e5,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblazy_static-f91da618dd3f72e5.rmeta,source=/liblazy_static-f91da618dd3f72e5.rmeta \
+##   --mount=from=out-f91da618dd3f72e5,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblazy_static-f91da618dd3f72e5.rlib,source=/liblazy_static-f91da618dd3f72e5.rlib \
 ##   --mount=from=out-6893ca5c870c6e37,dst=/tmp/clis-ntpd_1-2-3/release/deps/libthread_local-6893ca5c870c6e37.rmeta,source=/libthread_local-6893ca5c870c6e37.rmeta \
+##   --mount=from=out-6893ca5c870c6e37,dst=/tmp/clis-ntpd_1-2-3/release/deps/libthread_local-6893ca5c870c6e37.rlib,source=/libthread_local-6893ca5c870c6e37.rlib \
 ##   --mount=from=out-da34da6838abd7f1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rmeta,source=/libcfg_if-da34da6838abd7f1.rmeta \
+##   --mount=from=out-da34da6838abd7f1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rlib,source=/libcfg_if-da34da6838abd7f1.rlib \
 ##   --mount=from=out-6ed51fafe322ecba,dst=/tmp/clis-ntpd_1-2-3/release/deps/libonce_cell-6ed51fafe322ecba.rmeta,source=/libonce_cell-6ed51fafe322ecba.rmeta \
+##   --mount=from=out-6ed51fafe322ecba,dst=/tmp/clis-ntpd_1-2-3/release/deps/libonce_cell-6ed51fafe322ecba.rlib,source=/libonce_cell-6ed51fafe322ecba.rlib \
 ##   --mount=from=out-100f3fe23952e4be,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtracing_core-100f3fe23952e4be.rmeta,source=/libtracing_core-100f3fe23952e4be.rmeta \
+##   --mount=from=out-100f3fe23952e4be,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtracing_core-100f3fe23952e4be.rlib,source=/libtracing_core-100f3fe23952e4be.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="tracing_subscriber" \
@@ -9295,77 +12996,146 @@ RUN \
   --mount=from=cratesio-ntpd-1.2.3,source=/ntpd-1.2.3,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ntpd-1.2.3 \
   --mount=from=out-2b00e18c8782890c,dst=/tmp/clis-ntpd_1-2-3/release/deps/libasync_trait-2b00e18c8782890c.so,source=/libasync_trait-2b00e18c8782890c.so \
   --mount=from=out-4be32d01ee2a9db1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rmeta,source=/libproc_macro2-4be32d01ee2a9db1.rmeta \
+  --mount=from=out-4be32d01ee2a9db1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rlib,source=/libproc_macro2-4be32d01ee2a9db1.rlib \
   --mount=from=out-4c1dc76c11b3deb8,dst=/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rmeta,source=/libunicode_ident-4c1dc76c11b3deb8.rmeta \
+  --mount=from=out-4c1dc76c11b3deb8,dst=/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rlib,source=/libunicode_ident-4c1dc76c11b3deb8.rlib \
   --mount=from=out-36ed05d339fc79f9,dst=/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rmeta,source=/libquote-36ed05d339fc79f9.rmeta \
+  --mount=from=out-36ed05d339fc79f9,dst=/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rlib,source=/libquote-36ed05d339fc79f9.rlib \
   --mount=from=out-5c1d3e18a7dfcf78,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rmeta,source=/libsyn-5c1d3e18a7dfcf78.rmeta \
+  --mount=from=out-5c1d3e18a7dfcf78,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rlib,source=/libsyn-5c1d3e18a7dfcf78.rlib \
   --mount=from=out-7adc6d6ce8be0538,dst=/tmp/clis-ntpd_1-2-3/release/deps/libclock_steering-7adc6d6ce8be0538.rmeta,source=/libclock_steering-7adc6d6ce8be0538.rmeta \
+  --mount=from=out-7adc6d6ce8be0538,dst=/tmp/clis-ntpd_1-2-3/release/deps/libclock_steering-7adc6d6ce8be0538.rlib,source=/libclock_steering-7adc6d6ce8be0538.rlib \
   --mount=from=out-a7905fdc410bdfce,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rmeta,source=/liblibc-a7905fdc410bdfce.rmeta \
+  --mount=from=out-a7905fdc410bdfce,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rlib,source=/liblibc-a7905fdc410bdfce.rlib \
   --mount=from=out-5a810c5444456e7d,dst=/tmp/clis-ntpd_1-2-3/release/deps/libntp_proto-5a810c5444456e7d.rmeta,source=/libntp_proto-5a810c5444456e7d.rmeta \
+  --mount=from=out-5a810c5444456e7d,dst=/tmp/clis-ntpd_1-2-3/release/deps/libntp_proto-5a810c5444456e7d.rlib,source=/libntp_proto-5a810c5444456e7d.rlib \
   --mount=from=out-2ba1712ad50273ba,dst=/tmp/clis-ntpd_1-2-3/release/deps/libaead-2ba1712ad50273ba.rmeta,source=/libaead-2ba1712ad50273ba.rmeta \
+  --mount=from=out-2ba1712ad50273ba,dst=/tmp/clis-ntpd_1-2-3/release/deps/libaead-2ba1712ad50273ba.rlib,source=/libaead-2ba1712ad50273ba.rlib \
   --mount=from=out-1009fce94369ad6b,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcrypto_common-1009fce94369ad6b.rmeta,source=/libcrypto_common-1009fce94369ad6b.rmeta \
+  --mount=from=out-1009fce94369ad6b,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcrypto_common-1009fce94369ad6b.rlib,source=/libcrypto_common-1009fce94369ad6b.rlib \
   --mount=from=out-2d6ea4fd5d7ef666,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgeneric_array-2d6ea4fd5d7ef666.rmeta,source=/libgeneric_array-2d6ea4fd5d7ef666.rmeta \
+  --mount=from=out-2d6ea4fd5d7ef666,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgeneric_array-2d6ea4fd5d7ef666.rlib,source=/libgeneric_array-2d6ea4fd5d7ef666.rlib \
   --mount=from=out-981b1f3c4161234a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtypenum-981b1f3c4161234a.rmeta,source=/libtypenum-981b1f3c4161234a.rmeta \
+  --mount=from=out-981b1f3c4161234a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtypenum-981b1f3c4161234a.rlib,source=/libtypenum-981b1f3c4161234a.rlib \
   --mount=from=out-434e8a9dd58e4456,dst=/tmp/clis-ntpd_1-2-3/release/deps/librand_core-434e8a9dd58e4456.rmeta,source=/librand_core-434e8a9dd58e4456.rmeta \
+  --mount=from=out-434e8a9dd58e4456,dst=/tmp/clis-ntpd_1-2-3/release/deps/librand_core-434e8a9dd58e4456.rlib,source=/librand_core-434e8a9dd58e4456.rlib \
   --mount=from=out-84473f2ddfbb434a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rmeta,source=/libgetrandom-84473f2ddfbb434a.rmeta \
+  --mount=from=out-84473f2ddfbb434a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rlib,source=/libgetrandom-84473f2ddfbb434a.rlib \
   --mount=from=out-da34da6838abd7f1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rmeta,source=/libcfg_if-da34da6838abd7f1.rmeta \
+  --mount=from=out-da34da6838abd7f1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rlib,source=/libcfg_if-da34da6838abd7f1.rlib \
   --mount=from=out-e0325614c1d7d6ab,dst=/tmp/clis-ntpd_1-2-3/release/deps/libaes_siv-e0325614c1d7d6ab.rmeta,source=/libaes_siv-e0325614c1d7d6ab.rmeta \
+  --mount=from=out-e0325614c1d7d6ab,dst=/tmp/clis-ntpd_1-2-3/release/deps/libaes_siv-e0325614c1d7d6ab.rlib,source=/libaes_siv-e0325614c1d7d6ab.rlib \
   --mount=from=out-81c9db97d7f9be78,dst=/tmp/clis-ntpd_1-2-3/release/deps/libaes-81c9db97d7f9be78.rmeta,source=/libaes-81c9db97d7f9be78.rmeta \
+  --mount=from=out-81c9db97d7f9be78,dst=/tmp/clis-ntpd_1-2-3/release/deps/libaes-81c9db97d7f9be78.rlib,source=/libaes-81c9db97d7f9be78.rlib \
   --mount=from=out-ca1baada07864a60,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcipher-ca1baada07864a60.rmeta,source=/libcipher-ca1baada07864a60.rmeta \
+  --mount=from=out-ca1baada07864a60,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcipher-ca1baada07864a60.rlib,source=/libcipher-ca1baada07864a60.rlib \
   --mount=from=out-56f37e149446be27,dst=/tmp/clis-ntpd_1-2-3/release/deps/libinout-56f37e149446be27.rmeta,source=/libinout-56f37e149446be27.rmeta \
+  --mount=from=out-56f37e149446be27,dst=/tmp/clis-ntpd_1-2-3/release/deps/libinout-56f37e149446be27.rlib,source=/libinout-56f37e149446be27.rlib \
   --mount=from=out-4ab791033e58debd,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcpufeatures-4ab791033e58debd.rmeta,source=/libcpufeatures-4ab791033e58debd.rmeta \
+  --mount=from=out-4ab791033e58debd,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcpufeatures-4ab791033e58debd.rlib,source=/libcpufeatures-4ab791033e58debd.rlib \
   --mount=from=out-568874dfd4c5be74,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcmac-568874dfd4c5be74.rmeta,source=/libcmac-568874dfd4c5be74.rmeta \
+  --mount=from=out-568874dfd4c5be74,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcmac-568874dfd4c5be74.rlib,source=/libcmac-568874dfd4c5be74.rlib \
   --mount=from=out-19f9a0f198045bc5,dst=/tmp/clis-ntpd_1-2-3/release/deps/libdbl-19f9a0f198045bc5.rmeta,source=/libdbl-19f9a0f198045bc5.rmeta \
+  --mount=from=out-19f9a0f198045bc5,dst=/tmp/clis-ntpd_1-2-3/release/deps/libdbl-19f9a0f198045bc5.rlib,source=/libdbl-19f9a0f198045bc5.rlib \
   --mount=from=out-65e96f3f500a3098,dst=/tmp/clis-ntpd_1-2-3/release/deps/libdigest-65e96f3f500a3098.rmeta,source=/libdigest-65e96f3f500a3098.rmeta \
+  --mount=from=out-65e96f3f500a3098,dst=/tmp/clis-ntpd_1-2-3/release/deps/libdigest-65e96f3f500a3098.rlib,source=/libdigest-65e96f3f500a3098.rlib \
   --mount=from=out-bc12f6e8b62af3c6,dst=/tmp/clis-ntpd_1-2-3/release/deps/libblock_buffer-bc12f6e8b62af3c6.rmeta,source=/libblock_buffer-bc12f6e8b62af3c6.rmeta \
+  --mount=from=out-bc12f6e8b62af3c6,dst=/tmp/clis-ntpd_1-2-3/release/deps/libblock_buffer-bc12f6e8b62af3c6.rlib,source=/libblock_buffer-bc12f6e8b62af3c6.rlib \
   --mount=from=out-8b6e21d4a5a6c6ed,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsubtle-8b6e21d4a5a6c6ed.rmeta,source=/libsubtle-8b6e21d4a5a6c6ed.rmeta \
+  --mount=from=out-8b6e21d4a5a6c6ed,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsubtle-8b6e21d4a5a6c6ed.rlib,source=/libsubtle-8b6e21d4a5a6c6ed.rlib \
   --mount=from=out-aca4c84266bacfb7,dst=/tmp/clis-ntpd_1-2-3/release/deps/libctr-aca4c84266bacfb7.rmeta,source=/libctr-aca4c84266bacfb7.rmeta \
+  --mount=from=out-aca4c84266bacfb7,dst=/tmp/clis-ntpd_1-2-3/release/deps/libctr-aca4c84266bacfb7.rlib,source=/libctr-aca4c84266bacfb7.rlib \
   --mount=from=out-caf2b0ffe78763b7,dst=/tmp/clis-ntpd_1-2-3/release/deps/libzeroize-caf2b0ffe78763b7.rmeta,source=/libzeroize-caf2b0ffe78763b7.rmeta \
+  --mount=from=out-caf2b0ffe78763b7,dst=/tmp/clis-ntpd_1-2-3/release/deps/libzeroize-caf2b0ffe78763b7.rlib,source=/libzeroize-caf2b0ffe78763b7.rlib \
   --mount=from=out-f0775f4337e7a668,dst=/tmp/clis-ntpd_1-2-3/release/deps/libmd5-f0775f4337e7a668.rmeta,source=/libmd5-f0775f4337e7a668.rmeta \
+  --mount=from=out-f0775f4337e7a668,dst=/tmp/clis-ntpd_1-2-3/release/deps/libmd5-f0775f4337e7a668.rlib,source=/libmd5-f0775f4337e7a668.rlib \
   --mount=from=out-5161209caf71d483,dst=/tmp/clis-ntpd_1-2-3/release/deps/librand-5161209caf71d483.rmeta,source=/librand-5161209caf71d483.rmeta \
+  --mount=from=out-5161209caf71d483,dst=/tmp/clis-ntpd_1-2-3/release/deps/librand-5161209caf71d483.rlib,source=/librand-5161209caf71d483.rlib \
   --mount=from=out-8e2f025dcc32e9af,dst=/tmp/clis-ntpd_1-2-3/release/deps/librand_chacha-8e2f025dcc32e9af.rmeta,source=/librand_chacha-8e2f025dcc32e9af.rmeta \
+  --mount=from=out-8e2f025dcc32e9af,dst=/tmp/clis-ntpd_1-2-3/release/deps/librand_chacha-8e2f025dcc32e9af.rlib,source=/librand_chacha-8e2f025dcc32e9af.rlib \
   --mount=from=out-af198cb5433f3d0c,dst=/tmp/clis-ntpd_1-2-3/release/deps/libppv_lite86-af198cb5433f3d0c.rmeta,source=/libppv_lite86-af198cb5433f3d0c.rmeta \
+  --mount=from=out-af198cb5433f3d0c,dst=/tmp/clis-ntpd_1-2-3/release/deps/libppv_lite86-af198cb5433f3d0c.rlib,source=/libppv_lite86-af198cb5433f3d0c.rlib \
   --mount=from=out-fd2c262888e3ecb5,dst=/tmp/clis-ntpd_1-2-3/release/deps/librustls-fd2c262888e3ecb5.rmeta,source=/librustls-fd2c262888e3ecb5.rmeta \
+  --mount=from=out-fd2c262888e3ecb5,dst=/tmp/clis-ntpd_1-2-3/release/deps/librustls-fd2c262888e3ecb5.rlib,source=/librustls-fd2c262888e3ecb5.rlib \
   --mount=from=out-b564a3159bfcf688,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblog-b564a3159bfcf688.rmeta,source=/liblog-b564a3159bfcf688.rmeta \
+  --mount=from=out-b564a3159bfcf688,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblog-b564a3159bfcf688.rlib,source=/liblog-b564a3159bfcf688.rlib \
   --mount=from=out-6ed51fafe322ecba,dst=/tmp/clis-ntpd_1-2-3/release/deps/libonce_cell-6ed51fafe322ecba.rmeta,source=/libonce_cell-6ed51fafe322ecba.rmeta \
+  --mount=from=out-6ed51fafe322ecba,dst=/tmp/clis-ntpd_1-2-3/release/deps/libonce_cell-6ed51fafe322ecba.rlib,source=/libonce_cell-6ed51fafe322ecba.rlib \
   --mount=from=out-162d4bd1f192637c,dst=/tmp/clis-ntpd_1-2-3/release/deps/libring-162d4bd1f192637c.rmeta,source=/libring-162d4bd1f192637c.rmeta \
+  --mount=from=out-162d4bd1f192637c,dst=/tmp/clis-ntpd_1-2-3/release/deps/libring-162d4bd1f192637c.rlib,source=/libring-162d4bd1f192637c.rlib \
   --mount=from=out-126f99f44d356e93,dst=/tmp/clis-ntpd_1-2-3/release/deps/libspin-126f99f44d356e93.rmeta,source=/libspin-126f99f44d356e93.rmeta \
+  --mount=from=out-126f99f44d356e93,dst=/tmp/clis-ntpd_1-2-3/release/deps/libspin-126f99f44d356e93.rlib,source=/libspin-126f99f44d356e93.rlib \
   --mount=from=out-2cf0189e0a6f5785,dst=/tmp/clis-ntpd_1-2-3/release/deps/libuntrusted-2cf0189e0a6f5785.rmeta,source=/libuntrusted-2cf0189e0a6f5785.rmeta \
+  --mount=from=out-2cf0189e0a6f5785,dst=/tmp/clis-ntpd_1-2-3/release/deps/libuntrusted-2cf0189e0a6f5785.rlib,source=/libuntrusted-2cf0189e0a6f5785.rlib \
   --mount=from=out-0bd417676bde33fe,dst=/tmp/clis-ntpd_1-2-3/release/deps/librustls_pki_types-0bd417676bde33fe.rmeta,source=/librustls_pki_types-0bd417676bde33fe.rmeta \
+  --mount=from=out-0bd417676bde33fe,dst=/tmp/clis-ntpd_1-2-3/release/deps/librustls_pki_types-0bd417676bde33fe.rlib,source=/librustls_pki_types-0bd417676bde33fe.rlib \
   --mount=from=out-0b45a7938c797eef,dst=/tmp/clis-ntpd_1-2-3/release/deps/libwebpki-0b45a7938c797eef.rmeta,source=/libwebpki-0b45a7938c797eef.rmeta \
+  --mount=from=out-0b45a7938c797eef,dst=/tmp/clis-ntpd_1-2-3/release/deps/libwebpki-0b45a7938c797eef.rlib,source=/libwebpki-0b45a7938c797eef.rlib \
   --mount=from=out-986325a49dffbcd1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libserde-986325a49dffbcd1.rmeta,source=/libserde-986325a49dffbcd1.rmeta \
+  --mount=from=out-986325a49dffbcd1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libserde-986325a49dffbcd1.rlib,source=/libserde-986325a49dffbcd1.rlib \
   --mount=from=out-b74741511dfa898a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libserde_derive-b74741511dfa898a.so,source=/libserde_derive-b74741511dfa898a.so \
   --mount=from=out-7d2675bffdb63c95,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtracing-7d2675bffdb63c95.rmeta,source=/libtracing-7d2675bffdb63c95.rmeta \
+  --mount=from=out-7d2675bffdb63c95,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtracing-7d2675bffdb63c95.rlib,source=/libtracing-7d2675bffdb63c95.rlib \
   --mount=from=out-32982cb980ef9328,dst=/tmp/clis-ntpd_1-2-3/release/deps/libpin_project_lite-32982cb980ef9328.rmeta,source=/libpin_project_lite-32982cb980ef9328.rmeta \
+  --mount=from=out-32982cb980ef9328,dst=/tmp/clis-ntpd_1-2-3/release/deps/libpin_project_lite-32982cb980ef9328.rlib,source=/libpin_project_lite-32982cb980ef9328.rlib \
   --mount=from=out-ff2e92028461b3cf,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtracing_attributes-ff2e92028461b3cf.so,source=/libtracing_attributes-ff2e92028461b3cf.so \
   --mount=from=out-100f3fe23952e4be,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtracing_core-100f3fe23952e4be.rmeta,source=/libtracing_core-100f3fe23952e4be.rmeta \
+  --mount=from=out-100f3fe23952e4be,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtracing_core-100f3fe23952e4be.rlib,source=/libtracing_core-100f3fe23952e4be.rlib \
   --mount=from=out-9a69f5c8c648a58b,dst=/tmp/clis-ntpd_1-2-3/release/deps/librustls_native_certs-9a69f5c8c648a58b.rmeta,source=/librustls_native_certs-9a69f5c8c648a58b.rmeta \
+  --mount=from=out-9a69f5c8c648a58b,dst=/tmp/clis-ntpd_1-2-3/release/deps/librustls_native_certs-9a69f5c8c648a58b.rlib,source=/librustls_native_certs-9a69f5c8c648a58b.rlib \
   --mount=from=out-0ee236ae7bf0c632,dst=/tmp/clis-ntpd_1-2-3/release/deps/libopenssl_probe-0ee236ae7bf0c632.rmeta,source=/libopenssl_probe-0ee236ae7bf0c632.rmeta \
+  --mount=from=out-0ee236ae7bf0c632,dst=/tmp/clis-ntpd_1-2-3/release/deps/libopenssl_probe-0ee236ae7bf0c632.rlib,source=/libopenssl_probe-0ee236ae7bf0c632.rlib \
   --mount=from=out-e86acdc6389f12a9,dst=/tmp/clis-ntpd_1-2-3/release/deps/librustls_pemfile-e86acdc6389f12a9.rmeta,source=/librustls_pemfile-e86acdc6389f12a9.rmeta \
+  --mount=from=out-e86acdc6389f12a9,dst=/tmp/clis-ntpd_1-2-3/release/deps/librustls_pemfile-e86acdc6389f12a9.rlib,source=/librustls_pemfile-e86acdc6389f12a9.rlib \
   --mount=from=out-b08e25582a8fdf7e,dst=/tmp/clis-ntpd_1-2-3/release/deps/libbase64-b08e25582a8fdf7e.rmeta,source=/libbase64-b08e25582a8fdf7e.rmeta \
+  --mount=from=out-b08e25582a8fdf7e,dst=/tmp/clis-ntpd_1-2-3/release/deps/libbase64-b08e25582a8fdf7e.rlib,source=/libbase64-b08e25582a8fdf7e.rlib \
   --mount=from=out-2a345737f765283a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libserde_json-2a345737f765283a.rmeta,source=/libserde_json-2a345737f765283a.rmeta \
+  --mount=from=out-2a345737f765283a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libserde_json-2a345737f765283a.rlib,source=/libserde_json-2a345737f765283a.rlib \
   --mount=from=out-95ec35c9faa8fa43,dst=/tmp/clis-ntpd_1-2-3/release/deps/libitoa-95ec35c9faa8fa43.rmeta,source=/libitoa-95ec35c9faa8fa43.rmeta \
+  --mount=from=out-95ec35c9faa8fa43,dst=/tmp/clis-ntpd_1-2-3/release/deps/libitoa-95ec35c9faa8fa43.rlib,source=/libitoa-95ec35c9faa8fa43.rlib \
   --mount=from=out-56a874feb6525857,dst=/tmp/clis-ntpd_1-2-3/release/deps/libryu-56a874feb6525857.rmeta,source=/libryu-56a874feb6525857.rmeta \
+  --mount=from=out-56a874feb6525857,dst=/tmp/clis-ntpd_1-2-3/release/deps/libryu-56a874feb6525857.rlib,source=/libryu-56a874feb6525857.rlib \
   --mount=from=out-2f59881207cd7c68,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtimestamped_socket-2f59881207cd7c68.rmeta,source=/libtimestamped_socket-2f59881207cd7c68.rmeta \
+  --mount=from=out-2f59881207cd7c68,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtimestamped_socket-2f59881207cd7c68.rlib,source=/libtimestamped_socket-2f59881207cd7c68.rlib \
   --mount=from=out-e6ed429a0a7450c0,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtokio-e6ed429a0a7450c0.rmeta,source=/libtokio-e6ed429a0a7450c0.rmeta \
+  --mount=from=out-e6ed429a0a7450c0,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtokio-e6ed429a0a7450c0.rlib,source=/libtokio-e6ed429a0a7450c0.rlib \
   --mount=from=out-17cf73a7d3f13d95,dst=/tmp/clis-ntpd_1-2-3/release/deps/libbytes-17cf73a7d3f13d95.rmeta,source=/libbytes-17cf73a7d3f13d95.rmeta \
+  --mount=from=out-17cf73a7d3f13d95,dst=/tmp/clis-ntpd_1-2-3/release/deps/libbytes-17cf73a7d3f13d95.rlib,source=/libbytes-17cf73a7d3f13d95.rlib \
   --mount=from=out-57de3125ece5b1fd,dst=/tmp/clis-ntpd_1-2-3/release/deps/libmio-57de3125ece5b1fd.rmeta,source=/libmio-57de3125ece5b1fd.rmeta \
+  --mount=from=out-57de3125ece5b1fd,dst=/tmp/clis-ntpd_1-2-3/release/deps/libmio-57de3125ece5b1fd.rlib,source=/libmio-57de3125ece5b1fd.rlib \
   --mount=from=out-516d6049f106f6a2,dst=/tmp/clis-ntpd_1-2-3/release/deps/libnum_cpus-516d6049f106f6a2.rmeta,source=/libnum_cpus-516d6049f106f6a2.rmeta \
+  --mount=from=out-516d6049f106f6a2,dst=/tmp/clis-ntpd_1-2-3/release/deps/libnum_cpus-516d6049f106f6a2.rlib,source=/libnum_cpus-516d6049f106f6a2.rlib \
   --mount=from=out-4f06700ac893bf17,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsocket2-4f06700ac893bf17.rmeta,source=/libsocket2-4f06700ac893bf17.rmeta \
+  --mount=from=out-4f06700ac893bf17,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsocket2-4f06700ac893bf17.rlib,source=/libsocket2-4f06700ac893bf17.rlib \
   --mount=from=out-56d9f1f76b7466fe,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtokio_macros-56d9f1f76b7466fe.so,source=/libtokio_macros-56d9f1f76b7466fe.so \
   --mount=from=out-7b6c235fb7422577,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtoml-7b6c235fb7422577.rmeta,source=/libtoml-7b6c235fb7422577.rmeta \
+  --mount=from=out-7b6c235fb7422577,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtoml-7b6c235fb7422577.rlib,source=/libtoml-7b6c235fb7422577.rlib \
   --mount=from=out-dc39aa05fabf8bb2,dst=/tmp/clis-ntpd_1-2-3/release/deps/libserde_spanned-dc39aa05fabf8bb2.rmeta,source=/libserde_spanned-dc39aa05fabf8bb2.rmeta \
+  --mount=from=out-dc39aa05fabf8bb2,dst=/tmp/clis-ntpd_1-2-3/release/deps/libserde_spanned-dc39aa05fabf8bb2.rlib,source=/libserde_spanned-dc39aa05fabf8bb2.rlib \
   --mount=from=out-f1d69a8e9c76a596,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtoml_datetime-f1d69a8e9c76a596.rmeta,source=/libtoml_datetime-f1d69a8e9c76a596.rmeta \
+  --mount=from=out-f1d69a8e9c76a596,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtoml_datetime-f1d69a8e9c76a596.rlib,source=/libtoml_datetime-f1d69a8e9c76a596.rlib \
   --mount=from=out-90c6c24e7a16fdd6,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtoml_edit-90c6c24e7a16fdd6.rmeta,source=/libtoml_edit-90c6c24e7a16fdd6.rmeta \
+  --mount=from=out-90c6c24e7a16fdd6,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtoml_edit-90c6c24e7a16fdd6.rlib,source=/libtoml_edit-90c6c24e7a16fdd6.rlib \
   --mount=from=out-bd5f37b7de678bd9,dst=/tmp/clis-ntpd_1-2-3/release/deps/libindexmap-bd5f37b7de678bd9.rmeta,source=/libindexmap-bd5f37b7de678bd9.rmeta \
+  --mount=from=out-bd5f37b7de678bd9,dst=/tmp/clis-ntpd_1-2-3/release/deps/libindexmap-bd5f37b7de678bd9.rlib,source=/libindexmap-bd5f37b7de678bd9.rlib \
   --mount=from=out-bd5b9404126e35a1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libequivalent-bd5b9404126e35a1.rmeta,source=/libequivalent-bd5b9404126e35a1.rmeta \
+  --mount=from=out-bd5b9404126e35a1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libequivalent-bd5b9404126e35a1.rlib,source=/libequivalent-bd5b9404126e35a1.rlib \
   --mount=from=out-8bb46fd37d0b1c2d,dst=/tmp/clis-ntpd_1-2-3/release/deps/libhashbrown-8bb46fd37d0b1c2d.rmeta,source=/libhashbrown-8bb46fd37d0b1c2d.rmeta \
+  --mount=from=out-8bb46fd37d0b1c2d,dst=/tmp/clis-ntpd_1-2-3/release/deps/libhashbrown-8bb46fd37d0b1c2d.rlib,source=/libhashbrown-8bb46fd37d0b1c2d.rlib \
   --mount=from=out-f45e6953436548b2,dst=/tmp/clis-ntpd_1-2-3/release/deps/libwinnow-f45e6953436548b2.rmeta,source=/libwinnow-f45e6953436548b2.rmeta \
+  --mount=from=out-f45e6953436548b2,dst=/tmp/clis-ntpd_1-2-3/release/deps/libwinnow-f45e6953436548b2.rlib,source=/libwinnow-f45e6953436548b2.rlib \
   --mount=from=out-63f992d9454962cc,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtracing_subscriber-63f992d9454962cc.rmeta,source=/libtracing_subscriber-63f992d9454962cc.rmeta \
+  --mount=from=out-63f992d9454962cc,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtracing_subscriber-63f992d9454962cc.rlib,source=/libtracing_subscriber-63f992d9454962cc.rlib \
   --mount=from=out-c42192675aa050dd,dst=/tmp/clis-ntpd_1-2-3/release/deps/libnu_ansi_term-c42192675aa050dd.rmeta,source=/libnu_ansi_term-c42192675aa050dd.rmeta \
+  --mount=from=out-c42192675aa050dd,dst=/tmp/clis-ntpd_1-2-3/release/deps/libnu_ansi_term-c42192675aa050dd.rlib,source=/libnu_ansi_term-c42192675aa050dd.rlib \
   --mount=from=out-94fa3b5a5c6dc522,dst=/tmp/clis-ntpd_1-2-3/release/deps/liboverload-94fa3b5a5c6dc522.rmeta,source=/liboverload-94fa3b5a5c6dc522.rmeta \
+  --mount=from=out-94fa3b5a5c6dc522,dst=/tmp/clis-ntpd_1-2-3/release/deps/liboverload-94fa3b5a5c6dc522.rlib,source=/liboverload-94fa3b5a5c6dc522.rlib \
   --mount=from=out-b9545388d9527f67,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsharded_slab-b9545388d9527f67.rmeta,source=/libsharded_slab-b9545388d9527f67.rmeta \
+  --mount=from=out-b9545388d9527f67,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsharded_slab-b9545388d9527f67.rlib,source=/libsharded_slab-b9545388d9527f67.rlib \
   --mount=from=out-f91da618dd3f72e5,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblazy_static-f91da618dd3f72e5.rmeta,source=/liblazy_static-f91da618dd3f72e5.rmeta \
+  --mount=from=out-f91da618dd3f72e5,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblazy_static-f91da618dd3f72e5.rlib,source=/liblazy_static-f91da618dd3f72e5.rlib \
   --mount=from=out-6893ca5c870c6e37,dst=/tmp/clis-ntpd_1-2-3/release/deps/libthread_local-6893ca5c870c6e37.rmeta,source=/libthread_local-6893ca5c870c6e37.rmeta \
+  --mount=from=out-6893ca5c870c6e37,dst=/tmp/clis-ntpd_1-2-3/release/deps/libthread_local-6893ca5c870c6e37.rlib,source=/libthread_local-6893ca5c870c6e37.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="ntpd" \
@@ -9474,79 +13244,79 @@ COPY --from=dep-l-ntpd-1.2.3-7974610cfc5e520c /tmp/clis-ntpd_1-2-3/release/deps/
 ##     "6893ca5c870c6e37",
 ## ]
 ## short_externs = [
-##     "async_trait-2b00e18c8782890c",
-##     "proc_macro2-4be32d01ee2a9db1",
-##     "unicode_ident-4c1dc76c11b3deb8",
-##     "quote-36ed05d339fc79f9",
-##     "syn-5c1d3e18a7dfcf78",
-##     "clock_steering-7adc6d6ce8be0538",
-##     "libc-a7905fdc410bdfce",
-##     "ntp_proto-5a810c5444456e7d",
-##     "aead-2ba1712ad50273ba",
-##     "crypto_common-1009fce94369ad6b",
-##     "generic_array-2d6ea4fd5d7ef666",
-##     "typenum-981b1f3c4161234a",
-##     "rand_core-434e8a9dd58e4456",
-##     "getrandom-84473f2ddfbb434a",
-##     "cfg_if-da34da6838abd7f1",
-##     "aes_siv-e0325614c1d7d6ab",
-##     "aes-81c9db97d7f9be78",
-##     "cipher-ca1baada07864a60",
-##     "inout-56f37e149446be27",
-##     "cpufeatures-4ab791033e58debd",
-##     "cmac-568874dfd4c5be74",
-##     "dbl-19f9a0f198045bc5",
-##     "digest-65e96f3f500a3098",
-##     "block_buffer-bc12f6e8b62af3c6",
-##     "subtle-8b6e21d4a5a6c6ed",
-##     "ctr-aca4c84266bacfb7",
-##     "zeroize-caf2b0ffe78763b7",
-##     "md5-f0775f4337e7a668",
-##     "rand-5161209caf71d483",
-##     "rand_chacha-8e2f025dcc32e9af",
-##     "ppv_lite86-af198cb5433f3d0c",
-##     "rustls-fd2c262888e3ecb5",
-##     "log-b564a3159bfcf688",
-##     "once_cell-6ed51fafe322ecba",
-##     "ring-162d4bd1f192637c",
-##     "spin-126f99f44d356e93",
-##     "untrusted-2cf0189e0a6f5785",
-##     "rustls_pki_types-0bd417676bde33fe",
-##     "webpki-0b45a7938c797eef",
-##     "serde-986325a49dffbcd1",
-##     "serde_derive-b74741511dfa898a",
-##     "tracing-7d2675bffdb63c95",
-##     "pin_project_lite-32982cb980ef9328",
-##     "tracing_attributes-ff2e92028461b3cf",
-##     "tracing_core-100f3fe23952e4be",
-##     "rustls_native_certs-9a69f5c8c648a58b",
-##     "openssl_probe-0ee236ae7bf0c632",
-##     "rustls_pemfile-e86acdc6389f12a9",
-##     "base64-b08e25582a8fdf7e",
-##     "serde_json-2a345737f765283a",
-##     "itoa-95ec35c9faa8fa43",
-##     "ryu-56a874feb6525857",
-##     "timestamped_socket-2f59881207cd7c68",
-##     "tokio-e6ed429a0a7450c0",
-##     "bytes-17cf73a7d3f13d95",
-##     "mio-57de3125ece5b1fd",
-##     "num_cpus-516d6049f106f6a2",
-##     "socket2-4f06700ac893bf17",
-##     "tokio_macros-56d9f1f76b7466fe",
-##     "toml-7b6c235fb7422577",
-##     "serde_spanned-dc39aa05fabf8bb2",
-##     "toml_datetime-f1d69a8e9c76a596",
-##     "toml_edit-90c6c24e7a16fdd6",
-##     "indexmap-bd5f37b7de678bd9",
-##     "equivalent-bd5b9404126e35a1",
-##     "hashbrown-8bb46fd37d0b1c2d",
-##     "winnow-f45e6953436548b2",
-##     "tracing_subscriber-63f992d9454962cc",
-##     "nu_ansi_term-c42192675aa050dd",
-##     "overload-94fa3b5a5c6dc522",
-##     "sharded_slab-b9545388d9527f67",
-##     "lazy_static-f91da618dd3f72e5",
-##     "thread_local-6893ca5c870c6e37",
+##     "2b00e18c8782890c",
+##     "4be32d01ee2a9db1",
+##     "4c1dc76c11b3deb8",
+##     "36ed05d339fc79f9",
+##     "5c1d3e18a7dfcf78",
+##     "7adc6d6ce8be0538",
+##     "a7905fdc410bdfce",
+##     "5a810c5444456e7d",
+##     "2ba1712ad50273ba",
+##     "1009fce94369ad6b",
+##     "2d6ea4fd5d7ef666",
+##     "981b1f3c4161234a",
+##     "434e8a9dd58e4456",
+##     "84473f2ddfbb434a",
+##     "da34da6838abd7f1",
+##     "e0325614c1d7d6ab",
+##     "81c9db97d7f9be78",
+##     "ca1baada07864a60",
+##     "56f37e149446be27",
+##     "4ab791033e58debd",
+##     "568874dfd4c5be74",
+##     "19f9a0f198045bc5",
+##     "65e96f3f500a3098",
+##     "bc12f6e8b62af3c6",
+##     "8b6e21d4a5a6c6ed",
+##     "aca4c84266bacfb7",
+##     "caf2b0ffe78763b7",
+##     "f0775f4337e7a668",
+##     "5161209caf71d483",
+##     "8e2f025dcc32e9af",
+##     "af198cb5433f3d0c",
+##     "fd2c262888e3ecb5",
+##     "b564a3159bfcf688",
+##     "6ed51fafe322ecba",
+##     "162d4bd1f192637c",
+##     "126f99f44d356e93",
+##     "2cf0189e0a6f5785",
+##     "0bd417676bde33fe",
+##     "0b45a7938c797eef",
+##     "986325a49dffbcd1",
+##     "b74741511dfa898a",
+##     "7d2675bffdb63c95",
+##     "32982cb980ef9328",
+##     "ff2e92028461b3cf",
+##     "100f3fe23952e4be",
+##     "9a69f5c8c648a58b",
+##     "0ee236ae7bf0c632",
+##     "e86acdc6389f12a9",
+##     "b08e25582a8fdf7e",
+##     "2a345737f765283a",
+##     "95ec35c9faa8fa43",
+##     "56a874feb6525857",
+##     "2f59881207cd7c68",
+##     "e6ed429a0a7450c0",
+##     "17cf73a7d3f13d95",
+##     "57de3125ece5b1fd",
+##     "516d6049f106f6a2",
+##     "4f06700ac893bf17",
+##     "56d9f1f76b7466fe",
+##     "7b6c235fb7422577",
+##     "dc39aa05fabf8bb2",
+##     "f1d69a8e9c76a596",
+##     "90c6c24e7a16fdd6",
+##     "bd5f37b7de678bd9",
+##     "bd5b9404126e35a1",
+##     "8bb46fd37d0b1c2d",
+##     "f45e6953436548b2",
+##     "63f992d9454962cc",
+##     "c42192675aa050dd",
+##     "94fa3b5a5c6dc522",
+##     "b9545388d9527f67",
+##     "f91da618dd3f72e5",
+##     "6893ca5c870c6e37",
 ## ]
 ## writes = [
 ##     "deps/ntpd-7974610cfc5e520c.d",
@@ -9558,6 +13328,716 @@ COPY --from=dep-l-ntpd-1.2.3-7974610cfc5e520c /tmp/clis-ntpd_1-2-3/release/deps/
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-2-3/release/deps/libntpd-7974610cfc5e520c.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-2-3/release/deps/libntpd-7974610cfc5e520c.rlib","emit":"link"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-2b00e18c8782890c"
+## src = "/libasync_trait-2b00e18c8782890c.so"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libasync_trait-2b00e18c8782890c.so"
+## 
+## [[mounts]]
+## from = "out-4be32d01ee2a9db1"
+## src = "/libproc_macro2-4be32d01ee2a9db1.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rmeta"
+## 
+## [[mounts]]
+## from = "out-4be32d01ee2a9db1"
+## src = "/libproc_macro2-4be32d01ee2a9db1.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rlib"
+## 
+## [[mounts]]
+## from = "out-4c1dc76c11b3deb8"
+## src = "/libunicode_ident-4c1dc76c11b3deb8.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rmeta"
+## 
+## [[mounts]]
+## from = "out-4c1dc76c11b3deb8"
+## src = "/libunicode_ident-4c1dc76c11b3deb8.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rlib"
+## 
+## [[mounts]]
+## from = "out-36ed05d339fc79f9"
+## src = "/libquote-36ed05d339fc79f9.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rmeta"
+## 
+## [[mounts]]
+## from = "out-36ed05d339fc79f9"
+## src = "/libquote-36ed05d339fc79f9.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rlib"
+## 
+## [[mounts]]
+## from = "out-5c1d3e18a7dfcf78"
+## src = "/libsyn-5c1d3e18a7dfcf78.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rmeta"
+## 
+## [[mounts]]
+## from = "out-5c1d3e18a7dfcf78"
+## src = "/libsyn-5c1d3e18a7dfcf78.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rlib"
+## 
+## [[mounts]]
+## from = "out-7adc6d6ce8be0538"
+## src = "/libclock_steering-7adc6d6ce8be0538.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libclock_steering-7adc6d6ce8be0538.rmeta"
+## 
+## [[mounts]]
+## from = "out-7adc6d6ce8be0538"
+## src = "/libclock_steering-7adc6d6ce8be0538.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libclock_steering-7adc6d6ce8be0538.rlib"
+## 
+## [[mounts]]
+## from = "out-a7905fdc410bdfce"
+## src = "/liblibc-a7905fdc410bdfce.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rmeta"
+## 
+## [[mounts]]
+## from = "out-a7905fdc410bdfce"
+## src = "/liblibc-a7905fdc410bdfce.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rlib"
+## 
+## [[mounts]]
+## from = "out-5a810c5444456e7d"
+## src = "/libntp_proto-5a810c5444456e7d.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libntp_proto-5a810c5444456e7d.rmeta"
+## 
+## [[mounts]]
+## from = "out-5a810c5444456e7d"
+## src = "/libntp_proto-5a810c5444456e7d.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libntp_proto-5a810c5444456e7d.rlib"
+## 
+## [[mounts]]
+## from = "out-2ba1712ad50273ba"
+## src = "/libaead-2ba1712ad50273ba.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libaead-2ba1712ad50273ba.rmeta"
+## 
+## [[mounts]]
+## from = "out-2ba1712ad50273ba"
+## src = "/libaead-2ba1712ad50273ba.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libaead-2ba1712ad50273ba.rlib"
+## 
+## [[mounts]]
+## from = "out-1009fce94369ad6b"
+## src = "/libcrypto_common-1009fce94369ad6b.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libcrypto_common-1009fce94369ad6b.rmeta"
+## 
+## [[mounts]]
+## from = "out-1009fce94369ad6b"
+## src = "/libcrypto_common-1009fce94369ad6b.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libcrypto_common-1009fce94369ad6b.rlib"
+## 
+## [[mounts]]
+## from = "out-2d6ea4fd5d7ef666"
+## src = "/libgeneric_array-2d6ea4fd5d7ef666.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libgeneric_array-2d6ea4fd5d7ef666.rmeta"
+## 
+## [[mounts]]
+## from = "out-2d6ea4fd5d7ef666"
+## src = "/libgeneric_array-2d6ea4fd5d7ef666.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libgeneric_array-2d6ea4fd5d7ef666.rlib"
+## 
+## [[mounts]]
+## from = "out-981b1f3c4161234a"
+## src = "/libtypenum-981b1f3c4161234a.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libtypenum-981b1f3c4161234a.rmeta"
+## 
+## [[mounts]]
+## from = "out-981b1f3c4161234a"
+## src = "/libtypenum-981b1f3c4161234a.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libtypenum-981b1f3c4161234a.rlib"
+## 
+## [[mounts]]
+## from = "out-434e8a9dd58e4456"
+## src = "/librand_core-434e8a9dd58e4456.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/librand_core-434e8a9dd58e4456.rmeta"
+## 
+## [[mounts]]
+## from = "out-434e8a9dd58e4456"
+## src = "/librand_core-434e8a9dd58e4456.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/librand_core-434e8a9dd58e4456.rlib"
+## 
+## [[mounts]]
+## from = "out-84473f2ddfbb434a"
+## src = "/libgetrandom-84473f2ddfbb434a.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rmeta"
+## 
+## [[mounts]]
+## from = "out-84473f2ddfbb434a"
+## src = "/libgetrandom-84473f2ddfbb434a.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rlib"
+## 
+## [[mounts]]
+## from = "out-da34da6838abd7f1"
+## src = "/libcfg_if-da34da6838abd7f1.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rmeta"
+## 
+## [[mounts]]
+## from = "out-da34da6838abd7f1"
+## src = "/libcfg_if-da34da6838abd7f1.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rlib"
+## 
+## [[mounts]]
+## from = "out-e0325614c1d7d6ab"
+## src = "/libaes_siv-e0325614c1d7d6ab.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libaes_siv-e0325614c1d7d6ab.rmeta"
+## 
+## [[mounts]]
+## from = "out-e0325614c1d7d6ab"
+## src = "/libaes_siv-e0325614c1d7d6ab.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libaes_siv-e0325614c1d7d6ab.rlib"
+## 
+## [[mounts]]
+## from = "out-81c9db97d7f9be78"
+## src = "/libaes-81c9db97d7f9be78.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libaes-81c9db97d7f9be78.rmeta"
+## 
+## [[mounts]]
+## from = "out-81c9db97d7f9be78"
+## src = "/libaes-81c9db97d7f9be78.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libaes-81c9db97d7f9be78.rlib"
+## 
+## [[mounts]]
+## from = "out-ca1baada07864a60"
+## src = "/libcipher-ca1baada07864a60.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libcipher-ca1baada07864a60.rmeta"
+## 
+## [[mounts]]
+## from = "out-ca1baada07864a60"
+## src = "/libcipher-ca1baada07864a60.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libcipher-ca1baada07864a60.rlib"
+## 
+## [[mounts]]
+## from = "out-56f37e149446be27"
+## src = "/libinout-56f37e149446be27.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libinout-56f37e149446be27.rmeta"
+## 
+## [[mounts]]
+## from = "out-56f37e149446be27"
+## src = "/libinout-56f37e149446be27.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libinout-56f37e149446be27.rlib"
+## 
+## [[mounts]]
+## from = "out-4ab791033e58debd"
+## src = "/libcpufeatures-4ab791033e58debd.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libcpufeatures-4ab791033e58debd.rmeta"
+## 
+## [[mounts]]
+## from = "out-4ab791033e58debd"
+## src = "/libcpufeatures-4ab791033e58debd.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libcpufeatures-4ab791033e58debd.rlib"
+## 
+## [[mounts]]
+## from = "out-568874dfd4c5be74"
+## src = "/libcmac-568874dfd4c5be74.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libcmac-568874dfd4c5be74.rmeta"
+## 
+## [[mounts]]
+## from = "out-568874dfd4c5be74"
+## src = "/libcmac-568874dfd4c5be74.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libcmac-568874dfd4c5be74.rlib"
+## 
+## [[mounts]]
+## from = "out-19f9a0f198045bc5"
+## src = "/libdbl-19f9a0f198045bc5.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libdbl-19f9a0f198045bc5.rmeta"
+## 
+## [[mounts]]
+## from = "out-19f9a0f198045bc5"
+## src = "/libdbl-19f9a0f198045bc5.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libdbl-19f9a0f198045bc5.rlib"
+## 
+## [[mounts]]
+## from = "out-65e96f3f500a3098"
+## src = "/libdigest-65e96f3f500a3098.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libdigest-65e96f3f500a3098.rmeta"
+## 
+## [[mounts]]
+## from = "out-65e96f3f500a3098"
+## src = "/libdigest-65e96f3f500a3098.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libdigest-65e96f3f500a3098.rlib"
+## 
+## [[mounts]]
+## from = "out-bc12f6e8b62af3c6"
+## src = "/libblock_buffer-bc12f6e8b62af3c6.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libblock_buffer-bc12f6e8b62af3c6.rmeta"
+## 
+## [[mounts]]
+## from = "out-bc12f6e8b62af3c6"
+## src = "/libblock_buffer-bc12f6e8b62af3c6.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libblock_buffer-bc12f6e8b62af3c6.rlib"
+## 
+## [[mounts]]
+## from = "out-8b6e21d4a5a6c6ed"
+## src = "/libsubtle-8b6e21d4a5a6c6ed.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libsubtle-8b6e21d4a5a6c6ed.rmeta"
+## 
+## [[mounts]]
+## from = "out-8b6e21d4a5a6c6ed"
+## src = "/libsubtle-8b6e21d4a5a6c6ed.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libsubtle-8b6e21d4a5a6c6ed.rlib"
+## 
+## [[mounts]]
+## from = "out-aca4c84266bacfb7"
+## src = "/libctr-aca4c84266bacfb7.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libctr-aca4c84266bacfb7.rmeta"
+## 
+## [[mounts]]
+## from = "out-aca4c84266bacfb7"
+## src = "/libctr-aca4c84266bacfb7.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libctr-aca4c84266bacfb7.rlib"
+## 
+## [[mounts]]
+## from = "out-caf2b0ffe78763b7"
+## src = "/libzeroize-caf2b0ffe78763b7.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libzeroize-caf2b0ffe78763b7.rmeta"
+## 
+## [[mounts]]
+## from = "out-caf2b0ffe78763b7"
+## src = "/libzeroize-caf2b0ffe78763b7.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libzeroize-caf2b0ffe78763b7.rlib"
+## 
+## [[mounts]]
+## from = "out-f0775f4337e7a668"
+## src = "/libmd5-f0775f4337e7a668.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libmd5-f0775f4337e7a668.rmeta"
+## 
+## [[mounts]]
+## from = "out-f0775f4337e7a668"
+## src = "/libmd5-f0775f4337e7a668.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libmd5-f0775f4337e7a668.rlib"
+## 
+## [[mounts]]
+## from = "out-5161209caf71d483"
+## src = "/librand-5161209caf71d483.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/librand-5161209caf71d483.rmeta"
+## 
+## [[mounts]]
+## from = "out-5161209caf71d483"
+## src = "/librand-5161209caf71d483.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/librand-5161209caf71d483.rlib"
+## 
+## [[mounts]]
+## from = "out-8e2f025dcc32e9af"
+## src = "/librand_chacha-8e2f025dcc32e9af.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/librand_chacha-8e2f025dcc32e9af.rmeta"
+## 
+## [[mounts]]
+## from = "out-8e2f025dcc32e9af"
+## src = "/librand_chacha-8e2f025dcc32e9af.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/librand_chacha-8e2f025dcc32e9af.rlib"
+## 
+## [[mounts]]
+## from = "out-af198cb5433f3d0c"
+## src = "/libppv_lite86-af198cb5433f3d0c.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libppv_lite86-af198cb5433f3d0c.rmeta"
+## 
+## [[mounts]]
+## from = "out-af198cb5433f3d0c"
+## src = "/libppv_lite86-af198cb5433f3d0c.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libppv_lite86-af198cb5433f3d0c.rlib"
+## 
+## [[mounts]]
+## from = "out-fd2c262888e3ecb5"
+## src = "/librustls-fd2c262888e3ecb5.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/librustls-fd2c262888e3ecb5.rmeta"
+## 
+## [[mounts]]
+## from = "out-fd2c262888e3ecb5"
+## src = "/librustls-fd2c262888e3ecb5.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/librustls-fd2c262888e3ecb5.rlib"
+## 
+## [[mounts]]
+## from = "out-b564a3159bfcf688"
+## src = "/liblog-b564a3159bfcf688.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/liblog-b564a3159bfcf688.rmeta"
+## 
+## [[mounts]]
+## from = "out-b564a3159bfcf688"
+## src = "/liblog-b564a3159bfcf688.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/liblog-b564a3159bfcf688.rlib"
+## 
+## [[mounts]]
+## from = "out-6ed51fafe322ecba"
+## src = "/libonce_cell-6ed51fafe322ecba.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libonce_cell-6ed51fafe322ecba.rmeta"
+## 
+## [[mounts]]
+## from = "out-6ed51fafe322ecba"
+## src = "/libonce_cell-6ed51fafe322ecba.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libonce_cell-6ed51fafe322ecba.rlib"
+## 
+## [[mounts]]
+## from = "out-162d4bd1f192637c"
+## src = "/libring-162d4bd1f192637c.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libring-162d4bd1f192637c.rmeta"
+## 
+## [[mounts]]
+## from = "out-162d4bd1f192637c"
+## src = "/libring-162d4bd1f192637c.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libring-162d4bd1f192637c.rlib"
+## 
+## [[mounts]]
+## from = "out-126f99f44d356e93"
+## src = "/libspin-126f99f44d356e93.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libspin-126f99f44d356e93.rmeta"
+## 
+## [[mounts]]
+## from = "out-126f99f44d356e93"
+## src = "/libspin-126f99f44d356e93.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libspin-126f99f44d356e93.rlib"
+## 
+## [[mounts]]
+## from = "out-2cf0189e0a6f5785"
+## src = "/libuntrusted-2cf0189e0a6f5785.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libuntrusted-2cf0189e0a6f5785.rmeta"
+## 
+## [[mounts]]
+## from = "out-2cf0189e0a6f5785"
+## src = "/libuntrusted-2cf0189e0a6f5785.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libuntrusted-2cf0189e0a6f5785.rlib"
+## 
+## [[mounts]]
+## from = "out-0bd417676bde33fe"
+## src = "/librustls_pki_types-0bd417676bde33fe.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/librustls_pki_types-0bd417676bde33fe.rmeta"
+## 
+## [[mounts]]
+## from = "out-0bd417676bde33fe"
+## src = "/librustls_pki_types-0bd417676bde33fe.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/librustls_pki_types-0bd417676bde33fe.rlib"
+## 
+## [[mounts]]
+## from = "out-0b45a7938c797eef"
+## src = "/libwebpki-0b45a7938c797eef.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libwebpki-0b45a7938c797eef.rmeta"
+## 
+## [[mounts]]
+## from = "out-0b45a7938c797eef"
+## src = "/libwebpki-0b45a7938c797eef.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libwebpki-0b45a7938c797eef.rlib"
+## 
+## [[mounts]]
+## from = "out-986325a49dffbcd1"
+## src = "/libserde-986325a49dffbcd1.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libserde-986325a49dffbcd1.rmeta"
+## 
+## [[mounts]]
+## from = "out-986325a49dffbcd1"
+## src = "/libserde-986325a49dffbcd1.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libserde-986325a49dffbcd1.rlib"
+## 
+## [[mounts]]
+## from = "out-b74741511dfa898a"
+## src = "/libserde_derive-b74741511dfa898a.so"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libserde_derive-b74741511dfa898a.so"
+## 
+## [[mounts]]
+## from = "out-7d2675bffdb63c95"
+## src = "/libtracing-7d2675bffdb63c95.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libtracing-7d2675bffdb63c95.rmeta"
+## 
+## [[mounts]]
+## from = "out-7d2675bffdb63c95"
+## src = "/libtracing-7d2675bffdb63c95.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libtracing-7d2675bffdb63c95.rlib"
+## 
+## [[mounts]]
+## from = "out-32982cb980ef9328"
+## src = "/libpin_project_lite-32982cb980ef9328.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libpin_project_lite-32982cb980ef9328.rmeta"
+## 
+## [[mounts]]
+## from = "out-32982cb980ef9328"
+## src = "/libpin_project_lite-32982cb980ef9328.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libpin_project_lite-32982cb980ef9328.rlib"
+## 
+## [[mounts]]
+## from = "out-ff2e92028461b3cf"
+## src = "/libtracing_attributes-ff2e92028461b3cf.so"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libtracing_attributes-ff2e92028461b3cf.so"
+## 
+## [[mounts]]
+## from = "out-100f3fe23952e4be"
+## src = "/libtracing_core-100f3fe23952e4be.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libtracing_core-100f3fe23952e4be.rmeta"
+## 
+## [[mounts]]
+## from = "out-100f3fe23952e4be"
+## src = "/libtracing_core-100f3fe23952e4be.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libtracing_core-100f3fe23952e4be.rlib"
+## 
+## [[mounts]]
+## from = "out-9a69f5c8c648a58b"
+## src = "/librustls_native_certs-9a69f5c8c648a58b.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/librustls_native_certs-9a69f5c8c648a58b.rmeta"
+## 
+## [[mounts]]
+## from = "out-9a69f5c8c648a58b"
+## src = "/librustls_native_certs-9a69f5c8c648a58b.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/librustls_native_certs-9a69f5c8c648a58b.rlib"
+## 
+## [[mounts]]
+## from = "out-0ee236ae7bf0c632"
+## src = "/libopenssl_probe-0ee236ae7bf0c632.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libopenssl_probe-0ee236ae7bf0c632.rmeta"
+## 
+## [[mounts]]
+## from = "out-0ee236ae7bf0c632"
+## src = "/libopenssl_probe-0ee236ae7bf0c632.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libopenssl_probe-0ee236ae7bf0c632.rlib"
+## 
+## [[mounts]]
+## from = "out-e86acdc6389f12a9"
+## src = "/librustls_pemfile-e86acdc6389f12a9.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/librustls_pemfile-e86acdc6389f12a9.rmeta"
+## 
+## [[mounts]]
+## from = "out-e86acdc6389f12a9"
+## src = "/librustls_pemfile-e86acdc6389f12a9.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/librustls_pemfile-e86acdc6389f12a9.rlib"
+## 
+## [[mounts]]
+## from = "out-b08e25582a8fdf7e"
+## src = "/libbase64-b08e25582a8fdf7e.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libbase64-b08e25582a8fdf7e.rmeta"
+## 
+## [[mounts]]
+## from = "out-b08e25582a8fdf7e"
+## src = "/libbase64-b08e25582a8fdf7e.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libbase64-b08e25582a8fdf7e.rlib"
+## 
+## [[mounts]]
+## from = "out-2a345737f765283a"
+## src = "/libserde_json-2a345737f765283a.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libserde_json-2a345737f765283a.rmeta"
+## 
+## [[mounts]]
+## from = "out-2a345737f765283a"
+## src = "/libserde_json-2a345737f765283a.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libserde_json-2a345737f765283a.rlib"
+## 
+## [[mounts]]
+## from = "out-95ec35c9faa8fa43"
+## src = "/libitoa-95ec35c9faa8fa43.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libitoa-95ec35c9faa8fa43.rmeta"
+## 
+## [[mounts]]
+## from = "out-95ec35c9faa8fa43"
+## src = "/libitoa-95ec35c9faa8fa43.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libitoa-95ec35c9faa8fa43.rlib"
+## 
+## [[mounts]]
+## from = "out-56a874feb6525857"
+## src = "/libryu-56a874feb6525857.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libryu-56a874feb6525857.rmeta"
+## 
+## [[mounts]]
+## from = "out-56a874feb6525857"
+## src = "/libryu-56a874feb6525857.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libryu-56a874feb6525857.rlib"
+## 
+## [[mounts]]
+## from = "out-2f59881207cd7c68"
+## src = "/libtimestamped_socket-2f59881207cd7c68.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libtimestamped_socket-2f59881207cd7c68.rmeta"
+## 
+## [[mounts]]
+## from = "out-2f59881207cd7c68"
+## src = "/libtimestamped_socket-2f59881207cd7c68.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libtimestamped_socket-2f59881207cd7c68.rlib"
+## 
+## [[mounts]]
+## from = "out-e6ed429a0a7450c0"
+## src = "/libtokio-e6ed429a0a7450c0.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libtokio-e6ed429a0a7450c0.rmeta"
+## 
+## [[mounts]]
+## from = "out-e6ed429a0a7450c0"
+## src = "/libtokio-e6ed429a0a7450c0.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libtokio-e6ed429a0a7450c0.rlib"
+## 
+## [[mounts]]
+## from = "out-17cf73a7d3f13d95"
+## src = "/libbytes-17cf73a7d3f13d95.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libbytes-17cf73a7d3f13d95.rmeta"
+## 
+## [[mounts]]
+## from = "out-17cf73a7d3f13d95"
+## src = "/libbytes-17cf73a7d3f13d95.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libbytes-17cf73a7d3f13d95.rlib"
+## 
+## [[mounts]]
+## from = "out-57de3125ece5b1fd"
+## src = "/libmio-57de3125ece5b1fd.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libmio-57de3125ece5b1fd.rmeta"
+## 
+## [[mounts]]
+## from = "out-57de3125ece5b1fd"
+## src = "/libmio-57de3125ece5b1fd.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libmio-57de3125ece5b1fd.rlib"
+## 
+## [[mounts]]
+## from = "out-516d6049f106f6a2"
+## src = "/libnum_cpus-516d6049f106f6a2.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libnum_cpus-516d6049f106f6a2.rmeta"
+## 
+## [[mounts]]
+## from = "out-516d6049f106f6a2"
+## src = "/libnum_cpus-516d6049f106f6a2.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libnum_cpus-516d6049f106f6a2.rlib"
+## 
+## [[mounts]]
+## from = "out-4f06700ac893bf17"
+## src = "/libsocket2-4f06700ac893bf17.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libsocket2-4f06700ac893bf17.rmeta"
+## 
+## [[mounts]]
+## from = "out-4f06700ac893bf17"
+## src = "/libsocket2-4f06700ac893bf17.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libsocket2-4f06700ac893bf17.rlib"
+## 
+## [[mounts]]
+## from = "out-56d9f1f76b7466fe"
+## src = "/libtokio_macros-56d9f1f76b7466fe.so"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libtokio_macros-56d9f1f76b7466fe.so"
+## 
+## [[mounts]]
+## from = "out-7b6c235fb7422577"
+## src = "/libtoml-7b6c235fb7422577.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libtoml-7b6c235fb7422577.rmeta"
+## 
+## [[mounts]]
+## from = "out-7b6c235fb7422577"
+## src = "/libtoml-7b6c235fb7422577.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libtoml-7b6c235fb7422577.rlib"
+## 
+## [[mounts]]
+## from = "out-dc39aa05fabf8bb2"
+## src = "/libserde_spanned-dc39aa05fabf8bb2.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libserde_spanned-dc39aa05fabf8bb2.rmeta"
+## 
+## [[mounts]]
+## from = "out-dc39aa05fabf8bb2"
+## src = "/libserde_spanned-dc39aa05fabf8bb2.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libserde_spanned-dc39aa05fabf8bb2.rlib"
+## 
+## [[mounts]]
+## from = "out-f1d69a8e9c76a596"
+## src = "/libtoml_datetime-f1d69a8e9c76a596.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libtoml_datetime-f1d69a8e9c76a596.rmeta"
+## 
+## [[mounts]]
+## from = "out-f1d69a8e9c76a596"
+## src = "/libtoml_datetime-f1d69a8e9c76a596.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libtoml_datetime-f1d69a8e9c76a596.rlib"
+## 
+## [[mounts]]
+## from = "out-90c6c24e7a16fdd6"
+## src = "/libtoml_edit-90c6c24e7a16fdd6.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libtoml_edit-90c6c24e7a16fdd6.rmeta"
+## 
+## [[mounts]]
+## from = "out-90c6c24e7a16fdd6"
+## src = "/libtoml_edit-90c6c24e7a16fdd6.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libtoml_edit-90c6c24e7a16fdd6.rlib"
+## 
+## [[mounts]]
+## from = "out-bd5f37b7de678bd9"
+## src = "/libindexmap-bd5f37b7de678bd9.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libindexmap-bd5f37b7de678bd9.rmeta"
+## 
+## [[mounts]]
+## from = "out-bd5f37b7de678bd9"
+## src = "/libindexmap-bd5f37b7de678bd9.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libindexmap-bd5f37b7de678bd9.rlib"
+## 
+## [[mounts]]
+## from = "out-bd5b9404126e35a1"
+## src = "/libequivalent-bd5b9404126e35a1.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libequivalent-bd5b9404126e35a1.rmeta"
+## 
+## [[mounts]]
+## from = "out-bd5b9404126e35a1"
+## src = "/libequivalent-bd5b9404126e35a1.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libequivalent-bd5b9404126e35a1.rlib"
+## 
+## [[mounts]]
+## from = "out-8bb46fd37d0b1c2d"
+## src = "/libhashbrown-8bb46fd37d0b1c2d.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libhashbrown-8bb46fd37d0b1c2d.rmeta"
+## 
+## [[mounts]]
+## from = "out-8bb46fd37d0b1c2d"
+## src = "/libhashbrown-8bb46fd37d0b1c2d.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libhashbrown-8bb46fd37d0b1c2d.rlib"
+## 
+## [[mounts]]
+## from = "out-f45e6953436548b2"
+## src = "/libwinnow-f45e6953436548b2.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libwinnow-f45e6953436548b2.rmeta"
+## 
+## [[mounts]]
+## from = "out-f45e6953436548b2"
+## src = "/libwinnow-f45e6953436548b2.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libwinnow-f45e6953436548b2.rlib"
+## 
+## [[mounts]]
+## from = "out-63f992d9454962cc"
+## src = "/libtracing_subscriber-63f992d9454962cc.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libtracing_subscriber-63f992d9454962cc.rmeta"
+## 
+## [[mounts]]
+## from = "out-63f992d9454962cc"
+## src = "/libtracing_subscriber-63f992d9454962cc.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libtracing_subscriber-63f992d9454962cc.rlib"
+## 
+## [[mounts]]
+## from = "out-c42192675aa050dd"
+## src = "/libnu_ansi_term-c42192675aa050dd.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libnu_ansi_term-c42192675aa050dd.rmeta"
+## 
+## [[mounts]]
+## from = "out-c42192675aa050dd"
+## src = "/libnu_ansi_term-c42192675aa050dd.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libnu_ansi_term-c42192675aa050dd.rlib"
+## 
+## [[mounts]]
+## from = "out-94fa3b5a5c6dc522"
+## src = "/liboverload-94fa3b5a5c6dc522.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/liboverload-94fa3b5a5c6dc522.rmeta"
+## 
+## [[mounts]]
+## from = "out-94fa3b5a5c6dc522"
+## src = "/liboverload-94fa3b5a5c6dc522.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/liboverload-94fa3b5a5c6dc522.rlib"
+## 
+## [[mounts]]
+## from = "out-b9545388d9527f67"
+## src = "/libsharded_slab-b9545388d9527f67.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libsharded_slab-b9545388d9527f67.rmeta"
+## 
+## [[mounts]]
+## from = "out-b9545388d9527f67"
+## src = "/libsharded_slab-b9545388d9527f67.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libsharded_slab-b9545388d9527f67.rlib"
+## 
+## [[mounts]]
+## from = "out-f91da618dd3f72e5"
+## src = "/liblazy_static-f91da618dd3f72e5.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/liblazy_static-f91da618dd3f72e5.rmeta"
+## 
+## [[mounts]]
+## from = "out-f91da618dd3f72e5"
+## src = "/liblazy_static-f91da618dd3f72e5.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/liblazy_static-f91da618dd3f72e5.rlib"
+## 
+## [[mounts]]
+## from = "out-6893ca5c870c6e37"
+## src = "/libthread_local-6893ca5c870c6e37.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libthread_local-6893ca5c870c6e37.rmeta"
+## 
+## [[mounts]]
+## from = "out-6893ca5c870c6e37"
+## src = "/libthread_local-6893ca5c870c6e37.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libthread_local-6893ca5c870c6e37.rlib"
 ## 
 ## [[contexts]]
 ## name = "crate_out-e5fe159846b3109b"
@@ -9592,77 +14072,146 @@ COPY --from=dep-l-ntpd-1.2.3-7974610cfc5e520c /tmp/clis-ntpd_1-2-3/release/deps/
 ##   --mount=from=cratesio-ntpd-1.2.3,source=/ntpd-1.2.3,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ntpd-1.2.3 \
 ##   --mount=from=out-2b00e18c8782890c,dst=/tmp/clis-ntpd_1-2-3/release/deps/libasync_trait-2b00e18c8782890c.so,source=/libasync_trait-2b00e18c8782890c.so \
 ##   --mount=from=out-4be32d01ee2a9db1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rmeta,source=/libproc_macro2-4be32d01ee2a9db1.rmeta \
+##   --mount=from=out-4be32d01ee2a9db1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rlib,source=/libproc_macro2-4be32d01ee2a9db1.rlib \
 ##   --mount=from=out-4c1dc76c11b3deb8,dst=/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rmeta,source=/libunicode_ident-4c1dc76c11b3deb8.rmeta \
+##   --mount=from=out-4c1dc76c11b3deb8,dst=/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rlib,source=/libunicode_ident-4c1dc76c11b3deb8.rlib \
 ##   --mount=from=out-36ed05d339fc79f9,dst=/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rmeta,source=/libquote-36ed05d339fc79f9.rmeta \
+##   --mount=from=out-36ed05d339fc79f9,dst=/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rlib,source=/libquote-36ed05d339fc79f9.rlib \
 ##   --mount=from=out-5c1d3e18a7dfcf78,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rmeta,source=/libsyn-5c1d3e18a7dfcf78.rmeta \
+##   --mount=from=out-5c1d3e18a7dfcf78,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rlib,source=/libsyn-5c1d3e18a7dfcf78.rlib \
 ##   --mount=from=out-7adc6d6ce8be0538,dst=/tmp/clis-ntpd_1-2-3/release/deps/libclock_steering-7adc6d6ce8be0538.rmeta,source=/libclock_steering-7adc6d6ce8be0538.rmeta \
+##   --mount=from=out-7adc6d6ce8be0538,dst=/tmp/clis-ntpd_1-2-3/release/deps/libclock_steering-7adc6d6ce8be0538.rlib,source=/libclock_steering-7adc6d6ce8be0538.rlib \
 ##   --mount=from=out-a7905fdc410bdfce,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rmeta,source=/liblibc-a7905fdc410bdfce.rmeta \
+##   --mount=from=out-a7905fdc410bdfce,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rlib,source=/liblibc-a7905fdc410bdfce.rlib \
 ##   --mount=from=out-5a810c5444456e7d,dst=/tmp/clis-ntpd_1-2-3/release/deps/libntp_proto-5a810c5444456e7d.rmeta,source=/libntp_proto-5a810c5444456e7d.rmeta \
+##   --mount=from=out-5a810c5444456e7d,dst=/tmp/clis-ntpd_1-2-3/release/deps/libntp_proto-5a810c5444456e7d.rlib,source=/libntp_proto-5a810c5444456e7d.rlib \
 ##   --mount=from=out-2ba1712ad50273ba,dst=/tmp/clis-ntpd_1-2-3/release/deps/libaead-2ba1712ad50273ba.rmeta,source=/libaead-2ba1712ad50273ba.rmeta \
+##   --mount=from=out-2ba1712ad50273ba,dst=/tmp/clis-ntpd_1-2-3/release/deps/libaead-2ba1712ad50273ba.rlib,source=/libaead-2ba1712ad50273ba.rlib \
 ##   --mount=from=out-1009fce94369ad6b,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcrypto_common-1009fce94369ad6b.rmeta,source=/libcrypto_common-1009fce94369ad6b.rmeta \
+##   --mount=from=out-1009fce94369ad6b,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcrypto_common-1009fce94369ad6b.rlib,source=/libcrypto_common-1009fce94369ad6b.rlib \
 ##   --mount=from=out-2d6ea4fd5d7ef666,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgeneric_array-2d6ea4fd5d7ef666.rmeta,source=/libgeneric_array-2d6ea4fd5d7ef666.rmeta \
+##   --mount=from=out-2d6ea4fd5d7ef666,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgeneric_array-2d6ea4fd5d7ef666.rlib,source=/libgeneric_array-2d6ea4fd5d7ef666.rlib \
 ##   --mount=from=out-981b1f3c4161234a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtypenum-981b1f3c4161234a.rmeta,source=/libtypenum-981b1f3c4161234a.rmeta \
+##   --mount=from=out-981b1f3c4161234a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtypenum-981b1f3c4161234a.rlib,source=/libtypenum-981b1f3c4161234a.rlib \
 ##   --mount=from=out-434e8a9dd58e4456,dst=/tmp/clis-ntpd_1-2-3/release/deps/librand_core-434e8a9dd58e4456.rmeta,source=/librand_core-434e8a9dd58e4456.rmeta \
+##   --mount=from=out-434e8a9dd58e4456,dst=/tmp/clis-ntpd_1-2-3/release/deps/librand_core-434e8a9dd58e4456.rlib,source=/librand_core-434e8a9dd58e4456.rlib \
 ##   --mount=from=out-84473f2ddfbb434a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rmeta,source=/libgetrandom-84473f2ddfbb434a.rmeta \
+##   --mount=from=out-84473f2ddfbb434a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rlib,source=/libgetrandom-84473f2ddfbb434a.rlib \
 ##   --mount=from=out-da34da6838abd7f1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rmeta,source=/libcfg_if-da34da6838abd7f1.rmeta \
+##   --mount=from=out-da34da6838abd7f1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rlib,source=/libcfg_if-da34da6838abd7f1.rlib \
 ##   --mount=from=out-e0325614c1d7d6ab,dst=/tmp/clis-ntpd_1-2-3/release/deps/libaes_siv-e0325614c1d7d6ab.rmeta,source=/libaes_siv-e0325614c1d7d6ab.rmeta \
+##   --mount=from=out-e0325614c1d7d6ab,dst=/tmp/clis-ntpd_1-2-3/release/deps/libaes_siv-e0325614c1d7d6ab.rlib,source=/libaes_siv-e0325614c1d7d6ab.rlib \
 ##   --mount=from=out-81c9db97d7f9be78,dst=/tmp/clis-ntpd_1-2-3/release/deps/libaes-81c9db97d7f9be78.rmeta,source=/libaes-81c9db97d7f9be78.rmeta \
+##   --mount=from=out-81c9db97d7f9be78,dst=/tmp/clis-ntpd_1-2-3/release/deps/libaes-81c9db97d7f9be78.rlib,source=/libaes-81c9db97d7f9be78.rlib \
 ##   --mount=from=out-ca1baada07864a60,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcipher-ca1baada07864a60.rmeta,source=/libcipher-ca1baada07864a60.rmeta \
+##   --mount=from=out-ca1baada07864a60,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcipher-ca1baada07864a60.rlib,source=/libcipher-ca1baada07864a60.rlib \
 ##   --mount=from=out-56f37e149446be27,dst=/tmp/clis-ntpd_1-2-3/release/deps/libinout-56f37e149446be27.rmeta,source=/libinout-56f37e149446be27.rmeta \
+##   --mount=from=out-56f37e149446be27,dst=/tmp/clis-ntpd_1-2-3/release/deps/libinout-56f37e149446be27.rlib,source=/libinout-56f37e149446be27.rlib \
 ##   --mount=from=out-4ab791033e58debd,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcpufeatures-4ab791033e58debd.rmeta,source=/libcpufeatures-4ab791033e58debd.rmeta \
+##   --mount=from=out-4ab791033e58debd,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcpufeatures-4ab791033e58debd.rlib,source=/libcpufeatures-4ab791033e58debd.rlib \
 ##   --mount=from=out-568874dfd4c5be74,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcmac-568874dfd4c5be74.rmeta,source=/libcmac-568874dfd4c5be74.rmeta \
+##   --mount=from=out-568874dfd4c5be74,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcmac-568874dfd4c5be74.rlib,source=/libcmac-568874dfd4c5be74.rlib \
 ##   --mount=from=out-19f9a0f198045bc5,dst=/tmp/clis-ntpd_1-2-3/release/deps/libdbl-19f9a0f198045bc5.rmeta,source=/libdbl-19f9a0f198045bc5.rmeta \
+##   --mount=from=out-19f9a0f198045bc5,dst=/tmp/clis-ntpd_1-2-3/release/deps/libdbl-19f9a0f198045bc5.rlib,source=/libdbl-19f9a0f198045bc5.rlib \
 ##   --mount=from=out-65e96f3f500a3098,dst=/tmp/clis-ntpd_1-2-3/release/deps/libdigest-65e96f3f500a3098.rmeta,source=/libdigest-65e96f3f500a3098.rmeta \
+##   --mount=from=out-65e96f3f500a3098,dst=/tmp/clis-ntpd_1-2-3/release/deps/libdigest-65e96f3f500a3098.rlib,source=/libdigest-65e96f3f500a3098.rlib \
 ##   --mount=from=out-bc12f6e8b62af3c6,dst=/tmp/clis-ntpd_1-2-3/release/deps/libblock_buffer-bc12f6e8b62af3c6.rmeta,source=/libblock_buffer-bc12f6e8b62af3c6.rmeta \
+##   --mount=from=out-bc12f6e8b62af3c6,dst=/tmp/clis-ntpd_1-2-3/release/deps/libblock_buffer-bc12f6e8b62af3c6.rlib,source=/libblock_buffer-bc12f6e8b62af3c6.rlib \
 ##   --mount=from=out-8b6e21d4a5a6c6ed,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsubtle-8b6e21d4a5a6c6ed.rmeta,source=/libsubtle-8b6e21d4a5a6c6ed.rmeta \
+##   --mount=from=out-8b6e21d4a5a6c6ed,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsubtle-8b6e21d4a5a6c6ed.rlib,source=/libsubtle-8b6e21d4a5a6c6ed.rlib \
 ##   --mount=from=out-aca4c84266bacfb7,dst=/tmp/clis-ntpd_1-2-3/release/deps/libctr-aca4c84266bacfb7.rmeta,source=/libctr-aca4c84266bacfb7.rmeta \
+##   --mount=from=out-aca4c84266bacfb7,dst=/tmp/clis-ntpd_1-2-3/release/deps/libctr-aca4c84266bacfb7.rlib,source=/libctr-aca4c84266bacfb7.rlib \
 ##   --mount=from=out-caf2b0ffe78763b7,dst=/tmp/clis-ntpd_1-2-3/release/deps/libzeroize-caf2b0ffe78763b7.rmeta,source=/libzeroize-caf2b0ffe78763b7.rmeta \
+##   --mount=from=out-caf2b0ffe78763b7,dst=/tmp/clis-ntpd_1-2-3/release/deps/libzeroize-caf2b0ffe78763b7.rlib,source=/libzeroize-caf2b0ffe78763b7.rlib \
 ##   --mount=from=out-f0775f4337e7a668,dst=/tmp/clis-ntpd_1-2-3/release/deps/libmd5-f0775f4337e7a668.rmeta,source=/libmd5-f0775f4337e7a668.rmeta \
+##   --mount=from=out-f0775f4337e7a668,dst=/tmp/clis-ntpd_1-2-3/release/deps/libmd5-f0775f4337e7a668.rlib,source=/libmd5-f0775f4337e7a668.rlib \
 ##   --mount=from=out-5161209caf71d483,dst=/tmp/clis-ntpd_1-2-3/release/deps/librand-5161209caf71d483.rmeta,source=/librand-5161209caf71d483.rmeta \
+##   --mount=from=out-5161209caf71d483,dst=/tmp/clis-ntpd_1-2-3/release/deps/librand-5161209caf71d483.rlib,source=/librand-5161209caf71d483.rlib \
 ##   --mount=from=out-8e2f025dcc32e9af,dst=/tmp/clis-ntpd_1-2-3/release/deps/librand_chacha-8e2f025dcc32e9af.rmeta,source=/librand_chacha-8e2f025dcc32e9af.rmeta \
+##   --mount=from=out-8e2f025dcc32e9af,dst=/tmp/clis-ntpd_1-2-3/release/deps/librand_chacha-8e2f025dcc32e9af.rlib,source=/librand_chacha-8e2f025dcc32e9af.rlib \
 ##   --mount=from=out-af198cb5433f3d0c,dst=/tmp/clis-ntpd_1-2-3/release/deps/libppv_lite86-af198cb5433f3d0c.rmeta,source=/libppv_lite86-af198cb5433f3d0c.rmeta \
+##   --mount=from=out-af198cb5433f3d0c,dst=/tmp/clis-ntpd_1-2-3/release/deps/libppv_lite86-af198cb5433f3d0c.rlib,source=/libppv_lite86-af198cb5433f3d0c.rlib \
 ##   --mount=from=out-fd2c262888e3ecb5,dst=/tmp/clis-ntpd_1-2-3/release/deps/librustls-fd2c262888e3ecb5.rmeta,source=/librustls-fd2c262888e3ecb5.rmeta \
+##   --mount=from=out-fd2c262888e3ecb5,dst=/tmp/clis-ntpd_1-2-3/release/deps/librustls-fd2c262888e3ecb5.rlib,source=/librustls-fd2c262888e3ecb5.rlib \
 ##   --mount=from=out-b564a3159bfcf688,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblog-b564a3159bfcf688.rmeta,source=/liblog-b564a3159bfcf688.rmeta \
+##   --mount=from=out-b564a3159bfcf688,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblog-b564a3159bfcf688.rlib,source=/liblog-b564a3159bfcf688.rlib \
 ##   --mount=from=out-6ed51fafe322ecba,dst=/tmp/clis-ntpd_1-2-3/release/deps/libonce_cell-6ed51fafe322ecba.rmeta,source=/libonce_cell-6ed51fafe322ecba.rmeta \
+##   --mount=from=out-6ed51fafe322ecba,dst=/tmp/clis-ntpd_1-2-3/release/deps/libonce_cell-6ed51fafe322ecba.rlib,source=/libonce_cell-6ed51fafe322ecba.rlib \
 ##   --mount=from=out-162d4bd1f192637c,dst=/tmp/clis-ntpd_1-2-3/release/deps/libring-162d4bd1f192637c.rmeta,source=/libring-162d4bd1f192637c.rmeta \
+##   --mount=from=out-162d4bd1f192637c,dst=/tmp/clis-ntpd_1-2-3/release/deps/libring-162d4bd1f192637c.rlib,source=/libring-162d4bd1f192637c.rlib \
 ##   --mount=from=out-126f99f44d356e93,dst=/tmp/clis-ntpd_1-2-3/release/deps/libspin-126f99f44d356e93.rmeta,source=/libspin-126f99f44d356e93.rmeta \
+##   --mount=from=out-126f99f44d356e93,dst=/tmp/clis-ntpd_1-2-3/release/deps/libspin-126f99f44d356e93.rlib,source=/libspin-126f99f44d356e93.rlib \
 ##   --mount=from=out-2cf0189e0a6f5785,dst=/tmp/clis-ntpd_1-2-3/release/deps/libuntrusted-2cf0189e0a6f5785.rmeta,source=/libuntrusted-2cf0189e0a6f5785.rmeta \
+##   --mount=from=out-2cf0189e0a6f5785,dst=/tmp/clis-ntpd_1-2-3/release/deps/libuntrusted-2cf0189e0a6f5785.rlib,source=/libuntrusted-2cf0189e0a6f5785.rlib \
 ##   --mount=from=out-0bd417676bde33fe,dst=/tmp/clis-ntpd_1-2-3/release/deps/librustls_pki_types-0bd417676bde33fe.rmeta,source=/librustls_pki_types-0bd417676bde33fe.rmeta \
+##   --mount=from=out-0bd417676bde33fe,dst=/tmp/clis-ntpd_1-2-3/release/deps/librustls_pki_types-0bd417676bde33fe.rlib,source=/librustls_pki_types-0bd417676bde33fe.rlib \
 ##   --mount=from=out-0b45a7938c797eef,dst=/tmp/clis-ntpd_1-2-3/release/deps/libwebpki-0b45a7938c797eef.rmeta,source=/libwebpki-0b45a7938c797eef.rmeta \
+##   --mount=from=out-0b45a7938c797eef,dst=/tmp/clis-ntpd_1-2-3/release/deps/libwebpki-0b45a7938c797eef.rlib,source=/libwebpki-0b45a7938c797eef.rlib \
 ##   --mount=from=out-986325a49dffbcd1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libserde-986325a49dffbcd1.rmeta,source=/libserde-986325a49dffbcd1.rmeta \
+##   --mount=from=out-986325a49dffbcd1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libserde-986325a49dffbcd1.rlib,source=/libserde-986325a49dffbcd1.rlib \
 ##   --mount=from=out-b74741511dfa898a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libserde_derive-b74741511dfa898a.so,source=/libserde_derive-b74741511dfa898a.so \
 ##   --mount=from=out-7d2675bffdb63c95,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtracing-7d2675bffdb63c95.rmeta,source=/libtracing-7d2675bffdb63c95.rmeta \
+##   --mount=from=out-7d2675bffdb63c95,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtracing-7d2675bffdb63c95.rlib,source=/libtracing-7d2675bffdb63c95.rlib \
 ##   --mount=from=out-32982cb980ef9328,dst=/tmp/clis-ntpd_1-2-3/release/deps/libpin_project_lite-32982cb980ef9328.rmeta,source=/libpin_project_lite-32982cb980ef9328.rmeta \
+##   --mount=from=out-32982cb980ef9328,dst=/tmp/clis-ntpd_1-2-3/release/deps/libpin_project_lite-32982cb980ef9328.rlib,source=/libpin_project_lite-32982cb980ef9328.rlib \
 ##   --mount=from=out-ff2e92028461b3cf,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtracing_attributes-ff2e92028461b3cf.so,source=/libtracing_attributes-ff2e92028461b3cf.so \
 ##   --mount=from=out-100f3fe23952e4be,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtracing_core-100f3fe23952e4be.rmeta,source=/libtracing_core-100f3fe23952e4be.rmeta \
+##   --mount=from=out-100f3fe23952e4be,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtracing_core-100f3fe23952e4be.rlib,source=/libtracing_core-100f3fe23952e4be.rlib \
 ##   --mount=from=out-9a69f5c8c648a58b,dst=/tmp/clis-ntpd_1-2-3/release/deps/librustls_native_certs-9a69f5c8c648a58b.rmeta,source=/librustls_native_certs-9a69f5c8c648a58b.rmeta \
+##   --mount=from=out-9a69f5c8c648a58b,dst=/tmp/clis-ntpd_1-2-3/release/deps/librustls_native_certs-9a69f5c8c648a58b.rlib,source=/librustls_native_certs-9a69f5c8c648a58b.rlib \
 ##   --mount=from=out-0ee236ae7bf0c632,dst=/tmp/clis-ntpd_1-2-3/release/deps/libopenssl_probe-0ee236ae7bf0c632.rmeta,source=/libopenssl_probe-0ee236ae7bf0c632.rmeta \
+##   --mount=from=out-0ee236ae7bf0c632,dst=/tmp/clis-ntpd_1-2-3/release/deps/libopenssl_probe-0ee236ae7bf0c632.rlib,source=/libopenssl_probe-0ee236ae7bf0c632.rlib \
 ##   --mount=from=out-e86acdc6389f12a9,dst=/tmp/clis-ntpd_1-2-3/release/deps/librustls_pemfile-e86acdc6389f12a9.rmeta,source=/librustls_pemfile-e86acdc6389f12a9.rmeta \
+##   --mount=from=out-e86acdc6389f12a9,dst=/tmp/clis-ntpd_1-2-3/release/deps/librustls_pemfile-e86acdc6389f12a9.rlib,source=/librustls_pemfile-e86acdc6389f12a9.rlib \
 ##   --mount=from=out-b08e25582a8fdf7e,dst=/tmp/clis-ntpd_1-2-3/release/deps/libbase64-b08e25582a8fdf7e.rmeta,source=/libbase64-b08e25582a8fdf7e.rmeta \
+##   --mount=from=out-b08e25582a8fdf7e,dst=/tmp/clis-ntpd_1-2-3/release/deps/libbase64-b08e25582a8fdf7e.rlib,source=/libbase64-b08e25582a8fdf7e.rlib \
 ##   --mount=from=out-2a345737f765283a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libserde_json-2a345737f765283a.rmeta,source=/libserde_json-2a345737f765283a.rmeta \
+##   --mount=from=out-2a345737f765283a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libserde_json-2a345737f765283a.rlib,source=/libserde_json-2a345737f765283a.rlib \
 ##   --mount=from=out-95ec35c9faa8fa43,dst=/tmp/clis-ntpd_1-2-3/release/deps/libitoa-95ec35c9faa8fa43.rmeta,source=/libitoa-95ec35c9faa8fa43.rmeta \
+##   --mount=from=out-95ec35c9faa8fa43,dst=/tmp/clis-ntpd_1-2-3/release/deps/libitoa-95ec35c9faa8fa43.rlib,source=/libitoa-95ec35c9faa8fa43.rlib \
 ##   --mount=from=out-56a874feb6525857,dst=/tmp/clis-ntpd_1-2-3/release/deps/libryu-56a874feb6525857.rmeta,source=/libryu-56a874feb6525857.rmeta \
+##   --mount=from=out-56a874feb6525857,dst=/tmp/clis-ntpd_1-2-3/release/deps/libryu-56a874feb6525857.rlib,source=/libryu-56a874feb6525857.rlib \
 ##   --mount=from=out-2f59881207cd7c68,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtimestamped_socket-2f59881207cd7c68.rmeta,source=/libtimestamped_socket-2f59881207cd7c68.rmeta \
+##   --mount=from=out-2f59881207cd7c68,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtimestamped_socket-2f59881207cd7c68.rlib,source=/libtimestamped_socket-2f59881207cd7c68.rlib \
 ##   --mount=from=out-e6ed429a0a7450c0,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtokio-e6ed429a0a7450c0.rmeta,source=/libtokio-e6ed429a0a7450c0.rmeta \
+##   --mount=from=out-e6ed429a0a7450c0,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtokio-e6ed429a0a7450c0.rlib,source=/libtokio-e6ed429a0a7450c0.rlib \
 ##   --mount=from=out-17cf73a7d3f13d95,dst=/tmp/clis-ntpd_1-2-3/release/deps/libbytes-17cf73a7d3f13d95.rmeta,source=/libbytes-17cf73a7d3f13d95.rmeta \
+##   --mount=from=out-17cf73a7d3f13d95,dst=/tmp/clis-ntpd_1-2-3/release/deps/libbytes-17cf73a7d3f13d95.rlib,source=/libbytes-17cf73a7d3f13d95.rlib \
 ##   --mount=from=out-57de3125ece5b1fd,dst=/tmp/clis-ntpd_1-2-3/release/deps/libmio-57de3125ece5b1fd.rmeta,source=/libmio-57de3125ece5b1fd.rmeta \
+##   --mount=from=out-57de3125ece5b1fd,dst=/tmp/clis-ntpd_1-2-3/release/deps/libmio-57de3125ece5b1fd.rlib,source=/libmio-57de3125ece5b1fd.rlib \
 ##   --mount=from=out-516d6049f106f6a2,dst=/tmp/clis-ntpd_1-2-3/release/deps/libnum_cpus-516d6049f106f6a2.rmeta,source=/libnum_cpus-516d6049f106f6a2.rmeta \
+##   --mount=from=out-516d6049f106f6a2,dst=/tmp/clis-ntpd_1-2-3/release/deps/libnum_cpus-516d6049f106f6a2.rlib,source=/libnum_cpus-516d6049f106f6a2.rlib \
 ##   --mount=from=out-4f06700ac893bf17,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsocket2-4f06700ac893bf17.rmeta,source=/libsocket2-4f06700ac893bf17.rmeta \
+##   --mount=from=out-4f06700ac893bf17,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsocket2-4f06700ac893bf17.rlib,source=/libsocket2-4f06700ac893bf17.rlib \
 ##   --mount=from=out-56d9f1f76b7466fe,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtokio_macros-56d9f1f76b7466fe.so,source=/libtokio_macros-56d9f1f76b7466fe.so \
 ##   --mount=from=out-7b6c235fb7422577,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtoml-7b6c235fb7422577.rmeta,source=/libtoml-7b6c235fb7422577.rmeta \
+##   --mount=from=out-7b6c235fb7422577,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtoml-7b6c235fb7422577.rlib,source=/libtoml-7b6c235fb7422577.rlib \
 ##   --mount=from=out-dc39aa05fabf8bb2,dst=/tmp/clis-ntpd_1-2-3/release/deps/libserde_spanned-dc39aa05fabf8bb2.rmeta,source=/libserde_spanned-dc39aa05fabf8bb2.rmeta \
+##   --mount=from=out-dc39aa05fabf8bb2,dst=/tmp/clis-ntpd_1-2-3/release/deps/libserde_spanned-dc39aa05fabf8bb2.rlib,source=/libserde_spanned-dc39aa05fabf8bb2.rlib \
 ##   --mount=from=out-f1d69a8e9c76a596,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtoml_datetime-f1d69a8e9c76a596.rmeta,source=/libtoml_datetime-f1d69a8e9c76a596.rmeta \
+##   --mount=from=out-f1d69a8e9c76a596,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtoml_datetime-f1d69a8e9c76a596.rlib,source=/libtoml_datetime-f1d69a8e9c76a596.rlib \
 ##   --mount=from=out-90c6c24e7a16fdd6,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtoml_edit-90c6c24e7a16fdd6.rmeta,source=/libtoml_edit-90c6c24e7a16fdd6.rmeta \
+##   --mount=from=out-90c6c24e7a16fdd6,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtoml_edit-90c6c24e7a16fdd6.rlib,source=/libtoml_edit-90c6c24e7a16fdd6.rlib \
 ##   --mount=from=out-bd5f37b7de678bd9,dst=/tmp/clis-ntpd_1-2-3/release/deps/libindexmap-bd5f37b7de678bd9.rmeta,source=/libindexmap-bd5f37b7de678bd9.rmeta \
+##   --mount=from=out-bd5f37b7de678bd9,dst=/tmp/clis-ntpd_1-2-3/release/deps/libindexmap-bd5f37b7de678bd9.rlib,source=/libindexmap-bd5f37b7de678bd9.rlib \
 ##   --mount=from=out-bd5b9404126e35a1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libequivalent-bd5b9404126e35a1.rmeta,source=/libequivalent-bd5b9404126e35a1.rmeta \
+##   --mount=from=out-bd5b9404126e35a1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libequivalent-bd5b9404126e35a1.rlib,source=/libequivalent-bd5b9404126e35a1.rlib \
 ##   --mount=from=out-8bb46fd37d0b1c2d,dst=/tmp/clis-ntpd_1-2-3/release/deps/libhashbrown-8bb46fd37d0b1c2d.rmeta,source=/libhashbrown-8bb46fd37d0b1c2d.rmeta \
+##   --mount=from=out-8bb46fd37d0b1c2d,dst=/tmp/clis-ntpd_1-2-3/release/deps/libhashbrown-8bb46fd37d0b1c2d.rlib,source=/libhashbrown-8bb46fd37d0b1c2d.rlib \
 ##   --mount=from=out-f45e6953436548b2,dst=/tmp/clis-ntpd_1-2-3/release/deps/libwinnow-f45e6953436548b2.rmeta,source=/libwinnow-f45e6953436548b2.rmeta \
+##   --mount=from=out-f45e6953436548b2,dst=/tmp/clis-ntpd_1-2-3/release/deps/libwinnow-f45e6953436548b2.rlib,source=/libwinnow-f45e6953436548b2.rlib \
 ##   --mount=from=out-63f992d9454962cc,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtracing_subscriber-63f992d9454962cc.rmeta,source=/libtracing_subscriber-63f992d9454962cc.rmeta \
+##   --mount=from=out-63f992d9454962cc,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtracing_subscriber-63f992d9454962cc.rlib,source=/libtracing_subscriber-63f992d9454962cc.rlib \
 ##   --mount=from=out-c42192675aa050dd,dst=/tmp/clis-ntpd_1-2-3/release/deps/libnu_ansi_term-c42192675aa050dd.rmeta,source=/libnu_ansi_term-c42192675aa050dd.rmeta \
+##   --mount=from=out-c42192675aa050dd,dst=/tmp/clis-ntpd_1-2-3/release/deps/libnu_ansi_term-c42192675aa050dd.rlib,source=/libnu_ansi_term-c42192675aa050dd.rlib \
 ##   --mount=from=out-94fa3b5a5c6dc522,dst=/tmp/clis-ntpd_1-2-3/release/deps/liboverload-94fa3b5a5c6dc522.rmeta,source=/liboverload-94fa3b5a5c6dc522.rmeta \
+##   --mount=from=out-94fa3b5a5c6dc522,dst=/tmp/clis-ntpd_1-2-3/release/deps/liboverload-94fa3b5a5c6dc522.rlib,source=/liboverload-94fa3b5a5c6dc522.rlib \
 ##   --mount=from=out-b9545388d9527f67,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsharded_slab-b9545388d9527f67.rmeta,source=/libsharded_slab-b9545388d9527f67.rmeta \
+##   --mount=from=out-b9545388d9527f67,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsharded_slab-b9545388d9527f67.rlib,source=/libsharded_slab-b9545388d9527f67.rlib \
 ##   --mount=from=out-f91da618dd3f72e5,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblazy_static-f91da618dd3f72e5.rmeta,source=/liblazy_static-f91da618dd3f72e5.rmeta \
+##   --mount=from=out-f91da618dd3f72e5,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblazy_static-f91da618dd3f72e5.rlib,source=/liblazy_static-f91da618dd3f72e5.rlib \
 ##   --mount=from=out-6893ca5c870c6e37,dst=/tmp/clis-ntpd_1-2-3/release/deps/libthread_local-6893ca5c870c6e37.rmeta,source=/libthread_local-6893ca5c870c6e37.rmeta \
+##   --mount=from=out-6893ca5c870c6e37,dst=/tmp/clis-ntpd_1-2-3/release/deps/libthread_local-6893ca5c870c6e37.rlib,source=/libthread_local-6893ca5c870c6e37.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="ntpd" \
@@ -9705,78 +14254,148 @@ WORKDIR /tmp/clis-ntpd_1-2-3/release/deps
 RUN \
   --mount=from=cratesio-ntpd-1.2.3,source=/ntpd-1.2.3,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ntpd-1.2.3 \
   --mount=from=out-2b00e18c8782890c,dst=/tmp/clis-ntpd_1-2-3/release/deps/libasync_trait-2b00e18c8782890c.so,source=/libasync_trait-2b00e18c8782890c.so \
+  --mount=from=out-4be32d01ee2a9db1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rmeta,source=/libproc_macro2-4be32d01ee2a9db1.rmeta \
   --mount=from=out-4be32d01ee2a9db1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rlib,source=/libproc_macro2-4be32d01ee2a9db1.rlib \
+  --mount=from=out-4c1dc76c11b3deb8,dst=/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rmeta,source=/libunicode_ident-4c1dc76c11b3deb8.rmeta \
   --mount=from=out-4c1dc76c11b3deb8,dst=/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rlib,source=/libunicode_ident-4c1dc76c11b3deb8.rlib \
+  --mount=from=out-36ed05d339fc79f9,dst=/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rmeta,source=/libquote-36ed05d339fc79f9.rmeta \
   --mount=from=out-36ed05d339fc79f9,dst=/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rlib,source=/libquote-36ed05d339fc79f9.rlib \
+  --mount=from=out-5c1d3e18a7dfcf78,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rmeta,source=/libsyn-5c1d3e18a7dfcf78.rmeta \
   --mount=from=out-5c1d3e18a7dfcf78,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rlib,source=/libsyn-5c1d3e18a7dfcf78.rlib \
+  --mount=from=out-7adc6d6ce8be0538,dst=/tmp/clis-ntpd_1-2-3/release/deps/libclock_steering-7adc6d6ce8be0538.rmeta,source=/libclock_steering-7adc6d6ce8be0538.rmeta \
   --mount=from=out-7adc6d6ce8be0538,dst=/tmp/clis-ntpd_1-2-3/release/deps/libclock_steering-7adc6d6ce8be0538.rlib,source=/libclock_steering-7adc6d6ce8be0538.rlib \
+  --mount=from=out-a7905fdc410bdfce,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rmeta,source=/liblibc-a7905fdc410bdfce.rmeta \
   --mount=from=out-a7905fdc410bdfce,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rlib,source=/liblibc-a7905fdc410bdfce.rlib \
+  --mount=from=out-5a810c5444456e7d,dst=/tmp/clis-ntpd_1-2-3/release/deps/libntp_proto-5a810c5444456e7d.rmeta,source=/libntp_proto-5a810c5444456e7d.rmeta \
   --mount=from=out-5a810c5444456e7d,dst=/tmp/clis-ntpd_1-2-3/release/deps/libntp_proto-5a810c5444456e7d.rlib,source=/libntp_proto-5a810c5444456e7d.rlib \
+  --mount=from=out-2ba1712ad50273ba,dst=/tmp/clis-ntpd_1-2-3/release/deps/libaead-2ba1712ad50273ba.rmeta,source=/libaead-2ba1712ad50273ba.rmeta \
   --mount=from=out-2ba1712ad50273ba,dst=/tmp/clis-ntpd_1-2-3/release/deps/libaead-2ba1712ad50273ba.rlib,source=/libaead-2ba1712ad50273ba.rlib \
+  --mount=from=out-1009fce94369ad6b,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcrypto_common-1009fce94369ad6b.rmeta,source=/libcrypto_common-1009fce94369ad6b.rmeta \
   --mount=from=out-1009fce94369ad6b,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcrypto_common-1009fce94369ad6b.rlib,source=/libcrypto_common-1009fce94369ad6b.rlib \
+  --mount=from=out-2d6ea4fd5d7ef666,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgeneric_array-2d6ea4fd5d7ef666.rmeta,source=/libgeneric_array-2d6ea4fd5d7ef666.rmeta \
   --mount=from=out-2d6ea4fd5d7ef666,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgeneric_array-2d6ea4fd5d7ef666.rlib,source=/libgeneric_array-2d6ea4fd5d7ef666.rlib \
+  --mount=from=out-981b1f3c4161234a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtypenum-981b1f3c4161234a.rmeta,source=/libtypenum-981b1f3c4161234a.rmeta \
   --mount=from=out-981b1f3c4161234a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtypenum-981b1f3c4161234a.rlib,source=/libtypenum-981b1f3c4161234a.rlib \
+  --mount=from=out-434e8a9dd58e4456,dst=/tmp/clis-ntpd_1-2-3/release/deps/librand_core-434e8a9dd58e4456.rmeta,source=/librand_core-434e8a9dd58e4456.rmeta \
   --mount=from=out-434e8a9dd58e4456,dst=/tmp/clis-ntpd_1-2-3/release/deps/librand_core-434e8a9dd58e4456.rlib,source=/librand_core-434e8a9dd58e4456.rlib \
+  --mount=from=out-84473f2ddfbb434a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rmeta,source=/libgetrandom-84473f2ddfbb434a.rmeta \
   --mount=from=out-84473f2ddfbb434a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rlib,source=/libgetrandom-84473f2ddfbb434a.rlib \
+  --mount=from=out-da34da6838abd7f1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rmeta,source=/libcfg_if-da34da6838abd7f1.rmeta \
   --mount=from=out-da34da6838abd7f1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rlib,source=/libcfg_if-da34da6838abd7f1.rlib \
+  --mount=from=out-e0325614c1d7d6ab,dst=/tmp/clis-ntpd_1-2-3/release/deps/libaes_siv-e0325614c1d7d6ab.rmeta,source=/libaes_siv-e0325614c1d7d6ab.rmeta \
   --mount=from=out-e0325614c1d7d6ab,dst=/tmp/clis-ntpd_1-2-3/release/deps/libaes_siv-e0325614c1d7d6ab.rlib,source=/libaes_siv-e0325614c1d7d6ab.rlib \
+  --mount=from=out-81c9db97d7f9be78,dst=/tmp/clis-ntpd_1-2-3/release/deps/libaes-81c9db97d7f9be78.rmeta,source=/libaes-81c9db97d7f9be78.rmeta \
   --mount=from=out-81c9db97d7f9be78,dst=/tmp/clis-ntpd_1-2-3/release/deps/libaes-81c9db97d7f9be78.rlib,source=/libaes-81c9db97d7f9be78.rlib \
+  --mount=from=out-ca1baada07864a60,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcipher-ca1baada07864a60.rmeta,source=/libcipher-ca1baada07864a60.rmeta \
   --mount=from=out-ca1baada07864a60,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcipher-ca1baada07864a60.rlib,source=/libcipher-ca1baada07864a60.rlib \
+  --mount=from=out-56f37e149446be27,dst=/tmp/clis-ntpd_1-2-3/release/deps/libinout-56f37e149446be27.rmeta,source=/libinout-56f37e149446be27.rmeta \
   --mount=from=out-56f37e149446be27,dst=/tmp/clis-ntpd_1-2-3/release/deps/libinout-56f37e149446be27.rlib,source=/libinout-56f37e149446be27.rlib \
+  --mount=from=out-4ab791033e58debd,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcpufeatures-4ab791033e58debd.rmeta,source=/libcpufeatures-4ab791033e58debd.rmeta \
   --mount=from=out-4ab791033e58debd,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcpufeatures-4ab791033e58debd.rlib,source=/libcpufeatures-4ab791033e58debd.rlib \
+  --mount=from=out-568874dfd4c5be74,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcmac-568874dfd4c5be74.rmeta,source=/libcmac-568874dfd4c5be74.rmeta \
   --mount=from=out-568874dfd4c5be74,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcmac-568874dfd4c5be74.rlib,source=/libcmac-568874dfd4c5be74.rlib \
+  --mount=from=out-19f9a0f198045bc5,dst=/tmp/clis-ntpd_1-2-3/release/deps/libdbl-19f9a0f198045bc5.rmeta,source=/libdbl-19f9a0f198045bc5.rmeta \
   --mount=from=out-19f9a0f198045bc5,dst=/tmp/clis-ntpd_1-2-3/release/deps/libdbl-19f9a0f198045bc5.rlib,source=/libdbl-19f9a0f198045bc5.rlib \
+  --mount=from=out-65e96f3f500a3098,dst=/tmp/clis-ntpd_1-2-3/release/deps/libdigest-65e96f3f500a3098.rmeta,source=/libdigest-65e96f3f500a3098.rmeta \
   --mount=from=out-65e96f3f500a3098,dst=/tmp/clis-ntpd_1-2-3/release/deps/libdigest-65e96f3f500a3098.rlib,source=/libdigest-65e96f3f500a3098.rlib \
+  --mount=from=out-bc12f6e8b62af3c6,dst=/tmp/clis-ntpd_1-2-3/release/deps/libblock_buffer-bc12f6e8b62af3c6.rmeta,source=/libblock_buffer-bc12f6e8b62af3c6.rmeta \
   --mount=from=out-bc12f6e8b62af3c6,dst=/tmp/clis-ntpd_1-2-3/release/deps/libblock_buffer-bc12f6e8b62af3c6.rlib,source=/libblock_buffer-bc12f6e8b62af3c6.rlib \
+  --mount=from=out-8b6e21d4a5a6c6ed,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsubtle-8b6e21d4a5a6c6ed.rmeta,source=/libsubtle-8b6e21d4a5a6c6ed.rmeta \
   --mount=from=out-8b6e21d4a5a6c6ed,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsubtle-8b6e21d4a5a6c6ed.rlib,source=/libsubtle-8b6e21d4a5a6c6ed.rlib \
+  --mount=from=out-aca4c84266bacfb7,dst=/tmp/clis-ntpd_1-2-3/release/deps/libctr-aca4c84266bacfb7.rmeta,source=/libctr-aca4c84266bacfb7.rmeta \
   --mount=from=out-aca4c84266bacfb7,dst=/tmp/clis-ntpd_1-2-3/release/deps/libctr-aca4c84266bacfb7.rlib,source=/libctr-aca4c84266bacfb7.rlib \
+  --mount=from=out-caf2b0ffe78763b7,dst=/tmp/clis-ntpd_1-2-3/release/deps/libzeroize-caf2b0ffe78763b7.rmeta,source=/libzeroize-caf2b0ffe78763b7.rmeta \
   --mount=from=out-caf2b0ffe78763b7,dst=/tmp/clis-ntpd_1-2-3/release/deps/libzeroize-caf2b0ffe78763b7.rlib,source=/libzeroize-caf2b0ffe78763b7.rlib \
+  --mount=from=out-f0775f4337e7a668,dst=/tmp/clis-ntpd_1-2-3/release/deps/libmd5-f0775f4337e7a668.rmeta,source=/libmd5-f0775f4337e7a668.rmeta \
   --mount=from=out-f0775f4337e7a668,dst=/tmp/clis-ntpd_1-2-3/release/deps/libmd5-f0775f4337e7a668.rlib,source=/libmd5-f0775f4337e7a668.rlib \
+  --mount=from=out-5161209caf71d483,dst=/tmp/clis-ntpd_1-2-3/release/deps/librand-5161209caf71d483.rmeta,source=/librand-5161209caf71d483.rmeta \
   --mount=from=out-5161209caf71d483,dst=/tmp/clis-ntpd_1-2-3/release/deps/librand-5161209caf71d483.rlib,source=/librand-5161209caf71d483.rlib \
+  --mount=from=out-8e2f025dcc32e9af,dst=/tmp/clis-ntpd_1-2-3/release/deps/librand_chacha-8e2f025dcc32e9af.rmeta,source=/librand_chacha-8e2f025dcc32e9af.rmeta \
   --mount=from=out-8e2f025dcc32e9af,dst=/tmp/clis-ntpd_1-2-3/release/deps/librand_chacha-8e2f025dcc32e9af.rlib,source=/librand_chacha-8e2f025dcc32e9af.rlib \
+  --mount=from=out-af198cb5433f3d0c,dst=/tmp/clis-ntpd_1-2-3/release/deps/libppv_lite86-af198cb5433f3d0c.rmeta,source=/libppv_lite86-af198cb5433f3d0c.rmeta \
   --mount=from=out-af198cb5433f3d0c,dst=/tmp/clis-ntpd_1-2-3/release/deps/libppv_lite86-af198cb5433f3d0c.rlib,source=/libppv_lite86-af198cb5433f3d0c.rlib \
+  --mount=from=out-fd2c262888e3ecb5,dst=/tmp/clis-ntpd_1-2-3/release/deps/librustls-fd2c262888e3ecb5.rmeta,source=/librustls-fd2c262888e3ecb5.rmeta \
   --mount=from=out-fd2c262888e3ecb5,dst=/tmp/clis-ntpd_1-2-3/release/deps/librustls-fd2c262888e3ecb5.rlib,source=/librustls-fd2c262888e3ecb5.rlib \
+  --mount=from=out-b564a3159bfcf688,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblog-b564a3159bfcf688.rmeta,source=/liblog-b564a3159bfcf688.rmeta \
   --mount=from=out-b564a3159bfcf688,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblog-b564a3159bfcf688.rlib,source=/liblog-b564a3159bfcf688.rlib \
+  --mount=from=out-6ed51fafe322ecba,dst=/tmp/clis-ntpd_1-2-3/release/deps/libonce_cell-6ed51fafe322ecba.rmeta,source=/libonce_cell-6ed51fafe322ecba.rmeta \
   --mount=from=out-6ed51fafe322ecba,dst=/tmp/clis-ntpd_1-2-3/release/deps/libonce_cell-6ed51fafe322ecba.rlib,source=/libonce_cell-6ed51fafe322ecba.rlib \
+  --mount=from=out-162d4bd1f192637c,dst=/tmp/clis-ntpd_1-2-3/release/deps/libring-162d4bd1f192637c.rmeta,source=/libring-162d4bd1f192637c.rmeta \
   --mount=from=out-162d4bd1f192637c,dst=/tmp/clis-ntpd_1-2-3/release/deps/libring-162d4bd1f192637c.rlib,source=/libring-162d4bd1f192637c.rlib \
+  --mount=from=out-126f99f44d356e93,dst=/tmp/clis-ntpd_1-2-3/release/deps/libspin-126f99f44d356e93.rmeta,source=/libspin-126f99f44d356e93.rmeta \
   --mount=from=out-126f99f44d356e93,dst=/tmp/clis-ntpd_1-2-3/release/deps/libspin-126f99f44d356e93.rlib,source=/libspin-126f99f44d356e93.rlib \
+  --mount=from=out-2cf0189e0a6f5785,dst=/tmp/clis-ntpd_1-2-3/release/deps/libuntrusted-2cf0189e0a6f5785.rmeta,source=/libuntrusted-2cf0189e0a6f5785.rmeta \
   --mount=from=out-2cf0189e0a6f5785,dst=/tmp/clis-ntpd_1-2-3/release/deps/libuntrusted-2cf0189e0a6f5785.rlib,source=/libuntrusted-2cf0189e0a6f5785.rlib \
+  --mount=from=out-0bd417676bde33fe,dst=/tmp/clis-ntpd_1-2-3/release/deps/librustls_pki_types-0bd417676bde33fe.rmeta,source=/librustls_pki_types-0bd417676bde33fe.rmeta \
   --mount=from=out-0bd417676bde33fe,dst=/tmp/clis-ntpd_1-2-3/release/deps/librustls_pki_types-0bd417676bde33fe.rlib,source=/librustls_pki_types-0bd417676bde33fe.rlib \
+  --mount=from=out-0b45a7938c797eef,dst=/tmp/clis-ntpd_1-2-3/release/deps/libwebpki-0b45a7938c797eef.rmeta,source=/libwebpki-0b45a7938c797eef.rmeta \
   --mount=from=out-0b45a7938c797eef,dst=/tmp/clis-ntpd_1-2-3/release/deps/libwebpki-0b45a7938c797eef.rlib,source=/libwebpki-0b45a7938c797eef.rlib \
+  --mount=from=out-986325a49dffbcd1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libserde-986325a49dffbcd1.rmeta,source=/libserde-986325a49dffbcd1.rmeta \
   --mount=from=out-986325a49dffbcd1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libserde-986325a49dffbcd1.rlib,source=/libserde-986325a49dffbcd1.rlib \
   --mount=from=out-b74741511dfa898a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libserde_derive-b74741511dfa898a.so,source=/libserde_derive-b74741511dfa898a.so \
+  --mount=from=out-7d2675bffdb63c95,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtracing-7d2675bffdb63c95.rmeta,source=/libtracing-7d2675bffdb63c95.rmeta \
   --mount=from=out-7d2675bffdb63c95,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtracing-7d2675bffdb63c95.rlib,source=/libtracing-7d2675bffdb63c95.rlib \
+  --mount=from=out-32982cb980ef9328,dst=/tmp/clis-ntpd_1-2-3/release/deps/libpin_project_lite-32982cb980ef9328.rmeta,source=/libpin_project_lite-32982cb980ef9328.rmeta \
   --mount=from=out-32982cb980ef9328,dst=/tmp/clis-ntpd_1-2-3/release/deps/libpin_project_lite-32982cb980ef9328.rlib,source=/libpin_project_lite-32982cb980ef9328.rlib \
   --mount=from=out-ff2e92028461b3cf,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtracing_attributes-ff2e92028461b3cf.so,source=/libtracing_attributes-ff2e92028461b3cf.so \
+  --mount=from=out-100f3fe23952e4be,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtracing_core-100f3fe23952e4be.rmeta,source=/libtracing_core-100f3fe23952e4be.rmeta \
   --mount=from=out-100f3fe23952e4be,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtracing_core-100f3fe23952e4be.rlib,source=/libtracing_core-100f3fe23952e4be.rlib \
+  --mount=from=out-7974610cfc5e520c,dst=/tmp/clis-ntpd_1-2-3/release/deps/libntpd-7974610cfc5e520c.rmeta,source=/libntpd-7974610cfc5e520c.rmeta \
   --mount=from=out-7974610cfc5e520c,dst=/tmp/clis-ntpd_1-2-3/release/deps/libntpd-7974610cfc5e520c.rlib,source=/libntpd-7974610cfc5e520c.rlib \
+  --mount=from=out-9a69f5c8c648a58b,dst=/tmp/clis-ntpd_1-2-3/release/deps/librustls_native_certs-9a69f5c8c648a58b.rmeta,source=/librustls_native_certs-9a69f5c8c648a58b.rmeta \
   --mount=from=out-9a69f5c8c648a58b,dst=/tmp/clis-ntpd_1-2-3/release/deps/librustls_native_certs-9a69f5c8c648a58b.rlib,source=/librustls_native_certs-9a69f5c8c648a58b.rlib \
+  --mount=from=out-0ee236ae7bf0c632,dst=/tmp/clis-ntpd_1-2-3/release/deps/libopenssl_probe-0ee236ae7bf0c632.rmeta,source=/libopenssl_probe-0ee236ae7bf0c632.rmeta \
   --mount=from=out-0ee236ae7bf0c632,dst=/tmp/clis-ntpd_1-2-3/release/deps/libopenssl_probe-0ee236ae7bf0c632.rlib,source=/libopenssl_probe-0ee236ae7bf0c632.rlib \
+  --mount=from=out-e86acdc6389f12a9,dst=/tmp/clis-ntpd_1-2-3/release/deps/librustls_pemfile-e86acdc6389f12a9.rmeta,source=/librustls_pemfile-e86acdc6389f12a9.rmeta \
   --mount=from=out-e86acdc6389f12a9,dst=/tmp/clis-ntpd_1-2-3/release/deps/librustls_pemfile-e86acdc6389f12a9.rlib,source=/librustls_pemfile-e86acdc6389f12a9.rlib \
+  --mount=from=out-b08e25582a8fdf7e,dst=/tmp/clis-ntpd_1-2-3/release/deps/libbase64-b08e25582a8fdf7e.rmeta,source=/libbase64-b08e25582a8fdf7e.rmeta \
   --mount=from=out-b08e25582a8fdf7e,dst=/tmp/clis-ntpd_1-2-3/release/deps/libbase64-b08e25582a8fdf7e.rlib,source=/libbase64-b08e25582a8fdf7e.rlib \
+  --mount=from=out-2a345737f765283a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libserde_json-2a345737f765283a.rmeta,source=/libserde_json-2a345737f765283a.rmeta \
   --mount=from=out-2a345737f765283a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libserde_json-2a345737f765283a.rlib,source=/libserde_json-2a345737f765283a.rlib \
+  --mount=from=out-95ec35c9faa8fa43,dst=/tmp/clis-ntpd_1-2-3/release/deps/libitoa-95ec35c9faa8fa43.rmeta,source=/libitoa-95ec35c9faa8fa43.rmeta \
   --mount=from=out-95ec35c9faa8fa43,dst=/tmp/clis-ntpd_1-2-3/release/deps/libitoa-95ec35c9faa8fa43.rlib,source=/libitoa-95ec35c9faa8fa43.rlib \
+  --mount=from=out-56a874feb6525857,dst=/tmp/clis-ntpd_1-2-3/release/deps/libryu-56a874feb6525857.rmeta,source=/libryu-56a874feb6525857.rmeta \
   --mount=from=out-56a874feb6525857,dst=/tmp/clis-ntpd_1-2-3/release/deps/libryu-56a874feb6525857.rlib,source=/libryu-56a874feb6525857.rlib \
+  --mount=from=out-2f59881207cd7c68,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtimestamped_socket-2f59881207cd7c68.rmeta,source=/libtimestamped_socket-2f59881207cd7c68.rmeta \
   --mount=from=out-2f59881207cd7c68,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtimestamped_socket-2f59881207cd7c68.rlib,source=/libtimestamped_socket-2f59881207cd7c68.rlib \
+  --mount=from=out-e6ed429a0a7450c0,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtokio-e6ed429a0a7450c0.rmeta,source=/libtokio-e6ed429a0a7450c0.rmeta \
   --mount=from=out-e6ed429a0a7450c0,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtokio-e6ed429a0a7450c0.rlib,source=/libtokio-e6ed429a0a7450c0.rlib \
+  --mount=from=out-17cf73a7d3f13d95,dst=/tmp/clis-ntpd_1-2-3/release/deps/libbytes-17cf73a7d3f13d95.rmeta,source=/libbytes-17cf73a7d3f13d95.rmeta \
   --mount=from=out-17cf73a7d3f13d95,dst=/tmp/clis-ntpd_1-2-3/release/deps/libbytes-17cf73a7d3f13d95.rlib,source=/libbytes-17cf73a7d3f13d95.rlib \
+  --mount=from=out-57de3125ece5b1fd,dst=/tmp/clis-ntpd_1-2-3/release/deps/libmio-57de3125ece5b1fd.rmeta,source=/libmio-57de3125ece5b1fd.rmeta \
   --mount=from=out-57de3125ece5b1fd,dst=/tmp/clis-ntpd_1-2-3/release/deps/libmio-57de3125ece5b1fd.rlib,source=/libmio-57de3125ece5b1fd.rlib \
+  --mount=from=out-516d6049f106f6a2,dst=/tmp/clis-ntpd_1-2-3/release/deps/libnum_cpus-516d6049f106f6a2.rmeta,source=/libnum_cpus-516d6049f106f6a2.rmeta \
   --mount=from=out-516d6049f106f6a2,dst=/tmp/clis-ntpd_1-2-3/release/deps/libnum_cpus-516d6049f106f6a2.rlib,source=/libnum_cpus-516d6049f106f6a2.rlib \
+  --mount=from=out-4f06700ac893bf17,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsocket2-4f06700ac893bf17.rmeta,source=/libsocket2-4f06700ac893bf17.rmeta \
   --mount=from=out-4f06700ac893bf17,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsocket2-4f06700ac893bf17.rlib,source=/libsocket2-4f06700ac893bf17.rlib \
   --mount=from=out-56d9f1f76b7466fe,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtokio_macros-56d9f1f76b7466fe.so,source=/libtokio_macros-56d9f1f76b7466fe.so \
+  --mount=from=out-7b6c235fb7422577,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtoml-7b6c235fb7422577.rmeta,source=/libtoml-7b6c235fb7422577.rmeta \
   --mount=from=out-7b6c235fb7422577,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtoml-7b6c235fb7422577.rlib,source=/libtoml-7b6c235fb7422577.rlib \
+  --mount=from=out-dc39aa05fabf8bb2,dst=/tmp/clis-ntpd_1-2-3/release/deps/libserde_spanned-dc39aa05fabf8bb2.rmeta,source=/libserde_spanned-dc39aa05fabf8bb2.rmeta \
   --mount=from=out-dc39aa05fabf8bb2,dst=/tmp/clis-ntpd_1-2-3/release/deps/libserde_spanned-dc39aa05fabf8bb2.rlib,source=/libserde_spanned-dc39aa05fabf8bb2.rlib \
+  --mount=from=out-f1d69a8e9c76a596,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtoml_datetime-f1d69a8e9c76a596.rmeta,source=/libtoml_datetime-f1d69a8e9c76a596.rmeta \
   --mount=from=out-f1d69a8e9c76a596,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtoml_datetime-f1d69a8e9c76a596.rlib,source=/libtoml_datetime-f1d69a8e9c76a596.rlib \
+  --mount=from=out-90c6c24e7a16fdd6,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtoml_edit-90c6c24e7a16fdd6.rmeta,source=/libtoml_edit-90c6c24e7a16fdd6.rmeta \
   --mount=from=out-90c6c24e7a16fdd6,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtoml_edit-90c6c24e7a16fdd6.rlib,source=/libtoml_edit-90c6c24e7a16fdd6.rlib \
+  --mount=from=out-bd5f37b7de678bd9,dst=/tmp/clis-ntpd_1-2-3/release/deps/libindexmap-bd5f37b7de678bd9.rmeta,source=/libindexmap-bd5f37b7de678bd9.rmeta \
   --mount=from=out-bd5f37b7de678bd9,dst=/tmp/clis-ntpd_1-2-3/release/deps/libindexmap-bd5f37b7de678bd9.rlib,source=/libindexmap-bd5f37b7de678bd9.rlib \
+  --mount=from=out-bd5b9404126e35a1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libequivalent-bd5b9404126e35a1.rmeta,source=/libequivalent-bd5b9404126e35a1.rmeta \
   --mount=from=out-bd5b9404126e35a1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libequivalent-bd5b9404126e35a1.rlib,source=/libequivalent-bd5b9404126e35a1.rlib \
+  --mount=from=out-8bb46fd37d0b1c2d,dst=/tmp/clis-ntpd_1-2-3/release/deps/libhashbrown-8bb46fd37d0b1c2d.rmeta,source=/libhashbrown-8bb46fd37d0b1c2d.rmeta \
   --mount=from=out-8bb46fd37d0b1c2d,dst=/tmp/clis-ntpd_1-2-3/release/deps/libhashbrown-8bb46fd37d0b1c2d.rlib,source=/libhashbrown-8bb46fd37d0b1c2d.rlib \
+  --mount=from=out-f45e6953436548b2,dst=/tmp/clis-ntpd_1-2-3/release/deps/libwinnow-f45e6953436548b2.rmeta,source=/libwinnow-f45e6953436548b2.rmeta \
   --mount=from=out-f45e6953436548b2,dst=/tmp/clis-ntpd_1-2-3/release/deps/libwinnow-f45e6953436548b2.rlib,source=/libwinnow-f45e6953436548b2.rlib \
+  --mount=from=out-63f992d9454962cc,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtracing_subscriber-63f992d9454962cc.rmeta,source=/libtracing_subscriber-63f992d9454962cc.rmeta \
   --mount=from=out-63f992d9454962cc,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtracing_subscriber-63f992d9454962cc.rlib,source=/libtracing_subscriber-63f992d9454962cc.rlib \
+  --mount=from=out-c42192675aa050dd,dst=/tmp/clis-ntpd_1-2-3/release/deps/libnu_ansi_term-c42192675aa050dd.rmeta,source=/libnu_ansi_term-c42192675aa050dd.rmeta \
   --mount=from=out-c42192675aa050dd,dst=/tmp/clis-ntpd_1-2-3/release/deps/libnu_ansi_term-c42192675aa050dd.rlib,source=/libnu_ansi_term-c42192675aa050dd.rlib \
+  --mount=from=out-94fa3b5a5c6dc522,dst=/tmp/clis-ntpd_1-2-3/release/deps/liboverload-94fa3b5a5c6dc522.rmeta,source=/liboverload-94fa3b5a5c6dc522.rmeta \
   --mount=from=out-94fa3b5a5c6dc522,dst=/tmp/clis-ntpd_1-2-3/release/deps/liboverload-94fa3b5a5c6dc522.rlib,source=/liboverload-94fa3b5a5c6dc522.rlib \
+  --mount=from=out-b9545388d9527f67,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsharded_slab-b9545388d9527f67.rmeta,source=/libsharded_slab-b9545388d9527f67.rmeta \
   --mount=from=out-b9545388d9527f67,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsharded_slab-b9545388d9527f67.rlib,source=/libsharded_slab-b9545388d9527f67.rlib \
+  --mount=from=out-f91da618dd3f72e5,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblazy_static-f91da618dd3f72e5.rmeta,source=/liblazy_static-f91da618dd3f72e5.rmeta \
   --mount=from=out-f91da618dd3f72e5,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblazy_static-f91da618dd3f72e5.rlib,source=/liblazy_static-f91da618dd3f72e5.rlib \
+  --mount=from=out-6893ca5c870c6e37,dst=/tmp/clis-ntpd_1-2-3/release/deps/libthread_local-6893ca5c870c6e37.rmeta,source=/libthread_local-6893ca5c870c6e37.rmeta \
   --mount=from=out-6893ca5c870c6e37,dst=/tmp/clis-ntpd_1-2-3/release/deps/libthread_local-6893ca5c870c6e37.rlib,source=/libthread_local-6893ca5c870c6e37.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
@@ -9892,80 +14511,80 @@ COPY --from=dep-b-ntpd-1.2.3-88b4a2cd7d00f909 /tmp/clis-ntpd_1-2-3/release/deps/
 ##     "6893ca5c870c6e37",
 ## ]
 ## short_externs = [
-##     "async_trait-2b00e18c8782890c",
-##     "proc_macro2-4be32d01ee2a9db1",
-##     "unicode_ident-4c1dc76c11b3deb8",
-##     "quote-36ed05d339fc79f9",
-##     "syn-5c1d3e18a7dfcf78",
-##     "clock_steering-7adc6d6ce8be0538",
-##     "libc-a7905fdc410bdfce",
-##     "ntp_proto-5a810c5444456e7d",
-##     "aead-2ba1712ad50273ba",
-##     "crypto_common-1009fce94369ad6b",
-##     "generic_array-2d6ea4fd5d7ef666",
-##     "typenum-981b1f3c4161234a",
-##     "rand_core-434e8a9dd58e4456",
-##     "getrandom-84473f2ddfbb434a",
-##     "cfg_if-da34da6838abd7f1",
-##     "aes_siv-e0325614c1d7d6ab",
-##     "aes-81c9db97d7f9be78",
-##     "cipher-ca1baada07864a60",
-##     "inout-56f37e149446be27",
-##     "cpufeatures-4ab791033e58debd",
-##     "cmac-568874dfd4c5be74",
-##     "dbl-19f9a0f198045bc5",
-##     "digest-65e96f3f500a3098",
-##     "block_buffer-bc12f6e8b62af3c6",
-##     "subtle-8b6e21d4a5a6c6ed",
-##     "ctr-aca4c84266bacfb7",
-##     "zeroize-caf2b0ffe78763b7",
-##     "md5-f0775f4337e7a668",
-##     "rand-5161209caf71d483",
-##     "rand_chacha-8e2f025dcc32e9af",
-##     "ppv_lite86-af198cb5433f3d0c",
-##     "rustls-fd2c262888e3ecb5",
-##     "log-b564a3159bfcf688",
-##     "once_cell-6ed51fafe322ecba",
-##     "ring-162d4bd1f192637c",
-##     "spin-126f99f44d356e93",
-##     "untrusted-2cf0189e0a6f5785",
-##     "rustls_pki_types-0bd417676bde33fe",
-##     "webpki-0b45a7938c797eef",
-##     "serde-986325a49dffbcd1",
-##     "serde_derive-b74741511dfa898a",
-##     "tracing-7d2675bffdb63c95",
-##     "pin_project_lite-32982cb980ef9328",
-##     "tracing_attributes-ff2e92028461b3cf",
-##     "tracing_core-100f3fe23952e4be",
-##     "ntpd-7974610cfc5e520c",
-##     "rustls_native_certs-9a69f5c8c648a58b",
-##     "openssl_probe-0ee236ae7bf0c632",
-##     "rustls_pemfile-e86acdc6389f12a9",
-##     "base64-b08e25582a8fdf7e",
-##     "serde_json-2a345737f765283a",
-##     "itoa-95ec35c9faa8fa43",
-##     "ryu-56a874feb6525857",
-##     "timestamped_socket-2f59881207cd7c68",
-##     "tokio-e6ed429a0a7450c0",
-##     "bytes-17cf73a7d3f13d95",
-##     "mio-57de3125ece5b1fd",
-##     "num_cpus-516d6049f106f6a2",
-##     "socket2-4f06700ac893bf17",
-##     "tokio_macros-56d9f1f76b7466fe",
-##     "toml-7b6c235fb7422577",
-##     "serde_spanned-dc39aa05fabf8bb2",
-##     "toml_datetime-f1d69a8e9c76a596",
-##     "toml_edit-90c6c24e7a16fdd6",
-##     "indexmap-bd5f37b7de678bd9",
-##     "equivalent-bd5b9404126e35a1",
-##     "hashbrown-8bb46fd37d0b1c2d",
-##     "winnow-f45e6953436548b2",
-##     "tracing_subscriber-63f992d9454962cc",
-##     "nu_ansi_term-c42192675aa050dd",
-##     "overload-94fa3b5a5c6dc522",
-##     "sharded_slab-b9545388d9527f67",
-##     "lazy_static-f91da618dd3f72e5",
-##     "thread_local-6893ca5c870c6e37",
+##     "2b00e18c8782890c",
+##     "4be32d01ee2a9db1",
+##     "4c1dc76c11b3deb8",
+##     "36ed05d339fc79f9",
+##     "5c1d3e18a7dfcf78",
+##     "7adc6d6ce8be0538",
+##     "a7905fdc410bdfce",
+##     "5a810c5444456e7d",
+##     "2ba1712ad50273ba",
+##     "1009fce94369ad6b",
+##     "2d6ea4fd5d7ef666",
+##     "981b1f3c4161234a",
+##     "434e8a9dd58e4456",
+##     "84473f2ddfbb434a",
+##     "da34da6838abd7f1",
+##     "e0325614c1d7d6ab",
+##     "81c9db97d7f9be78",
+##     "ca1baada07864a60",
+##     "56f37e149446be27",
+##     "4ab791033e58debd",
+##     "568874dfd4c5be74",
+##     "19f9a0f198045bc5",
+##     "65e96f3f500a3098",
+##     "bc12f6e8b62af3c6",
+##     "8b6e21d4a5a6c6ed",
+##     "aca4c84266bacfb7",
+##     "caf2b0ffe78763b7",
+##     "f0775f4337e7a668",
+##     "5161209caf71d483",
+##     "8e2f025dcc32e9af",
+##     "af198cb5433f3d0c",
+##     "fd2c262888e3ecb5",
+##     "b564a3159bfcf688",
+##     "6ed51fafe322ecba",
+##     "162d4bd1f192637c",
+##     "126f99f44d356e93",
+##     "2cf0189e0a6f5785",
+##     "0bd417676bde33fe",
+##     "0b45a7938c797eef",
+##     "986325a49dffbcd1",
+##     "b74741511dfa898a",
+##     "7d2675bffdb63c95",
+##     "32982cb980ef9328",
+##     "ff2e92028461b3cf",
+##     "100f3fe23952e4be",
+##     "7974610cfc5e520c",
+##     "9a69f5c8c648a58b",
+##     "0ee236ae7bf0c632",
+##     "e86acdc6389f12a9",
+##     "b08e25582a8fdf7e",
+##     "2a345737f765283a",
+##     "95ec35c9faa8fa43",
+##     "56a874feb6525857",
+##     "2f59881207cd7c68",
+##     "e6ed429a0a7450c0",
+##     "17cf73a7d3f13d95",
+##     "57de3125ece5b1fd",
+##     "516d6049f106f6a2",
+##     "4f06700ac893bf17",
+##     "56d9f1f76b7466fe",
+##     "7b6c235fb7422577",
+##     "dc39aa05fabf8bb2",
+##     "f1d69a8e9c76a596",
+##     "90c6c24e7a16fdd6",
+##     "bd5f37b7de678bd9",
+##     "bd5b9404126e35a1",
+##     "8bb46fd37d0b1c2d",
+##     "f45e6953436548b2",
+##     "63f992d9454962cc",
+##     "c42192675aa050dd",
+##     "94fa3b5a5c6dc522",
+##     "b9545388d9527f67",
+##     "f91da618dd3f72e5",
+##     "6893ca5c870c6e37",
 ## ]
 ## writes = [
 ##     "deps/ntp_daemon-88b4a2cd7d00f909.d",
@@ -9975,6 +14594,726 @@ COPY --from=dep-b-ntpd-1.2.3-88b4a2cd7d00f909 /tmp/clis-ntpd_1-2-3/release/deps/
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-2-3/release/deps/ntp_daemon-88b4a2cd7d00f909.d","emit":"dep-info"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-2-3/release/deps/ntp_daemon-88b4a2cd7d00f909","emit":"link"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-2b00e18c8782890c"
+## src = "/libasync_trait-2b00e18c8782890c.so"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libasync_trait-2b00e18c8782890c.so"
+## 
+## [[mounts]]
+## from = "out-4be32d01ee2a9db1"
+## src = "/libproc_macro2-4be32d01ee2a9db1.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rmeta"
+## 
+## [[mounts]]
+## from = "out-4be32d01ee2a9db1"
+## src = "/libproc_macro2-4be32d01ee2a9db1.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rlib"
+## 
+## [[mounts]]
+## from = "out-4c1dc76c11b3deb8"
+## src = "/libunicode_ident-4c1dc76c11b3deb8.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rmeta"
+## 
+## [[mounts]]
+## from = "out-4c1dc76c11b3deb8"
+## src = "/libunicode_ident-4c1dc76c11b3deb8.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rlib"
+## 
+## [[mounts]]
+## from = "out-36ed05d339fc79f9"
+## src = "/libquote-36ed05d339fc79f9.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rmeta"
+## 
+## [[mounts]]
+## from = "out-36ed05d339fc79f9"
+## src = "/libquote-36ed05d339fc79f9.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rlib"
+## 
+## [[mounts]]
+## from = "out-5c1d3e18a7dfcf78"
+## src = "/libsyn-5c1d3e18a7dfcf78.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rmeta"
+## 
+## [[mounts]]
+## from = "out-5c1d3e18a7dfcf78"
+## src = "/libsyn-5c1d3e18a7dfcf78.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rlib"
+## 
+## [[mounts]]
+## from = "out-7adc6d6ce8be0538"
+## src = "/libclock_steering-7adc6d6ce8be0538.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libclock_steering-7adc6d6ce8be0538.rmeta"
+## 
+## [[mounts]]
+## from = "out-7adc6d6ce8be0538"
+## src = "/libclock_steering-7adc6d6ce8be0538.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libclock_steering-7adc6d6ce8be0538.rlib"
+## 
+## [[mounts]]
+## from = "out-a7905fdc410bdfce"
+## src = "/liblibc-a7905fdc410bdfce.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rmeta"
+## 
+## [[mounts]]
+## from = "out-a7905fdc410bdfce"
+## src = "/liblibc-a7905fdc410bdfce.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rlib"
+## 
+## [[mounts]]
+## from = "out-5a810c5444456e7d"
+## src = "/libntp_proto-5a810c5444456e7d.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libntp_proto-5a810c5444456e7d.rmeta"
+## 
+## [[mounts]]
+## from = "out-5a810c5444456e7d"
+## src = "/libntp_proto-5a810c5444456e7d.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libntp_proto-5a810c5444456e7d.rlib"
+## 
+## [[mounts]]
+## from = "out-2ba1712ad50273ba"
+## src = "/libaead-2ba1712ad50273ba.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libaead-2ba1712ad50273ba.rmeta"
+## 
+## [[mounts]]
+## from = "out-2ba1712ad50273ba"
+## src = "/libaead-2ba1712ad50273ba.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libaead-2ba1712ad50273ba.rlib"
+## 
+## [[mounts]]
+## from = "out-1009fce94369ad6b"
+## src = "/libcrypto_common-1009fce94369ad6b.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libcrypto_common-1009fce94369ad6b.rmeta"
+## 
+## [[mounts]]
+## from = "out-1009fce94369ad6b"
+## src = "/libcrypto_common-1009fce94369ad6b.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libcrypto_common-1009fce94369ad6b.rlib"
+## 
+## [[mounts]]
+## from = "out-2d6ea4fd5d7ef666"
+## src = "/libgeneric_array-2d6ea4fd5d7ef666.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libgeneric_array-2d6ea4fd5d7ef666.rmeta"
+## 
+## [[mounts]]
+## from = "out-2d6ea4fd5d7ef666"
+## src = "/libgeneric_array-2d6ea4fd5d7ef666.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libgeneric_array-2d6ea4fd5d7ef666.rlib"
+## 
+## [[mounts]]
+## from = "out-981b1f3c4161234a"
+## src = "/libtypenum-981b1f3c4161234a.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libtypenum-981b1f3c4161234a.rmeta"
+## 
+## [[mounts]]
+## from = "out-981b1f3c4161234a"
+## src = "/libtypenum-981b1f3c4161234a.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libtypenum-981b1f3c4161234a.rlib"
+## 
+## [[mounts]]
+## from = "out-434e8a9dd58e4456"
+## src = "/librand_core-434e8a9dd58e4456.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/librand_core-434e8a9dd58e4456.rmeta"
+## 
+## [[mounts]]
+## from = "out-434e8a9dd58e4456"
+## src = "/librand_core-434e8a9dd58e4456.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/librand_core-434e8a9dd58e4456.rlib"
+## 
+## [[mounts]]
+## from = "out-84473f2ddfbb434a"
+## src = "/libgetrandom-84473f2ddfbb434a.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rmeta"
+## 
+## [[mounts]]
+## from = "out-84473f2ddfbb434a"
+## src = "/libgetrandom-84473f2ddfbb434a.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rlib"
+## 
+## [[mounts]]
+## from = "out-da34da6838abd7f1"
+## src = "/libcfg_if-da34da6838abd7f1.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rmeta"
+## 
+## [[mounts]]
+## from = "out-da34da6838abd7f1"
+## src = "/libcfg_if-da34da6838abd7f1.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rlib"
+## 
+## [[mounts]]
+## from = "out-e0325614c1d7d6ab"
+## src = "/libaes_siv-e0325614c1d7d6ab.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libaes_siv-e0325614c1d7d6ab.rmeta"
+## 
+## [[mounts]]
+## from = "out-e0325614c1d7d6ab"
+## src = "/libaes_siv-e0325614c1d7d6ab.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libaes_siv-e0325614c1d7d6ab.rlib"
+## 
+## [[mounts]]
+## from = "out-81c9db97d7f9be78"
+## src = "/libaes-81c9db97d7f9be78.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libaes-81c9db97d7f9be78.rmeta"
+## 
+## [[mounts]]
+## from = "out-81c9db97d7f9be78"
+## src = "/libaes-81c9db97d7f9be78.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libaes-81c9db97d7f9be78.rlib"
+## 
+## [[mounts]]
+## from = "out-ca1baada07864a60"
+## src = "/libcipher-ca1baada07864a60.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libcipher-ca1baada07864a60.rmeta"
+## 
+## [[mounts]]
+## from = "out-ca1baada07864a60"
+## src = "/libcipher-ca1baada07864a60.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libcipher-ca1baada07864a60.rlib"
+## 
+## [[mounts]]
+## from = "out-56f37e149446be27"
+## src = "/libinout-56f37e149446be27.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libinout-56f37e149446be27.rmeta"
+## 
+## [[mounts]]
+## from = "out-56f37e149446be27"
+## src = "/libinout-56f37e149446be27.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libinout-56f37e149446be27.rlib"
+## 
+## [[mounts]]
+## from = "out-4ab791033e58debd"
+## src = "/libcpufeatures-4ab791033e58debd.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libcpufeatures-4ab791033e58debd.rmeta"
+## 
+## [[mounts]]
+## from = "out-4ab791033e58debd"
+## src = "/libcpufeatures-4ab791033e58debd.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libcpufeatures-4ab791033e58debd.rlib"
+## 
+## [[mounts]]
+## from = "out-568874dfd4c5be74"
+## src = "/libcmac-568874dfd4c5be74.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libcmac-568874dfd4c5be74.rmeta"
+## 
+## [[mounts]]
+## from = "out-568874dfd4c5be74"
+## src = "/libcmac-568874dfd4c5be74.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libcmac-568874dfd4c5be74.rlib"
+## 
+## [[mounts]]
+## from = "out-19f9a0f198045bc5"
+## src = "/libdbl-19f9a0f198045bc5.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libdbl-19f9a0f198045bc5.rmeta"
+## 
+## [[mounts]]
+## from = "out-19f9a0f198045bc5"
+## src = "/libdbl-19f9a0f198045bc5.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libdbl-19f9a0f198045bc5.rlib"
+## 
+## [[mounts]]
+## from = "out-65e96f3f500a3098"
+## src = "/libdigest-65e96f3f500a3098.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libdigest-65e96f3f500a3098.rmeta"
+## 
+## [[mounts]]
+## from = "out-65e96f3f500a3098"
+## src = "/libdigest-65e96f3f500a3098.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libdigest-65e96f3f500a3098.rlib"
+## 
+## [[mounts]]
+## from = "out-bc12f6e8b62af3c6"
+## src = "/libblock_buffer-bc12f6e8b62af3c6.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libblock_buffer-bc12f6e8b62af3c6.rmeta"
+## 
+## [[mounts]]
+## from = "out-bc12f6e8b62af3c6"
+## src = "/libblock_buffer-bc12f6e8b62af3c6.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libblock_buffer-bc12f6e8b62af3c6.rlib"
+## 
+## [[mounts]]
+## from = "out-8b6e21d4a5a6c6ed"
+## src = "/libsubtle-8b6e21d4a5a6c6ed.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libsubtle-8b6e21d4a5a6c6ed.rmeta"
+## 
+## [[mounts]]
+## from = "out-8b6e21d4a5a6c6ed"
+## src = "/libsubtle-8b6e21d4a5a6c6ed.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libsubtle-8b6e21d4a5a6c6ed.rlib"
+## 
+## [[mounts]]
+## from = "out-aca4c84266bacfb7"
+## src = "/libctr-aca4c84266bacfb7.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libctr-aca4c84266bacfb7.rmeta"
+## 
+## [[mounts]]
+## from = "out-aca4c84266bacfb7"
+## src = "/libctr-aca4c84266bacfb7.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libctr-aca4c84266bacfb7.rlib"
+## 
+## [[mounts]]
+## from = "out-caf2b0ffe78763b7"
+## src = "/libzeroize-caf2b0ffe78763b7.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libzeroize-caf2b0ffe78763b7.rmeta"
+## 
+## [[mounts]]
+## from = "out-caf2b0ffe78763b7"
+## src = "/libzeroize-caf2b0ffe78763b7.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libzeroize-caf2b0ffe78763b7.rlib"
+## 
+## [[mounts]]
+## from = "out-f0775f4337e7a668"
+## src = "/libmd5-f0775f4337e7a668.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libmd5-f0775f4337e7a668.rmeta"
+## 
+## [[mounts]]
+## from = "out-f0775f4337e7a668"
+## src = "/libmd5-f0775f4337e7a668.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libmd5-f0775f4337e7a668.rlib"
+## 
+## [[mounts]]
+## from = "out-5161209caf71d483"
+## src = "/librand-5161209caf71d483.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/librand-5161209caf71d483.rmeta"
+## 
+## [[mounts]]
+## from = "out-5161209caf71d483"
+## src = "/librand-5161209caf71d483.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/librand-5161209caf71d483.rlib"
+## 
+## [[mounts]]
+## from = "out-8e2f025dcc32e9af"
+## src = "/librand_chacha-8e2f025dcc32e9af.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/librand_chacha-8e2f025dcc32e9af.rmeta"
+## 
+## [[mounts]]
+## from = "out-8e2f025dcc32e9af"
+## src = "/librand_chacha-8e2f025dcc32e9af.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/librand_chacha-8e2f025dcc32e9af.rlib"
+## 
+## [[mounts]]
+## from = "out-af198cb5433f3d0c"
+## src = "/libppv_lite86-af198cb5433f3d0c.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libppv_lite86-af198cb5433f3d0c.rmeta"
+## 
+## [[mounts]]
+## from = "out-af198cb5433f3d0c"
+## src = "/libppv_lite86-af198cb5433f3d0c.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libppv_lite86-af198cb5433f3d0c.rlib"
+## 
+## [[mounts]]
+## from = "out-fd2c262888e3ecb5"
+## src = "/librustls-fd2c262888e3ecb5.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/librustls-fd2c262888e3ecb5.rmeta"
+## 
+## [[mounts]]
+## from = "out-fd2c262888e3ecb5"
+## src = "/librustls-fd2c262888e3ecb5.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/librustls-fd2c262888e3ecb5.rlib"
+## 
+## [[mounts]]
+## from = "out-b564a3159bfcf688"
+## src = "/liblog-b564a3159bfcf688.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/liblog-b564a3159bfcf688.rmeta"
+## 
+## [[mounts]]
+## from = "out-b564a3159bfcf688"
+## src = "/liblog-b564a3159bfcf688.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/liblog-b564a3159bfcf688.rlib"
+## 
+## [[mounts]]
+## from = "out-6ed51fafe322ecba"
+## src = "/libonce_cell-6ed51fafe322ecba.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libonce_cell-6ed51fafe322ecba.rmeta"
+## 
+## [[mounts]]
+## from = "out-6ed51fafe322ecba"
+## src = "/libonce_cell-6ed51fafe322ecba.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libonce_cell-6ed51fafe322ecba.rlib"
+## 
+## [[mounts]]
+## from = "out-162d4bd1f192637c"
+## src = "/libring-162d4bd1f192637c.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libring-162d4bd1f192637c.rmeta"
+## 
+## [[mounts]]
+## from = "out-162d4bd1f192637c"
+## src = "/libring-162d4bd1f192637c.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libring-162d4bd1f192637c.rlib"
+## 
+## [[mounts]]
+## from = "out-126f99f44d356e93"
+## src = "/libspin-126f99f44d356e93.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libspin-126f99f44d356e93.rmeta"
+## 
+## [[mounts]]
+## from = "out-126f99f44d356e93"
+## src = "/libspin-126f99f44d356e93.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libspin-126f99f44d356e93.rlib"
+## 
+## [[mounts]]
+## from = "out-2cf0189e0a6f5785"
+## src = "/libuntrusted-2cf0189e0a6f5785.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libuntrusted-2cf0189e0a6f5785.rmeta"
+## 
+## [[mounts]]
+## from = "out-2cf0189e0a6f5785"
+## src = "/libuntrusted-2cf0189e0a6f5785.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libuntrusted-2cf0189e0a6f5785.rlib"
+## 
+## [[mounts]]
+## from = "out-0bd417676bde33fe"
+## src = "/librustls_pki_types-0bd417676bde33fe.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/librustls_pki_types-0bd417676bde33fe.rmeta"
+## 
+## [[mounts]]
+## from = "out-0bd417676bde33fe"
+## src = "/librustls_pki_types-0bd417676bde33fe.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/librustls_pki_types-0bd417676bde33fe.rlib"
+## 
+## [[mounts]]
+## from = "out-0b45a7938c797eef"
+## src = "/libwebpki-0b45a7938c797eef.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libwebpki-0b45a7938c797eef.rmeta"
+## 
+## [[mounts]]
+## from = "out-0b45a7938c797eef"
+## src = "/libwebpki-0b45a7938c797eef.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libwebpki-0b45a7938c797eef.rlib"
+## 
+## [[mounts]]
+## from = "out-986325a49dffbcd1"
+## src = "/libserde-986325a49dffbcd1.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libserde-986325a49dffbcd1.rmeta"
+## 
+## [[mounts]]
+## from = "out-986325a49dffbcd1"
+## src = "/libserde-986325a49dffbcd1.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libserde-986325a49dffbcd1.rlib"
+## 
+## [[mounts]]
+## from = "out-b74741511dfa898a"
+## src = "/libserde_derive-b74741511dfa898a.so"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libserde_derive-b74741511dfa898a.so"
+## 
+## [[mounts]]
+## from = "out-7d2675bffdb63c95"
+## src = "/libtracing-7d2675bffdb63c95.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libtracing-7d2675bffdb63c95.rmeta"
+## 
+## [[mounts]]
+## from = "out-7d2675bffdb63c95"
+## src = "/libtracing-7d2675bffdb63c95.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libtracing-7d2675bffdb63c95.rlib"
+## 
+## [[mounts]]
+## from = "out-32982cb980ef9328"
+## src = "/libpin_project_lite-32982cb980ef9328.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libpin_project_lite-32982cb980ef9328.rmeta"
+## 
+## [[mounts]]
+## from = "out-32982cb980ef9328"
+## src = "/libpin_project_lite-32982cb980ef9328.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libpin_project_lite-32982cb980ef9328.rlib"
+## 
+## [[mounts]]
+## from = "out-ff2e92028461b3cf"
+## src = "/libtracing_attributes-ff2e92028461b3cf.so"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libtracing_attributes-ff2e92028461b3cf.so"
+## 
+## [[mounts]]
+## from = "out-100f3fe23952e4be"
+## src = "/libtracing_core-100f3fe23952e4be.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libtracing_core-100f3fe23952e4be.rmeta"
+## 
+## [[mounts]]
+## from = "out-100f3fe23952e4be"
+## src = "/libtracing_core-100f3fe23952e4be.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libtracing_core-100f3fe23952e4be.rlib"
+## 
+## [[mounts]]
+## from = "out-7974610cfc5e520c"
+## src = "/libntpd-7974610cfc5e520c.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libntpd-7974610cfc5e520c.rmeta"
+## 
+## [[mounts]]
+## from = "out-7974610cfc5e520c"
+## src = "/libntpd-7974610cfc5e520c.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libntpd-7974610cfc5e520c.rlib"
+## 
+## [[mounts]]
+## from = "out-9a69f5c8c648a58b"
+## src = "/librustls_native_certs-9a69f5c8c648a58b.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/librustls_native_certs-9a69f5c8c648a58b.rmeta"
+## 
+## [[mounts]]
+## from = "out-9a69f5c8c648a58b"
+## src = "/librustls_native_certs-9a69f5c8c648a58b.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/librustls_native_certs-9a69f5c8c648a58b.rlib"
+## 
+## [[mounts]]
+## from = "out-0ee236ae7bf0c632"
+## src = "/libopenssl_probe-0ee236ae7bf0c632.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libopenssl_probe-0ee236ae7bf0c632.rmeta"
+## 
+## [[mounts]]
+## from = "out-0ee236ae7bf0c632"
+## src = "/libopenssl_probe-0ee236ae7bf0c632.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libopenssl_probe-0ee236ae7bf0c632.rlib"
+## 
+## [[mounts]]
+## from = "out-e86acdc6389f12a9"
+## src = "/librustls_pemfile-e86acdc6389f12a9.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/librustls_pemfile-e86acdc6389f12a9.rmeta"
+## 
+## [[mounts]]
+## from = "out-e86acdc6389f12a9"
+## src = "/librustls_pemfile-e86acdc6389f12a9.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/librustls_pemfile-e86acdc6389f12a9.rlib"
+## 
+## [[mounts]]
+## from = "out-b08e25582a8fdf7e"
+## src = "/libbase64-b08e25582a8fdf7e.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libbase64-b08e25582a8fdf7e.rmeta"
+## 
+## [[mounts]]
+## from = "out-b08e25582a8fdf7e"
+## src = "/libbase64-b08e25582a8fdf7e.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libbase64-b08e25582a8fdf7e.rlib"
+## 
+## [[mounts]]
+## from = "out-2a345737f765283a"
+## src = "/libserde_json-2a345737f765283a.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libserde_json-2a345737f765283a.rmeta"
+## 
+## [[mounts]]
+## from = "out-2a345737f765283a"
+## src = "/libserde_json-2a345737f765283a.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libserde_json-2a345737f765283a.rlib"
+## 
+## [[mounts]]
+## from = "out-95ec35c9faa8fa43"
+## src = "/libitoa-95ec35c9faa8fa43.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libitoa-95ec35c9faa8fa43.rmeta"
+## 
+## [[mounts]]
+## from = "out-95ec35c9faa8fa43"
+## src = "/libitoa-95ec35c9faa8fa43.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libitoa-95ec35c9faa8fa43.rlib"
+## 
+## [[mounts]]
+## from = "out-56a874feb6525857"
+## src = "/libryu-56a874feb6525857.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libryu-56a874feb6525857.rmeta"
+## 
+## [[mounts]]
+## from = "out-56a874feb6525857"
+## src = "/libryu-56a874feb6525857.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libryu-56a874feb6525857.rlib"
+## 
+## [[mounts]]
+## from = "out-2f59881207cd7c68"
+## src = "/libtimestamped_socket-2f59881207cd7c68.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libtimestamped_socket-2f59881207cd7c68.rmeta"
+## 
+## [[mounts]]
+## from = "out-2f59881207cd7c68"
+## src = "/libtimestamped_socket-2f59881207cd7c68.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libtimestamped_socket-2f59881207cd7c68.rlib"
+## 
+## [[mounts]]
+## from = "out-e6ed429a0a7450c0"
+## src = "/libtokio-e6ed429a0a7450c0.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libtokio-e6ed429a0a7450c0.rmeta"
+## 
+## [[mounts]]
+## from = "out-e6ed429a0a7450c0"
+## src = "/libtokio-e6ed429a0a7450c0.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libtokio-e6ed429a0a7450c0.rlib"
+## 
+## [[mounts]]
+## from = "out-17cf73a7d3f13d95"
+## src = "/libbytes-17cf73a7d3f13d95.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libbytes-17cf73a7d3f13d95.rmeta"
+## 
+## [[mounts]]
+## from = "out-17cf73a7d3f13d95"
+## src = "/libbytes-17cf73a7d3f13d95.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libbytes-17cf73a7d3f13d95.rlib"
+## 
+## [[mounts]]
+## from = "out-57de3125ece5b1fd"
+## src = "/libmio-57de3125ece5b1fd.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libmio-57de3125ece5b1fd.rmeta"
+## 
+## [[mounts]]
+## from = "out-57de3125ece5b1fd"
+## src = "/libmio-57de3125ece5b1fd.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libmio-57de3125ece5b1fd.rlib"
+## 
+## [[mounts]]
+## from = "out-516d6049f106f6a2"
+## src = "/libnum_cpus-516d6049f106f6a2.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libnum_cpus-516d6049f106f6a2.rmeta"
+## 
+## [[mounts]]
+## from = "out-516d6049f106f6a2"
+## src = "/libnum_cpus-516d6049f106f6a2.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libnum_cpus-516d6049f106f6a2.rlib"
+## 
+## [[mounts]]
+## from = "out-4f06700ac893bf17"
+## src = "/libsocket2-4f06700ac893bf17.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libsocket2-4f06700ac893bf17.rmeta"
+## 
+## [[mounts]]
+## from = "out-4f06700ac893bf17"
+## src = "/libsocket2-4f06700ac893bf17.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libsocket2-4f06700ac893bf17.rlib"
+## 
+## [[mounts]]
+## from = "out-56d9f1f76b7466fe"
+## src = "/libtokio_macros-56d9f1f76b7466fe.so"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libtokio_macros-56d9f1f76b7466fe.so"
+## 
+## [[mounts]]
+## from = "out-7b6c235fb7422577"
+## src = "/libtoml-7b6c235fb7422577.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libtoml-7b6c235fb7422577.rmeta"
+## 
+## [[mounts]]
+## from = "out-7b6c235fb7422577"
+## src = "/libtoml-7b6c235fb7422577.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libtoml-7b6c235fb7422577.rlib"
+## 
+## [[mounts]]
+## from = "out-dc39aa05fabf8bb2"
+## src = "/libserde_spanned-dc39aa05fabf8bb2.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libserde_spanned-dc39aa05fabf8bb2.rmeta"
+## 
+## [[mounts]]
+## from = "out-dc39aa05fabf8bb2"
+## src = "/libserde_spanned-dc39aa05fabf8bb2.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libserde_spanned-dc39aa05fabf8bb2.rlib"
+## 
+## [[mounts]]
+## from = "out-f1d69a8e9c76a596"
+## src = "/libtoml_datetime-f1d69a8e9c76a596.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libtoml_datetime-f1d69a8e9c76a596.rmeta"
+## 
+## [[mounts]]
+## from = "out-f1d69a8e9c76a596"
+## src = "/libtoml_datetime-f1d69a8e9c76a596.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libtoml_datetime-f1d69a8e9c76a596.rlib"
+## 
+## [[mounts]]
+## from = "out-90c6c24e7a16fdd6"
+## src = "/libtoml_edit-90c6c24e7a16fdd6.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libtoml_edit-90c6c24e7a16fdd6.rmeta"
+## 
+## [[mounts]]
+## from = "out-90c6c24e7a16fdd6"
+## src = "/libtoml_edit-90c6c24e7a16fdd6.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libtoml_edit-90c6c24e7a16fdd6.rlib"
+## 
+## [[mounts]]
+## from = "out-bd5f37b7de678bd9"
+## src = "/libindexmap-bd5f37b7de678bd9.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libindexmap-bd5f37b7de678bd9.rmeta"
+## 
+## [[mounts]]
+## from = "out-bd5f37b7de678bd9"
+## src = "/libindexmap-bd5f37b7de678bd9.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libindexmap-bd5f37b7de678bd9.rlib"
+## 
+## [[mounts]]
+## from = "out-bd5b9404126e35a1"
+## src = "/libequivalent-bd5b9404126e35a1.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libequivalent-bd5b9404126e35a1.rmeta"
+## 
+## [[mounts]]
+## from = "out-bd5b9404126e35a1"
+## src = "/libequivalent-bd5b9404126e35a1.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libequivalent-bd5b9404126e35a1.rlib"
+## 
+## [[mounts]]
+## from = "out-8bb46fd37d0b1c2d"
+## src = "/libhashbrown-8bb46fd37d0b1c2d.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libhashbrown-8bb46fd37d0b1c2d.rmeta"
+## 
+## [[mounts]]
+## from = "out-8bb46fd37d0b1c2d"
+## src = "/libhashbrown-8bb46fd37d0b1c2d.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libhashbrown-8bb46fd37d0b1c2d.rlib"
+## 
+## [[mounts]]
+## from = "out-f45e6953436548b2"
+## src = "/libwinnow-f45e6953436548b2.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libwinnow-f45e6953436548b2.rmeta"
+## 
+## [[mounts]]
+## from = "out-f45e6953436548b2"
+## src = "/libwinnow-f45e6953436548b2.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libwinnow-f45e6953436548b2.rlib"
+## 
+## [[mounts]]
+## from = "out-63f992d9454962cc"
+## src = "/libtracing_subscriber-63f992d9454962cc.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libtracing_subscriber-63f992d9454962cc.rmeta"
+## 
+## [[mounts]]
+## from = "out-63f992d9454962cc"
+## src = "/libtracing_subscriber-63f992d9454962cc.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libtracing_subscriber-63f992d9454962cc.rlib"
+## 
+## [[mounts]]
+## from = "out-c42192675aa050dd"
+## src = "/libnu_ansi_term-c42192675aa050dd.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libnu_ansi_term-c42192675aa050dd.rmeta"
+## 
+## [[mounts]]
+## from = "out-c42192675aa050dd"
+## src = "/libnu_ansi_term-c42192675aa050dd.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libnu_ansi_term-c42192675aa050dd.rlib"
+## 
+## [[mounts]]
+## from = "out-94fa3b5a5c6dc522"
+## src = "/liboverload-94fa3b5a5c6dc522.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/liboverload-94fa3b5a5c6dc522.rmeta"
+## 
+## [[mounts]]
+## from = "out-94fa3b5a5c6dc522"
+## src = "/liboverload-94fa3b5a5c6dc522.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/liboverload-94fa3b5a5c6dc522.rlib"
+## 
+## [[mounts]]
+## from = "out-b9545388d9527f67"
+## src = "/libsharded_slab-b9545388d9527f67.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libsharded_slab-b9545388d9527f67.rmeta"
+## 
+## [[mounts]]
+## from = "out-b9545388d9527f67"
+## src = "/libsharded_slab-b9545388d9527f67.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libsharded_slab-b9545388d9527f67.rlib"
+## 
+## [[mounts]]
+## from = "out-f91da618dd3f72e5"
+## src = "/liblazy_static-f91da618dd3f72e5.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/liblazy_static-f91da618dd3f72e5.rmeta"
+## 
+## [[mounts]]
+## from = "out-f91da618dd3f72e5"
+## src = "/liblazy_static-f91da618dd3f72e5.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/liblazy_static-f91da618dd3f72e5.rlib"
+## 
+## [[mounts]]
+## from = "out-6893ca5c870c6e37"
+## src = "/libthread_local-6893ca5c870c6e37.rmeta"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libthread_local-6893ca5c870c6e37.rmeta"
+## 
+## [[mounts]]
+## from = "out-6893ca5c870c6e37"
+## src = "/libthread_local-6893ca5c870c6e37.rlib"
+## dst = "/tmp/clis-ntpd_1-2-3/release/deps/libthread_local-6893ca5c870c6e37.rlib"
 ## 
 ## [[contexts]]
 ## name = "crate_out-e5fe159846b3109b"
@@ -10008,78 +15347,148 @@ COPY --from=dep-b-ntpd-1.2.3-88b4a2cd7d00f909 /tmp/clis-ntpd_1-2-3/release/deps/
 ## RUN \
 ##   --mount=from=cratesio-ntpd-1.2.3,source=/ntpd-1.2.3,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ntpd-1.2.3 \
 ##   --mount=from=out-2b00e18c8782890c,dst=/tmp/clis-ntpd_1-2-3/release/deps/libasync_trait-2b00e18c8782890c.so,source=/libasync_trait-2b00e18c8782890c.so \
+##   --mount=from=out-4be32d01ee2a9db1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rmeta,source=/libproc_macro2-4be32d01ee2a9db1.rmeta \
 ##   --mount=from=out-4be32d01ee2a9db1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libproc_macro2-4be32d01ee2a9db1.rlib,source=/libproc_macro2-4be32d01ee2a9db1.rlib \
+##   --mount=from=out-4c1dc76c11b3deb8,dst=/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rmeta,source=/libunicode_ident-4c1dc76c11b3deb8.rmeta \
 ##   --mount=from=out-4c1dc76c11b3deb8,dst=/tmp/clis-ntpd_1-2-3/release/deps/libunicode_ident-4c1dc76c11b3deb8.rlib,source=/libunicode_ident-4c1dc76c11b3deb8.rlib \
+##   --mount=from=out-36ed05d339fc79f9,dst=/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rmeta,source=/libquote-36ed05d339fc79f9.rmeta \
 ##   --mount=from=out-36ed05d339fc79f9,dst=/tmp/clis-ntpd_1-2-3/release/deps/libquote-36ed05d339fc79f9.rlib,source=/libquote-36ed05d339fc79f9.rlib \
+##   --mount=from=out-5c1d3e18a7dfcf78,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rmeta,source=/libsyn-5c1d3e18a7dfcf78.rmeta \
 ##   --mount=from=out-5c1d3e18a7dfcf78,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsyn-5c1d3e18a7dfcf78.rlib,source=/libsyn-5c1d3e18a7dfcf78.rlib \
+##   --mount=from=out-7adc6d6ce8be0538,dst=/tmp/clis-ntpd_1-2-3/release/deps/libclock_steering-7adc6d6ce8be0538.rmeta,source=/libclock_steering-7adc6d6ce8be0538.rmeta \
 ##   --mount=from=out-7adc6d6ce8be0538,dst=/tmp/clis-ntpd_1-2-3/release/deps/libclock_steering-7adc6d6ce8be0538.rlib,source=/libclock_steering-7adc6d6ce8be0538.rlib \
+##   --mount=from=out-a7905fdc410bdfce,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rmeta,source=/liblibc-a7905fdc410bdfce.rmeta \
 ##   --mount=from=out-a7905fdc410bdfce,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblibc-a7905fdc410bdfce.rlib,source=/liblibc-a7905fdc410bdfce.rlib \
+##   --mount=from=out-5a810c5444456e7d,dst=/tmp/clis-ntpd_1-2-3/release/deps/libntp_proto-5a810c5444456e7d.rmeta,source=/libntp_proto-5a810c5444456e7d.rmeta \
 ##   --mount=from=out-5a810c5444456e7d,dst=/tmp/clis-ntpd_1-2-3/release/deps/libntp_proto-5a810c5444456e7d.rlib,source=/libntp_proto-5a810c5444456e7d.rlib \
+##   --mount=from=out-2ba1712ad50273ba,dst=/tmp/clis-ntpd_1-2-3/release/deps/libaead-2ba1712ad50273ba.rmeta,source=/libaead-2ba1712ad50273ba.rmeta \
 ##   --mount=from=out-2ba1712ad50273ba,dst=/tmp/clis-ntpd_1-2-3/release/deps/libaead-2ba1712ad50273ba.rlib,source=/libaead-2ba1712ad50273ba.rlib \
+##   --mount=from=out-1009fce94369ad6b,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcrypto_common-1009fce94369ad6b.rmeta,source=/libcrypto_common-1009fce94369ad6b.rmeta \
 ##   --mount=from=out-1009fce94369ad6b,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcrypto_common-1009fce94369ad6b.rlib,source=/libcrypto_common-1009fce94369ad6b.rlib \
+##   --mount=from=out-2d6ea4fd5d7ef666,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgeneric_array-2d6ea4fd5d7ef666.rmeta,source=/libgeneric_array-2d6ea4fd5d7ef666.rmeta \
 ##   --mount=from=out-2d6ea4fd5d7ef666,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgeneric_array-2d6ea4fd5d7ef666.rlib,source=/libgeneric_array-2d6ea4fd5d7ef666.rlib \
+##   --mount=from=out-981b1f3c4161234a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtypenum-981b1f3c4161234a.rmeta,source=/libtypenum-981b1f3c4161234a.rmeta \
 ##   --mount=from=out-981b1f3c4161234a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtypenum-981b1f3c4161234a.rlib,source=/libtypenum-981b1f3c4161234a.rlib \
+##   --mount=from=out-434e8a9dd58e4456,dst=/tmp/clis-ntpd_1-2-3/release/deps/librand_core-434e8a9dd58e4456.rmeta,source=/librand_core-434e8a9dd58e4456.rmeta \
 ##   --mount=from=out-434e8a9dd58e4456,dst=/tmp/clis-ntpd_1-2-3/release/deps/librand_core-434e8a9dd58e4456.rlib,source=/librand_core-434e8a9dd58e4456.rlib \
+##   --mount=from=out-84473f2ddfbb434a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rmeta,source=/libgetrandom-84473f2ddfbb434a.rmeta \
 ##   --mount=from=out-84473f2ddfbb434a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libgetrandom-84473f2ddfbb434a.rlib,source=/libgetrandom-84473f2ddfbb434a.rlib \
+##   --mount=from=out-da34da6838abd7f1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rmeta,source=/libcfg_if-da34da6838abd7f1.rmeta \
 ##   --mount=from=out-da34da6838abd7f1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcfg_if-da34da6838abd7f1.rlib,source=/libcfg_if-da34da6838abd7f1.rlib \
+##   --mount=from=out-e0325614c1d7d6ab,dst=/tmp/clis-ntpd_1-2-3/release/deps/libaes_siv-e0325614c1d7d6ab.rmeta,source=/libaes_siv-e0325614c1d7d6ab.rmeta \
 ##   --mount=from=out-e0325614c1d7d6ab,dst=/tmp/clis-ntpd_1-2-3/release/deps/libaes_siv-e0325614c1d7d6ab.rlib,source=/libaes_siv-e0325614c1d7d6ab.rlib \
+##   --mount=from=out-81c9db97d7f9be78,dst=/tmp/clis-ntpd_1-2-3/release/deps/libaes-81c9db97d7f9be78.rmeta,source=/libaes-81c9db97d7f9be78.rmeta \
 ##   --mount=from=out-81c9db97d7f9be78,dst=/tmp/clis-ntpd_1-2-3/release/deps/libaes-81c9db97d7f9be78.rlib,source=/libaes-81c9db97d7f9be78.rlib \
+##   --mount=from=out-ca1baada07864a60,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcipher-ca1baada07864a60.rmeta,source=/libcipher-ca1baada07864a60.rmeta \
 ##   --mount=from=out-ca1baada07864a60,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcipher-ca1baada07864a60.rlib,source=/libcipher-ca1baada07864a60.rlib \
+##   --mount=from=out-56f37e149446be27,dst=/tmp/clis-ntpd_1-2-3/release/deps/libinout-56f37e149446be27.rmeta,source=/libinout-56f37e149446be27.rmeta \
 ##   --mount=from=out-56f37e149446be27,dst=/tmp/clis-ntpd_1-2-3/release/deps/libinout-56f37e149446be27.rlib,source=/libinout-56f37e149446be27.rlib \
+##   --mount=from=out-4ab791033e58debd,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcpufeatures-4ab791033e58debd.rmeta,source=/libcpufeatures-4ab791033e58debd.rmeta \
 ##   --mount=from=out-4ab791033e58debd,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcpufeatures-4ab791033e58debd.rlib,source=/libcpufeatures-4ab791033e58debd.rlib \
+##   --mount=from=out-568874dfd4c5be74,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcmac-568874dfd4c5be74.rmeta,source=/libcmac-568874dfd4c5be74.rmeta \
 ##   --mount=from=out-568874dfd4c5be74,dst=/tmp/clis-ntpd_1-2-3/release/deps/libcmac-568874dfd4c5be74.rlib,source=/libcmac-568874dfd4c5be74.rlib \
+##   --mount=from=out-19f9a0f198045bc5,dst=/tmp/clis-ntpd_1-2-3/release/deps/libdbl-19f9a0f198045bc5.rmeta,source=/libdbl-19f9a0f198045bc5.rmeta \
 ##   --mount=from=out-19f9a0f198045bc5,dst=/tmp/clis-ntpd_1-2-3/release/deps/libdbl-19f9a0f198045bc5.rlib,source=/libdbl-19f9a0f198045bc5.rlib \
+##   --mount=from=out-65e96f3f500a3098,dst=/tmp/clis-ntpd_1-2-3/release/deps/libdigest-65e96f3f500a3098.rmeta,source=/libdigest-65e96f3f500a3098.rmeta \
 ##   --mount=from=out-65e96f3f500a3098,dst=/tmp/clis-ntpd_1-2-3/release/deps/libdigest-65e96f3f500a3098.rlib,source=/libdigest-65e96f3f500a3098.rlib \
+##   --mount=from=out-bc12f6e8b62af3c6,dst=/tmp/clis-ntpd_1-2-3/release/deps/libblock_buffer-bc12f6e8b62af3c6.rmeta,source=/libblock_buffer-bc12f6e8b62af3c6.rmeta \
 ##   --mount=from=out-bc12f6e8b62af3c6,dst=/tmp/clis-ntpd_1-2-3/release/deps/libblock_buffer-bc12f6e8b62af3c6.rlib,source=/libblock_buffer-bc12f6e8b62af3c6.rlib \
+##   --mount=from=out-8b6e21d4a5a6c6ed,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsubtle-8b6e21d4a5a6c6ed.rmeta,source=/libsubtle-8b6e21d4a5a6c6ed.rmeta \
 ##   --mount=from=out-8b6e21d4a5a6c6ed,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsubtle-8b6e21d4a5a6c6ed.rlib,source=/libsubtle-8b6e21d4a5a6c6ed.rlib \
+##   --mount=from=out-aca4c84266bacfb7,dst=/tmp/clis-ntpd_1-2-3/release/deps/libctr-aca4c84266bacfb7.rmeta,source=/libctr-aca4c84266bacfb7.rmeta \
 ##   --mount=from=out-aca4c84266bacfb7,dst=/tmp/clis-ntpd_1-2-3/release/deps/libctr-aca4c84266bacfb7.rlib,source=/libctr-aca4c84266bacfb7.rlib \
+##   --mount=from=out-caf2b0ffe78763b7,dst=/tmp/clis-ntpd_1-2-3/release/deps/libzeroize-caf2b0ffe78763b7.rmeta,source=/libzeroize-caf2b0ffe78763b7.rmeta \
 ##   --mount=from=out-caf2b0ffe78763b7,dst=/tmp/clis-ntpd_1-2-3/release/deps/libzeroize-caf2b0ffe78763b7.rlib,source=/libzeroize-caf2b0ffe78763b7.rlib \
+##   --mount=from=out-f0775f4337e7a668,dst=/tmp/clis-ntpd_1-2-3/release/deps/libmd5-f0775f4337e7a668.rmeta,source=/libmd5-f0775f4337e7a668.rmeta \
 ##   --mount=from=out-f0775f4337e7a668,dst=/tmp/clis-ntpd_1-2-3/release/deps/libmd5-f0775f4337e7a668.rlib,source=/libmd5-f0775f4337e7a668.rlib \
+##   --mount=from=out-5161209caf71d483,dst=/tmp/clis-ntpd_1-2-3/release/deps/librand-5161209caf71d483.rmeta,source=/librand-5161209caf71d483.rmeta \
 ##   --mount=from=out-5161209caf71d483,dst=/tmp/clis-ntpd_1-2-3/release/deps/librand-5161209caf71d483.rlib,source=/librand-5161209caf71d483.rlib \
+##   --mount=from=out-8e2f025dcc32e9af,dst=/tmp/clis-ntpd_1-2-3/release/deps/librand_chacha-8e2f025dcc32e9af.rmeta,source=/librand_chacha-8e2f025dcc32e9af.rmeta \
 ##   --mount=from=out-8e2f025dcc32e9af,dst=/tmp/clis-ntpd_1-2-3/release/deps/librand_chacha-8e2f025dcc32e9af.rlib,source=/librand_chacha-8e2f025dcc32e9af.rlib \
+##   --mount=from=out-af198cb5433f3d0c,dst=/tmp/clis-ntpd_1-2-3/release/deps/libppv_lite86-af198cb5433f3d0c.rmeta,source=/libppv_lite86-af198cb5433f3d0c.rmeta \
 ##   --mount=from=out-af198cb5433f3d0c,dst=/tmp/clis-ntpd_1-2-3/release/deps/libppv_lite86-af198cb5433f3d0c.rlib,source=/libppv_lite86-af198cb5433f3d0c.rlib \
+##   --mount=from=out-fd2c262888e3ecb5,dst=/tmp/clis-ntpd_1-2-3/release/deps/librustls-fd2c262888e3ecb5.rmeta,source=/librustls-fd2c262888e3ecb5.rmeta \
 ##   --mount=from=out-fd2c262888e3ecb5,dst=/tmp/clis-ntpd_1-2-3/release/deps/librustls-fd2c262888e3ecb5.rlib,source=/librustls-fd2c262888e3ecb5.rlib \
+##   --mount=from=out-b564a3159bfcf688,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblog-b564a3159bfcf688.rmeta,source=/liblog-b564a3159bfcf688.rmeta \
 ##   --mount=from=out-b564a3159bfcf688,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblog-b564a3159bfcf688.rlib,source=/liblog-b564a3159bfcf688.rlib \
+##   --mount=from=out-6ed51fafe322ecba,dst=/tmp/clis-ntpd_1-2-3/release/deps/libonce_cell-6ed51fafe322ecba.rmeta,source=/libonce_cell-6ed51fafe322ecba.rmeta \
 ##   --mount=from=out-6ed51fafe322ecba,dst=/tmp/clis-ntpd_1-2-3/release/deps/libonce_cell-6ed51fafe322ecba.rlib,source=/libonce_cell-6ed51fafe322ecba.rlib \
+##   --mount=from=out-162d4bd1f192637c,dst=/tmp/clis-ntpd_1-2-3/release/deps/libring-162d4bd1f192637c.rmeta,source=/libring-162d4bd1f192637c.rmeta \
 ##   --mount=from=out-162d4bd1f192637c,dst=/tmp/clis-ntpd_1-2-3/release/deps/libring-162d4bd1f192637c.rlib,source=/libring-162d4bd1f192637c.rlib \
+##   --mount=from=out-126f99f44d356e93,dst=/tmp/clis-ntpd_1-2-3/release/deps/libspin-126f99f44d356e93.rmeta,source=/libspin-126f99f44d356e93.rmeta \
 ##   --mount=from=out-126f99f44d356e93,dst=/tmp/clis-ntpd_1-2-3/release/deps/libspin-126f99f44d356e93.rlib,source=/libspin-126f99f44d356e93.rlib \
+##   --mount=from=out-2cf0189e0a6f5785,dst=/tmp/clis-ntpd_1-2-3/release/deps/libuntrusted-2cf0189e0a6f5785.rmeta,source=/libuntrusted-2cf0189e0a6f5785.rmeta \
 ##   --mount=from=out-2cf0189e0a6f5785,dst=/tmp/clis-ntpd_1-2-3/release/deps/libuntrusted-2cf0189e0a6f5785.rlib,source=/libuntrusted-2cf0189e0a6f5785.rlib \
+##   --mount=from=out-0bd417676bde33fe,dst=/tmp/clis-ntpd_1-2-3/release/deps/librustls_pki_types-0bd417676bde33fe.rmeta,source=/librustls_pki_types-0bd417676bde33fe.rmeta \
 ##   --mount=from=out-0bd417676bde33fe,dst=/tmp/clis-ntpd_1-2-3/release/deps/librustls_pki_types-0bd417676bde33fe.rlib,source=/librustls_pki_types-0bd417676bde33fe.rlib \
+##   --mount=from=out-0b45a7938c797eef,dst=/tmp/clis-ntpd_1-2-3/release/deps/libwebpki-0b45a7938c797eef.rmeta,source=/libwebpki-0b45a7938c797eef.rmeta \
 ##   --mount=from=out-0b45a7938c797eef,dst=/tmp/clis-ntpd_1-2-3/release/deps/libwebpki-0b45a7938c797eef.rlib,source=/libwebpki-0b45a7938c797eef.rlib \
+##   --mount=from=out-986325a49dffbcd1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libserde-986325a49dffbcd1.rmeta,source=/libserde-986325a49dffbcd1.rmeta \
 ##   --mount=from=out-986325a49dffbcd1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libserde-986325a49dffbcd1.rlib,source=/libserde-986325a49dffbcd1.rlib \
 ##   --mount=from=out-b74741511dfa898a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libserde_derive-b74741511dfa898a.so,source=/libserde_derive-b74741511dfa898a.so \
+##   --mount=from=out-7d2675bffdb63c95,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtracing-7d2675bffdb63c95.rmeta,source=/libtracing-7d2675bffdb63c95.rmeta \
 ##   --mount=from=out-7d2675bffdb63c95,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtracing-7d2675bffdb63c95.rlib,source=/libtracing-7d2675bffdb63c95.rlib \
+##   --mount=from=out-32982cb980ef9328,dst=/tmp/clis-ntpd_1-2-3/release/deps/libpin_project_lite-32982cb980ef9328.rmeta,source=/libpin_project_lite-32982cb980ef9328.rmeta \
 ##   --mount=from=out-32982cb980ef9328,dst=/tmp/clis-ntpd_1-2-3/release/deps/libpin_project_lite-32982cb980ef9328.rlib,source=/libpin_project_lite-32982cb980ef9328.rlib \
 ##   --mount=from=out-ff2e92028461b3cf,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtracing_attributes-ff2e92028461b3cf.so,source=/libtracing_attributes-ff2e92028461b3cf.so \
+##   --mount=from=out-100f3fe23952e4be,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtracing_core-100f3fe23952e4be.rmeta,source=/libtracing_core-100f3fe23952e4be.rmeta \
 ##   --mount=from=out-100f3fe23952e4be,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtracing_core-100f3fe23952e4be.rlib,source=/libtracing_core-100f3fe23952e4be.rlib \
+##   --mount=from=out-7974610cfc5e520c,dst=/tmp/clis-ntpd_1-2-3/release/deps/libntpd-7974610cfc5e520c.rmeta,source=/libntpd-7974610cfc5e520c.rmeta \
 ##   --mount=from=out-7974610cfc5e520c,dst=/tmp/clis-ntpd_1-2-3/release/deps/libntpd-7974610cfc5e520c.rlib,source=/libntpd-7974610cfc5e520c.rlib \
+##   --mount=from=out-9a69f5c8c648a58b,dst=/tmp/clis-ntpd_1-2-3/release/deps/librustls_native_certs-9a69f5c8c648a58b.rmeta,source=/librustls_native_certs-9a69f5c8c648a58b.rmeta \
 ##   --mount=from=out-9a69f5c8c648a58b,dst=/tmp/clis-ntpd_1-2-3/release/deps/librustls_native_certs-9a69f5c8c648a58b.rlib,source=/librustls_native_certs-9a69f5c8c648a58b.rlib \
+##   --mount=from=out-0ee236ae7bf0c632,dst=/tmp/clis-ntpd_1-2-3/release/deps/libopenssl_probe-0ee236ae7bf0c632.rmeta,source=/libopenssl_probe-0ee236ae7bf0c632.rmeta \
 ##   --mount=from=out-0ee236ae7bf0c632,dst=/tmp/clis-ntpd_1-2-3/release/deps/libopenssl_probe-0ee236ae7bf0c632.rlib,source=/libopenssl_probe-0ee236ae7bf0c632.rlib \
+##   --mount=from=out-e86acdc6389f12a9,dst=/tmp/clis-ntpd_1-2-3/release/deps/librustls_pemfile-e86acdc6389f12a9.rmeta,source=/librustls_pemfile-e86acdc6389f12a9.rmeta \
 ##   --mount=from=out-e86acdc6389f12a9,dst=/tmp/clis-ntpd_1-2-3/release/deps/librustls_pemfile-e86acdc6389f12a9.rlib,source=/librustls_pemfile-e86acdc6389f12a9.rlib \
+##   --mount=from=out-b08e25582a8fdf7e,dst=/tmp/clis-ntpd_1-2-3/release/deps/libbase64-b08e25582a8fdf7e.rmeta,source=/libbase64-b08e25582a8fdf7e.rmeta \
 ##   --mount=from=out-b08e25582a8fdf7e,dst=/tmp/clis-ntpd_1-2-3/release/deps/libbase64-b08e25582a8fdf7e.rlib,source=/libbase64-b08e25582a8fdf7e.rlib \
+##   --mount=from=out-2a345737f765283a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libserde_json-2a345737f765283a.rmeta,source=/libserde_json-2a345737f765283a.rmeta \
 ##   --mount=from=out-2a345737f765283a,dst=/tmp/clis-ntpd_1-2-3/release/deps/libserde_json-2a345737f765283a.rlib,source=/libserde_json-2a345737f765283a.rlib \
+##   --mount=from=out-95ec35c9faa8fa43,dst=/tmp/clis-ntpd_1-2-3/release/deps/libitoa-95ec35c9faa8fa43.rmeta,source=/libitoa-95ec35c9faa8fa43.rmeta \
 ##   --mount=from=out-95ec35c9faa8fa43,dst=/tmp/clis-ntpd_1-2-3/release/deps/libitoa-95ec35c9faa8fa43.rlib,source=/libitoa-95ec35c9faa8fa43.rlib \
+##   --mount=from=out-56a874feb6525857,dst=/tmp/clis-ntpd_1-2-3/release/deps/libryu-56a874feb6525857.rmeta,source=/libryu-56a874feb6525857.rmeta \
 ##   --mount=from=out-56a874feb6525857,dst=/tmp/clis-ntpd_1-2-3/release/deps/libryu-56a874feb6525857.rlib,source=/libryu-56a874feb6525857.rlib \
+##   --mount=from=out-2f59881207cd7c68,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtimestamped_socket-2f59881207cd7c68.rmeta,source=/libtimestamped_socket-2f59881207cd7c68.rmeta \
 ##   --mount=from=out-2f59881207cd7c68,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtimestamped_socket-2f59881207cd7c68.rlib,source=/libtimestamped_socket-2f59881207cd7c68.rlib \
+##   --mount=from=out-e6ed429a0a7450c0,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtokio-e6ed429a0a7450c0.rmeta,source=/libtokio-e6ed429a0a7450c0.rmeta \
 ##   --mount=from=out-e6ed429a0a7450c0,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtokio-e6ed429a0a7450c0.rlib,source=/libtokio-e6ed429a0a7450c0.rlib \
+##   --mount=from=out-17cf73a7d3f13d95,dst=/tmp/clis-ntpd_1-2-3/release/deps/libbytes-17cf73a7d3f13d95.rmeta,source=/libbytes-17cf73a7d3f13d95.rmeta \
 ##   --mount=from=out-17cf73a7d3f13d95,dst=/tmp/clis-ntpd_1-2-3/release/deps/libbytes-17cf73a7d3f13d95.rlib,source=/libbytes-17cf73a7d3f13d95.rlib \
+##   --mount=from=out-57de3125ece5b1fd,dst=/tmp/clis-ntpd_1-2-3/release/deps/libmio-57de3125ece5b1fd.rmeta,source=/libmio-57de3125ece5b1fd.rmeta \
 ##   --mount=from=out-57de3125ece5b1fd,dst=/tmp/clis-ntpd_1-2-3/release/deps/libmio-57de3125ece5b1fd.rlib,source=/libmio-57de3125ece5b1fd.rlib \
+##   --mount=from=out-516d6049f106f6a2,dst=/tmp/clis-ntpd_1-2-3/release/deps/libnum_cpus-516d6049f106f6a2.rmeta,source=/libnum_cpus-516d6049f106f6a2.rmeta \
 ##   --mount=from=out-516d6049f106f6a2,dst=/tmp/clis-ntpd_1-2-3/release/deps/libnum_cpus-516d6049f106f6a2.rlib,source=/libnum_cpus-516d6049f106f6a2.rlib \
+##   --mount=from=out-4f06700ac893bf17,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsocket2-4f06700ac893bf17.rmeta,source=/libsocket2-4f06700ac893bf17.rmeta \
 ##   --mount=from=out-4f06700ac893bf17,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsocket2-4f06700ac893bf17.rlib,source=/libsocket2-4f06700ac893bf17.rlib \
 ##   --mount=from=out-56d9f1f76b7466fe,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtokio_macros-56d9f1f76b7466fe.so,source=/libtokio_macros-56d9f1f76b7466fe.so \
+##   --mount=from=out-7b6c235fb7422577,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtoml-7b6c235fb7422577.rmeta,source=/libtoml-7b6c235fb7422577.rmeta \
 ##   --mount=from=out-7b6c235fb7422577,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtoml-7b6c235fb7422577.rlib,source=/libtoml-7b6c235fb7422577.rlib \
+##   --mount=from=out-dc39aa05fabf8bb2,dst=/tmp/clis-ntpd_1-2-3/release/deps/libserde_spanned-dc39aa05fabf8bb2.rmeta,source=/libserde_spanned-dc39aa05fabf8bb2.rmeta \
 ##   --mount=from=out-dc39aa05fabf8bb2,dst=/tmp/clis-ntpd_1-2-3/release/deps/libserde_spanned-dc39aa05fabf8bb2.rlib,source=/libserde_spanned-dc39aa05fabf8bb2.rlib \
+##   --mount=from=out-f1d69a8e9c76a596,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtoml_datetime-f1d69a8e9c76a596.rmeta,source=/libtoml_datetime-f1d69a8e9c76a596.rmeta \
 ##   --mount=from=out-f1d69a8e9c76a596,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtoml_datetime-f1d69a8e9c76a596.rlib,source=/libtoml_datetime-f1d69a8e9c76a596.rlib \
+##   --mount=from=out-90c6c24e7a16fdd6,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtoml_edit-90c6c24e7a16fdd6.rmeta,source=/libtoml_edit-90c6c24e7a16fdd6.rmeta \
 ##   --mount=from=out-90c6c24e7a16fdd6,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtoml_edit-90c6c24e7a16fdd6.rlib,source=/libtoml_edit-90c6c24e7a16fdd6.rlib \
+##   --mount=from=out-bd5f37b7de678bd9,dst=/tmp/clis-ntpd_1-2-3/release/deps/libindexmap-bd5f37b7de678bd9.rmeta,source=/libindexmap-bd5f37b7de678bd9.rmeta \
 ##   --mount=from=out-bd5f37b7de678bd9,dst=/tmp/clis-ntpd_1-2-3/release/deps/libindexmap-bd5f37b7de678bd9.rlib,source=/libindexmap-bd5f37b7de678bd9.rlib \
+##   --mount=from=out-bd5b9404126e35a1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libequivalent-bd5b9404126e35a1.rmeta,source=/libequivalent-bd5b9404126e35a1.rmeta \
 ##   --mount=from=out-bd5b9404126e35a1,dst=/tmp/clis-ntpd_1-2-3/release/deps/libequivalent-bd5b9404126e35a1.rlib,source=/libequivalent-bd5b9404126e35a1.rlib \
+##   --mount=from=out-8bb46fd37d0b1c2d,dst=/tmp/clis-ntpd_1-2-3/release/deps/libhashbrown-8bb46fd37d0b1c2d.rmeta,source=/libhashbrown-8bb46fd37d0b1c2d.rmeta \
 ##   --mount=from=out-8bb46fd37d0b1c2d,dst=/tmp/clis-ntpd_1-2-3/release/deps/libhashbrown-8bb46fd37d0b1c2d.rlib,source=/libhashbrown-8bb46fd37d0b1c2d.rlib \
+##   --mount=from=out-f45e6953436548b2,dst=/tmp/clis-ntpd_1-2-3/release/deps/libwinnow-f45e6953436548b2.rmeta,source=/libwinnow-f45e6953436548b2.rmeta \
 ##   --mount=from=out-f45e6953436548b2,dst=/tmp/clis-ntpd_1-2-3/release/deps/libwinnow-f45e6953436548b2.rlib,source=/libwinnow-f45e6953436548b2.rlib \
+##   --mount=from=out-63f992d9454962cc,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtracing_subscriber-63f992d9454962cc.rmeta,source=/libtracing_subscriber-63f992d9454962cc.rmeta \
 ##   --mount=from=out-63f992d9454962cc,dst=/tmp/clis-ntpd_1-2-3/release/deps/libtracing_subscriber-63f992d9454962cc.rlib,source=/libtracing_subscriber-63f992d9454962cc.rlib \
+##   --mount=from=out-c42192675aa050dd,dst=/tmp/clis-ntpd_1-2-3/release/deps/libnu_ansi_term-c42192675aa050dd.rmeta,source=/libnu_ansi_term-c42192675aa050dd.rmeta \
 ##   --mount=from=out-c42192675aa050dd,dst=/tmp/clis-ntpd_1-2-3/release/deps/libnu_ansi_term-c42192675aa050dd.rlib,source=/libnu_ansi_term-c42192675aa050dd.rlib \
+##   --mount=from=out-94fa3b5a5c6dc522,dst=/tmp/clis-ntpd_1-2-3/release/deps/liboverload-94fa3b5a5c6dc522.rmeta,source=/liboverload-94fa3b5a5c6dc522.rmeta \
 ##   --mount=from=out-94fa3b5a5c6dc522,dst=/tmp/clis-ntpd_1-2-3/release/deps/liboverload-94fa3b5a5c6dc522.rlib,source=/liboverload-94fa3b5a5c6dc522.rlib \
+##   --mount=from=out-b9545388d9527f67,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsharded_slab-b9545388d9527f67.rmeta,source=/libsharded_slab-b9545388d9527f67.rmeta \
 ##   --mount=from=out-b9545388d9527f67,dst=/tmp/clis-ntpd_1-2-3/release/deps/libsharded_slab-b9545388d9527f67.rlib,source=/libsharded_slab-b9545388d9527f67.rlib \
+##   --mount=from=out-f91da618dd3f72e5,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblazy_static-f91da618dd3f72e5.rmeta,source=/liblazy_static-f91da618dd3f72e5.rmeta \
 ##   --mount=from=out-f91da618dd3f72e5,dst=/tmp/clis-ntpd_1-2-3/release/deps/liblazy_static-f91da618dd3f72e5.rlib,source=/liblazy_static-f91da618dd3f72e5.rlib \
+##   --mount=from=out-6893ca5c870c6e37,dst=/tmp/clis-ntpd_1-2-3/release/deps/libthread_local-6893ca5c870c6e37.rmeta,source=/libthread_local-6893ca5c870c6e37.rmeta \
 ##   --mount=from=out-6893ca5c870c6e37,dst=/tmp/clis-ntpd_1-2-3/release/deps/libthread_local-6893ca5c870c6e37.rlib,source=/libthread_local-6893ca5c870c6e37.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
