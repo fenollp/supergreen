@@ -158,7 +158,7 @@ impl Md {
         emit: &str,
         externs: IndexSet<String>,
         target_path: &Utf8Path,
-    ) -> Result<(Vec<NamedMount>, Vec<Md>)> {
+    ) -> Result<(Vec<MountFrom>, Vec<Md>)> {
         let mut mds = HashMap::<Utf8PathBuf, Md>::new(); // A file cache
 
         let md_pather = |part: &str| target_path.join(format!("{part}.toml"));
@@ -218,7 +218,7 @@ impl Md {
                 else {
                     bail!("Unexpected extern name format: {xtern}")
                 };
-                let mount = NamedMount {
+                let mount = MountFrom {
                     name: xtern_stage,
                     src: format!("/{xtern}").into(),
                     dst: target_path.join("deps").join(xtern),
@@ -297,7 +297,7 @@ impl Md {
 }
 
 #[derive(Debug)]
-pub(crate) struct NamedMount {
+pub(crate) struct MountFrom {
     pub(crate) name: Stage,
     pub(crate) src: Utf8PathBuf,
     pub(crate) dst: Utf8PathBuf,
