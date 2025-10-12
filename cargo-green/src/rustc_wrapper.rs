@@ -17,7 +17,7 @@ use crate::{
     ext::CommandExt,
     green::Green,
     logging::{self, crate_type_for_logging, maybe_log},
-    md::{BuildContext, Md, NamedMount},
+    md::{BuildContext, Md, MountFrom},
     pwd,
     runner::Runner,
     rustc_arguments::{as_rustc, RustcArgs},
@@ -355,7 +355,7 @@ async fn do_wrap_rustc(
 
     let (mounts, mds) =
         md.assemble_build_dependencies(&crate_type, &emit, externs, &target_path)?;
-    for NamedMount { name, src, dst } in mounts {
+    for MountFrom { name, src, dst } in mounts {
         rustc_block.push_str(&format!("  --mount=from={name},dst={dst},source={src} \\\n"));
     }
 
