@@ -281,6 +281,7 @@ WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
   --mount=from=cratesio-generic-array-0.12.3,source=/generic-array-0.12.3,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/generic-array-0.12.3 \
   --mount=from=out-0c59626b95871fe7,dst=/tmp/clis-dbcc_2-2-1/release/deps/libtypenum-0c59626b95871fe7.rmeta,source=/libtypenum-0c59626b95871fe7.rmeta \
+  --mount=from=out-0c59626b95871fe7,dst=/tmp/clis-dbcc_2-2-1/release/deps/libtypenum-0c59626b95871fe7.rlib,source=/libtypenum-0c59626b95871fe7.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="generic_array" \
@@ -310,7 +311,7 @@ COPY --from=dep-l-generic-array-0.12.3-0afa135837d93e68 /tmp/clis-dbcc_2-2-1/rel
 
 ## this = "0afa135837d93e68"
 ## deps = ["0c59626b95871fe7"]
-## short_externs = ["typenum-0c59626b95871fe7"]
+## short_externs = ["0c59626b95871fe7"]
 ## writes = [
 ##     "deps/generic_array-0afa135837d93e68.d",
 ##     "deps/libgeneric_array-0afa135837d93e68.rmeta",
@@ -327,6 +328,16 @@ COPY --from=dep-l-generic-array-0.12.3-0afa135837d93e68 /tmp/clis-dbcc_2-2-1/rel
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-dbcc_2-2-1/release/deps/libgeneric_array-0afa135837d93e68.rlib","emit":"link"}',
 ##     '{"$message_type":"diagnostic","message":"5 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 5 warnings emitted\u001b[0m\n\n"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-0c59626b95871fe7"
+## src = "/libtypenum-0c59626b95871fe7.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libtypenum-0c59626b95871fe7.rmeta"
+## 
+## [[mounts]]
+## from = "out-0c59626b95871fe7"
+## src = "/libtypenum-0c59626b95871fe7.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libtypenum-0c59626b95871fe7.rlib"
 ## 
 ## [[contexts]]
 ## name = "crate_out-3cf9e442dfddd505"
@@ -352,6 +363,7 @@ COPY --from=dep-l-generic-array-0.12.3-0afa135837d93e68 /tmp/clis-dbcc_2-2-1/rel
 ## RUN \
 ##   --mount=from=cratesio-generic-array-0.12.3,source=/generic-array-0.12.3,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/generic-array-0.12.3 \
 ##   --mount=from=out-0c59626b95871fe7,dst=/tmp/clis-dbcc_2-2-1/release/deps/libtypenum-0c59626b95871fe7.rmeta,source=/libtypenum-0c59626b95871fe7.rmeta \
+##   --mount=from=out-0c59626b95871fe7,dst=/tmp/clis-dbcc_2-2-1/release/deps/libtypenum-0c59626b95871fe7.rlib,source=/libtypenum-0c59626b95871fe7.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="generic_array" \
@@ -497,8 +509,11 @@ WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
   --mount=from=cratesio-crypto-mac-0.7.0,source=/crypto-mac-0.7.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crypto-mac-0.7.0 \
   --mount=from=out-0afa135837d93e68,dst=/tmp/clis-dbcc_2-2-1/release/deps/libgeneric_array-0afa135837d93e68.rmeta,source=/libgeneric_array-0afa135837d93e68.rmeta \
+  --mount=from=out-0afa135837d93e68,dst=/tmp/clis-dbcc_2-2-1/release/deps/libgeneric_array-0afa135837d93e68.rlib,source=/libgeneric_array-0afa135837d93e68.rlib \
   --mount=from=out-0c59626b95871fe7,dst=/tmp/clis-dbcc_2-2-1/release/deps/libtypenum-0c59626b95871fe7.rmeta,source=/libtypenum-0c59626b95871fe7.rmeta \
+  --mount=from=out-0c59626b95871fe7,dst=/tmp/clis-dbcc_2-2-1/release/deps/libtypenum-0c59626b95871fe7.rlib,source=/libtypenum-0c59626b95871fe7.rlib \
   --mount=from=out-fe593aa0503da824,dst=/tmp/clis-dbcc_2-2-1/release/deps/libsubtle-fe593aa0503da824.rmeta,source=/libsubtle-fe593aa0503da824.rmeta \
+  --mount=from=out-fe593aa0503da824,dst=/tmp/clis-dbcc_2-2-1/release/deps/libsubtle-fe593aa0503da824.rlib,source=/libsubtle-fe593aa0503da824.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="crypto_mac" \
@@ -533,9 +548,9 @@ COPY --from=dep-l-crypto-mac-0.7.0-c92b10e2fa1c82cb /tmp/clis-dbcc_2-2-1/release
 ##     "fe593aa0503da824",
 ## ]
 ## short_externs = [
-##     "generic_array-0afa135837d93e68",
-##     "typenum-0c59626b95871fe7",
-##     "subtle-fe593aa0503da824",
+##     "0afa135837d93e68",
+##     "0c59626b95871fe7",
+##     "fe593aa0503da824",
 ## ]
 ## writes = [
 ##     "deps/crypto_mac-c92b10e2fa1c82cb.d",
@@ -547,6 +562,36 @@ COPY --from=dep-l-crypto-mac-0.7.0-c92b10e2fa1c82cb /tmp/clis-dbcc_2-2-1/release
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-dbcc_2-2-1/release/deps/libcrypto_mac-c92b10e2fa1c82cb.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-dbcc_2-2-1/release/deps/libcrypto_mac-c92b10e2fa1c82cb.rlib","emit":"link"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-0afa135837d93e68"
+## src = "/libgeneric_array-0afa135837d93e68.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libgeneric_array-0afa135837d93e68.rmeta"
+## 
+## [[mounts]]
+## from = "out-0afa135837d93e68"
+## src = "/libgeneric_array-0afa135837d93e68.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libgeneric_array-0afa135837d93e68.rlib"
+## 
+## [[mounts]]
+## from = "out-0c59626b95871fe7"
+## src = "/libtypenum-0c59626b95871fe7.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libtypenum-0c59626b95871fe7.rmeta"
+## 
+## [[mounts]]
+## from = "out-0c59626b95871fe7"
+## src = "/libtypenum-0c59626b95871fe7.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libtypenum-0c59626b95871fe7.rlib"
+## 
+## [[mounts]]
+## from = "out-fe593aa0503da824"
+## src = "/libsubtle-fe593aa0503da824.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libsubtle-fe593aa0503da824.rmeta"
+## 
+## [[mounts]]
+## from = "out-fe593aa0503da824"
+## src = "/libsubtle-fe593aa0503da824.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libsubtle-fe593aa0503da824.rlib"
 ## 
 ## [[contexts]]
 ## name = "crate_out-3cf9e442dfddd505"
@@ -572,8 +617,11 @@ COPY --from=dep-l-crypto-mac-0.7.0-c92b10e2fa1c82cb /tmp/clis-dbcc_2-2-1/release
 ## RUN \
 ##   --mount=from=cratesio-crypto-mac-0.7.0,source=/crypto-mac-0.7.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crypto-mac-0.7.0 \
 ##   --mount=from=out-0afa135837d93e68,dst=/tmp/clis-dbcc_2-2-1/release/deps/libgeneric_array-0afa135837d93e68.rmeta,source=/libgeneric_array-0afa135837d93e68.rmeta \
+##   --mount=from=out-0afa135837d93e68,dst=/tmp/clis-dbcc_2-2-1/release/deps/libgeneric_array-0afa135837d93e68.rlib,source=/libgeneric_array-0afa135837d93e68.rlib \
 ##   --mount=from=out-0c59626b95871fe7,dst=/tmp/clis-dbcc_2-2-1/release/deps/libtypenum-0c59626b95871fe7.rmeta,source=/libtypenum-0c59626b95871fe7.rmeta \
+##   --mount=from=out-0c59626b95871fe7,dst=/tmp/clis-dbcc_2-2-1/release/deps/libtypenum-0c59626b95871fe7.rlib,source=/libtypenum-0c59626b95871fe7.rlib \
 ##   --mount=from=out-fe593aa0503da824,dst=/tmp/clis-dbcc_2-2-1/release/deps/libsubtle-fe593aa0503da824.rmeta,source=/libsubtle-fe593aa0503da824.rmeta \
+##   --mount=from=out-fe593aa0503da824,dst=/tmp/clis-dbcc_2-2-1/release/deps/libsubtle-fe593aa0503da824.rlib,source=/libsubtle-fe593aa0503da824.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="crypto_mac" \
@@ -614,7 +662,9 @@ WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
   --mount=from=cratesio-digest-0.8.1,source=/digest-0.8.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/digest-0.8.1 \
   --mount=from=out-0afa135837d93e68,dst=/tmp/clis-dbcc_2-2-1/release/deps/libgeneric_array-0afa135837d93e68.rmeta,source=/libgeneric_array-0afa135837d93e68.rmeta \
+  --mount=from=out-0afa135837d93e68,dst=/tmp/clis-dbcc_2-2-1/release/deps/libgeneric_array-0afa135837d93e68.rlib,source=/libgeneric_array-0afa135837d93e68.rlib \
   --mount=from=out-0c59626b95871fe7,dst=/tmp/clis-dbcc_2-2-1/release/deps/libtypenum-0c59626b95871fe7.rmeta,source=/libtypenum-0c59626b95871fe7.rmeta \
+  --mount=from=out-0c59626b95871fe7,dst=/tmp/clis-dbcc_2-2-1/release/deps/libtypenum-0c59626b95871fe7.rlib,source=/libtypenum-0c59626b95871fe7.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="digest" \
@@ -648,8 +698,8 @@ COPY --from=dep-l-digest-0.8.1-3c7631a805111659 /tmp/clis-dbcc_2-2-1/release/dep
 ##     "0c59626b95871fe7",
 ## ]
 ## short_externs = [
-##     "generic_array-0afa135837d93e68",
-##     "typenum-0c59626b95871fe7",
+##     "0afa135837d93e68",
+##     "0c59626b95871fe7",
 ## ]
 ## writes = [
 ##     "deps/digest-3c7631a805111659.d",
@@ -665,6 +715,26 @@ COPY --from=dep-l-digest-0.8.1-3c7631a805111659 /tmp/clis-dbcc_2-2-1/release/dep
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-dbcc_2-2-1/release/deps/libdigest-3c7631a805111659.rlib","emit":"link"}',
 ##     '{"$message_type":"diagnostic","message":"3 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 3 warnings emitted\u001b[0m\n\n"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-0afa135837d93e68"
+## src = "/libgeneric_array-0afa135837d93e68.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libgeneric_array-0afa135837d93e68.rmeta"
+## 
+## [[mounts]]
+## from = "out-0afa135837d93e68"
+## src = "/libgeneric_array-0afa135837d93e68.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libgeneric_array-0afa135837d93e68.rlib"
+## 
+## [[mounts]]
+## from = "out-0c59626b95871fe7"
+## src = "/libtypenum-0c59626b95871fe7.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libtypenum-0c59626b95871fe7.rmeta"
+## 
+## [[mounts]]
+## from = "out-0c59626b95871fe7"
+## src = "/libtypenum-0c59626b95871fe7.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libtypenum-0c59626b95871fe7.rlib"
 ## 
 ## [[contexts]]
 ## name = "crate_out-3cf9e442dfddd505"
@@ -690,7 +760,9 @@ COPY --from=dep-l-digest-0.8.1-3c7631a805111659 /tmp/clis-dbcc_2-2-1/release/dep
 ## RUN \
 ##   --mount=from=cratesio-digest-0.8.1,source=/digest-0.8.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/digest-0.8.1 \
 ##   --mount=from=out-0afa135837d93e68,dst=/tmp/clis-dbcc_2-2-1/release/deps/libgeneric_array-0afa135837d93e68.rmeta,source=/libgeneric_array-0afa135837d93e68.rmeta \
+##   --mount=from=out-0afa135837d93e68,dst=/tmp/clis-dbcc_2-2-1/release/deps/libgeneric_array-0afa135837d93e68.rlib,source=/libgeneric_array-0afa135837d93e68.rlib \
 ##   --mount=from=out-0c59626b95871fe7,dst=/tmp/clis-dbcc_2-2-1/release/deps/libtypenum-0c59626b95871fe7.rmeta,source=/libtypenum-0c59626b95871fe7.rmeta \
+##   --mount=from=out-0c59626b95871fe7,dst=/tmp/clis-dbcc_2-2-1/release/deps/libtypenum-0c59626b95871fe7.rlib,source=/libtypenum-0c59626b95871fe7.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="digest" \
@@ -828,12 +900,19 @@ WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
   --mount=from=cratesio-blake2-0.8.1,source=/blake2-0.8.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/blake2-0.8.1 \
   --mount=from=out-208f428f6e945660,dst=/tmp/clis-dbcc_2-2-1/release/deps/libbyte_tools-208f428f6e945660.rmeta,source=/libbyte_tools-208f428f6e945660.rmeta \
+  --mount=from=out-208f428f6e945660,dst=/tmp/clis-dbcc_2-2-1/release/deps/libbyte_tools-208f428f6e945660.rlib,source=/libbyte_tools-208f428f6e945660.rlib \
   --mount=from=out-c92b10e2fa1c82cb,dst=/tmp/clis-dbcc_2-2-1/release/deps/libcrypto_mac-c92b10e2fa1c82cb.rmeta,source=/libcrypto_mac-c92b10e2fa1c82cb.rmeta \
+  --mount=from=out-c92b10e2fa1c82cb,dst=/tmp/clis-dbcc_2-2-1/release/deps/libcrypto_mac-c92b10e2fa1c82cb.rlib,source=/libcrypto_mac-c92b10e2fa1c82cb.rlib \
   --mount=from=out-0afa135837d93e68,dst=/tmp/clis-dbcc_2-2-1/release/deps/libgeneric_array-0afa135837d93e68.rmeta,source=/libgeneric_array-0afa135837d93e68.rmeta \
+  --mount=from=out-0afa135837d93e68,dst=/tmp/clis-dbcc_2-2-1/release/deps/libgeneric_array-0afa135837d93e68.rlib,source=/libgeneric_array-0afa135837d93e68.rlib \
   --mount=from=out-0c59626b95871fe7,dst=/tmp/clis-dbcc_2-2-1/release/deps/libtypenum-0c59626b95871fe7.rmeta,source=/libtypenum-0c59626b95871fe7.rmeta \
+  --mount=from=out-0c59626b95871fe7,dst=/tmp/clis-dbcc_2-2-1/release/deps/libtypenum-0c59626b95871fe7.rlib,source=/libtypenum-0c59626b95871fe7.rlib \
   --mount=from=out-fe593aa0503da824,dst=/tmp/clis-dbcc_2-2-1/release/deps/libsubtle-fe593aa0503da824.rmeta,source=/libsubtle-fe593aa0503da824.rmeta \
+  --mount=from=out-fe593aa0503da824,dst=/tmp/clis-dbcc_2-2-1/release/deps/libsubtle-fe593aa0503da824.rlib,source=/libsubtle-fe593aa0503da824.rlib \
   --mount=from=out-3c7631a805111659,dst=/tmp/clis-dbcc_2-2-1/release/deps/libdigest-3c7631a805111659.rmeta,source=/libdigest-3c7631a805111659.rmeta \
+  --mount=from=out-3c7631a805111659,dst=/tmp/clis-dbcc_2-2-1/release/deps/libdigest-3c7631a805111659.rlib,source=/libdigest-3c7631a805111659.rlib \
   --mount=from=out-3e36cb37043b614a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libopaque_debug-3e36cb37043b614a.rmeta,source=/libopaque_debug-3e36cb37043b614a.rmeta \
+  --mount=from=out-3e36cb37043b614a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libopaque_debug-3e36cb37043b614a.rlib,source=/libopaque_debug-3e36cb37043b614a.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="blake2" \
@@ -872,13 +951,13 @@ COPY --from=dep-l-blake2-0.8.1-90ca44a8caf54d0f /tmp/clis-dbcc_2-2-1/release/dep
 ##     "3e36cb37043b614a",
 ## ]
 ## short_externs = [
-##     "byte_tools-208f428f6e945660",
-##     "crypto_mac-c92b10e2fa1c82cb",
-##     "generic_array-0afa135837d93e68",
-##     "typenum-0c59626b95871fe7",
-##     "subtle-fe593aa0503da824",
-##     "digest-3c7631a805111659",
-##     "opaque_debug-3e36cb37043b614a",
+##     "208f428f6e945660",
+##     "c92b10e2fa1c82cb",
+##     "0afa135837d93e68",
+##     "0c59626b95871fe7",
+##     "fe593aa0503da824",
+##     "3c7631a805111659",
+##     "3e36cb37043b614a",
 ## ]
 ## writes = [
 ##     "deps/blake2-90ca44a8caf54d0f.d",
@@ -896,6 +975,76 @@ COPY --from=dep-l-blake2-0.8.1-90ca44a8caf54d0f /tmp/clis-dbcc_2-2-1/release/dep
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-dbcc_2-2-1/release/deps/libblake2-90ca44a8caf54d0f.rlib","emit":"link"}',
 ##     '{"$message_type":"diagnostic","message":"5 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 5 warnings emitted\u001b[0m\n\n"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-208f428f6e945660"
+## src = "/libbyte_tools-208f428f6e945660.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libbyte_tools-208f428f6e945660.rmeta"
+## 
+## [[mounts]]
+## from = "out-208f428f6e945660"
+## src = "/libbyte_tools-208f428f6e945660.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libbyte_tools-208f428f6e945660.rlib"
+## 
+## [[mounts]]
+## from = "out-c92b10e2fa1c82cb"
+## src = "/libcrypto_mac-c92b10e2fa1c82cb.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libcrypto_mac-c92b10e2fa1c82cb.rmeta"
+## 
+## [[mounts]]
+## from = "out-c92b10e2fa1c82cb"
+## src = "/libcrypto_mac-c92b10e2fa1c82cb.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libcrypto_mac-c92b10e2fa1c82cb.rlib"
+## 
+## [[mounts]]
+## from = "out-0afa135837d93e68"
+## src = "/libgeneric_array-0afa135837d93e68.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libgeneric_array-0afa135837d93e68.rmeta"
+## 
+## [[mounts]]
+## from = "out-0afa135837d93e68"
+## src = "/libgeneric_array-0afa135837d93e68.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libgeneric_array-0afa135837d93e68.rlib"
+## 
+## [[mounts]]
+## from = "out-0c59626b95871fe7"
+## src = "/libtypenum-0c59626b95871fe7.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libtypenum-0c59626b95871fe7.rmeta"
+## 
+## [[mounts]]
+## from = "out-0c59626b95871fe7"
+## src = "/libtypenum-0c59626b95871fe7.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libtypenum-0c59626b95871fe7.rlib"
+## 
+## [[mounts]]
+## from = "out-fe593aa0503da824"
+## src = "/libsubtle-fe593aa0503da824.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libsubtle-fe593aa0503da824.rmeta"
+## 
+## [[mounts]]
+## from = "out-fe593aa0503da824"
+## src = "/libsubtle-fe593aa0503da824.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libsubtle-fe593aa0503da824.rlib"
+## 
+## [[mounts]]
+## from = "out-3c7631a805111659"
+## src = "/libdigest-3c7631a805111659.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libdigest-3c7631a805111659.rmeta"
+## 
+## [[mounts]]
+## from = "out-3c7631a805111659"
+## src = "/libdigest-3c7631a805111659.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libdigest-3c7631a805111659.rlib"
+## 
+## [[mounts]]
+## from = "out-3e36cb37043b614a"
+## src = "/libopaque_debug-3e36cb37043b614a.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libopaque_debug-3e36cb37043b614a.rmeta"
+## 
+## [[mounts]]
+## from = "out-3e36cb37043b614a"
+## src = "/libopaque_debug-3e36cb37043b614a.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libopaque_debug-3e36cb37043b614a.rlib"
 ## 
 ## [[contexts]]
 ## name = "crate_out-3cf9e442dfddd505"
@@ -921,12 +1070,19 @@ COPY --from=dep-l-blake2-0.8.1-90ca44a8caf54d0f /tmp/clis-dbcc_2-2-1/release/dep
 ## RUN \
 ##   --mount=from=cratesio-blake2-0.8.1,source=/blake2-0.8.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/blake2-0.8.1 \
 ##   --mount=from=out-208f428f6e945660,dst=/tmp/clis-dbcc_2-2-1/release/deps/libbyte_tools-208f428f6e945660.rmeta,source=/libbyte_tools-208f428f6e945660.rmeta \
+##   --mount=from=out-208f428f6e945660,dst=/tmp/clis-dbcc_2-2-1/release/deps/libbyte_tools-208f428f6e945660.rlib,source=/libbyte_tools-208f428f6e945660.rlib \
 ##   --mount=from=out-c92b10e2fa1c82cb,dst=/tmp/clis-dbcc_2-2-1/release/deps/libcrypto_mac-c92b10e2fa1c82cb.rmeta,source=/libcrypto_mac-c92b10e2fa1c82cb.rmeta \
+##   --mount=from=out-c92b10e2fa1c82cb,dst=/tmp/clis-dbcc_2-2-1/release/deps/libcrypto_mac-c92b10e2fa1c82cb.rlib,source=/libcrypto_mac-c92b10e2fa1c82cb.rlib \
 ##   --mount=from=out-0afa135837d93e68,dst=/tmp/clis-dbcc_2-2-1/release/deps/libgeneric_array-0afa135837d93e68.rmeta,source=/libgeneric_array-0afa135837d93e68.rmeta \
+##   --mount=from=out-0afa135837d93e68,dst=/tmp/clis-dbcc_2-2-1/release/deps/libgeneric_array-0afa135837d93e68.rlib,source=/libgeneric_array-0afa135837d93e68.rlib \
 ##   --mount=from=out-0c59626b95871fe7,dst=/tmp/clis-dbcc_2-2-1/release/deps/libtypenum-0c59626b95871fe7.rmeta,source=/libtypenum-0c59626b95871fe7.rmeta \
+##   --mount=from=out-0c59626b95871fe7,dst=/tmp/clis-dbcc_2-2-1/release/deps/libtypenum-0c59626b95871fe7.rlib,source=/libtypenum-0c59626b95871fe7.rlib \
 ##   --mount=from=out-fe593aa0503da824,dst=/tmp/clis-dbcc_2-2-1/release/deps/libsubtle-fe593aa0503da824.rmeta,source=/libsubtle-fe593aa0503da824.rmeta \
+##   --mount=from=out-fe593aa0503da824,dst=/tmp/clis-dbcc_2-2-1/release/deps/libsubtle-fe593aa0503da824.rlib,source=/libsubtle-fe593aa0503da824.rlib \
 ##   --mount=from=out-3c7631a805111659,dst=/tmp/clis-dbcc_2-2-1/release/deps/libdigest-3c7631a805111659.rmeta,source=/libdigest-3c7631a805111659.rmeta \
+##   --mount=from=out-3c7631a805111659,dst=/tmp/clis-dbcc_2-2-1/release/deps/libdigest-3c7631a805111659.rlib,source=/libdigest-3c7631a805111659.rlib \
 ##   --mount=from=out-3e36cb37043b614a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libopaque_debug-3e36cb37043b614a.rmeta,source=/libopaque_debug-3e36cb37043b614a.rmeta \
+##   --mount=from=out-3e36cb37043b614a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libopaque_debug-3e36cb37043b614a.rlib,source=/libopaque_debug-3e36cb37043b614a.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="blake2" \
@@ -1064,6 +1220,7 @@ WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
   --mount=from=cratesio-proc-macro2-1.0.24,source=/proc-macro2-1.0.24,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.24 \
   --mount=from=out-ca80afcc82eeec0a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-ca80afcc82eeec0a.rmeta,source=/libunicode_xid-ca80afcc82eeec0a.rmeta \
+  --mount=from=out-ca80afcc82eeec0a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-ca80afcc82eeec0a.rlib,source=/libunicode_xid-ca80afcc82eeec0a.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="proc_macro2" \
@@ -1094,7 +1251,7 @@ COPY --from=dep-l-proc-macro2-1.0.24-80b37ce9903d0def /tmp/clis-dbcc_2-2-1/relea
 
 ## this = "80b37ce9903d0def"
 ## deps = ["ca80afcc82eeec0a"]
-## short_externs = ["unicode_xid-ca80afcc82eeec0a"]
+## short_externs = ["ca80afcc82eeec0a"]
 ## writes = [
 ##     "deps/proc_macro2-80b37ce9903d0def.d",
 ##     "deps/libproc_macro2-80b37ce9903d0def.rmeta",
@@ -1215,6 +1372,16 @@ COPY --from=dep-l-proc-macro2-1.0.24-80b37ce9903d0def /tmp/clis-dbcc_2-2-1/relea
 ##     '{"$message_type":"diagnostic","message":"108 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 108 warnings emitted\u001b[0m\n\n"}',
 ## ]
 ## 
+## [[mounts]]
+## from = "out-ca80afcc82eeec0a"
+## src = "/libunicode_xid-ca80afcc82eeec0a.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-ca80afcc82eeec0a.rmeta"
+## 
+## [[mounts]]
+## from = "out-ca80afcc82eeec0a"
+## src = "/libunicode_xid-ca80afcc82eeec0a.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-ca80afcc82eeec0a.rlib"
+## 
 ## [[stages]]
 ## name = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.86.0-slim@sha256:57d415bbd61ce11e2d5f73de068103c7bd9f3188dc132c97cef4a8f62989e944 AS rust-base"
@@ -1235,6 +1402,7 @@ COPY --from=dep-l-proc-macro2-1.0.24-80b37ce9903d0def /tmp/clis-dbcc_2-2-1/relea
 ## RUN \
 ##   --mount=from=cratesio-proc-macro2-1.0.24,source=/proc-macro2-1.0.24,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.24 \
 ##   --mount=from=out-ca80afcc82eeec0a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-ca80afcc82eeec0a.rmeta,source=/libunicode_xid-ca80afcc82eeec0a.rmeta \
+##   --mount=from=out-ca80afcc82eeec0a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-ca80afcc82eeec0a.rlib,source=/libunicode_xid-ca80afcc82eeec0a.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="proc_macro2" \
@@ -1276,7 +1444,9 @@ WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
   --mount=from=cratesio-quote-1.0.7,source=/quote-1.0.7,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.7 \
   --mount=from=out-80b37ce9903d0def,dst=/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-80b37ce9903d0def.rmeta,source=/libproc_macro2-80b37ce9903d0def.rmeta \
+  --mount=from=out-80b37ce9903d0def,dst=/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-80b37ce9903d0def.rlib,source=/libproc_macro2-80b37ce9903d0def.rlib \
   --mount=from=out-ca80afcc82eeec0a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-ca80afcc82eeec0a.rmeta,source=/libunicode_xid-ca80afcc82eeec0a.rmeta \
+  --mount=from=out-ca80afcc82eeec0a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-ca80afcc82eeec0a.rlib,source=/libunicode_xid-ca80afcc82eeec0a.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="quote" \
@@ -1310,8 +1480,8 @@ COPY --from=dep-l-quote-1.0.7-dd5debcb2b51fc02 /tmp/clis-dbcc_2-2-1/release/deps
 ##     "ca80afcc82eeec0a",
 ## ]
 ## short_externs = [
-##     "proc_macro2-80b37ce9903d0def",
-##     "unicode_xid-ca80afcc82eeec0a",
+##     "80b37ce9903d0def",
+##     "ca80afcc82eeec0a",
 ## ]
 ## writes = [
 ##     "deps/quote-dd5debcb2b51fc02.d",
@@ -1323,6 +1493,26 @@ COPY --from=dep-l-quote-1.0.7-dd5debcb2b51fc02 /tmp/clis-dbcc_2-2-1/release/deps
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-dbcc_2-2-1/release/deps/libquote-dd5debcb2b51fc02.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-dbcc_2-2-1/release/deps/libquote-dd5debcb2b51fc02.rlib","emit":"link"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-80b37ce9903d0def"
+## src = "/libproc_macro2-80b37ce9903d0def.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-80b37ce9903d0def.rmeta"
+## 
+## [[mounts]]
+## from = "out-80b37ce9903d0def"
+## src = "/libproc_macro2-80b37ce9903d0def.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-80b37ce9903d0def.rlib"
+## 
+## [[mounts]]
+## from = "out-ca80afcc82eeec0a"
+## src = "/libunicode_xid-ca80afcc82eeec0a.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-ca80afcc82eeec0a.rmeta"
+## 
+## [[mounts]]
+## from = "out-ca80afcc82eeec0a"
+## src = "/libunicode_xid-ca80afcc82eeec0a.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-ca80afcc82eeec0a.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -1344,7 +1534,9 @@ COPY --from=dep-l-quote-1.0.7-dd5debcb2b51fc02 /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
 ##   --mount=from=cratesio-quote-1.0.7,source=/quote-1.0.7,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.7 \
 ##   --mount=from=out-80b37ce9903d0def,dst=/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-80b37ce9903d0def.rmeta,source=/libproc_macro2-80b37ce9903d0def.rmeta \
+##   --mount=from=out-80b37ce9903d0def,dst=/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-80b37ce9903d0def.rlib,source=/libproc_macro2-80b37ce9903d0def.rlib \
 ##   --mount=from=out-ca80afcc82eeec0a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-ca80afcc82eeec0a.rmeta,source=/libunicode_xid-ca80afcc82eeec0a.rmeta \
+##   --mount=from=out-ca80afcc82eeec0a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-ca80afcc82eeec0a.rlib,source=/libunicode_xid-ca80afcc82eeec0a.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="quote" \
@@ -1385,8 +1577,11 @@ WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
   --mount=from=cratesio-syn-1.0.46,source=/syn-1.0.46,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/syn-1.0.46 \
   --mount=from=out-80b37ce9903d0def,dst=/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-80b37ce9903d0def.rmeta,source=/libproc_macro2-80b37ce9903d0def.rmeta \
+  --mount=from=out-80b37ce9903d0def,dst=/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-80b37ce9903d0def.rlib,source=/libproc_macro2-80b37ce9903d0def.rlib \
   --mount=from=out-ca80afcc82eeec0a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-ca80afcc82eeec0a.rmeta,source=/libunicode_xid-ca80afcc82eeec0a.rmeta \
+  --mount=from=out-ca80afcc82eeec0a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-ca80afcc82eeec0a.rlib,source=/libunicode_xid-ca80afcc82eeec0a.rlib \
   --mount=from=out-dd5debcb2b51fc02,dst=/tmp/clis-dbcc_2-2-1/release/deps/libquote-dd5debcb2b51fc02.rmeta,source=/libquote-dd5debcb2b51fc02.rmeta \
+  --mount=from=out-dd5debcb2b51fc02,dst=/tmp/clis-dbcc_2-2-1/release/deps/libquote-dd5debcb2b51fc02.rlib,source=/libquote-dd5debcb2b51fc02.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="syn" \
@@ -1422,9 +1617,9 @@ COPY --from=dep-l-syn-1.0.46-bbffa8c7e6a16356 /tmp/clis-dbcc_2-2-1/release/deps/
 ##     "dd5debcb2b51fc02",
 ## ]
 ## short_externs = [
-##     "proc_macro2-80b37ce9903d0def",
-##     "unicode_xid-ca80afcc82eeec0a",
-##     "quote-dd5debcb2b51fc02",
+##     "80b37ce9903d0def",
+##     "ca80afcc82eeec0a",
+##     "dd5debcb2b51fc02",
 ## ]
 ## writes = [
 ##     "deps/syn-bbffa8c7e6a16356.d",
@@ -1442,6 +1637,36 @@ COPY --from=dep-l-syn-1.0.46-bbffa8c7e6a16356 /tmp/clis-dbcc_2-2-1/release/deps/
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-dbcc_2-2-1/release/deps/libsyn-bbffa8c7e6a16356.rlib","emit":"link"}',
 ##     '{"$message_type":"diagnostic","message":"5 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 5 warnings emitted\u001b[0m\n\n"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-80b37ce9903d0def"
+## src = "/libproc_macro2-80b37ce9903d0def.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-80b37ce9903d0def.rmeta"
+## 
+## [[mounts]]
+## from = "out-80b37ce9903d0def"
+## src = "/libproc_macro2-80b37ce9903d0def.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-80b37ce9903d0def.rlib"
+## 
+## [[mounts]]
+## from = "out-ca80afcc82eeec0a"
+## src = "/libunicode_xid-ca80afcc82eeec0a.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-ca80afcc82eeec0a.rmeta"
+## 
+## [[mounts]]
+## from = "out-ca80afcc82eeec0a"
+## src = "/libunicode_xid-ca80afcc82eeec0a.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-ca80afcc82eeec0a.rlib"
+## 
+## [[mounts]]
+## from = "out-dd5debcb2b51fc02"
+## src = "/libquote-dd5debcb2b51fc02.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libquote-dd5debcb2b51fc02.rmeta"
+## 
+## [[mounts]]
+## from = "out-dd5debcb2b51fc02"
+## src = "/libquote-dd5debcb2b51fc02.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libquote-dd5debcb2b51fc02.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -1463,8 +1688,11 @@ COPY --from=dep-l-syn-1.0.46-bbffa8c7e6a16356 /tmp/clis-dbcc_2-2-1/release/deps/
 ## RUN \
 ##   --mount=from=cratesio-syn-1.0.46,source=/syn-1.0.46,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/syn-1.0.46 \
 ##   --mount=from=out-80b37ce9903d0def,dst=/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-80b37ce9903d0def.rmeta,source=/libproc_macro2-80b37ce9903d0def.rmeta \
+##   --mount=from=out-80b37ce9903d0def,dst=/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-80b37ce9903d0def.rlib,source=/libproc_macro2-80b37ce9903d0def.rlib \
 ##   --mount=from=out-ca80afcc82eeec0a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-ca80afcc82eeec0a.rmeta,source=/libunicode_xid-ca80afcc82eeec0a.rmeta \
+##   --mount=from=out-ca80afcc82eeec0a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-ca80afcc82eeec0a.rlib,source=/libunicode_xid-ca80afcc82eeec0a.rlib \
 ##   --mount=from=out-dd5debcb2b51fc02,dst=/tmp/clis-dbcc_2-2-1/release/deps/libquote-dd5debcb2b51fc02.rmeta,source=/libquote-dd5debcb2b51fc02.rmeta \
+##   --mount=from=out-dd5debcb2b51fc02,dst=/tmp/clis-dbcc_2-2-1/release/deps/libquote-dd5debcb2b51fc02.rlib,source=/libquote-dd5debcb2b51fc02.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="syn" \
@@ -1505,9 +1733,13 @@ SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
   --mount=from=cratesio-derive-getters-0.1.1,source=/derive-getters-0.1.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/derive-getters-0.1.1 \
+  --mount=from=out-80b37ce9903d0def,dst=/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-80b37ce9903d0def.rmeta,source=/libproc_macro2-80b37ce9903d0def.rmeta \
   --mount=from=out-80b37ce9903d0def,dst=/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-80b37ce9903d0def.rlib,source=/libproc_macro2-80b37ce9903d0def.rlib \
+  --mount=from=out-ca80afcc82eeec0a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-ca80afcc82eeec0a.rmeta,source=/libunicode_xid-ca80afcc82eeec0a.rmeta \
   --mount=from=out-ca80afcc82eeec0a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-ca80afcc82eeec0a.rlib,source=/libunicode_xid-ca80afcc82eeec0a.rlib \
+  --mount=from=out-dd5debcb2b51fc02,dst=/tmp/clis-dbcc_2-2-1/release/deps/libquote-dd5debcb2b51fc02.rmeta,source=/libquote-dd5debcb2b51fc02.rmeta \
   --mount=from=out-dd5debcb2b51fc02,dst=/tmp/clis-dbcc_2-2-1/release/deps/libquote-dd5debcb2b51fc02.rlib,source=/libquote-dd5debcb2b51fc02.rlib \
+  --mount=from=out-bbffa8c7e6a16356,dst=/tmp/clis-dbcc_2-2-1/release/deps/libsyn-bbffa8c7e6a16356.rmeta,source=/libsyn-bbffa8c7e6a16356.rmeta \
   --mount=from=out-bbffa8c7e6a16356,dst=/tmp/clis-dbcc_2-2-1/release/deps/libsyn-bbffa8c7e6a16356.rlib,source=/libsyn-bbffa8c7e6a16356.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
@@ -1544,10 +1776,10 @@ COPY --from=dep-p-derive-getters-0.1.1-10105863fb18eb2a /tmp/clis-dbcc_2-2-1/rel
 ##     "bbffa8c7e6a16356",
 ## ]
 ## short_externs = [
-##     "proc_macro2-80b37ce9903d0def",
-##     "unicode_xid-ca80afcc82eeec0a",
-##     "quote-dd5debcb2b51fc02",
-##     "syn-bbffa8c7e6a16356",
+##     "80b37ce9903d0def",
+##     "ca80afcc82eeec0a",
+##     "dd5debcb2b51fc02",
+##     "bbffa8c7e6a16356",
 ## ]
 ## is_proc_macro = true
 ## writes = [
@@ -1561,6 +1793,46 @@ COPY --from=dep-p-derive-getters-0.1.1-10105863fb18eb2a /tmp/clis-dbcc_2-2-1/rel
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-dbcc_2-2-1/release/deps/libderive_getters-10105863fb18eb2a.so","emit":"link"}',
 ##     '{"$message_type":"diagnostic","message":"2 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 2 warnings emitted\u001b[0m\n\n"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-80b37ce9903d0def"
+## src = "/libproc_macro2-80b37ce9903d0def.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-80b37ce9903d0def.rmeta"
+## 
+## [[mounts]]
+## from = "out-80b37ce9903d0def"
+## src = "/libproc_macro2-80b37ce9903d0def.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-80b37ce9903d0def.rlib"
+## 
+## [[mounts]]
+## from = "out-ca80afcc82eeec0a"
+## src = "/libunicode_xid-ca80afcc82eeec0a.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-ca80afcc82eeec0a.rmeta"
+## 
+## [[mounts]]
+## from = "out-ca80afcc82eeec0a"
+## src = "/libunicode_xid-ca80afcc82eeec0a.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-ca80afcc82eeec0a.rlib"
+## 
+## [[mounts]]
+## from = "out-dd5debcb2b51fc02"
+## src = "/libquote-dd5debcb2b51fc02.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libquote-dd5debcb2b51fc02.rmeta"
+## 
+## [[mounts]]
+## from = "out-dd5debcb2b51fc02"
+## src = "/libquote-dd5debcb2b51fc02.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libquote-dd5debcb2b51fc02.rlib"
+## 
+## [[mounts]]
+## from = "out-bbffa8c7e6a16356"
+## src = "/libsyn-bbffa8c7e6a16356.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libsyn-bbffa8c7e6a16356.rmeta"
+## 
+## [[mounts]]
+## from = "out-bbffa8c7e6a16356"
+## src = "/libsyn-bbffa8c7e6a16356.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libsyn-bbffa8c7e6a16356.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -1581,9 +1853,13 @@ COPY --from=dep-p-derive-getters-0.1.1-10105863fb18eb2a /tmp/clis-dbcc_2-2-1/rel
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
 ##   --mount=from=cratesio-derive-getters-0.1.1,source=/derive-getters-0.1.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/derive-getters-0.1.1 \
+##   --mount=from=out-80b37ce9903d0def,dst=/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-80b37ce9903d0def.rmeta,source=/libproc_macro2-80b37ce9903d0def.rmeta \
 ##   --mount=from=out-80b37ce9903d0def,dst=/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-80b37ce9903d0def.rlib,source=/libproc_macro2-80b37ce9903d0def.rlib \
+##   --mount=from=out-ca80afcc82eeec0a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-ca80afcc82eeec0a.rmeta,source=/libunicode_xid-ca80afcc82eeec0a.rmeta \
 ##   --mount=from=out-ca80afcc82eeec0a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-ca80afcc82eeec0a.rlib,source=/libunicode_xid-ca80afcc82eeec0a.rlib \
+##   --mount=from=out-dd5debcb2b51fc02,dst=/tmp/clis-dbcc_2-2-1/release/deps/libquote-dd5debcb2b51fc02.rmeta,source=/libquote-dd5debcb2b51fc02.rmeta \
 ##   --mount=from=out-dd5debcb2b51fc02,dst=/tmp/clis-dbcc_2-2-1/release/deps/libquote-dd5debcb2b51fc02.rlib,source=/libquote-dd5debcb2b51fc02.rlib \
+##   --mount=from=out-bbffa8c7e6a16356,dst=/tmp/clis-dbcc_2-2-1/release/deps/libsyn-bbffa8c7e6a16356.rmeta,source=/libsyn-bbffa8c7e6a16356.rmeta \
 ##   --mount=from=out-bbffa8c7e6a16356,dst=/tmp/clis-dbcc_2-2-1/release/deps/libsyn-bbffa8c7e6a16356.rlib,source=/libsyn-bbffa8c7e6a16356.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
@@ -1757,6 +2033,7 @@ WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
   --mount=from=cratesio-nom-4.2.3,source=/nom-4.2.3,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3 \
   --mount=from=out-c93fd10415a641fd,dst=/tmp/clis-dbcc_2-2-1/release/deps/libmemchr-c93fd10415a641fd.rmeta,source=/libmemchr-c93fd10415a641fd.rmeta \
+  --mount=from=out-c93fd10415a641fd,dst=/tmp/clis-dbcc_2-2-1/release/deps/libmemchr-c93fd10415a641fd.rlib,source=/libmemchr-c93fd10415a641fd.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="nom" \
@@ -1787,7 +2064,7 @@ COPY --from=dep-l-nom-4.2.3-cd5fc4bcd4e040ed /tmp/clis-dbcc_2-2-1/release/deps/*
 
 ## this = "cd5fc4bcd4e040ed"
 ## deps = ["c93fd10415a641fd"]
-## short_externs = ["memchr-c93fd10415a641fd"]
+## short_externs = ["c93fd10415a641fd"]
 ## writes = [
 ##     "deps/nom-cd5fc4bcd4e040ed.d",
 ##     "deps/libnom-cd5fc4bcd4e040ed.rmeta",
@@ -1867,6 +2144,16 @@ COPY --from=dep-l-nom-4.2.3-cd5fc4bcd4e040ed /tmp/clis-dbcc_2-2-1/release/deps/*
 ##     '''{"$message_type":"future_incompat","future_incompat_report":[{"diagnostic":{"$message_type":"diagnostic","message":"trailing semicolon in macro used in expression position","code":{"code":"semicolon_in_expressions_from_macros","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/src/macros.rs","byte_start":22808,"byte_end":22809,"line_start":666,"line_end":666,"column_start":35,"column_end":36,"is_primary":true,"text":[{"text":"    map!(__impl $i, call!($f), $g);","highlight_start":35,"highlight_end":36}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":{"span":{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/src/nom.rs","byte_start":14135,"byte_end":14162,"line_start":495,"line_end":495,"column_start":3,"column_end":30,"is_primary":false,"text":[{"text":"  map!(i, be_u8, |x| x as i8)","highlight_start":3,"highlight_end":30}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null},"macro_decl_name":"map!","def_site_span":{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/src/macros.rs","byte_start":22321,"byte_end":22817,"line_start":649,"line_end":668,"column_start":1,"column_end":3,"is_primary":false,"text":[{"text":"macro_rules! map(","highlight_start":1,"highlight_end":18},{"text":"  // Internal parser, do not use directly","highlight_start":1,"highlight_end":42},{"text":"  (__impl $i:expr, $submac:ident!( $($args:tt)* ), $g:expr) => (","highlight_start":1,"highlight_end":65},{"text":"    {","highlight_start":1,"highlight_end":6},{"text":"      pub fn _unify<T, R, F: FnOnce(T) -> R>(f: F, t: T) -> R {","highlight_start":1,"highlight_end":64},{"text":"       f(t)","highlight_start":1,"highlight_end":12},{"text":"      }","highlight_start":1,"highlight_end":8},{"text":"","highlight_start":1,"highlight_end":1},{"text":"      ($submac!($i, $($args)*)).map(|(i,o)| {","highlight_start":1,"highlight_end":46},{"text":"        (i, _unify($g, o))","highlight_start":1,"highlight_end":27},{"text":"      })","highlight_start":1,"highlight_end":9},{"text":"    }","highlight_start":1,"highlight_end":6},{"text":"  );","highlight_start":1,"highlight_end":5},{"text":"  ($i:expr, $submac:ident!( $($args:tt)* ), $g:expr) => (","highlight_start":1,"highlight_end":58},{"text":"    map!(__impl $i, $submac!($($args)*), $g);","highlight_start":1,"highlight_end":46},{"text":"  );","highlight_start":1,"highlight_end":5},{"text":"  ($i:expr, $f:expr, $g:expr) => (","highlight_start":1,"highlight_end":35},{"text":"    map!(__impl $i, call!($f), $g);","highlight_start":1,"highlight_end":36},{"text":"  );","highlight_start":1,"highlight_end":5},{"text":");","highlight_start":1,"highlight_end":3}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}}}],"children":[{"message":"this was previously accepted by the compiler but is being phased out; it will become a hard error in a future release!","code":null,"level":"warning","spans":[],"children":[],"rendered":null},{"message":"for more information, see issue #79813 <https://github.com/rust-lang/rust/issues/79813>","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"macro invocations at the end of a block are treated as expressions","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"to ignore the value produced by the macro, add a semicolon after the invocation of `map`","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"`#[warn(semicolon_in_expressions_from_macros)]` on by default","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: trailing semicolon in macro used in expression position\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/src/macros.rs:666:35\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m666\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    map!(__impl $i, call!($f), $g);\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                   \u001b[0m\u001b[0m\u001b[1m\u001b[33m^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m::: \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/src/nom.rs:495:3\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m495\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m  map!(i, be_u8, |x| x as i8)\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m---------------------------\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12min this macro invocation\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mwarning\u001b[0m\u001b[0m: this was previously accepted by the compiler but is being phased out; it will become a hard error in a future release!\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: for more information, see issue #79813 <https://github.com/rust-lang/rust/issues/79813>\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: macro invocations at the end of a block are treated as expressions\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: to ignore the value produced by the macro, add a semicolon after the invocation of `map`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: `#[warn(semicolon_in_expressions_from_macros)]` on by default\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: this warning originates in the macro `map` (in Nightly builds, run with -Z macro-backtrace for more info)\u001b[0m\n\n"}},{"diagnostic":{"$message_type":"diagnostic","message":"trailing semicolon in macro used in expression position","code":{"code":"semicolon_in_expressions_from_macros","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/src/macros.rs","byte_start":22808,"byte_end":22809,"line_start":666,"line_end":666,"column_start":35,"column_end":36,"is_primary":true,"text":[{"text":"    map!(__impl $i, call!($f), $g);","highlight_start":35,"highlight_end":36}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":{"span":{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/src/nom.rs","byte_start":14276,"byte_end":14305,"line_start":501,"line_end":501,"column_start":3,"column_end":32,"is_primary":false,"text":[{"text":"  map!(i, be_u16, |x| x as i16)","highlight_start":3,"highlight_end":32}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null},"macro_decl_name":"map!","def_site_span":{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/src/macros.rs","byte_start":22321,"byte_end":22817,"line_start":649,"line_end":668,"column_start":1,"column_end":3,"is_primary":false,"text":[{"text":"macro_rules! map(","highlight_start":1,"highlight_end":18},{"text":"  // Internal parser, do not use directly","highlight_start":1,"highlight_end":42},{"text":"  (__impl $i:expr, $submac:ident!( $($args:tt)* ), $g:expr) => (","highlight_start":1,"highlight_end":65},{"text":"    {","highlight_start":1,"highlight_end":6},{"text":"      pub fn _unify<T, R, F: FnOnce(T) -> R>(f: F, t: T) -> R {","highlight_start":1,"highlight_end":64},{"text":"       f(t)","highlight_start":1,"highlight_end":12},{"text":"      }","highlight_start":1,"highlight_end":8},{"text":"","highlight_start":1,"highlight_end":1},{"text":"      ($submac!($i, $($args)*)).map(|(i,o)| {","highlight_start":1,"highlight_end":46},{"text":"        (i, _unify($g, o))","highlight_start":1,"highlight_end":27},{"text":"      })","highlight_start":1,"highlight_end":9},{"text":"    }","highlight_start":1,"highlight_end":6},{"text":"  );","highlight_start":1,"highlight_end":5},{"text":"  ($i:expr, $submac:ident!( $($args:tt)* ), $g:expr) => (","highlight_start":1,"highlight_end":58},{"text":"    map!(__impl $i, $submac!($($args)*), $g);","highlight_start":1,"highlight_end":46},{"text":"  );","highlight_start":1,"highlight_end":5},{"text":"  ($i:expr, $f:expr, $g:expr) => (","highlight_start":1,"highlight_end":35},{"text":"    map!(__impl $i, call!($f), $g);","highlight_start":1,"highlight_end":36},{"text":"  );","highlight_start":1,"highlight_end":5},{"text":");","highlight_start":1,"highlight_end":3}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}}}],"children":[{"message":"this was previously accepted by the compiler but is being phased out; it will become a hard error in a future release!","code":null,"level":"warning","spans":[],"children":[],"rendered":null},{"message":"for more information, see issue #79813 <https://github.com/rust-lang/rust/issues/79813>","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"macro invocations at the end of a block are treated as expressions","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"to ignore the value produced by the macro, add a semicolon after the invocation of `map`","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"`#[warn(semicolon_in_expressions_from_macros)]` on by default","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: trailing semicolon in macro used in expression position\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/src/macros.rs:666:35\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m666\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    map!(__impl $i, call!($f), $g);\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                   \u001b[0m\u001b[0m\u001b[1m\u001b[33m^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m::: \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/src/nom.rs:501:3\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m501\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m  map!(i, be_u16, |x| x as i16)\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m-----------------------------\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12min this macro invocation\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mwarning\u001b[0m\u001b[0m: this was previously accepted by the compiler but is being phased out; it will become a hard error in a future release!\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: for more information, see issue #79813 <https://github.com/rust-lang/rust/issues/79813>\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: macro invocations at the end of a block are treated as expressions\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: to ignore the value produced by the macro, add a semicolon after the invocation of `map`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: `#[warn(semicolon_in_expressions_from_macros)]` on by default\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: this warning originates in the macro `map` (in Nightly builds, run with -Z macro-backtrace for more info)\u001b[0m\n\n"}},{"diagnostic":{"$message_type":"diagnostic","message":"trailing semicolon in macro used in expression position","code":{"code":"semicolon_in_expressions_from_macros","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/src/macros.rs","byte_start":22808,"byte_end":22809,"line_start":666,"line_end":666,"column_start":35,"column_end":36,"is_primary":true,"text":[{"text":"    map!(__impl $i, call!($f), $g);","highlight_start":35,"highlight_end":36}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":{"span":{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/src/nom.rs","byte_start":14494,"byte_end":14598,"line_start":508,"line_end":512,"column_start":3,"column_end":5,"is_primary":false,"text":[{"text":"  map!(i, be_u24, |x| if x & 0x80_00_00 != 0 {","highlight_start":3,"highlight_end":47},{"text":"    (x | 0xff_00_00_00) as i32","highlight_start":1,"highlight_end":31},{"text":"  } else {","highlight_start":1,"highlight_end":11},{"text":"    x as i32","highlight_start":1,"highlight_end":13},{"text":"  })","highlight_start":1,"highlight_end":5}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null},"macro_decl_name":"map!","def_site_span":{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/src/macros.rs","byte_start":22321,"byte_end":22817,"line_start":649,"line_end":668,"column_start":1,"column_end":3,"is_primary":false,"text":[{"text":"macro_rules! map(","highlight_start":1,"highlight_end":18},{"text":"  // Internal parser, do not use directly","highlight_start":1,"highlight_end":42},{"text":"  (__impl $i:expr, $submac:ident!( $($args:tt)* ), $g:expr) => (","highlight_start":1,"highlight_end":65},{"text":"    {","highlight_start":1,"highlight_end":6},{"text":"      pub fn _unify<T, R, F: FnOnce(T) -> R>(f: F, t: T) -> R {","highlight_start":1,"highlight_end":64},{"text":"       f(t)","highlight_start":1,"highlight_end":12},{"text":"      }","highlight_start":1,"highlight_end":8},{"text":"","highlight_start":1,"highlight_end":1},{"text":"      ($submac!($i, $($args)*)).map(|(i,o)| {","highlight_start":1,"highlight_end":46},{"text":"        (i, _unify($g, o))","highlight_start":1,"highlight_end":27},{"text":"      })","highlight_start":1,"highlight_end":9},{"text":"    }","highlight_start":1,"highlight_end":6},{"text":"  );","highlight_start":1,"highlight_end":5},{"text":"  ($i:expr, $submac:ident!( $($args:tt)* ), $g:expr) => (","highlight_start":1,"highlight_end":58},{"text":"    map!(__impl $i, $submac!($($args)*), $g);","highlight_start":1,"highlight_end":46},{"text":"  );","highlight_start":1,"highlight_end":5},{"text":"  ($i:expr, $f:expr, $g:expr) => (","highlight_start":1,"highlight_end":35},{"text":"    map!(__impl $i, call!($f), $g);","highlight_start":1,"highlight_end":36},{"text":"  );","highlight_start":1,"highlight_end":5},{"text":");","highlight_start":1,"highlight_end":3}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}}}],"children":[{"message":"this was previously accepted by the compiler but is being phased out; it will become a hard error in a future release!","code":null,"level":"warning","spans":[],"children":[],"rendered":null},{"message":"for more information, see issue #79813 <https://github.com/rust-lang/rust/issues/79813>","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"macro invocations at the end of a block are treated as expressions","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"to ignore the value produced by the macro, add a semicolon after the invocation of `map`","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"`#[warn(semicolon_in_expressions_from_macros)]` on by default","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: trailing semicolon in macro used in expression position\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/src/macros.rs:666:35\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m666\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m   \u001b[0m\u001b[0m    map!(__impl $i, call!($f), $g);\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                     \u001b[0m\u001b[0m\u001b[1m\u001b[33m^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m::: \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/src/nom.rs:508:3\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m508\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m/\u001b[0m\u001b[0m \u001b[0m\u001b[0m  map!(i, be_u24, |x| if x & 0x80_00_00 != 0 {\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m509\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    (x | 0xff_00_00_00) as i32\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m510\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m  } else {\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m511\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    x as i32\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m512\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m  })\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|____-\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12min this macro invocation\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mwarning\u001b[0m\u001b[0m: this was previously accepted by the compiler but is being phased out; it will become a hard error in a future release!\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: for more information, see issue #79813 <https://github.com/rust-lang/rust/issues/79813>\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: macro invocations at the end of a block are treated as expressions\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: to ignore the value produced by the macro, add a semicolon after the invocation of `map`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: `#[warn(semicolon_in_expressions_from_macros)]` on by default\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: this warning originates in the macro `map` (in Nightly builds, run with -Z macro-backtrace for more info)\u001b[0m\n\n"}},{"diagnostic":{"$message_type":"diagnostic","message":"trailing semicolon in macro used in expression position","code":{"code":"semicolon_in_expressions_from_macros","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/src/macros.rs","byte_start":22808,"byte_end":22809,"line_start":666,"line_end":666,"column_start":35,"column_end":36,"is_primary":true,"text":[{"text":"    map!(__impl $i, call!($f), $g);","highlight_start":35,"highlight_end":36}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":{"span":{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/src/nom.rs","byte_start":14712,"byte_end":14741,"line_start":518,"line_end":518,"column_start":3,"column_end":32,"is_primary":false,"text":[{"text":"  map!(i, be_u32, |x| x as i32)","highlight_start":3,"highlight_end":32}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null},"macro_decl_name":"map!","def_site_span":{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/src/macros.rs","byte_start":22321,"byte_end":22817,"line_start":649,"line_end":668,"column_start":1,"column_end":3,"is_primary":false,"text":[{"text":"macro_rules! map(","highlight_start":1,"highlight_end":18},{"text":"  // Internal parser, do not use directly","highlight_start":1,"highlight_end":42},{"text":"  (__impl $i:expr, $submac:ident!( $($args:tt)* ), $g:expr) => (","highlight_start":1,"highlight_end":65},{"text":"    {","highlight_start":1,"highlight_end":6},{"text":"      pub fn _unify<T, R, F: FnOnce(T) -> R>(f: F, t: T) -> R {","highlight_start":1,"highlight_end":64},{"text":"       f(t)","highlight_start":1,"highlight_end":12},{"text":"      }","highlight_start":1,"highlight_end":8},{"text":"","highlight_start":1,"highlight_end":1},{"text":"      ($submac!($i, $($args)*)).map(|(i,o)| {","highlight_start":1,"highlight_end":46},{"text":"        (i, _unify($g, o))","highlight_start":1,"highlight_end":27},{"text":"      })","highlight_start":1,"highlight_end":9},{"text":"    }","highlight_start":1,"highlight_end":6},{"text":"  );","highlight_start":1,"highlight_end":5},{"text":"  ($i:expr, $submac:ident!( $($args:tt)* ), $g:expr) => (","highlight_start":1,"highlight_end":58},{"text":"    map!(__impl $i, $submac!($($args)*), $g);","highlight_start":1,"highlight_end":46},{"text":"  );","highlight_start":1,"highlight_end":5},{"text":"  ($i:expr, $f:expr, $g:expr) => (","highlight_start":1,"highlight_end":35},{"text":"    map!(__impl $i, call!($f), $g);","highlight_start":1,"highlight_end":36},{"text":"  );","highlight_start":1,"highlight_end":5},{"text":");","highlight_start":1,"highlight_end":3}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}}}],"children":[{"message":"this was previously accepted by the compiler but is being phased out; it will become a hard error in a future release!","code":null,"level":"warning","spans":[],"children":[],"rendered":null},{"message":"for more information, see issue #79813 <https://github.com/rust-lang/rust/issues/79813>","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"macro invocations at the end of a block are treated as expressions","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"to ignore the value produced by the macro, add a semicolon after the invocation of `map`","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"`#[warn(semicolon_in_expressions_from_macros)]` on by default","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: trailing semicolon in macro used in expression position\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/src/macros.rs:666:35\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m666\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    map!(__impl $i, call!($f), $g);\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                   \u001b[0m\u001b[0m\u001b[1m\u001b[33m^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m::: \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/src/nom.rs:518:3\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m518\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m  map!(i, be_u32, |x| x as i32)\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m-----------------------------\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12min this macro invocation\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mwarning\u001b[0m\u001b[0m: this was previously accepted by the compiler but is being phased out; it will become a hard error in a future release!\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: for more information, see issue #79813 <https://github.com/rust-lang/rust/issues/79813>\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: macro invocations at the end of a block are treated as expressions\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: to ignore the value produced by the macro, add a semicolon after the invocation of `map`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: `#[warn(semicolon_in_expressions_from_macros)]` on by default\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: this warning originates in the macro `map` (in Nightly builds, run with -Z macro-backtrace for more info)\u001b[0m\n\n"}},{"diagnostic":{"$message_type":"diagnostic","message":"trailing semicolon in macro used in expression position","code":{"code":"semicolon_in_expressions_from_macros","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/src/macros.rs","byte_start":22808,"byte_end":22809,"line_start":666,"line_end":666,"column_start":35,"column_end":36,"is_primary":true,"text":[{"text":"    map!(__impl $i, call!($f), $g);","highlight_start":35,"highlight_end":36}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":{"span":{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/src/nom.rs","byte_start":14855,"byte_end":14884,"line_start":524,"line_end":524,"column_start":3,"column_end":32,"is_primary":false,"text":[{"text":"  map!(i, be_u64, |x| x as i64)","highlight_start":3,"highlight_end":32}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null},"macro_decl_name":"map!","def_site_span":{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/src/macros.rs","byte_start":22321,"byte_end":22817,"line_start":649,"line_end":668,"column_start":1,"column_end":3,"is_primary":false,"text":[{"text":"macro_rules! map(","highlight_start":1,"highlight_end":18},{"text":"  // Internal parser, do not use directly","highlight_start":1,"highlight_end":42},{"text":"  (__impl $i:expr, $submac:ident!( $($args:tt)* ), $g:expr) => (","highlight_start":1,"highlight_end":65},{"text":"    {","highlight_start":1,"highlight_end":6},{"text":"      pub fn _unify<T, R, F: FnOnce(T) -> R>(f: F, t: T) -> R {","highlight_start":1,"highlight_end":64},{"text":"       f(t)","highlight_start":1,"highlight_end":12},{"text":"      }","highlight_start":1,"highlight_end":8},{"text":"","highlight_start":1,"highlight_end":1},{"text":"      ($submac!($i, $($args)*)).map(|(i,o)| {","highlight_start":1,"highlight_end":46},{"text":"        (i, _unify($g, o))","highlight_start":1,"highlight_end":27},{"text":"      })","highlight_start":1,"highlight_end":9},{"text":"    }","highlight_start":1,"highlight_end":6},{"text":"  );","highlight_start":1,"highlight_end":5},{"text":"  ($i:expr, $submac:ident!( $($args:tt)* ), $g:expr) => (","highlight_start":1,"highlight_end":58},{"text":"    map!(__impl $i, $submac!($($args)*), $g);","highlight_start":1,"highlight_end":46},{"text":"  );","highlight_start":1,"highlight_end":5},{"text":"  ($i:expr, $f:expr, $g:expr) => (","highlight_start":1,"highlight_end":35},{"text":"    map!(__impl $i, call!($f), $g);","highlight_start":1,"highlight_end":36},{"text":"  );","highlight_start":1,"highlight_end":5},{"text":");","highlight_start":1,"highlight_end":3}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}}}],"children":[{"message":"this was previously accepted by the compiler but is being phased out; it will become a hard error in a future release!","code":null,"level":"warning","spans":[],"children":[],"rendered":null},{"message":"for more information, see issue #79813 <https://github.com/rust-lang/rust/issues/79813>","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"macro invocations at the end of a block are treated as expressions","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"to ignore the value produced by the macro, add a semicolon after the invocation of `map`","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"`#[warn(semicolon_in_expressions_from_macros)]` on by default","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: trailing semicolon in macro used in expression position\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/src/macros.rs:666:35\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m666\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    map!(__impl $i, call!($f), $g);\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                   \u001b[0m\u001b[0m\u001b[1m\u001b[33m^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m::: \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/src/nom.rs:524:3\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m524\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m  map!(i, be_u64, |x| x as i64)\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m-----------------------------\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12min this macro invocation\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mwarning\u001b[0m\u001b[0m: this was previously accepted by the compiler but is being phased out; it will become a hard error in a future release!\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: for more information, see issue #79813 <https://github.com/rust-lang/rust/issues/79813>\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: macro invocations at the end of a block are treated as expressions\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: to ignore the value produced by the macro, add a semicolon after the invocation of `map`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: `#[warn(semicolon_in_expressions_from_macros)]` on by default\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: this warning originates in the macro `map` (in Nightly builds, run with -Z macro-backtrace for more info)\u001b[0m\n\n"}},{"diagnostic":{"$message_type":"diagnostic","message":"trailing semicolon in macro used in expression position","code":{"code":"semicolon_in_expressions_from_macros","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/src/macros.rs","byte_start":22808,"byte_end":22809,"line_start":666,"line_end":666,"column_start":35,"column_end":36,"is_primary":true,"text":[{"text":"    map!(__impl $i, call!($f), $g);","highlight_start":35,"highlight_end":36}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":{"span":{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/src/nom.rs","byte_start":15021,"byte_end":15052,"line_start":531,"line_end":531,"column_start":3,"column_end":34,"is_primary":false,"text":[{"text":"  map!(i, be_u128, |x| x as i128)","highlight_start":3,"highlight_end":34}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null},"macro_decl_name":"map!","def_site_span":{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/src/macros.rs","byte_start":22321,"byte_end":22817,"line_start":649,"line_end":668,"column_start":1,"column_end":3,"is_primary":false,"text":[{"text":"macro_rules! map(","highlight_start":1,"highlight_end":18},{"text":"  // Internal parser, do not use directly","highlight_start":1,"highlight_end":42},{"text":"  (__impl $i:expr, $submac:ident!( $($args:tt)* ), $g:expr) => (","highlight_start":1,"highlight_end":65},{"text":"    {","highlight_start":1,"highlight_end":6},{"text":"      pub fn _unify<T, R, F: FnOnce(T) -> R>(f: F, t: T) -> R {","highlight_start":1,"highlight_end":64},{"text":"       f(t)","highlight_start":1,"highlight_end":12},{"text":"      }","highlight_start":1,"highlight_end":8},{"text":"","highlight_start":1,"highlight_end":1},{"text":"      ($submac!($i, $($args)*)).map(|(i,o)| {","highlight_start":1,"highlight_end":46},{"text":"        (i, _unify($g, o))","highlight_start":1,"highlight_end":27},{"text":"      })","highlight_start":1,"highlight_end":9},{"text":"    }","highlight_start":1,"highlight_end":6},{"text":"  );","highlight_start":1,"highlight_end":5},{"text":"  ($i:expr, $submac:ident!( $($args:tt)* ), $g:expr) => (","highlight_start":1,"highlight_end":58},{"text":"    map!(__impl $i, $submac!($($args)*), $g);","highlight_start":1,"highlight_end":46},{"text":"  );","highlight_start":1,"highlight_end":5},{"text":"  ($i:expr, $f:expr, $g:expr) => (","highlight_start":1,"highlight_end":35},{"text":"    map!(__impl $i, call!($f), $g);","highlight_start":1,"highlight_end":36},{"text":"  );","highlight_start":1,"highlight_end":5},{"text":");","highlight_start":1,"highlight_end":3}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}}}],"children":[{"message":"this was previously accepted by the compiler but is being phased out; it will become a hard error in a future release!","code":null,"level":"warning","spans":[],"children":[],"rendered":null},{"message":"for more information, see issue #79813 <https://github.com/rust-lang/rust/issues/79813>","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"macro invocations at the end of a block are treated as expressions","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"to ignore the value produced by the macro, add a semicolon after the invocation of `map`","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"`#[warn(semicolon_in_expressions_from_macros)]` on by default","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: trailing semicolon in macro used in expression position\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/src/macros.rs:666:35\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m666\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    map!(__impl $i, call!($f), $g);\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                   \u001b[0m\u001b[0m\u001b[1m\u001b[33m^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m::: \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/src/nom.rs:531:3\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m531\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m  map!(i, be_u128, |x| x as i128)\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m-------------------------------\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12min this macro invocation\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mwarning\u001b[0m\u001b[0m: this was previously accepted by the compiler but is being phased out; it will become a hard error in a future release!\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: for more information, see issue #79813 <https://github.com/rust-lang/rust/issues/79813>\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: macro invocations at the end of a block are treated as expressions\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: to ignore the value produced by the macro, add a semicolon after the invocation of `map`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: `#[warn(semicolon_in_expressions_from_macros)]` on by default\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: this warning originates in the macro `map` (in Nightly builds, run with -Z macro-backtrace for more info)\u001b[0m\n\n"}},{"diagnostic":{"$message_type":"diagnostic","message":"trailing semicolon in macro used in expression position","code":{"code":"semicolon_in_expressions_from_macros","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/src/macros.rs","byte_start":22808,"byte_end":22809,"line_start":666,"line_end":666,"column_start":35,"column_end":36,"is_primary":true,"text":[{"text":"    map!(__impl $i, call!($f), $g);","highlight_start":35,"highlight_end":36}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":{"span":{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/src/nom.rs","byte_start":17386,"byte_end":17413,"line_start":619,"line_end":619,"column_start":3,"column_end":30,"is_primary":false,"text":[{"text":"  map!(i, le_u8, |x| x as i8)","highlight_start":3,"highlight_end":30}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null},"macro_decl_name":"map!","def_site_span":{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/src/macros.rs","byte_start":22321,"byte_end":22817,"line_start":649,"line_end":668,"column_start":1,"column_end":3,"is_primary":false,"text":[{"text":"macro_rules! map(","highlight_start":1,"highlight_end":18},{"text":"  // Internal parser, do not use directly","highlight_start":1,"highlight_end":42},{"text":"  (__impl $i:expr, $submac:ident!( $($args:tt)* ), $g:expr) => (","highlight_start":1,"highlight_end":65},{"text":"    {","highlight_start":1,"highlight_end":6},{"text":"      pub fn _unify<T, R, F: FnOnce(T) -> R>(f: F, t: T) -> R {","highlight_start":1,"highlight_end":64},{"text":"       f(t)","highlight_start":1,"highlight_end":12},{"text":"      }","highlight_start":1,"highlight_end":8},{"text":"","highlight_start":1,"highlight_end":1},{"text":"      ($submac!($i, $($args)*)).map(|(i,o)| {","highlight_start":1,"highlight_end":46},{"text":"        (i, _unify($g, o))","highlight_start":1,"highlight_end":27},{"text":"      })","highlight_start":1,"highlight_end":9},{"text":"    }","highlight_start":1,"highlight_end":6},{"text":"  );","highlight_start":1,"highlight_end":5},{"text":"  ($i:expr, $submac:ident!( $($args:tt)* ), $g:expr) => (","highlight_start":1,"highlight_end":58},{"text":"    map!(__impl $i, $submac!($($args)*), $g);","highlight_start":1,"highlight_end":46},{"text":"  );","highlight_start":1,"highlight_end":5},{"text":"  ($i:expr, $f:expr, $g:expr) => (","highlight_start":1,"highlight_end":35},{"text":"    map!(__impl $i, call!($f), $g);","highlight_start":1,"highlight_end":36},{"text":"  );","highlight_start":1,"highlight_end":5},{"text":");","highlight_start":1,"highlight_end":3}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}}}],"children":[{"message":"this was previously accepted by the compiler but is being phased out; it will become a hard error in a future release!","code":null,"level":"warning","spans":[],"children":[],"rendered":null},{"message":"for more information, see issue #79813 <https://github.com/rust-lang/rust/issues/79813>","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"macro invocations at the end of a block are treated as expressions","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"to ignore the value produced by the macro, add a semicolon after the invocation of `map`","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"`#[warn(semicolon_in_expressions_from_macros)]` on by default","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: trailing semicolon in macro used in expression position\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/src/macros.rs:666:35\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m666\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    map!(__impl $i, call!($f), $g);\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                   \u001b[0m\u001b[0m\u001b[1m\u001b[33m^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m::: \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/src/nom.rs:619:3\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m619\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m  map!(i, le_u8, |x| x as i8)\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m---------------------------\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12min this macro invocation\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mwarning\u001b[0m\u001b[0m: this was previously accepted by the compiler but is being phased out; it will become a hard error in a future release!\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: for more information, see issue #79813 <https://github.com/rust-lang/rust/issues/79813>\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: macro invocations at the end of a block are treated as expressions\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: to ignore the value produced by the macro, add a semicolon after the invocation of `map`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: `#[warn(semicolon_in_expressions_from_macros)]` on by default\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: this warning originates in the macro `map` (in Nightly builds, run with -Z macro-backtrace for more info)\u001b[0m\n\n"}},{"diagnostic":{"$message_type":"diagnostic","message":"trailing semicolon in macro used in expression position","code":{"code":"semicolon_in_expressions_from_macros","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/src/macros.rs","byte_start":22808,"byte_end":22809,"line_start":666,"line_end":666,"column_start":35,"column_end":36,"is_primary":true,"text":[{"text":"    map!(__impl $i, call!($f), $g);","highlight_start":35,"highlight_end":36}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":{"span":{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/src/nom.rs","byte_start":17530,"byte_end":17559,"line_start":625,"line_end":625,"column_start":3,"column_end":32,"is_primary":false,"text":[{"text":"  map!(i, le_u16, |x| x as i16)","highlight_start":3,"highlight_end":32}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null},"macro_decl_name":"map!","def_site_span":{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/src/macros.rs","byte_start":22321,"byte_end":22817,"line_start":649,"line_end":668,"column_start":1,"column_end":3,"is_primary":false,"text":[{"text":"macro_rules! map(","highlight_start":1,"highlight_end":18},{"text":"  // Internal parser, do not use directly","highlight_start":1,"highlight_end":42},{"text":"  (__impl $i:expr, $submac:ident!( $($args:tt)* ), $g:expr) => (","highlight_start":1,"highlight_end":65},{"text":"    {","highlight_start":1,"highlight_end":6},{"text":"      pub fn _unify<T, R, F: FnOnce(T) -> R>(f: F, t: T) -> R {","highlight_start":1,"highlight_end":64},{"text":"       f(t)","highlight_start":1,"highlight_end":12},{"text":"      }","highlight_start":1,"highlight_end":8},{"text":"","highlight_start":1,"highlight_end":1},{"text":"      ($submac!($i, $($args)*)).map(|(i,o)| {","highlight_start":1,"highlight_end":46},{"text":"        (i, _unify($g, o))","highlight_start":1,"highlight_end":27},{"text":"      })","highlight_start":1,"highlight_end":9},{"text":"    }","highlight_start":1,"highlight_end":6},{"text":"  );","highlight_start":1,"highlight_end":5},{"text":"  ($i:expr, $submac:ident!( $($args:tt)* ), $g:expr) => (","highlight_start":1,"highlight_end":58},{"text":"    map!(__impl $i, $submac!($($args)*), $g);","highlight_start":1,"highlight_end":46},{"text":"  );","highlight_start":1,"highlight_end":5},{"text":"  ($i:expr, $f:expr, $g:expr) => (","highlight_start":1,"highlight_end":35},{"text":"    map!(__impl $i, call!($f), $g);","highlight_start":1,"highlight_end":36},{"text":"  );","highlight_start":1,"highlight_end":5},{"text":");","highlight_start":1,"highlight_end":3}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}}}],"children":[{"message":"this was previously accepted by the compiler but is being phased out; it will become a hard error in a future release!","code":null,"level":"warning","spans":[],"children":[],"rendered":null},{"message":"for more information, see issue #79813 <https://github.com/rust-lang/rust/issues/79813>","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"macro invocations at the end of a block are treated as expressions","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"to ignore the value produced by the macro, add a semicolon after the invocation of `map`","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"`#[warn(semicolon_in_expressions_from_macros)]` on by default","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: trailing semicolon in macro used in expression position\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/src/macros.rs:666:35\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m666\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    map!(__impl $i, call!($f), $g);\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                   \u001b[0m\u001b[0m\u001b[1m\u001b[33m^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m::: \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/src/nom.rs:625:3\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m625\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m  map!(i, le_u16, |x| x as i16)\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m-----------------------------\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12min this macro invocation\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mwarning\u001b[0m\u001b[0m: this was previously accepted by the compiler but is being phased out; it will become a hard error in a future release!\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: for more information, see issue #79813 <https://github.com/rust-lang/rust/issues/79813>\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: macro invocations at the end of a block are treated as expressions\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: to ignore the value produced by the macro, add a semicolon after the invocation of `map`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: `#[warn(semicolon_in_expressions_from_macros)]` on by default\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: this warning originates in the macro `map` (in Nightly builds, run with -Z macro-backtrace for more info)\u001b[0m\n\n"}},{"diagnostic":{"$message_type":"diagnostic","message":"trailing semicolon in macro used in expression position","code":{"code":"semicolon_in_expressions_from_macros","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/src/macros.rs","byte_start":22808,"byte_end":22809,"line_start":666,"line_end":666,"column_start":35,"column_end":36,"is_primary":true,"text":[{"text":"    map!(__impl $i, call!($f), $g);","highlight_start":35,"highlight_end":36}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":{"span":{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/src/nom.rs","byte_start":17751,"byte_end":17855,"line_start":632,"line_end":636,"column_start":3,"column_end":5,"is_primary":false,"text":[{"text":"  map!(i, le_u24, |x| if x & 0x80_00_00 != 0 {","highlight_start":3,"highlight_end":47},{"text":"    (x | 0xff_00_00_00) as i32","highlight_start":1,"highlight_end":31},{"text":"  } else {","highlight_start":1,"highlight_end":11},{"text":"    x as i32","highlight_start":1,"highlight_end":13},{"text":"  })","highlight_start":1,"highlight_end":5}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null},"macro_decl_name":"map!","def_site_span":{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/src/macros.rs","byte_start":22321,"byte_end":22817,"line_start":649,"line_end":668,"column_start":1,"column_end":3,"is_primary":false,"text":[{"text":"macro_rules! map(","highlight_start":1,"highlight_end":18},{"text":"  // Internal parser, do not use directly","highlight_start":1,"highlight_end":42},{"text":"  (__impl $i:expr, $submac:ident!( $($args:tt)* ), $g:expr) => (","highlight_start":1,"highlight_end":65},{"text":"    {","highlight_start":1,"highlight_end":6},{"text":"      pub fn _unify<T, R, F: FnOnce(T) -> R>(f: F, t: T) -> R {","highlight_start":1,"highlight_end":64},{"text":"       f(t)","highlight_start":1,"highlight_end":12},{"text":"      }","highlight_start":1,"highlight_end":8},{"text":"","highlight_start":1,"highlight_end":1},{"text":"      ($submac!($i, $($args)*)).map(|(i,o)| {","highlight_start":1,"highlight_end":46},{"text":"        (i, _unify($g, o))","highlight_start":1,"highlight_end":27},{"text":"      })","highlight_start":1,"highlight_end":9},{"text":"    }","highlight_start":1,"highlight_end":6},{"text":"  );","highlight_start":1,"highlight_end":5},{"text":"  ($i:expr, $submac:ident!( $($args:tt)* ), $g:expr) => (","highlight_start":1,"highlight_end":58},{"text":"    map!(__impl $i, $submac!($($args)*), $g);","highlight_start":1,"highlight_end":46},{"text":"  );","highlight_start":1,"highlight_end":5},{"text":"  ($i:expr, $f:expr, $g:expr) => (","highlight_start":1,"highlight_end":35},{"text":"    map!(__impl $i, call!($f), $g);","highlight_start":1,"highlight_end":36},{"text":"  );","highlight_start":1,"highlight_end":5},{"text":");","highlight_start":1,"highlight_end":3}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}}}],"children":[{"message":"this was previously accepted by the compiler but is being phased out; it will become a hard error in a future release!","code":null,"level":"warning","spans":[],"children":[],"rendered":null},{"message":"for more information, see issue #79813 <https://github.com/rust-lang/rust/issues/79813>","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"macro invocations at the end of a block are treated as expressions","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"to ignore the value produced by the macro, add a semicolon after the invocation of `map`","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"`#[warn(semicolon_in_expressions_from_macros)]` on by default","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: trailing semicolon in macro used in expression position\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/src/macros.rs:666:35\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m666\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m   \u001b[0m\u001b[0m    map!(__impl $i, call!($f), $g);\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                     \u001b[0m\u001b[0m\u001b[1m\u001b[33m^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m::: \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/src/nom.rs:632:3\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m632\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m/\u001b[0m\u001b[0m \u001b[0m\u001b[0m  map!(i, le_u24, |x| if x & 0x80_00_00 != 0 {\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m633\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    (x | 0xff_00_00_00) as i32\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m634\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m  } else {\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m635\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    x as i32\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m636\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m  })\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|____-\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12min this macro invocation\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mwarning\u001b[0m\u001b[0m: this was previously accepted by the compiler but is being phased out; it will become a hard error in a future release!\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: for more information, see issue #79813 <https://github.com/rust-lang/rust/issues/79813>\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: macro invocations at the end of a block are treated as expressions\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: to ignore the value produced by the macro, add a semicolon after the invocation of `map`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: `#[warn(semicolon_in_expressions_from_macros)]` on by default\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: this warning originates in the macro `map` (in Nightly builds, run with -Z macro-backtrace for more info)\u001b[0m\n\n"}},{"diagnostic":{"$message_type":"diagnostic","message":"trailing semicolon in macro used in expression position","code":{"code":"semicolon_in_expressions_from_macros","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/src/macros.rs","byte_start":22808,"byte_end":22809,"line_start":666,"line_end":666,"column_start":35,"column_end":36,"is_primary":true,"text":[{"text":"    map!(__impl $i, call!($f), $g);","highlight_start":35,"highlight_end":36}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":{"span":{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/src/nom.rs","byte_start":17972,"byte_end":18001,"line_start":642,"line_end":642,"column_start":3,"column_end":32,"is_primary":false,"text":[{"text":"  map!(i, le_u32, |x| x as i32)","highlight_start":3,"highlight_end":32}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null},"macro_decl_name":"map!","def_site_span":{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/src/macros.rs","byte_start":22321,"byte_end":22817,"line_start":649,"line_end":668,"column_start":1,"column_end":3,"is_primary":false,"text":[{"text":"macro_rules! map(","highlight_start":1,"highlight_end":18},{"text":"  // Internal parser, do not use directly","highlight_start":1,"highlight_end":42},{"text":"  (__impl $i:expr, $submac:ident!( $($args:tt)* ), $g:expr) => (","highlight_start":1,"highlight_end":65},{"text":"    {","highlight_start":1,"highlight_end":6},{"text":"      pub fn _unify<T, R, F: FnOnce(T) -> R>(f: F, t: T) -> R {","highlight_start":1,"highlight_end":64},{"text":"       f(t)","highlight_start":1,"highlight_end":12},{"text":"      }","highlight_start":1,"highlight_end":8},{"text":"","highlight_start":1,"highlight_end":1},{"text":"      ($submac!($i, $($args)*)).map(|(i,o)| {","highlight_start":1,"highlight_end":46},{"text":"        (i, _unify($g, o))","highlight_start":1,"highlight_end":27},{"text":"      })","highlight_start":1,"highlight_end":9},{"text":"    }","highlight_start":1,"highlight_end":6},{"text":"  );","highlight_start":1,"highlight_end":5},{"text":"  ($i:expr, $submac:ident!( $($args:tt)* ), $g:expr) => (","highlight_start":1,"highlight_end":58},{"text":"    map!(__impl $i, $submac!($($args)*), $g);","highlight_start":1,"highlight_end":46},{"text":"  );","highlight_start":1,"highlight_end":5},{"text":"  ($i:expr, $f:expr, $g:expr) => (","highlight_start":1,"highlight_end":35},{"text":"    map!(__impl $i, call!($f), $g);","highlight_start":1,"highlight_end":36},{"text":"  );","highlight_start":1,"highlight_end":5},{"text":");","highlight_start":1,"highlight_end":3}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}}}],"children":[{"message":"this was previously accepted by the compiler but is being phased out; it will become a hard error in a future release!","code":null,"level":"warning","spans":[],"children":[],"rendered":null},{"message":"for more information, see issue #79813 <https://github.com/rust-lang/rust/issues/79813>","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"macro invocations at the end of a block are treated as expressions","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"to ignore the value produced by the macro, add a semicolon after the invocation of `map`","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"`#[warn(semicolon_in_expressions_from_macros)]` on by default","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: trailing semicolon in macro used in expression position\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/src/macros.rs:666:35\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m666\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    map!(__impl $i, call!($f), $g);\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\
 ## ]
 ## 
+## [[mounts]]
+## from = "out-c93fd10415a641fd"
+## src = "/libmemchr-c93fd10415a641fd.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libmemchr-c93fd10415a641fd.rmeta"
+## 
+## [[mounts]]
+## from = "out-c93fd10415a641fd"
+## src = "/libmemchr-c93fd10415a641fd.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libmemchr-c93fd10415a641fd.rlib"
+## 
 ## [[stages]]
 ## name = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.86.0-slim@sha256:57d415bbd61ce11e2d5f73de068103c7bd9f3188dc132c97cef4a8f62989e944 AS rust-base"
@@ -1887,6 +2174,7 @@ COPY --from=dep-l-nom-4.2.3-cd5fc4bcd4e040ed /tmp/clis-dbcc_2-2-1/release/deps/*
 ## RUN \
 ##   --mount=from=cratesio-nom-4.2.3,source=/nom-4.2.3,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3 \
 ##   --mount=from=out-c93fd10415a641fd,dst=/tmp/clis-dbcc_2-2-1/release/deps/libmemchr-c93fd10415a641fd.rmeta,source=/libmemchr-c93fd10415a641fd.rmeta \
+##   --mount=from=out-c93fd10415a641fd,dst=/tmp/clis-dbcc_2-2-1/release/deps/libmemchr-c93fd10415a641fd.rlib,source=/libmemchr-c93fd10415a641fd.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="nom" \
@@ -1929,11 +2217,17 @@ RUN \
   --mount=from=cratesio-can-dbc-3.0.2,source=/can-dbc-3.0.2,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/can-dbc-3.0.2 \
   --mount=from=out-10105863fb18eb2a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libderive_getters-10105863fb18eb2a.so,source=/libderive_getters-10105863fb18eb2a.so \
   --mount=from=out-80b37ce9903d0def,dst=/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-80b37ce9903d0def.rmeta,source=/libproc_macro2-80b37ce9903d0def.rmeta \
+  --mount=from=out-80b37ce9903d0def,dst=/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-80b37ce9903d0def.rlib,source=/libproc_macro2-80b37ce9903d0def.rlib \
   --mount=from=out-ca80afcc82eeec0a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-ca80afcc82eeec0a.rmeta,source=/libunicode_xid-ca80afcc82eeec0a.rmeta \
+  --mount=from=out-ca80afcc82eeec0a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-ca80afcc82eeec0a.rlib,source=/libunicode_xid-ca80afcc82eeec0a.rlib \
   --mount=from=out-dd5debcb2b51fc02,dst=/tmp/clis-dbcc_2-2-1/release/deps/libquote-dd5debcb2b51fc02.rmeta,source=/libquote-dd5debcb2b51fc02.rmeta \
+  --mount=from=out-dd5debcb2b51fc02,dst=/tmp/clis-dbcc_2-2-1/release/deps/libquote-dd5debcb2b51fc02.rlib,source=/libquote-dd5debcb2b51fc02.rlib \
   --mount=from=out-bbffa8c7e6a16356,dst=/tmp/clis-dbcc_2-2-1/release/deps/libsyn-bbffa8c7e6a16356.rmeta,source=/libsyn-bbffa8c7e6a16356.rmeta \
+  --mount=from=out-bbffa8c7e6a16356,dst=/tmp/clis-dbcc_2-2-1/release/deps/libsyn-bbffa8c7e6a16356.rlib,source=/libsyn-bbffa8c7e6a16356.rlib \
   --mount=from=out-cd5fc4bcd4e040ed,dst=/tmp/clis-dbcc_2-2-1/release/deps/libnom-cd5fc4bcd4e040ed.rmeta,source=/libnom-cd5fc4bcd4e040ed.rmeta \
+  --mount=from=out-cd5fc4bcd4e040ed,dst=/tmp/clis-dbcc_2-2-1/release/deps/libnom-cd5fc4bcd4e040ed.rlib,source=/libnom-cd5fc4bcd4e040ed.rlib \
   --mount=from=out-c93fd10415a641fd,dst=/tmp/clis-dbcc_2-2-1/release/deps/libmemchr-c93fd10415a641fd.rmeta,source=/libmemchr-c93fd10415a641fd.rmeta \
+  --mount=from=out-c93fd10415a641fd,dst=/tmp/clis-dbcc_2-2-1/release/deps/libmemchr-c93fd10415a641fd.rlib,source=/libmemchr-c93fd10415a641fd.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="can_dbc" \
@@ -1972,13 +2266,13 @@ COPY --from=dep-l-can-dbc-3.0.2-593834cb44ccbead /tmp/clis-dbcc_2-2-1/release/de
 ##     "c93fd10415a641fd",
 ## ]
 ## short_externs = [
-##     "derive_getters-10105863fb18eb2a",
-##     "proc_macro2-80b37ce9903d0def",
-##     "unicode_xid-ca80afcc82eeec0a",
-##     "quote-dd5debcb2b51fc02",
-##     "syn-bbffa8c7e6a16356",
-##     "nom-cd5fc4bcd4e040ed",
-##     "memchr-c93fd10415a641fd",
+##     "10105863fb18eb2a",
+##     "80b37ce9903d0def",
+##     "ca80afcc82eeec0a",
+##     "dd5debcb2b51fc02",
+##     "bbffa8c7e6a16356",
+##     "cd5fc4bcd4e040ed",
+##     "c93fd10415a641fd",
 ## ]
 ## writes = [
 ##     "deps/can_dbc-593834cb44ccbead.d",
@@ -1990,6 +2284,71 @@ COPY --from=dep-l-can-dbc-3.0.2-593834cb44ccbead /tmp/clis-dbcc_2-2-1/release/de
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-dbcc_2-2-1/release/deps/libcan_dbc-593834cb44ccbead.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-dbcc_2-2-1/release/deps/libcan_dbc-593834cb44ccbead.rlib","emit":"link"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-10105863fb18eb2a"
+## src = "/libderive_getters-10105863fb18eb2a.so"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libderive_getters-10105863fb18eb2a.so"
+## 
+## [[mounts]]
+## from = "out-80b37ce9903d0def"
+## src = "/libproc_macro2-80b37ce9903d0def.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-80b37ce9903d0def.rmeta"
+## 
+## [[mounts]]
+## from = "out-80b37ce9903d0def"
+## src = "/libproc_macro2-80b37ce9903d0def.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-80b37ce9903d0def.rlib"
+## 
+## [[mounts]]
+## from = "out-ca80afcc82eeec0a"
+## src = "/libunicode_xid-ca80afcc82eeec0a.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-ca80afcc82eeec0a.rmeta"
+## 
+## [[mounts]]
+## from = "out-ca80afcc82eeec0a"
+## src = "/libunicode_xid-ca80afcc82eeec0a.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-ca80afcc82eeec0a.rlib"
+## 
+## [[mounts]]
+## from = "out-dd5debcb2b51fc02"
+## src = "/libquote-dd5debcb2b51fc02.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libquote-dd5debcb2b51fc02.rmeta"
+## 
+## [[mounts]]
+## from = "out-dd5debcb2b51fc02"
+## src = "/libquote-dd5debcb2b51fc02.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libquote-dd5debcb2b51fc02.rlib"
+## 
+## [[mounts]]
+## from = "out-bbffa8c7e6a16356"
+## src = "/libsyn-bbffa8c7e6a16356.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libsyn-bbffa8c7e6a16356.rmeta"
+## 
+## [[mounts]]
+## from = "out-bbffa8c7e6a16356"
+## src = "/libsyn-bbffa8c7e6a16356.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libsyn-bbffa8c7e6a16356.rlib"
+## 
+## [[mounts]]
+## from = "out-cd5fc4bcd4e040ed"
+## src = "/libnom-cd5fc4bcd4e040ed.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libnom-cd5fc4bcd4e040ed.rmeta"
+## 
+## [[mounts]]
+## from = "out-cd5fc4bcd4e040ed"
+## src = "/libnom-cd5fc4bcd4e040ed.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libnom-cd5fc4bcd4e040ed.rlib"
+## 
+## [[mounts]]
+## from = "out-c93fd10415a641fd"
+## src = "/libmemchr-c93fd10415a641fd.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libmemchr-c93fd10415a641fd.rmeta"
+## 
+## [[mounts]]
+## from = "out-c93fd10415a641fd"
+## src = "/libmemchr-c93fd10415a641fd.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libmemchr-c93fd10415a641fd.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -2012,11 +2371,17 @@ COPY --from=dep-l-can-dbc-3.0.2-593834cb44ccbead /tmp/clis-dbcc_2-2-1/release/de
 ##   --mount=from=cratesio-can-dbc-3.0.2,source=/can-dbc-3.0.2,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/can-dbc-3.0.2 \
 ##   --mount=from=out-10105863fb18eb2a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libderive_getters-10105863fb18eb2a.so,source=/libderive_getters-10105863fb18eb2a.so \
 ##   --mount=from=out-80b37ce9903d0def,dst=/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-80b37ce9903d0def.rmeta,source=/libproc_macro2-80b37ce9903d0def.rmeta \
+##   --mount=from=out-80b37ce9903d0def,dst=/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-80b37ce9903d0def.rlib,source=/libproc_macro2-80b37ce9903d0def.rlib \
 ##   --mount=from=out-ca80afcc82eeec0a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-ca80afcc82eeec0a.rmeta,source=/libunicode_xid-ca80afcc82eeec0a.rmeta \
+##   --mount=from=out-ca80afcc82eeec0a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-ca80afcc82eeec0a.rlib,source=/libunicode_xid-ca80afcc82eeec0a.rlib \
 ##   --mount=from=out-dd5debcb2b51fc02,dst=/tmp/clis-dbcc_2-2-1/release/deps/libquote-dd5debcb2b51fc02.rmeta,source=/libquote-dd5debcb2b51fc02.rmeta \
+##   --mount=from=out-dd5debcb2b51fc02,dst=/tmp/clis-dbcc_2-2-1/release/deps/libquote-dd5debcb2b51fc02.rlib,source=/libquote-dd5debcb2b51fc02.rlib \
 ##   --mount=from=out-bbffa8c7e6a16356,dst=/tmp/clis-dbcc_2-2-1/release/deps/libsyn-bbffa8c7e6a16356.rmeta,source=/libsyn-bbffa8c7e6a16356.rmeta \
+##   --mount=from=out-bbffa8c7e6a16356,dst=/tmp/clis-dbcc_2-2-1/release/deps/libsyn-bbffa8c7e6a16356.rlib,source=/libsyn-bbffa8c7e6a16356.rlib \
 ##   --mount=from=out-cd5fc4bcd4e040ed,dst=/tmp/clis-dbcc_2-2-1/release/deps/libnom-cd5fc4bcd4e040ed.rmeta,source=/libnom-cd5fc4bcd4e040ed.rmeta \
+##   --mount=from=out-cd5fc4bcd4e040ed,dst=/tmp/clis-dbcc_2-2-1/release/deps/libnom-cd5fc4bcd4e040ed.rlib,source=/libnom-cd5fc4bcd4e040ed.rlib \
 ##   --mount=from=out-c93fd10415a641fd,dst=/tmp/clis-dbcc_2-2-1/release/deps/libmemchr-c93fd10415a641fd.rmeta,source=/libmemchr-c93fd10415a641fd.rmeta \
+##   --mount=from=out-c93fd10415a641fd,dst=/tmp/clis-dbcc_2-2-1/release/deps/libmemchr-c93fd10415a641fd.rlib,source=/libmemchr-c93fd10415a641fd.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="can_dbc" \
@@ -2158,6 +2523,7 @@ WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
   --mount=from=cratesio-heck-0.3.1,source=/heck-0.3.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/heck-0.3.1 \
   --mount=from=out-b06e8bcc96549ef0,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_segmentation-b06e8bcc96549ef0.rmeta,source=/libunicode_segmentation-b06e8bcc96549ef0.rmeta \
+  --mount=from=out-b06e8bcc96549ef0,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_segmentation-b06e8bcc96549ef0.rlib,source=/libunicode_segmentation-b06e8bcc96549ef0.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="heck" \
@@ -2187,7 +2553,7 @@ COPY --from=dep-l-heck-0.3.1-7d0dcf7e7b45836f /tmp/clis-dbcc_2-2-1/release/deps/
 
 ## this = "7d0dcf7e7b45836f"
 ## deps = ["b06e8bcc96549ef0"]
-## short_externs = ["unicode_segmentation-b06e8bcc96549ef0"]
+## short_externs = ["b06e8bcc96549ef0"]
 ## writes = [
 ##     "deps/heck-7d0dcf7e7b45836f.d",
 ##     "deps/libheck-7d0dcf7e7b45836f.rmeta",
@@ -2198,6 +2564,16 @@ COPY --from=dep-l-heck-0.3.1-7d0dcf7e7b45836f /tmp/clis-dbcc_2-2-1/release/deps/
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-dbcc_2-2-1/release/deps/libheck-7d0dcf7e7b45836f.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-dbcc_2-2-1/release/deps/libheck-7d0dcf7e7b45836f.rlib","emit":"link"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-b06e8bcc96549ef0"
+## src = "/libunicode_segmentation-b06e8bcc96549ef0.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_segmentation-b06e8bcc96549ef0.rmeta"
+## 
+## [[mounts]]
+## from = "out-b06e8bcc96549ef0"
+## src = "/libunicode_segmentation-b06e8bcc96549ef0.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_segmentation-b06e8bcc96549ef0.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -2219,6 +2595,7 @@ COPY --from=dep-l-heck-0.3.1-7d0dcf7e7b45836f /tmp/clis-dbcc_2-2-1/release/deps/
 ## RUN \
 ##   --mount=from=cratesio-heck-0.3.1,source=/heck-0.3.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/heck-0.3.1 \
 ##   --mount=from=out-b06e8bcc96549ef0,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_segmentation-b06e8bcc96549ef0.rmeta,source=/libunicode_segmentation-b06e8bcc96549ef0.rmeta \
+##   --mount=from=out-b06e8bcc96549ef0,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_segmentation-b06e8bcc96549ef0.rlib,source=/libunicode_segmentation-b06e8bcc96549ef0.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="heck" \
@@ -2356,6 +2733,7 @@ WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
   --mount=from=cratesio-log-0.4.11,source=/log-0.4.11,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/log-0.4.11 \
   --mount=from=out-abefcc22b095b628,dst=/tmp/clis-dbcc_2-2-1/release/deps/libcfg_if-abefcc22b095b628.rmeta,source=/libcfg_if-abefcc22b095b628.rmeta \
+  --mount=from=out-abefcc22b095b628,dst=/tmp/clis-dbcc_2-2-1/release/deps/libcfg_if-abefcc22b095b628.rlib,source=/libcfg_if-abefcc22b095b628.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="log" \
@@ -2386,7 +2764,7 @@ COPY --from=dep-l-log-0.4.11-09be6f37eb701f15 /tmp/clis-dbcc_2-2-1/release/deps/
 
 ## this = "09be6f37eb701f15"
 ## deps = ["abefcc22b095b628"]
-## short_externs = ["cfg_if-abefcc22b095b628"]
+## short_externs = ["abefcc22b095b628"]
 ## writes = [
 ##     "deps/log-09be6f37eb701f15.d",
 ##     "deps/liblog-09be6f37eb701f15.rmeta",
@@ -2405,6 +2783,16 @@ COPY --from=dep-l-log-0.4.11-09be6f37eb701f15 /tmp/clis-dbcc_2-2-1/release/deps/
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-dbcc_2-2-1/release/deps/liblog-09be6f37eb701f15.rlib","emit":"link"}',
 ##     '{"$message_type":"diagnostic","message":"7 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 7 warnings emitted\u001b[0m\n\n"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-abefcc22b095b628"
+## src = "/libcfg_if-abefcc22b095b628.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libcfg_if-abefcc22b095b628.rmeta"
+## 
+## [[mounts]]
+## from = "out-abefcc22b095b628"
+## src = "/libcfg_if-abefcc22b095b628.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libcfg_if-abefcc22b095b628.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -2426,6 +2814,7 @@ COPY --from=dep-l-log-0.4.11-09be6f37eb701f15 /tmp/clis-dbcc_2-2-1/release/deps/
 ## RUN \
 ##   --mount=from=cratesio-log-0.4.11,source=/log-0.4.11,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/log-0.4.11 \
 ##   --mount=from=out-abefcc22b095b628,dst=/tmp/clis-dbcc_2-2-1/release/deps/libcfg_if-abefcc22b095b628.rmeta,source=/libcfg_if-abefcc22b095b628.rmeta \
+##   --mount=from=out-abefcc22b095b628,dst=/tmp/clis-dbcc_2-2-1/release/deps/libcfg_if-abefcc22b095b628.rlib,source=/libcfg_if-abefcc22b095b628.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="log" \
@@ -2616,6 +3005,7 @@ WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
   --mount=from=cratesio-atty-0.2.14,source=/atty-0.2.14,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/atty-0.2.14 \
   --mount=from=out-087afb0c1713a9a6,dst=/tmp/clis-dbcc_2-2-1/release/deps/liblibc-087afb0c1713a9a6.rmeta,source=/liblibc-087afb0c1713a9a6.rmeta \
+  --mount=from=out-087afb0c1713a9a6,dst=/tmp/clis-dbcc_2-2-1/release/deps/liblibc-087afb0c1713a9a6.rlib,source=/liblibc-087afb0c1713a9a6.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="atty" \
@@ -2645,7 +3035,7 @@ COPY --from=dep-l-atty-0.2.14-737035cdf92a82de /tmp/clis-dbcc_2-2-1/release/deps
 
 ## this = "737035cdf92a82de"
 ## deps = ["087afb0c1713a9a6"]
-## short_externs = ["libc-087afb0c1713a9a6"]
+## short_externs = ["087afb0c1713a9a6"]
 ## writes = [
 ##     "deps/atty-737035cdf92a82de.d",
 ##     "deps/libatty-737035cdf92a82de.rmeta",
@@ -2656,6 +3046,16 @@ COPY --from=dep-l-atty-0.2.14-737035cdf92a82de /tmp/clis-dbcc_2-2-1/release/deps
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-dbcc_2-2-1/release/deps/libatty-737035cdf92a82de.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-dbcc_2-2-1/release/deps/libatty-737035cdf92a82de.rlib","emit":"link"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-087afb0c1713a9a6"
+## src = "/liblibc-087afb0c1713a9a6.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/liblibc-087afb0c1713a9a6.rmeta"
+## 
+## [[mounts]]
+## from = "out-087afb0c1713a9a6"
+## src = "/liblibc-087afb0c1713a9a6.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/liblibc-087afb0c1713a9a6.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -2677,6 +3077,7 @@ COPY --from=dep-l-atty-0.2.14-737035cdf92a82de /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
 ##   --mount=from=cratesio-atty-0.2.14,source=/atty-0.2.14,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/atty-0.2.14 \
 ##   --mount=from=out-087afb0c1713a9a6,dst=/tmp/clis-dbcc_2-2-1/release/deps/liblibc-087afb0c1713a9a6.rmeta,source=/liblibc-087afb0c1713a9a6.rmeta \
+##   --mount=from=out-087afb0c1713a9a6,dst=/tmp/clis-dbcc_2-2-1/release/deps/liblibc-087afb0c1713a9a6.rlib,source=/liblibc-087afb0c1713a9a6.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="atty" \
@@ -2814,6 +3215,7 @@ WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
   --mount=from=cratesio-humantime-1.3.0,source=/humantime-1.3.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/humantime-1.3.0 \
   --mount=from=out-bd3d4e33b0f59f1b,dst=/tmp/clis-dbcc_2-2-1/release/deps/libquick_error-bd3d4e33b0f59f1b.rmeta,source=/libquick_error-bd3d4e33b0f59f1b.rmeta \
+  --mount=from=out-bd3d4e33b0f59f1b,dst=/tmp/clis-dbcc_2-2-1/release/deps/libquick_error-bd3d4e33b0f59f1b.rlib,source=/libquick_error-bd3d4e33b0f59f1b.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="humantime" \
@@ -2843,7 +3245,7 @@ COPY --from=dep-l-humantime-1.3.0-3e3dde196d8efa81 /tmp/clis-dbcc_2-2-1/release/
 
 ## this = "3e3dde196d8efa81"
 ## deps = ["bd3d4e33b0f59f1b"]
-## short_externs = ["quick_error-bd3d4e33b0f59f1b"]
+## short_externs = ["bd3d4e33b0f59f1b"]
 ## writes = [
 ##     "deps/humantime-3e3dde196d8efa81.d",
 ##     "deps/libhumantime-3e3dde196d8efa81.rmeta",
@@ -2884,6 +3286,16 @@ COPY --from=dep-l-humantime-1.3.0-3e3dde196d8efa81 /tmp/clis-dbcc_2-2-1/release/
 ##     '{"$message_type":"diagnostic","message":"28 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 28 warnings emitted\u001b[0m\n\n"}',
 ## ]
 ## 
+## [[mounts]]
+## from = "out-bd3d4e33b0f59f1b"
+## src = "/libquick_error-bd3d4e33b0f59f1b.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libquick_error-bd3d4e33b0f59f1b.rmeta"
+## 
+## [[mounts]]
+## from = "out-bd3d4e33b0f59f1b"
+## src = "/libquick_error-bd3d4e33b0f59f1b.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libquick_error-bd3d4e33b0f59f1b.rlib"
+## 
 ## [[stages]]
 ## name = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.86.0-slim@sha256:57d415bbd61ce11e2d5f73de068103c7bd9f3188dc132c97cef4a8f62989e944 AS rust-base"
@@ -2904,6 +3316,7 @@ COPY --from=dep-l-humantime-1.3.0-3e3dde196d8efa81 /tmp/clis-dbcc_2-2-1/release/
 ## RUN \
 ##   --mount=from=cratesio-humantime-1.3.0,source=/humantime-1.3.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/humantime-1.3.0 \
 ##   --mount=from=out-bd3d4e33b0f59f1b,dst=/tmp/clis-dbcc_2-2-1/release/deps/libquick_error-bd3d4e33b0f59f1b.rmeta,source=/libquick_error-bd3d4e33b0f59f1b.rmeta \
+##   --mount=from=out-bd3d4e33b0f59f1b,dst=/tmp/clis-dbcc_2-2-1/release/deps/libquick_error-bd3d4e33b0f59f1b.rlib,source=/libquick_error-bd3d4e33b0f59f1b.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="humantime" \
@@ -2944,6 +3357,7 @@ WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
   --mount=from=cratesio-aho-corasick-0.7.14,source=/aho-corasick-0.7.14,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aho-corasick-0.7.14 \
   --mount=from=out-c93fd10415a641fd,dst=/tmp/clis-dbcc_2-2-1/release/deps/libmemchr-c93fd10415a641fd.rmeta,source=/libmemchr-c93fd10415a641fd.rmeta \
+  --mount=from=out-c93fd10415a641fd,dst=/tmp/clis-dbcc_2-2-1/release/deps/libmemchr-c93fd10415a641fd.rlib,source=/libmemchr-c93fd10415a641fd.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="aho_corasick" \
@@ -2973,7 +3387,7 @@ COPY --from=dep-l-aho-corasick-0.7.14-014f7ab42daca0d7 /tmp/clis-dbcc_2-2-1/rele
 
 ## this = "014f7ab42daca0d7"
 ## deps = ["c93fd10415a641fd"]
-## short_externs = ["memchr-c93fd10415a641fd"]
+## short_externs = ["c93fd10415a641fd"]
 ## writes = [
 ##     "deps/aho_corasick-014f7ab42daca0d7.d",
 ##     "deps/libaho_corasick-014f7ab42daca0d7.rmeta",
@@ -2989,6 +3403,16 @@ COPY --from=dep-l-aho-corasick-0.7.14-014f7ab42daca0d7 /tmp/clis-dbcc_2-2-1/rele
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-dbcc_2-2-1/release/deps/libaho_corasick-014f7ab42daca0d7.rlib","emit":"link"}',
 ##     '{"$message_type":"diagnostic","message":"4 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 4 warnings emitted\u001b[0m\n\n"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-c93fd10415a641fd"
+## src = "/libmemchr-c93fd10415a641fd.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libmemchr-c93fd10415a641fd.rmeta"
+## 
+## [[mounts]]
+## from = "out-c93fd10415a641fd"
+## src = "/libmemchr-c93fd10415a641fd.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libmemchr-c93fd10415a641fd.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -3010,6 +3434,7 @@ COPY --from=dep-l-aho-corasick-0.7.14-014f7ab42daca0d7 /tmp/clis-dbcc_2-2-1/rele
 ## RUN \
 ##   --mount=from=cratesio-aho-corasick-0.7.14,source=/aho-corasick-0.7.14,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aho-corasick-0.7.14 \
 ##   --mount=from=out-c93fd10415a641fd,dst=/tmp/clis-dbcc_2-2-1/release/deps/libmemchr-c93fd10415a641fd.rmeta,source=/libmemchr-c93fd10415a641fd.rmeta \
+##   --mount=from=out-c93fd10415a641fd,dst=/tmp/clis-dbcc_2-2-1/release/deps/libmemchr-c93fd10415a641fd.rlib,source=/libmemchr-c93fd10415a641fd.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="aho_corasick" \
@@ -3251,6 +3676,7 @@ WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
   --mount=from=cratesio-thread_local-1.0.1,source=/thread_local-1.0.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thread_local-1.0.1 \
   --mount=from=out-a79af56de238e2b5,dst=/tmp/clis-dbcc_2-2-1/release/deps/liblazy_static-a79af56de238e2b5.rmeta,source=/liblazy_static-a79af56de238e2b5.rmeta \
+  --mount=from=out-a79af56de238e2b5,dst=/tmp/clis-dbcc_2-2-1/release/deps/liblazy_static-a79af56de238e2b5.rlib,source=/liblazy_static-a79af56de238e2b5.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="thread_local" \
@@ -3280,7 +3706,7 @@ COPY --from=dep-l-thread_local-1.0.1-3ace2abd55187163 /tmp/clis-dbcc_2-2-1/relea
 
 ## this = "3ace2abd55187163"
 ## deps = ["a79af56de238e2b5"]
-## short_externs = ["lazy_static-a79af56de238e2b5"]
+## short_externs = ["a79af56de238e2b5"]
 ## writes = [
 ##     "deps/thread_local-3ace2abd55187163.d",
 ##     "deps/libthread_local-3ace2abd55187163.rmeta",
@@ -3296,6 +3722,16 @@ COPY --from=dep-l-thread_local-1.0.1-3ace2abd55187163 /tmp/clis-dbcc_2-2-1/relea
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-dbcc_2-2-1/release/deps/libthread_local-3ace2abd55187163.rlib","emit":"link"}',
 ##     '{"$message_type":"diagnostic","message":"4 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 4 warnings emitted\u001b[0m\n\n"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-a79af56de238e2b5"
+## src = "/liblazy_static-a79af56de238e2b5.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/liblazy_static-a79af56de238e2b5.rmeta"
+## 
+## [[mounts]]
+## from = "out-a79af56de238e2b5"
+## src = "/liblazy_static-a79af56de238e2b5.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/liblazy_static-a79af56de238e2b5.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -3317,6 +3753,7 @@ COPY --from=dep-l-thread_local-1.0.1-3ace2abd55187163 /tmp/clis-dbcc_2-2-1/relea
 ## RUN \
 ##   --mount=from=cratesio-thread_local-1.0.1,source=/thread_local-1.0.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thread_local-1.0.1 \
 ##   --mount=from=out-a79af56de238e2b5,dst=/tmp/clis-dbcc_2-2-1/release/deps/liblazy_static-a79af56de238e2b5.rmeta,source=/liblazy_static-a79af56de238e2b5.rmeta \
+##   --mount=from=out-a79af56de238e2b5,dst=/tmp/clis-dbcc_2-2-1/release/deps/liblazy_static-a79af56de238e2b5.rlib,source=/liblazy_static-a79af56de238e2b5.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="thread_local" \
@@ -3357,10 +3794,15 @@ WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
   --mount=from=cratesio-regex-1.4.1,source=/regex-1.4.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/regex-1.4.1 \
   --mount=from=out-014f7ab42daca0d7,dst=/tmp/clis-dbcc_2-2-1/release/deps/libaho_corasick-014f7ab42daca0d7.rmeta,source=/libaho_corasick-014f7ab42daca0d7.rmeta \
+  --mount=from=out-014f7ab42daca0d7,dst=/tmp/clis-dbcc_2-2-1/release/deps/libaho_corasick-014f7ab42daca0d7.rlib,source=/libaho_corasick-014f7ab42daca0d7.rlib \
   --mount=from=out-c93fd10415a641fd,dst=/tmp/clis-dbcc_2-2-1/release/deps/libmemchr-c93fd10415a641fd.rmeta,source=/libmemchr-c93fd10415a641fd.rmeta \
+  --mount=from=out-c93fd10415a641fd,dst=/tmp/clis-dbcc_2-2-1/release/deps/libmemchr-c93fd10415a641fd.rlib,source=/libmemchr-c93fd10415a641fd.rlib \
   --mount=from=out-eec8efd7d7dadd3c,dst=/tmp/clis-dbcc_2-2-1/release/deps/libregex_syntax-eec8efd7d7dadd3c.rmeta,source=/libregex_syntax-eec8efd7d7dadd3c.rmeta \
+  --mount=from=out-eec8efd7d7dadd3c,dst=/tmp/clis-dbcc_2-2-1/release/deps/libregex_syntax-eec8efd7d7dadd3c.rlib,source=/libregex_syntax-eec8efd7d7dadd3c.rlib \
   --mount=from=out-3ace2abd55187163,dst=/tmp/clis-dbcc_2-2-1/release/deps/libthread_local-3ace2abd55187163.rmeta,source=/libthread_local-3ace2abd55187163.rmeta \
+  --mount=from=out-3ace2abd55187163,dst=/tmp/clis-dbcc_2-2-1/release/deps/libthread_local-3ace2abd55187163.rlib,source=/libthread_local-3ace2abd55187163.rlib \
   --mount=from=out-a79af56de238e2b5,dst=/tmp/clis-dbcc_2-2-1/release/deps/liblazy_static-a79af56de238e2b5.rmeta,source=/liblazy_static-a79af56de238e2b5.rmeta \
+  --mount=from=out-a79af56de238e2b5,dst=/tmp/clis-dbcc_2-2-1/release/deps/liblazy_static-a79af56de238e2b5.rlib,source=/liblazy_static-a79af56de238e2b5.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="regex" \
@@ -3397,11 +3839,11 @@ COPY --from=dep-l-regex-1.4.1-5ba8c6f49cc2732d /tmp/clis-dbcc_2-2-1/release/deps
 ##     "a79af56de238e2b5",
 ## ]
 ## short_externs = [
-##     "aho_corasick-014f7ab42daca0d7",
-##     "memchr-c93fd10415a641fd",
-##     "regex_syntax-eec8efd7d7dadd3c",
-##     "thread_local-3ace2abd55187163",
-##     "lazy_static-a79af56de238e2b5",
+##     "014f7ab42daca0d7",
+##     "c93fd10415a641fd",
+##     "eec8efd7d7dadd3c",
+##     "3ace2abd55187163",
+##     "a79af56de238e2b5",
 ## ]
 ## writes = [
 ##     "deps/regex-5ba8c6f49cc2732d.d",
@@ -3413,6 +3855,56 @@ COPY --from=dep-l-regex-1.4.1-5ba8c6f49cc2732d /tmp/clis-dbcc_2-2-1/release/deps
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-dbcc_2-2-1/release/deps/libregex-5ba8c6f49cc2732d.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-dbcc_2-2-1/release/deps/libregex-5ba8c6f49cc2732d.rlib","emit":"link"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-014f7ab42daca0d7"
+## src = "/libaho_corasick-014f7ab42daca0d7.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libaho_corasick-014f7ab42daca0d7.rmeta"
+## 
+## [[mounts]]
+## from = "out-014f7ab42daca0d7"
+## src = "/libaho_corasick-014f7ab42daca0d7.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libaho_corasick-014f7ab42daca0d7.rlib"
+## 
+## [[mounts]]
+## from = "out-c93fd10415a641fd"
+## src = "/libmemchr-c93fd10415a641fd.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libmemchr-c93fd10415a641fd.rmeta"
+## 
+## [[mounts]]
+## from = "out-c93fd10415a641fd"
+## src = "/libmemchr-c93fd10415a641fd.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libmemchr-c93fd10415a641fd.rlib"
+## 
+## [[mounts]]
+## from = "out-eec8efd7d7dadd3c"
+## src = "/libregex_syntax-eec8efd7d7dadd3c.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libregex_syntax-eec8efd7d7dadd3c.rmeta"
+## 
+## [[mounts]]
+## from = "out-eec8efd7d7dadd3c"
+## src = "/libregex_syntax-eec8efd7d7dadd3c.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libregex_syntax-eec8efd7d7dadd3c.rlib"
+## 
+## [[mounts]]
+## from = "out-3ace2abd55187163"
+## src = "/libthread_local-3ace2abd55187163.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libthread_local-3ace2abd55187163.rmeta"
+## 
+## [[mounts]]
+## from = "out-3ace2abd55187163"
+## src = "/libthread_local-3ace2abd55187163.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libthread_local-3ace2abd55187163.rlib"
+## 
+## [[mounts]]
+## from = "out-a79af56de238e2b5"
+## src = "/liblazy_static-a79af56de238e2b5.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/liblazy_static-a79af56de238e2b5.rmeta"
+## 
+## [[mounts]]
+## from = "out-a79af56de238e2b5"
+## src = "/liblazy_static-a79af56de238e2b5.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/liblazy_static-a79af56de238e2b5.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -3434,10 +3926,15 @@ COPY --from=dep-l-regex-1.4.1-5ba8c6f49cc2732d /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
 ##   --mount=from=cratesio-regex-1.4.1,source=/regex-1.4.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/regex-1.4.1 \
 ##   --mount=from=out-014f7ab42daca0d7,dst=/tmp/clis-dbcc_2-2-1/release/deps/libaho_corasick-014f7ab42daca0d7.rmeta,source=/libaho_corasick-014f7ab42daca0d7.rmeta \
+##   --mount=from=out-014f7ab42daca0d7,dst=/tmp/clis-dbcc_2-2-1/release/deps/libaho_corasick-014f7ab42daca0d7.rlib,source=/libaho_corasick-014f7ab42daca0d7.rlib \
 ##   --mount=from=out-c93fd10415a641fd,dst=/tmp/clis-dbcc_2-2-1/release/deps/libmemchr-c93fd10415a641fd.rmeta,source=/libmemchr-c93fd10415a641fd.rmeta \
+##   --mount=from=out-c93fd10415a641fd,dst=/tmp/clis-dbcc_2-2-1/release/deps/libmemchr-c93fd10415a641fd.rlib,source=/libmemchr-c93fd10415a641fd.rlib \
 ##   --mount=from=out-eec8efd7d7dadd3c,dst=/tmp/clis-dbcc_2-2-1/release/deps/libregex_syntax-eec8efd7d7dadd3c.rmeta,source=/libregex_syntax-eec8efd7d7dadd3c.rmeta \
+##   --mount=from=out-eec8efd7d7dadd3c,dst=/tmp/clis-dbcc_2-2-1/release/deps/libregex_syntax-eec8efd7d7dadd3c.rlib,source=/libregex_syntax-eec8efd7d7dadd3c.rlib \
 ##   --mount=from=out-3ace2abd55187163,dst=/tmp/clis-dbcc_2-2-1/release/deps/libthread_local-3ace2abd55187163.rmeta,source=/libthread_local-3ace2abd55187163.rmeta \
+##   --mount=from=out-3ace2abd55187163,dst=/tmp/clis-dbcc_2-2-1/release/deps/libthread_local-3ace2abd55187163.rlib,source=/libthread_local-3ace2abd55187163.rlib \
 ##   --mount=from=out-a79af56de238e2b5,dst=/tmp/clis-dbcc_2-2-1/release/deps/liblazy_static-a79af56de238e2b5.rmeta,source=/liblazy_static-a79af56de238e2b5.rmeta \
+##   --mount=from=out-a79af56de238e2b5,dst=/tmp/clis-dbcc_2-2-1/release/deps/liblazy_static-a79af56de238e2b5.rlib,source=/liblazy_static-a79af56de238e2b5.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="regex" \
@@ -3575,18 +4072,31 @@ WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
   --mount=from=cratesio-env_logger-0.7.1,source=/env_logger-0.7.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/env_logger-0.7.1 \
   --mount=from=out-737035cdf92a82de,dst=/tmp/clis-dbcc_2-2-1/release/deps/libatty-737035cdf92a82de.rmeta,source=/libatty-737035cdf92a82de.rmeta \
+  --mount=from=out-737035cdf92a82de,dst=/tmp/clis-dbcc_2-2-1/release/deps/libatty-737035cdf92a82de.rlib,source=/libatty-737035cdf92a82de.rlib \
   --mount=from=out-087afb0c1713a9a6,dst=/tmp/clis-dbcc_2-2-1/release/deps/liblibc-087afb0c1713a9a6.rmeta,source=/liblibc-087afb0c1713a9a6.rmeta \
+  --mount=from=out-087afb0c1713a9a6,dst=/tmp/clis-dbcc_2-2-1/release/deps/liblibc-087afb0c1713a9a6.rlib,source=/liblibc-087afb0c1713a9a6.rlib \
   --mount=from=out-3e3dde196d8efa81,dst=/tmp/clis-dbcc_2-2-1/release/deps/libhumantime-3e3dde196d8efa81.rmeta,source=/libhumantime-3e3dde196d8efa81.rmeta \
+  --mount=from=out-3e3dde196d8efa81,dst=/tmp/clis-dbcc_2-2-1/release/deps/libhumantime-3e3dde196d8efa81.rlib,source=/libhumantime-3e3dde196d8efa81.rlib \
   --mount=from=out-bd3d4e33b0f59f1b,dst=/tmp/clis-dbcc_2-2-1/release/deps/libquick_error-bd3d4e33b0f59f1b.rmeta,source=/libquick_error-bd3d4e33b0f59f1b.rmeta \
+  --mount=from=out-bd3d4e33b0f59f1b,dst=/tmp/clis-dbcc_2-2-1/release/deps/libquick_error-bd3d4e33b0f59f1b.rlib,source=/libquick_error-bd3d4e33b0f59f1b.rlib \
   --mount=from=out-09be6f37eb701f15,dst=/tmp/clis-dbcc_2-2-1/release/deps/liblog-09be6f37eb701f15.rmeta,source=/liblog-09be6f37eb701f15.rmeta \
+  --mount=from=out-09be6f37eb701f15,dst=/tmp/clis-dbcc_2-2-1/release/deps/liblog-09be6f37eb701f15.rlib,source=/liblog-09be6f37eb701f15.rlib \
   --mount=from=out-abefcc22b095b628,dst=/tmp/clis-dbcc_2-2-1/release/deps/libcfg_if-abefcc22b095b628.rmeta,source=/libcfg_if-abefcc22b095b628.rmeta \
+  --mount=from=out-abefcc22b095b628,dst=/tmp/clis-dbcc_2-2-1/release/deps/libcfg_if-abefcc22b095b628.rlib,source=/libcfg_if-abefcc22b095b628.rlib \
   --mount=from=out-5ba8c6f49cc2732d,dst=/tmp/clis-dbcc_2-2-1/release/deps/libregex-5ba8c6f49cc2732d.rmeta,source=/libregex-5ba8c6f49cc2732d.rmeta \
+  --mount=from=out-5ba8c6f49cc2732d,dst=/tmp/clis-dbcc_2-2-1/release/deps/libregex-5ba8c6f49cc2732d.rlib,source=/libregex-5ba8c6f49cc2732d.rlib \
   --mount=from=out-014f7ab42daca0d7,dst=/tmp/clis-dbcc_2-2-1/release/deps/libaho_corasick-014f7ab42daca0d7.rmeta,source=/libaho_corasick-014f7ab42daca0d7.rmeta \
+  --mount=from=out-014f7ab42daca0d7,dst=/tmp/clis-dbcc_2-2-1/release/deps/libaho_corasick-014f7ab42daca0d7.rlib,source=/libaho_corasick-014f7ab42daca0d7.rlib \
   --mount=from=out-c93fd10415a641fd,dst=/tmp/clis-dbcc_2-2-1/release/deps/libmemchr-c93fd10415a641fd.rmeta,source=/libmemchr-c93fd10415a641fd.rmeta \
+  --mount=from=out-c93fd10415a641fd,dst=/tmp/clis-dbcc_2-2-1/release/deps/libmemchr-c93fd10415a641fd.rlib,source=/libmemchr-c93fd10415a641fd.rlib \
   --mount=from=out-eec8efd7d7dadd3c,dst=/tmp/clis-dbcc_2-2-1/release/deps/libregex_syntax-eec8efd7d7dadd3c.rmeta,source=/libregex_syntax-eec8efd7d7dadd3c.rmeta \
+  --mount=from=out-eec8efd7d7dadd3c,dst=/tmp/clis-dbcc_2-2-1/release/deps/libregex_syntax-eec8efd7d7dadd3c.rlib,source=/libregex_syntax-eec8efd7d7dadd3c.rlib \
   --mount=from=out-3ace2abd55187163,dst=/tmp/clis-dbcc_2-2-1/release/deps/libthread_local-3ace2abd55187163.rmeta,source=/libthread_local-3ace2abd55187163.rmeta \
+  --mount=from=out-3ace2abd55187163,dst=/tmp/clis-dbcc_2-2-1/release/deps/libthread_local-3ace2abd55187163.rlib,source=/libthread_local-3ace2abd55187163.rlib \
   --mount=from=out-a79af56de238e2b5,dst=/tmp/clis-dbcc_2-2-1/release/deps/liblazy_static-a79af56de238e2b5.rmeta,source=/liblazy_static-a79af56de238e2b5.rmeta \
+  --mount=from=out-a79af56de238e2b5,dst=/tmp/clis-dbcc_2-2-1/release/deps/liblazy_static-a79af56de238e2b5.rlib,source=/liblazy_static-a79af56de238e2b5.rlib \
   --mount=from=out-3d5a70ee74f70e2b,dst=/tmp/clis-dbcc_2-2-1/release/deps/libtermcolor-3d5a70ee74f70e2b.rmeta,source=/libtermcolor-3d5a70ee74f70e2b.rmeta \
+  --mount=from=out-3d5a70ee74f70e2b,dst=/tmp/clis-dbcc_2-2-1/release/deps/libtermcolor-3d5a70ee74f70e2b.rlib,source=/libtermcolor-3d5a70ee74f70e2b.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="env_logger" \
@@ -3631,19 +4141,19 @@ COPY --from=dep-l-env_logger-0.7.1-94c0a2bd3b1451c8 /tmp/clis-dbcc_2-2-1/release
 ##     "3d5a70ee74f70e2b",
 ## ]
 ## short_externs = [
-##     "atty-737035cdf92a82de",
-##     "libc-087afb0c1713a9a6",
-##     "humantime-3e3dde196d8efa81",
-##     "quick_error-bd3d4e33b0f59f1b",
-##     "log-09be6f37eb701f15",
-##     "cfg_if-abefcc22b095b628",
-##     "regex-5ba8c6f49cc2732d",
-##     "aho_corasick-014f7ab42daca0d7",
-##     "memchr-c93fd10415a641fd",
-##     "regex_syntax-eec8efd7d7dadd3c",
-##     "thread_local-3ace2abd55187163",
-##     "lazy_static-a79af56de238e2b5",
-##     "termcolor-3d5a70ee74f70e2b",
+##     "737035cdf92a82de",
+##     "087afb0c1713a9a6",
+##     "3e3dde196d8efa81",
+##     "bd3d4e33b0f59f1b",
+##     "09be6f37eb701f15",
+##     "abefcc22b095b628",
+##     "5ba8c6f49cc2732d",
+##     "014f7ab42daca0d7",
+##     "c93fd10415a641fd",
+##     "eec8efd7d7dadd3c",
+##     "3ace2abd55187163",
+##     "a79af56de238e2b5",
+##     "3d5a70ee74f70e2b",
 ## ]
 ## writes = [
 ##     "deps/env_logger-94c0a2bd3b1451c8.d",
@@ -3658,6 +4168,136 @@ COPY --from=dep-l-env_logger-0.7.1-94c0a2bd3b1451c8 /tmp/clis-dbcc_2-2-1/release
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-dbcc_2-2-1/release/deps/libenv_logger-94c0a2bd3b1451c8.rlib","emit":"link"}',
 ##     '{"$message_type":"diagnostic","message":"2 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 2 warnings emitted\u001b[0m\n\n"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-737035cdf92a82de"
+## src = "/libatty-737035cdf92a82de.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libatty-737035cdf92a82de.rmeta"
+## 
+## [[mounts]]
+## from = "out-737035cdf92a82de"
+## src = "/libatty-737035cdf92a82de.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libatty-737035cdf92a82de.rlib"
+## 
+## [[mounts]]
+## from = "out-087afb0c1713a9a6"
+## src = "/liblibc-087afb0c1713a9a6.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/liblibc-087afb0c1713a9a6.rmeta"
+## 
+## [[mounts]]
+## from = "out-087afb0c1713a9a6"
+## src = "/liblibc-087afb0c1713a9a6.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/liblibc-087afb0c1713a9a6.rlib"
+## 
+## [[mounts]]
+## from = "out-3e3dde196d8efa81"
+## src = "/libhumantime-3e3dde196d8efa81.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libhumantime-3e3dde196d8efa81.rmeta"
+## 
+## [[mounts]]
+## from = "out-3e3dde196d8efa81"
+## src = "/libhumantime-3e3dde196d8efa81.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libhumantime-3e3dde196d8efa81.rlib"
+## 
+## [[mounts]]
+## from = "out-bd3d4e33b0f59f1b"
+## src = "/libquick_error-bd3d4e33b0f59f1b.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libquick_error-bd3d4e33b0f59f1b.rmeta"
+## 
+## [[mounts]]
+## from = "out-bd3d4e33b0f59f1b"
+## src = "/libquick_error-bd3d4e33b0f59f1b.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libquick_error-bd3d4e33b0f59f1b.rlib"
+## 
+## [[mounts]]
+## from = "out-09be6f37eb701f15"
+## src = "/liblog-09be6f37eb701f15.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/liblog-09be6f37eb701f15.rmeta"
+## 
+## [[mounts]]
+## from = "out-09be6f37eb701f15"
+## src = "/liblog-09be6f37eb701f15.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/liblog-09be6f37eb701f15.rlib"
+## 
+## [[mounts]]
+## from = "out-abefcc22b095b628"
+## src = "/libcfg_if-abefcc22b095b628.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libcfg_if-abefcc22b095b628.rmeta"
+## 
+## [[mounts]]
+## from = "out-abefcc22b095b628"
+## src = "/libcfg_if-abefcc22b095b628.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libcfg_if-abefcc22b095b628.rlib"
+## 
+## [[mounts]]
+## from = "out-5ba8c6f49cc2732d"
+## src = "/libregex-5ba8c6f49cc2732d.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libregex-5ba8c6f49cc2732d.rmeta"
+## 
+## [[mounts]]
+## from = "out-5ba8c6f49cc2732d"
+## src = "/libregex-5ba8c6f49cc2732d.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libregex-5ba8c6f49cc2732d.rlib"
+## 
+## [[mounts]]
+## from = "out-014f7ab42daca0d7"
+## src = "/libaho_corasick-014f7ab42daca0d7.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libaho_corasick-014f7ab42daca0d7.rmeta"
+## 
+## [[mounts]]
+## from = "out-014f7ab42daca0d7"
+## src = "/libaho_corasick-014f7ab42daca0d7.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libaho_corasick-014f7ab42daca0d7.rlib"
+## 
+## [[mounts]]
+## from = "out-c93fd10415a641fd"
+## src = "/libmemchr-c93fd10415a641fd.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libmemchr-c93fd10415a641fd.rmeta"
+## 
+## [[mounts]]
+## from = "out-c93fd10415a641fd"
+## src = "/libmemchr-c93fd10415a641fd.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libmemchr-c93fd10415a641fd.rlib"
+## 
+## [[mounts]]
+## from = "out-eec8efd7d7dadd3c"
+## src = "/libregex_syntax-eec8efd7d7dadd3c.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libregex_syntax-eec8efd7d7dadd3c.rmeta"
+## 
+## [[mounts]]
+## from = "out-eec8efd7d7dadd3c"
+## src = "/libregex_syntax-eec8efd7d7dadd3c.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libregex_syntax-eec8efd7d7dadd3c.rlib"
+## 
+## [[mounts]]
+## from = "out-3ace2abd55187163"
+## src = "/libthread_local-3ace2abd55187163.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libthread_local-3ace2abd55187163.rmeta"
+## 
+## [[mounts]]
+## from = "out-3ace2abd55187163"
+## src = "/libthread_local-3ace2abd55187163.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libthread_local-3ace2abd55187163.rlib"
+## 
+## [[mounts]]
+## from = "out-a79af56de238e2b5"
+## src = "/liblazy_static-a79af56de238e2b5.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/liblazy_static-a79af56de238e2b5.rmeta"
+## 
+## [[mounts]]
+## from = "out-a79af56de238e2b5"
+## src = "/liblazy_static-a79af56de238e2b5.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/liblazy_static-a79af56de238e2b5.rlib"
+## 
+## [[mounts]]
+## from = "out-3d5a70ee74f70e2b"
+## src = "/libtermcolor-3d5a70ee74f70e2b.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libtermcolor-3d5a70ee74f70e2b.rmeta"
+## 
+## [[mounts]]
+## from = "out-3d5a70ee74f70e2b"
+## src = "/libtermcolor-3d5a70ee74f70e2b.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libtermcolor-3d5a70ee74f70e2b.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -3679,18 +4319,31 @@ COPY --from=dep-l-env_logger-0.7.1-94c0a2bd3b1451c8 /tmp/clis-dbcc_2-2-1/release
 ## RUN \
 ##   --mount=from=cratesio-env_logger-0.7.1,source=/env_logger-0.7.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/env_logger-0.7.1 \
 ##   --mount=from=out-737035cdf92a82de,dst=/tmp/clis-dbcc_2-2-1/release/deps/libatty-737035cdf92a82de.rmeta,source=/libatty-737035cdf92a82de.rmeta \
+##   --mount=from=out-737035cdf92a82de,dst=/tmp/clis-dbcc_2-2-1/release/deps/libatty-737035cdf92a82de.rlib,source=/libatty-737035cdf92a82de.rlib \
 ##   --mount=from=out-087afb0c1713a9a6,dst=/tmp/clis-dbcc_2-2-1/release/deps/liblibc-087afb0c1713a9a6.rmeta,source=/liblibc-087afb0c1713a9a6.rmeta \
+##   --mount=from=out-087afb0c1713a9a6,dst=/tmp/clis-dbcc_2-2-1/release/deps/liblibc-087afb0c1713a9a6.rlib,source=/liblibc-087afb0c1713a9a6.rlib \
 ##   --mount=from=out-3e3dde196d8efa81,dst=/tmp/clis-dbcc_2-2-1/release/deps/libhumantime-3e3dde196d8efa81.rmeta,source=/libhumantime-3e3dde196d8efa81.rmeta \
+##   --mount=from=out-3e3dde196d8efa81,dst=/tmp/clis-dbcc_2-2-1/release/deps/libhumantime-3e3dde196d8efa81.rlib,source=/libhumantime-3e3dde196d8efa81.rlib \
 ##   --mount=from=out-bd3d4e33b0f59f1b,dst=/tmp/clis-dbcc_2-2-1/release/deps/libquick_error-bd3d4e33b0f59f1b.rmeta,source=/libquick_error-bd3d4e33b0f59f1b.rmeta \
+##   --mount=from=out-bd3d4e33b0f59f1b,dst=/tmp/clis-dbcc_2-2-1/release/deps/libquick_error-bd3d4e33b0f59f1b.rlib,source=/libquick_error-bd3d4e33b0f59f1b.rlib \
 ##   --mount=from=out-09be6f37eb701f15,dst=/tmp/clis-dbcc_2-2-1/release/deps/liblog-09be6f37eb701f15.rmeta,source=/liblog-09be6f37eb701f15.rmeta \
+##   --mount=from=out-09be6f37eb701f15,dst=/tmp/clis-dbcc_2-2-1/release/deps/liblog-09be6f37eb701f15.rlib,source=/liblog-09be6f37eb701f15.rlib \
 ##   --mount=from=out-abefcc22b095b628,dst=/tmp/clis-dbcc_2-2-1/release/deps/libcfg_if-abefcc22b095b628.rmeta,source=/libcfg_if-abefcc22b095b628.rmeta \
+##   --mount=from=out-abefcc22b095b628,dst=/tmp/clis-dbcc_2-2-1/release/deps/libcfg_if-abefcc22b095b628.rlib,source=/libcfg_if-abefcc22b095b628.rlib \
 ##   --mount=from=out-5ba8c6f49cc2732d,dst=/tmp/clis-dbcc_2-2-1/release/deps/libregex-5ba8c6f49cc2732d.rmeta,source=/libregex-5ba8c6f49cc2732d.rmeta \
+##   --mount=from=out-5ba8c6f49cc2732d,dst=/tmp/clis-dbcc_2-2-1/release/deps/libregex-5ba8c6f49cc2732d.rlib,source=/libregex-5ba8c6f49cc2732d.rlib \
 ##   --mount=from=out-014f7ab42daca0d7,dst=/tmp/clis-dbcc_2-2-1/release/deps/libaho_corasick-014f7ab42daca0d7.rmeta,source=/libaho_corasick-014f7ab42daca0d7.rmeta \
+##   --mount=from=out-014f7ab42daca0d7,dst=/tmp/clis-dbcc_2-2-1/release/deps/libaho_corasick-014f7ab42daca0d7.rlib,source=/libaho_corasick-014f7ab42daca0d7.rlib \
 ##   --mount=from=out-c93fd10415a641fd,dst=/tmp/clis-dbcc_2-2-1/release/deps/libmemchr-c93fd10415a641fd.rmeta,source=/libmemchr-c93fd10415a641fd.rmeta \
+##   --mount=from=out-c93fd10415a641fd,dst=/tmp/clis-dbcc_2-2-1/release/deps/libmemchr-c93fd10415a641fd.rlib,source=/libmemchr-c93fd10415a641fd.rlib \
 ##   --mount=from=out-eec8efd7d7dadd3c,dst=/tmp/clis-dbcc_2-2-1/release/deps/libregex_syntax-eec8efd7d7dadd3c.rmeta,source=/libregex_syntax-eec8efd7d7dadd3c.rmeta \
+##   --mount=from=out-eec8efd7d7dadd3c,dst=/tmp/clis-dbcc_2-2-1/release/deps/libregex_syntax-eec8efd7d7dadd3c.rlib,source=/libregex_syntax-eec8efd7d7dadd3c.rlib \
 ##   --mount=from=out-3ace2abd55187163,dst=/tmp/clis-dbcc_2-2-1/release/deps/libthread_local-3ace2abd55187163.rmeta,source=/libthread_local-3ace2abd55187163.rmeta \
+##   --mount=from=out-3ace2abd55187163,dst=/tmp/clis-dbcc_2-2-1/release/deps/libthread_local-3ace2abd55187163.rlib,source=/libthread_local-3ace2abd55187163.rlib \
 ##   --mount=from=out-a79af56de238e2b5,dst=/tmp/clis-dbcc_2-2-1/release/deps/liblazy_static-a79af56de238e2b5.rmeta,source=/liblazy_static-a79af56de238e2b5.rmeta \
+##   --mount=from=out-a79af56de238e2b5,dst=/tmp/clis-dbcc_2-2-1/release/deps/liblazy_static-a79af56de238e2b5.rlib,source=/liblazy_static-a79af56de238e2b5.rlib \
 ##   --mount=from=out-3d5a70ee74f70e2b,dst=/tmp/clis-dbcc_2-2-1/release/deps/libtermcolor-3d5a70ee74f70e2b.rmeta,source=/libtermcolor-3d5a70ee74f70e2b.rmeta \
+##   --mount=from=out-3d5a70ee74f70e2b,dst=/tmp/clis-dbcc_2-2-1/release/deps/libtermcolor-3d5a70ee74f70e2b.rlib,source=/libtermcolor-3d5a70ee74f70e2b.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="env_logger" \
@@ -3731,19 +4384,33 @@ WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
   --mount=from=cratesio-pretty_env_logger-0.4.0,source=/pretty_env_logger-0.4.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/pretty_env_logger-0.4.0 \
   --mount=from=out-94c0a2bd3b1451c8,dst=/tmp/clis-dbcc_2-2-1/release/deps/libenv_logger-94c0a2bd3b1451c8.rmeta,source=/libenv_logger-94c0a2bd3b1451c8.rmeta \
+  --mount=from=out-94c0a2bd3b1451c8,dst=/tmp/clis-dbcc_2-2-1/release/deps/libenv_logger-94c0a2bd3b1451c8.rlib,source=/libenv_logger-94c0a2bd3b1451c8.rlib \
   --mount=from=out-737035cdf92a82de,dst=/tmp/clis-dbcc_2-2-1/release/deps/libatty-737035cdf92a82de.rmeta,source=/libatty-737035cdf92a82de.rmeta \
+  --mount=from=out-737035cdf92a82de,dst=/tmp/clis-dbcc_2-2-1/release/deps/libatty-737035cdf92a82de.rlib,source=/libatty-737035cdf92a82de.rlib \
   --mount=from=out-087afb0c1713a9a6,dst=/tmp/clis-dbcc_2-2-1/release/deps/liblibc-087afb0c1713a9a6.rmeta,source=/liblibc-087afb0c1713a9a6.rmeta \
+  --mount=from=out-087afb0c1713a9a6,dst=/tmp/clis-dbcc_2-2-1/release/deps/liblibc-087afb0c1713a9a6.rlib,source=/liblibc-087afb0c1713a9a6.rlib \
   --mount=from=out-3e3dde196d8efa81,dst=/tmp/clis-dbcc_2-2-1/release/deps/libhumantime-3e3dde196d8efa81.rmeta,source=/libhumantime-3e3dde196d8efa81.rmeta \
+  --mount=from=out-3e3dde196d8efa81,dst=/tmp/clis-dbcc_2-2-1/release/deps/libhumantime-3e3dde196d8efa81.rlib,source=/libhumantime-3e3dde196d8efa81.rlib \
   --mount=from=out-bd3d4e33b0f59f1b,dst=/tmp/clis-dbcc_2-2-1/release/deps/libquick_error-bd3d4e33b0f59f1b.rmeta,source=/libquick_error-bd3d4e33b0f59f1b.rmeta \
+  --mount=from=out-bd3d4e33b0f59f1b,dst=/tmp/clis-dbcc_2-2-1/release/deps/libquick_error-bd3d4e33b0f59f1b.rlib,source=/libquick_error-bd3d4e33b0f59f1b.rlib \
   --mount=from=out-09be6f37eb701f15,dst=/tmp/clis-dbcc_2-2-1/release/deps/liblog-09be6f37eb701f15.rmeta,source=/liblog-09be6f37eb701f15.rmeta \
+  --mount=from=out-09be6f37eb701f15,dst=/tmp/clis-dbcc_2-2-1/release/deps/liblog-09be6f37eb701f15.rlib,source=/liblog-09be6f37eb701f15.rlib \
   --mount=from=out-abefcc22b095b628,dst=/tmp/clis-dbcc_2-2-1/release/deps/libcfg_if-abefcc22b095b628.rmeta,source=/libcfg_if-abefcc22b095b628.rmeta \
+  --mount=from=out-abefcc22b095b628,dst=/tmp/clis-dbcc_2-2-1/release/deps/libcfg_if-abefcc22b095b628.rlib,source=/libcfg_if-abefcc22b095b628.rlib \
   --mount=from=out-5ba8c6f49cc2732d,dst=/tmp/clis-dbcc_2-2-1/release/deps/libregex-5ba8c6f49cc2732d.rmeta,source=/libregex-5ba8c6f49cc2732d.rmeta \
+  --mount=from=out-5ba8c6f49cc2732d,dst=/tmp/clis-dbcc_2-2-1/release/deps/libregex-5ba8c6f49cc2732d.rlib,source=/libregex-5ba8c6f49cc2732d.rlib \
   --mount=from=out-014f7ab42daca0d7,dst=/tmp/clis-dbcc_2-2-1/release/deps/libaho_corasick-014f7ab42daca0d7.rmeta,source=/libaho_corasick-014f7ab42daca0d7.rmeta \
+  --mount=from=out-014f7ab42daca0d7,dst=/tmp/clis-dbcc_2-2-1/release/deps/libaho_corasick-014f7ab42daca0d7.rlib,source=/libaho_corasick-014f7ab42daca0d7.rlib \
   --mount=from=out-c93fd10415a641fd,dst=/tmp/clis-dbcc_2-2-1/release/deps/libmemchr-c93fd10415a641fd.rmeta,source=/libmemchr-c93fd10415a641fd.rmeta \
+  --mount=from=out-c93fd10415a641fd,dst=/tmp/clis-dbcc_2-2-1/release/deps/libmemchr-c93fd10415a641fd.rlib,source=/libmemchr-c93fd10415a641fd.rlib \
   --mount=from=out-eec8efd7d7dadd3c,dst=/tmp/clis-dbcc_2-2-1/release/deps/libregex_syntax-eec8efd7d7dadd3c.rmeta,source=/libregex_syntax-eec8efd7d7dadd3c.rmeta \
+  --mount=from=out-eec8efd7d7dadd3c,dst=/tmp/clis-dbcc_2-2-1/release/deps/libregex_syntax-eec8efd7d7dadd3c.rlib,source=/libregex_syntax-eec8efd7d7dadd3c.rlib \
   --mount=from=out-3ace2abd55187163,dst=/tmp/clis-dbcc_2-2-1/release/deps/libthread_local-3ace2abd55187163.rmeta,source=/libthread_local-3ace2abd55187163.rmeta \
+  --mount=from=out-3ace2abd55187163,dst=/tmp/clis-dbcc_2-2-1/release/deps/libthread_local-3ace2abd55187163.rlib,source=/libthread_local-3ace2abd55187163.rlib \
   --mount=from=out-a79af56de238e2b5,dst=/tmp/clis-dbcc_2-2-1/release/deps/liblazy_static-a79af56de238e2b5.rmeta,source=/liblazy_static-a79af56de238e2b5.rmeta \
+  --mount=from=out-a79af56de238e2b5,dst=/tmp/clis-dbcc_2-2-1/release/deps/liblazy_static-a79af56de238e2b5.rlib,source=/liblazy_static-a79af56de238e2b5.rlib \
   --mount=from=out-3d5a70ee74f70e2b,dst=/tmp/clis-dbcc_2-2-1/release/deps/libtermcolor-3d5a70ee74f70e2b.rmeta,source=/libtermcolor-3d5a70ee74f70e2b.rmeta \
+  --mount=from=out-3d5a70ee74f70e2b,dst=/tmp/clis-dbcc_2-2-1/release/deps/libtermcolor-3d5a70ee74f70e2b.rlib,source=/libtermcolor-3d5a70ee74f70e2b.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="pretty_env_logger" \
@@ -3789,20 +4456,20 @@ COPY --from=dep-l-pretty_env_logger-0.4.0-682e69746a16e0c7 /tmp/clis-dbcc_2-2-1/
 ##     "3d5a70ee74f70e2b",
 ## ]
 ## short_externs = [
-##     "env_logger-94c0a2bd3b1451c8",
-##     "atty-737035cdf92a82de",
-##     "libc-087afb0c1713a9a6",
-##     "humantime-3e3dde196d8efa81",
-##     "quick_error-bd3d4e33b0f59f1b",
-##     "log-09be6f37eb701f15",
-##     "cfg_if-abefcc22b095b628",
-##     "regex-5ba8c6f49cc2732d",
-##     "aho_corasick-014f7ab42daca0d7",
-##     "memchr-c93fd10415a641fd",
-##     "regex_syntax-eec8efd7d7dadd3c",
-##     "thread_local-3ace2abd55187163",
-##     "lazy_static-a79af56de238e2b5",
-##     "termcolor-3d5a70ee74f70e2b",
+##     "94c0a2bd3b1451c8",
+##     "737035cdf92a82de",
+##     "087afb0c1713a9a6",
+##     "3e3dde196d8efa81",
+##     "bd3d4e33b0f59f1b",
+##     "09be6f37eb701f15",
+##     "abefcc22b095b628",
+##     "5ba8c6f49cc2732d",
+##     "014f7ab42daca0d7",
+##     "c93fd10415a641fd",
+##     "eec8efd7d7dadd3c",
+##     "3ace2abd55187163",
+##     "a79af56de238e2b5",
+##     "3d5a70ee74f70e2b",
 ## ]
 ## writes = [
 ##     "deps/pretty_env_logger-682e69746a16e0c7.d",
@@ -3814,6 +4481,146 @@ COPY --from=dep-l-pretty_env_logger-0.4.0-682e69746a16e0c7 /tmp/clis-dbcc_2-2-1/
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-dbcc_2-2-1/release/deps/libpretty_env_logger-682e69746a16e0c7.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-dbcc_2-2-1/release/deps/libpretty_env_logger-682e69746a16e0c7.rlib","emit":"link"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-94c0a2bd3b1451c8"
+## src = "/libenv_logger-94c0a2bd3b1451c8.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libenv_logger-94c0a2bd3b1451c8.rmeta"
+## 
+## [[mounts]]
+## from = "out-94c0a2bd3b1451c8"
+## src = "/libenv_logger-94c0a2bd3b1451c8.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libenv_logger-94c0a2bd3b1451c8.rlib"
+## 
+## [[mounts]]
+## from = "out-737035cdf92a82de"
+## src = "/libatty-737035cdf92a82de.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libatty-737035cdf92a82de.rmeta"
+## 
+## [[mounts]]
+## from = "out-737035cdf92a82de"
+## src = "/libatty-737035cdf92a82de.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libatty-737035cdf92a82de.rlib"
+## 
+## [[mounts]]
+## from = "out-087afb0c1713a9a6"
+## src = "/liblibc-087afb0c1713a9a6.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/liblibc-087afb0c1713a9a6.rmeta"
+## 
+## [[mounts]]
+## from = "out-087afb0c1713a9a6"
+## src = "/liblibc-087afb0c1713a9a6.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/liblibc-087afb0c1713a9a6.rlib"
+## 
+## [[mounts]]
+## from = "out-3e3dde196d8efa81"
+## src = "/libhumantime-3e3dde196d8efa81.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libhumantime-3e3dde196d8efa81.rmeta"
+## 
+## [[mounts]]
+## from = "out-3e3dde196d8efa81"
+## src = "/libhumantime-3e3dde196d8efa81.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libhumantime-3e3dde196d8efa81.rlib"
+## 
+## [[mounts]]
+## from = "out-bd3d4e33b0f59f1b"
+## src = "/libquick_error-bd3d4e33b0f59f1b.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libquick_error-bd3d4e33b0f59f1b.rmeta"
+## 
+## [[mounts]]
+## from = "out-bd3d4e33b0f59f1b"
+## src = "/libquick_error-bd3d4e33b0f59f1b.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libquick_error-bd3d4e33b0f59f1b.rlib"
+## 
+## [[mounts]]
+## from = "out-09be6f37eb701f15"
+## src = "/liblog-09be6f37eb701f15.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/liblog-09be6f37eb701f15.rmeta"
+## 
+## [[mounts]]
+## from = "out-09be6f37eb701f15"
+## src = "/liblog-09be6f37eb701f15.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/liblog-09be6f37eb701f15.rlib"
+## 
+## [[mounts]]
+## from = "out-abefcc22b095b628"
+## src = "/libcfg_if-abefcc22b095b628.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libcfg_if-abefcc22b095b628.rmeta"
+## 
+## [[mounts]]
+## from = "out-abefcc22b095b628"
+## src = "/libcfg_if-abefcc22b095b628.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libcfg_if-abefcc22b095b628.rlib"
+## 
+## [[mounts]]
+## from = "out-5ba8c6f49cc2732d"
+## src = "/libregex-5ba8c6f49cc2732d.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libregex-5ba8c6f49cc2732d.rmeta"
+## 
+## [[mounts]]
+## from = "out-5ba8c6f49cc2732d"
+## src = "/libregex-5ba8c6f49cc2732d.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libregex-5ba8c6f49cc2732d.rlib"
+## 
+## [[mounts]]
+## from = "out-014f7ab42daca0d7"
+## src = "/libaho_corasick-014f7ab42daca0d7.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libaho_corasick-014f7ab42daca0d7.rmeta"
+## 
+## [[mounts]]
+## from = "out-014f7ab42daca0d7"
+## src = "/libaho_corasick-014f7ab42daca0d7.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libaho_corasick-014f7ab42daca0d7.rlib"
+## 
+## [[mounts]]
+## from = "out-c93fd10415a641fd"
+## src = "/libmemchr-c93fd10415a641fd.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libmemchr-c93fd10415a641fd.rmeta"
+## 
+## [[mounts]]
+## from = "out-c93fd10415a641fd"
+## src = "/libmemchr-c93fd10415a641fd.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libmemchr-c93fd10415a641fd.rlib"
+## 
+## [[mounts]]
+## from = "out-eec8efd7d7dadd3c"
+## src = "/libregex_syntax-eec8efd7d7dadd3c.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libregex_syntax-eec8efd7d7dadd3c.rmeta"
+## 
+## [[mounts]]
+## from = "out-eec8efd7d7dadd3c"
+## src = "/libregex_syntax-eec8efd7d7dadd3c.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libregex_syntax-eec8efd7d7dadd3c.rlib"
+## 
+## [[mounts]]
+## from = "out-3ace2abd55187163"
+## src = "/libthread_local-3ace2abd55187163.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libthread_local-3ace2abd55187163.rmeta"
+## 
+## [[mounts]]
+## from = "out-3ace2abd55187163"
+## src = "/libthread_local-3ace2abd55187163.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libthread_local-3ace2abd55187163.rlib"
+## 
+## [[mounts]]
+## from = "out-a79af56de238e2b5"
+## src = "/liblazy_static-a79af56de238e2b5.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/liblazy_static-a79af56de238e2b5.rmeta"
+## 
+## [[mounts]]
+## from = "out-a79af56de238e2b5"
+## src = "/liblazy_static-a79af56de238e2b5.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/liblazy_static-a79af56de238e2b5.rlib"
+## 
+## [[mounts]]
+## from = "out-3d5a70ee74f70e2b"
+## src = "/libtermcolor-3d5a70ee74f70e2b.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libtermcolor-3d5a70ee74f70e2b.rmeta"
+## 
+## [[mounts]]
+## from = "out-3d5a70ee74f70e2b"
+## src = "/libtermcolor-3d5a70ee74f70e2b.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libtermcolor-3d5a70ee74f70e2b.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -3835,19 +4642,33 @@ COPY --from=dep-l-pretty_env_logger-0.4.0-682e69746a16e0c7 /tmp/clis-dbcc_2-2-1/
 ## RUN \
 ##   --mount=from=cratesio-pretty_env_logger-0.4.0,source=/pretty_env_logger-0.4.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/pretty_env_logger-0.4.0 \
 ##   --mount=from=out-94c0a2bd3b1451c8,dst=/tmp/clis-dbcc_2-2-1/release/deps/libenv_logger-94c0a2bd3b1451c8.rmeta,source=/libenv_logger-94c0a2bd3b1451c8.rmeta \
+##   --mount=from=out-94c0a2bd3b1451c8,dst=/tmp/clis-dbcc_2-2-1/release/deps/libenv_logger-94c0a2bd3b1451c8.rlib,source=/libenv_logger-94c0a2bd3b1451c8.rlib \
 ##   --mount=from=out-737035cdf92a82de,dst=/tmp/clis-dbcc_2-2-1/release/deps/libatty-737035cdf92a82de.rmeta,source=/libatty-737035cdf92a82de.rmeta \
+##   --mount=from=out-737035cdf92a82de,dst=/tmp/clis-dbcc_2-2-1/release/deps/libatty-737035cdf92a82de.rlib,source=/libatty-737035cdf92a82de.rlib \
 ##   --mount=from=out-087afb0c1713a9a6,dst=/tmp/clis-dbcc_2-2-1/release/deps/liblibc-087afb0c1713a9a6.rmeta,source=/liblibc-087afb0c1713a9a6.rmeta \
+##   --mount=from=out-087afb0c1713a9a6,dst=/tmp/clis-dbcc_2-2-1/release/deps/liblibc-087afb0c1713a9a6.rlib,source=/liblibc-087afb0c1713a9a6.rlib \
 ##   --mount=from=out-3e3dde196d8efa81,dst=/tmp/clis-dbcc_2-2-1/release/deps/libhumantime-3e3dde196d8efa81.rmeta,source=/libhumantime-3e3dde196d8efa81.rmeta \
+##   --mount=from=out-3e3dde196d8efa81,dst=/tmp/clis-dbcc_2-2-1/release/deps/libhumantime-3e3dde196d8efa81.rlib,source=/libhumantime-3e3dde196d8efa81.rlib \
 ##   --mount=from=out-bd3d4e33b0f59f1b,dst=/tmp/clis-dbcc_2-2-1/release/deps/libquick_error-bd3d4e33b0f59f1b.rmeta,source=/libquick_error-bd3d4e33b0f59f1b.rmeta \
+##   --mount=from=out-bd3d4e33b0f59f1b,dst=/tmp/clis-dbcc_2-2-1/release/deps/libquick_error-bd3d4e33b0f59f1b.rlib,source=/libquick_error-bd3d4e33b0f59f1b.rlib \
 ##   --mount=from=out-09be6f37eb701f15,dst=/tmp/clis-dbcc_2-2-1/release/deps/liblog-09be6f37eb701f15.rmeta,source=/liblog-09be6f37eb701f15.rmeta \
+##   --mount=from=out-09be6f37eb701f15,dst=/tmp/clis-dbcc_2-2-1/release/deps/liblog-09be6f37eb701f15.rlib,source=/liblog-09be6f37eb701f15.rlib \
 ##   --mount=from=out-abefcc22b095b628,dst=/tmp/clis-dbcc_2-2-1/release/deps/libcfg_if-abefcc22b095b628.rmeta,source=/libcfg_if-abefcc22b095b628.rmeta \
+##   --mount=from=out-abefcc22b095b628,dst=/tmp/clis-dbcc_2-2-1/release/deps/libcfg_if-abefcc22b095b628.rlib,source=/libcfg_if-abefcc22b095b628.rlib \
 ##   --mount=from=out-5ba8c6f49cc2732d,dst=/tmp/clis-dbcc_2-2-1/release/deps/libregex-5ba8c6f49cc2732d.rmeta,source=/libregex-5ba8c6f49cc2732d.rmeta \
+##   --mount=from=out-5ba8c6f49cc2732d,dst=/tmp/clis-dbcc_2-2-1/release/deps/libregex-5ba8c6f49cc2732d.rlib,source=/libregex-5ba8c6f49cc2732d.rlib \
 ##   --mount=from=out-014f7ab42daca0d7,dst=/tmp/clis-dbcc_2-2-1/release/deps/libaho_corasick-014f7ab42daca0d7.rmeta,source=/libaho_corasick-014f7ab42daca0d7.rmeta \
+##   --mount=from=out-014f7ab42daca0d7,dst=/tmp/clis-dbcc_2-2-1/release/deps/libaho_corasick-014f7ab42daca0d7.rlib,source=/libaho_corasick-014f7ab42daca0d7.rlib \
 ##   --mount=from=out-c93fd10415a641fd,dst=/tmp/clis-dbcc_2-2-1/release/deps/libmemchr-c93fd10415a641fd.rmeta,source=/libmemchr-c93fd10415a641fd.rmeta \
+##   --mount=from=out-c93fd10415a641fd,dst=/tmp/clis-dbcc_2-2-1/release/deps/libmemchr-c93fd10415a641fd.rlib,source=/libmemchr-c93fd10415a641fd.rlib \
 ##   --mount=from=out-eec8efd7d7dadd3c,dst=/tmp/clis-dbcc_2-2-1/release/deps/libregex_syntax-eec8efd7d7dadd3c.rmeta,source=/libregex_syntax-eec8efd7d7dadd3c.rmeta \
+##   --mount=from=out-eec8efd7d7dadd3c,dst=/tmp/clis-dbcc_2-2-1/release/deps/libregex_syntax-eec8efd7d7dadd3c.rlib,source=/libregex_syntax-eec8efd7d7dadd3c.rlib \
 ##   --mount=from=out-3ace2abd55187163,dst=/tmp/clis-dbcc_2-2-1/release/deps/libthread_local-3ace2abd55187163.rmeta,source=/libthread_local-3ace2abd55187163.rmeta \
+##   --mount=from=out-3ace2abd55187163,dst=/tmp/clis-dbcc_2-2-1/release/deps/libthread_local-3ace2abd55187163.rlib,source=/libthread_local-3ace2abd55187163.rlib \
 ##   --mount=from=out-a79af56de238e2b5,dst=/tmp/clis-dbcc_2-2-1/release/deps/liblazy_static-a79af56de238e2b5.rmeta,source=/liblazy_static-a79af56de238e2b5.rmeta \
+##   --mount=from=out-a79af56de238e2b5,dst=/tmp/clis-dbcc_2-2-1/release/deps/liblazy_static-a79af56de238e2b5.rlib,source=/liblazy_static-a79af56de238e2b5.rlib \
 ##   --mount=from=out-3d5a70ee74f70e2b,dst=/tmp/clis-dbcc_2-2-1/release/deps/libtermcolor-3d5a70ee74f70e2b.rmeta,source=/libtermcolor-3d5a70ee74f70e2b.rmeta \
+##   --mount=from=out-3d5a70ee74f70e2b,dst=/tmp/clis-dbcc_2-2-1/release/deps/libtermcolor-3d5a70ee74f70e2b.rlib,source=/libtermcolor-3d5a70ee74f70e2b.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="pretty_env_logger" \
@@ -3981,6 +4802,7 @@ WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
   --mount=from=cratesio-proc-macro2-1.0.24,source=/proc-macro2-1.0.24,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.24 \
   --mount=from=out-f585407da4c0bf6f,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-f585407da4c0bf6f.rmeta,source=/libunicode_xid-f585407da4c0bf6f.rmeta \
+  --mount=from=out-f585407da4c0bf6f,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-f585407da4c0bf6f.rlib,source=/libunicode_xid-f585407da4c0bf6f.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="proc_macro2" \
@@ -4011,7 +4833,7 @@ COPY --from=dep-l-proc-macro2-1.0.24-5eebdd82bed7d9de /tmp/clis-dbcc_2-2-1/relea
 
 ## this = "5eebdd82bed7d9de"
 ## deps = ["f585407da4c0bf6f"]
-## short_externs = ["unicode_xid-f585407da4c0bf6f"]
+## short_externs = ["f585407da4c0bf6f"]
 ## writes = [
 ##     "deps/proc_macro2-5eebdd82bed7d9de.d",
 ##     "deps/libproc_macro2-5eebdd82bed7d9de.rmeta",
@@ -4132,6 +4954,16 @@ COPY --from=dep-l-proc-macro2-1.0.24-5eebdd82bed7d9de /tmp/clis-dbcc_2-2-1/relea
 ##     '{"$message_type":"diagnostic","message":"108 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 108 warnings emitted\u001b[0m\n\n"}',
 ## ]
 ## 
+## [[mounts]]
+## from = "out-f585407da4c0bf6f"
+## src = "/libunicode_xid-f585407da4c0bf6f.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-f585407da4c0bf6f.rmeta"
+## 
+## [[mounts]]
+## from = "out-f585407da4c0bf6f"
+## src = "/libunicode_xid-f585407da4c0bf6f.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-f585407da4c0bf6f.rlib"
+## 
 ## [[stages]]
 ## name = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.86.0-slim@sha256:57d415bbd61ce11e2d5f73de068103c7bd9f3188dc132c97cef4a8f62989e944 AS rust-base"
@@ -4152,6 +4984,7 @@ COPY --from=dep-l-proc-macro2-1.0.24-5eebdd82bed7d9de /tmp/clis-dbcc_2-2-1/relea
 ## RUN \
 ##   --mount=from=cratesio-proc-macro2-1.0.24,source=/proc-macro2-1.0.24,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.24 \
 ##   --mount=from=out-f585407da4c0bf6f,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-f585407da4c0bf6f.rmeta,source=/libunicode_xid-f585407da4c0bf6f.rmeta \
+##   --mount=from=out-f585407da4c0bf6f,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-f585407da4c0bf6f.rlib,source=/libunicode_xid-f585407da4c0bf6f.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="proc_macro2" \
@@ -4191,7 +5024,9 @@ WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
   --mount=from=cratesio-quote-1.0.7,source=/quote-1.0.7,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.7 \
   --mount=from=out-5eebdd82bed7d9de,dst=/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-5eebdd82bed7d9de.rmeta,source=/libproc_macro2-5eebdd82bed7d9de.rmeta \
+  --mount=from=out-5eebdd82bed7d9de,dst=/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-5eebdd82bed7d9de.rlib,source=/libproc_macro2-5eebdd82bed7d9de.rlib \
   --mount=from=out-f585407da4c0bf6f,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-f585407da4c0bf6f.rmeta,source=/libunicode_xid-f585407da4c0bf6f.rmeta \
+  --mount=from=out-f585407da4c0bf6f,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-f585407da4c0bf6f.rlib,source=/libunicode_xid-f585407da4c0bf6f.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="quote" \
@@ -4225,8 +5060,8 @@ COPY --from=dep-l-quote-1.0.7-0298ff41e604ba82 /tmp/clis-dbcc_2-2-1/release/deps
 ##     "f585407da4c0bf6f",
 ## ]
 ## short_externs = [
-##     "proc_macro2-5eebdd82bed7d9de",
-##     "unicode_xid-f585407da4c0bf6f",
+##     "5eebdd82bed7d9de",
+##     "f585407da4c0bf6f",
 ## ]
 ## writes = [
 ##     "deps/quote-0298ff41e604ba82.d",
@@ -4238,6 +5073,26 @@ COPY --from=dep-l-quote-1.0.7-0298ff41e604ba82 /tmp/clis-dbcc_2-2-1/release/deps
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-dbcc_2-2-1/release/deps/libquote-0298ff41e604ba82.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-dbcc_2-2-1/release/deps/libquote-0298ff41e604ba82.rlib","emit":"link"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-5eebdd82bed7d9de"
+## src = "/libproc_macro2-5eebdd82bed7d9de.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-5eebdd82bed7d9de.rmeta"
+## 
+## [[mounts]]
+## from = "out-5eebdd82bed7d9de"
+## src = "/libproc_macro2-5eebdd82bed7d9de.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-5eebdd82bed7d9de.rlib"
+## 
+## [[mounts]]
+## from = "out-f585407da4c0bf6f"
+## src = "/libunicode_xid-f585407da4c0bf6f.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-f585407da4c0bf6f.rmeta"
+## 
+## [[mounts]]
+## from = "out-f585407da4c0bf6f"
+## src = "/libunicode_xid-f585407da4c0bf6f.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-f585407da4c0bf6f.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -4259,7 +5114,9 @@ COPY --from=dep-l-quote-1.0.7-0298ff41e604ba82 /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
 ##   --mount=from=cratesio-quote-1.0.7,source=/quote-1.0.7,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.7 \
 ##   --mount=from=out-5eebdd82bed7d9de,dst=/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-5eebdd82bed7d9de.rmeta,source=/libproc_macro2-5eebdd82bed7d9de.rmeta \
+##   --mount=from=out-5eebdd82bed7d9de,dst=/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-5eebdd82bed7d9de.rlib,source=/libproc_macro2-5eebdd82bed7d9de.rlib \
 ##   --mount=from=out-f585407da4c0bf6f,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-f585407da4c0bf6f.rmeta,source=/libunicode_xid-f585407da4c0bf6f.rmeta \
+##   --mount=from=out-f585407da4c0bf6f,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-f585407da4c0bf6f.rlib,source=/libunicode_xid-f585407da4c0bf6f.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="quote" \
@@ -4623,7 +5480,9 @@ WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
   --mount=from=cratesio-nix-0.5.1,source=/nix-0.5.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nix-0.5.1 \
   --mount=from=out-e976848f96abbbd4,dst=/tmp/clis-dbcc_2-2-1/release/deps/libbitflags-e976848f96abbbd4.rmeta,source=/libbitflags-e976848f96abbbd4.rmeta \
+  --mount=from=out-e976848f96abbbd4,dst=/tmp/clis-dbcc_2-2-1/release/deps/libbitflags-e976848f96abbbd4.rlib,source=/libbitflags-e976848f96abbbd4.rlib \
   --mount=from=out-087afb0c1713a9a6,dst=/tmp/clis-dbcc_2-2-1/release/deps/liblibc-087afb0c1713a9a6.rmeta,source=/liblibc-087afb0c1713a9a6.rmeta \
+  --mount=from=out-087afb0c1713a9a6,dst=/tmp/clis-dbcc_2-2-1/release/deps/liblibc-087afb0c1713a9a6.rlib,source=/liblibc-087afb0c1713a9a6.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="nix" \
@@ -4657,8 +5516,8 @@ COPY --from=dep-l-nix-0.5.1-4ee318c191cb8959 /tmp/clis-dbcc_2-2-1/release/deps/*
 ##     "087afb0c1713a9a6",
 ## ]
 ## short_externs = [
-##     "bitflags-e976848f96abbbd4",
-##     "libc-087afb0c1713a9a6",
+##     "e976848f96abbbd4",
+##     "087afb0c1713a9a6",
 ## ]
 ## writes = [
 ##     "deps/nix-4ee318c191cb8959.d",
@@ -4895,6 +5754,26 @@ COPY --from=dep-l-nix-0.5.1-4ee318c191cb8959 /tmp/clis-dbcc_2-2-1/release/deps/*
 ##     '{"$message_type":"diagnostic","message":"223 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 223 warnings emitted\u001b[0m\n\n"}',
 ## ]
 ## 
+## [[mounts]]
+## from = "out-e976848f96abbbd4"
+## src = "/libbitflags-e976848f96abbbd4.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libbitflags-e976848f96abbbd4.rmeta"
+## 
+## [[mounts]]
+## from = "out-e976848f96abbbd4"
+## src = "/libbitflags-e976848f96abbbd4.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libbitflags-e976848f96abbbd4.rlib"
+## 
+## [[mounts]]
+## from = "out-087afb0c1713a9a6"
+## src = "/liblibc-087afb0c1713a9a6.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/liblibc-087afb0c1713a9a6.rmeta"
+## 
+## [[mounts]]
+## from = "out-087afb0c1713a9a6"
+## src = "/liblibc-087afb0c1713a9a6.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/liblibc-087afb0c1713a9a6.rlib"
+## 
 ## [[stages]]
 ## name = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.86.0-slim@sha256:57d415bbd61ce11e2d5f73de068103c7bd9f3188dc132c97cef4a8f62989e944 AS rust-base"
@@ -4915,7 +5794,9 @@ COPY --from=dep-l-nix-0.5.1-4ee318c191cb8959 /tmp/clis-dbcc_2-2-1/release/deps/*
 ## RUN \
 ##   --mount=from=cratesio-nix-0.5.1,source=/nix-0.5.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nix-0.5.1 \
 ##   --mount=from=out-e976848f96abbbd4,dst=/tmp/clis-dbcc_2-2-1/release/deps/libbitflags-e976848f96abbbd4.rmeta,source=/libbitflags-e976848f96abbbd4.rmeta \
+##   --mount=from=out-e976848f96abbbd4,dst=/tmp/clis-dbcc_2-2-1/release/deps/libbitflags-e976848f96abbbd4.rlib,source=/libbitflags-e976848f96abbbd4.rlib \
 ##   --mount=from=out-087afb0c1713a9a6,dst=/tmp/clis-dbcc_2-2-1/release/deps/liblibc-087afb0c1713a9a6.rmeta,source=/liblibc-087afb0c1713a9a6.rmeta \
+##   --mount=from=out-087afb0c1713a9a6,dst=/tmp/clis-dbcc_2-2-1/release/deps/liblibc-087afb0c1713a9a6.rlib,source=/liblibc-087afb0c1713a9a6.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="nix" \
@@ -5056,11 +5937,17 @@ WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
   --mount=from=cratesio-socketcan-1.7.0,source=/socketcan-1.7.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/socketcan-1.7.0 \
   --mount=from=out-f065076cf799d91a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libhex-f065076cf799d91a.rmeta,source=/libhex-f065076cf799d91a.rmeta \
+  --mount=from=out-f065076cf799d91a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libhex-f065076cf799d91a.rlib,source=/libhex-f065076cf799d91a.rlib \
   --mount=from=out-2505039b047dad1a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libitertools-2505039b047dad1a.rmeta,source=/libitertools-2505039b047dad1a.rmeta \
+  --mount=from=out-2505039b047dad1a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libitertools-2505039b047dad1a.rlib,source=/libitertools-2505039b047dad1a.rlib \
   --mount=from=out-087afb0c1713a9a6,dst=/tmp/clis-dbcc_2-2-1/release/deps/liblibc-087afb0c1713a9a6.rmeta,source=/liblibc-087afb0c1713a9a6.rmeta \
+  --mount=from=out-087afb0c1713a9a6,dst=/tmp/clis-dbcc_2-2-1/release/deps/liblibc-087afb0c1713a9a6.rlib,source=/liblibc-087afb0c1713a9a6.rlib \
   --mount=from=out-4ee318c191cb8959,dst=/tmp/clis-dbcc_2-2-1/release/deps/libnix-4ee318c191cb8959.rmeta,source=/libnix-4ee318c191cb8959.rmeta \
+  --mount=from=out-4ee318c191cb8959,dst=/tmp/clis-dbcc_2-2-1/release/deps/libnix-4ee318c191cb8959.rlib,source=/libnix-4ee318c191cb8959.rlib \
   --mount=from=out-e976848f96abbbd4,dst=/tmp/clis-dbcc_2-2-1/release/deps/libbitflags-e976848f96abbbd4.rmeta,source=/libbitflags-e976848f96abbbd4.rmeta \
+  --mount=from=out-e976848f96abbbd4,dst=/tmp/clis-dbcc_2-2-1/release/deps/libbitflags-e976848f96abbbd4.rlib,source=/libbitflags-e976848f96abbbd4.rlib \
   --mount=from=out-35b125c45c1cafb3,dst=/tmp/clis-dbcc_2-2-1/release/deps/libtry_from-35b125c45c1cafb3.rmeta,source=/libtry_from-35b125c45c1cafb3.rmeta \
+  --mount=from=out-35b125c45c1cafb3,dst=/tmp/clis-dbcc_2-2-1/release/deps/libtry_from-35b125c45c1cafb3.rlib,source=/libtry_from-35b125c45c1cafb3.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="socketcan" \
@@ -5098,12 +5985,12 @@ COPY --from=dep-l-socketcan-1.7.0-7d72679ab99cdbe3 /tmp/clis-dbcc_2-2-1/release/
 ##     "35b125c45c1cafb3",
 ## ]
 ## short_externs = [
-##     "hex-f065076cf799d91a",
-##     "itertools-2505039b047dad1a",
-##     "libc-087afb0c1713a9a6",
-##     "nix-4ee318c191cb8959",
-##     "bitflags-e976848f96abbbd4",
-##     "try_from-35b125c45c1cafb3",
+##     "f065076cf799d91a",
+##     "2505039b047dad1a",
+##     "087afb0c1713a9a6",
+##     "4ee318c191cb8959",
+##     "e976848f96abbbd4",
+##     "35b125c45c1cafb3",
 ## ]
 ## writes = [
 ##     "deps/socketcan-7d72679ab99cdbe3.d",
@@ -5143,6 +6030,66 @@ COPY --from=dep-l-socketcan-1.7.0-7d72679ab99cdbe3 /tmp/clis-dbcc_2-2-1/release/
 ##     '{"$message_type":"diagnostic","message":"26 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 26 warnings emitted\u001b[0m\n\n"}',
 ## ]
 ## 
+## [[mounts]]
+## from = "out-f065076cf799d91a"
+## src = "/libhex-f065076cf799d91a.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libhex-f065076cf799d91a.rmeta"
+## 
+## [[mounts]]
+## from = "out-f065076cf799d91a"
+## src = "/libhex-f065076cf799d91a.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libhex-f065076cf799d91a.rlib"
+## 
+## [[mounts]]
+## from = "out-2505039b047dad1a"
+## src = "/libitertools-2505039b047dad1a.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libitertools-2505039b047dad1a.rmeta"
+## 
+## [[mounts]]
+## from = "out-2505039b047dad1a"
+## src = "/libitertools-2505039b047dad1a.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libitertools-2505039b047dad1a.rlib"
+## 
+## [[mounts]]
+## from = "out-087afb0c1713a9a6"
+## src = "/liblibc-087afb0c1713a9a6.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/liblibc-087afb0c1713a9a6.rmeta"
+## 
+## [[mounts]]
+## from = "out-087afb0c1713a9a6"
+## src = "/liblibc-087afb0c1713a9a6.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/liblibc-087afb0c1713a9a6.rlib"
+## 
+## [[mounts]]
+## from = "out-4ee318c191cb8959"
+## src = "/libnix-4ee318c191cb8959.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libnix-4ee318c191cb8959.rmeta"
+## 
+## [[mounts]]
+## from = "out-4ee318c191cb8959"
+## src = "/libnix-4ee318c191cb8959.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libnix-4ee318c191cb8959.rlib"
+## 
+## [[mounts]]
+## from = "out-e976848f96abbbd4"
+## src = "/libbitflags-e976848f96abbbd4.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libbitflags-e976848f96abbbd4.rmeta"
+## 
+## [[mounts]]
+## from = "out-e976848f96abbbd4"
+## src = "/libbitflags-e976848f96abbbd4.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libbitflags-e976848f96abbbd4.rlib"
+## 
+## [[mounts]]
+## from = "out-35b125c45c1cafb3"
+## src = "/libtry_from-35b125c45c1cafb3.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libtry_from-35b125c45c1cafb3.rmeta"
+## 
+## [[mounts]]
+## from = "out-35b125c45c1cafb3"
+## src = "/libtry_from-35b125c45c1cafb3.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libtry_from-35b125c45c1cafb3.rlib"
+## 
 ## [[stages]]
 ## name = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.86.0-slim@sha256:57d415bbd61ce11e2d5f73de068103c7bd9f3188dc132c97cef4a8f62989e944 AS rust-base"
@@ -5163,11 +6110,17 @@ COPY --from=dep-l-socketcan-1.7.0-7d72679ab99cdbe3 /tmp/clis-dbcc_2-2-1/release/
 ## RUN \
 ##   --mount=from=cratesio-socketcan-1.7.0,source=/socketcan-1.7.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/socketcan-1.7.0 \
 ##   --mount=from=out-f065076cf799d91a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libhex-f065076cf799d91a.rmeta,source=/libhex-f065076cf799d91a.rmeta \
+##   --mount=from=out-f065076cf799d91a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libhex-f065076cf799d91a.rlib,source=/libhex-f065076cf799d91a.rlib \
 ##   --mount=from=out-2505039b047dad1a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libitertools-2505039b047dad1a.rmeta,source=/libitertools-2505039b047dad1a.rmeta \
+##   --mount=from=out-2505039b047dad1a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libitertools-2505039b047dad1a.rlib,source=/libitertools-2505039b047dad1a.rlib \
 ##   --mount=from=out-087afb0c1713a9a6,dst=/tmp/clis-dbcc_2-2-1/release/deps/liblibc-087afb0c1713a9a6.rmeta,source=/liblibc-087afb0c1713a9a6.rmeta \
+##   --mount=from=out-087afb0c1713a9a6,dst=/tmp/clis-dbcc_2-2-1/release/deps/liblibc-087afb0c1713a9a6.rlib,source=/liblibc-087afb0c1713a9a6.rlib \
 ##   --mount=from=out-4ee318c191cb8959,dst=/tmp/clis-dbcc_2-2-1/release/deps/libnix-4ee318c191cb8959.rmeta,source=/libnix-4ee318c191cb8959.rmeta \
+##   --mount=from=out-4ee318c191cb8959,dst=/tmp/clis-dbcc_2-2-1/release/deps/libnix-4ee318c191cb8959.rlib,source=/libnix-4ee318c191cb8959.rlib \
 ##   --mount=from=out-e976848f96abbbd4,dst=/tmp/clis-dbcc_2-2-1/release/deps/libbitflags-e976848f96abbbd4.rmeta,source=/libbitflags-e976848f96abbbd4.rmeta \
+##   --mount=from=out-e976848f96abbbd4,dst=/tmp/clis-dbcc_2-2-1/release/deps/libbitflags-e976848f96abbbd4.rlib,source=/libbitflags-e976848f96abbbd4.rlib \
 ##   --mount=from=out-35b125c45c1cafb3,dst=/tmp/clis-dbcc_2-2-1/release/deps/libtry_from-35b125c45c1cafb3.rmeta,source=/libtry_from-35b125c45c1cafb3.rmeta \
+##   --mount=from=out-35b125c45c1cafb3,dst=/tmp/clis-dbcc_2-2-1/release/deps/libtry_from-35b125c45c1cafb3.rlib,source=/libtry_from-35b125c45c1cafb3.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="socketcan" \
@@ -5614,6 +6567,7 @@ WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
   --mount=from=cratesio-textwrap-0.11.0,source=/textwrap-0.11.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/textwrap-0.11.0 \
   --mount=from=out-e55c633902343b3a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_width-e55c633902343b3a.rmeta,source=/libunicode_width-e55c633902343b3a.rmeta \
+  --mount=from=out-e55c633902343b3a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_width-e55c633902343b3a.rlib,source=/libunicode_width-e55c633902343b3a.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="textwrap" \
@@ -5643,7 +6597,7 @@ COPY --from=dep-l-textwrap-0.11.0-b7e82f41d8b26a14 /tmp/clis-dbcc_2-2-1/release/
 
 ## this = "b7e82f41d8b26a14"
 ## deps = ["e55c633902343b3a"]
-## short_externs = ["unicode_width-e55c633902343b3a"]
+## short_externs = ["e55c633902343b3a"]
 ## writes = [
 ##     "deps/textwrap-b7e82f41d8b26a14.d",
 ##     "deps/libtextwrap-b7e82f41d8b26a14.rmeta",
@@ -5654,6 +6608,16 @@ COPY --from=dep-l-textwrap-0.11.0-b7e82f41d8b26a14 /tmp/clis-dbcc_2-2-1/release/
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-dbcc_2-2-1/release/deps/libtextwrap-b7e82f41d8b26a14.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-dbcc_2-2-1/release/deps/libtextwrap-b7e82f41d8b26a14.rlib","emit":"link"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-e55c633902343b3a"
+## src = "/libunicode_width-e55c633902343b3a.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_width-e55c633902343b3a.rmeta"
+## 
+## [[mounts]]
+## from = "out-e55c633902343b3a"
+## src = "/libunicode_width-e55c633902343b3a.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_width-e55c633902343b3a.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -5675,6 +6639,7 @@ COPY --from=dep-l-textwrap-0.11.0-b7e82f41d8b26a14 /tmp/clis-dbcc_2-2-1/release/
 ## RUN \
 ##   --mount=from=cratesio-textwrap-0.11.0,source=/textwrap-0.11.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/textwrap-0.11.0 \
 ##   --mount=from=out-e55c633902343b3a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_width-e55c633902343b3a.rmeta,source=/libunicode_width-e55c633902343b3a.rmeta \
+##   --mount=from=out-e55c633902343b3a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_width-e55c633902343b3a.rlib,source=/libunicode_width-e55c633902343b3a.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="textwrap" \
@@ -5816,13 +6781,21 @@ WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
   --mount=from=cratesio-clap-2.33.3,source=/clap-2.33.3,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/clap-2.33.3 \
   --mount=from=out-320ef4b8ee2e57f9,dst=/tmp/clis-dbcc_2-2-1/release/deps/libansi_term-320ef4b8ee2e57f9.rmeta,source=/libansi_term-320ef4b8ee2e57f9.rmeta \
+  --mount=from=out-320ef4b8ee2e57f9,dst=/tmp/clis-dbcc_2-2-1/release/deps/libansi_term-320ef4b8ee2e57f9.rlib,source=/libansi_term-320ef4b8ee2e57f9.rlib \
   --mount=from=out-737035cdf92a82de,dst=/tmp/clis-dbcc_2-2-1/release/deps/libatty-737035cdf92a82de.rmeta,source=/libatty-737035cdf92a82de.rmeta \
+  --mount=from=out-737035cdf92a82de,dst=/tmp/clis-dbcc_2-2-1/release/deps/libatty-737035cdf92a82de.rlib,source=/libatty-737035cdf92a82de.rlib \
   --mount=from=out-087afb0c1713a9a6,dst=/tmp/clis-dbcc_2-2-1/release/deps/liblibc-087afb0c1713a9a6.rmeta,source=/liblibc-087afb0c1713a9a6.rmeta \
+  --mount=from=out-087afb0c1713a9a6,dst=/tmp/clis-dbcc_2-2-1/release/deps/liblibc-087afb0c1713a9a6.rlib,source=/liblibc-087afb0c1713a9a6.rlib \
   --mount=from=out-d19718ebe5a0c815,dst=/tmp/clis-dbcc_2-2-1/release/deps/libbitflags-d19718ebe5a0c815.rmeta,source=/libbitflags-d19718ebe5a0c815.rmeta \
+  --mount=from=out-d19718ebe5a0c815,dst=/tmp/clis-dbcc_2-2-1/release/deps/libbitflags-d19718ebe5a0c815.rlib,source=/libbitflags-d19718ebe5a0c815.rlib \
   --mount=from=out-ada2690f4d94d615,dst=/tmp/clis-dbcc_2-2-1/release/deps/libstrsim-ada2690f4d94d615.rmeta,source=/libstrsim-ada2690f4d94d615.rmeta \
+  --mount=from=out-ada2690f4d94d615,dst=/tmp/clis-dbcc_2-2-1/release/deps/libstrsim-ada2690f4d94d615.rlib,source=/libstrsim-ada2690f4d94d615.rlib \
   --mount=from=out-b7e82f41d8b26a14,dst=/tmp/clis-dbcc_2-2-1/release/deps/libtextwrap-b7e82f41d8b26a14.rmeta,source=/libtextwrap-b7e82f41d8b26a14.rmeta \
+  --mount=from=out-b7e82f41d8b26a14,dst=/tmp/clis-dbcc_2-2-1/release/deps/libtextwrap-b7e82f41d8b26a14.rlib,source=/libtextwrap-b7e82f41d8b26a14.rlib \
   --mount=from=out-e55c633902343b3a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_width-e55c633902343b3a.rmeta,source=/libunicode_width-e55c633902343b3a.rmeta \
+  --mount=from=out-e55c633902343b3a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_width-e55c633902343b3a.rlib,source=/libunicode_width-e55c633902343b3a.rlib \
   --mount=from=out-3fc8ab5befc6e8f4,dst=/tmp/clis-dbcc_2-2-1/release/deps/libvec_map-3fc8ab5befc6e8f4.rmeta,source=/libvec_map-3fc8ab5befc6e8f4.rmeta \
+  --mount=from=out-3fc8ab5befc6e8f4,dst=/tmp/clis-dbcc_2-2-1/release/deps/libvec_map-3fc8ab5befc6e8f4.rlib,source=/libvec_map-3fc8ab5befc6e8f4.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="clap" \
@@ -5862,14 +6835,14 @@ COPY --from=dep-l-clap-2.33.3-5a839c872643e159 /tmp/clis-dbcc_2-2-1/release/deps
 ##     "3fc8ab5befc6e8f4",
 ## ]
 ## short_externs = [
-##     "ansi_term-320ef4b8ee2e57f9",
-##     "atty-737035cdf92a82de",
-##     "libc-087afb0c1713a9a6",
-##     "bitflags-d19718ebe5a0c815",
-##     "strsim-ada2690f4d94d615",
-##     "textwrap-b7e82f41d8b26a14",
-##     "unicode_width-e55c633902343b3a",
-##     "vec_map-3fc8ab5befc6e8f4",
+##     "320ef4b8ee2e57f9",
+##     "737035cdf92a82de",
+##     "087afb0c1713a9a6",
+##     "d19718ebe5a0c815",
+##     "ada2690f4d94d615",
+##     "b7e82f41d8b26a14",
+##     "e55c633902343b3a",
+##     "3fc8ab5befc6e8f4",
 ## ]
 ## writes = [
 ##     "deps/clap-5a839c872643e159.d",
@@ -5965,6 +6938,86 @@ COPY --from=dep-l-clap-2.33.3-5a839c872643e159 /tmp/clis-dbcc_2-2-1/release/deps
 ##     '{"$message_type":"diagnostic","message":"82 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 82 warnings emitted\u001b[0m\n\n"}',
 ## ]
 ## 
+## [[mounts]]
+## from = "out-320ef4b8ee2e57f9"
+## src = "/libansi_term-320ef4b8ee2e57f9.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libansi_term-320ef4b8ee2e57f9.rmeta"
+## 
+## [[mounts]]
+## from = "out-320ef4b8ee2e57f9"
+## src = "/libansi_term-320ef4b8ee2e57f9.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libansi_term-320ef4b8ee2e57f9.rlib"
+## 
+## [[mounts]]
+## from = "out-737035cdf92a82de"
+## src = "/libatty-737035cdf92a82de.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libatty-737035cdf92a82de.rmeta"
+## 
+## [[mounts]]
+## from = "out-737035cdf92a82de"
+## src = "/libatty-737035cdf92a82de.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libatty-737035cdf92a82de.rlib"
+## 
+## [[mounts]]
+## from = "out-087afb0c1713a9a6"
+## src = "/liblibc-087afb0c1713a9a6.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/liblibc-087afb0c1713a9a6.rmeta"
+## 
+## [[mounts]]
+## from = "out-087afb0c1713a9a6"
+## src = "/liblibc-087afb0c1713a9a6.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/liblibc-087afb0c1713a9a6.rlib"
+## 
+## [[mounts]]
+## from = "out-d19718ebe5a0c815"
+## src = "/libbitflags-d19718ebe5a0c815.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libbitflags-d19718ebe5a0c815.rmeta"
+## 
+## [[mounts]]
+## from = "out-d19718ebe5a0c815"
+## src = "/libbitflags-d19718ebe5a0c815.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libbitflags-d19718ebe5a0c815.rlib"
+## 
+## [[mounts]]
+## from = "out-ada2690f4d94d615"
+## src = "/libstrsim-ada2690f4d94d615.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libstrsim-ada2690f4d94d615.rmeta"
+## 
+## [[mounts]]
+## from = "out-ada2690f4d94d615"
+## src = "/libstrsim-ada2690f4d94d615.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libstrsim-ada2690f4d94d615.rlib"
+## 
+## [[mounts]]
+## from = "out-b7e82f41d8b26a14"
+## src = "/libtextwrap-b7e82f41d8b26a14.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libtextwrap-b7e82f41d8b26a14.rmeta"
+## 
+## [[mounts]]
+## from = "out-b7e82f41d8b26a14"
+## src = "/libtextwrap-b7e82f41d8b26a14.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libtextwrap-b7e82f41d8b26a14.rlib"
+## 
+## [[mounts]]
+## from = "out-e55c633902343b3a"
+## src = "/libunicode_width-e55c633902343b3a.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_width-e55c633902343b3a.rmeta"
+## 
+## [[mounts]]
+## from = "out-e55c633902343b3a"
+## src = "/libunicode_width-e55c633902343b3a.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_width-e55c633902343b3a.rlib"
+## 
+## [[mounts]]
+## from = "out-3fc8ab5befc6e8f4"
+## src = "/libvec_map-3fc8ab5befc6e8f4.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libvec_map-3fc8ab5befc6e8f4.rmeta"
+## 
+## [[mounts]]
+## from = "out-3fc8ab5befc6e8f4"
+## src = "/libvec_map-3fc8ab5befc6e8f4.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libvec_map-3fc8ab5befc6e8f4.rlib"
+## 
 ## [[stages]]
 ## name = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.86.0-slim@sha256:57d415bbd61ce11e2d5f73de068103c7bd9f3188dc132c97cef4a8f62989e944 AS rust-base"
@@ -5985,13 +7038,21 @@ COPY --from=dep-l-clap-2.33.3-5a839c872643e159 /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
 ##   --mount=from=cratesio-clap-2.33.3,source=/clap-2.33.3,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/clap-2.33.3 \
 ##   --mount=from=out-320ef4b8ee2e57f9,dst=/tmp/clis-dbcc_2-2-1/release/deps/libansi_term-320ef4b8ee2e57f9.rmeta,source=/libansi_term-320ef4b8ee2e57f9.rmeta \
+##   --mount=from=out-320ef4b8ee2e57f9,dst=/tmp/clis-dbcc_2-2-1/release/deps/libansi_term-320ef4b8ee2e57f9.rlib,source=/libansi_term-320ef4b8ee2e57f9.rlib \
 ##   --mount=from=out-737035cdf92a82de,dst=/tmp/clis-dbcc_2-2-1/release/deps/libatty-737035cdf92a82de.rmeta,source=/libatty-737035cdf92a82de.rmeta \
+##   --mount=from=out-737035cdf92a82de,dst=/tmp/clis-dbcc_2-2-1/release/deps/libatty-737035cdf92a82de.rlib,source=/libatty-737035cdf92a82de.rlib \
 ##   --mount=from=out-087afb0c1713a9a6,dst=/tmp/clis-dbcc_2-2-1/release/deps/liblibc-087afb0c1713a9a6.rmeta,source=/liblibc-087afb0c1713a9a6.rmeta \
+##   --mount=from=out-087afb0c1713a9a6,dst=/tmp/clis-dbcc_2-2-1/release/deps/liblibc-087afb0c1713a9a6.rlib,source=/liblibc-087afb0c1713a9a6.rlib \
 ##   --mount=from=out-d19718ebe5a0c815,dst=/tmp/clis-dbcc_2-2-1/release/deps/libbitflags-d19718ebe5a0c815.rmeta,source=/libbitflags-d19718ebe5a0c815.rmeta \
+##   --mount=from=out-d19718ebe5a0c815,dst=/tmp/clis-dbcc_2-2-1/release/deps/libbitflags-d19718ebe5a0c815.rlib,source=/libbitflags-d19718ebe5a0c815.rlib \
 ##   --mount=from=out-ada2690f4d94d615,dst=/tmp/clis-dbcc_2-2-1/release/deps/libstrsim-ada2690f4d94d615.rmeta,source=/libstrsim-ada2690f4d94d615.rmeta \
+##   --mount=from=out-ada2690f4d94d615,dst=/tmp/clis-dbcc_2-2-1/release/deps/libstrsim-ada2690f4d94d615.rlib,source=/libstrsim-ada2690f4d94d615.rlib \
 ##   --mount=from=out-b7e82f41d8b26a14,dst=/tmp/clis-dbcc_2-2-1/release/deps/libtextwrap-b7e82f41d8b26a14.rmeta,source=/libtextwrap-b7e82f41d8b26a14.rmeta \
+##   --mount=from=out-b7e82f41d8b26a14,dst=/tmp/clis-dbcc_2-2-1/release/deps/libtextwrap-b7e82f41d8b26a14.rlib,source=/libtextwrap-b7e82f41d8b26a14.rlib \
 ##   --mount=from=out-e55c633902343b3a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_width-e55c633902343b3a.rmeta,source=/libunicode_width-e55c633902343b3a.rmeta \
+##   --mount=from=out-e55c633902343b3a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_width-e55c633902343b3a.rlib,source=/libunicode_width-e55c633902343b3a.rlib \
 ##   --mount=from=out-3fc8ab5befc6e8f4,dst=/tmp/clis-dbcc_2-2-1/release/deps/libvec_map-3fc8ab5befc6e8f4.rmeta,source=/libvec_map-3fc8ab5befc6e8f4.rmeta \
+##   --mount=from=out-3fc8ab5befc6e8f4,dst=/tmp/clis-dbcc_2-2-1/release/deps/libvec_map-3fc8ab5befc6e8f4.rlib,source=/libvec_map-3fc8ab5befc6e8f4.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="clap" \
@@ -6129,6 +7190,7 @@ WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
   --mount=from=cratesio-heck-0.3.1,source=/heck-0.3.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/heck-0.3.1 \
   --mount=from=out-0711d9c6f9e71290,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_segmentation-0711d9c6f9e71290.rmeta,source=/libunicode_segmentation-0711d9c6f9e71290.rmeta \
+  --mount=from=out-0711d9c6f9e71290,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_segmentation-0711d9c6f9e71290.rlib,source=/libunicode_segmentation-0711d9c6f9e71290.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="heck" \
@@ -6158,7 +7220,7 @@ COPY --from=dep-l-heck-0.3.1-41892b3573d1a97c /tmp/clis-dbcc_2-2-1/release/deps/
 
 ## this = "41892b3573d1a97c"
 ## deps = ["0711d9c6f9e71290"]
-## short_externs = ["unicode_segmentation-0711d9c6f9e71290"]
+## short_externs = ["0711d9c6f9e71290"]
 ## writes = [
 ##     "deps/heck-41892b3573d1a97c.d",
 ##     "deps/libheck-41892b3573d1a97c.rmeta",
@@ -6169,6 +7231,16 @@ COPY --from=dep-l-heck-0.3.1-41892b3573d1a97c /tmp/clis-dbcc_2-2-1/release/deps/
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-dbcc_2-2-1/release/deps/libheck-41892b3573d1a97c.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-dbcc_2-2-1/release/deps/libheck-41892b3573d1a97c.rlib","emit":"link"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-0711d9c6f9e71290"
+## src = "/libunicode_segmentation-0711d9c6f9e71290.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_segmentation-0711d9c6f9e71290.rmeta"
+## 
+## [[mounts]]
+## from = "out-0711d9c6f9e71290"
+## src = "/libunicode_segmentation-0711d9c6f9e71290.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_segmentation-0711d9c6f9e71290.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -6190,6 +7262,7 @@ COPY --from=dep-l-heck-0.3.1-41892b3573d1a97c /tmp/clis-dbcc_2-2-1/release/deps/
 ## RUN \
 ##   --mount=from=cratesio-heck-0.3.1,source=/heck-0.3.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/heck-0.3.1 \
 ##   --mount=from=out-0711d9c6f9e71290,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_segmentation-0711d9c6f9e71290.rmeta,source=/libunicode_segmentation-0711d9c6f9e71290.rmeta \
+##   --mount=from=out-0711d9c6f9e71290,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_segmentation-0711d9c6f9e71290.rlib,source=/libunicode_segmentation-0711d9c6f9e71290.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="heck" \
@@ -6229,8 +7302,11 @@ SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
   --mount=from=cratesio-proc-macro-error-attr-1.0.4,source=/proc-macro-error-attr-1.0.4,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro-error-attr-1.0.4 \
+  --mount=from=out-80b37ce9903d0def,dst=/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-80b37ce9903d0def.rmeta,source=/libproc_macro2-80b37ce9903d0def.rmeta \
   --mount=from=out-80b37ce9903d0def,dst=/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-80b37ce9903d0def.rlib,source=/libproc_macro2-80b37ce9903d0def.rlib \
+  --mount=from=out-ca80afcc82eeec0a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-ca80afcc82eeec0a.rmeta,source=/libunicode_xid-ca80afcc82eeec0a.rmeta \
   --mount=from=out-ca80afcc82eeec0a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-ca80afcc82eeec0a.rlib,source=/libunicode_xid-ca80afcc82eeec0a.rlib \
+  --mount=from=out-dd5debcb2b51fc02,dst=/tmp/clis-dbcc_2-2-1/release/deps/libquote-dd5debcb2b51fc02.rmeta,source=/libquote-dd5debcb2b51fc02.rmeta \
   --mount=from=out-dd5debcb2b51fc02,dst=/tmp/clis-dbcc_2-2-1/release/deps/libquote-dd5debcb2b51fc02.rlib,source=/libquote-dd5debcb2b51fc02.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
@@ -6267,9 +7343,9 @@ COPY --from=dep-p-proc-macro-error-attr-1.0.4-5abbb4d0b3e50e85 /tmp/clis-dbcc_2-
 ##     "dd5debcb2b51fc02",
 ## ]
 ## short_externs = [
-##     "proc_macro2-80b37ce9903d0def",
-##     "unicode_xid-ca80afcc82eeec0a",
-##     "quote-dd5debcb2b51fc02",
+##     "80b37ce9903d0def",
+##     "ca80afcc82eeec0a",
+##     "dd5debcb2b51fc02",
 ## ]
 ## is_proc_macro = true
 ## writes = [
@@ -6283,6 +7359,36 @@ COPY --from=dep-p-proc-macro-error-attr-1.0.4-5abbb4d0b3e50e85 /tmp/clis-dbcc_2-
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro_error_attr-5abbb4d0b3e50e85.so","emit":"link"}',
 ##     '{"$message_type":"diagnostic","message":"2 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 2 warnings emitted\u001b[0m\n\n"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-80b37ce9903d0def"
+## src = "/libproc_macro2-80b37ce9903d0def.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-80b37ce9903d0def.rmeta"
+## 
+## [[mounts]]
+## from = "out-80b37ce9903d0def"
+## src = "/libproc_macro2-80b37ce9903d0def.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-80b37ce9903d0def.rlib"
+## 
+## [[mounts]]
+## from = "out-ca80afcc82eeec0a"
+## src = "/libunicode_xid-ca80afcc82eeec0a.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-ca80afcc82eeec0a.rmeta"
+## 
+## [[mounts]]
+## from = "out-ca80afcc82eeec0a"
+## src = "/libunicode_xid-ca80afcc82eeec0a.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-ca80afcc82eeec0a.rlib"
+## 
+## [[mounts]]
+## from = "out-dd5debcb2b51fc02"
+## src = "/libquote-dd5debcb2b51fc02.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libquote-dd5debcb2b51fc02.rmeta"
+## 
+## [[mounts]]
+## from = "out-dd5debcb2b51fc02"
+## src = "/libquote-dd5debcb2b51fc02.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libquote-dd5debcb2b51fc02.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -6303,8 +7409,11 @@ COPY --from=dep-p-proc-macro-error-attr-1.0.4-5abbb4d0b3e50e85 /tmp/clis-dbcc_2-
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
 ##   --mount=from=cratesio-proc-macro-error-attr-1.0.4,source=/proc-macro-error-attr-1.0.4,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro-error-attr-1.0.4 \
+##   --mount=from=out-80b37ce9903d0def,dst=/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-80b37ce9903d0def.rmeta,source=/libproc_macro2-80b37ce9903d0def.rmeta \
 ##   --mount=from=out-80b37ce9903d0def,dst=/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-80b37ce9903d0def.rlib,source=/libproc_macro2-80b37ce9903d0def.rlib \
+##   --mount=from=out-ca80afcc82eeec0a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-ca80afcc82eeec0a.rmeta,source=/libunicode_xid-ca80afcc82eeec0a.rmeta \
 ##   --mount=from=out-ca80afcc82eeec0a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-ca80afcc82eeec0a.rlib,source=/libunicode_xid-ca80afcc82eeec0a.rlib \
+##   --mount=from=out-dd5debcb2b51fc02,dst=/tmp/clis-dbcc_2-2-1/release/deps/libquote-dd5debcb2b51fc02.rmeta,source=/libquote-dd5debcb2b51fc02.rmeta \
 ##   --mount=from=out-dd5debcb2b51fc02,dst=/tmp/clis-dbcc_2-2-1/release/deps/libquote-dd5debcb2b51fc02.rlib,source=/libquote-dd5debcb2b51fc02.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
@@ -6348,9 +7457,13 @@ RUN \
   --mount=from=cratesio-proc-macro-error-1.0.4,source=/proc-macro-error-1.0.4,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro-error-1.0.4 \
   --mount=from=out-5abbb4d0b3e50e85,dst=/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro_error_attr-5abbb4d0b3e50e85.so,source=/libproc_macro_error_attr-5abbb4d0b3e50e85.so \
   --mount=from=out-80b37ce9903d0def,dst=/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-80b37ce9903d0def.rmeta,source=/libproc_macro2-80b37ce9903d0def.rmeta \
+  --mount=from=out-80b37ce9903d0def,dst=/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-80b37ce9903d0def.rlib,source=/libproc_macro2-80b37ce9903d0def.rlib \
   --mount=from=out-ca80afcc82eeec0a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-ca80afcc82eeec0a.rmeta,source=/libunicode_xid-ca80afcc82eeec0a.rmeta \
+  --mount=from=out-ca80afcc82eeec0a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-ca80afcc82eeec0a.rlib,source=/libunicode_xid-ca80afcc82eeec0a.rlib \
   --mount=from=out-dd5debcb2b51fc02,dst=/tmp/clis-dbcc_2-2-1/release/deps/libquote-dd5debcb2b51fc02.rmeta,source=/libquote-dd5debcb2b51fc02.rmeta \
+  --mount=from=out-dd5debcb2b51fc02,dst=/tmp/clis-dbcc_2-2-1/release/deps/libquote-dd5debcb2b51fc02.rlib,source=/libquote-dd5debcb2b51fc02.rlib \
   --mount=from=out-bbffa8c7e6a16356,dst=/tmp/clis-dbcc_2-2-1/release/deps/libsyn-bbffa8c7e6a16356.rmeta,source=/libsyn-bbffa8c7e6a16356.rmeta \
+  --mount=from=out-bbffa8c7e6a16356,dst=/tmp/clis-dbcc_2-2-1/release/deps/libsyn-bbffa8c7e6a16356.rlib,source=/libsyn-bbffa8c7e6a16356.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="proc_macro_error" \
@@ -6388,11 +7501,11 @@ COPY --from=dep-l-proc-macro-error-1.0.4-8d3142ab9efe4ea8 /tmp/clis-dbcc_2-2-1/r
 ##     "bbffa8c7e6a16356",
 ## ]
 ## short_externs = [
-##     "proc_macro_error_attr-5abbb4d0b3e50e85",
-##     "proc_macro2-80b37ce9903d0def",
-##     "unicode_xid-ca80afcc82eeec0a",
-##     "quote-dd5debcb2b51fc02",
-##     "syn-bbffa8c7e6a16356",
+##     "5abbb4d0b3e50e85",
+##     "80b37ce9903d0def",
+##     "ca80afcc82eeec0a",
+##     "dd5debcb2b51fc02",
+##     "bbffa8c7e6a16356",
 ## ]
 ## writes = [
 ##     "deps/proc_macro_error-8d3142ab9efe4ea8.d",
@@ -6409,6 +7522,51 @@ COPY --from=dep-l-proc-macro-error-1.0.4-8d3142ab9efe4ea8 /tmp/clis-dbcc_2-2-1/r
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro_error-8d3142ab9efe4ea8.rlib","emit":"link"}',
 ##     '{"$message_type":"diagnostic","message":"4 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 4 warnings emitted\u001b[0m\n\n"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-5abbb4d0b3e50e85"
+## src = "/libproc_macro_error_attr-5abbb4d0b3e50e85.so"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro_error_attr-5abbb4d0b3e50e85.so"
+## 
+## [[mounts]]
+## from = "out-80b37ce9903d0def"
+## src = "/libproc_macro2-80b37ce9903d0def.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-80b37ce9903d0def.rmeta"
+## 
+## [[mounts]]
+## from = "out-80b37ce9903d0def"
+## src = "/libproc_macro2-80b37ce9903d0def.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-80b37ce9903d0def.rlib"
+## 
+## [[mounts]]
+## from = "out-ca80afcc82eeec0a"
+## src = "/libunicode_xid-ca80afcc82eeec0a.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-ca80afcc82eeec0a.rmeta"
+## 
+## [[mounts]]
+## from = "out-ca80afcc82eeec0a"
+## src = "/libunicode_xid-ca80afcc82eeec0a.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-ca80afcc82eeec0a.rlib"
+## 
+## [[mounts]]
+## from = "out-dd5debcb2b51fc02"
+## src = "/libquote-dd5debcb2b51fc02.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libquote-dd5debcb2b51fc02.rmeta"
+## 
+## [[mounts]]
+## from = "out-dd5debcb2b51fc02"
+## src = "/libquote-dd5debcb2b51fc02.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libquote-dd5debcb2b51fc02.rlib"
+## 
+## [[mounts]]
+## from = "out-bbffa8c7e6a16356"
+## src = "/libsyn-bbffa8c7e6a16356.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libsyn-bbffa8c7e6a16356.rmeta"
+## 
+## [[mounts]]
+## from = "out-bbffa8c7e6a16356"
+## src = "/libsyn-bbffa8c7e6a16356.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libsyn-bbffa8c7e6a16356.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -6431,9 +7589,13 @@ COPY --from=dep-l-proc-macro-error-1.0.4-8d3142ab9efe4ea8 /tmp/clis-dbcc_2-2-1/r
 ##   --mount=from=cratesio-proc-macro-error-1.0.4,source=/proc-macro-error-1.0.4,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro-error-1.0.4 \
 ##   --mount=from=out-5abbb4d0b3e50e85,dst=/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro_error_attr-5abbb4d0b3e50e85.so,source=/libproc_macro_error_attr-5abbb4d0b3e50e85.so \
 ##   --mount=from=out-80b37ce9903d0def,dst=/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-80b37ce9903d0def.rmeta,source=/libproc_macro2-80b37ce9903d0def.rmeta \
+##   --mount=from=out-80b37ce9903d0def,dst=/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-80b37ce9903d0def.rlib,source=/libproc_macro2-80b37ce9903d0def.rlib \
 ##   --mount=from=out-ca80afcc82eeec0a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-ca80afcc82eeec0a.rmeta,source=/libunicode_xid-ca80afcc82eeec0a.rmeta \
+##   --mount=from=out-ca80afcc82eeec0a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-ca80afcc82eeec0a.rlib,source=/libunicode_xid-ca80afcc82eeec0a.rlib \
 ##   --mount=from=out-dd5debcb2b51fc02,dst=/tmp/clis-dbcc_2-2-1/release/deps/libquote-dd5debcb2b51fc02.rmeta,source=/libquote-dd5debcb2b51fc02.rmeta \
+##   --mount=from=out-dd5debcb2b51fc02,dst=/tmp/clis-dbcc_2-2-1/release/deps/libquote-dd5debcb2b51fc02.rlib,source=/libquote-dd5debcb2b51fc02.rlib \
 ##   --mount=from=out-bbffa8c7e6a16356,dst=/tmp/clis-dbcc_2-2-1/release/deps/libsyn-bbffa8c7e6a16356.rmeta,source=/libsyn-bbffa8c7e6a16356.rmeta \
+##   --mount=from=out-bbffa8c7e6a16356,dst=/tmp/clis-dbcc_2-2-1/release/deps/libsyn-bbffa8c7e6a16356.rlib,source=/libsyn-bbffa8c7e6a16356.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="proc_macro_error" \
@@ -6474,13 +7636,20 @@ SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
   --mount=from=cratesio-structopt-derive-0.4.13,source=/structopt-derive-0.4.13,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/structopt-derive-0.4.13 \
+  --mount=from=out-41892b3573d1a97c,dst=/tmp/clis-dbcc_2-2-1/release/deps/libheck-41892b3573d1a97c.rmeta,source=/libheck-41892b3573d1a97c.rmeta \
   --mount=from=out-41892b3573d1a97c,dst=/tmp/clis-dbcc_2-2-1/release/deps/libheck-41892b3573d1a97c.rlib,source=/libheck-41892b3573d1a97c.rlib \
+  --mount=from=out-0711d9c6f9e71290,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_segmentation-0711d9c6f9e71290.rmeta,source=/libunicode_segmentation-0711d9c6f9e71290.rmeta \
   --mount=from=out-0711d9c6f9e71290,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_segmentation-0711d9c6f9e71290.rlib,source=/libunicode_segmentation-0711d9c6f9e71290.rlib \
+  --mount=from=out-8d3142ab9efe4ea8,dst=/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro_error-8d3142ab9efe4ea8.rmeta,source=/libproc_macro_error-8d3142ab9efe4ea8.rmeta \
   --mount=from=out-8d3142ab9efe4ea8,dst=/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro_error-8d3142ab9efe4ea8.rlib,source=/libproc_macro_error-8d3142ab9efe4ea8.rlib \
   --mount=from=out-5abbb4d0b3e50e85,dst=/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro_error_attr-5abbb4d0b3e50e85.so,source=/libproc_macro_error_attr-5abbb4d0b3e50e85.so \
+  --mount=from=out-80b37ce9903d0def,dst=/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-80b37ce9903d0def.rmeta,source=/libproc_macro2-80b37ce9903d0def.rmeta \
   --mount=from=out-80b37ce9903d0def,dst=/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-80b37ce9903d0def.rlib,source=/libproc_macro2-80b37ce9903d0def.rlib \
+  --mount=from=out-ca80afcc82eeec0a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-ca80afcc82eeec0a.rmeta,source=/libunicode_xid-ca80afcc82eeec0a.rmeta \
   --mount=from=out-ca80afcc82eeec0a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-ca80afcc82eeec0a.rlib,source=/libunicode_xid-ca80afcc82eeec0a.rlib \
+  --mount=from=out-dd5debcb2b51fc02,dst=/tmp/clis-dbcc_2-2-1/release/deps/libquote-dd5debcb2b51fc02.rmeta,source=/libquote-dd5debcb2b51fc02.rmeta \
   --mount=from=out-dd5debcb2b51fc02,dst=/tmp/clis-dbcc_2-2-1/release/deps/libquote-dd5debcb2b51fc02.rlib,source=/libquote-dd5debcb2b51fc02.rlib \
+  --mount=from=out-bbffa8c7e6a16356,dst=/tmp/clis-dbcc_2-2-1/release/deps/libsyn-bbffa8c7e6a16356.rmeta,source=/libsyn-bbffa8c7e6a16356.rmeta \
   --mount=from=out-bbffa8c7e6a16356,dst=/tmp/clis-dbcc_2-2-1/release/deps/libsyn-bbffa8c7e6a16356.rlib,source=/libsyn-bbffa8c7e6a16356.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
@@ -6521,14 +7690,14 @@ COPY --from=dep-p-structopt-derive-0.4.13-0187f3c8576aef3b /tmp/clis-dbcc_2-2-1/
 ##     "bbffa8c7e6a16356",
 ## ]
 ## short_externs = [
-##     "heck-41892b3573d1a97c",
-##     "unicode_segmentation-0711d9c6f9e71290",
-##     "proc_macro_error-8d3142ab9efe4ea8",
-##     "proc_macro_error_attr-5abbb4d0b3e50e85",
-##     "proc_macro2-80b37ce9903d0def",
-##     "unicode_xid-ca80afcc82eeec0a",
-##     "quote-dd5debcb2b51fc02",
-##     "syn-bbffa8c7e6a16356",
+##     "41892b3573d1a97c",
+##     "0711d9c6f9e71290",
+##     "8d3142ab9efe4ea8",
+##     "5abbb4d0b3e50e85",
+##     "80b37ce9903d0def",
+##     "ca80afcc82eeec0a",
+##     "dd5debcb2b51fc02",
+##     "bbffa8c7e6a16356",
 ## ]
 ## is_proc_macro = true
 ## writes = [
@@ -6545,6 +7714,81 @@ COPY --from=dep-p-structopt-derive-0.4.13-0187f3c8576aef3b /tmp/clis-dbcc_2-2-1/
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-dbcc_2-2-1/release/deps/libstructopt_derive-0187f3c8576aef3b.so","emit":"link"}',
 ##     '{"$message_type":"diagnostic","message":"5 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 5 warnings emitted\u001b[0m\n\n"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-41892b3573d1a97c"
+## src = "/libheck-41892b3573d1a97c.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libheck-41892b3573d1a97c.rmeta"
+## 
+## [[mounts]]
+## from = "out-41892b3573d1a97c"
+## src = "/libheck-41892b3573d1a97c.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libheck-41892b3573d1a97c.rlib"
+## 
+## [[mounts]]
+## from = "out-0711d9c6f9e71290"
+## src = "/libunicode_segmentation-0711d9c6f9e71290.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_segmentation-0711d9c6f9e71290.rmeta"
+## 
+## [[mounts]]
+## from = "out-0711d9c6f9e71290"
+## src = "/libunicode_segmentation-0711d9c6f9e71290.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_segmentation-0711d9c6f9e71290.rlib"
+## 
+## [[mounts]]
+## from = "out-8d3142ab9efe4ea8"
+## src = "/libproc_macro_error-8d3142ab9efe4ea8.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro_error-8d3142ab9efe4ea8.rmeta"
+## 
+## [[mounts]]
+## from = "out-8d3142ab9efe4ea8"
+## src = "/libproc_macro_error-8d3142ab9efe4ea8.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro_error-8d3142ab9efe4ea8.rlib"
+## 
+## [[mounts]]
+## from = "out-5abbb4d0b3e50e85"
+## src = "/libproc_macro_error_attr-5abbb4d0b3e50e85.so"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro_error_attr-5abbb4d0b3e50e85.so"
+## 
+## [[mounts]]
+## from = "out-80b37ce9903d0def"
+## src = "/libproc_macro2-80b37ce9903d0def.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-80b37ce9903d0def.rmeta"
+## 
+## [[mounts]]
+## from = "out-80b37ce9903d0def"
+## src = "/libproc_macro2-80b37ce9903d0def.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-80b37ce9903d0def.rlib"
+## 
+## [[mounts]]
+## from = "out-ca80afcc82eeec0a"
+## src = "/libunicode_xid-ca80afcc82eeec0a.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-ca80afcc82eeec0a.rmeta"
+## 
+## [[mounts]]
+## from = "out-ca80afcc82eeec0a"
+## src = "/libunicode_xid-ca80afcc82eeec0a.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-ca80afcc82eeec0a.rlib"
+## 
+## [[mounts]]
+## from = "out-dd5debcb2b51fc02"
+## src = "/libquote-dd5debcb2b51fc02.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libquote-dd5debcb2b51fc02.rmeta"
+## 
+## [[mounts]]
+## from = "out-dd5debcb2b51fc02"
+## src = "/libquote-dd5debcb2b51fc02.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libquote-dd5debcb2b51fc02.rlib"
+## 
+## [[mounts]]
+## from = "out-bbffa8c7e6a16356"
+## src = "/libsyn-bbffa8c7e6a16356.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libsyn-bbffa8c7e6a16356.rmeta"
+## 
+## [[mounts]]
+## from = "out-bbffa8c7e6a16356"
+## src = "/libsyn-bbffa8c7e6a16356.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libsyn-bbffa8c7e6a16356.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -6565,13 +7809,20 @@ COPY --from=dep-p-structopt-derive-0.4.13-0187f3c8576aef3b /tmp/clis-dbcc_2-2-1/
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
 ##   --mount=from=cratesio-structopt-derive-0.4.13,source=/structopt-derive-0.4.13,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/structopt-derive-0.4.13 \
+##   --mount=from=out-41892b3573d1a97c,dst=/tmp/clis-dbcc_2-2-1/release/deps/libheck-41892b3573d1a97c.rmeta,source=/libheck-41892b3573d1a97c.rmeta \
 ##   --mount=from=out-41892b3573d1a97c,dst=/tmp/clis-dbcc_2-2-1/release/deps/libheck-41892b3573d1a97c.rlib,source=/libheck-41892b3573d1a97c.rlib \
+##   --mount=from=out-0711d9c6f9e71290,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_segmentation-0711d9c6f9e71290.rmeta,source=/libunicode_segmentation-0711d9c6f9e71290.rmeta \
 ##   --mount=from=out-0711d9c6f9e71290,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_segmentation-0711d9c6f9e71290.rlib,source=/libunicode_segmentation-0711d9c6f9e71290.rlib \
+##   --mount=from=out-8d3142ab9efe4ea8,dst=/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro_error-8d3142ab9efe4ea8.rmeta,source=/libproc_macro_error-8d3142ab9efe4ea8.rmeta \
 ##   --mount=from=out-8d3142ab9efe4ea8,dst=/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro_error-8d3142ab9efe4ea8.rlib,source=/libproc_macro_error-8d3142ab9efe4ea8.rlib \
 ##   --mount=from=out-5abbb4d0b3e50e85,dst=/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro_error_attr-5abbb4d0b3e50e85.so,source=/libproc_macro_error_attr-5abbb4d0b3e50e85.so \
+##   --mount=from=out-80b37ce9903d0def,dst=/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-80b37ce9903d0def.rmeta,source=/libproc_macro2-80b37ce9903d0def.rmeta \
 ##   --mount=from=out-80b37ce9903d0def,dst=/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-80b37ce9903d0def.rlib,source=/libproc_macro2-80b37ce9903d0def.rlib \
+##   --mount=from=out-ca80afcc82eeec0a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-ca80afcc82eeec0a.rmeta,source=/libunicode_xid-ca80afcc82eeec0a.rmeta \
 ##   --mount=from=out-ca80afcc82eeec0a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-ca80afcc82eeec0a.rlib,source=/libunicode_xid-ca80afcc82eeec0a.rlib \
+##   --mount=from=out-dd5debcb2b51fc02,dst=/tmp/clis-dbcc_2-2-1/release/deps/libquote-dd5debcb2b51fc02.rmeta,source=/libquote-dd5debcb2b51fc02.rmeta \
 ##   --mount=from=out-dd5debcb2b51fc02,dst=/tmp/clis-dbcc_2-2-1/release/deps/libquote-dd5debcb2b51fc02.rlib,source=/libquote-dd5debcb2b51fc02.rlib \
+##   --mount=from=out-bbffa8c7e6a16356,dst=/tmp/clis-dbcc_2-2-1/release/deps/libsyn-bbffa8c7e6a16356.rmeta,source=/libsyn-bbffa8c7e6a16356.rmeta \
 ##   --mount=from=out-bbffa8c7e6a16356,dst=/tmp/clis-dbcc_2-2-1/release/deps/libsyn-bbffa8c7e6a16356.rlib,source=/libsyn-bbffa8c7e6a16356.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
@@ -6613,24 +7864,41 @@ WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
   --mount=from=cratesio-structopt-0.3.20,source=/structopt-0.3.20,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/structopt-0.3.20 \
   --mount=from=out-5a839c872643e159,dst=/tmp/clis-dbcc_2-2-1/release/deps/libclap-5a839c872643e159.rmeta,source=/libclap-5a839c872643e159.rmeta \
+  --mount=from=out-5a839c872643e159,dst=/tmp/clis-dbcc_2-2-1/release/deps/libclap-5a839c872643e159.rlib,source=/libclap-5a839c872643e159.rlib \
   --mount=from=out-320ef4b8ee2e57f9,dst=/tmp/clis-dbcc_2-2-1/release/deps/libansi_term-320ef4b8ee2e57f9.rmeta,source=/libansi_term-320ef4b8ee2e57f9.rmeta \
+  --mount=from=out-320ef4b8ee2e57f9,dst=/tmp/clis-dbcc_2-2-1/release/deps/libansi_term-320ef4b8ee2e57f9.rlib,source=/libansi_term-320ef4b8ee2e57f9.rlib \
   --mount=from=out-737035cdf92a82de,dst=/tmp/clis-dbcc_2-2-1/release/deps/libatty-737035cdf92a82de.rmeta,source=/libatty-737035cdf92a82de.rmeta \
+  --mount=from=out-737035cdf92a82de,dst=/tmp/clis-dbcc_2-2-1/release/deps/libatty-737035cdf92a82de.rlib,source=/libatty-737035cdf92a82de.rlib \
   --mount=from=out-087afb0c1713a9a6,dst=/tmp/clis-dbcc_2-2-1/release/deps/liblibc-087afb0c1713a9a6.rmeta,source=/liblibc-087afb0c1713a9a6.rmeta \
+  --mount=from=out-087afb0c1713a9a6,dst=/tmp/clis-dbcc_2-2-1/release/deps/liblibc-087afb0c1713a9a6.rlib,source=/liblibc-087afb0c1713a9a6.rlib \
   --mount=from=out-d19718ebe5a0c815,dst=/tmp/clis-dbcc_2-2-1/release/deps/libbitflags-d19718ebe5a0c815.rmeta,source=/libbitflags-d19718ebe5a0c815.rmeta \
+  --mount=from=out-d19718ebe5a0c815,dst=/tmp/clis-dbcc_2-2-1/release/deps/libbitflags-d19718ebe5a0c815.rlib,source=/libbitflags-d19718ebe5a0c815.rlib \
   --mount=from=out-ada2690f4d94d615,dst=/tmp/clis-dbcc_2-2-1/release/deps/libstrsim-ada2690f4d94d615.rmeta,source=/libstrsim-ada2690f4d94d615.rmeta \
+  --mount=from=out-ada2690f4d94d615,dst=/tmp/clis-dbcc_2-2-1/release/deps/libstrsim-ada2690f4d94d615.rlib,source=/libstrsim-ada2690f4d94d615.rlib \
   --mount=from=out-b7e82f41d8b26a14,dst=/tmp/clis-dbcc_2-2-1/release/deps/libtextwrap-b7e82f41d8b26a14.rmeta,source=/libtextwrap-b7e82f41d8b26a14.rmeta \
+  --mount=from=out-b7e82f41d8b26a14,dst=/tmp/clis-dbcc_2-2-1/release/deps/libtextwrap-b7e82f41d8b26a14.rlib,source=/libtextwrap-b7e82f41d8b26a14.rlib \
   --mount=from=out-e55c633902343b3a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_width-e55c633902343b3a.rmeta,source=/libunicode_width-e55c633902343b3a.rmeta \
+  --mount=from=out-e55c633902343b3a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_width-e55c633902343b3a.rlib,source=/libunicode_width-e55c633902343b3a.rlib \
   --mount=from=out-3fc8ab5befc6e8f4,dst=/tmp/clis-dbcc_2-2-1/release/deps/libvec_map-3fc8ab5befc6e8f4.rmeta,source=/libvec_map-3fc8ab5befc6e8f4.rmeta \
+  --mount=from=out-3fc8ab5befc6e8f4,dst=/tmp/clis-dbcc_2-2-1/release/deps/libvec_map-3fc8ab5befc6e8f4.rlib,source=/libvec_map-3fc8ab5befc6e8f4.rlib \
   --mount=from=out-a79af56de238e2b5,dst=/tmp/clis-dbcc_2-2-1/release/deps/liblazy_static-a79af56de238e2b5.rmeta,source=/liblazy_static-a79af56de238e2b5.rmeta \
+  --mount=from=out-a79af56de238e2b5,dst=/tmp/clis-dbcc_2-2-1/release/deps/liblazy_static-a79af56de238e2b5.rlib,source=/liblazy_static-a79af56de238e2b5.rlib \
   --mount=from=out-0187f3c8576aef3b,dst=/tmp/clis-dbcc_2-2-1/release/deps/libstructopt_derive-0187f3c8576aef3b.so,source=/libstructopt_derive-0187f3c8576aef3b.so \
   --mount=from=out-41892b3573d1a97c,dst=/tmp/clis-dbcc_2-2-1/release/deps/libheck-41892b3573d1a97c.rmeta,source=/libheck-41892b3573d1a97c.rmeta \
+  --mount=from=out-41892b3573d1a97c,dst=/tmp/clis-dbcc_2-2-1/release/deps/libheck-41892b3573d1a97c.rlib,source=/libheck-41892b3573d1a97c.rlib \
   --mount=from=out-0711d9c6f9e71290,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_segmentation-0711d9c6f9e71290.rmeta,source=/libunicode_segmentation-0711d9c6f9e71290.rmeta \
+  --mount=from=out-0711d9c6f9e71290,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_segmentation-0711d9c6f9e71290.rlib,source=/libunicode_segmentation-0711d9c6f9e71290.rlib \
   --mount=from=out-8d3142ab9efe4ea8,dst=/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro_error-8d3142ab9efe4ea8.rmeta,source=/libproc_macro_error-8d3142ab9efe4ea8.rmeta \
+  --mount=from=out-8d3142ab9efe4ea8,dst=/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro_error-8d3142ab9efe4ea8.rlib,source=/libproc_macro_error-8d3142ab9efe4ea8.rlib \
   --mount=from=out-5abbb4d0b3e50e85,dst=/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro_error_attr-5abbb4d0b3e50e85.so,source=/libproc_macro_error_attr-5abbb4d0b3e50e85.so \
   --mount=from=out-80b37ce9903d0def,dst=/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-80b37ce9903d0def.rmeta,source=/libproc_macro2-80b37ce9903d0def.rmeta \
+  --mount=from=out-80b37ce9903d0def,dst=/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-80b37ce9903d0def.rlib,source=/libproc_macro2-80b37ce9903d0def.rlib \
   --mount=from=out-ca80afcc82eeec0a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-ca80afcc82eeec0a.rmeta,source=/libunicode_xid-ca80afcc82eeec0a.rmeta \
+  --mount=from=out-ca80afcc82eeec0a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-ca80afcc82eeec0a.rlib,source=/libunicode_xid-ca80afcc82eeec0a.rlib \
   --mount=from=out-dd5debcb2b51fc02,dst=/tmp/clis-dbcc_2-2-1/release/deps/libquote-dd5debcb2b51fc02.rmeta,source=/libquote-dd5debcb2b51fc02.rmeta \
+  --mount=from=out-dd5debcb2b51fc02,dst=/tmp/clis-dbcc_2-2-1/release/deps/libquote-dd5debcb2b51fc02.rlib,source=/libquote-dd5debcb2b51fc02.rlib \
   --mount=from=out-bbffa8c7e6a16356,dst=/tmp/clis-dbcc_2-2-1/release/deps/libsyn-bbffa8c7e6a16356.rmeta,source=/libsyn-bbffa8c7e6a16356.rmeta \
+  --mount=from=out-bbffa8c7e6a16356,dst=/tmp/clis-dbcc_2-2-1/release/deps/libsyn-bbffa8c7e6a16356.rlib,source=/libsyn-bbffa8c7e6a16356.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="structopt" \
@@ -6681,25 +7949,25 @@ COPY --from=dep-l-structopt-0.3.20-05c5d104c65b93b5 /tmp/clis-dbcc_2-2-1/release
 ##     "bbffa8c7e6a16356",
 ## ]
 ## short_externs = [
-##     "clap-5a839c872643e159",
-##     "ansi_term-320ef4b8ee2e57f9",
-##     "atty-737035cdf92a82de",
-##     "libc-087afb0c1713a9a6",
-##     "bitflags-d19718ebe5a0c815",
-##     "strsim-ada2690f4d94d615",
-##     "textwrap-b7e82f41d8b26a14",
-##     "unicode_width-e55c633902343b3a",
-##     "vec_map-3fc8ab5befc6e8f4",
-##     "lazy_static-a79af56de238e2b5",
-##     "structopt_derive-0187f3c8576aef3b",
-##     "heck-41892b3573d1a97c",
-##     "unicode_segmentation-0711d9c6f9e71290",
-##     "proc_macro_error-8d3142ab9efe4ea8",
-##     "proc_macro_error_attr-5abbb4d0b3e50e85",
-##     "proc_macro2-80b37ce9903d0def",
-##     "unicode_xid-ca80afcc82eeec0a",
-##     "quote-dd5debcb2b51fc02",
-##     "syn-bbffa8c7e6a16356",
+##     "5a839c872643e159",
+##     "320ef4b8ee2e57f9",
+##     "737035cdf92a82de",
+##     "087afb0c1713a9a6",
+##     "d19718ebe5a0c815",
+##     "ada2690f4d94d615",
+##     "b7e82f41d8b26a14",
+##     "e55c633902343b3a",
+##     "3fc8ab5befc6e8f4",
+##     "a79af56de238e2b5",
+##     "0187f3c8576aef3b",
+##     "41892b3573d1a97c",
+##     "0711d9c6f9e71290",
+##     "8d3142ab9efe4ea8",
+##     "5abbb4d0b3e50e85",
+##     "80b37ce9903d0def",
+##     "ca80afcc82eeec0a",
+##     "dd5debcb2b51fc02",
+##     "bbffa8c7e6a16356",
 ## ]
 ## writes = [
 ##     "deps/structopt-05c5d104c65b93b5.d",
@@ -6711,6 +7979,186 @@ COPY --from=dep-l-structopt-0.3.20-05c5d104c65b93b5 /tmp/clis-dbcc_2-2-1/release
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-dbcc_2-2-1/release/deps/libstructopt-05c5d104c65b93b5.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-dbcc_2-2-1/release/deps/libstructopt-05c5d104c65b93b5.rlib","emit":"link"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-5a839c872643e159"
+## src = "/libclap-5a839c872643e159.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libclap-5a839c872643e159.rmeta"
+## 
+## [[mounts]]
+## from = "out-5a839c872643e159"
+## src = "/libclap-5a839c872643e159.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libclap-5a839c872643e159.rlib"
+## 
+## [[mounts]]
+## from = "out-320ef4b8ee2e57f9"
+## src = "/libansi_term-320ef4b8ee2e57f9.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libansi_term-320ef4b8ee2e57f9.rmeta"
+## 
+## [[mounts]]
+## from = "out-320ef4b8ee2e57f9"
+## src = "/libansi_term-320ef4b8ee2e57f9.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libansi_term-320ef4b8ee2e57f9.rlib"
+## 
+## [[mounts]]
+## from = "out-737035cdf92a82de"
+## src = "/libatty-737035cdf92a82de.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libatty-737035cdf92a82de.rmeta"
+## 
+## [[mounts]]
+## from = "out-737035cdf92a82de"
+## src = "/libatty-737035cdf92a82de.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libatty-737035cdf92a82de.rlib"
+## 
+## [[mounts]]
+## from = "out-087afb0c1713a9a6"
+## src = "/liblibc-087afb0c1713a9a6.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/liblibc-087afb0c1713a9a6.rmeta"
+## 
+## [[mounts]]
+## from = "out-087afb0c1713a9a6"
+## src = "/liblibc-087afb0c1713a9a6.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/liblibc-087afb0c1713a9a6.rlib"
+## 
+## [[mounts]]
+## from = "out-d19718ebe5a0c815"
+## src = "/libbitflags-d19718ebe5a0c815.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libbitflags-d19718ebe5a0c815.rmeta"
+## 
+## [[mounts]]
+## from = "out-d19718ebe5a0c815"
+## src = "/libbitflags-d19718ebe5a0c815.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libbitflags-d19718ebe5a0c815.rlib"
+## 
+## [[mounts]]
+## from = "out-ada2690f4d94d615"
+## src = "/libstrsim-ada2690f4d94d615.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libstrsim-ada2690f4d94d615.rmeta"
+## 
+## [[mounts]]
+## from = "out-ada2690f4d94d615"
+## src = "/libstrsim-ada2690f4d94d615.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libstrsim-ada2690f4d94d615.rlib"
+## 
+## [[mounts]]
+## from = "out-b7e82f41d8b26a14"
+## src = "/libtextwrap-b7e82f41d8b26a14.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libtextwrap-b7e82f41d8b26a14.rmeta"
+## 
+## [[mounts]]
+## from = "out-b7e82f41d8b26a14"
+## src = "/libtextwrap-b7e82f41d8b26a14.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libtextwrap-b7e82f41d8b26a14.rlib"
+## 
+## [[mounts]]
+## from = "out-e55c633902343b3a"
+## src = "/libunicode_width-e55c633902343b3a.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_width-e55c633902343b3a.rmeta"
+## 
+## [[mounts]]
+## from = "out-e55c633902343b3a"
+## src = "/libunicode_width-e55c633902343b3a.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_width-e55c633902343b3a.rlib"
+## 
+## [[mounts]]
+## from = "out-3fc8ab5befc6e8f4"
+## src = "/libvec_map-3fc8ab5befc6e8f4.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libvec_map-3fc8ab5befc6e8f4.rmeta"
+## 
+## [[mounts]]
+## from = "out-3fc8ab5befc6e8f4"
+## src = "/libvec_map-3fc8ab5befc6e8f4.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libvec_map-3fc8ab5befc6e8f4.rlib"
+## 
+## [[mounts]]
+## from = "out-a79af56de238e2b5"
+## src = "/liblazy_static-a79af56de238e2b5.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/liblazy_static-a79af56de238e2b5.rmeta"
+## 
+## [[mounts]]
+## from = "out-a79af56de238e2b5"
+## src = "/liblazy_static-a79af56de238e2b5.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/liblazy_static-a79af56de238e2b5.rlib"
+## 
+## [[mounts]]
+## from = "out-0187f3c8576aef3b"
+## src = "/libstructopt_derive-0187f3c8576aef3b.so"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libstructopt_derive-0187f3c8576aef3b.so"
+## 
+## [[mounts]]
+## from = "out-41892b3573d1a97c"
+## src = "/libheck-41892b3573d1a97c.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libheck-41892b3573d1a97c.rmeta"
+## 
+## [[mounts]]
+## from = "out-41892b3573d1a97c"
+## src = "/libheck-41892b3573d1a97c.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libheck-41892b3573d1a97c.rlib"
+## 
+## [[mounts]]
+## from = "out-0711d9c6f9e71290"
+## src = "/libunicode_segmentation-0711d9c6f9e71290.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_segmentation-0711d9c6f9e71290.rmeta"
+## 
+## [[mounts]]
+## from = "out-0711d9c6f9e71290"
+## src = "/libunicode_segmentation-0711d9c6f9e71290.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_segmentation-0711d9c6f9e71290.rlib"
+## 
+## [[mounts]]
+## from = "out-8d3142ab9efe4ea8"
+## src = "/libproc_macro_error-8d3142ab9efe4ea8.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro_error-8d3142ab9efe4ea8.rmeta"
+## 
+## [[mounts]]
+## from = "out-8d3142ab9efe4ea8"
+## src = "/libproc_macro_error-8d3142ab9efe4ea8.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro_error-8d3142ab9efe4ea8.rlib"
+## 
+## [[mounts]]
+## from = "out-5abbb4d0b3e50e85"
+## src = "/libproc_macro_error_attr-5abbb4d0b3e50e85.so"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro_error_attr-5abbb4d0b3e50e85.so"
+## 
+## [[mounts]]
+## from = "out-80b37ce9903d0def"
+## src = "/libproc_macro2-80b37ce9903d0def.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-80b37ce9903d0def.rmeta"
+## 
+## [[mounts]]
+## from = "out-80b37ce9903d0def"
+## src = "/libproc_macro2-80b37ce9903d0def.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-80b37ce9903d0def.rlib"
+## 
+## [[mounts]]
+## from = "out-ca80afcc82eeec0a"
+## src = "/libunicode_xid-ca80afcc82eeec0a.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-ca80afcc82eeec0a.rmeta"
+## 
+## [[mounts]]
+## from = "out-ca80afcc82eeec0a"
+## src = "/libunicode_xid-ca80afcc82eeec0a.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-ca80afcc82eeec0a.rlib"
+## 
+## [[mounts]]
+## from = "out-dd5debcb2b51fc02"
+## src = "/libquote-dd5debcb2b51fc02.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libquote-dd5debcb2b51fc02.rmeta"
+## 
+## [[mounts]]
+## from = "out-dd5debcb2b51fc02"
+## src = "/libquote-dd5debcb2b51fc02.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libquote-dd5debcb2b51fc02.rlib"
+## 
+## [[mounts]]
+## from = "out-bbffa8c7e6a16356"
+## src = "/libsyn-bbffa8c7e6a16356.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libsyn-bbffa8c7e6a16356.rmeta"
+## 
+## [[mounts]]
+## from = "out-bbffa8c7e6a16356"
+## src = "/libsyn-bbffa8c7e6a16356.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libsyn-bbffa8c7e6a16356.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -6732,24 +8180,41 @@ COPY --from=dep-l-structopt-0.3.20-05c5d104c65b93b5 /tmp/clis-dbcc_2-2-1/release
 ## RUN \
 ##   --mount=from=cratesio-structopt-0.3.20,source=/structopt-0.3.20,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/structopt-0.3.20 \
 ##   --mount=from=out-5a839c872643e159,dst=/tmp/clis-dbcc_2-2-1/release/deps/libclap-5a839c872643e159.rmeta,source=/libclap-5a839c872643e159.rmeta \
+##   --mount=from=out-5a839c872643e159,dst=/tmp/clis-dbcc_2-2-1/release/deps/libclap-5a839c872643e159.rlib,source=/libclap-5a839c872643e159.rlib \
 ##   --mount=from=out-320ef4b8ee2e57f9,dst=/tmp/clis-dbcc_2-2-1/release/deps/libansi_term-320ef4b8ee2e57f9.rmeta,source=/libansi_term-320ef4b8ee2e57f9.rmeta \
+##   --mount=from=out-320ef4b8ee2e57f9,dst=/tmp/clis-dbcc_2-2-1/release/deps/libansi_term-320ef4b8ee2e57f9.rlib,source=/libansi_term-320ef4b8ee2e57f9.rlib \
 ##   --mount=from=out-737035cdf92a82de,dst=/tmp/clis-dbcc_2-2-1/release/deps/libatty-737035cdf92a82de.rmeta,source=/libatty-737035cdf92a82de.rmeta \
+##   --mount=from=out-737035cdf92a82de,dst=/tmp/clis-dbcc_2-2-1/release/deps/libatty-737035cdf92a82de.rlib,source=/libatty-737035cdf92a82de.rlib \
 ##   --mount=from=out-087afb0c1713a9a6,dst=/tmp/clis-dbcc_2-2-1/release/deps/liblibc-087afb0c1713a9a6.rmeta,source=/liblibc-087afb0c1713a9a6.rmeta \
+##   --mount=from=out-087afb0c1713a9a6,dst=/tmp/clis-dbcc_2-2-1/release/deps/liblibc-087afb0c1713a9a6.rlib,source=/liblibc-087afb0c1713a9a6.rlib \
 ##   --mount=from=out-d19718ebe5a0c815,dst=/tmp/clis-dbcc_2-2-1/release/deps/libbitflags-d19718ebe5a0c815.rmeta,source=/libbitflags-d19718ebe5a0c815.rmeta \
+##   --mount=from=out-d19718ebe5a0c815,dst=/tmp/clis-dbcc_2-2-1/release/deps/libbitflags-d19718ebe5a0c815.rlib,source=/libbitflags-d19718ebe5a0c815.rlib \
 ##   --mount=from=out-ada2690f4d94d615,dst=/tmp/clis-dbcc_2-2-1/release/deps/libstrsim-ada2690f4d94d615.rmeta,source=/libstrsim-ada2690f4d94d615.rmeta \
+##   --mount=from=out-ada2690f4d94d615,dst=/tmp/clis-dbcc_2-2-1/release/deps/libstrsim-ada2690f4d94d615.rlib,source=/libstrsim-ada2690f4d94d615.rlib \
 ##   --mount=from=out-b7e82f41d8b26a14,dst=/tmp/clis-dbcc_2-2-1/release/deps/libtextwrap-b7e82f41d8b26a14.rmeta,source=/libtextwrap-b7e82f41d8b26a14.rmeta \
+##   --mount=from=out-b7e82f41d8b26a14,dst=/tmp/clis-dbcc_2-2-1/release/deps/libtextwrap-b7e82f41d8b26a14.rlib,source=/libtextwrap-b7e82f41d8b26a14.rlib \
 ##   --mount=from=out-e55c633902343b3a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_width-e55c633902343b3a.rmeta,source=/libunicode_width-e55c633902343b3a.rmeta \
+##   --mount=from=out-e55c633902343b3a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_width-e55c633902343b3a.rlib,source=/libunicode_width-e55c633902343b3a.rlib \
 ##   --mount=from=out-3fc8ab5befc6e8f4,dst=/tmp/clis-dbcc_2-2-1/release/deps/libvec_map-3fc8ab5befc6e8f4.rmeta,source=/libvec_map-3fc8ab5befc6e8f4.rmeta \
+##   --mount=from=out-3fc8ab5befc6e8f4,dst=/tmp/clis-dbcc_2-2-1/release/deps/libvec_map-3fc8ab5befc6e8f4.rlib,source=/libvec_map-3fc8ab5befc6e8f4.rlib \
 ##   --mount=from=out-a79af56de238e2b5,dst=/tmp/clis-dbcc_2-2-1/release/deps/liblazy_static-a79af56de238e2b5.rmeta,source=/liblazy_static-a79af56de238e2b5.rmeta \
+##   --mount=from=out-a79af56de238e2b5,dst=/tmp/clis-dbcc_2-2-1/release/deps/liblazy_static-a79af56de238e2b5.rlib,source=/liblazy_static-a79af56de238e2b5.rlib \
 ##   --mount=from=out-0187f3c8576aef3b,dst=/tmp/clis-dbcc_2-2-1/release/deps/libstructopt_derive-0187f3c8576aef3b.so,source=/libstructopt_derive-0187f3c8576aef3b.so \
 ##   --mount=from=out-41892b3573d1a97c,dst=/tmp/clis-dbcc_2-2-1/release/deps/libheck-41892b3573d1a97c.rmeta,source=/libheck-41892b3573d1a97c.rmeta \
+##   --mount=from=out-41892b3573d1a97c,dst=/tmp/clis-dbcc_2-2-1/release/deps/libheck-41892b3573d1a97c.rlib,source=/libheck-41892b3573d1a97c.rlib \
 ##   --mount=from=out-0711d9c6f9e71290,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_segmentation-0711d9c6f9e71290.rmeta,source=/libunicode_segmentation-0711d9c6f9e71290.rmeta \
+##   --mount=from=out-0711d9c6f9e71290,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_segmentation-0711d9c6f9e71290.rlib,source=/libunicode_segmentation-0711d9c6f9e71290.rlib \
 ##   --mount=from=out-8d3142ab9efe4ea8,dst=/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro_error-8d3142ab9efe4ea8.rmeta,source=/libproc_macro_error-8d3142ab9efe4ea8.rmeta \
+##   --mount=from=out-8d3142ab9efe4ea8,dst=/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro_error-8d3142ab9efe4ea8.rlib,source=/libproc_macro_error-8d3142ab9efe4ea8.rlib \
 ##   --mount=from=out-5abbb4d0b3e50e85,dst=/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro_error_attr-5abbb4d0b3e50e85.so,source=/libproc_macro_error_attr-5abbb4d0b3e50e85.so \
 ##   --mount=from=out-80b37ce9903d0def,dst=/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-80b37ce9903d0def.rmeta,source=/libproc_macro2-80b37ce9903d0def.rmeta \
+##   --mount=from=out-80b37ce9903d0def,dst=/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-80b37ce9903d0def.rlib,source=/libproc_macro2-80b37ce9903d0def.rlib \
 ##   --mount=from=out-ca80afcc82eeec0a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-ca80afcc82eeec0a.rmeta,source=/libunicode_xid-ca80afcc82eeec0a.rmeta \
+##   --mount=from=out-ca80afcc82eeec0a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-ca80afcc82eeec0a.rlib,source=/libunicode_xid-ca80afcc82eeec0a.rlib \
 ##   --mount=from=out-dd5debcb2b51fc02,dst=/tmp/clis-dbcc_2-2-1/release/deps/libquote-dd5debcb2b51fc02.rmeta,source=/libquote-dd5debcb2b51fc02.rmeta \
+##   --mount=from=out-dd5debcb2b51fc02,dst=/tmp/clis-dbcc_2-2-1/release/deps/libquote-dd5debcb2b51fc02.rlib,source=/libquote-dd5debcb2b51fc02.rlib \
 ##   --mount=from=out-bbffa8c7e6a16356,dst=/tmp/clis-dbcc_2-2-1/release/deps/libsyn-bbffa8c7e6a16356.rmeta,source=/libsyn-bbffa8c7e6a16356.rmeta \
+##   --mount=from=out-bbffa8c7e6a16356,dst=/tmp/clis-dbcc_2-2-1/release/deps/libsyn-bbffa8c7e6a16356.rlib,source=/libsyn-bbffa8c7e6a16356.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="structopt" \
@@ -6790,58 +8255,109 @@ WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
   --mount=from=cratesio-dbcc-2.2.1,source=/dbcc-2.2.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/dbcc-2.2.1 \
   --mount=from=out-90ca44a8caf54d0f,dst=/tmp/clis-dbcc_2-2-1/release/deps/libblake2-90ca44a8caf54d0f.rmeta,source=/libblake2-90ca44a8caf54d0f.rmeta \
+  --mount=from=out-90ca44a8caf54d0f,dst=/tmp/clis-dbcc_2-2-1/release/deps/libblake2-90ca44a8caf54d0f.rlib,source=/libblake2-90ca44a8caf54d0f.rlib \
   --mount=from=out-208f428f6e945660,dst=/tmp/clis-dbcc_2-2-1/release/deps/libbyte_tools-208f428f6e945660.rmeta,source=/libbyte_tools-208f428f6e945660.rmeta \
+  --mount=from=out-208f428f6e945660,dst=/tmp/clis-dbcc_2-2-1/release/deps/libbyte_tools-208f428f6e945660.rlib,source=/libbyte_tools-208f428f6e945660.rlib \
   --mount=from=out-c92b10e2fa1c82cb,dst=/tmp/clis-dbcc_2-2-1/release/deps/libcrypto_mac-c92b10e2fa1c82cb.rmeta,source=/libcrypto_mac-c92b10e2fa1c82cb.rmeta \
+  --mount=from=out-c92b10e2fa1c82cb,dst=/tmp/clis-dbcc_2-2-1/release/deps/libcrypto_mac-c92b10e2fa1c82cb.rlib,source=/libcrypto_mac-c92b10e2fa1c82cb.rlib \
   --mount=from=out-0afa135837d93e68,dst=/tmp/clis-dbcc_2-2-1/release/deps/libgeneric_array-0afa135837d93e68.rmeta,source=/libgeneric_array-0afa135837d93e68.rmeta \
+  --mount=from=out-0afa135837d93e68,dst=/tmp/clis-dbcc_2-2-1/release/deps/libgeneric_array-0afa135837d93e68.rlib,source=/libgeneric_array-0afa135837d93e68.rlib \
   --mount=from=out-0c59626b95871fe7,dst=/tmp/clis-dbcc_2-2-1/release/deps/libtypenum-0c59626b95871fe7.rmeta,source=/libtypenum-0c59626b95871fe7.rmeta \
+  --mount=from=out-0c59626b95871fe7,dst=/tmp/clis-dbcc_2-2-1/release/deps/libtypenum-0c59626b95871fe7.rlib,source=/libtypenum-0c59626b95871fe7.rlib \
   --mount=from=out-fe593aa0503da824,dst=/tmp/clis-dbcc_2-2-1/release/deps/libsubtle-fe593aa0503da824.rmeta,source=/libsubtle-fe593aa0503da824.rmeta \
+  --mount=from=out-fe593aa0503da824,dst=/tmp/clis-dbcc_2-2-1/release/deps/libsubtle-fe593aa0503da824.rlib,source=/libsubtle-fe593aa0503da824.rlib \
   --mount=from=out-3c7631a805111659,dst=/tmp/clis-dbcc_2-2-1/release/deps/libdigest-3c7631a805111659.rmeta,source=/libdigest-3c7631a805111659.rmeta \
+  --mount=from=out-3c7631a805111659,dst=/tmp/clis-dbcc_2-2-1/release/deps/libdigest-3c7631a805111659.rlib,source=/libdigest-3c7631a805111659.rlib \
   --mount=from=out-3e36cb37043b614a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libopaque_debug-3e36cb37043b614a.rmeta,source=/libopaque_debug-3e36cb37043b614a.rmeta \
+  --mount=from=out-3e36cb37043b614a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libopaque_debug-3e36cb37043b614a.rlib,source=/libopaque_debug-3e36cb37043b614a.rlib \
   --mount=from=out-593834cb44ccbead,dst=/tmp/clis-dbcc_2-2-1/release/deps/libcan_dbc-593834cb44ccbead.rmeta,source=/libcan_dbc-593834cb44ccbead.rmeta \
+  --mount=from=out-593834cb44ccbead,dst=/tmp/clis-dbcc_2-2-1/release/deps/libcan_dbc-593834cb44ccbead.rlib,source=/libcan_dbc-593834cb44ccbead.rlib \
   --mount=from=out-10105863fb18eb2a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libderive_getters-10105863fb18eb2a.so,source=/libderive_getters-10105863fb18eb2a.so \
   --mount=from=out-80b37ce9903d0def,dst=/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-80b37ce9903d0def.rmeta,source=/libproc_macro2-80b37ce9903d0def.rmeta \
+  --mount=from=out-80b37ce9903d0def,dst=/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-80b37ce9903d0def.rlib,source=/libproc_macro2-80b37ce9903d0def.rlib \
   --mount=from=out-ca80afcc82eeec0a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-ca80afcc82eeec0a.rmeta,source=/libunicode_xid-ca80afcc82eeec0a.rmeta \
+  --mount=from=out-ca80afcc82eeec0a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-ca80afcc82eeec0a.rlib,source=/libunicode_xid-ca80afcc82eeec0a.rlib \
   --mount=from=out-dd5debcb2b51fc02,dst=/tmp/clis-dbcc_2-2-1/release/deps/libquote-dd5debcb2b51fc02.rmeta,source=/libquote-dd5debcb2b51fc02.rmeta \
+  --mount=from=out-dd5debcb2b51fc02,dst=/tmp/clis-dbcc_2-2-1/release/deps/libquote-dd5debcb2b51fc02.rlib,source=/libquote-dd5debcb2b51fc02.rlib \
   --mount=from=out-bbffa8c7e6a16356,dst=/tmp/clis-dbcc_2-2-1/release/deps/libsyn-bbffa8c7e6a16356.rmeta,source=/libsyn-bbffa8c7e6a16356.rmeta \
+  --mount=from=out-bbffa8c7e6a16356,dst=/tmp/clis-dbcc_2-2-1/release/deps/libsyn-bbffa8c7e6a16356.rlib,source=/libsyn-bbffa8c7e6a16356.rlib \
   --mount=from=out-cd5fc4bcd4e040ed,dst=/tmp/clis-dbcc_2-2-1/release/deps/libnom-cd5fc4bcd4e040ed.rmeta,source=/libnom-cd5fc4bcd4e040ed.rmeta \
+  --mount=from=out-cd5fc4bcd4e040ed,dst=/tmp/clis-dbcc_2-2-1/release/deps/libnom-cd5fc4bcd4e040ed.rlib,source=/libnom-cd5fc4bcd4e040ed.rlib \
   --mount=from=out-c93fd10415a641fd,dst=/tmp/clis-dbcc_2-2-1/release/deps/libmemchr-c93fd10415a641fd.rmeta,source=/libmemchr-c93fd10415a641fd.rmeta \
+  --mount=from=out-c93fd10415a641fd,dst=/tmp/clis-dbcc_2-2-1/release/deps/libmemchr-c93fd10415a641fd.rlib,source=/libmemchr-c93fd10415a641fd.rlib \
   --mount=from=out-7d0dcf7e7b45836f,dst=/tmp/clis-dbcc_2-2-1/release/deps/libheck-7d0dcf7e7b45836f.rmeta,source=/libheck-7d0dcf7e7b45836f.rmeta \
+  --mount=from=out-7d0dcf7e7b45836f,dst=/tmp/clis-dbcc_2-2-1/release/deps/libheck-7d0dcf7e7b45836f.rlib,source=/libheck-7d0dcf7e7b45836f.rlib \
   --mount=from=out-b06e8bcc96549ef0,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_segmentation-b06e8bcc96549ef0.rmeta,source=/libunicode_segmentation-b06e8bcc96549ef0.rmeta \
+  --mount=from=out-b06e8bcc96549ef0,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_segmentation-b06e8bcc96549ef0.rlib,source=/libunicode_segmentation-b06e8bcc96549ef0.rlib \
   --mount=from=out-09be6f37eb701f15,dst=/tmp/clis-dbcc_2-2-1/release/deps/liblog-09be6f37eb701f15.rmeta,source=/liblog-09be6f37eb701f15.rmeta \
+  --mount=from=out-09be6f37eb701f15,dst=/tmp/clis-dbcc_2-2-1/release/deps/liblog-09be6f37eb701f15.rlib,source=/liblog-09be6f37eb701f15.rlib \
   --mount=from=out-abefcc22b095b628,dst=/tmp/clis-dbcc_2-2-1/release/deps/libcfg_if-abefcc22b095b628.rmeta,source=/libcfg_if-abefcc22b095b628.rmeta \
+  --mount=from=out-abefcc22b095b628,dst=/tmp/clis-dbcc_2-2-1/release/deps/libcfg_if-abefcc22b095b628.rlib,source=/libcfg_if-abefcc22b095b628.rlib \
   --mount=from=out-682e69746a16e0c7,dst=/tmp/clis-dbcc_2-2-1/release/deps/libpretty_env_logger-682e69746a16e0c7.rmeta,source=/libpretty_env_logger-682e69746a16e0c7.rmeta \
+  --mount=from=out-682e69746a16e0c7,dst=/tmp/clis-dbcc_2-2-1/release/deps/libpretty_env_logger-682e69746a16e0c7.rlib,source=/libpretty_env_logger-682e69746a16e0c7.rlib \
   --mount=from=out-94c0a2bd3b1451c8,dst=/tmp/clis-dbcc_2-2-1/release/deps/libenv_logger-94c0a2bd3b1451c8.rmeta,source=/libenv_logger-94c0a2bd3b1451c8.rmeta \
+  --mount=from=out-94c0a2bd3b1451c8,dst=/tmp/clis-dbcc_2-2-1/release/deps/libenv_logger-94c0a2bd3b1451c8.rlib,source=/libenv_logger-94c0a2bd3b1451c8.rlib \
   --mount=from=out-737035cdf92a82de,dst=/tmp/clis-dbcc_2-2-1/release/deps/libatty-737035cdf92a82de.rmeta,source=/libatty-737035cdf92a82de.rmeta \
+  --mount=from=out-737035cdf92a82de,dst=/tmp/clis-dbcc_2-2-1/release/deps/libatty-737035cdf92a82de.rlib,source=/libatty-737035cdf92a82de.rlib \
   --mount=from=out-087afb0c1713a9a6,dst=/tmp/clis-dbcc_2-2-1/release/deps/liblibc-087afb0c1713a9a6.rmeta,source=/liblibc-087afb0c1713a9a6.rmeta \
+  --mount=from=out-087afb0c1713a9a6,dst=/tmp/clis-dbcc_2-2-1/release/deps/liblibc-087afb0c1713a9a6.rlib,source=/liblibc-087afb0c1713a9a6.rlib \
   --mount=from=out-3e3dde196d8efa81,dst=/tmp/clis-dbcc_2-2-1/release/deps/libhumantime-3e3dde196d8efa81.rmeta,source=/libhumantime-3e3dde196d8efa81.rmeta \
+  --mount=from=out-3e3dde196d8efa81,dst=/tmp/clis-dbcc_2-2-1/release/deps/libhumantime-3e3dde196d8efa81.rlib,source=/libhumantime-3e3dde196d8efa81.rlib \
   --mount=from=out-bd3d4e33b0f59f1b,dst=/tmp/clis-dbcc_2-2-1/release/deps/libquick_error-bd3d4e33b0f59f1b.rmeta,source=/libquick_error-bd3d4e33b0f59f1b.rmeta \
+  --mount=from=out-bd3d4e33b0f59f1b,dst=/tmp/clis-dbcc_2-2-1/release/deps/libquick_error-bd3d4e33b0f59f1b.rlib,source=/libquick_error-bd3d4e33b0f59f1b.rlib \
   --mount=from=out-5ba8c6f49cc2732d,dst=/tmp/clis-dbcc_2-2-1/release/deps/libregex-5ba8c6f49cc2732d.rmeta,source=/libregex-5ba8c6f49cc2732d.rmeta \
+  --mount=from=out-5ba8c6f49cc2732d,dst=/tmp/clis-dbcc_2-2-1/release/deps/libregex-5ba8c6f49cc2732d.rlib,source=/libregex-5ba8c6f49cc2732d.rlib \
   --mount=from=out-014f7ab42daca0d7,dst=/tmp/clis-dbcc_2-2-1/release/deps/libaho_corasick-014f7ab42daca0d7.rmeta,source=/libaho_corasick-014f7ab42daca0d7.rmeta \
+  --mount=from=out-014f7ab42daca0d7,dst=/tmp/clis-dbcc_2-2-1/release/deps/libaho_corasick-014f7ab42daca0d7.rlib,source=/libaho_corasick-014f7ab42daca0d7.rlib \
   --mount=from=out-eec8efd7d7dadd3c,dst=/tmp/clis-dbcc_2-2-1/release/deps/libregex_syntax-eec8efd7d7dadd3c.rmeta,source=/libregex_syntax-eec8efd7d7dadd3c.rmeta \
+  --mount=from=out-eec8efd7d7dadd3c,dst=/tmp/clis-dbcc_2-2-1/release/deps/libregex_syntax-eec8efd7d7dadd3c.rlib,source=/libregex_syntax-eec8efd7d7dadd3c.rlib \
   --mount=from=out-3ace2abd55187163,dst=/tmp/clis-dbcc_2-2-1/release/deps/libthread_local-3ace2abd55187163.rmeta,source=/libthread_local-3ace2abd55187163.rmeta \
+  --mount=from=out-3ace2abd55187163,dst=/tmp/clis-dbcc_2-2-1/release/deps/libthread_local-3ace2abd55187163.rlib,source=/libthread_local-3ace2abd55187163.rlib \
   --mount=from=out-a79af56de238e2b5,dst=/tmp/clis-dbcc_2-2-1/release/deps/liblazy_static-a79af56de238e2b5.rmeta,source=/liblazy_static-a79af56de238e2b5.rmeta \
+  --mount=from=out-a79af56de238e2b5,dst=/tmp/clis-dbcc_2-2-1/release/deps/liblazy_static-a79af56de238e2b5.rlib,source=/liblazy_static-a79af56de238e2b5.rlib \
   --mount=from=out-3d5a70ee74f70e2b,dst=/tmp/clis-dbcc_2-2-1/release/deps/libtermcolor-3d5a70ee74f70e2b.rmeta,source=/libtermcolor-3d5a70ee74f70e2b.rmeta \
+  --mount=from=out-3d5a70ee74f70e2b,dst=/tmp/clis-dbcc_2-2-1/release/deps/libtermcolor-3d5a70ee74f70e2b.rlib,source=/libtermcolor-3d5a70ee74f70e2b.rlib \
   --mount=from=out-5eebdd82bed7d9de,dst=/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-5eebdd82bed7d9de.rmeta,source=/libproc_macro2-5eebdd82bed7d9de.rmeta \
+  --mount=from=out-5eebdd82bed7d9de,dst=/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-5eebdd82bed7d9de.rlib,source=/libproc_macro2-5eebdd82bed7d9de.rlib \
   --mount=from=out-f585407da4c0bf6f,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-f585407da4c0bf6f.rmeta,source=/libunicode_xid-f585407da4c0bf6f.rmeta \
+  --mount=from=out-f585407da4c0bf6f,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-f585407da4c0bf6f.rlib,source=/libunicode_xid-f585407da4c0bf6f.rlib \
   --mount=from=out-0298ff41e604ba82,dst=/tmp/clis-dbcc_2-2-1/release/deps/libquote-0298ff41e604ba82.rmeta,source=/libquote-0298ff41e604ba82.rmeta \
+  --mount=from=out-0298ff41e604ba82,dst=/tmp/clis-dbcc_2-2-1/release/deps/libquote-0298ff41e604ba82.rlib,source=/libquote-0298ff41e604ba82.rlib \
   --mount=from=out-7d72679ab99cdbe3,dst=/tmp/clis-dbcc_2-2-1/release/deps/libsocketcan-7d72679ab99cdbe3.rmeta,source=/libsocketcan-7d72679ab99cdbe3.rmeta \
+  --mount=from=out-7d72679ab99cdbe3,dst=/tmp/clis-dbcc_2-2-1/release/deps/libsocketcan-7d72679ab99cdbe3.rlib,source=/libsocketcan-7d72679ab99cdbe3.rlib \
   --mount=from=out-f065076cf799d91a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libhex-f065076cf799d91a.rmeta,source=/libhex-f065076cf799d91a.rmeta \
+  --mount=from=out-f065076cf799d91a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libhex-f065076cf799d91a.rlib,source=/libhex-f065076cf799d91a.rlib \
   --mount=from=out-2505039b047dad1a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libitertools-2505039b047dad1a.rmeta,source=/libitertools-2505039b047dad1a.rmeta \
+  --mount=from=out-2505039b047dad1a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libitertools-2505039b047dad1a.rlib,source=/libitertools-2505039b047dad1a.rlib \
   --mount=from=out-4ee318c191cb8959,dst=/tmp/clis-dbcc_2-2-1/release/deps/libnix-4ee318c191cb8959.rmeta,source=/libnix-4ee318c191cb8959.rmeta \
+  --mount=from=out-4ee318c191cb8959,dst=/tmp/clis-dbcc_2-2-1/release/deps/libnix-4ee318c191cb8959.rlib,source=/libnix-4ee318c191cb8959.rlib \
   --mount=from=out-e976848f96abbbd4,dst=/tmp/clis-dbcc_2-2-1/release/deps/libbitflags-e976848f96abbbd4.rmeta,source=/libbitflags-e976848f96abbbd4.rmeta \
+  --mount=from=out-e976848f96abbbd4,dst=/tmp/clis-dbcc_2-2-1/release/deps/libbitflags-e976848f96abbbd4.rlib,source=/libbitflags-e976848f96abbbd4.rlib \
   --mount=from=out-35b125c45c1cafb3,dst=/tmp/clis-dbcc_2-2-1/release/deps/libtry_from-35b125c45c1cafb3.rmeta,source=/libtry_from-35b125c45c1cafb3.rmeta \
+  --mount=from=out-35b125c45c1cafb3,dst=/tmp/clis-dbcc_2-2-1/release/deps/libtry_from-35b125c45c1cafb3.rlib,source=/libtry_from-35b125c45c1cafb3.rlib \
   --mount=from=out-05c5d104c65b93b5,dst=/tmp/clis-dbcc_2-2-1/release/deps/libstructopt-05c5d104c65b93b5.rmeta,source=/libstructopt-05c5d104c65b93b5.rmeta \
+  --mount=from=out-05c5d104c65b93b5,dst=/tmp/clis-dbcc_2-2-1/release/deps/libstructopt-05c5d104c65b93b5.rlib,source=/libstructopt-05c5d104c65b93b5.rlib \
   --mount=from=out-5a839c872643e159,dst=/tmp/clis-dbcc_2-2-1/release/deps/libclap-5a839c872643e159.rmeta,source=/libclap-5a839c872643e159.rmeta \
+  --mount=from=out-5a839c872643e159,dst=/tmp/clis-dbcc_2-2-1/release/deps/libclap-5a839c872643e159.rlib,source=/libclap-5a839c872643e159.rlib \
   --mount=from=out-320ef4b8ee2e57f9,dst=/tmp/clis-dbcc_2-2-1/release/deps/libansi_term-320ef4b8ee2e57f9.rmeta,source=/libansi_term-320ef4b8ee2e57f9.rmeta \
+  --mount=from=out-320ef4b8ee2e57f9,dst=/tmp/clis-dbcc_2-2-1/release/deps/libansi_term-320ef4b8ee2e57f9.rlib,source=/libansi_term-320ef4b8ee2e57f9.rlib \
   --mount=from=out-d19718ebe5a0c815,dst=/tmp/clis-dbcc_2-2-1/release/deps/libbitflags-d19718ebe5a0c815.rmeta,source=/libbitflags-d19718ebe5a0c815.rmeta \
+  --mount=from=out-d19718ebe5a0c815,dst=/tmp/clis-dbcc_2-2-1/release/deps/libbitflags-d19718ebe5a0c815.rlib,source=/libbitflags-d19718ebe5a0c815.rlib \
   --mount=from=out-ada2690f4d94d615,dst=/tmp/clis-dbcc_2-2-1/release/deps/libstrsim-ada2690f4d94d615.rmeta,source=/libstrsim-ada2690f4d94d615.rmeta \
+  --mount=from=out-ada2690f4d94d615,dst=/tmp/clis-dbcc_2-2-1/release/deps/libstrsim-ada2690f4d94d615.rlib,source=/libstrsim-ada2690f4d94d615.rlib \
   --mount=from=out-b7e82f41d8b26a14,dst=/tmp/clis-dbcc_2-2-1/release/deps/libtextwrap-b7e82f41d8b26a14.rmeta,source=/libtextwrap-b7e82f41d8b26a14.rmeta \
+  --mount=from=out-b7e82f41d8b26a14,dst=/tmp/clis-dbcc_2-2-1/release/deps/libtextwrap-b7e82f41d8b26a14.rlib,source=/libtextwrap-b7e82f41d8b26a14.rlib \
   --mount=from=out-e55c633902343b3a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_width-e55c633902343b3a.rmeta,source=/libunicode_width-e55c633902343b3a.rmeta \
+  --mount=from=out-e55c633902343b3a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_width-e55c633902343b3a.rlib,source=/libunicode_width-e55c633902343b3a.rlib \
   --mount=from=out-3fc8ab5befc6e8f4,dst=/tmp/clis-dbcc_2-2-1/release/deps/libvec_map-3fc8ab5befc6e8f4.rmeta,source=/libvec_map-3fc8ab5befc6e8f4.rmeta \
+  --mount=from=out-3fc8ab5befc6e8f4,dst=/tmp/clis-dbcc_2-2-1/release/deps/libvec_map-3fc8ab5befc6e8f4.rlib,source=/libvec_map-3fc8ab5befc6e8f4.rlib \
   --mount=from=out-0187f3c8576aef3b,dst=/tmp/clis-dbcc_2-2-1/release/deps/libstructopt_derive-0187f3c8576aef3b.so,source=/libstructopt_derive-0187f3c8576aef3b.so \
   --mount=from=out-41892b3573d1a97c,dst=/tmp/clis-dbcc_2-2-1/release/deps/libheck-41892b3573d1a97c.rmeta,source=/libheck-41892b3573d1a97c.rmeta \
+  --mount=from=out-41892b3573d1a97c,dst=/tmp/clis-dbcc_2-2-1/release/deps/libheck-41892b3573d1a97c.rlib,source=/libheck-41892b3573d1a97c.rlib \
   --mount=from=out-0711d9c6f9e71290,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_segmentation-0711d9c6f9e71290.rmeta,source=/libunicode_segmentation-0711d9c6f9e71290.rmeta \
+  --mount=from=out-0711d9c6f9e71290,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_segmentation-0711d9c6f9e71290.rlib,source=/libunicode_segmentation-0711d9c6f9e71290.rlib \
   --mount=from=out-8d3142ab9efe4ea8,dst=/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro_error-8d3142ab9efe4ea8.rmeta,source=/libproc_macro_error-8d3142ab9efe4ea8.rmeta \
+  --mount=from=out-8d3142ab9efe4ea8,dst=/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro_error-8d3142ab9efe4ea8.rlib,source=/libproc_macro_error-8d3142ab9efe4ea8.rlib \
   --mount=from=out-5abbb4d0b3e50e85,dst=/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro_error_attr-5abbb4d0b3e50e85.so,source=/libproc_macro_error_attr-5abbb4d0b3e50e85.so \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
@@ -6929,60 +8445,60 @@ COPY --from=dep-l-dbcc-2.2.1-e0edff43b19741a4 /tmp/clis-dbcc_2-2-1/release/deps/
 ##     "5abbb4d0b3e50e85",
 ## ]
 ## short_externs = [
-##     "blake2-90ca44a8caf54d0f",
-##     "byte_tools-208f428f6e945660",
-##     "crypto_mac-c92b10e2fa1c82cb",
-##     "generic_array-0afa135837d93e68",
-##     "typenum-0c59626b95871fe7",
-##     "subtle-fe593aa0503da824",
-##     "digest-3c7631a805111659",
-##     "opaque_debug-3e36cb37043b614a",
-##     "can_dbc-593834cb44ccbead",
-##     "derive_getters-10105863fb18eb2a",
-##     "proc_macro2-80b37ce9903d0def",
-##     "unicode_xid-ca80afcc82eeec0a",
-##     "quote-dd5debcb2b51fc02",
-##     "syn-bbffa8c7e6a16356",
-##     "nom-cd5fc4bcd4e040ed",
-##     "memchr-c93fd10415a641fd",
-##     "heck-7d0dcf7e7b45836f",
-##     "unicode_segmentation-b06e8bcc96549ef0",
-##     "log-09be6f37eb701f15",
-##     "cfg_if-abefcc22b095b628",
-##     "pretty_env_logger-682e69746a16e0c7",
-##     "env_logger-94c0a2bd3b1451c8",
-##     "atty-737035cdf92a82de",
-##     "libc-087afb0c1713a9a6",
-##     "humantime-3e3dde196d8efa81",
-##     "quick_error-bd3d4e33b0f59f1b",
-##     "regex-5ba8c6f49cc2732d",
-##     "aho_corasick-014f7ab42daca0d7",
-##     "regex_syntax-eec8efd7d7dadd3c",
-##     "thread_local-3ace2abd55187163",
-##     "lazy_static-a79af56de238e2b5",
-##     "termcolor-3d5a70ee74f70e2b",
-##     "proc_macro2-5eebdd82bed7d9de",
-##     "unicode_xid-f585407da4c0bf6f",
-##     "quote-0298ff41e604ba82",
-##     "socketcan-7d72679ab99cdbe3",
-##     "hex-f065076cf799d91a",
-##     "itertools-2505039b047dad1a",
-##     "nix-4ee318c191cb8959",
-##     "bitflags-e976848f96abbbd4",
-##     "try_from-35b125c45c1cafb3",
-##     "structopt-05c5d104c65b93b5",
-##     "clap-5a839c872643e159",
-##     "ansi_term-320ef4b8ee2e57f9",
-##     "bitflags-d19718ebe5a0c815",
-##     "strsim-ada2690f4d94d615",
-##     "textwrap-b7e82f41d8b26a14",
-##     "unicode_width-e55c633902343b3a",
-##     "vec_map-3fc8ab5befc6e8f4",
-##     "structopt_derive-0187f3c8576aef3b",
-##     "heck-41892b3573d1a97c",
-##     "unicode_segmentation-0711d9c6f9e71290",
-##     "proc_macro_error-8d3142ab9efe4ea8",
-##     "proc_macro_error_attr-5abbb4d0b3e50e85",
+##     "90ca44a8caf54d0f",
+##     "208f428f6e945660",
+##     "c92b10e2fa1c82cb",
+##     "0afa135837d93e68",
+##     "0c59626b95871fe7",
+##     "fe593aa0503da824",
+##     "3c7631a805111659",
+##     "3e36cb37043b614a",
+##     "593834cb44ccbead",
+##     "10105863fb18eb2a",
+##     "80b37ce9903d0def",
+##     "ca80afcc82eeec0a",
+##     "dd5debcb2b51fc02",
+##     "bbffa8c7e6a16356",
+##     "cd5fc4bcd4e040ed",
+##     "c93fd10415a641fd",
+##     "7d0dcf7e7b45836f",
+##     "b06e8bcc96549ef0",
+##     "09be6f37eb701f15",
+##     "abefcc22b095b628",
+##     "682e69746a16e0c7",
+##     "94c0a2bd3b1451c8",
+##     "737035cdf92a82de",
+##     "087afb0c1713a9a6",
+##     "3e3dde196d8efa81",
+##     "bd3d4e33b0f59f1b",
+##     "5ba8c6f49cc2732d",
+##     "014f7ab42daca0d7",
+##     "eec8efd7d7dadd3c",
+##     "3ace2abd55187163",
+##     "a79af56de238e2b5",
+##     "3d5a70ee74f70e2b",
+##     "5eebdd82bed7d9de",
+##     "f585407da4c0bf6f",
+##     "0298ff41e604ba82",
+##     "7d72679ab99cdbe3",
+##     "f065076cf799d91a",
+##     "2505039b047dad1a",
+##     "4ee318c191cb8959",
+##     "e976848f96abbbd4",
+##     "35b125c45c1cafb3",
+##     "05c5d104c65b93b5",
+##     "5a839c872643e159",
+##     "320ef4b8ee2e57f9",
+##     "d19718ebe5a0c815",
+##     "ada2690f4d94d615",
+##     "b7e82f41d8b26a14",
+##     "e55c633902343b3a",
+##     "3fc8ab5befc6e8f4",
+##     "0187f3c8576aef3b",
+##     "41892b3573d1a97c",
+##     "0711d9c6f9e71290",
+##     "8d3142ab9efe4ea8",
+##     "5abbb4d0b3e50e85",
 ## ]
 ## writes = [
 ##     "deps/dbcc-e0edff43b19741a4.d",
@@ -6997,6 +8513,531 @@ COPY --from=dep-l-dbcc-2.2.1-e0edff43b19741a4 /tmp/clis-dbcc_2-2-1/release/deps/
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-dbcc_2-2-1/release/deps/libdbcc-e0edff43b19741a4.rlib","emit":"link"}',
 ##     '{"$message_type":"diagnostic","message":"2 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 2 warnings emitted\u001b[0m\n\n"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-90ca44a8caf54d0f"
+## src = "/libblake2-90ca44a8caf54d0f.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libblake2-90ca44a8caf54d0f.rmeta"
+## 
+## [[mounts]]
+## from = "out-90ca44a8caf54d0f"
+## src = "/libblake2-90ca44a8caf54d0f.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libblake2-90ca44a8caf54d0f.rlib"
+## 
+## [[mounts]]
+## from = "out-208f428f6e945660"
+## src = "/libbyte_tools-208f428f6e945660.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libbyte_tools-208f428f6e945660.rmeta"
+## 
+## [[mounts]]
+## from = "out-208f428f6e945660"
+## src = "/libbyte_tools-208f428f6e945660.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libbyte_tools-208f428f6e945660.rlib"
+## 
+## [[mounts]]
+## from = "out-c92b10e2fa1c82cb"
+## src = "/libcrypto_mac-c92b10e2fa1c82cb.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libcrypto_mac-c92b10e2fa1c82cb.rmeta"
+## 
+## [[mounts]]
+## from = "out-c92b10e2fa1c82cb"
+## src = "/libcrypto_mac-c92b10e2fa1c82cb.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libcrypto_mac-c92b10e2fa1c82cb.rlib"
+## 
+## [[mounts]]
+## from = "out-0afa135837d93e68"
+## src = "/libgeneric_array-0afa135837d93e68.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libgeneric_array-0afa135837d93e68.rmeta"
+## 
+## [[mounts]]
+## from = "out-0afa135837d93e68"
+## src = "/libgeneric_array-0afa135837d93e68.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libgeneric_array-0afa135837d93e68.rlib"
+## 
+## [[mounts]]
+## from = "out-0c59626b95871fe7"
+## src = "/libtypenum-0c59626b95871fe7.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libtypenum-0c59626b95871fe7.rmeta"
+## 
+## [[mounts]]
+## from = "out-0c59626b95871fe7"
+## src = "/libtypenum-0c59626b95871fe7.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libtypenum-0c59626b95871fe7.rlib"
+## 
+## [[mounts]]
+## from = "out-fe593aa0503da824"
+## src = "/libsubtle-fe593aa0503da824.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libsubtle-fe593aa0503da824.rmeta"
+## 
+## [[mounts]]
+## from = "out-fe593aa0503da824"
+## src = "/libsubtle-fe593aa0503da824.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libsubtle-fe593aa0503da824.rlib"
+## 
+## [[mounts]]
+## from = "out-3c7631a805111659"
+## src = "/libdigest-3c7631a805111659.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libdigest-3c7631a805111659.rmeta"
+## 
+## [[mounts]]
+## from = "out-3c7631a805111659"
+## src = "/libdigest-3c7631a805111659.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libdigest-3c7631a805111659.rlib"
+## 
+## [[mounts]]
+## from = "out-3e36cb37043b614a"
+## src = "/libopaque_debug-3e36cb37043b614a.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libopaque_debug-3e36cb37043b614a.rmeta"
+## 
+## [[mounts]]
+## from = "out-3e36cb37043b614a"
+## src = "/libopaque_debug-3e36cb37043b614a.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libopaque_debug-3e36cb37043b614a.rlib"
+## 
+## [[mounts]]
+## from = "out-593834cb44ccbead"
+## src = "/libcan_dbc-593834cb44ccbead.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libcan_dbc-593834cb44ccbead.rmeta"
+## 
+## [[mounts]]
+## from = "out-593834cb44ccbead"
+## src = "/libcan_dbc-593834cb44ccbead.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libcan_dbc-593834cb44ccbead.rlib"
+## 
+## [[mounts]]
+## from = "out-10105863fb18eb2a"
+## src = "/libderive_getters-10105863fb18eb2a.so"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libderive_getters-10105863fb18eb2a.so"
+## 
+## [[mounts]]
+## from = "out-80b37ce9903d0def"
+## src = "/libproc_macro2-80b37ce9903d0def.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-80b37ce9903d0def.rmeta"
+## 
+## [[mounts]]
+## from = "out-80b37ce9903d0def"
+## src = "/libproc_macro2-80b37ce9903d0def.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-80b37ce9903d0def.rlib"
+## 
+## [[mounts]]
+## from = "out-ca80afcc82eeec0a"
+## src = "/libunicode_xid-ca80afcc82eeec0a.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-ca80afcc82eeec0a.rmeta"
+## 
+## [[mounts]]
+## from = "out-ca80afcc82eeec0a"
+## src = "/libunicode_xid-ca80afcc82eeec0a.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-ca80afcc82eeec0a.rlib"
+## 
+## [[mounts]]
+## from = "out-dd5debcb2b51fc02"
+## src = "/libquote-dd5debcb2b51fc02.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libquote-dd5debcb2b51fc02.rmeta"
+## 
+## [[mounts]]
+## from = "out-dd5debcb2b51fc02"
+## src = "/libquote-dd5debcb2b51fc02.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libquote-dd5debcb2b51fc02.rlib"
+## 
+## [[mounts]]
+## from = "out-bbffa8c7e6a16356"
+## src = "/libsyn-bbffa8c7e6a16356.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libsyn-bbffa8c7e6a16356.rmeta"
+## 
+## [[mounts]]
+## from = "out-bbffa8c7e6a16356"
+## src = "/libsyn-bbffa8c7e6a16356.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libsyn-bbffa8c7e6a16356.rlib"
+## 
+## [[mounts]]
+## from = "out-cd5fc4bcd4e040ed"
+## src = "/libnom-cd5fc4bcd4e040ed.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libnom-cd5fc4bcd4e040ed.rmeta"
+## 
+## [[mounts]]
+## from = "out-cd5fc4bcd4e040ed"
+## src = "/libnom-cd5fc4bcd4e040ed.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libnom-cd5fc4bcd4e040ed.rlib"
+## 
+## [[mounts]]
+## from = "out-c93fd10415a641fd"
+## src = "/libmemchr-c93fd10415a641fd.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libmemchr-c93fd10415a641fd.rmeta"
+## 
+## [[mounts]]
+## from = "out-c93fd10415a641fd"
+## src = "/libmemchr-c93fd10415a641fd.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libmemchr-c93fd10415a641fd.rlib"
+## 
+## [[mounts]]
+## from = "out-7d0dcf7e7b45836f"
+## src = "/libheck-7d0dcf7e7b45836f.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libheck-7d0dcf7e7b45836f.rmeta"
+## 
+## [[mounts]]
+## from = "out-7d0dcf7e7b45836f"
+## src = "/libheck-7d0dcf7e7b45836f.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libheck-7d0dcf7e7b45836f.rlib"
+## 
+## [[mounts]]
+## from = "out-b06e8bcc96549ef0"
+## src = "/libunicode_segmentation-b06e8bcc96549ef0.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_segmentation-b06e8bcc96549ef0.rmeta"
+## 
+## [[mounts]]
+## from = "out-b06e8bcc96549ef0"
+## src = "/libunicode_segmentation-b06e8bcc96549ef0.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_segmentation-b06e8bcc96549ef0.rlib"
+## 
+## [[mounts]]
+## from = "out-09be6f37eb701f15"
+## src = "/liblog-09be6f37eb701f15.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/liblog-09be6f37eb701f15.rmeta"
+## 
+## [[mounts]]
+## from = "out-09be6f37eb701f15"
+## src = "/liblog-09be6f37eb701f15.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/liblog-09be6f37eb701f15.rlib"
+## 
+## [[mounts]]
+## from = "out-abefcc22b095b628"
+## src = "/libcfg_if-abefcc22b095b628.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libcfg_if-abefcc22b095b628.rmeta"
+## 
+## [[mounts]]
+## from = "out-abefcc22b095b628"
+## src = "/libcfg_if-abefcc22b095b628.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libcfg_if-abefcc22b095b628.rlib"
+## 
+## [[mounts]]
+## from = "out-682e69746a16e0c7"
+## src = "/libpretty_env_logger-682e69746a16e0c7.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libpretty_env_logger-682e69746a16e0c7.rmeta"
+## 
+## [[mounts]]
+## from = "out-682e69746a16e0c7"
+## src = "/libpretty_env_logger-682e69746a16e0c7.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libpretty_env_logger-682e69746a16e0c7.rlib"
+## 
+## [[mounts]]
+## from = "out-94c0a2bd3b1451c8"
+## src = "/libenv_logger-94c0a2bd3b1451c8.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libenv_logger-94c0a2bd3b1451c8.rmeta"
+## 
+## [[mounts]]
+## from = "out-94c0a2bd3b1451c8"
+## src = "/libenv_logger-94c0a2bd3b1451c8.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libenv_logger-94c0a2bd3b1451c8.rlib"
+## 
+## [[mounts]]
+## from = "out-737035cdf92a82de"
+## src = "/libatty-737035cdf92a82de.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libatty-737035cdf92a82de.rmeta"
+## 
+## [[mounts]]
+## from = "out-737035cdf92a82de"
+## src = "/libatty-737035cdf92a82de.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libatty-737035cdf92a82de.rlib"
+## 
+## [[mounts]]
+## from = "out-087afb0c1713a9a6"
+## src = "/liblibc-087afb0c1713a9a6.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/liblibc-087afb0c1713a9a6.rmeta"
+## 
+## [[mounts]]
+## from = "out-087afb0c1713a9a6"
+## src = "/liblibc-087afb0c1713a9a6.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/liblibc-087afb0c1713a9a6.rlib"
+## 
+## [[mounts]]
+## from = "out-3e3dde196d8efa81"
+## src = "/libhumantime-3e3dde196d8efa81.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libhumantime-3e3dde196d8efa81.rmeta"
+## 
+## [[mounts]]
+## from = "out-3e3dde196d8efa81"
+## src = "/libhumantime-3e3dde196d8efa81.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libhumantime-3e3dde196d8efa81.rlib"
+## 
+## [[mounts]]
+## from = "out-bd3d4e33b0f59f1b"
+## src = "/libquick_error-bd3d4e33b0f59f1b.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libquick_error-bd3d4e33b0f59f1b.rmeta"
+## 
+## [[mounts]]
+## from = "out-bd3d4e33b0f59f1b"
+## src = "/libquick_error-bd3d4e33b0f59f1b.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libquick_error-bd3d4e33b0f59f1b.rlib"
+## 
+## [[mounts]]
+## from = "out-5ba8c6f49cc2732d"
+## src = "/libregex-5ba8c6f49cc2732d.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libregex-5ba8c6f49cc2732d.rmeta"
+## 
+## [[mounts]]
+## from = "out-5ba8c6f49cc2732d"
+## src = "/libregex-5ba8c6f49cc2732d.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libregex-5ba8c6f49cc2732d.rlib"
+## 
+## [[mounts]]
+## from = "out-014f7ab42daca0d7"
+## src = "/libaho_corasick-014f7ab42daca0d7.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libaho_corasick-014f7ab42daca0d7.rmeta"
+## 
+## [[mounts]]
+## from = "out-014f7ab42daca0d7"
+## src = "/libaho_corasick-014f7ab42daca0d7.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libaho_corasick-014f7ab42daca0d7.rlib"
+## 
+## [[mounts]]
+## from = "out-eec8efd7d7dadd3c"
+## src = "/libregex_syntax-eec8efd7d7dadd3c.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libregex_syntax-eec8efd7d7dadd3c.rmeta"
+## 
+## [[mounts]]
+## from = "out-eec8efd7d7dadd3c"
+## src = "/libregex_syntax-eec8efd7d7dadd3c.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libregex_syntax-eec8efd7d7dadd3c.rlib"
+## 
+## [[mounts]]
+## from = "out-3ace2abd55187163"
+## src = "/libthread_local-3ace2abd55187163.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libthread_local-3ace2abd55187163.rmeta"
+## 
+## [[mounts]]
+## from = "out-3ace2abd55187163"
+## src = "/libthread_local-3ace2abd55187163.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libthread_local-3ace2abd55187163.rlib"
+## 
+## [[mounts]]
+## from = "out-a79af56de238e2b5"
+## src = "/liblazy_static-a79af56de238e2b5.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/liblazy_static-a79af56de238e2b5.rmeta"
+## 
+## [[mounts]]
+## from = "out-a79af56de238e2b5"
+## src = "/liblazy_static-a79af56de238e2b5.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/liblazy_static-a79af56de238e2b5.rlib"
+## 
+## [[mounts]]
+## from = "out-3d5a70ee74f70e2b"
+## src = "/libtermcolor-3d5a70ee74f70e2b.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libtermcolor-3d5a70ee74f70e2b.rmeta"
+## 
+## [[mounts]]
+## from = "out-3d5a70ee74f70e2b"
+## src = "/libtermcolor-3d5a70ee74f70e2b.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libtermcolor-3d5a70ee74f70e2b.rlib"
+## 
+## [[mounts]]
+## from = "out-5eebdd82bed7d9de"
+## src = "/libproc_macro2-5eebdd82bed7d9de.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-5eebdd82bed7d9de.rmeta"
+## 
+## [[mounts]]
+## from = "out-5eebdd82bed7d9de"
+## src = "/libproc_macro2-5eebdd82bed7d9de.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-5eebdd82bed7d9de.rlib"
+## 
+## [[mounts]]
+## from = "out-f585407da4c0bf6f"
+## src = "/libunicode_xid-f585407da4c0bf6f.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-f585407da4c0bf6f.rmeta"
+## 
+## [[mounts]]
+## from = "out-f585407da4c0bf6f"
+## src = "/libunicode_xid-f585407da4c0bf6f.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-f585407da4c0bf6f.rlib"
+## 
+## [[mounts]]
+## from = "out-0298ff41e604ba82"
+## src = "/libquote-0298ff41e604ba82.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libquote-0298ff41e604ba82.rmeta"
+## 
+## [[mounts]]
+## from = "out-0298ff41e604ba82"
+## src = "/libquote-0298ff41e604ba82.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libquote-0298ff41e604ba82.rlib"
+## 
+## [[mounts]]
+## from = "out-7d72679ab99cdbe3"
+## src = "/libsocketcan-7d72679ab99cdbe3.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libsocketcan-7d72679ab99cdbe3.rmeta"
+## 
+## [[mounts]]
+## from = "out-7d72679ab99cdbe3"
+## src = "/libsocketcan-7d72679ab99cdbe3.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libsocketcan-7d72679ab99cdbe3.rlib"
+## 
+## [[mounts]]
+## from = "out-f065076cf799d91a"
+## src = "/libhex-f065076cf799d91a.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libhex-f065076cf799d91a.rmeta"
+## 
+## [[mounts]]
+## from = "out-f065076cf799d91a"
+## src = "/libhex-f065076cf799d91a.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libhex-f065076cf799d91a.rlib"
+## 
+## [[mounts]]
+## from = "out-2505039b047dad1a"
+## src = "/libitertools-2505039b047dad1a.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libitertools-2505039b047dad1a.rmeta"
+## 
+## [[mounts]]
+## from = "out-2505039b047dad1a"
+## src = "/libitertools-2505039b047dad1a.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libitertools-2505039b047dad1a.rlib"
+## 
+## [[mounts]]
+## from = "out-4ee318c191cb8959"
+## src = "/libnix-4ee318c191cb8959.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libnix-4ee318c191cb8959.rmeta"
+## 
+## [[mounts]]
+## from = "out-4ee318c191cb8959"
+## src = "/libnix-4ee318c191cb8959.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libnix-4ee318c191cb8959.rlib"
+## 
+## [[mounts]]
+## from = "out-e976848f96abbbd4"
+## src = "/libbitflags-e976848f96abbbd4.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libbitflags-e976848f96abbbd4.rmeta"
+## 
+## [[mounts]]
+## from = "out-e976848f96abbbd4"
+## src = "/libbitflags-e976848f96abbbd4.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libbitflags-e976848f96abbbd4.rlib"
+## 
+## [[mounts]]
+## from = "out-35b125c45c1cafb3"
+## src = "/libtry_from-35b125c45c1cafb3.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libtry_from-35b125c45c1cafb3.rmeta"
+## 
+## [[mounts]]
+## from = "out-35b125c45c1cafb3"
+## src = "/libtry_from-35b125c45c1cafb3.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libtry_from-35b125c45c1cafb3.rlib"
+## 
+## [[mounts]]
+## from = "out-05c5d104c65b93b5"
+## src = "/libstructopt-05c5d104c65b93b5.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libstructopt-05c5d104c65b93b5.rmeta"
+## 
+## [[mounts]]
+## from = "out-05c5d104c65b93b5"
+## src = "/libstructopt-05c5d104c65b93b5.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libstructopt-05c5d104c65b93b5.rlib"
+## 
+## [[mounts]]
+## from = "out-5a839c872643e159"
+## src = "/libclap-5a839c872643e159.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libclap-5a839c872643e159.rmeta"
+## 
+## [[mounts]]
+## from = "out-5a839c872643e159"
+## src = "/libclap-5a839c872643e159.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libclap-5a839c872643e159.rlib"
+## 
+## [[mounts]]
+## from = "out-320ef4b8ee2e57f9"
+## src = "/libansi_term-320ef4b8ee2e57f9.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libansi_term-320ef4b8ee2e57f9.rmeta"
+## 
+## [[mounts]]
+## from = "out-320ef4b8ee2e57f9"
+## src = "/libansi_term-320ef4b8ee2e57f9.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libansi_term-320ef4b8ee2e57f9.rlib"
+## 
+## [[mounts]]
+## from = "out-d19718ebe5a0c815"
+## src = "/libbitflags-d19718ebe5a0c815.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libbitflags-d19718ebe5a0c815.rmeta"
+## 
+## [[mounts]]
+## from = "out-d19718ebe5a0c815"
+## src = "/libbitflags-d19718ebe5a0c815.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libbitflags-d19718ebe5a0c815.rlib"
+## 
+## [[mounts]]
+## from = "out-ada2690f4d94d615"
+## src = "/libstrsim-ada2690f4d94d615.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libstrsim-ada2690f4d94d615.rmeta"
+## 
+## [[mounts]]
+## from = "out-ada2690f4d94d615"
+## src = "/libstrsim-ada2690f4d94d615.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libstrsim-ada2690f4d94d615.rlib"
+## 
+## [[mounts]]
+## from = "out-b7e82f41d8b26a14"
+## src = "/libtextwrap-b7e82f41d8b26a14.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libtextwrap-b7e82f41d8b26a14.rmeta"
+## 
+## [[mounts]]
+## from = "out-b7e82f41d8b26a14"
+## src = "/libtextwrap-b7e82f41d8b26a14.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libtextwrap-b7e82f41d8b26a14.rlib"
+## 
+## [[mounts]]
+## from = "out-e55c633902343b3a"
+## src = "/libunicode_width-e55c633902343b3a.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_width-e55c633902343b3a.rmeta"
+## 
+## [[mounts]]
+## from = "out-e55c633902343b3a"
+## src = "/libunicode_width-e55c633902343b3a.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_width-e55c633902343b3a.rlib"
+## 
+## [[mounts]]
+## from = "out-3fc8ab5befc6e8f4"
+## src = "/libvec_map-3fc8ab5befc6e8f4.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libvec_map-3fc8ab5befc6e8f4.rmeta"
+## 
+## [[mounts]]
+## from = "out-3fc8ab5befc6e8f4"
+## src = "/libvec_map-3fc8ab5befc6e8f4.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libvec_map-3fc8ab5befc6e8f4.rlib"
+## 
+## [[mounts]]
+## from = "out-0187f3c8576aef3b"
+## src = "/libstructopt_derive-0187f3c8576aef3b.so"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libstructopt_derive-0187f3c8576aef3b.so"
+## 
+## [[mounts]]
+## from = "out-41892b3573d1a97c"
+## src = "/libheck-41892b3573d1a97c.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libheck-41892b3573d1a97c.rmeta"
+## 
+## [[mounts]]
+## from = "out-41892b3573d1a97c"
+## src = "/libheck-41892b3573d1a97c.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libheck-41892b3573d1a97c.rlib"
+## 
+## [[mounts]]
+## from = "out-0711d9c6f9e71290"
+## src = "/libunicode_segmentation-0711d9c6f9e71290.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_segmentation-0711d9c6f9e71290.rmeta"
+## 
+## [[mounts]]
+## from = "out-0711d9c6f9e71290"
+## src = "/libunicode_segmentation-0711d9c6f9e71290.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_segmentation-0711d9c6f9e71290.rlib"
+## 
+## [[mounts]]
+## from = "out-8d3142ab9efe4ea8"
+## src = "/libproc_macro_error-8d3142ab9efe4ea8.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro_error-8d3142ab9efe4ea8.rmeta"
+## 
+## [[mounts]]
+## from = "out-8d3142ab9efe4ea8"
+## src = "/libproc_macro_error-8d3142ab9efe4ea8.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro_error-8d3142ab9efe4ea8.rlib"
+## 
+## [[mounts]]
+## from = "out-5abbb4d0b3e50e85"
+## src = "/libproc_macro_error_attr-5abbb4d0b3e50e85.so"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro_error_attr-5abbb4d0b3e50e85.so"
 ## 
 ## [[contexts]]
 ## name = "crate_out-3cf9e442dfddd505"
@@ -7022,58 +9063,109 @@ COPY --from=dep-l-dbcc-2.2.1-e0edff43b19741a4 /tmp/clis-dbcc_2-2-1/release/deps/
 ## RUN \
 ##   --mount=from=cratesio-dbcc-2.2.1,source=/dbcc-2.2.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/dbcc-2.2.1 \
 ##   --mount=from=out-90ca44a8caf54d0f,dst=/tmp/clis-dbcc_2-2-1/release/deps/libblake2-90ca44a8caf54d0f.rmeta,source=/libblake2-90ca44a8caf54d0f.rmeta \
+##   --mount=from=out-90ca44a8caf54d0f,dst=/tmp/clis-dbcc_2-2-1/release/deps/libblake2-90ca44a8caf54d0f.rlib,source=/libblake2-90ca44a8caf54d0f.rlib \
 ##   --mount=from=out-208f428f6e945660,dst=/tmp/clis-dbcc_2-2-1/release/deps/libbyte_tools-208f428f6e945660.rmeta,source=/libbyte_tools-208f428f6e945660.rmeta \
+##   --mount=from=out-208f428f6e945660,dst=/tmp/clis-dbcc_2-2-1/release/deps/libbyte_tools-208f428f6e945660.rlib,source=/libbyte_tools-208f428f6e945660.rlib \
 ##   --mount=from=out-c92b10e2fa1c82cb,dst=/tmp/clis-dbcc_2-2-1/release/deps/libcrypto_mac-c92b10e2fa1c82cb.rmeta,source=/libcrypto_mac-c92b10e2fa1c82cb.rmeta \
+##   --mount=from=out-c92b10e2fa1c82cb,dst=/tmp/clis-dbcc_2-2-1/release/deps/libcrypto_mac-c92b10e2fa1c82cb.rlib,source=/libcrypto_mac-c92b10e2fa1c82cb.rlib \
 ##   --mount=from=out-0afa135837d93e68,dst=/tmp/clis-dbcc_2-2-1/release/deps/libgeneric_array-0afa135837d93e68.rmeta,source=/libgeneric_array-0afa135837d93e68.rmeta \
+##   --mount=from=out-0afa135837d93e68,dst=/tmp/clis-dbcc_2-2-1/release/deps/libgeneric_array-0afa135837d93e68.rlib,source=/libgeneric_array-0afa135837d93e68.rlib \
 ##   --mount=from=out-0c59626b95871fe7,dst=/tmp/clis-dbcc_2-2-1/release/deps/libtypenum-0c59626b95871fe7.rmeta,source=/libtypenum-0c59626b95871fe7.rmeta \
+##   --mount=from=out-0c59626b95871fe7,dst=/tmp/clis-dbcc_2-2-1/release/deps/libtypenum-0c59626b95871fe7.rlib,source=/libtypenum-0c59626b95871fe7.rlib \
 ##   --mount=from=out-fe593aa0503da824,dst=/tmp/clis-dbcc_2-2-1/release/deps/libsubtle-fe593aa0503da824.rmeta,source=/libsubtle-fe593aa0503da824.rmeta \
+##   --mount=from=out-fe593aa0503da824,dst=/tmp/clis-dbcc_2-2-1/release/deps/libsubtle-fe593aa0503da824.rlib,source=/libsubtle-fe593aa0503da824.rlib \
 ##   --mount=from=out-3c7631a805111659,dst=/tmp/clis-dbcc_2-2-1/release/deps/libdigest-3c7631a805111659.rmeta,source=/libdigest-3c7631a805111659.rmeta \
+##   --mount=from=out-3c7631a805111659,dst=/tmp/clis-dbcc_2-2-1/release/deps/libdigest-3c7631a805111659.rlib,source=/libdigest-3c7631a805111659.rlib \
 ##   --mount=from=out-3e36cb37043b614a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libopaque_debug-3e36cb37043b614a.rmeta,source=/libopaque_debug-3e36cb37043b614a.rmeta \
+##   --mount=from=out-3e36cb37043b614a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libopaque_debug-3e36cb37043b614a.rlib,source=/libopaque_debug-3e36cb37043b614a.rlib \
 ##   --mount=from=out-593834cb44ccbead,dst=/tmp/clis-dbcc_2-2-1/release/deps/libcan_dbc-593834cb44ccbead.rmeta,source=/libcan_dbc-593834cb44ccbead.rmeta \
+##   --mount=from=out-593834cb44ccbead,dst=/tmp/clis-dbcc_2-2-1/release/deps/libcan_dbc-593834cb44ccbead.rlib,source=/libcan_dbc-593834cb44ccbead.rlib \
 ##   --mount=from=out-10105863fb18eb2a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libderive_getters-10105863fb18eb2a.so,source=/libderive_getters-10105863fb18eb2a.so \
 ##   --mount=from=out-80b37ce9903d0def,dst=/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-80b37ce9903d0def.rmeta,source=/libproc_macro2-80b37ce9903d0def.rmeta \
+##   --mount=from=out-80b37ce9903d0def,dst=/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-80b37ce9903d0def.rlib,source=/libproc_macro2-80b37ce9903d0def.rlib \
 ##   --mount=from=out-ca80afcc82eeec0a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-ca80afcc82eeec0a.rmeta,source=/libunicode_xid-ca80afcc82eeec0a.rmeta \
+##   --mount=from=out-ca80afcc82eeec0a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-ca80afcc82eeec0a.rlib,source=/libunicode_xid-ca80afcc82eeec0a.rlib \
 ##   --mount=from=out-dd5debcb2b51fc02,dst=/tmp/clis-dbcc_2-2-1/release/deps/libquote-dd5debcb2b51fc02.rmeta,source=/libquote-dd5debcb2b51fc02.rmeta \
+##   --mount=from=out-dd5debcb2b51fc02,dst=/tmp/clis-dbcc_2-2-1/release/deps/libquote-dd5debcb2b51fc02.rlib,source=/libquote-dd5debcb2b51fc02.rlib \
 ##   --mount=from=out-bbffa8c7e6a16356,dst=/tmp/clis-dbcc_2-2-1/release/deps/libsyn-bbffa8c7e6a16356.rmeta,source=/libsyn-bbffa8c7e6a16356.rmeta \
+##   --mount=from=out-bbffa8c7e6a16356,dst=/tmp/clis-dbcc_2-2-1/release/deps/libsyn-bbffa8c7e6a16356.rlib,source=/libsyn-bbffa8c7e6a16356.rlib \
 ##   --mount=from=out-cd5fc4bcd4e040ed,dst=/tmp/clis-dbcc_2-2-1/release/deps/libnom-cd5fc4bcd4e040ed.rmeta,source=/libnom-cd5fc4bcd4e040ed.rmeta \
+##   --mount=from=out-cd5fc4bcd4e040ed,dst=/tmp/clis-dbcc_2-2-1/release/deps/libnom-cd5fc4bcd4e040ed.rlib,source=/libnom-cd5fc4bcd4e040ed.rlib \
 ##   --mount=from=out-c93fd10415a641fd,dst=/tmp/clis-dbcc_2-2-1/release/deps/libmemchr-c93fd10415a641fd.rmeta,source=/libmemchr-c93fd10415a641fd.rmeta \
+##   --mount=from=out-c93fd10415a641fd,dst=/tmp/clis-dbcc_2-2-1/release/deps/libmemchr-c93fd10415a641fd.rlib,source=/libmemchr-c93fd10415a641fd.rlib \
 ##   --mount=from=out-7d0dcf7e7b45836f,dst=/tmp/clis-dbcc_2-2-1/release/deps/libheck-7d0dcf7e7b45836f.rmeta,source=/libheck-7d0dcf7e7b45836f.rmeta \
+##   --mount=from=out-7d0dcf7e7b45836f,dst=/tmp/clis-dbcc_2-2-1/release/deps/libheck-7d0dcf7e7b45836f.rlib,source=/libheck-7d0dcf7e7b45836f.rlib \
 ##   --mount=from=out-b06e8bcc96549ef0,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_segmentation-b06e8bcc96549ef0.rmeta,source=/libunicode_segmentation-b06e8bcc96549ef0.rmeta \
+##   --mount=from=out-b06e8bcc96549ef0,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_segmentation-b06e8bcc96549ef0.rlib,source=/libunicode_segmentation-b06e8bcc96549ef0.rlib \
 ##   --mount=from=out-09be6f37eb701f15,dst=/tmp/clis-dbcc_2-2-1/release/deps/liblog-09be6f37eb701f15.rmeta,source=/liblog-09be6f37eb701f15.rmeta \
+##   --mount=from=out-09be6f37eb701f15,dst=/tmp/clis-dbcc_2-2-1/release/deps/liblog-09be6f37eb701f15.rlib,source=/liblog-09be6f37eb701f15.rlib \
 ##   --mount=from=out-abefcc22b095b628,dst=/tmp/clis-dbcc_2-2-1/release/deps/libcfg_if-abefcc22b095b628.rmeta,source=/libcfg_if-abefcc22b095b628.rmeta \
+##   --mount=from=out-abefcc22b095b628,dst=/tmp/clis-dbcc_2-2-1/release/deps/libcfg_if-abefcc22b095b628.rlib,source=/libcfg_if-abefcc22b095b628.rlib \
 ##   --mount=from=out-682e69746a16e0c7,dst=/tmp/clis-dbcc_2-2-1/release/deps/libpretty_env_logger-682e69746a16e0c7.rmeta,source=/libpretty_env_logger-682e69746a16e0c7.rmeta \
+##   --mount=from=out-682e69746a16e0c7,dst=/tmp/clis-dbcc_2-2-1/release/deps/libpretty_env_logger-682e69746a16e0c7.rlib,source=/libpretty_env_logger-682e69746a16e0c7.rlib \
 ##   --mount=from=out-94c0a2bd3b1451c8,dst=/tmp/clis-dbcc_2-2-1/release/deps/libenv_logger-94c0a2bd3b1451c8.rmeta,source=/libenv_logger-94c0a2bd3b1451c8.rmeta \
+##   --mount=from=out-94c0a2bd3b1451c8,dst=/tmp/clis-dbcc_2-2-1/release/deps/libenv_logger-94c0a2bd3b1451c8.rlib,source=/libenv_logger-94c0a2bd3b1451c8.rlib \
 ##   --mount=from=out-737035cdf92a82de,dst=/tmp/clis-dbcc_2-2-1/release/deps/libatty-737035cdf92a82de.rmeta,source=/libatty-737035cdf92a82de.rmeta \
+##   --mount=from=out-737035cdf92a82de,dst=/tmp/clis-dbcc_2-2-1/release/deps/libatty-737035cdf92a82de.rlib,source=/libatty-737035cdf92a82de.rlib \
 ##   --mount=from=out-087afb0c1713a9a6,dst=/tmp/clis-dbcc_2-2-1/release/deps/liblibc-087afb0c1713a9a6.rmeta,source=/liblibc-087afb0c1713a9a6.rmeta \
+##   --mount=from=out-087afb0c1713a9a6,dst=/tmp/clis-dbcc_2-2-1/release/deps/liblibc-087afb0c1713a9a6.rlib,source=/liblibc-087afb0c1713a9a6.rlib \
 ##   --mount=from=out-3e3dde196d8efa81,dst=/tmp/clis-dbcc_2-2-1/release/deps/libhumantime-3e3dde196d8efa81.rmeta,source=/libhumantime-3e3dde196d8efa81.rmeta \
+##   --mount=from=out-3e3dde196d8efa81,dst=/tmp/clis-dbcc_2-2-1/release/deps/libhumantime-3e3dde196d8efa81.rlib,source=/libhumantime-3e3dde196d8efa81.rlib \
 ##   --mount=from=out-bd3d4e33b0f59f1b,dst=/tmp/clis-dbcc_2-2-1/release/deps/libquick_error-bd3d4e33b0f59f1b.rmeta,source=/libquick_error-bd3d4e33b0f59f1b.rmeta \
+##   --mount=from=out-bd3d4e33b0f59f1b,dst=/tmp/clis-dbcc_2-2-1/release/deps/libquick_error-bd3d4e33b0f59f1b.rlib,source=/libquick_error-bd3d4e33b0f59f1b.rlib \
 ##   --mount=from=out-5ba8c6f49cc2732d,dst=/tmp/clis-dbcc_2-2-1/release/deps/libregex-5ba8c6f49cc2732d.rmeta,source=/libregex-5ba8c6f49cc2732d.rmeta \
+##   --mount=from=out-5ba8c6f49cc2732d,dst=/tmp/clis-dbcc_2-2-1/release/deps/libregex-5ba8c6f49cc2732d.rlib,source=/libregex-5ba8c6f49cc2732d.rlib \
 ##   --mount=from=out-014f7ab42daca0d7,dst=/tmp/clis-dbcc_2-2-1/release/deps/libaho_corasick-014f7ab42daca0d7.rmeta,source=/libaho_corasick-014f7ab42daca0d7.rmeta \
+##   --mount=from=out-014f7ab42daca0d7,dst=/tmp/clis-dbcc_2-2-1/release/deps/libaho_corasick-014f7ab42daca0d7.rlib,source=/libaho_corasick-014f7ab42daca0d7.rlib \
 ##   --mount=from=out-eec8efd7d7dadd3c,dst=/tmp/clis-dbcc_2-2-1/release/deps/libregex_syntax-eec8efd7d7dadd3c.rmeta,source=/libregex_syntax-eec8efd7d7dadd3c.rmeta \
+##   --mount=from=out-eec8efd7d7dadd3c,dst=/tmp/clis-dbcc_2-2-1/release/deps/libregex_syntax-eec8efd7d7dadd3c.rlib,source=/libregex_syntax-eec8efd7d7dadd3c.rlib \
 ##   --mount=from=out-3ace2abd55187163,dst=/tmp/clis-dbcc_2-2-1/release/deps/libthread_local-3ace2abd55187163.rmeta,source=/libthread_local-3ace2abd55187163.rmeta \
+##   --mount=from=out-3ace2abd55187163,dst=/tmp/clis-dbcc_2-2-1/release/deps/libthread_local-3ace2abd55187163.rlib,source=/libthread_local-3ace2abd55187163.rlib \
 ##   --mount=from=out-a79af56de238e2b5,dst=/tmp/clis-dbcc_2-2-1/release/deps/liblazy_static-a79af56de238e2b5.rmeta,source=/liblazy_static-a79af56de238e2b5.rmeta \
+##   --mount=from=out-a79af56de238e2b5,dst=/tmp/clis-dbcc_2-2-1/release/deps/liblazy_static-a79af56de238e2b5.rlib,source=/liblazy_static-a79af56de238e2b5.rlib \
 ##   --mount=from=out-3d5a70ee74f70e2b,dst=/tmp/clis-dbcc_2-2-1/release/deps/libtermcolor-3d5a70ee74f70e2b.rmeta,source=/libtermcolor-3d5a70ee74f70e2b.rmeta \
+##   --mount=from=out-3d5a70ee74f70e2b,dst=/tmp/clis-dbcc_2-2-1/release/deps/libtermcolor-3d5a70ee74f70e2b.rlib,source=/libtermcolor-3d5a70ee74f70e2b.rlib \
 ##   --mount=from=out-5eebdd82bed7d9de,dst=/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-5eebdd82bed7d9de.rmeta,source=/libproc_macro2-5eebdd82bed7d9de.rmeta \
+##   --mount=from=out-5eebdd82bed7d9de,dst=/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-5eebdd82bed7d9de.rlib,source=/libproc_macro2-5eebdd82bed7d9de.rlib \
 ##   --mount=from=out-f585407da4c0bf6f,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-f585407da4c0bf6f.rmeta,source=/libunicode_xid-f585407da4c0bf6f.rmeta \
+##   --mount=from=out-f585407da4c0bf6f,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-f585407da4c0bf6f.rlib,source=/libunicode_xid-f585407da4c0bf6f.rlib \
 ##   --mount=from=out-0298ff41e604ba82,dst=/tmp/clis-dbcc_2-2-1/release/deps/libquote-0298ff41e604ba82.rmeta,source=/libquote-0298ff41e604ba82.rmeta \
+##   --mount=from=out-0298ff41e604ba82,dst=/tmp/clis-dbcc_2-2-1/release/deps/libquote-0298ff41e604ba82.rlib,source=/libquote-0298ff41e604ba82.rlib \
 ##   --mount=from=out-7d72679ab99cdbe3,dst=/tmp/clis-dbcc_2-2-1/release/deps/libsocketcan-7d72679ab99cdbe3.rmeta,source=/libsocketcan-7d72679ab99cdbe3.rmeta \
+##   --mount=from=out-7d72679ab99cdbe3,dst=/tmp/clis-dbcc_2-2-1/release/deps/libsocketcan-7d72679ab99cdbe3.rlib,source=/libsocketcan-7d72679ab99cdbe3.rlib \
 ##   --mount=from=out-f065076cf799d91a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libhex-f065076cf799d91a.rmeta,source=/libhex-f065076cf799d91a.rmeta \
+##   --mount=from=out-f065076cf799d91a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libhex-f065076cf799d91a.rlib,source=/libhex-f065076cf799d91a.rlib \
 ##   --mount=from=out-2505039b047dad1a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libitertools-2505039b047dad1a.rmeta,source=/libitertools-2505039b047dad1a.rmeta \
+##   --mount=from=out-2505039b047dad1a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libitertools-2505039b047dad1a.rlib,source=/libitertools-2505039b047dad1a.rlib \
 ##   --mount=from=out-4ee318c191cb8959,dst=/tmp/clis-dbcc_2-2-1/release/deps/libnix-4ee318c191cb8959.rmeta,source=/libnix-4ee318c191cb8959.rmeta \
+##   --mount=from=out-4ee318c191cb8959,dst=/tmp/clis-dbcc_2-2-1/release/deps/libnix-4ee318c191cb8959.rlib,source=/libnix-4ee318c191cb8959.rlib \
 ##   --mount=from=out-e976848f96abbbd4,dst=/tmp/clis-dbcc_2-2-1/release/deps/libbitflags-e976848f96abbbd4.rmeta,source=/libbitflags-e976848f96abbbd4.rmeta \
+##   --mount=from=out-e976848f96abbbd4,dst=/tmp/clis-dbcc_2-2-1/release/deps/libbitflags-e976848f96abbbd4.rlib,source=/libbitflags-e976848f96abbbd4.rlib \
 ##   --mount=from=out-35b125c45c1cafb3,dst=/tmp/clis-dbcc_2-2-1/release/deps/libtry_from-35b125c45c1cafb3.rmeta,source=/libtry_from-35b125c45c1cafb3.rmeta \
+##   --mount=from=out-35b125c45c1cafb3,dst=/tmp/clis-dbcc_2-2-1/release/deps/libtry_from-35b125c45c1cafb3.rlib,source=/libtry_from-35b125c45c1cafb3.rlib \
 ##   --mount=from=out-05c5d104c65b93b5,dst=/tmp/clis-dbcc_2-2-1/release/deps/libstructopt-05c5d104c65b93b5.rmeta,source=/libstructopt-05c5d104c65b93b5.rmeta \
+##   --mount=from=out-05c5d104c65b93b5,dst=/tmp/clis-dbcc_2-2-1/release/deps/libstructopt-05c5d104c65b93b5.rlib,source=/libstructopt-05c5d104c65b93b5.rlib \
 ##   --mount=from=out-5a839c872643e159,dst=/tmp/clis-dbcc_2-2-1/release/deps/libclap-5a839c872643e159.rmeta,source=/libclap-5a839c872643e159.rmeta \
+##   --mount=from=out-5a839c872643e159,dst=/tmp/clis-dbcc_2-2-1/release/deps/libclap-5a839c872643e159.rlib,source=/libclap-5a839c872643e159.rlib \
 ##   --mount=from=out-320ef4b8ee2e57f9,dst=/tmp/clis-dbcc_2-2-1/release/deps/libansi_term-320ef4b8ee2e57f9.rmeta,source=/libansi_term-320ef4b8ee2e57f9.rmeta \
+##   --mount=from=out-320ef4b8ee2e57f9,dst=/tmp/clis-dbcc_2-2-1/release/deps/libansi_term-320ef4b8ee2e57f9.rlib,source=/libansi_term-320ef4b8ee2e57f9.rlib \
 ##   --mount=from=out-d19718ebe5a0c815,dst=/tmp/clis-dbcc_2-2-1/release/deps/libbitflags-d19718ebe5a0c815.rmeta,source=/libbitflags-d19718ebe5a0c815.rmeta \
+##   --mount=from=out-d19718ebe5a0c815,dst=/tmp/clis-dbcc_2-2-1/release/deps/libbitflags-d19718ebe5a0c815.rlib,source=/libbitflags-d19718ebe5a0c815.rlib \
 ##   --mount=from=out-ada2690f4d94d615,dst=/tmp/clis-dbcc_2-2-1/release/deps/libstrsim-ada2690f4d94d615.rmeta,source=/libstrsim-ada2690f4d94d615.rmeta \
+##   --mount=from=out-ada2690f4d94d615,dst=/tmp/clis-dbcc_2-2-1/release/deps/libstrsim-ada2690f4d94d615.rlib,source=/libstrsim-ada2690f4d94d615.rlib \
 ##   --mount=from=out-b7e82f41d8b26a14,dst=/tmp/clis-dbcc_2-2-1/release/deps/libtextwrap-b7e82f41d8b26a14.rmeta,source=/libtextwrap-b7e82f41d8b26a14.rmeta \
+##   --mount=from=out-b7e82f41d8b26a14,dst=/tmp/clis-dbcc_2-2-1/release/deps/libtextwrap-b7e82f41d8b26a14.rlib,source=/libtextwrap-b7e82f41d8b26a14.rlib \
 ##   --mount=from=out-e55c633902343b3a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_width-e55c633902343b3a.rmeta,source=/libunicode_width-e55c633902343b3a.rmeta \
+##   --mount=from=out-e55c633902343b3a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_width-e55c633902343b3a.rlib,source=/libunicode_width-e55c633902343b3a.rlib \
 ##   --mount=from=out-3fc8ab5befc6e8f4,dst=/tmp/clis-dbcc_2-2-1/release/deps/libvec_map-3fc8ab5befc6e8f4.rmeta,source=/libvec_map-3fc8ab5befc6e8f4.rmeta \
+##   --mount=from=out-3fc8ab5befc6e8f4,dst=/tmp/clis-dbcc_2-2-1/release/deps/libvec_map-3fc8ab5befc6e8f4.rlib,source=/libvec_map-3fc8ab5befc6e8f4.rlib \
 ##   --mount=from=out-0187f3c8576aef3b,dst=/tmp/clis-dbcc_2-2-1/release/deps/libstructopt_derive-0187f3c8576aef3b.so,source=/libstructopt_derive-0187f3c8576aef3b.so \
 ##   --mount=from=out-41892b3573d1a97c,dst=/tmp/clis-dbcc_2-2-1/release/deps/libheck-41892b3573d1a97c.rmeta,source=/libheck-41892b3573d1a97c.rmeta \
+##   --mount=from=out-41892b3573d1a97c,dst=/tmp/clis-dbcc_2-2-1/release/deps/libheck-41892b3573d1a97c.rlib,source=/libheck-41892b3573d1a97c.rlib \
 ##   --mount=from=out-0711d9c6f9e71290,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_segmentation-0711d9c6f9e71290.rmeta,source=/libunicode_segmentation-0711d9c6f9e71290.rmeta \
+##   --mount=from=out-0711d9c6f9e71290,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_segmentation-0711d9c6f9e71290.rlib,source=/libunicode_segmentation-0711d9c6f9e71290.rlib \
 ##   --mount=from=out-8d3142ab9efe4ea8,dst=/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro_error-8d3142ab9efe4ea8.rmeta,source=/libproc_macro_error-8d3142ab9efe4ea8.rmeta \
+##   --mount=from=out-8d3142ab9efe4ea8,dst=/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro_error-8d3142ab9efe4ea8.rlib,source=/libproc_macro_error-8d3142ab9efe4ea8.rlib \
 ##   --mount=from=out-5abbb4d0b3e50e85,dst=/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro_error_attr-5abbb4d0b3e50e85.so,source=/libproc_macro_error_attr-5abbb4d0b3e50e85.so \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
@@ -7113,59 +9205,111 @@ SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
   --mount=from=cratesio-dbcc-2.2.1,source=/dbcc-2.2.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/dbcc-2.2.1 \
+  --mount=from=out-90ca44a8caf54d0f,dst=/tmp/clis-dbcc_2-2-1/release/deps/libblake2-90ca44a8caf54d0f.rmeta,source=/libblake2-90ca44a8caf54d0f.rmeta \
   --mount=from=out-90ca44a8caf54d0f,dst=/tmp/clis-dbcc_2-2-1/release/deps/libblake2-90ca44a8caf54d0f.rlib,source=/libblake2-90ca44a8caf54d0f.rlib \
+  --mount=from=out-208f428f6e945660,dst=/tmp/clis-dbcc_2-2-1/release/deps/libbyte_tools-208f428f6e945660.rmeta,source=/libbyte_tools-208f428f6e945660.rmeta \
   --mount=from=out-208f428f6e945660,dst=/tmp/clis-dbcc_2-2-1/release/deps/libbyte_tools-208f428f6e945660.rlib,source=/libbyte_tools-208f428f6e945660.rlib \
+  --mount=from=out-c92b10e2fa1c82cb,dst=/tmp/clis-dbcc_2-2-1/release/deps/libcrypto_mac-c92b10e2fa1c82cb.rmeta,source=/libcrypto_mac-c92b10e2fa1c82cb.rmeta \
   --mount=from=out-c92b10e2fa1c82cb,dst=/tmp/clis-dbcc_2-2-1/release/deps/libcrypto_mac-c92b10e2fa1c82cb.rlib,source=/libcrypto_mac-c92b10e2fa1c82cb.rlib \
+  --mount=from=out-0afa135837d93e68,dst=/tmp/clis-dbcc_2-2-1/release/deps/libgeneric_array-0afa135837d93e68.rmeta,source=/libgeneric_array-0afa135837d93e68.rmeta \
   --mount=from=out-0afa135837d93e68,dst=/tmp/clis-dbcc_2-2-1/release/deps/libgeneric_array-0afa135837d93e68.rlib,source=/libgeneric_array-0afa135837d93e68.rlib \
+  --mount=from=out-0c59626b95871fe7,dst=/tmp/clis-dbcc_2-2-1/release/deps/libtypenum-0c59626b95871fe7.rmeta,source=/libtypenum-0c59626b95871fe7.rmeta \
   --mount=from=out-0c59626b95871fe7,dst=/tmp/clis-dbcc_2-2-1/release/deps/libtypenum-0c59626b95871fe7.rlib,source=/libtypenum-0c59626b95871fe7.rlib \
+  --mount=from=out-fe593aa0503da824,dst=/tmp/clis-dbcc_2-2-1/release/deps/libsubtle-fe593aa0503da824.rmeta,source=/libsubtle-fe593aa0503da824.rmeta \
   --mount=from=out-fe593aa0503da824,dst=/tmp/clis-dbcc_2-2-1/release/deps/libsubtle-fe593aa0503da824.rlib,source=/libsubtle-fe593aa0503da824.rlib \
+  --mount=from=out-3c7631a805111659,dst=/tmp/clis-dbcc_2-2-1/release/deps/libdigest-3c7631a805111659.rmeta,source=/libdigest-3c7631a805111659.rmeta \
   --mount=from=out-3c7631a805111659,dst=/tmp/clis-dbcc_2-2-1/release/deps/libdigest-3c7631a805111659.rlib,source=/libdigest-3c7631a805111659.rlib \
+  --mount=from=out-3e36cb37043b614a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libopaque_debug-3e36cb37043b614a.rmeta,source=/libopaque_debug-3e36cb37043b614a.rmeta \
   --mount=from=out-3e36cb37043b614a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libopaque_debug-3e36cb37043b614a.rlib,source=/libopaque_debug-3e36cb37043b614a.rlib \
+  --mount=from=out-593834cb44ccbead,dst=/tmp/clis-dbcc_2-2-1/release/deps/libcan_dbc-593834cb44ccbead.rmeta,source=/libcan_dbc-593834cb44ccbead.rmeta \
   --mount=from=out-593834cb44ccbead,dst=/tmp/clis-dbcc_2-2-1/release/deps/libcan_dbc-593834cb44ccbead.rlib,source=/libcan_dbc-593834cb44ccbead.rlib \
   --mount=from=out-10105863fb18eb2a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libderive_getters-10105863fb18eb2a.so,source=/libderive_getters-10105863fb18eb2a.so \
+  --mount=from=out-80b37ce9903d0def,dst=/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-80b37ce9903d0def.rmeta,source=/libproc_macro2-80b37ce9903d0def.rmeta \
   --mount=from=out-80b37ce9903d0def,dst=/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-80b37ce9903d0def.rlib,source=/libproc_macro2-80b37ce9903d0def.rlib \
+  --mount=from=out-ca80afcc82eeec0a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-ca80afcc82eeec0a.rmeta,source=/libunicode_xid-ca80afcc82eeec0a.rmeta \
   --mount=from=out-ca80afcc82eeec0a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-ca80afcc82eeec0a.rlib,source=/libunicode_xid-ca80afcc82eeec0a.rlib \
+  --mount=from=out-dd5debcb2b51fc02,dst=/tmp/clis-dbcc_2-2-1/release/deps/libquote-dd5debcb2b51fc02.rmeta,source=/libquote-dd5debcb2b51fc02.rmeta \
   --mount=from=out-dd5debcb2b51fc02,dst=/tmp/clis-dbcc_2-2-1/release/deps/libquote-dd5debcb2b51fc02.rlib,source=/libquote-dd5debcb2b51fc02.rlib \
+  --mount=from=out-bbffa8c7e6a16356,dst=/tmp/clis-dbcc_2-2-1/release/deps/libsyn-bbffa8c7e6a16356.rmeta,source=/libsyn-bbffa8c7e6a16356.rmeta \
   --mount=from=out-bbffa8c7e6a16356,dst=/tmp/clis-dbcc_2-2-1/release/deps/libsyn-bbffa8c7e6a16356.rlib,source=/libsyn-bbffa8c7e6a16356.rlib \
+  --mount=from=out-cd5fc4bcd4e040ed,dst=/tmp/clis-dbcc_2-2-1/release/deps/libnom-cd5fc4bcd4e040ed.rmeta,source=/libnom-cd5fc4bcd4e040ed.rmeta \
   --mount=from=out-cd5fc4bcd4e040ed,dst=/tmp/clis-dbcc_2-2-1/release/deps/libnom-cd5fc4bcd4e040ed.rlib,source=/libnom-cd5fc4bcd4e040ed.rlib \
+  --mount=from=out-c93fd10415a641fd,dst=/tmp/clis-dbcc_2-2-1/release/deps/libmemchr-c93fd10415a641fd.rmeta,source=/libmemchr-c93fd10415a641fd.rmeta \
   --mount=from=out-c93fd10415a641fd,dst=/tmp/clis-dbcc_2-2-1/release/deps/libmemchr-c93fd10415a641fd.rlib,source=/libmemchr-c93fd10415a641fd.rlib \
+  --mount=from=out-e0edff43b19741a4,dst=/tmp/clis-dbcc_2-2-1/release/deps/libdbcc-e0edff43b19741a4.rmeta,source=/libdbcc-e0edff43b19741a4.rmeta \
   --mount=from=out-e0edff43b19741a4,dst=/tmp/clis-dbcc_2-2-1/release/deps/libdbcc-e0edff43b19741a4.rlib,source=/libdbcc-e0edff43b19741a4.rlib \
+  --mount=from=out-7d0dcf7e7b45836f,dst=/tmp/clis-dbcc_2-2-1/release/deps/libheck-7d0dcf7e7b45836f.rmeta,source=/libheck-7d0dcf7e7b45836f.rmeta \
   --mount=from=out-7d0dcf7e7b45836f,dst=/tmp/clis-dbcc_2-2-1/release/deps/libheck-7d0dcf7e7b45836f.rlib,source=/libheck-7d0dcf7e7b45836f.rlib \
+  --mount=from=out-b06e8bcc96549ef0,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_segmentation-b06e8bcc96549ef0.rmeta,source=/libunicode_segmentation-b06e8bcc96549ef0.rmeta \
   --mount=from=out-b06e8bcc96549ef0,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_segmentation-b06e8bcc96549ef0.rlib,source=/libunicode_segmentation-b06e8bcc96549ef0.rlib \
+  --mount=from=out-09be6f37eb701f15,dst=/tmp/clis-dbcc_2-2-1/release/deps/liblog-09be6f37eb701f15.rmeta,source=/liblog-09be6f37eb701f15.rmeta \
   --mount=from=out-09be6f37eb701f15,dst=/tmp/clis-dbcc_2-2-1/release/deps/liblog-09be6f37eb701f15.rlib,source=/liblog-09be6f37eb701f15.rlib \
+  --mount=from=out-abefcc22b095b628,dst=/tmp/clis-dbcc_2-2-1/release/deps/libcfg_if-abefcc22b095b628.rmeta,source=/libcfg_if-abefcc22b095b628.rmeta \
   --mount=from=out-abefcc22b095b628,dst=/tmp/clis-dbcc_2-2-1/release/deps/libcfg_if-abefcc22b095b628.rlib,source=/libcfg_if-abefcc22b095b628.rlib \
+  --mount=from=out-682e69746a16e0c7,dst=/tmp/clis-dbcc_2-2-1/release/deps/libpretty_env_logger-682e69746a16e0c7.rmeta,source=/libpretty_env_logger-682e69746a16e0c7.rmeta \
   --mount=from=out-682e69746a16e0c7,dst=/tmp/clis-dbcc_2-2-1/release/deps/libpretty_env_logger-682e69746a16e0c7.rlib,source=/libpretty_env_logger-682e69746a16e0c7.rlib \
+  --mount=from=out-94c0a2bd3b1451c8,dst=/tmp/clis-dbcc_2-2-1/release/deps/libenv_logger-94c0a2bd3b1451c8.rmeta,source=/libenv_logger-94c0a2bd3b1451c8.rmeta \
   --mount=from=out-94c0a2bd3b1451c8,dst=/tmp/clis-dbcc_2-2-1/release/deps/libenv_logger-94c0a2bd3b1451c8.rlib,source=/libenv_logger-94c0a2bd3b1451c8.rlib \
+  --mount=from=out-737035cdf92a82de,dst=/tmp/clis-dbcc_2-2-1/release/deps/libatty-737035cdf92a82de.rmeta,source=/libatty-737035cdf92a82de.rmeta \
   --mount=from=out-737035cdf92a82de,dst=/tmp/clis-dbcc_2-2-1/release/deps/libatty-737035cdf92a82de.rlib,source=/libatty-737035cdf92a82de.rlib \
+  --mount=from=out-087afb0c1713a9a6,dst=/tmp/clis-dbcc_2-2-1/release/deps/liblibc-087afb0c1713a9a6.rmeta,source=/liblibc-087afb0c1713a9a6.rmeta \
   --mount=from=out-087afb0c1713a9a6,dst=/tmp/clis-dbcc_2-2-1/release/deps/liblibc-087afb0c1713a9a6.rlib,source=/liblibc-087afb0c1713a9a6.rlib \
+  --mount=from=out-3e3dde196d8efa81,dst=/tmp/clis-dbcc_2-2-1/release/deps/libhumantime-3e3dde196d8efa81.rmeta,source=/libhumantime-3e3dde196d8efa81.rmeta \
   --mount=from=out-3e3dde196d8efa81,dst=/tmp/clis-dbcc_2-2-1/release/deps/libhumantime-3e3dde196d8efa81.rlib,source=/libhumantime-3e3dde196d8efa81.rlib \
+  --mount=from=out-bd3d4e33b0f59f1b,dst=/tmp/clis-dbcc_2-2-1/release/deps/libquick_error-bd3d4e33b0f59f1b.rmeta,source=/libquick_error-bd3d4e33b0f59f1b.rmeta \
   --mount=from=out-bd3d4e33b0f59f1b,dst=/tmp/clis-dbcc_2-2-1/release/deps/libquick_error-bd3d4e33b0f59f1b.rlib,source=/libquick_error-bd3d4e33b0f59f1b.rlib \
+  --mount=from=out-5ba8c6f49cc2732d,dst=/tmp/clis-dbcc_2-2-1/release/deps/libregex-5ba8c6f49cc2732d.rmeta,source=/libregex-5ba8c6f49cc2732d.rmeta \
   --mount=from=out-5ba8c6f49cc2732d,dst=/tmp/clis-dbcc_2-2-1/release/deps/libregex-5ba8c6f49cc2732d.rlib,source=/libregex-5ba8c6f49cc2732d.rlib \
+  --mount=from=out-014f7ab42daca0d7,dst=/tmp/clis-dbcc_2-2-1/release/deps/libaho_corasick-014f7ab42daca0d7.rmeta,source=/libaho_corasick-014f7ab42daca0d7.rmeta \
   --mount=from=out-014f7ab42daca0d7,dst=/tmp/clis-dbcc_2-2-1/release/deps/libaho_corasick-014f7ab42daca0d7.rlib,source=/libaho_corasick-014f7ab42daca0d7.rlib \
+  --mount=from=out-eec8efd7d7dadd3c,dst=/tmp/clis-dbcc_2-2-1/release/deps/libregex_syntax-eec8efd7d7dadd3c.rmeta,source=/libregex_syntax-eec8efd7d7dadd3c.rmeta \
   --mount=from=out-eec8efd7d7dadd3c,dst=/tmp/clis-dbcc_2-2-1/release/deps/libregex_syntax-eec8efd7d7dadd3c.rlib,source=/libregex_syntax-eec8efd7d7dadd3c.rlib \
+  --mount=from=out-3ace2abd55187163,dst=/tmp/clis-dbcc_2-2-1/release/deps/libthread_local-3ace2abd55187163.rmeta,source=/libthread_local-3ace2abd55187163.rmeta \
   --mount=from=out-3ace2abd55187163,dst=/tmp/clis-dbcc_2-2-1/release/deps/libthread_local-3ace2abd55187163.rlib,source=/libthread_local-3ace2abd55187163.rlib \
+  --mount=from=out-a79af56de238e2b5,dst=/tmp/clis-dbcc_2-2-1/release/deps/liblazy_static-a79af56de238e2b5.rmeta,source=/liblazy_static-a79af56de238e2b5.rmeta \
   --mount=from=out-a79af56de238e2b5,dst=/tmp/clis-dbcc_2-2-1/release/deps/liblazy_static-a79af56de238e2b5.rlib,source=/liblazy_static-a79af56de238e2b5.rlib \
+  --mount=from=out-3d5a70ee74f70e2b,dst=/tmp/clis-dbcc_2-2-1/release/deps/libtermcolor-3d5a70ee74f70e2b.rmeta,source=/libtermcolor-3d5a70ee74f70e2b.rmeta \
   --mount=from=out-3d5a70ee74f70e2b,dst=/tmp/clis-dbcc_2-2-1/release/deps/libtermcolor-3d5a70ee74f70e2b.rlib,source=/libtermcolor-3d5a70ee74f70e2b.rlib \
+  --mount=from=out-5eebdd82bed7d9de,dst=/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-5eebdd82bed7d9de.rmeta,source=/libproc_macro2-5eebdd82bed7d9de.rmeta \
   --mount=from=out-5eebdd82bed7d9de,dst=/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-5eebdd82bed7d9de.rlib,source=/libproc_macro2-5eebdd82bed7d9de.rlib \
+  --mount=from=out-f585407da4c0bf6f,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-f585407da4c0bf6f.rmeta,source=/libunicode_xid-f585407da4c0bf6f.rmeta \
   --mount=from=out-f585407da4c0bf6f,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-f585407da4c0bf6f.rlib,source=/libunicode_xid-f585407da4c0bf6f.rlib \
+  --mount=from=out-0298ff41e604ba82,dst=/tmp/clis-dbcc_2-2-1/release/deps/libquote-0298ff41e604ba82.rmeta,source=/libquote-0298ff41e604ba82.rmeta \
   --mount=from=out-0298ff41e604ba82,dst=/tmp/clis-dbcc_2-2-1/release/deps/libquote-0298ff41e604ba82.rlib,source=/libquote-0298ff41e604ba82.rlib \
+  --mount=from=out-7d72679ab99cdbe3,dst=/tmp/clis-dbcc_2-2-1/release/deps/libsocketcan-7d72679ab99cdbe3.rmeta,source=/libsocketcan-7d72679ab99cdbe3.rmeta \
   --mount=from=out-7d72679ab99cdbe3,dst=/tmp/clis-dbcc_2-2-1/release/deps/libsocketcan-7d72679ab99cdbe3.rlib,source=/libsocketcan-7d72679ab99cdbe3.rlib \
+  --mount=from=out-f065076cf799d91a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libhex-f065076cf799d91a.rmeta,source=/libhex-f065076cf799d91a.rmeta \
   --mount=from=out-f065076cf799d91a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libhex-f065076cf799d91a.rlib,source=/libhex-f065076cf799d91a.rlib \
+  --mount=from=out-2505039b047dad1a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libitertools-2505039b047dad1a.rmeta,source=/libitertools-2505039b047dad1a.rmeta \
   --mount=from=out-2505039b047dad1a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libitertools-2505039b047dad1a.rlib,source=/libitertools-2505039b047dad1a.rlib \
+  --mount=from=out-4ee318c191cb8959,dst=/tmp/clis-dbcc_2-2-1/release/deps/libnix-4ee318c191cb8959.rmeta,source=/libnix-4ee318c191cb8959.rmeta \
   --mount=from=out-4ee318c191cb8959,dst=/tmp/clis-dbcc_2-2-1/release/deps/libnix-4ee318c191cb8959.rlib,source=/libnix-4ee318c191cb8959.rlib \
+  --mount=from=out-e976848f96abbbd4,dst=/tmp/clis-dbcc_2-2-1/release/deps/libbitflags-e976848f96abbbd4.rmeta,source=/libbitflags-e976848f96abbbd4.rmeta \
   --mount=from=out-e976848f96abbbd4,dst=/tmp/clis-dbcc_2-2-1/release/deps/libbitflags-e976848f96abbbd4.rlib,source=/libbitflags-e976848f96abbbd4.rlib \
+  --mount=from=out-35b125c45c1cafb3,dst=/tmp/clis-dbcc_2-2-1/release/deps/libtry_from-35b125c45c1cafb3.rmeta,source=/libtry_from-35b125c45c1cafb3.rmeta \
   --mount=from=out-35b125c45c1cafb3,dst=/tmp/clis-dbcc_2-2-1/release/deps/libtry_from-35b125c45c1cafb3.rlib,source=/libtry_from-35b125c45c1cafb3.rlib \
+  --mount=from=out-05c5d104c65b93b5,dst=/tmp/clis-dbcc_2-2-1/release/deps/libstructopt-05c5d104c65b93b5.rmeta,source=/libstructopt-05c5d104c65b93b5.rmeta \
   --mount=from=out-05c5d104c65b93b5,dst=/tmp/clis-dbcc_2-2-1/release/deps/libstructopt-05c5d104c65b93b5.rlib,source=/libstructopt-05c5d104c65b93b5.rlib \
+  --mount=from=out-5a839c872643e159,dst=/tmp/clis-dbcc_2-2-1/release/deps/libclap-5a839c872643e159.rmeta,source=/libclap-5a839c872643e159.rmeta \
   --mount=from=out-5a839c872643e159,dst=/tmp/clis-dbcc_2-2-1/release/deps/libclap-5a839c872643e159.rlib,source=/libclap-5a839c872643e159.rlib \
+  --mount=from=out-320ef4b8ee2e57f9,dst=/tmp/clis-dbcc_2-2-1/release/deps/libansi_term-320ef4b8ee2e57f9.rmeta,source=/libansi_term-320ef4b8ee2e57f9.rmeta \
   --mount=from=out-320ef4b8ee2e57f9,dst=/tmp/clis-dbcc_2-2-1/release/deps/libansi_term-320ef4b8ee2e57f9.rlib,source=/libansi_term-320ef4b8ee2e57f9.rlib \
+  --mount=from=out-d19718ebe5a0c815,dst=/tmp/clis-dbcc_2-2-1/release/deps/libbitflags-d19718ebe5a0c815.rmeta,source=/libbitflags-d19718ebe5a0c815.rmeta \
   --mount=from=out-d19718ebe5a0c815,dst=/tmp/clis-dbcc_2-2-1/release/deps/libbitflags-d19718ebe5a0c815.rlib,source=/libbitflags-d19718ebe5a0c815.rlib \
+  --mount=from=out-ada2690f4d94d615,dst=/tmp/clis-dbcc_2-2-1/release/deps/libstrsim-ada2690f4d94d615.rmeta,source=/libstrsim-ada2690f4d94d615.rmeta \
   --mount=from=out-ada2690f4d94d615,dst=/tmp/clis-dbcc_2-2-1/release/deps/libstrsim-ada2690f4d94d615.rlib,source=/libstrsim-ada2690f4d94d615.rlib \
+  --mount=from=out-b7e82f41d8b26a14,dst=/tmp/clis-dbcc_2-2-1/release/deps/libtextwrap-b7e82f41d8b26a14.rmeta,source=/libtextwrap-b7e82f41d8b26a14.rmeta \
   --mount=from=out-b7e82f41d8b26a14,dst=/tmp/clis-dbcc_2-2-1/release/deps/libtextwrap-b7e82f41d8b26a14.rlib,source=/libtextwrap-b7e82f41d8b26a14.rlib \
+  --mount=from=out-e55c633902343b3a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_width-e55c633902343b3a.rmeta,source=/libunicode_width-e55c633902343b3a.rmeta \
   --mount=from=out-e55c633902343b3a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_width-e55c633902343b3a.rlib,source=/libunicode_width-e55c633902343b3a.rlib \
+  --mount=from=out-3fc8ab5befc6e8f4,dst=/tmp/clis-dbcc_2-2-1/release/deps/libvec_map-3fc8ab5befc6e8f4.rmeta,source=/libvec_map-3fc8ab5befc6e8f4.rmeta \
   --mount=from=out-3fc8ab5befc6e8f4,dst=/tmp/clis-dbcc_2-2-1/release/deps/libvec_map-3fc8ab5befc6e8f4.rlib,source=/libvec_map-3fc8ab5befc6e8f4.rlib \
   --mount=from=out-0187f3c8576aef3b,dst=/tmp/clis-dbcc_2-2-1/release/deps/libstructopt_derive-0187f3c8576aef3b.so,source=/libstructopt_derive-0187f3c8576aef3b.so \
+  --mount=from=out-41892b3573d1a97c,dst=/tmp/clis-dbcc_2-2-1/release/deps/libheck-41892b3573d1a97c.rmeta,source=/libheck-41892b3573d1a97c.rmeta \
   --mount=from=out-41892b3573d1a97c,dst=/tmp/clis-dbcc_2-2-1/release/deps/libheck-41892b3573d1a97c.rlib,source=/libheck-41892b3573d1a97c.rlib \
+  --mount=from=out-0711d9c6f9e71290,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_segmentation-0711d9c6f9e71290.rmeta,source=/libunicode_segmentation-0711d9c6f9e71290.rmeta \
   --mount=from=out-0711d9c6f9e71290,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_segmentation-0711d9c6f9e71290.rlib,source=/libunicode_segmentation-0711d9c6f9e71290.rlib \
+  --mount=from=out-8d3142ab9efe4ea8,dst=/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro_error-8d3142ab9efe4ea8.rmeta,source=/libproc_macro_error-8d3142ab9efe4ea8.rmeta \
   --mount=from=out-8d3142ab9efe4ea8,dst=/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro_error-8d3142ab9efe4ea8.rlib,source=/libproc_macro_error-8d3142ab9efe4ea8.rlib \
   --mount=from=out-5abbb4d0b3e50e85,dst=/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro_error_attr-5abbb4d0b3e50e85.so,source=/libproc_macro_error_attr-5abbb4d0b3e50e85.so \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
@@ -7260,61 +9404,61 @@ COPY --from=dep-b-dbcc-2.2.1-6cd0852da8e8bf94 /tmp/clis-dbcc_2-2-1/release/deps/
 ##     "5abbb4d0b3e50e85",
 ## ]
 ## short_externs = [
-##     "blake2-90ca44a8caf54d0f",
-##     "byte_tools-208f428f6e945660",
-##     "crypto_mac-c92b10e2fa1c82cb",
-##     "generic_array-0afa135837d93e68",
-##     "typenum-0c59626b95871fe7",
-##     "subtle-fe593aa0503da824",
-##     "digest-3c7631a805111659",
-##     "opaque_debug-3e36cb37043b614a",
-##     "can_dbc-593834cb44ccbead",
-##     "derive_getters-10105863fb18eb2a",
-##     "proc_macro2-80b37ce9903d0def",
-##     "unicode_xid-ca80afcc82eeec0a",
-##     "quote-dd5debcb2b51fc02",
-##     "syn-bbffa8c7e6a16356",
-##     "nom-cd5fc4bcd4e040ed",
-##     "memchr-c93fd10415a641fd",
-##     "dbcc-e0edff43b19741a4",
-##     "heck-7d0dcf7e7b45836f",
-##     "unicode_segmentation-b06e8bcc96549ef0",
-##     "log-09be6f37eb701f15",
-##     "cfg_if-abefcc22b095b628",
-##     "pretty_env_logger-682e69746a16e0c7",
-##     "env_logger-94c0a2bd3b1451c8",
-##     "atty-737035cdf92a82de",
-##     "libc-087afb0c1713a9a6",
-##     "humantime-3e3dde196d8efa81",
-##     "quick_error-bd3d4e33b0f59f1b",
-##     "regex-5ba8c6f49cc2732d",
-##     "aho_corasick-014f7ab42daca0d7",
-##     "regex_syntax-eec8efd7d7dadd3c",
-##     "thread_local-3ace2abd55187163",
-##     "lazy_static-a79af56de238e2b5",
-##     "termcolor-3d5a70ee74f70e2b",
-##     "proc_macro2-5eebdd82bed7d9de",
-##     "unicode_xid-f585407da4c0bf6f",
-##     "quote-0298ff41e604ba82",
-##     "socketcan-7d72679ab99cdbe3",
-##     "hex-f065076cf799d91a",
-##     "itertools-2505039b047dad1a",
-##     "nix-4ee318c191cb8959",
-##     "bitflags-e976848f96abbbd4",
-##     "try_from-35b125c45c1cafb3",
-##     "structopt-05c5d104c65b93b5",
-##     "clap-5a839c872643e159",
-##     "ansi_term-320ef4b8ee2e57f9",
-##     "bitflags-d19718ebe5a0c815",
-##     "strsim-ada2690f4d94d615",
-##     "textwrap-b7e82f41d8b26a14",
-##     "unicode_width-e55c633902343b3a",
-##     "vec_map-3fc8ab5befc6e8f4",
-##     "structopt_derive-0187f3c8576aef3b",
-##     "heck-41892b3573d1a97c",
-##     "unicode_segmentation-0711d9c6f9e71290",
-##     "proc_macro_error-8d3142ab9efe4ea8",
-##     "proc_macro_error_attr-5abbb4d0b3e50e85",
+##     "90ca44a8caf54d0f",
+##     "208f428f6e945660",
+##     "c92b10e2fa1c82cb",
+##     "0afa135837d93e68",
+##     "0c59626b95871fe7",
+##     "fe593aa0503da824",
+##     "3c7631a805111659",
+##     "3e36cb37043b614a",
+##     "593834cb44ccbead",
+##     "10105863fb18eb2a",
+##     "80b37ce9903d0def",
+##     "ca80afcc82eeec0a",
+##     "dd5debcb2b51fc02",
+##     "bbffa8c7e6a16356",
+##     "cd5fc4bcd4e040ed",
+##     "c93fd10415a641fd",
+##     "e0edff43b19741a4",
+##     "7d0dcf7e7b45836f",
+##     "b06e8bcc96549ef0",
+##     "09be6f37eb701f15",
+##     "abefcc22b095b628",
+##     "682e69746a16e0c7",
+##     "94c0a2bd3b1451c8",
+##     "737035cdf92a82de",
+##     "087afb0c1713a9a6",
+##     "3e3dde196d8efa81",
+##     "bd3d4e33b0f59f1b",
+##     "5ba8c6f49cc2732d",
+##     "014f7ab42daca0d7",
+##     "eec8efd7d7dadd3c",
+##     "3ace2abd55187163",
+##     "a79af56de238e2b5",
+##     "3d5a70ee74f70e2b",
+##     "5eebdd82bed7d9de",
+##     "f585407da4c0bf6f",
+##     "0298ff41e604ba82",
+##     "7d72679ab99cdbe3",
+##     "f065076cf799d91a",
+##     "2505039b047dad1a",
+##     "4ee318c191cb8959",
+##     "e976848f96abbbd4",
+##     "35b125c45c1cafb3",
+##     "05c5d104c65b93b5",
+##     "5a839c872643e159",
+##     "320ef4b8ee2e57f9",
+##     "d19718ebe5a0c815",
+##     "ada2690f4d94d615",
+##     "b7e82f41d8b26a14",
+##     "e55c633902343b3a",
+##     "3fc8ab5befc6e8f4",
+##     "0187f3c8576aef3b",
+##     "41892b3573d1a97c",
+##     "0711d9c6f9e71290",
+##     "8d3142ab9efe4ea8",
+##     "5abbb4d0b3e50e85",
 ## ]
 ## writes = [
 ##     "deps/dbcc-6cd0852da8e8bf94.d",
@@ -7324,6 +9468,541 @@ COPY --from=dep-b-dbcc-2.2.1-6cd0852da8e8bf94 /tmp/clis-dbcc_2-2-1/release/deps/
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-dbcc_2-2-1/release/deps/dbcc-6cd0852da8e8bf94.d","emit":"dep-info"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-dbcc_2-2-1/release/deps/dbcc-6cd0852da8e8bf94","emit":"link"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-90ca44a8caf54d0f"
+## src = "/libblake2-90ca44a8caf54d0f.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libblake2-90ca44a8caf54d0f.rmeta"
+## 
+## [[mounts]]
+## from = "out-90ca44a8caf54d0f"
+## src = "/libblake2-90ca44a8caf54d0f.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libblake2-90ca44a8caf54d0f.rlib"
+## 
+## [[mounts]]
+## from = "out-208f428f6e945660"
+## src = "/libbyte_tools-208f428f6e945660.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libbyte_tools-208f428f6e945660.rmeta"
+## 
+## [[mounts]]
+## from = "out-208f428f6e945660"
+## src = "/libbyte_tools-208f428f6e945660.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libbyte_tools-208f428f6e945660.rlib"
+## 
+## [[mounts]]
+## from = "out-c92b10e2fa1c82cb"
+## src = "/libcrypto_mac-c92b10e2fa1c82cb.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libcrypto_mac-c92b10e2fa1c82cb.rmeta"
+## 
+## [[mounts]]
+## from = "out-c92b10e2fa1c82cb"
+## src = "/libcrypto_mac-c92b10e2fa1c82cb.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libcrypto_mac-c92b10e2fa1c82cb.rlib"
+## 
+## [[mounts]]
+## from = "out-0afa135837d93e68"
+## src = "/libgeneric_array-0afa135837d93e68.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libgeneric_array-0afa135837d93e68.rmeta"
+## 
+## [[mounts]]
+## from = "out-0afa135837d93e68"
+## src = "/libgeneric_array-0afa135837d93e68.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libgeneric_array-0afa135837d93e68.rlib"
+## 
+## [[mounts]]
+## from = "out-0c59626b95871fe7"
+## src = "/libtypenum-0c59626b95871fe7.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libtypenum-0c59626b95871fe7.rmeta"
+## 
+## [[mounts]]
+## from = "out-0c59626b95871fe7"
+## src = "/libtypenum-0c59626b95871fe7.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libtypenum-0c59626b95871fe7.rlib"
+## 
+## [[mounts]]
+## from = "out-fe593aa0503da824"
+## src = "/libsubtle-fe593aa0503da824.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libsubtle-fe593aa0503da824.rmeta"
+## 
+## [[mounts]]
+## from = "out-fe593aa0503da824"
+## src = "/libsubtle-fe593aa0503da824.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libsubtle-fe593aa0503da824.rlib"
+## 
+## [[mounts]]
+## from = "out-3c7631a805111659"
+## src = "/libdigest-3c7631a805111659.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libdigest-3c7631a805111659.rmeta"
+## 
+## [[mounts]]
+## from = "out-3c7631a805111659"
+## src = "/libdigest-3c7631a805111659.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libdigest-3c7631a805111659.rlib"
+## 
+## [[mounts]]
+## from = "out-3e36cb37043b614a"
+## src = "/libopaque_debug-3e36cb37043b614a.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libopaque_debug-3e36cb37043b614a.rmeta"
+## 
+## [[mounts]]
+## from = "out-3e36cb37043b614a"
+## src = "/libopaque_debug-3e36cb37043b614a.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libopaque_debug-3e36cb37043b614a.rlib"
+## 
+## [[mounts]]
+## from = "out-593834cb44ccbead"
+## src = "/libcan_dbc-593834cb44ccbead.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libcan_dbc-593834cb44ccbead.rmeta"
+## 
+## [[mounts]]
+## from = "out-593834cb44ccbead"
+## src = "/libcan_dbc-593834cb44ccbead.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libcan_dbc-593834cb44ccbead.rlib"
+## 
+## [[mounts]]
+## from = "out-10105863fb18eb2a"
+## src = "/libderive_getters-10105863fb18eb2a.so"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libderive_getters-10105863fb18eb2a.so"
+## 
+## [[mounts]]
+## from = "out-80b37ce9903d0def"
+## src = "/libproc_macro2-80b37ce9903d0def.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-80b37ce9903d0def.rmeta"
+## 
+## [[mounts]]
+## from = "out-80b37ce9903d0def"
+## src = "/libproc_macro2-80b37ce9903d0def.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-80b37ce9903d0def.rlib"
+## 
+## [[mounts]]
+## from = "out-ca80afcc82eeec0a"
+## src = "/libunicode_xid-ca80afcc82eeec0a.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-ca80afcc82eeec0a.rmeta"
+## 
+## [[mounts]]
+## from = "out-ca80afcc82eeec0a"
+## src = "/libunicode_xid-ca80afcc82eeec0a.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-ca80afcc82eeec0a.rlib"
+## 
+## [[mounts]]
+## from = "out-dd5debcb2b51fc02"
+## src = "/libquote-dd5debcb2b51fc02.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libquote-dd5debcb2b51fc02.rmeta"
+## 
+## [[mounts]]
+## from = "out-dd5debcb2b51fc02"
+## src = "/libquote-dd5debcb2b51fc02.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libquote-dd5debcb2b51fc02.rlib"
+## 
+## [[mounts]]
+## from = "out-bbffa8c7e6a16356"
+## src = "/libsyn-bbffa8c7e6a16356.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libsyn-bbffa8c7e6a16356.rmeta"
+## 
+## [[mounts]]
+## from = "out-bbffa8c7e6a16356"
+## src = "/libsyn-bbffa8c7e6a16356.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libsyn-bbffa8c7e6a16356.rlib"
+## 
+## [[mounts]]
+## from = "out-cd5fc4bcd4e040ed"
+## src = "/libnom-cd5fc4bcd4e040ed.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libnom-cd5fc4bcd4e040ed.rmeta"
+## 
+## [[mounts]]
+## from = "out-cd5fc4bcd4e040ed"
+## src = "/libnom-cd5fc4bcd4e040ed.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libnom-cd5fc4bcd4e040ed.rlib"
+## 
+## [[mounts]]
+## from = "out-c93fd10415a641fd"
+## src = "/libmemchr-c93fd10415a641fd.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libmemchr-c93fd10415a641fd.rmeta"
+## 
+## [[mounts]]
+## from = "out-c93fd10415a641fd"
+## src = "/libmemchr-c93fd10415a641fd.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libmemchr-c93fd10415a641fd.rlib"
+## 
+## [[mounts]]
+## from = "out-e0edff43b19741a4"
+## src = "/libdbcc-e0edff43b19741a4.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libdbcc-e0edff43b19741a4.rmeta"
+## 
+## [[mounts]]
+## from = "out-e0edff43b19741a4"
+## src = "/libdbcc-e0edff43b19741a4.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libdbcc-e0edff43b19741a4.rlib"
+## 
+## [[mounts]]
+## from = "out-7d0dcf7e7b45836f"
+## src = "/libheck-7d0dcf7e7b45836f.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libheck-7d0dcf7e7b45836f.rmeta"
+## 
+## [[mounts]]
+## from = "out-7d0dcf7e7b45836f"
+## src = "/libheck-7d0dcf7e7b45836f.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libheck-7d0dcf7e7b45836f.rlib"
+## 
+## [[mounts]]
+## from = "out-b06e8bcc96549ef0"
+## src = "/libunicode_segmentation-b06e8bcc96549ef0.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_segmentation-b06e8bcc96549ef0.rmeta"
+## 
+## [[mounts]]
+## from = "out-b06e8bcc96549ef0"
+## src = "/libunicode_segmentation-b06e8bcc96549ef0.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_segmentation-b06e8bcc96549ef0.rlib"
+## 
+## [[mounts]]
+## from = "out-09be6f37eb701f15"
+## src = "/liblog-09be6f37eb701f15.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/liblog-09be6f37eb701f15.rmeta"
+## 
+## [[mounts]]
+## from = "out-09be6f37eb701f15"
+## src = "/liblog-09be6f37eb701f15.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/liblog-09be6f37eb701f15.rlib"
+## 
+## [[mounts]]
+## from = "out-abefcc22b095b628"
+## src = "/libcfg_if-abefcc22b095b628.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libcfg_if-abefcc22b095b628.rmeta"
+## 
+## [[mounts]]
+## from = "out-abefcc22b095b628"
+## src = "/libcfg_if-abefcc22b095b628.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libcfg_if-abefcc22b095b628.rlib"
+## 
+## [[mounts]]
+## from = "out-682e69746a16e0c7"
+## src = "/libpretty_env_logger-682e69746a16e0c7.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libpretty_env_logger-682e69746a16e0c7.rmeta"
+## 
+## [[mounts]]
+## from = "out-682e69746a16e0c7"
+## src = "/libpretty_env_logger-682e69746a16e0c7.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libpretty_env_logger-682e69746a16e0c7.rlib"
+## 
+## [[mounts]]
+## from = "out-94c0a2bd3b1451c8"
+## src = "/libenv_logger-94c0a2bd3b1451c8.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libenv_logger-94c0a2bd3b1451c8.rmeta"
+## 
+## [[mounts]]
+## from = "out-94c0a2bd3b1451c8"
+## src = "/libenv_logger-94c0a2bd3b1451c8.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libenv_logger-94c0a2bd3b1451c8.rlib"
+## 
+## [[mounts]]
+## from = "out-737035cdf92a82de"
+## src = "/libatty-737035cdf92a82de.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libatty-737035cdf92a82de.rmeta"
+## 
+## [[mounts]]
+## from = "out-737035cdf92a82de"
+## src = "/libatty-737035cdf92a82de.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libatty-737035cdf92a82de.rlib"
+## 
+## [[mounts]]
+## from = "out-087afb0c1713a9a6"
+## src = "/liblibc-087afb0c1713a9a6.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/liblibc-087afb0c1713a9a6.rmeta"
+## 
+## [[mounts]]
+## from = "out-087afb0c1713a9a6"
+## src = "/liblibc-087afb0c1713a9a6.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/liblibc-087afb0c1713a9a6.rlib"
+## 
+## [[mounts]]
+## from = "out-3e3dde196d8efa81"
+## src = "/libhumantime-3e3dde196d8efa81.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libhumantime-3e3dde196d8efa81.rmeta"
+## 
+## [[mounts]]
+## from = "out-3e3dde196d8efa81"
+## src = "/libhumantime-3e3dde196d8efa81.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libhumantime-3e3dde196d8efa81.rlib"
+## 
+## [[mounts]]
+## from = "out-bd3d4e33b0f59f1b"
+## src = "/libquick_error-bd3d4e33b0f59f1b.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libquick_error-bd3d4e33b0f59f1b.rmeta"
+## 
+## [[mounts]]
+## from = "out-bd3d4e33b0f59f1b"
+## src = "/libquick_error-bd3d4e33b0f59f1b.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libquick_error-bd3d4e33b0f59f1b.rlib"
+## 
+## [[mounts]]
+## from = "out-5ba8c6f49cc2732d"
+## src = "/libregex-5ba8c6f49cc2732d.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libregex-5ba8c6f49cc2732d.rmeta"
+## 
+## [[mounts]]
+## from = "out-5ba8c6f49cc2732d"
+## src = "/libregex-5ba8c6f49cc2732d.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libregex-5ba8c6f49cc2732d.rlib"
+## 
+## [[mounts]]
+## from = "out-014f7ab42daca0d7"
+## src = "/libaho_corasick-014f7ab42daca0d7.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libaho_corasick-014f7ab42daca0d7.rmeta"
+## 
+## [[mounts]]
+## from = "out-014f7ab42daca0d7"
+## src = "/libaho_corasick-014f7ab42daca0d7.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libaho_corasick-014f7ab42daca0d7.rlib"
+## 
+## [[mounts]]
+## from = "out-eec8efd7d7dadd3c"
+## src = "/libregex_syntax-eec8efd7d7dadd3c.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libregex_syntax-eec8efd7d7dadd3c.rmeta"
+## 
+## [[mounts]]
+## from = "out-eec8efd7d7dadd3c"
+## src = "/libregex_syntax-eec8efd7d7dadd3c.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libregex_syntax-eec8efd7d7dadd3c.rlib"
+## 
+## [[mounts]]
+## from = "out-3ace2abd55187163"
+## src = "/libthread_local-3ace2abd55187163.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libthread_local-3ace2abd55187163.rmeta"
+## 
+## [[mounts]]
+## from = "out-3ace2abd55187163"
+## src = "/libthread_local-3ace2abd55187163.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libthread_local-3ace2abd55187163.rlib"
+## 
+## [[mounts]]
+## from = "out-a79af56de238e2b5"
+## src = "/liblazy_static-a79af56de238e2b5.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/liblazy_static-a79af56de238e2b5.rmeta"
+## 
+## [[mounts]]
+## from = "out-a79af56de238e2b5"
+## src = "/liblazy_static-a79af56de238e2b5.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/liblazy_static-a79af56de238e2b5.rlib"
+## 
+## [[mounts]]
+## from = "out-3d5a70ee74f70e2b"
+## src = "/libtermcolor-3d5a70ee74f70e2b.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libtermcolor-3d5a70ee74f70e2b.rmeta"
+## 
+## [[mounts]]
+## from = "out-3d5a70ee74f70e2b"
+## src = "/libtermcolor-3d5a70ee74f70e2b.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libtermcolor-3d5a70ee74f70e2b.rlib"
+## 
+## [[mounts]]
+## from = "out-5eebdd82bed7d9de"
+## src = "/libproc_macro2-5eebdd82bed7d9de.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-5eebdd82bed7d9de.rmeta"
+## 
+## [[mounts]]
+## from = "out-5eebdd82bed7d9de"
+## src = "/libproc_macro2-5eebdd82bed7d9de.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-5eebdd82bed7d9de.rlib"
+## 
+## [[mounts]]
+## from = "out-f585407da4c0bf6f"
+## src = "/libunicode_xid-f585407da4c0bf6f.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-f585407da4c0bf6f.rmeta"
+## 
+## [[mounts]]
+## from = "out-f585407da4c0bf6f"
+## src = "/libunicode_xid-f585407da4c0bf6f.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-f585407da4c0bf6f.rlib"
+## 
+## [[mounts]]
+## from = "out-0298ff41e604ba82"
+## src = "/libquote-0298ff41e604ba82.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libquote-0298ff41e604ba82.rmeta"
+## 
+## [[mounts]]
+## from = "out-0298ff41e604ba82"
+## src = "/libquote-0298ff41e604ba82.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libquote-0298ff41e604ba82.rlib"
+## 
+## [[mounts]]
+## from = "out-7d72679ab99cdbe3"
+## src = "/libsocketcan-7d72679ab99cdbe3.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libsocketcan-7d72679ab99cdbe3.rmeta"
+## 
+## [[mounts]]
+## from = "out-7d72679ab99cdbe3"
+## src = "/libsocketcan-7d72679ab99cdbe3.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libsocketcan-7d72679ab99cdbe3.rlib"
+## 
+## [[mounts]]
+## from = "out-f065076cf799d91a"
+## src = "/libhex-f065076cf799d91a.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libhex-f065076cf799d91a.rmeta"
+## 
+## [[mounts]]
+## from = "out-f065076cf799d91a"
+## src = "/libhex-f065076cf799d91a.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libhex-f065076cf799d91a.rlib"
+## 
+## [[mounts]]
+## from = "out-2505039b047dad1a"
+## src = "/libitertools-2505039b047dad1a.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libitertools-2505039b047dad1a.rmeta"
+## 
+## [[mounts]]
+## from = "out-2505039b047dad1a"
+## src = "/libitertools-2505039b047dad1a.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libitertools-2505039b047dad1a.rlib"
+## 
+## [[mounts]]
+## from = "out-4ee318c191cb8959"
+## src = "/libnix-4ee318c191cb8959.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libnix-4ee318c191cb8959.rmeta"
+## 
+## [[mounts]]
+## from = "out-4ee318c191cb8959"
+## src = "/libnix-4ee318c191cb8959.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libnix-4ee318c191cb8959.rlib"
+## 
+## [[mounts]]
+## from = "out-e976848f96abbbd4"
+## src = "/libbitflags-e976848f96abbbd4.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libbitflags-e976848f96abbbd4.rmeta"
+## 
+## [[mounts]]
+## from = "out-e976848f96abbbd4"
+## src = "/libbitflags-e976848f96abbbd4.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libbitflags-e976848f96abbbd4.rlib"
+## 
+## [[mounts]]
+## from = "out-35b125c45c1cafb3"
+## src = "/libtry_from-35b125c45c1cafb3.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libtry_from-35b125c45c1cafb3.rmeta"
+## 
+## [[mounts]]
+## from = "out-35b125c45c1cafb3"
+## src = "/libtry_from-35b125c45c1cafb3.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libtry_from-35b125c45c1cafb3.rlib"
+## 
+## [[mounts]]
+## from = "out-05c5d104c65b93b5"
+## src = "/libstructopt-05c5d104c65b93b5.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libstructopt-05c5d104c65b93b5.rmeta"
+## 
+## [[mounts]]
+## from = "out-05c5d104c65b93b5"
+## src = "/libstructopt-05c5d104c65b93b5.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libstructopt-05c5d104c65b93b5.rlib"
+## 
+## [[mounts]]
+## from = "out-5a839c872643e159"
+## src = "/libclap-5a839c872643e159.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libclap-5a839c872643e159.rmeta"
+## 
+## [[mounts]]
+## from = "out-5a839c872643e159"
+## src = "/libclap-5a839c872643e159.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libclap-5a839c872643e159.rlib"
+## 
+## [[mounts]]
+## from = "out-320ef4b8ee2e57f9"
+## src = "/libansi_term-320ef4b8ee2e57f9.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libansi_term-320ef4b8ee2e57f9.rmeta"
+## 
+## [[mounts]]
+## from = "out-320ef4b8ee2e57f9"
+## src = "/libansi_term-320ef4b8ee2e57f9.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libansi_term-320ef4b8ee2e57f9.rlib"
+## 
+## [[mounts]]
+## from = "out-d19718ebe5a0c815"
+## src = "/libbitflags-d19718ebe5a0c815.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libbitflags-d19718ebe5a0c815.rmeta"
+## 
+## [[mounts]]
+## from = "out-d19718ebe5a0c815"
+## src = "/libbitflags-d19718ebe5a0c815.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libbitflags-d19718ebe5a0c815.rlib"
+## 
+## [[mounts]]
+## from = "out-ada2690f4d94d615"
+## src = "/libstrsim-ada2690f4d94d615.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libstrsim-ada2690f4d94d615.rmeta"
+## 
+## [[mounts]]
+## from = "out-ada2690f4d94d615"
+## src = "/libstrsim-ada2690f4d94d615.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libstrsim-ada2690f4d94d615.rlib"
+## 
+## [[mounts]]
+## from = "out-b7e82f41d8b26a14"
+## src = "/libtextwrap-b7e82f41d8b26a14.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libtextwrap-b7e82f41d8b26a14.rmeta"
+## 
+## [[mounts]]
+## from = "out-b7e82f41d8b26a14"
+## src = "/libtextwrap-b7e82f41d8b26a14.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libtextwrap-b7e82f41d8b26a14.rlib"
+## 
+## [[mounts]]
+## from = "out-e55c633902343b3a"
+## src = "/libunicode_width-e55c633902343b3a.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_width-e55c633902343b3a.rmeta"
+## 
+## [[mounts]]
+## from = "out-e55c633902343b3a"
+## src = "/libunicode_width-e55c633902343b3a.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_width-e55c633902343b3a.rlib"
+## 
+## [[mounts]]
+## from = "out-3fc8ab5befc6e8f4"
+## src = "/libvec_map-3fc8ab5befc6e8f4.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libvec_map-3fc8ab5befc6e8f4.rmeta"
+## 
+## [[mounts]]
+## from = "out-3fc8ab5befc6e8f4"
+## src = "/libvec_map-3fc8ab5befc6e8f4.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libvec_map-3fc8ab5befc6e8f4.rlib"
+## 
+## [[mounts]]
+## from = "out-0187f3c8576aef3b"
+## src = "/libstructopt_derive-0187f3c8576aef3b.so"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libstructopt_derive-0187f3c8576aef3b.so"
+## 
+## [[mounts]]
+## from = "out-41892b3573d1a97c"
+## src = "/libheck-41892b3573d1a97c.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libheck-41892b3573d1a97c.rmeta"
+## 
+## [[mounts]]
+## from = "out-41892b3573d1a97c"
+## src = "/libheck-41892b3573d1a97c.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libheck-41892b3573d1a97c.rlib"
+## 
+## [[mounts]]
+## from = "out-0711d9c6f9e71290"
+## src = "/libunicode_segmentation-0711d9c6f9e71290.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_segmentation-0711d9c6f9e71290.rmeta"
+## 
+## [[mounts]]
+## from = "out-0711d9c6f9e71290"
+## src = "/libunicode_segmentation-0711d9c6f9e71290.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_segmentation-0711d9c6f9e71290.rlib"
+## 
+## [[mounts]]
+## from = "out-8d3142ab9efe4ea8"
+## src = "/libproc_macro_error-8d3142ab9efe4ea8.rmeta"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro_error-8d3142ab9efe4ea8.rmeta"
+## 
+## [[mounts]]
+## from = "out-8d3142ab9efe4ea8"
+## src = "/libproc_macro_error-8d3142ab9efe4ea8.rlib"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro_error-8d3142ab9efe4ea8.rlib"
+## 
+## [[mounts]]
+## from = "out-5abbb4d0b3e50e85"
+## src = "/libproc_macro_error_attr-5abbb4d0b3e50e85.so"
+## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro_error_attr-5abbb4d0b3e50e85.so"
 ## 
 ## [[contexts]]
 ## name = "crate_out-3cf9e442dfddd505"
@@ -7348,59 +10027,111 @@ COPY --from=dep-b-dbcc-2.2.1-6cd0852da8e8bf94 /tmp/clis-dbcc_2-2-1/release/deps/
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
 ##   --mount=from=cratesio-dbcc-2.2.1,source=/dbcc-2.2.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/dbcc-2.2.1 \
+##   --mount=from=out-90ca44a8caf54d0f,dst=/tmp/clis-dbcc_2-2-1/release/deps/libblake2-90ca44a8caf54d0f.rmeta,source=/libblake2-90ca44a8caf54d0f.rmeta \
 ##   --mount=from=out-90ca44a8caf54d0f,dst=/tmp/clis-dbcc_2-2-1/release/deps/libblake2-90ca44a8caf54d0f.rlib,source=/libblake2-90ca44a8caf54d0f.rlib \
+##   --mount=from=out-208f428f6e945660,dst=/tmp/clis-dbcc_2-2-1/release/deps/libbyte_tools-208f428f6e945660.rmeta,source=/libbyte_tools-208f428f6e945660.rmeta \
 ##   --mount=from=out-208f428f6e945660,dst=/tmp/clis-dbcc_2-2-1/release/deps/libbyte_tools-208f428f6e945660.rlib,source=/libbyte_tools-208f428f6e945660.rlib \
+##   --mount=from=out-c92b10e2fa1c82cb,dst=/tmp/clis-dbcc_2-2-1/release/deps/libcrypto_mac-c92b10e2fa1c82cb.rmeta,source=/libcrypto_mac-c92b10e2fa1c82cb.rmeta \
 ##   --mount=from=out-c92b10e2fa1c82cb,dst=/tmp/clis-dbcc_2-2-1/release/deps/libcrypto_mac-c92b10e2fa1c82cb.rlib,source=/libcrypto_mac-c92b10e2fa1c82cb.rlib \
+##   --mount=from=out-0afa135837d93e68,dst=/tmp/clis-dbcc_2-2-1/release/deps/libgeneric_array-0afa135837d93e68.rmeta,source=/libgeneric_array-0afa135837d93e68.rmeta \
 ##   --mount=from=out-0afa135837d93e68,dst=/tmp/clis-dbcc_2-2-1/release/deps/libgeneric_array-0afa135837d93e68.rlib,source=/libgeneric_array-0afa135837d93e68.rlib \
+##   --mount=from=out-0c59626b95871fe7,dst=/tmp/clis-dbcc_2-2-1/release/deps/libtypenum-0c59626b95871fe7.rmeta,source=/libtypenum-0c59626b95871fe7.rmeta \
 ##   --mount=from=out-0c59626b95871fe7,dst=/tmp/clis-dbcc_2-2-1/release/deps/libtypenum-0c59626b95871fe7.rlib,source=/libtypenum-0c59626b95871fe7.rlib \
+##   --mount=from=out-fe593aa0503da824,dst=/tmp/clis-dbcc_2-2-1/release/deps/libsubtle-fe593aa0503da824.rmeta,source=/libsubtle-fe593aa0503da824.rmeta \
 ##   --mount=from=out-fe593aa0503da824,dst=/tmp/clis-dbcc_2-2-1/release/deps/libsubtle-fe593aa0503da824.rlib,source=/libsubtle-fe593aa0503da824.rlib \
+##   --mount=from=out-3c7631a805111659,dst=/tmp/clis-dbcc_2-2-1/release/deps/libdigest-3c7631a805111659.rmeta,source=/libdigest-3c7631a805111659.rmeta \
 ##   --mount=from=out-3c7631a805111659,dst=/tmp/clis-dbcc_2-2-1/release/deps/libdigest-3c7631a805111659.rlib,source=/libdigest-3c7631a805111659.rlib \
+##   --mount=from=out-3e36cb37043b614a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libopaque_debug-3e36cb37043b614a.rmeta,source=/libopaque_debug-3e36cb37043b614a.rmeta \
 ##   --mount=from=out-3e36cb37043b614a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libopaque_debug-3e36cb37043b614a.rlib,source=/libopaque_debug-3e36cb37043b614a.rlib \
+##   --mount=from=out-593834cb44ccbead,dst=/tmp/clis-dbcc_2-2-1/release/deps/libcan_dbc-593834cb44ccbead.rmeta,source=/libcan_dbc-593834cb44ccbead.rmeta \
 ##   --mount=from=out-593834cb44ccbead,dst=/tmp/clis-dbcc_2-2-1/release/deps/libcan_dbc-593834cb44ccbead.rlib,source=/libcan_dbc-593834cb44ccbead.rlib \
 ##   --mount=from=out-10105863fb18eb2a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libderive_getters-10105863fb18eb2a.so,source=/libderive_getters-10105863fb18eb2a.so \
+##   --mount=from=out-80b37ce9903d0def,dst=/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-80b37ce9903d0def.rmeta,source=/libproc_macro2-80b37ce9903d0def.rmeta \
 ##   --mount=from=out-80b37ce9903d0def,dst=/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-80b37ce9903d0def.rlib,source=/libproc_macro2-80b37ce9903d0def.rlib \
+##   --mount=from=out-ca80afcc82eeec0a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-ca80afcc82eeec0a.rmeta,source=/libunicode_xid-ca80afcc82eeec0a.rmeta \
 ##   --mount=from=out-ca80afcc82eeec0a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-ca80afcc82eeec0a.rlib,source=/libunicode_xid-ca80afcc82eeec0a.rlib \
+##   --mount=from=out-dd5debcb2b51fc02,dst=/tmp/clis-dbcc_2-2-1/release/deps/libquote-dd5debcb2b51fc02.rmeta,source=/libquote-dd5debcb2b51fc02.rmeta \
 ##   --mount=from=out-dd5debcb2b51fc02,dst=/tmp/clis-dbcc_2-2-1/release/deps/libquote-dd5debcb2b51fc02.rlib,source=/libquote-dd5debcb2b51fc02.rlib \
+##   --mount=from=out-bbffa8c7e6a16356,dst=/tmp/clis-dbcc_2-2-1/release/deps/libsyn-bbffa8c7e6a16356.rmeta,source=/libsyn-bbffa8c7e6a16356.rmeta \
 ##   --mount=from=out-bbffa8c7e6a16356,dst=/tmp/clis-dbcc_2-2-1/release/deps/libsyn-bbffa8c7e6a16356.rlib,source=/libsyn-bbffa8c7e6a16356.rlib \
+##   --mount=from=out-cd5fc4bcd4e040ed,dst=/tmp/clis-dbcc_2-2-1/release/deps/libnom-cd5fc4bcd4e040ed.rmeta,source=/libnom-cd5fc4bcd4e040ed.rmeta \
 ##   --mount=from=out-cd5fc4bcd4e040ed,dst=/tmp/clis-dbcc_2-2-1/release/deps/libnom-cd5fc4bcd4e040ed.rlib,source=/libnom-cd5fc4bcd4e040ed.rlib \
+##   --mount=from=out-c93fd10415a641fd,dst=/tmp/clis-dbcc_2-2-1/release/deps/libmemchr-c93fd10415a641fd.rmeta,source=/libmemchr-c93fd10415a641fd.rmeta \
 ##   --mount=from=out-c93fd10415a641fd,dst=/tmp/clis-dbcc_2-2-1/release/deps/libmemchr-c93fd10415a641fd.rlib,source=/libmemchr-c93fd10415a641fd.rlib \
+##   --mount=from=out-e0edff43b19741a4,dst=/tmp/clis-dbcc_2-2-1/release/deps/libdbcc-e0edff43b19741a4.rmeta,source=/libdbcc-e0edff43b19741a4.rmeta \
 ##   --mount=from=out-e0edff43b19741a4,dst=/tmp/clis-dbcc_2-2-1/release/deps/libdbcc-e0edff43b19741a4.rlib,source=/libdbcc-e0edff43b19741a4.rlib \
+##   --mount=from=out-7d0dcf7e7b45836f,dst=/tmp/clis-dbcc_2-2-1/release/deps/libheck-7d0dcf7e7b45836f.rmeta,source=/libheck-7d0dcf7e7b45836f.rmeta \
 ##   --mount=from=out-7d0dcf7e7b45836f,dst=/tmp/clis-dbcc_2-2-1/release/deps/libheck-7d0dcf7e7b45836f.rlib,source=/libheck-7d0dcf7e7b45836f.rlib \
+##   --mount=from=out-b06e8bcc96549ef0,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_segmentation-b06e8bcc96549ef0.rmeta,source=/libunicode_segmentation-b06e8bcc96549ef0.rmeta \
 ##   --mount=from=out-b06e8bcc96549ef0,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_segmentation-b06e8bcc96549ef0.rlib,source=/libunicode_segmentation-b06e8bcc96549ef0.rlib \
+##   --mount=from=out-09be6f37eb701f15,dst=/tmp/clis-dbcc_2-2-1/release/deps/liblog-09be6f37eb701f15.rmeta,source=/liblog-09be6f37eb701f15.rmeta \
 ##   --mount=from=out-09be6f37eb701f15,dst=/tmp/clis-dbcc_2-2-1/release/deps/liblog-09be6f37eb701f15.rlib,source=/liblog-09be6f37eb701f15.rlib \
+##   --mount=from=out-abefcc22b095b628,dst=/tmp/clis-dbcc_2-2-1/release/deps/libcfg_if-abefcc22b095b628.rmeta,source=/libcfg_if-abefcc22b095b628.rmeta \
 ##   --mount=from=out-abefcc22b095b628,dst=/tmp/clis-dbcc_2-2-1/release/deps/libcfg_if-abefcc22b095b628.rlib,source=/libcfg_if-abefcc22b095b628.rlib \
+##   --mount=from=out-682e69746a16e0c7,dst=/tmp/clis-dbcc_2-2-1/release/deps/libpretty_env_logger-682e69746a16e0c7.rmeta,source=/libpretty_env_logger-682e69746a16e0c7.rmeta \
 ##   --mount=from=out-682e69746a16e0c7,dst=/tmp/clis-dbcc_2-2-1/release/deps/libpretty_env_logger-682e69746a16e0c7.rlib,source=/libpretty_env_logger-682e69746a16e0c7.rlib \
+##   --mount=from=out-94c0a2bd3b1451c8,dst=/tmp/clis-dbcc_2-2-1/release/deps/libenv_logger-94c0a2bd3b1451c8.rmeta,source=/libenv_logger-94c0a2bd3b1451c8.rmeta \
 ##   --mount=from=out-94c0a2bd3b1451c8,dst=/tmp/clis-dbcc_2-2-1/release/deps/libenv_logger-94c0a2bd3b1451c8.rlib,source=/libenv_logger-94c0a2bd3b1451c8.rlib \
+##   --mount=from=out-737035cdf92a82de,dst=/tmp/clis-dbcc_2-2-1/release/deps/libatty-737035cdf92a82de.rmeta,source=/libatty-737035cdf92a82de.rmeta \
 ##   --mount=from=out-737035cdf92a82de,dst=/tmp/clis-dbcc_2-2-1/release/deps/libatty-737035cdf92a82de.rlib,source=/libatty-737035cdf92a82de.rlib \
+##   --mount=from=out-087afb0c1713a9a6,dst=/tmp/clis-dbcc_2-2-1/release/deps/liblibc-087afb0c1713a9a6.rmeta,source=/liblibc-087afb0c1713a9a6.rmeta \
 ##   --mount=from=out-087afb0c1713a9a6,dst=/tmp/clis-dbcc_2-2-1/release/deps/liblibc-087afb0c1713a9a6.rlib,source=/liblibc-087afb0c1713a9a6.rlib \
+##   --mount=from=out-3e3dde196d8efa81,dst=/tmp/clis-dbcc_2-2-1/release/deps/libhumantime-3e3dde196d8efa81.rmeta,source=/libhumantime-3e3dde196d8efa81.rmeta \
 ##   --mount=from=out-3e3dde196d8efa81,dst=/tmp/clis-dbcc_2-2-1/release/deps/libhumantime-3e3dde196d8efa81.rlib,source=/libhumantime-3e3dde196d8efa81.rlib \
+##   --mount=from=out-bd3d4e33b0f59f1b,dst=/tmp/clis-dbcc_2-2-1/release/deps/libquick_error-bd3d4e33b0f59f1b.rmeta,source=/libquick_error-bd3d4e33b0f59f1b.rmeta \
 ##   --mount=from=out-bd3d4e33b0f59f1b,dst=/tmp/clis-dbcc_2-2-1/release/deps/libquick_error-bd3d4e33b0f59f1b.rlib,source=/libquick_error-bd3d4e33b0f59f1b.rlib \
+##   --mount=from=out-5ba8c6f49cc2732d,dst=/tmp/clis-dbcc_2-2-1/release/deps/libregex-5ba8c6f49cc2732d.rmeta,source=/libregex-5ba8c6f49cc2732d.rmeta \
 ##   --mount=from=out-5ba8c6f49cc2732d,dst=/tmp/clis-dbcc_2-2-1/release/deps/libregex-5ba8c6f49cc2732d.rlib,source=/libregex-5ba8c6f49cc2732d.rlib \
+##   --mount=from=out-014f7ab42daca0d7,dst=/tmp/clis-dbcc_2-2-1/release/deps/libaho_corasick-014f7ab42daca0d7.rmeta,source=/libaho_corasick-014f7ab42daca0d7.rmeta \
 ##   --mount=from=out-014f7ab42daca0d7,dst=/tmp/clis-dbcc_2-2-1/release/deps/libaho_corasick-014f7ab42daca0d7.rlib,source=/libaho_corasick-014f7ab42daca0d7.rlib \
+##   --mount=from=out-eec8efd7d7dadd3c,dst=/tmp/clis-dbcc_2-2-1/release/deps/libregex_syntax-eec8efd7d7dadd3c.rmeta,source=/libregex_syntax-eec8efd7d7dadd3c.rmeta \
 ##   --mount=from=out-eec8efd7d7dadd3c,dst=/tmp/clis-dbcc_2-2-1/release/deps/libregex_syntax-eec8efd7d7dadd3c.rlib,source=/libregex_syntax-eec8efd7d7dadd3c.rlib \
+##   --mount=from=out-3ace2abd55187163,dst=/tmp/clis-dbcc_2-2-1/release/deps/libthread_local-3ace2abd55187163.rmeta,source=/libthread_local-3ace2abd55187163.rmeta \
 ##   --mount=from=out-3ace2abd55187163,dst=/tmp/clis-dbcc_2-2-1/release/deps/libthread_local-3ace2abd55187163.rlib,source=/libthread_local-3ace2abd55187163.rlib \
+##   --mount=from=out-a79af56de238e2b5,dst=/tmp/clis-dbcc_2-2-1/release/deps/liblazy_static-a79af56de238e2b5.rmeta,source=/liblazy_static-a79af56de238e2b5.rmeta \
 ##   --mount=from=out-a79af56de238e2b5,dst=/tmp/clis-dbcc_2-2-1/release/deps/liblazy_static-a79af56de238e2b5.rlib,source=/liblazy_static-a79af56de238e2b5.rlib \
+##   --mount=from=out-3d5a70ee74f70e2b,dst=/tmp/clis-dbcc_2-2-1/release/deps/libtermcolor-3d5a70ee74f70e2b.rmeta,source=/libtermcolor-3d5a70ee74f70e2b.rmeta \
 ##   --mount=from=out-3d5a70ee74f70e2b,dst=/tmp/clis-dbcc_2-2-1/release/deps/libtermcolor-3d5a70ee74f70e2b.rlib,source=/libtermcolor-3d5a70ee74f70e2b.rlib \
+##   --mount=from=out-5eebdd82bed7d9de,dst=/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-5eebdd82bed7d9de.rmeta,source=/libproc_macro2-5eebdd82bed7d9de.rmeta \
 ##   --mount=from=out-5eebdd82bed7d9de,dst=/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-5eebdd82bed7d9de.rlib,source=/libproc_macro2-5eebdd82bed7d9de.rlib \
+##   --mount=from=out-f585407da4c0bf6f,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-f585407da4c0bf6f.rmeta,source=/libunicode_xid-f585407da4c0bf6f.rmeta \
 ##   --mount=from=out-f585407da4c0bf6f,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-f585407da4c0bf6f.rlib,source=/libunicode_xid-f585407da4c0bf6f.rlib \
+##   --mount=from=out-0298ff41e604ba82,dst=/tmp/clis-dbcc_2-2-1/release/deps/libquote-0298ff41e604ba82.rmeta,source=/libquote-0298ff41e604ba82.rmeta \
 ##   --mount=from=out-0298ff41e604ba82,dst=/tmp/clis-dbcc_2-2-1/release/deps/libquote-0298ff41e604ba82.rlib,source=/libquote-0298ff41e604ba82.rlib \
+##   --mount=from=out-7d72679ab99cdbe3,dst=/tmp/clis-dbcc_2-2-1/release/deps/libsocketcan-7d72679ab99cdbe3.rmeta,source=/libsocketcan-7d72679ab99cdbe3.rmeta \
 ##   --mount=from=out-7d72679ab99cdbe3,dst=/tmp/clis-dbcc_2-2-1/release/deps/libsocketcan-7d72679ab99cdbe3.rlib,source=/libsocketcan-7d72679ab99cdbe3.rlib \
+##   --mount=from=out-f065076cf799d91a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libhex-f065076cf799d91a.rmeta,source=/libhex-f065076cf799d91a.rmeta \
 ##   --mount=from=out-f065076cf799d91a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libhex-f065076cf799d91a.rlib,source=/libhex-f065076cf799d91a.rlib \
+##   --mount=from=out-2505039b047dad1a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libitertools-2505039b047dad1a.rmeta,source=/libitertools-2505039b047dad1a.rmeta \
 ##   --mount=from=out-2505039b047dad1a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libitertools-2505039b047dad1a.rlib,source=/libitertools-2505039b047dad1a.rlib \
+##   --mount=from=out-4ee318c191cb8959,dst=/tmp/clis-dbcc_2-2-1/release/deps/libnix-4ee318c191cb8959.rmeta,source=/libnix-4ee318c191cb8959.rmeta \
 ##   --mount=from=out-4ee318c191cb8959,dst=/tmp/clis-dbcc_2-2-1/release/deps/libnix-4ee318c191cb8959.rlib,source=/libnix-4ee318c191cb8959.rlib \
+##   --mount=from=out-e976848f96abbbd4,dst=/tmp/clis-dbcc_2-2-1/release/deps/libbitflags-e976848f96abbbd4.rmeta,source=/libbitflags-e976848f96abbbd4.rmeta \
 ##   --mount=from=out-e976848f96abbbd4,dst=/tmp/clis-dbcc_2-2-1/release/deps/libbitflags-e976848f96abbbd4.rlib,source=/libbitflags-e976848f96abbbd4.rlib \
+##   --mount=from=out-35b125c45c1cafb3,dst=/tmp/clis-dbcc_2-2-1/release/deps/libtry_from-35b125c45c1cafb3.rmeta,source=/libtry_from-35b125c45c1cafb3.rmeta \
 ##   --mount=from=out-35b125c45c1cafb3,dst=/tmp/clis-dbcc_2-2-1/release/deps/libtry_from-35b125c45c1cafb3.rlib,source=/libtry_from-35b125c45c1cafb3.rlib \
+##   --mount=from=out-05c5d104c65b93b5,dst=/tmp/clis-dbcc_2-2-1/release/deps/libstructopt-05c5d104c65b93b5.rmeta,source=/libstructopt-05c5d104c65b93b5.rmeta \
 ##   --mount=from=out-05c5d104c65b93b5,dst=/tmp/clis-dbcc_2-2-1/release/deps/libstructopt-05c5d104c65b93b5.rlib,source=/libstructopt-05c5d104c65b93b5.rlib \
+##   --mount=from=out-5a839c872643e159,dst=/tmp/clis-dbcc_2-2-1/release/deps/libclap-5a839c872643e159.rmeta,source=/libclap-5a839c872643e159.rmeta \
 ##   --mount=from=out-5a839c872643e159,dst=/tmp/clis-dbcc_2-2-1/release/deps/libclap-5a839c872643e159.rlib,source=/libclap-5a839c872643e159.rlib \
+##   --mount=from=out-320ef4b8ee2e57f9,dst=/tmp/clis-dbcc_2-2-1/release/deps/libansi_term-320ef4b8ee2e57f9.rmeta,source=/libansi_term-320ef4b8ee2e57f9.rmeta \
 ##   --mount=from=out-320ef4b8ee2e57f9,dst=/tmp/clis-dbcc_2-2-1/release/deps/libansi_term-320ef4b8ee2e57f9.rlib,source=/libansi_term-320ef4b8ee2e57f9.rlib \
+##   --mount=from=out-d19718ebe5a0c815,dst=/tmp/clis-dbcc_2-2-1/release/deps/libbitflags-d19718ebe5a0c815.rmeta,source=/libbitflags-d19718ebe5a0c815.rmeta \
 ##   --mount=from=out-d19718ebe5a0c815,dst=/tmp/clis-dbcc_2-2-1/release/deps/libbitflags-d19718ebe5a0c815.rlib,source=/libbitflags-d19718ebe5a0c815.rlib \
+##   --mount=from=out-ada2690f4d94d615,dst=/tmp/clis-dbcc_2-2-1/release/deps/libstrsim-ada2690f4d94d615.rmeta,source=/libstrsim-ada2690f4d94d615.rmeta \
 ##   --mount=from=out-ada2690f4d94d615,dst=/tmp/clis-dbcc_2-2-1/release/deps/libstrsim-ada2690f4d94d615.rlib,source=/libstrsim-ada2690f4d94d615.rlib \
+##   --mount=from=out-b7e82f41d8b26a14,dst=/tmp/clis-dbcc_2-2-1/release/deps/libtextwrap-b7e82f41d8b26a14.rmeta,source=/libtextwrap-b7e82f41d8b26a14.rmeta \
 ##   --mount=from=out-b7e82f41d8b26a14,dst=/tmp/clis-dbcc_2-2-1/release/deps/libtextwrap-b7e82f41d8b26a14.rlib,source=/libtextwrap-b7e82f41d8b26a14.rlib \
+##   --mount=from=out-e55c633902343b3a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_width-e55c633902343b3a.rmeta,source=/libunicode_width-e55c633902343b3a.rmeta \
 ##   --mount=from=out-e55c633902343b3a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_width-e55c633902343b3a.rlib,source=/libunicode_width-e55c633902343b3a.rlib \
+##   --mount=from=out-3fc8ab5befc6e8f4,dst=/tmp/clis-dbcc_2-2-1/release/deps/libvec_map-3fc8ab5befc6e8f4.rmeta,source=/libvec_map-3fc8ab5befc6e8f4.rmeta \
 ##   --mount=from=out-3fc8ab5befc6e8f4,dst=/tmp/clis-dbcc_2-2-1/release/deps/libvec_map-3fc8ab5befc6e8f4.rlib,source=/libvec_map-3fc8ab5befc6e8f4.rlib \
 ##   --mount=from=out-0187f3c8576aef3b,dst=/tmp/clis-dbcc_2-2-1/release/deps/libstructopt_derive-0187f3c8576aef3b.so,source=/libstructopt_derive-0187f3c8576aef3b.so \
+##   --mount=from=out-41892b3573d1a97c,dst=/tmp/clis-dbcc_2-2-1/release/deps/libheck-41892b3573d1a97c.rmeta,source=/libheck-41892b3573d1a97c.rmeta \
 ##   --mount=from=out-41892b3573d1a97c,dst=/tmp/clis-dbcc_2-2-1/release/deps/libheck-41892b3573d1a97c.rlib,source=/libheck-41892b3573d1a97c.rlib \
+##   --mount=from=out-0711d9c6f9e71290,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_segmentation-0711d9c6f9e71290.rmeta,source=/libunicode_segmentation-0711d9c6f9e71290.rmeta \
 ##   --mount=from=out-0711d9c6f9e71290,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_segmentation-0711d9c6f9e71290.rlib,source=/libunicode_segmentation-0711d9c6f9e71290.rlib \
+##   --mount=from=out-8d3142ab9efe4ea8,dst=/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro_error-8d3142ab9efe4ea8.rmeta,source=/libproc_macro_error-8d3142ab9efe4ea8.rmeta \
 ##   --mount=from=out-8d3142ab9efe4ea8,dst=/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro_error-8d3142ab9efe4ea8.rlib,source=/libproc_macro_error-8d3142ab9efe4ea8.rlib \
 ##   --mount=from=out-5abbb4d0b3e50e85,dst=/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro_error_attr-5abbb4d0b3e50e85.so,source=/libproc_macro_error_attr-5abbb4d0b3e50e85.so \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \

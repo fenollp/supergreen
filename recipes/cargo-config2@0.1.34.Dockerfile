@@ -413,6 +413,7 @@ WORKDIR /tmp/clis-cargo-config2_0-1-34/release/deps
 RUN \
   --mount=from=cratesio-proc-macro2-1.0.95,source=/proc-macro2-1.0.95,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.95 \
   --mount=from=out-02b0d04ef026a7b6,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libunicode_ident-02b0d04ef026a7b6.rmeta,source=/libunicode_ident-02b0d04ef026a7b6.rmeta \
+  --mount=from=out-02b0d04ef026a7b6,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libunicode_ident-02b0d04ef026a7b6.rlib,source=/libunicode_ident-02b0d04ef026a7b6.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="proc_macro2" \
@@ -443,7 +444,7 @@ COPY --from=dep-l-proc-macro2-1.0.95-da36b031605c1ddc /tmp/clis-cargo-config2_0-
 
 ## this = "da36b031605c1ddc"
 ## deps = ["02b0d04ef026a7b6"]
-## short_externs = ["unicode_ident-02b0d04ef026a7b6"]
+## short_externs = ["02b0d04ef026a7b6"]
 ## writes = [
 ##     "deps/proc_macro2-da36b031605c1ddc.d",
 ##     "deps/libproc_macro2-da36b031605c1ddc.rmeta",
@@ -454,6 +455,16 @@ COPY --from=dep-l-proc-macro2-1.0.95-da36b031605c1ddc /tmp/clis-cargo-config2_0-
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-cargo-config2_0-1-34/release/deps/libproc_macro2-da36b031605c1ddc.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-cargo-config2_0-1-34/release/deps/libproc_macro2-da36b031605c1ddc.rlib","emit":"link"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-02b0d04ef026a7b6"
+## src = "/libunicode_ident-02b0d04ef026a7b6.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libunicode_ident-02b0d04ef026a7b6.rmeta"
+## 
+## [[mounts]]
+## from = "out-02b0d04ef026a7b6"
+## src = "/libunicode_ident-02b0d04ef026a7b6.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libunicode_ident-02b0d04ef026a7b6.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -475,6 +486,7 @@ COPY --from=dep-l-proc-macro2-1.0.95-da36b031605c1ddc /tmp/clis-cargo-config2_0-
 ## RUN \
 ##   --mount=from=cratesio-proc-macro2-1.0.95,source=/proc-macro2-1.0.95,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.95 \
 ##   --mount=from=out-02b0d04ef026a7b6,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libunicode_ident-02b0d04ef026a7b6.rmeta,source=/libunicode_ident-02b0d04ef026a7b6.rmeta \
+##   --mount=from=out-02b0d04ef026a7b6,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libunicode_ident-02b0d04ef026a7b6.rlib,source=/libunicode_ident-02b0d04ef026a7b6.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="proc_macro2" \
@@ -516,7 +528,9 @@ WORKDIR /tmp/clis-cargo-config2_0-1-34/release/deps
 RUN \
   --mount=from=cratesio-quote-1.0.40,source=/quote-1.0.40,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.40 \
   --mount=from=out-da36b031605c1ddc,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libproc_macro2-da36b031605c1ddc.rmeta,source=/libproc_macro2-da36b031605c1ddc.rmeta \
+  --mount=from=out-da36b031605c1ddc,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libproc_macro2-da36b031605c1ddc.rlib,source=/libproc_macro2-da36b031605c1ddc.rlib \
   --mount=from=out-02b0d04ef026a7b6,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libunicode_ident-02b0d04ef026a7b6.rmeta,source=/libunicode_ident-02b0d04ef026a7b6.rmeta \
+  --mount=from=out-02b0d04ef026a7b6,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libunicode_ident-02b0d04ef026a7b6.rlib,source=/libunicode_ident-02b0d04ef026a7b6.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="quote" \
@@ -550,8 +564,8 @@ COPY --from=dep-l-quote-1.0.40-21aeee0f329238fb /tmp/clis-cargo-config2_0-1-34/r
 ##     "02b0d04ef026a7b6",
 ## ]
 ## short_externs = [
-##     "proc_macro2-da36b031605c1ddc",
-##     "unicode_ident-02b0d04ef026a7b6",
+##     "da36b031605c1ddc",
+##     "02b0d04ef026a7b6",
 ## ]
 ## writes = [
 ##     "deps/quote-21aeee0f329238fb.d",
@@ -563,6 +577,26 @@ COPY --from=dep-l-quote-1.0.40-21aeee0f329238fb /tmp/clis-cargo-config2_0-1-34/r
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-cargo-config2_0-1-34/release/deps/libquote-21aeee0f329238fb.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-cargo-config2_0-1-34/release/deps/libquote-21aeee0f329238fb.rlib","emit":"link"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-da36b031605c1ddc"
+## src = "/libproc_macro2-da36b031605c1ddc.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libproc_macro2-da36b031605c1ddc.rmeta"
+## 
+## [[mounts]]
+## from = "out-da36b031605c1ddc"
+## src = "/libproc_macro2-da36b031605c1ddc.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libproc_macro2-da36b031605c1ddc.rlib"
+## 
+## [[mounts]]
+## from = "out-02b0d04ef026a7b6"
+## src = "/libunicode_ident-02b0d04ef026a7b6.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libunicode_ident-02b0d04ef026a7b6.rmeta"
+## 
+## [[mounts]]
+## from = "out-02b0d04ef026a7b6"
+## src = "/libunicode_ident-02b0d04ef026a7b6.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libunicode_ident-02b0d04ef026a7b6.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -584,7 +618,9 @@ COPY --from=dep-l-quote-1.0.40-21aeee0f329238fb /tmp/clis-cargo-config2_0-1-34/r
 ## RUN \
 ##   --mount=from=cratesio-quote-1.0.40,source=/quote-1.0.40,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.40 \
 ##   --mount=from=out-da36b031605c1ddc,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libproc_macro2-da36b031605c1ddc.rmeta,source=/libproc_macro2-da36b031605c1ddc.rmeta \
+##   --mount=from=out-da36b031605c1ddc,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libproc_macro2-da36b031605c1ddc.rlib,source=/libproc_macro2-da36b031605c1ddc.rlib \
 ##   --mount=from=out-02b0d04ef026a7b6,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libunicode_ident-02b0d04ef026a7b6.rmeta,source=/libunicode_ident-02b0d04ef026a7b6.rmeta \
+##   --mount=from=out-02b0d04ef026a7b6,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libunicode_ident-02b0d04ef026a7b6.rlib,source=/libunicode_ident-02b0d04ef026a7b6.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="quote" \
@@ -625,8 +661,11 @@ WORKDIR /tmp/clis-cargo-config2_0-1-34/release/deps
 RUN \
   --mount=from=cratesio-syn-2.0.104,source=/syn-2.0.104,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/syn-2.0.104 \
   --mount=from=out-da36b031605c1ddc,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libproc_macro2-da36b031605c1ddc.rmeta,source=/libproc_macro2-da36b031605c1ddc.rmeta \
+  --mount=from=out-da36b031605c1ddc,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libproc_macro2-da36b031605c1ddc.rlib,source=/libproc_macro2-da36b031605c1ddc.rlib \
   --mount=from=out-02b0d04ef026a7b6,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libunicode_ident-02b0d04ef026a7b6.rmeta,source=/libunicode_ident-02b0d04ef026a7b6.rmeta \
+  --mount=from=out-02b0d04ef026a7b6,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libunicode_ident-02b0d04ef026a7b6.rlib,source=/libunicode_ident-02b0d04ef026a7b6.rlib \
   --mount=from=out-21aeee0f329238fb,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libquote-21aeee0f329238fb.rmeta,source=/libquote-21aeee0f329238fb.rmeta \
+  --mount=from=out-21aeee0f329238fb,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libquote-21aeee0f329238fb.rlib,source=/libquote-21aeee0f329238fb.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="syn" \
@@ -661,9 +700,9 @@ COPY --from=dep-l-syn-2.0.104-5571b1fa61474ffa /tmp/clis-cargo-config2_0-1-34/re
 ##     "21aeee0f329238fb",
 ## ]
 ## short_externs = [
-##     "proc_macro2-da36b031605c1ddc",
-##     "unicode_ident-02b0d04ef026a7b6",
-##     "quote-21aeee0f329238fb",
+##     "da36b031605c1ddc",
+##     "02b0d04ef026a7b6",
+##     "21aeee0f329238fb",
 ## ]
 ## writes = [
 ##     "deps/syn-5571b1fa61474ffa.d",
@@ -675,6 +714,36 @@ COPY --from=dep-l-syn-2.0.104-5571b1fa61474ffa /tmp/clis-cargo-config2_0-1-34/re
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-cargo-config2_0-1-34/release/deps/libsyn-5571b1fa61474ffa.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-cargo-config2_0-1-34/release/deps/libsyn-5571b1fa61474ffa.rlib","emit":"link"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-da36b031605c1ddc"
+## src = "/libproc_macro2-da36b031605c1ddc.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libproc_macro2-da36b031605c1ddc.rmeta"
+## 
+## [[mounts]]
+## from = "out-da36b031605c1ddc"
+## src = "/libproc_macro2-da36b031605c1ddc.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libproc_macro2-da36b031605c1ddc.rlib"
+## 
+## [[mounts]]
+## from = "out-02b0d04ef026a7b6"
+## src = "/libunicode_ident-02b0d04ef026a7b6.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libunicode_ident-02b0d04ef026a7b6.rmeta"
+## 
+## [[mounts]]
+## from = "out-02b0d04ef026a7b6"
+## src = "/libunicode_ident-02b0d04ef026a7b6.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libunicode_ident-02b0d04ef026a7b6.rlib"
+## 
+## [[mounts]]
+## from = "out-21aeee0f329238fb"
+## src = "/libquote-21aeee0f329238fb.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libquote-21aeee0f329238fb.rmeta"
+## 
+## [[mounts]]
+## from = "out-21aeee0f329238fb"
+## src = "/libquote-21aeee0f329238fb.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libquote-21aeee0f329238fb.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -696,8 +765,11 @@ COPY --from=dep-l-syn-2.0.104-5571b1fa61474ffa /tmp/clis-cargo-config2_0-1-34/re
 ## RUN \
 ##   --mount=from=cratesio-syn-2.0.104,source=/syn-2.0.104,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/syn-2.0.104 \
 ##   --mount=from=out-da36b031605c1ddc,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libproc_macro2-da36b031605c1ddc.rmeta,source=/libproc_macro2-da36b031605c1ddc.rmeta \
+##   --mount=from=out-da36b031605c1ddc,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libproc_macro2-da36b031605c1ddc.rlib,source=/libproc_macro2-da36b031605c1ddc.rlib \
 ##   --mount=from=out-02b0d04ef026a7b6,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libunicode_ident-02b0d04ef026a7b6.rmeta,source=/libunicode_ident-02b0d04ef026a7b6.rmeta \
+##   --mount=from=out-02b0d04ef026a7b6,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libunicode_ident-02b0d04ef026a7b6.rlib,source=/libunicode_ident-02b0d04ef026a7b6.rlib \
 ##   --mount=from=out-21aeee0f329238fb,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libquote-21aeee0f329238fb.rmeta,source=/libquote-21aeee0f329238fb.rmeta \
+##   --mount=from=out-21aeee0f329238fb,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libquote-21aeee0f329238fb.rlib,source=/libquote-21aeee0f329238fb.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="syn" \
@@ -737,9 +809,13 @@ SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 WORKDIR /tmp/clis-cargo-config2_0-1-34/release/deps
 RUN \
   --mount=from=cratesio-serde_derive-1.0.219,source=/serde_derive-1.0.219,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_derive-1.0.219 \
+  --mount=from=out-da36b031605c1ddc,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libproc_macro2-da36b031605c1ddc.rmeta,source=/libproc_macro2-da36b031605c1ddc.rmeta \
   --mount=from=out-da36b031605c1ddc,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libproc_macro2-da36b031605c1ddc.rlib,source=/libproc_macro2-da36b031605c1ddc.rlib \
+  --mount=from=out-02b0d04ef026a7b6,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libunicode_ident-02b0d04ef026a7b6.rmeta,source=/libunicode_ident-02b0d04ef026a7b6.rmeta \
   --mount=from=out-02b0d04ef026a7b6,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libunicode_ident-02b0d04ef026a7b6.rlib,source=/libunicode_ident-02b0d04ef026a7b6.rlib \
+  --mount=from=out-21aeee0f329238fb,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libquote-21aeee0f329238fb.rmeta,source=/libquote-21aeee0f329238fb.rmeta \
   --mount=from=out-21aeee0f329238fb,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libquote-21aeee0f329238fb.rlib,source=/libquote-21aeee0f329238fb.rlib \
+  --mount=from=out-5571b1fa61474ffa,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libsyn-5571b1fa61474ffa.rmeta,source=/libsyn-5571b1fa61474ffa.rmeta \
   --mount=from=out-5571b1fa61474ffa,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libsyn-5571b1fa61474ffa.rlib,source=/libsyn-5571b1fa61474ffa.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
@@ -776,10 +852,10 @@ COPY --from=dep-p-serde_derive-1.0.219-a51e2455af527849 /tmp/clis-cargo-config2_
 ##     "5571b1fa61474ffa",
 ## ]
 ## short_externs = [
-##     "proc_macro2-da36b031605c1ddc",
-##     "unicode_ident-02b0d04ef026a7b6",
-##     "quote-21aeee0f329238fb",
-##     "syn-5571b1fa61474ffa",
+##     "da36b031605c1ddc",
+##     "02b0d04ef026a7b6",
+##     "21aeee0f329238fb",
+##     "5571b1fa61474ffa",
 ## ]
 ## is_proc_macro = true
 ## writes = [
@@ -790,6 +866,46 @@ COPY --from=dep-p-serde_derive-1.0.219-a51e2455af527849 /tmp/clis-cargo-config2_
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-cargo-config2_0-1-34/release/deps/serde_derive-a51e2455af527849.d","emit":"dep-info"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-cargo-config2_0-1-34/release/deps/libserde_derive-a51e2455af527849.so","emit":"link"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-da36b031605c1ddc"
+## src = "/libproc_macro2-da36b031605c1ddc.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libproc_macro2-da36b031605c1ddc.rmeta"
+## 
+## [[mounts]]
+## from = "out-da36b031605c1ddc"
+## src = "/libproc_macro2-da36b031605c1ddc.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libproc_macro2-da36b031605c1ddc.rlib"
+## 
+## [[mounts]]
+## from = "out-02b0d04ef026a7b6"
+## src = "/libunicode_ident-02b0d04ef026a7b6.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libunicode_ident-02b0d04ef026a7b6.rmeta"
+## 
+## [[mounts]]
+## from = "out-02b0d04ef026a7b6"
+## src = "/libunicode_ident-02b0d04ef026a7b6.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libunicode_ident-02b0d04ef026a7b6.rlib"
+## 
+## [[mounts]]
+## from = "out-21aeee0f329238fb"
+## src = "/libquote-21aeee0f329238fb.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libquote-21aeee0f329238fb.rmeta"
+## 
+## [[mounts]]
+## from = "out-21aeee0f329238fb"
+## src = "/libquote-21aeee0f329238fb.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libquote-21aeee0f329238fb.rlib"
+## 
+## [[mounts]]
+## from = "out-5571b1fa61474ffa"
+## src = "/libsyn-5571b1fa61474ffa.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libsyn-5571b1fa61474ffa.rmeta"
+## 
+## [[mounts]]
+## from = "out-5571b1fa61474ffa"
+## src = "/libsyn-5571b1fa61474ffa.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libsyn-5571b1fa61474ffa.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -810,9 +926,13 @@ COPY --from=dep-p-serde_derive-1.0.219-a51e2455af527849 /tmp/clis-cargo-config2_
 ## WORKDIR /tmp/clis-cargo-config2_0-1-34/release/deps
 ## RUN \
 ##   --mount=from=cratesio-serde_derive-1.0.219,source=/serde_derive-1.0.219,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_derive-1.0.219 \
+##   --mount=from=out-da36b031605c1ddc,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libproc_macro2-da36b031605c1ddc.rmeta,source=/libproc_macro2-da36b031605c1ddc.rmeta \
 ##   --mount=from=out-da36b031605c1ddc,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libproc_macro2-da36b031605c1ddc.rlib,source=/libproc_macro2-da36b031605c1ddc.rlib \
+##   --mount=from=out-02b0d04ef026a7b6,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libunicode_ident-02b0d04ef026a7b6.rmeta,source=/libunicode_ident-02b0d04ef026a7b6.rmeta \
 ##   --mount=from=out-02b0d04ef026a7b6,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libunicode_ident-02b0d04ef026a7b6.rlib,source=/libunicode_ident-02b0d04ef026a7b6.rlib \
+##   --mount=from=out-21aeee0f329238fb,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libquote-21aeee0f329238fb.rmeta,source=/libquote-21aeee0f329238fb.rmeta \
 ##   --mount=from=out-21aeee0f329238fb,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libquote-21aeee0f329238fb.rlib,source=/libquote-21aeee0f329238fb.rlib \
+##   --mount=from=out-5571b1fa61474ffa,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libsyn-5571b1fa61474ffa.rmeta,source=/libsyn-5571b1fa61474ffa.rmeta \
 ##   --mount=from=out-5571b1fa61474ffa,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libsyn-5571b1fa61474ffa.rlib,source=/libsyn-5571b1fa61474ffa.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
@@ -1048,7 +1168,9 @@ WORKDIR /tmp/clis-cargo-config2_0-1-34/release/deps
 RUN \
   --mount=from=cratesio-indexmap-2.9.0,source=/indexmap-2.9.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/indexmap-2.9.0 \
   --mount=from=out-92df6cc0b9ce3dcd,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libequivalent-92df6cc0b9ce3dcd.rmeta,source=/libequivalent-92df6cc0b9ce3dcd.rmeta \
+  --mount=from=out-92df6cc0b9ce3dcd,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libequivalent-92df6cc0b9ce3dcd.rlib,source=/libequivalent-92df6cc0b9ce3dcd.rlib \
   --mount=from=out-e384bcd48d03db95,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libhashbrown-e384bcd48d03db95.rmeta,source=/libhashbrown-e384bcd48d03db95.rmeta \
+  --mount=from=out-e384bcd48d03db95,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libhashbrown-e384bcd48d03db95.rlib,source=/libhashbrown-e384bcd48d03db95.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="indexmap" \
@@ -1082,8 +1204,8 @@ COPY --from=dep-l-indexmap-2.9.0-657f65f0f8918814 /tmp/clis-cargo-config2_0-1-34
 ##     "e384bcd48d03db95",
 ## ]
 ## short_externs = [
-##     "equivalent-92df6cc0b9ce3dcd",
-##     "hashbrown-e384bcd48d03db95",
+##     "92df6cc0b9ce3dcd",
+##     "e384bcd48d03db95",
 ## ]
 ## writes = [
 ##     "deps/indexmap-657f65f0f8918814.d",
@@ -1095,6 +1217,26 @@ COPY --from=dep-l-indexmap-2.9.0-657f65f0f8918814 /tmp/clis-cargo-config2_0-1-34
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-cargo-config2_0-1-34/release/deps/libindexmap-657f65f0f8918814.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-cargo-config2_0-1-34/release/deps/libindexmap-657f65f0f8918814.rlib","emit":"link"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-92df6cc0b9ce3dcd"
+## src = "/libequivalent-92df6cc0b9ce3dcd.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libequivalent-92df6cc0b9ce3dcd.rmeta"
+## 
+## [[mounts]]
+## from = "out-92df6cc0b9ce3dcd"
+## src = "/libequivalent-92df6cc0b9ce3dcd.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libequivalent-92df6cc0b9ce3dcd.rlib"
+## 
+## [[mounts]]
+## from = "out-e384bcd48d03db95"
+## src = "/libhashbrown-e384bcd48d03db95.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libhashbrown-e384bcd48d03db95.rmeta"
+## 
+## [[mounts]]
+## from = "out-e384bcd48d03db95"
+## src = "/libhashbrown-e384bcd48d03db95.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libhashbrown-e384bcd48d03db95.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -1116,7 +1258,9 @@ COPY --from=dep-l-indexmap-2.9.0-657f65f0f8918814 /tmp/clis-cargo-config2_0-1-34
 ## RUN \
 ##   --mount=from=cratesio-indexmap-2.9.0,source=/indexmap-2.9.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/indexmap-2.9.0 \
 ##   --mount=from=out-92df6cc0b9ce3dcd,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libequivalent-92df6cc0b9ce3dcd.rmeta,source=/libequivalent-92df6cc0b9ce3dcd.rmeta \
+##   --mount=from=out-92df6cc0b9ce3dcd,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libequivalent-92df6cc0b9ce3dcd.rlib,source=/libequivalent-92df6cc0b9ce3dcd.rlib \
 ##   --mount=from=out-e384bcd48d03db95,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libhashbrown-e384bcd48d03db95.rmeta,source=/libhashbrown-e384bcd48d03db95.rmeta \
+##   --mount=from=out-e384bcd48d03db95,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libhashbrown-e384bcd48d03db95.rlib,source=/libhashbrown-e384bcd48d03db95.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="indexmap" \
@@ -1157,6 +1301,7 @@ WORKDIR /tmp/clis-cargo-config2_0-1-34/release/deps
 RUN \
   --mount=from=cratesio-serde_spanned-0.6.9,source=/serde_spanned-0.6.9,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_spanned-0.6.9 \
   --mount=from=out-b6c6cf1c11688574,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libserde-b6c6cf1c11688574.rmeta,source=/libserde-b6c6cf1c11688574.rmeta \
+  --mount=from=out-b6c6cf1c11688574,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libserde-b6c6cf1c11688574.rlib,source=/libserde-b6c6cf1c11688574.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="serde_spanned" \
@@ -1186,7 +1331,7 @@ COPY --from=dep-l-serde_spanned-0.6.9-d88bc6011818f513 /tmp/clis-cargo-config2_0
 
 ## this = "d88bc6011818f513"
 ## deps = ["b6c6cf1c11688574"]
-## short_externs = ["serde-b6c6cf1c11688574"]
+## short_externs = ["b6c6cf1c11688574"]
 ## writes = [
 ##     "deps/serde_spanned-d88bc6011818f513.d",
 ##     "deps/libserde_spanned-d88bc6011818f513.rmeta",
@@ -1197,6 +1342,16 @@ COPY --from=dep-l-serde_spanned-0.6.9-d88bc6011818f513 /tmp/clis-cargo-config2_0
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-cargo-config2_0-1-34/release/deps/libserde_spanned-d88bc6011818f513.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-cargo-config2_0-1-34/release/deps/libserde_spanned-d88bc6011818f513.rlib","emit":"link"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-b6c6cf1c11688574"
+## src = "/libserde-b6c6cf1c11688574.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libserde-b6c6cf1c11688574.rmeta"
+## 
+## [[mounts]]
+## from = "out-b6c6cf1c11688574"
+## src = "/libserde-b6c6cf1c11688574.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libserde-b6c6cf1c11688574.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -1218,6 +1373,7 @@ COPY --from=dep-l-serde_spanned-0.6.9-d88bc6011818f513 /tmp/clis-cargo-config2_0
 ## RUN \
 ##   --mount=from=cratesio-serde_spanned-0.6.9,source=/serde_spanned-0.6.9,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_spanned-0.6.9 \
 ##   --mount=from=out-b6c6cf1c11688574,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libserde-b6c6cf1c11688574.rmeta,source=/libserde-b6c6cf1c11688574.rmeta \
+##   --mount=from=out-b6c6cf1c11688574,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libserde-b6c6cf1c11688574.rlib,source=/libserde-b6c6cf1c11688574.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="serde_spanned" \
@@ -1258,6 +1414,7 @@ WORKDIR /tmp/clis-cargo-config2_0-1-34/release/deps
 RUN \
   --mount=from=cratesio-toml_datetime-0.6.11,source=/toml_datetime-0.6.11,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/toml_datetime-0.6.11 \
   --mount=from=out-b6c6cf1c11688574,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libserde-b6c6cf1c11688574.rmeta,source=/libserde-b6c6cf1c11688574.rmeta \
+  --mount=from=out-b6c6cf1c11688574,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libserde-b6c6cf1c11688574.rlib,source=/libserde-b6c6cf1c11688574.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="toml_datetime" \
@@ -1287,7 +1444,7 @@ COPY --from=dep-l-toml_datetime-0.6.11-23be505440c57a38 /tmp/clis-cargo-config2_
 
 ## this = "23be505440c57a38"
 ## deps = ["b6c6cf1c11688574"]
-## short_externs = ["serde-b6c6cf1c11688574"]
+## short_externs = ["b6c6cf1c11688574"]
 ## writes = [
 ##     "deps/toml_datetime-23be505440c57a38.d",
 ##     "deps/libtoml_datetime-23be505440c57a38.rmeta",
@@ -1298,6 +1455,16 @@ COPY --from=dep-l-toml_datetime-0.6.11-23be505440c57a38 /tmp/clis-cargo-config2_
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-cargo-config2_0-1-34/release/deps/libtoml_datetime-23be505440c57a38.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-cargo-config2_0-1-34/release/deps/libtoml_datetime-23be505440c57a38.rlib","emit":"link"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-b6c6cf1c11688574"
+## src = "/libserde-b6c6cf1c11688574.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libserde-b6c6cf1c11688574.rmeta"
+## 
+## [[mounts]]
+## from = "out-b6c6cf1c11688574"
+## src = "/libserde-b6c6cf1c11688574.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libserde-b6c6cf1c11688574.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -1319,6 +1486,7 @@ COPY --from=dep-l-toml_datetime-0.6.11-23be505440c57a38 /tmp/clis-cargo-config2_
 ## RUN \
 ##   --mount=from=cratesio-toml_datetime-0.6.11,source=/toml_datetime-0.6.11,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/toml_datetime-0.6.11 \
 ##   --mount=from=out-b6c6cf1c11688574,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libserde-b6c6cf1c11688574.rmeta,source=/libserde-b6c6cf1c11688574.rmeta \
+##   --mount=from=out-b6c6cf1c11688574,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libserde-b6c6cf1c11688574.rlib,source=/libserde-b6c6cf1c11688574.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="toml_datetime" \
@@ -1553,13 +1721,21 @@ WORKDIR /tmp/clis-cargo-config2_0-1-34/release/deps
 RUN \
   --mount=from=cratesio-toml_edit-0.22.27,source=/toml_edit-0.22.27,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/toml_edit-0.22.27 \
   --mount=from=out-657f65f0f8918814,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libindexmap-657f65f0f8918814.rmeta,source=/libindexmap-657f65f0f8918814.rmeta \
+  --mount=from=out-657f65f0f8918814,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libindexmap-657f65f0f8918814.rlib,source=/libindexmap-657f65f0f8918814.rlib \
   --mount=from=out-92df6cc0b9ce3dcd,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libequivalent-92df6cc0b9ce3dcd.rmeta,source=/libequivalent-92df6cc0b9ce3dcd.rmeta \
+  --mount=from=out-92df6cc0b9ce3dcd,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libequivalent-92df6cc0b9ce3dcd.rlib,source=/libequivalent-92df6cc0b9ce3dcd.rlib \
   --mount=from=out-e384bcd48d03db95,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libhashbrown-e384bcd48d03db95.rmeta,source=/libhashbrown-e384bcd48d03db95.rmeta \
+  --mount=from=out-e384bcd48d03db95,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libhashbrown-e384bcd48d03db95.rlib,source=/libhashbrown-e384bcd48d03db95.rlib \
   --mount=from=out-b6c6cf1c11688574,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libserde-b6c6cf1c11688574.rmeta,source=/libserde-b6c6cf1c11688574.rmeta \
+  --mount=from=out-b6c6cf1c11688574,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libserde-b6c6cf1c11688574.rlib,source=/libserde-b6c6cf1c11688574.rlib \
   --mount=from=out-d88bc6011818f513,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libserde_spanned-d88bc6011818f513.rmeta,source=/libserde_spanned-d88bc6011818f513.rmeta \
+  --mount=from=out-d88bc6011818f513,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libserde_spanned-d88bc6011818f513.rlib,source=/libserde_spanned-d88bc6011818f513.rlib \
   --mount=from=out-23be505440c57a38,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libtoml_datetime-23be505440c57a38.rmeta,source=/libtoml_datetime-23be505440c57a38.rmeta \
+  --mount=from=out-23be505440c57a38,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libtoml_datetime-23be505440c57a38.rlib,source=/libtoml_datetime-23be505440c57a38.rlib \
   --mount=from=out-9abea66ccd9c864c,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libtoml_write-9abea66ccd9c864c.rmeta,source=/libtoml_write-9abea66ccd9c864c.rmeta \
+  --mount=from=out-9abea66ccd9c864c,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libtoml_write-9abea66ccd9c864c.rlib,source=/libtoml_write-9abea66ccd9c864c.rlib \
   --mount=from=out-d5e3fa1fabb7822c,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libwinnow-d5e3fa1fabb7822c.rmeta,source=/libwinnow-d5e3fa1fabb7822c.rmeta \
+  --mount=from=out-d5e3fa1fabb7822c,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libwinnow-d5e3fa1fabb7822c.rlib,source=/libwinnow-d5e3fa1fabb7822c.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="toml_edit" \
@@ -1599,14 +1775,14 @@ COPY --from=dep-l-toml_edit-0.22.27-c1e542f0979b274a /tmp/clis-cargo-config2_0-1
 ##     "d5e3fa1fabb7822c",
 ## ]
 ## short_externs = [
-##     "indexmap-657f65f0f8918814",
-##     "equivalent-92df6cc0b9ce3dcd",
-##     "hashbrown-e384bcd48d03db95",
-##     "serde-b6c6cf1c11688574",
-##     "serde_spanned-d88bc6011818f513",
-##     "toml_datetime-23be505440c57a38",
-##     "toml_write-9abea66ccd9c864c",
-##     "winnow-d5e3fa1fabb7822c",
+##     "657f65f0f8918814",
+##     "92df6cc0b9ce3dcd",
+##     "e384bcd48d03db95",
+##     "b6c6cf1c11688574",
+##     "d88bc6011818f513",
+##     "23be505440c57a38",
+##     "9abea66ccd9c864c",
+##     "d5e3fa1fabb7822c",
 ## ]
 ## writes = [
 ##     "deps/toml_edit-c1e542f0979b274a.d",
@@ -1618,6 +1794,86 @@ COPY --from=dep-l-toml_edit-0.22.27-c1e542f0979b274a /tmp/clis-cargo-config2_0-1
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-cargo-config2_0-1-34/release/deps/libtoml_edit-c1e542f0979b274a.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-cargo-config2_0-1-34/release/deps/libtoml_edit-c1e542f0979b274a.rlib","emit":"link"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-657f65f0f8918814"
+## src = "/libindexmap-657f65f0f8918814.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libindexmap-657f65f0f8918814.rmeta"
+## 
+## [[mounts]]
+## from = "out-657f65f0f8918814"
+## src = "/libindexmap-657f65f0f8918814.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libindexmap-657f65f0f8918814.rlib"
+## 
+## [[mounts]]
+## from = "out-92df6cc0b9ce3dcd"
+## src = "/libequivalent-92df6cc0b9ce3dcd.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libequivalent-92df6cc0b9ce3dcd.rmeta"
+## 
+## [[mounts]]
+## from = "out-92df6cc0b9ce3dcd"
+## src = "/libequivalent-92df6cc0b9ce3dcd.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libequivalent-92df6cc0b9ce3dcd.rlib"
+## 
+## [[mounts]]
+## from = "out-e384bcd48d03db95"
+## src = "/libhashbrown-e384bcd48d03db95.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libhashbrown-e384bcd48d03db95.rmeta"
+## 
+## [[mounts]]
+## from = "out-e384bcd48d03db95"
+## src = "/libhashbrown-e384bcd48d03db95.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libhashbrown-e384bcd48d03db95.rlib"
+## 
+## [[mounts]]
+## from = "out-b6c6cf1c11688574"
+## src = "/libserde-b6c6cf1c11688574.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libserde-b6c6cf1c11688574.rmeta"
+## 
+## [[mounts]]
+## from = "out-b6c6cf1c11688574"
+## src = "/libserde-b6c6cf1c11688574.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libserde-b6c6cf1c11688574.rlib"
+## 
+## [[mounts]]
+## from = "out-d88bc6011818f513"
+## src = "/libserde_spanned-d88bc6011818f513.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libserde_spanned-d88bc6011818f513.rmeta"
+## 
+## [[mounts]]
+## from = "out-d88bc6011818f513"
+## src = "/libserde_spanned-d88bc6011818f513.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libserde_spanned-d88bc6011818f513.rlib"
+## 
+## [[mounts]]
+## from = "out-23be505440c57a38"
+## src = "/libtoml_datetime-23be505440c57a38.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libtoml_datetime-23be505440c57a38.rmeta"
+## 
+## [[mounts]]
+## from = "out-23be505440c57a38"
+## src = "/libtoml_datetime-23be505440c57a38.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libtoml_datetime-23be505440c57a38.rlib"
+## 
+## [[mounts]]
+## from = "out-9abea66ccd9c864c"
+## src = "/libtoml_write-9abea66ccd9c864c.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libtoml_write-9abea66ccd9c864c.rmeta"
+## 
+## [[mounts]]
+## from = "out-9abea66ccd9c864c"
+## src = "/libtoml_write-9abea66ccd9c864c.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libtoml_write-9abea66ccd9c864c.rlib"
+## 
+## [[mounts]]
+## from = "out-d5e3fa1fabb7822c"
+## src = "/libwinnow-d5e3fa1fabb7822c.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libwinnow-d5e3fa1fabb7822c.rmeta"
+## 
+## [[mounts]]
+## from = "out-d5e3fa1fabb7822c"
+## src = "/libwinnow-d5e3fa1fabb7822c.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libwinnow-d5e3fa1fabb7822c.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -1639,13 +1895,21 @@ COPY --from=dep-l-toml_edit-0.22.27-c1e542f0979b274a /tmp/clis-cargo-config2_0-1
 ## RUN \
 ##   --mount=from=cratesio-toml_edit-0.22.27,source=/toml_edit-0.22.27,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/toml_edit-0.22.27 \
 ##   --mount=from=out-657f65f0f8918814,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libindexmap-657f65f0f8918814.rmeta,source=/libindexmap-657f65f0f8918814.rmeta \
+##   --mount=from=out-657f65f0f8918814,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libindexmap-657f65f0f8918814.rlib,source=/libindexmap-657f65f0f8918814.rlib \
 ##   --mount=from=out-92df6cc0b9ce3dcd,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libequivalent-92df6cc0b9ce3dcd.rmeta,source=/libequivalent-92df6cc0b9ce3dcd.rmeta \
+##   --mount=from=out-92df6cc0b9ce3dcd,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libequivalent-92df6cc0b9ce3dcd.rlib,source=/libequivalent-92df6cc0b9ce3dcd.rlib \
 ##   --mount=from=out-e384bcd48d03db95,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libhashbrown-e384bcd48d03db95.rmeta,source=/libhashbrown-e384bcd48d03db95.rmeta \
+##   --mount=from=out-e384bcd48d03db95,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libhashbrown-e384bcd48d03db95.rlib,source=/libhashbrown-e384bcd48d03db95.rlib \
 ##   --mount=from=out-b6c6cf1c11688574,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libserde-b6c6cf1c11688574.rmeta,source=/libserde-b6c6cf1c11688574.rmeta \
+##   --mount=from=out-b6c6cf1c11688574,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libserde-b6c6cf1c11688574.rlib,source=/libserde-b6c6cf1c11688574.rlib \
 ##   --mount=from=out-d88bc6011818f513,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libserde_spanned-d88bc6011818f513.rmeta,source=/libserde_spanned-d88bc6011818f513.rmeta \
+##   --mount=from=out-d88bc6011818f513,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libserde_spanned-d88bc6011818f513.rlib,source=/libserde_spanned-d88bc6011818f513.rlib \
 ##   --mount=from=out-23be505440c57a38,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libtoml_datetime-23be505440c57a38.rmeta,source=/libtoml_datetime-23be505440c57a38.rmeta \
+##   --mount=from=out-23be505440c57a38,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libtoml_datetime-23be505440c57a38.rlib,source=/libtoml_datetime-23be505440c57a38.rlib \
 ##   --mount=from=out-9abea66ccd9c864c,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libtoml_write-9abea66ccd9c864c.rmeta,source=/libtoml_write-9abea66ccd9c864c.rmeta \
+##   --mount=from=out-9abea66ccd9c864c,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libtoml_write-9abea66ccd9c864c.rlib,source=/libtoml_write-9abea66ccd9c864c.rlib \
 ##   --mount=from=out-d5e3fa1fabb7822c,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libwinnow-d5e3fa1fabb7822c.rmeta,source=/libwinnow-d5e3fa1fabb7822c.rmeta \
+##   --mount=from=out-d5e3fa1fabb7822c,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libwinnow-d5e3fa1fabb7822c.rlib,source=/libwinnow-d5e3fa1fabb7822c.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="toml_edit" \
@@ -1686,19 +1950,32 @@ WORKDIR /tmp/clis-cargo-config2_0-1-34/release/deps
 RUN \
   --mount=from=cratesio-cargo-config2-0.1.34,source=/cargo-config2-0.1.34,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/cargo-config2-0.1.34 \
   --mount=from=out-b6c6cf1c11688574,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libserde-b6c6cf1c11688574.rmeta,source=/libserde-b6c6cf1c11688574.rmeta \
+  --mount=from=out-b6c6cf1c11688574,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libserde-b6c6cf1c11688574.rlib,source=/libserde-b6c6cf1c11688574.rlib \
   --mount=from=out-a51e2455af527849,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libserde_derive-a51e2455af527849.so,source=/libserde_derive-a51e2455af527849.so \
   --mount=from=out-da36b031605c1ddc,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libproc_macro2-da36b031605c1ddc.rmeta,source=/libproc_macro2-da36b031605c1ddc.rmeta \
+  --mount=from=out-da36b031605c1ddc,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libproc_macro2-da36b031605c1ddc.rlib,source=/libproc_macro2-da36b031605c1ddc.rlib \
   --mount=from=out-02b0d04ef026a7b6,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libunicode_ident-02b0d04ef026a7b6.rmeta,source=/libunicode_ident-02b0d04ef026a7b6.rmeta \
+  --mount=from=out-02b0d04ef026a7b6,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libunicode_ident-02b0d04ef026a7b6.rlib,source=/libunicode_ident-02b0d04ef026a7b6.rlib \
   --mount=from=out-21aeee0f329238fb,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libquote-21aeee0f329238fb.rmeta,source=/libquote-21aeee0f329238fb.rmeta \
+  --mount=from=out-21aeee0f329238fb,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libquote-21aeee0f329238fb.rlib,source=/libquote-21aeee0f329238fb.rlib \
   --mount=from=out-5571b1fa61474ffa,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libsyn-5571b1fa61474ffa.rmeta,source=/libsyn-5571b1fa61474ffa.rmeta \
+  --mount=from=out-5571b1fa61474ffa,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libsyn-5571b1fa61474ffa.rlib,source=/libsyn-5571b1fa61474ffa.rlib \
   --mount=from=out-c1e542f0979b274a,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libtoml_edit-c1e542f0979b274a.rmeta,source=/libtoml_edit-c1e542f0979b274a.rmeta \
+  --mount=from=out-c1e542f0979b274a,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libtoml_edit-c1e542f0979b274a.rlib,source=/libtoml_edit-c1e542f0979b274a.rlib \
   --mount=from=out-657f65f0f8918814,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libindexmap-657f65f0f8918814.rmeta,source=/libindexmap-657f65f0f8918814.rmeta \
+  --mount=from=out-657f65f0f8918814,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libindexmap-657f65f0f8918814.rlib,source=/libindexmap-657f65f0f8918814.rlib \
   --mount=from=out-92df6cc0b9ce3dcd,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libequivalent-92df6cc0b9ce3dcd.rmeta,source=/libequivalent-92df6cc0b9ce3dcd.rmeta \
+  --mount=from=out-92df6cc0b9ce3dcd,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libequivalent-92df6cc0b9ce3dcd.rlib,source=/libequivalent-92df6cc0b9ce3dcd.rlib \
   --mount=from=out-e384bcd48d03db95,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libhashbrown-e384bcd48d03db95.rmeta,source=/libhashbrown-e384bcd48d03db95.rmeta \
+  --mount=from=out-e384bcd48d03db95,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libhashbrown-e384bcd48d03db95.rlib,source=/libhashbrown-e384bcd48d03db95.rlib \
   --mount=from=out-d88bc6011818f513,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libserde_spanned-d88bc6011818f513.rmeta,source=/libserde_spanned-d88bc6011818f513.rmeta \
+  --mount=from=out-d88bc6011818f513,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libserde_spanned-d88bc6011818f513.rlib,source=/libserde_spanned-d88bc6011818f513.rlib \
   --mount=from=out-23be505440c57a38,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libtoml_datetime-23be505440c57a38.rmeta,source=/libtoml_datetime-23be505440c57a38.rmeta \
+  --mount=from=out-23be505440c57a38,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libtoml_datetime-23be505440c57a38.rlib,source=/libtoml_datetime-23be505440c57a38.rlib \
   --mount=from=out-9abea66ccd9c864c,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libtoml_write-9abea66ccd9c864c.rmeta,source=/libtoml_write-9abea66ccd9c864c.rmeta \
+  --mount=from=out-9abea66ccd9c864c,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libtoml_write-9abea66ccd9c864c.rlib,source=/libtoml_write-9abea66ccd9c864c.rlib \
   --mount=from=out-d5e3fa1fabb7822c,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libwinnow-d5e3fa1fabb7822c.rmeta,source=/libwinnow-d5e3fa1fabb7822c.rmeta \
+  --mount=from=out-d5e3fa1fabb7822c,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libwinnow-d5e3fa1fabb7822c.rlib,source=/libwinnow-d5e3fa1fabb7822c.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="cargo_config2" \
@@ -1745,20 +2022,20 @@ COPY --from=dep-l-cargo-config2-0.1.34-e6fea3eab43aaf67 /tmp/clis-cargo-config2_
 ##     "d5e3fa1fabb7822c",
 ## ]
 ## short_externs = [
-##     "serde-b6c6cf1c11688574",
-##     "serde_derive-a51e2455af527849",
-##     "proc_macro2-da36b031605c1ddc",
-##     "unicode_ident-02b0d04ef026a7b6",
-##     "quote-21aeee0f329238fb",
-##     "syn-5571b1fa61474ffa",
-##     "toml_edit-c1e542f0979b274a",
-##     "indexmap-657f65f0f8918814",
-##     "equivalent-92df6cc0b9ce3dcd",
-##     "hashbrown-e384bcd48d03db95",
-##     "serde_spanned-d88bc6011818f513",
-##     "toml_datetime-23be505440c57a38",
-##     "toml_write-9abea66ccd9c864c",
-##     "winnow-d5e3fa1fabb7822c",
+##     "b6c6cf1c11688574",
+##     "a51e2455af527849",
+##     "da36b031605c1ddc",
+##     "02b0d04ef026a7b6",
+##     "21aeee0f329238fb",
+##     "5571b1fa61474ffa",
+##     "c1e542f0979b274a",
+##     "657f65f0f8918814",
+##     "92df6cc0b9ce3dcd",
+##     "e384bcd48d03db95",
+##     "d88bc6011818f513",
+##     "23be505440c57a38",
+##     "9abea66ccd9c864c",
+##     "d5e3fa1fabb7822c",
 ## ]
 ## writes = [
 ##     "deps/cargo_config2-e6fea3eab43aaf67.d",
@@ -1770,6 +2047,141 @@ COPY --from=dep-l-cargo-config2-0.1.34-e6fea3eab43aaf67 /tmp/clis-cargo-config2_
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-cargo-config2_0-1-34/release/deps/libcargo_config2-e6fea3eab43aaf67.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-cargo-config2_0-1-34/release/deps/libcargo_config2-e6fea3eab43aaf67.rlib","emit":"link"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-b6c6cf1c11688574"
+## src = "/libserde-b6c6cf1c11688574.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libserde-b6c6cf1c11688574.rmeta"
+## 
+## [[mounts]]
+## from = "out-b6c6cf1c11688574"
+## src = "/libserde-b6c6cf1c11688574.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libserde-b6c6cf1c11688574.rlib"
+## 
+## [[mounts]]
+## from = "out-a51e2455af527849"
+## src = "/libserde_derive-a51e2455af527849.so"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libserde_derive-a51e2455af527849.so"
+## 
+## [[mounts]]
+## from = "out-da36b031605c1ddc"
+## src = "/libproc_macro2-da36b031605c1ddc.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libproc_macro2-da36b031605c1ddc.rmeta"
+## 
+## [[mounts]]
+## from = "out-da36b031605c1ddc"
+## src = "/libproc_macro2-da36b031605c1ddc.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libproc_macro2-da36b031605c1ddc.rlib"
+## 
+## [[mounts]]
+## from = "out-02b0d04ef026a7b6"
+## src = "/libunicode_ident-02b0d04ef026a7b6.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libunicode_ident-02b0d04ef026a7b6.rmeta"
+## 
+## [[mounts]]
+## from = "out-02b0d04ef026a7b6"
+## src = "/libunicode_ident-02b0d04ef026a7b6.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libunicode_ident-02b0d04ef026a7b6.rlib"
+## 
+## [[mounts]]
+## from = "out-21aeee0f329238fb"
+## src = "/libquote-21aeee0f329238fb.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libquote-21aeee0f329238fb.rmeta"
+## 
+## [[mounts]]
+## from = "out-21aeee0f329238fb"
+## src = "/libquote-21aeee0f329238fb.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libquote-21aeee0f329238fb.rlib"
+## 
+## [[mounts]]
+## from = "out-5571b1fa61474ffa"
+## src = "/libsyn-5571b1fa61474ffa.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libsyn-5571b1fa61474ffa.rmeta"
+## 
+## [[mounts]]
+## from = "out-5571b1fa61474ffa"
+## src = "/libsyn-5571b1fa61474ffa.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libsyn-5571b1fa61474ffa.rlib"
+## 
+## [[mounts]]
+## from = "out-c1e542f0979b274a"
+## src = "/libtoml_edit-c1e542f0979b274a.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libtoml_edit-c1e542f0979b274a.rmeta"
+## 
+## [[mounts]]
+## from = "out-c1e542f0979b274a"
+## src = "/libtoml_edit-c1e542f0979b274a.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libtoml_edit-c1e542f0979b274a.rlib"
+## 
+## [[mounts]]
+## from = "out-657f65f0f8918814"
+## src = "/libindexmap-657f65f0f8918814.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libindexmap-657f65f0f8918814.rmeta"
+## 
+## [[mounts]]
+## from = "out-657f65f0f8918814"
+## src = "/libindexmap-657f65f0f8918814.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libindexmap-657f65f0f8918814.rlib"
+## 
+## [[mounts]]
+## from = "out-92df6cc0b9ce3dcd"
+## src = "/libequivalent-92df6cc0b9ce3dcd.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libequivalent-92df6cc0b9ce3dcd.rmeta"
+## 
+## [[mounts]]
+## from = "out-92df6cc0b9ce3dcd"
+## src = "/libequivalent-92df6cc0b9ce3dcd.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libequivalent-92df6cc0b9ce3dcd.rlib"
+## 
+## [[mounts]]
+## from = "out-e384bcd48d03db95"
+## src = "/libhashbrown-e384bcd48d03db95.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libhashbrown-e384bcd48d03db95.rmeta"
+## 
+## [[mounts]]
+## from = "out-e384bcd48d03db95"
+## src = "/libhashbrown-e384bcd48d03db95.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libhashbrown-e384bcd48d03db95.rlib"
+## 
+## [[mounts]]
+## from = "out-d88bc6011818f513"
+## src = "/libserde_spanned-d88bc6011818f513.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libserde_spanned-d88bc6011818f513.rmeta"
+## 
+## [[mounts]]
+## from = "out-d88bc6011818f513"
+## src = "/libserde_spanned-d88bc6011818f513.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libserde_spanned-d88bc6011818f513.rlib"
+## 
+## [[mounts]]
+## from = "out-23be505440c57a38"
+## src = "/libtoml_datetime-23be505440c57a38.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libtoml_datetime-23be505440c57a38.rmeta"
+## 
+## [[mounts]]
+## from = "out-23be505440c57a38"
+## src = "/libtoml_datetime-23be505440c57a38.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libtoml_datetime-23be505440c57a38.rlib"
+## 
+## [[mounts]]
+## from = "out-9abea66ccd9c864c"
+## src = "/libtoml_write-9abea66ccd9c864c.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libtoml_write-9abea66ccd9c864c.rmeta"
+## 
+## [[mounts]]
+## from = "out-9abea66ccd9c864c"
+## src = "/libtoml_write-9abea66ccd9c864c.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libtoml_write-9abea66ccd9c864c.rlib"
+## 
+## [[mounts]]
+## from = "out-d5e3fa1fabb7822c"
+## src = "/libwinnow-d5e3fa1fabb7822c.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libwinnow-d5e3fa1fabb7822c.rmeta"
+## 
+## [[mounts]]
+## from = "out-d5e3fa1fabb7822c"
+## src = "/libwinnow-d5e3fa1fabb7822c.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libwinnow-d5e3fa1fabb7822c.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -1791,19 +2203,32 @@ COPY --from=dep-l-cargo-config2-0.1.34-e6fea3eab43aaf67 /tmp/clis-cargo-config2_
 ## RUN \
 ##   --mount=from=cratesio-cargo-config2-0.1.34,source=/cargo-config2-0.1.34,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/cargo-config2-0.1.34 \
 ##   --mount=from=out-b6c6cf1c11688574,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libserde-b6c6cf1c11688574.rmeta,source=/libserde-b6c6cf1c11688574.rmeta \
+##   --mount=from=out-b6c6cf1c11688574,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libserde-b6c6cf1c11688574.rlib,source=/libserde-b6c6cf1c11688574.rlib \
 ##   --mount=from=out-a51e2455af527849,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libserde_derive-a51e2455af527849.so,source=/libserde_derive-a51e2455af527849.so \
 ##   --mount=from=out-da36b031605c1ddc,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libproc_macro2-da36b031605c1ddc.rmeta,source=/libproc_macro2-da36b031605c1ddc.rmeta \
+##   --mount=from=out-da36b031605c1ddc,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libproc_macro2-da36b031605c1ddc.rlib,source=/libproc_macro2-da36b031605c1ddc.rlib \
 ##   --mount=from=out-02b0d04ef026a7b6,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libunicode_ident-02b0d04ef026a7b6.rmeta,source=/libunicode_ident-02b0d04ef026a7b6.rmeta \
+##   --mount=from=out-02b0d04ef026a7b6,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libunicode_ident-02b0d04ef026a7b6.rlib,source=/libunicode_ident-02b0d04ef026a7b6.rlib \
 ##   --mount=from=out-21aeee0f329238fb,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libquote-21aeee0f329238fb.rmeta,source=/libquote-21aeee0f329238fb.rmeta \
+##   --mount=from=out-21aeee0f329238fb,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libquote-21aeee0f329238fb.rlib,source=/libquote-21aeee0f329238fb.rlib \
 ##   --mount=from=out-5571b1fa61474ffa,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libsyn-5571b1fa61474ffa.rmeta,source=/libsyn-5571b1fa61474ffa.rmeta \
+##   --mount=from=out-5571b1fa61474ffa,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libsyn-5571b1fa61474ffa.rlib,source=/libsyn-5571b1fa61474ffa.rlib \
 ##   --mount=from=out-c1e542f0979b274a,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libtoml_edit-c1e542f0979b274a.rmeta,source=/libtoml_edit-c1e542f0979b274a.rmeta \
+##   --mount=from=out-c1e542f0979b274a,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libtoml_edit-c1e542f0979b274a.rlib,source=/libtoml_edit-c1e542f0979b274a.rlib \
 ##   --mount=from=out-657f65f0f8918814,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libindexmap-657f65f0f8918814.rmeta,source=/libindexmap-657f65f0f8918814.rmeta \
+##   --mount=from=out-657f65f0f8918814,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libindexmap-657f65f0f8918814.rlib,source=/libindexmap-657f65f0f8918814.rlib \
 ##   --mount=from=out-92df6cc0b9ce3dcd,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libequivalent-92df6cc0b9ce3dcd.rmeta,source=/libequivalent-92df6cc0b9ce3dcd.rmeta \
+##   --mount=from=out-92df6cc0b9ce3dcd,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libequivalent-92df6cc0b9ce3dcd.rlib,source=/libequivalent-92df6cc0b9ce3dcd.rlib \
 ##   --mount=from=out-e384bcd48d03db95,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libhashbrown-e384bcd48d03db95.rmeta,source=/libhashbrown-e384bcd48d03db95.rmeta \
+##   --mount=from=out-e384bcd48d03db95,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libhashbrown-e384bcd48d03db95.rlib,source=/libhashbrown-e384bcd48d03db95.rlib \
 ##   --mount=from=out-d88bc6011818f513,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libserde_spanned-d88bc6011818f513.rmeta,source=/libserde_spanned-d88bc6011818f513.rmeta \
+##   --mount=from=out-d88bc6011818f513,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libserde_spanned-d88bc6011818f513.rlib,source=/libserde_spanned-d88bc6011818f513.rlib \
 ##   --mount=from=out-23be505440c57a38,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libtoml_datetime-23be505440c57a38.rmeta,source=/libtoml_datetime-23be505440c57a38.rmeta \
+##   --mount=from=out-23be505440c57a38,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libtoml_datetime-23be505440c57a38.rlib,source=/libtoml_datetime-23be505440c57a38.rlib \
 ##   --mount=from=out-9abea66ccd9c864c,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libtoml_write-9abea66ccd9c864c.rmeta,source=/libtoml_write-9abea66ccd9c864c.rmeta \
+##   --mount=from=out-9abea66ccd9c864c,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libtoml_write-9abea66ccd9c864c.rlib,source=/libtoml_write-9abea66ccd9c864c.rlib \
 ##   --mount=from=out-d5e3fa1fabb7822c,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libwinnow-d5e3fa1fabb7822c.rmeta,source=/libwinnow-d5e3fa1fabb7822c.rmeta \
+##   --mount=from=out-d5e3fa1fabb7822c,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libwinnow-d5e3fa1fabb7822c.rlib,source=/libwinnow-d5e3fa1fabb7822c.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="cargo_config2" \
@@ -2039,7 +2464,9 @@ WORKDIR /tmp/clis-cargo-config2_0-1-34/release/deps
 RUN \
   --mount=from=cratesio-clap_builder-4.5.40,source=/clap_builder-4.5.40,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/clap_builder-4.5.40 \
   --mount=from=out-21ded493861ed51c,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libanstyle-21ded493861ed51c.rmeta,source=/libanstyle-21ded493861ed51c.rmeta \
+  --mount=from=out-21ded493861ed51c,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libanstyle-21ded493861ed51c.rlib,source=/libanstyle-21ded493861ed51c.rlib \
   --mount=from=out-fa1650fe0d33e35e,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libclap_lex-fa1650fe0d33e35e.rmeta,source=/libclap_lex-fa1650fe0d33e35e.rmeta \
+  --mount=from=out-fa1650fe0d33e35e,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libclap_lex-fa1650fe0d33e35e.rlib,source=/libclap_lex-fa1650fe0d33e35e.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="clap_builder" \
@@ -2073,8 +2500,8 @@ COPY --from=dep-l-clap_builder-4.5.40-41622f4093b29d13 /tmp/clis-cargo-config2_0
 ##     "fa1650fe0d33e35e",
 ## ]
 ## short_externs = [
-##     "anstyle-21ded493861ed51c",
-##     "clap_lex-fa1650fe0d33e35e",
+##     "21ded493861ed51c",
+##     "fa1650fe0d33e35e",
 ## ]
 ## writes = [
 ##     "deps/clap_builder-41622f4093b29d13.d",
@@ -2086,6 +2513,26 @@ COPY --from=dep-l-clap_builder-4.5.40-41622f4093b29d13 /tmp/clis-cargo-config2_0
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-cargo-config2_0-1-34/release/deps/libclap_builder-41622f4093b29d13.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-cargo-config2_0-1-34/release/deps/libclap_builder-41622f4093b29d13.rlib","emit":"link"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-21ded493861ed51c"
+## src = "/libanstyle-21ded493861ed51c.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libanstyle-21ded493861ed51c.rmeta"
+## 
+## [[mounts]]
+## from = "out-21ded493861ed51c"
+## src = "/libanstyle-21ded493861ed51c.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libanstyle-21ded493861ed51c.rlib"
+## 
+## [[mounts]]
+## from = "out-fa1650fe0d33e35e"
+## src = "/libclap_lex-fa1650fe0d33e35e.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libclap_lex-fa1650fe0d33e35e.rmeta"
+## 
+## [[mounts]]
+## from = "out-fa1650fe0d33e35e"
+## src = "/libclap_lex-fa1650fe0d33e35e.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libclap_lex-fa1650fe0d33e35e.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -2107,7 +2554,9 @@ COPY --from=dep-l-clap_builder-4.5.40-41622f4093b29d13 /tmp/clis-cargo-config2_0
 ## RUN \
 ##   --mount=from=cratesio-clap_builder-4.5.40,source=/clap_builder-4.5.40,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/clap_builder-4.5.40 \
 ##   --mount=from=out-21ded493861ed51c,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libanstyle-21ded493861ed51c.rmeta,source=/libanstyle-21ded493861ed51c.rmeta \
+##   --mount=from=out-21ded493861ed51c,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libanstyle-21ded493861ed51c.rlib,source=/libanstyle-21ded493861ed51c.rlib \
 ##   --mount=from=out-fa1650fe0d33e35e,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libclap_lex-fa1650fe0d33e35e.rmeta,source=/libclap_lex-fa1650fe0d33e35e.rmeta \
+##   --mount=from=out-fa1650fe0d33e35e,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libclap_lex-fa1650fe0d33e35e.rlib,source=/libclap_lex-fa1650fe0d33e35e.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="clap_builder" \
@@ -2244,10 +2693,15 @@ SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 WORKDIR /tmp/clis-cargo-config2_0-1-34/release/deps
 RUN \
   --mount=from=cratesio-clap_derive-4.5.40,source=/clap_derive-4.5.40,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/clap_derive-4.5.40 \
+  --mount=from=out-06debb0d4d4774b1,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libheck-06debb0d4d4774b1.rmeta,source=/libheck-06debb0d4d4774b1.rmeta \
   --mount=from=out-06debb0d4d4774b1,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libheck-06debb0d4d4774b1.rlib,source=/libheck-06debb0d4d4774b1.rlib \
+  --mount=from=out-da36b031605c1ddc,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libproc_macro2-da36b031605c1ddc.rmeta,source=/libproc_macro2-da36b031605c1ddc.rmeta \
   --mount=from=out-da36b031605c1ddc,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libproc_macro2-da36b031605c1ddc.rlib,source=/libproc_macro2-da36b031605c1ddc.rlib \
+  --mount=from=out-02b0d04ef026a7b6,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libunicode_ident-02b0d04ef026a7b6.rmeta,source=/libunicode_ident-02b0d04ef026a7b6.rmeta \
   --mount=from=out-02b0d04ef026a7b6,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libunicode_ident-02b0d04ef026a7b6.rlib,source=/libunicode_ident-02b0d04ef026a7b6.rlib \
+  --mount=from=out-21aeee0f329238fb,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libquote-21aeee0f329238fb.rmeta,source=/libquote-21aeee0f329238fb.rmeta \
   --mount=from=out-21aeee0f329238fb,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libquote-21aeee0f329238fb.rlib,source=/libquote-21aeee0f329238fb.rlib \
+  --mount=from=out-5571b1fa61474ffa,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libsyn-5571b1fa61474ffa.rmeta,source=/libsyn-5571b1fa61474ffa.rmeta \
   --mount=from=out-5571b1fa61474ffa,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libsyn-5571b1fa61474ffa.rlib,source=/libsyn-5571b1fa61474ffa.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
@@ -2285,11 +2739,11 @@ COPY --from=dep-p-clap_derive-4.5.40-45053889f17e427d /tmp/clis-cargo-config2_0-
 ##     "5571b1fa61474ffa",
 ## ]
 ## short_externs = [
-##     "heck-06debb0d4d4774b1",
-##     "proc_macro2-da36b031605c1ddc",
-##     "unicode_ident-02b0d04ef026a7b6",
-##     "quote-21aeee0f329238fb",
-##     "syn-5571b1fa61474ffa",
+##     "06debb0d4d4774b1",
+##     "da36b031605c1ddc",
+##     "02b0d04ef026a7b6",
+##     "21aeee0f329238fb",
+##     "5571b1fa61474ffa",
 ## ]
 ## is_proc_macro = true
 ## writes = [
@@ -2300,6 +2754,56 @@ COPY --from=dep-p-clap_derive-4.5.40-45053889f17e427d /tmp/clis-cargo-config2_0-
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-cargo-config2_0-1-34/release/deps/clap_derive-45053889f17e427d.d","emit":"dep-info"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-cargo-config2_0-1-34/release/deps/libclap_derive-45053889f17e427d.so","emit":"link"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-06debb0d4d4774b1"
+## src = "/libheck-06debb0d4d4774b1.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libheck-06debb0d4d4774b1.rmeta"
+## 
+## [[mounts]]
+## from = "out-06debb0d4d4774b1"
+## src = "/libheck-06debb0d4d4774b1.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libheck-06debb0d4d4774b1.rlib"
+## 
+## [[mounts]]
+## from = "out-da36b031605c1ddc"
+## src = "/libproc_macro2-da36b031605c1ddc.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libproc_macro2-da36b031605c1ddc.rmeta"
+## 
+## [[mounts]]
+## from = "out-da36b031605c1ddc"
+## src = "/libproc_macro2-da36b031605c1ddc.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libproc_macro2-da36b031605c1ddc.rlib"
+## 
+## [[mounts]]
+## from = "out-02b0d04ef026a7b6"
+## src = "/libunicode_ident-02b0d04ef026a7b6.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libunicode_ident-02b0d04ef026a7b6.rmeta"
+## 
+## [[mounts]]
+## from = "out-02b0d04ef026a7b6"
+## src = "/libunicode_ident-02b0d04ef026a7b6.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libunicode_ident-02b0d04ef026a7b6.rlib"
+## 
+## [[mounts]]
+## from = "out-21aeee0f329238fb"
+## src = "/libquote-21aeee0f329238fb.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libquote-21aeee0f329238fb.rmeta"
+## 
+## [[mounts]]
+## from = "out-21aeee0f329238fb"
+## src = "/libquote-21aeee0f329238fb.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libquote-21aeee0f329238fb.rlib"
+## 
+## [[mounts]]
+## from = "out-5571b1fa61474ffa"
+## src = "/libsyn-5571b1fa61474ffa.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libsyn-5571b1fa61474ffa.rmeta"
+## 
+## [[mounts]]
+## from = "out-5571b1fa61474ffa"
+## src = "/libsyn-5571b1fa61474ffa.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libsyn-5571b1fa61474ffa.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -2320,10 +2824,15 @@ COPY --from=dep-p-clap_derive-4.5.40-45053889f17e427d /tmp/clis-cargo-config2_0-
 ## WORKDIR /tmp/clis-cargo-config2_0-1-34/release/deps
 ## RUN \
 ##   --mount=from=cratesio-clap_derive-4.5.40,source=/clap_derive-4.5.40,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/clap_derive-4.5.40 \
+##   --mount=from=out-06debb0d4d4774b1,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libheck-06debb0d4d4774b1.rmeta,source=/libheck-06debb0d4d4774b1.rmeta \
 ##   --mount=from=out-06debb0d4d4774b1,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libheck-06debb0d4d4774b1.rlib,source=/libheck-06debb0d4d4774b1.rlib \
+##   --mount=from=out-da36b031605c1ddc,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libproc_macro2-da36b031605c1ddc.rmeta,source=/libproc_macro2-da36b031605c1ddc.rmeta \
 ##   --mount=from=out-da36b031605c1ddc,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libproc_macro2-da36b031605c1ddc.rlib,source=/libproc_macro2-da36b031605c1ddc.rlib \
+##   --mount=from=out-02b0d04ef026a7b6,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libunicode_ident-02b0d04ef026a7b6.rmeta,source=/libunicode_ident-02b0d04ef026a7b6.rmeta \
 ##   --mount=from=out-02b0d04ef026a7b6,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libunicode_ident-02b0d04ef026a7b6.rlib,source=/libunicode_ident-02b0d04ef026a7b6.rlib \
+##   --mount=from=out-21aeee0f329238fb,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libquote-21aeee0f329238fb.rmeta,source=/libquote-21aeee0f329238fb.rmeta \
 ##   --mount=from=out-21aeee0f329238fb,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libquote-21aeee0f329238fb.rlib,source=/libquote-21aeee0f329238fb.rlib \
+##   --mount=from=out-5571b1fa61474ffa,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libsyn-5571b1fa61474ffa.rmeta,source=/libsyn-5571b1fa61474ffa.rmeta \
 ##   --mount=from=out-5571b1fa61474ffa,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libsyn-5571b1fa61474ffa.rlib,source=/libsyn-5571b1fa61474ffa.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
@@ -2365,14 +2874,22 @@ WORKDIR /tmp/clis-cargo-config2_0-1-34/release/deps
 RUN \
   --mount=from=cratesio-clap-4.5.40,source=/clap-4.5.40,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/clap-4.5.40 \
   --mount=from=out-41622f4093b29d13,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libclap_builder-41622f4093b29d13.rmeta,source=/libclap_builder-41622f4093b29d13.rmeta \
+  --mount=from=out-41622f4093b29d13,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libclap_builder-41622f4093b29d13.rlib,source=/libclap_builder-41622f4093b29d13.rlib \
   --mount=from=out-21ded493861ed51c,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libanstyle-21ded493861ed51c.rmeta,source=/libanstyle-21ded493861ed51c.rmeta \
+  --mount=from=out-21ded493861ed51c,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libanstyle-21ded493861ed51c.rlib,source=/libanstyle-21ded493861ed51c.rlib \
   --mount=from=out-fa1650fe0d33e35e,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libclap_lex-fa1650fe0d33e35e.rmeta,source=/libclap_lex-fa1650fe0d33e35e.rmeta \
+  --mount=from=out-fa1650fe0d33e35e,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libclap_lex-fa1650fe0d33e35e.rlib,source=/libclap_lex-fa1650fe0d33e35e.rlib \
   --mount=from=out-45053889f17e427d,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libclap_derive-45053889f17e427d.so,source=/libclap_derive-45053889f17e427d.so \
   --mount=from=out-06debb0d4d4774b1,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libheck-06debb0d4d4774b1.rmeta,source=/libheck-06debb0d4d4774b1.rmeta \
+  --mount=from=out-06debb0d4d4774b1,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libheck-06debb0d4d4774b1.rlib,source=/libheck-06debb0d4d4774b1.rlib \
   --mount=from=out-da36b031605c1ddc,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libproc_macro2-da36b031605c1ddc.rmeta,source=/libproc_macro2-da36b031605c1ddc.rmeta \
+  --mount=from=out-da36b031605c1ddc,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libproc_macro2-da36b031605c1ddc.rlib,source=/libproc_macro2-da36b031605c1ddc.rlib \
   --mount=from=out-02b0d04ef026a7b6,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libunicode_ident-02b0d04ef026a7b6.rmeta,source=/libunicode_ident-02b0d04ef026a7b6.rmeta \
+  --mount=from=out-02b0d04ef026a7b6,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libunicode_ident-02b0d04ef026a7b6.rlib,source=/libunicode_ident-02b0d04ef026a7b6.rlib \
   --mount=from=out-21aeee0f329238fb,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libquote-21aeee0f329238fb.rmeta,source=/libquote-21aeee0f329238fb.rmeta \
+  --mount=from=out-21aeee0f329238fb,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libquote-21aeee0f329238fb.rlib,source=/libquote-21aeee0f329238fb.rlib \
   --mount=from=out-5571b1fa61474ffa,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libsyn-5571b1fa61474ffa.rmeta,source=/libsyn-5571b1fa61474ffa.rmeta \
+  --mount=from=out-5571b1fa61474ffa,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libsyn-5571b1fa61474ffa.rlib,source=/libsyn-5571b1fa61474ffa.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="clap" \
@@ -2413,15 +2930,15 @@ COPY --from=dep-l-clap-4.5.40-fa9f135a39baa87b /tmp/clis-cargo-config2_0-1-34/re
 ##     "5571b1fa61474ffa",
 ## ]
 ## short_externs = [
-##     "clap_builder-41622f4093b29d13",
-##     "anstyle-21ded493861ed51c",
-##     "clap_lex-fa1650fe0d33e35e",
-##     "clap_derive-45053889f17e427d",
-##     "heck-06debb0d4d4774b1",
-##     "proc_macro2-da36b031605c1ddc",
-##     "unicode_ident-02b0d04ef026a7b6",
-##     "quote-21aeee0f329238fb",
-##     "syn-5571b1fa61474ffa",
+##     "41622f4093b29d13",
+##     "21ded493861ed51c",
+##     "fa1650fe0d33e35e",
+##     "45053889f17e427d",
+##     "06debb0d4d4774b1",
+##     "da36b031605c1ddc",
+##     "02b0d04ef026a7b6",
+##     "21aeee0f329238fb",
+##     "5571b1fa61474ffa",
 ## ]
 ## writes = [
 ##     "deps/clap-fa9f135a39baa87b.d",
@@ -2433,6 +2950,91 @@ COPY --from=dep-l-clap-4.5.40-fa9f135a39baa87b /tmp/clis-cargo-config2_0-1-34/re
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-cargo-config2_0-1-34/release/deps/libclap-fa9f135a39baa87b.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-cargo-config2_0-1-34/release/deps/libclap-fa9f135a39baa87b.rlib","emit":"link"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-41622f4093b29d13"
+## src = "/libclap_builder-41622f4093b29d13.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libclap_builder-41622f4093b29d13.rmeta"
+## 
+## [[mounts]]
+## from = "out-41622f4093b29d13"
+## src = "/libclap_builder-41622f4093b29d13.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libclap_builder-41622f4093b29d13.rlib"
+## 
+## [[mounts]]
+## from = "out-21ded493861ed51c"
+## src = "/libanstyle-21ded493861ed51c.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libanstyle-21ded493861ed51c.rmeta"
+## 
+## [[mounts]]
+## from = "out-21ded493861ed51c"
+## src = "/libanstyle-21ded493861ed51c.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libanstyle-21ded493861ed51c.rlib"
+## 
+## [[mounts]]
+## from = "out-fa1650fe0d33e35e"
+## src = "/libclap_lex-fa1650fe0d33e35e.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libclap_lex-fa1650fe0d33e35e.rmeta"
+## 
+## [[mounts]]
+## from = "out-fa1650fe0d33e35e"
+## src = "/libclap_lex-fa1650fe0d33e35e.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libclap_lex-fa1650fe0d33e35e.rlib"
+## 
+## [[mounts]]
+## from = "out-45053889f17e427d"
+## src = "/libclap_derive-45053889f17e427d.so"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libclap_derive-45053889f17e427d.so"
+## 
+## [[mounts]]
+## from = "out-06debb0d4d4774b1"
+## src = "/libheck-06debb0d4d4774b1.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libheck-06debb0d4d4774b1.rmeta"
+## 
+## [[mounts]]
+## from = "out-06debb0d4d4774b1"
+## src = "/libheck-06debb0d4d4774b1.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libheck-06debb0d4d4774b1.rlib"
+## 
+## [[mounts]]
+## from = "out-da36b031605c1ddc"
+## src = "/libproc_macro2-da36b031605c1ddc.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libproc_macro2-da36b031605c1ddc.rmeta"
+## 
+## [[mounts]]
+## from = "out-da36b031605c1ddc"
+## src = "/libproc_macro2-da36b031605c1ddc.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libproc_macro2-da36b031605c1ddc.rlib"
+## 
+## [[mounts]]
+## from = "out-02b0d04ef026a7b6"
+## src = "/libunicode_ident-02b0d04ef026a7b6.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libunicode_ident-02b0d04ef026a7b6.rmeta"
+## 
+## [[mounts]]
+## from = "out-02b0d04ef026a7b6"
+## src = "/libunicode_ident-02b0d04ef026a7b6.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libunicode_ident-02b0d04ef026a7b6.rlib"
+## 
+## [[mounts]]
+## from = "out-21aeee0f329238fb"
+## src = "/libquote-21aeee0f329238fb.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libquote-21aeee0f329238fb.rmeta"
+## 
+## [[mounts]]
+## from = "out-21aeee0f329238fb"
+## src = "/libquote-21aeee0f329238fb.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libquote-21aeee0f329238fb.rlib"
+## 
+## [[mounts]]
+## from = "out-5571b1fa61474ffa"
+## src = "/libsyn-5571b1fa61474ffa.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libsyn-5571b1fa61474ffa.rmeta"
+## 
+## [[mounts]]
+## from = "out-5571b1fa61474ffa"
+## src = "/libsyn-5571b1fa61474ffa.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libsyn-5571b1fa61474ffa.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -2454,14 +3056,22 @@ COPY --from=dep-l-clap-4.5.40-fa9f135a39baa87b /tmp/clis-cargo-config2_0-1-34/re
 ## RUN \
 ##   --mount=from=cratesio-clap-4.5.40,source=/clap-4.5.40,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/clap-4.5.40 \
 ##   --mount=from=out-41622f4093b29d13,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libclap_builder-41622f4093b29d13.rmeta,source=/libclap_builder-41622f4093b29d13.rmeta \
+##   --mount=from=out-41622f4093b29d13,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libclap_builder-41622f4093b29d13.rlib,source=/libclap_builder-41622f4093b29d13.rlib \
 ##   --mount=from=out-21ded493861ed51c,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libanstyle-21ded493861ed51c.rmeta,source=/libanstyle-21ded493861ed51c.rmeta \
+##   --mount=from=out-21ded493861ed51c,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libanstyle-21ded493861ed51c.rlib,source=/libanstyle-21ded493861ed51c.rlib \
 ##   --mount=from=out-fa1650fe0d33e35e,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libclap_lex-fa1650fe0d33e35e.rmeta,source=/libclap_lex-fa1650fe0d33e35e.rmeta \
+##   --mount=from=out-fa1650fe0d33e35e,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libclap_lex-fa1650fe0d33e35e.rlib,source=/libclap_lex-fa1650fe0d33e35e.rlib \
 ##   --mount=from=out-45053889f17e427d,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libclap_derive-45053889f17e427d.so,source=/libclap_derive-45053889f17e427d.so \
 ##   --mount=from=out-06debb0d4d4774b1,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libheck-06debb0d4d4774b1.rmeta,source=/libheck-06debb0d4d4774b1.rmeta \
+##   --mount=from=out-06debb0d4d4774b1,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libheck-06debb0d4d4774b1.rlib,source=/libheck-06debb0d4d4774b1.rlib \
 ##   --mount=from=out-da36b031605c1ddc,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libproc_macro2-da36b031605c1ddc.rmeta,source=/libproc_macro2-da36b031605c1ddc.rmeta \
+##   --mount=from=out-da36b031605c1ddc,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libproc_macro2-da36b031605c1ddc.rlib,source=/libproc_macro2-da36b031605c1ddc.rlib \
 ##   --mount=from=out-02b0d04ef026a7b6,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libunicode_ident-02b0d04ef026a7b6.rmeta,source=/libunicode_ident-02b0d04ef026a7b6.rmeta \
+##   --mount=from=out-02b0d04ef026a7b6,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libunicode_ident-02b0d04ef026a7b6.rlib,source=/libunicode_ident-02b0d04ef026a7b6.rlib \
 ##   --mount=from=out-21aeee0f329238fb,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libquote-21aeee0f329238fb.rmeta,source=/libquote-21aeee0f329238fb.rmeta \
+##   --mount=from=out-21aeee0f329238fb,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libquote-21aeee0f329238fb.rlib,source=/libquote-21aeee0f329238fb.rlib \
 ##   --mount=from=out-5571b1fa61474ffa,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libsyn-5571b1fa61474ffa.rmeta,source=/libsyn-5571b1fa61474ffa.rmeta \
+##   --mount=from=out-5571b1fa61474ffa,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libsyn-5571b1fa61474ffa.rlib,source=/libsyn-5571b1fa61474ffa.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="clap" \
@@ -3093,9 +3703,13 @@ WORKDIR /tmp/clis-cargo-config2_0-1-34/release/deps
 RUN \
   --mount=from=cratesio-serde_json-1.0.140,source=/serde_json-1.0.140,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.140 \
   --mount=from=out-a68ea12a2369cd39,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libitoa-a68ea12a2369cd39.rmeta,source=/libitoa-a68ea12a2369cd39.rmeta \
+  --mount=from=out-a68ea12a2369cd39,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libitoa-a68ea12a2369cd39.rlib,source=/libitoa-a68ea12a2369cd39.rlib \
   --mount=from=out-f8a5ec09fef4ab54,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libmemchr-f8a5ec09fef4ab54.rmeta,source=/libmemchr-f8a5ec09fef4ab54.rmeta \
+  --mount=from=out-f8a5ec09fef4ab54,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libmemchr-f8a5ec09fef4ab54.rlib,source=/libmemchr-f8a5ec09fef4ab54.rlib \
   --mount=from=out-fc928953fff1e68b,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libryu-fc928953fff1e68b.rmeta,source=/libryu-fc928953fff1e68b.rmeta \
+  --mount=from=out-fc928953fff1e68b,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libryu-fc928953fff1e68b.rlib,source=/libryu-fc928953fff1e68b.rlib \
   --mount=from=out-b6c6cf1c11688574,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libserde-b6c6cf1c11688574.rmeta,source=/libserde-b6c6cf1c11688574.rmeta \
+  --mount=from=out-b6c6cf1c11688574,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libserde-b6c6cf1c11688574.rlib,source=/libserde-b6c6cf1c11688574.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="serde_json" \
@@ -3132,10 +3746,10 @@ COPY --from=dep-l-serde_json-1.0.140-7c70ba617eecc4c0 /tmp/clis-cargo-config2_0-
 ##     "b6c6cf1c11688574",
 ## ]
 ## short_externs = [
-##     "itoa-a68ea12a2369cd39",
-##     "memchr-f8a5ec09fef4ab54",
-##     "ryu-fc928953fff1e68b",
-##     "serde-b6c6cf1c11688574",
+##     "a68ea12a2369cd39",
+##     "f8a5ec09fef4ab54",
+##     "fc928953fff1e68b",
+##     "b6c6cf1c11688574",
 ## ]
 ## writes = [
 ##     "deps/serde_json-7c70ba617eecc4c0.d",
@@ -3147,6 +3761,46 @@ COPY --from=dep-l-serde_json-1.0.140-7c70ba617eecc4c0 /tmp/clis-cargo-config2_0-
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-cargo-config2_0-1-34/release/deps/libserde_json-7c70ba617eecc4c0.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-cargo-config2_0-1-34/release/deps/libserde_json-7c70ba617eecc4c0.rlib","emit":"link"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-a68ea12a2369cd39"
+## src = "/libitoa-a68ea12a2369cd39.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libitoa-a68ea12a2369cd39.rmeta"
+## 
+## [[mounts]]
+## from = "out-a68ea12a2369cd39"
+## src = "/libitoa-a68ea12a2369cd39.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libitoa-a68ea12a2369cd39.rlib"
+## 
+## [[mounts]]
+## from = "out-f8a5ec09fef4ab54"
+## src = "/libmemchr-f8a5ec09fef4ab54.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libmemchr-f8a5ec09fef4ab54.rmeta"
+## 
+## [[mounts]]
+## from = "out-f8a5ec09fef4ab54"
+## src = "/libmemchr-f8a5ec09fef4ab54.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libmemchr-f8a5ec09fef4ab54.rlib"
+## 
+## [[mounts]]
+## from = "out-fc928953fff1e68b"
+## src = "/libryu-fc928953fff1e68b.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libryu-fc928953fff1e68b.rmeta"
+## 
+## [[mounts]]
+## from = "out-fc928953fff1e68b"
+## src = "/libryu-fc928953fff1e68b.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libryu-fc928953fff1e68b.rlib"
+## 
+## [[mounts]]
+## from = "out-b6c6cf1c11688574"
+## src = "/libserde-b6c6cf1c11688574.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libserde-b6c6cf1c11688574.rmeta"
+## 
+## [[mounts]]
+## from = "out-b6c6cf1c11688574"
+## src = "/libserde-b6c6cf1c11688574.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libserde-b6c6cf1c11688574.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -3168,9 +3822,13 @@ COPY --from=dep-l-serde_json-1.0.140-7c70ba617eecc4c0 /tmp/clis-cargo-config2_0-
 ## RUN \
 ##   --mount=from=cratesio-serde_json-1.0.140,source=/serde_json-1.0.140,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.140 \
 ##   --mount=from=out-a68ea12a2369cd39,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libitoa-a68ea12a2369cd39.rmeta,source=/libitoa-a68ea12a2369cd39.rmeta \
+##   --mount=from=out-a68ea12a2369cd39,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libitoa-a68ea12a2369cd39.rlib,source=/libitoa-a68ea12a2369cd39.rlib \
 ##   --mount=from=out-f8a5ec09fef4ab54,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libmemchr-f8a5ec09fef4ab54.rmeta,source=/libmemchr-f8a5ec09fef4ab54.rmeta \
+##   --mount=from=out-f8a5ec09fef4ab54,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libmemchr-f8a5ec09fef4ab54.rlib,source=/libmemchr-f8a5ec09fef4ab54.rlib \
 ##   --mount=from=out-fc928953fff1e68b,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libryu-fc928953fff1e68b.rmeta,source=/libryu-fc928953fff1e68b.rmeta \
+##   --mount=from=out-fc928953fff1e68b,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libryu-fc928953fff1e68b.rlib,source=/libryu-fc928953fff1e68b.rlib \
 ##   --mount=from=out-b6c6cf1c11688574,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libserde-b6c6cf1c11688574.rmeta,source=/libserde-b6c6cf1c11688574.rmeta \
+##   --mount=from=out-b6c6cf1c11688574,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libserde-b6c6cf1c11688574.rlib,source=/libserde-b6c6cf1c11688574.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="serde_json" \
@@ -3798,7 +4456,9 @@ WORKDIR /tmp/clis-cargo-config2_0-1-34/release/deps
 RUN \
   --mount=from=cratesio-rustix-1.0.7,source=/rustix-1.0.7,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustix-1.0.7 \
   --mount=from=out-d53ce0040874ecbb,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libbitflags-d53ce0040874ecbb.rmeta,source=/libbitflags-d53ce0040874ecbb.rmeta \
+  --mount=from=out-d53ce0040874ecbb,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libbitflags-d53ce0040874ecbb.rlib,source=/libbitflags-d53ce0040874ecbb.rlib \
   --mount=from=out-84721aa7d977aed9,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/liblinux_raw_sys-84721aa7d977aed9.rmeta,source=/liblinux_raw_sys-84721aa7d977aed9.rmeta \
+  --mount=from=out-84721aa7d977aed9,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/liblinux_raw_sys-84721aa7d977aed9.rlib,source=/liblinux_raw_sys-84721aa7d977aed9.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="rustix" \
@@ -3833,8 +4493,8 @@ COPY --from=dep-l-rustix-1.0.7-584f0556744e746d /tmp/clis-cargo-config2_0-1-34/r
 ##     "84721aa7d977aed9",
 ## ]
 ## short_externs = [
-##     "bitflags-d53ce0040874ecbb",
-##     "linux_raw_sys-84721aa7d977aed9",
+##     "d53ce0040874ecbb",
+##     "84721aa7d977aed9",
 ## ]
 ## writes = [
 ##     "deps/rustix-584f0556744e746d.d",
@@ -3846,6 +4506,26 @@ COPY --from=dep-l-rustix-1.0.7-584f0556744e746d /tmp/clis-cargo-config2_0-1-34/r
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-cargo-config2_0-1-34/release/deps/librustix-584f0556744e746d.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-cargo-config2_0-1-34/release/deps/librustix-584f0556744e746d.rlib","emit":"link"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-d53ce0040874ecbb"
+## src = "/libbitflags-d53ce0040874ecbb.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libbitflags-d53ce0040874ecbb.rmeta"
+## 
+## [[mounts]]
+## from = "out-d53ce0040874ecbb"
+## src = "/libbitflags-d53ce0040874ecbb.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libbitflags-d53ce0040874ecbb.rlib"
+## 
+## [[mounts]]
+## from = "out-84721aa7d977aed9"
+## src = "/liblinux_raw_sys-84721aa7d977aed9.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/liblinux_raw_sys-84721aa7d977aed9.rmeta"
+## 
+## [[mounts]]
+## from = "out-84721aa7d977aed9"
+## src = "/liblinux_raw_sys-84721aa7d977aed9.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/liblinux_raw_sys-84721aa7d977aed9.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -3867,7 +4547,9 @@ COPY --from=dep-l-rustix-1.0.7-584f0556744e746d /tmp/clis-cargo-config2_0-1-34/r
 ## RUN \
 ##   --mount=from=cratesio-rustix-1.0.7,source=/rustix-1.0.7,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustix-1.0.7 \
 ##   --mount=from=out-d53ce0040874ecbb,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libbitflags-d53ce0040874ecbb.rmeta,source=/libbitflags-d53ce0040874ecbb.rmeta \
+##   --mount=from=out-d53ce0040874ecbb,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libbitflags-d53ce0040874ecbb.rlib,source=/libbitflags-d53ce0040874ecbb.rlib \
 ##   --mount=from=out-84721aa7d977aed9,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/liblinux_raw_sys-84721aa7d977aed9.rmeta,source=/liblinux_raw_sys-84721aa7d977aed9.rmeta \
+##   --mount=from=out-84721aa7d977aed9,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/liblinux_raw_sys-84721aa7d977aed9.rlib,source=/liblinux_raw_sys-84721aa7d977aed9.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="rustix" \
@@ -3909,10 +4591,15 @@ WORKDIR /tmp/clis-cargo-config2_0-1-34/release/deps
 RUN \
   --mount=from=cratesio-tempfile-3.20.0,source=/tempfile-3.20.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/tempfile-3.20.0 \
   --mount=from=out-5f75ad2d1e8c435a,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libfastrand-5f75ad2d1e8c435a.rmeta,source=/libfastrand-5f75ad2d1e8c435a.rmeta \
+  --mount=from=out-5f75ad2d1e8c435a,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libfastrand-5f75ad2d1e8c435a.rlib,source=/libfastrand-5f75ad2d1e8c435a.rlib \
   --mount=from=out-44bb68212ecec348,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libonce_cell-44bb68212ecec348.rmeta,source=/libonce_cell-44bb68212ecec348.rmeta \
+  --mount=from=out-44bb68212ecec348,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libonce_cell-44bb68212ecec348.rlib,source=/libonce_cell-44bb68212ecec348.rlib \
   --mount=from=out-584f0556744e746d,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/librustix-584f0556744e746d.rmeta,source=/librustix-584f0556744e746d.rmeta \
+  --mount=from=out-584f0556744e746d,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/librustix-584f0556744e746d.rlib,source=/librustix-584f0556744e746d.rlib \
   --mount=from=out-d53ce0040874ecbb,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libbitflags-d53ce0040874ecbb.rmeta,source=/libbitflags-d53ce0040874ecbb.rmeta \
+  --mount=from=out-d53ce0040874ecbb,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libbitflags-d53ce0040874ecbb.rlib,source=/libbitflags-d53ce0040874ecbb.rlib \
   --mount=from=out-84721aa7d977aed9,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/liblinux_raw_sys-84721aa7d977aed9.rmeta,source=/liblinux_raw_sys-84721aa7d977aed9.rmeta \
+  --mount=from=out-84721aa7d977aed9,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/liblinux_raw_sys-84721aa7d977aed9.rlib,source=/liblinux_raw_sys-84721aa7d977aed9.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="tempfile" \
@@ -3949,11 +4636,11 @@ COPY --from=dep-l-tempfile-3.20.0-ba228c019d272069 /tmp/clis-cargo-config2_0-1-3
 ##     "84721aa7d977aed9",
 ## ]
 ## short_externs = [
-##     "fastrand-5f75ad2d1e8c435a",
-##     "once_cell-44bb68212ecec348",
-##     "rustix-584f0556744e746d",
-##     "bitflags-d53ce0040874ecbb",
-##     "linux_raw_sys-84721aa7d977aed9",
+##     "5f75ad2d1e8c435a",
+##     "44bb68212ecec348",
+##     "584f0556744e746d",
+##     "d53ce0040874ecbb",
+##     "84721aa7d977aed9",
 ## ]
 ## writes = [
 ##     "deps/tempfile-ba228c019d272069.d",
@@ -3965,6 +4652,56 @@ COPY --from=dep-l-tempfile-3.20.0-ba228c019d272069 /tmp/clis-cargo-config2_0-1-3
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-cargo-config2_0-1-34/release/deps/libtempfile-ba228c019d272069.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-cargo-config2_0-1-34/release/deps/libtempfile-ba228c019d272069.rlib","emit":"link"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-5f75ad2d1e8c435a"
+## src = "/libfastrand-5f75ad2d1e8c435a.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libfastrand-5f75ad2d1e8c435a.rmeta"
+## 
+## [[mounts]]
+## from = "out-5f75ad2d1e8c435a"
+## src = "/libfastrand-5f75ad2d1e8c435a.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libfastrand-5f75ad2d1e8c435a.rlib"
+## 
+## [[mounts]]
+## from = "out-44bb68212ecec348"
+## src = "/libonce_cell-44bb68212ecec348.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libonce_cell-44bb68212ecec348.rmeta"
+## 
+## [[mounts]]
+## from = "out-44bb68212ecec348"
+## src = "/libonce_cell-44bb68212ecec348.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libonce_cell-44bb68212ecec348.rlib"
+## 
+## [[mounts]]
+## from = "out-584f0556744e746d"
+## src = "/librustix-584f0556744e746d.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/librustix-584f0556744e746d.rmeta"
+## 
+## [[mounts]]
+## from = "out-584f0556744e746d"
+## src = "/librustix-584f0556744e746d.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/librustix-584f0556744e746d.rlib"
+## 
+## [[mounts]]
+## from = "out-d53ce0040874ecbb"
+## src = "/libbitflags-d53ce0040874ecbb.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libbitflags-d53ce0040874ecbb.rmeta"
+## 
+## [[mounts]]
+## from = "out-d53ce0040874ecbb"
+## src = "/libbitflags-d53ce0040874ecbb.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libbitflags-d53ce0040874ecbb.rlib"
+## 
+## [[mounts]]
+## from = "out-84721aa7d977aed9"
+## src = "/liblinux_raw_sys-84721aa7d977aed9.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/liblinux_raw_sys-84721aa7d977aed9.rmeta"
+## 
+## [[mounts]]
+## from = "out-84721aa7d977aed9"
+## src = "/liblinux_raw_sys-84721aa7d977aed9.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/liblinux_raw_sys-84721aa7d977aed9.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -3986,10 +4723,15 @@ COPY --from=dep-l-tempfile-3.20.0-ba228c019d272069 /tmp/clis-cargo-config2_0-1-3
 ## RUN \
 ##   --mount=from=cratesio-tempfile-3.20.0,source=/tempfile-3.20.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/tempfile-3.20.0 \
 ##   --mount=from=out-5f75ad2d1e8c435a,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libfastrand-5f75ad2d1e8c435a.rmeta,source=/libfastrand-5f75ad2d1e8c435a.rmeta \
+##   --mount=from=out-5f75ad2d1e8c435a,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libfastrand-5f75ad2d1e8c435a.rlib,source=/libfastrand-5f75ad2d1e8c435a.rlib \
 ##   --mount=from=out-44bb68212ecec348,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libonce_cell-44bb68212ecec348.rmeta,source=/libonce_cell-44bb68212ecec348.rmeta \
+##   --mount=from=out-44bb68212ecec348,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libonce_cell-44bb68212ecec348.rlib,source=/libonce_cell-44bb68212ecec348.rlib \
 ##   --mount=from=out-584f0556744e746d,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/librustix-584f0556744e746d.rmeta,source=/librustix-584f0556744e746d.rmeta \
+##   --mount=from=out-584f0556744e746d,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/librustix-584f0556744e746d.rlib,source=/librustix-584f0556744e746d.rlib \
 ##   --mount=from=out-d53ce0040874ecbb,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libbitflags-d53ce0040874ecbb.rmeta,source=/libbitflags-d53ce0040874ecbb.rmeta \
+##   --mount=from=out-d53ce0040874ecbb,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libbitflags-d53ce0040874ecbb.rlib,source=/libbitflags-d53ce0040874ecbb.rlib \
 ##   --mount=from=out-84721aa7d977aed9,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/liblinux_raw_sys-84721aa7d977aed9.rmeta,source=/liblinux_raw_sys-84721aa7d977aed9.rmeta \
+##   --mount=from=out-84721aa7d977aed9,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/liblinux_raw_sys-84721aa7d977aed9.rlib,source=/liblinux_raw_sys-84721aa7d977aed9.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="tempfile" \
@@ -4030,14 +4772,23 @@ WORKDIR /tmp/clis-cargo-config2_0-1-34/release/deps
 RUN \
   --mount=from=cratesio-toml-0.8.23,source=/toml-0.8.23,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/toml-0.8.23 \
   --mount=from=out-b6c6cf1c11688574,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libserde-b6c6cf1c11688574.rmeta,source=/libserde-b6c6cf1c11688574.rmeta \
+  --mount=from=out-b6c6cf1c11688574,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libserde-b6c6cf1c11688574.rlib,source=/libserde-b6c6cf1c11688574.rlib \
   --mount=from=out-d88bc6011818f513,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libserde_spanned-d88bc6011818f513.rmeta,source=/libserde_spanned-d88bc6011818f513.rmeta \
+  --mount=from=out-d88bc6011818f513,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libserde_spanned-d88bc6011818f513.rlib,source=/libserde_spanned-d88bc6011818f513.rlib \
   --mount=from=out-23be505440c57a38,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libtoml_datetime-23be505440c57a38.rmeta,source=/libtoml_datetime-23be505440c57a38.rmeta \
+  --mount=from=out-23be505440c57a38,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libtoml_datetime-23be505440c57a38.rlib,source=/libtoml_datetime-23be505440c57a38.rlib \
   --mount=from=out-c1e542f0979b274a,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libtoml_edit-c1e542f0979b274a.rmeta,source=/libtoml_edit-c1e542f0979b274a.rmeta \
+  --mount=from=out-c1e542f0979b274a,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libtoml_edit-c1e542f0979b274a.rlib,source=/libtoml_edit-c1e542f0979b274a.rlib \
   --mount=from=out-657f65f0f8918814,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libindexmap-657f65f0f8918814.rmeta,source=/libindexmap-657f65f0f8918814.rmeta \
+  --mount=from=out-657f65f0f8918814,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libindexmap-657f65f0f8918814.rlib,source=/libindexmap-657f65f0f8918814.rlib \
   --mount=from=out-92df6cc0b9ce3dcd,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libequivalent-92df6cc0b9ce3dcd.rmeta,source=/libequivalent-92df6cc0b9ce3dcd.rmeta \
+  --mount=from=out-92df6cc0b9ce3dcd,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libequivalent-92df6cc0b9ce3dcd.rlib,source=/libequivalent-92df6cc0b9ce3dcd.rlib \
   --mount=from=out-e384bcd48d03db95,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libhashbrown-e384bcd48d03db95.rmeta,source=/libhashbrown-e384bcd48d03db95.rmeta \
+  --mount=from=out-e384bcd48d03db95,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libhashbrown-e384bcd48d03db95.rlib,source=/libhashbrown-e384bcd48d03db95.rlib \
   --mount=from=out-9abea66ccd9c864c,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libtoml_write-9abea66ccd9c864c.rmeta,source=/libtoml_write-9abea66ccd9c864c.rmeta \
+  --mount=from=out-9abea66ccd9c864c,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libtoml_write-9abea66ccd9c864c.rlib,source=/libtoml_write-9abea66ccd9c864c.rlib \
   --mount=from=out-d5e3fa1fabb7822c,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libwinnow-d5e3fa1fabb7822c.rmeta,source=/libwinnow-d5e3fa1fabb7822c.rmeta \
+  --mount=from=out-d5e3fa1fabb7822c,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libwinnow-d5e3fa1fabb7822c.rlib,source=/libwinnow-d5e3fa1fabb7822c.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="toml" \
@@ -4078,15 +4829,15 @@ COPY --from=dep-l-toml-0.8.23-2bea4b835d7dad2d /tmp/clis-cargo-config2_0-1-34/re
 ##     "d5e3fa1fabb7822c",
 ## ]
 ## short_externs = [
-##     "serde-b6c6cf1c11688574",
-##     "serde_spanned-d88bc6011818f513",
-##     "toml_datetime-23be505440c57a38",
-##     "toml_edit-c1e542f0979b274a",
-##     "indexmap-657f65f0f8918814",
-##     "equivalent-92df6cc0b9ce3dcd",
-##     "hashbrown-e384bcd48d03db95",
-##     "toml_write-9abea66ccd9c864c",
-##     "winnow-d5e3fa1fabb7822c",
+##     "b6c6cf1c11688574",
+##     "d88bc6011818f513",
+##     "23be505440c57a38",
+##     "c1e542f0979b274a",
+##     "657f65f0f8918814",
+##     "92df6cc0b9ce3dcd",
+##     "e384bcd48d03db95",
+##     "9abea66ccd9c864c",
+##     "d5e3fa1fabb7822c",
 ## ]
 ## writes = [
 ##     "deps/toml-2bea4b835d7dad2d.d",
@@ -4098,6 +4849,96 @@ COPY --from=dep-l-toml-0.8.23-2bea4b835d7dad2d /tmp/clis-cargo-config2_0-1-34/re
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-cargo-config2_0-1-34/release/deps/libtoml-2bea4b835d7dad2d.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-cargo-config2_0-1-34/release/deps/libtoml-2bea4b835d7dad2d.rlib","emit":"link"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-b6c6cf1c11688574"
+## src = "/libserde-b6c6cf1c11688574.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libserde-b6c6cf1c11688574.rmeta"
+## 
+## [[mounts]]
+## from = "out-b6c6cf1c11688574"
+## src = "/libserde-b6c6cf1c11688574.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libserde-b6c6cf1c11688574.rlib"
+## 
+## [[mounts]]
+## from = "out-d88bc6011818f513"
+## src = "/libserde_spanned-d88bc6011818f513.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libserde_spanned-d88bc6011818f513.rmeta"
+## 
+## [[mounts]]
+## from = "out-d88bc6011818f513"
+## src = "/libserde_spanned-d88bc6011818f513.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libserde_spanned-d88bc6011818f513.rlib"
+## 
+## [[mounts]]
+## from = "out-23be505440c57a38"
+## src = "/libtoml_datetime-23be505440c57a38.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libtoml_datetime-23be505440c57a38.rmeta"
+## 
+## [[mounts]]
+## from = "out-23be505440c57a38"
+## src = "/libtoml_datetime-23be505440c57a38.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libtoml_datetime-23be505440c57a38.rlib"
+## 
+## [[mounts]]
+## from = "out-c1e542f0979b274a"
+## src = "/libtoml_edit-c1e542f0979b274a.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libtoml_edit-c1e542f0979b274a.rmeta"
+## 
+## [[mounts]]
+## from = "out-c1e542f0979b274a"
+## src = "/libtoml_edit-c1e542f0979b274a.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libtoml_edit-c1e542f0979b274a.rlib"
+## 
+## [[mounts]]
+## from = "out-657f65f0f8918814"
+## src = "/libindexmap-657f65f0f8918814.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libindexmap-657f65f0f8918814.rmeta"
+## 
+## [[mounts]]
+## from = "out-657f65f0f8918814"
+## src = "/libindexmap-657f65f0f8918814.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libindexmap-657f65f0f8918814.rlib"
+## 
+## [[mounts]]
+## from = "out-92df6cc0b9ce3dcd"
+## src = "/libequivalent-92df6cc0b9ce3dcd.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libequivalent-92df6cc0b9ce3dcd.rmeta"
+## 
+## [[mounts]]
+## from = "out-92df6cc0b9ce3dcd"
+## src = "/libequivalent-92df6cc0b9ce3dcd.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libequivalent-92df6cc0b9ce3dcd.rlib"
+## 
+## [[mounts]]
+## from = "out-e384bcd48d03db95"
+## src = "/libhashbrown-e384bcd48d03db95.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libhashbrown-e384bcd48d03db95.rmeta"
+## 
+## [[mounts]]
+## from = "out-e384bcd48d03db95"
+## src = "/libhashbrown-e384bcd48d03db95.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libhashbrown-e384bcd48d03db95.rlib"
+## 
+## [[mounts]]
+## from = "out-9abea66ccd9c864c"
+## src = "/libtoml_write-9abea66ccd9c864c.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libtoml_write-9abea66ccd9c864c.rmeta"
+## 
+## [[mounts]]
+## from = "out-9abea66ccd9c864c"
+## src = "/libtoml_write-9abea66ccd9c864c.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libtoml_write-9abea66ccd9c864c.rlib"
+## 
+## [[mounts]]
+## from = "out-d5e3fa1fabb7822c"
+## src = "/libwinnow-d5e3fa1fabb7822c.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libwinnow-d5e3fa1fabb7822c.rmeta"
+## 
+## [[mounts]]
+## from = "out-d5e3fa1fabb7822c"
+## src = "/libwinnow-d5e3fa1fabb7822c.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libwinnow-d5e3fa1fabb7822c.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -4119,14 +4960,23 @@ COPY --from=dep-l-toml-0.8.23-2bea4b835d7dad2d /tmp/clis-cargo-config2_0-1-34/re
 ## RUN \
 ##   --mount=from=cratesio-toml-0.8.23,source=/toml-0.8.23,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/toml-0.8.23 \
 ##   --mount=from=out-b6c6cf1c11688574,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libserde-b6c6cf1c11688574.rmeta,source=/libserde-b6c6cf1c11688574.rmeta \
+##   --mount=from=out-b6c6cf1c11688574,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libserde-b6c6cf1c11688574.rlib,source=/libserde-b6c6cf1c11688574.rlib \
 ##   --mount=from=out-d88bc6011818f513,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libserde_spanned-d88bc6011818f513.rmeta,source=/libserde_spanned-d88bc6011818f513.rmeta \
+##   --mount=from=out-d88bc6011818f513,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libserde_spanned-d88bc6011818f513.rlib,source=/libserde_spanned-d88bc6011818f513.rlib \
 ##   --mount=from=out-23be505440c57a38,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libtoml_datetime-23be505440c57a38.rmeta,source=/libtoml_datetime-23be505440c57a38.rmeta \
+##   --mount=from=out-23be505440c57a38,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libtoml_datetime-23be505440c57a38.rlib,source=/libtoml_datetime-23be505440c57a38.rlib \
 ##   --mount=from=out-c1e542f0979b274a,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libtoml_edit-c1e542f0979b274a.rmeta,source=/libtoml_edit-c1e542f0979b274a.rmeta \
+##   --mount=from=out-c1e542f0979b274a,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libtoml_edit-c1e542f0979b274a.rlib,source=/libtoml_edit-c1e542f0979b274a.rlib \
 ##   --mount=from=out-657f65f0f8918814,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libindexmap-657f65f0f8918814.rmeta,source=/libindexmap-657f65f0f8918814.rmeta \
+##   --mount=from=out-657f65f0f8918814,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libindexmap-657f65f0f8918814.rlib,source=/libindexmap-657f65f0f8918814.rlib \
 ##   --mount=from=out-92df6cc0b9ce3dcd,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libequivalent-92df6cc0b9ce3dcd.rmeta,source=/libequivalent-92df6cc0b9ce3dcd.rmeta \
+##   --mount=from=out-92df6cc0b9ce3dcd,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libequivalent-92df6cc0b9ce3dcd.rlib,source=/libequivalent-92df6cc0b9ce3dcd.rlib \
 ##   --mount=from=out-e384bcd48d03db95,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libhashbrown-e384bcd48d03db95.rmeta,source=/libhashbrown-e384bcd48d03db95.rmeta \
+##   --mount=from=out-e384bcd48d03db95,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libhashbrown-e384bcd48d03db95.rlib,source=/libhashbrown-e384bcd48d03db95.rlib \
 ##   --mount=from=out-9abea66ccd9c864c,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libtoml_write-9abea66ccd9c864c.rmeta,source=/libtoml_write-9abea66ccd9c864c.rmeta \
+##   --mount=from=out-9abea66ccd9c864c,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libtoml_write-9abea66ccd9c864c.rlib,source=/libtoml_write-9abea66ccd9c864c.rlib \
 ##   --mount=from=out-d5e3fa1fabb7822c,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libwinnow-d5e3fa1fabb7822c.rmeta,source=/libwinnow-d5e3fa1fabb7822c.rmeta \
+##   --mount=from=out-d5e3fa1fabb7822c,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libwinnow-d5e3fa1fabb7822c.rlib,source=/libwinnow-d5e3fa1fabb7822c.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="toml" \
@@ -4164,44 +5014,80 @@ SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 WORKDIR /tmp/clis-cargo-config2_0-1-34/release/examples
 RUN \
   --mount=from=cratesio-cargo-config2-0.1.34,source=/cargo-config2-0.1.34,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/cargo-config2-0.1.34 \
+  --mount=from=out-2510ffd6966eb36d,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libanyhow-2510ffd6966eb36d.rmeta,source=/libanyhow-2510ffd6966eb36d.rmeta \
   --mount=from=out-2510ffd6966eb36d,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libanyhow-2510ffd6966eb36d.rlib,source=/libanyhow-2510ffd6966eb36d.rlib \
+  --mount=from=out-438e025c67a2840e,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libbuild_context-438e025c67a2840e.rmeta,source=/libbuild_context-438e025c67a2840e.rmeta \
   --mount=from=out-438e025c67a2840e,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libbuild_context-438e025c67a2840e.rlib,source=/libbuild_context-438e025c67a2840e.rlib \
+  --mount=from=out-e6fea3eab43aaf67,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libcargo_config2-e6fea3eab43aaf67.rmeta,source=/libcargo_config2-e6fea3eab43aaf67.rmeta \
   --mount=from=out-e6fea3eab43aaf67,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libcargo_config2-e6fea3eab43aaf67.rlib,source=/libcargo_config2-e6fea3eab43aaf67.rlib \
+  --mount=from=out-b6c6cf1c11688574,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libserde-b6c6cf1c11688574.rmeta,source=/libserde-b6c6cf1c11688574.rmeta \
   --mount=from=out-b6c6cf1c11688574,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libserde-b6c6cf1c11688574.rlib,source=/libserde-b6c6cf1c11688574.rlib \
   --mount=from=out-a51e2455af527849,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libserde_derive-a51e2455af527849.so,source=/libserde_derive-a51e2455af527849.so \
+  --mount=from=out-da36b031605c1ddc,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libproc_macro2-da36b031605c1ddc.rmeta,source=/libproc_macro2-da36b031605c1ddc.rmeta \
   --mount=from=out-da36b031605c1ddc,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libproc_macro2-da36b031605c1ddc.rlib,source=/libproc_macro2-da36b031605c1ddc.rlib \
+  --mount=from=out-02b0d04ef026a7b6,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libunicode_ident-02b0d04ef026a7b6.rmeta,source=/libunicode_ident-02b0d04ef026a7b6.rmeta \
   --mount=from=out-02b0d04ef026a7b6,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libunicode_ident-02b0d04ef026a7b6.rlib,source=/libunicode_ident-02b0d04ef026a7b6.rlib \
+  --mount=from=out-21aeee0f329238fb,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libquote-21aeee0f329238fb.rmeta,source=/libquote-21aeee0f329238fb.rmeta \
   --mount=from=out-21aeee0f329238fb,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libquote-21aeee0f329238fb.rlib,source=/libquote-21aeee0f329238fb.rlib \
+  --mount=from=out-5571b1fa61474ffa,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libsyn-5571b1fa61474ffa.rmeta,source=/libsyn-5571b1fa61474ffa.rmeta \
   --mount=from=out-5571b1fa61474ffa,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libsyn-5571b1fa61474ffa.rlib,source=/libsyn-5571b1fa61474ffa.rlib \
+  --mount=from=out-c1e542f0979b274a,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libtoml_edit-c1e542f0979b274a.rmeta,source=/libtoml_edit-c1e542f0979b274a.rmeta \
   --mount=from=out-c1e542f0979b274a,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libtoml_edit-c1e542f0979b274a.rlib,source=/libtoml_edit-c1e542f0979b274a.rlib \
+  --mount=from=out-657f65f0f8918814,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libindexmap-657f65f0f8918814.rmeta,source=/libindexmap-657f65f0f8918814.rmeta \
   --mount=from=out-657f65f0f8918814,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libindexmap-657f65f0f8918814.rlib,source=/libindexmap-657f65f0f8918814.rlib \
+  --mount=from=out-92df6cc0b9ce3dcd,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libequivalent-92df6cc0b9ce3dcd.rmeta,source=/libequivalent-92df6cc0b9ce3dcd.rmeta \
   --mount=from=out-92df6cc0b9ce3dcd,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libequivalent-92df6cc0b9ce3dcd.rlib,source=/libequivalent-92df6cc0b9ce3dcd.rlib \
+  --mount=from=out-e384bcd48d03db95,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libhashbrown-e384bcd48d03db95.rmeta,source=/libhashbrown-e384bcd48d03db95.rmeta \
   --mount=from=out-e384bcd48d03db95,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libhashbrown-e384bcd48d03db95.rlib,source=/libhashbrown-e384bcd48d03db95.rlib \
+  --mount=from=out-d88bc6011818f513,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libserde_spanned-d88bc6011818f513.rmeta,source=/libserde_spanned-d88bc6011818f513.rmeta \
   --mount=from=out-d88bc6011818f513,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libserde_spanned-d88bc6011818f513.rlib,source=/libserde_spanned-d88bc6011818f513.rlib \
+  --mount=from=out-23be505440c57a38,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libtoml_datetime-23be505440c57a38.rmeta,source=/libtoml_datetime-23be505440c57a38.rmeta \
   --mount=from=out-23be505440c57a38,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libtoml_datetime-23be505440c57a38.rlib,source=/libtoml_datetime-23be505440c57a38.rlib \
+  --mount=from=out-9abea66ccd9c864c,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libtoml_write-9abea66ccd9c864c.rmeta,source=/libtoml_write-9abea66ccd9c864c.rmeta \
   --mount=from=out-9abea66ccd9c864c,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libtoml_write-9abea66ccd9c864c.rlib,source=/libtoml_write-9abea66ccd9c864c.rlib \
+  --mount=from=out-d5e3fa1fabb7822c,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libwinnow-d5e3fa1fabb7822c.rmeta,source=/libwinnow-d5e3fa1fabb7822c.rmeta \
   --mount=from=out-d5e3fa1fabb7822c,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libwinnow-d5e3fa1fabb7822c.rlib,source=/libwinnow-d5e3fa1fabb7822c.rlib \
+  --mount=from=out-fa9f135a39baa87b,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libclap-fa9f135a39baa87b.rmeta,source=/libclap-fa9f135a39baa87b.rmeta \
   --mount=from=out-fa9f135a39baa87b,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libclap-fa9f135a39baa87b.rlib,source=/libclap-fa9f135a39baa87b.rlib \
+  --mount=from=out-41622f4093b29d13,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libclap_builder-41622f4093b29d13.rmeta,source=/libclap_builder-41622f4093b29d13.rmeta \
   --mount=from=out-41622f4093b29d13,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libclap_builder-41622f4093b29d13.rlib,source=/libclap_builder-41622f4093b29d13.rlib \
+  --mount=from=out-21ded493861ed51c,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libanstyle-21ded493861ed51c.rmeta,source=/libanstyle-21ded493861ed51c.rmeta \
   --mount=from=out-21ded493861ed51c,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libanstyle-21ded493861ed51c.rlib,source=/libanstyle-21ded493861ed51c.rlib \
+  --mount=from=out-fa1650fe0d33e35e,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libclap_lex-fa1650fe0d33e35e.rmeta,source=/libclap_lex-fa1650fe0d33e35e.rmeta \
   --mount=from=out-fa1650fe0d33e35e,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libclap_lex-fa1650fe0d33e35e.rlib,source=/libclap_lex-fa1650fe0d33e35e.rlib \
   --mount=from=out-45053889f17e427d,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libclap_derive-45053889f17e427d.so,source=/libclap_derive-45053889f17e427d.so \
+  --mount=from=out-06debb0d4d4774b1,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libheck-06debb0d4d4774b1.rmeta,source=/libheck-06debb0d4d4774b1.rmeta \
   --mount=from=out-06debb0d4d4774b1,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libheck-06debb0d4d4774b1.rlib,source=/libheck-06debb0d4d4774b1.rlib \
+  --mount=from=out-e710e1ebbad36529,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libfs_err-e710e1ebbad36529.rmeta,source=/libfs_err-e710e1ebbad36529.rmeta \
   --mount=from=out-e710e1ebbad36529,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libfs_err-e710e1ebbad36529.rlib,source=/libfs_err-e710e1ebbad36529.rlib \
+  --mount=from=out-08712be55b44d56f,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/liblexopt-08712be55b44d56f.rmeta,source=/liblexopt-08712be55b44d56f.rmeta \
   --mount=from=out-08712be55b44d56f,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/liblexopt-08712be55b44d56f.rlib,source=/liblexopt-08712be55b44d56f.rlib \
   --mount=from=out-7ffc156b99c00502,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/librustversion-7ffc156b99c00502.so,source=/librustversion-7ffc156b99c00502.so \
+  --mount=from=out-7c70ba617eecc4c0,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libserde_json-7c70ba617eecc4c0.rmeta,source=/libserde_json-7c70ba617eecc4c0.rmeta \
   --mount=from=out-7c70ba617eecc4c0,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libserde_json-7c70ba617eecc4c0.rlib,source=/libserde_json-7c70ba617eecc4c0.rlib \
+  --mount=from=out-a68ea12a2369cd39,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libitoa-a68ea12a2369cd39.rmeta,source=/libitoa-a68ea12a2369cd39.rmeta \
   --mount=from=out-a68ea12a2369cd39,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libitoa-a68ea12a2369cd39.rlib,source=/libitoa-a68ea12a2369cd39.rlib \
+  --mount=from=out-f8a5ec09fef4ab54,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libmemchr-f8a5ec09fef4ab54.rmeta,source=/libmemchr-f8a5ec09fef4ab54.rmeta \
   --mount=from=out-f8a5ec09fef4ab54,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libmemchr-f8a5ec09fef4ab54.rlib,source=/libmemchr-f8a5ec09fef4ab54.rlib \
+  --mount=from=out-fc928953fff1e68b,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libryu-fc928953fff1e68b.rmeta,source=/libryu-fc928953fff1e68b.rmeta \
   --mount=from=out-fc928953fff1e68b,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libryu-fc928953fff1e68b.rlib,source=/libryu-fc928953fff1e68b.rlib \
+  --mount=from=out-454359939a0e8b60,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libshell_escape-454359939a0e8b60.rmeta,source=/libshell_escape-454359939a0e8b60.rmeta \
   --mount=from=out-454359939a0e8b60,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libshell_escape-454359939a0e8b60.rlib,source=/libshell_escape-454359939a0e8b60.rlib \
+  --mount=from=out-421f0f4cedfe8354,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libstatic_assertions-421f0f4cedfe8354.rmeta,source=/libstatic_assertions-421f0f4cedfe8354.rmeta \
   --mount=from=out-421f0f4cedfe8354,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libstatic_assertions-421f0f4cedfe8354.rlib,source=/libstatic_assertions-421f0f4cedfe8354.rlib \
+  --mount=from=out-ba228c019d272069,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libtempfile-ba228c019d272069.rmeta,source=/libtempfile-ba228c019d272069.rmeta \
   --mount=from=out-ba228c019d272069,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libtempfile-ba228c019d272069.rlib,source=/libtempfile-ba228c019d272069.rlib \
+  --mount=from=out-5f75ad2d1e8c435a,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libfastrand-5f75ad2d1e8c435a.rmeta,source=/libfastrand-5f75ad2d1e8c435a.rmeta \
   --mount=from=out-5f75ad2d1e8c435a,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libfastrand-5f75ad2d1e8c435a.rlib,source=/libfastrand-5f75ad2d1e8c435a.rlib \
+  --mount=from=out-44bb68212ecec348,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libonce_cell-44bb68212ecec348.rmeta,source=/libonce_cell-44bb68212ecec348.rmeta \
   --mount=from=out-44bb68212ecec348,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libonce_cell-44bb68212ecec348.rlib,source=/libonce_cell-44bb68212ecec348.rlib \
+  --mount=from=out-584f0556744e746d,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/librustix-584f0556744e746d.rmeta,source=/librustix-584f0556744e746d.rmeta \
   --mount=from=out-584f0556744e746d,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/librustix-584f0556744e746d.rlib,source=/librustix-584f0556744e746d.rlib \
+  --mount=from=out-d53ce0040874ecbb,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libbitflags-d53ce0040874ecbb.rmeta,source=/libbitflags-d53ce0040874ecbb.rmeta \
   --mount=from=out-d53ce0040874ecbb,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libbitflags-d53ce0040874ecbb.rlib,source=/libbitflags-d53ce0040874ecbb.rlib \
+  --mount=from=out-84721aa7d977aed9,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/liblinux_raw_sys-84721aa7d977aed9.rmeta,source=/liblinux_raw_sys-84721aa7d977aed9.rmeta \
   --mount=from=out-84721aa7d977aed9,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/liblinux_raw_sys-84721aa7d977aed9.rlib,source=/liblinux_raw_sys-84721aa7d977aed9.rlib \
+  --mount=from=out-2bea4b835d7dad2d,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libtoml-2bea4b835d7dad2d.rmeta,source=/libtoml-2bea4b835d7dad2d.rmeta \
   --mount=from=out-2bea4b835d7dad2d,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libtoml-2bea4b835d7dad2d.rlib,source=/libtoml-2bea4b835d7dad2d.rlib \
     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
     env CARGO="$(which cargo)" \
@@ -4279,45 +5165,45 @@ COPY --from=dep-b-cargo-config2-0.1.34-169636d1f2554c51 /tmp/clis-cargo-config2_
 ##     "2bea4b835d7dad2d",
 ## ]
 ## short_externs = [
-##     "anyhow-2510ffd6966eb36d",
-##     "build_context-438e025c67a2840e",
-##     "cargo_config2-e6fea3eab43aaf67",
-##     "serde-b6c6cf1c11688574",
-##     "serde_derive-a51e2455af527849",
-##     "proc_macro2-da36b031605c1ddc",
-##     "unicode_ident-02b0d04ef026a7b6",
-##     "quote-21aeee0f329238fb",
-##     "syn-5571b1fa61474ffa",
-##     "toml_edit-c1e542f0979b274a",
-##     "indexmap-657f65f0f8918814",
-##     "equivalent-92df6cc0b9ce3dcd",
-##     "hashbrown-e384bcd48d03db95",
-##     "serde_spanned-d88bc6011818f513",
-##     "toml_datetime-23be505440c57a38",
-##     "toml_write-9abea66ccd9c864c",
-##     "winnow-d5e3fa1fabb7822c",
-##     "clap-fa9f135a39baa87b",
-##     "clap_builder-41622f4093b29d13",
-##     "anstyle-21ded493861ed51c",
-##     "clap_lex-fa1650fe0d33e35e",
-##     "clap_derive-45053889f17e427d",
-##     "heck-06debb0d4d4774b1",
-##     "fs_err-e710e1ebbad36529",
-##     "lexopt-08712be55b44d56f",
-##     "rustversion-7ffc156b99c00502",
-##     "serde_json-7c70ba617eecc4c0",
-##     "itoa-a68ea12a2369cd39",
-##     "memchr-f8a5ec09fef4ab54",
-##     "ryu-fc928953fff1e68b",
-##     "shell_escape-454359939a0e8b60",
-##     "static_assertions-421f0f4cedfe8354",
-##     "tempfile-ba228c019d272069",
-##     "fastrand-5f75ad2d1e8c435a",
-##     "once_cell-44bb68212ecec348",
-##     "rustix-584f0556744e746d",
-##     "bitflags-d53ce0040874ecbb",
-##     "linux_raw_sys-84721aa7d977aed9",
-##     "toml-2bea4b835d7dad2d",
+##     "2510ffd6966eb36d",
+##     "438e025c67a2840e",
+##     "e6fea3eab43aaf67",
+##     "b6c6cf1c11688574",
+##     "a51e2455af527849",
+##     "da36b031605c1ddc",
+##     "02b0d04ef026a7b6",
+##     "21aeee0f329238fb",
+##     "5571b1fa61474ffa",
+##     "c1e542f0979b274a",
+##     "657f65f0f8918814",
+##     "92df6cc0b9ce3dcd",
+##     "e384bcd48d03db95",
+##     "d88bc6011818f513",
+##     "23be505440c57a38",
+##     "9abea66ccd9c864c",
+##     "d5e3fa1fabb7822c",
+##     "fa9f135a39baa87b",
+##     "41622f4093b29d13",
+##     "21ded493861ed51c",
+##     "fa1650fe0d33e35e",
+##     "45053889f17e427d",
+##     "06debb0d4d4774b1",
+##     "e710e1ebbad36529",
+##     "08712be55b44d56f",
+##     "7ffc156b99c00502",
+##     "7c70ba617eecc4c0",
+##     "a68ea12a2369cd39",
+##     "f8a5ec09fef4ab54",
+##     "fc928953fff1e68b",
+##     "454359939a0e8b60",
+##     "421f0f4cedfe8354",
+##     "ba228c019d272069",
+##     "5f75ad2d1e8c435a",
+##     "44bb68212ecec348",
+##     "584f0556744e746d",
+##     "d53ce0040874ecbb",
+##     "84721aa7d977aed9",
+##     "2bea4b835d7dad2d",
 ## ]
 ## writes = [
 ##     "examples/get-169636d1f2554c51.d",
@@ -4327,6 +5213,381 @@ COPY --from=dep-b-cargo-config2-0.1.34-169636d1f2554c51 /tmp/clis-cargo-config2_
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-cargo-config2_0-1-34/release/examples/get-169636d1f2554c51.d","emit":"dep-info"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-cargo-config2_0-1-34/release/examples/get-169636d1f2554c51","emit":"link"}',
 ## ]
+## 
+## [[mounts]]
+## from = "out-2510ffd6966eb36d"
+## src = "/libanyhow-2510ffd6966eb36d.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libanyhow-2510ffd6966eb36d.rmeta"
+## 
+## [[mounts]]
+## from = "out-2510ffd6966eb36d"
+## src = "/libanyhow-2510ffd6966eb36d.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libanyhow-2510ffd6966eb36d.rlib"
+## 
+## [[mounts]]
+## from = "out-438e025c67a2840e"
+## src = "/libbuild_context-438e025c67a2840e.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libbuild_context-438e025c67a2840e.rmeta"
+## 
+## [[mounts]]
+## from = "out-438e025c67a2840e"
+## src = "/libbuild_context-438e025c67a2840e.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libbuild_context-438e025c67a2840e.rlib"
+## 
+## [[mounts]]
+## from = "out-e6fea3eab43aaf67"
+## src = "/libcargo_config2-e6fea3eab43aaf67.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libcargo_config2-e6fea3eab43aaf67.rmeta"
+## 
+## [[mounts]]
+## from = "out-e6fea3eab43aaf67"
+## src = "/libcargo_config2-e6fea3eab43aaf67.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libcargo_config2-e6fea3eab43aaf67.rlib"
+## 
+## [[mounts]]
+## from = "out-b6c6cf1c11688574"
+## src = "/libserde-b6c6cf1c11688574.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libserde-b6c6cf1c11688574.rmeta"
+## 
+## [[mounts]]
+## from = "out-b6c6cf1c11688574"
+## src = "/libserde-b6c6cf1c11688574.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libserde-b6c6cf1c11688574.rlib"
+## 
+## [[mounts]]
+## from = "out-a51e2455af527849"
+## src = "/libserde_derive-a51e2455af527849.so"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libserde_derive-a51e2455af527849.so"
+## 
+## [[mounts]]
+## from = "out-da36b031605c1ddc"
+## src = "/libproc_macro2-da36b031605c1ddc.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libproc_macro2-da36b031605c1ddc.rmeta"
+## 
+## [[mounts]]
+## from = "out-da36b031605c1ddc"
+## src = "/libproc_macro2-da36b031605c1ddc.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libproc_macro2-da36b031605c1ddc.rlib"
+## 
+## [[mounts]]
+## from = "out-02b0d04ef026a7b6"
+## src = "/libunicode_ident-02b0d04ef026a7b6.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libunicode_ident-02b0d04ef026a7b6.rmeta"
+## 
+## [[mounts]]
+## from = "out-02b0d04ef026a7b6"
+## src = "/libunicode_ident-02b0d04ef026a7b6.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libunicode_ident-02b0d04ef026a7b6.rlib"
+## 
+## [[mounts]]
+## from = "out-21aeee0f329238fb"
+## src = "/libquote-21aeee0f329238fb.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libquote-21aeee0f329238fb.rmeta"
+## 
+## [[mounts]]
+## from = "out-21aeee0f329238fb"
+## src = "/libquote-21aeee0f329238fb.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libquote-21aeee0f329238fb.rlib"
+## 
+## [[mounts]]
+## from = "out-5571b1fa61474ffa"
+## src = "/libsyn-5571b1fa61474ffa.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libsyn-5571b1fa61474ffa.rmeta"
+## 
+## [[mounts]]
+## from = "out-5571b1fa61474ffa"
+## src = "/libsyn-5571b1fa61474ffa.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libsyn-5571b1fa61474ffa.rlib"
+## 
+## [[mounts]]
+## from = "out-c1e542f0979b274a"
+## src = "/libtoml_edit-c1e542f0979b274a.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libtoml_edit-c1e542f0979b274a.rmeta"
+## 
+## [[mounts]]
+## from = "out-c1e542f0979b274a"
+## src = "/libtoml_edit-c1e542f0979b274a.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libtoml_edit-c1e542f0979b274a.rlib"
+## 
+## [[mounts]]
+## from = "out-657f65f0f8918814"
+## src = "/libindexmap-657f65f0f8918814.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libindexmap-657f65f0f8918814.rmeta"
+## 
+## [[mounts]]
+## from = "out-657f65f0f8918814"
+## src = "/libindexmap-657f65f0f8918814.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libindexmap-657f65f0f8918814.rlib"
+## 
+## [[mounts]]
+## from = "out-92df6cc0b9ce3dcd"
+## src = "/libequivalent-92df6cc0b9ce3dcd.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libequivalent-92df6cc0b9ce3dcd.rmeta"
+## 
+## [[mounts]]
+## from = "out-92df6cc0b9ce3dcd"
+## src = "/libequivalent-92df6cc0b9ce3dcd.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libequivalent-92df6cc0b9ce3dcd.rlib"
+## 
+## [[mounts]]
+## from = "out-e384bcd48d03db95"
+## src = "/libhashbrown-e384bcd48d03db95.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libhashbrown-e384bcd48d03db95.rmeta"
+## 
+## [[mounts]]
+## from = "out-e384bcd48d03db95"
+## src = "/libhashbrown-e384bcd48d03db95.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libhashbrown-e384bcd48d03db95.rlib"
+## 
+## [[mounts]]
+## from = "out-d88bc6011818f513"
+## src = "/libserde_spanned-d88bc6011818f513.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libserde_spanned-d88bc6011818f513.rmeta"
+## 
+## [[mounts]]
+## from = "out-d88bc6011818f513"
+## src = "/libserde_spanned-d88bc6011818f513.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libserde_spanned-d88bc6011818f513.rlib"
+## 
+## [[mounts]]
+## from = "out-23be505440c57a38"
+## src = "/libtoml_datetime-23be505440c57a38.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libtoml_datetime-23be505440c57a38.rmeta"
+## 
+## [[mounts]]
+## from = "out-23be505440c57a38"
+## src = "/libtoml_datetime-23be505440c57a38.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libtoml_datetime-23be505440c57a38.rlib"
+## 
+## [[mounts]]
+## from = "out-9abea66ccd9c864c"
+## src = "/libtoml_write-9abea66ccd9c864c.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libtoml_write-9abea66ccd9c864c.rmeta"
+## 
+## [[mounts]]
+## from = "out-9abea66ccd9c864c"
+## src = "/libtoml_write-9abea66ccd9c864c.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libtoml_write-9abea66ccd9c864c.rlib"
+## 
+## [[mounts]]
+## from = "out-d5e3fa1fabb7822c"
+## src = "/libwinnow-d5e3fa1fabb7822c.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libwinnow-d5e3fa1fabb7822c.rmeta"
+## 
+## [[mounts]]
+## from = "out-d5e3fa1fabb7822c"
+## src = "/libwinnow-d5e3fa1fabb7822c.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libwinnow-d5e3fa1fabb7822c.rlib"
+## 
+## [[mounts]]
+## from = "out-fa9f135a39baa87b"
+## src = "/libclap-fa9f135a39baa87b.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libclap-fa9f135a39baa87b.rmeta"
+## 
+## [[mounts]]
+## from = "out-fa9f135a39baa87b"
+## src = "/libclap-fa9f135a39baa87b.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libclap-fa9f135a39baa87b.rlib"
+## 
+## [[mounts]]
+## from = "out-41622f4093b29d13"
+## src = "/libclap_builder-41622f4093b29d13.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libclap_builder-41622f4093b29d13.rmeta"
+## 
+## [[mounts]]
+## from = "out-41622f4093b29d13"
+## src = "/libclap_builder-41622f4093b29d13.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libclap_builder-41622f4093b29d13.rlib"
+## 
+## [[mounts]]
+## from = "out-21ded493861ed51c"
+## src = "/libanstyle-21ded493861ed51c.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libanstyle-21ded493861ed51c.rmeta"
+## 
+## [[mounts]]
+## from = "out-21ded493861ed51c"
+## src = "/libanstyle-21ded493861ed51c.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libanstyle-21ded493861ed51c.rlib"
+## 
+## [[mounts]]
+## from = "out-fa1650fe0d33e35e"
+## src = "/libclap_lex-fa1650fe0d33e35e.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libclap_lex-fa1650fe0d33e35e.rmeta"
+## 
+## [[mounts]]
+## from = "out-fa1650fe0d33e35e"
+## src = "/libclap_lex-fa1650fe0d33e35e.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libclap_lex-fa1650fe0d33e35e.rlib"
+## 
+## [[mounts]]
+## from = "out-45053889f17e427d"
+## src = "/libclap_derive-45053889f17e427d.so"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libclap_derive-45053889f17e427d.so"
+## 
+## [[mounts]]
+## from = "out-06debb0d4d4774b1"
+## src = "/libheck-06debb0d4d4774b1.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libheck-06debb0d4d4774b1.rmeta"
+## 
+## [[mounts]]
+## from = "out-06debb0d4d4774b1"
+## src = "/libheck-06debb0d4d4774b1.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libheck-06debb0d4d4774b1.rlib"
+## 
+## [[mounts]]
+## from = "out-e710e1ebbad36529"
+## src = "/libfs_err-e710e1ebbad36529.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libfs_err-e710e1ebbad36529.rmeta"
+## 
+## [[mounts]]
+## from = "out-e710e1ebbad36529"
+## src = "/libfs_err-e710e1ebbad36529.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libfs_err-e710e1ebbad36529.rlib"
+## 
+## [[mounts]]
+## from = "out-08712be55b44d56f"
+## src = "/liblexopt-08712be55b44d56f.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/liblexopt-08712be55b44d56f.rmeta"
+## 
+## [[mounts]]
+## from = "out-08712be55b44d56f"
+## src = "/liblexopt-08712be55b44d56f.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/liblexopt-08712be55b44d56f.rlib"
+## 
+## [[mounts]]
+## from = "out-7ffc156b99c00502"
+## src = "/librustversion-7ffc156b99c00502.so"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/librustversion-7ffc156b99c00502.so"
+## 
+## [[mounts]]
+## from = "out-7c70ba617eecc4c0"
+## src = "/libserde_json-7c70ba617eecc4c0.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libserde_json-7c70ba617eecc4c0.rmeta"
+## 
+## [[mounts]]
+## from = "out-7c70ba617eecc4c0"
+## src = "/libserde_json-7c70ba617eecc4c0.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libserde_json-7c70ba617eecc4c0.rlib"
+## 
+## [[mounts]]
+## from = "out-a68ea12a2369cd39"
+## src = "/libitoa-a68ea12a2369cd39.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libitoa-a68ea12a2369cd39.rmeta"
+## 
+## [[mounts]]
+## from = "out-a68ea12a2369cd39"
+## src = "/libitoa-a68ea12a2369cd39.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libitoa-a68ea12a2369cd39.rlib"
+## 
+## [[mounts]]
+## from = "out-f8a5ec09fef4ab54"
+## src = "/libmemchr-f8a5ec09fef4ab54.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libmemchr-f8a5ec09fef4ab54.rmeta"
+## 
+## [[mounts]]
+## from = "out-f8a5ec09fef4ab54"
+## src = "/libmemchr-f8a5ec09fef4ab54.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libmemchr-f8a5ec09fef4ab54.rlib"
+## 
+## [[mounts]]
+## from = "out-fc928953fff1e68b"
+## src = "/libryu-fc928953fff1e68b.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libryu-fc928953fff1e68b.rmeta"
+## 
+## [[mounts]]
+## from = "out-fc928953fff1e68b"
+## src = "/libryu-fc928953fff1e68b.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libryu-fc928953fff1e68b.rlib"
+## 
+## [[mounts]]
+## from = "out-454359939a0e8b60"
+## src = "/libshell_escape-454359939a0e8b60.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libshell_escape-454359939a0e8b60.rmeta"
+## 
+## [[mounts]]
+## from = "out-454359939a0e8b60"
+## src = "/libshell_escape-454359939a0e8b60.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libshell_escape-454359939a0e8b60.rlib"
+## 
+## [[mounts]]
+## from = "out-421f0f4cedfe8354"
+## src = "/libstatic_assertions-421f0f4cedfe8354.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libstatic_assertions-421f0f4cedfe8354.rmeta"
+## 
+## [[mounts]]
+## from = "out-421f0f4cedfe8354"
+## src = "/libstatic_assertions-421f0f4cedfe8354.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libstatic_assertions-421f0f4cedfe8354.rlib"
+## 
+## [[mounts]]
+## from = "out-ba228c019d272069"
+## src = "/libtempfile-ba228c019d272069.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libtempfile-ba228c019d272069.rmeta"
+## 
+## [[mounts]]
+## from = "out-ba228c019d272069"
+## src = "/libtempfile-ba228c019d272069.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libtempfile-ba228c019d272069.rlib"
+## 
+## [[mounts]]
+## from = "out-5f75ad2d1e8c435a"
+## src = "/libfastrand-5f75ad2d1e8c435a.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libfastrand-5f75ad2d1e8c435a.rmeta"
+## 
+## [[mounts]]
+## from = "out-5f75ad2d1e8c435a"
+## src = "/libfastrand-5f75ad2d1e8c435a.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libfastrand-5f75ad2d1e8c435a.rlib"
+## 
+## [[mounts]]
+## from = "out-44bb68212ecec348"
+## src = "/libonce_cell-44bb68212ecec348.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libonce_cell-44bb68212ecec348.rmeta"
+## 
+## [[mounts]]
+## from = "out-44bb68212ecec348"
+## src = "/libonce_cell-44bb68212ecec348.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libonce_cell-44bb68212ecec348.rlib"
+## 
+## [[mounts]]
+## from = "out-584f0556744e746d"
+## src = "/librustix-584f0556744e746d.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/librustix-584f0556744e746d.rmeta"
+## 
+## [[mounts]]
+## from = "out-584f0556744e746d"
+## src = "/librustix-584f0556744e746d.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/librustix-584f0556744e746d.rlib"
+## 
+## [[mounts]]
+## from = "out-d53ce0040874ecbb"
+## src = "/libbitflags-d53ce0040874ecbb.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libbitflags-d53ce0040874ecbb.rmeta"
+## 
+## [[mounts]]
+## from = "out-d53ce0040874ecbb"
+## src = "/libbitflags-d53ce0040874ecbb.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libbitflags-d53ce0040874ecbb.rlib"
+## 
+## [[mounts]]
+## from = "out-84721aa7d977aed9"
+## src = "/liblinux_raw_sys-84721aa7d977aed9.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/liblinux_raw_sys-84721aa7d977aed9.rmeta"
+## 
+## [[mounts]]
+## from = "out-84721aa7d977aed9"
+## src = "/liblinux_raw_sys-84721aa7d977aed9.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/liblinux_raw_sys-84721aa7d977aed9.rlib"
+## 
+## [[mounts]]
+## from = "out-2bea4b835d7dad2d"
+## src = "/libtoml-2bea4b835d7dad2d.rmeta"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libtoml-2bea4b835d7dad2d.rmeta"
+## 
+## [[mounts]]
+## from = "out-2bea4b835d7dad2d"
+## src = "/libtoml-2bea4b835d7dad2d.rlib"
+## dst = "/tmp/clis-cargo-config2_0-1-34/release/deps/libtoml-2bea4b835d7dad2d.rlib"
 ## 
 ## [[contexts]]
 ## name = "crate_out-722131f89e2bc94d"
@@ -4355,44 +5616,80 @@ COPY --from=dep-b-cargo-config2-0.1.34-169636d1f2554c51 /tmp/clis-cargo-config2_
 ## WORKDIR /tmp/clis-cargo-config2_0-1-34/release/examples
 ## RUN \
 ##   --mount=from=cratesio-cargo-config2-0.1.34,source=/cargo-config2-0.1.34,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/cargo-config2-0.1.34 \
+##   --mount=from=out-2510ffd6966eb36d,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libanyhow-2510ffd6966eb36d.rmeta,source=/libanyhow-2510ffd6966eb36d.rmeta \
 ##   --mount=from=out-2510ffd6966eb36d,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libanyhow-2510ffd6966eb36d.rlib,source=/libanyhow-2510ffd6966eb36d.rlib \
+##   --mount=from=out-438e025c67a2840e,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libbuild_context-438e025c67a2840e.rmeta,source=/libbuild_context-438e025c67a2840e.rmeta \
 ##   --mount=from=out-438e025c67a2840e,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libbuild_context-438e025c67a2840e.rlib,source=/libbuild_context-438e025c67a2840e.rlib \
+##   --mount=from=out-e6fea3eab43aaf67,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libcargo_config2-e6fea3eab43aaf67.rmeta,source=/libcargo_config2-e6fea3eab43aaf67.rmeta \
 ##   --mount=from=out-e6fea3eab43aaf67,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libcargo_config2-e6fea3eab43aaf67.rlib,source=/libcargo_config2-e6fea3eab43aaf67.rlib \
+##   --mount=from=out-b6c6cf1c11688574,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libserde-b6c6cf1c11688574.rmeta,source=/libserde-b6c6cf1c11688574.rmeta \
 ##   --mount=from=out-b6c6cf1c11688574,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libserde-b6c6cf1c11688574.rlib,source=/libserde-b6c6cf1c11688574.rlib \
 ##   --mount=from=out-a51e2455af527849,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libserde_derive-a51e2455af527849.so,source=/libserde_derive-a51e2455af527849.so \
+##   --mount=from=out-da36b031605c1ddc,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libproc_macro2-da36b031605c1ddc.rmeta,source=/libproc_macro2-da36b031605c1ddc.rmeta \
 ##   --mount=from=out-da36b031605c1ddc,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libproc_macro2-da36b031605c1ddc.rlib,source=/libproc_macro2-da36b031605c1ddc.rlib \
+##   --mount=from=out-02b0d04ef026a7b6,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libunicode_ident-02b0d04ef026a7b6.rmeta,source=/libunicode_ident-02b0d04ef026a7b6.rmeta \
 ##   --mount=from=out-02b0d04ef026a7b6,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libunicode_ident-02b0d04ef026a7b6.rlib,source=/libunicode_ident-02b0d04ef026a7b6.rlib \
+##   --mount=from=out-21aeee0f329238fb,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libquote-21aeee0f329238fb.rmeta,source=/libquote-21aeee0f329238fb.rmeta \
 ##   --mount=from=out-21aeee0f329238fb,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libquote-21aeee0f329238fb.rlib,source=/libquote-21aeee0f329238fb.rlib \
+##   --mount=from=out-5571b1fa61474ffa,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libsyn-5571b1fa61474ffa.rmeta,source=/libsyn-5571b1fa61474ffa.rmeta \
 ##   --mount=from=out-5571b1fa61474ffa,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libsyn-5571b1fa61474ffa.rlib,source=/libsyn-5571b1fa61474ffa.rlib \
+##   --mount=from=out-c1e542f0979b274a,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libtoml_edit-c1e542f0979b274a.rmeta,source=/libtoml_edit-c1e542f0979b274a.rmeta \
 ##   --mount=from=out-c1e542f0979b274a,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libtoml_edit-c1e542f0979b274a.rlib,source=/libtoml_edit-c1e542f0979b274a.rlib \
+##   --mount=from=out-657f65f0f8918814,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libindexmap-657f65f0f8918814.rmeta,source=/libindexmap-657f65f0f8918814.rmeta \
 ##   --mount=from=out-657f65f0f8918814,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libindexmap-657f65f0f8918814.rlib,source=/libindexmap-657f65f0f8918814.rlib \
+##   --mount=from=out-92df6cc0b9ce3dcd,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libequivalent-92df6cc0b9ce3dcd.rmeta,source=/libequivalent-92df6cc0b9ce3dcd.rmeta \
 ##   --mount=from=out-92df6cc0b9ce3dcd,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libequivalent-92df6cc0b9ce3dcd.rlib,source=/libequivalent-92df6cc0b9ce3dcd.rlib \
+##   --mount=from=out-e384bcd48d03db95,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libhashbrown-e384bcd48d03db95.rmeta,source=/libhashbrown-e384bcd48d03db95.rmeta \
 ##   --mount=from=out-e384bcd48d03db95,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libhashbrown-e384bcd48d03db95.rlib,source=/libhashbrown-e384bcd48d03db95.rlib \
+##   --mount=from=out-d88bc6011818f513,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libserde_spanned-d88bc6011818f513.rmeta,source=/libserde_spanned-d88bc6011818f513.rmeta \
 ##   --mount=from=out-d88bc6011818f513,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libserde_spanned-d88bc6011818f513.rlib,source=/libserde_spanned-d88bc6011818f513.rlib \
+##   --mount=from=out-23be505440c57a38,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libtoml_datetime-23be505440c57a38.rmeta,source=/libtoml_datetime-23be505440c57a38.rmeta \
 ##   --mount=from=out-23be505440c57a38,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libtoml_datetime-23be505440c57a38.rlib,source=/libtoml_datetime-23be505440c57a38.rlib \
+##   --mount=from=out-9abea66ccd9c864c,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libtoml_write-9abea66ccd9c864c.rmeta,source=/libtoml_write-9abea66ccd9c864c.rmeta \
 ##   --mount=from=out-9abea66ccd9c864c,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libtoml_write-9abea66ccd9c864c.rlib,source=/libtoml_write-9abea66ccd9c864c.rlib \
+##   --mount=from=out-d5e3fa1fabb7822c,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libwinnow-d5e3fa1fabb7822c.rmeta,source=/libwinnow-d5e3fa1fabb7822c.rmeta \
 ##   --mount=from=out-d5e3fa1fabb7822c,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libwinnow-d5e3fa1fabb7822c.rlib,source=/libwinnow-d5e3fa1fabb7822c.rlib \
+##   --mount=from=out-fa9f135a39baa87b,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libclap-fa9f135a39baa87b.rmeta,source=/libclap-fa9f135a39baa87b.rmeta \
 ##   --mount=from=out-fa9f135a39baa87b,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libclap-fa9f135a39baa87b.rlib,source=/libclap-fa9f135a39baa87b.rlib \
+##   --mount=from=out-41622f4093b29d13,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libclap_builder-41622f4093b29d13.rmeta,source=/libclap_builder-41622f4093b29d13.rmeta \
 ##   --mount=from=out-41622f4093b29d13,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libclap_builder-41622f4093b29d13.rlib,source=/libclap_builder-41622f4093b29d13.rlib \
+##   --mount=from=out-21ded493861ed51c,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libanstyle-21ded493861ed51c.rmeta,source=/libanstyle-21ded493861ed51c.rmeta \
 ##   --mount=from=out-21ded493861ed51c,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libanstyle-21ded493861ed51c.rlib,source=/libanstyle-21ded493861ed51c.rlib \
+##   --mount=from=out-fa1650fe0d33e35e,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libclap_lex-fa1650fe0d33e35e.rmeta,source=/libclap_lex-fa1650fe0d33e35e.rmeta \
 ##   --mount=from=out-fa1650fe0d33e35e,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libclap_lex-fa1650fe0d33e35e.rlib,source=/libclap_lex-fa1650fe0d33e35e.rlib \
 ##   --mount=from=out-45053889f17e427d,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libclap_derive-45053889f17e427d.so,source=/libclap_derive-45053889f17e427d.so \
+##   --mount=from=out-06debb0d4d4774b1,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libheck-06debb0d4d4774b1.rmeta,source=/libheck-06debb0d4d4774b1.rmeta \
 ##   --mount=from=out-06debb0d4d4774b1,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libheck-06debb0d4d4774b1.rlib,source=/libheck-06debb0d4d4774b1.rlib \
+##   --mount=from=out-e710e1ebbad36529,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libfs_err-e710e1ebbad36529.rmeta,source=/libfs_err-e710e1ebbad36529.rmeta \
 ##   --mount=from=out-e710e1ebbad36529,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libfs_err-e710e1ebbad36529.rlib,source=/libfs_err-e710e1ebbad36529.rlib \
+##   --mount=from=out-08712be55b44d56f,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/liblexopt-08712be55b44d56f.rmeta,source=/liblexopt-08712be55b44d56f.rmeta \
 ##   --mount=from=out-08712be55b44d56f,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/liblexopt-08712be55b44d56f.rlib,source=/liblexopt-08712be55b44d56f.rlib \
 ##   --mount=from=out-7ffc156b99c00502,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/librustversion-7ffc156b99c00502.so,source=/librustversion-7ffc156b99c00502.so \
+##   --mount=from=out-7c70ba617eecc4c0,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libserde_json-7c70ba617eecc4c0.rmeta,source=/libserde_json-7c70ba617eecc4c0.rmeta \
 ##   --mount=from=out-7c70ba617eecc4c0,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libserde_json-7c70ba617eecc4c0.rlib,source=/libserde_json-7c70ba617eecc4c0.rlib \
+##   --mount=from=out-a68ea12a2369cd39,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libitoa-a68ea12a2369cd39.rmeta,source=/libitoa-a68ea12a2369cd39.rmeta \
 ##   --mount=from=out-a68ea12a2369cd39,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libitoa-a68ea12a2369cd39.rlib,source=/libitoa-a68ea12a2369cd39.rlib \
+##   --mount=from=out-f8a5ec09fef4ab54,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libmemchr-f8a5ec09fef4ab54.rmeta,source=/libmemchr-f8a5ec09fef4ab54.rmeta \
 ##   --mount=from=out-f8a5ec09fef4ab54,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libmemchr-f8a5ec09fef4ab54.rlib,source=/libmemchr-f8a5ec09fef4ab54.rlib \
+##   --mount=from=out-fc928953fff1e68b,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libryu-fc928953fff1e68b.rmeta,source=/libryu-fc928953fff1e68b.rmeta \
 ##   --mount=from=out-fc928953fff1e68b,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libryu-fc928953fff1e68b.rlib,source=/libryu-fc928953fff1e68b.rlib \
+##   --mount=from=out-454359939a0e8b60,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libshell_escape-454359939a0e8b60.rmeta,source=/libshell_escape-454359939a0e8b60.rmeta \
 ##   --mount=from=out-454359939a0e8b60,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libshell_escape-454359939a0e8b60.rlib,source=/libshell_escape-454359939a0e8b60.rlib \
+##   --mount=from=out-421f0f4cedfe8354,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libstatic_assertions-421f0f4cedfe8354.rmeta,source=/libstatic_assertions-421f0f4cedfe8354.rmeta \
 ##   --mount=from=out-421f0f4cedfe8354,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libstatic_assertions-421f0f4cedfe8354.rlib,source=/libstatic_assertions-421f0f4cedfe8354.rlib \
+##   --mount=from=out-ba228c019d272069,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libtempfile-ba228c019d272069.rmeta,source=/libtempfile-ba228c019d272069.rmeta \
 ##   --mount=from=out-ba228c019d272069,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libtempfile-ba228c019d272069.rlib,source=/libtempfile-ba228c019d272069.rlib \
+##   --mount=from=out-5f75ad2d1e8c435a,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libfastrand-5f75ad2d1e8c435a.rmeta,source=/libfastrand-5f75ad2d1e8c435a.rmeta \
 ##   --mount=from=out-5f75ad2d1e8c435a,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libfastrand-5f75ad2d1e8c435a.rlib,source=/libfastrand-5f75ad2d1e8c435a.rlib \
+##   --mount=from=out-44bb68212ecec348,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libonce_cell-44bb68212ecec348.rmeta,source=/libonce_cell-44bb68212ecec348.rmeta \
 ##   --mount=from=out-44bb68212ecec348,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libonce_cell-44bb68212ecec348.rlib,source=/libonce_cell-44bb68212ecec348.rlib \
+##   --mount=from=out-584f0556744e746d,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/librustix-584f0556744e746d.rmeta,source=/librustix-584f0556744e746d.rmeta \
 ##   --mount=from=out-584f0556744e746d,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/librustix-584f0556744e746d.rlib,source=/librustix-584f0556744e746d.rlib \
+##   --mount=from=out-d53ce0040874ecbb,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libbitflags-d53ce0040874ecbb.rmeta,source=/libbitflags-d53ce0040874ecbb.rmeta \
 ##   --mount=from=out-d53ce0040874ecbb,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libbitflags-d53ce0040874ecbb.rlib,source=/libbitflags-d53ce0040874ecbb.rlib \
+##   --mount=from=out-84721aa7d977aed9,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/liblinux_raw_sys-84721aa7d977aed9.rmeta,source=/liblinux_raw_sys-84721aa7d977aed9.rmeta \
 ##   --mount=from=out-84721aa7d977aed9,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/liblinux_raw_sys-84721aa7d977aed9.rlib,source=/liblinux_raw_sys-84721aa7d977aed9.rlib \
+##   --mount=from=out-2bea4b835d7dad2d,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libtoml-2bea4b835d7dad2d.rmeta,source=/libtoml-2bea4b835d7dad2d.rmeta \
 ##   --mount=from=out-2bea4b835d7dad2d,dst=/tmp/clis-cargo-config2_0-1-34/release/deps/libtoml-2bea4b835d7dad2d.rlib,source=/libtoml-2bea4b835d7dad2d.rlib \
 ##     { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \
 ##     env CARGO="$(which cargo)" \
