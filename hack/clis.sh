@@ -372,7 +372,12 @@ set -x
     ls -lha $install_dir/bin/cargo-green
     rm $tmplogs >/dev/null 2>&1 || true
     touch $tmplogs
-    xdg-terminal-exec tail -f $tmplogs
+
+    case "$OSTYPE" in
+      darwin*) osascript -e "$(printf 'tell app "Terminal" \n do script "tail -f %s" \n end tell' $tmplogs)" ;;
+      *)       xdg-terminal-exec tail -f $tmplogs ;;
+    esac
+
     echo "$arg1"
     echo "Target dir: $tmptrgt"
     echo "Logs: $tmplogs"
