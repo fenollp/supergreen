@@ -16,6 +16,7 @@ source "$repo_root"/hack/ck.sh
 # Usage:    rmrf=1 $0 ..                           #=> rm -rf $CARGO_TARGET_DIR/*; cargo ...
 # Usage:   reset=1 $0 ..                           #=> docker buildx rm $BUILDX_BUILDER; cargo ...
 # Usage:   clean=1 $0 ..                           #=> Both reset=1 + rmrf=1
+# Usage:   final=1 $0 ..                           #=> Generate final Containerfile
 #
 # Usage:    DOCKER_HOST=.. $0 ..                   #=> Overrides machine
 # Usage: BUILDX_BUILDER=.. $0 ..                   #=> Overrides builder (set to "empty" to set BUILDX_BUILDER='')
@@ -346,6 +347,7 @@ reset=${reset:-0}
 [[ "${clean:-0}" = 1 ]] && rmrf=1 && reset=1
 jobs=${jobs:-$(nproc)}
 frozen=--locked ; [[ "${offline:-}" = '1' ]] && frozen=--frozen
+final=${final:-0}
 
 case "${BUILDX_BUILDER:-}" in
   '') BUILDX_BUILDER=supergreen ;;
@@ -453,7 +455,10 @@ envvars=(CARGOGREEN_LOG=trace)
 envvars+=(CARGOGREEN_LOG_PATH="$tmplogs")
 envvars+=(PATH=$install_dir/bin:"$PATH")
 envvars+=(CARGO_TARGET_DIR="$tmptrgt")
-# envvars+=(CARGOGREEN_FINAL_PATH=recipes/$name_at_version.Dockerfile)
+if [[ "$final" = '1' ]]; then
+  envvars+=(CARGOGREEN_FINAL_PATH=recipes/$name_at_version.Dockerfile)
+  envvars+=(CARGOGREEN_FINAL_PATH_NONPRIMARY=1)
+fi
 # envvars+=(CARGOGREEN_SYNTAX=docker-image://docker.io/docker/dockerfile:1@sha256:4c68376a702446fc3c79af22de146a148bc3367e73c25a5803d453b6b3f722fb)
 # envvars+=(CARGOGREEN_BASE_IMAGE=docker-image://docker.io/library/rust:1.86.0-slim@sha256:3f391b0678a6e0c88fd26f13e399c9c515ac47354e3cadfee7daee3b21651a4f)
 as_env "$name_at_version"
