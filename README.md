@@ -87,12 +87,22 @@ Faster Rust builds!
 
 ### `./hack/cli.sh ...`
 ```shell
-Usage:           $0                                      #=> generate CI
-Usage:           $0 ( <name@version> | <name> ) [clean]  #=> cargo install name@version
-Usage:           $0   ok                        [clean]  #=> cargo install all working bins
-Usage:           $0 ( build | test )            [clean]  #=> cargo build ./cargo-green
-Usage:    jobs=1 $0 ..                                   #=> cargo --jobs=$jobs
-Usage: offline=1 $0 ..                                   #=> cargo --frozen (defaults to just: --locked)
+# Usage:           $0                              #=> generate CI
+#
+# Usage:           $0 ( <name@version> | <name> )  #=> cargo install name@version
+# Usage:           $0   ok                         #=> cargo install all working bins
+#
+# Usage:           $0 ( build | test )             #=> cargo build ./cargo-green
+#
+# Usage:    jobs=1 $0 ..                           #=> cargo --jobs=$jobs
+# Usage: offline=1 $0 ..                           #=> cargo --frozen (defaults to just: --locked)
+# Usage:    rmrf=1 $0 ..                           #=> rm -rf $CARGO_TARGET_DIR/*; cargo ...
+# Usage:   reset=1 $0 ..                           #=> docker buildx rm $BUILDX_BUILDER; cargo ...
+# Usage:   clean=1 $0 ..                           #=> Both reset=1 + rmrf=1
+# Usage:   final=1 $0 ..                           #=> Generate final Containerfile
+#
+# Usage:    DOCKER_HOST=.. $0 ..                   #=> Overrides machine
+# Usage: BUILDX_BUILDER=.. $0 ..                   #=> Overrides builder (set to "empty" to set BUILDX_BUILDER='')
 ```
 
 ### `./hack/recipes.sh`
