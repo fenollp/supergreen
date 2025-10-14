@@ -278,6 +278,13 @@ $(cache_usage)
 $(unset_action_envs)
         env ${envvars[@]} \\
           cargo green -vv install --jobs=$jobs --locked --force $(as_install "$name_at_version") $@ |& tee _
+    - name: cargo install net=ON cache=ON remote=OFF jobs=1
+      if: \${{ failure() }}
+      run: |
+        rm _
+$(unset_action_envs)
+        env ${envvars[@]} \\
+          cargo green -vv install --jobs=1 --locked --force $(as_install "$name_at_version") $@ |& tee _
     - if: \${{ matrix.toolchain != 'stable' }}
       uses: actions/upload-artifact@v4
       name: Upload recipe
