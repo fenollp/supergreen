@@ -216,7 +216,7 @@ async fn do_wrap_rustc(
     pwd: Utf8PathBuf,
     args: Vec<String>,
     out_dir_var: Option<Utf8PathBuf>,
-    RustcArgs { crate_type, emit, externs, extrafn, incremental, input, out_dir, target_path }: RustcArgs,
+    RustcArgs { crate_type, emit: _, externs, extrafn, incremental, input, out_dir, target_path }: RustcArgs,
     fallback: impl Future<Output = Result<()>>,
 ) -> Result<()> {
     let debug = maybe_log();
@@ -351,7 +351,7 @@ async fn do_wrap_rustc(
         .collect();
     info!("loading {} build contexts", md.contexts.len());
 
-    let mds = md.assemble_build_dependencies(&crate_type, &emit, externs, &target_path)?;
+    let mds = md.assemble_build_dependencies(/*&crate_type, &emit,*/ externs, &target_path)?;
     for MountFrom { from, src, dst } in &md.mounts {
         rustc_block.push_str(&format!("  --mount=from={from},dst={dst},source={src} \\\n"));
     }

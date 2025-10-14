@@ -158,21 +158,21 @@ impl Md {
     //   https://github.com/rust-lang/rust/issues/63012 : Tracking issue for -Z binary-dep-depinfo
     pub(crate) fn assemble_build_dependencies(
         &mut self,
-        crate_type: &str,
-        emit: &str,
+        // crate_type: &str,
+        // emit: &str,
         externs: IndexSet<String>,
         target_path: &Utf8Path,
     ) -> Result<Vec<Self>> {
         let mut mds = HashMap::<Utf8PathBuf, Self>::new(); // A file cache
 
-        let ext = match crate_type {
-            "lib" => "rmeta".to_owned(),
-            "bin" | "rlib" | "test" | "proc-macro" => "rlib".to_owned(),
-            _ => bail!("BUG: unexpected crate-type: '{crate_type}'"),
-        };
-        // https://rustc-dev-guide.rust-lang.org/backend/libs-and-metadata.html#rmeta
-        // > [rmeta] is created if the --emit=metadata CLI option is used.
-        let ext = if emit.contains("metadata") { "rmeta".to_owned() } else { ext };
+        // let ext = match crate_type {
+        //     "lib" => "rmeta".to_owned(),
+        //     "bin" | "rlib" | "test" | "proc-macro" => "rlib".to_owned(),
+        //     _ => bail!("BUG: unexpected crate-type: '{crate_type}'"),
+        // };
+        // // https://rustc-dev-guide.rust-lang.org/backend/libs-and-metadata.html#rmeta
+        // // > [rmeta] is created if the --emit=metadata CLI option is used.
+        // let ext = if emit.contains("metadata") { "rmeta".to_owned() } else { ext };
 
         let mut extern_mds_and_paths = vec![];
 
@@ -195,11 +195,11 @@ impl Md {
             let extern_md = get_or_read(&mut mds, &extern_md)?;
 
             for transitive in extern_md.short_externs {
-                let guard_md = target_path.join(format!("{transitive}.toml")); //FIXME: MdId.path(target_path)
-                let guard_md = get_or_read(&mut mds, &guard_md)?;
-                let ext = if guard_md.is_proc_macro { "so" } else { &ext };
+                // let guard_md = target_path.join(format!("{transitive}.toml")); //FIXME: MdId.path(target_path)
+                // let guard_md = get_or_read(&mut mds, &guard_md)?;
+                // let ext = if guard_md.is_proc_macro { "so" } else { &ext };
 
-                trace!("❯ extern lib{transitive}.{ext}");
+                // trace!("❯ extern lib{transitive}.{ext}");
 
                 trace!("❯ transitive short extern {transitive}");
                 self.short_externs.insert(transitive);
@@ -216,7 +216,7 @@ impl Md {
                     .iter()
                     .filter(|w: &&Utf8PathBuf| !w.as_str().ends_with(".d"))
                     .map(|w| w.file_name().unwrap().to_owned())
-                    // .filter(|w: &String| w.ends_with(&format!(".{ext}")))
+                    // .filter(|w: &String| w.ends_with(&format!(".{ext}"))) TODO? shake some of these => fewer bind mounts
                     .map(|xtern: String| MountFrom {
                         from: dep_stage.clone(),
                         src: format!("/{xtern}").into(),
