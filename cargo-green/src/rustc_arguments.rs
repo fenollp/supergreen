@@ -4,23 +4,11 @@ use indexmap::IndexSet;
 
 use crate::ext::Popped;
 
-pub(crate) const ALL_CRATE_TYPES: &[&str] =
-    &["bin", "lib", "rlib", "dylib", "cdylib", "staticlib", "proc-macro"];
-
 const SYSROOT_CRATES: &[&str] = &["alloc", "core", "proc_macro", "std", "test"];
-
-// FIXME: fix bad mapping (eg. multiple crate types) + generalize
-// https://github.com/declantsien/cargo-ninja/blob/42490a0c8a67bbf8c0aff56a0cb70731913fd3e3/src/rustc_config.rs
 
 /// RustcArgs contains parts of `rustc`'s arguments
 #[derive(Debug, Default, PartialEq)]
 pub(crate) struct RustcArgs {
-    /// 1..: --crate-type
-    pub(crate) crate_type: String, // FIXME: handle >1
-
-    /// 1: --emit=EMIT | --emit EMIT
-    pub(crate) emit: String,
-
     /// 0..: --extern=EXTERN | --extern EXTERN
     pub(crate) externs: IndexSet<String>,
 
@@ -78,8 +66,6 @@ pub(crate) fn as_rustc(
         }
 
         if s_e && key == "--test" && val.is_empty() {
-            assert_eq!(state.crate_type, "");
-            "test".clone_into(&mut state.crate_type); // Not a real `--crate-type`
             (s_e, key) = (false, "".to_owned());
             args.push("--test".to_owned());
             continue;
@@ -127,21 +113,6 @@ pub(crate) fn as_rustc(
                         val = format!("dependency={}", pwd.join(v));
                     }
                 }
-            }
-            "--crate-type" => {
-                // https://doc.rust-lang.org/cargo/reference/cargo-targets.html#the-crate-type-field
-                // array, >=1 per rustc call => as many products !!! we expect a single one throughout FIXME
-                // assert_eq!(state.crate_type, "");
-                if !ALL_CRATE_TYPES.contains(&val.as_str()) {
-                    let ct = state.crate_type;
-                    bail!("Unhandled --crate-type={val} (knowing {ct:?}) in {arguments:?}")
-                }
-                val.clone_into(&mut state.crate_type);
-            }
-            "--emit" => {
-                assert_eq!(state.emit, "");
-                // For instance: dep-info,link dep-info,metadata dep-info,metadata,link
-                val.clone_into(&mut state.emit);
             }
             "--extern" => {
                 if SYSROOT_CRATES.contains(&val.as_str()) {
@@ -217,7 +188,6 @@ pub(crate) fn as_rustc(
         )
     };
 
-    //assert_ne!(state.crate_type, "");
     assert_ne!(state.extrafn, "");
     assert_eq!(state.extrafn.chars().next(), Some('-'));
     //assert_ne!(state.input, "");
@@ -281,8 +251,8 @@ mod tests {
             "--error-format=json",
             "--json=diagnostic-rendered-ansi,artifacts,future-incompat",
             "--diagnostic-width=211",
-            "--crate-type", "bin",                                                            // state.crate_type~
-            "--emit=dep-info,link",                                                           // state.emit
+            "--crate-type", "bin",
+            "--emit=dep-info,link",
             "-C", "embed-bitcode=no",
             "-C", "debuginfo=2",
             "-C", "metadata=710b4516f388a5e4",
@@ -304,8 +274,6 @@ mod tests {
         assert_eq!(
             st,
             RustcArgs {
-                crate_type: "bin".to_owned(),
-                emit: "dep-info,link".to_owned(),
                 externs: [
                     "libanyhow-f96497119bad6f50.rlib",
                     "libenv_logger-7e2d283f6e473671.rlib",
@@ -387,8 +355,6 @@ mod tests {
         assert_eq!(
             st,
             RustcArgs {
-                crate_type: "test".to_owned(),
-                emit: "dep-info,link".to_owned(),
                 externs: [
                     "libanyhow-f96497119bad6f50.rlib",
                     "libenv_logger-7e2d283f6e473671.rlib",
@@ -448,7 +414,7 @@ mod tests {
             "--error-format=json",
             "--json=diagnostic-rendered-ansi,artifacts,future-incompat",
             "--diagnostic-width=211",
-            "--crate-type", "bin",                                                            // state.crate_type~
+            "--crate-type", "bin",
             "--emit=dep-info,link",
             "-C", "embed-bitcode=no",
             "--cfg", "'feature=\"alloc\"'",
@@ -470,8 +436,6 @@ mod tests {
         assert_eq!(
             st,
             RustcArgs {
-                crate_type: "bin".to_owned(),
-                emit: "dep-info,link".to_owned(),
                 externs: Default::default(),
                 extrafn: "-c7101a3d6c8e4dce".to_owned(),
                 incremental: None,
@@ -542,8 +506,6 @@ mod tests {
         assert_eq!(
             st,
             RustcArgs {
-                crate_type: "proc-macro".to_owned(),
-                emit: "dep-info,link".to_owned(),
                 externs: ["libtime_core-c880e75c55528c08.rlib".to_owned()].into(),
                 extrafn: "-89438a15ab938e2f".to_owned(),
                 incremental: None,
@@ -610,8 +572,6 @@ mod tests {
         assert_eq!(
             st,
             RustcArgs {
-                crate_type: "bin".to_owned(),
-                emit: "dep-info,link".to_owned(),
                 externs: Default::default(),
                 extrafn: "-96fe5c8493f1a08f".to_owned(),
                 incremental: None,
@@ -676,8 +636,6 @@ mod tests {
         assert_eq!(
             st,
             RustcArgs {
-                crate_type: "bin".to_owned(),
-                emit: "dep-info,link".to_owned(),
                 externs: [
                     "libcc-3c316ebdde73b0fe.rlib".to_owned(),
                     "libpkg_config-a6962381fee76247.rlib".to_owned(),
@@ -776,8 +734,6 @@ mod tests {
         assert_eq!(
             st,
             RustcArgs {
-                crate_type: "".to_owned(),
-                emit: "".to_owned(),
                 externs: [].into(),
                 extrafn: "-94793bb2b78c57b5".to_owned(),
                 incremental: None,

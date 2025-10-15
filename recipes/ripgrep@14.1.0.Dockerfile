@@ -7,7 +7,7 @@ FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.86.0-slim@sha256:57d415b
 FROM scratch AS cratesio-anyhow-1.0.79
 ADD --chmod=0664 --unpack=true --checksum=sha256:080e9890a082662b09c1ad45f567faeeb47f22b5fb23895fbe1e651e718e25ca \
   https://static.crates.io/crates/anyhow/anyhow-1.0.79.crate /
-FROM rust-base AS dep-l-anyhow-1.0.79-95e5d8a0e52ba465
+FROM rust-base AS dep-n-anyhow-1.0.79-95e5d8a0e52ba465
 SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 RUN \
@@ -39,7 +39,7 @@ RUN \
         2> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-95e5d8a0e52ba465-stderr >&2) \
         || echo $? >/tmp/clis-ripgrep_14-1-0/release/deps/out-95e5d8a0e52ba465-errcode
 FROM scratch AS out-95e5d8a0e52ba465
-COPY --from=dep-l-anyhow-1.0.79-95e5d8a0e52ba465 /tmp/clis-ripgrep_14-1-0/release/deps/*-95e5d8a0e52ba465* /
+COPY --from=dep-n-anyhow-1.0.79-95e5d8a0e52ba465 /tmp/clis-ripgrep_14-1-0/release/deps/*-95e5d8a0e52ba465* /
 
 ## this = "95e5d8a0e52ba465"
 ## writes = [
@@ -165,9 +165,9 @@ COPY --from=dep-l-anyhow-1.0.79-95e5d8a0e52ba465 /tmp/clis-ripgrep_14-1-0/releas
 ##   https://static.crates.io/crates/anyhow/anyhow-1.0.79.crate /'''
 ## 
 ## [[stages]]
-## name = "dep-l-anyhow-1.0.79-95e5d8a0e52ba465"
+## name = "dep-n-anyhow-1.0.79-95e5d8a0e52ba465"
 ## script = '''
-## FROM rust-base AS dep-l-anyhow-1.0.79-95e5d8a0e52ba465
+## FROM rust-base AS dep-n-anyhow-1.0.79-95e5d8a0e52ba465
 ## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 ## WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 ## RUN \
@@ -203,12 +203,12 @@ COPY --from=dep-l-anyhow-1.0.79-95e5d8a0e52ba465 /tmp/clis-ripgrep_14-1-0/releas
 ## name = "out-95e5d8a0e52ba465"
 ## script = """
 ## FROM scratch AS out-95e5d8a0e52ba465
-## COPY --from=dep-l-anyhow-1.0.79-95e5d8a0e52ba465 /tmp/clis-ripgrep_14-1-0/release/deps/*-95e5d8a0e52ba465* /"""
+## COPY --from=dep-n-anyhow-1.0.79-95e5d8a0e52ba465 /tmp/clis-ripgrep_14-1-0/release/deps/*-95e5d8a0e52ba465* /"""
 
 FROM scratch AS cratesio-memchr-2.7.1
 ADD --chmod=0664 --unpack=true --checksum=sha256:523dc4f511e55ab87b694dc30d0f820d60906ef06413f93d4d7a1385599cc149 \
   https://static.crates.io/crates/memchr/memchr-2.7.1.crate /
-FROM rust-base AS dep-l-memchr-2.7.1-3d9021aec125798d
+FROM rust-base AS dep-n-memchr-2.7.1-3d9021aec125798d
 SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 RUN \
@@ -238,7 +238,7 @@ RUN \
         2> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-3d9021aec125798d-stderr >&2) \
         || echo $? >/tmp/clis-ripgrep_14-1-0/release/deps/out-3d9021aec125798d-errcode
 FROM scratch AS out-3d9021aec125798d
-COPY --from=dep-l-memchr-2.7.1-3d9021aec125798d /tmp/clis-ripgrep_14-1-0/release/deps/*-3d9021aec125798d* /
+COPY --from=dep-n-memchr-2.7.1-3d9021aec125798d /tmp/clis-ripgrep_14-1-0/release/deps/*-3d9021aec125798d* /
 
 ## this = "3d9021aec125798d"
 ## writes = [
@@ -266,9 +266,9 @@ COPY --from=dep-l-memchr-2.7.1-3d9021aec125798d /tmp/clis-ripgrep_14-1-0/release
 ##   https://static.crates.io/crates/memchr/memchr-2.7.1.crate /'''
 ## 
 ## [[stages]]
-## name = "dep-l-memchr-2.7.1-3d9021aec125798d"
+## name = "dep-n-memchr-2.7.1-3d9021aec125798d"
 ## script = '''
-## FROM rust-base AS dep-l-memchr-2.7.1-3d9021aec125798d
+## FROM rust-base AS dep-n-memchr-2.7.1-3d9021aec125798d
 ## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 ## WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 ## RUN \
@@ -302,12 +302,12 @@ COPY --from=dep-l-memchr-2.7.1-3d9021aec125798d /tmp/clis-ripgrep_14-1-0/release
 ## name = "out-3d9021aec125798d"
 ## script = """
 ## FROM scratch AS out-3d9021aec125798d
-## COPY --from=dep-l-memchr-2.7.1-3d9021aec125798d /tmp/clis-ripgrep_14-1-0/release/deps/*-3d9021aec125798d* /"""
+## COPY --from=dep-n-memchr-2.7.1-3d9021aec125798d /tmp/clis-ripgrep_14-1-0/release/deps/*-3d9021aec125798d* /"""
 
 FROM scratch AS cratesio-aho-corasick-1.1.2
 ADD --chmod=0664 --unpack=true --checksum=sha256:b2969dcb958b36655471fc61f7e416fa76033bdd4bfed0678d8fee1e2d07a1f0 \
   https://static.crates.io/crates/aho-corasick/aho-corasick-1.1.2.crate /
-FROM rust-base AS dep-l-aho-corasick-1.1.2-2a2c3bf3a2b335e0
+FROM rust-base AS dep-n-aho-corasick-1.1.2-2a2c3bf3a2b335e0
 SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 RUN \
@@ -339,7 +339,7 @@ RUN \
         2> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-2a2c3bf3a2b335e0-stderr >&2) \
         || echo $? >/tmp/clis-ripgrep_14-1-0/release/deps/out-2a2c3bf3a2b335e0-errcode
 FROM scratch AS out-2a2c3bf3a2b335e0
-COPY --from=dep-l-aho-corasick-1.1.2-2a2c3bf3a2b335e0 /tmp/clis-ripgrep_14-1-0/release/deps/*-2a2c3bf3a2b335e0* /
+COPY --from=dep-n-aho-corasick-1.1.2-2a2c3bf3a2b335e0 /tmp/clis-ripgrep_14-1-0/release/deps/*-2a2c3bf3a2b335e0* /
 
 ## this = "2a2c3bf3a2b335e0"
 ## deps = ["3d9021aec125798d"]
@@ -367,15 +367,13 @@ COPY --from=dep-l-aho-corasick-1.1.2-2a2c3bf3a2b335e0 /tmp/clis-ripgrep_14-1-0/r
 ##     '{"$message_type":"diagnostic","message":"11 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 11 warnings emitted\u001b[0m\n\n"}',
 ## ]
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-3d9021aec125798d"
-## src = "/libmemchr-3d9021aec125798d.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rmeta"
+## xtern = "libmemchr-3d9021aec125798d.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-3d9021aec125798d"
-## src = "/libmemchr-3d9021aec125798d.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rlib"
+## xtern = "libmemchr-3d9021aec125798d.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -389,9 +387,9 @@ COPY --from=dep-l-aho-corasick-1.1.2-2a2c3bf3a2b335e0 /tmp/clis-ripgrep_14-1-0/r
 ##   https://static.crates.io/crates/aho-corasick/aho-corasick-1.1.2.crate /'''
 ## 
 ## [[stages]]
-## name = "dep-l-aho-corasick-1.1.2-2a2c3bf3a2b335e0"
+## name = "dep-n-aho-corasick-1.1.2-2a2c3bf3a2b335e0"
 ## script = '''
-## FROM rust-base AS dep-l-aho-corasick-1.1.2-2a2c3bf3a2b335e0
+## FROM rust-base AS dep-n-aho-corasick-1.1.2-2a2c3bf3a2b335e0
 ## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 ## WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 ## RUN \
@@ -427,12 +425,12 @@ COPY --from=dep-l-aho-corasick-1.1.2-2a2c3bf3a2b335e0 /tmp/clis-ripgrep_14-1-0/r
 ## name = "out-2a2c3bf3a2b335e0"
 ## script = """
 ## FROM scratch AS out-2a2c3bf3a2b335e0
-## COPY --from=dep-l-aho-corasick-1.1.2-2a2c3bf3a2b335e0 /tmp/clis-ripgrep_14-1-0/release/deps/*-2a2c3bf3a2b335e0* /"""
+## COPY --from=dep-n-aho-corasick-1.1.2-2a2c3bf3a2b335e0 /tmp/clis-ripgrep_14-1-0/release/deps/*-2a2c3bf3a2b335e0* /"""
 
 FROM scratch AS cratesio-regex-syntax-0.8.2
 ADD --chmod=0664 --unpack=true --checksum=sha256:c08c74e62047bb2de4ff487b251e4a92e24f48745648451635cec7d591162d9f \
   https://static.crates.io/crates/regex-syntax/regex-syntax-0.8.2.crate /
-FROM rust-base AS dep-l-regex-syntax-0.8.2-0d361157f8cdd0fe
+FROM rust-base AS dep-n-regex-syntax-0.8.2-0d361157f8cdd0fe
 SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 RUN \
@@ -462,7 +460,7 @@ RUN \
         2> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-0d361157f8cdd0fe-stderr >&2) \
         || echo $? >/tmp/clis-ripgrep_14-1-0/release/deps/out-0d361157f8cdd0fe-errcode
 FROM scratch AS out-0d361157f8cdd0fe
-COPY --from=dep-l-regex-syntax-0.8.2-0d361157f8cdd0fe /tmp/clis-ripgrep_14-1-0/release/deps/*-0d361157f8cdd0fe* /
+COPY --from=dep-n-regex-syntax-0.8.2-0d361157f8cdd0fe /tmp/clis-ripgrep_14-1-0/release/deps/*-0d361157f8cdd0fe* /
 
 ## this = "0d361157f8cdd0fe"
 ## writes = [
@@ -490,9 +488,9 @@ COPY --from=dep-l-regex-syntax-0.8.2-0d361157f8cdd0fe /tmp/clis-ripgrep_14-1-0/r
 ##   https://static.crates.io/crates/regex-syntax/regex-syntax-0.8.2.crate /'''
 ## 
 ## [[stages]]
-## name = "dep-l-regex-syntax-0.8.2-0d361157f8cdd0fe"
+## name = "dep-n-regex-syntax-0.8.2-0d361157f8cdd0fe"
 ## script = '''
-## FROM rust-base AS dep-l-regex-syntax-0.8.2-0d361157f8cdd0fe
+## FROM rust-base AS dep-n-regex-syntax-0.8.2-0d361157f8cdd0fe
 ## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 ## WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 ## RUN \
@@ -526,12 +524,12 @@ COPY --from=dep-l-regex-syntax-0.8.2-0d361157f8cdd0fe /tmp/clis-ripgrep_14-1-0/r
 ## name = "out-0d361157f8cdd0fe"
 ## script = """
 ## FROM scratch AS out-0d361157f8cdd0fe
-## COPY --from=dep-l-regex-syntax-0.8.2-0d361157f8cdd0fe /tmp/clis-ripgrep_14-1-0/release/deps/*-0d361157f8cdd0fe* /"""
+## COPY --from=dep-n-regex-syntax-0.8.2-0d361157f8cdd0fe /tmp/clis-ripgrep_14-1-0/release/deps/*-0d361157f8cdd0fe* /"""
 
 FROM scratch AS cratesio-regex-automata-0.4.3
 ADD --chmod=0664 --unpack=true --checksum=sha256:5f804c7828047e88b2d32e2d7fe5a105da8ee3264f01902f796c8e067dc2483f \
   https://static.crates.io/crates/regex-automata/regex-automata-0.4.3.crate /
-FROM rust-base AS dep-l-regex-automata-0.4.3-54c30116fcd4ea92
+FROM rust-base AS dep-n-regex-automata-0.4.3-54c30116fcd4ea92
 SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 RUN \
@@ -567,7 +565,7 @@ RUN \
         2> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-54c30116fcd4ea92-stderr >&2) \
         || echo $? >/tmp/clis-ripgrep_14-1-0/release/deps/out-54c30116fcd4ea92-errcode
 FROM scratch AS out-54c30116fcd4ea92
-COPY --from=dep-l-regex-automata-0.4.3-54c30116fcd4ea92 /tmp/clis-ripgrep_14-1-0/release/deps/*-54c30116fcd4ea92* /
+COPY --from=dep-n-regex-automata-0.4.3-54c30116fcd4ea92 /tmp/clis-ripgrep_14-1-0/release/deps/*-54c30116fcd4ea92* /
 
 ## this = "54c30116fcd4ea92"
 ## deps = [
@@ -599,35 +597,29 @@ COPY --from=dep-l-regex-automata-0.4.3-54c30116fcd4ea92 /tmp/clis-ripgrep_14-1-0
 ##     '{"$message_type":"diagnostic","message":"7 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 7 warnings emitted\u001b[0m\n\n"}',
 ## ]
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-2a2c3bf3a2b335e0"
-## src = "/libaho_corasick-2a2c3bf3a2b335e0.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libaho_corasick-2a2c3bf3a2b335e0.rmeta"
+## xtern = "libaho_corasick-2a2c3bf3a2b335e0.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-2a2c3bf3a2b335e0"
-## src = "/libaho_corasick-2a2c3bf3a2b335e0.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libaho_corasick-2a2c3bf3a2b335e0.rlib"
+## xtern = "libaho_corasick-2a2c3bf3a2b335e0.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-3d9021aec125798d"
-## src = "/libmemchr-3d9021aec125798d.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rmeta"
+## xtern = "libmemchr-3d9021aec125798d.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-3d9021aec125798d"
-## src = "/libmemchr-3d9021aec125798d.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rlib"
+## xtern = "libmemchr-3d9021aec125798d.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-0d361157f8cdd0fe"
-## src = "/libregex_syntax-0d361157f8cdd0fe.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libregex_syntax-0d361157f8cdd0fe.rmeta"
+## xtern = "libregex_syntax-0d361157f8cdd0fe.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-0d361157f8cdd0fe"
-## src = "/libregex_syntax-0d361157f8cdd0fe.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libregex_syntax-0d361157f8cdd0fe.rlib"
+## xtern = "libregex_syntax-0d361157f8cdd0fe.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -641,9 +633,9 @@ COPY --from=dep-l-regex-automata-0.4.3-54c30116fcd4ea92 /tmp/clis-ripgrep_14-1-0
 ##   https://static.crates.io/crates/regex-automata/regex-automata-0.4.3.crate /'''
 ## 
 ## [[stages]]
-## name = "dep-l-regex-automata-0.4.3-54c30116fcd4ea92"
+## name = "dep-n-regex-automata-0.4.3-54c30116fcd4ea92"
 ## script = '''
-## FROM rust-base AS dep-l-regex-automata-0.4.3-54c30116fcd4ea92
+## FROM rust-base AS dep-n-regex-automata-0.4.3-54c30116fcd4ea92
 ## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 ## WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 ## RUN \
@@ -683,12 +675,12 @@ COPY --from=dep-l-regex-automata-0.4.3-54c30116fcd4ea92 /tmp/clis-ripgrep_14-1-0
 ## name = "out-54c30116fcd4ea92"
 ## script = """
 ## FROM scratch AS out-54c30116fcd4ea92
-## COPY --from=dep-l-regex-automata-0.4.3-54c30116fcd4ea92 /tmp/clis-ripgrep_14-1-0/release/deps/*-54c30116fcd4ea92* /"""
+## COPY --from=dep-n-regex-automata-0.4.3-54c30116fcd4ea92 /tmp/clis-ripgrep_14-1-0/release/deps/*-54c30116fcd4ea92* /"""
 
 FROM scratch AS cratesio-bstr-1.9.0
 ADD --chmod=0664 --unpack=true --checksum=sha256:c48f0051a4b4c5e0b6d365cd04af53aeaa209e3cc15ec2cdb69e73cc87fbd0dc \
   https://static.crates.io/crates/bstr/bstr-1.9.0.crate /
-FROM rust-base AS dep-l-bstr-1.9.0-f6b551c518280772
+FROM rust-base AS dep-n-bstr-1.9.0-f6b551c518280772
 SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 RUN \
@@ -726,7 +718,7 @@ RUN \
         2> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-f6b551c518280772-stderr >&2) \
         || echo $? >/tmp/clis-ripgrep_14-1-0/release/deps/out-f6b551c518280772-errcode
 FROM scratch AS out-f6b551c518280772
-COPY --from=dep-l-bstr-1.9.0-f6b551c518280772 /tmp/clis-ripgrep_14-1-0/release/deps/*-f6b551c518280772* /
+COPY --from=dep-n-bstr-1.9.0-f6b551c518280772 /tmp/clis-ripgrep_14-1-0/release/deps/*-f6b551c518280772* /
 
 ## this = "f6b551c518280772"
 ## deps = [
@@ -754,45 +746,37 @@ COPY --from=dep-l-bstr-1.9.0-f6b551c518280772 /tmp/clis-ripgrep_14-1-0/release/d
 ##     '{"$message_type":"diagnostic","message":"1 warning emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 1 warning emitted\u001b[0m\n\n"}',
 ## ]
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-3d9021aec125798d"
-## src = "/libmemchr-3d9021aec125798d.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rmeta"
+## xtern = "libmemchr-3d9021aec125798d.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-3d9021aec125798d"
-## src = "/libmemchr-3d9021aec125798d.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rlib"
+## xtern = "libmemchr-3d9021aec125798d.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-54c30116fcd4ea92"
-## src = "/libregex_automata-54c30116fcd4ea92.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libregex_automata-54c30116fcd4ea92.rmeta"
+## xtern = "libregex_automata-54c30116fcd4ea92.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-54c30116fcd4ea92"
-## src = "/libregex_automata-54c30116fcd4ea92.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libregex_automata-54c30116fcd4ea92.rlib"
+## xtern = "libregex_automata-54c30116fcd4ea92.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-2a2c3bf3a2b335e0"
-## src = "/libaho_corasick-2a2c3bf3a2b335e0.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libaho_corasick-2a2c3bf3a2b335e0.rmeta"
+## xtern = "libaho_corasick-2a2c3bf3a2b335e0.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-2a2c3bf3a2b335e0"
-## src = "/libaho_corasick-2a2c3bf3a2b335e0.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libaho_corasick-2a2c3bf3a2b335e0.rlib"
+## xtern = "libaho_corasick-2a2c3bf3a2b335e0.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-0d361157f8cdd0fe"
-## src = "/libregex_syntax-0d361157f8cdd0fe.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libregex_syntax-0d361157f8cdd0fe.rmeta"
+## xtern = "libregex_syntax-0d361157f8cdd0fe.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-0d361157f8cdd0fe"
-## src = "/libregex_syntax-0d361157f8cdd0fe.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libregex_syntax-0d361157f8cdd0fe.rlib"
+## xtern = "libregex_syntax-0d361157f8cdd0fe.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -806,9 +790,9 @@ COPY --from=dep-l-bstr-1.9.0-f6b551c518280772 /tmp/clis-ripgrep_14-1-0/release/d
 ##   https://static.crates.io/crates/bstr/bstr-1.9.0.crate /'''
 ## 
 ## [[stages]]
-## name = "dep-l-bstr-1.9.0-f6b551c518280772"
+## name = "dep-n-bstr-1.9.0-f6b551c518280772"
 ## script = '''
-## FROM rust-base AS dep-l-bstr-1.9.0-f6b551c518280772
+## FROM rust-base AS dep-n-bstr-1.9.0-f6b551c518280772
 ## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 ## WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 ## RUN \
@@ -850,12 +834,12 @@ COPY --from=dep-l-bstr-1.9.0-f6b551c518280772 /tmp/clis-ripgrep_14-1-0/release/d
 ## name = "out-f6b551c518280772"
 ## script = """
 ## FROM scratch AS out-f6b551c518280772
-## COPY --from=dep-l-bstr-1.9.0-f6b551c518280772 /tmp/clis-ripgrep_14-1-0/release/deps/*-f6b551c518280772* /"""
+## COPY --from=dep-n-bstr-1.9.0-f6b551c518280772 /tmp/clis-ripgrep_14-1-0/release/deps/*-f6b551c518280772* /"""
 
 FROM scratch AS cratesio-log-0.4.20
 ADD --chmod=0664 --unpack=true --checksum=sha256:b5e6163cb8c49088c2c36f57875e58ccd8c87c7427f7fbd50ea6710b2f3f2e8f \
   https://static.crates.io/crates/log/log-0.4.20.crate /
-FROM rust-base AS dep-l-log-0.4.20-45d1068292014e63
+FROM rust-base AS dep-n-log-0.4.20-45d1068292014e63
 SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 RUN \
@@ -885,7 +869,7 @@ RUN \
         2> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-45d1068292014e63-stderr >&2) \
         || echo $? >/tmp/clis-ripgrep_14-1-0/release/deps/out-45d1068292014e63-errcode
 FROM scratch AS out-45d1068292014e63
-COPY --from=dep-l-log-0.4.20-45d1068292014e63 /tmp/clis-ripgrep_14-1-0/release/deps/*-45d1068292014e63* /
+COPY --from=dep-n-log-0.4.20-45d1068292014e63 /tmp/clis-ripgrep_14-1-0/release/deps/*-45d1068292014e63* /
 
 ## this = "45d1068292014e63"
 ## writes = [
@@ -914,9 +898,9 @@ COPY --from=dep-l-log-0.4.20-45d1068292014e63 /tmp/clis-ripgrep_14-1-0/release/d
 ##   https://static.crates.io/crates/log/log-0.4.20.crate /'''
 ## 
 ## [[stages]]
-## name = "dep-l-log-0.4.20-45d1068292014e63"
+## name = "dep-n-log-0.4.20-45d1068292014e63"
 ## script = '''
-## FROM rust-base AS dep-l-log-0.4.20-45d1068292014e63
+## FROM rust-base AS dep-n-log-0.4.20-45d1068292014e63
 ## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 ## WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 ## RUN \
@@ -950,12 +934,12 @@ COPY --from=dep-l-log-0.4.20-45d1068292014e63 /tmp/clis-ripgrep_14-1-0/release/d
 ## name = "out-45d1068292014e63"
 ## script = """
 ## FROM scratch AS out-45d1068292014e63
-## COPY --from=dep-l-log-0.4.20-45d1068292014e63 /tmp/clis-ripgrep_14-1-0/release/deps/*-45d1068292014e63* /"""
+## COPY --from=dep-n-log-0.4.20-45d1068292014e63 /tmp/clis-ripgrep_14-1-0/release/deps/*-45d1068292014e63* /"""
 
 FROM scratch AS cratesio-globset-0.4.14
 ADD --chmod=0664 --unpack=true --checksum=sha256:57da3b9b5b85bd66f31093f8c408b90a74431672542466497dcbdfdc02034be1 \
   https://static.crates.io/crates/globset/globset-0.4.14.crate /
-FROM rust-base AS dep-l-globset-0.4.14-14504da8f25a4dbf
+FROM rust-base AS dep-n-globset-0.4.14-14504da8f25a4dbf
 SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 RUN \
@@ -997,7 +981,7 @@ RUN \
         2> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-14504da8f25a4dbf-stderr >&2) \
         || echo $? >/tmp/clis-ripgrep_14-1-0/release/deps/out-14504da8f25a4dbf-errcode
 FROM scratch AS out-14504da8f25a4dbf
-COPY --from=dep-l-globset-0.4.14-14504da8f25a4dbf /tmp/clis-ripgrep_14-1-0/release/deps/*-14504da8f25a4dbf* /
+COPY --from=dep-n-globset-0.4.14-14504da8f25a4dbf /tmp/clis-ripgrep_14-1-0/release/deps/*-14504da8f25a4dbf* /
 
 ## this = "14504da8f25a4dbf"
 ## deps = [
@@ -1027,65 +1011,53 @@ COPY --from=dep-l-globset-0.4.14-14504da8f25a4dbf /tmp/clis-ripgrep_14-1-0/relea
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_14-1-0/release/deps/libglobset-14504da8f25a4dbf.rlib","emit":"link"}',
 ## ]
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-2a2c3bf3a2b335e0"
-## src = "/libaho_corasick-2a2c3bf3a2b335e0.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libaho_corasick-2a2c3bf3a2b335e0.rmeta"
+## xtern = "libaho_corasick-2a2c3bf3a2b335e0.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-2a2c3bf3a2b335e0"
-## src = "/libaho_corasick-2a2c3bf3a2b335e0.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libaho_corasick-2a2c3bf3a2b335e0.rlib"
+## xtern = "libaho_corasick-2a2c3bf3a2b335e0.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-3d9021aec125798d"
-## src = "/libmemchr-3d9021aec125798d.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rmeta"
+## xtern = "libmemchr-3d9021aec125798d.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-3d9021aec125798d"
-## src = "/libmemchr-3d9021aec125798d.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rlib"
+## xtern = "libmemchr-3d9021aec125798d.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-f6b551c518280772"
-## src = "/libbstr-f6b551c518280772.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libbstr-f6b551c518280772.rmeta"
+## xtern = "libbstr-f6b551c518280772.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-f6b551c518280772"
-## src = "/libbstr-f6b551c518280772.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libbstr-f6b551c518280772.rlib"
+## xtern = "libbstr-f6b551c518280772.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-54c30116fcd4ea92"
-## src = "/libregex_automata-54c30116fcd4ea92.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libregex_automata-54c30116fcd4ea92.rmeta"
+## xtern = "libregex_automata-54c30116fcd4ea92.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-54c30116fcd4ea92"
-## src = "/libregex_automata-54c30116fcd4ea92.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libregex_automata-54c30116fcd4ea92.rlib"
+## xtern = "libregex_automata-54c30116fcd4ea92.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-0d361157f8cdd0fe"
-## src = "/libregex_syntax-0d361157f8cdd0fe.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libregex_syntax-0d361157f8cdd0fe.rmeta"
+## xtern = "libregex_syntax-0d361157f8cdd0fe.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-0d361157f8cdd0fe"
-## src = "/libregex_syntax-0d361157f8cdd0fe.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libregex_syntax-0d361157f8cdd0fe.rlib"
+## xtern = "libregex_syntax-0d361157f8cdd0fe.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-45d1068292014e63"
-## src = "/liblog-45d1068292014e63.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/liblog-45d1068292014e63.rmeta"
+## xtern = "liblog-45d1068292014e63.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-45d1068292014e63"
-## src = "/liblog-45d1068292014e63.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/liblog-45d1068292014e63.rlib"
+## xtern = "liblog-45d1068292014e63.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -1099,9 +1071,9 @@ COPY --from=dep-l-globset-0.4.14-14504da8f25a4dbf /tmp/clis-ripgrep_14-1-0/relea
 ##   https://static.crates.io/crates/globset/globset-0.4.14.crate /'''
 ## 
 ## [[stages]]
-## name = "dep-l-globset-0.4.14-14504da8f25a4dbf"
+## name = "dep-n-globset-0.4.14-14504da8f25a4dbf"
 ## script = '''
-## FROM rust-base AS dep-l-globset-0.4.14-14504da8f25a4dbf
+## FROM rust-base AS dep-n-globset-0.4.14-14504da8f25a4dbf
 ## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 ## WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 ## RUN \
@@ -1147,12 +1119,12 @@ COPY --from=dep-l-globset-0.4.14-14504da8f25a4dbf /tmp/clis-ripgrep_14-1-0/relea
 ## name = "out-14504da8f25a4dbf"
 ## script = """
 ## FROM scratch AS out-14504da8f25a4dbf
-## COPY --from=dep-l-globset-0.4.14-14504da8f25a4dbf /tmp/clis-ripgrep_14-1-0/release/deps/*-14504da8f25a4dbf* /"""
+## COPY --from=dep-n-globset-0.4.14-14504da8f25a4dbf /tmp/clis-ripgrep_14-1-0/release/deps/*-14504da8f25a4dbf* /"""
 
 FROM scratch AS cratesio-libc-0.2.151
 ADD --chmod=0664 --unpack=true --checksum=sha256:302d7ab3130588088d277783b1e2d2e10c9e9e4a16dd9050e6ec93fb3e7048f4 \
   https://static.crates.io/crates/libc/libc-0.2.151.crate /
-FROM rust-base AS dep-l-libc-0.2.151-b1dcb66edfd0e8a0
+FROM rust-base AS dep-n-libc-0.2.151-b1dcb66edfd0e8a0
 SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 RUN \
@@ -1183,7 +1155,7 @@ RUN \
         2> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-b1dcb66edfd0e8a0-stderr >&2) \
         || echo $? >/tmp/clis-ripgrep_14-1-0/release/deps/out-b1dcb66edfd0e8a0-errcode
 FROM scratch AS out-b1dcb66edfd0e8a0
-COPY --from=dep-l-libc-0.2.151-b1dcb66edfd0e8a0 /tmp/clis-ripgrep_14-1-0/release/deps/*-b1dcb66edfd0e8a0* /
+COPY --from=dep-n-libc-0.2.151-b1dcb66edfd0e8a0 /tmp/clis-ripgrep_14-1-0/release/deps/*-b1dcb66edfd0e8a0* /
 
 ## this = "b1dcb66edfd0e8a0"
 ## writes = [
@@ -1276,9 +1248,9 @@ COPY --from=dep-l-libc-0.2.151-b1dcb66edfd0e8a0 /tmp/clis-ripgrep_14-1-0/release
 ##   https://static.crates.io/crates/libc/libc-0.2.151.crate /'''
 ## 
 ## [[stages]]
-## name = "dep-l-libc-0.2.151-b1dcb66edfd0e8a0"
+## name = "dep-n-libc-0.2.151-b1dcb66edfd0e8a0"
 ## script = '''
-## FROM rust-base AS dep-l-libc-0.2.151-b1dcb66edfd0e8a0
+## FROM rust-base AS dep-n-libc-0.2.151-b1dcb66edfd0e8a0
 ## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 ## WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 ## RUN \
@@ -1313,12 +1285,12 @@ COPY --from=dep-l-libc-0.2.151-b1dcb66edfd0e8a0 /tmp/clis-ripgrep_14-1-0/release
 ## name = "out-b1dcb66edfd0e8a0"
 ## script = """
 ## FROM scratch AS out-b1dcb66edfd0e8a0
-## COPY --from=dep-l-libc-0.2.151-b1dcb66edfd0e8a0 /tmp/clis-ripgrep_14-1-0/release/deps/*-b1dcb66edfd0e8a0* /"""
+## COPY --from=dep-n-libc-0.2.151-b1dcb66edfd0e8a0 /tmp/clis-ripgrep_14-1-0/release/deps/*-b1dcb66edfd0e8a0* /"""
 
 FROM scratch AS cratesio-termcolor-1.4.0
 ADD --chmod=0664 --unpack=true --checksum=sha256:ff1bc3d3f05aff0403e8ac0d92ced918ec05b666a43f83297ccef5bea8a3d449 \
   https://static.crates.io/crates/termcolor/termcolor-1.4.0.crate /
-FROM rust-base AS dep-l-termcolor-1.4.0-59ae8e7772deaa56
+FROM rust-base AS dep-n-termcolor-1.4.0-59ae8e7772deaa56
 SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 RUN \
@@ -1348,7 +1320,7 @@ RUN \
         2> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-59ae8e7772deaa56-stderr >&2) \
         || echo $? >/tmp/clis-ripgrep_14-1-0/release/deps/out-59ae8e7772deaa56-errcode
 FROM scratch AS out-59ae8e7772deaa56
-COPY --from=dep-l-termcolor-1.4.0-59ae8e7772deaa56 /tmp/clis-ripgrep_14-1-0/release/deps/*-59ae8e7772deaa56* /
+COPY --from=dep-n-termcolor-1.4.0-59ae8e7772deaa56 /tmp/clis-ripgrep_14-1-0/release/deps/*-59ae8e7772deaa56* /
 
 ## this = "59ae8e7772deaa56"
 ## writes = [
@@ -1374,9 +1346,9 @@ COPY --from=dep-l-termcolor-1.4.0-59ae8e7772deaa56 /tmp/clis-ripgrep_14-1-0/rele
 ##   https://static.crates.io/crates/termcolor/termcolor-1.4.0.crate /'''
 ## 
 ## [[stages]]
-## name = "dep-l-termcolor-1.4.0-59ae8e7772deaa56"
+## name = "dep-n-termcolor-1.4.0-59ae8e7772deaa56"
 ## script = '''
-## FROM rust-base AS dep-l-termcolor-1.4.0-59ae8e7772deaa56
+## FROM rust-base AS dep-n-termcolor-1.4.0-59ae8e7772deaa56
 ## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 ## WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 ## RUN \
@@ -1410,12 +1382,12 @@ COPY --from=dep-l-termcolor-1.4.0-59ae8e7772deaa56 /tmp/clis-ripgrep_14-1-0/rele
 ## name = "out-59ae8e7772deaa56"
 ## script = """
 ## FROM scratch AS out-59ae8e7772deaa56
-## COPY --from=dep-l-termcolor-1.4.0-59ae8e7772deaa56 /tmp/clis-ripgrep_14-1-0/release/deps/*-59ae8e7772deaa56* /"""
+## COPY --from=dep-n-termcolor-1.4.0-59ae8e7772deaa56 /tmp/clis-ripgrep_14-1-0/release/deps/*-59ae8e7772deaa56* /"""
 
 FROM scratch AS cratesio-grep-cli-0.1.10
 ADD --chmod=0664 --unpack=true --checksum=sha256:ea40788c059ab8b622c4d074732750bfb3bd2912e2dd58eabc11798a4d5ad725 \
   https://static.crates.io/crates/grep-cli/grep-cli-0.1.10.crate /
-FROM rust-base AS dep-l-grep-cli-0.1.10-8da8357e778092ce
+FROM rust-base AS dep-n-grep-cli-0.1.10-8da8357e778092ce
 SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 RUN \
@@ -1463,7 +1435,7 @@ RUN \
         2> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-8da8357e778092ce-stderr >&2) \
         || echo $? >/tmp/clis-ripgrep_14-1-0/release/deps/out-8da8357e778092ce-errcode
 FROM scratch AS out-8da8357e778092ce
-COPY --from=dep-l-grep-cli-0.1.10-8da8357e778092ce /tmp/clis-ripgrep_14-1-0/release/deps/*-8da8357e778092ce* /
+COPY --from=dep-n-grep-cli-0.1.10-8da8357e778092ce /tmp/clis-ripgrep_14-1-0/release/deps/*-8da8357e778092ce* /
 
 ## this = "8da8357e778092ce"
 ## deps = [
@@ -1499,95 +1471,77 @@ COPY --from=dep-l-grep-cli-0.1.10-8da8357e778092ce /tmp/clis-ripgrep_14-1-0/rele
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_cli-8da8357e778092ce.rlib","emit":"link"}',
 ## ]
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-f6b551c518280772"
-## src = "/libbstr-f6b551c518280772.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libbstr-f6b551c518280772.rmeta"
+## xtern = "libbstr-f6b551c518280772.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-f6b551c518280772"
-## src = "/libbstr-f6b551c518280772.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libbstr-f6b551c518280772.rlib"
+## xtern = "libbstr-f6b551c518280772.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-3d9021aec125798d"
-## src = "/libmemchr-3d9021aec125798d.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rmeta"
+## xtern = "libmemchr-3d9021aec125798d.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-3d9021aec125798d"
-## src = "/libmemchr-3d9021aec125798d.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rlib"
+## xtern = "libmemchr-3d9021aec125798d.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-54c30116fcd4ea92"
-## src = "/libregex_automata-54c30116fcd4ea92.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libregex_automata-54c30116fcd4ea92.rmeta"
+## xtern = "libregex_automata-54c30116fcd4ea92.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-54c30116fcd4ea92"
-## src = "/libregex_automata-54c30116fcd4ea92.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libregex_automata-54c30116fcd4ea92.rlib"
+## xtern = "libregex_automata-54c30116fcd4ea92.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-2a2c3bf3a2b335e0"
-## src = "/libaho_corasick-2a2c3bf3a2b335e0.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libaho_corasick-2a2c3bf3a2b335e0.rmeta"
+## xtern = "libaho_corasick-2a2c3bf3a2b335e0.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-2a2c3bf3a2b335e0"
-## src = "/libaho_corasick-2a2c3bf3a2b335e0.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libaho_corasick-2a2c3bf3a2b335e0.rlib"
+## xtern = "libaho_corasick-2a2c3bf3a2b335e0.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-0d361157f8cdd0fe"
-## src = "/libregex_syntax-0d361157f8cdd0fe.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libregex_syntax-0d361157f8cdd0fe.rmeta"
+## xtern = "libregex_syntax-0d361157f8cdd0fe.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-0d361157f8cdd0fe"
-## src = "/libregex_syntax-0d361157f8cdd0fe.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libregex_syntax-0d361157f8cdd0fe.rlib"
+## xtern = "libregex_syntax-0d361157f8cdd0fe.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-14504da8f25a4dbf"
-## src = "/libglobset-14504da8f25a4dbf.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libglobset-14504da8f25a4dbf.rmeta"
+## xtern = "libglobset-14504da8f25a4dbf.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-14504da8f25a4dbf"
-## src = "/libglobset-14504da8f25a4dbf.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libglobset-14504da8f25a4dbf.rlib"
+## xtern = "libglobset-14504da8f25a4dbf.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-45d1068292014e63"
-## src = "/liblog-45d1068292014e63.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/liblog-45d1068292014e63.rmeta"
+## xtern = "liblog-45d1068292014e63.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-45d1068292014e63"
-## src = "/liblog-45d1068292014e63.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/liblog-45d1068292014e63.rlib"
+## xtern = "liblog-45d1068292014e63.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-b1dcb66edfd0e8a0"
-## src = "/liblibc-b1dcb66edfd0e8a0.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/liblibc-b1dcb66edfd0e8a0.rmeta"
+## xtern = "liblibc-b1dcb66edfd0e8a0.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-b1dcb66edfd0e8a0"
-## src = "/liblibc-b1dcb66edfd0e8a0.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/liblibc-b1dcb66edfd0e8a0.rlib"
+## xtern = "liblibc-b1dcb66edfd0e8a0.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-59ae8e7772deaa56"
-## src = "/libtermcolor-59ae8e7772deaa56.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libtermcolor-59ae8e7772deaa56.rmeta"
+## xtern = "libtermcolor-59ae8e7772deaa56.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-59ae8e7772deaa56"
-## src = "/libtermcolor-59ae8e7772deaa56.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libtermcolor-59ae8e7772deaa56.rlib"
+## xtern = "libtermcolor-59ae8e7772deaa56.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -1601,9 +1555,9 @@ COPY --from=dep-l-grep-cli-0.1.10-8da8357e778092ce /tmp/clis-ripgrep_14-1-0/rele
 ##   https://static.crates.io/crates/grep-cli/grep-cli-0.1.10.crate /'''
 ## 
 ## [[stages]]
-## name = "dep-l-grep-cli-0.1.10-8da8357e778092ce"
+## name = "dep-n-grep-cli-0.1.10-8da8357e778092ce"
 ## script = '''
-## FROM rust-base AS dep-l-grep-cli-0.1.10-8da8357e778092ce
+## FROM rust-base AS dep-n-grep-cli-0.1.10-8da8357e778092ce
 ## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 ## WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 ## RUN \
@@ -1655,12 +1609,12 @@ COPY --from=dep-l-grep-cli-0.1.10-8da8357e778092ce /tmp/clis-ripgrep_14-1-0/rele
 ## name = "out-8da8357e778092ce"
 ## script = """
 ## FROM scratch AS out-8da8357e778092ce
-## COPY --from=dep-l-grep-cli-0.1.10-8da8357e778092ce /tmp/clis-ripgrep_14-1-0/release/deps/*-8da8357e778092ce* /"""
+## COPY --from=dep-n-grep-cli-0.1.10-8da8357e778092ce /tmp/clis-ripgrep_14-1-0/release/deps/*-8da8357e778092ce* /"""
 
 FROM scratch AS cratesio-grep-matcher-0.1.7
 ADD --chmod=0664 --unpack=true --checksum=sha256:47a3141a10a43acfedc7c98a60a834d7ba00dfe7bec9071cbfc19b55b292ac02 \
   https://static.crates.io/crates/grep-matcher/grep-matcher-0.1.7.crate /
-FROM rust-base AS dep-l-grep-matcher-0.1.7-7517975d791c1423
+FROM rust-base AS dep-n-grep-matcher-0.1.7-7517975d791c1423
 SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 RUN \
@@ -1692,7 +1646,7 @@ RUN \
         2> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-7517975d791c1423-stderr >&2) \
         || echo $? >/tmp/clis-ripgrep_14-1-0/release/deps/out-7517975d791c1423-errcode
 FROM scratch AS out-7517975d791c1423
-COPY --from=dep-l-grep-matcher-0.1.7-7517975d791c1423 /tmp/clis-ripgrep_14-1-0/release/deps/*-7517975d791c1423* /
+COPY --from=dep-n-grep-matcher-0.1.7-7517975d791c1423 /tmp/clis-ripgrep_14-1-0/release/deps/*-7517975d791c1423* /
 
 ## this = "7517975d791c1423"
 ## deps = ["3d9021aec125798d"]
@@ -1708,15 +1662,13 @@ COPY --from=dep-l-grep-matcher-0.1.7-7517975d791c1423 /tmp/clis-ripgrep_14-1-0/r
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_matcher-7517975d791c1423.rlib","emit":"link"}',
 ## ]
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-3d9021aec125798d"
-## src = "/libmemchr-3d9021aec125798d.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rmeta"
+## xtern = "libmemchr-3d9021aec125798d.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-3d9021aec125798d"
-## src = "/libmemchr-3d9021aec125798d.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rlib"
+## xtern = "libmemchr-3d9021aec125798d.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -1730,9 +1682,9 @@ COPY --from=dep-l-grep-matcher-0.1.7-7517975d791c1423 /tmp/clis-ripgrep_14-1-0/r
 ##   https://static.crates.io/crates/grep-matcher/grep-matcher-0.1.7.crate /'''
 ## 
 ## [[stages]]
-## name = "dep-l-grep-matcher-0.1.7-7517975d791c1423"
+## name = "dep-n-grep-matcher-0.1.7-7517975d791c1423"
 ## script = '''
-## FROM rust-base AS dep-l-grep-matcher-0.1.7-7517975d791c1423
+## FROM rust-base AS dep-n-grep-matcher-0.1.7-7517975d791c1423
 ## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 ## WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 ## RUN \
@@ -1768,12 +1720,12 @@ COPY --from=dep-l-grep-matcher-0.1.7-7517975d791c1423 /tmp/clis-ripgrep_14-1-0/r
 ## name = "out-7517975d791c1423"
 ## script = """
 ## FROM scratch AS out-7517975d791c1423
-## COPY --from=dep-l-grep-matcher-0.1.7-7517975d791c1423 /tmp/clis-ripgrep_14-1-0/release/deps/*-7517975d791c1423* /"""
+## COPY --from=dep-n-grep-matcher-0.1.7-7517975d791c1423 /tmp/clis-ripgrep_14-1-0/release/deps/*-7517975d791c1423* /"""
 
 FROM scratch AS cratesio-cfg-if-1.0.0
 ADD --chmod=0664 --unpack=true --checksum=sha256:baf1de4339761588bc0619e3cbc0120ee582ebb74b53b4efbf79117bd2da40fd \
   https://static.crates.io/crates/cfg-if/cfg-if-1.0.0.crate /
-FROM rust-base AS dep-l-cfg-if-1.0.0-98d40c6178a8b60f
+FROM rust-base AS dep-n-cfg-if-1.0.0-98d40c6178a8b60f
 SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 RUN \
@@ -1803,7 +1755,7 @@ RUN \
         2> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-98d40c6178a8b60f-stderr >&2) \
         || echo $? >/tmp/clis-ripgrep_14-1-0/release/deps/out-98d40c6178a8b60f-errcode
 FROM scratch AS out-98d40c6178a8b60f
-COPY --from=dep-l-cfg-if-1.0.0-98d40c6178a8b60f /tmp/clis-ripgrep_14-1-0/release/deps/*-98d40c6178a8b60f* /
+COPY --from=dep-n-cfg-if-1.0.0-98d40c6178a8b60f /tmp/clis-ripgrep_14-1-0/release/deps/*-98d40c6178a8b60f* /
 
 ## this = "98d40c6178a8b60f"
 ## writes = [
@@ -1829,9 +1781,9 @@ COPY --from=dep-l-cfg-if-1.0.0-98d40c6178a8b60f /tmp/clis-ripgrep_14-1-0/release
 ##   https://static.crates.io/crates/cfg-if/cfg-if-1.0.0.crate /'''
 ## 
 ## [[stages]]
-## name = "dep-l-cfg-if-1.0.0-98d40c6178a8b60f"
+## name = "dep-n-cfg-if-1.0.0-98d40c6178a8b60f"
 ## script = '''
-## FROM rust-base AS dep-l-cfg-if-1.0.0-98d40c6178a8b60f
+## FROM rust-base AS dep-n-cfg-if-1.0.0-98d40c6178a8b60f
 ## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 ## WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 ## RUN \
@@ -1865,12 +1817,12 @@ COPY --from=dep-l-cfg-if-1.0.0-98d40c6178a8b60f /tmp/clis-ripgrep_14-1-0/release
 ## name = "out-98d40c6178a8b60f"
 ## script = """
 ## FROM scratch AS out-98d40c6178a8b60f
-## COPY --from=dep-l-cfg-if-1.0.0-98d40c6178a8b60f /tmp/clis-ripgrep_14-1-0/release/deps/*-98d40c6178a8b60f* /"""
+## COPY --from=dep-n-cfg-if-1.0.0-98d40c6178a8b60f /tmp/clis-ripgrep_14-1-0/release/deps/*-98d40c6178a8b60f* /"""
 
 FROM scratch AS cratesio-encoding_rs-0.8.33
 ADD --chmod=0664 --unpack=true --checksum=sha256:7268b386296a025e474d5140678f75d6de9493ae55a5d709eeb9dd08149945e1 \
   https://static.crates.io/crates/encoding_rs/encoding_rs-0.8.33.crate /
-FROM rust-base AS dep-l-encoding_rs-0.8.33-71f95fee6544e787
+FROM rust-base AS dep-n-encoding_rs-0.8.33-71f95fee6544e787
 SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 RUN \
@@ -1902,7 +1854,7 @@ RUN \
         2> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-71f95fee6544e787-stderr >&2) \
         || echo $? >/tmp/clis-ripgrep_14-1-0/release/deps/out-71f95fee6544e787-errcode
 FROM scratch AS out-71f95fee6544e787
-COPY --from=dep-l-encoding_rs-0.8.33-71f95fee6544e787 /tmp/clis-ripgrep_14-1-0/release/deps/*-71f95fee6544e787* /
+COPY --from=dep-n-encoding_rs-0.8.33-71f95fee6544e787 /tmp/clis-ripgrep_14-1-0/release/deps/*-71f95fee6544e787* /
 
 ## this = "71f95fee6544e787"
 ## deps = ["98d40c6178a8b60f"]
@@ -1946,15 +1898,13 @@ COPY --from=dep-l-encoding_rs-0.8.33-71f95fee6544e787 /tmp/clis-ripgrep_14-1-0/r
 ##     '{"$message_type":"diagnostic","message":"27 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 27 warnings emitted\u001b[0m\n\n"}',
 ## ]
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-98d40c6178a8b60f"
-## src = "/libcfg_if-98d40c6178a8b60f.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libcfg_if-98d40c6178a8b60f.rmeta"
+## xtern = "libcfg_if-98d40c6178a8b60f.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-98d40c6178a8b60f"
-## src = "/libcfg_if-98d40c6178a8b60f.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libcfg_if-98d40c6178a8b60f.rlib"
+## xtern = "libcfg_if-98d40c6178a8b60f.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -1968,9 +1918,9 @@ COPY --from=dep-l-encoding_rs-0.8.33-71f95fee6544e787 /tmp/clis-ripgrep_14-1-0/r
 ##   https://static.crates.io/crates/encoding_rs/encoding_rs-0.8.33.crate /'''
 ## 
 ## [[stages]]
-## name = "dep-l-encoding_rs-0.8.33-71f95fee6544e787"
+## name = "dep-n-encoding_rs-0.8.33-71f95fee6544e787"
 ## script = '''
-## FROM rust-base AS dep-l-encoding_rs-0.8.33-71f95fee6544e787
+## FROM rust-base AS dep-n-encoding_rs-0.8.33-71f95fee6544e787
 ## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 ## WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 ## RUN \
@@ -2006,12 +1956,12 @@ COPY --from=dep-l-encoding_rs-0.8.33-71f95fee6544e787 /tmp/clis-ripgrep_14-1-0/r
 ## name = "out-71f95fee6544e787"
 ## script = """
 ## FROM scratch AS out-71f95fee6544e787
-## COPY --from=dep-l-encoding_rs-0.8.33-71f95fee6544e787 /tmp/clis-ripgrep_14-1-0/release/deps/*-71f95fee6544e787* /"""
+## COPY --from=dep-n-encoding_rs-0.8.33-71f95fee6544e787 /tmp/clis-ripgrep_14-1-0/release/deps/*-71f95fee6544e787* /"""
 
 FROM scratch AS cratesio-encoding_rs_io-0.1.7
 ADD --chmod=0664 --unpack=true --checksum=sha256:1cc3c5651fb62ab8aa3103998dade57efdd028544bd300516baa31840c252a83 \
   https://static.crates.io/crates/encoding_rs_io/encoding_rs_io-0.1.7.crate /
-FROM rust-base AS dep-l-encoding_rs_io-0.1.7-1f57e01234da7cf8
+FROM rust-base AS dep-n-encoding_rs_io-0.1.7-1f57e01234da7cf8
 SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 RUN \
@@ -2045,7 +1995,7 @@ RUN \
         2> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-1f57e01234da7cf8-stderr >&2) \
         || echo $? >/tmp/clis-ripgrep_14-1-0/release/deps/out-1f57e01234da7cf8-errcode
 FROM scratch AS out-1f57e01234da7cf8
-COPY --from=dep-l-encoding_rs_io-0.1.7-1f57e01234da7cf8 /tmp/clis-ripgrep_14-1-0/release/deps/*-1f57e01234da7cf8* /
+COPY --from=dep-n-encoding_rs_io-0.1.7-1f57e01234da7cf8 /tmp/clis-ripgrep_14-1-0/release/deps/*-1f57e01234da7cf8* /
 
 ## this = "1f57e01234da7cf8"
 ## deps = [
@@ -2067,25 +2017,21 @@ COPY --from=dep-l-encoding_rs_io-0.1.7-1f57e01234da7cf8 /tmp/clis-ripgrep_14-1-0
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_14-1-0/release/deps/libencoding_rs_io-1f57e01234da7cf8.rlib","emit":"link"}',
 ## ]
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-71f95fee6544e787"
-## src = "/libencoding_rs-71f95fee6544e787.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libencoding_rs-71f95fee6544e787.rmeta"
+## xtern = "libencoding_rs-71f95fee6544e787.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-71f95fee6544e787"
-## src = "/libencoding_rs-71f95fee6544e787.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libencoding_rs-71f95fee6544e787.rlib"
+## xtern = "libencoding_rs-71f95fee6544e787.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-98d40c6178a8b60f"
-## src = "/libcfg_if-98d40c6178a8b60f.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libcfg_if-98d40c6178a8b60f.rmeta"
+## xtern = "libcfg_if-98d40c6178a8b60f.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-98d40c6178a8b60f"
-## src = "/libcfg_if-98d40c6178a8b60f.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libcfg_if-98d40c6178a8b60f.rlib"
+## xtern = "libcfg_if-98d40c6178a8b60f.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -2099,9 +2045,9 @@ COPY --from=dep-l-encoding_rs_io-0.1.7-1f57e01234da7cf8 /tmp/clis-ripgrep_14-1-0
 ##   https://static.crates.io/crates/encoding_rs_io/encoding_rs_io-0.1.7.crate /'''
 ## 
 ## [[stages]]
-## name = "dep-l-encoding_rs_io-0.1.7-1f57e01234da7cf8"
+## name = "dep-n-encoding_rs_io-0.1.7-1f57e01234da7cf8"
 ## script = '''
-## FROM rust-base AS dep-l-encoding_rs_io-0.1.7-1f57e01234da7cf8
+## FROM rust-base AS dep-n-encoding_rs_io-0.1.7-1f57e01234da7cf8
 ## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 ## WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 ## RUN \
@@ -2139,12 +2085,12 @@ COPY --from=dep-l-encoding_rs_io-0.1.7-1f57e01234da7cf8 /tmp/clis-ripgrep_14-1-0
 ## name = "out-1f57e01234da7cf8"
 ## script = """
 ## FROM scratch AS out-1f57e01234da7cf8
-## COPY --from=dep-l-encoding_rs_io-0.1.7-1f57e01234da7cf8 /tmp/clis-ripgrep_14-1-0/release/deps/*-1f57e01234da7cf8* /"""
+## COPY --from=dep-n-encoding_rs_io-0.1.7-1f57e01234da7cf8 /tmp/clis-ripgrep_14-1-0/release/deps/*-1f57e01234da7cf8* /"""
 
 FROM scratch AS cratesio-memmap2-0.9.3
 ADD --chmod=0664 --unpack=true --checksum=sha256:45fd3a57831bf88bc63f8cebc0cf956116276e97fef3966103e96416209f7c92 \
   https://static.crates.io/crates/memmap2/memmap2-0.9.3.crate /
-FROM rust-base AS dep-l-memmap2-0.9.3-21c841a4e972790f
+FROM rust-base AS dep-n-memmap2-0.9.3-21c841a4e972790f
 SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 RUN \
@@ -2176,7 +2122,7 @@ RUN \
         2> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-21c841a4e972790f-stderr >&2) \
         || echo $? >/tmp/clis-ripgrep_14-1-0/release/deps/out-21c841a4e972790f-errcode
 FROM scratch AS out-21c841a4e972790f
-COPY --from=dep-l-memmap2-0.9.3-21c841a4e972790f /tmp/clis-ripgrep_14-1-0/release/deps/*-21c841a4e972790f* /
+COPY --from=dep-n-memmap2-0.9.3-21c841a4e972790f /tmp/clis-ripgrep_14-1-0/release/deps/*-21c841a4e972790f* /
 
 ## this = "21c841a4e972790f"
 ## deps = ["b1dcb66edfd0e8a0"]
@@ -2192,15 +2138,13 @@ COPY --from=dep-l-memmap2-0.9.3-21c841a4e972790f /tmp/clis-ripgrep_14-1-0/releas
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_14-1-0/release/deps/libmemmap2-21c841a4e972790f.rlib","emit":"link"}',
 ## ]
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-b1dcb66edfd0e8a0"
-## src = "/liblibc-b1dcb66edfd0e8a0.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/liblibc-b1dcb66edfd0e8a0.rmeta"
+## xtern = "liblibc-b1dcb66edfd0e8a0.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-b1dcb66edfd0e8a0"
-## src = "/liblibc-b1dcb66edfd0e8a0.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/liblibc-b1dcb66edfd0e8a0.rlib"
+## xtern = "liblibc-b1dcb66edfd0e8a0.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -2214,9 +2158,9 @@ COPY --from=dep-l-memmap2-0.9.3-21c841a4e972790f /tmp/clis-ripgrep_14-1-0/releas
 ##   https://static.crates.io/crates/memmap2/memmap2-0.9.3.crate /'''
 ## 
 ## [[stages]]
-## name = "dep-l-memmap2-0.9.3-21c841a4e972790f"
+## name = "dep-n-memmap2-0.9.3-21c841a4e972790f"
 ## script = '''
-## FROM rust-base AS dep-l-memmap2-0.9.3-21c841a4e972790f
+## FROM rust-base AS dep-n-memmap2-0.9.3-21c841a4e972790f
 ## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 ## WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 ## RUN \
@@ -2252,12 +2196,12 @@ COPY --from=dep-l-memmap2-0.9.3-21c841a4e972790f /tmp/clis-ripgrep_14-1-0/releas
 ## name = "out-21c841a4e972790f"
 ## script = """
 ## FROM scratch AS out-21c841a4e972790f
-## COPY --from=dep-l-memmap2-0.9.3-21c841a4e972790f /tmp/clis-ripgrep_14-1-0/release/deps/*-21c841a4e972790f* /"""
+## COPY --from=dep-n-memmap2-0.9.3-21c841a4e972790f /tmp/clis-ripgrep_14-1-0/release/deps/*-21c841a4e972790f* /"""
 
 FROM scratch AS cratesio-grep-searcher-0.1.13
 ADD --chmod=0664 --unpack=true --checksum=sha256:ba536ae4f69bec62d8839584dd3153d3028ef31bb229f04e09fb5a9e5a193c54 \
   https://static.crates.io/crates/grep-searcher/grep-searcher-0.1.13.crate /
-FROM rust-base AS dep-l-grep-searcher-0.1.13-6fc004d41272f596
+FROM rust-base AS dep-n-grep-searcher-0.1.13-6fc004d41272f596
 SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 RUN \
@@ -2311,7 +2255,7 @@ RUN \
         2> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-6fc004d41272f596-stderr >&2) \
         || echo $? >/tmp/clis-ripgrep_14-1-0/release/deps/out-6fc004d41272f596-errcode
 FROM scratch AS out-6fc004d41272f596
-COPY --from=dep-l-grep-searcher-0.1.13-6fc004d41272f596 /tmp/clis-ripgrep_14-1-0/release/deps/*-6fc004d41272f596* /
+COPY --from=dep-n-grep-searcher-0.1.13-6fc004d41272f596 /tmp/clis-ripgrep_14-1-0/release/deps/*-6fc004d41272f596* /
 
 ## this = "6fc004d41272f596"
 ## deps = [
@@ -2353,125 +2297,101 @@ COPY --from=dep-l-grep-searcher-0.1.13-6fc004d41272f596 /tmp/clis-ripgrep_14-1-0
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_searcher-6fc004d41272f596.rlib","emit":"link"}',
 ## ]
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-f6b551c518280772"
-## src = "/libbstr-f6b551c518280772.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libbstr-f6b551c518280772.rmeta"
+## xtern = "libbstr-f6b551c518280772.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-f6b551c518280772"
-## src = "/libbstr-f6b551c518280772.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libbstr-f6b551c518280772.rlib"
+## xtern = "libbstr-f6b551c518280772.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-3d9021aec125798d"
-## src = "/libmemchr-3d9021aec125798d.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rmeta"
+## xtern = "libmemchr-3d9021aec125798d.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-3d9021aec125798d"
-## src = "/libmemchr-3d9021aec125798d.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rlib"
+## xtern = "libmemchr-3d9021aec125798d.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-54c30116fcd4ea92"
-## src = "/libregex_automata-54c30116fcd4ea92.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libregex_automata-54c30116fcd4ea92.rmeta"
+## xtern = "libregex_automata-54c30116fcd4ea92.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-54c30116fcd4ea92"
-## src = "/libregex_automata-54c30116fcd4ea92.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libregex_automata-54c30116fcd4ea92.rlib"
+## xtern = "libregex_automata-54c30116fcd4ea92.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-2a2c3bf3a2b335e0"
-## src = "/libaho_corasick-2a2c3bf3a2b335e0.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libaho_corasick-2a2c3bf3a2b335e0.rmeta"
+## xtern = "libaho_corasick-2a2c3bf3a2b335e0.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-2a2c3bf3a2b335e0"
-## src = "/libaho_corasick-2a2c3bf3a2b335e0.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libaho_corasick-2a2c3bf3a2b335e0.rlib"
+## xtern = "libaho_corasick-2a2c3bf3a2b335e0.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-0d361157f8cdd0fe"
-## src = "/libregex_syntax-0d361157f8cdd0fe.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libregex_syntax-0d361157f8cdd0fe.rmeta"
+## xtern = "libregex_syntax-0d361157f8cdd0fe.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-0d361157f8cdd0fe"
-## src = "/libregex_syntax-0d361157f8cdd0fe.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libregex_syntax-0d361157f8cdd0fe.rlib"
+## xtern = "libregex_syntax-0d361157f8cdd0fe.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-71f95fee6544e787"
-## src = "/libencoding_rs-71f95fee6544e787.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libencoding_rs-71f95fee6544e787.rmeta"
+## xtern = "libencoding_rs-71f95fee6544e787.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-71f95fee6544e787"
-## src = "/libencoding_rs-71f95fee6544e787.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libencoding_rs-71f95fee6544e787.rlib"
+## xtern = "libencoding_rs-71f95fee6544e787.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-98d40c6178a8b60f"
-## src = "/libcfg_if-98d40c6178a8b60f.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libcfg_if-98d40c6178a8b60f.rmeta"
+## xtern = "libcfg_if-98d40c6178a8b60f.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-98d40c6178a8b60f"
-## src = "/libcfg_if-98d40c6178a8b60f.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libcfg_if-98d40c6178a8b60f.rlib"
+## xtern = "libcfg_if-98d40c6178a8b60f.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-1f57e01234da7cf8"
-## src = "/libencoding_rs_io-1f57e01234da7cf8.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libencoding_rs_io-1f57e01234da7cf8.rmeta"
+## xtern = "libencoding_rs_io-1f57e01234da7cf8.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-1f57e01234da7cf8"
-## src = "/libencoding_rs_io-1f57e01234da7cf8.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libencoding_rs_io-1f57e01234da7cf8.rlib"
+## xtern = "libencoding_rs_io-1f57e01234da7cf8.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-7517975d791c1423"
-## src = "/libgrep_matcher-7517975d791c1423.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_matcher-7517975d791c1423.rmeta"
+## xtern = "libgrep_matcher-7517975d791c1423.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-7517975d791c1423"
-## src = "/libgrep_matcher-7517975d791c1423.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_matcher-7517975d791c1423.rlib"
+## xtern = "libgrep_matcher-7517975d791c1423.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-45d1068292014e63"
-## src = "/liblog-45d1068292014e63.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/liblog-45d1068292014e63.rmeta"
+## xtern = "liblog-45d1068292014e63.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-45d1068292014e63"
-## src = "/liblog-45d1068292014e63.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/liblog-45d1068292014e63.rlib"
+## xtern = "liblog-45d1068292014e63.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-21c841a4e972790f"
-## src = "/libmemmap2-21c841a4e972790f.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libmemmap2-21c841a4e972790f.rmeta"
+## xtern = "libmemmap2-21c841a4e972790f.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-21c841a4e972790f"
-## src = "/libmemmap2-21c841a4e972790f.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libmemmap2-21c841a4e972790f.rlib"
+## xtern = "libmemmap2-21c841a4e972790f.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-b1dcb66edfd0e8a0"
-## src = "/liblibc-b1dcb66edfd0e8a0.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/liblibc-b1dcb66edfd0e8a0.rmeta"
+## xtern = "liblibc-b1dcb66edfd0e8a0.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-b1dcb66edfd0e8a0"
-## src = "/liblibc-b1dcb66edfd0e8a0.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/liblibc-b1dcb66edfd0e8a0.rlib"
+## xtern = "liblibc-b1dcb66edfd0e8a0.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -2485,9 +2405,9 @@ COPY --from=dep-l-grep-searcher-0.1.13-6fc004d41272f596 /tmp/clis-ripgrep_14-1-0
 ##   https://static.crates.io/crates/grep-searcher/grep-searcher-0.1.13.crate /'''
 ## 
 ## [[stages]]
-## name = "dep-l-grep-searcher-0.1.13-6fc004d41272f596"
+## name = "dep-n-grep-searcher-0.1.13-6fc004d41272f596"
 ## script = '''
-## FROM rust-base AS dep-l-grep-searcher-0.1.13-6fc004d41272f596
+## FROM rust-base AS dep-n-grep-searcher-0.1.13-6fc004d41272f596
 ## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 ## WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 ## RUN \
@@ -2545,12 +2465,12 @@ COPY --from=dep-l-grep-searcher-0.1.13-6fc004d41272f596 /tmp/clis-ripgrep_14-1-0
 ## name = "out-6fc004d41272f596"
 ## script = """
 ## FROM scratch AS out-6fc004d41272f596
-## COPY --from=dep-l-grep-searcher-0.1.13-6fc004d41272f596 /tmp/clis-ripgrep_14-1-0/release/deps/*-6fc004d41272f596* /"""
+## COPY --from=dep-n-grep-searcher-0.1.13-6fc004d41272f596 /tmp/clis-ripgrep_14-1-0/release/deps/*-6fc004d41272f596* /"""
 
 FROM scratch AS cratesio-serde-1.0.195
 ADD --chmod=0664 --unpack=true --checksum=sha256:63261df402c67811e9ac6def069e4786148c4563f4b50fd4bf30aa370d626b02 \
   https://static.crates.io/crates/serde/serde-1.0.195.crate /
-FROM rust-base AS dep-l-serde-1.0.195-6342957ddc692e98
+FROM rust-base AS dep-n-serde-1.0.195-6342957ddc692e98
 SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 RUN \
@@ -2581,7 +2501,7 @@ RUN \
         2> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-6342957ddc692e98-stderr >&2) \
         || echo $? >/tmp/clis-ripgrep_14-1-0/release/deps/out-6342957ddc692e98-errcode
 FROM scratch AS out-6342957ddc692e98
-COPY --from=dep-l-serde-1.0.195-6342957ddc692e98 /tmp/clis-ripgrep_14-1-0/release/deps/*-6342957ddc692e98* /
+COPY --from=dep-n-serde-1.0.195-6342957ddc692e98 /tmp/clis-ripgrep_14-1-0/release/deps/*-6342957ddc692e98* /
 
 ## this = "6342957ddc692e98"
 ## writes = [
@@ -2730,9 +2650,9 @@ COPY --from=dep-l-serde-1.0.195-6342957ddc692e98 /tmp/clis-ripgrep_14-1-0/releas
 ##   https://static.crates.io/crates/serde/serde-1.0.195.crate /'''
 ## 
 ## [[stages]]
-## name = "dep-l-serde-1.0.195-6342957ddc692e98"
+## name = "dep-n-serde-1.0.195-6342957ddc692e98"
 ## script = '''
-## FROM rust-base AS dep-l-serde-1.0.195-6342957ddc692e98
+## FROM rust-base AS dep-n-serde-1.0.195-6342957ddc692e98
 ## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 ## WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 ## RUN \
@@ -2767,12 +2687,12 @@ COPY --from=dep-l-serde-1.0.195-6342957ddc692e98 /tmp/clis-ripgrep_14-1-0/releas
 ## name = "out-6342957ddc692e98"
 ## script = """
 ## FROM scratch AS out-6342957ddc692e98
-## COPY --from=dep-l-serde-1.0.195-6342957ddc692e98 /tmp/clis-ripgrep_14-1-0/release/deps/*-6342957ddc692e98* /"""
+## COPY --from=dep-n-serde-1.0.195-6342957ddc692e98 /tmp/clis-ripgrep_14-1-0/release/deps/*-6342957ddc692e98* /"""
 
 FROM scratch AS cratesio-itoa-1.0.10
 ADD --chmod=0664 --unpack=true --checksum=sha256:b1a46d1a171d865aa5f83f92695765caa047a9b4cbae2cbf37dbd613a793fd4c \
   https://static.crates.io/crates/itoa/itoa-1.0.10.crate /
-FROM rust-base AS dep-l-itoa-1.0.10-2b4528a4fd57cfaf
+FROM rust-base AS dep-n-itoa-1.0.10-2b4528a4fd57cfaf
 SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 RUN \
@@ -2802,7 +2722,7 @@ RUN \
         2> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-2b4528a4fd57cfaf-stderr >&2) \
         || echo $? >/tmp/clis-ripgrep_14-1-0/release/deps/out-2b4528a4fd57cfaf-errcode
 FROM scratch AS out-2b4528a4fd57cfaf
-COPY --from=dep-l-itoa-1.0.10-2b4528a4fd57cfaf /tmp/clis-ripgrep_14-1-0/release/deps/*-2b4528a4fd57cfaf* /
+COPY --from=dep-n-itoa-1.0.10-2b4528a4fd57cfaf /tmp/clis-ripgrep_14-1-0/release/deps/*-2b4528a4fd57cfaf* /
 
 ## this = "2b4528a4fd57cfaf"
 ## writes = [
@@ -2828,9 +2748,9 @@ COPY --from=dep-l-itoa-1.0.10-2b4528a4fd57cfaf /tmp/clis-ripgrep_14-1-0/release/
 ##   https://static.crates.io/crates/itoa/itoa-1.0.10.crate /'''
 ## 
 ## [[stages]]
-## name = "dep-l-itoa-1.0.10-2b4528a4fd57cfaf"
+## name = "dep-n-itoa-1.0.10-2b4528a4fd57cfaf"
 ## script = '''
-## FROM rust-base AS dep-l-itoa-1.0.10-2b4528a4fd57cfaf
+## FROM rust-base AS dep-n-itoa-1.0.10-2b4528a4fd57cfaf
 ## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 ## WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 ## RUN \
@@ -2864,12 +2784,12 @@ COPY --from=dep-l-itoa-1.0.10-2b4528a4fd57cfaf /tmp/clis-ripgrep_14-1-0/release/
 ## name = "out-2b4528a4fd57cfaf"
 ## script = """
 ## FROM scratch AS out-2b4528a4fd57cfaf
-## COPY --from=dep-l-itoa-1.0.10-2b4528a4fd57cfaf /tmp/clis-ripgrep_14-1-0/release/deps/*-2b4528a4fd57cfaf* /"""
+## COPY --from=dep-n-itoa-1.0.10-2b4528a4fd57cfaf /tmp/clis-ripgrep_14-1-0/release/deps/*-2b4528a4fd57cfaf* /"""
 
 FROM scratch AS cratesio-ryu-1.0.16
 ADD --chmod=0664 --unpack=true --checksum=sha256:f98d2aa92eebf49b69786be48e4477826b256916e84a57ff2a4f21923b48eb4c \
   https://static.crates.io/crates/ryu/ryu-1.0.16.crate /
-FROM rust-base AS dep-l-ryu-1.0.16-a994c87db442418d
+FROM rust-base AS dep-n-ryu-1.0.16-a994c87db442418d
 SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 RUN \
@@ -2899,7 +2819,7 @@ RUN \
         2> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-a994c87db442418d-stderr >&2) \
         || echo $? >/tmp/clis-ripgrep_14-1-0/release/deps/out-a994c87db442418d-errcode
 FROM scratch AS out-a994c87db442418d
-COPY --from=dep-l-ryu-1.0.16-a994c87db442418d /tmp/clis-ripgrep_14-1-0/release/deps/*-a994c87db442418d* /
+COPY --from=dep-n-ryu-1.0.16-a994c87db442418d /tmp/clis-ripgrep_14-1-0/release/deps/*-a994c87db442418d* /
 
 ## this = "a994c87db442418d"
 ## writes = [
@@ -2925,9 +2845,9 @@ COPY --from=dep-l-ryu-1.0.16-a994c87db442418d /tmp/clis-ripgrep_14-1-0/release/d
 ##   https://static.crates.io/crates/ryu/ryu-1.0.16.crate /'''
 ## 
 ## [[stages]]
-## name = "dep-l-ryu-1.0.16-a994c87db442418d"
+## name = "dep-n-ryu-1.0.16-a994c87db442418d"
 ## script = '''
-## FROM rust-base AS dep-l-ryu-1.0.16-a994c87db442418d
+## FROM rust-base AS dep-n-ryu-1.0.16-a994c87db442418d
 ## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 ## WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 ## RUN \
@@ -2961,12 +2881,12 @@ COPY --from=dep-l-ryu-1.0.16-a994c87db442418d /tmp/clis-ripgrep_14-1-0/release/d
 ## name = "out-a994c87db442418d"
 ## script = """
 ## FROM scratch AS out-a994c87db442418d
-## COPY --from=dep-l-ryu-1.0.16-a994c87db442418d /tmp/clis-ripgrep_14-1-0/release/deps/*-a994c87db442418d* /"""
+## COPY --from=dep-n-ryu-1.0.16-a994c87db442418d /tmp/clis-ripgrep_14-1-0/release/deps/*-a994c87db442418d* /"""
 
 FROM scratch AS cratesio-serde_json-1.0.111
 ADD --chmod=0664 --unpack=true --checksum=sha256:176e46fa42316f18edd598015a5166857fc835ec732f5215eac6b7bdbf0a84f4 \
   https://static.crates.io/crates/serde_json/serde_json-1.0.111.crate /
-FROM rust-base AS dep-l-serde_json-1.0.111-f1456127761f5765
+FROM rust-base AS dep-n-serde_json-1.0.111-f1456127761f5765
 SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 RUN \
@@ -3003,7 +2923,7 @@ RUN \
         2> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-f1456127761f5765-stderr >&2) \
         || echo $? >/tmp/clis-ripgrep_14-1-0/release/deps/out-f1456127761f5765-errcode
 FROM scratch AS out-f1456127761f5765
-COPY --from=dep-l-serde_json-1.0.111-f1456127761f5765 /tmp/clis-ripgrep_14-1-0/release/deps/*-f1456127761f5765* /
+COPY --from=dep-n-serde_json-1.0.111-f1456127761f5765 /tmp/clis-ripgrep_14-1-0/release/deps/*-f1456127761f5765* /
 
 ## this = "f1456127761f5765"
 ## deps = [
@@ -3027,35 +2947,29 @@ COPY --from=dep-l-serde_json-1.0.111-f1456127761f5765 /tmp/clis-ripgrep_14-1-0/r
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_14-1-0/release/deps/libserde_json-f1456127761f5765.rlib","emit":"link"}',
 ## ]
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-2b4528a4fd57cfaf"
-## src = "/libitoa-2b4528a4fd57cfaf.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libitoa-2b4528a4fd57cfaf.rmeta"
+## xtern = "libitoa-2b4528a4fd57cfaf.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-2b4528a4fd57cfaf"
-## src = "/libitoa-2b4528a4fd57cfaf.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libitoa-2b4528a4fd57cfaf.rlib"
+## xtern = "libitoa-2b4528a4fd57cfaf.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-a994c87db442418d"
-## src = "/libryu-a994c87db442418d.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libryu-a994c87db442418d.rmeta"
+## xtern = "libryu-a994c87db442418d.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-a994c87db442418d"
-## src = "/libryu-a994c87db442418d.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libryu-a994c87db442418d.rlib"
+## xtern = "libryu-a994c87db442418d.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-6342957ddc692e98"
-## src = "/libserde-6342957ddc692e98.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libserde-6342957ddc692e98.rmeta"
+## xtern = "libserde-6342957ddc692e98.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-6342957ddc692e98"
-## src = "/libserde-6342957ddc692e98.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libserde-6342957ddc692e98.rlib"
+## xtern = "libserde-6342957ddc692e98.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -3069,9 +2983,9 @@ COPY --from=dep-l-serde_json-1.0.111-f1456127761f5765 /tmp/clis-ripgrep_14-1-0/r
 ##   https://static.crates.io/crates/serde_json/serde_json-1.0.111.crate /'''
 ## 
 ## [[stages]]
-## name = "dep-l-serde_json-1.0.111-f1456127761f5765"
+## name = "dep-n-serde_json-1.0.111-f1456127761f5765"
 ## script = '''
-## FROM rust-base AS dep-l-serde_json-1.0.111-f1456127761f5765
+## FROM rust-base AS dep-n-serde_json-1.0.111-f1456127761f5765
 ## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 ## WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 ## RUN \
@@ -3112,12 +3026,12 @@ COPY --from=dep-l-serde_json-1.0.111-f1456127761f5765 /tmp/clis-ripgrep_14-1-0/r
 ## name = "out-f1456127761f5765"
 ## script = """
 ## FROM scratch AS out-f1456127761f5765
-## COPY --from=dep-l-serde_json-1.0.111-f1456127761f5765 /tmp/clis-ripgrep_14-1-0/release/deps/*-f1456127761f5765* /"""
+## COPY --from=dep-n-serde_json-1.0.111-f1456127761f5765 /tmp/clis-ripgrep_14-1-0/release/deps/*-f1456127761f5765* /"""
 
 FROM scratch AS cratesio-grep-printer-0.2.1
 ADD --chmod=0664 --unpack=true --checksum=sha256:743c12a03c8aee38b6e5bd0168d8ebb09345751323df4a01c56e792b1f38ceb2 \
   https://static.crates.io/crates/grep-printer/grep-printer-0.2.1.crate /
-FROM rust-base AS dep-l-grep-printer-0.2.1-0e4d9ea7a0184dd5
+FROM rust-base AS dep-n-grep-printer-0.2.1-0e4d9ea7a0184dd5
 SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 RUN \
@@ -3183,7 +3097,7 @@ RUN \
         2> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-0e4d9ea7a0184dd5-stderr >&2) \
         || echo $? >/tmp/clis-ripgrep_14-1-0/release/deps/out-0e4d9ea7a0184dd5-errcode
 FROM scratch AS out-0e4d9ea7a0184dd5
-COPY --from=dep-l-grep-printer-0.2.1-0e4d9ea7a0184dd5 /tmp/clis-ripgrep_14-1-0/release/deps/*-0e4d9ea7a0184dd5* /
+COPY --from=dep-n-grep-printer-0.2.1-0e4d9ea7a0184dd5 /tmp/clis-ripgrep_14-1-0/release/deps/*-0e4d9ea7a0184dd5* /
 
 ## this = "0e4d9ea7a0184dd5"
 ## deps = [
@@ -3237,185 +3151,149 @@ COPY --from=dep-l-grep-printer-0.2.1-0e4d9ea7a0184dd5 /tmp/clis-ripgrep_14-1-0/r
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_printer-0e4d9ea7a0184dd5.rlib","emit":"link"}',
 ## ]
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-f6b551c518280772"
-## src = "/libbstr-f6b551c518280772.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libbstr-f6b551c518280772.rmeta"
+## xtern = "libbstr-f6b551c518280772.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-f6b551c518280772"
-## src = "/libbstr-f6b551c518280772.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libbstr-f6b551c518280772.rlib"
+## xtern = "libbstr-f6b551c518280772.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-3d9021aec125798d"
-## src = "/libmemchr-3d9021aec125798d.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rmeta"
+## xtern = "libmemchr-3d9021aec125798d.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-3d9021aec125798d"
-## src = "/libmemchr-3d9021aec125798d.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rlib"
+## xtern = "libmemchr-3d9021aec125798d.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-54c30116fcd4ea92"
-## src = "/libregex_automata-54c30116fcd4ea92.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libregex_automata-54c30116fcd4ea92.rmeta"
+## xtern = "libregex_automata-54c30116fcd4ea92.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-54c30116fcd4ea92"
-## src = "/libregex_automata-54c30116fcd4ea92.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libregex_automata-54c30116fcd4ea92.rlib"
+## xtern = "libregex_automata-54c30116fcd4ea92.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-2a2c3bf3a2b335e0"
-## src = "/libaho_corasick-2a2c3bf3a2b335e0.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libaho_corasick-2a2c3bf3a2b335e0.rmeta"
+## xtern = "libaho_corasick-2a2c3bf3a2b335e0.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-2a2c3bf3a2b335e0"
-## src = "/libaho_corasick-2a2c3bf3a2b335e0.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libaho_corasick-2a2c3bf3a2b335e0.rlib"
+## xtern = "libaho_corasick-2a2c3bf3a2b335e0.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-0d361157f8cdd0fe"
-## src = "/libregex_syntax-0d361157f8cdd0fe.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libregex_syntax-0d361157f8cdd0fe.rmeta"
+## xtern = "libregex_syntax-0d361157f8cdd0fe.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-0d361157f8cdd0fe"
-## src = "/libregex_syntax-0d361157f8cdd0fe.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libregex_syntax-0d361157f8cdd0fe.rlib"
+## xtern = "libregex_syntax-0d361157f8cdd0fe.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-7517975d791c1423"
-## src = "/libgrep_matcher-7517975d791c1423.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_matcher-7517975d791c1423.rmeta"
+## xtern = "libgrep_matcher-7517975d791c1423.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-7517975d791c1423"
-## src = "/libgrep_matcher-7517975d791c1423.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_matcher-7517975d791c1423.rlib"
+## xtern = "libgrep_matcher-7517975d791c1423.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-6fc004d41272f596"
-## src = "/libgrep_searcher-6fc004d41272f596.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_searcher-6fc004d41272f596.rmeta"
+## xtern = "libgrep_searcher-6fc004d41272f596.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-6fc004d41272f596"
-## src = "/libgrep_searcher-6fc004d41272f596.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_searcher-6fc004d41272f596.rlib"
+## xtern = "libgrep_searcher-6fc004d41272f596.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-71f95fee6544e787"
-## src = "/libencoding_rs-71f95fee6544e787.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libencoding_rs-71f95fee6544e787.rmeta"
+## xtern = "libencoding_rs-71f95fee6544e787.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-71f95fee6544e787"
-## src = "/libencoding_rs-71f95fee6544e787.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libencoding_rs-71f95fee6544e787.rlib"
+## xtern = "libencoding_rs-71f95fee6544e787.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-98d40c6178a8b60f"
-## src = "/libcfg_if-98d40c6178a8b60f.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libcfg_if-98d40c6178a8b60f.rmeta"
+## xtern = "libcfg_if-98d40c6178a8b60f.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-98d40c6178a8b60f"
-## src = "/libcfg_if-98d40c6178a8b60f.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libcfg_if-98d40c6178a8b60f.rlib"
+## xtern = "libcfg_if-98d40c6178a8b60f.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-1f57e01234da7cf8"
-## src = "/libencoding_rs_io-1f57e01234da7cf8.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libencoding_rs_io-1f57e01234da7cf8.rmeta"
+## xtern = "libencoding_rs_io-1f57e01234da7cf8.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-1f57e01234da7cf8"
-## src = "/libencoding_rs_io-1f57e01234da7cf8.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libencoding_rs_io-1f57e01234da7cf8.rlib"
+## xtern = "libencoding_rs_io-1f57e01234da7cf8.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-45d1068292014e63"
-## src = "/liblog-45d1068292014e63.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/liblog-45d1068292014e63.rmeta"
+## xtern = "liblog-45d1068292014e63.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-45d1068292014e63"
-## src = "/liblog-45d1068292014e63.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/liblog-45d1068292014e63.rlib"
+## xtern = "liblog-45d1068292014e63.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-21c841a4e972790f"
-## src = "/libmemmap2-21c841a4e972790f.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libmemmap2-21c841a4e972790f.rmeta"
+## xtern = "libmemmap2-21c841a4e972790f.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-21c841a4e972790f"
-## src = "/libmemmap2-21c841a4e972790f.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libmemmap2-21c841a4e972790f.rlib"
+## xtern = "libmemmap2-21c841a4e972790f.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-b1dcb66edfd0e8a0"
-## src = "/liblibc-b1dcb66edfd0e8a0.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/liblibc-b1dcb66edfd0e8a0.rmeta"
+## xtern = "liblibc-b1dcb66edfd0e8a0.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-b1dcb66edfd0e8a0"
-## src = "/liblibc-b1dcb66edfd0e8a0.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/liblibc-b1dcb66edfd0e8a0.rlib"
+## xtern = "liblibc-b1dcb66edfd0e8a0.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-6342957ddc692e98"
-## src = "/libserde-6342957ddc692e98.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libserde-6342957ddc692e98.rmeta"
+## xtern = "libserde-6342957ddc692e98.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-6342957ddc692e98"
-## src = "/libserde-6342957ddc692e98.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libserde-6342957ddc692e98.rlib"
+## xtern = "libserde-6342957ddc692e98.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-f1456127761f5765"
-## src = "/libserde_json-f1456127761f5765.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libserde_json-f1456127761f5765.rmeta"
+## xtern = "libserde_json-f1456127761f5765.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-f1456127761f5765"
-## src = "/libserde_json-f1456127761f5765.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libserde_json-f1456127761f5765.rlib"
+## xtern = "libserde_json-f1456127761f5765.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-2b4528a4fd57cfaf"
-## src = "/libitoa-2b4528a4fd57cfaf.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libitoa-2b4528a4fd57cfaf.rmeta"
+## xtern = "libitoa-2b4528a4fd57cfaf.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-2b4528a4fd57cfaf"
-## src = "/libitoa-2b4528a4fd57cfaf.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libitoa-2b4528a4fd57cfaf.rlib"
+## xtern = "libitoa-2b4528a4fd57cfaf.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-a994c87db442418d"
-## src = "/libryu-a994c87db442418d.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libryu-a994c87db442418d.rmeta"
+## xtern = "libryu-a994c87db442418d.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-a994c87db442418d"
-## src = "/libryu-a994c87db442418d.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libryu-a994c87db442418d.rlib"
+## xtern = "libryu-a994c87db442418d.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-59ae8e7772deaa56"
-## src = "/libtermcolor-59ae8e7772deaa56.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libtermcolor-59ae8e7772deaa56.rmeta"
+## xtern = "libtermcolor-59ae8e7772deaa56.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-59ae8e7772deaa56"
-## src = "/libtermcolor-59ae8e7772deaa56.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libtermcolor-59ae8e7772deaa56.rlib"
+## xtern = "libtermcolor-59ae8e7772deaa56.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -3429,9 +3307,9 @@ COPY --from=dep-l-grep-printer-0.2.1-0e4d9ea7a0184dd5 /tmp/clis-ripgrep_14-1-0/r
 ##   https://static.crates.io/crates/grep-printer/grep-printer-0.2.1.crate /'''
 ## 
 ## [[stages]]
-## name = "dep-l-grep-printer-0.2.1-0e4d9ea7a0184dd5"
+## name = "dep-n-grep-printer-0.2.1-0e4d9ea7a0184dd5"
 ## script = '''
-## FROM rust-base AS dep-l-grep-printer-0.2.1-0e4d9ea7a0184dd5
+## FROM rust-base AS dep-n-grep-printer-0.2.1-0e4d9ea7a0184dd5
 ## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 ## WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 ## RUN \
@@ -3501,12 +3379,12 @@ COPY --from=dep-l-grep-printer-0.2.1-0e4d9ea7a0184dd5 /tmp/clis-ripgrep_14-1-0/r
 ## name = "out-0e4d9ea7a0184dd5"
 ## script = """
 ## FROM scratch AS out-0e4d9ea7a0184dd5
-## COPY --from=dep-l-grep-printer-0.2.1-0e4d9ea7a0184dd5 /tmp/clis-ripgrep_14-1-0/release/deps/*-0e4d9ea7a0184dd5* /"""
+## COPY --from=dep-n-grep-printer-0.2.1-0e4d9ea7a0184dd5 /tmp/clis-ripgrep_14-1-0/release/deps/*-0e4d9ea7a0184dd5* /"""
 
 FROM scratch AS cratesio-grep-regex-0.1.12
 ADD --chmod=0664 --unpack=true --checksum=sha256:f748bb135ca835da5cbc67ca0e6955f968db9c5df74ca4f56b18e1ddbc68230d \
   https://static.crates.io/crates/grep-regex/grep-regex-0.1.12.crate /
-FROM rust-base AS dep-l-grep-regex-0.1.12-c08c56633b958d0c
+FROM rust-base AS dep-n-grep-regex-0.1.12-c08c56633b958d0c
 SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 RUN \
@@ -3550,7 +3428,7 @@ RUN \
         2> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-c08c56633b958d0c-stderr >&2) \
         || echo $? >/tmp/clis-ripgrep_14-1-0/release/deps/out-c08c56633b958d0c-errcode
 FROM scratch AS out-c08c56633b958d0c
-COPY --from=dep-l-grep-regex-0.1.12-c08c56633b958d0c /tmp/clis-ripgrep_14-1-0/release/deps/*-c08c56633b958d0c* /
+COPY --from=dep-n-grep-regex-0.1.12-c08c56633b958d0c /tmp/clis-ripgrep_14-1-0/release/deps/*-c08c56633b958d0c* /
 
 ## this = "c08c56633b958d0c"
 ## deps = [
@@ -3582,75 +3460,61 @@ COPY --from=dep-l-grep-regex-0.1.12-c08c56633b958d0c /tmp/clis-ripgrep_14-1-0/re
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_regex-c08c56633b958d0c.rlib","emit":"link"}',
 ## ]
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-f6b551c518280772"
-## src = "/libbstr-f6b551c518280772.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libbstr-f6b551c518280772.rmeta"
+## xtern = "libbstr-f6b551c518280772.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-f6b551c518280772"
-## src = "/libbstr-f6b551c518280772.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libbstr-f6b551c518280772.rlib"
+## xtern = "libbstr-f6b551c518280772.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-3d9021aec125798d"
-## src = "/libmemchr-3d9021aec125798d.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rmeta"
+## xtern = "libmemchr-3d9021aec125798d.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-3d9021aec125798d"
-## src = "/libmemchr-3d9021aec125798d.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rlib"
+## xtern = "libmemchr-3d9021aec125798d.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-54c30116fcd4ea92"
-## src = "/libregex_automata-54c30116fcd4ea92.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libregex_automata-54c30116fcd4ea92.rmeta"
+## xtern = "libregex_automata-54c30116fcd4ea92.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-54c30116fcd4ea92"
-## src = "/libregex_automata-54c30116fcd4ea92.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libregex_automata-54c30116fcd4ea92.rlib"
+## xtern = "libregex_automata-54c30116fcd4ea92.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-2a2c3bf3a2b335e0"
-## src = "/libaho_corasick-2a2c3bf3a2b335e0.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libaho_corasick-2a2c3bf3a2b335e0.rmeta"
+## xtern = "libaho_corasick-2a2c3bf3a2b335e0.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-2a2c3bf3a2b335e0"
-## src = "/libaho_corasick-2a2c3bf3a2b335e0.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libaho_corasick-2a2c3bf3a2b335e0.rlib"
+## xtern = "libaho_corasick-2a2c3bf3a2b335e0.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-0d361157f8cdd0fe"
-## src = "/libregex_syntax-0d361157f8cdd0fe.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libregex_syntax-0d361157f8cdd0fe.rmeta"
+## xtern = "libregex_syntax-0d361157f8cdd0fe.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-0d361157f8cdd0fe"
-## src = "/libregex_syntax-0d361157f8cdd0fe.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libregex_syntax-0d361157f8cdd0fe.rlib"
+## xtern = "libregex_syntax-0d361157f8cdd0fe.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-7517975d791c1423"
-## src = "/libgrep_matcher-7517975d791c1423.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_matcher-7517975d791c1423.rmeta"
+## xtern = "libgrep_matcher-7517975d791c1423.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-7517975d791c1423"
-## src = "/libgrep_matcher-7517975d791c1423.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_matcher-7517975d791c1423.rlib"
+## xtern = "libgrep_matcher-7517975d791c1423.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-45d1068292014e63"
-## src = "/liblog-45d1068292014e63.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/liblog-45d1068292014e63.rmeta"
+## xtern = "liblog-45d1068292014e63.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-45d1068292014e63"
-## src = "/liblog-45d1068292014e63.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/liblog-45d1068292014e63.rlib"
+## xtern = "liblog-45d1068292014e63.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -3664,9 +3528,9 @@ COPY --from=dep-l-grep-regex-0.1.12-c08c56633b958d0c /tmp/clis-ripgrep_14-1-0/re
 ##   https://static.crates.io/crates/grep-regex/grep-regex-0.1.12.crate /'''
 ## 
 ## [[stages]]
-## name = "dep-l-grep-regex-0.1.12-c08c56633b958d0c"
+## name = "dep-n-grep-regex-0.1.12-c08c56633b958d0c"
 ## script = '''
-## FROM rust-base AS dep-l-grep-regex-0.1.12-c08c56633b958d0c
+## FROM rust-base AS dep-n-grep-regex-0.1.12-c08c56633b958d0c
 ## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 ## WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 ## RUN \
@@ -3714,12 +3578,12 @@ COPY --from=dep-l-grep-regex-0.1.12-c08c56633b958d0c /tmp/clis-ripgrep_14-1-0/re
 ## name = "out-c08c56633b958d0c"
 ## script = """
 ## FROM scratch AS out-c08c56633b958d0c
-## COPY --from=dep-l-grep-regex-0.1.12-c08c56633b958d0c /tmp/clis-ripgrep_14-1-0/release/deps/*-c08c56633b958d0c* /"""
+## COPY --from=dep-n-grep-regex-0.1.12-c08c56633b958d0c /tmp/clis-ripgrep_14-1-0/release/deps/*-c08c56633b958d0c* /"""
 
 FROM scratch AS cratesio-grep-0.3.1
 ADD --chmod=0664 --unpack=true --checksum=sha256:6e2b024ec1e686cb64d78beb852030b0e632af93817f1ed25be0173af0e94939 \
   https://static.crates.io/crates/grep/grep-0.3.1.crate /
-FROM rust-base AS dep-l-grep-0.3.1-9e71f2809112d472
+FROM rust-base AS dep-n-grep-0.3.1-9e71f2809112d472
 SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 RUN \
@@ -3793,7 +3657,7 @@ RUN \
         2> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-9e71f2809112d472-stderr >&2) \
         || echo $? >/tmp/clis-ripgrep_14-1-0/release/deps/out-9e71f2809112d472-errcode
 FROM scratch AS out-9e71f2809112d472
-COPY --from=dep-l-grep-0.3.1-9e71f2809112d472 /tmp/clis-ripgrep_14-1-0/release/deps/*-9e71f2809112d472* /
+COPY --from=dep-n-grep-0.3.1-9e71f2809112d472 /tmp/clis-ripgrep_14-1-0/release/deps/*-9e71f2809112d472* /
 
 ## this = "9e71f2809112d472"
 ## deps = [
@@ -3855,225 +3719,181 @@ COPY --from=dep-l-grep-0.3.1-9e71f2809112d472 /tmp/clis-ripgrep_14-1-0/release/d
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_14-1-0/release/deps/libgrep-9e71f2809112d472.rlib","emit":"link"}',
 ## ]
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-8da8357e778092ce"
-## src = "/libgrep_cli-8da8357e778092ce.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_cli-8da8357e778092ce.rmeta"
+## xtern = "libgrep_cli-8da8357e778092ce.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-8da8357e778092ce"
-## src = "/libgrep_cli-8da8357e778092ce.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_cli-8da8357e778092ce.rlib"
+## xtern = "libgrep_cli-8da8357e778092ce.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-f6b551c518280772"
-## src = "/libbstr-f6b551c518280772.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libbstr-f6b551c518280772.rmeta"
+## xtern = "libbstr-f6b551c518280772.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-f6b551c518280772"
-## src = "/libbstr-f6b551c518280772.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libbstr-f6b551c518280772.rlib"
+## xtern = "libbstr-f6b551c518280772.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-3d9021aec125798d"
-## src = "/libmemchr-3d9021aec125798d.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rmeta"
+## xtern = "libmemchr-3d9021aec125798d.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-3d9021aec125798d"
-## src = "/libmemchr-3d9021aec125798d.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rlib"
+## xtern = "libmemchr-3d9021aec125798d.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-54c30116fcd4ea92"
-## src = "/libregex_automata-54c30116fcd4ea92.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libregex_automata-54c30116fcd4ea92.rmeta"
+## xtern = "libregex_automata-54c30116fcd4ea92.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-54c30116fcd4ea92"
-## src = "/libregex_automata-54c30116fcd4ea92.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libregex_automata-54c30116fcd4ea92.rlib"
+## xtern = "libregex_automata-54c30116fcd4ea92.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-2a2c3bf3a2b335e0"
-## src = "/libaho_corasick-2a2c3bf3a2b335e0.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libaho_corasick-2a2c3bf3a2b335e0.rmeta"
+## xtern = "libaho_corasick-2a2c3bf3a2b335e0.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-2a2c3bf3a2b335e0"
-## src = "/libaho_corasick-2a2c3bf3a2b335e0.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libaho_corasick-2a2c3bf3a2b335e0.rlib"
+## xtern = "libaho_corasick-2a2c3bf3a2b335e0.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-0d361157f8cdd0fe"
-## src = "/libregex_syntax-0d361157f8cdd0fe.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libregex_syntax-0d361157f8cdd0fe.rmeta"
+## xtern = "libregex_syntax-0d361157f8cdd0fe.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-0d361157f8cdd0fe"
-## src = "/libregex_syntax-0d361157f8cdd0fe.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libregex_syntax-0d361157f8cdd0fe.rlib"
+## xtern = "libregex_syntax-0d361157f8cdd0fe.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-14504da8f25a4dbf"
-## src = "/libglobset-14504da8f25a4dbf.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libglobset-14504da8f25a4dbf.rmeta"
+## xtern = "libglobset-14504da8f25a4dbf.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-14504da8f25a4dbf"
-## src = "/libglobset-14504da8f25a4dbf.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libglobset-14504da8f25a4dbf.rlib"
+## xtern = "libglobset-14504da8f25a4dbf.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-45d1068292014e63"
-## src = "/liblog-45d1068292014e63.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/liblog-45d1068292014e63.rmeta"
+## xtern = "liblog-45d1068292014e63.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-45d1068292014e63"
-## src = "/liblog-45d1068292014e63.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/liblog-45d1068292014e63.rlib"
+## xtern = "liblog-45d1068292014e63.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-b1dcb66edfd0e8a0"
-## src = "/liblibc-b1dcb66edfd0e8a0.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/liblibc-b1dcb66edfd0e8a0.rmeta"
+## xtern = "liblibc-b1dcb66edfd0e8a0.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-b1dcb66edfd0e8a0"
-## src = "/liblibc-b1dcb66edfd0e8a0.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/liblibc-b1dcb66edfd0e8a0.rlib"
+## xtern = "liblibc-b1dcb66edfd0e8a0.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-59ae8e7772deaa56"
-## src = "/libtermcolor-59ae8e7772deaa56.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libtermcolor-59ae8e7772deaa56.rmeta"
+## xtern = "libtermcolor-59ae8e7772deaa56.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-59ae8e7772deaa56"
-## src = "/libtermcolor-59ae8e7772deaa56.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libtermcolor-59ae8e7772deaa56.rlib"
+## xtern = "libtermcolor-59ae8e7772deaa56.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-7517975d791c1423"
-## src = "/libgrep_matcher-7517975d791c1423.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_matcher-7517975d791c1423.rmeta"
+## xtern = "libgrep_matcher-7517975d791c1423.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-7517975d791c1423"
-## src = "/libgrep_matcher-7517975d791c1423.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_matcher-7517975d791c1423.rlib"
+## xtern = "libgrep_matcher-7517975d791c1423.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-0e4d9ea7a0184dd5"
-## src = "/libgrep_printer-0e4d9ea7a0184dd5.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_printer-0e4d9ea7a0184dd5.rmeta"
+## xtern = "libgrep_printer-0e4d9ea7a0184dd5.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-0e4d9ea7a0184dd5"
-## src = "/libgrep_printer-0e4d9ea7a0184dd5.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_printer-0e4d9ea7a0184dd5.rlib"
+## xtern = "libgrep_printer-0e4d9ea7a0184dd5.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-6fc004d41272f596"
-## src = "/libgrep_searcher-6fc004d41272f596.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_searcher-6fc004d41272f596.rmeta"
+## xtern = "libgrep_searcher-6fc004d41272f596.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-6fc004d41272f596"
-## src = "/libgrep_searcher-6fc004d41272f596.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_searcher-6fc004d41272f596.rlib"
+## xtern = "libgrep_searcher-6fc004d41272f596.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-71f95fee6544e787"
-## src = "/libencoding_rs-71f95fee6544e787.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libencoding_rs-71f95fee6544e787.rmeta"
+## xtern = "libencoding_rs-71f95fee6544e787.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-71f95fee6544e787"
-## src = "/libencoding_rs-71f95fee6544e787.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libencoding_rs-71f95fee6544e787.rlib"
+## xtern = "libencoding_rs-71f95fee6544e787.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-98d40c6178a8b60f"
-## src = "/libcfg_if-98d40c6178a8b60f.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libcfg_if-98d40c6178a8b60f.rmeta"
+## xtern = "libcfg_if-98d40c6178a8b60f.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-98d40c6178a8b60f"
-## src = "/libcfg_if-98d40c6178a8b60f.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libcfg_if-98d40c6178a8b60f.rlib"
+## xtern = "libcfg_if-98d40c6178a8b60f.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-1f57e01234da7cf8"
-## src = "/libencoding_rs_io-1f57e01234da7cf8.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libencoding_rs_io-1f57e01234da7cf8.rmeta"
+## xtern = "libencoding_rs_io-1f57e01234da7cf8.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-1f57e01234da7cf8"
-## src = "/libencoding_rs_io-1f57e01234da7cf8.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libencoding_rs_io-1f57e01234da7cf8.rlib"
+## xtern = "libencoding_rs_io-1f57e01234da7cf8.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-21c841a4e972790f"
-## src = "/libmemmap2-21c841a4e972790f.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libmemmap2-21c841a4e972790f.rmeta"
+## xtern = "libmemmap2-21c841a4e972790f.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-21c841a4e972790f"
-## src = "/libmemmap2-21c841a4e972790f.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libmemmap2-21c841a4e972790f.rlib"
+## xtern = "libmemmap2-21c841a4e972790f.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-6342957ddc692e98"
-## src = "/libserde-6342957ddc692e98.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libserde-6342957ddc692e98.rmeta"
+## xtern = "libserde-6342957ddc692e98.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-6342957ddc692e98"
-## src = "/libserde-6342957ddc692e98.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libserde-6342957ddc692e98.rlib"
+## xtern = "libserde-6342957ddc692e98.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-f1456127761f5765"
-## src = "/libserde_json-f1456127761f5765.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libserde_json-f1456127761f5765.rmeta"
+## xtern = "libserde_json-f1456127761f5765.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-f1456127761f5765"
-## src = "/libserde_json-f1456127761f5765.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libserde_json-f1456127761f5765.rlib"
+## xtern = "libserde_json-f1456127761f5765.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-2b4528a4fd57cfaf"
-## src = "/libitoa-2b4528a4fd57cfaf.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libitoa-2b4528a4fd57cfaf.rmeta"
+## xtern = "libitoa-2b4528a4fd57cfaf.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-2b4528a4fd57cfaf"
-## src = "/libitoa-2b4528a4fd57cfaf.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libitoa-2b4528a4fd57cfaf.rlib"
+## xtern = "libitoa-2b4528a4fd57cfaf.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-a994c87db442418d"
-## src = "/libryu-a994c87db442418d.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libryu-a994c87db442418d.rmeta"
+## xtern = "libryu-a994c87db442418d.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-a994c87db442418d"
-## src = "/libryu-a994c87db442418d.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libryu-a994c87db442418d.rlib"
+## xtern = "libryu-a994c87db442418d.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-c08c56633b958d0c"
-## src = "/libgrep_regex-c08c56633b958d0c.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_regex-c08c56633b958d0c.rmeta"
+## xtern = "libgrep_regex-c08c56633b958d0c.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-c08c56633b958d0c"
-## src = "/libgrep_regex-c08c56633b958d0c.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_regex-c08c56633b958d0c.rlib"
+## xtern = "libgrep_regex-c08c56633b958d0c.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -4087,9 +3907,9 @@ COPY --from=dep-l-grep-0.3.1-9e71f2809112d472 /tmp/clis-ripgrep_14-1-0/release/d
 ##   https://static.crates.io/crates/grep/grep-0.3.1.crate /'''
 ## 
 ## [[stages]]
-## name = "dep-l-grep-0.3.1-9e71f2809112d472"
+## name = "dep-n-grep-0.3.1-9e71f2809112d472"
 ## script = '''
-## FROM rust-base AS dep-l-grep-0.3.1-9e71f2809112d472
+## FROM rust-base AS dep-n-grep-0.3.1-9e71f2809112d472
 ## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 ## WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 ## RUN \
@@ -4167,12 +3987,12 @@ COPY --from=dep-l-grep-0.3.1-9e71f2809112d472 /tmp/clis-ripgrep_14-1-0/release/d
 ## name = "out-9e71f2809112d472"
 ## script = """
 ## FROM scratch AS out-9e71f2809112d472
-## COPY --from=dep-l-grep-0.3.1-9e71f2809112d472 /tmp/clis-ripgrep_14-1-0/release/deps/*-9e71f2809112d472* /"""
+## COPY --from=dep-n-grep-0.3.1-9e71f2809112d472 /tmp/clis-ripgrep_14-1-0/release/deps/*-9e71f2809112d472* /"""
 
 FROM scratch AS cratesio-crossbeam-utils-0.8.18
 ADD --chmod=0664 --unpack=true --checksum=sha256:c3a430a770ebd84726f584a90ee7f020d28db52c6d02138900f22341f866d39c \
   https://static.crates.io/crates/crossbeam-utils/crossbeam-utils-0.8.18.crate /
-FROM rust-base AS dep-l-crossbeam-utils-0.8.18-1ae807b4b6e713ec
+FROM rust-base AS dep-n-crossbeam-utils-0.8.18-1ae807b4b6e713ec
 SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 RUN \
@@ -4205,7 +4025,7 @@ RUN \
         2> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-1ae807b4b6e713ec-stderr >&2) \
         || echo $? >/tmp/clis-ripgrep_14-1-0/release/deps/out-1ae807b4b6e713ec-errcode
 FROM scratch AS out-1ae807b4b6e713ec
-COPY --from=dep-l-crossbeam-utils-0.8.18-1ae807b4b6e713ec /tmp/clis-ripgrep_14-1-0/release/deps/*-1ae807b4b6e713ec* /
+COPY --from=dep-n-crossbeam-utils-0.8.18-1ae807b4b6e713ec /tmp/clis-ripgrep_14-1-0/release/deps/*-1ae807b4b6e713ec* /
 
 ## this = "1ae807b4b6e713ec"
 ## deps = ["98d40c6178a8b60f"]
@@ -4266,15 +4086,13 @@ COPY --from=dep-l-crossbeam-utils-0.8.18-1ae807b4b6e713ec /tmp/clis-ripgrep_14-1
 ##     '{"$message_type":"diagnostic","message":"44 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 44 warnings emitted\u001b[0m\n\n"}',
 ## ]
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-98d40c6178a8b60f"
-## src = "/libcfg_if-98d40c6178a8b60f.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libcfg_if-98d40c6178a8b60f.rmeta"
+## xtern = "libcfg_if-98d40c6178a8b60f.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-98d40c6178a8b60f"
-## src = "/libcfg_if-98d40c6178a8b60f.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libcfg_if-98d40c6178a8b60f.rlib"
+## xtern = "libcfg_if-98d40c6178a8b60f.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -4288,9 +4106,9 @@ COPY --from=dep-l-crossbeam-utils-0.8.18-1ae807b4b6e713ec /tmp/clis-ripgrep_14-1
 ##   https://static.crates.io/crates/crossbeam-utils/crossbeam-utils-0.8.18.crate /'''
 ## 
 ## [[stages]]
-## name = "dep-l-crossbeam-utils-0.8.18-1ae807b4b6e713ec"
+## name = "dep-n-crossbeam-utils-0.8.18-1ae807b4b6e713ec"
 ## script = '''
-## FROM rust-base AS dep-l-crossbeam-utils-0.8.18-1ae807b4b6e713ec
+## FROM rust-base AS dep-n-crossbeam-utils-0.8.18-1ae807b4b6e713ec
 ## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 ## WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 ## RUN \
@@ -4327,12 +4145,12 @@ COPY --from=dep-l-crossbeam-utils-0.8.18-1ae807b4b6e713ec /tmp/clis-ripgrep_14-1
 ## name = "out-1ae807b4b6e713ec"
 ## script = """
 ## FROM scratch AS out-1ae807b4b6e713ec
-## COPY --from=dep-l-crossbeam-utils-0.8.18-1ae807b4b6e713ec /tmp/clis-ripgrep_14-1-0/release/deps/*-1ae807b4b6e713ec* /"""
+## COPY --from=dep-n-crossbeam-utils-0.8.18-1ae807b4b6e713ec /tmp/clis-ripgrep_14-1-0/release/deps/*-1ae807b4b6e713ec* /"""
 
 FROM scratch AS cratesio-crossbeam-epoch-0.9.17
 ADD --chmod=0664 --unpack=true --checksum=sha256:0e3681d554572a651dda4186cd47240627c3d0114d45a95f6ad27f2f22e7548d \
   https://static.crates.io/crates/crossbeam-epoch/crossbeam-epoch-0.9.17.crate /
-FROM rust-base AS dep-l-crossbeam-epoch-0.9.17-e4df21448919a796
+FROM rust-base AS dep-n-crossbeam-epoch-0.9.17-e4df21448919a796
 SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 RUN \
@@ -4366,7 +4184,7 @@ RUN \
         2> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-e4df21448919a796-stderr >&2) \
         || echo $? >/tmp/clis-ripgrep_14-1-0/release/deps/out-e4df21448919a796-errcode
 FROM scratch AS out-e4df21448919a796
-COPY --from=dep-l-crossbeam-epoch-0.9.17-e4df21448919a796 /tmp/clis-ripgrep_14-1-0/release/deps/*-e4df21448919a796* /
+COPY --from=dep-n-crossbeam-epoch-0.9.17-e4df21448919a796 /tmp/clis-ripgrep_14-1-0/release/deps/*-e4df21448919a796* /
 
 ## this = "e4df21448919a796"
 ## deps = [
@@ -4409,25 +4227,21 @@ COPY --from=dep-l-crossbeam-epoch-0.9.17-e4df21448919a796 /tmp/clis-ripgrep_14-1
 ##     '{"$message_type":"diagnostic","message":"20 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 20 warnings emitted\u001b[0m\n\n"}',
 ## ]
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-98d40c6178a8b60f"
-## src = "/libcfg_if-98d40c6178a8b60f.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libcfg_if-98d40c6178a8b60f.rmeta"
+## xtern = "libcfg_if-98d40c6178a8b60f.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-98d40c6178a8b60f"
-## src = "/libcfg_if-98d40c6178a8b60f.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libcfg_if-98d40c6178a8b60f.rlib"
+## xtern = "libcfg_if-98d40c6178a8b60f.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-1ae807b4b6e713ec"
-## src = "/libcrossbeam_utils-1ae807b4b6e713ec.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libcrossbeam_utils-1ae807b4b6e713ec.rmeta"
+## xtern = "libcrossbeam_utils-1ae807b4b6e713ec.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-1ae807b4b6e713ec"
-## src = "/libcrossbeam_utils-1ae807b4b6e713ec.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libcrossbeam_utils-1ae807b4b6e713ec.rlib"
+## xtern = "libcrossbeam_utils-1ae807b4b6e713ec.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -4441,9 +4255,9 @@ COPY --from=dep-l-crossbeam-epoch-0.9.17-e4df21448919a796 /tmp/clis-ripgrep_14-1
 ##   https://static.crates.io/crates/crossbeam-epoch/crossbeam-epoch-0.9.17.crate /'''
 ## 
 ## [[stages]]
-## name = "dep-l-crossbeam-epoch-0.9.17-e4df21448919a796"
+## name = "dep-n-crossbeam-epoch-0.9.17-e4df21448919a796"
 ## script = '''
-## FROM rust-base AS dep-l-crossbeam-epoch-0.9.17-e4df21448919a796
+## FROM rust-base AS dep-n-crossbeam-epoch-0.9.17-e4df21448919a796
 ## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 ## WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 ## RUN \
@@ -4481,12 +4295,12 @@ COPY --from=dep-l-crossbeam-epoch-0.9.17-e4df21448919a796 /tmp/clis-ripgrep_14-1
 ## name = "out-e4df21448919a796"
 ## script = """
 ## FROM scratch AS out-e4df21448919a796
-## COPY --from=dep-l-crossbeam-epoch-0.9.17-e4df21448919a796 /tmp/clis-ripgrep_14-1-0/release/deps/*-e4df21448919a796* /"""
+## COPY --from=dep-n-crossbeam-epoch-0.9.17-e4df21448919a796 /tmp/clis-ripgrep_14-1-0/release/deps/*-e4df21448919a796* /"""
 
 FROM scratch AS cratesio-crossbeam-deque-0.8.4
 ADD --chmod=0664 --unpack=true --checksum=sha256:fca89a0e215bab21874660c67903c5f143333cab1da83d041c7ded6053774751 \
   https://static.crates.io/crates/crossbeam-deque/crossbeam-deque-0.8.4.crate /
-FROM rust-base AS dep-l-crossbeam-deque-0.8.4-0deb1c425e6f6d70
+FROM rust-base AS dep-n-crossbeam-deque-0.8.4-0deb1c425e6f6d70
 SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 RUN \
@@ -4522,7 +4336,7 @@ RUN \
         2> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-0deb1c425e6f6d70-stderr >&2) \
         || echo $? >/tmp/clis-ripgrep_14-1-0/release/deps/out-0deb1c425e6f6d70-errcode
 FROM scratch AS out-0deb1c425e6f6d70
-COPY --from=dep-l-crossbeam-deque-0.8.4-0deb1c425e6f6d70 /tmp/clis-ripgrep_14-1-0/release/deps/*-0deb1c425e6f6d70* /
+COPY --from=dep-n-crossbeam-deque-0.8.4-0deb1c425e6f6d70 /tmp/clis-ripgrep_14-1-0/release/deps/*-0deb1c425e6f6d70* /
 
 ## this = "0deb1c425e6f6d70"
 ## deps = [
@@ -4546,35 +4360,29 @@ COPY --from=dep-l-crossbeam-deque-0.8.4-0deb1c425e6f6d70 /tmp/clis-ripgrep_14-1-
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_14-1-0/release/deps/libcrossbeam_deque-0deb1c425e6f6d70.rlib","emit":"link"}',
 ## ]
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-98d40c6178a8b60f"
-## src = "/libcfg_if-98d40c6178a8b60f.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libcfg_if-98d40c6178a8b60f.rmeta"
+## xtern = "libcfg_if-98d40c6178a8b60f.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-98d40c6178a8b60f"
-## src = "/libcfg_if-98d40c6178a8b60f.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libcfg_if-98d40c6178a8b60f.rlib"
+## xtern = "libcfg_if-98d40c6178a8b60f.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-e4df21448919a796"
-## src = "/libcrossbeam_epoch-e4df21448919a796.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libcrossbeam_epoch-e4df21448919a796.rmeta"
+## xtern = "libcrossbeam_epoch-e4df21448919a796.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-e4df21448919a796"
-## src = "/libcrossbeam_epoch-e4df21448919a796.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libcrossbeam_epoch-e4df21448919a796.rlib"
+## xtern = "libcrossbeam_epoch-e4df21448919a796.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-1ae807b4b6e713ec"
-## src = "/libcrossbeam_utils-1ae807b4b6e713ec.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libcrossbeam_utils-1ae807b4b6e713ec.rmeta"
+## xtern = "libcrossbeam_utils-1ae807b4b6e713ec.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-1ae807b4b6e713ec"
-## src = "/libcrossbeam_utils-1ae807b4b6e713ec.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libcrossbeam_utils-1ae807b4b6e713ec.rlib"
+## xtern = "libcrossbeam_utils-1ae807b4b6e713ec.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -4588,9 +4396,9 @@ COPY --from=dep-l-crossbeam-deque-0.8.4-0deb1c425e6f6d70 /tmp/clis-ripgrep_14-1-
 ##   https://static.crates.io/crates/crossbeam-deque/crossbeam-deque-0.8.4.crate /'''
 ## 
 ## [[stages]]
-## name = "dep-l-crossbeam-deque-0.8.4-0deb1c425e6f6d70"
+## name = "dep-n-crossbeam-deque-0.8.4-0deb1c425e6f6d70"
 ## script = '''
-## FROM rust-base AS dep-l-crossbeam-deque-0.8.4-0deb1c425e6f6d70
+## FROM rust-base AS dep-n-crossbeam-deque-0.8.4-0deb1c425e6f6d70
 ## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 ## WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 ## RUN \
@@ -4630,12 +4438,12 @@ COPY --from=dep-l-crossbeam-deque-0.8.4-0deb1c425e6f6d70 /tmp/clis-ripgrep_14-1-
 ## name = "out-0deb1c425e6f6d70"
 ## script = """
 ## FROM scratch AS out-0deb1c425e6f6d70
-## COPY --from=dep-l-crossbeam-deque-0.8.4-0deb1c425e6f6d70 /tmp/clis-ripgrep_14-1-0/release/deps/*-0deb1c425e6f6d70* /"""
+## COPY --from=dep-n-crossbeam-deque-0.8.4-0deb1c425e6f6d70 /tmp/clis-ripgrep_14-1-0/release/deps/*-0deb1c425e6f6d70* /"""
 
 FROM scratch AS cratesio-same-file-1.0.6
 ADD --chmod=0664 --unpack=true --checksum=sha256:93fc1dc3aaa9bfed95e02e6eadabb4baf7e3078b0bd1b4d7b6b0b68378900502 \
   https://static.crates.io/crates/same-file/same-file-1.0.6.crate /
-FROM rust-base AS dep-l-same-file-1.0.6-880cd61c1f851a7b
+FROM rust-base AS dep-n-same-file-1.0.6-880cd61c1f851a7b
 SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 RUN \
@@ -4665,7 +4473,7 @@ RUN \
         2> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-880cd61c1f851a7b-stderr >&2) \
         || echo $? >/tmp/clis-ripgrep_14-1-0/release/deps/out-880cd61c1f851a7b-errcode
 FROM scratch AS out-880cd61c1f851a7b
-COPY --from=dep-l-same-file-1.0.6-880cd61c1f851a7b /tmp/clis-ripgrep_14-1-0/release/deps/*-880cd61c1f851a7b* /
+COPY --from=dep-n-same-file-1.0.6-880cd61c1f851a7b /tmp/clis-ripgrep_14-1-0/release/deps/*-880cd61c1f851a7b* /
 
 ## this = "880cd61c1f851a7b"
 ## writes = [
@@ -4693,9 +4501,9 @@ COPY --from=dep-l-same-file-1.0.6-880cd61c1f851a7b /tmp/clis-ripgrep_14-1-0/rele
 ##   https://static.crates.io/crates/same-file/same-file-1.0.6.crate /'''
 ## 
 ## [[stages]]
-## name = "dep-l-same-file-1.0.6-880cd61c1f851a7b"
+## name = "dep-n-same-file-1.0.6-880cd61c1f851a7b"
 ## script = '''
-## FROM rust-base AS dep-l-same-file-1.0.6-880cd61c1f851a7b
+## FROM rust-base AS dep-n-same-file-1.0.6-880cd61c1f851a7b
 ## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 ## WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 ## RUN \
@@ -4729,12 +4537,12 @@ COPY --from=dep-l-same-file-1.0.6-880cd61c1f851a7b /tmp/clis-ripgrep_14-1-0/rele
 ## name = "out-880cd61c1f851a7b"
 ## script = """
 ## FROM scratch AS out-880cd61c1f851a7b
-## COPY --from=dep-l-same-file-1.0.6-880cd61c1f851a7b /tmp/clis-ripgrep_14-1-0/release/deps/*-880cd61c1f851a7b* /"""
+## COPY --from=dep-n-same-file-1.0.6-880cd61c1f851a7b /tmp/clis-ripgrep_14-1-0/release/deps/*-880cd61c1f851a7b* /"""
 
 FROM scratch AS cratesio-walkdir-2.4.0
 ADD --chmod=0664 --unpack=true --checksum=sha256:d71d857dc86794ca4c280d616f7da00d2dbfd8cd788846559a6813e6aa4b54ee \
   https://static.crates.io/crates/walkdir/walkdir-2.4.0.crate /
-FROM rust-base AS dep-l-walkdir-2.4.0-345a7495356295f2
+FROM rust-base AS dep-n-walkdir-2.4.0-345a7495356295f2
 SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 RUN \
@@ -4766,7 +4574,7 @@ RUN \
         2> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-345a7495356295f2-stderr >&2) \
         || echo $? >/tmp/clis-ripgrep_14-1-0/release/deps/out-345a7495356295f2-errcode
 FROM scratch AS out-345a7495356295f2
-COPY --from=dep-l-walkdir-2.4.0-345a7495356295f2 /tmp/clis-ripgrep_14-1-0/release/deps/*-345a7495356295f2* /
+COPY --from=dep-n-walkdir-2.4.0-345a7495356295f2 /tmp/clis-ripgrep_14-1-0/release/deps/*-345a7495356295f2* /
 
 ## this = "345a7495356295f2"
 ## deps = ["880cd61c1f851a7b"]
@@ -4782,15 +4590,13 @@ COPY --from=dep-l-walkdir-2.4.0-345a7495356295f2 /tmp/clis-ripgrep_14-1-0/releas
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_14-1-0/release/deps/libwalkdir-345a7495356295f2.rlib","emit":"link"}',
 ## ]
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-880cd61c1f851a7b"
-## src = "/libsame_file-880cd61c1f851a7b.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libsame_file-880cd61c1f851a7b.rmeta"
+## xtern = "libsame_file-880cd61c1f851a7b.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-880cd61c1f851a7b"
-## src = "/libsame_file-880cd61c1f851a7b.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libsame_file-880cd61c1f851a7b.rlib"
+## xtern = "libsame_file-880cd61c1f851a7b.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -4804,9 +4610,9 @@ COPY --from=dep-l-walkdir-2.4.0-345a7495356295f2 /tmp/clis-ripgrep_14-1-0/releas
 ##   https://static.crates.io/crates/walkdir/walkdir-2.4.0.crate /'''
 ## 
 ## [[stages]]
-## name = "dep-l-walkdir-2.4.0-345a7495356295f2"
+## name = "dep-n-walkdir-2.4.0-345a7495356295f2"
 ## script = '''
-## FROM rust-base AS dep-l-walkdir-2.4.0-345a7495356295f2
+## FROM rust-base AS dep-n-walkdir-2.4.0-345a7495356295f2
 ## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 ## WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 ## RUN \
@@ -4842,12 +4648,12 @@ COPY --from=dep-l-walkdir-2.4.0-345a7495356295f2 /tmp/clis-ripgrep_14-1-0/releas
 ## name = "out-345a7495356295f2"
 ## script = """
 ## FROM scratch AS out-345a7495356295f2
-## COPY --from=dep-l-walkdir-2.4.0-345a7495356295f2 /tmp/clis-ripgrep_14-1-0/release/deps/*-345a7495356295f2* /"""
+## COPY --from=dep-n-walkdir-2.4.0-345a7495356295f2 /tmp/clis-ripgrep_14-1-0/release/deps/*-345a7495356295f2* /"""
 
 FROM scratch AS cratesio-ignore-0.4.22
 ADD --chmod=0664 --unpack=true --checksum=sha256:b46810df39e66e925525d6e38ce1e7f6e1d208f72dc39757880fcb66e2c58af1 \
   https://static.crates.io/crates/ignore/ignore-0.4.22.crate /
-FROM rust-base AS dep-l-ignore-0.4.22-95c296cdf92c1819
+FROM rust-base AS dep-n-ignore-0.4.22-95c296cdf92c1819
 SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 RUN \
@@ -4903,7 +4709,7 @@ RUN \
         2> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-95c296cdf92c1819-stderr >&2) \
         || echo $? >/tmp/clis-ripgrep_14-1-0/release/deps/out-95c296cdf92c1819-errcode
 FROM scratch AS out-95c296cdf92c1819
-COPY --from=dep-l-ignore-0.4.22-95c296cdf92c1819 /tmp/clis-ripgrep_14-1-0/release/deps/*-95c296cdf92c1819* /
+COPY --from=dep-n-ignore-0.4.22-95c296cdf92c1819 /tmp/clis-ripgrep_14-1-0/release/deps/*-95c296cdf92c1819* /
 
 ## this = "95c296cdf92c1819"
 ## deps = [
@@ -4947,135 +4753,109 @@ COPY --from=dep-l-ignore-0.4.22-95c296cdf92c1819 /tmp/clis-ripgrep_14-1-0/releas
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_14-1-0/release/deps/libignore-95c296cdf92c1819.rlib","emit":"link"}',
 ## ]
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-0deb1c425e6f6d70"
-## src = "/libcrossbeam_deque-0deb1c425e6f6d70.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libcrossbeam_deque-0deb1c425e6f6d70.rmeta"
+## xtern = "libcrossbeam_deque-0deb1c425e6f6d70.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-0deb1c425e6f6d70"
-## src = "/libcrossbeam_deque-0deb1c425e6f6d70.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libcrossbeam_deque-0deb1c425e6f6d70.rlib"
+## xtern = "libcrossbeam_deque-0deb1c425e6f6d70.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-98d40c6178a8b60f"
-## src = "/libcfg_if-98d40c6178a8b60f.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libcfg_if-98d40c6178a8b60f.rmeta"
+## xtern = "libcfg_if-98d40c6178a8b60f.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-98d40c6178a8b60f"
-## src = "/libcfg_if-98d40c6178a8b60f.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libcfg_if-98d40c6178a8b60f.rlib"
+## xtern = "libcfg_if-98d40c6178a8b60f.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-e4df21448919a796"
-## src = "/libcrossbeam_epoch-e4df21448919a796.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libcrossbeam_epoch-e4df21448919a796.rmeta"
+## xtern = "libcrossbeam_epoch-e4df21448919a796.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-e4df21448919a796"
-## src = "/libcrossbeam_epoch-e4df21448919a796.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libcrossbeam_epoch-e4df21448919a796.rlib"
+## xtern = "libcrossbeam_epoch-e4df21448919a796.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-1ae807b4b6e713ec"
-## src = "/libcrossbeam_utils-1ae807b4b6e713ec.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libcrossbeam_utils-1ae807b4b6e713ec.rmeta"
+## xtern = "libcrossbeam_utils-1ae807b4b6e713ec.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-1ae807b4b6e713ec"
-## src = "/libcrossbeam_utils-1ae807b4b6e713ec.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libcrossbeam_utils-1ae807b4b6e713ec.rlib"
+## xtern = "libcrossbeam_utils-1ae807b4b6e713ec.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-14504da8f25a4dbf"
-## src = "/libglobset-14504da8f25a4dbf.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libglobset-14504da8f25a4dbf.rmeta"
+## xtern = "libglobset-14504da8f25a4dbf.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-14504da8f25a4dbf"
-## src = "/libglobset-14504da8f25a4dbf.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libglobset-14504da8f25a4dbf.rlib"
+## xtern = "libglobset-14504da8f25a4dbf.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-2a2c3bf3a2b335e0"
-## src = "/libaho_corasick-2a2c3bf3a2b335e0.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libaho_corasick-2a2c3bf3a2b335e0.rmeta"
+## xtern = "libaho_corasick-2a2c3bf3a2b335e0.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-2a2c3bf3a2b335e0"
-## src = "/libaho_corasick-2a2c3bf3a2b335e0.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libaho_corasick-2a2c3bf3a2b335e0.rlib"
+## xtern = "libaho_corasick-2a2c3bf3a2b335e0.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-3d9021aec125798d"
-## src = "/libmemchr-3d9021aec125798d.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rmeta"
+## xtern = "libmemchr-3d9021aec125798d.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-3d9021aec125798d"
-## src = "/libmemchr-3d9021aec125798d.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rlib"
+## xtern = "libmemchr-3d9021aec125798d.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-f6b551c518280772"
-## src = "/libbstr-f6b551c518280772.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libbstr-f6b551c518280772.rmeta"
+## xtern = "libbstr-f6b551c518280772.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-f6b551c518280772"
-## src = "/libbstr-f6b551c518280772.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libbstr-f6b551c518280772.rlib"
+## xtern = "libbstr-f6b551c518280772.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-54c30116fcd4ea92"
-## src = "/libregex_automata-54c30116fcd4ea92.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libregex_automata-54c30116fcd4ea92.rmeta"
+## xtern = "libregex_automata-54c30116fcd4ea92.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-54c30116fcd4ea92"
-## src = "/libregex_automata-54c30116fcd4ea92.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libregex_automata-54c30116fcd4ea92.rlib"
+## xtern = "libregex_automata-54c30116fcd4ea92.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-0d361157f8cdd0fe"
-## src = "/libregex_syntax-0d361157f8cdd0fe.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libregex_syntax-0d361157f8cdd0fe.rmeta"
+## xtern = "libregex_syntax-0d361157f8cdd0fe.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-0d361157f8cdd0fe"
-## src = "/libregex_syntax-0d361157f8cdd0fe.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libregex_syntax-0d361157f8cdd0fe.rlib"
+## xtern = "libregex_syntax-0d361157f8cdd0fe.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-45d1068292014e63"
-## src = "/liblog-45d1068292014e63.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/liblog-45d1068292014e63.rmeta"
+## xtern = "liblog-45d1068292014e63.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-45d1068292014e63"
-## src = "/liblog-45d1068292014e63.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/liblog-45d1068292014e63.rlib"
+## xtern = "liblog-45d1068292014e63.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-880cd61c1f851a7b"
-## src = "/libsame_file-880cd61c1f851a7b.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libsame_file-880cd61c1f851a7b.rmeta"
+## xtern = "libsame_file-880cd61c1f851a7b.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-880cd61c1f851a7b"
-## src = "/libsame_file-880cd61c1f851a7b.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libsame_file-880cd61c1f851a7b.rlib"
+## xtern = "libsame_file-880cd61c1f851a7b.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-345a7495356295f2"
-## src = "/libwalkdir-345a7495356295f2.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libwalkdir-345a7495356295f2.rmeta"
+## xtern = "libwalkdir-345a7495356295f2.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-345a7495356295f2"
-## src = "/libwalkdir-345a7495356295f2.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libwalkdir-345a7495356295f2.rlib"
+## xtern = "libwalkdir-345a7495356295f2.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -5089,9 +4869,9 @@ COPY --from=dep-l-ignore-0.4.22-95c296cdf92c1819 /tmp/clis-ripgrep_14-1-0/releas
 ##   https://static.crates.io/crates/ignore/ignore-0.4.22.crate /'''
 ## 
 ## [[stages]]
-## name = "dep-l-ignore-0.4.22-95c296cdf92c1819"
+## name = "dep-n-ignore-0.4.22-95c296cdf92c1819"
 ## script = '''
-## FROM rust-base AS dep-l-ignore-0.4.22-95c296cdf92c1819
+## FROM rust-base AS dep-n-ignore-0.4.22-95c296cdf92c1819
 ## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 ## WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 ## RUN \
@@ -5151,12 +4931,12 @@ COPY --from=dep-l-ignore-0.4.22-95c296cdf92c1819 /tmp/clis-ripgrep_14-1-0/releas
 ## name = "out-95c296cdf92c1819"
 ## script = """
 ## FROM scratch AS out-95c296cdf92c1819
-## COPY --from=dep-l-ignore-0.4.22-95c296cdf92c1819 /tmp/clis-ripgrep_14-1-0/release/deps/*-95c296cdf92c1819* /"""
+## COPY --from=dep-n-ignore-0.4.22-95c296cdf92c1819 /tmp/clis-ripgrep_14-1-0/release/deps/*-95c296cdf92c1819* /"""
 
 FROM scratch AS cratesio-lexopt-0.3.0
 ADD --chmod=0664 --unpack=true --checksum=sha256:baff4b617f7df3d896f97fe922b64817f6cd9a756bb81d40f8883f2f66dcb401 \
   https://static.crates.io/crates/lexopt/lexopt-0.3.0.crate /
-FROM rust-base AS dep-l-lexopt-0.3.0-17f37e7bd1b70087
+FROM rust-base AS dep-n-lexopt-0.3.0-17f37e7bd1b70087
 SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 RUN \
@@ -5186,7 +4966,7 @@ RUN \
         2> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-17f37e7bd1b70087-stderr >&2) \
         || echo $? >/tmp/clis-ripgrep_14-1-0/release/deps/out-17f37e7bd1b70087-errcode
 FROM scratch AS out-17f37e7bd1b70087
-COPY --from=dep-l-lexopt-0.3.0-17f37e7bd1b70087 /tmp/clis-ripgrep_14-1-0/release/deps/*-17f37e7bd1b70087* /
+COPY --from=dep-n-lexopt-0.3.0-17f37e7bd1b70087 /tmp/clis-ripgrep_14-1-0/release/deps/*-17f37e7bd1b70087* /
 
 ## this = "17f37e7bd1b70087"
 ## writes = [
@@ -5212,9 +4992,9 @@ COPY --from=dep-l-lexopt-0.3.0-17f37e7bd1b70087 /tmp/clis-ripgrep_14-1-0/release
 ##   https://static.crates.io/crates/lexopt/lexopt-0.3.0.crate /'''
 ## 
 ## [[stages]]
-## name = "dep-l-lexopt-0.3.0-17f37e7bd1b70087"
+## name = "dep-n-lexopt-0.3.0-17f37e7bd1b70087"
 ## script = '''
-## FROM rust-base AS dep-l-lexopt-0.3.0-17f37e7bd1b70087
+## FROM rust-base AS dep-n-lexopt-0.3.0-17f37e7bd1b70087
 ## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 ## WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 ## RUN \
@@ -5248,12 +5028,12 @@ COPY --from=dep-l-lexopt-0.3.0-17f37e7bd1b70087 /tmp/clis-ripgrep_14-1-0/release
 ## name = "out-17f37e7bd1b70087"
 ## script = """
 ## FROM scratch AS out-17f37e7bd1b70087
-## COPY --from=dep-l-lexopt-0.3.0-17f37e7bd1b70087 /tmp/clis-ripgrep_14-1-0/release/deps/*-17f37e7bd1b70087* /"""
+## COPY --from=dep-n-lexopt-0.3.0-17f37e7bd1b70087 /tmp/clis-ripgrep_14-1-0/release/deps/*-17f37e7bd1b70087* /"""
 
 FROM scratch AS cratesio-textwrap-0.16.0
 ADD --chmod=0664 --unpack=true --checksum=sha256:222a222a5bfe1bba4a77b45ec488a741b3cb8872e5e499451fd7d0129c9c7c3d \
   https://static.crates.io/crates/textwrap/textwrap-0.16.0.crate /
-FROM rust-base AS dep-l-textwrap-0.16.0-f2419d4872a2993a
+FROM rust-base AS dep-n-textwrap-0.16.0-f2419d4872a2993a
 SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 RUN \
@@ -5283,7 +5063,7 @@ RUN \
         2> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-f2419d4872a2993a-stderr >&2) \
         || echo $? >/tmp/clis-ripgrep_14-1-0/release/deps/out-f2419d4872a2993a-errcode
 FROM scratch AS out-f2419d4872a2993a
-COPY --from=dep-l-textwrap-0.16.0-f2419d4872a2993a /tmp/clis-ripgrep_14-1-0/release/deps/*-f2419d4872a2993a* /
+COPY --from=dep-n-textwrap-0.16.0-f2419d4872a2993a /tmp/clis-ripgrep_14-1-0/release/deps/*-f2419d4872a2993a* /
 
 ## this = "f2419d4872a2993a"
 ## writes = [
@@ -5311,9 +5091,9 @@ COPY --from=dep-l-textwrap-0.16.0-f2419d4872a2993a /tmp/clis-ripgrep_14-1-0/rele
 ##   https://static.crates.io/crates/textwrap/textwrap-0.16.0.crate /'''
 ## 
 ## [[stages]]
-## name = "dep-l-textwrap-0.16.0-f2419d4872a2993a"
+## name = "dep-n-textwrap-0.16.0-f2419d4872a2993a"
 ## script = '''
-## FROM rust-base AS dep-l-textwrap-0.16.0-f2419d4872a2993a
+## FROM rust-base AS dep-n-textwrap-0.16.0-f2419d4872a2993a
 ## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 ## WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 ## RUN \
@@ -5347,12 +5127,12 @@ COPY --from=dep-l-textwrap-0.16.0-f2419d4872a2993a /tmp/clis-ripgrep_14-1-0/rele
 ## name = "out-f2419d4872a2993a"
 ## script = """
 ## FROM scratch AS out-f2419d4872a2993a
-## COPY --from=dep-l-textwrap-0.16.0-f2419d4872a2993a /tmp/clis-ripgrep_14-1-0/release/deps/*-f2419d4872a2993a* /"""
+## COPY --from=dep-n-textwrap-0.16.0-f2419d4872a2993a /tmp/clis-ripgrep_14-1-0/release/deps/*-f2419d4872a2993a* /"""
 
 FROM scratch AS cratesio-ripgrep-14.1.0
 ADD --chmod=0664 --unpack=true --checksum=sha256:d7bcbc3ac47a84bd5d0cefb27a53bbf3defb6867b97e526531fba2e564597fd8 \
   https://static.crates.io/crates/ripgrep/ripgrep-14.1.0.crate /
-FROM rust-base AS dep-b-ripgrep-14.1.0-16aebc92c4aced68
+FROM rust-base AS dep-n-ripgrep-14.1.0-16aebc92c4aced68
 SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 RUN \
@@ -5449,7 +5229,7 @@ RUN \
         2> >(tee    /tmp/clis-ripgrep_14-1-0/release/deps/out-16aebc92c4aced68-stderr >&2) \
         || echo $? >/tmp/clis-ripgrep_14-1-0/release/deps/out-16aebc92c4aced68-errcode
 FROM scratch AS out-16aebc92c4aced68
-COPY --from=dep-b-ripgrep-14.1.0-16aebc92c4aced68 /tmp/clis-ripgrep_14-1-0/release/deps/*-16aebc92c4aced68* /
+COPY --from=dep-n-ripgrep-14.1.0-16aebc92c4aced68 /tmp/clis-ripgrep_14-1-0/release/deps/*-16aebc92c4aced68* /
 
 # Pipe this file to (not portable due to usage of local build contexts):
 # DOCKER_BUILDKIT="1" \
@@ -5533,325 +5313,261 @@ COPY --from=dep-b-ripgrep-14.1.0-16aebc92c4aced68 /tmp/clis-ripgrep_14-1-0/relea
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_14-1-0/release/deps/rg-16aebc92c4aced68","emit":"link"}',
 ## ]
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-95e5d8a0e52ba465"
-## src = "/libanyhow-95e5d8a0e52ba465.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libanyhow-95e5d8a0e52ba465.rmeta"
+## xtern = "libanyhow-95e5d8a0e52ba465.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-95e5d8a0e52ba465"
-## src = "/libanyhow-95e5d8a0e52ba465.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libanyhow-95e5d8a0e52ba465.rlib"
+## xtern = "libanyhow-95e5d8a0e52ba465.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-f6b551c518280772"
-## src = "/libbstr-f6b551c518280772.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libbstr-f6b551c518280772.rmeta"
+## xtern = "libbstr-f6b551c518280772.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-f6b551c518280772"
-## src = "/libbstr-f6b551c518280772.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libbstr-f6b551c518280772.rlib"
+## xtern = "libbstr-f6b551c518280772.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-3d9021aec125798d"
-## src = "/libmemchr-3d9021aec125798d.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rmeta"
+## xtern = "libmemchr-3d9021aec125798d.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-3d9021aec125798d"
-## src = "/libmemchr-3d9021aec125798d.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rlib"
+## xtern = "libmemchr-3d9021aec125798d.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-54c30116fcd4ea92"
-## src = "/libregex_automata-54c30116fcd4ea92.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libregex_automata-54c30116fcd4ea92.rmeta"
+## xtern = "libregex_automata-54c30116fcd4ea92.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-54c30116fcd4ea92"
-## src = "/libregex_automata-54c30116fcd4ea92.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libregex_automata-54c30116fcd4ea92.rlib"
+## xtern = "libregex_automata-54c30116fcd4ea92.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-2a2c3bf3a2b335e0"
-## src = "/libaho_corasick-2a2c3bf3a2b335e0.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libaho_corasick-2a2c3bf3a2b335e0.rmeta"
+## xtern = "libaho_corasick-2a2c3bf3a2b335e0.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-2a2c3bf3a2b335e0"
-## src = "/libaho_corasick-2a2c3bf3a2b335e0.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libaho_corasick-2a2c3bf3a2b335e0.rlib"
+## xtern = "libaho_corasick-2a2c3bf3a2b335e0.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-0d361157f8cdd0fe"
-## src = "/libregex_syntax-0d361157f8cdd0fe.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libregex_syntax-0d361157f8cdd0fe.rmeta"
+## xtern = "libregex_syntax-0d361157f8cdd0fe.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-0d361157f8cdd0fe"
-## src = "/libregex_syntax-0d361157f8cdd0fe.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libregex_syntax-0d361157f8cdd0fe.rlib"
+## xtern = "libregex_syntax-0d361157f8cdd0fe.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-9e71f2809112d472"
-## src = "/libgrep-9e71f2809112d472.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libgrep-9e71f2809112d472.rmeta"
+## xtern = "libgrep-9e71f2809112d472.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-9e71f2809112d472"
-## src = "/libgrep-9e71f2809112d472.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libgrep-9e71f2809112d472.rlib"
+## xtern = "libgrep-9e71f2809112d472.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-8da8357e778092ce"
-## src = "/libgrep_cli-8da8357e778092ce.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_cli-8da8357e778092ce.rmeta"
+## xtern = "libgrep_cli-8da8357e778092ce.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-8da8357e778092ce"
-## src = "/libgrep_cli-8da8357e778092ce.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_cli-8da8357e778092ce.rlib"
+## xtern = "libgrep_cli-8da8357e778092ce.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-14504da8f25a4dbf"
-## src = "/libglobset-14504da8f25a4dbf.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libglobset-14504da8f25a4dbf.rmeta"
+## xtern = "libglobset-14504da8f25a4dbf.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-14504da8f25a4dbf"
-## src = "/libglobset-14504da8f25a4dbf.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libglobset-14504da8f25a4dbf.rlib"
+## xtern = "libglobset-14504da8f25a4dbf.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-45d1068292014e63"
-## src = "/liblog-45d1068292014e63.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/liblog-45d1068292014e63.rmeta"
+## xtern = "liblog-45d1068292014e63.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-45d1068292014e63"
-## src = "/liblog-45d1068292014e63.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/liblog-45d1068292014e63.rlib"
+## xtern = "liblog-45d1068292014e63.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-b1dcb66edfd0e8a0"
-## src = "/liblibc-b1dcb66edfd0e8a0.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/liblibc-b1dcb66edfd0e8a0.rmeta"
+## xtern = "liblibc-b1dcb66edfd0e8a0.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-b1dcb66edfd0e8a0"
-## src = "/liblibc-b1dcb66edfd0e8a0.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/liblibc-b1dcb66edfd0e8a0.rlib"
+## xtern = "liblibc-b1dcb66edfd0e8a0.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-59ae8e7772deaa56"
-## src = "/libtermcolor-59ae8e7772deaa56.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libtermcolor-59ae8e7772deaa56.rmeta"
+## xtern = "libtermcolor-59ae8e7772deaa56.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-59ae8e7772deaa56"
-## src = "/libtermcolor-59ae8e7772deaa56.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libtermcolor-59ae8e7772deaa56.rlib"
+## xtern = "libtermcolor-59ae8e7772deaa56.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-7517975d791c1423"
-## src = "/libgrep_matcher-7517975d791c1423.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_matcher-7517975d791c1423.rmeta"
+## xtern = "libgrep_matcher-7517975d791c1423.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-7517975d791c1423"
-## src = "/libgrep_matcher-7517975d791c1423.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_matcher-7517975d791c1423.rlib"
+## xtern = "libgrep_matcher-7517975d791c1423.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-0e4d9ea7a0184dd5"
-## src = "/libgrep_printer-0e4d9ea7a0184dd5.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_printer-0e4d9ea7a0184dd5.rmeta"
+## xtern = "libgrep_printer-0e4d9ea7a0184dd5.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-0e4d9ea7a0184dd5"
-## src = "/libgrep_printer-0e4d9ea7a0184dd5.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_printer-0e4d9ea7a0184dd5.rlib"
+## xtern = "libgrep_printer-0e4d9ea7a0184dd5.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-6fc004d41272f596"
-## src = "/libgrep_searcher-6fc004d41272f596.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_searcher-6fc004d41272f596.rmeta"
+## xtern = "libgrep_searcher-6fc004d41272f596.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-6fc004d41272f596"
-## src = "/libgrep_searcher-6fc004d41272f596.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_searcher-6fc004d41272f596.rlib"
+## xtern = "libgrep_searcher-6fc004d41272f596.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-71f95fee6544e787"
-## src = "/libencoding_rs-71f95fee6544e787.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libencoding_rs-71f95fee6544e787.rmeta"
+## xtern = "libencoding_rs-71f95fee6544e787.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-71f95fee6544e787"
-## src = "/libencoding_rs-71f95fee6544e787.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libencoding_rs-71f95fee6544e787.rlib"
+## xtern = "libencoding_rs-71f95fee6544e787.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-98d40c6178a8b60f"
-## src = "/libcfg_if-98d40c6178a8b60f.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libcfg_if-98d40c6178a8b60f.rmeta"
+## xtern = "libcfg_if-98d40c6178a8b60f.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-98d40c6178a8b60f"
-## src = "/libcfg_if-98d40c6178a8b60f.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libcfg_if-98d40c6178a8b60f.rlib"
+## xtern = "libcfg_if-98d40c6178a8b60f.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-1f57e01234da7cf8"
-## src = "/libencoding_rs_io-1f57e01234da7cf8.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libencoding_rs_io-1f57e01234da7cf8.rmeta"
+## xtern = "libencoding_rs_io-1f57e01234da7cf8.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-1f57e01234da7cf8"
-## src = "/libencoding_rs_io-1f57e01234da7cf8.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libencoding_rs_io-1f57e01234da7cf8.rlib"
+## xtern = "libencoding_rs_io-1f57e01234da7cf8.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-21c841a4e972790f"
-## src = "/libmemmap2-21c841a4e972790f.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libmemmap2-21c841a4e972790f.rmeta"
+## xtern = "libmemmap2-21c841a4e972790f.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-21c841a4e972790f"
-## src = "/libmemmap2-21c841a4e972790f.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libmemmap2-21c841a4e972790f.rlib"
+## xtern = "libmemmap2-21c841a4e972790f.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-6342957ddc692e98"
-## src = "/libserde-6342957ddc692e98.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libserde-6342957ddc692e98.rmeta"
+## xtern = "libserde-6342957ddc692e98.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-6342957ddc692e98"
-## src = "/libserde-6342957ddc692e98.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libserde-6342957ddc692e98.rlib"
+## xtern = "libserde-6342957ddc692e98.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-f1456127761f5765"
-## src = "/libserde_json-f1456127761f5765.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libserde_json-f1456127761f5765.rmeta"
+## xtern = "libserde_json-f1456127761f5765.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-f1456127761f5765"
-## src = "/libserde_json-f1456127761f5765.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libserde_json-f1456127761f5765.rlib"
+## xtern = "libserde_json-f1456127761f5765.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-2b4528a4fd57cfaf"
-## src = "/libitoa-2b4528a4fd57cfaf.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libitoa-2b4528a4fd57cfaf.rmeta"
+## xtern = "libitoa-2b4528a4fd57cfaf.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-2b4528a4fd57cfaf"
-## src = "/libitoa-2b4528a4fd57cfaf.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libitoa-2b4528a4fd57cfaf.rlib"
+## xtern = "libitoa-2b4528a4fd57cfaf.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-a994c87db442418d"
-## src = "/libryu-a994c87db442418d.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libryu-a994c87db442418d.rmeta"
+## xtern = "libryu-a994c87db442418d.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-a994c87db442418d"
-## src = "/libryu-a994c87db442418d.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libryu-a994c87db442418d.rlib"
+## xtern = "libryu-a994c87db442418d.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-c08c56633b958d0c"
-## src = "/libgrep_regex-c08c56633b958d0c.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_regex-c08c56633b958d0c.rmeta"
+## xtern = "libgrep_regex-c08c56633b958d0c.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-c08c56633b958d0c"
-## src = "/libgrep_regex-c08c56633b958d0c.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_regex-c08c56633b958d0c.rlib"
+## xtern = "libgrep_regex-c08c56633b958d0c.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-95c296cdf92c1819"
-## src = "/libignore-95c296cdf92c1819.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libignore-95c296cdf92c1819.rmeta"
+## xtern = "libignore-95c296cdf92c1819.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-95c296cdf92c1819"
-## src = "/libignore-95c296cdf92c1819.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libignore-95c296cdf92c1819.rlib"
+## xtern = "libignore-95c296cdf92c1819.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-0deb1c425e6f6d70"
-## src = "/libcrossbeam_deque-0deb1c425e6f6d70.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libcrossbeam_deque-0deb1c425e6f6d70.rmeta"
+## xtern = "libcrossbeam_deque-0deb1c425e6f6d70.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-0deb1c425e6f6d70"
-## src = "/libcrossbeam_deque-0deb1c425e6f6d70.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libcrossbeam_deque-0deb1c425e6f6d70.rlib"
+## xtern = "libcrossbeam_deque-0deb1c425e6f6d70.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-e4df21448919a796"
-## src = "/libcrossbeam_epoch-e4df21448919a796.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libcrossbeam_epoch-e4df21448919a796.rmeta"
+## xtern = "libcrossbeam_epoch-e4df21448919a796.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-e4df21448919a796"
-## src = "/libcrossbeam_epoch-e4df21448919a796.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libcrossbeam_epoch-e4df21448919a796.rlib"
+## xtern = "libcrossbeam_epoch-e4df21448919a796.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-1ae807b4b6e713ec"
-## src = "/libcrossbeam_utils-1ae807b4b6e713ec.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libcrossbeam_utils-1ae807b4b6e713ec.rmeta"
+## xtern = "libcrossbeam_utils-1ae807b4b6e713ec.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-1ae807b4b6e713ec"
-## src = "/libcrossbeam_utils-1ae807b4b6e713ec.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libcrossbeam_utils-1ae807b4b6e713ec.rlib"
+## xtern = "libcrossbeam_utils-1ae807b4b6e713ec.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-880cd61c1f851a7b"
-## src = "/libsame_file-880cd61c1f851a7b.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libsame_file-880cd61c1f851a7b.rmeta"
+## xtern = "libsame_file-880cd61c1f851a7b.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-880cd61c1f851a7b"
-## src = "/libsame_file-880cd61c1f851a7b.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libsame_file-880cd61c1f851a7b.rlib"
+## xtern = "libsame_file-880cd61c1f851a7b.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-345a7495356295f2"
-## src = "/libwalkdir-345a7495356295f2.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libwalkdir-345a7495356295f2.rmeta"
+## xtern = "libwalkdir-345a7495356295f2.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-345a7495356295f2"
-## src = "/libwalkdir-345a7495356295f2.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libwalkdir-345a7495356295f2.rlib"
+## xtern = "libwalkdir-345a7495356295f2.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-17f37e7bd1b70087"
-## src = "/liblexopt-17f37e7bd1b70087.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/liblexopt-17f37e7bd1b70087.rmeta"
+## xtern = "liblexopt-17f37e7bd1b70087.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-17f37e7bd1b70087"
-## src = "/liblexopt-17f37e7bd1b70087.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/liblexopt-17f37e7bd1b70087.rlib"
+## xtern = "liblexopt-17f37e7bd1b70087.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-f2419d4872a2993a"
-## src = "/libtextwrap-f2419d4872a2993a.rmeta"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libtextwrap-f2419d4872a2993a.rmeta"
+## xtern = "libtextwrap-f2419d4872a2993a.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-f2419d4872a2993a"
-## src = "/libtextwrap-f2419d4872a2993a.rlib"
-## dst = "/tmp/clis-ripgrep_14-1-0/release/deps/libtextwrap-f2419d4872a2993a.rlib"
+## xtern = "libtextwrap-f2419d4872a2993a.rlib"
 ## 
 ## [[contexts]]
 ## name = "crate_out-467b075ea0bb0ef8"
@@ -5869,9 +5585,9 @@ COPY --from=dep-b-ripgrep-14.1.0-16aebc92c4aced68 /tmp/clis-ripgrep_14-1-0/relea
 ##   https://static.crates.io/crates/ripgrep/ripgrep-14.1.0.crate /'''
 ## 
 ## [[stages]]
-## name = "dep-b-ripgrep-14.1.0-16aebc92c4aced68"
+## name = "dep-n-ripgrep-14.1.0-16aebc92c4aced68"
 ## script = '''
-## FROM rust-base AS dep-b-ripgrep-14.1.0-16aebc92c4aced68
+## FROM rust-base AS dep-n-ripgrep-14.1.0-16aebc92c4aced68
 ## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 ## WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 ## RUN \
@@ -5972,7 +5688,7 @@ COPY --from=dep-b-ripgrep-14.1.0-16aebc92c4aced68 /tmp/clis-ripgrep_14-1-0/relea
 ## name = "out-16aebc92c4aced68"
 ## script = """
 ## FROM scratch AS out-16aebc92c4aced68
-## COPY --from=dep-b-ripgrep-14.1.0-16aebc92c4aced68 /tmp/clis-ripgrep_14-1-0/release/deps/*-16aebc92c4aced68* /"""
+## COPY --from=dep-n-ripgrep-14.1.0-16aebc92c4aced68 /tmp/clis-ripgrep_14-1-0/release/deps/*-16aebc92c4aced68* /"""
 
 FROM scratch
 COPY --from=out-16aebc92c4aced68 /rg-16aebc92c4aced68 /rg

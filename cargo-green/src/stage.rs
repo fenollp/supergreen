@@ -3,6 +3,8 @@ use std::sync::LazyLock;
 use anyhow::{anyhow, bail, Error, Result};
 use nutype::nutype;
 
+use crate::md::MdId;
+
 pub(crate) const RST: &str = "rust-base"; // Twin, for Display
 pub(crate) static RUST: LazyLock<Stage> = LazyLock::new(|| Stage::new(RST).unwrap());
 
@@ -33,12 +35,12 @@ impl Stage {
         Self::new(&format!("pkg-{crate_id}"))
     }
 
-    pub(crate) fn local_mount(extrafn: &str) -> Result<Self> {
-        Self::new(&format!("cwd{extrafn}"))
+    pub(crate) fn local_mount(metadata: MdId) -> Result<Self> {
+        Self::new(&format!("cwd-{metadata}"))
     }
 
-    pub(crate) fn crate_out(extrafn_nodash: &str) -> Result<Self> {
-        Self::new(&format!("crate_out-{extrafn_nodash}"))
+    pub(crate) fn crate_out(metadata: MdId) -> Result<Self> {
+        Self::new(&format!("crate_out-{metadata}"))
     }
 
     // TODO: link this to the build script it's coming from
@@ -55,12 +57,12 @@ impl Stage {
         self.starts_with("cratesio-") || self.starts_with("checkout-")
     }
 
-    pub(crate) fn incremental(extrafn: &str) -> Result<Self> {
-        Self::new(&format!("inc{extrafn}"))
+    pub(crate) fn incremental(metadata: MdId) -> Result<Self> {
+        Self::new(&format!("inc-{metadata}"))
     }
 
-    pub(crate) fn output(extrafn_nodash: &str) -> Result<Self> {
-        Self::new(&format!("out-{extrafn_nodash}"))
+    pub(crate) fn output(metadata: MdId) -> Result<Self> {
+        Self::new(&format!("out-{metadata}"))
     }
 }
 
@@ -89,8 +91,8 @@ fn is_alnum_dot_underscore(c: char) -> bool {
 
 #[test]
 fn stages() {
-    let local_mount = Stage::local_mount("-9d1546e4763fe483").unwrap();
-    let crate_out = Stage::crate_out("9d1546e4763fe483").unwrap();
+    let local_mount = Stage::local_mount(MdId::new("-9d1546e4763fe483")).unwrap();
+    let crate_out = Stage::crate_out(MdId::new("-9d1546e4763fe483")).unwrap();
     let cratesio = Stage::cratesio("syn", "1.0.46").unwrap();
     let checkout =
         Stage::checkout("buildxargs-76dd4ee9dadcdcf0", "df9b810011cd416b8e3fc02911f2f496acb8475e")
@@ -112,8 +114,8 @@ fn stages() {
             checkout.clone(),
             "checkout-buildxargs-76dd4ee9dadcdcf0-df9b810011cd416b8e3fc02911f2f496acb8475e",
         ),
-        (Stage::incremental("-9d1546e4763fe483").unwrap(), "inc-9d1546e4763fe483"),
-        (Stage::output("9d1546e4763fe483").unwrap(), "out-9d1546e4763fe483"),
+        (Stage::incremental(MdId::new("-9d1546e4763fe483")).unwrap(), "inc-9d1546e4763fe483"),
+        (Stage::output(MdId::new("-9d1546e4763fe483")).unwrap(), "out-9d1546e4763fe483"),
     ];
 
     for (stage, sname) in stages {

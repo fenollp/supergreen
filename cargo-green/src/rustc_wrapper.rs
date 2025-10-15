@@ -16,8 +16,8 @@ use crate::{
     cratesio::{self, rewrite_cratesio_index},
     ext::CommandExt,
     green::Green,
-    logging::{self, crate_type_for_logging, maybe_log},
-    md::{BuildContext, Md, MountFrom},
+    logging::{self, maybe_log},
+    md::{BuildContext, Md, MdId, MountExtern},
     pwd,
     runner::Runner,
     rustc_arguments::{as_rustc, RustcArgs},
@@ -139,12 +139,8 @@ async fn wrap_rustc(
     let krate_repository = env::var("CARGO_PKG_REPOSITORY").ok().unwrap_or_default();
 
     let full_krate_id = {
-        let RustcArgs { crate_type, extrafn, .. } = &st;
-        if buildrs && crate_type != "bin" {
-            bail!("BUG: expected build script to be of crate_type bin, got: {crate_type}")
-        }
-        let krate_type = if buildrs { 'X' } else { crate_type_for_logging(crate_type) };
-        format!("{krate_type} {krate_name} {krate_version}{extrafn}")
+        let kind = if buildrs { 'X' } else { 'N' }; // exe or normal
+        format!("{kind} {krate_name} {krate_version}{}", st.extrafn)
     };
 
     logging::setup(&full_krate_id);
@@ -216,7 +212,7 @@ async fn do_wrap_rustc(
     pwd: Utf8PathBuf,
     args: Vec<String>,
     out_dir_var: Option<Utf8PathBuf>,
-    RustcArgs { crate_type, emit: _, externs, extrafn, incremental, input, out_dir, target_path }: RustcArgs,
+    RustcArgs { externs, extrafn, incremental, input, out_dir, target_path }: RustcArgs,
     fallback: impl Future<Output = Result<()>>,
 ) -> Result<()> {
     let debug = maybe_log();
@@ -225,11 +221,8 @@ async fn do_wrap_rustc(
 
     let crate_out = crate_out_dir(out_dir_var)?;
 
-    let mut md = Md::new(&extrafn[1..]); // Drops leading dash
+    let mut md = Md::new(&extrafn);
     md.push_block(&RUST, green.image.base_image_inline.clone().unwrap());
-
-    // This way crates that depend on this know they must require it as .so
-    md.is_proc_macro = crate_type == "proc-macro";
 
     fs::create_dir_all(&out_dir).map_err(|e| anyhow!("Failed to `mkdir -p {out_dir}`: {e}"))?;
     if let Some(ref incremental) = incremental {
@@ -273,8 +266,8 @@ async fn do_wrap_rustc(
     info!("picked {rustc_stage} for {input}");
     let input = rewrite_cratesio_index(&input);
 
-    let incremental_stage = Stage::incremental(&extrafn)?;
-    let out_stage = Stage::output(&extrafn[1..])?; // Drops leading dash
+    let incremental_stage = Stage::incremental(md.this())?;
+    let out_stage = Stage::output(md.this())?;
 
     let mut rustc_block = String::new();
     rustc_block.push_str(&format!("FROM {RST} AS {rustc_stage}\n"));
@@ -330,7 +323,7 @@ async fn do_wrap_rustc(
         // TODO: do better to avoid copying >1 times local work dir on each cargo call => context-mount local content-addressed tarball?
         // test|cargo-green|0.8.0|f273b3fc9f002200] copying all git files under $HOME/wefwefwef/supergreen.git to /tmp/cargo-green_0.8.0/CWDf273b3fc9f002200
         // bin|cargo-green|0.8.0|efe5575298075b07] copying all git files under $HOME/wefwefwef/supergreen.git to /tmp/cargo-green_0.8.0/CWDefe5575298075b07
-        let cwd_stage = Stage::local_mount(&extrafn)?;
+        let cwd_stage = Stage::local_mount(md.this())?;
 
         rustc_block.push_str(&format!("COPY --from={cwd_stage} / .\n"));
         rustc_block.push_str("RUN \\\n");
@@ -351,9 +344,10 @@ async fn do_wrap_rustc(
         .collect();
     info!("loading {} build contexts", md.contexts.len());
 
-    let mds = md.assemble_build_dependencies(/*&crate_type, &emit,*/ externs, &target_path)?;
-    for MountFrom { from, src, dst } in &md.mounts {
-        rustc_block.push_str(&format!("  --mount=from={from},dst={dst},source={src} \\\n"));
+    let mds = md.assemble_build_dependencies(externs, &target_path)?;
+    for MountExtern { from, xtern } in md.externs() {
+        let dst = target_path.join("deps").join(xtern);
+        rustc_block.push_str(&format!("  --mount=from={from},dst={dst},source=/{xtern} \\\n"));
     }
 
     // Log a possible toolchain file contents (TODO: make per-crate base_image out of this)
@@ -413,7 +407,7 @@ async fn do_wrap_rustc(
     // => skip the COPY (--mount=from=out-08c4d63ed4366a99)
     //   => use the stage directly (--mount=from=dep-l-buildxargs-1.4.0-08c4d63ed4366a99)
 
-    let md_path = target_path.join(format!("{}.toml", &extrafn[1..] /* Drops leading dash */));
+    let md_path = md.this().path(&target_path);
     let containerfile_path = target_path.join(format!("{krate_name}{extrafn}.Dockerfile"));
 
     md.write_to(&md_path)?;
@@ -599,7 +593,7 @@ fn crate_out_name(name: &Utf8Path) -> Stage {
     name.parent()
         .and_then(|x| x.file_name())
         .and_then(|x| x.rsplit_once('-'))
-        .map(|(_, x)| Stage::crate_out(x))
+        .map(|(_, x)| Stage::crate_out(MdId::new(&format!("-{x}"))))
         .expect("PROOF: suffix is /out")
         .expect("PROOF: out dir path format")
 }

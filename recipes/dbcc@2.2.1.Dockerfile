@@ -7,7 +7,7 @@ FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.86.0-slim@sha256:57d415b
 FROM scratch AS cratesio-byte-tools-0.3.1
 ADD --chmod=0664 --unpack=true --checksum=sha256:e3b5ca7a04898ad4bcd41c90c5285445ff5b791899bb1b0abdd2a2aa791211d7 \
   https://static.crates.io/crates/byte-tools/byte-tools-0.3.1.crate /
-FROM rust-base AS dep-l-byte-tools-0.3.1-208f428f6e945660
+FROM rust-base AS dep-n-byte-tools-0.3.1-208f428f6e945660
 SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
@@ -37,7 +37,7 @@ RUN \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-208f428f6e945660-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-208f428f6e945660-errcode
 FROM scratch AS out-208f428f6e945660
-COPY --from=dep-l-byte-tools-0.3.1-208f428f6e945660 /tmp/clis-dbcc_2-2-1/release/deps/*-208f428f6e945660* /
+COPY --from=dep-n-byte-tools-0.3.1-208f428f6e945660 /tmp/clis-dbcc_2-2-1/release/deps/*-208f428f6e945660* /
 
 ## this = "208f428f6e945660"
 ## writes = [
@@ -63,9 +63,9 @@ COPY --from=dep-l-byte-tools-0.3.1-208f428f6e945660 /tmp/clis-dbcc_2-2-1/release
 ##   https://static.crates.io/crates/byte-tools/byte-tools-0.3.1.crate /'''
 ## 
 ## [[stages]]
-## name = "dep-l-byte-tools-0.3.1-208f428f6e945660"
+## name = "dep-n-byte-tools-0.3.1-208f428f6e945660"
 ## script = '''
-## FROM rust-base AS dep-l-byte-tools-0.3.1-208f428f6e945660
+## FROM rust-base AS dep-n-byte-tools-0.3.1-208f428f6e945660
 ## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
@@ -99,12 +99,12 @@ COPY --from=dep-l-byte-tools-0.3.1-208f428f6e945660 /tmp/clis-dbcc_2-2-1/release
 ## name = "out-208f428f6e945660"
 ## script = """
 ## FROM scratch AS out-208f428f6e945660
-## COPY --from=dep-l-byte-tools-0.3.1-208f428f6e945660 /tmp/clis-dbcc_2-2-1/release/deps/*-208f428f6e945660* /"""
+## COPY --from=dep-n-byte-tools-0.3.1-208f428f6e945660 /tmp/clis-dbcc_2-2-1/release/deps/*-208f428f6e945660* /"""
 
 FROM scratch AS cratesio-typenum-1.12.0
 ADD --chmod=0664 --unpack=true --checksum=sha256:373c8a200f9e67a0c95e62a4f52fbf80c23b4381c05a17845531982fa99e6b33 \
   https://static.crates.io/crates/typenum/typenum-1.12.0.crate /
-FROM rust-base AS dep-l-typenum-1.12.0-0c59626b95871fe7
+FROM rust-base AS dep-n-typenum-1.12.0-0c59626b95871fe7
 SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
@@ -138,7 +138,7 @@ RUN \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-0c59626b95871fe7-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-0c59626b95871fe7-errcode
 FROM scratch AS out-0c59626b95871fe7
-COPY --from=dep-l-typenum-1.12.0-0c59626b95871fe7 /tmp/clis-dbcc_2-2-1/release/deps/*-0c59626b95871fe7* /
+COPY --from=dep-n-typenum-1.12.0-0c59626b95871fe7 /tmp/clis-dbcc_2-2-1/release/deps/*-0c59626b95871fe7* /
 
 ## this = "0c59626b95871fe7"
 ## writes = [
@@ -230,9 +230,9 @@ COPY --from=dep-l-typenum-1.12.0-0c59626b95871fe7 /tmp/clis-dbcc_2-2-1/release/d
 ##   https://static.crates.io/crates/typenum/typenum-1.12.0.crate /'''
 ## 
 ## [[stages]]
-## name = "dep-l-typenum-1.12.0-0c59626b95871fe7"
+## name = "dep-n-typenum-1.12.0-0c59626b95871fe7"
 ## script = '''
-## FROM rust-base AS dep-l-typenum-1.12.0-0c59626b95871fe7
+## FROM rust-base AS dep-n-typenum-1.12.0-0c59626b95871fe7
 ## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
@@ -270,12 +270,12 @@ COPY --from=dep-l-typenum-1.12.0-0c59626b95871fe7 /tmp/clis-dbcc_2-2-1/release/d
 ## name = "out-0c59626b95871fe7"
 ## script = """
 ## FROM scratch AS out-0c59626b95871fe7
-## COPY --from=dep-l-typenum-1.12.0-0c59626b95871fe7 /tmp/clis-dbcc_2-2-1/release/deps/*-0c59626b95871fe7* /"""
+## COPY --from=dep-n-typenum-1.12.0-0c59626b95871fe7 /tmp/clis-dbcc_2-2-1/release/deps/*-0c59626b95871fe7* /"""
 
 FROM scratch AS cratesio-generic-array-0.12.3
 ADD --chmod=0664 --unpack=true --checksum=sha256:c68f0274ae0e023facc3c97b2e00f076be70e254bc851d972503b328db79b2ec \
   https://static.crates.io/crates/generic-array/generic-array-0.12.3.crate /
-FROM rust-base AS dep-l-generic-array-0.12.3-0afa135837d93e68
+FROM rust-base AS dep-n-generic-array-0.12.3-0afa135837d93e68
 SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
@@ -307,7 +307,7 @@ RUN \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-0afa135837d93e68-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-0afa135837d93e68-errcode
 FROM scratch AS out-0afa135837d93e68
-COPY --from=dep-l-generic-array-0.12.3-0afa135837d93e68 /tmp/clis-dbcc_2-2-1/release/deps/*-0afa135837d93e68* /
+COPY --from=dep-n-generic-array-0.12.3-0afa135837d93e68 /tmp/clis-dbcc_2-2-1/release/deps/*-0afa135837d93e68* /
 
 ## this = "0afa135837d93e68"
 ## deps = ["0c59626b95871fe7"]
@@ -329,15 +329,13 @@ COPY --from=dep-l-generic-array-0.12.3-0afa135837d93e68 /tmp/clis-dbcc_2-2-1/rel
 ##     '{"$message_type":"diagnostic","message":"5 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 5 warnings emitted\u001b[0m\n\n"}',
 ## ]
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-0c59626b95871fe7"
-## src = "/libtypenum-0c59626b95871fe7.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libtypenum-0c59626b95871fe7.rmeta"
+## xtern = "libtypenum-0c59626b95871fe7.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-0c59626b95871fe7"
-## src = "/libtypenum-0c59626b95871fe7.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libtypenum-0c59626b95871fe7.rlib"
+## xtern = "libtypenum-0c59626b95871fe7.rlib"
 ## 
 ## [[contexts]]
 ## name = "crate_out-3cf9e442dfddd505"
@@ -355,9 +353,9 @@ COPY --from=dep-l-generic-array-0.12.3-0afa135837d93e68 /tmp/clis-dbcc_2-2-1/rel
 ##   https://static.crates.io/crates/generic-array/generic-array-0.12.3.crate /'''
 ## 
 ## [[stages]]
-## name = "dep-l-generic-array-0.12.3-0afa135837d93e68"
+## name = "dep-n-generic-array-0.12.3-0afa135837d93e68"
 ## script = '''
-## FROM rust-base AS dep-l-generic-array-0.12.3-0afa135837d93e68
+## FROM rust-base AS dep-n-generic-array-0.12.3-0afa135837d93e68
 ## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
@@ -393,12 +391,12 @@ COPY --from=dep-l-generic-array-0.12.3-0afa135837d93e68 /tmp/clis-dbcc_2-2-1/rel
 ## name = "out-0afa135837d93e68"
 ## script = """
 ## FROM scratch AS out-0afa135837d93e68
-## COPY --from=dep-l-generic-array-0.12.3-0afa135837d93e68 /tmp/clis-dbcc_2-2-1/release/deps/*-0afa135837d93e68* /"""
+## COPY --from=dep-n-generic-array-0.12.3-0afa135837d93e68 /tmp/clis-dbcc_2-2-1/release/deps/*-0afa135837d93e68* /"""
 
 FROM scratch AS cratesio-subtle-1.0.0
 ADD --chmod=0664 --unpack=true --checksum=sha256:2d67a5a62ba6e01cb2192ff309324cb4875d0c451d55fe2319433abe7a05a8ee \
   https://static.crates.io/crates/subtle/subtle-1.0.0.crate /
-FROM rust-base AS dep-l-subtle-1.0.0-fe593aa0503da824
+FROM rust-base AS dep-n-subtle-1.0.0-fe593aa0503da824
 SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
@@ -428,7 +426,7 @@ RUN \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-fe593aa0503da824-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-fe593aa0503da824-errcode
 FROM scratch AS out-fe593aa0503da824
-COPY --from=dep-l-subtle-1.0.0-fe593aa0503da824 /tmp/clis-dbcc_2-2-1/release/deps/*-fe593aa0503da824* /
+COPY --from=dep-n-subtle-1.0.0-fe593aa0503da824 /tmp/clis-dbcc_2-2-1/release/deps/*-fe593aa0503da824* /
 
 ## this = "fe593aa0503da824"
 ## writes = [
@@ -462,9 +460,9 @@ COPY --from=dep-l-subtle-1.0.0-fe593aa0503da824 /tmp/clis-dbcc_2-2-1/release/dep
 ##   https://static.crates.io/crates/subtle/subtle-1.0.0.crate /'''
 ## 
 ## [[stages]]
-## name = "dep-l-subtle-1.0.0-fe593aa0503da824"
+## name = "dep-n-subtle-1.0.0-fe593aa0503da824"
 ## script = '''
-## FROM rust-base AS dep-l-subtle-1.0.0-fe593aa0503da824
+## FROM rust-base AS dep-n-subtle-1.0.0-fe593aa0503da824
 ## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
@@ -498,12 +496,12 @@ COPY --from=dep-l-subtle-1.0.0-fe593aa0503da824 /tmp/clis-dbcc_2-2-1/release/dep
 ## name = "out-fe593aa0503da824"
 ## script = """
 ## FROM scratch AS out-fe593aa0503da824
-## COPY --from=dep-l-subtle-1.0.0-fe593aa0503da824 /tmp/clis-dbcc_2-2-1/release/deps/*-fe593aa0503da824* /"""
+## COPY --from=dep-n-subtle-1.0.0-fe593aa0503da824 /tmp/clis-dbcc_2-2-1/release/deps/*-fe593aa0503da824* /"""
 
 FROM scratch AS cratesio-crypto-mac-0.7.0
 ADD --chmod=0664 --unpack=true --checksum=sha256:4434400df11d95d556bac068ddfedd482915eb18fe8bea89bc80b6e4b1c179e5 \
   https://static.crates.io/crates/crypto-mac/crypto-mac-0.7.0.crate /
-FROM rust-base AS dep-l-crypto-mac-0.7.0-c92b10e2fa1c82cb
+FROM rust-base AS dep-n-crypto-mac-0.7.0-c92b10e2fa1c82cb
 SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
@@ -539,7 +537,7 @@ RUN \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-c92b10e2fa1c82cb-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-c92b10e2fa1c82cb-errcode
 FROM scratch AS out-c92b10e2fa1c82cb
-COPY --from=dep-l-crypto-mac-0.7.0-c92b10e2fa1c82cb /tmp/clis-dbcc_2-2-1/release/deps/*-c92b10e2fa1c82cb* /
+COPY --from=dep-n-crypto-mac-0.7.0-c92b10e2fa1c82cb /tmp/clis-dbcc_2-2-1/release/deps/*-c92b10e2fa1c82cb* /
 
 ## this = "c92b10e2fa1c82cb"
 ## deps = [
@@ -563,35 +561,29 @@ COPY --from=dep-l-crypto-mac-0.7.0-c92b10e2fa1c82cb /tmp/clis-dbcc_2-2-1/release
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-dbcc_2-2-1/release/deps/libcrypto_mac-c92b10e2fa1c82cb.rlib","emit":"link"}',
 ## ]
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-0afa135837d93e68"
-## src = "/libgeneric_array-0afa135837d93e68.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libgeneric_array-0afa135837d93e68.rmeta"
+## xtern = "libgeneric_array-0afa135837d93e68.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-0afa135837d93e68"
-## src = "/libgeneric_array-0afa135837d93e68.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libgeneric_array-0afa135837d93e68.rlib"
+## xtern = "libgeneric_array-0afa135837d93e68.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-0c59626b95871fe7"
-## src = "/libtypenum-0c59626b95871fe7.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libtypenum-0c59626b95871fe7.rmeta"
+## xtern = "libtypenum-0c59626b95871fe7.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-0c59626b95871fe7"
-## src = "/libtypenum-0c59626b95871fe7.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libtypenum-0c59626b95871fe7.rlib"
+## xtern = "libtypenum-0c59626b95871fe7.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-fe593aa0503da824"
-## src = "/libsubtle-fe593aa0503da824.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libsubtle-fe593aa0503da824.rmeta"
+## xtern = "libsubtle-fe593aa0503da824.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-fe593aa0503da824"
-## src = "/libsubtle-fe593aa0503da824.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libsubtle-fe593aa0503da824.rlib"
+## xtern = "libsubtle-fe593aa0503da824.rlib"
 ## 
 ## [[contexts]]
 ## name = "crate_out-3cf9e442dfddd505"
@@ -609,9 +601,9 @@ COPY --from=dep-l-crypto-mac-0.7.0-c92b10e2fa1c82cb /tmp/clis-dbcc_2-2-1/release
 ##   https://static.crates.io/crates/crypto-mac/crypto-mac-0.7.0.crate /'''
 ## 
 ## [[stages]]
-## name = "dep-l-crypto-mac-0.7.0-c92b10e2fa1c82cb"
+## name = "dep-n-crypto-mac-0.7.0-c92b10e2fa1c82cb"
 ## script = '''
-## FROM rust-base AS dep-l-crypto-mac-0.7.0-c92b10e2fa1c82cb
+## FROM rust-base AS dep-n-crypto-mac-0.7.0-c92b10e2fa1c82cb
 ## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
@@ -651,12 +643,12 @@ COPY --from=dep-l-crypto-mac-0.7.0-c92b10e2fa1c82cb /tmp/clis-dbcc_2-2-1/release
 ## name = "out-c92b10e2fa1c82cb"
 ## script = """
 ## FROM scratch AS out-c92b10e2fa1c82cb
-## COPY --from=dep-l-crypto-mac-0.7.0-c92b10e2fa1c82cb /tmp/clis-dbcc_2-2-1/release/deps/*-c92b10e2fa1c82cb* /"""
+## COPY --from=dep-n-crypto-mac-0.7.0-c92b10e2fa1c82cb /tmp/clis-dbcc_2-2-1/release/deps/*-c92b10e2fa1c82cb* /"""
 
 FROM scratch AS cratesio-digest-0.8.1
 ADD --chmod=0664 --unpack=true --checksum=sha256:f3d0c8c8752312f9713efd397ff63acb9f85585afbf179282e720e7704954dd5 \
   https://static.crates.io/crates/digest/digest-0.8.1.crate /
-FROM rust-base AS dep-l-digest-0.8.1-3c7631a805111659
+FROM rust-base AS dep-n-digest-0.8.1-3c7631a805111659
 SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
@@ -690,7 +682,7 @@ RUN \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-3c7631a805111659-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-3c7631a805111659-errcode
 FROM scratch AS out-3c7631a805111659
-COPY --from=dep-l-digest-0.8.1-3c7631a805111659 /tmp/clis-dbcc_2-2-1/release/deps/*-3c7631a805111659* /
+COPY --from=dep-n-digest-0.8.1-3c7631a805111659 /tmp/clis-dbcc_2-2-1/release/deps/*-3c7631a805111659* /
 
 ## this = "3c7631a805111659"
 ## deps = [
@@ -716,25 +708,21 @@ COPY --from=dep-l-digest-0.8.1-3c7631a805111659 /tmp/clis-dbcc_2-2-1/release/dep
 ##     '{"$message_type":"diagnostic","message":"3 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 3 warnings emitted\u001b[0m\n\n"}',
 ## ]
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-0afa135837d93e68"
-## src = "/libgeneric_array-0afa135837d93e68.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libgeneric_array-0afa135837d93e68.rmeta"
+## xtern = "libgeneric_array-0afa135837d93e68.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-0afa135837d93e68"
-## src = "/libgeneric_array-0afa135837d93e68.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libgeneric_array-0afa135837d93e68.rlib"
+## xtern = "libgeneric_array-0afa135837d93e68.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-0c59626b95871fe7"
-## src = "/libtypenum-0c59626b95871fe7.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libtypenum-0c59626b95871fe7.rmeta"
+## xtern = "libtypenum-0c59626b95871fe7.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-0c59626b95871fe7"
-## src = "/libtypenum-0c59626b95871fe7.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libtypenum-0c59626b95871fe7.rlib"
+## xtern = "libtypenum-0c59626b95871fe7.rlib"
 ## 
 ## [[contexts]]
 ## name = "crate_out-3cf9e442dfddd505"
@@ -752,9 +740,9 @@ COPY --from=dep-l-digest-0.8.1-3c7631a805111659 /tmp/clis-dbcc_2-2-1/release/dep
 ##   https://static.crates.io/crates/digest/digest-0.8.1.crate /'''
 ## 
 ## [[stages]]
-## name = "dep-l-digest-0.8.1-3c7631a805111659"
+## name = "dep-n-digest-0.8.1-3c7631a805111659"
 ## script = '''
-## FROM rust-base AS dep-l-digest-0.8.1-3c7631a805111659
+## FROM rust-base AS dep-n-digest-0.8.1-3c7631a805111659
 ## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
@@ -792,12 +780,12 @@ COPY --from=dep-l-digest-0.8.1-3c7631a805111659 /tmp/clis-dbcc_2-2-1/release/dep
 ## name = "out-3c7631a805111659"
 ## script = """
 ## FROM scratch AS out-3c7631a805111659
-## COPY --from=dep-l-digest-0.8.1-3c7631a805111659 /tmp/clis-dbcc_2-2-1/release/deps/*-3c7631a805111659* /"""
+## COPY --from=dep-n-digest-0.8.1-3c7631a805111659 /tmp/clis-dbcc_2-2-1/release/deps/*-3c7631a805111659* /"""
 
 FROM scratch AS cratesio-opaque-debug-0.2.3
 ADD --chmod=0664 --unpack=true --checksum=sha256:2839e79665f131bdb5782e51f2c6c9599c133c6098982a54c794358bf432529c \
   https://static.crates.io/crates/opaque-debug/opaque-debug-0.2.3.crate /
-FROM rust-base AS dep-l-opaque-debug-0.2.3-3e36cb37043b614a
+FROM rust-base AS dep-n-opaque-debug-0.2.3-3e36cb37043b614a
 SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
@@ -827,7 +815,7 @@ RUN \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-3e36cb37043b614a-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-3e36cb37043b614a-errcode
 FROM scratch AS out-3e36cb37043b614a
-COPY --from=dep-l-opaque-debug-0.2.3-3e36cb37043b614a /tmp/clis-dbcc_2-2-1/release/deps/*-3e36cb37043b614a* /
+COPY --from=dep-n-opaque-debug-0.2.3-3e36cb37043b614a /tmp/clis-dbcc_2-2-1/release/deps/*-3e36cb37043b614a* /
 
 ## this = "3e36cb37043b614a"
 ## writes = [
@@ -853,9 +841,9 @@ COPY --from=dep-l-opaque-debug-0.2.3-3e36cb37043b614a /tmp/clis-dbcc_2-2-1/relea
 ##   https://static.crates.io/crates/opaque-debug/opaque-debug-0.2.3.crate /'''
 ## 
 ## [[stages]]
-## name = "dep-l-opaque-debug-0.2.3-3e36cb37043b614a"
+## name = "dep-n-opaque-debug-0.2.3-3e36cb37043b614a"
 ## script = '''
-## FROM rust-base AS dep-l-opaque-debug-0.2.3-3e36cb37043b614a
+## FROM rust-base AS dep-n-opaque-debug-0.2.3-3e36cb37043b614a
 ## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
@@ -889,12 +877,12 @@ COPY --from=dep-l-opaque-debug-0.2.3-3e36cb37043b614a /tmp/clis-dbcc_2-2-1/relea
 ## name = "out-3e36cb37043b614a"
 ## script = """
 ## FROM scratch AS out-3e36cb37043b614a
-## COPY --from=dep-l-opaque-debug-0.2.3-3e36cb37043b614a /tmp/clis-dbcc_2-2-1/release/deps/*-3e36cb37043b614a* /"""
+## COPY --from=dep-n-opaque-debug-0.2.3-3e36cb37043b614a /tmp/clis-dbcc_2-2-1/release/deps/*-3e36cb37043b614a* /"""
 
 FROM scratch AS cratesio-blake2-0.8.1
 ADD --chmod=0664 --unpack=true --checksum=sha256:94cb07b0da6a73955f8fb85d24c466778e70cda767a568229b104f0264089330 \
   https://static.crates.io/crates/blake2/blake2-0.8.1.crate /
-FROM rust-base AS dep-l-blake2-0.8.1-90ca44a8caf54d0f
+FROM rust-base AS dep-n-blake2-0.8.1-90ca44a8caf54d0f
 SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
@@ -938,7 +926,7 @@ RUN \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-90ca44a8caf54d0f-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-90ca44a8caf54d0f-errcode
 FROM scratch AS out-90ca44a8caf54d0f
-COPY --from=dep-l-blake2-0.8.1-90ca44a8caf54d0f /tmp/clis-dbcc_2-2-1/release/deps/*-90ca44a8caf54d0f* /
+COPY --from=dep-n-blake2-0.8.1-90ca44a8caf54d0f /tmp/clis-dbcc_2-2-1/release/deps/*-90ca44a8caf54d0f* /
 
 ## this = "90ca44a8caf54d0f"
 ## deps = [
@@ -976,75 +964,61 @@ COPY --from=dep-l-blake2-0.8.1-90ca44a8caf54d0f /tmp/clis-dbcc_2-2-1/release/dep
 ##     '{"$message_type":"diagnostic","message":"5 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 5 warnings emitted\u001b[0m\n\n"}',
 ## ]
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-208f428f6e945660"
-## src = "/libbyte_tools-208f428f6e945660.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libbyte_tools-208f428f6e945660.rmeta"
+## xtern = "libbyte_tools-208f428f6e945660.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-208f428f6e945660"
-## src = "/libbyte_tools-208f428f6e945660.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libbyte_tools-208f428f6e945660.rlib"
+## xtern = "libbyte_tools-208f428f6e945660.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-c92b10e2fa1c82cb"
-## src = "/libcrypto_mac-c92b10e2fa1c82cb.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libcrypto_mac-c92b10e2fa1c82cb.rmeta"
+## xtern = "libcrypto_mac-c92b10e2fa1c82cb.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-c92b10e2fa1c82cb"
-## src = "/libcrypto_mac-c92b10e2fa1c82cb.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libcrypto_mac-c92b10e2fa1c82cb.rlib"
+## xtern = "libcrypto_mac-c92b10e2fa1c82cb.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-0afa135837d93e68"
-## src = "/libgeneric_array-0afa135837d93e68.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libgeneric_array-0afa135837d93e68.rmeta"
+## xtern = "libgeneric_array-0afa135837d93e68.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-0afa135837d93e68"
-## src = "/libgeneric_array-0afa135837d93e68.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libgeneric_array-0afa135837d93e68.rlib"
+## xtern = "libgeneric_array-0afa135837d93e68.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-0c59626b95871fe7"
-## src = "/libtypenum-0c59626b95871fe7.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libtypenum-0c59626b95871fe7.rmeta"
+## xtern = "libtypenum-0c59626b95871fe7.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-0c59626b95871fe7"
-## src = "/libtypenum-0c59626b95871fe7.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libtypenum-0c59626b95871fe7.rlib"
+## xtern = "libtypenum-0c59626b95871fe7.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-fe593aa0503da824"
-## src = "/libsubtle-fe593aa0503da824.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libsubtle-fe593aa0503da824.rmeta"
+## xtern = "libsubtle-fe593aa0503da824.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-fe593aa0503da824"
-## src = "/libsubtle-fe593aa0503da824.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libsubtle-fe593aa0503da824.rlib"
+## xtern = "libsubtle-fe593aa0503da824.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-3c7631a805111659"
-## src = "/libdigest-3c7631a805111659.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libdigest-3c7631a805111659.rmeta"
+## xtern = "libdigest-3c7631a805111659.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-3c7631a805111659"
-## src = "/libdigest-3c7631a805111659.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libdigest-3c7631a805111659.rlib"
+## xtern = "libdigest-3c7631a805111659.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-3e36cb37043b614a"
-## src = "/libopaque_debug-3e36cb37043b614a.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libopaque_debug-3e36cb37043b614a.rmeta"
+## xtern = "libopaque_debug-3e36cb37043b614a.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-3e36cb37043b614a"
-## src = "/libopaque_debug-3e36cb37043b614a.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libopaque_debug-3e36cb37043b614a.rlib"
+## xtern = "libopaque_debug-3e36cb37043b614a.rlib"
 ## 
 ## [[contexts]]
 ## name = "crate_out-3cf9e442dfddd505"
@@ -1062,9 +1036,9 @@ COPY --from=dep-l-blake2-0.8.1-90ca44a8caf54d0f /tmp/clis-dbcc_2-2-1/release/dep
 ##   https://static.crates.io/crates/blake2/blake2-0.8.1.crate /'''
 ## 
 ## [[stages]]
-## name = "dep-l-blake2-0.8.1-90ca44a8caf54d0f"
+## name = "dep-n-blake2-0.8.1-90ca44a8caf54d0f"
 ## script = '''
-## FROM rust-base AS dep-l-blake2-0.8.1-90ca44a8caf54d0f
+## FROM rust-base AS dep-n-blake2-0.8.1-90ca44a8caf54d0f
 ## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
@@ -1112,12 +1086,12 @@ COPY --from=dep-l-blake2-0.8.1-90ca44a8caf54d0f /tmp/clis-dbcc_2-2-1/release/dep
 ## name = "out-90ca44a8caf54d0f"
 ## script = """
 ## FROM scratch AS out-90ca44a8caf54d0f
-## COPY --from=dep-l-blake2-0.8.1-90ca44a8caf54d0f /tmp/clis-dbcc_2-2-1/release/deps/*-90ca44a8caf54d0f* /"""
+## COPY --from=dep-n-blake2-0.8.1-90ca44a8caf54d0f /tmp/clis-dbcc_2-2-1/release/deps/*-90ca44a8caf54d0f* /"""
 
 FROM scratch AS cratesio-unicode-xid-0.2.1
 ADD --chmod=0664 --unpack=true --checksum=sha256:f7fe0bb3479651439c9112f72b6c505038574c9fbb575ed1bf3b797fa39dd564 \
   https://static.crates.io/crates/unicode-xid/unicode-xid-0.2.1.crate /
-FROM rust-base AS dep-l-unicode-xid-0.2.1-ca80afcc82eeec0a
+FROM rust-base AS dep-n-unicode-xid-0.2.1-ca80afcc82eeec0a
 SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
@@ -1147,7 +1121,7 @@ RUN \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-ca80afcc82eeec0a-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-ca80afcc82eeec0a-errcode
 FROM scratch AS out-ca80afcc82eeec0a
-COPY --from=dep-l-unicode-xid-0.2.1-ca80afcc82eeec0a /tmp/clis-dbcc_2-2-1/release/deps/*-ca80afcc82eeec0a* /
+COPY --from=dep-n-unicode-xid-0.2.1-ca80afcc82eeec0a /tmp/clis-dbcc_2-2-1/release/deps/*-ca80afcc82eeec0a* /
 
 ## this = "ca80afcc82eeec0a"
 ## writes = [
@@ -1173,9 +1147,9 @@ COPY --from=dep-l-unicode-xid-0.2.1-ca80afcc82eeec0a /tmp/clis-dbcc_2-2-1/releas
 ##   https://static.crates.io/crates/unicode-xid/unicode-xid-0.2.1.crate /'''
 ## 
 ## [[stages]]
-## name = "dep-l-unicode-xid-0.2.1-ca80afcc82eeec0a"
+## name = "dep-n-unicode-xid-0.2.1-ca80afcc82eeec0a"
 ## script = '''
-## FROM rust-base AS dep-l-unicode-xid-0.2.1-ca80afcc82eeec0a
+## FROM rust-base AS dep-n-unicode-xid-0.2.1-ca80afcc82eeec0a
 ## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
@@ -1209,12 +1183,12 @@ COPY --from=dep-l-unicode-xid-0.2.1-ca80afcc82eeec0a /tmp/clis-dbcc_2-2-1/releas
 ## name = "out-ca80afcc82eeec0a"
 ## script = """
 ## FROM scratch AS out-ca80afcc82eeec0a
-## COPY --from=dep-l-unicode-xid-0.2.1-ca80afcc82eeec0a /tmp/clis-dbcc_2-2-1/release/deps/*-ca80afcc82eeec0a* /"""
+## COPY --from=dep-n-unicode-xid-0.2.1-ca80afcc82eeec0a /tmp/clis-dbcc_2-2-1/release/deps/*-ca80afcc82eeec0a* /"""
 
 FROM scratch AS cratesio-proc-macro2-1.0.24
 ADD --chmod=0664 --unpack=true --checksum=sha256:1e0704ee1a7e00d7bb417d0770ea303c1bccbabf0ef1667dae92b5967f5f8a71 \
   https://static.crates.io/crates/proc-macro2/proc-macro2-1.0.24.crate /
-FROM rust-base AS dep-l-proc-macro2-1.0.24-80b37ce9903d0def
+FROM rust-base AS dep-n-proc-macro2-1.0.24-80b37ce9903d0def
 SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
@@ -1247,7 +1221,7 @@ RUN \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-80b37ce9903d0def-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-80b37ce9903d0def-errcode
 FROM scratch AS out-80b37ce9903d0def
-COPY --from=dep-l-proc-macro2-1.0.24-80b37ce9903d0def /tmp/clis-dbcc_2-2-1/release/deps/*-80b37ce9903d0def* /
+COPY --from=dep-n-proc-macro2-1.0.24-80b37ce9903d0def /tmp/clis-dbcc_2-2-1/release/deps/*-80b37ce9903d0def* /
 
 ## this = "80b37ce9903d0def"
 ## deps = ["ca80afcc82eeec0a"]
@@ -1372,15 +1346,13 @@ COPY --from=dep-l-proc-macro2-1.0.24-80b37ce9903d0def /tmp/clis-dbcc_2-2-1/relea
 ##     '{"$message_type":"diagnostic","message":"108 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 108 warnings emitted\u001b[0m\n\n"}',
 ## ]
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-ca80afcc82eeec0a"
-## src = "/libunicode_xid-ca80afcc82eeec0a.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-ca80afcc82eeec0a.rmeta"
+## xtern = "libunicode_xid-ca80afcc82eeec0a.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-ca80afcc82eeec0a"
-## src = "/libunicode_xid-ca80afcc82eeec0a.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-ca80afcc82eeec0a.rlib"
+## xtern = "libunicode_xid-ca80afcc82eeec0a.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -1394,9 +1366,9 @@ COPY --from=dep-l-proc-macro2-1.0.24-80b37ce9903d0def /tmp/clis-dbcc_2-2-1/relea
 ##   https://static.crates.io/crates/proc-macro2/proc-macro2-1.0.24.crate /'''
 ## 
 ## [[stages]]
-## name = "dep-l-proc-macro2-1.0.24-80b37ce9903d0def"
+## name = "dep-n-proc-macro2-1.0.24-80b37ce9903d0def"
 ## script = '''
-## FROM rust-base AS dep-l-proc-macro2-1.0.24-80b37ce9903d0def
+## FROM rust-base AS dep-n-proc-macro2-1.0.24-80b37ce9903d0def
 ## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
@@ -1433,12 +1405,12 @@ COPY --from=dep-l-proc-macro2-1.0.24-80b37ce9903d0def /tmp/clis-dbcc_2-2-1/relea
 ## name = "out-80b37ce9903d0def"
 ## script = """
 ## FROM scratch AS out-80b37ce9903d0def
-## COPY --from=dep-l-proc-macro2-1.0.24-80b37ce9903d0def /tmp/clis-dbcc_2-2-1/release/deps/*-80b37ce9903d0def* /"""
+## COPY --from=dep-n-proc-macro2-1.0.24-80b37ce9903d0def /tmp/clis-dbcc_2-2-1/release/deps/*-80b37ce9903d0def* /"""
 
 FROM scratch AS cratesio-quote-1.0.7
 ADD --chmod=0664 --unpack=true --checksum=sha256:aa563d17ecb180e500da1cfd2b028310ac758de548efdd203e18f283af693f37 \
   https://static.crates.io/crates/quote/quote-1.0.7.crate /
-FROM rust-base AS dep-l-quote-1.0.7-dd5debcb2b51fc02
+FROM rust-base AS dep-n-quote-1.0.7-dd5debcb2b51fc02
 SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
@@ -1472,7 +1444,7 @@ RUN \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-dd5debcb2b51fc02-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-dd5debcb2b51fc02-errcode
 FROM scratch AS out-dd5debcb2b51fc02
-COPY --from=dep-l-quote-1.0.7-dd5debcb2b51fc02 /tmp/clis-dbcc_2-2-1/release/deps/*-dd5debcb2b51fc02* /
+COPY --from=dep-n-quote-1.0.7-dd5debcb2b51fc02 /tmp/clis-dbcc_2-2-1/release/deps/*-dd5debcb2b51fc02* /
 
 ## this = "dd5debcb2b51fc02"
 ## deps = [
@@ -1494,25 +1466,21 @@ COPY --from=dep-l-quote-1.0.7-dd5debcb2b51fc02 /tmp/clis-dbcc_2-2-1/release/deps
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-dbcc_2-2-1/release/deps/libquote-dd5debcb2b51fc02.rlib","emit":"link"}',
 ## ]
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-80b37ce9903d0def"
-## src = "/libproc_macro2-80b37ce9903d0def.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-80b37ce9903d0def.rmeta"
+## xtern = "libproc_macro2-80b37ce9903d0def.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-80b37ce9903d0def"
-## src = "/libproc_macro2-80b37ce9903d0def.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-80b37ce9903d0def.rlib"
+## xtern = "libproc_macro2-80b37ce9903d0def.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-ca80afcc82eeec0a"
-## src = "/libunicode_xid-ca80afcc82eeec0a.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-ca80afcc82eeec0a.rmeta"
+## xtern = "libunicode_xid-ca80afcc82eeec0a.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-ca80afcc82eeec0a"
-## src = "/libunicode_xid-ca80afcc82eeec0a.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-ca80afcc82eeec0a.rlib"
+## xtern = "libunicode_xid-ca80afcc82eeec0a.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -1526,9 +1494,9 @@ COPY --from=dep-l-quote-1.0.7-dd5debcb2b51fc02 /tmp/clis-dbcc_2-2-1/release/deps
 ##   https://static.crates.io/crates/quote/quote-1.0.7.crate /'''
 ## 
 ## [[stages]]
-## name = "dep-l-quote-1.0.7-dd5debcb2b51fc02"
+## name = "dep-n-quote-1.0.7-dd5debcb2b51fc02"
 ## script = '''
-## FROM rust-base AS dep-l-quote-1.0.7-dd5debcb2b51fc02
+## FROM rust-base AS dep-n-quote-1.0.7-dd5debcb2b51fc02
 ## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
@@ -1566,12 +1534,12 @@ COPY --from=dep-l-quote-1.0.7-dd5debcb2b51fc02 /tmp/clis-dbcc_2-2-1/release/deps
 ## name = "out-dd5debcb2b51fc02"
 ## script = """
 ## FROM scratch AS out-dd5debcb2b51fc02
-## COPY --from=dep-l-quote-1.0.7-dd5debcb2b51fc02 /tmp/clis-dbcc_2-2-1/release/deps/*-dd5debcb2b51fc02* /"""
+## COPY --from=dep-n-quote-1.0.7-dd5debcb2b51fc02 /tmp/clis-dbcc_2-2-1/release/deps/*-dd5debcb2b51fc02* /"""
 
 FROM scratch AS cratesio-syn-1.0.46
 ADD --chmod=0664 --unpack=true --checksum=sha256:5ad5de3220ea04da322618ded2c42233d02baca219d6f160a3e9c87cda16c942 \
   https://static.crates.io/crates/syn/syn-1.0.46.crate /
-FROM rust-base AS dep-l-syn-1.0.46-bbffa8c7e6a16356
+FROM rust-base AS dep-n-syn-1.0.46-bbffa8c7e6a16356
 SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
@@ -1608,7 +1576,7 @@ RUN \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-bbffa8c7e6a16356-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-bbffa8c7e6a16356-errcode
 FROM scratch AS out-bbffa8c7e6a16356
-COPY --from=dep-l-syn-1.0.46-bbffa8c7e6a16356 /tmp/clis-dbcc_2-2-1/release/deps/*-bbffa8c7e6a16356* /
+COPY --from=dep-n-syn-1.0.46-bbffa8c7e6a16356 /tmp/clis-dbcc_2-2-1/release/deps/*-bbffa8c7e6a16356* /
 
 ## this = "bbffa8c7e6a16356"
 ## deps = [
@@ -1638,35 +1606,29 @@ COPY --from=dep-l-syn-1.0.46-bbffa8c7e6a16356 /tmp/clis-dbcc_2-2-1/release/deps/
 ##     '{"$message_type":"diagnostic","message":"5 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 5 warnings emitted\u001b[0m\n\n"}',
 ## ]
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-80b37ce9903d0def"
-## src = "/libproc_macro2-80b37ce9903d0def.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-80b37ce9903d0def.rmeta"
+## xtern = "libproc_macro2-80b37ce9903d0def.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-80b37ce9903d0def"
-## src = "/libproc_macro2-80b37ce9903d0def.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-80b37ce9903d0def.rlib"
+## xtern = "libproc_macro2-80b37ce9903d0def.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-ca80afcc82eeec0a"
-## src = "/libunicode_xid-ca80afcc82eeec0a.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-ca80afcc82eeec0a.rmeta"
+## xtern = "libunicode_xid-ca80afcc82eeec0a.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-ca80afcc82eeec0a"
-## src = "/libunicode_xid-ca80afcc82eeec0a.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-ca80afcc82eeec0a.rlib"
+## xtern = "libunicode_xid-ca80afcc82eeec0a.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-dd5debcb2b51fc02"
-## src = "/libquote-dd5debcb2b51fc02.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libquote-dd5debcb2b51fc02.rmeta"
+## xtern = "libquote-dd5debcb2b51fc02.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-dd5debcb2b51fc02"
-## src = "/libquote-dd5debcb2b51fc02.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libquote-dd5debcb2b51fc02.rlib"
+## xtern = "libquote-dd5debcb2b51fc02.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -1680,9 +1642,9 @@ COPY --from=dep-l-syn-1.0.46-bbffa8c7e6a16356 /tmp/clis-dbcc_2-2-1/release/deps/
 ##   https://static.crates.io/crates/syn/syn-1.0.46.crate /'''
 ## 
 ## [[stages]]
-## name = "dep-l-syn-1.0.46-bbffa8c7e6a16356"
+## name = "dep-n-syn-1.0.46-bbffa8c7e6a16356"
 ## script = '''
-## FROM rust-base AS dep-l-syn-1.0.46-bbffa8c7e6a16356
+## FROM rust-base AS dep-n-syn-1.0.46-bbffa8c7e6a16356
 ## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
@@ -1723,12 +1685,12 @@ COPY --from=dep-l-syn-1.0.46-bbffa8c7e6a16356 /tmp/clis-dbcc_2-2-1/release/deps/
 ## name = "out-bbffa8c7e6a16356"
 ## script = """
 ## FROM scratch AS out-bbffa8c7e6a16356
-## COPY --from=dep-l-syn-1.0.46-bbffa8c7e6a16356 /tmp/clis-dbcc_2-2-1/release/deps/*-bbffa8c7e6a16356* /"""
+## COPY --from=dep-n-syn-1.0.46-bbffa8c7e6a16356 /tmp/clis-dbcc_2-2-1/release/deps/*-bbffa8c7e6a16356* /"""
 
 FROM scratch AS cratesio-derive-getters-0.1.1
 ADD --chmod=0664 --unpack=true --checksum=sha256:16dc4e2517f08ca167440ccb11023c1308ee19a4022d7b03c0e652f971171869 \
   https://static.crates.io/crates/derive-getters/derive-getters-0.1.1.crate /
-FROM rust-base AS dep-p-derive-getters-0.1.1-10105863fb18eb2a
+FROM rust-base AS dep-n-derive-getters-0.1.1-10105863fb18eb2a
 SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
@@ -1766,7 +1728,7 @@ RUN \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-10105863fb18eb2a-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-10105863fb18eb2a-errcode
 FROM scratch AS out-10105863fb18eb2a
-COPY --from=dep-p-derive-getters-0.1.1-10105863fb18eb2a /tmp/clis-dbcc_2-2-1/release/deps/*-10105863fb18eb2a* /
+COPY --from=dep-n-derive-getters-0.1.1-10105863fb18eb2a /tmp/clis-dbcc_2-2-1/release/deps/*-10105863fb18eb2a* /
 
 ## this = "10105863fb18eb2a"
 ## deps = [
@@ -1781,7 +1743,6 @@ COPY --from=dep-p-derive-getters-0.1.1-10105863fb18eb2a /tmp/clis-dbcc_2-2-1/rel
 ##     "dd5debcb2b51fc02",
 ##     "bbffa8c7e6a16356",
 ## ]
-## is_proc_macro = true
 ## writes = [
 ##     "deps/derive_getters-10105863fb18eb2a.d",
 ##     "deps/libderive_getters-10105863fb18eb2a.so",
@@ -1794,45 +1755,37 @@ COPY --from=dep-p-derive-getters-0.1.1-10105863fb18eb2a /tmp/clis-dbcc_2-2-1/rel
 ##     '{"$message_type":"diagnostic","message":"2 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 2 warnings emitted\u001b[0m\n\n"}',
 ## ]
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-80b37ce9903d0def"
-## src = "/libproc_macro2-80b37ce9903d0def.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-80b37ce9903d0def.rmeta"
+## xtern = "libproc_macro2-80b37ce9903d0def.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-80b37ce9903d0def"
-## src = "/libproc_macro2-80b37ce9903d0def.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-80b37ce9903d0def.rlib"
+## xtern = "libproc_macro2-80b37ce9903d0def.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-ca80afcc82eeec0a"
-## src = "/libunicode_xid-ca80afcc82eeec0a.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-ca80afcc82eeec0a.rmeta"
+## xtern = "libunicode_xid-ca80afcc82eeec0a.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-ca80afcc82eeec0a"
-## src = "/libunicode_xid-ca80afcc82eeec0a.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-ca80afcc82eeec0a.rlib"
+## xtern = "libunicode_xid-ca80afcc82eeec0a.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-dd5debcb2b51fc02"
-## src = "/libquote-dd5debcb2b51fc02.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libquote-dd5debcb2b51fc02.rmeta"
+## xtern = "libquote-dd5debcb2b51fc02.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-dd5debcb2b51fc02"
-## src = "/libquote-dd5debcb2b51fc02.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libquote-dd5debcb2b51fc02.rlib"
+## xtern = "libquote-dd5debcb2b51fc02.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-bbffa8c7e6a16356"
-## src = "/libsyn-bbffa8c7e6a16356.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libsyn-bbffa8c7e6a16356.rmeta"
+## xtern = "libsyn-bbffa8c7e6a16356.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-bbffa8c7e6a16356"
-## src = "/libsyn-bbffa8c7e6a16356.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libsyn-bbffa8c7e6a16356.rlib"
+## xtern = "libsyn-bbffa8c7e6a16356.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -1846,9 +1799,9 @@ COPY --from=dep-p-derive-getters-0.1.1-10105863fb18eb2a /tmp/clis-dbcc_2-2-1/rel
 ##   https://static.crates.io/crates/derive-getters/derive-getters-0.1.1.crate /'''
 ## 
 ## [[stages]]
-## name = "dep-p-derive-getters-0.1.1-10105863fb18eb2a"
+## name = "dep-n-derive-getters-0.1.1-10105863fb18eb2a"
 ## script = '''
-## FROM rust-base AS dep-p-derive-getters-0.1.1-10105863fb18eb2a
+## FROM rust-base AS dep-n-derive-getters-0.1.1-10105863fb18eb2a
 ## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
@@ -1890,12 +1843,12 @@ COPY --from=dep-p-derive-getters-0.1.1-10105863fb18eb2a /tmp/clis-dbcc_2-2-1/rel
 ## name = "out-10105863fb18eb2a"
 ## script = """
 ## FROM scratch AS out-10105863fb18eb2a
-## COPY --from=dep-p-derive-getters-0.1.1-10105863fb18eb2a /tmp/clis-dbcc_2-2-1/release/deps/*-10105863fb18eb2a* /"""
+## COPY --from=dep-n-derive-getters-0.1.1-10105863fb18eb2a /tmp/clis-dbcc_2-2-1/release/deps/*-10105863fb18eb2a* /"""
 
 FROM scratch AS cratesio-memchr-2.3.3
 ADD --chmod=0664 --unpack=true --checksum=sha256:3728d817d99e5ac407411fa471ff9800a778d88a24685968b36824eaf4bee400 \
   https://static.crates.io/crates/memchr/memchr-2.3.3.crate /
-FROM rust-base AS dep-l-memchr-2.3.3-c93fd10415a641fd
+FROM rust-base AS dep-n-memchr-2.3.3-c93fd10415a641fd
 SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
@@ -1926,7 +1879,7 @@ RUN \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-c93fd10415a641fd-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-c93fd10415a641fd-errcode
 FROM scratch AS out-c93fd10415a641fd
-COPY --from=dep-l-memchr-2.3.3-c93fd10415a641fd /tmp/clis-dbcc_2-2-1/release/deps/*-c93fd10415a641fd* /
+COPY --from=dep-n-memchr-2.3.3-c93fd10415a641fd /tmp/clis-dbcc_2-2-1/release/deps/*-c93fd10415a641fd* /
 
 ## this = "c93fd10415a641fd"
 ## writes = [
@@ -1985,9 +1938,9 @@ COPY --from=dep-l-memchr-2.3.3-c93fd10415a641fd /tmp/clis-dbcc_2-2-1/release/dep
 ##   https://static.crates.io/crates/memchr/memchr-2.3.3.crate /'''
 ## 
 ## [[stages]]
-## name = "dep-l-memchr-2.3.3-c93fd10415a641fd"
+## name = "dep-n-memchr-2.3.3-c93fd10415a641fd"
 ## script = '''
-## FROM rust-base AS dep-l-memchr-2.3.3-c93fd10415a641fd
+## FROM rust-base AS dep-n-memchr-2.3.3-c93fd10415a641fd
 ## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
@@ -2022,12 +1975,12 @@ COPY --from=dep-l-memchr-2.3.3-c93fd10415a641fd /tmp/clis-dbcc_2-2-1/release/dep
 ## name = "out-c93fd10415a641fd"
 ## script = """
 ## FROM scratch AS out-c93fd10415a641fd
-## COPY --from=dep-l-memchr-2.3.3-c93fd10415a641fd /tmp/clis-dbcc_2-2-1/release/deps/*-c93fd10415a641fd* /"""
+## COPY --from=dep-n-memchr-2.3.3-c93fd10415a641fd /tmp/clis-dbcc_2-2-1/release/deps/*-c93fd10415a641fd* /"""
 
 FROM scratch AS cratesio-nom-4.2.3
 ADD --chmod=0664 --unpack=true --checksum=sha256:2ad2a91a8e869eeb30b9cb3119ae87773a8f4ae617f41b1eb9c154b2905f7bd6 \
   https://static.crates.io/crates/nom/nom-4.2.3.crate /
-FROM rust-base AS dep-l-nom-4.2.3-cd5fc4bcd4e040ed
+FROM rust-base AS dep-n-nom-4.2.3-cd5fc4bcd4e040ed
 SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
@@ -2060,7 +2013,7 @@ RUN \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-cd5fc4bcd4e040ed-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-cd5fc4bcd4e040ed-errcode
 FROM scratch AS out-cd5fc4bcd4e040ed
-COPY --from=dep-l-nom-4.2.3-cd5fc4bcd4e040ed /tmp/clis-dbcc_2-2-1/release/deps/*-cd5fc4bcd4e040ed* /
+COPY --from=dep-n-nom-4.2.3-cd5fc4bcd4e040ed /tmp/clis-dbcc_2-2-1/release/deps/*-cd5fc4bcd4e040ed* /
 
 ## this = "cd5fc4bcd4e040ed"
 ## deps = ["c93fd10415a641fd"]
@@ -2144,15 +2097,13 @@ COPY --from=dep-l-nom-4.2.3-cd5fc4bcd4e040ed /tmp/clis-dbcc_2-2-1/release/deps/*
 ##     '''{"$message_type":"future_incompat","future_incompat_report":[{"diagnostic":{"$message_type":"diagnostic","message":"trailing semicolon in macro used in expression position","code":{"code":"semicolon_in_expressions_from_macros","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/src/macros.rs","byte_start":22808,"byte_end":22809,"line_start":666,"line_end":666,"column_start":35,"column_end":36,"is_primary":true,"text":[{"text":"    map!(__impl $i, call!($f), $g);","highlight_start":35,"highlight_end":36}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":{"span":{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/src/nom.rs","byte_start":14135,"byte_end":14162,"line_start":495,"line_end":495,"column_start":3,"column_end":30,"is_primary":false,"text":[{"text":"  map!(i, be_u8, |x| x as i8)","highlight_start":3,"highlight_end":30}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null},"macro_decl_name":"map!","def_site_span":{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/src/macros.rs","byte_start":22321,"byte_end":22817,"line_start":649,"line_end":668,"column_start":1,"column_end":3,"is_primary":false,"text":[{"text":"macro_rules! map(","highlight_start":1,"highlight_end":18},{"text":"  // Internal parser, do not use directly","highlight_start":1,"highlight_end":42},{"text":"  (__impl $i:expr, $submac:ident!( $($args:tt)* ), $g:expr) => (","highlight_start":1,"highlight_end":65},{"text":"    {","highlight_start":1,"highlight_end":6},{"text":"      pub fn _unify<T, R, F: FnOnce(T) -> R>(f: F, t: T) -> R {","highlight_start":1,"highlight_end":64},{"text":"       f(t)","highlight_start":1,"highlight_end":12},{"text":"      }","highlight_start":1,"highlight_end":8},{"text":"","highlight_start":1,"highlight_end":1},{"text":"      ($submac!($i, $($args)*)).map(|(i,o)| {","highlight_start":1,"highlight_end":46},{"text":"        (i, _unify($g, o))","highlight_start":1,"highlight_end":27},{"text":"      })","highlight_start":1,"highlight_end":9},{"text":"    }","highlight_start":1,"highlight_end":6},{"text":"  );","highlight_start":1,"highlight_end":5},{"text":"  ($i:expr, $submac:ident!( $($args:tt)* ), $g:expr) => (","highlight_start":1,"highlight_end":58},{"text":"    map!(__impl $i, $submac!($($args)*), $g);","highlight_start":1,"highlight_end":46},{"text":"  );","highlight_start":1,"highlight_end":5},{"text":"  ($i:expr, $f:expr, $g:expr) => (","highlight_start":1,"highlight_end":35},{"text":"    map!(__impl $i, call!($f), $g);","highlight_start":1,"highlight_end":36},{"text":"  );","highlight_start":1,"highlight_end":5},{"text":");","highlight_start":1,"highlight_end":3}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}}}],"children":[{"message":"this was previously accepted by the compiler but is being phased out; it will become a hard error in a future release!","code":null,"level":"warning","spans":[],"children":[],"rendered":null},{"message":"for more information, see issue #79813 <https://github.com/rust-lang/rust/issues/79813>","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"macro invocations at the end of a block are treated as expressions","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"to ignore the value produced by the macro, add a semicolon after the invocation of `map`","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"`#[warn(semicolon_in_expressions_from_macros)]` on by default","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: trailing semicolon in macro used in expression position\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/src/macros.rs:666:35\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m666\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    map!(__impl $i, call!($f), $g);\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                   \u001b[0m\u001b[0m\u001b[1m\u001b[33m^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m::: \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/src/nom.rs:495:3\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m495\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m  map!(i, be_u8, |x| x as i8)\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m---------------------------\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12min this macro invocation\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mwarning\u001b[0m\u001b[0m: this was previously accepted by the compiler but is being phased out; it will become a hard error in a future release!\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: for more information, see issue #79813 <https://github.com/rust-lang/rust/issues/79813>\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: macro invocations at the end of a block are treated as expressions\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: to ignore the value produced by the macro, add a semicolon after the invocation of `map`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: `#[warn(semicolon_in_expressions_from_macros)]` on by default\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: this warning originates in the macro `map` (in Nightly builds, run with -Z macro-backtrace for more info)\u001b[0m\n\n"}},{"diagnostic":{"$message_type":"diagnostic","message":"trailing semicolon in macro used in expression position","code":{"code":"semicolon_in_expressions_from_macros","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/src/macros.rs","byte_start":22808,"byte_end":22809,"line_start":666,"line_end":666,"column_start":35,"column_end":36,"is_primary":true,"text":[{"text":"    map!(__impl $i, call!($f), $g);","highlight_start":35,"highlight_end":36}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":{"span":{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/src/nom.rs","byte_start":14276,"byte_end":14305,"line_start":501,"line_end":501,"column_start":3,"column_end":32,"is_primary":false,"text":[{"text":"  map!(i, be_u16, |x| x as i16)","highlight_start":3,"highlight_end":32}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null},"macro_decl_name":"map!","def_site_span":{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/src/macros.rs","byte_start":22321,"byte_end":22817,"line_start":649,"line_end":668,"column_start":1,"column_end":3,"is_primary":false,"text":[{"text":"macro_rules! map(","highlight_start":1,"highlight_end":18},{"text":"  // Internal parser, do not use directly","highlight_start":1,"highlight_end":42},{"text":"  (__impl $i:expr, $submac:ident!( $($args:tt)* ), $g:expr) => (","highlight_start":1,"highlight_end":65},{"text":"    {","highlight_start":1,"highlight_end":6},{"text":"      pub fn _unify<T, R, F: FnOnce(T) -> R>(f: F, t: T) -> R {","highlight_start":1,"highlight_end":64},{"text":"       f(t)","highlight_start":1,"highlight_end":12},{"text":"      }","highlight_start":1,"highlight_end":8},{"text":"","highlight_start":1,"highlight_end":1},{"text":"      ($submac!($i, $($args)*)).map(|(i,o)| {","highlight_start":1,"highlight_end":46},{"text":"        (i, _unify($g, o))","highlight_start":1,"highlight_end":27},{"text":"      })","highlight_start":1,"highlight_end":9},{"text":"    }","highlight_start":1,"highlight_end":6},{"text":"  );","highlight_start":1,"highlight_end":5},{"text":"  ($i:expr, $submac:ident!( $($args:tt)* ), $g:expr) => (","highlight_start":1,"highlight_end":58},{"text":"    map!(__impl $i, $submac!($($args)*), $g);","highlight_start":1,"highlight_end":46},{"text":"  );","highlight_start":1,"highlight_end":5},{"text":"  ($i:expr, $f:expr, $g:expr) => (","highlight_start":1,"highlight_end":35},{"text":"    map!(__impl $i, call!($f), $g);","highlight_start":1,"highlight_end":36},{"text":"  );","highlight_start":1,"highlight_end":5},{"text":");","highlight_start":1,"highlight_end":3}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}}}],"children":[{"message":"this was previously accepted by the compiler but is being phased out; it will become a hard error in a future release!","code":null,"level":"warning","spans":[],"children":[],"rendered":null},{"message":"for more information, see issue #79813 <https://github.com/rust-lang/rust/issues/79813>","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"macro invocations at the end of a block are treated as expressions","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"to ignore the value produced by the macro, add a semicolon after the invocation of `map`","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"`#[warn(semicolon_in_expressions_from_macros)]` on by default","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: trailing semicolon in macro used in expression position\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/src/macros.rs:666:35\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m666\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    map!(__impl $i, call!($f), $g);\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                   \u001b[0m\u001b[0m\u001b[1m\u001b[33m^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m::: \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/src/nom.rs:501:3\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m501\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m  map!(i, be_u16, |x| x as i16)\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m-----------------------------\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12min this macro invocation\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mwarning\u001b[0m\u001b[0m: this was previously accepted by the compiler but is being phased out; it will become a hard error in a future release!\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: for more information, see issue #79813 <https://github.com/rust-lang/rust/issues/79813>\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: macro invocations at the end of a block are treated as expressions\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: to ignore the value produced by the macro, add a semicolon after the invocation of `map`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: `#[warn(semicolon_in_expressions_from_macros)]` on by default\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: this warning originates in the macro `map` (in Nightly builds, run with -Z macro-backtrace for more info)\u001b[0m\n\n"}},{"diagnostic":{"$message_type":"diagnostic","message":"trailing semicolon in macro used in expression position","code":{"code":"semicolon_in_expressions_from_macros","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/src/macros.rs","byte_start":22808,"byte_end":22809,"line_start":666,"line_end":666,"column_start":35,"column_end":36,"is_primary":true,"text":[{"text":"    map!(__impl $i, call!($f), $g);","highlight_start":35,"highlight_end":36}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":{"span":{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/src/nom.rs","byte_start":14494,"byte_end":14598,"line_start":508,"line_end":512,"column_start":3,"column_end":5,"is_primary":false,"text":[{"text":"  map!(i, be_u24, |x| if x & 0x80_00_00 != 0 {","highlight_start":3,"highlight_end":47},{"text":"    (x | 0xff_00_00_00) as i32","highlight_start":1,"highlight_end":31},{"text":"  } else {","highlight_start":1,"highlight_end":11},{"text":"    x as i32","highlight_start":1,"highlight_end":13},{"text":"  })","highlight_start":1,"highlight_end":5}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null},"macro_decl_name":"map!","def_site_span":{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/src/macros.rs","byte_start":22321,"byte_end":22817,"line_start":649,"line_end":668,"column_start":1,"column_end":3,"is_primary":false,"text":[{"text":"macro_rules! map(","highlight_start":1,"highlight_end":18},{"text":"  // Internal parser, do not use directly","highlight_start":1,"highlight_end":42},{"text":"  (__impl $i:expr, $submac:ident!( $($args:tt)* ), $g:expr) => (","highlight_start":1,"highlight_end":65},{"text":"    {","highlight_start":1,"highlight_end":6},{"text":"      pub fn _unify<T, R, F: FnOnce(T) -> R>(f: F, t: T) -> R {","highlight_start":1,"highlight_end":64},{"text":"       f(t)","highlight_start":1,"highlight_end":12},{"text":"      }","highlight_start":1,"highlight_end":8},{"text":"","highlight_start":1,"highlight_end":1},{"text":"      ($submac!($i, $($args)*)).map(|(i,o)| {","highlight_start":1,"highlight_end":46},{"text":"        (i, _unify($g, o))","highlight_start":1,"highlight_end":27},{"text":"      })","highlight_start":1,"highlight_end":9},{"text":"    }","highlight_start":1,"highlight_end":6},{"text":"  );","highlight_start":1,"highlight_end":5},{"text":"  ($i:expr, $submac:ident!( $($args:tt)* ), $g:expr) => (","highlight_start":1,"highlight_end":58},{"text":"    map!(__impl $i, $submac!($($args)*), $g);","highlight_start":1,"highlight_end":46},{"text":"  );","highlight_start":1,"highlight_end":5},{"text":"  ($i:expr, $f:expr, $g:expr) => (","highlight_start":1,"highlight_end":35},{"text":"    map!(__impl $i, call!($f), $g);","highlight_start":1,"highlight_end":36},{"text":"  );","highlight_start":1,"highlight_end":5},{"text":");","highlight_start":1,"highlight_end":3}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}}}],"children":[{"message":"this was previously accepted by the compiler but is being phased out; it will become a hard error in a future release!","code":null,"level":"warning","spans":[],"children":[],"rendered":null},{"message":"for more information, see issue #79813 <https://github.com/rust-lang/rust/issues/79813>","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"macro invocations at the end of a block are treated as expressions","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"to ignore the value produced by the macro, add a semicolon after the invocation of `map`","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"`#[warn(semicolon_in_expressions_from_macros)]` on by default","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: trailing semicolon in macro used in expression position\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/src/macros.rs:666:35\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m666\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m   \u001b[0m\u001b[0m    map!(__impl $i, call!($f), $g);\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                     \u001b[0m\u001b[0m\u001b[1m\u001b[33m^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m::: \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/src/nom.rs:508:3\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m508\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m/\u001b[0m\u001b[0m \u001b[0m\u001b[0m  map!(i, be_u24, |x| if x & 0x80_00_00 != 0 {\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m509\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    (x | 0xff_00_00_00) as i32\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m510\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m  } else {\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m511\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    x as i32\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m512\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m  })\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|____-\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12min this macro invocation\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mwarning\u001b[0m\u001b[0m: this was previously accepted by the compiler but is being phased out; it will become a hard error in a future release!\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: for more information, see issue #79813 <https://github.com/rust-lang/rust/issues/79813>\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: macro invocations at the end of a block are treated as expressions\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: to ignore the value produced by the macro, add a semicolon after the invocation of `map`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: `#[warn(semicolon_in_expressions_from_macros)]` on by default\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: this warning originates in the macro `map` (in Nightly builds, run with -Z macro-backtrace for more info)\u001b[0m\n\n"}},{"diagnostic":{"$message_type":"diagnostic","message":"trailing semicolon in macro used in expression position","code":{"code":"semicolon_in_expressions_from_macros","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/src/macros.rs","byte_start":22808,"byte_end":22809,"line_start":666,"line_end":666,"column_start":35,"column_end":36,"is_primary":true,"text":[{"text":"    map!(__impl $i, call!($f), $g);","highlight_start":35,"highlight_end":36}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":{"span":{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/src/nom.rs","byte_start":14712,"byte_end":14741,"line_start":518,"line_end":518,"column_start":3,"column_end":32,"is_primary":false,"text":[{"text":"  map!(i, be_u32, |x| x as i32)","highlight_start":3,"highlight_end":32}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null},"macro_decl_name":"map!","def_site_span":{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/src/macros.rs","byte_start":22321,"byte_end":22817,"line_start":649,"line_end":668,"column_start":1,"column_end":3,"is_primary":false,"text":[{"text":"macro_rules! map(","highlight_start":1,"highlight_end":18},{"text":"  // Internal parser, do not use directly","highlight_start":1,"highlight_end":42},{"text":"  (__impl $i:expr, $submac:ident!( $($args:tt)* ), $g:expr) => (","highlight_start":1,"highlight_end":65},{"text":"    {","highlight_start":1,"highlight_end":6},{"text":"      pub fn _unify<T, R, F: FnOnce(T) -> R>(f: F, t: T) -> R {","highlight_start":1,"highlight_end":64},{"text":"       f(t)","highlight_start":1,"highlight_end":12},{"text":"      }","highlight_start":1,"highlight_end":8},{"text":"","highlight_start":1,"highlight_end":1},{"text":"      ($submac!($i, $($args)*)).map(|(i,o)| {","highlight_start":1,"highlight_end":46},{"text":"        (i, _unify($g, o))","highlight_start":1,"highlight_end":27},{"text":"      })","highlight_start":1,"highlight_end":9},{"text":"    }","highlight_start":1,"highlight_end":6},{"text":"  );","highlight_start":1,"highlight_end":5},{"text":"  ($i:expr, $submac:ident!( $($args:tt)* ), $g:expr) => (","highlight_start":1,"highlight_end":58},{"text":"    map!(__impl $i, $submac!($($args)*), $g);","highlight_start":1,"highlight_end":46},{"text":"  );","highlight_start":1,"highlight_end":5},{"text":"  ($i:expr, $f:expr, $g:expr) => (","highlight_start":1,"highlight_end":35},{"text":"    map!(__impl $i, call!($f), $g);","highlight_start":1,"highlight_end":36},{"text":"  );","highlight_start":1,"highlight_end":5},{"text":");","highlight_start":1,"highlight_end":3}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}}}],"children":[{"message":"this was previously accepted by the compiler but is being phased out; it will become a hard error in a future release!","code":null,"level":"warning","spans":[],"children":[],"rendered":null},{"message":"for more information, see issue #79813 <https://github.com/rust-lang/rust/issues/79813>","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"macro invocations at the end of a block are treated as expressions","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"to ignore the value produced by the macro, add a semicolon after the invocation of `map`","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"`#[warn(semicolon_in_expressions_from_macros)]` on by default","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: trailing semicolon in macro used in expression position\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/src/macros.rs:666:35\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m666\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    map!(__impl $i, call!($f), $g);\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                   \u001b[0m\u001b[0m\u001b[1m\u001b[33m^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m::: \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/src/nom.rs:518:3\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m518\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m  map!(i, be_u32, |x| x as i32)\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m-----------------------------\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12min this macro invocation\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mwarning\u001b[0m\u001b[0m: this was previously accepted by the compiler but is being phased out; it will become a hard error in a future release!\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: for more information, see issue #79813 <https://github.com/rust-lang/rust/issues/79813>\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: macro invocations at the end of a block are treated as expressions\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: to ignore the value produced by the macro, add a semicolon after the invocation of `map`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: `#[warn(semicolon_in_expressions_from_macros)]` on by default\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: this warning originates in the macro `map` (in Nightly builds, run with -Z macro-backtrace for more info)\u001b[0m\n\n"}},{"diagnostic":{"$message_type":"diagnostic","message":"trailing semicolon in macro used in expression position","code":{"code":"semicolon_in_expressions_from_macros","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/src/macros.rs","byte_start":22808,"byte_end":22809,"line_start":666,"line_end":666,"column_start":35,"column_end":36,"is_primary":true,"text":[{"text":"    map!(__impl $i, call!($f), $g);","highlight_start":35,"highlight_end":36}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":{"span":{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/src/nom.rs","byte_start":14855,"byte_end":14884,"line_start":524,"line_end":524,"column_start":3,"column_end":32,"is_primary":false,"text":[{"text":"  map!(i, be_u64, |x| x as i64)","highlight_start":3,"highlight_end":32}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null},"macro_decl_name":"map!","def_site_span":{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/src/macros.rs","byte_start":22321,"byte_end":22817,"line_start":649,"line_end":668,"column_start":1,"column_end":3,"is_primary":false,"text":[{"text":"macro_rules! map(","highlight_start":1,"highlight_end":18},{"text":"  // Internal parser, do not use directly","highlight_start":1,"highlight_end":42},{"text":"  (__impl $i:expr, $submac:ident!( $($args:tt)* ), $g:expr) => (","highlight_start":1,"highlight_end":65},{"text":"    {","highlight_start":1,"highlight_end":6},{"text":"      pub fn _unify<T, R, F: FnOnce(T) -> R>(f: F, t: T) -> R {","highlight_start":1,"highlight_end":64},{"text":"       f(t)","highlight_start":1,"highlight_end":12},{"text":"      }","highlight_start":1,"highlight_end":8},{"text":"","highlight_start":1,"highlight_end":1},{"text":"      ($submac!($i, $($args)*)).map(|(i,o)| {","highlight_start":1,"highlight_end":46},{"text":"        (i, _unify($g, o))","highlight_start":1,"highlight_end":27},{"text":"      })","highlight_start":1,"highlight_end":9},{"text":"    }","highlight_start":1,"highlight_end":6},{"text":"  );","highlight_start":1,"highlight_end":5},{"text":"  ($i:expr, $submac:ident!( $($args:tt)* ), $g:expr) => (","highlight_start":1,"highlight_end":58},{"text":"    map!(__impl $i, $submac!($($args)*), $g);","highlight_start":1,"highlight_end":46},{"text":"  );","highlight_start":1,"highlight_end":5},{"text":"  ($i:expr, $f:expr, $g:expr) => (","highlight_start":1,"highlight_end":35},{"text":"    map!(__impl $i, call!($f), $g);","highlight_start":1,"highlight_end":36},{"text":"  );","highlight_start":1,"highlight_end":5},{"text":");","highlight_start":1,"highlight_end":3}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}}}],"children":[{"message":"this was previously accepted by the compiler but is being phased out; it will become a hard error in a future release!","code":null,"level":"warning","spans":[],"children":[],"rendered":null},{"message":"for more information, see issue #79813 <https://github.com/rust-lang/rust/issues/79813>","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"macro invocations at the end of a block are treated as expressions","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"to ignore the value produced by the macro, add a semicolon after the invocation of `map`","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"`#[warn(semicolon_in_expressions_from_macros)]` on by default","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: trailing semicolon in macro used in expression position\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/src/macros.rs:666:35\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m666\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    map!(__impl $i, call!($f), $g);\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                   \u001b[0m\u001b[0m\u001b[1m\u001b[33m^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m::: \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/src/nom.rs:524:3\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m524\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m  map!(i, be_u64, |x| x as i64)\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m-----------------------------\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12min this macro invocation\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mwarning\u001b[0m\u001b[0m: this was previously accepted by the compiler but is being phased out; it will become a hard error in a future release!\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: for more information, see issue #79813 <https://github.com/rust-lang/rust/issues/79813>\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: macro invocations at the end of a block are treated as expressions\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: to ignore the value produced by the macro, add a semicolon after the invocation of `map`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: `#[warn(semicolon_in_expressions_from_macros)]` on by default\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: this warning originates in the macro `map` (in Nightly builds, run with -Z macro-backtrace for more info)\u001b[0m\n\n"}},{"diagnostic":{"$message_type":"diagnostic","message":"trailing semicolon in macro used in expression position","code":{"code":"semicolon_in_expressions_from_macros","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/src/macros.rs","byte_start":22808,"byte_end":22809,"line_start":666,"line_end":666,"column_start":35,"column_end":36,"is_primary":true,"text":[{"text":"    map!(__impl $i, call!($f), $g);","highlight_start":35,"highlight_end":36}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":{"span":{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/src/nom.rs","byte_start":15021,"byte_end":15052,"line_start":531,"line_end":531,"column_start":3,"column_end":34,"is_primary":false,"text":[{"text":"  map!(i, be_u128, |x| x as i128)","highlight_start":3,"highlight_end":34}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null},"macro_decl_name":"map!","def_site_span":{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/src/macros.rs","byte_start":22321,"byte_end":22817,"line_start":649,"line_end":668,"column_start":1,"column_end":3,"is_primary":false,"text":[{"text":"macro_rules! map(","highlight_start":1,"highlight_end":18},{"text":"  // Internal parser, do not use directly","highlight_start":1,"highlight_end":42},{"text":"  (__impl $i:expr, $submac:ident!( $($args:tt)* ), $g:expr) => (","highlight_start":1,"highlight_end":65},{"text":"    {","highlight_start":1,"highlight_end":6},{"text":"      pub fn _unify<T, R, F: FnOnce(T) -> R>(f: F, t: T) -> R {","highlight_start":1,"highlight_end":64},{"text":"       f(t)","highlight_start":1,"highlight_end":12},{"text":"      }","highlight_start":1,"highlight_end":8},{"text":"","highlight_start":1,"highlight_end":1},{"text":"      ($submac!($i, $($args)*)).map(|(i,o)| {","highlight_start":1,"highlight_end":46},{"text":"        (i, _unify($g, o))","highlight_start":1,"highlight_end":27},{"text":"      })","highlight_start":1,"highlight_end":9},{"text":"    }","highlight_start":1,"highlight_end":6},{"text":"  );","highlight_start":1,"highlight_end":5},{"text":"  ($i:expr, $submac:ident!( $($args:tt)* ), $g:expr) => (","highlight_start":1,"highlight_end":58},{"text":"    map!(__impl $i, $submac!($($args)*), $g);","highlight_start":1,"highlight_end":46},{"text":"  );","highlight_start":1,"highlight_end":5},{"text":"  ($i:expr, $f:expr, $g:expr) => (","highlight_start":1,"highlight_end":35},{"text":"    map!(__impl $i, call!($f), $g);","highlight_start":1,"highlight_end":36},{"text":"  );","highlight_start":1,"highlight_end":5},{"text":");","highlight_start":1,"highlight_end":3}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}}}],"children":[{"message":"this was previously accepted by the compiler but is being phased out; it will become a hard error in a future release!","code":null,"level":"warning","spans":[],"children":[],"rendered":null},{"message":"for more information, see issue #79813 <https://github.com/rust-lang/rust/issues/79813>","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"macro invocations at the end of a block are treated as expressions","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"to ignore the value produced by the macro, add a semicolon after the invocation of `map`","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"`#[warn(semicolon_in_expressions_from_macros)]` on by default","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: trailing semicolon in macro used in expression position\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/src/macros.rs:666:35\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m666\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    map!(__impl $i, call!($f), $g);\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                   \u001b[0m\u001b[0m\u001b[1m\u001b[33m^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m::: \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/src/nom.rs:531:3\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m531\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m  map!(i, be_u128, |x| x as i128)\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m-------------------------------\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12min this macro invocation\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mwarning\u001b[0m\u001b[0m: this was previously accepted by the compiler but is being phased out; it will become a hard error in a future release!\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: for more information, see issue #79813 <https://github.com/rust-lang/rust/issues/79813>\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: macro invocations at the end of a block are treated as expressions\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: to ignore the value produced by the macro, add a semicolon after the invocation of `map`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: `#[warn(semicolon_in_expressions_from_macros)]` on by default\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: this warning originates in the macro `map` (in Nightly builds, run with -Z macro-backtrace for more info)\u001b[0m\n\n"}},{"diagnostic":{"$message_type":"diagnostic","message":"trailing semicolon in macro used in expression position","code":{"code":"semicolon_in_expressions_from_macros","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/src/macros.rs","byte_start":22808,"byte_end":22809,"line_start":666,"line_end":666,"column_start":35,"column_end":36,"is_primary":true,"text":[{"text":"    map!(__impl $i, call!($f), $g);","highlight_start":35,"highlight_end":36}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":{"span":{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/src/nom.rs","byte_start":17386,"byte_end":17413,"line_start":619,"line_end":619,"column_start":3,"column_end":30,"is_primary":false,"text":[{"text":"  map!(i, le_u8, |x| x as i8)","highlight_start":3,"highlight_end":30}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null},"macro_decl_name":"map!","def_site_span":{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/src/macros.rs","byte_start":22321,"byte_end":22817,"line_start":649,"line_end":668,"column_start":1,"column_end":3,"is_primary":false,"text":[{"text":"macro_rules! map(","highlight_start":1,"highlight_end":18},{"text":"  // Internal parser, do not use directly","highlight_start":1,"highlight_end":42},{"text":"  (__impl $i:expr, $submac:ident!( $($args:tt)* ), $g:expr) => (","highlight_start":1,"highlight_end":65},{"text":"    {","highlight_start":1,"highlight_end":6},{"text":"      pub fn _unify<T, R, F: FnOnce(T) -> R>(f: F, t: T) -> R {","highlight_start":1,"highlight_end":64},{"text":"       f(t)","highlight_start":1,"highlight_end":12},{"text":"      }","highlight_start":1,"highlight_end":8},{"text":"","highlight_start":1,"highlight_end":1},{"text":"      ($submac!($i, $($args)*)).map(|(i,o)| {","highlight_start":1,"highlight_end":46},{"text":"        (i, _unify($g, o))","highlight_start":1,"highlight_end":27},{"text":"      })","highlight_start":1,"highlight_end":9},{"text":"    }","highlight_start":1,"highlight_end":6},{"text":"  );","highlight_start":1,"highlight_end":5},{"text":"  ($i:expr, $submac:ident!( $($args:tt)* ), $g:expr) => (","highlight_start":1,"highlight_end":58},{"text":"    map!(__impl $i, $submac!($($args)*), $g);","highlight_start":1,"highlight_end":46},{"text":"  );","highlight_start":1,"highlight_end":5},{"text":"  ($i:expr, $f:expr, $g:expr) => (","highlight_start":1,"highlight_end":35},{"text":"    map!(__impl $i, call!($f), $g);","highlight_start":1,"highlight_end":36},{"text":"  );","highlight_start":1,"highlight_end":5},{"text":");","highlight_start":1,"highlight_end":3}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}}}],"children":[{"message":"this was previously accepted by the compiler but is being phased out; it will become a hard error in a future release!","code":null,"level":"warning","spans":[],"children":[],"rendered":null},{"message":"for more information, see issue #79813 <https://github.com/rust-lang/rust/issues/79813>","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"macro invocations at the end of a block are treated as expressions","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"to ignore the value produced by the macro, add a semicolon after the invocation of `map`","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"`#[warn(semicolon_in_expressions_from_macros)]` on by default","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: trailing semicolon in macro used in expression position\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/src/macros.rs:666:35\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m666\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    map!(__impl $i, call!($f), $g);\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                   \u001b[0m\u001b[0m\u001b[1m\u001b[33m^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m::: \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/src/nom.rs:619:3\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m619\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m  map!(i, le_u8, |x| x as i8)\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m---------------------------\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12min this macro invocation\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mwarning\u001b[0m\u001b[0m: this was previously accepted by the compiler but is being phased out; it will become a hard error in a future release!\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: for more information, see issue #79813 <https://github.com/rust-lang/rust/issues/79813>\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: macro invocations at the end of a block are treated as expressions\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: to ignore the value produced by the macro, add a semicolon after the invocation of `map`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: `#[warn(semicolon_in_expressions_from_macros)]` on by default\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: this warning originates in the macro `map` (in Nightly builds, run with -Z macro-backtrace for more info)\u001b[0m\n\n"}},{"diagnostic":{"$message_type":"diagnostic","message":"trailing semicolon in macro used in expression position","code":{"code":"semicolon_in_expressions_from_macros","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/src/macros.rs","byte_start":22808,"byte_end":22809,"line_start":666,"line_end":666,"column_start":35,"column_end":36,"is_primary":true,"text":[{"text":"    map!(__impl $i, call!($f), $g);","highlight_start":35,"highlight_end":36}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":{"span":{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/src/nom.rs","byte_start":17530,"byte_end":17559,"line_start":625,"line_end":625,"column_start":3,"column_end":32,"is_primary":false,"text":[{"text":"  map!(i, le_u16, |x| x as i16)","highlight_start":3,"highlight_end":32}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null},"macro_decl_name":"map!","def_site_span":{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/src/macros.rs","byte_start":22321,"byte_end":22817,"line_start":649,"line_end":668,"column_start":1,"column_end":3,"is_primary":false,"text":[{"text":"macro_rules! map(","highlight_start":1,"highlight_end":18},{"text":"  // Internal parser, do not use directly","highlight_start":1,"highlight_end":42},{"text":"  (__impl $i:expr, $submac:ident!( $($args:tt)* ), $g:expr) => (","highlight_start":1,"highlight_end":65},{"text":"    {","highlight_start":1,"highlight_end":6},{"text":"      pub fn _unify<T, R, F: FnOnce(T) -> R>(f: F, t: T) -> R {","highlight_start":1,"highlight_end":64},{"text":"       f(t)","highlight_start":1,"highlight_end":12},{"text":"      }","highlight_start":1,"highlight_end":8},{"text":"","highlight_start":1,"highlight_end":1},{"text":"      ($submac!($i, $($args)*)).map(|(i,o)| {","highlight_start":1,"highlight_end":46},{"text":"        (i, _unify($g, o))","highlight_start":1,"highlight_end":27},{"text":"      })","highlight_start":1,"highlight_end":9},{"text":"    }","highlight_start":1,"highlight_end":6},{"text":"  );","highlight_start":1,"highlight_end":5},{"text":"  ($i:expr, $submac:ident!( $($args:tt)* ), $g:expr) => (","highlight_start":1,"highlight_end":58},{"text":"    map!(__impl $i, $submac!($($args)*), $g);","highlight_start":1,"highlight_end":46},{"text":"  );","highlight_start":1,"highlight_end":5},{"text":"  ($i:expr, $f:expr, $g:expr) => (","highlight_start":1,"highlight_end":35},{"text":"    map!(__impl $i, call!($f), $g);","highlight_start":1,"highlight_end":36},{"text":"  );","highlight_start":1,"highlight_end":5},{"text":");","highlight_start":1,"highlight_end":3}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}}}],"children":[{"message":"this was previously accepted by the compiler but is being phased out; it will become a hard error in a future release!","code":null,"level":"warning","spans":[],"children":[],"rendered":null},{"message":"for more information, see issue #79813 <https://github.com/rust-lang/rust/issues/79813>","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"macro invocations at the end of a block are treated as expressions","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"to ignore the value produced by the macro, add a semicolon after the invocation of `map`","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"`#[warn(semicolon_in_expressions_from_macros)]` on by default","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: trailing semicolon in macro used in expression position\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/src/macros.rs:666:35\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m666\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    map!(__impl $i, call!($f), $g);\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                   \u001b[0m\u001b[0m\u001b[1m\u001b[33m^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m::: \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/src/nom.rs:625:3\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m625\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m  map!(i, le_u16, |x| x as i16)\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m-----------------------------\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12min this macro invocation\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mwarning\u001b[0m\u001b[0m: this was previously accepted by the compiler but is being phased out; it will become a hard error in a future release!\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: for more information, see issue #79813 <https://github.com/rust-lang/rust/issues/79813>\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: macro invocations at the end of a block are treated as expressions\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: to ignore the value produced by the macro, add a semicolon after the invocation of `map`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: `#[warn(semicolon_in_expressions_from_macros)]` on by default\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: this warning originates in the macro `map` (in Nightly builds, run with -Z macro-backtrace for more info)\u001b[0m\n\n"}},{"diagnostic":{"$message_type":"diagnostic","message":"trailing semicolon in macro used in expression position","code":{"code":"semicolon_in_expressions_from_macros","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/src/macros.rs","byte_start":22808,"byte_end":22809,"line_start":666,"line_end":666,"column_start":35,"column_end":36,"is_primary":true,"text":[{"text":"    map!(__impl $i, call!($f), $g);","highlight_start":35,"highlight_end":36}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":{"span":{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/src/nom.rs","byte_start":17751,"byte_end":17855,"line_start":632,"line_end":636,"column_start":3,"column_end":5,"is_primary":false,"text":[{"text":"  map!(i, le_u24, |x| if x & 0x80_00_00 != 0 {","highlight_start":3,"highlight_end":47},{"text":"    (x | 0xff_00_00_00) as i32","highlight_start":1,"highlight_end":31},{"text":"  } else {","highlight_start":1,"highlight_end":11},{"text":"    x as i32","highlight_start":1,"highlight_end":13},{"text":"  })","highlight_start":1,"highlight_end":5}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null},"macro_decl_name":"map!","def_site_span":{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/src/macros.rs","byte_start":22321,"byte_end":22817,"line_start":649,"line_end":668,"column_start":1,"column_end":3,"is_primary":false,"text":[{"text":"macro_rules! map(","highlight_start":1,"highlight_end":18},{"text":"  // Internal parser, do not use directly","highlight_start":1,"highlight_end":42},{"text":"  (__impl $i:expr, $submac:ident!( $($args:tt)* ), $g:expr) => (","highlight_start":1,"highlight_end":65},{"text":"    {","highlight_start":1,"highlight_end":6},{"text":"      pub fn _unify<T, R, F: FnOnce(T) -> R>(f: F, t: T) -> R {","highlight_start":1,"highlight_end":64},{"text":"       f(t)","highlight_start":1,"highlight_end":12},{"text":"      }","highlight_start":1,"highlight_end":8},{"text":"","highlight_start":1,"highlight_end":1},{"text":"      ($submac!($i, $($args)*)).map(|(i,o)| {","highlight_start":1,"highlight_end":46},{"text":"        (i, _unify($g, o))","highlight_start":1,"highlight_end":27},{"text":"      })","highlight_start":1,"highlight_end":9},{"text":"    }","highlight_start":1,"highlight_end":6},{"text":"  );","highlight_start":1,"highlight_end":5},{"text":"  ($i:expr, $submac:ident!( $($args:tt)* ), $g:expr) => (","highlight_start":1,"highlight_end":58},{"text":"    map!(__impl $i, $submac!($($args)*), $g);","highlight_start":1,"highlight_end":46},{"text":"  );","highlight_start":1,"highlight_end":5},{"text":"  ($i:expr, $f:expr, $g:expr) => (","highlight_start":1,"highlight_end":35},{"text":"    map!(__impl $i, call!($f), $g);","highlight_start":1,"highlight_end":36},{"text":"  );","highlight_start":1,"highlight_end":5},{"text":");","highlight_start":1,"highlight_end":3}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}}}],"children":[{"message":"this was previously accepted by the compiler but is being phased out; it will become a hard error in a future release!","code":null,"level":"warning","spans":[],"children":[],"rendered":null},{"message":"for more information, see issue #79813 <https://github.com/rust-lang/rust/issues/79813>","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"macro invocations at the end of a block are treated as expressions","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"to ignore the value produced by the macro, add a semicolon after the invocation of `map`","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"`#[warn(semicolon_in_expressions_from_macros)]` on by default","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: trailing semicolon in macro used in expression position\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/src/macros.rs:666:35\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m666\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m   \u001b[0m\u001b[0m    map!(__impl $i, call!($f), $g);\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                     \u001b[0m\u001b[0m\u001b[1m\u001b[33m^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m::: \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/src/nom.rs:632:3\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m632\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m/\u001b[0m\u001b[0m \u001b[0m\u001b[0m  map!(i, le_u24, |x| if x & 0x80_00_00 != 0 {\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m633\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    (x | 0xff_00_00_00) as i32\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m634\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m  } else {\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m635\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    x as i32\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m636\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m  })\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|____-\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12min this macro invocation\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mwarning\u001b[0m\u001b[0m: this was previously accepted by the compiler but is being phased out; it will become a hard error in a future release!\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: for more information, see issue #79813 <https://github.com/rust-lang/rust/issues/79813>\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: macro invocations at the end of a block are treated as expressions\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: to ignore the value produced by the macro, add a semicolon after the invocation of `map`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: `#[warn(semicolon_in_expressions_from_macros)]` on by default\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: this warning originates in the macro `map` (in Nightly builds, run with -Z macro-backtrace for more info)\u001b[0m\n\n"}},{"diagnostic":{"$message_type":"diagnostic","message":"trailing semicolon in macro used in expression position","code":{"code":"semicolon_in_expressions_from_macros","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/src/macros.rs","byte_start":22808,"byte_end":22809,"line_start":666,"line_end":666,"column_start":35,"column_end":36,"is_primary":true,"text":[{"text":"    map!(__impl $i, call!($f), $g);","highlight_start":35,"highlight_end":36}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":{"span":{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/src/nom.rs","byte_start":17972,"byte_end":18001,"line_start":642,"line_end":642,"column_start":3,"column_end":32,"is_primary":false,"text":[{"text":"  map!(i, le_u32, |x| x as i32)","highlight_start":3,"highlight_end":32}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null},"macro_decl_name":"map!","def_site_span":{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/src/macros.rs","byte_start":22321,"byte_end":22817,"line_start":649,"line_end":668,"column_start":1,"column_end":3,"is_primary":false,"text":[{"text":"macro_rules! map(","highlight_start":1,"highlight_end":18},{"text":"  // Internal parser, do not use directly","highlight_start":1,"highlight_end":42},{"text":"  (__impl $i:expr, $submac:ident!( $($args:tt)* ), $g:expr) => (","highlight_start":1,"highlight_end":65},{"text":"    {","highlight_start":1,"highlight_end":6},{"text":"      pub fn _unify<T, R, F: FnOnce(T) -> R>(f: F, t: T) -> R {","highlight_start":1,"highlight_end":64},{"text":"       f(t)","highlight_start":1,"highlight_end":12},{"text":"      }","highlight_start":1,"highlight_end":8},{"text":"","highlight_start":1,"highlight_end":1},{"text":"      ($submac!($i, $($args)*)).map(|(i,o)| {","highlight_start":1,"highlight_end":46},{"text":"        (i, _unify($g, o))","highlight_start":1,"highlight_end":27},{"text":"      })","highlight_start":1,"highlight_end":9},{"text":"    }","highlight_start":1,"highlight_end":6},{"text":"  );","highlight_start":1,"highlight_end":5},{"text":"  ($i:expr, $submac:ident!( $($args:tt)* ), $g:expr) => (","highlight_start":1,"highlight_end":58},{"text":"    map!(__impl $i, $submac!($($args)*), $g);","highlight_start":1,"highlight_end":46},{"text":"  );","highlight_start":1,"highlight_end":5},{"text":"  ($i:expr, $f:expr, $g:expr) => (","highlight_start":1,"highlight_end":35},{"text":"    map!(__impl $i, call!($f), $g);","highlight_start":1,"highlight_end":36},{"text":"  );","highlight_start":1,"highlight_end":5},{"text":");","highlight_start":1,"highlight_end":3}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}}}],"children":[{"message":"this was previously accepted by the compiler but is being phased out; it will become a hard error in a future release!","code":null,"level":"warning","spans":[],"children":[],"rendered":null},{"message":"for more information, see issue #79813 <https://github.com/rust-lang/rust/issues/79813>","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"macro invocations at the end of a block are treated as expressions","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"to ignore the value produced by the macro, add a semicolon after the invocation of `map`","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"`#[warn(semicolon_in_expressions_from_macros)]` on by default","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: trailing semicolon in macro used in expression position\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/src/macros.rs:666:35\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m666\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    map!(__impl $i, call!($f), $g);\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\
 ## ]
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-c93fd10415a641fd"
-## src = "/libmemchr-c93fd10415a641fd.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libmemchr-c93fd10415a641fd.rmeta"
+## xtern = "libmemchr-c93fd10415a641fd.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-c93fd10415a641fd"
-## src = "/libmemchr-c93fd10415a641fd.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libmemchr-c93fd10415a641fd.rlib"
+## xtern = "libmemchr-c93fd10415a641fd.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -2166,9 +2117,9 @@ COPY --from=dep-l-nom-4.2.3-cd5fc4bcd4e040ed /tmp/clis-dbcc_2-2-1/release/deps/*
 ##   https://static.crates.io/crates/nom/nom-4.2.3.crate /'''
 ## 
 ## [[stages]]
-## name = "dep-l-nom-4.2.3-cd5fc4bcd4e040ed"
+## name = "dep-n-nom-4.2.3-cd5fc4bcd4e040ed"
 ## script = '''
-## FROM rust-base AS dep-l-nom-4.2.3-cd5fc4bcd4e040ed
+## FROM rust-base AS dep-n-nom-4.2.3-cd5fc4bcd4e040ed
 ## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
@@ -2205,12 +2156,12 @@ COPY --from=dep-l-nom-4.2.3-cd5fc4bcd4e040ed /tmp/clis-dbcc_2-2-1/release/deps/*
 ## name = "out-cd5fc4bcd4e040ed"
 ## script = """
 ## FROM scratch AS out-cd5fc4bcd4e040ed
-## COPY --from=dep-l-nom-4.2.3-cd5fc4bcd4e040ed /tmp/clis-dbcc_2-2-1/release/deps/*-cd5fc4bcd4e040ed* /"""
+## COPY --from=dep-n-nom-4.2.3-cd5fc4bcd4e040ed /tmp/clis-dbcc_2-2-1/release/deps/*-cd5fc4bcd4e040ed* /"""
 
 FROM scratch AS cratesio-can-dbc-3.0.2
 ADD --chmod=0664 --unpack=true --checksum=sha256:5bc2e1f9f6f7fe6f3dbcfc44036eb07596ef1d37517ce822111f0c3d6eeed82a \
   https://static.crates.io/crates/can-dbc/can-dbc-3.0.2.crate /
-FROM rust-base AS dep-l-can-dbc-3.0.2-593834cb44ccbead
+FROM rust-base AS dep-n-can-dbc-3.0.2-593834cb44ccbead
 SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
@@ -2253,7 +2204,7 @@ RUN \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-593834cb44ccbead-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-593834cb44ccbead-errcode
 FROM scratch AS out-593834cb44ccbead
-COPY --from=dep-l-can-dbc-3.0.2-593834cb44ccbead /tmp/clis-dbcc_2-2-1/release/deps/*-593834cb44ccbead* /
+COPY --from=dep-n-can-dbc-3.0.2-593834cb44ccbead /tmp/clis-dbcc_2-2-1/release/deps/*-593834cb44ccbead* /
 
 ## this = "593834cb44ccbead"
 ## deps = [
@@ -2285,70 +2236,57 @@ COPY --from=dep-l-can-dbc-3.0.2-593834cb44ccbead /tmp/clis-dbcc_2-2-1/release/de
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-dbcc_2-2-1/release/deps/libcan_dbc-593834cb44ccbead.rlib","emit":"link"}',
 ## ]
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-10105863fb18eb2a"
-## src = "/libderive_getters-10105863fb18eb2a.so"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libderive_getters-10105863fb18eb2a.so"
+## xtern = "libderive_getters-10105863fb18eb2a.so"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-80b37ce9903d0def"
-## src = "/libproc_macro2-80b37ce9903d0def.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-80b37ce9903d0def.rmeta"
+## xtern = "libproc_macro2-80b37ce9903d0def.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-80b37ce9903d0def"
-## src = "/libproc_macro2-80b37ce9903d0def.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-80b37ce9903d0def.rlib"
+## xtern = "libproc_macro2-80b37ce9903d0def.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-ca80afcc82eeec0a"
-## src = "/libunicode_xid-ca80afcc82eeec0a.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-ca80afcc82eeec0a.rmeta"
+## xtern = "libunicode_xid-ca80afcc82eeec0a.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-ca80afcc82eeec0a"
-## src = "/libunicode_xid-ca80afcc82eeec0a.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-ca80afcc82eeec0a.rlib"
+## xtern = "libunicode_xid-ca80afcc82eeec0a.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-dd5debcb2b51fc02"
-## src = "/libquote-dd5debcb2b51fc02.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libquote-dd5debcb2b51fc02.rmeta"
+## xtern = "libquote-dd5debcb2b51fc02.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-dd5debcb2b51fc02"
-## src = "/libquote-dd5debcb2b51fc02.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libquote-dd5debcb2b51fc02.rlib"
+## xtern = "libquote-dd5debcb2b51fc02.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-bbffa8c7e6a16356"
-## src = "/libsyn-bbffa8c7e6a16356.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libsyn-bbffa8c7e6a16356.rmeta"
+## xtern = "libsyn-bbffa8c7e6a16356.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-bbffa8c7e6a16356"
-## src = "/libsyn-bbffa8c7e6a16356.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libsyn-bbffa8c7e6a16356.rlib"
+## xtern = "libsyn-bbffa8c7e6a16356.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-cd5fc4bcd4e040ed"
-## src = "/libnom-cd5fc4bcd4e040ed.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libnom-cd5fc4bcd4e040ed.rmeta"
+## xtern = "libnom-cd5fc4bcd4e040ed.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-cd5fc4bcd4e040ed"
-## src = "/libnom-cd5fc4bcd4e040ed.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libnom-cd5fc4bcd4e040ed.rlib"
+## xtern = "libnom-cd5fc4bcd4e040ed.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-c93fd10415a641fd"
-## src = "/libmemchr-c93fd10415a641fd.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libmemchr-c93fd10415a641fd.rmeta"
+## xtern = "libmemchr-c93fd10415a641fd.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-c93fd10415a641fd"
-## src = "/libmemchr-c93fd10415a641fd.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libmemchr-c93fd10415a641fd.rlib"
+## xtern = "libmemchr-c93fd10415a641fd.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -2362,9 +2300,9 @@ COPY --from=dep-l-can-dbc-3.0.2-593834cb44ccbead /tmp/clis-dbcc_2-2-1/release/de
 ##   https://static.crates.io/crates/can-dbc/can-dbc-3.0.2.crate /'''
 ## 
 ## [[stages]]
-## name = "dep-l-can-dbc-3.0.2-593834cb44ccbead"
+## name = "dep-n-can-dbc-3.0.2-593834cb44ccbead"
 ## script = '''
-## FROM rust-base AS dep-l-can-dbc-3.0.2-593834cb44ccbead
+## FROM rust-base AS dep-n-can-dbc-3.0.2-593834cb44ccbead
 ## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
@@ -2411,12 +2349,12 @@ COPY --from=dep-l-can-dbc-3.0.2-593834cb44ccbead /tmp/clis-dbcc_2-2-1/release/de
 ## name = "out-593834cb44ccbead"
 ## script = """
 ## FROM scratch AS out-593834cb44ccbead
-## COPY --from=dep-l-can-dbc-3.0.2-593834cb44ccbead /tmp/clis-dbcc_2-2-1/release/deps/*-593834cb44ccbead* /"""
+## COPY --from=dep-n-can-dbc-3.0.2-593834cb44ccbead /tmp/clis-dbcc_2-2-1/release/deps/*-593834cb44ccbead* /"""
 
 FROM scratch AS cratesio-unicode-segmentation-1.6.0
 ADD --chmod=0664 --unpack=true --checksum=sha256:e83e153d1053cbb5a118eeff7fd5be06ed99153f00dbcd8ae310c5fb2b22edc0 \
   https://static.crates.io/crates/unicode-segmentation/unicode-segmentation-1.6.0.crate /
-FROM rust-base AS dep-l-unicode-segmentation-1.6.0-b06e8bcc96549ef0
+FROM rust-base AS dep-n-unicode-segmentation-1.6.0-b06e8bcc96549ef0
 SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
@@ -2446,7 +2384,7 @@ RUN \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-b06e8bcc96549ef0-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-b06e8bcc96549ef0-errcode
 FROM scratch AS out-b06e8bcc96549ef0
-COPY --from=dep-l-unicode-segmentation-1.6.0-b06e8bcc96549ef0 /tmp/clis-dbcc_2-2-1/release/deps/*-b06e8bcc96549ef0* /
+COPY --from=dep-n-unicode-segmentation-1.6.0-b06e8bcc96549ef0 /tmp/clis-dbcc_2-2-1/release/deps/*-b06e8bcc96549ef0* /
 
 ## this = "b06e8bcc96549ef0"
 ## writes = [
@@ -2476,9 +2414,9 @@ COPY --from=dep-l-unicode-segmentation-1.6.0-b06e8bcc96549ef0 /tmp/clis-dbcc_2-2
 ##   https://static.crates.io/crates/unicode-segmentation/unicode-segmentation-1.6.0.crate /'''
 ## 
 ## [[stages]]
-## name = "dep-l-unicode-segmentation-1.6.0-b06e8bcc96549ef0"
+## name = "dep-n-unicode-segmentation-1.6.0-b06e8bcc96549ef0"
 ## script = '''
-## FROM rust-base AS dep-l-unicode-segmentation-1.6.0-b06e8bcc96549ef0
+## FROM rust-base AS dep-n-unicode-segmentation-1.6.0-b06e8bcc96549ef0
 ## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
@@ -2512,12 +2450,12 @@ COPY --from=dep-l-unicode-segmentation-1.6.0-b06e8bcc96549ef0 /tmp/clis-dbcc_2-2
 ## name = "out-b06e8bcc96549ef0"
 ## script = """
 ## FROM scratch AS out-b06e8bcc96549ef0
-## COPY --from=dep-l-unicode-segmentation-1.6.0-b06e8bcc96549ef0 /tmp/clis-dbcc_2-2-1/release/deps/*-b06e8bcc96549ef0* /"""
+## COPY --from=dep-n-unicode-segmentation-1.6.0-b06e8bcc96549ef0 /tmp/clis-dbcc_2-2-1/release/deps/*-b06e8bcc96549ef0* /"""
 
 FROM scratch AS cratesio-heck-0.3.1
 ADD --chmod=0664 --unpack=true --checksum=sha256:20564e78d53d2bb135c343b3f47714a56af2061f1c928fdb541dc7b9fdd94205 \
   https://static.crates.io/crates/heck/heck-0.3.1.crate /
-FROM rust-base AS dep-l-heck-0.3.1-7d0dcf7e7b45836f
+FROM rust-base AS dep-n-heck-0.3.1-7d0dcf7e7b45836f
 SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
@@ -2549,7 +2487,7 @@ RUN \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-7d0dcf7e7b45836f-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-7d0dcf7e7b45836f-errcode
 FROM scratch AS out-7d0dcf7e7b45836f
-COPY --from=dep-l-heck-0.3.1-7d0dcf7e7b45836f /tmp/clis-dbcc_2-2-1/release/deps/*-7d0dcf7e7b45836f* /
+COPY --from=dep-n-heck-0.3.1-7d0dcf7e7b45836f /tmp/clis-dbcc_2-2-1/release/deps/*-7d0dcf7e7b45836f* /
 
 ## this = "7d0dcf7e7b45836f"
 ## deps = ["b06e8bcc96549ef0"]
@@ -2565,15 +2503,13 @@ COPY --from=dep-l-heck-0.3.1-7d0dcf7e7b45836f /tmp/clis-dbcc_2-2-1/release/deps/
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-dbcc_2-2-1/release/deps/libheck-7d0dcf7e7b45836f.rlib","emit":"link"}',
 ## ]
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-b06e8bcc96549ef0"
-## src = "/libunicode_segmentation-b06e8bcc96549ef0.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_segmentation-b06e8bcc96549ef0.rmeta"
+## xtern = "libunicode_segmentation-b06e8bcc96549ef0.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-b06e8bcc96549ef0"
-## src = "/libunicode_segmentation-b06e8bcc96549ef0.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_segmentation-b06e8bcc96549ef0.rlib"
+## xtern = "libunicode_segmentation-b06e8bcc96549ef0.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -2587,9 +2523,9 @@ COPY --from=dep-l-heck-0.3.1-7d0dcf7e7b45836f /tmp/clis-dbcc_2-2-1/release/deps/
 ##   https://static.crates.io/crates/heck/heck-0.3.1.crate /'''
 ## 
 ## [[stages]]
-## name = "dep-l-heck-0.3.1-7d0dcf7e7b45836f"
+## name = "dep-n-heck-0.3.1-7d0dcf7e7b45836f"
 ## script = '''
-## FROM rust-base AS dep-l-heck-0.3.1-7d0dcf7e7b45836f
+## FROM rust-base AS dep-n-heck-0.3.1-7d0dcf7e7b45836f
 ## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
@@ -2625,12 +2561,12 @@ COPY --from=dep-l-heck-0.3.1-7d0dcf7e7b45836f /tmp/clis-dbcc_2-2-1/release/deps/
 ## name = "out-7d0dcf7e7b45836f"
 ## script = """
 ## FROM scratch AS out-7d0dcf7e7b45836f
-## COPY --from=dep-l-heck-0.3.1-7d0dcf7e7b45836f /tmp/clis-dbcc_2-2-1/release/deps/*-7d0dcf7e7b45836f* /"""
+## COPY --from=dep-n-heck-0.3.1-7d0dcf7e7b45836f /tmp/clis-dbcc_2-2-1/release/deps/*-7d0dcf7e7b45836f* /"""
 
 FROM scratch AS cratesio-cfg-if-0.1.10
 ADD --chmod=0664 --unpack=true --checksum=sha256:4785bdd1c96b2a846b2bd7cc02e86b6b3dbf14e7e53446c4f54c92a361040822 \
   https://static.crates.io/crates/cfg-if/cfg-if-0.1.10.crate /
-FROM rust-base AS dep-l-cfg-if-0.1.10-abefcc22b095b628
+FROM rust-base AS dep-n-cfg-if-0.1.10-abefcc22b095b628
 SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
@@ -2660,7 +2596,7 @@ RUN \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-abefcc22b095b628-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-abefcc22b095b628-errcode
 FROM scratch AS out-abefcc22b095b628
-COPY --from=dep-l-cfg-if-0.1.10-abefcc22b095b628 /tmp/clis-dbcc_2-2-1/release/deps/*-abefcc22b095b628* /
+COPY --from=dep-n-cfg-if-0.1.10-abefcc22b095b628 /tmp/clis-dbcc_2-2-1/release/deps/*-abefcc22b095b628* /
 
 ## this = "abefcc22b095b628"
 ## writes = [
@@ -2686,9 +2622,9 @@ COPY --from=dep-l-cfg-if-0.1.10-abefcc22b095b628 /tmp/clis-dbcc_2-2-1/release/de
 ##   https://static.crates.io/crates/cfg-if/cfg-if-0.1.10.crate /'''
 ## 
 ## [[stages]]
-## name = "dep-l-cfg-if-0.1.10-abefcc22b095b628"
+## name = "dep-n-cfg-if-0.1.10-abefcc22b095b628"
 ## script = '''
-## FROM rust-base AS dep-l-cfg-if-0.1.10-abefcc22b095b628
+## FROM rust-base AS dep-n-cfg-if-0.1.10-abefcc22b095b628
 ## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
@@ -2722,12 +2658,12 @@ COPY --from=dep-l-cfg-if-0.1.10-abefcc22b095b628 /tmp/clis-dbcc_2-2-1/release/de
 ## name = "out-abefcc22b095b628"
 ## script = """
 ## FROM scratch AS out-abefcc22b095b628
-## COPY --from=dep-l-cfg-if-0.1.10-abefcc22b095b628 /tmp/clis-dbcc_2-2-1/release/deps/*-abefcc22b095b628* /"""
+## COPY --from=dep-n-cfg-if-0.1.10-abefcc22b095b628 /tmp/clis-dbcc_2-2-1/release/deps/*-abefcc22b095b628* /"""
 
 FROM scratch AS cratesio-log-0.4.11
 ADD --chmod=0664 --unpack=true --checksum=sha256:4fabed175da42fed1fa0746b0ea71f412aa9d35e76e95e59b192c64b9dc2bf8b \
   https://static.crates.io/crates/log/log-0.4.11.crate /
-FROM rust-base AS dep-l-log-0.4.11-09be6f37eb701f15
+FROM rust-base AS dep-n-log-0.4.11-09be6f37eb701f15
 SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
@@ -2760,7 +2696,7 @@ RUN \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-09be6f37eb701f15-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-09be6f37eb701f15-errcode
 FROM scratch AS out-09be6f37eb701f15
-COPY --from=dep-l-log-0.4.11-09be6f37eb701f15 /tmp/clis-dbcc_2-2-1/release/deps/*-09be6f37eb701f15* /
+COPY --from=dep-n-log-0.4.11-09be6f37eb701f15 /tmp/clis-dbcc_2-2-1/release/deps/*-09be6f37eb701f15* /
 
 ## this = "09be6f37eb701f15"
 ## deps = ["abefcc22b095b628"]
@@ -2784,15 +2720,13 @@ COPY --from=dep-l-log-0.4.11-09be6f37eb701f15 /tmp/clis-dbcc_2-2-1/release/deps/
 ##     '{"$message_type":"diagnostic","message":"7 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 7 warnings emitted\u001b[0m\n\n"}',
 ## ]
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-abefcc22b095b628"
-## src = "/libcfg_if-abefcc22b095b628.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libcfg_if-abefcc22b095b628.rmeta"
+## xtern = "libcfg_if-abefcc22b095b628.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-abefcc22b095b628"
-## src = "/libcfg_if-abefcc22b095b628.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libcfg_if-abefcc22b095b628.rlib"
+## xtern = "libcfg_if-abefcc22b095b628.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -2806,9 +2740,9 @@ COPY --from=dep-l-log-0.4.11-09be6f37eb701f15 /tmp/clis-dbcc_2-2-1/release/deps/
 ##   https://static.crates.io/crates/log/log-0.4.11.crate /'''
 ## 
 ## [[stages]]
-## name = "dep-l-log-0.4.11-09be6f37eb701f15"
+## name = "dep-n-log-0.4.11-09be6f37eb701f15"
 ## script = '''
-## FROM rust-base AS dep-l-log-0.4.11-09be6f37eb701f15
+## FROM rust-base AS dep-n-log-0.4.11-09be6f37eb701f15
 ## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
@@ -2845,12 +2779,12 @@ COPY --from=dep-l-log-0.4.11-09be6f37eb701f15 /tmp/clis-dbcc_2-2-1/release/deps/
 ## name = "out-09be6f37eb701f15"
 ## script = """
 ## FROM scratch AS out-09be6f37eb701f15
-## COPY --from=dep-l-log-0.4.11-09be6f37eb701f15 /tmp/clis-dbcc_2-2-1/release/deps/*-09be6f37eb701f15* /"""
+## COPY --from=dep-n-log-0.4.11-09be6f37eb701f15 /tmp/clis-dbcc_2-2-1/release/deps/*-09be6f37eb701f15* /"""
 
 FROM scratch AS cratesio-libc-0.2.79
 ADD --chmod=0664 --unpack=true --checksum=sha256:2448f6066e80e3bfc792e9c98bf705b4b0fc6e8ef5b43e5889aff0eaa9c58743 \
   https://static.crates.io/crates/libc/libc-0.2.79.crate /
-FROM rust-base AS dep-l-libc-0.2.79-087afb0c1713a9a6
+FROM rust-base AS dep-n-libc-0.2.79-087afb0c1713a9a6
 SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
@@ -2881,7 +2815,7 @@ RUN \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-087afb0c1713a9a6-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-087afb0c1713a9a6-errcode
 FROM scratch AS out-087afb0c1713a9a6
-COPY --from=dep-l-libc-0.2.79-087afb0c1713a9a6 /tmp/clis-dbcc_2-2-1/release/deps/*-087afb0c1713a9a6* /
+COPY --from=dep-n-libc-0.2.79-087afb0c1713a9a6 /tmp/clis-dbcc_2-2-1/release/deps/*-087afb0c1713a9a6* /
 
 ## this = "087afb0c1713a9a6"
 ## writes = [
@@ -2957,9 +2891,9 @@ COPY --from=dep-l-libc-0.2.79-087afb0c1713a9a6 /tmp/clis-dbcc_2-2-1/release/deps
 ##   https://static.crates.io/crates/libc/libc-0.2.79.crate /'''
 ## 
 ## [[stages]]
-## name = "dep-l-libc-0.2.79-087afb0c1713a9a6"
+## name = "dep-n-libc-0.2.79-087afb0c1713a9a6"
 ## script = '''
-## FROM rust-base AS dep-l-libc-0.2.79-087afb0c1713a9a6
+## FROM rust-base AS dep-n-libc-0.2.79-087afb0c1713a9a6
 ## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
@@ -2994,12 +2928,12 @@ COPY --from=dep-l-libc-0.2.79-087afb0c1713a9a6 /tmp/clis-dbcc_2-2-1/release/deps
 ## name = "out-087afb0c1713a9a6"
 ## script = """
 ## FROM scratch AS out-087afb0c1713a9a6
-## COPY --from=dep-l-libc-0.2.79-087afb0c1713a9a6 /tmp/clis-dbcc_2-2-1/release/deps/*-087afb0c1713a9a6* /"""
+## COPY --from=dep-n-libc-0.2.79-087afb0c1713a9a6 /tmp/clis-dbcc_2-2-1/release/deps/*-087afb0c1713a9a6* /"""
 
 FROM scratch AS cratesio-atty-0.2.14
 ADD --chmod=0664 --unpack=true --checksum=sha256:d9b39be18770d11421cdb1b9947a45dd3f37e93092cbf377614828a319d5fee8 \
   https://static.crates.io/crates/atty/atty-0.2.14.crate /
-FROM rust-base AS dep-l-atty-0.2.14-737035cdf92a82de
+FROM rust-base AS dep-n-atty-0.2.14-737035cdf92a82de
 SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
@@ -3031,7 +2965,7 @@ RUN \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-737035cdf92a82de-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-737035cdf92a82de-errcode
 FROM scratch AS out-737035cdf92a82de
-COPY --from=dep-l-atty-0.2.14-737035cdf92a82de /tmp/clis-dbcc_2-2-1/release/deps/*-737035cdf92a82de* /
+COPY --from=dep-n-atty-0.2.14-737035cdf92a82de /tmp/clis-dbcc_2-2-1/release/deps/*-737035cdf92a82de* /
 
 ## this = "737035cdf92a82de"
 ## deps = ["087afb0c1713a9a6"]
@@ -3047,15 +2981,13 @@ COPY --from=dep-l-atty-0.2.14-737035cdf92a82de /tmp/clis-dbcc_2-2-1/release/deps
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-dbcc_2-2-1/release/deps/libatty-737035cdf92a82de.rlib","emit":"link"}',
 ## ]
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-087afb0c1713a9a6"
-## src = "/liblibc-087afb0c1713a9a6.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/liblibc-087afb0c1713a9a6.rmeta"
+## xtern = "liblibc-087afb0c1713a9a6.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-087afb0c1713a9a6"
-## src = "/liblibc-087afb0c1713a9a6.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/liblibc-087afb0c1713a9a6.rlib"
+## xtern = "liblibc-087afb0c1713a9a6.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -3069,9 +3001,9 @@ COPY --from=dep-l-atty-0.2.14-737035cdf92a82de /tmp/clis-dbcc_2-2-1/release/deps
 ##   https://static.crates.io/crates/atty/atty-0.2.14.crate /'''
 ## 
 ## [[stages]]
-## name = "dep-l-atty-0.2.14-737035cdf92a82de"
+## name = "dep-n-atty-0.2.14-737035cdf92a82de"
 ## script = '''
-## FROM rust-base AS dep-l-atty-0.2.14-737035cdf92a82de
+## FROM rust-base AS dep-n-atty-0.2.14-737035cdf92a82de
 ## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
@@ -3107,12 +3039,12 @@ COPY --from=dep-l-atty-0.2.14-737035cdf92a82de /tmp/clis-dbcc_2-2-1/release/deps
 ## name = "out-737035cdf92a82de"
 ## script = """
 ## FROM scratch AS out-737035cdf92a82de
-## COPY --from=dep-l-atty-0.2.14-737035cdf92a82de /tmp/clis-dbcc_2-2-1/release/deps/*-737035cdf92a82de* /"""
+## COPY --from=dep-n-atty-0.2.14-737035cdf92a82de /tmp/clis-dbcc_2-2-1/release/deps/*-737035cdf92a82de* /"""
 
 FROM scratch AS cratesio-quick-error-1.2.3
 ADD --chmod=0664 --unpack=true --checksum=sha256:a1d01941d82fa2ab50be1e79e6714289dd7cde78eba4c074bc5a4374f650dfe0 \
   https://static.crates.io/crates/quick-error/quick-error-1.2.3.crate /
-FROM rust-base AS dep-l-quick-error-1.2.3-bd3d4e33b0f59f1b
+FROM rust-base AS dep-n-quick-error-1.2.3-bd3d4e33b0f59f1b
 SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
@@ -3142,7 +3074,7 @@ RUN \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-bd3d4e33b0f59f1b-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-bd3d4e33b0f59f1b-errcode
 FROM scratch AS out-bd3d4e33b0f59f1b
-COPY --from=dep-l-quick-error-1.2.3-bd3d4e33b0f59f1b /tmp/clis-dbcc_2-2-1/release/deps/*-bd3d4e33b0f59f1b* /
+COPY --from=dep-n-quick-error-1.2.3-bd3d4e33b0f59f1b /tmp/clis-dbcc_2-2-1/release/deps/*-bd3d4e33b0f59f1b* /
 
 ## this = "bd3d4e33b0f59f1b"
 ## writes = [
@@ -3168,9 +3100,9 @@ COPY --from=dep-l-quick-error-1.2.3-bd3d4e33b0f59f1b /tmp/clis-dbcc_2-2-1/releas
 ##   https://static.crates.io/crates/quick-error/quick-error-1.2.3.crate /'''
 ## 
 ## [[stages]]
-## name = "dep-l-quick-error-1.2.3-bd3d4e33b0f59f1b"
+## name = "dep-n-quick-error-1.2.3-bd3d4e33b0f59f1b"
 ## script = '''
-## FROM rust-base AS dep-l-quick-error-1.2.3-bd3d4e33b0f59f1b
+## FROM rust-base AS dep-n-quick-error-1.2.3-bd3d4e33b0f59f1b
 ## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
@@ -3204,12 +3136,12 @@ COPY --from=dep-l-quick-error-1.2.3-bd3d4e33b0f59f1b /tmp/clis-dbcc_2-2-1/releas
 ## name = "out-bd3d4e33b0f59f1b"
 ## script = """
 ## FROM scratch AS out-bd3d4e33b0f59f1b
-## COPY --from=dep-l-quick-error-1.2.3-bd3d4e33b0f59f1b /tmp/clis-dbcc_2-2-1/release/deps/*-bd3d4e33b0f59f1b* /"""
+## COPY --from=dep-n-quick-error-1.2.3-bd3d4e33b0f59f1b /tmp/clis-dbcc_2-2-1/release/deps/*-bd3d4e33b0f59f1b* /"""
 
 FROM scratch AS cratesio-humantime-1.3.0
 ADD --chmod=0664 --unpack=true --checksum=sha256:df004cfca50ef23c36850aaaa59ad52cc70d0e90243c3c7737a4dd32dc7a3c4f \
   https://static.crates.io/crates/humantime/humantime-1.3.0.crate /
-FROM rust-base AS dep-l-humantime-1.3.0-3e3dde196d8efa81
+FROM rust-base AS dep-n-humantime-1.3.0-3e3dde196d8efa81
 SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
@@ -3241,7 +3173,7 @@ RUN \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-3e3dde196d8efa81-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-3e3dde196d8efa81-errcode
 FROM scratch AS out-3e3dde196d8efa81
-COPY --from=dep-l-humantime-1.3.0-3e3dde196d8efa81 /tmp/clis-dbcc_2-2-1/release/deps/*-3e3dde196d8efa81* /
+COPY --from=dep-n-humantime-1.3.0-3e3dde196d8efa81 /tmp/clis-dbcc_2-2-1/release/deps/*-3e3dde196d8efa81* /
 
 ## this = "3e3dde196d8efa81"
 ## deps = ["bd3d4e33b0f59f1b"]
@@ -3286,15 +3218,13 @@ COPY --from=dep-l-humantime-1.3.0-3e3dde196d8efa81 /tmp/clis-dbcc_2-2-1/release/
 ##     '{"$message_type":"diagnostic","message":"28 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 28 warnings emitted\u001b[0m\n\n"}',
 ## ]
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-bd3d4e33b0f59f1b"
-## src = "/libquick_error-bd3d4e33b0f59f1b.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libquick_error-bd3d4e33b0f59f1b.rmeta"
+## xtern = "libquick_error-bd3d4e33b0f59f1b.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-bd3d4e33b0f59f1b"
-## src = "/libquick_error-bd3d4e33b0f59f1b.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libquick_error-bd3d4e33b0f59f1b.rlib"
+## xtern = "libquick_error-bd3d4e33b0f59f1b.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -3308,9 +3238,9 @@ COPY --from=dep-l-humantime-1.3.0-3e3dde196d8efa81 /tmp/clis-dbcc_2-2-1/release/
 ##   https://static.crates.io/crates/humantime/humantime-1.3.0.crate /'''
 ## 
 ## [[stages]]
-## name = "dep-l-humantime-1.3.0-3e3dde196d8efa81"
+## name = "dep-n-humantime-1.3.0-3e3dde196d8efa81"
 ## script = '''
-## FROM rust-base AS dep-l-humantime-1.3.0-3e3dde196d8efa81
+## FROM rust-base AS dep-n-humantime-1.3.0-3e3dde196d8efa81
 ## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
@@ -3346,12 +3276,12 @@ COPY --from=dep-l-humantime-1.3.0-3e3dde196d8efa81 /tmp/clis-dbcc_2-2-1/release/
 ## name = "out-3e3dde196d8efa81"
 ## script = """
 ## FROM scratch AS out-3e3dde196d8efa81
-## COPY --from=dep-l-humantime-1.3.0-3e3dde196d8efa81 /tmp/clis-dbcc_2-2-1/release/deps/*-3e3dde196d8efa81* /"""
+## COPY --from=dep-n-humantime-1.3.0-3e3dde196d8efa81 /tmp/clis-dbcc_2-2-1/release/deps/*-3e3dde196d8efa81* /"""
 
 FROM scratch AS cratesio-aho-corasick-0.7.14
 ADD --chmod=0664 --unpack=true --checksum=sha256:b476ce7103678b0c6d3d395dbbae31d48ff910bd28be979ba5d48c6351131d0d \
   https://static.crates.io/crates/aho-corasick/aho-corasick-0.7.14.crate /
-FROM rust-base AS dep-l-aho-corasick-0.7.14-014f7ab42daca0d7
+FROM rust-base AS dep-n-aho-corasick-0.7.14-014f7ab42daca0d7
 SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
@@ -3383,7 +3313,7 @@ RUN \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-014f7ab42daca0d7-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-014f7ab42daca0d7-errcode
 FROM scratch AS out-014f7ab42daca0d7
-COPY --from=dep-l-aho-corasick-0.7.14-014f7ab42daca0d7 /tmp/clis-dbcc_2-2-1/release/deps/*-014f7ab42daca0d7* /
+COPY --from=dep-n-aho-corasick-0.7.14-014f7ab42daca0d7 /tmp/clis-dbcc_2-2-1/release/deps/*-014f7ab42daca0d7* /
 
 ## this = "014f7ab42daca0d7"
 ## deps = ["c93fd10415a641fd"]
@@ -3404,15 +3334,13 @@ COPY --from=dep-l-aho-corasick-0.7.14-014f7ab42daca0d7 /tmp/clis-dbcc_2-2-1/rele
 ##     '{"$message_type":"diagnostic","message":"4 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 4 warnings emitted\u001b[0m\n\n"}',
 ## ]
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-c93fd10415a641fd"
-## src = "/libmemchr-c93fd10415a641fd.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libmemchr-c93fd10415a641fd.rmeta"
+## xtern = "libmemchr-c93fd10415a641fd.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-c93fd10415a641fd"
-## src = "/libmemchr-c93fd10415a641fd.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libmemchr-c93fd10415a641fd.rlib"
+## xtern = "libmemchr-c93fd10415a641fd.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -3426,9 +3354,9 @@ COPY --from=dep-l-aho-corasick-0.7.14-014f7ab42daca0d7 /tmp/clis-dbcc_2-2-1/rele
 ##   https://static.crates.io/crates/aho-corasick/aho-corasick-0.7.14.crate /'''
 ## 
 ## [[stages]]
-## name = "dep-l-aho-corasick-0.7.14-014f7ab42daca0d7"
+## name = "dep-n-aho-corasick-0.7.14-014f7ab42daca0d7"
 ## script = '''
-## FROM rust-base AS dep-l-aho-corasick-0.7.14-014f7ab42daca0d7
+## FROM rust-base AS dep-n-aho-corasick-0.7.14-014f7ab42daca0d7
 ## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
@@ -3464,12 +3392,12 @@ COPY --from=dep-l-aho-corasick-0.7.14-014f7ab42daca0d7 /tmp/clis-dbcc_2-2-1/rele
 ## name = "out-014f7ab42daca0d7"
 ## script = """
 ## FROM scratch AS out-014f7ab42daca0d7
-## COPY --from=dep-l-aho-corasick-0.7.14-014f7ab42daca0d7 /tmp/clis-dbcc_2-2-1/release/deps/*-014f7ab42daca0d7* /"""
+## COPY --from=dep-n-aho-corasick-0.7.14-014f7ab42daca0d7 /tmp/clis-dbcc_2-2-1/release/deps/*-014f7ab42daca0d7* /"""
 
 FROM scratch AS cratesio-regex-syntax-0.6.20
 ADD --chmod=0664 --unpack=true --checksum=sha256:8cab7a364d15cde1e505267766a2d3c4e22a843e1a601f0fa7564c0f82ced11c \
   https://static.crates.io/crates/regex-syntax/regex-syntax-0.6.20.crate /
-FROM rust-base AS dep-l-regex-syntax-0.6.20-eec8efd7d7dadd3c
+FROM rust-base AS dep-n-regex-syntax-0.6.20-eec8efd7d7dadd3c
 SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
@@ -3499,7 +3427,7 @@ RUN \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-eec8efd7d7dadd3c-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-eec8efd7d7dadd3c-errcode
 FROM scratch AS out-eec8efd7d7dadd3c
-COPY --from=dep-l-regex-syntax-0.6.20-eec8efd7d7dadd3c /tmp/clis-dbcc_2-2-1/release/deps/*-eec8efd7d7dadd3c* /
+COPY --from=dep-n-regex-syntax-0.6.20-eec8efd7d7dadd3c /tmp/clis-dbcc_2-2-1/release/deps/*-eec8efd7d7dadd3c* /
 
 ## this = "eec8efd7d7dadd3c"
 ## writes = [
@@ -3530,9 +3458,9 @@ COPY --from=dep-l-regex-syntax-0.6.20-eec8efd7d7dadd3c /tmp/clis-dbcc_2-2-1/rele
 ##   https://static.crates.io/crates/regex-syntax/regex-syntax-0.6.20.crate /'''
 ## 
 ## [[stages]]
-## name = "dep-l-regex-syntax-0.6.20-eec8efd7d7dadd3c"
+## name = "dep-n-regex-syntax-0.6.20-eec8efd7d7dadd3c"
 ## script = '''
-## FROM rust-base AS dep-l-regex-syntax-0.6.20-eec8efd7d7dadd3c
+## FROM rust-base AS dep-n-regex-syntax-0.6.20-eec8efd7d7dadd3c
 ## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
@@ -3566,12 +3494,12 @@ COPY --from=dep-l-regex-syntax-0.6.20-eec8efd7d7dadd3c /tmp/clis-dbcc_2-2-1/rele
 ## name = "out-eec8efd7d7dadd3c"
 ## script = """
 ## FROM scratch AS out-eec8efd7d7dadd3c
-## COPY --from=dep-l-regex-syntax-0.6.20-eec8efd7d7dadd3c /tmp/clis-dbcc_2-2-1/release/deps/*-eec8efd7d7dadd3c* /"""
+## COPY --from=dep-n-regex-syntax-0.6.20-eec8efd7d7dadd3c /tmp/clis-dbcc_2-2-1/release/deps/*-eec8efd7d7dadd3c* /"""
 
 FROM scratch AS cratesio-lazy_static-1.4.0
 ADD --chmod=0664 --unpack=true --checksum=sha256:e2abad23fbc42b3700f2f279844dc832adb2b2eb069b2df918f455c4e18cc646 \
   https://static.crates.io/crates/lazy_static/lazy_static-1.4.0.crate /
-FROM rust-base AS dep-l-lazy_static-1.4.0-a79af56de238e2b5
+FROM rust-base AS dep-n-lazy_static-1.4.0-a79af56de238e2b5
 SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
@@ -3601,7 +3529,7 @@ RUN \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-a79af56de238e2b5-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-a79af56de238e2b5-errcode
 FROM scratch AS out-a79af56de238e2b5
-COPY --from=dep-l-lazy_static-1.4.0-a79af56de238e2b5 /tmp/clis-dbcc_2-2-1/release/deps/*-a79af56de238e2b5* /
+COPY --from=dep-n-lazy_static-1.4.0-a79af56de238e2b5 /tmp/clis-dbcc_2-2-1/release/deps/*-a79af56de238e2b5* /
 
 ## this = "a79af56de238e2b5"
 ## writes = [
@@ -3629,9 +3557,9 @@ COPY --from=dep-l-lazy_static-1.4.0-a79af56de238e2b5 /tmp/clis-dbcc_2-2-1/releas
 ##   https://static.crates.io/crates/lazy_static/lazy_static-1.4.0.crate /'''
 ## 
 ## [[stages]]
-## name = "dep-l-lazy_static-1.4.0-a79af56de238e2b5"
+## name = "dep-n-lazy_static-1.4.0-a79af56de238e2b5"
 ## script = '''
-## FROM rust-base AS dep-l-lazy_static-1.4.0-a79af56de238e2b5
+## FROM rust-base AS dep-n-lazy_static-1.4.0-a79af56de238e2b5
 ## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
@@ -3665,12 +3593,12 @@ COPY --from=dep-l-lazy_static-1.4.0-a79af56de238e2b5 /tmp/clis-dbcc_2-2-1/releas
 ## name = "out-a79af56de238e2b5"
 ## script = """
 ## FROM scratch AS out-a79af56de238e2b5
-## COPY --from=dep-l-lazy_static-1.4.0-a79af56de238e2b5 /tmp/clis-dbcc_2-2-1/release/deps/*-a79af56de238e2b5* /"""
+## COPY --from=dep-n-lazy_static-1.4.0-a79af56de238e2b5 /tmp/clis-dbcc_2-2-1/release/deps/*-a79af56de238e2b5* /"""
 
 FROM scratch AS cratesio-thread_local-1.0.1
 ADD --chmod=0664 --unpack=true --checksum=sha256:d40c6d1b69745a6ec6fb1ca717914848da4b44ae29d9b3080cbee91d72a69b14 \
   https://static.crates.io/crates/thread_local/thread_local-1.0.1.crate /
-FROM rust-base AS dep-l-thread_local-1.0.1-3ace2abd55187163
+FROM rust-base AS dep-n-thread_local-1.0.1-3ace2abd55187163
 SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
@@ -3702,7 +3630,7 @@ RUN \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-3ace2abd55187163-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-3ace2abd55187163-errcode
 FROM scratch AS out-3ace2abd55187163
-COPY --from=dep-l-thread_local-1.0.1-3ace2abd55187163 /tmp/clis-dbcc_2-2-1/release/deps/*-3ace2abd55187163* /
+COPY --from=dep-n-thread_local-1.0.1-3ace2abd55187163 /tmp/clis-dbcc_2-2-1/release/deps/*-3ace2abd55187163* /
 
 ## this = "3ace2abd55187163"
 ## deps = ["a79af56de238e2b5"]
@@ -3723,15 +3651,13 @@ COPY --from=dep-l-thread_local-1.0.1-3ace2abd55187163 /tmp/clis-dbcc_2-2-1/relea
 ##     '{"$message_type":"diagnostic","message":"4 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 4 warnings emitted\u001b[0m\n\n"}',
 ## ]
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-a79af56de238e2b5"
-## src = "/liblazy_static-a79af56de238e2b5.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/liblazy_static-a79af56de238e2b5.rmeta"
+## xtern = "liblazy_static-a79af56de238e2b5.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-a79af56de238e2b5"
-## src = "/liblazy_static-a79af56de238e2b5.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/liblazy_static-a79af56de238e2b5.rlib"
+## xtern = "liblazy_static-a79af56de238e2b5.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -3745,9 +3671,9 @@ COPY --from=dep-l-thread_local-1.0.1-3ace2abd55187163 /tmp/clis-dbcc_2-2-1/relea
 ##   https://static.crates.io/crates/thread_local/thread_local-1.0.1.crate /'''
 ## 
 ## [[stages]]
-## name = "dep-l-thread_local-1.0.1-3ace2abd55187163"
+## name = "dep-n-thread_local-1.0.1-3ace2abd55187163"
 ## script = '''
-## FROM rust-base AS dep-l-thread_local-1.0.1-3ace2abd55187163
+## FROM rust-base AS dep-n-thread_local-1.0.1-3ace2abd55187163
 ## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
@@ -3783,12 +3709,12 @@ COPY --from=dep-l-thread_local-1.0.1-3ace2abd55187163 /tmp/clis-dbcc_2-2-1/relea
 ## name = "out-3ace2abd55187163"
 ## script = """
 ## FROM scratch AS out-3ace2abd55187163
-## COPY --from=dep-l-thread_local-1.0.1-3ace2abd55187163 /tmp/clis-dbcc_2-2-1/release/deps/*-3ace2abd55187163* /"""
+## COPY --from=dep-n-thread_local-1.0.1-3ace2abd55187163 /tmp/clis-dbcc_2-2-1/release/deps/*-3ace2abd55187163* /"""
 
 FROM scratch AS cratesio-regex-1.4.1
 ADD --chmod=0664 --unpack=true --checksum=sha256:8963b85b8ce3074fecffde43b4b0dded83ce2f367dc8d363afc56679f3ee820b \
   https://static.crates.io/crates/regex/regex-1.4.1.crate /
-FROM rust-base AS dep-l-regex-1.4.1-5ba8c6f49cc2732d
+FROM rust-base AS dep-n-regex-1.4.1-5ba8c6f49cc2732d
 SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
@@ -3828,7 +3754,7 @@ RUN \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-5ba8c6f49cc2732d-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-5ba8c6f49cc2732d-errcode
 FROM scratch AS out-5ba8c6f49cc2732d
-COPY --from=dep-l-regex-1.4.1-5ba8c6f49cc2732d /tmp/clis-dbcc_2-2-1/release/deps/*-5ba8c6f49cc2732d* /
+COPY --from=dep-n-regex-1.4.1-5ba8c6f49cc2732d /tmp/clis-dbcc_2-2-1/release/deps/*-5ba8c6f49cc2732d* /
 
 ## this = "5ba8c6f49cc2732d"
 ## deps = [
@@ -3856,55 +3782,45 @@ COPY --from=dep-l-regex-1.4.1-5ba8c6f49cc2732d /tmp/clis-dbcc_2-2-1/release/deps
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-dbcc_2-2-1/release/deps/libregex-5ba8c6f49cc2732d.rlib","emit":"link"}',
 ## ]
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-014f7ab42daca0d7"
-## src = "/libaho_corasick-014f7ab42daca0d7.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libaho_corasick-014f7ab42daca0d7.rmeta"
+## xtern = "libaho_corasick-014f7ab42daca0d7.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-014f7ab42daca0d7"
-## src = "/libaho_corasick-014f7ab42daca0d7.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libaho_corasick-014f7ab42daca0d7.rlib"
+## xtern = "libaho_corasick-014f7ab42daca0d7.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-c93fd10415a641fd"
-## src = "/libmemchr-c93fd10415a641fd.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libmemchr-c93fd10415a641fd.rmeta"
+## xtern = "libmemchr-c93fd10415a641fd.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-c93fd10415a641fd"
-## src = "/libmemchr-c93fd10415a641fd.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libmemchr-c93fd10415a641fd.rlib"
+## xtern = "libmemchr-c93fd10415a641fd.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-eec8efd7d7dadd3c"
-## src = "/libregex_syntax-eec8efd7d7dadd3c.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libregex_syntax-eec8efd7d7dadd3c.rmeta"
+## xtern = "libregex_syntax-eec8efd7d7dadd3c.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-eec8efd7d7dadd3c"
-## src = "/libregex_syntax-eec8efd7d7dadd3c.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libregex_syntax-eec8efd7d7dadd3c.rlib"
+## xtern = "libregex_syntax-eec8efd7d7dadd3c.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-3ace2abd55187163"
-## src = "/libthread_local-3ace2abd55187163.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libthread_local-3ace2abd55187163.rmeta"
+## xtern = "libthread_local-3ace2abd55187163.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-3ace2abd55187163"
-## src = "/libthread_local-3ace2abd55187163.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libthread_local-3ace2abd55187163.rlib"
+## xtern = "libthread_local-3ace2abd55187163.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-a79af56de238e2b5"
-## src = "/liblazy_static-a79af56de238e2b5.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/liblazy_static-a79af56de238e2b5.rmeta"
+## xtern = "liblazy_static-a79af56de238e2b5.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-a79af56de238e2b5"
-## src = "/liblazy_static-a79af56de238e2b5.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/liblazy_static-a79af56de238e2b5.rlib"
+## xtern = "liblazy_static-a79af56de238e2b5.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -3918,9 +3834,9 @@ COPY --from=dep-l-regex-1.4.1-5ba8c6f49cc2732d /tmp/clis-dbcc_2-2-1/release/deps
 ##   https://static.crates.io/crates/regex/regex-1.4.1.crate /'''
 ## 
 ## [[stages]]
-## name = "dep-l-regex-1.4.1-5ba8c6f49cc2732d"
+## name = "dep-n-regex-1.4.1-5ba8c6f49cc2732d"
 ## script = '''
-## FROM rust-base AS dep-l-regex-1.4.1-5ba8c6f49cc2732d
+## FROM rust-base AS dep-n-regex-1.4.1-5ba8c6f49cc2732d
 ## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
@@ -3964,12 +3880,12 @@ COPY --from=dep-l-regex-1.4.1-5ba8c6f49cc2732d /tmp/clis-dbcc_2-2-1/release/deps
 ## name = "out-5ba8c6f49cc2732d"
 ## script = """
 ## FROM scratch AS out-5ba8c6f49cc2732d
-## COPY --from=dep-l-regex-1.4.1-5ba8c6f49cc2732d /tmp/clis-dbcc_2-2-1/release/deps/*-5ba8c6f49cc2732d* /"""
+## COPY --from=dep-n-regex-1.4.1-5ba8c6f49cc2732d /tmp/clis-dbcc_2-2-1/release/deps/*-5ba8c6f49cc2732d* /"""
 
 FROM scratch AS cratesio-termcolor-1.1.0
 ADD --chmod=0664 --unpack=true --checksum=sha256:bb6bfa289a4d7c5766392812c0a1f4c1ba45afa1ad47803c11e1f407d846d75f \
   https://static.crates.io/crates/termcolor/termcolor-1.1.0.crate /
-FROM rust-base AS dep-l-termcolor-1.1.0-3d5a70ee74f70e2b
+FROM rust-base AS dep-n-termcolor-1.1.0-3d5a70ee74f70e2b
 SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
@@ -3999,7 +3915,7 @@ RUN \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-3d5a70ee74f70e2b-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-3d5a70ee74f70e2b-errcode
 FROM scratch AS out-3d5a70ee74f70e2b
-COPY --from=dep-l-termcolor-1.1.0-3d5a70ee74f70e2b /tmp/clis-dbcc_2-2-1/release/deps/*-3d5a70ee74f70e2b* /
+COPY --from=dep-n-termcolor-1.1.0-3d5a70ee74f70e2b /tmp/clis-dbcc_2-2-1/release/deps/*-3d5a70ee74f70e2b* /
 
 ## this = "3d5a70ee74f70e2b"
 ## writes = [
@@ -4025,9 +3941,9 @@ COPY --from=dep-l-termcolor-1.1.0-3d5a70ee74f70e2b /tmp/clis-dbcc_2-2-1/release/
 ##   https://static.crates.io/crates/termcolor/termcolor-1.1.0.crate /'''
 ## 
 ## [[stages]]
-## name = "dep-l-termcolor-1.1.0-3d5a70ee74f70e2b"
+## name = "dep-n-termcolor-1.1.0-3d5a70ee74f70e2b"
 ## script = '''
-## FROM rust-base AS dep-l-termcolor-1.1.0-3d5a70ee74f70e2b
+## FROM rust-base AS dep-n-termcolor-1.1.0-3d5a70ee74f70e2b
 ## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
@@ -4061,12 +3977,12 @@ COPY --from=dep-l-termcolor-1.1.0-3d5a70ee74f70e2b /tmp/clis-dbcc_2-2-1/release/
 ## name = "out-3d5a70ee74f70e2b"
 ## script = """
 ## FROM scratch AS out-3d5a70ee74f70e2b
-## COPY --from=dep-l-termcolor-1.1.0-3d5a70ee74f70e2b /tmp/clis-dbcc_2-2-1/release/deps/*-3d5a70ee74f70e2b* /"""
+## COPY --from=dep-n-termcolor-1.1.0-3d5a70ee74f70e2b /tmp/clis-dbcc_2-2-1/release/deps/*-3d5a70ee74f70e2b* /"""
 
 FROM scratch AS cratesio-env_logger-0.7.1
 ADD --chmod=0664 --unpack=true --checksum=sha256:44533bbbb3bb3c1fa17d9f2e4e38bbbaf8396ba82193c4cb1b6445d711445d36 \
   https://static.crates.io/crates/env_logger/env_logger-0.7.1.crate /
-FROM rust-base AS dep-l-env_logger-0.7.1-94c0a2bd3b1451c8
+FROM rust-base AS dep-n-env_logger-0.7.1-94c0a2bd3b1451c8
 SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
@@ -4122,7 +4038,7 @@ RUN \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-94c0a2bd3b1451c8-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-94c0a2bd3b1451c8-errcode
 FROM scratch AS out-94c0a2bd3b1451c8
-COPY --from=dep-l-env_logger-0.7.1-94c0a2bd3b1451c8 /tmp/clis-dbcc_2-2-1/release/deps/*-94c0a2bd3b1451c8* /
+COPY --from=dep-n-env_logger-0.7.1-94c0a2bd3b1451c8 /tmp/clis-dbcc_2-2-1/release/deps/*-94c0a2bd3b1451c8* /
 
 ## this = "94c0a2bd3b1451c8"
 ## deps = [
@@ -4169,135 +4085,109 @@ COPY --from=dep-l-env_logger-0.7.1-94c0a2bd3b1451c8 /tmp/clis-dbcc_2-2-1/release
 ##     '{"$message_type":"diagnostic","message":"2 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 2 warnings emitted\u001b[0m\n\n"}',
 ## ]
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-737035cdf92a82de"
-## src = "/libatty-737035cdf92a82de.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libatty-737035cdf92a82de.rmeta"
+## xtern = "libatty-737035cdf92a82de.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-737035cdf92a82de"
-## src = "/libatty-737035cdf92a82de.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libatty-737035cdf92a82de.rlib"
+## xtern = "libatty-737035cdf92a82de.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-087afb0c1713a9a6"
-## src = "/liblibc-087afb0c1713a9a6.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/liblibc-087afb0c1713a9a6.rmeta"
+## xtern = "liblibc-087afb0c1713a9a6.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-087afb0c1713a9a6"
-## src = "/liblibc-087afb0c1713a9a6.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/liblibc-087afb0c1713a9a6.rlib"
+## xtern = "liblibc-087afb0c1713a9a6.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-3e3dde196d8efa81"
-## src = "/libhumantime-3e3dde196d8efa81.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libhumantime-3e3dde196d8efa81.rmeta"
+## xtern = "libhumantime-3e3dde196d8efa81.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-3e3dde196d8efa81"
-## src = "/libhumantime-3e3dde196d8efa81.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libhumantime-3e3dde196d8efa81.rlib"
+## xtern = "libhumantime-3e3dde196d8efa81.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-bd3d4e33b0f59f1b"
-## src = "/libquick_error-bd3d4e33b0f59f1b.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libquick_error-bd3d4e33b0f59f1b.rmeta"
+## xtern = "libquick_error-bd3d4e33b0f59f1b.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-bd3d4e33b0f59f1b"
-## src = "/libquick_error-bd3d4e33b0f59f1b.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libquick_error-bd3d4e33b0f59f1b.rlib"
+## xtern = "libquick_error-bd3d4e33b0f59f1b.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-09be6f37eb701f15"
-## src = "/liblog-09be6f37eb701f15.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/liblog-09be6f37eb701f15.rmeta"
+## xtern = "liblog-09be6f37eb701f15.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-09be6f37eb701f15"
-## src = "/liblog-09be6f37eb701f15.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/liblog-09be6f37eb701f15.rlib"
+## xtern = "liblog-09be6f37eb701f15.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-abefcc22b095b628"
-## src = "/libcfg_if-abefcc22b095b628.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libcfg_if-abefcc22b095b628.rmeta"
+## xtern = "libcfg_if-abefcc22b095b628.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-abefcc22b095b628"
-## src = "/libcfg_if-abefcc22b095b628.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libcfg_if-abefcc22b095b628.rlib"
+## xtern = "libcfg_if-abefcc22b095b628.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-5ba8c6f49cc2732d"
-## src = "/libregex-5ba8c6f49cc2732d.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libregex-5ba8c6f49cc2732d.rmeta"
+## xtern = "libregex-5ba8c6f49cc2732d.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-5ba8c6f49cc2732d"
-## src = "/libregex-5ba8c6f49cc2732d.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libregex-5ba8c6f49cc2732d.rlib"
+## xtern = "libregex-5ba8c6f49cc2732d.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-014f7ab42daca0d7"
-## src = "/libaho_corasick-014f7ab42daca0d7.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libaho_corasick-014f7ab42daca0d7.rmeta"
+## xtern = "libaho_corasick-014f7ab42daca0d7.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-014f7ab42daca0d7"
-## src = "/libaho_corasick-014f7ab42daca0d7.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libaho_corasick-014f7ab42daca0d7.rlib"
+## xtern = "libaho_corasick-014f7ab42daca0d7.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-c93fd10415a641fd"
-## src = "/libmemchr-c93fd10415a641fd.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libmemchr-c93fd10415a641fd.rmeta"
+## xtern = "libmemchr-c93fd10415a641fd.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-c93fd10415a641fd"
-## src = "/libmemchr-c93fd10415a641fd.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libmemchr-c93fd10415a641fd.rlib"
+## xtern = "libmemchr-c93fd10415a641fd.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-eec8efd7d7dadd3c"
-## src = "/libregex_syntax-eec8efd7d7dadd3c.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libregex_syntax-eec8efd7d7dadd3c.rmeta"
+## xtern = "libregex_syntax-eec8efd7d7dadd3c.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-eec8efd7d7dadd3c"
-## src = "/libregex_syntax-eec8efd7d7dadd3c.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libregex_syntax-eec8efd7d7dadd3c.rlib"
+## xtern = "libregex_syntax-eec8efd7d7dadd3c.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-3ace2abd55187163"
-## src = "/libthread_local-3ace2abd55187163.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libthread_local-3ace2abd55187163.rmeta"
+## xtern = "libthread_local-3ace2abd55187163.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-3ace2abd55187163"
-## src = "/libthread_local-3ace2abd55187163.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libthread_local-3ace2abd55187163.rlib"
+## xtern = "libthread_local-3ace2abd55187163.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-a79af56de238e2b5"
-## src = "/liblazy_static-a79af56de238e2b5.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/liblazy_static-a79af56de238e2b5.rmeta"
+## xtern = "liblazy_static-a79af56de238e2b5.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-a79af56de238e2b5"
-## src = "/liblazy_static-a79af56de238e2b5.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/liblazy_static-a79af56de238e2b5.rlib"
+## xtern = "liblazy_static-a79af56de238e2b5.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-3d5a70ee74f70e2b"
-## src = "/libtermcolor-3d5a70ee74f70e2b.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libtermcolor-3d5a70ee74f70e2b.rmeta"
+## xtern = "libtermcolor-3d5a70ee74f70e2b.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-3d5a70ee74f70e2b"
-## src = "/libtermcolor-3d5a70ee74f70e2b.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libtermcolor-3d5a70ee74f70e2b.rlib"
+## xtern = "libtermcolor-3d5a70ee74f70e2b.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -4311,9 +4201,9 @@ COPY --from=dep-l-env_logger-0.7.1-94c0a2bd3b1451c8 /tmp/clis-dbcc_2-2-1/release
 ##   https://static.crates.io/crates/env_logger/env_logger-0.7.1.crate /'''
 ## 
 ## [[stages]]
-## name = "dep-l-env_logger-0.7.1-94c0a2bd3b1451c8"
+## name = "dep-n-env_logger-0.7.1-94c0a2bd3b1451c8"
 ## script = '''
-## FROM rust-base AS dep-l-env_logger-0.7.1-94c0a2bd3b1451c8
+## FROM rust-base AS dep-n-env_logger-0.7.1-94c0a2bd3b1451c8
 ## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
@@ -4373,12 +4263,12 @@ COPY --from=dep-l-env_logger-0.7.1-94c0a2bd3b1451c8 /tmp/clis-dbcc_2-2-1/release
 ## name = "out-94c0a2bd3b1451c8"
 ## script = """
 ## FROM scratch AS out-94c0a2bd3b1451c8
-## COPY --from=dep-l-env_logger-0.7.1-94c0a2bd3b1451c8 /tmp/clis-dbcc_2-2-1/release/deps/*-94c0a2bd3b1451c8* /"""
+## COPY --from=dep-n-env_logger-0.7.1-94c0a2bd3b1451c8 /tmp/clis-dbcc_2-2-1/release/deps/*-94c0a2bd3b1451c8* /"""
 
 FROM scratch AS cratesio-pretty_env_logger-0.4.0
 ADD --chmod=0664 --unpack=true --checksum=sha256:926d36b9553851b8b0005f1275891b392ee4d2d833852c417ed025477350fb9d \
   https://static.crates.io/crates/pretty_env_logger/pretty_env_logger-0.4.0.crate /
-FROM rust-base AS dep-l-pretty_env_logger-0.4.0-682e69746a16e0c7
+FROM rust-base AS dep-n-pretty_env_logger-0.4.0-682e69746a16e0c7
 SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
@@ -4436,7 +4326,7 @@ RUN \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-682e69746a16e0c7-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-682e69746a16e0c7-errcode
 FROM scratch AS out-682e69746a16e0c7
-COPY --from=dep-l-pretty_env_logger-0.4.0-682e69746a16e0c7 /tmp/clis-dbcc_2-2-1/release/deps/*-682e69746a16e0c7* /
+COPY --from=dep-n-pretty_env_logger-0.4.0-682e69746a16e0c7 /tmp/clis-dbcc_2-2-1/release/deps/*-682e69746a16e0c7* /
 
 ## this = "682e69746a16e0c7"
 ## deps = [
@@ -4482,145 +4372,117 @@ COPY --from=dep-l-pretty_env_logger-0.4.0-682e69746a16e0c7 /tmp/clis-dbcc_2-2-1/
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-dbcc_2-2-1/release/deps/libpretty_env_logger-682e69746a16e0c7.rlib","emit":"link"}',
 ## ]
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-94c0a2bd3b1451c8"
-## src = "/libenv_logger-94c0a2bd3b1451c8.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libenv_logger-94c0a2bd3b1451c8.rmeta"
+## xtern = "libenv_logger-94c0a2bd3b1451c8.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-94c0a2bd3b1451c8"
-## src = "/libenv_logger-94c0a2bd3b1451c8.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libenv_logger-94c0a2bd3b1451c8.rlib"
+## xtern = "libenv_logger-94c0a2bd3b1451c8.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-737035cdf92a82de"
-## src = "/libatty-737035cdf92a82de.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libatty-737035cdf92a82de.rmeta"
+## xtern = "libatty-737035cdf92a82de.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-737035cdf92a82de"
-## src = "/libatty-737035cdf92a82de.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libatty-737035cdf92a82de.rlib"
+## xtern = "libatty-737035cdf92a82de.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-087afb0c1713a9a6"
-## src = "/liblibc-087afb0c1713a9a6.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/liblibc-087afb0c1713a9a6.rmeta"
+## xtern = "liblibc-087afb0c1713a9a6.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-087afb0c1713a9a6"
-## src = "/liblibc-087afb0c1713a9a6.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/liblibc-087afb0c1713a9a6.rlib"
+## xtern = "liblibc-087afb0c1713a9a6.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-3e3dde196d8efa81"
-## src = "/libhumantime-3e3dde196d8efa81.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libhumantime-3e3dde196d8efa81.rmeta"
+## xtern = "libhumantime-3e3dde196d8efa81.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-3e3dde196d8efa81"
-## src = "/libhumantime-3e3dde196d8efa81.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libhumantime-3e3dde196d8efa81.rlib"
+## xtern = "libhumantime-3e3dde196d8efa81.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-bd3d4e33b0f59f1b"
-## src = "/libquick_error-bd3d4e33b0f59f1b.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libquick_error-bd3d4e33b0f59f1b.rmeta"
+## xtern = "libquick_error-bd3d4e33b0f59f1b.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-bd3d4e33b0f59f1b"
-## src = "/libquick_error-bd3d4e33b0f59f1b.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libquick_error-bd3d4e33b0f59f1b.rlib"
+## xtern = "libquick_error-bd3d4e33b0f59f1b.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-09be6f37eb701f15"
-## src = "/liblog-09be6f37eb701f15.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/liblog-09be6f37eb701f15.rmeta"
+## xtern = "liblog-09be6f37eb701f15.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-09be6f37eb701f15"
-## src = "/liblog-09be6f37eb701f15.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/liblog-09be6f37eb701f15.rlib"
+## xtern = "liblog-09be6f37eb701f15.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-abefcc22b095b628"
-## src = "/libcfg_if-abefcc22b095b628.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libcfg_if-abefcc22b095b628.rmeta"
+## xtern = "libcfg_if-abefcc22b095b628.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-abefcc22b095b628"
-## src = "/libcfg_if-abefcc22b095b628.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libcfg_if-abefcc22b095b628.rlib"
+## xtern = "libcfg_if-abefcc22b095b628.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-5ba8c6f49cc2732d"
-## src = "/libregex-5ba8c6f49cc2732d.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libregex-5ba8c6f49cc2732d.rmeta"
+## xtern = "libregex-5ba8c6f49cc2732d.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-5ba8c6f49cc2732d"
-## src = "/libregex-5ba8c6f49cc2732d.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libregex-5ba8c6f49cc2732d.rlib"
+## xtern = "libregex-5ba8c6f49cc2732d.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-014f7ab42daca0d7"
-## src = "/libaho_corasick-014f7ab42daca0d7.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libaho_corasick-014f7ab42daca0d7.rmeta"
+## xtern = "libaho_corasick-014f7ab42daca0d7.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-014f7ab42daca0d7"
-## src = "/libaho_corasick-014f7ab42daca0d7.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libaho_corasick-014f7ab42daca0d7.rlib"
+## xtern = "libaho_corasick-014f7ab42daca0d7.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-c93fd10415a641fd"
-## src = "/libmemchr-c93fd10415a641fd.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libmemchr-c93fd10415a641fd.rmeta"
+## xtern = "libmemchr-c93fd10415a641fd.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-c93fd10415a641fd"
-## src = "/libmemchr-c93fd10415a641fd.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libmemchr-c93fd10415a641fd.rlib"
+## xtern = "libmemchr-c93fd10415a641fd.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-eec8efd7d7dadd3c"
-## src = "/libregex_syntax-eec8efd7d7dadd3c.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libregex_syntax-eec8efd7d7dadd3c.rmeta"
+## xtern = "libregex_syntax-eec8efd7d7dadd3c.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-eec8efd7d7dadd3c"
-## src = "/libregex_syntax-eec8efd7d7dadd3c.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libregex_syntax-eec8efd7d7dadd3c.rlib"
+## xtern = "libregex_syntax-eec8efd7d7dadd3c.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-3ace2abd55187163"
-## src = "/libthread_local-3ace2abd55187163.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libthread_local-3ace2abd55187163.rmeta"
+## xtern = "libthread_local-3ace2abd55187163.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-3ace2abd55187163"
-## src = "/libthread_local-3ace2abd55187163.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libthread_local-3ace2abd55187163.rlib"
+## xtern = "libthread_local-3ace2abd55187163.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-a79af56de238e2b5"
-## src = "/liblazy_static-a79af56de238e2b5.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/liblazy_static-a79af56de238e2b5.rmeta"
+## xtern = "liblazy_static-a79af56de238e2b5.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-a79af56de238e2b5"
-## src = "/liblazy_static-a79af56de238e2b5.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/liblazy_static-a79af56de238e2b5.rlib"
+## xtern = "liblazy_static-a79af56de238e2b5.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-3d5a70ee74f70e2b"
-## src = "/libtermcolor-3d5a70ee74f70e2b.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libtermcolor-3d5a70ee74f70e2b.rmeta"
+## xtern = "libtermcolor-3d5a70ee74f70e2b.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-3d5a70ee74f70e2b"
-## src = "/libtermcolor-3d5a70ee74f70e2b.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libtermcolor-3d5a70ee74f70e2b.rlib"
+## xtern = "libtermcolor-3d5a70ee74f70e2b.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -4634,9 +4496,9 @@ COPY --from=dep-l-pretty_env_logger-0.4.0-682e69746a16e0c7 /tmp/clis-dbcc_2-2-1/
 ##   https://static.crates.io/crates/pretty_env_logger/pretty_env_logger-0.4.0.crate /'''
 ## 
 ## [[stages]]
-## name = "dep-l-pretty_env_logger-0.4.0-682e69746a16e0c7"
+## name = "dep-n-pretty_env_logger-0.4.0-682e69746a16e0c7"
 ## script = '''
-## FROM rust-base AS dep-l-pretty_env_logger-0.4.0-682e69746a16e0c7
+## FROM rust-base AS dep-n-pretty_env_logger-0.4.0-682e69746a16e0c7
 ## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
@@ -4698,10 +4560,10 @@ COPY --from=dep-l-pretty_env_logger-0.4.0-682e69746a16e0c7 /tmp/clis-dbcc_2-2-1/
 ## name = "out-682e69746a16e0c7"
 ## script = """
 ## FROM scratch AS out-682e69746a16e0c7
-## COPY --from=dep-l-pretty_env_logger-0.4.0-682e69746a16e0c7 /tmp/clis-dbcc_2-2-1/release/deps/*-682e69746a16e0c7* /"""
+## COPY --from=dep-n-pretty_env_logger-0.4.0-682e69746a16e0c7 /tmp/clis-dbcc_2-2-1/release/deps/*-682e69746a16e0c7* /"""
 
 
-FROM rust-base AS dep-l-unicode-xid-0.2.1-f585407da4c0bf6f
+FROM rust-base AS dep-n-unicode-xid-0.2.1-f585407da4c0bf6f
 SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
@@ -4731,7 +4593,7 @@ RUN \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-f585407da4c0bf6f-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-f585407da4c0bf6f-errcode
 FROM scratch AS out-f585407da4c0bf6f
-COPY --from=dep-l-unicode-xid-0.2.1-f585407da4c0bf6f /tmp/clis-dbcc_2-2-1/release/deps/*-f585407da4c0bf6f* /
+COPY --from=dep-n-unicode-xid-0.2.1-f585407da4c0bf6f /tmp/clis-dbcc_2-2-1/release/deps/*-f585407da4c0bf6f* /
 
 ## this = "f585407da4c0bf6f"
 ## writes = [
@@ -4757,9 +4619,9 @@ COPY --from=dep-l-unicode-xid-0.2.1-f585407da4c0bf6f /tmp/clis-dbcc_2-2-1/releas
 ##   https://static.crates.io/crates/unicode-xid/unicode-xid-0.2.1.crate /'''
 ## 
 ## [[stages]]
-## name = "dep-l-unicode-xid-0.2.1-f585407da4c0bf6f"
+## name = "dep-n-unicode-xid-0.2.1-f585407da4c0bf6f"
 ## script = '''
-## FROM rust-base AS dep-l-unicode-xid-0.2.1-f585407da4c0bf6f
+## FROM rust-base AS dep-n-unicode-xid-0.2.1-f585407da4c0bf6f
 ## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
@@ -4793,10 +4655,10 @@ COPY --from=dep-l-unicode-xid-0.2.1-f585407da4c0bf6f /tmp/clis-dbcc_2-2-1/releas
 ## name = "out-f585407da4c0bf6f"
 ## script = """
 ## FROM scratch AS out-f585407da4c0bf6f
-## COPY --from=dep-l-unicode-xid-0.2.1-f585407da4c0bf6f /tmp/clis-dbcc_2-2-1/release/deps/*-f585407da4c0bf6f* /"""
+## COPY --from=dep-n-unicode-xid-0.2.1-f585407da4c0bf6f /tmp/clis-dbcc_2-2-1/release/deps/*-f585407da4c0bf6f* /"""
 
 
-FROM rust-base AS dep-l-proc-macro2-1.0.24-5eebdd82bed7d9de
+FROM rust-base AS dep-n-proc-macro2-1.0.24-5eebdd82bed7d9de
 SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
@@ -4829,7 +4691,7 @@ RUN \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-5eebdd82bed7d9de-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-5eebdd82bed7d9de-errcode
 FROM scratch AS out-5eebdd82bed7d9de
-COPY --from=dep-l-proc-macro2-1.0.24-5eebdd82bed7d9de /tmp/clis-dbcc_2-2-1/release/deps/*-5eebdd82bed7d9de* /
+COPY --from=dep-n-proc-macro2-1.0.24-5eebdd82bed7d9de /tmp/clis-dbcc_2-2-1/release/deps/*-5eebdd82bed7d9de* /
 
 ## this = "5eebdd82bed7d9de"
 ## deps = ["f585407da4c0bf6f"]
@@ -4954,15 +4816,13 @@ COPY --from=dep-l-proc-macro2-1.0.24-5eebdd82bed7d9de /tmp/clis-dbcc_2-2-1/relea
 ##     '{"$message_type":"diagnostic","message":"108 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 108 warnings emitted\u001b[0m\n\n"}',
 ## ]
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-f585407da4c0bf6f"
-## src = "/libunicode_xid-f585407da4c0bf6f.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-f585407da4c0bf6f.rmeta"
+## xtern = "libunicode_xid-f585407da4c0bf6f.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-f585407da4c0bf6f"
-## src = "/libunicode_xid-f585407da4c0bf6f.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-f585407da4c0bf6f.rlib"
+## xtern = "libunicode_xid-f585407da4c0bf6f.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -4976,9 +4836,9 @@ COPY --from=dep-l-proc-macro2-1.0.24-5eebdd82bed7d9de /tmp/clis-dbcc_2-2-1/relea
 ##   https://static.crates.io/crates/proc-macro2/proc-macro2-1.0.24.crate /'''
 ## 
 ## [[stages]]
-## name = "dep-l-proc-macro2-1.0.24-5eebdd82bed7d9de"
+## name = "dep-n-proc-macro2-1.0.24-5eebdd82bed7d9de"
 ## script = '''
-## FROM rust-base AS dep-l-proc-macro2-1.0.24-5eebdd82bed7d9de
+## FROM rust-base AS dep-n-proc-macro2-1.0.24-5eebdd82bed7d9de
 ## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
@@ -5015,10 +4875,10 @@ COPY --from=dep-l-proc-macro2-1.0.24-5eebdd82bed7d9de /tmp/clis-dbcc_2-2-1/relea
 ## name = "out-5eebdd82bed7d9de"
 ## script = """
 ## FROM scratch AS out-5eebdd82bed7d9de
-## COPY --from=dep-l-proc-macro2-1.0.24-5eebdd82bed7d9de /tmp/clis-dbcc_2-2-1/release/deps/*-5eebdd82bed7d9de* /"""
+## COPY --from=dep-n-proc-macro2-1.0.24-5eebdd82bed7d9de /tmp/clis-dbcc_2-2-1/release/deps/*-5eebdd82bed7d9de* /"""
 
 
-FROM rust-base AS dep-l-quote-1.0.7-0298ff41e604ba82
+FROM rust-base AS dep-n-quote-1.0.7-0298ff41e604ba82
 SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
@@ -5052,7 +4912,7 @@ RUN \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-0298ff41e604ba82-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-0298ff41e604ba82-errcode
 FROM scratch AS out-0298ff41e604ba82
-COPY --from=dep-l-quote-1.0.7-0298ff41e604ba82 /tmp/clis-dbcc_2-2-1/release/deps/*-0298ff41e604ba82* /
+COPY --from=dep-n-quote-1.0.7-0298ff41e604ba82 /tmp/clis-dbcc_2-2-1/release/deps/*-0298ff41e604ba82* /
 
 ## this = "0298ff41e604ba82"
 ## deps = [
@@ -5074,25 +4934,21 @@ COPY --from=dep-l-quote-1.0.7-0298ff41e604ba82 /tmp/clis-dbcc_2-2-1/release/deps
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-dbcc_2-2-1/release/deps/libquote-0298ff41e604ba82.rlib","emit":"link"}',
 ## ]
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-5eebdd82bed7d9de"
-## src = "/libproc_macro2-5eebdd82bed7d9de.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-5eebdd82bed7d9de.rmeta"
+## xtern = "libproc_macro2-5eebdd82bed7d9de.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-5eebdd82bed7d9de"
-## src = "/libproc_macro2-5eebdd82bed7d9de.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-5eebdd82bed7d9de.rlib"
+## xtern = "libproc_macro2-5eebdd82bed7d9de.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-f585407da4c0bf6f"
-## src = "/libunicode_xid-f585407da4c0bf6f.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-f585407da4c0bf6f.rmeta"
+## xtern = "libunicode_xid-f585407da4c0bf6f.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-f585407da4c0bf6f"
-## src = "/libunicode_xid-f585407da4c0bf6f.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-f585407da4c0bf6f.rlib"
+## xtern = "libunicode_xid-f585407da4c0bf6f.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -5106,9 +4962,9 @@ COPY --from=dep-l-quote-1.0.7-0298ff41e604ba82 /tmp/clis-dbcc_2-2-1/release/deps
 ##   https://static.crates.io/crates/quote/quote-1.0.7.crate /'''
 ## 
 ## [[stages]]
-## name = "dep-l-quote-1.0.7-0298ff41e604ba82"
+## name = "dep-n-quote-1.0.7-0298ff41e604ba82"
 ## script = '''
-## FROM rust-base AS dep-l-quote-1.0.7-0298ff41e604ba82
+## FROM rust-base AS dep-n-quote-1.0.7-0298ff41e604ba82
 ## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
@@ -5146,12 +5002,12 @@ COPY --from=dep-l-quote-1.0.7-0298ff41e604ba82 /tmp/clis-dbcc_2-2-1/release/deps
 ## name = "out-0298ff41e604ba82"
 ## script = """
 ## FROM scratch AS out-0298ff41e604ba82
-## COPY --from=dep-l-quote-1.0.7-0298ff41e604ba82 /tmp/clis-dbcc_2-2-1/release/deps/*-0298ff41e604ba82* /"""
+## COPY --from=dep-n-quote-1.0.7-0298ff41e604ba82 /tmp/clis-dbcc_2-2-1/release/deps/*-0298ff41e604ba82* /"""
 
 FROM scratch AS cratesio-hex-0.2.0
 ADD --chmod=0664 --unpack=true --checksum=sha256:d6a22814455d41612f41161581c2883c0c6a1c41852729b17d5ed88f01e153aa \
   https://static.crates.io/crates/hex/hex-0.2.0.crate /
-FROM rust-base AS dep-l-hex-0.2.0-f065076cf799d91a
+FROM rust-base AS dep-n-hex-0.2.0-f065076cf799d91a
 SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
@@ -5181,7 +5037,7 @@ RUN \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-f065076cf799d91a-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-f065076cf799d91a-errcode
 FROM scratch AS out-f065076cf799d91a
-COPY --from=dep-l-hex-0.2.0-f065076cf799d91a /tmp/clis-dbcc_2-2-1/release/deps/*-f065076cf799d91a* /
+COPY --from=dep-n-hex-0.2.0-f065076cf799d91a /tmp/clis-dbcc_2-2-1/release/deps/*-f065076cf799d91a* /
 
 ## this = "f065076cf799d91a"
 ## writes = [
@@ -5211,9 +5067,9 @@ COPY --from=dep-l-hex-0.2.0-f065076cf799d91a /tmp/clis-dbcc_2-2-1/release/deps/*
 ##   https://static.crates.io/crates/hex/hex-0.2.0.crate /'''
 ## 
 ## [[stages]]
-## name = "dep-l-hex-0.2.0-f065076cf799d91a"
+## name = "dep-n-hex-0.2.0-f065076cf799d91a"
 ## script = '''
-## FROM rust-base AS dep-l-hex-0.2.0-f065076cf799d91a
+## FROM rust-base AS dep-n-hex-0.2.0-f065076cf799d91a
 ## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
@@ -5247,12 +5103,12 @@ COPY --from=dep-l-hex-0.2.0-f065076cf799d91a /tmp/clis-dbcc_2-2-1/release/deps/*
 ## name = "out-f065076cf799d91a"
 ## script = """
 ## FROM scratch AS out-f065076cf799d91a
-## COPY --from=dep-l-hex-0.2.0-f065076cf799d91a /tmp/clis-dbcc_2-2-1/release/deps/*-f065076cf799d91a* /"""
+## COPY --from=dep-n-hex-0.2.0-f065076cf799d91a /tmp/clis-dbcc_2-2-1/release/deps/*-f065076cf799d91a* /"""
 
 FROM scratch AS cratesio-itertools-0.4.19
 ADD --chmod=0664 --unpack=true --checksum=sha256:c4a9b56eb56058f43dc66e58f40a214b2ccbc9f3df51861b63d51dec7b65bc3f \
   https://static.crates.io/crates/itertools/itertools-0.4.19.crate /
-FROM rust-base AS dep-l-itertools-0.4.19-2505039b047dad1a
+FROM rust-base AS dep-n-itertools-0.4.19-2505039b047dad1a
 SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
@@ -5282,7 +5138,7 @@ RUN \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-2505039b047dad1a-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-2505039b047dad1a-errcode
 FROM scratch AS out-2505039b047dad1a
-COPY --from=dep-l-itertools-0.4.19-2505039b047dad1a /tmp/clis-dbcc_2-2-1/release/deps/*-2505039b047dad1a* /
+COPY --from=dep-n-itertools-0.4.19-2505039b047dad1a /tmp/clis-dbcc_2-2-1/release/deps/*-2505039b047dad1a* /
 
 ## this = "2505039b047dad1a"
 ## writes = [
@@ -5332,9 +5188,9 @@ COPY --from=dep-l-itertools-0.4.19-2505039b047dad1a /tmp/clis-dbcc_2-2-1/release
 ##   https://static.crates.io/crates/itertools/itertools-0.4.19.crate /'''
 ## 
 ## [[stages]]
-## name = "dep-l-itertools-0.4.19-2505039b047dad1a"
+## name = "dep-n-itertools-0.4.19-2505039b047dad1a"
 ## script = '''
-## FROM rust-base AS dep-l-itertools-0.4.19-2505039b047dad1a
+## FROM rust-base AS dep-n-itertools-0.4.19-2505039b047dad1a
 ## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
@@ -5368,12 +5224,12 @@ COPY --from=dep-l-itertools-0.4.19-2505039b047dad1a /tmp/clis-dbcc_2-2-1/release
 ## name = "out-2505039b047dad1a"
 ## script = """
 ## FROM scratch AS out-2505039b047dad1a
-## COPY --from=dep-l-itertools-0.4.19-2505039b047dad1a /tmp/clis-dbcc_2-2-1/release/deps/*-2505039b047dad1a* /"""
+## COPY --from=dep-n-itertools-0.4.19-2505039b047dad1a /tmp/clis-dbcc_2-2-1/release/deps/*-2505039b047dad1a* /"""
 
 FROM scratch AS cratesio-bitflags-0.4.0
 ADD --chmod=0664 --unpack=true --checksum=sha256:8dead7461c1127cf637931a1e50934eb6eee8bff2f74433ac7909e9afcee04a3 \
   https://static.crates.io/crates/bitflags/bitflags-0.4.0.crate /
-FROM rust-base AS dep-l-bitflags-0.4.0-e976848f96abbbd4
+FROM rust-base AS dep-n-bitflags-0.4.0-e976848f96abbbd4
 SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
@@ -5403,7 +5259,7 @@ RUN \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-e976848f96abbbd4-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-e976848f96abbbd4-errcode
 FROM scratch AS out-e976848f96abbbd4
-COPY --from=dep-l-bitflags-0.4.0-e976848f96abbbd4 /tmp/clis-dbcc_2-2-1/release/deps/*-e976848f96abbbd4* /
+COPY --from=dep-n-bitflags-0.4.0-e976848f96abbbd4 /tmp/clis-dbcc_2-2-1/release/deps/*-e976848f96abbbd4* /
 
 ## this = "e976848f96abbbd4"
 ## writes = [
@@ -5433,9 +5289,9 @@ COPY --from=dep-l-bitflags-0.4.0-e976848f96abbbd4 /tmp/clis-dbcc_2-2-1/release/d
 ##   https://static.crates.io/crates/bitflags/bitflags-0.4.0.crate /'''
 ## 
 ## [[stages]]
-## name = "dep-l-bitflags-0.4.0-e976848f96abbbd4"
+## name = "dep-n-bitflags-0.4.0-e976848f96abbbd4"
 ## script = '''
-## FROM rust-base AS dep-l-bitflags-0.4.0-e976848f96abbbd4
+## FROM rust-base AS dep-n-bitflags-0.4.0-e976848f96abbbd4
 ## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
@@ -5469,12 +5325,12 @@ COPY --from=dep-l-bitflags-0.4.0-e976848f96abbbd4 /tmp/clis-dbcc_2-2-1/release/d
 ## name = "out-e976848f96abbbd4"
 ## script = """
 ## FROM scratch AS out-e976848f96abbbd4
-## COPY --from=dep-l-bitflags-0.4.0-e976848f96abbbd4 /tmp/clis-dbcc_2-2-1/release/deps/*-e976848f96abbbd4* /"""
+## COPY --from=dep-n-bitflags-0.4.0-e976848f96abbbd4 /tmp/clis-dbcc_2-2-1/release/deps/*-e976848f96abbbd4* /"""
 
 FROM scratch AS cratesio-nix-0.5.1
 ADD --chmod=0664 --unpack=true --checksum=sha256:bfb3ddedaa14746434a02041940495bf11325c22f6d36125d3bdd56090d50a79 \
   https://static.crates.io/crates/nix/nix-0.5.1.crate /
-FROM rust-base AS dep-l-nix-0.5.1-4ee318c191cb8959
+FROM rust-base AS dep-n-nix-0.5.1-4ee318c191cb8959
 SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
@@ -5508,7 +5364,7 @@ RUN \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-4ee318c191cb8959-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-4ee318c191cb8959-errcode
 FROM scratch AS out-4ee318c191cb8959
-COPY --from=dep-l-nix-0.5.1-4ee318c191cb8959 /tmp/clis-dbcc_2-2-1/release/deps/*-4ee318c191cb8959* /
+COPY --from=dep-n-nix-0.5.1-4ee318c191cb8959 /tmp/clis-dbcc_2-2-1/release/deps/*-4ee318c191cb8959* /
 
 ## this = "4ee318c191cb8959"
 ## deps = [
@@ -5754,25 +5610,21 @@ COPY --from=dep-l-nix-0.5.1-4ee318c191cb8959 /tmp/clis-dbcc_2-2-1/release/deps/*
 ##     '{"$message_type":"diagnostic","message":"223 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 223 warnings emitted\u001b[0m\n\n"}',
 ## ]
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-e976848f96abbbd4"
-## src = "/libbitflags-e976848f96abbbd4.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libbitflags-e976848f96abbbd4.rmeta"
+## xtern = "libbitflags-e976848f96abbbd4.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-e976848f96abbbd4"
-## src = "/libbitflags-e976848f96abbbd4.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libbitflags-e976848f96abbbd4.rlib"
+## xtern = "libbitflags-e976848f96abbbd4.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-087afb0c1713a9a6"
-## src = "/liblibc-087afb0c1713a9a6.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/liblibc-087afb0c1713a9a6.rmeta"
+## xtern = "liblibc-087afb0c1713a9a6.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-087afb0c1713a9a6"
-## src = "/liblibc-087afb0c1713a9a6.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/liblibc-087afb0c1713a9a6.rlib"
+## xtern = "liblibc-087afb0c1713a9a6.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -5786,9 +5638,9 @@ COPY --from=dep-l-nix-0.5.1-4ee318c191cb8959 /tmp/clis-dbcc_2-2-1/release/deps/*
 ##   https://static.crates.io/crates/nix/nix-0.5.1.crate /'''
 ## 
 ## [[stages]]
-## name = "dep-l-nix-0.5.1-4ee318c191cb8959"
+## name = "dep-n-nix-0.5.1-4ee318c191cb8959"
 ## script = '''
-## FROM rust-base AS dep-l-nix-0.5.1-4ee318c191cb8959
+## FROM rust-base AS dep-n-nix-0.5.1-4ee318c191cb8959
 ## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
@@ -5826,12 +5678,12 @@ COPY --from=dep-l-nix-0.5.1-4ee318c191cb8959 /tmp/clis-dbcc_2-2-1/release/deps/*
 ## name = "out-4ee318c191cb8959"
 ## script = """
 ## FROM scratch AS out-4ee318c191cb8959
-## COPY --from=dep-l-nix-0.5.1-4ee318c191cb8959 /tmp/clis-dbcc_2-2-1/release/deps/*-4ee318c191cb8959* /"""
+## COPY --from=dep-n-nix-0.5.1-4ee318c191cb8959 /tmp/clis-dbcc_2-2-1/release/deps/*-4ee318c191cb8959* /"""
 
 FROM scratch AS cratesio-try_from-0.2.2
 ADD --chmod=0664 --unpack=true --checksum=sha256:923a7ee3e97dbfe8685261beb4511cc9620a1252405d02693d43169729570111 \
   https://static.crates.io/crates/try_from/try_from-0.2.2.crate /
-FROM rust-base AS dep-l-try_from-0.2.2-35b125c45c1cafb3
+FROM rust-base AS dep-n-try_from-0.2.2-35b125c45c1cafb3
 SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
@@ -5861,7 +5713,7 @@ RUN \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-35b125c45c1cafb3-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-35b125c45c1cafb3-errcode
 FROM scratch AS out-35b125c45c1cafb3
-COPY --from=dep-l-try_from-0.2.2-35b125c45c1cafb3 /tmp/clis-dbcc_2-2-1/release/deps/*-35b125c45c1cafb3* /
+COPY --from=dep-n-try_from-0.2.2-35b125c45c1cafb3 /tmp/clis-dbcc_2-2-1/release/deps/*-35b125c45c1cafb3* /
 
 ## this = "35b125c45c1cafb3"
 ## writes = [
@@ -5890,9 +5742,9 @@ COPY --from=dep-l-try_from-0.2.2-35b125c45c1cafb3 /tmp/clis-dbcc_2-2-1/release/d
 ##   https://static.crates.io/crates/try_from/try_from-0.2.2.crate /'''
 ## 
 ## [[stages]]
-## name = "dep-l-try_from-0.2.2-35b125c45c1cafb3"
+## name = "dep-n-try_from-0.2.2-35b125c45c1cafb3"
 ## script = '''
-## FROM rust-base AS dep-l-try_from-0.2.2-35b125c45c1cafb3
+## FROM rust-base AS dep-n-try_from-0.2.2-35b125c45c1cafb3
 ## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
@@ -5926,12 +5778,12 @@ COPY --from=dep-l-try_from-0.2.2-35b125c45c1cafb3 /tmp/clis-dbcc_2-2-1/release/d
 ## name = "out-35b125c45c1cafb3"
 ## script = """
 ## FROM scratch AS out-35b125c45c1cafb3
-## COPY --from=dep-l-try_from-0.2.2-35b125c45c1cafb3 /tmp/clis-dbcc_2-2-1/release/deps/*-35b125c45c1cafb3* /"""
+## COPY --from=dep-n-try_from-0.2.2-35b125c45c1cafb3 /tmp/clis-dbcc_2-2-1/release/deps/*-35b125c45c1cafb3* /"""
 
 FROM scratch AS cratesio-socketcan-1.7.0
 ADD --chmod=0664 --unpack=true --checksum=sha256:3101efc6ef5af6f1c1a488241b469757b7a183baca63af958cd90e4696446c80 \
   https://static.crates.io/crates/socketcan/socketcan-1.7.0.crate /
-FROM rust-base AS dep-l-socketcan-1.7.0-7d72679ab99cdbe3
+FROM rust-base AS dep-n-socketcan-1.7.0-7d72679ab99cdbe3
 SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
@@ -5973,7 +5825,7 @@ RUN \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-7d72679ab99cdbe3-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-7d72679ab99cdbe3-errcode
 FROM scratch AS out-7d72679ab99cdbe3
-COPY --from=dep-l-socketcan-1.7.0-7d72679ab99cdbe3 /tmp/clis-dbcc_2-2-1/release/deps/*-7d72679ab99cdbe3* /
+COPY --from=dep-n-socketcan-1.7.0-7d72679ab99cdbe3 /tmp/clis-dbcc_2-2-1/release/deps/*-7d72679ab99cdbe3* /
 
 ## this = "7d72679ab99cdbe3"
 ## deps = [
@@ -6030,65 +5882,53 @@ COPY --from=dep-l-socketcan-1.7.0-7d72679ab99cdbe3 /tmp/clis-dbcc_2-2-1/release/
 ##     '{"$message_type":"diagnostic","message":"26 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 26 warnings emitted\u001b[0m\n\n"}',
 ## ]
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-f065076cf799d91a"
-## src = "/libhex-f065076cf799d91a.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libhex-f065076cf799d91a.rmeta"
+## xtern = "libhex-f065076cf799d91a.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-f065076cf799d91a"
-## src = "/libhex-f065076cf799d91a.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libhex-f065076cf799d91a.rlib"
+## xtern = "libhex-f065076cf799d91a.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-2505039b047dad1a"
-## src = "/libitertools-2505039b047dad1a.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libitertools-2505039b047dad1a.rmeta"
+## xtern = "libitertools-2505039b047dad1a.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-2505039b047dad1a"
-## src = "/libitertools-2505039b047dad1a.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libitertools-2505039b047dad1a.rlib"
+## xtern = "libitertools-2505039b047dad1a.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-087afb0c1713a9a6"
-## src = "/liblibc-087afb0c1713a9a6.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/liblibc-087afb0c1713a9a6.rmeta"
+## xtern = "liblibc-087afb0c1713a9a6.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-087afb0c1713a9a6"
-## src = "/liblibc-087afb0c1713a9a6.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/liblibc-087afb0c1713a9a6.rlib"
+## xtern = "liblibc-087afb0c1713a9a6.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-4ee318c191cb8959"
-## src = "/libnix-4ee318c191cb8959.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libnix-4ee318c191cb8959.rmeta"
+## xtern = "libnix-4ee318c191cb8959.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-4ee318c191cb8959"
-## src = "/libnix-4ee318c191cb8959.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libnix-4ee318c191cb8959.rlib"
+## xtern = "libnix-4ee318c191cb8959.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-e976848f96abbbd4"
-## src = "/libbitflags-e976848f96abbbd4.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libbitflags-e976848f96abbbd4.rmeta"
+## xtern = "libbitflags-e976848f96abbbd4.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-e976848f96abbbd4"
-## src = "/libbitflags-e976848f96abbbd4.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libbitflags-e976848f96abbbd4.rlib"
+## xtern = "libbitflags-e976848f96abbbd4.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-35b125c45c1cafb3"
-## src = "/libtry_from-35b125c45c1cafb3.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libtry_from-35b125c45c1cafb3.rmeta"
+## xtern = "libtry_from-35b125c45c1cafb3.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-35b125c45c1cafb3"
-## src = "/libtry_from-35b125c45c1cafb3.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libtry_from-35b125c45c1cafb3.rlib"
+## xtern = "libtry_from-35b125c45c1cafb3.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -6102,9 +5942,9 @@ COPY --from=dep-l-socketcan-1.7.0-7d72679ab99cdbe3 /tmp/clis-dbcc_2-2-1/release/
 ##   https://static.crates.io/crates/socketcan/socketcan-1.7.0.crate /'''
 ## 
 ## [[stages]]
-## name = "dep-l-socketcan-1.7.0-7d72679ab99cdbe3"
+## name = "dep-n-socketcan-1.7.0-7d72679ab99cdbe3"
 ## script = '''
-## FROM rust-base AS dep-l-socketcan-1.7.0-7d72679ab99cdbe3
+## FROM rust-base AS dep-n-socketcan-1.7.0-7d72679ab99cdbe3
 ## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
@@ -6150,12 +5990,12 @@ COPY --from=dep-l-socketcan-1.7.0-7d72679ab99cdbe3 /tmp/clis-dbcc_2-2-1/release/
 ## name = "out-7d72679ab99cdbe3"
 ## script = """
 ## FROM scratch AS out-7d72679ab99cdbe3
-## COPY --from=dep-l-socketcan-1.7.0-7d72679ab99cdbe3 /tmp/clis-dbcc_2-2-1/release/deps/*-7d72679ab99cdbe3* /"""
+## COPY --from=dep-n-socketcan-1.7.0-7d72679ab99cdbe3 /tmp/clis-dbcc_2-2-1/release/deps/*-7d72679ab99cdbe3* /"""
 
 FROM scratch AS cratesio-ansi_term-0.11.0
 ADD --chmod=0664 --unpack=true --checksum=sha256:ee49baf6cb617b853aa8d93bf420db2383fab46d314482ca2803b40d5fde979b \
   https://static.crates.io/crates/ansi_term/ansi_term-0.11.0.crate /
-FROM rust-base AS dep-l-ansi_term-0.11.0-320ef4b8ee2e57f9
+FROM rust-base AS dep-n-ansi_term-0.11.0-320ef4b8ee2e57f9
 SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
@@ -6185,7 +6025,7 @@ RUN \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-320ef4b8ee2e57f9-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-320ef4b8ee2e57f9-errcode
 FROM scratch AS out-320ef4b8ee2e57f9
-COPY --from=dep-l-ansi_term-0.11.0-320ef4b8ee2e57f9 /tmp/clis-dbcc_2-2-1/release/deps/*-320ef4b8ee2e57f9* /
+COPY --from=dep-n-ansi_term-0.11.0-320ef4b8ee2e57f9 /tmp/clis-dbcc_2-2-1/release/deps/*-320ef4b8ee2e57f9* /
 
 ## this = "320ef4b8ee2e57f9"
 ## writes = [
@@ -6224,9 +6064,9 @@ COPY --from=dep-l-ansi_term-0.11.0-320ef4b8ee2e57f9 /tmp/clis-dbcc_2-2-1/release
 ##   https://static.crates.io/crates/ansi_term/ansi_term-0.11.0.crate /'''
 ## 
 ## [[stages]]
-## name = "dep-l-ansi_term-0.11.0-320ef4b8ee2e57f9"
+## name = "dep-n-ansi_term-0.11.0-320ef4b8ee2e57f9"
 ## script = '''
-## FROM rust-base AS dep-l-ansi_term-0.11.0-320ef4b8ee2e57f9
+## FROM rust-base AS dep-n-ansi_term-0.11.0-320ef4b8ee2e57f9
 ## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
@@ -6260,12 +6100,12 @@ COPY --from=dep-l-ansi_term-0.11.0-320ef4b8ee2e57f9 /tmp/clis-dbcc_2-2-1/release
 ## name = "out-320ef4b8ee2e57f9"
 ## script = """
 ## FROM scratch AS out-320ef4b8ee2e57f9
-## COPY --from=dep-l-ansi_term-0.11.0-320ef4b8ee2e57f9 /tmp/clis-dbcc_2-2-1/release/deps/*-320ef4b8ee2e57f9* /"""
+## COPY --from=dep-n-ansi_term-0.11.0-320ef4b8ee2e57f9 /tmp/clis-dbcc_2-2-1/release/deps/*-320ef4b8ee2e57f9* /"""
 
 FROM scratch AS cratesio-bitflags-1.2.1
 ADD --chmod=0664 --unpack=true --checksum=sha256:cf1de2fe8c75bc145a2f577add951f8134889b4795d47466a54a5c846d691693 \
   https://static.crates.io/crates/bitflags/bitflags-1.2.1.crate /
-FROM rust-base AS dep-l-bitflags-1.2.1-d19718ebe5a0c815
+FROM rust-base AS dep-n-bitflags-1.2.1-d19718ebe5a0c815
 SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
@@ -6296,7 +6136,7 @@ RUN \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-d19718ebe5a0c815-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-d19718ebe5a0c815-errcode
 FROM scratch AS out-d19718ebe5a0c815
-COPY --from=dep-l-bitflags-1.2.1-d19718ebe5a0c815 /tmp/clis-dbcc_2-2-1/release/deps/*-d19718ebe5a0c815* /
+COPY --from=dep-n-bitflags-1.2.1-d19718ebe5a0c815 /tmp/clis-dbcc_2-2-1/release/deps/*-d19718ebe5a0c815* /
 
 ## this = "d19718ebe5a0c815"
 ## writes = [
@@ -6325,9 +6165,9 @@ COPY --from=dep-l-bitflags-1.2.1-d19718ebe5a0c815 /tmp/clis-dbcc_2-2-1/release/d
 ##   https://static.crates.io/crates/bitflags/bitflags-1.2.1.crate /'''
 ## 
 ## [[stages]]
-## name = "dep-l-bitflags-1.2.1-d19718ebe5a0c815"
+## name = "dep-n-bitflags-1.2.1-d19718ebe5a0c815"
 ## script = '''
-## FROM rust-base AS dep-l-bitflags-1.2.1-d19718ebe5a0c815
+## FROM rust-base AS dep-n-bitflags-1.2.1-d19718ebe5a0c815
 ## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
@@ -6362,12 +6202,12 @@ COPY --from=dep-l-bitflags-1.2.1-d19718ebe5a0c815 /tmp/clis-dbcc_2-2-1/release/d
 ## name = "out-d19718ebe5a0c815"
 ## script = """
 ## FROM scratch AS out-d19718ebe5a0c815
-## COPY --from=dep-l-bitflags-1.2.1-d19718ebe5a0c815 /tmp/clis-dbcc_2-2-1/release/deps/*-d19718ebe5a0c815* /"""
+## COPY --from=dep-n-bitflags-1.2.1-d19718ebe5a0c815 /tmp/clis-dbcc_2-2-1/release/deps/*-d19718ebe5a0c815* /"""
 
 FROM scratch AS cratesio-strsim-0.8.0
 ADD --chmod=0664 --unpack=true --checksum=sha256:8ea5119cdb4c55b55d432abb513a0429384878c15dde60cc77b1c99de1a95a6a \
   https://static.crates.io/crates/strsim/strsim-0.8.0.crate /
-FROM rust-base AS dep-l-strsim-0.8.0-ada2690f4d94d615
+FROM rust-base AS dep-n-strsim-0.8.0-ada2690f4d94d615
 SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
@@ -6397,7 +6237,7 @@ RUN \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-ada2690f4d94d615-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-ada2690f4d94d615-errcode
 FROM scratch AS out-ada2690f4d94d615
-COPY --from=dep-l-strsim-0.8.0-ada2690f4d94d615 /tmp/clis-dbcc_2-2-1/release/deps/*-ada2690f4d94d615* /
+COPY --from=dep-n-strsim-0.8.0-ada2690f4d94d615 /tmp/clis-dbcc_2-2-1/release/deps/*-ada2690f4d94d615* /
 
 ## this = "ada2690f4d94d615"
 ## writes = [
@@ -6423,9 +6263,9 @@ COPY --from=dep-l-strsim-0.8.0-ada2690f4d94d615 /tmp/clis-dbcc_2-2-1/release/dep
 ##   https://static.crates.io/crates/strsim/strsim-0.8.0.crate /'''
 ## 
 ## [[stages]]
-## name = "dep-l-strsim-0.8.0-ada2690f4d94d615"
+## name = "dep-n-strsim-0.8.0-ada2690f4d94d615"
 ## script = '''
-## FROM rust-base AS dep-l-strsim-0.8.0-ada2690f4d94d615
+## FROM rust-base AS dep-n-strsim-0.8.0-ada2690f4d94d615
 ## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
@@ -6459,12 +6299,12 @@ COPY --from=dep-l-strsim-0.8.0-ada2690f4d94d615 /tmp/clis-dbcc_2-2-1/release/dep
 ## name = "out-ada2690f4d94d615"
 ## script = """
 ## FROM scratch AS out-ada2690f4d94d615
-## COPY --from=dep-l-strsim-0.8.0-ada2690f4d94d615 /tmp/clis-dbcc_2-2-1/release/deps/*-ada2690f4d94d615* /"""
+## COPY --from=dep-n-strsim-0.8.0-ada2690f4d94d615 /tmp/clis-dbcc_2-2-1/release/deps/*-ada2690f4d94d615* /"""
 
 FROM scratch AS cratesio-unicode-width-0.1.8
 ADD --chmod=0664 --unpack=true --checksum=sha256:9337591893a19b88d8d87f2cec1e73fad5cdfd10e5a6f349f498ad6ea2ffb1e3 \
   https://static.crates.io/crates/unicode-width/unicode-width-0.1.8.crate /
-FROM rust-base AS dep-l-unicode-width-0.1.8-e55c633902343b3a
+FROM rust-base AS dep-n-unicode-width-0.1.8-e55c633902343b3a
 SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
@@ -6494,7 +6334,7 @@ RUN \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-e55c633902343b3a-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-e55c633902343b3a-errcode
 FROM scratch AS out-e55c633902343b3a
-COPY --from=dep-l-unicode-width-0.1.8-e55c633902343b3a /tmp/clis-dbcc_2-2-1/release/deps/*-e55c633902343b3a* /
+COPY --from=dep-n-unicode-width-0.1.8-e55c633902343b3a /tmp/clis-dbcc_2-2-1/release/deps/*-e55c633902343b3a* /
 
 ## this = "e55c633902343b3a"
 ## writes = [
@@ -6520,9 +6360,9 @@ COPY --from=dep-l-unicode-width-0.1.8-e55c633902343b3a /tmp/clis-dbcc_2-2-1/rele
 ##   https://static.crates.io/crates/unicode-width/unicode-width-0.1.8.crate /'''
 ## 
 ## [[stages]]
-## name = "dep-l-unicode-width-0.1.8-e55c633902343b3a"
+## name = "dep-n-unicode-width-0.1.8-e55c633902343b3a"
 ## script = '''
-## FROM rust-base AS dep-l-unicode-width-0.1.8-e55c633902343b3a
+## FROM rust-base AS dep-n-unicode-width-0.1.8-e55c633902343b3a
 ## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
@@ -6556,12 +6396,12 @@ COPY --from=dep-l-unicode-width-0.1.8-e55c633902343b3a /tmp/clis-dbcc_2-2-1/rele
 ## name = "out-e55c633902343b3a"
 ## script = """
 ## FROM scratch AS out-e55c633902343b3a
-## COPY --from=dep-l-unicode-width-0.1.8-e55c633902343b3a /tmp/clis-dbcc_2-2-1/release/deps/*-e55c633902343b3a* /"""
+## COPY --from=dep-n-unicode-width-0.1.8-e55c633902343b3a /tmp/clis-dbcc_2-2-1/release/deps/*-e55c633902343b3a* /"""
 
 FROM scratch AS cratesio-textwrap-0.11.0
 ADD --chmod=0664 --unpack=true --checksum=sha256:d326610f408c7a4eb6f51c37c330e496b08506c9457c9d34287ecc38809fb060 \
   https://static.crates.io/crates/textwrap/textwrap-0.11.0.crate /
-FROM rust-base AS dep-l-textwrap-0.11.0-b7e82f41d8b26a14
+FROM rust-base AS dep-n-textwrap-0.11.0-b7e82f41d8b26a14
 SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
@@ -6593,7 +6433,7 @@ RUN \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-b7e82f41d8b26a14-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-b7e82f41d8b26a14-errcode
 FROM scratch AS out-b7e82f41d8b26a14
-COPY --from=dep-l-textwrap-0.11.0-b7e82f41d8b26a14 /tmp/clis-dbcc_2-2-1/release/deps/*-b7e82f41d8b26a14* /
+COPY --from=dep-n-textwrap-0.11.0-b7e82f41d8b26a14 /tmp/clis-dbcc_2-2-1/release/deps/*-b7e82f41d8b26a14* /
 
 ## this = "b7e82f41d8b26a14"
 ## deps = ["e55c633902343b3a"]
@@ -6609,15 +6449,13 @@ COPY --from=dep-l-textwrap-0.11.0-b7e82f41d8b26a14 /tmp/clis-dbcc_2-2-1/release/
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-dbcc_2-2-1/release/deps/libtextwrap-b7e82f41d8b26a14.rlib","emit":"link"}',
 ## ]
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-e55c633902343b3a"
-## src = "/libunicode_width-e55c633902343b3a.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_width-e55c633902343b3a.rmeta"
+## xtern = "libunicode_width-e55c633902343b3a.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-e55c633902343b3a"
-## src = "/libunicode_width-e55c633902343b3a.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_width-e55c633902343b3a.rlib"
+## xtern = "libunicode_width-e55c633902343b3a.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -6631,9 +6469,9 @@ COPY --from=dep-l-textwrap-0.11.0-b7e82f41d8b26a14 /tmp/clis-dbcc_2-2-1/release/
 ##   https://static.crates.io/crates/textwrap/textwrap-0.11.0.crate /'''
 ## 
 ## [[stages]]
-## name = "dep-l-textwrap-0.11.0-b7e82f41d8b26a14"
+## name = "dep-n-textwrap-0.11.0-b7e82f41d8b26a14"
 ## script = '''
-## FROM rust-base AS dep-l-textwrap-0.11.0-b7e82f41d8b26a14
+## FROM rust-base AS dep-n-textwrap-0.11.0-b7e82f41d8b26a14
 ## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
@@ -6669,12 +6507,12 @@ COPY --from=dep-l-textwrap-0.11.0-b7e82f41d8b26a14 /tmp/clis-dbcc_2-2-1/release/
 ## name = "out-b7e82f41d8b26a14"
 ## script = """
 ## FROM scratch AS out-b7e82f41d8b26a14
-## COPY --from=dep-l-textwrap-0.11.0-b7e82f41d8b26a14 /tmp/clis-dbcc_2-2-1/release/deps/*-b7e82f41d8b26a14* /"""
+## COPY --from=dep-n-textwrap-0.11.0-b7e82f41d8b26a14 /tmp/clis-dbcc_2-2-1/release/deps/*-b7e82f41d8b26a14* /"""
 
 FROM scratch AS cratesio-vec_map-0.8.2
 ADD --chmod=0664 --unpack=true --checksum=sha256:f1bddf1187be692e79c5ffeab891132dfb0f236ed36a43c7ed39f1165ee20191 \
   https://static.crates.io/crates/vec_map/vec_map-0.8.2.crate /
-FROM rust-base AS dep-l-vec_map-0.8.2-3fc8ab5befc6e8f4
+FROM rust-base AS dep-n-vec_map-0.8.2-3fc8ab5befc6e8f4
 SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
@@ -6704,7 +6542,7 @@ RUN \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-3fc8ab5befc6e8f4-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-3fc8ab5befc6e8f4-errcode
 FROM scratch AS out-3fc8ab5befc6e8f4
-COPY --from=dep-l-vec_map-0.8.2-3fc8ab5befc6e8f4 /tmp/clis-dbcc_2-2-1/release/deps/*-3fc8ab5befc6e8f4* /
+COPY --from=dep-n-vec_map-0.8.2-3fc8ab5befc6e8f4 /tmp/clis-dbcc_2-2-1/release/deps/*-3fc8ab5befc6e8f4* /
 
 ## this = "3fc8ab5befc6e8f4"
 ## writes = [
@@ -6734,9 +6572,9 @@ COPY --from=dep-l-vec_map-0.8.2-3fc8ab5befc6e8f4 /tmp/clis-dbcc_2-2-1/release/de
 ##   https://static.crates.io/crates/vec_map/vec_map-0.8.2.crate /'''
 ## 
 ## [[stages]]
-## name = "dep-l-vec_map-0.8.2-3fc8ab5befc6e8f4"
+## name = "dep-n-vec_map-0.8.2-3fc8ab5befc6e8f4"
 ## script = '''
-## FROM rust-base AS dep-l-vec_map-0.8.2-3fc8ab5befc6e8f4
+## FROM rust-base AS dep-n-vec_map-0.8.2-3fc8ab5befc6e8f4
 ## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
@@ -6770,12 +6608,12 @@ COPY --from=dep-l-vec_map-0.8.2-3fc8ab5befc6e8f4 /tmp/clis-dbcc_2-2-1/release/de
 ## name = "out-3fc8ab5befc6e8f4"
 ## script = """
 ## FROM scratch AS out-3fc8ab5befc6e8f4
-## COPY --from=dep-l-vec_map-0.8.2-3fc8ab5befc6e8f4 /tmp/clis-dbcc_2-2-1/release/deps/*-3fc8ab5befc6e8f4* /"""
+## COPY --from=dep-n-vec_map-0.8.2-3fc8ab5befc6e8f4 /tmp/clis-dbcc_2-2-1/release/deps/*-3fc8ab5befc6e8f4* /"""
 
 FROM scratch AS cratesio-clap-2.33.3
 ADD --chmod=0664 --unpack=true --checksum=sha256:37e58ac78573c40708d45522f0d80fa2f01cc4f9b4e2bf749807255454312002 \
   https://static.crates.io/crates/clap/clap-2.33.3.crate /
-FROM rust-base AS dep-l-clap-2.33.3-5a839c872643e159
+FROM rust-base AS dep-n-clap-2.33.3-5a839c872643e159
 SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
@@ -6821,7 +6659,7 @@ RUN \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-5a839c872643e159-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-5a839c872643e159-errcode
 FROM scratch AS out-5a839c872643e159
-COPY --from=dep-l-clap-2.33.3-5a839c872643e159 /tmp/clis-dbcc_2-2-1/release/deps/*-5a839c872643e159* /
+COPY --from=dep-n-clap-2.33.3-5a839c872643e159 /tmp/clis-dbcc_2-2-1/release/deps/*-5a839c872643e159* /
 
 ## this = "5a839c872643e159"
 ## deps = [
@@ -6938,85 +6776,69 @@ COPY --from=dep-l-clap-2.33.3-5a839c872643e159 /tmp/clis-dbcc_2-2-1/release/deps
 ##     '{"$message_type":"diagnostic","message":"82 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 82 warnings emitted\u001b[0m\n\n"}',
 ## ]
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-320ef4b8ee2e57f9"
-## src = "/libansi_term-320ef4b8ee2e57f9.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libansi_term-320ef4b8ee2e57f9.rmeta"
+## xtern = "libansi_term-320ef4b8ee2e57f9.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-320ef4b8ee2e57f9"
-## src = "/libansi_term-320ef4b8ee2e57f9.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libansi_term-320ef4b8ee2e57f9.rlib"
+## xtern = "libansi_term-320ef4b8ee2e57f9.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-737035cdf92a82de"
-## src = "/libatty-737035cdf92a82de.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libatty-737035cdf92a82de.rmeta"
+## xtern = "libatty-737035cdf92a82de.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-737035cdf92a82de"
-## src = "/libatty-737035cdf92a82de.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libatty-737035cdf92a82de.rlib"
+## xtern = "libatty-737035cdf92a82de.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-087afb0c1713a9a6"
-## src = "/liblibc-087afb0c1713a9a6.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/liblibc-087afb0c1713a9a6.rmeta"
+## xtern = "liblibc-087afb0c1713a9a6.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-087afb0c1713a9a6"
-## src = "/liblibc-087afb0c1713a9a6.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/liblibc-087afb0c1713a9a6.rlib"
+## xtern = "liblibc-087afb0c1713a9a6.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-d19718ebe5a0c815"
-## src = "/libbitflags-d19718ebe5a0c815.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libbitflags-d19718ebe5a0c815.rmeta"
+## xtern = "libbitflags-d19718ebe5a0c815.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-d19718ebe5a0c815"
-## src = "/libbitflags-d19718ebe5a0c815.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libbitflags-d19718ebe5a0c815.rlib"
+## xtern = "libbitflags-d19718ebe5a0c815.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-ada2690f4d94d615"
-## src = "/libstrsim-ada2690f4d94d615.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libstrsim-ada2690f4d94d615.rmeta"
+## xtern = "libstrsim-ada2690f4d94d615.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-ada2690f4d94d615"
-## src = "/libstrsim-ada2690f4d94d615.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libstrsim-ada2690f4d94d615.rlib"
+## xtern = "libstrsim-ada2690f4d94d615.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-b7e82f41d8b26a14"
-## src = "/libtextwrap-b7e82f41d8b26a14.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libtextwrap-b7e82f41d8b26a14.rmeta"
+## xtern = "libtextwrap-b7e82f41d8b26a14.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-b7e82f41d8b26a14"
-## src = "/libtextwrap-b7e82f41d8b26a14.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libtextwrap-b7e82f41d8b26a14.rlib"
+## xtern = "libtextwrap-b7e82f41d8b26a14.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-e55c633902343b3a"
-## src = "/libunicode_width-e55c633902343b3a.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_width-e55c633902343b3a.rmeta"
+## xtern = "libunicode_width-e55c633902343b3a.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-e55c633902343b3a"
-## src = "/libunicode_width-e55c633902343b3a.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_width-e55c633902343b3a.rlib"
+## xtern = "libunicode_width-e55c633902343b3a.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-3fc8ab5befc6e8f4"
-## src = "/libvec_map-3fc8ab5befc6e8f4.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libvec_map-3fc8ab5befc6e8f4.rmeta"
+## xtern = "libvec_map-3fc8ab5befc6e8f4.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-3fc8ab5befc6e8f4"
-## src = "/libvec_map-3fc8ab5befc6e8f4.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libvec_map-3fc8ab5befc6e8f4.rlib"
+## xtern = "libvec_map-3fc8ab5befc6e8f4.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -7030,9 +6852,9 @@ COPY --from=dep-l-clap-2.33.3-5a839c872643e159 /tmp/clis-dbcc_2-2-1/release/deps
 ##   https://static.crates.io/crates/clap/clap-2.33.3.crate /'''
 ## 
 ## [[stages]]
-## name = "dep-l-clap-2.33.3-5a839c872643e159"
+## name = "dep-n-clap-2.33.3-5a839c872643e159"
 ## script = '''
-## FROM rust-base AS dep-l-clap-2.33.3-5a839c872643e159
+## FROM rust-base AS dep-n-clap-2.33.3-5a839c872643e159
 ## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
@@ -7082,10 +6904,10 @@ COPY --from=dep-l-clap-2.33.3-5a839c872643e159 /tmp/clis-dbcc_2-2-1/release/deps
 ## name = "out-5a839c872643e159"
 ## script = """
 ## FROM scratch AS out-5a839c872643e159
-## COPY --from=dep-l-clap-2.33.3-5a839c872643e159 /tmp/clis-dbcc_2-2-1/release/deps/*-5a839c872643e159* /"""
+## COPY --from=dep-n-clap-2.33.3-5a839c872643e159 /tmp/clis-dbcc_2-2-1/release/deps/*-5a839c872643e159* /"""
 
 
-FROM rust-base AS dep-l-unicode-segmentation-1.6.0-0711d9c6f9e71290
+FROM rust-base AS dep-n-unicode-segmentation-1.6.0-0711d9c6f9e71290
 SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
@@ -7115,7 +6937,7 @@ RUN \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-0711d9c6f9e71290-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-0711d9c6f9e71290-errcode
 FROM scratch AS out-0711d9c6f9e71290
-COPY --from=dep-l-unicode-segmentation-1.6.0-0711d9c6f9e71290 /tmp/clis-dbcc_2-2-1/release/deps/*-0711d9c6f9e71290* /
+COPY --from=dep-n-unicode-segmentation-1.6.0-0711d9c6f9e71290 /tmp/clis-dbcc_2-2-1/release/deps/*-0711d9c6f9e71290* /
 
 ## this = "0711d9c6f9e71290"
 ## writes = [
@@ -7145,9 +6967,9 @@ COPY --from=dep-l-unicode-segmentation-1.6.0-0711d9c6f9e71290 /tmp/clis-dbcc_2-2
 ##   https://static.crates.io/crates/unicode-segmentation/unicode-segmentation-1.6.0.crate /'''
 ## 
 ## [[stages]]
-## name = "dep-l-unicode-segmentation-1.6.0-0711d9c6f9e71290"
+## name = "dep-n-unicode-segmentation-1.6.0-0711d9c6f9e71290"
 ## script = '''
-## FROM rust-base AS dep-l-unicode-segmentation-1.6.0-0711d9c6f9e71290
+## FROM rust-base AS dep-n-unicode-segmentation-1.6.0-0711d9c6f9e71290
 ## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
@@ -7181,10 +7003,10 @@ COPY --from=dep-l-unicode-segmentation-1.6.0-0711d9c6f9e71290 /tmp/clis-dbcc_2-2
 ## name = "out-0711d9c6f9e71290"
 ## script = """
 ## FROM scratch AS out-0711d9c6f9e71290
-## COPY --from=dep-l-unicode-segmentation-1.6.0-0711d9c6f9e71290 /tmp/clis-dbcc_2-2-1/release/deps/*-0711d9c6f9e71290* /"""
+## COPY --from=dep-n-unicode-segmentation-1.6.0-0711d9c6f9e71290 /tmp/clis-dbcc_2-2-1/release/deps/*-0711d9c6f9e71290* /"""
 
 
-FROM rust-base AS dep-l-heck-0.3.1-41892b3573d1a97c
+FROM rust-base AS dep-n-heck-0.3.1-41892b3573d1a97c
 SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
@@ -7216,7 +7038,7 @@ RUN \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-41892b3573d1a97c-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-41892b3573d1a97c-errcode
 FROM scratch AS out-41892b3573d1a97c
-COPY --from=dep-l-heck-0.3.1-41892b3573d1a97c /tmp/clis-dbcc_2-2-1/release/deps/*-41892b3573d1a97c* /
+COPY --from=dep-n-heck-0.3.1-41892b3573d1a97c /tmp/clis-dbcc_2-2-1/release/deps/*-41892b3573d1a97c* /
 
 ## this = "41892b3573d1a97c"
 ## deps = ["0711d9c6f9e71290"]
@@ -7232,15 +7054,13 @@ COPY --from=dep-l-heck-0.3.1-41892b3573d1a97c /tmp/clis-dbcc_2-2-1/release/deps/
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-dbcc_2-2-1/release/deps/libheck-41892b3573d1a97c.rlib","emit":"link"}',
 ## ]
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-0711d9c6f9e71290"
-## src = "/libunicode_segmentation-0711d9c6f9e71290.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_segmentation-0711d9c6f9e71290.rmeta"
+## xtern = "libunicode_segmentation-0711d9c6f9e71290.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-0711d9c6f9e71290"
-## src = "/libunicode_segmentation-0711d9c6f9e71290.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_segmentation-0711d9c6f9e71290.rlib"
+## xtern = "libunicode_segmentation-0711d9c6f9e71290.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -7254,9 +7074,9 @@ COPY --from=dep-l-heck-0.3.1-41892b3573d1a97c /tmp/clis-dbcc_2-2-1/release/deps/
 ##   https://static.crates.io/crates/heck/heck-0.3.1.crate /'''
 ## 
 ## [[stages]]
-## name = "dep-l-heck-0.3.1-41892b3573d1a97c"
+## name = "dep-n-heck-0.3.1-41892b3573d1a97c"
 ## script = '''
-## FROM rust-base AS dep-l-heck-0.3.1-41892b3573d1a97c
+## FROM rust-base AS dep-n-heck-0.3.1-41892b3573d1a97c
 ## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
@@ -7292,12 +7112,12 @@ COPY --from=dep-l-heck-0.3.1-41892b3573d1a97c /tmp/clis-dbcc_2-2-1/release/deps/
 ## name = "out-41892b3573d1a97c"
 ## script = """
 ## FROM scratch AS out-41892b3573d1a97c
-## COPY --from=dep-l-heck-0.3.1-41892b3573d1a97c /tmp/clis-dbcc_2-2-1/release/deps/*-41892b3573d1a97c* /"""
+## COPY --from=dep-n-heck-0.3.1-41892b3573d1a97c /tmp/clis-dbcc_2-2-1/release/deps/*-41892b3573d1a97c* /"""
 
 FROM scratch AS cratesio-proc-macro-error-attr-1.0.4
 ADD --chmod=0664 --unpack=true --checksum=sha256:a1be40180e52ecc98ad80b184934baf3d0d29f979574e439af5a55274b35f869 \
   https://static.crates.io/crates/proc-macro-error-attr/proc-macro-error-attr-1.0.4.crate /
-FROM rust-base AS dep-p-proc-macro-error-attr-1.0.4-5abbb4d0b3e50e85
+FROM rust-base AS dep-n-proc-macro-error-attr-1.0.4-5abbb4d0b3e50e85
 SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
@@ -7334,7 +7154,7 @@ RUN \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-5abbb4d0b3e50e85-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-5abbb4d0b3e50e85-errcode
 FROM scratch AS out-5abbb4d0b3e50e85
-COPY --from=dep-p-proc-macro-error-attr-1.0.4-5abbb4d0b3e50e85 /tmp/clis-dbcc_2-2-1/release/deps/*-5abbb4d0b3e50e85* /
+COPY --from=dep-n-proc-macro-error-attr-1.0.4-5abbb4d0b3e50e85 /tmp/clis-dbcc_2-2-1/release/deps/*-5abbb4d0b3e50e85* /
 
 ## this = "5abbb4d0b3e50e85"
 ## deps = [
@@ -7347,7 +7167,6 @@ COPY --from=dep-p-proc-macro-error-attr-1.0.4-5abbb4d0b3e50e85 /tmp/clis-dbcc_2-
 ##     "ca80afcc82eeec0a",
 ##     "dd5debcb2b51fc02",
 ## ]
-## is_proc_macro = true
 ## writes = [
 ##     "deps/proc_macro_error_attr-5abbb4d0b3e50e85.d",
 ##     "deps/libproc_macro_error_attr-5abbb4d0b3e50e85.so",
@@ -7360,35 +7179,29 @@ COPY --from=dep-p-proc-macro-error-attr-1.0.4-5abbb4d0b3e50e85 /tmp/clis-dbcc_2-
 ##     '{"$message_type":"diagnostic","message":"2 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 2 warnings emitted\u001b[0m\n\n"}',
 ## ]
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-80b37ce9903d0def"
-## src = "/libproc_macro2-80b37ce9903d0def.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-80b37ce9903d0def.rmeta"
+## xtern = "libproc_macro2-80b37ce9903d0def.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-80b37ce9903d0def"
-## src = "/libproc_macro2-80b37ce9903d0def.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-80b37ce9903d0def.rlib"
+## xtern = "libproc_macro2-80b37ce9903d0def.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-ca80afcc82eeec0a"
-## src = "/libunicode_xid-ca80afcc82eeec0a.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-ca80afcc82eeec0a.rmeta"
+## xtern = "libunicode_xid-ca80afcc82eeec0a.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-ca80afcc82eeec0a"
-## src = "/libunicode_xid-ca80afcc82eeec0a.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-ca80afcc82eeec0a.rlib"
+## xtern = "libunicode_xid-ca80afcc82eeec0a.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-dd5debcb2b51fc02"
-## src = "/libquote-dd5debcb2b51fc02.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libquote-dd5debcb2b51fc02.rmeta"
+## xtern = "libquote-dd5debcb2b51fc02.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-dd5debcb2b51fc02"
-## src = "/libquote-dd5debcb2b51fc02.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libquote-dd5debcb2b51fc02.rlib"
+## xtern = "libquote-dd5debcb2b51fc02.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -7402,9 +7215,9 @@ COPY --from=dep-p-proc-macro-error-attr-1.0.4-5abbb4d0b3e50e85 /tmp/clis-dbcc_2-
 ##   https://static.crates.io/crates/proc-macro-error-attr/proc-macro-error-attr-1.0.4.crate /'''
 ## 
 ## [[stages]]
-## name = "dep-p-proc-macro-error-attr-1.0.4-5abbb4d0b3e50e85"
+## name = "dep-n-proc-macro-error-attr-1.0.4-5abbb4d0b3e50e85"
 ## script = '''
-## FROM rust-base AS dep-p-proc-macro-error-attr-1.0.4-5abbb4d0b3e50e85
+## FROM rust-base AS dep-n-proc-macro-error-attr-1.0.4-5abbb4d0b3e50e85
 ## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
@@ -7445,12 +7258,12 @@ COPY --from=dep-p-proc-macro-error-attr-1.0.4-5abbb4d0b3e50e85 /tmp/clis-dbcc_2-
 ## name = "out-5abbb4d0b3e50e85"
 ## script = """
 ## FROM scratch AS out-5abbb4d0b3e50e85
-## COPY --from=dep-p-proc-macro-error-attr-1.0.4-5abbb4d0b3e50e85 /tmp/clis-dbcc_2-2-1/release/deps/*-5abbb4d0b3e50e85* /"""
+## COPY --from=dep-n-proc-macro-error-attr-1.0.4-5abbb4d0b3e50e85 /tmp/clis-dbcc_2-2-1/release/deps/*-5abbb4d0b3e50e85* /"""
 
 FROM scratch AS cratesio-proc-macro-error-1.0.4
 ADD --chmod=0664 --unpack=true --checksum=sha256:da25490ff9892aab3fcf7c36f08cfb902dd3e71ca0f9f9517bea02a73a5ce38c \
   https://static.crates.io/crates/proc-macro-error/proc-macro-error-1.0.4.crate /
-FROM rust-base AS dep-l-proc-macro-error-1.0.4-8d3142ab9efe4ea8
+FROM rust-base AS dep-n-proc-macro-error-1.0.4-8d3142ab9efe4ea8
 SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
@@ -7490,7 +7303,7 @@ RUN \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-8d3142ab9efe4ea8-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-8d3142ab9efe4ea8-errcode
 FROM scratch AS out-8d3142ab9efe4ea8
-COPY --from=dep-l-proc-macro-error-1.0.4-8d3142ab9efe4ea8 /tmp/clis-dbcc_2-2-1/release/deps/*-8d3142ab9efe4ea8* /
+COPY --from=dep-n-proc-macro-error-1.0.4-8d3142ab9efe4ea8 /tmp/clis-dbcc_2-2-1/release/deps/*-8d3142ab9efe4ea8* /
 
 ## this = "8d3142ab9efe4ea8"
 ## deps = [
@@ -7523,50 +7336,41 @@ COPY --from=dep-l-proc-macro-error-1.0.4-8d3142ab9efe4ea8 /tmp/clis-dbcc_2-2-1/r
 ##     '{"$message_type":"diagnostic","message":"4 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 4 warnings emitted\u001b[0m\n\n"}',
 ## ]
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-5abbb4d0b3e50e85"
-## src = "/libproc_macro_error_attr-5abbb4d0b3e50e85.so"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro_error_attr-5abbb4d0b3e50e85.so"
+## xtern = "libproc_macro_error_attr-5abbb4d0b3e50e85.so"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-80b37ce9903d0def"
-## src = "/libproc_macro2-80b37ce9903d0def.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-80b37ce9903d0def.rmeta"
+## xtern = "libproc_macro2-80b37ce9903d0def.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-80b37ce9903d0def"
-## src = "/libproc_macro2-80b37ce9903d0def.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-80b37ce9903d0def.rlib"
+## xtern = "libproc_macro2-80b37ce9903d0def.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-ca80afcc82eeec0a"
-## src = "/libunicode_xid-ca80afcc82eeec0a.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-ca80afcc82eeec0a.rmeta"
+## xtern = "libunicode_xid-ca80afcc82eeec0a.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-ca80afcc82eeec0a"
-## src = "/libunicode_xid-ca80afcc82eeec0a.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-ca80afcc82eeec0a.rlib"
+## xtern = "libunicode_xid-ca80afcc82eeec0a.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-dd5debcb2b51fc02"
-## src = "/libquote-dd5debcb2b51fc02.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libquote-dd5debcb2b51fc02.rmeta"
+## xtern = "libquote-dd5debcb2b51fc02.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-dd5debcb2b51fc02"
-## src = "/libquote-dd5debcb2b51fc02.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libquote-dd5debcb2b51fc02.rlib"
+## xtern = "libquote-dd5debcb2b51fc02.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-bbffa8c7e6a16356"
-## src = "/libsyn-bbffa8c7e6a16356.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libsyn-bbffa8c7e6a16356.rmeta"
+## xtern = "libsyn-bbffa8c7e6a16356.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-bbffa8c7e6a16356"
-## src = "/libsyn-bbffa8c7e6a16356.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libsyn-bbffa8c7e6a16356.rlib"
+## xtern = "libsyn-bbffa8c7e6a16356.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -7580,9 +7384,9 @@ COPY --from=dep-l-proc-macro-error-1.0.4-8d3142ab9efe4ea8 /tmp/clis-dbcc_2-2-1/r
 ##   https://static.crates.io/crates/proc-macro-error/proc-macro-error-1.0.4.crate /'''
 ## 
 ## [[stages]]
-## name = "dep-l-proc-macro-error-1.0.4-8d3142ab9efe4ea8"
+## name = "dep-n-proc-macro-error-1.0.4-8d3142ab9efe4ea8"
 ## script = '''
-## FROM rust-base AS dep-l-proc-macro-error-1.0.4-8d3142ab9efe4ea8
+## FROM rust-base AS dep-n-proc-macro-error-1.0.4-8d3142ab9efe4ea8
 ## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
@@ -7626,12 +7430,12 @@ COPY --from=dep-l-proc-macro-error-1.0.4-8d3142ab9efe4ea8 /tmp/clis-dbcc_2-2-1/r
 ## name = "out-8d3142ab9efe4ea8"
 ## script = """
 ## FROM scratch AS out-8d3142ab9efe4ea8
-## COPY --from=dep-l-proc-macro-error-1.0.4-8d3142ab9efe4ea8 /tmp/clis-dbcc_2-2-1/release/deps/*-8d3142ab9efe4ea8* /"""
+## COPY --from=dep-n-proc-macro-error-1.0.4-8d3142ab9efe4ea8 /tmp/clis-dbcc_2-2-1/release/deps/*-8d3142ab9efe4ea8* /"""
 
 FROM scratch AS cratesio-structopt-derive-0.4.13
 ADD --chmod=0664 --unpack=true --checksum=sha256:65e51c492f9e23a220534971ff5afc14037289de430e3c83f9daf6a1b6ae91e8 \
   https://static.crates.io/crates/structopt-derive/structopt-derive-0.4.13.crate /
-FROM rust-base AS dep-p-structopt-derive-0.4.13-0187f3c8576aef3b
+FROM rust-base AS dep-n-structopt-derive-0.4.13-0187f3c8576aef3b
 SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
@@ -7676,7 +7480,7 @@ RUN \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-0187f3c8576aef3b-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-0187f3c8576aef3b-errcode
 FROM scratch AS out-0187f3c8576aef3b
-COPY --from=dep-p-structopt-derive-0.4.13-0187f3c8576aef3b /tmp/clis-dbcc_2-2-1/release/deps/*-0187f3c8576aef3b* /
+COPY --from=dep-n-structopt-derive-0.4.13-0187f3c8576aef3b /tmp/clis-dbcc_2-2-1/release/deps/*-0187f3c8576aef3b* /
 
 ## this = "0187f3c8576aef3b"
 ## deps = [
@@ -7699,7 +7503,6 @@ COPY --from=dep-p-structopt-derive-0.4.13-0187f3c8576aef3b /tmp/clis-dbcc_2-2-1/
 ##     "dd5debcb2b51fc02",
 ##     "bbffa8c7e6a16356",
 ## ]
-## is_proc_macro = true
 ## writes = [
 ##     "deps/structopt_derive-0187f3c8576aef3b.d",
 ##     "deps/libstructopt_derive-0187f3c8576aef3b.so",
@@ -7715,80 +7518,65 @@ COPY --from=dep-p-structopt-derive-0.4.13-0187f3c8576aef3b /tmp/clis-dbcc_2-2-1/
 ##     '{"$message_type":"diagnostic","message":"5 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 5 warnings emitted\u001b[0m\n\n"}',
 ## ]
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-41892b3573d1a97c"
-## src = "/libheck-41892b3573d1a97c.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libheck-41892b3573d1a97c.rmeta"
+## xtern = "libheck-41892b3573d1a97c.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-41892b3573d1a97c"
-## src = "/libheck-41892b3573d1a97c.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libheck-41892b3573d1a97c.rlib"
+## xtern = "libheck-41892b3573d1a97c.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-0711d9c6f9e71290"
-## src = "/libunicode_segmentation-0711d9c6f9e71290.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_segmentation-0711d9c6f9e71290.rmeta"
+## xtern = "libunicode_segmentation-0711d9c6f9e71290.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-0711d9c6f9e71290"
-## src = "/libunicode_segmentation-0711d9c6f9e71290.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_segmentation-0711d9c6f9e71290.rlib"
+## xtern = "libunicode_segmentation-0711d9c6f9e71290.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-8d3142ab9efe4ea8"
-## src = "/libproc_macro_error-8d3142ab9efe4ea8.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro_error-8d3142ab9efe4ea8.rmeta"
+## xtern = "libproc_macro_error-8d3142ab9efe4ea8.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-8d3142ab9efe4ea8"
-## src = "/libproc_macro_error-8d3142ab9efe4ea8.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro_error-8d3142ab9efe4ea8.rlib"
+## xtern = "libproc_macro_error-8d3142ab9efe4ea8.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-5abbb4d0b3e50e85"
-## src = "/libproc_macro_error_attr-5abbb4d0b3e50e85.so"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro_error_attr-5abbb4d0b3e50e85.so"
+## xtern = "libproc_macro_error_attr-5abbb4d0b3e50e85.so"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-80b37ce9903d0def"
-## src = "/libproc_macro2-80b37ce9903d0def.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-80b37ce9903d0def.rmeta"
+## xtern = "libproc_macro2-80b37ce9903d0def.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-80b37ce9903d0def"
-## src = "/libproc_macro2-80b37ce9903d0def.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-80b37ce9903d0def.rlib"
+## xtern = "libproc_macro2-80b37ce9903d0def.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-ca80afcc82eeec0a"
-## src = "/libunicode_xid-ca80afcc82eeec0a.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-ca80afcc82eeec0a.rmeta"
+## xtern = "libunicode_xid-ca80afcc82eeec0a.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-ca80afcc82eeec0a"
-## src = "/libunicode_xid-ca80afcc82eeec0a.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-ca80afcc82eeec0a.rlib"
+## xtern = "libunicode_xid-ca80afcc82eeec0a.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-dd5debcb2b51fc02"
-## src = "/libquote-dd5debcb2b51fc02.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libquote-dd5debcb2b51fc02.rmeta"
+## xtern = "libquote-dd5debcb2b51fc02.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-dd5debcb2b51fc02"
-## src = "/libquote-dd5debcb2b51fc02.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libquote-dd5debcb2b51fc02.rlib"
+## xtern = "libquote-dd5debcb2b51fc02.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-bbffa8c7e6a16356"
-## src = "/libsyn-bbffa8c7e6a16356.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libsyn-bbffa8c7e6a16356.rmeta"
+## xtern = "libsyn-bbffa8c7e6a16356.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-bbffa8c7e6a16356"
-## src = "/libsyn-bbffa8c7e6a16356.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libsyn-bbffa8c7e6a16356.rlib"
+## xtern = "libsyn-bbffa8c7e6a16356.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -7802,9 +7590,9 @@ COPY --from=dep-p-structopt-derive-0.4.13-0187f3c8576aef3b /tmp/clis-dbcc_2-2-1/
 ##   https://static.crates.io/crates/structopt-derive/structopt-derive-0.4.13.crate /'''
 ## 
 ## [[stages]]
-## name = "dep-p-structopt-derive-0.4.13-0187f3c8576aef3b"
+## name = "dep-n-structopt-derive-0.4.13-0187f3c8576aef3b"
 ## script = '''
-## FROM rust-base AS dep-p-structopt-derive-0.4.13-0187f3c8576aef3b
+## FROM rust-base AS dep-n-structopt-derive-0.4.13-0187f3c8576aef3b
 ## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
@@ -7853,12 +7641,12 @@ COPY --from=dep-p-structopt-derive-0.4.13-0187f3c8576aef3b /tmp/clis-dbcc_2-2-1/
 ## name = "out-0187f3c8576aef3b"
 ## script = """
 ## FROM scratch AS out-0187f3c8576aef3b
-## COPY --from=dep-p-structopt-derive-0.4.13-0187f3c8576aef3b /tmp/clis-dbcc_2-2-1/release/deps/*-0187f3c8576aef3b* /"""
+## COPY --from=dep-n-structopt-derive-0.4.13-0187f3c8576aef3b /tmp/clis-dbcc_2-2-1/release/deps/*-0187f3c8576aef3b* /"""
 
 FROM scratch AS cratesio-structopt-0.3.20
 ADD --chmod=0664 --unpack=true --checksum=sha256:126d630294ec449fae0b16f964e35bf3c74f940da9dca17ee9b905f7b3112eb8 \
   https://static.crates.io/crates/structopt/structopt-0.3.20.crate /
-FROM rust-base AS dep-l-structopt-0.3.20-05c5d104c65b93b5
+FROM rust-base AS dep-n-structopt-0.3.20-05c5d104c65b93b5
 SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
@@ -7924,7 +7712,7 @@ RUN \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-05c5d104c65b93b5-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-05c5d104c65b93b5-errcode
 FROM scratch AS out-05c5d104c65b93b5
-COPY --from=dep-l-structopt-0.3.20-05c5d104c65b93b5 /tmp/clis-dbcc_2-2-1/release/deps/*-05c5d104c65b93b5* /
+COPY --from=dep-n-structopt-0.3.20-05c5d104c65b93b5 /tmp/clis-dbcc_2-2-1/release/deps/*-05c5d104c65b93b5* /
 
 ## this = "05c5d104c65b93b5"
 ## deps = [
@@ -7980,185 +7768,149 @@ COPY --from=dep-l-structopt-0.3.20-05c5d104c65b93b5 /tmp/clis-dbcc_2-2-1/release
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-dbcc_2-2-1/release/deps/libstructopt-05c5d104c65b93b5.rlib","emit":"link"}',
 ## ]
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-5a839c872643e159"
-## src = "/libclap-5a839c872643e159.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libclap-5a839c872643e159.rmeta"
+## xtern = "libclap-5a839c872643e159.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-5a839c872643e159"
-## src = "/libclap-5a839c872643e159.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libclap-5a839c872643e159.rlib"
+## xtern = "libclap-5a839c872643e159.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-320ef4b8ee2e57f9"
-## src = "/libansi_term-320ef4b8ee2e57f9.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libansi_term-320ef4b8ee2e57f9.rmeta"
+## xtern = "libansi_term-320ef4b8ee2e57f9.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-320ef4b8ee2e57f9"
-## src = "/libansi_term-320ef4b8ee2e57f9.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libansi_term-320ef4b8ee2e57f9.rlib"
+## xtern = "libansi_term-320ef4b8ee2e57f9.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-737035cdf92a82de"
-## src = "/libatty-737035cdf92a82de.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libatty-737035cdf92a82de.rmeta"
+## xtern = "libatty-737035cdf92a82de.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-737035cdf92a82de"
-## src = "/libatty-737035cdf92a82de.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libatty-737035cdf92a82de.rlib"
+## xtern = "libatty-737035cdf92a82de.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-087afb0c1713a9a6"
-## src = "/liblibc-087afb0c1713a9a6.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/liblibc-087afb0c1713a9a6.rmeta"
+## xtern = "liblibc-087afb0c1713a9a6.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-087afb0c1713a9a6"
-## src = "/liblibc-087afb0c1713a9a6.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/liblibc-087afb0c1713a9a6.rlib"
+## xtern = "liblibc-087afb0c1713a9a6.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-d19718ebe5a0c815"
-## src = "/libbitflags-d19718ebe5a0c815.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libbitflags-d19718ebe5a0c815.rmeta"
+## xtern = "libbitflags-d19718ebe5a0c815.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-d19718ebe5a0c815"
-## src = "/libbitflags-d19718ebe5a0c815.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libbitflags-d19718ebe5a0c815.rlib"
+## xtern = "libbitflags-d19718ebe5a0c815.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-ada2690f4d94d615"
-## src = "/libstrsim-ada2690f4d94d615.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libstrsim-ada2690f4d94d615.rmeta"
+## xtern = "libstrsim-ada2690f4d94d615.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-ada2690f4d94d615"
-## src = "/libstrsim-ada2690f4d94d615.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libstrsim-ada2690f4d94d615.rlib"
+## xtern = "libstrsim-ada2690f4d94d615.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-b7e82f41d8b26a14"
-## src = "/libtextwrap-b7e82f41d8b26a14.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libtextwrap-b7e82f41d8b26a14.rmeta"
+## xtern = "libtextwrap-b7e82f41d8b26a14.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-b7e82f41d8b26a14"
-## src = "/libtextwrap-b7e82f41d8b26a14.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libtextwrap-b7e82f41d8b26a14.rlib"
+## xtern = "libtextwrap-b7e82f41d8b26a14.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-e55c633902343b3a"
-## src = "/libunicode_width-e55c633902343b3a.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_width-e55c633902343b3a.rmeta"
+## xtern = "libunicode_width-e55c633902343b3a.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-e55c633902343b3a"
-## src = "/libunicode_width-e55c633902343b3a.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_width-e55c633902343b3a.rlib"
+## xtern = "libunicode_width-e55c633902343b3a.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-3fc8ab5befc6e8f4"
-## src = "/libvec_map-3fc8ab5befc6e8f4.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libvec_map-3fc8ab5befc6e8f4.rmeta"
+## xtern = "libvec_map-3fc8ab5befc6e8f4.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-3fc8ab5befc6e8f4"
-## src = "/libvec_map-3fc8ab5befc6e8f4.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libvec_map-3fc8ab5befc6e8f4.rlib"
+## xtern = "libvec_map-3fc8ab5befc6e8f4.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-a79af56de238e2b5"
-## src = "/liblazy_static-a79af56de238e2b5.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/liblazy_static-a79af56de238e2b5.rmeta"
+## xtern = "liblazy_static-a79af56de238e2b5.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-a79af56de238e2b5"
-## src = "/liblazy_static-a79af56de238e2b5.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/liblazy_static-a79af56de238e2b5.rlib"
+## xtern = "liblazy_static-a79af56de238e2b5.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-0187f3c8576aef3b"
-## src = "/libstructopt_derive-0187f3c8576aef3b.so"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libstructopt_derive-0187f3c8576aef3b.so"
+## xtern = "libstructopt_derive-0187f3c8576aef3b.so"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-41892b3573d1a97c"
-## src = "/libheck-41892b3573d1a97c.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libheck-41892b3573d1a97c.rmeta"
+## xtern = "libheck-41892b3573d1a97c.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-41892b3573d1a97c"
-## src = "/libheck-41892b3573d1a97c.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libheck-41892b3573d1a97c.rlib"
+## xtern = "libheck-41892b3573d1a97c.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-0711d9c6f9e71290"
-## src = "/libunicode_segmentation-0711d9c6f9e71290.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_segmentation-0711d9c6f9e71290.rmeta"
+## xtern = "libunicode_segmentation-0711d9c6f9e71290.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-0711d9c6f9e71290"
-## src = "/libunicode_segmentation-0711d9c6f9e71290.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_segmentation-0711d9c6f9e71290.rlib"
+## xtern = "libunicode_segmentation-0711d9c6f9e71290.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-8d3142ab9efe4ea8"
-## src = "/libproc_macro_error-8d3142ab9efe4ea8.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro_error-8d3142ab9efe4ea8.rmeta"
+## xtern = "libproc_macro_error-8d3142ab9efe4ea8.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-8d3142ab9efe4ea8"
-## src = "/libproc_macro_error-8d3142ab9efe4ea8.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro_error-8d3142ab9efe4ea8.rlib"
+## xtern = "libproc_macro_error-8d3142ab9efe4ea8.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-5abbb4d0b3e50e85"
-## src = "/libproc_macro_error_attr-5abbb4d0b3e50e85.so"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro_error_attr-5abbb4d0b3e50e85.so"
+## xtern = "libproc_macro_error_attr-5abbb4d0b3e50e85.so"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-80b37ce9903d0def"
-## src = "/libproc_macro2-80b37ce9903d0def.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-80b37ce9903d0def.rmeta"
+## xtern = "libproc_macro2-80b37ce9903d0def.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-80b37ce9903d0def"
-## src = "/libproc_macro2-80b37ce9903d0def.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-80b37ce9903d0def.rlib"
+## xtern = "libproc_macro2-80b37ce9903d0def.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-ca80afcc82eeec0a"
-## src = "/libunicode_xid-ca80afcc82eeec0a.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-ca80afcc82eeec0a.rmeta"
+## xtern = "libunicode_xid-ca80afcc82eeec0a.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-ca80afcc82eeec0a"
-## src = "/libunicode_xid-ca80afcc82eeec0a.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-ca80afcc82eeec0a.rlib"
+## xtern = "libunicode_xid-ca80afcc82eeec0a.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-dd5debcb2b51fc02"
-## src = "/libquote-dd5debcb2b51fc02.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libquote-dd5debcb2b51fc02.rmeta"
+## xtern = "libquote-dd5debcb2b51fc02.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-dd5debcb2b51fc02"
-## src = "/libquote-dd5debcb2b51fc02.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libquote-dd5debcb2b51fc02.rlib"
+## xtern = "libquote-dd5debcb2b51fc02.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-bbffa8c7e6a16356"
-## src = "/libsyn-bbffa8c7e6a16356.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libsyn-bbffa8c7e6a16356.rmeta"
+## xtern = "libsyn-bbffa8c7e6a16356.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-bbffa8c7e6a16356"
-## src = "/libsyn-bbffa8c7e6a16356.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libsyn-bbffa8c7e6a16356.rlib"
+## xtern = "libsyn-bbffa8c7e6a16356.rlib"
 ## 
 ## [[stages]]
 ## name = "rust-base"
@@ -8172,9 +7924,9 @@ COPY --from=dep-l-structopt-0.3.20-05c5d104c65b93b5 /tmp/clis-dbcc_2-2-1/release
 ##   https://static.crates.io/crates/structopt/structopt-0.3.20.crate /'''
 ## 
 ## [[stages]]
-## name = "dep-l-structopt-0.3.20-05c5d104c65b93b5"
+## name = "dep-n-structopt-0.3.20-05c5d104c65b93b5"
 ## script = '''
-## FROM rust-base AS dep-l-structopt-0.3.20-05c5d104c65b93b5
+## FROM rust-base AS dep-n-structopt-0.3.20-05c5d104c65b93b5
 ## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
@@ -8244,12 +7996,12 @@ COPY --from=dep-l-structopt-0.3.20-05c5d104c65b93b5 /tmp/clis-dbcc_2-2-1/release
 ## name = "out-05c5d104c65b93b5"
 ## script = """
 ## FROM scratch AS out-05c5d104c65b93b5
-## COPY --from=dep-l-structopt-0.3.20-05c5d104c65b93b5 /tmp/clis-dbcc_2-2-1/release/deps/*-05c5d104c65b93b5* /"""
+## COPY --from=dep-n-structopt-0.3.20-05c5d104c65b93b5 /tmp/clis-dbcc_2-2-1/release/deps/*-05c5d104c65b93b5* /"""
 
 FROM scratch AS cratesio-dbcc-2.2.1
 ADD --chmod=0664 --unpack=true --checksum=sha256:6bbc56797a8a9d3a4045bdc1c8ac8fc8abd4b6610e085a727e33acaa01de9050 \
   https://static.crates.io/crates/dbcc/dbcc-2.2.1.crate /
-FROM rust-base AS dep-l-dbcc-2.2.1-e0edff43b19741a4
+FROM rust-base AS dep-n-dbcc-2.2.1-e0edff43b19741a4
 SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
@@ -8385,7 +8137,7 @@ RUN \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-e0edff43b19741a4-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-e0edff43b19741a4-errcode
 FROM scratch AS out-e0edff43b19741a4
-COPY --from=dep-l-dbcc-2.2.1-e0edff43b19741a4 /tmp/clis-dbcc_2-2-1/release/deps/*-e0edff43b19741a4* /
+COPY --from=dep-n-dbcc-2.2.1-e0edff43b19741a4 /tmp/clis-dbcc_2-2-1/release/deps/*-e0edff43b19741a4* /
 
 ## this = "e0edff43b19741a4"
 ## deps = [
@@ -8514,530 +8266,425 @@ COPY --from=dep-l-dbcc-2.2.1-e0edff43b19741a4 /tmp/clis-dbcc_2-2-1/release/deps/
 ##     '{"$message_type":"diagnostic","message":"2 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 2 warnings emitted\u001b[0m\n\n"}',
 ## ]
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-90ca44a8caf54d0f"
-## src = "/libblake2-90ca44a8caf54d0f.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libblake2-90ca44a8caf54d0f.rmeta"
+## xtern = "libblake2-90ca44a8caf54d0f.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-90ca44a8caf54d0f"
-## src = "/libblake2-90ca44a8caf54d0f.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libblake2-90ca44a8caf54d0f.rlib"
+## xtern = "libblake2-90ca44a8caf54d0f.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-208f428f6e945660"
-## src = "/libbyte_tools-208f428f6e945660.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libbyte_tools-208f428f6e945660.rmeta"
+## xtern = "libbyte_tools-208f428f6e945660.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-208f428f6e945660"
-## src = "/libbyte_tools-208f428f6e945660.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libbyte_tools-208f428f6e945660.rlib"
+## xtern = "libbyte_tools-208f428f6e945660.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-c92b10e2fa1c82cb"
-## src = "/libcrypto_mac-c92b10e2fa1c82cb.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libcrypto_mac-c92b10e2fa1c82cb.rmeta"
+## xtern = "libcrypto_mac-c92b10e2fa1c82cb.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-c92b10e2fa1c82cb"
-## src = "/libcrypto_mac-c92b10e2fa1c82cb.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libcrypto_mac-c92b10e2fa1c82cb.rlib"
+## xtern = "libcrypto_mac-c92b10e2fa1c82cb.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-0afa135837d93e68"
-## src = "/libgeneric_array-0afa135837d93e68.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libgeneric_array-0afa135837d93e68.rmeta"
+## xtern = "libgeneric_array-0afa135837d93e68.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-0afa135837d93e68"
-## src = "/libgeneric_array-0afa135837d93e68.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libgeneric_array-0afa135837d93e68.rlib"
+## xtern = "libgeneric_array-0afa135837d93e68.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-0c59626b95871fe7"
-## src = "/libtypenum-0c59626b95871fe7.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libtypenum-0c59626b95871fe7.rmeta"
+## xtern = "libtypenum-0c59626b95871fe7.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-0c59626b95871fe7"
-## src = "/libtypenum-0c59626b95871fe7.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libtypenum-0c59626b95871fe7.rlib"
+## xtern = "libtypenum-0c59626b95871fe7.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-fe593aa0503da824"
-## src = "/libsubtle-fe593aa0503da824.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libsubtle-fe593aa0503da824.rmeta"
+## xtern = "libsubtle-fe593aa0503da824.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-fe593aa0503da824"
-## src = "/libsubtle-fe593aa0503da824.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libsubtle-fe593aa0503da824.rlib"
+## xtern = "libsubtle-fe593aa0503da824.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-3c7631a805111659"
-## src = "/libdigest-3c7631a805111659.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libdigest-3c7631a805111659.rmeta"
+## xtern = "libdigest-3c7631a805111659.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-3c7631a805111659"
-## src = "/libdigest-3c7631a805111659.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libdigest-3c7631a805111659.rlib"
+## xtern = "libdigest-3c7631a805111659.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-3e36cb37043b614a"
-## src = "/libopaque_debug-3e36cb37043b614a.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libopaque_debug-3e36cb37043b614a.rmeta"
+## xtern = "libopaque_debug-3e36cb37043b614a.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-3e36cb37043b614a"
-## src = "/libopaque_debug-3e36cb37043b614a.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libopaque_debug-3e36cb37043b614a.rlib"
+## xtern = "libopaque_debug-3e36cb37043b614a.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-593834cb44ccbead"
-## src = "/libcan_dbc-593834cb44ccbead.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libcan_dbc-593834cb44ccbead.rmeta"
+## xtern = "libcan_dbc-593834cb44ccbead.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-593834cb44ccbead"
-## src = "/libcan_dbc-593834cb44ccbead.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libcan_dbc-593834cb44ccbead.rlib"
+## xtern = "libcan_dbc-593834cb44ccbead.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-10105863fb18eb2a"
-## src = "/libderive_getters-10105863fb18eb2a.so"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libderive_getters-10105863fb18eb2a.so"
+## xtern = "libderive_getters-10105863fb18eb2a.so"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-80b37ce9903d0def"
-## src = "/libproc_macro2-80b37ce9903d0def.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-80b37ce9903d0def.rmeta"
+## xtern = "libproc_macro2-80b37ce9903d0def.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-80b37ce9903d0def"
-## src = "/libproc_macro2-80b37ce9903d0def.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-80b37ce9903d0def.rlib"
+## xtern = "libproc_macro2-80b37ce9903d0def.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-ca80afcc82eeec0a"
-## src = "/libunicode_xid-ca80afcc82eeec0a.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-ca80afcc82eeec0a.rmeta"
+## xtern = "libunicode_xid-ca80afcc82eeec0a.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-ca80afcc82eeec0a"
-## src = "/libunicode_xid-ca80afcc82eeec0a.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-ca80afcc82eeec0a.rlib"
+## xtern = "libunicode_xid-ca80afcc82eeec0a.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-dd5debcb2b51fc02"
-## src = "/libquote-dd5debcb2b51fc02.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libquote-dd5debcb2b51fc02.rmeta"
+## xtern = "libquote-dd5debcb2b51fc02.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-dd5debcb2b51fc02"
-## src = "/libquote-dd5debcb2b51fc02.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libquote-dd5debcb2b51fc02.rlib"
+## xtern = "libquote-dd5debcb2b51fc02.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-bbffa8c7e6a16356"
-## src = "/libsyn-bbffa8c7e6a16356.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libsyn-bbffa8c7e6a16356.rmeta"
+## xtern = "libsyn-bbffa8c7e6a16356.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-bbffa8c7e6a16356"
-## src = "/libsyn-bbffa8c7e6a16356.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libsyn-bbffa8c7e6a16356.rlib"
+## xtern = "libsyn-bbffa8c7e6a16356.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-cd5fc4bcd4e040ed"
-## src = "/libnom-cd5fc4bcd4e040ed.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libnom-cd5fc4bcd4e040ed.rmeta"
+## xtern = "libnom-cd5fc4bcd4e040ed.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-cd5fc4bcd4e040ed"
-## src = "/libnom-cd5fc4bcd4e040ed.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libnom-cd5fc4bcd4e040ed.rlib"
+## xtern = "libnom-cd5fc4bcd4e040ed.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-c93fd10415a641fd"
-## src = "/libmemchr-c93fd10415a641fd.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libmemchr-c93fd10415a641fd.rmeta"
+## xtern = "libmemchr-c93fd10415a641fd.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-c93fd10415a641fd"
-## src = "/libmemchr-c93fd10415a641fd.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libmemchr-c93fd10415a641fd.rlib"
+## xtern = "libmemchr-c93fd10415a641fd.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-7d0dcf7e7b45836f"
-## src = "/libheck-7d0dcf7e7b45836f.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libheck-7d0dcf7e7b45836f.rmeta"
+## xtern = "libheck-7d0dcf7e7b45836f.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-7d0dcf7e7b45836f"
-## src = "/libheck-7d0dcf7e7b45836f.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libheck-7d0dcf7e7b45836f.rlib"
+## xtern = "libheck-7d0dcf7e7b45836f.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-b06e8bcc96549ef0"
-## src = "/libunicode_segmentation-b06e8bcc96549ef0.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_segmentation-b06e8bcc96549ef0.rmeta"
+## xtern = "libunicode_segmentation-b06e8bcc96549ef0.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-b06e8bcc96549ef0"
-## src = "/libunicode_segmentation-b06e8bcc96549ef0.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_segmentation-b06e8bcc96549ef0.rlib"
+## xtern = "libunicode_segmentation-b06e8bcc96549ef0.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-09be6f37eb701f15"
-## src = "/liblog-09be6f37eb701f15.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/liblog-09be6f37eb701f15.rmeta"
+## xtern = "liblog-09be6f37eb701f15.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-09be6f37eb701f15"
-## src = "/liblog-09be6f37eb701f15.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/liblog-09be6f37eb701f15.rlib"
+## xtern = "liblog-09be6f37eb701f15.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-abefcc22b095b628"
-## src = "/libcfg_if-abefcc22b095b628.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libcfg_if-abefcc22b095b628.rmeta"
+## xtern = "libcfg_if-abefcc22b095b628.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-abefcc22b095b628"
-## src = "/libcfg_if-abefcc22b095b628.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libcfg_if-abefcc22b095b628.rlib"
+## xtern = "libcfg_if-abefcc22b095b628.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-682e69746a16e0c7"
-## src = "/libpretty_env_logger-682e69746a16e0c7.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libpretty_env_logger-682e69746a16e0c7.rmeta"
+## xtern = "libpretty_env_logger-682e69746a16e0c7.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-682e69746a16e0c7"
-## src = "/libpretty_env_logger-682e69746a16e0c7.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libpretty_env_logger-682e69746a16e0c7.rlib"
+## xtern = "libpretty_env_logger-682e69746a16e0c7.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-94c0a2bd3b1451c8"
-## src = "/libenv_logger-94c0a2bd3b1451c8.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libenv_logger-94c0a2bd3b1451c8.rmeta"
+## xtern = "libenv_logger-94c0a2bd3b1451c8.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-94c0a2bd3b1451c8"
-## src = "/libenv_logger-94c0a2bd3b1451c8.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libenv_logger-94c0a2bd3b1451c8.rlib"
+## xtern = "libenv_logger-94c0a2bd3b1451c8.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-737035cdf92a82de"
-## src = "/libatty-737035cdf92a82de.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libatty-737035cdf92a82de.rmeta"
+## xtern = "libatty-737035cdf92a82de.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-737035cdf92a82de"
-## src = "/libatty-737035cdf92a82de.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libatty-737035cdf92a82de.rlib"
+## xtern = "libatty-737035cdf92a82de.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-087afb0c1713a9a6"
-## src = "/liblibc-087afb0c1713a9a6.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/liblibc-087afb0c1713a9a6.rmeta"
+## xtern = "liblibc-087afb0c1713a9a6.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-087afb0c1713a9a6"
-## src = "/liblibc-087afb0c1713a9a6.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/liblibc-087afb0c1713a9a6.rlib"
+## xtern = "liblibc-087afb0c1713a9a6.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-3e3dde196d8efa81"
-## src = "/libhumantime-3e3dde196d8efa81.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libhumantime-3e3dde196d8efa81.rmeta"
+## xtern = "libhumantime-3e3dde196d8efa81.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-3e3dde196d8efa81"
-## src = "/libhumantime-3e3dde196d8efa81.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libhumantime-3e3dde196d8efa81.rlib"
+## xtern = "libhumantime-3e3dde196d8efa81.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-bd3d4e33b0f59f1b"
-## src = "/libquick_error-bd3d4e33b0f59f1b.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libquick_error-bd3d4e33b0f59f1b.rmeta"
+## xtern = "libquick_error-bd3d4e33b0f59f1b.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-bd3d4e33b0f59f1b"
-## src = "/libquick_error-bd3d4e33b0f59f1b.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libquick_error-bd3d4e33b0f59f1b.rlib"
+## xtern = "libquick_error-bd3d4e33b0f59f1b.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-5ba8c6f49cc2732d"
-## src = "/libregex-5ba8c6f49cc2732d.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libregex-5ba8c6f49cc2732d.rmeta"
+## xtern = "libregex-5ba8c6f49cc2732d.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-5ba8c6f49cc2732d"
-## src = "/libregex-5ba8c6f49cc2732d.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libregex-5ba8c6f49cc2732d.rlib"
+## xtern = "libregex-5ba8c6f49cc2732d.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-014f7ab42daca0d7"
-## src = "/libaho_corasick-014f7ab42daca0d7.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libaho_corasick-014f7ab42daca0d7.rmeta"
+## xtern = "libaho_corasick-014f7ab42daca0d7.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-014f7ab42daca0d7"
-## src = "/libaho_corasick-014f7ab42daca0d7.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libaho_corasick-014f7ab42daca0d7.rlib"
+## xtern = "libaho_corasick-014f7ab42daca0d7.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-eec8efd7d7dadd3c"
-## src = "/libregex_syntax-eec8efd7d7dadd3c.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libregex_syntax-eec8efd7d7dadd3c.rmeta"
+## xtern = "libregex_syntax-eec8efd7d7dadd3c.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-eec8efd7d7dadd3c"
-## src = "/libregex_syntax-eec8efd7d7dadd3c.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libregex_syntax-eec8efd7d7dadd3c.rlib"
+## xtern = "libregex_syntax-eec8efd7d7dadd3c.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-3ace2abd55187163"
-## src = "/libthread_local-3ace2abd55187163.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libthread_local-3ace2abd55187163.rmeta"
+## xtern = "libthread_local-3ace2abd55187163.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-3ace2abd55187163"
-## src = "/libthread_local-3ace2abd55187163.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libthread_local-3ace2abd55187163.rlib"
+## xtern = "libthread_local-3ace2abd55187163.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-a79af56de238e2b5"
-## src = "/liblazy_static-a79af56de238e2b5.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/liblazy_static-a79af56de238e2b5.rmeta"
+## xtern = "liblazy_static-a79af56de238e2b5.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-a79af56de238e2b5"
-## src = "/liblazy_static-a79af56de238e2b5.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/liblazy_static-a79af56de238e2b5.rlib"
+## xtern = "liblazy_static-a79af56de238e2b5.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-3d5a70ee74f70e2b"
-## src = "/libtermcolor-3d5a70ee74f70e2b.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libtermcolor-3d5a70ee74f70e2b.rmeta"
+## xtern = "libtermcolor-3d5a70ee74f70e2b.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-3d5a70ee74f70e2b"
-## src = "/libtermcolor-3d5a70ee74f70e2b.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libtermcolor-3d5a70ee74f70e2b.rlib"
+## xtern = "libtermcolor-3d5a70ee74f70e2b.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-5eebdd82bed7d9de"
-## src = "/libproc_macro2-5eebdd82bed7d9de.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-5eebdd82bed7d9de.rmeta"
+## xtern = "libproc_macro2-5eebdd82bed7d9de.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-5eebdd82bed7d9de"
-## src = "/libproc_macro2-5eebdd82bed7d9de.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-5eebdd82bed7d9de.rlib"
+## xtern = "libproc_macro2-5eebdd82bed7d9de.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-f585407da4c0bf6f"
-## src = "/libunicode_xid-f585407da4c0bf6f.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-f585407da4c0bf6f.rmeta"
+## xtern = "libunicode_xid-f585407da4c0bf6f.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-f585407da4c0bf6f"
-## src = "/libunicode_xid-f585407da4c0bf6f.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-f585407da4c0bf6f.rlib"
+## xtern = "libunicode_xid-f585407da4c0bf6f.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-0298ff41e604ba82"
-## src = "/libquote-0298ff41e604ba82.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libquote-0298ff41e604ba82.rmeta"
+## xtern = "libquote-0298ff41e604ba82.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-0298ff41e604ba82"
-## src = "/libquote-0298ff41e604ba82.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libquote-0298ff41e604ba82.rlib"
+## xtern = "libquote-0298ff41e604ba82.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-7d72679ab99cdbe3"
-## src = "/libsocketcan-7d72679ab99cdbe3.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libsocketcan-7d72679ab99cdbe3.rmeta"
+## xtern = "libsocketcan-7d72679ab99cdbe3.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-7d72679ab99cdbe3"
-## src = "/libsocketcan-7d72679ab99cdbe3.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libsocketcan-7d72679ab99cdbe3.rlib"
+## xtern = "libsocketcan-7d72679ab99cdbe3.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-f065076cf799d91a"
-## src = "/libhex-f065076cf799d91a.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libhex-f065076cf799d91a.rmeta"
+## xtern = "libhex-f065076cf799d91a.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-f065076cf799d91a"
-## src = "/libhex-f065076cf799d91a.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libhex-f065076cf799d91a.rlib"
+## xtern = "libhex-f065076cf799d91a.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-2505039b047dad1a"
-## src = "/libitertools-2505039b047dad1a.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libitertools-2505039b047dad1a.rmeta"
+## xtern = "libitertools-2505039b047dad1a.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-2505039b047dad1a"
-## src = "/libitertools-2505039b047dad1a.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libitertools-2505039b047dad1a.rlib"
+## xtern = "libitertools-2505039b047dad1a.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-4ee318c191cb8959"
-## src = "/libnix-4ee318c191cb8959.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libnix-4ee318c191cb8959.rmeta"
+## xtern = "libnix-4ee318c191cb8959.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-4ee318c191cb8959"
-## src = "/libnix-4ee318c191cb8959.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libnix-4ee318c191cb8959.rlib"
+## xtern = "libnix-4ee318c191cb8959.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-e976848f96abbbd4"
-## src = "/libbitflags-e976848f96abbbd4.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libbitflags-e976848f96abbbd4.rmeta"
+## xtern = "libbitflags-e976848f96abbbd4.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-e976848f96abbbd4"
-## src = "/libbitflags-e976848f96abbbd4.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libbitflags-e976848f96abbbd4.rlib"
+## xtern = "libbitflags-e976848f96abbbd4.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-35b125c45c1cafb3"
-## src = "/libtry_from-35b125c45c1cafb3.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libtry_from-35b125c45c1cafb3.rmeta"
+## xtern = "libtry_from-35b125c45c1cafb3.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-35b125c45c1cafb3"
-## src = "/libtry_from-35b125c45c1cafb3.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libtry_from-35b125c45c1cafb3.rlib"
+## xtern = "libtry_from-35b125c45c1cafb3.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-05c5d104c65b93b5"
-## src = "/libstructopt-05c5d104c65b93b5.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libstructopt-05c5d104c65b93b5.rmeta"
+## xtern = "libstructopt-05c5d104c65b93b5.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-05c5d104c65b93b5"
-## src = "/libstructopt-05c5d104c65b93b5.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libstructopt-05c5d104c65b93b5.rlib"
+## xtern = "libstructopt-05c5d104c65b93b5.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-5a839c872643e159"
-## src = "/libclap-5a839c872643e159.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libclap-5a839c872643e159.rmeta"
+## xtern = "libclap-5a839c872643e159.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-5a839c872643e159"
-## src = "/libclap-5a839c872643e159.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libclap-5a839c872643e159.rlib"
+## xtern = "libclap-5a839c872643e159.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-320ef4b8ee2e57f9"
-## src = "/libansi_term-320ef4b8ee2e57f9.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libansi_term-320ef4b8ee2e57f9.rmeta"
+## xtern = "libansi_term-320ef4b8ee2e57f9.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-320ef4b8ee2e57f9"
-## src = "/libansi_term-320ef4b8ee2e57f9.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libansi_term-320ef4b8ee2e57f9.rlib"
+## xtern = "libansi_term-320ef4b8ee2e57f9.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-d19718ebe5a0c815"
-## src = "/libbitflags-d19718ebe5a0c815.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libbitflags-d19718ebe5a0c815.rmeta"
+## xtern = "libbitflags-d19718ebe5a0c815.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-d19718ebe5a0c815"
-## src = "/libbitflags-d19718ebe5a0c815.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libbitflags-d19718ebe5a0c815.rlib"
+## xtern = "libbitflags-d19718ebe5a0c815.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-ada2690f4d94d615"
-## src = "/libstrsim-ada2690f4d94d615.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libstrsim-ada2690f4d94d615.rmeta"
+## xtern = "libstrsim-ada2690f4d94d615.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-ada2690f4d94d615"
-## src = "/libstrsim-ada2690f4d94d615.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libstrsim-ada2690f4d94d615.rlib"
+## xtern = "libstrsim-ada2690f4d94d615.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-b7e82f41d8b26a14"
-## src = "/libtextwrap-b7e82f41d8b26a14.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libtextwrap-b7e82f41d8b26a14.rmeta"
+## xtern = "libtextwrap-b7e82f41d8b26a14.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-b7e82f41d8b26a14"
-## src = "/libtextwrap-b7e82f41d8b26a14.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libtextwrap-b7e82f41d8b26a14.rlib"
+## xtern = "libtextwrap-b7e82f41d8b26a14.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-e55c633902343b3a"
-## src = "/libunicode_width-e55c633902343b3a.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_width-e55c633902343b3a.rmeta"
+## xtern = "libunicode_width-e55c633902343b3a.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-e55c633902343b3a"
-## src = "/libunicode_width-e55c633902343b3a.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_width-e55c633902343b3a.rlib"
+## xtern = "libunicode_width-e55c633902343b3a.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-3fc8ab5befc6e8f4"
-## src = "/libvec_map-3fc8ab5befc6e8f4.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libvec_map-3fc8ab5befc6e8f4.rmeta"
+## xtern = "libvec_map-3fc8ab5befc6e8f4.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-3fc8ab5befc6e8f4"
-## src = "/libvec_map-3fc8ab5befc6e8f4.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libvec_map-3fc8ab5befc6e8f4.rlib"
+## xtern = "libvec_map-3fc8ab5befc6e8f4.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-0187f3c8576aef3b"
-## src = "/libstructopt_derive-0187f3c8576aef3b.so"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libstructopt_derive-0187f3c8576aef3b.so"
+## xtern = "libstructopt_derive-0187f3c8576aef3b.so"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-41892b3573d1a97c"
-## src = "/libheck-41892b3573d1a97c.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libheck-41892b3573d1a97c.rmeta"
+## xtern = "libheck-41892b3573d1a97c.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-41892b3573d1a97c"
-## src = "/libheck-41892b3573d1a97c.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libheck-41892b3573d1a97c.rlib"
+## xtern = "libheck-41892b3573d1a97c.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-0711d9c6f9e71290"
-## src = "/libunicode_segmentation-0711d9c6f9e71290.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_segmentation-0711d9c6f9e71290.rmeta"
+## xtern = "libunicode_segmentation-0711d9c6f9e71290.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-0711d9c6f9e71290"
-## src = "/libunicode_segmentation-0711d9c6f9e71290.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_segmentation-0711d9c6f9e71290.rlib"
+## xtern = "libunicode_segmentation-0711d9c6f9e71290.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-8d3142ab9efe4ea8"
-## src = "/libproc_macro_error-8d3142ab9efe4ea8.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro_error-8d3142ab9efe4ea8.rmeta"
+## xtern = "libproc_macro_error-8d3142ab9efe4ea8.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-8d3142ab9efe4ea8"
-## src = "/libproc_macro_error-8d3142ab9efe4ea8.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro_error-8d3142ab9efe4ea8.rlib"
+## xtern = "libproc_macro_error-8d3142ab9efe4ea8.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-5abbb4d0b3e50e85"
-## src = "/libproc_macro_error_attr-5abbb4d0b3e50e85.so"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro_error_attr-5abbb4d0b3e50e85.so"
+## xtern = "libproc_macro_error_attr-5abbb4d0b3e50e85.so"
 ## 
 ## [[contexts]]
 ## name = "crate_out-3cf9e442dfddd505"
@@ -9055,9 +8702,9 @@ COPY --from=dep-l-dbcc-2.2.1-e0edff43b19741a4 /tmp/clis-dbcc_2-2-1/release/deps/
 ##   https://static.crates.io/crates/dbcc/dbcc-2.2.1.crate /'''
 ## 
 ## [[stages]]
-## name = "dep-l-dbcc-2.2.1-e0edff43b19741a4"
+## name = "dep-n-dbcc-2.2.1-e0edff43b19741a4"
 ## script = '''
-## FROM rust-base AS dep-l-dbcc-2.2.1-e0edff43b19741a4
+## FROM rust-base AS dep-n-dbcc-2.2.1-e0edff43b19741a4
 ## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
@@ -9197,10 +8844,10 @@ COPY --from=dep-l-dbcc-2.2.1-e0edff43b19741a4 /tmp/clis-dbcc_2-2-1/release/deps/
 ## name = "out-e0edff43b19741a4"
 ## script = """
 ## FROM scratch AS out-e0edff43b19741a4
-## COPY --from=dep-l-dbcc-2.2.1-e0edff43b19741a4 /tmp/clis-dbcc_2-2-1/release/deps/*-e0edff43b19741a4* /"""
+## COPY --from=dep-n-dbcc-2.2.1-e0edff43b19741a4 /tmp/clis-dbcc_2-2-1/release/deps/*-e0edff43b19741a4* /"""
 
 
-FROM rust-base AS dep-b-dbcc-2.2.1-6cd0852da8e8bf94
+FROM rust-base AS dep-n-dbcc-2.2.1-6cd0852da8e8bf94
 SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
@@ -9339,7 +8986,7 @@ RUN \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-6cd0852da8e8bf94-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-6cd0852da8e8bf94-errcode
 FROM scratch AS out-6cd0852da8e8bf94
-COPY --from=dep-b-dbcc-2.2.1-6cd0852da8e8bf94 /tmp/clis-dbcc_2-2-1/release/deps/*-6cd0852da8e8bf94* /
+COPY --from=dep-n-dbcc-2.2.1-6cd0852da8e8bf94 /tmp/clis-dbcc_2-2-1/release/deps/*-6cd0852da8e8bf94* /
 
 # Pipe this file to (not portable due to usage of local build contexts):
 # DOCKER_BUILDKIT="1" \
@@ -9469,540 +9116,433 @@ COPY --from=dep-b-dbcc-2.2.1-6cd0852da8e8bf94 /tmp/clis-dbcc_2-2-1/release/deps/
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-dbcc_2-2-1/release/deps/dbcc-6cd0852da8e8bf94","emit":"link"}',
 ## ]
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-90ca44a8caf54d0f"
-## src = "/libblake2-90ca44a8caf54d0f.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libblake2-90ca44a8caf54d0f.rmeta"
+## xtern = "libblake2-90ca44a8caf54d0f.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-90ca44a8caf54d0f"
-## src = "/libblake2-90ca44a8caf54d0f.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libblake2-90ca44a8caf54d0f.rlib"
+## xtern = "libblake2-90ca44a8caf54d0f.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-208f428f6e945660"
-## src = "/libbyte_tools-208f428f6e945660.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libbyte_tools-208f428f6e945660.rmeta"
+## xtern = "libbyte_tools-208f428f6e945660.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-208f428f6e945660"
-## src = "/libbyte_tools-208f428f6e945660.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libbyte_tools-208f428f6e945660.rlib"
+## xtern = "libbyte_tools-208f428f6e945660.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-c92b10e2fa1c82cb"
-## src = "/libcrypto_mac-c92b10e2fa1c82cb.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libcrypto_mac-c92b10e2fa1c82cb.rmeta"
+## xtern = "libcrypto_mac-c92b10e2fa1c82cb.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-c92b10e2fa1c82cb"
-## src = "/libcrypto_mac-c92b10e2fa1c82cb.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libcrypto_mac-c92b10e2fa1c82cb.rlib"
+## xtern = "libcrypto_mac-c92b10e2fa1c82cb.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-0afa135837d93e68"
-## src = "/libgeneric_array-0afa135837d93e68.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libgeneric_array-0afa135837d93e68.rmeta"
+## xtern = "libgeneric_array-0afa135837d93e68.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-0afa135837d93e68"
-## src = "/libgeneric_array-0afa135837d93e68.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libgeneric_array-0afa135837d93e68.rlib"
+## xtern = "libgeneric_array-0afa135837d93e68.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-0c59626b95871fe7"
-## src = "/libtypenum-0c59626b95871fe7.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libtypenum-0c59626b95871fe7.rmeta"
+## xtern = "libtypenum-0c59626b95871fe7.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-0c59626b95871fe7"
-## src = "/libtypenum-0c59626b95871fe7.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libtypenum-0c59626b95871fe7.rlib"
+## xtern = "libtypenum-0c59626b95871fe7.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-fe593aa0503da824"
-## src = "/libsubtle-fe593aa0503da824.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libsubtle-fe593aa0503da824.rmeta"
+## xtern = "libsubtle-fe593aa0503da824.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-fe593aa0503da824"
-## src = "/libsubtle-fe593aa0503da824.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libsubtle-fe593aa0503da824.rlib"
+## xtern = "libsubtle-fe593aa0503da824.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-3c7631a805111659"
-## src = "/libdigest-3c7631a805111659.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libdigest-3c7631a805111659.rmeta"
+## xtern = "libdigest-3c7631a805111659.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-3c7631a805111659"
-## src = "/libdigest-3c7631a805111659.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libdigest-3c7631a805111659.rlib"
+## xtern = "libdigest-3c7631a805111659.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-3e36cb37043b614a"
-## src = "/libopaque_debug-3e36cb37043b614a.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libopaque_debug-3e36cb37043b614a.rmeta"
+## xtern = "libopaque_debug-3e36cb37043b614a.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-3e36cb37043b614a"
-## src = "/libopaque_debug-3e36cb37043b614a.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libopaque_debug-3e36cb37043b614a.rlib"
+## xtern = "libopaque_debug-3e36cb37043b614a.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-593834cb44ccbead"
-## src = "/libcan_dbc-593834cb44ccbead.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libcan_dbc-593834cb44ccbead.rmeta"
+## xtern = "libcan_dbc-593834cb44ccbead.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-593834cb44ccbead"
-## src = "/libcan_dbc-593834cb44ccbead.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libcan_dbc-593834cb44ccbead.rlib"
+## xtern = "libcan_dbc-593834cb44ccbead.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-10105863fb18eb2a"
-## src = "/libderive_getters-10105863fb18eb2a.so"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libderive_getters-10105863fb18eb2a.so"
+## xtern = "libderive_getters-10105863fb18eb2a.so"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-80b37ce9903d0def"
-## src = "/libproc_macro2-80b37ce9903d0def.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-80b37ce9903d0def.rmeta"
+## xtern = "libproc_macro2-80b37ce9903d0def.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-80b37ce9903d0def"
-## src = "/libproc_macro2-80b37ce9903d0def.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-80b37ce9903d0def.rlib"
+## xtern = "libproc_macro2-80b37ce9903d0def.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-ca80afcc82eeec0a"
-## src = "/libunicode_xid-ca80afcc82eeec0a.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-ca80afcc82eeec0a.rmeta"
+## xtern = "libunicode_xid-ca80afcc82eeec0a.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-ca80afcc82eeec0a"
-## src = "/libunicode_xid-ca80afcc82eeec0a.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-ca80afcc82eeec0a.rlib"
+## xtern = "libunicode_xid-ca80afcc82eeec0a.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-dd5debcb2b51fc02"
-## src = "/libquote-dd5debcb2b51fc02.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libquote-dd5debcb2b51fc02.rmeta"
+## xtern = "libquote-dd5debcb2b51fc02.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-dd5debcb2b51fc02"
-## src = "/libquote-dd5debcb2b51fc02.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libquote-dd5debcb2b51fc02.rlib"
+## xtern = "libquote-dd5debcb2b51fc02.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-bbffa8c7e6a16356"
-## src = "/libsyn-bbffa8c7e6a16356.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libsyn-bbffa8c7e6a16356.rmeta"
+## xtern = "libsyn-bbffa8c7e6a16356.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-bbffa8c7e6a16356"
-## src = "/libsyn-bbffa8c7e6a16356.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libsyn-bbffa8c7e6a16356.rlib"
+## xtern = "libsyn-bbffa8c7e6a16356.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-cd5fc4bcd4e040ed"
-## src = "/libnom-cd5fc4bcd4e040ed.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libnom-cd5fc4bcd4e040ed.rmeta"
+## xtern = "libnom-cd5fc4bcd4e040ed.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-cd5fc4bcd4e040ed"
-## src = "/libnom-cd5fc4bcd4e040ed.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libnom-cd5fc4bcd4e040ed.rlib"
+## xtern = "libnom-cd5fc4bcd4e040ed.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-c93fd10415a641fd"
-## src = "/libmemchr-c93fd10415a641fd.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libmemchr-c93fd10415a641fd.rmeta"
+## xtern = "libmemchr-c93fd10415a641fd.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-c93fd10415a641fd"
-## src = "/libmemchr-c93fd10415a641fd.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libmemchr-c93fd10415a641fd.rlib"
+## xtern = "libmemchr-c93fd10415a641fd.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-e0edff43b19741a4"
-## src = "/libdbcc-e0edff43b19741a4.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libdbcc-e0edff43b19741a4.rmeta"
+## xtern = "libdbcc-e0edff43b19741a4.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-e0edff43b19741a4"
-## src = "/libdbcc-e0edff43b19741a4.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libdbcc-e0edff43b19741a4.rlib"
+## xtern = "libdbcc-e0edff43b19741a4.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-7d0dcf7e7b45836f"
-## src = "/libheck-7d0dcf7e7b45836f.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libheck-7d0dcf7e7b45836f.rmeta"
+## xtern = "libheck-7d0dcf7e7b45836f.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-7d0dcf7e7b45836f"
-## src = "/libheck-7d0dcf7e7b45836f.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libheck-7d0dcf7e7b45836f.rlib"
+## xtern = "libheck-7d0dcf7e7b45836f.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-b06e8bcc96549ef0"
-## src = "/libunicode_segmentation-b06e8bcc96549ef0.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_segmentation-b06e8bcc96549ef0.rmeta"
+## xtern = "libunicode_segmentation-b06e8bcc96549ef0.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-b06e8bcc96549ef0"
-## src = "/libunicode_segmentation-b06e8bcc96549ef0.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_segmentation-b06e8bcc96549ef0.rlib"
+## xtern = "libunicode_segmentation-b06e8bcc96549ef0.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-09be6f37eb701f15"
-## src = "/liblog-09be6f37eb701f15.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/liblog-09be6f37eb701f15.rmeta"
+## xtern = "liblog-09be6f37eb701f15.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-09be6f37eb701f15"
-## src = "/liblog-09be6f37eb701f15.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/liblog-09be6f37eb701f15.rlib"
+## xtern = "liblog-09be6f37eb701f15.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-abefcc22b095b628"
-## src = "/libcfg_if-abefcc22b095b628.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libcfg_if-abefcc22b095b628.rmeta"
+## xtern = "libcfg_if-abefcc22b095b628.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-abefcc22b095b628"
-## src = "/libcfg_if-abefcc22b095b628.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libcfg_if-abefcc22b095b628.rlib"
+## xtern = "libcfg_if-abefcc22b095b628.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-682e69746a16e0c7"
-## src = "/libpretty_env_logger-682e69746a16e0c7.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libpretty_env_logger-682e69746a16e0c7.rmeta"
+## xtern = "libpretty_env_logger-682e69746a16e0c7.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-682e69746a16e0c7"
-## src = "/libpretty_env_logger-682e69746a16e0c7.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libpretty_env_logger-682e69746a16e0c7.rlib"
+## xtern = "libpretty_env_logger-682e69746a16e0c7.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-94c0a2bd3b1451c8"
-## src = "/libenv_logger-94c0a2bd3b1451c8.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libenv_logger-94c0a2bd3b1451c8.rmeta"
+## xtern = "libenv_logger-94c0a2bd3b1451c8.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-94c0a2bd3b1451c8"
-## src = "/libenv_logger-94c0a2bd3b1451c8.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libenv_logger-94c0a2bd3b1451c8.rlib"
+## xtern = "libenv_logger-94c0a2bd3b1451c8.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-737035cdf92a82de"
-## src = "/libatty-737035cdf92a82de.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libatty-737035cdf92a82de.rmeta"
+## xtern = "libatty-737035cdf92a82de.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-737035cdf92a82de"
-## src = "/libatty-737035cdf92a82de.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libatty-737035cdf92a82de.rlib"
+## xtern = "libatty-737035cdf92a82de.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-087afb0c1713a9a6"
-## src = "/liblibc-087afb0c1713a9a6.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/liblibc-087afb0c1713a9a6.rmeta"
+## xtern = "liblibc-087afb0c1713a9a6.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-087afb0c1713a9a6"
-## src = "/liblibc-087afb0c1713a9a6.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/liblibc-087afb0c1713a9a6.rlib"
+## xtern = "liblibc-087afb0c1713a9a6.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-3e3dde196d8efa81"
-## src = "/libhumantime-3e3dde196d8efa81.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libhumantime-3e3dde196d8efa81.rmeta"
+## xtern = "libhumantime-3e3dde196d8efa81.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-3e3dde196d8efa81"
-## src = "/libhumantime-3e3dde196d8efa81.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libhumantime-3e3dde196d8efa81.rlib"
+## xtern = "libhumantime-3e3dde196d8efa81.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-bd3d4e33b0f59f1b"
-## src = "/libquick_error-bd3d4e33b0f59f1b.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libquick_error-bd3d4e33b0f59f1b.rmeta"
+## xtern = "libquick_error-bd3d4e33b0f59f1b.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-bd3d4e33b0f59f1b"
-## src = "/libquick_error-bd3d4e33b0f59f1b.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libquick_error-bd3d4e33b0f59f1b.rlib"
+## xtern = "libquick_error-bd3d4e33b0f59f1b.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-5ba8c6f49cc2732d"
-## src = "/libregex-5ba8c6f49cc2732d.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libregex-5ba8c6f49cc2732d.rmeta"
+## xtern = "libregex-5ba8c6f49cc2732d.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-5ba8c6f49cc2732d"
-## src = "/libregex-5ba8c6f49cc2732d.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libregex-5ba8c6f49cc2732d.rlib"
+## xtern = "libregex-5ba8c6f49cc2732d.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-014f7ab42daca0d7"
-## src = "/libaho_corasick-014f7ab42daca0d7.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libaho_corasick-014f7ab42daca0d7.rmeta"
+## xtern = "libaho_corasick-014f7ab42daca0d7.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-014f7ab42daca0d7"
-## src = "/libaho_corasick-014f7ab42daca0d7.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libaho_corasick-014f7ab42daca0d7.rlib"
+## xtern = "libaho_corasick-014f7ab42daca0d7.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-eec8efd7d7dadd3c"
-## src = "/libregex_syntax-eec8efd7d7dadd3c.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libregex_syntax-eec8efd7d7dadd3c.rmeta"
+## xtern = "libregex_syntax-eec8efd7d7dadd3c.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-eec8efd7d7dadd3c"
-## src = "/libregex_syntax-eec8efd7d7dadd3c.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libregex_syntax-eec8efd7d7dadd3c.rlib"
+## xtern = "libregex_syntax-eec8efd7d7dadd3c.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-3ace2abd55187163"
-## src = "/libthread_local-3ace2abd55187163.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libthread_local-3ace2abd55187163.rmeta"
+## xtern = "libthread_local-3ace2abd55187163.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-3ace2abd55187163"
-## src = "/libthread_local-3ace2abd55187163.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libthread_local-3ace2abd55187163.rlib"
+## xtern = "libthread_local-3ace2abd55187163.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-a79af56de238e2b5"
-## src = "/liblazy_static-a79af56de238e2b5.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/liblazy_static-a79af56de238e2b5.rmeta"
+## xtern = "liblazy_static-a79af56de238e2b5.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-a79af56de238e2b5"
-## src = "/liblazy_static-a79af56de238e2b5.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/liblazy_static-a79af56de238e2b5.rlib"
+## xtern = "liblazy_static-a79af56de238e2b5.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-3d5a70ee74f70e2b"
-## src = "/libtermcolor-3d5a70ee74f70e2b.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libtermcolor-3d5a70ee74f70e2b.rmeta"
+## xtern = "libtermcolor-3d5a70ee74f70e2b.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-3d5a70ee74f70e2b"
-## src = "/libtermcolor-3d5a70ee74f70e2b.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libtermcolor-3d5a70ee74f70e2b.rlib"
+## xtern = "libtermcolor-3d5a70ee74f70e2b.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-5eebdd82bed7d9de"
-## src = "/libproc_macro2-5eebdd82bed7d9de.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-5eebdd82bed7d9de.rmeta"
+## xtern = "libproc_macro2-5eebdd82bed7d9de.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-5eebdd82bed7d9de"
-## src = "/libproc_macro2-5eebdd82bed7d9de.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-5eebdd82bed7d9de.rlib"
+## xtern = "libproc_macro2-5eebdd82bed7d9de.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-f585407da4c0bf6f"
-## src = "/libunicode_xid-f585407da4c0bf6f.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-f585407da4c0bf6f.rmeta"
+## xtern = "libunicode_xid-f585407da4c0bf6f.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-f585407da4c0bf6f"
-## src = "/libunicode_xid-f585407da4c0bf6f.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-f585407da4c0bf6f.rlib"
+## xtern = "libunicode_xid-f585407da4c0bf6f.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-0298ff41e604ba82"
-## src = "/libquote-0298ff41e604ba82.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libquote-0298ff41e604ba82.rmeta"
+## xtern = "libquote-0298ff41e604ba82.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-0298ff41e604ba82"
-## src = "/libquote-0298ff41e604ba82.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libquote-0298ff41e604ba82.rlib"
+## xtern = "libquote-0298ff41e604ba82.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-7d72679ab99cdbe3"
-## src = "/libsocketcan-7d72679ab99cdbe3.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libsocketcan-7d72679ab99cdbe3.rmeta"
+## xtern = "libsocketcan-7d72679ab99cdbe3.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-7d72679ab99cdbe3"
-## src = "/libsocketcan-7d72679ab99cdbe3.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libsocketcan-7d72679ab99cdbe3.rlib"
+## xtern = "libsocketcan-7d72679ab99cdbe3.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-f065076cf799d91a"
-## src = "/libhex-f065076cf799d91a.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libhex-f065076cf799d91a.rmeta"
+## xtern = "libhex-f065076cf799d91a.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-f065076cf799d91a"
-## src = "/libhex-f065076cf799d91a.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libhex-f065076cf799d91a.rlib"
+## xtern = "libhex-f065076cf799d91a.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-2505039b047dad1a"
-## src = "/libitertools-2505039b047dad1a.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libitertools-2505039b047dad1a.rmeta"
+## xtern = "libitertools-2505039b047dad1a.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-2505039b047dad1a"
-## src = "/libitertools-2505039b047dad1a.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libitertools-2505039b047dad1a.rlib"
+## xtern = "libitertools-2505039b047dad1a.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-4ee318c191cb8959"
-## src = "/libnix-4ee318c191cb8959.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libnix-4ee318c191cb8959.rmeta"
+## xtern = "libnix-4ee318c191cb8959.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-4ee318c191cb8959"
-## src = "/libnix-4ee318c191cb8959.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libnix-4ee318c191cb8959.rlib"
+## xtern = "libnix-4ee318c191cb8959.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-e976848f96abbbd4"
-## src = "/libbitflags-e976848f96abbbd4.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libbitflags-e976848f96abbbd4.rmeta"
+## xtern = "libbitflags-e976848f96abbbd4.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-e976848f96abbbd4"
-## src = "/libbitflags-e976848f96abbbd4.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libbitflags-e976848f96abbbd4.rlib"
+## xtern = "libbitflags-e976848f96abbbd4.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-35b125c45c1cafb3"
-## src = "/libtry_from-35b125c45c1cafb3.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libtry_from-35b125c45c1cafb3.rmeta"
+## xtern = "libtry_from-35b125c45c1cafb3.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-35b125c45c1cafb3"
-## src = "/libtry_from-35b125c45c1cafb3.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libtry_from-35b125c45c1cafb3.rlib"
+## xtern = "libtry_from-35b125c45c1cafb3.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-05c5d104c65b93b5"
-## src = "/libstructopt-05c5d104c65b93b5.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libstructopt-05c5d104c65b93b5.rmeta"
+## xtern = "libstructopt-05c5d104c65b93b5.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-05c5d104c65b93b5"
-## src = "/libstructopt-05c5d104c65b93b5.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libstructopt-05c5d104c65b93b5.rlib"
+## xtern = "libstructopt-05c5d104c65b93b5.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-5a839c872643e159"
-## src = "/libclap-5a839c872643e159.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libclap-5a839c872643e159.rmeta"
+## xtern = "libclap-5a839c872643e159.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-5a839c872643e159"
-## src = "/libclap-5a839c872643e159.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libclap-5a839c872643e159.rlib"
+## xtern = "libclap-5a839c872643e159.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-320ef4b8ee2e57f9"
-## src = "/libansi_term-320ef4b8ee2e57f9.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libansi_term-320ef4b8ee2e57f9.rmeta"
+## xtern = "libansi_term-320ef4b8ee2e57f9.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-320ef4b8ee2e57f9"
-## src = "/libansi_term-320ef4b8ee2e57f9.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libansi_term-320ef4b8ee2e57f9.rlib"
+## xtern = "libansi_term-320ef4b8ee2e57f9.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-d19718ebe5a0c815"
-## src = "/libbitflags-d19718ebe5a0c815.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libbitflags-d19718ebe5a0c815.rmeta"
+## xtern = "libbitflags-d19718ebe5a0c815.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-d19718ebe5a0c815"
-## src = "/libbitflags-d19718ebe5a0c815.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libbitflags-d19718ebe5a0c815.rlib"
+## xtern = "libbitflags-d19718ebe5a0c815.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-ada2690f4d94d615"
-## src = "/libstrsim-ada2690f4d94d615.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libstrsim-ada2690f4d94d615.rmeta"
+## xtern = "libstrsim-ada2690f4d94d615.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-ada2690f4d94d615"
-## src = "/libstrsim-ada2690f4d94d615.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libstrsim-ada2690f4d94d615.rlib"
+## xtern = "libstrsim-ada2690f4d94d615.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-b7e82f41d8b26a14"
-## src = "/libtextwrap-b7e82f41d8b26a14.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libtextwrap-b7e82f41d8b26a14.rmeta"
+## xtern = "libtextwrap-b7e82f41d8b26a14.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-b7e82f41d8b26a14"
-## src = "/libtextwrap-b7e82f41d8b26a14.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libtextwrap-b7e82f41d8b26a14.rlib"
+## xtern = "libtextwrap-b7e82f41d8b26a14.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-e55c633902343b3a"
-## src = "/libunicode_width-e55c633902343b3a.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_width-e55c633902343b3a.rmeta"
+## xtern = "libunicode_width-e55c633902343b3a.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-e55c633902343b3a"
-## src = "/libunicode_width-e55c633902343b3a.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_width-e55c633902343b3a.rlib"
+## xtern = "libunicode_width-e55c633902343b3a.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-3fc8ab5befc6e8f4"
-## src = "/libvec_map-3fc8ab5befc6e8f4.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libvec_map-3fc8ab5befc6e8f4.rmeta"
+## xtern = "libvec_map-3fc8ab5befc6e8f4.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-3fc8ab5befc6e8f4"
-## src = "/libvec_map-3fc8ab5befc6e8f4.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libvec_map-3fc8ab5befc6e8f4.rlib"
+## xtern = "libvec_map-3fc8ab5befc6e8f4.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-0187f3c8576aef3b"
-## src = "/libstructopt_derive-0187f3c8576aef3b.so"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libstructopt_derive-0187f3c8576aef3b.so"
+## xtern = "libstructopt_derive-0187f3c8576aef3b.so"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-41892b3573d1a97c"
-## src = "/libheck-41892b3573d1a97c.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libheck-41892b3573d1a97c.rmeta"
+## xtern = "libheck-41892b3573d1a97c.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-41892b3573d1a97c"
-## src = "/libheck-41892b3573d1a97c.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libheck-41892b3573d1a97c.rlib"
+## xtern = "libheck-41892b3573d1a97c.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-0711d9c6f9e71290"
-## src = "/libunicode_segmentation-0711d9c6f9e71290.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_segmentation-0711d9c6f9e71290.rmeta"
+## xtern = "libunicode_segmentation-0711d9c6f9e71290.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-0711d9c6f9e71290"
-## src = "/libunicode_segmentation-0711d9c6f9e71290.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libunicode_segmentation-0711d9c6f9e71290.rlib"
+## xtern = "libunicode_segmentation-0711d9c6f9e71290.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-8d3142ab9efe4ea8"
-## src = "/libproc_macro_error-8d3142ab9efe4ea8.rmeta"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro_error-8d3142ab9efe4ea8.rmeta"
+## xtern = "libproc_macro_error-8d3142ab9efe4ea8.rmeta"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-8d3142ab9efe4ea8"
-## src = "/libproc_macro_error-8d3142ab9efe4ea8.rlib"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro_error-8d3142ab9efe4ea8.rlib"
+## xtern = "libproc_macro_error-8d3142ab9efe4ea8.rlib"
 ## 
-## [[mounts]]
+## [[externs]]
 ## from = "out-5abbb4d0b3e50e85"
-## src = "/libproc_macro_error_attr-5abbb4d0b3e50e85.so"
-## dst = "/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro_error_attr-5abbb4d0b3e50e85.so"
+## xtern = "libproc_macro_error_attr-5abbb4d0b3e50e85.so"
 ## 
 ## [[contexts]]
 ## name = "crate_out-3cf9e442dfddd505"
@@ -10020,9 +9560,9 @@ COPY --from=dep-b-dbcc-2.2.1-6cd0852da8e8bf94 /tmp/clis-dbcc_2-2-1/release/deps/
 ##   https://static.crates.io/crates/dbcc/dbcc-2.2.1.crate /'''
 ## 
 ## [[stages]]
-## name = "dep-b-dbcc-2.2.1-6cd0852da8e8bf94"
+## name = "dep-n-dbcc-2.2.1-6cd0852da8e8bf94"
 ## script = '''
-## FROM rust-base AS dep-b-dbcc-2.2.1-6cd0852da8e8bf94
+## FROM rust-base AS dep-n-dbcc-2.2.1-6cd0852da8e8bf94
 ## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
@@ -10165,7 +9705,7 @@ COPY --from=dep-b-dbcc-2.2.1-6cd0852da8e8bf94 /tmp/clis-dbcc_2-2-1/release/deps/
 ## name = "out-6cd0852da8e8bf94"
 ## script = """
 ## FROM scratch AS out-6cd0852da8e8bf94
-## COPY --from=dep-b-dbcc-2.2.1-6cd0852da8e8bf94 /tmp/clis-dbcc_2-2-1/release/deps/*-6cd0852da8e8bf94* /"""
+## COPY --from=dep-n-dbcc-2.2.1-6cd0852da8e8bf94 /tmp/clis-dbcc_2-2-1/release/deps/*-6cd0852da8e8bf94* /"""
 
 FROM scratch
 COPY --from=out-6cd0852da8e8bf94 /dbcc-6cd0852da8e8bf94 /dbcc
