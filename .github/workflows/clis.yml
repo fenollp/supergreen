@@ -961,7 +961,7 @@ jobs:
       if: ${{ failure() || success() }}
       run: du -sh $CARGO_TARGET_DIR
 
-  diesel_cli_2-1-1_3:
+  diesel_cli_2-3-2_3:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -973,8 +973,8 @@ jobs:
         - stable
         - 1.86.0
     env:
-      CARGO_TARGET_DIR: /tmp/clis-diesel_cli_2-1-1
-      CARGOGREEN_FINAL_PATH: recipes/diesel_cli@2.1.1.Dockerfile
+      CARGO_TARGET_DIR: /tmp/clis-diesel_cli_2-3-2
+      CARGOGREEN_FINAL_PATH: recipes/diesel_cli@2.3.2.Dockerfile
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
 
@@ -1034,7 +1034,7 @@ jobs:
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env CARGOGREEN_ADD_APT=libpq-dev \
-          cargo green -vv install --jobs=3 --locked --force diesel_cli@2.1.1 --no-default-features --features=postgres |& tee _
+          cargo green -vv install --jobs=3 --locked --force diesel_cli@2.3.2 --no-default-features --features=postgres |& tee _
     - name: cargo install net=ON cache=ON remote=OFF jobs=1
       if: ${{ failure() }}
       run: |
@@ -1045,12 +1045,12 @@ jobs:
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env CARGOGREEN_ADD_APT=libpq-dev \
-          cargo green -vv install --jobs=1 --locked --force diesel_cli@2.1.1 --no-default-features --features=postgres |& tee _
+          cargo green -vv install --jobs=1 --locked --force diesel_cli@2.3.2 --no-default-features --features=postgres |& tee _
     - if: ${{ matrix.toolchain != 'stable' }}
       uses: actions/upload-artifact@v4
       name: Upload recipe
       with:
-        name: diesel_cli@2.1.1.Dockerfile
+        name: diesel_cli@2.3.2.Dockerfile
         path: ${{ env.CARGOGREEN_FINAL_PATH }}
     - if: ${{ failure() || success() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
@@ -1118,7 +1118,7 @@ jobs:
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env CARGOGREEN_ADD_APT=libpq-dev \
-          cargo green -vv install --jobs=3 --locked --force diesel_cli@2.1.1 --no-default-features --features=postgres |& tee _
+          cargo green -vv install --jobs=3 --locked --force diesel_cli@2.3.2 --no-default-features --features=postgres |& tee _
     - name: ...doesn't recompile anything
       run: |
         err=0
