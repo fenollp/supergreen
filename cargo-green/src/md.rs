@@ -21,16 +21,13 @@ pub(crate) struct Md {
     this: MdId,
 
     #[serde(default, skip_serializing_if = "IndexSet::is_empty")]
-    pub(crate) mounts: IndexSet<MountFrom>,
+    externs: IndexSet<MountExtern>,
 
     #[serde(default, skip_serializing_if = "IndexSet::is_empty")]
     deps: IndexSet<MdId>,
 
     #[serde(default, skip_serializing_if = "IndexSet::is_empty")]
-    pub(crate) short_externs: IndexSet<MdId>,
-
-    #[serde(default, skip_serializing_if = "<&bool as std::ops::Not>::not")]
-    pub(crate) is_proc_macro: bool,
+    short_externs: IndexSet<MdId>,
 
     #[serde(default, skip_serializing_if = "IndexSet::is_empty")]
     pub(crate) contexts: IndexSet<BuildContext>,
@@ -56,19 +53,32 @@ impl FromStr for Md {
 
 impl Md {
     #[must_use]
-    pub(crate) fn new(this: &str) -> Self {
+    pub(crate) fn new(extrafn: &str) -> Self {
         Self {
-            this: MdId(this.to_owned()),
-            mounts: IndexSet::default(),
+            this: MdId::new(extrafn),
+            externs: IndexSet::default(),
             deps: IndexSet::default(),
             short_externs: IndexSet::default(),
-            is_proc_macro: false,
             contexts: IndexSet::default(),
             stages: IndexSet::default(),
             writes: Vec::default(),
             stdout: Vec::default(),
             stderr: Vec::default(),
         }
+    }
+
+    #[must_use]
+    pub(crate) fn this(&self) -> MdId {
+        self.this
+    }
+
+    pub(crate) fn externs(&self) -> impl Iterator<Item = &MountExtern> {
+        self.externs.iter()
+    }
+
+    #[must_use]
+    fn deps(&self) -> Vec<MdId> {
+        self.deps.iter().cloned().collect()
     }
 
     pub(crate) fn from_file(path: &Utf8Path) -> Result<Self> {
@@ -158,21 +168,10 @@ impl Md {
     //   https://github.com/rust-lang/rust/issues/63012 : Tracking issue for -Z binary-dep-depinfo
     pub(crate) fn assemble_build_dependencies(
         &mut self,
-        // crate_type: &str,
-        // emit: &str,
         externs: IndexSet<String>,
         target_path: &Utf8Path,
     ) -> Result<Vec<Self>> {
         let mut mds = HashMap::<Utf8PathBuf, Self>::new(); // A file cache
-
-        // let ext = match crate_type {
-        //     "lib" => "rmeta".to_owned(),
-        //     "bin" | "rlib" | "test" | "proc-macro" => "rlib".to_owned(),
-        //     _ => bail!("BUG: unexpected crate-type: '{crate_type}'"),
-        // };
-        // // https://rustc-dev-guide.rust-lang.org/backend/libs-and-metadata.html#rmeta
-        // // > [rmeta] is created if the --emit=metadata CLI option is used.
-        // let ext = if emit.contains("metadata") { "rmeta".to_owned() } else { ext };
 
         let mut extern_mds_and_paths = vec![];
 
@@ -182,46 +181,35 @@ impl Md {
             trace!("❯ extern {xtern}");
 
             // E.g. c443c88a44e24bc6
-            let Some(xtern_mdid) = xtern.split(['-', '.']).nth(1) else {
+            let Some(xtern) = xtern.split(['-', '.']).nth(1) else {
                 bail!("BUG: expected extern to match ^lib[^.-]+-<mdid>.[^.]+$: {xtern}")
             };
-            let xtern_mdid = MdId(xtern_mdid.to_owned());
+            let xtern = MdId::new(&format!("-{xtern}"));
 
-            trace!("❯ short extern {xtern_mdid}");
-            self.short_externs.insert(xtern_mdid.clone()); //FIXME: rename xtern_mdid to xtern
+            trace!("❯ short extern {xtern}");
+            self.short_externs.insert(xtern);
 
-            let extern_md = target_path.join(format!("{xtern_mdid}.toml")); //FIXME: MdId.path(target_path)
+            let extern_md = xtern.path(target_path);
             info!("checking (RO) extern's externs {extern_md}");
             let extern_md = get_or_read(&mut mds, &extern_md)?;
 
             for transitive in extern_md.short_externs {
-                // let guard_md = target_path.join(format!("{transitive}.toml")); //FIXME: MdId.path(target_path)
-                // let guard_md = get_or_read(&mut mds, &guard_md)?;
-                // let ext = if guard_md.is_proc_macro { "so" } else { &ext };
-
-                // trace!("❯ extern lib{transitive}.{ext}");
-
                 trace!("❯ transitive short extern {transitive}");
                 self.short_externs.insert(transitive);
             }
         }
 
         for dep in &self.short_externs {
-            let dep_md_path = target_path.join(format!("{dep}.toml"));
+            let dep_md_path = dep.path(target_path);
             let dep_md = get_or_read(&mut mds, &dep_md_path)?;
-            let dep_stage = Stage::output(&dep.0)?; //TODO: swap arg type
-            self.mounts.extend(
+            let dep_stage = Stage::output(*dep)?;
+            self.externs.extend(
                 dep_md
                     .writes
                     .iter()
                     .filter(|w: &&Utf8PathBuf| !w.as_str().ends_with(".d"))
                     .map(|w| w.file_name().unwrap().to_owned())
-                    // .filter(|w: &String| w.ends_with(&format!(".{ext}"))) TODO? shake some of these => fewer bind mounts
-                    .map(|xtern: String| MountFrom {
-                        from: dep_stage.clone(),
-                        src: format!("/{xtern}").into(),
-                        dst: target_path.join("deps").join(xtern),
-                    }),
+                    .map(|xtern: String| MountExtern { from: dep_stage.clone(), xtern }),
             );
             extern_mds_and_paths.push((dep_md_path, dep_md));
         }
@@ -241,28 +229,26 @@ impl Md {
         let mut dag: Vec<_> = mds
             .into_iter()
             .map(|(md_path, md)| {
-                let this = md.this.as_u64();
+                let node = Node::new(md.this, md.deps(), md_path);
                 self.deps.insert(md.this);
                 self.contexts.extend(md.contexts);
-                Node::new(this, md.deps.as_u64s(), md_path)
+                node
             })
             .collect();
-        let this = self.this.as_u64();
-        dag.push(Node::new(this, self.deps.as_u64s(), "".into()));
+        let this = self.this;
+        let root = Utf8PathBuf::new();
+        dag.push(Node::new(this, self.deps(), root.clone()));
 
-        let mut md_paths = sort(&dag, this).map_err(|e| {
-            let this = &self.this.0;
-            match e {
-                TopsortError::TargetNotFound(x) => {
-                    anyhow!("Failed topolosorting {this}: {} not found", MdId::from_u64(x).0)
-                }
-                TopsortError::CyclicDependency(x) => {
-                    anyhow!("Failed topolosorting {this}: cyclic {}", MdId::from_u64(x).0)
-                }
+        let mut md_paths = sort(&dag, this).map_err(|e| match e {
+            TopsortError::TargetNotFound(x) => {
+                anyhow!("Failed topolosorting {this}: {x} not found")
+            }
+            TopsortError::CyclicDependency(x) => {
+                anyhow!("Failed topolosorting {this}: cyclic {x}")
             }
         })?;
         let last = md_paths.pop();
-        assert_eq!(last.as_deref(), Some("".into()), "BUG: it's self.this's empty path");
+        assert_eq!(last, Some(root), "BUG: should be self.this's empty path");
 
         Ok(md_paths)
     }
@@ -293,26 +279,25 @@ impl Md {
 }
 
 #[derive(Debug, Clone, Deserialize, Serialize, Eq)]
-pub(crate) struct MountFrom {
+pub(crate) struct MountExtern {
     pub(crate) from: Stage,
-    pub(crate) src: Utf8PathBuf,
-    pub(crate) dst: Utf8PathBuf,
+    pub(crate) xtern: String,
 }
 
 /// For use by IndexSet
-impl PartialEq for MountFrom {
+impl PartialEq for MountExtern {
     fn eq(&self, other: &Self) -> bool {
-        self.dst == other.dst
+        self.xtern == other.xtern
     }
 }
 
 /// For use by IndexSet
-impl std::hash::Hash for MountFrom {
+impl std::hash::Hash for MountExtern {
     fn hash<H>(&self, state: &mut H)
     where
         H: std::hash::Hasher,
     {
-        self.dst.hash(state);
+        self.xtern.hash(state);
     }
 }
 
@@ -338,61 +323,88 @@ pub(crate) struct BuildContext {
     pub(crate) uri: Utf8PathBuf,
 }
 
-#[derive(Debug, Clone, Deserialize, Serialize, Eq, PartialEq, Hash)]
-pub(crate) struct MdId(pub(crate) String); //FIXME: unpub
-
-//TODO: impl Display
-//TODO: .0 as u64 + Self::from_str
-//TODO: ::from_extrafn
-
-impl MdId {
-    #[must_use]
-    fn from_u64(metadata: u64) -> Self {
-        Self(format!("{metadata:#x}").trim_start_matches("0x").to_owned())
-    }
-
-    #[must_use]
-    fn as_u64(&self) -> u64 {
-        u64::from_str_radix(self.0.as_ref(), 16).expect("16-digit hex str")
-    }
-}
+/// An ID unique to crate+version+crate-type+.. extracted from the rustc arg "extrafn"
+#[derive(Debug, Copy, Clone, Deserialize, Serialize, Eq, PartialEq, Hash)]
+#[serde(from = "String", into = "String")]
+pub(crate) struct MdId(u64);
 
 impl fmt::Display for MdId {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{}", self.0)
+        write!(f, "{:0>16}", format!("{:#x}", self.0).trim_start_matches("0x"))
     }
 }
 
-trait MdIdsExt {
-    #[must_use]
-    fn as_u64s(&self) -> Vec<u64>;
+/// For use by serde
+impl From<MdId> for String {
+    fn from(metadata: MdId) -> Self {
+        format!("{metadata}")
+    }
 }
 
-impl MdIdsExt for IndexSet<MdId> {
-    fn as_u64s(&self) -> Vec<u64> {
-        self.into_iter().map(MdId::as_u64).collect()
+/// For use by serde
+// TODO? prefer &str impl
+impl From<String> for MdId {
+    fn from(hex: String) -> Self {
+        assert_eq!(hex.len(), 16, "Unexpected MdId {hex:?}");
+        Self(u64::from_str_radix(&hex, 16).expect("16-digit hex str"))
+    }
+}
+
+impl MdId {
+    #[must_use]
+    pub(crate) fn new(extrafn: &str) -> Self {
+        assert!(extrafn.starts_with('-'), "Unexpected extrafn {extrafn:?}");
+        extrafn[1..].to_owned().into()
+    }
+
+    #[must_use]
+    pub(crate) fn path(&self, target_path: &Utf8Path) -> Utf8PathBuf {
+        target_path.join(format!("{self}.toml"))
     }
 }
 
 #[test]
-fn dec_decs() {
-    let as_hex = MdId("dab737da4696ee62".to_owned());
-    let as_dec = 15760126831633034850;
-    assert_eq!(as_hex.as_u64(), as_dec);
-    assert_eq!(MdId::from_u64(as_dec), as_hex);
-    assert_eq!(MdId::from_u64(MdId::from_u64(as_dec).as_u64()).as_u64(), as_dec);
+fn mdid_path() {
+    assert_eq!(
+        MdId(0xfb7fae2e3366cafc).path("some/path".into()),
+        "some/path/fb7fae2e3366cafc.toml"
+    );
+}
+
+#[test]
+fn mdid_roundrobin() {
+    let extrafn = "-dab737da4696ee62";
+    let mdid = MdId::new(extrafn);
+    assert_eq!(format!("-{mdid}"), extrafn);
+}
+
+#[test]
+fn mdid_pads() {
+    let mdid = MdId(0x572f583993dd3d9).to_string();
+    assert_eq!(mdid, "0572f583993dd3d9");
+    assert_eq!(mdid.len(), 16);
+}
+
+#[test]
+fn mdid_ser() {
+    let mdid = MdId(0x78d0c09fd98410d3);
+    assert_eq!(mdid.to_string(), "78d0c09fd98410d3".to_owned());
+    assert_eq!(&serde_json::to_string(&mdid).unwrap(), "\"78d0c09fd98410d3\"");
+}
+
+#[test]
+fn mdid_de() {
+    let hex = "\"78d0c09fd98410d3\"";
+    assert_eq!(serde_json::from_str::<MdId>(hex).unwrap(), MdId(0x78d0c09fd98410d3));
 }
 
 #[test]
 fn md_ser() {
     let md = Md {
-        this: MdId("711ba64e1183a234".to_owned()),
-        mounts: [MountFrom { from: RUST.clone(), src: "./blip".into(), dst: "/blop".into() }]
-            .into(),
-        deps: [MdId("81529f4c2380d9ec".to_owned()), MdId("88a4324b2aff6db9".to_owned())].into(),
-        short_externs: [MdId("b8c41dbf50ca5479".to_owned()), MdId("96a741f581f4126a".to_owned())]
-            .into(),
-        is_proc_macro: true,
+        this: MdId(0x711ba64e1183a234),
+        externs: [MountExtern { from: RUST.clone(), xtern: "blop".into() }].into(),
+        deps: [MdId(0x81529f4c2380d9ec), MdId(0x88a4324b2aff6db9)].into(),
+        short_externs: [MdId(0xb8c41dbf50ca5479), MdId(0x96a741f581f4126a)].into(),
         contexts: [BuildContext {
             name: "rust".try_into().unwrap(),
             uri: "/some/local/path".into(),
@@ -419,17 +431,15 @@ short_externs = [
     "b8c41dbf50ca5479",
     "96a741f581f4126a",
 ]
-is_proc_macro = true
 writes = [
     "deps/primeorder-06397107ab8300fa.d",
     "deps/libprimeorder-06397107ab8300fa.rmeta",
     "deps/libprimeorder-06397107ab8300fa.rlib",
 ]
 
-[[mounts]]
+[[externs]]
 from = "rust-base"
-src = "./blip"
-dst = "/blop"
+xtern = "blop"
 
 [[contexts]]
 name = "rust"
@@ -456,8 +466,6 @@ contexts = [
 stages = []
 "#[1..];
 
-    let this = MdId("9494aa6093cd94c9".to_owned());
-    let deps = [MdId("0dc1fe2644e3176a".to_owned())].into();
     let contexts = [
         BuildContext {
             name: "input_src_lib_rs--rustversion-1.0.9".try_into().unwrap(),
@@ -475,8 +483,8 @@ stages = []
         },
     ];
     let md = Md::from_str(origin).unwrap();
-    assert_eq!(md.this, this);
-    assert_eq!(md.deps, deps);
+    assert_eq!(md.this, MdId(0x9494aa6093cd94c9));
+    assert_eq!(md.deps(), vec![MdId(0x0dc1fe2644e3176a)]);
     dbg!(&md.contexts);
     pretty_assertions::assert_eq!(md.contexts, contexts.clone().into());
 }

@@ -50,19 +50,3 @@ fn log_level_for_logging(lvl: Level) -> char {
         Level::Trace => 'T',
     }
 }
-
-#[must_use]
-pub(crate) fn crate_type_for_logging(crate_type: &str) -> char {
-    crate_type.chars().next().unwrap().to_ascii_uppercase()
-}
-
-#[test]
-fn unique_krate_types() {
-    use std::collections::HashSet;
-
-    use super::rustc_arguments::ALL_CRATE_TYPES;
-
-    let all: HashSet<_> = ALL_CRATE_TYPES.iter().map(|ty| crate_type_for_logging(ty)).collect();
-    assert_eq!(ALL_CRATE_TYPES.len(), all.len());
-    assert!(!all.contains(&'X')); // for build scripts
-}

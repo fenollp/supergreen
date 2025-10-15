@@ -30,8 +30,9 @@ use crate::{
     ext::{timeout, CommandExt},
     green::{Green, ENV_SET_ENVS},
     image_uri::ImageUri,
-    logging::{crate_type_for_logging, ENV_LOG_PATH},
+    logging::ENV_LOG_PATH,
     md::BuildContext,
+    r#final::is_primary,
     runner::DOCKER_HOST,
     stage::Stage,
     PKG,
@@ -251,9 +252,8 @@ impl Green {
                 //TODO: include --target=platform in image tag, per: https://github.com/docker/buildx/discussions/1382
                 cmd.arg(format!("--tag={img}:{target}"));
 
-                // TODO? additionally filter for only root package
-                assert_eq!('b', crate_type_for_logging("bin").to_ascii_lowercase());
-                if target.trim_start_matches(|c| c != '-').starts_with("-b-") {
+                if is_primary() {
+                    // MAY tag >1 times
                     cmd.arg(format!("--tag={img}:latest"));
                 }
             }

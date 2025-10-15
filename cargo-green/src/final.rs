@@ -14,11 +14,15 @@ use crate::{
     md::{BuildContext, Md},
 };
 
+pub(crate) fn is_primary() -> bool {
+    env::var("CARGO_PRIMARY_PACKAGE").is_ok()
+}
+
 impl Green {
     // NOTE: using $CARGO_PRIMARY_PACKAGE still makes >1 hits in rustc calls history: lib + bin, at least.
     fn should_write_final_path(&self) -> Option<&Utf8Path> {
         if let Some(path) = self.final_path.as_deref() {
-            if self.final_path_nonprimary || env::var("CARGO_PRIMARY_PACKAGE").is_ok() {
+            if self.final_path_nonprimary || is_primary() {
                 return Some(path);
             }
         }
