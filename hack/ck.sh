@@ -106,7 +106,7 @@ cat <<EOF
     - if: \${{ failure() || success() }}
       name: 🔴 =means=> here's cargo's error text
       run: |
-        ! grep -C20 -F '##[error]' \$CARGOGREEN_LOG_PATH
+        ! grep -C20 -Ei '^error:' \$CARGOGREEN_LOG_PATH
 
     - if: \${{ failure() || success() }}
       name: 🔴 =means=> here's relevant logs
