@@ -52,32 +52,32 @@ impl FromStr for Driver {
 #[serde(deny_unknown_fields)]
 #[serde(rename_all = "kebab-case")]
 pub(crate) struct Builder {
-    // Sets which BuildKit builder to use, through $BUILDX_BUILDER.
-    //
-    // See https://docs.docker.com/build/building/variables/#buildx_builder
-    //
-    // * Unset: creates & handles a builder named "supergreen". Upgrades it if too old, while trying to keep old cached data
-    // * Set to "": skips using a builder
-    // * Set to "supergreen": uses existing and just warns if too old
-    // * Set: use that as builder, no questions asked
+    /// Sets which BuildKit builder to use, through $BUILDX_BUILDER.
+    ///
+    /// See https://docs.docker.com/build/building/variables/#buildx_builder
+    ///
+    /// * Unset: creates & handles a builder named "supergreen". Upgrades it if too old, while trying to keep old cached data
+    /// * Set to "": skips using a builder
+    /// * Set to "supergreen": uses existing and just warns if too old
+    /// * Set: use that as builder, no questions asked
     #[serde(skip_serializing_if = "Option::is_none")]
     pub(crate) name: Option<String>,
 
-    // Shows which driver the configured builder uses.
-    //
-    // See https://docs.docker.com/build/drivers/
-    // Also: https://docs.docker.com/build/drivers/docker-container/
-    // Also: https://docs.docker.com/build/drivers/remote/
-    // Also: https://docs.docker.com/build/drivers/kubernetes/
+    /// Shows which driver the configured builder uses.
+    ///
+    /// See https://docs.docker.com/build/drivers/
+    /// Also: https://docs.docker.com/build/drivers/docker-container/
+    /// Also: https://docs.docker.com/build/drivers/remote/
+    /// Also: https://docs.docker.com/build/drivers/kubernetes/
     #[serde(skip_serializing_if = "Option::is_none")]
     pub(crate) driver: Option<Driver>,
 
-    // Sets which BuildKit builder version to use.
-    //
-    // See https://docs.docker.com/build/builders/
-    //
-    // # Use by setting this environment variable (no Cargo.toml setting):
-    // CARGOGREEN_BUILDER_IMAGE="docker-image://docker.io/moby/buildkit:latest"
+    /// Sets which BuildKit builder version to use.
+    ///
+    /// See https://docs.docker.com/build/builders/
+    ///
+    /// # Use by setting this environment variable (no Cargo.toml setting):
+    /// CARGOGREEN_BUILDER_IMAGE="docker-image://docker.io/moby/buildkit:latest"
     #[serde(skip_serializing_if = "Option::is_none")]
     pub(crate) image: Option<ImageUri>,
 }

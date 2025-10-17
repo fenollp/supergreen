@@ -27,100 +27,101 @@ pub(crate) const ENV_CACHE_IMAGES: &str = "CARGOGREEN_CACHE_IMAGES";
 pub(crate) const ENV_INCREMENTAL: &str = "CARGOGREEN_INCREMENTAL";
 pub(crate) const ENV_SET_ENVS: &str = "CARGOGREEN_SET_ENVS";
 
+/// Configuration.
+///
+/// Cargo.toml's `[package.metadata.green]` entries are overriden by
+/// environment variables that are prefixed by `$CARGOGREEN_`.
 #[derive(Debug, Serialize, Deserialize, Default, PartialEq, Eq)]
-#[serde(default)]
-#[serde(deny_unknown_fields)]
-#[serde(rename_all = "kebab-case")]
+#[serde(default, deny_unknown_fields, rename_all = "kebab-case")]
 pub(crate) struct Green {
-    // Pick which executor to use: "docker" (default), "podman" or "none".
-    //
-    // # Use by setting this environment variable (no Cargo.toml setting):
-    // CARGOGREEN_RUNNER="docker"
+    /// Pick which executor to use: "docker" (default), "podman" or "none".
+    ///
+    /// # Use by setting this environment variable (no Cargo.toml setting):
+    /// CARGOGREEN_RUNNER="docker"
     pub(crate) runner: Runner,
 
     // Snapshot of runner's envs. Not user-settable.
     #[serde(skip_serializing_if = "HashMap::is_empty")]
     pub(crate) runner_envs: HashMap<String, String>,
 
-    // Whether to wrap incremental compilation, defaults to false.
-    //
-    // See https://doc.rust-lang.org/cargo/reference/config.html#buildincremental
-    //
-    // # Use by setting this environment variable (no Cargo.toml setting):
-    // CARGOGREEN_INCREMENTAL="1"
+    /// Whether to wrap incremental compilation, defaults to false.
+    ///
+    /// See https://doc.rust-lang.org/cargo/reference/config.html#buildincremental
+    ///
+    /// # Use by setting this environment variable (no Cargo.toml setting):
+    /// CARGOGREEN_INCREMENTAL="1"
     #[serde(skip_serializing_if = "<&bool as std::ops::Not>::not")]
     pub(crate) incremental: bool,
 
     #[serde(flatten)]
     pub(crate) builder: Builder,
 
-    // Sets which BuildKit frontend syntax to use.
-    //
-    // See https://docs.docker.com/build/buildkit/frontend/#stable-channel
-    //
-    // # Use by setting this environment variable (no Cargo.toml setting):
-    // CARGOGREEN_SYNTAX="docker-image://docker.io/docker/dockerfile:1"
+    /// Sets which BuildKit frontend syntax to use.
+    ///
+    /// See https://docs.docker.com/build/buildkit/frontend/#stable-channel
+    ///
+    /// # Use by setting this environment variable (no Cargo.toml setting):
+    /// CARGOGREEN_SYNTAX="docker-image://docker.io/docker/dockerfile:1"
     pub(crate) syntax: ImageUri,
 
-    // Image paths with registry information.
-    //
-    // See type=registry at https://docs.docker.com/build/cache/backends/
-    //
-    // cache-images = [ "docker-image://my.org/team/my-project", "docker-image://some.org/global/cache" ]
-    //
-    // # Use by setting this environment variable (no Cargo.toml setting):
-    // # Note: values here are comma-separated.
-    // CARGOGREEN_CACHE_IMAGES="docker-image://my.org/team/my-project,docker-image://some.org/global/cache"
+    /// Image paths with registry information.
+    ///
+    /// See type=registry at https://docs.docker.com/build/cache/backends/
+    ///
+    /// cache-images = [ "docker-image://my.org/team/my-project", "docker-image://some.org/global/cache" ]
+    ///
+    /// # Use by setting this environment variable (no Cargo.toml setting):
+    /// # Note: values here are comma-separated.
+    /// CARGOGREEN_CACHE_IMAGES="docker-image://my.org/team/my-project,docker-image://some.org/global/cache"
     #[serde(skip_serializing_if = "Vec::is_empty")]
     pub(crate) cache_images: Vec<ImageUri>,
     // TODO? error when registry is unreachable
-
-    // Write final containerfile to given path.
-    //
-    // Helps e.g. create a containerfile of e.g. a binary to use for best caching of dependencies.
-    //
-    // # Use by setting this environment variable (no Cargo.toml setting):
-    // CARGOGREEN_FINAL_PATH="$PWD/my-bin@1.0.0.Dockerfile"
+    /// Write final containerfile to given path.
+    ///
+    /// Helps e.g. create a containerfile of e.g. a binary to use for best caching of dependencies.
+    ///
+    /// # Use by setting this environment variable (no Cargo.toml setting):
+    /// CARGOGREEN_FINAL_PATH="$PWD/my-bin@1.0.0.Dockerfile"
     #[serde(skip_serializing_if = "Option::is_none")]
     pub(crate) final_path: Option<Utf8PathBuf>,
 
-    // Write final containerfile on every rustc call.
-    //
-    // Helps e.g. debug builds failing too early.
-    //
-    // # Use by setting this environment variable (no Cargo.toml setting):
-    // CARGOGREEN_FINAL_PATH_NONPRIMARY="1"
+    /// Write final containerfile on every rustc call.
+    ///
+    /// Helps e.g. debug builds failing too early.
+    ///
+    /// # Use by setting this environment variable (no Cargo.toml setting):
+    /// CARGOGREEN_FINAL_PATH_NONPRIMARY="1"
     #[serde(skip_serializing_if = "<&bool as std::ops::Not>::not")]
     pub(crate) final_path_nonprimary: bool,
 
     #[serde(flatten)]
     pub(crate) image: BaseImage,
 
-    // Pass environment variables through to build runner.
-    // See also:
-    //   `packages`
-    //
-    // May be useful if a build script exported some vars that a package then reads.
-    // About $GIT_AUTH_TOKEN: https://docs.docker.com/build/building/secrets/#git-authentication-for-remote-contexts
-    //
-    // set-envs = [ "GIT_AUTH_TOKEN", "TYPENUM_BUILD_CONSTS", "TYPENUM_BUILD_OP" ]
-    //
-    // # This environment variable takes precedence over any Cargo.toml settings:
-    // # Note: values here are comma-separated.
-    // CARGOGREEN_SET_ENVS="GIT_AUTH_TOKEN,TYPENUM_BUILD_CONSTS,TYPENUM_BUILD_OP"
-    //
-    // NOTE: this doesn't (yet) accumulate dependencies' set-envs values!
+    /// Pass environment variables through to build runner.
+    /// See also:
+    ///   `packages`
+    ///
+    /// May be useful if a build script exported some vars that a package then reads.
+    /// About $GIT_AUTH_TOKEN: https://docs.docker.com/build/building/secrets/#git-authentication-for-remote-contexts
+    ///
+    /// set-envs = [ "GIT_AUTH_TOKEN", "TYPENUM_BUILD_CONSTS", "TYPENUM_BUILD_OP" ]
+    ///
+    /// # This environment variable takes precedence over any Cargo.toml settings:
+    /// # Note: values here are comma-separated.
+    /// CARGOGREEN_SET_ENVS="GIT_AUTH_TOKEN,TYPENUM_BUILD_CONSTS,TYPENUM_BUILD_OP"
+    ///
+    /// NOTE: this doesn't (yet) accumulate dependencies' set-envs values!
     #[serde(skip_serializing_if = "Vec::is_empty")]
     pub(crate) set_envs: Vec<String>,
 
-    // Add OS packages to the base image
-    // See also:
-    //   `add.apk`
-    //   `add.apt`
-    //   `add.apt-get`
-    //
-    // # Inspect the resulting base image with:
-    // CARGOGREEN_ADD_APT=libssl-dev,zlib1g-dev cargo green supergreen env CARGOGREEN_BASE_IMAGE_INLINE
+    /// Add OS packages to the base image
+    /// See also:
+    ///   `add.apk`
+    ///   `add.apt`
+    ///   `add.apt-get`
+    ///
+    /// # Inspect the resulting base image with:
+    /// CARGOGREEN_ADD_APT=libssl-dev,zlib1g-dev cargo green supergreen env CARGOGREEN_BASE_IMAGE_INLINE
     #[serde(skip_serializing_if = "Add::is_empty")]
     pub(crate) add: Add,
 }
