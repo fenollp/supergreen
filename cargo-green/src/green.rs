@@ -205,7 +205,8 @@ impl Green {
             // #TODO: CARGOGREEN_COMPONENT=toolchain=,target=,add=llvm-tools-preview;remove=
             // https://rust-lang.github.io/rustup/concepts/toolchains.html#toolchain-specification
             // if set use it, else:
-            green.base = BaseImage::from_local_rustc();
+            ///////let maybe = async move { green.image.xx = fetch digset(XX)   };
+            green.base = BaseImage::from_local_rustc(/*green.image.xx*/);
         }
 
         validate_csv(&mut green.set_envs, ENV_SET_ENVS!())?;

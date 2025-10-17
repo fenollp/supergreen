@@ -83,7 +83,7 @@ impl BaseImage {
         }
         commit_hash
             .zip(commit_date)
-            .map(|(commit, date)| RustcV { version: semver, commit, date, channel }.as_base_image())
+            .map(|(commit, date)| RustcV { semver, commit, date, channel }.as_base_image())
     }
 
     #[must_use]
@@ -110,7 +110,7 @@ impl BaseImage {
 // TODO? maybe use commit & version as selector too?
 struct RustcV {
     #[expect(unused)]
-    version: Version,
+    semver: Version,
     #[expect(unused)]
     commit: String,
     date: String,
@@ -120,10 +120,6 @@ struct RustcV {
 impl RustcV {
     #[must_use]
     fn as_base_image(&self) -> BaseImage {
-        // TODO: dynamically resolve + cache this, if network is up.
-        let rustup_version = "1.28.1";
-        let rustup_checksum = "a3339fb004c3d0bb9862ba0bce001861fe5cbde9c10d16591eb3f39ee6cd3e7f";
-
         // FIXME: multiplatformify (using auto ARG.s) (use rustc_version::VersionMeta.host)
         let host = "x86_64-unknown-linux-gnu";
 
@@ -132,6 +128,8 @@ impl RustcV {
         //
         // maybe that's too naive
         //   do more research with `cargo cross`
+        //
+        // [xx-cargo broken with xx-sdk](https://github.com/tonistiigi/xx/issues/196)
         //
         // Use https://github.com/search?q=repo%3Across-rs/cross%20path%3Adockerfile&type=code images as auto base image?
         //
@@ -171,30 +169,29 @@ impl RustcV {
             apt: vec!["ca-certificates".to_owned(), "gcc".to_owned(), "libc6-dev".to_owned()],
             apt_get: vec!["ca-certificates".to_owned(), "gcc".to_owned(), "libc6-dev".to_owned()],
         }
-        .as_block(&format!("FROM --platform=$BUILDPLATFORM {base} AS {RST}"));
+        .as_block(
+            crate::add::XX.clone(), //FIXME
+            &format!("FROM --platform=$BUILDPLATFORM {base} AS {RST}"),
+        );
 
-        let block = format!(
+        let image_inline = Some(format!(
             r#"
-FROM scratch AS rustup-{channel}-{date}
-ADD --chmod=0144 --checksum=sha256:{rustup_checksum} \
-  https://static.rust-lang.org/rustup/archive/{rustup_version}/{host}/rustup-init /rustup-init
 {packages_block}
 ENV RUSTUP_HOME=/usr/local/rustup \
      CARGO_HOME=/usr/local/cargo \
            PATH=/usr/local/cargo/bin:$PATH
 RUN \
- --mount=from=rustup-{channel}-{date},source=/rustup-init,dst=/rustup-init \
+ --mount=from={rustup_image},source={rustup},dst={rustup},rw \
    set -eux \
-&& /rustup-init --verbose -y --no-modify-path --profile minimal --default-toolchain {channel}-{date} --default-host {host} \
-&& chmod -R a+w $RUSTUP_HOME $CARGO_HOME \
-&& rustup --version \
-&& cargo --version \
-&& rustc --version
+&& {rustup} toolchain install --profile minimal {channel}-{date}-{host} --no-self-update \
+&& chmod -R a+w $RUSTUP_HOME $CARGO_HOME
 "#,
             packages_block = packages_block.trim(),
-        );
+            rustup_image = STABLE_RUST.noscheme(), //FIXME
+            rustup = "/usr/local/cargo/bin/rustup",
+        ));
 
-        BaseImage { with_network, image, image_inline: Some(block) }
+        BaseImage { with_network, image, image_inline }
     }
 }
 
