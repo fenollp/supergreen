@@ -269,7 +269,6 @@ pub(crate) async fn fetch(green: Green) -> Result<()> {
         if img.locked() && user_input.map(|x| !x.contains("@sha256:")).unwrap_or(true) {
             // Don't pull a locked image unless that's what's asked
             // Otherwise, pull unlocked
-
             img.unlocked()
         } else {
             img.to_owned()
