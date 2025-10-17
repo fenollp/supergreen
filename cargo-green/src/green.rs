@@ -34,10 +34,12 @@ pub(crate) const ENV_SET_ENVS: &str = "CARGOGREEN_SET_ENVS";
 #[derive(Debug, Serialize, Deserialize, Default, PartialEq, Eq)]
 #[serde(default, deny_unknown_fields, rename_all = "kebab-case")]
 pub(crate) struct Green {
-    /// Pick which executor to use: "docker" (default), "podman" or "none".
+    /// Pick which executor to use: `"docker"` (default), `"podman"` or `"none"`.
     ///
-    /// # Use by setting this environment variable (no Cargo.toml setting):
+    /// *Use by setting this environment variable (no `Cargo.toml` setting):*
+    /// ```shell
     /// CARGOGREEN_RUNNER="docker"
+    /// ```
     pub(crate) runner: Runner,
 
     // Snapshot of runner's envs. Not user-settable.
@@ -46,10 +48,12 @@ pub(crate) struct Green {
 
     /// Whether to wrap incremental compilation, defaults to false.
     ///
-    /// See https://doc.rust-lang.org/cargo/reference/config.html#buildincremental
+    /// See <https://doc.rust-lang.org/cargo/reference/config.html#buildincremental>
     ///
-    /// # Use by setting this environment variable (no Cargo.toml setting):
+    /// *Use by setting this environment variable (no `Cargo.toml` setting):*
+    /// ```shell
     /// CARGOGREEN_INCREMENTAL="1"
+    /// ```
     #[serde(skip_serializing_if = "<&bool as std::ops::Not>::not")]
     pub(crate) incremental: bool,
 
@@ -58,30 +62,40 @@ pub(crate) struct Green {
 
     /// Sets which BuildKit frontend syntax to use.
     ///
-    /// See https://docs.docker.com/build/buildkit/frontend/#stable-channel
+    /// See <https://docs.docker.com/build/buildkit/frontend/#stable-channel>
     ///
-    /// # Use by setting this environment variable (no Cargo.toml setting):
+    /// *Use by setting this environment variable (no `Cargo.toml` setting):*
+    /// ```shell
     /// CARGOGREEN_SYNTAX="docker-image://docker.io/docker/dockerfile:1"
+    /// ```
     pub(crate) syntax: ImageUri,
 
-    /// Image paths with registry information.
+    /// Both read and write cached data to and from image registries
     ///
-    /// See type=registry at https://docs.docker.com/build/cache/backends/
+    /// See
+    /// * `type=registry` at <https://docs.docker.com/build/cache/backends/>
+    /// * and <https://docs.docker.com/build/cache/backends/registry/>
     ///
+    /// ```toml
     /// cache-images = [ "docker-image://my.org/team/my-project", "docker-image://some.org/global/cache" ]
+    /// ```
     ///
-    /// # Use by setting this environment variable (no Cargo.toml setting):
+    /// *Use by setting this environment variable (no `Cargo.toml` setting):*
+    /// ```shell
     /// # Note: values here are comma-separated.
     /// CARGOGREEN_CACHE_IMAGES="docker-image://my.org/team/my-project,docker-image://some.org/global/cache"
+    /// ```
     #[serde(skip_serializing_if = "Vec::is_empty")]
-    pub(crate) cache_images: Vec<ImageUri>,
-    // TODO? error when registry is unreachable
+    pub(crate) cache_images: Vec<ImageUri>, // TODO? error when registry is unreachable
+
     /// Write final containerfile to given path.
     ///
     /// Helps e.g. create a containerfile of e.g. a binary to use for best caching of dependencies.
     ///
-    /// # Use by setting this environment variable (no Cargo.toml setting):
+    /// *Use by setting this environment variable (no `Cargo.toml` setting):*
+    /// ```shell
     /// CARGOGREEN_FINAL_PATH="$PWD/my-bin@1.0.0.Dockerfile"
+    /// ```
     #[serde(skip_serializing_if = "Option::is_none")]
     pub(crate) final_path: Option<Utf8PathBuf>,
 
@@ -89,8 +103,10 @@ pub(crate) struct Green {
     ///
     /// Helps e.g. debug builds failing too early.
     ///
-    /// # Use by setting this environment variable (no Cargo.toml setting):
+    /// *Use by setting this environment variable (no `Cargo.toml` setting):*
+    /// ```shell
     /// CARGOGREEN_FINAL_PATH_NONPRIMARY="1"
+    /// ```
     #[serde(skip_serializing_if = "<&bool as std::ops::Not>::not")]
     pub(crate) final_path_nonprimary: bool,
 
@@ -98,30 +114,39 @@ pub(crate) struct Green {
     pub(crate) image: BaseImage,
 
     /// Pass environment variables through to build runner.
-    /// See also:
-    ///   `packages`
     ///
     /// May be useful if a build script exported some vars that a package then reads.
-    /// About $GIT_AUTH_TOKEN: https://docs.docker.com/build/building/secrets/#git-authentication-for-remote-contexts
+    /// See also:
+    /// * `packages`
     ///
+    /// About `$GIT_AUTH_TOKEN`: <https://docs.docker.com/build/building/secrets/#git-authentication-for-remote-contexts>
+    ///
+    /// ```toml
     /// set-envs = [ "GIT_AUTH_TOKEN", "TYPENUM_BUILD_CONSTS", "TYPENUM_BUILD_OP" ]
+    /// ```
     ///
-    /// # This environment variable takes precedence over any Cargo.toml settings:
+    /// *This environment variable takes precedence over any `Cargo.toml` settings:*
+    /// ```shell
     /// # Note: values here are comma-separated.
     /// CARGOGREEN_SET_ENVS="GIT_AUTH_TOKEN,TYPENUM_BUILD_CONSTS,TYPENUM_BUILD_OP"
+    /// ```
     ///
     /// NOTE: this doesn't (yet) accumulate dependencies' set-envs values!
+    /// Meaning only the top-level crate's setting is used, for all crates/dependencies.
     #[serde(skip_serializing_if = "Vec::is_empty")]
     pub(crate) set_envs: Vec<String>,
 
     /// Add OS packages to the base image
-    /// See also:
-    ///   `add.apk`
-    ///   `add.apt`
-    ///   `add.apt-get`
     ///
-    /// # Inspect the resulting base image with:
-    /// CARGOGREEN_ADD_APT=libssl-dev,zlib1g-dev cargo green supergreen env CARGOGREEN_BASE_IMAGE_INLINE
+    /// See also:
+    /// * `add.apk`
+    /// * `add.apt`
+    /// * `add.apt-get`
+    ///
+    /// Inspect the resulting base image with:
+    /// ```shell
+    /// CARGOGREEN_ADD_APT="libssl-dev,zlib1g-dev" cargo green supergreen env CARGOGREEN_BASE_IMAGE_INLINE
+    /// ```
     #[serde(skip_serializing_if = "Add::is_empty")]
     pub(crate) add: Add,
 }
@@ -791,7 +816,6 @@ cache-images = ["docker-image://some-registry.com/dir/image:sometag"]
 
 //
 
-//////////////////////////////////////////////////
 // from https://github.com/PRQL/prql/pull/3773/files
 // [profile.release.package.prql-compiler]
 // strip = "debuginfo"
@@ -807,7 +831,7 @@ cache-images = ["docker-image://some-registry.com/dir/image:sometag"]
 // https://lib.rs/crates/cargo_metadata
 // https://github.com/stormshield/cargo-ft/blob/d4ba5b048345ab4b21f7992cc6ed12afff7cc863/src/package/metadata.rs
 
-//////////////////////////////////////////////////
+//
 
 // use error_stack::{report, Context, ResultExt};
 // use serde::{
@@ -904,7 +928,7 @@ cache-images = ["docker-image://some-registry.com/dir/image:sometag"]
 //     ft: Option<InheritableFields>,
 // }
 
-// /// Group of fields which members of the workspace can inherit
+// // Group of fields which members of the workspace can inherit
 // #[derive(Debug, Clone, Eq, PartialEq, Hash, Default, Deserialize)]
 // #[serde(rename_all = "kebab-case")]
 // struct InheritableFields {

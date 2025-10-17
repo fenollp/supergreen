@@ -25,58 +25,84 @@ fn default_is_unset() {
 pub(crate) struct BaseImage {
     /// Controls runner's `--network none (default) | default | host` setting.
     ///
-    /// Set this to "default" if e.g. your `base-image-inline` calls curl or wget or installs some packages.
+    /// Set this to `"default"` if e.g. your `base-image-inline` calls curl or wget or installs some packages.
     ///
-    /// # This environment variable takes precedence over any Cargo.toml settings:
+    /// *This environment variable takes precedence over any `Cargo.toml` settings:*
+    /// ```shell
     /// CARGOGREEN_WITH_NETWORK="none"
+    /// ```
     ///
-    /// Set to `none` when in $CARGO_NET_OFFLINE mode. See
-    ///   * https://doc.rust-lang.org/cargo/reference/config.html#netoffline
-    ///   * https://github.com/rust-lang/rustup/issues/4289
+    /// Set to `none` when in `$CARGO_NET_OFFLINE` mode. See
+    ///   * <https://doc.rust-lang.org/cargo/reference/config.html#netoffline>
+    ///   * <https://github.com/rust-lang/rustup/issues/4289>
     pub(crate) with_network: Network,
 
     /// Sets the base Rust image, as an image URL (or any build context, actually).
     ///
     /// If needing additional envs to be passed to rustc or build script, set them in the base image.
+    ///
     /// This can be done in that same config file with `base-image-inline`.
     ///
     /// See also:
-    ///   `also-run`
-    ///   `base-image-inline`
-    ///   `additional-build-arguments`
+    /// * `also-run`
+    /// * `base-image-inline`
+    /// * `additional-build-arguments`
+    ///
     /// For remote builds: make sure this is accessible non-locally.
     ///
+    /// ```toml
     /// base-image = "docker-image://docker.io/library/rust:1-slim"
+    /// ```
     ///
-    /// The value must start with docker-image:// and image must be available on the DOCKER_HOST, eg:
+    /// The value must start with `docker-image://` and image must be available on the `$DOCKER_HOST`, eg:
+    /// ```shell
     /// CARGOGREEN_BASE_IMAGE=docker-image://rustc_with_libs
     /// DOCKER_HOST=ssh://my-remote-builder docker buildx build -t rustc_with_libs - <<EOF
     /// FROM docker.io/library/rust:1.69.0-slim-bookworm@sha256:8bdd28ef184d85c9b4932586af6280732780e806e5f452065420f2e783323ca3
     /// RUN set -eux && apt update && apt install -y libpq-dev libssl3
     /// ENV KEY=value
     /// EOF
+    /// ```
     ///
-    /// # This environment variable takes precedence over any Cargo.toml settings:
+    /// *This environment variable takes precedence over any `Cargo.toml` settings:*
+    /// ```shell
     /// CARGOGREEN_BASE_IMAGE="docker-image://docker.io/library/rust:1-slim"
+    /// ```
     pub(crate) base_image: ImageUri,
 
     /// Sets the base Rust image for root package and all dependencies, unless themselves being configured differently.
+    ///
     /// See also:
-    ///   `with-network`
-    ///   `additional-build-arguments`
+    /// * `with-network`
+    /// * `additional-build-arguments`
     ///
     /// In order to avoid unexpected changes, you may want to pin the image using an immutable digest.
+    ///
     /// Note that carefully crafting crossplatform stages can be non-trivial.
     ///
+    /// ```toml
     /// base-image-inline = """
     /// FROM --platform=$BUILDPLATFORM rust:1 AS rust-base
     /// RUN --mount=from=some-context,dst=/tmp/some-context cp -r /tmp/some-context ./
     /// RUN --mount=type=secret,id=aws
     /// """
-    /// base-image = "docker-image://rust:1" # This must also be set so digest gets pinned automatically.
+    /// ```
     ///
-    /// # This environment variable takes precedence over any Cargo.toml settings:
-    /// CARGOGREEN_BASE_IMAGE="FROM=rust:1 AS rust-base\nRUN --mount=from=some-context,dst=/tmp/some-context cp -r /tmp/some-context ./\nRUN --mount=type=secret,id=aws\n"
+    /// ```toml
+    /// # This must also be set so digest gets pinned automatically.
+    // TODO: parse base-image-inline and extract base-image
+    /// base-image = "docker-image://rust:1"
+    /// ```
+    ///
+    /// *This environment variable takes precedence over any `Cargo.toml` settings:*
+    /// ```shell
+    /// IFS='' read -r -d '' CARGOGREEN_BASE_IMAGE <<"EOF"
+    /// FROM=rust:1 AS rust-base
+    /// RUN --mount=from=some-context,dst=/tmp/some-context cp -r /tmp/some-context ./
+    /// RUN --mount=type=secret,id=aws
+    /// EOF
+    /// echo "$CARGOGREEN_BASE_IMAGE" # (with quotes to preserve newlines)
+    /// ```
     #[serde(skip_serializing_if = "Option::is_none")]
     pub(crate) base_image_inline: Option<String>,
 }

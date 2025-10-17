@@ -10,16 +10,18 @@ use crate::{
     image_uri::ImageUri, runner::BUILDX_BUILDER,
 };
 
-/// TODO: move to :rootless
+/// TODO: move to `:rootless`
 static BUILDKIT_IMAGE: LazyLock<ImageUri> =
     LazyLock::new(|| ImageUri::try_new("docker-image://docker.io/moby/buildkit:latest").unwrap());
 
-/// https://docs.docker.com/build/builders/drivers/docker-container/#qemu
-/// https://docs.docker.com/build/cache/backends/
+/// <https://docs.docker.com/build/builders/drivers/docker-container/#qemu>
+///
+/// <https://docs.docker.com/build/cache/backends/>
 const BUILDER_DRIVER: &str = "docker-container";
 
 /// Not a Release Candidate
-/// https://github.com/moby/buildkit/tags
+///
+/// <https://github.com/moby/buildkit/tags>
 static LATEST_BUILDKIT: LazyLock<Version> =
     LazyLock::new(|| Version::from(include_str!("latest_buildkit.txt").trim()).unwrap());
 
@@ -52,43 +54,45 @@ impl FromStr for Driver {
 #[serde(deny_unknown_fields)]
 #[serde(rename_all = "kebab-case")]
 pub(crate) struct Builder {
-    /// Sets which BuildKit builder to use, through $BUILDX_BUILDER.
+    /// Sets which BuildKit builder to use, through `$BUILDX_BUILDER`.
     ///
-    /// See https://docs.docker.com/build/building/variables/#buildx_builder
+    /// See <https://docs.docker.com/build/building/variables/#buildx_builder>
     ///
-    /// * Unset: creates & handles a builder named "supergreen". Upgrades it if too old, while trying to keep old cached data
-    /// * Set to "": skips using a builder
-    /// * Set to "supergreen": uses existing and just warns if too old
+    /// * Unset: creates & handles a builder named `"supergreen"`. Upgrades it if too old, while trying to keep old cached data
+    /// * Set to `""`: skips using a builder
+    /// * Set to `"supergreen"`: uses existing and just warns if too old
     /// * Set: use that as builder, no questions asked
     #[serde(skip_serializing_if = "Option::is_none")]
     pub(crate) name: Option<String>,
 
     /// Shows which driver the configured builder uses.
     ///
-    /// See https://docs.docker.com/build/drivers/
-    /// Also: https://docs.docker.com/build/drivers/docker-container/
-    /// Also: https://docs.docker.com/build/drivers/remote/
-    /// Also: https://docs.docker.com/build/drivers/kubernetes/
+    /// See <https://docs.docker.com/build/drivers/>
+    /// * <https://docs.docker.com/build/drivers/docker-container/>
+    /// * <https://docs.docker.com/build/drivers/remote/>
+    /// * <https://docs.docker.com/build/drivers/kubernetes/>
     #[serde(skip_serializing_if = "Option::is_none")]
     pub(crate) driver: Option<Driver>,
 
     /// Sets which BuildKit builder version to use.
     ///
-    /// See https://docs.docker.com/build/builders/
+    /// See <https://docs.docker.com/build/builders/>
     ///
-    /// # Use by setting this environment variable (no Cargo.toml setting):
+    /// *Use by setting this environment variable (no `Cargo.toml` setting):*
+    /// ```shell
     /// CARGOGREEN_BUILDER_IMAGE="docker-image://docker.io/moby/buildkit:latest"
+    /// ```
     #[serde(skip_serializing_if = "Option::is_none")]
     pub(crate) image: Option<ImageUri>,
 }
 
 impl Builder {
     pub(crate) fn is_default(&self) -> bool {
-        self.driver.as_ref().is_none_or(|d| d == &Driver::Docker)
+        self.driver.as_ref().is_none_or(|d| *d == Driver::Docker)
     }
 
     pub(crate) fn has_maxready(&self) -> bool {
-        self.driver.as_ref().is_some_and(|d| d == &Driver::DockerContainer)
+        self.driver.as_ref().is_some_and(|d| *d == Driver::DockerContainer)
     }
 }
 
@@ -275,17 +279,17 @@ struct BuilderNode {
 #[derive(Debug, Deserialize)]
 #[cfg_attr(test, derive(PartialEq))]
 struct DriverOpts {
-    /// An ImageUri without ^docker-image://
+    /// An ImageUri without `^docker-image://`
     image: Option<String>,
 }
 
-/// https://docs.docker.com/build/builders/drivers/
+/// <https://docs.docker.com/build/builders/drivers/>
 #[derive(Debug, Deserialize)]
 #[cfg_attr(test, derive(PartialEq))]
 #[serde(rename_all = "PascalCase")]
 struct BuildxBuilder {
     name: String,
-    /// Not an enum: future-proof (docker, docker-container, ..)
+    /// Not an enum: future-proof (`"docker"`, `"docker-container"`, ..)
     driver: String,
     nodes: Vec<BuilderNode>,
 }

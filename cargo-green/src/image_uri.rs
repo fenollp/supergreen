@@ -3,9 +3,14 @@ use std::sync::LazyLock;
 use anyhow::{bail, Error, Result};
 use nutype::nutype;
 
+/// Default BuildKit syntax: `docker-image://docker.io/docker/dockerfile:1`
 pub(crate) static SYNTAX: LazyLock<ImageUri> =
     LazyLock::new(|| ImageUri::try_new("docker-image://docker.io/docker/dockerfile:1").unwrap());
 
+/// An OCI image URI of the format `docker-image://host/namespace/name:tag@sha256:digest`
+///
+/// * Supported scheme: `docker-image://`
+/// * With or without digest ie. "locked" or "unlocked".
 #[nutype(
     default = SYNTAX.as_str(),
     validate(error = Error, with = docker_image_uri),

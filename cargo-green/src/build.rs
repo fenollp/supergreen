@@ -44,6 +44,7 @@ pub(crate) const STDOUT: &str = "stdout";
 
 impl Green {
     /// Read digest from builder cache, then maybe from default cache.
+    ///
     /// Goal is to have a completely offline mode by default, after a `cargo green fetch`.
     pub(crate) async fn maybe_lock_image(&self, img: &ImageUri) -> Result<ImageUri> {
         if img.locked() {
@@ -61,9 +62,12 @@ impl Green {
 
     /// Reads from builder build cache if any, and falls back to image cache.
     ///
-    /// https://docs.docker.com/reference/cli/docker/buildx/imagetools/inspect/
-    /// => docker buildx imagetools inspect --format={{json .Manifest.Digest}} img.noscheme()
-    ///   Only fetches remote though, and takes ages compared to fetch_digest!
+    /// <https://docs.docker.com/reference/cli/docker/buildx/imagetools/inspect/>
+    ///
+    /// ```text
+    /// docker buildx imagetools inspect --format='{{json .Manifest.Digest}}' img.noscheme()
+    /// # Only fetches remote though, and takes ages compared to fetch_digest!
+    /// ```
     /// See [Getting an image's digest fast, within a docker-container builder](https://github.com/docker/buildx/discussions/3363)
     async fn maybe_lock_from_builder_cache(&self, img: &ImageUri) -> Result<Option<ImageUri>> {
         let cached = self.images_in_builder_cache().await?;
@@ -71,9 +75,10 @@ impl Green {
     }
 
     /// If given an un-pinned image URI, query local image cache for its digest.
+    ///
     /// Returns the given URI, along with its digest if one was found.
     ///
-    /// https://docs.docker.com/dhi/core-concepts/digests/
+    /// <https://docs.docker.com/dhi/core-concepts/digests/>
     async fn maybe_lock_from_image_cache(&self, img: &ImageUri) -> Result<Option<ImageUri>> {
         let mut cmd = self.cmd()?;
         cmd.arg("inspect").arg("--format={{index .RepoDigests 0}}").arg(img.noscheme());
