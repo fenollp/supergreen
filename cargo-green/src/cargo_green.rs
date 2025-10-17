@@ -9,6 +9,7 @@ use log::{debug, info, warn};
 use tokio::try_join;
 
 use crate::{
+    add::XX,
     base_image::{ENV_BASE_IMAGE, ENV_WITH_NETWORK},
     build::fetch_digest,
     cratesio::{self},
@@ -173,14 +174,14 @@ pub(crate) async fn main() -> Result<Green> {
     }
 
     if !green.image.base_image.locked() {
-        let mut base = green.maybe_lock_image(&green.image.base_image).await?;
-        base = fetch_digest(&base).await?;
+        let base = fetch_digest(&green.maybe_lock_image(&green.image.base_image).await?).await?;
         green.image = green.image.lock_base_to(base);
     }
 
     let (mut with_network, mut finalized_block) = green.image.as_block();
     if !green.add.is_empty() {
-        (with_network, finalized_block) = green.add.as_block(&finalized_block);
+        let xx = fetch_digest(&green.maybe_lock_image(&XX).await?).await?;
+        (with_network, finalized_block) = green.add.as_block(xx, &finalized_block);
     }
     green.image.with_network = with_network;
     green.image.base_image_inline = Some(finalized_block.trim().to_owned());

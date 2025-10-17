@@ -137,7 +137,7 @@ impl BaseImage {
         }
         commit_hash
             .zip(commit_date)
-            .map(|(commit, date)| RustcV { version: semver, commit, date, channel }.as_base_image())
+            .map(|(commit, date)| RustcV { semver, commit, date, channel }.as_base_image())
     }
 
     #[must_use]
@@ -164,7 +164,7 @@ impl BaseImage {
 // TODO? maybe use commit & version as selector too?
 struct RustcV {
     #[expect(unused)]
-    version: Version,
+    semver: Version,
     #[expect(unused)]
     commit: String,
     date: String,
@@ -186,6 +186,8 @@ impl RustcV {
         //
         // maybe that's too naive
         //   do more research with `cargo cross`
+        //
+        // [xx-cargo broken with xx-sdk](https://github.com/tonistiigi/xx/issues/196)
         //
         // Use https://github.com/search?q=repo%3Across-rs/cross%20path%3Adockerfile&type=code images as auto base image?
         //
@@ -225,9 +227,12 @@ impl RustcV {
             apt: vec!["ca-certificates".to_owned(), "gcc".to_owned(), "libc6-dev".to_owned()],
             apt_get: vec!["ca-certificates".to_owned(), "gcc".to_owned(), "libc6-dev".to_owned()],
         }
-        .as_block(&format!("FROM --platform=$BUILDPLATFORM {base} AS {RST}"));
+        .as_block(
+            crate::add::XX.clone(), //FIXME
+            &format!("FROM --platform=$BUILDPLATFORM {base} AS {RST}"),
+        );
 
-        let block = format!(
+        let base_image_inline = Some(format!(
             r#"
 FROM scratch AS rustup-{channel}-{date}
 ADD --chmod=0144 --checksum=sha256:{rustup_checksum} \
@@ -240,15 +245,12 @@ RUN \
  --mount=from=rustup-{channel}-{date},source=/rustup-init,dst=/rustup-init \
    set -eux \
 && /rustup-init --verbose -y --no-modify-path --profile minimal --default-toolchain {channel}-{date} --default-host {host} \
-&& chmod -R a+w $RUSTUP_HOME $CARGO_HOME \
-&& rustup --version \
-&& cargo --version \
-&& rustc --version
+&& chmod -R a+w $RUSTUP_HOME $CARGO_HOME
 "#,
             packages_block = packages_block.trim(),
-        );
+        ));
 
-        BaseImage { with_network, base_image, base_image_inline: Some(block) }
+        BaseImage { with_network, base_image, base_image_inline }
     }
 }
 
