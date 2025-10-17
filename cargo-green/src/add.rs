@@ -1,6 +1,12 @@
+use std::sync::LazyLock;
+
 use serde::{Deserialize, Serialize};
 
-use crate::network::Network;
+use crate::{image_uri::ImageUri, network::Network};
+
+/// Cross platform tools from <https://github.com/tonistiigi/xx>
+pub(crate) static XX: LazyLock<ImageUri> =
+    LazyLock::new(|| ImageUri::try_new("docker-image://docker.io/tonistiigi/xx:latest").unwrap()); //fixme: env to lock image
 
 // TODO: drop apt-get?
 // maybe actually drop apt + turn api easier for "apt-get satisfy" or repro-get like
@@ -55,14 +61,10 @@ impl Add {
         [apk, apt, apt_get].iter().all(|x| x.is_empty())
     }
 
-    // TODO: pin major + lock by pulling
-    // TODO: more architectures
-    pub(crate) fn as_block(&self, last: &str) -> (Network, String) {
-        const XX: &str = "docker.io/tonistiigi/xx:1.6.1@sha256:923441d7c25f1e2eb5789f82d987693c47b8ed987c4ab3b075d6ed2b5d6779a3";
-
+    pub(crate) fn as_block(&self, xx: ImageUri, last: &str) -> (Network, String) {
         let block = format!(
             r#"
-FROM --platform=$BUILDPLATFORM {XX} AS xx
+FROM --platform=$BUILDPLATFORM {xx} AS xx
 {last}
 ARG TARGETPLATFORM
 RUN \
@@ -88,6 +90,7 @@ RUN \
       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '{apt_get}'; \
     fi
 "#,
+            xx = xx.noscheme(),
             last = last.trim(),
             apk = quote_pkgs(&self.apk),
             apt = quote_pkgs(&self.apt),
