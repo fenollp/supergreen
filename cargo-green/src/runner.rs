@@ -26,8 +26,9 @@ pub(crate) const DOCKER_HOST: &str = "DOCKER_HOST";
 
 impl Runner {
     /// Read envs used by runner, once.
-    /// https://docs.docker.com/engine/reference/commandline/cli/#environment-variables
-    /// https://docs.docker.com/build/building/variables/#build-tool-configuration-variables
+    ///
+    /// * <https://docs.docker.com/engine/reference/commandline/cli/#environment-variables>
+    /// * <https://docs.docker.com/build/building/variables/#build-tool-configuration-variables>
     pub(crate) fn envs(&self) -> HashMap<String, String> {
         [
             BUILDKIT_COLORS,
@@ -142,8 +143,11 @@ pub(crate) enum Runner {
 ///
 /// Somehow, not finding but executing `docker` may give the following errors (on arm Darwin):
 ///
+/// ```text
 /// Error: Failed to spawn DOCKER_BUILDKIT="1" docker buildx ls --format=json: No such file or directory (os error 2)
+/// ```
 ///
+/// ```text
 /// Calling DOCKER_BUILDKIT="1" /usr/local/bin/docker buildx create --bootstrap --name supergreen --driver docker-container --driver-opt=image=docker.io[...]
 /// Error: BUG: failed to create builder: #1 [internal] booting buildkit
 /// #1 pulling image docker.io/moby/buildkit:latest@sha256:faffcac91decfb3b981234bf2762d88ed6c90771b689a3d8a5049cd0e874759a done
@@ -152,6 +156,7 @@ pub(crate) enum Runner {
 ///  > [internal] booting buildkit:
 /// ------
 /// ERROR: error getting credentials - err: exec: "docker-credential-desktop": executable file not found in $PATH, out: ``
+/// ```
 impl Runner {
     pub(crate) fn executable(&self) -> Result<&'static Utf8PathBuf> {
         static EXE: OnceLock<Utf8PathBuf> = OnceLock::new();
