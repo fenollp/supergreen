@@ -297,7 +297,7 @@ $(cache_usage)
 
     - name: Target dir disk usage
       if: \${{ failure() || success() }}
-      run: du -sh \$CARGO_TARGET_DIR
+      run: du -sh \$CARGO_TARGET_DIR || true
 
     - name: Ensure running the same command twice without modifications...
       run: |
@@ -310,7 +310,7 @@ $(cache_usage)
 
     - name: Target dir disk usage
       if: \${{ failure() || success() }}
-      run: du -sh \$CARGO_TARGET_DIR
+      run: du -sh \$CARGO_TARGET_DIR || true
 
 EOF
 }

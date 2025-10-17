@@ -49,7 +49,7 @@ EOF
 cache_usage() {
     [[ $# -eq 0 ]]
     cat <<EOF
-    - run: sudo du -sh /var/lib/docker
+    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: docker buildx du | head || true
@@ -106,7 +106,7 @@ cat <<EOF
     - if: \${{ failure() || success() }}
       name: 🔴 =means=> here's cargo's error text
       run: |
-        ! grep -C20 -Ei '^error:' \$CARGOGREEN_LOG_PATH
+        ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' \$CARGOGREEN_LOG_PATH
 
     - if: \${{ failure() || success() }}
       name: 🔴 =means=> here's relevant logs
