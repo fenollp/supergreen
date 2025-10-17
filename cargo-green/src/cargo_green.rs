@@ -7,6 +7,7 @@ use anyhow::{anyhow, bail, Result};
 use log::{debug, info, warn};
 
 use crate::{
+    add::XX,
     build::fetch_digest,
     cratesio::{self},
     experiments::EXPERIMENTS,
@@ -156,14 +157,16 @@ pub(crate) async fn main() -> Result<Green> {
     }
 
     if !green.base.image.locked() {
-        let mut base = green.maybe_lock_image(&green.base.image).await?;
-        base = fetch_digest(&base).await?;
+        //FIXME? parse dockerfile then find images and try locking them?
+        //or just sed XX and STABLE_RUST and related?
+        let base = fetch_digest(&green.maybe_lock_image(&green.base.image).await?).await?;
         green.base = green.base.lock_base_to(base);
     }
 
     let (mut with_network, mut finalized_block) = green.base.as_block();
     if !green.add.is_empty() {
-        (with_network, finalized_block) = green.add.as_block(&finalized_block);
+        let xx = fetch_digest(&green.maybe_lock_image(&XX).await?).await?;
+        (with_network, finalized_block) = green.add.as_block(xx, &finalized_block);
     }
     green.base.with_network = with_network;
     green.base.image_inline = Some(finalized_block.trim().to_owned());
@@ -271,7 +274,7 @@ impl Green {
                     .push(&format!("COPY --link --from={stg} / /{stg}\n", stg = stager(leaf)));
             }
         }
-        containerfile.push(&format!("COPY --link --from={RST} / /{RST}\n"));
+        containerfile.push(&format!("COPY --link --from={RST} / /{RST}\n")); // + XX + debian?
 
         let fname = format!("{PKG}-{VSN}-prebuilt-{}.Dockerfile", containerfile.hashed());
 

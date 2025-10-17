@@ -110,7 +110,7 @@ impl Runner {
 
 impl Green {
     pub(crate) fn cmd(&self) -> Result<Command> {
-        let mut cmd = Command::new(self.runner.executable()?);
+        let mut cmd = Command::new(self.runner.executable()?); //FIXME persist to Green
         cmd.kill_on_drop(true); // Underlying OS process dies with us
         cmd.stdin(Stdio::null());
         if false {
