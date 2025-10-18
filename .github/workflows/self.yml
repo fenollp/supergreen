@@ -18,6 +18,8 @@ jobs:
     - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
         toolchain: stable
+        cache-all-crates: true
+        cache-workspace-crates: true
 
     - uses: actions/checkout@v5
 
@@ -69,8 +71,9 @@ jobs:
     - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
         toolchain: stable
-        cache: false
         rustflags: ''
+        cache-all-crates: true
+        cache-workspace-crates: true
 
     - name: Retrieve saved bin
       uses: actions/download-artifact@v5
@@ -187,8 +190,9 @@ jobs:
     - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
         toolchain: stable
-        cache: false
         rustflags: ''
+        cache-all-crates: true
+        cache-workspace-crates: true
 
     - name: Retrieve saved bin
       uses: actions/download-artifact@v5
@@ -308,8 +312,9 @@ jobs:
     - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
         toolchain: nightly-2025-08-06
-        cache: false
         rustflags: ''
+        cache-all-crates: true
+        cache-workspace-crates: true
 
     - name: Retrieve saved bin
       uses: actions/download-artifact@v5
@@ -490,8 +495,9 @@ jobs:
     - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
         toolchain: stable
-        cache: false
         rustflags: ''
+        cache-all-crates: true
+        cache-workspace-crates: true
 
     - name: Retrieve saved bin
       uses: actions/download-artifact@v5
@@ -799,8 +805,9 @@ jobs:
     - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
         toolchain: stable
-        cache: false
         rustflags: ''
+        cache-all-crates: true
+        cache-workspace-crates: true
 
     - name: Retrieve saved bin
       uses: actions/download-artifact@v5
@@ -1108,8 +1115,9 @@ jobs:
     - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
         toolchain: stable
-        cache: false
         rustflags: ''
+        cache-all-crates: true
+        cache-workspace-crates: true
 
     - name: Retrieve saved bin
       uses: actions/download-artifact@v5
@@ -1349,8 +1357,9 @@ jobs:
     - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
         toolchain: stable
-        cache: false
         rustflags: ''
+        cache-all-crates: true
+        cache-workspace-crates: true
 
     - name: Retrieve saved bin
       uses: actions/download-artifact@v5
@@ -1522,8 +1531,9 @@ jobs:
     - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
         toolchain: stable
-        cache: false
         rustflags: ''
+        cache-all-crates: true
+        cache-workspace-crates: true
 
     - name: Retrieve saved bin
       uses: actions/download-artifact@v5
