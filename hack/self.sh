@@ -15,8 +15,9 @@ postbin_steps() {
     - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
         toolchain: $toolchain
-        cache: false
         rustflags: ''
+        cache-all-crates: true
+        cache-workspace-crates: true
 
 $(restore_bin)
 
@@ -63,6 +64,8 @@ $(rundeps_versions)
     - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
         toolchain: stable
+        cache-all-crates: true
+        cache-workspace-crates: true
 
     - uses: actions/checkout@v5
 

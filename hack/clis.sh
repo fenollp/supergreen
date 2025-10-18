@@ -136,6 +136,8 @@ $(jobdef 'bin')
     - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
         toolchain: stable
+        cache-all-crates: true
+        cache-workspace-crates: true
 
     - uses: actions/checkout@v5
 
@@ -246,15 +248,9 @@ $(
     - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
         toolchain: \${{ matrix.toolchain }}
-        cache: false
         rustflags: ''
-    - name: Unset envs set by toolchain action
-      run: |
-        unset CARGO_INCREMENTAL
-        unset CARGO_PROFILE_DEV_DEBUG
-        unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
-        unset CARGO_TERM_COLOR
-        unset CARGO_UNSTABLE_SPARSE_REGISTRY
+        cache-all-crates: true
+        cache-workspace-crates: true
 $(
 	case "$name_at_version" in
 		cargo-llvm-cov@*) printf '    - run: rustup component add llvm-tools-preview\n' ;;
