@@ -10,7 +10,7 @@ use crate::{
     add::{ENV_ADD_APK, ENV_ADD_APT, ENV_ADD_APT_GET},
     base_image::{ENV_BASE_IMAGE, ENV_BASE_IMAGE_INLINE, ENV_WITH_NETWORK},
     cargo_green::{
-        ENV_BUILDER_IMAGE, ENV_FINAL_PATH, ENV_FINAL_PATH_NONPRIMARY, ENV_RUNNER, ENV_SYNTAX,
+        ENV_BUILDER_IMAGE, ENV_FINAL_PATH, ENV_FINAL_PATH_NONPRIMARY, ENV_RUNNER, ENV_SYNTAX_IMAGE,
     },
     ext::CommandExt,
     green::{Green, ENV_CACHE_IMAGES, ENV_INCREMENTAL, ENV_SET_ENVS},
@@ -169,7 +169,7 @@ fn envs(green: Green, vars: Vec<String>) {
         (ENV_LOG_STYLE, env::var(ENV_LOG_STYLE).ok()),
         (ENV_RUNNER, Some(green.runner.to_string())),
         (ENV_SET_ENVS, csv(&green.set_envs)),
-        (ENV_SYNTAX, Some(green.syntax.to_string())),
+        (ENV_SYNTAX_IMAGE, Some(green.syntax.to_string())),
         (ENV_WITH_NETWORK, Some(green.image.with_network.to_string())),
     ];
 

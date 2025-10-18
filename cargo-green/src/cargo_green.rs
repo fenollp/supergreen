@@ -15,7 +15,7 @@ use crate::{
     ext::CommandExt,
     green::Green,
     hash,
-    image_uri::{ImageUri, SYNTAX},
+    image_uri::{ImageUri, SYNTAX_IMAGE},
     lockfile::{find_lockfile, locked_crates},
     logging::{self, maybe_log},
     network::Network,
@@ -30,7 +30,7 @@ pub(crate) const ENV_BUILDER_IMAGE: &str = "CARGOGREEN_BUILDER_IMAGE";
 pub(crate) const ENV_FINAL_PATH: &str = "CARGOGREEN_FINAL_PATH";
 pub(crate) const ENV_FINAL_PATH_NONPRIMARY: &str = "CARGOGREEN_FINAL_PATH_NONPRIMARY";
 pub(crate) const ENV_RUNNER: &str = "CARGOGREEN_RUNNER";
-pub(crate) const ENV_SYNTAX: &str = "CARGOGREEN_SYNTAX";
+pub(crate) const ENV_SYNTAX_IMAGE: &str = "CARGOGREEN_SYNTAX_IMAGE";
 
 pub(crate) async fn main() -> Result<Green> {
     let mut green = Green::new_from_env_then_manifest()?;
@@ -114,7 +114,7 @@ pub(crate) async fn main() -> Result<Green> {
     }
     if let Ok(builder_image) = env::var(ENV_BUILDER_IMAGE) {
         let img = builder_image
-            .clone()
+            .as_str()
             .try_into()
             .map_err(|e| anyhow!("${ENV_BUILDER_IMAGE}={builder_image:?} {e}"))?;
         // Don't use 'maybe_lock_image', only 'fetch_digest': cmd uses builder.
@@ -124,11 +124,13 @@ pub(crate) async fn main() -> Result<Green> {
     green.maybe_setup_builder(builder.cloned()).await?;
 
     if !green.syntax.is_empty() {
-        bail!("${ENV_SYNTAX} can only be set through the environment variable")
+        bail!("${ENV_SYNTAX_IMAGE} can only be set through the environment variable")
     }
-    if let Ok(syntax) = env::var(ENV_SYNTAX) {
-        green.syntax =
-            syntax.clone().try_into().map_err(|e| anyhow!("${ENV_SYNTAX}={syntax:?} {e}"))?;
+    if let Ok(syntax) = env::var(ENV_SYNTAX_IMAGE) {
+        green.syntax = syntax
+            .as_str()
+            .try_into()
+            .map_err(|e| anyhow!("${ENV_SYNTAX_IMAGE}={syntax:?} {e}"))?;
     }
     // Use local hashed image if one matching exists locally
     green.syntax = green.maybe_lock_image(&green.syntax).await?;
@@ -136,7 +138,7 @@ pub(crate) async fn main() -> Result<Green> {
     green.syntax = fetch_digest(&green.syntax).await?;
     if !green.syntax.stable_syntax_frontend() {
         // Enforce a known stable syntax + allow pinning to digest
-        bail!("${ENV_SYNTAX} must be a digest of {}", SYNTAX.as_str())
+        bail!("${ENV_SYNTAX_IMAGE} must be a digest of {}", SYNTAX_IMAGE.as_str())
     }
 
     if green.final_path.is_some() {
@@ -183,7 +185,7 @@ pub(crate) async fn main() -> Result<Green> {
     green.image.with_network = with_network;
     green.image.base_image_inline = Some(finalized_block.trim().to_owned());
 
-    assert!(!green.image.base_image.is_empty(), "BUG: base_image set to {SYNTAX:?}");
+    assert!(!green.image.base_image.is_empty(), "BUG: base_image set to {SYNTAX_IMAGE:?}");
 
     if let Ok(val) = env::var(ENV_WITH_NETWORK) {
         green.image.with_network =
@@ -259,7 +261,7 @@ pub(crate) async fn fetch(green: Green) -> Result<()> {
 
     let imgs: Vec<_> = [
         // NOTE: we don't pull ENV_CACHE_IMAGES
-        (env::var(ENV_SYNTAX).ok(), Some(&green.syntax)),
+        (env::var(ENV_SYNTAX_IMAGE).ok(), Some(&green.syntax)),
         (env::var(ENV_BASE_IMAGE).ok(), Some(&green.image.base_image)),
         (env::var(ENV_BUILDER_IMAGE).ok(), green.builder.image.as_ref()),
     ]

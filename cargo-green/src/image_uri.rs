@@ -4,7 +4,7 @@ use anyhow::{bail, Error, Result};
 use nutype::nutype;
 
 /// Default BuildKit syntax: `docker-image://docker.io/docker/dockerfile:1`
-pub(crate) static SYNTAX: LazyLock<ImageUri> =
+pub(crate) static SYNTAX_IMAGE: LazyLock<ImageUri> =
     LazyLock::new(|| ImageUri::try_new("docker-image://docker.io/docker/dockerfile:1").unwrap());
 
 /// An OCI image URI of the format `docker-image://host/namespace/name:tag@sha256:digest`
@@ -12,7 +12,7 @@ pub(crate) static SYNTAX: LazyLock<ImageUri> =
 /// * Supported scheme: `docker-image://`
 /// * With or without digest ie. "locked" or "unlocked".
 #[nutype(
-    default = SYNTAX.as_str(),
+    default = SYNTAX_IMAGE.as_str(),
     validate(error = Error, with = docker_image_uri),
     derive(Clone, Debug, Default, Display, Deref, TryFrom, Serialize, Deserialize, Eq, PartialEq, Ord, PartialOrd, Hash))
 ]
@@ -43,7 +43,7 @@ impl ImageUri {
 
     #[must_use]
     pub(crate) fn is_empty(&self) -> bool {
-        self.as_str() == SYNTAX.as_str()
+        self.as_str() == SYNTAX_IMAGE.as_str()
     }
 
     #[must_use]
@@ -53,7 +53,7 @@ impl ImageUri {
 
     #[must_use]
     pub(crate) fn stable_syntax_frontend(&self) -> bool {
-        self.starts_with(SYNTAX.as_str())
+        self.starts_with(SYNTAX_IMAGE.as_str())
     }
 
     #[must_use]
