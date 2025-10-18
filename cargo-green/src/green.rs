@@ -66,7 +66,7 @@ pub(crate) struct Green {
     ///
     /// *Use by setting this environment variable (no `Cargo.toml` setting):*
     /// ```shell
-    /// CARGOGREEN_SYNTAX="docker-image://docker.io/docker/dockerfile:1"
+    /// CARGOGREEN_SYNTAX_IMAGE="docker-image://docker.io/docker/dockerfile:1"
     /// ```
     pub(crate) syntax: ImageUri,
 
@@ -228,9 +228,7 @@ impl Green {
             }
             // TODO: drop this requirement by allowing a `base-image-stage` override
             //FIXME: have to repeat base stage per stage actually => no naming constraint then anyway
-            if !base_image_inline.contains(&format!(" AS {RST}\n"))
-                && !base_image_inline.contains(&format!(" as {RST}\n"))
-            {
+            if !base_image_inline.to_lowercase().contains(&format!(" AS {RST}\n").to_lowercase()) {
                 bail!("{origin} does not provide a stage named '{RST}'")
             }
         }
