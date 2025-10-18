@@ -174,10 +174,6 @@ struct RustcV {
 impl RustcV {
     #[must_use]
     fn as_base_image(&self) -> BaseImage {
-        // TODO: dynamically resolve + cache this, if network is up.
-        let rustup_version = "1.28.1";
-        let rustup_checksum = "a3339fb004c3d0bb9862ba0bce001861fe5cbde9c10d16591eb3f39ee6cd3e7f";
-
         // FIXME: multiplatformify (using auto ARG.s) (use rustc_version::VersionMeta.host)
         let host = "x86_64-unknown-linux-gnu";
 
@@ -234,20 +230,19 @@ impl RustcV {
 
         let base_image_inline = Some(format!(
             r#"
-FROM scratch AS rustup-{channel}-{date}
-ADD --chmod=0144 --checksum=sha256:{rustup_checksum} \
-  https://static.rust-lang.org/rustup/archive/{rustup_version}/{host}/rustup-init /rustup-init
 {packages_block}
 ENV RUSTUP_HOME=/usr/local/rustup \
      CARGO_HOME=/usr/local/cargo \
            PATH=/usr/local/cargo/bin:$PATH
 RUN \
- --mount=from=rustup-{channel}-{date},source=/rustup-init,dst=/rustup-init \
+ --mount=from={rustup_image},source={rustup},dst={rustup} \
    set -eux \
-&& /rustup-init --verbose -y --no-modify-path --profile minimal --default-toolchain {channel}-{date} --default-host {host} \
+&& {rustup} --verbose -y --no-modify-path --profile minimal --default-toolchain {channel}-{date} --default-host {host} \
 && chmod -R a+w $RUSTUP_HOME $CARGO_HOME
 "#,
             packages_block = packages_block.trim(),
+            rustup_image = STABLE_RUST.noscheme(), //FIXME
+            rustup = "/usr/local/cargo/bin/rustup",
         ));
 
         BaseImage { with_network, base_image, base_image_inline }
