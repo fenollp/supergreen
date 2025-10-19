@@ -15,6 +15,7 @@ use crate::{
     PKG,
 };
 
+//FIXME unpub?
 #[derive(Debug, Clone, Deserialize, Serialize, Eq)]
 pub(crate) struct NamedMount {
     pub(crate) name: Stage,
@@ -174,7 +175,7 @@ impl Md {
     }
 
     #[must_use]
-    pub(crate) fn last_stage(&self) -> Stage {
+    fn last_stage(&self) -> Stage {
         self.stages.last().unwrap().name.clone()
     }
 
@@ -351,6 +352,7 @@ impl Md {
         Ok(mds)
     }
 
+    //FIXME: try unpub
     pub(crate) fn sort_deps(&mut self, mds: Vec<(Utf8PathBuf, Self)>) -> Result<Vec<Utf8PathBuf>> {
         let mut dag: Vec<_> = mds
             .into_iter()
@@ -388,6 +390,7 @@ impl Md {
         //> dockerfile line greater than max allowed size of 65535
     }
 
+    //FIXME: try unpub via newfn "green.new_containerfile block"
     pub(crate) fn block_along_with_predecessors(&self, mds: &[Self]) -> String {
         let mut blocks = String::new();
         let mut visited_cratesio_stages = IndexSet::new();
@@ -427,6 +430,7 @@ impl std::hash::Hash for MountExtern {
     }
 }
 
+//FIXME: unpub via Mds newtype
 pub(crate) fn get_or_read(mds: &mut HashMap<Utf8PathBuf, Md>, path: &Utf8Path) -> Result<Md> {
     if let Some(md) = mds.get(path) {
         return Ok(md.clone());
