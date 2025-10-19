@@ -15,11 +15,28 @@ use crate::{
     PKG,
 };
 
-#[derive(Debug)]
-pub(crate)struct NamedMount {
-    name: Stage,
-    src: Utf8PathBuf,
-    dst: Utf8PathBuf,
+#[derive(Debug, Clone, Deserialize, Serialize, Eq)]
+pub(crate) struct NamedMount {
+    pub(crate) name: Stage,
+    pub(crate) src: Utf8PathBuf,
+    pub(crate) dst: Utf8PathBuf,
+}
+
+/// For use by IndexSet
+impl PartialEq for NamedMount {
+    fn eq(&self, other: &Self) -> bool {
+        self.dst == other.dst
+    }
+}
+
+/// For use by IndexSet
+impl std::hash::Hash for NamedMount {
+    fn hash<H>(&self, state: &mut H)
+    where
+        H: std::hash::Hasher,
+    {
+        self.dst.hash(state);
+    }
 }
 
 #[derive(Debug, Clone, Deserialize, Serialize)]
@@ -34,7 +51,7 @@ pub(crate) struct Md {
     deps: IndexSet<MdId>,
 
     #[serde(default, skip_serializing_if = "IndexSet::is_empty")]
-    short_externs: IndexSet<MdId>,
+    pub(crate) short_externs: IndexSet<MdId>,
 
     #[serde(default, skip_serializing_if = "IndexSet::is_empty")]
     pub(crate) buildrs_results: IndexSet<MdId>,
@@ -72,7 +89,7 @@ impl Md {
             deps: IndexSet::default(),
             short_externs: IndexSet::default(),
             buildrs_results: IndexSet::default(),
-            mounts:IndexSet::default(),
+            mounts: IndexSet::default(),
             contexts: IndexSet::default(),
             stages: IndexSet::default(),
             writes: Vec::default(),
@@ -196,7 +213,7 @@ impl Md {
     pub(crate) fn assemble_build_dependencies(
         &mut self,
         externs: IndexSet<String>,
-    out_dir_var: Option<Utf8PathBuf>,
+        out_dir_var: Option<Utf8PathBuf>,
         target_path: &Utf8Path,
     ) -> Result<Vec<Self>> {
         let mut mds = HashMap::<Utf8PathBuf, Self>::new(); // A file cache
@@ -265,12 +282,19 @@ impl Md {
         }
 
         if let Some(out_dir) = out_dir_var {
-            assert_eq!(out_dir.file_name(), Some("out"), "BUG: unexpected $OUT_DIR={out_dir} format");
+            assert_eq!(
+                out_dir.file_name(),
+                Some("out"),
+                "BUG: unexpected $OUT_DIR={out_dir} format"
+            );
             // With OUT_DIR="/tmp/clis-vixargs_0-1-0/release/build/proc-macro-error-attr-de2f43c37de3bfce/out"
             //   => proc-macro-error-attr-de2f43c37de3bfce
             let z_dep = out_dir.parent().unwrap().file_name().unwrap();
             assert_eq!("proc-macro-error-attr-de2f43c37de3bfce", Utf8PathBuf::from("/tmp/clis-vixargs_0-1-0/release/build/proc-macro-error-attr-de2f43c37de3bfce/out").parent().unwrap().file_name().unwrap());
-            assert_eq!("de2f43c37de3bfce", "proc-macro-error-attr-de2f43c37de3bfce".rsplit('-').next().unwrap());
+            assert_eq!(
+                "de2f43c37de3bfce",
+                "proc-macro-error-attr-de2f43c37de3bfce".rsplit('-').next().unwrap()
+            );
             let z_dep = z_dep.rsplit('-').next().unwrap();
             let z_dep = MdId::new(&format!("-{z_dep}"));
 
@@ -282,7 +306,7 @@ impl Md {
             let out_dir_mount =
                 NamedMount { name: z_dep_md.last_stage(), src: "/".into(), dst: out_dir };
             info!("also mounting buildrs out dir {out_dir_mount:?} from {z_dep_md:?}");
-            self.mounts.push(out_dir_mount);
+            self.mounts.insert(out_dir_mount);
 
             // info!("and adding that buildrs dep");
             // // build_script_build-422764cb03f8177b
@@ -403,7 +427,7 @@ impl std::hash::Hash for MountExtern {
     }
 }
 
-fn get_or_read(mds: &mut HashMap<Utf8PathBuf, Md>, path: &Utf8Path) -> Result<Md> {
+pub(crate) fn get_or_read(mds: &mut HashMap<Utf8PathBuf, Md>, path: &Utf8Path) -> Result<Md> {
     if let Some(md) = mds.get(path) {
         return Ok(md.clone());
     }
@@ -507,7 +531,8 @@ fn md_ser() {
         externs: [MountExtern { from: RUST.clone(), xtern: "blop".into() }].into(),
         deps: [MdId(0x81529f4c2380d9ec), MdId(0x88a4324b2aff6db9)].into(),
         short_externs: [MdId(0xb8c41dbf50ca5479), MdId(0x96a741f581f4126a)].into(),
-        buildrs_results: ["proc-macro2-a2ba26818f759606".to_owned()].into(),
+        buildrs_results: [MdId(0xa2ba26818f759606)].into(),
+        mounts: [].into(),
         contexts: [BuildContext {
             name: "rust".try_into().unwrap(),
             uri: "/some/local/path".into(),
@@ -534,7 +559,7 @@ short_externs = [
     "b8c41dbf50ca5479",
     "96a741f581f4126a",
 ]
-buildrs_results = ["proc-macro2-a2ba26818f759606"]
+buildrs_results = ["a2ba26818f759606"]
 writes = [
     "deps/primeorder-06397107ab8300fa.d",
     "deps/libprimeorder-06397107ab8300fa.rmeta",
