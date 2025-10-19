@@ -1,5 +1,5 @@
 use std::{
-    collections::BTreeMap,
+    collections::{BTreeMap, HashMap},
     env,
     fs::{self},
     future::Future,
@@ -17,7 +17,7 @@ use crate::{
     ext::CommandExt,
     green::Green,
     logging::{self, maybe_log},
-    md::{BuildContext, Md, MdId, MountExtern},
+    md::{get_or_read, BuildContext, Md, MdId, MountExtern, NamedMount},
     pwd,
     runner::Runner,
     rustc_arguments::{as_rustc, RustcArgs},
@@ -120,7 +120,6 @@ pub(crate) async fn exec_buildrs(green: Green, exe: Utf8PathBuf) -> Result<()> {
     env::set_var(ENV, "1");
 
     let krate_name = env::var("CARGO_PKG_NAME").expect("$CARGO_PKG_NAME");
-
     let krate_version = env::var("CARGO_PKG_VERSION").expect("$CARGO_PKG_VERSION");
 
     // exe: /target/release/build/proc-macro2-2f938e044e3f79bf/build-script-build
@@ -129,8 +128,13 @@ pub(crate) async fn exec_buildrs(green: Green, exe: Utf8PathBuf) -> Result<()> {
         let name = exe.file_name()?.replace('-', "_");
         // target_path: /target/release/build/proc-macro2-2f938e044e3f79bf
         let target_path = exe.parent()?;
+
+        // // extra: -2f938e044e3f79bf
+        // let extra = target_path.file_name()?.trim_start_matches(&krate_name).to_owned();
+
         // extra: -2f938e044e3f79bf
-        let extra = target_path.file_name()?.trim_start_matches(&krate_name).to_owned();
+        let extra = format!("-{}", target_path.file_name()?.rsplit('-').next()?);
+
         // target_path: /target/release
         let target_path = target_path.parent()?.parent()?;
         // /target/release/build_script_build-2f938e044e3f79bf.toml
@@ -144,10 +148,17 @@ pub(crate) async fn exec_buildrs(green: Green, exe: Utf8PathBuf) -> Result<()> {
     let Some((md_path, extra)) = || -> Option<_> {
         // name: proc-macro2-b97492fdd0201a99
         let name = out_dir_var.parent()?.file_name()?;
+
+        // // extra: -b97492fdd0201a99
+        // let extra = name.trim_start_matches(&krate_name).to_owned();
+        // // /target/release/proc-macro2-b97492fdd0201a99.toml
+        // Some((previous_md_path.with_file_name(format!("{name}.toml")), extra))
+
         // extra: -b97492fdd0201a99
-        let extra = name.trim_start_matches(&krate_name).to_owned();
-        // /target/release/proc-macro2-b97492fdd0201a99.toml
-        Some((previous_md_path.with_file_name(format!("{name}.toml")), extra))
+        let extra = format!("-{}", name.rsplit('-').next()?);
+
+        // /target/release/b97492fdd0201a99.toml
+        Some((previous_md_path.with_file_name(format!("{}.toml", MdId::new(&extra))), extra))
     }() else {
         bail!("BUG: malformed $OUT_DIR {out_dir_var:?}")
     };
@@ -160,7 +171,7 @@ pub(crate) async fn exec_buildrs(green: Green, exe: Utf8PathBuf) -> Result<()> {
 
     do_exec_buildrs(
         green,
-        // &krate_name,
+        &krate_name,
         // krate_version,
         full_krate_id.replace(' ', "-"),
         out_dir_var,
@@ -177,7 +188,7 @@ pub(crate) async fn exec_buildrs(green: Green, exe: Utf8PathBuf) -> Result<()> {
 #[expect(clippy::too_many_arguments)]
 async fn do_exec_buildrs(
     green: Green,
-    // krate_name: &str,
+    krate_name: &str,
     // krate_version: String,
     crate_id: String,
     out_dir_var: Utf8PathBuf,
@@ -203,12 +214,16 @@ async fn do_exec_buildrs(
         format!("/{name}{previous_extra}")
     };
 
-    let mut md = Md::new(&extra[1..]); // Drops leading dash
+    let mut md = Md::new(&extra);
     md.push_block(&RUST, green.image.base_image_inline.clone().unwrap());
+
+    fs::create_dir_all(&out_dir_var)
+        .map_err(|e| anyhow!("Failed to `mkdir -p {out_dir_var}`: {e}"))?;
 
     let mut run_block = String::new();
     run_block.push_str(&format!("FROM {RST} AS {run_stage}\n"));
-    run_block.push_str(&format!("SHELL {:?}\n", ["/bin/bash", "-eux", "-c"]));
+    // run_block.push_str(&format!("SHELL {:?}\n", ["/bin/bash", "-eux", "-c"]));
+    run_block.push_str(&format!("SHELL {:?}\n", ["/bin/bash", "-euxo", "pipefail", "-c"]));
     run_block.push_str(&format!("WORKDIR {out_dir_var}\n"));
     run_block.push_str("RUN \\\n");
     // run_block.push_str(&format!(
@@ -218,7 +233,7 @@ async fn do_exec_buildrs(
         "  --mount=from={previous_out_stage},source={previous_out_dst},dst={exe} \\\n"
     ));
 
-    let mut mds = HashMap::<Utf8PathBuf, Md>::new(); // A file cache
+    let mut mds = HashMap::<Utf8PathBuf, Md>::new(); // A file cache FIXME: merge both into Mds
 
     let previous_md = get_or_read(&mut mds, &previous_md_path)?;
     trace!(">>>previous_md_path = {previous_md_path}");
@@ -243,7 +258,7 @@ async fn do_exec_buildrs(
     // md.short_externs.push(previous_md as short xtern) FIXME?? MAY counter assemble+outdirvar
     extern_mds_and_paths.push((previous_md_path, previous_md));
     let extern_md_paths = md.sort_deps(extern_mds_and_paths)?;
-    info!("extern_md_paths: {} {extern_md_paths:?}", extern_md_paths.len());
+    info!("extern_md_paths: {}", extern_md_paths.len());
 
     let mds = extern_md_paths
         .into_iter()
@@ -256,28 +271,31 @@ async fn do_exec_buildrs(
     }
     run_block.push_str(&format!("        {ENV}=1 \\\n"));
     for var in &green.set_envs {
-        if let Ok(val) = env::var(var) {
-            // let val = replace_target_dir_str(&val, TARGET_DIR.as_str(), VIRTUAL_TARGET_DIR);
+        if let Some(val) = env::var_os(var) {
             warn!("passing ${var}={val:?} env through");
             run_block.push_str(&format!("        {var}={val:?} \\\n"));
         }
     }
     run_block.push_str(&format!("        {ENV_EXECUTE_BUILDRS}= \\\n"));
     run_block.push_str(&format!("      {exe} \\\n"));
-    run_block.push_str(&format!("        1> >(sed 's/^/{MARK_STDOUT}/') \\\n"));
-    run_block.push_str(&format!("        2> >(sed 's/^/{MARK_STDERR}/' >&2)\n"));
+    run_block.push_str(&format!("        1> >(tee    {out_dir_var}/{out_stage}-{STDOUT}) \\\n"));
+    run_block
+        .push_str(&format!("        2> >(tee    {out_dir_var}/{out_stage}-{STDERR} >&2) \\\n"));
+    run_block.push_str(&format!("        || echo $? >{out_dir_var}/{out_stage}-{ERRCODE}\n"));
     md.push_block(&run_stage, run_block);
 
     let mut out_block = String::new();
     out_block.push_str(&format!("FROM scratch AS {out_stage}\n"));
     out_block.push_str(&format!("COPY --from={run_stage} {out_dir_var}/* /\n"));
+    // out_block.push_str(&format!("COPY --from={run_stage} {out_dir_var}/*{extra}* /\n"));
     md.push_block(&out_stage, out_block);
 
-    let containerfile_path = md_path.with_extension("Dockerfile");
+    // // let containerfile_path = md_path.with_extension("Dockerfile");
+    // let md_path = md.this().path(&target_path);
+    // let containerfile_path = target_path.join(format!("{krate_name}{extra}.Dockerfile"));
+    let containerfile_path = md_path.with_file_name(format!("{krate_name}{extra}.Dockerfile"));
 
-    let md = md; // Drop mut
     md.write_to(&md_path)?;
-    drop(md_path);
 
     let mut containerfile = green.new_containerfile();
     containerfile.pushln(md.rust_stage());
@@ -285,9 +303,6 @@ async fn do_exec_buildrs(
     containerfile.push(&md.block_along_with_predecessors(&mds));
     containerfile.write_to(&containerfile_path)?;
     drop(containerfile);
-
-    fs::create_dir_all(&out_dir_var)
-        .map_err(|e| anyhow!("Failed to `mkdir -p {out_dir_var}`: {e}"))?;
 
     let fallback = async move {
         let mut cmd = Command::new(&exe);
@@ -309,19 +324,24 @@ async fn do_exec_buildrs(
         info!("Runner disabled, falling back...");
         return fallback.await;
     }
-    let res = build_out(&green, &containerfile_path, out_stage, &md.contexts, &out_dir_var).await;
-
-    if let Err(e) = res {
-        warn!("Falling back due to {e}");
-        if debug.is_none() {
-            // Bubble up actual error & outputs
-            return fallback
-                .await
-                .inspect(|()| eprintln!("BUG: {PKG} should not have encountered this error: {e}"));
+    let (_call, _envs, ran) =
+        green.build_out(&containerfile_path, &out_stage, &md.contexts, &out_dir_var).await;
+    match ran {
+        Ok(Effects { written, stdout, stderr }) => {
+            debug!(">>> written={written:?}");
+            debug!(">>> stdout={stdout:?}");
+            debug!(">>> stderr={stderr:?}");
+            Ok(())
         }
-        return Err(e);
+        Err(e) if debug.is_none() => {
+            warn!("Falling back due to {e}");
+            // Bubble up actual error & outputs
+            fallback
+                .await
+                .inspect(|()| eprintln!("BUG: {PKG} should not have encountered this error: {e}"))
+        }
+        Err(e) => Err(e),
     }
-    Ok(())
 }
 
 async fn wrap_rustc(
@@ -462,7 +482,7 @@ async fn do_wrap_rustc(
     let cwd = if let Some((name, src, dst)) = input_mount.as_ref() {
         rustc_block.push_str("RUN \\\n");
         let source = src.as_deref().map(|src| format!(",source={src}")).unwrap_or_default();
-        let rw = buildrs.then_some(",rw").unwrap_or_default();
+        let rw = if buildrs { ",rw" } else { "" };
         //FIXME: rw is probs just ducktape and an actual stage is needed to keep results
         rustc_block.push_str(&format!("  --mount=from={name}{source},dst={dst}{rw} \\\n"));
 
@@ -523,6 +543,7 @@ async fn do_wrap_rustc(
         rustc_block.push_str(&format!("  --mount=from={from},dst={dst},source=/{xtern} \\\n"));
     }
     for NamedMount { name, src, dst } in &md.mounts {
+        //FIXME: no need to mount as writeable or to make a stage?
         rustc_block.push_str(&format!("  --mount=from={name},dst={dst},source={src} \\\n"));
     }
 
