@@ -23265,7 +23265,7 @@ COPY --from=dep-n-diesel_cli-2.3.2-61c61f6a26671ae2 /tmp/clis-diesel_cli_2-3-2/r
 
 # Pipe this file to:
 # DOCKER_BUILDKIT="1" \
-#   docker build --network=default --output=. - <diesel_cli-61c61f6a26671ae2.Dockerfile
+#   docker build --output=. - <THIS_FILE
 
 ## this = "61c61f6a26671ae2"
 ## deps = [

@@ -4885,7 +4885,7 @@ COPY --from=dep-n-cargo-config2-0.1.34-169636d1f2554c51 /tmp/clis-cargo-config2_
 
 # Pipe this file to (not portable due to usage of local build contexts):
 # DOCKER_BUILDKIT="1" \
-#   docker build --network=none --output=. --build-context=crate_out-722131f89e2bc94d=/tmp/clis-cargo-config2_0-1-34/release/build/build-context-722131f89e2bc94d/out --build-context=crate_out-b1a5281989c68f62=/tmp/clis-cargo-config2_0-1-34/release/build/rustversion-b1a5281989c68f62/out - <cargo-config2-169636d1f2554c51.Dockerfile
+#   docker build --network=none --output=. --build-context=crate_out-722131f89e2bc94d=/tmp/clis-cargo-config2_0-1-34/release/build/build-context-722131f89e2bc94d/out --build-context=crate_out-b1a5281989c68f62=/tmp/clis-cargo-config2_0-1-34/release/build/rustversion-b1a5281989c68f62/out - <THIS_FILE
 
 ## this = "169636d1f2554c51"
 ## deps = [

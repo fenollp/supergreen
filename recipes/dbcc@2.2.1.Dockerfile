@@ -8854,7 +8854,7 @@ COPY --from=dep-n-dbcc-2.2.1-6cd0852da8e8bf94 /tmp/clis-dbcc_2-2-1/release/deps/
 
 # Pipe this file to (not portable due to usage of local build contexts):
 # DOCKER_BUILDKIT="1" \
-#   docker build --network=none --output=. --build-context=crate_out-3cf9e442dfddd505=/tmp/clis-dbcc_2-2-1/release/build/typenum-3cf9e442dfddd505/out - <dbcc-6cd0852da8e8bf94.Dockerfile
+#   docker build --network=none --output=. --build-context=crate_out-3cf9e442dfddd505=/tmp/clis-dbcc_2-2-1/release/build/typenum-3cf9e442dfddd505/out - <THIS_FILE
 
 ## this = "6cd0852da8e8bf94"
 ## deps = [
