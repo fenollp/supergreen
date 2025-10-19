@@ -124,21 +124,17 @@ pub(crate) async fn exec_buildrs(green: Green, exe: Utf8PathBuf) -> Result<()> {
 
     // exe: /target/release/build/proc-macro2-2f938e044e3f79bf/build-script-build
     let Some((previous_md_path, previous_extra)) = || -> Option<_> {
-        // name: build_script_build
-        let name = exe.file_name()?.replace('-', "_");
         // target_path: /target/release/build/proc-macro2-2f938e044e3f79bf
         let target_path = exe.parent()?;
-
-        // // extra: -2f938e044e3f79bf
-        // let extra = target_path.file_name()?.trim_start_matches(&krate_name).to_owned();
 
         // extra: -2f938e044e3f79bf
         let extra = format!("-{}", target_path.file_name()?.rsplit('-').next()?);
 
         // target_path: /target/release
         let target_path = target_path.parent()?.parent()?;
-        // /target/release/build_script_build-2f938e044e3f79bf.toml
-        Some((target_path.join(format!("{name}{extra}.toml")), extra))
+
+        // /target/release/2f938e044e3f79bf.toml
+        Some((MdId::new(&extra).path(target_path), extra))
     }() else {
         bail!("BUG: malformed buildrs exe {exe:?}")
     };
@@ -148,11 +144,6 @@ pub(crate) async fn exec_buildrs(green: Green, exe: Utf8PathBuf) -> Result<()> {
     let Some((md_path, extra)) = || -> Option<_> {
         // name: proc-macro2-b97492fdd0201a99
         let name = out_dir_var.parent()?.file_name()?;
-
-        // // extra: -b97492fdd0201a99
-        // let extra = name.trim_start_matches(&krate_name).to_owned();
-        // // /target/release/proc-macro2-b97492fdd0201a99.toml
-        // Some((previous_md_path.with_file_name(format!("{name}.toml")), extra))
 
         // extra: -b97492fdd0201a99
         let extra = format!("-{}", name.rsplit('-').next()?);
