@@ -175,6 +175,10 @@ impl Md {
 
         let mut extern_mds_and_paths = vec![];
 
+        let no_rmetas = externs.iter().all(|xtern| !xtern.ends_with(".rmeta"));
+        let exclude_rmeta_when_not_needed =
+            |xtern: &Utf8Path| if no_rmetas { !xtern.as_str().ends_with(".rmeta") } else { true };
+
         for xtern in externs {
             // E.g. libproc_macro2-e44df32b5d502568.rmeta
             // E.g. libunicode_xid-c443c88a44e24bc6.rlib
@@ -208,6 +212,7 @@ impl Md {
                     .writes
                     .iter()
                     .filter(|w: &&Utf8PathBuf| !w.as_str().ends_with(".d"))
+                    .filter(|w: &&Utf8PathBuf| exclude_rmeta_when_not_needed(w))
                     .map(|w| w.file_name().unwrap().to_owned())
                     .map(|xtern: String| MountExtern { from: dep_stage.clone(), xtern }),
             );
