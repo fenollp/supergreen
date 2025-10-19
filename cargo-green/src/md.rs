@@ -15,6 +15,13 @@ use crate::{
     PKG,
 };
 
+#[derive(Debug)]
+pub(crate)struct NamedMount {
+    name: Stage,
+    src: Utf8PathBuf,
+    dst: Utf8PathBuf,
+}
+
 #[derive(Debug, Clone, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub(crate) struct Md {
@@ -28,6 +35,11 @@ pub(crate) struct Md {
 
     #[serde(default, skip_serializing_if = "IndexSet::is_empty")]
     short_externs: IndexSet<MdId>,
+
+    #[serde(default, skip_serializing_if = "IndexSet::is_empty")]
+    pub(crate) buildrs_results: IndexSet<MdId>,
+    #[serde(default, skip_serializing_if = "IndexSet::is_empty")]
+    pub(crate) mounts: IndexSet<NamedMount>,
 
     #[serde(default, skip_serializing_if = "IndexSet::is_empty")]
     pub(crate) contexts: IndexSet<BuildContext>,
@@ -59,6 +71,8 @@ impl Md {
             externs: IndexSet::default(),
             deps: IndexSet::default(),
             short_externs: IndexSet::default(),
+            buildrs_results: IndexSet::default(),
+            mounts:IndexSet::default(),
             contexts: IndexSet::default(),
             stages: IndexSet::default(),
             writes: Vec::default(),
@@ -134,6 +148,11 @@ impl Md {
         &self.stages.iter().find(|NamedStage { name, .. }| *name == *RUST).unwrap().script
     }
 
+    #[must_use]
+    pub(crate) fn last_stage(&self) -> Stage {
+        self.stages.last().unwrap().name.clone()
+    }
+
     pub(crate) fn push_block(&mut self, name: &Stage, block: String) {
         self.stages.insert(NamedStage { name: name.clone(), script: block.trim().to_owned() });
     }
@@ -169,6 +188,7 @@ impl Md {
     pub(crate) fn assemble_build_dependencies(
         &mut self,
         externs: IndexSet<String>,
+    out_dir_var: Option<Utf8PathBuf>,
         target_path: &Utf8Path,
     ) -> Result<Vec<Self>> {
         let mut mds = HashMap::<Utf8PathBuf, Self>::new(); // A file cache
@@ -201,6 +221,23 @@ impl Md {
                 trace!("❯ transitive short extern {transitive}");
                 self.short_externs.insert(transitive);
             }
+
+            // for buildrs_result in &extern_md.buildrs_results {
+            //     let br_md_path = md_pather(buildrs_result);
+            //     let br_md = get_or_read(&mut mds, &br_md_path)?;
+            //     for dep in &br_md.deps {
+            //         let mut dep_md_path = md_pather(&format!("*-{dep}"));
+            //         for (i, p) in glob::glob(dep_md_path.as_str()).unwrap().enumerate() {
+            //             assert_eq!(i, 0, ">>> {p:?}");
+            //             dep_md_path = p.unwrap().try_into().unwrap();
+            //         }
+            //         let dep_md = get_or_read(&mut mds, &dep_md_path)?;
+            //         extern_mds_and_paths.push((dep_md_path, dep_md));
+            //     }
+            //     extern_mds_and_paths.push((br_md_path, br_md));
+            // }
+            self.buildrs_results.extend(extern_md.buildrs_results);
+            //FIXME? also add transitive buildrs_results?
         }
 
         for dep in &self.short_externs {
@@ -217,6 +254,58 @@ impl Md {
                     .map(|xtern: String| MountExtern { from: dep_stage.clone(), xtern }),
             );
             extern_mds_and_paths.push((dep_md_path, dep_md));
+        }
+
+        if let Some(out_dir) = out_dir_var {
+            assert_eq!(out_dir.file_name(), Some("out"), "BUG: unexpected $OUT_DIR={out_dir} format");
+            // With OUT_DIR="/tmp/clis-vixargs_0-1-0/release/build/proc-macro-error-attr-de2f43c37de3bfce/out"
+            //   => proc-macro-error-attr-de2f43c37de3bfce
+            let z_dep = out_dir.parent().unwrap().file_name().unwrap();
+            assert_eq!("proc-macro-error-attr-de2f43c37de3bfce", Utf8PathBuf::from("/tmp/clis-vixargs_0-1-0/release/build/proc-macro-error-attr-de2f43c37de3bfce/out").parent().unwrap().file_name().unwrap());
+            assert_eq!("de2f43c37de3bfce", "proc-macro-error-attr-de2f43c37de3bfce".rsplit('-').next().unwrap());
+            let z_dep = z_dep.rsplit('-').next().unwrap();
+            let z_dep = MdId::new(&format!("-{z_dep}"));
+
+            // md.short_externs.insert(z_dep.to_owned());
+            self.buildrs_results.insert(z_dep);
+
+            let z_dep_md_path = z_dep.path(target_path);
+            let z_dep_md = get_or_read(&mut mds, &z_dep_md_path)?;
+            let out_dir_mount =
+                NamedMount { name: z_dep_md.last_stage(), src: "/".into(), dst: out_dir };
+            info!("also mounting buildrs out dir {out_dir_mount:?} from {z_dep_md:?}");
+            self.mounts.push(out_dir_mount);
+
+            // info!("and adding that buildrs dep");
+            // // build_script_build-422764cb03f8177b
+            // assert_eq!(z_dep_md.deps.len(), 1);
+            // let x_dep = format!("build_script_build-{}", z_dep_md.deps[0]);
+            // let x_dep_md_path = md_pather(&x_dep);
+            // let x_dep_md = get_or_read(&mut mds, &x_dep_md_path)?;
+            // info!("and adding that buildrs dep: {x_dep_md:?}");
+            // extern_mds_and_paths.push((x_dep_md_path, x_dep_md));
+
+            // md.short_externs.insert(x_dep);
+
+            extern_mds_and_paths.push((z_dep_md_path, z_dep_md));
+        }
+
+        for buildrs_result in &self.buildrs_results {
+            let br_md_path = buildrs_result.path(target_path);
+            let br_md = get_or_read(&mut mds, &br_md_path)?;
+            for dep in &br_md.deps {
+                let dep_md_path = dep.path(target_path);
+                let dep_md = get_or_read(&mut mds, &dep_md_path)?;
+
+                for dep in &dep_md.deps {
+                    let dep_md_path = dep.path(target_path);
+                    let dep_md = get_or_read(&mut mds, &dep_md_path)?;
+                    extern_mds_and_paths.push((dep_md_path, dep_md));
+                }
+
+                extern_mds_and_paths.push((dep_md_path, dep_md));
+            }
+            extern_mds_and_paths.push((br_md_path, br_md));
         }
 
         let extern_md_paths = self.sort_deps(extern_mds_and_paths)?;
@@ -410,6 +499,7 @@ fn md_ser() {
         externs: [MountExtern { from: RUST.clone(), xtern: "blop".into() }].into(),
         deps: [MdId(0x81529f4c2380d9ec), MdId(0x88a4324b2aff6db9)].into(),
         short_externs: [MdId(0xb8c41dbf50ca5479), MdId(0x96a741f581f4126a)].into(),
+        buildrs_results: ["proc-macro2-a2ba26818f759606".to_owned()].into(),
         contexts: [BuildContext {
             name: "rust".try_into().unwrap(),
             uri: "/some/local/path".into(),
@@ -436,6 +526,7 @@ short_externs = [
     "b8c41dbf50ca5479",
     "96a741f581f4126a",
 ]
+buildrs_results = ["proc-macro2-a2ba26818f759606"]
 writes = [
     "deps/primeorder-06397107ab8300fa.d",
     "deps/libprimeorder-06397107ab8300fa.rmeta",
