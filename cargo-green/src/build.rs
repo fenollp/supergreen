@@ -311,6 +311,7 @@ impl Green {
             .filter(|flag| !flag.starts_with("--target="))
             .filter(|flag| *flag != "--platform=local")
             .filter(|flag| *flag != "--pull=false")
+            .filter(|flag| *flag != "--network=default")
             .map(|flag| if flag.starts_with("--output=") { "--output=." } else { flag })
             .collect::<Vec<_>>()
             .join(" ")

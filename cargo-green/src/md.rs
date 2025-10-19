@@ -81,7 +81,7 @@ impl Md {
         self.deps.iter().cloned().collect()
     }
 
-    pub(crate) fn from_file(path: &Utf8Path) -> Result<Self> {
+    fn from_file(path: &Utf8Path) -> Result<Self> {
         info!("opening (RO) md {path}");
         let txt = fs::read_to_string(path).map_err(|e| {
             if e.kind() == ErrorKind::NotFound {

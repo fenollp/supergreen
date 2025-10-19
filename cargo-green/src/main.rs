@@ -77,10 +77,11 @@ async fn main() -> Result<()> {
     const ENV_ROOT_PACKAGE_SETTINGS: &str = "CARGOGREEN_ROOT_PACKAGE_SETTINGS_";
 
     if let Ok(wrapper) = env::var("RUSTC_WRAPPER") {
+        // Now running as a subprocess
+
         if PathBuf::from(&wrapper).file_name() != Some(OsStr::new(PKG)) {
             bail!("A $RUSTC_WRAPPER other than `{PKG}` is already set: {wrapper}")
         }
-        // Now running as a subprocess
 
         let green = env::var(ENV_ROOT_PACKAGE_SETTINGS)
             .map_err(|_| anyhow!("BUG: ${ENV_ROOT_PACKAGE_SETTINGS} is unset"))?;

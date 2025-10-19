@@ -374,7 +374,7 @@ COPY --from=dep-n-buildxargs-1.4.0-4245cb92e8e8c024 /tmp/clis-buildxargs_master/
 
 # Pipe this file to:
 # DOCKER_BUILDKIT="1" \
-#   docker build --network=none --output=. - <buildxargs-4245cb92e8e8c024.Dockerfile
+#   docker build --network=none --output=. - <THIS_FILE
 
 ## this = "4245cb92e8e8c024"
 ## deps = [

@@ -50,7 +50,7 @@ impl Green {
                 fbuf.push_str(" (not portable due to usage of local build contexts)");
             }
             fbuf.push_str(&format!(":\n# {envs} \\\n"));
-            fbuf.push_str(&format!("#   {call} <{}\n", containerfile.file_name().unwrap()));
+            fbuf.push_str(&format!("#   {call} <THIS_FILE\n"));
 
             let mut file = OpenOptions::new().append(true).open(path)?;
             write!(file, "{fbuf}")?;

@@ -13476,7 +13476,7 @@ COPY --from=dep-n-ntpd-1.2.3-88b4a2cd7d00f909 /tmp/clis-ntpd_1-2-3/release/deps/
 
 # Pipe this file to (not portable due to usage of local build contexts):
 # DOCKER_BUILDKIT="1" \
-#   docker build --network=none --output=. --build-context=crate_out-e5fe159846b3109b=/tmp/clis-ntpd_1-2-3/release/build/proc-macro2-e5fe159846b3109b/out --build-context=crate_out-a7d381539c9ce48d=/tmp/clis-ntpd_1-2-3/release/build/typenum-a7d381539c9ce48d/out --build-context=crate_out-a0b19822430eae69=/tmp/clis-ntpd_1-2-3/release/build/ring-a0b19822430eae69/out - <ntpd-88b4a2cd7d00f909.Dockerfile
+#   docker build --network=none --output=. --build-context=crate_out-e5fe159846b3109b=/tmp/clis-ntpd_1-2-3/release/build/proc-macro2-e5fe159846b3109b/out --build-context=crate_out-a7d381539c9ce48d=/tmp/clis-ntpd_1-2-3/release/build/typenum-a7d381539c9ce48d/out --build-context=crate_out-a0b19822430eae69=/tmp/clis-ntpd_1-2-3/release/build/ring-a0b19822430eae69/out - <THIS_FILE
 
 ## this = "88b4a2cd7d00f909"
 ## deps = [

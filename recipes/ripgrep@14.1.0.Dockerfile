@@ -5201,7 +5201,7 @@ COPY --from=dep-n-ripgrep-14.1.0-16aebc92c4aced68 /tmp/clis-ripgrep_14-1-0/relea
 
 # Pipe this file to (not portable due to usage of local build contexts):
 # DOCKER_BUILDKIT="1" \
-#   docker build --network=none --output=. --build-context=crate_out-467b075ea0bb0ef8=/tmp/clis-ripgrep_14-1-0/release/build/anyhow-467b075ea0bb0ef8/out - <ripgrep-16aebc92c4aced68.Dockerfile
+#   docker build --network=none --output=. --build-context=crate_out-467b075ea0bb0ef8=/tmp/clis-ripgrep_14-1-0/release/build/anyhow-467b075ea0bb0ef8/out - <THIS_FILE
 
 ## this = "16aebc92c4aced68"
 ## deps = [
