@@ -173,7 +173,6 @@ dependencies = [
  "test-case",
  "tokio",
  "toml 0.8.23",
- "url",
  "version-compare",
  "which",
 ]

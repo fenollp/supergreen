@@ -59,6 +59,5 @@ szyk = "1"
 test-case = "3"
 tokio = { version = "1", features = [ "io-util", "macros", "process", "rt-multi-thread", "time" ] }
 toml = "0, >=0.8"
-url = "2"
 version-compare = "0, >=0.2"
 which = "8"
