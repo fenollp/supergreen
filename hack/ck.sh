@@ -109,6 +109,11 @@ cat <<EOF
         ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' \$CARGOGREEN_LOG_PATH
 
     - if: \${{ failure() || success() }}
+      name: 🔴 =means=> 429 Too Many Requests
+      run: |
+        ! grep -C20 -F '429 Too Many Requests' \$CARGOGREEN_LOG_PATH
+
+    - if: \${{ failure() || success() }}
       name: 🔴 =means=> here's relevant logs
       run: |
         ! grep -C20 -F ' >>> ' \$CARGOGREEN_LOG_PATH
