@@ -245,6 +245,10 @@ $(
 )
     needs: bin
     steps:
+    - uses: docker/login-action@v3
+      with:
+        username: \${{ vars.DOCKERHUB_USERNAME }}
+        password: \${{ secrets.DOCKERHUB_TOKEN }}
     - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
         toolchain: \${{ matrix.toolchain }}

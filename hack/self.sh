@@ -12,12 +12,17 @@ postbin_steps() {
     local toolchain=${1:-stable}; shift
     [[ $# -eq 0 ]]
     cat <<EOF
+    - uses: docker/login-action@v3
+      with:
+        username: \${{ vars.DOCKERHUB_USERNAME }}
+        password: \${{ secrets.DOCKERHUB_TOKEN }}
     - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
         toolchain: $toolchain
         rustflags: ''
         cache-all-crates: true
         cache-workspace-crates: true
+$(rundeps_versions)
 
 $(restore_bin)
 
@@ -60,12 +65,12 @@ jobs:
 
 $(jobdef 'bin')
     steps:
-$(rundeps_versions)
     - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
         toolchain: stable
         cache-all-crates: true
         cache-workspace-crates: true
+$(rundeps_versions)
 
     - uses: actions/checkout@v5
 
@@ -99,7 +104,6 @@ $(rundeps_versions)
 
 $(bin_jobdef 'installs')
     steps:
-$(rundeps_versions)
 $(postbin_steps)
 $(cache_usage)
     - name: cargo install net=ON cache=OFF remote=OFF jobs=1
@@ -112,7 +116,6 @@ $(cache_usage)
 
 $(bin_jobdef 'audits')
     steps:
-$(rundeps_versions)
 $(postbin_steps)
     - uses: taiki-e/install-action@v2
       with:
@@ -150,7 +153,6 @@ $(cache_usage)
 
 $(bin_jobdef 'builds')
     steps:
-$(rundeps_versions)
 $(postbin_steps)
 $(cache_usage)
     - name: cargo fetch
@@ -182,7 +184,6 @@ $(cache_usage)
 
 $(bin_jobdef 'tests')
     steps:
-$(rundeps_versions)
 $(postbin_steps)
 $(cache_usage)
     - name: cargo fetch
@@ -214,7 +215,6 @@ $(cache_usage)
 
 $(bin_jobdef 'checks')
     steps:
-$(rundeps_versions)
 $(postbin_steps)
 $(cache_usage)
     - name: cargo fetch
@@ -239,7 +239,6 @@ $(cache_usage)
 
 $(bin_jobdef 'packages')
     steps:
-$(rundeps_versions)
 $(postbin_steps)
 $(cache_usage)
     - name: cargo fetch
@@ -257,7 +256,6 @@ $(cache_usage)
 
 $(bin_jobdef 'clippy')
     steps:
-$(rundeps_versions)
 $(postbin_steps)
     - run: rustup component add clippy
 $(cache_usage)
