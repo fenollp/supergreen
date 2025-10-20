@@ -209,6 +209,8 @@ impl Green {
         };
         cmd.arg("build");
 
+        //TODO: if allowing additional-build-arguments, deny: --build-arg=BUILDKIT_SYNTAX=
+
         //TODO: (use if set) cmd.env("SOURCE_DATE_EPOCH", "0"); // https://reproducible-builds.org/docs/source-date-epoch
         // https://github.com/moby/buildkit/blob/master/docs/build-repro.md#source_date_epoch
         // Set SOURCE_DATE_EPOCH=$(git log -1 --pretty=%ct) for local code, and
