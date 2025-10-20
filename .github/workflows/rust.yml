@@ -8,8 +8,9 @@ jobs:
     steps:
     - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
-        profile: minimal
         toolchain: stable
+        cache-all-crates: true
+        cache-workspace-crates: true
     - uses: actions/checkout@v5
     - uses: taiki-e/install-action@nextest
     - name: Cache `cargo fetch`
@@ -39,8 +40,9 @@ jobs:
     steps:
     - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
-        profile: minimal
         toolchain: nightly
+        cache-all-crates: true
+        cache-workspace-crates: true
     - run: rustup component add rustfmt
     - uses: actions/checkout@v5
     - run: cargo fmt --check --all
@@ -51,8 +53,9 @@ jobs:
     steps:
     - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
-        profile: minimal
         toolchain: stable
+        cache-all-crates: true
+        cache-workspace-crates: true
     - run: rustup component add clippy
     - uses: actions/checkout@v5
     - name: Cache `cargo fetch`

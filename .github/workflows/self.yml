@@ -9,17 +9,17 @@ jobs:
       run:
         shell: bash -euo pipefail {0}
     steps:
+    - uses: actions-rust-lang/setup-rust-toolchain@v1
+      with:
+        toolchain: stable
+        cache-all-crates: true
+        cache-workspace-crates: true
     - run: docker info
     - run: docker buildx version
     - run: docker buildx build --help
     - run: podman version || true
     - run: cargo -Vv
     - run: docker buildx prune --all --force
-    - uses: actions-rust-lang/setup-rust-toolchain@v1
-      with:
-        toolchain: stable
-        cache-all-crates: true
-        cache-workspace-crates: true
 
     - uses: actions/checkout@v5
 
@@ -62,18 +62,22 @@ jobs:
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
     steps:
-    - run: docker info
-    - run: docker buildx version
-    - run: docker buildx build --help
-    - run: podman version || true
-    - run: cargo -Vv
-    - run: docker buildx prune --all --force
+    - uses: docker/login-action@v3
+      with:
+        username: ${{ vars.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
     - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
         toolchain: stable
         rustflags: ''
         cache-all-crates: true
         cache-workspace-crates: true
+    - run: docker info
+    - run: docker buildx version
+    - run: docker buildx build --help
+    - run: podman version || true
+    - run: cargo -Vv
+    - run: docker buildx prune --all --force
 
     - name: Retrieve saved bin
       uses: actions/download-artifact@v5
@@ -181,18 +185,22 @@ jobs:
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
     steps:
-    - run: docker info
-    - run: docker buildx version
-    - run: docker buildx build --help
-    - run: podman version || true
-    - run: cargo -Vv
-    - run: docker buildx prune --all --force
+    - uses: docker/login-action@v3
+      with:
+        username: ${{ vars.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
     - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
         toolchain: stable
         rustflags: ''
         cache-all-crates: true
         cache-workspace-crates: true
+    - run: docker info
+    - run: docker buildx version
+    - run: docker buildx build --help
+    - run: podman version || true
+    - run: cargo -Vv
+    - run: docker buildx prune --all --force
 
     - name: Retrieve saved bin
       uses: actions/download-artifact@v5
@@ -309,12 +317,22 @@ jobs:
     - run: podman version || true
     - run: cargo -Vv
     - run: docker buildx prune --all --force
+    - uses: docker/login-action@v3
+      with:
+        username: ${{ vars.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
     - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
         toolchain: nightly-2025-08-06
         rustflags: ''
         cache-all-crates: true
         cache-workspace-crates: true
+    - run: docker info
+    - run: docker buildx version
+    - run: docker buildx build --help
+    - run: podman version || true
+    - run: cargo -Vv
+    - run: docker buildx prune --all --force
 
     - name: Retrieve saved bin
       uses: actions/download-artifact@v5
@@ -486,18 +504,22 @@ jobs:
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
     steps:
-    - run: docker info
-    - run: docker buildx version
-    - run: docker buildx build --help
-    - run: podman version || true
-    - run: cargo -Vv
-    - run: docker buildx prune --all --force
+    - uses: docker/login-action@v3
+      with:
+        username: ${{ vars.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
     - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
         toolchain: stable
         rustflags: ''
         cache-all-crates: true
         cache-workspace-crates: true
+    - run: docker info
+    - run: docker buildx version
+    - run: docker buildx build --help
+    - run: podman version || true
+    - run: cargo -Vv
+    - run: docker buildx prune --all --force
 
     - name: Retrieve saved bin
       uses: actions/download-artifact@v5
@@ -796,18 +818,22 @@ jobs:
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
     steps:
-    - run: docker info
-    - run: docker buildx version
-    - run: docker buildx build --help
-    - run: podman version || true
-    - run: cargo -Vv
-    - run: docker buildx prune --all --force
+    - uses: docker/login-action@v3
+      with:
+        username: ${{ vars.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
     - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
         toolchain: stable
         rustflags: ''
         cache-all-crates: true
         cache-workspace-crates: true
+    - run: docker info
+    - run: docker buildx version
+    - run: docker buildx build --help
+    - run: podman version || true
+    - run: cargo -Vv
+    - run: docker buildx prune --all --force
 
     - name: Retrieve saved bin
       uses: actions/download-artifact@v5
@@ -1106,18 +1132,22 @@ jobs:
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
     steps:
-    - run: docker info
-    - run: docker buildx version
-    - run: docker buildx build --help
-    - run: podman version || true
-    - run: cargo -Vv
-    - run: docker buildx prune --all --force
+    - uses: docker/login-action@v3
+      with:
+        username: ${{ vars.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
     - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
         toolchain: stable
         rustflags: ''
         cache-all-crates: true
         cache-workspace-crates: true
+    - run: docker info
+    - run: docker buildx version
+    - run: docker buildx build --help
+    - run: podman version || true
+    - run: cargo -Vv
+    - run: docker buildx prune --all --force
 
     - name: Retrieve saved bin
       uses: actions/download-artifact@v5
@@ -1348,18 +1378,22 @@ jobs:
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
     steps:
-    - run: docker info
-    - run: docker buildx version
-    - run: docker buildx build --help
-    - run: podman version || true
-    - run: cargo -Vv
-    - run: docker buildx prune --all --force
+    - uses: docker/login-action@v3
+      with:
+        username: ${{ vars.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
     - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
         toolchain: stable
         rustflags: ''
         cache-all-crates: true
         cache-workspace-crates: true
+    - run: docker info
+    - run: docker buildx version
+    - run: docker buildx build --help
+    - run: podman version || true
+    - run: cargo -Vv
+    - run: docker buildx prune --all --force
 
     - name: Retrieve saved bin
       uses: actions/download-artifact@v5
@@ -1522,18 +1556,22 @@ jobs:
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
     steps:
-    - run: docker info
-    - run: docker buildx version
-    - run: docker buildx build --help
-    - run: podman version || true
-    - run: cargo -Vv
-    - run: docker buildx prune --all --force
+    - uses: docker/login-action@v3
+      with:
+        username: ${{ vars.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
     - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
         toolchain: stable
         rustflags: ''
         cache-all-crates: true
         cache-workspace-crates: true
+    - run: docker info
+    - run: docker buildx version
+    - run: docker buildx build --help
+    - run: podman version || true
+    - run: cargo -Vv
+    - run: docker buildx prune --all --force
 
     - name: Retrieve saved bin
       uses: actions/download-artifact@v5

@@ -90,6 +90,10 @@ jobs:
 
     needs: bin
     steps:
+    - uses: docker/login-action@v3
+      with:
+        username: ${{ vars.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
     - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
         toolchain: ${{ matrix.toolchain }}
@@ -307,6 +311,10 @@ jobs:
 
     needs: bin
     steps:
+    - uses: docker/login-action@v3
+      with:
+        username: ${{ vars.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
     - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
         toolchain: ${{ matrix.toolchain }}
@@ -524,6 +532,10 @@ jobs:
 
     needs: bin
     steps:
+    - uses: docker/login-action@v3
+      with:
+        username: ${{ vars.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
     - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
         toolchain: ${{ matrix.toolchain }}
@@ -741,6 +753,10 @@ jobs:
 
     needs: bin
     steps:
+    - uses: docker/login-action@v3
+      with:
+        username: ${{ vars.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
     - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
         toolchain: ${{ matrix.toolchain }}
@@ -958,6 +974,10 @@ jobs:
 
     needs: bin
     steps:
+    - uses: docker/login-action@v3
+      with:
+        username: ${{ vars.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
     - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
         toolchain: ${{ matrix.toolchain }}
@@ -1175,6 +1195,10 @@ jobs:
 
     needs: bin
     steps:
+    - uses: docker/login-action@v3
+      with:
+        username: ${{ vars.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
     - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
         toolchain: ${{ matrix.toolchain }}
@@ -1392,6 +1416,10 @@ jobs:
 
     needs: bin
     steps:
+    - uses: docker/login-action@v3
+      with:
+        username: ${{ vars.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
     - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
         toolchain: ${{ matrix.toolchain }}
@@ -1610,6 +1638,10 @@ jobs:
       NTPD_RS_GIT_DATE: 2025-05-09
     needs: bin
     steps:
+    - uses: docker/login-action@v3
+      with:
+        username: ${{ vars.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
     - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
         toolchain: ${{ matrix.toolchain }}
@@ -1827,6 +1859,10 @@ jobs:
 
     needs: bin
     steps:
+    - uses: docker/login-action@v3
+      with:
+        username: ${{ vars.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
     - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
         toolchain: ${{ matrix.toolchain }}
@@ -2044,6 +2080,10 @@ jobs:
 
     needs: bin
     steps:
+    - uses: docker/login-action@v3
+      with:
+        username: ${{ vars.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
     - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
         toolchain: ${{ matrix.toolchain }}
@@ -2261,6 +2301,10 @@ jobs:
 
     needs: bin
     steps:
+    - uses: docker/login-action@v3
+      with:
+        username: ${{ vars.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
     - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
         toolchain: ${{ matrix.toolchain }}
@@ -2478,6 +2522,10 @@ jobs:
 
     needs: bin
     steps:
+    - uses: docker/login-action@v3
+      with:
+        username: ${{ vars.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
     - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
         toolchain: ${{ matrix.toolchain }}
@@ -2695,6 +2743,10 @@ jobs:
 
     needs: bin
     steps:
+    - uses: docker/login-action@v3
+      with:
+        username: ${{ vars.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
     - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
         toolchain: ${{ matrix.toolchain }}
@@ -2912,6 +2964,10 @@ jobs:
 
     needs: bin
     steps:
+    - uses: docker/login-action@v3
+      with:
+        username: ${{ vars.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
     - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
         toolchain: ${{ matrix.toolchain }}
