@@ -129,11 +129,14 @@ pub(crate) async fn fetch_digest(img: &ImageUri) -> Result<ImageUri> {
             _ => bail!("BUG: unhandled registry {img:?}"),
         };
 
-        let txt = ReqwestClient::builder()
+        let req = ReqwestClient::builder()
             .connect_timeout(Duration::from_secs(4))
             .build()
             .map_err(|e| anyhow!("HTTP client's config/TLS failed: {e}"))?
-            .get(format!("https://registry.hub.docker.com/v2/repositories/{ns}/{slug}/tags/{tag}"))
+            .get(format!("https://registry.hub.docker.com/v2/repositories/{ns}/{slug}/tags/{tag}"));
+        info!("Fetching {req:?}");
+        eprintln!("Fetching {req:?}");
+        let txt = req
             .send()
             .await
             .map_err(|e| anyhow!("Failed to reach Docker Hub's registry: {e}"))?
