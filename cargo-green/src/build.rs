@@ -514,8 +514,8 @@ async fn run_build(
 
         match join!(timeout(out), timeout(err)) {
             (
-                Ok(Ok(Ok(Accumulated { stdout, .. }))),
-                Ok(Ok(Ok(Accumulated { stderr, written, envs, libs, .. }))),
+                Ok(Ok(Ok(Accumulated { stdout, .. }))), //                      STDOUT
+                Ok(Ok(Ok(Accumulated { stderr, written, envs, libs, .. }))), // STDERR
             ) => {
                 info!("Suggested {PKG}-specific config: envs:{} libs:{}", envs.len(), libs.len());
                 effects.stdout = stdout;
@@ -609,8 +609,32 @@ where
         }
         debug!("Task {badge} ran for {:?}", start.elapsed());
         drop(stdio);
-        Ok(acc)
+        Ok(workaround_missing_rmeta_or_rlib(acc))
     })
+}
+
+/// Sometimes, cargo's STDERR is missing some rlibs...
+///
+/// TODO: report to upstream cargo and investigate.
+///
+/// Mimic cargo's ordering: .d then .rmeta then .rlib
+fn workaround_missing_rmeta_or_rlib(mut acc: Accumulated) -> Accumulated {
+    if acc.written.iter().any(|f| f.extension() == Some("d")) {
+        let rmeta = acc.written.iter().find(|f| f.extension() == Some("rmeta"));
+        let rlib = acc.written.iter().find(|f| f.extension() == Some("rlib"));
+        match (rmeta, rlib) {
+            (Some(rmeta), None) if rmeta.with_extension("rlib").exists() => {
+                acc.written.push(rmeta.with_extension("rlib"))
+            }
+            (None, Some(rlib)) if rlib.with_extension("rmeta").exists() => {
+                acc.written.push(rlib.with_extension("rmeta"));
+                let last = acc.written.len() - 1;
+                acc.written.swap(1, last);
+            }
+            _ => {}
+        }
+    }
+    acc
 }
 
 #[derive(Default)]
