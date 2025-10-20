@@ -25,7 +25,10 @@ use crate::{
 // Envs that override Cargo.toml settings
 pub(crate) const ENV_CACHE_IMAGES: &str = "CARGOGREEN_CACHE_IMAGES";
 pub(crate) const ENV_INCREMENTAL: &str = "CARGOGREEN_INCREMENTAL";
+pub(crate) const ENV_REGISTRY_MIRRORS: &str = "CARGOGREEN_REGISTRY_MIRRORS";
 pub(crate) const ENV_SET_ENVS: &str = "CARGOGREEN_SET_ENVS";
+
+const DEFAULT_REGISTRY_MIRRORS: &[&str] = &["mirror.gcr.io", "public.ecr.aws/docker"];
 
 /// Configuration.
 ///
@@ -70,6 +73,28 @@ pub(crate) struct Green {
     /// ```
     pub(crate) syntax: ImageUri,
 
+    /// Mirror registries to docker.io, serialized as CSV.
+    ///
+    /// See <https://docs.docker.com/build/buildkit/configure/#registry-mirror>
+    ///
+    /// Namely hosts with maybe a port and a path:
+    /// * `dockerhub.timeweb.cloud`
+    /// * `dockerhub1.beget.com`
+    /// * `localhost:5000`
+    /// * `mirror.gcr.io`
+    /// * `public.ecr.aws/docker`
+    ///
+    /// ```toml
+    /// registry-mirrors = [ "mirror.gcr.io", "public.ecr.aws/docker" ]
+    /// ```
+    ///
+    /// *This environment variable takes precedence over any `Cargo.toml` settings:*
+    /// ```shell
+    /// # Note: values here are comma-separated.
+    /// CARGOGREEN_REGISTRY_MIRRORS="mirror.gcr.io,public.ecr.aws/docker"
+    /// ```
+    pub(crate) registry_mirrors: Vec<String>,
+
     /// Both read and write cached data to and from image registries
     ///
     /// See
@@ -80,7 +105,7 @@ pub(crate) struct Green {
     /// cache-images = [ "docker-image://my.org/team/my-project", "docker-image://some.org/global/cache" ]
     /// ```
     ///
-    /// *Use by setting this environment variable (no `Cargo.toml` setting):*
+    /// *This environment variable takes precedence over any `Cargo.toml` settings:*
     /// ```shell
     /// # Note: values here are comma-separated.
     /// CARGOGREEN_CACHE_IMAGES="docker-image://my.org/team/my-project,docker-image://some.org/global/cache"
@@ -190,6 +215,28 @@ impl Green {
 
         if let Ok(val) = env::var(ENV_INCREMENTAL) {
             green.incremental = val == "1";
+        }
+
+        let mut origin = "[metadata.green.registry-mirrors]".to_owned();
+        if let Ok(val) = env::var(ENV_REGISTRY_MIRRORS) {
+            origin = format!("${ENV_REGISTRY_MIRRORS}");
+            if val.is_empty() {
+                bail!("{origin} is empty")
+            }
+            green.registry_mirrors = val.split(',').map(ToOwned::to_owned).collect();
+        }
+        if !green.registry_mirrors.is_empty() {
+            if bad_names(&green.registry_mirrors) {
+                bail!("{origin} contains empty names, quotes or whitespace")
+            }
+            if green.registry_mirrors.len()
+                != green.registry_mirrors.iter().collect::<HashSet<_>>().len()
+            {
+                bail!("{origin} contains duplicates")
+            }
+        } else {
+            green.registry_mirrors =
+                DEFAULT_REGISTRY_MIRRORS.iter().map(|x| x.to_owned().to_owned()).collect();
         }
 
         let mut origin = "[metadata.green.cache-images]".to_owned();
@@ -312,9 +359,15 @@ name = "test-package"
     ))
     .unwrap();
     let mut green = Green::try_new(Some(manifest)).unwrap();
+
     assert!(!green.image.base_image.is_empty());
     green.image.base_image = ImageUri::default();
     assert!(green.image.base_image.is_empty());
+
+    assert!(!green.registry_mirrors.is_empty());
+    green.registry_mirrors = vec![];
+    assert!(green.registry_mirrors.is_empty());
+
     assert_eq!(green, Green::default());
 }
 

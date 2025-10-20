@@ -1,13 +1,14 @@
-use std::{str::FromStr, sync::LazyLock};
+use std::{fs, str::FromStr, sync::LazyLock};
 
 use anyhow::{anyhow, bail, Result};
+use indexmap::IndexMap;
 use log::info;
 use serde::{Deserialize, Serialize};
 use version_compare::Version;
 
 use crate::{
     build::fetch_digest, cargo_green::ENV_BUILDER_IMAGE, ext::CommandExt, green::Green,
-    image_uri::ImageUri, runner::BUILDX_BUILDER,
+    image_uri::ImageUri, runner::BUILDX_BUILDER, tmp,
 };
 
 /// TODO: move to `:rootless`
@@ -166,10 +167,29 @@ then run your cargo command again.
     }
 
     async fn create_builder(&mut self, name: &str) -> Result<()> {
+        let mirrors = self.registry_mirrors.clone();
+        let config = BuildKitDConfig {
+            debug: false,
+            registry: [("docker.io".to_owned(), RegistryConfig { mirrors })].into(),
+        };
+
+        let cfg = if config != BuildKitDConfig::default() {
+            let config = toml::to_string_pretty(&config)
+                .map_err(|e| anyhow!("Cannot serialize {config:?}: {e}"))?;
+            let cfg = tmp().join(format!("{:#x}.toml", crc32fast::hash(config.as_bytes())));
+            fs::write(&cfg, config).map_err(|e| anyhow!("Failed writing buildkitd config: {e}"))?;
+            Some(cfg)
+        } else {
+            None
+        };
+
         let mut cmd = self.cmd()?;
         cmd.args(["buildx", "create", "--bootstrap"])
             .args(["--name", name])
             .args(["--driver", BUILDER_DRIVER]);
+        if let Some(ref cfg) = cfg {
+            cmd.args(["--buildkitd-config", cfg.as_str()]);
+        }
 
         let img = if let Some(ref img) = self.builder.image {
             img.clone()
@@ -182,6 +202,11 @@ then run your cargo command again.
         if !succeeded {
             let stderr = String::from_utf8_lossy(&stderr);
             bail!("BUG: failed to create builder: {stderr}")
+        }
+
+        if let Some(cfg) = cfg {
+            fs::remove_file(cfg)
+                .map_err(|e| anyhow!("Failed cleaning up buildkitd config: {e}"))?;
         }
 
         self.builder.image = Some(img);
@@ -328,4 +353,49 @@ impl BuildxBuilder {
         imgs.dedup();
         imgs.first().cloned()
     }
+}
+
+#[derive(Debug, Default, Serialize, Deserialize, PartialEq)]
+struct BuildKitDConfig {
+    /// --buildkitd-flags '--debug' => docker logs buildx_buildkit_supergreen0 -f
+    debug: bool,
+    registry: IndexMap<String, RegistryConfig>,
+}
+
+#[derive(Debug, Default, Serialize, Deserialize, PartialEq)]
+struct RegistryConfig {
+    mirrors: Vec<String>,
+}
+
+#[test]
+fn buildkitd_config() {
+    let cfg = &r#"
+debug = true
+
+[registry."docker.io"]
+mirrors = [
+    "localhost:5000",
+    "public.ecr.aws/docker",
+]
+"#[1..];
+
+    let de: BuildKitDConfig = toml::de::from_str(cfg).unwrap();
+    assert_ne!(de, BuildKitDConfig::default());
+    assert_eq!(
+        de,
+        BuildKitDConfig {
+            debug: true,
+            registry: [(
+                "docker.io".to_owned(),
+                RegistryConfig {
+                    mirrors: vec!["localhost:5000".to_owned(), "public.ecr.aws/docker".to_owned()]
+                }
+            )]
+            .into()
+        }
+    );
+
+    let ser = toml::to_string_pretty(&de).unwrap();
+    println!("{ser}");
+    assert_eq!(ser, cfg);
 }
