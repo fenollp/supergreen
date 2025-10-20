@@ -7,6 +7,10 @@ use tokio::process::Command;
 
 use crate::{cargo, ext::CommandExt, pwd};
 
+// TODO: when cargo installing or building without a lockfile
+// we can wrap the version picking process to favor cache-hot versions
+// Then this'll help: https://github.com/pubgrub-rs/pubgrub
+
 pub(crate) async fn locked_crates(
     manifest_path_lockfile: &Utf8Path,
 ) -> Result<Vec<(String, String, String)>> {
