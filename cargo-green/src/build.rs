@@ -129,20 +129,27 @@ pub(crate) async fn fetch_digest(img: &ImageUri) -> Result<ImageUri> {
             _ => bail!("BUG: unhandled registry {img:?}"),
         };
 
-        let req = ReqwestClient::builder()
+        let domain = "registry.hub.docker.com";
+        let (client, req) = ReqwestClient::builder()
             .connect_timeout(Duration::from_secs(4))
             .build()
             .map_err(|e| anyhow!("HTTP client's config/TLS failed: {e}"))?
-            .get(format!("https://registry.hub.docker.com/v2/repositories/{ns}/{slug}/tags/{tag}"));
-        info!("Fetching {req:?}");
-        eprintln!("Fetching {req:?}");
-        let txt = req
-            .send()
+            .get(format!("https://{domain}/v2/repositories/{ns}/{slug}/tags/{tag}"))
+            .build_split();
+        let req = req.map_err(|e| anyhow!("Failed to build a request against {domain}: {e}"))?;
+
+        info!("GETing {}", req.url());
+        eprintln!("GETing {}", req.url());
+        assert!(req.body().is_none());
+        assert!(req.headers().is_empty());
+
+        let txt = client
+            .execute(req)
             .await
-            .map_err(|e| anyhow!("Failed to reach Docker Hub's registry: {e}"))?
+            .map_err(|e| anyhow!("Failed to reach {domain}'s registry: {e}"))?
             .text()
             .await
-            .map_err(|e| anyhow!("Failed to read response from registry: {e}"))?;
+            .map_err(|e| anyhow!("Failed to read response from {domain} registry: {e}"))?;
 
         #[derive(Deserialize)]
         struct RegistryResponse {
