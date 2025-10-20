@@ -28,6 +28,7 @@ mod lockfile;
 mod logging;
 mod md;
 mod network;
+mod rechrome;
 mod runner;
 mod rustc_arguments;
 mod rustc_wrapper;
