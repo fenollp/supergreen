@@ -237,7 +237,7 @@ ENV RUSTUP_HOME=/usr/local/rustup \
 RUN \
  --mount=from={rustup_image},source={rustup},dst={rustup} \
    set -eux \
-&& {rustup} --verbose -y --no-modify-path --profile minimal --default-toolchain {channel}-{date} --default-host {host} \
+&& {rustup} toolchain install --profile minimal {channel}-{date}-{host} --no-self-update \
 && chmod -R a+w $RUSTUP_HOME $CARGO_HOME
 "#,
             packages_block = packages_block.trim(),
