@@ -670,8 +670,33 @@ fn fwd_stderr(msg: &str, acc: &mut Accumulated) {
         }
     }
 
+    hide_credentials_on_rate_limit(&mut msg);
+
     eprintln!("{msg}");
     acc.stderr.push(msg);
+}
+
+/// Somehow, GitHub Actions won't hide this secret
+fn hide_credentials_on_rate_limit(msg: &mut String) {
+    const LHS: &str = "toomanyrequests: You have reached your pull rate limit as '";
+    const SEP: &str = "': ";
+    const RHS: &str =
+        ". You may increase the limit by upgrading. https://www.docker.com/increase-rate-limit";
+    if let Some(("", rest)) = msg.split_once(LHS) {
+        if let Some((userpart, rest)) = rest.split_once(SEP) {
+            if let Some((secret, "")) = rest.split_once(RHS) {
+                *msg = format!("{LHS}{userpart}{SEP}{}{RHS}", "*".repeat(secret.len()));
+            }
+        }
+    }
+}
+
+#[test]
+fn hide_credentials_from_final_log() {
+    let mut msg = "toomanyrequests: You have reached your pull rate limit as 'hubuser': dckr_jti_tookeeeennn-H0jyHY3m7bYZruA=. You may increase the limit by upgrading. https://www.docker.com/increase-rate-limit".to_owned();
+    hide_credentials_on_rate_limit(&mut msg);
+    assert_eq!(msg,
+        "toomanyrequests: You have reached your pull rate limit as 'hubuser': *************************************. You may increase the limit by upgrading. https://www.docker.com/increase-rate-limit");
 }
 
 fn fwd_stdout(msg: &str, acc: &mut Accumulated) {
