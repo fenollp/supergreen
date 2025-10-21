@@ -91,6 +91,7 @@ jobs:
     needs: bin
     steps:
     - uses: docker/login-action@v3
+      if: ${{ ! startsWith(github.ref, 'refs/heads/dependabot/') }}
       with:
         username: ${{ vars.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
@@ -322,6 +323,7 @@ jobs:
     needs: bin
     steps:
     - uses: docker/login-action@v3
+      if: ${{ ! startsWith(github.ref, 'refs/heads/dependabot/') }}
       with:
         username: ${{ vars.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
@@ -553,6 +555,7 @@ jobs:
     needs: bin
     steps:
     - uses: docker/login-action@v3
+      if: ${{ ! startsWith(github.ref, 'refs/heads/dependabot/') }}
       with:
         username: ${{ vars.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
@@ -784,6 +787,7 @@ jobs:
     needs: bin
     steps:
     - uses: docker/login-action@v3
+      if: ${{ ! startsWith(github.ref, 'refs/heads/dependabot/') }}
       with:
         username: ${{ vars.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
@@ -1015,6 +1019,7 @@ jobs:
     needs: bin
     steps:
     - uses: docker/login-action@v3
+      if: ${{ ! startsWith(github.ref, 'refs/heads/dependabot/') }}
       with:
         username: ${{ vars.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
@@ -1246,6 +1251,7 @@ jobs:
     needs: bin
     steps:
     - uses: docker/login-action@v3
+      if: ${{ ! startsWith(github.ref, 'refs/heads/dependabot/') }}
       with:
         username: ${{ vars.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
@@ -1477,6 +1483,7 @@ jobs:
     needs: bin
     steps:
     - uses: docker/login-action@v3
+      if: ${{ ! startsWith(github.ref, 'refs/heads/dependabot/') }}
       with:
         username: ${{ vars.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
@@ -1709,6 +1716,7 @@ jobs:
     needs: bin
     steps:
     - uses: docker/login-action@v3
+      if: ${{ ! startsWith(github.ref, 'refs/heads/dependabot/') }}
       with:
         username: ${{ vars.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
@@ -1940,6 +1948,7 @@ jobs:
     needs: bin
     steps:
     - uses: docker/login-action@v3
+      if: ${{ ! startsWith(github.ref, 'refs/heads/dependabot/') }}
       with:
         username: ${{ vars.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
@@ -2171,6 +2180,7 @@ jobs:
     needs: bin
     steps:
     - uses: docker/login-action@v3
+      if: ${{ ! startsWith(github.ref, 'refs/heads/dependabot/') }}
       with:
         username: ${{ vars.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
@@ -2402,6 +2412,7 @@ jobs:
     needs: bin
     steps:
     - uses: docker/login-action@v3
+      if: ${{ ! startsWith(github.ref, 'refs/heads/dependabot/') }}
       with:
         username: ${{ vars.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
@@ -2633,6 +2644,7 @@ jobs:
     needs: bin
     steps:
     - uses: docker/login-action@v3
+      if: ${{ ! startsWith(github.ref, 'refs/heads/dependabot/') }}
       with:
         username: ${{ vars.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
@@ -2864,6 +2876,7 @@ jobs:
     needs: bin
     steps:
     - uses: docker/login-action@v3
+      if: ${{ ! startsWith(github.ref, 'refs/heads/dependabot/') }}
       with:
         username: ${{ vars.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
@@ -3095,6 +3108,7 @@ jobs:
     needs: bin
     steps:
     - uses: docker/login-action@v3
+      if: ${{ ! startsWith(github.ref, 'refs/heads/dependabot/') }}
       with:
         username: ${{ vars.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}

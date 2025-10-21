@@ -63,6 +63,7 @@ jobs:
       CARGOGREEN_LOG_PATH: logs.txt
     steps:
     - uses: docker/login-action@v3
+      if: ${{ ! startsWith(github.ref, 'refs/heads/dependabot/') }}
       with:
         username: ${{ vars.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
@@ -191,6 +192,7 @@ jobs:
       CARGOGREEN_LOG_PATH: logs.txt
     steps:
     - uses: docker/login-action@v3
+      if: ${{ ! startsWith(github.ref, 'refs/heads/dependabot/') }}
       with:
         username: ${{ vars.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
@@ -328,6 +330,7 @@ jobs:
     - run: cargo -Vv
     - run: docker buildx prune --all --force
     - uses: docker/login-action@v3
+      if: ${{ ! startsWith(github.ref, 'refs/heads/dependabot/') }}
       with:
         username: ${{ vars.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
@@ -525,6 +528,7 @@ jobs:
       CARGOGREEN_LOG_PATH: logs.txt
     steps:
     - uses: docker/login-action@v3
+      if: ${{ ! startsWith(github.ref, 'refs/heads/dependabot/') }}
       with:
         username: ${{ vars.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
@@ -859,6 +863,7 @@ jobs:
       CARGOGREEN_LOG_PATH: logs.txt
     steps:
     - uses: docker/login-action@v3
+      if: ${{ ! startsWith(github.ref, 'refs/heads/dependabot/') }}
       with:
         username: ${{ vars.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
@@ -1193,6 +1198,7 @@ jobs:
       CARGOGREEN_LOG_PATH: logs.txt
     steps:
     - uses: docker/login-action@v3
+      if: ${{ ! startsWith(github.ref, 'refs/heads/dependabot/') }}
       with:
         username: ${{ vars.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
@@ -1454,6 +1460,7 @@ jobs:
       CARGOGREEN_LOG_PATH: logs.txt
     steps:
     - uses: docker/login-action@v3
+      if: ${{ ! startsWith(github.ref, 'refs/heads/dependabot/') }}
       with:
         username: ${{ vars.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
@@ -1642,6 +1649,7 @@ jobs:
       CARGOGREEN_LOG_PATH: logs.txt
     steps:
     - uses: docker/login-action@v3
+      if: ${{ ! startsWith(github.ref, 'refs/heads/dependabot/') }}
       with:
         username: ${{ vars.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
