@@ -148,3 +148,14 @@ cat <<EOF
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
 EOF
 }
+
+login_to_readonly_hub() {
+    [[ $# -eq 0 ]]
+cat <<EOF
+    - uses: docker/login-action@v3
+      if: \${{ ! startsWith(github.ref, 'refs/heads/dependabot/') }}
+      with:
+        username: \${{ vars.DOCKERHUB_USERNAME }}
+        password: \${{ secrets.DOCKERHUB_TOKEN }}
+EOF
+}

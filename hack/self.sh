@@ -12,10 +12,7 @@ postbin_steps() {
     local toolchain=${1:-stable}; shift
     [[ $# -eq 0 ]]
     cat <<EOF
-    - uses: docker/login-action@v3
-      with:
-        username: \${{ vars.DOCKERHUB_USERNAME }}
-        password: \${{ secrets.DOCKERHUB_TOKEN }}
+$(login_to_readonly_hub)
     - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
         toolchain: $toolchain
