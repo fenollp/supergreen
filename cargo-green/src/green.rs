@@ -28,6 +28,7 @@ pub(crate) const ENV_INCREMENTAL: &str = "CARGOGREEN_INCREMENTAL";
 pub(crate) const ENV_REGISTRY_MIRRORS: &str = "CARGOGREEN_REGISTRY_MIRRORS";
 pub(crate) const ENV_SET_ENVS: &str = "CARGOGREEN_SET_ENVS";
 
+/// Hit me if you have more!
 const DEFAULT_REGISTRY_MIRRORS: &[&str] = &["mirror.gcr.io", "public.ecr.aws/docker"];
 
 /// Configuration.
@@ -138,7 +139,7 @@ pub(crate) struct Green {
     #[serde(flatten)]
     pub(crate) image: BaseImage,
 
-    /// Pass environment variables through to build runner.
+    /// Pass environment variables through to build runner, serialized as CSV.
     ///
     /// May be useful if a build script exported some vars that a package then reads.
     /// See also:
@@ -217,24 +218,8 @@ impl Green {
             green.incremental = val == "1";
         }
 
-        let mut origin = "[metadata.green.registry-mirrors]".to_owned();
-        if let Ok(val) = env::var(ENV_REGISTRY_MIRRORS) {
-            origin = format!("${ENV_REGISTRY_MIRRORS}");
-            if val.is_empty() {
-                bail!("{origin} is empty")
-            }
-            green.registry_mirrors = val.split(',').map(ToOwned::to_owned).collect();
-        }
-        if !green.registry_mirrors.is_empty() {
-            if bad_names(&green.registry_mirrors) {
-                bail!("{origin} contains empty names, quotes or whitespace")
-            }
-            if green.registry_mirrors.len()
-                != green.registry_mirrors.iter().collect::<HashSet<_>>().len()
-            {
-                bail!("{origin} contains duplicates")
-            }
-        } else {
+        validate_csv(&mut green.registry_mirrors, "registry-mirrors", ENV_REGISTRY_MIRRORS)?;
+        if green.registry_mirrors.is_empty() {
             green.registry_mirrors =
                 DEFAULT_REGISTRY_MIRRORS.iter().map(|x| x.to_owned().to_owned()).collect();
         }
@@ -294,56 +279,44 @@ impl Green {
             green.image = BaseImage::from_local_rustc();
         }
 
-        let mut origin = "[metadata.green.set-envs]".to_owned();
-        if let Ok(val) = env::var(ENV_SET_ENVS) {
-            origin = format!("${ENV_SET_ENVS}");
-            if val.is_empty() {
-                bail!("{origin} is empty")
-            }
-            green.set_envs = val.split(',').map(ToOwned::to_owned).collect();
-        }
-        if !green.set_envs.is_empty() {
-            if bad_names(&green.set_envs) {
-                bail!("{origin} contains empty names, quotes or whitespace")
-            }
-            if green.set_envs.iter().any(|var| var.starts_with("CARGOGREEN_")) {
-                bail!("{origin} contains CARGOGREEN_* names")
-            }
-            if green.set_envs.len() != green.set_envs.iter().collect::<HashSet<_>>().len() {
-                bail!("{origin} contains duplicates")
-            }
+        validate_csv(&mut green.set_envs, "set-envs", ENV_SET_ENVS)?;
+        if green.set_envs.iter().any(|var| var.starts_with("CARGOGREEN_")) {
+            bail!("{origin} contains CARGOGREEN_* names")
         }
 
         for (field, (var, setting)) in [
-            (&mut green.add.apk, (ENV_ADD_APK, "apk")),
-            (&mut green.add.apt, (ENV_ADD_APT, "apt")),
-            (&mut green.add.apt_get, (ENV_ADD_APT_GET, "apt-get")),
+            (&mut green.add.apk, (ENV_ADD_APK, "add.apk")),
+            (&mut green.add.apt, (ENV_ADD_APT, "add.apt")),
+            (&mut green.add.apt_get, (ENV_ADD_APT_GET, "add.apt-get")),
         ] {
-            let mut origin = format!("[metadata.green.add.{setting}]");
-            if let Ok(val) = env::var(var) {
-                origin = format!("${var}");
-                if val.is_empty() {
-                    bail!("{origin} is empty")
-                }
-                *field = val.split(',').map(ToOwned::to_owned).collect();
-            }
-            if !field.is_empty() {
-                if bad_names(field) {
-                    bail!("{origin} contains empty names, quotes or whitespace")
-                }
-                if field.len() != field.iter().collect::<HashSet<_>>().len() {
-                    bail!("{origin} contains duplicates")
-                }
-            }
+            validate_csv(field, setting, var)?;
         }
 
         Ok(green)
     }
 }
 
-#[must_use]
-fn bad_names(names: &[String]) -> bool {
-    names.iter().any(|x| x.is_empty() || x.contains([' ', '\'', '"']) || x.trim() != x)
+fn validate_csv(field: &mut Vec<String>, setting: &str, var: &'static str) -> Result<()> {
+    let mut origin = format!("[metadata.green.{setting}]");
+    if let Ok(val) = env::var(var) {
+        origin = format!("${var}");
+        if val.is_empty() {
+            bail!("{origin} is empty")
+        }
+
+        *field = val.split(',').map(ToOwned::to_owned).collect();
+    }
+    if !field.is_empty() {
+        let bad_chars = [' ', '\'', '"', ';'];
+        if field.iter().any(|x| x.is_empty() || x.contains(bad_chars) || x.trim() != x) {
+            bail!("{origin} contains empty names, quotes, semicolons or whitespace")
+        }
+
+        if field.len() != field.iter().collect::<HashSet<_>>().len() {
+            bail!("{origin} contains duplicates")
+        }
+    }
+    Ok(())
 }
 
 #[cfg(test)]

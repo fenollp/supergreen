@@ -12,7 +12,7 @@ pub(crate) const ENV_ADD_APT_GET: &str = "CARGOGREEN_ADD_APT_GET";
 #[serde(deny_unknown_fields)]
 #[serde(rename_all = "kebab-case")]
 pub(crate) struct Add {
-    /// Adds OS packages to the base image with `apk add`
+    /// Adds OS packages to the base image with `apk add`, serialized as CSV.
     ///
     /// ```toml
     /// add.apk = [ "libpq-dev", "pkgconf" ]
@@ -26,7 +26,7 @@ pub(crate) struct Add {
     #[serde(skip_serializing_if = "Vec::is_empty")]
     pub(crate) apk: Vec<String>,
 
-    /// Adds OS packages to the base image with `apt install`
+    /// Adds OS packages to the base image with `apt install`, serialized as CSV.
     ///
     /// ```toml
     /// add.apt = [ "libpq-dev", "pkg-config" ]
@@ -40,7 +40,7 @@ pub(crate) struct Add {
     #[serde(skip_serializing_if = "Vec::is_empty")]
     pub(crate) apt: Vec<String>,
 
-    /// Adds OS packages to the base image with `apt-get install`
+    /// Adds OS packages to the base image with `apt-get install`, serialized as CSV.
     ///
     /// ```toml
     /// add.apt-get = [ "libpq-dev", "pkg-config" ]
