@@ -6,6 +6,40 @@ Faster Rust builds!
 
 ![A rusty crab character named Ferris, featuring a unique hairstyle resembling 'Ruby Road', a vibrant and textured hairdo often seen in flamboyant red](./hack/logo.jpg)
 
+
+- [Installation](#installation)
+- [Configuration](#configuration)
+  - [`$CARGOGREEN_ADD_APT`](#-cargogreen-add-apt)
+
+## Installation
+
+```shell
+cargo install cargo-green
+cargo install --locked --force --git https://github.com/fenollp/supergreen.git cargo-green
+
+# Make sure $CARGO_HOME/bin is in your $PATH
+which cargo-green
+```
+
+
+## Configuration
+
+### `$CARGOGREEN_ADD_APT`
+
+Adds OS packages to the base image with `apt install`, serialized as CSV.
+
+```toml
+add.apt = [ "libpq-dev", "pkg-config" ]
+```
+
+*This environment variable takes precedence over any `Cargo.toml` settings:*
+```shell
+# Note: values here are comma-separated.
+CARGOGREEN_ADD_APT="libpq-dev,pkg-config"
+```
+
+---
+
 ## Goals
 * [x] seamlessly build on another machine (with more cores, more cache)
   * [x] support remote builds by setting env `DOCKER_HOST=` with e.g. `ssh://me@beaffy-machine.internal.net`

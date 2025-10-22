@@ -112,17 +112,6 @@ cargo green test ...
 ```
 
 
-## Installation
-
-```shell
-# Installs to ~/.cargo/bin
-cargo install --locked --force --git https://github.com/fenollp/supergreen.git cargo-green
-
-# Make sur $CARGO_HOME/bin is in your $PATH
-which cargo-green
-```
-
-
 ## Alternatives
 In no particular order:
 * **ipetkov**'s `crane`: [A Nix library for building cargo projects. Never build twice thanks to incremental artifact caching.](https://github.com/ipetkov/crane)
