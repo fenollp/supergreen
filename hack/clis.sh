@@ -108,6 +108,8 @@ declare -a nvs nvs_args
 
 # TODO: https://belmoussaoui.com/blog/8-how-to-flatpak-a-rust-application/
 
+# TODO: cargo install --git https://github.com/astral-sh/uv uv
+
 #FIXME: test with Environment: CARGO_BUILD_RUSTC_WRAPPER or RUSTC_WRAPPER  or Environment: CARGO_BUILD_RUSTC_WORKSPACE_WRAPPER or RUSTC_WORKSPACE_WRAPPER
 # => the final invocation is $RUSTC_WRAPPER $RUSTC_WORKSPACE_WRAPPER $RUSTC.
 
