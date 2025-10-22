@@ -106,6 +106,8 @@ declare -a nvs nvs_args
 
 # TODO https://github.com/aizcutei/nanometers?tab=readme-ov-file#testing-locally
 
+# TODO: https://belmoussaoui.com/blog/8-how-to-flatpak-a-rust-application/
+
 #FIXME: test with Environment: CARGO_BUILD_RUSTC_WRAPPER or RUSTC_WRAPPER  or Environment: CARGO_BUILD_RUSTC_WORKSPACE_WRAPPER or RUSTC_WORKSPACE_WRAPPER
 # => the final invocation is $RUSTC_WRAPPER $RUSTC_WORKSPACE_WRAPPER $RUSTC.
 
