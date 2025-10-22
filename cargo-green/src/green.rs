@@ -104,16 +104,14 @@ pub(crate) struct Green {
 
     /// Read cached data from image registries
     ///
-    /// See https://docs.docker.com/build/cache/backends/registry/
-    ///
-    /// See also: [cache_to_images](Green:cache_to_images)
+    /// See also [Green::cache_images] and [Green::cache_to_images].
     ///
     /// ```toml
     /// cache-from-images = [ "docker-image://my.org/team/my-project", "docker-image://some.org/global/cache" ]
     /// ```
     ///
+    /// *This environment variable takes precedence over any `Cargo.toml` settings:*
     /// ```shell
-    /// # Use by setting this environment variable (no Cargo.toml setting):
     /// # Note: values here are comma-separated.
     /// CARGOGREEN_CACHE_FROM_IMAGES="docker-image://my.org/team/my-project,docker-image://some.org/global/cache"
     /// ```
@@ -122,15 +120,25 @@ pub(crate) struct Green {
 
     /// Write cached data to image registries
     ///
-    /// See https://docs.docker.com/build/cache/backends/registry/
+    /// Note that errors caused by failed cache exports are ignored.
     ///
-    /// See also: [cache_from_images](Green:cache_from_images)
+    /// See also [Green::cache_images] and [Green::cache_from_images].
+    ///
+    /// ```toml
+    /// cache-to-images = [ "docker-image://my.org/team/my-project", "docker-image://some.org/global/cache" ]
+    /// ```
+    ///
+    /// *This environment variable takes precedence over any `Cargo.toml` settings:*
+    /// ```shell
+    /// # Note: values here are comma-separated.
+    /// CARGOGREEN_CACHE_TO_IMAGES="docker-image://my.org/team/my-project,docker-image://some.org/global/cache"
+    /// ```
     #[serde(skip_serializing_if = "Vec::is_empty")]
     pub(crate) cache_to_images: Vec<ImageUri>,
 
     /// Both read and write cached data to and from image registries
     ///
-    /// See also: [cache_from_images](Green:cache_from_images) [cache_to_images](Green:cache_to_images)
+    /// Exactly a combination of [Green::cache_from_images] and [Green::cache_to_images].
     ///
     /// See
     /// * `type=registry` at <https://docs.docker.com/build/cache/backends/>
@@ -146,7 +154,7 @@ pub(crate) struct Green {
     /// CARGOGREEN_CACHE_IMAGES="docker-image://my.org/team/my-project,docker-image://some.org/global/cache"
     /// ```
     #[serde(skip_serializing_if = "Vec::is_empty")]
-    pub(crate) cache_images: Vec<ImageUri>, // TODO? error when registry is unreachable =1:my.org;0:some.org 1|0
+    pub(crate) cache_images: Vec<ImageUri>,
 
     /// Write final containerfile to given path.
     ///
@@ -770,24 +778,30 @@ RUN exit 42
 
 //
 
-#[test]
-fn metadata_green_cache_from_images_ok() {
-    let manifest = Manifest::from_str(
+#[cfg(test)]
+#[test_case::test_matrix(["cache-images", "cache-from-images", "cache-to-images"])]
+fn metadata_green_cache_images_ok(setting: &str) {
+    let manifest = Manifest::from_str(&format!(
         r#"
 [package]
 name = "test-package"
 
 [package.metadata.green]
-cache-from-images = [
+{setting} = [
   "docker-image://some-registry.com/dir/image",
   "docker-image://other.registry/dir2/image3",
 ]
 "#,
-    )
+    ))
     .unwrap();
     let green = Green::try_new(Some(manifest)).unwrap();
     assert_eq!(
-        green.cache_from_images,
+        match setting {
+            "cache-images" => green.cache_images,
+            "cache-from-images" => green.cache_from_images,
+            "cache-to-images" => green.cache_to_images,
+            _ => unreachable!(),
+        },
         vec![
             ImageUri::try_new("docker-image://some-registry.com/dir/image").unwrap(),
             ImageUri::try_new("docker-image://other.registry/dir2/image3").unwrap(),
@@ -795,85 +809,90 @@ cache-from-images = [
     );
 }
 
-#[test]
-fn metadata_green_cache_from_images_dupes() {
-    let manifest = Manifest::from_str(
+#[cfg(test)]
+#[test_case::test_matrix(["cache-images", "cache-from-images", "cache-to-images"])]
+fn metadata_green_cache_images_dupes(setting: &str) {
+    let manifest = Manifest::from_str(&format!(
         r#"
 [package]
 name = "test-package"
 
 [package.metadata.green]
-cache-from-images = [
+{setting} = [
   "docker-image://some-registry.com/dir/image",
   "docker-image://other.registry/dir2/image3",
   "docker-image://some-registry.com/dir/image",
 ]
 "#,
-    )
+    ))
     .unwrap();
     let err = Green::try_new(Some(manifest)).err().unwrap().to_string();
     assert!(err.contains("duplicates"), "In: {err}");
 }
 
-#[test]
-fn metadata_green_cache_from_images_bad_names() {
-    let manifest = Manifest::from_str(
+#[cfg(test)]
+#[test_case::test_matrix(["cache-images", "cache-from-images", "cache-to-images"])]
+fn metadata_green_cache_images_bad_names(setting: &str) {
+    let manifest = Manifest::from_str(&format!(
         r#"
 [package]
 name = "test-package"
 
 [package.metadata.green]
-cache-from-images = ["docker-image://some-registry.com/dir/image 'docker-image://other.registry/dir2/image3'", ""]
+{setting} = ["docker-image://some-registry.com/dir/image 'docker-image://other.registry/dir2/image3'", ""]
 "#,
-    )
+    ))
     .unwrap();
     let err = Green::try_new(Some(manifest)).err().unwrap().to_string();
     assert!(err.contains("names"), "In: {err}");
 }
 
-#[test]
-fn metadata_green_cache_from_images_bad_scheme() {
-    let manifest = Manifest::from_str(
+#[cfg(test)]
+#[test_case::test_matrix(["cache-images", "cache-from-images", "cache-to-images"])]
+fn metadata_green_cache_images_bad_scheme(setting: &str) {
+    let manifest = Manifest::from_str(&format!(
         r#"
 [package]
 name = "test-package"
 
 [package.metadata.green]
-cache-from-images = ["some-registry.com/dir/image"]
+{setting} = ["some-registry.com/dir/image"]
 "#,
-    )
+    ))
     .unwrap();
     let err = Green::try_new(Some(manifest)).err().unwrap().to_string();
     assert!(err.contains("scheme"), "In: {err}");
 }
 
-#[test]
-fn metadata_green_cache_from_images_bad_registry() {
-    let manifest = Manifest::from_str(
+#[cfg(test)]
+#[test_case::test_matrix(["cache-images", "cache-from-images", "cache-to-images"])]
+fn metadata_green_cache_images_bad_registry(setting: &str) {
+    let manifest = Manifest::from_str(&format!(
         r#"
 [package]
 name = "test-package"
 
 [package.metadata.green]
-cache-from-images = ["docker-image://image"]
+{setting} = ["docker-image://image"]
 "#,
-    )
+    ))
     .unwrap();
     let err = Green::try_new(Some(manifest)).err().unwrap().to_string();
     assert!(err.contains("registry"), "In: {err}");
 }
 
-#[test]
-fn metadata_green_cache_from_images_bad_image() {
-    let manifest = Manifest::from_str(
+#[cfg(test)]
+#[test_case::test_matrix(["cache-images", "cache-from-images", "cache-to-images"])]
+fn metadata_green_cache_images_bad_image(setting: &str) {
+    let manifest = Manifest::from_str(&format!(
         r#"
 [package]
 name = "test-package"
 
 [package.metadata.green]
-cache-from-images = ["docker-image://some-registry.com/dir/image:sometag"]
+{setting} = ["docker-image://some-registry.com/dir/image:sometag"]
 "#,
-    )
+    ))
     .unwrap();
     let err = Green::try_new(Some(manifest)).err().unwrap().to_string();
     assert!(err.contains("tag"), "In: {err}");
