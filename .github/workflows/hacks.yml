@@ -3,6 +3,24 @@ name: Hacks
 jobs:
 
 
+  meta-check:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash -euo pipefail {0}
+    steps:
+    - uses: actions/checkout@v5
+    - run: ./hack/clis.sh | tee .github/workflows/clis.yml
+    - run: ./hack/self.sh | tee .github/workflows/self.yml
+    - run: ./hack/docs.sh
+    - run: git --no-pager diff --exit-code
+    - name: Run shellcheck
+      uses: ludeeus/action-shellcheck@2.0.0
+      with:
+        check_together: 'yes'
+        severity: error
+
+
   hit:
     runs-on: ubuntu-latest
     steps:

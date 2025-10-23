@@ -4,12 +4,12 @@ Faster Rust builds!
 
 * [`cargo-green`](./cargo-green): Cargo plugin and `$RUSTC_WRAPPER` to sandbox, cache & remote exec `cargo` builds
 
-![A rusty crab character named Ferris, featuring a unique hairstyle resembling 'Ruby Road', a vibrant and textured hairdo often seen in flamboyant red](./hack/logo.jpg)
+![A rusty crab character named Ferris, featuring a unique hairstyle resembling 'Ruby Road', a vibrant and textured hairdo often seen in flamboyant red](./hack/logo2.jpg)
 
 
 - [Installation](#installation)
 - [Configuration](#configuration)
-  - [`$CARGOGREEN_ADD_APT`](#-cargogreen-add-apt)
+  - [`$CARGOGREEN_ADD_APT`](#cargogreen_add_apt)
 
 ## Installation
 
@@ -29,6 +29,7 @@ which cargo-green
 Adds OS packages to the base image with `apt install`, serialized as CSV.
 
 ```toml
+[package.metadata.green]
 add.apt = [ "libpq-dev", "pkg-config" ]
 ```
 

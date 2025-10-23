@@ -123,17 +123,6 @@ name: CLIs
 jobs:
 
 
-$(jobdef 'meta-check')
-    steps:
-    - uses: actions/checkout@v5
-    - run: ./hack/clis.sh | tee .github/workflows/clis.yml
-    - run: ./hack/self.sh | tee .github/workflows/self.yml
-    - run: git --no-pager diff --exit-code
-    - name: Run shellcheck
-      uses: ludeeus/action-shellcheck@2.0.0
-      with:
-        check_together: 'yes'
-        severity: error
 $(
 # $(jobdef 'set-image-name')
 #     needs: [meta-check]
