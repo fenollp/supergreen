@@ -99,6 +99,11 @@ async fn main() -> Result<()> {
         supergreen::help();
         exit(1)
     }
+    // Shortcut here just for `cargo green supergreen --help` to avoid some calulations
+    if supergreen::just_help(env::args().nth(3).as_deref()) {
+        supergreen::help();
+        return Ok(());
+    }
 
     let arg2 = args.next();
 

@@ -35,13 +35,21 @@ use crate::{
 //TODO: cli shows builder's jaeger: BUILDX_BUILDER=supergreen docker buildx history trace --addr 127.0.0.1:5452
 
 pub(crate) async fn main(green: Green, arg1: Option<&str>, args: Vec<String>) -> Result<()> {
+    if just_help(arg1) {
+        help();
+        return Ok(());
+    }
     match arg1 {
-        None | Some("-h" | "--help" | "-V" | "--version") => help(),
         Some("env") => envs(green, args),
         Some("push") => return push(green).await,
         Some(arg) => bail!("Unexpected supergreen command {arg:?}"),
+        None => unreachable!(),
     }
     Ok(())
+}
+
+pub(crate) fn just_help(arg1: Option<&str>) -> bool {
+    matches!(arg1, None | Some("-h" | "--help" | "-V" | "--version"))
 }
 
 //TODO: util to inspect + clear (+ push) build cache: docker buildx du --verbose
