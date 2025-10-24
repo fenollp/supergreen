@@ -33,188 +33,60 @@ pub(crate) const ENV_SET_ENVS: &str = "CARGOGREEN_SET_ENVS";
 /// Hit me if you have more!
 const DEFAULT_REGISTRY_MIRRORS: &[&str] = &["mirror.gcr.io", "public.ecr.aws/docker"];
 
-/// Configuration.
-///
-/// Cargo.toml's `[package.metadata.green]` entries are overriden by
-/// environment variables that are prefixed by `$CARGOGREEN_`.
+// TODO? switch all envs to TOML: cargo --config 'build.rustdocflags = ["--html-in-header", "header.html"]' …
+
+#[doc = include_str!("../docs/configuration.md")]
 #[derive(Debug, Serialize, Deserialize, Default, PartialEq, Eq)]
 #[serde(default, deny_unknown_fields, rename_all = "kebab-case")]
 pub(crate) struct Green {
-    /// Pick which executor to use: `"docker"` (default), `"podman"` or `"none"`.
-    ///
-    /// *Use by setting this environment variable (no `Cargo.toml` setting):*
-    /// ```shell
-    /// CARGOGREEN_RUNNER="docker"
-    /// ```
+    #[doc = include_str!("../docs/CARGOGREEN_RUNNER.md")]
     pub(crate) runner: Runner,
 
-    // Snapshot of runner's envs. Not user-settable.
+    /// Snapshot of runner's envs. Not user-settable.
+    #[doc(hidden)]
     #[serde(skip_serializing_if = "HashMap::is_empty")]
     pub(crate) runner_envs: HashMap<String, String>,
 
-    /// Whether to wrap incremental compilation, defaults to false.
-    ///
-    /// See <https://doc.rust-lang.org/cargo/reference/config.html#buildincremental>
-    ///
-    /// *Use by setting this environment variable (no `Cargo.toml` setting):*
-    /// ```shell
-    /// CARGOGREEN_INCREMENTAL="1"
-    /// ```
+    #[doc = include_str!("../docs/CARGOGREEN_INCREMENTAL.md")]
     #[serde(skip_serializing_if = "<&bool as std::ops::Not>::not")]
     pub(crate) incremental: bool,
-
-    /// TODO: Environment variables will take precedence over TOML configuration.
-
-    /// TODO? switch all envs to TOML: cargo --config 'build.rustdocflags = ["--html-in-header", "header.html"]' …
 
     #[serde(flatten)]
     pub(crate) builder: Builder,
 
-    /// Sets which BuildKit frontend syntax to use.
-    ///
-    /// See <https://docs.docker.com/build/buildkit/frontend/#stable-channel>
-    ///
-    /// *Use by setting this environment variable (no `Cargo.toml` setting):*
-    /// ```shell
-    /// CARGOGREEN_SYNTAX_IMAGE="docker-image://docker.io/docker/dockerfile:1"
-    /// ```
+    #[doc = include_str!("../docs/CARGOGREEN_SYNTAX_IMAGE.md")]
     pub(crate) syntax: ImageUri,
 
-    /// Mirror registries to docker.io, serialized as CSV.
-    ///
-    /// See <https://docs.docker.com/build/buildkit/configure/#registry-mirror>
-    ///
-    /// Namely hosts with maybe a port and a path:
-    /// * `dockerhub.timeweb.cloud`
-    /// * `dockerhub1.beget.com`
-    /// * `localhost:5000`
-    /// * `mirror.gcr.io`
-    /// * `public.ecr.aws/docker`
-    ///
-    /// ```toml
-    /// registry-mirrors = [ "mirror.gcr.io", "public.ecr.aws/docker" ]
-    /// ```
-    ///
-    /// *This environment variable takes precedence over any `Cargo.toml` settings:*
-    /// ```shell
-    /// # Note: values here are comma-separated.
-    /// CARGOGREEN_REGISTRY_MIRRORS="mirror.gcr.io,public.ecr.aws/docker"
-    /// ```
+    #[doc = include_str!("../docs/CARGOGREEN_REGISTRY_MIRRORS.md")]
     pub(crate) registry_mirrors: Vec<String>,
 
-    /// Read cached data from image registries
-    ///
-    /// See also [Green::cache_images] and [Green::cache_to_images].
-    ///
-    /// ```toml
-    /// cache-from-images = [ "docker-image://my.org/team/my-project", "docker-image://some.org/global/cache" ]
-    /// ```
-    ///
-    /// *This environment variable takes precedence over any `Cargo.toml` settings:*
-    /// ```shell
-    /// # Note: values here are comma-separated.
-    /// CARGOGREEN_CACHE_FROM_IMAGES="docker-image://my.org/team/my-project,docker-image://some.org/global/cache"
-    /// ```
+    #[doc = include_str!("../docs/CARGOGREEN_CACHE_FROM_IMAGES.md")]
     #[serde(skip_serializing_if = "Vec::is_empty")]
     pub(crate) cache_from_images: Vec<ImageUri>,
 
-    /// Write cached data to image registries
-    ///
-    /// Note that errors caused by failed cache exports are ignored.
-    ///
-    /// See also [Green::cache_images] and [Green::cache_from_images].
-    ///
-    /// ```toml
-    /// cache-to-images = [ "docker-image://my.org/team/my-project", "docker-image://some.org/global/cache" ]
-    /// ```
-    ///
-    /// *This environment variable takes precedence over any `Cargo.toml` settings:*
-    /// ```shell
-    /// # Note: values here are comma-separated.
-    /// CARGOGREEN_CACHE_TO_IMAGES="docker-image://my.org/team/my-project,docker-image://some.org/global/cache"
-    /// ```
+    #[doc = include_str!("../docs/CARGOGREEN_CACHE_TO_IMAGES.md")]
     #[serde(skip_serializing_if = "Vec::is_empty")]
     pub(crate) cache_to_images: Vec<ImageUri>,
 
-    /// Both read and write cached data to and from image registries
-    ///
-    /// Exactly a combination of [Green::cache_from_images] and [Green::cache_to_images].
-    ///
-    /// See
-    /// * `type=registry` at <https://docs.docker.com/build/cache/backends/>
-    /// * and <https://docs.docker.com/build/cache/backends/registry/>
-    ///
-    /// ```toml
-    /// cache-images = [ "docker-image://my.org/team/my-project", "docker-image://some.org/global/cache" ]
-    /// ```
-    ///
-    /// *This environment variable takes precedence over any `Cargo.toml` settings:*
-    /// ```shell
-    /// # Note: values here are comma-separated.
-    /// CARGOGREEN_CACHE_IMAGES="docker-image://my.org/team/my-project,docker-image://some.org/global/cache"
-    /// ```
+    #[doc = include_str!("../docs/CARGOGREEN_CACHE_IMAGES.md")]
     #[serde(skip_serializing_if = "Vec::is_empty")]
     pub(crate) cache_images: Vec<ImageUri>,
 
-    /// Write final containerfile to given path.
-    ///
-    /// Helps e.g. create a containerfile of e.g. a binary to use for best caching of dependencies.
-    ///
-    /// *Use by setting this environment variable (no `Cargo.toml` setting):*
-    /// ```shell
-    /// CARGOGREEN_FINAL_PATH="$PWD/my-bin@1.0.0.Dockerfile"
-    /// ```
+    #[doc = include_str!("../docs/CARGOGREEN_FINAL_PATH.md")]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub(crate) final_path: Option<Utf8PathBuf>,
 
-    /// Write final containerfile on every rustc call.
-    ///
-    /// Helps e.g. debug builds failing too early.
-    ///
-    /// *Use by setting this environment variable (no `Cargo.toml` setting):*
-    /// ```shell
-    /// CARGOGREEN_FINAL_PATH_NONPRIMARY="1"
-    /// ```
+    #[doc = include_str!("../docs/CARGOGREEN_FINAL_PATH_NONPRIMARY.md")]
     #[serde(skip_serializing_if = "<&bool as std::ops::Not>::not")]
     pub(crate) final_path_nonprimary: bool,
 
     #[serde(flatten)]
     pub(crate) image: BaseImage,
 
-    /// Pass environment variables through to build runner, serialized as CSV.
-    ///
-    /// May be useful if a build script exported some vars that a package then reads.
-    /// See also:
-    /// * `packages`
-    ///
-    /// About `$GIT_AUTH_TOKEN`: <https://docs.docker.com/build/building/secrets/#git-authentication-for-remote-contexts>
-    ///
-    /// ```toml
-    /// set-envs = [ "GIT_AUTH_TOKEN", "TYPENUM_BUILD_CONSTS", "TYPENUM_BUILD_OP" ]
-    /// ```
-    ///
-    /// *This environment variable takes precedence over any `Cargo.toml` settings:*
-    /// ```shell
-    /// # Note: values here are comma-separated.
-    /// CARGOGREEN_SET_ENVS="GIT_AUTH_TOKEN,TYPENUM_BUILD_CONSTS,TYPENUM_BUILD_OP"
-    /// ```
-    ///
-    /// NOTE: this doesn't (yet) accumulate dependencies' set-envs values!
-    /// Meaning only the top-level crate's setting is used, for all crates/dependencies.
+    #[doc = include_str!("../docs/CARGOGREEN_SET_ENVS.md")]
     #[serde(skip_serializing_if = "Vec::is_empty")]
     pub(crate) set_envs: Vec<String>,
 
-    /// Add OS packages to the base image
-    ///
-    /// See also:
-    /// * `add.apk`
-    /// * `add.apt`
-    /// * `add.apt-get`
-    ///
-    /// Inspect the resulting base image with:
-    /// ```shell
-    /// CARGOGREEN_ADD_APT="libssl-dev,zlib1g-dev" cargo green supergreen env CARGOGREEN_BASE_IMAGE_INLINE
-    /// ```
     #[serde(skip_serializing_if = "Add::is_empty")]
     pub(crate) add: Add,
 }

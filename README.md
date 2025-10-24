@@ -24,9 +24,280 @@ which cargo-green
 
 ## Configuration
 
+Tune the behavior of `cargo-green` either through environment variables or via the package's `green` metadata section.
+
+```toml
+[package]
+name = "my-crate"
+# ...
+
+[package.metadata.green]
+registry-mirrors = [ "mirror.gcr.io", "public.ecr.aws/docker" ] # Default values
+```
+
+Environment variables that are prefixed with `$CARGOGREEN_` override TOML settings.
+
+```shell
+export CARGOGREEN_REGISTRY_MIRRORS=mirror.gcr.io
+cargo green build
+```
+
+### `$CARGOGREEN_RUNNER`
+
+Pick which executor to use: `"docker"` (default), `"podman"` or `"none"`.
+
+*Use by setting this environment variable (no `Cargo.toml` setting):*
+```shell
+CARGOGREEN_RUNNER="docker"
+```
+
+### `$BUILDX_BUILDER`
+
+Sets which BuildKit builder to use, through `$BUILDX_BUILDER`.
+
+See <https://docs.docker.com/build/building/variables/#buildx_builder>
+
+* Unset: creates & handles a builder named `"supergreen"`. Upgrades it if too old, while trying to keep old cached data
+* Set to `""`: skips using a builder
+* Set to `"supergreen"`: uses existing and just warns if too old
+* Set: use that as builder, no questions asked
+
+### `$CARGOGREEN_BUILDER_IMAGE`
+
+Sets which BuildKit builder version to use.
+
+See <https://docs.docker.com/build/builders/>
+
+*Use by setting this environment variable (no `Cargo.toml` setting):*
+```shell
+CARGOGREEN_BUILDER_IMAGE="docker-image://docker.io/moby/buildkit:latest"
+```
+
+### `$CARGOGREEN_SYNTAX_IMAGE`
+
+Sets which BuildKit frontend syntax to use.
+
+See <https://docs.docker.com/build/buildkit/frontend/#stable-channel>
+
+*Use by setting this environment variable (no `Cargo.toml` setting):*
+```shell
+CARGOGREEN_SYNTAX_IMAGE="docker-image://docker.io/docker/dockerfile:1"
+```
+
+### `$CARGOGREEN_REGISTRY_MIRRORS`
+
+Mirror registries to docker.io, serialized as CSV.
+
+See <https://docs.docker.com/build/buildkit/configure/#registry-mirror>
+
+Namely hosts with maybe a port and a path:
+* `dockerhub.timeweb.cloud`
+* `dockerhub1.beget.com`
+* `localhost:5000`
+* `mirror.gcr.io`
+* `public.ecr.aws/docker`
+
+```toml
+registry-mirrors = [ "mirror.gcr.io", "public.ecr.aws/docker" ]
+```
+
+*This environment variable takes precedence over any `Cargo.toml` settings:*
+```shell
+# Note: values here are comma-separated.
+CARGOGREEN_REGISTRY_MIRRORS="mirror.gcr.io,public.ecr.aws/docker"
+```
+
+### `$CARGOGREEN_CACHE_IMAGES`
+
+Both read and write cached data to and from image registries
+
+Exactly a combination of [Green::cache_from_images] and [Green::cache_to_images].
+
+See
+* `type=registry` at <https://docs.docker.com/build/cache/backends/>
+* and <https://docs.docker.com/build/cache/backends/registry/>
+
+```toml
+cache-images = [ "docker-image://my.org/team/my-project", "docker-image://some.org/global/cache" ]
+```
+
+*This environment variable takes precedence over any `Cargo.toml` settings:*
+```shell
+# Note: values here are comma-separated.
+CARGOGREEN_CACHE_IMAGES="docker-image://my.org/team/my-project,docker-image://some.org/global/cache"
+```
+
+### `$CARGOGREEN_CACHE_TO_IMAGES`
+
+Write cached data to image registries
+
+Note that errors caused by failed cache exports are ignored.
+
+See also [Green::cache_images] and [Green::cache_from_images].
+
+```toml
+cache-to-images = [ "docker-image://my.org/team/my-project", "docker-image://some.org/global/cache" ]
+```
+
+*This environment variable takes precedence over any `Cargo.toml` settings:*
+```shell
+# Note: values here are comma-separated.
+CARGOGREEN_CACHE_TO_IMAGES="docker-image://my.org/team/my-project,docker-image://some.org/global/cache"
+```
+
+### `$CARGOGREEN_CACHE_FROM_IMAGES`
+
+Read cached data from image registries
+
+See also [Green::cache_images] and [Green::cache_to_images].
+
+```toml
+cache-from-images = [ "docker-image://my.org/team/my-project", "docker-image://some.org/global/cache" ]
+```
+
+*This environment variable takes precedence over any `Cargo.toml` settings:*
+```shell
+# Note: values here are comma-separated.
+CARGOGREEN_CACHE_FROM_IMAGES="docker-image://my.org/team/my-project,docker-image://some.org/global/cache"
+```
+
+### `$CARGOGREEN_FINAL_PATH`
+
+Write final containerfile to given path.
+
+Helps e.g. create a containerfile of e.g. a binary to use for best caching of dependencies.
+
+*Use by setting this environment variable (no `Cargo.toml` setting):*
+```shell
+CARGOGREEN_FINAL_PATH="$PWD/my-bin@1.0.0.Dockerfile"
+```
+
+### `$CARGOGREEN_FINAL_PATH_NONPRIMARY`
+
+Write final containerfile on every rustc call.
+
+Helps e.g. debug builds failing too early.
+
+*Use by setting this environment variable (no `Cargo.toml` setting):*
+```shell
+CARGOGREEN_FINAL_PATH_NONPRIMARY="1"
+```
+
+### `$CARGOGREEN_BASE_IMAGE`
+
+Sets the base Rust image, as an image URL (or any build context, actually).
+
+If needing additional envs to be passed to rustc or build script, set them in the base image.
+
+This can be done in that same config file with `base-image-inline`.
+
+See also:
+* `also-run`
+* `base-image-inline`
+* `additional-build-arguments`
+
+For remote builds: make sure this is accessible non-locally.
+
+```toml
+base-image = "docker-image://docker.io/library/rust:1-slim"
+```
+
+The value must start with `docker-image://` and image must be available on the `$DOCKER_HOST`, eg:
+```shell
+CARGOGREEN_BASE_IMAGE=docker-image://rustc_with_libs
+DOCKER_HOST=ssh://my-remote-builder docker buildx build -t rustc_with_libs - <<EOF
+FROM docker.io/library/rust:1.69.0-slim-bookworm@sha256:8bdd28ef184d85c9b4932586af6280732780e806e5f452065420f2e783323ca3
+RUN set -eux && apt update && apt install -y libpq-dev libssl3
+ENV KEY=value
+EOF
+```
+
+*This environment variable takes precedence over any `Cargo.toml` settings:*
+```shell
+CARGOGREEN_BASE_IMAGE="docker-image://docker.io/library/rust:1-slim"
+```
+
+### `$CARGOGREEN_SET_ENVS`
+
+Pass environment variables through to build runner, serialized as CSV.
+
+May be useful if a build script exported some vars that a package then reads.
+See also:
+* `packages`
+
+See about `$GIT_AUTH_TOKEN`: <https://docs.docker.com/build/building/secrets/#git-authentication-for-remote-contexts>
+
+NOTE: this doesn't (yet) accumulate dependencies' set-envs values!
+Meaning only the top-level crate's setting is used, for all crates/dependencies.
+
+```toml
+set-envs = [ "GIT_AUTH_TOKEN", "TYPENUM_BUILD_CONSTS", "TYPENUM_BUILD_OP" ]
+```
+
+*This environment variable takes precedence over any `Cargo.toml` settings:*
+```shell
+# Note: values here are comma-separated.
+CARGOGREEN_SET_ENVS="GIT_AUTH_TOKEN,TYPENUM_BUILD_CONSTS,TYPENUM_BUILD_OP"
+```
+
+### `$CARGOGREEN_BASE_IMAGE_INLINE`
+
+Sets the base Rust image for root package and all dependencies, unless themselves being configured differently.
+
+See also:
+* `with-network`
+* `additional-build-arguments`
+
+In order to avoid unexpected changes, you may want to pin the image using an immutable digest.
+
+Note that carefully crafting crossplatform stages can be non-trivial.
+
+```toml
+base-image-inline = """
+FROM --platform=$BUILDPLATFORM rust:1 AS rust-base
+RUN --mount=from=some-context,dst=/tmp/some-context cp -r /tmp/some-context ./
+RUN --mount=type=secret,id=aws
+"""
+```
+
+```toml
+# This must also be set so digest gets pinned automatically.
+base-image = "docker-image://rust:1"
+```
+
+*This environment variable takes precedence over any `Cargo.toml` settings:*
+```shell
+IFS='' read -r -d '' CARGOGREEN_BASE_IMAGE_INLINE <<"EOF"
+FROM=rust:1 AS rust-base
+RUN --mount=from=some-context,dst=/tmp/some-context cp -r /tmp/some-context ./
+RUN --mount=type=secret,id=aws
+EOF
+echo "$CARGOGREEN_BASE_IMAGE_INLINE" # (with quotes to preserve newlines)
+```
+
+### `$CARGOGREEN_WITH_NETWORK`
+
+Controls runner's `--network none (default) | default | host` setting.
+
+Set this to `"default"` if e.g. your `base-image-inline` calls curl or wget or installs some packages.
+
+Set to `none` when in `$CARGO_NET_OFFLINE` mode. See
+  * <https://doc.rust-lang.org/cargo/reference/config.html#netoffline>
+  * <https://github.com/rust-lang/rustup/issues/4289>
+
+*This environment variable takes precedence over any `Cargo.toml` settings:*
+```shell
+CARGOGREEN_WITH_NETWORK="none"
+```
+
 ### `$CARGOGREEN_ADD_APT`
 
 Adds OS packages to the base image with `apt install`, serialized as CSV.
+
+See also:
+* `add.apk`
+* `add.apt-get`
+* `base-image`
 
 ```toml
 [package.metadata.green]
@@ -35,8 +306,63 @@ add.apt = [ "libpq-dev", "pkg-config" ]
 
 *This environment variable takes precedence over any `Cargo.toml` settings:*
 ```shell
-# Note: values here are comma-separated.
-CARGOGREEN_ADD_APT="libpq-dev,pkg-config"
+export CARGOGREEN_ADD_APT="libpq-dev,pkg-config"
+
+# Inspect the resulting base image with:
+cargo green supergreen env CARGOGREEN_BASE_IMAGE_INLINE
+```
+
+### `$CARGOGREEN_ADD_APT_GET`
+
+Adds OS packages to the base image with `apt-get install`, serialized as CSV.
+
+See also:
+* `add.apk`
+* `add.apt`
+* `base-image`
+
+```toml
+add.apt-get = [ "libpq-dev", "pkg-config" ]
+```
+
+*This environment variable takes precedence over any `Cargo.toml` settings:*
+```shell
+export CARGOGREEN_ADD_APT_GET="libpq-dev,pkg-config"
+
+# Inspect the resulting base image with:
+cargo green supergreen env CARGOGREEN_BASE_IMAGE_INLINE
+```
+
+### `$CARGOGREEN_ADD_APK`
+
+Adds OS packages to the base image with `apk add`, serialized as CSV.
+
+See also:
+* `add.apt`
+* `add.apt-get`
+* `base-image`
+
+```toml
+add.apk = [ "libpq-dev", "pkgconf" ]
+```
+
+*This environment variable takes precedence over any `Cargo.toml` settings:*
+```shell
+export CARGOGREEN_ADD_APK="libpq-dev,pkg-conf"
+
+# Inspect the resulting base image with:
+cargo green supergreen env CARGOGREEN_BASE_IMAGE_INLINE
+```
+
+### `$CARGOGREEN_INCREMENTAL`
+
+Whether to wrap incremental compilation, defaults to false.
+
+See <https://doc.rust-lang.org/cargo/reference/config.html#buildincremental>
+
+*Use by setting this environment variable (no `Cargo.toml` setting):*
+```shell
+CARGOGREEN_INCREMENTAL="1"
 ```
 
 ---

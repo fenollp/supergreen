@@ -1,18 +1,17 @@
-Adds OS packages to the base image with `apt install`, serialized as CSV.
+Adds OS packages to the base image with `apt-get install`, serialized as CSV.
 
 See also:
 * `add.apk`
-* `add.apt-get`
+* `add.apt`
 * `base-image`
 
 ```toml
-[package.metadata.green]
-add.apt = [ "libpq-dev", "pkg-config" ]
+add.apt-get = [ "libpq-dev", "pkg-config" ]
 ```
 
 *This environment variable takes precedence over any `Cargo.toml` settings:*
 ```shell
-export CARGOGREEN_ADD_APT="libpq-dev,pkg-config"
+export CARGOGREEN_ADD_APT_GET="libpq-dev,pkg-config"
 
 # Inspect the resulting base image with:
 cargo green supergreen env CARGOGREEN_BASE_IMAGE_INLINE
