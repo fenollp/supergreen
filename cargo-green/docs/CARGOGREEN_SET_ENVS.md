@@ -1,4 +1,4 @@
-Pass environment variables through to build runner, serialized as CSV.
+Pass environment variables through to build runner.
 
 May be useful if a build script exported some vars that a package then reads.
 See also:

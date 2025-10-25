@@ -1,4 +1,4 @@
-Adds OS packages to the base image with `apt-get install`, serialized as CSV.
+Adds OS packages to the base image with `apt-get install`.
 
 See also:
 * `add.apk`
@@ -11,6 +11,7 @@ add.apt-get = [ "libpq-dev", "pkg-config" ]
 
 *This environment variable takes precedence over any `Cargo.toml` settings:*
 ```shell
+# Note: values here are comma-separated.
 export CARGOGREEN_ADD_APT_GET="libpq-dev,pkg-config"
 
 # Inspect the resulting base image with:

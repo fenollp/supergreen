@@ -177,7 +177,7 @@ CARGOGREEN_SYNTAX_IMAGE="docker-image://docker.io/docker/dockerfile:1"
 
 ### `$CARGOGREEN_REGISTRY_MIRRORS`
 
-Mirror registries to docker.io, serialized as CSV.
+Registry mirrors for Docker Hub (docker.io). Defaults to GCP & AWS mirrors.
 
 See <https://docs.docker.com/build/buildkit/configure/#registry-mirror>
 
@@ -310,7 +310,7 @@ CARGOGREEN_BASE_IMAGE="docker-image://docker.io/library/rust:1-slim"
 
 ### `$CARGOGREEN_SET_ENVS`
 
-Pass environment variables through to build runner, serialized as CSV.
+Pass environment variables through to build runner.
 
 May be useful if a build script exported some vars that a package then reads.
 See also:
@@ -383,7 +383,7 @@ CARGOGREEN_WITH_NETWORK="none"
 
 ### `$CARGOGREEN_ADD_APT`
 
-Adds OS packages to the base image with `apt install`, serialized as CSV.
+Adds OS packages to the base image with `apt install`.
 
 See also:
 * `add.apk`
@@ -397,6 +397,7 @@ add.apt = [ "libpq-dev", "pkg-config" ]
 
 *This environment variable takes precedence over any `Cargo.toml` settings:*
 ```shell
+# Note: values here are comma-separated.
 export CARGOGREEN_ADD_APT="libpq-dev,pkg-config"
 
 # Inspect the resulting base image with:
@@ -405,7 +406,7 @@ cargo green supergreen env CARGOGREEN_BASE_IMAGE_INLINE
 
 ### `$CARGOGREEN_ADD_APT_GET`
 
-Adds OS packages to the base image with `apt-get install`, serialized as CSV.
+Adds OS packages to the base image with `apt-get install`.
 
 See also:
 * `add.apk`
@@ -418,6 +419,7 @@ add.apt-get = [ "libpq-dev", "pkg-config" ]
 
 *This environment variable takes precedence over any `Cargo.toml` settings:*
 ```shell
+# Note: values here are comma-separated.
 export CARGOGREEN_ADD_APT_GET="libpq-dev,pkg-config"
 
 # Inspect the resulting base image with:
@@ -426,7 +428,7 @@ cargo green supergreen env CARGOGREEN_BASE_IMAGE_INLINE
 
 ### `$CARGOGREEN_ADD_APK`
 
-Adds OS packages to the base image with `apk add`, serialized as CSV.
+Adds OS packages to the base image with `apk add`.
 
 See also:
 * `add.apt`
@@ -439,6 +441,7 @@ add.apk = [ "libpq-dev", "pkgconf" ]
 
 *This environment variable takes precedence over any `Cargo.toml` settings:*
 ```shell
+# Note: values here are comma-separated.
 export CARGOGREEN_ADD_APK="libpq-dev,pkg-conf"
 
 # Inspect the resulting base image with:

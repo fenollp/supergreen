@@ -1,4 +1,4 @@
-Mirror registries to docker.io, serialized as CSV.
+Registry mirrors for Docker Hub (docker.io). Defaults to GCP & AWS mirrors.
 
 See <https://docs.docker.com/build/buildkit/configure/#registry-mirror>
 
