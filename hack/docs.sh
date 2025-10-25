@@ -14,6 +14,7 @@ while read -r line; do
 	if [[ "${line:0:2}" = '##' ]] && [[ "$within" = 0 ]]; then
 		within=1
 		title=${line#*'# '}
+		# shellcheck disable=SC2199,SC2076
 		if [[ "${title:0:2}" = '`$' ]]; then
 			# The env settings
 			title=${title#*$} && title=${title%*\`}
@@ -46,7 +47,9 @@ done
 
 for dox in ./cargo-green/docs/*.md; do
 	section=$(basename "$dox" .md)
+	# shellcheck disable=SC2199,SC2076
 	if [[ " ${!sections[@]} " =~ " $section " ]]; then continue; fi
+	# shellcheck disable=SC2199,SC2076
 	if [[ " ${envs[@]} " =~ " $section " ]]; then continue; fi
 	echo "Unused $dox!" && exit 1
 done

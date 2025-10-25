@@ -1,31 +1,14 @@
 # [`cargo-green`](https://github.com/fenollp/supergreen/tree/main/cargo-green)
-Cached & remote-ready Rust projects builder by forwarding `rustc` calls to [BuildKit](https://github.com/moby/buildkit) builders.
-
-`cargo-green` is
-* a `cargo` plugin that sets a `$RUSTC_WRAPPER` then calls `cargo`.
-* a [`RUSTC_WRAPPER`](https://doc.rust-lang.org/cargo/reference/config.html#buildrustc-wrapper) that builds Dockerfiles
 
 
 ## Configuration
 
 Reads envs (show values with `cargo green supergreen env`)
-* `$CARGOGREEN_ADD_APK`: `add.apk` TOML setting
-* `$CARGOGREEN_ADD_APT_GET`: `add.apt-get` TOML setting
-* `$CARGOGREEN_ADD_APT`: `add.apt` TOML setting
-* `$CARGOGREEN_BASE_IMAGE_INLINE`: `base-image-inline` TOML setting
-* `$CARGOGREEN_BASE_IMAGE`: `base-image` TOML setting
-* `$CARGOGREEN_BUILDER_IMAGE`: image to use when creating builder container
-* `$CARGOGREEN_CACHE_IMAGES`: `cache-images` TOML setting
 * `$CARGOGREEN_FINAL_PATH`: if set, this file will end up with the final Dockerfile that reproduces the build
-* `$CARGOGREEN_INCREMENTAL`: `incremental` TOML setting
 * `$CARGOGREEN_LOG_PATH`: logfile path
 * `$CARGOGREEN_LOG_STYLE`
 * `$CARGOGREEN_LOG`: equivalent to `$RUST_LOG` (and doesn't conflict with `cargo`'s)
-* `$CARGOGREEN_REMOTE`: *reserved for now*
-* `$CARGOGREEN_RUNNER`: use `docker` or `podman` or `none` as build runner
-* `$CARGOGREEN_SET_ENVS`: `set-envs` TOML setting
 * `$CARGOGREEN_SYNTAX_IMAGE`: use a [`dockerfile:1`](https://hub.docker.com/r/docker/dockerfile)-derived BuildKit frontend
-* `$CARGOGREEN_WITH_NETWORK`: `with-network` TOML setting
 
 Also [passes these envs through to the runner](https://docs.docker.com/engine/reference/commandline/cli/#environment-variables):
 * `BUILDKIT_PROGRESS`
@@ -49,97 +32,6 @@ Sets
 * [`$RUSTC_WRAPPER`](https://doc.rust-lang.org/cargo/reference/environment-variables.html#environment-variables-cargo-reads)
 * `$CARGOGREEN=1`
 
-
-## Usage
-
-* Ensure at least either a [`docker`](https://github.com/docker/docker-install) or [`podman`](https://podman.io/docs/installation) *client* is installed
-* Known to work on `Ubuntu 22.04` with `github.com/docker/buildx v0.11.2 9872040` and `rust 1.73`
-
-```shell
-cargo green add
-cargo green bench
-cargo green build
-cargo green check
-cargo green clean
-cargo green clippy
-cargo green doc
-cargo green init
-cargo green install
-cargo green new
-cargo green package
-cargo green publish
-cargo green remove
-cargo green run
-cargo green search
-cargo green test
-cargo green uninstall
-cargo green update
-
-# or, setting an alias in e.g. ~/.bashrc
-alias cargo='cargo green'
-
-# With this, one may also use this set of subcommands: [UNSTABLE API] (refacto into a `cache` cmd)
-cargo supergreen config get   VAR*
-cargo supergreen config set   VAR VAL
-cargo supergreen config unset VAR
-cargo supergreen pull-images             Pulls latest versions of images used for the build, no cache (respects $DOCKER_HOST)
-cargo supergreen pull-cache              Pulls all from `--cache-from`
-cargo supergreen push-cache              Pushes all to `--cache-to`
-```
-
-### Fine tuning settings
-
-```shell
-cargo-green@0.6.0: Cargo plugin and $RUSTC_WRAPPER to sandbox & cache cargo builds and execute jobs remotely
-    https://github.com/fenollp/supergreen
-
-Usage:
-  cargo green supergreen env             Show used values
-  cargo green fetch                      Pulls images (respects $DOCKER_HOST)
-  cargo green supergreen push            Push cache image (all tags)
-  cargo green supergreen -h | --help
-  cargo green supergreen -V | --version
-```
-
-
-## Remote execution
-
-Say you have a bigger machine in your `~/.ssh/config` called `extra_oomph`:
-
-```shell
-export DOCKER_HOST=ssh://extra_oomph
-cargo green test ...
-```
-
-
-## Alternatives
-In no particular order:
-* **ipetkov**'s `crane`: [A Nix library for building cargo projects. Never build twice thanks to incremental artifact caching.](https://github.com/ipetkov/crane)
-  * [crane.dev](https://crane.dev/)
-  * `=>` Very complete! Relies on `nix` tools and language.
-* **Mozilla**'s `sccache`: [sccache - Shared Compilation Cache](https://github.com/mozilla/sccache)
-  * [Cargo Book ~ Build cache ~ Shared cache](https://doc.rust-lang.org/cargo/reference/build-cache.html#shared-cache)
-  * `=>` Relies on everyone having the same paths and doesn't cache all crate types.
-* **LukeMathWalker**'s `cargo-chef`: [A cargo-subcommand to speed up Rust Docker builds using Docker layer caching.](https://github.com/LukeMathWalker/cargo-chef)
-  * [5x Faster Rust Docker Builds with cargo-chef](https://www.lpalmieri.com/posts/fast-rust-docker-builds/)
-  * `=>` Relies on everyone having the same paths + cache isn't crate-granular.
-* **Bazel**'s `rules_rust`: [Rules Rust](https://bazelbuild.github.io/rules_rust/)
-  * [Building a Rust workspace with Bazel](https://www.tweag.io/blog/2023-07-27-building-rust-workspace-with-bazel/)
-  * [Rust rules for Bazel](https://github.com/bazelbuild/rules_rust)
-  * `=>` Replaces `cargo` with `bazel`.
-* **sgeisler**'s `cargo-remote`: [cargo subcommand to compile rust projects remotely](https://github.com/sgeisler/cargo-remote)
-  * [Building on a remote server](https://www.reddit.com/r/rust/comments/im7bb1/building_on_a_remote_server/)
-  * `=>` Uses `rsync` and `ssh`; *seems unmaintained*.
-* **Swatinem**'s `rust-cache`: [A GitHub Action that implements smart caching for rust/cargo projects](https://github.com/Swatinem/rust-cache)
-  * `=>` A GitHub Action.
-* **cross-rs**'s `cargo-cross`: [“Zero setup” cross compilation and “cross testing” of Rust crates](https://github.com/cross-rs/cross)
-  * Look at all these (compilation + testing) [Supported targets](https://github.com/cross-rs/cross#supported-targets)!
-  * Remote building and caching with [Data Volumes](https://github.com/cross-rs/cross/blob/main/docs/remote.md#data-volumes)
-  * `=>` *seldomly* maintained but a lifesaver for cross compilation.
-See also this article on what `cargo-green` does (perfect layering):
-* [Better support of Docker layer caching in Cargo](https://hackmd.io/@kobzol/S17NS71bh)
-  * [Exploring the problem of faster Cargo Docker builds](https://www.reddit.com/r/rust/comments/126xeyx/exploring_the_problem_of_faster_cargo_docker/)
-  * [Another reddit discussion](https://www.reddit.com/r/rust/comments/126whnc/better_support_of_docker_layer_caching_in_cargo/)
 
 
 ### En vrac

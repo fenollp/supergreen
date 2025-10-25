@@ -1,8 +1,13 @@
-# [`supergreen`](https://github.com/fenollp/supergreen)
+# [`supergreen`](https://github.com/fenollp/supergreen) ~ Faster Rust builds!
 
-Faster Rust builds!
+[`cargo-green`](./cargo-green): a [`cargo`](https://doc.rust-lang.org/cargo/) plugin and [`$RUSTC_WRAPPER`](https://doc.rust-lang.org/cargo/reference/config.html#buildrustc-wrapper) to sandbox, cache & remote exec `cargo` builds.
 
-* [`cargo-green`](./cargo-green): Cargo plugin and `$RUSTC_WRAPPER` to sandbox, cache & remote exec `cargo` builds
+Cached & remote-ready Rust projects builder by forwarding `rustc` calls to [BuildKit](https://github.com/moby/buildkit) builders.
+
+`cargo-green` is
+* a `cargo` plugin that sets a `$RUSTC_WRAPPER` then calls `cargo`.
+* a [`RUSTC_WRAPPER`](https://doc.rust-lang.org/cargo/reference/config.html#buildrustc-wrapper) that builds Dockerfiles
+
 
 ![A rusty crab character named Ferris, featuring a unique hairstyle resembling 'Ruby Road', a vibrant and textured hairdo often seen in flamboyant red](./hack/logo2.png)
 
@@ -19,6 +24,87 @@ cargo install --locked --force --git https://github.com/fenollp/supergreen.git c
 
 # Make sure $CARGO_HOME/bin is in your $PATH
 which cargo-green
+```
+
+When building locally, ensure either a [`docker`](https://github.com/docker/docker-install) or [`podman`](https://podman.io/docs/installation) *client* is installed.
+
+Minimum requirements:
+* `Ubuntu 22.04`
+* `buildkit 0.12.0`
+* `github.com/docker/buildx v0.11.2`
+* `rust 1.73`
+
+## Usage
+
+```shell
+cd into/your/project.git
+cargo clean # Start from a clean slate
+cargo green build
+cargo green clippy
+cargo green test
+```
+
+```shell
+# or, setting an alias in e.g. ~/.bashrc
+alias cargo='cargo green'
+
+# Now just:
+cargo build
+```
+
+`supergreen` usage:
+```shell
+cargo-green v0.20.0
+
+        Cargo plugin and $RUSTC_WRAPPER to sandbox & cache cargo builds and execute jobs remotely
+
+    https://github.com/fenollp/supergreen
+
+Usage:
+  cargo green supergreen env             Show used values
+  cargo green fetch                      Pulls images (respects $DOCKER_HOST)
+  cargo green supergreen push            Push cache image (all tags)
+  cargo green supergreen -h | --help
+  cargo green supergreen -V | --version
+```
+
+//////////// FIXME: gen
+```shell
+# With this, one may also use this set of subcommands: [UNSTABLE API] (refacto into a `cache` cmd)
+cargo supergreen config get   VAR*
+cargo supergreen config set   VAR VAL
+cargo supergreen config unset VAR
+cargo supergreen pull-images             Pulls latest versions of images used for the build, no cache (respects $DOCKER_HOST)
+cargo supergreen pull-cache              Pulls all from `--cache-from`
+cargo supergreen push-cache              Pushes all to `--cache-to`
+```
+
+
+
+## Remote execution
+
+Say you have a bigger machine in your `~/.ssh/config` called `extra-oomph`:
+
+```shell
+DOCKER_HOST=ssh://extra-oomph cargo green test
+```
+
+This will compile the tests on the remote machine and run then locally.
+TODO: also run tests remotely, like `cross` does: <https://github.com/cross-rs/cross/blob/49cd054de9b832dfc11a4895c72b0aef533b5c6a/README.md#supported-targets>
+
+For more knobs to tune, see also:
+* [`$BUILDX_BUILDER`](#buildx_builder)
+* [`$CARGOGREEN_BUILDER_IMAGE`](#cargogreen_builder_image)
+
+
+## Caching
+
+Share your build cache with your team and CI, never feel cold starts!
+
+```toml
+[package.metadata.green]
+cache-images = [ "docker-image://my.org/team/my-project", "docker-image://ghcr.io/me/fork" ]
+cache-from-images = [ "docker-image://some.org/global/cache" ]
 ```
 
 
@@ -61,6 +147,11 @@ See <https://docs.docker.com/build/building/variables/#buildx_builder>
 * Set to `""`: skips using a builder
 * Set to `"supergreen"`: uses existing and just warns if too old
 * Set: use that as builder, no questions asked
+
+See also
+* `$DOCKER_HOST`: <https://docs.docker.com/engine/reference/commandline/cli/#environment-variables>
+* `$DOCKER_CONTEXT`: <https://docs.docker.com/reference/cli/docker/#environment-variables>
+* `$BUILDKIT_HOST`: <https://docs.docker.com/build/building/variables/#buildkit_host>
 
 ### `$CARGOGREEN_BUILDER_IMAGE`
 
@@ -365,84 +456,38 @@ See <https://doc.rust-lang.org/cargo/reference/config.html#buildincremental>
 CARGOGREEN_INCREMENTAL="1"
 ```
 
----
-
-## Goals
-* [x] seamlessly build on another machine (with more cores, more cache)
-  * [x] support remote builds by setting env `DOCKER_HOST=` with e.g. `ssh://me@beaffy-machine.internal.net`
-    * [x] Build cache is saved remotely, artifacts are saved locally
-    * [x] Tests building happens on remote machine, execution happens on local machine
-* [x] seamlessly integrate with normal `cargo` usage
-  * [x] only pull sources from local filesystem
-  * [x] produce the same intermediary artefacts as local `cargo` does
-  * [x] fallback to normal, local `rustc` anytime
-    * switching from this wrapper back to local `rustc` does necessitate a fresh build
-* [ ] wrap `rustc` calls in `buildkit`-like calls (`docker`, `podman`)
-  * [x] `docker`
-  * [x] `podman`
-  * [ ] deps compatibility
-    * [x] handle Rust-only deps
-    * [ ] handle all the other deps (expand this list) (use `crater`)
-      * [x] `C` deps
-      * [ ] ...
-  * [x] runner compatibility
-    * [x] set `.dockerignore`s (to be authoritative on srcs)
-  * [x] trace these outputs (STDOUT/STDERR) for debugging
-* [x] available as a `rustc` wrapper through `$RUSTC_WRAPPER`
-* [ ] available as a `cargo` subcommand
-  * [ ] configuration profiles (user, team, per-workspace, per-crate, CI, ...)
-  * [x] seamlessly use current/local `rustc` version
-    * [x] support overriding `rustc` base image
-  * [ ] seamlessly use current/local tools (`mold`, ...)
-    * [ ] config expressions on top of base image config?
-    * [ ] just suggest an inline `Dockerfile` stage?
-  * [ ] support CRUD-ish operations on local/remotes cache
-  * [x] `[SEC]` support building a crate without it having network access
-* [ ] integrate with shipping OCI images
-* [ ] share cache with the World cf. [`user-wide-cache`](https://rust-lang.github.io/rust-project-goals/2024h2/user-wide-cache.html)
-  * [x] never rebuild a dep (for a given version of `rustc`, ...)
-    * [x] ensure finest cache granularity (crate-level)
-    * [x] free users from cache key built from `Cargo.lock` (changes on every release cut!)
-  * [ ] share cache with other projects on local machine
-    * [ ] fix `WORKDIR`s + rewrite paths with `remap-path-prefix` 
-  * [ ] share cache with CI and team
-    * [ ] share cache with CI (at least for a single user)
-  * [ ] `[SEC]` ensure private deps don't leak through/to cache
-  * [ ] CLI gives the Dockerfile that `cargo install`'s any crate
-* [ ] suggest a global cache -faciliting configuration profile
-* [ ] integrate with `cross`
-  * [ ] build for a non-local target
-  * [ ] run/test for a non-local target (with `cross`'s same caveats ie. QEMU)
-
-
-## Upstream issues & patches
-* [ ] [`rust`: Compile a crate from its source archive directly](https://github.com/rust-lang/rust/issues/128884)
-* [ ] [`cargo`: Tell `rustc` wrappers which envs to pass through to allow env sandboxing](https://github.com/rust-lang/cargo/issues/14444)
-* [ ] [`buildkit`: `docker/dockerfile` image tags are late](https://github.com/moby/buildkit/issues/6118)
-* gRPC buffers too small
-  * [x] [`buildkit`: Build function: ResourceExhausted: grpc: received message larger than max (_ vs. 4194304)](https://github.com/moby/buildkit/issues/5217)
-  * [x] [`buildx`: `ResourceExhausted: grpc: received message larger than max (_ vs. 4194304)`](https://github.com/docker/buildx/issues/2453)
-  * [ ] [`buildkit`: remote `docker buildx build` with large dockerfile gives `trying to send message larger than max (22482550 vs. 16777216)` error](https://github.com/moby/buildkit/issues/6097)
-* [x] [`buildkit`: Support extracting `ADD --checksum=.. https://.. ..`](https://github.com/moby/buildkit/issues/4907)
-* TODO
-  1. buildkit flag to disable dockerignore and save disk read
-    * --ignore-file (closed) [Add support for specifying .dockerignore file with -i/--ignore](https://github.com/moby/moby/issues/12886)
-    * --no-ignore-file
-  1. docker build support multiple input files
-    * --file-part
-    * >=1 stage per Dockerfile part file
-      * order doesn't matter: order is fixed when consolidation happens (internally)
-  1. cargo + docker
-    * [cargo build --dependencies-only](https://github.com/rust-lang/cargo/issues/2644#issuecomment-2304774192)
-* [Getting an image's digest fast, within a docker-container builder](https://github.com/docker/buildx/discussions/3363)
-  * [Inspect image manifest without pushing to registry or load to local docker daemon](https://github.com/moby/buildkit/issues/4854)
-  * [Proposal: introduce enhanced image resolution gateway API](https://github.com/moby/buildkit/issues/2944)
-
+## Alternatives
+In no particular order:
+* **ipetkov**'s `crane`: [A Nix library for building cargo projects. Never build twice thanks to incremental artifact caching.](https://github.com/ipetkov/crane)
+  * [crane.dev](https://crane.dev/)
+  * `=>` Very complete! Relies on `nix` tools and language.
+* **Mozilla**'s `sccache`: [sccache - Shared Compilation Cache](https://github.com/mozilla/sccache)
+  * [Cargo Book ~ Build cache ~ Shared cache](https://doc.rust-lang.org/cargo/reference/build-cache.html#shared-cache)
+  * `=>` Relies on everyone having the same paths and doesn't cache all crate types.
+* **LukeMathWalker**'s `cargo-chef`: [A cargo-subcommand to speed up Rust Docker builds using Docker layer caching.](https://github.com/LukeMathWalker/cargo-chef)
+  * [5x Faster Rust Docker Builds with cargo-chef](https://www.lpalmieri.com/posts/fast-rust-docker-builds/)
+  * `=>` Relies on everyone having the same paths + cache isn't crate-granular.
+* **Bazel**'s `rules_rust`: [Rules Rust](https://bazelbuild.github.io/rules_rust/)
+  * [Building a Rust workspace with Bazel](https://www.tweag.io/blog/2023-07-27-building-rust-workspace-with-bazel/)
+  * [Rust rules for Bazel](https://github.com/bazelbuild/rules_rust)
+  * `=>` Replaces `cargo` with `bazel`.
+* **sgeisler**'s `cargo-remote`: [cargo subcommand to compile rust projects remotely](https://github.com/sgeisler/cargo-remote)
+  * [Building on a remote server](https://www.reddit.com/r/rust/comments/im7bb1/building_on_a_remote_server/)
+  * `=>` Uses `rsync` and `ssh`; *seems unmaintained*.
+* **Swatinem**'s `rust-cache`: [A GitHub Action that implements smart caching for rust/cargo projects](https://github.com/Swatinem/rust-cache)
+  * `=>` A GitHub Action.
+* **cross-rs**'s `cargo-cross`: [“Zero setup” cross compilation and “cross testing” of Rust crates](https://github.com/cross-rs/cross)
+  * Look at all these (compilation + testing) [Supported targets](https://github.com/cross-rs/cross#supported-targets)!
+  * Remote building and caching with [Data Volumes](https://github.com/cross-rs/cross/blob/main/docs/remote.md#data-volumes)
+  * `=>` *seldomly* maintained but a lifesaver for cross compilation.
+See also this article on what `cargo-green` does (perfect layering):
+* [Better support of Docker layer caching in Cargo](https://hackmd.io/@kobzol/S17NS71bh)
+  * [Exploring the problem of faster Cargo Docker builds](https://www.reddit.com/r/rust/comments/126xeyx/exploring_the_problem_of_faster_cargo_docker/)
+  * [Another reddit discussion](https://www.reddit.com/r/rust/comments/126whnc/better_support_of_docker_layer_caching_in_cargo/)
 
 ## Origins
 * PoC originally written in Bash: https://github.com/fenollp/buildxargs/blob/buildx/tryin.sh
 * Initial blog post https://fenollp.github.io/faster-rust-builds-docker_host
-
 
 ## Hacking
 
@@ -501,3 +546,74 @@ all:
 	RUST_MIN_STACK=8000000 cargo nextest run --all-targets --all-features --locked --frozen --offline --no-fail-fast
 	git --no-pager diff --exit-code
 ```
+
+## Goals
+* [x] seamlessly build on another machine (with more cores, more cache)
+  * [x] support remote builds by setting env `DOCKER_HOST=` with e.g. `ssh://me@beaffy-machine.internal.net`
+    * [x] Build cache is saved remotely, artifacts are saved locally
+    * [x] Tests building happens on remote machine, execution happens on local machine
+* [x] seamlessly integrate with normal `cargo` usage
+  * [x] only pull sources from local filesystem
+  * [x] produce the same intermediary artefacts as local `cargo` does
+  * [x] fallback to normal, local `rustc` anytime
+    * switching from this wrapper back to local `rustc` does necessitate a fresh build
+* [ ] wrap `rustc` calls in `buildkit`-like calls (`docker`, `podman`)
+  * [x] `docker`
+  * [ ] `podman` TODO: test in CI
+  * [ ] deps compatibility
+    * [x] handle Rust-only deps
+    * [ ] handle all the other deps (expand this list) (use `crater`)
+      * [x] `C` deps
+      * [ ] ...
+  * [x] runner compatibility
+    * [x] set `.dockerignore`s (to be authoritative on srcs)
+  * [x] trace these outputs (STDOUT/STDERR) for debugging
+* [x] available as a `rustc` wrapper through `$RUSTC_WRAPPER`
+* [ ] available as a `cargo` subcommand
+  * [ ] configuration profiles (user, team, per-workspace, per-crate, CI, ...)
+  * [x] seamlessly use current/local `rustc` version
+    * [x] support overriding `rustc` base image
+  * [ ] seamlessly use current/local tools (`mold`, ...)
+    * [ ] config expressions on top of base image config?
+    * [ ] just suggest an inline `Dockerfile` stage?
+  * [ ] support CRUD-ish operations on local/remotes cache
+  * [x] `[SEC]` support building a crate without it having network access
+* [ ] integrate with shipping OCI images
+* [ ] share cache with the World cf. [`user-wide-cache`](https://rust-lang.github.io/rust-project-goals/2024h2/user-wide-cache.html)
+  * [x] never rebuild a dep (for a given version of `rustc`, ...)
+    * [x] ensure finest cache granularity (crate-level)
+    * [x] free users from cache key built from `Cargo.lock` (changes on every release cut!)
+  * [ ] share cache with other projects on local machine
+    * [ ] fix `WORKDIR`s + rewrite paths with `remap-path-prefix` 
+  * [ ] share cache with CI and team
+    * [ ] share cache with CI (at least for a single user)
+  * [ ] `[SEC]` ensure private deps don't leak through/to cache
+  * [ ] CLI gives the Dockerfile that `cargo install`'s any crate
+* [ ] suggest a global cache -faciliting configuration profile
+* [ ] integrate with `cross`
+  * [ ] build for a non-local target
+  * [ ] run/test for a non-local target (with `cross`'s same caveats ie. QEMU)
+
+
+## Upstream issues & patches
+* [ ] [`rust`: Compile a crate from its source archive directly](https://github.com/rust-lang/rust/issues/128884)
+* [ ] [`cargo`: Tell `rustc` wrappers which envs to pass through to allow env sandboxing](https://github.com/rust-lang/cargo/issues/14444)
+* [ ] [`buildkit`: `docker/dockerfile` image tags are late](https://github.com/moby/buildkit/issues/6118)
+* gRPC buffers too small
+  * [x] [`buildkit`: Build function: ResourceExhausted: grpc: received message larger than max (_ vs. 4194304)](https://github.com/moby/buildkit/issues/5217)
+  * [x] [`buildx`: `ResourceExhausted: grpc: received message larger than max (_ vs. 4194304)`](https://github.com/docker/buildx/issues/2453)
+  * [ ] [`buildkit`: remote `docker buildx build` with large dockerfile gives `trying to send message larger than max (22482550 vs. 16777216)` error](https://github.com/moby/buildkit/issues/6097)
+* [x] [`buildkit`: Support extracting `ADD --checksum=.. https://.. ..`](https://github.com/moby/buildkit/issues/4907)
+* TODO
+  1. buildkit flag to disable dockerignore and save disk read
+    * --ignore-file (closed) [Add support for specifying .dockerignore file with -i/--ignore](https://github.com/moby/moby/issues/12886)
+    * --no-ignore-file
+  1. docker build support multiple input files
+    * --file-part
+    * >=1 stage per Dockerfile part file
+      * order doesn't matter: order is fixed when consolidation happens (internally)
+  1. cargo + docker
+    * [cargo build --dependencies-only](https://github.com/rust-lang/cargo/issues/2644#issuecomment-2304774192)
+* [Getting an image's digest fast, within a docker-container builder](https://github.com/docker/buildx/discussions/3363)
+  * [Inspect image manifest without pushing to registry or load to local docker daemon](https://github.com/moby/buildkit/issues/4854)
+  * [Proposal: introduce enhanced image resolution gateway API](https://github.com/moby/buildkit/issues/2944)
