@@ -26,3 +26,17 @@ Also [passes these envs through to the runner](https://docs.docker.com/engine/re
 Sets
 * [`$RUSTC_WRAPPER`](https://doc.rust-lang.org/cargo/reference/environment-variables.html#environment-variables-cargo-reads)
 * `$CARGOGREEN=1`
+
+
+
+
+//////////// FIXME: gen
+```shell
+# With this, one may also use this set of subcommands: [UNSTABLE API] (refacto into a `cache` cmd)
+cargo supergreen config get   VAR*
+cargo supergreen config set   VAR VAL
+cargo supergreen config unset VAR
+cargo supergreen pull-images             Pulls latest versions of images used for the build, no cache (respects $DOCKER_HOST)
+cargo supergreen pull-cache              Pulls all from `--cache-from`
+cargo supergreen push-cache              Pushes all to `--cache-to`
+```

@@ -19,7 +19,6 @@ use crate::{
     },
     image_uri::ImageUri,
     logging::{ENV_LOG, ENV_LOG_PATH, ENV_LOG_STYLE},
-    runner::DOCKER_HOST,
     rustc_wrapper::ENV,
     PKG, REPO, VSN,
 };
@@ -85,14 +84,10 @@ pub(crate) fn help() {
 
     {REPO}
 
-Usage:
-  cargo green supergreen env             Show used values
-  cargo green fetch                      Pulls images (respects ${DOCKER_HOST})
-  cargo green supergreen push            Push cache image (all tags)
-  cargo green supergreen -h | --help
-  cargo green supergreen -V | --version
+{usage}
 ",
         description = env!("CARGO_PKG_DESCRIPTION"),
+        usage = include_str!("../docs/usage.md").trim().replace("```shell", "").replace("```", ""),
     );
 }
 

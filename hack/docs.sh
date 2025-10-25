@@ -4,13 +4,14 @@ set -o pipefail
 
 declare -A sections=()
 sections['configuration']=1
+sections['usage']=1
 
 envs=()
 
 within=0
 title=''
 dox=''
-while read -r line; do
+while IFS= read -r line; do
 	if [[ "${line:0:2}" = '##' ]] && [[ "$within" = 0 ]]; then
 		within=1
 		title=${line#*'# '}

@@ -37,48 +37,27 @@ Minimum requirements:
 ## Usage
 
 ```shell
-cd into/your/project.git
-cargo clean # Start from a clean slate
-cargo green build
-cargo green clippy
-cargo green test
-```
-
-```shell
-# or, setting an alias in e.g. ~/.bashrc
-alias cargo='cargo green'
-
-# Now just:
-cargo build
-```
-
-`supergreen` usage:
-```shell
-cargo-green v0.20.0
-
-        Cargo plugin and $RUSTC_WRAPPER to sandbox & cache cargo builds and execute jobs remotely
-
-    https://github.com/fenollp/supergreen
-
 Usage:
-  cargo green supergreen env             Show used values
-  cargo green fetch                      Pulls images (respects $DOCKER_HOST)
+  cargo green supergreen env [ENV ...]   Show used values
+  cargo green supergreen doc [ENV ...]   Documentation of said values
+  cargo green fetch                      Pulls images
   cargo green supergreen push            Push cache image (all tags)
   cargo green supergreen -h | --help
   cargo green supergreen -V | --version
-```
+  cargo green ...any cargo subcommand...
 
-//////////// FIXME: gen
-```shell
-# With this, one may also use this set of subcommands: [UNSTABLE API] (refacto into a `cache` cmd)
-cargo supergreen config get   VAR*
-cargo supergreen config set   VAR VAL
-cargo supergreen config unset VAR
-cargo supergreen pull-images             Pulls latest versions of images used for the build, no cache (respects $DOCKER_HOST)
-cargo supergreen pull-cache              Pulls all from `--cache-from`
-cargo supergreen push-cache              Pushes all to `--cache-to`
-```
+Try:
+  cargo clean # Start from a clean slate
+  cargo green build
+  cargo supergreen env CARGOGREEN_BASE_IMAGE 2>/dev/null
+  cargo supergreen help
 
+Suggestion:
+  alias cargo='cargo green'
+  # Now try, within your project:
+  cargo fetch
+  cargo test
+```
 
 
 ## Remote execution
