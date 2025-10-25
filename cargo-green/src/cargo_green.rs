@@ -89,6 +89,7 @@ pub(crate) async fn main() -> Result<Green> {
     }
 
     //CARGOGREEN_REMOTES ~= CCSV: host=URL;URL
+    // URL;0:host=URL,ca,cert,..;1:URL,ca=,..;2:..  https://docs.docker.com/build/ci/github-actions/configure-builder/#append-additional-nodes-to-the-builder
     //=> colon CSV
     //=> keys= host,ca,cert,key,skip-tls-verify + name,description,from (enforce!)
     //=> when only URL given: craft name
@@ -107,6 +108,9 @@ pub(crate) async fn main() -> Result<Green> {
     // https://github.com/moby/buildkit/issues/4268#issuecomment-2128464135
     // docker buildx create --name amd64-builder --driver docker-container --platform linux/amd64 ssh://user@remote-machine
     // docker buildx build --builder amd64-builder --load .
+    //
+    //docker use builder on other host
+    //https://dev.to/aboozar/build-docker-multi-platform-image-using-buildx-remote-builder-node-5631
 
     // Then the builder: needed by cmd calls
     if green.builder.image.is_some() {

@@ -8,6 +8,7 @@ license.workspace = true
 name = "cargo-green"
 repository.workspace = true
 version.workspace = true
+readme = "../README.md"
 
 # [package.metadata.green]
 # base-image = "docker-image://blabla"

@@ -13,10 +13,12 @@ use crate::{
         ENV_BUILDER_IMAGE, ENV_FINAL_PATH, ENV_FINAL_PATH_NONPRIMARY, ENV_RUNNER, ENV_SYNTAX_IMAGE,
     },
     ext::CommandExt,
-    green::{Green, ENV_CACHE_IMAGES, ENV_INCREMENTAL, ENV_REGISTRY_MIRRORS, ENV_SET_ENVS},
+    green::{
+        Green, ENV_CACHE_FROM_IMAGES, ENV_CACHE_IMAGES, ENV_CACHE_TO_IMAGES, ENV_INCREMENTAL,
+        ENV_REGISTRY_MIRRORS, ENV_SET_ENVS,
+    },
     image_uri::ImageUri,
     logging::{ENV_LOG, ENV_LOG_PATH, ENV_LOG_STYLE},
-    runner::DOCKER_HOST,
     rustc_wrapper::ENV,
     PKG, REPO, VSN,
 };
@@ -32,13 +34,21 @@ use crate::{
 //TODO: cli shows builder's jaeger: BUILDX_BUILDER=supergreen docker buildx history trace --addr 127.0.0.1:5452
 
 pub(crate) async fn main(green: Green, arg1: Option<&str>, args: Vec<String>) -> Result<()> {
+    if just_help(arg1) {
+        help();
+        return Ok(());
+    }
     match arg1 {
-        None | Some("-h" | "--help" | "-V" | "--version") => help(),
         Some("env") => envs(green, args),
         Some("push") => return push(green).await,
         Some(arg) => bail!("Unexpected supergreen command {arg:?}"),
+        None => unreachable!(),
     }
     Ok(())
+}
+
+pub(crate) fn just_help(arg1: Option<&str>) -> bool {
+    matches!(arg1, None | Some("-h" | "--help" | "-V" | "--version"))
 }
 
 //TODO: util to inspect + clear (+ push) build cache: docker buildx du --verbose
@@ -74,14 +84,10 @@ pub(crate) fn help() {
 
     {REPO}
 
-Usage:
-  cargo green supergreen env             Show used values
-  cargo green fetch                      Pulls images (respects ${DOCKER_HOST})
-  cargo green supergreen push            Push cache image (all tags)
-  cargo green supergreen -h | --help
-  cargo green supergreen -V | --version
+{usage}
 ",
         description = env!("CARGO_PKG_DESCRIPTION"),
+        usage = include_str!("../docs/usage.md").trim().replace("```shell", "").replace("```", ""),
     );
 }
 
@@ -160,7 +166,9 @@ fn envs(green: Green, vars: Vec<String>) {
         (ENV_BASE_IMAGE, Some(green.image.base_image.to_string())),
         (ENV_BASE_IMAGE_INLINE, green.image.base_image_inline.clone()),
         (ENV_BUILDER_IMAGE, green.builder.image.map(|x| x.to_string())),
+        (ENV_CACHE_FROM_IMAGES, csv_uris(&green.cache_from_images)),
         (ENV_CACHE_IMAGES, csv_uris(&green.cache_images)),
+        (ENV_CACHE_TO_IMAGES, csv_uris(&green.cache_to_images)),
         (ENV_FINAL_PATH, green.final_path.as_deref().map(ToString::to_string)),
         (ENV_FINAL_PATH_NONPRIMARY, green.final_path_nonprimary.then(|| "1".to_owned())),
         (ENV_INCREMENTAL, green.incremental.then(|| "1".to_owned())),

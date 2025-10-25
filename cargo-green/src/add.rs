@@ -12,45 +12,15 @@ pub(crate) const ENV_ADD_APT_GET: &str = "CARGOGREEN_ADD_APT_GET";
 #[serde(deny_unknown_fields)]
 #[serde(rename_all = "kebab-case")]
 pub(crate) struct Add {
-    /// Adds OS packages to the base image with `apk add`
-    ///
-    /// ```toml
-    /// add.apk = [ "libpq-dev", "pkgconf" ]
-    /// ```
-    ///
-    /// *This environment variable takes precedence over any `Cargo.toml` settings:*
-    /// ```shell
-    /// # Note: values here are comma-separated.
-    /// CARGOGREEN_ADD_APK="libpq-dev,pkg-conf"
-    /// ```
+    #[doc = include_str!("../docs/CARGOGREEN_ADD_APK.md")]
     #[serde(skip_serializing_if = "Vec::is_empty")]
     pub(crate) apk: Vec<String>,
 
-    /// Adds OS packages to the base image with `apt install`
-    ///
-    /// ```toml
-    /// add.apt = [ "libpq-dev", "pkg-config" ]
-    /// ```
-    ///
-    /// *This environment variable takes precedence over any `Cargo.toml` settings:*
-    /// ```shell
-    /// # Note: values here are comma-separated.
-    /// CARGOGREEN_ADD_APT="libpq-dev,pkg-config"
-    /// ```
+    #[doc = include_str!("../docs/CARGOGREEN_ADD_APT.md")]
     #[serde(skip_serializing_if = "Vec::is_empty")]
     pub(crate) apt: Vec<String>,
 
-    /// Adds OS packages to the base image with `apt-get install`
-    ///
-    /// ```toml
-    /// add.apt-get = [ "libpq-dev", "pkg-config" ]
-    /// ```
-    ///
-    /// *This environment variable takes precedence over any `Cargo.toml` settings:*
-    /// ```shell
-    /// # Note: values here are comma-separated.
-    /// CARGOGREEN_ADD_APT_GET="libpq-dev,pkg-config"
-    /// ```
+    #[doc = include_str!("../docs/CARGOGREEN_ADD_APT_GET.md")]
     #[serde(skip_serializing_if = "Vec::is_empty")]
     pub(crate) apt_get: Vec<String>,
 }
