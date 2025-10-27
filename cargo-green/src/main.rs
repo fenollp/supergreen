@@ -107,13 +107,15 @@ async fn main() -> Result<()> {
         supergreen::help();
         exit(1)
     }
+
+    let arg2 = args.next();
+
     // Shortcut here just for `cargo green supergreen --help` to avoid some calulations
-    if supergreen::just_help(env::args().nth(3).as_deref()) {
+    if arg2.as_deref() == Some("supergreen") && supergreen::just_help(env::args().nth(3).as_deref())
+    {
         supergreen::help();
         return Ok(());
     }
-
-    let arg2 = args.next();
 
     let mut cmd = Command::new(cargo());
     cmd.kill_on_drop(true);
