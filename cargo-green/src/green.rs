@@ -4,34 +4,16 @@ use std::{
 };
 
 use anyhow::{anyhow, bail, Result};
-use camino::Utf8PathBuf;
 use cargo_toml::Manifest;
 use serde::{Deserialize, Serialize};
 
 #[cfg(test)]
 use crate::network::Network;
 use crate::{
-    add::Add, base_image::BaseImage, builder::Builder, containerfile::Containerfile,
-    image_uri::ImageUri, lockfile::find_manifest_path, runner::Runner, stage::RST, PKG,
+    add::Add, base_image::BaseImage, builder::Builder, cache::Cache, containerfile::Containerfile,
+    image_uri::ImageUri, lockfile::find_manifest_path, r#final::Final, runner::Runner, stage::RST,
+    ENV_RUNNER, PKG,
 };
-
-macro_rules! ENV_CACHE_FROM_IMAGES {
-    () => {
-        "CARGOGREEN_CACHE_FROM_IMAGES"
-    };
-}
-
-macro_rules! ENV_CACHE_IMAGES {
-    () => {
-        "CARGOGREEN_CACHE_IMAGES"
-    };
-}
-
-macro_rules! ENV_CACHE_TO_IMAGES {
-    () => {
-        "CARGOGREEN_CACHE_TO_IMAGES"
-    };
-}
 
 macro_rules! ENV_INCREMENTAL {
     () => {
@@ -48,6 +30,13 @@ macro_rules! ENV_REGISTRY_MIRRORS {
 macro_rules! ENV_SET_ENVS {
     () => {
         "CARGOGREEN_SET_ENVS"
+    };
+}
+
+#[macro_export]
+macro_rules! ENV_SYNTAX_IMAGE {
+    () => {
+        "CARGOGREEN_SYNTAX_IMAGE"
     };
 }
 
@@ -82,28 +71,14 @@ pub(crate) struct Green {
     #[serde(skip_serializing_if = "Vec::is_empty")]
     pub(crate) registry_mirrors: Vec<String>,
 
-    #[doc = include_str!(concat!("../docs/",ENV_CACHE_FROM_IMAGES!(),".md"))]
-    #[serde(skip_serializing_if = "Vec::is_empty")]
-    pub(crate) cache_from_images: Vec<ImageUri>,
-
-    #[doc = include_str!(concat!("../docs/",ENV_CACHE_TO_IMAGES!(),".md"))]
-    #[serde(skip_serializing_if = "Vec::is_empty")]
-    pub(crate) cache_to_images: Vec<ImageUri>,
-
-    #[doc = include_str!(concat!("../docs/",ENV_CACHE_IMAGES!(),".md"))]
-    #[serde(skip_serializing_if = "Vec::is_empty")]
-    pub(crate) cache_images: Vec<ImageUri>,
-
-    #[doc = include_str!(concat!("../docs/",ENV_FINAL_PATH!(),".md"))]
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub(crate) final_path: Option<Utf8PathBuf>,
-
-    #[doc = include_str!(concat!("../docs/",ENV_FINAL_PATH_NONPRIMARY!(),".md"))]
-    #[serde(skip_serializing_if = "<&bool as std::ops::Not>::not")]
-    pub(crate) final_path_nonprimary: bool,
+    #[serde(flatten)]
+    pub(crate) cache: Cache,
 
     #[serde(flatten)]
-    pub(crate) image: BaseImage,
+    pub(crate) r#final: Final,
+
+    #[serde(flatten)]
+    pub(crate) base: BaseImage,
 
     #[doc = include_str!(concat!("../docs/",ENV_SET_ENVS!(),".md"))]
     #[serde(skip_serializing_if = "Vec::is_empty")]
@@ -161,9 +136,9 @@ impl Green {
         }
 
         for (field, var) in [
-            (&mut green.cache_from_images, ENV_CACHE_FROM_IMAGES!()),
-            (&mut green.cache_to_images, ENV_CACHE_TO_IMAGES!()),
-            (&mut green.cache_images, ENV_CACHE_IMAGES!()),
+            (&mut green.cache.from_images, ENV_CACHE_FROM_IMAGES!()),
+            (&mut green.cache.to_images, ENV_CACHE_TO_IMAGES!()),
+            (&mut green.cache.images, ENV_CACHE_IMAGES!()),
         ] {
             let mut origin = setting(var);
             if let Ok(val) = env::var(var) {
@@ -189,16 +164,16 @@ impl Green {
         let mut var = ENV_BASE_IMAGE!();
         if let Ok(val) = env::var(var) {
             let val = val.try_into().map_err(|e| anyhow!("${var} {e}"))?;
-            green.image = BaseImage::from_image(val);
+            green.base = BaseImage::from_image(val);
         }
 
         var = ENV_BASE_IMAGE_INLINE!();
         let mut origin = setting(var);
         if let Ok(val) = env::var(var) {
             origin = format!("${var}");
-            green.image.base_image_inline = Some(val);
+            green.base.image_inline = Some(val);
         }
-        if let Some(ref base_image_inline) = green.image.base_image_inline {
+        if let Some(ref base_image_inline) = green.base.image_inline {
             if base_image_inline.is_empty() {
                 bail!("{origin} is empty")
             }
@@ -209,8 +184,8 @@ impl Green {
             }
         }
 
-        if let Some(ref base_image_inline) = green.image.base_image_inline {
-            let base = green.image.base_image.noscheme();
+        if let Some(ref base_image_inline) = green.base.image_inline {
+            let base = green.base.image.noscheme();
             if base.is_empty() || !base_image_inline.contains(&format!(" {base} ")) {
                 bail!(
                     "Make sure to match {} ({base}) with the image URL used in {}",
@@ -219,13 +194,13 @@ impl Green {
                 )
             }
         }
-        if green.image.is_unset() {
+        if green.base.is_unset() {
             //CARGOGREEN_USE=<a rustup toolchain>
             //CARGOGREEN_TOOLCHAIN=<a rustup toolchain> MOUCH BETTA
             // #TODO: CARGOGREEN_COMPONENT=toolchain=,target=,add=llvm-tools-preview;remove=
             // https://rust-lang.github.io/rustup/concepts/toolchains.html#toolchain-specification
             // if set use it, else:
-            green.image = BaseImage::from_local_rustc();
+            green.base = BaseImage::from_local_rustc();
         }
 
         validate_csv(&mut green.set_envs, ENV_SET_ENVS!())?;
@@ -290,9 +265,9 @@ name = "test-package"
     .unwrap();
     let mut green = Green::try_new(Some(manifest)).unwrap();
 
-    assert!(!green.image.base_image.is_empty());
-    green.image.base_image = ImageUri::default();
-    assert!(green.image.base_image.is_empty());
+    assert!(!green.base.image.is_empty());
+    green.base.image = ImageUri::default();
+    assert!(green.base.image.is_empty());
 
     assert!(!green.registry_mirrors.is_empty());
     green.registry_mirrors = vec![];
@@ -512,10 +487,10 @@ base-image = "docker-image://docker.io/library/rust:1"
     .unwrap();
     let green = Green::try_new(Some(manifest)).unwrap();
     assert_eq!(
-        green.image,
+        green.base,
         BaseImage {
-            base_image: ImageUri::std("rust:1"),
-            base_image_inline: None,
+            image: ImageUri::std("rust:1"),
+            image_inline: None,
             with_network: Network::None,
         }
     );
@@ -595,9 +570,9 @@ RUN --mount=type=secret,id=aws
         )
         .unwrap();
     let green = Green::try_new(Some(manifest)).unwrap();
-    assert_eq!(green.image, BaseImage {
-        base_image: ImageUri::try_new("docker-image://rust:1").unwrap(),
-        base_image_inline:
+    assert_eq!(green.base, BaseImage {
+        image: ImageUri::try_new("docker-image://rust:1").unwrap(),
+        image_inline:
             Some(
                 r#"
 # syntax = ghcr.io/reproducible-containers/buildkit-nix:v0.1.1@sha256:7d4c42a5c6baea2b21145589afa85e0862625e6779c89488987266b85e088021 <-- gets ignored
@@ -631,9 +606,9 @@ RUN --mount=type=secret,id=aws
         )
         .unwrap();
     let green = Green::try_new(Some(manifest)).unwrap();
-    assert_eq!(green.image, BaseImage {
-        base_image: ImageUri::try_new("docker-image://rust:1").unwrap(),
-        base_image_inline:
+    assert_eq!(green.base, BaseImage {
+        image: ImageUri::try_new("docker-image://rust:1").unwrap(),
+        image_inline:
             Some(
                 r#"
 # syntax = ghcr.io/reproducible-containers/buildkit-nix:v0.1.1@sha256:7d4c42a5c6baea2b21145589afa85e0862625e6779c89488987266b85e088021 <-- gets ignored
@@ -705,9 +680,9 @@ name = "test-package"
     let green = Green::try_new(Some(manifest)).unwrap();
     assert_eq!(
         match setting {
-            "cache-images" => green.cache_images,
-            "cache-from-images" => green.cache_from_images,
-            "cache-to-images" => green.cache_to_images,
+            "cache-images" => green.cache.images,
+            "cache-from-images" => green.cache.from_images,
+            "cache-to-images" => green.cache.to_images,
             _ => unreachable!(),
         },
         vec![

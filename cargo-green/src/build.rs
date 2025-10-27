@@ -242,14 +242,14 @@ impl Green {
             // TODO: 'id~=REGEXP as per https://github.com/containerd/containerd/blob/20fc2cf8ec70c5c02cd2f1bbe431bc19b2c622a3/pkg/filters/parser.go#L36
         }
 
-        for img in self.cache_from_images.iter().chain(self.cache_images.iter()) {
+        for img in self.cache.from_images.iter().chain(self.cache.images.iter()) {
             let img = img.noscheme();
             cmd.arg(format!("--cache-from=type=registry,ref={img}"));
         }
 
-        if !self.cache_to_images.is_empty() || !self.cache_images.is_empty() {
+        if !self.cache.to_images.is_empty() || !self.cache.images.is_empty() {
             let maxready = self.builder.has_maxready();
-            for img in self.cache_to_images.iter().chain(self.cache_images.iter()) {
+            for img in self.cache.to_images.iter().chain(self.cache.images.iter()) {
                 let img = img.noscheme();
                 cmd.arg(format!(
                     "--cache-to=type=registry,ref={img}{mode}{compression},ignore-error={ignore_error}",
@@ -296,7 +296,7 @@ impl Green {
 
         //TODO? --annotation=(PLATFORM=)KEY=VALUE
 
-        cmd.arg(format!("--network={}", self.image.with_network));
+        cmd.arg(format!("--network={}", self.base.with_network));
 
         cmd.arg("--platform=local");
         cmd.arg("--pull=false");
