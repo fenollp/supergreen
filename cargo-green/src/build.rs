@@ -332,6 +332,9 @@ impl Green {
         }
 
         let call = cmd.show();
+        if true {
+            eprintln!(">>> call:{call}\n{:?}", self.cache.images);
+        }
         info!("Starting `{envs} {call} <{containerfile}`", envs = cmd.envs_string(&[]));
         let call = call
             .split_whitespace()

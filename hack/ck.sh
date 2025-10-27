@@ -132,8 +132,7 @@ cat <<EOF
           --ignore-matching-lines="^##     '\\{" \
           -- \$CARGOGREEN_FINAL_PATH
 
-    - if: \${{ failure() }}
-      name: cargo-green logs
+    - name: cargo-green logs
       run: tail -n9999999 \$CARGOGREEN_LOG_PATH ; echo >\$CARGOGREEN_LOG_PATH
 EOF
 }
@@ -157,5 +156,16 @@ cat <<EOF
       with:
         username: \${{ vars.DOCKERHUB_USERNAME }}
         password: \${{ secrets.DOCKERHUB_TOKEN }}
+EOF
+}
+
+login_to_readwrite_ghcr() {
+    [[ $# -eq 0 ]]
+cat <<EOF
+    - uses: docker/login-action@v3
+      with:
+        registry: ghcr.io
+        username: \${{ github.actor }}
+        password: \${{ secrets.GITHUB_TOKEN }}
 EOF
 }

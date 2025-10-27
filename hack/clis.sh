@@ -153,18 +153,6 @@ name: CLIs
 jobs:
 
 
-$(
-# $(jobdef 'set-image-name')
-#     needs: [meta-check]
-#     outputs:
-#       name: \${{ steps.namer.outputs.name }}
-#     steps:
-#     - name: Set lowercase image name
-#       id: namer
-#       run: echo "::set-output name=name::ghcr.io/\${SLUG,,}"
-#       env:
-#         SLUG: \${{ github.repository }}
-)
 $(jobdef 'bin')
     steps:
     - uses: actions-rust-lang/setup-rust-toolchain@v1
@@ -280,8 +268,7 @@ cli() {
 
 	cat <<EOF
 $(jobdef "$(slugify "$name_at_version")_$jobs")
-$( #   needs: [set-image-name]
-)    continue-on-error: \${{ matrix.toolchain != 'stable' }}
+    continue-on-error: \${{ matrix.toolchain != 'stable' }}
     strategy:
       matrix:
         toolchain:
@@ -289,6 +276,7 @@ $( #   needs: [set-image-name]
         - 1.86.0
     env:
       CARGO_TARGET_DIR: /tmp/clis-$(slugify "$name_at_version")
+      CARGOGREEN_CACHE_IMAGES: docker-image://ghcr.io/\${{ github.repository }}
       CARGOGREEN_FINAL_PATH: recipes/$name_at_version.Dockerfile
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
@@ -304,6 +292,7 @@ $(
     needs: bin
     steps:
 $(login_to_readonly_hub)
+$(login_to_readwrite_ghcr)
     - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
         toolchain: \${{ matrix.toolchain }}
@@ -328,14 +317,7 @@ $(rundeps_versions)
       run: ~/.cargo/bin/cargo-green green supergreen env
 
 $(cache_usage)
-$(
-    # - name: Log in to GitHub Container Registry
-    #       uses: docker/login-action@v3
-    #       with:
-    #         registry: ghcr.io
-    #         username: \${{ github.actor }}
-    #         password: \${{ secrets.GITHUB_TOKEN }}
-    )    - name: cargo install net=ON cache=OFF remote=OFF jobs=$jobs
+    - name: cargo install net=ON cache=OFF remote=OFF jobs=$jobs
       run: |
 $(unset_action_envs)
         env ${envvars[@]} \\
