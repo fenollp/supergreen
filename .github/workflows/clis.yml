@@ -104,7 +104,7 @@ jobs:
 
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v5
+      uses: actions/download-artifact@v6
       with:
         name: cargo-green
 
@@ -336,7 +336,7 @@ jobs:
     - run: rustup component add llvm-tools-preview
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v5
+      uses: actions/download-artifact@v6
       with:
         name: cargo-green
 
@@ -568,7 +568,7 @@ jobs:
 
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v5
+      uses: actions/download-artifact@v6
       with:
         name: cargo-green
 
@@ -800,7 +800,7 @@ jobs:
 
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v5
+      uses: actions/download-artifact@v6
       with:
         name: cargo-green
 
@@ -1032,7 +1032,7 @@ jobs:
 
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v5
+      uses: actions/download-artifact@v6
       with:
         name: cargo-green
 
@@ -1264,7 +1264,7 @@ jobs:
 
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v5
+      uses: actions/download-artifact@v6
       with:
         name: cargo-green
 
@@ -1496,7 +1496,7 @@ jobs:
 
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v5
+      uses: actions/download-artifact@v6
       with:
         name: cargo-green
 
@@ -1729,7 +1729,7 @@ jobs:
 
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v5
+      uses: actions/download-artifact@v6
       with:
         name: cargo-green
 
@@ -1961,7 +1961,7 @@ jobs:
 
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v5
+      uses: actions/download-artifact@v6
       with:
         name: cargo-green
 
@@ -2193,7 +2193,7 @@ jobs:
 
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v5
+      uses: actions/download-artifact@v6
       with:
         name: cargo-green
 
@@ -2425,7 +2425,7 @@ jobs:
 
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v5
+      uses: actions/download-artifact@v6
       with:
         name: cargo-green
 
@@ -2657,7 +2657,7 @@ jobs:
 
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v5
+      uses: actions/download-artifact@v6
       with:
         name: cargo-green
 
@@ -2889,7 +2889,7 @@ jobs:
 
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v5
+      uses: actions/download-artifact@v6
       with:
         name: cargo-green
 
@@ -3121,7 +3121,7 @@ jobs:
 
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v5
+      uses: actions/download-artifact@v6
       with:
         name: cargo-green
 
