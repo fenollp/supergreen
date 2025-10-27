@@ -81,7 +81,7 @@ jobs:
     - run: docker buildx prune --all --force
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v5
+      uses: actions/download-artifact@v6
       with:
         name: cargo-green
 
@@ -210,7 +210,7 @@ jobs:
     - run: docker buildx prune --all --force
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v5
+      uses: actions/download-artifact@v6
       with:
         name: cargo-green
 
@@ -348,7 +348,7 @@ jobs:
     - run: docker buildx prune --all --force
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v5
+      uses: actions/download-artifact@v6
       with:
         name: cargo-green
 
@@ -546,7 +546,7 @@ jobs:
     - run: docker buildx prune --all --force
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v5
+      uses: actions/download-artifact@v6
       with:
         name: cargo-green
 
@@ -881,7 +881,7 @@ jobs:
     - run: docker buildx prune --all --force
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v5
+      uses: actions/download-artifact@v6
       with:
         name: cargo-green
 
@@ -1216,7 +1216,7 @@ jobs:
     - run: docker buildx prune --all --force
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v5
+      uses: actions/download-artifact@v6
       with:
         name: cargo-green
 
@@ -1478,7 +1478,7 @@ jobs:
     - run: docker buildx prune --all --force
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v5
+      uses: actions/download-artifact@v6
       with:
         name: cargo-green
 
@@ -1667,7 +1667,7 @@ jobs:
     - run: docker buildx prune --all --force
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v5
+      uses: actions/download-artifact@v6
       with:
         name: cargo-green
 
