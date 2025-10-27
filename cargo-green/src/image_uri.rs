@@ -10,6 +10,7 @@ pub(crate) static SYNTAX_IMAGE: LazyLock<ImageUri> =
 /// An OCI image URI of the format `docker-image://host/namespace/name:tag@sha256:digest`
 ///
 /// * Supported scheme: `docker-image://`
+/// * With or without tag.
 /// * With or without digest ie. "locked" or "unlocked".
 #[nutype(
     default = SYNTAX_IMAGE.as_str(),

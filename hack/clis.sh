@@ -259,17 +259,6 @@ cli() {
 # path/to/<hashed pwd + cmd | or just cmd if cinstall>-<datetime>/cache-<extrafn>(-new)?
 # then rm old + mv -new .
 
-# https://docs.docker.com/build/buildkit/configure/#registry-mirror
-# debug = true
-# [registry."docker.io"]
-#   mirrors = ["mirror.gcr.io"]
-# docker buildx create --use --bootstrap \
-#   --name mybuilder \
-#   --driver docker-container \
-#   --buildkitd-config /etc/buildkitd.toml
-
-# https://github.com/docker/buildx/discussions/2109#discussioncomment-7521381
-
 # among first CI steps
 #   along with bin build job
 # * get local registry from cache
@@ -291,46 +280,6 @@ cli() {
 #           - 5000:5000
 #     steps:
 # docker buildx imagetools inspect localhost:5000/name/app:latest
-
-# CARGOGREEN_REGISTRY_MIRRORS=
-#   CSV ; CSV
-
-# https://docs.docker.com/docker-hub/image-library/mirror/#configure-the-docker-daemon
-# {
-#   "registry-mirrors": ["https://<my-docker-mirror-host>"]
-# }
-
-# https://docs.docker.com/build/buildkit/toml-configuration/
-# # registry configures a new Docker register used for cache import or output.
-# [registry."docker.io"]
-#   # mirror configuration to handle path in case a mirror registry requires a /project path rather than just a host:port
-#   mirrors = ["yourmirror.local:5000", "core.harbor.domain/proxy.docker.io"]
-#   # Use plain HTTP to connect to the mirrors.
-#   http = true
-#   # Use HTTPS with self-signed certificates. Do not enable this together with `http`.
-#   insecure = true
-#   # If you use token auth with self-signed certificates,
-#   # then buildctl also needs to trust the token provider CA (for example, certificates that are configured for registry)
-#   # because buildctl pulls tokens directly without daemon process
-#   ca=["/etc/config/myca.pem"]
-#   [[registry."docker.io".keypair]]
-#     key="/etc/config/key.pem"
-#     cert="/etc/config/cert.pem"
-
-# # optionally mirror configuration can be done by defining it as a registry.
-# [registry."yourmirror.local:5000"]
-#   http = true
-
-# https://github.com/docker/setup-buildx-action/blob/1583c0f09d26c58c59d25b0eef29792b7ce99d9a/src/context.ts#L76
-
-# [registry."docker.io"]
-#   mirrors = ["192.168.128.1:5000"]
-#   http = true
-#   insecure = true
-
-# [registry."192.168.128.1:5000"]
-#   http = true
-#   insecure = true
 
 
 	cat <<EOF

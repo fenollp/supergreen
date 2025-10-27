@@ -226,7 +226,7 @@ async fn do_wrap_rustc(
     let crate_out = crate_out_dir(out_dir_var)?;
 
     let mut md = Md::new(&extrafn);
-    md.push_block(&RUST, green.image.base_image_inline.clone().unwrap());
+    md.push_block(&RUST, green.base.image_inline.clone().unwrap());
 
     fs::create_dir_all(&out_dir).map_err(|e| anyhow!("Failed to `mkdir -p {out_dir}`: {e}"))?;
     if let Some(ref incremental) = incremental {
@@ -354,7 +354,7 @@ async fn do_wrap_rustc(
         rustc_block.push_str(&format!("  --mount=from={from},dst={dst},source=/{xtern} \\\n"));
     }
 
-    // Log a possible toolchain file contents (TODO: make per-crate base_image out of this)
+    // Log a possible toolchain file contents (TODO: make per-crate base.image out of this)
     rustc_block.push_str("    { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \\\n");
     //fixme? prefix with ::rustc-toolchain::
 

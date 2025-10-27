@@ -6,10 +6,22 @@ use log::info;
 use serde::{Deserialize, Serialize};
 use version_compare::Version;
 
-use crate::{
-    build::fetch_digest, ext::CommandExt, green::Green, image_uri::ImageUri, tmp, BUILDX_BUILDER,
-    ENV_BUILDER_IMAGE,
-};
+use crate::{build::fetch_digest, ext::CommandExt, green::Green, image_uri::ImageUri, tmp};
+
+macro_rules! BUILDX_BUILDER {
+    () => {
+        "BUILDX_BUILDER"
+    };
+}
+
+macro_rules! ENV_BUILDER_IMAGE {
+    () => {
+        "CARGOGREEN_BUILDER_IMAGE"
+    };
+}
+
+const BUILDX_BUILDER: &str = BUILDX_BUILDER!();
+const ENV_BUILDER_IMAGE: &str = ENV_BUILDER_IMAGE!();
 
 /// TODO: move to `:rootless`
 static BUILDKIT_IMAGE: LazyLock<ImageUri> =
@@ -31,6 +43,43 @@ fn uses_version_newer_or_equal_to() {
     assert!(Version::from("2").is_some_and(|ref v| v >= &LATEST_BUILDKIT));
 }
 
+#[derive(Debug, Serialize, Deserialize, Default, PartialEq, Eq)]
+#[serde(default)]
+#[serde(deny_unknown_fields)]
+pub(crate) struct Builder {
+    #[doc = include_str!(concat!("../docs/",BUILDX_BUILDER!(),".md"))]
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(rename = "builder-name")]
+    pub(crate) name: Option<String>,
+
+    #[doc = include_str!(concat!("../docs/",ENV_BUILDER_IMAGE!(),".md"))]
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(rename = "builder-image")]
+    pub(crate) image: Option<ImageUri>,
+
+    /// Shows which driver the configured builder uses.
+    ///
+    /// Defaults to [BUILDER_DRIVER].
+    ///
+    /// See <https://docs.docker.com/build/drivers/>
+    /// * <https://docs.docker.com/build/drivers/docker-container/>
+    /// * <https://docs.docker.com/build/drivers/remote/>
+    /// * <https://docs.docker.com/build/drivers/kubernetes/>
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(rename = "builder-driver")]
+    pub(crate) driver: Option<Driver>,
+}
+
+impl Builder {
+    pub(crate) fn is_default(&self) -> bool {
+        self.driver.as_ref().is_none_or(|d| *d == Driver::Docker)
+    }
+
+    pub(crate) fn has_maxready(&self) -> bool {
+        self.driver.as_ref().is_some_and(|d| *d == Driver::DockerContainer)
+    }
+}
+
 #[derive(Debug, Serialize, Deserialize, PartialEq, Eq)]
 pub(crate) enum Driver {
     Docker,
@@ -50,48 +99,13 @@ impl FromStr for Driver {
     }
 }
 
-#[derive(Debug, Serialize, Deserialize, Default, PartialEq, Eq)]
-#[serde(default)]
-#[serde(deny_unknown_fields)]
-#[serde(rename_all = "kebab-case")]
-pub(crate) struct Builder {
-    #[doc = include_str!(concat!("../docs/",BUILDX_BUILDER!(),".md"))]
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub(crate) name: Option<String>,
-
-    #[doc = include_str!(concat!("../docs/",ENV_BUILDER_IMAGE!(),".md"))]
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub(crate) image: Option<ImageUri>,
-
-    /// Shows which driver the configured builder uses.
-    ///
-    /// Defaults to [BUILDER_DRIVER].
-    ///
-    /// See <https://docs.docker.com/build/drivers/>
-    /// * <https://docs.docker.com/build/drivers/docker-container/>
-    /// * <https://docs.docker.com/build/drivers/remote/>
-    /// * <https://docs.docker.com/build/drivers/kubernetes/>
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub(crate) driver: Option<Driver>,
-}
-
-impl Builder {
-    pub(crate) fn is_default(&self) -> bool {
-        self.driver.as_ref().is_none_or(|d| *d == Driver::Docker)
-    }
-
-    pub(crate) fn has_maxready(&self) -> bool {
-        self.driver.as_ref().is_some_and(|d| *d == Driver::DockerContainer)
-    }
-}
-
 impl Green {
     pub(crate) async fn maybe_setup_builder(&mut self, env: Option<String>) -> Result<()> {
         let (managed, name) = match env.as_deref() {
             None | Some("supergreen") => (true, "supergreen"),
             Some("") => {
                 if let Some(ref img) = self.builder.image {
-                    bail!("Not using a builder, however ${}={img:?} is set", ENV_BUILDER_IMAGE!())
+                    bail!("Not using a builder, however ${ENV_BUILDER_IMAGE}={img:?} is set")
                 }
                 return Ok(());
             }
@@ -107,11 +121,7 @@ impl Green {
             if let Some(ref img) = self.builder.image {
                 if !existing.uses_image(img) {
                     if !managed {
-                        bail!(
-                            "Existing ${}={name:?} does not match ${}={img:?}",
-                            BUILDX_BUILDER!(),
-                            ENV_BUILDER_IMAGE!()
-                        )
+                        bail!("Existing ${BUILDX_BUILDER}={name:?} does not match ${ENV_BUILDER_IMAGE}={img:?}")
                     }
                     recreate = true;
                 }
@@ -123,12 +133,11 @@ impl Green {
                 } else {
                     eprintln!(
                         "
-Existing ${var}={name:?} runs a BuildKit version older than v{latest}
+Existing ${BUILDX_BUILDER}={name:?} runs a BuildKit version older than v{latest}
 Maybe try to remove and re-create your builder with:
     docker buildx rm {name} --keep-state
 then run your cargo command again.
 ",
-                        var = BUILDX_BUILDER!(),
                         latest = LATEST_BUILDKIT.as_str(),
                     );
                 }
@@ -144,7 +153,7 @@ then run your cargo command again.
                 self.create_builder(name).await?;
             }
         } else if !managed {
-            bail!("${}={name} does not exist", BUILDX_BUILDER!())
+            bail!("${BUILDX_BUILDER}={name} does not exist")
         } else {
             self.create_builder(name).await?;
         }
@@ -190,16 +199,6 @@ then run your cargo command again.
             fetch_digest(&BUILDKIT_IMAGE).await?
         };
         cmd.arg(format!("--driver-opt=image={}", img.noscheme()));
-        // buildkitd-flags: --debug
-        //=> docker logs $BUILDX_BUILDER
-        //=> grep "do request.+host="
-        //
-        // buildkitd-config-inline: |
-        //   [registry."docker.io"]
-        //   mirrors = ["mirror.gcr.io"]
-        //
-        // [worker.oci]
-        // max-parallelism = 4  # for low-powered machines
 
         let (succeeded, _, stderr) = cmd.exec().await?;
         if !succeeded {
@@ -358,9 +357,13 @@ impl BuildxBuilder {
     }
 }
 
+/// TODO: for low-powered machines
+/// [worker.oci]
+/// max-parallelism = 4
 #[derive(Debug, Default, Serialize, Deserialize, PartialEq)]
 struct BuildKitDConfig {
-    /// --buildkitd-flags '--debug' => docker logs buildx_buildkit_supergreen0 -f
+    /// --buildkitd-flags '--debug'
+    /// => docker logs $BUILDX_BUILDER -f | grep 'do request.+host='
     debug: bool,
     registry: IndexMap<String, RegistryConfig>,
 }

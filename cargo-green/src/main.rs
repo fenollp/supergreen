@@ -17,12 +17,14 @@ mod build;
 #[macro_use]
 mod builder;
 #[macro_use]
+mod cache;
 mod cargo_green;
 mod checkouts;
 mod containerfile;
 mod cratesio;
 mod du;
 mod ext;
+#[macro_use]
 mod r#final;
 #[macro_use]
 mod green;

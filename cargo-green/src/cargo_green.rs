@@ -21,39 +21,8 @@ use crate::{
     pwd,
     runner::{Runner, BUILDKIT_HOST, DOCKER_BUILDKIT, DOCKER_CONTEXT, DOCKER_HOST},
     stage::{Stage, RST, RUST},
-    tmp, BUILDX_BUILDER, PKG, VSN,
+    tmp, ENV_FINAL_PATH, ENV_FINAL_PATH_NONPRIMARY, ENV_RUNNER, ENV_SYNTAX_IMAGE, PKG, VSN,
 };
-
-#[macro_export]
-macro_rules! ENV_BUILDER_IMAGE {
-    () => {
-        "CARGOGREEN_BUILDER_IMAGE"
-    };
-}
-
-macro_rules! ENV_FINAL_PATH {
-    () => {
-        "CARGOGREEN_FINAL_PATH"
-    };
-}
-
-macro_rules! ENV_FINAL_PATH_NONPRIMARY {
-    () => {
-        "CARGOGREEN_FINAL_PATH_NONPRIMARY"
-    };
-}
-
-macro_rules! ENV_RUNNER {
-    () => {
-        "CARGOGREEN_RUNNER"
-    };
-}
-
-macro_rules! ENV_SYNTAX_IMAGE {
-    () => {
-        "CARGOGREEN_SYNTAX_IMAGE"
-    };
-}
 
 pub(crate) async fn main() -> Result<Green> {
     let mut green = Green::new_from_env_then_manifest()?;
@@ -170,7 +139,7 @@ pub(crate) async fn main() -> Result<Green> {
     }
 
     var = ENV_FINAL_PATH!();
-    if green.final_path.is_some() {
+    if green.r#final.path.is_some() {
         bail!("${var} can only be set through the environment variable")
     }
     // TODO? provide a way to export final as flatpack
@@ -186,11 +155,11 @@ pub(crate) async fn main() -> Result<Green> {
         if let Some(dir) = path.parent() {
             fs::create_dir_all(dir).map_err(|e| anyhow!("Failed `mkdir -p {dir}`: {e}"))?;
         }
-        green.final_path = Some(path);
+        green.r#final.path = Some(path);
     }
 
     var = ENV_FINAL_PATH_NONPRIMARY!();
-    if green.final_path_nonprimary {
+    if green.r#final.path_nonprimary {
         bail!("${var} can only be set through the environment variable")
     }
     if let Ok(v) = env::var(var) {
@@ -200,31 +169,31 @@ pub(crate) async fn main() -> Result<Green> {
         if v != "1" {
             bail!("${var} must only be '1'")
         }
-        green.final_path_nonprimary = true;
+        green.r#final.path_nonprimary = true;
     }
 
-    if !green.image.base_image.locked() {
-        let mut base = green.maybe_lock_image(&green.image.base_image).await?;
+    if !green.base.image.locked() {
+        let mut base = green.maybe_lock_image(&green.base.image).await?;
         base = fetch_digest(&base).await?;
-        green.image = green.image.lock_base_to(base);
+        green.base = green.base.lock_base_to(base);
     }
 
-    let (mut with_network, mut finalized_block) = green.image.as_block();
+    let (mut with_network, mut finalized_block) = green.base.as_block();
     if !green.add.is_empty() {
         (with_network, finalized_block) = green.add.as_block(&finalized_block);
     }
-    green.image.with_network = with_network;
-    green.image.base_image_inline = Some(finalized_block.trim().to_owned());
+    green.base.with_network = with_network;
+    green.base.image_inline = Some(finalized_block.trim().to_owned());
 
-    assert!(!green.image.base_image.is_empty(), "BUG: base_image set to {SYNTAX_IMAGE:?}");
+    assert!(!green.base.image.is_empty(), "BUG: base_image set to {SYNTAX_IMAGE:?}");
 
     var = ENV_WITH_NETWORK!();
     if let Ok(val) = env::var(var) {
-        green.image.with_network = val.parse().map_err(|e| anyhow!("${var}={val:?} {e}"))?;
+        green.base.with_network = val.parse().map_err(|e| anyhow!("${var}={val:?} {e}"))?;
     }
     if let Ok(val) = env::var("CARGO_NET_OFFLINE") {
         if val == "1" {
-            green.image.with_network = Network::None;
+            green.base.with_network = Network::None;
         }
     }
 
@@ -251,7 +220,7 @@ pub(crate) async fn main() -> Result<Green> {
 
 pub(crate) async fn maybe_prebuild_base(green: &Green) -> Result<()> {
     let mut containerfile = green.new_containerfile();
-    containerfile.pushln(green.image.base_image_inline.as_deref().unwrap());
+    containerfile.pushln(green.base.image_inline.as_deref().unwrap());
 
     let fname = format!("{PKG}-{RST}-{}.Dockerfile", containerfile.hashed());
     let sentinel = tmp().join(format!("{fname}.done"));
@@ -293,7 +262,7 @@ pub(crate) async fn fetch(green: Green) -> Result<()> {
     let imgs: Vec<_> = [
         // NOTE: we don't pull ENV_CACHE_IMAGES
         (env::var(ENV_SYNTAX_IMAGE!()).ok(), Some(&green.syntax)),
-        (env::var(ENV_BASE_IMAGE!()).ok(), Some(&green.image.base_image)),
+        (env::var(ENV_BASE_IMAGE!()).ok(), Some(&green.base.image)),
         (env::var(ENV_BUILDER_IMAGE!()).ok(), green.builder.image.as_ref()),
     ]
     .into_iter()

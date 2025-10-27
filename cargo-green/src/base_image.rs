@@ -34,28 +34,30 @@ fn default_is_unset() {
 #[derive(Debug, Serialize, Deserialize, Default, PartialEq, Eq)]
 #[serde(default)]
 #[serde(deny_unknown_fields)]
-#[serde(rename_all = "kebab-case")]
 pub(crate) struct BaseImage {
     #[doc = include_str!(concat!("../docs/",ENV_WITH_NETWORK!(),".md"))]
+    #[serde(rename = "with-network")]
     pub(crate) with_network: Network,
 
     #[doc = include_str!(concat!("../docs/",ENV_BASE_IMAGE!(),".md"))]
-    pub(crate) base_image: ImageUri,
+    #[serde(rename = "base-image")]
+    pub(crate) image: ImageUri,
 
     #[doc = include_str!(concat!("../docs/",ENV_BASE_IMAGE_INLINE!(),".md"))]
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub(crate) base_image_inline: Option<String>,
+    #[serde(rename = "base-image-inline")]
+    pub(crate) image_inline: Option<String>,
 }
 
 impl BaseImage {
     #[must_use]
-    pub(crate) fn from_image(base_image: ImageUri) -> Self {
-        Self { base_image, ..Default::default() }
+    pub(crate) fn from_image(image: ImageUri) -> Self {
+        Self { image, ..Default::default() }
     }
 
     #[must_use]
     pub(crate) fn is_unset(&self) -> bool {
-        self.base_image.is_empty() && self.base_image_inline.is_none()
+        self.image.is_empty() && self.image_inline.is_none()
     }
 
     #[must_use]
@@ -81,19 +83,19 @@ impl BaseImage {
     }
 
     #[must_use]
-    pub(crate) fn lock_base_to(self, base_image: ImageUri) -> Self {
-        let base_image_inline = self.base_image_inline.map(|block| {
-            let from = self.base_image.noscheme();
-            let to = base_image.noscheme();
+    pub(crate) fn lock_base_to(self, image: ImageUri) -> Self {
+        let image_inline = self.image_inline.map(|block| {
+            let from = self.image.noscheme();
+            let to = image.noscheme();
             block.replace(&format!(" {from} "), &format!(" {to} "))
         });
-        Self { base_image, base_image_inline, ..self }
+        Self { image, image_inline, ..self }
     }
 
     #[must_use]
     pub(crate) fn as_block(&self) -> (Network, String) {
-        let block = self.base_image_inline.clone().unwrap_or_else(|| {
-            let base = self.base_image.noscheme();
+        let block = self.image_inline.clone().unwrap_or_else(|| {
+            let base = self.image.noscheme();
             // TODO? ARG RUST_BASE=myorg/myapp:latest \n FROM $RUST_BASE (+ similar for non-stable imgs)
             format!("FROM --platform=$BUILDPLATFORM {base} AS {RST}\n")
         });
@@ -154,8 +156,8 @@ impl RustcV {
         //=> sub fn that takes "{channel}-{date}" in, because rustup takes somewhat-freeform toolchain specs
         //==> $RUSTUP_TOOLCHAIN https://rust-lang.github.io/rustup/environment-variables.html
 
-        let base_image = BASE_FOR_RUST.to_owned();
-        let base = base_image.noscheme();
+        let image = BASE_FOR_RUST.to_owned();
+        let base = image.noscheme();
         assert!(base.contains("/debian:"));
 
         let (with_network, packages_block) = Add {
@@ -188,7 +190,7 @@ RUN \
             packages_block = packages_block.trim(),
         );
 
-        BaseImage { with_network, base_image, base_image_inline: Some(block) }
+        BaseImage { with_network, image, image_inline: Some(block) }
     }
 }
 
@@ -209,8 +211,8 @@ LLVM version: 18.1.7
     )
     .unwrap();
     let res = BaseImage::from_rustcv(some_stable).unwrap();
-    assert_eq!(res.base_image, ImageUri::std("rust:1.80.0-slim"));
-    assert_eq!(res.base_image_inline, None);
+    assert_eq!(res.image, ImageUri::std("rust:1.80.0-slim"));
+    assert_eq!(res.image_inline, None);
     assert_eq!(res.with_network, Network::None);
 
     let some_nightly = version_meta_for(
@@ -226,7 +228,7 @@ LLVM version: 19.1.0
     )
     .unwrap();
     let res = BaseImage::from_rustcv(some_nightly).unwrap();
-    assert_eq!(res.base_image, ImageUri::std("debian:stable-slim"));
-    assert!(res.base_image_inline.unwrap().contains(" docker.io/library/debian:stable-slim "));
+    assert_eq!(res.image, ImageUri::std("debian:stable-slim"));
+    assert!(res.image_inline.unwrap().contains(" docker.io/library/debian:stable-slim "));
     assert_eq!(res.with_network, Network::Default);
 }

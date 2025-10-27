@@ -88,7 +88,7 @@ pub(crate) fn help() {
 // TODO: make it work for podman: https://github.com/containers/podman/issues/2369
 // TODO: have fun with https://github.com/console-rs/indicatif
 async fn push(green: Green) -> Result<()> {
-    for img in &green.cache_images {
+    for img in green.cache.to_images.iter().chain(green.cache.images.iter()) {
         let img = img.noscheme();
         let tags = all_tags_of(&green, img).await?;
 
@@ -176,15 +176,15 @@ fn all_envs(green: &Green) -> Vec<(&str, &'static str, Option<String>)> {
         var!(ENV_BUILDER_IMAGE!(), green.builder.image.as_deref().map(ToString::to_string)),
         var!(ENV_SYNTAX_IMAGE!(), Some(green.syntax.to_string())),
         var!(ENV_REGISTRY_MIRRORS!(), csv(&green.registry_mirrors)),
-        var!(ENV_CACHE_IMAGES!(), csv_uris(&green.cache_images)),
-        var!(ENV_CACHE_FROM_IMAGES!(), csv_uris(&green.cache_from_images)),
-        var!(ENV_CACHE_TO_IMAGES!(), csv_uris(&green.cache_to_images)),
-        var!(ENV_FINAL_PATH!(), green.final_path.as_deref().map(ToString::to_string)),
-        var!(ENV_FINAL_PATH_NONPRIMARY!(), green.final_path_nonprimary.then(|| "1".to_owned())),
-        var!(ENV_BASE_IMAGE!(), Some(green.image.base_image.to_string())),
+        var!(ENV_CACHE_IMAGES!(), csv_uris(&green.cache.images)),
+        var!(ENV_CACHE_FROM_IMAGES!(), csv_uris(&green.cache.from_images)),
+        var!(ENV_CACHE_TO_IMAGES!(), csv_uris(&green.cache.to_images)),
+        var!(ENV_FINAL_PATH!(), green.r#final.path.as_deref().map(ToString::to_string)),
+        var!(ENV_FINAL_PATH_NONPRIMARY!(), green.r#final.path_nonprimary.then(|| "1".to_owned())),
+        var!(ENV_BASE_IMAGE!(), Some(green.base.image.to_string())),
         var!(ENV_SET_ENVS!(), csv(&green.set_envs)),
-        var!(ENV_BASE_IMAGE_INLINE!(), green.image.base_image_inline.clone()),
-        var!(ENV_WITH_NETWORK!(), Some(green.image.with_network.to_string())),
+        var!(ENV_BASE_IMAGE_INLINE!(), green.base.image_inline.clone()),
+        var!(ENV_WITH_NETWORK!(), Some(green.base.with_network.to_string())),
         var!(ENV_ADD_APT!(), csv(&green.add.apt)),
         var!(ENV_ADD_APT_GET!(), csv(&green.add.apt_get)),
         var!(ENV_ADD_APK!(), csv(&green.add.apk)),

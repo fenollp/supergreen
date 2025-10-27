@@ -10,6 +10,13 @@ use tokio::process::Command;
 
 use crate::green::Green;
 
+#[macro_export]
+macro_rules! ENV_RUNNER {
+    () => {
+        "CARGOGREEN_RUNNER"
+    };
+}
+
 // Envs from BuildKit/Buildx/Docker/Podman that we read
 const BUILDKIT_COLORS: &str = "BUILDKIT_COLORS";
 pub(crate) const BUILDKIT_HOST: &str = "BUILDKIT_HOST";
@@ -22,13 +29,6 @@ pub(crate) const DOCKER_CONTEXT: &str = "DOCKER_CONTEXT";
 const DOCKER_DEFAULT_PLATFORM: &str = "DOCKER_DEFAULT_PLATFORM";
 const DOCKER_HIDE_LEGACY_COMMANDS: &str = "DOCKER_HIDE_LEGACY_COMMANDS";
 pub(crate) const DOCKER_HOST: &str = "DOCKER_HOST";
-
-#[macro_export]
-macro_rules! BUILDX_BUILDER {
-    () => {
-        "BUILDX_BUILDER"
-    };
-}
 
 impl Runner {
     /// Read envs used by runner, once.
