@@ -23,6 +23,10 @@ macro_rules! ENV_WITH_NETWORK {
     };
 }
 
+// TODO: switch to mentioning debian name: 1-slim-trixie, 1.89-slim-trixie, 1.89.0-slim-trixie, slim-trixie
+// MAY help with:
+//   /tmp/clis-diesel_cli_2-3-2_/release/build/proc-macro2- (required by /tmp/clis-diesel_cli_2-3-2_/release/build/proc-macro2-3093cf4d56979071/build-script-build)
+
 static STABLE_RUST: LazyLock<ImageUri> = LazyLock::new(|| ImageUri::std("rust:1-slim"));
 static BASE_FOR_RUST: LazyLock<ImageUri> = LazyLock::new(|| ImageUri::std("debian:stable-slim"));
 

@@ -137,16 +137,20 @@ cargo green build
 
 ### `$CARGOGREEN_LOG_PATH`
 
-Path to a text file to write logs. By default, writes under `/tmp`.
+Path to a text file to write logs.
 
 *Use by setting this environment variable (no `Cargo.toml` setting):*
 ```shell
 export CARGOGREEN_LOG_PATH="/tmp/my-logs.txt"
+# This needs to be set: nothing is logged by default
+export CARGOGREEN_LOG="info"
 ```
 
 ### `$CARGOGREEN_LOG`
 
 Filter logs. Equivalent to `$RUST_LOG` (and doesn't conflict with `cargo`'s).
+
+By default, writes logs under [`/tmp`](https://doc.rust-lang.org/stable/std/env/fn.temp_dir.html).
 
 See <https://docs.rs/env_logger/#enabling-logging>
 
@@ -544,6 +548,8 @@ In no particular order:
 * **Mozilla**'s `sccache`: [sccache - Shared Compilation Cache](https://github.com/mozilla/sccache)
   * [Cargo Book ~ Build cache ~ Shared cache](https://doc.rust-lang.org/cargo/reference/build-cache.html#shared-cache)
   * `=>` Relies on everyone having the same paths and doesn't cache all crate types.
+* **garentyler**'s `distrustc`: [A Rust-compatible distcc implementation](https://github.com/garentyler/distrustc)
+  * [`distcc`'s manpage](https://linux.die.net/man/1/distcc)
 * **LukeMathWalker**'s `cargo-chef`: [A cargo-subcommand to speed up Rust Docker builds using Docker layer caching.](https://github.com/LukeMathWalker/cargo-chef)
   * [5x Faster Rust Docker Builds with cargo-chef](https://www.lpalmieri.com/posts/fast-rust-docker-builds/)
   * `=>` Relies on everyone having the same paths + cache isn't crate-granular.
@@ -684,6 +690,11 @@ all:
   * [x] [`buildx`: `ResourceExhausted: grpc: received message larger than max (_ vs. 4194304)`](https://github.com/docker/buildx/issues/2453)
   * [ ] [`buildkit`: remote `docker buildx build` with large dockerfile gives `trying to send message larger than max (22482550 vs. 16777216)` error](https://github.com/moby/buildkit/issues/6097)
 * [x] [`buildkit`: Support extracting `ADD --checksum=.. https://.. ..`](https://github.com/moby/buildkit/issues/4907)
+* [ ] [`buildkit`: `RUN --no-cache` to skip reading & writing a RUN layer to cache](https://github.com/moby/buildkit/issues/6303)
+* [ ] [`buildkit`: FR: an option to delay --cache-to pushes](https://github.com/docker/buildx/issues/3150)
+* [x] [`buildkit`: Looking for a consistently "latest" BuildKit image tag](https://github.com/moby/buildkit/discussions/6134)
+* [x] [`buildkit`: docker/dockerfile image tags are late](https://github.com/moby/buildkit/issues/6118)
+* [ ] [`buildx`: Support --format=json for buildx du --verbose](https://github.com/docker/buildx/issues/3367)
 * TODO
   1. buildkit flag to disable dockerignore and save disk read
     * --ignore-file (closed) [Add support for specifying .dockerignore file with -i/--ignore](https://github.com/moby/moby/issues/12886)
@@ -697,6 +708,8 @@ all:
 * [Getting an image's digest fast, within a docker-container builder](https://github.com/docker/buildx/discussions/3363)
   * [Inspect image manifest without pushing to registry or load to local docker daemon](https://github.com/moby/buildkit/issues/4854)
   * [Proposal: introduce enhanced image resolution gateway API](https://github.com/moby/buildkit/issues/2944)
+* [ ] [`buildkit`: allow exporting cache layers in parallel to the remote registry](https://github.com/moby/buildkit/issues/6123)
+* [ ] [`buildkit`: remote docker buildx build with large dockerfile gives trying to send message larger than max (22482550 vs. 16777216) error](https://github.com/moby/buildkit/issues/6097)
 
 
 ## En vrac
@@ -748,3 +761,9 @@ all:
 * [Doesn't detect Docker Rootless #4](https://github.com/TheLarkInn/is-docker/issues/4)
 * [Using S3 as a container registry](https://ochagavia.nl/blog/using-s3-as-a-container-registry/)
 * [What's the best practice for caching compilation of Rust dependencies?](https://www.reddit.com/r/rust/comments/sunme5/whats_the_best_practice_for_caching_compilation/)
+* [Enable Fast Compiles](https://bevy.org/learn/quick-start/getting-started/setup/#enable-fast-compiles-optional)
+  * [Compiling is slow...](https://www.reddit.com/r/bevy/comments/1mrvcis/compiling_is_slow/)
+* [Everytime I try to use Tauri for Android... Why?](https://www.reddit.com/r/rust/comments/1mlzz5l/media_everytime_i_try_to_use_tauri_for_android_why/)
+  * on size of compilation artifacts
+  * > ultimately the "real" solution has got to be a complete overhaul of the entire compilation system to be entirely on-demand in a granular basis, rather than "compile every crate in the dependency tree wholesale".
+  * suggestion to use a shared target folder

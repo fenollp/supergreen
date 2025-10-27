@@ -2,6 +2,16 @@ use serde::{Deserialize, Serialize};
 
 use crate::network::Network;
 
+// TODO: drop apt-get?
+// maybe actually drop apt + turn api easier for "apt-get satisfy" or repro-get like
+
+// TODO: To install a specific version of a package using apt-get, you use the following command: sudo apt-get install = . This command allows you to specify the package and the version you want to install. Here's a simple example: sudo apt-get install curl=7.58.21 May 2024
+//
+// https://github.com/fenollp/docker-from-deps/blob/ee1e638de8cd30ed438611ec89252244a0e3b5f7/to_dockerfile#L45
+//
+// * Suggest using `=` for apt
+// * auto-search the web to add `=...`
+
 macro_rules! ENV_ADD_APK {
     () => {
         "CARGOGREEN_ADD_APK"

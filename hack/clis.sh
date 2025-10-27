@@ -22,7 +22,14 @@ source "$repo_root"/hack/ck.sh
 # Usage: BUILDX_BUILDER=.. $0 ..                   #=> Overrides builder (set to "empty" to set BUILDX_BUILDER='')
 
 # TODO: test other runtimes: runc crun containerd buildkit-rootless lima colima
+# * CARGOGREEN_BUILDER_IMAGE="docker-image://docker.io/moby/buildkit:buildx-stable-1-rootless"
+#   * https://github.com/docker/setup-docker-action testing rootless and containerd
+# * a matrix of earlier and earlier versions of: buildkit x buildx/docker x cargo/rustc 
+# * a local + cached DockerHub proxy
+
 # TODO: set -x in ci
+
+# TODO: set about green's overhead with --timings
 
 # TODO: https://crates.io/categories/command-line-utilities?sort=recent-updates
 declare -a nvs nvs_args
@@ -109,6 +116,29 @@ declare -a nvs nvs_args
 # TODO: https://belmoussaoui.com/blog/8-how-to-flatpak-a-rust-application/
 
 # TODO: cargo install --git https://github.com/astral-sh/uv uv
+
+# TODO: https://github.com/flamegraph-rs/flamegraph
+
+# TODO: https://codeberg.org/willempx/qair/
+
+# TODO: https://git.sr.ht/~ireas/rusty-man
+
+# TODO: https://github.com/asterinas/asterinas
+# TODO: https://github.com/microsoft/edit
+# => does toolchain file impact whole project or just primary crate?
+
+# TODO: cargo install --locked --git https://fuchsia.googlesource.com/fargo fargo
+
+# TODO: https://github.com/CyberTimon/RapidRAW
+
+# TODO: https://github.com/Automattic/harper/releases/tag/v0.37.0 harper-cli
+# TODO: https://lib.rs/crates/zstd
+# TODO: https://github.com/facebook/pyrefly
+# TODO: https://gitlab.freedesktop.org/gstreamer/gst-plugins-rs/-/tree/4ee38b6cf99407bc8a633a4a06784e09816ff48d
+
+# TODO: https://crates.io/crates/bottom
+#   dependent on https://lib.rs/crates/nvml-wrapper
+#   and https://github.com/nagisa/rust_libloading
 
 #FIXME: test with Environment: CARGO_BUILD_RUSTC_WRAPPER or RUSTC_WRAPPER  or Environment: CARGO_BUILD_RUSTC_WORKSPACE_WRAPPER or RUSTC_WORKSPACE_WRAPPER
 # => the final invocation is $RUSTC_WRAPPER $RUSTC_WORKSPACE_WRAPPER $RUSTC.
@@ -225,44 +255,11 @@ cli() {
   local envvars=()
  as_env "$name_at_version"
 
-
-# CARGOGREEN_CACHE_FROM: type=gha
-# CARGOGREEN_CACHE_TO: type=gha,mode=max
-#=> https://docs.docker.com/build/cache/backends/gha/
-# need setup (get vars through an action for urls,tokens) + setting
-# * scope=extrafn
-# * mode=max
-# * ignore-error to same as cache-images
-# * timeout to something low (given small layers & running on GH runners)
-
-#       #FIXME: also compare with local reg:3 + cache
-
-#       #FIXME: also compare with gha from+to
-
 #       CARGOGREEN_CACHE_IMAGES: \${{ needs.set-image-name.outputs.name }}
 
-#       mkdir -p cch cch-new
-#       CARGOGREEN_CACHE_FROM=type=local,src=/tmp/local-cache CARGOGREEN_CACHE_TO=type=local,mode=max,dest=/tmp/local-cache-new rmrf=1 ./hack/clis.sh vix
-
-# https://docs.docker.com/build/cache/backends/local/
-# >If the src cache doesn't exist, then the cache import step will fail,
-# https://github.com/moby/buildkit/issues/1896
-# >only grows => cache dance
-# also
-# >doesn't support concurrent use!
-# ==> HAVE to handle per-buildcall type=local cache
-# also: write to tmp ramfs
-# see about merging type=local caches /+ concurrent use.
-
-# trash cch cch-new/ ; mkdir -p cch cch-new ; CARGOGREEN_CACHE_FROM='type=local,src='$PWD'/cch;type=local,src='$PWD'/cch-new' CARGOGREEN_CACHE_TO=type=local,mode=max,dest=$PWD/cch-new jobs=1 rmrf=1 ./hack/clis.sh vix ; du cch*
-
-# path/to/<hashed pwd + cmd | or just cmd if cinstall>-<datetime>/cache-<extrafn>(-new)?
-# then rm old + mv -new .
-
-# among first CI steps
-#   along with bin build job
-# * get local registry from cache
-# * create second local registry
+# TODO: along with bin build job
+# * get local registry:3 from cache
+# * create second local registry:3
 # * list images required via green supergreen envs
 # * pull images to second registry using first as cache
 # * destroy first and cache second
