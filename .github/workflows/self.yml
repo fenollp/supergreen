@@ -8,6 +8,9 @@ jobs:
     defaults:
       run:
         shell: bash -euo pipefail {0}
+    permissions:
+      contents: read
+      packages: write
     steps:
     - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
@@ -55,6 +58,9 @@ jobs:
     defaults:
       run:
         shell: bash -euo pipefail {0}
+    permissions:
+      contents: read
+      packages: write
     needs: bin
     env:
       RUST_BACKTRACE: 1
@@ -107,9 +113,9 @@ jobs:
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
     - name: cargo install net=ON cache=OFF remote=OFF jobs=1
       run: |
         unset CARGO_INCREMENTAL
@@ -172,9 +178,9 @@ jobs:
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
 
 
   audits:
@@ -182,6 +188,9 @@ jobs:
     defaults:
       run:
         shell: bash -euo pipefail {0}
+    permissions:
+      contents: read
+      packages: write
     needs: bin
     env:
       RUST_BACKTRACE: 1
@@ -237,9 +246,9 @@ jobs:
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
     - name: cargo audit net=ON cache=OFF remote=OFF
       run: |
         unset CARGO_INCREMENTAL
@@ -302,9 +311,9 @@ jobs:
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
 
 
   udeps:
@@ -312,6 +321,9 @@ jobs:
     defaults:
       run:
         shell: bash -euo pipefail {0}
+    permissions:
+      contents: read
+      packages: write
     needs: bin
     env:
       RUST_BACKTRACE: 1
@@ -373,9 +385,9 @@ jobs:
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
     - name: cargo +nightly-2025-08-06 green udeps --all-targets --jobs=1 cache=OFF remote=OFF
       run: |
         unset CARGO_INCREMENTAL
@@ -438,9 +450,9 @@ jobs:
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
     - name: Again, with +toolchain to cargo-green
       run: |
         unset CARGO_INCREMENTAL
@@ -503,9 +515,9 @@ jobs:
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
 
 
   builds:
@@ -513,6 +525,9 @@ jobs:
     defaults:
       run:
         shell: bash -euo pipefail {0}
+    permissions:
+      contents: read
+      packages: write
     needs: bin
     env:
       RUST_BACKTRACE: 1
@@ -565,9 +580,9 @@ jobs:
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
     - name: cargo fetch
       run: |
         unset CARGO_INCREMENTAL
@@ -689,9 +704,9 @@ jobs:
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
     - name: Ensure running the same command twice without modifications...
       run: |
         unset CARGO_INCREMENTAL
@@ -761,9 +776,9 @@ jobs:
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
     - name: Ensure running the same command thrice without modifications (jobs>1)...
       run: |
         unset CARGO_INCREMENTAL
@@ -833,9 +848,9 @@ jobs:
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
 
 
   tests:
@@ -843,6 +858,9 @@ jobs:
     defaults:
       run:
         shell: bash -euo pipefail {0}
+    permissions:
+      contents: read
+      packages: write
     needs: bin
     env:
       RUST_BACKTRACE: 1
@@ -895,9 +913,9 @@ jobs:
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
     - name: cargo fetch
       run: |
         unset CARGO_INCREMENTAL
@@ -1019,9 +1037,9 @@ jobs:
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
     - name: Ensure running the same command twice without modifications...
       run: |
         unset CARGO_INCREMENTAL
@@ -1091,9 +1109,9 @@ jobs:
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
     - name: Ensure running the same command thrice without modifications (jobs>1)...
       run: |
         unset CARGO_INCREMENTAL
@@ -1163,9 +1181,9 @@ jobs:
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
 
 
   checks:
@@ -1173,6 +1191,9 @@ jobs:
     defaults:
       run:
         shell: bash -euo pipefail {0}
+    permissions:
+      contents: read
+      packages: write
     needs: bin
     env:
       RUST_BACKTRACE: 1
@@ -1225,9 +1246,9 @@ jobs:
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
     - name: cargo fetch
       run: |
         unset CARGO_INCREMENTAL
@@ -1349,9 +1370,9 @@ jobs:
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
     - name: Ensure running the same command twice without modifications...
       run: |
         unset CARGO_INCREMENTAL
@@ -1421,9 +1442,9 @@ jobs:
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
 
 
   packages:
@@ -1431,6 +1452,9 @@ jobs:
     defaults:
       run:
         shell: bash -euo pipefail {0}
+    permissions:
+      contents: read
+      packages: write
     needs: bin
     env:
       RUST_BACKTRACE: 1
@@ -1483,9 +1507,9 @@ jobs:
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
     - name: cargo fetch
       run: |
         unset CARGO_INCREMENTAL
@@ -1607,9 +1631,9 @@ jobs:
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
 
 
   clippy:
@@ -1617,6 +1641,9 @@ jobs:
     defaults:
       run:
         shell: bash -euo pipefail {0}
+    permissions:
+      contents: read
+      packages: write
     needs: bin
     env:
       RUST_BACKTRACE: 1
@@ -1670,9 +1697,9 @@ jobs:
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
     - name: cargo fetch
       run: |
         unset CARGO_INCREMENTAL
@@ -1794,9 +1821,9 @@ jobs:
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
     - name: Ensure running the same command twice without modifications...
       run: |
         unset CARGO_INCREMENTAL
@@ -1866,6 +1893,6 @@ jobs:
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose

@@ -11,6 +11,9 @@ cat <<EOF
     defaults:
       run:
         shell: bash -euo pipefail {0}
+    permissions:
+      contents: read
+      packages: write
 EOF
 }
 
@@ -52,9 +55,9 @@ cache_usage() {
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
 EOF
 }
 

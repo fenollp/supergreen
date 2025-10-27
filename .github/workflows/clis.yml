@@ -8,6 +8,9 @@ jobs:
     defaults:
       run:
         shell: bash -euo pipefail {0}
+    permissions:
+      contents: read
+      packages: write
     steps:
     - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
@@ -59,6 +62,9 @@ jobs:
     defaults:
       run:
         shell: bash -euo pipefail {0}
+    permissions:
+      contents: read
+      packages: write
     continue-on-error: ${{ matrix.toolchain != 'stable' }}
     strategy:
       matrix:
@@ -67,7 +73,7 @@ jobs:
         - 1.86.0
     env:
       CARGO_TARGET_DIR: /tmp/clis-buildxargs_master
-      CARGOGREEN_CACHE_IMAGES: docker-image://ghcr.io/${{ github.repository }}
+      CARGOGREEN_CACHE_FROM_IMAGES: docker-image://ghcr.io/${{ github.repository }}
       CARGOGREEN_FINAL_PATH: recipes/buildxargs@master.Dockerfile
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
@@ -120,9 +126,9 @@ jobs:
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
     - name: cargo install net=ON cache=OFF remote=OFF jobs=3
       run: |
         unset CARGO_INCREMENTAL
@@ -203,9 +209,9 @@ jobs:
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
 
     - name: Target dir disk usage
       if: ${{ failure() || success() }}
@@ -281,9 +287,9 @@ jobs:
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
 
     - name: Target dir disk usage
       if: ${{ failure() || success() }}
@@ -294,6 +300,9 @@ jobs:
     defaults:
       run:
         shell: bash -euo pipefail {0}
+    permissions:
+      contents: read
+      packages: write
     continue-on-error: ${{ matrix.toolchain != 'stable' }}
     strategy:
       matrix:
@@ -302,7 +311,7 @@ jobs:
         - 1.86.0
     env:
       CARGO_TARGET_DIR: /tmp/clis-cargo-llvm-cov_0-5-36
-      CARGOGREEN_CACHE_IMAGES: docker-image://ghcr.io/${{ github.repository }}
+      CARGOGREEN_CACHE_FROM_IMAGES: docker-image://ghcr.io/${{ github.repository }}
       CARGOGREEN_FINAL_PATH: recipes/cargo-llvm-cov@0.5.36.Dockerfile
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
@@ -355,9 +364,9 @@ jobs:
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
     - name: cargo install net=ON cache=OFF remote=OFF jobs=3
       run: |
         unset CARGO_INCREMENTAL
@@ -438,9 +447,9 @@ jobs:
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
 
     - name: Target dir disk usage
       if: ${{ failure() || success() }}
@@ -516,9 +525,9 @@ jobs:
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
 
     - name: Target dir disk usage
       if: ${{ failure() || success() }}
@@ -529,6 +538,9 @@ jobs:
     defaults:
       run:
         shell: bash -euo pipefail {0}
+    permissions:
+      contents: read
+      packages: write
     continue-on-error: ${{ matrix.toolchain != 'stable' }}
     strategy:
       matrix:
@@ -537,7 +549,7 @@ jobs:
         - 1.86.0
     env:
       CARGO_TARGET_DIR: /tmp/clis-cross_0-2-5
-      CARGOGREEN_CACHE_IMAGES: docker-image://ghcr.io/${{ github.repository }}
+      CARGOGREEN_CACHE_FROM_IMAGES: docker-image://ghcr.io/${{ github.repository }}
       CARGOGREEN_FINAL_PATH: recipes/cross@0.2.5.Dockerfile
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
@@ -590,9 +602,9 @@ jobs:
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
     - name: cargo install net=ON cache=OFF remote=OFF jobs=3
       run: |
         unset CARGO_INCREMENTAL
@@ -673,9 +685,9 @@ jobs:
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
 
     - name: Target dir disk usage
       if: ${{ failure() || success() }}
@@ -751,9 +763,9 @@ jobs:
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
 
     - name: Target dir disk usage
       if: ${{ failure() || success() }}
@@ -764,6 +776,9 @@ jobs:
     defaults:
       run:
         shell: bash -euo pipefail {0}
+    permissions:
+      contents: read
+      packages: write
     continue-on-error: ${{ matrix.toolchain != 'stable' }}
     strategy:
       matrix:
@@ -772,7 +787,7 @@ jobs:
         - 1.86.0
     env:
       CARGO_TARGET_DIR: /tmp/clis-dbcc_2-2-1
-      CARGOGREEN_CACHE_IMAGES: docker-image://ghcr.io/${{ github.repository }}
+      CARGOGREEN_CACHE_FROM_IMAGES: docker-image://ghcr.io/${{ github.repository }}
       CARGOGREEN_FINAL_PATH: recipes/dbcc@2.2.1.Dockerfile
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
@@ -825,9 +840,9 @@ jobs:
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
     - name: cargo install net=ON cache=OFF remote=OFF jobs=3
       run: |
         unset CARGO_INCREMENTAL
@@ -908,9 +923,9 @@ jobs:
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
 
     - name: Target dir disk usage
       if: ${{ failure() || success() }}
@@ -986,9 +1001,9 @@ jobs:
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
 
     - name: Target dir disk usage
       if: ${{ failure() || success() }}
@@ -999,6 +1014,9 @@ jobs:
     defaults:
       run:
         shell: bash -euo pipefail {0}
+    permissions:
+      contents: read
+      packages: write
     continue-on-error: ${{ matrix.toolchain != 'stable' }}
     strategy:
       matrix:
@@ -1007,7 +1025,7 @@ jobs:
         - 1.86.0
     env:
       CARGO_TARGET_DIR: /tmp/clis-diesel_cli_2-3-2
-      CARGOGREEN_CACHE_IMAGES: docker-image://ghcr.io/${{ github.repository }}
+      CARGOGREEN_CACHE_FROM_IMAGES: docker-image://ghcr.io/${{ github.repository }}
       CARGOGREEN_FINAL_PATH: recipes/diesel_cli@2.3.2.Dockerfile
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
@@ -1060,9 +1078,9 @@ jobs:
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
     - name: cargo install net=ON cache=OFF remote=OFF jobs=3
       run: |
         unset CARGO_INCREMENTAL
@@ -1143,9 +1161,9 @@ jobs:
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
 
     - name: Target dir disk usage
       if: ${{ failure() || success() }}
@@ -1221,9 +1239,9 @@ jobs:
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
 
     - name: Target dir disk usage
       if: ${{ failure() || success() }}
@@ -1234,6 +1252,9 @@ jobs:
     defaults:
       run:
         shell: bash -euo pipefail {0}
+    permissions:
+      contents: read
+      packages: write
     continue-on-error: ${{ matrix.toolchain != 'stable' }}
     strategy:
       matrix:
@@ -1242,7 +1263,7 @@ jobs:
         - 1.86.0
     env:
       CARGO_TARGET_DIR: /tmp/clis-hickory-dns_0-25-0-alpha-1
-      CARGOGREEN_CACHE_IMAGES: docker-image://ghcr.io/${{ github.repository }}
+      CARGOGREEN_CACHE_FROM_IMAGES: docker-image://ghcr.io/${{ github.repository }}
       CARGOGREEN_FINAL_PATH: recipes/hickory-dns@0.25.0-alpha.1.Dockerfile
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
@@ -1295,9 +1316,9 @@ jobs:
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
     - name: cargo install net=ON cache=OFF remote=OFF jobs=3
       run: |
         unset CARGO_INCREMENTAL
@@ -1378,9 +1399,9 @@ jobs:
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
 
     - name: Target dir disk usage
       if: ${{ failure() || success() }}
@@ -1456,9 +1477,9 @@ jobs:
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
 
     - name: Target dir disk usage
       if: ${{ failure() || success() }}
@@ -1469,6 +1490,9 @@ jobs:
     defaults:
       run:
         shell: bash -euo pipefail {0}
+    permissions:
+      contents: read
+      packages: write
     continue-on-error: ${{ matrix.toolchain != 'stable' }}
     strategy:
       matrix:
@@ -1477,7 +1501,7 @@ jobs:
         - 1.86.0
     env:
       CARGO_TARGET_DIR: /tmp/clis-mussh_3-1-3
-      CARGOGREEN_CACHE_IMAGES: docker-image://ghcr.io/${{ github.repository }}
+      CARGOGREEN_CACHE_FROM_IMAGES: docker-image://ghcr.io/${{ github.repository }}
       CARGOGREEN_FINAL_PATH: recipes/mussh@3.1.3.Dockerfile
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
@@ -1530,9 +1554,9 @@ jobs:
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
     - name: cargo install net=ON cache=OFF remote=OFF jobs=3
       run: |
         unset CARGO_INCREMENTAL
@@ -1613,9 +1637,9 @@ jobs:
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
 
     - name: Target dir disk usage
       if: ${{ failure() || success() }}
@@ -1691,9 +1715,9 @@ jobs:
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
 
     - name: Target dir disk usage
       if: ${{ failure() || success() }}
@@ -1704,6 +1728,9 @@ jobs:
     defaults:
       run:
         shell: bash -euo pipefail {0}
+    permissions:
+      contents: read
+      packages: write
     continue-on-error: ${{ matrix.toolchain != 'stable' }}
     strategy:
       matrix:
@@ -1712,7 +1739,7 @@ jobs:
         - 1.86.0
     env:
       CARGO_TARGET_DIR: /tmp/clis-ntpd_1-2-3
-      CARGOGREEN_CACHE_IMAGES: docker-image://ghcr.io/${{ github.repository }}
+      CARGOGREEN_CACHE_FROM_IMAGES: docker-image://ghcr.io/${{ github.repository }}
       CARGOGREEN_FINAL_PATH: recipes/ntpd@1.2.3.Dockerfile
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
@@ -1766,9 +1793,9 @@ jobs:
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
     - name: cargo install net=ON cache=OFF remote=OFF jobs=3
       run: |
         unset CARGO_INCREMENTAL
@@ -1849,9 +1876,9 @@ jobs:
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
 
     - name: Target dir disk usage
       if: ${{ failure() || success() }}
@@ -1927,9 +1954,9 @@ jobs:
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
 
     - name: Target dir disk usage
       if: ${{ failure() || success() }}
@@ -1940,6 +1967,9 @@ jobs:
     defaults:
       run:
         shell: bash -euo pipefail {0}
+    permissions:
+      contents: read
+      packages: write
     continue-on-error: ${{ matrix.toolchain != 'stable' }}
     strategy:
       matrix:
@@ -1948,7 +1978,7 @@ jobs:
         - 1.86.0
     env:
       CARGO_TARGET_DIR: /tmp/clis-qcow2-rs_0-1-2
-      CARGOGREEN_CACHE_IMAGES: docker-image://ghcr.io/${{ github.repository }}
+      CARGOGREEN_CACHE_FROM_IMAGES: docker-image://ghcr.io/${{ github.repository }}
       CARGOGREEN_FINAL_PATH: recipes/qcow2-rs@0.1.2.Dockerfile
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
@@ -2001,9 +2031,9 @@ jobs:
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
     - name: cargo install net=ON cache=OFF remote=OFF jobs=3
       run: |
         unset CARGO_INCREMENTAL
@@ -2084,9 +2114,9 @@ jobs:
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
 
     - name: Target dir disk usage
       if: ${{ failure() || success() }}
@@ -2162,9 +2192,9 @@ jobs:
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
 
     - name: Target dir disk usage
       if: ${{ failure() || success() }}
@@ -2175,6 +2205,9 @@ jobs:
     defaults:
       run:
         shell: bash -euo pipefail {0}
+    permissions:
+      contents: read
+      packages: write
     continue-on-error: ${{ matrix.toolchain != 'stable' }}
     strategy:
       matrix:
@@ -2183,7 +2216,7 @@ jobs:
         - 1.86.0
     env:
       CARGO_TARGET_DIR: /tmp/clis-ripgrep_14-1-0
-      CARGOGREEN_CACHE_IMAGES: docker-image://ghcr.io/${{ github.repository }}
+      CARGOGREEN_CACHE_FROM_IMAGES: docker-image://ghcr.io/${{ github.repository }}
       CARGOGREEN_FINAL_PATH: recipes/ripgrep@14.1.0.Dockerfile
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
@@ -2236,9 +2269,9 @@ jobs:
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
     - name: cargo install net=ON cache=OFF remote=OFF jobs=3
       run: |
         unset CARGO_INCREMENTAL
@@ -2319,9 +2352,9 @@ jobs:
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
 
     - name: Target dir disk usage
       if: ${{ failure() || success() }}
@@ -2397,9 +2430,9 @@ jobs:
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
 
     - name: Target dir disk usage
       if: ${{ failure() || success() }}
@@ -2410,6 +2443,9 @@ jobs:
     defaults:
       run:
         shell: bash -euo pipefail {0}
+    permissions:
+      contents: read
+      packages: write
     continue-on-error: ${{ matrix.toolchain != 'stable' }}
     strategy:
       matrix:
@@ -2418,7 +2454,7 @@ jobs:
         - 1.86.0
     env:
       CARGO_TARGET_DIR: /tmp/clis-rublk_0-2-0
-      CARGOGREEN_CACHE_IMAGES: docker-image://ghcr.io/${{ github.repository }}
+      CARGOGREEN_CACHE_FROM_IMAGES: docker-image://ghcr.io/${{ github.repository }}
       CARGOGREEN_FINAL_PATH: recipes/rublk@0.2.0.Dockerfile
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
@@ -2471,9 +2507,9 @@ jobs:
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
     - name: cargo install net=ON cache=OFF remote=OFF jobs=3
       run: |
         unset CARGO_INCREMENTAL
@@ -2554,9 +2590,9 @@ jobs:
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
 
     - name: Target dir disk usage
       if: ${{ failure() || success() }}
@@ -2632,9 +2668,9 @@ jobs:
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
 
     - name: Target dir disk usage
       if: ${{ failure() || success() }}
@@ -2645,6 +2681,9 @@ jobs:
     defaults:
       run:
         shell: bash -euo pipefail {0}
+    permissions:
+      contents: read
+      packages: write
     continue-on-error: ${{ matrix.toolchain != 'stable' }}
     strategy:
       matrix:
@@ -2653,7 +2692,7 @@ jobs:
         - 1.86.0
     env:
       CARGO_TARGET_DIR: /tmp/clis-vixargs_0-1-0
-      CARGOGREEN_CACHE_IMAGES: docker-image://ghcr.io/${{ github.repository }}
+      CARGOGREEN_CACHE_FROM_IMAGES: docker-image://ghcr.io/${{ github.repository }}
       CARGOGREEN_FINAL_PATH: recipes/vixargs@0.1.0.Dockerfile
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
@@ -2706,9 +2745,9 @@ jobs:
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
     - name: cargo install net=ON cache=OFF remote=OFF jobs=3
       run: |
         unset CARGO_INCREMENTAL
@@ -2789,9 +2828,9 @@ jobs:
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
 
     - name: Target dir disk usage
       if: ${{ failure() || success() }}
@@ -2867,9 +2906,9 @@ jobs:
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
 
     - name: Target dir disk usage
       if: ${{ failure() || success() }}
@@ -2880,6 +2919,9 @@ jobs:
     defaults:
       run:
         shell: bash -euo pipefail {0}
+    permissions:
+      contents: read
+      packages: write
     continue-on-error: ${{ matrix.toolchain != 'stable' }}
     strategy:
       matrix:
@@ -2888,7 +2930,7 @@ jobs:
         - 1.86.0
     env:
       CARGO_TARGET_DIR: /tmp/clis-cargo-config2_0-1-34
-      CARGOGREEN_CACHE_IMAGES: docker-image://ghcr.io/${{ github.repository }}
+      CARGOGREEN_CACHE_FROM_IMAGES: docker-image://ghcr.io/${{ github.repository }}
       CARGOGREEN_FINAL_PATH: recipes/cargo-config2@0.1.34.Dockerfile
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
@@ -2941,9 +2983,9 @@ jobs:
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
     - name: cargo install net=ON cache=OFF remote=OFF jobs=3
       run: |
         unset CARGO_INCREMENTAL
@@ -3024,9 +3066,9 @@ jobs:
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
 
     - name: Target dir disk usage
       if: ${{ failure() || success() }}
@@ -3102,9 +3144,9 @@ jobs:
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
 
     - name: Target dir disk usage
       if: ${{ failure() || success() }}
@@ -3115,6 +3157,9 @@ jobs:
     defaults:
       run:
         shell: bash -euo pipefail {0}
+    permissions:
+      contents: read
+      packages: write
     continue-on-error: ${{ matrix.toolchain != 'stable' }}
     strategy:
       matrix:
@@ -3123,7 +3168,7 @@ jobs:
         - 1.86.0
     env:
       CARGO_TARGET_DIR: /tmp/clis-cargo-udeps_0-1-55
-      CARGOGREEN_CACHE_IMAGES: docker-image://ghcr.io/${{ github.repository }}
+      CARGOGREEN_CACHE_FROM_IMAGES: docker-image://ghcr.io/${{ github.repository }}
       CARGOGREEN_FINAL_PATH: recipes/cargo-udeps@0.1.55.Dockerfile
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
@@ -3176,9 +3221,9 @@ jobs:
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
     - name: cargo install net=ON cache=OFF remote=OFF jobs=3
       run: |
         unset CARGO_INCREMENTAL
@@ -3259,9 +3304,9 @@ jobs:
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
 
     - name: Target dir disk usage
       if: ${{ failure() || success() }}
@@ -3337,9 +3382,9 @@ jobs:
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
 
     - name: Target dir disk usage
       if: ${{ failure() || success() }}

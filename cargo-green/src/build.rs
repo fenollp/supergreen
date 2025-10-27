@@ -272,7 +272,7 @@ impl Green {
                     compression = "",
 
                     // TODO? if error when registry is unreachable, possible setting language: =1:my.org;0:some.org 1|0
-                    ignore_error = "true",
+                    ignore_error = "false",
                 ));
 
                 if maxready {
@@ -310,6 +310,10 @@ impl Green {
         cmd.arg("--platform=local");
         cmd.arg("--pull=false");
         cmd.arg(format!("--target={target}"));
+
+        // https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry#labelling-container-images
+        cmd.arg(format!("--label=org.opencontainers.image.description={target}"));
+
         if let Some(out_dir) = out_dir {
             cmd.arg(format!("--output=type=local,dest={out_dir}"));
         } else {
@@ -333,7 +337,7 @@ impl Green {
 
         let call = cmd.show();
         if true {
-            eprintln!(">>> call:{call}\n{:?}", self.cache.images);
+            eprintln!(">>> call:{call}");
         }
         info!("Starting `{envs} {call} <{containerfile}`", envs = cmd.envs_string(&[]));
         let call = call

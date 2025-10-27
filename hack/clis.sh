@@ -242,7 +242,14 @@ cli() {
   local envvars=()
  as_env "$name_at_version"
 
-#       CARGOGREEN_CACHE_IMAGES: \${{ needs.set-image-name.outputs.name }}
+# FIXME: [allow exporting cache layers in parallel to the remote registry](https://github.com/moby/buildkit/issues/6123)
+# * export these layers in parallel
+# * use manifest retrieved in --cache-from to filter out layers which we know remote registry already has
+#
+#=> leaf build calls: don't use --cache-to, then
+#=> cargo call#0: runs a (gRPC?) server that receives just-made-build-call and re-runs it with cacheonly and --cache-to
+#then wait for both leafbuild and that server's tasks before exiting.
+#==> server needs a task counter
 
 # TODO: along with bin build job
 # * get local registry:3 from cache
@@ -253,6 +260,8 @@ cli() {
 # * pass second through artifacts or cache to next jobs
 # * use that registry through the mirrors env
 
+# or: --cache-to local registry during build, then push that to ghcr after.
+#
 # https://docs.docker.com/build/ci/github-actions/local-registry/
 # jobs:
 #   docker:
@@ -265,6 +274,7 @@ cli() {
 #     steps:
 # docker buildx imagetools inspect localhost:5000/name/app:latest
 
+# or: use --cache-from in non-main branch and both otherwise
 
 	cat <<EOF
 $(jobdef "$(slugify "$name_at_version")_$jobs")
@@ -276,7 +286,7 @@ $(jobdef "$(slugify "$name_at_version")_$jobs")
         - 1.86.0
     env:
       CARGO_TARGET_DIR: /tmp/clis-$(slugify "$name_at_version")
-      CARGOGREEN_CACHE_IMAGES: docker-image://ghcr.io/\${{ github.repository }}
+      CARGOGREEN_CACHE_FROM_IMAGES: docker-image://ghcr.io/\${{ github.repository }}
       CARGOGREEN_FINAL_PATH: recipes/$name_at_version.Dockerfile
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
