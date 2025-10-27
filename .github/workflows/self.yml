@@ -12,8 +12,7 @@ jobs:
     - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
         toolchain: stable
-        cache-all-crates: true
-        cache-workspace-crates: true
+        cache-on-failure: true
     - run: docker info
     - run: docker buildx version
     - run: docker buildx build --help
@@ -71,8 +70,7 @@ jobs:
       with:
         toolchain: stable
         rustflags: ''
-        cache-all-crates: true
-        cache-workspace-crates: true
+        cache-on-failure: true
     - run: docker info
     - run: docker buildx version
     - run: docker buildx build --help
@@ -200,8 +198,7 @@ jobs:
       with:
         toolchain: stable
         rustflags: ''
-        cache-all-crates: true
-        cache-workspace-crates: true
+        cache-on-failure: true
     - run: docker info
     - run: docker buildx version
     - run: docker buildx build --help
@@ -338,8 +335,7 @@ jobs:
       with:
         toolchain: nightly-2025-08-06
         rustflags: ''
-        cache-all-crates: true
-        cache-workspace-crates: true
+        cache-on-failure: true
     - run: docker info
     - run: docker buildx version
     - run: docker buildx build --help
@@ -536,8 +532,7 @@ jobs:
       with:
         toolchain: stable
         rustflags: ''
-        cache-all-crates: true
-        cache-workspace-crates: true
+        cache-on-failure: true
     - run: docker info
     - run: docker buildx version
     - run: docker buildx build --help
@@ -871,8 +866,7 @@ jobs:
       with:
         toolchain: stable
         rustflags: ''
-        cache-all-crates: true
-        cache-workspace-crates: true
+        cache-on-failure: true
     - run: docker info
     - run: docker buildx version
     - run: docker buildx build --help
@@ -1206,8 +1200,7 @@ jobs:
       with:
         toolchain: stable
         rustflags: ''
-        cache-all-crates: true
-        cache-workspace-crates: true
+        cache-on-failure: true
     - run: docker info
     - run: docker buildx version
     - run: docker buildx build --help
@@ -1468,8 +1461,7 @@ jobs:
       with:
         toolchain: stable
         rustflags: ''
-        cache-all-crates: true
-        cache-workspace-crates: true
+        cache-on-failure: true
     - run: docker info
     - run: docker buildx version
     - run: docker buildx build --help
@@ -1657,8 +1649,7 @@ jobs:
       with:
         toolchain: stable
         rustflags: ''
-        cache-all-crates: true
-        cache-workspace-crates: true
+        cache-on-failure: true
     - run: docker info
     - run: docker buildx version
     - run: docker buildx build --help

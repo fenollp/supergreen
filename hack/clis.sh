@@ -170,8 +170,7 @@ $(jobdef 'bin')
     - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
         toolchain: stable
-        cache-all-crates: true
-        cache-workspace-crates: true
+        cache-on-failure: true
 
     - uses: actions/checkout@v5
 
@@ -309,8 +308,7 @@ $(login_to_readonly_hub)
       with:
         toolchain: \${{ matrix.toolchain }}
         rustflags: ''
-        cache-all-crates: true
-        cache-workspace-crates: true
+        cache-on-failure: true
 $(
 	case "$name_at_version" in
 		cargo-llvm-cov@*) printf '    - run: rustup component add llvm-tools-preview\n' ;;

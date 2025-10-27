@@ -34,8 +34,7 @@ $(login_to_readonly_hub)
       with:
         toolchain: $toolchain
         rustflags: ''
-        cache-all-crates: true
-        cache-workspace-crates: true
+        cache-on-failure: true
 $(rundeps_versions)
 
 $(restore_bin)
@@ -82,8 +81,7 @@ $(jobdef 'bin')
     - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
         toolchain: stable
-        cache-all-crates: true
-        cache-workspace-crates: true
+        cache-on-failure: true
 $(rundeps_versions)
 
     - uses: actions/checkout@v5
