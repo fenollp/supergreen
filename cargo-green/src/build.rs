@@ -210,13 +210,18 @@ impl Green {
 
         //TODO: if allowing additional-build-arguments, deny: --build-arg=BUILDKIT_SYNTAX=
 
-        //TODO: (use if set) cmd.env("SOURCE_DATE_EPOCH", "0"); // https://reproducible-builds.org/docs/source-date-epoch
+        //TODO: (use if set) cmd.env("SOURCE_DATE_EPOCH", "1"); // https://reproducible-builds.org/docs/source-date-epoch
         // https://github.com/moby/buildkit/blob/master/docs/build-repro.md#source_date_epoch
         // Set SOURCE_DATE_EPOCH=$(git log -1 --pretty=%ct) for local code, and
         // set it to crates' birth date, in case it's a $HOME/.cargo/registry/cache/...crate
         // set it to the directory's birth date otherwise (should be a relative path to local files).
         // see https://github.com/moby/buildkit/issues/3009#issuecomment-1721565511
         //=> rewrite written files timestamps to not trip cargo's timekeeping
+        //Try rewrite-timestamp=true but this looks to be only for --output=type=image
+        //https://github.com/moby/buildkit/blob/202e28fe031a3be7eba17fb4382e4bbb0acf69b3/README.md?plain=1#L293
+        //https://scribe.rip/nttlabs/dockercon-2023-reproducible-builds-with-buildkit-for-software-supply-chain-security-0e5aedd1aaa7
+        //https://github.com/moby/buildkit/blob/202e28fe031a3be7eba17fb4382e4bbb0acf69b3/docs/build-repro.md#source_date_epoch
+        //https://github.com/moby/buildkit/issues/3973
 
         // `--repro`
         // From https://github.com/docker-library/official-images/issues/16044
