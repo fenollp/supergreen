@@ -40,9 +40,6 @@ macro_rules! ENV_SYNTAX_IMAGE {
     };
 }
 
-/// Hit me if you have more!
-const DEFAULT_REGISTRY_MIRRORS: &[&str] = &["mirror.gcr.io", "public.ecr.aws/docker"];
-
 // TODO? switch all envs to TOML: cargo --config 'build.rustdocflags = ["--html-in-header", "header.html"]' …
 
 #[doc = include_str!("../docs/configuration.md")]
@@ -111,6 +108,7 @@ impl Green {
 
     fn try_new(manifest: Option<Manifest>) -> Result<Self> {
         let mut green = Self::default();
+
         if let Some(Manifest {
             package: Some(cargo_toml::Package { metadata: Some(metadata), .. }),
             ..
@@ -129,10 +127,27 @@ impl Green {
             green.incremental = val == "1";
         }
 
-        validate_csv(&mut green.registry_mirrors, ENV_REGISTRY_MIRRORS!())?;
-        if green.registry_mirrors.is_empty() {
+        let var = ENV_REGISTRY_MIRRORS!();
+        let mut origin = setting(var);
+        let mut was_reset = false;
+        if let Ok(val) = env::var(var) {
+            origin = format!("${var}");
+            if val.is_empty() {
+                was_reset = true;
+                green.registry_mirrors = vec![];
+            } else {
+                green.registry_mirrors = parse_csv(&val);
+            }
+        }
+        if green.registry_mirrors.len()
+            != green.registry_mirrors.iter().collect::<HashSet<_>>().len()
+        {
+            bail!("{origin} contains duplicates")
+        }
+        if green.registry_mirrors.is_empty() && !was_reset {
+            // Hit me if you have more!
             green.registry_mirrors =
-                DEFAULT_REGISTRY_MIRRORS.iter().map(|x| x.to_owned().to_owned()).collect();
+                vec!["mirror.gcr.io".to_owned(), "public.ecr.aws/docker".to_owned()];
         }
 
         for (field, var) in [
@@ -161,13 +176,13 @@ impl Green {
             }
         }
 
-        let mut var = ENV_BASE_IMAGE!();
+        let var = ENV_BASE_IMAGE!();
         if let Ok(val) = env::var(var) {
             let val = val.try_into().map_err(|e| anyhow!("${var} {e}"))?;
             green.base = BaseImage::from_image(val);
         }
 
-        var = ENV_BASE_IMAGE_INLINE!();
+        let var = ENV_BASE_IMAGE_INLINE!();
         let mut origin = setting(var);
         if let Ok(val) = env::var(var) {
             origin = format!("${var}");
@@ -228,6 +243,10 @@ fn setting(var: &str) -> String {
     format!("[metadata.green.{}]", env_as_toml(var))
 }
 
+fn parse_csv(val: &str) -> Vec<String> {
+    val.split(',').map(ToOwned::to_owned).collect()
+}
+
 fn validate_csv(field: &mut Vec<String>, var: &'static str) -> Result<()> {
     let mut origin = setting(var);
     if let Ok(val) = env::var(var) {
@@ -236,7 +255,7 @@ fn validate_csv(field: &mut Vec<String>, var: &'static str) -> Result<()> {
             bail!("{origin} is empty")
         }
 
-        *field = val.split(',').map(ToOwned::to_owned).collect();
+        *field = parse_csv(&val);
     }
     if !field.is_empty() {
         let bad_chars = [' ', '\'', '"', ';'];
