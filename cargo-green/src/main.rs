@@ -18,6 +18,7 @@ mod build;
 mod builder;
 #[macro_use]
 mod cache;
+mod buildkitd;
 mod cargo_green;
 mod checkouts;
 mod containerfile;
