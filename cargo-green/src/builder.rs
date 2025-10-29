@@ -180,8 +180,18 @@ then run your cargo command again.
             registry: [
                 ("docker.io".to_owned(), buildkitd::Registry { mirrors, ..Default::default() }),
                 (
-                    "127.0.0.1:5000".to_owned(),
-                    buildkitd::Registry { http: true, insecure: true, ..Default::default() },
+                    "localhost:5000".to_owned(),
+                    buildkitd::Registry {
+                        http: true,
+                        /*insecure: true,*/ ..Default::default()
+                    },
+                ),
+                (
+                    "localhost:12345".to_owned(),
+                    buildkitd::Registry {
+                        http: true,
+                        /*insecure: true,*/ ..Default::default()
+                    },
                 ),
             ]
             .into(),
@@ -190,6 +200,7 @@ then run your cargo command again.
         let cfg = if config != buildkitd::Config::default() {
             let config = toml::to_string_pretty(&config)
                 .map_err(|e| anyhow!("Cannot serialize {config:?}: {e}"))?;
+            eprintln!(">>> buildkitd.toml:\n{config}");
             let cfg = tmp().join(format!("{:#x}.toml", crc32fast::hash(config.as_bytes())));
             fs::write(&cfg, config).map_err(|e| anyhow!("Failed writing buildkitd config: {e}"))?;
             Some(cfg)
@@ -200,6 +211,14 @@ then run your cargo command again.
         let mut cmd = self.cmd()?;
         cmd.args(["buildx", "create", "--bootstrap"])
             .args(["--name", name])
+            // Insecure Entitlement "network.host" not working https://github.com/docker/buildx/issues/835
+            //FIXME: detect. curl -fsS  http://localhost:12345/v2/_catalog ?
+            .args([
+                "--driver-opt",
+                "network=host",
+                "--buildkitd-flags",
+                "--allow-insecure-entitlement network.host",
+            ])
             .args(["--driver", BUILDER_DRIVER]);
         if let Some(ref cfg) = cfg {
             cmd.args(["--buildkitd-config", cfg.as_str()]);

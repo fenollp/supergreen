@@ -261,18 +261,6 @@ cli() {
 # * use that registry through the mirrors env
 
 # or: --cache-to local registry during build, then push that to ghcr after.
-#
-# https://docs.docker.com/build/ci/github-actions/local-registry/
-# jobs:
-#   docker:
-#     runs-on: ubuntu-latest
-#     services:
-#       registry:
-#         image: registry:3
-#         ports:
-#           - 5000:5000
-#     steps:
-# docker buildx imagetools inspect 127.0.0.1:5000/name/app:latest
 
 # or: use --cache-from in non-main branch and both otherwise
 
@@ -297,7 +285,7 @@ $(jobdef "$(slugify "$name_at_version")_$jobs")
     env:
       CARGO_TARGET_DIR: /tmp/clis-$(slugify "$name_at_version")
     # CARGOGREEN_CACHE_FROM_IMAGES: docker-image://ghcr.io/\${{ github.repository }}
-      CARGOGREEN_CACHE_IMAGES: docker-image://127.0.0.1:5000/\${{ github.repository }}
+      CARGOGREEN_CACHE_IMAGES: docker-image://localhost:5000/\${{ github.repository }}
       CARGOGREEN_FINAL_PATH: recipes/$name_at_version.Dockerfile
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
@@ -329,10 +317,10 @@ $(
 $(restore_bin)
     - run: ls -lha $registry || true
     - run: mkdir -p $registry
-    - run: docker pull 127.0.0.1:5000/fenollp/supergreen || true
-    - run: docker build --push --tag 127.0.0.1:5000/fenollp/supergreen - <<<'FROM scratch'
-    - run: docker pull 127.0.0.1:5000/fenollp/supergreen || true
-    - run: curl -fsSL http://127.0.0.1:5000/v2/fenollp/supergreen/blobs/sha256:1720a10883c7ebbf9080c7d8399b21cb883271cb3dfec3e30a4248b636628779 || true
+    - run: docker pull localhost:5000/fenollp/supergreen || true
+    - run: docker build --push --tag localhost:5000/fenollp/supergreen - <<<'FROM scratch'
+    - run: docker pull localhost:5000/fenollp/supergreen || true
+    - run: curl -fsSL http://localhost:5000/v2/fenollp/supergreen/blobs/sha256:1720a10883c7ebbf9080c7d8399b21cb883271cb3dfec3e30a4248b636628779 || true
     - run: ls -lha $registry || true
     - run: du -sh $registry || true
     - run: ls -lha $registry || true
@@ -345,6 +333,7 @@ $(rundeps_versions)
       run: ~/.cargo/bin/cargo-green green supergreen env
     - if: \${{ matrix.toolchain != 'stable' }}
       run: ~/.cargo/bin/cargo-green green supergreen env CARGOGREEN_BASE_IMAGE | grep '\${{ matrix.toolchain }}'
+    - run: BUILDX_BUILDER=supergreen docker buildx inspect
     - name: Envs again
       run: ~/.cargo/bin/cargo-green green supergreen env
 
