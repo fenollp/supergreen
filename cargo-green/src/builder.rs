@@ -1,12 +1,13 @@
 use std::{fs, str::FromStr, sync::LazyLock};
 
 use anyhow::{anyhow, bail, Result};
-use indexmap::IndexMap;
 use log::info;
 use serde::{Deserialize, Serialize};
 use version_compare::Version;
 
-use crate::{build::fetch_digest, ext::CommandExt, green::Green, image_uri::ImageUri, tmp};
+use crate::{
+    build::fetch_digest, buildkitd, ext::CommandExt, green::Green, image_uri::ImageUri, tmp,
+};
 
 macro_rules! BUILDX_BUILDER {
     () => {
@@ -170,12 +171,20 @@ then run your cargo command again.
 
     pub(crate) async fn create_builder(&mut self, name: &str) -> Result<()> {
         let mirrors = self.registry_mirrors.clone();
-        let config = BuildKitDConfig {
+        let config = buildkitd::Config {
             debug: false,
-            registry: [("docker.io".to_owned(), RegistryConfig { mirrors })].into(),
+            registry: [
+                ("docker.io".to_owned(), buildkitd::Registry { mirrors, ..Default::default() }),
+                (
+                    "127.0.0.1:5000".to_owned(),
+                    buildkitd::Registry { http: true, insecure: true, ..Default::default() },
+                ),
+            ]
+            .into(),
+            ..Default::default()
         };
 
-        let cfg = if config != BuildKitDConfig::default() {
+        let cfg = if config != buildkitd::Config::default() {
             let config = toml::to_string_pretty(&config)
                 .map_err(|e| anyhow!("Cannot serialize {config:?}: {e}"))?;
             let cfg = tmp().join(format!("{:#x}.toml", crc32fast::hash(config.as_bytes())));
@@ -355,53 +364,4 @@ impl BuildxBuilder {
         imgs.dedup();
         imgs.first().cloned()
     }
-}
-
-/// TODO: for low-powered machines
-/// [worker.oci]
-/// max-parallelism = 4
-#[derive(Debug, Default, Serialize, Deserialize, PartialEq)]
-struct BuildKitDConfig {
-    /// --buildkitd-flags '--debug'
-    /// => docker logs $BUILDX_BUILDER -f | grep 'do request.+host='
-    debug: bool,
-    registry: IndexMap<String, RegistryConfig>,
-}
-
-#[derive(Debug, Default, Serialize, Deserialize, PartialEq)]
-struct RegistryConfig {
-    mirrors: Vec<String>,
-}
-
-#[test]
-fn buildkitd_config() {
-    let cfg = &r#"
-debug = true
-
-[registry."docker.io"]
-mirrors = [
-    "localhost:5000",
-    "public.ecr.aws/docker",
-]
-"#[1..];
-
-    let de: BuildKitDConfig = toml::de::from_str(cfg).unwrap();
-    assert_ne!(de, BuildKitDConfig::default());
-    assert_eq!(
-        de,
-        BuildKitDConfig {
-            debug: true,
-            registry: [(
-                "docker.io".to_owned(),
-                RegistryConfig {
-                    mirrors: vec!["localhost:5000".to_owned(), "public.ecr.aws/docker".to_owned()]
-                }
-            )]
-            .into()
-        }
-    );
-
-    let ser = toml::to_string_pretty(&de).unwrap();
-    println!("{ser}");
-    assert_eq!(ser, cfg);
 }
