@@ -14,29 +14,22 @@ use crate::{ext::CommandExt, green::Green, image_uri::ImageUri, PKG, REPO, VSN};
 
 // TODO: cli for stats (cache hit/miss/size/age/volume, existing available/selected runners, disk usage/free)
 
-//TODO: cli to show cfg'd builder
-
 //TODO: cli shows builder's jaeger: BUILDX_BUILDER=supergreen docker buildx history trace --addr 127.0.0.1:5452
 
-// # With this, one may also use this set of subcommands: [UNSTABLE API] (refacto into a `cache` cmd)
-// cargo supergreen config get   VAR*
-// cargo supergreen config set   VAR VAL
-// cargo supergreen config unset VAR
-// cargo supergreen pull-images             Pulls latest versions of images used for the build, no cache (respects $DOCKER_HOST)
-// cargo supergreen pull-cache              Pulls all from `--cache-from`
-// cargo supergreen push-cache              Pushes all to `--cache-to`
-
-pub(crate) async fn main(green: Green, arg1: Option<&str>, args: Vec<String>) -> Result<()> {
+pub(crate) async fn main(mut green: Green, arg1: Option<&str>, args: Vec<String>) -> Result<()> {
     if just_help(arg1) {
         help();
         return Ok(());
     }
-    match arg1 {
-        Some("env") => envs(green, args)?,
-        Some("doc") => docs(green, args)?,
-        Some("push") => return push(green).await,
-        Some(arg) => bail!("Unexpected supergreen command {arg:?}"),
-        None => unreachable!(),
+    match (arg1, args.first().map(String::as_str)) {
+        (Some("env"), _) => green.envs(args)?,
+        (Some("doc"), _) => green.docs(args)?,
+        (Some("push"), _) => green.push().await?,
+        (Some("builder"), None) => green.inspect_builder().await?,
+        (Some("builder"), Some("rm")) => green.rm_builder().await?,
+        (Some("builder"), Some("recreate")) => green.recreate_builder().await?,
+        (Some(arg), _) => bail!("Unexpected supergreen command {arg:?}"),
+        (None, _) => unreachable!(),
     }
     Ok(())
 }
@@ -85,36 +78,72 @@ pub(crate) fn help() {
     );
 }
 
-// TODO: make it work for podman: https://github.com/containers/podman/issues/2369
-// TODO: have fun with https://github.com/console-rs/indicatif
-async fn push(green: Green) -> Result<()> {
-    for img in green.cache.to_images.iter().chain(green.cache.images.iter()) {
-        let img = img.noscheme();
-        let tags = all_tags_of(&green, img).await?;
+impl Green {
+    async fn inspect_builder(&self) -> Result<()> {
+        let mut cmd = self.cmd()?;
+        cmd.args(["buildx", "inspect"]);
 
-        async fn do_push(green: &Green, tag: String, img: &str) -> Result<()> {
-            println!("Pushing {img}:{tag}...");
-            let mut cmd = green.cmd()?;
-            cmd.arg("push").arg(format!("{img}:{tag}")).stdout(Stdio::null()).stderr(Stdio::null());
-
-            if let Ok(mut o) = cmd.spawn() {
-                if let Ok(o) = o.wait().await {
-                    if o.success() {
-                        println!("Pushing {img}:{tag}... done!");
-                        return Ok(());
-                    }
-                }
-            }
-            bail!("Pushing {img}:{tag} failed!")
+        let (succeeded, stdout, stderr) = cmd.exec().await?;
+        if !succeeded {
+            let stderr = String::from_utf8_lossy(&stderr);
+            bail!("BUG: failed to inspect builder: {stderr}")
         }
 
-        iter(tags)
-            .map(|tag| do_push(&green, tag, img))
-            .buffer_unordered(10)
-            .try_collect::<()>()
-            .await?;
+        let stdout = String::from_utf8_lossy(&stdout);
+        println!("{stdout}");
+        Ok(())
     }
-    Ok(())
+
+    async fn rm_builder(&mut self) -> Result<()> {
+        let Some(name) = self.builder.name.clone() else { return Ok(()) };
+        self.remove_builder(&name).await?;
+        Ok(())
+    }
+
+    async fn recreate_builder(&mut self) -> Result<()> {
+        let Some(name) = self.builder.name.clone() else { return Ok(()) };
+        self.remove_builder(&name).await?;
+        self.create_builder(&name).await?;
+        self.inspect_builder().await?;
+        Ok(())
+    }
+}
+
+impl Green {
+    // TODO: make it work for podman: https://github.com/containers/podman/issues/2369
+    // TODO: have fun with https://github.com/console-rs/indicatif
+    async fn push(&self) -> Result<()> {
+        for img in self.cache.to_images.iter().chain(self.cache.images.iter()) {
+            let img = img.noscheme();
+            let tags = all_tags_of(self, img).await?;
+
+            async fn do_push(green: &Green, tag: String, img: &str) -> Result<()> {
+                println!("Pushing {img}:{tag}...");
+                let mut cmd = green.cmd()?;
+                cmd.arg("push")
+                    .arg(format!("{img}:{tag}"))
+                    .stdout(Stdio::null())
+                    .stderr(Stdio::null());
+
+                if let Ok(mut o) = cmd.spawn() {
+                    if let Ok(o) = o.wait().await {
+                        if o.success() {
+                            println!("Pushing {img}:{tag}... done!");
+                            return Ok(());
+                        }
+                    }
+                }
+                bail!("Pushing {img}:{tag} failed!")
+            }
+
+            iter(tags)
+                .map(|tag| do_push(self, tag, img))
+                .buffer_unordered(10)
+                .try_collect::<()>()
+                .await?;
+        }
+        Ok(())
+    }
 }
 
 // TODO: test with known tags
@@ -216,21 +245,23 @@ fn for_all_or_filtered(
     Ok(())
 }
 
-fn envs(green: Green, vars: Vec<String>) -> Result<()> {
-    for_all_or_filtered(&green, vars, |var: &str, _doc: &'static str, val: Option<&str>| {
-        println!("{var}={:?}", val.unwrap_or_default());
-    })
-}
+impl Green {
+    fn envs(&self, vars: Vec<String>) -> Result<()> {
+        for_all_or_filtered(self, vars, |var: &str, _doc: &'static str, val: Option<&str>| {
+            println!("{var}={:?}", val.unwrap_or_default());
+        })
+    }
 
-fn docs(green: Green, vars: Vec<String>) -> Result<()> {
-    for_all_or_filtered(&green, vars, |var: &str, doc: &'static str, val: Option<&str>| {
-        println!();
-        termimad::print_text(&format!("# ${var}"));
-        if let Some(val) = val {
-            let val = val.trim().lines().collect::<Vec<_>>().join("\n> ");
-            termimad::print_text(&format!("> {val}"));
+    fn docs(&self, vars: Vec<String>) -> Result<()> {
+        for_all_or_filtered(self, vars, |var: &str, doc: &'static str, val: Option<&str>| {
             println!();
-        }
-        termimad::print_text(doc);
-    })
+            termimad::print_text(&format!("# ${var}"));
+            if let Some(val) = val {
+                let val = val.trim().lines().collect::<Vec<_>>().join("\n> ");
+                termimad::print_text(&format!("> {val}"));
+                println!();
+            }
+            termimad::print_text(doc);
+        })
+    }
 }

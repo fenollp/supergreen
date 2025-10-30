@@ -144,12 +144,7 @@ then run your cargo command again.
             }
 
             if recreate {
-                // First try keeping state...
-                if self.try_removing_builder(name, true).await.is_err() {
-                    // ...then stop messing about...
-                    self.try_removing_builder(name, false).await?;
-                }
-                // ...and create afresh.
+                self.remove_builder(name).await?;
                 self.create_builder(name).await?;
             }
         } else if !managed {
@@ -168,7 +163,16 @@ then run your cargo command again.
         Ok(())
     }
 
-    async fn create_builder(&mut self, name: &str) -> Result<()> {
+    pub(crate) async fn remove_builder(&mut self, name: &str) -> Result<()> {
+        // First try keeping state...
+        if self.try_removing_builder(name, true).await.is_err() {
+            // ...then stop messing about.
+            self.try_removing_builder(name, false).await?;
+        }
+        Ok(())
+    }
+
+    pub(crate) async fn create_builder(&mut self, name: &str) -> Result<()> {
         let mirrors = self.registry_mirrors.clone();
         let config = BuildKitDConfig {
             debug: false,
