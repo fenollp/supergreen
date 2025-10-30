@@ -1,5 +1,6 @@
 use std::{
     env,
+    error::Error,
     fs::{self},
     io::ErrorKind,
     ops::Not,
@@ -135,7 +136,10 @@ pub(crate) async fn fetch_digest(img: &ImageUri) -> Result<ImageUri> {
             .map_err(|e| anyhow!("HTTP client's config/TLS failed: {e}"))?
             .get(format!("https://{domain}/v2/repositories/{ns}/{slug}/tags/{tag}"))
             .build_split();
-        let req = req.map_err(|e| anyhow!("Failed to build a request against {domain}: {e}"))?;
+        let req = req.map_err(|e| {
+            // e.source(): try to be a bit more helpful than just "error sending request for url"
+            anyhow!("Failed to build a request against {domain}: {e} ({:?})", e.source())
+        })?;
 
         info!("GETing {}", req.url());
         eprintln!("GETing {}", req.url());
