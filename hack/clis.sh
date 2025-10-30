@@ -345,7 +345,7 @@ $(unset_action_envs)
     - name: cargo install net=ON cache=ON remote=OFF jobs=1
       if: \${{ failure() }}
       run: |
-        rm _
+        rm _ || true
 $(unset_action_envs)
         env ${envvars[@]} \\
           cargo green -vv install --jobs=1 --locked --force $(as_install "$name_at_version") $@ |& tee _

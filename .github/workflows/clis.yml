@@ -132,7 +132,7 @@ jobs:
     - name: cargo install net=ON cache=ON remote=OFF jobs=1
       if: ${{ failure() }}
       run: |
-        rm _
+        rm _ || true
         unset CARGO_INCREMENTAL
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
@@ -364,7 +364,7 @@ jobs:
     - name: cargo install net=ON cache=ON remote=OFF jobs=1
       if: ${{ failure() }}
       run: |
-        rm _
+        rm _ || true
         unset CARGO_INCREMENTAL
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
@@ -596,7 +596,7 @@ jobs:
     - name: cargo install net=ON cache=ON remote=OFF jobs=1
       if: ${{ failure() }}
       run: |
-        rm _
+        rm _ || true
         unset CARGO_INCREMENTAL
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
@@ -828,7 +828,7 @@ jobs:
     - name: cargo install net=ON cache=ON remote=OFF jobs=1
       if: ${{ failure() }}
       run: |
-        rm _
+        rm _ || true
         unset CARGO_INCREMENTAL
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
@@ -1060,7 +1060,7 @@ jobs:
     - name: cargo install net=ON cache=ON remote=OFF jobs=1
       if: ${{ failure() }}
       run: |
-        rm _
+        rm _ || true
         unset CARGO_INCREMENTAL
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
@@ -1292,7 +1292,7 @@ jobs:
     - name: cargo install net=ON cache=ON remote=OFF jobs=1
       if: ${{ failure() }}
       run: |
-        rm _
+        rm _ || true
         unset CARGO_INCREMENTAL
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
@@ -1524,7 +1524,7 @@ jobs:
     - name: cargo install net=ON cache=ON remote=OFF jobs=1
       if: ${{ failure() }}
       run: |
-        rm _
+        rm _ || true
         unset CARGO_INCREMENTAL
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
@@ -1757,7 +1757,7 @@ jobs:
     - name: cargo install net=ON cache=ON remote=OFF jobs=1
       if: ${{ failure() }}
       run: |
-        rm _
+        rm _ || true
         unset CARGO_INCREMENTAL
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
@@ -1989,7 +1989,7 @@ jobs:
     - name: cargo install net=ON cache=ON remote=OFF jobs=1
       if: ${{ failure() }}
       run: |
-        rm _
+        rm _ || true
         unset CARGO_INCREMENTAL
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
@@ -2221,7 +2221,7 @@ jobs:
     - name: cargo install net=ON cache=ON remote=OFF jobs=1
       if: ${{ failure() }}
       run: |
-        rm _
+        rm _ || true
         unset CARGO_INCREMENTAL
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
@@ -2453,7 +2453,7 @@ jobs:
     - name: cargo install net=ON cache=ON remote=OFF jobs=1
       if: ${{ failure() }}
       run: |
-        rm _
+        rm _ || true
         unset CARGO_INCREMENTAL
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
@@ -2685,7 +2685,7 @@ jobs:
     - name: cargo install net=ON cache=ON remote=OFF jobs=1
       if: ${{ failure() }}
       run: |
-        rm _
+        rm _ || true
         unset CARGO_INCREMENTAL
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
@@ -2917,7 +2917,7 @@ jobs:
     - name: cargo install net=ON cache=ON remote=OFF jobs=1
       if: ${{ failure() }}
       run: |
-        rm _
+        rm _ || true
         unset CARGO_INCREMENTAL
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
@@ -3149,7 +3149,7 @@ jobs:
     - name: cargo install net=ON cache=ON remote=OFF jobs=1
       if: ${{ failure() }}
       run: |
-        rm _
+        rm _ || true
         unset CARGO_INCREMENTAL
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
