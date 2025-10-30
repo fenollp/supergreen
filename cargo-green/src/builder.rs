@@ -187,6 +187,10 @@ then run your cargo command again.
                     },
                 ),
                 (
+                    "localhost:6000".to_owned(),
+                    buildkitd::Registry { http: true, ..Default::default() },
+                ),
+                (
                     "localhost:12345".to_owned(),
                     buildkitd::Registry {
                         http: true,
@@ -212,17 +216,39 @@ then run your cargo command again.
         let mut cmd = self.cmd()?;
         cmd.args(["buildx", "create", "--bootstrap"])
             .args(["--name", name])
-            // Insecure Entitlement "network.host" not working https://github.com/docker/buildx/issues/835
-            //FIXME: detect. curl -fsS  http://localhost:12345/v2/_catalog ?
-            .args([
-                "--driver-opt",
-                "network=host",
-                "--buildkitd-flags",
-                "--allow-insecure-entitlement network.host",
-            ])
             .args(["--driver", BUILDER_DRIVER]);
         if let Some(ref cfg) = cfg {
             cmd.args(["--buildkitd-config", cfg.as_str()]);
+        }
+
+        // Insecure Entitlement "network.host" not working https://github.com/docker/buildx/issues/835
+        //FIXME: detect. curl -fsS  http://localhost:12345/v2/_catalog ?
+        if true {
+            // curl: (22) The requested URL returned error: 403
+            // 22    supergreen.git ca-ching-actually 🔗 curl -fsS  https://localhost:5000/v2/_catalog
+            // ^C
+            // 130 4s supergreen.git ca-ching-actually 🔗 curl -fsSL  https://localhost:5000/v2/_catalog
+            // ^C
+            // 130 1s supergreen.git ca-ching-actually 🔗 curl -fsS  http://localhost:12345/v2/_catalog
+            // curl: (7) Failed to connect to localhost port 12345 after 0 ms: Couldn't connect to server
+            // 7    supergreen.git ca-ching-actually 🔗 curl -fsS  https://localhost:12345/v2/_catalog
+            // curl: (7) Failed to connect to localhost port 12345 after 0 ms: Couldn't connect to server
+            // 7    supergreen.git ca-ching-actually 🔗 curl -fsS  https://localhost:12345/v2/_catalog
+            // curl: (7) Failed to connect to localhost port 12345 after 0 ms: Couldn't connect to server
+            // 7    supergreen.git ca-ching-actually 🔗 curl -fsS  https://localhost:12345/v2/_catalog
+            // 7    supergreen.git ca-ching-actually 🔗 curl -fsS  https://localhost:12345/v2/_catalog
+            // curl: (7) Failed to connect to localhost port 12345 after 0 ms: Couldn't connect to server
+            // 7    supergreen.git ca-ching-actually 🔗 curl -fsS  http://localhost:12345/v2/_catalog
+            // {"repositories":[]}
+            //      supergreen.git ca-ching-actually 🔗 curl -fsS  https://localhost:12345/v2/_catalog
+            // curl: (35) LibreSSL/3.3.6: error:1404B42E:SSL routines:ST_CONNECT:tlsv1 alert protocol version
+            // 35    supergreen.git ca-ching-actually 🔗
+
+            cmd.args([
+                "--driver-opt=network=host",
+                "--buildkitd-flags",
+                "--allow-insecure-entitlement network.host",
+            ]);
         }
 
         let img = if let Some(ref img) = self.builder.image {

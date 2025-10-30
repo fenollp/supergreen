@@ -239,36 +239,10 @@ ntpd_locked_date=2025-05-09                                  # Time of commit
 cli() {
   local name_at_version=$1; shift
   local jobs=$1; shift
-  local envvars=()
- as_env "$name_at_version"
-
-# FIXME: [allow exporting cache layers in parallel to the remote registry](https://github.com/moby/buildkit/issues/6123)
-# * export these layers in parallel
-# * use manifest retrieved in --cache-from to filter out layers which we know remote registry already has
-#
-#=> leaf build calls: don't use --cache-to, then
-#=> cargo call#0: runs a (gRPC?) server that receives just-made-build-call and re-runs it with cacheonly and --cache-to
-#then wait for both leafbuild and that server's tasks before exiting.
-#==> server needs a task counter
-
-# TODO: along with bin build job
-# * get local registry:3 from cache
-# * create second local registry:3
-# * list images required via green supergreen envs
-# * pull images to second registry using first as cache
-# * destroy first and cache second
-# * pass second through artifacts or cache to next jobs
-# * use that registry through the mirrors env
-
-# or: --cache-to local registry during build, then push that to ghcr after.
-
-# or: use --cache-from in non-main branch and both otherwise
-
-#setup 2 registries
-#cachefrom: restore 1 reg from cache, use it with cachefrom
-#cacheto: norestore, build, swap with cachefrom, cache.
-
   local registry=/tmp/.local-registry
+  local registry_new=/tmp/.local-registry-new
+  local envvars=()
+  as_env "$name_at_version"
 
 	cat <<EOF
 $(jobdef "$(slugify "$name_at_version")_$jobs")
@@ -286,17 +260,17 @@ $(jobdef "$(slugify "$name_at_version")_$jobs")
         credentials:
           username: \${{ vars.DOCKERHUB_USERNAME }}
           password: \${{ secrets.DOCKERHUB_TOKEN }}
-      registrybis:
+      registrynew:
         image: registry:3
         ports: ['6000:5000']
-        volumes: ['$registry-new:/var/lib/registry']
+        volumes: ['$registry_new:/var/lib/registry']
         credentials:
           username: \${{ vars.DOCKERHUB_USERNAME }}
           password: \${{ secrets.DOCKERHUB_TOKEN }}
     env:
       CARGO_TARGET_DIR: /tmp/clis-$(slugify "$name_at_version")
-    # CARGOGREEN_CACHE_FROM_IMAGES: docker-image://ghcr.io/\${{ github.repository }}
-      CARGOGREEN_CACHE_IMAGES: docker-image://localhost:5000/\${{ github.repository }}
+      CARGOGREEN_CACHE_FROM_IMAGES: docker-image://localhost:5000/\${{ github.repository }}
+      CARGOGREEN_CACHE_TO_IMAGES: docker-image://localhost:6000/\${{ github.repository }}
       CARGOGREEN_FINAL_PATH: recipes/$name_at_version.Dockerfile
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
@@ -328,8 +302,8 @@ $(
 $(restore_bin)
     - run: ls -lha $registry || true
     - run: mkdir -p $registry
-    - run: ls -lha $registry-new || true
-    - run: mkdir -p $registry-new
+    - run: ls -lha $registry_new || true
+    - run: mkdir -p $registry_new
     - run: docker pull localhost:5000/fenollp/supergreen || true
     - run: docker build --push --tag localhost:5000/fenollp/supergreen - <<<'FROM scratch'
     - run: docker pull localhost:5000/fenollp/supergreen || true
@@ -337,22 +311,23 @@ $(restore_bin)
     - run: ls -lha $registry || true
     - run: du -sh $registry || true
     - run: ls -lha $registry || true
-    - run: du -sh $registry-new || true
-    - run: ls -lha $registry-new || true
+    - run: du -sh $registry_new || true
+    - run: ls -lha $registry_new || true
     - uses: actions/checkout@v5
     - run: ls -lha $registry || true
     - run: du -sh $registry || true
-    - run: ls -lha $registry-new || true
-    - run: du -sh $registry-new || true
+    - run: ls -lha $registry_new || true
+    - run: du -sh $registry_new || true
 $(rundeps_versions)
 
     - name: Local private registry cache
       uses: actions/cache@v4
       with:
         path: $registry
-        key: localprivatereg-\${{ github.job }}-cli-\${{ runner.os }}
+        key: localprivatereg-\${{ runner.os }}-\${{ matrix.toolchain }}-\${{ github.job }}
         restore-keys: |
-          localprivatereg-\${{ github.job }}-cli-
+          localprivatereg-\${{ runner.os }}-\${{ matrix.toolchain }}-
+          localprivatereg-\${{ runner.os }}-
           localprivatereg-
 
     - name: Envs
@@ -366,8 +341,8 @@ $(rundeps_versions)
 $(cache_usage)
     - run: du -sh $registry || true
     - run: ls -lha $registry || true
-    - run: du -sh $registry-new || true
-    - run: ls -lha $registry-new || true
+    - run: du -sh $registry_new || true
+    - run: ls -lha $registry_new || true
     - name: cargo install net=ON cache=OFF remote=OFF jobs=$jobs
       run: |
 $(unset_action_envs)
@@ -375,8 +350,8 @@ $(unset_action_envs)
           cargo green -vv install --jobs=$jobs --locked --force $(as_install "$name_at_version") $@ |& tee _
     - run: du -sh $registry || true
     - run: ls -lha $registry || true
-    - run: du -sh $registry-new || true
-    - run: ls -lha $registry-new || true
+    - run: du -sh $registry_new || true
+    - run: ls -lha $registry_new || true
     - name: cargo install net=ON cache=ON remote=OFF jobs=1
       if: \${{ failure() }}
       run: |
@@ -386,8 +361,8 @@ $(unset_action_envs)
           cargo green -vv install --jobs=1 --locked --force $(as_install "$name_at_version") $@ |& tee _
     - run: du -sh $registry || true
     - run: ls -lha $registry || true
-    - run: du -sh $registry-new || true
-    - run: ls -lha $registry-new || true
+    - run: du -sh $registry_new || true
+    - run: ls -lha $registry_new || true
     - if: \${{ matrix.toolchain != 'stable' }}
       uses: actions/upload-artifact@v4
       name: Upload recipe
@@ -408,6 +383,11 @@ $(unset_action_envs)
           cargo green -vv install --jobs=$jobs --locked --force $(as_install "$name_at_version") $@ |& tee _
 $(postcond_fresh _)
 $(postconds _)
+    - name: Local private registry cache dance
+      run: |
+        # [ci: caches keep growing](https://github.com/moby/buildkit/issues/1850)
+        rm -rf $registry
+        mv $registry_new $registry
 $(cache_usage)
 
     - name: Target dir disk usage
