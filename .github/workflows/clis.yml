@@ -64,11 +64,11 @@ jobs:
     defaults:
       run:
         shell: bash -euo pipefail {0}
-    continue-on-error: ${{ matrix.toolchain != 'stable' }}
+    continue-on-error: ${{ matrix.toolchain != '1.90.0' }}
     strategy:
       matrix:
         toolchain:
-        - stable
+        - 1.90.0
         - 1.86.0
     services:
       registry:
@@ -162,7 +162,7 @@ jobs:
 
     - name: Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
-    - if: ${{ matrix.toolchain != 'stable' }}
+    - if: ${{ matrix.toolchain != '1.90.0' }}
       run: ~/.cargo/bin/cargo-green green supergreen env CARGOGREEN_BASE_IMAGE | grep '${{ matrix.toolchain }}'
     - run: BUILDX_BUILDER=supergreen docker buildx inspect
     - name: Envs again
@@ -206,7 +206,7 @@ jobs:
     - run: ls -lha /tmp/.local-registry || true
     - run: du -sh /tmp/.local-registry-new || true
     - run: ls -lha /tmp/.local-registry-new || true
-    - if: ${{ matrix.toolchain != 'stable' }}
+    - if: ${{ matrix.toolchain != '1.90.0' }}
       uses: actions/upload-artifact@v4
       name: Upload recipe
       with:
@@ -252,7 +252,7 @@ jobs:
       run: |
         ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != 'stable' }}
+    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != '1.90.0' }}
       name: Maybe show final path diff
       run: |
         case "$GITHUB_JOB" in
@@ -330,7 +330,7 @@ jobs:
       run: |
         ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != 'stable' }}
+    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != '1.90.0' }}
       name: Maybe show final path diff
       run: |
         case "$GITHUB_JOB" in
@@ -362,11 +362,11 @@ jobs:
     defaults:
       run:
         shell: bash -euo pipefail {0}
-    continue-on-error: ${{ matrix.toolchain != 'stable' }}
+    continue-on-error: ${{ matrix.toolchain != '1.90.0' }}
     strategy:
       matrix:
         toolchain:
-        - stable
+        - 1.90.0
         - 1.86.0
     services:
       registry:
@@ -460,7 +460,7 @@ jobs:
 
     - name: Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
-    - if: ${{ matrix.toolchain != 'stable' }}
+    - if: ${{ matrix.toolchain != '1.90.0' }}
       run: ~/.cargo/bin/cargo-green green supergreen env CARGOGREEN_BASE_IMAGE | grep '${{ matrix.toolchain }}'
     - run: BUILDX_BUILDER=supergreen docker buildx inspect
     - name: Envs again
@@ -504,7 +504,7 @@ jobs:
     - run: ls -lha /tmp/.local-registry || true
     - run: du -sh /tmp/.local-registry-new || true
     - run: ls -lha /tmp/.local-registry-new || true
-    - if: ${{ matrix.toolchain != 'stable' }}
+    - if: ${{ matrix.toolchain != '1.90.0' }}
       uses: actions/upload-artifact@v4
       name: Upload recipe
       with:
@@ -550,7 +550,7 @@ jobs:
       run: |
         ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != 'stable' }}
+    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != '1.90.0' }}
       name: Maybe show final path diff
       run: |
         case "$GITHUB_JOB" in
@@ -628,7 +628,7 @@ jobs:
       run: |
         ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != 'stable' }}
+    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != '1.90.0' }}
       name: Maybe show final path diff
       run: |
         case "$GITHUB_JOB" in
@@ -660,11 +660,11 @@ jobs:
     defaults:
       run:
         shell: bash -euo pipefail {0}
-    continue-on-error: ${{ matrix.toolchain != 'stable' }}
+    continue-on-error: ${{ matrix.toolchain != '1.90.0' }}
     strategy:
       matrix:
         toolchain:
-        - stable
+        - 1.90.0
         - 1.86.0
     services:
       registry:
@@ -758,7 +758,7 @@ jobs:
 
     - name: Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
-    - if: ${{ matrix.toolchain != 'stable' }}
+    - if: ${{ matrix.toolchain != '1.90.0' }}
       run: ~/.cargo/bin/cargo-green green supergreen env CARGOGREEN_BASE_IMAGE | grep '${{ matrix.toolchain }}'
     - run: BUILDX_BUILDER=supergreen docker buildx inspect
     - name: Envs again
@@ -802,7 +802,7 @@ jobs:
     - run: ls -lha /tmp/.local-registry || true
     - run: du -sh /tmp/.local-registry-new || true
     - run: ls -lha /tmp/.local-registry-new || true
-    - if: ${{ matrix.toolchain != 'stable' }}
+    - if: ${{ matrix.toolchain != '1.90.0' }}
       uses: actions/upload-artifact@v4
       name: Upload recipe
       with:
@@ -848,7 +848,7 @@ jobs:
       run: |
         ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != 'stable' }}
+    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != '1.90.0' }}
       name: Maybe show final path diff
       run: |
         case "$GITHUB_JOB" in
@@ -926,7 +926,7 @@ jobs:
       run: |
         ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != 'stable' }}
+    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != '1.90.0' }}
       name: Maybe show final path diff
       run: |
         case "$GITHUB_JOB" in
@@ -958,11 +958,11 @@ jobs:
     defaults:
       run:
         shell: bash -euo pipefail {0}
-    continue-on-error: ${{ matrix.toolchain != 'stable' }}
+    continue-on-error: ${{ matrix.toolchain != '1.90.0' }}
     strategy:
       matrix:
         toolchain:
-        - stable
+        - 1.90.0
         - 1.86.0
     services:
       registry:
@@ -1056,7 +1056,7 @@ jobs:
 
     - name: Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
-    - if: ${{ matrix.toolchain != 'stable' }}
+    - if: ${{ matrix.toolchain != '1.90.0' }}
       run: ~/.cargo/bin/cargo-green green supergreen env CARGOGREEN_BASE_IMAGE | grep '${{ matrix.toolchain }}'
     - run: BUILDX_BUILDER=supergreen docker buildx inspect
     - name: Envs again
@@ -1100,7 +1100,7 @@ jobs:
     - run: ls -lha /tmp/.local-registry || true
     - run: du -sh /tmp/.local-registry-new || true
     - run: ls -lha /tmp/.local-registry-new || true
-    - if: ${{ matrix.toolchain != 'stable' }}
+    - if: ${{ matrix.toolchain != '1.90.0' }}
       uses: actions/upload-artifact@v4
       name: Upload recipe
       with:
@@ -1146,7 +1146,7 @@ jobs:
       run: |
         ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != 'stable' }}
+    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != '1.90.0' }}
       name: Maybe show final path diff
       run: |
         case "$GITHUB_JOB" in
@@ -1224,7 +1224,7 @@ jobs:
       run: |
         ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != 'stable' }}
+    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != '1.90.0' }}
       name: Maybe show final path diff
       run: |
         case "$GITHUB_JOB" in
@@ -1256,11 +1256,11 @@ jobs:
     defaults:
       run:
         shell: bash -euo pipefail {0}
-    continue-on-error: ${{ matrix.toolchain != 'stable' }}
+    continue-on-error: ${{ matrix.toolchain != '1.90.0' }}
     strategy:
       matrix:
         toolchain:
-        - stable
+        - 1.90.0
         - 1.86.0
     services:
       registry:
@@ -1354,7 +1354,7 @@ jobs:
 
     - name: Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
-    - if: ${{ matrix.toolchain != 'stable' }}
+    - if: ${{ matrix.toolchain != '1.90.0' }}
       run: ~/.cargo/bin/cargo-green green supergreen env CARGOGREEN_BASE_IMAGE | grep '${{ matrix.toolchain }}'
     - run: BUILDX_BUILDER=supergreen docker buildx inspect
     - name: Envs again
@@ -1398,7 +1398,7 @@ jobs:
     - run: ls -lha /tmp/.local-registry || true
     - run: du -sh /tmp/.local-registry-new || true
     - run: ls -lha /tmp/.local-registry-new || true
-    - if: ${{ matrix.toolchain != 'stable' }}
+    - if: ${{ matrix.toolchain != '1.90.0' }}
       uses: actions/upload-artifact@v4
       name: Upload recipe
       with:
@@ -1444,7 +1444,7 @@ jobs:
       run: |
         ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != 'stable' }}
+    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != '1.90.0' }}
       name: Maybe show final path diff
       run: |
         case "$GITHUB_JOB" in
@@ -1522,7 +1522,7 @@ jobs:
       run: |
         ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != 'stable' }}
+    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != '1.90.0' }}
       name: Maybe show final path diff
       run: |
         case "$GITHUB_JOB" in
@@ -1554,11 +1554,11 @@ jobs:
     defaults:
       run:
         shell: bash -euo pipefail {0}
-    continue-on-error: ${{ matrix.toolchain != 'stable' }}
+    continue-on-error: ${{ matrix.toolchain != '1.90.0' }}
     strategy:
       matrix:
         toolchain:
-        - stable
+        - 1.90.0
         - 1.86.0
     services:
       registry:
@@ -1652,7 +1652,7 @@ jobs:
 
     - name: Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
-    - if: ${{ matrix.toolchain != 'stable' }}
+    - if: ${{ matrix.toolchain != '1.90.0' }}
       run: ~/.cargo/bin/cargo-green green supergreen env CARGOGREEN_BASE_IMAGE | grep '${{ matrix.toolchain }}'
     - run: BUILDX_BUILDER=supergreen docker buildx inspect
     - name: Envs again
@@ -1696,7 +1696,7 @@ jobs:
     - run: ls -lha /tmp/.local-registry || true
     - run: du -sh /tmp/.local-registry-new || true
     - run: ls -lha /tmp/.local-registry-new || true
-    - if: ${{ matrix.toolchain != 'stable' }}
+    - if: ${{ matrix.toolchain != '1.90.0' }}
       uses: actions/upload-artifact@v4
       name: Upload recipe
       with:
@@ -1742,7 +1742,7 @@ jobs:
       run: |
         ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != 'stable' }}
+    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != '1.90.0' }}
       name: Maybe show final path diff
       run: |
         case "$GITHUB_JOB" in
@@ -1820,7 +1820,7 @@ jobs:
       run: |
         ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != 'stable' }}
+    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != '1.90.0' }}
       name: Maybe show final path diff
       run: |
         case "$GITHUB_JOB" in
@@ -1852,11 +1852,11 @@ jobs:
     defaults:
       run:
         shell: bash -euo pipefail {0}
-    continue-on-error: ${{ matrix.toolchain != 'stable' }}
+    continue-on-error: ${{ matrix.toolchain != '1.90.0' }}
     strategy:
       matrix:
         toolchain:
-        - stable
+        - 1.90.0
         - 1.86.0
     services:
       registry:
@@ -1950,7 +1950,7 @@ jobs:
 
     - name: Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
-    - if: ${{ matrix.toolchain != 'stable' }}
+    - if: ${{ matrix.toolchain != '1.90.0' }}
       run: ~/.cargo/bin/cargo-green green supergreen env CARGOGREEN_BASE_IMAGE | grep '${{ matrix.toolchain }}'
     - run: BUILDX_BUILDER=supergreen docker buildx inspect
     - name: Envs again
@@ -1994,7 +1994,7 @@ jobs:
     - run: ls -lha /tmp/.local-registry || true
     - run: du -sh /tmp/.local-registry-new || true
     - run: ls -lha /tmp/.local-registry-new || true
-    - if: ${{ matrix.toolchain != 'stable' }}
+    - if: ${{ matrix.toolchain != '1.90.0' }}
       uses: actions/upload-artifact@v4
       name: Upload recipe
       with:
@@ -2040,7 +2040,7 @@ jobs:
       run: |
         ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != 'stable' }}
+    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != '1.90.0' }}
       name: Maybe show final path diff
       run: |
         case "$GITHUB_JOB" in
@@ -2118,7 +2118,7 @@ jobs:
       run: |
         ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != 'stable' }}
+    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != '1.90.0' }}
       name: Maybe show final path diff
       run: |
         case "$GITHUB_JOB" in
@@ -2150,11 +2150,11 @@ jobs:
     defaults:
       run:
         shell: bash -euo pipefail {0}
-    continue-on-error: ${{ matrix.toolchain != 'stable' }}
+    continue-on-error: ${{ matrix.toolchain != '1.90.0' }}
     strategy:
       matrix:
         toolchain:
-        - stable
+        - 1.90.0
         - 1.86.0
     services:
       registry:
@@ -2249,7 +2249,7 @@ jobs:
 
     - name: Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
-    - if: ${{ matrix.toolchain != 'stable' }}
+    - if: ${{ matrix.toolchain != '1.90.0' }}
       run: ~/.cargo/bin/cargo-green green supergreen env CARGOGREEN_BASE_IMAGE | grep '${{ matrix.toolchain }}'
     - run: BUILDX_BUILDER=supergreen docker buildx inspect
     - name: Envs again
@@ -2293,7 +2293,7 @@ jobs:
     - run: ls -lha /tmp/.local-registry || true
     - run: du -sh /tmp/.local-registry-new || true
     - run: ls -lha /tmp/.local-registry-new || true
-    - if: ${{ matrix.toolchain != 'stable' }}
+    - if: ${{ matrix.toolchain != '1.90.0' }}
       uses: actions/upload-artifact@v4
       name: Upload recipe
       with:
@@ -2339,7 +2339,7 @@ jobs:
       run: |
         ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != 'stable' }}
+    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != '1.90.0' }}
       name: Maybe show final path diff
       run: |
         case "$GITHUB_JOB" in
@@ -2417,7 +2417,7 @@ jobs:
       run: |
         ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != 'stable' }}
+    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != '1.90.0' }}
       name: Maybe show final path diff
       run: |
         case "$GITHUB_JOB" in
@@ -2449,11 +2449,11 @@ jobs:
     defaults:
       run:
         shell: bash -euo pipefail {0}
-    continue-on-error: ${{ matrix.toolchain != 'stable' }}
+    continue-on-error: ${{ matrix.toolchain != '1.90.0' }}
     strategy:
       matrix:
         toolchain:
-        - stable
+        - 1.90.0
         - 1.86.0
     services:
       registry:
@@ -2547,7 +2547,7 @@ jobs:
 
     - name: Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
-    - if: ${{ matrix.toolchain != 'stable' }}
+    - if: ${{ matrix.toolchain != '1.90.0' }}
       run: ~/.cargo/bin/cargo-green green supergreen env CARGOGREEN_BASE_IMAGE | grep '${{ matrix.toolchain }}'
     - run: BUILDX_BUILDER=supergreen docker buildx inspect
     - name: Envs again
@@ -2591,7 +2591,7 @@ jobs:
     - run: ls -lha /tmp/.local-registry || true
     - run: du -sh /tmp/.local-registry-new || true
     - run: ls -lha /tmp/.local-registry-new || true
-    - if: ${{ matrix.toolchain != 'stable' }}
+    - if: ${{ matrix.toolchain != '1.90.0' }}
       uses: actions/upload-artifact@v4
       name: Upload recipe
       with:
@@ -2637,7 +2637,7 @@ jobs:
       run: |
         ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != 'stable' }}
+    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != '1.90.0' }}
       name: Maybe show final path diff
       run: |
         case "$GITHUB_JOB" in
@@ -2715,7 +2715,7 @@ jobs:
       run: |
         ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != 'stable' }}
+    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != '1.90.0' }}
       name: Maybe show final path diff
       run: |
         case "$GITHUB_JOB" in
@@ -2747,11 +2747,11 @@ jobs:
     defaults:
       run:
         shell: bash -euo pipefail {0}
-    continue-on-error: ${{ matrix.toolchain != 'stable' }}
+    continue-on-error: ${{ matrix.toolchain != '1.90.0' }}
     strategy:
       matrix:
         toolchain:
-        - stable
+        - 1.90.0
         - 1.86.0
     services:
       registry:
@@ -2845,7 +2845,7 @@ jobs:
 
     - name: Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
-    - if: ${{ matrix.toolchain != 'stable' }}
+    - if: ${{ matrix.toolchain != '1.90.0' }}
       run: ~/.cargo/bin/cargo-green green supergreen env CARGOGREEN_BASE_IMAGE | grep '${{ matrix.toolchain }}'
     - run: BUILDX_BUILDER=supergreen docker buildx inspect
     - name: Envs again
@@ -2889,7 +2889,7 @@ jobs:
     - run: ls -lha /tmp/.local-registry || true
     - run: du -sh /tmp/.local-registry-new || true
     - run: ls -lha /tmp/.local-registry-new || true
-    - if: ${{ matrix.toolchain != 'stable' }}
+    - if: ${{ matrix.toolchain != '1.90.0' }}
       uses: actions/upload-artifact@v4
       name: Upload recipe
       with:
@@ -2935,7 +2935,7 @@ jobs:
       run: |
         ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != 'stable' }}
+    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != '1.90.0' }}
       name: Maybe show final path diff
       run: |
         case "$GITHUB_JOB" in
@@ -3013,7 +3013,7 @@ jobs:
       run: |
         ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != 'stable' }}
+    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != '1.90.0' }}
       name: Maybe show final path diff
       run: |
         case "$GITHUB_JOB" in
@@ -3045,11 +3045,11 @@ jobs:
     defaults:
       run:
         shell: bash -euo pipefail {0}
-    continue-on-error: ${{ matrix.toolchain != 'stable' }}
+    continue-on-error: ${{ matrix.toolchain != '1.90.0' }}
     strategy:
       matrix:
         toolchain:
-        - stable
+        - 1.90.0
         - 1.86.0
     services:
       registry:
@@ -3143,7 +3143,7 @@ jobs:
 
     - name: Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
-    - if: ${{ matrix.toolchain != 'stable' }}
+    - if: ${{ matrix.toolchain != '1.90.0' }}
       run: ~/.cargo/bin/cargo-green green supergreen env CARGOGREEN_BASE_IMAGE | grep '${{ matrix.toolchain }}'
     - run: BUILDX_BUILDER=supergreen docker buildx inspect
     - name: Envs again
@@ -3187,7 +3187,7 @@ jobs:
     - run: ls -lha /tmp/.local-registry || true
     - run: du -sh /tmp/.local-registry-new || true
     - run: ls -lha /tmp/.local-registry-new || true
-    - if: ${{ matrix.toolchain != 'stable' }}
+    - if: ${{ matrix.toolchain != '1.90.0' }}
       uses: actions/upload-artifact@v4
       name: Upload recipe
       with:
@@ -3233,7 +3233,7 @@ jobs:
       run: |
         ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != 'stable' }}
+    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != '1.90.0' }}
       name: Maybe show final path diff
       run: |
         case "$GITHUB_JOB" in
@@ -3311,7 +3311,7 @@ jobs:
       run: |
         ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != 'stable' }}
+    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != '1.90.0' }}
       name: Maybe show final path diff
       run: |
         case "$GITHUB_JOB" in
@@ -3343,11 +3343,11 @@ jobs:
     defaults:
       run:
         shell: bash -euo pipefail {0}
-    continue-on-error: ${{ matrix.toolchain != 'stable' }}
+    continue-on-error: ${{ matrix.toolchain != '1.90.0' }}
     strategy:
       matrix:
         toolchain:
-        - stable
+        - 1.90.0
         - 1.86.0
     services:
       registry:
@@ -3441,7 +3441,7 @@ jobs:
 
     - name: Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
-    - if: ${{ matrix.toolchain != 'stable' }}
+    - if: ${{ matrix.toolchain != '1.90.0' }}
       run: ~/.cargo/bin/cargo-green green supergreen env CARGOGREEN_BASE_IMAGE | grep '${{ matrix.toolchain }}'
     - run: BUILDX_BUILDER=supergreen docker buildx inspect
     - name: Envs again
@@ -3485,7 +3485,7 @@ jobs:
     - run: ls -lha /tmp/.local-registry || true
     - run: du -sh /tmp/.local-registry-new || true
     - run: ls -lha /tmp/.local-registry-new || true
-    - if: ${{ matrix.toolchain != 'stable' }}
+    - if: ${{ matrix.toolchain != '1.90.0' }}
       uses: actions/upload-artifact@v4
       name: Upload recipe
       with:
@@ -3531,7 +3531,7 @@ jobs:
       run: |
         ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != 'stable' }}
+    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != '1.90.0' }}
       name: Maybe show final path diff
       run: |
         case "$GITHUB_JOB" in
@@ -3609,7 +3609,7 @@ jobs:
       run: |
         ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != 'stable' }}
+    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != '1.90.0' }}
       name: Maybe show final path diff
       run: |
         case "$GITHUB_JOB" in
@@ -3641,11 +3641,11 @@ jobs:
     defaults:
       run:
         shell: bash -euo pipefail {0}
-    continue-on-error: ${{ matrix.toolchain != 'stable' }}
+    continue-on-error: ${{ matrix.toolchain != '1.90.0' }}
     strategy:
       matrix:
         toolchain:
-        - stable
+        - 1.90.0
         - 1.86.0
     services:
       registry:
@@ -3739,7 +3739,7 @@ jobs:
 
     - name: Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
-    - if: ${{ matrix.toolchain != 'stable' }}
+    - if: ${{ matrix.toolchain != '1.90.0' }}
       run: ~/.cargo/bin/cargo-green green supergreen env CARGOGREEN_BASE_IMAGE | grep '${{ matrix.toolchain }}'
     - run: BUILDX_BUILDER=supergreen docker buildx inspect
     - name: Envs again
@@ -3783,7 +3783,7 @@ jobs:
     - run: ls -lha /tmp/.local-registry || true
     - run: du -sh /tmp/.local-registry-new || true
     - run: ls -lha /tmp/.local-registry-new || true
-    - if: ${{ matrix.toolchain != 'stable' }}
+    - if: ${{ matrix.toolchain != '1.90.0' }}
       uses: actions/upload-artifact@v4
       name: Upload recipe
       with:
@@ -3829,7 +3829,7 @@ jobs:
       run: |
         ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != 'stable' }}
+    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != '1.90.0' }}
       name: Maybe show final path diff
       run: |
         case "$GITHUB_JOB" in
@@ -3907,7 +3907,7 @@ jobs:
       run: |
         ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != 'stable' }}
+    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != '1.90.0' }}
       name: Maybe show final path diff
       run: |
         case "$GITHUB_JOB" in
@@ -3939,11 +3939,11 @@ jobs:
     defaults:
       run:
         shell: bash -euo pipefail {0}
-    continue-on-error: ${{ matrix.toolchain != 'stable' }}
+    continue-on-error: ${{ matrix.toolchain != '1.90.0' }}
     strategy:
       matrix:
         toolchain:
-        - stable
+        - 1.90.0
         - 1.86.0
     services:
       registry:
@@ -4037,7 +4037,7 @@ jobs:
 
     - name: Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
-    - if: ${{ matrix.toolchain != 'stable' }}
+    - if: ${{ matrix.toolchain != '1.90.0' }}
       run: ~/.cargo/bin/cargo-green green supergreen env CARGOGREEN_BASE_IMAGE | grep '${{ matrix.toolchain }}'
     - run: BUILDX_BUILDER=supergreen docker buildx inspect
     - name: Envs again
@@ -4081,7 +4081,7 @@ jobs:
     - run: ls -lha /tmp/.local-registry || true
     - run: du -sh /tmp/.local-registry-new || true
     - run: ls -lha /tmp/.local-registry-new || true
-    - if: ${{ matrix.toolchain != 'stable' }}
+    - if: ${{ matrix.toolchain != '1.90.0' }}
       uses: actions/upload-artifact@v4
       name: Upload recipe
       with:
@@ -4127,7 +4127,7 @@ jobs:
       run: |
         ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != 'stable' }}
+    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != '1.90.0' }}
       name: Maybe show final path diff
       run: |
         case "$GITHUB_JOB" in
@@ -4205,7 +4205,7 @@ jobs:
       run: |
         ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != 'stable' }}
+    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != '1.90.0' }}
       name: Maybe show final path diff
       run: |
         case "$GITHUB_JOB" in

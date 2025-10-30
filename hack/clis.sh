@@ -251,12 +251,12 @@ cli() {
 
 	cat <<EOF
 $(jobdef "$(slugify "$name_at_version")_$jobs")
-    continue-on-error: \${{ matrix.toolchain != 'stable' }}
+    continue-on-error: \${{ matrix.toolchain != '$stable' }}
     strategy:
       matrix:
         toolchain:
-        - stable
-        - 1.86.0
+        - $stable
+        - $fixed
     services:
       registry:
         image: registry:3
@@ -339,7 +339,7 @@ $(rundeps_versions)
 
     - name: Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
-    - if: \${{ matrix.toolchain != 'stable' }}
+    - if: \${{ matrix.toolchain != '$stable' }}
       run: ~/.cargo/bin/cargo-green green supergreen env CARGOGREEN_BASE_IMAGE | grep '\${{ matrix.toolchain }}'
     - run: BUILDX_BUILDER=supergreen docker buildx inspect
     - name: Envs again
@@ -370,7 +370,7 @@ $(unset_action_envs)
     - run: ls -lha $registry || true
     - run: du -sh $registry_new || true
     - run: ls -lha $registry_new || true
-    - if: \${{ matrix.toolchain != 'stable' }}
+    - if: \${{ matrix.toolchain != '$stable' }}
       uses: actions/upload-artifact@v4
       name: Upload recipe
       with:

@@ -1,7 +1,8 @@
 #!/usr/bin/env -S bash -eu
 set -o pipefail
 
-source $(realpath "$(dirname "$0")")/ck.sh
+repo_root=$(realpath "$(dirname "$(dirname "$0")")")
+source "$repo_root"/hack/ck.sh
 
 nightly=nightly-2025-08-06
 
