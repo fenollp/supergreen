@@ -159,7 +159,7 @@ $(jobdef 'bin')
     steps:
     - id: get-user
       run: echo "::set-output name=uid_gid::\$(id -u):\$(id -g)"
-    steps:
+
     - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
         toolchain: stable
