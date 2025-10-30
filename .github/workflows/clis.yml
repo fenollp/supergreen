@@ -343,8 +343,8 @@ jobs:
     - name: Local private registry cache dance
       run: |
         # [ci: caches keep growing](https://github.com/moby/buildkit/issues/1850)
-        rm -rf /tmp/.local-registry
-        mv /tmp/.local-registry-new /tmp/.local-registry
+        sudo rm -rf /tmp/.local-registry
+        sudo mv /tmp/.local-registry-new /tmp/.local-registry
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
@@ -642,8 +642,8 @@ jobs:
     - name: Local private registry cache dance
       run: |
         # [ci: caches keep growing](https://github.com/moby/buildkit/issues/1850)
-        rm -rf /tmp/.local-registry
-        mv /tmp/.local-registry-new /tmp/.local-registry
+        sudo rm -rf /tmp/.local-registry
+        sudo mv /tmp/.local-registry-new /tmp/.local-registry
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
@@ -941,8 +941,8 @@ jobs:
     - name: Local private registry cache dance
       run: |
         # [ci: caches keep growing](https://github.com/moby/buildkit/issues/1850)
-        rm -rf /tmp/.local-registry
-        mv /tmp/.local-registry-new /tmp/.local-registry
+        sudo rm -rf /tmp/.local-registry
+        sudo mv /tmp/.local-registry-new /tmp/.local-registry
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
@@ -1240,8 +1240,8 @@ jobs:
     - name: Local private registry cache dance
       run: |
         # [ci: caches keep growing](https://github.com/moby/buildkit/issues/1850)
-        rm -rf /tmp/.local-registry
-        mv /tmp/.local-registry-new /tmp/.local-registry
+        sudo rm -rf /tmp/.local-registry
+        sudo mv /tmp/.local-registry-new /tmp/.local-registry
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
@@ -1539,8 +1539,8 @@ jobs:
     - name: Local private registry cache dance
       run: |
         # [ci: caches keep growing](https://github.com/moby/buildkit/issues/1850)
-        rm -rf /tmp/.local-registry
-        mv /tmp/.local-registry-new /tmp/.local-registry
+        sudo rm -rf /tmp/.local-registry
+        sudo mv /tmp/.local-registry-new /tmp/.local-registry
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
@@ -1838,8 +1838,8 @@ jobs:
     - name: Local private registry cache dance
       run: |
         # [ci: caches keep growing](https://github.com/moby/buildkit/issues/1850)
-        rm -rf /tmp/.local-registry
-        mv /tmp/.local-registry-new /tmp/.local-registry
+        sudo rm -rf /tmp/.local-registry
+        sudo mv /tmp/.local-registry-new /tmp/.local-registry
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
@@ -2137,8 +2137,8 @@ jobs:
     - name: Local private registry cache dance
       run: |
         # [ci: caches keep growing](https://github.com/moby/buildkit/issues/1850)
-        rm -rf /tmp/.local-registry
-        mv /tmp/.local-registry-new /tmp/.local-registry
+        sudo rm -rf /tmp/.local-registry
+        sudo mv /tmp/.local-registry-new /tmp/.local-registry
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
@@ -2437,8 +2437,8 @@ jobs:
     - name: Local private registry cache dance
       run: |
         # [ci: caches keep growing](https://github.com/moby/buildkit/issues/1850)
-        rm -rf /tmp/.local-registry
-        mv /tmp/.local-registry-new /tmp/.local-registry
+        sudo rm -rf /tmp/.local-registry
+        sudo mv /tmp/.local-registry-new /tmp/.local-registry
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
@@ -2736,8 +2736,8 @@ jobs:
     - name: Local private registry cache dance
       run: |
         # [ci: caches keep growing](https://github.com/moby/buildkit/issues/1850)
-        rm -rf /tmp/.local-registry
-        mv /tmp/.local-registry-new /tmp/.local-registry
+        sudo rm -rf /tmp/.local-registry
+        sudo mv /tmp/.local-registry-new /tmp/.local-registry
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
@@ -3035,8 +3035,8 @@ jobs:
     - name: Local private registry cache dance
       run: |
         # [ci: caches keep growing](https://github.com/moby/buildkit/issues/1850)
-        rm -rf /tmp/.local-registry
-        mv /tmp/.local-registry-new /tmp/.local-registry
+        sudo rm -rf /tmp/.local-registry
+        sudo mv /tmp/.local-registry-new /tmp/.local-registry
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
@@ -3334,8 +3334,8 @@ jobs:
     - name: Local private registry cache dance
       run: |
         # [ci: caches keep growing](https://github.com/moby/buildkit/issues/1850)
-        rm -rf /tmp/.local-registry
-        mv /tmp/.local-registry-new /tmp/.local-registry
+        sudo rm -rf /tmp/.local-registry
+        sudo mv /tmp/.local-registry-new /tmp/.local-registry
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
@@ -3633,8 +3633,8 @@ jobs:
     - name: Local private registry cache dance
       run: |
         # [ci: caches keep growing](https://github.com/moby/buildkit/issues/1850)
-        rm -rf /tmp/.local-registry
-        mv /tmp/.local-registry-new /tmp/.local-registry
+        sudo rm -rf /tmp/.local-registry
+        sudo mv /tmp/.local-registry-new /tmp/.local-registry
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
@@ -3932,8 +3932,8 @@ jobs:
     - name: Local private registry cache dance
       run: |
         # [ci: caches keep growing](https://github.com/moby/buildkit/issues/1850)
-        rm -rf /tmp/.local-registry
-        mv /tmp/.local-registry-new /tmp/.local-registry
+        sudo rm -rf /tmp/.local-registry
+        sudo mv /tmp/.local-registry-new /tmp/.local-registry
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
@@ -4231,8 +4231,8 @@ jobs:
     - name: Local private registry cache dance
       run: |
         # [ci: caches keep growing](https://github.com/moby/buildkit/issues/1850)
-        rm -rf /tmp/.local-registry
-        mv /tmp/.local-registry-new /tmp/.local-registry
+        sudo rm -rf /tmp/.local-registry
+        sudo mv /tmp/.local-registry-new /tmp/.local-registry
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose

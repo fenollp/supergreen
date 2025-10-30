@@ -386,8 +386,8 @@ $(postconds _)
     - name: Local private registry cache dance
       run: |
         # [ci: caches keep growing](https://github.com/moby/buildkit/issues/1850)
-        rm -rf $registry
-        mv $registry_new $registry
+        sudo rm -rf $registry
+        sudo mv $registry_new $registry
 $(cache_usage)
 
     - name: Target dir disk usage
