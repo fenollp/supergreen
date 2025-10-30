@@ -195,6 +195,7 @@ then run your cargo command again.
                 ),
             ]
             .into(),
+            ..Default::default()
         };
 
         let cfg = if config != buildkitd::Config::default() {

@@ -5,7 +5,7 @@ use serde::{Deserialize, Serialize};
 /// [worker.oci]
 /// max-parallelism = 4
 #[derive(Debug, Default, Serialize, Deserialize, PartialEq)]
-#[serde(default)]
+#[serde(default, rename_all = "kebab-case")]
 pub(crate) struct Config {
     /// --buildkitd-flags '--debug'
     /// => docker logs $BUILDX_BUILDER -f | grep 'do request.+host='
@@ -14,10 +14,13 @@ pub(crate) struct Config {
 
     #[serde(skip_serializing_if = "IndexMap::is_empty")]
     pub(crate) registry: IndexMap<String, Registry>,
+
+    #[serde(skip_serializing_if = "Vec::is_empty")]
+    pub(crate) insecure_entitlements: Vec<String>,
 }
 
 #[derive(Debug, Default, Serialize, Deserialize, PartialEq)]
-#[serde(default)]
+#[serde(default, rename_all = "kebab-case")]
 pub(crate) struct Registry {
     #[serde(skip_serializing_if = "Vec::is_empty")]
     pub(crate) mirrors: Vec<String>,
@@ -54,7 +57,8 @@ mirrors = [
                     ..Default::default()
                 }
             )]
-            .into()
+            .into(),
+            ..Default::default()
         }
     );
 
@@ -75,7 +79,6 @@ insecure = true
 "#[1..];
 
     let de: Config = toml::de::from_str(cfg).unwrap();
-    assert_ne!(de, Config::default());
     assert_eq!(
         de,
         Config {
@@ -90,6 +93,29 @@ insecure = true
                 ),
             ]
             .into(),
+            ..Default::default()
+        }
+    );
+
+    let ser = toml::to_string_pretty(&de).unwrap();
+    println!("{ser}");
+    assert_eq!(ser, cfg);
+}
+
+#[test]
+fn insecure() {
+    let cfg = &r#"
+insecure-entitlements = [
+    "network.host",
+    "security.insecure",
+]
+"#[1..];
+
+    let de: Config = toml::de::from_str(cfg).unwrap();
+    assert_eq!(
+        de,
+        Config {
+            insecure_entitlements: vec!["network.host".to_owned(), "security.insecure".to_owned()],
             ..Default::default()
         }
     );
