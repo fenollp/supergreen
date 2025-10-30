@@ -11,9 +11,6 @@ cat <<EOF
     defaults:
       run:
         shell: bash -euo pipefail {0}
-    permissions:
-      contents: read
-      packages: write
 EOF
 }
 

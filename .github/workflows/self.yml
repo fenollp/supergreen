@@ -8,9 +8,6 @@ jobs:
     defaults:
       run:
         shell: bash -euo pipefail {0}
-    permissions:
-      contents: read
-      packages: write
     steps:
     - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
@@ -58,9 +55,6 @@ jobs:
     defaults:
       run:
         shell: bash -euo pipefail {0}
-    permissions:
-      contents: read
-      packages: write
     needs: bin
     env:
       RUST_BACKTRACE: 1
@@ -188,9 +182,6 @@ jobs:
     defaults:
       run:
         shell: bash -euo pipefail {0}
-    permissions:
-      contents: read
-      packages: write
     needs: bin
     env:
       RUST_BACKTRACE: 1
@@ -321,9 +312,6 @@ jobs:
     defaults:
       run:
         shell: bash -euo pipefail {0}
-    permissions:
-      contents: read
-      packages: write
     needs: bin
     env:
       RUST_BACKTRACE: 1
@@ -525,9 +513,6 @@ jobs:
     defaults:
       run:
         shell: bash -euo pipefail {0}
-    permissions:
-      contents: read
-      packages: write
     needs: bin
     env:
       RUST_BACKTRACE: 1
@@ -858,9 +843,6 @@ jobs:
     defaults:
       run:
         shell: bash -euo pipefail {0}
-    permissions:
-      contents: read
-      packages: write
     needs: bin
     env:
       RUST_BACKTRACE: 1
@@ -1191,9 +1173,6 @@ jobs:
     defaults:
       run:
         shell: bash -euo pipefail {0}
-    permissions:
-      contents: read
-      packages: write
     needs: bin
     env:
       RUST_BACKTRACE: 1
@@ -1452,9 +1431,6 @@ jobs:
     defaults:
       run:
         shell: bash -euo pipefail {0}
-    permissions:
-      contents: read
-      packages: write
     needs: bin
     env:
       RUST_BACKTRACE: 1
@@ -1641,9 +1617,6 @@ jobs:
     defaults:
       run:
         shell: bash -euo pipefail {0}
-    permissions:
-      contents: read
-      packages: write
     needs: bin
     env:
       RUST_BACKTRACE: 1

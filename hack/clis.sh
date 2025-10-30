@@ -154,6 +154,11 @@ jobs:
 
 
 $(jobdef 'bin')
+    outputs: # [Run the job.container as the same user of the host VM by default](https://github.com/actions/runner/issues/691#issue-691014872)
+      uid_gid: \${{ steps.get-user.outputs.uid_gid }}
+    steps:
+    - id: get-user
+      run: echo "::set-output name=uid_gid::\$(id -u):\$(id -g)"
     steps:
     - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
@@ -257,6 +262,7 @@ $(jobdef "$(slugify "$name_at_version")_$jobs")
         image: registry:3
         ports: ['5000:5000']
         volumes: ['$registry:/var/lib/registry']
+        options: --user \${{ needs.bin.outputs.uid_gid }}
         credentials:
           username: \${{ vars.DOCKERHUB_USERNAME }}
           password: \${{ secrets.DOCKERHUB_TOKEN }}
@@ -264,6 +270,7 @@ $(jobdef "$(slugify "$name_at_version")_$jobs")
         image: registry:3
         ports: ['6000:5000']
         volumes: ['$registry_new:/var/lib/registry']
+        options: --user \${{ needs.bin.outputs.uid_gid }}
         credentials:
           username: \${{ vars.DOCKERHUB_USERNAME }}
           password: \${{ secrets.DOCKERHUB_TOKEN }}
@@ -320,7 +327,7 @@ $(restore_bin)
     - run: du -sh $registry_new || true
 $(rundeps_versions)
 
-    - name: Local private registry cache
+    - name: Local private registry cache https://github.com/fenollp/supergreen/actions/caches
       uses: actions/cache@v4
       with:
         path: $registry
@@ -386,8 +393,8 @@ $(postconds _)
     - name: Local private registry cache dance
       run: |
         # [ci: caches keep growing](https://github.com/moby/buildkit/issues/1850)
-        sudo rm -rf $registry
-        sudo mv $registry_new $registry
+        rm -rf $registry
+        mv $registry_new $registry
 $(cache_usage)
 
     - name: Target dir disk usage
