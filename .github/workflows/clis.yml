@@ -79,6 +79,13 @@ jobs:
         credentials:
           username: ${{ vars.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+      registrybis:
+        image: registry:3
+        ports: ['6000:5000']
+        volumes: ['/tmp/.local-registry-new:/var/lib/registry']
+        credentials:
+          username: ${{ vars.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
     env:
       CARGO_TARGET_DIR: /tmp/clis-buildxargs_master
     # CARGOGREEN_CACHE_FROM_IMAGES: docker-image://ghcr.io/${{ github.repository }}
@@ -119,6 +126,8 @@ jobs:
         mv ./cargo-green ~/.cargo/bin/
     - run: ls -lha /tmp/.local-registry || true
     - run: mkdir -p /tmp/.local-registry
+    - run: ls -lha /tmp/.local-registry-new || true
+    - run: mkdir -p /tmp/.local-registry-new
     - run: docker pull localhost:5000/fenollp/supergreen || true
     - run: docker build --push --tag localhost:5000/fenollp/supergreen - <<<'FROM scratch'
     - run: docker pull localhost:5000/fenollp/supergreen || true
@@ -126,15 +135,28 @@ jobs:
     - run: ls -lha /tmp/.local-registry || true
     - run: du -sh /tmp/.local-registry || true
     - run: ls -lha /tmp/.local-registry || true
+    - run: du -sh /tmp/.local-registry-new || true
+    - run: ls -lha /tmp/.local-registry-new || true
     - uses: actions/checkout@v5
     - run: ls -lha /tmp/.local-registry || true
     - run: du -sh /tmp/.local-registry || true
+    - run: ls -lha /tmp/.local-registry-new || true
+    - run: du -sh /tmp/.local-registry-new || true
     - run: docker info
     - run: docker buildx version
     - run: docker buildx build --help
     - run: podman version || true
     - run: cargo -Vv
     - run: docker buildx prune --all --force
+
+    - name: Local private registry cache
+      uses: actions/cache@v4
+      with:
+        path: /tmp/.local-registry
+        key: localprivatereg-${{ github.job }}-cli-${{ runner.os }}
+        restore-keys: |
+          localprivatereg-${{ github.job }}-cli-
+          localprivatereg-
 
     - name: Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
@@ -152,6 +174,8 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
     - run: du -sh /tmp/.local-registry || true
     - run: ls -lha /tmp/.local-registry || true
+    - run: du -sh /tmp/.local-registry-new || true
+    - run: ls -lha /tmp/.local-registry-new || true
     - name: cargo install net=ON cache=OFF remote=OFF jobs=3
       run: |
         unset CARGO_INCREMENTAL
@@ -163,6 +187,8 @@ jobs:
           cargo green -vv install --jobs=3 --locked --force buildxargs --git https://github.com/fenollp/buildxargs.git |& tee _
     - run: du -sh /tmp/.local-registry || true
     - run: ls -lha /tmp/.local-registry || true
+    - run: du -sh /tmp/.local-registry-new || true
+    - run: ls -lha /tmp/.local-registry-new || true
     - name: cargo install net=ON cache=ON remote=OFF jobs=1
       if: ${{ failure() }}
       run: |
@@ -176,6 +202,8 @@ jobs:
           cargo green -vv install --jobs=1 --locked --force buildxargs --git https://github.com/fenollp/buildxargs.git |& tee _
     - run: du -sh /tmp/.local-registry || true
     - run: ls -lha /tmp/.local-registry || true
+    - run: du -sh /tmp/.local-registry-new || true
+    - run: ls -lha /tmp/.local-registry-new || true
     - if: ${{ matrix.toolchain != 'stable' }}
       uses: actions/upload-artifact@v4
       name: Upload recipe
@@ -344,6 +372,13 @@ jobs:
         credentials:
           username: ${{ vars.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+      registrybis:
+        image: registry:3
+        ports: ['6000:5000']
+        volumes: ['/tmp/.local-registry-new:/var/lib/registry']
+        credentials:
+          username: ${{ vars.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
     env:
       CARGO_TARGET_DIR: /tmp/clis-cargo-llvm-cov_0-5-36
     # CARGOGREEN_CACHE_FROM_IMAGES: docker-image://ghcr.io/${{ github.repository }}
@@ -384,6 +419,8 @@ jobs:
         mv ./cargo-green ~/.cargo/bin/
     - run: ls -lha /tmp/.local-registry || true
     - run: mkdir -p /tmp/.local-registry
+    - run: ls -lha /tmp/.local-registry-new || true
+    - run: mkdir -p /tmp/.local-registry-new
     - run: docker pull localhost:5000/fenollp/supergreen || true
     - run: docker build --push --tag localhost:5000/fenollp/supergreen - <<<'FROM scratch'
     - run: docker pull localhost:5000/fenollp/supergreen || true
@@ -391,15 +428,28 @@ jobs:
     - run: ls -lha /tmp/.local-registry || true
     - run: du -sh /tmp/.local-registry || true
     - run: ls -lha /tmp/.local-registry || true
+    - run: du -sh /tmp/.local-registry-new || true
+    - run: ls -lha /tmp/.local-registry-new || true
     - uses: actions/checkout@v5
     - run: ls -lha /tmp/.local-registry || true
     - run: du -sh /tmp/.local-registry || true
+    - run: ls -lha /tmp/.local-registry-new || true
+    - run: du -sh /tmp/.local-registry-new || true
     - run: docker info
     - run: docker buildx version
     - run: docker buildx build --help
     - run: podman version || true
     - run: cargo -Vv
     - run: docker buildx prune --all --force
+
+    - name: Local private registry cache
+      uses: actions/cache@v4
+      with:
+        path: /tmp/.local-registry
+        key: localprivatereg-${{ github.job }}-cli-${{ runner.os }}
+        restore-keys: |
+          localprivatereg-${{ github.job }}-cli-
+          localprivatereg-
 
     - name: Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
@@ -417,6 +467,8 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
     - run: du -sh /tmp/.local-registry || true
     - run: ls -lha /tmp/.local-registry || true
+    - run: du -sh /tmp/.local-registry-new || true
+    - run: ls -lha /tmp/.local-registry-new || true
     - name: cargo install net=ON cache=OFF remote=OFF jobs=3
       run: |
         unset CARGO_INCREMENTAL
@@ -428,6 +480,8 @@ jobs:
           cargo green -vv install --jobs=3 --locked --force cargo-llvm-cov@0.5.36  |& tee _
     - run: du -sh /tmp/.local-registry || true
     - run: ls -lha /tmp/.local-registry || true
+    - run: du -sh /tmp/.local-registry-new || true
+    - run: ls -lha /tmp/.local-registry-new || true
     - name: cargo install net=ON cache=ON remote=OFF jobs=1
       if: ${{ failure() }}
       run: |
@@ -441,6 +495,8 @@ jobs:
           cargo green -vv install --jobs=1 --locked --force cargo-llvm-cov@0.5.36  |& tee _
     - run: du -sh /tmp/.local-registry || true
     - run: ls -lha /tmp/.local-registry || true
+    - run: du -sh /tmp/.local-registry-new || true
+    - run: ls -lha /tmp/.local-registry-new || true
     - if: ${{ matrix.toolchain != 'stable' }}
       uses: actions/upload-artifact@v4
       name: Upload recipe
@@ -609,6 +665,13 @@ jobs:
         credentials:
           username: ${{ vars.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+      registrybis:
+        image: registry:3
+        ports: ['6000:5000']
+        volumes: ['/tmp/.local-registry-new:/var/lib/registry']
+        credentials:
+          username: ${{ vars.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
     env:
       CARGO_TARGET_DIR: /tmp/clis-cross_0-2-5
     # CARGOGREEN_CACHE_FROM_IMAGES: docker-image://ghcr.io/${{ github.repository }}
@@ -649,6 +712,8 @@ jobs:
         mv ./cargo-green ~/.cargo/bin/
     - run: ls -lha /tmp/.local-registry || true
     - run: mkdir -p /tmp/.local-registry
+    - run: ls -lha /tmp/.local-registry-new || true
+    - run: mkdir -p /tmp/.local-registry-new
     - run: docker pull localhost:5000/fenollp/supergreen || true
     - run: docker build --push --tag localhost:5000/fenollp/supergreen - <<<'FROM scratch'
     - run: docker pull localhost:5000/fenollp/supergreen || true
@@ -656,15 +721,28 @@ jobs:
     - run: ls -lha /tmp/.local-registry || true
     - run: du -sh /tmp/.local-registry || true
     - run: ls -lha /tmp/.local-registry || true
+    - run: du -sh /tmp/.local-registry-new || true
+    - run: ls -lha /tmp/.local-registry-new || true
     - uses: actions/checkout@v5
     - run: ls -lha /tmp/.local-registry || true
     - run: du -sh /tmp/.local-registry || true
+    - run: ls -lha /tmp/.local-registry-new || true
+    - run: du -sh /tmp/.local-registry-new || true
     - run: docker info
     - run: docker buildx version
     - run: docker buildx build --help
     - run: podman version || true
     - run: cargo -Vv
     - run: docker buildx prune --all --force
+
+    - name: Local private registry cache
+      uses: actions/cache@v4
+      with:
+        path: /tmp/.local-registry
+        key: localprivatereg-${{ github.job }}-cli-${{ runner.os }}
+        restore-keys: |
+          localprivatereg-${{ github.job }}-cli-
+          localprivatereg-
 
     - name: Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
@@ -682,6 +760,8 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
     - run: du -sh /tmp/.local-registry || true
     - run: ls -lha /tmp/.local-registry || true
+    - run: du -sh /tmp/.local-registry-new || true
+    - run: ls -lha /tmp/.local-registry-new || true
     - name: cargo install net=ON cache=OFF remote=OFF jobs=3
       run: |
         unset CARGO_INCREMENTAL
@@ -693,6 +773,8 @@ jobs:
           cargo green -vv install --jobs=3 --locked --force cross@0.2.5 --git https://github.com/cross-rs/cross.git --tag=v0.2.5 cross |& tee _
     - run: du -sh /tmp/.local-registry || true
     - run: ls -lha /tmp/.local-registry || true
+    - run: du -sh /tmp/.local-registry-new || true
+    - run: ls -lha /tmp/.local-registry-new || true
     - name: cargo install net=ON cache=ON remote=OFF jobs=1
       if: ${{ failure() }}
       run: |
@@ -706,6 +788,8 @@ jobs:
           cargo green -vv install --jobs=1 --locked --force cross@0.2.5 --git https://github.com/cross-rs/cross.git --tag=v0.2.5 cross |& tee _
     - run: du -sh /tmp/.local-registry || true
     - run: ls -lha /tmp/.local-registry || true
+    - run: du -sh /tmp/.local-registry-new || true
+    - run: ls -lha /tmp/.local-registry-new || true
     - if: ${{ matrix.toolchain != 'stable' }}
       uses: actions/upload-artifact@v4
       name: Upload recipe
@@ -874,6 +958,13 @@ jobs:
         credentials:
           username: ${{ vars.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+      registrybis:
+        image: registry:3
+        ports: ['6000:5000']
+        volumes: ['/tmp/.local-registry-new:/var/lib/registry']
+        credentials:
+          username: ${{ vars.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
     env:
       CARGO_TARGET_DIR: /tmp/clis-dbcc_2-2-1
     # CARGOGREEN_CACHE_FROM_IMAGES: docker-image://ghcr.io/${{ github.repository }}
@@ -914,6 +1005,8 @@ jobs:
         mv ./cargo-green ~/.cargo/bin/
     - run: ls -lha /tmp/.local-registry || true
     - run: mkdir -p /tmp/.local-registry
+    - run: ls -lha /tmp/.local-registry-new || true
+    - run: mkdir -p /tmp/.local-registry-new
     - run: docker pull localhost:5000/fenollp/supergreen || true
     - run: docker build --push --tag localhost:5000/fenollp/supergreen - <<<'FROM scratch'
     - run: docker pull localhost:5000/fenollp/supergreen || true
@@ -921,15 +1014,28 @@ jobs:
     - run: ls -lha /tmp/.local-registry || true
     - run: du -sh /tmp/.local-registry || true
     - run: ls -lha /tmp/.local-registry || true
+    - run: du -sh /tmp/.local-registry-new || true
+    - run: ls -lha /tmp/.local-registry-new || true
     - uses: actions/checkout@v5
     - run: ls -lha /tmp/.local-registry || true
     - run: du -sh /tmp/.local-registry || true
+    - run: ls -lha /tmp/.local-registry-new || true
+    - run: du -sh /tmp/.local-registry-new || true
     - run: docker info
     - run: docker buildx version
     - run: docker buildx build --help
     - run: podman version || true
     - run: cargo -Vv
     - run: docker buildx prune --all --force
+
+    - name: Local private registry cache
+      uses: actions/cache@v4
+      with:
+        path: /tmp/.local-registry
+        key: localprivatereg-${{ github.job }}-cli-${{ runner.os }}
+        restore-keys: |
+          localprivatereg-${{ github.job }}-cli-
+          localprivatereg-
 
     - name: Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
@@ -947,6 +1053,8 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
     - run: du -sh /tmp/.local-registry || true
     - run: ls -lha /tmp/.local-registry || true
+    - run: du -sh /tmp/.local-registry-new || true
+    - run: ls -lha /tmp/.local-registry-new || true
     - name: cargo install net=ON cache=OFF remote=OFF jobs=3
       run: |
         unset CARGO_INCREMENTAL
@@ -958,6 +1066,8 @@ jobs:
           cargo green -vv install --jobs=3 --locked --force dbcc@2.2.1  |& tee _
     - run: du -sh /tmp/.local-registry || true
     - run: ls -lha /tmp/.local-registry || true
+    - run: du -sh /tmp/.local-registry-new || true
+    - run: ls -lha /tmp/.local-registry-new || true
     - name: cargo install net=ON cache=ON remote=OFF jobs=1
       if: ${{ failure() }}
       run: |
@@ -971,6 +1081,8 @@ jobs:
           cargo green -vv install --jobs=1 --locked --force dbcc@2.2.1  |& tee _
     - run: du -sh /tmp/.local-registry || true
     - run: ls -lha /tmp/.local-registry || true
+    - run: du -sh /tmp/.local-registry-new || true
+    - run: ls -lha /tmp/.local-registry-new || true
     - if: ${{ matrix.toolchain != 'stable' }}
       uses: actions/upload-artifact@v4
       name: Upload recipe
@@ -1139,6 +1251,13 @@ jobs:
         credentials:
           username: ${{ vars.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+      registrybis:
+        image: registry:3
+        ports: ['6000:5000']
+        volumes: ['/tmp/.local-registry-new:/var/lib/registry']
+        credentials:
+          username: ${{ vars.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
     env:
       CARGO_TARGET_DIR: /tmp/clis-diesel_cli_2-3-2
     # CARGOGREEN_CACHE_FROM_IMAGES: docker-image://ghcr.io/${{ github.repository }}
@@ -1179,6 +1298,8 @@ jobs:
         mv ./cargo-green ~/.cargo/bin/
     - run: ls -lha /tmp/.local-registry || true
     - run: mkdir -p /tmp/.local-registry
+    - run: ls -lha /tmp/.local-registry-new || true
+    - run: mkdir -p /tmp/.local-registry-new
     - run: docker pull localhost:5000/fenollp/supergreen || true
     - run: docker build --push --tag localhost:5000/fenollp/supergreen - <<<'FROM scratch'
     - run: docker pull localhost:5000/fenollp/supergreen || true
@@ -1186,15 +1307,28 @@ jobs:
     - run: ls -lha /tmp/.local-registry || true
     - run: du -sh /tmp/.local-registry || true
     - run: ls -lha /tmp/.local-registry || true
+    - run: du -sh /tmp/.local-registry-new || true
+    - run: ls -lha /tmp/.local-registry-new || true
     - uses: actions/checkout@v5
     - run: ls -lha /tmp/.local-registry || true
     - run: du -sh /tmp/.local-registry || true
+    - run: ls -lha /tmp/.local-registry-new || true
+    - run: du -sh /tmp/.local-registry-new || true
     - run: docker info
     - run: docker buildx version
     - run: docker buildx build --help
     - run: podman version || true
     - run: cargo -Vv
     - run: docker buildx prune --all --force
+
+    - name: Local private registry cache
+      uses: actions/cache@v4
+      with:
+        path: /tmp/.local-registry
+        key: localprivatereg-${{ github.job }}-cli-${{ runner.os }}
+        restore-keys: |
+          localprivatereg-${{ github.job }}-cli-
+          localprivatereg-
 
     - name: Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
@@ -1212,6 +1346,8 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
     - run: du -sh /tmp/.local-registry || true
     - run: ls -lha /tmp/.local-registry || true
+    - run: du -sh /tmp/.local-registry-new || true
+    - run: ls -lha /tmp/.local-registry-new || true
     - name: cargo install net=ON cache=OFF remote=OFF jobs=3
       run: |
         unset CARGO_INCREMENTAL
@@ -1223,6 +1359,8 @@ jobs:
           cargo green -vv install --jobs=3 --locked --force diesel_cli@2.3.2 --no-default-features --features=postgres |& tee _
     - run: du -sh /tmp/.local-registry || true
     - run: ls -lha /tmp/.local-registry || true
+    - run: du -sh /tmp/.local-registry-new || true
+    - run: ls -lha /tmp/.local-registry-new || true
     - name: cargo install net=ON cache=ON remote=OFF jobs=1
       if: ${{ failure() }}
       run: |
@@ -1236,6 +1374,8 @@ jobs:
           cargo green -vv install --jobs=1 --locked --force diesel_cli@2.3.2 --no-default-features --features=postgres |& tee _
     - run: du -sh /tmp/.local-registry || true
     - run: ls -lha /tmp/.local-registry || true
+    - run: du -sh /tmp/.local-registry-new || true
+    - run: ls -lha /tmp/.local-registry-new || true
     - if: ${{ matrix.toolchain != 'stable' }}
       uses: actions/upload-artifact@v4
       name: Upload recipe
@@ -1404,6 +1544,13 @@ jobs:
         credentials:
           username: ${{ vars.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+      registrybis:
+        image: registry:3
+        ports: ['6000:5000']
+        volumes: ['/tmp/.local-registry-new:/var/lib/registry']
+        credentials:
+          username: ${{ vars.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
     env:
       CARGO_TARGET_DIR: /tmp/clis-hickory-dns_0-25-0-alpha-1
     # CARGOGREEN_CACHE_FROM_IMAGES: docker-image://ghcr.io/${{ github.repository }}
@@ -1444,6 +1591,8 @@ jobs:
         mv ./cargo-green ~/.cargo/bin/
     - run: ls -lha /tmp/.local-registry || true
     - run: mkdir -p /tmp/.local-registry
+    - run: ls -lha /tmp/.local-registry-new || true
+    - run: mkdir -p /tmp/.local-registry-new
     - run: docker pull localhost:5000/fenollp/supergreen || true
     - run: docker build --push --tag localhost:5000/fenollp/supergreen - <<<'FROM scratch'
     - run: docker pull localhost:5000/fenollp/supergreen || true
@@ -1451,15 +1600,28 @@ jobs:
     - run: ls -lha /tmp/.local-registry || true
     - run: du -sh /tmp/.local-registry || true
     - run: ls -lha /tmp/.local-registry || true
+    - run: du -sh /tmp/.local-registry-new || true
+    - run: ls -lha /tmp/.local-registry-new || true
     - uses: actions/checkout@v5
     - run: ls -lha /tmp/.local-registry || true
     - run: du -sh /tmp/.local-registry || true
+    - run: ls -lha /tmp/.local-registry-new || true
+    - run: du -sh /tmp/.local-registry-new || true
     - run: docker info
     - run: docker buildx version
     - run: docker buildx build --help
     - run: podman version || true
     - run: cargo -Vv
     - run: docker buildx prune --all --force
+
+    - name: Local private registry cache
+      uses: actions/cache@v4
+      with:
+        path: /tmp/.local-registry
+        key: localprivatereg-${{ github.job }}-cli-${{ runner.os }}
+        restore-keys: |
+          localprivatereg-${{ github.job }}-cli-
+          localprivatereg-
 
     - name: Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
@@ -1477,6 +1639,8 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
     - run: du -sh /tmp/.local-registry || true
     - run: ls -lha /tmp/.local-registry || true
+    - run: du -sh /tmp/.local-registry-new || true
+    - run: ls -lha /tmp/.local-registry-new || true
     - name: cargo install net=ON cache=OFF remote=OFF jobs=3
       run: |
         unset CARGO_INCREMENTAL
@@ -1488,6 +1652,8 @@ jobs:
           cargo green -vv install --jobs=3 --locked --force hickory-dns@0.25.0-alpha.1 --features=dns-over-rustls |& tee _
     - run: du -sh /tmp/.local-registry || true
     - run: ls -lha /tmp/.local-registry || true
+    - run: du -sh /tmp/.local-registry-new || true
+    - run: ls -lha /tmp/.local-registry-new || true
     - name: cargo install net=ON cache=ON remote=OFF jobs=1
       if: ${{ failure() }}
       run: |
@@ -1501,6 +1667,8 @@ jobs:
           cargo green -vv install --jobs=1 --locked --force hickory-dns@0.25.0-alpha.1 --features=dns-over-rustls |& tee _
     - run: du -sh /tmp/.local-registry || true
     - run: ls -lha /tmp/.local-registry || true
+    - run: du -sh /tmp/.local-registry-new || true
+    - run: ls -lha /tmp/.local-registry-new || true
     - if: ${{ matrix.toolchain != 'stable' }}
       uses: actions/upload-artifact@v4
       name: Upload recipe
@@ -1669,6 +1837,13 @@ jobs:
         credentials:
           username: ${{ vars.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+      registrybis:
+        image: registry:3
+        ports: ['6000:5000']
+        volumes: ['/tmp/.local-registry-new:/var/lib/registry']
+        credentials:
+          username: ${{ vars.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
     env:
       CARGO_TARGET_DIR: /tmp/clis-mussh_3-1-3
     # CARGOGREEN_CACHE_FROM_IMAGES: docker-image://ghcr.io/${{ github.repository }}
@@ -1709,6 +1884,8 @@ jobs:
         mv ./cargo-green ~/.cargo/bin/
     - run: ls -lha /tmp/.local-registry || true
     - run: mkdir -p /tmp/.local-registry
+    - run: ls -lha /tmp/.local-registry-new || true
+    - run: mkdir -p /tmp/.local-registry-new
     - run: docker pull localhost:5000/fenollp/supergreen || true
     - run: docker build --push --tag localhost:5000/fenollp/supergreen - <<<'FROM scratch'
     - run: docker pull localhost:5000/fenollp/supergreen || true
@@ -1716,15 +1893,28 @@ jobs:
     - run: ls -lha /tmp/.local-registry || true
     - run: du -sh /tmp/.local-registry || true
     - run: ls -lha /tmp/.local-registry || true
+    - run: du -sh /tmp/.local-registry-new || true
+    - run: ls -lha /tmp/.local-registry-new || true
     - uses: actions/checkout@v5
     - run: ls -lha /tmp/.local-registry || true
     - run: du -sh /tmp/.local-registry || true
+    - run: ls -lha /tmp/.local-registry-new || true
+    - run: du -sh /tmp/.local-registry-new || true
     - run: docker info
     - run: docker buildx version
     - run: docker buildx build --help
     - run: podman version || true
     - run: cargo -Vv
     - run: docker buildx prune --all --force
+
+    - name: Local private registry cache
+      uses: actions/cache@v4
+      with:
+        path: /tmp/.local-registry
+        key: localprivatereg-${{ github.job }}-cli-${{ runner.os }}
+        restore-keys: |
+          localprivatereg-${{ github.job }}-cli-
+          localprivatereg-
 
     - name: Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
@@ -1742,6 +1932,8 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
     - run: du -sh /tmp/.local-registry || true
     - run: ls -lha /tmp/.local-registry || true
+    - run: du -sh /tmp/.local-registry-new || true
+    - run: ls -lha /tmp/.local-registry-new || true
     - name: cargo install net=ON cache=OFF remote=OFF jobs=3
       run: |
         unset CARGO_INCREMENTAL
@@ -1753,6 +1945,8 @@ jobs:
           cargo green -vv install --jobs=3 --locked --force mussh@3.1.3  |& tee _
     - run: du -sh /tmp/.local-registry || true
     - run: ls -lha /tmp/.local-registry || true
+    - run: du -sh /tmp/.local-registry-new || true
+    - run: ls -lha /tmp/.local-registry-new || true
     - name: cargo install net=ON cache=ON remote=OFF jobs=1
       if: ${{ failure() }}
       run: |
@@ -1766,6 +1960,8 @@ jobs:
           cargo green -vv install --jobs=1 --locked --force mussh@3.1.3  |& tee _
     - run: du -sh /tmp/.local-registry || true
     - run: ls -lha /tmp/.local-registry || true
+    - run: du -sh /tmp/.local-registry-new || true
+    - run: ls -lha /tmp/.local-registry-new || true
     - if: ${{ matrix.toolchain != 'stable' }}
       uses: actions/upload-artifact@v4
       name: Upload recipe
@@ -1934,6 +2130,13 @@ jobs:
         credentials:
           username: ${{ vars.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+      registrybis:
+        image: registry:3
+        ports: ['6000:5000']
+        volumes: ['/tmp/.local-registry-new:/var/lib/registry']
+        credentials:
+          username: ${{ vars.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
     env:
       CARGO_TARGET_DIR: /tmp/clis-ntpd_1-2-3
     # CARGOGREEN_CACHE_FROM_IMAGES: docker-image://ghcr.io/${{ github.repository }}
@@ -1975,6 +2178,8 @@ jobs:
         mv ./cargo-green ~/.cargo/bin/
     - run: ls -lha /tmp/.local-registry || true
     - run: mkdir -p /tmp/.local-registry
+    - run: ls -lha /tmp/.local-registry-new || true
+    - run: mkdir -p /tmp/.local-registry-new
     - run: docker pull localhost:5000/fenollp/supergreen || true
     - run: docker build --push --tag localhost:5000/fenollp/supergreen - <<<'FROM scratch'
     - run: docker pull localhost:5000/fenollp/supergreen || true
@@ -1982,15 +2187,28 @@ jobs:
     - run: ls -lha /tmp/.local-registry || true
     - run: du -sh /tmp/.local-registry || true
     - run: ls -lha /tmp/.local-registry || true
+    - run: du -sh /tmp/.local-registry-new || true
+    - run: ls -lha /tmp/.local-registry-new || true
     - uses: actions/checkout@v5
     - run: ls -lha /tmp/.local-registry || true
     - run: du -sh /tmp/.local-registry || true
+    - run: ls -lha /tmp/.local-registry-new || true
+    - run: du -sh /tmp/.local-registry-new || true
     - run: docker info
     - run: docker buildx version
     - run: docker buildx build --help
     - run: podman version || true
     - run: cargo -Vv
     - run: docker buildx prune --all --force
+
+    - name: Local private registry cache
+      uses: actions/cache@v4
+      with:
+        path: /tmp/.local-registry
+        key: localprivatereg-${{ github.job }}-cli-${{ runner.os }}
+        restore-keys: |
+          localprivatereg-${{ github.job }}-cli-
+          localprivatereg-
 
     - name: Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
@@ -2008,6 +2226,8 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
     - run: du -sh /tmp/.local-registry || true
     - run: ls -lha /tmp/.local-registry || true
+    - run: du -sh /tmp/.local-registry-new || true
+    - run: ls -lha /tmp/.local-registry-new || true
     - name: cargo install net=ON cache=OFF remote=OFF jobs=3
       run: |
         unset CARGO_INCREMENTAL
@@ -2019,6 +2239,8 @@ jobs:
           cargo green -vv install --jobs=3 --locked --force ntpd@1.2.3  |& tee _
     - run: du -sh /tmp/.local-registry || true
     - run: ls -lha /tmp/.local-registry || true
+    - run: du -sh /tmp/.local-registry-new || true
+    - run: ls -lha /tmp/.local-registry-new || true
     - name: cargo install net=ON cache=ON remote=OFF jobs=1
       if: ${{ failure() }}
       run: |
@@ -2032,6 +2254,8 @@ jobs:
           cargo green -vv install --jobs=1 --locked --force ntpd@1.2.3  |& tee _
     - run: du -sh /tmp/.local-registry || true
     - run: ls -lha /tmp/.local-registry || true
+    - run: du -sh /tmp/.local-registry-new || true
+    - run: ls -lha /tmp/.local-registry-new || true
     - if: ${{ matrix.toolchain != 'stable' }}
       uses: actions/upload-artifact@v4
       name: Upload recipe
@@ -2200,6 +2424,13 @@ jobs:
         credentials:
           username: ${{ vars.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+      registrybis:
+        image: registry:3
+        ports: ['6000:5000']
+        volumes: ['/tmp/.local-registry-new:/var/lib/registry']
+        credentials:
+          username: ${{ vars.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
     env:
       CARGO_TARGET_DIR: /tmp/clis-qcow2-rs_0-1-2
     # CARGOGREEN_CACHE_FROM_IMAGES: docker-image://ghcr.io/${{ github.repository }}
@@ -2240,6 +2471,8 @@ jobs:
         mv ./cargo-green ~/.cargo/bin/
     - run: ls -lha /tmp/.local-registry || true
     - run: mkdir -p /tmp/.local-registry
+    - run: ls -lha /tmp/.local-registry-new || true
+    - run: mkdir -p /tmp/.local-registry-new
     - run: docker pull localhost:5000/fenollp/supergreen || true
     - run: docker build --push --tag localhost:5000/fenollp/supergreen - <<<'FROM scratch'
     - run: docker pull localhost:5000/fenollp/supergreen || true
@@ -2247,15 +2480,28 @@ jobs:
     - run: ls -lha /tmp/.local-registry || true
     - run: du -sh /tmp/.local-registry || true
     - run: ls -lha /tmp/.local-registry || true
+    - run: du -sh /tmp/.local-registry-new || true
+    - run: ls -lha /tmp/.local-registry-new || true
     - uses: actions/checkout@v5
     - run: ls -lha /tmp/.local-registry || true
     - run: du -sh /tmp/.local-registry || true
+    - run: ls -lha /tmp/.local-registry-new || true
+    - run: du -sh /tmp/.local-registry-new || true
     - run: docker info
     - run: docker buildx version
     - run: docker buildx build --help
     - run: podman version || true
     - run: cargo -Vv
     - run: docker buildx prune --all --force
+
+    - name: Local private registry cache
+      uses: actions/cache@v4
+      with:
+        path: /tmp/.local-registry
+        key: localprivatereg-${{ github.job }}-cli-${{ runner.os }}
+        restore-keys: |
+          localprivatereg-${{ github.job }}-cli-
+          localprivatereg-
 
     - name: Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
@@ -2273,6 +2519,8 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
     - run: du -sh /tmp/.local-registry || true
     - run: ls -lha /tmp/.local-registry || true
+    - run: du -sh /tmp/.local-registry-new || true
+    - run: ls -lha /tmp/.local-registry-new || true
     - name: cargo install net=ON cache=OFF remote=OFF jobs=3
       run: |
         unset CARGO_INCREMENTAL
@@ -2284,6 +2532,8 @@ jobs:
           cargo green -vv install --jobs=3 --locked --force qcow2-rs@0.1.2  |& tee _
     - run: du -sh /tmp/.local-registry || true
     - run: ls -lha /tmp/.local-registry || true
+    - run: du -sh /tmp/.local-registry-new || true
+    - run: ls -lha /tmp/.local-registry-new || true
     - name: cargo install net=ON cache=ON remote=OFF jobs=1
       if: ${{ failure() }}
       run: |
@@ -2297,6 +2547,8 @@ jobs:
           cargo green -vv install --jobs=1 --locked --force qcow2-rs@0.1.2  |& tee _
     - run: du -sh /tmp/.local-registry || true
     - run: ls -lha /tmp/.local-registry || true
+    - run: du -sh /tmp/.local-registry-new || true
+    - run: ls -lha /tmp/.local-registry-new || true
     - if: ${{ matrix.toolchain != 'stable' }}
       uses: actions/upload-artifact@v4
       name: Upload recipe
@@ -2465,6 +2717,13 @@ jobs:
         credentials:
           username: ${{ vars.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+      registrybis:
+        image: registry:3
+        ports: ['6000:5000']
+        volumes: ['/tmp/.local-registry-new:/var/lib/registry']
+        credentials:
+          username: ${{ vars.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
     env:
       CARGO_TARGET_DIR: /tmp/clis-ripgrep_14-1-0
     # CARGOGREEN_CACHE_FROM_IMAGES: docker-image://ghcr.io/${{ github.repository }}
@@ -2505,6 +2764,8 @@ jobs:
         mv ./cargo-green ~/.cargo/bin/
     - run: ls -lha /tmp/.local-registry || true
     - run: mkdir -p /tmp/.local-registry
+    - run: ls -lha /tmp/.local-registry-new || true
+    - run: mkdir -p /tmp/.local-registry-new
     - run: docker pull localhost:5000/fenollp/supergreen || true
     - run: docker build --push --tag localhost:5000/fenollp/supergreen - <<<'FROM scratch'
     - run: docker pull localhost:5000/fenollp/supergreen || true
@@ -2512,15 +2773,28 @@ jobs:
     - run: ls -lha /tmp/.local-registry || true
     - run: du -sh /tmp/.local-registry || true
     - run: ls -lha /tmp/.local-registry || true
+    - run: du -sh /tmp/.local-registry-new || true
+    - run: ls -lha /tmp/.local-registry-new || true
     - uses: actions/checkout@v5
     - run: ls -lha /tmp/.local-registry || true
     - run: du -sh /tmp/.local-registry || true
+    - run: ls -lha /tmp/.local-registry-new || true
+    - run: du -sh /tmp/.local-registry-new || true
     - run: docker info
     - run: docker buildx version
     - run: docker buildx build --help
     - run: podman version || true
     - run: cargo -Vv
     - run: docker buildx prune --all --force
+
+    - name: Local private registry cache
+      uses: actions/cache@v4
+      with:
+        path: /tmp/.local-registry
+        key: localprivatereg-${{ github.job }}-cli-${{ runner.os }}
+        restore-keys: |
+          localprivatereg-${{ github.job }}-cli-
+          localprivatereg-
 
     - name: Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
@@ -2538,6 +2812,8 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
     - run: du -sh /tmp/.local-registry || true
     - run: ls -lha /tmp/.local-registry || true
+    - run: du -sh /tmp/.local-registry-new || true
+    - run: ls -lha /tmp/.local-registry-new || true
     - name: cargo install net=ON cache=OFF remote=OFF jobs=3
       run: |
         unset CARGO_INCREMENTAL
@@ -2549,6 +2825,8 @@ jobs:
           cargo green -vv install --jobs=3 --locked --force ripgrep@14.1.0  |& tee _
     - run: du -sh /tmp/.local-registry || true
     - run: ls -lha /tmp/.local-registry || true
+    - run: du -sh /tmp/.local-registry-new || true
+    - run: ls -lha /tmp/.local-registry-new || true
     - name: cargo install net=ON cache=ON remote=OFF jobs=1
       if: ${{ failure() }}
       run: |
@@ -2562,6 +2840,8 @@ jobs:
           cargo green -vv install --jobs=1 --locked --force ripgrep@14.1.0  |& tee _
     - run: du -sh /tmp/.local-registry || true
     - run: ls -lha /tmp/.local-registry || true
+    - run: du -sh /tmp/.local-registry-new || true
+    - run: ls -lha /tmp/.local-registry-new || true
     - if: ${{ matrix.toolchain != 'stable' }}
       uses: actions/upload-artifact@v4
       name: Upload recipe
@@ -2730,6 +3010,13 @@ jobs:
         credentials:
           username: ${{ vars.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+      registrybis:
+        image: registry:3
+        ports: ['6000:5000']
+        volumes: ['/tmp/.local-registry-new:/var/lib/registry']
+        credentials:
+          username: ${{ vars.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
     env:
       CARGO_TARGET_DIR: /tmp/clis-rublk_0-2-0
     # CARGOGREEN_CACHE_FROM_IMAGES: docker-image://ghcr.io/${{ github.repository }}
@@ -2770,6 +3057,8 @@ jobs:
         mv ./cargo-green ~/.cargo/bin/
     - run: ls -lha /tmp/.local-registry || true
     - run: mkdir -p /tmp/.local-registry
+    - run: ls -lha /tmp/.local-registry-new || true
+    - run: mkdir -p /tmp/.local-registry-new
     - run: docker pull localhost:5000/fenollp/supergreen || true
     - run: docker build --push --tag localhost:5000/fenollp/supergreen - <<<'FROM scratch'
     - run: docker pull localhost:5000/fenollp/supergreen || true
@@ -2777,15 +3066,28 @@ jobs:
     - run: ls -lha /tmp/.local-registry || true
     - run: du -sh /tmp/.local-registry || true
     - run: ls -lha /tmp/.local-registry || true
+    - run: du -sh /tmp/.local-registry-new || true
+    - run: ls -lha /tmp/.local-registry-new || true
     - uses: actions/checkout@v5
     - run: ls -lha /tmp/.local-registry || true
     - run: du -sh /tmp/.local-registry || true
+    - run: ls -lha /tmp/.local-registry-new || true
+    - run: du -sh /tmp/.local-registry-new || true
     - run: docker info
     - run: docker buildx version
     - run: docker buildx build --help
     - run: podman version || true
     - run: cargo -Vv
     - run: docker buildx prune --all --force
+
+    - name: Local private registry cache
+      uses: actions/cache@v4
+      with:
+        path: /tmp/.local-registry
+        key: localprivatereg-${{ github.job }}-cli-${{ runner.os }}
+        restore-keys: |
+          localprivatereg-${{ github.job }}-cli-
+          localprivatereg-
 
     - name: Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
@@ -2803,6 +3105,8 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
     - run: du -sh /tmp/.local-registry || true
     - run: ls -lha /tmp/.local-registry || true
+    - run: du -sh /tmp/.local-registry-new || true
+    - run: ls -lha /tmp/.local-registry-new || true
     - name: cargo install net=ON cache=OFF remote=OFF jobs=3
       run: |
         unset CARGO_INCREMENTAL
@@ -2814,6 +3118,8 @@ jobs:
           cargo green -vv install --jobs=3 --locked --force rublk@0.2.0  |& tee _
     - run: du -sh /tmp/.local-registry || true
     - run: ls -lha /tmp/.local-registry || true
+    - run: du -sh /tmp/.local-registry-new || true
+    - run: ls -lha /tmp/.local-registry-new || true
     - name: cargo install net=ON cache=ON remote=OFF jobs=1
       if: ${{ failure() }}
       run: |
@@ -2827,6 +3133,8 @@ jobs:
           cargo green -vv install --jobs=1 --locked --force rublk@0.2.0  |& tee _
     - run: du -sh /tmp/.local-registry || true
     - run: ls -lha /tmp/.local-registry || true
+    - run: du -sh /tmp/.local-registry-new || true
+    - run: ls -lha /tmp/.local-registry-new || true
     - if: ${{ matrix.toolchain != 'stable' }}
       uses: actions/upload-artifact@v4
       name: Upload recipe
@@ -2995,6 +3303,13 @@ jobs:
         credentials:
           username: ${{ vars.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+      registrybis:
+        image: registry:3
+        ports: ['6000:5000']
+        volumes: ['/tmp/.local-registry-new:/var/lib/registry']
+        credentials:
+          username: ${{ vars.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
     env:
       CARGO_TARGET_DIR: /tmp/clis-vixargs_0-1-0
     # CARGOGREEN_CACHE_FROM_IMAGES: docker-image://ghcr.io/${{ github.repository }}
@@ -3035,6 +3350,8 @@ jobs:
         mv ./cargo-green ~/.cargo/bin/
     - run: ls -lha /tmp/.local-registry || true
     - run: mkdir -p /tmp/.local-registry
+    - run: ls -lha /tmp/.local-registry-new || true
+    - run: mkdir -p /tmp/.local-registry-new
     - run: docker pull localhost:5000/fenollp/supergreen || true
     - run: docker build --push --tag localhost:5000/fenollp/supergreen - <<<'FROM scratch'
     - run: docker pull localhost:5000/fenollp/supergreen || true
@@ -3042,15 +3359,28 @@ jobs:
     - run: ls -lha /tmp/.local-registry || true
     - run: du -sh /tmp/.local-registry || true
     - run: ls -lha /tmp/.local-registry || true
+    - run: du -sh /tmp/.local-registry-new || true
+    - run: ls -lha /tmp/.local-registry-new || true
     - uses: actions/checkout@v5
     - run: ls -lha /tmp/.local-registry || true
     - run: du -sh /tmp/.local-registry || true
+    - run: ls -lha /tmp/.local-registry-new || true
+    - run: du -sh /tmp/.local-registry-new || true
     - run: docker info
     - run: docker buildx version
     - run: docker buildx build --help
     - run: podman version || true
     - run: cargo -Vv
     - run: docker buildx prune --all --force
+
+    - name: Local private registry cache
+      uses: actions/cache@v4
+      with:
+        path: /tmp/.local-registry
+        key: localprivatereg-${{ github.job }}-cli-${{ runner.os }}
+        restore-keys: |
+          localprivatereg-${{ github.job }}-cli-
+          localprivatereg-
 
     - name: Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
@@ -3068,6 +3398,8 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
     - run: du -sh /tmp/.local-registry || true
     - run: ls -lha /tmp/.local-registry || true
+    - run: du -sh /tmp/.local-registry-new || true
+    - run: ls -lha /tmp/.local-registry-new || true
     - name: cargo install net=ON cache=OFF remote=OFF jobs=3
       run: |
         unset CARGO_INCREMENTAL
@@ -3079,6 +3411,8 @@ jobs:
           cargo green -vv install --jobs=3 --locked --force vixargs@0.1.0  |& tee _
     - run: du -sh /tmp/.local-registry || true
     - run: ls -lha /tmp/.local-registry || true
+    - run: du -sh /tmp/.local-registry-new || true
+    - run: ls -lha /tmp/.local-registry-new || true
     - name: cargo install net=ON cache=ON remote=OFF jobs=1
       if: ${{ failure() }}
       run: |
@@ -3092,6 +3426,8 @@ jobs:
           cargo green -vv install --jobs=1 --locked --force vixargs@0.1.0  |& tee _
     - run: du -sh /tmp/.local-registry || true
     - run: ls -lha /tmp/.local-registry || true
+    - run: du -sh /tmp/.local-registry-new || true
+    - run: ls -lha /tmp/.local-registry-new || true
     - if: ${{ matrix.toolchain != 'stable' }}
       uses: actions/upload-artifact@v4
       name: Upload recipe
@@ -3260,6 +3596,13 @@ jobs:
         credentials:
           username: ${{ vars.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+      registrybis:
+        image: registry:3
+        ports: ['6000:5000']
+        volumes: ['/tmp/.local-registry-new:/var/lib/registry']
+        credentials:
+          username: ${{ vars.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
     env:
       CARGO_TARGET_DIR: /tmp/clis-cargo-config2_0-1-34
     # CARGOGREEN_CACHE_FROM_IMAGES: docker-image://ghcr.io/${{ github.repository }}
@@ -3300,6 +3643,8 @@ jobs:
         mv ./cargo-green ~/.cargo/bin/
     - run: ls -lha /tmp/.local-registry || true
     - run: mkdir -p /tmp/.local-registry
+    - run: ls -lha /tmp/.local-registry-new || true
+    - run: mkdir -p /tmp/.local-registry-new
     - run: docker pull localhost:5000/fenollp/supergreen || true
     - run: docker build --push --tag localhost:5000/fenollp/supergreen - <<<'FROM scratch'
     - run: docker pull localhost:5000/fenollp/supergreen || true
@@ -3307,15 +3652,28 @@ jobs:
     - run: ls -lha /tmp/.local-registry || true
     - run: du -sh /tmp/.local-registry || true
     - run: ls -lha /tmp/.local-registry || true
+    - run: du -sh /tmp/.local-registry-new || true
+    - run: ls -lha /tmp/.local-registry-new || true
     - uses: actions/checkout@v5
     - run: ls -lha /tmp/.local-registry || true
     - run: du -sh /tmp/.local-registry || true
+    - run: ls -lha /tmp/.local-registry-new || true
+    - run: du -sh /tmp/.local-registry-new || true
     - run: docker info
     - run: docker buildx version
     - run: docker buildx build --help
     - run: podman version || true
     - run: cargo -Vv
     - run: docker buildx prune --all --force
+
+    - name: Local private registry cache
+      uses: actions/cache@v4
+      with:
+        path: /tmp/.local-registry
+        key: localprivatereg-${{ github.job }}-cli-${{ runner.os }}
+        restore-keys: |
+          localprivatereg-${{ github.job }}-cli-
+          localprivatereg-
 
     - name: Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
@@ -3333,6 +3691,8 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
     - run: du -sh /tmp/.local-registry || true
     - run: ls -lha /tmp/.local-registry || true
+    - run: du -sh /tmp/.local-registry-new || true
+    - run: ls -lha /tmp/.local-registry-new || true
     - name: cargo install net=ON cache=OFF remote=OFF jobs=3
       run: |
         unset CARGO_INCREMENTAL
@@ -3344,6 +3704,8 @@ jobs:
           cargo green -vv install --jobs=3 --locked --force cargo-config2@0.1.34 --example=get |& tee _
     - run: du -sh /tmp/.local-registry || true
     - run: ls -lha /tmp/.local-registry || true
+    - run: du -sh /tmp/.local-registry-new || true
+    - run: ls -lha /tmp/.local-registry-new || true
     - name: cargo install net=ON cache=ON remote=OFF jobs=1
       if: ${{ failure() }}
       run: |
@@ -3357,6 +3719,8 @@ jobs:
           cargo green -vv install --jobs=1 --locked --force cargo-config2@0.1.34 --example=get |& tee _
     - run: du -sh /tmp/.local-registry || true
     - run: ls -lha /tmp/.local-registry || true
+    - run: du -sh /tmp/.local-registry-new || true
+    - run: ls -lha /tmp/.local-registry-new || true
     - if: ${{ matrix.toolchain != 'stable' }}
       uses: actions/upload-artifact@v4
       name: Upload recipe
@@ -3525,6 +3889,13 @@ jobs:
         credentials:
           username: ${{ vars.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+      registrybis:
+        image: registry:3
+        ports: ['6000:5000']
+        volumes: ['/tmp/.local-registry-new:/var/lib/registry']
+        credentials:
+          username: ${{ vars.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
     env:
       CARGO_TARGET_DIR: /tmp/clis-cargo-udeps_0-1-55
     # CARGOGREEN_CACHE_FROM_IMAGES: docker-image://ghcr.io/${{ github.repository }}
@@ -3565,6 +3936,8 @@ jobs:
         mv ./cargo-green ~/.cargo/bin/
     - run: ls -lha /tmp/.local-registry || true
     - run: mkdir -p /tmp/.local-registry
+    - run: ls -lha /tmp/.local-registry-new || true
+    - run: mkdir -p /tmp/.local-registry-new
     - run: docker pull localhost:5000/fenollp/supergreen || true
     - run: docker build --push --tag localhost:5000/fenollp/supergreen - <<<'FROM scratch'
     - run: docker pull localhost:5000/fenollp/supergreen || true
@@ -3572,15 +3945,28 @@ jobs:
     - run: ls -lha /tmp/.local-registry || true
     - run: du -sh /tmp/.local-registry || true
     - run: ls -lha /tmp/.local-registry || true
+    - run: du -sh /tmp/.local-registry-new || true
+    - run: ls -lha /tmp/.local-registry-new || true
     - uses: actions/checkout@v5
     - run: ls -lha /tmp/.local-registry || true
     - run: du -sh /tmp/.local-registry || true
+    - run: ls -lha /tmp/.local-registry-new || true
+    - run: du -sh /tmp/.local-registry-new || true
     - run: docker info
     - run: docker buildx version
     - run: docker buildx build --help
     - run: podman version || true
     - run: cargo -Vv
     - run: docker buildx prune --all --force
+
+    - name: Local private registry cache
+      uses: actions/cache@v4
+      with:
+        path: /tmp/.local-registry
+        key: localprivatereg-${{ github.job }}-cli-${{ runner.os }}
+        restore-keys: |
+          localprivatereg-${{ github.job }}-cli-
+          localprivatereg-
 
     - name: Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
@@ -3598,6 +3984,8 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
     - run: du -sh /tmp/.local-registry || true
     - run: ls -lha /tmp/.local-registry || true
+    - run: du -sh /tmp/.local-registry-new || true
+    - run: ls -lha /tmp/.local-registry-new || true
     - name: cargo install net=ON cache=OFF remote=OFF jobs=3
       run: |
         unset CARGO_INCREMENTAL
@@ -3609,6 +3997,8 @@ jobs:
           cargo green -vv install --jobs=3 --locked --force cargo-udeps@0.1.55  |& tee _
     - run: du -sh /tmp/.local-registry || true
     - run: ls -lha /tmp/.local-registry || true
+    - run: du -sh /tmp/.local-registry-new || true
+    - run: ls -lha /tmp/.local-registry-new || true
     - name: cargo install net=ON cache=ON remote=OFF jobs=1
       if: ${{ failure() }}
       run: |
@@ -3622,6 +4012,8 @@ jobs:
           cargo green -vv install --jobs=1 --locked --force cargo-udeps@0.1.55  |& tee _
     - run: du -sh /tmp/.local-registry || true
     - run: ls -lha /tmp/.local-registry || true
+    - run: du -sh /tmp/.local-registry-new || true
+    - run: ls -lha /tmp/.local-registry-new || true
     - if: ${{ matrix.toolchain != 'stable' }}
       uses: actions/upload-artifact@v4
       name: Upload recipe

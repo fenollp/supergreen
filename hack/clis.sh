@@ -264,6 +264,10 @@ cli() {
 
 # or: use --cache-from in non-main branch and both otherwise
 
+#setup 2 registries
+#cachefrom: restore 1 reg from cache, use it with cachefrom
+#cacheto: norestore, build, swap with cachefrom, cache.
+
   local registry=/tmp/.local-registry
 
 	cat <<EOF
@@ -279,6 +283,13 @@ $(jobdef "$(slugify "$name_at_version")_$jobs")
         image: registry:3
         ports: ['5000:5000']
         volumes: ['$registry:/var/lib/registry']
+        credentials:
+          username: \${{ vars.DOCKERHUB_USERNAME }}
+          password: \${{ secrets.DOCKERHUB_TOKEN }}
+      registrybis:
+        image: registry:3
+        ports: ['6000:5000']
+        volumes: ['$registry-new:/var/lib/registry']
         credentials:
           username: \${{ vars.DOCKERHUB_USERNAME }}
           password: \${{ secrets.DOCKERHUB_TOKEN }}
@@ -317,6 +328,8 @@ $(
 $(restore_bin)
     - run: ls -lha $registry || true
     - run: mkdir -p $registry
+    - run: ls -lha $registry-new || true
+    - run: mkdir -p $registry-new
     - run: docker pull localhost:5000/fenollp/supergreen || true
     - run: docker build --push --tag localhost:5000/fenollp/supergreen - <<<'FROM scratch'
     - run: docker pull localhost:5000/fenollp/supergreen || true
@@ -324,10 +337,23 @@ $(restore_bin)
     - run: ls -lha $registry || true
     - run: du -sh $registry || true
     - run: ls -lha $registry || true
+    - run: du -sh $registry-new || true
+    - run: ls -lha $registry-new || true
     - uses: actions/checkout@v5
     - run: ls -lha $registry || true
     - run: du -sh $registry || true
+    - run: ls -lha $registry-new || true
+    - run: du -sh $registry-new || true
 $(rundeps_versions)
+
+    - name: Local private registry cache
+      uses: actions/cache@v4
+      with:
+        path: $registry
+        key: localprivatereg-\${{ github.job }}-cli-\${{ runner.os }}
+        restore-keys: |
+          localprivatereg-\${{ github.job }}-cli-
+          localprivatereg-
 
     - name: Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
@@ -340,6 +366,8 @@ $(rundeps_versions)
 $(cache_usage)
     - run: du -sh $registry || true
     - run: ls -lha $registry || true
+    - run: du -sh $registry-new || true
+    - run: ls -lha $registry-new || true
     - name: cargo install net=ON cache=OFF remote=OFF jobs=$jobs
       run: |
 $(unset_action_envs)
@@ -347,6 +375,8 @@ $(unset_action_envs)
           cargo green -vv install --jobs=$jobs --locked --force $(as_install "$name_at_version") $@ |& tee _
     - run: du -sh $registry || true
     - run: ls -lha $registry || true
+    - run: du -sh $registry-new || true
+    - run: ls -lha $registry-new || true
     - name: cargo install net=ON cache=ON remote=OFF jobs=1
       if: \${{ failure() }}
       run: |
@@ -356,6 +386,8 @@ $(unset_action_envs)
           cargo green -vv install --jobs=1 --locked --force $(as_install "$name_at_version") $@ |& tee _
     - run: du -sh $registry || true
     - run: ls -lha $registry || true
+    - run: du -sh $registry-new || true
+    - run: ls -lha $registry-new || true
     - if: \${{ matrix.toolchain != 'stable' }}
       uses: actions/upload-artifact@v4
       name: Upload recipe
