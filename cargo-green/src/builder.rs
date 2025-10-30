@@ -195,7 +195,7 @@ then run your cargo command again.
                 ),
             ]
             .into(),
-            ..Default::default()
+            insecure_entitlements: vec!["network.host".to_owned(), "security.insecure".to_owned()],
         };
 
         let cfg = if config != buildkitd::Config::default() {
