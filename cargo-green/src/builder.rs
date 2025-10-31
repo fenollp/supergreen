@@ -174,33 +174,28 @@ then run your cargo command again.
     }
 
     pub(crate) async fn create_builder(&mut self, name: &str) -> Result<()> {
-        let mirrors = self.registry_mirrors.clone();
-        let config = buildkitd::Config {
-            debug: false,
-            registry: [
-                ("docker.io".to_owned(), buildkitd::Registry { mirrors, ..Default::default() }),
-                (
-                    "localhost:5000".to_owned(),
-                    buildkitd::Registry {
-                        http: true,
-                        /*insecure: true,*/ ..Default::default()
-                    },
-                ),
-                (
-                    "localhost:6000".to_owned(),
-                    buildkitd::Registry { http: true, ..Default::default() },
-                ),
-                (
-                    "localhost:12345".to_owned(),
-                    buildkitd::Registry {
-                        http: true,
-                        /*insecure: true,*/ ..Default::default()
-                    },
-                ),
-            ]
-            .into(),
-            ..Default::default()
-        };
+        let mut config = buildkitd::Config::default();
+        if !self.registry_mirrors.is_empty() {
+            let mirrors = self.registry_mirrors.clone();
+            let mirrors = buildkitd::Registry { mirrors, ..Default::default() };
+            config.registry.insert("docker.io".to_owned(), mirrors);
+        }
+        config.registry.insert(
+            "localhost:5000".to_owned(),
+            buildkitd::Registry { http: true, /*insecure: true,*/ ..Default::default() },
+        );
+        config.registry.insert(
+            "localhost:6000".to_owned(),
+            buildkitd::Registry { http: true, ..Default::default() },
+        );
+        config.registry.insert(
+            "localhost:12345".to_owned(),
+            buildkitd::Registry { http: true, ..Default::default() },
+        );
+        config.registry.insert(
+            "localhost:23456".to_owned(),
+            buildkitd::Registry { http: true, ..Default::default() },
+        );
 
         let cfg = if config != buildkitd::Config::default() {
             let config = toml::to_string_pretty(&config)

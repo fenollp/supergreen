@@ -154,12 +154,7 @@ jobs:
 
 
 $(jobdef 'bin')
-    outputs: # [Run the job.container as the same user of the host VM by default](https://github.com/actions/runner/issues/691#issue-691014872)
-      uid_gid: \${{ steps.get-user.outputs.uid_gid }}
     steps:
-    - id: get-user
-      run: echo "::set-output name=uid_gid::\$(id -u):\$(id -g)"
-
     - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
         toolchain: stable
@@ -257,23 +252,6 @@ $(jobdef "$(slugify "$name_at_version")_$jobs")
         toolchain:
         - $stable
         - $fixed
-    services:
-      registry:
-        image: registry:3
-        ports: ['5000:5000']
-        volumes: ['$registry:/var/lib/registry']
-        options: --user \${{ needs.bin.outputs.uid_gid }}
-        credentials:
-          username: \${{ vars.DOCKERHUB_USERNAME }}
-          password: \${{ secrets.DOCKERHUB_TOKEN }}
-      registrynew:
-        image: registry:3
-        ports: ['6000:5000']
-        volumes: ['$registry_new:/var/lib/registry']
-        options: --user \${{ needs.bin.outputs.uid_gid }}
-        credentials:
-          username: \${{ vars.DOCKERHUB_USERNAME }}
-          password: \${{ secrets.DOCKERHUB_TOKEN }}
     env:
       CARGO_TARGET_DIR: /tmp/clis-$(slugify "$name_at_version")
       CARGOGREEN_CACHE_FROM_IMAGES: docker-image://localhost:5000/\${{ github.repository }}
@@ -307,24 +285,7 @@ $(
 )
 
 $(restore_bin)
-    - run: ls -lha $registry || true
-    - run: mkdir -p $registry
-    - run: ls -lha $registry_new || true
-    - run: mkdir -p $registry_new
-    - run: docker pull localhost:5000/fenollp/supergreen || true
-    - run: docker build --push --tag localhost:5000/fenollp/supergreen - <<<'FROM scratch'
-    - run: docker pull localhost:5000/fenollp/supergreen || true
-    - run: curl -fsSL http://localhost:5000/v2/fenollp/supergreen/blobs/sha256:1720a10883c7ebbf9080c7d8399b21cb883271cb3dfec3e30a4248b636628779 || true
-    - run: ls -lha $registry || true
-    - run: du -sh $registry || true
-    - run: ls -lha $registry || true
-    - run: du -sh $registry_new || true
-    - run: ls -lha $registry_new || true
     - uses: actions/checkout@v5
-    - run: ls -lha $registry || true
-    - run: du -sh $registry || true
-    - run: ls -lha $registry_new || true
-    - run: du -sh $registry_new || true
 $(rundeps_versions)
 
     - name: Local private registry cache https://github.com/fenollp/supergreen/actions/caches
@@ -336,6 +297,27 @@ $(rundeps_versions)
           localprivatereg-\${{ runner.os }}-\${{ matrix.toolchain }}-
           localprivatereg-\${{ runner.os }}-
           localprivatereg-
+  # - run: mkdir -p $registry
+  # - run: mkdir -p $registry_new
+
+    - run: ls -lha $registry || true
+    - run: du -sh $registry || true
+    - run: du -sh $registry_new || true
+    - run: ls -lha $registry_new || true
+
+    - name: Start "cache from" image registry
+      run: docker run --name=reg-from --rm -it -p 12345:5000 --user \$(id -u):\$(id -g) -v     $registry:/var/lib/registry registry:3
+    - name: Start "cache to" image registry
+      run: docker run --name=reg-to   --rm -it -p 23456:5000 --user \$(id -u):\$(id -g) -v $registry_new:/var/lib/registry registry:3
+
+    - run: docker pull localhost:5000/fenollp/supergreen || true
+    - run: docker build --push --tag localhost:5000/fenollp/supergreen - <<<'FROM scratch'
+    - run: docker pull localhost:5000/fenollp/supergreen || true
+    - run: curl -fsSL http://localhost:5000/v2/fenollp/supergreen/blobs/sha256:1720a10883c7ebbf9080c7d8399b21cb883271cb3dfec3e30a4248b636628779 || true
+    - run: ls -lha $registry || true
+    - run: du -sh $registry || true
+    - run: du -sh $registry_new || true
+    - run: ls -lha $registry_new || true
 
     - name: Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
