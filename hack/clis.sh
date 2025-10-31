@@ -293,12 +293,14 @@ $(rundeps_versions)
         # https://github.com/fenollp/supergreen/actions/caches
         mkdir -p $registry
         mkdir -p $registry_new
-    - name: 🔵 Local private registry cache https://github.com/fenollp/supergreen/actions/caches
-      uses: actions/cache@v4
+    - name: 🔵 Restore local private registry cache
+      uses: actions/cache/restore@v4
       with:
         path: $registry
-        key: localprivatereg-\${{ runner.os }}-\${{ matrix.toolchain }}-\${{ github.job }}
+        # github.run_id: https://github.com/actions/toolkit/issues/658#issuecomment-2640690759
+        key: localprivatereg-\${{ runner.os }}-\${{ matrix.toolchain }}-\${{ github.job }}-\${{ github.run_id }}
         restore-keys: |
+          localprivatereg-\${{ runner.os }}-\${{ matrix.toolchain }}-\${{ github.job }}-
           localprivatereg-\${{ runner.os }}-\${{ matrix.toolchain }}-
           localprivatereg-\${{ runner.os }}-
           localprivatereg-
@@ -384,6 +386,12 @@ $(postconds _)
         docker stop --timeout 10 reg-from reg-to
         rm -rf $registry
         mv $registry_new $registry
+    - name: 🔵 Save local private registry cache
+      uses: actions/cache/save@v4
+      if: always()
+      with:
+        path: $registry
+        key: localprivatereg-\${{ runner.os }}-\${{ matrix.toolchain }}-\${{ github.job }}-\${{ github.run_id }}
 
 $(cache_usage)
 
