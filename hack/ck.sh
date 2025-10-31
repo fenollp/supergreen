@@ -135,7 +135,8 @@ cat <<EOF
           --ignore-matching-lines="^##     '\\{" \
           -- \$CARGOGREEN_FINAL_PATH
 
-    - name: cargo-green logs
+    - if: \${{ failure() || success() }}
+      name: cargo-green logs
       run: tail -n9999999 \$CARGOGREEN_LOG_PATH ; echo >\$CARGOGREEN_LOG_PATH
 EOF
 }

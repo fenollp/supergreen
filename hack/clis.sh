@@ -288,8 +288,11 @@ $(restore_bin)
     - uses: actions/checkout@v5
 $(rundeps_versions)
 
-    - run: mkdir -p $registry
-    - run: mkdir -p $registry_new
+    - name: Prepare local private registry cache
+      run: |
+        # https://github.com/fenollp/supergreen/actions/caches
+        mkdir -p $registry
+        mkdir -p $registry_new
     - name: Local private registry cache https://github.com/fenollp/supergreen/actions/caches
       uses: actions/cache@v4
       with:
@@ -300,10 +303,10 @@ $(rundeps_versions)
           localprivatereg-\${{ runner.os }}-
           localprivatereg-
 
-    - run: ls -lha $registry || true
-    - run: du -sh $registry || true
-    - run: du -sh $registry_new || true
-    - run: ls -lha $registry_new || true
+    - run: ls -lha $registry
+    - run: du -sh $registry
+    - run: du -sh $registry_new
+    - run: ls -lha $registry_new
 
     - name: Start "cache from" image registry
       run: docker run --name=reg-from --rm --detach -p 12345:5000 --user \$(id -u):\$(id -g) -v     $registry:/var/lib/registry registry:3
@@ -312,12 +315,12 @@ $(rundeps_versions)
 
     - run: docker pull localhost:12345/fenollp/supergreen || true
     - run: docker build --push --tag localhost:12345/fenollp/supergreen - <<<'FROM scratch'
-    - run: docker pull localhost:12345/fenollp/supergreen || true
+    - run: docker pull localhost:12345/fenollp/supergreen
     - run: curl -fsSL http://localhost:12345/v2/fenollp/supergreen/blobs/sha256:1720a10883c7ebbf9080c7d8399b21cb883271cb3dfec3e30a4248b636628779 || true
-    - run: ls -lha $registry || true
-    - run: du -sh $registry || true
-    - run: du -sh $registry_new || true
-    - run: ls -lha $registry_new || true
+    - run: ls -lha $registry
+    - run: du -sh $registry
+    - run: du -sh $registry_new
+    - run: ls -lha $registry_new
 
     - name: Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
@@ -328,19 +331,19 @@ $(rundeps_versions)
       run: ~/.cargo/bin/cargo-green green supergreen env
 
 $(cache_usage)
-    - run: du -sh $registry || true
-    - run: ls -lha $registry || true
-    - run: du -sh $registry_new || true
-    - run: ls -lha $registry_new || true
+    - run: ls -lha $registry
+    - run: du -sh $registry
+    - run: du -sh $registry_new
+    - run: ls -lha $registry_new
     - name: cargo install net=ON cache=OFF remote=OFF jobs=$jobs
       run: |
 $(unset_action_envs)
         env ${envvars[@]} \\
           cargo green -vv install --jobs=$jobs --locked --force $(as_install "$name_at_version") $@ |& tee _
-    - run: du -sh $registry || true
-    - run: ls -lha $registry || true
-    - run: du -sh $registry_new || true
-    - run: ls -lha $registry_new || true
+    - run: ls -lha $registry
+    - run: du -sh $registry
+    - run: du -sh $registry_new
+    - run: ls -lha $registry_new
     - name: cargo install net=ON cache=ON remote=OFF jobs=1
       if: \${{ failure() }}
       run: |
@@ -348,10 +351,10 @@ $(unset_action_envs)
 $(unset_action_envs)
         env ${envvars[@]} \\
           cargo green -vv install --jobs=1 --locked --force $(as_install "$name_at_version") $@ |& tee _
-    - run: du -sh $registry || true
-    - run: ls -lha $registry || true
-    - run: du -sh $registry_new || true
-    - run: ls -lha $registry_new || true
+    - run: ls -lha $registry
+    - run: du -sh $registry
+    - run: du -sh $registry_new
+    - run: ls -lha $registry_new
     - if: \${{ matrix.toolchain != '$stable' }}
       uses: actions/upload-artifact@v4
       name: Upload recipe
@@ -373,11 +376,10 @@ $(unset_action_envs)
 $(postcond_fresh _)
 $(postconds _)
 
-    - name: Stop image registries
-      run: docker stop --timeout 10 reg-from reg-to
     - name: Local private registry cache dance
       run: |
         # [ci: caches keep growing](https://github.com/moby/buildkit/issues/1850)
+        docker stop --timeout 10 reg-from reg-to
         rm -rf $registry
         mv $registry_new $registry
 
