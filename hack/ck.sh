@@ -122,7 +122,7 @@ cat <<EOF
         ! grep -C20 -F ' >>> ' \$CARGOGREEN_LOG_PATH
 
     - if: \${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != '$stable' }}
-      name: Maybe show final path diff
+      name: 🌀 Maybe show final path diff
       run: |
         case "\$GITHUB_JOB" in
           cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
@@ -136,7 +136,7 @@ cat <<EOF
           -- \$CARGOGREEN_FINAL_PATH
 
     - if: \${{ failure() || success() }}
-      name: cargo-green logs
+      name: 🌀 cargo-green logs
       run: tail -n9999999 \$CARGOGREEN_LOG_PATH ; echo >\$CARGOGREEN_LOG_PATH
 EOF
 }

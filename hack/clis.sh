@@ -293,7 +293,7 @@ $(rundeps_versions)
         # https://github.com/fenollp/supergreen/actions/caches
         mkdir -p $registry
         mkdir -p $registry_new
-    - name: Local private registry cache https://github.com/fenollp/supergreen/actions/caches
+    - name: 🔵 Local private registry cache https://github.com/fenollp/supergreen/actions/caches
       uses: actions/cache@v4
       with:
         path: $registry
@@ -322,12 +322,12 @@ $(rundeps_versions)
     - run: du -sh $registry_new
     - run: ls -lha $registry_new
 
-    - name: Envs
+    - name: 🔵 Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
     - if: \${{ matrix.toolchain != '$stable' }}
       run: ~/.cargo/bin/cargo-green green supergreen env CARGOGREEN_BASE_IMAGE | grep '\${{ matrix.toolchain }}'
     - run: BUILDX_BUILDER=supergreen docker buildx inspect
-    - name: Envs again
+    - name: 🔵 Envs again
       run: ~/.cargo/bin/cargo-green green supergreen env
 
 $(cache_usage)
@@ -335,7 +335,7 @@ $(cache_usage)
     - run: du -sh $registry
     - run: du -sh $registry_new
     - run: ls -lha $registry_new
-    - name: cargo install net=ON cache=OFF remote=OFF jobs=$jobs
+    - name: 🔵 cargo install net=ON cache=OFF remote=OFF jobs=$jobs
       run: |
 $(unset_action_envs)
         env ${envvars[@]} \\
@@ -344,7 +344,7 @@ $(unset_action_envs)
     - run: du -sh $registry
     - run: du -sh $registry_new
     - run: ls -lha $registry_new
-    - name: cargo install net=ON cache=ON remote=OFF jobs=1
+    - name: 🔵 cargo install net=ON cache=ON remote=OFF jobs=1
       if: \${{ failure() }}
       run: |
         rm _ || true
@@ -368,7 +368,7 @@ $(cache_usage)
       if: \${{ failure() || success() }}
       run: du -sh \$CARGO_TARGET_DIR || true
 
-    - name: Ensure running the same command twice without modifications...
+    - name: 🔵 Ensure running the same command twice without modifications...
       run: |
 $(unset_action_envs)
         env ${envvars[@]} \\
@@ -376,11 +376,11 @@ $(unset_action_envs)
 $(postcond_fresh _)
 $(postconds _)
 
-    - name: ▷ ► ▢ ◍ ◎ ● ◯ 🔵 🌀 Local private registry cache dance
+    - name: 🔵 Local private registry cache dance
       run: |
         # [ci: caches keep growing](https://github.com/moby/buildkit/issues/1850)
         curl -s -I http://localhost:12345/v2/\${{ github.repository }}/manifests/latest | grep Docker-Content-Digest | cut -d: -f3
-        find $registry_new/docker/registry/v2/blobs/sha256/??/ -type d | cut -d/ -f8 | sort -u #| tail -n+2
+        find $registry_new/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print \$NF}' | sort -u #| tail -n+2
         docker stop --timeout 10 reg-from reg-to
         rm -rf $registry
         mv $registry_new $registry
