@@ -311,10 +311,17 @@ $(rundeps_versions)
     - run: du -sh $registry_new
     - run: ls -lha $registry_new
 
+    - name: Pull regist3 image
+      run: |
+        false \
+        || docker build --tag regist3 - <<<'FROM docker.io/registry:3' \
+        || docker build --tag regist3 - <<<'FROM mirror.gcr.io/registry:3' \
+        || docker build --tag regist3 - <<<'FROM public.ecr.aws/docker/registry:3' \
+        || exit 1
     - name: Start "cache from" image registry
-      run: docker run --name=reg-from --rm --detach -p 12345:5000 --user \$(id -u):\$(id -g) -v     $registry:/var/lib/registry registry:3
+      run: docker run --name=reg-from --rm --detach -p 12345:5000 --user \$(id -u):\$(id -g) -v     $registry:/var/lib/registry regist3
     - name: Start "cache to" image registry
-      run: docker run --name=reg-to   --rm --detach -p 23456:5000 --user \$(id -u):\$(id -g) -v $registry_new:/var/lib/registry registry:3
+      run: docker run --name=reg-to   --rm --detach -p 23456:5000 --user \$(id -u):\$(id -g) -v $registry_new:/var/lib/registry regist3
 
     - run: docker pull localhost:12345/\${{ github.repository }} || true
     - run: docker build --push --tag localhost:12345/\${{ github.repository }} - <<<'FROM scratch'
