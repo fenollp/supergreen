@@ -306,9 +306,9 @@ $(rundeps_versions)
     - run: ls -lha $registry_new || true
 
     - name: Start "cache from" image registry
-      run: docker run --name=reg-from --rm -p 12345:5000 --user \$(id -u):\$(id -g) -v     $registry:/var/lib/registry registry:3
+      run: docker run --name=reg-from --rm --detach -p 12345:5000 --user \$(id -u):\$(id -g) -v     $registry:/var/lib/registry registry:3
     - name: Start "cache to" image registry
-      run: docker run --name=reg-to   --rm -p 23456:5000 --user \$(id -u):\$(id -g) -v $registry_new:/var/lib/registry registry:3
+      run: docker run --name=reg-to   --rm --detach -p 23456:5000 --user \$(id -u):\$(id -g) -v $registry_new:/var/lib/registry registry:3
 
     - run: docker pull localhost:5000/fenollp/supergreen || true
     - run: docker build --push --tag localhost:5000/fenollp/supergreen - <<<'FROM scratch'
@@ -372,11 +372,15 @@ $(unset_action_envs)
           cargo green -vv install --jobs=$jobs --locked --force $(as_install "$name_at_version") $@ |& tee _
 $(postcond_fresh _)
 $(postconds _)
+
+    - name: Stop image registries
+      run: docker stop --timeout 10 reg-from reg-to
     - name: Local private registry cache dance
       run: |
         # [ci: caches keep growing](https://github.com/moby/buildkit/issues/1850)
         rm -rf $registry
         mv $registry_new $registry
+
 $(cache_usage)
 
     - name: Target dir disk usage

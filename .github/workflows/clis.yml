@@ -129,9 +129,9 @@ jobs:
     - run: ls -lha /tmp/.local-registry-new || true
 
     - name: Start "cache from" image registry
-      run: docker run --name=reg-from --rm -p 12345:5000 --user $(id -u):$(id -g) -v     /tmp/.local-registry:/var/lib/registry registry:3
+      run: docker run --name=reg-from --rm --detach -p 12345:5000 --user $(id -u):$(id -g) -v     /tmp/.local-registry:/var/lib/registry registry:3
     - name: Start "cache to" image registry
-      run: docker run --name=reg-to   --rm -p 23456:5000 --user $(id -u):$(id -g) -v /tmp/.local-registry-new:/var/lib/registry registry:3
+      run: docker run --name=reg-to   --rm --detach -p 23456:5000 --user $(id -u):$(id -g) -v /tmp/.local-registry-new:/var/lib/registry registry:3
 
     - run: docker pull localhost:5000/fenollp/supergreen || true
     - run: docker build --push --tag localhost:5000/fenollp/supergreen - <<<'FROM scratch'
@@ -323,11 +323,15 @@ jobs:
 
     - name: cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
+
+    - name: Stop image registries
+      run: docker stop --timeout 10 reg-from reg-to
     - name: Local private registry cache dance
       run: |
         # [ci: caches keep growing](https://github.com/moby/buildkit/issues/1850)
         rm -rf /tmp/.local-registry
         mv /tmp/.local-registry-new /tmp/.local-registry
+
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
@@ -414,9 +418,9 @@ jobs:
     - run: ls -lha /tmp/.local-registry-new || true
 
     - name: Start "cache from" image registry
-      run: docker run --name=reg-from --rm -p 12345:5000 --user $(id -u):$(id -g) -v     /tmp/.local-registry:/var/lib/registry registry:3
+      run: docker run --name=reg-from --rm --detach -p 12345:5000 --user $(id -u):$(id -g) -v     /tmp/.local-registry:/var/lib/registry registry:3
     - name: Start "cache to" image registry
-      run: docker run --name=reg-to   --rm -p 23456:5000 --user $(id -u):$(id -g) -v /tmp/.local-registry-new:/var/lib/registry registry:3
+      run: docker run --name=reg-to   --rm --detach -p 23456:5000 --user $(id -u):$(id -g) -v /tmp/.local-registry-new:/var/lib/registry registry:3
 
     - run: docker pull localhost:5000/fenollp/supergreen || true
     - run: docker build --push --tag localhost:5000/fenollp/supergreen - <<<'FROM scratch'
@@ -608,11 +612,15 @@ jobs:
 
     - name: cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
+
+    - name: Stop image registries
+      run: docker stop --timeout 10 reg-from reg-to
     - name: Local private registry cache dance
       run: |
         # [ci: caches keep growing](https://github.com/moby/buildkit/issues/1850)
         rm -rf /tmp/.local-registry
         mv /tmp/.local-registry-new /tmp/.local-registry
+
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
@@ -699,9 +707,9 @@ jobs:
     - run: ls -lha /tmp/.local-registry-new || true
 
     - name: Start "cache from" image registry
-      run: docker run --name=reg-from --rm -p 12345:5000 --user $(id -u):$(id -g) -v     /tmp/.local-registry:/var/lib/registry registry:3
+      run: docker run --name=reg-from --rm --detach -p 12345:5000 --user $(id -u):$(id -g) -v     /tmp/.local-registry:/var/lib/registry registry:3
     - name: Start "cache to" image registry
-      run: docker run --name=reg-to   --rm -p 23456:5000 --user $(id -u):$(id -g) -v /tmp/.local-registry-new:/var/lib/registry registry:3
+      run: docker run --name=reg-to   --rm --detach -p 23456:5000 --user $(id -u):$(id -g) -v /tmp/.local-registry-new:/var/lib/registry registry:3
 
     - run: docker pull localhost:5000/fenollp/supergreen || true
     - run: docker build --push --tag localhost:5000/fenollp/supergreen - <<<'FROM scratch'
@@ -893,11 +901,15 @@ jobs:
 
     - name: cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
+
+    - name: Stop image registries
+      run: docker stop --timeout 10 reg-from reg-to
     - name: Local private registry cache dance
       run: |
         # [ci: caches keep growing](https://github.com/moby/buildkit/issues/1850)
         rm -rf /tmp/.local-registry
         mv /tmp/.local-registry-new /tmp/.local-registry
+
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
@@ -984,9 +996,9 @@ jobs:
     - run: ls -lha /tmp/.local-registry-new || true
 
     - name: Start "cache from" image registry
-      run: docker run --name=reg-from --rm -p 12345:5000 --user $(id -u):$(id -g) -v     /tmp/.local-registry:/var/lib/registry registry:3
+      run: docker run --name=reg-from --rm --detach -p 12345:5000 --user $(id -u):$(id -g) -v     /tmp/.local-registry:/var/lib/registry registry:3
     - name: Start "cache to" image registry
-      run: docker run --name=reg-to   --rm -p 23456:5000 --user $(id -u):$(id -g) -v /tmp/.local-registry-new:/var/lib/registry registry:3
+      run: docker run --name=reg-to   --rm --detach -p 23456:5000 --user $(id -u):$(id -g) -v /tmp/.local-registry-new:/var/lib/registry registry:3
 
     - run: docker pull localhost:5000/fenollp/supergreen || true
     - run: docker build --push --tag localhost:5000/fenollp/supergreen - <<<'FROM scratch'
@@ -1178,11 +1190,15 @@ jobs:
 
     - name: cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
+
+    - name: Stop image registries
+      run: docker stop --timeout 10 reg-from reg-to
     - name: Local private registry cache dance
       run: |
         # [ci: caches keep growing](https://github.com/moby/buildkit/issues/1850)
         rm -rf /tmp/.local-registry
         mv /tmp/.local-registry-new /tmp/.local-registry
+
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
@@ -1269,9 +1285,9 @@ jobs:
     - run: ls -lha /tmp/.local-registry-new || true
 
     - name: Start "cache from" image registry
-      run: docker run --name=reg-from --rm -p 12345:5000 --user $(id -u):$(id -g) -v     /tmp/.local-registry:/var/lib/registry registry:3
+      run: docker run --name=reg-from --rm --detach -p 12345:5000 --user $(id -u):$(id -g) -v     /tmp/.local-registry:/var/lib/registry registry:3
     - name: Start "cache to" image registry
-      run: docker run --name=reg-to   --rm -p 23456:5000 --user $(id -u):$(id -g) -v /tmp/.local-registry-new:/var/lib/registry registry:3
+      run: docker run --name=reg-to   --rm --detach -p 23456:5000 --user $(id -u):$(id -g) -v /tmp/.local-registry-new:/var/lib/registry registry:3
 
     - run: docker pull localhost:5000/fenollp/supergreen || true
     - run: docker build --push --tag localhost:5000/fenollp/supergreen - <<<'FROM scratch'
@@ -1463,11 +1479,15 @@ jobs:
 
     - name: cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
+
+    - name: Stop image registries
+      run: docker stop --timeout 10 reg-from reg-to
     - name: Local private registry cache dance
       run: |
         # [ci: caches keep growing](https://github.com/moby/buildkit/issues/1850)
         rm -rf /tmp/.local-registry
         mv /tmp/.local-registry-new /tmp/.local-registry
+
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
@@ -1554,9 +1574,9 @@ jobs:
     - run: ls -lha /tmp/.local-registry-new || true
 
     - name: Start "cache from" image registry
-      run: docker run --name=reg-from --rm -p 12345:5000 --user $(id -u):$(id -g) -v     /tmp/.local-registry:/var/lib/registry registry:3
+      run: docker run --name=reg-from --rm --detach -p 12345:5000 --user $(id -u):$(id -g) -v     /tmp/.local-registry:/var/lib/registry registry:3
     - name: Start "cache to" image registry
-      run: docker run --name=reg-to   --rm -p 23456:5000 --user $(id -u):$(id -g) -v /tmp/.local-registry-new:/var/lib/registry registry:3
+      run: docker run --name=reg-to   --rm --detach -p 23456:5000 --user $(id -u):$(id -g) -v /tmp/.local-registry-new:/var/lib/registry registry:3
 
     - run: docker pull localhost:5000/fenollp/supergreen || true
     - run: docker build --push --tag localhost:5000/fenollp/supergreen - <<<'FROM scratch'
@@ -1748,11 +1768,15 @@ jobs:
 
     - name: cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
+
+    - name: Stop image registries
+      run: docker stop --timeout 10 reg-from reg-to
     - name: Local private registry cache dance
       run: |
         # [ci: caches keep growing](https://github.com/moby/buildkit/issues/1850)
         rm -rf /tmp/.local-registry
         mv /tmp/.local-registry-new /tmp/.local-registry
+
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
@@ -1839,9 +1863,9 @@ jobs:
     - run: ls -lha /tmp/.local-registry-new || true
 
     - name: Start "cache from" image registry
-      run: docker run --name=reg-from --rm -p 12345:5000 --user $(id -u):$(id -g) -v     /tmp/.local-registry:/var/lib/registry registry:3
+      run: docker run --name=reg-from --rm --detach -p 12345:5000 --user $(id -u):$(id -g) -v     /tmp/.local-registry:/var/lib/registry registry:3
     - name: Start "cache to" image registry
-      run: docker run --name=reg-to   --rm -p 23456:5000 --user $(id -u):$(id -g) -v /tmp/.local-registry-new:/var/lib/registry registry:3
+      run: docker run --name=reg-to   --rm --detach -p 23456:5000 --user $(id -u):$(id -g) -v /tmp/.local-registry-new:/var/lib/registry registry:3
 
     - run: docker pull localhost:5000/fenollp/supergreen || true
     - run: docker build --push --tag localhost:5000/fenollp/supergreen - <<<'FROM scratch'
@@ -2033,11 +2057,15 @@ jobs:
 
     - name: cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
+
+    - name: Stop image registries
+      run: docker stop --timeout 10 reg-from reg-to
     - name: Local private registry cache dance
       run: |
         # [ci: caches keep growing](https://github.com/moby/buildkit/issues/1850)
         rm -rf /tmp/.local-registry
         mv /tmp/.local-registry-new /tmp/.local-registry
+
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
@@ -2125,9 +2153,9 @@ jobs:
     - run: ls -lha /tmp/.local-registry-new || true
 
     - name: Start "cache from" image registry
-      run: docker run --name=reg-from --rm -p 12345:5000 --user $(id -u):$(id -g) -v     /tmp/.local-registry:/var/lib/registry registry:3
+      run: docker run --name=reg-from --rm --detach -p 12345:5000 --user $(id -u):$(id -g) -v     /tmp/.local-registry:/var/lib/registry registry:3
     - name: Start "cache to" image registry
-      run: docker run --name=reg-to   --rm -p 23456:5000 --user $(id -u):$(id -g) -v /tmp/.local-registry-new:/var/lib/registry registry:3
+      run: docker run --name=reg-to   --rm --detach -p 23456:5000 --user $(id -u):$(id -g) -v /tmp/.local-registry-new:/var/lib/registry registry:3
 
     - run: docker pull localhost:5000/fenollp/supergreen || true
     - run: docker build --push --tag localhost:5000/fenollp/supergreen - <<<'FROM scratch'
@@ -2319,11 +2347,15 @@ jobs:
 
     - name: cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
+
+    - name: Stop image registries
+      run: docker stop --timeout 10 reg-from reg-to
     - name: Local private registry cache dance
       run: |
         # [ci: caches keep growing](https://github.com/moby/buildkit/issues/1850)
         rm -rf /tmp/.local-registry
         mv /tmp/.local-registry-new /tmp/.local-registry
+
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
@@ -2410,9 +2442,9 @@ jobs:
     - run: ls -lha /tmp/.local-registry-new || true
 
     - name: Start "cache from" image registry
-      run: docker run --name=reg-from --rm -p 12345:5000 --user $(id -u):$(id -g) -v     /tmp/.local-registry:/var/lib/registry registry:3
+      run: docker run --name=reg-from --rm --detach -p 12345:5000 --user $(id -u):$(id -g) -v     /tmp/.local-registry:/var/lib/registry registry:3
     - name: Start "cache to" image registry
-      run: docker run --name=reg-to   --rm -p 23456:5000 --user $(id -u):$(id -g) -v /tmp/.local-registry-new:/var/lib/registry registry:3
+      run: docker run --name=reg-to   --rm --detach -p 23456:5000 --user $(id -u):$(id -g) -v /tmp/.local-registry-new:/var/lib/registry registry:3
 
     - run: docker pull localhost:5000/fenollp/supergreen || true
     - run: docker build --push --tag localhost:5000/fenollp/supergreen - <<<'FROM scratch'
@@ -2604,11 +2636,15 @@ jobs:
 
     - name: cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
+
+    - name: Stop image registries
+      run: docker stop --timeout 10 reg-from reg-to
     - name: Local private registry cache dance
       run: |
         # [ci: caches keep growing](https://github.com/moby/buildkit/issues/1850)
         rm -rf /tmp/.local-registry
         mv /tmp/.local-registry-new /tmp/.local-registry
+
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
@@ -2695,9 +2731,9 @@ jobs:
     - run: ls -lha /tmp/.local-registry-new || true
 
     - name: Start "cache from" image registry
-      run: docker run --name=reg-from --rm -p 12345:5000 --user $(id -u):$(id -g) -v     /tmp/.local-registry:/var/lib/registry registry:3
+      run: docker run --name=reg-from --rm --detach -p 12345:5000 --user $(id -u):$(id -g) -v     /tmp/.local-registry:/var/lib/registry registry:3
     - name: Start "cache to" image registry
-      run: docker run --name=reg-to   --rm -p 23456:5000 --user $(id -u):$(id -g) -v /tmp/.local-registry-new:/var/lib/registry registry:3
+      run: docker run --name=reg-to   --rm --detach -p 23456:5000 --user $(id -u):$(id -g) -v /tmp/.local-registry-new:/var/lib/registry registry:3
 
     - run: docker pull localhost:5000/fenollp/supergreen || true
     - run: docker build --push --tag localhost:5000/fenollp/supergreen - <<<'FROM scratch'
@@ -2889,11 +2925,15 @@ jobs:
 
     - name: cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
+
+    - name: Stop image registries
+      run: docker stop --timeout 10 reg-from reg-to
     - name: Local private registry cache dance
       run: |
         # [ci: caches keep growing](https://github.com/moby/buildkit/issues/1850)
         rm -rf /tmp/.local-registry
         mv /tmp/.local-registry-new /tmp/.local-registry
+
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
@@ -2980,9 +3020,9 @@ jobs:
     - run: ls -lha /tmp/.local-registry-new || true
 
     - name: Start "cache from" image registry
-      run: docker run --name=reg-from --rm -p 12345:5000 --user $(id -u):$(id -g) -v     /tmp/.local-registry:/var/lib/registry registry:3
+      run: docker run --name=reg-from --rm --detach -p 12345:5000 --user $(id -u):$(id -g) -v     /tmp/.local-registry:/var/lib/registry registry:3
     - name: Start "cache to" image registry
-      run: docker run --name=reg-to   --rm -p 23456:5000 --user $(id -u):$(id -g) -v /tmp/.local-registry-new:/var/lib/registry registry:3
+      run: docker run --name=reg-to   --rm --detach -p 23456:5000 --user $(id -u):$(id -g) -v /tmp/.local-registry-new:/var/lib/registry registry:3
 
     - run: docker pull localhost:5000/fenollp/supergreen || true
     - run: docker build --push --tag localhost:5000/fenollp/supergreen - <<<'FROM scratch'
@@ -3174,11 +3214,15 @@ jobs:
 
     - name: cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
+
+    - name: Stop image registries
+      run: docker stop --timeout 10 reg-from reg-to
     - name: Local private registry cache dance
       run: |
         # [ci: caches keep growing](https://github.com/moby/buildkit/issues/1850)
         rm -rf /tmp/.local-registry
         mv /tmp/.local-registry-new /tmp/.local-registry
+
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
@@ -3265,9 +3309,9 @@ jobs:
     - run: ls -lha /tmp/.local-registry-new || true
 
     - name: Start "cache from" image registry
-      run: docker run --name=reg-from --rm -p 12345:5000 --user $(id -u):$(id -g) -v     /tmp/.local-registry:/var/lib/registry registry:3
+      run: docker run --name=reg-from --rm --detach -p 12345:5000 --user $(id -u):$(id -g) -v     /tmp/.local-registry:/var/lib/registry registry:3
     - name: Start "cache to" image registry
-      run: docker run --name=reg-to   --rm -p 23456:5000 --user $(id -u):$(id -g) -v /tmp/.local-registry-new:/var/lib/registry registry:3
+      run: docker run --name=reg-to   --rm --detach -p 23456:5000 --user $(id -u):$(id -g) -v /tmp/.local-registry-new:/var/lib/registry registry:3
 
     - run: docker pull localhost:5000/fenollp/supergreen || true
     - run: docker build --push --tag localhost:5000/fenollp/supergreen - <<<'FROM scratch'
@@ -3459,11 +3503,15 @@ jobs:
 
     - name: cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
+
+    - name: Stop image registries
+      run: docker stop --timeout 10 reg-from reg-to
     - name: Local private registry cache dance
       run: |
         # [ci: caches keep growing](https://github.com/moby/buildkit/issues/1850)
         rm -rf /tmp/.local-registry
         mv /tmp/.local-registry-new /tmp/.local-registry
+
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
@@ -3550,9 +3598,9 @@ jobs:
     - run: ls -lha /tmp/.local-registry-new || true
 
     - name: Start "cache from" image registry
-      run: docker run --name=reg-from --rm -p 12345:5000 --user $(id -u):$(id -g) -v     /tmp/.local-registry:/var/lib/registry registry:3
+      run: docker run --name=reg-from --rm --detach -p 12345:5000 --user $(id -u):$(id -g) -v     /tmp/.local-registry:/var/lib/registry registry:3
     - name: Start "cache to" image registry
-      run: docker run --name=reg-to   --rm -p 23456:5000 --user $(id -u):$(id -g) -v /tmp/.local-registry-new:/var/lib/registry registry:3
+      run: docker run --name=reg-to   --rm --detach -p 23456:5000 --user $(id -u):$(id -g) -v /tmp/.local-registry-new:/var/lib/registry registry:3
 
     - run: docker pull localhost:5000/fenollp/supergreen || true
     - run: docker build --push --tag localhost:5000/fenollp/supergreen - <<<'FROM scratch'
@@ -3744,11 +3792,15 @@ jobs:
 
     - name: cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
+
+    - name: Stop image registries
+      run: docker stop --timeout 10 reg-from reg-to
     - name: Local private registry cache dance
       run: |
         # [ci: caches keep growing](https://github.com/moby/buildkit/issues/1850)
         rm -rf /tmp/.local-registry
         mv /tmp/.local-registry-new /tmp/.local-registry
+
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
@@ -3835,9 +3887,9 @@ jobs:
     - run: ls -lha /tmp/.local-registry-new || true
 
     - name: Start "cache from" image registry
-      run: docker run --name=reg-from --rm -p 12345:5000 --user $(id -u):$(id -g) -v     /tmp/.local-registry:/var/lib/registry registry:3
+      run: docker run --name=reg-from --rm --detach -p 12345:5000 --user $(id -u):$(id -g) -v     /tmp/.local-registry:/var/lib/registry registry:3
     - name: Start "cache to" image registry
-      run: docker run --name=reg-to   --rm -p 23456:5000 --user $(id -u):$(id -g) -v /tmp/.local-registry-new:/var/lib/registry registry:3
+      run: docker run --name=reg-to   --rm --detach -p 23456:5000 --user $(id -u):$(id -g) -v /tmp/.local-registry-new:/var/lib/registry registry:3
 
     - run: docker pull localhost:5000/fenollp/supergreen || true
     - run: docker build --push --tag localhost:5000/fenollp/supergreen - <<<'FROM scratch'
@@ -4029,11 +4081,15 @@ jobs:
 
     - name: cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
+
+    - name: Stop image registries
+      run: docker stop --timeout 10 reg-from reg-to
     - name: Local private registry cache dance
       run: |
         # [ci: caches keep growing](https://github.com/moby/buildkit/issues/1850)
         rm -rf /tmp/.local-registry
         mv /tmp/.local-registry-new /tmp/.local-registry
+
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
