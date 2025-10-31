@@ -313,10 +313,10 @@ $(rundeps_versions)
 
     - name: Pull regist3 image
       run: |
-        false \
-        || docker build --tag regist3 - <<<'FROM docker.io/registry:3' \
-        || docker build --tag regist3 - <<<'FROM mirror.gcr.io/registry:3' \
-        || docker build --tag regist3 - <<<'FROM public.ecr.aws/docker/registry:3' \
+        false \\
+        || docker build --tag regist3 - <<<'FROM docker.io/registry:3' \\
+        || docker build --tag regist3 - <<<'FROM mirror.gcr.io/registry:3' \\
+        || docker build --tag regist3 - <<<'FROM public.ecr.aws/docker/registry:3' \\
         || exit 1
     - name: Start "cache from" image registry
       run: docker run --name=reg-from --rm --detach -p 12345:5000 --user \$(id -u):\$(id -g) -v     $registry:/var/lib/registry regist3
@@ -386,12 +386,17 @@ $(unset_action_envs)
 $(postcond_fresh _)
 $(postconds _)
 
-    - name: 🔵 Old local private registry image digests
+    - name: Old local private registry image digests
       run: |
         find $registry/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print \$NF}' | sort -u #| tail -n+2
-    - name: 🔵 New local private registry image digests
+    - name: New local private registry image digests
       run: |
         find $registry_new/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print \$NF}' | sort -u #| tail -n+2
+    - name: 🔵 Compare old/new local private registry image digests
+      run: |
+        diff --width=150 -y \\
+          < <(find $registry/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print \$NF}' | sort -u) \\
+          < <(find $registry_new/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print \$NF}' | sort -u)
     - name: Local private registry cache dance
       run: |
         # [ci: caches keep growing](https://github.com/moby/buildkit/issues/1850)
