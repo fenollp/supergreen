@@ -257,7 +257,7 @@ impl Green {
         }
 
         if !self.cache.to_images.is_empty() || !self.cache.images.is_empty() {
-            let maxready = self.builder.has_maxready();
+            let maxready = !self.builder.is_default();
             for img in self.cache.to_images.iter().chain(self.cache.images.iter()) {
                 let img = img.noscheme();
                 cmd.arg(format!(

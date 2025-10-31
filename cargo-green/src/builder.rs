@@ -74,10 +74,6 @@ impl Builder {
     pub(crate) fn is_default(&self) -> bool {
         self.driver.as_ref().is_none_or(|d| *d == Driver::Docker)
     }
-
-    pub(crate) fn has_maxready(&self) -> bool {
-        self.driver.as_ref().is_some_and(|d| *d == Driver::DockerContainer)
-    }
 }
 
 #[derive(Debug, Serialize, Deserialize, PartialEq, Eq)]
