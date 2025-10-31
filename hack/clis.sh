@@ -288,6 +288,8 @@ $(restore_bin)
     - uses: actions/checkout@v5
 $(rundeps_versions)
 
+    - run: mkdir -p $registry
+    - run: mkdir -p $registry_new
     - name: Local private registry cache https://github.com/fenollp/supergreen/actions/caches
       uses: actions/cache@v4
       with:
@@ -297,8 +299,6 @@ $(rundeps_versions)
           localprivatereg-\${{ runner.os }}-\${{ matrix.toolchain }}-
           localprivatereg-\${{ runner.os }}-
           localprivatereg-
-  # - run: mkdir -p $registry
-  # - run: mkdir -p $registry_new
 
     - run: ls -lha $registry || true
     - run: du -sh $registry || true
@@ -306,9 +306,9 @@ $(rundeps_versions)
     - run: ls -lha $registry_new || true
 
     - name: Start "cache from" image registry
-      run: docker run --name=reg-from --rm -it -p 12345:5000 --user \$(id -u):\$(id -g) -v     $registry:/var/lib/registry registry:3
+      run: docker run --name=reg-from --rm -p 12345:5000 --user \$(id -u):\$(id -g) -v     $registry:/var/lib/registry registry:3
     - name: Start "cache to" image registry
-      run: docker run --name=reg-to   --rm -it -p 23456:5000 --user \$(id -u):\$(id -g) -v $registry_new:/var/lib/registry registry:3
+      run: docker run --name=reg-to   --rm -p 23456:5000 --user \$(id -u):\$(id -g) -v $registry_new:/var/lib/registry registry:3
 
     - run: docker pull localhost:5000/fenollp/supergreen || true
     - run: docker build --push --tag localhost:5000/fenollp/supergreen - <<<'FROM scratch'
