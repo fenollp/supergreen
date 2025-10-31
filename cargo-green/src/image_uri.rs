@@ -35,10 +35,10 @@ fn docker_image_uri(uri: &str) -> Result<()> {
 impl ImageUri {
     #[must_use]
     pub(crate) fn std(tagged: &str) -> Self {
-        assert!(!tagged.is_empty());
+        assert!(!tagged.is_empty(), "cannot be the empty string");
         let uri = Self::try_new(format!("docker-image://docker.io/library/{tagged}")).unwrap();
-        assert!(uri.tagged());
-        assert!(!uri.locked());
+        assert!(uri.tagged(), "must have a tag: {uri}");
+        assert!(!uri.locked(), "must not be locked: {uri}");
         uri
     }
 
@@ -64,39 +64,33 @@ impl ImageUri {
 
     #[must_use]
     pub(crate) fn unlocked(&self) -> Self {
-        assert!(self.locked());
+        assert!(self.locked(), "must be locked: {self}");
         self.trim_end_matches(|c| c != '@').trim_end_matches('@').try_into().unwrap()
     }
 
     #[must_use]
     pub(crate) fn lock(&self, sha_digest: &str) -> Self {
-        assert!(!self.locked());
-        assert!(sha_digest.starts_with("sha256:"));
-        assert_eq!(sha_digest.len(), "sha256:".len() + 64);
-        format!("{self}@{sha_digest}").try_into().unwrap()
+        assert!(!self.locked(), "must not be locked: {self}");
+        assert!(sha_digest.starts_with("sha256:"), "unknown digest algo: {sha_digest}");
+        assert_eq!(sha_digest.len(), "sha256:".len() + 64, "incorrect digest length: {sha_digest}");
+        format!("{self}@{sha_digest}").try_into().expect("PROOF: assembled from good parts")
     }
 
     #[must_use]
     pub(crate) fn digest(&self) -> &str {
-        assert!(self.locked());
+        assert!(self.locked(), "must be locked: {self}");
         self.trim_start_matches(|c| c != '@').trim_start_matches('@')
     }
 
     #[must_use]
     pub(crate) fn path_and_tag(&self) -> (&str, &str) {
-        assert!(!self.locked());
+        assert!(!self.locked(), "must not be locked: {self}");
         let img = self.noscheme();
-        // let if self.tagged()&& Some((path,tag))=img.rsplit_once(':'){
-        //     return (path,tag)
-        // }
-        // (img,"latest")
-        // if let Some(())=self.rspli
         if let Some((_, rhs)) = self.rsplit_once('/') {
             if let Some((_, tag)) = rhs.rsplit_once(':') {
                 return (img.trim_end_matches(tag).trim_end_matches(':'), tag);
             }
             return (img, "latest");
-            // return img.rsplit_once(':').unwrap_or((rhs, "latest"));
         }
         (img, "latest")
     }
