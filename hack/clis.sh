@@ -240,7 +240,7 @@ cli() {
   local name_at_version=$1; shift
   local jobs=$1; shift
   local registry=/tmp/.local-registry
-  local registry_new=/tmp/.local-registry-new
+  local registry_new=$registry-new
   local envvars=()
   as_env "$name_at_version"
 
@@ -376,10 +376,11 @@ $(unset_action_envs)
 $(postcond_fresh _)
 $(postconds _)
 
-    - name: Local private registry cache dance
+    - name: ▷ ► ▢ ◍ ◎ ● ◯ 🔵 🌀 Local private registry cache dance
       run: |
         # [ci: caches keep growing](https://github.com/moby/buildkit/issues/1850)
         curl -s -I http://localhost:12345/v2/\${{ github.repository }}/manifests/latest | grep Docker-Content-Digest | cut -d: -f3
+        find $registry_new/docker/registry/v2/blobs/sha256/??/ -type d | cut -d/ -f8 | sort -u #| tail -n+2
         docker stop --timeout 10 reg-from reg-to
         rm -rf $registry
         mv $registry_new $registry

@@ -329,10 +329,11 @@ jobs:
       name: cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
 
-    - name: Local private registry cache dance
+    - name: ▷ ► ▢ ◍ ◎ ● ◯ 🔵 🌀 Local private registry cache dance
       run: |
         # [ci: caches keep growing](https://github.com/moby/buildkit/issues/1850)
         curl -s -I http://localhost:12345/v2/${{ github.repository }}/manifests/latest | grep Docker-Content-Digest | cut -d: -f3
+        find /tmp/.local-registry-new/docker/registry/v2/blobs/sha256/??/ -type d | cut -d/ -f8 | sort -u #| tail -n+2
         docker stop --timeout 10 reg-from reg-to
         rm -rf /tmp/.local-registry
         mv /tmp/.local-registry-new /tmp/.local-registry
@@ -623,10 +624,11 @@ jobs:
       name: cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
 
-    - name: Local private registry cache dance
+    - name: ▷ ► ▢ ◍ ◎ ● ◯ 🔵 🌀 Local private registry cache dance
       run: |
         # [ci: caches keep growing](https://github.com/moby/buildkit/issues/1850)
         curl -s -I http://localhost:12345/v2/${{ github.repository }}/manifests/latest | grep Docker-Content-Digest | cut -d: -f3
+        find /tmp/.local-registry-new/docker/registry/v2/blobs/sha256/??/ -type d | cut -d/ -f8 | sort -u #| tail -n+2
         docker stop --timeout 10 reg-from reg-to
         rm -rf /tmp/.local-registry
         mv /tmp/.local-registry-new /tmp/.local-registry
@@ -917,10 +919,11 @@ jobs:
       name: cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
 
-    - name: Local private registry cache dance
+    - name: ▷ ► ▢ ◍ ◎ ● ◯ 🔵 🌀 Local private registry cache dance
       run: |
         # [ci: caches keep growing](https://github.com/moby/buildkit/issues/1850)
         curl -s -I http://localhost:12345/v2/${{ github.repository }}/manifests/latest | grep Docker-Content-Digest | cut -d: -f3
+        find /tmp/.local-registry-new/docker/registry/v2/blobs/sha256/??/ -type d | cut -d/ -f8 | sort -u #| tail -n+2
         docker stop --timeout 10 reg-from reg-to
         rm -rf /tmp/.local-registry
         mv /tmp/.local-registry-new /tmp/.local-registry
@@ -1211,10 +1214,11 @@ jobs:
       name: cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
 
-    - name: Local private registry cache dance
+    - name: ▷ ► ▢ ◍ ◎ ● ◯ 🔵 🌀 Local private registry cache dance
       run: |
         # [ci: caches keep growing](https://github.com/moby/buildkit/issues/1850)
         curl -s -I http://localhost:12345/v2/${{ github.repository }}/manifests/latest | grep Docker-Content-Digest | cut -d: -f3
+        find /tmp/.local-registry-new/docker/registry/v2/blobs/sha256/??/ -type d | cut -d/ -f8 | sort -u #| tail -n+2
         docker stop --timeout 10 reg-from reg-to
         rm -rf /tmp/.local-registry
         mv /tmp/.local-registry-new /tmp/.local-registry
@@ -1505,10 +1509,11 @@ jobs:
       name: cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
 
-    - name: Local private registry cache dance
+    - name: ▷ ► ▢ ◍ ◎ ● ◯ 🔵 🌀 Local private registry cache dance
       run: |
         # [ci: caches keep growing](https://github.com/moby/buildkit/issues/1850)
         curl -s -I http://localhost:12345/v2/${{ github.repository }}/manifests/latest | grep Docker-Content-Digest | cut -d: -f3
+        find /tmp/.local-registry-new/docker/registry/v2/blobs/sha256/??/ -type d | cut -d/ -f8 | sort -u #| tail -n+2
         docker stop --timeout 10 reg-from reg-to
         rm -rf /tmp/.local-registry
         mv /tmp/.local-registry-new /tmp/.local-registry
@@ -1799,10 +1804,11 @@ jobs:
       name: cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
 
-    - name: Local private registry cache dance
+    - name: ▷ ► ▢ ◍ ◎ ● ◯ 🔵 🌀 Local private registry cache dance
       run: |
         # [ci: caches keep growing](https://github.com/moby/buildkit/issues/1850)
         curl -s -I http://localhost:12345/v2/${{ github.repository }}/manifests/latest | grep Docker-Content-Digest | cut -d: -f3
+        find /tmp/.local-registry-new/docker/registry/v2/blobs/sha256/??/ -type d | cut -d/ -f8 | sort -u #| tail -n+2
         docker stop --timeout 10 reg-from reg-to
         rm -rf /tmp/.local-registry
         mv /tmp/.local-registry-new /tmp/.local-registry
@@ -2093,10 +2099,11 @@ jobs:
       name: cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
 
-    - name: Local private registry cache dance
+    - name: ▷ ► ▢ ◍ ◎ ● ◯ 🔵 🌀 Local private registry cache dance
       run: |
         # [ci: caches keep growing](https://github.com/moby/buildkit/issues/1850)
         curl -s -I http://localhost:12345/v2/${{ github.repository }}/manifests/latest | grep Docker-Content-Digest | cut -d: -f3
+        find /tmp/.local-registry-new/docker/registry/v2/blobs/sha256/??/ -type d | cut -d/ -f8 | sort -u #| tail -n+2
         docker stop --timeout 10 reg-from reg-to
         rm -rf /tmp/.local-registry
         mv /tmp/.local-registry-new /tmp/.local-registry
@@ -2388,10 +2395,11 @@ jobs:
       name: cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
 
-    - name: Local private registry cache dance
+    - name: ▷ ► ▢ ◍ ◎ ● ◯ 🔵 🌀 Local private registry cache dance
       run: |
         # [ci: caches keep growing](https://github.com/moby/buildkit/issues/1850)
         curl -s -I http://localhost:12345/v2/${{ github.repository }}/manifests/latest | grep Docker-Content-Digest | cut -d: -f3
+        find /tmp/.local-registry-new/docker/registry/v2/blobs/sha256/??/ -type d | cut -d/ -f8 | sort -u #| tail -n+2
         docker stop --timeout 10 reg-from reg-to
         rm -rf /tmp/.local-registry
         mv /tmp/.local-registry-new /tmp/.local-registry
@@ -2682,10 +2690,11 @@ jobs:
       name: cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
 
-    - name: Local private registry cache dance
+    - name: ▷ ► ▢ ◍ ◎ ● ◯ 🔵 🌀 Local private registry cache dance
       run: |
         # [ci: caches keep growing](https://github.com/moby/buildkit/issues/1850)
         curl -s -I http://localhost:12345/v2/${{ github.repository }}/manifests/latest | grep Docker-Content-Digest | cut -d: -f3
+        find /tmp/.local-registry-new/docker/registry/v2/blobs/sha256/??/ -type d | cut -d/ -f8 | sort -u #| tail -n+2
         docker stop --timeout 10 reg-from reg-to
         rm -rf /tmp/.local-registry
         mv /tmp/.local-registry-new /tmp/.local-registry
@@ -2976,10 +2985,11 @@ jobs:
       name: cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
 
-    - name: Local private registry cache dance
+    - name: ▷ ► ▢ ◍ ◎ ● ◯ 🔵 🌀 Local private registry cache dance
       run: |
         # [ci: caches keep growing](https://github.com/moby/buildkit/issues/1850)
         curl -s -I http://localhost:12345/v2/${{ github.repository }}/manifests/latest | grep Docker-Content-Digest | cut -d: -f3
+        find /tmp/.local-registry-new/docker/registry/v2/blobs/sha256/??/ -type d | cut -d/ -f8 | sort -u #| tail -n+2
         docker stop --timeout 10 reg-from reg-to
         rm -rf /tmp/.local-registry
         mv /tmp/.local-registry-new /tmp/.local-registry
@@ -3270,10 +3280,11 @@ jobs:
       name: cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
 
-    - name: Local private registry cache dance
+    - name: ▷ ► ▢ ◍ ◎ ● ◯ 🔵 🌀 Local private registry cache dance
       run: |
         # [ci: caches keep growing](https://github.com/moby/buildkit/issues/1850)
         curl -s -I http://localhost:12345/v2/${{ github.repository }}/manifests/latest | grep Docker-Content-Digest | cut -d: -f3
+        find /tmp/.local-registry-new/docker/registry/v2/blobs/sha256/??/ -type d | cut -d/ -f8 | sort -u #| tail -n+2
         docker stop --timeout 10 reg-from reg-to
         rm -rf /tmp/.local-registry
         mv /tmp/.local-registry-new /tmp/.local-registry
@@ -3564,10 +3575,11 @@ jobs:
       name: cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
 
-    - name: Local private registry cache dance
+    - name: ▷ ► ▢ ◍ ◎ ● ◯ 🔵 🌀 Local private registry cache dance
       run: |
         # [ci: caches keep growing](https://github.com/moby/buildkit/issues/1850)
         curl -s -I http://localhost:12345/v2/${{ github.repository }}/manifests/latest | grep Docker-Content-Digest | cut -d: -f3
+        find /tmp/.local-registry-new/docker/registry/v2/blobs/sha256/??/ -type d | cut -d/ -f8 | sort -u #| tail -n+2
         docker stop --timeout 10 reg-from reg-to
         rm -rf /tmp/.local-registry
         mv /tmp/.local-registry-new /tmp/.local-registry
@@ -3858,10 +3870,11 @@ jobs:
       name: cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
 
-    - name: Local private registry cache dance
+    - name: ▷ ► ▢ ◍ ◎ ● ◯ 🔵 🌀 Local private registry cache dance
       run: |
         # [ci: caches keep growing](https://github.com/moby/buildkit/issues/1850)
         curl -s -I http://localhost:12345/v2/${{ github.repository }}/manifests/latest | grep Docker-Content-Digest | cut -d: -f3
+        find /tmp/.local-registry-new/docker/registry/v2/blobs/sha256/??/ -type d | cut -d/ -f8 | sort -u #| tail -n+2
         docker stop --timeout 10 reg-from reg-to
         rm -rf /tmp/.local-registry
         mv /tmp/.local-registry-new /tmp/.local-registry
@@ -4152,10 +4165,11 @@ jobs:
       name: cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
 
-    - name: Local private registry cache dance
+    - name: ▷ ► ▢ ◍ ◎ ● ◯ 🔵 🌀 Local private registry cache dance
       run: |
         # [ci: caches keep growing](https://github.com/moby/buildkit/issues/1850)
         curl -s -I http://localhost:12345/v2/${{ github.repository }}/manifests/latest | grep Docker-Content-Digest | cut -d: -f3
+        find /tmp/.local-registry-new/docker/registry/v2/blobs/sha256/??/ -type d | cut -d/ -f8 | sort -u #| tail -n+2
         docker stop --timeout 10 reg-from reg-to
         rm -rf /tmp/.local-registry
         mv /tmp/.local-registry-new /tmp/.local-registry
