@@ -257,6 +257,7 @@ $(jobdef "$(slugify "$name_at_version")_$jobs")
       CARGOGREEN_CACHE_FROM_IMAGES: docker-image://localhost:12345/\${{ github.repository }}
       CARGOGREEN_CACHE_TO_IMAGES: docker-image://localhost:23456/\${{ github.repository }}
       CARGOGREEN_FINAL_PATH: recipes/$name_at_version.Dockerfile
+      CARGOGREEN_FINAL_PATH_NONPRIMARY: 1 # dumps on each build call
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
 $(
@@ -271,7 +272,6 @@ $(
     needs: bin
     steps:
 $(login_to_readonly_hub)
-$(login_to_readwrite_ghcr)
     - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
         toolchain: \${{ matrix.toolchain }}
@@ -295,6 +295,7 @@ $(rundeps_versions)
         mkdir -p $registry_new
     - name: 🔵 Restore local private registry cache
       uses: actions/cache/restore@v4
+      if: \${{ matrix.toolchain != '$stable' }} # TODO: drop toolchain filter when digests are stable
       with:
         path: $registry
         # github.run_id: https://github.com/actions/toolkit/issues/658#issuecomment-2640690759
@@ -378,17 +379,21 @@ $(unset_action_envs)
 $(postcond_fresh _)
 $(postconds _)
 
-    - name: 🔵 Local private registry cache dance
+    - name: 🔵 Old local private registry image digests
+      run: |
+        find $registry/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print \$NF}' | sort -u #| tail -n+2
+    - name: 🔵 New local private registry image digests
+      run: |
+        find $registry_new/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print \$NF}' | sort -u #| tail -n+2
+    - name: Local private registry cache dance
       run: |
         # [ci: caches keep growing](https://github.com/moby/buildkit/issues/1850)
-        curl -s -I http://localhost:12345/v2/\${{ github.repository }}/manifests/latest | grep Docker-Content-Digest | cut -d: -f3
-        find $registry_new/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print \$NF}' | sort -u #| tail -n+2
         docker stop --timeout 10 reg-from reg-to
         rm -rf $registry
         mv $registry_new $registry
     - name: 🔵 Save local private registry cache
       uses: actions/cache/save@v4
-      if: always()
+      if: \${{ always() && matrix.toolchain != '$stable' }} # TODO: drop toolchain filter when digests are stable
       with:
         path: $registry
         key: localprivatereg-\${{ runner.os }}-\${{ matrix.toolchain }}-\${{ github.job }}-\${{ github.run_id }}
