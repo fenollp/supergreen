@@ -105,6 +105,14 @@ impl ImageUri {
         }
         false
     }
+
+    #[must_use]
+    pub(crate) fn host(&self) -> &str {
+        let img = self.noscheme();
+        assert!(img.contains('/'), "must contain a path: {img}");
+        let (host, _) = self.noscheme().split_once('/').expect("PROOF: just checked");
+        host
+    }
 }
 
 #[test]

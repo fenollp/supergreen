@@ -1,6 +1,7 @@
 use std::{fs, str::FromStr, sync::LazyLock};
 
 use anyhow::{anyhow, bail, Result};
+use indexmap::IndexSet;
 use log::info;
 use serde::{Deserialize, Serialize};
 use version_compare::Version;
@@ -176,22 +177,72 @@ then run your cargo command again.
             let mirrors = buildkitd::Registry { mirrors, ..Default::default() };
             config.registry.insert("docker.io".to_owned(), mirrors);
         }
-        config.registry.insert(
-            "localhost:5000".to_owned(),
-            buildkitd::Registry { http: true, /*insecure: true,*/ ..Default::default() },
-        );
-        config.registry.insert(
-            "localhost:6000".to_owned(),
-            buildkitd::Registry { http: true, ..Default::default() },
-        );
-        config.registry.insert(
-            "localhost:12345".to_owned(),
-            buildkitd::Registry { http: true, ..Default::default() },
-        );
-        config.registry.insert(
-            "localhost:23456".to_owned(),
-            buildkitd::Registry { http: true, ..Default::default() },
-        );
+
+        let mut use_host_network = false;
+        let hosts = self
+            .cache
+            .from_images
+            .iter()
+            .chain(self.cache.to_images.iter())
+            .chain(self.cache.images.iter())
+            .map(ImageUri::host)
+            .collect::<IndexSet<_>>();
+
+        for domain in hosts {
+            let bla = |scheme| async move {
+                let (client, req) = reqwest::Client::builder()
+                    .connect_timeout(std::time::Duration::from_secs(4))
+                    .build()?
+                    .get(format!("{scheme}://{domain}/v2/_catalog"))
+                    .build_split();
+                let req = req?;
+                let rep = client.execute(req).await;
+                //     let mut decodes=false;
+                // if let Ok(rep)=rep {
+                //     decodes = rep.text().await.is_ok();
+                // }
+                // Ok((rep.is_ok(), decodes))
+                let _ = rep?.text().await?;
+                // // >>>>> https localhost:12345 Failed to reach localhost:12345's registry: error sending request for url (https://localhost:12345/v2/_catalog)
+                // // >>> >>>>>>>>>>>>>>>>>>>>>> http localhost:12345 {"repositories":[]}
+                // //=> https:(false, false)|http:(true,true) ==> use_host_network=true + http=true for that domain
+                // //==> just https:is_err | http:is_ok does it!
+                //     eprintln!(">>> >>>>>>>>>>>>>>>>>>>>>> {scheme} {domain} {txt}");
+                Ok::<_, anyhow::Error>(())
+            };
+            // for scheme in ["https", "http"] {
+            //     let _: Result<_> =
+            //         bla(scheme).await.inspect_err(|e| eprintln!(">>>>> {scheme} {domain} {e:?}"));
+            // }
+
+            // >>>>> https localhost:12345 Failed to reach localhost:12345's registry: error sending request for url (https://localhost:12345/v2/_catalog)
+            // >>> >>>>>>>>>>>>>>>>>>>>>> http localhost:12345 {"repositories":[]}
+
+            if bla("https").await.is_err() && bla("http").await.is_ok() {
+                use_host_network = true;
+                config.registry.insert(
+                    domain.to_owned(),
+                    buildkitd::Registry { http: true, ..Default::default() },
+                );
+            }
+        }
+
+        // config.registry.insert(
+        //     "localhost:5000".to_owned(),
+        //     buildkitd::Registry { http: true, /*insecure: true,*/ ..Default::default() },
+        // );
+        // config.registry.insert(
+        //     "localhost:6000".to_owned(),
+        //     buildkitd::Registry { http: true, ..Default::default() },
+        // );
+        // config.registry.insert(
+        //     "localhost:12345".to_owned(),
+        //     buildkitd::Registry { http: true, ..Default::default() },
+        // );
+        // config.registry.insert(
+        //     "localhost:23456".to_owned(),
+        //     buildkitd::Registry { http: true, ..Default::default() },
+        // );
 
         let cfg = if config != buildkitd::Config::default() {
             let config = toml::to_string_pretty(&config)
@@ -214,7 +265,7 @@ then run your cargo command again.
 
         // Insecure Entitlement "network.host" not working https://github.com/docker/buildx/issues/835
         //FIXME: detect. curl -fsS  http://localhost:12345/v2/_catalog ?
-        if true {
+        if use_host_network {
             // curl: (22) The requested URL returned error: 403
             // 22    supergreen.git ca-ching-actually 🔗 curl -fsS  https://localhost:5000/v2/_catalog
             // ^C
