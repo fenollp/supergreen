@@ -295,7 +295,6 @@ $(rundeps_versions)
         mkdir -p $registry_new
     - name: 🔵 Restore local private registry cache
       uses: actions/cache/restore@v4
-      if: \${{ matrix.toolchain != '$stable' }} # TODO: drop toolchain filter when digests are stable
       with:
         path: $registry
         # github.run_id: https://github.com/actions/toolkit/issues/658#issuecomment-2640690759
@@ -386,26 +385,20 @@ $(unset_action_envs)
 $(postcond_fresh _)
 $(postconds _)
 
-    - name: Old local private registry image digests
-      run: |
-        find $registry/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print \$NF}' | sort -u #| tail -n+2
-    - name: New local private registry image digests
-      run: |
-        find $registry_new/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print \$NF}' | sort -u #| tail -n+2
     - name: 🔵 Compare old/new local private registry image digests
       run: |
         diff --width=150 -y \\
-          < <(find $registry/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print \$NF}' | sort -u) \\
-          < <(find $registry_new/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print \$NF}' | sort -u)
+          <(find $registry/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print \$NF}' | sort -u) \\
+          <(find $registry_new/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print \$NF}' | sort -u)
     - name: Local private registry cache dance
       run: |
         # [ci: caches keep growing](https://github.com/moby/buildkit/issues/1850)
         docker stop --timeout 10 reg-from reg-to
         rm -rf $registry
         mv $registry_new $registry
-    - name: 🔵 Save local private registry cache
+    - name: Save local private registry cache
       uses: actions/cache/save@v4
-      if: \${{ always() && matrix.toolchain != '$stable' }} # TODO: drop toolchain filter when digests are stable
+      if: \${{ never() }} # TODO: drop when digests are stable
       with:
         path: $registry
         key: localprivatereg-\${{ runner.os }}-\${{ matrix.toolchain }}-\${{ github.job }}-\${{ github.run_id }}
