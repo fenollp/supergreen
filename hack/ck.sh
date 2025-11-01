@@ -121,7 +121,7 @@ cat <<EOF
       run: |
         ! grep -C20 -F ' >>> ' \$CARGOGREEN_LOG_PATH
 
-    - if: \${{ always() && matrix.toolchain != '$stable' }}
+    - if: \${{ always() && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != '$stable' }}
       name: 🌀 Maybe show final path diff
       run: |
         case "\$GITHUB_JOB" in

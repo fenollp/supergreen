@@ -398,7 +398,7 @@ $(postconds _)
         mv $registry_new $registry
     - name: Save local private registry cache
       uses: actions/cache/save@v4
-      if: \${{ never() }} # TODO: drop when digests are stable
+      if: \${{ false }} # TODO: drop when digests are stable
       with:
         path: $registry
         key: localprivatereg-\${{ runner.os }}-\${{ matrix.toolchain }}-\${{ github.job }}-\${{ github.run_id }}
