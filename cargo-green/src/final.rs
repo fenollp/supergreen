@@ -5,14 +5,44 @@ use std::{
 };
 
 use anyhow::Result;
-use camino::Utf8Path;
+use camino::{Utf8Path, Utf8PathBuf};
 use indexmap::IndexSet;
 use log::info;
+use serde::{Deserialize, Serialize};
 
 use crate::{
     green::Green,
     md::{BuildContext, Md},
 };
+
+#[macro_export]
+macro_rules! ENV_FINAL_PATH {
+    () => {
+        "CARGOGREEN_FINAL_PATH"
+    };
+}
+
+#[macro_export]
+macro_rules! ENV_FINAL_PATH_NONPRIMARY {
+    () => {
+        "CARGOGREEN_FINAL_PATH_NONPRIMARY"
+    };
+}
+
+#[derive(Debug, Serialize, Deserialize, Default, PartialEq, Eq)]
+#[serde(default)]
+#[serde(deny_unknown_fields)]
+pub(crate) struct Final {
+    #[doc = include_str!(concat!("../docs/",ENV_FINAL_PATH!(),".md"))]
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(rename = "final-path")]
+    pub(crate) path: Option<Utf8PathBuf>,
+
+    #[doc = include_str!(concat!("../docs/",ENV_FINAL_PATH_NONPRIMARY!(),".md"))]
+    #[serde(skip_serializing_if = "<&bool as std::ops::Not>::not")]
+    #[serde(rename = "final-path-nonprimary")]
+    pub(crate) path_nonprimary: bool,
+}
 
 pub(crate) fn is_primary() -> bool {
     env::var("CARGO_PRIMARY_PACKAGE").is_ok()
@@ -21,8 +51,8 @@ pub(crate) fn is_primary() -> bool {
 impl Green {
     // NOTE: using $CARGO_PRIMARY_PACKAGE still makes >1 hits in rustc calls history: lib + bin, at least.
     fn should_write_final_path(&self) -> Option<&Utf8Path> {
-        if let Some(path) = self.final_path.as_deref() {
-            if self.final_path_nonprimary || is_primary() {
+        if let Some(path) = self.r#final.path.as_deref() {
+            if self.r#final.path_nonprimary || is_primary() {
                 return Some(path);
             }
         }

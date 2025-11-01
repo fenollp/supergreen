@@ -3,22 +3,6 @@ name: CLIs
 jobs:
 
 
-  meta-check:
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        shell: bash -euo pipefail {0}
-    steps:
-    - uses: actions/checkout@v5
-    - run: ./hack/clis.sh | tee .github/workflows/clis.yml
-    - run: ./hack/self.sh | tee .github/workflows/self.yml
-    - run: git --no-pager diff --exit-code
-    - name: Run shellcheck
-      uses: ludeeus/action-shellcheck@2.0.0
-      with:
-        check_together: 'yes'
-        severity: error
-
   bin:
     runs-on: ubuntu-latest
     defaults:
@@ -28,8 +12,7 @@ jobs:
     - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
         toolchain: stable
-        cache-all-crates: true
-        cache-workspace-crates: true
+        cache-on-failure: true
 
     - uses: actions/checkout@v5
 
@@ -76,15 +59,18 @@ jobs:
     defaults:
       run:
         shell: bash -euo pipefail {0}
-    continue-on-error: ${{ matrix.toolchain != 'stable' }}
+    continue-on-error: ${{ matrix.toolchain != '1.90.0' }}
     strategy:
       matrix:
         toolchain:
-        - stable
+        - 1.90.0
         - 1.86.0
     env:
       CARGO_TARGET_DIR: /tmp/clis-buildxargs_master
+      CARGOGREEN_CACHE_FROM_IMAGES: docker-image://localhost:12345/${{ github.repository }}
+      CARGOGREEN_CACHE_TO_IMAGES: docker-image://localhost:23456/${{ github.repository }}
       CARGOGREEN_FINAL_PATH: recipes/buildxargs@master.Dockerfile
+      CARGOGREEN_FINAL_PATH_NONPRIMARY: 1 # dumps on each build call
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
 
@@ -99,8 +85,7 @@ jobs:
       with:
         toolchain: ${{ matrix.toolchain }}
         rustflags: ''
-        cache-all-crates: true
-        cache-workspace-crates: true
+        cache-on-failure: true
 
 
     - name: Retrieve saved bin
@@ -122,20 +107,68 @@ jobs:
     - run: cargo -Vv
     - run: docker buildx prune --all --force
 
-    - name: Envs
+    - name: Prepare local private registry cache
+      run: |
+        # https://github.com/fenollp/supergreen/actions/caches
+        mkdir -p /tmp/.local-registry
+        mkdir -p /tmp/.local-registry-new
+    - name: 🔵 Restore local private registry cache
+      uses: actions/cache/restore@v4
+      with:
+        path: /tmp/.local-registry
+        # github.run_id: https://github.com/actions/toolkit/issues/658#issuecomment-2640690759
+        key: localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-${{ github.run_id }}
+        restore-keys: |
+          localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-
+          localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-
+          localprivatereg-${{ runner.os }}-
+          localprivatereg-
+
+    - run: ls -lha /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry-new
+    - run: ls -lha /tmp/.local-registry-new
+
+    - name: Pull regist3 image
+      run: |
+        false \
+        || docker build --tag regist3 - <<<'FROM docker.io/registry:3' \
+        || docker build --tag regist3 - <<<'FROM mirror.gcr.io/registry:3' \
+        || docker build --tag regist3 - <<<'FROM public.ecr.aws/docker/registry:3' \
+        || exit 1
+    - name: Start "cache from" image registry
+      run: docker run --name=reg-from --rm --detach -p 12345:5000 --user $(id -u):$(id -g) -v     /tmp/.local-registry:/var/lib/registry regist3
+    - name: Start "cache to" image registry
+      run: docker run --name=reg-to   --rm --detach -p 23456:5000 --user $(id -u):$(id -g) -v /tmp/.local-registry-new:/var/lib/registry regist3
+
+    - run: docker pull localhost:12345/${{ github.repository }} || true
+    - run: docker build --push --tag localhost:12345/${{ github.repository }} - <<<'FROM scratch'
+    - run: docker pull localhost:12345/${{ github.repository }}
+    - run: curl -fsSL http://localhost:12345/v2/${{ github.repository }}/blobs/sha256:1720a10883c7ebbf9080c7d8399b21cb883271cb3dfec3e30a4248b636628779 || true
+    - run: ls -lha /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry-new
+    - run: ls -lha /tmp/.local-registry-new
+
+    - name: 🔵 Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
-    - if: ${{ matrix.toolchain != 'stable' }}
+    - if: ${{ matrix.toolchain != '1.90.0' }}
       run: ~/.cargo/bin/cargo-green green supergreen env CARGOGREEN_BASE_IMAGE | grep '${{ matrix.toolchain }}'
-    - name: Envs again
+    - run: BUILDX_BUILDER=supergreen docker buildx inspect
+    - name: 🔵 Envs again
       run: ~/.cargo/bin/cargo-green green supergreen env
 
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
-    - name: cargo install net=ON cache=OFF remote=OFF jobs=3
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
+    - run: ls -lha /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry-new
+    - run: ls -lha /tmp/.local-registry-new
+    - name: 🔵 cargo install net=ON cache=OFF remote=OFF jobs=3
       run: |
         unset CARGO_INCREMENTAL
         unset CARGO_PROFILE_DEV_DEBUG
@@ -144,10 +177,14 @@ jobs:
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env  \
           cargo green -vv install --jobs=3 --locked --force buildxargs --git https://github.com/fenollp/buildxargs.git |& tee _
-    - name: cargo install net=ON cache=ON remote=OFF jobs=1
+    - run: ls -lha /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry-new
+    - run: ls -lha /tmp/.local-registry-new
+    - name: 🔵 cargo install net=ON cache=ON remote=OFF jobs=1
       if: ${{ failure() }}
       run: |
-        rm _
+        rm _ || true
         unset CARGO_INCREMENTAL
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
@@ -155,54 +192,58 @@ jobs:
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env  \
           cargo green -vv install --jobs=1 --locked --force buildxargs --git https://github.com/fenollp/buildxargs.git |& tee _
-    - if: ${{ matrix.toolchain != 'stable' }}
+    - run: ls -lha /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry-new
+    - run: ls -lha /tmp/.local-registry-new
+    - if: ${{ matrix.toolchain != '1.90.0' }}
       uses: actions/upload-artifact@v4
       name: Upload recipe
       with:
         name: buildxargs@master.Dockerfile
         path: ${{ env.CARGOGREEN_FINAL_PATH }}
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
         ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
       run: |
         ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
       run: |
         ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> there's some panic!s
       run: |
         ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> there's some BUGs
       run: |
         ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> here's cargo's error text
       run: |
         ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> 429 Too Many Requests
       run: |
         ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> here's relevant logs
       run: |
         ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != 'stable' }}
-      name: Maybe show final path diff
+    - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != '1.90.0' }}
+      name: 🌀 Maybe show final path diff
       run: |
         case "$GITHUB_JOB" in
           cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
@@ -210,21 +251,21 @@ jobs:
         esac
         git --no-pager diff --exit-code           --ignore-matching-lines='^# Generated by'           --ignore-matching-lines=' AS rust-base$'           --ignore-matching-lines='^# syntax=docker.io/docker/dockerfile:1@'           --ignore-matching-lines="^##     '\{"           -- $CARGOGREEN_FINAL_PATH
 
-    - if: ${{ failure() }}
-      name: cargo-green logs
+    - if: ${{ always() }}
+      name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
 
     - name: Target dir disk usage
       if: ${{ failure() || success() }}
       run: du -sh $CARGO_TARGET_DIR || true
 
-    - name: Ensure running the same command twice without modifications...
+    - name: 🔵 Ensure running the same command twice without modifications...
       run: |
         unset CARGO_INCREMENTAL
         unset CARGO_PROFILE_DEV_DEBUG
@@ -240,48 +281,48 @@ jobs:
         grep Dirty     _                     && err=1
         grep Compiling _                     && err=1
         exit $err
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
         ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
       run: |
         ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
       run: |
         ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> there's some panic!s
       run: |
         ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> there's some BUGs
       run: |
         ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> here's cargo's error text
       run: |
         ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> 429 Too Many Requests
       run: |
         ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> here's relevant logs
       run: |
         ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != 'stable' }}
-      name: Maybe show final path diff
+    - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != '1.90.0' }}
+      name: 🌀 Maybe show final path diff
       run: |
         case "$GITHUB_JOB" in
           cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
@@ -289,15 +330,35 @@ jobs:
         esac
         git --no-pager diff --exit-code           --ignore-matching-lines='^# Generated by'           --ignore-matching-lines=' AS rust-base$'           --ignore-matching-lines='^# syntax=docker.io/docker/dockerfile:1@'           --ignore-matching-lines="^##     '\{"           -- $CARGOGREEN_FINAL_PATH
 
-    - if: ${{ failure() }}
-      name: cargo-green logs
+    - if: ${{ always() }}
+      name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
+
+    - name: 🔵 Compare old/new local private registry image digests
+      continue-on-error: true # TODO: drop when digests are stable
+      run: |
+        diff --width=150 -y \
+          <(find /tmp/.local-registry/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print $NF}' | sort -u) \
+          <(find /tmp/.local-registry-new/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print $NF}' | sort -u)
+    - name: Local private registry cache dance
+      run: |
+        # [ci: caches keep growing](https://github.com/moby/buildkit/issues/1850)
+        docker stop --timeout 10 reg-from reg-to
+        rm -rf /tmp/.local-registry
+        mv /tmp/.local-registry-new /tmp/.local-registry
+    - name: Save local private registry cache
+      uses: actions/cache/save@v4
+      if: ${{ false }} # TODO: drop when digests are stable
+      with:
+        path: /tmp/.local-registry
+        key: localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-${{ github.run_id }}
+
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
 
     - name: Target dir disk usage
       if: ${{ failure() || success() }}
@@ -308,15 +369,18 @@ jobs:
     defaults:
       run:
         shell: bash -euo pipefail {0}
-    continue-on-error: ${{ matrix.toolchain != 'stable' }}
+    continue-on-error: ${{ matrix.toolchain != '1.90.0' }}
     strategy:
       matrix:
         toolchain:
-        - stable
+        - 1.90.0
         - 1.86.0
     env:
       CARGO_TARGET_DIR: /tmp/clis-cargo-llvm-cov_0-5-36
+      CARGOGREEN_CACHE_FROM_IMAGES: docker-image://localhost:12345/${{ github.repository }}
+      CARGOGREEN_CACHE_TO_IMAGES: docker-image://localhost:23456/${{ github.repository }}
       CARGOGREEN_FINAL_PATH: recipes/cargo-llvm-cov@0.5.36.Dockerfile
+      CARGOGREEN_FINAL_PATH_NONPRIMARY: 1 # dumps on each build call
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
 
@@ -331,8 +395,7 @@ jobs:
       with:
         toolchain: ${{ matrix.toolchain }}
         rustflags: ''
-        cache-all-crates: true
-        cache-workspace-crates: true
+        cache-on-failure: true
     - run: rustup component add llvm-tools-preview
 
     - name: Retrieve saved bin
@@ -354,20 +417,68 @@ jobs:
     - run: cargo -Vv
     - run: docker buildx prune --all --force
 
-    - name: Envs
+    - name: Prepare local private registry cache
+      run: |
+        # https://github.com/fenollp/supergreen/actions/caches
+        mkdir -p /tmp/.local-registry
+        mkdir -p /tmp/.local-registry-new
+    - name: 🔵 Restore local private registry cache
+      uses: actions/cache/restore@v4
+      with:
+        path: /tmp/.local-registry
+        # github.run_id: https://github.com/actions/toolkit/issues/658#issuecomment-2640690759
+        key: localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-${{ github.run_id }}
+        restore-keys: |
+          localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-
+          localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-
+          localprivatereg-${{ runner.os }}-
+          localprivatereg-
+
+    - run: ls -lha /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry-new
+    - run: ls -lha /tmp/.local-registry-new
+
+    - name: Pull regist3 image
+      run: |
+        false \
+        || docker build --tag regist3 - <<<'FROM docker.io/registry:3' \
+        || docker build --tag regist3 - <<<'FROM mirror.gcr.io/registry:3' \
+        || docker build --tag regist3 - <<<'FROM public.ecr.aws/docker/registry:3' \
+        || exit 1
+    - name: Start "cache from" image registry
+      run: docker run --name=reg-from --rm --detach -p 12345:5000 --user $(id -u):$(id -g) -v     /tmp/.local-registry:/var/lib/registry regist3
+    - name: Start "cache to" image registry
+      run: docker run --name=reg-to   --rm --detach -p 23456:5000 --user $(id -u):$(id -g) -v /tmp/.local-registry-new:/var/lib/registry regist3
+
+    - run: docker pull localhost:12345/${{ github.repository }} || true
+    - run: docker build --push --tag localhost:12345/${{ github.repository }} - <<<'FROM scratch'
+    - run: docker pull localhost:12345/${{ github.repository }}
+    - run: curl -fsSL http://localhost:12345/v2/${{ github.repository }}/blobs/sha256:1720a10883c7ebbf9080c7d8399b21cb883271cb3dfec3e30a4248b636628779 || true
+    - run: ls -lha /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry-new
+    - run: ls -lha /tmp/.local-registry-new
+
+    - name: 🔵 Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
-    - if: ${{ matrix.toolchain != 'stable' }}
+    - if: ${{ matrix.toolchain != '1.90.0' }}
       run: ~/.cargo/bin/cargo-green green supergreen env CARGOGREEN_BASE_IMAGE | grep '${{ matrix.toolchain }}'
-    - name: Envs again
+    - run: BUILDX_BUILDER=supergreen docker buildx inspect
+    - name: 🔵 Envs again
       run: ~/.cargo/bin/cargo-green green supergreen env
 
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
-    - name: cargo install net=ON cache=OFF remote=OFF jobs=3
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
+    - run: ls -lha /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry-new
+    - run: ls -lha /tmp/.local-registry-new
+    - name: 🔵 cargo install net=ON cache=OFF remote=OFF jobs=3
       run: |
         unset CARGO_INCREMENTAL
         unset CARGO_PROFILE_DEV_DEBUG
@@ -376,10 +487,14 @@ jobs:
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env  \
           cargo green -vv install --jobs=3 --locked --force cargo-llvm-cov@0.5.36  |& tee _
-    - name: cargo install net=ON cache=ON remote=OFF jobs=1
+    - run: ls -lha /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry-new
+    - run: ls -lha /tmp/.local-registry-new
+    - name: 🔵 cargo install net=ON cache=ON remote=OFF jobs=1
       if: ${{ failure() }}
       run: |
-        rm _
+        rm _ || true
         unset CARGO_INCREMENTAL
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
@@ -387,54 +502,58 @@ jobs:
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env  \
           cargo green -vv install --jobs=1 --locked --force cargo-llvm-cov@0.5.36  |& tee _
-    - if: ${{ matrix.toolchain != 'stable' }}
+    - run: ls -lha /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry-new
+    - run: ls -lha /tmp/.local-registry-new
+    - if: ${{ matrix.toolchain != '1.90.0' }}
       uses: actions/upload-artifact@v4
       name: Upload recipe
       with:
         name: cargo-llvm-cov@0.5.36.Dockerfile
         path: ${{ env.CARGOGREEN_FINAL_PATH }}
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
         ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
       run: |
         ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
       run: |
         ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> there's some panic!s
       run: |
         ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> there's some BUGs
       run: |
         ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> here's cargo's error text
       run: |
         ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> 429 Too Many Requests
       run: |
         ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> here's relevant logs
       run: |
         ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != 'stable' }}
-      name: Maybe show final path diff
+    - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != '1.90.0' }}
+      name: 🌀 Maybe show final path diff
       run: |
         case "$GITHUB_JOB" in
           cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
@@ -442,21 +561,21 @@ jobs:
         esac
         git --no-pager diff --exit-code           --ignore-matching-lines='^# Generated by'           --ignore-matching-lines=' AS rust-base$'           --ignore-matching-lines='^# syntax=docker.io/docker/dockerfile:1@'           --ignore-matching-lines="^##     '\{"           -- $CARGOGREEN_FINAL_PATH
 
-    - if: ${{ failure() }}
-      name: cargo-green logs
+    - if: ${{ always() }}
+      name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
 
     - name: Target dir disk usage
       if: ${{ failure() || success() }}
       run: du -sh $CARGO_TARGET_DIR || true
 
-    - name: Ensure running the same command twice without modifications...
+    - name: 🔵 Ensure running the same command twice without modifications...
       run: |
         unset CARGO_INCREMENTAL
         unset CARGO_PROFILE_DEV_DEBUG
@@ -472,48 +591,48 @@ jobs:
         grep Dirty     _                     && err=1
         grep Compiling _                     && err=1
         exit $err
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
         ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
       run: |
         ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
       run: |
         ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> there's some panic!s
       run: |
         ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> there's some BUGs
       run: |
         ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> here's cargo's error text
       run: |
         ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> 429 Too Many Requests
       run: |
         ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> here's relevant logs
       run: |
         ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != 'stable' }}
-      name: Maybe show final path diff
+    - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != '1.90.0' }}
+      name: 🌀 Maybe show final path diff
       run: |
         case "$GITHUB_JOB" in
           cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
@@ -521,15 +640,35 @@ jobs:
         esac
         git --no-pager diff --exit-code           --ignore-matching-lines='^# Generated by'           --ignore-matching-lines=' AS rust-base$'           --ignore-matching-lines='^# syntax=docker.io/docker/dockerfile:1@'           --ignore-matching-lines="^##     '\{"           -- $CARGOGREEN_FINAL_PATH
 
-    - if: ${{ failure() }}
-      name: cargo-green logs
+    - if: ${{ always() }}
+      name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
+
+    - name: 🔵 Compare old/new local private registry image digests
+      continue-on-error: true # TODO: drop when digests are stable
+      run: |
+        diff --width=150 -y \
+          <(find /tmp/.local-registry/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print $NF}' | sort -u) \
+          <(find /tmp/.local-registry-new/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print $NF}' | sort -u)
+    - name: Local private registry cache dance
+      run: |
+        # [ci: caches keep growing](https://github.com/moby/buildkit/issues/1850)
+        docker stop --timeout 10 reg-from reg-to
+        rm -rf /tmp/.local-registry
+        mv /tmp/.local-registry-new /tmp/.local-registry
+    - name: Save local private registry cache
+      uses: actions/cache/save@v4
+      if: ${{ false }} # TODO: drop when digests are stable
+      with:
+        path: /tmp/.local-registry
+        key: localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-${{ github.run_id }}
+
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
 
     - name: Target dir disk usage
       if: ${{ failure() || success() }}
@@ -540,15 +679,18 @@ jobs:
     defaults:
       run:
         shell: bash -euo pipefail {0}
-    continue-on-error: ${{ matrix.toolchain != 'stable' }}
+    continue-on-error: ${{ matrix.toolchain != '1.90.0' }}
     strategy:
       matrix:
         toolchain:
-        - stable
+        - 1.90.0
         - 1.86.0
     env:
       CARGO_TARGET_DIR: /tmp/clis-cross_0-2-5
+      CARGOGREEN_CACHE_FROM_IMAGES: docker-image://localhost:12345/${{ github.repository }}
+      CARGOGREEN_CACHE_TO_IMAGES: docker-image://localhost:23456/${{ github.repository }}
       CARGOGREEN_FINAL_PATH: recipes/cross@0.2.5.Dockerfile
+      CARGOGREEN_FINAL_PATH_NONPRIMARY: 1 # dumps on each build call
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
 
@@ -563,8 +705,7 @@ jobs:
       with:
         toolchain: ${{ matrix.toolchain }}
         rustflags: ''
-        cache-all-crates: true
-        cache-workspace-crates: true
+        cache-on-failure: true
 
 
     - name: Retrieve saved bin
@@ -586,20 +727,68 @@ jobs:
     - run: cargo -Vv
     - run: docker buildx prune --all --force
 
-    - name: Envs
+    - name: Prepare local private registry cache
+      run: |
+        # https://github.com/fenollp/supergreen/actions/caches
+        mkdir -p /tmp/.local-registry
+        mkdir -p /tmp/.local-registry-new
+    - name: 🔵 Restore local private registry cache
+      uses: actions/cache/restore@v4
+      with:
+        path: /tmp/.local-registry
+        # github.run_id: https://github.com/actions/toolkit/issues/658#issuecomment-2640690759
+        key: localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-${{ github.run_id }}
+        restore-keys: |
+          localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-
+          localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-
+          localprivatereg-${{ runner.os }}-
+          localprivatereg-
+
+    - run: ls -lha /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry-new
+    - run: ls -lha /tmp/.local-registry-new
+
+    - name: Pull regist3 image
+      run: |
+        false \
+        || docker build --tag regist3 - <<<'FROM docker.io/registry:3' \
+        || docker build --tag regist3 - <<<'FROM mirror.gcr.io/registry:3' \
+        || docker build --tag regist3 - <<<'FROM public.ecr.aws/docker/registry:3' \
+        || exit 1
+    - name: Start "cache from" image registry
+      run: docker run --name=reg-from --rm --detach -p 12345:5000 --user $(id -u):$(id -g) -v     /tmp/.local-registry:/var/lib/registry regist3
+    - name: Start "cache to" image registry
+      run: docker run --name=reg-to   --rm --detach -p 23456:5000 --user $(id -u):$(id -g) -v /tmp/.local-registry-new:/var/lib/registry regist3
+
+    - run: docker pull localhost:12345/${{ github.repository }} || true
+    - run: docker build --push --tag localhost:12345/${{ github.repository }} - <<<'FROM scratch'
+    - run: docker pull localhost:12345/${{ github.repository }}
+    - run: curl -fsSL http://localhost:12345/v2/${{ github.repository }}/blobs/sha256:1720a10883c7ebbf9080c7d8399b21cb883271cb3dfec3e30a4248b636628779 || true
+    - run: ls -lha /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry-new
+    - run: ls -lha /tmp/.local-registry-new
+
+    - name: 🔵 Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
-    - if: ${{ matrix.toolchain != 'stable' }}
+    - if: ${{ matrix.toolchain != '1.90.0' }}
       run: ~/.cargo/bin/cargo-green green supergreen env CARGOGREEN_BASE_IMAGE | grep '${{ matrix.toolchain }}'
-    - name: Envs again
+    - run: BUILDX_BUILDER=supergreen docker buildx inspect
+    - name: 🔵 Envs again
       run: ~/.cargo/bin/cargo-green green supergreen env
 
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
-    - name: cargo install net=ON cache=OFF remote=OFF jobs=3
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
+    - run: ls -lha /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry-new
+    - run: ls -lha /tmp/.local-registry-new
+    - name: 🔵 cargo install net=ON cache=OFF remote=OFF jobs=3
       run: |
         unset CARGO_INCREMENTAL
         unset CARGO_PROFILE_DEV_DEBUG
@@ -608,10 +797,14 @@ jobs:
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env  \
           cargo green -vv install --jobs=3 --locked --force cross@0.2.5 --git https://github.com/cross-rs/cross.git --tag=v0.2.5 cross |& tee _
-    - name: cargo install net=ON cache=ON remote=OFF jobs=1
+    - run: ls -lha /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry-new
+    - run: ls -lha /tmp/.local-registry-new
+    - name: 🔵 cargo install net=ON cache=ON remote=OFF jobs=1
       if: ${{ failure() }}
       run: |
-        rm _
+        rm _ || true
         unset CARGO_INCREMENTAL
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
@@ -619,54 +812,58 @@ jobs:
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env  \
           cargo green -vv install --jobs=1 --locked --force cross@0.2.5 --git https://github.com/cross-rs/cross.git --tag=v0.2.5 cross |& tee _
-    - if: ${{ matrix.toolchain != 'stable' }}
+    - run: ls -lha /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry-new
+    - run: ls -lha /tmp/.local-registry-new
+    - if: ${{ matrix.toolchain != '1.90.0' }}
       uses: actions/upload-artifact@v4
       name: Upload recipe
       with:
         name: cross@0.2.5.Dockerfile
         path: ${{ env.CARGOGREEN_FINAL_PATH }}
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
         ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
       run: |
         ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
       run: |
         ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> there's some panic!s
       run: |
         ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> there's some BUGs
       run: |
         ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> here's cargo's error text
       run: |
         ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> 429 Too Many Requests
       run: |
         ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> here's relevant logs
       run: |
         ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != 'stable' }}
-      name: Maybe show final path diff
+    - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != '1.90.0' }}
+      name: 🌀 Maybe show final path diff
       run: |
         case "$GITHUB_JOB" in
           cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
@@ -674,21 +871,21 @@ jobs:
         esac
         git --no-pager diff --exit-code           --ignore-matching-lines='^# Generated by'           --ignore-matching-lines=' AS rust-base$'           --ignore-matching-lines='^# syntax=docker.io/docker/dockerfile:1@'           --ignore-matching-lines="^##     '\{"           -- $CARGOGREEN_FINAL_PATH
 
-    - if: ${{ failure() }}
-      name: cargo-green logs
+    - if: ${{ always() }}
+      name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
 
     - name: Target dir disk usage
       if: ${{ failure() || success() }}
       run: du -sh $CARGO_TARGET_DIR || true
 
-    - name: Ensure running the same command twice without modifications...
+    - name: 🔵 Ensure running the same command twice without modifications...
       run: |
         unset CARGO_INCREMENTAL
         unset CARGO_PROFILE_DEV_DEBUG
@@ -704,48 +901,48 @@ jobs:
         grep Dirty     _                     && err=1
         grep Compiling _                     && err=1
         exit $err
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
         ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
       run: |
         ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
       run: |
         ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> there's some panic!s
       run: |
         ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> there's some BUGs
       run: |
         ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> here's cargo's error text
       run: |
         ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> 429 Too Many Requests
       run: |
         ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> here's relevant logs
       run: |
         ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != 'stable' }}
-      name: Maybe show final path diff
+    - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != '1.90.0' }}
+      name: 🌀 Maybe show final path diff
       run: |
         case "$GITHUB_JOB" in
           cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
@@ -753,15 +950,35 @@ jobs:
         esac
         git --no-pager diff --exit-code           --ignore-matching-lines='^# Generated by'           --ignore-matching-lines=' AS rust-base$'           --ignore-matching-lines='^# syntax=docker.io/docker/dockerfile:1@'           --ignore-matching-lines="^##     '\{"           -- $CARGOGREEN_FINAL_PATH
 
-    - if: ${{ failure() }}
-      name: cargo-green logs
+    - if: ${{ always() }}
+      name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
+
+    - name: 🔵 Compare old/new local private registry image digests
+      continue-on-error: true # TODO: drop when digests are stable
+      run: |
+        diff --width=150 -y \
+          <(find /tmp/.local-registry/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print $NF}' | sort -u) \
+          <(find /tmp/.local-registry-new/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print $NF}' | sort -u)
+    - name: Local private registry cache dance
+      run: |
+        # [ci: caches keep growing](https://github.com/moby/buildkit/issues/1850)
+        docker stop --timeout 10 reg-from reg-to
+        rm -rf /tmp/.local-registry
+        mv /tmp/.local-registry-new /tmp/.local-registry
+    - name: Save local private registry cache
+      uses: actions/cache/save@v4
+      if: ${{ false }} # TODO: drop when digests are stable
+      with:
+        path: /tmp/.local-registry
+        key: localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-${{ github.run_id }}
+
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
 
     - name: Target dir disk usage
       if: ${{ failure() || success() }}
@@ -772,15 +989,18 @@ jobs:
     defaults:
       run:
         shell: bash -euo pipefail {0}
-    continue-on-error: ${{ matrix.toolchain != 'stable' }}
+    continue-on-error: ${{ matrix.toolchain != '1.90.0' }}
     strategy:
       matrix:
         toolchain:
-        - stable
+        - 1.90.0
         - 1.86.0
     env:
       CARGO_TARGET_DIR: /tmp/clis-dbcc_2-2-1
+      CARGOGREEN_CACHE_FROM_IMAGES: docker-image://localhost:12345/${{ github.repository }}
+      CARGOGREEN_CACHE_TO_IMAGES: docker-image://localhost:23456/${{ github.repository }}
       CARGOGREEN_FINAL_PATH: recipes/dbcc@2.2.1.Dockerfile
+      CARGOGREEN_FINAL_PATH_NONPRIMARY: 1 # dumps on each build call
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
 
@@ -795,8 +1015,7 @@ jobs:
       with:
         toolchain: ${{ matrix.toolchain }}
         rustflags: ''
-        cache-all-crates: true
-        cache-workspace-crates: true
+        cache-on-failure: true
 
 
     - name: Retrieve saved bin
@@ -818,20 +1037,68 @@ jobs:
     - run: cargo -Vv
     - run: docker buildx prune --all --force
 
-    - name: Envs
+    - name: Prepare local private registry cache
+      run: |
+        # https://github.com/fenollp/supergreen/actions/caches
+        mkdir -p /tmp/.local-registry
+        mkdir -p /tmp/.local-registry-new
+    - name: 🔵 Restore local private registry cache
+      uses: actions/cache/restore@v4
+      with:
+        path: /tmp/.local-registry
+        # github.run_id: https://github.com/actions/toolkit/issues/658#issuecomment-2640690759
+        key: localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-${{ github.run_id }}
+        restore-keys: |
+          localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-
+          localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-
+          localprivatereg-${{ runner.os }}-
+          localprivatereg-
+
+    - run: ls -lha /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry-new
+    - run: ls -lha /tmp/.local-registry-new
+
+    - name: Pull regist3 image
+      run: |
+        false \
+        || docker build --tag regist3 - <<<'FROM docker.io/registry:3' \
+        || docker build --tag regist3 - <<<'FROM mirror.gcr.io/registry:3' \
+        || docker build --tag regist3 - <<<'FROM public.ecr.aws/docker/registry:3' \
+        || exit 1
+    - name: Start "cache from" image registry
+      run: docker run --name=reg-from --rm --detach -p 12345:5000 --user $(id -u):$(id -g) -v     /tmp/.local-registry:/var/lib/registry regist3
+    - name: Start "cache to" image registry
+      run: docker run --name=reg-to   --rm --detach -p 23456:5000 --user $(id -u):$(id -g) -v /tmp/.local-registry-new:/var/lib/registry regist3
+
+    - run: docker pull localhost:12345/${{ github.repository }} || true
+    - run: docker build --push --tag localhost:12345/${{ github.repository }} - <<<'FROM scratch'
+    - run: docker pull localhost:12345/${{ github.repository }}
+    - run: curl -fsSL http://localhost:12345/v2/${{ github.repository }}/blobs/sha256:1720a10883c7ebbf9080c7d8399b21cb883271cb3dfec3e30a4248b636628779 || true
+    - run: ls -lha /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry-new
+    - run: ls -lha /tmp/.local-registry-new
+
+    - name: 🔵 Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
-    - if: ${{ matrix.toolchain != 'stable' }}
+    - if: ${{ matrix.toolchain != '1.90.0' }}
       run: ~/.cargo/bin/cargo-green green supergreen env CARGOGREEN_BASE_IMAGE | grep '${{ matrix.toolchain }}'
-    - name: Envs again
+    - run: BUILDX_BUILDER=supergreen docker buildx inspect
+    - name: 🔵 Envs again
       run: ~/.cargo/bin/cargo-green green supergreen env
 
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
-    - name: cargo install net=ON cache=OFF remote=OFF jobs=3
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
+    - run: ls -lha /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry-new
+    - run: ls -lha /tmp/.local-registry-new
+    - name: 🔵 cargo install net=ON cache=OFF remote=OFF jobs=3
       run: |
         unset CARGO_INCREMENTAL
         unset CARGO_PROFILE_DEV_DEBUG
@@ -840,10 +1107,14 @@ jobs:
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env CARGOGREEN_SET_ENVS=TYPENUM_BUILD_CONSTS,TYPENUM_BUILD_OP \
           cargo green -vv install --jobs=3 --locked --force dbcc@2.2.1  |& tee _
-    - name: cargo install net=ON cache=ON remote=OFF jobs=1
+    - run: ls -lha /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry-new
+    - run: ls -lha /tmp/.local-registry-new
+    - name: 🔵 cargo install net=ON cache=ON remote=OFF jobs=1
       if: ${{ failure() }}
       run: |
-        rm _
+        rm _ || true
         unset CARGO_INCREMENTAL
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
@@ -851,54 +1122,58 @@ jobs:
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env CARGOGREEN_SET_ENVS=TYPENUM_BUILD_CONSTS,TYPENUM_BUILD_OP \
           cargo green -vv install --jobs=1 --locked --force dbcc@2.2.1  |& tee _
-    - if: ${{ matrix.toolchain != 'stable' }}
+    - run: ls -lha /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry-new
+    - run: ls -lha /tmp/.local-registry-new
+    - if: ${{ matrix.toolchain != '1.90.0' }}
       uses: actions/upload-artifact@v4
       name: Upload recipe
       with:
         name: dbcc@2.2.1.Dockerfile
         path: ${{ env.CARGOGREEN_FINAL_PATH }}
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
         ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
       run: |
         ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
       run: |
         ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> there's some panic!s
       run: |
         ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> there's some BUGs
       run: |
         ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> here's cargo's error text
       run: |
         ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> 429 Too Many Requests
       run: |
         ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> here's relevant logs
       run: |
         ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != 'stable' }}
-      name: Maybe show final path diff
+    - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != '1.90.0' }}
+      name: 🌀 Maybe show final path diff
       run: |
         case "$GITHUB_JOB" in
           cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
@@ -906,21 +1181,21 @@ jobs:
         esac
         git --no-pager diff --exit-code           --ignore-matching-lines='^# Generated by'           --ignore-matching-lines=' AS rust-base$'           --ignore-matching-lines='^# syntax=docker.io/docker/dockerfile:1@'           --ignore-matching-lines="^##     '\{"           -- $CARGOGREEN_FINAL_PATH
 
-    - if: ${{ failure() }}
-      name: cargo-green logs
+    - if: ${{ always() }}
+      name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
 
     - name: Target dir disk usage
       if: ${{ failure() || success() }}
       run: du -sh $CARGO_TARGET_DIR || true
 
-    - name: Ensure running the same command twice without modifications...
+    - name: 🔵 Ensure running the same command twice without modifications...
       run: |
         unset CARGO_INCREMENTAL
         unset CARGO_PROFILE_DEV_DEBUG
@@ -936,48 +1211,48 @@ jobs:
         grep Dirty     _                     && err=1
         grep Compiling _                     && err=1
         exit $err
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
         ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
       run: |
         ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
       run: |
         ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> there's some panic!s
       run: |
         ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> there's some BUGs
       run: |
         ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> here's cargo's error text
       run: |
         ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> 429 Too Many Requests
       run: |
         ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> here's relevant logs
       run: |
         ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != 'stable' }}
-      name: Maybe show final path diff
+    - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != '1.90.0' }}
+      name: 🌀 Maybe show final path diff
       run: |
         case "$GITHUB_JOB" in
           cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
@@ -985,15 +1260,35 @@ jobs:
         esac
         git --no-pager diff --exit-code           --ignore-matching-lines='^# Generated by'           --ignore-matching-lines=' AS rust-base$'           --ignore-matching-lines='^# syntax=docker.io/docker/dockerfile:1@'           --ignore-matching-lines="^##     '\{"           -- $CARGOGREEN_FINAL_PATH
 
-    - if: ${{ failure() }}
-      name: cargo-green logs
+    - if: ${{ always() }}
+      name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
+
+    - name: 🔵 Compare old/new local private registry image digests
+      continue-on-error: true # TODO: drop when digests are stable
+      run: |
+        diff --width=150 -y \
+          <(find /tmp/.local-registry/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print $NF}' | sort -u) \
+          <(find /tmp/.local-registry-new/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print $NF}' | sort -u)
+    - name: Local private registry cache dance
+      run: |
+        # [ci: caches keep growing](https://github.com/moby/buildkit/issues/1850)
+        docker stop --timeout 10 reg-from reg-to
+        rm -rf /tmp/.local-registry
+        mv /tmp/.local-registry-new /tmp/.local-registry
+    - name: Save local private registry cache
+      uses: actions/cache/save@v4
+      if: ${{ false }} # TODO: drop when digests are stable
+      with:
+        path: /tmp/.local-registry
+        key: localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-${{ github.run_id }}
+
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
 
     - name: Target dir disk usage
       if: ${{ failure() || success() }}
@@ -1004,15 +1299,18 @@ jobs:
     defaults:
       run:
         shell: bash -euo pipefail {0}
-    continue-on-error: ${{ matrix.toolchain != 'stable' }}
+    continue-on-error: ${{ matrix.toolchain != '1.90.0' }}
     strategy:
       matrix:
         toolchain:
-        - stable
+        - 1.90.0
         - 1.86.0
     env:
       CARGO_TARGET_DIR: /tmp/clis-diesel_cli_2-3-2
+      CARGOGREEN_CACHE_FROM_IMAGES: docker-image://localhost:12345/${{ github.repository }}
+      CARGOGREEN_CACHE_TO_IMAGES: docker-image://localhost:23456/${{ github.repository }}
       CARGOGREEN_FINAL_PATH: recipes/diesel_cli@2.3.2.Dockerfile
+      CARGOGREEN_FINAL_PATH_NONPRIMARY: 1 # dumps on each build call
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
 
@@ -1027,8 +1325,7 @@ jobs:
       with:
         toolchain: ${{ matrix.toolchain }}
         rustflags: ''
-        cache-all-crates: true
-        cache-workspace-crates: true
+        cache-on-failure: true
 
 
     - name: Retrieve saved bin
@@ -1050,20 +1347,68 @@ jobs:
     - run: cargo -Vv
     - run: docker buildx prune --all --force
 
-    - name: Envs
+    - name: Prepare local private registry cache
+      run: |
+        # https://github.com/fenollp/supergreen/actions/caches
+        mkdir -p /tmp/.local-registry
+        mkdir -p /tmp/.local-registry-new
+    - name: 🔵 Restore local private registry cache
+      uses: actions/cache/restore@v4
+      with:
+        path: /tmp/.local-registry
+        # github.run_id: https://github.com/actions/toolkit/issues/658#issuecomment-2640690759
+        key: localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-${{ github.run_id }}
+        restore-keys: |
+          localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-
+          localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-
+          localprivatereg-${{ runner.os }}-
+          localprivatereg-
+
+    - run: ls -lha /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry-new
+    - run: ls -lha /tmp/.local-registry-new
+
+    - name: Pull regist3 image
+      run: |
+        false \
+        || docker build --tag regist3 - <<<'FROM docker.io/registry:3' \
+        || docker build --tag regist3 - <<<'FROM mirror.gcr.io/registry:3' \
+        || docker build --tag regist3 - <<<'FROM public.ecr.aws/docker/registry:3' \
+        || exit 1
+    - name: Start "cache from" image registry
+      run: docker run --name=reg-from --rm --detach -p 12345:5000 --user $(id -u):$(id -g) -v     /tmp/.local-registry:/var/lib/registry regist3
+    - name: Start "cache to" image registry
+      run: docker run --name=reg-to   --rm --detach -p 23456:5000 --user $(id -u):$(id -g) -v /tmp/.local-registry-new:/var/lib/registry regist3
+
+    - run: docker pull localhost:12345/${{ github.repository }} || true
+    - run: docker build --push --tag localhost:12345/${{ github.repository }} - <<<'FROM scratch'
+    - run: docker pull localhost:12345/${{ github.repository }}
+    - run: curl -fsSL http://localhost:12345/v2/${{ github.repository }}/blobs/sha256:1720a10883c7ebbf9080c7d8399b21cb883271cb3dfec3e30a4248b636628779 || true
+    - run: ls -lha /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry-new
+    - run: ls -lha /tmp/.local-registry-new
+
+    - name: 🔵 Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
-    - if: ${{ matrix.toolchain != 'stable' }}
+    - if: ${{ matrix.toolchain != '1.90.0' }}
       run: ~/.cargo/bin/cargo-green green supergreen env CARGOGREEN_BASE_IMAGE | grep '${{ matrix.toolchain }}'
-    - name: Envs again
+    - run: BUILDX_BUILDER=supergreen docker buildx inspect
+    - name: 🔵 Envs again
       run: ~/.cargo/bin/cargo-green green supergreen env
 
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
-    - name: cargo install net=ON cache=OFF remote=OFF jobs=3
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
+    - run: ls -lha /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry-new
+    - run: ls -lha /tmp/.local-registry-new
+    - name: 🔵 cargo install net=ON cache=OFF remote=OFF jobs=3
       run: |
         unset CARGO_INCREMENTAL
         unset CARGO_PROFILE_DEV_DEBUG
@@ -1072,10 +1417,14 @@ jobs:
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env CARGOGREEN_ADD_APT=libpq-dev \
           cargo green -vv install --jobs=3 --locked --force diesel_cli@2.3.2 --no-default-features --features=postgres |& tee _
-    - name: cargo install net=ON cache=ON remote=OFF jobs=1
+    - run: ls -lha /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry-new
+    - run: ls -lha /tmp/.local-registry-new
+    - name: 🔵 cargo install net=ON cache=ON remote=OFF jobs=1
       if: ${{ failure() }}
       run: |
-        rm _
+        rm _ || true
         unset CARGO_INCREMENTAL
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
@@ -1083,54 +1432,58 @@ jobs:
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env CARGOGREEN_ADD_APT=libpq-dev \
           cargo green -vv install --jobs=1 --locked --force diesel_cli@2.3.2 --no-default-features --features=postgres |& tee _
-    - if: ${{ matrix.toolchain != 'stable' }}
+    - run: ls -lha /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry-new
+    - run: ls -lha /tmp/.local-registry-new
+    - if: ${{ matrix.toolchain != '1.90.0' }}
       uses: actions/upload-artifact@v4
       name: Upload recipe
       with:
         name: diesel_cli@2.3.2.Dockerfile
         path: ${{ env.CARGOGREEN_FINAL_PATH }}
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
         ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
       run: |
         ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
       run: |
         ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> there's some panic!s
       run: |
         ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> there's some BUGs
       run: |
         ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> here's cargo's error text
       run: |
         ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> 429 Too Many Requests
       run: |
         ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> here's relevant logs
       run: |
         ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != 'stable' }}
-      name: Maybe show final path diff
+    - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != '1.90.0' }}
+      name: 🌀 Maybe show final path diff
       run: |
         case "$GITHUB_JOB" in
           cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
@@ -1138,21 +1491,21 @@ jobs:
         esac
         git --no-pager diff --exit-code           --ignore-matching-lines='^# Generated by'           --ignore-matching-lines=' AS rust-base$'           --ignore-matching-lines='^# syntax=docker.io/docker/dockerfile:1@'           --ignore-matching-lines="^##     '\{"           -- $CARGOGREEN_FINAL_PATH
 
-    - if: ${{ failure() }}
-      name: cargo-green logs
+    - if: ${{ always() }}
+      name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
 
     - name: Target dir disk usage
       if: ${{ failure() || success() }}
       run: du -sh $CARGO_TARGET_DIR || true
 
-    - name: Ensure running the same command twice without modifications...
+    - name: 🔵 Ensure running the same command twice without modifications...
       run: |
         unset CARGO_INCREMENTAL
         unset CARGO_PROFILE_DEV_DEBUG
@@ -1168,48 +1521,48 @@ jobs:
         grep Dirty     _                     && err=1
         grep Compiling _                     && err=1
         exit $err
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
         ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
       run: |
         ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
       run: |
         ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> there's some panic!s
       run: |
         ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> there's some BUGs
       run: |
         ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> here's cargo's error text
       run: |
         ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> 429 Too Many Requests
       run: |
         ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> here's relevant logs
       run: |
         ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != 'stable' }}
-      name: Maybe show final path diff
+    - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != '1.90.0' }}
+      name: 🌀 Maybe show final path diff
       run: |
         case "$GITHUB_JOB" in
           cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
@@ -1217,15 +1570,35 @@ jobs:
         esac
         git --no-pager diff --exit-code           --ignore-matching-lines='^# Generated by'           --ignore-matching-lines=' AS rust-base$'           --ignore-matching-lines='^# syntax=docker.io/docker/dockerfile:1@'           --ignore-matching-lines="^##     '\{"           -- $CARGOGREEN_FINAL_PATH
 
-    - if: ${{ failure() }}
-      name: cargo-green logs
+    - if: ${{ always() }}
+      name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
+
+    - name: 🔵 Compare old/new local private registry image digests
+      continue-on-error: true # TODO: drop when digests are stable
+      run: |
+        diff --width=150 -y \
+          <(find /tmp/.local-registry/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print $NF}' | sort -u) \
+          <(find /tmp/.local-registry-new/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print $NF}' | sort -u)
+    - name: Local private registry cache dance
+      run: |
+        # [ci: caches keep growing](https://github.com/moby/buildkit/issues/1850)
+        docker stop --timeout 10 reg-from reg-to
+        rm -rf /tmp/.local-registry
+        mv /tmp/.local-registry-new /tmp/.local-registry
+    - name: Save local private registry cache
+      uses: actions/cache/save@v4
+      if: ${{ false }} # TODO: drop when digests are stable
+      with:
+        path: /tmp/.local-registry
+        key: localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-${{ github.run_id }}
+
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
 
     - name: Target dir disk usage
       if: ${{ failure() || success() }}
@@ -1236,15 +1609,18 @@ jobs:
     defaults:
       run:
         shell: bash -euo pipefail {0}
-    continue-on-error: ${{ matrix.toolchain != 'stable' }}
+    continue-on-error: ${{ matrix.toolchain != '1.90.0' }}
     strategy:
       matrix:
         toolchain:
-        - stable
+        - 1.90.0
         - 1.86.0
     env:
       CARGO_TARGET_DIR: /tmp/clis-hickory-dns_0-25-0-alpha-1
+      CARGOGREEN_CACHE_FROM_IMAGES: docker-image://localhost:12345/${{ github.repository }}
+      CARGOGREEN_CACHE_TO_IMAGES: docker-image://localhost:23456/${{ github.repository }}
       CARGOGREEN_FINAL_PATH: recipes/hickory-dns@0.25.0-alpha.1.Dockerfile
+      CARGOGREEN_FINAL_PATH_NONPRIMARY: 1 # dumps on each build call
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
 
@@ -1259,8 +1635,7 @@ jobs:
       with:
         toolchain: ${{ matrix.toolchain }}
         rustflags: ''
-        cache-all-crates: true
-        cache-workspace-crates: true
+        cache-on-failure: true
 
 
     - name: Retrieve saved bin
@@ -1282,20 +1657,68 @@ jobs:
     - run: cargo -Vv
     - run: docker buildx prune --all --force
 
-    - name: Envs
+    - name: Prepare local private registry cache
+      run: |
+        # https://github.com/fenollp/supergreen/actions/caches
+        mkdir -p /tmp/.local-registry
+        mkdir -p /tmp/.local-registry-new
+    - name: 🔵 Restore local private registry cache
+      uses: actions/cache/restore@v4
+      with:
+        path: /tmp/.local-registry
+        # github.run_id: https://github.com/actions/toolkit/issues/658#issuecomment-2640690759
+        key: localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-${{ github.run_id }}
+        restore-keys: |
+          localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-
+          localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-
+          localprivatereg-${{ runner.os }}-
+          localprivatereg-
+
+    - run: ls -lha /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry-new
+    - run: ls -lha /tmp/.local-registry-new
+
+    - name: Pull regist3 image
+      run: |
+        false \
+        || docker build --tag regist3 - <<<'FROM docker.io/registry:3' \
+        || docker build --tag regist3 - <<<'FROM mirror.gcr.io/registry:3' \
+        || docker build --tag regist3 - <<<'FROM public.ecr.aws/docker/registry:3' \
+        || exit 1
+    - name: Start "cache from" image registry
+      run: docker run --name=reg-from --rm --detach -p 12345:5000 --user $(id -u):$(id -g) -v     /tmp/.local-registry:/var/lib/registry regist3
+    - name: Start "cache to" image registry
+      run: docker run --name=reg-to   --rm --detach -p 23456:5000 --user $(id -u):$(id -g) -v /tmp/.local-registry-new:/var/lib/registry regist3
+
+    - run: docker pull localhost:12345/${{ github.repository }} || true
+    - run: docker build --push --tag localhost:12345/${{ github.repository }} - <<<'FROM scratch'
+    - run: docker pull localhost:12345/${{ github.repository }}
+    - run: curl -fsSL http://localhost:12345/v2/${{ github.repository }}/blobs/sha256:1720a10883c7ebbf9080c7d8399b21cb883271cb3dfec3e30a4248b636628779 || true
+    - run: ls -lha /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry-new
+    - run: ls -lha /tmp/.local-registry-new
+
+    - name: 🔵 Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
-    - if: ${{ matrix.toolchain != 'stable' }}
+    - if: ${{ matrix.toolchain != '1.90.0' }}
       run: ~/.cargo/bin/cargo-green green supergreen env CARGOGREEN_BASE_IMAGE | grep '${{ matrix.toolchain }}'
-    - name: Envs again
+    - run: BUILDX_BUILDER=supergreen docker buildx inspect
+    - name: 🔵 Envs again
       run: ~/.cargo/bin/cargo-green green supergreen env
 
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
-    - name: cargo install net=ON cache=OFF remote=OFF jobs=3
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
+    - run: ls -lha /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry-new
+    - run: ls -lha /tmp/.local-registry-new
+    - name: 🔵 cargo install net=ON cache=OFF remote=OFF jobs=3
       run: |
         unset CARGO_INCREMENTAL
         unset CARGO_PROFILE_DEV_DEBUG
@@ -1304,10 +1727,14 @@ jobs:
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env CARGOGREEN_SET_ENVS=RING_CORE_PREFIX \
           cargo green -vv install --jobs=3 --locked --force hickory-dns@0.25.0-alpha.1 --features=dns-over-rustls |& tee _
-    - name: cargo install net=ON cache=ON remote=OFF jobs=1
+    - run: ls -lha /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry-new
+    - run: ls -lha /tmp/.local-registry-new
+    - name: 🔵 cargo install net=ON cache=ON remote=OFF jobs=1
       if: ${{ failure() }}
       run: |
-        rm _
+        rm _ || true
         unset CARGO_INCREMENTAL
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
@@ -1315,54 +1742,58 @@ jobs:
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env CARGOGREEN_SET_ENVS=RING_CORE_PREFIX \
           cargo green -vv install --jobs=1 --locked --force hickory-dns@0.25.0-alpha.1 --features=dns-over-rustls |& tee _
-    - if: ${{ matrix.toolchain != 'stable' }}
+    - run: ls -lha /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry-new
+    - run: ls -lha /tmp/.local-registry-new
+    - if: ${{ matrix.toolchain != '1.90.0' }}
       uses: actions/upload-artifact@v4
       name: Upload recipe
       with:
         name: hickory-dns@0.25.0-alpha.1.Dockerfile
         path: ${{ env.CARGOGREEN_FINAL_PATH }}
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
         ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
       run: |
         ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
       run: |
         ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> there's some panic!s
       run: |
         ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> there's some BUGs
       run: |
         ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> here's cargo's error text
       run: |
         ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> 429 Too Many Requests
       run: |
         ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> here's relevant logs
       run: |
         ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != 'stable' }}
-      name: Maybe show final path diff
+    - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != '1.90.0' }}
+      name: 🌀 Maybe show final path diff
       run: |
         case "$GITHUB_JOB" in
           cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
@@ -1370,21 +1801,21 @@ jobs:
         esac
         git --no-pager diff --exit-code           --ignore-matching-lines='^# Generated by'           --ignore-matching-lines=' AS rust-base$'           --ignore-matching-lines='^# syntax=docker.io/docker/dockerfile:1@'           --ignore-matching-lines="^##     '\{"           -- $CARGOGREEN_FINAL_PATH
 
-    - if: ${{ failure() }}
-      name: cargo-green logs
+    - if: ${{ always() }}
+      name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
 
     - name: Target dir disk usage
       if: ${{ failure() || success() }}
       run: du -sh $CARGO_TARGET_DIR || true
 
-    - name: Ensure running the same command twice without modifications...
+    - name: 🔵 Ensure running the same command twice without modifications...
       run: |
         unset CARGO_INCREMENTAL
         unset CARGO_PROFILE_DEV_DEBUG
@@ -1400,48 +1831,48 @@ jobs:
         grep Dirty     _                     && err=1
         grep Compiling _                     && err=1
         exit $err
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
         ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
       run: |
         ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
       run: |
         ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> there's some panic!s
       run: |
         ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> there's some BUGs
       run: |
         ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> here's cargo's error text
       run: |
         ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> 429 Too Many Requests
       run: |
         ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> here's relevant logs
       run: |
         ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != 'stable' }}
-      name: Maybe show final path diff
+    - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != '1.90.0' }}
+      name: 🌀 Maybe show final path diff
       run: |
         case "$GITHUB_JOB" in
           cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
@@ -1449,15 +1880,35 @@ jobs:
         esac
         git --no-pager diff --exit-code           --ignore-matching-lines='^# Generated by'           --ignore-matching-lines=' AS rust-base$'           --ignore-matching-lines='^# syntax=docker.io/docker/dockerfile:1@'           --ignore-matching-lines="^##     '\{"           -- $CARGOGREEN_FINAL_PATH
 
-    - if: ${{ failure() }}
-      name: cargo-green logs
+    - if: ${{ always() }}
+      name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
+
+    - name: 🔵 Compare old/new local private registry image digests
+      continue-on-error: true # TODO: drop when digests are stable
+      run: |
+        diff --width=150 -y \
+          <(find /tmp/.local-registry/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print $NF}' | sort -u) \
+          <(find /tmp/.local-registry-new/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print $NF}' | sort -u)
+    - name: Local private registry cache dance
+      run: |
+        # [ci: caches keep growing](https://github.com/moby/buildkit/issues/1850)
+        docker stop --timeout 10 reg-from reg-to
+        rm -rf /tmp/.local-registry
+        mv /tmp/.local-registry-new /tmp/.local-registry
+    - name: Save local private registry cache
+      uses: actions/cache/save@v4
+      if: ${{ false }} # TODO: drop when digests are stable
+      with:
+        path: /tmp/.local-registry
+        key: localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-${{ github.run_id }}
+
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
 
     - name: Target dir disk usage
       if: ${{ failure() || success() }}
@@ -1468,15 +1919,18 @@ jobs:
     defaults:
       run:
         shell: bash -euo pipefail {0}
-    continue-on-error: ${{ matrix.toolchain != 'stable' }}
+    continue-on-error: ${{ matrix.toolchain != '1.90.0' }}
     strategy:
       matrix:
         toolchain:
-        - stable
+        - 1.90.0
         - 1.86.0
     env:
       CARGO_TARGET_DIR: /tmp/clis-mussh_3-1-3
+      CARGOGREEN_CACHE_FROM_IMAGES: docker-image://localhost:12345/${{ github.repository }}
+      CARGOGREEN_CACHE_TO_IMAGES: docker-image://localhost:23456/${{ github.repository }}
       CARGOGREEN_FINAL_PATH: recipes/mussh@3.1.3.Dockerfile
+      CARGOGREEN_FINAL_PATH_NONPRIMARY: 1 # dumps on each build call
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
 
@@ -1491,8 +1945,7 @@ jobs:
       with:
         toolchain: ${{ matrix.toolchain }}
         rustflags: ''
-        cache-all-crates: true
-        cache-workspace-crates: true
+        cache-on-failure: true
 
 
     - name: Retrieve saved bin
@@ -1514,20 +1967,68 @@ jobs:
     - run: cargo -Vv
     - run: docker buildx prune --all --force
 
-    - name: Envs
+    - name: Prepare local private registry cache
+      run: |
+        # https://github.com/fenollp/supergreen/actions/caches
+        mkdir -p /tmp/.local-registry
+        mkdir -p /tmp/.local-registry-new
+    - name: 🔵 Restore local private registry cache
+      uses: actions/cache/restore@v4
+      with:
+        path: /tmp/.local-registry
+        # github.run_id: https://github.com/actions/toolkit/issues/658#issuecomment-2640690759
+        key: localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-${{ github.run_id }}
+        restore-keys: |
+          localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-
+          localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-
+          localprivatereg-${{ runner.os }}-
+          localprivatereg-
+
+    - run: ls -lha /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry-new
+    - run: ls -lha /tmp/.local-registry-new
+
+    - name: Pull regist3 image
+      run: |
+        false \
+        || docker build --tag regist3 - <<<'FROM docker.io/registry:3' \
+        || docker build --tag regist3 - <<<'FROM mirror.gcr.io/registry:3' \
+        || docker build --tag regist3 - <<<'FROM public.ecr.aws/docker/registry:3' \
+        || exit 1
+    - name: Start "cache from" image registry
+      run: docker run --name=reg-from --rm --detach -p 12345:5000 --user $(id -u):$(id -g) -v     /tmp/.local-registry:/var/lib/registry regist3
+    - name: Start "cache to" image registry
+      run: docker run --name=reg-to   --rm --detach -p 23456:5000 --user $(id -u):$(id -g) -v /tmp/.local-registry-new:/var/lib/registry regist3
+
+    - run: docker pull localhost:12345/${{ github.repository }} || true
+    - run: docker build --push --tag localhost:12345/${{ github.repository }} - <<<'FROM scratch'
+    - run: docker pull localhost:12345/${{ github.repository }}
+    - run: curl -fsSL http://localhost:12345/v2/${{ github.repository }}/blobs/sha256:1720a10883c7ebbf9080c7d8399b21cb883271cb3dfec3e30a4248b636628779 || true
+    - run: ls -lha /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry-new
+    - run: ls -lha /tmp/.local-registry-new
+
+    - name: 🔵 Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
-    - if: ${{ matrix.toolchain != 'stable' }}
+    - if: ${{ matrix.toolchain != '1.90.0' }}
       run: ~/.cargo/bin/cargo-green green supergreen env CARGOGREEN_BASE_IMAGE | grep '${{ matrix.toolchain }}'
-    - name: Envs again
+    - run: BUILDX_BUILDER=supergreen docker buildx inspect
+    - name: 🔵 Envs again
       run: ~/.cargo/bin/cargo-green green supergreen env
 
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
-    - name: cargo install net=ON cache=OFF remote=OFF jobs=3
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
+    - run: ls -lha /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry-new
+    - run: ls -lha /tmp/.local-registry-new
+    - name: 🔵 cargo install net=ON cache=OFF remote=OFF jobs=3
       run: |
         unset CARGO_INCREMENTAL
         unset CARGO_PROFILE_DEV_DEBUG
@@ -1536,10 +2037,14 @@ jobs:
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env CARGOGREEN_ADD_APT=libsqlite3-dev,libssl-dev,zlib1g-dev \
           cargo green -vv install --jobs=3 --locked --force mussh@3.1.3  |& tee _
-    - name: cargo install net=ON cache=ON remote=OFF jobs=1
+    - run: ls -lha /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry-new
+    - run: ls -lha /tmp/.local-registry-new
+    - name: 🔵 cargo install net=ON cache=ON remote=OFF jobs=1
       if: ${{ failure() }}
       run: |
-        rm _
+        rm _ || true
         unset CARGO_INCREMENTAL
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
@@ -1547,54 +2052,58 @@ jobs:
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env CARGOGREEN_ADD_APT=libsqlite3-dev,libssl-dev,zlib1g-dev \
           cargo green -vv install --jobs=1 --locked --force mussh@3.1.3  |& tee _
-    - if: ${{ matrix.toolchain != 'stable' }}
+    - run: ls -lha /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry-new
+    - run: ls -lha /tmp/.local-registry-new
+    - if: ${{ matrix.toolchain != '1.90.0' }}
       uses: actions/upload-artifact@v4
       name: Upload recipe
       with:
         name: mussh@3.1.3.Dockerfile
         path: ${{ env.CARGOGREEN_FINAL_PATH }}
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
         ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
       run: |
         ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
       run: |
         ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> there's some panic!s
       run: |
         ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> there's some BUGs
       run: |
         ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> here's cargo's error text
       run: |
         ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> 429 Too Many Requests
       run: |
         ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> here's relevant logs
       run: |
         ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != 'stable' }}
-      name: Maybe show final path diff
+    - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != '1.90.0' }}
+      name: 🌀 Maybe show final path diff
       run: |
         case "$GITHUB_JOB" in
           cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
@@ -1602,21 +2111,21 @@ jobs:
         esac
         git --no-pager diff --exit-code           --ignore-matching-lines='^# Generated by'           --ignore-matching-lines=' AS rust-base$'           --ignore-matching-lines='^# syntax=docker.io/docker/dockerfile:1@'           --ignore-matching-lines="^##     '\{"           -- $CARGOGREEN_FINAL_PATH
 
-    - if: ${{ failure() }}
-      name: cargo-green logs
+    - if: ${{ always() }}
+      name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
 
     - name: Target dir disk usage
       if: ${{ failure() || success() }}
       run: du -sh $CARGO_TARGET_DIR || true
 
-    - name: Ensure running the same command twice without modifications...
+    - name: 🔵 Ensure running the same command twice without modifications...
       run: |
         unset CARGO_INCREMENTAL
         unset CARGO_PROFILE_DEV_DEBUG
@@ -1632,48 +2141,48 @@ jobs:
         grep Dirty     _                     && err=1
         grep Compiling _                     && err=1
         exit $err
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
         ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
       run: |
         ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
       run: |
         ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> there's some panic!s
       run: |
         ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> there's some BUGs
       run: |
         ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> here's cargo's error text
       run: |
         ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> 429 Too Many Requests
       run: |
         ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> here's relevant logs
       run: |
         ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != 'stable' }}
-      name: Maybe show final path diff
+    - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != '1.90.0' }}
+      name: 🌀 Maybe show final path diff
       run: |
         case "$GITHUB_JOB" in
           cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
@@ -1681,15 +2190,35 @@ jobs:
         esac
         git --no-pager diff --exit-code           --ignore-matching-lines='^# Generated by'           --ignore-matching-lines=' AS rust-base$'           --ignore-matching-lines='^# syntax=docker.io/docker/dockerfile:1@'           --ignore-matching-lines="^##     '\{"           -- $CARGOGREEN_FINAL_PATH
 
-    - if: ${{ failure() }}
-      name: cargo-green logs
+    - if: ${{ always() }}
+      name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
+
+    - name: 🔵 Compare old/new local private registry image digests
+      continue-on-error: true # TODO: drop when digests are stable
+      run: |
+        diff --width=150 -y \
+          <(find /tmp/.local-registry/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print $NF}' | sort -u) \
+          <(find /tmp/.local-registry-new/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print $NF}' | sort -u)
+    - name: Local private registry cache dance
+      run: |
+        # [ci: caches keep growing](https://github.com/moby/buildkit/issues/1850)
+        docker stop --timeout 10 reg-from reg-to
+        rm -rf /tmp/.local-registry
+        mv /tmp/.local-registry-new /tmp/.local-registry
+    - name: Save local private registry cache
+      uses: actions/cache/save@v4
+      if: ${{ false }} # TODO: drop when digests are stable
+      with:
+        path: /tmp/.local-registry
+        key: localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-${{ github.run_id }}
+
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
 
     - name: Target dir disk usage
       if: ${{ failure() || success() }}
@@ -1700,15 +2229,18 @@ jobs:
     defaults:
       run:
         shell: bash -euo pipefail {0}
-    continue-on-error: ${{ matrix.toolchain != 'stable' }}
+    continue-on-error: ${{ matrix.toolchain != '1.90.0' }}
     strategy:
       matrix:
         toolchain:
-        - stable
+        - 1.90.0
         - 1.86.0
     env:
       CARGO_TARGET_DIR: /tmp/clis-ntpd_1-2-3
+      CARGOGREEN_CACHE_FROM_IMAGES: docker-image://localhost:12345/${{ github.repository }}
+      CARGOGREEN_CACHE_TO_IMAGES: docker-image://localhost:23456/${{ github.repository }}
       CARGOGREEN_FINAL_PATH: recipes/ntpd@1.2.3.Dockerfile
+      CARGOGREEN_FINAL_PATH_NONPRIMARY: 1 # dumps on each build call
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
       NTPD_RS_GIT_REV: c7945250c378f65f65b2a75748132edf75063b3b
@@ -1724,8 +2256,7 @@ jobs:
       with:
         toolchain: ${{ matrix.toolchain }}
         rustflags: ''
-        cache-all-crates: true
-        cache-workspace-crates: true
+        cache-on-failure: true
 
 
     - name: Retrieve saved bin
@@ -1747,20 +2278,68 @@ jobs:
     - run: cargo -Vv
     - run: docker buildx prune --all --force
 
-    - name: Envs
+    - name: Prepare local private registry cache
+      run: |
+        # https://github.com/fenollp/supergreen/actions/caches
+        mkdir -p /tmp/.local-registry
+        mkdir -p /tmp/.local-registry-new
+    - name: 🔵 Restore local private registry cache
+      uses: actions/cache/restore@v4
+      with:
+        path: /tmp/.local-registry
+        # github.run_id: https://github.com/actions/toolkit/issues/658#issuecomment-2640690759
+        key: localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-${{ github.run_id }}
+        restore-keys: |
+          localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-
+          localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-
+          localprivatereg-${{ runner.os }}-
+          localprivatereg-
+
+    - run: ls -lha /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry-new
+    - run: ls -lha /tmp/.local-registry-new
+
+    - name: Pull regist3 image
+      run: |
+        false \
+        || docker build --tag regist3 - <<<'FROM docker.io/registry:3' \
+        || docker build --tag regist3 - <<<'FROM mirror.gcr.io/registry:3' \
+        || docker build --tag regist3 - <<<'FROM public.ecr.aws/docker/registry:3' \
+        || exit 1
+    - name: Start "cache from" image registry
+      run: docker run --name=reg-from --rm --detach -p 12345:5000 --user $(id -u):$(id -g) -v     /tmp/.local-registry:/var/lib/registry regist3
+    - name: Start "cache to" image registry
+      run: docker run --name=reg-to   --rm --detach -p 23456:5000 --user $(id -u):$(id -g) -v /tmp/.local-registry-new:/var/lib/registry regist3
+
+    - run: docker pull localhost:12345/${{ github.repository }} || true
+    - run: docker build --push --tag localhost:12345/${{ github.repository }} - <<<'FROM scratch'
+    - run: docker pull localhost:12345/${{ github.repository }}
+    - run: curl -fsSL http://localhost:12345/v2/${{ github.repository }}/blobs/sha256:1720a10883c7ebbf9080c7d8399b21cb883271cb3dfec3e30a4248b636628779 || true
+    - run: ls -lha /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry-new
+    - run: ls -lha /tmp/.local-registry-new
+
+    - name: 🔵 Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
-    - if: ${{ matrix.toolchain != 'stable' }}
+    - if: ${{ matrix.toolchain != '1.90.0' }}
       run: ~/.cargo/bin/cargo-green green supergreen env CARGOGREEN_BASE_IMAGE | grep '${{ matrix.toolchain }}'
-    - name: Envs again
+    - run: BUILDX_BUILDER=supergreen docker buildx inspect
+    - name: 🔵 Envs again
       run: ~/.cargo/bin/cargo-green green supergreen env
 
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
-    - name: cargo install net=ON cache=OFF remote=OFF jobs=3
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
+    - run: ls -lha /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry-new
+    - run: ls -lha /tmp/.local-registry-new
+    - name: 🔵 cargo install net=ON cache=OFF remote=OFF jobs=3
       run: |
         unset CARGO_INCREMENTAL
         unset CARGO_PROFILE_DEV_DEBUG
@@ -1769,10 +2348,14 @@ jobs:
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env CARGOGREEN_SET_ENVS=NTPD_RS_GIT_DATE,NTPD_RS_GIT_REV,RING_CORE_PREFIX \
           cargo green -vv install --jobs=3 --locked --force ntpd@1.2.3  |& tee _
-    - name: cargo install net=ON cache=ON remote=OFF jobs=1
+    - run: ls -lha /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry-new
+    - run: ls -lha /tmp/.local-registry-new
+    - name: 🔵 cargo install net=ON cache=ON remote=OFF jobs=1
       if: ${{ failure() }}
       run: |
-        rm _
+        rm _ || true
         unset CARGO_INCREMENTAL
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
@@ -1780,54 +2363,58 @@ jobs:
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env CARGOGREEN_SET_ENVS=NTPD_RS_GIT_DATE,NTPD_RS_GIT_REV,RING_CORE_PREFIX \
           cargo green -vv install --jobs=1 --locked --force ntpd@1.2.3  |& tee _
-    - if: ${{ matrix.toolchain != 'stable' }}
+    - run: ls -lha /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry-new
+    - run: ls -lha /tmp/.local-registry-new
+    - if: ${{ matrix.toolchain != '1.90.0' }}
       uses: actions/upload-artifact@v4
       name: Upload recipe
       with:
         name: ntpd@1.2.3.Dockerfile
         path: ${{ env.CARGOGREEN_FINAL_PATH }}
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
         ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
       run: |
         ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
       run: |
         ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> there's some panic!s
       run: |
         ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> there's some BUGs
       run: |
         ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> here's cargo's error text
       run: |
         ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> 429 Too Many Requests
       run: |
         ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> here's relevant logs
       run: |
         ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != 'stable' }}
-      name: Maybe show final path diff
+    - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != '1.90.0' }}
+      name: 🌀 Maybe show final path diff
       run: |
         case "$GITHUB_JOB" in
           cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
@@ -1835,21 +2422,21 @@ jobs:
         esac
         git --no-pager diff --exit-code           --ignore-matching-lines='^# Generated by'           --ignore-matching-lines=' AS rust-base$'           --ignore-matching-lines='^# syntax=docker.io/docker/dockerfile:1@'           --ignore-matching-lines="^##     '\{"           -- $CARGOGREEN_FINAL_PATH
 
-    - if: ${{ failure() }}
-      name: cargo-green logs
+    - if: ${{ always() }}
+      name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
 
     - name: Target dir disk usage
       if: ${{ failure() || success() }}
       run: du -sh $CARGO_TARGET_DIR || true
 
-    - name: Ensure running the same command twice without modifications...
+    - name: 🔵 Ensure running the same command twice without modifications...
       run: |
         unset CARGO_INCREMENTAL
         unset CARGO_PROFILE_DEV_DEBUG
@@ -1865,48 +2452,48 @@ jobs:
         grep Dirty     _                     && err=1
         grep Compiling _                     && err=1
         exit $err
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
         ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
       run: |
         ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
       run: |
         ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> there's some panic!s
       run: |
         ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> there's some BUGs
       run: |
         ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> here's cargo's error text
       run: |
         ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> 429 Too Many Requests
       run: |
         ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> here's relevant logs
       run: |
         ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != 'stable' }}
-      name: Maybe show final path diff
+    - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != '1.90.0' }}
+      name: 🌀 Maybe show final path diff
       run: |
         case "$GITHUB_JOB" in
           cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
@@ -1914,15 +2501,35 @@ jobs:
         esac
         git --no-pager diff --exit-code           --ignore-matching-lines='^# Generated by'           --ignore-matching-lines=' AS rust-base$'           --ignore-matching-lines='^# syntax=docker.io/docker/dockerfile:1@'           --ignore-matching-lines="^##     '\{"           -- $CARGOGREEN_FINAL_PATH
 
-    - if: ${{ failure() }}
-      name: cargo-green logs
+    - if: ${{ always() }}
+      name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
+
+    - name: 🔵 Compare old/new local private registry image digests
+      continue-on-error: true # TODO: drop when digests are stable
+      run: |
+        diff --width=150 -y \
+          <(find /tmp/.local-registry/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print $NF}' | sort -u) \
+          <(find /tmp/.local-registry-new/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print $NF}' | sort -u)
+    - name: Local private registry cache dance
+      run: |
+        # [ci: caches keep growing](https://github.com/moby/buildkit/issues/1850)
+        docker stop --timeout 10 reg-from reg-to
+        rm -rf /tmp/.local-registry
+        mv /tmp/.local-registry-new /tmp/.local-registry
+    - name: Save local private registry cache
+      uses: actions/cache/save@v4
+      if: ${{ false }} # TODO: drop when digests are stable
+      with:
+        path: /tmp/.local-registry
+        key: localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-${{ github.run_id }}
+
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
 
     - name: Target dir disk usage
       if: ${{ failure() || success() }}
@@ -1933,15 +2540,18 @@ jobs:
     defaults:
       run:
         shell: bash -euo pipefail {0}
-    continue-on-error: ${{ matrix.toolchain != 'stable' }}
+    continue-on-error: ${{ matrix.toolchain != '1.90.0' }}
     strategy:
       matrix:
         toolchain:
-        - stable
+        - 1.90.0
         - 1.86.0
     env:
       CARGO_TARGET_DIR: /tmp/clis-qcow2-rs_0-1-2
+      CARGOGREEN_CACHE_FROM_IMAGES: docker-image://localhost:12345/${{ github.repository }}
+      CARGOGREEN_CACHE_TO_IMAGES: docker-image://localhost:23456/${{ github.repository }}
       CARGOGREEN_FINAL_PATH: recipes/qcow2-rs@0.1.2.Dockerfile
+      CARGOGREEN_FINAL_PATH_NONPRIMARY: 1 # dumps on each build call
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
 
@@ -1956,8 +2566,7 @@ jobs:
       with:
         toolchain: ${{ matrix.toolchain }}
         rustflags: ''
-        cache-all-crates: true
-        cache-workspace-crates: true
+        cache-on-failure: true
 
 
     - name: Retrieve saved bin
@@ -1979,20 +2588,68 @@ jobs:
     - run: cargo -Vv
     - run: docker buildx prune --all --force
 
-    - name: Envs
+    - name: Prepare local private registry cache
+      run: |
+        # https://github.com/fenollp/supergreen/actions/caches
+        mkdir -p /tmp/.local-registry
+        mkdir -p /tmp/.local-registry-new
+    - name: 🔵 Restore local private registry cache
+      uses: actions/cache/restore@v4
+      with:
+        path: /tmp/.local-registry
+        # github.run_id: https://github.com/actions/toolkit/issues/658#issuecomment-2640690759
+        key: localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-${{ github.run_id }}
+        restore-keys: |
+          localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-
+          localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-
+          localprivatereg-${{ runner.os }}-
+          localprivatereg-
+
+    - run: ls -lha /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry-new
+    - run: ls -lha /tmp/.local-registry-new
+
+    - name: Pull regist3 image
+      run: |
+        false \
+        || docker build --tag regist3 - <<<'FROM docker.io/registry:3' \
+        || docker build --tag regist3 - <<<'FROM mirror.gcr.io/registry:3' \
+        || docker build --tag regist3 - <<<'FROM public.ecr.aws/docker/registry:3' \
+        || exit 1
+    - name: Start "cache from" image registry
+      run: docker run --name=reg-from --rm --detach -p 12345:5000 --user $(id -u):$(id -g) -v     /tmp/.local-registry:/var/lib/registry regist3
+    - name: Start "cache to" image registry
+      run: docker run --name=reg-to   --rm --detach -p 23456:5000 --user $(id -u):$(id -g) -v /tmp/.local-registry-new:/var/lib/registry regist3
+
+    - run: docker pull localhost:12345/${{ github.repository }} || true
+    - run: docker build --push --tag localhost:12345/${{ github.repository }} - <<<'FROM scratch'
+    - run: docker pull localhost:12345/${{ github.repository }}
+    - run: curl -fsSL http://localhost:12345/v2/${{ github.repository }}/blobs/sha256:1720a10883c7ebbf9080c7d8399b21cb883271cb3dfec3e30a4248b636628779 || true
+    - run: ls -lha /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry-new
+    - run: ls -lha /tmp/.local-registry-new
+
+    - name: 🔵 Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
-    - if: ${{ matrix.toolchain != 'stable' }}
+    - if: ${{ matrix.toolchain != '1.90.0' }}
       run: ~/.cargo/bin/cargo-green green supergreen env CARGOGREEN_BASE_IMAGE | grep '${{ matrix.toolchain }}'
-    - name: Envs again
+    - run: BUILDX_BUILDER=supergreen docker buildx inspect
+    - name: 🔵 Envs again
       run: ~/.cargo/bin/cargo-green green supergreen env
 
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
-    - name: cargo install net=ON cache=OFF remote=OFF jobs=3
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
+    - run: ls -lha /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry-new
+    - run: ls -lha /tmp/.local-registry-new
+    - name: 🔵 cargo install net=ON cache=OFF remote=OFF jobs=3
       run: |
         unset CARGO_INCREMENTAL
         unset CARGO_PROFILE_DEV_DEBUG
@@ -2001,10 +2658,14 @@ jobs:
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env  \
           cargo green -vv install --jobs=3 --locked --force qcow2-rs@0.1.2  |& tee _
-    - name: cargo install net=ON cache=ON remote=OFF jobs=1
+    - run: ls -lha /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry-new
+    - run: ls -lha /tmp/.local-registry-new
+    - name: 🔵 cargo install net=ON cache=ON remote=OFF jobs=1
       if: ${{ failure() }}
       run: |
-        rm _
+        rm _ || true
         unset CARGO_INCREMENTAL
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
@@ -2012,54 +2673,58 @@ jobs:
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env  \
           cargo green -vv install --jobs=1 --locked --force qcow2-rs@0.1.2  |& tee _
-    - if: ${{ matrix.toolchain != 'stable' }}
+    - run: ls -lha /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry-new
+    - run: ls -lha /tmp/.local-registry-new
+    - if: ${{ matrix.toolchain != '1.90.0' }}
       uses: actions/upload-artifact@v4
       name: Upload recipe
       with:
         name: qcow2-rs@0.1.2.Dockerfile
         path: ${{ env.CARGOGREEN_FINAL_PATH }}
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
         ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
       run: |
         ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
       run: |
         ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> there's some panic!s
       run: |
         ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> there's some BUGs
       run: |
         ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> here's cargo's error text
       run: |
         ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> 429 Too Many Requests
       run: |
         ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> here's relevant logs
       run: |
         ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != 'stable' }}
-      name: Maybe show final path diff
+    - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != '1.90.0' }}
+      name: 🌀 Maybe show final path diff
       run: |
         case "$GITHUB_JOB" in
           cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
@@ -2067,21 +2732,21 @@ jobs:
         esac
         git --no-pager diff --exit-code           --ignore-matching-lines='^# Generated by'           --ignore-matching-lines=' AS rust-base$'           --ignore-matching-lines='^# syntax=docker.io/docker/dockerfile:1@'           --ignore-matching-lines="^##     '\{"           -- $CARGOGREEN_FINAL_PATH
 
-    - if: ${{ failure() }}
-      name: cargo-green logs
+    - if: ${{ always() }}
+      name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
 
     - name: Target dir disk usage
       if: ${{ failure() || success() }}
       run: du -sh $CARGO_TARGET_DIR || true
 
-    - name: Ensure running the same command twice without modifications...
+    - name: 🔵 Ensure running the same command twice without modifications...
       run: |
         unset CARGO_INCREMENTAL
         unset CARGO_PROFILE_DEV_DEBUG
@@ -2097,48 +2762,48 @@ jobs:
         grep Dirty     _                     && err=1
         grep Compiling _                     && err=1
         exit $err
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
         ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
       run: |
         ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
       run: |
         ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> there's some panic!s
       run: |
         ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> there's some BUGs
       run: |
         ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> here's cargo's error text
       run: |
         ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> 429 Too Many Requests
       run: |
         ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> here's relevant logs
       run: |
         ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != 'stable' }}
-      name: Maybe show final path diff
+    - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != '1.90.0' }}
+      name: 🌀 Maybe show final path diff
       run: |
         case "$GITHUB_JOB" in
           cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
@@ -2146,15 +2811,35 @@ jobs:
         esac
         git --no-pager diff --exit-code           --ignore-matching-lines='^# Generated by'           --ignore-matching-lines=' AS rust-base$'           --ignore-matching-lines='^# syntax=docker.io/docker/dockerfile:1@'           --ignore-matching-lines="^##     '\{"           -- $CARGOGREEN_FINAL_PATH
 
-    - if: ${{ failure() }}
-      name: cargo-green logs
+    - if: ${{ always() }}
+      name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
+
+    - name: 🔵 Compare old/new local private registry image digests
+      continue-on-error: true # TODO: drop when digests are stable
+      run: |
+        diff --width=150 -y \
+          <(find /tmp/.local-registry/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print $NF}' | sort -u) \
+          <(find /tmp/.local-registry-new/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print $NF}' | sort -u)
+    - name: Local private registry cache dance
+      run: |
+        # [ci: caches keep growing](https://github.com/moby/buildkit/issues/1850)
+        docker stop --timeout 10 reg-from reg-to
+        rm -rf /tmp/.local-registry
+        mv /tmp/.local-registry-new /tmp/.local-registry
+    - name: Save local private registry cache
+      uses: actions/cache/save@v4
+      if: ${{ false }} # TODO: drop when digests are stable
+      with:
+        path: /tmp/.local-registry
+        key: localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-${{ github.run_id }}
+
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
 
     - name: Target dir disk usage
       if: ${{ failure() || success() }}
@@ -2165,15 +2850,18 @@ jobs:
     defaults:
       run:
         shell: bash -euo pipefail {0}
-    continue-on-error: ${{ matrix.toolchain != 'stable' }}
+    continue-on-error: ${{ matrix.toolchain != '1.90.0' }}
     strategy:
       matrix:
         toolchain:
-        - stable
+        - 1.90.0
         - 1.86.0
     env:
       CARGO_TARGET_DIR: /tmp/clis-ripgrep_14-1-0
+      CARGOGREEN_CACHE_FROM_IMAGES: docker-image://localhost:12345/${{ github.repository }}
+      CARGOGREEN_CACHE_TO_IMAGES: docker-image://localhost:23456/${{ github.repository }}
       CARGOGREEN_FINAL_PATH: recipes/ripgrep@14.1.0.Dockerfile
+      CARGOGREEN_FINAL_PATH_NONPRIMARY: 1 # dumps on each build call
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
 
@@ -2188,8 +2876,7 @@ jobs:
       with:
         toolchain: ${{ matrix.toolchain }}
         rustflags: ''
-        cache-all-crates: true
-        cache-workspace-crates: true
+        cache-on-failure: true
 
 
     - name: Retrieve saved bin
@@ -2211,20 +2898,68 @@ jobs:
     - run: cargo -Vv
     - run: docker buildx prune --all --force
 
-    - name: Envs
+    - name: Prepare local private registry cache
+      run: |
+        # https://github.com/fenollp/supergreen/actions/caches
+        mkdir -p /tmp/.local-registry
+        mkdir -p /tmp/.local-registry-new
+    - name: 🔵 Restore local private registry cache
+      uses: actions/cache/restore@v4
+      with:
+        path: /tmp/.local-registry
+        # github.run_id: https://github.com/actions/toolkit/issues/658#issuecomment-2640690759
+        key: localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-${{ github.run_id }}
+        restore-keys: |
+          localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-
+          localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-
+          localprivatereg-${{ runner.os }}-
+          localprivatereg-
+
+    - run: ls -lha /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry-new
+    - run: ls -lha /tmp/.local-registry-new
+
+    - name: Pull regist3 image
+      run: |
+        false \
+        || docker build --tag regist3 - <<<'FROM docker.io/registry:3' \
+        || docker build --tag regist3 - <<<'FROM mirror.gcr.io/registry:3' \
+        || docker build --tag regist3 - <<<'FROM public.ecr.aws/docker/registry:3' \
+        || exit 1
+    - name: Start "cache from" image registry
+      run: docker run --name=reg-from --rm --detach -p 12345:5000 --user $(id -u):$(id -g) -v     /tmp/.local-registry:/var/lib/registry regist3
+    - name: Start "cache to" image registry
+      run: docker run --name=reg-to   --rm --detach -p 23456:5000 --user $(id -u):$(id -g) -v /tmp/.local-registry-new:/var/lib/registry regist3
+
+    - run: docker pull localhost:12345/${{ github.repository }} || true
+    - run: docker build --push --tag localhost:12345/${{ github.repository }} - <<<'FROM scratch'
+    - run: docker pull localhost:12345/${{ github.repository }}
+    - run: curl -fsSL http://localhost:12345/v2/${{ github.repository }}/blobs/sha256:1720a10883c7ebbf9080c7d8399b21cb883271cb3dfec3e30a4248b636628779 || true
+    - run: ls -lha /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry-new
+    - run: ls -lha /tmp/.local-registry-new
+
+    - name: 🔵 Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
-    - if: ${{ matrix.toolchain != 'stable' }}
+    - if: ${{ matrix.toolchain != '1.90.0' }}
       run: ~/.cargo/bin/cargo-green green supergreen env CARGOGREEN_BASE_IMAGE | grep '${{ matrix.toolchain }}'
-    - name: Envs again
+    - run: BUILDX_BUILDER=supergreen docker buildx inspect
+    - name: 🔵 Envs again
       run: ~/.cargo/bin/cargo-green green supergreen env
 
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
-    - name: cargo install net=ON cache=OFF remote=OFF jobs=3
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
+    - run: ls -lha /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry-new
+    - run: ls -lha /tmp/.local-registry-new
+    - name: 🔵 cargo install net=ON cache=OFF remote=OFF jobs=3
       run: |
         unset CARGO_INCREMENTAL
         unset CARGO_PROFILE_DEV_DEBUG
@@ -2233,10 +2968,14 @@ jobs:
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env  \
           cargo green -vv install --jobs=3 --locked --force ripgrep@14.1.0  |& tee _
-    - name: cargo install net=ON cache=ON remote=OFF jobs=1
+    - run: ls -lha /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry-new
+    - run: ls -lha /tmp/.local-registry-new
+    - name: 🔵 cargo install net=ON cache=ON remote=OFF jobs=1
       if: ${{ failure() }}
       run: |
-        rm _
+        rm _ || true
         unset CARGO_INCREMENTAL
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
@@ -2244,54 +2983,58 @@ jobs:
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env  \
           cargo green -vv install --jobs=1 --locked --force ripgrep@14.1.0  |& tee _
-    - if: ${{ matrix.toolchain != 'stable' }}
+    - run: ls -lha /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry-new
+    - run: ls -lha /tmp/.local-registry-new
+    - if: ${{ matrix.toolchain != '1.90.0' }}
       uses: actions/upload-artifact@v4
       name: Upload recipe
       with:
         name: ripgrep@14.1.0.Dockerfile
         path: ${{ env.CARGOGREEN_FINAL_PATH }}
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
         ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
       run: |
         ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
       run: |
         ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> there's some panic!s
       run: |
         ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> there's some BUGs
       run: |
         ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> here's cargo's error text
       run: |
         ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> 429 Too Many Requests
       run: |
         ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> here's relevant logs
       run: |
         ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != 'stable' }}
-      name: Maybe show final path diff
+    - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != '1.90.0' }}
+      name: 🌀 Maybe show final path diff
       run: |
         case "$GITHUB_JOB" in
           cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
@@ -2299,21 +3042,21 @@ jobs:
         esac
         git --no-pager diff --exit-code           --ignore-matching-lines='^# Generated by'           --ignore-matching-lines=' AS rust-base$'           --ignore-matching-lines='^# syntax=docker.io/docker/dockerfile:1@'           --ignore-matching-lines="^##     '\{"           -- $CARGOGREEN_FINAL_PATH
 
-    - if: ${{ failure() }}
-      name: cargo-green logs
+    - if: ${{ always() }}
+      name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
 
     - name: Target dir disk usage
       if: ${{ failure() || success() }}
       run: du -sh $CARGO_TARGET_DIR || true
 
-    - name: Ensure running the same command twice without modifications...
+    - name: 🔵 Ensure running the same command twice without modifications...
       run: |
         unset CARGO_INCREMENTAL
         unset CARGO_PROFILE_DEV_DEBUG
@@ -2329,48 +3072,48 @@ jobs:
         grep Dirty     _                     && err=1
         grep Compiling _                     && err=1
         exit $err
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
         ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
       run: |
         ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
       run: |
         ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> there's some panic!s
       run: |
         ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> there's some BUGs
       run: |
         ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> here's cargo's error text
       run: |
         ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> 429 Too Many Requests
       run: |
         ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> here's relevant logs
       run: |
         ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != 'stable' }}
-      name: Maybe show final path diff
+    - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != '1.90.0' }}
+      name: 🌀 Maybe show final path diff
       run: |
         case "$GITHUB_JOB" in
           cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
@@ -2378,15 +3121,35 @@ jobs:
         esac
         git --no-pager diff --exit-code           --ignore-matching-lines='^# Generated by'           --ignore-matching-lines=' AS rust-base$'           --ignore-matching-lines='^# syntax=docker.io/docker/dockerfile:1@'           --ignore-matching-lines="^##     '\{"           -- $CARGOGREEN_FINAL_PATH
 
-    - if: ${{ failure() }}
-      name: cargo-green logs
+    - if: ${{ always() }}
+      name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
+
+    - name: 🔵 Compare old/new local private registry image digests
+      continue-on-error: true # TODO: drop when digests are stable
+      run: |
+        diff --width=150 -y \
+          <(find /tmp/.local-registry/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print $NF}' | sort -u) \
+          <(find /tmp/.local-registry-new/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print $NF}' | sort -u)
+    - name: Local private registry cache dance
+      run: |
+        # [ci: caches keep growing](https://github.com/moby/buildkit/issues/1850)
+        docker stop --timeout 10 reg-from reg-to
+        rm -rf /tmp/.local-registry
+        mv /tmp/.local-registry-new /tmp/.local-registry
+    - name: Save local private registry cache
+      uses: actions/cache/save@v4
+      if: ${{ false }} # TODO: drop when digests are stable
+      with:
+        path: /tmp/.local-registry
+        key: localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-${{ github.run_id }}
+
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
 
     - name: Target dir disk usage
       if: ${{ failure() || success() }}
@@ -2397,15 +3160,18 @@ jobs:
     defaults:
       run:
         shell: bash -euo pipefail {0}
-    continue-on-error: ${{ matrix.toolchain != 'stable' }}
+    continue-on-error: ${{ matrix.toolchain != '1.90.0' }}
     strategy:
       matrix:
         toolchain:
-        - stable
+        - 1.90.0
         - 1.86.0
     env:
       CARGO_TARGET_DIR: /tmp/clis-rublk_0-2-0
+      CARGOGREEN_CACHE_FROM_IMAGES: docker-image://localhost:12345/${{ github.repository }}
+      CARGOGREEN_CACHE_TO_IMAGES: docker-image://localhost:23456/${{ github.repository }}
       CARGOGREEN_FINAL_PATH: recipes/rublk@0.2.0.Dockerfile
+      CARGOGREEN_FINAL_PATH_NONPRIMARY: 1 # dumps on each build call
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
 
@@ -2420,8 +3186,7 @@ jobs:
       with:
         toolchain: ${{ matrix.toolchain }}
         rustflags: ''
-        cache-all-crates: true
-        cache-workspace-crates: true
+        cache-on-failure: true
 
 
     - name: Retrieve saved bin
@@ -2443,20 +3208,68 @@ jobs:
     - run: cargo -Vv
     - run: docker buildx prune --all --force
 
-    - name: Envs
+    - name: Prepare local private registry cache
+      run: |
+        # https://github.com/fenollp/supergreen/actions/caches
+        mkdir -p /tmp/.local-registry
+        mkdir -p /tmp/.local-registry-new
+    - name: 🔵 Restore local private registry cache
+      uses: actions/cache/restore@v4
+      with:
+        path: /tmp/.local-registry
+        # github.run_id: https://github.com/actions/toolkit/issues/658#issuecomment-2640690759
+        key: localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-${{ github.run_id }}
+        restore-keys: |
+          localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-
+          localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-
+          localprivatereg-${{ runner.os }}-
+          localprivatereg-
+
+    - run: ls -lha /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry-new
+    - run: ls -lha /tmp/.local-registry-new
+
+    - name: Pull regist3 image
+      run: |
+        false \
+        || docker build --tag regist3 - <<<'FROM docker.io/registry:3' \
+        || docker build --tag regist3 - <<<'FROM mirror.gcr.io/registry:3' \
+        || docker build --tag regist3 - <<<'FROM public.ecr.aws/docker/registry:3' \
+        || exit 1
+    - name: Start "cache from" image registry
+      run: docker run --name=reg-from --rm --detach -p 12345:5000 --user $(id -u):$(id -g) -v     /tmp/.local-registry:/var/lib/registry regist3
+    - name: Start "cache to" image registry
+      run: docker run --name=reg-to   --rm --detach -p 23456:5000 --user $(id -u):$(id -g) -v /tmp/.local-registry-new:/var/lib/registry regist3
+
+    - run: docker pull localhost:12345/${{ github.repository }} || true
+    - run: docker build --push --tag localhost:12345/${{ github.repository }} - <<<'FROM scratch'
+    - run: docker pull localhost:12345/${{ github.repository }}
+    - run: curl -fsSL http://localhost:12345/v2/${{ github.repository }}/blobs/sha256:1720a10883c7ebbf9080c7d8399b21cb883271cb3dfec3e30a4248b636628779 || true
+    - run: ls -lha /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry-new
+    - run: ls -lha /tmp/.local-registry-new
+
+    - name: 🔵 Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
-    - if: ${{ matrix.toolchain != 'stable' }}
+    - if: ${{ matrix.toolchain != '1.90.0' }}
       run: ~/.cargo/bin/cargo-green green supergreen env CARGOGREEN_BASE_IMAGE | grep '${{ matrix.toolchain }}'
-    - name: Envs again
+    - run: BUILDX_BUILDER=supergreen docker buildx inspect
+    - name: 🔵 Envs again
       run: ~/.cargo/bin/cargo-green green supergreen env
 
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
-    - name: cargo install net=ON cache=OFF remote=OFF jobs=3
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
+    - run: ls -lha /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry-new
+    - run: ls -lha /tmp/.local-registry-new
+    - name: 🔵 cargo install net=ON cache=OFF remote=OFF jobs=3
       run: |
         unset CARGO_INCREMENTAL
         unset CARGO_PROFILE_DEV_DEBUG
@@ -2465,10 +3278,14 @@ jobs:
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env  \
           cargo green -vv install --jobs=3 --locked --force rublk@0.2.0  |& tee _
-    - name: cargo install net=ON cache=ON remote=OFF jobs=1
+    - run: ls -lha /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry-new
+    - run: ls -lha /tmp/.local-registry-new
+    - name: 🔵 cargo install net=ON cache=ON remote=OFF jobs=1
       if: ${{ failure() }}
       run: |
-        rm _
+        rm _ || true
         unset CARGO_INCREMENTAL
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
@@ -2476,54 +3293,58 @@ jobs:
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env  \
           cargo green -vv install --jobs=1 --locked --force rublk@0.2.0  |& tee _
-    - if: ${{ matrix.toolchain != 'stable' }}
+    - run: ls -lha /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry-new
+    - run: ls -lha /tmp/.local-registry-new
+    - if: ${{ matrix.toolchain != '1.90.0' }}
       uses: actions/upload-artifact@v4
       name: Upload recipe
       with:
         name: rublk@0.2.0.Dockerfile
         path: ${{ env.CARGOGREEN_FINAL_PATH }}
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
         ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
       run: |
         ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
       run: |
         ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> there's some panic!s
       run: |
         ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> there's some BUGs
       run: |
         ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> here's cargo's error text
       run: |
         ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> 429 Too Many Requests
       run: |
         ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> here's relevant logs
       run: |
         ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != 'stable' }}
-      name: Maybe show final path diff
+    - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != '1.90.0' }}
+      name: 🌀 Maybe show final path diff
       run: |
         case "$GITHUB_JOB" in
           cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
@@ -2531,21 +3352,21 @@ jobs:
         esac
         git --no-pager diff --exit-code           --ignore-matching-lines='^# Generated by'           --ignore-matching-lines=' AS rust-base$'           --ignore-matching-lines='^# syntax=docker.io/docker/dockerfile:1@'           --ignore-matching-lines="^##     '\{"           -- $CARGOGREEN_FINAL_PATH
 
-    - if: ${{ failure() }}
-      name: cargo-green logs
+    - if: ${{ always() }}
+      name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
 
     - name: Target dir disk usage
       if: ${{ failure() || success() }}
       run: du -sh $CARGO_TARGET_DIR || true
 
-    - name: Ensure running the same command twice without modifications...
+    - name: 🔵 Ensure running the same command twice without modifications...
       run: |
         unset CARGO_INCREMENTAL
         unset CARGO_PROFILE_DEV_DEBUG
@@ -2561,48 +3382,48 @@ jobs:
         grep Dirty     _                     && err=1
         grep Compiling _                     && err=1
         exit $err
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
         ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
       run: |
         ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
       run: |
         ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> there's some panic!s
       run: |
         ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> there's some BUGs
       run: |
         ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> here's cargo's error text
       run: |
         ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> 429 Too Many Requests
       run: |
         ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> here's relevant logs
       run: |
         ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != 'stable' }}
-      name: Maybe show final path diff
+    - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != '1.90.0' }}
+      name: 🌀 Maybe show final path diff
       run: |
         case "$GITHUB_JOB" in
           cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
@@ -2610,15 +3431,35 @@ jobs:
         esac
         git --no-pager diff --exit-code           --ignore-matching-lines='^# Generated by'           --ignore-matching-lines=' AS rust-base$'           --ignore-matching-lines='^# syntax=docker.io/docker/dockerfile:1@'           --ignore-matching-lines="^##     '\{"           -- $CARGOGREEN_FINAL_PATH
 
-    - if: ${{ failure() }}
-      name: cargo-green logs
+    - if: ${{ always() }}
+      name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
+
+    - name: 🔵 Compare old/new local private registry image digests
+      continue-on-error: true # TODO: drop when digests are stable
+      run: |
+        diff --width=150 -y \
+          <(find /tmp/.local-registry/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print $NF}' | sort -u) \
+          <(find /tmp/.local-registry-new/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print $NF}' | sort -u)
+    - name: Local private registry cache dance
+      run: |
+        # [ci: caches keep growing](https://github.com/moby/buildkit/issues/1850)
+        docker stop --timeout 10 reg-from reg-to
+        rm -rf /tmp/.local-registry
+        mv /tmp/.local-registry-new /tmp/.local-registry
+    - name: Save local private registry cache
+      uses: actions/cache/save@v4
+      if: ${{ false }} # TODO: drop when digests are stable
+      with:
+        path: /tmp/.local-registry
+        key: localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-${{ github.run_id }}
+
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
 
     - name: Target dir disk usage
       if: ${{ failure() || success() }}
@@ -2629,15 +3470,18 @@ jobs:
     defaults:
       run:
         shell: bash -euo pipefail {0}
-    continue-on-error: ${{ matrix.toolchain != 'stable' }}
+    continue-on-error: ${{ matrix.toolchain != '1.90.0' }}
     strategy:
       matrix:
         toolchain:
-        - stable
+        - 1.90.0
         - 1.86.0
     env:
       CARGO_TARGET_DIR: /tmp/clis-vixargs_0-1-0
+      CARGOGREEN_CACHE_FROM_IMAGES: docker-image://localhost:12345/${{ github.repository }}
+      CARGOGREEN_CACHE_TO_IMAGES: docker-image://localhost:23456/${{ github.repository }}
       CARGOGREEN_FINAL_PATH: recipes/vixargs@0.1.0.Dockerfile
+      CARGOGREEN_FINAL_PATH_NONPRIMARY: 1 # dumps on each build call
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
 
@@ -2652,8 +3496,7 @@ jobs:
       with:
         toolchain: ${{ matrix.toolchain }}
         rustflags: ''
-        cache-all-crates: true
-        cache-workspace-crates: true
+        cache-on-failure: true
 
 
     - name: Retrieve saved bin
@@ -2675,20 +3518,68 @@ jobs:
     - run: cargo -Vv
     - run: docker buildx prune --all --force
 
-    - name: Envs
+    - name: Prepare local private registry cache
+      run: |
+        # https://github.com/fenollp/supergreen/actions/caches
+        mkdir -p /tmp/.local-registry
+        mkdir -p /tmp/.local-registry-new
+    - name: 🔵 Restore local private registry cache
+      uses: actions/cache/restore@v4
+      with:
+        path: /tmp/.local-registry
+        # github.run_id: https://github.com/actions/toolkit/issues/658#issuecomment-2640690759
+        key: localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-${{ github.run_id }}
+        restore-keys: |
+          localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-
+          localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-
+          localprivatereg-${{ runner.os }}-
+          localprivatereg-
+
+    - run: ls -lha /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry-new
+    - run: ls -lha /tmp/.local-registry-new
+
+    - name: Pull regist3 image
+      run: |
+        false \
+        || docker build --tag regist3 - <<<'FROM docker.io/registry:3' \
+        || docker build --tag regist3 - <<<'FROM mirror.gcr.io/registry:3' \
+        || docker build --tag regist3 - <<<'FROM public.ecr.aws/docker/registry:3' \
+        || exit 1
+    - name: Start "cache from" image registry
+      run: docker run --name=reg-from --rm --detach -p 12345:5000 --user $(id -u):$(id -g) -v     /tmp/.local-registry:/var/lib/registry regist3
+    - name: Start "cache to" image registry
+      run: docker run --name=reg-to   --rm --detach -p 23456:5000 --user $(id -u):$(id -g) -v /tmp/.local-registry-new:/var/lib/registry regist3
+
+    - run: docker pull localhost:12345/${{ github.repository }} || true
+    - run: docker build --push --tag localhost:12345/${{ github.repository }} - <<<'FROM scratch'
+    - run: docker pull localhost:12345/${{ github.repository }}
+    - run: curl -fsSL http://localhost:12345/v2/${{ github.repository }}/blobs/sha256:1720a10883c7ebbf9080c7d8399b21cb883271cb3dfec3e30a4248b636628779 || true
+    - run: ls -lha /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry-new
+    - run: ls -lha /tmp/.local-registry-new
+
+    - name: 🔵 Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
-    - if: ${{ matrix.toolchain != 'stable' }}
+    - if: ${{ matrix.toolchain != '1.90.0' }}
       run: ~/.cargo/bin/cargo-green green supergreen env CARGOGREEN_BASE_IMAGE | grep '${{ matrix.toolchain }}'
-    - name: Envs again
+    - run: BUILDX_BUILDER=supergreen docker buildx inspect
+    - name: 🔵 Envs again
       run: ~/.cargo/bin/cargo-green green supergreen env
 
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
-    - name: cargo install net=ON cache=OFF remote=OFF jobs=3
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
+    - run: ls -lha /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry-new
+    - run: ls -lha /tmp/.local-registry-new
+    - name: 🔵 cargo install net=ON cache=OFF remote=OFF jobs=3
       run: |
         unset CARGO_INCREMENTAL
         unset CARGO_PROFILE_DEV_DEBUG
@@ -2697,10 +3588,14 @@ jobs:
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env  \
           cargo green -vv install --jobs=3 --locked --force vixargs@0.1.0  |& tee _
-    - name: cargo install net=ON cache=ON remote=OFF jobs=1
+    - run: ls -lha /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry-new
+    - run: ls -lha /tmp/.local-registry-new
+    - name: 🔵 cargo install net=ON cache=ON remote=OFF jobs=1
       if: ${{ failure() }}
       run: |
-        rm _
+        rm _ || true
         unset CARGO_INCREMENTAL
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
@@ -2708,54 +3603,58 @@ jobs:
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env  \
           cargo green -vv install --jobs=1 --locked --force vixargs@0.1.0  |& tee _
-    - if: ${{ matrix.toolchain != 'stable' }}
+    - run: ls -lha /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry-new
+    - run: ls -lha /tmp/.local-registry-new
+    - if: ${{ matrix.toolchain != '1.90.0' }}
       uses: actions/upload-artifact@v4
       name: Upload recipe
       with:
         name: vixargs@0.1.0.Dockerfile
         path: ${{ env.CARGOGREEN_FINAL_PATH }}
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
         ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
       run: |
         ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
       run: |
         ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> there's some panic!s
       run: |
         ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> there's some BUGs
       run: |
         ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> here's cargo's error text
       run: |
         ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> 429 Too Many Requests
       run: |
         ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> here's relevant logs
       run: |
         ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != 'stable' }}
-      name: Maybe show final path diff
+    - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != '1.90.0' }}
+      name: 🌀 Maybe show final path diff
       run: |
         case "$GITHUB_JOB" in
           cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
@@ -2763,21 +3662,21 @@ jobs:
         esac
         git --no-pager diff --exit-code           --ignore-matching-lines='^# Generated by'           --ignore-matching-lines=' AS rust-base$'           --ignore-matching-lines='^# syntax=docker.io/docker/dockerfile:1@'           --ignore-matching-lines="^##     '\{"           -- $CARGOGREEN_FINAL_PATH
 
-    - if: ${{ failure() }}
-      name: cargo-green logs
+    - if: ${{ always() }}
+      name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
 
     - name: Target dir disk usage
       if: ${{ failure() || success() }}
       run: du -sh $CARGO_TARGET_DIR || true
 
-    - name: Ensure running the same command twice without modifications...
+    - name: 🔵 Ensure running the same command twice without modifications...
       run: |
         unset CARGO_INCREMENTAL
         unset CARGO_PROFILE_DEV_DEBUG
@@ -2793,48 +3692,48 @@ jobs:
         grep Dirty     _                     && err=1
         grep Compiling _                     && err=1
         exit $err
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
         ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
       run: |
         ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
       run: |
         ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> there's some panic!s
       run: |
         ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> there's some BUGs
       run: |
         ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> here's cargo's error text
       run: |
         ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> 429 Too Many Requests
       run: |
         ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> here's relevant logs
       run: |
         ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != 'stable' }}
-      name: Maybe show final path diff
+    - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != '1.90.0' }}
+      name: 🌀 Maybe show final path diff
       run: |
         case "$GITHUB_JOB" in
           cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
@@ -2842,15 +3741,35 @@ jobs:
         esac
         git --no-pager diff --exit-code           --ignore-matching-lines='^# Generated by'           --ignore-matching-lines=' AS rust-base$'           --ignore-matching-lines='^# syntax=docker.io/docker/dockerfile:1@'           --ignore-matching-lines="^##     '\{"           -- $CARGOGREEN_FINAL_PATH
 
-    - if: ${{ failure() }}
-      name: cargo-green logs
+    - if: ${{ always() }}
+      name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
+
+    - name: 🔵 Compare old/new local private registry image digests
+      continue-on-error: true # TODO: drop when digests are stable
+      run: |
+        diff --width=150 -y \
+          <(find /tmp/.local-registry/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print $NF}' | sort -u) \
+          <(find /tmp/.local-registry-new/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print $NF}' | sort -u)
+    - name: Local private registry cache dance
+      run: |
+        # [ci: caches keep growing](https://github.com/moby/buildkit/issues/1850)
+        docker stop --timeout 10 reg-from reg-to
+        rm -rf /tmp/.local-registry
+        mv /tmp/.local-registry-new /tmp/.local-registry
+    - name: Save local private registry cache
+      uses: actions/cache/save@v4
+      if: ${{ false }} # TODO: drop when digests are stable
+      with:
+        path: /tmp/.local-registry
+        key: localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-${{ github.run_id }}
+
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
 
     - name: Target dir disk usage
       if: ${{ failure() || success() }}
@@ -2861,15 +3780,18 @@ jobs:
     defaults:
       run:
         shell: bash -euo pipefail {0}
-    continue-on-error: ${{ matrix.toolchain != 'stable' }}
+    continue-on-error: ${{ matrix.toolchain != '1.90.0' }}
     strategy:
       matrix:
         toolchain:
-        - stable
+        - 1.90.0
         - 1.86.0
     env:
       CARGO_TARGET_DIR: /tmp/clis-cargo-config2_0-1-34
+      CARGOGREEN_CACHE_FROM_IMAGES: docker-image://localhost:12345/${{ github.repository }}
+      CARGOGREEN_CACHE_TO_IMAGES: docker-image://localhost:23456/${{ github.repository }}
       CARGOGREEN_FINAL_PATH: recipes/cargo-config2@0.1.34.Dockerfile
+      CARGOGREEN_FINAL_PATH_NONPRIMARY: 1 # dumps on each build call
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
 
@@ -2884,8 +3806,7 @@ jobs:
       with:
         toolchain: ${{ matrix.toolchain }}
         rustflags: ''
-        cache-all-crates: true
-        cache-workspace-crates: true
+        cache-on-failure: true
 
 
     - name: Retrieve saved bin
@@ -2907,20 +3828,68 @@ jobs:
     - run: cargo -Vv
     - run: docker buildx prune --all --force
 
-    - name: Envs
+    - name: Prepare local private registry cache
+      run: |
+        # https://github.com/fenollp/supergreen/actions/caches
+        mkdir -p /tmp/.local-registry
+        mkdir -p /tmp/.local-registry-new
+    - name: 🔵 Restore local private registry cache
+      uses: actions/cache/restore@v4
+      with:
+        path: /tmp/.local-registry
+        # github.run_id: https://github.com/actions/toolkit/issues/658#issuecomment-2640690759
+        key: localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-${{ github.run_id }}
+        restore-keys: |
+          localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-
+          localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-
+          localprivatereg-${{ runner.os }}-
+          localprivatereg-
+
+    - run: ls -lha /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry-new
+    - run: ls -lha /tmp/.local-registry-new
+
+    - name: Pull regist3 image
+      run: |
+        false \
+        || docker build --tag regist3 - <<<'FROM docker.io/registry:3' \
+        || docker build --tag regist3 - <<<'FROM mirror.gcr.io/registry:3' \
+        || docker build --tag regist3 - <<<'FROM public.ecr.aws/docker/registry:3' \
+        || exit 1
+    - name: Start "cache from" image registry
+      run: docker run --name=reg-from --rm --detach -p 12345:5000 --user $(id -u):$(id -g) -v     /tmp/.local-registry:/var/lib/registry regist3
+    - name: Start "cache to" image registry
+      run: docker run --name=reg-to   --rm --detach -p 23456:5000 --user $(id -u):$(id -g) -v /tmp/.local-registry-new:/var/lib/registry regist3
+
+    - run: docker pull localhost:12345/${{ github.repository }} || true
+    - run: docker build --push --tag localhost:12345/${{ github.repository }} - <<<'FROM scratch'
+    - run: docker pull localhost:12345/${{ github.repository }}
+    - run: curl -fsSL http://localhost:12345/v2/${{ github.repository }}/blobs/sha256:1720a10883c7ebbf9080c7d8399b21cb883271cb3dfec3e30a4248b636628779 || true
+    - run: ls -lha /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry-new
+    - run: ls -lha /tmp/.local-registry-new
+
+    - name: 🔵 Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
-    - if: ${{ matrix.toolchain != 'stable' }}
+    - if: ${{ matrix.toolchain != '1.90.0' }}
       run: ~/.cargo/bin/cargo-green green supergreen env CARGOGREEN_BASE_IMAGE | grep '${{ matrix.toolchain }}'
-    - name: Envs again
+    - run: BUILDX_BUILDER=supergreen docker buildx inspect
+    - name: 🔵 Envs again
       run: ~/.cargo/bin/cargo-green green supergreen env
 
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
-    - name: cargo install net=ON cache=OFF remote=OFF jobs=3
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
+    - run: ls -lha /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry-new
+    - run: ls -lha /tmp/.local-registry-new
+    - name: 🔵 cargo install net=ON cache=OFF remote=OFF jobs=3
       run: |
         unset CARGO_INCREMENTAL
         unset CARGO_PROFILE_DEV_DEBUG
@@ -2929,10 +3898,14 @@ jobs:
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env  \
           cargo green -vv install --jobs=3 --locked --force cargo-config2@0.1.34 --example=get |& tee _
-    - name: cargo install net=ON cache=ON remote=OFF jobs=1
+    - run: ls -lha /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry-new
+    - run: ls -lha /tmp/.local-registry-new
+    - name: 🔵 cargo install net=ON cache=ON remote=OFF jobs=1
       if: ${{ failure() }}
       run: |
-        rm _
+        rm _ || true
         unset CARGO_INCREMENTAL
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
@@ -2940,54 +3913,58 @@ jobs:
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env  \
           cargo green -vv install --jobs=1 --locked --force cargo-config2@0.1.34 --example=get |& tee _
-    - if: ${{ matrix.toolchain != 'stable' }}
+    - run: ls -lha /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry-new
+    - run: ls -lha /tmp/.local-registry-new
+    - if: ${{ matrix.toolchain != '1.90.0' }}
       uses: actions/upload-artifact@v4
       name: Upload recipe
       with:
         name: cargo-config2@0.1.34.Dockerfile
         path: ${{ env.CARGOGREEN_FINAL_PATH }}
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
         ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
       run: |
         ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
       run: |
         ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> there's some panic!s
       run: |
         ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> there's some BUGs
       run: |
         ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> here's cargo's error text
       run: |
         ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> 429 Too Many Requests
       run: |
         ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> here's relevant logs
       run: |
         ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != 'stable' }}
-      name: Maybe show final path diff
+    - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != '1.90.0' }}
+      name: 🌀 Maybe show final path diff
       run: |
         case "$GITHUB_JOB" in
           cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
@@ -2995,21 +3972,21 @@ jobs:
         esac
         git --no-pager diff --exit-code           --ignore-matching-lines='^# Generated by'           --ignore-matching-lines=' AS rust-base$'           --ignore-matching-lines='^# syntax=docker.io/docker/dockerfile:1@'           --ignore-matching-lines="^##     '\{"           -- $CARGOGREEN_FINAL_PATH
 
-    - if: ${{ failure() }}
-      name: cargo-green logs
+    - if: ${{ always() }}
+      name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
 
     - name: Target dir disk usage
       if: ${{ failure() || success() }}
       run: du -sh $CARGO_TARGET_DIR || true
 
-    - name: Ensure running the same command twice without modifications...
+    - name: 🔵 Ensure running the same command twice without modifications...
       run: |
         unset CARGO_INCREMENTAL
         unset CARGO_PROFILE_DEV_DEBUG
@@ -3025,48 +4002,48 @@ jobs:
         grep Dirty     _                     && err=1
         grep Compiling _                     && err=1
         exit $err
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
         ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
       run: |
         ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
       run: |
         ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> there's some panic!s
       run: |
         ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> there's some BUGs
       run: |
         ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> here's cargo's error text
       run: |
         ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> 429 Too Many Requests
       run: |
         ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> here's relevant logs
       run: |
         ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != 'stable' }}
-      name: Maybe show final path diff
+    - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != '1.90.0' }}
+      name: 🌀 Maybe show final path diff
       run: |
         case "$GITHUB_JOB" in
           cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
@@ -3074,15 +4051,35 @@ jobs:
         esac
         git --no-pager diff --exit-code           --ignore-matching-lines='^# Generated by'           --ignore-matching-lines=' AS rust-base$'           --ignore-matching-lines='^# syntax=docker.io/docker/dockerfile:1@'           --ignore-matching-lines="^##     '\{"           -- $CARGOGREEN_FINAL_PATH
 
-    - if: ${{ failure() }}
-      name: cargo-green logs
+    - if: ${{ always() }}
+      name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
+
+    - name: 🔵 Compare old/new local private registry image digests
+      continue-on-error: true # TODO: drop when digests are stable
+      run: |
+        diff --width=150 -y \
+          <(find /tmp/.local-registry/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print $NF}' | sort -u) \
+          <(find /tmp/.local-registry-new/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print $NF}' | sort -u)
+    - name: Local private registry cache dance
+      run: |
+        # [ci: caches keep growing](https://github.com/moby/buildkit/issues/1850)
+        docker stop --timeout 10 reg-from reg-to
+        rm -rf /tmp/.local-registry
+        mv /tmp/.local-registry-new /tmp/.local-registry
+    - name: Save local private registry cache
+      uses: actions/cache/save@v4
+      if: ${{ false }} # TODO: drop when digests are stable
+      with:
+        path: /tmp/.local-registry
+        key: localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-${{ github.run_id }}
+
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
 
     - name: Target dir disk usage
       if: ${{ failure() || success() }}
@@ -3093,15 +4090,18 @@ jobs:
     defaults:
       run:
         shell: bash -euo pipefail {0}
-    continue-on-error: ${{ matrix.toolchain != 'stable' }}
+    continue-on-error: ${{ matrix.toolchain != '1.90.0' }}
     strategy:
       matrix:
         toolchain:
-        - stable
+        - 1.90.0
         - 1.86.0
     env:
       CARGO_TARGET_DIR: /tmp/clis-cargo-udeps_0-1-55
+      CARGOGREEN_CACHE_FROM_IMAGES: docker-image://localhost:12345/${{ github.repository }}
+      CARGOGREEN_CACHE_TO_IMAGES: docker-image://localhost:23456/${{ github.repository }}
       CARGOGREEN_FINAL_PATH: recipes/cargo-udeps@0.1.55.Dockerfile
+      CARGOGREEN_FINAL_PATH_NONPRIMARY: 1 # dumps on each build call
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
 
@@ -3116,8 +4116,7 @@ jobs:
       with:
         toolchain: ${{ matrix.toolchain }}
         rustflags: ''
-        cache-all-crates: true
-        cache-workspace-crates: true
+        cache-on-failure: true
 
 
     - name: Retrieve saved bin
@@ -3139,20 +4138,68 @@ jobs:
     - run: cargo -Vv
     - run: docker buildx prune --all --force
 
-    - name: Envs
+    - name: Prepare local private registry cache
+      run: |
+        # https://github.com/fenollp/supergreen/actions/caches
+        mkdir -p /tmp/.local-registry
+        mkdir -p /tmp/.local-registry-new
+    - name: 🔵 Restore local private registry cache
+      uses: actions/cache/restore@v4
+      with:
+        path: /tmp/.local-registry
+        # github.run_id: https://github.com/actions/toolkit/issues/658#issuecomment-2640690759
+        key: localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-${{ github.run_id }}
+        restore-keys: |
+          localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-
+          localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-
+          localprivatereg-${{ runner.os }}-
+          localprivatereg-
+
+    - run: ls -lha /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry-new
+    - run: ls -lha /tmp/.local-registry-new
+
+    - name: Pull regist3 image
+      run: |
+        false \
+        || docker build --tag regist3 - <<<'FROM docker.io/registry:3' \
+        || docker build --tag regist3 - <<<'FROM mirror.gcr.io/registry:3' \
+        || docker build --tag regist3 - <<<'FROM public.ecr.aws/docker/registry:3' \
+        || exit 1
+    - name: Start "cache from" image registry
+      run: docker run --name=reg-from --rm --detach -p 12345:5000 --user $(id -u):$(id -g) -v     /tmp/.local-registry:/var/lib/registry regist3
+    - name: Start "cache to" image registry
+      run: docker run --name=reg-to   --rm --detach -p 23456:5000 --user $(id -u):$(id -g) -v /tmp/.local-registry-new:/var/lib/registry regist3
+
+    - run: docker pull localhost:12345/${{ github.repository }} || true
+    - run: docker build --push --tag localhost:12345/${{ github.repository }} - <<<'FROM scratch'
+    - run: docker pull localhost:12345/${{ github.repository }}
+    - run: curl -fsSL http://localhost:12345/v2/${{ github.repository }}/blobs/sha256:1720a10883c7ebbf9080c7d8399b21cb883271cb3dfec3e30a4248b636628779 || true
+    - run: ls -lha /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry-new
+    - run: ls -lha /tmp/.local-registry-new
+
+    - name: 🔵 Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
-    - if: ${{ matrix.toolchain != 'stable' }}
+    - if: ${{ matrix.toolchain != '1.90.0' }}
       run: ~/.cargo/bin/cargo-green green supergreen env CARGOGREEN_BASE_IMAGE | grep '${{ matrix.toolchain }}'
-    - name: Envs again
+    - run: BUILDX_BUILDER=supergreen docker buildx inspect
+    - name: 🔵 Envs again
       run: ~/.cargo/bin/cargo-green green supergreen env
 
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
-    - name: cargo install net=ON cache=OFF remote=OFF jobs=3
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
+    - run: ls -lha /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry-new
+    - run: ls -lha /tmp/.local-registry-new
+    - name: 🔵 cargo install net=ON cache=OFF remote=OFF jobs=3
       run: |
         unset CARGO_INCREMENTAL
         unset CARGO_PROFILE_DEV_DEBUG
@@ -3161,10 +4208,14 @@ jobs:
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env CARGOGREEN_ADD_APT=libssl-dev,zlib1g-dev \
           cargo green -vv install --jobs=3 --locked --force cargo-udeps@0.1.55  |& tee _
-    - name: cargo install net=ON cache=ON remote=OFF jobs=1
+    - run: ls -lha /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry-new
+    - run: ls -lha /tmp/.local-registry-new
+    - name: 🔵 cargo install net=ON cache=ON remote=OFF jobs=1
       if: ${{ failure() }}
       run: |
-        rm _
+        rm _ || true
         unset CARGO_INCREMENTAL
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
@@ -3172,54 +4223,58 @@ jobs:
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env CARGOGREEN_ADD_APT=libssl-dev,zlib1g-dev \
           cargo green -vv install --jobs=1 --locked --force cargo-udeps@0.1.55  |& tee _
-    - if: ${{ matrix.toolchain != 'stable' }}
+    - run: ls -lha /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry
+    - run: du -sh /tmp/.local-registry-new
+    - run: ls -lha /tmp/.local-registry-new
+    - if: ${{ matrix.toolchain != '1.90.0' }}
       uses: actions/upload-artifact@v4
       name: Upload recipe
       with:
         name: cargo-udeps@0.1.55.Dockerfile
         path: ${{ env.CARGOGREEN_FINAL_PATH }}
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
         ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
       run: |
         ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
       run: |
         ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> there's some panic!s
       run: |
         ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> there's some BUGs
       run: |
         ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> here's cargo's error text
       run: |
         ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> 429 Too Many Requests
       run: |
         ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> here's relevant logs
       run: |
         ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != 'stable' }}
-      name: Maybe show final path diff
+    - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != '1.90.0' }}
+      name: 🌀 Maybe show final path diff
       run: |
         case "$GITHUB_JOB" in
           cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
@@ -3227,21 +4282,21 @@ jobs:
         esac
         git --no-pager diff --exit-code           --ignore-matching-lines='^# Generated by'           --ignore-matching-lines=' AS rust-base$'           --ignore-matching-lines='^# syntax=docker.io/docker/dockerfile:1@'           --ignore-matching-lines="^##     '\{"           -- $CARGOGREEN_FINAL_PATH
 
-    - if: ${{ failure() }}
-      name: cargo-green logs
+    - if: ${{ always() }}
+      name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
 
     - name: Target dir disk usage
       if: ${{ failure() || success() }}
       run: du -sh $CARGO_TARGET_DIR || true
 
-    - name: Ensure running the same command twice without modifications...
+    - name: 🔵 Ensure running the same command twice without modifications...
       run: |
         unset CARGO_INCREMENTAL
         unset CARGO_PROFILE_DEV_DEBUG
@@ -3257,48 +4312,48 @@ jobs:
         grep Dirty     _                     && err=1
         grep Compiling _                     && err=1
         exit $err
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
         ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
       run: |
         ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
       run: |
         ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> there's some panic!s
       run: |
         ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> there's some BUGs
       run: |
         ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> here's cargo's error text
       run: |
         ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> 429 Too Many Requests
       run: |
         ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ failure() || success() }}
+    - if: ${{ always() }}
       name: 🔴 =means=> here's relevant logs
       run: |
         ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != 'stable' }}
-      name: Maybe show final path diff
+    - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != '1.90.0' }}
+      name: 🌀 Maybe show final path diff
       run: |
         case "$GITHUB_JOB" in
           cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
@@ -3306,15 +4361,35 @@ jobs:
         esac
         git --no-pager diff --exit-code           --ignore-matching-lines='^# Generated by'           --ignore-matching-lines=' AS rust-base$'           --ignore-matching-lines='^# syntax=docker.io/docker/dockerfile:1@'           --ignore-matching-lines="^##     '\{"           -- $CARGOGREEN_FINAL_PATH
 
-    - if: ${{ failure() }}
-      name: cargo-green logs
+    - if: ${{ always() }}
+      name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
+
+    - name: 🔵 Compare old/new local private registry image digests
+      continue-on-error: true # TODO: drop when digests are stable
+      run: |
+        diff --width=150 -y \
+          <(find /tmp/.local-registry/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print $NF}' | sort -u) \
+          <(find /tmp/.local-registry-new/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print $NF}' | sort -u)
+    - name: Local private registry cache dance
+      run: |
+        # [ci: caches keep growing](https://github.com/moby/buildkit/issues/1850)
+        docker stop --timeout 10 reg-from reg-to
+        rm -rf /tmp/.local-registry
+        mv /tmp/.local-registry-new /tmp/.local-registry
+    - name: Save local private registry cache
+      uses: actions/cache/save@v4
+      if: ${{ false }} # TODO: drop when digests are stable
+      with:
+        path: /tmp/.local-registry
+        key: localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-${{ github.run_id }}
+
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
 
     - name: Target dir disk usage
       if: ${{ failure() || success() }}

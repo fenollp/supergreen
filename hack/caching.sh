@@ -19,6 +19,8 @@ mkdir -p $CARGO_TARGET_DIR
 rm -rf $CARGO_TARGET_DIR/*
 
 $CARGO green supergreen env
+#$CARGO +1.84.1 green supergreen env
+#TODO: ensure match of local & sandboxed cargo/rustc => local is authoritative on the extrafn hash => need rustup calls/suggestions
 
 compute_installed_bin_sha256() {
 	sha256sum $install_root/bin/${install_package%@*} | awk '{print $1}'

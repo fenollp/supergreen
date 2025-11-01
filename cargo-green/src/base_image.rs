@@ -5,10 +5,27 @@ use serde::{Deserialize, Serialize};
 
 use crate::{add::Add, image_uri::ImageUri, network::Network, stage::RST};
 
-// Envs that override Cargo.toml settings
-pub(crate) const ENV_BASE_IMAGE: &str = "CARGOGREEN_BASE_IMAGE";
-pub(crate) const ENV_BASE_IMAGE_INLINE: &str = "CARGOGREEN_BASE_IMAGE_INLINE";
-pub(crate) const ENV_WITH_NETWORK: &str = "CARGOGREEN_WITH_NETWORK";
+macro_rules! ENV_BASE_IMAGE {
+    () => {
+        "CARGOGREEN_BASE_IMAGE"
+    };
+}
+
+macro_rules! ENV_BASE_IMAGE_INLINE {
+    () => {
+        "CARGOGREEN_BASE_IMAGE_INLINE"
+    };
+}
+
+macro_rules! ENV_WITH_NETWORK {
+    () => {
+        "CARGOGREEN_WITH_NETWORK"
+    };
+}
+
+// TODO: switch to mentioning debian name: 1-slim-trixie, 1.89-slim-trixie, 1.89.0-slim-trixie, slim-trixie
+// MAY help with:
+//   /tmp/clis-diesel_cli_2-3-2_/release/build/proc-macro2- (required by /tmp/clis-diesel_cli_2-3-2_/release/build/proc-macro2-3093cf4d56979071/build-script-build)
 
 static STABLE_RUST: LazyLock<ImageUri> = LazyLock::new(|| ImageUri::std("rust:1-slim"));
 static BASE_FOR_RUST: LazyLock<ImageUri> = LazyLock::new(|| ImageUri::std("debian:stable-slim"));
@@ -21,101 +38,30 @@ fn default_is_unset() {
 #[derive(Debug, Serialize, Deserialize, Default, PartialEq, Eq)]
 #[serde(default)]
 #[serde(deny_unknown_fields)]
-#[serde(rename_all = "kebab-case")]
 pub(crate) struct BaseImage {
-    /// Controls runner's `--network none (default) | default | host` setting.
-    ///
-    /// Set this to `"default"` if e.g. your `base-image-inline` calls curl or wget or installs some packages.
-    ///
-    /// *This environment variable takes precedence over any `Cargo.toml` settings:*
-    /// ```shell
-    /// CARGOGREEN_WITH_NETWORK="none"
-    /// ```
-    ///
-    /// Set to `none` when in `$CARGO_NET_OFFLINE` mode. See
-    ///   * <https://doc.rust-lang.org/cargo/reference/config.html#netoffline>
-    ///   * <https://github.com/rust-lang/rustup/issues/4289>
+    #[doc = include_str!(concat!("../docs/",ENV_WITH_NETWORK!(),".md"))]
+    #[serde(rename = "with-network")]
     pub(crate) with_network: Network,
 
-    /// Sets the base Rust image, as an image URL (or any build context, actually).
-    ///
-    /// If needing additional envs to be passed to rustc or build script, set them in the base image.
-    ///
-    /// This can be done in that same config file with `base-image-inline`.
-    ///
-    /// See also:
-    /// * `also-run`
-    /// * `base-image-inline`
-    /// * `additional-build-arguments`
-    ///
-    /// For remote builds: make sure this is accessible non-locally.
-    ///
-    /// ```toml
-    /// base-image = "docker-image://docker.io/library/rust:1-slim"
-    /// ```
-    ///
-    /// The value must start with `docker-image://` and image must be available on the `$DOCKER_HOST`, eg:
-    /// ```shell
-    /// CARGOGREEN_BASE_IMAGE=docker-image://rustc_with_libs
-    /// DOCKER_HOST=ssh://my-remote-builder docker buildx build -t rustc_with_libs - <<EOF
-    /// FROM docker.io/library/rust:1.69.0-slim-bookworm@sha256:8bdd28ef184d85c9b4932586af6280732780e806e5f452065420f2e783323ca3
-    /// RUN set -eux && apt update && apt install -y libpq-dev libssl3
-    /// ENV KEY=value
-    /// EOF
-    /// ```
-    ///
-    /// *This environment variable takes precedence over any `Cargo.toml` settings:*
-    /// ```shell
-    /// CARGOGREEN_BASE_IMAGE="docker-image://docker.io/library/rust:1-slim"
-    /// ```
-    pub(crate) base_image: ImageUri,
+    #[doc = include_str!(concat!("../docs/",ENV_BASE_IMAGE!(),".md"))]
+    #[serde(rename = "base-image")]
+    pub(crate) image: ImageUri,
 
-    /// Sets the base Rust image for root package and all dependencies, unless themselves being configured differently.
-    ///
-    /// See also:
-    /// * `with-network`
-    /// * `additional-build-arguments`
-    ///
-    /// In order to avoid unexpected changes, you may want to pin the image using an immutable digest.
-    ///
-    /// Note that carefully crafting crossplatform stages can be non-trivial.
-    ///
-    /// ```toml
-    /// base-image-inline = """
-    /// FROM --platform=$BUILDPLATFORM rust:1 AS rust-base
-    /// RUN --mount=from=some-context,dst=/tmp/some-context cp -r /tmp/some-context ./
-    /// RUN --mount=type=secret,id=aws
-    /// """
-    /// ```
-    ///
-    /// ```toml
-    /// # This must also be set so digest gets pinned automatically.
-    // TODO: parse base-image-inline and extract base-image
-    /// base-image = "docker-image://rust:1"
-    /// ```
-    ///
-    /// *This environment variable takes precedence over any `Cargo.toml` settings:*
-    /// ```shell
-    /// IFS='' read -r -d '' CARGOGREEN_BASE_IMAGE <<"EOF"
-    /// FROM=rust:1 AS rust-base
-    /// RUN --mount=from=some-context,dst=/tmp/some-context cp -r /tmp/some-context ./
-    /// RUN --mount=type=secret,id=aws
-    /// EOF
-    /// echo "$CARGOGREEN_BASE_IMAGE" # (with quotes to preserve newlines)
-    /// ```
+    #[doc = include_str!(concat!("../docs/",ENV_BASE_IMAGE_INLINE!(),".md"))]
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub(crate) base_image_inline: Option<String>,
+    #[serde(rename = "base-image-inline")]
+    pub(crate) image_inline: Option<String>,
 }
 
 impl BaseImage {
     #[must_use]
-    pub(crate) fn from_image(base_image: ImageUri) -> Self {
-        Self { base_image, ..Default::default() }
+    pub(crate) fn from_image(image: ImageUri) -> Self {
+        Self { image, ..Default::default() }
     }
 
     #[must_use]
     pub(crate) fn is_unset(&self) -> bool {
-        self.base_image.is_empty() && self.base_image_inline.is_none()
+        self.image.is_empty() && self.image_inline.is_none()
     }
 
     #[must_use]
@@ -141,19 +87,19 @@ impl BaseImage {
     }
 
     #[must_use]
-    pub(crate) fn lock_base_to(self, base_image: ImageUri) -> Self {
-        let base_image_inline = self.base_image_inline.map(|block| {
-            let from = self.base_image.noscheme();
-            let to = base_image.noscheme();
+    pub(crate) fn lock_base_to(self, image: ImageUri) -> Self {
+        let image_inline = self.image_inline.map(|block| {
+            let from = self.image.noscheme();
+            let to = image.noscheme();
             block.replace(&format!(" {from} "), &format!(" {to} "))
         });
-        Self { base_image, base_image_inline, ..self }
+        Self { image, image_inline, ..self }
     }
 
     #[must_use]
     pub(crate) fn as_block(&self) -> (Network, String) {
-        let block = self.base_image_inline.clone().unwrap_or_else(|| {
-            let base = self.base_image.noscheme();
+        let block = self.image_inline.clone().unwrap_or_else(|| {
+            let base = self.image.noscheme();
             // TODO? ARG RUST_BASE=myorg/myapp:latest \n FROM $RUST_BASE (+ similar for non-stable imgs)
             format!("FROM --platform=$BUILDPLATFORM {base} AS {RST}\n")
         });
@@ -214,8 +160,8 @@ impl RustcV {
         //=> sub fn that takes "{channel}-{date}" in, because rustup takes somewhat-freeform toolchain specs
         //==> $RUSTUP_TOOLCHAIN https://rust-lang.github.io/rustup/environment-variables.html
 
-        let base_image = BASE_FOR_RUST.to_owned();
-        let base = base_image.noscheme();
+        let image = BASE_FOR_RUST.to_owned();
+        let base = image.noscheme();
         assert!(base.contains("/debian:"));
 
         let (with_network, packages_block) = Add {
@@ -248,7 +194,7 @@ RUN \
             packages_block = packages_block.trim(),
         );
 
-        BaseImage { with_network, base_image, base_image_inline: Some(block) }
+        BaseImage { with_network, image, image_inline: Some(block) }
     }
 }
 
@@ -269,8 +215,8 @@ LLVM version: 18.1.7
     )
     .unwrap();
     let res = BaseImage::from_rustcv(some_stable).unwrap();
-    assert_eq!(res.base_image, ImageUri::std("rust:1.80.0-slim"));
-    assert_eq!(res.base_image_inline, None);
+    assert_eq!(res.image, ImageUri::std("rust:1.80.0-slim"));
+    assert_eq!(res.image_inline, None);
     assert_eq!(res.with_network, Network::None);
 
     let some_nightly = version_meta_for(
@@ -286,7 +232,7 @@ LLVM version: 19.1.0
     )
     .unwrap();
     let res = BaseImage::from_rustcv(some_nightly).unwrap();
-    assert_eq!(res.base_image, ImageUri::std("debian:stable-slim"));
-    assert!(res.base_image_inline.unwrap().contains(" docker.io/library/debian:stable-slim "));
+    assert_eq!(res.image, ImageUri::std("debian:stable-slim"));
+    assert!(res.image_inline.unwrap().contains(" docker.io/library/debian:stable-slim "));
     assert_eq!(res.with_network, Network::Default);
 }

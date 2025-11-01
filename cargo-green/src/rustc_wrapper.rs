@@ -28,7 +28,11 @@ use crate::{
 // NOTE: this RUSTC_WRAPPER program only ever gets called by `cargo`, so we save
 //       ourselves some trouble and assume std::path::{Path, PathBuf} are UTF-8.
 
-pub(crate) const ENV: &str = "CARGOGREEN";
+macro_rules! ENV {
+    () => {
+        "CARGOGREEN"
+    };
+}
 
 pub(crate) async fn main(
     green: Green,
@@ -118,8 +122,8 @@ async fn wrap_rustc(
     arguments: Vec<String>,
     fallback: impl Future<Output = Result<()>>,
 ) -> Result<()> {
-    assert!(env::var_os(ENV).is_none(), "It's turtles all the way down!");
-    env::set_var(ENV, "1");
+    assert!(env::var_os(ENV!()).is_none(), "It's turtles all the way down!");
+    env::set_var(ENV!(), "1");
 
     let pwd = pwd();
 
@@ -222,7 +226,7 @@ async fn do_wrap_rustc(
     let crate_out = crate_out_dir(out_dir_var)?;
 
     let mut md = Md::new(&extrafn);
-    md.push_block(&RUST, green.image.base_image_inline.clone().unwrap());
+    md.push_block(&RUST, green.base.image_inline.clone().unwrap());
 
     fs::create_dir_all(&out_dir).map_err(|e| anyhow!("Failed to `mkdir -p {out_dir}`: {e}"))?;
     if let Some(ref incremental) = incremental {
@@ -306,7 +310,7 @@ async fn do_wrap_rustc(
             if pwd.join(".git").is_dir() { "git " } else { "" }
         );
 
-        copy_dir_all(&pwd, &cwd_path)?; //TODO: atomic mv
+        copy_dir_all(&pwd, &cwd_path)?; //TODO: atomic mv: https://github.com/untitaker/rust-atomicwrites
 
         // TODO: --mount=bind each file one by one => drop temp dir ctx (needs [multiple] `mkdir -p`[s] first though)
         // This doesn't work: rustc_block.push_str(&format!("  --mount=from=cwd,dst={pwd} \\\n"));
@@ -350,7 +354,7 @@ async fn do_wrap_rustc(
         rustc_block.push_str(&format!("  --mount=from={from},dst={dst},source=/{xtern} \\\n"));
     }
 
-    // Log a possible toolchain file contents (TODO: make per-crate base_image out of this)
+    // Log a possible toolchain file contents (TODO: make per-crate base.image out of this)
     rustc_block.push_str("    { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \\\n");
     //fixme? prefix with ::rustc-toolchain::
 
@@ -359,7 +363,7 @@ async fn do_wrap_rustc(
     for (var, val) in env::vars().filter_map(|kv| fmap_env(kv, buildrs)) {
         rustc_block.push_str(&format!("        {var}={val} \\\n"));
     }
-    rustc_block.push_str(&format!("        {ENV}=1 \\\n"));
+    rustc_block.push_str(&format!("        {}=1 \\\n", ENV!()));
     // => cargo upstream issue "pass env vars read/wrote by build script on call to rustc"
     // TODO whence https://github.com/rust-lang/cargo/issues/14444#issuecomment-2305891696
     for var in &green.set_envs {

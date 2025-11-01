@@ -1,15 +1,29 @@
 use std::{fs, str::FromStr, sync::LazyLock};
 
 use anyhow::{anyhow, bail, Result};
-use indexmap::IndexMap;
+use indexmap::IndexSet;
 use log::info;
 use serde::{Deserialize, Serialize};
 use version_compare::Version;
 
 use crate::{
-    build::fetch_digest, cargo_green::ENV_BUILDER_IMAGE, ext::CommandExt, green::Green,
-    image_uri::ImageUri, runner::BUILDX_BUILDER, tmp,
+    build::fetch_digest, buildkitd, ext::CommandExt, green::Green, image_uri::ImageUri, tmp,
 };
+
+macro_rules! BUILDX_BUILDER {
+    () => {
+        "BUILDX_BUILDER"
+    };
+}
+
+macro_rules! ENV_BUILDER_IMAGE {
+    () => {
+        "CARGOGREEN_BUILDER_IMAGE"
+    };
+}
+
+const BUILDX_BUILDER: &str = BUILDX_BUILDER!();
+const ENV_BUILDER_IMAGE: &str = ENV_BUILDER_IMAGE!();
 
 /// TODO: move to `:rootless`
 static BUILDKIT_IMAGE: LazyLock<ImageUri> =
@@ -31,6 +45,39 @@ fn uses_version_newer_or_equal_to() {
     assert!(Version::from("2").is_some_and(|ref v| v >= &LATEST_BUILDKIT));
 }
 
+#[derive(Debug, Serialize, Deserialize, Default, PartialEq, Eq)]
+#[serde(default)]
+#[serde(deny_unknown_fields)]
+pub(crate) struct Builder {
+    #[doc = include_str!(concat!("../docs/",BUILDX_BUILDER!(),".md"))]
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(rename = "builder-name")]
+    pub(crate) name: Option<String>,
+
+    #[doc = include_str!(concat!("../docs/",ENV_BUILDER_IMAGE!(),".md"))]
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(rename = "builder-image")]
+    pub(crate) image: Option<ImageUri>,
+
+    /// Shows which driver the configured builder uses.
+    ///
+    /// Defaults to [BUILDER_DRIVER].
+    ///
+    /// See <https://docs.docker.com/build/drivers/>
+    /// * <https://docs.docker.com/build/drivers/docker-container/>
+    /// * <https://docs.docker.com/build/drivers/remote/>
+    /// * <https://docs.docker.com/build/drivers/kubernetes/>
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(rename = "builder-driver")]
+    pub(crate) driver: Option<Driver>,
+}
+
+impl Builder {
+    pub(crate) fn is_default(&self) -> bool {
+        self.driver.as_ref().is_none_or(|d| *d == Driver::Docker)
+    }
+}
+
 #[derive(Debug, Serialize, Deserialize, PartialEq, Eq)]
 pub(crate) enum Driver {
     Docker,
@@ -47,53 +94,6 @@ impl FromStr for Driver {
             BUILDER_DRIVER => Self::DockerContainer,
             _ => Self::Other(s.to_owned()),
         })
-    }
-}
-
-#[derive(Debug, Serialize, Deserialize, Default, PartialEq, Eq)]
-#[serde(default)]
-#[serde(deny_unknown_fields)]
-#[serde(rename_all = "kebab-case")]
-pub(crate) struct Builder {
-    /// Sets which BuildKit builder to use, through `$BUILDX_BUILDER`.
-    ///
-    /// See <https://docs.docker.com/build/building/variables/#buildx_builder>
-    ///
-    /// * Unset: creates & handles a builder named `"supergreen"`. Upgrades it if too old, while trying to keep old cached data
-    /// * Set to `""`: skips using a builder
-    /// * Set to `"supergreen"`: uses existing and just warns if too old
-    /// * Set: use that as builder, no questions asked
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub(crate) name: Option<String>,
-
-    /// Shows which driver the configured builder uses.
-    ///
-    /// See <https://docs.docker.com/build/drivers/>
-    /// * <https://docs.docker.com/build/drivers/docker-container/>
-    /// * <https://docs.docker.com/build/drivers/remote/>
-    /// * <https://docs.docker.com/build/drivers/kubernetes/>
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub(crate) driver: Option<Driver>,
-
-    /// Sets which BuildKit builder version to use.
-    ///
-    /// See <https://docs.docker.com/build/builders/>
-    ///
-    /// *Use by setting this environment variable (no `Cargo.toml` setting):*
-    /// ```shell
-    /// CARGOGREEN_BUILDER_IMAGE="docker-image://docker.io/moby/buildkit:latest"
-    /// ```
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub(crate) image: Option<ImageUri>,
-}
-
-impl Builder {
-    pub(crate) fn is_default(&self) -> bool {
-        self.driver.as_ref().is_none_or(|d| *d == Driver::Docker)
-    }
-
-    pub(crate) fn has_maxready(&self) -> bool {
-        self.driver.as_ref().is_some_and(|d| *d == Driver::DockerContainer)
     }
 }
 
@@ -142,12 +142,7 @@ then run your cargo command again.
             }
 
             if recreate {
-                // First try keeping state...
-                if self.try_removing_builder(name, true).await.is_err() {
-                    // ...then stop messing about...
-                    self.try_removing_builder(name, false).await?;
-                }
-                // ...and create afresh.
+                self.remove_builder(name).await?;
                 self.create_builder(name).await?;
             }
         } else if !managed {
@@ -166,16 +161,93 @@ then run your cargo command again.
         Ok(())
     }
 
-    async fn create_builder(&mut self, name: &str) -> Result<()> {
-        let mirrors = self.registry_mirrors.clone();
-        let config = BuildKitDConfig {
-            debug: false,
-            registry: [("docker.io".to_owned(), RegistryConfig { mirrors })].into(),
-        };
+    pub(crate) async fn remove_builder(&mut self, name: &str) -> Result<()> {
+        // First try keeping state...
+        if self.try_removing_builder(name, true).await.is_err() {
+            // ...then stop messing about.
+            self.try_removing_builder(name, false).await?;
+        }
+        Ok(())
+    }
 
-        let cfg = if config != BuildKitDConfig::default() {
+    pub(crate) async fn create_builder(&mut self, name: &str) -> Result<()> {
+        let mut config = buildkitd::Config::default();
+        if !self.registry_mirrors.is_empty() {
+            let mirrors = self.registry_mirrors.clone();
+            let mirrors = buildkitd::Registry { mirrors, ..Default::default() };
+            config.registry.insert("docker.io".to_owned(), mirrors);
+        }
+
+        let mut use_host_network = false;
+        let hosts = self
+            .cache
+            .from_images
+            .iter()
+            .chain(self.cache.to_images.iter())
+            .chain(self.cache.images.iter())
+            .map(ImageUri::host)
+            .collect::<IndexSet<_>>();
+
+        for domain in hosts {
+            let bla = |scheme| async move {
+                let (client, req) = reqwest::Client::builder()
+                    .connect_timeout(std::time::Duration::from_secs(4))
+                    .build()?
+                    .get(format!("{scheme}://{domain}/v2/_catalog"))
+                    .build_split();
+                let req = req?;
+                let rep = client.execute(req).await;
+                //     let mut decodes=false;
+                // if let Ok(rep)=rep {
+                //     decodes = rep.text().await.is_ok();
+                // }
+                // Ok((rep.is_ok(), decodes))
+                let _ = rep?.text().await?;
+                // // >>>>> https localhost:12345 Failed to reach localhost:12345's registry: error sending request for url (https://localhost:12345/v2/_catalog)
+                // // >>> >>>>>>>>>>>>>>>>>>>>>> http localhost:12345 {"repositories":[]}
+                // //=> https:(false, false)|http:(true,true) ==> use_host_network=true + http=true for that domain
+                // //==> just https:is_err | http:is_ok does it!
+                //     eprintln!(">>> >>>>>>>>>>>>>>>>>>>>>> {scheme} {domain} {txt}");
+                Ok::<_, anyhow::Error>(())
+            };
+            // for scheme in ["https", "http"] {
+            //     let _: Result<_> =
+            //         bla(scheme).await.inspect_err(|e| eprintln!(">>>>> {scheme} {domain} {e:?}"));
+            // }
+
+            // >>>>> https localhost:12345 Failed to reach localhost:12345's registry: error sending request for url (https://localhost:12345/v2/_catalog)
+            // >>> >>>>>>>>>>>>>>>>>>>>>> http localhost:12345 {"repositories":[]}
+
+            if bla("https").await.is_err() && bla("http").await.is_ok() {
+                use_host_network = true;
+                config.registry.insert(
+                    domain.to_owned(),
+                    buildkitd::Registry { http: true, ..Default::default() },
+                );
+            }
+        }
+
+        // config.registry.insert(
+        //     "localhost:5000".to_owned(),
+        //     buildkitd::Registry { http: true, /*insecure: true,*/ ..Default::default() },
+        // );
+        // config.registry.insert(
+        //     "localhost:6000".to_owned(),
+        //     buildkitd::Registry { http: true, ..Default::default() },
+        // );
+        // config.registry.insert(
+        //     "localhost:12345".to_owned(),
+        //     buildkitd::Registry { http: true, ..Default::default() },
+        // );
+        // config.registry.insert(
+        //     "localhost:23456".to_owned(),
+        //     buildkitd::Registry { http: true, ..Default::default() },
+        // );
+
+        let cfg = if config != buildkitd::Config::default() {
             let config = toml::to_string_pretty(&config)
                 .map_err(|e| anyhow!("Cannot serialize {config:?}: {e}"))?;
+            eprintln!(">>> buildkitd.toml:\n{config}");
             let cfg = tmp().join(format!("{:#x}.toml", crc32fast::hash(config.as_bytes())));
             fs::write(&cfg, config).map_err(|e| anyhow!("Failed writing buildkitd config: {e}"))?;
             Some(cfg)
@@ -189,6 +261,36 @@ then run your cargo command again.
             .args(["--driver", BUILDER_DRIVER]);
         if let Some(ref cfg) = cfg {
             cmd.args(["--buildkitd-config", cfg.as_str()]);
+        }
+
+        // Insecure Entitlement "network.host" not working https://github.com/docker/buildx/issues/835
+        //FIXME: detect. curl -fsS  http://localhost:12345/v2/_catalog ?
+        if use_host_network {
+            // curl: (22) The requested URL returned error: 403
+            // 22    supergreen.git ca-ching-actually 🔗 curl -fsS  https://localhost:5000/v2/_catalog
+            // ^C
+            // 130 4s supergreen.git ca-ching-actually 🔗 curl -fsSL  https://localhost:5000/v2/_catalog
+            // ^C
+            // 130 1s supergreen.git ca-ching-actually 🔗 curl -fsS  http://localhost:12345/v2/_catalog
+            // curl: (7) Failed to connect to localhost port 12345 after 0 ms: Couldn't connect to server
+            // 7    supergreen.git ca-ching-actually 🔗 curl -fsS  https://localhost:12345/v2/_catalog
+            // curl: (7) Failed to connect to localhost port 12345 after 0 ms: Couldn't connect to server
+            // 7    supergreen.git ca-ching-actually 🔗 curl -fsS  https://localhost:12345/v2/_catalog
+            // curl: (7) Failed to connect to localhost port 12345 after 0 ms: Couldn't connect to server
+            // 7    supergreen.git ca-ching-actually 🔗 curl -fsS  https://localhost:12345/v2/_catalog
+            // 7    supergreen.git ca-ching-actually 🔗 curl -fsS  https://localhost:12345/v2/_catalog
+            // curl: (7) Failed to connect to localhost port 12345 after 0 ms: Couldn't connect to server
+            // 7    supergreen.git ca-ching-actually 🔗 curl -fsS  http://localhost:12345/v2/_catalog
+            // {"repositories":[]}
+            //      supergreen.git ca-ching-actually 🔗 curl -fsS  https://localhost:12345/v2/_catalog
+            // curl: (35) LibreSSL/3.3.6: error:1404B42E:SSL routines:ST_CONNECT:tlsv1 alert protocol version
+            // 35    supergreen.git ca-ching-actually 🔗
+
+            cmd.args([
+                "--driver-opt=network=host",
+                "--buildkitd-flags",
+                "--allow-insecure-entitlement network.host",
+            ]);
         }
 
         let img = if let Some(ref img) = self.builder.image {
@@ -353,49 +455,4 @@ impl BuildxBuilder {
         imgs.dedup();
         imgs.first().cloned()
     }
-}
-
-#[derive(Debug, Default, Serialize, Deserialize, PartialEq)]
-struct BuildKitDConfig {
-    /// --buildkitd-flags '--debug' => docker logs buildx_buildkit_supergreen0 -f
-    debug: bool,
-    registry: IndexMap<String, RegistryConfig>,
-}
-
-#[derive(Debug, Default, Serialize, Deserialize, PartialEq)]
-struct RegistryConfig {
-    mirrors: Vec<String>,
-}
-
-#[test]
-fn buildkitd_config() {
-    let cfg = &r#"
-debug = true
-
-[registry."docker.io"]
-mirrors = [
-    "localhost:5000",
-    "public.ecr.aws/docker",
-]
-"#[1..];
-
-    let de: BuildKitDConfig = toml::de::from_str(cfg).unwrap();
-    assert_ne!(de, BuildKitDConfig::default());
-    assert_eq!(
-        de,
-        BuildKitDConfig {
-            debug: true,
-            registry: [(
-                "docker.io".to_owned(),
-                RegistryConfig {
-                    mirrors: vec!["localhost:5000".to_owned(), "public.ecr.aws/docker".to_owned()]
-                }
-            )]
-            .into()
-        }
-    );
-
-    let ser = toml::to_string_pretty(&de).unwrap();
-    println!("{ser}");
-    assert_eq!(ser, cfg);
 }

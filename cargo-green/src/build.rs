@@ -1,5 +1,6 @@
 use std::{
     env,
+    error::Error,
     fs::{self},
     io::ErrorKind,
     ops::Not,
@@ -29,13 +30,12 @@ use crate::{
     ext::{timeout, CommandExt},
     green::Green,
     image_uri::ImageUri,
-    logging::ENV_LOG_PATH,
     md::BuildContext,
     r#final::is_primary,
     rechrome,
     runner::DOCKER_HOST,
     stage::Stage,
-    PKG,
+    ENV_LOG_PATH, PKG,
 };
 
 pub(crate) const ERRCODE: &str = "errcode";
@@ -136,7 +136,10 @@ pub(crate) async fn fetch_digest(img: &ImageUri) -> Result<ImageUri> {
             .map_err(|e| anyhow!("HTTP client's config/TLS failed: {e}"))?
             .get(format!("https://{domain}/v2/repositories/{ns}/{slug}/tags/{tag}"))
             .build_split();
-        let req = req.map_err(|e| anyhow!("Failed to build a request against {domain}: {e}"))?;
+        let req = req.map_err(|e| {
+            // e.source(): try to be a bit more helpful than just "error sending request for url"
+            anyhow!("Failed to build a request against {domain}: {e} ({:?})", e.source())
+        })?;
 
         info!("GETing {}", req.url());
         eprintln!("GETing {}", req.url());
@@ -211,13 +214,18 @@ impl Green {
 
         //TODO: if allowing additional-build-arguments, deny: --build-arg=BUILDKIT_SYNTAX=
 
-        //TODO: (use if set) cmd.env("SOURCE_DATE_EPOCH", "0"); // https://reproducible-builds.org/docs/source-date-epoch
+        //TODO: (use if set) cmd.env("SOURCE_DATE_EPOCH", "1"); // https://reproducible-builds.org/docs/source-date-epoch
         // https://github.com/moby/buildkit/blob/master/docs/build-repro.md#source_date_epoch
         // Set SOURCE_DATE_EPOCH=$(git log -1 --pretty=%ct) for local code, and
         // set it to crates' birth date, in case it's a $HOME/.cargo/registry/cache/...crate
         // set it to the directory's birth date otherwise (should be a relative path to local files).
         // see https://github.com/moby/buildkit/issues/3009#issuecomment-1721565511
         //=> rewrite written files timestamps to not trip cargo's timekeeping
+        //Try rewrite-timestamp=true but this looks to be only for --output=type=image
+        //https://github.com/moby/buildkit/blob/202e28fe031a3be7eba17fb4382e4bbb0acf69b3/README.md?plain=1#L293
+        //https://scribe.rip/nttlabs/dockercon-2023-reproducible-builds-with-buildkit-for-software-supply-chain-security-0e5aedd1aaa7
+        //https://github.com/moby/buildkit/blob/202e28fe031a3be7eba17fb4382e4bbb0acf69b3/docs/build-repro.md#source_date_epoch
+        //https://github.com/moby/buildkit/issues/3973
 
         // `--repro`
         // From https://github.com/docker-library/official-images/issues/16044
@@ -243,20 +251,28 @@ impl Green {
             // TODO: 'id~=REGEXP as per https://github.com/containerd/containerd/blob/20fc2cf8ec70c5c02cd2f1bbe431bc19b2c622a3/pkg/filters/parser.go#L36
         }
 
-        //     cmd.arg(format!("--cache-to=type=registry,ref={img},mode=max,compression=zstd,force-compression=true,oci-mediatypes=true"));
-        // // [2024-04-09T07:55:39Z DEBUG lib-autocfg-72217d8ded4d7ec7@177912] ✖ ERROR: Cache export is not supported for the docker driver.
-        // // [2024-04-09T07:55:39Z DEBUG lib-autocfg-72217d8ded4d7ec7@177912] ✖ Switch to a different driver, or turn on the containerd image store, and try again.
-        // // [2024-04-09T07:55:39Z DEBUG lib-autocfg-72217d8ded4d7ec7@177912] ✖ Learn more at https://docs.docker.com/go/build-cache-backends/
-        //TODO: experiment --cache-to=type=inline => try ,mode=max
-        //ignore-error=true
+        for img in self.cache.from_images.iter().chain(self.cache.images.iter()) {
+            let img = img.noscheme();
+            cmd.arg(format!("--cache-from=type=registry,ref={img}"));
+        }
 
-        if !self.cache_images.is_empty() {
-            let maxready = self.builder.has_maxready();
-            for img in &self.cache_images {
+        if !self.cache.to_images.is_empty() || !self.cache.images.is_empty() {
+            let maxready = !self.builder.is_default();
+            for img in self.cache.to_images.iter().chain(self.cache.images.iter()) {
                 let img = img.noscheme();
                 cmd.arg(format!(
-                    "--cache-from=type=registry,ref={img}{mode}",
-                    mode = if maxready { ",mode=max" } else { "" }
+                    "--cache-to=type=registry,ref={img}{mode}{compression},ignore-error={ignore_error}",
+
+                    // ERROR: Cache export is not supported for the docker driver.
+                    // Switch to a different driver, or turn on the containerd image store, and try again.
+                    // Learn more at https://docs.docker.com/go/build-cache-backends/
+                    mode = if maxready { ",mode=max" } else { "" },
+
+                    // TODO? compression=zstd,force-compression=true
+                    compression = "",
+
+                    // TODO? if error when registry is unreachable, possible setting language: =1:my.org;0:some.org 1|0
+                    ignore_error = "false",
                 ));
 
                 if maxready {
@@ -289,11 +305,15 @@ impl Green {
 
         //TODO? --annotation=(PLATFORM=)KEY=VALUE
 
-        cmd.arg(format!("--network={}", self.image.with_network));
+        cmd.arg(format!("--network={}", self.base.with_network));
 
         cmd.arg("--platform=local");
         cmd.arg("--pull=false");
         cmd.arg(format!("--target={target}"));
+
+        // // https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry#labelling-container-images
+        // cmd.arg(format!("--label=org.opencontainers.image.description={target}"));
+
         if let Some(out_dir) = out_dir {
             cmd.arg(format!("--output=type=local,dest={out_dir}"));
         } else {
@@ -316,6 +336,9 @@ impl Green {
         }
 
         let call = cmd.show();
+        if true {
+            eprintln!(">>> call:{call}");
+        }
         info!("Starting `{envs} {call} <{containerfile}`", envs = cmd.envs_string(&[]));
         let call = call
             .split_whitespace()
@@ -337,7 +360,7 @@ impl Green {
 
         // Something is very wrong here. Try to be helpful by logging some info about runner config:
         if !status.success() {
-            let logs = env::var(ENV_LOG_PATH)
+            let logs = env::var(ENV_LOG_PATH!())
                 .map(|val| format!("\nCheck logs at {val}"))
                 .unwrap_or_default();
             return rtrn(anyhow!(
@@ -355,6 +378,29 @@ Please report an issue along with information from the following:
         (call, envs, Ok(effects))
     }
 }
+
+// NOTE: build may fail with the below error (macOS):
+//=> reason has something to do with `"credsStore": "desktop"` in ~/.docker/config.json
+//
+// [+] Building 0.4s (2/2) FINISHED
+//  => [internal] load build definition from Dockerfile
+//  => => transferring dockerfile: 382B
+//  => ERROR resolve image config for docker-image://docker.io/docker/dockerfile:1@sha256:b6afd42430b15f2d2a4c5a02b919e98a525b785b1aaff16747d2f623364e39b6
+// ------
+//  > resolve image config for docker-image://docker.io/docker/dockerfile:1@sha256:b6afd42430b15f2d2a4c5a02b919e98a525b785b1aaff16747d2f623364e39b6:
+// ------
+// Dockerfile:1
+// --------------------
+//    1 | >>> # syntax=docker.io/docker/dockerfile:1@sha256:b6afd42430b15f2d2a4c5a02b919e98a525b785b1aaff16747d2f623364e39b6
+//    2 |     # check=error=true
+//    3 |     # Generated by https://github.com/fenollp/supergreen v0.19.0
+// --------------------
+// ERROR: failed to build: failed to solve: error getting credentials - err: exec: "docker-credential-desktop": executable file not found in $PATH, out: ``
+// Error: # syntax=docker.io/docker/dockerfile:1@sha256:b6afd42430b15f2d2a4c5a02b919e98a525b785b1aaff16747d2f623364e39b6
+// # check=error=true
+// # Generated by https://github.com/fenollp/supergreen v0.19.0
+// FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:e4ae8ab67883487c5545884d5aa5ebbe86b5f13c6df4a8e3e2f34c89cedb9f54 AS rust-base
+// Unable to build rust-base: Runner failed.
 
 async fn run_build(
     mut cmd: Command,

@@ -22,12 +22,19 @@ source "$repo_root"/hack/ck.sh
 # Usage: BUILDX_BUILDER=.. $0 ..                   #=> Overrides builder (set to "empty" to set BUILDX_BUILDER='')
 
 # TODO: test other runtimes: runc crun containerd buildkit-rootless lima colima
+# * CARGOGREEN_BUILDER_IMAGE="docker-image://docker.io/moby/buildkit:buildx-stable-1-rootless"
+#   * https://github.com/docker/setup-docker-action testing rootless and containerd
+# * a matrix of earlier and earlier versions of: buildkit x buildx/docker x cargo/rustc 
+# * a local + cached DockerHub proxy
+
 # TODO: set -x in ci
+
+# TODO: set about green's overhead with --timings
 
 # TODO: https://crates.io/categories/command-line-utilities?sort=recent-updates
 declare -a nvs nvs_args
    i=0  ; nvs[i]=buildxargs@master;           oks[i]=ok; nvs_args[i]='--git https://github.com/fenollp/buildxargs.git'
-((i+=1)); nvs[i]=cargo-audit@0.21.1;          oks[i]=ko; nvs_args[i]='--features=fix' # TODO: re-ok when GitHub Actions runners update to patched BuildKit (>=v0.20)
+((i+=1)); nvs[i]=cargo-audit@0.21.1;          oks[i]=ko; nvs_args[i]='--features=fix' # TODO: re-ok when GitHub Actions runners update to patched BuildKit (>=v0.20)   environment variable `RING_CORE_PREFIX` not defined at compile time
 ((i+=1)); nvs[i]=cargo-bpf@2.3.0;             oks[i]=ko; nvs_args[i]='' # (No libelf-dev installed on host) (Wrapper compiles successfully) Build script fails to run: Running `CARGO=.. .../bpf-sys-c62ba29dc4f555d9/build-script-build` ... error: gelf.h: No such file => TODO: see about overriding RUSTC_LINKER=/usr/bin/clang
 ((i+=1)); nvs[i]=cargo-deny@0.16.1;           oks[i]=ko; nvs_args[i]='' # TODO: re-ok when GitHub Actions runners update to patched BuildKit (>=v0.20)
 ((i+=1)); nvs[i]=cargo-fuzz@0.12.0;           oks[i]=ko; nvs_args[i]='' # .. environment variable `TARGET_PLATFORM` not defined at compile time .. current_platform-0.2.0 + HOST_PLATFORM
@@ -106,6 +113,33 @@ declare -a nvs nvs_args
 
 # TODO https://github.com/aizcutei/nanometers?tab=readme-ov-file#testing-locally
 
+# TODO: https://belmoussaoui.com/blog/8-how-to-flatpak-a-rust-application/
+
+# TODO: cargo install --git https://github.com/astral-sh/uv uv
+
+# TODO: https://github.com/flamegraph-rs/flamegraph
+
+# TODO: https://codeberg.org/willempx/qair/
+
+# TODO: https://git.sr.ht/~ireas/rusty-man
+
+# TODO: https://github.com/asterinas/asterinas
+# TODO: https://github.com/microsoft/edit
+# => does toolchain file impact whole project or just primary crate?
+
+# TODO: cargo install --locked --git https://fuchsia.googlesource.com/fargo fargo
+
+# TODO: https://github.com/CyberTimon/RapidRAW
+
+# TODO: https://github.com/Automattic/harper/releases/tag/v0.37.0 harper-cli
+# TODO: https://lib.rs/crates/zstd
+# TODO: https://github.com/facebook/pyrefly
+# TODO: https://gitlab.freedesktop.org/gstreamer/gst-plugins-rs/-/tree/4ee38b6cf99407bc8a633a4a06784e09816ff48d
+
+# TODO: https://crates.io/crates/bottom
+#   dependent on https://lib.rs/crates/nvml-wrapper
+#   and https://github.com/nagisa/rust_libloading
+
 #FIXME: test with Environment: CARGO_BUILD_RUSTC_WRAPPER or RUSTC_WRAPPER  or Environment: CARGO_BUILD_RUSTC_WORKSPACE_WRAPPER or RUSTC_WORKSPACE_WRAPPER
 # => the final invocation is $RUSTC_WRAPPER $RUSTC_WORKSPACE_WRAPPER $RUSTC.
 
@@ -119,25 +153,12 @@ name: CLIs
 jobs:
 
 
-$(jobdef 'meta-check')
-    steps:
-    - uses: actions/checkout@v5
-    - run: ./hack/clis.sh | tee .github/workflows/clis.yml
-    - run: ./hack/self.sh | tee .github/workflows/self.yml
-    - run: git --no-pager diff --exit-code
-    - name: Run shellcheck
-      uses: ludeeus/action-shellcheck@2.0.0
-      with:
-        check_together: 'yes'
-        severity: error
-
 $(jobdef 'bin')
     steps:
     - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
         toolchain: stable
-        cache-all-crates: true
-        cache-workspace-crates: true
+        cache-on-failure: true
 
     - uses: actions/checkout@v5
 
@@ -218,20 +239,25 @@ ntpd_locked_date=2025-05-09                                  # Time of commit
 cli() {
   local name_at_version=$1; shift
   local jobs=$1; shift
+  local registry=/tmp/.local-registry
+  local registry_new=$registry-new
   local envvars=()
- as_env "$name_at_version"
+  as_env "$name_at_version"
 
 	cat <<EOF
 $(jobdef "$(slugify "$name_at_version")_$jobs")
-    continue-on-error: \${{ matrix.toolchain != 'stable' }}
+    continue-on-error: \${{ matrix.toolchain != '$stable' }}
     strategy:
       matrix:
         toolchain:
-        - stable
-        - 1.86.0
+        - $stable
+        - $fixed
     env:
       CARGO_TARGET_DIR: /tmp/clis-$(slugify "$name_at_version")
+      CARGOGREEN_CACHE_FROM_IMAGES: docker-image://localhost:12345/\${{ github.repository }}
+      CARGOGREEN_CACHE_TO_IMAGES: docker-image://localhost:23456/\${{ github.repository }}
       CARGOGREEN_FINAL_PATH: recipes/$name_at_version.Dockerfile
+      CARGOGREEN_FINAL_PATH_NONPRIMARY: 1 # dumps on each build call
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
 $(
@@ -250,8 +276,7 @@ $(login_to_readonly_hub)
       with:
         toolchain: \${{ matrix.toolchain }}
         rustflags: ''
-        cache-all-crates: true
-        cache-workspace-crates: true
+        cache-on-failure: true
 $(
 	case "$name_at_version" in
 		cargo-llvm-cov@*) printf '    - run: rustup component add llvm-tools-preview\n' ;;
@@ -263,27 +288,83 @@ $(restore_bin)
     - uses: actions/checkout@v5
 $(rundeps_versions)
 
-    - name: Envs
+    - name: Prepare local private registry cache
+      run: |
+        # https://github.com/fenollp/supergreen/actions/caches
+        mkdir -p $registry
+        mkdir -p $registry_new
+    - name: 🔵 Restore local private registry cache
+      uses: actions/cache/restore@v4
+      with:
+        path: $registry
+        # github.run_id: https://github.com/actions/toolkit/issues/658#issuecomment-2640690759
+        key: localprivatereg-\${{ runner.os }}-\${{ matrix.toolchain }}-\${{ github.job }}-\${{ github.run_id }}
+        restore-keys: |
+          localprivatereg-\${{ runner.os }}-\${{ matrix.toolchain }}-\${{ github.job }}-
+          localprivatereg-\${{ runner.os }}-\${{ matrix.toolchain }}-
+          localprivatereg-\${{ runner.os }}-
+          localprivatereg-
+
+    - run: ls -lha $registry
+    - run: du -sh $registry
+    - run: du -sh $registry_new
+    - run: ls -lha $registry_new
+
+    - name: Pull regist3 image
+      run: |
+        false \\
+        || docker build --tag regist3 - <<<'FROM docker.io/registry:3' \\
+        || docker build --tag regist3 - <<<'FROM mirror.gcr.io/registry:3' \\
+        || docker build --tag regist3 - <<<'FROM public.ecr.aws/docker/registry:3' \\
+        || exit 1
+    - name: Start "cache from" image registry
+      run: docker run --name=reg-from --rm --detach -p 12345:5000 --user \$(id -u):\$(id -g) -v     $registry:/var/lib/registry regist3
+    - name: Start "cache to" image registry
+      run: docker run --name=reg-to   --rm --detach -p 23456:5000 --user \$(id -u):\$(id -g) -v $registry_new:/var/lib/registry regist3
+
+    - run: docker pull localhost:12345/\${{ github.repository }} || true
+    - run: docker build --push --tag localhost:12345/\${{ github.repository }} - <<<'FROM scratch'
+    - run: docker pull localhost:12345/\${{ github.repository }}
+    - run: curl -fsSL http://localhost:12345/v2/\${{ github.repository }}/blobs/sha256:1720a10883c7ebbf9080c7d8399b21cb883271cb3dfec3e30a4248b636628779 || true
+    - run: ls -lha $registry
+    - run: du -sh $registry
+    - run: du -sh $registry_new
+    - run: ls -lha $registry_new
+
+    - name: 🔵 Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
-    - if: \${{ matrix.toolchain != 'stable' }}
+    - if: \${{ matrix.toolchain != '$stable' }}
       run: ~/.cargo/bin/cargo-green green supergreen env CARGOGREEN_BASE_IMAGE | grep '\${{ matrix.toolchain }}'
-    - name: Envs again
+    - run: BUILDX_BUILDER=supergreen docker buildx inspect
+    - name: 🔵 Envs again
       run: ~/.cargo/bin/cargo-green green supergreen env
 
 $(cache_usage)
-    - name: cargo install net=ON cache=OFF remote=OFF jobs=$jobs
+    - run: ls -lha $registry
+    - run: du -sh $registry
+    - run: du -sh $registry_new
+    - run: ls -lha $registry_new
+    - name: 🔵 cargo install net=ON cache=OFF remote=OFF jobs=$jobs
       run: |
 $(unset_action_envs)
         env ${envvars[@]} \\
           cargo green -vv install --jobs=$jobs --locked --force $(as_install "$name_at_version") $@ |& tee _
-    - name: cargo install net=ON cache=ON remote=OFF jobs=1
+    - run: ls -lha $registry
+    - run: du -sh $registry
+    - run: du -sh $registry_new
+    - run: ls -lha $registry_new
+    - name: 🔵 cargo install net=ON cache=ON remote=OFF jobs=1
       if: \${{ failure() }}
       run: |
-        rm _
+        rm _ || true
 $(unset_action_envs)
         env ${envvars[@]} \\
           cargo green -vv install --jobs=1 --locked --force $(as_install "$name_at_version") $@ |& tee _
-    - if: \${{ matrix.toolchain != 'stable' }}
+    - run: ls -lha $registry
+    - run: du -sh $registry
+    - run: du -sh $registry_new
+    - run: ls -lha $registry_new
+    - if: \${{ matrix.toolchain != '$stable' }}
       uses: actions/upload-artifact@v4
       name: Upload recipe
       with:
@@ -296,13 +377,33 @@ $(cache_usage)
       if: \${{ failure() || success() }}
       run: du -sh \$CARGO_TARGET_DIR || true
 
-    - name: Ensure running the same command twice without modifications...
+    - name: 🔵 Ensure running the same command twice without modifications...
       run: |
 $(unset_action_envs)
         env ${envvars[@]} \\
           cargo green -vv install --jobs=$jobs --locked --force $(as_install "$name_at_version") $@ |& tee _
 $(postcond_fresh _)
 $(postconds _)
+
+    - name: 🔵 Compare old/new local private registry image digests
+      continue-on-error: true # TODO: drop when digests are stable
+      run: |
+        diff --width=150 -y \\
+          <(find $registry/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print \$NF}' | sort -u) \\
+          <(find $registry_new/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print \$NF}' | sort -u)
+    - name: Local private registry cache dance
+      run: |
+        # [ci: caches keep growing](https://github.com/moby/buildkit/issues/1850)
+        docker stop --timeout 10 reg-from reg-to
+        rm -rf $registry
+        mv $registry_new $registry
+    - name: Save local private registry cache
+      uses: actions/cache/save@v4
+      if: \${{ false }} # TODO: drop when digests are stable
+      with:
+        path: $registry
+        key: localprivatereg-\${{ runner.os }}-\${{ matrix.toolchain }}-\${{ github.job }}-\${{ github.run_id }}
+
 $(cache_usage)
 
     - name: Target dir disk usage

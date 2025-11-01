@@ -1,11 +1,29 @@
 #!/usr/bin/env -S bash -eu
 set -o pipefail
 
-source $(realpath "$(dirname "$0")")/ck.sh
+repo_root=$(realpath "$(dirname "$(dirname "$0")")")
+source "$repo_root"/hack/ck.sh
 
 nightly=nightly-2025-08-06
 
 # Usage:  $0                              #=> generate CI
+
+
+# TODO: all of `cargo --list` (including shortcuts) except for cinstall-ed plugins
+# Currently missing (non-exhaustive)
+# cargo green add
+# cargo green bench
+# cargo green clean
+# cargo green doc
+# cargo green init
+# cargo green install
+# cargo green new
+# cargo green publish
+# cargo green remove
+# cargo green run
+# cargo green search
+# cargo green uninstall
+# cargo green update
 
 
 postbin_steps() {
@@ -17,8 +35,7 @@ $(login_to_readonly_hub)
       with:
         toolchain: $toolchain
         rustflags: ''
-        cache-all-crates: true
-        cache-workspace-crates: true
+        cache-on-failure: true
 $(rundeps_versions)
 
 $(restore_bin)
@@ -65,8 +82,7 @@ $(jobdef 'bin')
     - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
         toolchain: stable
-        cache-all-crates: true
-        cache-workspace-crates: true
+        cache-on-failure: true
 $(rundeps_versions)
 
     - uses: actions/checkout@v5

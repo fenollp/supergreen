@@ -7,30 +7,39 @@ use std::{
 };
 
 use anyhow::{anyhow, bail, Result};
-use logging::{ENV_LOG, ENV_LOG_PATH};
-use rustc_wrapper::ENV;
 use tokio::process::Command;
 
+#[macro_use]
 mod add;
+#[macro_use]
 mod base_image;
 mod build;
+#[macro_use]
 mod builder;
+#[macro_use]
+mod cache;
+mod buildkitd;
 mod cargo_green;
 mod checkouts;
 mod containerfile;
 mod cratesio;
 mod du;
 mod ext;
+#[macro_use]
 mod r#final;
+#[macro_use]
 mod green;
 mod image_uri;
 mod lockfile;
+#[macro_use]
 mod logging;
 mod md;
 mod network;
 mod rechrome;
+#[macro_use]
 mod runner;
 mod rustc_arguments;
+#[macro_use]
 mod rustc_wrapper;
 mod stage;
 mod supergreen;
@@ -102,6 +111,13 @@ async fn main() -> Result<()> {
 
     let arg2 = args.next();
 
+    // Shortcut here just for `cargo green supergreen --help` to avoid some calulations
+    if arg2.as_deref() == Some("supergreen") && supergreen::just_help(env::args().nth(3).as_deref())
+    {
+        supergreen::help();
+        return Ok(());
+    }
+
     let mut cmd = Command::new(cargo());
     cmd.kill_on_drop(true);
     cmd.env("RUSTC_WRAPPER", arg0);
@@ -124,18 +140,19 @@ async fn main() -> Result<()> {
 
     // TODO: TUI above cargo output (? https://docs.rs/prodash )
 
-    if let Ok(log) = env::var(ENV_LOG) {
-        cmd.env(ENV_LOG, log);
-        let path = env::var(ENV_LOG_PATH)
+    if let Ok(log) = env::var(ENV_LOG!()) {
+        cmd.env(ENV_LOG!(), log);
+        let var = ENV_LOG_PATH!();
+        let path = env::var(var)
             .unwrap_or_else(|_| tmp().join(format!("{PKG}-{}.log", hashed_args())).to_string());
         let path = camino::absolute_utf8(path)
-            .map_err(|e| anyhow!("Failed canonicalizing ${ENV_LOG_PATH}: {e}"))?;
-        env::set_var(ENV_LOG_PATH, &path);
-        cmd.env(ENV_LOG_PATH, &path);
+            .map_err(|e| anyhow!("Failed canonicalizing ${var}: {e}"))?;
+        env::set_var(var, &path);
+        cmd.env(var, &path);
         let _ = OpenOptions::new().create(true).truncate(false).append(true).open(path);
     }
 
-    assert!(env::var_os(ENV).is_none());
+    assert!(env::var_os(ENV!()).is_none());
     assert!(env::var_os(ENV_ROOT_PACKAGE_SETTINGS).is_none());
 
     // Goal: produce only fully-locked Dockerfiles/TOMLs

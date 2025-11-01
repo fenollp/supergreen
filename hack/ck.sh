@@ -1,6 +1,9 @@
 #!/usr/bin/env -S bash -eu
 set -o pipefail
 
+stable=1.90.0 # Closest to latest stable, as official Rust images availability permits (TODO: use rustup when image isn't yet available)
+fixed=1.86.0 # Some fixed rustc version
+
 
 jobdef() {
     local name=$1; shift
@@ -52,9 +55,9 @@ cache_usage() {
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
-    - run: docker buildx du | head || true
-    - run: docker buildx du | tail || true
-    - run: docker buildx du --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
 EOF
 }
 
@@ -78,48 +81,48 @@ postconds() {
     local cargologs=$1; shift
     [[ $# -eq 0 ]]
 cat <<EOF
-    - if: \${{ failure() || success() }}
+    - if: \${{ always() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
         ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' $cargologs
 
-    - if: \${{ failure() || success() }}
+    - if: \${{ always() }}
       name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
       run: |
         ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' \$CARGOGREEN_LOG_PATH
 
-    - if: \${{ failure() || success() }}
+    - if: \${{ always() }}
       name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
       run: |
         ! grep -C20 -F 'connection error: COMPRESSION_ERROR' \$CARGOGREEN_LOG_PATH
 
-    - if: \${{ failure() || success() }}
+    - if: \${{ always() }}
       name: 🔴 =means=> there's some panic!s
       run: |
         ! grep -C20 -F ' panicked at ' \$CARGOGREEN_LOG_PATH
 
-    - if: \${{ failure() || success() }}
+    - if: \${{ always() }}
       name: 🔴 =means=> there's some BUGs
       run: |
         ! grep -C20 -F 'BUG: ' \$CARGOGREEN_LOG_PATH
 
-    - if: \${{ failure() || success() }}
+    - if: \${{ always() }}
       name: 🔴 =means=> here's cargo's error text
       run: |
         ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' \$CARGOGREEN_LOG_PATH $cargologs
 
-    - if: \${{ failure() || success() }}
+    - if: \${{ always() }}
       name: 🔴 =means=> 429 Too Many Requests
       run: |
         ! grep -C20 -F '429 Too Many Requests' \$CARGOGREEN_LOG_PATH $cargologs
 
-    - if: \${{ failure() || success() }}
+    - if: \${{ always() }}
       name: 🔴 =means=> here's relevant logs
       run: |
         ! grep -C20 -F ' >>> ' \$CARGOGREEN_LOG_PATH
 
-    - if: \${{ ( failure() || success() ) && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != 'stable' }}
-      name: Maybe show final path diff
+    - if: \${{ always() && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != '$stable' }}
+      name: 🌀 Maybe show final path diff
       run: |
         case "\$GITHUB_JOB" in
           cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
@@ -132,8 +135,8 @@ cat <<EOF
           --ignore-matching-lines="^##     '\\{" \
           -- \$CARGOGREEN_FINAL_PATH
 
-    - if: \${{ failure() }}
-      name: cargo-green logs
+    - if: \${{ always() }}
+      name: 🌀 cargo-green logs
       run: tail -n9999999 \$CARGOGREEN_LOG_PATH ; echo >\$CARGOGREEN_LOG_PATH
 EOF
 }
@@ -157,5 +160,16 @@ cat <<EOF
       with:
         username: \${{ vars.DOCKERHUB_USERNAME }}
         password: \${{ secrets.DOCKERHUB_TOKEN }}
+EOF
+}
+
+login_to_readwrite_ghcr() {
+    [[ $# -eq 0 ]]
+cat <<EOF
+    - uses: docker/login-action@v3
+      with:
+        registry: ghcr.io
+        username: \${{ github.actor }}
+        password: \${{ secrets.GITHUB_TOKEN }}
 EOF
 }
