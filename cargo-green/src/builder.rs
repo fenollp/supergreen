@@ -1,6 +1,7 @@
-use std::{fs, str::FromStr, sync::LazyLock};
+use std::{fs, str::FromStr, sync::LazyLock, time::Duration};
 
 use anyhow::{anyhow, bail, Result};
+use indexmap::IndexSet;
 use log::info;
 use serde::{Deserialize, Serialize};
 use version_compare::Version;
@@ -170,19 +171,49 @@ then run your cargo command again.
     }
 
     pub(crate) async fn create_builder(&mut self, name: &str) -> Result<()> {
-        let mirrors = self.registry_mirrors.clone();
-        let config = buildkitd::Config {
-            debug: false,
-            registry: [
-                ("docker.io".to_owned(), buildkitd::Registry { mirrors, ..Default::default() }),
-                (
-                    "127.0.0.1:5000".to_owned(),
-                    buildkitd::Registry { http: true, insecure: true, ..Default::default() },
-                ),
-            ]
-            .into(),
-            ..Default::default()
-        };
+        let mut config = buildkitd::Config::default();
+        if !self.registry_mirrors.is_empty() {
+            let mirrors = self.registry_mirrors.clone();
+            let mirrors = buildkitd::Registry { mirrors, ..Default::default() };
+            config.registry.insert("docker.io".to_owned(), mirrors);
+        }
+
+        let mut use_host_network = false;
+        let hosts = self
+            .cache
+            .from_images
+            .iter()
+            .chain(self.cache.to_images.iter())
+            .chain(self.cache.images.iter())
+            .map(ImageUri::host)
+            .collect::<IndexSet<_>>();
+
+        let mut clt = reqwest::Client::builder()
+            .connect_timeout(Duration::from_secs(4))
+            .build()
+            .map_err(|e| anyhow!("Cannot create HTTP(s) client: {e}"))?;
+
+        async fn tst(clt: &mut reqwest::Client, scheme: &'static str, domain: &str) -> Result<()> {
+            let req = clt.get(format!("{scheme}://{domain}/v2/_catalog")).build()?;
+            let _ = clt.execute(req).await?.text().await?;
+            Ok(())
+        }
+
+        for domain in hosts {
+            // TODO: do better
+            if ["localhost", "127.0.0.1", "::1"].iter().any(|pat| domain.starts_with(pat)) {
+                use_host_network = true;
+            }
+
+            if tst(&mut clt, "https", domain).await.is_err()
+                && tst(&mut clt, "http", domain).await.is_ok()
+            {
+                config.registry.insert(
+                    domain.to_owned(),
+                    buildkitd::Registry { http: true, ..Default::default() },
+                );
+            }
+        }
 
         let cfg = if config != buildkitd::Config::default() {
             let config = toml::to_string_pretty(&config)
@@ -200,6 +231,15 @@ then run your cargo command again.
             .args(["--driver", BUILDER_DRIVER]);
         if let Some(ref cfg) = cfg {
             cmd.args(["--buildkitd-config", cfg.as_str()]);
+        }
+
+        if use_host_network {
+            // From [Insecure Entitlement "network.host" not working](https://github.com/docker/buildx/issues/835)
+            cmd.args([
+                "--driver-opt=network=host",
+                "--buildkitd-flags",
+                "--allow-insecure-entitlement network.host",
+            ]);
         }
 
         let img = if let Some(ref img) = self.builder.image {
