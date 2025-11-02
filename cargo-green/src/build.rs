@@ -310,6 +310,10 @@ impl Green {
         cmd.arg("--platform=local");
         cmd.arg("--pull=false");
         cmd.arg(format!("--target={target}"));
+
+        // // https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry#labelling-container-images
+        // cmd.arg(format!("--label=org.opencontainers.image.description={target}"));
+
         if let Some(out_dir) = out_dir {
             cmd.arg(format!("--output=type=local,dest={out_dir}"));
         } else {
