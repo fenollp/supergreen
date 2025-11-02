@@ -318,7 +318,7 @@ export CARGOGREEN_CACHE_FROM_IMAGES="docker-image://my.org/team/my-project-in-ci
 
 Write cached data to image registries
 
-Note that errors caused by failed cache exports are ignored.
+Note that errors caused by failed cache exports are not ignored.
 
 See also [Green::cache_images] and [Green::cache_from_images].
 
@@ -711,6 +711,8 @@ all:
   * [Proposal: introduce enhanced image resolution gateway API](https://github.com/moby/buildkit/issues/2944)
 * [ ] [`buildkit`: allow exporting cache layers in parallel to the remote registry](https://github.com/moby/buildkit/issues/6123)
 * [ ] [`buildkit`: remote docker buildx build with large dockerfile gives trying to send message larger than max (22482550 vs. 16777216) error](https://github.com/moby/buildkit/issues/6097)
+* [ ] [`buildx`: `--cache-from` takes longer than actual (cached) build](https://github.com/docker/buildx/issues/3491)
+* [ ] [`buildx`: The cache export step hangs](https://github.com/docker/buildx/issues/537)
 
 
 ## En vrac
