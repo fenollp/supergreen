@@ -272,7 +272,7 @@ impl Green {
                     compression = "",
 
                     // TODO? if error when registry is unreachable, possible setting language: =1:my.org;0:some.org 1|0
-                    ignore_error = "true",
+                    ignore_error = "false",
                 ));
 
                 if maxready {

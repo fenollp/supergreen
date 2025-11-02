@@ -1,6 +1,6 @@
 Write cached data to image registries
 
-Note that errors caused by failed cache exports are ignored.
+Note that errors caused by failed cache exports are not ignored.
 
 See also [Green::cache_images] and [Green::cache_from_images].
 
