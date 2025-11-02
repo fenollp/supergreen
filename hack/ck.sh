@@ -1,6 +1,9 @@
 #!/usr/bin/env -S bash -eu
 set -o pipefail
 
+stable=1.90.0 # Closest to latest stable, as official Rust images availability permits (TODO: use rustup when image isn't yet available)
+fixed=1.86.0 # Some fixed rustc version
+
 
 jobdef() {
     local name=$1; shift
@@ -118,7 +121,7 @@ cat <<EOF
       run: |
         ! grep -C20 -F ' >>> ' \$CARGOGREEN_LOG_PATH
 
-    - if: \${{ always() && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != 'stable' }}
+    - if: \${{ always() && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != '$stable' }}
       name: 🌀 Maybe show final path diff
       run: |
         case "\$GITHUB_JOB" in
