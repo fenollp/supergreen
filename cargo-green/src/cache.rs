@@ -16,7 +16,7 @@ use crate::image_uri::ImageUri;
 // https://docs.docker.com/build/cache/backends/local/
 // >If the src cache doesn't exist, then the cache import step will fail,
 // https://github.com/moby/buildkit/issues/1896
-// >only grows => cache dance => https://github.com/moby/buildkit/pull/1857/files
+// >only grows => cache dance
 // also
 // >doesn't support concurrent use!
 // ==> HAVE to handle per-buildcall type=local cache
@@ -30,6 +30,19 @@ use crate::image_uri::ImageUri;
 //
 // mkdir -p cch cch-new
 // CARGOGREEN_CACHE_FROM=type=local,src=/tmp/local-cache CARGOGREEN_CACHE_TO=type=local,mode=max,dest=/tmp/local-cache-new rmrf=1 ./hack/clis.sh vix
+
+// FIXME: [allow exporting cache layers in parallel to the remote registry](https://github.com/moby/buildkit/issues/6123)
+// * export these layers in parallel
+// * use manifest retrieved in --cache-from to filter out layers which we know remote registry already has
+//
+//=> leaf build calls: don't use --cache-to, then
+//=> cargo call#0: runs a (gRPC?) server that receives just-made-build-call and re-runs it with cacheonly and --cache-to
+//then wait for both leafbuild and that server's tasks before exiting.
+//==> server needs a task counter
+
+// or: --cache-to local registry during build, then push that to ghcr after.
+
+// or: use --cache-from in non-main branch and both otherwise
 
 macro_rules! ENV_CACHE_FROM_IMAGES {
     () => {
