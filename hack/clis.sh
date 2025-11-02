@@ -244,12 +244,12 @@ cli() {
 
 	cat <<EOF
 $(jobdef "$(slugify "$name_at_version")_$jobs")
-    continue-on-error: \${{ matrix.toolchain != 'stable' }}
+    continue-on-error: \${{ matrix.toolchain != '$stable' }}
     strategy:
       matrix:
         toolchain:
-        - stable
-        - 1.86.0
+        - $stable
+        - $fixed
     env:
       CARGO_TARGET_DIR: /tmp/clis-$(slugify "$name_at_version")
       CARGOGREEN_FINAL_PATH: recipes/$name_at_version.Dockerfile
@@ -285,7 +285,7 @@ $(rundeps_versions)
 
     - name: 🔵 Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
-    - if: \${{ matrix.toolchain != 'stable' }}
+    - if: \${{ matrix.toolchain != '$stable' }}
       run: ~/.cargo/bin/cargo-green green supergreen env CARGOGREEN_BASE_IMAGE | grep '\${{ matrix.toolchain }}'
     - run: ~/.cargo/bin/cargo-green green supergreen builder
     - name: 🔵 Envs again
@@ -304,7 +304,7 @@ $(unset_action_envs)
 $(unset_action_envs)
         env ${envvars[@]} \\
           cargo green -vv install --jobs=1 --locked --force $(as_install "$name_at_version") $@ |& tee _
-    - if: \${{ matrix.toolchain != 'stable' }}
+    - if: \${{ matrix.toolchain != '$stable' }}
       uses: actions/upload-artifact@v5
       name: Upload recipe
       with:
