@@ -24,7 +24,7 @@ source "$repo_root"/hack/ck.sh
 # TODO: test other runtimes: runc crun containerd buildkit-rootless lima colima
 # * CARGOGREEN_BUILDER_IMAGE="docker-image://docker.io/moby/buildkit:buildx-stable-1-rootless"
 #   * https://github.com/docker/setup-docker-action testing rootless and containerd
-# * a matrix of earlier and earlier versions of: buildkit x buildx/docker x cargo/rustc 
+# * a matrix of earlier and earlier versions of: buildkit x buildx/docker x cargo/rustc
 # * a local + cached DockerHub proxy
 
 # TODO: set -x in ci
@@ -153,18 +153,6 @@ name: CLIs
 jobs:
 
 
-$(
-# $(jobdef 'set-image-name')
-#     needs: [meta-check]
-#     outputs:
-#       name: \${{ steps.namer.outputs.name }}
-#     steps:
-#     - name: Set lowercase image name
-#       id: namer
-#       run: echo "::set-output name=name::ghcr.io/\${SLUG,,}"
-#       env:
-#         SLUG: \${{ github.repository }}
-)
 $(jobdef 'bin')
     steps:
     - uses: actions-rust-lang/setup-rust-toolchain@v1
@@ -199,7 +187,7 @@ EOW
       run: |
         CARGO_TARGET_DIR=~/instmp cargo install --locked --force --path=./cargo-green
 
-    - uses: actions/upload-artifact@v4
+    - uses: actions/upload-artifact@v5
       with:
         name: cargo-green
         path: /home/runner/.cargo/bin/cargo-green
@@ -252,36 +240,11 @@ cli() {
   local name_at_version=$1; shift
   local jobs=$1; shift
   local envvars=()
- as_env "$name_at_version"
-
-#       CARGOGREEN_CACHE_IMAGES: \${{ needs.set-image-name.outputs.name }}
-
-# TODO: along with bin build job
-# * get local registry:3 from cache
-# * create second local registry:3
-# * list images required via green supergreen envs
-# * pull images to second registry using first as cache
-# * destroy first and cache second
-# * pass second through artifacts or cache to next jobs
-# * use that registry through the mirrors env
-
-# https://docs.docker.com/build/ci/github-actions/local-registry/
-# jobs:
-#   docker:
-#     runs-on: ubuntu-latest
-#     services:
-#       registry:
-#         image: registry:3
-#         ports:
-#           - 5000:5000
-#     steps:
-# docker buildx imagetools inspect localhost:5000/name/app:latest
-
+  as_env "$name_at_version"
 
 	cat <<EOF
 $(jobdef "$(slugify "$name_at_version")_$jobs")
-$( #   needs: [set-image-name]
-)    continue-on-error: \${{ matrix.toolchain != 'stable' }}
+    continue-on-error: \${{ matrix.toolchain != 'stable' }}
     strategy:
       matrix:
         toolchain:
@@ -320,27 +283,21 @@ $(restore_bin)
     - uses: actions/checkout@v5
 $(rundeps_versions)
 
-    - name: Envs
+    - name: 🔵 Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
     - if: \${{ matrix.toolchain != 'stable' }}
       run: ~/.cargo/bin/cargo-green green supergreen env CARGOGREEN_BASE_IMAGE | grep '\${{ matrix.toolchain }}'
-    - name: Envs again
+    - run: ~/.cargo/bin/cargo-green green supergreen builder
+    - name: 🔵 Envs again
       run: ~/.cargo/bin/cargo-green green supergreen env
 
 $(cache_usage)
-$(
-    # - name: Log in to GitHub Container Registry
-    #       uses: docker/login-action@v3
-    #       with:
-    #         registry: ghcr.io
-    #         username: \${{ github.actor }}
-    #         password: \${{ secrets.GITHUB_TOKEN }}
-    )    - name: cargo install net=ON cache=OFF remote=OFF jobs=$jobs
+    - name: 🔵 cargo install net=ON cache=OFF remote=OFF jobs=$jobs
       run: |
 $(unset_action_envs)
         env ${envvars[@]} \\
           cargo green -vv install --jobs=$jobs --locked --force $(as_install "$name_at_version") $@ |& tee _
-    - name: cargo install net=ON cache=ON remote=OFF jobs=1
+    - name: 🔵 cargo install net=ON cache=ON remote=OFF jobs=1
       if: \${{ failure() }}
       run: |
         rm _ || true
@@ -348,7 +305,7 @@ $(unset_action_envs)
         env ${envvars[@]} \\
           cargo green -vv install --jobs=1 --locked --force $(as_install "$name_at_version") $@ |& tee _
     - if: \${{ matrix.toolchain != 'stable' }}
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v5
       name: Upload recipe
       with:
         name: $name_at_version.Dockerfile
@@ -360,7 +317,7 @@ $(cache_usage)
       if: \${{ failure() || success() }}
       run: du -sh \$CARGO_TARGET_DIR || true
 
-    - name: Ensure running the same command twice without modifications...
+    - name: 🔵 Ensure running the same command twice without modifications...
       run: |
 $(unset_action_envs)
         env ${envvars[@]} \\
