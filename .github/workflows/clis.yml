@@ -67,7 +67,10 @@ jobs:
         - 1.86.0
     env:
       CARGO_TARGET_DIR: /tmp/clis-buildxargs_master
+      CARGOGREEN_CACHE_FROM_IMAGES: docker-image://localhost:12345/${{ github.repository }}
+      CARGOGREEN_CACHE_TO_IMAGES: docker-image://localhost:23456/${{ github.repository }}
       CARGOGREEN_FINAL_PATH: recipes/buildxargs@master.Dockerfile
+      CARGOGREEN_FINAL_PATH_NONPRIMARY: 1 # dumps on each build call
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
 
@@ -103,6 +106,35 @@ jobs:
     - run: podman version || true
     - run: cargo -Vv
     - run: docker buildx prune --all --force
+
+    - name: Prepare local private registry cache
+      run: |
+        # https://github.com/fenollp/supergreen/actions/caches
+        mkdir -p /tmp/.local-registry
+        mkdir -p /tmp/.local-registry-new
+    - name: 🔵 Restore local private registry cache
+      uses: actions/cache/restore@v4
+      with:
+        path: /tmp/.local-registry
+        # github.run_id: https://github.com/actions/toolkit/issues/658#issuecomment-2640690759
+        key: localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-${{ github.run_id }}
+        restore-keys: |
+          localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-
+          localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-
+          localprivatereg-${{ runner.os }}-
+          localprivatereg-
+
+    - name: Pull regist3 image
+      run: |
+        false \
+        || docker build --tag regist3 - <<<'FROM docker.io/registry:3' \
+        || docker build --tag regist3 - <<<'FROM mirror.gcr.io/registry:3' \
+        || docker build --tag regist3 - <<<'FROM public.ecr.aws/docker/registry:3' \
+        || exit 1
+    - name: Start "cache from" image registry
+      run: docker run --name=reg-from --rm --detach -p 12345:5000 --user $(id -u):$(id -g) -v     /tmp/.local-registry:/var/lib/registry regist3
+    - name: Start "cache to" image registry
+      run: docker run --name=reg-to   --rm --detach -p 23456:5000 --user $(id -u):$(id -g) -v /tmp/.local-registry-new:/var/lib/registry regist3
 
     - name: 🔵 Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
@@ -275,6 +307,25 @@ jobs:
     - if: ${{ failure() }}
       name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
+
+    - name: 🔵 Compare old/new local private registry image digests
+      run: |
+        diff --width=150 -y \
+          <(find /tmp/.local-registry/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print $NF}' | sort -u) \
+          <(find /tmp/.local-registry-new/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print $NF}' | sort -u) || true
+    - name: Local private registry cache dance
+      run: |
+        # [ci: caches keep growing](https://github.com/moby/buildkit/issues/1850)
+        docker stop --timeout 10 reg-from reg-to
+        rm -rf /tmp/.local-registry
+        mv /tmp/.local-registry-new /tmp/.local-registry
+    - name: Save local private registry cache
+      uses: actions/cache/save@v4
+      if: ${{ false }} # TODO: drop when digests are stable
+      with:
+        path: /tmp/.local-registry
+        key: localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-${{ github.run_id }}
+
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
@@ -299,7 +350,10 @@ jobs:
         - 1.86.0
     env:
       CARGO_TARGET_DIR: /tmp/clis-cargo-llvm-cov_0-5-36
+      CARGOGREEN_CACHE_FROM_IMAGES: docker-image://localhost:12345/${{ github.repository }}
+      CARGOGREEN_CACHE_TO_IMAGES: docker-image://localhost:23456/${{ github.repository }}
       CARGOGREEN_FINAL_PATH: recipes/cargo-llvm-cov@0.5.36.Dockerfile
+      CARGOGREEN_FINAL_PATH_NONPRIMARY: 1 # dumps on each build call
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
 
@@ -335,6 +389,35 @@ jobs:
     - run: podman version || true
     - run: cargo -Vv
     - run: docker buildx prune --all --force
+
+    - name: Prepare local private registry cache
+      run: |
+        # https://github.com/fenollp/supergreen/actions/caches
+        mkdir -p /tmp/.local-registry
+        mkdir -p /tmp/.local-registry-new
+    - name: 🔵 Restore local private registry cache
+      uses: actions/cache/restore@v4
+      with:
+        path: /tmp/.local-registry
+        # github.run_id: https://github.com/actions/toolkit/issues/658#issuecomment-2640690759
+        key: localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-${{ github.run_id }}
+        restore-keys: |
+          localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-
+          localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-
+          localprivatereg-${{ runner.os }}-
+          localprivatereg-
+
+    - name: Pull regist3 image
+      run: |
+        false \
+        || docker build --tag regist3 - <<<'FROM docker.io/registry:3' \
+        || docker build --tag regist3 - <<<'FROM mirror.gcr.io/registry:3' \
+        || docker build --tag regist3 - <<<'FROM public.ecr.aws/docker/registry:3' \
+        || exit 1
+    - name: Start "cache from" image registry
+      run: docker run --name=reg-from --rm --detach -p 12345:5000 --user $(id -u):$(id -g) -v     /tmp/.local-registry:/var/lib/registry regist3
+    - name: Start "cache to" image registry
+      run: docker run --name=reg-to   --rm --detach -p 23456:5000 --user $(id -u):$(id -g) -v /tmp/.local-registry-new:/var/lib/registry regist3
 
     - name: 🔵 Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
@@ -507,6 +590,25 @@ jobs:
     - if: ${{ failure() }}
       name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
+
+    - name: 🔵 Compare old/new local private registry image digests
+      run: |
+        diff --width=150 -y \
+          <(find /tmp/.local-registry/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print $NF}' | sort -u) \
+          <(find /tmp/.local-registry-new/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print $NF}' | sort -u) || true
+    - name: Local private registry cache dance
+      run: |
+        # [ci: caches keep growing](https://github.com/moby/buildkit/issues/1850)
+        docker stop --timeout 10 reg-from reg-to
+        rm -rf /tmp/.local-registry
+        mv /tmp/.local-registry-new /tmp/.local-registry
+    - name: Save local private registry cache
+      uses: actions/cache/save@v4
+      if: ${{ false }} # TODO: drop when digests are stable
+      with:
+        path: /tmp/.local-registry
+        key: localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-${{ github.run_id }}
+
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
@@ -531,7 +633,10 @@ jobs:
         - 1.86.0
     env:
       CARGO_TARGET_DIR: /tmp/clis-cross_0-2-5
+      CARGOGREEN_CACHE_FROM_IMAGES: docker-image://localhost:12345/${{ github.repository }}
+      CARGOGREEN_CACHE_TO_IMAGES: docker-image://localhost:23456/${{ github.repository }}
       CARGOGREEN_FINAL_PATH: recipes/cross@0.2.5.Dockerfile
+      CARGOGREEN_FINAL_PATH_NONPRIMARY: 1 # dumps on each build call
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
 
@@ -567,6 +672,35 @@ jobs:
     - run: podman version || true
     - run: cargo -Vv
     - run: docker buildx prune --all --force
+
+    - name: Prepare local private registry cache
+      run: |
+        # https://github.com/fenollp/supergreen/actions/caches
+        mkdir -p /tmp/.local-registry
+        mkdir -p /tmp/.local-registry-new
+    - name: 🔵 Restore local private registry cache
+      uses: actions/cache/restore@v4
+      with:
+        path: /tmp/.local-registry
+        # github.run_id: https://github.com/actions/toolkit/issues/658#issuecomment-2640690759
+        key: localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-${{ github.run_id }}
+        restore-keys: |
+          localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-
+          localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-
+          localprivatereg-${{ runner.os }}-
+          localprivatereg-
+
+    - name: Pull regist3 image
+      run: |
+        false \
+        || docker build --tag regist3 - <<<'FROM docker.io/registry:3' \
+        || docker build --tag regist3 - <<<'FROM mirror.gcr.io/registry:3' \
+        || docker build --tag regist3 - <<<'FROM public.ecr.aws/docker/registry:3' \
+        || exit 1
+    - name: Start "cache from" image registry
+      run: docker run --name=reg-from --rm --detach -p 12345:5000 --user $(id -u):$(id -g) -v     /tmp/.local-registry:/var/lib/registry regist3
+    - name: Start "cache to" image registry
+      run: docker run --name=reg-to   --rm --detach -p 23456:5000 --user $(id -u):$(id -g) -v /tmp/.local-registry-new:/var/lib/registry regist3
 
     - name: 🔵 Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
@@ -739,6 +873,25 @@ jobs:
     - if: ${{ failure() }}
       name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
+
+    - name: 🔵 Compare old/new local private registry image digests
+      run: |
+        diff --width=150 -y \
+          <(find /tmp/.local-registry/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print $NF}' | sort -u) \
+          <(find /tmp/.local-registry-new/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print $NF}' | sort -u) || true
+    - name: Local private registry cache dance
+      run: |
+        # [ci: caches keep growing](https://github.com/moby/buildkit/issues/1850)
+        docker stop --timeout 10 reg-from reg-to
+        rm -rf /tmp/.local-registry
+        mv /tmp/.local-registry-new /tmp/.local-registry
+    - name: Save local private registry cache
+      uses: actions/cache/save@v4
+      if: ${{ false }} # TODO: drop when digests are stable
+      with:
+        path: /tmp/.local-registry
+        key: localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-${{ github.run_id }}
+
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
@@ -763,7 +916,10 @@ jobs:
         - 1.86.0
     env:
       CARGO_TARGET_DIR: /tmp/clis-dbcc_2-2-1
+      CARGOGREEN_CACHE_FROM_IMAGES: docker-image://localhost:12345/${{ github.repository }}
+      CARGOGREEN_CACHE_TO_IMAGES: docker-image://localhost:23456/${{ github.repository }}
       CARGOGREEN_FINAL_PATH: recipes/dbcc@2.2.1.Dockerfile
+      CARGOGREEN_FINAL_PATH_NONPRIMARY: 1 # dumps on each build call
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
 
@@ -799,6 +955,35 @@ jobs:
     - run: podman version || true
     - run: cargo -Vv
     - run: docker buildx prune --all --force
+
+    - name: Prepare local private registry cache
+      run: |
+        # https://github.com/fenollp/supergreen/actions/caches
+        mkdir -p /tmp/.local-registry
+        mkdir -p /tmp/.local-registry-new
+    - name: 🔵 Restore local private registry cache
+      uses: actions/cache/restore@v4
+      with:
+        path: /tmp/.local-registry
+        # github.run_id: https://github.com/actions/toolkit/issues/658#issuecomment-2640690759
+        key: localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-${{ github.run_id }}
+        restore-keys: |
+          localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-
+          localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-
+          localprivatereg-${{ runner.os }}-
+          localprivatereg-
+
+    - name: Pull regist3 image
+      run: |
+        false \
+        || docker build --tag regist3 - <<<'FROM docker.io/registry:3' \
+        || docker build --tag regist3 - <<<'FROM mirror.gcr.io/registry:3' \
+        || docker build --tag regist3 - <<<'FROM public.ecr.aws/docker/registry:3' \
+        || exit 1
+    - name: Start "cache from" image registry
+      run: docker run --name=reg-from --rm --detach -p 12345:5000 --user $(id -u):$(id -g) -v     /tmp/.local-registry:/var/lib/registry regist3
+    - name: Start "cache to" image registry
+      run: docker run --name=reg-to   --rm --detach -p 23456:5000 --user $(id -u):$(id -g) -v /tmp/.local-registry-new:/var/lib/registry regist3
 
     - name: 🔵 Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
@@ -971,6 +1156,25 @@ jobs:
     - if: ${{ failure() }}
       name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
+
+    - name: 🔵 Compare old/new local private registry image digests
+      run: |
+        diff --width=150 -y \
+          <(find /tmp/.local-registry/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print $NF}' | sort -u) \
+          <(find /tmp/.local-registry-new/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print $NF}' | sort -u) || true
+    - name: Local private registry cache dance
+      run: |
+        # [ci: caches keep growing](https://github.com/moby/buildkit/issues/1850)
+        docker stop --timeout 10 reg-from reg-to
+        rm -rf /tmp/.local-registry
+        mv /tmp/.local-registry-new /tmp/.local-registry
+    - name: Save local private registry cache
+      uses: actions/cache/save@v4
+      if: ${{ false }} # TODO: drop when digests are stable
+      with:
+        path: /tmp/.local-registry
+        key: localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-${{ github.run_id }}
+
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
@@ -995,7 +1199,10 @@ jobs:
         - 1.86.0
     env:
       CARGO_TARGET_DIR: /tmp/clis-diesel_cli_2-3-2
+      CARGOGREEN_CACHE_FROM_IMAGES: docker-image://localhost:12345/${{ github.repository }}
+      CARGOGREEN_CACHE_TO_IMAGES: docker-image://localhost:23456/${{ github.repository }}
       CARGOGREEN_FINAL_PATH: recipes/diesel_cli@2.3.2.Dockerfile
+      CARGOGREEN_FINAL_PATH_NONPRIMARY: 1 # dumps on each build call
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
 
@@ -1031,6 +1238,35 @@ jobs:
     - run: podman version || true
     - run: cargo -Vv
     - run: docker buildx prune --all --force
+
+    - name: Prepare local private registry cache
+      run: |
+        # https://github.com/fenollp/supergreen/actions/caches
+        mkdir -p /tmp/.local-registry
+        mkdir -p /tmp/.local-registry-new
+    - name: 🔵 Restore local private registry cache
+      uses: actions/cache/restore@v4
+      with:
+        path: /tmp/.local-registry
+        # github.run_id: https://github.com/actions/toolkit/issues/658#issuecomment-2640690759
+        key: localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-${{ github.run_id }}
+        restore-keys: |
+          localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-
+          localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-
+          localprivatereg-${{ runner.os }}-
+          localprivatereg-
+
+    - name: Pull regist3 image
+      run: |
+        false \
+        || docker build --tag regist3 - <<<'FROM docker.io/registry:3' \
+        || docker build --tag regist3 - <<<'FROM mirror.gcr.io/registry:3' \
+        || docker build --tag regist3 - <<<'FROM public.ecr.aws/docker/registry:3' \
+        || exit 1
+    - name: Start "cache from" image registry
+      run: docker run --name=reg-from --rm --detach -p 12345:5000 --user $(id -u):$(id -g) -v     /tmp/.local-registry:/var/lib/registry regist3
+    - name: Start "cache to" image registry
+      run: docker run --name=reg-to   --rm --detach -p 23456:5000 --user $(id -u):$(id -g) -v /tmp/.local-registry-new:/var/lib/registry regist3
 
     - name: 🔵 Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
@@ -1203,6 +1439,25 @@ jobs:
     - if: ${{ failure() }}
       name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
+
+    - name: 🔵 Compare old/new local private registry image digests
+      run: |
+        diff --width=150 -y \
+          <(find /tmp/.local-registry/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print $NF}' | sort -u) \
+          <(find /tmp/.local-registry-new/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print $NF}' | sort -u) || true
+    - name: Local private registry cache dance
+      run: |
+        # [ci: caches keep growing](https://github.com/moby/buildkit/issues/1850)
+        docker stop --timeout 10 reg-from reg-to
+        rm -rf /tmp/.local-registry
+        mv /tmp/.local-registry-new /tmp/.local-registry
+    - name: Save local private registry cache
+      uses: actions/cache/save@v4
+      if: ${{ false }} # TODO: drop when digests are stable
+      with:
+        path: /tmp/.local-registry
+        key: localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-${{ github.run_id }}
+
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
@@ -1227,7 +1482,10 @@ jobs:
         - 1.86.0
     env:
       CARGO_TARGET_DIR: /tmp/clis-hickory-dns_0-25-0-alpha-1
+      CARGOGREEN_CACHE_FROM_IMAGES: docker-image://localhost:12345/${{ github.repository }}
+      CARGOGREEN_CACHE_TO_IMAGES: docker-image://localhost:23456/${{ github.repository }}
       CARGOGREEN_FINAL_PATH: recipes/hickory-dns@0.25.0-alpha.1.Dockerfile
+      CARGOGREEN_FINAL_PATH_NONPRIMARY: 1 # dumps on each build call
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
 
@@ -1263,6 +1521,35 @@ jobs:
     - run: podman version || true
     - run: cargo -Vv
     - run: docker buildx prune --all --force
+
+    - name: Prepare local private registry cache
+      run: |
+        # https://github.com/fenollp/supergreen/actions/caches
+        mkdir -p /tmp/.local-registry
+        mkdir -p /tmp/.local-registry-new
+    - name: 🔵 Restore local private registry cache
+      uses: actions/cache/restore@v4
+      with:
+        path: /tmp/.local-registry
+        # github.run_id: https://github.com/actions/toolkit/issues/658#issuecomment-2640690759
+        key: localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-${{ github.run_id }}
+        restore-keys: |
+          localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-
+          localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-
+          localprivatereg-${{ runner.os }}-
+          localprivatereg-
+
+    - name: Pull regist3 image
+      run: |
+        false \
+        || docker build --tag regist3 - <<<'FROM docker.io/registry:3' \
+        || docker build --tag regist3 - <<<'FROM mirror.gcr.io/registry:3' \
+        || docker build --tag regist3 - <<<'FROM public.ecr.aws/docker/registry:3' \
+        || exit 1
+    - name: Start "cache from" image registry
+      run: docker run --name=reg-from --rm --detach -p 12345:5000 --user $(id -u):$(id -g) -v     /tmp/.local-registry:/var/lib/registry regist3
+    - name: Start "cache to" image registry
+      run: docker run --name=reg-to   --rm --detach -p 23456:5000 --user $(id -u):$(id -g) -v /tmp/.local-registry-new:/var/lib/registry regist3
 
     - name: 🔵 Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
@@ -1435,6 +1722,25 @@ jobs:
     - if: ${{ failure() }}
       name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
+
+    - name: 🔵 Compare old/new local private registry image digests
+      run: |
+        diff --width=150 -y \
+          <(find /tmp/.local-registry/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print $NF}' | sort -u) \
+          <(find /tmp/.local-registry-new/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print $NF}' | sort -u) || true
+    - name: Local private registry cache dance
+      run: |
+        # [ci: caches keep growing](https://github.com/moby/buildkit/issues/1850)
+        docker stop --timeout 10 reg-from reg-to
+        rm -rf /tmp/.local-registry
+        mv /tmp/.local-registry-new /tmp/.local-registry
+    - name: Save local private registry cache
+      uses: actions/cache/save@v4
+      if: ${{ false }} # TODO: drop when digests are stable
+      with:
+        path: /tmp/.local-registry
+        key: localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-${{ github.run_id }}
+
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
@@ -1459,7 +1765,10 @@ jobs:
         - 1.86.0
     env:
       CARGO_TARGET_DIR: /tmp/clis-mussh_3-1-3
+      CARGOGREEN_CACHE_FROM_IMAGES: docker-image://localhost:12345/${{ github.repository }}
+      CARGOGREEN_CACHE_TO_IMAGES: docker-image://localhost:23456/${{ github.repository }}
       CARGOGREEN_FINAL_PATH: recipes/mussh@3.1.3.Dockerfile
+      CARGOGREEN_FINAL_PATH_NONPRIMARY: 1 # dumps on each build call
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
 
@@ -1495,6 +1804,35 @@ jobs:
     - run: podman version || true
     - run: cargo -Vv
     - run: docker buildx prune --all --force
+
+    - name: Prepare local private registry cache
+      run: |
+        # https://github.com/fenollp/supergreen/actions/caches
+        mkdir -p /tmp/.local-registry
+        mkdir -p /tmp/.local-registry-new
+    - name: 🔵 Restore local private registry cache
+      uses: actions/cache/restore@v4
+      with:
+        path: /tmp/.local-registry
+        # github.run_id: https://github.com/actions/toolkit/issues/658#issuecomment-2640690759
+        key: localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-${{ github.run_id }}
+        restore-keys: |
+          localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-
+          localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-
+          localprivatereg-${{ runner.os }}-
+          localprivatereg-
+
+    - name: Pull regist3 image
+      run: |
+        false \
+        || docker build --tag regist3 - <<<'FROM docker.io/registry:3' \
+        || docker build --tag regist3 - <<<'FROM mirror.gcr.io/registry:3' \
+        || docker build --tag regist3 - <<<'FROM public.ecr.aws/docker/registry:3' \
+        || exit 1
+    - name: Start "cache from" image registry
+      run: docker run --name=reg-from --rm --detach -p 12345:5000 --user $(id -u):$(id -g) -v     /tmp/.local-registry:/var/lib/registry regist3
+    - name: Start "cache to" image registry
+      run: docker run --name=reg-to   --rm --detach -p 23456:5000 --user $(id -u):$(id -g) -v /tmp/.local-registry-new:/var/lib/registry regist3
 
     - name: 🔵 Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
@@ -1667,6 +2005,25 @@ jobs:
     - if: ${{ failure() }}
       name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
+
+    - name: 🔵 Compare old/new local private registry image digests
+      run: |
+        diff --width=150 -y \
+          <(find /tmp/.local-registry/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print $NF}' | sort -u) \
+          <(find /tmp/.local-registry-new/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print $NF}' | sort -u) || true
+    - name: Local private registry cache dance
+      run: |
+        # [ci: caches keep growing](https://github.com/moby/buildkit/issues/1850)
+        docker stop --timeout 10 reg-from reg-to
+        rm -rf /tmp/.local-registry
+        mv /tmp/.local-registry-new /tmp/.local-registry
+    - name: Save local private registry cache
+      uses: actions/cache/save@v4
+      if: ${{ false }} # TODO: drop when digests are stable
+      with:
+        path: /tmp/.local-registry
+        key: localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-${{ github.run_id }}
+
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
@@ -1691,7 +2048,10 @@ jobs:
         - 1.86.0
     env:
       CARGO_TARGET_DIR: /tmp/clis-ntpd_1-2-3
+      CARGOGREEN_CACHE_FROM_IMAGES: docker-image://localhost:12345/${{ github.repository }}
+      CARGOGREEN_CACHE_TO_IMAGES: docker-image://localhost:23456/${{ github.repository }}
       CARGOGREEN_FINAL_PATH: recipes/ntpd@1.2.3.Dockerfile
+      CARGOGREEN_FINAL_PATH_NONPRIMARY: 1 # dumps on each build call
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
       NTPD_RS_GIT_REV: c7945250c378f65f65b2a75748132edf75063b3b
@@ -1728,6 +2088,35 @@ jobs:
     - run: podman version || true
     - run: cargo -Vv
     - run: docker buildx prune --all --force
+
+    - name: Prepare local private registry cache
+      run: |
+        # https://github.com/fenollp/supergreen/actions/caches
+        mkdir -p /tmp/.local-registry
+        mkdir -p /tmp/.local-registry-new
+    - name: 🔵 Restore local private registry cache
+      uses: actions/cache/restore@v4
+      with:
+        path: /tmp/.local-registry
+        # github.run_id: https://github.com/actions/toolkit/issues/658#issuecomment-2640690759
+        key: localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-${{ github.run_id }}
+        restore-keys: |
+          localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-
+          localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-
+          localprivatereg-${{ runner.os }}-
+          localprivatereg-
+
+    - name: Pull regist3 image
+      run: |
+        false \
+        || docker build --tag regist3 - <<<'FROM docker.io/registry:3' \
+        || docker build --tag regist3 - <<<'FROM mirror.gcr.io/registry:3' \
+        || docker build --tag regist3 - <<<'FROM public.ecr.aws/docker/registry:3' \
+        || exit 1
+    - name: Start "cache from" image registry
+      run: docker run --name=reg-from --rm --detach -p 12345:5000 --user $(id -u):$(id -g) -v     /tmp/.local-registry:/var/lib/registry regist3
+    - name: Start "cache to" image registry
+      run: docker run --name=reg-to   --rm --detach -p 23456:5000 --user $(id -u):$(id -g) -v /tmp/.local-registry-new:/var/lib/registry regist3
 
     - name: 🔵 Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
@@ -1900,6 +2289,25 @@ jobs:
     - if: ${{ failure() }}
       name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
+
+    - name: 🔵 Compare old/new local private registry image digests
+      run: |
+        diff --width=150 -y \
+          <(find /tmp/.local-registry/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print $NF}' | sort -u) \
+          <(find /tmp/.local-registry-new/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print $NF}' | sort -u) || true
+    - name: Local private registry cache dance
+      run: |
+        # [ci: caches keep growing](https://github.com/moby/buildkit/issues/1850)
+        docker stop --timeout 10 reg-from reg-to
+        rm -rf /tmp/.local-registry
+        mv /tmp/.local-registry-new /tmp/.local-registry
+    - name: Save local private registry cache
+      uses: actions/cache/save@v4
+      if: ${{ false }} # TODO: drop when digests are stable
+      with:
+        path: /tmp/.local-registry
+        key: localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-${{ github.run_id }}
+
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
@@ -1924,7 +2332,10 @@ jobs:
         - 1.86.0
     env:
       CARGO_TARGET_DIR: /tmp/clis-qcow2-rs_0-1-2
+      CARGOGREEN_CACHE_FROM_IMAGES: docker-image://localhost:12345/${{ github.repository }}
+      CARGOGREEN_CACHE_TO_IMAGES: docker-image://localhost:23456/${{ github.repository }}
       CARGOGREEN_FINAL_PATH: recipes/qcow2-rs@0.1.2.Dockerfile
+      CARGOGREEN_FINAL_PATH_NONPRIMARY: 1 # dumps on each build call
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
 
@@ -1960,6 +2371,35 @@ jobs:
     - run: podman version || true
     - run: cargo -Vv
     - run: docker buildx prune --all --force
+
+    - name: Prepare local private registry cache
+      run: |
+        # https://github.com/fenollp/supergreen/actions/caches
+        mkdir -p /tmp/.local-registry
+        mkdir -p /tmp/.local-registry-new
+    - name: 🔵 Restore local private registry cache
+      uses: actions/cache/restore@v4
+      with:
+        path: /tmp/.local-registry
+        # github.run_id: https://github.com/actions/toolkit/issues/658#issuecomment-2640690759
+        key: localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-${{ github.run_id }}
+        restore-keys: |
+          localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-
+          localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-
+          localprivatereg-${{ runner.os }}-
+          localprivatereg-
+
+    - name: Pull regist3 image
+      run: |
+        false \
+        || docker build --tag regist3 - <<<'FROM docker.io/registry:3' \
+        || docker build --tag regist3 - <<<'FROM mirror.gcr.io/registry:3' \
+        || docker build --tag regist3 - <<<'FROM public.ecr.aws/docker/registry:3' \
+        || exit 1
+    - name: Start "cache from" image registry
+      run: docker run --name=reg-from --rm --detach -p 12345:5000 --user $(id -u):$(id -g) -v     /tmp/.local-registry:/var/lib/registry regist3
+    - name: Start "cache to" image registry
+      run: docker run --name=reg-to   --rm --detach -p 23456:5000 --user $(id -u):$(id -g) -v /tmp/.local-registry-new:/var/lib/registry regist3
 
     - name: 🔵 Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
@@ -2132,6 +2572,25 @@ jobs:
     - if: ${{ failure() }}
       name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
+
+    - name: 🔵 Compare old/new local private registry image digests
+      run: |
+        diff --width=150 -y \
+          <(find /tmp/.local-registry/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print $NF}' | sort -u) \
+          <(find /tmp/.local-registry-new/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print $NF}' | sort -u) || true
+    - name: Local private registry cache dance
+      run: |
+        # [ci: caches keep growing](https://github.com/moby/buildkit/issues/1850)
+        docker stop --timeout 10 reg-from reg-to
+        rm -rf /tmp/.local-registry
+        mv /tmp/.local-registry-new /tmp/.local-registry
+    - name: Save local private registry cache
+      uses: actions/cache/save@v4
+      if: ${{ false }} # TODO: drop when digests are stable
+      with:
+        path: /tmp/.local-registry
+        key: localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-${{ github.run_id }}
+
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
@@ -2156,7 +2615,10 @@ jobs:
         - 1.86.0
     env:
       CARGO_TARGET_DIR: /tmp/clis-ripgrep_14-1-0
+      CARGOGREEN_CACHE_FROM_IMAGES: docker-image://localhost:12345/${{ github.repository }}
+      CARGOGREEN_CACHE_TO_IMAGES: docker-image://localhost:23456/${{ github.repository }}
       CARGOGREEN_FINAL_PATH: recipes/ripgrep@14.1.0.Dockerfile
+      CARGOGREEN_FINAL_PATH_NONPRIMARY: 1 # dumps on each build call
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
 
@@ -2192,6 +2654,35 @@ jobs:
     - run: podman version || true
     - run: cargo -Vv
     - run: docker buildx prune --all --force
+
+    - name: Prepare local private registry cache
+      run: |
+        # https://github.com/fenollp/supergreen/actions/caches
+        mkdir -p /tmp/.local-registry
+        mkdir -p /tmp/.local-registry-new
+    - name: 🔵 Restore local private registry cache
+      uses: actions/cache/restore@v4
+      with:
+        path: /tmp/.local-registry
+        # github.run_id: https://github.com/actions/toolkit/issues/658#issuecomment-2640690759
+        key: localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-${{ github.run_id }}
+        restore-keys: |
+          localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-
+          localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-
+          localprivatereg-${{ runner.os }}-
+          localprivatereg-
+
+    - name: Pull regist3 image
+      run: |
+        false \
+        || docker build --tag regist3 - <<<'FROM docker.io/registry:3' \
+        || docker build --tag regist3 - <<<'FROM mirror.gcr.io/registry:3' \
+        || docker build --tag regist3 - <<<'FROM public.ecr.aws/docker/registry:3' \
+        || exit 1
+    - name: Start "cache from" image registry
+      run: docker run --name=reg-from --rm --detach -p 12345:5000 --user $(id -u):$(id -g) -v     /tmp/.local-registry:/var/lib/registry regist3
+    - name: Start "cache to" image registry
+      run: docker run --name=reg-to   --rm --detach -p 23456:5000 --user $(id -u):$(id -g) -v /tmp/.local-registry-new:/var/lib/registry regist3
 
     - name: 🔵 Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
@@ -2364,6 +2855,25 @@ jobs:
     - if: ${{ failure() }}
       name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
+
+    - name: 🔵 Compare old/new local private registry image digests
+      run: |
+        diff --width=150 -y \
+          <(find /tmp/.local-registry/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print $NF}' | sort -u) \
+          <(find /tmp/.local-registry-new/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print $NF}' | sort -u) || true
+    - name: Local private registry cache dance
+      run: |
+        # [ci: caches keep growing](https://github.com/moby/buildkit/issues/1850)
+        docker stop --timeout 10 reg-from reg-to
+        rm -rf /tmp/.local-registry
+        mv /tmp/.local-registry-new /tmp/.local-registry
+    - name: Save local private registry cache
+      uses: actions/cache/save@v4
+      if: ${{ false }} # TODO: drop when digests are stable
+      with:
+        path: /tmp/.local-registry
+        key: localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-${{ github.run_id }}
+
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
@@ -2388,7 +2898,10 @@ jobs:
         - 1.86.0
     env:
       CARGO_TARGET_DIR: /tmp/clis-rublk_0-2-0
+      CARGOGREEN_CACHE_FROM_IMAGES: docker-image://localhost:12345/${{ github.repository }}
+      CARGOGREEN_CACHE_TO_IMAGES: docker-image://localhost:23456/${{ github.repository }}
       CARGOGREEN_FINAL_PATH: recipes/rublk@0.2.0.Dockerfile
+      CARGOGREEN_FINAL_PATH_NONPRIMARY: 1 # dumps on each build call
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
 
@@ -2424,6 +2937,35 @@ jobs:
     - run: podman version || true
     - run: cargo -Vv
     - run: docker buildx prune --all --force
+
+    - name: Prepare local private registry cache
+      run: |
+        # https://github.com/fenollp/supergreen/actions/caches
+        mkdir -p /tmp/.local-registry
+        mkdir -p /tmp/.local-registry-new
+    - name: 🔵 Restore local private registry cache
+      uses: actions/cache/restore@v4
+      with:
+        path: /tmp/.local-registry
+        # github.run_id: https://github.com/actions/toolkit/issues/658#issuecomment-2640690759
+        key: localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-${{ github.run_id }}
+        restore-keys: |
+          localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-
+          localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-
+          localprivatereg-${{ runner.os }}-
+          localprivatereg-
+
+    - name: Pull regist3 image
+      run: |
+        false \
+        || docker build --tag regist3 - <<<'FROM docker.io/registry:3' \
+        || docker build --tag regist3 - <<<'FROM mirror.gcr.io/registry:3' \
+        || docker build --tag regist3 - <<<'FROM public.ecr.aws/docker/registry:3' \
+        || exit 1
+    - name: Start "cache from" image registry
+      run: docker run --name=reg-from --rm --detach -p 12345:5000 --user $(id -u):$(id -g) -v     /tmp/.local-registry:/var/lib/registry regist3
+    - name: Start "cache to" image registry
+      run: docker run --name=reg-to   --rm --detach -p 23456:5000 --user $(id -u):$(id -g) -v /tmp/.local-registry-new:/var/lib/registry regist3
 
     - name: 🔵 Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
@@ -2596,6 +3138,25 @@ jobs:
     - if: ${{ failure() }}
       name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
+
+    - name: 🔵 Compare old/new local private registry image digests
+      run: |
+        diff --width=150 -y \
+          <(find /tmp/.local-registry/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print $NF}' | sort -u) \
+          <(find /tmp/.local-registry-new/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print $NF}' | sort -u) || true
+    - name: Local private registry cache dance
+      run: |
+        # [ci: caches keep growing](https://github.com/moby/buildkit/issues/1850)
+        docker stop --timeout 10 reg-from reg-to
+        rm -rf /tmp/.local-registry
+        mv /tmp/.local-registry-new /tmp/.local-registry
+    - name: Save local private registry cache
+      uses: actions/cache/save@v4
+      if: ${{ false }} # TODO: drop when digests are stable
+      with:
+        path: /tmp/.local-registry
+        key: localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-${{ github.run_id }}
+
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
@@ -2620,7 +3181,10 @@ jobs:
         - 1.86.0
     env:
       CARGO_TARGET_DIR: /tmp/clis-vixargs_0-1-0
+      CARGOGREEN_CACHE_FROM_IMAGES: docker-image://localhost:12345/${{ github.repository }}
+      CARGOGREEN_CACHE_TO_IMAGES: docker-image://localhost:23456/${{ github.repository }}
       CARGOGREEN_FINAL_PATH: recipes/vixargs@0.1.0.Dockerfile
+      CARGOGREEN_FINAL_PATH_NONPRIMARY: 1 # dumps on each build call
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
 
@@ -2656,6 +3220,35 @@ jobs:
     - run: podman version || true
     - run: cargo -Vv
     - run: docker buildx prune --all --force
+
+    - name: Prepare local private registry cache
+      run: |
+        # https://github.com/fenollp/supergreen/actions/caches
+        mkdir -p /tmp/.local-registry
+        mkdir -p /tmp/.local-registry-new
+    - name: 🔵 Restore local private registry cache
+      uses: actions/cache/restore@v4
+      with:
+        path: /tmp/.local-registry
+        # github.run_id: https://github.com/actions/toolkit/issues/658#issuecomment-2640690759
+        key: localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-${{ github.run_id }}
+        restore-keys: |
+          localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-
+          localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-
+          localprivatereg-${{ runner.os }}-
+          localprivatereg-
+
+    - name: Pull regist3 image
+      run: |
+        false \
+        || docker build --tag regist3 - <<<'FROM docker.io/registry:3' \
+        || docker build --tag regist3 - <<<'FROM mirror.gcr.io/registry:3' \
+        || docker build --tag regist3 - <<<'FROM public.ecr.aws/docker/registry:3' \
+        || exit 1
+    - name: Start "cache from" image registry
+      run: docker run --name=reg-from --rm --detach -p 12345:5000 --user $(id -u):$(id -g) -v     /tmp/.local-registry:/var/lib/registry regist3
+    - name: Start "cache to" image registry
+      run: docker run --name=reg-to   --rm --detach -p 23456:5000 --user $(id -u):$(id -g) -v /tmp/.local-registry-new:/var/lib/registry regist3
 
     - name: 🔵 Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
@@ -2828,6 +3421,25 @@ jobs:
     - if: ${{ failure() }}
       name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
+
+    - name: 🔵 Compare old/new local private registry image digests
+      run: |
+        diff --width=150 -y \
+          <(find /tmp/.local-registry/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print $NF}' | sort -u) \
+          <(find /tmp/.local-registry-new/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print $NF}' | sort -u) || true
+    - name: Local private registry cache dance
+      run: |
+        # [ci: caches keep growing](https://github.com/moby/buildkit/issues/1850)
+        docker stop --timeout 10 reg-from reg-to
+        rm -rf /tmp/.local-registry
+        mv /tmp/.local-registry-new /tmp/.local-registry
+    - name: Save local private registry cache
+      uses: actions/cache/save@v4
+      if: ${{ false }} # TODO: drop when digests are stable
+      with:
+        path: /tmp/.local-registry
+        key: localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-${{ github.run_id }}
+
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
@@ -2852,7 +3464,10 @@ jobs:
         - 1.86.0
     env:
       CARGO_TARGET_DIR: /tmp/clis-cargo-config2_0-1-34
+      CARGOGREEN_CACHE_FROM_IMAGES: docker-image://localhost:12345/${{ github.repository }}
+      CARGOGREEN_CACHE_TO_IMAGES: docker-image://localhost:23456/${{ github.repository }}
       CARGOGREEN_FINAL_PATH: recipes/cargo-config2@0.1.34.Dockerfile
+      CARGOGREEN_FINAL_PATH_NONPRIMARY: 1 # dumps on each build call
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
 
@@ -2888,6 +3503,35 @@ jobs:
     - run: podman version || true
     - run: cargo -Vv
     - run: docker buildx prune --all --force
+
+    - name: Prepare local private registry cache
+      run: |
+        # https://github.com/fenollp/supergreen/actions/caches
+        mkdir -p /tmp/.local-registry
+        mkdir -p /tmp/.local-registry-new
+    - name: 🔵 Restore local private registry cache
+      uses: actions/cache/restore@v4
+      with:
+        path: /tmp/.local-registry
+        # github.run_id: https://github.com/actions/toolkit/issues/658#issuecomment-2640690759
+        key: localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-${{ github.run_id }}
+        restore-keys: |
+          localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-
+          localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-
+          localprivatereg-${{ runner.os }}-
+          localprivatereg-
+
+    - name: Pull regist3 image
+      run: |
+        false \
+        || docker build --tag regist3 - <<<'FROM docker.io/registry:3' \
+        || docker build --tag regist3 - <<<'FROM mirror.gcr.io/registry:3' \
+        || docker build --tag regist3 - <<<'FROM public.ecr.aws/docker/registry:3' \
+        || exit 1
+    - name: Start "cache from" image registry
+      run: docker run --name=reg-from --rm --detach -p 12345:5000 --user $(id -u):$(id -g) -v     /tmp/.local-registry:/var/lib/registry regist3
+    - name: Start "cache to" image registry
+      run: docker run --name=reg-to   --rm --detach -p 23456:5000 --user $(id -u):$(id -g) -v /tmp/.local-registry-new:/var/lib/registry regist3
 
     - name: 🔵 Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
@@ -3060,238 +3704,25 @@ jobs:
     - if: ${{ failure() }}
       name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
-    - run: sudo du -sh /var/lib/docker || true
-    - run: docker system df
-    - run: docker system df --verbose
-    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
-    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
-    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
 
-    - name: Target dir disk usage
-      if: ${{ failure() || success() }}
-      run: du -sh $CARGO_TARGET_DIR || true
-
-  cargo-udeps_0-1-55_3:
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        shell: bash -euo pipefail {0}
-    continue-on-error: ${{ matrix.toolchain != '1.90.0' }}
-    strategy:
-      matrix:
-        toolchain:
-        - 1.90.0
-        - 1.86.0
-    env:
-      CARGO_TARGET_DIR: /tmp/clis-cargo-udeps_0-1-55
-      CARGOGREEN_FINAL_PATH: recipes/cargo-udeps@0.1.55.Dockerfile
-      CARGOGREEN_LOG: trace
-      CARGOGREEN_LOG_PATH: logs.txt
-
-    needs: bin
-    steps:
-    - uses: docker/login-action@v3
-      if: ${{ ! startsWith(github.ref, 'refs/heads/dependabot/') }}
+    - name: 🔵 Compare old/new local private registry image digests
+      run: |
+        diff --width=150 -y \
+          <(find /tmp/.local-registry/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print $NF}' | sort -u) \
+          <(find /tmp/.local-registry-new/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print $NF}' | sort -u) || true
+    - name: Local private registry cache dance
+      run: |
+        # [ci: caches keep growing](https://github.com/moby/buildkit/issues/1850)
+        docker stop --timeout 10 reg-from reg-to
+        rm -rf /tmp/.local-registry
+        mv /tmp/.local-registry-new /tmp/.local-registry
+    - name: Save local private registry cache
+      uses: actions/cache/save@v4
+      if: ${{ false }} # TODO: drop when digests are stable
       with:
-        username: ${{ vars.DOCKERHUB_USERNAME }}
-        password: ${{ secrets.DOCKERHUB_TOKEN }}
-    - uses: actions-rust-lang/setup-rust-toolchain@v1
-      with:
-        toolchain: ${{ matrix.toolchain }}
-        rustflags: ''
-        cache-on-failure: true
+        path: /tmp/.local-registry
+        key: localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-${{ github.run_id }}
 
-
-    - name: Retrieve saved bin
-      uses: actions/download-artifact@v6
-      with:
-        name: cargo-green
-
-    - name: Install saved bin
-      shell: bash -eu {0}
-      run: | # TODO: whence https://github.com/actions/download-artifact/issues/236
-        chmod +x ./cargo-green
-        { ! ./cargo-green --version ; } | grep cargo-green
-        mv ./cargo-green ~/.cargo/bin/
-    - uses: actions/checkout@v5
-    - run: docker info
-    - run: docker buildx version
-    - run: docker buildx build --help
-    - run: podman version || true
-    - run: cargo -Vv
-    - run: docker buildx prune --all --force
-
-    - name: 🔵 Envs
-      run: ~/.cargo/bin/cargo-green green supergreen env
-    - if: ${{ matrix.toolchain != '1.90.0' }}
-      run: ~/.cargo/bin/cargo-green green supergreen env CARGOGREEN_BASE_IMAGE | grep '${{ matrix.toolchain }}'
-    - run: ~/.cargo/bin/cargo-green green supergreen builder
-    - name: 🔵 Envs again
-      run: ~/.cargo/bin/cargo-green green supergreen env
-
-    - run: sudo du -sh /var/lib/docker || true
-    - run: docker system df
-    - run: docker system df --verbose
-    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
-    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
-    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
-    - name: 🔵 cargo install net=ON cache=OFF remote=OFF jobs=3
-      run: |
-        unset CARGO_INCREMENTAL
-        unset CARGO_PROFILE_DEV_DEBUG
-        unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
-        unset CARGO_TERM_COLOR
-        unset CARGO_UNSTABLE_SPARSE_REGISTRY
-        env CARGOGREEN_ADD_APT=libssl-dev,zlib1g-dev \
-          cargo green -vv install --jobs=3 --locked --force cargo-udeps@0.1.55  |& tee _
-    - name: 🔵 cargo install net=ON cache=ON remote=OFF jobs=1
-      if: ${{ failure() }}
-      run: |
-        rm _ || true
-        unset CARGO_INCREMENTAL
-        unset CARGO_PROFILE_DEV_DEBUG
-        unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
-        unset CARGO_TERM_COLOR
-        unset CARGO_UNSTABLE_SPARSE_REGISTRY
-        env CARGOGREEN_ADD_APT=libssl-dev,zlib1g-dev \
-          cargo green -vv install --jobs=1 --locked --force cargo-udeps@0.1.55  |& tee _
-    - if: ${{ matrix.toolchain != '1.90.0' }}
-      uses: actions/upload-artifact@v5
-      name: Upload recipe
-      with:
-        name: cargo-udeps@0.1.55.Dockerfile
-        path: ${{ env.CARGOGREEN_FINAL_PATH }}
-    - if: ${{ always() }}
-      name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
-      run: |
-        ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
-
-    - if: ${{ always() }}
-      name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
-      run: |
-        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
-
-    - if: ${{ always() }}
-      name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
-      run: |
-        ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
-
-    - if: ${{ always() }}
-      name: 🔴 =means=> there's some panic!s
-      run: |
-        ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
-
-    - if: ${{ always() }}
-      name: 🔴 =means=> there's some BUGs
-      run: |
-        ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
-
-    - if: ${{ always() }}
-      name: 🔴 =means=> here's cargo's error text
-      run: |
-        ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
-
-    - if: ${{ always() }}
-      name: 🔴 =means=> 429 Too Many Requests
-      run: |
-        ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
-
-    - if: ${{ always() }}
-      name: 🔴 =means=> here's relevant logs
-      run: |
-        ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
-
-    - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != '1.90.0' }}
-      name: 🌀 Maybe show final path diff
-      run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
-        git --no-pager diff --exit-code           --ignore-matching-lines='^# Generated by'           --ignore-matching-lines=' AS rust-base$'           --ignore-matching-lines='^# syntax=docker.io/docker/dockerfile:1@'           --ignore-matching-lines="^##     '\{"           -- $CARGOGREEN_FINAL_PATH
-
-    - if: ${{ failure() }}
-      name: 🌀 cargo-green logs
-      run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
-    - run: sudo du -sh /var/lib/docker || true
-    - run: docker system df
-    - run: docker system df --verbose
-    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
-    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
-    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
-
-    - name: Target dir disk usage
-      if: ${{ failure() || success() }}
-      run: du -sh $CARGO_TARGET_DIR || true
-
-    - name: 🔵 Ensure running the same command twice without modifications...
-      run: |
-        unset CARGO_INCREMENTAL
-        unset CARGO_PROFILE_DEV_DEBUG
-        unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
-        unset CARGO_TERM_COLOR
-        unset CARGO_UNSTABLE_SPARSE_REGISTRY
-        env CARGOGREEN_ADD_APT=libssl-dev,zlib1g-dev \
-          cargo green -vv install --jobs=3 --locked --force cargo-udeps@0.1.55  |& tee _
-    - name: ...doesn't recompile anything
-      run: |
-        err=0
-        grep Finished  _ | grep -E [012]...s || err=1
-        grep Dirty     _                     && err=1
-        grep Compiling _                     && err=1
-        exit $err
-    - if: ${{ always() }}
-      name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
-      run: |
-        ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
-
-    - if: ${{ always() }}
-      name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
-      run: |
-        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
-
-    - if: ${{ always() }}
-      name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
-      run: |
-        ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
-
-    - if: ${{ always() }}
-      name: 🔴 =means=> there's some panic!s
-      run: |
-        ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
-
-    - if: ${{ always() }}
-      name: 🔴 =means=> there's some BUGs
-      run: |
-        ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
-
-    - if: ${{ always() }}
-      name: 🔴 =means=> here's cargo's error text
-      run: |
-        ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
-
-    - if: ${{ always() }}
-      name: 🔴 =means=> 429 Too Many Requests
-      run: |
-        ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
-
-    - if: ${{ always() }}
-      name: 🔴 =means=> here's relevant logs
-      run: |
-        ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
-
-    - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' && matrix.toolchain != '1.90.0' }}
-      name: 🌀 Maybe show final path diff
-      run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
-        git --no-pager diff --exit-code           --ignore-matching-lines='^# Generated by'           --ignore-matching-lines=' AS rust-base$'           --ignore-matching-lines='^# syntax=docker.io/docker/dockerfile:1@'           --ignore-matching-lines="^##     '\{"           -- $CARGOGREEN_FINAL_PATH
-
-    - if: ${{ failure() }}
-      name: 🌀 cargo-green logs
-      run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
     - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose

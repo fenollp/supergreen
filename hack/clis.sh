@@ -61,7 +61,7 @@ declare -a nvs nvs_args
 ((i+=1)); nvs[i]=miri@master;                 oks[i]=ko; nvs_args[i]='--git https://github.com/rust-lang/miri.git --rev=dcd2112' # can't find crate for `either`
 ((i+=1)); nvs[i]=zed@main;                    oks[i]=ko; nvs_args[i]='--git https://github.com/zed-industries/zed.git --tag=v0.179.5 zed' # error: could not download file from 'https://static.rust-lang.org/dist/channel-rust-1.85.toml.sha256'
 ((i+=1)); nvs[i]=verso@main;                  oks[i]=ko; nvs_args[i]='--git https://github.com/versotile-org/verso.git --rev 62e3085 verso' # error: could not download file from 'https://static.rust-lang.org/dist/channel-rust-1.85.0.toml.sha256'
-((i+=1)); nvs[i]=cargo-udeps@0.1.55;          oks[i]=hm; nvs_args[i]=''
+((i+=1)); nvs[i]=cargo-udeps@0.1.55;          oks[i]=ko; nvs_args[i]='' # TODO: seems to not use libssl-dev & fails building openssl-sys crate.
 
 ((i+=1)); nvs[i]=mirai@main;                  oks[i]=ko; nvs_args[i]='--git https://github.com/facebookexperimental/MIRAI.git --tag=v1.1.9 checker'
 # error: could not find `checker` in https://github.com/facebookexperimental/MIRAI.git?tag=v1.1.9 with version `*`
@@ -239,6 +239,8 @@ ntpd_locked_date=2025-05-09                                  # Time of commit
 cli() {
   local name_at_version=$1; shift
   local jobs=$1; shift
+  local registry=/tmp/.local-registry
+  local registry_new=$registry-new
   local envvars=()
   as_env "$name_at_version"
 
@@ -252,7 +254,10 @@ $(jobdef "$(slugify "$name_at_version")_$jobs")
         - $fixed
     env:
       CARGO_TARGET_DIR: /tmp/clis-$(slugify "$name_at_version")
+      CARGOGREEN_CACHE_FROM_IMAGES: docker-image://localhost:12345/\${{ github.repository }}
+      CARGOGREEN_CACHE_TO_IMAGES: docker-image://localhost:23456/\${{ github.repository }}
       CARGOGREEN_FINAL_PATH: recipes/$name_at_version.Dockerfile
+      CARGOGREEN_FINAL_PATH_NONPRIMARY: 1 # dumps on each build call
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
 $(
@@ -282,6 +287,35 @@ $(
 $(restore_bin)
     - uses: actions/checkout@v5
 $(rundeps_versions)
+
+    - name: Prepare local private registry cache
+      run: |
+        # https://github.com/fenollp/supergreen/actions/caches
+        mkdir -p $registry
+        mkdir -p $registry_new
+    - name: 🔵 Restore local private registry cache
+      uses: actions/cache/restore@v4
+      with:
+        path: $registry
+        # github.run_id: https://github.com/actions/toolkit/issues/658#issuecomment-2640690759
+        key: localprivatereg-\${{ runner.os }}-\${{ matrix.toolchain }}-\${{ github.job }}-\${{ github.run_id }}
+        restore-keys: |
+          localprivatereg-\${{ runner.os }}-\${{ matrix.toolchain }}-\${{ github.job }}-
+          localprivatereg-\${{ runner.os }}-\${{ matrix.toolchain }}-
+          localprivatereg-\${{ runner.os }}-
+          localprivatereg-
+
+    - name: Pull regist3 image
+      run: |
+        false \\
+        || docker build --tag regist3 - <<<'FROM docker.io/registry:3' \\
+        || docker build --tag regist3 - <<<'FROM mirror.gcr.io/registry:3' \\
+        || docker build --tag regist3 - <<<'FROM public.ecr.aws/docker/registry:3' \\
+        || exit 1
+    - name: Start "cache from" image registry
+      run: docker run --name=reg-from --rm --detach -p 12345:5000 --user \$(id -u):\$(id -g) -v     $registry:/var/lib/registry regist3
+    - name: Start "cache to" image registry
+      run: docker run --name=reg-to   --rm --detach -p 23456:5000 --user \$(id -u):\$(id -g) -v $registry_new:/var/lib/registry regist3
 
     - name: 🔵 Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
@@ -324,6 +358,25 @@ $(unset_action_envs)
           cargo green -vv install --jobs=$jobs --locked --force $(as_install "$name_at_version") $@ |& tee _
 $(postcond_fresh _)
 $(postconds _)
+
+    - name: 🔵 Compare old/new local private registry image digests
+      run: |
+        diff --width=150 -y \\
+          <(find $registry/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print \$NF}' | sort -u) \\
+          <(find $registry_new/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print \$NF}' | sort -u) || true
+    - name: Local private registry cache dance
+      run: |
+        # [ci: caches keep growing](https://github.com/moby/buildkit/issues/1850)
+        docker stop --timeout 10 reg-from reg-to
+        rm -rf $registry
+        mv $registry_new $registry
+    - name: Save local private registry cache
+      uses: actions/cache/save@v4
+      if: \${{ false }} # TODO: drop when digests are stable
+      with:
+        path: $registry
+        key: localprivatereg-\${{ runner.os }}-\${{ matrix.toolchain }}-\${{ github.job }}-\${{ github.run_id }}
+
 $(cache_usage)
 
     - name: Target dir disk usage
