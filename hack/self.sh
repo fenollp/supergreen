@@ -1,7 +1,8 @@
 #!/usr/bin/env -S bash -eu
 set -o pipefail
 
-source $(realpath "$(dirname "$0")")/ck.sh
+repo_root=$(realpath "$(dirname "$(dirname "$0")")")
+source "$repo_root"/hack/ck.sh
 
 nightly=nightly-2025-08-06
 
@@ -108,7 +109,7 @@ $(rundeps_versions)
       run: |
         CARGO_TARGET_DIR=~/instmp cargo install --locked --force --path=./cargo-green
 
-    - uses: actions/upload-artifact@v4
+    - uses: actions/upload-artifact@v5
       with:
         name: cargo-green
         path: /home/runner/.cargo/bin/cargo-green
