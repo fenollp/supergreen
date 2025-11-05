@@ -236,7 +236,7 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
 
     - name: Target dir disk usage
-      if: ${{ failure() || success() }}
+      if: ${{ always() }}
       run: du -sh $CARGO_TARGET_DIR || true
 
     - name: 🔵 Ensure running the same command twice without modifications...
@@ -309,10 +309,12 @@ jobs:
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
 
     - name: 🔵 Compare old/new local private registry image digests
+      if: ${{ always() }}
       run: |
         diff --width=150 -y \
           <(find /tmp/.local-registry/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print $NF}' | sort -u) \
           <(find /tmp/.local-registry-new/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print $NF}' | sort -u) || true
+        du -sh /tmp/.local-registry /tmp/.local-registry-new || true
     - name: Local private registry cache dance
       run: |
         # [ci: caches keep growing](https://github.com/moby/buildkit/issues/1850)
@@ -334,7 +336,7 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
 
     - name: Target dir disk usage
-      if: ${{ failure() || success() }}
+      if: ${{ always() }}
       run: du -sh $CARGO_TARGET_DIR || true
 
   cargo-llvm-cov_0-5-36_3:
@@ -519,7 +521,7 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
 
     - name: Target dir disk usage
-      if: ${{ failure() || success() }}
+      if: ${{ always() }}
       run: du -sh $CARGO_TARGET_DIR || true
 
     - name: 🔵 Ensure running the same command twice without modifications...
@@ -592,10 +594,12 @@ jobs:
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
 
     - name: 🔵 Compare old/new local private registry image digests
+      if: ${{ always() }}
       run: |
         diff --width=150 -y \
           <(find /tmp/.local-registry/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print $NF}' | sort -u) \
           <(find /tmp/.local-registry-new/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print $NF}' | sort -u) || true
+        du -sh /tmp/.local-registry /tmp/.local-registry-new || true
     - name: Local private registry cache dance
       run: |
         # [ci: caches keep growing](https://github.com/moby/buildkit/issues/1850)
@@ -617,7 +621,7 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
 
     - name: Target dir disk usage
-      if: ${{ failure() || success() }}
+      if: ${{ always() }}
       run: du -sh $CARGO_TARGET_DIR || true
 
   cross_0-2-5_3:
@@ -802,7 +806,7 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
 
     - name: Target dir disk usage
-      if: ${{ failure() || success() }}
+      if: ${{ always() }}
       run: du -sh $CARGO_TARGET_DIR || true
 
     - name: 🔵 Ensure running the same command twice without modifications...
@@ -875,10 +879,12 @@ jobs:
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
 
     - name: 🔵 Compare old/new local private registry image digests
+      if: ${{ always() }}
       run: |
         diff --width=150 -y \
           <(find /tmp/.local-registry/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print $NF}' | sort -u) \
           <(find /tmp/.local-registry-new/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print $NF}' | sort -u) || true
+        du -sh /tmp/.local-registry /tmp/.local-registry-new || true
     - name: Local private registry cache dance
       run: |
         # [ci: caches keep growing](https://github.com/moby/buildkit/issues/1850)
@@ -900,7 +906,7 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
 
     - name: Target dir disk usage
-      if: ${{ failure() || success() }}
+      if: ${{ always() }}
       run: du -sh $CARGO_TARGET_DIR || true
 
   dbcc_2-2-1_3:
@@ -1085,7 +1091,7 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
 
     - name: Target dir disk usage
-      if: ${{ failure() || success() }}
+      if: ${{ always() }}
       run: du -sh $CARGO_TARGET_DIR || true
 
     - name: 🔵 Ensure running the same command twice without modifications...
@@ -1158,10 +1164,12 @@ jobs:
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
 
     - name: 🔵 Compare old/new local private registry image digests
+      if: ${{ always() }}
       run: |
         diff --width=150 -y \
           <(find /tmp/.local-registry/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print $NF}' | sort -u) \
           <(find /tmp/.local-registry-new/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print $NF}' | sort -u) || true
+        du -sh /tmp/.local-registry /tmp/.local-registry-new || true
     - name: Local private registry cache dance
       run: |
         # [ci: caches keep growing](https://github.com/moby/buildkit/issues/1850)
@@ -1183,7 +1191,7 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
 
     - name: Target dir disk usage
-      if: ${{ failure() || success() }}
+      if: ${{ always() }}
       run: du -sh $CARGO_TARGET_DIR || true
 
   diesel_cli_2-3-2_3:
@@ -1368,7 +1376,7 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
 
     - name: Target dir disk usage
-      if: ${{ failure() || success() }}
+      if: ${{ always() }}
       run: du -sh $CARGO_TARGET_DIR || true
 
     - name: 🔵 Ensure running the same command twice without modifications...
@@ -1441,10 +1449,12 @@ jobs:
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
 
     - name: 🔵 Compare old/new local private registry image digests
+      if: ${{ always() }}
       run: |
         diff --width=150 -y \
           <(find /tmp/.local-registry/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print $NF}' | sort -u) \
           <(find /tmp/.local-registry-new/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print $NF}' | sort -u) || true
+        du -sh /tmp/.local-registry /tmp/.local-registry-new || true
     - name: Local private registry cache dance
       run: |
         # [ci: caches keep growing](https://github.com/moby/buildkit/issues/1850)
@@ -1466,7 +1476,7 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
 
     - name: Target dir disk usage
-      if: ${{ failure() || success() }}
+      if: ${{ always() }}
       run: du -sh $CARGO_TARGET_DIR || true
 
   hickory-dns_0-25-0-alpha-1_3:
@@ -1651,7 +1661,7 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
 
     - name: Target dir disk usage
-      if: ${{ failure() || success() }}
+      if: ${{ always() }}
       run: du -sh $CARGO_TARGET_DIR || true
 
     - name: 🔵 Ensure running the same command twice without modifications...
@@ -1724,10 +1734,12 @@ jobs:
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
 
     - name: 🔵 Compare old/new local private registry image digests
+      if: ${{ always() }}
       run: |
         diff --width=150 -y \
           <(find /tmp/.local-registry/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print $NF}' | sort -u) \
           <(find /tmp/.local-registry-new/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print $NF}' | sort -u) || true
+        du -sh /tmp/.local-registry /tmp/.local-registry-new || true
     - name: Local private registry cache dance
       run: |
         # [ci: caches keep growing](https://github.com/moby/buildkit/issues/1850)
@@ -1749,7 +1761,7 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
 
     - name: Target dir disk usage
-      if: ${{ failure() || success() }}
+      if: ${{ always() }}
       run: du -sh $CARGO_TARGET_DIR || true
 
   mussh_3-1-3_3:
@@ -1934,7 +1946,7 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
 
     - name: Target dir disk usage
-      if: ${{ failure() || success() }}
+      if: ${{ always() }}
       run: du -sh $CARGO_TARGET_DIR || true
 
     - name: 🔵 Ensure running the same command twice without modifications...
@@ -2007,10 +2019,12 @@ jobs:
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
 
     - name: 🔵 Compare old/new local private registry image digests
+      if: ${{ always() }}
       run: |
         diff --width=150 -y \
           <(find /tmp/.local-registry/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print $NF}' | sort -u) \
           <(find /tmp/.local-registry-new/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print $NF}' | sort -u) || true
+        du -sh /tmp/.local-registry /tmp/.local-registry-new || true
     - name: Local private registry cache dance
       run: |
         # [ci: caches keep growing](https://github.com/moby/buildkit/issues/1850)
@@ -2032,7 +2046,7 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
 
     - name: Target dir disk usage
-      if: ${{ failure() || success() }}
+      if: ${{ always() }}
       run: du -sh $CARGO_TARGET_DIR || true
 
   ntpd_1-2-3_3:
@@ -2218,7 +2232,7 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
 
     - name: Target dir disk usage
-      if: ${{ failure() || success() }}
+      if: ${{ always() }}
       run: du -sh $CARGO_TARGET_DIR || true
 
     - name: 🔵 Ensure running the same command twice without modifications...
@@ -2291,10 +2305,12 @@ jobs:
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
 
     - name: 🔵 Compare old/new local private registry image digests
+      if: ${{ always() }}
       run: |
         diff --width=150 -y \
           <(find /tmp/.local-registry/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print $NF}' | sort -u) \
           <(find /tmp/.local-registry-new/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print $NF}' | sort -u) || true
+        du -sh /tmp/.local-registry /tmp/.local-registry-new || true
     - name: Local private registry cache dance
       run: |
         # [ci: caches keep growing](https://github.com/moby/buildkit/issues/1850)
@@ -2316,7 +2332,7 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
 
     - name: Target dir disk usage
-      if: ${{ failure() || success() }}
+      if: ${{ always() }}
       run: du -sh $CARGO_TARGET_DIR || true
 
   qcow2-rs_0-1-2_3:
@@ -2501,7 +2517,7 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
 
     - name: Target dir disk usage
-      if: ${{ failure() || success() }}
+      if: ${{ always() }}
       run: du -sh $CARGO_TARGET_DIR || true
 
     - name: 🔵 Ensure running the same command twice without modifications...
@@ -2574,10 +2590,12 @@ jobs:
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
 
     - name: 🔵 Compare old/new local private registry image digests
+      if: ${{ always() }}
       run: |
         diff --width=150 -y \
           <(find /tmp/.local-registry/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print $NF}' | sort -u) \
           <(find /tmp/.local-registry-new/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print $NF}' | sort -u) || true
+        du -sh /tmp/.local-registry /tmp/.local-registry-new || true
     - name: Local private registry cache dance
       run: |
         # [ci: caches keep growing](https://github.com/moby/buildkit/issues/1850)
@@ -2599,7 +2617,7 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
 
     - name: Target dir disk usage
-      if: ${{ failure() || success() }}
+      if: ${{ always() }}
       run: du -sh $CARGO_TARGET_DIR || true
 
   ripgrep_14-1-0_3:
@@ -2784,7 +2802,7 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
 
     - name: Target dir disk usage
-      if: ${{ failure() || success() }}
+      if: ${{ always() }}
       run: du -sh $CARGO_TARGET_DIR || true
 
     - name: 🔵 Ensure running the same command twice without modifications...
@@ -2857,10 +2875,12 @@ jobs:
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
 
     - name: 🔵 Compare old/new local private registry image digests
+      if: ${{ always() }}
       run: |
         diff --width=150 -y \
           <(find /tmp/.local-registry/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print $NF}' | sort -u) \
           <(find /tmp/.local-registry-new/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print $NF}' | sort -u) || true
+        du -sh /tmp/.local-registry /tmp/.local-registry-new || true
     - name: Local private registry cache dance
       run: |
         # [ci: caches keep growing](https://github.com/moby/buildkit/issues/1850)
@@ -2882,7 +2902,7 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
 
     - name: Target dir disk usage
-      if: ${{ failure() || success() }}
+      if: ${{ always() }}
       run: du -sh $CARGO_TARGET_DIR || true
 
   rublk_0-2-0_3:
@@ -3067,7 +3087,7 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
 
     - name: Target dir disk usage
-      if: ${{ failure() || success() }}
+      if: ${{ always() }}
       run: du -sh $CARGO_TARGET_DIR || true
 
     - name: 🔵 Ensure running the same command twice without modifications...
@@ -3140,10 +3160,12 @@ jobs:
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
 
     - name: 🔵 Compare old/new local private registry image digests
+      if: ${{ always() }}
       run: |
         diff --width=150 -y \
           <(find /tmp/.local-registry/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print $NF}' | sort -u) \
           <(find /tmp/.local-registry-new/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print $NF}' | sort -u) || true
+        du -sh /tmp/.local-registry /tmp/.local-registry-new || true
     - name: Local private registry cache dance
       run: |
         # [ci: caches keep growing](https://github.com/moby/buildkit/issues/1850)
@@ -3165,7 +3187,7 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
 
     - name: Target dir disk usage
-      if: ${{ failure() || success() }}
+      if: ${{ always() }}
       run: du -sh $CARGO_TARGET_DIR || true
 
   vixargs_0-1-0_3:
@@ -3350,7 +3372,7 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
 
     - name: Target dir disk usage
-      if: ${{ failure() || success() }}
+      if: ${{ always() }}
       run: du -sh $CARGO_TARGET_DIR || true
 
     - name: 🔵 Ensure running the same command twice without modifications...
@@ -3423,10 +3445,12 @@ jobs:
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
 
     - name: 🔵 Compare old/new local private registry image digests
+      if: ${{ always() }}
       run: |
         diff --width=150 -y \
           <(find /tmp/.local-registry/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print $NF}' | sort -u) \
           <(find /tmp/.local-registry-new/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print $NF}' | sort -u) || true
+        du -sh /tmp/.local-registry /tmp/.local-registry-new || true
     - name: Local private registry cache dance
       run: |
         # [ci: caches keep growing](https://github.com/moby/buildkit/issues/1850)
@@ -3448,7 +3472,7 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
 
     - name: Target dir disk usage
-      if: ${{ failure() || success() }}
+      if: ${{ always() }}
       run: du -sh $CARGO_TARGET_DIR || true
 
   cargo-config2_0-1-34_3:
@@ -3633,7 +3657,7 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
 
     - name: Target dir disk usage
-      if: ${{ failure() || success() }}
+      if: ${{ always() }}
       run: du -sh $CARGO_TARGET_DIR || true
 
     - name: 🔵 Ensure running the same command twice without modifications...
@@ -3706,10 +3730,12 @@ jobs:
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
 
     - name: 🔵 Compare old/new local private registry image digests
+      if: ${{ always() }}
       run: |
         diff --width=150 -y \
           <(find /tmp/.local-registry/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print $NF}' | sort -u) \
           <(find /tmp/.local-registry-new/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print $NF}' | sort -u) || true
+        du -sh /tmp/.local-registry /tmp/.local-registry-new || true
     - name: Local private registry cache dance
       run: |
         # [ci: caches keep growing](https://github.com/moby/buildkit/issues/1850)
@@ -3731,6 +3757,6 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
 
     - name: Target dir disk usage
-      if: ${{ failure() || success() }}
+      if: ${{ always() }}
       run: du -sh $CARGO_TARGET_DIR || true
 

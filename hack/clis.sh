@@ -348,7 +348,7 @@ $(postconds _)
 $(cache_usage)
 
     - name: Target dir disk usage
-      if: \${{ failure() || success() }}
+      if: \${{ always() }}
       run: du -sh \$CARGO_TARGET_DIR || true
 
     - name: 🔵 Ensure running the same command twice without modifications...
@@ -360,10 +360,12 @@ $(postcond_fresh _)
 $(postconds _)
 
     - name: 🔵 Compare old/new local private registry image digests
+      if: \${{ always() }}
       run: |
         diff --width=150 -y \\
           <(find $registry/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print \$NF}' | sort -u) \\
           <(find $registry_new/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print \$NF}' | sort -u) || true
+        du -sh $registry $registry_new || true
     - name: Local private registry cache dance
       run: |
         # [ci: caches keep growing](https://github.com/moby/buildkit/issues/1850)
@@ -380,7 +382,7 @@ $(postconds _)
 $(cache_usage)
 
     - name: Target dir disk usage
-      if: \${{ failure() || success() }}
+      if: \${{ always() }}
       run: du -sh \$CARGO_TARGET_DIR || true
 
 EOF
