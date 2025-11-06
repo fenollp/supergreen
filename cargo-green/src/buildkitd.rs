@@ -1,4 +1,5 @@
-use indexmap::IndexMap;
+use std::collections::BTreeMap;
+
 use serde::{Deserialize, Serialize};
 
 /// TODO: for low-powered machines
@@ -12,8 +13,8 @@ pub(crate) struct Config {
     #[serde(skip_serializing_if = "<&bool as std::ops::Not>::not")]
     pub(crate) debug: bool,
 
-    #[serde(skip_serializing_if = "IndexMap::is_empty")]
-    pub(crate) registry: IndexMap<String, Registry>,
+    #[serde(skip_serializing_if = "BTreeMap::is_empty")]
+    pub(crate) registry: BTreeMap<String, Registry>,
 
     #[serde(skip_serializing_if = "Vec::is_empty")]
     pub(crate) insecure_entitlements: Vec<String>,
@@ -70,11 +71,11 @@ mirrors = [
 #[test]
 fn private_insecure_registry() {
     let cfg = &r#"
-[registry."localhost:5000"]
-http = true
+[registry."192.168.189.102:5000"]
 insecure = true
 
-[registry."192.168.189.102:5000"]
+[registry."localhost:5000"]
+http = true
 insecure = true
 "#[1..];
 
@@ -84,12 +85,12 @@ insecure = true
         Config {
             registry: [
                 (
-                    "localhost:5000".to_owned(),
-                    Registry { http: true, insecure: true, ..Default::default() }
-                ),
-                (
                     "192.168.189.102:5000".to_owned(),
                     Registry { insecure: true, ..Default::default() }
+                ),
+                (
+                    "localhost:5000".to_owned(),
+                    Registry { http: true, insecure: true, ..Default::default() }
                 ),
             ]
             .into(),
