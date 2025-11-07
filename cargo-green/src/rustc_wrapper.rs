@@ -355,8 +355,9 @@ async fn do_wrap_rustc(
     }
 
     // Log a possible toolchain file contents (TODO: make per-crate base.image out of this)
-    rustc_block.push_str("    { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \\\n");
-    //fixme? prefix with ::rustc-toolchain::
+    if false {
+        rustc_block.push_str("    { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \\\n");
+    }
 
     rustc_block.push_str(&format!("    env CARGO={:?} \\\n", "$(which cargo)"));
 
