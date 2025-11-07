@@ -507,6 +507,7 @@ async fn run_build(
                     }
                 }
                 info!("rustc wrote {} files:", written.len());
+                written.sort();
                 (out_handle, err_handle, rcd, written)
             }
         });
