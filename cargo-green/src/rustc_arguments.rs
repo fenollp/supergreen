@@ -188,12 +188,6 @@ pub(crate) fn as_rustc(
         )
     };
 
-    assert_ne!(state.extrafn, "");
-    assert_eq!(state.extrafn.chars().next(), Some('-'));
-    //assert_ne!(state.input, "");
-    //assert_ne!(state.out_dir, "");
-    assert!(!state.incremental.as_ref().map(|x| x == "").unwrap_or_default()); // MAY be unset: only set on last calls
-
     Ok((state, args))
 }
 
