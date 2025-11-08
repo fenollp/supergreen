@@ -31,12 +31,15 @@ version.workspace = true
 
 [dependencies]
 anyhow.workspace = true
+astral-tokio-tar.workspace = true
+atomicwrites.workspace = true
 camino.workspace = true
 cargo-lock.workspace = true
 cargo-subcommand-metadata.workspace = true
 cargo_toml.workspace = true
 chrono.workspace = true
 indexmap.workspace = true
+tokio-stream.workspace = true
 # clap.workspace = true
 # clap-cargo.workspace = true
 crc32fast.workspace = true
