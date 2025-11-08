@@ -175,6 +175,8 @@ pub(crate) struct Effects {
     pub(crate) stderr: Vec<String>,
 }
 
+const EPOCH: u64 = 42;
+
 impl Green {
     pub(crate) async fn build_cacheonly(
         &self,
@@ -211,42 +213,11 @@ impl Green {
 
         //TODO: if allowing additional-build-arguments, deny: --build-arg=BUILDKIT_SYNTAX=
 
-        //TODO: (use if set) cmd.env("SOURCE_DATE_EPOCH", "1"); // https://reproducible-builds.org/docs/source-date-epoch
-        // https://github.com/moby/buildkit/blob/master/docs/build-repro.md#source_date_epoch
-        // Set SOURCE_DATE_EPOCH=$(git log -1 --pretty=%ct) for local code, and
-        // set it to crates' birth date, in case it's a $HOME/.cargo/registry/cache/...crate
-        // set it to the directory's birth date otherwise (should be a relative path to local files).
-        // see https://github.com/moby/buildkit/issues/3009#issuecomment-1721565511
-        //=> rewrite written files timestamps to not trip cargo's timekeeping
-        //Try rewrite-timestamp=true but this looks to be only for --output=type=image
-        //https://github.com/moby/buildkit/blob/202e28fe031a3be7eba17fb4382e4bbb0acf69b3/README.md?plain=1#L293
-        //https://scribe.rip/nttlabs/dockercon-2023-reproducible-builds-with-buildkit-for-software-supply-chain-security-0e5aedd1aaa7
-        //https://github.com/moby/buildkit/blob/202e28fe031a3be7eba17fb4382e4bbb0acf69b3/docs/build-repro.md#source_date_epoch
-        //https://github.com/moby/buildkit/issues/3973
-
-        // `--repro`
-        // From https://github.com/docker-library/official-images/issues/16044
-        // $ # "none://" is a filler for the build context arg
-        // $ docker buildx build \
-        //   --load \
-        //   -t gcc:local \
-        //   --repro from=gcc@sha256:f97e2719cd5138c932a814ca43f3ca7b33fde866e182e7d76d8391ec0b05091f \
-        //   none://
-        // ...
-        // [amd64] Using SLSA provenance sha256:7ecde97c24ea34e1409caf6e91123690fa62d1465ad08f638ebbd75dd381f08f
-        // [amd64] Importing Dockerfile blob embedded in the provenance
-        // [amd64] Importing build context https://github.com/docker-library/gcc.git#af458ec8254ef7ca3344f12631e2356b20b4a7f1:13
-        // [amd64] Importing build-arg SOURCE_DATE_EPOCH=1690467916
-        // [amd64] Importing buildpack-deps:bookworm from docker-image://buildpack-deps:bookworm@sha256:bccdd9ebd8dbbb95d41bb5d9de3f654f8cd03b57d65d090ac330d106c87d7ed
-        // ...
-        // $ diffoci diff gcc@sha256:f97e2719cd5138c932a814ca43f3ca7b33fde866e182e7d76d8391ec0b05091f gcc:local
-        // ...
-
-        if false {
-            cmd.arg("--no-cache");
-            //NOTE: --no-cache-filter target1,target2 --no-cache-filter=target3 (&&)
-            // TODO: 'id~=REGEXP as per https://github.com/containerd/containerd/blob/20fc2cf8ec70c5c02cd2f1bbe431bc19b2c622a3/pkg/filters/parser.go#L36
-        }
+        // TODO? use a non-fixed EPOCH value
+        // * set SOURCE_DATE_EPOCH=$(git log -1 --pretty=%ct) for local code, and
+        // * set it to crates' birth date, in case it's a $HOME/.cargo/registry/cache/...crate
+        // * set it to the directory's birth date otherwise (should be a relative path to local files).
+        cmd.arg(format!("--build-arg=SOURCE_DATE_EPOCH={EPOCH}")); // https://reproducible-builds.org/docs/source-date-epoch/
 
         for img in self.cache.from_images.iter().chain(self.cache.images.iter()) {
             let img = img.noscheme();
@@ -501,6 +472,7 @@ async fn run_build(
                         assert_eq!(f.header().entry_type().as_byte(), 0x30);
                         assert_eq!(f.header().uid().unwrap(), 0);
                         assert_eq!(f.header().gid().unwrap(), 0);
+                        assert_eq!(f.header().mtime().unwrap(), EPOCH);
                         assert_eq!(f.header().username(), Ok(Some("")));
                         assert_eq!(f.header().groupname(), Ok(Some("")));
 
@@ -514,6 +486,20 @@ async fn run_build(
                             mode,
                             ">>> {:#o} vs {mode:#o} {:?}",
                             std::fs::metadata(&fname).unwrap().mode(),
+                            std::fs::metadata(&fname)
+                        );
+
+                        use std::time::SystemTime;
+                        assert_ne!(
+                            std::fs::metadata(&fname)
+                                .unwrap()
+                                .modified()
+                                .unwrap()
+                                .duration_since(SystemTime::UNIX_EPOCH)
+                                .unwrap()
+                                .as_secs(),
+                            EPOCH,
+                            ">>> {:?}",
                             std::fs::metadata(&fname)
                         );
 
