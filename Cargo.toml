@@ -31,7 +31,6 @@ version = "0.22.0"
 
 [workspace.dependencies]
 anyhow = "1"
-assertx = { version = "1", features = [ "logging" ] }
 astral-tokio-tar = { version = "0, >=0.5", default-features = false }
 atomicwrites = { version = "0, >=0.4", default-features = false }
 camino = { version = "1", features = [ "serde1" ] }

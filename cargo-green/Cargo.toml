@@ -10,6 +10,9 @@ readme = "../README.md"
 repository.workspace = true
 version.workspace = true
 
+[package.metadata.cargo-machete]
+ignored = [ "astral-tokio-tar" ]
+
 # [package.metadata.green]
 # base-image = "docker-image://blabla"
 # base-image-inline = """
@@ -64,6 +67,5 @@ version-compare.workspace = true
 which.workspace = true
 
 [dev-dependencies]
-assertx.workspace = true
 pretty_assertions.workspace = true
 test-case.workspace = true
