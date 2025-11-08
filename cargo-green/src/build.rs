@@ -1,12 +1,16 @@
 use std::{
     env,
     error::Error,
+    fs::OpenOptions,
+    io::Write,
     ops::Not,
+    os::unix::fs::{MetadataExt, OpenOptionsExt},
     process::{ExitStatus, Stdio},
     time::{Duration, Instant},
 };
 
 use anyhow::{anyhow, bail, Result};
+use atomicwrites::{AtomicFile, OverwriteBehavior};
 use camino::{Utf8Path, Utf8PathBuf};
 use indexmap::IndexSet;
 use log::{debug, info};
@@ -19,6 +23,7 @@ use tokio::{
     process::Command,
     spawn,
     sync::oneshot::{self},
+    task::JoinHandle,
 };
 use tokio_stream::StreamExt;
 
@@ -409,7 +414,7 @@ async fn run_build(
     let mut tx_err = Some(tx_err);
 
     let handles = if let Some(out_dir) = out_dir {
-        let dbg_out = spawn({
+        let dbg_out: JoinHandle<Result<_>> = spawn({
             let out = TokioBufReader::new(child.stdout.take().expect("started"));
             let out_path = format!("{target}-{STDOUT}");
             let err_path = format!("{target}-{STDERR}");
@@ -422,51 +427,50 @@ async fn run_build(
             async move {
                 info!("running untar on STDOUT");
                 let mut ar = tokio_tar::Archive::new(out);
-                let mut entries = ar.entries().unwrap();
+                let mut entries = ar.entries().map_err(|e| anyhow!("Failed reading TAR: {e}"))?;
                 while let Some(Ok(mut f)) = entries.next().await {
-                    let fname = Utf8PathBuf::from(f.path().unwrap().to_str().unwrap().to_owned());
-                    if fname == out_path {
+                    let name: Utf8PathBuf = f
+                        .path()
+                        .map_err(|e| anyhow!("Failed decoding TAR entry name: {e}"))?
+                        .to_string_lossy()
+                        .to_string()
+                        .into();
+
+                    if name == out_path {
                         let mut buf = String::new();
-                        f.read_to_string(&mut buf).await.unwrap();
+                        f.read_to_string(&mut buf)
+                            .await
+                            .map_err(|e| anyhow!("Failed unTARing buffer: {e}"))?;
                         out_handle = Some(buf);
-                    } else if fname == err_path {
+                    } else if name == err_path {
                         let mut buf = String::new();
-                        f.read_to_string(&mut buf).await.unwrap();
+                        f.read_to_string(&mut buf)
+                            .await
+                            .map_err(|e| anyhow!("Failed unTARing buffer: {e}"))?;
                         err_handle = Some(buf);
-                    } else if fname == rcd_path {
+                    } else if name == rcd_path {
                         let line = TokioBufReader::new(f).lines().next_line().await;
                         rcd = line.ok().flatten().and_then(|x| x.parse::<i8>().ok());
                     } else {
-                        written.push(fname.clone());
-                        let fname = out_dir.join(fname);
-                        let mode = f.header().mode().unwrap();
-                        info!("creating {fname:?} with mode {mode:#o}");
+                        written.push(name.clone());
+                        info!("creating (RW) {name:?}");
+                        let fname = out_dir.join(&name);
+                        let mode =
+                            f.header().mode().map_err(|e| anyhow!("Failed decoding mode: {e}"))?;
+
                         // Let's drop async for FS operations: we're not writing gigabytes!
-
-                        //let temp = tempfile::NamedTempFile::new_in(&out_dir).unwrap();
-
+                        // Also: entries MUST be consumed in sequence anyway.
                         let mut buf = Vec::new();
-                        f.read_to_end(&mut buf).await.unwrap();
+                        f.read_to_end(&mut buf)
+                            .await
+                            .map_err(|e| anyhow!("Failed unTARing buffer: {e}"))?;
 
-                        use std::{io::Write, os::unix::fs::OpenOptionsExt};
-
-                        use atomicwrites::{AtomicFile, OverwriteBehavior};
                         let atomix = AtomicFile::new(&fname, OverwriteBehavior::AllowOverwrite);
-                        let mut options = std::fs::OpenOptions::new();
-                        options.read(true).write(true).create(true).truncate(true);
-                        options.mode(mode);
-                        // TODO: doesn't support async writes https://github.com/untitaker/rust-atomicwrites/issues/38
-                        atomix.write_with_options(|f| f.write_all(&buf), options).unwrap();
-
-                        // let mut wf = tokio::fs::File::options()
-                        //     .read(true)
-                        //     .write(true)
-                        //     .create(true)
-                        //     .truncate(true)
-                        //     .open(temp.path())
-                        //     .await
-                        //     .unwrap();
-                        // tokio::io::copy(&mut f, &mut wf).await.unwrap();
+                        let mut options = OpenOptions::new();
+                        options.read(true).write(true).create(true).truncate(true).mode(mode);
+                        atomix
+                            .write_with_options(|f| f.write_all(&buf), options)
+                            .map_err(|e| anyhow!("Failed writing unTARed: {e}"))?;
 
                         assert_eq!(f.link_name().unwrap(), None);
                         assert_eq!(f.header().entry_type().as_byte(), 0x30);
@@ -476,39 +480,18 @@ async fn run_build(
                         assert_eq!(f.header().username(), Ok(Some("")));
                         assert_eq!(f.header().groupname(), Ok(Some("")));
 
-                        //use std::os::unix::prelude::PermissionsExt;
-                        //std::fs::set_permissions(temp.path(), PermissionsExt::from_mode(mode))
-                        //    .unwrap();
-
-                        use std::os::unix::fs::MetadataExt;
                         assert_eq!(
-                            std::fs::metadata(&fname).unwrap().mode() & 0o777,
+                            fname.metadata().unwrap().mode() & 0o777,
                             mode,
-                            ">>> {:#o} vs {mode:#o} {:?}",
-                            std::fs::metadata(&fname).unwrap().mode(),
-                            std::fs::metadata(&fname)
+                            "Unexpected untared-then-written file mode {:#o} vs: {mode:#o} {:?}",
+                            fname.metadata().unwrap().mode(),
+                            fname.metadata()
                         );
-
-                        use std::time::SystemTime;
-                        assert_ne!(
-                            std::fs::metadata(&fname)
-                                .unwrap()
-                                .modified()
-                                .unwrap()
-                                .duration_since(SystemTime::UNIX_EPOCH)
-                                .unwrap()
-                                .as_secs(),
-                            EPOCH,
-                            ">>> {:?}",
-                            std::fs::metadata(&fname)
-                        );
-
-                        //temp.persist(&fname).unwrap();
                     }
                 }
                 info!("rustc wrote {} files:", written.len());
                 written.sort();
-                (out_handle, err_handle, rcd, written)
+                Ok((out_handle, err_handle, rcd, written))
             }
         });
 
@@ -581,19 +564,23 @@ async fn run_build(
         // * if the call doesn't fail, the file isn't created.
         // * if the build fails that's a bug, and no files will be outputed.
         match join!(timeout(dbg_out), timeout(dbg_err)) {
-            (Ok(Ok((Some(out_buf), Some(err_buf), rcd, written))), Ok(Ok(()))) => {
+            (Ok(Ok(Ok((_, _, Some(errcode), _)))), _) => {
+                bail!("Runner failed with exit code {errcode}")
+            }
+            (Ok(Ok(Err(e))), _) => {
+                bail!("Something went wrong (maybe retry?): {e}")
+            }
+            (Ok(Ok(Ok((Some(out_buf), Some(err_buf), _, written)))), _) => {
                 let Accumulated { stdout, .. } = fwd(&out_buf, "➤", fwd_stdout);
                 let Accumulated { stderr, envs, libs, .. } = fwd(&err_buf, "✖", fwd_stderr);
                 info!("Suggested {PKG}-specific config: envs:{} libs:{}", envs.len(), libs.len());
                 effects.stdout = stdout;
                 effects.stderr = stderr;
                 effects.written = written;
-                if let Some(errcode) = rcd {
-                    bail!("Runner failed with exit code {errcode}")
-                }
             }
-            //TODO: check rcd not depending on the 2 others being Some/None
-            (e1, e2) => bail!("BUG: STDIO forwarding crashed: {e1:?} | {e2:?}"),
+            (e1, e2) => {
+                bail!("BUG: STDIO forwarding crashed: {e1:?} | {e2:?}")
+            }
         }
     }
     drop(child);
@@ -616,8 +603,6 @@ fn fwd(
     badge: &'static str,
     fwd_std: impl Fn(&str, &mut Accumulated) + Send + 'static,
 ) -> Accumulated {
-    debug!("Reading {badge} file");
-    let start = Instant::now();
     let mut acc = Accumulated::default();
     for line in stdio.lines() {
         if line.is_empty() {
@@ -636,7 +621,6 @@ fn fwd(
         // => also in .d files
         // cache should be ok (cargo's point of view) if written right after green's build(..) call
     }
-    debug!("Task {badge} ran for {:?}", start.elapsed());
     acc
 }
 
