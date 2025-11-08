@@ -445,10 +445,7 @@ async fn do_wrap_rustc(
     match built {
         Ok(Effects { written, stdout, stderr }) => {
             if !written.is_empty() || !stdout.is_empty() || !stderr.is_empty() {
-                md.writes = written
-                    .into_iter()
-                    .map(|x| x.strip_prefix(&target_path).unwrap().to_owned())
-                    .collect();
+                md.writes = written;
                 md.stdout = stdout;
                 md.stderr = stderr;
                 info!("re-opening (RW) crate's md {md_path}");

@@ -1,8 +1,6 @@
 use std::{
     env,
     error::Error,
-    fs::{self},
-    io::ErrorKind,
     ops::Not,
     process::{ExitStatus, Stdio},
     time::{Duration, Instant},
@@ -16,14 +14,13 @@ use reqwest::Client as ReqwestClient;
 use serde::Deserialize;
 use tokio::{
     fs::File as TokioFile,
-    io::{AsyncBufRead, AsyncBufReadExt, AsyncWriteExt, BufReader as TokioBufReader, Lines},
+    io::{AsyncBufReadExt, AsyncReadExt, AsyncWriteExt, BufReader as TokioBufReader},
     join,
     process::Command,
     spawn,
-    sync::oneshot::{self, error::TryRecvError},
-    task::JoinHandle,
-    time::error::Elapsed,
+    sync::oneshot::{self},
 };
+use tokio_stream::StreamExt;
 
 use crate::{
     du::lock_from_builder_cache,
@@ -314,8 +311,8 @@ impl Green {
         // // https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry#labelling-container-images
         // cmd.arg(format!("--label=org.opencontainers.image.description={target}"));
 
-        if let Some(out_dir) = out_dir {
-            cmd.arg(format!("--output=type=local,dest={out_dir}"));
+        if out_dir.is_some() {
+            cmd.arg("--output=type=tar");
         } else {
             // https://docs.docker.com/build/exporters/#cache-only-export
             cmd.arg("--output=type=cacheonly");
@@ -332,7 +329,8 @@ impl Green {
 
         cmd.arg("-").stdin(Stdio::piped()); // Pass Dockerfile via STDIN, this way there's no default filesystem context.
         if out_dir.is_some() {
-            cmd.stdout(Stdio::piped()).stderr(Stdio::piped());
+            cmd.stdout(Stdio::piped());
+            cmd.stderr(Stdio::piped());
         }
 
         let call = cmd.show();
@@ -439,17 +437,91 @@ async fn run_build(
     let (tx_err, mut rx_err) = oneshot::channel();
     let mut tx_err = Some(tx_err);
 
-    let handles = if out_dir.is_some() {
+    let handles = if let Some(out_dir) = out_dir {
         let dbg_out = spawn({
-            let mut lines = TokioBufReader::new(child.stdout.take().expect("started")).lines();
+            let out = TokioBufReader::new(child.stdout.take().expect("started"));
+            let out_path = format!("{target}-{STDOUT}");
+            let err_path = format!("{target}-{STDERR}");
+            let rcd_path = format!("{target}-{ERRCODE}");
+            let out_dir = out_dir.to_owned();
+            let mut err_handle = None;
+            let mut out_handle = None;
+            let mut rcd = None;
+            let mut written = vec![];
             async move {
-                while let Ok(Some(line)) = lines.next_line().await {
-                    let line = strip_ansi_escapes(&line);
-                    if line.is_empty() {
-                        continue;
+                info!("running untar on STDOUT");
+                let mut ar = tokio_tar::Archive::new(out);
+                let mut entries = ar.entries().unwrap();
+                while let Some(Ok(mut f)) = entries.next().await {
+                    let fname = Utf8PathBuf::from(f.path().unwrap().to_str().unwrap().to_owned());
+                    if fname == out_path {
+                        let mut buf = String::new();
+                        f.read_to_string(&mut buf).await.unwrap();
+                        out_handle = Some(buf);
+                    } else if fname == err_path {
+                        let mut buf = String::new();
+                        f.read_to_string(&mut buf).await.unwrap();
+                        err_handle = Some(buf);
+                    } else if fname == rcd_path {
+                        let line = TokioBufReader::new(f).lines().next_line().await;
+                        rcd = line.ok().flatten().and_then(|x| x.parse::<i8>().ok());
+                    } else {
+                        written.push(fname.clone());
+                        let fname = out_dir.join(fname);
+                        let mode = f.header().mode().unwrap();
+                        info!("creating {fname:?} with mode {mode:#o}");
+                        // Let's drop async for FS operations: we're not writing gigabytes!
+
+                        //let temp = tempfile::NamedTempFile::new_in(&out_dir).unwrap();
+
+                        let mut buf = Vec::new();
+                        f.read_to_end(&mut buf).await.unwrap();
+
+                        use std::{io::Write, os::unix::fs::OpenOptionsExt};
+
+                        use atomicwrites::{AtomicFile, OverwriteBehavior};
+                        let atomix = AtomicFile::new(&fname, OverwriteBehavior::AllowOverwrite);
+                        let mut options = std::fs::OpenOptions::new();
+                        options.read(true).write(true).create(true).truncate(true);
+                        options.mode(mode);
+                        // TODO: doesn't support async writes https://github.com/untitaker/rust-atomicwrites/issues/38
+                        atomix.write_with_options(|f| f.write_all(&buf), options).unwrap();
+
+                        // let mut wf = tokio::fs::File::options()
+                        //     .read(true)
+                        //     .write(true)
+                        //     .create(true)
+                        //     .truncate(true)
+                        //     .open(temp.path())
+                        //     .await
+                        //     .unwrap();
+                        // tokio::io::copy(&mut f, &mut wf).await.unwrap();
+
+                        assert_eq!(f.link_name().unwrap(), None);
+                        assert_eq!(f.header().entry_type().as_byte(), 0x30);
+                        assert_eq!(f.header().uid().unwrap(), 0);
+                        assert_eq!(f.header().gid().unwrap(), 0);
+                        assert_eq!(f.header().username(), Ok(Some("")));
+                        assert_eq!(f.header().groupname(), Ok(Some("")));
+
+                        //use std::os::unix::prelude::PermissionsExt;
+                        //std::fs::set_permissions(temp.path(), PermissionsExt::from_mode(mode))
+                        //    .unwrap();
+
+                        use std::os::unix::fs::MetadataExt;
+                        assert_eq!(
+                            std::fs::metadata(&fname).unwrap().mode() & 0o777,
+                            mode,
+                            ">>> {:#o} vs {mode:#o} {:?}",
+                            std::fs::metadata(&fname).unwrap().mode(),
+                            std::fs::metadata(&fname)
+                        );
+
+                        //temp.persist(&fname).unwrap();
                     }
-                    info!("➤ {line}");
                 }
+                info!("rustc wrote {} files:", written.len());
+                (out_handle, err_handle, rcd, written)
             }
         });
 
@@ -512,99 +584,33 @@ async fn run_build(
     let status = res.map_err(|e| anyhow!("Failed calling `{call}`: {e}"))?;
     info!("build ran in {secs:?}: {status}");
 
+    let mut effects = Effects { written: vec![], stdout: vec![], stderr: vec![] };
     if let Some((dbg_out, dbg_err)) = handles {
+        if let Ok(e) = rx_err.try_recv() {
+            bail!("Runner BUG: {e}")
+        }
+        // NOTE:
+        // * if call to rustc fails, errcode file will exist but the build will complete.
+        // * if the call doesn't fail, the file isn't created.
+        // * if the build fails that's a bug, and no files will be outputed.
         match join!(timeout(dbg_out), timeout(dbg_err)) {
-            (Ok(Ok(())), Ok(Ok(()))) => {}
+            (Ok(Ok((Some(out_buf), Some(err_buf), rcd, written))), Ok(Ok(()))) => {
+                let Accumulated { stdout, .. } = fwd(&out_buf, "➤", fwd_stdout);
+                let Accumulated { stderr, envs, libs, .. } = fwd(&err_buf, "✖", fwd_stderr);
+                info!("Suggested {PKG}-specific config: envs:{} libs:{}", envs.len(), libs.len());
+                effects.stdout = stdout;
+                effects.stderr = stderr;
+                effects.written = written;
+                if let Some(errcode) = rcd {
+                    bail!("Runner failed with exit code {errcode}")
+                }
+            }
+            //TODO: check rcd not depending on the 2 others being Some/None
             (e1, e2) => bail!("BUG: STDIO forwarding crashed: {e1:?} | {e2:?}"),
         }
     }
     drop(child);
-
-    let mut effects = Effects { written: vec![], stdout: vec![], stderr: vec![] };
-    if let Some(out_dir) = out_dir {
-        fn stdio_path(target: &Stage, out_dir: &Utf8Path, stdio: &'static str) -> Utf8PathBuf {
-            out_dir.join(format!("{target}-{stdio}"))
-        }
-
-        //TODO? write all output to mem first? and then to disk (except stdio files)
-        let out_path = stdio_path(target, out_dir, STDOUT);
-        let err_path = stdio_path(target, out_dir, STDERR);
-        let rcd_path = stdio_path(target, out_dir, ERRCODE);
-
-        // Read errorcode output file first, and check for build error. NOTE:
-        // * if call to rustc fails, the file will exist but the build will complete.
-        // * if the call doesn't fail, the file isn't created.
-        // * if the build fails that's a bug, and no files will be outputed.
-        let errcode = match (TokioFile::open(&rcd_path).await, rx_err.try_recv()) {
-            (Ok(errcode), _) => {
-                let line = TokioBufReader::new(errcode).lines().next_line().await;
-                line.ok().flatten().and_then(|x| x.parse::<i8>().ok())
-            }
-            (_, Ok(e)) => bail!("Runner BUG: {e}"),
-            (Err(e), Err(TryRecvError::Closed)) if e.kind() == ErrorKind::NotFound => None,
-            (Err(a), Err(b)) => unreachable!("either {a} | {b}"),
-        };
-
-        async fn stdio_lines(stdio: &Utf8Path) -> Result<Lines<TokioBufReader<TokioFile>>> {
-            TokioFile::open(&stdio)
-                .await
-                .map_err(|e| anyhow!("Failed reading {stdio}: {e}"))
-                .map(|stdio| TokioBufReader::new(stdio).lines())
-        }
-
-        let out = fwd(stdio_lines(&out_path).await?, "➤", fwd_stdout);
-        let err = fwd(stdio_lines(&err_path).await?, "✖", fwd_stderr);
-
-        match join!(timeout(out), timeout(err)) {
-            (
-                Ok(Ok(Ok(Accumulated { stdout, .. }))), //                      STDOUT
-                Ok(Ok(Ok(Accumulated { stderr, written, envs, libs, .. }))), // STDERR
-            ) => {
-                info!("Suggested {PKG}-specific config: envs:{} libs:{}", envs.len(), libs.len());
-                effects.stdout = stdout;
-                effects.stderr = stderr;
-                if !written.is_empty() {
-                    log_written_files_metadata(&written);
-                    effects.written = written;
-                }
-                if let Some(errcode) = errcode {
-                    bail!("Runner failed with exit code {errcode}")
-                }
-            }
-            (Ok(Ok(Err(e))), _) | (_, Ok(Ok(Err(e)))) => {
-                bail!("BUG: STDIO forwarding crashed: {e}")
-            }
-            (Ok(Err(e)), _) | (_, Ok(Err(e))) => {
-                bail!("BUG: spawning STDIO forwarding crashed: {e}")
-            }
-            (Err(Elapsed { .. }), _) | (_, Err(Elapsed { .. })) => {
-                bail!("BUG: STDIO forwarding got crickets for some time")
-            }
-        }
-        if let Err(e) = fs::remove_file(&out_path) {
-            bail!("Failed `rm {out_path}`: {e}")
-        }
-        if let Err(e) = fs::remove_file(&err_path) {
-            bail!("Failed `rm {err_path}`: {e}")
-        }
-    }
-
     Ok((status, effects))
-}
-
-fn log_written_files_metadata(written: &[Utf8PathBuf]) {
-    info!("rustc wrote {} files:", written.len());
-    for f in written {
-        info!(
-            "metadata for {f:?}: {:?}",
-            f.metadata().map(|fmd| format!(
-                "created:{c:?} accessed:{a:?} modified:{m:?}",
-                c = fmd.created(),
-                a = fmd.accessed(),
-                m = fmd.modified(),
-            ))
-        );
-    }
 }
 
 #[inline]
@@ -618,71 +624,37 @@ fn strip_ansi_escapes(line: &str) -> String {
 }
 
 #[must_use]
-fn fwd<R>(
-    mut stdio: Lines<R>,
+fn fwd(
+    stdio: &str,
     badge: &'static str,
     fwd_std: impl Fn(&str, &mut Accumulated) + Send + 'static,
-) -> JoinHandle<Result<Accumulated>>
-where
-    R: AsyncBufRead + Unpin + Send + 'static,
-{
+) -> Accumulated {
     debug!("Reading {badge} file");
     let start = Instant::now();
-    spawn(async move {
-        let mut acc = Accumulated::default();
-        loop {
-            let maybe_line = stdio.next_line().await;
-            let line = maybe_line.map_err(|e| anyhow!("Failed during piping of {badge}: {e:?}"))?;
-            let Some(line) = line else { break };
-            if line.is_empty() {
-                continue;
-            }
-
-            debug!("{badge} {}", strip_ansi_escapes(&line));
-
-            if let Some(msg) = lift_stdio(&line) {
-                fwd_std(msg, &mut acc);
-            }
-
-            // //warning: panic message contains an unused formatting placeholder
-            // //--> /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.36/build.rs:191:17
-            // FIXME un-rewrite /index.crates.io-0000000000000000/ in cargo messages
-            // => also in .d files
-            // cache should be ok (cargo's point of view) if written right after green's build(..) call
+    let mut acc = Accumulated::default();
+    for line in stdio.lines() {
+        if line.is_empty() {
+            continue;
         }
-        debug!("Task {badge} ran for {:?}", start.elapsed());
-        drop(stdio);
-        Ok(workaround_missing_rmeta_or_rlib(acc))
-    })
-}
 
-/// Sometimes, cargo's STDERR is missing some rlibs...
-///
-/// TODO: report to upstream cargo and investigate.
-///
-/// Mimic cargo's ordering: .d then .rmeta then .rlib
-fn workaround_missing_rmeta_or_rlib(mut acc: Accumulated) -> Accumulated {
-    if acc.written.iter().any(|f| f.extension() == Some("d")) {
-        let rmeta = acc.written.iter().find(|f| f.extension() == Some("rmeta"));
-        let rlib = acc.written.iter().find(|f| f.extension() == Some("rlib"));
-        match (rmeta, rlib) {
-            (Some(rmeta), None) if rmeta.with_extension("rlib").exists() => {
-                acc.written.push(rmeta.with_extension("rlib"))
-            }
-            (None, Some(rlib)) if rlib.with_extension("rmeta").exists() => {
-                acc.written.push(rlib.with_extension("rmeta"));
-                let last = acc.written.len() - 1;
-                acc.written.swap(1, last);
-            }
-            _ => {}
+        debug!("{badge} {}", strip_ansi_escapes(line));
+
+        if let Some(msg) = lift_stdio(line) {
+            fwd_std(msg, &mut acc);
         }
+
+        // //warning: panic message contains an unused formatting placeholder
+        // //--> /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.36/build.rs:191:17
+        // FIXME un-rewrite /index.crates.io-0000000000000000/ in cargo messages
+        // => also in .d files
+        // cache should be ok (cargo's point of view) if written right after green's build(..) call
     }
+    debug!("Task {badge} ran for {:?}", start.elapsed());
     acc
 }
 
-#[derive(Default)]
+#[derive(Debug, Default)]
 struct Accumulated {
-    written: Vec<Utf8PathBuf>,
     envs: IndexSet<String>,
     libs: IndexSet<String>,
     stdout: Vec<String>,
@@ -690,11 +662,6 @@ struct Accumulated {
 }
 
 fn fwd_stderr(msg: &str, acc: &mut Accumulated) {
-    if let Some(file) = artifact_written(msg) {
-        acc.written.push(file.into());
-        info!("rustc wrote {file}");
-    }
-
     let mut msg = msg.to_owned();
 
     if let Some(var) = rechrome::env_not_comptime_defined(&msg) {
@@ -771,67 +738,9 @@ fn stdio_passthrough_from_runner() {
 }
 
 #[must_use]
-fn artifact_written(msg: &str) -> Option<&str> {
-    #[derive(Deserialize)]
-    struct Wrote<'a> {
-        artifact: Option<&'a str>,
-    }
-    let wrote: Option<Wrote> = serde_json::from_str(msg).ok();
-    wrote.and_then(|Wrote { artifact }| artifact)
-}
-
-#[must_use]
 fn lift_stdio(line: &str) -> Option<&str> {
     // Docker builds running shell code usually start like: #47 0.057
     let line = line.trim_start_matches(|c| ['#', '.', ' '].contains(&c) || c.is_ascii_digit());
     let msg = line.trim();
     msg.is_empty().not().then_some(msg)
-}
-
-#[test]
-fn lifting_doesnt_miss_an_artifact() {
-    use log::Level;
-
-    let logs = assertx::setup_logging_test();
-    let lines = [
-        r#"#10 0.111 + cat ./rustc-toolchain ./rustc-toolchain.toml"#,
-        r#"#10 0.113 + true"#,
-        r#"#10 0.120 ++ which cargo"#,
-        r#"#10 0.123 + env CARGO=/usr/local/cargo/bin/cargo CARGO_CRATE_NAME=bitflags CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bitflags-0.4.0 CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bitflags-0.4.0/Cargo.toml 'CARGO_PKG_AUTHORS=The Rust Project Developers' 'CARGO_PKG_DESCRIPTION=A macro to generate structures which behave like bitflags.\n' CARGO_PKG_HOMEPAGE=https://github.com/rust-lang/bitflags CARGO_PKG_LICENSE=MIT/Apache-2.0 CARGO_PKG_LICENSE_FILE= CARGO_PKG_NAME=bitflags CARGO_PKG_README=README.md CARGO_PKG_REPOSITORY=https://github.com/rust-lang/bitflags CARGO_PKG_RUST_VERSION= CARGO_PKG_VERSION=0.4.0 CARGO_PKG_VERSION_MAJOR=0 CARGO_PKG_VERSION_MINOR=4 CARGO_PKG_VERSION_PATCH=0 CARGO_PKG_VERSION_PRE= CARGOGREEN=1 rustc --crate-name bitflags --edition 2015 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level=3 -C embed-bitcode=no --check-cfg 'cfg(docsrs,test)' --check-cfg 'cfg(feature, values("no_std"))' -C metadata=c40fd9a620d26196 -C extra-filename=-e976848f96abbbd4 --out-dir /tmp/clis-dbcc_2-2-1/release/deps -C strip=debuginfo -L dependency=/tmp/clis-dbcc_2-2-1/release/deps --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bitflags-0.4.0/src/lib.rs"#,
-        r#"#10 0.124 ++ tee /tmp/clis-dbcc_2-2-1/release/deps/out-e976848f96abbbd4-stdout"#,
-        r#"#10 0.125 ++ tee /tmp/clis-dbcc_2-2-1/release/deps/out-e976848f96abbbd4-stderr"#,
-        r#"#10 0.258 {"$message_type":"artifact","artifact":"/tmp/clis-dbcc_2-2-1/release/deps/bitflags-e976848f96abbbd4.d","emit":"dep-info"}"#,
-        r#"#10 0.259 {"$message_type":"diagnostic","message":"extern crate `std` is private and cannot be re-exported","code":{"code":"E0365","explanation":"Private modules cannot be publicly re-exported. This error indicates that you\nattempted to `pub use` a module that was not itself public.\n\nErroneous code example:\n\n```compile_fail,E0365\nmod foo {\n    pub const X: u32 = 1;\n}\n\npub use foo as foo2;\n\nfn main() {}\n```\n\nThe solution to this problem is to ensure that the module that you are\nre-exporting is itself marked with `pub`:\n\n```\npub mod foo {\n    pub const X: u32 = 1;\n}\n\npub use foo as foo2;\n\nfn main() {}\n```\n\nSee the [Use Declarations][use-declarations] section of the reference for\nmore information on this topic.\n\n[use-declarations]: https://doc.rust-lang.org/reference/items/use-declarations.html\n"},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bitflags-0.4.0/src/lib.rs","byte_start":1046,"byte_end":1059,"line_start":25,"line_end":25,"column_start":9,"column_end":22,"is_primary":true,"text":[{"text":"pub use std as __core;","highlight_start":9,"highlight_end":22}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"this was previously accepted by the compiler but is being phased out; it will become a hard error in a future release!","code":null,"level":"warning","spans":[],"children":[],"rendered":null},{"message":"for more information, see issue #127909 <https://github.com/rust-lang/rust/issues/127909>","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"`#[warn(pub_use_of_private_extern_crate)]` on by default","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"consider making the `extern crate` item publicly accessible","code":null,"level":"help","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bitflags-0.4.0/src/lib.rs","byte_start":0,"byte_end":0,"line_start":1,"line_end":1,"column_start":1,"column_end":1,"is_primary":true,"text":[],"label":null,"suggested_replacement":"pub ","suggestion_applicability":"MaybeIncorrect","expansion":null}],"children":[],"rendered":null}],"rendered":"warning[E0365]: extern crate `std` is private and cannot be re-exported\n  --> /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bitflags-0.4.0/src/lib.rs:25:9\n   |\n25 | pub use std as __core;\n   |         ^^^^^^^^^^^^^\n   |\n   = warning: this was previously accepted by the compiler but is being phased out; it will become a hard error in a future release!\n   = note: for more information, see issue #127909 <https://github.com/rust-lang/rust/issues/127909>\n   = note: `#[warn(pub_use_of_private_extern_crate)]` on by default\n\u001b[38;5;14mhelp: consider making the `extern crate` item publicly accessible\n   |\n1  | \u001b[38;5;10mpub // Copyright 2014 The Rust Project Developers. See the COPYRIGHT\n   | \u001b[38;5;10m+++\n\n"}"#,
-        r#"#10 0.262 {"$message_type":"artifact","artifact":"/tmp/clis-dbcc_2-2-1/release/deps/libbitflags-e976848f96abbbd4.rmeta","emit":"metadata"}"#,
-        r#"#10 0.276 {"$message_type":"artifact","artifact":"/tmp/clis-dbcc_2-2-1/release/deps/libbitflags-e976848f96abbbd4.rlib","emit":"link"}"#,
-        r#"#10 0.276 {"$message_type":"diagnostic","message":"1 warning emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"warning: 1 warning emitted\n\n"}"#,
-        r#"#10 0.276 {"$message_type":"diagnostic","message":"For more information about this error, try `rustc --explain E0365`.","code":null,"level":"failure-note","spans":[],"children":[],"rendered":"For more information about this error, try `rustc --explain E0365`.\n"}"#,
-        r#"#10 0.276 {"$message_type":"future_incompat","future_incompat_report":[{"diagnostic":{"$message_type":"diagnostic","message":"extern crate `std` is private and cannot be re-exported","code":{"code":"E0365","explanation":"Private modules cannot be publicly re-exported. This error indicates that you\nattempted to `pub use` a module that was not itself public.\n\nErroneous code example:\n\n```compile_fail,E0365\nmod foo {\n    pub const X: u32 = 1;\n}\n\npub use foo as foo2;\n\nfn main() {}\n```\n\nThe solution to this problem is to ensure that the module that you are\nre-exporting is itself marked with `pub`:\n\n```\npub mod foo {\n    pub const X: u32 = 1;\n}\n\npub use foo as foo2;\n\nfn main() {}\n```\n\nSee the [Use Declarations][use-declarations] section of the reference for\nmore information on this topic.\n\n[use-declarations]: https://doc.rust-lang.org/reference/items/use-declarations.html\n"},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bitflags-0.4.0/src/lib.rs","byte_start":1046,"byte_end":1059,"line_start":25,"line_end":25,"column_start":9,"column_end":22,"is_primary":true,"text":[{"text":"pub use std as __core;","highlight_start":9,"highlight_end":22}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"this was previously accepted by the compiler but is being phased out; it will become a hard error in a future release!","code":null,"level":"warning","spans":[],"children":[],"rendered":null},{"message":"for more information, see issue #127909 <https://github.com/rust-lang/rust/issues/127909>","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"`#[warn(pub_use_of_private_extern_crate)]` on by default","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"consider making the `extern crate` item publicly accessible","code":null,"level":"help","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bitflags-0.4.0/src/lib.rs","byte_start":0,"byte_end":0,"line_start":1,"line_end":1,"column_start":1,"column_end":1,"is_primary":true,"text":[],"label":null,"suggested_replacement":"pub ","suggestion_applicability":"MaybeIncorrect","expansion":null}],"children":[],"rendered":null}],"rendered":"warning[E0365]: extern crate `std` is private and cannot be re-exported\n  --> /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bitflags-0.4.0/src/lib.rs:25:9\n   |\n25 | pub use std as __core;\n   |         ^^^^^^^^^^^^^\n   |\n   = warning: this was previously accepted by the compiler but is being phased out; it will become a hard error in a future release!\n   = note: for more information, see issue #127909 <https://github.com/rust-lang/rust/issues/127909>\n   = note: `#[warn(pub_use_of_private_extern_crate)]` on by default\n\u001b[38;5;14mhelp: consider making the `extern crate` item publicly accessible\n   |\n1  | \u001b[38;5;10mpub // Copyright 2014 The Rust Project Developers. See the COPYRIGHT\n   | \u001b[38;5;10m+++\n\n"}}]}"#,
-        r#"#10 DONE 0.3s"#,
-        r#"#11 [out-e976848f96abbbd4 1/1] COPY --from=dep-l-bitflags-0.4.0-e976848f96abbbd4 /tmp/clis-dbcc_2-2-1/release/deps/*-e976848f96abbbd4* /"#,
-        r#"#11 DONE 0.0s"#,
-        r#"#12 exporting to client directory"#,
-        r#"#12 copying files 44.70kB done"#,
-        r#"#12 DONE 0.0s"#,
-    ];
-    let mut acc = Accumulated::default();
-
-    for line in lines {
-        let Some(msg) = lift_stdio(line) else { continue };
-        fwd_stderr(msg, &mut acc);
-    }
-
-    assert_eq!(
-        acc.written,
-        [
-            "/tmp/clis-dbcc_2-2-1/release/deps/bitflags-e976848f96abbbd4.d",
-            "/tmp/clis-dbcc_2-2-1/release/deps/libbitflags-e976848f96abbbd4.rmeta",
-            "/tmp/clis-dbcc_2-2-1/release/deps/libbitflags-e976848f96abbbd4.rlib"
-        ]
-    );
-
-    // Then fwd_stderr calls artifact_written which returns Some("/tmp/thing")
-    assertx::assert_logs_contain_in_order!(logs, Level::Info => "rustc wrote /tmp/clis-dbcc_2-2-1/release/deps/bitflags-e976848f96abbbd4.d");
-    assertx::assert_logs_contain_in_order!(logs, Level::Info => "rustc wrote /tmp/clis-dbcc_2-2-1/release/deps/libbitflags-e976848f96abbbd4.rmeta");
-    assertx::assert_logs_contain_in_order!(logs, Level::Info => "rustc wrote /tmp/clis-dbcc_2-2-1/release/deps/libbitflags-e976848f96abbbd4.rlib");
 }
