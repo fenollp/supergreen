@@ -33,7 +33,7 @@ version = "0.21.0"
 anyhow = "1"
 assertx = { version = "1", features = [ "logging" ] }
 camino = { version = "1", features = [ "serde1" ] }
-cargo-lock = "10"
+cargo-lock = "11"
 cargo-subcommand-metadata = "0, >=0.1"
 cargo_toml = "0, >=0.21"
 chrono = { version = "0, >=0.4", default-features = false, features = [ "now" ] }
