@@ -713,6 +713,7 @@ all:
 * [ ] [`buildkit`: remote docker buildx build with large dockerfile gives trying to send message larger than max (22482550 vs. 16777216) error](https://github.com/moby/buildkit/issues/6097)
 * [ ] [`buildx`: `--cache-from` takes longer than actual (cached) build](https://github.com/docker/buildx/issues/3491)
 * [ ] [`buildx`: The cache export step hangs](https://github.com/docker/buildx/issues/537)
+* [ ] [`buildkit`: `COPY --rewrite-timestamp ...` to apply SOURCE_DATE_EPOCH build arg value to the timestamps of the files](https://github.com/moby/buildkit/issues/6348)
 
 
 ## En vrac

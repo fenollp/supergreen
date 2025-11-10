@@ -36,8 +36,10 @@ RUN \
         1> >(tee    /tmp/clis-buildxargs_master/release/deps/out-ef1ec1c562398afc-stdout) \
         2> >(tee    /tmp/clis-buildxargs_master/release/deps/out-ef1ec1c562398afc-stderr >&2) \
         || echo $? >/tmp/clis-buildxargs_master/release/deps/out-ef1ec1c562398afc-errcode
+ARG SOURCE_DATE_EPOCH
+RUN find /tmp/clis-buildxargs_master/release/deps/*-ef1ec1c562398afc* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-ef1ec1c562398afc
-COPY --from=dep-n-pico-args-0.5.0-ef1ec1c562398afc /tmp/clis-buildxargs_master/release/deps/*-ef1ec1c562398afc* /
+COPY --link --from=dep-n-pico-args-0.5.0-ef1ec1c562398afc /tmp/clis-buildxargs_master/release/deps/*-ef1ec1c562398afc* /
 
 ## this = "ef1ec1c562398afc"
 ## writes = [
@@ -93,13 +95,15 @@ COPY --from=dep-n-pico-args-0.5.0-ef1ec1c562398afc /tmp/clis-buildxargs_master/r
 ##       rustc '--crate-name' 'pico_args' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="default"' '--cfg' 'feature="eq-separator"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("combined-flags", "default", "eq-separator", "short-space-opt"))' '-C' 'metadata=735182ed74090f67' '-C' 'extra-filename=-ef1ec1c562398afc' '--out-dir' '/tmp/clis-buildxargs_master/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-buildxargs_master/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/pico-args-0.5.0/src/lib.rs \
 ##         1> >(tee    /tmp/clis-buildxargs_master/release/deps/out-ef1ec1c562398afc-stdout) \
 ##         2> >(tee    /tmp/clis-buildxargs_master/release/deps/out-ef1ec1c562398afc-stderr >&2) \
-##         || echo $? >/tmp/clis-buildxargs_master/release/deps/out-ef1ec1c562398afc-errcode'''
+##         || echo $? >/tmp/clis-buildxargs_master/release/deps/out-ef1ec1c562398afc-errcode
+## ARG SOURCE_DATE_EPOCH
+## RUN find /tmp/clis-buildxargs_master/release/deps/*-ef1ec1c562398afc* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ## 
 ## [[stages]]
 ## name = "out-ef1ec1c562398afc"
 ## script = """
 ## FROM scratch AS out-ef1ec1c562398afc
-## COPY --from=dep-n-pico-args-0.5.0-ef1ec1c562398afc /tmp/clis-buildxargs_master/release/deps/*-ef1ec1c562398afc* /"""
+## COPY --link --from=dep-n-pico-args-0.5.0-ef1ec1c562398afc /tmp/clis-buildxargs_master/release/deps/*-ef1ec1c562398afc* /"""
 
 FROM scratch AS cratesio-shlex-1.3.0
 ADD --chmod=0664 --unpack=true --checksum=sha256:0fda2ff0d084019ba4d7c6f371c95d8fd75ce3524c3cb8fb653a3023f6323e64 \
@@ -133,8 +137,10 @@ RUN \
         1> >(tee    /tmp/clis-buildxargs_master/release/deps/out-ab0e05b376045caf-stdout) \
         2> >(tee    /tmp/clis-buildxargs_master/release/deps/out-ab0e05b376045caf-stderr >&2) \
         || echo $? >/tmp/clis-buildxargs_master/release/deps/out-ab0e05b376045caf-errcode
+ARG SOURCE_DATE_EPOCH
+RUN find /tmp/clis-buildxargs_master/release/deps/*-ab0e05b376045caf* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-ab0e05b376045caf
-COPY --from=dep-n-shlex-1.3.0-ab0e05b376045caf /tmp/clis-buildxargs_master/release/deps/*-ab0e05b376045caf* /
+COPY --link --from=dep-n-shlex-1.3.0-ab0e05b376045caf /tmp/clis-buildxargs_master/release/deps/*-ab0e05b376045caf* /
 
 ## this = "ab0e05b376045caf"
 ## writes = [
@@ -192,13 +198,15 @@ COPY --from=dep-n-shlex-1.3.0-ab0e05b376045caf /tmp/clis-buildxargs_master/relea
 ##       rustc '--crate-name' 'shlex' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "std"))' '-C' 'metadata=54c2f0a338814297' '-C' 'extra-filename=-ab0e05b376045caf' '--out-dir' '/tmp/clis-buildxargs_master/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-buildxargs_master/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0/src/lib.rs \
 ##         1> >(tee    /tmp/clis-buildxargs_master/release/deps/out-ab0e05b376045caf-stdout) \
 ##         2> >(tee    /tmp/clis-buildxargs_master/release/deps/out-ab0e05b376045caf-stderr >&2) \
-##         || echo $? >/tmp/clis-buildxargs_master/release/deps/out-ab0e05b376045caf-errcode'''
+##         || echo $? >/tmp/clis-buildxargs_master/release/deps/out-ab0e05b376045caf-errcode
+## ARG SOURCE_DATE_EPOCH
+## RUN find /tmp/clis-buildxargs_master/release/deps/*-ab0e05b376045caf* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ## 
 ## [[stages]]
 ## name = "out-ab0e05b376045caf"
 ## script = """
 ## FROM scratch AS out-ab0e05b376045caf
-## COPY --from=dep-n-shlex-1.3.0-ab0e05b376045caf /tmp/clis-buildxargs_master/release/deps/*-ab0e05b376045caf* /"""
+## COPY --link --from=dep-n-shlex-1.3.0-ab0e05b376045caf /tmp/clis-buildxargs_master/release/deps/*-ab0e05b376045caf* /"""
 
 FROM scratch AS checkout-buildxargs-76dd4ee9dadcdcf0-df9b810011cd416b8e3fc02911f2f496acb8475e
 ADD --keep-git-dir=false \
@@ -238,8 +246,10 @@ RUN \
         1> >(tee    /tmp/clis-buildxargs_master/release/deps/out-42615e6c7f87c749-stdout) \
         2> >(tee    /tmp/clis-buildxargs_master/release/deps/out-42615e6c7f87c749-stderr >&2) \
         || echo $? >/tmp/clis-buildxargs_master/release/deps/out-42615e6c7f87c749-errcode
+ARG SOURCE_DATE_EPOCH
+RUN find /tmp/clis-buildxargs_master/release/deps/*-42615e6c7f87c749* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-42615e6c7f87c749
-COPY --from=dep-n-buildxargs-1.4.0-42615e6c7f87c749 /tmp/clis-buildxargs_master/release/deps/*-42615e6c7f87c749* /
+COPY --link --from=dep-n-buildxargs-1.4.0-42615e6c7f87c749 /tmp/clis-buildxargs_master/release/deps/*-42615e6c7f87c749* /
 
 ## this = "42615e6c7f87c749"
 ## deps = [
@@ -325,13 +335,15 @@ COPY --from=dep-n-buildxargs-1.4.0-42615e6c7f87c749 /tmp/clis-buildxargs_master/
 ##       rustc '--crate-name' 'buildxargs' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=39cb79e74912484c' '-C' 'extra-filename=-42615e6c7f87c749' '--out-dir' '/tmp/clis-buildxargs_master/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-buildxargs_master/release/deps' '--extern' 'pico_args=/tmp/clis-buildxargs_master/release/deps/libpico_args-ef1ec1c562398afc.rmeta' '--extern' 'shlex=/tmp/clis-buildxargs_master/release/deps/libshlex-ab0e05b376045caf.rmeta' src/lib.rs \
 ##         1> >(tee    /tmp/clis-buildxargs_master/release/deps/out-42615e6c7f87c749-stdout) \
 ##         2> >(tee    /tmp/clis-buildxargs_master/release/deps/out-42615e6c7f87c749-stderr >&2) \
-##         || echo $? >/tmp/clis-buildxargs_master/release/deps/out-42615e6c7f87c749-errcode'''
+##         || echo $? >/tmp/clis-buildxargs_master/release/deps/out-42615e6c7f87c749-errcode
+## ARG SOURCE_DATE_EPOCH
+## RUN find /tmp/clis-buildxargs_master/release/deps/*-42615e6c7f87c749* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ## 
 ## [[stages]]
 ## name = "out-42615e6c7f87c749"
 ## script = """
 ## FROM scratch AS out-42615e6c7f87c749
-## COPY --from=dep-n-buildxargs-1.4.0-42615e6c7f87c749 /tmp/clis-buildxargs_master/release/deps/*-42615e6c7f87c749* /"""
+## COPY --link --from=dep-n-buildxargs-1.4.0-42615e6c7f87c749 /tmp/clis-buildxargs_master/release/deps/*-42615e6c7f87c749* /"""
 
 
 FROM rust-base AS dep-n-buildxargs-1.4.0-4245cb92e8e8c024
@@ -369,8 +381,10 @@ RUN \
         1> >(tee    /tmp/clis-buildxargs_master/release/deps/out-4245cb92e8e8c024-stdout) \
         2> >(tee    /tmp/clis-buildxargs_master/release/deps/out-4245cb92e8e8c024-stderr >&2) \
         || echo $? >/tmp/clis-buildxargs_master/release/deps/out-4245cb92e8e8c024-errcode
+ARG SOURCE_DATE_EPOCH
+RUN find /tmp/clis-buildxargs_master/release/deps/*-4245cb92e8e8c024* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-4245cb92e8e8c024
-COPY --from=dep-n-buildxargs-1.4.0-4245cb92e8e8c024 /tmp/clis-buildxargs_master/release/deps/*-4245cb92e8e8c024* /
+COPY --link --from=dep-n-buildxargs-1.4.0-4245cb92e8e8c024 /tmp/clis-buildxargs_master/release/deps/*-4245cb92e8e8c024* /
 
 # Pipe this file to:
 # DOCKER_BUILDKIT="1" \
@@ -456,13 +470,15 @@ COPY --from=dep-n-buildxargs-1.4.0-4245cb92e8e8c024 /tmp/clis-buildxargs_master/
 ##       rustc '--crate-name' 'buildxargs' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'bin' '--emit' 'dep-info,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=a2ad5b1299c6ff1c' '-C' 'extra-filename=-4245cb92e8e8c024' '--out-dir' '/tmp/clis-buildxargs_master/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-buildxargs_master/release/deps' '--extern' 'buildxargs=/tmp/clis-buildxargs_master/release/deps/libbuildxargs-42615e6c7f87c749.rlib' '--extern' 'pico_args=/tmp/clis-buildxargs_master/release/deps/libpico_args-ef1ec1c562398afc.rlib' '--extern' 'shlex=/tmp/clis-buildxargs_master/release/deps/libshlex-ab0e05b376045caf.rlib' src/main.rs \
 ##         1> >(tee    /tmp/clis-buildxargs_master/release/deps/out-4245cb92e8e8c024-stdout) \
 ##         2> >(tee    /tmp/clis-buildxargs_master/release/deps/out-4245cb92e8e8c024-stderr >&2) \
-##         || echo $? >/tmp/clis-buildxargs_master/release/deps/out-4245cb92e8e8c024-errcode'''
+##         || echo $? >/tmp/clis-buildxargs_master/release/deps/out-4245cb92e8e8c024-errcode
+## ARG SOURCE_DATE_EPOCH
+## RUN find /tmp/clis-buildxargs_master/release/deps/*-4245cb92e8e8c024* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ## 
 ## [[stages]]
 ## name = "out-4245cb92e8e8c024"
 ## script = """
 ## FROM scratch AS out-4245cb92e8e8c024
-## COPY --from=dep-n-buildxargs-1.4.0-4245cb92e8e8c024 /tmp/clis-buildxargs_master/release/deps/*-4245cb92e8e8c024* /"""
+## COPY --link --from=dep-n-buildxargs-1.4.0-4245cb92e8e8c024 /tmp/clis-buildxargs_master/release/deps/*-4245cb92e8e8c024* /"""
 
 FROM scratch
-COPY --from=out-4245cb92e8e8c024 /buildxargs-4245cb92e8e8c024 /buildxargs
+COPY --link --from=out-4245cb92e8e8c024 /buildxargs-4245cb92e8e8c024 /buildxargs

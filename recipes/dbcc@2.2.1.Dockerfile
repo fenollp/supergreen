@@ -36,8 +36,10 @@ RUN \
         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-208f428f6e945660-stdout) \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-208f428f6e945660-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-208f428f6e945660-errcode
+ARG SOURCE_DATE_EPOCH
+RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-208f428f6e945660* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-208f428f6e945660
-COPY --from=dep-n-byte-tools-0.3.1-208f428f6e945660 /tmp/clis-dbcc_2-2-1/release/deps/*-208f428f6e945660* /
+COPY --link --from=dep-n-byte-tools-0.3.1-208f428f6e945660 /tmp/clis-dbcc_2-2-1/release/deps/*-208f428f6e945660* /
 
 ## this = "208f428f6e945660"
 ## writes = [
@@ -93,13 +95,15 @@ COPY --from=dep-n-byte-tools-0.3.1-208f428f6e945660 /tmp/clis-dbcc_2-2-1/release
 ##       rustc '--crate-name' 'byte_tools' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=bc0228cfae750508' '-C' 'extra-filename=-208f428f6e945660' '--out-dir' '/tmp/clis-dbcc_2-2-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-dbcc_2-2-1/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/byte-tools-0.3.1/src/lib.rs \
 ##         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-208f428f6e945660-stdout) \
 ##         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-208f428f6e945660-stderr >&2) \
-##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-208f428f6e945660-errcode'''
+##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-208f428f6e945660-errcode
+## ARG SOURCE_DATE_EPOCH
+## RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-208f428f6e945660* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ## 
 ## [[stages]]
 ## name = "out-208f428f6e945660"
 ## script = """
 ## FROM scratch AS out-208f428f6e945660
-## COPY --from=dep-n-byte-tools-0.3.1-208f428f6e945660 /tmp/clis-dbcc_2-2-1/release/deps/*-208f428f6e945660* /"""
+## COPY --link --from=dep-n-byte-tools-0.3.1-208f428f6e945660 /tmp/clis-dbcc_2-2-1/release/deps/*-208f428f6e945660* /"""
 
 FROM scratch AS cratesio-typenum-1.12.0
 ADD --chmod=0664 --unpack=true --checksum=sha256:373c8a200f9e67a0c95e62a4f52fbf80c23b4381c05a17845531982fa99e6b33 \
@@ -137,8 +141,10 @@ RUN \
         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-0c59626b95871fe7-stdout) \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-0c59626b95871fe7-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-0c59626b95871fe7-errcode
+ARG SOURCE_DATE_EPOCH
+RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-0c59626b95871fe7* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-0c59626b95871fe7
-COPY --from=dep-n-typenum-1.12.0-0c59626b95871fe7 /tmp/clis-dbcc_2-2-1/release/deps/*-0c59626b95871fe7* /
+COPY --link --from=dep-n-typenum-1.12.0-0c59626b95871fe7 /tmp/clis-dbcc_2-2-1/release/deps/*-0c59626b95871fe7* /
 
 ## this = "0c59626b95871fe7"
 ## writes = [
@@ -264,13 +270,15 @@ COPY --from=dep-n-typenum-1.12.0-0c59626b95871fe7 /tmp/clis-dbcc_2-2-1/release/d
 ##       rustc '--crate-name' 'typenum' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("force_unix_path_separator", "i128", "no_std", "strict"))' '-C' 'metadata=9b72b0a35302172d' '-C' 'extra-filename=-0c59626b95871fe7' '--out-dir' '/tmp/clis-dbcc_2-2-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-dbcc_2-2-1/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/typenum-1.12.0/src/lib.rs \
 ##         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-0c59626b95871fe7-stdout) \
 ##         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-0c59626b95871fe7-stderr >&2) \
-##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-0c59626b95871fe7-errcode'''
+##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-0c59626b95871fe7-errcode
+## ARG SOURCE_DATE_EPOCH
+## RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-0c59626b95871fe7* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ## 
 ## [[stages]]
 ## name = "out-0c59626b95871fe7"
 ## script = """
 ## FROM scratch AS out-0c59626b95871fe7
-## COPY --from=dep-n-typenum-1.12.0-0c59626b95871fe7 /tmp/clis-dbcc_2-2-1/release/deps/*-0c59626b95871fe7* /"""
+## COPY --link --from=dep-n-typenum-1.12.0-0c59626b95871fe7 /tmp/clis-dbcc_2-2-1/release/deps/*-0c59626b95871fe7* /"""
 
 FROM scratch AS cratesio-generic-array-0.12.3
 ADD --chmod=0664 --unpack=true --checksum=sha256:c68f0274ae0e023facc3c97b2e00f076be70e254bc851d972503b328db79b2ec \
@@ -306,8 +314,10 @@ RUN \
         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-0afa135837d93e68-stdout) \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-0afa135837d93e68-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-0afa135837d93e68-errcode
+ARG SOURCE_DATE_EPOCH
+RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-0afa135837d93e68* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-0afa135837d93e68
-COPY --from=dep-n-generic-array-0.12.3-0afa135837d93e68 /tmp/clis-dbcc_2-2-1/release/deps/*-0afa135837d93e68* /
+COPY --link --from=dep-n-generic-array-0.12.3-0afa135837d93e68 /tmp/clis-dbcc_2-2-1/release/deps/*-0afa135837d93e68* /
 
 ## this = "0afa135837d93e68"
 ## deps = ["0c59626b95871fe7"]
@@ -385,13 +395,15 @@ COPY --from=dep-n-generic-array-0.12.3-0afa135837d93e68 /tmp/clis-dbcc_2-2-1/rel
 ##       rustc '--crate-name' 'generic_array' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("serde"))' '-C' 'metadata=b88e8b871eb088ce' '-C' 'extra-filename=-0afa135837d93e68' '--out-dir' '/tmp/clis-dbcc_2-2-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-dbcc_2-2-1/release/deps' '--extern' 'typenum=/tmp/clis-dbcc_2-2-1/release/deps/libtypenum-0c59626b95871fe7.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/generic-array-0.12.3/src/lib.rs \
 ##         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-0afa135837d93e68-stdout) \
 ##         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-0afa135837d93e68-stderr >&2) \
-##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-0afa135837d93e68-errcode'''
+##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-0afa135837d93e68-errcode
+## ARG SOURCE_DATE_EPOCH
+## RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-0afa135837d93e68* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ## 
 ## [[stages]]
 ## name = "out-0afa135837d93e68"
 ## script = """
 ## FROM scratch AS out-0afa135837d93e68
-## COPY --from=dep-n-generic-array-0.12.3-0afa135837d93e68 /tmp/clis-dbcc_2-2-1/release/deps/*-0afa135837d93e68* /"""
+## COPY --link --from=dep-n-generic-array-0.12.3-0afa135837d93e68 /tmp/clis-dbcc_2-2-1/release/deps/*-0afa135837d93e68* /"""
 
 FROM scratch AS cratesio-subtle-1.0.0
 ADD --chmod=0664 --unpack=true --checksum=sha256:2d67a5a62ba6e01cb2192ff309324cb4875d0c451d55fe2319433abe7a05a8ee \
@@ -425,8 +437,10 @@ RUN \
         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-fe593aa0503da824-stdout) \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-fe593aa0503da824-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-fe593aa0503da824-errcode
+ARG SOURCE_DATE_EPOCH
+RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-fe593aa0503da824* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-fe593aa0503da824
-COPY --from=dep-n-subtle-1.0.0-fe593aa0503da824 /tmp/clis-dbcc_2-2-1/release/deps/*-fe593aa0503da824* /
+COPY --link --from=dep-n-subtle-1.0.0-fe593aa0503da824 /tmp/clis-dbcc_2-2-1/release/deps/*-fe593aa0503da824* /
 
 ## this = "fe593aa0503da824"
 ## writes = [
@@ -490,13 +504,15 @@ COPY --from=dep-n-subtle-1.0.0-fe593aa0503da824 /tmp/clis-dbcc_2-2-1/release/dep
 ##       rustc '--crate-name' 'subtle' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "i128", "nightly", "std"))' '-C' 'metadata=40c172ea47432436' '-C' 'extra-filename=-fe593aa0503da824' '--out-dir' '/tmp/clis-dbcc_2-2-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-dbcc_2-2-1/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/subtle-1.0.0/src/lib.rs \
 ##         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-fe593aa0503da824-stdout) \
 ##         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-fe593aa0503da824-stderr >&2) \
-##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-fe593aa0503da824-errcode'''
+##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-fe593aa0503da824-errcode
+## ARG SOURCE_DATE_EPOCH
+## RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-fe593aa0503da824* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ## 
 ## [[stages]]
 ## name = "out-fe593aa0503da824"
 ## script = """
 ## FROM scratch AS out-fe593aa0503da824
-## COPY --from=dep-n-subtle-1.0.0-fe593aa0503da824 /tmp/clis-dbcc_2-2-1/release/deps/*-fe593aa0503da824* /"""
+## COPY --link --from=dep-n-subtle-1.0.0-fe593aa0503da824 /tmp/clis-dbcc_2-2-1/release/deps/*-fe593aa0503da824* /"""
 
 FROM scratch AS cratesio-crypto-mac-0.7.0
 ADD --chmod=0664 --unpack=true --checksum=sha256:4434400df11d95d556bac068ddfedd482915eb18fe8bea89bc80b6e4b1c179e5 \
@@ -536,8 +552,10 @@ RUN \
         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-c92b10e2fa1c82cb-stdout) \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-c92b10e2fa1c82cb-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-c92b10e2fa1c82cb-errcode
+ARG SOURCE_DATE_EPOCH
+RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-c92b10e2fa1c82cb* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-c92b10e2fa1c82cb
-COPY --from=dep-n-crypto-mac-0.7.0-c92b10e2fa1c82cb /tmp/clis-dbcc_2-2-1/release/deps/*-c92b10e2fa1c82cb* /
+COPY --link --from=dep-n-crypto-mac-0.7.0-c92b10e2fa1c82cb /tmp/clis-dbcc_2-2-1/release/deps/*-c92b10e2fa1c82cb* /
 
 ## this = "c92b10e2fa1c82cb"
 ## deps = [
@@ -637,13 +655,15 @@ COPY --from=dep-n-crypto-mac-0.7.0-c92b10e2fa1c82cb /tmp/clis-dbcc_2-2-1/release
 ##       rustc '--crate-name' 'crypto_mac' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("blobby", "dev", "std"))' '-C' 'metadata=eca871e5fe137624' '-C' 'extra-filename=-c92b10e2fa1c82cb' '--out-dir' '/tmp/clis-dbcc_2-2-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-dbcc_2-2-1/release/deps' '--extern' 'generic_array=/tmp/clis-dbcc_2-2-1/release/deps/libgeneric_array-0afa135837d93e68.rmeta' '--extern' 'subtle=/tmp/clis-dbcc_2-2-1/release/deps/libsubtle-fe593aa0503da824.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crypto-mac-0.7.0/src/lib.rs \
 ##         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-c92b10e2fa1c82cb-stdout) \
 ##         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-c92b10e2fa1c82cb-stderr >&2) \
-##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-c92b10e2fa1c82cb-errcode'''
+##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-c92b10e2fa1c82cb-errcode
+## ARG SOURCE_DATE_EPOCH
+## RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-c92b10e2fa1c82cb* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ## 
 ## [[stages]]
 ## name = "out-c92b10e2fa1c82cb"
 ## script = """
 ## FROM scratch AS out-c92b10e2fa1c82cb
-## COPY --from=dep-n-crypto-mac-0.7.0-c92b10e2fa1c82cb /tmp/clis-dbcc_2-2-1/release/deps/*-c92b10e2fa1c82cb* /"""
+## COPY --link --from=dep-n-crypto-mac-0.7.0-c92b10e2fa1c82cb /tmp/clis-dbcc_2-2-1/release/deps/*-c92b10e2fa1c82cb* /"""
 
 FROM scratch AS cratesio-digest-0.8.1
 ADD --chmod=0664 --unpack=true --checksum=sha256:f3d0c8c8752312f9713efd397ff63acb9f85585afbf179282e720e7704954dd5 \
@@ -681,8 +701,10 @@ RUN \
         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-3c7631a805111659-stdout) \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-3c7631a805111659-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-3c7631a805111659-errcode
+ARG SOURCE_DATE_EPOCH
+RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-3c7631a805111659* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-3c7631a805111659
-COPY --from=dep-n-digest-0.8.1-3c7631a805111659 /tmp/clis-dbcc_2-2-1/release/deps/*-3c7631a805111659* /
+COPY --link --from=dep-n-digest-0.8.1-3c7631a805111659 /tmp/clis-dbcc_2-2-1/release/deps/*-3c7631a805111659* /
 
 ## this = "3c7631a805111659"
 ## deps = [
@@ -774,13 +796,15 @@ COPY --from=dep-n-digest-0.8.1-3c7631a805111659 /tmp/clis-dbcc_2-2-1/release/dep
 ##       rustc '--crate-name' 'digest' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("blobby", "dev", "std"))' '-C' 'metadata=7162f2f9e50280b8' '-C' 'extra-filename=-3c7631a805111659' '--out-dir' '/tmp/clis-dbcc_2-2-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-dbcc_2-2-1/release/deps' '--extern' 'generic_array=/tmp/clis-dbcc_2-2-1/release/deps/libgeneric_array-0afa135837d93e68.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/digest-0.8.1/src/lib.rs \
 ##         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-3c7631a805111659-stdout) \
 ##         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-3c7631a805111659-stderr >&2) \
-##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-3c7631a805111659-errcode'''
+##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-3c7631a805111659-errcode
+## ARG SOURCE_DATE_EPOCH
+## RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-3c7631a805111659* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ## 
 ## [[stages]]
 ## name = "out-3c7631a805111659"
 ## script = """
 ## FROM scratch AS out-3c7631a805111659
-## COPY --from=dep-n-digest-0.8.1-3c7631a805111659 /tmp/clis-dbcc_2-2-1/release/deps/*-3c7631a805111659* /"""
+## COPY --link --from=dep-n-digest-0.8.1-3c7631a805111659 /tmp/clis-dbcc_2-2-1/release/deps/*-3c7631a805111659* /"""
 
 FROM scratch AS cratesio-opaque-debug-0.2.3
 ADD --chmod=0664 --unpack=true --checksum=sha256:2839e79665f131bdb5782e51f2c6c9599c133c6098982a54c794358bf432529c \
@@ -814,8 +838,10 @@ RUN \
         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-3e36cb37043b614a-stdout) \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-3e36cb37043b614a-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-3e36cb37043b614a-errcode
+ARG SOURCE_DATE_EPOCH
+RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-3e36cb37043b614a* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-3e36cb37043b614a
-COPY --from=dep-n-opaque-debug-0.2.3-3e36cb37043b614a /tmp/clis-dbcc_2-2-1/release/deps/*-3e36cb37043b614a* /
+COPY --link --from=dep-n-opaque-debug-0.2.3-3e36cb37043b614a /tmp/clis-dbcc_2-2-1/release/deps/*-3e36cb37043b614a* /
 
 ## this = "3e36cb37043b614a"
 ## writes = [
@@ -871,13 +897,15 @@ COPY --from=dep-n-opaque-debug-0.2.3-3e36cb37043b614a /tmp/clis-dbcc_2-2-1/relea
 ##       rustc '--crate-name' 'opaque_debug' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=b8563ebc370a96b5' '-C' 'extra-filename=-3e36cb37043b614a' '--out-dir' '/tmp/clis-dbcc_2-2-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-dbcc_2-2-1/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/opaque-debug-0.2.3/src/lib.rs \
 ##         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-3e36cb37043b614a-stdout) \
 ##         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-3e36cb37043b614a-stderr >&2) \
-##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-3e36cb37043b614a-errcode'''
+##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-3e36cb37043b614a-errcode
+## ARG SOURCE_DATE_EPOCH
+## RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-3e36cb37043b614a* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ## 
 ## [[stages]]
 ## name = "out-3e36cb37043b614a"
 ## script = """
 ## FROM scratch AS out-3e36cb37043b614a
-## COPY --from=dep-n-opaque-debug-0.2.3-3e36cb37043b614a /tmp/clis-dbcc_2-2-1/release/deps/*-3e36cb37043b614a* /"""
+## COPY --link --from=dep-n-opaque-debug-0.2.3-3e36cb37043b614a /tmp/clis-dbcc_2-2-1/release/deps/*-3e36cb37043b614a* /"""
 
 FROM scratch AS cratesio-blake2-0.8.1
 ADD --chmod=0664 --unpack=true --checksum=sha256:94cb07b0da6a73955f8fb85d24c466778e70cda767a568229b104f0264089330 \
@@ -925,8 +953,10 @@ RUN \
         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-90ca44a8caf54d0f-stdout) \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-90ca44a8caf54d0f-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-90ca44a8caf54d0f-errcode
+ARG SOURCE_DATE_EPOCH
+RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-90ca44a8caf54d0f* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-90ca44a8caf54d0f
-COPY --from=dep-n-blake2-0.8.1-90ca44a8caf54d0f /tmp/clis-dbcc_2-2-1/release/deps/*-90ca44a8caf54d0f* /
+COPY --link --from=dep-n-blake2-0.8.1-90ca44a8caf54d0f /tmp/clis-dbcc_2-2-1/release/deps/*-90ca44a8caf54d0f* /
 
 ## this = "90ca44a8caf54d0f"
 ## deps = [
@@ -1080,13 +1110,15 @@ COPY --from=dep-n-blake2-0.8.1-90ca44a8caf54d0f /tmp/clis-dbcc_2-2-1/release/dep
 ##       rustc '--crate-name' 'blake2' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "simd", "simd_asm", "simd_opt", "std"))' '-C' 'metadata=34e446de08958184' '-C' 'extra-filename=-90ca44a8caf54d0f' '--out-dir' '/tmp/clis-dbcc_2-2-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-dbcc_2-2-1/release/deps' '--extern' 'byte_tools=/tmp/clis-dbcc_2-2-1/release/deps/libbyte_tools-208f428f6e945660.rmeta' '--extern' 'crypto_mac=/tmp/clis-dbcc_2-2-1/release/deps/libcrypto_mac-c92b10e2fa1c82cb.rmeta' '--extern' 'digest=/tmp/clis-dbcc_2-2-1/release/deps/libdigest-3c7631a805111659.rmeta' '--extern' 'opaque_debug=/tmp/clis-dbcc_2-2-1/release/deps/libopaque_debug-3e36cb37043b614a.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/blake2-0.8.1/src/lib.rs \
 ##         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-90ca44a8caf54d0f-stdout) \
 ##         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-90ca44a8caf54d0f-stderr >&2) \
-##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-90ca44a8caf54d0f-errcode'''
+##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-90ca44a8caf54d0f-errcode
+## ARG SOURCE_DATE_EPOCH
+## RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-90ca44a8caf54d0f* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ## 
 ## [[stages]]
 ## name = "out-90ca44a8caf54d0f"
 ## script = """
 ## FROM scratch AS out-90ca44a8caf54d0f
-## COPY --from=dep-n-blake2-0.8.1-90ca44a8caf54d0f /tmp/clis-dbcc_2-2-1/release/deps/*-90ca44a8caf54d0f* /"""
+## COPY --link --from=dep-n-blake2-0.8.1-90ca44a8caf54d0f /tmp/clis-dbcc_2-2-1/release/deps/*-90ca44a8caf54d0f* /"""
 
 FROM scratch AS cratesio-unicode-xid-0.2.1
 ADD --chmod=0664 --unpack=true --checksum=sha256:f7fe0bb3479651439c9112f72b6c505038574c9fbb575ed1bf3b797fa39dd564 \
@@ -1120,8 +1152,10 @@ RUN \
         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-ca80afcc82eeec0a-stdout) \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-ca80afcc82eeec0a-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-ca80afcc82eeec0a-errcode
+ARG SOURCE_DATE_EPOCH
+RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-ca80afcc82eeec0a* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-ca80afcc82eeec0a
-COPY --from=dep-n-unicode-xid-0.2.1-ca80afcc82eeec0a /tmp/clis-dbcc_2-2-1/release/deps/*-ca80afcc82eeec0a* /
+COPY --link --from=dep-n-unicode-xid-0.2.1-ca80afcc82eeec0a /tmp/clis-dbcc_2-2-1/release/deps/*-ca80afcc82eeec0a* /
 
 ## this = "ca80afcc82eeec0a"
 ## writes = [
@@ -1177,13 +1211,15 @@ COPY --from=dep-n-unicode-xid-0.2.1-ca80afcc82eeec0a /tmp/clis-dbcc_2-2-1/releas
 ##       rustc '--crate-name' 'unicode_xid' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--cfg' 'feature="default"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("bench", "default", "no_std"))' '-C' 'metadata=74af045ac9162114' '-C' 'extra-filename=-ca80afcc82eeec0a' '--out-dir' '/tmp/clis-dbcc_2-2-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-dbcc_2-2-1/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/unicode-xid-0.2.1/src/lib.rs \
 ##         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-ca80afcc82eeec0a-stdout) \
 ##         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-ca80afcc82eeec0a-stderr >&2) \
-##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-ca80afcc82eeec0a-errcode'''
+##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-ca80afcc82eeec0a-errcode
+## ARG SOURCE_DATE_EPOCH
+## RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-ca80afcc82eeec0a* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ## 
 ## [[stages]]
 ## name = "out-ca80afcc82eeec0a"
 ## script = """
 ## FROM scratch AS out-ca80afcc82eeec0a
-## COPY --from=dep-n-unicode-xid-0.2.1-ca80afcc82eeec0a /tmp/clis-dbcc_2-2-1/release/deps/*-ca80afcc82eeec0a* /"""
+## COPY --link --from=dep-n-unicode-xid-0.2.1-ca80afcc82eeec0a /tmp/clis-dbcc_2-2-1/release/deps/*-ca80afcc82eeec0a* /"""
 
 FROM scratch AS cratesio-proc-macro2-1.0.24
 ADD --chmod=0664 --unpack=true --checksum=sha256:1e0704ee1a7e00d7bb417d0770ea303c1bccbabf0ef1667dae92b5967f5f8a71 \
@@ -1220,8 +1256,10 @@ RUN \
         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-80b37ce9903d0def-stdout) \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-80b37ce9903d0def-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-80b37ce9903d0def-errcode
+ARG SOURCE_DATE_EPOCH
+RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-80b37ce9903d0def* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-80b37ce9903d0def
-COPY --from=dep-n-proc-macro2-1.0.24-80b37ce9903d0def /tmp/clis-dbcc_2-2-1/release/deps/*-80b37ce9903d0def* /
+COPY --link --from=dep-n-proc-macro2-1.0.24-80b37ce9903d0def /tmp/clis-dbcc_2-2-1/release/deps/*-80b37ce9903d0def* /
 
 ## this = "80b37ce9903d0def"
 ## deps = ["ca80afcc82eeec0a"]
@@ -1399,13 +1437,15 @@ COPY --from=dep-n-proc-macro2-1.0.24-80b37ce9903d0def /tmp/clis-dbcc_2-2-1/relea
 ##       rustc '--crate-name' 'proc_macro2' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--cfg' 'feature="default"' '--cfg' 'feature="proc-macro"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "nightly", "proc-macro", "span-locations"))' '-C' 'metadata=74632adfdd4ed0d9' '-C' 'extra-filename=-80b37ce9903d0def' '--out-dir' '/tmp/clis-dbcc_2-2-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-dbcc_2-2-1/release/deps' '--extern' 'unicode_xid=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-ca80afcc82eeec0a.rmeta' '--cap-lints' 'warn' '--cfg' 'lexerror_display' '--cfg' 'hygiene' '--cfg' 'use_proc_macro' '--cfg' 'wrap_proc_macro' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.24/src/lib.rs \
 ##         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-80b37ce9903d0def-stdout) \
 ##         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-80b37ce9903d0def-stderr >&2) \
-##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-80b37ce9903d0def-errcode'''
+##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-80b37ce9903d0def-errcode
+## ARG SOURCE_DATE_EPOCH
+## RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-80b37ce9903d0def* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ## 
 ## [[stages]]
 ## name = "out-80b37ce9903d0def"
 ## script = """
 ## FROM scratch AS out-80b37ce9903d0def
-## COPY --from=dep-n-proc-macro2-1.0.24-80b37ce9903d0def /tmp/clis-dbcc_2-2-1/release/deps/*-80b37ce9903d0def* /"""
+## COPY --link --from=dep-n-proc-macro2-1.0.24-80b37ce9903d0def /tmp/clis-dbcc_2-2-1/release/deps/*-80b37ce9903d0def* /"""
 
 FROM scratch AS cratesio-quote-1.0.7
 ADD --chmod=0664 --unpack=true --checksum=sha256:aa563d17ecb180e500da1cfd2b028310ac758de548efdd203e18f283af693f37 \
@@ -1443,8 +1483,10 @@ RUN \
         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-dd5debcb2b51fc02-stdout) \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-dd5debcb2b51fc02-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-dd5debcb2b51fc02-errcode
+ARG SOURCE_DATE_EPOCH
+RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-dd5debcb2b51fc02* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-dd5debcb2b51fc02
-COPY --from=dep-n-quote-1.0.7-dd5debcb2b51fc02 /tmp/clis-dbcc_2-2-1/release/deps/*-dd5debcb2b51fc02* /
+COPY --link --from=dep-n-quote-1.0.7-dd5debcb2b51fc02 /tmp/clis-dbcc_2-2-1/release/deps/*-dd5debcb2b51fc02* /
 
 ## this = "dd5debcb2b51fc02"
 ## deps = [
@@ -1528,13 +1570,15 @@ COPY --from=dep-n-quote-1.0.7-dd5debcb2b51fc02 /tmp/clis-dbcc_2-2-1/release/deps
 ##       rustc '--crate-name' 'quote' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--cfg' 'feature="default"' '--cfg' 'feature="proc-macro"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "proc-macro"))' '-C' 'metadata=042d1e8fcb9da129' '-C' 'extra-filename=-dd5debcb2b51fc02' '--out-dir' '/tmp/clis-dbcc_2-2-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-dbcc_2-2-1/release/deps' '--extern' 'proc_macro2=/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-80b37ce9903d0def.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.7/src/lib.rs \
 ##         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-dd5debcb2b51fc02-stdout) \
 ##         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-dd5debcb2b51fc02-stderr >&2) \
-##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-dd5debcb2b51fc02-errcode'''
+##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-dd5debcb2b51fc02-errcode
+## ARG SOURCE_DATE_EPOCH
+## RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-dd5debcb2b51fc02* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ## 
 ## [[stages]]
 ## name = "out-dd5debcb2b51fc02"
 ## script = """
 ## FROM scratch AS out-dd5debcb2b51fc02
-## COPY --from=dep-n-quote-1.0.7-dd5debcb2b51fc02 /tmp/clis-dbcc_2-2-1/release/deps/*-dd5debcb2b51fc02* /"""
+## COPY --link --from=dep-n-quote-1.0.7-dd5debcb2b51fc02 /tmp/clis-dbcc_2-2-1/release/deps/*-dd5debcb2b51fc02* /"""
 
 FROM scratch AS cratesio-syn-1.0.46
 ADD --chmod=0664 --unpack=true --checksum=sha256:5ad5de3220ea04da322618ded2c42233d02baca219d6f160a3e9c87cda16c942 \
@@ -1575,8 +1619,10 @@ RUN \
         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-bbffa8c7e6a16356-stdout) \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-bbffa8c7e6a16356-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-bbffa8c7e6a16356-errcode
+ARG SOURCE_DATE_EPOCH
+RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-bbffa8c7e6a16356* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-bbffa8c7e6a16356
-COPY --from=dep-n-syn-1.0.46-bbffa8c7e6a16356 /tmp/clis-dbcc_2-2-1/release/deps/*-bbffa8c7e6a16356* /
+COPY --link --from=dep-n-syn-1.0.46-bbffa8c7e6a16356 /tmp/clis-dbcc_2-2-1/release/deps/*-bbffa8c7e6a16356* /
 
 ## this = "bbffa8c7e6a16356"
 ## deps = [
@@ -1679,13 +1725,15 @@ COPY --from=dep-n-syn-1.0.46-bbffa8c7e6a16356 /tmp/clis-dbcc_2-2-1/release/deps/
 ##       rustc '--crate-name' 'syn' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--cfg' 'feature="clone-impls"' '--cfg' 'feature="default"' '--cfg' 'feature="derive"' '--cfg' 'feature="extra-traits"' '--cfg' 'feature="full"' '--cfg' 'feature="parsing"' '--cfg' 'feature="printing"' '--cfg' 'feature="proc-macro"' '--cfg' 'feature="quote"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("clone-impls", "default", "derive", "extra-traits", "fold", "full", "parsing", "printing", "proc-macro", "quote", "test", "visit", "visit-mut"))' '-C' 'metadata=fa5ca828ba56be39' '-C' 'extra-filename=-bbffa8c7e6a16356' '--out-dir' '/tmp/clis-dbcc_2-2-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-dbcc_2-2-1/release/deps' '--extern' 'proc_macro2=/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-80b37ce9903d0def.rmeta' '--extern' 'quote=/tmp/clis-dbcc_2-2-1/release/deps/libquote-dd5debcb2b51fc02.rmeta' '--extern' 'unicode_xid=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-ca80afcc82eeec0a.rmeta' '--cap-lints' 'warn' '--cfg' 'syn_disable_nightly_tests' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/syn-1.0.46/src/lib.rs \
 ##         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-bbffa8c7e6a16356-stdout) \
 ##         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-bbffa8c7e6a16356-stderr >&2) \
-##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-bbffa8c7e6a16356-errcode'''
+##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-bbffa8c7e6a16356-errcode
+## ARG SOURCE_DATE_EPOCH
+## RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-bbffa8c7e6a16356* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ## 
 ## [[stages]]
 ## name = "out-bbffa8c7e6a16356"
 ## script = """
 ## FROM scratch AS out-bbffa8c7e6a16356
-## COPY --from=dep-n-syn-1.0.46-bbffa8c7e6a16356 /tmp/clis-dbcc_2-2-1/release/deps/*-bbffa8c7e6a16356* /"""
+## COPY --link --from=dep-n-syn-1.0.46-bbffa8c7e6a16356 /tmp/clis-dbcc_2-2-1/release/deps/*-bbffa8c7e6a16356* /"""
 
 FROM scratch AS cratesio-derive-getters-0.1.1
 ADD --chmod=0664 --unpack=true --checksum=sha256:16dc4e2517f08ca167440ccb11023c1308ee19a4022d7b03c0e652f971171869 \
@@ -1723,8 +1771,10 @@ RUN \
         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-10105863fb18eb2a-stdout) \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-10105863fb18eb2a-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-10105863fb18eb2a-errcode
+ARG SOURCE_DATE_EPOCH
+RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-10105863fb18eb2a* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-10105863fb18eb2a
-COPY --from=dep-n-derive-getters-0.1.1-10105863fb18eb2a /tmp/clis-dbcc_2-2-1/release/deps/*-10105863fb18eb2a* /
+COPY --link --from=dep-n-derive-getters-0.1.1-10105863fb18eb2a /tmp/clis-dbcc_2-2-1/release/deps/*-10105863fb18eb2a* /
 
 ## this = "10105863fb18eb2a"
 ## deps = [
@@ -1813,13 +1863,15 @@ COPY --from=dep-n-derive-getters-0.1.1-10105863fb18eb2a /tmp/clis-dbcc_2-2-1/rel
 ##       rustc '--crate-name' 'derive_getters' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'proc-macro' '--emit' 'dep-info,link' '-C' 'prefer-dynamic' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=7483499958518af0' '-C' 'extra-filename=-10105863fb18eb2a' '--out-dir' '/tmp/clis-dbcc_2-2-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-dbcc_2-2-1/release/deps' '--extern' 'proc_macro2=/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-80b37ce9903d0def.rlib' '--extern' 'quote=/tmp/clis-dbcc_2-2-1/release/deps/libquote-dd5debcb2b51fc02.rlib' '--extern' 'syn=/tmp/clis-dbcc_2-2-1/release/deps/libsyn-bbffa8c7e6a16356.rlib' '--extern' 'proc_macro' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/derive-getters-0.1.1/src/lib.rs \
 ##         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-10105863fb18eb2a-stdout) \
 ##         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-10105863fb18eb2a-stderr >&2) \
-##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-10105863fb18eb2a-errcode'''
+##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-10105863fb18eb2a-errcode
+## ARG SOURCE_DATE_EPOCH
+## RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-10105863fb18eb2a* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ## 
 ## [[stages]]
 ## name = "out-10105863fb18eb2a"
 ## script = """
 ## FROM scratch AS out-10105863fb18eb2a
-## COPY --from=dep-n-derive-getters-0.1.1-10105863fb18eb2a /tmp/clis-dbcc_2-2-1/release/deps/*-10105863fb18eb2a* /"""
+## COPY --link --from=dep-n-derive-getters-0.1.1-10105863fb18eb2a /tmp/clis-dbcc_2-2-1/release/deps/*-10105863fb18eb2a* /"""
 
 FROM scratch AS cratesio-memchr-2.3.3
 ADD --chmod=0664 --unpack=true --checksum=sha256:3728d817d99e5ac407411fa471ff9800a778d88a24685968b36824eaf4bee400 \
@@ -1854,8 +1906,10 @@ RUN \
         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-c93fd10415a641fd-stdout) \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-c93fd10415a641fd-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-c93fd10415a641fd-errcode
+ARG SOURCE_DATE_EPOCH
+RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-c93fd10415a641fd* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-c93fd10415a641fd
-COPY --from=dep-n-memchr-2.3.3-c93fd10415a641fd /tmp/clis-dbcc_2-2-1/release/deps/*-c93fd10415a641fd* /
+COPY --link --from=dep-n-memchr-2.3.3-c93fd10415a641fd /tmp/clis-dbcc_2-2-1/release/deps/*-c93fd10415a641fd* /
 
 ## this = "c93fd10415a641fd"
 ## writes = [
@@ -1945,13 +1999,15 @@ COPY --from=dep-n-memchr-2.3.3-c93fd10415a641fd /tmp/clis-dbcc_2-2-1/release/dep
 ##       rustc '--crate-name' 'memchr' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--cfg' 'feature="use_std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "libc", "std", "use_std"))' '-C' 'metadata=a11f98a351ba84dd' '-C' 'extra-filename=-c93fd10415a641fd' '--out-dir' '/tmp/clis-dbcc_2-2-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-dbcc_2-2-1/release/deps' '--cap-lints' 'warn' '--cfg' 'memchr_runtime_simd' '--cfg' 'memchr_runtime_sse2' '--cfg' 'memchr_runtime_sse42' '--cfg' 'memchr_runtime_avx' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/memchr-2.3.3/src/lib.rs \
 ##         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-c93fd10415a641fd-stdout) \
 ##         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-c93fd10415a641fd-stderr >&2) \
-##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-c93fd10415a641fd-errcode'''
+##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-c93fd10415a641fd-errcode
+## ARG SOURCE_DATE_EPOCH
+## RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-c93fd10415a641fd* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ## 
 ## [[stages]]
 ## name = "out-c93fd10415a641fd"
 ## script = """
 ## FROM scratch AS out-c93fd10415a641fd
-## COPY --from=dep-n-memchr-2.3.3-c93fd10415a641fd /tmp/clis-dbcc_2-2-1/release/deps/*-c93fd10415a641fd* /"""
+## COPY --link --from=dep-n-memchr-2.3.3-c93fd10415a641fd /tmp/clis-dbcc_2-2-1/release/deps/*-c93fd10415a641fd* /"""
 
 FROM scratch AS cratesio-nom-4.2.3
 ADD --chmod=0664 --unpack=true --checksum=sha256:2ad2a91a8e869eeb30b9cb3119ae87773a8f4ae617f41b1eb9c154b2905f7bd6 \
@@ -1988,8 +2044,10 @@ RUN \
         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-cd5fc4bcd4e040ed-stdout) \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-cd5fc4bcd4e040ed-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-cd5fc4bcd4e040ed-errcode
+ARG SOURCE_DATE_EPOCH
+RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-cd5fc4bcd4e040ed* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-cd5fc4bcd4e040ed
-COPY --from=dep-n-nom-4.2.3-cd5fc4bcd4e040ed /tmp/clis-dbcc_2-2-1/release/deps/*-cd5fc4bcd4e040ed* /
+COPY --link --from=dep-n-nom-4.2.3-cd5fc4bcd4e040ed /tmp/clis-dbcc_2-2-1/release/deps/*-cd5fc4bcd4e040ed* /
 
 ## this = "cd5fc4bcd4e040ed"
 ## deps = ["c93fd10415a641fd"]
@@ -2126,13 +2184,15 @@ COPY --from=dep-n-nom-4.2.3-cd5fc4bcd4e040ed /tmp/clis-dbcc_2-2-1/release/deps/*
 ##       rustc '--crate-name' 'nom' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="alloc"' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--cfg' 'feature="verbose-errors"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "default", "lazy_static", "regex", "regexp", "regexp_macros", "std", "verbose-errors"))' '-C' 'metadata=86639ca7531042ec' '-C' 'extra-filename=-cd5fc4bcd4e040ed' '--out-dir' '/tmp/clis-dbcc_2-2-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-dbcc_2-2-1/release/deps' '--extern' 'memchr=/tmp/clis-dbcc_2-2-1/release/deps/libmemchr-c93fd10415a641fd.rmeta' '--cap-lints' 'warn' '--cfg' 'stable_i128' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/src/lib.rs \
 ##         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-cd5fc4bcd4e040ed-stdout) \
 ##         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-cd5fc4bcd4e040ed-stderr >&2) \
-##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-cd5fc4bcd4e040ed-errcode'''
+##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-cd5fc4bcd4e040ed-errcode
+## ARG SOURCE_DATE_EPOCH
+## RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-cd5fc4bcd4e040ed* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ## 
 ## [[stages]]
 ## name = "out-cd5fc4bcd4e040ed"
 ## script = """
 ## FROM scratch AS out-cd5fc4bcd4e040ed
-## COPY --from=dep-n-nom-4.2.3-cd5fc4bcd4e040ed /tmp/clis-dbcc_2-2-1/release/deps/*-cd5fc4bcd4e040ed* /"""
+## COPY --link --from=dep-n-nom-4.2.3-cd5fc4bcd4e040ed /tmp/clis-dbcc_2-2-1/release/deps/*-cd5fc4bcd4e040ed* /"""
 
 FROM scratch AS cratesio-can-dbc-3.0.2
 ADD --chmod=0664 --unpack=true --checksum=sha256:5bc2e1f9f6f7fe6f3dbcfc44036eb07596ef1d37517ce822111f0c3d6eeed82a \
@@ -2179,8 +2239,10 @@ RUN \
         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-593834cb44ccbead-stdout) \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-593834cb44ccbead-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-593834cb44ccbead-errcode
+ARG SOURCE_DATE_EPOCH
+RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-593834cb44ccbead* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-593834cb44ccbead
-COPY --from=dep-n-can-dbc-3.0.2-593834cb44ccbead /tmp/clis-dbcc_2-2-1/release/deps/*-593834cb44ccbead* /
+COPY --link --from=dep-n-can-dbc-3.0.2-593834cb44ccbead /tmp/clis-dbcc_2-2-1/release/deps/*-593834cb44ccbead* /
 
 ## this = "593834cb44ccbead"
 ## deps = [
@@ -2319,13 +2381,15 @@ COPY --from=dep-n-can-dbc-3.0.2-593834cb44ccbead /tmp/clis-dbcc_2-2-1/release/de
 ##       rustc '--crate-name' 'can_dbc' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("serde", "serde_derive", "with-serde"))' '-C' 'metadata=fee22bce5cf13fc7' '-C' 'extra-filename=-593834cb44ccbead' '--out-dir' '/tmp/clis-dbcc_2-2-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-dbcc_2-2-1/release/deps' '--extern' 'derive_getters=/tmp/clis-dbcc_2-2-1/release/deps/libderive_getters-10105863fb18eb2a.so' '--extern' 'nom=/tmp/clis-dbcc_2-2-1/release/deps/libnom-cd5fc4bcd4e040ed.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/can-dbc-3.0.2/src/lib.rs \
 ##         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-593834cb44ccbead-stdout) \
 ##         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-593834cb44ccbead-stderr >&2) \
-##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-593834cb44ccbead-errcode'''
+##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-593834cb44ccbead-errcode
+## ARG SOURCE_DATE_EPOCH
+## RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-593834cb44ccbead* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ## 
 ## [[stages]]
 ## name = "out-593834cb44ccbead"
 ## script = """
 ## FROM scratch AS out-593834cb44ccbead
-## COPY --from=dep-n-can-dbc-3.0.2-593834cb44ccbead /tmp/clis-dbcc_2-2-1/release/deps/*-593834cb44ccbead* /"""
+## COPY --link --from=dep-n-can-dbc-3.0.2-593834cb44ccbead /tmp/clis-dbcc_2-2-1/release/deps/*-593834cb44ccbead* /"""
 
 FROM scratch AS cratesio-unicode-segmentation-1.6.0
 ADD --chmod=0664 --unpack=true --checksum=sha256:e83e153d1053cbb5a118eeff7fd5be06ed99153f00dbcd8ae310c5fb2b22edc0 \
@@ -2359,8 +2423,10 @@ RUN \
         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-b06e8bcc96549ef0-stdout) \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-b06e8bcc96549ef0-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-b06e8bcc96549ef0-errcode
+ARG SOURCE_DATE_EPOCH
+RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-b06e8bcc96549ef0* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-b06e8bcc96549ef0
-COPY --from=dep-n-unicode-segmentation-1.6.0-b06e8bcc96549ef0 /tmp/clis-dbcc_2-2-1/release/deps/*-b06e8bcc96549ef0* /
+COPY --link --from=dep-n-unicode-segmentation-1.6.0-b06e8bcc96549ef0 /tmp/clis-dbcc_2-2-1/release/deps/*-b06e8bcc96549ef0* /
 
 ## this = "b06e8bcc96549ef0"
 ## writes = [
@@ -2420,13 +2486,15 @@ COPY --from=dep-n-unicode-segmentation-1.6.0-b06e8bcc96549ef0 /tmp/clis-dbcc_2-2
 ##       rustc '--crate-name' 'unicode_segmentation' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("no_std"))' '-C' 'metadata=caefe3ad86024d64' '-C' 'extra-filename=-b06e8bcc96549ef0' '--out-dir' '/tmp/clis-dbcc_2-2-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-dbcc_2-2-1/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/unicode-segmentation-1.6.0/src/lib.rs \
 ##         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-b06e8bcc96549ef0-stdout) \
 ##         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-b06e8bcc96549ef0-stderr >&2) \
-##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-b06e8bcc96549ef0-errcode'''
+##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-b06e8bcc96549ef0-errcode
+## ARG SOURCE_DATE_EPOCH
+## RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-b06e8bcc96549ef0* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ## 
 ## [[stages]]
 ## name = "out-b06e8bcc96549ef0"
 ## script = """
 ## FROM scratch AS out-b06e8bcc96549ef0
-## COPY --from=dep-n-unicode-segmentation-1.6.0-b06e8bcc96549ef0 /tmp/clis-dbcc_2-2-1/release/deps/*-b06e8bcc96549ef0* /"""
+## COPY --link --from=dep-n-unicode-segmentation-1.6.0-b06e8bcc96549ef0 /tmp/clis-dbcc_2-2-1/release/deps/*-b06e8bcc96549ef0* /"""
 
 FROM scratch AS cratesio-heck-0.3.1
 ADD --chmod=0664 --unpack=true --checksum=sha256:20564e78d53d2bb135c343b3f47714a56af2061f1c928fdb541dc7b9fdd94205 \
@@ -2462,8 +2530,10 @@ RUN \
         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-7d0dcf7e7b45836f-stdout) \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-7d0dcf7e7b45836f-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-7d0dcf7e7b45836f-errcode
+ARG SOURCE_DATE_EPOCH
+RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-7d0dcf7e7b45836f* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-7d0dcf7e7b45836f
-COPY --from=dep-n-heck-0.3.1-7d0dcf7e7b45836f /tmp/clis-dbcc_2-2-1/release/deps/*-7d0dcf7e7b45836f* /
+COPY --link --from=dep-n-heck-0.3.1-7d0dcf7e7b45836f /tmp/clis-dbcc_2-2-1/release/deps/*-7d0dcf7e7b45836f* /
 
 ## this = "7d0dcf7e7b45836f"
 ## deps = ["b06e8bcc96549ef0"]
@@ -2531,13 +2601,15 @@ COPY --from=dep-n-heck-0.3.1-7d0dcf7e7b45836f /tmp/clis-dbcc_2-2-1/release/deps/
 ##       rustc '--crate-name' 'heck' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=bc369c776ba0d082' '-C' 'extra-filename=-7d0dcf7e7b45836f' '--out-dir' '/tmp/clis-dbcc_2-2-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-dbcc_2-2-1/release/deps' '--extern' 'unicode_segmentation=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_segmentation-b06e8bcc96549ef0.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/heck-0.3.1/src/lib.rs \
 ##         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-7d0dcf7e7b45836f-stdout) \
 ##         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-7d0dcf7e7b45836f-stderr >&2) \
-##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-7d0dcf7e7b45836f-errcode'''
+##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-7d0dcf7e7b45836f-errcode
+## ARG SOURCE_DATE_EPOCH
+## RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-7d0dcf7e7b45836f* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ## 
 ## [[stages]]
 ## name = "out-7d0dcf7e7b45836f"
 ## script = """
 ## FROM scratch AS out-7d0dcf7e7b45836f
-## COPY --from=dep-n-heck-0.3.1-7d0dcf7e7b45836f /tmp/clis-dbcc_2-2-1/release/deps/*-7d0dcf7e7b45836f* /"""
+## COPY --link --from=dep-n-heck-0.3.1-7d0dcf7e7b45836f /tmp/clis-dbcc_2-2-1/release/deps/*-7d0dcf7e7b45836f* /"""
 
 FROM scratch AS cratesio-cfg-if-0.1.10
 ADD --chmod=0664 --unpack=true --checksum=sha256:4785bdd1c96b2a846b2bd7cc02e86b6b3dbf14e7e53446c4f54c92a361040822 \
@@ -2571,8 +2643,10 @@ RUN \
         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-abefcc22b095b628-stdout) \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-abefcc22b095b628-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-abefcc22b095b628-errcode
+ARG SOURCE_DATE_EPOCH
+RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-abefcc22b095b628* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-abefcc22b095b628
-COPY --from=dep-n-cfg-if-0.1.10-abefcc22b095b628 /tmp/clis-dbcc_2-2-1/release/deps/*-abefcc22b095b628* /
+COPY --link --from=dep-n-cfg-if-0.1.10-abefcc22b095b628 /tmp/clis-dbcc_2-2-1/release/deps/*-abefcc22b095b628* /
 
 ## this = "abefcc22b095b628"
 ## writes = [
@@ -2628,13 +2702,15 @@ COPY --from=dep-n-cfg-if-0.1.10-abefcc22b095b628 /tmp/clis-dbcc_2-2-1/release/de
 ##       rustc '--crate-name' 'cfg_if' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("compiler_builtins", "core", "rustc-dep-of-std"))' '-C' 'metadata=c86d40f468e79710' '-C' 'extra-filename=-abefcc22b095b628' '--out-dir' '/tmp/clis-dbcc_2-2-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-dbcc_2-2-1/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/cfg-if-0.1.10/src/lib.rs \
 ##         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-abefcc22b095b628-stdout) \
 ##         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-abefcc22b095b628-stderr >&2) \
-##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-abefcc22b095b628-errcode'''
+##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-abefcc22b095b628-errcode
+## ARG SOURCE_DATE_EPOCH
+## RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-abefcc22b095b628* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ## 
 ## [[stages]]
 ## name = "out-abefcc22b095b628"
 ## script = """
 ## FROM scratch AS out-abefcc22b095b628
-## COPY --from=dep-n-cfg-if-0.1.10-abefcc22b095b628 /tmp/clis-dbcc_2-2-1/release/deps/*-abefcc22b095b628* /"""
+## COPY --link --from=dep-n-cfg-if-0.1.10-abefcc22b095b628 /tmp/clis-dbcc_2-2-1/release/deps/*-abefcc22b095b628* /"""
 
 FROM scratch AS cratesio-log-0.4.11
 ADD --chmod=0664 --unpack=true --checksum=sha256:4fabed175da42fed1fa0746b0ea71f412aa9d35e76e95e59b192c64b9dc2bf8b \
@@ -2671,8 +2747,10 @@ RUN \
         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-09be6f37eb701f15-stdout) \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-09be6f37eb701f15-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-09be6f37eb701f15-errcode
+ARG SOURCE_DATE_EPOCH
+RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-09be6f37eb701f15* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-09be6f37eb701f15
-COPY --from=dep-n-log-0.4.11-09be6f37eb701f15 /tmp/clis-dbcc_2-2-1/release/deps/*-09be6f37eb701f15* /
+COPY --link --from=dep-n-log-0.4.11-09be6f37eb701f15 /tmp/clis-dbcc_2-2-1/release/deps/*-09be6f37eb701f15* /
 
 ## this = "09be6f37eb701f15"
 ## deps = ["abefcc22b095b628"]
@@ -2749,13 +2827,15 @@ COPY --from=dep-n-log-0.4.11-09be6f37eb701f15 /tmp/clis-dbcc_2-2-1/release/deps/
 ##       rustc '--crate-name' 'log' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("kv_unstable", "kv_unstable_sval", "max_level_debug", "max_level_error", "max_level_info", "max_level_off", "max_level_trace", "max_level_warn", "release_max_level_debug", "release_max_level_error", "release_max_level_info", "release_max_level_off", "release_max_level_trace", "release_max_level_warn", "serde", "std", "sval"))' '-C' 'metadata=46ae8ee621802908' '-C' 'extra-filename=-09be6f37eb701f15' '--out-dir' '/tmp/clis-dbcc_2-2-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-dbcc_2-2-1/release/deps' '--extern' 'cfg_if=/tmp/clis-dbcc_2-2-1/release/deps/libcfg_if-abefcc22b095b628.rmeta' '--cap-lints' 'warn' '--cfg' 'atomic_cas' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/log-0.4.11/src/lib.rs \
 ##         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-09be6f37eb701f15-stdout) \
 ##         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-09be6f37eb701f15-stderr >&2) \
-##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-09be6f37eb701f15-errcode'''
+##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-09be6f37eb701f15-errcode
+## ARG SOURCE_DATE_EPOCH
+## RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-09be6f37eb701f15* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ## 
 ## [[stages]]
 ## name = "out-09be6f37eb701f15"
 ## script = """
 ## FROM scratch AS out-09be6f37eb701f15
-## COPY --from=dep-n-log-0.4.11-09be6f37eb701f15 /tmp/clis-dbcc_2-2-1/release/deps/*-09be6f37eb701f15* /"""
+## COPY --link --from=dep-n-log-0.4.11-09be6f37eb701f15 /tmp/clis-dbcc_2-2-1/release/deps/*-09be6f37eb701f15* /"""
 
 FROM scratch AS cratesio-libc-0.2.79
 ADD --chmod=0664 --unpack=true --checksum=sha256:2448f6066e80e3bfc792e9c98bf705b4b0fc6e8ef5b43e5889aff0eaa9c58743 \
@@ -2790,8 +2870,10 @@ RUN \
         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-087afb0c1713a9a6-stdout) \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-087afb0c1713a9a6-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-087afb0c1713a9a6-errcode
+ARG SOURCE_DATE_EPOCH
+RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-087afb0c1713a9a6* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-087afb0c1713a9a6
-COPY --from=dep-n-libc-0.2.79-087afb0c1713a9a6 /tmp/clis-dbcc_2-2-1/release/deps/*-087afb0c1713a9a6* /
+COPY --link --from=dep-n-libc-0.2.79-087afb0c1713a9a6 /tmp/clis-dbcc_2-2-1/release/deps/*-087afb0c1713a9a6* /
 
 ## this = "087afb0c1713a9a6"
 ## writes = [
@@ -2898,13 +2980,15 @@ COPY --from=dep-n-libc-0.2.79-087afb0c1713a9a6 /tmp/clis-dbcc_2-2-1/release/deps
 ##       rustc '--crate-name' 'libc' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("align", "const-extern-fn", "default", "extra_traits", "rustc-dep-of-std", "rustc-std-workspace-core", "std", "use_std"))' '-C' 'metadata=58c6b7d495767a66' '-C' 'extra-filename=-087afb0c1713a9a6' '--out-dir' '/tmp/clis-dbcc_2-2-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-dbcc_2-2-1/release/deps' '--cap-lints' 'warn' '--cfg' 'freebsd11' '--cfg' 'libc_priv_mod_use' '--cfg' 'libc_union' '--cfg' 'libc_const_size_of' '--cfg' 'libc_align' '--cfg' 'libc_core_cvoid' '--cfg' 'libc_packedN' '--cfg' 'libc_cfg_target_vendor' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.79/src/lib.rs \
 ##         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-087afb0c1713a9a6-stdout) \
 ##         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-087afb0c1713a9a6-stderr >&2) \
-##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-087afb0c1713a9a6-errcode'''
+##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-087afb0c1713a9a6-errcode
+## ARG SOURCE_DATE_EPOCH
+## RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-087afb0c1713a9a6* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ## 
 ## [[stages]]
 ## name = "out-087afb0c1713a9a6"
 ## script = """
 ## FROM scratch AS out-087afb0c1713a9a6
-## COPY --from=dep-n-libc-0.2.79-087afb0c1713a9a6 /tmp/clis-dbcc_2-2-1/release/deps/*-087afb0c1713a9a6* /"""
+## COPY --link --from=dep-n-libc-0.2.79-087afb0c1713a9a6 /tmp/clis-dbcc_2-2-1/release/deps/*-087afb0c1713a9a6* /"""
 
 FROM scratch AS cratesio-atty-0.2.14
 ADD --chmod=0664 --unpack=true --checksum=sha256:d9b39be18770d11421cdb1b9947a45dd3f37e93092cbf377614828a319d5fee8 \
@@ -2940,8 +3024,10 @@ RUN \
         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-737035cdf92a82de-stdout) \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-737035cdf92a82de-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-737035cdf92a82de-errcode
+ARG SOURCE_DATE_EPOCH
+RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-737035cdf92a82de* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-737035cdf92a82de
-COPY --from=dep-n-atty-0.2.14-737035cdf92a82de /tmp/clis-dbcc_2-2-1/release/deps/*-737035cdf92a82de* /
+COPY --link --from=dep-n-atty-0.2.14-737035cdf92a82de /tmp/clis-dbcc_2-2-1/release/deps/*-737035cdf92a82de* /
 
 ## this = "737035cdf92a82de"
 ## deps = ["087afb0c1713a9a6"]
@@ -3009,13 +3095,15 @@ COPY --from=dep-n-atty-0.2.14-737035cdf92a82de /tmp/clis-dbcc_2-2-1/release/deps
 ##       rustc '--crate-name' 'atty' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=1f9cf5e9732c64b7' '-C' 'extra-filename=-737035cdf92a82de' '--out-dir' '/tmp/clis-dbcc_2-2-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-dbcc_2-2-1/release/deps' '--extern' 'libc=/tmp/clis-dbcc_2-2-1/release/deps/liblibc-087afb0c1713a9a6.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/atty-0.2.14/src/lib.rs \
 ##         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-737035cdf92a82de-stdout) \
 ##         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-737035cdf92a82de-stderr >&2) \
-##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-737035cdf92a82de-errcode'''
+##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-737035cdf92a82de-errcode
+## ARG SOURCE_DATE_EPOCH
+## RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-737035cdf92a82de* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ## 
 ## [[stages]]
 ## name = "out-737035cdf92a82de"
 ## script = """
 ## FROM scratch AS out-737035cdf92a82de
-## COPY --from=dep-n-atty-0.2.14-737035cdf92a82de /tmp/clis-dbcc_2-2-1/release/deps/*-737035cdf92a82de* /"""
+## COPY --link --from=dep-n-atty-0.2.14-737035cdf92a82de /tmp/clis-dbcc_2-2-1/release/deps/*-737035cdf92a82de* /"""
 
 FROM scratch AS cratesio-quick-error-1.2.3
 ADD --chmod=0664 --unpack=true --checksum=sha256:a1d01941d82fa2ab50be1e79e6714289dd7cde78eba4c074bc5a4374f650dfe0 \
@@ -3049,8 +3137,10 @@ RUN \
         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-bd3d4e33b0f59f1b-stdout) \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-bd3d4e33b0f59f1b-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-bd3d4e33b0f59f1b-errcode
+ARG SOURCE_DATE_EPOCH
+RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-bd3d4e33b0f59f1b* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-bd3d4e33b0f59f1b
-COPY --from=dep-n-quick-error-1.2.3-bd3d4e33b0f59f1b /tmp/clis-dbcc_2-2-1/release/deps/*-bd3d4e33b0f59f1b* /
+COPY --link --from=dep-n-quick-error-1.2.3-bd3d4e33b0f59f1b /tmp/clis-dbcc_2-2-1/release/deps/*-bd3d4e33b0f59f1b* /
 
 ## this = "bd3d4e33b0f59f1b"
 ## writes = [
@@ -3106,13 +3196,15 @@ COPY --from=dep-n-quick-error-1.2.3-bd3d4e33b0f59f1b /tmp/clis-dbcc_2-2-1/releas
 ##       rustc '--crate-name' 'quick_error' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=55ff0ffe965b7f06' '-C' 'extra-filename=-bd3d4e33b0f59f1b' '--out-dir' '/tmp/clis-dbcc_2-2-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-dbcc_2-2-1/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quick-error-1.2.3/src/lib.rs \
 ##         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-bd3d4e33b0f59f1b-stdout) \
 ##         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-bd3d4e33b0f59f1b-stderr >&2) \
-##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-bd3d4e33b0f59f1b-errcode'''
+##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-bd3d4e33b0f59f1b-errcode
+## ARG SOURCE_DATE_EPOCH
+## RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-bd3d4e33b0f59f1b* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ## 
 ## [[stages]]
 ## name = "out-bd3d4e33b0f59f1b"
 ## script = """
 ## FROM scratch AS out-bd3d4e33b0f59f1b
-## COPY --from=dep-n-quick-error-1.2.3-bd3d4e33b0f59f1b /tmp/clis-dbcc_2-2-1/release/deps/*-bd3d4e33b0f59f1b* /"""
+## COPY --link --from=dep-n-quick-error-1.2.3-bd3d4e33b0f59f1b /tmp/clis-dbcc_2-2-1/release/deps/*-bd3d4e33b0f59f1b* /"""
 
 FROM scratch AS cratesio-humantime-1.3.0
 ADD --chmod=0664 --unpack=true --checksum=sha256:df004cfca50ef23c36850aaaa59ad52cc70d0e90243c3c7737a4dd32dc7a3c4f \
@@ -3148,8 +3240,10 @@ RUN \
         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-3e3dde196d8efa81-stdout) \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-3e3dde196d8efa81-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-3e3dde196d8efa81-errcode
+ARG SOURCE_DATE_EPOCH
+RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-3e3dde196d8efa81* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-3e3dde196d8efa81
-COPY --from=dep-n-humantime-1.3.0-3e3dde196d8efa81 /tmp/clis-dbcc_2-2-1/release/deps/*-3e3dde196d8efa81* /
+COPY --link --from=dep-n-humantime-1.3.0-3e3dde196d8efa81 /tmp/clis-dbcc_2-2-1/release/deps/*-3e3dde196d8efa81* /
 
 ## this = "3e3dde196d8efa81"
 ## deps = ["bd3d4e33b0f59f1b"]
@@ -3246,13 +3340,15 @@ COPY --from=dep-n-humantime-1.3.0-3e3dde196d8efa81 /tmp/clis-dbcc_2-2-1/release/
 ##       rustc '--crate-name' 'humantime' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=1635e82c5370c82b' '-C' 'extra-filename=-3e3dde196d8efa81' '--out-dir' '/tmp/clis-dbcc_2-2-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-dbcc_2-2-1/release/deps' '--extern' 'quick_error=/tmp/clis-dbcc_2-2-1/release/deps/libquick_error-bd3d4e33b0f59f1b.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/humantime-1.3.0/src/lib.rs \
 ##         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-3e3dde196d8efa81-stdout) \
 ##         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-3e3dde196d8efa81-stderr >&2) \
-##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-3e3dde196d8efa81-errcode'''
+##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-3e3dde196d8efa81-errcode
+## ARG SOURCE_DATE_EPOCH
+## RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-3e3dde196d8efa81* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ## 
 ## [[stages]]
 ## name = "out-3e3dde196d8efa81"
 ## script = """
 ## FROM scratch AS out-3e3dde196d8efa81
-## COPY --from=dep-n-humantime-1.3.0-3e3dde196d8efa81 /tmp/clis-dbcc_2-2-1/release/deps/*-3e3dde196d8efa81* /"""
+## COPY --link --from=dep-n-humantime-1.3.0-3e3dde196d8efa81 /tmp/clis-dbcc_2-2-1/release/deps/*-3e3dde196d8efa81* /"""
 
 FROM scratch AS cratesio-aho-corasick-0.7.14
 ADD --chmod=0664 --unpack=true --checksum=sha256:b476ce7103678b0c6d3d395dbbae31d48ff910bd28be979ba5d48c6351131d0d \
@@ -3288,8 +3384,10 @@ RUN \
         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-014f7ab42daca0d7-stdout) \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-014f7ab42daca0d7-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-014f7ab42daca0d7-errcode
+ARG SOURCE_DATE_EPOCH
+RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-014f7ab42daca0d7* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-014f7ab42daca0d7
-COPY --from=dep-n-aho-corasick-0.7.14-014f7ab42daca0d7 /tmp/clis-dbcc_2-2-1/release/deps/*-014f7ab42daca0d7* /
+COPY --link --from=dep-n-aho-corasick-0.7.14-014f7ab42daca0d7 /tmp/clis-dbcc_2-2-1/release/deps/*-014f7ab42daca0d7* /
 
 ## this = "014f7ab42daca0d7"
 ## deps = ["c93fd10415a641fd"]
@@ -3362,13 +3460,15 @@ COPY --from=dep-n-aho-corasick-0.7.14-014f7ab42daca0d7 /tmp/clis-dbcc_2-2-1/rele
 ##       rustc '--crate-name' 'aho_corasick' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "std"))' '-C' 'metadata=3f47cc43fa81dcc3' '-C' 'extra-filename=-014f7ab42daca0d7' '--out-dir' '/tmp/clis-dbcc_2-2-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-dbcc_2-2-1/release/deps' '--extern' 'memchr=/tmp/clis-dbcc_2-2-1/release/deps/libmemchr-c93fd10415a641fd.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aho-corasick-0.7.14/src/lib.rs \
 ##         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-014f7ab42daca0d7-stdout) \
 ##         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-014f7ab42daca0d7-stderr >&2) \
-##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-014f7ab42daca0d7-errcode'''
+##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-014f7ab42daca0d7-errcode
+## ARG SOURCE_DATE_EPOCH
+## RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-014f7ab42daca0d7* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ## 
 ## [[stages]]
 ## name = "out-014f7ab42daca0d7"
 ## script = """
 ## FROM scratch AS out-014f7ab42daca0d7
-## COPY --from=dep-n-aho-corasick-0.7.14-014f7ab42daca0d7 /tmp/clis-dbcc_2-2-1/release/deps/*-014f7ab42daca0d7* /"""
+## COPY --link --from=dep-n-aho-corasick-0.7.14-014f7ab42daca0d7 /tmp/clis-dbcc_2-2-1/release/deps/*-014f7ab42daca0d7* /"""
 
 FROM scratch AS cratesio-regex-syntax-0.6.20
 ADD --chmod=0664 --unpack=true --checksum=sha256:8cab7a364d15cde1e505267766a2d3c4e22a843e1a601f0fa7564c0f82ced11c \
@@ -3402,8 +3502,10 @@ RUN \
         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-eec8efd7d7dadd3c-stdout) \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-eec8efd7d7dadd3c-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-eec8efd7d7dadd3c-errcode
+ARG SOURCE_DATE_EPOCH
+RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-eec8efd7d7dadd3c* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-eec8efd7d7dadd3c
-COPY --from=dep-n-regex-syntax-0.6.20-eec8efd7d7dadd3c /tmp/clis-dbcc_2-2-1/release/deps/*-eec8efd7d7dadd3c* /
+COPY --link --from=dep-n-regex-syntax-0.6.20-eec8efd7d7dadd3c /tmp/clis-dbcc_2-2-1/release/deps/*-eec8efd7d7dadd3c* /
 
 ## this = "eec8efd7d7dadd3c"
 ## writes = [
@@ -3464,13 +3566,15 @@ COPY --from=dep-n-regex-syntax-0.6.20-eec8efd7d7dadd3c /tmp/clis-dbcc_2-2-1/rele
 ##       rustc '--crate-name' 'regex_syntax' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="default"' '--cfg' 'feature="unicode"' '--cfg' 'feature="unicode-age"' '--cfg' 'feature="unicode-bool"' '--cfg' 'feature="unicode-case"' '--cfg' 'feature="unicode-gencat"' '--cfg' 'feature="unicode-perl"' '--cfg' 'feature="unicode-script"' '--cfg' 'feature="unicode-segment"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "unicode", "unicode-age", "unicode-bool", "unicode-case", "unicode-gencat", "unicode-perl", "unicode-script", "unicode-segment"))' '-C' 'metadata=25f36bd4ab5f92c8' '-C' 'extra-filename=-eec8efd7d7dadd3c' '--out-dir' '/tmp/clis-dbcc_2-2-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-dbcc_2-2-1/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/regex-syntax-0.6.20/src/lib.rs \
 ##         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-eec8efd7d7dadd3c-stdout) \
 ##         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-eec8efd7d7dadd3c-stderr >&2) \
-##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-eec8efd7d7dadd3c-errcode'''
+##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-eec8efd7d7dadd3c-errcode
+## ARG SOURCE_DATE_EPOCH
+## RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-eec8efd7d7dadd3c* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ## 
 ## [[stages]]
 ## name = "out-eec8efd7d7dadd3c"
 ## script = """
 ## FROM scratch AS out-eec8efd7d7dadd3c
-## COPY --from=dep-n-regex-syntax-0.6.20-eec8efd7d7dadd3c /tmp/clis-dbcc_2-2-1/release/deps/*-eec8efd7d7dadd3c* /"""
+## COPY --link --from=dep-n-regex-syntax-0.6.20-eec8efd7d7dadd3c /tmp/clis-dbcc_2-2-1/release/deps/*-eec8efd7d7dadd3c* /"""
 
 FROM scratch AS cratesio-lazy_static-1.4.0
 ADD --chmod=0664 --unpack=true --checksum=sha256:e2abad23fbc42b3700f2f279844dc832adb2b2eb069b2df918f455c4e18cc646 \
@@ -3504,8 +3608,10 @@ RUN \
         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-a79af56de238e2b5-stdout) \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-a79af56de238e2b5-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-a79af56de238e2b5-errcode
+ARG SOURCE_DATE_EPOCH
+RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-a79af56de238e2b5* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-a79af56de238e2b5
-COPY --from=dep-n-lazy_static-1.4.0-a79af56de238e2b5 /tmp/clis-dbcc_2-2-1/release/deps/*-a79af56de238e2b5* /
+COPY --link --from=dep-n-lazy_static-1.4.0-a79af56de238e2b5 /tmp/clis-dbcc_2-2-1/release/deps/*-a79af56de238e2b5* /
 
 ## this = "a79af56de238e2b5"
 ## writes = [
@@ -3563,13 +3669,15 @@ COPY --from=dep-n-lazy_static-1.4.0-a79af56de238e2b5 /tmp/clis-dbcc_2-2-1/releas
 ##       rustc '--crate-name' 'lazy_static' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("spin", "spin_no_std"))' '-C' 'metadata=41a5c3179e73440d' '-C' 'extra-filename=-a79af56de238e2b5' '--out-dir' '/tmp/clis-dbcc_2-2-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-dbcc_2-2-1/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/lazy_static-1.4.0/src/lib.rs \
 ##         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-a79af56de238e2b5-stdout) \
 ##         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-a79af56de238e2b5-stderr >&2) \
-##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-a79af56de238e2b5-errcode'''
+##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-a79af56de238e2b5-errcode
+## ARG SOURCE_DATE_EPOCH
+## RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-a79af56de238e2b5* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ## 
 ## [[stages]]
 ## name = "out-a79af56de238e2b5"
 ## script = """
 ## FROM scratch AS out-a79af56de238e2b5
-## COPY --from=dep-n-lazy_static-1.4.0-a79af56de238e2b5 /tmp/clis-dbcc_2-2-1/release/deps/*-a79af56de238e2b5* /"""
+## COPY --link --from=dep-n-lazy_static-1.4.0-a79af56de238e2b5 /tmp/clis-dbcc_2-2-1/release/deps/*-a79af56de238e2b5* /"""
 
 FROM scratch AS cratesio-thread_local-1.0.1
 ADD --chmod=0664 --unpack=true --checksum=sha256:d40c6d1b69745a6ec6fb1ca717914848da4b44ae29d9b3080cbee91d72a69b14 \
@@ -3605,8 +3713,10 @@ RUN \
         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-3ace2abd55187163-stdout) \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-3ace2abd55187163-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-3ace2abd55187163-errcode
+ARG SOURCE_DATE_EPOCH
+RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-3ace2abd55187163* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-3ace2abd55187163
-COPY --from=dep-n-thread_local-1.0.1-3ace2abd55187163 /tmp/clis-dbcc_2-2-1/release/deps/*-3ace2abd55187163* /
+COPY --link --from=dep-n-thread_local-1.0.1-3ace2abd55187163 /tmp/clis-dbcc_2-2-1/release/deps/*-3ace2abd55187163* /
 
 ## this = "3ace2abd55187163"
 ## deps = ["a79af56de238e2b5"]
@@ -3679,13 +3789,15 @@ COPY --from=dep-n-thread_local-1.0.1-3ace2abd55187163 /tmp/clis-dbcc_2-2-1/relea
 ##       rustc '--crate-name' 'thread_local' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=4c283879b6d3db91' '-C' 'extra-filename=-3ace2abd55187163' '--out-dir' '/tmp/clis-dbcc_2-2-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-dbcc_2-2-1/release/deps' '--extern' 'lazy_static=/tmp/clis-dbcc_2-2-1/release/deps/liblazy_static-a79af56de238e2b5.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thread_local-1.0.1/src/lib.rs \
 ##         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-3ace2abd55187163-stdout) \
 ##         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-3ace2abd55187163-stderr >&2) \
-##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-3ace2abd55187163-errcode'''
+##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-3ace2abd55187163-errcode
+## ARG SOURCE_DATE_EPOCH
+## RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-3ace2abd55187163* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ## 
 ## [[stages]]
 ## name = "out-3ace2abd55187163"
 ## script = """
 ## FROM scratch AS out-3ace2abd55187163
-## COPY --from=dep-n-thread_local-1.0.1-3ace2abd55187163 /tmp/clis-dbcc_2-2-1/release/deps/*-3ace2abd55187163* /"""
+## COPY --link --from=dep-n-thread_local-1.0.1-3ace2abd55187163 /tmp/clis-dbcc_2-2-1/release/deps/*-3ace2abd55187163* /"""
 
 FROM scratch AS cratesio-regex-1.4.1
 ADD --chmod=0664 --unpack=true --checksum=sha256:8963b85b8ce3074fecffde43b4b0dded83ce2f367dc8d363afc56679f3ee820b \
@@ -3729,8 +3841,10 @@ RUN \
         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-5ba8c6f49cc2732d-stdout) \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-5ba8c6f49cc2732d-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-5ba8c6f49cc2732d-errcode
+ARG SOURCE_DATE_EPOCH
+RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-5ba8c6f49cc2732d* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-5ba8c6f49cc2732d
-COPY --from=dep-n-regex-1.4.1-5ba8c6f49cc2732d /tmp/clis-dbcc_2-2-1/release/deps/*-5ba8c6f49cc2732d* /
+COPY --link --from=dep-n-regex-1.4.1-5ba8c6f49cc2732d /tmp/clis-dbcc_2-2-1/release/deps/*-5ba8c6f49cc2732d* /
 
 ## this = "5ba8c6f49cc2732d"
 ## deps = [
@@ -3850,13 +3964,15 @@ COPY --from=dep-n-regex-1.4.1-5ba8c6f49cc2732d /tmp/clis-dbcc_2-2-1/release/deps
 ##       rustc '--crate-name' 'regex' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="aho-corasick"' '--cfg' 'feature="default"' '--cfg' 'feature="memchr"' '--cfg' 'feature="perf"' '--cfg' 'feature="perf-cache"' '--cfg' 'feature="perf-dfa"' '--cfg' 'feature="perf-inline"' '--cfg' 'feature="perf-literal"' '--cfg' 'feature="std"' '--cfg' 'feature="thread_local"' '--cfg' 'feature="unicode"' '--cfg' 'feature="unicode-age"' '--cfg' 'feature="unicode-bool"' '--cfg' 'feature="unicode-case"' '--cfg' 'feature="unicode-gencat"' '--cfg' 'feature="unicode-perl"' '--cfg' 'feature="unicode-script"' '--cfg' 'feature="unicode-segment"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("aho-corasick", "default", "memchr", "pattern", "perf", "perf-cache", "perf-dfa", "perf-inline", "perf-literal", "std", "thread_local", "unicode", "unicode-age", "unicode-bool", "unicode-case", "unicode-gencat", "unicode-perl", "unicode-script", "unicode-segment", "unstable", "use_std"))' '-C' 'metadata=37ea37561d556d66' '-C' 'extra-filename=-5ba8c6f49cc2732d' '--out-dir' '/tmp/clis-dbcc_2-2-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-dbcc_2-2-1/release/deps' '--extern' 'aho_corasick=/tmp/clis-dbcc_2-2-1/release/deps/libaho_corasick-014f7ab42daca0d7.rmeta' '--extern' 'memchr=/tmp/clis-dbcc_2-2-1/release/deps/libmemchr-c93fd10415a641fd.rmeta' '--extern' 'regex_syntax=/tmp/clis-dbcc_2-2-1/release/deps/libregex_syntax-eec8efd7d7dadd3c.rmeta' '--extern' 'thread_local=/tmp/clis-dbcc_2-2-1/release/deps/libthread_local-3ace2abd55187163.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/regex-1.4.1/src/lib.rs \
 ##         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-5ba8c6f49cc2732d-stdout) \
 ##         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-5ba8c6f49cc2732d-stderr >&2) \
-##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-5ba8c6f49cc2732d-errcode'''
+##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-5ba8c6f49cc2732d-errcode
+## ARG SOURCE_DATE_EPOCH
+## RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-5ba8c6f49cc2732d* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ## 
 ## [[stages]]
 ## name = "out-5ba8c6f49cc2732d"
 ## script = """
 ## FROM scratch AS out-5ba8c6f49cc2732d
-## COPY --from=dep-n-regex-1.4.1-5ba8c6f49cc2732d /tmp/clis-dbcc_2-2-1/release/deps/*-5ba8c6f49cc2732d* /"""
+## COPY --link --from=dep-n-regex-1.4.1-5ba8c6f49cc2732d /tmp/clis-dbcc_2-2-1/release/deps/*-5ba8c6f49cc2732d* /"""
 
 FROM scratch AS cratesio-termcolor-1.1.0
 ADD --chmod=0664 --unpack=true --checksum=sha256:bb6bfa289a4d7c5766392812c0a1f4c1ba45afa1ad47803c11e1f407d846d75f \
@@ -3890,8 +4006,10 @@ RUN \
         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-3d5a70ee74f70e2b-stdout) \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-3d5a70ee74f70e2b-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-3d5a70ee74f70e2b-errcode
+ARG SOURCE_DATE_EPOCH
+RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-3d5a70ee74f70e2b* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-3d5a70ee74f70e2b
-COPY --from=dep-n-termcolor-1.1.0-3d5a70ee74f70e2b /tmp/clis-dbcc_2-2-1/release/deps/*-3d5a70ee74f70e2b* /
+COPY --link --from=dep-n-termcolor-1.1.0-3d5a70ee74f70e2b /tmp/clis-dbcc_2-2-1/release/deps/*-3d5a70ee74f70e2b* /
 
 ## this = "3d5a70ee74f70e2b"
 ## writes = [
@@ -3947,13 +4065,15 @@ COPY --from=dep-n-termcolor-1.1.0-3d5a70ee74f70e2b /tmp/clis-dbcc_2-2-1/release/
 ##       rustc '--crate-name' 'termcolor' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=78372cdcfff54a1b' '-C' 'extra-filename=-3d5a70ee74f70e2b' '--out-dir' '/tmp/clis-dbcc_2-2-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-dbcc_2-2-1/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/termcolor-1.1.0/src/lib.rs \
 ##         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-3d5a70ee74f70e2b-stdout) \
 ##         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-3d5a70ee74f70e2b-stderr >&2) \
-##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-3d5a70ee74f70e2b-errcode'''
+##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-3d5a70ee74f70e2b-errcode
+## ARG SOURCE_DATE_EPOCH
+## RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-3d5a70ee74f70e2b* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ## 
 ## [[stages]]
 ## name = "out-3d5a70ee74f70e2b"
 ## script = """
 ## FROM scratch AS out-3d5a70ee74f70e2b
-## COPY --from=dep-n-termcolor-1.1.0-3d5a70ee74f70e2b /tmp/clis-dbcc_2-2-1/release/deps/*-3d5a70ee74f70e2b* /"""
+## COPY --link --from=dep-n-termcolor-1.1.0-3d5a70ee74f70e2b /tmp/clis-dbcc_2-2-1/release/deps/*-3d5a70ee74f70e2b* /"""
 
 FROM scratch AS cratesio-env_logger-0.7.1
 ADD --chmod=0664 --unpack=true --checksum=sha256:44533bbbb3bb3c1fa17d9f2e4e38bbbaf8396ba82193c4cb1b6445d711445d36 \
@@ -4013,8 +4133,10 @@ RUN \
         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-94c0a2bd3b1451c8-stdout) \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-94c0a2bd3b1451c8-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-94c0a2bd3b1451c8-errcode
+ARG SOURCE_DATE_EPOCH
+RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-94c0a2bd3b1451c8* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-94c0a2bd3b1451c8
-COPY --from=dep-n-env_logger-0.7.1-94c0a2bd3b1451c8 /tmp/clis-dbcc_2-2-1/release/deps/*-94c0a2bd3b1451c8* /
+COPY --link --from=dep-n-env_logger-0.7.1-94c0a2bd3b1451c8 /tmp/clis-dbcc_2-2-1/release/deps/*-94c0a2bd3b1451c8* /
 
 ## this = "94c0a2bd3b1451c8"
 ## deps = [
@@ -4233,13 +4355,15 @@ COPY --from=dep-n-env_logger-0.7.1-94c0a2bd3b1451c8 /tmp/clis-dbcc_2-2-1/release
 ##       rustc '--crate-name' 'env_logger' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="atty"' '--cfg' 'feature="default"' '--cfg' 'feature="humantime"' '--cfg' 'feature="regex"' '--cfg' 'feature="termcolor"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("atty", "default", "humantime", "regex", "termcolor"))' '-C' 'metadata=b21cd85cd34aec8a' '-C' 'extra-filename=-94c0a2bd3b1451c8' '--out-dir' '/tmp/clis-dbcc_2-2-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-dbcc_2-2-1/release/deps' '--extern' 'atty=/tmp/clis-dbcc_2-2-1/release/deps/libatty-737035cdf92a82de.rmeta' '--extern' 'humantime=/tmp/clis-dbcc_2-2-1/release/deps/libhumantime-3e3dde196d8efa81.rmeta' '--extern' 'log=/tmp/clis-dbcc_2-2-1/release/deps/liblog-09be6f37eb701f15.rmeta' '--extern' 'regex=/tmp/clis-dbcc_2-2-1/release/deps/libregex-5ba8c6f49cc2732d.rmeta' '--extern' 'termcolor=/tmp/clis-dbcc_2-2-1/release/deps/libtermcolor-3d5a70ee74f70e2b.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/env_logger-0.7.1/src/lib.rs \
 ##         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-94c0a2bd3b1451c8-stdout) \
 ##         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-94c0a2bd3b1451c8-stderr >&2) \
-##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-94c0a2bd3b1451c8-errcode'''
+##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-94c0a2bd3b1451c8-errcode
+## ARG SOURCE_DATE_EPOCH
+## RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-94c0a2bd3b1451c8* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ## 
 ## [[stages]]
 ## name = "out-94c0a2bd3b1451c8"
 ## script = """
 ## FROM scratch AS out-94c0a2bd3b1451c8
-## COPY --from=dep-n-env_logger-0.7.1-94c0a2bd3b1451c8 /tmp/clis-dbcc_2-2-1/release/deps/*-94c0a2bd3b1451c8* /"""
+## COPY --link --from=dep-n-env_logger-0.7.1-94c0a2bd3b1451c8 /tmp/clis-dbcc_2-2-1/release/deps/*-94c0a2bd3b1451c8* /"""
 
 FROM scratch AS cratesio-pretty_env_logger-0.4.0
 ADD --chmod=0664 --unpack=true --checksum=sha256:926d36b9553851b8b0005f1275891b392ee4d2d833852c417ed025477350fb9d \
@@ -4301,8 +4425,10 @@ RUN \
         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-682e69746a16e0c7-stdout) \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-682e69746a16e0c7-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-682e69746a16e0c7-errcode
+ARG SOURCE_DATE_EPOCH
+RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-682e69746a16e0c7* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-682e69746a16e0c7
-COPY --from=dep-n-pretty_env_logger-0.4.0-682e69746a16e0c7 /tmp/clis-dbcc_2-2-1/release/deps/*-682e69746a16e0c7* /
+COPY --link --from=dep-n-pretty_env_logger-0.4.0-682e69746a16e0c7 /tmp/clis-dbcc_2-2-1/release/deps/*-682e69746a16e0c7* /
 
 ## this = "682e69746a16e0c7"
 ## deps = [
@@ -4530,13 +4656,15 @@ COPY --from=dep-n-pretty_env_logger-0.4.0-682e69746a16e0c7 /tmp/clis-dbcc_2-2-1/
 ##       rustc '--crate-name' 'pretty_env_logger' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=b32e3928ee0376e0' '-C' 'extra-filename=-682e69746a16e0c7' '--out-dir' '/tmp/clis-dbcc_2-2-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-dbcc_2-2-1/release/deps' '--extern' 'env_logger=/tmp/clis-dbcc_2-2-1/release/deps/libenv_logger-94c0a2bd3b1451c8.rmeta' '--extern' 'log=/tmp/clis-dbcc_2-2-1/release/deps/liblog-09be6f37eb701f15.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/pretty_env_logger-0.4.0/src/lib.rs \
 ##         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-682e69746a16e0c7-stdout) \
 ##         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-682e69746a16e0c7-stderr >&2) \
-##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-682e69746a16e0c7-errcode'''
+##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-682e69746a16e0c7-errcode
+## ARG SOURCE_DATE_EPOCH
+## RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-682e69746a16e0c7* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ## 
 ## [[stages]]
 ## name = "out-682e69746a16e0c7"
 ## script = """
 ## FROM scratch AS out-682e69746a16e0c7
-## COPY --from=dep-n-pretty_env_logger-0.4.0-682e69746a16e0c7 /tmp/clis-dbcc_2-2-1/release/deps/*-682e69746a16e0c7* /"""
+## COPY --link --from=dep-n-pretty_env_logger-0.4.0-682e69746a16e0c7 /tmp/clis-dbcc_2-2-1/release/deps/*-682e69746a16e0c7* /"""
 
 
 FROM rust-base AS dep-n-unicode-xid-0.2.1-f585407da4c0bf6f
@@ -4568,8 +4696,10 @@ RUN \
         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-f585407da4c0bf6f-stdout) \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-f585407da4c0bf6f-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-f585407da4c0bf6f-errcode
+ARG SOURCE_DATE_EPOCH
+RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-f585407da4c0bf6f* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-f585407da4c0bf6f
-COPY --from=dep-n-unicode-xid-0.2.1-f585407da4c0bf6f /tmp/clis-dbcc_2-2-1/release/deps/*-f585407da4c0bf6f* /
+COPY --link --from=dep-n-unicode-xid-0.2.1-f585407da4c0bf6f /tmp/clis-dbcc_2-2-1/release/deps/*-f585407da4c0bf6f* /
 
 ## this = "f585407da4c0bf6f"
 ## writes = [
@@ -4625,13 +4755,15 @@ COPY --from=dep-n-unicode-xid-0.2.1-f585407da4c0bf6f /tmp/clis-dbcc_2-2-1/releas
 ##       rustc '--crate-name' 'unicode_xid' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="default"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("bench", "default", "no_std"))' '-C' 'metadata=547e3cbe880d0bd4' '-C' 'extra-filename=-f585407da4c0bf6f' '--out-dir' '/tmp/clis-dbcc_2-2-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-dbcc_2-2-1/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/unicode-xid-0.2.1/src/lib.rs \
 ##         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-f585407da4c0bf6f-stdout) \
 ##         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-f585407da4c0bf6f-stderr >&2) \
-##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-f585407da4c0bf6f-errcode'''
+##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-f585407da4c0bf6f-errcode
+## ARG SOURCE_DATE_EPOCH
+## RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-f585407da4c0bf6f* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ## 
 ## [[stages]]
 ## name = "out-f585407da4c0bf6f"
 ## script = """
 ## FROM scratch AS out-f585407da4c0bf6f
-## COPY --from=dep-n-unicode-xid-0.2.1-f585407da4c0bf6f /tmp/clis-dbcc_2-2-1/release/deps/*-f585407da4c0bf6f* /"""
+## COPY --link --from=dep-n-unicode-xid-0.2.1-f585407da4c0bf6f /tmp/clis-dbcc_2-2-1/release/deps/*-f585407da4c0bf6f* /"""
 
 
 FROM rust-base AS dep-n-proc-macro2-1.0.24-5eebdd82bed7d9de
@@ -4666,8 +4798,10 @@ RUN \
         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-5eebdd82bed7d9de-stdout) \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-5eebdd82bed7d9de-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-5eebdd82bed7d9de-errcode
+ARG SOURCE_DATE_EPOCH
+RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-5eebdd82bed7d9de* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-5eebdd82bed7d9de
-COPY --from=dep-n-proc-macro2-1.0.24-5eebdd82bed7d9de /tmp/clis-dbcc_2-2-1/release/deps/*-5eebdd82bed7d9de* /
+COPY --link --from=dep-n-proc-macro2-1.0.24-5eebdd82bed7d9de /tmp/clis-dbcc_2-2-1/release/deps/*-5eebdd82bed7d9de* /
 
 ## this = "5eebdd82bed7d9de"
 ## deps = ["f585407da4c0bf6f"]
@@ -4845,13 +4979,15 @@ COPY --from=dep-n-proc-macro2-1.0.24-5eebdd82bed7d9de /tmp/clis-dbcc_2-2-1/relea
 ##       rustc '--crate-name' 'proc_macro2' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="default"' '--cfg' 'feature="proc-macro"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "nightly", "proc-macro", "span-locations"))' '-C' 'metadata=7c2486de5ccdc7c0' '-C' 'extra-filename=-5eebdd82bed7d9de' '--out-dir' '/tmp/clis-dbcc_2-2-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-dbcc_2-2-1/release/deps' '--extern' 'unicode_xid=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-f585407da4c0bf6f.rmeta' '--cap-lints' 'warn' '--cfg' 'lexerror_display' '--cfg' 'hygiene' '--cfg' 'use_proc_macro' '--cfg' 'wrap_proc_macro' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.24/src/lib.rs \
 ##         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-5eebdd82bed7d9de-stdout) \
 ##         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-5eebdd82bed7d9de-stderr >&2) \
-##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-5eebdd82bed7d9de-errcode'''
+##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-5eebdd82bed7d9de-errcode
+## ARG SOURCE_DATE_EPOCH
+## RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-5eebdd82bed7d9de* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ## 
 ## [[stages]]
 ## name = "out-5eebdd82bed7d9de"
 ## script = """
 ## FROM scratch AS out-5eebdd82bed7d9de
-## COPY --from=dep-n-proc-macro2-1.0.24-5eebdd82bed7d9de /tmp/clis-dbcc_2-2-1/release/deps/*-5eebdd82bed7d9de* /"""
+## COPY --link --from=dep-n-proc-macro2-1.0.24-5eebdd82bed7d9de /tmp/clis-dbcc_2-2-1/release/deps/*-5eebdd82bed7d9de* /"""
 
 
 FROM rust-base AS dep-n-quote-1.0.7-0298ff41e604ba82
@@ -4887,8 +5023,10 @@ RUN \
         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-0298ff41e604ba82-stdout) \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-0298ff41e604ba82-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-0298ff41e604ba82-errcode
+ARG SOURCE_DATE_EPOCH
+RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-0298ff41e604ba82* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-0298ff41e604ba82
-COPY --from=dep-n-quote-1.0.7-0298ff41e604ba82 /tmp/clis-dbcc_2-2-1/release/deps/*-0298ff41e604ba82* /
+COPY --link --from=dep-n-quote-1.0.7-0298ff41e604ba82 /tmp/clis-dbcc_2-2-1/release/deps/*-0298ff41e604ba82* /
 
 ## this = "0298ff41e604ba82"
 ## deps = [
@@ -4972,13 +5110,15 @@ COPY --from=dep-n-quote-1.0.7-0298ff41e604ba82 /tmp/clis-dbcc_2-2-1/release/deps
 ##       rustc '--crate-name' 'quote' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="default"' '--cfg' 'feature="proc-macro"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "proc-macro"))' '-C' 'metadata=c5904edbd824e07e' '-C' 'extra-filename=-0298ff41e604ba82' '--out-dir' '/tmp/clis-dbcc_2-2-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-dbcc_2-2-1/release/deps' '--extern' 'proc_macro2=/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-5eebdd82bed7d9de.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.7/src/lib.rs \
 ##         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-0298ff41e604ba82-stdout) \
 ##         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-0298ff41e604ba82-stderr >&2) \
-##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-0298ff41e604ba82-errcode'''
+##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-0298ff41e604ba82-errcode
+## ARG SOURCE_DATE_EPOCH
+## RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-0298ff41e604ba82* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ## 
 ## [[stages]]
 ## name = "out-0298ff41e604ba82"
 ## script = """
 ## FROM scratch AS out-0298ff41e604ba82
-## COPY --from=dep-n-quote-1.0.7-0298ff41e604ba82 /tmp/clis-dbcc_2-2-1/release/deps/*-0298ff41e604ba82* /"""
+## COPY --link --from=dep-n-quote-1.0.7-0298ff41e604ba82 /tmp/clis-dbcc_2-2-1/release/deps/*-0298ff41e604ba82* /"""
 
 FROM scratch AS cratesio-hex-0.2.0
 ADD --chmod=0664 --unpack=true --checksum=sha256:d6a22814455d41612f41161581c2883c0c6a1c41852729b17d5ed88f01e153aa \
@@ -5012,8 +5152,10 @@ RUN \
         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-f065076cf799d91a-stdout) \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-f065076cf799d91a-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-f065076cf799d91a-errcode
+ARG SOURCE_DATE_EPOCH
+RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-f065076cf799d91a* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-f065076cf799d91a
-COPY --from=dep-n-hex-0.2.0-f065076cf799d91a /tmp/clis-dbcc_2-2-1/release/deps/*-f065076cf799d91a* /
+COPY --link --from=dep-n-hex-0.2.0-f065076cf799d91a /tmp/clis-dbcc_2-2-1/release/deps/*-f065076cf799d91a* /
 
 ## this = "f065076cf799d91a"
 ## writes = [
@@ -5073,13 +5215,15 @@ COPY --from=dep-n-hex-0.2.0-f065076cf799d91a /tmp/clis-dbcc_2-2-1/release/deps/*
 ##       rustc '--crate-name' 'hex' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=c34604b3193f2443' '-C' 'extra-filename=-f065076cf799d91a' '--out-dir' '/tmp/clis-dbcc_2-2-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-dbcc_2-2-1/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/hex-0.2.0/src/lib.rs \
 ##         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-f065076cf799d91a-stdout) \
 ##         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-f065076cf799d91a-stderr >&2) \
-##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-f065076cf799d91a-errcode'''
+##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-f065076cf799d91a-errcode
+## ARG SOURCE_DATE_EPOCH
+## RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-f065076cf799d91a* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ## 
 ## [[stages]]
 ## name = "out-f065076cf799d91a"
 ## script = """
 ## FROM scratch AS out-f065076cf799d91a
-## COPY --from=dep-n-hex-0.2.0-f065076cf799d91a /tmp/clis-dbcc_2-2-1/release/deps/*-f065076cf799d91a* /"""
+## COPY --link --from=dep-n-hex-0.2.0-f065076cf799d91a /tmp/clis-dbcc_2-2-1/release/deps/*-f065076cf799d91a* /"""
 
 FROM scratch AS cratesio-itertools-0.4.19
 ADD --chmod=0664 --unpack=true --checksum=sha256:c4a9b56eb56058f43dc66e58f40a214b2ccbc9f3df51861b63d51dec7b65bc3f \
@@ -5113,8 +5257,10 @@ RUN \
         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-2505039b047dad1a-stdout) \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-2505039b047dad1a-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-2505039b047dad1a-errcode
+ARG SOURCE_DATE_EPOCH
+RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-2505039b047dad1a* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-2505039b047dad1a
-COPY --from=dep-n-itertools-0.4.19-2505039b047dad1a /tmp/clis-dbcc_2-2-1/release/deps/*-2505039b047dad1a* /
+COPY --link --from=dep-n-itertools-0.4.19-2505039b047dad1a /tmp/clis-dbcc_2-2-1/release/deps/*-2505039b047dad1a* /
 
 ## this = "2505039b047dad1a"
 ## writes = [
@@ -5194,13 +5340,15 @@ COPY --from=dep-n-itertools-0.4.19-2505039b047dad1a /tmp/clis-dbcc_2-2-1/release
 ##       rustc '--crate-name' 'itertools' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("quickcheck", "unstable"))' '-C' 'metadata=ec365d68050d67a1' '-C' 'extra-filename=-2505039b047dad1a' '--out-dir' '/tmp/clis-dbcc_2-2-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-dbcc_2-2-1/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/itertools-0.4.19/src/lib.rs \
 ##         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-2505039b047dad1a-stdout) \
 ##         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-2505039b047dad1a-stderr >&2) \
-##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-2505039b047dad1a-errcode'''
+##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-2505039b047dad1a-errcode
+## ARG SOURCE_DATE_EPOCH
+## RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-2505039b047dad1a* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ## 
 ## [[stages]]
 ## name = "out-2505039b047dad1a"
 ## script = """
 ## FROM scratch AS out-2505039b047dad1a
-## COPY --from=dep-n-itertools-0.4.19-2505039b047dad1a /tmp/clis-dbcc_2-2-1/release/deps/*-2505039b047dad1a* /"""
+## COPY --link --from=dep-n-itertools-0.4.19-2505039b047dad1a /tmp/clis-dbcc_2-2-1/release/deps/*-2505039b047dad1a* /"""
 
 FROM scratch AS cratesio-bitflags-0.4.0
 ADD --chmod=0664 --unpack=true --checksum=sha256:8dead7461c1127cf637931a1e50934eb6eee8bff2f74433ac7909e9afcee04a3 \
@@ -5234,8 +5382,10 @@ RUN \
         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-e976848f96abbbd4-stdout) \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-e976848f96abbbd4-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-e976848f96abbbd4-errcode
+ARG SOURCE_DATE_EPOCH
+RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-e976848f96abbbd4* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-e976848f96abbbd4
-COPY --from=dep-n-bitflags-0.4.0-e976848f96abbbd4 /tmp/clis-dbcc_2-2-1/release/deps/*-e976848f96abbbd4* /
+COPY --link --from=dep-n-bitflags-0.4.0-e976848f96abbbd4 /tmp/clis-dbcc_2-2-1/release/deps/*-e976848f96abbbd4* /
 
 ## this = "e976848f96abbbd4"
 ## writes = [
@@ -5295,13 +5445,15 @@ COPY --from=dep-n-bitflags-0.4.0-e976848f96abbbd4 /tmp/clis-dbcc_2-2-1/release/d
 ##       rustc '--crate-name' 'bitflags' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("no_std"))' '-C' 'metadata=c40fd9a620d26196' '-C' 'extra-filename=-e976848f96abbbd4' '--out-dir' '/tmp/clis-dbcc_2-2-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-dbcc_2-2-1/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bitflags-0.4.0/src/lib.rs \
 ##         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-e976848f96abbbd4-stdout) \
 ##         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-e976848f96abbbd4-stderr >&2) \
-##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-e976848f96abbbd4-errcode'''
+##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-e976848f96abbbd4-errcode
+## ARG SOURCE_DATE_EPOCH
+## RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-e976848f96abbbd4* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ## 
 ## [[stages]]
 ## name = "out-e976848f96abbbd4"
 ## script = """
 ## FROM scratch AS out-e976848f96abbbd4
-## COPY --from=dep-n-bitflags-0.4.0-e976848f96abbbd4 /tmp/clis-dbcc_2-2-1/release/deps/*-e976848f96abbbd4* /"""
+## COPY --link --from=dep-n-bitflags-0.4.0-e976848f96abbbd4 /tmp/clis-dbcc_2-2-1/release/deps/*-e976848f96abbbd4* /"""
 
 FROM scratch AS cratesio-nix-0.5.1
 ADD --chmod=0664 --unpack=true --checksum=sha256:bfb3ddedaa14746434a02041940495bf11325c22f6d36125d3bdd56090d50a79 \
@@ -5339,8 +5491,10 @@ RUN \
         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-4ee318c191cb8959-stdout) \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-4ee318c191cb8959-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-4ee318c191cb8959-errcode
+ARG SOURCE_DATE_EPOCH
+RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-4ee318c191cb8959* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-4ee318c191cb8959
-COPY --from=dep-n-nix-0.5.1-4ee318c191cb8959 /tmp/clis-dbcc_2-2-1/release/deps/*-4ee318c191cb8959* /
+COPY --link --from=dep-n-nix-0.5.1-4ee318c191cb8959 /tmp/clis-dbcc_2-2-1/release/deps/*-4ee318c191cb8959* /
 
 ## this = "4ee318c191cb8959"
 ## deps = [
@@ -5648,13 +5802,15 @@ COPY --from=dep-n-nix-0.5.1-4ee318c191cb8959 /tmp/clis-dbcc_2-2-1/release/deps/*
 ##       rustc '--crate-name' 'nix' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("eventfd", "execvpe", "preadv_pwritev", "signalfd"))' '-C' 'metadata=81800accad6947e6' '-C' 'extra-filename=-4ee318c191cb8959' '--out-dir' '/tmp/clis-dbcc_2-2-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-dbcc_2-2-1/release/deps' '--extern' 'bitflags=/tmp/clis-dbcc_2-2-1/release/deps/libbitflags-e976848f96abbbd4.rmeta' '--extern' 'libc=/tmp/clis-dbcc_2-2-1/release/deps/liblibc-087afb0c1713a9a6.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nix-0.5.1/src/lib.rs \
 ##         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-4ee318c191cb8959-stdout) \
 ##         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-4ee318c191cb8959-stderr >&2) \
-##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-4ee318c191cb8959-errcode'''
+##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-4ee318c191cb8959-errcode
+## ARG SOURCE_DATE_EPOCH
+## RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-4ee318c191cb8959* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ## 
 ## [[stages]]
 ## name = "out-4ee318c191cb8959"
 ## script = """
 ## FROM scratch AS out-4ee318c191cb8959
-## COPY --from=dep-n-nix-0.5.1-4ee318c191cb8959 /tmp/clis-dbcc_2-2-1/release/deps/*-4ee318c191cb8959* /"""
+## COPY --link --from=dep-n-nix-0.5.1-4ee318c191cb8959 /tmp/clis-dbcc_2-2-1/release/deps/*-4ee318c191cb8959* /"""
 
 FROM scratch AS cratesio-try_from-0.2.2
 ADD --chmod=0664 --unpack=true --checksum=sha256:923a7ee3e97dbfe8685261beb4511cc9620a1252405d02693d43169729570111 \
@@ -5688,8 +5844,10 @@ RUN \
         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-35b125c45c1cafb3-stdout) \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-35b125c45c1cafb3-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-35b125c45c1cafb3-errcode
+ARG SOURCE_DATE_EPOCH
+RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-35b125c45c1cafb3* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-35b125c45c1cafb3
-COPY --from=dep-n-try_from-0.2.2-35b125c45c1cafb3 /tmp/clis-dbcc_2-2-1/release/deps/*-35b125c45c1cafb3* /
+COPY --link --from=dep-n-try_from-0.2.2-35b125c45c1cafb3 /tmp/clis-dbcc_2-2-1/release/deps/*-35b125c45c1cafb3* /
 
 ## this = "35b125c45c1cafb3"
 ## writes = [
@@ -5748,13 +5906,15 @@ COPY --from=dep-n-try_from-0.2.2-35b125c45c1cafb3 /tmp/clis-dbcc_2-2-1/release/d
 ##       rustc '--crate-name' 'try_from' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=e520d19da200c6fa' '-C' 'extra-filename=-35b125c45c1cafb3' '--out-dir' '/tmp/clis-dbcc_2-2-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-dbcc_2-2-1/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/try_from-0.2.2/src/lib.rs \
 ##         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-35b125c45c1cafb3-stdout) \
 ##         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-35b125c45c1cafb3-stderr >&2) \
-##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-35b125c45c1cafb3-errcode'''
+##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-35b125c45c1cafb3-errcode
+## ARG SOURCE_DATE_EPOCH
+## RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-35b125c45c1cafb3* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ## 
 ## [[stages]]
 ## name = "out-35b125c45c1cafb3"
 ## script = """
 ## FROM scratch AS out-35b125c45c1cafb3
-## COPY --from=dep-n-try_from-0.2.2-35b125c45c1cafb3 /tmp/clis-dbcc_2-2-1/release/deps/*-35b125c45c1cafb3* /"""
+## COPY --link --from=dep-n-try_from-0.2.2-35b125c45c1cafb3 /tmp/clis-dbcc_2-2-1/release/deps/*-35b125c45c1cafb3* /"""
 
 FROM scratch AS cratesio-socketcan-1.7.0
 ADD --chmod=0664 --unpack=true --checksum=sha256:3101efc6ef5af6f1c1a488241b469757b7a183baca63af958cd90e4696446c80 \
@@ -5800,8 +5960,10 @@ RUN \
         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-7d72679ab99cdbe3-stdout) \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-7d72679ab99cdbe3-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-7d72679ab99cdbe3-errcode
+ARG SOURCE_DATE_EPOCH
+RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-7d72679ab99cdbe3* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-7d72679ab99cdbe3
-COPY --from=dep-n-socketcan-1.7.0-7d72679ab99cdbe3 /tmp/clis-dbcc_2-2-1/release/deps/*-7d72679ab99cdbe3* /
+COPY --link --from=dep-n-socketcan-1.7.0-7d72679ab99cdbe3 /tmp/clis-dbcc_2-2-1/release/deps/*-7d72679ab99cdbe3* /
 
 ## this = "7d72679ab99cdbe3"
 ## deps = [
@@ -5960,13 +6122,15 @@ COPY --from=dep-n-socketcan-1.7.0-7d72679ab99cdbe3 /tmp/clis-dbcc_2-2-1/release/
 ##       rustc '--crate-name' 'socketcan' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("vcan_tests"))' '-C' 'metadata=eb773bd766dbb556' '-C' 'extra-filename=-7d72679ab99cdbe3' '--out-dir' '/tmp/clis-dbcc_2-2-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-dbcc_2-2-1/release/deps' '--extern' 'hex=/tmp/clis-dbcc_2-2-1/release/deps/libhex-f065076cf799d91a.rmeta' '--extern' 'itertools=/tmp/clis-dbcc_2-2-1/release/deps/libitertools-2505039b047dad1a.rmeta' '--extern' 'libc=/tmp/clis-dbcc_2-2-1/release/deps/liblibc-087afb0c1713a9a6.rmeta' '--extern' 'nix=/tmp/clis-dbcc_2-2-1/release/deps/libnix-4ee318c191cb8959.rmeta' '--extern' 'try_from=/tmp/clis-dbcc_2-2-1/release/deps/libtry_from-35b125c45c1cafb3.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/socketcan-1.7.0/src/lib.rs \
 ##         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-7d72679ab99cdbe3-stdout) \
 ##         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-7d72679ab99cdbe3-stderr >&2) \
-##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-7d72679ab99cdbe3-errcode'''
+##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-7d72679ab99cdbe3-errcode
+## ARG SOURCE_DATE_EPOCH
+## RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-7d72679ab99cdbe3* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ## 
 ## [[stages]]
 ## name = "out-7d72679ab99cdbe3"
 ## script = """
 ## FROM scratch AS out-7d72679ab99cdbe3
-## COPY --from=dep-n-socketcan-1.7.0-7d72679ab99cdbe3 /tmp/clis-dbcc_2-2-1/release/deps/*-7d72679ab99cdbe3* /"""
+## COPY --link --from=dep-n-socketcan-1.7.0-7d72679ab99cdbe3 /tmp/clis-dbcc_2-2-1/release/deps/*-7d72679ab99cdbe3* /"""
 
 FROM scratch AS cratesio-ansi_term-0.11.0
 ADD --chmod=0664 --unpack=true --checksum=sha256:ee49baf6cb617b853aa8d93bf420db2383fab46d314482ca2803b40d5fde979b \
@@ -6000,8 +6164,10 @@ RUN \
         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-320ef4b8ee2e57f9-stdout) \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-320ef4b8ee2e57f9-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-320ef4b8ee2e57f9-errcode
+ARG SOURCE_DATE_EPOCH
+RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-320ef4b8ee2e57f9* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-320ef4b8ee2e57f9
-COPY --from=dep-n-ansi_term-0.11.0-320ef4b8ee2e57f9 /tmp/clis-dbcc_2-2-1/release/deps/*-320ef4b8ee2e57f9* /
+COPY --link --from=dep-n-ansi_term-0.11.0-320ef4b8ee2e57f9 /tmp/clis-dbcc_2-2-1/release/deps/*-320ef4b8ee2e57f9* /
 
 ## this = "320ef4b8ee2e57f9"
 ## writes = [
@@ -6070,13 +6236,15 @@ COPY --from=dep-n-ansi_term-0.11.0-320ef4b8ee2e57f9 /tmp/clis-dbcc_2-2-1/release
 ##       rustc '--crate-name' 'ansi_term' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=b83c48034e26d540' '-C' 'extra-filename=-320ef4b8ee2e57f9' '--out-dir' '/tmp/clis-dbcc_2-2-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-dbcc_2-2-1/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ansi_term-0.11.0/src/lib.rs \
 ##         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-320ef4b8ee2e57f9-stdout) \
 ##         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-320ef4b8ee2e57f9-stderr >&2) \
-##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-320ef4b8ee2e57f9-errcode'''
+##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-320ef4b8ee2e57f9-errcode
+## ARG SOURCE_DATE_EPOCH
+## RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-320ef4b8ee2e57f9* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ## 
 ## [[stages]]
 ## name = "out-320ef4b8ee2e57f9"
 ## script = """
 ## FROM scratch AS out-320ef4b8ee2e57f9
-## COPY --from=dep-n-ansi_term-0.11.0-320ef4b8ee2e57f9 /tmp/clis-dbcc_2-2-1/release/deps/*-320ef4b8ee2e57f9* /"""
+## COPY --link --from=dep-n-ansi_term-0.11.0-320ef4b8ee2e57f9 /tmp/clis-dbcc_2-2-1/release/deps/*-320ef4b8ee2e57f9* /"""
 
 FROM scratch AS cratesio-bitflags-1.2.1
 ADD --chmod=0664 --unpack=true --checksum=sha256:cf1de2fe8c75bc145a2f577add951f8134889b4795d47466a54a5c846d691693 \
@@ -6111,8 +6279,10 @@ RUN \
         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-d19718ebe5a0c815-stdout) \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-d19718ebe5a0c815-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-d19718ebe5a0c815-errcode
+ARG SOURCE_DATE_EPOCH
+RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-d19718ebe5a0c815* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-d19718ebe5a0c815
-COPY --from=dep-n-bitflags-1.2.1-d19718ebe5a0c815 /tmp/clis-dbcc_2-2-1/release/deps/*-d19718ebe5a0c815* /
+COPY --link --from=dep-n-bitflags-1.2.1-d19718ebe5a0c815 /tmp/clis-dbcc_2-2-1/release/deps/*-d19718ebe5a0c815* /
 
 ## this = "d19718ebe5a0c815"
 ## writes = [
@@ -6172,13 +6342,15 @@ COPY --from=dep-n-bitflags-1.2.1-d19718ebe5a0c815 /tmp/clis-dbcc_2-2-1/release/d
 ##       rustc '--crate-name' 'bitflags' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="default"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "example_generated"))' '-C' 'metadata=5262e28377aa4313' '-C' 'extra-filename=-d19718ebe5a0c815' '--out-dir' '/tmp/clis-dbcc_2-2-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-dbcc_2-2-1/release/deps' '--cap-lints' 'warn' '--cfg' 'bitflags_const_fn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bitflags-1.2.1/src/lib.rs \
 ##         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-d19718ebe5a0c815-stdout) \
 ##         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-d19718ebe5a0c815-stderr >&2) \
-##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-d19718ebe5a0c815-errcode'''
+##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-d19718ebe5a0c815-errcode
+## ARG SOURCE_DATE_EPOCH
+## RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-d19718ebe5a0c815* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ## 
 ## [[stages]]
 ## name = "out-d19718ebe5a0c815"
 ## script = """
 ## FROM scratch AS out-d19718ebe5a0c815
-## COPY --from=dep-n-bitflags-1.2.1-d19718ebe5a0c815 /tmp/clis-dbcc_2-2-1/release/deps/*-d19718ebe5a0c815* /"""
+## COPY --link --from=dep-n-bitflags-1.2.1-d19718ebe5a0c815 /tmp/clis-dbcc_2-2-1/release/deps/*-d19718ebe5a0c815* /"""
 
 FROM scratch AS cratesio-strsim-0.8.0
 ADD --chmod=0664 --unpack=true --checksum=sha256:8ea5119cdb4c55b55d432abb513a0429384878c15dde60cc77b1c99de1a95a6a \
@@ -6212,8 +6384,10 @@ RUN \
         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-ada2690f4d94d615-stdout) \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-ada2690f4d94d615-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-ada2690f4d94d615-errcode
+ARG SOURCE_DATE_EPOCH
+RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-ada2690f4d94d615* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-ada2690f4d94d615
-COPY --from=dep-n-strsim-0.8.0-ada2690f4d94d615 /tmp/clis-dbcc_2-2-1/release/deps/*-ada2690f4d94d615* /
+COPY --link --from=dep-n-strsim-0.8.0-ada2690f4d94d615 /tmp/clis-dbcc_2-2-1/release/deps/*-ada2690f4d94d615* /
 
 ## this = "ada2690f4d94d615"
 ## writes = [
@@ -6269,13 +6443,15 @@ COPY --from=dep-n-strsim-0.8.0-ada2690f4d94d615 /tmp/clis-dbcc_2-2-1/release/dep
 ##       rustc '--crate-name' 'strsim' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=6148129c3828fb71' '-C' 'extra-filename=-ada2690f4d94d615' '--out-dir' '/tmp/clis-dbcc_2-2-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-dbcc_2-2-1/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/strsim-0.8.0/src/lib.rs \
 ##         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-ada2690f4d94d615-stdout) \
 ##         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-ada2690f4d94d615-stderr >&2) \
-##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-ada2690f4d94d615-errcode'''
+##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-ada2690f4d94d615-errcode
+## ARG SOURCE_DATE_EPOCH
+## RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-ada2690f4d94d615* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ## 
 ## [[stages]]
 ## name = "out-ada2690f4d94d615"
 ## script = """
 ## FROM scratch AS out-ada2690f4d94d615
-## COPY --from=dep-n-strsim-0.8.0-ada2690f4d94d615 /tmp/clis-dbcc_2-2-1/release/deps/*-ada2690f4d94d615* /"""
+## COPY --link --from=dep-n-strsim-0.8.0-ada2690f4d94d615 /tmp/clis-dbcc_2-2-1/release/deps/*-ada2690f4d94d615* /"""
 
 FROM scratch AS cratesio-unicode-width-0.1.8
 ADD --chmod=0664 --unpack=true --checksum=sha256:9337591893a19b88d8d87f2cec1e73fad5cdfd10e5a6f349f498ad6ea2ffb1e3 \
@@ -6309,8 +6485,10 @@ RUN \
         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-e55c633902343b3a-stdout) \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-e55c633902343b3a-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-e55c633902343b3a-errcode
+ARG SOURCE_DATE_EPOCH
+RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-e55c633902343b3a* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-e55c633902343b3a
-COPY --from=dep-n-unicode-width-0.1.8-e55c633902343b3a /tmp/clis-dbcc_2-2-1/release/deps/*-e55c633902343b3a* /
+COPY --link --from=dep-n-unicode-width-0.1.8-e55c633902343b3a /tmp/clis-dbcc_2-2-1/release/deps/*-e55c633902343b3a* /
 
 ## this = "e55c633902343b3a"
 ## writes = [
@@ -6366,13 +6544,15 @@ COPY --from=dep-n-unicode-width-0.1.8-e55c633902343b3a /tmp/clis-dbcc_2-2-1/rele
 ##       rustc '--crate-name' 'unicode_width' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="default"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("bench", "compiler_builtins", "core", "default", "no_std", "rustc-dep-of-std", "std"))' '-C' 'metadata=dc2c81fcea1d5b77' '-C' 'extra-filename=-e55c633902343b3a' '--out-dir' '/tmp/clis-dbcc_2-2-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-dbcc_2-2-1/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/unicode-width-0.1.8/src/lib.rs \
 ##         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-e55c633902343b3a-stdout) \
 ##         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-e55c633902343b3a-stderr >&2) \
-##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-e55c633902343b3a-errcode'''
+##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-e55c633902343b3a-errcode
+## ARG SOURCE_DATE_EPOCH
+## RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-e55c633902343b3a* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ## 
 ## [[stages]]
 ## name = "out-e55c633902343b3a"
 ## script = """
 ## FROM scratch AS out-e55c633902343b3a
-## COPY --from=dep-n-unicode-width-0.1.8-e55c633902343b3a /tmp/clis-dbcc_2-2-1/release/deps/*-e55c633902343b3a* /"""
+## COPY --link --from=dep-n-unicode-width-0.1.8-e55c633902343b3a /tmp/clis-dbcc_2-2-1/release/deps/*-e55c633902343b3a* /"""
 
 FROM scratch AS cratesio-textwrap-0.11.0
 ADD --chmod=0664 --unpack=true --checksum=sha256:d326610f408c7a4eb6f51c37c330e496b08506c9457c9d34287ecc38809fb060 \
@@ -6408,8 +6588,10 @@ RUN \
         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-b7e82f41d8b26a14-stdout) \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-b7e82f41d8b26a14-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-b7e82f41d8b26a14-errcode
+ARG SOURCE_DATE_EPOCH
+RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-b7e82f41d8b26a14* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-b7e82f41d8b26a14
-COPY --from=dep-n-textwrap-0.11.0-b7e82f41d8b26a14 /tmp/clis-dbcc_2-2-1/release/deps/*-b7e82f41d8b26a14* /
+COPY --link --from=dep-n-textwrap-0.11.0-b7e82f41d8b26a14 /tmp/clis-dbcc_2-2-1/release/deps/*-b7e82f41d8b26a14* /
 
 ## this = "b7e82f41d8b26a14"
 ## deps = ["e55c633902343b3a"]
@@ -6477,13 +6659,15 @@ COPY --from=dep-n-textwrap-0.11.0-b7e82f41d8b26a14 /tmp/clis-dbcc_2-2-1/release/
 ##       rustc '--crate-name' 'textwrap' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("hyphenation", "term_size"))' '-C' 'metadata=6a61acb476333b63' '-C' 'extra-filename=-b7e82f41d8b26a14' '--out-dir' '/tmp/clis-dbcc_2-2-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-dbcc_2-2-1/release/deps' '--extern' 'unicode_width=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_width-e55c633902343b3a.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/textwrap-0.11.0/src/lib.rs \
 ##         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-b7e82f41d8b26a14-stdout) \
 ##         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-b7e82f41d8b26a14-stderr >&2) \
-##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-b7e82f41d8b26a14-errcode'''
+##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-b7e82f41d8b26a14-errcode
+## ARG SOURCE_DATE_EPOCH
+## RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-b7e82f41d8b26a14* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ## 
 ## [[stages]]
 ## name = "out-b7e82f41d8b26a14"
 ## script = """
 ## FROM scratch AS out-b7e82f41d8b26a14
-## COPY --from=dep-n-textwrap-0.11.0-b7e82f41d8b26a14 /tmp/clis-dbcc_2-2-1/release/deps/*-b7e82f41d8b26a14* /"""
+## COPY --link --from=dep-n-textwrap-0.11.0-b7e82f41d8b26a14 /tmp/clis-dbcc_2-2-1/release/deps/*-b7e82f41d8b26a14* /"""
 
 FROM scratch AS cratesio-vec_map-0.8.2
 ADD --chmod=0664 --unpack=true --checksum=sha256:f1bddf1187be692e79c5ffeab891132dfb0f236ed36a43c7ed39f1165ee20191 \
@@ -6517,8 +6701,10 @@ RUN \
         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-3fc8ab5befc6e8f4-stdout) \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-3fc8ab5befc6e8f4-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-3fc8ab5befc6e8f4-errcode
+ARG SOURCE_DATE_EPOCH
+RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-3fc8ab5befc6e8f4* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-3fc8ab5befc6e8f4
-COPY --from=dep-n-vec_map-0.8.2-3fc8ab5befc6e8f4 /tmp/clis-dbcc_2-2-1/release/deps/*-3fc8ab5befc6e8f4* /
+COPY --link --from=dep-n-vec_map-0.8.2-3fc8ab5befc6e8f4 /tmp/clis-dbcc_2-2-1/release/deps/*-3fc8ab5befc6e8f4* /
 
 ## this = "3fc8ab5befc6e8f4"
 ## writes = [
@@ -6578,13 +6764,15 @@ COPY --from=dep-n-vec_map-0.8.2-3fc8ab5befc6e8f4 /tmp/clis-dbcc_2-2-1/release/de
 ##       rustc '--crate-name' 'vec_map' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("eders", "serde"))' '-C' 'metadata=e3c2dfe37d7693e9' '-C' 'extra-filename=-3fc8ab5befc6e8f4' '--out-dir' '/tmp/clis-dbcc_2-2-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-dbcc_2-2-1/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/vec_map-0.8.2/src/lib.rs \
 ##         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-3fc8ab5befc6e8f4-stdout) \
 ##         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-3fc8ab5befc6e8f4-stderr >&2) \
-##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-3fc8ab5befc6e8f4-errcode'''
+##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-3fc8ab5befc6e8f4-errcode
+## ARG SOURCE_DATE_EPOCH
+## RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-3fc8ab5befc6e8f4* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ## 
 ## [[stages]]
 ## name = "out-3fc8ab5befc6e8f4"
 ## script = """
 ## FROM scratch AS out-3fc8ab5befc6e8f4
-## COPY --from=dep-n-vec_map-0.8.2-3fc8ab5befc6e8f4 /tmp/clis-dbcc_2-2-1/release/deps/*-3fc8ab5befc6e8f4* /"""
+## COPY --link --from=dep-n-vec_map-0.8.2-3fc8ab5befc6e8f4 /tmp/clis-dbcc_2-2-1/release/deps/*-3fc8ab5befc6e8f4* /"""
 
 FROM scratch AS cratesio-clap-2.33.3
 ADD --chmod=0664 --unpack=true --checksum=sha256:37e58ac78573c40708d45522f0d80fa2f01cc4f9b4e2bf749807255454312002 \
@@ -6634,8 +6822,10 @@ RUN \
         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-5a839c872643e159-stdout) \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-5a839c872643e159-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-5a839c872643e159-errcode
+ARG SOURCE_DATE_EPOCH
+RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-5a839c872643e159* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-5a839c872643e159
-COPY --from=dep-n-clap-2.33.3-5a839c872643e159 /tmp/clis-dbcc_2-2-1/release/deps/*-5a839c872643e159* /
+COPY --link --from=dep-n-clap-2.33.3-5a839c872643e159 /tmp/clis-dbcc_2-2-1/release/deps/*-5a839c872643e159* /
 
 ## this = "5a839c872643e159"
 ## deps = [
@@ -6874,13 +7064,15 @@ COPY --from=dep-n-clap-2.33.3-5a839c872643e159 /tmp/clis-dbcc_2-2-1/release/deps
 ##       rustc '--crate-name' 'clap' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="ansi_term"' '--cfg' 'feature="atty"' '--cfg' 'feature="color"' '--cfg' 'feature="default"' '--cfg' 'feature="strsim"' '--cfg' 'feature="suggestions"' '--cfg' 'feature="vec_map"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("ansi_term", "atty", "clippy", "color", "debug", "default", "doc", "lints", "nightly", "no_cargo", "strsim", "suggestions", "term_size", "unstable", "vec_map", "wrap_help", "yaml", "yaml-rust"))' '-C' 'metadata=92692002227a641e' '-C' 'extra-filename=-5a839c872643e159' '--out-dir' '/tmp/clis-dbcc_2-2-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-dbcc_2-2-1/release/deps' '--extern' 'ansi_term=/tmp/clis-dbcc_2-2-1/release/deps/libansi_term-320ef4b8ee2e57f9.rmeta' '--extern' 'atty=/tmp/clis-dbcc_2-2-1/release/deps/libatty-737035cdf92a82de.rmeta' '--extern' 'bitflags=/tmp/clis-dbcc_2-2-1/release/deps/libbitflags-d19718ebe5a0c815.rmeta' '--extern' 'strsim=/tmp/clis-dbcc_2-2-1/release/deps/libstrsim-ada2690f4d94d615.rmeta' '--extern' 'textwrap=/tmp/clis-dbcc_2-2-1/release/deps/libtextwrap-b7e82f41d8b26a14.rmeta' '--extern' 'unicode_width=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_width-e55c633902343b3a.rmeta' '--extern' 'vec_map=/tmp/clis-dbcc_2-2-1/release/deps/libvec_map-3fc8ab5befc6e8f4.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/clap-2.33.3/src/lib.rs \
 ##         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-5a839c872643e159-stdout) \
 ##         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-5a839c872643e159-stderr >&2) \
-##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-5a839c872643e159-errcode'''
+##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-5a839c872643e159-errcode
+## ARG SOURCE_DATE_EPOCH
+## RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-5a839c872643e159* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ## 
 ## [[stages]]
 ## name = "out-5a839c872643e159"
 ## script = """
 ## FROM scratch AS out-5a839c872643e159
-## COPY --from=dep-n-clap-2.33.3-5a839c872643e159 /tmp/clis-dbcc_2-2-1/release/deps/*-5a839c872643e159* /"""
+## COPY --link --from=dep-n-clap-2.33.3-5a839c872643e159 /tmp/clis-dbcc_2-2-1/release/deps/*-5a839c872643e159* /"""
 
 
 FROM rust-base AS dep-n-unicode-segmentation-1.6.0-0711d9c6f9e71290
@@ -6912,8 +7104,10 @@ RUN \
         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-0711d9c6f9e71290-stdout) \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-0711d9c6f9e71290-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-0711d9c6f9e71290-errcode
+ARG SOURCE_DATE_EPOCH
+RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-0711d9c6f9e71290* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-0711d9c6f9e71290
-COPY --from=dep-n-unicode-segmentation-1.6.0-0711d9c6f9e71290 /tmp/clis-dbcc_2-2-1/release/deps/*-0711d9c6f9e71290* /
+COPY --link --from=dep-n-unicode-segmentation-1.6.0-0711d9c6f9e71290 /tmp/clis-dbcc_2-2-1/release/deps/*-0711d9c6f9e71290* /
 
 ## this = "0711d9c6f9e71290"
 ## writes = [
@@ -6973,13 +7167,15 @@ COPY --from=dep-n-unicode-segmentation-1.6.0-0711d9c6f9e71290 /tmp/clis-dbcc_2-2
 ##       rustc '--crate-name' 'unicode_segmentation' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("no_std"))' '-C' 'metadata=de3ad364d6666506' '-C' 'extra-filename=-0711d9c6f9e71290' '--out-dir' '/tmp/clis-dbcc_2-2-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-dbcc_2-2-1/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/unicode-segmentation-1.6.0/src/lib.rs \
 ##         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-0711d9c6f9e71290-stdout) \
 ##         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-0711d9c6f9e71290-stderr >&2) \
-##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-0711d9c6f9e71290-errcode'''
+##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-0711d9c6f9e71290-errcode
+## ARG SOURCE_DATE_EPOCH
+## RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-0711d9c6f9e71290* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ## 
 ## [[stages]]
 ## name = "out-0711d9c6f9e71290"
 ## script = """
 ## FROM scratch AS out-0711d9c6f9e71290
-## COPY --from=dep-n-unicode-segmentation-1.6.0-0711d9c6f9e71290 /tmp/clis-dbcc_2-2-1/release/deps/*-0711d9c6f9e71290* /"""
+## COPY --link --from=dep-n-unicode-segmentation-1.6.0-0711d9c6f9e71290 /tmp/clis-dbcc_2-2-1/release/deps/*-0711d9c6f9e71290* /"""
 
 
 FROM rust-base AS dep-n-heck-0.3.1-41892b3573d1a97c
@@ -7013,8 +7209,10 @@ RUN \
         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-41892b3573d1a97c-stdout) \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-41892b3573d1a97c-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-41892b3573d1a97c-errcode
+ARG SOURCE_DATE_EPOCH
+RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-41892b3573d1a97c* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-41892b3573d1a97c
-COPY --from=dep-n-heck-0.3.1-41892b3573d1a97c /tmp/clis-dbcc_2-2-1/release/deps/*-41892b3573d1a97c* /
+COPY --link --from=dep-n-heck-0.3.1-41892b3573d1a97c /tmp/clis-dbcc_2-2-1/release/deps/*-41892b3573d1a97c* /
 
 ## this = "41892b3573d1a97c"
 ## deps = ["0711d9c6f9e71290"]
@@ -7082,13 +7280,15 @@ COPY --from=dep-n-heck-0.3.1-41892b3573d1a97c /tmp/clis-dbcc_2-2-1/release/deps/
 ##       rustc '--crate-name' 'heck' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=2f5bfc775a952d4c' '-C' 'extra-filename=-41892b3573d1a97c' '--out-dir' '/tmp/clis-dbcc_2-2-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-dbcc_2-2-1/release/deps' '--extern' 'unicode_segmentation=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_segmentation-0711d9c6f9e71290.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/heck-0.3.1/src/lib.rs \
 ##         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-41892b3573d1a97c-stdout) \
 ##         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-41892b3573d1a97c-stderr >&2) \
-##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-41892b3573d1a97c-errcode'''
+##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-41892b3573d1a97c-errcode
+## ARG SOURCE_DATE_EPOCH
+## RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-41892b3573d1a97c* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ## 
 ## [[stages]]
 ## name = "out-41892b3573d1a97c"
 ## script = """
 ## FROM scratch AS out-41892b3573d1a97c
-## COPY --from=dep-n-heck-0.3.1-41892b3573d1a97c /tmp/clis-dbcc_2-2-1/release/deps/*-41892b3573d1a97c* /"""
+## COPY --link --from=dep-n-heck-0.3.1-41892b3573d1a97c /tmp/clis-dbcc_2-2-1/release/deps/*-41892b3573d1a97c* /"""
 
 FROM scratch AS cratesio-proc-macro-error-attr-1.0.4
 ADD --chmod=0664 --unpack=true --checksum=sha256:a1be40180e52ecc98ad80b184934baf3d0d29f979574e439af5a55274b35f869 \
@@ -7126,8 +7326,10 @@ RUN \
         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-5abbb4d0b3e50e85-stdout) \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-5abbb4d0b3e50e85-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-5abbb4d0b3e50e85-errcode
+ARG SOURCE_DATE_EPOCH
+RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-5abbb4d0b3e50e85* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-5abbb4d0b3e50e85
-COPY --from=dep-n-proc-macro-error-attr-1.0.4-5abbb4d0b3e50e85 /tmp/clis-dbcc_2-2-1/release/deps/*-5abbb4d0b3e50e85* /
+COPY --link --from=dep-n-proc-macro-error-attr-1.0.4-5abbb4d0b3e50e85 /tmp/clis-dbcc_2-2-1/release/deps/*-5abbb4d0b3e50e85* /
 
 ## this = "5abbb4d0b3e50e85"
 ## deps = [
@@ -7210,13 +7412,15 @@ COPY --from=dep-n-proc-macro-error-attr-1.0.4-5abbb4d0b3e50e85 /tmp/clis-dbcc_2-
 ##       rustc '--crate-name' 'proc_macro_error_attr' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'proc-macro' '--emit' 'dep-info,link' '-C' 'prefer-dynamic' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=5a216e554a65b5da' '-C' 'extra-filename=-5abbb4d0b3e50e85' '--out-dir' '/tmp/clis-dbcc_2-2-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-dbcc_2-2-1/release/deps' '--extern' 'proc_macro2=/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-80b37ce9903d0def.rlib' '--extern' 'quote=/tmp/clis-dbcc_2-2-1/release/deps/libquote-dd5debcb2b51fc02.rlib' '--extern' 'proc_macro' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro-error-attr-1.0.4/src/lib.rs \
 ##         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-5abbb4d0b3e50e85-stdout) \
 ##         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-5abbb4d0b3e50e85-stderr >&2) \
-##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-5abbb4d0b3e50e85-errcode'''
+##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-5abbb4d0b3e50e85-errcode
+## ARG SOURCE_DATE_EPOCH
+## RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-5abbb4d0b3e50e85* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ## 
 ## [[stages]]
 ## name = "out-5abbb4d0b3e50e85"
 ## script = """
 ## FROM scratch AS out-5abbb4d0b3e50e85
-## COPY --from=dep-n-proc-macro-error-attr-1.0.4-5abbb4d0b3e50e85 /tmp/clis-dbcc_2-2-1/release/deps/*-5abbb4d0b3e50e85* /"""
+## COPY --link --from=dep-n-proc-macro-error-attr-1.0.4-5abbb4d0b3e50e85 /tmp/clis-dbcc_2-2-1/release/deps/*-5abbb4d0b3e50e85* /"""
 
 FROM scratch AS cratesio-proc-macro-error-1.0.4
 ADD --chmod=0664 --unpack=true --checksum=sha256:da25490ff9892aab3fcf7c36f08cfb902dd3e71ca0f9f9517bea02a73a5ce38c \
@@ -7260,8 +7464,10 @@ RUN \
         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-8d3142ab9efe4ea8-stdout) \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-8d3142ab9efe4ea8-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-8d3142ab9efe4ea8-errcode
+ARG SOURCE_DATE_EPOCH
+RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-8d3142ab9efe4ea8* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-8d3142ab9efe4ea8
-COPY --from=dep-n-proc-macro-error-1.0.4-8d3142ab9efe4ea8 /tmp/clis-dbcc_2-2-1/release/deps/*-8d3142ab9efe4ea8* /
+COPY --link --from=dep-n-proc-macro-error-1.0.4-8d3142ab9efe4ea8 /tmp/clis-dbcc_2-2-1/release/deps/*-8d3142ab9efe4ea8* /
 
 ## this = "8d3142ab9efe4ea8"
 ## deps = [
@@ -7382,13 +7588,15 @@ COPY --from=dep-n-proc-macro-error-1.0.4-8d3142ab9efe4ea8 /tmp/clis-dbcc_2-2-1/r
 ##       rustc '--crate-name' 'proc_macro_error' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--cfg' 'feature="default"' '--cfg' 'feature="syn"' '--cfg' 'feature="syn-error"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "syn", "syn-error"))' '-C' 'metadata=5f2d351359ab4260' '-C' 'extra-filename=-8d3142ab9efe4ea8' '--out-dir' '/tmp/clis-dbcc_2-2-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-dbcc_2-2-1/release/deps' '--extern' 'proc_macro_error_attr=/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro_error_attr-5abbb4d0b3e50e85.so' '--extern' 'proc_macro2=/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-80b37ce9903d0def.rmeta' '--extern' 'quote=/tmp/clis-dbcc_2-2-1/release/deps/libquote-dd5debcb2b51fc02.rmeta' '--extern' 'syn=/tmp/clis-dbcc_2-2-1/release/deps/libsyn-bbffa8c7e6a16356.rmeta' '--cap-lints' 'warn' '--cfg' 'use_fallback' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro-error-1.0.4/src/lib.rs \
 ##         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-8d3142ab9efe4ea8-stdout) \
 ##         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-8d3142ab9efe4ea8-stderr >&2) \
-##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-8d3142ab9efe4ea8-errcode'''
+##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-8d3142ab9efe4ea8-errcode
+## ARG SOURCE_DATE_EPOCH
+## RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-8d3142ab9efe4ea8* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ## 
 ## [[stages]]
 ## name = "out-8d3142ab9efe4ea8"
 ## script = """
 ## FROM scratch AS out-8d3142ab9efe4ea8
-## COPY --from=dep-n-proc-macro-error-1.0.4-8d3142ab9efe4ea8 /tmp/clis-dbcc_2-2-1/release/deps/*-8d3142ab9efe4ea8* /"""
+## COPY --link --from=dep-n-proc-macro-error-1.0.4-8d3142ab9efe4ea8 /tmp/clis-dbcc_2-2-1/release/deps/*-8d3142ab9efe4ea8* /"""
 
 FROM scratch AS cratesio-structopt-derive-0.4.13
 ADD --chmod=0664 --unpack=true --checksum=sha256:65e51c492f9e23a220534971ff5afc14037289de430e3c83f9daf6a1b6ae91e8 \
@@ -7430,8 +7638,10 @@ RUN \
         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-0187f3c8576aef3b-stdout) \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-0187f3c8576aef3b-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-0187f3c8576aef3b-errcode
+ARG SOURCE_DATE_EPOCH
+RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-0187f3c8576aef3b* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-0187f3c8576aef3b
-COPY --from=dep-n-structopt-derive-0.4.13-0187f3c8576aef3b /tmp/clis-dbcc_2-2-1/release/deps/*-0187f3c8576aef3b* /
+COPY --link --from=dep-n-structopt-derive-0.4.13-0187f3c8576aef3b /tmp/clis-dbcc_2-2-1/release/deps/*-0187f3c8576aef3b* /
 
 ## this = "0187f3c8576aef3b"
 ## deps = [
@@ -7551,13 +7761,15 @@ COPY --from=dep-n-structopt-derive-0.4.13-0187f3c8576aef3b /tmp/clis-dbcc_2-2-1/
 ##       rustc '--crate-name' 'structopt_derive' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'proc-macro' '--emit' 'dep-info,link' '-C' 'prefer-dynamic' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("paw"))' '-C' 'metadata=64c40337d2020380' '-C' 'extra-filename=-0187f3c8576aef3b' '--out-dir' '/tmp/clis-dbcc_2-2-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-dbcc_2-2-1/release/deps' '--extern' 'heck=/tmp/clis-dbcc_2-2-1/release/deps/libheck-41892b3573d1a97c.rlib' '--extern' 'proc_macro_error=/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro_error-8d3142ab9efe4ea8.rlib' '--extern' 'proc_macro2=/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-80b37ce9903d0def.rlib' '--extern' 'quote=/tmp/clis-dbcc_2-2-1/release/deps/libquote-dd5debcb2b51fc02.rlib' '--extern' 'syn=/tmp/clis-dbcc_2-2-1/release/deps/libsyn-bbffa8c7e6a16356.rlib' '--extern' 'proc_macro' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/structopt-derive-0.4.13/src/lib.rs \
 ##         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-0187f3c8576aef3b-stdout) \
 ##         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-0187f3c8576aef3b-stderr >&2) \
-##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-0187f3c8576aef3b-errcode'''
+##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-0187f3c8576aef3b-errcode
+## ARG SOURCE_DATE_EPOCH
+## RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-0187f3c8576aef3b* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ## 
 ## [[stages]]
 ## name = "out-0187f3c8576aef3b"
 ## script = """
 ## FROM scratch AS out-0187f3c8576aef3b
-## COPY --from=dep-n-structopt-derive-0.4.13-0187f3c8576aef3b /tmp/clis-dbcc_2-2-1/release/deps/*-0187f3c8576aef3b* /"""
+## COPY --link --from=dep-n-structopt-derive-0.4.13-0187f3c8576aef3b /tmp/clis-dbcc_2-2-1/release/deps/*-0187f3c8576aef3b* /"""
 
 FROM scratch AS cratesio-structopt-0.3.20
 ADD --chmod=0664 --unpack=true --checksum=sha256:126d630294ec449fae0b16f964e35bf3c74f940da9dca17ee9b905f7b3112eb8 \
@@ -7627,8 +7839,10 @@ RUN \
         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-05c5d104c65b93b5-stdout) \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-05c5d104c65b93b5-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-05c5d104c65b93b5-errcode
+ARG SOURCE_DATE_EPOCH
+RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-05c5d104c65b93b5* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-05c5d104c65b93b5
-COPY --from=dep-n-structopt-0.3.20-05c5d104c65b93b5 /tmp/clis-dbcc_2-2-1/release/deps/*-05c5d104c65b93b5* /
+COPY --link --from=dep-n-structopt-0.3.20-05c5d104c65b93b5 /tmp/clis-dbcc_2-2-1/release/deps/*-05c5d104c65b93b5* /
 
 ## this = "05c5d104c65b93b5"
 ## deps = [
@@ -7906,13 +8120,15 @@ COPY --from=dep-n-structopt-0.3.20-05c5d104c65b93b5 /tmp/clis-dbcc_2-2-1/release
 ##       rustc '--crate-name' 'structopt' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="default"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("color", "debug", "default", "doc", "lints", "no_cargo", "paw", "paw_dep", "suggestions", "wrap_help", "yaml"))' '-C' 'metadata=7d5321695520a701' '-C' 'extra-filename=-05c5d104c65b93b5' '--out-dir' '/tmp/clis-dbcc_2-2-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-dbcc_2-2-1/release/deps' '--extern' 'clap=/tmp/clis-dbcc_2-2-1/release/deps/libclap-5a839c872643e159.rmeta' '--extern' 'lazy_static=/tmp/clis-dbcc_2-2-1/release/deps/liblazy_static-a79af56de238e2b5.rmeta' '--extern' 'structopt_derive=/tmp/clis-dbcc_2-2-1/release/deps/libstructopt_derive-0187f3c8576aef3b.so' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/structopt-0.3.20/src/lib.rs \
 ##         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-05c5d104c65b93b5-stdout) \
 ##         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-05c5d104c65b93b5-stderr >&2) \
-##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-05c5d104c65b93b5-errcode'''
+##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-05c5d104c65b93b5-errcode
+## ARG SOURCE_DATE_EPOCH
+## RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-05c5d104c65b93b5* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ## 
 ## [[stages]]
 ## name = "out-05c5d104c65b93b5"
 ## script = """
 ## FROM scratch AS out-05c5d104c65b93b5
-## COPY --from=dep-n-structopt-0.3.20-05c5d104c65b93b5 /tmp/clis-dbcc_2-2-1/release/deps/*-05c5d104c65b93b5* /"""
+## COPY --link --from=dep-n-structopt-0.3.20-05c5d104c65b93b5 /tmp/clis-dbcc_2-2-1/release/deps/*-05c5d104c65b93b5* /"""
 
 FROM scratch AS cratesio-dbcc-2.2.1
 ADD --chmod=0664 --unpack=true --checksum=sha256:6bbc56797a8a9d3a4045bdc1c8ac8fc8abd4b6610e085a727e33acaa01de9050 \
@@ -8052,8 +8268,10 @@ RUN \
         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-e0edff43b19741a4-stdout) \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-e0edff43b19741a4-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-e0edff43b19741a4-errcode
+ARG SOURCE_DATE_EPOCH
+RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-e0edff43b19741a4* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-e0edff43b19741a4
-COPY --from=dep-n-dbcc-2.2.1-e0edff43b19741a4 /tmp/clis-dbcc_2-2-1/release/deps/*-e0edff43b19741a4* /
+COPY --link --from=dep-n-dbcc-2.2.1-e0edff43b19741a4 /tmp/clis-dbcc_2-2-1/release/deps/*-e0edff43b19741a4* /
 
 ## this = "e0edff43b19741a4"
 ## deps = [
@@ -8754,13 +8972,15 @@ COPY --from=dep-n-dbcc-2.2.1-e0edff43b19741a4 /tmp/clis-dbcc_2-2-1/release/deps/
 ##       rustc '--crate-name' 'dbcc' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=ed136c30a5077844' '-C' 'extra-filename=-e0edff43b19741a4' '--out-dir' '/tmp/clis-dbcc_2-2-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-dbcc_2-2-1/release/deps' '--extern' 'blake2=/tmp/clis-dbcc_2-2-1/release/deps/libblake2-90ca44a8caf54d0f.rmeta' '--extern' 'can_dbc=/tmp/clis-dbcc_2-2-1/release/deps/libcan_dbc-593834cb44ccbead.rmeta' '--extern' 'generic_array=/tmp/clis-dbcc_2-2-1/release/deps/libgeneric_array-0afa135837d93e68.rmeta' '--extern' 'heck=/tmp/clis-dbcc_2-2-1/release/deps/libheck-7d0dcf7e7b45836f.rmeta' '--extern' 'log=/tmp/clis-dbcc_2-2-1/release/deps/liblog-09be6f37eb701f15.rmeta' '--extern' 'nom=/tmp/clis-dbcc_2-2-1/release/deps/libnom-cd5fc4bcd4e040ed.rmeta' '--extern' 'pretty_env_logger=/tmp/clis-dbcc_2-2-1/release/deps/libpretty_env_logger-682e69746a16e0c7.rmeta' '--extern' 'proc_macro2=/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-5eebdd82bed7d9de.rmeta' '--extern' 'quote=/tmp/clis-dbcc_2-2-1/release/deps/libquote-0298ff41e604ba82.rmeta' '--extern' 'socketcan=/tmp/clis-dbcc_2-2-1/release/deps/libsocketcan-7d72679ab99cdbe3.rmeta' '--extern' 'structopt=/tmp/clis-dbcc_2-2-1/release/deps/libstructopt-05c5d104c65b93b5.rmeta' '--extern' 'typenum=/tmp/clis-dbcc_2-2-1/release/deps/libtypenum-0c59626b95871fe7.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/dbcc-2.2.1/src/lib.rs \
 ##         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-e0edff43b19741a4-stdout) \
 ##         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-e0edff43b19741a4-stderr >&2) \
-##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-e0edff43b19741a4-errcode'''
+##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-e0edff43b19741a4-errcode
+## ARG SOURCE_DATE_EPOCH
+## RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-e0edff43b19741a4* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ## 
 ## [[stages]]
 ## name = "out-e0edff43b19741a4"
 ## script = """
 ## FROM scratch AS out-e0edff43b19741a4
-## COPY --from=dep-n-dbcc-2.2.1-e0edff43b19741a4 /tmp/clis-dbcc_2-2-1/release/deps/*-e0edff43b19741a4* /"""
+## COPY --link --from=dep-n-dbcc-2.2.1-e0edff43b19741a4 /tmp/clis-dbcc_2-2-1/release/deps/*-e0edff43b19741a4* /"""
 
 
 FROM rust-base AS dep-n-dbcc-2.2.1-6cd0852da8e8bf94
@@ -8849,8 +9069,10 @@ RUN \
         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-6cd0852da8e8bf94-stdout) \
         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-6cd0852da8e8bf94-stderr >&2) \
         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-6cd0852da8e8bf94-errcode
+ARG SOURCE_DATE_EPOCH
+RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-6cd0852da8e8bf94* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-6cd0852da8e8bf94
-COPY --from=dep-n-dbcc-2.2.1-6cd0852da8e8bf94 /tmp/clis-dbcc_2-2-1/release/deps/*-6cd0852da8e8bf94* /
+COPY --link --from=dep-n-dbcc-2.2.1-6cd0852da8e8bf94 /tmp/clis-dbcc_2-2-1/release/deps/*-6cd0852da8e8bf94* /
 
 # Pipe this file to (not portable due to usage of local build contexts):
 # DOCKER_BUILDKIT="1" \
@@ -9303,13 +9525,15 @@ COPY --from=dep-n-dbcc-2.2.1-6cd0852da8e8bf94 /tmp/clis-dbcc_2-2-1/release/deps/
 ##       rustc '--crate-name' 'dbcc' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'bin' '--emit' 'dep-info,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=8d61b9db7169bea3' '-C' 'extra-filename=-6cd0852da8e8bf94' '--out-dir' '/tmp/clis-dbcc_2-2-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-dbcc_2-2-1/release/deps' '--extern' 'blake2=/tmp/clis-dbcc_2-2-1/release/deps/libblake2-90ca44a8caf54d0f.rlib' '--extern' 'can_dbc=/tmp/clis-dbcc_2-2-1/release/deps/libcan_dbc-593834cb44ccbead.rlib' '--extern' 'dbcc=/tmp/clis-dbcc_2-2-1/release/deps/libdbcc-e0edff43b19741a4.rlib' '--extern' 'generic_array=/tmp/clis-dbcc_2-2-1/release/deps/libgeneric_array-0afa135837d93e68.rlib' '--extern' 'heck=/tmp/clis-dbcc_2-2-1/release/deps/libheck-7d0dcf7e7b45836f.rlib' '--extern' 'log=/tmp/clis-dbcc_2-2-1/release/deps/liblog-09be6f37eb701f15.rlib' '--extern' 'nom=/tmp/clis-dbcc_2-2-1/release/deps/libnom-cd5fc4bcd4e040ed.rlib' '--extern' 'pretty_env_logger=/tmp/clis-dbcc_2-2-1/release/deps/libpretty_env_logger-682e69746a16e0c7.rlib' '--extern' 'proc_macro2=/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-5eebdd82bed7d9de.rlib' '--extern' 'quote=/tmp/clis-dbcc_2-2-1/release/deps/libquote-0298ff41e604ba82.rlib' '--extern' 'socketcan=/tmp/clis-dbcc_2-2-1/release/deps/libsocketcan-7d72679ab99cdbe3.rlib' '--extern' 'structopt=/tmp/clis-dbcc_2-2-1/release/deps/libstructopt-05c5d104c65b93b5.rlib' '--extern' 'typenum=/tmp/clis-dbcc_2-2-1/release/deps/libtypenum-0c59626b95871fe7.rlib' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/dbcc-2.2.1/src/main.rs \
 ##         1> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-6cd0852da8e8bf94-stdout) \
 ##         2> >(tee    /tmp/clis-dbcc_2-2-1/release/deps/out-6cd0852da8e8bf94-stderr >&2) \
-##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-6cd0852da8e8bf94-errcode'''
+##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-6cd0852da8e8bf94-errcode
+## ARG SOURCE_DATE_EPOCH
+## RUN find /tmp/clis-dbcc_2-2-1/release/deps/*-6cd0852da8e8bf94* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ## 
 ## [[stages]]
 ## name = "out-6cd0852da8e8bf94"
 ## script = """
 ## FROM scratch AS out-6cd0852da8e8bf94
-## COPY --from=dep-n-dbcc-2.2.1-6cd0852da8e8bf94 /tmp/clis-dbcc_2-2-1/release/deps/*-6cd0852da8e8bf94* /"""
+## COPY --link --from=dep-n-dbcc-2.2.1-6cd0852da8e8bf94 /tmp/clis-dbcc_2-2-1/release/deps/*-6cd0852da8e8bf94* /"""
 
 FROM scratch
-COPY --from=out-6cd0852da8e8bf94 /dbcc-6cd0852da8e8bf94 /dbcc
+COPY --link --from=out-6cd0852da8e8bf94 /dbcc-6cd0852da8e8bf94 /dbcc

@@ -329,7 +329,7 @@ async fn do_wrap_rustc(
         // bin|cargo-green|0.8.0|efe5575298075b07] copying all git files under $HOME/wefwefwef/supergreen.git to /tmp/cargo-green_0.8.0/CWDefe5575298075b07
         let cwd_stage = Stage::local_mount(md.this())?;
 
-        rustc_block.push_str(&format!("COPY --from={cwd_stage} / .\n"));
+        rustc_block.push_str(&format!("COPY --link --from={cwd_stage} / .\n"));
         rustc_block.push_str("RUN \\\n");
 
         Some((cwd_stage, cwd_path))
@@ -397,16 +397,17 @@ async fn do_wrap_rustc(
     rustc_block.push_str(&format!("        1> >(tee    {out_dir}/{out_stage}-{STDOUT}) \\\n"));
     rustc_block.push_str(&format!("        2> >(tee    {out_dir}/{out_stage}-{STDERR} >&2) \\\n"));
     rustc_block.push_str(&format!("        || echo $? >{out_dir}/{out_stage}-{ERRCODE}\n"));
+    rustc_block.push_str(&format!("ARG SOURCE_DATE_EPOCH\nRUN find {out_dir}/*{extrafn}* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH\n"));
     md.push_block(&rustc_stage, rustc_block);
 
     if let Some(ref incremental) = incremental {
         let mut incremental_block = format!("FROM scratch AS {incremental_stage}\n");
-        incremental_block.push_str(&format!("COPY --from={rustc_stage} {incremental} /\n"));
+        incremental_block.push_str(&format!("COPY --link --from={rustc_stage} {incremental} /\n"));
         md.push_block(&incremental_stage, incremental_block);
     }
 
     let mut out_block = format!("FROM scratch AS {out_stage}\n");
-    out_block.push_str(&format!("COPY --from={rustc_stage} {out_dir}/*{extrafn}* /\n"));
+    out_block.push_str(&format!("COPY --link --from={rustc_stage} {out_dir}/*{extrafn}* /\n"));
     md.push_block(&out_stage, out_block);
     // TODO? in Dockerfile, when using outputs:
     // => skip the COPY (--mount=from=out-08c4d63ed4366a99)
@@ -461,7 +462,8 @@ async fn do_wrap_rustc(
                     .filter(|f| f != &format!("{out_stage}-{STDOUT}"))
                     .filter(|f| f != &format!("{out_stage}-{STDERR}"))
                     .filter(|f| f != &format!("{out_stage}-{ERRCODE}"))
-                    .map(|f| format!("COPY --from={out_stage} /{f} /{}", f.replace(&extrafn, "")))
+                    .map(|f| (f, f.replace(&extrafn, "")))
+                    .map(|(src, dst)| format!("COPY --link --from={out_stage} /{src} /{dst}"))
                     .collect::<Vec<_>>()
                     .join("\n")
             );
