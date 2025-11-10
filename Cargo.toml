@@ -34,7 +34,7 @@ anyhow = "1"
 astral-tokio-tar = { version = "0, >=0.5", default-features = false }
 atomicwrites = { version = "0, >=0.4", default-features = false }
 camino = { version = "1", features = [ "serde1" ] }
-cargo-lock = "10"
+cargo-lock = "11"
 cargo-subcommand-metadata = "0, >=0.1"
 cargo_toml = "0, >=0.21"
 chrono = { version = "0, >=0.4", default-features = false, features = [ "now" ] }
