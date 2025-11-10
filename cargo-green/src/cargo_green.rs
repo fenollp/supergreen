@@ -309,12 +309,12 @@ pub(crate) async fn fetch(green: Green) -> Result<()> {
     }
     containerfile.push(&format!("FROM scratch AS {stage}\n"));
     for leaf in 0..=leaves {
-        containerfile.push(&format!("COPY --from={} / /\n", stager(leaf)));
+        containerfile.push(&format!("COPY --link --from={} / /\n", stager(leaf)));
     }
 
     for img in imgs.iter().filter(|_| !ddb) {
         let imgd = imger(img.noscheme());
-        containerfile.push(&format!("COPY --from={imgd} / /{imgd}\n"));
+        containerfile.push(&format!("COPY --link --from={imgd} / /{imgd}\n"));
     }
 
     let fname = format!(

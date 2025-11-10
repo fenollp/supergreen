@@ -37,8 +37,10 @@ RUN \
         1> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-2510ffd6966eb36d-stdout) \
         2> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-2510ffd6966eb36d-stderr >&2) \
         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-2510ffd6966eb36d-errcode
+ARG SOURCE_DATE_EPOCH
+RUN find /tmp/clis-cargo-config2_0-1-34/release/deps/*-2510ffd6966eb36d* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-2510ffd6966eb36d
-COPY --from=dep-n-anyhow-1.0.98-2510ffd6966eb36d /tmp/clis-cargo-config2_0-1-34/release/deps/*-2510ffd6966eb36d* /
+COPY --link --from=dep-n-anyhow-1.0.98-2510ffd6966eb36d /tmp/clis-cargo-config2_0-1-34/release/deps/*-2510ffd6966eb36d* /
 
 ## this = "2510ffd6966eb36d"
 ## writes = [
@@ -95,13 +97,15 @@ COPY --from=dep-n-anyhow-1.0.98-2510ffd6966eb36d /tmp/clis-cargo-config2_0-1-34/
 ##       rustc '--crate-name' 'anyhow' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("backtrace", "default", "std"))' '-C' 'metadata=754294ee8e715bfa' '-C' 'extra-filename=-2510ffd6966eb36d' '--out-dir' '/tmp/clis-cargo-config2_0-1-34/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-cargo-config2_0-1-34/release/deps' '--cap-lints' 'warn' '--cfg' 'std_backtrace' '--check-cfg' 'cfg(anyhow_build_probe)' '--check-cfg' 'cfg(anyhow_nightly_testing)' '--check-cfg' 'cfg(anyhow_no_core_error)' '--check-cfg' 'cfg(anyhow_no_core_unwind_safe)' '--check-cfg' 'cfg(anyhow_no_fmt_arguments_as_str)' '--check-cfg' 'cfg(anyhow_no_ptr_addr_of)' '--check-cfg' 'cfg(anyhow_no_unsafe_op_in_unsafe_fn_lint)' '--check-cfg' 'cfg(error_generic_member_access)' '--check-cfg' 'cfg(std_backtrace)' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.98/src/lib.rs \
 ##         1> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-2510ffd6966eb36d-stdout) \
 ##         2> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-2510ffd6966eb36d-stderr >&2) \
-##         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-2510ffd6966eb36d-errcode'''
+##         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-2510ffd6966eb36d-errcode
+## ARG SOURCE_DATE_EPOCH
+## RUN find /tmp/clis-cargo-config2_0-1-34/release/deps/*-2510ffd6966eb36d* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ## 
 ## [[stages]]
 ## name = "out-2510ffd6966eb36d"
 ## script = """
 ## FROM scratch AS out-2510ffd6966eb36d
-## COPY --from=dep-n-anyhow-1.0.98-2510ffd6966eb36d /tmp/clis-cargo-config2_0-1-34/release/deps/*-2510ffd6966eb36d* /"""
+## COPY --link --from=dep-n-anyhow-1.0.98-2510ffd6966eb36d /tmp/clis-cargo-config2_0-1-34/release/deps/*-2510ffd6966eb36d* /"""
 
 FROM scratch AS cratesio-build-context-0.1.3
 ADD --chmod=0664 --unpack=true --checksum=sha256:86610cb1e9d45d65a31b574f9d69de003a76b6bb0b7d882396a5153fc547c935 \
@@ -137,8 +141,10 @@ RUN \
         1> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-438e025c67a2840e-stdout) \
         2> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-438e025c67a2840e-stderr >&2) \
         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-438e025c67a2840e-errcode
+ARG SOURCE_DATE_EPOCH
+RUN find /tmp/clis-cargo-config2_0-1-34/release/deps/*-438e025c67a2840e* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-438e025c67a2840e
-COPY --from=dep-n-build-context-0.1.3-438e025c67a2840e /tmp/clis-cargo-config2_0-1-34/release/deps/*-438e025c67a2840e* /
+COPY --link --from=dep-n-build-context-0.1.3-438e025c67a2840e /tmp/clis-cargo-config2_0-1-34/release/deps/*-438e025c67a2840e* /
 
 ## this = "438e025c67a2840e"
 ## writes = [
@@ -200,13 +206,15 @@ COPY --from=dep-n-build-context-0.1.3-438e025c67a2840e /tmp/clis-cargo-config2_0
 ##       rustc '--crate-name' 'build_context' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--warn' 'unreachable_pub' '--warn' 'unexpected_cfgs' '--warn' 'clippy::undocumented_unsafe_blocks' '--warn' 'clippy::transmute_undefined_repr' '--warn' 'clippy::trailing_empty_array' '--warn' 'single_use_lifetimes' '--warn' 'rust_2018_idioms' '--warn' 'clippy::pedantic' '--warn' 'non_ascii_idents' '--warn' 'clippy::inline_asm_x86_att_syntax' '--warn' 'improper_ctypes_definitions' '--warn' 'improper_ctypes' '--warn' 'deprecated_safe' '--warn' 'clippy::default_union_representation' '--warn' 'clippy::as_underscore' '--warn' 'clippy::as_ptr_cast_mut' '--warn' 'clippy::all' '--allow' 'clippy::unreadable_literal' '--allow' 'clippy::type_complexity' '--allow' 'clippy::too_many_lines' '--allow' 'clippy::too_many_arguments' '--allow' 'clippy::struct_field_names' '--allow' 'clippy::struct_excessive_bools' '--allow' 'clippy::single_match_else' '--allow' 'clippy::single_match' '--allow' 'clippy::similar_names' '--allow' 'clippy::range_plus_one' '--allow' 'clippy::nonminimal_bool' '--allow' 'clippy::naive_bytecount' '--allow' 'clippy::module_name_repetitions' '--allow' 'clippy::missing_errors_doc' '--allow' 'clippy::manual_range_contains' '--allow' 'clippy::manual_assert' '--allow' 'clippy::lint_groups_priority' '--allow' 'clippy::incompatible_msrv' '--allow' 'clippy::float_cmp' '--allow' 'clippy::doc_markdown' '--allow' 'clippy::declare_interior_mutable_const' '--allow' 'clippy::cast_lossless' '--allow' 'clippy::borrow_as_ptr' '--allow' 'clippy::bool_assert_comparison' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=c7769e2dc534794a' '-C' 'extra-filename=-438e025c67a2840e' '--out-dir' '/tmp/clis-cargo-config2_0-1-34/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-cargo-config2_0-1-34/release/deps' '--cap-lints' 'warn' '--check-cfg' 'cfg(host_os,values("windows"))' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/build-context-0.1.3/src/lib.rs \
 ##         1> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-438e025c67a2840e-stdout) \
 ##         2> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-438e025c67a2840e-stderr >&2) \
-##         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-438e025c67a2840e-errcode'''
+##         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-438e025c67a2840e-errcode
+## ARG SOURCE_DATE_EPOCH
+## RUN find /tmp/clis-cargo-config2_0-1-34/release/deps/*-438e025c67a2840e* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ## 
 ## [[stages]]
 ## name = "out-438e025c67a2840e"
 ## script = """
 ## FROM scratch AS out-438e025c67a2840e
-## COPY --from=dep-n-build-context-0.1.3-438e025c67a2840e /tmp/clis-cargo-config2_0-1-34/release/deps/*-438e025c67a2840e* /"""
+## COPY --link --from=dep-n-build-context-0.1.3-438e025c67a2840e /tmp/clis-cargo-config2_0-1-34/release/deps/*-438e025c67a2840e* /"""
 
 FROM scratch AS cratesio-serde-1.0.219
 ADD --chmod=0664 --unpack=true --checksum=sha256:5f0e2c6ed6606019b4e29e69dbaba95b11854410e5347d525002456dbbb786b6 \
@@ -241,8 +249,10 @@ RUN \
         1> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-b6c6cf1c11688574-stdout) \
         2> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-b6c6cf1c11688574-stderr >&2) \
         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-b6c6cf1c11688574-errcode
+ARG SOURCE_DATE_EPOCH
+RUN find /tmp/clis-cargo-config2_0-1-34/release/deps/*-b6c6cf1c11688574* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-b6c6cf1c11688574
-COPY --from=dep-n-serde-1.0.219-b6c6cf1c11688574 /tmp/clis-cargo-config2_0-1-34/release/deps/*-b6c6cf1c11688574* /
+COPY --link --from=dep-n-serde-1.0.219-b6c6cf1c11688574 /tmp/clis-cargo-config2_0-1-34/release/deps/*-b6c6cf1c11688574* /
 
 ## this = "b6c6cf1c11688574"
 ## writes = [
@@ -299,13 +309,15 @@ COPY --from=dep-n-serde-1.0.219-b6c6cf1c11688574 /tmp/clis-cargo-config2_0-1-34/
 ##       rustc '--crate-name' 'serde' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "default", "derive", "rc", "serde_derive", "std", "unstable"))' '-C' 'metadata=1e238e820d4694ed' '-C' 'extra-filename=-b6c6cf1c11688574' '--out-dir' '/tmp/clis-cargo-config2_0-1-34/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-cargo-config2_0-1-34/release/deps' '--cap-lints' 'warn' '--check-cfg' 'cfg(no_core_cstr)' '--check-cfg' 'cfg(no_core_error)' '--check-cfg' 'cfg(no_core_net)' '--check-cfg' 'cfg(no_core_num_saturating)' '--check-cfg' 'cfg(no_core_try_from)' '--check-cfg' 'cfg(no_diagnostic_namespace)' '--check-cfg' 'cfg(no_float_copysign)' '--check-cfg' 'cfg(no_num_nonzero_signed)' '--check-cfg' 'cfg(no_relaxed_trait_bounds)' '--check-cfg' 'cfg(no_serde_derive)' '--check-cfg' 'cfg(no_std_atomic)' '--check-cfg' 'cfg(no_std_atomic64)' '--check-cfg' 'cfg(no_systemtime_checked_add)' '--check-cfg' 'cfg(no_target_has_atomic)' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.219/src/lib.rs \
 ##         1> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-b6c6cf1c11688574-stdout) \
 ##         2> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-b6c6cf1c11688574-stderr >&2) \
-##         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-b6c6cf1c11688574-errcode'''
+##         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-b6c6cf1c11688574-errcode
+## ARG SOURCE_DATE_EPOCH
+## RUN find /tmp/clis-cargo-config2_0-1-34/release/deps/*-b6c6cf1c11688574* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ## 
 ## [[stages]]
 ## name = "out-b6c6cf1c11688574"
 ## script = """
 ## FROM scratch AS out-b6c6cf1c11688574
-## COPY --from=dep-n-serde-1.0.219-b6c6cf1c11688574 /tmp/clis-cargo-config2_0-1-34/release/deps/*-b6c6cf1c11688574* /"""
+## COPY --link --from=dep-n-serde-1.0.219-b6c6cf1c11688574 /tmp/clis-cargo-config2_0-1-34/release/deps/*-b6c6cf1c11688574* /"""
 
 FROM scratch AS cratesio-unicode-ident-1.0.18
 ADD --chmod=0664 --unpack=true --checksum=sha256:5a5f39404a5da50712a4c1eecf25e90dd62b613502b7e925fd4e4d19b5c96512 \
@@ -339,8 +351,10 @@ RUN \
         1> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-02b0d04ef026a7b6-stdout) \
         2> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-02b0d04ef026a7b6-stderr >&2) \
         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-02b0d04ef026a7b6-errcode
+ARG SOURCE_DATE_EPOCH
+RUN find /tmp/clis-cargo-config2_0-1-34/release/deps/*-02b0d04ef026a7b6* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-02b0d04ef026a7b6
-COPY --from=dep-n-unicode-ident-1.0.18-02b0d04ef026a7b6 /tmp/clis-cargo-config2_0-1-34/release/deps/*-02b0d04ef026a7b6* /
+COPY --link --from=dep-n-unicode-ident-1.0.18-02b0d04ef026a7b6 /tmp/clis-cargo-config2_0-1-34/release/deps/*-02b0d04ef026a7b6* /
 
 ## this = "02b0d04ef026a7b6"
 ## writes = [
@@ -396,13 +410,15 @@ COPY --from=dep-n-unicode-ident-1.0.18-02b0d04ef026a7b6 /tmp/clis-cargo-config2_
 ##       rustc '--crate-name' 'unicode_ident' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=9ab26da12a7409b4' '-C' 'extra-filename=-02b0d04ef026a7b6' '--out-dir' '/tmp/clis-cargo-config2_0-1-34/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-cargo-config2_0-1-34/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/unicode-ident-1.0.18/src/lib.rs \
 ##         1> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-02b0d04ef026a7b6-stdout) \
 ##         2> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-02b0d04ef026a7b6-stderr >&2) \
-##         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-02b0d04ef026a7b6-errcode'''
+##         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-02b0d04ef026a7b6-errcode
+## ARG SOURCE_DATE_EPOCH
+## RUN find /tmp/clis-cargo-config2_0-1-34/release/deps/*-02b0d04ef026a7b6* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ## 
 ## [[stages]]
 ## name = "out-02b0d04ef026a7b6"
 ## script = """
 ## FROM scratch AS out-02b0d04ef026a7b6
-## COPY --from=dep-n-unicode-ident-1.0.18-02b0d04ef026a7b6 /tmp/clis-cargo-config2_0-1-34/release/deps/*-02b0d04ef026a7b6* /"""
+## COPY --link --from=dep-n-unicode-ident-1.0.18-02b0d04ef026a7b6 /tmp/clis-cargo-config2_0-1-34/release/deps/*-02b0d04ef026a7b6* /"""
 
 FROM scratch AS cratesio-proc-macro2-1.0.95
 ADD --chmod=0664 --unpack=true --checksum=sha256:02b3e5e68a3a1a02aad3ec490a98007cbc13c37cbe84a3cd7b8e406d76e7f778 \
@@ -439,8 +455,10 @@ RUN \
         1> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-da36b031605c1ddc-stdout) \
         2> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-da36b031605c1ddc-stderr >&2) \
         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-da36b031605c1ddc-errcode
+ARG SOURCE_DATE_EPOCH
+RUN find /tmp/clis-cargo-config2_0-1-34/release/deps/*-da36b031605c1ddc* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-da36b031605c1ddc
-COPY --from=dep-n-proc-macro2-1.0.95-da36b031605c1ddc /tmp/clis-cargo-config2_0-1-34/release/deps/*-da36b031605c1ddc* /
+COPY --link --from=dep-n-proc-macro2-1.0.95-da36b031605c1ddc /tmp/clis-cargo-config2_0-1-34/release/deps/*-da36b031605c1ddc* /
 
 ## this = "da36b031605c1ddc"
 ## deps = ["02b0d04ef026a7b6"]
@@ -509,13 +527,15 @@ COPY --from=dep-n-proc-macro2-1.0.95-da36b031605c1ddc /tmp/clis-cargo-config2_0-
 ##       rustc '--crate-name' 'proc_macro2' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--cfg' 'feature="default"' '--cfg' 'feature="proc-macro"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "nightly", "proc-macro", "span-locations"))' '-C' 'metadata=8e0e659e542c9f0e' '-C' 'extra-filename=-da36b031605c1ddc' '--out-dir' '/tmp/clis-cargo-config2_0-1-34/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-cargo-config2_0-1-34/release/deps' '--extern' 'unicode_ident=/tmp/clis-cargo-config2_0-1-34/release/deps/libunicode_ident-02b0d04ef026a7b6.rmeta' '--cap-lints' 'warn' '--cfg' 'wrap_proc_macro' '--check-cfg' 'cfg(fuzzing)' '--check-cfg' 'cfg(no_is_available)' '--check-cfg' 'cfg(no_literal_byte_character)' '--check-cfg' 'cfg(no_literal_c_string)' '--check-cfg' 'cfg(no_source_text)' '--check-cfg' 'cfg(proc_macro_span)' '--check-cfg' 'cfg(procmacro2_backtrace)' '--check-cfg' 'cfg(procmacro2_nightly_testing)' '--check-cfg' 'cfg(procmacro2_semver_exempt)' '--check-cfg' 'cfg(randomize_layout)' '--check-cfg' 'cfg(span_locations)' '--check-cfg' 'cfg(super_unstable)' '--check-cfg' 'cfg(wrap_proc_macro)' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.95/src/lib.rs \
 ##         1> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-da36b031605c1ddc-stdout) \
 ##         2> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-da36b031605c1ddc-stderr >&2) \
-##         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-da36b031605c1ddc-errcode'''
+##         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-da36b031605c1ddc-errcode
+## ARG SOURCE_DATE_EPOCH
+## RUN find /tmp/clis-cargo-config2_0-1-34/release/deps/*-da36b031605c1ddc* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ## 
 ## [[stages]]
 ## name = "out-da36b031605c1ddc"
 ## script = """
 ## FROM scratch AS out-da36b031605c1ddc
-## COPY --from=dep-n-proc-macro2-1.0.95-da36b031605c1ddc /tmp/clis-cargo-config2_0-1-34/release/deps/*-da36b031605c1ddc* /"""
+## COPY --link --from=dep-n-proc-macro2-1.0.95-da36b031605c1ddc /tmp/clis-cargo-config2_0-1-34/release/deps/*-da36b031605c1ddc* /"""
 
 FROM scratch AS cratesio-quote-1.0.40
 ADD --chmod=0664 --unpack=true --checksum=sha256:1885c039570dc00dcb4ff087a89e185fd56bae234ddc7f056a945bf36467248d \
@@ -553,8 +573,10 @@ RUN \
         1> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-21aeee0f329238fb-stdout) \
         2> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-21aeee0f329238fb-stderr >&2) \
         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-21aeee0f329238fb-errcode
+ARG SOURCE_DATE_EPOCH
+RUN find /tmp/clis-cargo-config2_0-1-34/release/deps/*-21aeee0f329238fb* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-21aeee0f329238fb
-COPY --from=dep-n-quote-1.0.40-21aeee0f329238fb /tmp/clis-cargo-config2_0-1-34/release/deps/*-21aeee0f329238fb* /
+COPY --link --from=dep-n-quote-1.0.40-21aeee0f329238fb /tmp/clis-cargo-config2_0-1-34/release/deps/*-21aeee0f329238fb* /
 
 ## this = "21aeee0f329238fb"
 ## deps = [
@@ -638,13 +660,15 @@ COPY --from=dep-n-quote-1.0.40-21aeee0f329238fb /tmp/clis-cargo-config2_0-1-34/r
 ##       rustc '--crate-name' 'quote' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--cfg' 'feature="default"' '--cfg' 'feature="proc-macro"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "proc-macro"))' '-C' 'metadata=1524a7ca779c8737' '-C' 'extra-filename=-21aeee0f329238fb' '--out-dir' '/tmp/clis-cargo-config2_0-1-34/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-cargo-config2_0-1-34/release/deps' '--extern' 'proc_macro2=/tmp/clis-cargo-config2_0-1-34/release/deps/libproc_macro2-da36b031605c1ddc.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.40/src/lib.rs \
 ##         1> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-21aeee0f329238fb-stdout) \
 ##         2> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-21aeee0f329238fb-stderr >&2) \
-##         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-21aeee0f329238fb-errcode'''
+##         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-21aeee0f329238fb-errcode
+## ARG SOURCE_DATE_EPOCH
+## RUN find /tmp/clis-cargo-config2_0-1-34/release/deps/*-21aeee0f329238fb* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ## 
 ## [[stages]]
 ## name = "out-21aeee0f329238fb"
 ## script = """
 ## FROM scratch AS out-21aeee0f329238fb
-## COPY --from=dep-n-quote-1.0.40-21aeee0f329238fb /tmp/clis-cargo-config2_0-1-34/release/deps/*-21aeee0f329238fb* /"""
+## COPY --link --from=dep-n-quote-1.0.40-21aeee0f329238fb /tmp/clis-cargo-config2_0-1-34/release/deps/*-21aeee0f329238fb* /"""
 
 FROM scratch AS cratesio-syn-2.0.104
 ADD --chmod=0664 --unpack=true --checksum=sha256:17b6f705963418cdb9927482fa304bc562ece2fdd4f616084c50b7023b435a40 \
@@ -684,8 +708,10 @@ RUN \
         1> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-5571b1fa61474ffa-stdout) \
         2> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-5571b1fa61474ffa-stderr >&2) \
         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-5571b1fa61474ffa-errcode
+ARG SOURCE_DATE_EPOCH
+RUN find /tmp/clis-cargo-config2_0-1-34/release/deps/*-5571b1fa61474ffa* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-5571b1fa61474ffa
-COPY --from=dep-n-syn-2.0.104-5571b1fa61474ffa /tmp/clis-cargo-config2_0-1-34/release/deps/*-5571b1fa61474ffa* /
+COPY --link --from=dep-n-syn-2.0.104-5571b1fa61474ffa /tmp/clis-cargo-config2_0-1-34/release/deps/*-5571b1fa61474ffa* /
 
 ## this = "5571b1fa61474ffa"
 ## deps = [
@@ -781,13 +807,15 @@ COPY --from=dep-n-syn-2.0.104-5571b1fa61474ffa /tmp/clis-cargo-config2_0-1-34/re
 ##       rustc '--crate-name' 'syn' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--cfg' 'feature="clone-impls"' '--cfg' 'feature="default"' '--cfg' 'feature="derive"' '--cfg' 'feature="full"' '--cfg' 'feature="parsing"' '--cfg' 'feature="printing"' '--cfg' 'feature="proc-macro"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("clone-impls", "default", "derive", "extra-traits", "fold", "full", "parsing", "printing", "proc-macro", "test", "visit", "visit-mut"))' '-C' 'metadata=6ea2567978b4a379' '-C' 'extra-filename=-5571b1fa61474ffa' '--out-dir' '/tmp/clis-cargo-config2_0-1-34/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-cargo-config2_0-1-34/release/deps' '--extern' 'proc_macro2=/tmp/clis-cargo-config2_0-1-34/release/deps/libproc_macro2-da36b031605c1ddc.rmeta' '--extern' 'quote=/tmp/clis-cargo-config2_0-1-34/release/deps/libquote-21aeee0f329238fb.rmeta' '--extern' 'unicode_ident=/tmp/clis-cargo-config2_0-1-34/release/deps/libunicode_ident-02b0d04ef026a7b6.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/syn-2.0.104/src/lib.rs \
 ##         1> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-5571b1fa61474ffa-stdout) \
 ##         2> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-5571b1fa61474ffa-stderr >&2) \
-##         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-5571b1fa61474ffa-errcode'''
+##         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-5571b1fa61474ffa-errcode
+## ARG SOURCE_DATE_EPOCH
+## RUN find /tmp/clis-cargo-config2_0-1-34/release/deps/*-5571b1fa61474ffa* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ## 
 ## [[stages]]
 ## name = "out-5571b1fa61474ffa"
 ## script = """
 ## FROM scratch AS out-5571b1fa61474ffa
-## COPY --from=dep-n-syn-2.0.104-5571b1fa61474ffa /tmp/clis-cargo-config2_0-1-34/release/deps/*-5571b1fa61474ffa* /"""
+## COPY --link --from=dep-n-syn-2.0.104-5571b1fa61474ffa /tmp/clis-cargo-config2_0-1-34/release/deps/*-5571b1fa61474ffa* /"""
 
 FROM scratch AS cratesio-serde_derive-1.0.219
 ADD --chmod=0664 --unpack=true --checksum=sha256:5b0276cf7f2c73365f7157c8123c21cd9a50fbbd844757af28ca1f5925fc2a00 \
@@ -825,8 +853,10 @@ RUN \
         1> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-a51e2455af527849-stdout) \
         2> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-a51e2455af527849-stderr >&2) \
         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-a51e2455af527849-errcode
+ARG SOURCE_DATE_EPOCH
+RUN find /tmp/clis-cargo-config2_0-1-34/release/deps/*-a51e2455af527849* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-a51e2455af527849
-COPY --from=dep-n-serde_derive-1.0.219-a51e2455af527849 /tmp/clis-cargo-config2_0-1-34/release/deps/*-a51e2455af527849* /
+COPY --link --from=dep-n-serde_derive-1.0.219-a51e2455af527849 /tmp/clis-cargo-config2_0-1-34/release/deps/*-a51e2455af527849* /
 
 ## this = "a51e2455af527849"
 ## deps = [
@@ -912,13 +942,15 @@ COPY --from=dep-n-serde_derive-1.0.219-a51e2455af527849 /tmp/clis-cargo-config2_
 ##       rustc '--crate-name' 'serde_derive' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'proc-macro' '--emit' 'dep-info,link' '-C' 'prefer-dynamic' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--cfg' 'feature="default"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "deserialize_in_place"))' '-C' 'metadata=16ab7eceab240ea7' '-C' 'extra-filename=-a51e2455af527849' '--out-dir' '/tmp/clis-cargo-config2_0-1-34/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-cargo-config2_0-1-34/release/deps' '--extern' 'proc_macro2=/tmp/clis-cargo-config2_0-1-34/release/deps/libproc_macro2-da36b031605c1ddc.rlib' '--extern' 'quote=/tmp/clis-cargo-config2_0-1-34/release/deps/libquote-21aeee0f329238fb.rlib' '--extern' 'syn=/tmp/clis-cargo-config2_0-1-34/release/deps/libsyn-5571b1fa61474ffa.rlib' '--extern' 'proc_macro' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_derive-1.0.219/src/lib.rs \
 ##         1> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-a51e2455af527849-stdout) \
 ##         2> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-a51e2455af527849-stderr >&2) \
-##         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-a51e2455af527849-errcode'''
+##         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-a51e2455af527849-errcode
+## ARG SOURCE_DATE_EPOCH
+## RUN find /tmp/clis-cargo-config2_0-1-34/release/deps/*-a51e2455af527849* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ## 
 ## [[stages]]
 ## name = "out-a51e2455af527849"
 ## script = """
 ## FROM scratch AS out-a51e2455af527849
-## COPY --from=dep-n-serde_derive-1.0.219-a51e2455af527849 /tmp/clis-cargo-config2_0-1-34/release/deps/*-a51e2455af527849* /"""
+## COPY --link --from=dep-n-serde_derive-1.0.219-a51e2455af527849 /tmp/clis-cargo-config2_0-1-34/release/deps/*-a51e2455af527849* /"""
 
 FROM scratch AS cratesio-equivalent-1.0.2
 ADD --chmod=0664 --unpack=true --checksum=sha256:877a4ace8713b0bcf2a4e7eec82529c029f1d0619886d18145fea96c3ffe5c0f \
@@ -952,8 +984,10 @@ RUN \
         1> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-92df6cc0b9ce3dcd-stdout) \
         2> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-92df6cc0b9ce3dcd-stderr >&2) \
         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-92df6cc0b9ce3dcd-errcode
+ARG SOURCE_DATE_EPOCH
+RUN find /tmp/clis-cargo-config2_0-1-34/release/deps/*-92df6cc0b9ce3dcd* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-92df6cc0b9ce3dcd
-COPY --from=dep-n-equivalent-1.0.2-92df6cc0b9ce3dcd /tmp/clis-cargo-config2_0-1-34/release/deps/*-92df6cc0b9ce3dcd* /
+COPY --link --from=dep-n-equivalent-1.0.2-92df6cc0b9ce3dcd /tmp/clis-cargo-config2_0-1-34/release/deps/*-92df6cc0b9ce3dcd* /
 
 ## this = "92df6cc0b9ce3dcd"
 ## writes = [
@@ -1009,13 +1043,15 @@ COPY --from=dep-n-equivalent-1.0.2-92df6cc0b9ce3dcd /tmp/clis-cargo-config2_0-1-
 ##       rustc '--crate-name' 'equivalent' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=031e2a0e34e977c7' '-C' 'extra-filename=-92df6cc0b9ce3dcd' '--out-dir' '/tmp/clis-cargo-config2_0-1-34/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-cargo-config2_0-1-34/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/equivalent-1.0.2/src/lib.rs \
 ##         1> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-92df6cc0b9ce3dcd-stdout) \
 ##         2> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-92df6cc0b9ce3dcd-stderr >&2) \
-##         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-92df6cc0b9ce3dcd-errcode'''
+##         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-92df6cc0b9ce3dcd-errcode
+## ARG SOURCE_DATE_EPOCH
+## RUN find /tmp/clis-cargo-config2_0-1-34/release/deps/*-92df6cc0b9ce3dcd* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ## 
 ## [[stages]]
 ## name = "out-92df6cc0b9ce3dcd"
 ## script = """
 ## FROM scratch AS out-92df6cc0b9ce3dcd
-## COPY --from=dep-n-equivalent-1.0.2-92df6cc0b9ce3dcd /tmp/clis-cargo-config2_0-1-34/release/deps/*-92df6cc0b9ce3dcd* /"""
+## COPY --link --from=dep-n-equivalent-1.0.2-92df6cc0b9ce3dcd /tmp/clis-cargo-config2_0-1-34/release/deps/*-92df6cc0b9ce3dcd* /"""
 
 FROM scratch AS cratesio-hashbrown-0.15.4
 ADD --chmod=0664 --unpack=true --checksum=sha256:5971ac85611da7067dbfcabef3c70ebb5606018acd9e2a3903a0da507521e0d5 \
@@ -1049,8 +1085,10 @@ RUN \
         1> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-e384bcd48d03db95-stdout) \
         2> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-e384bcd48d03db95-stderr >&2) \
         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-e384bcd48d03db95-errcode
+ARG SOURCE_DATE_EPOCH
+RUN find /tmp/clis-cargo-config2_0-1-34/release/deps/*-e384bcd48d03db95* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-e384bcd48d03db95
-COPY --from=dep-n-hashbrown-0.15.4-e384bcd48d03db95 /tmp/clis-cargo-config2_0-1-34/release/deps/*-e384bcd48d03db95* /
+COPY --link --from=dep-n-hashbrown-0.15.4-e384bcd48d03db95 /tmp/clis-cargo-config2_0-1-34/release/deps/*-e384bcd48d03db95* /
 
 ## this = "e384bcd48d03db95"
 ## writes = [
@@ -1106,13 +1144,15 @@ COPY --from=dep-n-hashbrown-0.15.4-e384bcd48d03db95 /tmp/clis-cargo-config2_0-1-
 ##       rustc '--crate-name' 'hashbrown' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "allocator-api2", "core", "default", "default-hasher", "equivalent", "inline-more", "nightly", "raw-entry", "rayon", "rustc-dep-of-std", "rustc-internal-api", "serde"))' '-C' 'metadata=82e61a6f78bcbe4b' '-C' 'extra-filename=-e384bcd48d03db95' '--out-dir' '/tmp/clis-cargo-config2_0-1-34/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-cargo-config2_0-1-34/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/hashbrown-0.15.4/src/lib.rs \
 ##         1> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-e384bcd48d03db95-stdout) \
 ##         2> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-e384bcd48d03db95-stderr >&2) \
-##         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-e384bcd48d03db95-errcode'''
+##         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-e384bcd48d03db95-errcode
+## ARG SOURCE_DATE_EPOCH
+## RUN find /tmp/clis-cargo-config2_0-1-34/release/deps/*-e384bcd48d03db95* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ## 
 ## [[stages]]
 ## name = "out-e384bcd48d03db95"
 ## script = """
 ## FROM scratch AS out-e384bcd48d03db95
-## COPY --from=dep-n-hashbrown-0.15.4-e384bcd48d03db95 /tmp/clis-cargo-config2_0-1-34/release/deps/*-e384bcd48d03db95* /"""
+## COPY --link --from=dep-n-hashbrown-0.15.4-e384bcd48d03db95 /tmp/clis-cargo-config2_0-1-34/release/deps/*-e384bcd48d03db95* /"""
 
 FROM scratch AS cratesio-indexmap-2.9.0
 ADD --chmod=0664 --unpack=true --checksum=sha256:cea70ddb795996207ad57735b50c5982d8844f38ba9ee5f1aedcfb708a2aa11e \
@@ -1150,8 +1190,10 @@ RUN \
         1> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-657f65f0f8918814-stdout) \
         2> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-657f65f0f8918814-stderr >&2) \
         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-657f65f0f8918814-errcode
+ARG SOURCE_DATE_EPOCH
+RUN find /tmp/clis-cargo-config2_0-1-34/release/deps/*-657f65f0f8918814* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-657f65f0f8918814
-COPY --from=dep-n-indexmap-2.9.0-657f65f0f8918814 /tmp/clis-cargo-config2_0-1-34/release/deps/*-657f65f0f8918814* /
+COPY --link --from=dep-n-indexmap-2.9.0-657f65f0f8918814 /tmp/clis-cargo-config2_0-1-34/release/deps/*-657f65f0f8918814* /
 
 ## this = "657f65f0f8918814"
 ## deps = [
@@ -1235,13 +1277,15 @@ COPY --from=dep-n-indexmap-2.9.0-657f65f0f8918814 /tmp/clis-cargo-config2_0-1-34
 ##       rustc '--crate-name' 'indexmap' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--allow' 'clippy::style' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("arbitrary", "borsh", "default", "quickcheck", "rayon", "serde", "std", "test_debug"))' '-C' 'metadata=30b244e9ed1abf1b' '-C' 'extra-filename=-657f65f0f8918814' '--out-dir' '/tmp/clis-cargo-config2_0-1-34/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-cargo-config2_0-1-34/release/deps' '--extern' 'equivalent=/tmp/clis-cargo-config2_0-1-34/release/deps/libequivalent-92df6cc0b9ce3dcd.rmeta' '--extern' 'hashbrown=/tmp/clis-cargo-config2_0-1-34/release/deps/libhashbrown-e384bcd48d03db95.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/indexmap-2.9.0/src/lib.rs \
 ##         1> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-657f65f0f8918814-stdout) \
 ##         2> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-657f65f0f8918814-stderr >&2) \
-##         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-657f65f0f8918814-errcode'''
+##         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-657f65f0f8918814-errcode
+## ARG SOURCE_DATE_EPOCH
+## RUN find /tmp/clis-cargo-config2_0-1-34/release/deps/*-657f65f0f8918814* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ## 
 ## [[stages]]
 ## name = "out-657f65f0f8918814"
 ## script = """
 ## FROM scratch AS out-657f65f0f8918814
-## COPY --from=dep-n-indexmap-2.9.0-657f65f0f8918814 /tmp/clis-cargo-config2_0-1-34/release/deps/*-657f65f0f8918814* /"""
+## COPY --link --from=dep-n-indexmap-2.9.0-657f65f0f8918814 /tmp/clis-cargo-config2_0-1-34/release/deps/*-657f65f0f8918814* /"""
 
 FROM scratch AS cratesio-serde_spanned-0.6.9
 ADD --chmod=0664 --unpack=true --checksum=sha256:bf41e0cfaf7226dca15e8197172c295a782857fcb97fad1808a166870dee75a3 \
@@ -1277,8 +1321,10 @@ RUN \
         1> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-d88bc6011818f513-stdout) \
         2> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-d88bc6011818f513-stderr >&2) \
         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-d88bc6011818f513-errcode
+ARG SOURCE_DATE_EPOCH
+RUN find /tmp/clis-cargo-config2_0-1-34/release/deps/*-d88bc6011818f513* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-d88bc6011818f513
-COPY --from=dep-n-serde_spanned-0.6.9-d88bc6011818f513 /tmp/clis-cargo-config2_0-1-34/release/deps/*-d88bc6011818f513* /
+COPY --link --from=dep-n-serde_spanned-0.6.9-d88bc6011818f513 /tmp/clis-cargo-config2_0-1-34/release/deps/*-d88bc6011818f513* /
 
 ## this = "d88bc6011818f513"
 ## deps = ["b6c6cf1c11688574"]
@@ -1346,13 +1392,15 @@ COPY --from=dep-n-serde_spanned-0.6.9-d88bc6011818f513 /tmp/clis-cargo-config2_0
 ##       rustc '--crate-name' 'serde_spanned' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--warn' 'rust_2018_idioms' '--warn' 'clippy::zero_sized_map_values' '--warn' 'clippy::wildcard_imports' '--warn' 'clippy::verbose_file_reads' '--warn' 'unused_qualifications' '--warn' 'unused_macro_rules' '--warn' 'unused_lifetimes' '--warn' 'unsafe_op_in_unsafe_fn' '--warn' 'unreachable_pub' '--allow' 'unnameable_types' '--warn' 'clippy::uninlined_format_args' '--warn' 'clippy::trait_duplication_in_bounds' '--warn' 'clippy::todo' '--warn' 'clippy::string_to_string' '--warn' 'clippy::string_lit_as_bytes' '--warn' 'clippy::string_add_assign' '--warn' 'clippy::string_add' '--warn' 'clippy::str_to_string' '--warn' 'clippy::semicolon_if_nothing_returned' '--warn' 'clippy::self_named_module_files' '--warn' 'clippy::same_functions_in_if_condition' '--allow' 'clippy::result_large_err' '--warn' 'clippy::rest_pat_in_fully_bound_structs' '--warn' 'clippy::ref_option_ref' '--warn' 'clippy::redundant_feature_names' '--warn' 'clippy::rc_mutex' '--warn' 'clippy::ptr_as_ptr' '--warn' 'clippy::path_buf_push_overwrite' '--warn' 'clippy::negative_feature_names' '--warn' 'clippy::needless_for_each' '--allow' 'clippy::needless_continue' '--warn' 'clippy::mutex_integer' '--warn' 'clippy::mem_forget' '--warn' 'clippy::macro_use_imports' '--warn' 'clippy::lossy_float_literal' '--warn' 'clippy::linkedlist' '--allow' 'clippy::let_and_return' '--warn' 'clippy::large_types_passed_by_value' '--warn' 'clippy::large_stack_arrays' '--warn' 'clippy::large_digit_groups' '--warn' 'clippy::invalid_upcast_comparisons' '--warn' 'clippy::infinite_loop' '--warn' 'clippy::inefficient_to_string' '--warn' 'clippy::inconsistent_struct_constructor' '--warn' 'clippy::imprecise_flops' '--warn' 'clippy::implicit_clone' '--allow' 'clippy::if_same_then_else' '--warn' 'clippy::from_iter_instead_of_collect' '--warn' 'clippy::fn_params_excessive_bools' '--warn' 'clippy::float_cmp_const' '--warn' 'clippy::flat_map_option' '--warn' 'clippy::filter_map_next' '--warn' 'clippy::fallible_impl_from' '--warn' 'clippy::explicit_into_iter_loop' '--warn' 'clippy::explicit_deref_methods' '--warn' 'clippy::expl_impl_clone_on_copy' '--warn' 'clippy::enum_glob_use' '--warn' 'clippy::empty_enum' '--warn' 'clippy::doc_markdown' '--warn' 'clippy::debug_assert_with_mut_call' '--warn' 'clippy::dbg_macro' '--warn' 'clippy::create_dir' '--allow' 'clippy::collapsible_else_if' '--warn' 'clippy::checked_conversions' '--allow' 'clippy::branches_sharing_code' '--allow' 'clippy::bool_assert_comparison' '--cfg' 'feature="serde"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("serde"))' '-C' 'metadata=b065603a46dcc7e9' '-C' 'extra-filename=-d88bc6011818f513' '--out-dir' '/tmp/clis-cargo-config2_0-1-34/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-cargo-config2_0-1-34/release/deps' '--extern' 'serde=/tmp/clis-cargo-config2_0-1-34/release/deps/libserde-b6c6cf1c11688574.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_spanned-0.6.9/src/lib.rs \
 ##         1> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-d88bc6011818f513-stdout) \
 ##         2> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-d88bc6011818f513-stderr >&2) \
-##         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-d88bc6011818f513-errcode'''
+##         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-d88bc6011818f513-errcode
+## ARG SOURCE_DATE_EPOCH
+## RUN find /tmp/clis-cargo-config2_0-1-34/release/deps/*-d88bc6011818f513* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ## 
 ## [[stages]]
 ## name = "out-d88bc6011818f513"
 ## script = """
 ## FROM scratch AS out-d88bc6011818f513
-## COPY --from=dep-n-serde_spanned-0.6.9-d88bc6011818f513 /tmp/clis-cargo-config2_0-1-34/release/deps/*-d88bc6011818f513* /"""
+## COPY --link --from=dep-n-serde_spanned-0.6.9-d88bc6011818f513 /tmp/clis-cargo-config2_0-1-34/release/deps/*-d88bc6011818f513* /"""
 
 FROM scratch AS cratesio-toml_datetime-0.6.11
 ADD --chmod=0664 --unpack=true --checksum=sha256:22cddaf88f4fbc13c51aebbf5f8eceb5c7c5a9da2ac40a13519eb5b0a0e8f11c \
@@ -1388,8 +1436,10 @@ RUN \
         1> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-23be505440c57a38-stdout) \
         2> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-23be505440c57a38-stderr >&2) \
         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-23be505440c57a38-errcode
+ARG SOURCE_DATE_EPOCH
+RUN find /tmp/clis-cargo-config2_0-1-34/release/deps/*-23be505440c57a38* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-23be505440c57a38
-COPY --from=dep-n-toml_datetime-0.6.11-23be505440c57a38 /tmp/clis-cargo-config2_0-1-34/release/deps/*-23be505440c57a38* /
+COPY --link --from=dep-n-toml_datetime-0.6.11-23be505440c57a38 /tmp/clis-cargo-config2_0-1-34/release/deps/*-23be505440c57a38* /
 
 ## this = "23be505440c57a38"
 ## deps = ["b6c6cf1c11688574"]
@@ -1457,13 +1507,15 @@ COPY --from=dep-n-toml_datetime-0.6.11-23be505440c57a38 /tmp/clis-cargo-config2_
 ##       rustc '--crate-name' 'toml_datetime' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--warn' 'rust_2018_idioms' '--warn' 'clippy::zero_sized_map_values' '--warn' 'clippy::wildcard_imports' '--warn' 'clippy::verbose_file_reads' '--warn' 'unused_qualifications' '--warn' 'unused_macro_rules' '--warn' 'unused_lifetimes' '--warn' 'unsafe_op_in_unsafe_fn' '--warn' 'unreachable_pub' '--allow' 'unnameable_types' '--warn' 'clippy::uninlined_format_args' '--warn' 'clippy::trait_duplication_in_bounds' '--warn' 'clippy::todo' '--warn' 'clippy::string_to_string' '--warn' 'clippy::string_lit_as_bytes' '--warn' 'clippy::string_add_assign' '--warn' 'clippy::string_add' '--warn' 'clippy::str_to_string' '--warn' 'clippy::semicolon_if_nothing_returned' '--warn' 'clippy::self_named_module_files' '--warn' 'clippy::same_functions_in_if_condition' '--allow' 'clippy::result_large_err' '--warn' 'clippy::rest_pat_in_fully_bound_structs' '--warn' 'clippy::ref_option_ref' '--warn' 'clippy::redundant_feature_names' '--warn' 'clippy::rc_mutex' '--warn' 'clippy::ptr_as_ptr' '--warn' 'clippy::path_buf_push_overwrite' '--warn' 'clippy::negative_feature_names' '--warn' 'clippy::needless_for_each' '--allow' 'clippy::needless_continue' '--warn' 'clippy::mutex_integer' '--warn' 'clippy::mem_forget' '--warn' 'clippy::macro_use_imports' '--warn' 'clippy::lossy_float_literal' '--warn' 'clippy::linkedlist' '--allow' 'clippy::let_and_return' '--warn' 'clippy::large_types_passed_by_value' '--warn' 'clippy::large_stack_arrays' '--warn' 'clippy::large_digit_groups' '--warn' 'clippy::invalid_upcast_comparisons' '--warn' 'clippy::infinite_loop' '--warn' 'clippy::inefficient_to_string' '--warn' 'clippy::inconsistent_struct_constructor' '--warn' 'clippy::imprecise_flops' '--warn' 'clippy::implicit_clone' '--allow' 'clippy::if_same_then_else' '--warn' 'clippy::from_iter_instead_of_collect' '--warn' 'clippy::fn_params_excessive_bools' '--warn' 'clippy::float_cmp_const' '--warn' 'clippy::flat_map_option' '--warn' 'clippy::filter_map_next' '--warn' 'clippy::fallible_impl_from' '--warn' 'clippy::explicit_into_iter_loop' '--warn' 'clippy::explicit_deref_methods' '--warn' 'clippy::expl_impl_clone_on_copy' '--warn' 'clippy::enum_glob_use' '--warn' 'clippy::empty_enum' '--warn' 'clippy::doc_markdown' '--warn' 'clippy::debug_assert_with_mut_call' '--warn' 'clippy::dbg_macro' '--warn' 'clippy::create_dir' '--allow' 'clippy::collapsible_else_if' '--warn' 'clippy::checked_conversions' '--allow' 'clippy::branches_sharing_code' '--allow' 'clippy::bool_assert_comparison' '--cfg' 'feature="serde"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("serde"))' '-C' 'metadata=68efb08ca6477f4e' '-C' 'extra-filename=-23be505440c57a38' '--out-dir' '/tmp/clis-cargo-config2_0-1-34/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-cargo-config2_0-1-34/release/deps' '--extern' 'serde=/tmp/clis-cargo-config2_0-1-34/release/deps/libserde-b6c6cf1c11688574.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/toml_datetime-0.6.11/src/lib.rs \
 ##         1> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-23be505440c57a38-stdout) \
 ##         2> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-23be505440c57a38-stderr >&2) \
-##         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-23be505440c57a38-errcode'''
+##         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-23be505440c57a38-errcode
+## ARG SOURCE_DATE_EPOCH
+## RUN find /tmp/clis-cargo-config2_0-1-34/release/deps/*-23be505440c57a38* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ## 
 ## [[stages]]
 ## name = "out-23be505440c57a38"
 ## script = """
 ## FROM scratch AS out-23be505440c57a38
-## COPY --from=dep-n-toml_datetime-0.6.11-23be505440c57a38 /tmp/clis-cargo-config2_0-1-34/release/deps/*-23be505440c57a38* /"""
+## COPY --link --from=dep-n-toml_datetime-0.6.11-23be505440c57a38 /tmp/clis-cargo-config2_0-1-34/release/deps/*-23be505440c57a38* /"""
 
 FROM scratch AS cratesio-toml_write-0.1.2
 ADD --chmod=0664 --unpack=true --checksum=sha256:5d99f8c9a7727884afe522e9bd5edbfc91a3312b36a77b5fb8926e4c31a41801 \
@@ -1497,8 +1549,10 @@ RUN \
         1> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-9abea66ccd9c864c-stdout) \
         2> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-9abea66ccd9c864c-stderr >&2) \
         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-9abea66ccd9c864c-errcode
+ARG SOURCE_DATE_EPOCH
+RUN find /tmp/clis-cargo-config2_0-1-34/release/deps/*-9abea66ccd9c864c* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-9abea66ccd9c864c
-COPY --from=dep-n-toml_write-0.1.2-9abea66ccd9c864c /tmp/clis-cargo-config2_0-1-34/release/deps/*-9abea66ccd9c864c* /
+COPY --link --from=dep-n-toml_write-0.1.2-9abea66ccd9c864c /tmp/clis-cargo-config2_0-1-34/release/deps/*-9abea66ccd9c864c* /
 
 ## this = "9abea66ccd9c864c"
 ## writes = [
@@ -1554,13 +1608,15 @@ COPY --from=dep-n-toml_write-0.1.2-9abea66ccd9c864c /tmp/clis-cargo-config2_0-1-
 ##       rustc '--crate-name' 'toml_write' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--warn' 'rust_2018_idioms' '--warn' 'clippy::zero_sized_map_values' '--warn' 'clippy::wildcard_imports' '--warn' 'clippy::verbose_file_reads' '--warn' 'unused_qualifications' '--warn' 'unused_macro_rules' '--warn' 'unused_lifetimes' '--warn' 'unsafe_op_in_unsafe_fn' '--warn' 'unreachable_pub' '--allow' 'unnameable_types' '--warn' 'clippy::uninlined_format_args' '--warn' 'clippy::trait_duplication_in_bounds' '--warn' 'clippy::todo' '--warn' 'clippy::string_to_string' '--warn' 'clippy::string_lit_as_bytes' '--warn' 'clippy::string_add_assign' '--warn' 'clippy::string_add' '--warn' 'clippy::str_to_string' '--warn' 'clippy::semicolon_if_nothing_returned' '--warn' 'clippy::self_named_module_files' '--warn' 'clippy::same_functions_in_if_condition' '--allow' 'clippy::result_large_err' '--warn' 'clippy::rest_pat_in_fully_bound_structs' '--warn' 'clippy::ref_option_ref' '--warn' 'clippy::redundant_feature_names' '--warn' 'clippy::rc_mutex' '--warn' 'clippy::ptr_as_ptr' '--warn' 'clippy::path_buf_push_overwrite' '--warn' 'clippy::negative_feature_names' '--warn' 'clippy::needless_for_each' '--allow' 'clippy::needless_continue' '--warn' 'clippy::mutex_integer' '--warn' 'clippy::mem_forget' '--warn' 'clippy::macro_use_imports' '--warn' 'clippy::lossy_float_literal' '--warn' 'clippy::linkedlist' '--allow' 'clippy::let_and_return' '--warn' 'clippy::large_types_passed_by_value' '--warn' 'clippy::large_stack_arrays' '--warn' 'clippy::large_digit_groups' '--warn' 'clippy::invalid_upcast_comparisons' '--warn' 'clippy::infinite_loop' '--warn' 'clippy::inefficient_to_string' '--warn' 'clippy::inconsistent_struct_constructor' '--warn' 'clippy::imprecise_flops' '--warn' 'clippy::implicit_clone' '--allow' 'clippy::if_same_then_else' '--warn' 'clippy::from_iter_instead_of_collect' '--warn' 'clippy::fn_params_excessive_bools' '--warn' 'clippy::float_cmp_const' '--warn' 'clippy::flat_map_option' '--warn' 'clippy::filter_map_next' '--warn' 'clippy::fallible_impl_from' '--warn' 'clippy::explicit_into_iter_loop' '--warn' 'clippy::explicit_deref_methods' '--warn' 'clippy::expl_impl_clone_on_copy' '--warn' 'clippy::enum_glob_use' '--warn' 'clippy::empty_enum' '--warn' 'clippy::doc_markdown' '--warn' 'clippy::debug_assert_with_mut_call' '--warn' 'clippy::dbg_macro' '--warn' 'clippy::create_dir' '--allow' 'clippy::collapsible_else_if' '--warn' 'clippy::checked_conversions' '--allow' 'clippy::branches_sharing_code' '--allow' 'clippy::bool_assert_comparison' '--cfg' 'feature="alloc"' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "default", "std"))' '-C' 'metadata=ff2ed407ab92e2ad' '-C' 'extra-filename=-9abea66ccd9c864c' '--out-dir' '/tmp/clis-cargo-config2_0-1-34/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-cargo-config2_0-1-34/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/toml_write-0.1.2/src/lib.rs \
 ##         1> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-9abea66ccd9c864c-stdout) \
 ##         2> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-9abea66ccd9c864c-stderr >&2) \
-##         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-9abea66ccd9c864c-errcode'''
+##         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-9abea66ccd9c864c-errcode
+## ARG SOURCE_DATE_EPOCH
+## RUN find /tmp/clis-cargo-config2_0-1-34/release/deps/*-9abea66ccd9c864c* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ## 
 ## [[stages]]
 ## name = "out-9abea66ccd9c864c"
 ## script = """
 ## FROM scratch AS out-9abea66ccd9c864c
-## COPY --from=dep-n-toml_write-0.1.2-9abea66ccd9c864c /tmp/clis-cargo-config2_0-1-34/release/deps/*-9abea66ccd9c864c* /"""
+## COPY --link --from=dep-n-toml_write-0.1.2-9abea66ccd9c864c /tmp/clis-cargo-config2_0-1-34/release/deps/*-9abea66ccd9c864c* /"""
 
 FROM scratch AS cratesio-winnow-0.7.11
 ADD --chmod=0664 --unpack=true --checksum=sha256:74c7b26e3480b707944fc872477815d29a8e429d2f93a1ce000f5fa84a15cbcd \
@@ -1594,8 +1650,10 @@ RUN \
         1> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-d5e3fa1fabb7822c-stdout) \
         2> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-d5e3fa1fabb7822c-stderr >&2) \
         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-d5e3fa1fabb7822c-errcode
+ARG SOURCE_DATE_EPOCH
+RUN find /tmp/clis-cargo-config2_0-1-34/release/deps/*-d5e3fa1fabb7822c* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-d5e3fa1fabb7822c
-COPY --from=dep-n-winnow-0.7.11-d5e3fa1fabb7822c /tmp/clis-cargo-config2_0-1-34/release/deps/*-d5e3fa1fabb7822c* /
+COPY --link --from=dep-n-winnow-0.7.11-d5e3fa1fabb7822c /tmp/clis-cargo-config2_0-1-34/release/deps/*-d5e3fa1fabb7822c* /
 
 ## this = "d5e3fa1fabb7822c"
 ## writes = [
@@ -1651,13 +1709,15 @@ COPY --from=dep-n-winnow-0.7.11-d5e3fa1fabb7822c /tmp/clis-cargo-config2_0-1-34/
 ##       rustc '--crate-name' 'winnow' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--warn' 'rust_2018_idioms' '--warn' 'clippy::zero_sized_map_values' '--allow' 'clippy::wildcard_imports' '--warn' 'clippy::verbose_file_reads' '--warn' 'unused_macro_rules' '--warn' 'unused_lifetimes' '--warn' 'unsafe_op_in_unsafe_fn' '--warn' 'unreachable_pub' '--warn' 'unnameable_types' '--warn' 'clippy::uninlined_format_args' '--warn' 'clippy::trait_duplication_in_bounds' '--warn' 'clippy::todo' '--warn' 'clippy::string_to_string' '--warn' 'clippy::string_lit_as_bytes' '--warn' 'clippy::string_add_assign' '--warn' 'clippy::string_add' '--warn' 'clippy::str_to_string' '--warn' 'clippy::semicolon_if_nothing_returned' '--warn' 'clippy::same_functions_in_if_condition' '--allow' 'clippy::result_large_err' '--warn' 'clippy::rest_pat_in_fully_bound_structs' '--warn' 'clippy::ref_option_ref' '--warn' 'clippy::redundant_feature_names' '--warn' 'clippy::rc_mutex' '--warn' 'clippy::ptr_as_ptr' '--warn' 'clippy::path_buf_push_overwrite' '--warn' 'clippy::negative_feature_names' '--warn' 'clippy::needless_for_each' '--allow' 'clippy::needless_continue' '--warn' 'clippy::mutex_integer' '--warn' 'clippy::mem_forget' '--warn' 'clippy::macro_use_imports' '--warn' 'clippy::lossy_float_literal' '--warn' 'clippy::linkedlist' '--allow' 'clippy::let_and_return' '--warn' 'clippy::large_types_passed_by_value' '--warn' 'clippy::large_stack_arrays' '--warn' 'clippy::large_digit_groups' '--warn' 'clippy::invalid_upcast_comparisons' '--warn' 'clippy::infinite_loop' '--warn' 'clippy::inefficient_to_string' '--warn' 'clippy::inconsistent_struct_constructor' '--warn' 'clippy::imprecise_flops' '--warn' 'clippy::implicit_clone' '--allow' 'clippy::if_same_then_else' '--warn' 'clippy::from_iter_instead_of_collect' '--warn' 'clippy::fn_params_excessive_bools' '--warn' 'clippy::float_cmp_const' '--warn' 'clippy::flat_map_option' '--warn' 'clippy::filter_map_next' '--warn' 'clippy::fallible_impl_from' '--warn' 'clippy::explicit_into_iter_loop' '--warn' 'clippy::explicit_deref_methods' '--warn' 'clippy::expl_impl_clone_on_copy' '--warn' 'clippy::enum_glob_use' '--warn' 'clippy::empty_enum' '--warn' 'clippy::doc_markdown' '--warn' 'clippy::debug_assert_with_mut_call' '--warn' 'clippy::dbg_macro' '--warn' 'clippy::create_dir' '--allow' 'clippy::collapsible_else_if' '--warn' 'clippy::checked_conversions' '--allow' 'clippy::branches_sharing_code' '--allow' 'clippy::bool_assert_comparison' '--cfg' 'feature="alloc"' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "debug", "default", "simd", "std", "unstable-doc", "unstable-recover"))' '-C' 'metadata=ad9e735c1b8154f2' '-C' 'extra-filename=-d5e3fa1fabb7822c' '--out-dir' '/tmp/clis-cargo-config2_0-1-34/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-cargo-config2_0-1-34/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/winnow-0.7.11/src/lib.rs \
 ##         1> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-d5e3fa1fabb7822c-stdout) \
 ##         2> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-d5e3fa1fabb7822c-stderr >&2) \
-##         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-d5e3fa1fabb7822c-errcode'''
+##         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-d5e3fa1fabb7822c-errcode
+## ARG SOURCE_DATE_EPOCH
+## RUN find /tmp/clis-cargo-config2_0-1-34/release/deps/*-d5e3fa1fabb7822c* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ## 
 ## [[stages]]
 ## name = "out-d5e3fa1fabb7822c"
 ## script = """
 ## FROM scratch AS out-d5e3fa1fabb7822c
-## COPY --from=dep-n-winnow-0.7.11-d5e3fa1fabb7822c /tmp/clis-cargo-config2_0-1-34/release/deps/*-d5e3fa1fabb7822c* /"""
+## COPY --link --from=dep-n-winnow-0.7.11-d5e3fa1fabb7822c /tmp/clis-cargo-config2_0-1-34/release/deps/*-d5e3fa1fabb7822c* /"""
 
 FROM scratch AS cratesio-toml_edit-0.22.27
 ADD --chmod=0664 --unpack=true --checksum=sha256:41fe8c660ae4257887cf66394862d21dbca4a6ddd26f04a3560410406a2f819a \
@@ -1707,8 +1767,10 @@ RUN \
         1> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-c1e542f0979b274a-stdout) \
         2> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-c1e542f0979b274a-stderr >&2) \
         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-c1e542f0979b274a-errcode
+ARG SOURCE_DATE_EPOCH
+RUN find /tmp/clis-cargo-config2_0-1-34/release/deps/*-c1e542f0979b274a* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-c1e542f0979b274a
-COPY --from=dep-n-toml_edit-0.22.27-c1e542f0979b274a /tmp/clis-cargo-config2_0-1-34/release/deps/*-c1e542f0979b274a* /
+COPY --link --from=dep-n-toml_edit-0.22.27-c1e542f0979b274a /tmp/clis-cargo-config2_0-1-34/release/deps/*-c1e542f0979b274a* /
 
 ## this = "c1e542f0979b274a"
 ## deps = [
@@ -1864,13 +1926,15 @@ COPY --from=dep-n-toml_edit-0.22.27-c1e542f0979b274a /tmp/clis-cargo-config2_0-1
 ##       rustc '--crate-name' 'toml_edit' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--warn' 'rust_2018_idioms' '--warn' 'clippy::zero_sized_map_values' '--warn' 'clippy::wildcard_imports' '--warn' 'clippy::verbose_file_reads' '--warn' 'unused_qualifications' '--warn' 'unused_macro_rules' '--warn' 'unused_lifetimes' '--warn' 'unsafe_op_in_unsafe_fn' '--warn' 'unreachable_pub' '--allow' 'unnameable_types' '--warn' 'clippy::uninlined_format_args' '--warn' 'clippy::trait_duplication_in_bounds' '--warn' 'clippy::todo' '--warn' 'clippy::string_to_string' '--warn' 'clippy::string_lit_as_bytes' '--warn' 'clippy::string_add_assign' '--warn' 'clippy::string_add' '--warn' 'clippy::str_to_string' '--warn' 'clippy::semicolon_if_nothing_returned' '--warn' 'clippy::self_named_module_files' '--warn' 'clippy::same_functions_in_if_condition' '--allow' 'clippy::result_large_err' '--warn' 'clippy::rest_pat_in_fully_bound_structs' '--warn' 'clippy::ref_option_ref' '--warn' 'clippy::redundant_feature_names' '--warn' 'clippy::rc_mutex' '--warn' 'clippy::ptr_as_ptr' '--warn' 'clippy::path_buf_push_overwrite' '--warn' 'clippy::negative_feature_names' '--warn' 'clippy::needless_for_each' '--allow' 'clippy::needless_continue' '--warn' 'clippy::mutex_integer' '--warn' 'clippy::mem_forget' '--warn' 'clippy::macro_use_imports' '--warn' 'clippy::lossy_float_literal' '--warn' 'clippy::linkedlist' '--allow' 'clippy::let_and_return' '--warn' 'clippy::large_types_passed_by_value' '--warn' 'clippy::large_stack_arrays' '--warn' 'clippy::large_digit_groups' '--warn' 'clippy::invalid_upcast_comparisons' '--warn' 'clippy::infinite_loop' '--warn' 'clippy::inefficient_to_string' '--warn' 'clippy::inconsistent_struct_constructor' '--warn' 'clippy::imprecise_flops' '--warn' 'clippy::implicit_clone' '--allow' 'clippy::if_same_then_else' '--warn' 'clippy::from_iter_instead_of_collect' '--warn' 'clippy::fn_params_excessive_bools' '--warn' 'clippy::float_cmp_const' '--warn' 'clippy::flat_map_option' '--warn' 'clippy::filter_map_next' '--warn' 'clippy::fallible_impl_from' '--warn' 'clippy::explicit_into_iter_loop' '--warn' 'clippy::explicit_deref_methods' '--warn' 'clippy::expl_impl_clone_on_copy' '--warn' 'clippy::enum_glob_use' '--warn' 'clippy::empty_enum' '--warn' 'clippy::doc_markdown' '--warn' 'clippy::debug_assert_with_mut_call' '--warn' 'clippy::dbg_macro' '--warn' 'clippy::create_dir' '--allow' 'clippy::collapsible_else_if' '--warn' 'clippy::checked_conversions' '--allow' 'clippy::branches_sharing_code' '--allow' 'clippy::bool_assert_comparison' '--cfg' 'feature="display"' '--cfg' 'feature="parse"' '--cfg' 'feature="serde"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "display", "parse", "perf", "serde", "unbounded", "unstable-debug"))' '-C' 'metadata=ecbe71c7a472b04e' '-C' 'extra-filename=-c1e542f0979b274a' '--out-dir' '/tmp/clis-cargo-config2_0-1-34/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-cargo-config2_0-1-34/release/deps' '--extern' 'indexmap=/tmp/clis-cargo-config2_0-1-34/release/deps/libindexmap-657f65f0f8918814.rmeta' '--extern' 'serde=/tmp/clis-cargo-config2_0-1-34/release/deps/libserde-b6c6cf1c11688574.rmeta' '--extern' 'serde_spanned=/tmp/clis-cargo-config2_0-1-34/release/deps/libserde_spanned-d88bc6011818f513.rmeta' '--extern' 'toml_datetime=/tmp/clis-cargo-config2_0-1-34/release/deps/libtoml_datetime-23be505440c57a38.rmeta' '--extern' 'toml_write=/tmp/clis-cargo-config2_0-1-34/release/deps/libtoml_write-9abea66ccd9c864c.rmeta' '--extern' 'winnow=/tmp/clis-cargo-config2_0-1-34/release/deps/libwinnow-d5e3fa1fabb7822c.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/toml_edit-0.22.27/src/lib.rs \
 ##         1> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-c1e542f0979b274a-stdout) \
 ##         2> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-c1e542f0979b274a-stderr >&2) \
-##         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-c1e542f0979b274a-errcode'''
+##         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-c1e542f0979b274a-errcode
+## ARG SOURCE_DATE_EPOCH
+## RUN find /tmp/clis-cargo-config2_0-1-34/release/deps/*-c1e542f0979b274a* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ## 
 ## [[stages]]
 ## name = "out-c1e542f0979b274a"
 ## script = """
 ## FROM scratch AS out-c1e542f0979b274a
-## COPY --from=dep-n-toml_edit-0.22.27-c1e542f0979b274a /tmp/clis-cargo-config2_0-1-34/release/deps/*-c1e542f0979b274a* /"""
+## COPY --link --from=dep-n-toml_edit-0.22.27-c1e542f0979b274a /tmp/clis-cargo-config2_0-1-34/release/deps/*-c1e542f0979b274a* /"""
 
 FROM scratch AS cratesio-cargo-config2-0.1.34
 ADD --chmod=0664 --unpack=true --checksum=sha256:a82de3b1a1dd72252c6d456247864ffe52110d109da949f579eeb16349e0eb5d \
@@ -1932,8 +1996,10 @@ RUN \
         1> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-e6fea3eab43aaf67-stdout) \
         2> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-e6fea3eab43aaf67-stderr >&2) \
         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-e6fea3eab43aaf67-errcode
+ARG SOURCE_DATE_EPOCH
+RUN find /tmp/clis-cargo-config2_0-1-34/release/deps/*-e6fea3eab43aaf67* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-e6fea3eab43aaf67
-COPY --from=dep-n-cargo-config2-0.1.34-e6fea3eab43aaf67 /tmp/clis-cargo-config2_0-1-34/release/deps/*-e6fea3eab43aaf67* /
+COPY --link --from=dep-n-cargo-config2-0.1.34-e6fea3eab43aaf67 /tmp/clis-cargo-config2_0-1-34/release/deps/*-e6fea3eab43aaf67* /
 
 ## this = "e6fea3eab43aaf67"
 ## deps = [
@@ -2157,13 +2223,15 @@ COPY --from=dep-n-cargo-config2-0.1.34-e6fea3eab43aaf67 /tmp/clis-cargo-config2_
 ##       rustc '--crate-name' 'cargo_config2' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--warn' 'clippy::unused_trait_names' '--warn' 'unsafe_op_in_unsafe_fn' '--warn' 'unreachable_pub' '--warn' 'unnameable_types' '--warn' 'unexpected_cfgs' '--warn' 'clippy::undocumented_unsafe_blocks' '--warn' 'clippy::transmute_undefined_repr' '--warn' 'clippy::trailing_empty_array' '--warn' 'single_use_lifetimes' '--warn' 'rust_2018_idioms' '--warn' 'clippy::pedantic' '--warn' 'non_ascii_idents' '--warn' 'clippy::inline_asm_x86_att_syntax' '--warn' 'improper_ctypes_definitions' '--warn' 'improper_ctypes' '--warn' 'deprecated_safe' '--warn' 'clippy::default_union_representation' '--warn' 'clippy::as_underscore' '--warn' 'clippy::as_ptr_cast_mut' '--warn' 'clippy::all' '--allow' 'clippy::unreadable_literal' '--allow' 'clippy::type_complexity' '--allow' 'clippy::too_many_lines' '--allow' 'clippy::too_many_arguments' '--allow' 'clippy::struct_field_names' '--allow' 'clippy::struct_excessive_bools' '--allow' 'clippy::single_match_else' '--allow' 'clippy::single_match' '--allow' 'clippy::similar_names' '--allow' 'clippy::range_plus_one' '--allow' 'clippy::nonminimal_bool' '--allow' 'clippy::naive_bytecount' '--allow' 'clippy::module_name_repetitions' '--allow' 'clippy::missing_errors_doc' '--allow' 'clippy::manual_range_contains' '--allow' 'clippy::manual_assert' '--allow' 'clippy::lint_groups_priority' '--allow' 'clippy::incompatible_msrv' '--allow' 'clippy::float_cmp' '--allow' 'clippy::doc_markdown' '--allow' 'clippy::declare_interior_mutable_const' '--allow' 'clippy::cast_lossless' '--allow' 'clippy::borrow_as_ptr' '--allow' 'clippy::bool_assert_comparison' '--check-cfg' 'cfg(careful)' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=08bf19fde49e57aa' '-C' 'extra-filename=-e6fea3eab43aaf67' '--out-dir' '/tmp/clis-cargo-config2_0-1-34/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-cargo-config2_0-1-34/release/deps' '--extern' 'serde=/tmp/clis-cargo-config2_0-1-34/release/deps/libserde-b6c6cf1c11688574.rmeta' '--extern' 'serde_derive=/tmp/clis-cargo-config2_0-1-34/release/deps/libserde_derive-a51e2455af527849.so' '--extern' 'toml_edit=/tmp/clis-cargo-config2_0-1-34/release/deps/libtoml_edit-c1e542f0979b274a.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/cargo-config2-0.1.34/src/lib.rs \
 ##         1> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-e6fea3eab43aaf67-stdout) \
 ##         2> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-e6fea3eab43aaf67-stderr >&2) \
-##         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-e6fea3eab43aaf67-errcode'''
+##         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-e6fea3eab43aaf67-errcode
+## ARG SOURCE_DATE_EPOCH
+## RUN find /tmp/clis-cargo-config2_0-1-34/release/deps/*-e6fea3eab43aaf67* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ## 
 ## [[stages]]
 ## name = "out-e6fea3eab43aaf67"
 ## script = """
 ## FROM scratch AS out-e6fea3eab43aaf67
-## COPY --from=dep-n-cargo-config2-0.1.34-e6fea3eab43aaf67 /tmp/clis-cargo-config2_0-1-34/release/deps/*-e6fea3eab43aaf67* /"""
+## COPY --link --from=dep-n-cargo-config2-0.1.34-e6fea3eab43aaf67 /tmp/clis-cargo-config2_0-1-34/release/deps/*-e6fea3eab43aaf67* /"""
 
 FROM scratch AS cratesio-anstyle-1.0.11
 ADD --chmod=0664 --unpack=true --checksum=sha256:862ed96ca487e809f1c8e5a8447f6ee2cf102f846893800b20cebdf541fc6bbd \
@@ -2197,8 +2265,10 @@ RUN \
         1> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-21ded493861ed51c-stdout) \
         2> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-21ded493861ed51c-stderr >&2) \
         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-21ded493861ed51c-errcode
+ARG SOURCE_DATE_EPOCH
+RUN find /tmp/clis-cargo-config2_0-1-34/release/deps/*-21ded493861ed51c* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-21ded493861ed51c
-COPY --from=dep-n-anstyle-1.0.11-21ded493861ed51c /tmp/clis-cargo-config2_0-1-34/release/deps/*-21ded493861ed51c* /
+COPY --link --from=dep-n-anstyle-1.0.11-21ded493861ed51c /tmp/clis-cargo-config2_0-1-34/release/deps/*-21ded493861ed51c* /
 
 ## this = "21ded493861ed51c"
 ## writes = [
@@ -2254,13 +2324,15 @@ COPY --from=dep-n-anstyle-1.0.11-21ded493861ed51c /tmp/clis-cargo-config2_0-1-34
 ##       rustc '--crate-name' 'anstyle' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--warn' 'rust_2018_idioms' '--warn' 'clippy::zero_sized_map_values' '--warn' 'clippy::wildcard_imports' '--warn' 'clippy::verbose_file_reads' '--warn' 'unused_qualifications' '--warn' 'unused_macro_rules' '--warn' 'unused_lifetimes' '--warn' 'unsafe_op_in_unsafe_fn' '--warn' 'unreachable_pub' '--warn' 'unnameable_types' '--warn' 'clippy::uninlined_format_args' '--warn' 'clippy::trait_duplication_in_bounds' '--warn' 'clippy::todo' '--warn' 'clippy::string_to_string' '--warn' 'clippy::string_lit_as_bytes' '--warn' 'clippy::string_add_assign' '--warn' 'clippy::string_add' '--warn' 'clippy::str_to_string' '--warn' 'clippy::semicolon_if_nothing_returned' '--warn' 'clippy::self_named_module_files' '--warn' 'clippy::same_functions_in_if_condition' '--allow' 'clippy::result_large_err' '--warn' 'clippy::rest_pat_in_fully_bound_structs' '--warn' 'clippy::ref_option_ref' '--warn' 'clippy::redundant_feature_names' '--warn' 'clippy::rc_mutex' '--warn' 'clippy::ptr_as_ptr' '--warn' 'clippy::path_buf_push_overwrite' '--warn' 'clippy::negative_feature_names' '--warn' 'clippy::needless_for_each' '--allow' 'clippy::needless_continue' '--warn' 'clippy::mutex_integer' '--warn' 'clippy::mem_forget' '--warn' 'clippy::macro_use_imports' '--warn' 'clippy::lossy_float_literal' '--warn' 'clippy::linkedlist' '--allow' 'clippy::let_and_return' '--warn' 'clippy::large_types_passed_by_value' '--warn' 'clippy::large_stack_arrays' '--warn' 'clippy::large_digit_groups' '--warn' 'clippy::invalid_upcast_comparisons' '--warn' 'clippy::infinite_loop' '--warn' 'clippy::inefficient_to_string' '--warn' 'clippy::inconsistent_struct_constructor' '--warn' 'clippy::imprecise_flops' '--warn' 'clippy::implicit_clone' '--allow' 'clippy::if_same_then_else' '--warn' 'clippy::from_iter_instead_of_collect' '--warn' 'clippy::fn_params_excessive_bools' '--warn' 'clippy::float_cmp_const' '--warn' 'clippy::flat_map_option' '--warn' 'clippy::filter_map_next' '--warn' 'clippy::fallible_impl_from' '--warn' 'clippy::explicit_into_iter_loop' '--warn' 'clippy::explicit_deref_methods' '--warn' 'clippy::expl_impl_clone_on_copy' '--warn' 'clippy::enum_glob_use' '--warn' 'clippy::empty_enum' '--warn' 'clippy::doc_markdown' '--warn' 'clippy::debug_assert_with_mut_call' '--warn' 'clippy::dbg_macro' '--warn' 'clippy::create_dir' '--allow' 'clippy::collapsible_else_if' '--warn' 'clippy::checked_conversions' '--allow' 'clippy::branches_sharing_code' '--allow' 'clippy::bool_assert_comparison' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "std"))' '-C' 'metadata=fe1ba5653a7f5616' '-C' 'extra-filename=-21ded493861ed51c' '--out-dir' '/tmp/clis-cargo-config2_0-1-34/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-cargo-config2_0-1-34/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anstyle-1.0.11/src/lib.rs \
 ##         1> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-21ded493861ed51c-stdout) \
 ##         2> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-21ded493861ed51c-stderr >&2) \
-##         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-21ded493861ed51c-errcode'''
+##         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-21ded493861ed51c-errcode
+## ARG SOURCE_DATE_EPOCH
+## RUN find /tmp/clis-cargo-config2_0-1-34/release/deps/*-21ded493861ed51c* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ## 
 ## [[stages]]
 ## name = "out-21ded493861ed51c"
 ## script = """
 ## FROM scratch AS out-21ded493861ed51c
-## COPY --from=dep-n-anstyle-1.0.11-21ded493861ed51c /tmp/clis-cargo-config2_0-1-34/release/deps/*-21ded493861ed51c* /"""
+## COPY --link --from=dep-n-anstyle-1.0.11-21ded493861ed51c /tmp/clis-cargo-config2_0-1-34/release/deps/*-21ded493861ed51c* /"""
 
 FROM scratch AS cratesio-clap_lex-0.7.5
 ADD --chmod=0664 --unpack=true --checksum=sha256:b94f61472cee1439c0b966b47e3aca9ae07e45d070759512cd390ea2bebc6675 \
@@ -2294,8 +2366,10 @@ RUN \
         1> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-fa1650fe0d33e35e-stdout) \
         2> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-fa1650fe0d33e35e-stderr >&2) \
         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-fa1650fe0d33e35e-errcode
+ARG SOURCE_DATE_EPOCH
+RUN find /tmp/clis-cargo-config2_0-1-34/release/deps/*-fa1650fe0d33e35e* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-fa1650fe0d33e35e
-COPY --from=dep-n-clap_lex-0.7.5-fa1650fe0d33e35e /tmp/clis-cargo-config2_0-1-34/release/deps/*-fa1650fe0d33e35e* /
+COPY --link --from=dep-n-clap_lex-0.7.5-fa1650fe0d33e35e /tmp/clis-cargo-config2_0-1-34/release/deps/*-fa1650fe0d33e35e* /
 
 ## this = "fa1650fe0d33e35e"
 ## writes = [
@@ -2351,13 +2425,15 @@ COPY --from=dep-n-clap_lex-0.7.5-fa1650fe0d33e35e /tmp/clis-cargo-config2_0-1-34
 ##       rustc '--crate-name' 'clap_lex' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--warn' 'rust_2018_idioms' '--warn' 'clippy::zero_sized_map_values' '--warn' 'clippy::verbose_file_reads' '--warn' 'unused_qualifications' '--warn' 'unused_macro_rules' '--warn' 'unused_lifetimes' '--warn' 'unsafe_op_in_unsafe_fn' '--warn' 'unreachable_pub' '--allow' 'unnameable_types' '--warn' 'clippy::uninlined_format_args' '--warn' 'clippy::trait_duplication_in_bounds' '--warn' 'clippy::todo' '--warn' 'clippy::string_lit_as_bytes' '--warn' 'clippy::string_add_assign' '--warn' 'clippy::semicolon_if_nothing_returned' '--warn' 'clippy::self_named_module_files' '--warn' 'clippy::same_functions_in_if_condition' '--allow' 'clippy::result_large_err' '--warn' 'clippy::rest_pat_in_fully_bound_structs' '--warn' 'clippy::ref_option_ref' '--warn' 'clippy::redundant_feature_names' '--warn' 'clippy::rc_mutex' '--warn' 'clippy::ptr_as_ptr' '--warn' 'clippy::path_buf_push_overwrite' '--warn' 'clippy::negative_feature_names' '--warn' 'clippy::needless_for_each' '--allow' 'clippy::needless_continue' '--warn' 'clippy::mutex_integer' '--allow' 'clippy::multiple_bound_locations' '--warn' 'clippy::mem_forget' '--warn' 'clippy::macro_use_imports' '--warn' 'clippy::lossy_float_literal' '--warn' 'clippy::linkedlist' '--allow' 'clippy::let_and_return' '--warn' 'clippy::large_types_passed_by_value' '--warn' 'clippy::large_stack_arrays' '--warn' 'clippy::large_digit_groups' '--warn' 'clippy::invalid_upcast_comparisons' '--warn' 'clippy::infinite_loop' '--warn' 'clippy::inefficient_to_string' '--warn' 'clippy::inconsistent_struct_constructor' '--warn' 'clippy::imprecise_flops' '--warn' 'clippy::implicit_clone' '--allow' 'clippy::if_same_then_else' '--warn' 'clippy::from_iter_instead_of_collect' '--warn' 'clippy::fn_params_excessive_bools' '--warn' 'clippy::float_cmp_const' '--warn' 'clippy::flat_map_option' '--warn' 'clippy::filter_map_next' '--warn' 'clippy::fallible_impl_from' '--warn' 'clippy::explicit_into_iter_loop' '--warn' 'clippy::explicit_deref_methods' '--warn' 'clippy::expl_impl_clone_on_copy' '--warn' 'clippy::enum_glob_use' '--warn' 'clippy::empty_enum' '--warn' 'clippy::doc_markdown' '--warn' 'clippy::debug_assert_with_mut_call' '--warn' 'clippy::dbg_macro' '--warn' 'clippy::create_dir' '--allow' 'clippy::collapsible_else_if' '--warn' 'clippy::checked_conversions' '--allow' 'clippy::branches_sharing_code' '--allow' 'clippy::bool_assert_comparison' '--allow' 'clippy::blocks_in_conditions' '--allow' 'clippy::assigning_clones' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=c45f77cba2cfafb5' '-C' 'extra-filename=-fa1650fe0d33e35e' '--out-dir' '/tmp/clis-cargo-config2_0-1-34/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-cargo-config2_0-1-34/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/clap_lex-0.7.5/src/lib.rs \
 ##         1> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-fa1650fe0d33e35e-stdout) \
 ##         2> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-fa1650fe0d33e35e-stderr >&2) \
-##         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-fa1650fe0d33e35e-errcode'''
+##         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-fa1650fe0d33e35e-errcode
+## ARG SOURCE_DATE_EPOCH
+## RUN find /tmp/clis-cargo-config2_0-1-34/release/deps/*-fa1650fe0d33e35e* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ## 
 ## [[stages]]
 ## name = "out-fa1650fe0d33e35e"
 ## script = """
 ## FROM scratch AS out-fa1650fe0d33e35e
-## COPY --from=dep-n-clap_lex-0.7.5-fa1650fe0d33e35e /tmp/clis-cargo-config2_0-1-34/release/deps/*-fa1650fe0d33e35e* /"""
+## COPY --link --from=dep-n-clap_lex-0.7.5-fa1650fe0d33e35e /tmp/clis-cargo-config2_0-1-34/release/deps/*-fa1650fe0d33e35e* /"""
 
 FROM scratch AS cratesio-clap_builder-4.5.40
 ADD --chmod=0664 --unpack=true --checksum=sha256:e0c66c08ce9f0c698cbce5c0279d0bb6ac936d8674174fe48f736533b964f59e \
@@ -2395,8 +2471,10 @@ RUN \
         1> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-41622f4093b29d13-stdout) \
         2> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-41622f4093b29d13-stderr >&2) \
         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-41622f4093b29d13-errcode
+ARG SOURCE_DATE_EPOCH
+RUN find /tmp/clis-cargo-config2_0-1-34/release/deps/*-41622f4093b29d13* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-41622f4093b29d13
-COPY --from=dep-n-clap_builder-4.5.40-41622f4093b29d13 /tmp/clis-cargo-config2_0-1-34/release/deps/*-41622f4093b29d13* /
+COPY --link --from=dep-n-clap_builder-4.5.40-41622f4093b29d13 /tmp/clis-cargo-config2_0-1-34/release/deps/*-41622f4093b29d13* /
 
 ## this = "41622f4093b29d13"
 ## deps = [
@@ -2480,13 +2558,15 @@ COPY --from=dep-n-clap_builder-4.5.40-41622f4093b29d13 /tmp/clis-cargo-config2_0
 ##       rustc '--crate-name' 'clap_builder' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--warn' 'rust_2018_idioms' '--warn' 'clippy::zero_sized_map_values' '--warn' 'clippy::verbose_file_reads' '--warn' 'unused_qualifications' '--warn' 'unused_macro_rules' '--warn' 'unused_lifetimes' '--warn' 'unsafe_op_in_unsafe_fn' '--warn' 'unreachable_pub' '--allow' 'unnameable_types' '--warn' 'clippy::uninlined_format_args' '--warn' 'clippy::trait_duplication_in_bounds' '--warn' 'clippy::todo' '--warn' 'clippy::string_lit_as_bytes' '--warn' 'clippy::string_add_assign' '--warn' 'clippy::semicolon_if_nothing_returned' '--warn' 'clippy::self_named_module_files' '--warn' 'clippy::same_functions_in_if_condition' '--allow' 'clippy::result_large_err' '--warn' 'clippy::rest_pat_in_fully_bound_structs' '--warn' 'clippy::ref_option_ref' '--warn' 'clippy::redundant_feature_names' '--warn' 'clippy::rc_mutex' '--warn' 'clippy::ptr_as_ptr' '--warn' 'clippy::path_buf_push_overwrite' '--warn' 'clippy::negative_feature_names' '--warn' 'clippy::needless_for_each' '--allow' 'clippy::needless_continue' '--warn' 'clippy::mutex_integer' '--allow' 'clippy::multiple_bound_locations' '--warn' 'clippy::mem_forget' '--warn' 'clippy::macro_use_imports' '--warn' 'clippy::lossy_float_literal' '--warn' 'clippy::linkedlist' '--allow' 'clippy::let_and_return' '--warn' 'clippy::large_types_passed_by_value' '--warn' 'clippy::large_stack_arrays' '--warn' 'clippy::large_digit_groups' '--warn' 'clippy::invalid_upcast_comparisons' '--warn' 'clippy::infinite_loop' '--warn' 'clippy::inefficient_to_string' '--warn' 'clippy::inconsistent_struct_constructor' '--warn' 'clippy::imprecise_flops' '--warn' 'clippy::implicit_clone' '--allow' 'clippy::if_same_then_else' '--warn' 'clippy::from_iter_instead_of_collect' '--warn' 'clippy::fn_params_excessive_bools' '--warn' 'clippy::float_cmp_const' '--warn' 'clippy::flat_map_option' '--warn' 'clippy::filter_map_next' '--warn' 'clippy::fallible_impl_from' '--warn' 'clippy::explicit_into_iter_loop' '--warn' 'clippy::explicit_deref_methods' '--warn' 'clippy::expl_impl_clone_on_copy' '--warn' 'clippy::enum_glob_use' '--warn' 'clippy::empty_enum' '--warn' 'clippy::doc_markdown' '--warn' 'clippy::debug_assert_with_mut_call' '--warn' 'clippy::dbg_macro' '--warn' 'clippy::create_dir' '--allow' 'clippy::collapsible_else_if' '--warn' 'clippy::checked_conversions' '--allow' 'clippy::branches_sharing_code' '--allow' 'clippy::bool_assert_comparison' '--allow' 'clippy::blocks_in_conditions' '--allow' 'clippy::assigning_clones' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("cargo", "color", "debug", "default", "deprecated", "env", "error-context", "help", "std", "string", "suggestions", "unicode", "unstable-doc", "unstable-ext", "unstable-styles", "unstable-v5", "usage", "wrap_help"))' '-C' 'metadata=ea336caf438572c8' '-C' 'extra-filename=-41622f4093b29d13' '--out-dir' '/tmp/clis-cargo-config2_0-1-34/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-cargo-config2_0-1-34/release/deps' '--extern' 'anstyle=/tmp/clis-cargo-config2_0-1-34/release/deps/libanstyle-21ded493861ed51c.rmeta' '--extern' 'clap_lex=/tmp/clis-cargo-config2_0-1-34/release/deps/libclap_lex-fa1650fe0d33e35e.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/clap_builder-4.5.40/src/lib.rs \
 ##         1> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-41622f4093b29d13-stdout) \
 ##         2> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-41622f4093b29d13-stderr >&2) \
-##         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-41622f4093b29d13-errcode'''
+##         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-41622f4093b29d13-errcode
+## ARG SOURCE_DATE_EPOCH
+## RUN find /tmp/clis-cargo-config2_0-1-34/release/deps/*-41622f4093b29d13* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ## 
 ## [[stages]]
 ## name = "out-41622f4093b29d13"
 ## script = """
 ## FROM scratch AS out-41622f4093b29d13
-## COPY --from=dep-n-clap_builder-4.5.40-41622f4093b29d13 /tmp/clis-cargo-config2_0-1-34/release/deps/*-41622f4093b29d13* /"""
+## COPY --link --from=dep-n-clap_builder-4.5.40-41622f4093b29d13 /tmp/clis-cargo-config2_0-1-34/release/deps/*-41622f4093b29d13* /"""
 
 FROM scratch AS cratesio-heck-0.5.0
 ADD --chmod=0664 --unpack=true --checksum=sha256:2304e00983f87ffb38b55b444b5e3b60a884b5d30c0fca7d82fe33449bbe55ea \
@@ -2520,8 +2600,10 @@ RUN \
         1> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-06debb0d4d4774b1-stdout) \
         2> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-06debb0d4d4774b1-stderr >&2) \
         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-06debb0d4d4774b1-errcode
+ARG SOURCE_DATE_EPOCH
+RUN find /tmp/clis-cargo-config2_0-1-34/release/deps/*-06debb0d4d4774b1* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-06debb0d4d4774b1
-COPY --from=dep-n-heck-0.5.0-06debb0d4d4774b1 /tmp/clis-cargo-config2_0-1-34/release/deps/*-06debb0d4d4774b1* /
+COPY --link --from=dep-n-heck-0.5.0-06debb0d4d4774b1 /tmp/clis-cargo-config2_0-1-34/release/deps/*-06debb0d4d4774b1* /
 
 ## this = "06debb0d4d4774b1"
 ## writes = [
@@ -2577,13 +2659,15 @@ COPY --from=dep-n-heck-0.5.0-06debb0d4d4774b1 /tmp/clis-cargo-config2_0-1-34/rel
 ##       rustc '--crate-name' 'heck' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=9281ab7030f38e32' '-C' 'extra-filename=-06debb0d4d4774b1' '--out-dir' '/tmp/clis-cargo-config2_0-1-34/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-cargo-config2_0-1-34/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/heck-0.5.0/src/lib.rs \
 ##         1> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-06debb0d4d4774b1-stdout) \
 ##         2> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-06debb0d4d4774b1-stderr >&2) \
-##         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-06debb0d4d4774b1-errcode'''
+##         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-06debb0d4d4774b1-errcode
+## ARG SOURCE_DATE_EPOCH
+## RUN find /tmp/clis-cargo-config2_0-1-34/release/deps/*-06debb0d4d4774b1* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ## 
 ## [[stages]]
 ## name = "out-06debb0d4d4774b1"
 ## script = """
 ## FROM scratch AS out-06debb0d4d4774b1
-## COPY --from=dep-n-heck-0.5.0-06debb0d4d4774b1 /tmp/clis-cargo-config2_0-1-34/release/deps/*-06debb0d4d4774b1* /"""
+## COPY --link --from=dep-n-heck-0.5.0-06debb0d4d4774b1 /tmp/clis-cargo-config2_0-1-34/release/deps/*-06debb0d4d4774b1* /"""
 
 FROM scratch AS cratesio-clap_derive-4.5.40
 ADD --chmod=0664 --unpack=true --checksum=sha256:d2c7947ae4cc3d851207c1adb5b5e260ff0cca11446b1d6d1423788e442257ce \
@@ -2622,8 +2706,10 @@ RUN \
         1> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-45053889f17e427d-stdout) \
         2> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-45053889f17e427d-stderr >&2) \
         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-45053889f17e427d-errcode
+ARG SOURCE_DATE_EPOCH
+RUN find /tmp/clis-cargo-config2_0-1-34/release/deps/*-45053889f17e427d* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-45053889f17e427d
-COPY --from=dep-n-clap_derive-4.5.40-45053889f17e427d /tmp/clis-cargo-config2_0-1-34/release/deps/*-45053889f17e427d* /
+COPY --link --from=dep-n-clap_derive-4.5.40-45053889f17e427d /tmp/clis-cargo-config2_0-1-34/release/deps/*-45053889f17e427d* /
 
 ## this = "45053889f17e427d"
 ## deps = [
@@ -2716,13 +2802,15 @@ COPY --from=dep-n-clap_derive-4.5.40-45053889f17e427d /tmp/clis-cargo-config2_0-
 ##       rustc '--crate-name' 'clap_derive' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'proc-macro' '--emit' 'dep-info,link' '-C' 'prefer-dynamic' '-C' 'embed-bitcode=no' '--warn' 'rust_2018_idioms' '--warn' 'clippy::zero_sized_map_values' '--warn' 'clippy::verbose_file_reads' '--warn' 'unused_qualifications' '--warn' 'unused_macro_rules' '--warn' 'unused_lifetimes' '--warn' 'unsafe_op_in_unsafe_fn' '--warn' 'unreachable_pub' '--allow' 'unnameable_types' '--warn' 'clippy::uninlined_format_args' '--warn' 'clippy::trait_duplication_in_bounds' '--warn' 'clippy::todo' '--warn' 'clippy::string_lit_as_bytes' '--warn' 'clippy::string_add_assign' '--warn' 'clippy::semicolon_if_nothing_returned' '--warn' 'clippy::self_named_module_files' '--warn' 'clippy::same_functions_in_if_condition' '--allow' 'clippy::result_large_err' '--warn' 'clippy::rest_pat_in_fully_bound_structs' '--warn' 'clippy::ref_option_ref' '--warn' 'clippy::redundant_feature_names' '--warn' 'clippy::rc_mutex' '--warn' 'clippy::ptr_as_ptr' '--warn' 'clippy::path_buf_push_overwrite' '--warn' 'clippy::negative_feature_names' '--warn' 'clippy::needless_for_each' '--allow' 'clippy::needless_continue' '--warn' 'clippy::mutex_integer' '--allow' 'clippy::multiple_bound_locations' '--warn' 'clippy::mem_forget' '--warn' 'clippy::macro_use_imports' '--warn' 'clippy::lossy_float_literal' '--warn' 'clippy::linkedlist' '--allow' 'clippy::let_and_return' '--warn' 'clippy::large_types_passed_by_value' '--warn' 'clippy::large_stack_arrays' '--warn' 'clippy::large_digit_groups' '--warn' 'clippy::invalid_upcast_comparisons' '--warn' 'clippy::infinite_loop' '--warn' 'clippy::inefficient_to_string' '--warn' 'clippy::inconsistent_struct_constructor' '--warn' 'clippy::imprecise_flops' '--warn' 'clippy::implicit_clone' '--allow' 'clippy::if_same_then_else' '--warn' 'clippy::from_iter_instead_of_collect' '--warn' 'clippy::fn_params_excessive_bools' '--warn' 'clippy::float_cmp_const' '--warn' 'clippy::flat_map_option' '--warn' 'clippy::filter_map_next' '--warn' 'clippy::fallible_impl_from' '--warn' 'clippy::explicit_into_iter_loop' '--warn' 'clippy::explicit_deref_methods' '--warn' 'clippy::expl_impl_clone_on_copy' '--warn' 'clippy::enum_glob_use' '--warn' 'clippy::empty_enum' '--warn' 'clippy::doc_markdown' '--warn' 'clippy::debug_assert_with_mut_call' '--warn' 'clippy::dbg_macro' '--warn' 'clippy::create_dir' '--allow' 'clippy::collapsible_else_if' '--warn' 'clippy::checked_conversions' '--allow' 'clippy::branches_sharing_code' '--allow' 'clippy::bool_assert_comparison' '--allow' 'clippy::blocks_in_conditions' '--allow' 'clippy::assigning_clones' '-C' 'debug-assertions=off' '--cfg' 'feature="default"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("debug", "default", "deprecated", "raw-deprecated", "unstable-markdown", "unstable-v5"))' '-C' 'metadata=2d96a3114e53d756' '-C' 'extra-filename=-45053889f17e427d' '--out-dir' '/tmp/clis-cargo-config2_0-1-34/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-cargo-config2_0-1-34/release/deps' '--extern' 'heck=/tmp/clis-cargo-config2_0-1-34/release/deps/libheck-06debb0d4d4774b1.rlib' '--extern' 'proc_macro2=/tmp/clis-cargo-config2_0-1-34/release/deps/libproc_macro2-da36b031605c1ddc.rlib' '--extern' 'quote=/tmp/clis-cargo-config2_0-1-34/release/deps/libquote-21aeee0f329238fb.rlib' '--extern' 'syn=/tmp/clis-cargo-config2_0-1-34/release/deps/libsyn-5571b1fa61474ffa.rlib' '--extern' 'proc_macro' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/clap_derive-4.5.40/src/lib.rs \
 ##         1> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-45053889f17e427d-stdout) \
 ##         2> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-45053889f17e427d-stderr >&2) \
-##         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-45053889f17e427d-errcode'''
+##         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-45053889f17e427d-errcode
+## ARG SOURCE_DATE_EPOCH
+## RUN find /tmp/clis-cargo-config2_0-1-34/release/deps/*-45053889f17e427d* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ## 
 ## [[stages]]
 ## name = "out-45053889f17e427d"
 ## script = """
 ## FROM scratch AS out-45053889f17e427d
-## COPY --from=dep-n-clap_derive-4.5.40-45053889f17e427d /tmp/clis-cargo-config2_0-1-34/release/deps/*-45053889f17e427d* /"""
+## COPY --link --from=dep-n-clap_derive-4.5.40-45053889f17e427d /tmp/clis-cargo-config2_0-1-34/release/deps/*-45053889f17e427d* /"""
 
 FROM scratch AS cratesio-clap-4.5.40
 ADD --chmod=0664 --unpack=true --checksum=sha256:40b6887a1d8685cebccf115538db5c0efe625ccac9696ad45c409d96566e910f \
@@ -2773,8 +2861,10 @@ RUN \
         1> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-fa9f135a39baa87b-stdout) \
         2> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-fa9f135a39baa87b-stderr >&2) \
         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-fa9f135a39baa87b-errcode
+ARG SOURCE_DATE_EPOCH
+RUN find /tmp/clis-cargo-config2_0-1-34/release/deps/*-fa9f135a39baa87b* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-fa9f135a39baa87b
-COPY --from=dep-n-clap-4.5.40-fa9f135a39baa87b /tmp/clis-cargo-config2_0-1-34/release/deps/*-fa9f135a39baa87b* /
+COPY --link --from=dep-n-clap-4.5.40-fa9f135a39baa87b /tmp/clis-cargo-config2_0-1-34/release/deps/*-fa9f135a39baa87b* /
 
 ## this = "fa9f135a39baa87b"
 ## deps = [
@@ -2937,13 +3027,15 @@ COPY --from=dep-n-clap-4.5.40-fa9f135a39baa87b /tmp/clis-cargo-config2_0-1-34/re
 ##       rustc '--crate-name' 'clap' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--warn' 'rust_2018_idioms' '--warn' 'clippy::zero_sized_map_values' '--warn' 'clippy::verbose_file_reads' '--warn' 'unused_qualifications' '--warn' 'unused_macro_rules' '--warn' 'unused_lifetimes' '--warn' 'unsafe_op_in_unsafe_fn' '--warn' 'unreachable_pub' '--allow' 'unnameable_types' '--warn' 'clippy::uninlined_format_args' '--warn' 'clippy::trait_duplication_in_bounds' '--warn' 'clippy::todo' '--warn' 'clippy::string_lit_as_bytes' '--warn' 'clippy::string_add_assign' '--warn' 'clippy::semicolon_if_nothing_returned' '--warn' 'clippy::self_named_module_files' '--warn' 'clippy::same_functions_in_if_condition' '--allow' 'clippy::result_large_err' '--warn' 'clippy::rest_pat_in_fully_bound_structs' '--warn' 'clippy::ref_option_ref' '--warn' 'clippy::redundant_feature_names' '--warn' 'clippy::rc_mutex' '--warn' 'clippy::ptr_as_ptr' '--warn' 'clippy::path_buf_push_overwrite' '--warn' 'clippy::negative_feature_names' '--warn' 'clippy::needless_for_each' '--allow' 'clippy::needless_continue' '--warn' 'clippy::mutex_integer' '--allow' 'clippy::multiple_bound_locations' '--warn' 'clippy::mem_forget' '--warn' 'clippy::macro_use_imports' '--warn' 'clippy::lossy_float_literal' '--warn' 'clippy::linkedlist' '--allow' 'clippy::let_and_return' '--warn' 'clippy::large_types_passed_by_value' '--warn' 'clippy::large_stack_arrays' '--warn' 'clippy::large_digit_groups' '--warn' 'clippy::invalid_upcast_comparisons' '--warn' 'clippy::infinite_loop' '--warn' 'clippy::inefficient_to_string' '--warn' 'clippy::inconsistent_struct_constructor' '--warn' 'clippy::imprecise_flops' '--warn' 'clippy::implicit_clone' '--allow' 'clippy::if_same_then_else' '--warn' 'clippy::from_iter_instead_of_collect' '--warn' 'clippy::fn_params_excessive_bools' '--warn' 'clippy::float_cmp_const' '--warn' 'clippy::flat_map_option' '--warn' 'clippy::filter_map_next' '--warn' 'clippy::fallible_impl_from' '--warn' 'clippy::explicit_into_iter_loop' '--warn' 'clippy::explicit_deref_methods' '--warn' 'clippy::expl_impl_clone_on_copy' '--warn' 'clippy::enum_glob_use' '--warn' 'clippy::empty_enum' '--warn' 'clippy::doc_markdown' '--warn' 'clippy::debug_assert_with_mut_call' '--warn' 'clippy::dbg_macro' '--warn' 'clippy::create_dir' '--allow' 'clippy::collapsible_else_if' '--warn' 'clippy::checked_conversions' '--allow' 'clippy::branches_sharing_code' '--allow' 'clippy::bool_assert_comparison' '--allow' 'clippy::blocks_in_conditions' '--allow' 'clippy::assigning_clones' '--cfg' 'feature="derive"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("cargo", "color", "debug", "default", "deprecated", "derive", "env", "error-context", "help", "std", "string", "suggestions", "unicode", "unstable-derive-ui-tests", "unstable-doc", "unstable-ext", "unstable-markdown", "unstable-styles", "unstable-v5", "usage", "wrap_help"))' '-C' 'metadata=8ef7f4691a4f8179' '-C' 'extra-filename=-fa9f135a39baa87b' '--out-dir' '/tmp/clis-cargo-config2_0-1-34/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-cargo-config2_0-1-34/release/deps' '--extern' 'clap_builder=/tmp/clis-cargo-config2_0-1-34/release/deps/libclap_builder-41622f4093b29d13.rmeta' '--extern' 'clap_derive=/tmp/clis-cargo-config2_0-1-34/release/deps/libclap_derive-45053889f17e427d.so' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/clap-4.5.40/src/lib.rs \
 ##         1> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-fa9f135a39baa87b-stdout) \
 ##         2> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-fa9f135a39baa87b-stderr >&2) \
-##         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-fa9f135a39baa87b-errcode'''
+##         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-fa9f135a39baa87b-errcode
+## ARG SOURCE_DATE_EPOCH
+## RUN find /tmp/clis-cargo-config2_0-1-34/release/deps/*-fa9f135a39baa87b* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ## 
 ## [[stages]]
 ## name = "out-fa9f135a39baa87b"
 ## script = """
 ## FROM scratch AS out-fa9f135a39baa87b
-## COPY --from=dep-n-clap-4.5.40-fa9f135a39baa87b /tmp/clis-cargo-config2_0-1-34/release/deps/*-fa9f135a39baa87b* /"""
+## COPY --link --from=dep-n-clap-4.5.40-fa9f135a39baa87b /tmp/clis-cargo-config2_0-1-34/release/deps/*-fa9f135a39baa87b* /"""
 
 FROM scratch AS cratesio-fs-err-3.1.1
 ADD --chmod=0664 --unpack=true --checksum=sha256:88d7be93788013f265201256d58f04936a8079ad5dc898743aa20525f503b683 \
@@ -2978,8 +3070,10 @@ RUN \
         1> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-e710e1ebbad36529-stdout) \
         2> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-e710e1ebbad36529-stderr >&2) \
         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-e710e1ebbad36529-errcode
+ARG SOURCE_DATE_EPOCH
+RUN find /tmp/clis-cargo-config2_0-1-34/release/deps/*-e710e1ebbad36529* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-e710e1ebbad36529
-COPY --from=dep-n-fs-err-3.1.1-e710e1ebbad36529 /tmp/clis-cargo-config2_0-1-34/release/deps/*-e710e1ebbad36529* /
+COPY --link --from=dep-n-fs-err-3.1.1-e710e1ebbad36529 /tmp/clis-cargo-config2_0-1-34/release/deps/*-e710e1ebbad36529* /
 
 ## this = "e710e1ebbad36529"
 ## writes = [
@@ -3036,13 +3130,15 @@ COPY --from=dep-n-fs-err-3.1.1-e710e1ebbad36529 /tmp/clis-cargo-config2_0-1-34/r
 ##       rustc '--crate-name' 'fs_err' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("expose_original_error", "tokio"))' '-C' 'metadata=ef52b16995752dff' '-C' 'extra-filename=-e710e1ebbad36529' '--out-dir' '/tmp/clis-cargo-config2_0-1-34/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-cargo-config2_0-1-34/release/deps' '--cap-lints' 'warn' '--cfg' 'rustc_1_63' '--check-cfg' 'cfg(rustc_1_63)' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/fs-err-3.1.1/src/lib.rs \
 ##         1> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-e710e1ebbad36529-stdout) \
 ##         2> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-e710e1ebbad36529-stderr >&2) \
-##         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-e710e1ebbad36529-errcode'''
+##         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-e710e1ebbad36529-errcode
+## ARG SOURCE_DATE_EPOCH
+## RUN find /tmp/clis-cargo-config2_0-1-34/release/deps/*-e710e1ebbad36529* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ## 
 ## [[stages]]
 ## name = "out-e710e1ebbad36529"
 ## script = """
 ## FROM scratch AS out-e710e1ebbad36529
-## COPY --from=dep-n-fs-err-3.1.1-e710e1ebbad36529 /tmp/clis-cargo-config2_0-1-34/release/deps/*-e710e1ebbad36529* /"""
+## COPY --link --from=dep-n-fs-err-3.1.1-e710e1ebbad36529 /tmp/clis-cargo-config2_0-1-34/release/deps/*-e710e1ebbad36529* /"""
 
 FROM scratch AS cratesio-lexopt-0.3.1
 ADD --chmod=0664 --unpack=true --checksum=sha256:9fa0e2a1fcbe2f6be6c42e342259976206b383122fc152e872795338b5a3f3a7 \
@@ -3076,8 +3172,10 @@ RUN \
         1> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-08712be55b44d56f-stdout) \
         2> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-08712be55b44d56f-stderr >&2) \
         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-08712be55b44d56f-errcode
+ARG SOURCE_DATE_EPOCH
+RUN find /tmp/clis-cargo-config2_0-1-34/release/deps/*-08712be55b44d56f* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-08712be55b44d56f
-COPY --from=dep-n-lexopt-0.3.1-08712be55b44d56f /tmp/clis-cargo-config2_0-1-34/release/deps/*-08712be55b44d56f* /
+COPY --link --from=dep-n-lexopt-0.3.1-08712be55b44d56f /tmp/clis-cargo-config2_0-1-34/release/deps/*-08712be55b44d56f* /
 
 ## this = "08712be55b44d56f"
 ## writes = [
@@ -3133,13 +3231,15 @@ COPY --from=dep-n-lexopt-0.3.1-08712be55b44d56f /tmp/clis-cargo-config2_0-1-34/r
 ##       rustc '--crate-name' 'lexopt' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=a3cdf58122d46636' '-C' 'extra-filename=-08712be55b44d56f' '--out-dir' '/tmp/clis-cargo-config2_0-1-34/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-cargo-config2_0-1-34/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/lexopt-0.3.1/src/lib.rs \
 ##         1> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-08712be55b44d56f-stdout) \
 ##         2> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-08712be55b44d56f-stderr >&2) \
-##         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-08712be55b44d56f-errcode'''
+##         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-08712be55b44d56f-errcode
+## ARG SOURCE_DATE_EPOCH
+## RUN find /tmp/clis-cargo-config2_0-1-34/release/deps/*-08712be55b44d56f* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ## 
 ## [[stages]]
 ## name = "out-08712be55b44d56f"
 ## script = """
 ## FROM scratch AS out-08712be55b44d56f
-## COPY --from=dep-n-lexopt-0.3.1-08712be55b44d56f /tmp/clis-cargo-config2_0-1-34/release/deps/*-08712be55b44d56f* /"""
+## COPY --link --from=dep-n-lexopt-0.3.1-08712be55b44d56f /tmp/clis-cargo-config2_0-1-34/release/deps/*-08712be55b44d56f* /"""
 
 FROM scratch AS cratesio-rustversion-1.0.21
 ADD --chmod=0664 --unpack=true --checksum=sha256:8a0d197bd2c9dc6e53b84da9556a69ba4cdfab8619eb41a8bd1cc2027a0f6b1d \
@@ -3175,8 +3275,10 @@ RUN \
         1> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-7ffc156b99c00502-stdout) \
         2> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-7ffc156b99c00502-stderr >&2) \
         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-7ffc156b99c00502-errcode
+ARG SOURCE_DATE_EPOCH
+RUN find /tmp/clis-cargo-config2_0-1-34/release/deps/*-7ffc156b99c00502* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-7ffc156b99c00502
-COPY --from=dep-n-rustversion-1.0.21-7ffc156b99c00502 /tmp/clis-cargo-config2_0-1-34/release/deps/*-7ffc156b99c00502* /
+COPY --link --from=dep-n-rustversion-1.0.21-7ffc156b99c00502 /tmp/clis-cargo-config2_0-1-34/release/deps/*-7ffc156b99c00502* /
 
 ## this = "7ffc156b99c00502"
 ## writes = [
@@ -3236,13 +3338,15 @@ COPY --from=dep-n-rustversion-1.0.21-7ffc156b99c00502 /tmp/clis-cargo-config2_0-
 ##       rustc '--crate-name' 'rustversion' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'proc-macro' '--emit' 'dep-info,link' '-C' 'prefer-dynamic' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=ae8fbe723b139b6c' '-C' 'extra-filename=-7ffc156b99c00502' '--out-dir' '/tmp/clis-cargo-config2_0-1-34/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-cargo-config2_0-1-34/release/deps' '--extern' 'proc_macro' '--cap-lints' 'warn' '--check-cfg' 'cfg(cfg_macro_not_allowed)' '--check-cfg' 'cfg(host_os, values("windows"))' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustversion-1.0.21/src/lib.rs \
 ##         1> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-7ffc156b99c00502-stdout) \
 ##         2> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-7ffc156b99c00502-stderr >&2) \
-##         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-7ffc156b99c00502-errcode'''
+##         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-7ffc156b99c00502-errcode
+## ARG SOURCE_DATE_EPOCH
+## RUN find /tmp/clis-cargo-config2_0-1-34/release/deps/*-7ffc156b99c00502* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ## 
 ## [[stages]]
 ## name = "out-7ffc156b99c00502"
 ## script = """
 ## FROM scratch AS out-7ffc156b99c00502
-## COPY --from=dep-n-rustversion-1.0.21-7ffc156b99c00502 /tmp/clis-cargo-config2_0-1-34/release/deps/*-7ffc156b99c00502* /"""
+## COPY --link --from=dep-n-rustversion-1.0.21-7ffc156b99c00502 /tmp/clis-cargo-config2_0-1-34/release/deps/*-7ffc156b99c00502* /"""
 
 FROM scratch AS cratesio-itoa-1.0.15
 ADD --chmod=0664 --unpack=true --checksum=sha256:4a5f13b858c8d314ee3e8f639011f7ccefe71f97f96e50151fb991f267928e2c \
@@ -3276,8 +3380,10 @@ RUN \
         1> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-a68ea12a2369cd39-stdout) \
         2> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-a68ea12a2369cd39-stderr >&2) \
         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-a68ea12a2369cd39-errcode
+ARG SOURCE_DATE_EPOCH
+RUN find /tmp/clis-cargo-config2_0-1-34/release/deps/*-a68ea12a2369cd39* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-a68ea12a2369cd39
-COPY --from=dep-n-itoa-1.0.15-a68ea12a2369cd39 /tmp/clis-cargo-config2_0-1-34/release/deps/*-a68ea12a2369cd39* /
+COPY --link --from=dep-n-itoa-1.0.15-a68ea12a2369cd39 /tmp/clis-cargo-config2_0-1-34/release/deps/*-a68ea12a2369cd39* /
 
 ## this = "a68ea12a2369cd39"
 ## writes = [
@@ -3333,13 +3439,15 @@ COPY --from=dep-n-itoa-1.0.15-a68ea12a2369cd39 /tmp/clis-cargo-config2_0-1-34/re
 ##       rustc '--crate-name' 'itoa' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("no-panic"))' '-C' 'metadata=dbdaf505605b7ce7' '-C' 'extra-filename=-a68ea12a2369cd39' '--out-dir' '/tmp/clis-cargo-config2_0-1-34/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-cargo-config2_0-1-34/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/itoa-1.0.15/src/lib.rs \
 ##         1> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-a68ea12a2369cd39-stdout) \
 ##         2> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-a68ea12a2369cd39-stderr >&2) \
-##         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-a68ea12a2369cd39-errcode'''
+##         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-a68ea12a2369cd39-errcode
+## ARG SOURCE_DATE_EPOCH
+## RUN find /tmp/clis-cargo-config2_0-1-34/release/deps/*-a68ea12a2369cd39* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ## 
 ## [[stages]]
 ## name = "out-a68ea12a2369cd39"
 ## script = """
 ## FROM scratch AS out-a68ea12a2369cd39
-## COPY --from=dep-n-itoa-1.0.15-a68ea12a2369cd39 /tmp/clis-cargo-config2_0-1-34/release/deps/*-a68ea12a2369cd39* /"""
+## COPY --link --from=dep-n-itoa-1.0.15-a68ea12a2369cd39 /tmp/clis-cargo-config2_0-1-34/release/deps/*-a68ea12a2369cd39* /"""
 
 FROM scratch AS cratesio-memchr-2.7.5
 ADD --chmod=0664 --unpack=true --checksum=sha256:32a282da65faaf38286cf3be983213fcf1d2e2a58700e808f83f4ea9a4804bc0 \
@@ -3373,8 +3481,10 @@ RUN \
         1> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-f8a5ec09fef4ab54-stdout) \
         2> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-f8a5ec09fef4ab54-stderr >&2) \
         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-f8a5ec09fef4ab54-errcode
+ARG SOURCE_DATE_EPOCH
+RUN find /tmp/clis-cargo-config2_0-1-34/release/deps/*-f8a5ec09fef4ab54* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-f8a5ec09fef4ab54
-COPY --from=dep-n-memchr-2.7.5-f8a5ec09fef4ab54 /tmp/clis-cargo-config2_0-1-34/release/deps/*-f8a5ec09fef4ab54* /
+COPY --link --from=dep-n-memchr-2.7.5-f8a5ec09fef4ab54 /tmp/clis-cargo-config2_0-1-34/release/deps/*-f8a5ec09fef4ab54* /
 
 ## this = "f8a5ec09fef4ab54"
 ## writes = [
@@ -3430,13 +3540,15 @@ COPY --from=dep-n-memchr-2.7.5-f8a5ec09fef4ab54 /tmp/clis-cargo-config2_0-1-34/r
 ##       rustc '--crate-name' 'memchr' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="alloc"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "core", "default", "libc", "logging", "rustc-dep-of-std", "std", "use_std"))' '-C' 'metadata=2fd5f0c7165d1f69' '-C' 'extra-filename=-f8a5ec09fef4ab54' '--out-dir' '/tmp/clis-cargo-config2_0-1-34/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-cargo-config2_0-1-34/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/memchr-2.7.5/src/lib.rs \
 ##         1> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-f8a5ec09fef4ab54-stdout) \
 ##         2> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-f8a5ec09fef4ab54-stderr >&2) \
-##         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-f8a5ec09fef4ab54-errcode'''
+##         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-f8a5ec09fef4ab54-errcode
+## ARG SOURCE_DATE_EPOCH
+## RUN find /tmp/clis-cargo-config2_0-1-34/release/deps/*-f8a5ec09fef4ab54* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ## 
 ## [[stages]]
 ## name = "out-f8a5ec09fef4ab54"
 ## script = """
 ## FROM scratch AS out-f8a5ec09fef4ab54
-## COPY --from=dep-n-memchr-2.7.5-f8a5ec09fef4ab54 /tmp/clis-cargo-config2_0-1-34/release/deps/*-f8a5ec09fef4ab54* /"""
+## COPY --link --from=dep-n-memchr-2.7.5-f8a5ec09fef4ab54 /tmp/clis-cargo-config2_0-1-34/release/deps/*-f8a5ec09fef4ab54* /"""
 
 FROM scratch AS cratesio-ryu-1.0.20
 ADD --chmod=0664 --unpack=true --checksum=sha256:28d3b2b1366ec20994f1fd18c3c594f05c5dd4bc44d8bb0c1c632c8d6829481f \
@@ -3470,8 +3582,10 @@ RUN \
         1> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-fc928953fff1e68b-stdout) \
         2> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-fc928953fff1e68b-stderr >&2) \
         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-fc928953fff1e68b-errcode
+ARG SOURCE_DATE_EPOCH
+RUN find /tmp/clis-cargo-config2_0-1-34/release/deps/*-fc928953fff1e68b* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-fc928953fff1e68b
-COPY --from=dep-n-ryu-1.0.20-fc928953fff1e68b /tmp/clis-cargo-config2_0-1-34/release/deps/*-fc928953fff1e68b* /
+COPY --link --from=dep-n-ryu-1.0.20-fc928953fff1e68b /tmp/clis-cargo-config2_0-1-34/release/deps/*-fc928953fff1e68b* /
 
 ## this = "fc928953fff1e68b"
 ## writes = [
@@ -3527,13 +3641,15 @@ COPY --from=dep-n-ryu-1.0.20-fc928953fff1e68b /tmp/clis-cargo-config2_0-1-34/rel
 ##       rustc '--crate-name' 'ryu' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("no-panic", "small"))' '-C' 'metadata=d058b16e6d6a0968' '-C' 'extra-filename=-fc928953fff1e68b' '--out-dir' '/tmp/clis-cargo-config2_0-1-34/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-cargo-config2_0-1-34/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ryu-1.0.20/src/lib.rs \
 ##         1> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-fc928953fff1e68b-stdout) \
 ##         2> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-fc928953fff1e68b-stderr >&2) \
-##         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-fc928953fff1e68b-errcode'''
+##         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-fc928953fff1e68b-errcode
+## ARG SOURCE_DATE_EPOCH
+## RUN find /tmp/clis-cargo-config2_0-1-34/release/deps/*-fc928953fff1e68b* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ## 
 ## [[stages]]
 ## name = "out-fc928953fff1e68b"
 ## script = """
 ## FROM scratch AS out-fc928953fff1e68b
-## COPY --from=dep-n-ryu-1.0.20-fc928953fff1e68b /tmp/clis-cargo-config2_0-1-34/release/deps/*-fc928953fff1e68b* /"""
+## COPY --link --from=dep-n-ryu-1.0.20-fc928953fff1e68b /tmp/clis-cargo-config2_0-1-34/release/deps/*-fc928953fff1e68b* /"""
 
 FROM scratch AS cratesio-serde_json-1.0.140
 ADD --chmod=0664 --unpack=true --checksum=sha256:20068b6e96dc6c9bd23e01df8827e6c7e1f2fddd43c21810382803c136b99373 \
@@ -3576,8 +3692,10 @@ RUN \
         1> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-7c70ba617eecc4c0-stdout) \
         2> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-7c70ba617eecc4c0-stderr >&2) \
         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-7c70ba617eecc4c0-errcode
+ARG SOURCE_DATE_EPOCH
+RUN find /tmp/clis-cargo-config2_0-1-34/release/deps/*-7c70ba617eecc4c0* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-7c70ba617eecc4c0
-COPY --from=dep-n-serde_json-1.0.140-7c70ba617eecc4c0 /tmp/clis-cargo-config2_0-1-34/release/deps/*-7c70ba617eecc4c0* /
+COPY --link --from=dep-n-serde_json-1.0.140-7c70ba617eecc4c0 /tmp/clis-cargo-config2_0-1-34/release/deps/*-7c70ba617eecc4c0* /
 
 ## this = "7c70ba617eecc4c0"
 ## deps = [
@@ -3686,13 +3804,15 @@ COPY --from=dep-n-serde_json-1.0.140-7c70ba617eecc4c0 /tmp/clis-cargo-config2_0-
 ##       rustc '--crate-name' 'serde_json' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "arbitrary_precision", "default", "float_roundtrip", "indexmap", "preserve_order", "raw_value", "std", "unbounded_depth"))' '-C' 'metadata=58744bc94326a31c' '-C' 'extra-filename=-7c70ba617eecc4c0' '--out-dir' '/tmp/clis-cargo-config2_0-1-34/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-cargo-config2_0-1-34/release/deps' '--extern' 'itoa=/tmp/clis-cargo-config2_0-1-34/release/deps/libitoa-a68ea12a2369cd39.rmeta' '--extern' 'memchr=/tmp/clis-cargo-config2_0-1-34/release/deps/libmemchr-f8a5ec09fef4ab54.rmeta' '--extern' 'ryu=/tmp/clis-cargo-config2_0-1-34/release/deps/libryu-fc928953fff1e68b.rmeta' '--extern' 'serde=/tmp/clis-cargo-config2_0-1-34/release/deps/libserde-b6c6cf1c11688574.rmeta' '--cap-lints' 'warn' '--cfg' 'fast_arithmetic="64"' '--check-cfg' 'cfg(fast_arithmetic, values("32", "64"))' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.140/src/lib.rs \
 ##         1> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-7c70ba617eecc4c0-stdout) \
 ##         2> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-7c70ba617eecc4c0-stderr >&2) \
-##         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-7c70ba617eecc4c0-errcode'''
+##         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-7c70ba617eecc4c0-errcode
+## ARG SOURCE_DATE_EPOCH
+## RUN find /tmp/clis-cargo-config2_0-1-34/release/deps/*-7c70ba617eecc4c0* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ## 
 ## [[stages]]
 ## name = "out-7c70ba617eecc4c0"
 ## script = """
 ## FROM scratch AS out-7c70ba617eecc4c0
-## COPY --from=dep-n-serde_json-1.0.140-7c70ba617eecc4c0 /tmp/clis-cargo-config2_0-1-34/release/deps/*-7c70ba617eecc4c0* /"""
+## COPY --link --from=dep-n-serde_json-1.0.140-7c70ba617eecc4c0 /tmp/clis-cargo-config2_0-1-34/release/deps/*-7c70ba617eecc4c0* /"""
 
 FROM scratch AS cratesio-shell-escape-0.1.5
 ADD --chmod=0664 --unpack=true --checksum=sha256:45bb67a18fa91266cc7807181f62f9178a6873bfad7dc788c42e6430db40184f \
@@ -3726,8 +3846,10 @@ RUN \
         1> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-454359939a0e8b60-stdout) \
         2> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-454359939a0e8b60-stderr >&2) \
         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-454359939a0e8b60-errcode
+ARG SOURCE_DATE_EPOCH
+RUN find /tmp/clis-cargo-config2_0-1-34/release/deps/*-454359939a0e8b60* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-454359939a0e8b60
-COPY --from=dep-n-shell-escape-0.1.5-454359939a0e8b60 /tmp/clis-cargo-config2_0-1-34/release/deps/*-454359939a0e8b60* /
+COPY --link --from=dep-n-shell-escape-0.1.5-454359939a0e8b60 /tmp/clis-cargo-config2_0-1-34/release/deps/*-454359939a0e8b60* /
 
 ## this = "454359939a0e8b60"
 ## writes = [
@@ -3787,13 +3909,15 @@ COPY --from=dep-n-shell-escape-0.1.5-454359939a0e8b60 /tmp/clis-cargo-config2_0-
 ##       rustc '--crate-name' 'shell_escape' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=bfdd76b31cb19ae4' '-C' 'extra-filename=-454359939a0e8b60' '--out-dir' '/tmp/clis-cargo-config2_0-1-34/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-cargo-config2_0-1-34/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/shell-escape-0.1.5/src/lib.rs \
 ##         1> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-454359939a0e8b60-stdout) \
 ##         2> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-454359939a0e8b60-stderr >&2) \
-##         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-454359939a0e8b60-errcode'''
+##         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-454359939a0e8b60-errcode
+## ARG SOURCE_DATE_EPOCH
+## RUN find /tmp/clis-cargo-config2_0-1-34/release/deps/*-454359939a0e8b60* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ## 
 ## [[stages]]
 ## name = "out-454359939a0e8b60"
 ## script = """
 ## FROM scratch AS out-454359939a0e8b60
-## COPY --from=dep-n-shell-escape-0.1.5-454359939a0e8b60 /tmp/clis-cargo-config2_0-1-34/release/deps/*-454359939a0e8b60* /"""
+## COPY --link --from=dep-n-shell-escape-0.1.5-454359939a0e8b60 /tmp/clis-cargo-config2_0-1-34/release/deps/*-454359939a0e8b60* /"""
 
 FROM scratch AS cratesio-static_assertions-1.1.0
 ADD --chmod=0664 --unpack=true --checksum=sha256:a2eb9349b6444b326872e140eb1cf5e7c522154d69e7a0ffb0fb81c06b37543f \
@@ -3827,8 +3951,10 @@ RUN \
         1> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-421f0f4cedfe8354-stdout) \
         2> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-421f0f4cedfe8354-stderr >&2) \
         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-421f0f4cedfe8354-errcode
+ARG SOURCE_DATE_EPOCH
+RUN find /tmp/clis-cargo-config2_0-1-34/release/deps/*-421f0f4cedfe8354* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-421f0f4cedfe8354
-COPY --from=dep-n-static_assertions-1.1.0-421f0f4cedfe8354 /tmp/clis-cargo-config2_0-1-34/release/deps/*-421f0f4cedfe8354* /
+COPY --link --from=dep-n-static_assertions-1.1.0-421f0f4cedfe8354 /tmp/clis-cargo-config2_0-1-34/release/deps/*-421f0f4cedfe8354* /
 
 ## this = "421f0f4cedfe8354"
 ## writes = [
@@ -3884,13 +4010,15 @@ COPY --from=dep-n-static_assertions-1.1.0-421f0f4cedfe8354 /tmp/clis-cargo-confi
 ##       rustc '--crate-name' 'static_assertions' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("nightly"))' '-C' 'metadata=59175ca8cf1986c5' '-C' 'extra-filename=-421f0f4cedfe8354' '--out-dir' '/tmp/clis-cargo-config2_0-1-34/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-cargo-config2_0-1-34/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/static_assertions-1.1.0/src/lib.rs \
 ##         1> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-421f0f4cedfe8354-stdout) \
 ##         2> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-421f0f4cedfe8354-stderr >&2) \
-##         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-421f0f4cedfe8354-errcode'''
+##         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-421f0f4cedfe8354-errcode
+## ARG SOURCE_DATE_EPOCH
+## RUN find /tmp/clis-cargo-config2_0-1-34/release/deps/*-421f0f4cedfe8354* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ## 
 ## [[stages]]
 ## name = "out-421f0f4cedfe8354"
 ## script = """
 ## FROM scratch AS out-421f0f4cedfe8354
-## COPY --from=dep-n-static_assertions-1.1.0-421f0f4cedfe8354 /tmp/clis-cargo-config2_0-1-34/release/deps/*-421f0f4cedfe8354* /"""
+## COPY --link --from=dep-n-static_assertions-1.1.0-421f0f4cedfe8354 /tmp/clis-cargo-config2_0-1-34/release/deps/*-421f0f4cedfe8354* /"""
 
 FROM scratch AS cratesio-fastrand-2.3.0
 ADD --chmod=0664 --unpack=true --checksum=sha256:37909eebbb50d72f9059c3b6d82c0463f2ff062c9e95845c43a6c9c0355411be \
@@ -3924,8 +4052,10 @@ RUN \
         1> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-5f75ad2d1e8c435a-stdout) \
         2> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-5f75ad2d1e8c435a-stderr >&2) \
         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-5f75ad2d1e8c435a-errcode
+ARG SOURCE_DATE_EPOCH
+RUN find /tmp/clis-cargo-config2_0-1-34/release/deps/*-5f75ad2d1e8c435a* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-5f75ad2d1e8c435a
-COPY --from=dep-n-fastrand-2.3.0-5f75ad2d1e8c435a /tmp/clis-cargo-config2_0-1-34/release/deps/*-5f75ad2d1e8c435a* /
+COPY --link --from=dep-n-fastrand-2.3.0-5f75ad2d1e8c435a /tmp/clis-cargo-config2_0-1-34/release/deps/*-5f75ad2d1e8c435a* /
 
 ## this = "5f75ad2d1e8c435a"
 ## writes = [
@@ -3981,13 +4111,15 @@ COPY --from=dep-n-fastrand-2.3.0-5f75ad2d1e8c435a /tmp/clis-cargo-config2_0-1-34
 ##       rustc '--crate-name' 'fastrand' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="alloc"' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "default", "getrandom", "js", "std"))' '-C' 'metadata=39b9fc9111293397' '-C' 'extra-filename=-5f75ad2d1e8c435a' '--out-dir' '/tmp/clis-cargo-config2_0-1-34/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-cargo-config2_0-1-34/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/fastrand-2.3.0/src/lib.rs \
 ##         1> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-5f75ad2d1e8c435a-stdout) \
 ##         2> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-5f75ad2d1e8c435a-stderr >&2) \
-##         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-5f75ad2d1e8c435a-errcode'''
+##         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-5f75ad2d1e8c435a-errcode
+## ARG SOURCE_DATE_EPOCH
+## RUN find /tmp/clis-cargo-config2_0-1-34/release/deps/*-5f75ad2d1e8c435a* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ## 
 ## [[stages]]
 ## name = "out-5f75ad2d1e8c435a"
 ## script = """
 ## FROM scratch AS out-5f75ad2d1e8c435a
-## COPY --from=dep-n-fastrand-2.3.0-5f75ad2d1e8c435a /tmp/clis-cargo-config2_0-1-34/release/deps/*-5f75ad2d1e8c435a* /"""
+## COPY --link --from=dep-n-fastrand-2.3.0-5f75ad2d1e8c435a /tmp/clis-cargo-config2_0-1-34/release/deps/*-5f75ad2d1e8c435a* /"""
 
 FROM scratch AS cratesio-once_cell-1.21.3
 ADD --chmod=0664 --unpack=true --checksum=sha256:42f5e15c9953c5e4ccceeb2e7382a716482c34515315f7b03532b8b4e8393d2d \
@@ -4021,8 +4153,10 @@ RUN \
         1> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-44bb68212ecec348-stdout) \
         2> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-44bb68212ecec348-stderr >&2) \
         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-44bb68212ecec348-errcode
+ARG SOURCE_DATE_EPOCH
+RUN find /tmp/clis-cargo-config2_0-1-34/release/deps/*-44bb68212ecec348* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-44bb68212ecec348
-COPY --from=dep-n-once_cell-1.21.3-44bb68212ecec348 /tmp/clis-cargo-config2_0-1-34/release/deps/*-44bb68212ecec348* /
+COPY --link --from=dep-n-once_cell-1.21.3-44bb68212ecec348 /tmp/clis-cargo-config2_0-1-34/release/deps/*-44bb68212ecec348* /
 
 ## this = "44bb68212ecec348"
 ## writes = [
@@ -4078,13 +4212,15 @@ COPY --from=dep-n-once_cell-1.21.3-44bb68212ecec348 /tmp/clis-cargo-config2_0-1-
 ##       rustc '--crate-name' 'once_cell' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="alloc"' '--cfg' 'feature="race"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "atomic-polyfill", "critical-section", "default", "parking_lot", "portable-atomic", "race", "std", "unstable"))' '-C' 'metadata=3e71095d797b65fb' '-C' 'extra-filename=-44bb68212ecec348' '--out-dir' '/tmp/clis-cargo-config2_0-1-34/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-cargo-config2_0-1-34/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/once_cell-1.21.3/src/lib.rs \
 ##         1> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-44bb68212ecec348-stdout) \
 ##         2> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-44bb68212ecec348-stderr >&2) \
-##         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-44bb68212ecec348-errcode'''
+##         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-44bb68212ecec348-errcode
+## ARG SOURCE_DATE_EPOCH
+## RUN find /tmp/clis-cargo-config2_0-1-34/release/deps/*-44bb68212ecec348* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ## 
 ## [[stages]]
 ## name = "out-44bb68212ecec348"
 ## script = """
 ## FROM scratch AS out-44bb68212ecec348
-## COPY --from=dep-n-once_cell-1.21.3-44bb68212ecec348 /tmp/clis-cargo-config2_0-1-34/release/deps/*-44bb68212ecec348* /"""
+## COPY --link --from=dep-n-once_cell-1.21.3-44bb68212ecec348 /tmp/clis-cargo-config2_0-1-34/release/deps/*-44bb68212ecec348* /"""
 
 FROM scratch AS cratesio-bitflags-2.9.1
 ADD --chmod=0664 --unpack=true --checksum=sha256:1b8e56985ec62d17e9c1001dc89c88ecd7dc08e47eba5ec7c29c7b5eeecde967 \
@@ -4118,8 +4254,10 @@ RUN \
         1> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-d53ce0040874ecbb-stdout) \
         2> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-d53ce0040874ecbb-stderr >&2) \
         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-d53ce0040874ecbb-errcode
+ARG SOURCE_DATE_EPOCH
+RUN find /tmp/clis-cargo-config2_0-1-34/release/deps/*-d53ce0040874ecbb* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-d53ce0040874ecbb
-COPY --from=dep-n-bitflags-2.9.1-d53ce0040874ecbb /tmp/clis-cargo-config2_0-1-34/release/deps/*-d53ce0040874ecbb* /
+COPY --link --from=dep-n-bitflags-2.9.1-d53ce0040874ecbb /tmp/clis-cargo-config2_0-1-34/release/deps/*-d53ce0040874ecbb* /
 
 ## this = "d53ce0040874ecbb"
 ## writes = [
@@ -4175,13 +4313,15 @@ COPY --from=dep-n-bitflags-2.9.1-d53ce0040874ecbb /tmp/clis-cargo-config2_0-1-34
 ##       rustc '--crate-name' 'bitflags' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("arbitrary", "bytemuck", "compiler_builtins", "core", "example_generated", "rustc-dep-of-std", "serde", "std"))' '-C' 'metadata=ca8b5dd5992429f4' '-C' 'extra-filename=-d53ce0040874ecbb' '--out-dir' '/tmp/clis-cargo-config2_0-1-34/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-cargo-config2_0-1-34/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bitflags-2.9.1/src/lib.rs \
 ##         1> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-d53ce0040874ecbb-stdout) \
 ##         2> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-d53ce0040874ecbb-stderr >&2) \
-##         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-d53ce0040874ecbb-errcode'''
+##         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-d53ce0040874ecbb-errcode
+## ARG SOURCE_DATE_EPOCH
+## RUN find /tmp/clis-cargo-config2_0-1-34/release/deps/*-d53ce0040874ecbb* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ## 
 ## [[stages]]
 ## name = "out-d53ce0040874ecbb"
 ## script = """
 ## FROM scratch AS out-d53ce0040874ecbb
-## COPY --from=dep-n-bitflags-2.9.1-d53ce0040874ecbb /tmp/clis-cargo-config2_0-1-34/release/deps/*-d53ce0040874ecbb* /"""
+## COPY --link --from=dep-n-bitflags-2.9.1-d53ce0040874ecbb /tmp/clis-cargo-config2_0-1-34/release/deps/*-d53ce0040874ecbb* /"""
 
 FROM scratch AS cratesio-linux-raw-sys-0.9.4
 ADD --chmod=0664 --unpack=true --checksum=sha256:cd945864f07fe9f5371a27ad7b52a172b4b499999f1d97574c9fa68373937e12 \
@@ -4215,8 +4355,10 @@ RUN \
         1> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-84721aa7d977aed9-stdout) \
         2> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-84721aa7d977aed9-stderr >&2) \
         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-84721aa7d977aed9-errcode
+ARG SOURCE_DATE_EPOCH
+RUN find /tmp/clis-cargo-config2_0-1-34/release/deps/*-84721aa7d977aed9* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-84721aa7d977aed9
-COPY --from=dep-n-linux-raw-sys-0.9.4-84721aa7d977aed9 /tmp/clis-cargo-config2_0-1-34/release/deps/*-84721aa7d977aed9* /
+COPY --link --from=dep-n-linux-raw-sys-0.9.4-84721aa7d977aed9 /tmp/clis-cargo-config2_0-1-34/release/deps/*-84721aa7d977aed9* /
 
 ## this = "84721aa7d977aed9"
 ## writes = [
@@ -4272,13 +4414,15 @@ COPY --from=dep-n-linux-raw-sys-0.9.4-84721aa7d977aed9 /tmp/clis-cargo-config2_0
 ##       rustc '--crate-name' 'linux_raw_sys' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--warn' 'unexpected_cfgs' '--check-cfg' 'cfg(target_arch, values("xtensa"))' '--cfg' 'feature="elf"' '--cfg' 'feature="errno"' '--cfg' 'feature="general"' '--cfg' 'feature="ioctl"' '--cfg' 'feature="no_std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("bootparam", "btrfs", "compiler_builtins", "core", "default", "elf", "elf_uapi", "errno", "general", "if_arp", "if_ether", "if_packet", "image", "io_uring", "ioctl", "landlock", "loop_device", "mempolicy", "net", "netlink", "no_std", "prctl", "ptrace", "rustc-dep-of-std", "std", "system", "xdp"))' '-C' 'metadata=61836029ffcdeb9b' '-C' 'extra-filename=-84721aa7d977aed9' '--out-dir' '/tmp/clis-cargo-config2_0-1-34/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-cargo-config2_0-1-34/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/linux-raw-sys-0.9.4/src/lib.rs \
 ##         1> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-84721aa7d977aed9-stdout) \
 ##         2> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-84721aa7d977aed9-stderr >&2) \
-##         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-84721aa7d977aed9-errcode'''
+##         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-84721aa7d977aed9-errcode
+## ARG SOURCE_DATE_EPOCH
+## RUN find /tmp/clis-cargo-config2_0-1-34/release/deps/*-84721aa7d977aed9* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ## 
 ## [[stages]]
 ## name = "out-84721aa7d977aed9"
 ## script = """
 ## FROM scratch AS out-84721aa7d977aed9
-## COPY --from=dep-n-linux-raw-sys-0.9.4-84721aa7d977aed9 /tmp/clis-cargo-config2_0-1-34/release/deps/*-84721aa7d977aed9* /"""
+## COPY --link --from=dep-n-linux-raw-sys-0.9.4-84721aa7d977aed9 /tmp/clis-cargo-config2_0-1-34/release/deps/*-84721aa7d977aed9* /"""
 
 FROM scratch AS cratesio-rustix-1.0.7
 ADD --chmod=0664 --unpack=true --checksum=sha256:c71e83d6afe7ff64890ec6b71d6a69bb8a610ab78ce364b3352876bb4c801266 \
@@ -4317,8 +4461,10 @@ RUN \
         1> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-584f0556744e746d-stdout) \
         2> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-584f0556744e746d-stderr >&2) \
         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-584f0556744e746d-errcode
+ARG SOURCE_DATE_EPOCH
+RUN find /tmp/clis-cargo-config2_0-1-34/release/deps/*-584f0556744e746d* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-584f0556744e746d
-COPY --from=dep-n-rustix-1.0.7-584f0556744e746d /tmp/clis-cargo-config2_0-1-34/release/deps/*-584f0556744e746d* /
+COPY --link --from=dep-n-rustix-1.0.7-584f0556744e746d /tmp/clis-cargo-config2_0-1-34/release/deps/*-584f0556744e746d* /
 
 ## this = "584f0556744e746d"
 ## deps = [
@@ -4403,13 +4549,15 @@ COPY --from=dep-n-rustix-1.0.7-584f0556744e746d /tmp/clis-cargo-config2_0-1-34/r
 ##       rustc '--crate-name' 'rustix' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--warn' 'unexpected_cfgs' '--check-cfg' 'cfg(alloc_c_string)' '--check-cfg' 'cfg(alloc_ffi)' '--check-cfg' 'cfg(apple)' '--check-cfg' 'cfg(asm_experimental_arch)' '--check-cfg' 'cfg(bsd)' '--check-cfg' 'cfg(core_c_str)' '--check-cfg' 'cfg(core_ffi_c)' '--check-cfg' 'cfg(core_intrinsics)' '--check-cfg' 'cfg(criterion)' '--check-cfg' 'cfg(document_experimental_runtime_api)' '--check-cfg' 'cfg(error_in_core)' '--check-cfg' 'cfg(fix_y2038)' '--check-cfg' 'cfg(freebsdlike)' '--check-cfg' 'cfg(libc)' '--check-cfg' 'cfg(linux_kernel)' '--check-cfg' 'cfg(linux_like)' '--check-cfg' 'cfg(linux_raw)' '--check-cfg' 'cfg(netbsdlike)' '--check-cfg' 'cfg(rustc_attrs)' '--check-cfg' 'cfg(solarish)' '--check-cfg' 'cfg(staged_api)' '--check-cfg' 'cfg(static_assertions)' '--check-cfg' 'cfg(thumb_mode)' '--check-cfg' 'cfg(wasi)' '--check-cfg' 'cfg(wasi_ext)' '--check-cfg' 'cfg(wasip2)' '--check-cfg' 'cfg(target_arch, values("xtensa"))' '--check-cfg' 'cfg(target_os, values("cygwin"))' '--cfg' 'feature="alloc"' '--cfg' 'feature="default"' '--cfg' 'feature="fs"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("all-apis", "alloc", "compiler_builtins", "core", "default", "event", "fs", "io_uring", "libc", "libc_errno", "linux_4_11", "linux_5_1", "linux_5_11", "linux_latest", "mm", "mount", "net", "param", "pipe", "process", "pty", "rand", "runtime", "rustc-dep-of-std", "rustc-std-workspace-alloc", "shm", "std", "stdio", "system", "termios", "thread", "time", "try_close", "use-explicitly-provided-auxv", "use-libc", "use-libc-auxv"))' '-C' 'metadata=1305ce0e2e0ade1c' '-C' 'extra-filename=-584f0556744e746d' '--out-dir' '/tmp/clis-cargo-config2_0-1-34/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-cargo-config2_0-1-34/release/deps' '--extern' 'bitflags=/tmp/clis-cargo-config2_0-1-34/release/deps/libbitflags-d53ce0040874ecbb.rmeta' '--extern' 'linux_raw_sys=/tmp/clis-cargo-config2_0-1-34/release/deps/liblinux_raw_sys-84721aa7d977aed9.rmeta' '--cap-lints' 'warn' '--cfg' 'static_assertions' '--cfg' 'linux_raw' '--cfg' 'linux_like' '--cfg' 'linux_kernel' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustix-1.0.7/src/lib.rs \
 ##         1> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-584f0556744e746d-stdout) \
 ##         2> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-584f0556744e746d-stderr >&2) \
-##         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-584f0556744e746d-errcode'''
+##         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-584f0556744e746d-errcode
+## ARG SOURCE_DATE_EPOCH
+## RUN find /tmp/clis-cargo-config2_0-1-34/release/deps/*-584f0556744e746d* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ## 
 ## [[stages]]
 ## name = "out-584f0556744e746d"
 ## script = """
 ## FROM scratch AS out-584f0556744e746d
-## COPY --from=dep-n-rustix-1.0.7-584f0556744e746d /tmp/clis-cargo-config2_0-1-34/release/deps/*-584f0556744e746d* /"""
+## COPY --link --from=dep-n-rustix-1.0.7-584f0556744e746d /tmp/clis-cargo-config2_0-1-34/release/deps/*-584f0556744e746d* /"""
 
 FROM scratch AS cratesio-tempfile-3.20.0
 ADD --chmod=0664 --unpack=true --checksum=sha256:e8a64e3985349f2441a1a9ef0b853f869006c3855f2cda6862a94d26ebb9d6a1 \
@@ -4453,8 +4601,10 @@ RUN \
         1> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-ba228c019d272069-stdout) \
         2> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-ba228c019d272069-stderr >&2) \
         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-ba228c019d272069-errcode
+ARG SOURCE_DATE_EPOCH
+RUN find /tmp/clis-cargo-config2_0-1-34/release/deps/*-ba228c019d272069* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-ba228c019d272069
-COPY --from=dep-n-tempfile-3.20.0-ba228c019d272069 /tmp/clis-cargo-config2_0-1-34/release/deps/*-ba228c019d272069* /
+COPY --link --from=dep-n-tempfile-3.20.0-ba228c019d272069 /tmp/clis-cargo-config2_0-1-34/release/deps/*-ba228c019d272069* /
 
 ## this = "ba228c019d272069"
 ## deps = [
@@ -4574,13 +4724,15 @@ COPY --from=dep-n-tempfile-3.20.0-ba228c019d272069 /tmp/clis-cargo-config2_0-1-3
 ##       rustc '--crate-name' 'tempfile' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "getrandom", "nightly", "unstable-windows-keep-open-tempfile"))' '-C' 'metadata=3330b2ad513d6f63' '-C' 'extra-filename=-ba228c019d272069' '--out-dir' '/tmp/clis-cargo-config2_0-1-34/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-cargo-config2_0-1-34/release/deps' '--extern' 'fastrand=/tmp/clis-cargo-config2_0-1-34/release/deps/libfastrand-5f75ad2d1e8c435a.rmeta' '--extern' 'once_cell=/tmp/clis-cargo-config2_0-1-34/release/deps/libonce_cell-44bb68212ecec348.rmeta' '--extern' 'rustix=/tmp/clis-cargo-config2_0-1-34/release/deps/librustix-584f0556744e746d.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/tempfile-3.20.0/src/lib.rs \
 ##         1> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-ba228c019d272069-stdout) \
 ##         2> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-ba228c019d272069-stderr >&2) \
-##         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-ba228c019d272069-errcode'''
+##         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-ba228c019d272069-errcode
+## ARG SOURCE_DATE_EPOCH
+## RUN find /tmp/clis-cargo-config2_0-1-34/release/deps/*-ba228c019d272069* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ## 
 ## [[stages]]
 ## name = "out-ba228c019d272069"
 ## script = """
 ## FROM scratch AS out-ba228c019d272069
-## COPY --from=dep-n-tempfile-3.20.0-ba228c019d272069 /tmp/clis-cargo-config2_0-1-34/release/deps/*-ba228c019d272069* /"""
+## COPY --link --from=dep-n-tempfile-3.20.0-ba228c019d272069 /tmp/clis-cargo-config2_0-1-34/release/deps/*-ba228c019d272069* /"""
 
 FROM scratch AS cratesio-toml-0.8.23
 ADD --chmod=0664 --unpack=true --checksum=sha256:dc1beb996b9d83529a9e75c17a1686767d148d70663143c7854d8b4a09ced362 \
@@ -4632,8 +4784,10 @@ RUN \
         1> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-2bea4b835d7dad2d-stdout) \
         2> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-2bea4b835d7dad2d-stderr >&2) \
         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-2bea4b835d7dad2d-errcode
+ARG SOURCE_DATE_EPOCH
+RUN find /tmp/clis-cargo-config2_0-1-34/release/deps/*-2bea4b835d7dad2d* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-2bea4b835d7dad2d
-COPY --from=dep-n-toml-0.8.23-2bea4b835d7dad2d /tmp/clis-cargo-config2_0-1-34/release/deps/*-2bea4b835d7dad2d* /
+COPY --link --from=dep-n-toml-0.8.23-2bea4b835d7dad2d /tmp/clis-cargo-config2_0-1-34/release/deps/*-2bea4b835d7dad2d* /
 
 ## this = "2bea4b835d7dad2d"
 ## deps = [
@@ -4801,13 +4955,15 @@ COPY --from=dep-n-toml-0.8.23-2bea4b835d7dad2d /tmp/clis-cargo-config2_0-1-34/re
 ##       rustc '--crate-name' 'toml' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--warn' 'rust_2018_idioms' '--warn' 'clippy::zero_sized_map_values' '--warn' 'clippy::wildcard_imports' '--warn' 'clippy::verbose_file_reads' '--warn' 'unused_qualifications' '--warn' 'unused_macro_rules' '--warn' 'unused_lifetimes' '--warn' 'unsafe_op_in_unsafe_fn' '--warn' 'unreachable_pub' '--allow' 'unnameable_types' '--warn' 'clippy::uninlined_format_args' '--warn' 'clippy::trait_duplication_in_bounds' '--warn' 'clippy::todo' '--warn' 'clippy::string_to_string' '--warn' 'clippy::string_lit_as_bytes' '--warn' 'clippy::string_add_assign' '--warn' 'clippy::string_add' '--warn' 'clippy::str_to_string' '--warn' 'clippy::semicolon_if_nothing_returned' '--warn' 'clippy::self_named_module_files' '--warn' 'clippy::same_functions_in_if_condition' '--allow' 'clippy::result_large_err' '--warn' 'clippy::rest_pat_in_fully_bound_structs' '--warn' 'clippy::ref_option_ref' '--warn' 'clippy::redundant_feature_names' '--warn' 'clippy::rc_mutex' '--warn' 'clippy::ptr_as_ptr' '--warn' 'clippy::path_buf_push_overwrite' '--warn' 'clippy::negative_feature_names' '--warn' 'clippy::needless_for_each' '--allow' 'clippy::needless_continue' '--warn' 'clippy::mutex_integer' '--warn' 'clippy::mem_forget' '--warn' 'clippy::macro_use_imports' '--warn' 'clippy::lossy_float_literal' '--warn' 'clippy::linkedlist' '--allow' 'clippy::let_and_return' '--warn' 'clippy::large_types_passed_by_value' '--warn' 'clippy::large_stack_arrays' '--warn' 'clippy::large_digit_groups' '--warn' 'clippy::invalid_upcast_comparisons' '--warn' 'clippy::infinite_loop' '--warn' 'clippy::inefficient_to_string' '--warn' 'clippy::inconsistent_struct_constructor' '--warn' 'clippy::imprecise_flops' '--warn' 'clippy::implicit_clone' '--allow' 'clippy::if_same_then_else' '--warn' 'clippy::from_iter_instead_of_collect' '--warn' 'clippy::fn_params_excessive_bools' '--warn' 'clippy::float_cmp_const' '--warn' 'clippy::flat_map_option' '--warn' 'clippy::filter_map_next' '--warn' 'clippy::fallible_impl_from' '--warn' 'clippy::explicit_into_iter_loop' '--warn' 'clippy::explicit_deref_methods' '--warn' 'clippy::expl_impl_clone_on_copy' '--warn' 'clippy::enum_glob_use' '--warn' 'clippy::empty_enum' '--warn' 'clippy::doc_markdown' '--warn' 'clippy::debug_assert_with_mut_call' '--warn' 'clippy::dbg_macro' '--warn' 'clippy::create_dir' '--allow' 'clippy::collapsible_else_if' '--warn' 'clippy::checked_conversions' '--allow' 'clippy::branches_sharing_code' '--allow' 'clippy::bool_assert_comparison' '--cfg' 'feature="default"' '--cfg' 'feature="display"' '--cfg' 'feature="parse"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "display", "indexmap", "parse", "preserve_order", "unbounded"))' '-C' 'metadata=f9ae29618fede2be' '-C' 'extra-filename=-2bea4b835d7dad2d' '--out-dir' '/tmp/clis-cargo-config2_0-1-34/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-cargo-config2_0-1-34/release/deps' '--extern' 'serde=/tmp/clis-cargo-config2_0-1-34/release/deps/libserde-b6c6cf1c11688574.rmeta' '--extern' 'serde_spanned=/tmp/clis-cargo-config2_0-1-34/release/deps/libserde_spanned-d88bc6011818f513.rmeta' '--extern' 'toml_datetime=/tmp/clis-cargo-config2_0-1-34/release/deps/libtoml_datetime-23be505440c57a38.rmeta' '--extern' 'toml_edit=/tmp/clis-cargo-config2_0-1-34/release/deps/libtoml_edit-c1e542f0979b274a.rmeta' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/toml-0.8.23/src/lib.rs \
 ##         1> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-2bea4b835d7dad2d-stdout) \
 ##         2> >(tee    /tmp/clis-cargo-config2_0-1-34/release/deps/out-2bea4b835d7dad2d-stderr >&2) \
-##         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-2bea4b835d7dad2d-errcode'''
+##         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/deps/out-2bea4b835d7dad2d-errcode
+## ARG SOURCE_DATE_EPOCH
+## RUN find /tmp/clis-cargo-config2_0-1-34/release/deps/*-2bea4b835d7dad2d* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ## 
 ## [[stages]]
 ## name = "out-2bea4b835d7dad2d"
 ## script = """
 ## FROM scratch AS out-2bea4b835d7dad2d
-## COPY --from=dep-n-toml-0.8.23-2bea4b835d7dad2d /tmp/clis-cargo-config2_0-1-34/release/deps/*-2bea4b835d7dad2d* /"""
+## COPY --link --from=dep-n-toml-0.8.23-2bea4b835d7dad2d /tmp/clis-cargo-config2_0-1-34/release/deps/*-2bea4b835d7dad2d* /"""
 
 
 FROM rust-base AS dep-n-cargo-config2-0.1.34-169636d1f2554c51
@@ -4880,8 +5036,10 @@ RUN \
         1> >(tee    /tmp/clis-cargo-config2_0-1-34/release/examples/out-169636d1f2554c51-stdout) \
         2> >(tee    /tmp/clis-cargo-config2_0-1-34/release/examples/out-169636d1f2554c51-stderr >&2) \
         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/examples/out-169636d1f2554c51-errcode
+ARG SOURCE_DATE_EPOCH
+RUN find /tmp/clis-cargo-config2_0-1-34/release/examples/*-169636d1f2554c51* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-169636d1f2554c51
-COPY --from=dep-n-cargo-config2-0.1.34-169636d1f2554c51 /tmp/clis-cargo-config2_0-1-34/release/examples/*-169636d1f2554c51* /
+COPY --link --from=dep-n-cargo-config2-0.1.34-169636d1f2554c51 /tmp/clis-cargo-config2_0-1-34/release/examples/*-169636d1f2554c51* /
 
 # Pipe this file to (not portable due to usage of local build contexts):
 # DOCKER_BUILDKIT="1" \
@@ -5226,13 +5384,15 @@ COPY --from=dep-n-cargo-config2-0.1.34-169636d1f2554c51 /tmp/clis-cargo-config2_
 ##       rustc '--crate-name' 'get' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'bin' '--emit' 'dep-info,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--warn' 'clippy::unused_trait_names' '--warn' 'unsafe_op_in_unsafe_fn' '--warn' 'unreachable_pub' '--warn' 'unnameable_types' '--warn' 'unexpected_cfgs' '--warn' 'clippy::undocumented_unsafe_blocks' '--warn' 'clippy::transmute_undefined_repr' '--warn' 'clippy::trailing_empty_array' '--warn' 'single_use_lifetimes' '--warn' 'rust_2018_idioms' '--warn' 'clippy::pedantic' '--warn' 'non_ascii_idents' '--warn' 'clippy::inline_asm_x86_att_syntax' '--warn' 'improper_ctypes_definitions' '--warn' 'improper_ctypes' '--warn' 'deprecated_safe' '--warn' 'clippy::default_union_representation' '--warn' 'clippy::as_underscore' '--warn' 'clippy::as_ptr_cast_mut' '--warn' 'clippy::all' '--allow' 'clippy::unreadable_literal' '--allow' 'clippy::type_complexity' '--allow' 'clippy::too_many_lines' '--allow' 'clippy::too_many_arguments' '--allow' 'clippy::struct_field_names' '--allow' 'clippy::struct_excessive_bools' '--allow' 'clippy::single_match_else' '--allow' 'clippy::single_match' '--allow' 'clippy::similar_names' '--allow' 'clippy::range_plus_one' '--allow' 'clippy::nonminimal_bool' '--allow' 'clippy::naive_bytecount' '--allow' 'clippy::module_name_repetitions' '--allow' 'clippy::missing_errors_doc' '--allow' 'clippy::manual_range_contains' '--allow' 'clippy::manual_assert' '--allow' 'clippy::lint_groups_priority' '--allow' 'clippy::incompatible_msrv' '--allow' 'clippy::float_cmp' '--allow' 'clippy::doc_markdown' '--allow' 'clippy::declare_interior_mutable_const' '--allow' 'clippy::cast_lossless' '--allow' 'clippy::borrow_as_ptr' '--allow' 'clippy::bool_assert_comparison' '--check-cfg' 'cfg(careful)' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=30c076b081b9b0d5' '-C' 'extra-filename=-169636d1f2554c51' '--out-dir' '/tmp/clis-cargo-config2_0-1-34/release/examples' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-cargo-config2_0-1-34/release/deps' '--extern' 'anyhow=/tmp/clis-cargo-config2_0-1-34/release/deps/libanyhow-2510ffd6966eb36d.rlib' '--extern' 'build_context=/tmp/clis-cargo-config2_0-1-34/release/deps/libbuild_context-438e025c67a2840e.rlib' '--extern' 'cargo_config2=/tmp/clis-cargo-config2_0-1-34/release/deps/libcargo_config2-e6fea3eab43aaf67.rlib' '--extern' 'clap=/tmp/clis-cargo-config2_0-1-34/release/deps/libclap-fa9f135a39baa87b.rlib' '--extern' 'fs_err=/tmp/clis-cargo-config2_0-1-34/release/deps/libfs_err-e710e1ebbad36529.rlib' '--extern' 'lexopt=/tmp/clis-cargo-config2_0-1-34/release/deps/liblexopt-08712be55b44d56f.rlib' '--extern' 'rustversion=/tmp/clis-cargo-config2_0-1-34/release/deps/librustversion-7ffc156b99c00502.so' '--extern' 'serde=/tmp/clis-cargo-config2_0-1-34/release/deps/libserde-b6c6cf1c11688574.rlib' '--extern' 'serde_derive=/tmp/clis-cargo-config2_0-1-34/release/deps/libserde_derive-a51e2455af527849.so' '--extern' 'serde_json=/tmp/clis-cargo-config2_0-1-34/release/deps/libserde_json-7c70ba617eecc4c0.rlib' '--extern' 'shell_escape=/tmp/clis-cargo-config2_0-1-34/release/deps/libshell_escape-454359939a0e8b60.rlib' '--extern' 'static_assertions=/tmp/clis-cargo-config2_0-1-34/release/deps/libstatic_assertions-421f0f4cedfe8354.rlib' '--extern' 'tempfile=/tmp/clis-cargo-config2_0-1-34/release/deps/libtempfile-ba228c019d272069.rlib' '--extern' 'toml=/tmp/clis-cargo-config2_0-1-34/release/deps/libtoml-2bea4b835d7dad2d.rlib' '--extern' 'toml_edit=/tmp/clis-cargo-config2_0-1-34/release/deps/libtoml_edit-c1e542f0979b274a.rlib' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/cargo-config2-0.1.34/examples/get.rs \
 ##         1> >(tee    /tmp/clis-cargo-config2_0-1-34/release/examples/out-169636d1f2554c51-stdout) \
 ##         2> >(tee    /tmp/clis-cargo-config2_0-1-34/release/examples/out-169636d1f2554c51-stderr >&2) \
-##         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/examples/out-169636d1f2554c51-errcode'''
+##         || echo $? >/tmp/clis-cargo-config2_0-1-34/release/examples/out-169636d1f2554c51-errcode
+## ARG SOURCE_DATE_EPOCH
+## RUN find /tmp/clis-cargo-config2_0-1-34/release/examples/*-169636d1f2554c51* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ## 
 ## [[stages]]
 ## name = "out-169636d1f2554c51"
 ## script = """
 ## FROM scratch AS out-169636d1f2554c51
-## COPY --from=dep-n-cargo-config2-0.1.34-169636d1f2554c51 /tmp/clis-cargo-config2_0-1-34/release/examples/*-169636d1f2554c51* /"""
+## COPY --link --from=dep-n-cargo-config2-0.1.34-169636d1f2554c51 /tmp/clis-cargo-config2_0-1-34/release/examples/*-169636d1f2554c51* /"""
 
 FROM scratch
-COPY --from=out-169636d1f2554c51 /get-169636d1f2554c51 /get
+COPY --link --from=out-169636d1f2554c51 /get-169636d1f2554c51 /get
