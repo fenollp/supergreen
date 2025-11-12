@@ -222,8 +222,90 @@ as_env() {
     # stu@*) envvars+=(CARGOGREEN_SET_ENVS=RING_CORE_PREFIX) ;;
     *) ;;
   esac
+
+  if [[ -n "${CARGOGREEN_LOG_PATH:-}" ]]; then
+    echo Using CARGOGREEN_LOG_PATH
+    envvars+=(CARGOGREEN_LOG_PATH="$CARGOGREEN_LOG_PATH")
+  fi
+  if [[ -n "${CARGOGREEN_LOG:-}" ]]; then
+    echo Using CARGOGREEN_LOG
+    envvars+=(CARGOGREEN_LOG="$CARGOGREEN_LOG")
+  fi
+  if [[ -n "${CARGOGREEN_LOG_STYLE:-}" ]]; then
+    echo Using CARGOGREEN_LOG_STYLE
+    envvars+=(CARGOGREEN_LOG_STYLE="$CARGOGREEN_LOG_STYLE")
+  fi
+  if [[ -n "${CARGOGREEN_RUNNER:-}" ]]; then
+    echo Using CARGOGREEN_RUNNER
+    envvars+=(CARGOGREEN_RUNNER="$CARGOGREEN_RUNNER")
+  fi
+  if [[ -n "${BUILDX_BUILDER:-}" ]]; then
+    echo Using BUILDX_BUILDER
+    envvars+=(BUILDX_BUILDER="$BUILDX_BUILDER")
+  fi
+  if [[ -n "${CARGOGREEN_BUILDER_IMAGE:-}" ]]; then
+    echo Using CARGOGREEN_BUILDER_IMAGE
+    envvars+=(CARGOGREEN_BUILDER_IMAGE="$CARGOGREEN_BUILDER_IMAGE")
+  fi
+  if [[ -n "${CARGOGREEN_SYNTAX_IMAGE:-}" ]]; then
+    echo Using CARGOGREEN_SYNTAX_IMAGE
+    envvars+=(CARGOGREEN_SYNTAX_IMAGE="$CARGOGREEN_SYNTAX_IMAGE")
+  fi
+  if [[ -n "${CARGOGREEN_REGISTRY_MIRRORS:-}" ]]; then
+    echo Using CARGOGREEN_REGISTRY_MIRRORS
+    envvars+=(CARGOGREEN_REGISTRY_MIRRORS="$CARGOGREEN_REGISTRY_MIRRORS")
+  fi
   if [[ -n "${CARGOGREEN_CACHE_IMAGES:-}" ]]; then
+    echo Using CARGOGREEN_CACHE_IMAGES
     envvars+=(CARGOGREEN_CACHE_IMAGES="$CARGOGREEN_CACHE_IMAGES")
+  fi
+  if [[ -n "${CARGOGREEN_CACHE_FROM_IMAGES:-}" ]]; then
+    echo Using CARGOGREEN_CACHE_FROM_IMAGES
+    envvars+=(CARGOGREEN_CACHE_FROM_IMAGES="$CARGOGREEN_CACHE_FROM_IMAGES")
+  fi
+  if [[ -n "${CARGOGREEN_CACHE_TO_IMAGES:-}" ]]; then
+    echo Using CARGOGREEN_CACHE_TO_IMAGES
+    envvars+=(CARGOGREEN_CACHE_TO_IMAGES="$CARGOGREEN_CACHE_TO_IMAGES")
+  fi
+  if [[ -n "${CARGOGREEN_FINAL_PATH:-}" ]]; then
+    echo Using CARGOGREEN_FINAL_PATH
+    envvars+=(CARGOGREEN_FINAL_PATH="$CARGOGREEN_FINAL_PATH")
+  fi
+  if [[ -n "${CARGOGREEN_FINAL_PATH_NONPRIMARY:-}" ]]; then
+    echo Using CARGOGREEN_FINAL_PATH_NONPRIMARY
+    envvars+=(CARGOGREEN_FINAL_PATH_NONPRIMARY="$CARGOGREEN_FINAL_PATH_NONPRIMARY")
+  fi
+  if [[ -n "${CARGOGREEN_BASE_IMAGE:-}" ]]; then
+    echo Using CARGOGREEN_BASE_IMAGE
+    envvars+=(CARGOGREEN_BASE_IMAGE="$CARGOGREEN_BASE_IMAGE")
+  fi
+  if [[ -n "${CARGOGREEN_SET_ENVS:-}" ]]; then
+    echo Using CARGOGREEN_SET_ENVS
+    envvars+=(CARGOGREEN_SET_ENVS="$CARGOGREEN_SET_ENVS")
+  fi
+  if [[ -n "${CARGOGREEN_BASE_IMAGE_INLINE:-}" ]]; then
+    echo Using CARGOGREEN_BASE_IMAGE_INLINE
+    envvars+=(CARGOGREEN_BASE_IMAGE_INLINE="$CARGOGREEN_BASE_IMAGE_INLINE")
+  fi
+  if [[ -n "${CARGOGREEN_WITH_NETWORK:-}" ]]; then
+    echo Using CARGOGREEN_WITH_NETWORK
+    envvars+=(CARGOGREEN_WITH_NETWORK="$CARGOGREEN_WITH_NETWORK")
+  fi
+  if [[ -n "${CARGOGREEN_ADD_APT:-}" ]]; then
+    echo Using CARGOGREEN_ADD_APT
+    envvars+=(CARGOGREEN_ADD_APT="$CARGOGREEN_ADD_APT")
+  fi
+  if [[ -n "${CARGOGREEN_ADD_APT_GET:-}" ]]; then
+    echo Using CARGOGREEN_ADD_APT_GET
+    envvars+=(CARGOGREEN_ADD_APT_GET="$CARGOGREEN_ADD_APT_GET")
+  fi
+  if [[ -n "${CARGOGREEN_ADD_APK:-}" ]]; then
+    echo Using CARGOGREEN_ADD_APK
+    envvars+=(CARGOGREEN_ADD_APK="$CARGOGREEN_ADD_APK")
+  fi
+  if [[ -n "${CARGOGREEN_INCREMENTAL:-}" ]]; then
+    echo Using CARGOGREEN_INCREMENTAL
+    envvars+=(CARGOGREEN_INCREMENTAL="$CARGOGREEN_INCREMENTAL")
   fi
 }
 
