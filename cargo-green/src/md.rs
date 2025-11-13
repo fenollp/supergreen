@@ -130,8 +130,16 @@ impl Md {
     }
 
     #[must_use]
-    pub(crate) fn rust_stage(&self) -> &str {
-        &self.stages.iter().find(|NamedStage { name, .. }| *name == *RUST).unwrap().script
+    pub(crate) fn rust_stage(&self) -> String {
+        format!(
+            "{}\nARG SOURCE_DATE_EPOCH=42\n", // https://reproducible-builds.org/docs/source-date-epoch/
+            &self.stages.iter().find(|NamedStage { name, .. }| *name == *RUST).unwrap().script
+        )
+
+        // TODO? use a non-fixed EPOCH value
+        // * set SOURCE_DATE_EPOCH=$(git log -1 --pretty=%ct) for local code, and
+        // * set it to crates' birth date, in case it's a $HOME/.cargo/registry/cache/...crate
+        // * set it to the directory's birth date otherwise (should be a relative path to local files).
     }
 
     pub(crate) fn push_block(&mut self, name: &Stage, block: String) {
