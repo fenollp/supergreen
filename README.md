@@ -28,7 +28,6 @@
   - [`$CARGOGREEN_CACHE_FROM_IMAGES`](#cargogreen_from_images)
   - [`$CARGOGREEN_CACHE_TO_IMAGES`](#cargogreen_to_images)
   - [`$CARGOGREEN_FINAL_PATH`](#cargogreen_final_path)
-  - [`$CARGOGREEN_FINAL_PATH_NONPRIMARY`](#cargogreen_final_path_nonprimary)
   - [`$CARGOGREEN_BASE_IMAGE`](#cargogreen_base_image)
   - [`$CARGOGREEN_SET_ENVS`](#cargogreen_set_envs)
   - [`$CARGOGREEN_BASE_IMAGE_INLINE`](#cargogreen_base_image_inline)
@@ -36,7 +35,7 @@
   - [`$CARGOGREEN_ADD_APT`](#cargogreen_add_apt)
   - [`$CARGOGREEN_ADD_APT_GET`](#cargogreen_add_apt_get)
   - [`$CARGOGREEN_ADD_APK`](#cargogreen_add_apk)
-  - [`$CARGOGREEN_INCREMENTAL`](#cargogreen_incremental)
+  - [`$CARGOGREEN_EXPERIMENT`](#cargogreen_experiment)
 - [Alternatives](#alternatives)
 - [Origins](#origins)
 - [Hacking](#hacking)
@@ -343,17 +342,6 @@ Helps e.g. create a containerfile of e.g. a binary to use for best caching of de
 export CARGOGREEN_FINAL_PATH="$PWD/my-bin@1.0.0.Dockerfile"
 ```
 
-### `$CARGOGREEN_FINAL_PATH_NONPRIMARY`
-
-Write final containerfile on every rustc call.
-
-Helps e.g. debug builds failing too early.
-
-*Use by setting this environment variable (no `Cargo.toml` setting):*
-```shell
-export CARGOGREEN_FINAL_PATH_NONPRIMARY="1"
-```
-
 ### `$CARGOGREEN_BASE_IMAGE`
 
 Sets the base Rust image, as an image URL (or any build context, actually).
@@ -530,15 +518,27 @@ export CARGOGREEN_ADD_APK="libpq-dev,pkg-conf"
 cargo green supergreen env CARGOGREEN_BASE_IMAGE_INLINE
 ```
 
-### `$CARGOGREEN_INCREMENTAL`
+### `$CARGOGREEN_EXPERIMENT`
 
-Whether to wrap incremental compilation, defaults to false.
+A comma-separated list of names of features to activate.
 
-See <https://doc.rust-lang.org/cargo/reference/config.html#buildincremental>
+A name that does not match exactly is an error.
+
+* `finalpathnonprimary`:
+  - Write final containerfile on every rustc call.
+  - Helps e.g. debug builds failing too early.
+
+* `incremental`:
+  - Also wrap incremental compilation.
+  - See <https://doc.rust-lang.org/cargo/reference/config.html#buildincremental>
+
+* `repro`:
+  - Try and test for builds hermeticity and reproducibility.
+  - See <https://docs.docker.com/reference/cli/docker/buildx/build/#no-cache-filter>
 
 *Use by setting this environment variable (no `Cargo.toml` setting):*
 ```shell
-export CARGOGREEN_INCREMENTAL="1"
+export CARGOGREEN_EXPERIMENT="finalpathnonprimary,repro"
 ```
 
 ## Alternatives

@@ -17,6 +17,7 @@ RUN \
   --mount=from=crate_out-467b075ea0bb0ef8,dst=/tmp/clis-ripgrep_14-1-0/release/build/anyhow-467b075ea0bb0ef8/out \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="anyhow" \
+        CARGO_INCREMENTAL="0" \
         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.79" \
         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.79/Cargo.toml" \
         CARGO_PKG_AUTHORS="David Tolnay <dtolnay@gmail.com>" \
@@ -177,6 +178,7 @@ COPY --link --from=dep-n-anyhow-1.0.79-95e5d8a0e52ba465 /tmp/clis-ripgrep_14-1-0
 ##   --mount=from=crate_out-467b075ea0bb0ef8,dst=/tmp/clis-ripgrep_14-1-0/release/build/anyhow-467b075ea0bb0ef8/out \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="anyhow" \
+##         CARGO_INCREMENTAL="0" \
 ##         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.79" \
 ##         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.79/Cargo.toml" \
 ##         CARGO_PKG_AUTHORS="David Tolnay <dtolnay@gmail.com>" \
@@ -217,6 +219,7 @@ RUN \
   --mount=from=cratesio-memchr-2.7.1,source=/memchr-2.7.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/memchr-2.7.1 \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="memchr" \
+        CARGO_INCREMENTAL="0" \
         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/memchr-2.7.1" \
         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/memchr-2.7.1/Cargo.toml" \
         CARGO_PKG_AUTHORS="Andrew Gallant <jamslam@gmail.com>:bluss" \
@@ -277,6 +280,7 @@ COPY --link --from=dep-n-memchr-2.7.1-3d9021aec125798d /tmp/clis-ripgrep_14-1-0/
 ##   --mount=from=cratesio-memchr-2.7.1,source=/memchr-2.7.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/memchr-2.7.1 \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="memchr" \
+##         CARGO_INCREMENTAL="0" \
 ##         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/memchr-2.7.1" \
 ##         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/memchr-2.7.1/Cargo.toml" \
 ##         CARGO_PKG_AUTHORS="Andrew Gallant <jamslam@gmail.com>:bluss" \
@@ -318,6 +322,7 @@ RUN \
   --mount=from=out-3d9021aec125798d,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rmeta,source=/libmemchr-3d9021aec125798d.rmeta \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="aho_corasick" \
+        CARGO_INCREMENTAL="0" \
         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aho-corasick-1.1.2" \
         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aho-corasick-1.1.2/Cargo.toml" \
         CARGO_PKG_AUTHORS="Andrew Gallant <jamslam@gmail.com>" \
@@ -400,6 +405,7 @@ COPY --link --from=dep-n-aho-corasick-1.1.2-2a2c3bf3a2b335e0 /tmp/clis-ripgrep_1
 ##   --mount=from=out-3d9021aec125798d,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rmeta,source=/libmemchr-3d9021aec125798d.rmeta \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="aho_corasick" \
+##         CARGO_INCREMENTAL="0" \
 ##         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aho-corasick-1.1.2" \
 ##         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aho-corasick-1.1.2/Cargo.toml" \
 ##         CARGO_PKG_AUTHORS="Andrew Gallant <jamslam@gmail.com>" \
@@ -439,6 +445,7 @@ RUN \
   --mount=from=cratesio-regex-syntax-0.8.2,source=/regex-syntax-0.8.2,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/regex-syntax-0.8.2 \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="regex_syntax" \
+        CARGO_INCREMENTAL="0" \
         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/regex-syntax-0.8.2" \
         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/regex-syntax-0.8.2/Cargo.toml" \
         CARGO_PKG_AUTHORS="The Rust Project Developers:Andrew Gallant <jamslam@gmail.com>" \
@@ -499,6 +506,7 @@ COPY --link --from=dep-n-regex-syntax-0.8.2-0d361157f8cdd0fe /tmp/clis-ripgrep_1
 ##   --mount=from=cratesio-regex-syntax-0.8.2,source=/regex-syntax-0.8.2,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/regex-syntax-0.8.2 \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="regex_syntax" \
+##         CARGO_INCREMENTAL="0" \
 ##         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/regex-syntax-0.8.2" \
 ##         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/regex-syntax-0.8.2/Cargo.toml" \
 ##         CARGO_PKG_AUTHORS="The Rust Project Developers:Andrew Gallant <jamslam@gmail.com>" \
@@ -544,6 +552,7 @@ RUN \
   --mount=from=out-0d361157f8cdd0fe,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libregex_syntax-0d361157f8cdd0fe.rmeta,source=/libregex_syntax-0d361157f8cdd0fe.rmeta \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="regex_automata" \
+        CARGO_INCREMENTAL="0" \
         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/regex-automata-0.4.3" \
         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/regex-automata-0.4.3/Cargo.toml" \
         CARGO_PKG_AUTHORS="The Rust Project Developers:Andrew Gallant <jamslam@gmail.com>" \
@@ -650,6 +659,7 @@ COPY --link --from=dep-n-regex-automata-0.4.3-54c30116fcd4ea92 /tmp/clis-ripgrep
 ##   --mount=from=out-0d361157f8cdd0fe,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libregex_syntax-0d361157f8cdd0fe.rmeta,source=/libregex_syntax-0d361157f8cdd0fe.rmeta \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="regex_automata" \
+##         CARGO_INCREMENTAL="0" \
 ##         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/regex-automata-0.4.3" \
 ##         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/regex-automata-0.4.3/Cargo.toml" \
 ##         CARGO_PKG_AUTHORS="The Rust Project Developers:Andrew Gallant <jamslam@gmail.com>" \
@@ -697,6 +707,7 @@ RUN \
   --mount=from=out-0d361157f8cdd0fe,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libregex_syntax-0d361157f8cdd0fe.rmeta,source=/libregex_syntax-0d361157f8cdd0fe.rmeta \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="bstr" \
+        CARGO_INCREMENTAL="0" \
         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bstr-1.9.0" \
         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bstr-1.9.0/Cargo.toml" \
         CARGO_PKG_AUTHORS="Andrew Gallant <jamslam@gmail.com>" \
@@ -809,6 +820,7 @@ COPY --link --from=dep-n-bstr-1.9.0-f6b551c518280772 /tmp/clis-ripgrep_14-1-0/re
 ##   --mount=from=out-0d361157f8cdd0fe,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libregex_syntax-0d361157f8cdd0fe.rmeta,source=/libregex_syntax-0d361157f8cdd0fe.rmeta \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="bstr" \
+##         CARGO_INCREMENTAL="0" \
 ##         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bstr-1.9.0" \
 ##         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bstr-1.9.0/Cargo.toml" \
 ##         CARGO_PKG_AUTHORS="Andrew Gallant <jamslam@gmail.com>" \
@@ -848,6 +860,7 @@ RUN \
   --mount=from=cratesio-log-0.4.20,source=/log-0.4.20,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/log-0.4.20 \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="log" \
+        CARGO_INCREMENTAL="0" \
         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/log-0.4.20" \
         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/log-0.4.20/Cargo.toml" \
         CARGO_PKG_AUTHORS="The Rust Project Developers" \
@@ -909,6 +922,7 @@ COPY --link --from=dep-n-log-0.4.20-45d1068292014e63 /tmp/clis-ripgrep_14-1-0/re
 ##   --mount=from=cratesio-log-0.4.20,source=/log-0.4.20,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/log-0.4.20 \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="log" \
+##         CARGO_INCREMENTAL="0" \
 ##         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/log-0.4.20" \
 ##         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/log-0.4.20/Cargo.toml" \
 ##         CARGO_PKG_AUTHORS="The Rust Project Developers" \
@@ -960,6 +974,7 @@ RUN \
   --mount=from=out-45d1068292014e63,dst=/tmp/clis-ripgrep_14-1-0/release/deps/liblog-45d1068292014e63.rmeta,source=/liblog-45d1068292014e63.rmeta \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="globset" \
+        CARGO_INCREMENTAL="0" \
         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/globset-0.4.14" \
         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/globset-0.4.14/Cargo.toml" \
         CARGO_PKG_AUTHORS="Andrew Gallant <jamslam@gmail.com>" \
@@ -1094,6 +1109,7 @@ COPY --link --from=dep-n-globset-0.4.14-14504da8f25a4dbf /tmp/clis-ripgrep_14-1-
 ##   --mount=from=out-45d1068292014e63,dst=/tmp/clis-ripgrep_14-1-0/release/deps/liblog-45d1068292014e63.rmeta,source=/liblog-45d1068292014e63.rmeta \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="globset" \
+##         CARGO_INCREMENTAL="0" \
 ##         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/globset-0.4.14" \
 ##         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/globset-0.4.14/Cargo.toml" \
 ##         CARGO_PKG_AUTHORS="Andrew Gallant <jamslam@gmail.com>" \
@@ -1133,6 +1149,7 @@ RUN \
   --mount=from=cratesio-libc-0.2.151,source=/libc-0.2.151,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.151 \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="libc" \
+        CARGO_INCREMENTAL="0" \
         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.151" \
         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.151/Cargo.toml" \
         CARGO_PKG_AUTHORS="The Rust Project Developers" \
@@ -1259,6 +1276,7 @@ COPY --link --from=dep-n-libc-0.2.151-b1dcb66edfd0e8a0 /tmp/clis-ripgrep_14-1-0/
 ##   --mount=from=cratesio-libc-0.2.151,source=/libc-0.2.151,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.151 \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="libc" \
+##         CARGO_INCREMENTAL="0" \
 ##         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.151" \
 ##         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.151/Cargo.toml" \
 ##         CARGO_PKG_AUTHORS="The Rust Project Developers" \
@@ -1299,6 +1317,7 @@ RUN \
   --mount=from=cratesio-termcolor-1.4.0,source=/termcolor-1.4.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/termcolor-1.4.0 \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="termcolor" \
+        CARGO_INCREMENTAL="0" \
         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/termcolor-1.4.0" \
         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/termcolor-1.4.0/Cargo.toml" \
         CARGO_PKG_AUTHORS="Andrew Gallant <jamslam@gmail.com>" \
@@ -1357,6 +1376,7 @@ COPY --link --from=dep-n-termcolor-1.4.0-59ae8e7772deaa56 /tmp/clis-ripgrep_14-1
 ##   --mount=from=cratesio-termcolor-1.4.0,source=/termcolor-1.4.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/termcolor-1.4.0 \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="termcolor" \
+##         CARGO_INCREMENTAL="0" \
 ##         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/termcolor-1.4.0" \
 ##         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/termcolor-1.4.0/Cargo.toml" \
 ##         CARGO_PKG_AUTHORS="Andrew Gallant <jamslam@gmail.com>" \
@@ -1414,6 +1434,7 @@ RUN \
   --mount=from=out-59ae8e7772deaa56,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libtermcolor-59ae8e7772deaa56.rmeta,source=/libtermcolor-59ae8e7772deaa56.rmeta \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="grep_cli" \
+        CARGO_INCREMENTAL="0" \
         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-cli-0.1.10" \
         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-cli-0.1.10/Cargo.toml" \
         CARGO_PKG_AUTHORS="Andrew Gallant <jamslam@gmail.com>" \
@@ -1584,6 +1605,7 @@ COPY --link --from=dep-n-grep-cli-0.1.10-8da8357e778092ce /tmp/clis-ripgrep_14-1
 ##   --mount=from=out-59ae8e7772deaa56,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libtermcolor-59ae8e7772deaa56.rmeta,source=/libtermcolor-59ae8e7772deaa56.rmeta \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="grep_cli" \
+##         CARGO_INCREMENTAL="0" \
 ##         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-cli-0.1.10" \
 ##         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-cli-0.1.10/Cargo.toml" \
 ##         CARGO_PKG_AUTHORS="Andrew Gallant <jamslam@gmail.com>" \
@@ -1625,6 +1647,7 @@ RUN \
   --mount=from=out-3d9021aec125798d,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rmeta,source=/libmemchr-3d9021aec125798d.rmeta \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="grep_matcher" \
+        CARGO_INCREMENTAL="0" \
         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-matcher-0.1.7" \
         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-matcher-0.1.7/Cargo.toml" \
         CARGO_PKG_AUTHORS="Andrew Gallant <jamslam@gmail.com>" \
@@ -1695,6 +1718,7 @@ COPY --link --from=dep-n-grep-matcher-0.1.7-7517975d791c1423 /tmp/clis-ripgrep_1
 ##   --mount=from=out-3d9021aec125798d,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libmemchr-3d9021aec125798d.rmeta,source=/libmemchr-3d9021aec125798d.rmeta \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="grep_matcher" \
+##         CARGO_INCREMENTAL="0" \
 ##         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-matcher-0.1.7" \
 ##         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-matcher-0.1.7/Cargo.toml" \
 ##         CARGO_PKG_AUTHORS="Andrew Gallant <jamslam@gmail.com>" \
@@ -1734,6 +1758,7 @@ RUN \
   --mount=from=cratesio-cfg-if-1.0.0,source=/cfg-if-1.0.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/cfg-if-1.0.0 \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="cfg_if" \
+        CARGO_INCREMENTAL="0" \
         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/cfg-if-1.0.0" \
         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/cfg-if-1.0.0/Cargo.toml" \
         CARGO_PKG_AUTHORS="Alex Crichton <alex@alexcrichton.com>" \
@@ -1792,6 +1817,7 @@ COPY --link --from=dep-n-cfg-if-1.0.0-98d40c6178a8b60f /tmp/clis-ripgrep_14-1-0/
 ##   --mount=from=cratesio-cfg-if-1.0.0,source=/cfg-if-1.0.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/cfg-if-1.0.0 \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="cfg_if" \
+##         CARGO_INCREMENTAL="0" \
 ##         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/cfg-if-1.0.0" \
 ##         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/cfg-if-1.0.0/Cargo.toml" \
 ##         CARGO_PKG_AUTHORS="Alex Crichton <alex@alexcrichton.com>" \
@@ -1833,6 +1859,7 @@ RUN \
   --mount=from=out-98d40c6178a8b60f,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libcfg_if-98d40c6178a8b60f.rmeta,source=/libcfg_if-98d40c6178a8b60f.rmeta \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="encoding_rs" \
+        CARGO_INCREMENTAL="0" \
         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/encoding_rs-0.8.33" \
         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/encoding_rs-0.8.33/Cargo.toml" \
         CARGO_PKG_AUTHORS="Henri Sivonen <hsivonen@hsivonen.fi>" \
@@ -1931,6 +1958,7 @@ COPY --link --from=dep-n-encoding_rs-0.8.33-71f95fee6544e787 /tmp/clis-ripgrep_1
 ##   --mount=from=out-98d40c6178a8b60f,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libcfg_if-98d40c6178a8b60f.rmeta,source=/libcfg_if-98d40c6178a8b60f.rmeta \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="encoding_rs" \
+##         CARGO_INCREMENTAL="0" \
 ##         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/encoding_rs-0.8.33" \
 ##         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/encoding_rs-0.8.33/Cargo.toml" \
 ##         CARGO_PKG_AUTHORS="Henri Sivonen <hsivonen@hsivonen.fi>" \
@@ -1974,6 +2002,7 @@ RUN \
   --mount=from=out-98d40c6178a8b60f,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libcfg_if-98d40c6178a8b60f.rmeta,source=/libcfg_if-98d40c6178a8b60f.rmeta \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="encoding_rs_io" \
+        CARGO_INCREMENTAL="0" \
         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/encoding_rs_io-0.1.7" \
         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/encoding_rs_io-0.1.7/Cargo.toml" \
         CARGO_PKG_AUTHORS="Andrew Gallant <jamslam@gmail.com>" \
@@ -2060,6 +2089,7 @@ COPY --link --from=dep-n-encoding_rs_io-0.1.7-1f57e01234da7cf8 /tmp/clis-ripgrep
 ##   --mount=from=out-98d40c6178a8b60f,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libcfg_if-98d40c6178a8b60f.rmeta,source=/libcfg_if-98d40c6178a8b60f.rmeta \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="encoding_rs_io" \
+##         CARGO_INCREMENTAL="0" \
 ##         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/encoding_rs_io-0.1.7" \
 ##         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/encoding_rs_io-0.1.7/Cargo.toml" \
 ##         CARGO_PKG_AUTHORS="Andrew Gallant <jamslam@gmail.com>" \
@@ -2101,6 +2131,7 @@ RUN \
   --mount=from=out-b1dcb66edfd0e8a0,dst=/tmp/clis-ripgrep_14-1-0/release/deps/liblibc-b1dcb66edfd0e8a0.rmeta,source=/liblibc-b1dcb66edfd0e8a0.rmeta \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="memmap2" \
+        CARGO_INCREMENTAL="0" \
         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/memmap2-0.9.3" \
         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/memmap2-0.9.3/Cargo.toml" \
         CARGO_PKG_AUTHORS="Dan Burkert <dan@danburkert.com>:Yevhenii Reizner <razrfalcon@gmail.com>" \
@@ -2171,6 +2202,7 @@ COPY --link --from=dep-n-memmap2-0.9.3-21c841a4e972790f /tmp/clis-ripgrep_14-1-0
 ##   --mount=from=out-b1dcb66edfd0e8a0,dst=/tmp/clis-ripgrep_14-1-0/release/deps/liblibc-b1dcb66edfd0e8a0.rmeta,source=/liblibc-b1dcb66edfd0e8a0.rmeta \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="memmap2" \
+##         CARGO_INCREMENTAL="0" \
 ##         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/memmap2-0.9.3" \
 ##         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/memmap2-0.9.3/Cargo.toml" \
 ##         CARGO_PKG_AUTHORS="Dan Burkert <dan@danburkert.com>:Yevhenii Reizner <razrfalcon@gmail.com>" \
@@ -2234,6 +2266,7 @@ RUN \
   --mount=from=out-b1dcb66edfd0e8a0,dst=/tmp/clis-ripgrep_14-1-0/release/deps/liblibc-b1dcb66edfd0e8a0.rmeta,source=/liblibc-b1dcb66edfd0e8a0.rmeta \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="grep_searcher" \
+        CARGO_INCREMENTAL="0" \
         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-searcher-0.1.13" \
         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-searcher-0.1.13/Cargo.toml" \
         CARGO_PKG_AUTHORS="Andrew Gallant <jamslam@gmail.com>" \
@@ -2440,6 +2473,7 @@ COPY --link --from=dep-n-grep-searcher-0.1.13-6fc004d41272f596 /tmp/clis-ripgrep
 ##   --mount=from=out-b1dcb66edfd0e8a0,dst=/tmp/clis-ripgrep_14-1-0/release/deps/liblibc-b1dcb66edfd0e8a0.rmeta,source=/liblibc-b1dcb66edfd0e8a0.rmeta \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="grep_searcher" \
+##         CARGO_INCREMENTAL="0" \
 ##         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-searcher-0.1.13" \
 ##         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-searcher-0.1.13/Cargo.toml" \
 ##         CARGO_PKG_AUTHORS="Andrew Gallant <jamslam@gmail.com>" \
@@ -2479,6 +2513,7 @@ RUN \
   --mount=from=cratesio-serde-1.0.195,source=/serde-1.0.195,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.195 \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="serde" \
+        CARGO_INCREMENTAL="0" \
         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.195" \
         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.195/Cargo.toml" \
         CARGO_PKG_AUTHORS="Erick Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>" \
@@ -2661,6 +2696,7 @@ COPY --link --from=dep-n-serde-1.0.195-6342957ddc692e98 /tmp/clis-ripgrep_14-1-0
 ##   --mount=from=cratesio-serde-1.0.195,source=/serde-1.0.195,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.195 \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="serde" \
+##         CARGO_INCREMENTAL="0" \
 ##         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.195" \
 ##         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.195/Cargo.toml" \
 ##         CARGO_PKG_AUTHORS="Erick Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>" \
@@ -2701,6 +2737,7 @@ RUN \
   --mount=from=cratesio-itoa-1.0.10,source=/itoa-1.0.10,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/itoa-1.0.10 \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="itoa" \
+        CARGO_INCREMENTAL="0" \
         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/itoa-1.0.10" \
         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/itoa-1.0.10/Cargo.toml" \
         CARGO_PKG_AUTHORS="David Tolnay <dtolnay@gmail.com>" \
@@ -2759,6 +2796,7 @@ COPY --link --from=dep-n-itoa-1.0.10-2b4528a4fd57cfaf /tmp/clis-ripgrep_14-1-0/r
 ##   --mount=from=cratesio-itoa-1.0.10,source=/itoa-1.0.10,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/itoa-1.0.10 \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="itoa" \
+##         CARGO_INCREMENTAL="0" \
 ##         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/itoa-1.0.10" \
 ##         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/itoa-1.0.10/Cargo.toml" \
 ##         CARGO_PKG_AUTHORS="David Tolnay <dtolnay@gmail.com>" \
@@ -2798,6 +2836,7 @@ RUN \
   --mount=from=cratesio-ryu-1.0.16,source=/ryu-1.0.16,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ryu-1.0.16 \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="ryu" \
+        CARGO_INCREMENTAL="0" \
         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ryu-1.0.16" \
         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ryu-1.0.16/Cargo.toml" \
         CARGO_PKG_AUTHORS="David Tolnay <dtolnay@gmail.com>" \
@@ -2856,6 +2895,7 @@ COPY --link --from=dep-n-ryu-1.0.16-a994c87db442418d /tmp/clis-ripgrep_14-1-0/re
 ##   --mount=from=cratesio-ryu-1.0.16,source=/ryu-1.0.16,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ryu-1.0.16 \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="ryu" \
+##         CARGO_INCREMENTAL="0" \
 ##         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ryu-1.0.16" \
 ##         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ryu-1.0.16/Cargo.toml" \
 ##         CARGO_PKG_AUTHORS="David Tolnay <dtolnay@gmail.com>" \
@@ -2901,6 +2941,7 @@ RUN \
   --mount=from=out-6342957ddc692e98,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libserde-6342957ddc692e98.rmeta,source=/libserde-6342957ddc692e98.rmeta \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="serde_json" \
+        CARGO_INCREMENTAL="0" \
         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.111" \
         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.111/Cargo.toml" \
         CARGO_PKG_AUTHORS="Erick Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>" \
@@ -3000,6 +3041,7 @@ COPY --link --from=dep-n-serde_json-1.0.111-f1456127761f5765 /tmp/clis-ripgrep_1
 ##   --mount=from=out-6342957ddc692e98,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libserde-6342957ddc692e98.rmeta,source=/libserde-6342957ddc692e98.rmeta \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="serde_json" \
+##         CARGO_INCREMENTAL="0" \
 ##         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.111" \
 ##         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.111/Cargo.toml" \
 ##         CARGO_PKG_AUTHORS="Erick Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>" \
@@ -3076,6 +3118,7 @@ RUN \
   --mount=from=out-59ae8e7772deaa56,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libtermcolor-59ae8e7772deaa56.rmeta,source=/libtermcolor-59ae8e7772deaa56.rmeta \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="grep_printer" \
+        CARGO_INCREMENTAL="0" \
         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-printer-0.2.1" \
         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-printer-0.2.1/Cargo.toml" \
         CARGO_PKG_AUTHORS="Andrew Gallant <jamslam@gmail.com>" \
@@ -3354,6 +3397,7 @@ COPY --link --from=dep-n-grep-printer-0.2.1-0e4d9ea7a0184dd5 /tmp/clis-ripgrep_1
 ##   --mount=from=out-59ae8e7772deaa56,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libtermcolor-59ae8e7772deaa56.rmeta,source=/libtermcolor-59ae8e7772deaa56.rmeta \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="grep_printer" \
+##         CARGO_INCREMENTAL="0" \
 ##         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-printer-0.2.1" \
 ##         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-printer-0.2.1/Cargo.toml" \
 ##         CARGO_PKG_AUTHORS="Andrew Gallant <jamslam@gmail.com>" \
@@ -3407,6 +3451,7 @@ RUN \
   --mount=from=out-45d1068292014e63,dst=/tmp/clis-ripgrep_14-1-0/release/deps/liblog-45d1068292014e63.rmeta,source=/liblog-45d1068292014e63.rmeta \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="grep_regex" \
+        CARGO_INCREMENTAL="0" \
         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-regex-0.1.12" \
         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-regex-0.1.12/Cargo.toml" \
         CARGO_PKG_AUTHORS="Andrew Gallant <jamslam@gmail.com>" \
@@ -3553,6 +3598,7 @@ COPY --link --from=dep-n-grep-regex-0.1.12-c08c56633b958d0c /tmp/clis-ripgrep_14
 ##   --mount=from=out-45d1068292014e63,dst=/tmp/clis-ripgrep_14-1-0/release/deps/liblog-45d1068292014e63.rmeta,source=/liblog-45d1068292014e63.rmeta \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="grep_regex" \
+##         CARGO_INCREMENTAL="0" \
 ##         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-regex-0.1.12" \
 ##         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-regex-0.1.12/Cargo.toml" \
 ##         CARGO_PKG_AUTHORS="Andrew Gallant <jamslam@gmail.com>" \
@@ -3636,6 +3682,7 @@ RUN \
   --mount=from=out-c08c56633b958d0c,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_regex-c08c56633b958d0c.rmeta,source=/libgrep_regex-c08c56633b958d0c.rmeta \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="grep" \
+        CARGO_INCREMENTAL="0" \
         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-0.3.1" \
         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-0.3.1/Cargo.toml" \
         CARGO_PKG_AUTHORS="Andrew Gallant <jamslam@gmail.com>" \
@@ -3962,6 +4009,7 @@ COPY --link --from=dep-n-grep-0.3.1-9e71f2809112d472 /tmp/clis-ripgrep_14-1-0/re
 ##   --mount=from=out-c08c56633b958d0c,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libgrep_regex-c08c56633b958d0c.rmeta,source=/libgrep_regex-c08c56633b958d0c.rmeta \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="grep" \
+##         CARGO_INCREMENTAL="0" \
 ##         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-0.3.1" \
 ##         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-0.3.1/Cargo.toml" \
 ##         CARGO_PKG_AUTHORS="Andrew Gallant <jamslam@gmail.com>" \
@@ -4003,6 +4051,7 @@ RUN \
   --mount=from=out-98d40c6178a8b60f,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libcfg_if-98d40c6178a8b60f.rmeta,source=/libcfg_if-98d40c6178a8b60f.rmeta \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="crossbeam_utils" \
+        CARGO_INCREMENTAL="0" \
         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.18" \
         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.18/Cargo.toml" \
         CARGO_PKG_AUTHORS= \
@@ -4119,6 +4168,7 @@ COPY --link --from=dep-n-crossbeam-utils-0.8.18-1ae807b4b6e713ec /tmp/clis-ripgr
 ##   --mount=from=out-98d40c6178a8b60f,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libcfg_if-98d40c6178a8b60f.rmeta,source=/libcfg_if-98d40c6178a8b60f.rmeta \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="crossbeam_utils" \
+##         CARGO_INCREMENTAL="0" \
 ##         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.18" \
 ##         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.18/Cargo.toml" \
 ##         CARGO_PKG_AUTHORS= \
@@ -4163,6 +4213,7 @@ RUN \
   --mount=from=out-1ae807b4b6e713ec,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libcrossbeam_utils-1ae807b4b6e713ec.rmeta,source=/libcrossbeam_utils-1ae807b4b6e713ec.rmeta \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="crossbeam_epoch" \
+        CARGO_INCREMENTAL="0" \
         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-epoch-0.9.17" \
         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-epoch-0.9.17/Cargo.toml" \
         CARGO_PKG_AUTHORS= \
@@ -4270,6 +4321,7 @@ COPY --link --from=dep-n-crossbeam-epoch-0.9.17-e4df21448919a796 /tmp/clis-ripgr
 ##   --mount=from=out-1ae807b4b6e713ec,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libcrossbeam_utils-1ae807b4b6e713ec.rmeta,source=/libcrossbeam_utils-1ae807b4b6e713ec.rmeta \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="crossbeam_epoch" \
+##         CARGO_INCREMENTAL="0" \
 ##         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-epoch-0.9.17" \
 ##         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-epoch-0.9.17/Cargo.toml" \
 ##         CARGO_PKG_AUTHORS= \
@@ -4315,6 +4367,7 @@ RUN \
   --mount=from=out-1ae807b4b6e713ec,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libcrossbeam_utils-1ae807b4b6e713ec.rmeta,source=/libcrossbeam_utils-1ae807b4b6e713ec.rmeta \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="crossbeam_deque" \
+        CARGO_INCREMENTAL="0" \
         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-deque-0.8.4" \
         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-deque-0.8.4/Cargo.toml" \
         CARGO_PKG_AUTHORS= \
@@ -4413,6 +4466,7 @@ COPY --link --from=dep-n-crossbeam-deque-0.8.4-0deb1c425e6f6d70 /tmp/clis-ripgre
 ##   --mount=from=out-1ae807b4b6e713ec,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libcrossbeam_utils-1ae807b4b6e713ec.rmeta,source=/libcrossbeam_utils-1ae807b4b6e713ec.rmeta \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="crossbeam_deque" \
+##         CARGO_INCREMENTAL="0" \
 ##         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-deque-0.8.4" \
 ##         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-deque-0.8.4/Cargo.toml" \
 ##         CARGO_PKG_AUTHORS= \
@@ -4452,6 +4506,7 @@ RUN \
   --mount=from=cratesio-same-file-1.0.6,source=/same-file-1.0.6,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/same-file-1.0.6 \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="same_file" \
+        CARGO_INCREMENTAL="0" \
         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/same-file-1.0.6" \
         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/same-file-1.0.6/Cargo.toml" \
         CARGO_PKG_AUTHORS="Andrew Gallant <jamslam@gmail.com>" \
@@ -4512,6 +4567,7 @@ COPY --link --from=dep-n-same-file-1.0.6-880cd61c1f851a7b /tmp/clis-ripgrep_14-1
 ##   --mount=from=cratesio-same-file-1.0.6,source=/same-file-1.0.6,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/same-file-1.0.6 \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="same_file" \
+##         CARGO_INCREMENTAL="0" \
 ##         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/same-file-1.0.6" \
 ##         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/same-file-1.0.6/Cargo.toml" \
 ##         CARGO_PKG_AUTHORS="Andrew Gallant <jamslam@gmail.com>" \
@@ -4553,6 +4609,7 @@ RUN \
   --mount=from=out-880cd61c1f851a7b,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libsame_file-880cd61c1f851a7b.rmeta,source=/libsame_file-880cd61c1f851a7b.rmeta \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="walkdir" \
+        CARGO_INCREMENTAL="0" \
         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/walkdir-2.4.0" \
         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/walkdir-2.4.0/Cargo.toml" \
         CARGO_PKG_AUTHORS="Andrew Gallant <jamslam@gmail.com>" \
@@ -4623,6 +4680,7 @@ COPY --link --from=dep-n-walkdir-2.4.0-345a7495356295f2 /tmp/clis-ripgrep_14-1-0
 ##   --mount=from=out-880cd61c1f851a7b,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libsame_file-880cd61c1f851a7b.rmeta,source=/libsame_file-880cd61c1f851a7b.rmeta \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="walkdir" \
+##         CARGO_INCREMENTAL="0" \
 ##         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/walkdir-2.4.0" \
 ##         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/walkdir-2.4.0/Cargo.toml" \
 ##         CARGO_PKG_AUTHORS="Andrew Gallant <jamslam@gmail.com>" \
@@ -4688,6 +4746,7 @@ RUN \
   --mount=from=out-345a7495356295f2,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libwalkdir-345a7495356295f2.rmeta,source=/libwalkdir-345a7495356295f2.rmeta \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="ignore" \
+        CARGO_INCREMENTAL="0" \
         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ignore-0.4.22" \
         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ignore-0.4.22/Cargo.toml" \
         CARGO_PKG_AUTHORS="Andrew Gallant <jamslam@gmail.com>" \
@@ -4906,6 +4965,7 @@ COPY --link --from=dep-n-ignore-0.4.22-95c296cdf92c1819 /tmp/clis-ripgrep_14-1-0
 ##   --mount=from=out-345a7495356295f2,dst=/tmp/clis-ripgrep_14-1-0/release/deps/libwalkdir-345a7495356295f2.rmeta,source=/libwalkdir-345a7495356295f2.rmeta \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="ignore" \
+##         CARGO_INCREMENTAL="0" \
 ##         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ignore-0.4.22" \
 ##         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ignore-0.4.22/Cargo.toml" \
 ##         CARGO_PKG_AUTHORS="Andrew Gallant <jamslam@gmail.com>" \
@@ -4945,6 +5005,7 @@ RUN \
   --mount=from=cratesio-lexopt-0.3.0,source=/lexopt-0.3.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/lexopt-0.3.0 \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="lexopt" \
+        CARGO_INCREMENTAL="0" \
         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/lexopt-0.3.0" \
         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/lexopt-0.3.0/Cargo.toml" \
         CARGO_PKG_AUTHORS="Jan Verbeek <jan.verbeek@posteo.nl>" \
@@ -5003,6 +5064,7 @@ COPY --link --from=dep-n-lexopt-0.3.0-17f37e7bd1b70087 /tmp/clis-ripgrep_14-1-0/
 ##   --mount=from=cratesio-lexopt-0.3.0,source=/lexopt-0.3.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/lexopt-0.3.0 \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="lexopt" \
+##         CARGO_INCREMENTAL="0" \
 ##         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/lexopt-0.3.0" \
 ##         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/lexopt-0.3.0/Cargo.toml" \
 ##         CARGO_PKG_AUTHORS="Jan Verbeek <jan.verbeek@posteo.nl>" \
@@ -5042,6 +5104,7 @@ RUN \
   --mount=from=cratesio-textwrap-0.16.0,source=/textwrap-0.16.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/textwrap-0.16.0 \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="textwrap" \
+        CARGO_INCREMENTAL="0" \
         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/textwrap-0.16.0" \
         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/textwrap-0.16.0/Cargo.toml" \
         CARGO_PKG_AUTHORS="Martin Geisler <martin@geisler.net>" \
@@ -5102,6 +5165,7 @@ COPY --link --from=dep-n-textwrap-0.16.0-f2419d4872a2993a /tmp/clis-ripgrep_14-1
 ##   --mount=from=cratesio-textwrap-0.16.0,source=/textwrap-0.16.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/textwrap-0.16.0 \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="textwrap" \
+##         CARGO_INCREMENTAL="0" \
 ##         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/textwrap-0.16.0" \
 ##         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/textwrap-0.16.0/Cargo.toml" \
 ##         CARGO_PKG_AUTHORS="Martin Geisler <martin@geisler.net>" \
@@ -5174,6 +5238,7 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_BIN_NAME="rg" \
         CARGO_CRATE_NAME="rg" \
+        CARGO_INCREMENTAL="0" \
         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ripgrep-14.1.0" \
         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ripgrep-14.1.0/Cargo.toml" \
         CARGO_PKG_AUTHORS="Andrew Gallant <jamslam@gmail.com>" \
@@ -5469,6 +5534,7 @@ COPY --link --from=dep-n-ripgrep-14.1.0-16aebc92c4aced68 /tmp/clis-ripgrep_14-1-
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_BIN_NAME="rg" \
 ##         CARGO_CRATE_NAME="rg" \
+##         CARGO_INCREMENTAL="0" \
 ##         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ripgrep-14.1.0" \
 ##         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ripgrep-14.1.0/Cargo.toml" \
 ##         CARGO_PKG_AUTHORS="Andrew Gallant <jamslam@gmail.com>" \

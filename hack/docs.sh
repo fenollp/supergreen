@@ -69,10 +69,14 @@ ordered_envs() {
 	grep -E '^ +var!' cargo-green/src/supergreen.rs | cut -d! -f2 | sed 's%(%%;s%^ENV_%CARGOGREEN_%'
 }
 
+echo "Compared with what's coded in supergreen.rs:"
 diff -y \
 	<(echo "${envs:11}" | sed 's% %\n%g') \
 	<(ordered_envs)
+echo
 
+echo "Compared with what's documented in README.md:"
 diff -y \
 	<(grep -E '^  - \[`\$' README.md | cut -d '`' -f2 | cut -d '$' -f2) \
 	<(ordered_envs)
+echo

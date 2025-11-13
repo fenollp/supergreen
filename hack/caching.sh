@@ -25,9 +25,11 @@ $CARGO green supergreen env
 compute_installed_bin_sha256() {
 	sha256sum $install_root/bin/${install_package%@*} | awk '{print $1}'
 }
+
 ensure__rewrite_cratesio_index__works() {
 	! grep -F '/index.crates.io-' $CARGOGREEN_LOG_PATH | grep -vE '/index.crates.io-0{16}|original args|env is set|opening .RO. crate tarball|picked'
 }
+
 compute_produced_shas() {
 	grep -E produced.+0x $CARGOGREEN_LOG_PATH | awk '{print $8,$9}' | sort
 }
@@ -37,6 +39,12 @@ ensure__produces_same_shas() {
 	else
 		diff --width=150 -y <(cat $CARGOGREEN_LOG_PATH.produced) <(compute_produced_shas)
 	fi
+}
+
+registry_blobs() {
+    local dir=$1; shift
+    [[ $# -eq 0 ]]
+    find $dir/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print $NF}' | sort -u
 }
 
 echo Sortons nos cartes!
@@ -64,7 +72,29 @@ echo
 #---
 
 
-# $CARGO green supergreen builder recreate
+rm -rf $CARGO_TARGET_DIR/* >/dev/null
+rm -rf $CARGOGREEN_LOG_PATH >/dev/null
+rm -rf $install_root/* >/dev/null
+$CARGO green install --locked --frozen --offline --force $install_package --root=$install_root
+git add $CARGOGREEN_FINAL_PATH
+ensure__produces_same_shas # rebuild => same shas
+ensure__rewrite_cratesio_index__works
+$install_root/bin/${install_package%@*} --help >/dev/null
+[[ $install_sha = $(compute_installed_bin_sha256) ]] # rebuild => no change
+
+echo Re-builds fine
+echo
+
+
+#---
+
+
+reg1=$(mktemp -d)
+reg2=$(mktemp -d)
+docker run --rm -it --name regis3-1 -d --user $(id -u):$(id -g) -p 12345:5000 -v $reg1:/var/lib/registry registry:3
+docker run --rm -it --name regis3-2 -d --user $(id -u):$(id -g) -p 23456:5000 -v $reg2:/var/lib/registry registry:3
+export CARGOGREEN_CACHE_IMAGES=docker-image://localhost:12345/ca/ching,docker-image://localhost:23456/ca/ching
+$CARGO green supergreen builder recreate
 
 rm -rf $CARGO_TARGET_DIR/* >/dev/null
 rm -rf $CARGOGREEN_LOG_PATH >/dev/null
@@ -76,7 +106,38 @@ ensure__rewrite_cratesio_index__works
 $install_root/bin/${install_package%@*} --help >/dev/null
 [[ $install_sha = $(compute_installed_bin_sha256) ]] # rebuild => no change
 
-echo Re-builds fine #and using a new builder
+echo Re-re-builds fine and both remote registries are equal
+echo
+
+docker stop --timeout 2 regis3-2
+diff --width=150 -y <(registry_blobs $reg1) <(registry_blobs $reg2)
+
+unset CARGOGREEN_CACHE_IMAGES
+export CARGOGREEN_CACHE_TO_IMAGES=docker-image://localhost:12345/ca/ching
+export CARGOGREEN_EXPERIMENT=repro
+
+rm -rf $CARGO_TARGET_DIR/* >/dev/null
+rm -rf $CARGOGREEN_LOG_PATH >/dev/null
+rm -rf $install_root/* >/dev/null
+$CARGO green install --locked --frozen --offline --force $install_package --root=$install_root
+git add $CARGOGREEN_FINAL_PATH
+ensure__produces_same_shas # rebuild without reading cache => new layers written to cache!!
+ensure__rewrite_cratesio_index__works
+$install_root/bin/${install_package%@*} --help >/dev/null
+[[ $install_sha = $(compute_installed_bin_sha256) ]] # rebuild => no change
+
+docker stop --timeout 2 regis3-1
+unset CARGOGREEN_EXPERIMENT
+unset CARGOGREEN_CACHE_TO_IMAGES
+[[ $(registry_blobs $reg1 | wc -l) -gt $(registry_blobs $reg2 | wc -l) ]]
+[[ $( ( diff --width=150 -y <(registry_blobs $reg1) <(registry_blobs $reg2) || true ) | wc -l ) = $(registry_blobs $reg1 | wc -l) ]]
+[[ $( ( diff --width=150 -y <(registry_blobs $reg1) <(registry_blobs $reg2) || true ) | grep '<' | wc -l ) -gt $(registry_blobs $reg2 | wc -l) ]]
+[[ $( ( diff --width=150 -y <(registry_blobs $reg1) <(registry_blobs $reg2) || true ) | grep '|' | wc -l ) = 0 ]]
+[[ $( ( diff --width=150 -y <(registry_blobs $reg1) <(registry_blobs $reg2) || true ) | grep '>' | wc -l ) = 0 ]]
+rm -rf $reg1 $reg2 >/dev/null
+
+echo Re-re-re-builds fine but remote registry cache keeps growing '(albeit slowly)'...
+echo "TODO: https://github.com/moby/buildkit/issues/6348 about 'remote cache not being static'"
 echo
 
 

@@ -15,12 +15,6 @@ use crate::{
     ENV_RUNNER, PKG,
 };
 
-macro_rules! ENV_INCREMENTAL {
-    () => {
-        "CARGOGREEN_INCREMENTAL"
-    };
-}
-
 macro_rules! ENV_REGISTRY_MIRRORS {
     () => {
         "CARGOGREEN_REGISTRY_MIRRORS"
@@ -54,10 +48,6 @@ pub(crate) struct Green {
     #[serde(skip_serializing_if = "HashMap::is_empty")]
     pub(crate) runner_envs: HashMap<String, String>,
 
-    #[doc = include_str!(concat!("../docs/",ENV_INCREMENTAL!(),".md"))]
-    #[serde(skip_serializing_if = "<&bool as std::ops::Not>::not")]
-    pub(crate) incremental: bool,
-
     #[serde(flatten)]
     pub(crate) builder: Builder,
 
@@ -83,6 +73,10 @@ pub(crate) struct Green {
 
     #[serde(skip_serializing_if = "Add::is_empty")]
     pub(crate) add: Add,
+
+    #[doc = include_str!(concat!("../docs/",ENV_EXPERIMENT!(),".md"))]
+    #[serde(skip_serializing_if = "Vec::is_empty")]
+    pub(crate) experiment: Vec<String>,
 }
 
 impl Green {
@@ -121,10 +115,6 @@ impl Green {
             if let GreenMetadata { green: Some(from_manifest) } = metadata.try_into()? {
                 green = from_manifest;
             }
-        }
-
-        if let Ok(val) = env::var(ENV_INCREMENTAL!()) {
-            green.incremental = val == "1";
         }
 
         let var = ENV_REGISTRY_MIRRORS!();
@@ -247,7 +237,7 @@ fn parse_csv(val: &str) -> Vec<String> {
     val.split(',').map(ToOwned::to_owned).collect()
 }
 
-fn validate_csv(field: &mut Vec<String>, var: &'static str) -> Result<()> {
+pub(crate) fn validate_csv(field: &mut Vec<String>, var: &'static str) -> Result<()> {
     let mut origin = setting(var);
     if let Ok(val) = env::var(var) {
         origin = format!("${var}");

@@ -271,10 +271,6 @@ as_env() {
     echo Using CARGOGREEN_FINAL_PATH
     envvars+=(CARGOGREEN_FINAL_PATH="$CARGOGREEN_FINAL_PATH")
   fi
-  if [[ -n "${CARGOGREEN_FINAL_PATH_NONPRIMARY:-}" ]]; then
-    echo Using CARGOGREEN_FINAL_PATH_NONPRIMARY
-    envvars+=(CARGOGREEN_FINAL_PATH_NONPRIMARY="$CARGOGREEN_FINAL_PATH_NONPRIMARY")
-  fi
   if [[ -n "${CARGOGREEN_BASE_IMAGE:-}" ]]; then
     echo Using CARGOGREEN_BASE_IMAGE
     envvars+=(CARGOGREEN_BASE_IMAGE="$CARGOGREEN_BASE_IMAGE")
@@ -303,9 +299,9 @@ as_env() {
     echo Using CARGOGREEN_ADD_APK
     envvars+=(CARGOGREEN_ADD_APK="$CARGOGREEN_ADD_APK")
   fi
-  if [[ -n "${CARGOGREEN_INCREMENTAL:-}" ]]; then
-    echo Using CARGOGREEN_INCREMENTAL
-    envvars+=(CARGOGREEN_INCREMENTAL="$CARGOGREEN_INCREMENTAL")
+  if [[ -n "${CARGOGREEN_EXPERIMENT:-}" ]]; then
+    echo Using CARGOGREEN_EXPERIMENT
+    envvars+=(CARGOGREEN_EXPERIMENT="$CARGOGREEN_EXPERIMENT")
   fi
 }
 
@@ -339,7 +335,7 @@ $(jobdef "$(slugify "$name_at_version")_$jobs")
       CARGOGREEN_CACHE_FROM_IMAGES: docker-image://localhost:12345/\${{ github.repository }}
       CARGOGREEN_CACHE_TO_IMAGES: docker-image://localhost:23456/\${{ github.repository }}
       CARGOGREEN_FINAL_PATH: recipes/$name_at_version.Dockerfile
-      CARGOGREEN_FINAL_PATH_NONPRIMARY: 1 # dumps on each build call
+      CARGOGREEN_EXPERIMENT: finalpathnonprimary # dumps on each build call
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
 $(
@@ -539,7 +535,7 @@ set -x
 
     case "$OSTYPE" in
       darwin*) osascript -e "$(printf 'tell app "Terminal" \n do script "tail -f %s" \n end tell' $tmplogs)" ;;
-      *)       xdg-terminal-exec tail -f $tmplogs ;;
+      *)     # xdg-terminal-exec tail -f $tmplogs ;;
     esac
 
     echo "$arg1"
@@ -612,7 +608,7 @@ envvars+=(PATH=$install_dir/bin:"$PATH")
 envvars+=(CARGO_TARGET_DIR="$tmptrgt")
 if [[ "$final" = '1' ]]; then
   envvars+=(CARGOGREEN_FINAL_PATH=recipes/$name_at_version.Dockerfile)
-  envvars+=(CARGOGREEN_FINAL_PATH_NONPRIMARY=1)
+  envvars+=(CARGOGREEN_EXPERIMENT=finalpathnonprimary)
 fi
 # envvars+=(CARGOGREEN_SYNTAX_IMAGE=docker-image://docker.io/docker/dockerfile:1@sha256:4c68376a702446fc3c79af22de146a148bc3367e73c25a5803d453b6b3f722fb)
 # envvars+=(CARGOGREEN_BASE_IMAGE=docker-image://docker.io/library/rust:1.86.0-slim@sha256:3f391b0678a6e0c88fd26f13e399c9c515ac47354e3cadfee7daee3b21651a4f)
