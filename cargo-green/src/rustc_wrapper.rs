@@ -221,7 +221,7 @@ async fn do_wrap_rustc(
 ) -> Result<()> {
     let debug = maybe_log();
 
-    let incremental = green.incremental.then_some(incremental).flatten();
+    let incremental = green.incremental().then_some(incremental).flatten();
 
     let crate_out = crate_out_dir(out_dir_var)?;
 

@@ -104,7 +104,7 @@ impl Runner {
 
     /// Strip out flags that don't affect a build's outputs:
     pub(crate) fn buildnoop_flags(&self) -> impl Iterator<Item = &str> {
-        ["--cache-from=", "--cache-to="].into_iter()
+        ["--cache-from=", "--cache-to=", "--no-cache"].into_iter()
     }
 }
 

@@ -12,6 +12,8 @@ use tokio::process::Command;
 #[macro_use]
 mod add;
 #[macro_use]
+mod experiments;
+#[macro_use]
 mod base_image;
 mod build;
 #[macro_use]

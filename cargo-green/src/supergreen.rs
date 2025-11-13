@@ -187,21 +187,13 @@ macro_rules! var {
 }
 
 fn all_envs(green: &Green) -> Vec<(&str, &'static str, Option<String>)> {
-    let builder_name = || {
-        green
-            .builder
-            .name
-            .as_deref()
-            .map(ToString::to_string)
-            .unwrap_or_else(|| "supergreen".to_owned())
-    };
     vec![
         // var!(ENV!(), env::var(ENV!()).ok()),
         var!(ENV_LOG_PATH!(), env::var(ENV_LOG_PATH!()).ok()),
         var!(ENV_LOG!(), env::var(ENV_LOG!()).ok()),
         var!(ENV_LOG_STYLE!(), env::var(ENV_LOG_STYLE!()).ok()),
         var!(ENV_RUNNER!(), Some(green.runner.to_string())),
-        var!(BUILDX_BUILDER!(), Some(builder_name())),
+        var!(BUILDX_BUILDER!(), green.builder.name.as_deref().map(ToString::to_string)),
         var!(ENV_BUILDER_IMAGE!(), green.builder.image.as_deref().map(ToString::to_string)),
         var!(ENV_SYNTAX_IMAGE!(), Some(green.syntax.to_string())),
         var!(ENV_REGISTRY_MIRRORS!(), csv(&green.registry_mirrors)),
@@ -209,7 +201,6 @@ fn all_envs(green: &Green) -> Vec<(&str, &'static str, Option<String>)> {
         var!(ENV_CACHE_FROM_IMAGES!(), csv_uris(&green.cache.from_images)),
         var!(ENV_CACHE_TO_IMAGES!(), csv_uris(&green.cache.to_images)),
         var!(ENV_FINAL_PATH!(), green.r#final.path.as_deref().map(ToString::to_string)),
-        var!(ENV_FINAL_PATH_NONPRIMARY!(), green.r#final.path_nonprimary.then(|| "1".to_owned())),
         var!(ENV_BASE_IMAGE!(), Some(green.base.image.to_string())),
         var!(ENV_SET_ENVS!(), csv(&green.set_envs)),
         var!(ENV_BASE_IMAGE_INLINE!(), green.base.image_inline.clone()),
@@ -217,7 +208,7 @@ fn all_envs(green: &Green) -> Vec<(&str, &'static str, Option<String>)> {
         var!(ENV_ADD_APT!(), csv(&green.add.apt)),
         var!(ENV_ADD_APT_GET!(), csv(&green.add.apt_get)),
         var!(ENV_ADD_APK!(), csv(&green.add.apk)),
-        var!(ENV_INCREMENTAL!(), green.incremental.then(|| "1".to_owned())),
+        var!(ENV_EXPERIMENT!(), csv(&green.experiment)),
     ]
 }
 

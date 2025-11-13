@@ -112,7 +112,6 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
     - name: cargo install net=ON cache=OFF remote=OFF jobs=1
       run: |
-        unset CARGO_INCREMENTAL
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
         unset CARGO_TERM_COLOR
@@ -252,7 +251,6 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
     - name: cargo audit net=ON cache=OFF remote=OFF
       run: |
-        unset CARGO_INCREMENTAL
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
         unset CARGO_TERM_COLOR
@@ -398,7 +396,6 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
     - name: cargo +nightly-2025-08-06 green udeps --all-targets --jobs=1 cache=OFF remote=OFF
       run: |
-        unset CARGO_INCREMENTAL
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
         unset CARGO_TERM_COLOR
@@ -473,7 +470,6 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
     - name: Again, with +toolchain to cargo-green
       run: |
-        unset CARGO_INCREMENTAL
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
         unset CARGO_TERM_COLOR
@@ -610,7 +606,6 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
     - name: cargo fetch
       run: |
-        unset CARGO_INCREMENTAL
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
         unset CARGO_TERM_COLOR
@@ -679,7 +674,6 @@ jobs:
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
     - name: cargo build net=OFF cache=OFF remote=OFF jobs=1
       run: |
-        unset CARGO_INCREMENTAL
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
         unset CARGO_TERM_COLOR
@@ -754,7 +748,6 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
     - name: Ensure running the same command twice without modifications...
       run: |
-        unset CARGO_INCREMENTAL
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
         unset CARGO_TERM_COLOR
@@ -836,7 +829,6 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
     - name: Ensure running the same command thrice without modifications (jobs>1)...
       run: |
-        unset CARGO_INCREMENTAL
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
         unset CARGO_TERM_COLOR
@@ -980,7 +972,6 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
     - name: cargo fetch
       run: |
-        unset CARGO_INCREMENTAL
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
         unset CARGO_TERM_COLOR
@@ -1049,7 +1040,6 @@ jobs:
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
     - name: cargo test net=OFF cache=OFF remote=OFF jobs=1
       run: |
-        unset CARGO_INCREMENTAL
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
         unset CARGO_TERM_COLOR
@@ -1124,7 +1114,6 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
     - name: Ensure running the same command twice without modifications...
       run: |
-        unset CARGO_INCREMENTAL
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
         unset CARGO_TERM_COLOR
@@ -1206,7 +1195,6 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
     - name: Ensure running the same command thrice without modifications (jobs>1)...
       run: |
-        unset CARGO_INCREMENTAL
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
         unset CARGO_TERM_COLOR
@@ -1350,7 +1338,6 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
     - name: cargo fetch
       run: |
-        unset CARGO_INCREMENTAL
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
         unset CARGO_TERM_COLOR
@@ -1419,7 +1406,6 @@ jobs:
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
     - name: cargo check net=OFF cache=OFF remote=OFF jobs=$(nproc)
       run: |
-        unset CARGO_INCREMENTAL
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
         unset CARGO_TERM_COLOR
@@ -1494,7 +1480,6 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
     - name: Ensure running the same command twice without modifications...
       run: |
-        unset CARGO_INCREMENTAL
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
         unset CARGO_TERM_COLOR
@@ -1638,7 +1623,6 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
     - name: cargo fetch
       run: |
-        unset CARGO_INCREMENTAL
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
         unset CARGO_TERM_COLOR
@@ -1707,7 +1691,6 @@ jobs:
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
     - name: cargo package net=OFF cache=OFF remote=OFF jobs=1
       run: |
-        unset CARGO_INCREMENTAL
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
         unset CARGO_TERM_COLOR
@@ -1845,7 +1828,6 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
     - name: cargo fetch
       run: |
-        unset CARGO_INCREMENTAL
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
         unset CARGO_TERM_COLOR
@@ -1914,7 +1896,6 @@ jobs:
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
     - name: cargo clippy net=OFF cache=OFF remote=OFF jobs=1
       run: |
-        unset CARGO_INCREMENTAL
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
         unset CARGO_TERM_COLOR
@@ -1989,7 +1970,6 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
     - name: Ensure running the same command twice without modifications...
       run: |
-        unset CARGO_INCREMENTAL
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
         unset CARGO_TERM_COLOR

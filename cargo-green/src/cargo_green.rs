@@ -11,8 +11,9 @@ use tokio::try_join;
 use crate::{
     build::fetch_digest,
     cratesio::{self},
+    experiments::EXPERIMENTS,
     ext::CommandExt,
-    green::Green,
+    green::{validate_csv, Green},
     hash,
     image_uri::{ImageUri, SYNTAX_IMAGE},
     lockfile::{find_lockfile, locked_crates},
@@ -21,7 +22,7 @@ use crate::{
     pwd,
     runner::{Runner, BUILDKIT_HOST, DOCKER_BUILDKIT, DOCKER_CONTEXT, DOCKER_HOST},
     stage::{Stage, RST, RUST},
-    tmp, ENV_FINAL_PATH, ENV_FINAL_PATH_NONPRIMARY, ENV_RUNNER, ENV_SYNTAX_IMAGE, PKG, VSN,
+    tmp, ENV_FINAL_PATH, ENV_RUNNER, ENV_SYNTAX_IMAGE, PKG, VSN,
 };
 
 pub(crate) async fn main() -> Result<Green> {
@@ -158,20 +159,6 @@ pub(crate) async fn main() -> Result<Green> {
         green.r#final.path = Some(path);
     }
 
-    var = ENV_FINAL_PATH_NONPRIMARY!();
-    if green.r#final.path_nonprimary {
-        bail!("${var} can only be set through the environment variable")
-    }
-    if let Ok(v) = env::var(var) {
-        if v.is_empty() {
-            bail!("${var} is empty")
-        }
-        if v != "1" {
-            bail!("${var} must only be '1'")
-        }
-        green.r#final.path_nonprimary = true;
-    }
-
     if !green.base.image.locked() {
         let mut base = green.maybe_lock_image(&green.base.image).await?;
         base = fetch_digest(&base).await?;
@@ -214,6 +201,17 @@ pub(crate) async fn main() -> Result<Green> {
 
     // https://crates.io/crates/async-ssh2-tokio
     // https://crates.io/crates/russh
+
+    var = ENV_EXPERIMENT!();
+    if !green.experiment.is_empty() {
+        bail!("${var} can only be set through the environment variable")
+    }
+    validate_csv(&mut green.experiment, ENV_EXPERIMENT!())?;
+    let nopes: Vec<_> =
+        green.experiment.iter().filter(|ex| !EXPERIMENTS.contains(&ex.as_str())).collect();
+    if !nopes.is_empty() {
+        bail!("${var} contains unknown experiment names: {nopes:?}")
+    }
 
     Ok(green)
 }

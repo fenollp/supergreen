@@ -216,6 +216,10 @@ impl Green {
 
         //TODO: if allowing additional-build-arguments, deny: --build-arg=BUILDKIT_SYNTAX=
 
+        if self.repro() {
+            cmd.arg("--no-cache");
+        }
+
         for img in self.cache.from_images.iter().chain(self.cache.images.iter()) {
             let img = img.noscheme();
             cmd.arg(format!("--cache-from=type=registry,ref={img}"));
@@ -303,9 +307,10 @@ impl Green {
 
         let call = cmd.show();
         info!("Starting `{envs} {call} <{containerfile}`", envs = cmd.envs_string(&[]));
+        eprintln!("Starting `{envs} {call} <{containerfile}`", envs = cmd.envs_string(&[]));
         let call = call
             .split_whitespace()
-            .filter(|flag| !self.runner.buildnoop_flags().any(|prefix| flag.contains(prefix)))
+            .filter(|flag| !self.runner.buildnoop_flags().any(|prefix| flag.starts_with(prefix)))
             .filter(|flag| !flag.starts_with("--target="))
             .filter(|flag| *flag != "--platform=local")
             .filter(|flag| *flag != "--pull=false")

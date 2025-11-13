@@ -148,7 +148,6 @@ EOF
 unset_action_envs() {
     [[ $# -eq 0 ]]
 cat <<EOF
-        unset CARGO_INCREMENTAL
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
         unset CARGO_TERM_COLOR
