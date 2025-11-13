@@ -82,7 +82,7 @@ RUN \
     set -eux \
  && if   command -v apk >/dev/null 2>&1; then \
                                      xx-apk     add     --no-cache                 '{apk}'; \
-    elif command -v apt >/dev/null 2&>1; then \
+    elif command -v apt >/dev/null 2>&1; then \
       DEBIAN_FRONTEND=noninteractive xx-apt     install --no-install-recommends -y '{apt}'; \
     else \
       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '{apt_get}'; \
