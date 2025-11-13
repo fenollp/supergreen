@@ -415,16 +415,24 @@ async fn run_build(
 
     let handles = if let Some(out_dir) = out_dir {
         let dbg_out: JoinHandle<Result<_>> = spawn({
-            let out = TokioBufReader::new(child.stdout.take().expect("started"));
-            let out_path = format!("{target}-{STDOUT}");
-            let err_path = format!("{target}-{STDERR}");
-            let rcd_path = format!("{target}-{ERRCODE}");
+            let mut out = TokioBufReader::new(child.stdout.take().expect("started"));
+            let target = target.to_owned();
             let out_dir = out_dir.to_owned();
             let mut err_handle = None;
             let mut out_handle = None;
             let mut rcd = None;
             let mut written = vec![];
             async move {
+                let mut buf = Vec::new();
+                out.read_to_end(&mut buf)
+                    .await
+                    .map_err(|e| anyhow!("Failed getting all the buffer: {e}"))?;
+                debug!("produced {target} 0x{}", sha256::digest(&buf));
+                let out = TokioBufReader::new(buf.as_slice());
+                let out_path = format!("{target}-{STDOUT}");
+                let err_path = format!("{target}-{STDERR}");
+                let rcd_path = format!("{target}-{ERRCODE}");
+
                 info!("running untar on STDOUT");
                 let mut ar = tokio_tar::Archive::new(out);
                 let mut entries = ar.entries().map_err(|e| anyhow!("Failed reading TAR: {e}"))?;
@@ -441,12 +449,14 @@ async fn run_build(
                         f.read_to_string(&mut buf)
                             .await
                             .map_err(|e| anyhow!("Failed unTARing buffer: {e}"))?;
+                        debug!("produced {name} 0x{}", sha256::digest(&buf));
                         out_handle = Some(buf);
                     } else if name == err_path {
                         let mut buf = String::new();
                         f.read_to_string(&mut buf)
                             .await
                             .map_err(|e| anyhow!("Failed unTARing buffer: {e}"))?;
+                        debug!("produced {name} 0x{}", sha256::digest(&buf));
                         err_handle = Some(buf);
                     } else if name == rcd_path {
                         let line = TokioBufReader::new(f).lines().next_line().await;
@@ -464,6 +474,7 @@ async fn run_build(
                         f.read_to_end(&mut buf)
                             .await
                             .map_err(|e| anyhow!("Failed unTARing buffer: {e}"))?;
+                        debug!("produced {name} 0x{}", sha256::digest(&buf));
 
                         let atomix = AtomicFile::new(&fname, OverwriteBehavior::AllowOverwrite);
                         let mut options = OpenOptions::new();
