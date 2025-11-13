@@ -52,7 +52,7 @@ FROM scratch AS {stage}
 pub(crate) fn add_step(name: &str, version: &str, hash: &str) -> String {
     format!(
         r#"
-ADD --chmod=0664 --unpack=true --checksum=sha256:{hash} \
+ADD --chmod=0664 --unpack --checksum=sha256:{hash} \
   https://static.crates.io/crates/{name}/{name}-{version}.crate /
 "#
     )
