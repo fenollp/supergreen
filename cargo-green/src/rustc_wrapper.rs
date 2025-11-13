@@ -393,9 +393,8 @@ async fn do_wrap_rustc(
     }
 
     rustc_block.push_str(&format!("      rustc '{}' {input} \\\n", args.join("' '")));
-    //TODO: see if subshell and tee call can be dropped
-    rustc_block.push_str(&format!("        1> >(tee    {out_dir}/{out_stage}-{STDOUT}) \\\n"));
-    rustc_block.push_str(&format!("        2> >(tee    {out_dir}/{out_stage}-{STDERR} >&2) \\\n"));
+    rustc_block.push_str(&format!("        1>          {out_dir}/{out_stage}-{STDOUT} \\\n"));
+    rustc_block.push_str(&format!("        2>          {out_dir}/{out_stage}-{STDERR} \\\n"));
     rustc_block.push_str(&format!("        || echo $? >{out_dir}/{out_stage}-{ERRCODE}\n"));
     rustc_block.push_str(&format!("ARG SOURCE_DATE_EPOCH\nRUN find {out_dir}/*{extrafn}* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH\n"));
     md.push_block(&rustc_stage, rustc_block);
