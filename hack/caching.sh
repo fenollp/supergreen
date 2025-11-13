@@ -16,7 +16,7 @@ export CARGOGREEN_LOG=trace
 export CARGOGREEN_LOG_PATH=/tmp/cargo-green--hack-caching--$install_package.log
 export CARGO_TARGET_DIR=/tmp/cargo-green--hack-caching--target-dir
 mkdir -p $CARGO_TARGET_DIR
-rm -rf $CARGO_TARGET_DIR/*
+rm -rf $CARGO_TARGET_DIR/* $CARGOGREEN_LOG_PATH* >/dev/null
 
 $CARGO green supergreen env
 #$CARGO +1.84.1 green supergreen env
@@ -28,6 +28,16 @@ compute_installed_bin_sha256() {
 ensure__rewrite_cratesio_index__works() {
 	! grep -F '/index.crates.io-' $CARGOGREEN_LOG_PATH | grep -vE '/index.crates.io-0{16}|original args|env is set|opening .RO. crate tarball|picked'
 }
+compute_produced_shas() {
+	grep -E produced.+0x $CARGOGREEN_LOG_PATH | awk '{print $8,$9}' | sort
+}
+ensure__produces_same_shas() {
+	if [[ ! -f $CARGOGREEN_LOG_PATH.produced ]]; then
+		compute_produced_shas >$CARGOGREEN_LOG_PATH.produced
+	else
+		diff --width=150 -y <(cat $CARGOGREEN_LOG_PATH.produced) <(compute_produced_shas)
+	fi
+}
 
 echo Sortons nos cartes!
 echo
@@ -37,14 +47,36 @@ echo
 
 
 rm -rf $CARGO_TARGET_DIR/* >/dev/null
+rm -rf $CARGOGREEN_LOG_PATH >/dev/null
+rm -rf $install_root/* >/dev/null
 $CARGO green install --locked                            $install_package --root=$install_root
 git add $CARGOGREEN_FINAL_PATH
+ensure__produces_same_shas # => just computes shas
 ensure__rewrite_cratesio_index__works
 $install_root/bin/${install_package%@*} --help >/dev/null
 install_sha=$(compute_installed_bin_sha256)
 
 grep -A2 '# Pipe this file to:' $CARGOGREEN_FINAL_PATH
 echo Builds fine
+echo
+
+
+#---
+
+
+# $CARGO green supergreen builder recreate
+
+rm -rf $CARGO_TARGET_DIR/* >/dev/null
+rm -rf $CARGOGREEN_LOG_PATH >/dev/null
+rm -rf $install_root/* >/dev/null
+$CARGO green install --locked --frozen --offline --force $install_package --root=$install_root
+git add $CARGOGREEN_FINAL_PATH
+ensure__produces_same_shas # rebuild => same shas
+ensure__rewrite_cratesio_index__works
+$install_root/bin/${install_package%@*} --help >/dev/null
+[[ $install_sha = $(compute_installed_bin_sha256) ]] # rebuild => no change
+
+echo Re-builds fine #and using a new builder
 echo
 
 
@@ -70,6 +102,8 @@ echo
 export CARGOGREEN_BASE_IMAGE=docker-image://docker.io/library/rust:1.84.0-slim@sha256:0ec205a9abb049604cb085f2fdf7630f1a31dad1f7ad4986154a56501fb7ca77
 
 rm -rf $CARGO_TARGET_DIR/* >/dev/null
+rm -rf $CARGOGREEN_LOG_PATH >/dev/null
+rm -rf $install_root/* >/dev/null
 $CARGO green install --locked --frozen --offline --force $install_package --root=$install_root
 REPO=$(cargo metadata --no-deps --format-version 1 | jq -r '.packages[] | select(.name=="cargo-green").repository')
 VSN=$(cargo metadata --no-deps --format-version 1 | jq -r '.packages[] | select(.name=="cargo-green").version')
@@ -85,6 +119,9 @@ cat <<EOF | diff -u - <(git --no-pager diff --ignore-matching-lines='^##' -- $CA
  
 EOF
 git add $CARGOGREEN_FINAL_PATH
+! ensure__produces_same_shas # change rustc => changes shas
+rm -rf $CARGOGREEN_LOG_PATH.produced >/dev/null
+ensure__produces_same_shas # (here, we just re-compute shas)
 ensure__rewrite_cratesio_index__works
 $install_root/bin/${install_package%@*} --help >/dev/null
 [[ $install_sha != $(compute_installed_bin_sha256) ]] # change rustc => change final bin
@@ -111,6 +148,8 @@ echo
 # Changing CARGOGREEN_LOG_LEVEL shouldn't evict cache
 
 # rm -rf $CARGO_TARGET_DIR/* >/dev/null
+# rm -rf $CARGOGREEN_LOG_PATH >/dev/null
+# rm -rf $install_root/* >/dev/null
 # $CARGO green +nightly install --locked --frozen --offline --force $install_package --root=$install_root
 # git --no-pager diff --color-words=. --exit-code -- $CARGOGREEN_FINAL_PATH
 
@@ -124,6 +163,8 @@ export CARGO_TARGET_DIR=/tmp/cargo-green--hack-caching
 mkdir -p $CARGO_TARGET_DIR
 
 rm -rf $CARGO_TARGET_DIR/* >/dev/null
+rm -rf $CARGOGREEN_LOG_PATH >/dev/null
+rm -rf $install_root/* >/dev/null
 $CARGO green install --locked --frozen --offline --force $install_package --root=$install_root
 #TODO: rewrite target dir between host and build(..) calls
 # git --no-pager diff -- $CARGOGREEN_FINAL_PATH
@@ -134,6 +175,7 @@ $CARGO green install --locked --frozen --offline --force $install_package --root
 # +#   docker --debug build --network=none --platform=local --pull=false --target=out-68f2214769fd28b1 --output=type=local,dest=/tmp/cargo-green--hack-caching/release/deps -
 # EOF
 unset old_target_dir
+! ensure__produces_same_shas # change targetdir => changes shas (here, we just re-compute shas)
 ensure__rewrite_cratesio_index__works
 $install_root/bin/${install_package%@*} --help >/dev/null
 [[ $install_sha = $(compute_installed_bin_sha256) ]] # change targetdir => no binary changes
