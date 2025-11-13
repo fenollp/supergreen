@@ -395,8 +395,9 @@ async fn do_wrap_rustc(
     rustc_block.push_str(&format!("      rustc '{}' {input} \\\n", args.join("' '")));
     rustc_block.push_str(&format!("        1>          {out_dir}/{out_stage}-{STDOUT} \\\n"));
     rustc_block.push_str(&format!("        2>          {out_dir}/{out_stage}-{STDERR} \\\n"));
-    rustc_block.push_str(&format!("        || echo $? >{out_dir}/{out_stage}-{ERRCODE}\n"));
-    rustc_block.push_str(&format!("ARG SOURCE_DATE_EPOCH\nRUN find {out_dir}/*{extrafn}* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH\n"));
+    rustc_block.push_str(&format!("        || echo $? >{out_dir}/{out_stage}-{ERRCODE}\\\n"));
+    // TODO: [`COPY --rewrite-timestamp ...` to apply SOURCE_DATE_EPOCH build arg value to the timestamps of the files](https://github.com/moby/buildkit/issues/6348)
+    rustc_block.push_str(&format!("  ; find {out_dir}/*{extrafn}* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH\n"));
     md.push_block(&rustc_stage, rustc_block);
 
     if let Some(ref incremental) = incremental {
@@ -418,7 +419,7 @@ async fn do_wrap_rustc(
     md.write_to(&md_path)?;
 
     let mut containerfile = green.new_containerfile();
-    containerfile.pushln(md.rust_stage());
+    containerfile.pushln(&md.rust_stage());
     containerfile.nl();
     containerfile.push(&md.block_along_with_predecessors(&mds));
     containerfile.write_to(&containerfile_path)?;

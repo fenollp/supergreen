@@ -180,8 +180,6 @@ pub(crate) struct Effects {
     pub(crate) stderr: Vec<String>,
 }
 
-const EPOCH: u64 = 42;
-
 impl Green {
     pub(crate) async fn build_cacheonly(
         &self,
@@ -217,12 +215,6 @@ impl Green {
         cmd.arg("build");
 
         //TODO: if allowing additional-build-arguments, deny: --build-arg=BUILDKIT_SYNTAX=
-
-        // TODO? use a non-fixed EPOCH value
-        // * set SOURCE_DATE_EPOCH=$(git log -1 --pretty=%ct) for local code, and
-        // * set it to crates' birth date, in case it's a $HOME/.cargo/registry/cache/...crate
-        // * set it to the directory's birth date otherwise (should be a relative path to local files).
-        cmd.arg(format!("--build-arg=SOURCE_DATE_EPOCH={EPOCH}")); // https://reproducible-builds.org/docs/source-date-epoch/
 
         for img in self.cache.from_images.iter().chain(self.cache.images.iter()) {
             let img = img.noscheme();
@@ -487,7 +479,7 @@ async fn run_build(
                         assert_eq!(f.header().entry_type().as_byte(), 0x30);
                         assert_eq!(f.header().uid().unwrap(), 0);
                         assert_eq!(f.header().gid().unwrap(), 0);
-                        assert_eq!(f.header().mtime().unwrap(), EPOCH);
+                        //assert_eq!(f.header().mtime().unwrap(), 42);
                         assert_eq!(f.header().username(), Ok(Some("")));
                         assert_eq!(f.header().groupname(), Ok(Some("")));
 
