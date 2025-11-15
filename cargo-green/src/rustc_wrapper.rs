@@ -120,8 +120,8 @@ async fn call_rustc(rustc: &str, args: Vec<String>) -> Result<()> {
 }
 
 pub(crate) async fn exec_buildrs(green: Green, exe: Utf8PathBuf) -> Result<()> {
-    assert!(env::var_os(ENV).is_none(), "It's turtles all the way down!");
-    env::set_var(ENV, "1");
+    assert!(env::var_os(ENV!()).is_none(), "It's turtles all the way down!");
+    env::set_var(ENV!(), "1");
 
     let krate_name = env::var("CARGO_PKG_NAME").expect("$CARGO_PKG_NAME");
     let krate_version = env::var("CARGO_PKG_VERSION").expect("$CARGO_PKG_VERSION");
@@ -210,7 +210,7 @@ async fn do_exec_buildrs(
     };
 
     let mut md = Md::new(&extra);
-    md.push_block(&RUST, green.image.base_image_inline.clone().unwrap());
+    md.push_block(&RUST, green.base.image_inline.clone().unwrap());
 
     fs::create_dir_all(&out_dir_var)
         .map_err(|e| anyhow!("Failed to `mkdir -p {out_dir_var}`: {e}"))?;
@@ -264,7 +264,7 @@ async fn do_exec_buildrs(
     for (var, val) in env::vars().filter_map(|kv| fmap_env(kv, true)) {
         run_block.push_str(&format!("        {var}={val} \\\n"));
     }
-    run_block.push_str(&format!("        {ENV}=1 \\\n"));
+    run_block.push_str(&format!("        {}=1 \\\n", ENV!()));
     for var in &green.set_envs {
         if let Some(val) = env::var_os(var) {
             warn!("passing ${var}={val:?} env through");
@@ -293,7 +293,7 @@ async fn do_exec_buildrs(
     md.write_to(&md_path)?;
 
     let mut containerfile = green.new_containerfile();
-    containerfile.pushln(md.rust_stage());
+    containerfile.pushln(&md.rust_stage());
     containerfile.nl();
     containerfile.push(&md.block_along_with_predecessors(&mds));
     containerfile.write_to(&containerfile_path)?;
