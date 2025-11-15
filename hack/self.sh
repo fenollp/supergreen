@@ -119,10 +119,15 @@ $(bin_jobdef 'installs')
     steps:
 $(postbin_steps)
 $(cache_usage)
-    - name: cargo install net=ON cache=OFF remote=OFF jobs=1
+    - name: 🔵 cargo green install --locked --force --path=./cargo-green
       run: |
 $(unset_action_envs)
-        cargo green -vv install --jobs=1 --locked --force --path=./cargo-green |& tee ../_
+        cargo green -vv install --locked --force --path=./cargo-green |& tee ../_
+    - name: cargo green install --locked --force --path=./cargo-green --jobs=1
+      if: \${{ failure() }}
+      run: |
+$(unset_action_envs)
+        cargo green -vv install --locked --force --path=./cargo-green --jobs=1 |& tee ../_
 $(postconds ../_)
 $(cache_usage)
 
@@ -150,13 +155,23 @@ $(postbin_steps $nightly)
       with:
         tool: cargo-udeps
 $(cache_usage)
-    - name: cargo +$nightly green udeps --all-targets --jobs=1 cache=OFF remote=OFF
+    - name: 🔵 cargo +$nightly green udeps --all-targets
+      run: |
+$(unset_action_envs)
+        cargo +$nightly green udeps --all-targets |& tee ../_
+    - name: cargo +$nightly green udeps --all-targets --jobs=1
+      if: \${{ failure() }}
       run: |
 $(unset_action_envs)
         cargo +$nightly green udeps --all-targets --jobs=1 |& tee ../_
 $(postconds ../_)
 $(cache_usage)
-    - name: Again, with +toolchain to cargo-green
+    - name: 🔵 cargo green +$nightly udeps --all-targets
+      run: |
+$(unset_action_envs)
+        cargo green +$nightly udeps --all-targets |& tee ../_
+    - name: cargo green +$nightly udeps --all-targets --jobs=1
+      if: \${{ failure() }}
       run: |
 $(unset_action_envs)
         cargo green +$nightly udeps --all-targets --jobs=1 |& tee ../_
@@ -173,23 +188,21 @@ $(cache_usage)
 $(unset_action_envs)
         cargo green -vv fetch |& tee ../_
 $(postconds ../_)
-    - name: cargo build net=OFF cache=OFF remote=OFF jobs=1
+    - name: 🔵 cargo green build --all-targets --all-features --locked --frozen --offline
       run: |
 $(unset_action_envs)
-        cargo green -vv build --jobs=1 --all-targets --all-features --locked --frozen --offline |& tee ../_
+        cargo green -vv build --all-targets --all-features --locked --frozen --offline |& tee ../_
+    - name: cargo green build --all-targets --all-features --locked --frozen --offline --jobs=1
+      if: \${{ failure() }}
+      run: |
+$(unset_action_envs)
+        cargo green -vv build --all-targets --all-features --locked --frozen --offline --jobs=1 |& tee ../_
 $(postconds ../_)
 $(cache_usage)
-    - name: Ensure running the same command twice without modifications...
+    - name: Ensure running the same command thrice without modifications...
       run: |
 $(unset_action_envs)
-        cargo green -vv build --jobs=1 --all-targets --all-features --locked --frozen --offline |& tee ../_
-$(postcond_fresh ../_)
-$(postconds ../_)
-$(cache_usage)
-    - name: Ensure running the same command thrice without modifications (jobs>1)...
-      run: |
-$(unset_action_envs)
-        cargo green -vv build --jobs=\$(nproc) --all-targets --all-features --locked --frozen --offline |& tee ../_
+        cargo green -vv build --all-targets --all-features --locked --frozen --offline |& tee ../_
 $(postcond_fresh ../_)
 $(postconds ../_)
 $(cache_usage)
@@ -204,23 +217,21 @@ $(cache_usage)
 $(unset_action_envs)
         cargo green -vv fetch |& tee ../_
 $(postconds ../_)
-    - name: cargo test net=OFF cache=OFF remote=OFF jobs=1
+    - name: 🔵 cargo green test --all-targets --all-features --locked --frozen --offline
       run: |
 $(unset_action_envs)
-        cargo green -vv test --jobs=1 --all-targets --all-features --locked --frozen --offline |& tee ../_
+        cargo green -vv test --all-targets --all-features --locked --frozen --offline |& tee ../_
+    - name: cargo green test --all-targets --all-features --locked --frozen --offline --jobs=1
+      if: \${{ failure() }}
+      run: |
+$(unset_action_envs)
+        cargo green -vv test --all-targets --all-features --locked --frozen --offline --jobs=1 |& tee ../_
 $(postconds ../_)
 $(cache_usage)
     - name: Ensure running the same command twice without modifications...
       run: |
 $(unset_action_envs)
-        cargo green -vv test --jobs=1 --all-targets --all-features --locked --frozen --offline |& tee ../_
-$(postcond_fresh ../_)
-$(postconds ../_)
-$(cache_usage)
-    - name: Ensure running the same command thrice without modifications (jobs>1)...
-      run: |
-$(unset_action_envs)
-        cargo green -vv test --jobs=\$(nproc) --all-targets --all-features --locked --frozen --offline |& tee ../_
+        cargo green -vv test --all-targets --all-features --locked --frozen --offline |& tee ../_
 $(postcond_fresh ../_)
 $(postconds ../_)
 $(cache_usage)
@@ -235,16 +246,21 @@ $(cache_usage)
 $(unset_action_envs)
         cargo green -vv fetch |& tee ../_
 $(postconds ../_)
-    - name: cargo check net=OFF cache=OFF remote=OFF jobs=\$(nproc)
+    - name: 🔵 cargo green check --all-targets --all-features --locked --frozen --offline
       run: |
 $(unset_action_envs)
-        cargo green -vv check --jobs=\$(nproc) --all-targets --all-features --locked --frozen --offline |& tee ../_
+        cargo green -vv check --all-targets --all-features --locked --frozen --offline |& tee ../_
+    - name: cargo green check --all-targets --all-features --locked --frozen --offline --jobs=1
+      if: \${{ failure() }}
+      run: |
+$(unset_action_envs)
+        cargo green -vv check --all-targets --all-features --locked --frozen --offline --jobs=1 |& tee ../_
 $(postconds ../_)
 $(cache_usage)
     - name: Ensure running the same command twice without modifications...
       run: |
 $(unset_action_envs)
-        cargo green -vv check --jobs=1 --all-targets --all-features --locked --frozen --offline |& tee ../_
+        cargo green -vv check --all-targets --all-features --locked --frozen --offline |& tee ../_
 $(postcond_fresh ../_)
 $(postconds ../_)
 $(cache_usage)
@@ -259,10 +275,15 @@ $(cache_usage)
 $(unset_action_envs)
         cargo green -vv fetch |& tee ../_
 $(postconds ../_)
-    - name: cargo package net=OFF cache=OFF remote=OFF jobs=1
+    - name: 🔵 cargo green package --all-features --locked --frozen --offline
       run: |
 $(unset_action_envs)
-        cargo green -vv package --jobs=1 --all-features --locked --frozen --offline |& tee ../_
+        cargo green -vv package --all-features --locked --frozen --offline |& tee ../_
+    - name: cargo green package --all-features --locked --frozen --offline --jobs=1
+      if: \${{ failure() }}
+      run: |
+$(unset_action_envs)
+        cargo green -vv package --all-features --locked --frozen --offline --jobs=1 |& tee ../_
 $(postconds ../_)
 $(cache_usage)
 
@@ -277,16 +298,21 @@ $(cache_usage)
 $(unset_action_envs)
         cargo green -vv fetch
 $(postconds ../_)
-    - name: cargo clippy net=OFF cache=OFF remote=OFF jobs=1
+    - name: 🔵 cargo green clippy --all-targets --all-features --locked --frozen --offline
       run: |
 $(unset_action_envs)
-        cargo green -vv clippy --jobs=1 --all-targets --all-features --locked --frozen --offline |& tee ../_
+        cargo green -vv clippy --all-targets --all-features --locked --frozen --offline |& tee ../_
+    - name: cargo green clippy --all-targets --all-features --locked --frozen --offline --jobs=1
+      if: \${{ failure() }}
+      run: |
+$(unset_action_envs)
+        cargo green -vv clippy --all-targets --all-features --locked --frozen --offline --jobs=1 |& tee ../_
 $(postconds ../_)
 $(cache_usage)
     - name: Ensure running the same command twice without modifications...
       run: |
 $(unset_action_envs)
-        cargo green -vv clippy --jobs=\$(nproc) --all-targets --all-features --locked --frozen --offline |& tee ../_
+        cargo green -vv clippy --all-targets --all-features --locked --frozen --offline |& tee ../_
 $(postcond_fresh ../_)
 $(postconds ../_)
 $(cache_usage)
