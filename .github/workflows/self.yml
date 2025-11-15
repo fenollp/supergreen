@@ -110,13 +110,21 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
     - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
-    - name: cargo install net=ON cache=OFF remote=OFF jobs=1
+    - name: 🔵 cargo green install --locked --force --path=./cargo-green
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
-        cargo green -vv install --jobs=1 --locked --force --path=./cargo-green |& tee ../_
+        cargo green -vv install --locked --force --path=./cargo-green |& tee ../_
+    - name: cargo green install --locked --force --path=./cargo-green --jobs=1
+      if: ${{ failure() }}
+      run: |
+        unset CARGO_PROFILE_DEV_DEBUG
+        unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
+        unset CARGO_TERM_COLOR
+        unset CARGO_UNSTABLE_SPARSE_REGISTRY
+        cargo green -vv install --locked --force --path=./cargo-green --jobs=1 |& tee ../_
     - if: ${{ always() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
@@ -394,7 +402,15 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
     - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
-    - name: cargo +nightly-2025-08-06 green udeps --all-targets --jobs=1 cache=OFF remote=OFF
+    - name: 🔵 cargo +nightly-2025-08-06 green udeps --all-targets
+      run: |
+        unset CARGO_PROFILE_DEV_DEBUG
+        unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
+        unset CARGO_TERM_COLOR
+        unset CARGO_UNSTABLE_SPARSE_REGISTRY
+        cargo +nightly-2025-08-06 green udeps --all-targets |& tee ../_
+    - name: cargo +nightly-2025-08-06 green udeps --all-targets --jobs=1
+      if: ${{ failure() }}
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
@@ -468,7 +484,15 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
     - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
-    - name: Again, with +toolchain to cargo-green
+    - name: 🔵 cargo green +nightly-2025-08-06 udeps --all-targets
+      run: |
+        unset CARGO_PROFILE_DEV_DEBUG
+        unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
+        unset CARGO_TERM_COLOR
+        unset CARGO_UNSTABLE_SPARSE_REGISTRY
+        cargo green +nightly-2025-08-06 udeps --all-targets |& tee ../_
+    - name: cargo green +nightly-2025-08-06 udeps --all-targets --jobs=1
+      if: ${{ failure() }}
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
@@ -672,13 +696,21 @@ jobs:
     - if: ${{ failure() }}
       name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
-    - name: cargo build net=OFF cache=OFF remote=OFF jobs=1
+    - name: 🔵 cargo green build --all-targets --all-features --locked --frozen --offline
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
-        cargo green -vv build --jobs=1 --all-targets --all-features --locked --frozen --offline |& tee ../_
+        cargo green -vv build --all-targets --all-features --locked --frozen --offline |& tee ../_
+    - name: cargo green build --all-targets --all-features --locked --frozen --offline --jobs=1
+      if: ${{ failure() }}
+      run: |
+        unset CARGO_PROFILE_DEV_DEBUG
+        unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
+        unset CARGO_TERM_COLOR
+        unset CARGO_UNSTABLE_SPARSE_REGISTRY
+        cargo green -vv build --all-targets --all-features --locked --frozen --offline --jobs=1 |& tee ../_
     - if: ${{ always() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
@@ -746,94 +778,13 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
     - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
-    - name: Ensure running the same command twice without modifications...
+    - name: Ensure running the same command thrice without modifications...
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
-        cargo green -vv build --jobs=1 --all-targets --all-features --locked --frozen --offline |& tee ../_
-    - name: ...doesn't recompile anything
-      run: |
-        err=0
-        grep Finished  ../_ | grep -E [012]...s || err=1
-        grep Dirty     ../_                     && err=1
-        grep Compiling ../_                     && err=1
-        exit $err
-    - if: ${{ always() }}
-      name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
-      run: |
-        ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' ../_
-
-    - if: ${{ always() }}
-      name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
-      run: |
-        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
-
-    - if: ${{ always() }}
-      name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
-      run: |
-        ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
-
-    - if: ${{ always() }}
-      name: 🔴 =means=> there's some panic!s
-      run: |
-        ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
-
-    - if: ${{ always() }}
-      name: 🔴 =means=> there's some BUGs
-      run: |
-        ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
-
-    - if: ${{ always() }}
-      name: 🔴 =means=> here's cargo's error text
-      run: |
-        ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH ../_
-
-    - if: ${{ always() }}
-      name: 🔴 =means=> 429 Too Many Requests
-      run: |
-        ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH ../_
-
-    - if: ${{ always() }}
-      name: 🔴 =means=> here's relevant logs
-      run: |
-        ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
-
-    - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
-      name: 🌀 Maybe show final path diff
-      run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
-        final_diff=(git --no-pager diff)
-        if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
-          final_diff+=(--exit-code)
-        fi
-        final_diff+=(--ignore-matching-lines='^# Generated by')
-        final_diff+=(--ignore-matching-lines=' AS rust-base$')
-        final_diff+=(--ignore-matching-lines='^# syntax=docker.io/docker/dockerfile:1@')
-        final_diff+=(--ignore-matching-lines="^##     '\{")
-        final_diff+=(-- $CARGOGREEN_FINAL_PATH)
-        "${final_diff[@]}"
-
-    - if: ${{ failure() }}
-      name: 🌀 cargo-green logs
-      run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
-    - run: sudo du -sh /var/lib/docker || true
-    - run: docker system df
-    - run: docker system df --verbose
-    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
-    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
-    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
-    - name: Ensure running the same command thrice without modifications (jobs>1)...
-      run: |
-        unset CARGO_PROFILE_DEV_DEBUG
-        unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
-        unset CARGO_TERM_COLOR
-        unset CARGO_UNSTABLE_SPARSE_REGISTRY
-        cargo green -vv build --jobs=$(nproc) --all-targets --all-features --locked --frozen --offline |& tee ../_
+        cargo green -vv build --all-targets --all-features --locked --frozen --offline |& tee ../_
     - name: ...doesn't recompile anything
       run: |
         err=0
@@ -1038,13 +989,21 @@ jobs:
     - if: ${{ failure() }}
       name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
-    - name: cargo test net=OFF cache=OFF remote=OFF jobs=1
+    - name: 🔵 cargo green test --all-targets --all-features --locked --frozen --offline
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
-        cargo green -vv test --jobs=1 --all-targets --all-features --locked --frozen --offline |& tee ../_
+        cargo green -vv test --all-targets --all-features --locked --frozen --offline |& tee ../_
+    - name: cargo green test --all-targets --all-features --locked --frozen --offline --jobs=1
+      if: ${{ failure() }}
+      run: |
+        unset CARGO_PROFILE_DEV_DEBUG
+        unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
+        unset CARGO_TERM_COLOR
+        unset CARGO_UNSTABLE_SPARSE_REGISTRY
+        cargo green -vv test --all-targets --all-features --locked --frozen --offline --jobs=1 |& tee ../_
     - if: ${{ always() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
@@ -1118,88 +1077,7 @@ jobs:
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
-        cargo green -vv test --jobs=1 --all-targets --all-features --locked --frozen --offline |& tee ../_
-    - name: ...doesn't recompile anything
-      run: |
-        err=0
-        grep Finished  ../_ | grep -E [012]...s || err=1
-        grep Dirty     ../_                     && err=1
-        grep Compiling ../_                     && err=1
-        exit $err
-    - if: ${{ always() }}
-      name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
-      run: |
-        ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' ../_
-
-    - if: ${{ always() }}
-      name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
-      run: |
-        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
-
-    - if: ${{ always() }}
-      name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
-      run: |
-        ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
-
-    - if: ${{ always() }}
-      name: 🔴 =means=> there's some panic!s
-      run: |
-        ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
-
-    - if: ${{ always() }}
-      name: 🔴 =means=> there's some BUGs
-      run: |
-        ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
-
-    - if: ${{ always() }}
-      name: 🔴 =means=> here's cargo's error text
-      run: |
-        ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH ../_
-
-    - if: ${{ always() }}
-      name: 🔴 =means=> 429 Too Many Requests
-      run: |
-        ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH ../_
-
-    - if: ${{ always() }}
-      name: 🔴 =means=> here's relevant logs
-      run: |
-        ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
-
-    - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
-      name: 🌀 Maybe show final path diff
-      run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
-        final_diff=(git --no-pager diff)
-        if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
-          final_diff+=(--exit-code)
-        fi
-        final_diff+=(--ignore-matching-lines='^# Generated by')
-        final_diff+=(--ignore-matching-lines=' AS rust-base$')
-        final_diff+=(--ignore-matching-lines='^# syntax=docker.io/docker/dockerfile:1@')
-        final_diff+=(--ignore-matching-lines="^##     '\{")
-        final_diff+=(-- $CARGOGREEN_FINAL_PATH)
-        "${final_diff[@]}"
-
-    - if: ${{ failure() }}
-      name: 🌀 cargo-green logs
-      run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
-    - run: sudo du -sh /var/lib/docker || true
-    - run: docker system df
-    - run: docker system df --verbose
-    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
-    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
-    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
-    - name: Ensure running the same command thrice without modifications (jobs>1)...
-      run: |
-        unset CARGO_PROFILE_DEV_DEBUG
-        unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
-        unset CARGO_TERM_COLOR
-        unset CARGO_UNSTABLE_SPARSE_REGISTRY
-        cargo green -vv test --jobs=$(nproc) --all-targets --all-features --locked --frozen --offline |& tee ../_
+        cargo green -vv test --all-targets --all-features --locked --frozen --offline |& tee ../_
     - name: ...doesn't recompile anything
       run: |
         err=0
@@ -1404,13 +1282,21 @@ jobs:
     - if: ${{ failure() }}
       name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
-    - name: cargo check net=OFF cache=OFF remote=OFF jobs=$(nproc)
+    - name: 🔵 cargo green check --all-targets --all-features --locked --frozen --offline
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
-        cargo green -vv check --jobs=$(nproc) --all-targets --all-features --locked --frozen --offline |& tee ../_
+        cargo green -vv check --all-targets --all-features --locked --frozen --offline |& tee ../_
+    - name: cargo green check --all-targets --all-features --locked --frozen --offline --jobs=1
+      if: ${{ failure() }}
+      run: |
+        unset CARGO_PROFILE_DEV_DEBUG
+        unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
+        unset CARGO_TERM_COLOR
+        unset CARGO_UNSTABLE_SPARSE_REGISTRY
+        cargo green -vv check --all-targets --all-features --locked --frozen --offline --jobs=1 |& tee ../_
     - if: ${{ always() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
@@ -1484,7 +1370,7 @@ jobs:
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
-        cargo green -vv check --jobs=1 --all-targets --all-features --locked --frozen --offline |& tee ../_
+        cargo green -vv check --all-targets --all-features --locked --frozen --offline |& tee ../_
     - name: ...doesn't recompile anything
       run: |
         err=0
@@ -1689,13 +1575,21 @@ jobs:
     - if: ${{ failure() }}
       name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
-    - name: cargo package net=OFF cache=OFF remote=OFF jobs=1
+    - name: 🔵 cargo green package --all-features --locked --frozen --offline
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
-        cargo green -vv package --jobs=1 --all-features --locked --frozen --offline |& tee ../_
+        cargo green -vv package --all-features --locked --frozen --offline |& tee ../_
+    - name: cargo green package --all-features --locked --frozen --offline --jobs=1
+      if: ${{ failure() }}
+      run: |
+        unset CARGO_PROFILE_DEV_DEBUG
+        unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
+        unset CARGO_TERM_COLOR
+        unset CARGO_UNSTABLE_SPARSE_REGISTRY
+        cargo green -vv package --all-features --locked --frozen --offline --jobs=1 |& tee ../_
     - if: ${{ always() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
@@ -1894,13 +1788,21 @@ jobs:
     - if: ${{ failure() }}
       name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
-    - name: cargo clippy net=OFF cache=OFF remote=OFF jobs=1
+    - name: 🔵 cargo green clippy --all-targets --all-features --locked --frozen --offline
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
-        cargo green -vv clippy --jobs=1 --all-targets --all-features --locked --frozen --offline |& tee ../_
+        cargo green -vv clippy --all-targets --all-features --locked --frozen --offline |& tee ../_
+    - name: cargo green clippy --all-targets --all-features --locked --frozen --offline --jobs=1
+      if: ${{ failure() }}
+      run: |
+        unset CARGO_PROFILE_DEV_DEBUG
+        unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
+        unset CARGO_TERM_COLOR
+        unset CARGO_UNSTABLE_SPARSE_REGISTRY
+        cargo green -vv clippy --all-targets --all-features --locked --frozen --offline --jobs=1 |& tee ../_
     - if: ${{ always() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
@@ -1974,7 +1876,7 @@ jobs:
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
-        cargo green -vv clippy --jobs=$(nproc) --all-targets --all-features --locked --frozen --offline |& tee ../_
+        cargo green -vv clippy --all-targets --all-features --locked --frozen --offline |& tee ../_
     - name: ...doesn't recompile anything
       run: |
         err=0
