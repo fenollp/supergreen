@@ -7,6 +7,7 @@ use std::{
 };
 
 use anyhow::{anyhow, bail, Result};
+use supergreen::just_help;
 use tokio::process::Command;
 
 #[macro_use]
@@ -113,9 +114,8 @@ async fn main() -> Result<()> {
 
     let arg2 = args.next();
 
-    // Shortcut here just for `cargo green supergreen --help` to avoid some calulations
-    if arg2.as_deref() == Some("supergreen") && supergreen::just_help(env::args().nth(3).as_deref())
-    {
+    // Shortcut here just for `cargo green supergreen --help` to avoid some calculations
+    if arg2.as_deref() == Some("supergreen") && just_help(env::args().nth(3).as_deref()) {
         supergreen::help();
         return Ok(());
     }

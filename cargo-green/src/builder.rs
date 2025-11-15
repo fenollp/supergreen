@@ -142,7 +142,7 @@ then run your cargo command again.
             }
 
             if recreate {
-                self.remove_builder(name).await?;
+                self.remove_builder(name, true).await?;
                 self.create_builder(name).await?;
             }
         } else if !managed {
@@ -161,7 +161,10 @@ then run your cargo command again.
         Ok(())
     }
 
-    pub(crate) async fn remove_builder(&mut self, name: &str) -> Result<()> {
+    pub(crate) async fn remove_builder(&mut self, name: &str, keep_state: bool) -> Result<()> {
+        if !keep_state {
+            return self.try_removing_builder(name, false).await;
+        }
         // First try keeping state...
         if self.try_removing_builder(name, true).await.is_err() {
             // ...then stop messing about.
