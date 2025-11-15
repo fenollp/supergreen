@@ -474,7 +474,7 @@ deps = ["0dc1fe2644e3176a"]
 contexts = [
   { name = "input_src_lib_rs--rustversion-1.0.9", uri = "/home/maison/.cargo/registry/src/github.com-1ecc6299db9ec823/rustversion-1.0.9" },
   { name = "crate_out-...", uri = "/home/maison/code/thing.git/target/debug/build/rustversion-ae69baa7face5565/out" },
-  { name = "cwd-5b79a479b19b5f41", uri = "/tmp/CWD5b79a479b19b5f41" },
+  { name = "cwd-5b79a479b19b5f41", uri = "/tmp/cwd-5b79a479b19b5f41" },
 ]
 stages = []
 "#[1..];
@@ -492,7 +492,7 @@ stages = []
         },
         BuildContext {
             name: "cwd-5b79a479b19b5f41".try_into().unwrap(),
-            uri: "/tmp/CWD5b79a479b19b5f41".into(),
+            uri: "/tmp/cwd-5b79a479b19b5f41".into(),
         },
     ];
     let md = Md::from_str(origin).unwrap();

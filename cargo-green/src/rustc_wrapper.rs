@@ -294,6 +294,7 @@ async fn do_wrap_rustc(
 
         None
     } else {
+        let cwd_stage = Stage::local_mount(md.this())?;
         // NOTE: we don't `rm -rf cwd_root`
         let cwd_root = tmp().join(format!("{PKG}_{VSN}"));
         fs::create_dir_all(&cwd_root)
@@ -303,7 +304,7 @@ async fn do_wrap_rustc(
         fs::write(&ignore, "")
             .map_err(|e| anyhow!("Failed creating cwd dockerignore {ignore:?}: {e}"))?;
 
-        let cwd_path = cwd_root.join(format!("CWD{extrafn}"));
+        let cwd_path = cwd_root.join(cwd_stage.as_str());
 
         info!(
             "copying all {}files under {pwd} to {cwd_path}",
@@ -327,7 +328,7 @@ async fn do_wrap_rustc(
         // TODO: do better to avoid copying >1 times local work dir on each cargo call => context-mount local content-addressed tarball?
         // test|cargo-green|0.8.0|f273b3fc9f002200] copying all git files under $HOME/wefwefwef/supergreen.git to /tmp/cargo-green_0.8.0/CWDf273b3fc9f002200
         // bin|cargo-green|0.8.0|efe5575298075b07] copying all git files under $HOME/wefwefwef/supergreen.git to /tmp/cargo-green_0.8.0/CWDefe5575298075b07
-        let cwd_stage = Stage::local_mount(md.this())?;
+        // TODO: or just include the files in containerfile?
 
         rustc_block.push_str(&format!("COPY --link --from={cwd_stage} / .\n"));
         rustc_block.push_str("RUN \\\n");
