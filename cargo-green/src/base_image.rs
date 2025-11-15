@@ -181,7 +181,7 @@ ENV RUSTUP_HOME=/usr/local/rustup \
      CARGO_HOME=/usr/local/cargo \
            PATH=/usr/local/cargo/bin:$PATH
 RUN \
- --mount=from={rustup_image},source={rustup},dst={rustup} \
+ --mount=from={rustup_image},source={rustup},dst={rustup},rw \
    set -eux \
 && {rustup} toolchain install --profile minimal {channel}-{date}-{host} --no-self-update \
 && chmod -R a+w $RUSTUP_HOME $CARGO_HOME
