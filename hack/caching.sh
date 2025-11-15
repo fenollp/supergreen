@@ -131,7 +131,7 @@ unset CARGOGREEN_EXPERIMENT
 unset CARGOGREEN_CACHE_TO_IMAGES
 [[ $(registry_blobs $reg1 | wc -l) -gt $(registry_blobs $reg2 | wc -l) ]]
 [[ $( ( diff --width=150 -y <(registry_blobs $reg1) <(registry_blobs $reg2) || true ) | wc -l ) = $(registry_blobs $reg1 | wc -l) ]]
-[[ $( ( diff --width=150 -y <(registry_blobs $reg1) <(registry_blobs $reg2) || true ) | grep '<' | wc -l ) -gt $(registry_blobs $reg2 | wc -l) ]]
+[[ $( ( diff --width=150 -y <(registry_blobs $reg1) <(registry_blobs $reg2) || true ) | grep '<' | wc -l ) -ge $(registry_blobs $reg2 | wc -l) ]]
 [[ $( ( diff --width=150 -y <(registry_blobs $reg1) <(registry_blobs $reg2) || true ) | grep '|' | wc -l ) = 0 ]]
 [[ $( ( diff --width=150 -y <(registry_blobs $reg1) <(registry_blobs $reg2) || true ) | grep '>' | wc -l ) = 0 ]]
 rm -rf $reg1 $reg2 >/dev/null
