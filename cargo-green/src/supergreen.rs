@@ -17,19 +17,23 @@ use crate::{ext::CommandExt, green::Green, image_uri::ImageUri, PKG, REPO, VSN};
 //TODO: cli shows builder's jaeger: BUILDX_BUILDER=supergreen docker buildx history trace --addr 127.0.0.1:5452
 
 pub(crate) async fn main(mut green: Green, arg1: Option<&str>, args: Vec<String>) -> Result<()> {
-    if just_help(arg1) {
-        help();
-        return Ok(());
-    }
-    match (arg1, args.first().map(String::as_str)) {
-        (Some("env"), _) => green.envs(args)?,
-        (Some("doc"), _) => green.docs(args)?,
-        (Some("push"), _) => green.push().await?,
-        (Some("builder"), None) => green.inspect_builder().await?,
-        (Some("builder"), Some("rm")) => green.rm_builder().await?,
-        (Some("builder"), Some("recreate")) => green.recreate_builder().await?,
-        (Some(arg), _) => bail!("Unexpected supergreen command {arg:?}"),
-        (None, _) => unreachable!(),
+    match (arg1, args.first().map(String::as_str), args.get(1).map(String::as_str)) {
+        (Some("env"), _, _) => green.envs(args)?,
+        (Some("doc"), _, _) => green.docs(args)?,
+        (Some("push"), None, None) => green.push().await?,
+        (Some("builder"), None, None) => green.inspect_builder().await?,
+        (Some("builder"), Some("rm"), None) => green.rm_builder(true).await?,
+        (Some("builder"), Some("rm"), Some("--clean")) => green.rm_builder(false).await?,
+        (Some("builder"), Some("recreate"), None) => green.recreate_builder(true).await?,
+        (Some("builder"), Some("recreate"), Some("--clean")) => {
+            green.recreate_builder(false).await?
+        }
+        _ => {
+            help();
+            if !just_help(arg1) {
+                bail!("Unexpected supergreen arguments: {}", args.join(" "))
+            }
+        }
     }
     Ok(())
 }
@@ -94,15 +98,15 @@ impl Green {
         Ok(())
     }
 
-    async fn rm_builder(&mut self) -> Result<()> {
+    async fn rm_builder(&mut self, keep_state: bool) -> Result<()> {
         let Some(name) = self.builder.name.clone() else { return Ok(()) };
-        self.remove_builder(&name).await?;
+        self.remove_builder(&name, keep_state).await?;
         Ok(())
     }
 
-    async fn recreate_builder(&mut self) -> Result<()> {
+    async fn recreate_builder(&mut self, keep_state: bool) -> Result<()> {
         let Some(name) = self.builder.name.clone() else { return Ok(()) };
-        self.remove_builder(&name).await?;
+        self.remove_builder(&name, keep_state).await?;
         self.create_builder(&name).await?;
         self.inspect_builder().await?;
         Ok(())
