@@ -8,6 +8,7 @@ use std::{
 use anyhow::{anyhow, bail, Result};
 use camino::{Utf8Path, Utf8PathBuf};
 use log::{debug, error, info, trace, warn};
+use merkle_hash::{Algorithm::Blake3, MerkleTree};
 use tokio::process::Command;
 
 use crate::{
@@ -304,7 +305,11 @@ async fn do_wrap_rustc(
         fs::write(&ignore, "")
             .map_err(|e| anyhow!("Failed creating cwd dockerignore {ignore:?}: {e}"))?;
 
-        let cwd_path = cwd_root.join(cwd_stage.as_str());
+        let tree = MerkleTree::builder(&pwd).algorithm(Blake3).hash_names(true).build()?;
+        let hashed_tree =
+            tree.root.item.hash.iter().map(|b| format!("{b:02x}")).collect::<String>();
+
+        let cwd_path = cwd_root.join(hashed_tree);
 
         info!(
             "copying all {}files under {pwd} to {cwd_path}",

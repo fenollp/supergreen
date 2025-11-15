@@ -39,6 +39,7 @@ cargo-subcommand-metadata = "0, >=0.1"
 cargo_toml = "0, >=0.21"
 chrono = { version = "0, >=0.4", default-features = false, features = [ "now" ] }
 indexmap = { version = "2", features = [ "serde" ] }
+merkle_hash = { version = "3", default-features = false, features = [ "camino", "parallel" ] }
 tokio-stream = { version = "0, >=0.1", default-features = false }
 # clap = { version = "4", features = [ "derive" ] }
 # clap-cargo = { version = "0, >=0.15", features = [ "cargo_metadata", "clap" ] }
