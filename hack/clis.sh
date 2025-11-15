@@ -316,14 +316,13 @@ ntpd_locked_date=2025-05-09                                  # Time of commit
 
 cli() {
   local name_at_version=$1; shift
-  local jobs=$1; shift
   local registry=/tmp/.local-registry
   local registry_new=$registry-new
   local envvars=()
   as_env "$name_at_version"
 
 	cat <<EOF
-$(jobdef "$(slugify "$name_at_version")_$jobs")
+$(jobdef "$(slugify "$name_at_version")")
     continue-on-error: \${{ matrix.toolchain != '$stable' }}
     strategy:
       matrix:
@@ -404,15 +403,14 @@ $(rundeps_versions)
       run: ~/.cargo/bin/cargo-green green supergreen env
 
 $(cache_usage)
-    - name: 🔵 cargo install net=ON cache=OFF remote=OFF jobs=$jobs
+    - name: 🔵 cargo install
       run: |
 $(unset_action_envs)
         env ${envvars[@]} \\
-          cargo green -vv install --jobs=$jobs --locked --force $(as_install "$name_at_version") $@ |& tee _
-    - name: 🔵 cargo install net=ON cache=ON remote=OFF jobs=1
+          cargo green -vv install --locked --force $(as_install "$name_at_version") $@ |& tee _
+    - name: 🔵 cargo install jobs=1
       if: \${{ failure() }}
       run: |
-        rm _ || true
 $(unset_action_envs)
         env ${envvars[@]} \\
           cargo green -vv install --jobs=1 --locked --force $(as_install "$name_at_version") $@ |& tee _
@@ -433,7 +431,7 @@ $(cache_usage)
       run: |
 $(unset_action_envs)
         env ${envvars[@]} \\
-          cargo green -vv install --jobs=$jobs --locked --force $(as_install "$name_at_version") $@ |& tee _
+          cargo green -vv install --locked --force $(as_install "$name_at_version") $@ |& tee _
 $(postcond_fresh _)
 $(postconds _)
 
@@ -483,8 +481,7 @@ if [[ $# = 0 ]]; then
     case "$name_at_version" in
       cargo-green@*) continue ;;
     esac
-    # 3: https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners/about-github-hosted-runners#standard-github-hosted-runners-for-public-repositories
-    cli "$name_at_version" 3 "${nvs_args["$i"]}"
+    cli "$name_at_version" "${nvs_args["$i"]}"
   done
 
   exit
