@@ -562,15 +562,17 @@ async fn run_build(
     let status = res.map_err(|e| anyhow!("Failed calling `{call}`: {e}"))?;
     info!("build ran in {secs:?}: {status}");
 
+    if let Ok(e) = rx_err.try_recv() {
+        bail!("Runner BUG: {e}")
+    }
+
+    // NOTE:
+    // * if call to rustc fails, errcode file will exist but the build will complete.
+    // * if the call doesn't fail, the file isn't created.
+    // * if the build fails that's a bug, and no files will be outputed.
+
     let mut effects = Effects { written: vec![], stdout: vec![], stderr: vec![] };
     if let Some((dbg_out, dbg_err)) = handles {
-        if let Ok(e) = rx_err.try_recv() {
-            bail!("Runner BUG: {e}")
-        }
-        // NOTE:
-        // * if call to rustc fails, errcode file will exist but the build will complete.
-        // * if the call doesn't fail, the file isn't created.
-        // * if the build fails that's a bug, and no files will be outputed.
         match join!(timeout(dbg_out), timeout(dbg_err)) {
             (Ok(Ok(Ok((_, _, Some(errcode), _)))), _) => {
                 bail!("Runner failed with exit code {errcode}")
