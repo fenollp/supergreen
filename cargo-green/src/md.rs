@@ -267,12 +267,17 @@ impl Md {
     }
 
     pub(crate) fn comment_pretty(line: &str, buf: &mut String) {
-        buf.push_str("## ");
-        let max = usize::from(u16::MAX) - "## ".len() - '\n'.len_utf8();
-        let max = std::cmp::min(max, line.len());
-        buf.push_str(&line[..max]);
-        buf.push('\n');
+        const MAX: usize = u16::MAX as usize - ("## ".len() + '\n'.len_utf8());
+        let max = MAX.min(line.len());
         //> dockerfile line greater than max allowed size of 65535
+        let line = &line[..max];
+        if line.is_empty() {
+            buf.push_str("##\n");
+            return;
+        }
+        buf.push_str("## ");
+        buf.push_str(line);
+        buf.push('\n');
     }
 
     pub(crate) fn block_along_with_predecessors(&self, mds: &[Self]) -> String {
