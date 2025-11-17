@@ -77,7 +77,7 @@ COPY --link --from=dep-n-iana-time-zone-0.1.63-2711ec9468103a3d /tmp/clis-diesel
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libiana_time_zone-2711ec9468103a3d.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libiana_time_zone-2711ec9468103a3d.rlib","emit":"link"}',
 ## ]
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -106,14 +106,14 @@ COPY --link --from=dep-n-iana-time-zone-0.1.63-2711ec9468103a3d /tmp/clis-diesel
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-iana-time-zone-0.1.63"
 ## script = '''
 ## FROM scratch AS cratesio-iana-time-zone-0.1.63
 ## ADD --chmod=0664 --unpack --checksum=sha256:b0c919e5debc312ad217002b8048a17b7d83f80703865bbfcfebb0458b0b27d8 \
 ##   https://static.crates.io/crates/iana-time-zone/iana-time-zone-0.1.63.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-iana-time-zone-0.1.63-2711ec9468103a3d"
 ## script = '''
@@ -147,7 +147,7 @@ COPY --link --from=dep-n-iana-time-zone-0.1.63-2711ec9468103a3d /tmp/clis-diesel
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-2711ec9468103a3d-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-2711ec9468103a3d-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-2711ec9468103a3d* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-2711ec9468103a3d"
 ## script = """
@@ -202,7 +202,7 @@ COPY --link --from=dep-n-num-traits-0.2.19-c4396812cd7bbf4a /tmp/clis-diesel_cli
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libnum_traits-c4396812cd7bbf4a.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libnum_traits-c4396812cd7bbf4a.rlib","emit":"link"}',
 ## ]
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -231,14 +231,14 @@ COPY --link --from=dep-n-num-traits-0.2.19-c4396812cd7bbf4a /tmp/clis-diesel_cli
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-num-traits-0.2.19"
 ## script = '''
 ## FROM scratch AS cratesio-num-traits-0.2.19
 ## ADD --chmod=0664 --unpack --checksum=sha256:071dfc062690e90b734c0b2273ce72ad0ffa95f0c74596bc250dcfd960262841 \
 ##   https://static.crates.io/crates/num-traits/num-traits-0.2.19.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-num-traits-0.2.19-c4396812cd7bbf4a"
 ## script = '''
@@ -273,7 +273,7 @@ COPY --link --from=dep-n-num-traits-0.2.19-c4396812cd7bbf4a /tmp/clis-diesel_cli
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-c4396812cd7bbf4a-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-c4396812cd7bbf4a-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-c4396812cd7bbf4a* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-c4396812cd7bbf4a"
 ## script = """
@@ -339,23 +339,23 @@ COPY --link --from=dep-n-chrono-0.4.41-9b3f7774e097210c /tmp/clis-diesel_cli_2-3
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libchrono-9b3f7774e097210c.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libchrono-9b3f7774e097210c.rlib","emit":"link"}',
 ## ]
-## 
+##
 ## [[externs]]
 ## from = "out-2711ec9468103a3d"
 ## xtern = "libiana_time_zone-2711ec9468103a3d.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-2711ec9468103a3d"
 ## xtern = "libiana_time_zone-2711ec9468103a3d.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-c4396812cd7bbf4a"
 ## xtern = "libnum_traits-c4396812cd7bbf4a.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-c4396812cd7bbf4a"
 ## xtern = "libnum_traits-c4396812cd7bbf4a.rmeta"
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -384,14 +384,14 @@ COPY --link --from=dep-n-chrono-0.4.41-9b3f7774e097210c /tmp/clis-diesel_cli_2-3
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-chrono-0.4.41"
 ## script = '''
 ## FROM scratch AS cratesio-chrono-0.4.41
 ## ADD --chmod=0664 --unpack --checksum=sha256:c469d952047f47f91b68d1cba3f10d63c11d73e4636f24f08daf0278abf01c4d \
 ##   https://static.crates.io/crates/chrono/chrono-0.4.41.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-chrono-0.4.41-9b3f7774e097210c"
 ## script = '''
@@ -429,7 +429,7 @@ COPY --link --from=dep-n-chrono-0.4.41-9b3f7774e097210c /tmp/clis-diesel_cli_2-3
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-9b3f7774e097210c-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-9b3f7774e097210c-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-9b3f7774e097210c* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-9b3f7774e097210c"
 ## script = """
@@ -483,7 +483,7 @@ COPY --link --from=dep-n-anstyle-1.0.11-21ded493861ed51c /tmp/clis-diesel_cli_2-
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libanstyle-21ded493861ed51c.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libanstyle-21ded493861ed51c.rlib","emit":"link"}',
 ## ]
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -512,14 +512,14 @@ COPY --link --from=dep-n-anstyle-1.0.11-21ded493861ed51c /tmp/clis-diesel_cli_2-
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-anstyle-1.0.11"
 ## script = '''
 ## FROM scratch AS cratesio-anstyle-1.0.11
 ## ADD --chmod=0664 --unpack --checksum=sha256:862ed96ca487e809f1c8e5a8447f6ee2cf102f846893800b20cebdf541fc6bbd \
 ##   https://static.crates.io/crates/anstyle/anstyle-1.0.11.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-anstyle-1.0.11-21ded493861ed51c"
 ## script = '''
@@ -553,7 +553,7 @@ COPY --link --from=dep-n-anstyle-1.0.11-21ded493861ed51c /tmp/clis-diesel_cli_2-
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-21ded493861ed51c-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-21ded493861ed51c-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-21ded493861ed51c* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-21ded493861ed51c"
 ## script = """
@@ -607,7 +607,7 @@ COPY --link --from=dep-n-utf8parse-0.2.2-a65b6a9ab8fee7e7 /tmp/clis-diesel_cli_2
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libutf8parse-a65b6a9ab8fee7e7.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libutf8parse-a65b6a9ab8fee7e7.rlib","emit":"link"}',
 ## ]
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -636,14 +636,14 @@ COPY --link --from=dep-n-utf8parse-0.2.2-a65b6a9ab8fee7e7 /tmp/clis-diesel_cli_2
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-utf8parse-0.2.2"
 ## script = '''
 ## FROM scratch AS cratesio-utf8parse-0.2.2
 ## ADD --chmod=0664 --unpack --checksum=sha256:06abde3611657adf66d383f00b093d7faecc7fa57071cce2578660c9f1010821 \
 ##   https://static.crates.io/crates/utf8parse/utf8parse-0.2.2.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-utf8parse-0.2.2-a65b6a9ab8fee7e7"
 ## script = '''
@@ -677,7 +677,7 @@ COPY --link --from=dep-n-utf8parse-0.2.2-a65b6a9ab8fee7e7 /tmp/clis-diesel_cli_2
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-a65b6a9ab8fee7e7-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-a65b6a9ab8fee7e7-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-a65b6a9ab8fee7e7* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-a65b6a9ab8fee7e7"
 ## script = """
@@ -735,15 +735,15 @@ COPY --link --from=dep-n-anstyle-parse-0.2.7-8569a1647cc81361 /tmp/clis-diesel_c
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libanstyle_parse-8569a1647cc81361.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libanstyle_parse-8569a1647cc81361.rlib","emit":"link"}',
 ## ]
-## 
+##
 ## [[externs]]
 ## from = "out-a65b6a9ab8fee7e7"
 ## xtern = "libutf8parse-a65b6a9ab8fee7e7.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-a65b6a9ab8fee7e7"
 ## xtern = "libutf8parse-a65b6a9ab8fee7e7.rmeta"
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -772,14 +772,14 @@ COPY --link --from=dep-n-anstyle-parse-0.2.7-8569a1647cc81361 /tmp/clis-diesel_c
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-anstyle-parse-0.2.7"
 ## script = '''
 ## FROM scratch AS cratesio-anstyle-parse-0.2.7
 ## ADD --chmod=0664 --unpack --checksum=sha256:4e7644824f0aa2c7b9384579234ef10eb7efb6a0deb83f9630a49594dd9c15c2 \
 ##   https://static.crates.io/crates/anstyle-parse/anstyle-parse-0.2.7.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-anstyle-parse-0.2.7-8569a1647cc81361"
 ## script = '''
@@ -815,7 +815,7 @@ COPY --link --from=dep-n-anstyle-parse-0.2.7-8569a1647cc81361 /tmp/clis-diesel_c
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-8569a1647cc81361-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-8569a1647cc81361-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-8569a1647cc81361* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-8569a1647cc81361"
 ## script = """
@@ -869,7 +869,7 @@ COPY --link --from=dep-n-anstyle-query-1.1.3-f68ac9121a29106e /tmp/clis-diesel_c
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libanstyle_query-f68ac9121a29106e.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libanstyle_query-f68ac9121a29106e.rlib","emit":"link"}',
 ## ]
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -898,14 +898,14 @@ COPY --link --from=dep-n-anstyle-query-1.1.3-f68ac9121a29106e /tmp/clis-diesel_c
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-anstyle-query-1.1.3"
 ## script = '''
 ## FROM scratch AS cratesio-anstyle-query-1.1.3
 ## ADD --chmod=0664 --unpack --checksum=sha256:6c8bdeb6047d8983be085bab0ba1472e6dc604e7041dbf6fcd5e71523014fae9 \
 ##   https://static.crates.io/crates/anstyle-query/anstyle-query-1.1.3.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-anstyle-query-1.1.3-f68ac9121a29106e"
 ## script = '''
@@ -939,7 +939,7 @@ COPY --link --from=dep-n-anstyle-query-1.1.3-f68ac9121a29106e /tmp/clis-diesel_c
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-f68ac9121a29106e-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-f68ac9121a29106e-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-f68ac9121a29106e* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-f68ac9121a29106e"
 ## script = """
@@ -993,7 +993,7 @@ COPY --link --from=dep-n-colorchoice-1.0.4-6ebfc2086a48cd60 /tmp/clis-diesel_cli
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libcolorchoice-6ebfc2086a48cd60.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libcolorchoice-6ebfc2086a48cd60.rlib","emit":"link"}',
 ## ]
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -1022,14 +1022,14 @@ COPY --link --from=dep-n-colorchoice-1.0.4-6ebfc2086a48cd60 /tmp/clis-diesel_cli
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-colorchoice-1.0.4"
 ## script = '''
 ## FROM scratch AS cratesio-colorchoice-1.0.4
 ## ADD --chmod=0664 --unpack --checksum=sha256:b05b61dc5112cbb17e4b6cd61790d9845d13888356391624cbe7e41efeac1e75 \
 ##   https://static.crates.io/crates/colorchoice/colorchoice-1.0.4.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-colorchoice-1.0.4-6ebfc2086a48cd60"
 ## script = '''
@@ -1063,7 +1063,7 @@ COPY --link --from=dep-n-colorchoice-1.0.4-6ebfc2086a48cd60 /tmp/clis-diesel_cli
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-6ebfc2086a48cd60-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-6ebfc2086a48cd60-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-6ebfc2086a48cd60* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-6ebfc2086a48cd60"
 ## script = """
@@ -1117,7 +1117,7 @@ COPY --link --from=dep-n-is_terminal_polyfill-1.70.1-1c27b69067eead0f /tmp/clis-
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libis_terminal_polyfill-1c27b69067eead0f.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libis_terminal_polyfill-1c27b69067eead0f.rlib","emit":"link"}',
 ## ]
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -1146,14 +1146,14 @@ COPY --link --from=dep-n-is_terminal_polyfill-1.70.1-1c27b69067eead0f /tmp/clis-
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-is_terminal_polyfill-1.70.1"
 ## script = '''
 ## FROM scratch AS cratesio-is_terminal_polyfill-1.70.1
 ## ADD --chmod=0664 --unpack --checksum=sha256:7943c866cc5cd64cbc25b2e01621d07fa8eb2a1a23160ee81ce38704e97b8ecf \
 ##   https://static.crates.io/crates/is_terminal_polyfill/is_terminal_polyfill-1.70.1.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-is_terminal_polyfill-1.70.1-1c27b69067eead0f"
 ## script = '''
@@ -1187,7 +1187,7 @@ COPY --link --from=dep-n-is_terminal_polyfill-1.70.1-1c27b69067eead0f /tmp/clis-
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-1c27b69067eead0f-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-1c27b69067eead0f-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-1c27b69067eead0f* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-1c27b69067eead0f"
 ## script = """
@@ -1269,55 +1269,55 @@ COPY --link --from=dep-n-anstream-0.6.19-76169d23d8833892 /tmp/clis-diesel_cli_2
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libanstream-76169d23d8833892.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libanstream-76169d23d8833892.rlib","emit":"link"}',
 ## ]
-## 
+##
 ## [[externs]]
 ## from = "out-21ded493861ed51c"
 ## xtern = "libanstyle-21ded493861ed51c.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-21ded493861ed51c"
 ## xtern = "libanstyle-21ded493861ed51c.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-8569a1647cc81361"
 ## xtern = "libanstyle_parse-8569a1647cc81361.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-8569a1647cc81361"
 ## xtern = "libanstyle_parse-8569a1647cc81361.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-a65b6a9ab8fee7e7"
 ## xtern = "libutf8parse-a65b6a9ab8fee7e7.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-a65b6a9ab8fee7e7"
 ## xtern = "libutf8parse-a65b6a9ab8fee7e7.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-f68ac9121a29106e"
 ## xtern = "libanstyle_query-f68ac9121a29106e.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-f68ac9121a29106e"
 ## xtern = "libanstyle_query-f68ac9121a29106e.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-6ebfc2086a48cd60"
 ## xtern = "libcolorchoice-6ebfc2086a48cd60.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-6ebfc2086a48cd60"
 ## xtern = "libcolorchoice-6ebfc2086a48cd60.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-1c27b69067eead0f"
 ## xtern = "libis_terminal_polyfill-1c27b69067eead0f.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-1c27b69067eead0f"
 ## xtern = "libis_terminal_polyfill-1c27b69067eead0f.rmeta"
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -1346,14 +1346,14 @@ COPY --link --from=dep-n-anstream-0.6.19-76169d23d8833892 /tmp/clis-diesel_cli_2
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-anstream-0.6.19"
 ## script = '''
 ## FROM scratch AS cratesio-anstream-0.6.19
 ## ADD --chmod=0664 --unpack --checksum=sha256:301af1932e46185686725e0fad2f8f2aa7da69dd70bf6ecc44d6b703844a3933 \
 ##   https://static.crates.io/crates/anstream/anstream-0.6.19.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-anstream-0.6.19-76169d23d8833892"
 ## script = '''
@@ -1399,7 +1399,7 @@ COPY --link --from=dep-n-anstream-0.6.19-76169d23d8833892 /tmp/clis-diesel_cli_2
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-76169d23d8833892-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-76169d23d8833892-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-76169d23d8833892* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-76169d23d8833892"
 ## script = """
@@ -1453,7 +1453,7 @@ COPY --link --from=dep-n-clap_lex-0.7.5-fa1650fe0d33e35e /tmp/clis-diesel_cli_2-
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libclap_lex-fa1650fe0d33e35e.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libclap_lex-fa1650fe0d33e35e.rlib","emit":"link"}',
 ## ]
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -1482,14 +1482,14 @@ COPY --link --from=dep-n-clap_lex-0.7.5-fa1650fe0d33e35e /tmp/clis-diesel_cli_2-
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-clap_lex-0.7.5"
 ## script = '''
 ## FROM scratch AS cratesio-clap_lex-0.7.5
 ## ADD --chmod=0664 --unpack --checksum=sha256:b94f61472cee1439c0b966b47e3aca9ae07e45d070759512cd390ea2bebc6675 \
 ##   https://static.crates.io/crates/clap_lex/clap_lex-0.7.5.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-clap_lex-0.7.5-fa1650fe0d33e35e"
 ## script = '''
@@ -1523,7 +1523,7 @@ COPY --link --from=dep-n-clap_lex-0.7.5-fa1650fe0d33e35e /tmp/clis-diesel_cli_2-
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-fa1650fe0d33e35e-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-fa1650fe0d33e35e-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-fa1650fe0d33e35e* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-fa1650fe0d33e35e"
 ## script = """
@@ -1577,7 +1577,7 @@ COPY --link --from=dep-n-strsim-0.11.1-aff96e3b8811a5dc /tmp/clis-diesel_cli_2-3
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libstrsim-aff96e3b8811a5dc.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libstrsim-aff96e3b8811a5dc.rlib","emit":"link"}',
 ## ]
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -1606,14 +1606,14 @@ COPY --link --from=dep-n-strsim-0.11.1-aff96e3b8811a5dc /tmp/clis-diesel_cli_2-3
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-strsim-0.11.1"
 ## script = '''
 ## FROM scratch AS cratesio-strsim-0.11.1
 ## ADD --chmod=0664 --unpack --checksum=sha256:7da8b5736845d9f2fcb837ea5d9e2628564b3b043a70948a3f0b778838c5fb4f \
 ##   https://static.crates.io/crates/strsim/strsim-0.11.1.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-strsim-0.11.1-aff96e3b8811a5dc"
 ## script = '''
@@ -1647,7 +1647,7 @@ COPY --link --from=dep-n-strsim-0.11.1-aff96e3b8811a5dc /tmp/clis-diesel_cli_2-3
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-aff96e3b8811a5dc-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-aff96e3b8811a5dc-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-aff96e3b8811a5dc* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-aff96e3b8811a5dc"
 ## script = """
@@ -1741,79 +1741,79 @@ COPY --link --from=dep-n-clap_builder-4.5.41-b5b03266e26b4cfe /tmp/clis-diesel_c
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libclap_builder-b5b03266e26b4cfe.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libclap_builder-b5b03266e26b4cfe.rlib","emit":"link"}',
 ## ]
-## 
+##
 ## [[externs]]
 ## from = "out-76169d23d8833892"
 ## xtern = "libanstream-76169d23d8833892.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-76169d23d8833892"
 ## xtern = "libanstream-76169d23d8833892.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-21ded493861ed51c"
 ## xtern = "libanstyle-21ded493861ed51c.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-21ded493861ed51c"
 ## xtern = "libanstyle-21ded493861ed51c.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-8569a1647cc81361"
 ## xtern = "libanstyle_parse-8569a1647cc81361.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-8569a1647cc81361"
 ## xtern = "libanstyle_parse-8569a1647cc81361.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-a65b6a9ab8fee7e7"
 ## xtern = "libutf8parse-a65b6a9ab8fee7e7.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-a65b6a9ab8fee7e7"
 ## xtern = "libutf8parse-a65b6a9ab8fee7e7.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-f68ac9121a29106e"
 ## xtern = "libanstyle_query-f68ac9121a29106e.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-f68ac9121a29106e"
 ## xtern = "libanstyle_query-f68ac9121a29106e.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-6ebfc2086a48cd60"
 ## xtern = "libcolorchoice-6ebfc2086a48cd60.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-6ebfc2086a48cd60"
 ## xtern = "libcolorchoice-6ebfc2086a48cd60.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-1c27b69067eead0f"
 ## xtern = "libis_terminal_polyfill-1c27b69067eead0f.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-1c27b69067eead0f"
 ## xtern = "libis_terminal_polyfill-1c27b69067eead0f.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-fa1650fe0d33e35e"
 ## xtern = "libclap_lex-fa1650fe0d33e35e.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-fa1650fe0d33e35e"
 ## xtern = "libclap_lex-fa1650fe0d33e35e.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-aff96e3b8811a5dc"
 ## xtern = "libstrsim-aff96e3b8811a5dc.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-aff96e3b8811a5dc"
 ## xtern = "libstrsim-aff96e3b8811a5dc.rmeta"
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -1842,14 +1842,14 @@ COPY --link --from=dep-n-clap_builder-4.5.41-b5b03266e26b4cfe /tmp/clis-diesel_c
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-clap_builder-4.5.41"
 ## script = '''
 ## FROM scratch AS cratesio-clap_builder-4.5.41
 ## ADD --chmod=0664 --unpack --checksum=sha256:707eab41e9622f9139419d573eca0900137718000c517d47da73045f54331c3d \
 ##   https://static.crates.io/crates/clap_builder/clap_builder-4.5.41.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-clap_builder-4.5.41-b5b03266e26b4cfe"
 ## script = '''
@@ -1901,7 +1901,7 @@ COPY --link --from=dep-n-clap_builder-4.5.41-b5b03266e26b4cfe /tmp/clis-diesel_c
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-b5b03266e26b4cfe-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-b5b03266e26b4cfe-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-b5b03266e26b4cfe* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-b5b03266e26b4cfe"
 ## script = """
@@ -1999,87 +1999,87 @@ COPY --link --from=dep-n-clap-4.5.41-a4332dd0af53f27d /tmp/clis-diesel_cli_2-3-2
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libclap-a4332dd0af53f27d.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libclap-a4332dd0af53f27d.rlib","emit":"link"}',
 ## ]
-## 
+##
 ## [[externs]]
 ## from = "out-b5b03266e26b4cfe"
 ## xtern = "libclap_builder-b5b03266e26b4cfe.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-b5b03266e26b4cfe"
 ## xtern = "libclap_builder-b5b03266e26b4cfe.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-76169d23d8833892"
 ## xtern = "libanstream-76169d23d8833892.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-76169d23d8833892"
 ## xtern = "libanstream-76169d23d8833892.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-21ded493861ed51c"
 ## xtern = "libanstyle-21ded493861ed51c.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-21ded493861ed51c"
 ## xtern = "libanstyle-21ded493861ed51c.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-8569a1647cc81361"
 ## xtern = "libanstyle_parse-8569a1647cc81361.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-8569a1647cc81361"
 ## xtern = "libanstyle_parse-8569a1647cc81361.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-a65b6a9ab8fee7e7"
 ## xtern = "libutf8parse-a65b6a9ab8fee7e7.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-a65b6a9ab8fee7e7"
 ## xtern = "libutf8parse-a65b6a9ab8fee7e7.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-f68ac9121a29106e"
 ## xtern = "libanstyle_query-f68ac9121a29106e.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-f68ac9121a29106e"
 ## xtern = "libanstyle_query-f68ac9121a29106e.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-6ebfc2086a48cd60"
 ## xtern = "libcolorchoice-6ebfc2086a48cd60.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-6ebfc2086a48cd60"
 ## xtern = "libcolorchoice-6ebfc2086a48cd60.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-1c27b69067eead0f"
 ## xtern = "libis_terminal_polyfill-1c27b69067eead0f.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-1c27b69067eead0f"
 ## xtern = "libis_terminal_polyfill-1c27b69067eead0f.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-fa1650fe0d33e35e"
 ## xtern = "libclap_lex-fa1650fe0d33e35e.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-fa1650fe0d33e35e"
 ## xtern = "libclap_lex-fa1650fe0d33e35e.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-aff96e3b8811a5dc"
 ## xtern = "libstrsim-aff96e3b8811a5dc.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-aff96e3b8811a5dc"
 ## xtern = "libstrsim-aff96e3b8811a5dc.rmeta"
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -2108,14 +2108,14 @@ COPY --link --from=dep-n-clap-4.5.41-a4332dd0af53f27d /tmp/clis-diesel_cli_2-3-2
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-clap-4.5.41"
 ## script = '''
 ## FROM scratch AS cratesio-clap-4.5.41
 ## ADD --chmod=0664 --unpack --checksum=sha256:be92d32e80243a54711e5d7ce823c35c41c9d929dc4ab58e1276f625841aadf9 \
 ##   https://static.crates.io/crates/clap/clap-4.5.41.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-clap-4.5.41-a4332dd0af53f27d"
 ## script = '''
@@ -2169,7 +2169,7 @@ COPY --link --from=dep-n-clap-4.5.41-a4332dd0af53f27d /tmp/clis-diesel_cli_2-3-2
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-a4332dd0af53f27d-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-a4332dd0af53f27d-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-a4332dd0af53f27d* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-a4332dd0af53f27d"
 ## script = """
@@ -2271,95 +2271,95 @@ COPY --link --from=dep-n-clap_complete-4.5.55-4d494c886f164468 /tmp/clis-diesel_
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libclap_complete-4d494c886f164468.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libclap_complete-4d494c886f164468.rlib","emit":"link"}',
 ## ]
-## 
+##
 ## [[externs]]
 ## from = "out-a4332dd0af53f27d"
 ## xtern = "libclap-a4332dd0af53f27d.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-a4332dd0af53f27d"
 ## xtern = "libclap-a4332dd0af53f27d.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-b5b03266e26b4cfe"
 ## xtern = "libclap_builder-b5b03266e26b4cfe.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-b5b03266e26b4cfe"
 ## xtern = "libclap_builder-b5b03266e26b4cfe.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-76169d23d8833892"
 ## xtern = "libanstream-76169d23d8833892.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-76169d23d8833892"
 ## xtern = "libanstream-76169d23d8833892.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-21ded493861ed51c"
 ## xtern = "libanstyle-21ded493861ed51c.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-21ded493861ed51c"
 ## xtern = "libanstyle-21ded493861ed51c.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-8569a1647cc81361"
 ## xtern = "libanstyle_parse-8569a1647cc81361.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-8569a1647cc81361"
 ## xtern = "libanstyle_parse-8569a1647cc81361.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-a65b6a9ab8fee7e7"
 ## xtern = "libutf8parse-a65b6a9ab8fee7e7.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-a65b6a9ab8fee7e7"
 ## xtern = "libutf8parse-a65b6a9ab8fee7e7.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-f68ac9121a29106e"
 ## xtern = "libanstyle_query-f68ac9121a29106e.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-f68ac9121a29106e"
 ## xtern = "libanstyle_query-f68ac9121a29106e.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-6ebfc2086a48cd60"
 ## xtern = "libcolorchoice-6ebfc2086a48cd60.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-6ebfc2086a48cd60"
 ## xtern = "libcolorchoice-6ebfc2086a48cd60.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-1c27b69067eead0f"
 ## xtern = "libis_terminal_polyfill-1c27b69067eead0f.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-1c27b69067eead0f"
 ## xtern = "libis_terminal_polyfill-1c27b69067eead0f.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-fa1650fe0d33e35e"
 ## xtern = "libclap_lex-fa1650fe0d33e35e.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-fa1650fe0d33e35e"
 ## xtern = "libclap_lex-fa1650fe0d33e35e.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-aff96e3b8811a5dc"
 ## xtern = "libstrsim-aff96e3b8811a5dc.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-aff96e3b8811a5dc"
 ## xtern = "libstrsim-aff96e3b8811a5dc.rmeta"
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -2388,14 +2388,14 @@ COPY --link --from=dep-n-clap_complete-4.5.55-4d494c886f164468 /tmp/clis-diesel_
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-clap_complete-4.5.55"
 ## script = '''
 ## FROM scratch AS cratesio-clap_complete-4.5.55
 ## ADD --chmod=0664 --unpack --checksum=sha256:a5abde44486daf70c5be8b8f8f1b66c49f86236edf6fa2abadb4d961c4c6229a \
 ##   https://static.crates.io/crates/clap_complete/clap_complete-4.5.55.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-clap_complete-4.5.55-4d494c886f164468"
 ## script = '''
@@ -2451,7 +2451,7 @@ COPY --link --from=dep-n-clap_complete-4.5.55-4d494c886f164468 /tmp/clis-diesel_
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-4d494c886f164468-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-4d494c886f164468-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-4d494c886f164468* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-4d494c886f164468"
 ## script = """
@@ -2505,7 +2505,7 @@ COPY --link --from=dep-n-bitflags-2.9.1-d53ce0040874ecbb /tmp/clis-diesel_cli_2-
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libbitflags-d53ce0040874ecbb.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libbitflags-d53ce0040874ecbb.rlib","emit":"link"}',
 ## ]
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -2534,14 +2534,14 @@ COPY --link --from=dep-n-bitflags-2.9.1-d53ce0040874ecbb /tmp/clis-diesel_cli_2-
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-bitflags-2.9.1"
 ## script = '''
 ## FROM scratch AS cratesio-bitflags-2.9.1
 ## ADD --chmod=0664 --unpack --checksum=sha256:1b8e56985ec62d17e9c1001dc89c88ecd7dc08e47eba5ec7c29c7b5eeecde967 \
 ##   https://static.crates.io/crates/bitflags/bitflags-2.9.1.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-bitflags-2.9.1-d53ce0040874ecbb"
 ## script = '''
@@ -2575,7 +2575,7 @@ COPY --link --from=dep-n-bitflags-2.9.1-d53ce0040874ecbb /tmp/clis-diesel_cli_2-
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-d53ce0040874ecbb-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-d53ce0040874ecbb-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-d53ce0040874ecbb* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-d53ce0040874ecbb"
 ## script = """
@@ -2629,7 +2629,7 @@ COPY --link --from=dep-n-byteorder-1.5.0-a63c22cfa59c094d /tmp/clis-diesel_cli_2
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libbyteorder-a63c22cfa59c094d.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libbyteorder-a63c22cfa59c094d.rlib","emit":"link"}',
 ## ]
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -2658,14 +2658,14 @@ COPY --link --from=dep-n-byteorder-1.5.0-a63c22cfa59c094d /tmp/clis-diesel_cli_2
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-byteorder-1.5.0"
 ## script = '''
 ## FROM scratch AS cratesio-byteorder-1.5.0
 ## ADD --chmod=0664 --unpack --checksum=sha256:1fd0f2584146f6f2ef48085050886acf353beff7305ebd1ae69500e27c67f64b \
 ##   https://static.crates.io/crates/byteorder/byteorder-1.5.0.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-byteorder-1.5.0-a63c22cfa59c094d"
 ## script = '''
@@ -2699,7 +2699,7 @@ COPY --link --from=dep-n-byteorder-1.5.0-a63c22cfa59c094d /tmp/clis-diesel_cli_2
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-a63c22cfa59c094d-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-a63c22cfa59c094d-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-a63c22cfa59c094d* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-a63c22cfa59c094d"
 ## script = """
@@ -2753,7 +2753,7 @@ COPY --link --from=dep-n-unicode-ident-1.0.18-02b0d04ef026a7b6 /tmp/clis-diesel_
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libunicode_ident-02b0d04ef026a7b6.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libunicode_ident-02b0d04ef026a7b6.rlib","emit":"link"}',
 ## ]
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -2782,14 +2782,14 @@ COPY --link --from=dep-n-unicode-ident-1.0.18-02b0d04ef026a7b6 /tmp/clis-diesel_
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-unicode-ident-1.0.18"
 ## script = '''
 ## FROM scratch AS cratesio-unicode-ident-1.0.18
 ## ADD --chmod=0664 --unpack --checksum=sha256:5a5f39404a5da50712a4c1eecf25e90dd62b613502b7e925fd4e4d19b5c96512 \
 ##   https://static.crates.io/crates/unicode-ident/unicode-ident-1.0.18.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-unicode-ident-1.0.18-02b0d04ef026a7b6"
 ## script = '''
@@ -2823,7 +2823,7 @@ COPY --link --from=dep-n-unicode-ident-1.0.18-02b0d04ef026a7b6 /tmp/clis-diesel_
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-02b0d04ef026a7b6-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-02b0d04ef026a7b6-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-02b0d04ef026a7b6* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-02b0d04ef026a7b6"
 ## script = """
@@ -2882,15 +2882,15 @@ COPY --link --from=dep-n-proc-macro2-1.0.95-da36b031605c1ddc /tmp/clis-diesel_cl
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libproc_macro2-da36b031605c1ddc.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libproc_macro2-da36b031605c1ddc.rlib","emit":"link"}',
 ## ]
-## 
+##
 ## [[externs]]
 ## from = "out-02b0d04ef026a7b6"
 ## xtern = "libunicode_ident-02b0d04ef026a7b6.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-02b0d04ef026a7b6"
 ## xtern = "libunicode_ident-02b0d04ef026a7b6.rmeta"
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -2919,14 +2919,14 @@ COPY --link --from=dep-n-proc-macro2-1.0.95-da36b031605c1ddc /tmp/clis-diesel_cl
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-proc-macro2-1.0.95"
 ## script = '''
 ## FROM scratch AS cratesio-proc-macro2-1.0.95
 ## ADD --chmod=0664 --unpack --checksum=sha256:02b3e5e68a3a1a02aad3ec490a98007cbc13c37cbe84a3cd7b8e406d76e7f778 \
 ##   https://static.crates.io/crates/proc-macro2/proc-macro2-1.0.95.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-proc-macro2-1.0.95-da36b031605c1ddc"
 ## script = '''
@@ -2963,7 +2963,7 @@ COPY --link --from=dep-n-proc-macro2-1.0.95-da36b031605c1ddc /tmp/clis-diesel_cl
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-da36b031605c1ddc-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-da36b031605c1ddc-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-da36b031605c1ddc* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-da36b031605c1ddc"
 ## script = """
@@ -3029,23 +3029,23 @@ COPY --link --from=dep-n-quote-1.0.40-21aeee0f329238fb /tmp/clis-diesel_cli_2-3-
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libquote-21aeee0f329238fb.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libquote-21aeee0f329238fb.rlib","emit":"link"}',
 ## ]
-## 
+##
 ## [[externs]]
 ## from = "out-da36b031605c1ddc"
 ## xtern = "libproc_macro2-da36b031605c1ddc.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-da36b031605c1ddc"
 ## xtern = "libproc_macro2-da36b031605c1ddc.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-02b0d04ef026a7b6"
 ## xtern = "libunicode_ident-02b0d04ef026a7b6.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-02b0d04ef026a7b6"
 ## xtern = "libunicode_ident-02b0d04ef026a7b6.rmeta"
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -3074,14 +3074,14 @@ COPY --link --from=dep-n-quote-1.0.40-21aeee0f329238fb /tmp/clis-diesel_cli_2-3-
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-quote-1.0.40"
 ## script = '''
 ## FROM scratch AS cratesio-quote-1.0.40
 ## ADD --chmod=0664 --unpack --checksum=sha256:1885c039570dc00dcb4ff087a89e185fd56bae234ddc7f056a945bf36467248d \
 ##   https://static.crates.io/crates/quote/quote-1.0.40.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-quote-1.0.40-21aeee0f329238fb"
 ## script = '''
@@ -3119,7 +3119,7 @@ COPY --link --from=dep-n-quote-1.0.40-21aeee0f329238fb /tmp/clis-diesel_cli_2-3-
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-21aeee0f329238fb-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-21aeee0f329238fb-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-21aeee0f329238fb* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-21aeee0f329238fb"
 ## script = """
@@ -3189,31 +3189,31 @@ COPY --link --from=dep-n-syn-2.0.104-f0d9159e02a48398 /tmp/clis-diesel_cli_2-3-2
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libsyn-f0d9159e02a48398.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libsyn-f0d9159e02a48398.rlib","emit":"link"}',
 ## ]
-## 
+##
 ## [[externs]]
 ## from = "out-da36b031605c1ddc"
 ## xtern = "libproc_macro2-da36b031605c1ddc.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-da36b031605c1ddc"
 ## xtern = "libproc_macro2-da36b031605c1ddc.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-02b0d04ef026a7b6"
 ## xtern = "libunicode_ident-02b0d04ef026a7b6.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-02b0d04ef026a7b6"
 ## xtern = "libunicode_ident-02b0d04ef026a7b6.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-21aeee0f329238fb"
 ## xtern = "libquote-21aeee0f329238fb.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-21aeee0f329238fb"
 ## xtern = "libquote-21aeee0f329238fb.rmeta"
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -3242,14 +3242,14 @@ COPY --link --from=dep-n-syn-2.0.104-f0d9159e02a48398 /tmp/clis-diesel_cli_2-3-2
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-syn-2.0.104"
 ## script = '''
 ## FROM scratch AS cratesio-syn-2.0.104
 ## ADD --chmod=0664 --unpack --checksum=sha256:17b6f705963418cdb9927482fa304bc562ece2fdd4f616084c50b7023b435a40 \
 ##   https://static.crates.io/crates/syn/syn-2.0.104.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-syn-2.0.104-f0d9159e02a48398"
 ## script = '''
@@ -3289,7 +3289,7 @@ COPY --link --from=dep-n-syn-2.0.104-f0d9159e02a48398 /tmp/clis-diesel_cli_2-3-2
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-f0d9159e02a48398-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-f0d9159e02a48398-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-f0d9159e02a48398* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-f0d9159e02a48398"
 ## script = """
@@ -3363,39 +3363,39 @@ COPY --link --from=dep-n-diesel_table_macro_syntax-0.3.0-98fffecbdb4097db /tmp/c
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libdiesel_table_macro_syntax-98fffecbdb4097db.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libdiesel_table_macro_syntax-98fffecbdb4097db.rlib","emit":"link"}',
 ## ]
-## 
+##
 ## [[externs]]
 ## from = "out-f0d9159e02a48398"
 ## xtern = "libsyn-f0d9159e02a48398.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-f0d9159e02a48398"
 ## xtern = "libsyn-f0d9159e02a48398.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-da36b031605c1ddc"
 ## xtern = "libproc_macro2-da36b031605c1ddc.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-da36b031605c1ddc"
 ## xtern = "libproc_macro2-da36b031605c1ddc.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-02b0d04ef026a7b6"
 ## xtern = "libunicode_ident-02b0d04ef026a7b6.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-02b0d04ef026a7b6"
 ## xtern = "libunicode_ident-02b0d04ef026a7b6.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-21aeee0f329238fb"
 ## xtern = "libquote-21aeee0f329238fb.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-21aeee0f329238fb"
 ## xtern = "libquote-21aeee0f329238fb.rmeta"
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -3424,14 +3424,14 @@ COPY --link --from=dep-n-diesel_table_macro_syntax-0.3.0-98fffecbdb4097db /tmp/c
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-diesel_table_macro_syntax-0.3.0"
 ## script = '''
 ## FROM scratch AS cratesio-diesel_table_macro_syntax-0.3.0
 ## ADD --chmod=0664 --unpack --checksum=sha256:fe2444076b48641147115697648dc743c2c00b61adade0f01ce67133c7babe8c \
 ##   https://static.crates.io/crates/diesel_table_macro_syntax/diesel_table_macro_syntax-0.3.0.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-diesel_table_macro_syntax-0.3.0-98fffecbdb4097db"
 ## script = '''
@@ -3473,7 +3473,7 @@ COPY --link --from=dep-n-diesel_table_macro_syntax-0.3.0-98fffecbdb4097db /tmp/c
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-98fffecbdb4097db-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-98fffecbdb4097db-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-98fffecbdb4097db* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-98fffecbdb4097db"
 ## script = """
@@ -3527,7 +3527,7 @@ COPY --link --from=dep-n-fnv-1.0.7-5a16a728e430782f /tmp/clis-diesel_cli_2-3-2/r
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libfnv-5a16a728e430782f.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libfnv-5a16a728e430782f.rlib","emit":"link"}',
 ## ]
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -3556,14 +3556,14 @@ COPY --link --from=dep-n-fnv-1.0.7-5a16a728e430782f /tmp/clis-diesel_cli_2-3-2/r
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-fnv-1.0.7"
 ## script = '''
 ## FROM scratch AS cratesio-fnv-1.0.7
 ## ADD --chmod=0664 --unpack --checksum=sha256:3f9eec918d3f24069decb9af1554cad7c880e2da24a9afd88aca000531ab82c1 \
 ##   https://static.crates.io/crates/fnv/fnv-1.0.7.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-fnv-1.0.7-5a16a728e430782f"
 ## script = '''
@@ -3597,7 +3597,7 @@ COPY --link --from=dep-n-fnv-1.0.7-5a16a728e430782f /tmp/clis-diesel_cli_2-3-2/r
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-5a16a728e430782f-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-5a16a728e430782f-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-5a16a728e430782f* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-5a16a728e430782f"
 ## script = """
@@ -3654,7 +3654,7 @@ COPY --link --from=dep-n-ident_case-1.0.1-734174ec4510f387 /tmp/clis-diesel_cli_
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libident_case-734174ec4510f387.rlib","emit":"link"}',
 ##     '{"$message_type":"diagnostic","message":"2 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 2 warnings emitted\u001b[0m\n\n"}',
 ## ]
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -3683,14 +3683,14 @@ COPY --link --from=dep-n-ident_case-1.0.1-734174ec4510f387 /tmp/clis-diesel_cli_
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-ident_case-1.0.1"
 ## script = '''
 ## FROM scratch AS cratesio-ident_case-1.0.1
 ## ADD --chmod=0664 --unpack --checksum=sha256:b9e0384b61958566e926dc50660321d12159025e767c18e043daf26b70104c39 \
 ##   https://static.crates.io/crates/ident_case/ident_case-1.0.1.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-ident_case-1.0.1-734174ec4510f387"
 ## script = '''
@@ -3724,7 +3724,7 @@ COPY --link --from=dep-n-ident_case-1.0.1-734174ec4510f387 /tmp/clis-diesel_cli_
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-734174ec4510f387-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-734174ec4510f387-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-734174ec4510f387* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-734174ec4510f387"
 ## script = """
@@ -3776,7 +3776,7 @@ COPY --link --from=dep-n-strsim-0.11.1-121dac5a70e1a903 /tmp/clis-diesel_cli_2-3
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libstrsim-121dac5a70e1a903.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libstrsim-121dac5a70e1a903.rlib","emit":"link"}',
 ## ]
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -3805,14 +3805,14 @@ COPY --link --from=dep-n-strsim-0.11.1-121dac5a70e1a903 /tmp/clis-diesel_cli_2-3
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-strsim-0.11.1"
 ## script = '''
 ## FROM scratch AS cratesio-strsim-0.11.1
 ## ADD --chmod=0664 --unpack --checksum=sha256:7da8b5736845d9f2fcb837ea5d9e2628564b3b043a70948a3f0b778838c5fb4f \
 ##   https://static.crates.io/crates/strsim/strsim-0.11.1.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-strsim-0.11.1-121dac5a70e1a903"
 ## script = '''
@@ -3846,7 +3846,7 @@ COPY --link --from=dep-n-strsim-0.11.1-121dac5a70e1a903 /tmp/clis-diesel_cli_2-3
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-121dac5a70e1a903-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-121dac5a70e1a903-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-121dac5a70e1a903* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-121dac5a70e1a903"
 ## script = """
@@ -3932,63 +3932,63 @@ COPY --link --from=dep-n-darling_core-0.21.3-3031be4b9dd3216f /tmp/clis-diesel_c
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libdarling_core-3031be4b9dd3216f.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libdarling_core-3031be4b9dd3216f.rlib","emit":"link"}',
 ## ]
-## 
+##
 ## [[externs]]
 ## from = "out-5a16a728e430782f"
 ## xtern = "libfnv-5a16a728e430782f.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-5a16a728e430782f"
 ## xtern = "libfnv-5a16a728e430782f.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-734174ec4510f387"
 ## xtern = "libident_case-734174ec4510f387.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-734174ec4510f387"
 ## xtern = "libident_case-734174ec4510f387.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-da36b031605c1ddc"
 ## xtern = "libproc_macro2-da36b031605c1ddc.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-da36b031605c1ddc"
 ## xtern = "libproc_macro2-da36b031605c1ddc.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-02b0d04ef026a7b6"
 ## xtern = "libunicode_ident-02b0d04ef026a7b6.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-02b0d04ef026a7b6"
 ## xtern = "libunicode_ident-02b0d04ef026a7b6.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-21aeee0f329238fb"
 ## xtern = "libquote-21aeee0f329238fb.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-21aeee0f329238fb"
 ## xtern = "libquote-21aeee0f329238fb.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-121dac5a70e1a903"
 ## xtern = "libstrsim-121dac5a70e1a903.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-121dac5a70e1a903"
 ## xtern = "libstrsim-121dac5a70e1a903.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-f0d9159e02a48398"
 ## xtern = "libsyn-f0d9159e02a48398.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-f0d9159e02a48398"
 ## xtern = "libsyn-f0d9159e02a48398.rmeta"
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -4017,14 +4017,14 @@ COPY --link --from=dep-n-darling_core-0.21.3-3031be4b9dd3216f /tmp/clis-diesel_c
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-darling_core-0.21.3"
 ## script = '''
 ## FROM scratch AS cratesio-darling_core-0.21.3
 ## ADD --chmod=0664 --unpack --checksum=sha256:1247195ecd7e3c85f83c8d2a366e4210d588e802133e1e355180a9870b517ea4 \
 ##   https://static.crates.io/crates/darling_core/darling_core-0.21.3.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-darling_core-0.21.3-3031be4b9dd3216f"
 ## script = '''
@@ -4072,7 +4072,7 @@ COPY --link --from=dep-n-darling_core-0.21.3-3031be4b9dd3216f /tmp/clis-diesel_c
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-3031be4b9dd3216f-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-3031be4b9dd3216f-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-3031be4b9dd3216f* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-3031be4b9dd3216f"
 ## script = """
@@ -4152,39 +4152,39 @@ COPY --link --from=dep-n-darling_macro-0.21.3-e99c0f3ebd5299d7 /tmp/clis-diesel_
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/darling_macro-e99c0f3ebd5299d7.d","emit":"dep-info"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libdarling_macro-e99c0f3ebd5299d7.so","emit":"link"}',
 ## ]
-## 
+##
 ## [[externs]]
 ## from = "out-3031be4b9dd3216f"
 ## xtern = "libdarling_core-3031be4b9dd3216f.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-5a16a728e430782f"
 ## xtern = "libfnv-5a16a728e430782f.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-734174ec4510f387"
 ## xtern = "libident_case-734174ec4510f387.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-da36b031605c1ddc"
 ## xtern = "libproc_macro2-da36b031605c1ddc.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-02b0d04ef026a7b6"
 ## xtern = "libunicode_ident-02b0d04ef026a7b6.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-21aeee0f329238fb"
 ## xtern = "libquote-21aeee0f329238fb.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-121dac5a70e1a903"
 ## xtern = "libstrsim-121dac5a70e1a903.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-f0d9159e02a48398"
 ## xtern = "libsyn-f0d9159e02a48398.rlib"
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -4213,14 +4213,14 @@ COPY --link --from=dep-n-darling_macro-0.21.3-e99c0f3ebd5299d7 /tmp/clis-diesel_
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-darling_macro-0.21.3"
 ## script = '''
 ## FROM scratch AS cratesio-darling_macro-0.21.3
 ## ADD --chmod=0664 --unpack --checksum=sha256:d38308df82d1080de0afee5d069fa14b0326a88c14f15c5ccda35b4a6c414c81 \
 ##   https://static.crates.io/crates/darling_macro/darling_macro-0.21.3.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-darling_macro-0.21.3-e99c0f3ebd5299d7"
 ## script = '''
@@ -4262,7 +4262,7 @@ COPY --link --from=dep-n-darling_macro-0.21.3-e99c0f3ebd5299d7 /tmp/clis-diesel_
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-e99c0f3ebd5299d7-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-e99c0f3ebd5299d7-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-e99c0f3ebd5299d7* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-e99c0f3ebd5299d7"
 ## script = """
@@ -4355,75 +4355,75 @@ COPY --link --from=dep-n-darling-0.21.3-d150b173f490e382 /tmp/clis-diesel_cli_2-
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libdarling-d150b173f490e382.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libdarling-d150b173f490e382.rlib","emit":"link"}',
 ## ]
-## 
+##
 ## [[externs]]
 ## from = "out-3031be4b9dd3216f"
 ## xtern = "libdarling_core-3031be4b9dd3216f.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-3031be4b9dd3216f"
 ## xtern = "libdarling_core-3031be4b9dd3216f.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-5a16a728e430782f"
 ## xtern = "libfnv-5a16a728e430782f.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-5a16a728e430782f"
 ## xtern = "libfnv-5a16a728e430782f.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-734174ec4510f387"
 ## xtern = "libident_case-734174ec4510f387.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-734174ec4510f387"
 ## xtern = "libident_case-734174ec4510f387.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-da36b031605c1ddc"
 ## xtern = "libproc_macro2-da36b031605c1ddc.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-da36b031605c1ddc"
 ## xtern = "libproc_macro2-da36b031605c1ddc.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-02b0d04ef026a7b6"
 ## xtern = "libunicode_ident-02b0d04ef026a7b6.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-02b0d04ef026a7b6"
 ## xtern = "libunicode_ident-02b0d04ef026a7b6.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-21aeee0f329238fb"
 ## xtern = "libquote-21aeee0f329238fb.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-21aeee0f329238fb"
 ## xtern = "libquote-21aeee0f329238fb.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-121dac5a70e1a903"
 ## xtern = "libstrsim-121dac5a70e1a903.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-121dac5a70e1a903"
 ## xtern = "libstrsim-121dac5a70e1a903.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-f0d9159e02a48398"
 ## xtern = "libsyn-f0d9159e02a48398.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-f0d9159e02a48398"
 ## xtern = "libsyn-f0d9159e02a48398.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-e99c0f3ebd5299d7"
 ## xtern = "libdarling_macro-e99c0f3ebd5299d7.so"
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -4452,14 +4452,14 @@ COPY --link --from=dep-n-darling-0.21.3-d150b173f490e382 /tmp/clis-diesel_cli_2-
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-darling-0.21.3"
 ## script = '''
 ## FROM scratch AS cratesio-darling-0.21.3
 ## ADD --chmod=0664 --unpack --checksum=sha256:9cdf337090841a411e2a7f3deb9187445851f91b309c0c0a29e05f74a00a48c0 \
 ##   https://static.crates.io/crates/darling/darling-0.21.3.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-darling-0.21.3-d150b173f490e382"
 ## script = '''
@@ -4510,7 +4510,7 @@ COPY --link --from=dep-n-darling-0.21.3-d150b173f490e382 /tmp/clis-diesel_cli_2-
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-d150b173f490e382-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-d150b173f490e382-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-d150b173f490e382* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-d150b173f490e382"
 ## script = """
@@ -4564,7 +4564,7 @@ COPY --link --from=dep-n-either-1.15.0-4ddc6931e0266c5d /tmp/clis-diesel_cli_2-3
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libeither-4ddc6931e0266c5d.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libeither-4ddc6931e0266c5d.rlib","emit":"link"}',
 ## ]
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -4593,14 +4593,14 @@ COPY --link --from=dep-n-either-1.15.0-4ddc6931e0266c5d /tmp/clis-diesel_cli_2-3
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-either-1.15.0"
 ## script = '''
 ## FROM scratch AS cratesio-either-1.15.0
 ## ADD --chmod=0664 --unpack --checksum=sha256:48c757948c5ede0e46177b7add2e67155f70e33c07fea8284df6576da70b3719 \
 ##   https://static.crates.io/crates/either/either-1.15.0.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-either-1.15.0-4ddc6931e0266c5d"
 ## script = '''
@@ -4634,7 +4634,7 @@ COPY --link --from=dep-n-either-1.15.0-4ddc6931e0266c5d /tmp/clis-diesel_cli_2-3
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-4ddc6931e0266c5d-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-4ddc6931e0266c5d-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-4ddc6931e0266c5d* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-4ddc6931e0266c5d"
 ## script = """
@@ -4688,7 +4688,7 @@ COPY --link --from=dep-n-heck-0.5.0-06debb0d4d4774b1 /tmp/clis-diesel_cli_2-3-2/
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libheck-06debb0d4d4774b1.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libheck-06debb0d4d4774b1.rlib","emit":"link"}',
 ## ]
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -4717,14 +4717,14 @@ COPY --link --from=dep-n-heck-0.5.0-06debb0d4d4774b1 /tmp/clis-diesel_cli_2-3-2/
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-heck-0.5.0"
 ## script = '''
 ## FROM scratch AS cratesio-heck-0.5.0
 ## ADD --chmod=0664 --unpack --checksum=sha256:2304e00983f87ffb38b55b444b5e3b60a884b5d30c0fca7d82fe33449bbe55ea \
 ##   https://static.crates.io/crates/heck/heck-0.5.0.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-heck-0.5.0-06debb0d4d4774b1"
 ## script = '''
@@ -4758,7 +4758,7 @@ COPY --link --from=dep-n-heck-0.5.0-06debb0d4d4774b1 /tmp/clis-diesel_cli_2-3-2/
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-06debb0d4d4774b1-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-06debb0d4d4774b1-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-06debb0d4d4774b1* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-06debb0d4d4774b1"
 ## script = """
@@ -4863,99 +4863,99 @@ COPY --link --from=dep-n-dsl_auto_type-0.2.0-23840e29699400b7 /tmp/clis-diesel_c
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libdsl_auto_type-23840e29699400b7.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libdsl_auto_type-23840e29699400b7.rlib","emit":"link"}',
 ## ]
-## 
+##
 ## [[externs]]
 ## from = "out-d150b173f490e382"
 ## xtern = "libdarling-d150b173f490e382.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-d150b173f490e382"
 ## xtern = "libdarling-d150b173f490e382.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-3031be4b9dd3216f"
 ## xtern = "libdarling_core-3031be4b9dd3216f.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-3031be4b9dd3216f"
 ## xtern = "libdarling_core-3031be4b9dd3216f.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-5a16a728e430782f"
 ## xtern = "libfnv-5a16a728e430782f.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-5a16a728e430782f"
 ## xtern = "libfnv-5a16a728e430782f.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-734174ec4510f387"
 ## xtern = "libident_case-734174ec4510f387.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-734174ec4510f387"
 ## xtern = "libident_case-734174ec4510f387.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-da36b031605c1ddc"
 ## xtern = "libproc_macro2-da36b031605c1ddc.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-da36b031605c1ddc"
 ## xtern = "libproc_macro2-da36b031605c1ddc.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-02b0d04ef026a7b6"
 ## xtern = "libunicode_ident-02b0d04ef026a7b6.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-02b0d04ef026a7b6"
 ## xtern = "libunicode_ident-02b0d04ef026a7b6.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-21aeee0f329238fb"
 ## xtern = "libquote-21aeee0f329238fb.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-21aeee0f329238fb"
 ## xtern = "libquote-21aeee0f329238fb.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-121dac5a70e1a903"
 ## xtern = "libstrsim-121dac5a70e1a903.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-121dac5a70e1a903"
 ## xtern = "libstrsim-121dac5a70e1a903.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-f0d9159e02a48398"
 ## xtern = "libsyn-f0d9159e02a48398.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-f0d9159e02a48398"
 ## xtern = "libsyn-f0d9159e02a48398.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-e99c0f3ebd5299d7"
 ## xtern = "libdarling_macro-e99c0f3ebd5299d7.so"
-## 
+##
 ## [[externs]]
 ## from = "out-4ddc6931e0266c5d"
 ## xtern = "libeither-4ddc6931e0266c5d.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-4ddc6931e0266c5d"
 ## xtern = "libeither-4ddc6931e0266c5d.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-06debb0d4d4774b1"
 ## xtern = "libheck-06debb0d4d4774b1.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-06debb0d4d4774b1"
 ## xtern = "libheck-06debb0d4d4774b1.rmeta"
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -4984,14 +4984,14 @@ COPY --link --from=dep-n-dsl_auto_type-0.2.0-23840e29699400b7 /tmp/clis-diesel_c
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-dsl_auto_type-0.2.0"
 ## script = '''
 ## FROM scratch AS cratesio-dsl_auto_type-0.2.0
 ## ADD --chmod=0664 --unpack --checksum=sha256:dd122633e4bef06db27737f21d3738fb89c8f6d5360d6d9d7635dda142a7757e \
 ##   https://static.crates.io/crates/dsl_auto_type/dsl_auto_type-0.2.0.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-dsl_auto_type-0.2.0-23840e29699400b7"
 ## script = '''
@@ -5048,7 +5048,7 @@ COPY --link --from=dep-n-dsl_auto_type-0.2.0-23840e29699400b7 /tmp/clis-diesel_c
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-23840e29699400b7-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-23840e29699400b7-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-23840e29699400b7* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-23840e29699400b7"
 ## script = """
@@ -5147,63 +5147,63 @@ COPY --link --from=dep-n-diesel_derives-2.3.3-bbf1af25790241d6 /tmp/clis-diesel_
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/diesel_derives-bbf1af25790241d6.d","emit":"dep-info"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libdiesel_derives-bbf1af25790241d6.so","emit":"link"}',
 ## ]
-## 
+##
 ## [[externs]]
 ## from = "out-98fffecbdb4097db"
 ## xtern = "libdiesel_table_macro_syntax-98fffecbdb4097db.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-f0d9159e02a48398"
 ## xtern = "libsyn-f0d9159e02a48398.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-da36b031605c1ddc"
 ## xtern = "libproc_macro2-da36b031605c1ddc.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-02b0d04ef026a7b6"
 ## xtern = "libunicode_ident-02b0d04ef026a7b6.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-21aeee0f329238fb"
 ## xtern = "libquote-21aeee0f329238fb.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-23840e29699400b7"
 ## xtern = "libdsl_auto_type-23840e29699400b7.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-d150b173f490e382"
 ## xtern = "libdarling-d150b173f490e382.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-3031be4b9dd3216f"
 ## xtern = "libdarling_core-3031be4b9dd3216f.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-5a16a728e430782f"
 ## xtern = "libfnv-5a16a728e430782f.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-734174ec4510f387"
 ## xtern = "libident_case-734174ec4510f387.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-121dac5a70e1a903"
 ## xtern = "libstrsim-121dac5a70e1a903.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-e99c0f3ebd5299d7"
 ## xtern = "libdarling_macro-e99c0f3ebd5299d7.so"
-## 
+##
 ## [[externs]]
 ## from = "out-4ddc6931e0266c5d"
 ## xtern = "libeither-4ddc6931e0266c5d.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-06debb0d4d4774b1"
 ## xtern = "libheck-06debb0d4d4774b1.rlib"
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -5232,14 +5232,14 @@ COPY --link --from=dep-n-diesel_derives-2.3.3-bbf1af25790241d6 /tmp/clis-diesel_
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-diesel_derives-2.3.3"
 ## script = '''
 ## FROM scratch AS cratesio-diesel_derives-2.3.3
 ## ADD --chmod=0664 --unpack --checksum=sha256:09af0e983035368439f1383011cd87c46f41da81d0f21dc3727e2857d5a43c8e \
 ##   https://static.crates.io/crates/diesel_derives/diesel_derives-2.3.3.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-diesel_derives-2.3.3-bbf1af25790241d6"
 ## script = '''
@@ -5288,7 +5288,7 @@ COPY --link --from=dep-n-diesel_derives-2.3.3-bbf1af25790241d6 /tmp/clis-diesel_
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-bbf1af25790241d6-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-bbf1af25790241d6-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-bbf1af25790241d6* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-bbf1af25790241d6"
 ## script = """
@@ -5342,7 +5342,7 @@ COPY --link --from=dep-n-downcast-rs-2.0.1-da023ea0f94d8f90 /tmp/clis-diesel_cli
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libdowncast_rs-da023ea0f94d8f90.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libdowncast_rs-da023ea0f94d8f90.rlib","emit":"link"}',
 ## ]
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -5371,14 +5371,14 @@ COPY --link --from=dep-n-downcast-rs-2.0.1-da023ea0f94d8f90 /tmp/clis-diesel_cli
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-downcast-rs-2.0.1"
 ## script = '''
 ## FROM scratch AS cratesio-downcast-rs-2.0.1
 ## ADD --chmod=0664 --unpack --checksum=sha256:ea8a8b81cacc08888170eef4d13b775126db426d0b348bee9d18c2c1eaf123cf \
 ##   https://static.crates.io/crates/downcast-rs/downcast-rs-2.0.1.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-downcast-rs-2.0.1-da023ea0f94d8f90"
 ## script = '''
@@ -5412,7 +5412,7 @@ COPY --link --from=dep-n-downcast-rs-2.0.1-da023ea0f94d8f90 /tmp/clis-diesel_cli
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-da023ea0f94d8f90-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-da023ea0f94d8f90-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-da023ea0f94d8f90* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-da023ea0f94d8f90"
 ## script = """
@@ -5466,7 +5466,7 @@ COPY --link --from=dep-n-itoa-1.0.15-a68ea12a2369cd39 /tmp/clis-diesel_cli_2-3-2
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libitoa-a68ea12a2369cd39.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libitoa-a68ea12a2369cd39.rlib","emit":"link"}',
 ## ]
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -5495,14 +5495,14 @@ COPY --link --from=dep-n-itoa-1.0.15-a68ea12a2369cd39 /tmp/clis-diesel_cli_2-3-2
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-itoa-1.0.15"
 ## script = '''
 ## FROM scratch AS cratesio-itoa-1.0.15
 ## ADD --chmod=0664 --unpack --checksum=sha256:4a5f13b858c8d314ee3e8f639011f7ccefe71f97f96e50151fb991f267928e2c \
 ##   https://static.crates.io/crates/itoa/itoa-1.0.15.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-itoa-1.0.15-a68ea12a2369cd39"
 ## script = '''
@@ -5536,7 +5536,7 @@ COPY --link --from=dep-n-itoa-1.0.15-a68ea12a2369cd39 /tmp/clis-diesel_cli_2-3-2
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-a68ea12a2369cd39-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-a68ea12a2369cd39-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-a68ea12a2369cd39* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-a68ea12a2369cd39"
 ## script = """
@@ -5591,7 +5591,7 @@ COPY --link --from=dep-n-pq-sys-0.6.3-3b91b6dcd2781330 /tmp/clis-diesel_cli_2-3-
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libpq_sys-3b91b6dcd2781330.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libpq_sys-3b91b6dcd2781330.rlib","emit":"link"}',
 ## ]
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -5620,14 +5620,14 @@ COPY --link --from=dep-n-pq-sys-0.6.3-3b91b6dcd2781330 /tmp/clis-diesel_cli_2-3-
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-pq-sys-0.6.3"
 ## script = '''
 ## FROM scratch AS cratesio-pq-sys-0.6.3
 ## ADD --chmod=0664 --unpack --checksum=sha256:f6cc05d7ea95200187117196eee9edd0644424911821aeb28a18ce60ea0b8793 \
 ##   https://static.crates.io/crates/pq-sys/pq-sys-0.6.3.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-pq-sys-0.6.3-3b91b6dcd2781330"
 ## script = '''
@@ -5662,7 +5662,7 @@ COPY --link --from=dep-n-pq-sys-0.6.3-3b91b6dcd2781330 /tmp/clis-diesel_cli_2-3-
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-3b91b6dcd2781330-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-3b91b6dcd2781330-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-3b91b6dcd2781330* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-3b91b6dcd2781330"
 ## script = """
@@ -5798,159 +5798,159 @@ COPY --link --from=dep-n-diesel-2.3.2-46abf7a372455c7b /tmp/clis-diesel_cli_2-3-
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libdiesel-46abf7a372455c7b.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libdiesel-46abf7a372455c7b.rlib","emit":"link"}',
 ## ]
-## 
+##
 ## [[externs]]
 ## from = "out-d53ce0040874ecbb"
 ## xtern = "libbitflags-d53ce0040874ecbb.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-d53ce0040874ecbb"
 ## xtern = "libbitflags-d53ce0040874ecbb.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-a63c22cfa59c094d"
 ## xtern = "libbyteorder-a63c22cfa59c094d.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-a63c22cfa59c094d"
 ## xtern = "libbyteorder-a63c22cfa59c094d.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-bbf1af25790241d6"
 ## xtern = "libdiesel_derives-bbf1af25790241d6.so"
-## 
+##
 ## [[externs]]
 ## from = "out-98fffecbdb4097db"
 ## xtern = "libdiesel_table_macro_syntax-98fffecbdb4097db.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-98fffecbdb4097db"
 ## xtern = "libdiesel_table_macro_syntax-98fffecbdb4097db.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-f0d9159e02a48398"
 ## xtern = "libsyn-f0d9159e02a48398.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-f0d9159e02a48398"
 ## xtern = "libsyn-f0d9159e02a48398.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-da36b031605c1ddc"
 ## xtern = "libproc_macro2-da36b031605c1ddc.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-da36b031605c1ddc"
 ## xtern = "libproc_macro2-da36b031605c1ddc.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-02b0d04ef026a7b6"
 ## xtern = "libunicode_ident-02b0d04ef026a7b6.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-02b0d04ef026a7b6"
 ## xtern = "libunicode_ident-02b0d04ef026a7b6.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-21aeee0f329238fb"
 ## xtern = "libquote-21aeee0f329238fb.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-21aeee0f329238fb"
 ## xtern = "libquote-21aeee0f329238fb.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-23840e29699400b7"
 ## xtern = "libdsl_auto_type-23840e29699400b7.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-23840e29699400b7"
 ## xtern = "libdsl_auto_type-23840e29699400b7.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-d150b173f490e382"
 ## xtern = "libdarling-d150b173f490e382.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-d150b173f490e382"
 ## xtern = "libdarling-d150b173f490e382.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-3031be4b9dd3216f"
 ## xtern = "libdarling_core-3031be4b9dd3216f.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-3031be4b9dd3216f"
 ## xtern = "libdarling_core-3031be4b9dd3216f.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-5a16a728e430782f"
 ## xtern = "libfnv-5a16a728e430782f.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-5a16a728e430782f"
 ## xtern = "libfnv-5a16a728e430782f.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-734174ec4510f387"
 ## xtern = "libident_case-734174ec4510f387.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-734174ec4510f387"
 ## xtern = "libident_case-734174ec4510f387.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-121dac5a70e1a903"
 ## xtern = "libstrsim-121dac5a70e1a903.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-121dac5a70e1a903"
 ## xtern = "libstrsim-121dac5a70e1a903.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-e99c0f3ebd5299d7"
 ## xtern = "libdarling_macro-e99c0f3ebd5299d7.so"
-## 
+##
 ## [[externs]]
 ## from = "out-4ddc6931e0266c5d"
 ## xtern = "libeither-4ddc6931e0266c5d.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-4ddc6931e0266c5d"
 ## xtern = "libeither-4ddc6931e0266c5d.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-06debb0d4d4774b1"
 ## xtern = "libheck-06debb0d4d4774b1.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-06debb0d4d4774b1"
 ## xtern = "libheck-06debb0d4d4774b1.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-da023ea0f94d8f90"
 ## xtern = "libdowncast_rs-da023ea0f94d8f90.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-da023ea0f94d8f90"
 ## xtern = "libdowncast_rs-da023ea0f94d8f90.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-a68ea12a2369cd39"
 ## xtern = "libitoa-a68ea12a2369cd39.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-a68ea12a2369cd39"
 ## xtern = "libitoa-a68ea12a2369cd39.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-3b91b6dcd2781330"
 ## xtern = "libpq_sys-3b91b6dcd2781330.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-3b91b6dcd2781330"
 ## xtern = "libpq_sys-3b91b6dcd2781330.rmeta"
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -5979,14 +5979,14 @@ COPY --link --from=dep-n-diesel-2.3.2-46abf7a372455c7b /tmp/clis-diesel_cli_2-3-
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-diesel-2.3.2"
 ## script = '''
 ## FROM scratch AS cratesio-diesel-2.3.2
 ## ADD --chmod=0664 --unpack --checksum=sha256:e8496eeb328dce26ee9d9b73275d396d9bddb433fa30106cf6056dd8c3c2764c \
 ##   https://static.crates.io/crates/diesel/diesel-2.3.2.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-diesel-2.3.2-46abf7a372455c7b"
 ## script = '''
@@ -6058,7 +6058,7 @@ COPY --link --from=dep-n-diesel-2.3.2-46abf7a372455c7b /tmp/clis-diesel_cli_2-3-
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-46abf7a372455c7b-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-46abf7a372455c7b-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-46abf7a372455c7b* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-46abf7a372455c7b"
 ## script = """
@@ -6126,23 +6126,23 @@ COPY --link --from=dep-n-serde_derive-1.0.219-1931024729ab70b5 /tmp/clis-diesel_
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/serde_derive-1931024729ab70b5.d","emit":"dep-info"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libserde_derive-1931024729ab70b5.so","emit":"link"}',
 ## ]
-## 
+##
 ## [[externs]]
 ## from = "out-da36b031605c1ddc"
 ## xtern = "libproc_macro2-da36b031605c1ddc.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-02b0d04ef026a7b6"
 ## xtern = "libunicode_ident-02b0d04ef026a7b6.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-21aeee0f329238fb"
 ## xtern = "libquote-21aeee0f329238fb.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-f0d9159e02a48398"
 ## xtern = "libsyn-f0d9159e02a48398.rlib"
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -6171,14 +6171,14 @@ COPY --link --from=dep-n-serde_derive-1.0.219-1931024729ab70b5 /tmp/clis-diesel_
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-serde_derive-1.0.219"
 ## script = '''
 ## FROM scratch AS cratesio-serde_derive-1.0.219
 ## ADD --chmod=0664 --unpack --checksum=sha256:5b0276cf7f2c73365f7157c8123c21cd9a50fbbd844757af28ca1f5925fc2a00 \
 ##   https://static.crates.io/crates/serde_derive/serde_derive-1.0.219.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-serde_derive-1.0.219-1931024729ab70b5"
 ## script = '''
@@ -6216,7 +6216,7 @@ COPY --link --from=dep-n-serde_derive-1.0.219-1931024729ab70b5 /tmp/clis-diesel_
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-1931024729ab70b5-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-1931024729ab70b5-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-1931024729ab70b5* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-1931024729ab70b5"
 ## script = """
@@ -6290,27 +6290,27 @@ COPY --link --from=dep-n-serde-1.0.219-cf863a164a8f1acb /tmp/clis-diesel_cli_2-3
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libserde-cf863a164a8f1acb.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libserde-cf863a164a8f1acb.rlib","emit":"link"}',
 ## ]
-## 
+##
 ## [[externs]]
 ## from = "out-1931024729ab70b5"
 ## xtern = "libserde_derive-1931024729ab70b5.so"
-## 
+##
 ## [[externs]]
 ## from = "out-da36b031605c1ddc"
 ## xtern = "libproc_macro2-da36b031605c1ddc.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-02b0d04ef026a7b6"
 ## xtern = "libunicode_ident-02b0d04ef026a7b6.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-21aeee0f329238fb"
 ## xtern = "libquote-21aeee0f329238fb.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-f0d9159e02a48398"
 ## xtern = "libsyn-f0d9159e02a48398.rlib"
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -6339,14 +6339,14 @@ COPY --link --from=dep-n-serde-1.0.219-cf863a164a8f1acb /tmp/clis-diesel_cli_2-3
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-serde-1.0.219"
 ## script = '''
 ## FROM scratch AS cratesio-serde-1.0.219
 ## ADD --chmod=0664 --unpack --checksum=sha256:5f0e2c6ed6606019b4e29e69dbaba95b11854410e5347d525002456dbbb786b6 \
 ##   https://static.crates.io/crates/serde/serde-1.0.219.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-serde-1.0.219-cf863a164a8f1acb"
 ## script = '''
@@ -6386,7 +6386,7 @@ COPY --link --from=dep-n-serde-1.0.219-cf863a164a8f1acb /tmp/clis-diesel_cli_2-3
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-cf863a164a8f1acb-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-cf863a164a8f1acb-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-cf863a164a8f1acb* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-cf863a164a8f1acb"
 ## script = """
@@ -6467,51 +6467,51 @@ COPY --link --from=dep-n-serde_spanned-1.0.0-70ce3d96b0efaadd /tmp/clis-diesel_c
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libserde_spanned-70ce3d96b0efaadd.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libserde_spanned-70ce3d96b0efaadd.rlib","emit":"link"}',
 ## ]
-## 
+##
 ## [[externs]]
 ## from = "out-cf863a164a8f1acb"
 ## xtern = "libserde-cf863a164a8f1acb.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-cf863a164a8f1acb"
 ## xtern = "libserde-cf863a164a8f1acb.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-1931024729ab70b5"
 ## xtern = "libserde_derive-1931024729ab70b5.so"
-## 
+##
 ## [[externs]]
 ## from = "out-da36b031605c1ddc"
 ## xtern = "libproc_macro2-da36b031605c1ddc.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-da36b031605c1ddc"
 ## xtern = "libproc_macro2-da36b031605c1ddc.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-02b0d04ef026a7b6"
 ## xtern = "libunicode_ident-02b0d04ef026a7b6.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-02b0d04ef026a7b6"
 ## xtern = "libunicode_ident-02b0d04ef026a7b6.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-21aeee0f329238fb"
 ## xtern = "libquote-21aeee0f329238fb.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-21aeee0f329238fb"
 ## xtern = "libquote-21aeee0f329238fb.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-f0d9159e02a48398"
 ## xtern = "libsyn-f0d9159e02a48398.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-f0d9159e02a48398"
 ## xtern = "libsyn-f0d9159e02a48398.rmeta"
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -6540,14 +6540,14 @@ COPY --link --from=dep-n-serde_spanned-1.0.0-70ce3d96b0efaadd /tmp/clis-diesel_c
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-serde_spanned-1.0.0"
 ## script = '''
 ## FROM scratch AS cratesio-serde_spanned-1.0.0
 ## ADD --chmod=0664 --unpack --checksum=sha256:40734c41988f7306bb04f0ecf60ec0f3f1caa34290e4e8ea471dcd3346483b83 \
 ##   https://static.crates.io/crates/serde_spanned/serde_spanned-1.0.0.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-serde_spanned-1.0.0-70ce3d96b0efaadd"
 ## script = '''
@@ -6592,7 +6592,7 @@ COPY --link --from=dep-n-serde_spanned-1.0.0-70ce3d96b0efaadd /tmp/clis-diesel_c
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-70ce3d96b0efaadd-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-70ce3d96b0efaadd-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-70ce3d96b0efaadd* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-70ce3d96b0efaadd"
 ## script = """
@@ -6673,51 +6673,51 @@ COPY --link --from=dep-n-toml_datetime-0.7.0-55f2d4848cd0a37d /tmp/clis-diesel_c
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libtoml_datetime-55f2d4848cd0a37d.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libtoml_datetime-55f2d4848cd0a37d.rlib","emit":"link"}',
 ## ]
-## 
+##
 ## [[externs]]
 ## from = "out-cf863a164a8f1acb"
 ## xtern = "libserde-cf863a164a8f1acb.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-cf863a164a8f1acb"
 ## xtern = "libserde-cf863a164a8f1acb.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-1931024729ab70b5"
 ## xtern = "libserde_derive-1931024729ab70b5.so"
-## 
+##
 ## [[externs]]
 ## from = "out-da36b031605c1ddc"
 ## xtern = "libproc_macro2-da36b031605c1ddc.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-da36b031605c1ddc"
 ## xtern = "libproc_macro2-da36b031605c1ddc.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-02b0d04ef026a7b6"
 ## xtern = "libunicode_ident-02b0d04ef026a7b6.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-02b0d04ef026a7b6"
 ## xtern = "libunicode_ident-02b0d04ef026a7b6.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-21aeee0f329238fb"
 ## xtern = "libquote-21aeee0f329238fb.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-21aeee0f329238fb"
 ## xtern = "libquote-21aeee0f329238fb.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-f0d9159e02a48398"
 ## xtern = "libsyn-f0d9159e02a48398.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-f0d9159e02a48398"
 ## xtern = "libsyn-f0d9159e02a48398.rmeta"
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -6746,14 +6746,14 @@ COPY --link --from=dep-n-toml_datetime-0.7.0-55f2d4848cd0a37d /tmp/clis-diesel_c
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-toml_datetime-0.7.0"
 ## script = '''
 ## FROM scratch AS cratesio-toml_datetime-0.7.0
 ## ADD --chmod=0664 --unpack --checksum=sha256:bade1c3e902f58d73d3f294cd7f20391c1cb2fbcb643b73566bc773971df91e3 \
 ##   https://static.crates.io/crates/toml_datetime/toml_datetime-0.7.0.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-toml_datetime-0.7.0-55f2d4848cd0a37d"
 ## script = '''
@@ -6798,7 +6798,7 @@ COPY --link --from=dep-n-toml_datetime-0.7.0-55f2d4848cd0a37d /tmp/clis-diesel_c
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-55f2d4848cd0a37d-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-55f2d4848cd0a37d-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-55f2d4848cd0a37d* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-55f2d4848cd0a37d"
 ## script = """
@@ -6860,7 +6860,7 @@ COPY --link --from=dep-n-winnow-0.7.11-a6d26416b11427c0 /tmp/clis-diesel_cli_2-3
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libwinnow-a6d26416b11427c0.rlib","emit":"link"}',
 ##     '{"$message_type":"diagnostic","message":"7 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 7 warnings emitted\u001b[0m\n\n"}',
 ## ]
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -6889,14 +6889,14 @@ COPY --link --from=dep-n-winnow-0.7.11-a6d26416b11427c0 /tmp/clis-diesel_cli_2-3
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-winnow-0.7.11"
 ## script = '''
 ## FROM scratch AS cratesio-winnow-0.7.11
 ## ADD --chmod=0664 --unpack --checksum=sha256:74c7b26e3480b707944fc872477815d29a8e429d2f93a1ce000f5fa84a15cbcd \
 ##   https://static.crates.io/crates/winnow/winnow-0.7.11.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-winnow-0.7.11-a6d26416b11427c0"
 ## script = '''
@@ -6930,7 +6930,7 @@ COPY --link --from=dep-n-winnow-0.7.11-a6d26416b11427c0 /tmp/clis-diesel_cli_2-3
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-a6d26416b11427c0-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-a6d26416b11427c0-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-a6d26416b11427c0* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-a6d26416b11427c0"
 ## script = """
@@ -6988,15 +6988,15 @@ COPY --link --from=dep-n-toml_parser-1.0.1-12b82382775590b5 /tmp/clis-diesel_cli
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libtoml_parser-12b82382775590b5.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libtoml_parser-12b82382775590b5.rlib","emit":"link"}',
 ## ]
-## 
+##
 ## [[externs]]
 ## from = "out-a6d26416b11427c0"
 ## xtern = "libwinnow-a6d26416b11427c0.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-a6d26416b11427c0"
 ## xtern = "libwinnow-a6d26416b11427c0.rmeta"
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -7025,14 +7025,14 @@ COPY --link --from=dep-n-toml_parser-1.0.1-12b82382775590b5 /tmp/clis-diesel_cli
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-toml_parser-1.0.1"
 ## script = '''
 ## FROM scratch AS cratesio-toml_parser-1.0.1
 ## ADD --chmod=0664 --unpack --checksum=sha256:97200572db069e74c512a14117b296ba0a80a30123fbbb5aa1f4a348f639ca30 \
 ##   https://static.crates.io/crates/toml_parser/toml_parser-1.0.1.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-toml_parser-1.0.1-12b82382775590b5"
 ## script = '''
@@ -7068,7 +7068,7 @@ COPY --link --from=dep-n-toml_parser-1.0.1-12b82382775590b5 /tmp/clis-diesel_cli
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-12b82382775590b5-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-12b82382775590b5-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-12b82382775590b5* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-12b82382775590b5"
 ## script = """
@@ -7170,83 +7170,83 @@ COPY --link --from=dep-n-toml-0.9.4-ee34c37aa9b5df05 /tmp/clis-diesel_cli_2-3-2/
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libtoml-ee34c37aa9b5df05.rlib","emit":"link"}',
 ##     '{"$message_type":"diagnostic","message":"4 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 4 warnings emitted\u001b[0m\n\n"}',
 ## ]
-## 
+##
 ## [[externs]]
 ## from = "out-cf863a164a8f1acb"
 ## xtern = "libserde-cf863a164a8f1acb.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-cf863a164a8f1acb"
 ## xtern = "libserde-cf863a164a8f1acb.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-1931024729ab70b5"
 ## xtern = "libserde_derive-1931024729ab70b5.so"
-## 
+##
 ## [[externs]]
 ## from = "out-da36b031605c1ddc"
 ## xtern = "libproc_macro2-da36b031605c1ddc.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-da36b031605c1ddc"
 ## xtern = "libproc_macro2-da36b031605c1ddc.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-02b0d04ef026a7b6"
 ## xtern = "libunicode_ident-02b0d04ef026a7b6.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-02b0d04ef026a7b6"
 ## xtern = "libunicode_ident-02b0d04ef026a7b6.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-21aeee0f329238fb"
 ## xtern = "libquote-21aeee0f329238fb.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-21aeee0f329238fb"
 ## xtern = "libquote-21aeee0f329238fb.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-f0d9159e02a48398"
 ## xtern = "libsyn-f0d9159e02a48398.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-f0d9159e02a48398"
 ## xtern = "libsyn-f0d9159e02a48398.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-70ce3d96b0efaadd"
 ## xtern = "libserde_spanned-70ce3d96b0efaadd.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-70ce3d96b0efaadd"
 ## xtern = "libserde_spanned-70ce3d96b0efaadd.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-55f2d4848cd0a37d"
 ## xtern = "libtoml_datetime-55f2d4848cd0a37d.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-55f2d4848cd0a37d"
 ## xtern = "libtoml_datetime-55f2d4848cd0a37d.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-12b82382775590b5"
 ## xtern = "libtoml_parser-12b82382775590b5.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-12b82382775590b5"
 ## xtern = "libtoml_parser-12b82382775590b5.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-a6d26416b11427c0"
 ## xtern = "libwinnow-a6d26416b11427c0.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-a6d26416b11427c0"
 ## xtern = "libwinnow-a6d26416b11427c0.rmeta"
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -7275,14 +7275,14 @@ COPY --link --from=dep-n-toml-0.9.4-ee34c37aa9b5df05 /tmp/clis-diesel_cli_2-3-2/
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-toml-0.9.4"
 ## script = '''
 ## FROM scratch AS cratesio-toml-0.9.4
 ## ADD --chmod=0664 --unpack --checksum=sha256:41ae868b5a0f67631c14589f7e250c1ea2c574ee5ba21c6c8dd4b1485705a5a1 \
 ##   https://static.crates.io/crates/toml/toml-0.9.4.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-toml-0.9.4-ee34c37aa9b5df05"
 ## script = '''
@@ -7335,7 +7335,7 @@ COPY --link --from=dep-n-toml-0.9.4-ee34c37aa9b5df05 /tmp/clis-diesel_cli_2-3-2/
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-ee34c37aa9b5df05-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-ee34c37aa9b5df05-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-ee34c37aa9b5df05* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-ee34c37aa9b5df05"
 ## script = """
@@ -7436,91 +7436,91 @@ COPY --link --from=dep-n-migrations_internals-2.3.0-1ee661f4af346a49 /tmp/clis-d
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libmigrations_internals-1ee661f4af346a49.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libmigrations_internals-1ee661f4af346a49.rlib","emit":"link"}',
 ## ]
-## 
+##
 ## [[externs]]
 ## from = "out-cf863a164a8f1acb"
 ## xtern = "libserde-cf863a164a8f1acb.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-cf863a164a8f1acb"
 ## xtern = "libserde-cf863a164a8f1acb.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-1931024729ab70b5"
 ## xtern = "libserde_derive-1931024729ab70b5.so"
-## 
+##
 ## [[externs]]
 ## from = "out-da36b031605c1ddc"
 ## xtern = "libproc_macro2-da36b031605c1ddc.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-da36b031605c1ddc"
 ## xtern = "libproc_macro2-da36b031605c1ddc.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-02b0d04ef026a7b6"
 ## xtern = "libunicode_ident-02b0d04ef026a7b6.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-02b0d04ef026a7b6"
 ## xtern = "libunicode_ident-02b0d04ef026a7b6.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-21aeee0f329238fb"
 ## xtern = "libquote-21aeee0f329238fb.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-21aeee0f329238fb"
 ## xtern = "libquote-21aeee0f329238fb.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-f0d9159e02a48398"
 ## xtern = "libsyn-f0d9159e02a48398.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-f0d9159e02a48398"
 ## xtern = "libsyn-f0d9159e02a48398.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-ee34c37aa9b5df05"
 ## xtern = "libtoml-ee34c37aa9b5df05.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-ee34c37aa9b5df05"
 ## xtern = "libtoml-ee34c37aa9b5df05.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-70ce3d96b0efaadd"
 ## xtern = "libserde_spanned-70ce3d96b0efaadd.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-70ce3d96b0efaadd"
 ## xtern = "libserde_spanned-70ce3d96b0efaadd.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-55f2d4848cd0a37d"
 ## xtern = "libtoml_datetime-55f2d4848cd0a37d.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-55f2d4848cd0a37d"
 ## xtern = "libtoml_datetime-55f2d4848cd0a37d.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-12b82382775590b5"
 ## xtern = "libtoml_parser-12b82382775590b5.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-12b82382775590b5"
 ## xtern = "libtoml_parser-12b82382775590b5.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-a6d26416b11427c0"
 ## xtern = "libwinnow-a6d26416b11427c0.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-a6d26416b11427c0"
 ## xtern = "libwinnow-a6d26416b11427c0.rmeta"
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -7549,14 +7549,14 @@ COPY --link --from=dep-n-migrations_internals-2.3.0-1ee661f4af346a49 /tmp/clis-d
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-migrations_internals-2.3.0"
 ## script = '''
 ## FROM scratch AS cratesio-migrations_internals-2.3.0
 ## ADD --chmod=0664 --unpack --checksum=sha256:36c791ecdf977c99f45f23280405d7723727470f6689a5e6dbf513ac547ae10d \
 ##   https://static.crates.io/crates/migrations_internals/migrations_internals-2.3.0.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-migrations_internals-2.3.0-1ee661f4af346a49"
 ## script = '''
@@ -7611,7 +7611,7 @@ COPY --link --from=dep-n-migrations_internals-2.3.0-1ee661f4af346a49 /tmp/clis-d
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-1ee661f4af346a49-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-1ee661f4af346a49-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-1ee661f4af346a49* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-1ee661f4af346a49"
 ## script = """
@@ -7683,27 +7683,27 @@ COPY --link --from=dep-n-serde-1.0.219-7cd80cdcabe0a9d0 /tmp/clis-diesel_cli_2-3
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libserde-7cd80cdcabe0a9d0.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libserde-7cd80cdcabe0a9d0.rlib","emit":"link"}',
 ## ]
-## 
+##
 ## [[externs]]
 ## from = "out-1931024729ab70b5"
 ## xtern = "libserde_derive-1931024729ab70b5.so"
-## 
+##
 ## [[externs]]
 ## from = "out-da36b031605c1ddc"
 ## xtern = "libproc_macro2-da36b031605c1ddc.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-02b0d04ef026a7b6"
 ## xtern = "libunicode_ident-02b0d04ef026a7b6.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-21aeee0f329238fb"
 ## xtern = "libquote-21aeee0f329238fb.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-f0d9159e02a48398"
 ## xtern = "libsyn-f0d9159e02a48398.rlib"
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -7732,14 +7732,14 @@ COPY --link --from=dep-n-serde-1.0.219-7cd80cdcabe0a9d0 /tmp/clis-diesel_cli_2-3
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-serde-1.0.219"
 ## script = '''
 ## FROM scratch AS cratesio-serde-1.0.219
 ## ADD --chmod=0664 --unpack --checksum=sha256:5f0e2c6ed6606019b4e29e69dbaba95b11854410e5347d525002456dbbb786b6 \
 ##   https://static.crates.io/crates/serde/serde-1.0.219.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-serde-1.0.219-7cd80cdcabe0a9d0"
 ## script = '''
@@ -7779,7 +7779,7 @@ COPY --link --from=dep-n-serde-1.0.219-7cd80cdcabe0a9d0 /tmp/clis-diesel_cli_2-3
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-7cd80cdcabe0a9d0-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-7cd80cdcabe0a9d0-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-7cd80cdcabe0a9d0* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-7cd80cdcabe0a9d0"
 ## script = """
@@ -7858,51 +7858,51 @@ COPY --link --from=dep-n-serde_spanned-1.0.0-8b3cdebd56345d91 /tmp/clis-diesel_c
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libserde_spanned-8b3cdebd56345d91.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libserde_spanned-8b3cdebd56345d91.rlib","emit":"link"}',
 ## ]
-## 
+##
 ## [[externs]]
 ## from = "out-7cd80cdcabe0a9d0"
 ## xtern = "libserde-7cd80cdcabe0a9d0.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-7cd80cdcabe0a9d0"
 ## xtern = "libserde-7cd80cdcabe0a9d0.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-1931024729ab70b5"
 ## xtern = "libserde_derive-1931024729ab70b5.so"
-## 
+##
 ## [[externs]]
 ## from = "out-da36b031605c1ddc"
 ## xtern = "libproc_macro2-da36b031605c1ddc.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-da36b031605c1ddc"
 ## xtern = "libproc_macro2-da36b031605c1ddc.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-02b0d04ef026a7b6"
 ## xtern = "libunicode_ident-02b0d04ef026a7b6.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-02b0d04ef026a7b6"
 ## xtern = "libunicode_ident-02b0d04ef026a7b6.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-21aeee0f329238fb"
 ## xtern = "libquote-21aeee0f329238fb.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-21aeee0f329238fb"
 ## xtern = "libquote-21aeee0f329238fb.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-f0d9159e02a48398"
 ## xtern = "libsyn-f0d9159e02a48398.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-f0d9159e02a48398"
 ## xtern = "libsyn-f0d9159e02a48398.rmeta"
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -7931,14 +7931,14 @@ COPY --link --from=dep-n-serde_spanned-1.0.0-8b3cdebd56345d91 /tmp/clis-diesel_c
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-serde_spanned-1.0.0"
 ## script = '''
 ## FROM scratch AS cratesio-serde_spanned-1.0.0
 ## ADD --chmod=0664 --unpack --checksum=sha256:40734c41988f7306bb04f0ecf60ec0f3f1caa34290e4e8ea471dcd3346483b83 \
 ##   https://static.crates.io/crates/serde_spanned/serde_spanned-1.0.0.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-serde_spanned-1.0.0-8b3cdebd56345d91"
 ## script = '''
@@ -7983,7 +7983,7 @@ COPY --link --from=dep-n-serde_spanned-1.0.0-8b3cdebd56345d91 /tmp/clis-diesel_c
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-8b3cdebd56345d91-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-8b3cdebd56345d91-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-8b3cdebd56345d91* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-8b3cdebd56345d91"
 ## script = """
@@ -8062,51 +8062,51 @@ COPY --link --from=dep-n-toml_datetime-0.7.0-d08fd1a16a866536 /tmp/clis-diesel_c
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libtoml_datetime-d08fd1a16a866536.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libtoml_datetime-d08fd1a16a866536.rlib","emit":"link"}',
 ## ]
-## 
+##
 ## [[externs]]
 ## from = "out-7cd80cdcabe0a9d0"
 ## xtern = "libserde-7cd80cdcabe0a9d0.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-7cd80cdcabe0a9d0"
 ## xtern = "libserde-7cd80cdcabe0a9d0.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-1931024729ab70b5"
 ## xtern = "libserde_derive-1931024729ab70b5.so"
-## 
+##
 ## [[externs]]
 ## from = "out-da36b031605c1ddc"
 ## xtern = "libproc_macro2-da36b031605c1ddc.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-da36b031605c1ddc"
 ## xtern = "libproc_macro2-da36b031605c1ddc.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-02b0d04ef026a7b6"
 ## xtern = "libunicode_ident-02b0d04ef026a7b6.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-02b0d04ef026a7b6"
 ## xtern = "libunicode_ident-02b0d04ef026a7b6.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-21aeee0f329238fb"
 ## xtern = "libquote-21aeee0f329238fb.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-21aeee0f329238fb"
 ## xtern = "libquote-21aeee0f329238fb.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-f0d9159e02a48398"
 ## xtern = "libsyn-f0d9159e02a48398.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-f0d9159e02a48398"
 ## xtern = "libsyn-f0d9159e02a48398.rmeta"
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -8135,14 +8135,14 @@ COPY --link --from=dep-n-toml_datetime-0.7.0-d08fd1a16a866536 /tmp/clis-diesel_c
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-toml_datetime-0.7.0"
 ## script = '''
 ## FROM scratch AS cratesio-toml_datetime-0.7.0
 ## ADD --chmod=0664 --unpack --checksum=sha256:bade1c3e902f58d73d3f294cd7f20391c1cb2fbcb643b73566bc773971df91e3 \
 ##   https://static.crates.io/crates/toml_datetime/toml_datetime-0.7.0.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-toml_datetime-0.7.0-d08fd1a16a866536"
 ## script = '''
@@ -8187,7 +8187,7 @@ COPY --link --from=dep-n-toml_datetime-0.7.0-d08fd1a16a866536 /tmp/clis-diesel_c
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-d08fd1a16a866536-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-d08fd1a16a866536-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-d08fd1a16a866536* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-d08fd1a16a866536"
 ## script = """
@@ -8247,7 +8247,7 @@ COPY --link --from=dep-n-winnow-0.7.11-606a9bde4b104ab4 /tmp/clis-diesel_cli_2-3
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libwinnow-606a9bde4b104ab4.rlib","emit":"link"}',
 ##     '{"$message_type":"diagnostic","message":"7 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 7 warnings emitted\u001b[0m\n\n"}',
 ## ]
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -8276,14 +8276,14 @@ COPY --link --from=dep-n-winnow-0.7.11-606a9bde4b104ab4 /tmp/clis-diesel_cli_2-3
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-winnow-0.7.11"
 ## script = '''
 ## FROM scratch AS cratesio-winnow-0.7.11
 ## ADD --chmod=0664 --unpack --checksum=sha256:74c7b26e3480b707944fc872477815d29a8e429d2f93a1ce000f5fa84a15cbcd \
 ##   https://static.crates.io/crates/winnow/winnow-0.7.11.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-winnow-0.7.11-606a9bde4b104ab4"
 ## script = '''
@@ -8317,7 +8317,7 @@ COPY --link --from=dep-n-winnow-0.7.11-606a9bde4b104ab4 /tmp/clis-diesel_cli_2-3
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-606a9bde4b104ab4-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-606a9bde4b104ab4-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-606a9bde4b104ab4* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-606a9bde4b104ab4"
 ## script = """
@@ -8373,15 +8373,15 @@ COPY --link --from=dep-n-toml_parser-1.0.1-fdb7568236fe59ac /tmp/clis-diesel_cli
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libtoml_parser-fdb7568236fe59ac.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libtoml_parser-fdb7568236fe59ac.rlib","emit":"link"}',
 ## ]
-## 
+##
 ## [[externs]]
 ## from = "out-606a9bde4b104ab4"
 ## xtern = "libwinnow-606a9bde4b104ab4.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-606a9bde4b104ab4"
 ## xtern = "libwinnow-606a9bde4b104ab4.rmeta"
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -8410,14 +8410,14 @@ COPY --link --from=dep-n-toml_parser-1.0.1-fdb7568236fe59ac /tmp/clis-diesel_cli
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-toml_parser-1.0.1"
 ## script = '''
 ## FROM scratch AS cratesio-toml_parser-1.0.1
 ## ADD --chmod=0664 --unpack --checksum=sha256:97200572db069e74c512a14117b296ba0a80a30123fbbb5aa1f4a348f639ca30 \
 ##   https://static.crates.io/crates/toml_parser/toml_parser-1.0.1.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-toml_parser-1.0.1-fdb7568236fe59ac"
 ## script = '''
@@ -8453,7 +8453,7 @@ COPY --link --from=dep-n-toml_parser-1.0.1-fdb7568236fe59ac /tmp/clis-diesel_cli
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-fdb7568236fe59ac-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-fdb7568236fe59ac-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-fdb7568236fe59ac* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-fdb7568236fe59ac"
 ## script = """
@@ -8553,83 +8553,83 @@ COPY --link --from=dep-n-toml-0.9.4-6ec065cafd7ff0fb /tmp/clis-diesel_cli_2-3-2/
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libtoml-6ec065cafd7ff0fb.rlib","emit":"link"}',
 ##     '{"$message_type":"diagnostic","message":"4 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 4 warnings emitted\u001b[0m\n\n"}',
 ## ]
-## 
+##
 ## [[externs]]
 ## from = "out-7cd80cdcabe0a9d0"
 ## xtern = "libserde-7cd80cdcabe0a9d0.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-7cd80cdcabe0a9d0"
 ## xtern = "libserde-7cd80cdcabe0a9d0.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-1931024729ab70b5"
 ## xtern = "libserde_derive-1931024729ab70b5.so"
-## 
+##
 ## [[externs]]
 ## from = "out-da36b031605c1ddc"
 ## xtern = "libproc_macro2-da36b031605c1ddc.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-da36b031605c1ddc"
 ## xtern = "libproc_macro2-da36b031605c1ddc.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-02b0d04ef026a7b6"
 ## xtern = "libunicode_ident-02b0d04ef026a7b6.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-02b0d04ef026a7b6"
 ## xtern = "libunicode_ident-02b0d04ef026a7b6.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-21aeee0f329238fb"
 ## xtern = "libquote-21aeee0f329238fb.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-21aeee0f329238fb"
 ## xtern = "libquote-21aeee0f329238fb.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-f0d9159e02a48398"
 ## xtern = "libsyn-f0d9159e02a48398.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-f0d9159e02a48398"
 ## xtern = "libsyn-f0d9159e02a48398.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-8b3cdebd56345d91"
 ## xtern = "libserde_spanned-8b3cdebd56345d91.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-8b3cdebd56345d91"
 ## xtern = "libserde_spanned-8b3cdebd56345d91.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-d08fd1a16a866536"
 ## xtern = "libtoml_datetime-d08fd1a16a866536.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-d08fd1a16a866536"
 ## xtern = "libtoml_datetime-d08fd1a16a866536.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-fdb7568236fe59ac"
 ## xtern = "libtoml_parser-fdb7568236fe59ac.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-fdb7568236fe59ac"
 ## xtern = "libtoml_parser-fdb7568236fe59ac.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-606a9bde4b104ab4"
 ## xtern = "libwinnow-606a9bde4b104ab4.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-606a9bde4b104ab4"
 ## xtern = "libwinnow-606a9bde4b104ab4.rmeta"
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -8658,14 +8658,14 @@ COPY --link --from=dep-n-toml-0.9.4-6ec065cafd7ff0fb /tmp/clis-diesel_cli_2-3-2/
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-toml-0.9.4"
 ## script = '''
 ## FROM scratch AS cratesio-toml-0.9.4
 ## ADD --chmod=0664 --unpack --checksum=sha256:41ae868b5a0f67631c14589f7e250c1ea2c574ee5ba21c6c8dd4b1485705a5a1 \
 ##   https://static.crates.io/crates/toml/toml-0.9.4.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-toml-0.9.4-6ec065cafd7ff0fb"
 ## script = '''
@@ -8718,7 +8718,7 @@ COPY --link --from=dep-n-toml-0.9.4-6ec065cafd7ff0fb /tmp/clis-diesel_cli_2-3-2/
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-6ec065cafd7ff0fb-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-6ec065cafd7ff0fb-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-6ec065cafd7ff0fb* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-6ec065cafd7ff0fb"
 ## script = """
@@ -8817,91 +8817,91 @@ COPY --link --from=dep-n-migrations_internals-2.3.0-a13670c690f404dd /tmp/clis-d
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libmigrations_internals-a13670c690f404dd.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libmigrations_internals-a13670c690f404dd.rlib","emit":"link"}',
 ## ]
-## 
+##
 ## [[externs]]
 ## from = "out-7cd80cdcabe0a9d0"
 ## xtern = "libserde-7cd80cdcabe0a9d0.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-7cd80cdcabe0a9d0"
 ## xtern = "libserde-7cd80cdcabe0a9d0.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-1931024729ab70b5"
 ## xtern = "libserde_derive-1931024729ab70b5.so"
-## 
+##
 ## [[externs]]
 ## from = "out-da36b031605c1ddc"
 ## xtern = "libproc_macro2-da36b031605c1ddc.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-da36b031605c1ddc"
 ## xtern = "libproc_macro2-da36b031605c1ddc.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-02b0d04ef026a7b6"
 ## xtern = "libunicode_ident-02b0d04ef026a7b6.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-02b0d04ef026a7b6"
 ## xtern = "libunicode_ident-02b0d04ef026a7b6.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-21aeee0f329238fb"
 ## xtern = "libquote-21aeee0f329238fb.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-21aeee0f329238fb"
 ## xtern = "libquote-21aeee0f329238fb.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-f0d9159e02a48398"
 ## xtern = "libsyn-f0d9159e02a48398.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-f0d9159e02a48398"
 ## xtern = "libsyn-f0d9159e02a48398.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-6ec065cafd7ff0fb"
 ## xtern = "libtoml-6ec065cafd7ff0fb.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-6ec065cafd7ff0fb"
 ## xtern = "libtoml-6ec065cafd7ff0fb.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-8b3cdebd56345d91"
 ## xtern = "libserde_spanned-8b3cdebd56345d91.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-8b3cdebd56345d91"
 ## xtern = "libserde_spanned-8b3cdebd56345d91.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-d08fd1a16a866536"
 ## xtern = "libtoml_datetime-d08fd1a16a866536.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-d08fd1a16a866536"
 ## xtern = "libtoml_datetime-d08fd1a16a866536.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-fdb7568236fe59ac"
 ## xtern = "libtoml_parser-fdb7568236fe59ac.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-fdb7568236fe59ac"
 ## xtern = "libtoml_parser-fdb7568236fe59ac.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-606a9bde4b104ab4"
 ## xtern = "libwinnow-606a9bde4b104ab4.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-606a9bde4b104ab4"
 ## xtern = "libwinnow-606a9bde4b104ab4.rmeta"
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -8930,14 +8930,14 @@ COPY --link --from=dep-n-migrations_internals-2.3.0-a13670c690f404dd /tmp/clis-d
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-migrations_internals-2.3.0"
 ## script = '''
 ## FROM scratch AS cratesio-migrations_internals-2.3.0
 ## ADD --chmod=0664 --unpack --checksum=sha256:36c791ecdf977c99f45f23280405d7723727470f6689a5e6dbf513ac547ae10d \
 ##   https://static.crates.io/crates/migrations_internals/migrations_internals-2.3.0.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-migrations_internals-2.3.0-a13670c690f404dd"
 ## script = '''
@@ -8992,7 +8992,7 @@ COPY --link --from=dep-n-migrations_internals-2.3.0-a13670c690f404dd /tmp/clis-d
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-a13670c690f404dd-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-a13670c690f404dd-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-a13670c690f404dd* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-a13670c690f404dd"
 ## script = """
@@ -9084,55 +9084,55 @@ COPY --link --from=dep-n-migrations_macros-2.3.0-de41932e0179a2eb /tmp/clis-dies
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/migrations_macros-de41932e0179a2eb.d","emit":"dep-info"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libmigrations_macros-de41932e0179a2eb.so","emit":"link"}',
 ## ]
-## 
+##
 ## [[externs]]
 ## from = "out-a13670c690f404dd"
 ## xtern = "libmigrations_internals-a13670c690f404dd.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-7cd80cdcabe0a9d0"
 ## xtern = "libserde-7cd80cdcabe0a9d0.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-1931024729ab70b5"
 ## xtern = "libserde_derive-1931024729ab70b5.so"
-## 
+##
 ## [[externs]]
 ## from = "out-da36b031605c1ddc"
 ## xtern = "libproc_macro2-da36b031605c1ddc.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-02b0d04ef026a7b6"
 ## xtern = "libunicode_ident-02b0d04ef026a7b6.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-21aeee0f329238fb"
 ## xtern = "libquote-21aeee0f329238fb.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-f0d9159e02a48398"
 ## xtern = "libsyn-f0d9159e02a48398.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-6ec065cafd7ff0fb"
 ## xtern = "libtoml-6ec065cafd7ff0fb.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-8b3cdebd56345d91"
 ## xtern = "libserde_spanned-8b3cdebd56345d91.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-d08fd1a16a866536"
 ## xtern = "libtoml_datetime-d08fd1a16a866536.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-fdb7568236fe59ac"
 ## xtern = "libtoml_parser-fdb7568236fe59ac.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-606a9bde4b104ab4"
 ## xtern = "libwinnow-606a9bde4b104ab4.rlib"
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -9161,14 +9161,14 @@ COPY --link --from=dep-n-migrations_macros-2.3.0-de41932e0179a2eb /tmp/clis-dies
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-migrations_macros-2.3.0"
 ## script = '''
 ## FROM scratch AS cratesio-migrations_macros-2.3.0
 ## ADD --chmod=0664 --unpack --checksum=sha256:36fc5ac76be324cfd2d3f2cf0fdf5d5d3c4f14ed8aaebadb09e304ba42282703 \
 ##   https://static.crates.io/crates/migrations_macros/migrations_macros-2.3.0.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-migrations_macros-2.3.0-de41932e0179a2eb"
 ## script = '''
@@ -9214,7 +9214,7 @@ COPY --link --from=dep-n-migrations_macros-2.3.0-de41932e0179a2eb /tmp/clis-dies
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-de41932e0179a2eb-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-de41932e0179a2eb-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-de41932e0179a2eb* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-de41932e0179a2eb"
 ## script = """
@@ -9416,287 +9416,287 @@ COPY --link --from=dep-n-diesel_migrations-2.3.0-f15803787717664d /tmp/clis-dies
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libdiesel_migrations-f15803787717664d.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libdiesel_migrations-f15803787717664d.rlib","emit":"link"}',
 ## ]
-## 
+##
 ## [[externs]]
 ## from = "out-46abf7a372455c7b"
 ## xtern = "libdiesel-46abf7a372455c7b.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-46abf7a372455c7b"
 ## xtern = "libdiesel-46abf7a372455c7b.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-d53ce0040874ecbb"
 ## xtern = "libbitflags-d53ce0040874ecbb.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-d53ce0040874ecbb"
 ## xtern = "libbitflags-d53ce0040874ecbb.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-a63c22cfa59c094d"
 ## xtern = "libbyteorder-a63c22cfa59c094d.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-a63c22cfa59c094d"
 ## xtern = "libbyteorder-a63c22cfa59c094d.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-bbf1af25790241d6"
 ## xtern = "libdiesel_derives-bbf1af25790241d6.so"
-## 
+##
 ## [[externs]]
 ## from = "out-98fffecbdb4097db"
 ## xtern = "libdiesel_table_macro_syntax-98fffecbdb4097db.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-98fffecbdb4097db"
 ## xtern = "libdiesel_table_macro_syntax-98fffecbdb4097db.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-f0d9159e02a48398"
 ## xtern = "libsyn-f0d9159e02a48398.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-f0d9159e02a48398"
 ## xtern = "libsyn-f0d9159e02a48398.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-da36b031605c1ddc"
 ## xtern = "libproc_macro2-da36b031605c1ddc.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-da36b031605c1ddc"
 ## xtern = "libproc_macro2-da36b031605c1ddc.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-02b0d04ef026a7b6"
 ## xtern = "libunicode_ident-02b0d04ef026a7b6.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-02b0d04ef026a7b6"
 ## xtern = "libunicode_ident-02b0d04ef026a7b6.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-21aeee0f329238fb"
 ## xtern = "libquote-21aeee0f329238fb.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-21aeee0f329238fb"
 ## xtern = "libquote-21aeee0f329238fb.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-23840e29699400b7"
 ## xtern = "libdsl_auto_type-23840e29699400b7.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-23840e29699400b7"
 ## xtern = "libdsl_auto_type-23840e29699400b7.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-d150b173f490e382"
 ## xtern = "libdarling-d150b173f490e382.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-d150b173f490e382"
 ## xtern = "libdarling-d150b173f490e382.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-3031be4b9dd3216f"
 ## xtern = "libdarling_core-3031be4b9dd3216f.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-3031be4b9dd3216f"
 ## xtern = "libdarling_core-3031be4b9dd3216f.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-5a16a728e430782f"
 ## xtern = "libfnv-5a16a728e430782f.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-5a16a728e430782f"
 ## xtern = "libfnv-5a16a728e430782f.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-734174ec4510f387"
 ## xtern = "libident_case-734174ec4510f387.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-734174ec4510f387"
 ## xtern = "libident_case-734174ec4510f387.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-121dac5a70e1a903"
 ## xtern = "libstrsim-121dac5a70e1a903.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-121dac5a70e1a903"
 ## xtern = "libstrsim-121dac5a70e1a903.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-e99c0f3ebd5299d7"
 ## xtern = "libdarling_macro-e99c0f3ebd5299d7.so"
-## 
+##
 ## [[externs]]
 ## from = "out-4ddc6931e0266c5d"
 ## xtern = "libeither-4ddc6931e0266c5d.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-4ddc6931e0266c5d"
 ## xtern = "libeither-4ddc6931e0266c5d.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-06debb0d4d4774b1"
 ## xtern = "libheck-06debb0d4d4774b1.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-06debb0d4d4774b1"
 ## xtern = "libheck-06debb0d4d4774b1.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-da023ea0f94d8f90"
 ## xtern = "libdowncast_rs-da023ea0f94d8f90.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-da023ea0f94d8f90"
 ## xtern = "libdowncast_rs-da023ea0f94d8f90.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-a68ea12a2369cd39"
 ## xtern = "libitoa-a68ea12a2369cd39.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-a68ea12a2369cd39"
 ## xtern = "libitoa-a68ea12a2369cd39.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-3b91b6dcd2781330"
 ## xtern = "libpq_sys-3b91b6dcd2781330.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-3b91b6dcd2781330"
 ## xtern = "libpq_sys-3b91b6dcd2781330.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-1ee661f4af346a49"
 ## xtern = "libmigrations_internals-1ee661f4af346a49.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-1ee661f4af346a49"
 ## xtern = "libmigrations_internals-1ee661f4af346a49.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-cf863a164a8f1acb"
 ## xtern = "libserde-cf863a164a8f1acb.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-cf863a164a8f1acb"
 ## xtern = "libserde-cf863a164a8f1acb.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-1931024729ab70b5"
 ## xtern = "libserde_derive-1931024729ab70b5.so"
-## 
+##
 ## [[externs]]
 ## from = "out-ee34c37aa9b5df05"
 ## xtern = "libtoml-ee34c37aa9b5df05.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-ee34c37aa9b5df05"
 ## xtern = "libtoml-ee34c37aa9b5df05.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-70ce3d96b0efaadd"
 ## xtern = "libserde_spanned-70ce3d96b0efaadd.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-70ce3d96b0efaadd"
 ## xtern = "libserde_spanned-70ce3d96b0efaadd.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-55f2d4848cd0a37d"
 ## xtern = "libtoml_datetime-55f2d4848cd0a37d.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-55f2d4848cd0a37d"
 ## xtern = "libtoml_datetime-55f2d4848cd0a37d.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-12b82382775590b5"
 ## xtern = "libtoml_parser-12b82382775590b5.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-12b82382775590b5"
 ## xtern = "libtoml_parser-12b82382775590b5.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-a6d26416b11427c0"
 ## xtern = "libwinnow-a6d26416b11427c0.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-a6d26416b11427c0"
 ## xtern = "libwinnow-a6d26416b11427c0.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-de41932e0179a2eb"
 ## xtern = "libmigrations_macros-de41932e0179a2eb.so"
-## 
+##
 ## [[externs]]
 ## from = "out-a13670c690f404dd"
 ## xtern = "libmigrations_internals-a13670c690f404dd.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-a13670c690f404dd"
 ## xtern = "libmigrations_internals-a13670c690f404dd.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-7cd80cdcabe0a9d0"
 ## xtern = "libserde-7cd80cdcabe0a9d0.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-7cd80cdcabe0a9d0"
 ## xtern = "libserde-7cd80cdcabe0a9d0.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-6ec065cafd7ff0fb"
 ## xtern = "libtoml-6ec065cafd7ff0fb.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-6ec065cafd7ff0fb"
 ## xtern = "libtoml-6ec065cafd7ff0fb.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-8b3cdebd56345d91"
 ## xtern = "libserde_spanned-8b3cdebd56345d91.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-8b3cdebd56345d91"
 ## xtern = "libserde_spanned-8b3cdebd56345d91.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-d08fd1a16a866536"
 ## xtern = "libtoml_datetime-d08fd1a16a866536.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-d08fd1a16a866536"
 ## xtern = "libtoml_datetime-d08fd1a16a866536.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-fdb7568236fe59ac"
 ## xtern = "libtoml_parser-fdb7568236fe59ac.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-fdb7568236fe59ac"
 ## xtern = "libtoml_parser-fdb7568236fe59ac.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-606a9bde4b104ab4"
 ## xtern = "libwinnow-606a9bde4b104ab4.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-606a9bde4b104ab4"
 ## xtern = "libwinnow-606a9bde4b104ab4.rmeta"
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -9725,14 +9725,14 @@ COPY --link --from=dep-n-diesel_migrations-2.3.0-f15803787717664d /tmp/clis-dies
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-diesel_migrations-2.3.0"
 ## script = '''
 ## FROM scratch AS cratesio-diesel_migrations-2.3.0
 ## ADD --chmod=0664 --unpack --checksum=sha256:ee060f709c3e3b1cadd83fcd0f61711f7a8cf493348f758d3a1c1147d70b3c97 \
 ##   https://static.crates.io/crates/diesel_migrations/diesel_migrations-2.3.0.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-diesel_migrations-2.3.0-f15803787717664d"
 ## script = '''
@@ -9836,7 +9836,7 @@ COPY --link --from=dep-n-diesel_migrations-2.3.0-f15803787717664d /tmp/clis-dies
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-f15803787717664d-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-f15803787717664d-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-f15803787717664d* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-f15803787717664d"
 ## script = """
@@ -9888,7 +9888,7 @@ COPY --link --from=dep-n-unicode-ident-1.0.18-a40aeaeb18cf83dc /tmp/clis-diesel_
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libunicode_ident-a40aeaeb18cf83dc.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libunicode_ident-a40aeaeb18cf83dc.rlib","emit":"link"}',
 ## ]
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -9917,14 +9917,14 @@ COPY --link --from=dep-n-unicode-ident-1.0.18-a40aeaeb18cf83dc /tmp/clis-diesel_
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-unicode-ident-1.0.18"
 ## script = '''
 ## FROM scratch AS cratesio-unicode-ident-1.0.18
 ## ADD --chmod=0664 --unpack --checksum=sha256:5a5f39404a5da50712a4c1eecf25e90dd62b613502b7e925fd4e4d19b5c96512 \
 ##   https://static.crates.io/crates/unicode-ident/unicode-ident-1.0.18.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-unicode-ident-1.0.18-a40aeaeb18cf83dc"
 ## script = '''
@@ -9958,7 +9958,7 @@ COPY --link --from=dep-n-unicode-ident-1.0.18-a40aeaeb18cf83dc /tmp/clis-diesel_
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-a40aeaeb18cf83dc-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-a40aeaeb18cf83dc-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-a40aeaeb18cf83dc* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-a40aeaeb18cf83dc"
 ## script = """
@@ -10015,15 +10015,15 @@ COPY --link --from=dep-n-proc-macro2-1.0.95-02f207b978e39a3f /tmp/clis-diesel_cl
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libproc_macro2-02f207b978e39a3f.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libproc_macro2-02f207b978e39a3f.rlib","emit":"link"}',
 ## ]
-## 
+##
 ## [[externs]]
 ## from = "out-a40aeaeb18cf83dc"
 ## xtern = "libunicode_ident-a40aeaeb18cf83dc.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-a40aeaeb18cf83dc"
 ## xtern = "libunicode_ident-a40aeaeb18cf83dc.rmeta"
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -10052,14 +10052,14 @@ COPY --link --from=dep-n-proc-macro2-1.0.95-02f207b978e39a3f /tmp/clis-diesel_cl
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-proc-macro2-1.0.95"
 ## script = '''
 ## FROM scratch AS cratesio-proc-macro2-1.0.95
 ## ADD --chmod=0664 --unpack --checksum=sha256:02b3e5e68a3a1a02aad3ec490a98007cbc13c37cbe84a3cd7b8e406d76e7f778 \
 ##   https://static.crates.io/crates/proc-macro2/proc-macro2-1.0.95.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-proc-macro2-1.0.95-02f207b978e39a3f"
 ## script = '''
@@ -10096,7 +10096,7 @@ COPY --link --from=dep-n-proc-macro2-1.0.95-02f207b978e39a3f /tmp/clis-diesel_cl
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-02f207b978e39a3f-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-02f207b978e39a3f-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-02f207b978e39a3f* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-02f207b978e39a3f"
 ## script = """
@@ -10160,23 +10160,23 @@ COPY --link --from=dep-n-quote-1.0.40-b6bf8d6b37f22c92 /tmp/clis-diesel_cli_2-3-
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libquote-b6bf8d6b37f22c92.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libquote-b6bf8d6b37f22c92.rlib","emit":"link"}',
 ## ]
-## 
+##
 ## [[externs]]
 ## from = "out-02f207b978e39a3f"
 ## xtern = "libproc_macro2-02f207b978e39a3f.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-02f207b978e39a3f"
 ## xtern = "libproc_macro2-02f207b978e39a3f.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-a40aeaeb18cf83dc"
 ## xtern = "libunicode_ident-a40aeaeb18cf83dc.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-a40aeaeb18cf83dc"
 ## xtern = "libunicode_ident-a40aeaeb18cf83dc.rmeta"
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -10205,14 +10205,14 @@ COPY --link --from=dep-n-quote-1.0.40-b6bf8d6b37f22c92 /tmp/clis-diesel_cli_2-3-
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-quote-1.0.40"
 ## script = '''
 ## FROM scratch AS cratesio-quote-1.0.40
 ## ADD --chmod=0664 --unpack --checksum=sha256:1885c039570dc00dcb4ff087a89e185fd56bae234ddc7f056a945bf36467248d \
 ##   https://static.crates.io/crates/quote/quote-1.0.40.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-quote-1.0.40-b6bf8d6b37f22c92"
 ## script = '''
@@ -10250,7 +10250,7 @@ COPY --link --from=dep-n-quote-1.0.40-b6bf8d6b37f22c92 /tmp/clis-diesel_cli_2-3-
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-b6bf8d6b37f22c92-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-b6bf8d6b37f22c92-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-b6bf8d6b37f22c92* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-b6bf8d6b37f22c92"
 ## script = """
@@ -10318,31 +10318,31 @@ COPY --link --from=dep-n-syn-2.0.104-81ac40d8cdfddf4c /tmp/clis-diesel_cli_2-3-2
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libsyn-81ac40d8cdfddf4c.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libsyn-81ac40d8cdfddf4c.rlib","emit":"link"}',
 ## ]
-## 
+##
 ## [[externs]]
 ## from = "out-02f207b978e39a3f"
 ## xtern = "libproc_macro2-02f207b978e39a3f.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-02f207b978e39a3f"
 ## xtern = "libproc_macro2-02f207b978e39a3f.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-a40aeaeb18cf83dc"
 ## xtern = "libunicode_ident-a40aeaeb18cf83dc.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-a40aeaeb18cf83dc"
 ## xtern = "libunicode_ident-a40aeaeb18cf83dc.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-b6bf8d6b37f22c92"
 ## xtern = "libquote-b6bf8d6b37f22c92.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-b6bf8d6b37f22c92"
 ## xtern = "libquote-b6bf8d6b37f22c92.rmeta"
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -10371,14 +10371,14 @@ COPY --link --from=dep-n-syn-2.0.104-81ac40d8cdfddf4c /tmp/clis-diesel_cli_2-3-2
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-syn-2.0.104"
 ## script = '''
 ## FROM scratch AS cratesio-syn-2.0.104
 ## ADD --chmod=0664 --unpack --checksum=sha256:17b6f705963418cdb9927482fa304bc562ece2fdd4f616084c50b7023b435a40 \
 ##   https://static.crates.io/crates/syn/syn-2.0.104.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-syn-2.0.104-81ac40d8cdfddf4c"
 ## script = '''
@@ -10418,7 +10418,7 @@ COPY --link --from=dep-n-syn-2.0.104-81ac40d8cdfddf4c /tmp/clis-diesel_cli_2-3-2
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-81ac40d8cdfddf4c-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-81ac40d8cdfddf4c-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-81ac40d8cdfddf4c* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-81ac40d8cdfddf4c"
 ## script = """
@@ -10490,39 +10490,39 @@ COPY --link --from=dep-n-diesel_table_macro_syntax-0.3.0-d1a5f3b5c85ace18 /tmp/c
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libdiesel_table_macro_syntax-d1a5f3b5c85ace18.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libdiesel_table_macro_syntax-d1a5f3b5c85ace18.rlib","emit":"link"}',
 ## ]
-## 
+##
 ## [[externs]]
 ## from = "out-81ac40d8cdfddf4c"
 ## xtern = "libsyn-81ac40d8cdfddf4c.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-81ac40d8cdfddf4c"
 ## xtern = "libsyn-81ac40d8cdfddf4c.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-02f207b978e39a3f"
 ## xtern = "libproc_macro2-02f207b978e39a3f.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-02f207b978e39a3f"
 ## xtern = "libproc_macro2-02f207b978e39a3f.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-a40aeaeb18cf83dc"
 ## xtern = "libunicode_ident-a40aeaeb18cf83dc.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-a40aeaeb18cf83dc"
 ## xtern = "libunicode_ident-a40aeaeb18cf83dc.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-b6bf8d6b37f22c92"
 ## xtern = "libquote-b6bf8d6b37f22c92.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-b6bf8d6b37f22c92"
 ## xtern = "libquote-b6bf8d6b37f22c92.rmeta"
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -10551,14 +10551,14 @@ COPY --link --from=dep-n-diesel_table_macro_syntax-0.3.0-d1a5f3b5c85ace18 /tmp/c
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-diesel_table_macro_syntax-0.3.0"
 ## script = '''
 ## FROM scratch AS cratesio-diesel_table_macro_syntax-0.3.0
 ## ADD --chmod=0664 --unpack --checksum=sha256:fe2444076b48641147115697648dc743c2c00b61adade0f01ce67133c7babe8c \
 ##   https://static.crates.io/crates/diesel_table_macro_syntax/diesel_table_macro_syntax-0.3.0.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-diesel_table_macro_syntax-0.3.0-d1a5f3b5c85ace18"
 ## script = '''
@@ -10600,7 +10600,7 @@ COPY --link --from=dep-n-diesel_table_macro_syntax-0.3.0-d1a5f3b5c85ace18 /tmp/c
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-d1a5f3b5c85ace18-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-d1a5f3b5c85ace18-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-d1a5f3b5c85ace18* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-d1a5f3b5c85ace18"
 ## script = """
@@ -10654,7 +10654,7 @@ COPY --link --from=dep-n-nu-ansi-term-0.50.1-0a088750727c7bdc /tmp/clis-diesel_c
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libnu_ansi_term-0a088750727c7bdc.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libnu_ansi_term-0a088750727c7bdc.rlib","emit":"link"}',
 ## ]
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -10683,14 +10683,14 @@ COPY --link --from=dep-n-nu-ansi-term-0.50.1-0a088750727c7bdc /tmp/clis-diesel_c
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-nu-ansi-term-0.50.1"
 ## script = '''
 ## FROM scratch AS cratesio-nu-ansi-term-0.50.1
 ## ADD --chmod=0664 --unpack --checksum=sha256:d4a28e057d01f97e61255210fcff094d74ed0466038633e95017f5beb68e4399 \
 ##   https://static.crates.io/crates/nu-ansi-term/nu-ansi-term-0.50.1.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-nu-ansi-term-0.50.1-0a088750727c7bdc"
 ## script = '''
@@ -10724,7 +10724,7 @@ COPY --link --from=dep-n-nu-ansi-term-0.50.1-0a088750727c7bdc /tmp/clis-diesel_c
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-0a088750727c7bdc-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-0a088750727c7bdc-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-0a088750727c7bdc* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-0a088750727c7bdc"
 ## script = """
@@ -10782,15 +10782,15 @@ COPY --link --from=dep-n-diffy-0.4.2-a59d483876bd904f /tmp/clis-diesel_cli_2-3-2
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libdiffy-a59d483876bd904f.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libdiffy-a59d483876bd904f.rlib","emit":"link"}',
 ## ]
-## 
+##
 ## [[externs]]
 ## from = "out-0a088750727c7bdc"
 ## xtern = "libnu_ansi_term-0a088750727c7bdc.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-0a088750727c7bdc"
 ## xtern = "libnu_ansi_term-0a088750727c7bdc.rmeta"
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -10819,14 +10819,14 @@ COPY --link --from=dep-n-diffy-0.4.2-a59d483876bd904f /tmp/clis-diesel_cli_2-3-2
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-diffy-0.4.2"
 ## script = '''
 ## FROM scratch AS cratesio-diffy-0.4.2
 ## ADD --chmod=0664 --unpack --checksum=sha256:b545b8c50194bdd008283985ab0b31dba153cfd5b3066a92770634fbc0d7d291 \
 ##   https://static.crates.io/crates/diffy/diffy-0.4.2.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-diffy-0.4.2-a59d483876bd904f"
 ## script = '''
@@ -10862,7 +10862,7 @@ COPY --link --from=dep-n-diffy-0.4.2-a59d483876bd904f /tmp/clis-diesel_cli_2-3-2
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-a59d483876bd904f-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-a59d483876bd904f-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-a59d483876bd904f* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-a59d483876bd904f"
 ## script = """
@@ -10916,7 +10916,7 @@ COPY --link --from=dep-n-dotenvy-0.15.7-8cc98a97cb25a78a /tmp/clis-diesel_cli_2-
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libdotenvy-8cc98a97cb25a78a.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libdotenvy-8cc98a97cb25a78a.rlib","emit":"link"}',
 ## ]
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -10945,14 +10945,14 @@ COPY --link --from=dep-n-dotenvy-0.15.7-8cc98a97cb25a78a /tmp/clis-diesel_cli_2-
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-dotenvy-0.15.7"
 ## script = '''
 ## FROM scratch AS cratesio-dotenvy-0.15.7
 ## ADD --chmod=0664 --unpack --checksum=sha256:1aaf95b3e5c8f23aa320147307562d361db0ae0d51242340f558153b4eb2439b \
 ##   https://static.crates.io/crates/dotenvy/dotenvy-0.15.7.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-dotenvy-0.15.7-8cc98a97cb25a78a"
 ## script = '''
@@ -10986,7 +10986,7 @@ COPY --link --from=dep-n-dotenvy-0.15.7-8cc98a97cb25a78a /tmp/clis-diesel_cli_2-
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-8cc98a97cb25a78a-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-8cc98a97cb25a78a-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-8cc98a97cb25a78a* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-8cc98a97cb25a78a"
 ## script = """
@@ -11040,7 +11040,7 @@ COPY --link --from=dep-n-cfg-if-1.0.1-6876b4372c8c4777 /tmp/clis-diesel_cli_2-3-
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libcfg_if-6876b4372c8c4777.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libcfg_if-6876b4372c8c4777.rlib","emit":"link"}',
 ## ]
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -11069,14 +11069,14 @@ COPY --link --from=dep-n-cfg-if-1.0.1-6876b4372c8c4777 /tmp/clis-diesel_cli_2-3-
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-cfg-if-1.0.1"
 ## script = '''
 ## FROM scratch AS cratesio-cfg-if-1.0.1
 ## ADD --chmod=0664 --unpack --checksum=sha256:9555578bc9e57714c812a1f84e4fc5b4d21fcb063490c624de019f7464c91268 \
 ##   https://static.crates.io/crates/cfg-if/cfg-if-1.0.1.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-cfg-if-1.0.1-6876b4372c8c4777"
 ## script = '''
@@ -11110,7 +11110,7 @@ COPY --link --from=dep-n-cfg-if-1.0.1-6876b4372c8c4777 /tmp/clis-diesel_cli_2-3-
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-6876b4372c8c4777-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-6876b4372c8c4777-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-6876b4372c8c4777* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-6876b4372c8c4777"
 ## script = """
@@ -11164,7 +11164,7 @@ COPY --link --from=dep-n-linux-raw-sys-0.9.4-84721aa7d977aed9 /tmp/clis-diesel_c
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/liblinux_raw_sys-84721aa7d977aed9.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/liblinux_raw_sys-84721aa7d977aed9.rlib","emit":"link"}',
 ## ]
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -11193,14 +11193,14 @@ COPY --link --from=dep-n-linux-raw-sys-0.9.4-84721aa7d977aed9 /tmp/clis-diesel_c
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-linux-raw-sys-0.9.4"
 ## script = '''
 ## FROM scratch AS cratesio-linux-raw-sys-0.9.4
 ## ADD --chmod=0664 --unpack --checksum=sha256:cd945864f07fe9f5371a27ad7b52a172b4b499999f1d97574c9fa68373937e12 \
 ##   https://static.crates.io/crates/linux-raw-sys/linux-raw-sys-0.9.4.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-linux-raw-sys-0.9.4-84721aa7d977aed9"
 ## script = '''
@@ -11234,7 +11234,7 @@ COPY --link --from=dep-n-linux-raw-sys-0.9.4-84721aa7d977aed9 /tmp/clis-diesel_c
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-84721aa7d977aed9-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-84721aa7d977aed9-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-84721aa7d977aed9* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-84721aa7d977aed9"
 ## script = """
@@ -11301,23 +11301,23 @@ COPY --link --from=dep-n-rustix-1.0.7-584f0556744e746d /tmp/clis-diesel_cli_2-3-
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/librustix-584f0556744e746d.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/librustix-584f0556744e746d.rlib","emit":"link"}',
 ## ]
-## 
+##
 ## [[externs]]
 ## from = "out-d53ce0040874ecbb"
 ## xtern = "libbitflags-d53ce0040874ecbb.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-d53ce0040874ecbb"
 ## xtern = "libbitflags-d53ce0040874ecbb.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-84721aa7d977aed9"
 ## xtern = "liblinux_raw_sys-84721aa7d977aed9.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-84721aa7d977aed9"
 ## xtern = "liblinux_raw_sys-84721aa7d977aed9.rmeta"
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -11346,14 +11346,14 @@ COPY --link --from=dep-n-rustix-1.0.7-584f0556744e746d /tmp/clis-diesel_cli_2-3-
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-rustix-1.0.7"
 ## script = '''
 ## FROM scratch AS cratesio-rustix-1.0.7
 ## ADD --chmod=0664 --unpack --checksum=sha256:c71e83d6afe7ff64890ec6b71d6a69bb8a610ab78ce364b3352876bb4c801266 \
 ##   https://static.crates.io/crates/rustix/rustix-1.0.7.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-rustix-1.0.7-584f0556744e746d"
 ## script = '''
@@ -11392,7 +11392,7 @@ COPY --link --from=dep-n-rustix-1.0.7-584f0556744e746d /tmp/clis-diesel_cli_2-3-
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-584f0556744e746d-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-584f0556744e746d-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-584f0556744e746d* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-584f0556744e746d"
 ## script = """
@@ -11466,39 +11466,39 @@ COPY --link --from=dep-n-fd-lock-4.0.4-097e03437e057c49 /tmp/clis-diesel_cli_2-3
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libfd_lock-097e03437e057c49.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libfd_lock-097e03437e057c49.rlib","emit":"link"}',
 ## ]
-## 
+##
 ## [[externs]]
 ## from = "out-6876b4372c8c4777"
 ## xtern = "libcfg_if-6876b4372c8c4777.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-6876b4372c8c4777"
 ## xtern = "libcfg_if-6876b4372c8c4777.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-584f0556744e746d"
 ## xtern = "librustix-584f0556744e746d.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-584f0556744e746d"
 ## xtern = "librustix-584f0556744e746d.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-d53ce0040874ecbb"
 ## xtern = "libbitflags-d53ce0040874ecbb.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-d53ce0040874ecbb"
 ## xtern = "libbitflags-d53ce0040874ecbb.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-84721aa7d977aed9"
 ## xtern = "liblinux_raw_sys-84721aa7d977aed9.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-84721aa7d977aed9"
 ## xtern = "liblinux_raw_sys-84721aa7d977aed9.rmeta"
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -11527,14 +11527,14 @@ COPY --link --from=dep-n-fd-lock-4.0.4-097e03437e057c49 /tmp/clis-diesel_cli_2-3
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-fd-lock-4.0.4"
 ## script = '''
 ## FROM scratch AS cratesio-fd-lock-4.0.4
 ## ADD --chmod=0664 --unpack --checksum=sha256:0ce92ff622d6dadf7349484f42c93271a0d49b7cc4d466a936405bacbe10aa78 \
 ##   https://static.crates.io/crates/fd-lock/fd-lock-4.0.4.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-fd-lock-4.0.4-097e03437e057c49"
 ## script = '''
@@ -11576,7 +11576,7 @@ COPY --link --from=dep-n-fd-lock-4.0.4-097e03437e057c49 /tmp/clis-diesel_cli_2-3
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-097e03437e057c49-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-097e03437e057c49-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-097e03437e057c49* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-097e03437e057c49"
 ## script = """
@@ -11628,7 +11628,7 @@ COPY --link --from=dep-n-heck-0.5.0-1353fc9670f24397 /tmp/clis-diesel_cli_2-3-2/
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libheck-1353fc9670f24397.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libheck-1353fc9670f24397.rlib","emit":"link"}',
 ## ]
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -11657,14 +11657,14 @@ COPY --link --from=dep-n-heck-0.5.0-1353fc9670f24397 /tmp/clis-diesel_cli_2-3-2/
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-heck-0.5.0"
 ## script = '''
 ## FROM scratch AS cratesio-heck-0.5.0
 ## ADD --chmod=0664 --unpack --checksum=sha256:2304e00983f87ffb38b55b444b5e3b60a884b5d30c0fca7d82fe33449bbe55ea \
 ##   https://static.crates.io/crates/heck/heck-0.5.0.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-heck-0.5.0-1353fc9670f24397"
 ## script = '''
@@ -11698,7 +11698,7 @@ COPY --link --from=dep-n-heck-0.5.0-1353fc9670f24397 /tmp/clis-diesel_cli_2-3-2/
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-1353fc9670f24397-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-1353fc9670f24397-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-1353fc9670f24397* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-1353fc9670f24397"
 ## script = """
@@ -11752,7 +11752,7 @@ COPY --link --from=dep-n-memchr-2.7.5-f8a5ec09fef4ab54 /tmp/clis-diesel_cli_2-3-
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libmemchr-f8a5ec09fef4ab54.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libmemchr-f8a5ec09fef4ab54.rlib","emit":"link"}',
 ## ]
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -11781,14 +11781,14 @@ COPY --link --from=dep-n-memchr-2.7.5-f8a5ec09fef4ab54 /tmp/clis-diesel_cli_2-3-
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-memchr-2.7.5"
 ## script = '''
 ## FROM scratch AS cratesio-memchr-2.7.5
 ## ADD --chmod=0664 --unpack --checksum=sha256:32a282da65faaf38286cf3be983213fcf1d2e2a58700e808f83f4ea9a4804bc0 \
 ##   https://static.crates.io/crates/memchr/memchr-2.7.5.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-memchr-2.7.5-f8a5ec09fef4ab54"
 ## script = '''
@@ -11822,7 +11822,7 @@ COPY --link --from=dep-n-memchr-2.7.5-f8a5ec09fef4ab54 /tmp/clis-diesel_cli_2-3-
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-f8a5ec09fef4ab54-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-f8a5ec09fef4ab54-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-f8a5ec09fef4ab54* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-f8a5ec09fef4ab54"
 ## script = """
@@ -11880,15 +11880,15 @@ COPY --link --from=dep-n-aho-corasick-1.1.3-b09ba6ab78a2f997 /tmp/clis-diesel_cl
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libaho_corasick-b09ba6ab78a2f997.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libaho_corasick-b09ba6ab78a2f997.rlib","emit":"link"}',
 ## ]
-## 
+##
 ## [[externs]]
 ## from = "out-f8a5ec09fef4ab54"
 ## xtern = "libmemchr-f8a5ec09fef4ab54.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-f8a5ec09fef4ab54"
 ## xtern = "libmemchr-f8a5ec09fef4ab54.rmeta"
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -11917,14 +11917,14 @@ COPY --link --from=dep-n-aho-corasick-1.1.3-b09ba6ab78a2f997 /tmp/clis-diesel_cl
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-aho-corasick-1.1.3"
 ## script = '''
 ## FROM scratch AS cratesio-aho-corasick-1.1.3
 ## ADD --chmod=0664 --unpack --checksum=sha256:8e60d3430d3a69478ad0993f19238d2df97c507009a52b3c10addcd7f6bcb916 \
 ##   https://static.crates.io/crates/aho-corasick/aho-corasick-1.1.3.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-aho-corasick-1.1.3-b09ba6ab78a2f997"
 ## script = '''
@@ -11960,7 +11960,7 @@ COPY --link --from=dep-n-aho-corasick-1.1.3-b09ba6ab78a2f997 /tmp/clis-diesel_cl
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-b09ba6ab78a2f997-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-b09ba6ab78a2f997-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-b09ba6ab78a2f997* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-b09ba6ab78a2f997"
 ## script = """
@@ -12014,7 +12014,7 @@ COPY --link --from=dep-n-regex-syntax-0.8.5-75712f8a87a24c79 /tmp/clis-diesel_cl
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libregex_syntax-75712f8a87a24c79.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libregex_syntax-75712f8a87a24c79.rlib","emit":"link"}',
 ## ]
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -12043,14 +12043,14 @@ COPY --link --from=dep-n-regex-syntax-0.8.5-75712f8a87a24c79 /tmp/clis-diesel_cl
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-regex-syntax-0.8.5"
 ## script = '''
 ## FROM scratch AS cratesio-regex-syntax-0.8.5
 ## ADD --chmod=0664 --unpack --checksum=sha256:2b15c43186be67a4fd63bee50d0303afffcef381492ebe2c5d87f324e1b8815c \
 ##   https://static.crates.io/crates/regex-syntax/regex-syntax-0.8.5.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-regex-syntax-0.8.5-75712f8a87a24c79"
 ## script = '''
@@ -12084,7 +12084,7 @@ COPY --link --from=dep-n-regex-syntax-0.8.5-75712f8a87a24c79 /tmp/clis-diesel_cl
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-75712f8a87a24c79-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-75712f8a87a24c79-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-75712f8a87a24c79* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-75712f8a87a24c79"
 ## script = """
@@ -12154,31 +12154,31 @@ COPY --link --from=dep-n-regex-automata-0.4.9-a8c5e2efa6073f05 /tmp/clis-diesel_
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libregex_automata-a8c5e2efa6073f05.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libregex_automata-a8c5e2efa6073f05.rlib","emit":"link"}',
 ## ]
-## 
+##
 ## [[externs]]
 ## from = "out-b09ba6ab78a2f997"
 ## xtern = "libaho_corasick-b09ba6ab78a2f997.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-b09ba6ab78a2f997"
 ## xtern = "libaho_corasick-b09ba6ab78a2f997.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-f8a5ec09fef4ab54"
 ## xtern = "libmemchr-f8a5ec09fef4ab54.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-f8a5ec09fef4ab54"
 ## xtern = "libmemchr-f8a5ec09fef4ab54.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-75712f8a87a24c79"
 ## xtern = "libregex_syntax-75712f8a87a24c79.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-75712f8a87a24c79"
 ## xtern = "libregex_syntax-75712f8a87a24c79.rmeta"
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -12207,14 +12207,14 @@ COPY --link --from=dep-n-regex-automata-0.4.9-a8c5e2efa6073f05 /tmp/clis-diesel_
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-regex-automata-0.4.9"
 ## script = '''
 ## FROM scratch AS cratesio-regex-automata-0.4.9
 ## ADD --chmod=0664 --unpack --checksum=sha256:809e8dc61f6de73b46c85f4c96486310fe304c434cfa43669d7b40f711150908 \
 ##   https://static.crates.io/crates/regex-automata/regex-automata-0.4.9.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-regex-automata-0.4.9-a8c5e2efa6073f05"
 ## script = '''
@@ -12254,7 +12254,7 @@ COPY --link --from=dep-n-regex-automata-0.4.9-a8c5e2efa6073f05 /tmp/clis-diesel_
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-a8c5e2efa6073f05-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-a8c5e2efa6073f05-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-a8c5e2efa6073f05* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-a8c5e2efa6073f05"
 ## script = """
@@ -12328,39 +12328,39 @@ COPY --link --from=dep-n-regex-1.11.1-f8d06e6ff7493f6c /tmp/clis-diesel_cli_2-3-
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libregex-f8d06e6ff7493f6c.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libregex-f8d06e6ff7493f6c.rlib","emit":"link"}',
 ## ]
-## 
+##
 ## [[externs]]
 ## from = "out-b09ba6ab78a2f997"
 ## xtern = "libaho_corasick-b09ba6ab78a2f997.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-b09ba6ab78a2f997"
 ## xtern = "libaho_corasick-b09ba6ab78a2f997.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-f8a5ec09fef4ab54"
 ## xtern = "libmemchr-f8a5ec09fef4ab54.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-f8a5ec09fef4ab54"
 ## xtern = "libmemchr-f8a5ec09fef4ab54.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-a8c5e2efa6073f05"
 ## xtern = "libregex_automata-a8c5e2efa6073f05.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-a8c5e2efa6073f05"
 ## xtern = "libregex_automata-a8c5e2efa6073f05.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-75712f8a87a24c79"
 ## xtern = "libregex_syntax-75712f8a87a24c79.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-75712f8a87a24c79"
 ## xtern = "libregex_syntax-75712f8a87a24c79.rmeta"
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -12389,14 +12389,14 @@ COPY --link --from=dep-n-regex-1.11.1-f8d06e6ff7493f6c /tmp/clis-diesel_cli_2-3-
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-regex-1.11.1"
 ## script = '''
 ## FROM scratch AS cratesio-regex-1.11.1
 ## ADD --chmod=0664 --unpack --checksum=sha256:b544ef1b4eac5dc2db33ea63606ae9ffcfac26c1416a2806ae0bf5f56b201191 \
 ##   https://static.crates.io/crates/regex/regex-1.11.1.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-regex-1.11.1-f8d06e6ff7493f6c"
 ## script = '''
@@ -12438,7 +12438,7 @@ COPY --link --from=dep-n-regex-1.11.1-f8d06e6ff7493f6c /tmp/clis-diesel_cli_2-3-
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-f8d06e6ff7493f6c-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-f8d06e6ff7493f6c-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-f8d06e6ff7493f6c* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-f8d06e6ff7493f6c"
 ## script = """
@@ -12539,91 +12539,91 @@ COPY --link --from=dep-n-serde_regex-1.1.0-1ac5b4570187825d /tmp/clis-diesel_cli
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libserde_regex-1ac5b4570187825d.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libserde_regex-1ac5b4570187825d.rlib","emit":"link"}',
 ## ]
-## 
+##
 ## [[externs]]
 ## from = "out-f8d06e6ff7493f6c"
 ## xtern = "libregex-f8d06e6ff7493f6c.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-f8d06e6ff7493f6c"
 ## xtern = "libregex-f8d06e6ff7493f6c.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-b09ba6ab78a2f997"
 ## xtern = "libaho_corasick-b09ba6ab78a2f997.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-b09ba6ab78a2f997"
 ## xtern = "libaho_corasick-b09ba6ab78a2f997.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-f8a5ec09fef4ab54"
 ## xtern = "libmemchr-f8a5ec09fef4ab54.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-f8a5ec09fef4ab54"
 ## xtern = "libmemchr-f8a5ec09fef4ab54.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-a8c5e2efa6073f05"
 ## xtern = "libregex_automata-a8c5e2efa6073f05.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-a8c5e2efa6073f05"
 ## xtern = "libregex_automata-a8c5e2efa6073f05.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-75712f8a87a24c79"
 ## xtern = "libregex_syntax-75712f8a87a24c79.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-75712f8a87a24c79"
 ## xtern = "libregex_syntax-75712f8a87a24c79.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-cf863a164a8f1acb"
 ## xtern = "libserde-cf863a164a8f1acb.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-cf863a164a8f1acb"
 ## xtern = "libserde-cf863a164a8f1acb.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-1931024729ab70b5"
 ## xtern = "libserde_derive-1931024729ab70b5.so"
-## 
+##
 ## [[externs]]
 ## from = "out-da36b031605c1ddc"
 ## xtern = "libproc_macro2-da36b031605c1ddc.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-da36b031605c1ddc"
 ## xtern = "libproc_macro2-da36b031605c1ddc.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-02b0d04ef026a7b6"
 ## xtern = "libunicode_ident-02b0d04ef026a7b6.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-02b0d04ef026a7b6"
 ## xtern = "libunicode_ident-02b0d04ef026a7b6.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-21aeee0f329238fb"
 ## xtern = "libquote-21aeee0f329238fb.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-21aeee0f329238fb"
 ## xtern = "libquote-21aeee0f329238fb.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-f0d9159e02a48398"
 ## xtern = "libsyn-f0d9159e02a48398.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-f0d9159e02a48398"
 ## xtern = "libsyn-f0d9159e02a48398.rmeta"
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -12652,14 +12652,14 @@ COPY --link --from=dep-n-serde_regex-1.1.0-1ac5b4570187825d /tmp/clis-diesel_cli
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-serde_regex-1.1.0"
 ## script = '''
 ## FROM scratch AS cratesio-serde_regex-1.1.0
 ## ADD --chmod=0664 --unpack --checksum=sha256:a8136f1a4ea815d7eac4101cfd0b16dc0cb5e1fe1b8609dfd728058656b7badf \
 ##   https://static.crates.io/crates/serde_regex/serde_regex-1.1.0.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-serde_regex-1.1.0-1ac5b4570187825d"
 ## script = '''
@@ -12714,7 +12714,7 @@ COPY --link --from=dep-n-serde_regex-1.1.0-1ac5b4570187825d /tmp/clis-diesel_cli
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-1ac5b4570187825d-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-1ac5b4570187825d-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-1ac5b4570187825d* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-1ac5b4570187825d"
 ## script = """
@@ -12769,7 +12769,7 @@ COPY --link --from=dep-n-libc-0.2.174-7692b361c3b7706f /tmp/clis-diesel_cli_2-3-
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/liblibc-7692b361c3b7706f.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/liblibc-7692b361c3b7706f.rlib","emit":"link"}',
 ## ]
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -12798,14 +12798,14 @@ COPY --link --from=dep-n-libc-0.2.174-7692b361c3b7706f /tmp/clis-diesel_cli_2-3-
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-libc-0.2.174"
 ## script = '''
 ## FROM scratch AS cratesio-libc-0.2.174
 ## ADD --chmod=0664 --unpack --checksum=sha256:1171693293099992e19cddea4e8b849964e9846f4acee11b3948bcc337be8776 \
 ##   https://static.crates.io/crates/libc/libc-0.2.174.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-libc-0.2.174-7692b361c3b7706f"
 ## script = '''
@@ -12840,7 +12840,7 @@ COPY --link --from=dep-n-libc-0.2.174-7692b361c3b7706f /tmp/clis-diesel_cli_2-3-
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-7692b361c3b7706f-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-7692b361c3b7706f-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-7692b361c3b7706f* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-7692b361c3b7706f"
 ## script = """
@@ -12894,7 +12894,7 @@ COPY --link --from=dep-n-once_cell-1.21.3-109e57aa4a9d42c0 /tmp/clis-diesel_cli_
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libonce_cell-109e57aa4a9d42c0.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libonce_cell-109e57aa4a9d42c0.rlib","emit":"link"}',
 ## ]
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -12923,14 +12923,14 @@ COPY --link --from=dep-n-once_cell-1.21.3-109e57aa4a9d42c0 /tmp/clis-diesel_cli_
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-once_cell-1.21.3"
 ## script = '''
 ## FROM scratch AS cratesio-once_cell-1.21.3
 ## ADD --chmod=0664 --unpack --checksum=sha256:42f5e15c9953c5e4ccceeb2e7382a716482c34515315f7b03532b8b4e8393d2d \
 ##   https://static.crates.io/crates/once_cell/once_cell-1.21.3.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-once_cell-1.21.3-109e57aa4a9d42c0"
 ## script = '''
@@ -12964,7 +12964,7 @@ COPY --link --from=dep-n-once_cell-1.21.3-109e57aa4a9d42c0 /tmp/clis-diesel_cli_
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-109e57aa4a9d42c0-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-109e57aa4a9d42c0-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-109e57aa4a9d42c0* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-109e57aa4a9d42c0"
 ## script = """
@@ -13030,23 +13030,23 @@ COPY --link --from=dep-n-console-0.15.11-87c8d40bb012143c /tmp/clis-diesel_cli_2
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libconsole-87c8d40bb012143c.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libconsole-87c8d40bb012143c.rlib","emit":"link"}',
 ## ]
-## 
+##
 ## [[externs]]
 ## from = "out-7692b361c3b7706f"
 ## xtern = "liblibc-7692b361c3b7706f.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-7692b361c3b7706f"
 ## xtern = "liblibc-7692b361c3b7706f.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-109e57aa4a9d42c0"
 ## xtern = "libonce_cell-109e57aa4a9d42c0.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-109e57aa4a9d42c0"
 ## xtern = "libonce_cell-109e57aa4a9d42c0.rmeta"
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -13075,14 +13075,14 @@ COPY --link --from=dep-n-console-0.15.11-87c8d40bb012143c /tmp/clis-diesel_cli_2
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-console-0.15.11"
 ## script = '''
 ## FROM scratch AS cratesio-console-0.15.11
 ## ADD --chmod=0664 --unpack --checksum=sha256:054ccb5b10f9f2cbf51eb355ca1d05c2d279ce1804688d0db74b4733a5aeafd8 \
 ##   https://static.crates.io/crates/console/console-0.15.11.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-console-0.15.11-87c8d40bb012143c"
 ## script = '''
@@ -13120,7 +13120,7 @@ COPY --link --from=dep-n-console-0.15.11-87c8d40bb012143c /tmp/clis-diesel_cli_2
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-87c8d40bb012143c-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-87c8d40bb012143c-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-87c8d40bb012143c* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-87c8d40bb012143c"
 ## script = """
@@ -13174,7 +13174,7 @@ COPY --link --from=dep-n-unicode-segmentation-1.12.0-b577d1358f084421 /tmp/clis-
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libunicode_segmentation-b577d1358f084421.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libunicode_segmentation-b577d1358f084421.rlib","emit":"link"}',
 ## ]
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -13203,14 +13203,14 @@ COPY --link --from=dep-n-unicode-segmentation-1.12.0-b577d1358f084421 /tmp/clis-
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-unicode-segmentation-1.12.0"
 ## script = '''
 ## FROM scratch AS cratesio-unicode-segmentation-1.12.0
 ## ADD --chmod=0664 --unpack --checksum=sha256:f6ccf251212114b54433ec949fd6a7841275f9ada20dddd2f29e9ceea4501493 \
 ##   https://static.crates.io/crates/unicode-segmentation/unicode-segmentation-1.12.0.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-unicode-segmentation-1.12.0-b577d1358f084421"
 ## script = '''
@@ -13244,7 +13244,7 @@ COPY --link --from=dep-n-unicode-segmentation-1.12.0-b577d1358f084421 /tmp/clis-
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-b577d1358f084421-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-b577d1358f084421-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-b577d1358f084421* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-b577d1358f084421"
 ## script = """
@@ -13302,15 +13302,15 @@ COPY --link --from=dep-n-similar-2.7.0-8b71338979bab2a9 /tmp/clis-diesel_cli_2-3
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libsimilar-8b71338979bab2a9.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libsimilar-8b71338979bab2a9.rlib","emit":"link"}',
 ## ]
-## 
+##
 ## [[externs]]
 ## from = "out-b577d1358f084421"
 ## xtern = "libunicode_segmentation-b577d1358f084421.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-b577d1358f084421"
 ## xtern = "libunicode_segmentation-b577d1358f084421.rmeta"
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -13339,14 +13339,14 @@ COPY --link --from=dep-n-similar-2.7.0-8b71338979bab2a9 /tmp/clis-diesel_cli_2-3
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-similar-2.7.0"
 ## script = '''
 ## FROM scratch AS cratesio-similar-2.7.0
 ## ADD --chmod=0664 --unpack --checksum=sha256:bbbb5d9659141646ae647b42fe094daf6c6192d1620870b449d9557f748b2daa \
 ##   https://static.crates.io/crates/similar/similar-2.7.0.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-similar-2.7.0-8b71338979bab2a9"
 ## script = '''
@@ -13382,7 +13382,7 @@ COPY --link --from=dep-n-similar-2.7.0-8b71338979bab2a9 /tmp/clis-diesel_cli_2-3
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-8b71338979bab2a9-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-8b71338979bab2a9-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-8b71338979bab2a9* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-8b71338979bab2a9"
 ## script = """
@@ -13460,47 +13460,47 @@ COPY --link --from=dep-n-similar-asserts-1.7.0-efac43244bde854e /tmp/clis-diesel
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libsimilar_asserts-efac43244bde854e.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libsimilar_asserts-efac43244bde854e.rlib","emit":"link"}',
 ## ]
-## 
+##
 ## [[externs]]
 ## from = "out-87c8d40bb012143c"
 ## xtern = "libconsole-87c8d40bb012143c.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-87c8d40bb012143c"
 ## xtern = "libconsole-87c8d40bb012143c.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-7692b361c3b7706f"
 ## xtern = "liblibc-7692b361c3b7706f.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-7692b361c3b7706f"
 ## xtern = "liblibc-7692b361c3b7706f.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-109e57aa4a9d42c0"
 ## xtern = "libonce_cell-109e57aa4a9d42c0.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-109e57aa4a9d42c0"
 ## xtern = "libonce_cell-109e57aa4a9d42c0.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-8b71338979bab2a9"
 ## xtern = "libsimilar-8b71338979bab2a9.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-8b71338979bab2a9"
 ## xtern = "libsimilar-8b71338979bab2a9.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-b577d1358f084421"
 ## xtern = "libunicode_segmentation-b577d1358f084421.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-b577d1358f084421"
 ## xtern = "libunicode_segmentation-b577d1358f084421.rmeta"
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -13529,14 +13529,14 @@ COPY --link --from=dep-n-similar-asserts-1.7.0-efac43244bde854e /tmp/clis-diesel
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-similar-asserts-1.7.0"
 ## script = '''
 ## FROM scratch AS cratesio-similar-asserts-1.7.0
 ## ADD --chmod=0664 --unpack --checksum=sha256:b5b441962c817e33508847a22bd82f03a30cff43642dc2fae8b050566121eb9a \
 ##   https://static.crates.io/crates/similar-asserts/similar-asserts-1.7.0.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-similar-asserts-1.7.0-efac43244bde854e"
 ## script = '''
@@ -13580,7 +13580,7 @@ COPY --link --from=dep-n-similar-asserts-1.7.0-efac43244bde854e /tmp/clis-diesel
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-efac43244bde854e-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-efac43244bde854e-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-efac43244bde854e* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-efac43244bde854e"
 ## script = """
@@ -13648,23 +13648,23 @@ COPY --link --from=dep-n-thiserror-impl-2.0.12-5c339b1f78823d32 /tmp/clis-diesel
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/thiserror_impl-5c339b1f78823d32.d","emit":"dep-info"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libthiserror_impl-5c339b1f78823d32.so","emit":"link"}',
 ## ]
-## 
+##
 ## [[externs]]
 ## from = "out-da36b031605c1ddc"
 ## xtern = "libproc_macro2-da36b031605c1ddc.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-02b0d04ef026a7b6"
 ## xtern = "libunicode_ident-02b0d04ef026a7b6.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-21aeee0f329238fb"
 ## xtern = "libquote-21aeee0f329238fb.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-f0d9159e02a48398"
 ## xtern = "libsyn-f0d9159e02a48398.rlib"
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -13693,14 +13693,14 @@ COPY --link --from=dep-n-thiserror-impl-2.0.12-5c339b1f78823d32 /tmp/clis-diesel
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-thiserror-impl-2.0.12"
 ## script = '''
 ## FROM scratch AS cratesio-thiserror-impl-2.0.12
 ## ADD --chmod=0664 --unpack --checksum=sha256:7f7cf42b4507d8ea322120659672cf1b9dbb93f8f2d4ecfd6e51350ff5b17a1d \
 ##   https://static.crates.io/crates/thiserror-impl/thiserror-impl-2.0.12.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-thiserror-impl-2.0.12-5c339b1f78823d32"
 ## script = '''
@@ -13738,7 +13738,7 @@ COPY --link --from=dep-n-thiserror-impl-2.0.12-5c339b1f78823d32 /tmp/clis-diesel
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-5c339b1f78823d32-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-5c339b1f78823d32-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-5c339b1f78823d32* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-5c339b1f78823d32"
 ## script = """
@@ -13812,27 +13812,27 @@ COPY --link --from=dep-n-thiserror-2.0.12-97cf7fc81077ddb4 /tmp/clis-diesel_cli_
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libthiserror-97cf7fc81077ddb4.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libthiserror-97cf7fc81077ddb4.rlib","emit":"link"}',
 ## ]
-## 
+##
 ## [[externs]]
 ## from = "out-5c339b1f78823d32"
 ## xtern = "libthiserror_impl-5c339b1f78823d32.so"
-## 
+##
 ## [[externs]]
 ## from = "out-da36b031605c1ddc"
 ## xtern = "libproc_macro2-da36b031605c1ddc.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-02b0d04ef026a7b6"
 ## xtern = "libunicode_ident-02b0d04ef026a7b6.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-21aeee0f329238fb"
 ## xtern = "libquote-21aeee0f329238fb.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-f0d9159e02a48398"
 ## xtern = "libsyn-f0d9159e02a48398.rlib"
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -13861,14 +13861,14 @@ COPY --link --from=dep-n-thiserror-2.0.12-97cf7fc81077ddb4 /tmp/clis-diesel_cli_
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-thiserror-2.0.12"
 ## script = '''
 ## FROM scratch AS cratesio-thiserror-2.0.12
 ## ADD --chmod=0664 --unpack --checksum=sha256:567b8a2dae586314f7be2a752ec7474332959c6460e02bde30d702a66d488708 \
 ##   https://static.crates.io/crates/thiserror/thiserror-2.0.12.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-thiserror-2.0.12-97cf7fc81077ddb4"
 ## script = '''
@@ -13908,7 +13908,7 @@ COPY --link --from=dep-n-thiserror-2.0.12-97cf7fc81077ddb4 /tmp/clis-diesel_cli_
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-97cf7fc81077ddb4-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-97cf7fc81077ddb4-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-97cf7fc81077ddb4* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-97cf7fc81077ddb4"
 ## script = """
@@ -13962,7 +13962,7 @@ COPY --link --from=dep-n-pin-project-lite-0.2.16-1fa7cdba4ce9f504 /tmp/clis-dies
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libpin_project_lite-1fa7cdba4ce9f504.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libpin_project_lite-1fa7cdba4ce9f504.rlib","emit":"link"}',
 ## ]
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -13991,14 +13991,14 @@ COPY --link --from=dep-n-pin-project-lite-0.2.16-1fa7cdba4ce9f504 /tmp/clis-dies
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-pin-project-lite-0.2.16"
 ## script = '''
 ## FROM scratch AS cratesio-pin-project-lite-0.2.16
 ## ADD --chmod=0664 --unpack --checksum=sha256:3b3cff922bd51709b605d9ead9aa71031d81447142d828eb4a6eba76fe619f9b \
 ##   https://static.crates.io/crates/pin-project-lite/pin-project-lite-0.2.16.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-pin-project-lite-0.2.16-1fa7cdba4ce9f504"
 ## script = '''
@@ -14032,7 +14032,7 @@ COPY --link --from=dep-n-pin-project-lite-0.2.16-1fa7cdba4ce9f504 /tmp/clis-dies
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-1fa7cdba4ce9f504-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-1fa7cdba4ce9f504-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-1fa7cdba4ce9f504* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-1fa7cdba4ce9f504"
 ## script = """
@@ -14100,23 +14100,23 @@ COPY --link --from=dep-n-tracing-attributes-0.1.30-a987b303d02b952a /tmp/clis-di
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/tracing_attributes-a987b303d02b952a.d","emit":"dep-info"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libtracing_attributes-a987b303d02b952a.so","emit":"link"}',
 ## ]
-## 
+##
 ## [[externs]]
 ## from = "out-da36b031605c1ddc"
 ## xtern = "libproc_macro2-da36b031605c1ddc.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-02b0d04ef026a7b6"
 ## xtern = "libunicode_ident-02b0d04ef026a7b6.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-21aeee0f329238fb"
 ## xtern = "libquote-21aeee0f329238fb.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-f0d9159e02a48398"
 ## xtern = "libsyn-f0d9159e02a48398.rlib"
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -14145,14 +14145,14 @@ COPY --link --from=dep-n-tracing-attributes-0.1.30-a987b303d02b952a /tmp/clis-di
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-tracing-attributes-0.1.30"
 ## script = '''
 ## FROM scratch AS cratesio-tracing-attributes-0.1.30
 ## ADD --chmod=0664 --unpack --checksum=sha256:81383ab64e72a7a8b8e13130c49e3dab29def6d0c7d76a03087b3cf71c5c6903 \
 ##   https://static.crates.io/crates/tracing-attributes/tracing-attributes-0.1.30.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-tracing-attributes-0.1.30-a987b303d02b952a"
 ## script = '''
@@ -14190,7 +14190,7 @@ COPY --link --from=dep-n-tracing-attributes-0.1.30-a987b303d02b952a /tmp/clis-di
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-a987b303d02b952a-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-a987b303d02b952a-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-a987b303d02b952a* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-a987b303d02b952a"
 ## script = """
@@ -14248,15 +14248,15 @@ COPY --link --from=dep-n-tracing-core-0.1.34-d403a28166dbf63d /tmp/clis-diesel_c
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libtracing_core-d403a28166dbf63d.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libtracing_core-d403a28166dbf63d.rlib","emit":"link"}',
 ## ]
-## 
+##
 ## [[externs]]
 ## from = "out-109e57aa4a9d42c0"
 ## xtern = "libonce_cell-109e57aa4a9d42c0.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-109e57aa4a9d42c0"
 ## xtern = "libonce_cell-109e57aa4a9d42c0.rmeta"
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -14285,14 +14285,14 @@ COPY --link --from=dep-n-tracing-core-0.1.34-d403a28166dbf63d /tmp/clis-diesel_c
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-tracing-core-0.1.34"
 ## script = '''
 ## FROM scratch AS cratesio-tracing-core-0.1.34
 ## ADD --chmod=0664 --unpack --checksum=sha256:b9d12581f227e93f094d3af2ae690a574abb8a2b9b7a96e7cfe9647b2b617678 \
 ##   https://static.crates.io/crates/tracing-core/tracing-core-0.1.34.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-tracing-core-0.1.34-d403a28166dbf63d"
 ## script = '''
@@ -14328,7 +14328,7 @@ COPY --link --from=dep-n-tracing-core-0.1.34-d403a28166dbf63d /tmp/clis-diesel_c
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-d403a28166dbf63d-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-d403a28166dbf63d-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-d403a28166dbf63d* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-d403a28166dbf63d"
 ## script = """
@@ -14417,67 +14417,67 @@ COPY --link --from=dep-n-tracing-0.1.41-c65078462e13f42b /tmp/clis-diesel_cli_2-
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libtracing-c65078462e13f42b.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libtracing-c65078462e13f42b.rlib","emit":"link"}',
 ## ]
-## 
+##
 ## [[externs]]
 ## from = "out-1fa7cdba4ce9f504"
 ## xtern = "libpin_project_lite-1fa7cdba4ce9f504.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-1fa7cdba4ce9f504"
 ## xtern = "libpin_project_lite-1fa7cdba4ce9f504.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-a987b303d02b952a"
 ## xtern = "libtracing_attributes-a987b303d02b952a.so"
-## 
+##
 ## [[externs]]
 ## from = "out-da36b031605c1ddc"
 ## xtern = "libproc_macro2-da36b031605c1ddc.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-da36b031605c1ddc"
 ## xtern = "libproc_macro2-da36b031605c1ddc.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-02b0d04ef026a7b6"
 ## xtern = "libunicode_ident-02b0d04ef026a7b6.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-02b0d04ef026a7b6"
 ## xtern = "libunicode_ident-02b0d04ef026a7b6.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-21aeee0f329238fb"
 ## xtern = "libquote-21aeee0f329238fb.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-21aeee0f329238fb"
 ## xtern = "libquote-21aeee0f329238fb.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-f0d9159e02a48398"
 ## xtern = "libsyn-f0d9159e02a48398.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-f0d9159e02a48398"
 ## xtern = "libsyn-f0d9159e02a48398.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-d403a28166dbf63d"
 ## xtern = "libtracing_core-d403a28166dbf63d.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-d403a28166dbf63d"
 ## xtern = "libtracing_core-d403a28166dbf63d.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-109e57aa4a9d42c0"
 ## xtern = "libonce_cell-109e57aa4a9d42c0.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-109e57aa4a9d42c0"
 ## xtern = "libonce_cell-109e57aa4a9d42c0.rmeta"
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -14506,14 +14506,14 @@ COPY --link --from=dep-n-tracing-0.1.41-c65078462e13f42b /tmp/clis-diesel_cli_2-
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-tracing-0.1.41"
 ## script = '''
 ## FROM scratch AS cratesio-tracing-0.1.41
 ## ADD --chmod=0664 --unpack --checksum=sha256:784e0ac535deb450455cbfa28a6f0df145ea1bb7ae51b821cf5e7927fdcfbdd0 \
 ##   https://static.crates.io/crates/tracing/tracing-0.1.41.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-tracing-0.1.41-c65078462e13f42b"
 ## script = '''
@@ -14562,7 +14562,7 @@ COPY --link --from=dep-n-tracing-0.1.41-c65078462e13f42b /tmp/clis-diesel_cli_2-
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-c65078462e13f42b-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-c65078462e13f42b-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-c65078462e13f42b* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-c65078462e13f42b"
 ## script = """
@@ -14619,7 +14619,7 @@ COPY --link --from=dep-n-regex-syntax-0.6.29-278fc833d6e378c8 /tmp/clis-diesel_c
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libregex_syntax-278fc833d6e378c8.rlib","emit":"link"}',
 ##     '{"$message_type":"diagnostic","message":"2 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 2 warnings emitted\u001b[0m\n\n"}',
 ## ]
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -14648,14 +14648,14 @@ COPY --link --from=dep-n-regex-syntax-0.6.29-278fc833d6e378c8 /tmp/clis-diesel_c
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-regex-syntax-0.6.29"
 ## script = '''
 ## FROM scratch AS cratesio-regex-syntax-0.6.29
 ## ADD --chmod=0664 --unpack --checksum=sha256:f162c6dd7b008981e4d40210aca20b4bd0f9b60ca9271061b07f78537722f2e1 \
 ##   https://static.crates.io/crates/regex-syntax/regex-syntax-0.6.29.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-regex-syntax-0.6.29-278fc833d6e378c8"
 ## script = '''
@@ -14689,7 +14689,7 @@ COPY --link --from=dep-n-regex-syntax-0.6.29-278fc833d6e378c8 /tmp/clis-diesel_c
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-278fc833d6e378c8-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-278fc833d6e378c8-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-278fc833d6e378c8* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-278fc833d6e378c8"
 ## script = """
@@ -14747,15 +14747,15 @@ COPY --link --from=dep-n-regex-automata-0.1.10-36c17437fa6ac77d /tmp/clis-diesel
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libregex_automata-36c17437fa6ac77d.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libregex_automata-36c17437fa6ac77d.rlib","emit":"link"}',
 ## ]
-## 
+##
 ## [[externs]]
 ## from = "out-278fc833d6e378c8"
 ## xtern = "libregex_syntax-278fc833d6e378c8.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-278fc833d6e378c8"
 ## xtern = "libregex_syntax-278fc833d6e378c8.rmeta"
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -14784,14 +14784,14 @@ COPY --link --from=dep-n-regex-automata-0.1.10-36c17437fa6ac77d /tmp/clis-diesel
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-regex-automata-0.1.10"
 ## script = '''
 ## FROM scratch AS cratesio-regex-automata-0.1.10
 ## ADD --chmod=0664 --unpack --checksum=sha256:6c230d73fb8d8c1b9c0b3135c5142a8acee3a0558fb8db5cf1cb65f8d7862132 \
 ##   https://static.crates.io/crates/regex-automata/regex-automata-0.1.10.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-regex-automata-0.1.10-36c17437fa6ac77d"
 ## script = '''
@@ -14827,7 +14827,7 @@ COPY --link --from=dep-n-regex-automata-0.1.10-36c17437fa6ac77d /tmp/clis-diesel
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-36c17437fa6ac77d-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-36c17437fa6ac77d-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-36c17437fa6ac77d* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-36c17437fa6ac77d"
 ## script = """
@@ -14893,23 +14893,23 @@ COPY --link --from=dep-n-matchers-0.1.0-f3b453967c4ace5b /tmp/clis-diesel_cli_2-
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libmatchers-f3b453967c4ace5b.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libmatchers-f3b453967c4ace5b.rlib","emit":"link"}',
 ## ]
-## 
+##
 ## [[externs]]
 ## from = "out-36c17437fa6ac77d"
 ## xtern = "libregex_automata-36c17437fa6ac77d.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-36c17437fa6ac77d"
 ## xtern = "libregex_automata-36c17437fa6ac77d.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-278fc833d6e378c8"
 ## xtern = "libregex_syntax-278fc833d6e378c8.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-278fc833d6e378c8"
 ## xtern = "libregex_syntax-278fc833d6e378c8.rmeta"
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -14938,14 +14938,14 @@ COPY --link --from=dep-n-matchers-0.1.0-f3b453967c4ace5b /tmp/clis-diesel_cli_2-
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-matchers-0.1.0"
 ## script = '''
 ## FROM scratch AS cratesio-matchers-0.1.0
 ## ADD --chmod=0664 --unpack --checksum=sha256:8263075bb86c5a1b1427b5ae862e8889656f126e9f77c484496e8b47cf5c5558 \
 ##   https://static.crates.io/crates/matchers/matchers-0.1.0.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-matchers-0.1.0-f3b453967c4ace5b"
 ## script = '''
@@ -14983,7 +14983,7 @@ COPY --link --from=dep-n-matchers-0.1.0-f3b453967c4ace5b /tmp/clis-diesel_cli_2-
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-f3b453967c4ace5b-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-f3b453967c4ace5b-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-f3b453967c4ace5b* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-f3b453967c4ace5b"
 ## script = """
@@ -15037,7 +15037,7 @@ COPY --link --from=dep-n-overload-0.1.1-94fa3b5a5c6dc522 /tmp/clis-diesel_cli_2-
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/liboverload-94fa3b5a5c6dc522.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/liboverload-94fa3b5a5c6dc522.rlib","emit":"link"}',
 ## ]
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -15066,14 +15066,14 @@ COPY --link --from=dep-n-overload-0.1.1-94fa3b5a5c6dc522 /tmp/clis-diesel_cli_2-
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-overload-0.1.1"
 ## script = '''
 ## FROM scratch AS cratesio-overload-0.1.1
 ## ADD --chmod=0664 --unpack --checksum=sha256:b15813163c1d831bf4a13c3610c05c0d03b39feb07f7e09fa234dac9b15aaf39 \
 ##   https://static.crates.io/crates/overload/overload-0.1.1.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-overload-0.1.1-94fa3b5a5c6dc522"
 ## script = '''
@@ -15107,7 +15107,7 @@ COPY --link --from=dep-n-overload-0.1.1-94fa3b5a5c6dc522 /tmp/clis-diesel_cli_2-
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-94fa3b5a5c6dc522-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-94fa3b5a5c6dc522-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-94fa3b5a5c6dc522* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-94fa3b5a5c6dc522"
 ## script = """
@@ -15167,15 +15167,15 @@ COPY --link --from=dep-n-nu-ansi-term-0.46.0-c42192675aa050dd /tmp/clis-diesel_c
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libnu_ansi_term-c42192675aa050dd.rlib","emit":"link"}',
 ##     '{"$message_type":"diagnostic","message":"1 warning emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 1 warning emitted\u001b[0m\n\n"}',
 ## ]
-## 
+##
 ## [[externs]]
 ## from = "out-94fa3b5a5c6dc522"
 ## xtern = "liboverload-94fa3b5a5c6dc522.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-94fa3b5a5c6dc522"
 ## xtern = "liboverload-94fa3b5a5c6dc522.rmeta"
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -15204,14 +15204,14 @@ COPY --link --from=dep-n-nu-ansi-term-0.46.0-c42192675aa050dd /tmp/clis-diesel_c
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-nu-ansi-term-0.46.0"
 ## script = '''
 ## FROM scratch AS cratesio-nu-ansi-term-0.46.0
 ## ADD --chmod=0664 --unpack --checksum=sha256:77a8165726e8236064dbb45459242600304b42a5ea24ee2948e18e023bf7ba84 \
 ##   https://static.crates.io/crates/nu-ansi-term/nu-ansi-term-0.46.0.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-nu-ansi-term-0.46.0-c42192675aa050dd"
 ## script = '''
@@ -15247,7 +15247,7 @@ COPY --link --from=dep-n-nu-ansi-term-0.46.0-c42192675aa050dd /tmp/clis-diesel_c
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-c42192675aa050dd-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-c42192675aa050dd-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-c42192675aa050dd* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-c42192675aa050dd"
 ## script = """
@@ -15303,7 +15303,7 @@ COPY --link --from=dep-n-lazy_static-1.5.0-f91da618dd3f72e5 /tmp/clis-diesel_cli
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/liblazy_static-f91da618dd3f72e5.rlib","emit":"link"}',
 ##     '{"$message_type":"diagnostic","message":"1 warning emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 1 warning emitted\u001b[0m\n\n"}',
 ## ]
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -15332,14 +15332,14 @@ COPY --link --from=dep-n-lazy_static-1.5.0-f91da618dd3f72e5 /tmp/clis-diesel_cli
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-lazy_static-1.5.0"
 ## script = '''
 ## FROM scratch AS cratesio-lazy_static-1.5.0
 ## ADD --chmod=0664 --unpack --checksum=sha256:bbd2bcb4c963f2ddae06a2efc7e9f3591312473c50c6685e1f298068316e66fe \
 ##   https://static.crates.io/crates/lazy_static/lazy_static-1.5.0.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-lazy_static-1.5.0-f91da618dd3f72e5"
 ## script = '''
@@ -15373,7 +15373,7 @@ COPY --link --from=dep-n-lazy_static-1.5.0-f91da618dd3f72e5 /tmp/clis-diesel_cli
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-f91da618dd3f72e5-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-f91da618dd3f72e5-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-f91da618dd3f72e5* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-f91da618dd3f72e5"
 ## script = """
@@ -15537,15 +15537,15 @@ COPY --link --from=dep-n-sharded-slab-0.1.7-b9545388d9527f67 /tmp/clis-diesel_cl
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libsharded_slab-b9545388d9527f67.rlib","emit":"link"}',
 ##     '{"$message_type":"diagnostic","message":"105 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 105 warnings emitted\u001b[0m\n\n"}',
 ## ]
-## 
+##
 ## [[externs]]
 ## from = "out-f91da618dd3f72e5"
 ## xtern = "liblazy_static-f91da618dd3f72e5.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-f91da618dd3f72e5"
 ## xtern = "liblazy_static-f91da618dd3f72e5.rmeta"
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -15574,14 +15574,14 @@ COPY --link --from=dep-n-sharded-slab-0.1.7-b9545388d9527f67 /tmp/clis-diesel_cl
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-sharded-slab-0.1.7"
 ## script = '''
 ## FROM scratch AS cratesio-sharded-slab-0.1.7
 ## ADD --chmod=0664 --unpack --checksum=sha256:f40ca3c46823713e0d4209592e8d6e826aa57e928f09752619fc696c499637f6 \
 ##   https://static.crates.io/crates/sharded-slab/sharded-slab-0.1.7.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-sharded-slab-0.1.7-b9545388d9527f67"
 ## script = '''
@@ -15617,7 +15617,7 @@ COPY --link --from=dep-n-sharded-slab-0.1.7-b9545388d9527f67 /tmp/clis-diesel_cl
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-b9545388d9527f67-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-b9545388d9527f67-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-b9545388d9527f67* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-b9545388d9527f67"
 ## script = """
@@ -15671,7 +15671,7 @@ COPY --link --from=dep-n-smallvec-1.15.1-5d9a571e1bcf340f /tmp/clis-diesel_cli_2
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libsmallvec-5d9a571e1bcf340f.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libsmallvec-5d9a571e1bcf340f.rlib","emit":"link"}',
 ## ]
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -15700,14 +15700,14 @@ COPY --link --from=dep-n-smallvec-1.15.1-5d9a571e1bcf340f /tmp/clis-diesel_cli_2
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-smallvec-1.15.1"
 ## script = '''
 ## FROM scratch AS cratesio-smallvec-1.15.1
 ## ADD --chmod=0664 --unpack --checksum=sha256:67b1b7a3b5fe4f1376887184045fcf45c69e92af734b7aaddc05fb777b6fbd03 \
 ##   https://static.crates.io/crates/smallvec/smallvec-1.15.1.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-smallvec-1.15.1-5d9a571e1bcf340f"
 ## script = '''
@@ -15741,7 +15741,7 @@ COPY --link --from=dep-n-smallvec-1.15.1-5d9a571e1bcf340f /tmp/clis-diesel_cli_2
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-5d9a571e1bcf340f-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-5d9a571e1bcf340f-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-5d9a571e1bcf340f* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-5d9a571e1bcf340f"
 ## script = """
@@ -15802,15 +15802,15 @@ COPY --link --from=dep-n-thread_local-1.1.9-bb674c36f9027759 /tmp/clis-diesel_cl
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libthread_local-bb674c36f9027759.rlib","emit":"link"}',
 ##     '{"$message_type":"diagnostic","message":"2 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 2 warnings emitted\u001b[0m\n\n"}',
 ## ]
-## 
+##
 ## [[externs]]
 ## from = "out-6876b4372c8c4777"
 ## xtern = "libcfg_if-6876b4372c8c4777.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-6876b4372c8c4777"
 ## xtern = "libcfg_if-6876b4372c8c4777.rmeta"
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -15839,14 +15839,14 @@ COPY --link --from=dep-n-thread_local-1.1.9-bb674c36f9027759 /tmp/clis-diesel_cl
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-thread_local-1.1.9"
 ## script = '''
 ## FROM scratch AS cratesio-thread_local-1.1.9
 ## ADD --chmod=0664 --unpack --checksum=sha256:f60246a4944f24f6e018aa17cdeffb7818b76356965d03b07d6a9886e8962185 \
 ##   https://static.crates.io/crates/thread_local/thread_local-1.1.9.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-thread_local-1.1.9-bb674c36f9027759"
 ## script = '''
@@ -15882,7 +15882,7 @@ COPY --link --from=dep-n-thread_local-1.1.9-bb674c36f9027759 /tmp/clis-diesel_cl
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-bb674c36f9027759-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-bb674c36f9027759-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-bb674c36f9027759* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-bb674c36f9027759"
 ## script = """
@@ -15936,7 +15936,7 @@ COPY --link --from=dep-n-log-0.4.27-323569b758259b9b /tmp/clis-diesel_cli_2-3-2/
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/liblog-323569b758259b9b.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/liblog-323569b758259b9b.rlib","emit":"link"}',
 ## ]
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -15965,14 +15965,14 @@ COPY --link --from=dep-n-log-0.4.27-323569b758259b9b /tmp/clis-diesel_cli_2-3-2/
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-log-0.4.27"
 ## script = '''
 ## FROM scratch AS cratesio-log-0.4.27
 ## ADD --chmod=0664 --unpack --checksum=sha256:13dc2df351e3202783a1fe0d44375f7295ffb4049267b0f3018346dc122a1d94 \
 ##   https://static.crates.io/crates/log/log-0.4.27.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-log-0.4.27-323569b758259b9b"
 ## script = '''
@@ -16006,7 +16006,7 @@ COPY --link --from=dep-n-log-0.4.27-323569b758259b9b /tmp/clis-diesel_cli_2-3-2/
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-323569b758259b9b-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-323569b758259b9b-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-323569b758259b9b* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-323569b758259b9b"
 ## script = """
@@ -16078,31 +16078,31 @@ COPY --link --from=dep-n-tracing-log-0.2.0-5c718901fdf2c1c1 /tmp/clis-diesel_cli
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libtracing_log-5c718901fdf2c1c1.rlib","emit":"link"}',
 ##     '{"$message_type":"diagnostic","message":"1 warning emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 1 warning emitted\u001b[0m\n\n"}',
 ## ]
-## 
+##
 ## [[externs]]
 ## from = "out-323569b758259b9b"
 ## xtern = "liblog-323569b758259b9b.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-323569b758259b9b"
 ## xtern = "liblog-323569b758259b9b.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-109e57aa4a9d42c0"
 ## xtern = "libonce_cell-109e57aa4a9d42c0.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-109e57aa4a9d42c0"
 ## xtern = "libonce_cell-109e57aa4a9d42c0.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-d403a28166dbf63d"
 ## xtern = "libtracing_core-d403a28166dbf63d.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-d403a28166dbf63d"
 ## xtern = "libtracing_core-d403a28166dbf63d.rmeta"
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -16131,14 +16131,14 @@ COPY --link --from=dep-n-tracing-log-0.2.0-5c718901fdf2c1c1 /tmp/clis-diesel_cli
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-tracing-log-0.2.0"
 ## script = '''
 ## FROM scratch AS cratesio-tracing-log-0.2.0
 ## ADD --chmod=0664 --unpack --checksum=sha256:ee855f1f400bd0e5c02d150ae5de3840039a3f54b025156404e34c23c03f47c3 \
 ##   https://static.crates.io/crates/tracing-log/tracing-log-0.2.0.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-tracing-log-0.2.0-5c718901fdf2c1c1"
 ## script = '''
@@ -16178,7 +16178,7 @@ COPY --link --from=dep-n-tracing-log-0.2.0-5c718901fdf2c1c1 /tmp/clis-diesel_cli
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-5c718901fdf2c1c1-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-5c718901fdf2c1c1-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-5c718901fdf2c1c1* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-5c718901fdf2c1c1"
 ## script = """
@@ -16339,211 +16339,211 @@ COPY --link --from=dep-n-tracing-subscriber-0.3.19-57e82b204b27a965 /tmp/clis-di
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libtracing_subscriber-57e82b204b27a965.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libtracing_subscriber-57e82b204b27a965.rlib","emit":"link"}',
 ## ]
-## 
+##
 ## [[externs]]
 ## from = "out-f3b453967c4ace5b"
 ## xtern = "libmatchers-f3b453967c4ace5b.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-f3b453967c4ace5b"
 ## xtern = "libmatchers-f3b453967c4ace5b.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-36c17437fa6ac77d"
 ## xtern = "libregex_automata-36c17437fa6ac77d.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-36c17437fa6ac77d"
 ## xtern = "libregex_automata-36c17437fa6ac77d.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-278fc833d6e378c8"
 ## xtern = "libregex_syntax-278fc833d6e378c8.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-278fc833d6e378c8"
 ## xtern = "libregex_syntax-278fc833d6e378c8.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-c42192675aa050dd"
 ## xtern = "libnu_ansi_term-c42192675aa050dd.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-c42192675aa050dd"
 ## xtern = "libnu_ansi_term-c42192675aa050dd.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-94fa3b5a5c6dc522"
 ## xtern = "liboverload-94fa3b5a5c6dc522.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-94fa3b5a5c6dc522"
 ## xtern = "liboverload-94fa3b5a5c6dc522.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-109e57aa4a9d42c0"
 ## xtern = "libonce_cell-109e57aa4a9d42c0.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-109e57aa4a9d42c0"
 ## xtern = "libonce_cell-109e57aa4a9d42c0.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-f8d06e6ff7493f6c"
 ## xtern = "libregex-f8d06e6ff7493f6c.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-f8d06e6ff7493f6c"
 ## xtern = "libregex-f8d06e6ff7493f6c.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-b09ba6ab78a2f997"
 ## xtern = "libaho_corasick-b09ba6ab78a2f997.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-b09ba6ab78a2f997"
 ## xtern = "libaho_corasick-b09ba6ab78a2f997.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-f8a5ec09fef4ab54"
 ## xtern = "libmemchr-f8a5ec09fef4ab54.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-f8a5ec09fef4ab54"
 ## xtern = "libmemchr-f8a5ec09fef4ab54.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-a8c5e2efa6073f05"
 ## xtern = "libregex_automata-a8c5e2efa6073f05.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-a8c5e2efa6073f05"
 ## xtern = "libregex_automata-a8c5e2efa6073f05.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-75712f8a87a24c79"
 ## xtern = "libregex_syntax-75712f8a87a24c79.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-75712f8a87a24c79"
 ## xtern = "libregex_syntax-75712f8a87a24c79.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-b9545388d9527f67"
 ## xtern = "libsharded_slab-b9545388d9527f67.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-b9545388d9527f67"
 ## xtern = "libsharded_slab-b9545388d9527f67.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-f91da618dd3f72e5"
 ## xtern = "liblazy_static-f91da618dd3f72e5.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-f91da618dd3f72e5"
 ## xtern = "liblazy_static-f91da618dd3f72e5.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-5d9a571e1bcf340f"
 ## xtern = "libsmallvec-5d9a571e1bcf340f.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-5d9a571e1bcf340f"
 ## xtern = "libsmallvec-5d9a571e1bcf340f.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-bb674c36f9027759"
 ## xtern = "libthread_local-bb674c36f9027759.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-bb674c36f9027759"
 ## xtern = "libthread_local-bb674c36f9027759.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-6876b4372c8c4777"
 ## xtern = "libcfg_if-6876b4372c8c4777.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-6876b4372c8c4777"
 ## xtern = "libcfg_if-6876b4372c8c4777.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-c65078462e13f42b"
 ## xtern = "libtracing-c65078462e13f42b.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-c65078462e13f42b"
 ## xtern = "libtracing-c65078462e13f42b.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-1fa7cdba4ce9f504"
 ## xtern = "libpin_project_lite-1fa7cdba4ce9f504.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-1fa7cdba4ce9f504"
 ## xtern = "libpin_project_lite-1fa7cdba4ce9f504.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-a987b303d02b952a"
 ## xtern = "libtracing_attributes-a987b303d02b952a.so"
-## 
+##
 ## [[externs]]
 ## from = "out-da36b031605c1ddc"
 ## xtern = "libproc_macro2-da36b031605c1ddc.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-da36b031605c1ddc"
 ## xtern = "libproc_macro2-da36b031605c1ddc.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-02b0d04ef026a7b6"
 ## xtern = "libunicode_ident-02b0d04ef026a7b6.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-02b0d04ef026a7b6"
 ## xtern = "libunicode_ident-02b0d04ef026a7b6.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-21aeee0f329238fb"
 ## xtern = "libquote-21aeee0f329238fb.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-21aeee0f329238fb"
 ## xtern = "libquote-21aeee0f329238fb.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-f0d9159e02a48398"
 ## xtern = "libsyn-f0d9159e02a48398.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-f0d9159e02a48398"
 ## xtern = "libsyn-f0d9159e02a48398.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-d403a28166dbf63d"
 ## xtern = "libtracing_core-d403a28166dbf63d.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-d403a28166dbf63d"
 ## xtern = "libtracing_core-d403a28166dbf63d.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-5c718901fdf2c1c1"
 ## xtern = "libtracing_log-5c718901fdf2c1c1.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-5c718901fdf2c1c1"
 ## xtern = "libtracing_log-5c718901fdf2c1c1.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-323569b758259b9b"
 ## xtern = "liblog-323569b758259b9b.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-323569b758259b9b"
 ## xtern = "liblog-323569b758259b9b.rmeta"
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -16572,14 +16572,14 @@ COPY --link --from=dep-n-tracing-subscriber-0.3.19-57e82b204b27a965 /tmp/clis-di
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-tracing-subscriber-0.3.19"
 ## script = '''
 ## FROM scratch AS cratesio-tracing-subscriber-0.3.19
 ## ADD --chmod=0664 --unpack --checksum=sha256:e8189decb5ac0fa7bc8b96b7cb9b2701d60d48805aca84a238004d665fcc4008 \
 ##   https://static.crates.io/crates/tracing-subscriber/tracing-subscriber-0.3.19.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-tracing-subscriber-0.3.19-57e82b204b27a965"
 ## script = '''
@@ -16664,7 +16664,7 @@ COPY --link --from=dep-n-tracing-subscriber-0.3.19-57e82b204b27a965 /tmp/clis-di
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-57e82b204b27a965-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-57e82b204b27a965-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-57e82b204b27a965* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-57e82b204b27a965"
 ## script = """
@@ -16720,7 +16720,7 @@ COPY --link --from=dep-n-percent-encoding-2.3.1-8d7998c0a5025064 /tmp/clis-diese
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libpercent_encoding-8d7998c0a5025064.rlib","emit":"link"}',
 ##     '{"$message_type":"diagnostic","message":"1 warning emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 1 warning emitted\u001b[0m\n\n"}',
 ## ]
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -16749,14 +16749,14 @@ COPY --link --from=dep-n-percent-encoding-2.3.1-8d7998c0a5025064 /tmp/clis-diese
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-percent-encoding-2.3.1"
 ## script = '''
 ## FROM scratch AS cratesio-percent-encoding-2.3.1
 ## ADD --chmod=0664 --unpack --checksum=sha256:e3148f5046208a5d56bcfc03053e3ca6334e51da8dfb19b6cdc8b306fae3283e \
 ##   https://static.crates.io/crates/percent-encoding/percent-encoding-2.3.1.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-percent-encoding-2.3.1-8d7998c0a5025064"
 ## script = '''
@@ -16790,7 +16790,7 @@ COPY --link --from=dep-n-percent-encoding-2.3.1-8d7998c0a5025064 /tmp/clis-diese
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-8d7998c0a5025064-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-8d7998c0a5025064-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-8d7998c0a5025064* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-8d7998c0a5025064"
 ## script = """
@@ -16850,15 +16850,15 @@ COPY --link --from=dep-n-form_urlencoded-1.2.1-6fa2d81a8ad3580c /tmp/clis-diesel
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libform_urlencoded-6fa2d81a8ad3580c.rlib","emit":"link"}',
 ##     '{"$message_type":"diagnostic","message":"1 warning emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 1 warning emitted\u001b[0m\n\n"}',
 ## ]
-## 
+##
 ## [[externs]]
 ## from = "out-8d7998c0a5025064"
 ## xtern = "libpercent_encoding-8d7998c0a5025064.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-8d7998c0a5025064"
 ## xtern = "libpercent_encoding-8d7998c0a5025064.rmeta"
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -16887,14 +16887,14 @@ COPY --link --from=dep-n-form_urlencoded-1.2.1-6fa2d81a8ad3580c /tmp/clis-diesel
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-form_urlencoded-1.2.1"
 ## script = '''
 ## FROM scratch AS cratesio-form_urlencoded-1.2.1
 ## ADD --chmod=0664 --unpack --checksum=sha256:e13624c2627564efccf4934284bdd98cbaa14e79b0b5a141218e507b3a823456 \
 ##   https://static.crates.io/crates/form_urlencoded/form_urlencoded-1.2.1.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-form_urlencoded-1.2.1-6fa2d81a8ad3580c"
 ## script = '''
@@ -16930,7 +16930,7 @@ COPY --link --from=dep-n-form_urlencoded-1.2.1-6fa2d81a8ad3580c /tmp/clis-diesel
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-6fa2d81a8ad3580c-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-6fa2d81a8ad3580c-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-6fa2d81a8ad3580c* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-6fa2d81a8ad3580c"
 ## script = """
@@ -16998,23 +16998,23 @@ COPY --link --from=dep-n-displaydoc-0.2.5-33cb4686da2fed7b /tmp/clis-diesel_cli_
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/displaydoc-33cb4686da2fed7b.d","emit":"dep-info"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libdisplaydoc-33cb4686da2fed7b.so","emit":"link"}',
 ## ]
-## 
+##
 ## [[externs]]
 ## from = "out-da36b031605c1ddc"
 ## xtern = "libproc_macro2-da36b031605c1ddc.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-02b0d04ef026a7b6"
 ## xtern = "libunicode_ident-02b0d04ef026a7b6.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-21aeee0f329238fb"
 ## xtern = "libquote-21aeee0f329238fb.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-f0d9159e02a48398"
 ## xtern = "libsyn-f0d9159e02a48398.rlib"
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -17043,14 +17043,14 @@ COPY --link --from=dep-n-displaydoc-0.2.5-33cb4686da2fed7b /tmp/clis-diesel_cli_
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-displaydoc-0.2.5"
 ## script = '''
 ## FROM scratch AS cratesio-displaydoc-0.2.5
 ## ADD --chmod=0664 --unpack --checksum=sha256:97369cbbc041bc366949bc74d34658d6cda5621039731c6310521892a3a20ae0 \
 ##   https://static.crates.io/crates/displaydoc/displaydoc-0.2.5.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-displaydoc-0.2.5-33cb4686da2fed7b"
 ## script = '''
@@ -17088,7 +17088,7 @@ COPY --link --from=dep-n-displaydoc-0.2.5-33cb4686da2fed7b /tmp/clis-diesel_cli_
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-33cb4686da2fed7b-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-33cb4686da2fed7b-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-33cb4686da2fed7b* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-33cb4686da2fed7b"
 ## script = """
@@ -17142,7 +17142,7 @@ COPY --link --from=dep-n-stable_deref_trait-1.2.0-64b214f8b7568c22 /tmp/clis-die
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libstable_deref_trait-64b214f8b7568c22.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libstable_deref_trait-64b214f8b7568c22.rlib","emit":"link"}',
 ## ]
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -17171,14 +17171,14 @@ COPY --link --from=dep-n-stable_deref_trait-1.2.0-64b214f8b7568c22 /tmp/clis-die
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-stable_deref_trait-1.2.0"
 ## script = '''
 ## FROM scratch AS cratesio-stable_deref_trait-1.2.0
 ## ADD --chmod=0664 --unpack --checksum=sha256:a8f112729512f8e442d81f95a8a7ddf2b7c6b8a1a6f509a95864142b30cab2d3 \
 ##   https://static.crates.io/crates/stable_deref_trait/stable_deref_trait-1.2.0.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-stable_deref_trait-1.2.0-64b214f8b7568c22"
 ## script = '''
@@ -17212,7 +17212,7 @@ COPY --link --from=dep-n-stable_deref_trait-1.2.0-64b214f8b7568c22 /tmp/clis-die
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-64b214f8b7568c22-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-64b214f8b7568c22-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-64b214f8b7568c22* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-64b214f8b7568c22"
 ## script = """
@@ -17286,39 +17286,39 @@ COPY --link --from=dep-n-synstructure-0.13.2-5ef66ecc0476c29a /tmp/clis-diesel_c
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libsynstructure-5ef66ecc0476c29a.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libsynstructure-5ef66ecc0476c29a.rlib","emit":"link"}',
 ## ]
-## 
+##
 ## [[externs]]
 ## from = "out-da36b031605c1ddc"
 ## xtern = "libproc_macro2-da36b031605c1ddc.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-da36b031605c1ddc"
 ## xtern = "libproc_macro2-da36b031605c1ddc.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-02b0d04ef026a7b6"
 ## xtern = "libunicode_ident-02b0d04ef026a7b6.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-02b0d04ef026a7b6"
 ## xtern = "libunicode_ident-02b0d04ef026a7b6.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-21aeee0f329238fb"
 ## xtern = "libquote-21aeee0f329238fb.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-21aeee0f329238fb"
 ## xtern = "libquote-21aeee0f329238fb.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-f0d9159e02a48398"
 ## xtern = "libsyn-f0d9159e02a48398.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-f0d9159e02a48398"
 ## xtern = "libsyn-f0d9159e02a48398.rmeta"
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -17347,14 +17347,14 @@ COPY --link --from=dep-n-synstructure-0.13.2-5ef66ecc0476c29a /tmp/clis-diesel_c
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-synstructure-0.13.2"
 ## script = '''
 ## FROM scratch AS cratesio-synstructure-0.13.2
 ## ADD --chmod=0664 --unpack --checksum=sha256:728a70f3dbaf5bab7f0c4b1ac8d7ae5ea60a4b5549c8a5914361c99147a709d2 \
 ##   https://static.crates.io/crates/synstructure/synstructure-0.13.2.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-synstructure-0.13.2-5ef66ecc0476c29a"
 ## script = '''
@@ -17396,7 +17396,7 @@ COPY --link --from=dep-n-synstructure-0.13.2-5ef66ecc0476c29a /tmp/clis-diesel_c
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-5ef66ecc0476c29a-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-5ef66ecc0476c29a-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-5ef66ecc0476c29a* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-5ef66ecc0476c29a"
 ## script = """
@@ -17467,27 +17467,27 @@ COPY --link --from=dep-n-yoke-derive-0.8.0-e93e94337f616c10 /tmp/clis-diesel_cli
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/yoke_derive-e93e94337f616c10.d","emit":"dep-info"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libyoke_derive-e93e94337f616c10.so","emit":"link"}',
 ## ]
-## 
+##
 ## [[externs]]
 ## from = "out-da36b031605c1ddc"
 ## xtern = "libproc_macro2-da36b031605c1ddc.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-02b0d04ef026a7b6"
 ## xtern = "libunicode_ident-02b0d04ef026a7b6.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-21aeee0f329238fb"
 ## xtern = "libquote-21aeee0f329238fb.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-f0d9159e02a48398"
 ## xtern = "libsyn-f0d9159e02a48398.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-5ef66ecc0476c29a"
 ## xtern = "libsynstructure-5ef66ecc0476c29a.rlib"
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -17516,14 +17516,14 @@ COPY --link --from=dep-n-yoke-derive-0.8.0-e93e94337f616c10 /tmp/clis-diesel_cli
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-yoke-derive-0.8.0"
 ## script = '''
 ## FROM scratch AS cratesio-yoke-derive-0.8.0
 ## ADD --chmod=0664 --unpack --checksum=sha256:38da3c9736e16c5d3c8c597a9aaa5d1fa565d0532ae05e27c24aa62fb32c0ab6 \
 ##   https://static.crates.io/crates/yoke-derive/yoke-derive-0.8.0.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-yoke-derive-0.8.0-e93e94337f616c10"
 ## script = '''
@@ -17562,7 +17562,7 @@ COPY --link --from=dep-n-yoke-derive-0.8.0-e93e94337f616c10 /tmp/clis-diesel_cli
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-e93e94337f616c10-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-e93e94337f616c10-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-e93e94337f616c10* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-e93e94337f616c10"
 ## script = """
@@ -17633,27 +17633,27 @@ COPY --link --from=dep-n-zerofrom-derive-0.1.6-767c856a4e9aa04c /tmp/clis-diesel
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/zerofrom_derive-767c856a4e9aa04c.d","emit":"dep-info"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libzerofrom_derive-767c856a4e9aa04c.so","emit":"link"}',
 ## ]
-## 
+##
 ## [[externs]]
 ## from = "out-da36b031605c1ddc"
 ## xtern = "libproc_macro2-da36b031605c1ddc.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-02b0d04ef026a7b6"
 ## xtern = "libunicode_ident-02b0d04ef026a7b6.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-21aeee0f329238fb"
 ## xtern = "libquote-21aeee0f329238fb.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-f0d9159e02a48398"
 ## xtern = "libsyn-f0d9159e02a48398.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-5ef66ecc0476c29a"
 ## xtern = "libsynstructure-5ef66ecc0476c29a.rlib"
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -17682,14 +17682,14 @@ COPY --link --from=dep-n-zerofrom-derive-0.1.6-767c856a4e9aa04c /tmp/clis-diesel
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-zerofrom-derive-0.1.6"
 ## script = '''
 ## FROM scratch AS cratesio-zerofrom-derive-0.1.6
 ## ADD --chmod=0664 --unpack --checksum=sha256:d71e5d6e06ab090c67b5e44993ec16b72dcbaabc526db883a360057678b48502 \
 ##   https://static.crates.io/crates/zerofrom-derive/zerofrom-derive-0.1.6.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-zerofrom-derive-0.1.6-767c856a4e9aa04c"
 ## script = '''
@@ -17728,7 +17728,7 @@ COPY --link --from=dep-n-zerofrom-derive-0.1.6-767c856a4e9aa04c /tmp/clis-diesel
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-767c856a4e9aa04c-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-767c856a4e9aa04c-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-767c856a4e9aa04c* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-767c856a4e9aa04c"
 ## script = """
@@ -17804,31 +17804,31 @@ COPY --link --from=dep-n-zerofrom-0.1.6-00c3b49813826788 /tmp/clis-diesel_cli_2-
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libzerofrom-00c3b49813826788.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libzerofrom-00c3b49813826788.rlib","emit":"link"}',
 ## ]
-## 
+##
 ## [[externs]]
 ## from = "out-767c856a4e9aa04c"
 ## xtern = "libzerofrom_derive-767c856a4e9aa04c.so"
-## 
+##
 ## [[externs]]
 ## from = "out-da36b031605c1ddc"
 ## xtern = "libproc_macro2-da36b031605c1ddc.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-02b0d04ef026a7b6"
 ## xtern = "libunicode_ident-02b0d04ef026a7b6.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-21aeee0f329238fb"
 ## xtern = "libquote-21aeee0f329238fb.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-f0d9159e02a48398"
 ## xtern = "libsyn-f0d9159e02a48398.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-5ef66ecc0476c29a"
 ## xtern = "libsynstructure-5ef66ecc0476c29a.rlib"
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -17857,14 +17857,14 @@ COPY --link --from=dep-n-zerofrom-0.1.6-00c3b49813826788 /tmp/clis-diesel_cli_2-
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-zerofrom-0.1.6"
 ## script = '''
 ## FROM scratch AS cratesio-zerofrom-0.1.6
 ## ADD --chmod=0664 --unpack --checksum=sha256:50cc42e0333e05660c3587f3bf9d0478688e15d870fab3346451ce7f8c9fbea5 \
 ##   https://static.crates.io/crates/zerofrom/zerofrom-0.1.6.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-zerofrom-0.1.6-00c3b49813826788"
 ## script = '''
@@ -17904,7 +17904,7 @@ COPY --link --from=dep-n-zerofrom-0.1.6-00c3b49813826788 /tmp/clis-diesel_cli_2-
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-00c3b49813826788-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-00c3b49813826788-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-00c3b49813826788* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-00c3b49813826788"
 ## script = """
@@ -17996,71 +17996,71 @@ COPY --link --from=dep-n-yoke-0.8.0-8d7809c78337cadb /tmp/clis-diesel_cli_2-3-2/
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libyoke-8d7809c78337cadb.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libyoke-8d7809c78337cadb.rlib","emit":"link"}',
 ## ]
-## 
+##
 ## [[externs]]
 ## from = "out-64b214f8b7568c22"
 ## xtern = "libstable_deref_trait-64b214f8b7568c22.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-64b214f8b7568c22"
 ## xtern = "libstable_deref_trait-64b214f8b7568c22.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-e93e94337f616c10"
 ## xtern = "libyoke_derive-e93e94337f616c10.so"
-## 
+##
 ## [[externs]]
 ## from = "out-da36b031605c1ddc"
 ## xtern = "libproc_macro2-da36b031605c1ddc.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-da36b031605c1ddc"
 ## xtern = "libproc_macro2-da36b031605c1ddc.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-02b0d04ef026a7b6"
 ## xtern = "libunicode_ident-02b0d04ef026a7b6.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-02b0d04ef026a7b6"
 ## xtern = "libunicode_ident-02b0d04ef026a7b6.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-21aeee0f329238fb"
 ## xtern = "libquote-21aeee0f329238fb.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-21aeee0f329238fb"
 ## xtern = "libquote-21aeee0f329238fb.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-f0d9159e02a48398"
 ## xtern = "libsyn-f0d9159e02a48398.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-f0d9159e02a48398"
 ## xtern = "libsyn-f0d9159e02a48398.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-5ef66ecc0476c29a"
 ## xtern = "libsynstructure-5ef66ecc0476c29a.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-5ef66ecc0476c29a"
 ## xtern = "libsynstructure-5ef66ecc0476c29a.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-00c3b49813826788"
 ## xtern = "libzerofrom-00c3b49813826788.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-00c3b49813826788"
 ## xtern = "libzerofrom-00c3b49813826788.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-767c856a4e9aa04c"
 ## xtern = "libzerofrom_derive-767c856a4e9aa04c.so"
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -18089,14 +18089,14 @@ COPY --link --from=dep-n-yoke-0.8.0-8d7809c78337cadb /tmp/clis-diesel_cli_2-3-2/
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-yoke-0.8.0"
 ## script = '''
 ## FROM scratch AS cratesio-yoke-0.8.0
 ## ADD --chmod=0664 --unpack --checksum=sha256:5f41bb01b8226ef4bfd589436a297c53d118f65921786300e427be8d487695cc \
 ##   https://static.crates.io/crates/yoke/yoke-0.8.0.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-yoke-0.8.0-8d7809c78337cadb"
 ## script = '''
@@ -18146,7 +18146,7 @@ COPY --link --from=dep-n-yoke-0.8.0-8d7809c78337cadb /tmp/clis-diesel_cli_2-3-2/
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-8d7809c78337cadb-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-8d7809c78337cadb-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-8d7809c78337cadb* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-8d7809c78337cadb"
 ## script = """
@@ -18214,23 +18214,23 @@ COPY --link --from=dep-n-zerovec-derive-0.11.1-91bc8cb8ec21fc5b /tmp/clis-diesel
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/zerovec_derive-91bc8cb8ec21fc5b.d","emit":"dep-info"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libzerovec_derive-91bc8cb8ec21fc5b.so","emit":"link"}',
 ## ]
-## 
+##
 ## [[externs]]
 ## from = "out-da36b031605c1ddc"
 ## xtern = "libproc_macro2-da36b031605c1ddc.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-02b0d04ef026a7b6"
 ## xtern = "libunicode_ident-02b0d04ef026a7b6.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-21aeee0f329238fb"
 ## xtern = "libquote-21aeee0f329238fb.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-f0d9159e02a48398"
 ## xtern = "libsyn-f0d9159e02a48398.rlib"
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -18259,14 +18259,14 @@ COPY --link --from=dep-n-zerovec-derive-0.11.1-91bc8cb8ec21fc5b /tmp/clis-diesel
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-zerovec-derive-0.11.1"
 ## script = '''
 ## FROM scratch AS cratesio-zerovec-derive-0.11.1
 ## ADD --chmod=0664 --unpack --checksum=sha256:5b96237efa0c878c64bd89c436f661be4e46b2f3eff1ebb976f7ef2321d2f58f \
 ##   https://static.crates.io/crates/zerovec-derive/zerovec-derive-0.11.1.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-zerovec-derive-0.11.1-91bc8cb8ec21fc5b"
 ## script = '''
@@ -18304,7 +18304,7 @@ COPY --link --from=dep-n-zerovec-derive-0.11.1-91bc8cb8ec21fc5b /tmp/clis-diesel
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-91bc8cb8ec21fc5b-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-91bc8cb8ec21fc5b-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-91bc8cb8ec21fc5b* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-91bc8cb8ec21fc5b"
 ## script = """
@@ -18403,83 +18403,83 @@ COPY --link --from=dep-n-zerovec-0.11.2-52a5538e3daafb5d /tmp/clis-diesel_cli_2-
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libzerovec-52a5538e3daafb5d.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libzerovec-52a5538e3daafb5d.rlib","emit":"link"}',
 ## ]
-## 
+##
 ## [[externs]]
 ## from = "out-8d7809c78337cadb"
 ## xtern = "libyoke-8d7809c78337cadb.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-8d7809c78337cadb"
 ## xtern = "libyoke-8d7809c78337cadb.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-64b214f8b7568c22"
 ## xtern = "libstable_deref_trait-64b214f8b7568c22.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-64b214f8b7568c22"
 ## xtern = "libstable_deref_trait-64b214f8b7568c22.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-e93e94337f616c10"
 ## xtern = "libyoke_derive-e93e94337f616c10.so"
-## 
+##
 ## [[externs]]
 ## from = "out-da36b031605c1ddc"
 ## xtern = "libproc_macro2-da36b031605c1ddc.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-da36b031605c1ddc"
 ## xtern = "libproc_macro2-da36b031605c1ddc.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-02b0d04ef026a7b6"
 ## xtern = "libunicode_ident-02b0d04ef026a7b6.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-02b0d04ef026a7b6"
 ## xtern = "libunicode_ident-02b0d04ef026a7b6.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-21aeee0f329238fb"
 ## xtern = "libquote-21aeee0f329238fb.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-21aeee0f329238fb"
 ## xtern = "libquote-21aeee0f329238fb.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-f0d9159e02a48398"
 ## xtern = "libsyn-f0d9159e02a48398.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-f0d9159e02a48398"
 ## xtern = "libsyn-f0d9159e02a48398.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-5ef66ecc0476c29a"
 ## xtern = "libsynstructure-5ef66ecc0476c29a.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-5ef66ecc0476c29a"
 ## xtern = "libsynstructure-5ef66ecc0476c29a.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-00c3b49813826788"
 ## xtern = "libzerofrom-00c3b49813826788.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-00c3b49813826788"
 ## xtern = "libzerofrom-00c3b49813826788.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-767c856a4e9aa04c"
 ## xtern = "libzerofrom_derive-767c856a4e9aa04c.so"
-## 
+##
 ## [[externs]]
 ## from = "out-91bc8cb8ec21fc5b"
 ## xtern = "libzerovec_derive-91bc8cb8ec21fc5b.so"
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -18508,14 +18508,14 @@ COPY --link --from=dep-n-zerovec-0.11.2-52a5538e3daafb5d /tmp/clis-diesel_cli_2-
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-zerovec-0.11.2"
 ## script = '''
 ## FROM scratch AS cratesio-zerovec-0.11.2
 ## ADD --chmod=0664 --unpack --checksum=sha256:4a05eb080e015ba39cc9e23bbe5e7fb04d5fb040350f99f34e338d5fdd294428 \
 ##   https://static.crates.io/crates/zerovec/zerovec-0.11.2.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-zerovec-0.11.2-52a5538e3daafb5d"
 ## script = '''
@@ -18568,7 +18568,7 @@ COPY --link --from=dep-n-zerovec-0.11.2-52a5538e3daafb5d /tmp/clis-diesel_cli_2-
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-52a5538e3daafb5d-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-52a5538e3daafb5d-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-52a5538e3daafb5d* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-52a5538e3daafb5d"
 ## script = """
@@ -18671,91 +18671,91 @@ COPY --link --from=dep-n-potential_utf-0.1.2-67a4625bc299980a /tmp/clis-diesel_c
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libpotential_utf-67a4625bc299980a.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libpotential_utf-67a4625bc299980a.rlib","emit":"link"}',
 ## ]
-## 
+##
 ## [[externs]]
 ## from = "out-52a5538e3daafb5d"
 ## xtern = "libzerovec-52a5538e3daafb5d.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-52a5538e3daafb5d"
 ## xtern = "libzerovec-52a5538e3daafb5d.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-8d7809c78337cadb"
 ## xtern = "libyoke-8d7809c78337cadb.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-8d7809c78337cadb"
 ## xtern = "libyoke-8d7809c78337cadb.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-64b214f8b7568c22"
 ## xtern = "libstable_deref_trait-64b214f8b7568c22.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-64b214f8b7568c22"
 ## xtern = "libstable_deref_trait-64b214f8b7568c22.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-e93e94337f616c10"
 ## xtern = "libyoke_derive-e93e94337f616c10.so"
-## 
+##
 ## [[externs]]
 ## from = "out-da36b031605c1ddc"
 ## xtern = "libproc_macro2-da36b031605c1ddc.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-da36b031605c1ddc"
 ## xtern = "libproc_macro2-da36b031605c1ddc.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-02b0d04ef026a7b6"
 ## xtern = "libunicode_ident-02b0d04ef026a7b6.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-02b0d04ef026a7b6"
 ## xtern = "libunicode_ident-02b0d04ef026a7b6.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-21aeee0f329238fb"
 ## xtern = "libquote-21aeee0f329238fb.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-21aeee0f329238fb"
 ## xtern = "libquote-21aeee0f329238fb.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-f0d9159e02a48398"
 ## xtern = "libsyn-f0d9159e02a48398.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-f0d9159e02a48398"
 ## xtern = "libsyn-f0d9159e02a48398.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-5ef66ecc0476c29a"
 ## xtern = "libsynstructure-5ef66ecc0476c29a.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-5ef66ecc0476c29a"
 ## xtern = "libsynstructure-5ef66ecc0476c29a.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-00c3b49813826788"
 ## xtern = "libzerofrom-00c3b49813826788.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-00c3b49813826788"
 ## xtern = "libzerofrom-00c3b49813826788.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-767c856a4e9aa04c"
 ## xtern = "libzerofrom_derive-767c856a4e9aa04c.so"
-## 
+##
 ## [[externs]]
 ## from = "out-91bc8cb8ec21fc5b"
 ## xtern = "libzerovec_derive-91bc8cb8ec21fc5b.so"
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -18784,14 +18784,14 @@ COPY --link --from=dep-n-potential_utf-0.1.2-67a4625bc299980a /tmp/clis-diesel_c
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-potential_utf-0.1.2"
 ## script = '''
 ## FROM scratch AS cratesio-potential_utf-0.1.2
 ## ADD --chmod=0664 --unpack --checksum=sha256:e5a7c30837279ca13e7c867e9e40053bc68740f988cb07f7ca6df43cc734b585 \
 ##   https://static.crates.io/crates/potential_utf/potential_utf-0.1.2.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-potential_utf-0.1.2-67a4625bc299980a"
 ## script = '''
@@ -18846,7 +18846,7 @@ COPY --link --from=dep-n-potential_utf-0.1.2-67a4625bc299980a /tmp/clis-diesel_c
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-67a4625bc299980a-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-67a4625bc299980a-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-67a4625bc299980a* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-67a4625bc299980a"
 ## script = """
@@ -18956,103 +18956,103 @@ COPY --link --from=dep-n-icu_collections-2.0.0-9e97082200d747ce /tmp/clis-diesel
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libicu_collections-9e97082200d747ce.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libicu_collections-9e97082200d747ce.rlib","emit":"link"}',
 ## ]
-## 
+##
 ## [[externs]]
 ## from = "out-33cb4686da2fed7b"
 ## xtern = "libdisplaydoc-33cb4686da2fed7b.so"
-## 
+##
 ## [[externs]]
 ## from = "out-da36b031605c1ddc"
 ## xtern = "libproc_macro2-da36b031605c1ddc.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-da36b031605c1ddc"
 ## xtern = "libproc_macro2-da36b031605c1ddc.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-02b0d04ef026a7b6"
 ## xtern = "libunicode_ident-02b0d04ef026a7b6.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-02b0d04ef026a7b6"
 ## xtern = "libunicode_ident-02b0d04ef026a7b6.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-21aeee0f329238fb"
 ## xtern = "libquote-21aeee0f329238fb.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-21aeee0f329238fb"
 ## xtern = "libquote-21aeee0f329238fb.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-f0d9159e02a48398"
 ## xtern = "libsyn-f0d9159e02a48398.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-f0d9159e02a48398"
 ## xtern = "libsyn-f0d9159e02a48398.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-67a4625bc299980a"
 ## xtern = "libpotential_utf-67a4625bc299980a.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-67a4625bc299980a"
 ## xtern = "libpotential_utf-67a4625bc299980a.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-52a5538e3daafb5d"
 ## xtern = "libzerovec-52a5538e3daafb5d.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-52a5538e3daafb5d"
 ## xtern = "libzerovec-52a5538e3daafb5d.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-8d7809c78337cadb"
 ## xtern = "libyoke-8d7809c78337cadb.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-8d7809c78337cadb"
 ## xtern = "libyoke-8d7809c78337cadb.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-64b214f8b7568c22"
 ## xtern = "libstable_deref_trait-64b214f8b7568c22.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-64b214f8b7568c22"
 ## xtern = "libstable_deref_trait-64b214f8b7568c22.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-e93e94337f616c10"
 ## xtern = "libyoke_derive-e93e94337f616c10.so"
-## 
+##
 ## [[externs]]
 ## from = "out-5ef66ecc0476c29a"
 ## xtern = "libsynstructure-5ef66ecc0476c29a.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-5ef66ecc0476c29a"
 ## xtern = "libsynstructure-5ef66ecc0476c29a.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-00c3b49813826788"
 ## xtern = "libzerofrom-00c3b49813826788.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-00c3b49813826788"
 ## xtern = "libzerofrom-00c3b49813826788.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-767c856a4e9aa04c"
 ## xtern = "libzerofrom_derive-767c856a4e9aa04c.so"
-## 
+##
 ## [[externs]]
 ## from = "out-91bc8cb8ec21fc5b"
 ## xtern = "libzerovec_derive-91bc8cb8ec21fc5b.so"
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -19081,14 +19081,14 @@ COPY --link --from=dep-n-icu_collections-2.0.0-9e97082200d747ce /tmp/clis-diesel
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-icu_collections-2.0.0"
 ## script = '''
 ## FROM scratch AS cratesio-icu_collections-2.0.0
 ## ADD --chmod=0664 --unpack --checksum=sha256:200072f5d0e3614556f94a9930d5dc3e0662a652823904c3a75dc3b0af7fee47 \
 ##   https://static.crates.io/crates/icu_collections/icu_collections-2.0.0.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-icu_collections-2.0.0-9e97082200d747ce"
 ## script = '''
@@ -19146,7 +19146,7 @@ COPY --link --from=dep-n-icu_collections-2.0.0-9e97082200d747ce /tmp/clis-diesel
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-9e97082200d747ce-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-9e97082200d747ce-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-9e97082200d747ce* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-9e97082200d747ce"
 ## script = """
@@ -19201,7 +19201,7 @@ COPY --link --from=dep-n-icu_normalizer_data-2.0.0-770920809931b010 /tmp/clis-di
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libicu_normalizer_data-770920809931b010.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libicu_normalizer_data-770920809931b010.rlib","emit":"link"}',
 ## ]
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -19230,14 +19230,14 @@ COPY --link --from=dep-n-icu_normalizer_data-2.0.0-770920809931b010 /tmp/clis-di
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-icu_normalizer_data-2.0.0"
 ## script = '''
 ## FROM scratch AS cratesio-icu_normalizer_data-2.0.0
 ## ADD --chmod=0664 --unpack --checksum=sha256:00210d6893afc98edb752b664b8890f0ef174c8adbb8d0be9710fa66fbbf72d3 \
 ##   https://static.crates.io/crates/icu_normalizer_data/icu_normalizer_data-2.0.0.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-icu_normalizer_data-2.0.0-770920809931b010"
 ## script = '''
@@ -19272,7 +19272,7 @@ COPY --link --from=dep-n-icu_normalizer_data-2.0.0-770920809931b010 /tmp/clis-di
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-770920809931b010-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-770920809931b010-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-770920809931b010* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-770920809931b010"
 ## script = """
@@ -19326,7 +19326,7 @@ COPY --link --from=dep-n-litemap-0.8.0-96b4e914e5e42150 /tmp/clis-diesel_cli_2-3
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/liblitemap-96b4e914e5e42150.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/liblitemap-96b4e914e5e42150.rlib","emit":"link"}',
 ## ]
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -19355,14 +19355,14 @@ COPY --link --from=dep-n-litemap-0.8.0-96b4e914e5e42150 /tmp/clis-diesel_cli_2-3
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-litemap-0.8.0"
 ## script = '''
 ## FROM scratch AS cratesio-litemap-0.8.0
 ## ADD --chmod=0664 --unpack --checksum=sha256:241eaef5fd12c88705a01fc1066c48c4b36e0dd4377dcdc7ec3942cea7a69956 \
 ##   https://static.crates.io/crates/litemap/litemap-0.8.0.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-litemap-0.8.0-96b4e914e5e42150"
 ## script = '''
@@ -19396,7 +19396,7 @@ COPY --link --from=dep-n-litemap-0.8.0-96b4e914e5e42150 /tmp/clis-diesel_cli_2-3
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-96b4e914e5e42150-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-96b4e914e5e42150-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-96b4e914e5e42150* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-96b4e914e5e42150"
 ## script = """
@@ -19502,95 +19502,95 @@ COPY --link --from=dep-n-tinystr-0.8.1-1a087bab337e35b1 /tmp/clis-diesel_cli_2-3
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libtinystr-1a087bab337e35b1.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libtinystr-1a087bab337e35b1.rlib","emit":"link"}',
 ## ]
-## 
+##
 ## [[externs]]
 ## from = "out-33cb4686da2fed7b"
 ## xtern = "libdisplaydoc-33cb4686da2fed7b.so"
-## 
+##
 ## [[externs]]
 ## from = "out-da36b031605c1ddc"
 ## xtern = "libproc_macro2-da36b031605c1ddc.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-da36b031605c1ddc"
 ## xtern = "libproc_macro2-da36b031605c1ddc.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-02b0d04ef026a7b6"
 ## xtern = "libunicode_ident-02b0d04ef026a7b6.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-02b0d04ef026a7b6"
 ## xtern = "libunicode_ident-02b0d04ef026a7b6.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-21aeee0f329238fb"
 ## xtern = "libquote-21aeee0f329238fb.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-21aeee0f329238fb"
 ## xtern = "libquote-21aeee0f329238fb.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-f0d9159e02a48398"
 ## xtern = "libsyn-f0d9159e02a48398.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-f0d9159e02a48398"
 ## xtern = "libsyn-f0d9159e02a48398.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-52a5538e3daafb5d"
 ## xtern = "libzerovec-52a5538e3daafb5d.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-52a5538e3daafb5d"
 ## xtern = "libzerovec-52a5538e3daafb5d.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-8d7809c78337cadb"
 ## xtern = "libyoke-8d7809c78337cadb.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-8d7809c78337cadb"
 ## xtern = "libyoke-8d7809c78337cadb.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-64b214f8b7568c22"
 ## xtern = "libstable_deref_trait-64b214f8b7568c22.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-64b214f8b7568c22"
 ## xtern = "libstable_deref_trait-64b214f8b7568c22.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-e93e94337f616c10"
 ## xtern = "libyoke_derive-e93e94337f616c10.so"
-## 
+##
 ## [[externs]]
 ## from = "out-5ef66ecc0476c29a"
 ## xtern = "libsynstructure-5ef66ecc0476c29a.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-5ef66ecc0476c29a"
 ## xtern = "libsynstructure-5ef66ecc0476c29a.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-00c3b49813826788"
 ## xtern = "libzerofrom-00c3b49813826788.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-00c3b49813826788"
 ## xtern = "libzerofrom-00c3b49813826788.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-767c856a4e9aa04c"
 ## xtern = "libzerofrom_derive-767c856a4e9aa04c.so"
-## 
+##
 ## [[externs]]
 ## from = "out-91bc8cb8ec21fc5b"
 ## xtern = "libzerovec_derive-91bc8cb8ec21fc5b.so"
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -19619,14 +19619,14 @@ COPY --link --from=dep-n-tinystr-0.8.1-1a087bab337e35b1 /tmp/clis-diesel_cli_2-3
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-tinystr-0.8.1"
 ## script = '''
 ## FROM scratch AS cratesio-tinystr-0.8.1
 ## ADD --chmod=0664 --unpack --checksum=sha256:5d4f6d1145dcb577acf783d4e601bc1d76a13337bb54e6233add580b07344c8b \
 ##   https://static.crates.io/crates/tinystr/tinystr-0.8.1.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-tinystr-0.8.1-1a087bab337e35b1"
 ## script = '''
@@ -19682,7 +19682,7 @@ COPY --link --from=dep-n-tinystr-0.8.1-1a087bab337e35b1 /tmp/clis-diesel_cli_2-3
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-1a087bab337e35b1-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-1a087bab337e35b1-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-1a087bab337e35b1* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-1a087bab337e35b1"
 ## script = """
@@ -19736,7 +19736,7 @@ COPY --link --from=dep-n-writeable-0.6.1-88c098d69cf2eee8 /tmp/clis-diesel_cli_2
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libwriteable-88c098d69cf2eee8.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libwriteable-88c098d69cf2eee8.rlib","emit":"link"}',
 ## ]
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -19765,14 +19765,14 @@ COPY --link --from=dep-n-writeable-0.6.1-88c098d69cf2eee8 /tmp/clis-diesel_cli_2
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-writeable-0.6.1"
 ## script = '''
 ## FROM scratch AS cratesio-writeable-0.6.1
 ## ADD --chmod=0664 --unpack --checksum=sha256:ea2f10b9bb0928dfb1b42b65e1f9e36f7f54dbdf08457afefb38afcdec4fa2bb \
 ##   https://static.crates.io/crates/writeable/writeable-0.6.1.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-writeable-0.6.1-88c098d69cf2eee8"
 ## script = '''
@@ -19806,7 +19806,7 @@ COPY --link --from=dep-n-writeable-0.6.1-88c098d69cf2eee8 /tmp/clis-diesel_cli_2
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-88c098d69cf2eee8-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-88c098d69cf2eee8-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-88c098d69cf2eee8* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-88c098d69cf2eee8"
 ## script = """
@@ -19924,119 +19924,119 @@ COPY --link --from=dep-n-icu_locale_core-2.0.0-8628dde14a206d6f /tmp/clis-diesel
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libicu_locale_core-8628dde14a206d6f.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libicu_locale_core-8628dde14a206d6f.rlib","emit":"link"}',
 ## ]
-## 
+##
 ## [[externs]]
 ## from = "out-33cb4686da2fed7b"
 ## xtern = "libdisplaydoc-33cb4686da2fed7b.so"
-## 
+##
 ## [[externs]]
 ## from = "out-da36b031605c1ddc"
 ## xtern = "libproc_macro2-da36b031605c1ddc.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-da36b031605c1ddc"
 ## xtern = "libproc_macro2-da36b031605c1ddc.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-02b0d04ef026a7b6"
 ## xtern = "libunicode_ident-02b0d04ef026a7b6.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-02b0d04ef026a7b6"
 ## xtern = "libunicode_ident-02b0d04ef026a7b6.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-21aeee0f329238fb"
 ## xtern = "libquote-21aeee0f329238fb.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-21aeee0f329238fb"
 ## xtern = "libquote-21aeee0f329238fb.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-f0d9159e02a48398"
 ## xtern = "libsyn-f0d9159e02a48398.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-f0d9159e02a48398"
 ## xtern = "libsyn-f0d9159e02a48398.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-96b4e914e5e42150"
 ## xtern = "liblitemap-96b4e914e5e42150.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-96b4e914e5e42150"
 ## xtern = "liblitemap-96b4e914e5e42150.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-1a087bab337e35b1"
 ## xtern = "libtinystr-1a087bab337e35b1.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-1a087bab337e35b1"
 ## xtern = "libtinystr-1a087bab337e35b1.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-52a5538e3daafb5d"
 ## xtern = "libzerovec-52a5538e3daafb5d.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-52a5538e3daafb5d"
 ## xtern = "libzerovec-52a5538e3daafb5d.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-8d7809c78337cadb"
 ## xtern = "libyoke-8d7809c78337cadb.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-8d7809c78337cadb"
 ## xtern = "libyoke-8d7809c78337cadb.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-64b214f8b7568c22"
 ## xtern = "libstable_deref_trait-64b214f8b7568c22.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-64b214f8b7568c22"
 ## xtern = "libstable_deref_trait-64b214f8b7568c22.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-e93e94337f616c10"
 ## xtern = "libyoke_derive-e93e94337f616c10.so"
-## 
+##
 ## [[externs]]
 ## from = "out-5ef66ecc0476c29a"
 ## xtern = "libsynstructure-5ef66ecc0476c29a.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-5ef66ecc0476c29a"
 ## xtern = "libsynstructure-5ef66ecc0476c29a.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-00c3b49813826788"
 ## xtern = "libzerofrom-00c3b49813826788.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-00c3b49813826788"
 ## xtern = "libzerofrom-00c3b49813826788.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-767c856a4e9aa04c"
 ## xtern = "libzerofrom_derive-767c856a4e9aa04c.so"
-## 
+##
 ## [[externs]]
 ## from = "out-91bc8cb8ec21fc5b"
 ## xtern = "libzerovec_derive-91bc8cb8ec21fc5b.so"
-## 
+##
 ## [[externs]]
 ## from = "out-88c098d69cf2eee8"
 ## xtern = "libwriteable-88c098d69cf2eee8.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-88c098d69cf2eee8"
 ## xtern = "libwriteable-88c098d69cf2eee8.rmeta"
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -20065,14 +20065,14 @@ COPY --link --from=dep-n-icu_locale_core-2.0.0-8628dde14a206d6f /tmp/clis-diesel
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-icu_locale_core-2.0.0"
 ## script = '''
 ## FROM scratch AS cratesio-icu_locale_core-2.0.0
 ## ADD --chmod=0664 --unpack --checksum=sha256:0cde2700ccaed3872079a65fb1a78f6c0a36c91570f28755dda67bc8f7d9f00a \
 ##   https://static.crates.io/crates/icu_locale_core/icu_locale_core-2.0.0.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-icu_locale_core-2.0.0-8628dde14a206d6f"
 ## script = '''
@@ -20134,7 +20134,7 @@ COPY --link --from=dep-n-icu_locale_core-2.0.0-8628dde14a206d6f /tmp/clis-diesel
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-8628dde14a206d6f-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-8628dde14a206d6f-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-8628dde14a206d6f* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-8628dde14a206d6f"
 ## script = """
@@ -20233,83 +20233,83 @@ COPY --link --from=dep-n-zerotrie-0.2.2-bae9a68a84dba003 /tmp/clis-diesel_cli_2-
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libzerotrie-bae9a68a84dba003.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libzerotrie-bae9a68a84dba003.rlib","emit":"link"}',
 ## ]
-## 
+##
 ## [[externs]]
 ## from = "out-33cb4686da2fed7b"
 ## xtern = "libdisplaydoc-33cb4686da2fed7b.so"
-## 
+##
 ## [[externs]]
 ## from = "out-da36b031605c1ddc"
 ## xtern = "libproc_macro2-da36b031605c1ddc.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-da36b031605c1ddc"
 ## xtern = "libproc_macro2-da36b031605c1ddc.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-02b0d04ef026a7b6"
 ## xtern = "libunicode_ident-02b0d04ef026a7b6.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-02b0d04ef026a7b6"
 ## xtern = "libunicode_ident-02b0d04ef026a7b6.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-21aeee0f329238fb"
 ## xtern = "libquote-21aeee0f329238fb.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-21aeee0f329238fb"
 ## xtern = "libquote-21aeee0f329238fb.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-f0d9159e02a48398"
 ## xtern = "libsyn-f0d9159e02a48398.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-f0d9159e02a48398"
 ## xtern = "libsyn-f0d9159e02a48398.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-8d7809c78337cadb"
 ## xtern = "libyoke-8d7809c78337cadb.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-8d7809c78337cadb"
 ## xtern = "libyoke-8d7809c78337cadb.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-64b214f8b7568c22"
 ## xtern = "libstable_deref_trait-64b214f8b7568c22.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-64b214f8b7568c22"
 ## xtern = "libstable_deref_trait-64b214f8b7568c22.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-e93e94337f616c10"
 ## xtern = "libyoke_derive-e93e94337f616c10.so"
-## 
+##
 ## [[externs]]
 ## from = "out-5ef66ecc0476c29a"
 ## xtern = "libsynstructure-5ef66ecc0476c29a.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-5ef66ecc0476c29a"
 ## xtern = "libsynstructure-5ef66ecc0476c29a.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-00c3b49813826788"
 ## xtern = "libzerofrom-00c3b49813826788.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-00c3b49813826788"
 ## xtern = "libzerofrom-00c3b49813826788.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-767c856a4e9aa04c"
 ## xtern = "libzerofrom_derive-767c856a4e9aa04c.so"
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -20338,14 +20338,14 @@ COPY --link --from=dep-n-zerotrie-0.2.2-bae9a68a84dba003 /tmp/clis-diesel_cli_2-
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-zerotrie-0.2.2"
 ## script = '''
 ## FROM scratch AS cratesio-zerotrie-0.2.2
 ## ADD --chmod=0664 --unpack --checksum=sha256:36f0bbd478583f79edad978b407914f61b2972f5af6fa089686016be8f9af595 \
 ##   https://static.crates.io/crates/zerotrie/zerotrie-0.2.2.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-zerotrie-0.2.2-bae9a68a84dba003"
 ## script = '''
@@ -20398,7 +20398,7 @@ COPY --link --from=dep-n-zerotrie-0.2.2-bae9a68a84dba003 /tmp/clis-diesel_cli_2-
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-bae9a68a84dba003-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-bae9a68a84dba003-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-bae9a68a84dba003* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-bae9a68a84dba003"
 ## script = """
@@ -20524,135 +20524,135 @@ COPY --link --from=dep-n-icu_provider-2.0.0-7131204e1823b5a8 /tmp/clis-diesel_cl
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libicu_provider-7131204e1823b5a8.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libicu_provider-7131204e1823b5a8.rlib","emit":"link"}',
 ## ]
-## 
+##
 ## [[externs]]
 ## from = "out-33cb4686da2fed7b"
 ## xtern = "libdisplaydoc-33cb4686da2fed7b.so"
-## 
+##
 ## [[externs]]
 ## from = "out-da36b031605c1ddc"
 ## xtern = "libproc_macro2-da36b031605c1ddc.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-da36b031605c1ddc"
 ## xtern = "libproc_macro2-da36b031605c1ddc.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-02b0d04ef026a7b6"
 ## xtern = "libunicode_ident-02b0d04ef026a7b6.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-02b0d04ef026a7b6"
 ## xtern = "libunicode_ident-02b0d04ef026a7b6.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-21aeee0f329238fb"
 ## xtern = "libquote-21aeee0f329238fb.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-21aeee0f329238fb"
 ## xtern = "libquote-21aeee0f329238fb.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-f0d9159e02a48398"
 ## xtern = "libsyn-f0d9159e02a48398.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-f0d9159e02a48398"
 ## xtern = "libsyn-f0d9159e02a48398.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-8628dde14a206d6f"
 ## xtern = "libicu_locale_core-8628dde14a206d6f.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-8628dde14a206d6f"
 ## xtern = "libicu_locale_core-8628dde14a206d6f.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-96b4e914e5e42150"
 ## xtern = "liblitemap-96b4e914e5e42150.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-96b4e914e5e42150"
 ## xtern = "liblitemap-96b4e914e5e42150.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-1a087bab337e35b1"
 ## xtern = "libtinystr-1a087bab337e35b1.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-1a087bab337e35b1"
 ## xtern = "libtinystr-1a087bab337e35b1.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-52a5538e3daafb5d"
 ## xtern = "libzerovec-52a5538e3daafb5d.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-52a5538e3daafb5d"
 ## xtern = "libzerovec-52a5538e3daafb5d.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-8d7809c78337cadb"
 ## xtern = "libyoke-8d7809c78337cadb.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-8d7809c78337cadb"
 ## xtern = "libyoke-8d7809c78337cadb.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-64b214f8b7568c22"
 ## xtern = "libstable_deref_trait-64b214f8b7568c22.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-64b214f8b7568c22"
 ## xtern = "libstable_deref_trait-64b214f8b7568c22.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-e93e94337f616c10"
 ## xtern = "libyoke_derive-e93e94337f616c10.so"
-## 
+##
 ## [[externs]]
 ## from = "out-5ef66ecc0476c29a"
 ## xtern = "libsynstructure-5ef66ecc0476c29a.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-5ef66ecc0476c29a"
 ## xtern = "libsynstructure-5ef66ecc0476c29a.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-00c3b49813826788"
 ## xtern = "libzerofrom-00c3b49813826788.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-00c3b49813826788"
 ## xtern = "libzerofrom-00c3b49813826788.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-767c856a4e9aa04c"
 ## xtern = "libzerofrom_derive-767c856a4e9aa04c.so"
-## 
+##
 ## [[externs]]
 ## from = "out-91bc8cb8ec21fc5b"
 ## xtern = "libzerovec_derive-91bc8cb8ec21fc5b.so"
-## 
+##
 ## [[externs]]
 ## from = "out-88c098d69cf2eee8"
 ## xtern = "libwriteable-88c098d69cf2eee8.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-88c098d69cf2eee8"
 ## xtern = "libwriteable-88c098d69cf2eee8.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-bae9a68a84dba003"
 ## xtern = "libzerotrie-bae9a68a84dba003.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-bae9a68a84dba003"
 ## xtern = "libzerotrie-bae9a68a84dba003.rmeta"
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -20681,14 +20681,14 @@ COPY --link --from=dep-n-icu_provider-2.0.0-7131204e1823b5a8 /tmp/clis-diesel_cl
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-icu_provider-2.0.0"
 ## script = '''
 ## FROM scratch AS cratesio-icu_provider-2.0.0
 ## ADD --chmod=0664 --unpack --checksum=sha256:03c80da27b5f4187909049ee2d72f276f0d9f99a42c306bd0131ecfe04d8e5af \
 ##   https://static.crates.io/crates/icu_provider/icu_provider-2.0.0.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-icu_provider-2.0.0-7131204e1823b5a8"
 ## script = '''
@@ -20754,7 +20754,7 @@ COPY --link --from=dep-n-icu_provider-2.0.0-7131204e1823b5a8 /tmp/clis-diesel_cl
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-7131204e1823b5a8-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-7131204e1823b5a8-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-7131204e1823b5a8* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-7131204e1823b5a8"
 ## script = """
@@ -20900,175 +20900,175 @@ COPY --link --from=dep-n-icu_normalizer-2.0.0-e23cd85056631297 /tmp/clis-diesel_
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libicu_normalizer-e23cd85056631297.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libicu_normalizer-e23cd85056631297.rlib","emit":"link"}',
 ## ]
-## 
+##
 ## [[externs]]
 ## from = "out-33cb4686da2fed7b"
 ## xtern = "libdisplaydoc-33cb4686da2fed7b.so"
-## 
+##
 ## [[externs]]
 ## from = "out-da36b031605c1ddc"
 ## xtern = "libproc_macro2-da36b031605c1ddc.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-da36b031605c1ddc"
 ## xtern = "libproc_macro2-da36b031605c1ddc.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-02b0d04ef026a7b6"
 ## xtern = "libunicode_ident-02b0d04ef026a7b6.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-02b0d04ef026a7b6"
 ## xtern = "libunicode_ident-02b0d04ef026a7b6.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-21aeee0f329238fb"
 ## xtern = "libquote-21aeee0f329238fb.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-21aeee0f329238fb"
 ## xtern = "libquote-21aeee0f329238fb.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-f0d9159e02a48398"
 ## xtern = "libsyn-f0d9159e02a48398.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-f0d9159e02a48398"
 ## xtern = "libsyn-f0d9159e02a48398.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-9e97082200d747ce"
 ## xtern = "libicu_collections-9e97082200d747ce.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-9e97082200d747ce"
 ## xtern = "libicu_collections-9e97082200d747ce.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-67a4625bc299980a"
 ## xtern = "libpotential_utf-67a4625bc299980a.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-67a4625bc299980a"
 ## xtern = "libpotential_utf-67a4625bc299980a.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-52a5538e3daafb5d"
 ## xtern = "libzerovec-52a5538e3daafb5d.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-52a5538e3daafb5d"
 ## xtern = "libzerovec-52a5538e3daafb5d.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-8d7809c78337cadb"
 ## xtern = "libyoke-8d7809c78337cadb.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-8d7809c78337cadb"
 ## xtern = "libyoke-8d7809c78337cadb.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-64b214f8b7568c22"
 ## xtern = "libstable_deref_trait-64b214f8b7568c22.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-64b214f8b7568c22"
 ## xtern = "libstable_deref_trait-64b214f8b7568c22.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-e93e94337f616c10"
 ## xtern = "libyoke_derive-e93e94337f616c10.so"
-## 
+##
 ## [[externs]]
 ## from = "out-5ef66ecc0476c29a"
 ## xtern = "libsynstructure-5ef66ecc0476c29a.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-5ef66ecc0476c29a"
 ## xtern = "libsynstructure-5ef66ecc0476c29a.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-00c3b49813826788"
 ## xtern = "libzerofrom-00c3b49813826788.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-00c3b49813826788"
 ## xtern = "libzerofrom-00c3b49813826788.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-767c856a4e9aa04c"
 ## xtern = "libzerofrom_derive-767c856a4e9aa04c.so"
-## 
+##
 ## [[externs]]
 ## from = "out-91bc8cb8ec21fc5b"
 ## xtern = "libzerovec_derive-91bc8cb8ec21fc5b.so"
-## 
+##
 ## [[externs]]
 ## from = "out-770920809931b010"
 ## xtern = "libicu_normalizer_data-770920809931b010.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-770920809931b010"
 ## xtern = "libicu_normalizer_data-770920809931b010.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-7131204e1823b5a8"
 ## xtern = "libicu_provider-7131204e1823b5a8.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-7131204e1823b5a8"
 ## xtern = "libicu_provider-7131204e1823b5a8.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-8628dde14a206d6f"
 ## xtern = "libicu_locale_core-8628dde14a206d6f.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-8628dde14a206d6f"
 ## xtern = "libicu_locale_core-8628dde14a206d6f.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-96b4e914e5e42150"
 ## xtern = "liblitemap-96b4e914e5e42150.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-96b4e914e5e42150"
 ## xtern = "liblitemap-96b4e914e5e42150.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-1a087bab337e35b1"
 ## xtern = "libtinystr-1a087bab337e35b1.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-1a087bab337e35b1"
 ## xtern = "libtinystr-1a087bab337e35b1.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-88c098d69cf2eee8"
 ## xtern = "libwriteable-88c098d69cf2eee8.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-88c098d69cf2eee8"
 ## xtern = "libwriteable-88c098d69cf2eee8.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-bae9a68a84dba003"
 ## xtern = "libzerotrie-bae9a68a84dba003.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-bae9a68a84dba003"
 ## xtern = "libzerotrie-bae9a68a84dba003.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-5d9a571e1bcf340f"
 ## xtern = "libsmallvec-5d9a571e1bcf340f.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-5d9a571e1bcf340f"
 ## xtern = "libsmallvec-5d9a571e1bcf340f.rmeta"
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -21097,14 +21097,14 @@ COPY --link --from=dep-n-icu_normalizer-2.0.0-e23cd85056631297 /tmp/clis-diesel_
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-icu_normalizer-2.0.0"
 ## script = '''
 ## FROM scratch AS cratesio-icu_normalizer-2.0.0
 ## ADD --chmod=0664 --unpack --checksum=sha256:436880e8e18df4d7bbc06d58432329d6458cc84531f7ac5f024e93deadb37979 \
 ##   https://static.crates.io/crates/icu_normalizer/icu_normalizer-2.0.0.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-icu_normalizer-2.0.0-e23cd85056631297"
 ## script = '''
@@ -21180,7 +21180,7 @@ COPY --link --from=dep-n-icu_normalizer-2.0.0-e23cd85056631297 /tmp/clis-diesel_
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-e23cd85056631297-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-e23cd85056631297-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-e23cd85056631297* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-e23cd85056631297"
 ## script = """
@@ -21235,7 +21235,7 @@ COPY --link --from=dep-n-icu_properties_data-2.0.1-4ab50bd9d01aa116 /tmp/clis-di
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libicu_properties_data-4ab50bd9d01aa116.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libicu_properties_data-4ab50bd9d01aa116.rlib","emit":"link"}',
 ## ]
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -21264,14 +21264,14 @@ COPY --link --from=dep-n-icu_properties_data-2.0.1-4ab50bd9d01aa116 /tmp/clis-di
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-icu_properties_data-2.0.1"
 ## script = '''
 ## FROM scratch AS cratesio-icu_properties_data-2.0.1
 ## ADD --chmod=0664 --unpack --checksum=sha256:298459143998310acd25ffe6810ed544932242d3f07083eee1084d83a71bd632 \
 ##   https://static.crates.io/crates/icu_properties_data/icu_properties_data-2.0.1.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-icu_properties_data-2.0.1-4ab50bd9d01aa116"
 ## script = '''
@@ -21306,7 +21306,7 @@ COPY --link --from=dep-n-icu_properties_data-2.0.1-4ab50bd9d01aa116 /tmp/clis-di
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-4ab50bd9d01aa116-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-4ab50bd9d01aa116-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-4ab50bd9d01aa116* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-4ab50bd9d01aa116"
 ## script = """
@@ -21448,167 +21448,167 @@ COPY --link --from=dep-n-icu_properties-2.0.1-a00f4efd70ddb9c9 /tmp/clis-diesel_
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libicu_properties-a00f4efd70ddb9c9.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libicu_properties-a00f4efd70ddb9c9.rlib","emit":"link"}',
 ## ]
-## 
+##
 ## [[externs]]
 ## from = "out-33cb4686da2fed7b"
 ## xtern = "libdisplaydoc-33cb4686da2fed7b.so"
-## 
+##
 ## [[externs]]
 ## from = "out-da36b031605c1ddc"
 ## xtern = "libproc_macro2-da36b031605c1ddc.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-da36b031605c1ddc"
 ## xtern = "libproc_macro2-da36b031605c1ddc.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-02b0d04ef026a7b6"
 ## xtern = "libunicode_ident-02b0d04ef026a7b6.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-02b0d04ef026a7b6"
 ## xtern = "libunicode_ident-02b0d04ef026a7b6.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-21aeee0f329238fb"
 ## xtern = "libquote-21aeee0f329238fb.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-21aeee0f329238fb"
 ## xtern = "libquote-21aeee0f329238fb.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-f0d9159e02a48398"
 ## xtern = "libsyn-f0d9159e02a48398.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-f0d9159e02a48398"
 ## xtern = "libsyn-f0d9159e02a48398.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-9e97082200d747ce"
 ## xtern = "libicu_collections-9e97082200d747ce.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-9e97082200d747ce"
 ## xtern = "libicu_collections-9e97082200d747ce.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-67a4625bc299980a"
 ## xtern = "libpotential_utf-67a4625bc299980a.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-67a4625bc299980a"
 ## xtern = "libpotential_utf-67a4625bc299980a.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-52a5538e3daafb5d"
 ## xtern = "libzerovec-52a5538e3daafb5d.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-52a5538e3daafb5d"
 ## xtern = "libzerovec-52a5538e3daafb5d.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-8d7809c78337cadb"
 ## xtern = "libyoke-8d7809c78337cadb.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-8d7809c78337cadb"
 ## xtern = "libyoke-8d7809c78337cadb.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-64b214f8b7568c22"
 ## xtern = "libstable_deref_trait-64b214f8b7568c22.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-64b214f8b7568c22"
 ## xtern = "libstable_deref_trait-64b214f8b7568c22.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-e93e94337f616c10"
 ## xtern = "libyoke_derive-e93e94337f616c10.so"
-## 
+##
 ## [[externs]]
 ## from = "out-5ef66ecc0476c29a"
 ## xtern = "libsynstructure-5ef66ecc0476c29a.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-5ef66ecc0476c29a"
 ## xtern = "libsynstructure-5ef66ecc0476c29a.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-00c3b49813826788"
 ## xtern = "libzerofrom-00c3b49813826788.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-00c3b49813826788"
 ## xtern = "libzerofrom-00c3b49813826788.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-767c856a4e9aa04c"
 ## xtern = "libzerofrom_derive-767c856a4e9aa04c.so"
-## 
+##
 ## [[externs]]
 ## from = "out-91bc8cb8ec21fc5b"
 ## xtern = "libzerovec_derive-91bc8cb8ec21fc5b.so"
-## 
+##
 ## [[externs]]
 ## from = "out-8628dde14a206d6f"
 ## xtern = "libicu_locale_core-8628dde14a206d6f.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-8628dde14a206d6f"
 ## xtern = "libicu_locale_core-8628dde14a206d6f.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-96b4e914e5e42150"
 ## xtern = "liblitemap-96b4e914e5e42150.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-96b4e914e5e42150"
 ## xtern = "liblitemap-96b4e914e5e42150.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-1a087bab337e35b1"
 ## xtern = "libtinystr-1a087bab337e35b1.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-1a087bab337e35b1"
 ## xtern = "libtinystr-1a087bab337e35b1.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-88c098d69cf2eee8"
 ## xtern = "libwriteable-88c098d69cf2eee8.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-88c098d69cf2eee8"
 ## xtern = "libwriteable-88c098d69cf2eee8.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-4ab50bd9d01aa116"
 ## xtern = "libicu_properties_data-4ab50bd9d01aa116.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-4ab50bd9d01aa116"
 ## xtern = "libicu_properties_data-4ab50bd9d01aa116.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-7131204e1823b5a8"
 ## xtern = "libicu_provider-7131204e1823b5a8.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-7131204e1823b5a8"
 ## xtern = "libicu_provider-7131204e1823b5a8.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-bae9a68a84dba003"
 ## xtern = "libzerotrie-bae9a68a84dba003.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-bae9a68a84dba003"
 ## xtern = "libzerotrie-bae9a68a84dba003.rmeta"
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -21637,14 +21637,14 @@ COPY --link --from=dep-n-icu_properties-2.0.1-a00f4efd70ddb9c9 /tmp/clis-diesel_
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-icu_properties-2.0.1"
 ## script = '''
 ## FROM scratch AS cratesio-icu_properties-2.0.1
 ## ADD --chmod=0664 --unpack --checksum=sha256:016c619c1eeb94efb86809b015c58f479963de65bdb6253345c1a1276f22e32b \
 ##   https://static.crates.io/crates/icu_properties/icu_properties-2.0.1.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-icu_properties-2.0.1-a00f4efd70ddb9c9"
 ## script = '''
@@ -21718,7 +21718,7 @@ COPY --link --from=dep-n-icu_properties-2.0.1-a00f4efd70ddb9c9 /tmp/clis-diesel_
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-a00f4efd70ddb9c9-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-a00f4efd70ddb9c9-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-a00f4efd70ddb9c9* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-a00f4efd70ddb9c9"
 ## script = """
@@ -21876,199 +21876,199 @@ COPY --link --from=dep-n-idna_adapter-1.2.1-ada7e7fa9748a757 /tmp/clis-diesel_cl
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libidna_adapter-ada7e7fa9748a757.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libidna_adapter-ada7e7fa9748a757.rlib","emit":"link"}',
 ## ]
-## 
+##
 ## [[externs]]
 ## from = "out-e23cd85056631297"
 ## xtern = "libicu_normalizer-e23cd85056631297.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-e23cd85056631297"
 ## xtern = "libicu_normalizer-e23cd85056631297.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-33cb4686da2fed7b"
 ## xtern = "libdisplaydoc-33cb4686da2fed7b.so"
-## 
+##
 ## [[externs]]
 ## from = "out-da36b031605c1ddc"
 ## xtern = "libproc_macro2-da36b031605c1ddc.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-da36b031605c1ddc"
 ## xtern = "libproc_macro2-da36b031605c1ddc.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-02b0d04ef026a7b6"
 ## xtern = "libunicode_ident-02b0d04ef026a7b6.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-02b0d04ef026a7b6"
 ## xtern = "libunicode_ident-02b0d04ef026a7b6.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-21aeee0f329238fb"
 ## xtern = "libquote-21aeee0f329238fb.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-21aeee0f329238fb"
 ## xtern = "libquote-21aeee0f329238fb.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-f0d9159e02a48398"
 ## xtern = "libsyn-f0d9159e02a48398.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-f0d9159e02a48398"
 ## xtern = "libsyn-f0d9159e02a48398.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-9e97082200d747ce"
 ## xtern = "libicu_collections-9e97082200d747ce.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-9e97082200d747ce"
 ## xtern = "libicu_collections-9e97082200d747ce.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-67a4625bc299980a"
 ## xtern = "libpotential_utf-67a4625bc299980a.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-67a4625bc299980a"
 ## xtern = "libpotential_utf-67a4625bc299980a.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-52a5538e3daafb5d"
 ## xtern = "libzerovec-52a5538e3daafb5d.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-52a5538e3daafb5d"
 ## xtern = "libzerovec-52a5538e3daafb5d.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-8d7809c78337cadb"
 ## xtern = "libyoke-8d7809c78337cadb.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-8d7809c78337cadb"
 ## xtern = "libyoke-8d7809c78337cadb.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-64b214f8b7568c22"
 ## xtern = "libstable_deref_trait-64b214f8b7568c22.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-64b214f8b7568c22"
 ## xtern = "libstable_deref_trait-64b214f8b7568c22.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-e93e94337f616c10"
 ## xtern = "libyoke_derive-e93e94337f616c10.so"
-## 
+##
 ## [[externs]]
 ## from = "out-5ef66ecc0476c29a"
 ## xtern = "libsynstructure-5ef66ecc0476c29a.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-5ef66ecc0476c29a"
 ## xtern = "libsynstructure-5ef66ecc0476c29a.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-00c3b49813826788"
 ## xtern = "libzerofrom-00c3b49813826788.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-00c3b49813826788"
 ## xtern = "libzerofrom-00c3b49813826788.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-767c856a4e9aa04c"
 ## xtern = "libzerofrom_derive-767c856a4e9aa04c.so"
-## 
+##
 ## [[externs]]
 ## from = "out-91bc8cb8ec21fc5b"
 ## xtern = "libzerovec_derive-91bc8cb8ec21fc5b.so"
-## 
+##
 ## [[externs]]
 ## from = "out-770920809931b010"
 ## xtern = "libicu_normalizer_data-770920809931b010.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-770920809931b010"
 ## xtern = "libicu_normalizer_data-770920809931b010.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-7131204e1823b5a8"
 ## xtern = "libicu_provider-7131204e1823b5a8.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-7131204e1823b5a8"
 ## xtern = "libicu_provider-7131204e1823b5a8.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-8628dde14a206d6f"
 ## xtern = "libicu_locale_core-8628dde14a206d6f.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-8628dde14a206d6f"
 ## xtern = "libicu_locale_core-8628dde14a206d6f.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-96b4e914e5e42150"
 ## xtern = "liblitemap-96b4e914e5e42150.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-96b4e914e5e42150"
 ## xtern = "liblitemap-96b4e914e5e42150.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-1a087bab337e35b1"
 ## xtern = "libtinystr-1a087bab337e35b1.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-1a087bab337e35b1"
 ## xtern = "libtinystr-1a087bab337e35b1.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-88c098d69cf2eee8"
 ## xtern = "libwriteable-88c098d69cf2eee8.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-88c098d69cf2eee8"
 ## xtern = "libwriteable-88c098d69cf2eee8.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-bae9a68a84dba003"
 ## xtern = "libzerotrie-bae9a68a84dba003.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-bae9a68a84dba003"
 ## xtern = "libzerotrie-bae9a68a84dba003.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-5d9a571e1bcf340f"
 ## xtern = "libsmallvec-5d9a571e1bcf340f.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-5d9a571e1bcf340f"
 ## xtern = "libsmallvec-5d9a571e1bcf340f.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-a00f4efd70ddb9c9"
 ## xtern = "libicu_properties-a00f4efd70ddb9c9.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-a00f4efd70ddb9c9"
 ## xtern = "libicu_properties-a00f4efd70ddb9c9.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-4ab50bd9d01aa116"
 ## xtern = "libicu_properties_data-4ab50bd9d01aa116.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-4ab50bd9d01aa116"
 ## xtern = "libicu_properties_data-4ab50bd9d01aa116.rmeta"
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -22097,14 +22097,14 @@ COPY --link --from=dep-n-idna_adapter-1.2.1-ada7e7fa9748a757 /tmp/clis-diesel_cl
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-idna_adapter-1.2.1"
 ## script = '''
 ## FROM scratch AS cratesio-idna_adapter-1.2.1
 ## ADD --chmod=0664 --unpack --checksum=sha256:3acae9609540aa318d1bc588455225fb2085b9ed0c4f6bd0d9d5bcd86f1a0344 \
 ##   https://static.crates.io/crates/idna_adapter/idna_adapter-1.2.1.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-idna_adapter-1.2.1-ada7e7fa9748a757"
 ## script = '''
@@ -22186,7 +22186,7 @@ COPY --link --from=dep-n-idna_adapter-1.2.1-ada7e7fa9748a757 /tmp/clis-diesel_cl
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-ada7e7fa9748a757-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-ada7e7fa9748a757-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-ada7e7fa9748a757* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-ada7e7fa9748a757"
 ## script = """
@@ -22240,7 +22240,7 @@ COPY --link --from=dep-n-utf8_iter-1.0.4-f4e90a05e0718388 /tmp/clis-diesel_cli_2
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libutf8_iter-f4e90a05e0718388.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libutf8_iter-f4e90a05e0718388.rlib","emit":"link"}',
 ## ]
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -22269,14 +22269,14 @@ COPY --link --from=dep-n-utf8_iter-1.0.4-f4e90a05e0718388 /tmp/clis-diesel_cli_2
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-utf8_iter-1.0.4"
 ## script = '''
 ## FROM scratch AS cratesio-utf8_iter-1.0.4
 ## ADD --chmod=0664 --unpack --checksum=sha256:b6c140620e7ffbb22c2dee59cafe6084a59b5ffc27a8859a5f0d494b5d52b6be \
 ##   https://static.crates.io/crates/utf8_iter/utf8_iter-1.0.4.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-utf8_iter-1.0.4-f4e90a05e0718388"
 ## script = '''
@@ -22310,7 +22310,7 @@ COPY --link --from=dep-n-utf8_iter-1.0.4-f4e90a05e0718388 /tmp/clis-diesel_cli_2
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-f4e90a05e0718388-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-f4e90a05e0718388-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-f4e90a05e0718388* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-f4e90a05e0718388"
 ## script = """
@@ -22476,215 +22476,215 @@ COPY --link --from=dep-n-idna-1.0.3-b45f57985461d249 /tmp/clis-diesel_cli_2-3-2/
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libidna-b45f57985461d249.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/libidna-b45f57985461d249.rlib","emit":"link"}',
 ## ]
-## 
+##
 ## [[externs]]
 ## from = "out-ada7e7fa9748a757"
 ## xtern = "libidna_adapter-ada7e7fa9748a757.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-ada7e7fa9748a757"
 ## xtern = "libidna_adapter-ada7e7fa9748a757.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-e23cd85056631297"
 ## xtern = "libicu_normalizer-e23cd85056631297.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-e23cd85056631297"
 ## xtern = "libicu_normalizer-e23cd85056631297.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-33cb4686da2fed7b"
 ## xtern = "libdisplaydoc-33cb4686da2fed7b.so"
-## 
+##
 ## [[externs]]
 ## from = "out-da36b031605c1ddc"
 ## xtern = "libproc_macro2-da36b031605c1ddc.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-da36b031605c1ddc"
 ## xtern = "libproc_macro2-da36b031605c1ddc.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-02b0d04ef026a7b6"
 ## xtern = "libunicode_ident-02b0d04ef026a7b6.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-02b0d04ef026a7b6"
 ## xtern = "libunicode_ident-02b0d04ef026a7b6.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-21aeee0f329238fb"
 ## xtern = "libquote-21aeee0f329238fb.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-21aeee0f329238fb"
 ## xtern = "libquote-21aeee0f329238fb.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-f0d9159e02a48398"
 ## xtern = "libsyn-f0d9159e02a48398.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-f0d9159e02a48398"
 ## xtern = "libsyn-f0d9159e02a48398.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-9e97082200d747ce"
 ## xtern = "libicu_collections-9e97082200d747ce.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-9e97082200d747ce"
 ## xtern = "libicu_collections-9e97082200d747ce.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-67a4625bc299980a"
 ## xtern = "libpotential_utf-67a4625bc299980a.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-67a4625bc299980a"
 ## xtern = "libpotential_utf-67a4625bc299980a.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-52a5538e3daafb5d"
 ## xtern = "libzerovec-52a5538e3daafb5d.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-52a5538e3daafb5d"
 ## xtern = "libzerovec-52a5538e3daafb5d.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-8d7809c78337cadb"
 ## xtern = "libyoke-8d7809c78337cadb.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-8d7809c78337cadb"
 ## xtern = "libyoke-8d7809c78337cadb.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-64b214f8b7568c22"
 ## xtern = "libstable_deref_trait-64b214f8b7568c22.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-64b214f8b7568c22"
 ## xtern = "libstable_deref_trait-64b214f8b7568c22.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-e93e94337f616c10"
 ## xtern = "libyoke_derive-e93e94337f616c10.so"
-## 
+##
 ## [[externs]]
 ## from = "out-5ef66ecc0476c29a"
 ## xtern = "libsynstructure-5ef66ecc0476c29a.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-5ef66ecc0476c29a"
 ## xtern = "libsynstructure-5ef66ecc0476c29a.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-00c3b49813826788"
 ## xtern = "libzerofrom-00c3b49813826788.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-00c3b49813826788"
 ## xtern = "libzerofrom-00c3b49813826788.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-767c856a4e9aa04c"
 ## xtern = "libzerofrom_derive-767c856a4e9aa04c.so"
-## 
+##
 ## [[externs]]
 ## from = "out-91bc8cb8ec21fc5b"
 ## xtern = "libzerovec_derive-91bc8cb8ec21fc5b.so"
-## 
+##
 ## [[externs]]
 ## from = "out-770920809931b010"
 ## xtern = "libicu_normalizer_data-770920809931b010.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-770920809931b010"
 ## xtern = "libicu_normalizer_data-770920809931b010.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-7131204e1823b5a8"
 ## xtern = "libicu_provider-7131204e1823b5a8.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-7131204e1823b5a8"
 ## xtern = "libicu_provider-7131204e1823b5a8.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-8628dde14a206d6f"
 ## xtern = "libicu_locale_core-8628dde14a206d6f.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-8628dde14a206d6f"
 ## xtern = "libicu_locale_core-8628dde14a206d6f.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-96b4e914e5e42150"
 ## xtern = "liblitemap-96b4e914e5e42150.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-96b4e914e5e42150"
 ## xtern = "liblitemap-96b4e914e5e42150.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-1a087bab337e35b1"
 ## xtern = "libtinystr-1a087bab337e35b1.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-1a087bab337e35b1"
 ## xtern = "libtinystr-1a087bab337e35b1.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-88c098d69cf2eee8"
 ## xtern = "libwriteable-88c098d69cf2eee8.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-88c098d69cf2eee8"
 ## xtern = "libwriteable-88c098d69cf2eee8.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-bae9a68a84dba003"
 ## xtern = "libzerotrie-bae9a68a84dba003.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-bae9a68a84dba003"
 ## xtern = "libzerotrie-bae9a68a84dba003.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-5d9a571e1bcf340f"
 ## xtern = "libsmallvec-5d9a571e1bcf340f.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-5d9a571e1bcf340f"
 ## xtern = "libsmallvec-5d9a571e1bcf340f.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-a00f4efd70ddb9c9"
 ## xtern = "libicu_properties-a00f4efd70ddb9c9.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-a00f4efd70ddb9c9"
 ## xtern = "libicu_properties-a00f4efd70ddb9c9.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-4ab50bd9d01aa116"
 ## xtern = "libicu_properties_data-4ab50bd9d01aa116.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-4ab50bd9d01aa116"
 ## xtern = "libicu_properties_data-4ab50bd9d01aa116.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-f4e90a05e0718388"
 ## xtern = "libutf8_iter-f4e90a05e0718388.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-f4e90a05e0718388"
 ## xtern = "libutf8_iter-f4e90a05e0718388.rmeta"
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -22713,14 +22713,14 @@ COPY --link --from=dep-n-idna-1.0.3-b45f57985461d249 /tmp/clis-diesel_cli_2-3-2/
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-idna-1.0.3"
 ## script = '''
 ## FROM scratch AS cratesio-idna-1.0.3
 ## ADD --chmod=0664 --unpack --checksum=sha256:686f825264d630750a544639377bae737628043f20d38bbc029e8f29ea968a7e \
 ##   https://static.crates.io/crates/idna/idna-1.0.3.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-idna-1.0.3-b45f57985461d249"
 ## script = '''
@@ -22806,7 +22806,7 @@ COPY --link --from=dep-n-idna-1.0.3-b45f57985461d249 /tmp/clis-diesel_cli_2-3-2/
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-b45f57985461d249-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-b45f57985461d249-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-b45f57985461d249* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-b45f57985461d249"
 ## script = """
@@ -22984,239 +22984,239 @@ COPY --link --from=dep-n-url-2.5.4-aa848d1d1187bb20 /tmp/clis-diesel_cli_2-3-2/r
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/liburl-aa848d1d1187bb20.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/liburl-aa848d1d1187bb20.rlib","emit":"link"}',
 ## ]
-## 
+##
 ## [[externs]]
 ## from = "out-6fa2d81a8ad3580c"
 ## xtern = "libform_urlencoded-6fa2d81a8ad3580c.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-6fa2d81a8ad3580c"
 ## xtern = "libform_urlencoded-6fa2d81a8ad3580c.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-8d7998c0a5025064"
 ## xtern = "libpercent_encoding-8d7998c0a5025064.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-8d7998c0a5025064"
 ## xtern = "libpercent_encoding-8d7998c0a5025064.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-b45f57985461d249"
 ## xtern = "libidna-b45f57985461d249.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-b45f57985461d249"
 ## xtern = "libidna-b45f57985461d249.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-ada7e7fa9748a757"
 ## xtern = "libidna_adapter-ada7e7fa9748a757.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-ada7e7fa9748a757"
 ## xtern = "libidna_adapter-ada7e7fa9748a757.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-e23cd85056631297"
 ## xtern = "libicu_normalizer-e23cd85056631297.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-e23cd85056631297"
 ## xtern = "libicu_normalizer-e23cd85056631297.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-33cb4686da2fed7b"
 ## xtern = "libdisplaydoc-33cb4686da2fed7b.so"
-## 
+##
 ## [[externs]]
 ## from = "out-da36b031605c1ddc"
 ## xtern = "libproc_macro2-da36b031605c1ddc.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-da36b031605c1ddc"
 ## xtern = "libproc_macro2-da36b031605c1ddc.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-02b0d04ef026a7b6"
 ## xtern = "libunicode_ident-02b0d04ef026a7b6.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-02b0d04ef026a7b6"
 ## xtern = "libunicode_ident-02b0d04ef026a7b6.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-21aeee0f329238fb"
 ## xtern = "libquote-21aeee0f329238fb.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-21aeee0f329238fb"
 ## xtern = "libquote-21aeee0f329238fb.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-f0d9159e02a48398"
 ## xtern = "libsyn-f0d9159e02a48398.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-f0d9159e02a48398"
 ## xtern = "libsyn-f0d9159e02a48398.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-9e97082200d747ce"
 ## xtern = "libicu_collections-9e97082200d747ce.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-9e97082200d747ce"
 ## xtern = "libicu_collections-9e97082200d747ce.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-67a4625bc299980a"
 ## xtern = "libpotential_utf-67a4625bc299980a.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-67a4625bc299980a"
 ## xtern = "libpotential_utf-67a4625bc299980a.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-52a5538e3daafb5d"
 ## xtern = "libzerovec-52a5538e3daafb5d.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-52a5538e3daafb5d"
 ## xtern = "libzerovec-52a5538e3daafb5d.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-8d7809c78337cadb"
 ## xtern = "libyoke-8d7809c78337cadb.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-8d7809c78337cadb"
 ## xtern = "libyoke-8d7809c78337cadb.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-64b214f8b7568c22"
 ## xtern = "libstable_deref_trait-64b214f8b7568c22.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-64b214f8b7568c22"
 ## xtern = "libstable_deref_trait-64b214f8b7568c22.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-e93e94337f616c10"
 ## xtern = "libyoke_derive-e93e94337f616c10.so"
-## 
+##
 ## [[externs]]
 ## from = "out-5ef66ecc0476c29a"
 ## xtern = "libsynstructure-5ef66ecc0476c29a.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-5ef66ecc0476c29a"
 ## xtern = "libsynstructure-5ef66ecc0476c29a.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-00c3b49813826788"
 ## xtern = "libzerofrom-00c3b49813826788.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-00c3b49813826788"
 ## xtern = "libzerofrom-00c3b49813826788.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-767c856a4e9aa04c"
 ## xtern = "libzerofrom_derive-767c856a4e9aa04c.so"
-## 
+##
 ## [[externs]]
 ## from = "out-91bc8cb8ec21fc5b"
 ## xtern = "libzerovec_derive-91bc8cb8ec21fc5b.so"
-## 
+##
 ## [[externs]]
 ## from = "out-770920809931b010"
 ## xtern = "libicu_normalizer_data-770920809931b010.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-770920809931b010"
 ## xtern = "libicu_normalizer_data-770920809931b010.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-7131204e1823b5a8"
 ## xtern = "libicu_provider-7131204e1823b5a8.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-7131204e1823b5a8"
 ## xtern = "libicu_provider-7131204e1823b5a8.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-8628dde14a206d6f"
 ## xtern = "libicu_locale_core-8628dde14a206d6f.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-8628dde14a206d6f"
 ## xtern = "libicu_locale_core-8628dde14a206d6f.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-96b4e914e5e42150"
 ## xtern = "liblitemap-96b4e914e5e42150.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-96b4e914e5e42150"
 ## xtern = "liblitemap-96b4e914e5e42150.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-1a087bab337e35b1"
 ## xtern = "libtinystr-1a087bab337e35b1.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-1a087bab337e35b1"
 ## xtern = "libtinystr-1a087bab337e35b1.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-88c098d69cf2eee8"
 ## xtern = "libwriteable-88c098d69cf2eee8.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-88c098d69cf2eee8"
 ## xtern = "libwriteable-88c098d69cf2eee8.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-bae9a68a84dba003"
 ## xtern = "libzerotrie-bae9a68a84dba003.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-bae9a68a84dba003"
 ## xtern = "libzerotrie-bae9a68a84dba003.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-5d9a571e1bcf340f"
 ## xtern = "libsmallvec-5d9a571e1bcf340f.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-5d9a571e1bcf340f"
 ## xtern = "libsmallvec-5d9a571e1bcf340f.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-a00f4efd70ddb9c9"
 ## xtern = "libicu_properties-a00f4efd70ddb9c9.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-a00f4efd70ddb9c9"
 ## xtern = "libicu_properties-a00f4efd70ddb9c9.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-4ab50bd9d01aa116"
 ## xtern = "libicu_properties_data-4ab50bd9d01aa116.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-4ab50bd9d01aa116"
 ## xtern = "libicu_properties_data-4ab50bd9d01aa116.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-f4e90a05e0718388"
 ## xtern = "libutf8_iter-f4e90a05e0718388.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-f4e90a05e0718388"
 ## xtern = "libutf8_iter-f4e90a05e0718388.rmeta"
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -23245,14 +23245,14 @@ COPY --link --from=dep-n-url-2.5.4-aa848d1d1187bb20 /tmp/clis-diesel_cli_2-3-2/r
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-url-2.5.4"
 ## script = '''
 ## FROM scratch AS cratesio-url-2.5.4
 ## ADD --chmod=0664 --unpack --checksum=sha256:32f8b686cadd1473f4bd0117a5d28d36b1ade384ea9b5069a1c40aefed7fda60 \
 ##   https://static.crates.io/crates/url/url-2.5.4.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-url-2.5.4-aa848d1d1187bb20"
 ## script = '''
@@ -23344,7 +23344,7 @@ COPY --link --from=dep-n-url-2.5.4-aa848d1d1187bb20 /tmp/clis-diesel_cli_2-3-2/r
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-aa848d1d1187bb20-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-aa848d1d1187bb20-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-aa848d1d1187bb20* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-aa848d1d1187bb20"
 ## script = """
@@ -23775,499 +23775,499 @@ COPY --link --from=dep-n-diesel_cli-2.3.2-61c61f6a26671ae2 /tmp/clis-diesel_cli_
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/diesel-61c61f6a26671ae2.d","emit":"dep-info"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-2/release/deps/diesel-61c61f6a26671ae2","emit":"link"}',
 ## ]
-## 
+##
 ## [[externs]]
 ## from = "out-9b3f7774e097210c"
 ## xtern = "libchrono-9b3f7774e097210c.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-2711ec9468103a3d"
 ## xtern = "libiana_time_zone-2711ec9468103a3d.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-c4396812cd7bbf4a"
 ## xtern = "libnum_traits-c4396812cd7bbf4a.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-a4332dd0af53f27d"
 ## xtern = "libclap-a4332dd0af53f27d.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-b5b03266e26b4cfe"
 ## xtern = "libclap_builder-b5b03266e26b4cfe.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-76169d23d8833892"
 ## xtern = "libanstream-76169d23d8833892.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-21ded493861ed51c"
 ## xtern = "libanstyle-21ded493861ed51c.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-8569a1647cc81361"
 ## xtern = "libanstyle_parse-8569a1647cc81361.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-a65b6a9ab8fee7e7"
 ## xtern = "libutf8parse-a65b6a9ab8fee7e7.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-f68ac9121a29106e"
 ## xtern = "libanstyle_query-f68ac9121a29106e.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-6ebfc2086a48cd60"
 ## xtern = "libcolorchoice-6ebfc2086a48cd60.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-1c27b69067eead0f"
 ## xtern = "libis_terminal_polyfill-1c27b69067eead0f.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-fa1650fe0d33e35e"
 ## xtern = "libclap_lex-fa1650fe0d33e35e.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-aff96e3b8811a5dc"
 ## xtern = "libstrsim-aff96e3b8811a5dc.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-4d494c886f164468"
 ## xtern = "libclap_complete-4d494c886f164468.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-46abf7a372455c7b"
 ## xtern = "libdiesel-46abf7a372455c7b.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-d53ce0040874ecbb"
 ## xtern = "libbitflags-d53ce0040874ecbb.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-a63c22cfa59c094d"
 ## xtern = "libbyteorder-a63c22cfa59c094d.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-bbf1af25790241d6"
 ## xtern = "libdiesel_derives-bbf1af25790241d6.so"
-## 
+##
 ## [[externs]]
 ## from = "out-98fffecbdb4097db"
 ## xtern = "libdiesel_table_macro_syntax-98fffecbdb4097db.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-f0d9159e02a48398"
 ## xtern = "libsyn-f0d9159e02a48398.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-da36b031605c1ddc"
 ## xtern = "libproc_macro2-da36b031605c1ddc.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-02b0d04ef026a7b6"
 ## xtern = "libunicode_ident-02b0d04ef026a7b6.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-21aeee0f329238fb"
 ## xtern = "libquote-21aeee0f329238fb.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-23840e29699400b7"
 ## xtern = "libdsl_auto_type-23840e29699400b7.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-d150b173f490e382"
 ## xtern = "libdarling-d150b173f490e382.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-3031be4b9dd3216f"
 ## xtern = "libdarling_core-3031be4b9dd3216f.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-5a16a728e430782f"
 ## xtern = "libfnv-5a16a728e430782f.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-734174ec4510f387"
 ## xtern = "libident_case-734174ec4510f387.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-121dac5a70e1a903"
 ## xtern = "libstrsim-121dac5a70e1a903.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-e99c0f3ebd5299d7"
 ## xtern = "libdarling_macro-e99c0f3ebd5299d7.so"
-## 
+##
 ## [[externs]]
 ## from = "out-4ddc6931e0266c5d"
 ## xtern = "libeither-4ddc6931e0266c5d.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-06debb0d4d4774b1"
 ## xtern = "libheck-06debb0d4d4774b1.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-da023ea0f94d8f90"
 ## xtern = "libdowncast_rs-da023ea0f94d8f90.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-a68ea12a2369cd39"
 ## xtern = "libitoa-a68ea12a2369cd39.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-3b91b6dcd2781330"
 ## xtern = "libpq_sys-3b91b6dcd2781330.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-f15803787717664d"
 ## xtern = "libdiesel_migrations-f15803787717664d.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-1ee661f4af346a49"
 ## xtern = "libmigrations_internals-1ee661f4af346a49.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-cf863a164a8f1acb"
 ## xtern = "libserde-cf863a164a8f1acb.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-1931024729ab70b5"
 ## xtern = "libserde_derive-1931024729ab70b5.so"
-## 
+##
 ## [[externs]]
 ## from = "out-ee34c37aa9b5df05"
 ## xtern = "libtoml-ee34c37aa9b5df05.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-70ce3d96b0efaadd"
 ## xtern = "libserde_spanned-70ce3d96b0efaadd.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-55f2d4848cd0a37d"
 ## xtern = "libtoml_datetime-55f2d4848cd0a37d.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-12b82382775590b5"
 ## xtern = "libtoml_parser-12b82382775590b5.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-a6d26416b11427c0"
 ## xtern = "libwinnow-a6d26416b11427c0.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-de41932e0179a2eb"
 ## xtern = "libmigrations_macros-de41932e0179a2eb.so"
-## 
+##
 ## [[externs]]
 ## from = "out-a13670c690f404dd"
 ## xtern = "libmigrations_internals-a13670c690f404dd.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-7cd80cdcabe0a9d0"
 ## xtern = "libserde-7cd80cdcabe0a9d0.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-6ec065cafd7ff0fb"
 ## xtern = "libtoml-6ec065cafd7ff0fb.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-8b3cdebd56345d91"
 ## xtern = "libserde_spanned-8b3cdebd56345d91.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-d08fd1a16a866536"
 ## xtern = "libtoml_datetime-d08fd1a16a866536.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-fdb7568236fe59ac"
 ## xtern = "libtoml_parser-fdb7568236fe59ac.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-606a9bde4b104ab4"
 ## xtern = "libwinnow-606a9bde4b104ab4.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-d1a5f3b5c85ace18"
 ## xtern = "libdiesel_table_macro_syntax-d1a5f3b5c85ace18.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-81ac40d8cdfddf4c"
 ## xtern = "libsyn-81ac40d8cdfddf4c.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-02f207b978e39a3f"
 ## xtern = "libproc_macro2-02f207b978e39a3f.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-a40aeaeb18cf83dc"
 ## xtern = "libunicode_ident-a40aeaeb18cf83dc.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-b6bf8d6b37f22c92"
 ## xtern = "libquote-b6bf8d6b37f22c92.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-a59d483876bd904f"
 ## xtern = "libdiffy-a59d483876bd904f.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-0a088750727c7bdc"
 ## xtern = "libnu_ansi_term-0a088750727c7bdc.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-8cc98a97cb25a78a"
 ## xtern = "libdotenvy-8cc98a97cb25a78a.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-097e03437e057c49"
 ## xtern = "libfd_lock-097e03437e057c49.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-6876b4372c8c4777"
 ## xtern = "libcfg_if-6876b4372c8c4777.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-584f0556744e746d"
 ## xtern = "librustix-584f0556744e746d.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-84721aa7d977aed9"
 ## xtern = "liblinux_raw_sys-84721aa7d977aed9.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-1353fc9670f24397"
 ## xtern = "libheck-1353fc9670f24397.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-f8d06e6ff7493f6c"
 ## xtern = "libregex-f8d06e6ff7493f6c.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-b09ba6ab78a2f997"
 ## xtern = "libaho_corasick-b09ba6ab78a2f997.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-f8a5ec09fef4ab54"
 ## xtern = "libmemchr-f8a5ec09fef4ab54.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-a8c5e2efa6073f05"
 ## xtern = "libregex_automata-a8c5e2efa6073f05.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-75712f8a87a24c79"
 ## xtern = "libregex_syntax-75712f8a87a24c79.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-1ac5b4570187825d"
 ## xtern = "libserde_regex-1ac5b4570187825d.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-efac43244bde854e"
 ## xtern = "libsimilar_asserts-efac43244bde854e.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-87c8d40bb012143c"
 ## xtern = "libconsole-87c8d40bb012143c.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-7692b361c3b7706f"
 ## xtern = "liblibc-7692b361c3b7706f.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-109e57aa4a9d42c0"
 ## xtern = "libonce_cell-109e57aa4a9d42c0.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-8b71338979bab2a9"
 ## xtern = "libsimilar-8b71338979bab2a9.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-b577d1358f084421"
 ## xtern = "libunicode_segmentation-b577d1358f084421.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-97cf7fc81077ddb4"
 ## xtern = "libthiserror-97cf7fc81077ddb4.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-5c339b1f78823d32"
 ## xtern = "libthiserror_impl-5c339b1f78823d32.so"
-## 
+##
 ## [[externs]]
 ## from = "out-c65078462e13f42b"
 ## xtern = "libtracing-c65078462e13f42b.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-1fa7cdba4ce9f504"
 ## xtern = "libpin_project_lite-1fa7cdba4ce9f504.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-a987b303d02b952a"
 ## xtern = "libtracing_attributes-a987b303d02b952a.so"
-## 
+##
 ## [[externs]]
 ## from = "out-d403a28166dbf63d"
 ## xtern = "libtracing_core-d403a28166dbf63d.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-57e82b204b27a965"
 ## xtern = "libtracing_subscriber-57e82b204b27a965.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-f3b453967c4ace5b"
 ## xtern = "libmatchers-f3b453967c4ace5b.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-36c17437fa6ac77d"
 ## xtern = "libregex_automata-36c17437fa6ac77d.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-278fc833d6e378c8"
 ## xtern = "libregex_syntax-278fc833d6e378c8.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-c42192675aa050dd"
 ## xtern = "libnu_ansi_term-c42192675aa050dd.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-94fa3b5a5c6dc522"
 ## xtern = "liboverload-94fa3b5a5c6dc522.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-b9545388d9527f67"
 ## xtern = "libsharded_slab-b9545388d9527f67.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-f91da618dd3f72e5"
 ## xtern = "liblazy_static-f91da618dd3f72e5.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-5d9a571e1bcf340f"
 ## xtern = "libsmallvec-5d9a571e1bcf340f.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-bb674c36f9027759"
 ## xtern = "libthread_local-bb674c36f9027759.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-5c718901fdf2c1c1"
 ## xtern = "libtracing_log-5c718901fdf2c1c1.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-323569b758259b9b"
 ## xtern = "liblog-323569b758259b9b.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-aa848d1d1187bb20"
 ## xtern = "liburl-aa848d1d1187bb20.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-6fa2d81a8ad3580c"
 ## xtern = "libform_urlencoded-6fa2d81a8ad3580c.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-8d7998c0a5025064"
 ## xtern = "libpercent_encoding-8d7998c0a5025064.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-b45f57985461d249"
 ## xtern = "libidna-b45f57985461d249.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-ada7e7fa9748a757"
 ## xtern = "libidna_adapter-ada7e7fa9748a757.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-e23cd85056631297"
 ## xtern = "libicu_normalizer-e23cd85056631297.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-33cb4686da2fed7b"
 ## xtern = "libdisplaydoc-33cb4686da2fed7b.so"
-## 
+##
 ## [[externs]]
 ## from = "out-9e97082200d747ce"
 ## xtern = "libicu_collections-9e97082200d747ce.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-67a4625bc299980a"
 ## xtern = "libpotential_utf-67a4625bc299980a.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-52a5538e3daafb5d"
 ## xtern = "libzerovec-52a5538e3daafb5d.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-8d7809c78337cadb"
 ## xtern = "libyoke-8d7809c78337cadb.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-64b214f8b7568c22"
 ## xtern = "libstable_deref_trait-64b214f8b7568c22.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-e93e94337f616c10"
 ## xtern = "libyoke_derive-e93e94337f616c10.so"
-## 
+##
 ## [[externs]]
 ## from = "out-5ef66ecc0476c29a"
 ## xtern = "libsynstructure-5ef66ecc0476c29a.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-00c3b49813826788"
 ## xtern = "libzerofrom-00c3b49813826788.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-767c856a4e9aa04c"
 ## xtern = "libzerofrom_derive-767c856a4e9aa04c.so"
-## 
+##
 ## [[externs]]
 ## from = "out-91bc8cb8ec21fc5b"
 ## xtern = "libzerovec_derive-91bc8cb8ec21fc5b.so"
-## 
+##
 ## [[externs]]
 ## from = "out-770920809931b010"
 ## xtern = "libicu_normalizer_data-770920809931b010.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-7131204e1823b5a8"
 ## xtern = "libicu_provider-7131204e1823b5a8.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-8628dde14a206d6f"
 ## xtern = "libicu_locale_core-8628dde14a206d6f.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-96b4e914e5e42150"
 ## xtern = "liblitemap-96b4e914e5e42150.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-1a087bab337e35b1"
 ## xtern = "libtinystr-1a087bab337e35b1.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-88c098d69cf2eee8"
 ## xtern = "libwriteable-88c098d69cf2eee8.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-bae9a68a84dba003"
 ## xtern = "libzerotrie-bae9a68a84dba003.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-a00f4efd70ddb9c9"
 ## xtern = "libicu_properties-a00f4efd70ddb9c9.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-4ab50bd9d01aa116"
 ## xtern = "libicu_properties_data-4ab50bd9d01aa116.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-f4e90a05e0718388"
 ## xtern = "libutf8_iter-f4e90a05e0718388.rlib"
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = '''
@@ -24296,14 +24296,14 @@ COPY --link --from=dep-n-diesel_cli-2.3.2-61c61f6a26671ae2 /tmp/clis-diesel_cli_
 ##     else \
 ##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
 ##     fi'''
-## 
+##
 ## [[stages]]
 ## name = "cratesio-diesel_cli-2.3.2"
 ## script = '''
 ## FROM scratch AS cratesio-diesel_cli-2.3.2
 ## ADD --chmod=0664 --unpack --checksum=sha256:85e9c4ebe505638506ee07bba7476d02944c0e36daa8b27158f0f5914418c046 \
 ##   https://static.crates.io/crates/diesel_cli/diesel_cli-2.3.2.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-diesel_cli-2.3.2-61c61f6a26671ae2"
 ## script = '''
@@ -24462,7 +24462,7 @@ COPY --link --from=dep-n-diesel_cli-2.3.2-61c61f6a26671ae2 /tmp/clis-diesel_cli_
 ##         2>          /tmp/clis-diesel_cli_2-3-2/release/deps/out-61c61f6a26671ae2-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-2/release/deps/out-61c61f6a26671ae2-errcode\
 ##   ; find /tmp/clis-diesel_cli_2-3-2/release/deps/*-61c61f6a26671ae2* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-61c61f6a26671ae2"
 ## script = """

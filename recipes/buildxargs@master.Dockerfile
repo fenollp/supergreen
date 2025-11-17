@@ -53,18 +53,18 @@ COPY --link --from=dep-n-pico-args-0.5.0-ef1ec1c562398afc /tmp/clis-buildxargs_m
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-buildxargs_master/release/deps/libpico_args-ef1ec1c562398afc.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-buildxargs_master/release/deps/libpico_args-ef1ec1c562398afc.rlib","emit":"link"}',
 ## ]
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.86.0-slim@sha256:57d415bbd61ce11e2d5f73de068103c7bd9f3188dc132c97cef4a8f62989e944 AS rust-base"
-## 
+##
 ## [[stages]]
 ## name = "cratesio-pico-args-0.5.0"
 ## script = '''
 ## FROM scratch AS cratesio-pico-args-0.5.0
 ## ADD --chmod=0664 --unpack --checksum=sha256:5be167a7af36ee22fe3115051bc51f6e6c7054c9348e28deb4f49bd6f705a315 \
 ##   https://static.crates.io/crates/pico-args/pico-args-0.5.0.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-pico-args-0.5.0-ef1ec1c562398afc"
 ## script = '''
@@ -98,7 +98,7 @@ COPY --link --from=dep-n-pico-args-0.5.0-ef1ec1c562398afc /tmp/clis-buildxargs_m
 ##         2>          /tmp/clis-buildxargs_master/release/deps/out-ef1ec1c562398afc-stderr \
 ##         || echo $? >/tmp/clis-buildxargs_master/release/deps/out-ef1ec1c562398afc-errcode\
 ##   ; find /tmp/clis-buildxargs_master/release/deps/*-ef1ec1c562398afc* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-ef1ec1c562398afc"
 ## script = """
@@ -154,18 +154,18 @@ COPY --link --from=dep-n-shlex-1.3.0-ab0e05b376045caf /tmp/clis-buildxargs_maste
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-buildxargs_master/release/deps/libshlex-ab0e05b376045caf.rlib","emit":"link"}',
 ##     '{"$message_type":"diagnostic","message":"1 warning emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 1 warning emitted\u001b[0m\n\n"}',
 ## ]
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.86.0-slim@sha256:57d415bbd61ce11e2d5f73de068103c7bd9f3188dc132c97cef4a8f62989e944 AS rust-base"
-## 
+##
 ## [[stages]]
 ## name = "cratesio-shlex-1.3.0"
 ## script = '''
 ## FROM scratch AS cratesio-shlex-1.3.0
 ## ADD --chmod=0664 --unpack --checksum=sha256:0fda2ff0d084019ba4d7c6f371c95d8fd75ce3524c3cb8fb653a3023f6323e64 \
 ##   https://static.crates.io/crates/shlex/shlex-1.3.0.crate /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-shlex-1.3.0-ab0e05b376045caf"
 ## script = '''
@@ -199,7 +199,7 @@ COPY --link --from=dep-n-shlex-1.3.0-ab0e05b376045caf /tmp/clis-buildxargs_maste
 ##         2>          /tmp/clis-buildxargs_master/release/deps/out-ab0e05b376045caf-stderr \
 ##         || echo $? >/tmp/clis-buildxargs_master/release/deps/out-ab0e05b376045caf-errcode\
 ##   ; find /tmp/clis-buildxargs_master/release/deps/*-ab0e05b376045caf* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-ab0e05b376045caf"
 ## script = """
@@ -267,34 +267,34 @@ COPY --link --from=dep-n-buildxargs-1.4.0-42615e6c7f87c749 /tmp/clis-buildxargs_
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-buildxargs_master/release/deps/libbuildxargs-42615e6c7f87c749.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-buildxargs_master/release/deps/libbuildxargs-42615e6c7f87c749.rlib","emit":"link"}',
 ## ]
-## 
+##
 ## [[externs]]
 ## from = "out-ef1ec1c562398afc"
 ## xtern = "libpico_args-ef1ec1c562398afc.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-ef1ec1c562398afc"
 ## xtern = "libpico_args-ef1ec1c562398afc.rmeta"
-## 
+##
 ## [[externs]]
 ## from = "out-ab0e05b376045caf"
 ## xtern = "libshlex-ab0e05b376045caf.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-ab0e05b376045caf"
 ## xtern = "libshlex-ab0e05b376045caf.rmeta"
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.86.0-slim@sha256:57d415bbd61ce11e2d5f73de068103c7bd9f3188dc132c97cef4a8f62989e944 AS rust-base"
-## 
+##
 ## [[stages]]
 ## name = "checkout-buildxargs-76dd4ee9dadcdcf0-df9b810011cd416b8e3fc02911f2f496acb8475e"
 ## script = '''
 ## FROM scratch AS checkout-buildxargs-76dd4ee9dadcdcf0-df9b810011cd416b8e3fc02911f2f496acb8475e
 ## ADD --keep-git-dir=false \
 ##   https://github.com/fenollp/buildxargs.git#df9b810011cd416b8e3fc02911f2f496acb8475e /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-buildxargs-1.4.0-42615e6c7f87c749"
 ## script = '''
@@ -334,7 +334,7 @@ COPY --link --from=dep-n-buildxargs-1.4.0-42615e6c7f87c749 /tmp/clis-buildxargs_
 ##         2>          /tmp/clis-buildxargs_master/release/deps/out-42615e6c7f87c749-stderr \
 ##         || echo $? >/tmp/clis-buildxargs_master/release/deps/out-42615e6c7f87c749-errcode\
 ##   ; find /tmp/clis-buildxargs_master/release/deps/*-42615e6c7f87c749* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-42615e6c7f87c749"
 ## script = """
@@ -404,30 +404,30 @@ COPY --link --from=dep-n-buildxargs-1.4.0-4245cb92e8e8c024 /tmp/clis-buildxargs_
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-buildxargs_master/release/deps/buildxargs-4245cb92e8e8c024.d","emit":"dep-info"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-buildxargs_master/release/deps/buildxargs-4245cb92e8e8c024","emit":"link"}',
 ## ]
-## 
+##
 ## [[externs]]
 ## from = "out-42615e6c7f87c749"
 ## xtern = "libbuildxargs-42615e6c7f87c749.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-ef1ec1c562398afc"
 ## xtern = "libpico_args-ef1ec1c562398afc.rlib"
-## 
+##
 ## [[externs]]
 ## from = "out-ab0e05b376045caf"
 ## xtern = "libshlex-ab0e05b376045caf.rlib"
-## 
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.86.0-slim@sha256:57d415bbd61ce11e2d5f73de068103c7bd9f3188dc132c97cef4a8f62989e944 AS rust-base"
-## 
+##
 ## [[stages]]
 ## name = "checkout-buildxargs-76dd4ee9dadcdcf0-df9b810011cd416b8e3fc02911f2f496acb8475e"
 ## script = '''
 ## FROM scratch AS checkout-buildxargs-76dd4ee9dadcdcf0-df9b810011cd416b8e3fc02911f2f496acb8475e
 ## ADD --keep-git-dir=false \
 ##   https://github.com/fenollp/buildxargs.git#df9b810011cd416b8e3fc02911f2f496acb8475e /'''
-## 
+##
 ## [[stages]]
 ## name = "dep-n-buildxargs-1.4.0-4245cb92e8e8c024"
 ## script = '''
@@ -467,7 +467,7 @@ COPY --link --from=dep-n-buildxargs-1.4.0-4245cb92e8e8c024 /tmp/clis-buildxargs_
 ##         2>          /tmp/clis-buildxargs_master/release/deps/out-4245cb92e8e8c024-stderr \
 ##         || echo $? >/tmp/clis-buildxargs_master/release/deps/out-4245cb92e8e8c024-errcode\
 ##   ; find /tmp/clis-buildxargs_master/release/deps/*-4245cb92e8e8c024* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-## 
+##
 ## [[stages]]
 ## name = "out-4245cb92e8e8c024"
 ## script = """
