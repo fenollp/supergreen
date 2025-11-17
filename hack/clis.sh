@@ -414,7 +414,7 @@ $(unset_action_envs)
 $(unset_action_envs)
         env ${envvars[@]} \\
           cargo green -vv install --jobs=1 --locked --force $(as_install "$name_at_version") $@ |& tee _
-    - if: \${{ matrix.toolchain != '$stable' }}
+    - if: \${{ always() && matrix.toolchain != '$stable' }}
       uses: actions/upload-artifact@v5
       name: Upload recipe
       with:
