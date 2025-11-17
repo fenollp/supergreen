@@ -541,11 +541,13 @@ set -x
     CARGOGREEN_LOG=trace \
     CARGOGREEN_LOG_PATH="$tmplogs" \
     CARGOGREEN_FINAL_PATH="$tmptrgt/cargo-green-fetched.Dockerfile" \
+    CARGOGREEN_EXPERIMENT=finalpathnonprimary \
     PATH=$install_dir/bin:"$PATH" \
       $CARGO green -v fetch
     CARGOGREEN_LOG=trace \
     CARGOGREEN_LOG_PATH="$tmplogs" \
     CARGOGREEN_FINAL_PATH="$tmptrgt/cargo-green.Dockerfile" \
+    CARGOGREEN_EXPERIMENT=finalpathnonprimary \
     PATH=$install_dir/bin:"$PATH" \
     CARGO_TARGET_DIR="$tmptrgt" \
       $CARGO green -v $arg1 --jobs=$jobs --all-targets --all-features $frozen -p cargo-green
