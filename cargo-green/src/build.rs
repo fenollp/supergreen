@@ -88,12 +88,12 @@ impl Green {
         let (succeeded, stdout, stderr) = cmd.exec().await?;
         if !succeeded {
             let stderr = String::from_utf8_lossy(&stderr);
-            if stderr.contains("No such object") {
+            if stderr.to_lowercase().contains("no such object") {
                 return Ok(None);
             }
 
             let mut help = "";
-            if stderr.contains(" executable file not found in ")
+            if stderr.to_lowercase().contains(" executable file not found in ")
                 && self.runner_envs.contains_key(DOCKER_HOST)
             {
                 // TODO: find actual solutions to 'executable file not found in $PATH'
