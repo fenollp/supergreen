@@ -51,11 +51,10 @@ impl FromStr for Md {
     }
 }
 
-impl Md {
-    #[must_use]
-    pub(crate) fn new(extrafn: &str) -> Self {
+impl From<MdId> for Md {
+    fn from(this: MdId) -> Self {
         Self {
-            this: MdId::new(extrafn),
+            this,
             externs: IndexSet::default(),
             deps: IndexSet::default(),
             short_externs: IndexSet::default(),
@@ -65,6 +64,13 @@ impl Md {
             stdout: Vec::default(),
             stderr: Vec::default(),
         }
+    }
+}
+
+impl Md {
+    #[must_use]
+    pub(crate) fn new(extrafn: &str) -> Self {
+        MdId::new(extrafn).into()
     }
 
     #[must_use]
@@ -196,7 +202,7 @@ impl Md {
             let Some(xtern) = xtern.split(['-', '.']).nth(1) else {
                 bail!("BUG: expected extern to match ^lib[^.-]+-<mdid>.[^.]+$: {xtern}")
             };
-            let xtern = MdId::new(&format!("-{xtern}"));
+            let xtern: MdId = xtern.into();
 
             trace!("❯ short extern {xtern}");
             self.short_externs.insert(xtern);
@@ -360,11 +366,18 @@ impl From<MdId> for String {
 }
 
 /// For use by serde
+/// = help: the trait `From<std::string::String>` is not implemented for `md::MdId`
+///         but trait `From<&str>` is implemented for it
 // TODO? prefer &str impl
 impl From<String> for MdId {
     fn from(hex: String) -> Self {
+        hex.as_str().into()
+    }
+}
+impl From<&str> for MdId {
+    fn from(hex: &str) -> Self {
         assert_eq!(hex.len(), 16, "Unexpected MdId {hex:?}");
-        Self(u64::from_str_radix(&hex, 16).expect("16-digit hex str"))
+        Self(u64::from_str_radix(hex, 16).expect("16-digit hex str"))
     }
 }
 
