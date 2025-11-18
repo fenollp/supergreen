@@ -10,7 +10,7 @@ FROM scratch AS cratesio-anyhow-1.0.98
 ADD --chmod=0664 --unpack --checksum=sha256:e16d2d3311acee920a9eb8d33b8cbc1787ce4a264e85f964c2404b969bdcd487 \
   https://static.crates.io/crates/anyhow/anyhow-1.0.98.crate /
 FROM rust-base AS dep-n-anyhow-1.0.98-2510ffd6966eb36d
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-cargo-config2_0-1-34/release/deps
 RUN \
   --mount=from=cratesio-anyhow-1.0.98,source=/anyhow-1.0.98,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.98 \
@@ -70,7 +70,7 @@ COPY --link --from=dep-n-anyhow-1.0.98-2510ffd6966eb36d /tmp/clis-cargo-config2_
 ## name = "dep-n-anyhow-1.0.98-2510ffd6966eb36d"
 ## script = '''
 ## FROM rust-base AS dep-n-anyhow-1.0.98-2510ffd6966eb36d
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-cargo-config2_0-1-34/release/deps
 ## RUN \
 ##   --mount=from=cratesio-anyhow-1.0.98,source=/anyhow-1.0.98,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.98 \
@@ -111,7 +111,7 @@ FROM scratch AS cratesio-build-context-0.1.3
 ADD --chmod=0664 --unpack --checksum=sha256:86610cb1e9d45d65a31b574f9d69de003a76b6bb0b7d882396a5153fc547c935 \
   https://static.crates.io/crates/build-context/build-context-0.1.3.crate /
 FROM rust-base AS dep-n-build-context-0.1.3-438e025c67a2840e
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-cargo-config2_0-1-34/release/deps
 RUN \
   --mount=from=cratesio-build-context-0.1.3,source=/build-context-0.1.3,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/build-context-0.1.3 \
@@ -176,7 +176,7 @@ COPY --link --from=dep-n-build-context-0.1.3-438e025c67a2840e /tmp/clis-cargo-co
 ## name = "dep-n-build-context-0.1.3-438e025c67a2840e"
 ## script = '''
 ## FROM rust-base AS dep-n-build-context-0.1.3-438e025c67a2840e
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-cargo-config2_0-1-34/release/deps
 ## RUN \
 ##   --mount=from=cratesio-build-context-0.1.3,source=/build-context-0.1.3,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/build-context-0.1.3 \
@@ -218,7 +218,7 @@ FROM scratch AS cratesio-serde-1.0.219
 ADD --chmod=0664 --unpack --checksum=sha256:5f0e2c6ed6606019b4e29e69dbaba95b11854410e5347d525002456dbbb786b6 \
   https://static.crates.io/crates/serde/serde-1.0.219.crate /
 FROM rust-base AS dep-n-serde-1.0.219-b6c6cf1c11688574
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-cargo-config2_0-1-34/release/deps
 RUN \
   --mount=from=cratesio-serde-1.0.219,source=/serde-1.0.219,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.219 \
@@ -278,7 +278,7 @@ COPY --link --from=dep-n-serde-1.0.219-b6c6cf1c11688574 /tmp/clis-cargo-config2_
 ## name = "dep-n-serde-1.0.219-b6c6cf1c11688574"
 ## script = '''
 ## FROM rust-base AS dep-n-serde-1.0.219-b6c6cf1c11688574
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-cargo-config2_0-1-34/release/deps
 ## RUN \
 ##   --mount=from=cratesio-serde-1.0.219,source=/serde-1.0.219,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.219 \
@@ -319,7 +319,7 @@ FROM scratch AS cratesio-unicode-ident-1.0.18
 ADD --chmod=0664 --unpack --checksum=sha256:5a5f39404a5da50712a4c1eecf25e90dd62b613502b7e925fd4e4d19b5c96512 \
   https://static.crates.io/crates/unicode-ident/unicode-ident-1.0.18.crate /
 FROM rust-base AS dep-n-unicode-ident-1.0.18-02b0d04ef026a7b6
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-cargo-config2_0-1-34/release/deps
 RUN \
   --mount=from=cratesio-unicode-ident-1.0.18,source=/unicode-ident-1.0.18,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/unicode-ident-1.0.18 \
@@ -378,7 +378,7 @@ COPY --link --from=dep-n-unicode-ident-1.0.18-02b0d04ef026a7b6 /tmp/clis-cargo-c
 ## name = "dep-n-unicode-ident-1.0.18-02b0d04ef026a7b6"
 ## script = '''
 ## FROM rust-base AS dep-n-unicode-ident-1.0.18-02b0d04ef026a7b6
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-cargo-config2_0-1-34/release/deps
 ## RUN \
 ##   --mount=from=cratesio-unicode-ident-1.0.18,source=/unicode-ident-1.0.18,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/unicode-ident-1.0.18 \
@@ -418,7 +418,7 @@ FROM scratch AS cratesio-proc-macro2-1.0.95
 ADD --chmod=0664 --unpack --checksum=sha256:02b3e5e68a3a1a02aad3ec490a98007cbc13c37cbe84a3cd7b8e406d76e7f778 \
   https://static.crates.io/crates/proc-macro2/proc-macro2-1.0.95.crate /
 FROM rust-base AS dep-n-proc-macro2-1.0.95-da36b031605c1ddc
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-cargo-config2_0-1-34/release/deps
 RUN \
   --mount=from=cratesio-proc-macro2-1.0.95,source=/proc-macro2-1.0.95,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.95 \
@@ -490,7 +490,7 @@ COPY --link --from=dep-n-proc-macro2-1.0.95-da36b031605c1ddc /tmp/clis-cargo-con
 ## name = "dep-n-proc-macro2-1.0.95-da36b031605c1ddc"
 ## script = '''
 ## FROM rust-base AS dep-n-proc-macro2-1.0.95-da36b031605c1ddc
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-cargo-config2_0-1-34/release/deps
 ## RUN \
 ##   --mount=from=cratesio-proc-macro2-1.0.95,source=/proc-macro2-1.0.95,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.95 \
@@ -533,7 +533,7 @@ FROM scratch AS cratesio-quote-1.0.40
 ADD --chmod=0664 --unpack --checksum=sha256:1885c039570dc00dcb4ff087a89e185fd56bae234ddc7f056a945bf36467248d \
   https://static.crates.io/crates/quote/quote-1.0.40.crate /
 FROM rust-base AS dep-n-quote-1.0.40-21aeee0f329238fb
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-cargo-config2_0-1-34/release/deps
 RUN \
   --mount=from=cratesio-quote-1.0.40,source=/quote-1.0.40,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.40 \
@@ -620,7 +620,7 @@ COPY --link --from=dep-n-quote-1.0.40-21aeee0f329238fb /tmp/clis-cargo-config2_0
 ## name = "dep-n-quote-1.0.40-21aeee0f329238fb"
 ## script = '''
 ## FROM rust-base AS dep-n-quote-1.0.40-21aeee0f329238fb
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-cargo-config2_0-1-34/release/deps
 ## RUN \
 ##   --mount=from=cratesio-quote-1.0.40,source=/quote-1.0.40,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.40 \
@@ -664,7 +664,7 @@ FROM scratch AS cratesio-syn-2.0.104
 ADD --chmod=0664 --unpack --checksum=sha256:17b6f705963418cdb9927482fa304bc562ece2fdd4f616084c50b7023b435a40 \
   https://static.crates.io/crates/syn/syn-2.0.104.crate /
 FROM rust-base AS dep-n-syn-2.0.104-5571b1fa61474ffa
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-cargo-config2_0-1-34/release/deps
 RUN \
   --mount=from=cratesio-syn-2.0.104,source=/syn-2.0.104,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/syn-2.0.104 \
@@ -763,7 +763,7 @@ COPY --link --from=dep-n-syn-2.0.104-5571b1fa61474ffa /tmp/clis-cargo-config2_0-
 ## name = "dep-n-syn-2.0.104-5571b1fa61474ffa"
 ## script = '''
 ## FROM rust-base AS dep-n-syn-2.0.104-5571b1fa61474ffa
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-cargo-config2_0-1-34/release/deps
 ## RUN \
 ##   --mount=from=cratesio-syn-2.0.104,source=/syn-2.0.104,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/syn-2.0.104 \
@@ -809,7 +809,7 @@ FROM scratch AS cratesio-serde_derive-1.0.219
 ADD --chmod=0664 --unpack --checksum=sha256:5b0276cf7f2c73365f7157c8123c21cd9a50fbbd844757af28ca1f5925fc2a00 \
   https://static.crates.io/crates/serde_derive/serde_derive-1.0.219.crate /
 FROM rust-base AS dep-n-serde_derive-1.0.219-a51e2455af527849
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-cargo-config2_0-1-34/release/deps
 RUN \
   --mount=from=cratesio-serde_derive-1.0.219,source=/serde_derive-1.0.219,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_derive-1.0.219 \
@@ -898,7 +898,7 @@ COPY --link --from=dep-n-serde_derive-1.0.219-a51e2455af527849 /tmp/clis-cargo-c
 ## name = "dep-n-serde_derive-1.0.219-a51e2455af527849"
 ## script = '''
 ## FROM rust-base AS dep-n-serde_derive-1.0.219-a51e2455af527849
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-cargo-config2_0-1-34/release/deps
 ## RUN \
 ##   --mount=from=cratesio-serde_derive-1.0.219,source=/serde_derive-1.0.219,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_derive-1.0.219 \
@@ -942,7 +942,7 @@ FROM scratch AS cratesio-equivalent-1.0.2
 ADD --chmod=0664 --unpack --checksum=sha256:877a4ace8713b0bcf2a4e7eec82529c029f1d0619886d18145fea96c3ffe5c0f \
   https://static.crates.io/crates/equivalent/equivalent-1.0.2.crate /
 FROM rust-base AS dep-n-equivalent-1.0.2-92df6cc0b9ce3dcd
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-cargo-config2_0-1-34/release/deps
 RUN \
   --mount=from=cratesio-equivalent-1.0.2,source=/equivalent-1.0.2,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/equivalent-1.0.2 \
@@ -1001,7 +1001,7 @@ COPY --link --from=dep-n-equivalent-1.0.2-92df6cc0b9ce3dcd /tmp/clis-cargo-confi
 ## name = "dep-n-equivalent-1.0.2-92df6cc0b9ce3dcd"
 ## script = '''
 ## FROM rust-base AS dep-n-equivalent-1.0.2-92df6cc0b9ce3dcd
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-cargo-config2_0-1-34/release/deps
 ## RUN \
 ##   --mount=from=cratesio-equivalent-1.0.2,source=/equivalent-1.0.2,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/equivalent-1.0.2 \
@@ -1041,7 +1041,7 @@ FROM scratch AS cratesio-hashbrown-0.15.4
 ADD --chmod=0664 --unpack --checksum=sha256:5971ac85611da7067dbfcabef3c70ebb5606018acd9e2a3903a0da507521e0d5 \
   https://static.crates.io/crates/hashbrown/hashbrown-0.15.4.crate /
 FROM rust-base AS dep-n-hashbrown-0.15.4-e384bcd48d03db95
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-cargo-config2_0-1-34/release/deps
 RUN \
   --mount=from=cratesio-hashbrown-0.15.4,source=/hashbrown-0.15.4,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/hashbrown-0.15.4 \
@@ -1100,7 +1100,7 @@ COPY --link --from=dep-n-hashbrown-0.15.4-e384bcd48d03db95 /tmp/clis-cargo-confi
 ## name = "dep-n-hashbrown-0.15.4-e384bcd48d03db95"
 ## script = '''
 ## FROM rust-base AS dep-n-hashbrown-0.15.4-e384bcd48d03db95
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-cargo-config2_0-1-34/release/deps
 ## RUN \
 ##   --mount=from=cratesio-hashbrown-0.15.4,source=/hashbrown-0.15.4,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/hashbrown-0.15.4 \
@@ -1140,7 +1140,7 @@ FROM scratch AS cratesio-indexmap-2.9.0
 ADD --chmod=0664 --unpack --checksum=sha256:cea70ddb795996207ad57735b50c5982d8844f38ba9ee5f1aedcfb708a2aa11e \
   https://static.crates.io/crates/indexmap/indexmap-2.9.0.crate /
 FROM rust-base AS dep-n-indexmap-2.9.0-657f65f0f8918814
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-cargo-config2_0-1-34/release/deps
 RUN \
   --mount=from=cratesio-indexmap-2.9.0,source=/indexmap-2.9.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/indexmap-2.9.0 \
@@ -1227,7 +1227,7 @@ COPY --link --from=dep-n-indexmap-2.9.0-657f65f0f8918814 /tmp/clis-cargo-config2
 ## name = "dep-n-indexmap-2.9.0-657f65f0f8918814"
 ## script = '''
 ## FROM rust-base AS dep-n-indexmap-2.9.0-657f65f0f8918814
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-cargo-config2_0-1-34/release/deps
 ## RUN \
 ##   --mount=from=cratesio-indexmap-2.9.0,source=/indexmap-2.9.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/indexmap-2.9.0 \
@@ -1271,7 +1271,7 @@ FROM scratch AS cratesio-serde_spanned-0.6.9
 ADD --chmod=0664 --unpack --checksum=sha256:bf41e0cfaf7226dca15e8197172c295a782857fcb97fad1808a166870dee75a3 \
   https://static.crates.io/crates/serde_spanned/serde_spanned-0.6.9.crate /
 FROM rust-base AS dep-n-serde_spanned-0.6.9-d88bc6011818f513
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-cargo-config2_0-1-34/release/deps
 RUN \
   --mount=from=cratesio-serde_spanned-0.6.9,source=/serde_spanned-0.6.9,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_spanned-0.6.9 \
@@ -1342,7 +1342,7 @@ COPY --link --from=dep-n-serde_spanned-0.6.9-d88bc6011818f513 /tmp/clis-cargo-co
 ## name = "dep-n-serde_spanned-0.6.9-d88bc6011818f513"
 ## script = '''
 ## FROM rust-base AS dep-n-serde_spanned-0.6.9-d88bc6011818f513
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-cargo-config2_0-1-34/release/deps
 ## RUN \
 ##   --mount=from=cratesio-serde_spanned-0.6.9,source=/serde_spanned-0.6.9,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_spanned-0.6.9 \
@@ -1384,7 +1384,7 @@ FROM scratch AS cratesio-toml_datetime-0.6.11
 ADD --chmod=0664 --unpack --checksum=sha256:22cddaf88f4fbc13c51aebbf5f8eceb5c7c5a9da2ac40a13519eb5b0a0e8f11c \
   https://static.crates.io/crates/toml_datetime/toml_datetime-0.6.11.crate /
 FROM rust-base AS dep-n-toml_datetime-0.6.11-23be505440c57a38
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-cargo-config2_0-1-34/release/deps
 RUN \
   --mount=from=cratesio-toml_datetime-0.6.11,source=/toml_datetime-0.6.11,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/toml_datetime-0.6.11 \
@@ -1455,7 +1455,7 @@ COPY --link --from=dep-n-toml_datetime-0.6.11-23be505440c57a38 /tmp/clis-cargo-c
 ## name = "dep-n-toml_datetime-0.6.11-23be505440c57a38"
 ## script = '''
 ## FROM rust-base AS dep-n-toml_datetime-0.6.11-23be505440c57a38
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-cargo-config2_0-1-34/release/deps
 ## RUN \
 ##   --mount=from=cratesio-toml_datetime-0.6.11,source=/toml_datetime-0.6.11,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/toml_datetime-0.6.11 \
@@ -1497,7 +1497,7 @@ FROM scratch AS cratesio-toml_write-0.1.2
 ADD --chmod=0664 --unpack --checksum=sha256:5d99f8c9a7727884afe522e9bd5edbfc91a3312b36a77b5fb8926e4c31a41801 \
   https://static.crates.io/crates/toml_write/toml_write-0.1.2.crate /
 FROM rust-base AS dep-n-toml_write-0.1.2-9abea66ccd9c864c
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-cargo-config2_0-1-34/release/deps
 RUN \
   --mount=from=cratesio-toml_write-0.1.2,source=/toml_write-0.1.2,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/toml_write-0.1.2 \
@@ -1556,7 +1556,7 @@ COPY --link --from=dep-n-toml_write-0.1.2-9abea66ccd9c864c /tmp/clis-cargo-confi
 ## name = "dep-n-toml_write-0.1.2-9abea66ccd9c864c"
 ## script = '''
 ## FROM rust-base AS dep-n-toml_write-0.1.2-9abea66ccd9c864c
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-cargo-config2_0-1-34/release/deps
 ## RUN \
 ##   --mount=from=cratesio-toml_write-0.1.2,source=/toml_write-0.1.2,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/toml_write-0.1.2 \
@@ -1596,7 +1596,7 @@ FROM scratch AS cratesio-winnow-0.7.11
 ADD --chmod=0664 --unpack --checksum=sha256:74c7b26e3480b707944fc872477815d29a8e429d2f93a1ce000f5fa84a15cbcd \
   https://static.crates.io/crates/winnow/winnow-0.7.11.crate /
 FROM rust-base AS dep-n-winnow-0.7.11-d5e3fa1fabb7822c
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-cargo-config2_0-1-34/release/deps
 RUN \
   --mount=from=cratesio-winnow-0.7.11,source=/winnow-0.7.11,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/winnow-0.7.11 \
@@ -1655,7 +1655,7 @@ COPY --link --from=dep-n-winnow-0.7.11-d5e3fa1fabb7822c /tmp/clis-cargo-config2_
 ## name = "dep-n-winnow-0.7.11-d5e3fa1fabb7822c"
 ## script = '''
 ## FROM rust-base AS dep-n-winnow-0.7.11-d5e3fa1fabb7822c
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-cargo-config2_0-1-34/release/deps
 ## RUN \
 ##   --mount=from=cratesio-winnow-0.7.11,source=/winnow-0.7.11,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/winnow-0.7.11 \
@@ -1695,7 +1695,7 @@ FROM scratch AS cratesio-toml_edit-0.22.27
 ADD --chmod=0664 --unpack --checksum=sha256:41fe8c660ae4257887cf66394862d21dbca4a6ddd26f04a3560410406a2f819a \
   https://static.crates.io/crates/toml_edit/toml_edit-0.22.27.crate /
 FROM rust-base AS dep-n-toml_edit-0.22.27-c1e542f0979b274a
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-cargo-config2_0-1-34/release/deps
 RUN \
   --mount=from=cratesio-toml_edit-0.22.27,source=/toml_edit-0.22.27,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/toml_edit-0.22.27 \
@@ -1854,7 +1854,7 @@ COPY --link --from=dep-n-toml_edit-0.22.27-c1e542f0979b274a /tmp/clis-cargo-conf
 ## name = "dep-n-toml_edit-0.22.27-c1e542f0979b274a"
 ## script = '''
 ## FROM rust-base AS dep-n-toml_edit-0.22.27-c1e542f0979b274a
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-cargo-config2_0-1-34/release/deps
 ## RUN \
 ##   --mount=from=cratesio-toml_edit-0.22.27,source=/toml_edit-0.22.27,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/toml_edit-0.22.27 \
@@ -1910,7 +1910,7 @@ FROM scratch AS cratesio-cargo-config2-0.1.34
 ADD --chmod=0664 --unpack --checksum=sha256:a82de3b1a1dd72252c6d456247864ffe52110d109da949f579eeb16349e0eb5d \
   https://static.crates.io/crates/cargo-config2/cargo-config2-0.1.34.crate /
 FROM rust-base AS dep-n-cargo-config2-0.1.34-e6fea3eab43aaf67
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-cargo-config2_0-1-34/release/deps
 RUN \
   --mount=from=cratesio-cargo-config2-0.1.34,source=/cargo-config2-0.1.34,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/cargo-config2-0.1.34 \
@@ -2137,7 +2137,7 @@ COPY --link --from=dep-n-cargo-config2-0.1.34-e6fea3eab43aaf67 /tmp/clis-cargo-c
 ## name = "dep-n-cargo-config2-0.1.34-e6fea3eab43aaf67"
 ## script = '''
 ## FROM rust-base AS dep-n-cargo-config2-0.1.34-e6fea3eab43aaf67
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-cargo-config2_0-1-34/release/deps
 ## RUN \
 ##   --mount=from=cratesio-cargo-config2-0.1.34,source=/cargo-config2-0.1.34,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/cargo-config2-0.1.34 \
@@ -2205,7 +2205,7 @@ FROM scratch AS cratesio-anstyle-1.0.11
 ADD --chmod=0664 --unpack --checksum=sha256:862ed96ca487e809f1c8e5a8447f6ee2cf102f846893800b20cebdf541fc6bbd \
   https://static.crates.io/crates/anstyle/anstyle-1.0.11.crate /
 FROM rust-base AS dep-n-anstyle-1.0.11-21ded493861ed51c
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-cargo-config2_0-1-34/release/deps
 RUN \
   --mount=from=cratesio-anstyle-1.0.11,source=/anstyle-1.0.11,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anstyle-1.0.11 \
@@ -2264,7 +2264,7 @@ COPY --link --from=dep-n-anstyle-1.0.11-21ded493861ed51c /tmp/clis-cargo-config2
 ## name = "dep-n-anstyle-1.0.11-21ded493861ed51c"
 ## script = '''
 ## FROM rust-base AS dep-n-anstyle-1.0.11-21ded493861ed51c
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-cargo-config2_0-1-34/release/deps
 ## RUN \
 ##   --mount=from=cratesio-anstyle-1.0.11,source=/anstyle-1.0.11,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anstyle-1.0.11 \
@@ -2304,7 +2304,7 @@ FROM scratch AS cratesio-clap_lex-0.7.5
 ADD --chmod=0664 --unpack --checksum=sha256:b94f61472cee1439c0b966b47e3aca9ae07e45d070759512cd390ea2bebc6675 \
   https://static.crates.io/crates/clap_lex/clap_lex-0.7.5.crate /
 FROM rust-base AS dep-n-clap_lex-0.7.5-fa1650fe0d33e35e
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-cargo-config2_0-1-34/release/deps
 RUN \
   --mount=from=cratesio-clap_lex-0.7.5,source=/clap_lex-0.7.5,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/clap_lex-0.7.5 \
@@ -2363,7 +2363,7 @@ COPY --link --from=dep-n-clap_lex-0.7.5-fa1650fe0d33e35e /tmp/clis-cargo-config2
 ## name = "dep-n-clap_lex-0.7.5-fa1650fe0d33e35e"
 ## script = '''
 ## FROM rust-base AS dep-n-clap_lex-0.7.5-fa1650fe0d33e35e
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-cargo-config2_0-1-34/release/deps
 ## RUN \
 ##   --mount=from=cratesio-clap_lex-0.7.5,source=/clap_lex-0.7.5,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/clap_lex-0.7.5 \
@@ -2403,7 +2403,7 @@ FROM scratch AS cratesio-clap_builder-4.5.40
 ADD --chmod=0664 --unpack --checksum=sha256:e0c66c08ce9f0c698cbce5c0279d0bb6ac936d8674174fe48f736533b964f59e \
   https://static.crates.io/crates/clap_builder/clap_builder-4.5.40.crate /
 FROM rust-base AS dep-n-clap_builder-4.5.40-41622f4093b29d13
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-cargo-config2_0-1-34/release/deps
 RUN \
   --mount=from=cratesio-clap_builder-4.5.40,source=/clap_builder-4.5.40,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/clap_builder-4.5.40 \
@@ -2490,7 +2490,7 @@ COPY --link --from=dep-n-clap_builder-4.5.40-41622f4093b29d13 /tmp/clis-cargo-co
 ## name = "dep-n-clap_builder-4.5.40-41622f4093b29d13"
 ## script = '''
 ## FROM rust-base AS dep-n-clap_builder-4.5.40-41622f4093b29d13
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-cargo-config2_0-1-34/release/deps
 ## RUN \
 ##   --mount=from=cratesio-clap_builder-4.5.40,source=/clap_builder-4.5.40,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/clap_builder-4.5.40 \
@@ -2534,7 +2534,7 @@ FROM scratch AS cratesio-heck-0.5.0
 ADD --chmod=0664 --unpack --checksum=sha256:2304e00983f87ffb38b55b444b5e3b60a884b5d30c0fca7d82fe33449bbe55ea \
   https://static.crates.io/crates/heck/heck-0.5.0.crate /
 FROM rust-base AS dep-n-heck-0.5.0-06debb0d4d4774b1
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-cargo-config2_0-1-34/release/deps
 RUN \
   --mount=from=cratesio-heck-0.5.0,source=/heck-0.5.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/heck-0.5.0 \
@@ -2593,7 +2593,7 @@ COPY --link --from=dep-n-heck-0.5.0-06debb0d4d4774b1 /tmp/clis-cargo-config2_0-1
 ## name = "dep-n-heck-0.5.0-06debb0d4d4774b1"
 ## script = '''
 ## FROM rust-base AS dep-n-heck-0.5.0-06debb0d4d4774b1
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-cargo-config2_0-1-34/release/deps
 ## RUN \
 ##   --mount=from=cratesio-heck-0.5.0,source=/heck-0.5.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/heck-0.5.0 \
@@ -2633,7 +2633,7 @@ FROM scratch AS cratesio-clap_derive-4.5.40
 ADD --chmod=0664 --unpack --checksum=sha256:d2c7947ae4cc3d851207c1adb5b5e260ff0cca11446b1d6d1423788e442257ce \
   https://static.crates.io/crates/clap_derive/clap_derive-4.5.40.crate /
 FROM rust-base AS dep-n-clap_derive-4.5.40-45053889f17e427d
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-cargo-config2_0-1-34/release/deps
 RUN \
   --mount=from=cratesio-clap_derive-4.5.40,source=/clap_derive-4.5.40,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/clap_derive-4.5.40 \
@@ -2729,7 +2729,7 @@ COPY --link --from=dep-n-clap_derive-4.5.40-45053889f17e427d /tmp/clis-cargo-con
 ## name = "dep-n-clap_derive-4.5.40-45053889f17e427d"
 ## script = '''
 ## FROM rust-base AS dep-n-clap_derive-4.5.40-45053889f17e427d
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-cargo-config2_0-1-34/release/deps
 ## RUN \
 ##   --mount=from=cratesio-clap_derive-4.5.40,source=/clap_derive-4.5.40,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/clap_derive-4.5.40 \
@@ -2774,7 +2774,7 @@ FROM scratch AS cratesio-clap-4.5.40
 ADD --chmod=0664 --unpack --checksum=sha256:40b6887a1d8685cebccf115538db5c0efe625ccac9696ad45c409d96566e910f \
   https://static.crates.io/crates/clap/clap-4.5.40.crate /
 FROM rust-base AS dep-n-clap-4.5.40-fa9f135a39baa87b
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-cargo-config2_0-1-34/release/deps
 RUN \
   --mount=from=cratesio-clap-4.5.40,source=/clap-4.5.40,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/clap-4.5.40 \
@@ -2940,7 +2940,7 @@ COPY --link --from=dep-n-clap-4.5.40-fa9f135a39baa87b /tmp/clis-cargo-config2_0-
 ## name = "dep-n-clap-4.5.40-fa9f135a39baa87b"
 ## script = '''
 ## FROM rust-base AS dep-n-clap-4.5.40-fa9f135a39baa87b
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-cargo-config2_0-1-34/release/deps
 ## RUN \
 ##   --mount=from=cratesio-clap-4.5.40,source=/clap-4.5.40,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/clap-4.5.40 \
@@ -2997,7 +2997,7 @@ FROM scratch AS cratesio-fs-err-3.1.1
 ADD --chmod=0664 --unpack --checksum=sha256:88d7be93788013f265201256d58f04936a8079ad5dc898743aa20525f503b683 \
   https://static.crates.io/crates/fs-err/fs-err-3.1.1.crate /
 FROM rust-base AS dep-n-fs-err-3.1.1-e710e1ebbad36529
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-cargo-config2_0-1-34/release/deps
 RUN \
   --mount=from=cratesio-fs-err-3.1.1,source=/fs-err-3.1.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/fs-err-3.1.1 \
@@ -3057,7 +3057,7 @@ COPY --link --from=dep-n-fs-err-3.1.1-e710e1ebbad36529 /tmp/clis-cargo-config2_0
 ## name = "dep-n-fs-err-3.1.1-e710e1ebbad36529"
 ## script = '''
 ## FROM rust-base AS dep-n-fs-err-3.1.1-e710e1ebbad36529
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-cargo-config2_0-1-34/release/deps
 ## RUN \
 ##   --mount=from=cratesio-fs-err-3.1.1,source=/fs-err-3.1.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/fs-err-3.1.1 \
@@ -3098,7 +3098,7 @@ FROM scratch AS cratesio-lexopt-0.3.1
 ADD --chmod=0664 --unpack --checksum=sha256:9fa0e2a1fcbe2f6be6c42e342259976206b383122fc152e872795338b5a3f3a7 \
   https://static.crates.io/crates/lexopt/lexopt-0.3.1.crate /
 FROM rust-base AS dep-n-lexopt-0.3.1-08712be55b44d56f
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-cargo-config2_0-1-34/release/deps
 RUN \
   --mount=from=cratesio-lexopt-0.3.1,source=/lexopt-0.3.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/lexopt-0.3.1 \
@@ -3157,7 +3157,7 @@ COPY --link --from=dep-n-lexopt-0.3.1-08712be55b44d56f /tmp/clis-cargo-config2_0
 ## name = "dep-n-lexopt-0.3.1-08712be55b44d56f"
 ## script = '''
 ## FROM rust-base AS dep-n-lexopt-0.3.1-08712be55b44d56f
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-cargo-config2_0-1-34/release/deps
 ## RUN \
 ##   --mount=from=cratesio-lexopt-0.3.1,source=/lexopt-0.3.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/lexopt-0.3.1 \
@@ -3197,7 +3197,7 @@ FROM scratch AS cratesio-rustversion-1.0.21
 ADD --chmod=0664 --unpack --checksum=sha256:8a0d197bd2c9dc6e53b84da9556a69ba4cdfab8619eb41a8bd1cc2027a0f6b1d \
   https://static.crates.io/crates/rustversion/rustversion-1.0.21.crate /
 FROM rust-base AS dep-n-rustversion-1.0.21-7ffc156b99c00502
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-cargo-config2_0-1-34/release/deps
 RUN \
   --mount=from=cratesio-rustversion-1.0.21,source=/rustversion-1.0.21,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustversion-1.0.21 \
@@ -3260,7 +3260,7 @@ COPY --link --from=dep-n-rustversion-1.0.21-7ffc156b99c00502 /tmp/clis-cargo-con
 ## name = "dep-n-rustversion-1.0.21-7ffc156b99c00502"
 ## script = '''
 ## FROM rust-base AS dep-n-rustversion-1.0.21-7ffc156b99c00502
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-cargo-config2_0-1-34/release/deps
 ## RUN \
 ##   --mount=from=cratesio-rustversion-1.0.21,source=/rustversion-1.0.21,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustversion-1.0.21 \
@@ -3302,7 +3302,7 @@ FROM scratch AS cratesio-itoa-1.0.15
 ADD --chmod=0664 --unpack --checksum=sha256:4a5f13b858c8d314ee3e8f639011f7ccefe71f97f96e50151fb991f267928e2c \
   https://static.crates.io/crates/itoa/itoa-1.0.15.crate /
 FROM rust-base AS dep-n-itoa-1.0.15-a68ea12a2369cd39
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-cargo-config2_0-1-34/release/deps
 RUN \
   --mount=from=cratesio-itoa-1.0.15,source=/itoa-1.0.15,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/itoa-1.0.15 \
@@ -3361,7 +3361,7 @@ COPY --link --from=dep-n-itoa-1.0.15-a68ea12a2369cd39 /tmp/clis-cargo-config2_0-
 ## name = "dep-n-itoa-1.0.15-a68ea12a2369cd39"
 ## script = '''
 ## FROM rust-base AS dep-n-itoa-1.0.15-a68ea12a2369cd39
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-cargo-config2_0-1-34/release/deps
 ## RUN \
 ##   --mount=from=cratesio-itoa-1.0.15,source=/itoa-1.0.15,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/itoa-1.0.15 \
@@ -3401,7 +3401,7 @@ FROM scratch AS cratesio-memchr-2.7.5
 ADD --chmod=0664 --unpack --checksum=sha256:32a282da65faaf38286cf3be983213fcf1d2e2a58700e808f83f4ea9a4804bc0 \
   https://static.crates.io/crates/memchr/memchr-2.7.5.crate /
 FROM rust-base AS dep-n-memchr-2.7.5-f8a5ec09fef4ab54
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-cargo-config2_0-1-34/release/deps
 RUN \
   --mount=from=cratesio-memchr-2.7.5,source=/memchr-2.7.5,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/memchr-2.7.5 \
@@ -3460,7 +3460,7 @@ COPY --link --from=dep-n-memchr-2.7.5-f8a5ec09fef4ab54 /tmp/clis-cargo-config2_0
 ## name = "dep-n-memchr-2.7.5-f8a5ec09fef4ab54"
 ## script = '''
 ## FROM rust-base AS dep-n-memchr-2.7.5-f8a5ec09fef4ab54
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-cargo-config2_0-1-34/release/deps
 ## RUN \
 ##   --mount=from=cratesio-memchr-2.7.5,source=/memchr-2.7.5,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/memchr-2.7.5 \
@@ -3500,7 +3500,7 @@ FROM scratch AS cratesio-ryu-1.0.20
 ADD --chmod=0664 --unpack --checksum=sha256:28d3b2b1366ec20994f1fd18c3c594f05c5dd4bc44d8bb0c1c632c8d6829481f \
   https://static.crates.io/crates/ryu/ryu-1.0.20.crate /
 FROM rust-base AS dep-n-ryu-1.0.20-fc928953fff1e68b
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-cargo-config2_0-1-34/release/deps
 RUN \
   --mount=from=cratesio-ryu-1.0.20,source=/ryu-1.0.20,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ryu-1.0.20 \
@@ -3559,7 +3559,7 @@ COPY --link --from=dep-n-ryu-1.0.20-fc928953fff1e68b /tmp/clis-cargo-config2_0-1
 ## name = "dep-n-ryu-1.0.20-fc928953fff1e68b"
 ## script = '''
 ## FROM rust-base AS dep-n-ryu-1.0.20-fc928953fff1e68b
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-cargo-config2_0-1-34/release/deps
 ## RUN \
 ##   --mount=from=cratesio-ryu-1.0.20,source=/ryu-1.0.20,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ryu-1.0.20 \
@@ -3599,7 +3599,7 @@ FROM scratch AS cratesio-serde_json-1.0.140
 ADD --chmod=0664 --unpack --checksum=sha256:20068b6e96dc6c9bd23e01df8827e6c7e1f2fddd43c21810382803c136b99373 \
   https://static.crates.io/crates/serde_json/serde_json-1.0.140.crate /
 FROM rust-base AS dep-n-serde_json-1.0.140-7c70ba617eecc4c0
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-cargo-config2_0-1-34/release/deps
 RUN \
   --mount=from=cratesio-serde_json-1.0.140,source=/serde_json-1.0.140,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.140 \
@@ -3711,7 +3711,7 @@ COPY --link --from=dep-n-serde_json-1.0.140-7c70ba617eecc4c0 /tmp/clis-cargo-con
 ## name = "dep-n-serde_json-1.0.140-7c70ba617eecc4c0"
 ## script = '''
 ## FROM rust-base AS dep-n-serde_json-1.0.140-7c70ba617eecc4c0
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-cargo-config2_0-1-34/release/deps
 ## RUN \
 ##   --mount=from=cratesio-serde_json-1.0.140,source=/serde_json-1.0.140,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.140 \
@@ -3760,7 +3760,7 @@ FROM scratch AS cratesio-shell-escape-0.1.5
 ADD --chmod=0664 --unpack --checksum=sha256:45bb67a18fa91266cc7807181f62f9178a6873bfad7dc788c42e6430db40184f \
   https://static.crates.io/crates/shell-escape/shell-escape-0.1.5.crate /
 FROM rust-base AS dep-n-shell-escape-0.1.5-454359939a0e8b60
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-cargo-config2_0-1-34/release/deps
 RUN \
   --mount=from=cratesio-shell-escape-0.1.5,source=/shell-escape-0.1.5,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/shell-escape-0.1.5 \
@@ -3823,7 +3823,7 @@ COPY --link --from=dep-n-shell-escape-0.1.5-454359939a0e8b60 /tmp/clis-cargo-con
 ## name = "dep-n-shell-escape-0.1.5-454359939a0e8b60"
 ## script = '''
 ## FROM rust-base AS dep-n-shell-escape-0.1.5-454359939a0e8b60
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-cargo-config2_0-1-34/release/deps
 ## RUN \
 ##   --mount=from=cratesio-shell-escape-0.1.5,source=/shell-escape-0.1.5,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/shell-escape-0.1.5 \
@@ -3863,7 +3863,7 @@ FROM scratch AS cratesio-static_assertions-1.1.0
 ADD --chmod=0664 --unpack --checksum=sha256:a2eb9349b6444b326872e140eb1cf5e7c522154d69e7a0ffb0fb81c06b37543f \
   https://static.crates.io/crates/static_assertions/static_assertions-1.1.0.crate /
 FROM rust-base AS dep-n-static_assertions-1.1.0-421f0f4cedfe8354
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-cargo-config2_0-1-34/release/deps
 RUN \
   --mount=from=cratesio-static_assertions-1.1.0,source=/static_assertions-1.1.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/static_assertions-1.1.0 \
@@ -3922,7 +3922,7 @@ COPY --link --from=dep-n-static_assertions-1.1.0-421f0f4cedfe8354 /tmp/clis-carg
 ## name = "dep-n-static_assertions-1.1.0-421f0f4cedfe8354"
 ## script = '''
 ## FROM rust-base AS dep-n-static_assertions-1.1.0-421f0f4cedfe8354
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-cargo-config2_0-1-34/release/deps
 ## RUN \
 ##   --mount=from=cratesio-static_assertions-1.1.0,source=/static_assertions-1.1.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/static_assertions-1.1.0 \
@@ -3962,7 +3962,7 @@ FROM scratch AS cratesio-fastrand-2.3.0
 ADD --chmod=0664 --unpack --checksum=sha256:37909eebbb50d72f9059c3b6d82c0463f2ff062c9e95845c43a6c9c0355411be \
   https://static.crates.io/crates/fastrand/fastrand-2.3.0.crate /
 FROM rust-base AS dep-n-fastrand-2.3.0-5f75ad2d1e8c435a
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-cargo-config2_0-1-34/release/deps
 RUN \
   --mount=from=cratesio-fastrand-2.3.0,source=/fastrand-2.3.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/fastrand-2.3.0 \
@@ -4021,7 +4021,7 @@ COPY --link --from=dep-n-fastrand-2.3.0-5f75ad2d1e8c435a /tmp/clis-cargo-config2
 ## name = "dep-n-fastrand-2.3.0-5f75ad2d1e8c435a"
 ## script = '''
 ## FROM rust-base AS dep-n-fastrand-2.3.0-5f75ad2d1e8c435a
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-cargo-config2_0-1-34/release/deps
 ## RUN \
 ##   --mount=from=cratesio-fastrand-2.3.0,source=/fastrand-2.3.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/fastrand-2.3.0 \
@@ -4061,7 +4061,7 @@ FROM scratch AS cratesio-once_cell-1.21.3
 ADD --chmod=0664 --unpack --checksum=sha256:42f5e15c9953c5e4ccceeb2e7382a716482c34515315f7b03532b8b4e8393d2d \
   https://static.crates.io/crates/once_cell/once_cell-1.21.3.crate /
 FROM rust-base AS dep-n-once_cell-1.21.3-44bb68212ecec348
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-cargo-config2_0-1-34/release/deps
 RUN \
   --mount=from=cratesio-once_cell-1.21.3,source=/once_cell-1.21.3,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/once_cell-1.21.3 \
@@ -4120,7 +4120,7 @@ COPY --link --from=dep-n-once_cell-1.21.3-44bb68212ecec348 /tmp/clis-cargo-confi
 ## name = "dep-n-once_cell-1.21.3-44bb68212ecec348"
 ## script = '''
 ## FROM rust-base AS dep-n-once_cell-1.21.3-44bb68212ecec348
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-cargo-config2_0-1-34/release/deps
 ## RUN \
 ##   --mount=from=cratesio-once_cell-1.21.3,source=/once_cell-1.21.3,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/once_cell-1.21.3 \
@@ -4160,7 +4160,7 @@ FROM scratch AS cratesio-bitflags-2.9.1
 ADD --chmod=0664 --unpack --checksum=sha256:1b8e56985ec62d17e9c1001dc89c88ecd7dc08e47eba5ec7c29c7b5eeecde967 \
   https://static.crates.io/crates/bitflags/bitflags-2.9.1.crate /
 FROM rust-base AS dep-n-bitflags-2.9.1-d53ce0040874ecbb
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-cargo-config2_0-1-34/release/deps
 RUN \
   --mount=from=cratesio-bitflags-2.9.1,source=/bitflags-2.9.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bitflags-2.9.1 \
@@ -4219,7 +4219,7 @@ COPY --link --from=dep-n-bitflags-2.9.1-d53ce0040874ecbb /tmp/clis-cargo-config2
 ## name = "dep-n-bitflags-2.9.1-d53ce0040874ecbb"
 ## script = '''
 ## FROM rust-base AS dep-n-bitflags-2.9.1-d53ce0040874ecbb
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-cargo-config2_0-1-34/release/deps
 ## RUN \
 ##   --mount=from=cratesio-bitflags-2.9.1,source=/bitflags-2.9.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bitflags-2.9.1 \
@@ -4259,7 +4259,7 @@ FROM scratch AS cratesio-linux-raw-sys-0.9.4
 ADD --chmod=0664 --unpack --checksum=sha256:cd945864f07fe9f5371a27ad7b52a172b4b499999f1d97574c9fa68373937e12 \
   https://static.crates.io/crates/linux-raw-sys/linux-raw-sys-0.9.4.crate /
 FROM rust-base AS dep-n-linux-raw-sys-0.9.4-84721aa7d977aed9
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-cargo-config2_0-1-34/release/deps
 RUN \
   --mount=from=cratesio-linux-raw-sys-0.9.4,source=/linux-raw-sys-0.9.4,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/linux-raw-sys-0.9.4 \
@@ -4318,7 +4318,7 @@ COPY --link --from=dep-n-linux-raw-sys-0.9.4-84721aa7d977aed9 /tmp/clis-cargo-co
 ## name = "dep-n-linux-raw-sys-0.9.4-84721aa7d977aed9"
 ## script = '''
 ## FROM rust-base AS dep-n-linux-raw-sys-0.9.4-84721aa7d977aed9
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-cargo-config2_0-1-34/release/deps
 ## RUN \
 ##   --mount=from=cratesio-linux-raw-sys-0.9.4,source=/linux-raw-sys-0.9.4,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/linux-raw-sys-0.9.4 \
@@ -4358,7 +4358,7 @@ FROM scratch AS cratesio-rustix-1.0.7
 ADD --chmod=0664 --unpack --checksum=sha256:c71e83d6afe7ff64890ec6b71d6a69bb8a610ab78ce364b3352876bb4c801266 \
   https://static.crates.io/crates/rustix/rustix-1.0.7.crate /
 FROM rust-base AS dep-n-rustix-1.0.7-584f0556744e746d
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-cargo-config2_0-1-34/release/deps
 RUN \
   --mount=from=cratesio-rustix-1.0.7,source=/rustix-1.0.7,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustix-1.0.7 \
@@ -4446,7 +4446,7 @@ COPY --link --from=dep-n-rustix-1.0.7-584f0556744e746d /tmp/clis-cargo-config2_0
 ## name = "dep-n-rustix-1.0.7-584f0556744e746d"
 ## script = '''
 ## FROM rust-base AS dep-n-rustix-1.0.7-584f0556744e746d
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-cargo-config2_0-1-34/release/deps
 ## RUN \
 ##   --mount=from=cratesio-rustix-1.0.7,source=/rustix-1.0.7,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustix-1.0.7 \
@@ -4491,7 +4491,7 @@ FROM scratch AS cratesio-tempfile-3.20.0
 ADD --chmod=0664 --unpack --checksum=sha256:e8a64e3985349f2441a1a9ef0b853f869006c3855f2cda6862a94d26ebb9d6a1 \
   https://static.crates.io/crates/tempfile/tempfile-3.20.0.crate /
 FROM rust-base AS dep-n-tempfile-3.20.0-ba228c019d272069
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-cargo-config2_0-1-34/release/deps
 RUN \
   --mount=from=cratesio-tempfile-3.20.0,source=/tempfile-3.20.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/tempfile-3.20.0 \
@@ -4614,7 +4614,7 @@ COPY --link --from=dep-n-tempfile-3.20.0-ba228c019d272069 /tmp/clis-cargo-config
 ## name = "dep-n-tempfile-3.20.0-ba228c019d272069"
 ## script = '''
 ## FROM rust-base AS dep-n-tempfile-3.20.0-ba228c019d272069
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-cargo-config2_0-1-34/release/deps
 ## RUN \
 ##   --mount=from=cratesio-tempfile-3.20.0,source=/tempfile-3.20.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/tempfile-3.20.0 \
@@ -4664,7 +4664,7 @@ FROM scratch AS cratesio-toml-0.8.23
 ADD --chmod=0664 --unpack --checksum=sha256:dc1beb996b9d83529a9e75c17a1686767d148d70663143c7854d8b4a09ced362 \
   https://static.crates.io/crates/toml/toml-0.8.23.crate /
 FROM rust-base AS dep-n-toml-0.8.23-2bea4b835d7dad2d
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-cargo-config2_0-1-34/release/deps
 RUN \
   --mount=from=cratesio-toml-0.8.23,source=/toml-0.8.23,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/toml-0.8.23 \
@@ -4835,7 +4835,7 @@ COPY --link --from=dep-n-toml-0.8.23-2bea4b835d7dad2d /tmp/clis-cargo-config2_0-
 ## name = "dep-n-toml-0.8.23-2bea4b835d7dad2d"
 ## script = '''
 ## FROM rust-base AS dep-n-toml-0.8.23-2bea4b835d7dad2d
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-cargo-config2_0-1-34/release/deps
 ## RUN \
 ##   --mount=from=cratesio-toml-0.8.23,source=/toml-0.8.23,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/toml-0.8.23 \
@@ -4891,7 +4891,7 @@ COPY --link --from=dep-n-toml-0.8.23-2bea4b835d7dad2d /tmp/clis-cargo-config2_0-
 
 
 FROM rust-base AS dep-n-cargo-config2-0.1.34-169636d1f2554c51
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-cargo-config2_0-1-34/release/examples
 RUN \
   --mount=from=cratesio-cargo-config2-0.1.34,source=/cargo-config2-0.1.34,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/cargo-config2-0.1.34 \
@@ -5239,7 +5239,7 @@ COPY --link --from=dep-n-cargo-config2-0.1.34-169636d1f2554c51 /tmp/clis-cargo-c
 ## name = "dep-n-cargo-config2-0.1.34-169636d1f2554c51"
 ## script = '''
 ## FROM rust-base AS dep-n-cargo-config2-0.1.34-169636d1f2554c51
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-cargo-config2_0-1-34/release/examples
 ## RUN \
 ##   --mount=from=cratesio-cargo-config2-0.1.34,source=/cargo-config2-0.1.34,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/cargo-config2-0.1.34 \

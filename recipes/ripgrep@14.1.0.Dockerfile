@@ -10,7 +10,7 @@ FROM scratch AS cratesio-anyhow-1.0.79
 ADD --chmod=0664 --unpack --checksum=sha256:080e9890a082662b09c1ad45f567faeeb47f22b5fb23895fbe1e651e718e25ca \
   https://static.crates.io/crates/anyhow/anyhow-1.0.79.crate /
 FROM rust-base AS dep-n-anyhow-1.0.79-95e5d8a0e52ba465
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 RUN \
   --mount=from=cratesio-anyhow-1.0.79,source=/anyhow-1.0.79,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.79 \
@@ -171,7 +171,7 @@ COPY --link --from=dep-n-anyhow-1.0.79-95e5d8a0e52ba465 /tmp/clis-ripgrep_14-1-0
 ## name = "dep-n-anyhow-1.0.79-95e5d8a0e52ba465"
 ## script = '''
 ## FROM rust-base AS dep-n-anyhow-1.0.79-95e5d8a0e52ba465
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 ## RUN \
 ##   --mount=from=cratesio-anyhow-1.0.79,source=/anyhow-1.0.79,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.79 \
@@ -213,7 +213,7 @@ FROM scratch AS cratesio-memchr-2.7.1
 ADD --chmod=0664 --unpack --checksum=sha256:523dc4f511e55ab87b694dc30d0f820d60906ef06413f93d4d7a1385599cc149 \
   https://static.crates.io/crates/memchr/memchr-2.7.1.crate /
 FROM rust-base AS dep-n-memchr-2.7.1-3d9021aec125798d
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 RUN \
   --mount=from=cratesio-memchr-2.7.1,source=/memchr-2.7.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/memchr-2.7.1 \
@@ -274,7 +274,7 @@ COPY --link --from=dep-n-memchr-2.7.1-3d9021aec125798d /tmp/clis-ripgrep_14-1-0/
 ## name = "dep-n-memchr-2.7.1-3d9021aec125798d"
 ## script = '''
 ## FROM rust-base AS dep-n-memchr-2.7.1-3d9021aec125798d
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 ## RUN \
 ##   --mount=from=cratesio-memchr-2.7.1,source=/memchr-2.7.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/memchr-2.7.1 \
@@ -314,7 +314,7 @@ FROM scratch AS cratesio-aho-corasick-1.1.2
 ADD --chmod=0664 --unpack --checksum=sha256:b2969dcb958b36655471fc61f7e416fa76033bdd4bfed0678d8fee1e2d07a1f0 \
   https://static.crates.io/crates/aho-corasick/aho-corasick-1.1.2.crate /
 FROM rust-base AS dep-n-aho-corasick-1.1.2-2a2c3bf3a2b335e0
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 RUN \
   --mount=from=cratesio-aho-corasick-1.1.2,source=/aho-corasick-1.1.2,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aho-corasick-1.1.2 \
@@ -397,7 +397,7 @@ COPY --link --from=dep-n-aho-corasick-1.1.2-2a2c3bf3a2b335e0 /tmp/clis-ripgrep_1
 ## name = "dep-n-aho-corasick-1.1.2-2a2c3bf3a2b335e0"
 ## script = '''
 ## FROM rust-base AS dep-n-aho-corasick-1.1.2-2a2c3bf3a2b335e0
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 ## RUN \
 ##   --mount=from=cratesio-aho-corasick-1.1.2,source=/aho-corasick-1.1.2,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aho-corasick-1.1.2 \
@@ -439,7 +439,7 @@ FROM scratch AS cratesio-regex-syntax-0.8.2
 ADD --chmod=0664 --unpack --checksum=sha256:c08c74e62047bb2de4ff487b251e4a92e24f48745648451635cec7d591162d9f \
   https://static.crates.io/crates/regex-syntax/regex-syntax-0.8.2.crate /
 FROM rust-base AS dep-n-regex-syntax-0.8.2-0d361157f8cdd0fe
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 RUN \
   --mount=from=cratesio-regex-syntax-0.8.2,source=/regex-syntax-0.8.2,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/regex-syntax-0.8.2 \
@@ -500,7 +500,7 @@ COPY --link --from=dep-n-regex-syntax-0.8.2-0d361157f8cdd0fe /tmp/clis-ripgrep_1
 ## name = "dep-n-regex-syntax-0.8.2-0d361157f8cdd0fe"
 ## script = '''
 ## FROM rust-base AS dep-n-regex-syntax-0.8.2-0d361157f8cdd0fe
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 ## RUN \
 ##   --mount=from=cratesio-regex-syntax-0.8.2,source=/regex-syntax-0.8.2,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/regex-syntax-0.8.2 \
@@ -540,7 +540,7 @@ FROM scratch AS cratesio-regex-automata-0.4.3
 ADD --chmod=0664 --unpack --checksum=sha256:5f804c7828047e88b2d32e2d7fe5a105da8ee3264f01902f796c8e067dc2483f \
   https://static.crates.io/crates/regex-automata/regex-automata-0.4.3.crate /
 FROM rust-base AS dep-n-regex-automata-0.4.3-54c30116fcd4ea92
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 RUN \
   --mount=from=cratesio-regex-automata-0.4.3,source=/regex-automata-0.4.3,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/regex-automata-0.4.3 \
@@ -647,7 +647,7 @@ COPY --link --from=dep-n-regex-automata-0.4.3-54c30116fcd4ea92 /tmp/clis-ripgrep
 ## name = "dep-n-regex-automata-0.4.3-54c30116fcd4ea92"
 ## script = '''
 ## FROM rust-base AS dep-n-regex-automata-0.4.3-54c30116fcd4ea92
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 ## RUN \
 ##   --mount=from=cratesio-regex-automata-0.4.3,source=/regex-automata-0.4.3,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/regex-automata-0.4.3 \
@@ -693,7 +693,7 @@ FROM scratch AS cratesio-bstr-1.9.0
 ADD --chmod=0664 --unpack --checksum=sha256:c48f0051a4b4c5e0b6d365cd04af53aeaa209e3cc15ec2cdb69e73cc87fbd0dc \
   https://static.crates.io/crates/bstr/bstr-1.9.0.crate /
 FROM rust-base AS dep-n-bstr-1.9.0-f6b551c518280772
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 RUN \
   --mount=from=cratesio-bstr-1.9.0,source=/bstr-1.9.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bstr-1.9.0 \
@@ -806,7 +806,7 @@ COPY --link --from=dep-n-bstr-1.9.0-f6b551c518280772 /tmp/clis-ripgrep_14-1-0/re
 ## name = "dep-n-bstr-1.9.0-f6b551c518280772"
 ## script = '''
 ## FROM rust-base AS dep-n-bstr-1.9.0-f6b551c518280772
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 ## RUN \
 ##   --mount=from=cratesio-bstr-1.9.0,source=/bstr-1.9.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bstr-1.9.0 \
@@ -854,7 +854,7 @@ FROM scratch AS cratesio-log-0.4.20
 ADD --chmod=0664 --unpack --checksum=sha256:b5e6163cb8c49088c2c36f57875e58ccd8c87c7427f7fbd50ea6710b2f3f2e8f \
   https://static.crates.io/crates/log/log-0.4.20.crate /
 FROM rust-base AS dep-n-log-0.4.20-45d1068292014e63
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 RUN \
   --mount=from=cratesio-log-0.4.20,source=/log-0.4.20,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/log-0.4.20 \
@@ -916,7 +916,7 @@ COPY --link --from=dep-n-log-0.4.20-45d1068292014e63 /tmp/clis-ripgrep_14-1-0/re
 ## name = "dep-n-log-0.4.20-45d1068292014e63"
 ## script = '''
 ## FROM rust-base AS dep-n-log-0.4.20-45d1068292014e63
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 ## RUN \
 ##   --mount=from=cratesio-log-0.4.20,source=/log-0.4.20,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/log-0.4.20 \
@@ -956,7 +956,7 @@ FROM scratch AS cratesio-globset-0.4.14
 ADD --chmod=0664 --unpack --checksum=sha256:57da3b9b5b85bd66f31093f8c408b90a74431672542466497dcbdfdc02034be1 \
   https://static.crates.io/crates/globset/globset-0.4.14.crate /
 FROM rust-base AS dep-n-globset-0.4.14-14504da8f25a4dbf
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 RUN \
   --mount=from=cratesio-globset-0.4.14,source=/globset-0.4.14,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/globset-0.4.14 \
@@ -1091,7 +1091,7 @@ COPY --link --from=dep-n-globset-0.4.14-14504da8f25a4dbf /tmp/clis-ripgrep_14-1-
 ## name = "dep-n-globset-0.4.14-14504da8f25a4dbf"
 ## script = '''
 ## FROM rust-base AS dep-n-globset-0.4.14-14504da8f25a4dbf
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 ## RUN \
 ##   --mount=from=cratesio-globset-0.4.14,source=/globset-0.4.14,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/globset-0.4.14 \
@@ -1143,7 +1143,7 @@ FROM scratch AS cratesio-libc-0.2.151
 ADD --chmod=0664 --unpack --checksum=sha256:302d7ab3130588088d277783b1e2d2e10c9e9e4a16dd9050e6ec93fb3e7048f4 \
   https://static.crates.io/crates/libc/libc-0.2.151.crate /
 FROM rust-base AS dep-n-libc-0.2.151-b1dcb66edfd0e8a0
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 RUN \
   --mount=from=cratesio-libc-0.2.151,source=/libc-0.2.151,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.151 \
@@ -1270,7 +1270,7 @@ COPY --link --from=dep-n-libc-0.2.151-b1dcb66edfd0e8a0 /tmp/clis-ripgrep_14-1-0/
 ## name = "dep-n-libc-0.2.151-b1dcb66edfd0e8a0"
 ## script = '''
 ## FROM rust-base AS dep-n-libc-0.2.151-b1dcb66edfd0e8a0
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 ## RUN \
 ##   --mount=from=cratesio-libc-0.2.151,source=/libc-0.2.151,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.151 \
@@ -1311,7 +1311,7 @@ FROM scratch AS cratesio-termcolor-1.4.0
 ADD --chmod=0664 --unpack --checksum=sha256:ff1bc3d3f05aff0403e8ac0d92ced918ec05b666a43f83297ccef5bea8a3d449 \
   https://static.crates.io/crates/termcolor/termcolor-1.4.0.crate /
 FROM rust-base AS dep-n-termcolor-1.4.0-59ae8e7772deaa56
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 RUN \
   --mount=from=cratesio-termcolor-1.4.0,source=/termcolor-1.4.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/termcolor-1.4.0 \
@@ -1370,7 +1370,7 @@ COPY --link --from=dep-n-termcolor-1.4.0-59ae8e7772deaa56 /tmp/clis-ripgrep_14-1
 ## name = "dep-n-termcolor-1.4.0-59ae8e7772deaa56"
 ## script = '''
 ## FROM rust-base AS dep-n-termcolor-1.4.0-59ae8e7772deaa56
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 ## RUN \
 ##   --mount=from=cratesio-termcolor-1.4.0,source=/termcolor-1.4.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/termcolor-1.4.0 \
@@ -1410,7 +1410,7 @@ FROM scratch AS cratesio-grep-cli-0.1.10
 ADD --chmod=0664 --unpack --checksum=sha256:ea40788c059ab8b622c4d074732750bfb3bd2912e2dd58eabc11798a4d5ad725 \
   https://static.crates.io/crates/grep-cli/grep-cli-0.1.10.crate /
 FROM rust-base AS dep-n-grep-cli-0.1.10-8da8357e778092ce
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 RUN \
   --mount=from=cratesio-grep-cli-0.1.10,source=/grep-cli-0.1.10,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-cli-0.1.10 \
@@ -1581,7 +1581,7 @@ COPY --link --from=dep-n-grep-cli-0.1.10-8da8357e778092ce /tmp/clis-ripgrep_14-1
 ## name = "dep-n-grep-cli-0.1.10-8da8357e778092ce"
 ## script = '''
 ## FROM rust-base AS dep-n-grep-cli-0.1.10-8da8357e778092ce
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 ## RUN \
 ##   --mount=from=cratesio-grep-cli-0.1.10,source=/grep-cli-0.1.10,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-cli-0.1.10 \
@@ -1639,7 +1639,7 @@ FROM scratch AS cratesio-grep-matcher-0.1.7
 ADD --chmod=0664 --unpack --checksum=sha256:47a3141a10a43acfedc7c98a60a834d7ba00dfe7bec9071cbfc19b55b292ac02 \
   https://static.crates.io/crates/grep-matcher/grep-matcher-0.1.7.crate /
 FROM rust-base AS dep-n-grep-matcher-0.1.7-7517975d791c1423
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 RUN \
   --mount=from=cratesio-grep-matcher-0.1.7,source=/grep-matcher-0.1.7,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-matcher-0.1.7 \
@@ -1710,7 +1710,7 @@ COPY --link --from=dep-n-grep-matcher-0.1.7-7517975d791c1423 /tmp/clis-ripgrep_1
 ## name = "dep-n-grep-matcher-0.1.7-7517975d791c1423"
 ## script = '''
 ## FROM rust-base AS dep-n-grep-matcher-0.1.7-7517975d791c1423
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 ## RUN \
 ##   --mount=from=cratesio-grep-matcher-0.1.7,source=/grep-matcher-0.1.7,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-matcher-0.1.7 \
@@ -1752,7 +1752,7 @@ FROM scratch AS cratesio-cfg-if-1.0.0
 ADD --chmod=0664 --unpack --checksum=sha256:baf1de4339761588bc0619e3cbc0120ee582ebb74b53b4efbf79117bd2da40fd \
   https://static.crates.io/crates/cfg-if/cfg-if-1.0.0.crate /
 FROM rust-base AS dep-n-cfg-if-1.0.0-98d40c6178a8b60f
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 RUN \
   --mount=from=cratesio-cfg-if-1.0.0,source=/cfg-if-1.0.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/cfg-if-1.0.0 \
@@ -1811,7 +1811,7 @@ COPY --link --from=dep-n-cfg-if-1.0.0-98d40c6178a8b60f /tmp/clis-ripgrep_14-1-0/
 ## name = "dep-n-cfg-if-1.0.0-98d40c6178a8b60f"
 ## script = '''
 ## FROM rust-base AS dep-n-cfg-if-1.0.0-98d40c6178a8b60f
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 ## RUN \
 ##   --mount=from=cratesio-cfg-if-1.0.0,source=/cfg-if-1.0.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/cfg-if-1.0.0 \
@@ -1851,7 +1851,7 @@ FROM scratch AS cratesio-encoding_rs-0.8.33
 ADD --chmod=0664 --unpack --checksum=sha256:7268b386296a025e474d5140678f75d6de9493ae55a5d709eeb9dd08149945e1 \
   https://static.crates.io/crates/encoding_rs/encoding_rs-0.8.33.crate /
 FROM rust-base AS dep-n-encoding_rs-0.8.33-71f95fee6544e787
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 RUN \
   --mount=from=cratesio-encoding_rs-0.8.33,source=/encoding_rs-0.8.33,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/encoding_rs-0.8.33 \
@@ -1950,7 +1950,7 @@ COPY --link --from=dep-n-encoding_rs-0.8.33-71f95fee6544e787 /tmp/clis-ripgrep_1
 ## name = "dep-n-encoding_rs-0.8.33-71f95fee6544e787"
 ## script = '''
 ## FROM rust-base AS dep-n-encoding_rs-0.8.33-71f95fee6544e787
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 ## RUN \
 ##   --mount=from=cratesio-encoding_rs-0.8.33,source=/encoding_rs-0.8.33,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/encoding_rs-0.8.33 \
@@ -1992,7 +1992,7 @@ FROM scratch AS cratesio-encoding_rs_io-0.1.7
 ADD --chmod=0664 --unpack --checksum=sha256:1cc3c5651fb62ab8aa3103998dade57efdd028544bd300516baa31840c252a83 \
   https://static.crates.io/crates/encoding_rs_io/encoding_rs_io-0.1.7.crate /
 FROM rust-base AS dep-n-encoding_rs_io-0.1.7-1f57e01234da7cf8
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 RUN \
   --mount=from=cratesio-encoding_rs_io-0.1.7,source=/encoding_rs_io-0.1.7,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/encoding_rs_io-0.1.7 \
@@ -2079,7 +2079,7 @@ COPY --link --from=dep-n-encoding_rs_io-0.1.7-1f57e01234da7cf8 /tmp/clis-ripgrep
 ## name = "dep-n-encoding_rs_io-0.1.7-1f57e01234da7cf8"
 ## script = '''
 ## FROM rust-base AS dep-n-encoding_rs_io-0.1.7-1f57e01234da7cf8
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 ## RUN \
 ##   --mount=from=cratesio-encoding_rs_io-0.1.7,source=/encoding_rs_io-0.1.7,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/encoding_rs_io-0.1.7 \
@@ -2123,7 +2123,7 @@ FROM scratch AS cratesio-memmap2-0.9.3
 ADD --chmod=0664 --unpack --checksum=sha256:45fd3a57831bf88bc63f8cebc0cf956116276e97fef3966103e96416209f7c92 \
   https://static.crates.io/crates/memmap2/memmap2-0.9.3.crate /
 FROM rust-base AS dep-n-memmap2-0.9.3-21c841a4e972790f
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 RUN \
   --mount=from=cratesio-memmap2-0.9.3,source=/memmap2-0.9.3,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/memmap2-0.9.3 \
@@ -2194,7 +2194,7 @@ COPY --link --from=dep-n-memmap2-0.9.3-21c841a4e972790f /tmp/clis-ripgrep_14-1-0
 ## name = "dep-n-memmap2-0.9.3-21c841a4e972790f"
 ## script = '''
 ## FROM rust-base AS dep-n-memmap2-0.9.3-21c841a4e972790f
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 ## RUN \
 ##   --mount=from=cratesio-memmap2-0.9.3,source=/memmap2-0.9.3,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/memmap2-0.9.3 \
@@ -2236,7 +2236,7 @@ FROM scratch AS cratesio-grep-searcher-0.1.13
 ADD --chmod=0664 --unpack --checksum=sha256:ba536ae4f69bec62d8839584dd3153d3028ef31bb229f04e09fb5a9e5a193c54 \
   https://static.crates.io/crates/grep-searcher/grep-searcher-0.1.13.crate /
 FROM rust-base AS dep-n-grep-searcher-0.1.13-6fc004d41272f596
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 RUN \
   --mount=from=cratesio-grep-searcher-0.1.13,source=/grep-searcher-0.1.13,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-searcher-0.1.13 \
@@ -2443,7 +2443,7 @@ COPY --link --from=dep-n-grep-searcher-0.1.13-6fc004d41272f596 /tmp/clis-ripgrep
 ## name = "dep-n-grep-searcher-0.1.13-6fc004d41272f596"
 ## script = '''
 ## FROM rust-base AS dep-n-grep-searcher-0.1.13-6fc004d41272f596
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 ## RUN \
 ##   --mount=from=cratesio-grep-searcher-0.1.13,source=/grep-searcher-0.1.13,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-searcher-0.1.13 \
@@ -2507,7 +2507,7 @@ FROM scratch AS cratesio-serde-1.0.195
 ADD --chmod=0664 --unpack --checksum=sha256:63261df402c67811e9ac6def069e4786148c4563f4b50fd4bf30aa370d626b02 \
   https://static.crates.io/crates/serde/serde-1.0.195.crate /
 FROM rust-base AS dep-n-serde-1.0.195-6342957ddc692e98
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 RUN \
   --mount=from=cratesio-serde-1.0.195,source=/serde-1.0.195,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.195 \
@@ -2690,7 +2690,7 @@ COPY --link --from=dep-n-serde-1.0.195-6342957ddc692e98 /tmp/clis-ripgrep_14-1-0
 ## name = "dep-n-serde-1.0.195-6342957ddc692e98"
 ## script = '''
 ## FROM rust-base AS dep-n-serde-1.0.195-6342957ddc692e98
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 ## RUN \
 ##   --mount=from=cratesio-serde-1.0.195,source=/serde-1.0.195,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.195 \
@@ -2731,7 +2731,7 @@ FROM scratch AS cratesio-itoa-1.0.10
 ADD --chmod=0664 --unpack --checksum=sha256:b1a46d1a171d865aa5f83f92695765caa047a9b4cbae2cbf37dbd613a793fd4c \
   https://static.crates.io/crates/itoa/itoa-1.0.10.crate /
 FROM rust-base AS dep-n-itoa-1.0.10-2b4528a4fd57cfaf
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 RUN \
   --mount=from=cratesio-itoa-1.0.10,source=/itoa-1.0.10,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/itoa-1.0.10 \
@@ -2790,7 +2790,7 @@ COPY --link --from=dep-n-itoa-1.0.10-2b4528a4fd57cfaf /tmp/clis-ripgrep_14-1-0/r
 ## name = "dep-n-itoa-1.0.10-2b4528a4fd57cfaf"
 ## script = '''
 ## FROM rust-base AS dep-n-itoa-1.0.10-2b4528a4fd57cfaf
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 ## RUN \
 ##   --mount=from=cratesio-itoa-1.0.10,source=/itoa-1.0.10,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/itoa-1.0.10 \
@@ -2830,7 +2830,7 @@ FROM scratch AS cratesio-ryu-1.0.16
 ADD --chmod=0664 --unpack --checksum=sha256:f98d2aa92eebf49b69786be48e4477826b256916e84a57ff2a4f21923b48eb4c \
   https://static.crates.io/crates/ryu/ryu-1.0.16.crate /
 FROM rust-base AS dep-n-ryu-1.0.16-a994c87db442418d
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 RUN \
   --mount=from=cratesio-ryu-1.0.16,source=/ryu-1.0.16,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ryu-1.0.16 \
@@ -2889,7 +2889,7 @@ COPY --link --from=dep-n-ryu-1.0.16-a994c87db442418d /tmp/clis-ripgrep_14-1-0/re
 ## name = "dep-n-ryu-1.0.16-a994c87db442418d"
 ## script = '''
 ## FROM rust-base AS dep-n-ryu-1.0.16-a994c87db442418d
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 ## RUN \
 ##   --mount=from=cratesio-ryu-1.0.16,source=/ryu-1.0.16,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ryu-1.0.16 \
@@ -2929,7 +2929,7 @@ FROM scratch AS cratesio-serde_json-1.0.111
 ADD --chmod=0664 --unpack --checksum=sha256:176e46fa42316f18edd598015a5166857fc835ec732f5215eac6b7bdbf0a84f4 \
   https://static.crates.io/crates/serde_json/serde_json-1.0.111.crate /
 FROM rust-base AS dep-n-serde_json-1.0.111-f1456127761f5765
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 RUN \
   --mount=from=cratesio-serde_json-1.0.111,source=/serde_json-1.0.111,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.111 \
@@ -3029,7 +3029,7 @@ COPY --link --from=dep-n-serde_json-1.0.111-f1456127761f5765 /tmp/clis-ripgrep_1
 ## name = "dep-n-serde_json-1.0.111-f1456127761f5765"
 ## script = '''
 ## FROM rust-base AS dep-n-serde_json-1.0.111-f1456127761f5765
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 ## RUN \
 ##   --mount=from=cratesio-serde_json-1.0.111,source=/serde_json-1.0.111,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.111 \
@@ -3076,7 +3076,7 @@ FROM scratch AS cratesio-grep-printer-0.2.1
 ADD --chmod=0664 --unpack --checksum=sha256:743c12a03c8aee38b6e5bd0168d8ebb09345751323df4a01c56e792b1f38ceb2 \
   https://static.crates.io/crates/grep-printer/grep-printer-0.2.1.crate /
 FROM rust-base AS dep-n-grep-printer-0.2.1-0e4d9ea7a0184dd5
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 RUN \
   --mount=from=cratesio-grep-printer-0.2.1,source=/grep-printer-0.2.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-printer-0.2.1 \
@@ -3355,7 +3355,7 @@ COPY --link --from=dep-n-grep-printer-0.2.1-0e4d9ea7a0184dd5 /tmp/clis-ripgrep_1
 ## name = "dep-n-grep-printer-0.2.1-0e4d9ea7a0184dd5"
 ## script = '''
 ## FROM rust-base AS dep-n-grep-printer-0.2.1-0e4d9ea7a0184dd5
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 ## RUN \
 ##   --mount=from=cratesio-grep-printer-0.2.1,source=/grep-printer-0.2.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-printer-0.2.1 \
@@ -3431,7 +3431,7 @@ FROM scratch AS cratesio-grep-regex-0.1.12
 ADD --chmod=0664 --unpack --checksum=sha256:f748bb135ca835da5cbc67ca0e6955f968db9c5df74ca4f56b18e1ddbc68230d \
   https://static.crates.io/crates/grep-regex/grep-regex-0.1.12.crate /
 FROM rust-base AS dep-n-grep-regex-0.1.12-c08c56633b958d0c
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 RUN \
   --mount=from=cratesio-grep-regex-0.1.12,source=/grep-regex-0.1.12,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-regex-0.1.12 \
@@ -3578,7 +3578,7 @@ COPY --link --from=dep-n-grep-regex-0.1.12-c08c56633b958d0c /tmp/clis-ripgrep_14
 ## name = "dep-n-grep-regex-0.1.12-c08c56633b958d0c"
 ## script = '''
 ## FROM rust-base AS dep-n-grep-regex-0.1.12-c08c56633b958d0c
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 ## RUN \
 ##   --mount=from=cratesio-grep-regex-0.1.12,source=/grep-regex-0.1.12,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-regex-0.1.12 \
@@ -3632,7 +3632,7 @@ FROM scratch AS cratesio-grep-0.3.1
 ADD --chmod=0664 --unpack --checksum=sha256:6e2b024ec1e686cb64d78beb852030b0e632af93817f1ed25be0173af0e94939 \
   https://static.crates.io/crates/grep/grep-0.3.1.crate /
 FROM rust-base AS dep-n-grep-0.3.1-9e71f2809112d472
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 RUN \
   --mount=from=cratesio-grep-0.3.1,source=/grep-0.3.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-0.3.1 \
@@ -3959,7 +3959,7 @@ COPY --link --from=dep-n-grep-0.3.1-9e71f2809112d472 /tmp/clis-ripgrep_14-1-0/re
 ## name = "dep-n-grep-0.3.1-9e71f2809112d472"
 ## script = '''
 ## FROM rust-base AS dep-n-grep-0.3.1-9e71f2809112d472
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 ## RUN \
 ##   --mount=from=cratesio-grep-0.3.1,source=/grep-0.3.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-0.3.1 \
@@ -4043,7 +4043,7 @@ FROM scratch AS cratesio-crossbeam-utils-0.8.18
 ADD --chmod=0664 --unpack --checksum=sha256:c3a430a770ebd84726f584a90ee7f020d28db52c6d02138900f22341f866d39c \
   https://static.crates.io/crates/crossbeam-utils/crossbeam-utils-0.8.18.crate /
 FROM rust-base AS dep-n-crossbeam-utils-0.8.18-1ae807b4b6e713ec
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 RUN \
   --mount=from=cratesio-crossbeam-utils-0.8.18,source=/crossbeam-utils-0.8.18,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.18 \
@@ -4160,7 +4160,7 @@ COPY --link --from=dep-n-crossbeam-utils-0.8.18-1ae807b4b6e713ec /tmp/clis-ripgr
 ## name = "dep-n-crossbeam-utils-0.8.18-1ae807b4b6e713ec"
 ## script = '''
 ## FROM rust-base AS dep-n-crossbeam-utils-0.8.18-1ae807b4b6e713ec
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 ## RUN \
 ##   --mount=from=cratesio-crossbeam-utils-0.8.18,source=/crossbeam-utils-0.8.18,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.18 \
@@ -4203,7 +4203,7 @@ FROM scratch AS cratesio-crossbeam-epoch-0.9.17
 ADD --chmod=0664 --unpack --checksum=sha256:0e3681d554572a651dda4186cd47240627c3d0114d45a95f6ad27f2f22e7548d \
   https://static.crates.io/crates/crossbeam-epoch/crossbeam-epoch-0.9.17.crate /
 FROM rust-base AS dep-n-crossbeam-epoch-0.9.17-e4df21448919a796
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 RUN \
   --mount=from=cratesio-crossbeam-epoch-0.9.17,source=/crossbeam-epoch-0.9.17,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-epoch-0.9.17 \
@@ -4311,7 +4311,7 @@ COPY --link --from=dep-n-crossbeam-epoch-0.9.17-e4df21448919a796 /tmp/clis-ripgr
 ## name = "dep-n-crossbeam-epoch-0.9.17-e4df21448919a796"
 ## script = '''
 ## FROM rust-base AS dep-n-crossbeam-epoch-0.9.17-e4df21448919a796
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 ## RUN \
 ##   --mount=from=cratesio-crossbeam-epoch-0.9.17,source=/crossbeam-epoch-0.9.17,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-epoch-0.9.17 \
@@ -4355,7 +4355,7 @@ FROM scratch AS cratesio-crossbeam-deque-0.8.4
 ADD --chmod=0664 --unpack --checksum=sha256:fca89a0e215bab21874660c67903c5f143333cab1da83d041c7ded6053774751 \
   https://static.crates.io/crates/crossbeam-deque/crossbeam-deque-0.8.4.crate /
 FROM rust-base AS dep-n-crossbeam-deque-0.8.4-0deb1c425e6f6d70
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 RUN \
   --mount=from=cratesio-crossbeam-deque-0.8.4,source=/crossbeam-deque-0.8.4,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-deque-0.8.4 \
@@ -4454,7 +4454,7 @@ COPY --link --from=dep-n-crossbeam-deque-0.8.4-0deb1c425e6f6d70 /tmp/clis-ripgre
 ## name = "dep-n-crossbeam-deque-0.8.4-0deb1c425e6f6d70"
 ## script = '''
 ## FROM rust-base AS dep-n-crossbeam-deque-0.8.4-0deb1c425e6f6d70
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 ## RUN \
 ##   --mount=from=cratesio-crossbeam-deque-0.8.4,source=/crossbeam-deque-0.8.4,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-deque-0.8.4 \
@@ -4500,7 +4500,7 @@ FROM scratch AS cratesio-same-file-1.0.6
 ADD --chmod=0664 --unpack --checksum=sha256:93fc1dc3aaa9bfed95e02e6eadabb4baf7e3078b0bd1b4d7b6b0b68378900502 \
   https://static.crates.io/crates/same-file/same-file-1.0.6.crate /
 FROM rust-base AS dep-n-same-file-1.0.6-880cd61c1f851a7b
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 RUN \
   --mount=from=cratesio-same-file-1.0.6,source=/same-file-1.0.6,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/same-file-1.0.6 \
@@ -4561,7 +4561,7 @@ COPY --link --from=dep-n-same-file-1.0.6-880cd61c1f851a7b /tmp/clis-ripgrep_14-1
 ## name = "dep-n-same-file-1.0.6-880cd61c1f851a7b"
 ## script = '''
 ## FROM rust-base AS dep-n-same-file-1.0.6-880cd61c1f851a7b
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 ## RUN \
 ##   --mount=from=cratesio-same-file-1.0.6,source=/same-file-1.0.6,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/same-file-1.0.6 \
@@ -4601,7 +4601,7 @@ FROM scratch AS cratesio-walkdir-2.4.0
 ADD --chmod=0664 --unpack --checksum=sha256:d71d857dc86794ca4c280d616f7da00d2dbfd8cd788846559a6813e6aa4b54ee \
   https://static.crates.io/crates/walkdir/walkdir-2.4.0.crate /
 FROM rust-base AS dep-n-walkdir-2.4.0-345a7495356295f2
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 RUN \
   --mount=from=cratesio-walkdir-2.4.0,source=/walkdir-2.4.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/walkdir-2.4.0 \
@@ -4672,7 +4672,7 @@ COPY --link --from=dep-n-walkdir-2.4.0-345a7495356295f2 /tmp/clis-ripgrep_14-1-0
 ## name = "dep-n-walkdir-2.4.0-345a7495356295f2"
 ## script = '''
 ## FROM rust-base AS dep-n-walkdir-2.4.0-345a7495356295f2
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 ## RUN \
 ##   --mount=from=cratesio-walkdir-2.4.0,source=/walkdir-2.4.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/walkdir-2.4.0 \
@@ -4714,7 +4714,7 @@ FROM scratch AS cratesio-ignore-0.4.22
 ADD --chmod=0664 --unpack --checksum=sha256:b46810df39e66e925525d6e38ce1e7f6e1d208f72dc39757880fcb66e2c58af1 \
   https://static.crates.io/crates/ignore/ignore-0.4.22.crate /
 FROM rust-base AS dep-n-ignore-0.4.22-95c296cdf92c1819
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 RUN \
   --mount=from=cratesio-ignore-0.4.22,source=/ignore-0.4.22,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ignore-0.4.22 \
@@ -4933,7 +4933,7 @@ COPY --link --from=dep-n-ignore-0.4.22-95c296cdf92c1819 /tmp/clis-ripgrep_14-1-0
 ## name = "dep-n-ignore-0.4.22-95c296cdf92c1819"
 ## script = '''
 ## FROM rust-base AS dep-n-ignore-0.4.22-95c296cdf92c1819
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 ## RUN \
 ##   --mount=from=cratesio-ignore-0.4.22,source=/ignore-0.4.22,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ignore-0.4.22 \
@@ -4999,7 +4999,7 @@ FROM scratch AS cratesio-lexopt-0.3.0
 ADD --chmod=0664 --unpack --checksum=sha256:baff4b617f7df3d896f97fe922b64817f6cd9a756bb81d40f8883f2f66dcb401 \
   https://static.crates.io/crates/lexopt/lexopt-0.3.0.crate /
 FROM rust-base AS dep-n-lexopt-0.3.0-17f37e7bd1b70087
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 RUN \
   --mount=from=cratesio-lexopt-0.3.0,source=/lexopt-0.3.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/lexopt-0.3.0 \
@@ -5058,7 +5058,7 @@ COPY --link --from=dep-n-lexopt-0.3.0-17f37e7bd1b70087 /tmp/clis-ripgrep_14-1-0/
 ## name = "dep-n-lexopt-0.3.0-17f37e7bd1b70087"
 ## script = '''
 ## FROM rust-base AS dep-n-lexopt-0.3.0-17f37e7bd1b70087
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 ## RUN \
 ##   --mount=from=cratesio-lexopt-0.3.0,source=/lexopt-0.3.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/lexopt-0.3.0 \
@@ -5098,7 +5098,7 @@ FROM scratch AS cratesio-textwrap-0.16.0
 ADD --chmod=0664 --unpack --checksum=sha256:222a222a5bfe1bba4a77b45ec488a741b3cb8872e5e499451fd7d0129c9c7c3d \
   https://static.crates.io/crates/textwrap/textwrap-0.16.0.crate /
 FROM rust-base AS dep-n-textwrap-0.16.0-f2419d4872a2993a
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 RUN \
   --mount=from=cratesio-textwrap-0.16.0,source=/textwrap-0.16.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/textwrap-0.16.0 \
@@ -5159,7 +5159,7 @@ COPY --link --from=dep-n-textwrap-0.16.0-f2419d4872a2993a /tmp/clis-ripgrep_14-1
 ## name = "dep-n-textwrap-0.16.0-f2419d4872a2993a"
 ## script = '''
 ## FROM rust-base AS dep-n-textwrap-0.16.0-f2419d4872a2993a
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 ## RUN \
 ##   --mount=from=cratesio-textwrap-0.16.0,source=/textwrap-0.16.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/textwrap-0.16.0 \
@@ -5199,7 +5199,7 @@ FROM scratch AS cratesio-ripgrep-14.1.0
 ADD --chmod=0664 --unpack --checksum=sha256:d7bcbc3ac47a84bd5d0cefb27a53bbf3defb6867b97e526531fba2e564597fd8 \
   https://static.crates.io/crates/ripgrep/ripgrep-14.1.0.crate /
 FROM rust-base AS dep-n-ripgrep-14.1.0-16aebc92c4aced68
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 RUN \
   --mount=from=cratesio-ripgrep-14.1.0,source=/ripgrep-14.1.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ripgrep-14.1.0 \
@@ -5495,7 +5495,7 @@ COPY --link --from=dep-n-ripgrep-14.1.0-16aebc92c4aced68 /tmp/clis-ripgrep_14-1-
 ## name = "dep-n-ripgrep-14.1.0-16aebc92c4aced68"
 ## script = '''
 ## FROM rust-base AS dep-n-ripgrep-14.1.0-16aebc92c4aced68
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-ripgrep_14-1-0/release/deps
 ## RUN \
 ##   --mount=from=cratesio-ripgrep-14.1.0,source=/ripgrep-14.1.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ripgrep-14.1.0 \

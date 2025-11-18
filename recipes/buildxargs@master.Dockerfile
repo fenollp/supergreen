@@ -10,7 +10,7 @@ FROM scratch AS cratesio-pico-args-0.5.0
 ADD --chmod=0664 --unpack --checksum=sha256:5be167a7af36ee22fe3115051bc51f6e6c7054c9348e28deb4f49bd6f705a315 \
   https://static.crates.io/crates/pico-args/pico-args-0.5.0.crate /
 FROM rust-base AS dep-n-pico-args-0.5.0-ef1ec1c562398afc
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-buildxargs_master/release/deps
 RUN \
   --mount=from=cratesio-pico-args-0.5.0,source=/pico-args-0.5.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/pico-args-0.5.0 \
@@ -69,7 +69,7 @@ COPY --link --from=dep-n-pico-args-0.5.0-ef1ec1c562398afc /tmp/clis-buildxargs_m
 ## name = "dep-n-pico-args-0.5.0-ef1ec1c562398afc"
 ## script = '''
 ## FROM rust-base AS dep-n-pico-args-0.5.0-ef1ec1c562398afc
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-buildxargs_master/release/deps
 ## RUN \
 ##   --mount=from=cratesio-pico-args-0.5.0,source=/pico-args-0.5.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/pico-args-0.5.0 \
@@ -109,7 +109,7 @@ FROM scratch AS cratesio-shlex-1.3.0
 ADD --chmod=0664 --unpack --checksum=sha256:0fda2ff0d084019ba4d7c6f371c95d8fd75ce3524c3cb8fb653a3023f6323e64 \
   https://static.crates.io/crates/shlex/shlex-1.3.0.crate /
 FROM rust-base AS dep-n-shlex-1.3.0-ab0e05b376045caf
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-buildxargs_master/release/deps
 RUN \
   --mount=from=cratesio-shlex-1.3.0,source=/shlex-1.3.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0 \
@@ -170,7 +170,7 @@ COPY --link --from=dep-n-shlex-1.3.0-ab0e05b376045caf /tmp/clis-buildxargs_maste
 ## name = "dep-n-shlex-1.3.0-ab0e05b376045caf"
 ## script = '''
 ## FROM rust-base AS dep-n-shlex-1.3.0-ab0e05b376045caf
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-buildxargs_master/release/deps
 ## RUN \
 ##   --mount=from=cratesio-shlex-1.3.0,source=/shlex-1.3.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0 \
@@ -210,7 +210,7 @@ FROM scratch AS checkout-buildxargs-76dd4ee9dadcdcf0-df9b810011cd416b8e3fc02911f
 ADD --keep-git-dir=false \
   https://github.com/fenollp/buildxargs.git#df9b810011cd416b8e3fc02911f2f496acb8475e /
 FROM rust-base AS dep-n-buildxargs-1.4.0-42615e6c7f87c749
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-buildxargs_master/release/deps
 WORKDIR /home/runner/.cargo/git/checkouts/buildxargs-76dd4ee9dadcdcf0/df9b810
 RUN \
@@ -299,7 +299,7 @@ COPY --link --from=dep-n-buildxargs-1.4.0-42615e6c7f87c749 /tmp/clis-buildxargs_
 ## name = "dep-n-buildxargs-1.4.0-42615e6c7f87c749"
 ## script = '''
 ## FROM rust-base AS dep-n-buildxargs-1.4.0-42615e6c7f87c749
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-buildxargs_master/release/deps
 ## WORKDIR /home/runner/.cargo/git/checkouts/buildxargs-76dd4ee9dadcdcf0/df9b810
 ## RUN \
@@ -343,7 +343,7 @@ COPY --link --from=dep-n-buildxargs-1.4.0-42615e6c7f87c749 /tmp/clis-buildxargs_
 
 
 FROM rust-base AS dep-n-buildxargs-1.4.0-4245cb92e8e8c024
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-buildxargs_master/release/deps
 WORKDIR /home/runner/.cargo/git/checkouts/buildxargs-76dd4ee9dadcdcf0/df9b810
 RUN \
@@ -432,7 +432,7 @@ COPY --link --from=dep-n-buildxargs-1.4.0-4245cb92e8e8c024 /tmp/clis-buildxargs_
 ## name = "dep-n-buildxargs-1.4.0-4245cb92e8e8c024"
 ## script = '''
 ## FROM rust-base AS dep-n-buildxargs-1.4.0-4245cb92e8e8c024
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-buildxargs_master/release/deps
 ## WORKDIR /home/runner/.cargo/git/checkouts/buildxargs-76dd4ee9dadcdcf0/df9b810
 ## RUN \
