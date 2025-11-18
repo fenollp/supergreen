@@ -437,7 +437,9 @@ async fn do_wrap_rustc(
     // https://github.com/tugglecore/rust-tracing-primer
     // TODO: `cargo green -v{N+1} ..` starts a TUI showing colored logs on above `cargo -v{N} ..`
 
-    green.do_build(fallback, &containerfile_path, &out_stage, &mut md, &out_dir, &md_path).await?;
+    green
+        .do_build(fallback, &containerfile_path, &out_stage, &mut md, &out_dir, &target_path)
+        .await?;
 
     if let Some(incremental) = incremental {
         if let (_, _, _, Err(e)) = green
@@ -459,8 +461,8 @@ impl Green {
         containerfile_path: &Utf8Path,
         stage: &Stage,
         md: &mut Md,
-        out_dir_var: &Utf8Path,
-        md_path: &Utf8Path, // FIXME: use md.this().path(target_path)
+        out_dir: &Utf8Path,
+        target_path: &Utf8Path,
     ) -> Result<()> {
         if self.runner == Runner::None {
             info!("Runner disabled, falling back...");
@@ -468,17 +470,19 @@ impl Green {
         }
 
         let (call, envs, Effects { written, stdout, stderr }, built) =
-            self.build_out(containerfile_path, stage, &md.contexts, out_dir_var).await;
+            self.build_out(containerfile_path, stage, &md.contexts, out_dir).await;
 
         self.maybe_write_final_path(containerfile_path, &md.contexts, &call, &envs)
             .map_err(|e| anyhow!("Failed producing final path: {e}"))?;
+
+        let md_path = md.this().path(target_path);
 
         if !written.is_empty() || !stdout.is_empty() || !stderr.is_empty() {
             md.writes = written;
             md.stdout = stdout;
             md.stderr = stderr;
             info!("re-opening (RW) crate's md {md_path}");
-            md.write_to(md_path)?;
+            md.write_to(&md_path)?;
         }
 
         let final_stage = format!(
@@ -496,7 +500,7 @@ impl Green {
                 .join("\n")
         );
 
-        self.maybe_append_to_final_path(md_path, final_stage)
+        self.maybe_append_to_final_path(&md_path, final_stage)
             .map_err(|e| anyhow!("Failed finishing final path: {e}"))?;
 
         if let Err(e) = built {
