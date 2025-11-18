@@ -91,8 +91,9 @@ echo
 
 reg1=$(mktemp -d)
 reg2=$(mktemp -d)
-docker run --rm -it --name regis3-1 -d --user $(id -u):$(id -g) -p 12345:5000 -v $reg1:/var/lib/registry registry:3
-docker run --rm -it --name regis3-2 -d --user $(id -u):$(id -g) -p 23456:5000 -v $reg2:/var/lib/registry registry:3
+registry_proxy=mirror.gcr.io # dockerhub gets annoying
+docker run --rm -it --name regis3-1 -d --user $(id -u):$(id -g) -p 12345:5000 -v $reg1:/var/lib/registry $registry_proxy/registry:3
+docker run --rm -it --name regis3-2 -d --user $(id -u):$(id -g) -p 23456:5000 -v $reg2:/var/lib/registry $registry_proxy/registry:3
 export CARGOGREEN_CACHE_IMAGES=docker-image://localhost:12345/ca/ching,docker-image://localhost:23456/ca/ching
 $CARGO green supergreen builder recreate
 
