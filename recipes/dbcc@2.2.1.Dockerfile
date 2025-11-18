@@ -10,7 +10,7 @@ FROM scratch AS cratesio-byte-tools-0.3.1
 ADD --chmod=0664 --unpack --checksum=sha256:e3b5ca7a04898ad4bcd41c90c5285445ff5b791899bb1b0abdd2a2aa791211d7 \
   https://static.crates.io/crates/byte-tools/byte-tools-0.3.1.crate /
 FROM rust-base AS dep-n-byte-tools-0.3.1-208f428f6e945660
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
   --mount=from=cratesio-byte-tools-0.3.1,source=/byte-tools-0.3.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/byte-tools-0.3.1 \
@@ -69,7 +69,7 @@ COPY --link --from=dep-n-byte-tools-0.3.1-208f428f6e945660 /tmp/clis-dbcc_2-2-1/
 ## name = "dep-n-byte-tools-0.3.1-208f428f6e945660"
 ## script = '''
 ## FROM rust-base AS dep-n-byte-tools-0.3.1-208f428f6e945660
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
 ##   --mount=from=cratesio-byte-tools-0.3.1,source=/byte-tools-0.3.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/byte-tools-0.3.1 \
@@ -109,7 +109,7 @@ FROM scratch AS cratesio-typenum-1.12.0
 ADD --chmod=0664 --unpack --checksum=sha256:373c8a200f9e67a0c95e62a4f52fbf80c23b4381c05a17845531982fa99e6b33 \
   https://static.crates.io/crates/typenum/typenum-1.12.0.crate /
 FROM rust-base AS dep-n-typenum-1.12.0-0c59626b95871fe7
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
   --mount=from=cratesio-typenum-1.12.0,source=/typenum-1.12.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/typenum-1.12.0 \
@@ -238,7 +238,7 @@ COPY --link --from=dep-n-typenum-1.12.0-0c59626b95871fe7 /tmp/clis-dbcc_2-2-1/re
 ## name = "dep-n-typenum-1.12.0-0c59626b95871fe7"
 ## script = '''
 ## FROM rust-base AS dep-n-typenum-1.12.0-0c59626b95871fe7
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
 ##   --mount=from=cratesio-typenum-1.12.0,source=/typenum-1.12.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/typenum-1.12.0 \
@@ -282,7 +282,7 @@ FROM scratch AS cratesio-generic-array-0.12.3
 ADD --chmod=0664 --unpack --checksum=sha256:c68f0274ae0e023facc3c97b2e00f076be70e254bc851d972503b328db79b2ec \
   https://static.crates.io/crates/generic-array/generic-array-0.12.3.crate /
 FROM rust-base AS dep-n-generic-array-0.12.3-0afa135837d93e68
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
   --mount=from=cratesio-generic-array-0.12.3,source=/generic-array-0.12.3,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/generic-array-0.12.3 \
@@ -363,7 +363,7 @@ COPY --link --from=dep-n-generic-array-0.12.3-0afa135837d93e68 /tmp/clis-dbcc_2-
 ## name = "dep-n-generic-array-0.12.3-0afa135837d93e68"
 ## script = '''
 ## FROM rust-base AS dep-n-generic-array-0.12.3-0afa135837d93e68
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
 ##   --mount=from=cratesio-generic-array-0.12.3,source=/generic-array-0.12.3,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/generic-array-0.12.3 \
@@ -405,7 +405,7 @@ FROM scratch AS cratesio-subtle-1.0.0
 ADD --chmod=0664 --unpack --checksum=sha256:2d67a5a62ba6e01cb2192ff309324cb4875d0c451d55fe2319433abe7a05a8ee \
   https://static.crates.io/crates/subtle/subtle-1.0.0.crate /
 FROM rust-base AS dep-n-subtle-1.0.0-fe593aa0503da824
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
   --mount=from=cratesio-subtle-1.0.0,source=/subtle-1.0.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/subtle-1.0.0 \
@@ -472,7 +472,7 @@ COPY --link --from=dep-n-subtle-1.0.0-fe593aa0503da824 /tmp/clis-dbcc_2-2-1/rele
 ## name = "dep-n-subtle-1.0.0-fe593aa0503da824"
 ## script = '''
 ## FROM rust-base AS dep-n-subtle-1.0.0-fe593aa0503da824
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
 ##   --mount=from=cratesio-subtle-1.0.0,source=/subtle-1.0.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/subtle-1.0.0 \
@@ -512,7 +512,7 @@ FROM scratch AS cratesio-crypto-mac-0.7.0
 ADD --chmod=0664 --unpack --checksum=sha256:4434400df11d95d556bac068ddfedd482915eb18fe8bea89bc80b6e4b1c179e5 \
   https://static.crates.io/crates/crypto-mac/crypto-mac-0.7.0.crate /
 FROM rust-base AS dep-n-crypto-mac-0.7.0-c92b10e2fa1c82cb
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
   --mount=from=cratesio-crypto-mac-0.7.0,source=/crypto-mac-0.7.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crypto-mac-0.7.0 \
@@ -615,7 +615,7 @@ COPY --link --from=dep-n-crypto-mac-0.7.0-c92b10e2fa1c82cb /tmp/clis-dbcc_2-2-1/
 ## name = "dep-n-crypto-mac-0.7.0-c92b10e2fa1c82cb"
 ## script = '''
 ## FROM rust-base AS dep-n-crypto-mac-0.7.0-c92b10e2fa1c82cb
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
 ##   --mount=from=cratesio-crypto-mac-0.7.0,source=/crypto-mac-0.7.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crypto-mac-0.7.0 \
@@ -661,7 +661,7 @@ FROM scratch AS cratesio-digest-0.8.1
 ADD --chmod=0664 --unpack --checksum=sha256:f3d0c8c8752312f9713efd397ff63acb9f85585afbf179282e720e7704954dd5 \
   https://static.crates.io/crates/digest/digest-0.8.1.crate /
 FROM rust-base AS dep-n-digest-0.8.1-3c7631a805111659
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
   --mount=from=cratesio-digest-0.8.1,source=/digest-0.8.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/digest-0.8.1 \
@@ -756,7 +756,7 @@ COPY --link --from=dep-n-digest-0.8.1-3c7631a805111659 /tmp/clis-dbcc_2-2-1/rele
 ## name = "dep-n-digest-0.8.1-3c7631a805111659"
 ## script = '''
 ## FROM rust-base AS dep-n-digest-0.8.1-3c7631a805111659
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
 ##   --mount=from=cratesio-digest-0.8.1,source=/digest-0.8.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/digest-0.8.1 \
@@ -800,7 +800,7 @@ FROM scratch AS cratesio-opaque-debug-0.2.3
 ADD --chmod=0664 --unpack --checksum=sha256:2839e79665f131bdb5782e51f2c6c9599c133c6098982a54c794358bf432529c \
   https://static.crates.io/crates/opaque-debug/opaque-debug-0.2.3.crate /
 FROM rust-base AS dep-n-opaque-debug-0.2.3-3e36cb37043b614a
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
   --mount=from=cratesio-opaque-debug-0.2.3,source=/opaque-debug-0.2.3,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/opaque-debug-0.2.3 \
@@ -859,7 +859,7 @@ COPY --link --from=dep-n-opaque-debug-0.2.3-3e36cb37043b614a /tmp/clis-dbcc_2-2-
 ## name = "dep-n-opaque-debug-0.2.3-3e36cb37043b614a"
 ## script = '''
 ## FROM rust-base AS dep-n-opaque-debug-0.2.3-3e36cb37043b614a
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
 ##   --mount=from=cratesio-opaque-debug-0.2.3,source=/opaque-debug-0.2.3,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/opaque-debug-0.2.3 \
@@ -899,7 +899,7 @@ FROM scratch AS cratesio-blake2-0.8.1
 ADD --chmod=0664 --unpack --checksum=sha256:94cb07b0da6a73955f8fb85d24c466778e70cda767a568229b104f0264089330 \
   https://static.crates.io/crates/blake2/blake2-0.8.1.crate /
 FROM rust-base AS dep-n-blake2-0.8.1-90ca44a8caf54d0f
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
   --mount=from=cratesio-blake2-0.8.1,source=/blake2-0.8.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/blake2-0.8.1 \
@@ -1056,7 +1056,7 @@ COPY --link --from=dep-n-blake2-0.8.1-90ca44a8caf54d0f /tmp/clis-dbcc_2-2-1/rele
 ## name = "dep-n-blake2-0.8.1-90ca44a8caf54d0f"
 ## script = '''
 ## FROM rust-base AS dep-n-blake2-0.8.1-90ca44a8caf54d0f
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
 ##   --mount=from=cratesio-blake2-0.8.1,source=/blake2-0.8.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/blake2-0.8.1 \
@@ -1110,7 +1110,7 @@ FROM scratch AS cratesio-unicode-xid-0.2.1
 ADD --chmod=0664 --unpack --checksum=sha256:f7fe0bb3479651439c9112f72b6c505038574c9fbb575ed1bf3b797fa39dd564 \
   https://static.crates.io/crates/unicode-xid/unicode-xid-0.2.1.crate /
 FROM rust-base AS dep-n-unicode-xid-0.2.1-ca80afcc82eeec0a
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
   --mount=from=cratesio-unicode-xid-0.2.1,source=/unicode-xid-0.2.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/unicode-xid-0.2.1 \
@@ -1169,7 +1169,7 @@ COPY --link --from=dep-n-unicode-xid-0.2.1-ca80afcc82eeec0a /tmp/clis-dbcc_2-2-1
 ## name = "dep-n-unicode-xid-0.2.1-ca80afcc82eeec0a"
 ## script = '''
 ## FROM rust-base AS dep-n-unicode-xid-0.2.1-ca80afcc82eeec0a
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
 ##   --mount=from=cratesio-unicode-xid-0.2.1,source=/unicode-xid-0.2.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/unicode-xid-0.2.1 \
@@ -1209,7 +1209,7 @@ FROM scratch AS cratesio-proc-macro2-1.0.24
 ADD --chmod=0664 --unpack --checksum=sha256:1e0704ee1a7e00d7bb417d0770ea303c1bccbabf0ef1667dae92b5967f5f8a71 \
   https://static.crates.io/crates/proc-macro2/proc-macro2-1.0.24.crate /
 FROM rust-base AS dep-n-proc-macro2-1.0.24-80b37ce9903d0def
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
   --mount=from=cratesio-proc-macro2-1.0.24,source=/proc-macro2-1.0.24,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.24 \
@@ -1390,7 +1390,7 @@ COPY --link --from=dep-n-proc-macro2-1.0.24-80b37ce9903d0def /tmp/clis-dbcc_2-2-
 ## name = "dep-n-proc-macro2-1.0.24-80b37ce9903d0def"
 ## script = '''
 ## FROM rust-base AS dep-n-proc-macro2-1.0.24-80b37ce9903d0def
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
 ##   --mount=from=cratesio-proc-macro2-1.0.24,source=/proc-macro2-1.0.24,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.24 \
@@ -1433,7 +1433,7 @@ FROM scratch AS cratesio-quote-1.0.7
 ADD --chmod=0664 --unpack --checksum=sha256:aa563d17ecb180e500da1cfd2b028310ac758de548efdd203e18f283af693f37 \
   https://static.crates.io/crates/quote/quote-1.0.7.crate /
 FROM rust-base AS dep-n-quote-1.0.7-dd5debcb2b51fc02
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
   --mount=from=cratesio-quote-1.0.7,source=/quote-1.0.7,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.7 \
@@ -1520,7 +1520,7 @@ COPY --link --from=dep-n-quote-1.0.7-dd5debcb2b51fc02 /tmp/clis-dbcc_2-2-1/relea
 ## name = "dep-n-quote-1.0.7-dd5debcb2b51fc02"
 ## script = '''
 ## FROM rust-base AS dep-n-quote-1.0.7-dd5debcb2b51fc02
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
 ##   --mount=from=cratesio-quote-1.0.7,source=/quote-1.0.7,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.7 \
@@ -1564,7 +1564,7 @@ FROM scratch AS cratesio-syn-1.0.46
 ADD --chmod=0664 --unpack --checksum=sha256:5ad5de3220ea04da322618ded2c42233d02baca219d6f160a3e9c87cda16c942 \
   https://static.crates.io/crates/syn/syn-1.0.46.crate /
 FROM rust-base AS dep-n-syn-1.0.46-bbffa8c7e6a16356
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
   --mount=from=cratesio-syn-1.0.46,source=/syn-1.0.46,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/syn-1.0.46 \
@@ -1670,7 +1670,7 @@ COPY --link --from=dep-n-syn-1.0.46-bbffa8c7e6a16356 /tmp/clis-dbcc_2-2-1/releas
 ## name = "dep-n-syn-1.0.46-bbffa8c7e6a16356"
 ## script = '''
 ## FROM rust-base AS dep-n-syn-1.0.46-bbffa8c7e6a16356
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
 ##   --mount=from=cratesio-syn-1.0.46,source=/syn-1.0.46,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/syn-1.0.46 \
@@ -1717,7 +1717,7 @@ FROM scratch AS cratesio-derive-getters-0.1.1
 ADD --chmod=0664 --unpack --checksum=sha256:16dc4e2517f08ca167440ccb11023c1308ee19a4022d7b03c0e652f971171869 \
   https://static.crates.io/crates/derive-getters/derive-getters-0.1.1.crate /
 FROM rust-base AS dep-n-derive-getters-0.1.1-10105863fb18eb2a
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
   --mount=from=cratesio-derive-getters-0.1.1,source=/derive-getters-0.1.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/derive-getters-0.1.1 \
@@ -1809,7 +1809,7 @@ COPY --link --from=dep-n-derive-getters-0.1.1-10105863fb18eb2a /tmp/clis-dbcc_2-
 ## name = "dep-n-derive-getters-0.1.1-10105863fb18eb2a"
 ## script = '''
 ## FROM rust-base AS dep-n-derive-getters-0.1.1-10105863fb18eb2a
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
 ##   --mount=from=cratesio-derive-getters-0.1.1,source=/derive-getters-0.1.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/derive-getters-0.1.1 \
@@ -1853,7 +1853,7 @@ FROM scratch AS cratesio-memchr-2.3.3
 ADD --chmod=0664 --unpack --checksum=sha256:3728d817d99e5ac407411fa471ff9800a778d88a24685968b36824eaf4bee400 \
   https://static.crates.io/crates/memchr/memchr-2.3.3.crate /
 FROM rust-base AS dep-n-memchr-2.3.3-c93fd10415a641fd
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
   --mount=from=cratesio-memchr-2.3.3,source=/memchr-2.3.3,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/memchr-2.3.3 \
@@ -1946,7 +1946,7 @@ COPY --link --from=dep-n-memchr-2.3.3-c93fd10415a641fd /tmp/clis-dbcc_2-2-1/rele
 ## name = "dep-n-memchr-2.3.3-c93fd10415a641fd"
 ## script = '''
 ## FROM rust-base AS dep-n-memchr-2.3.3-c93fd10415a641fd
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
 ##   --mount=from=cratesio-memchr-2.3.3,source=/memchr-2.3.3,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/memchr-2.3.3 \
@@ -1987,7 +1987,7 @@ FROM scratch AS cratesio-nom-4.2.3
 ADD --chmod=0664 --unpack --checksum=sha256:2ad2a91a8e869eeb30b9cb3119ae87773a8f4ae617f41b1eb9c154b2905f7bd6 \
   https://static.crates.io/crates/nom/nom-4.2.3.crate /
 FROM rust-base AS dep-n-nom-4.2.3-cd5fc4bcd4e040ed
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
   --mount=from=cratesio-nom-4.2.3,source=/nom-4.2.3,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3 \
@@ -2127,7 +2127,7 @@ COPY --link --from=dep-n-nom-4.2.3-cd5fc4bcd4e040ed /tmp/clis-dbcc_2-2-1/release
 ## name = "dep-n-nom-4.2.3-cd5fc4bcd4e040ed"
 ## script = '''
 ## FROM rust-base AS dep-n-nom-4.2.3-cd5fc4bcd4e040ed
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
 ##   --mount=from=cratesio-nom-4.2.3,source=/nom-4.2.3,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3 \
@@ -2170,7 +2170,7 @@ FROM scratch AS cratesio-can-dbc-3.0.2
 ADD --chmod=0664 --unpack --checksum=sha256:5bc2e1f9f6f7fe6f3dbcfc44036eb07596ef1d37517ce822111f0c3d6eeed82a \
   https://static.crates.io/crates/can-dbc/can-dbc-3.0.2.crate /
 FROM rust-base AS dep-n-can-dbc-3.0.2-593834cb44ccbead
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
   --mount=from=cratesio-can-dbc-3.0.2,source=/can-dbc-3.0.2,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/can-dbc-3.0.2 \
@@ -2312,7 +2312,7 @@ COPY --link --from=dep-n-can-dbc-3.0.2-593834cb44ccbead /tmp/clis-dbcc_2-2-1/rel
 ## name = "dep-n-can-dbc-3.0.2-593834cb44ccbead"
 ## script = '''
 ## FROM rust-base AS dep-n-can-dbc-3.0.2-593834cb44ccbead
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
 ##   --mount=from=cratesio-can-dbc-3.0.2,source=/can-dbc-3.0.2,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/can-dbc-3.0.2 \
@@ -2365,7 +2365,7 @@ FROM scratch AS cratesio-unicode-segmentation-1.6.0
 ADD --chmod=0664 --unpack --checksum=sha256:e83e153d1053cbb5a118eeff7fd5be06ed99153f00dbcd8ae310c5fb2b22edc0 \
   https://static.crates.io/crates/unicode-segmentation/unicode-segmentation-1.6.0.crate /
 FROM rust-base AS dep-n-unicode-segmentation-1.6.0-b06e8bcc96549ef0
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
   --mount=from=cratesio-unicode-segmentation-1.6.0,source=/unicode-segmentation-1.6.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/unicode-segmentation-1.6.0 \
@@ -2428,7 +2428,7 @@ COPY --link --from=dep-n-unicode-segmentation-1.6.0-b06e8bcc96549ef0 /tmp/clis-d
 ## name = "dep-n-unicode-segmentation-1.6.0-b06e8bcc96549ef0"
 ## script = '''
 ## FROM rust-base AS dep-n-unicode-segmentation-1.6.0-b06e8bcc96549ef0
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
 ##   --mount=from=cratesio-unicode-segmentation-1.6.0,source=/unicode-segmentation-1.6.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/unicode-segmentation-1.6.0 \
@@ -2468,7 +2468,7 @@ FROM scratch AS cratesio-heck-0.3.1
 ADD --chmod=0664 --unpack --checksum=sha256:20564e78d53d2bb135c343b3f47714a56af2061f1c928fdb541dc7b9fdd94205 \
   https://static.crates.io/crates/heck/heck-0.3.1.crate /
 FROM rust-base AS dep-n-heck-0.3.1-7d0dcf7e7b45836f
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
   --mount=from=cratesio-heck-0.3.1,source=/heck-0.3.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/heck-0.3.1 \
@@ -2539,7 +2539,7 @@ COPY --link --from=dep-n-heck-0.3.1-7d0dcf7e7b45836f /tmp/clis-dbcc_2-2-1/releas
 ## name = "dep-n-heck-0.3.1-7d0dcf7e7b45836f"
 ## script = '''
 ## FROM rust-base AS dep-n-heck-0.3.1-7d0dcf7e7b45836f
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
 ##   --mount=from=cratesio-heck-0.3.1,source=/heck-0.3.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/heck-0.3.1 \
@@ -2581,7 +2581,7 @@ FROM scratch AS cratesio-cfg-if-0.1.10
 ADD --chmod=0664 --unpack --checksum=sha256:4785bdd1c96b2a846b2bd7cc02e86b6b3dbf14e7e53446c4f54c92a361040822 \
   https://static.crates.io/crates/cfg-if/cfg-if-0.1.10.crate /
 FROM rust-base AS dep-n-cfg-if-0.1.10-abefcc22b095b628
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
   --mount=from=cratesio-cfg-if-0.1.10,source=/cfg-if-0.1.10,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/cfg-if-0.1.10 \
@@ -2640,7 +2640,7 @@ COPY --link --from=dep-n-cfg-if-0.1.10-abefcc22b095b628 /tmp/clis-dbcc_2-2-1/rel
 ## name = "dep-n-cfg-if-0.1.10-abefcc22b095b628"
 ## script = '''
 ## FROM rust-base AS dep-n-cfg-if-0.1.10-abefcc22b095b628
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
 ##   --mount=from=cratesio-cfg-if-0.1.10,source=/cfg-if-0.1.10,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/cfg-if-0.1.10 \
@@ -2680,7 +2680,7 @@ FROM scratch AS cratesio-log-0.4.11
 ADD --chmod=0664 --unpack --checksum=sha256:4fabed175da42fed1fa0746b0ea71f412aa9d35e76e95e59b192c64b9dc2bf8b \
   https://static.crates.io/crates/log/log-0.4.11.crate /
 FROM rust-base AS dep-n-log-0.4.11-09be6f37eb701f15
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
   --mount=from=cratesio-log-0.4.11,source=/log-0.4.11,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/log-0.4.11 \
@@ -2760,7 +2760,7 @@ COPY --link --from=dep-n-log-0.4.11-09be6f37eb701f15 /tmp/clis-dbcc_2-2-1/releas
 ## name = "dep-n-log-0.4.11-09be6f37eb701f15"
 ## script = '''
 ## FROM rust-base AS dep-n-log-0.4.11-09be6f37eb701f15
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
 ##   --mount=from=cratesio-log-0.4.11,source=/log-0.4.11,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/log-0.4.11 \
@@ -2803,7 +2803,7 @@ FROM scratch AS cratesio-libc-0.2.79
 ADD --chmod=0664 --unpack --checksum=sha256:2448f6066e80e3bfc792e9c98bf705b4b0fc6e8ef5b43e5889aff0eaa9c58743 \
   https://static.crates.io/crates/libc/libc-0.2.79.crate /
 FROM rust-base AS dep-n-libc-0.2.79-087afb0c1713a9a6
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
   --mount=from=cratesio-libc-0.2.79,source=/libc-0.2.79,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.79 \
@@ -2913,7 +2913,7 @@ COPY --link --from=dep-n-libc-0.2.79-087afb0c1713a9a6 /tmp/clis-dbcc_2-2-1/relea
 ## name = "dep-n-libc-0.2.79-087afb0c1713a9a6"
 ## script = '''
 ## FROM rust-base AS dep-n-libc-0.2.79-087afb0c1713a9a6
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
 ##   --mount=from=cratesio-libc-0.2.79,source=/libc-0.2.79,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.79 \
@@ -2954,7 +2954,7 @@ FROM scratch AS cratesio-atty-0.2.14
 ADD --chmod=0664 --unpack --checksum=sha256:d9b39be18770d11421cdb1b9947a45dd3f37e93092cbf377614828a319d5fee8 \
   https://static.crates.io/crates/atty/atty-0.2.14.crate /
 FROM rust-base AS dep-n-atty-0.2.14-737035cdf92a82de
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
   --mount=from=cratesio-atty-0.2.14,source=/atty-0.2.14,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/atty-0.2.14 \
@@ -3025,7 +3025,7 @@ COPY --link --from=dep-n-atty-0.2.14-737035cdf92a82de /tmp/clis-dbcc_2-2-1/relea
 ## name = "dep-n-atty-0.2.14-737035cdf92a82de"
 ## script = '''
 ## FROM rust-base AS dep-n-atty-0.2.14-737035cdf92a82de
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
 ##   --mount=from=cratesio-atty-0.2.14,source=/atty-0.2.14,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/atty-0.2.14 \
@@ -3067,7 +3067,7 @@ FROM scratch AS cratesio-quick-error-1.2.3
 ADD --chmod=0664 --unpack --checksum=sha256:a1d01941d82fa2ab50be1e79e6714289dd7cde78eba4c074bc5a4374f650dfe0 \
   https://static.crates.io/crates/quick-error/quick-error-1.2.3.crate /
 FROM rust-base AS dep-n-quick-error-1.2.3-bd3d4e33b0f59f1b
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
   --mount=from=cratesio-quick-error-1.2.3,source=/quick-error-1.2.3,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quick-error-1.2.3 \
@@ -3126,7 +3126,7 @@ COPY --link --from=dep-n-quick-error-1.2.3-bd3d4e33b0f59f1b /tmp/clis-dbcc_2-2-1
 ## name = "dep-n-quick-error-1.2.3-bd3d4e33b0f59f1b"
 ## script = '''
 ## FROM rust-base AS dep-n-quick-error-1.2.3-bd3d4e33b0f59f1b
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
 ##   --mount=from=cratesio-quick-error-1.2.3,source=/quick-error-1.2.3,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quick-error-1.2.3 \
@@ -3166,7 +3166,7 @@ FROM scratch AS cratesio-humantime-1.3.0
 ADD --chmod=0664 --unpack --checksum=sha256:df004cfca50ef23c36850aaaa59ad52cc70d0e90243c3c7737a4dd32dc7a3c4f \
   https://static.crates.io/crates/humantime/humantime-1.3.0.crate /
 FROM rust-base AS dep-n-humantime-1.3.0-3e3dde196d8efa81
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
   --mount=from=cratesio-humantime-1.3.0,source=/humantime-1.3.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/humantime-1.3.0 \
@@ -3266,7 +3266,7 @@ COPY --link --from=dep-n-humantime-1.3.0-3e3dde196d8efa81 /tmp/clis-dbcc_2-2-1/r
 ## name = "dep-n-humantime-1.3.0-3e3dde196d8efa81"
 ## script = '''
 ## FROM rust-base AS dep-n-humantime-1.3.0-3e3dde196d8efa81
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
 ##   --mount=from=cratesio-humantime-1.3.0,source=/humantime-1.3.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/humantime-1.3.0 \
@@ -3308,7 +3308,7 @@ FROM scratch AS cratesio-aho-corasick-0.7.14
 ADD --chmod=0664 --unpack --checksum=sha256:b476ce7103678b0c6d3d395dbbae31d48ff910bd28be979ba5d48c6351131d0d \
   https://static.crates.io/crates/aho-corasick/aho-corasick-0.7.14.crate /
 FROM rust-base AS dep-n-aho-corasick-0.7.14-014f7ab42daca0d7
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
   --mount=from=cratesio-aho-corasick-0.7.14,source=/aho-corasick-0.7.14,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aho-corasick-0.7.14 \
@@ -3384,7 +3384,7 @@ COPY --link --from=dep-n-aho-corasick-0.7.14-014f7ab42daca0d7 /tmp/clis-dbcc_2-2
 ## name = "dep-n-aho-corasick-0.7.14-014f7ab42daca0d7"
 ## script = '''
 ## FROM rust-base AS dep-n-aho-corasick-0.7.14-014f7ab42daca0d7
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
 ##   --mount=from=cratesio-aho-corasick-0.7.14,source=/aho-corasick-0.7.14,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aho-corasick-0.7.14 \
@@ -3426,7 +3426,7 @@ FROM scratch AS cratesio-regex-syntax-0.6.20
 ADD --chmod=0664 --unpack --checksum=sha256:8cab7a364d15cde1e505267766a2d3c4e22a843e1a601f0fa7564c0f82ced11c \
   https://static.crates.io/crates/regex-syntax/regex-syntax-0.6.20.crate /
 FROM rust-base AS dep-n-regex-syntax-0.6.20-eec8efd7d7dadd3c
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
   --mount=from=cratesio-regex-syntax-0.6.20,source=/regex-syntax-0.6.20,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/regex-syntax-0.6.20 \
@@ -3490,7 +3490,7 @@ COPY --link --from=dep-n-regex-syntax-0.6.20-eec8efd7d7dadd3c /tmp/clis-dbcc_2-2
 ## name = "dep-n-regex-syntax-0.6.20-eec8efd7d7dadd3c"
 ## script = '''
 ## FROM rust-base AS dep-n-regex-syntax-0.6.20-eec8efd7d7dadd3c
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
 ##   --mount=from=cratesio-regex-syntax-0.6.20,source=/regex-syntax-0.6.20,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/regex-syntax-0.6.20 \
@@ -3530,7 +3530,7 @@ FROM scratch AS cratesio-lazy_static-1.4.0
 ADD --chmod=0664 --unpack --checksum=sha256:e2abad23fbc42b3700f2f279844dc832adb2b2eb069b2df918f455c4e18cc646 \
   https://static.crates.io/crates/lazy_static/lazy_static-1.4.0.crate /
 FROM rust-base AS dep-n-lazy_static-1.4.0-a79af56de238e2b5
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
   --mount=from=cratesio-lazy_static-1.4.0,source=/lazy_static-1.4.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/lazy_static-1.4.0 \
@@ -3591,7 +3591,7 @@ COPY --link --from=dep-n-lazy_static-1.4.0-a79af56de238e2b5 /tmp/clis-dbcc_2-2-1
 ## name = "dep-n-lazy_static-1.4.0-a79af56de238e2b5"
 ## script = '''
 ## FROM rust-base AS dep-n-lazy_static-1.4.0-a79af56de238e2b5
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
 ##   --mount=from=cratesio-lazy_static-1.4.0,source=/lazy_static-1.4.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/lazy_static-1.4.0 \
@@ -3631,7 +3631,7 @@ FROM scratch AS cratesio-thread_local-1.0.1
 ADD --chmod=0664 --unpack --checksum=sha256:d40c6d1b69745a6ec6fb1ca717914848da4b44ae29d9b3080cbee91d72a69b14 \
   https://static.crates.io/crates/thread_local/thread_local-1.0.1.crate /
 FROM rust-base AS dep-n-thread_local-1.0.1-3ace2abd55187163
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
   --mount=from=cratesio-thread_local-1.0.1,source=/thread_local-1.0.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thread_local-1.0.1 \
@@ -3707,7 +3707,7 @@ COPY --link --from=dep-n-thread_local-1.0.1-3ace2abd55187163 /tmp/clis-dbcc_2-2-
 ## name = "dep-n-thread_local-1.0.1-3ace2abd55187163"
 ## script = '''
 ## FROM rust-base AS dep-n-thread_local-1.0.1-3ace2abd55187163
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
 ##   --mount=from=cratesio-thread_local-1.0.1,source=/thread_local-1.0.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thread_local-1.0.1 \
@@ -3749,7 +3749,7 @@ FROM scratch AS cratesio-regex-1.4.1
 ADD --chmod=0664 --unpack --checksum=sha256:8963b85b8ce3074fecffde43b4b0dded83ce2f367dc8d363afc56679f3ee820b \
   https://static.crates.io/crates/regex/regex-1.4.1.crate /
 FROM rust-base AS dep-n-regex-1.4.1-5ba8c6f49cc2732d
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
   --mount=from=cratesio-regex-1.4.1,source=/regex-1.4.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/regex-1.4.1 \
@@ -3872,7 +3872,7 @@ COPY --link --from=dep-n-regex-1.4.1-5ba8c6f49cc2732d /tmp/clis-dbcc_2-2-1/relea
 ## name = "dep-n-regex-1.4.1-5ba8c6f49cc2732d"
 ## script = '''
 ## FROM rust-base AS dep-n-regex-1.4.1-5ba8c6f49cc2732d
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
 ##   --mount=from=cratesio-regex-1.4.1,source=/regex-1.4.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/regex-1.4.1 \
@@ -3922,7 +3922,7 @@ FROM scratch AS cratesio-termcolor-1.1.0
 ADD --chmod=0664 --unpack --checksum=sha256:bb6bfa289a4d7c5766392812c0a1f4c1ba45afa1ad47803c11e1f407d846d75f \
   https://static.crates.io/crates/termcolor/termcolor-1.1.0.crate /
 FROM rust-base AS dep-n-termcolor-1.1.0-3d5a70ee74f70e2b
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
   --mount=from=cratesio-termcolor-1.1.0,source=/termcolor-1.1.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/termcolor-1.1.0 \
@@ -3981,7 +3981,7 @@ COPY --link --from=dep-n-termcolor-1.1.0-3d5a70ee74f70e2b /tmp/clis-dbcc_2-2-1/r
 ## name = "dep-n-termcolor-1.1.0-3d5a70ee74f70e2b"
 ## script = '''
 ## FROM rust-base AS dep-n-termcolor-1.1.0-3d5a70ee74f70e2b
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
 ##   --mount=from=cratesio-termcolor-1.1.0,source=/termcolor-1.1.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/termcolor-1.1.0 \
@@ -4021,7 +4021,7 @@ FROM scratch AS cratesio-env_logger-0.7.1
 ADD --chmod=0664 --unpack --checksum=sha256:44533bbbb3bb3c1fa17d9f2e4e38bbbaf8396ba82193c4cb1b6445d711445d36 \
   https://static.crates.io/crates/env_logger/env_logger-0.7.1.crate /
 FROM rust-base AS dep-n-env_logger-0.7.1-94c0a2bd3b1451c8
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
   --mount=from=cratesio-env_logger-0.7.1,source=/env_logger-0.7.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/env_logger-0.7.1 \
@@ -4243,7 +4243,7 @@ COPY --link --from=dep-n-env_logger-0.7.1-94c0a2bd3b1451c8 /tmp/clis-dbcc_2-2-1/
 ## name = "dep-n-env_logger-0.7.1-94c0a2bd3b1451c8"
 ## script = '''
 ## FROM rust-base AS dep-n-env_logger-0.7.1-94c0a2bd3b1451c8
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
 ##   --mount=from=cratesio-env_logger-0.7.1,source=/env_logger-0.7.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/env_logger-0.7.1 \
@@ -4309,7 +4309,7 @@ FROM scratch AS cratesio-pretty_env_logger-0.4.0
 ADD --chmod=0664 --unpack --checksum=sha256:926d36b9553851b8b0005f1275891b392ee4d2d833852c417ed025477350fb9d \
   https://static.crates.io/crates/pretty_env_logger/pretty_env_logger-0.4.0.crate /
 FROM rust-base AS dep-n-pretty_env_logger-0.4.0-682e69746a16e0c7
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
   --mount=from=cratesio-pretty_env_logger-0.4.0,source=/pretty_env_logger-0.4.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/pretty_env_logger-0.4.0 \
@@ -4540,7 +4540,7 @@ COPY --link --from=dep-n-pretty_env_logger-0.4.0-682e69746a16e0c7 /tmp/clis-dbcc
 ## name = "dep-n-pretty_env_logger-0.4.0-682e69746a16e0c7"
 ## script = '''
 ## FROM rust-base AS dep-n-pretty_env_logger-0.4.0-682e69746a16e0c7
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
 ##   --mount=from=cratesio-pretty_env_logger-0.4.0,source=/pretty_env_logger-0.4.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/pretty_env_logger-0.4.0 \
@@ -4606,7 +4606,7 @@ COPY --link --from=dep-n-pretty_env_logger-0.4.0-682e69746a16e0c7 /tmp/clis-dbcc
 
 
 FROM rust-base AS dep-n-unicode-xid-0.2.1-f585407da4c0bf6f
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
   --mount=from=cratesio-unicode-xid-0.2.1,source=/unicode-xid-0.2.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/unicode-xid-0.2.1 \
@@ -4665,7 +4665,7 @@ COPY --link --from=dep-n-unicode-xid-0.2.1-f585407da4c0bf6f /tmp/clis-dbcc_2-2-1
 ## name = "dep-n-unicode-xid-0.2.1-f585407da4c0bf6f"
 ## script = '''
 ## FROM rust-base AS dep-n-unicode-xid-0.2.1-f585407da4c0bf6f
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
 ##   --mount=from=cratesio-unicode-xid-0.2.1,source=/unicode-xid-0.2.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/unicode-xid-0.2.1 \
@@ -4703,7 +4703,7 @@ COPY --link --from=dep-n-unicode-xid-0.2.1-f585407da4c0bf6f /tmp/clis-dbcc_2-2-1
 
 
 FROM rust-base AS dep-n-proc-macro2-1.0.24-5eebdd82bed7d9de
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
   --mount=from=cratesio-proc-macro2-1.0.24,source=/proc-macro2-1.0.24,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.24 \
@@ -4884,7 +4884,7 @@ COPY --link --from=dep-n-proc-macro2-1.0.24-5eebdd82bed7d9de /tmp/clis-dbcc_2-2-
 ## name = "dep-n-proc-macro2-1.0.24-5eebdd82bed7d9de"
 ## script = '''
 ## FROM rust-base AS dep-n-proc-macro2-1.0.24-5eebdd82bed7d9de
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
 ##   --mount=from=cratesio-proc-macro2-1.0.24,source=/proc-macro2-1.0.24,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.24 \
@@ -4925,7 +4925,7 @@ COPY --link --from=dep-n-proc-macro2-1.0.24-5eebdd82bed7d9de /tmp/clis-dbcc_2-2-
 
 
 FROM rust-base AS dep-n-quote-1.0.7-0298ff41e604ba82
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
   --mount=from=cratesio-quote-1.0.7,source=/quote-1.0.7,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.7 \
@@ -5012,7 +5012,7 @@ COPY --link --from=dep-n-quote-1.0.7-0298ff41e604ba82 /tmp/clis-dbcc_2-2-1/relea
 ## name = "dep-n-quote-1.0.7-0298ff41e604ba82"
 ## script = '''
 ## FROM rust-base AS dep-n-quote-1.0.7-0298ff41e604ba82
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
 ##   --mount=from=cratesio-quote-1.0.7,source=/quote-1.0.7,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.7 \
@@ -5056,7 +5056,7 @@ FROM scratch AS cratesio-hex-0.2.0
 ADD --chmod=0664 --unpack --checksum=sha256:d6a22814455d41612f41161581c2883c0c6a1c41852729b17d5ed88f01e153aa \
   https://static.crates.io/crates/hex/hex-0.2.0.crate /
 FROM rust-base AS dep-n-hex-0.2.0-f065076cf799d91a
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
   --mount=from=cratesio-hex-0.2.0,source=/hex-0.2.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/hex-0.2.0 \
@@ -5119,7 +5119,7 @@ COPY --link --from=dep-n-hex-0.2.0-f065076cf799d91a /tmp/clis-dbcc_2-2-1/release
 ## name = "dep-n-hex-0.2.0-f065076cf799d91a"
 ## script = '''
 ## FROM rust-base AS dep-n-hex-0.2.0-f065076cf799d91a
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
 ##   --mount=from=cratesio-hex-0.2.0,source=/hex-0.2.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/hex-0.2.0 \
@@ -5159,7 +5159,7 @@ FROM scratch AS cratesio-itertools-0.4.19
 ADD --chmod=0664 --unpack --checksum=sha256:c4a9b56eb56058f43dc66e58f40a214b2ccbc9f3df51861b63d51dec7b65bc3f \
   https://static.crates.io/crates/itertools/itertools-0.4.19.crate /
 FROM rust-base AS dep-n-itertools-0.4.19-2505039b047dad1a
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
   --mount=from=cratesio-itertools-0.4.19,source=/itertools-0.4.19,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/itertools-0.4.19 \
@@ -5242,7 +5242,7 @@ COPY --link --from=dep-n-itertools-0.4.19-2505039b047dad1a /tmp/clis-dbcc_2-2-1/
 ## name = "dep-n-itertools-0.4.19-2505039b047dad1a"
 ## script = '''
 ## FROM rust-base AS dep-n-itertools-0.4.19-2505039b047dad1a
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
 ##   --mount=from=cratesio-itertools-0.4.19,source=/itertools-0.4.19,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/itertools-0.4.19 \
@@ -5282,7 +5282,7 @@ FROM scratch AS cratesio-bitflags-0.4.0
 ADD --chmod=0664 --unpack --checksum=sha256:8dead7461c1127cf637931a1e50934eb6eee8bff2f74433ac7909e9afcee04a3 \
   https://static.crates.io/crates/bitflags/bitflags-0.4.0.crate /
 FROM rust-base AS dep-n-bitflags-0.4.0-e976848f96abbbd4
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
   --mount=from=cratesio-bitflags-0.4.0,source=/bitflags-0.4.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bitflags-0.4.0 \
@@ -5345,7 +5345,7 @@ COPY --link --from=dep-n-bitflags-0.4.0-e976848f96abbbd4 /tmp/clis-dbcc_2-2-1/re
 ## name = "dep-n-bitflags-0.4.0-e976848f96abbbd4"
 ## script = '''
 ## FROM rust-base AS dep-n-bitflags-0.4.0-e976848f96abbbd4
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
 ##   --mount=from=cratesio-bitflags-0.4.0,source=/bitflags-0.4.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bitflags-0.4.0 \
@@ -5385,7 +5385,7 @@ FROM scratch AS cratesio-nix-0.5.1
 ADD --chmod=0664 --unpack --checksum=sha256:bfb3ddedaa14746434a02041940495bf11325c22f6d36125d3bdd56090d50a79 \
   https://static.crates.io/crates/nix/nix-0.5.1.crate /
 FROM rust-base AS dep-n-nix-0.5.1-4ee318c191cb8959
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
   --mount=from=cratesio-nix-0.5.1,source=/nix-0.5.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nix-0.5.1 \
@@ -5696,7 +5696,7 @@ COPY --link --from=dep-n-nix-0.5.1-4ee318c191cb8959 /tmp/clis-dbcc_2-2-1/release
 ## name = "dep-n-nix-0.5.1-4ee318c191cb8959"
 ## script = '''
 ## FROM rust-base AS dep-n-nix-0.5.1-4ee318c191cb8959
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
 ##   --mount=from=cratesio-nix-0.5.1,source=/nix-0.5.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nix-0.5.1 \
@@ -5740,7 +5740,7 @@ FROM scratch AS cratesio-try_from-0.2.2
 ADD --chmod=0664 --unpack --checksum=sha256:923a7ee3e97dbfe8685261beb4511cc9620a1252405d02693d43169729570111 \
   https://static.crates.io/crates/try_from/try_from-0.2.2.crate /
 FROM rust-base AS dep-n-try_from-0.2.2-35b125c45c1cafb3
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
   --mount=from=cratesio-try_from-0.2.2,source=/try_from-0.2.2,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/try_from-0.2.2 \
@@ -5802,7 +5802,7 @@ COPY --link --from=dep-n-try_from-0.2.2-35b125c45c1cafb3 /tmp/clis-dbcc_2-2-1/re
 ## name = "dep-n-try_from-0.2.2-35b125c45c1cafb3"
 ## script = '''
 ## FROM rust-base AS dep-n-try_from-0.2.2-35b125c45c1cafb3
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
 ##   --mount=from=cratesio-try_from-0.2.2,source=/try_from-0.2.2,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/try_from-0.2.2 \
@@ -5842,7 +5842,7 @@ FROM scratch AS cratesio-socketcan-1.7.0
 ADD --chmod=0664 --unpack --checksum=sha256:3101efc6ef5af6f1c1a488241b469757b7a183baca63af958cd90e4696446c80 \
   https://static.crates.io/crates/socketcan/socketcan-1.7.0.crate /
 FROM rust-base AS dep-n-socketcan-1.7.0-7d72679ab99cdbe3
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
   --mount=from=cratesio-socketcan-1.7.0,source=/socketcan-1.7.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/socketcan-1.7.0 \
@@ -6004,7 +6004,7 @@ COPY --link --from=dep-n-socketcan-1.7.0-7d72679ab99cdbe3 /tmp/clis-dbcc_2-2-1/r
 ## name = "dep-n-socketcan-1.7.0-7d72679ab99cdbe3"
 ## script = '''
 ## FROM rust-base AS dep-n-socketcan-1.7.0-7d72679ab99cdbe3
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
 ##   --mount=from=cratesio-socketcan-1.7.0,source=/socketcan-1.7.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/socketcan-1.7.0 \
@@ -6056,7 +6056,7 @@ FROM scratch AS cratesio-ansi_term-0.11.0
 ADD --chmod=0664 --unpack --checksum=sha256:ee49baf6cb617b853aa8d93bf420db2383fab46d314482ca2803b40d5fde979b \
   https://static.crates.io/crates/ansi_term/ansi_term-0.11.0.crate /
 FROM rust-base AS dep-n-ansi_term-0.11.0-320ef4b8ee2e57f9
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
   --mount=from=cratesio-ansi_term-0.11.0,source=/ansi_term-0.11.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ansi_term-0.11.0 \
@@ -6128,7 +6128,7 @@ COPY --link --from=dep-n-ansi_term-0.11.0-320ef4b8ee2e57f9 /tmp/clis-dbcc_2-2-1/
 ## name = "dep-n-ansi_term-0.11.0-320ef4b8ee2e57f9"
 ## script = '''
 ## FROM rust-base AS dep-n-ansi_term-0.11.0-320ef4b8ee2e57f9
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
 ##   --mount=from=cratesio-ansi_term-0.11.0,source=/ansi_term-0.11.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ansi_term-0.11.0 \
@@ -6168,7 +6168,7 @@ FROM scratch AS cratesio-bitflags-1.2.1
 ADD --chmod=0664 --unpack --checksum=sha256:cf1de2fe8c75bc145a2f577add951f8134889b4795d47466a54a5c846d691693 \
   https://static.crates.io/crates/bitflags/bitflags-1.2.1.crate /
 FROM rust-base AS dep-n-bitflags-1.2.1-d19718ebe5a0c815
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
   --mount=from=cratesio-bitflags-1.2.1,source=/bitflags-1.2.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bitflags-1.2.1 \
@@ -6231,7 +6231,7 @@ COPY --link --from=dep-n-bitflags-1.2.1-d19718ebe5a0c815 /tmp/clis-dbcc_2-2-1/re
 ## name = "dep-n-bitflags-1.2.1-d19718ebe5a0c815"
 ## script = '''
 ## FROM rust-base AS dep-n-bitflags-1.2.1-d19718ebe5a0c815
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
 ##   --mount=from=cratesio-bitflags-1.2.1,source=/bitflags-1.2.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bitflags-1.2.1 \
@@ -6272,7 +6272,7 @@ FROM scratch AS cratesio-strsim-0.8.0
 ADD --chmod=0664 --unpack --checksum=sha256:8ea5119cdb4c55b55d432abb513a0429384878c15dde60cc77b1c99de1a95a6a \
   https://static.crates.io/crates/strsim/strsim-0.8.0.crate /
 FROM rust-base AS dep-n-strsim-0.8.0-ada2690f4d94d615
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
   --mount=from=cratesio-strsim-0.8.0,source=/strsim-0.8.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/strsim-0.8.0 \
@@ -6331,7 +6331,7 @@ COPY --link --from=dep-n-strsim-0.8.0-ada2690f4d94d615 /tmp/clis-dbcc_2-2-1/rele
 ## name = "dep-n-strsim-0.8.0-ada2690f4d94d615"
 ## script = '''
 ## FROM rust-base AS dep-n-strsim-0.8.0-ada2690f4d94d615
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
 ##   --mount=from=cratesio-strsim-0.8.0,source=/strsim-0.8.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/strsim-0.8.0 \
@@ -6371,7 +6371,7 @@ FROM scratch AS cratesio-unicode-width-0.1.8
 ADD --chmod=0664 --unpack --checksum=sha256:9337591893a19b88d8d87f2cec1e73fad5cdfd10e5a6f349f498ad6ea2ffb1e3 \
   https://static.crates.io/crates/unicode-width/unicode-width-0.1.8.crate /
 FROM rust-base AS dep-n-unicode-width-0.1.8-e55c633902343b3a
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
   --mount=from=cratesio-unicode-width-0.1.8,source=/unicode-width-0.1.8,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/unicode-width-0.1.8 \
@@ -6430,7 +6430,7 @@ COPY --link --from=dep-n-unicode-width-0.1.8-e55c633902343b3a /tmp/clis-dbcc_2-2
 ## name = "dep-n-unicode-width-0.1.8-e55c633902343b3a"
 ## script = '''
 ## FROM rust-base AS dep-n-unicode-width-0.1.8-e55c633902343b3a
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
 ##   --mount=from=cratesio-unicode-width-0.1.8,source=/unicode-width-0.1.8,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/unicode-width-0.1.8 \
@@ -6470,7 +6470,7 @@ FROM scratch AS cratesio-textwrap-0.11.0
 ADD --chmod=0664 --unpack --checksum=sha256:d326610f408c7a4eb6f51c37c330e496b08506c9457c9d34287ecc38809fb060 \
   https://static.crates.io/crates/textwrap/textwrap-0.11.0.crate /
 FROM rust-base AS dep-n-textwrap-0.11.0-b7e82f41d8b26a14
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
   --mount=from=cratesio-textwrap-0.11.0,source=/textwrap-0.11.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/textwrap-0.11.0 \
@@ -6541,7 +6541,7 @@ COPY --link --from=dep-n-textwrap-0.11.0-b7e82f41d8b26a14 /tmp/clis-dbcc_2-2-1/r
 ## name = "dep-n-textwrap-0.11.0-b7e82f41d8b26a14"
 ## script = '''
 ## FROM rust-base AS dep-n-textwrap-0.11.0-b7e82f41d8b26a14
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
 ##   --mount=from=cratesio-textwrap-0.11.0,source=/textwrap-0.11.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/textwrap-0.11.0 \
@@ -6583,7 +6583,7 @@ FROM scratch AS cratesio-vec_map-0.8.2
 ADD --chmod=0664 --unpack --checksum=sha256:f1bddf1187be692e79c5ffeab891132dfb0f236ed36a43c7ed39f1165ee20191 \
   https://static.crates.io/crates/vec_map/vec_map-0.8.2.crate /
 FROM rust-base AS dep-n-vec_map-0.8.2-3fc8ab5befc6e8f4
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
   --mount=from=cratesio-vec_map-0.8.2,source=/vec_map-0.8.2,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/vec_map-0.8.2 \
@@ -6646,7 +6646,7 @@ COPY --link --from=dep-n-vec_map-0.8.2-3fc8ab5befc6e8f4 /tmp/clis-dbcc_2-2-1/rel
 ## name = "dep-n-vec_map-0.8.2-3fc8ab5befc6e8f4"
 ## script = '''
 ## FROM rust-base AS dep-n-vec_map-0.8.2-3fc8ab5befc6e8f4
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
 ##   --mount=from=cratesio-vec_map-0.8.2,source=/vec_map-0.8.2,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/vec_map-0.8.2 \
@@ -6686,7 +6686,7 @@ FROM scratch AS cratesio-clap-2.33.3
 ADD --chmod=0664 --unpack --checksum=sha256:37e58ac78573c40708d45522f0d80fa2f01cc4f9b4e2bf749807255454312002 \
   https://static.crates.io/crates/clap/clap-2.33.3.crate /
 FROM rust-base AS dep-n-clap-2.33.3-5a839c872643e159
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
   --mount=from=cratesio-clap-2.33.3,source=/clap-2.33.3,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/clap-2.33.3 \
@@ -6928,7 +6928,7 @@ COPY --link --from=dep-n-clap-2.33.3-5a839c872643e159 /tmp/clis-dbcc_2-2-1/relea
 ## name = "dep-n-clap-2.33.3-5a839c872643e159"
 ## script = '''
 ## FROM rust-base AS dep-n-clap-2.33.3-5a839c872643e159
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
 ##   --mount=from=cratesio-clap-2.33.3,source=/clap-2.33.3,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/clap-2.33.3 \
@@ -6982,7 +6982,7 @@ COPY --link --from=dep-n-clap-2.33.3-5a839c872643e159 /tmp/clis-dbcc_2-2-1/relea
 
 
 FROM rust-base AS dep-n-unicode-segmentation-1.6.0-0711d9c6f9e71290
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
   --mount=from=cratesio-unicode-segmentation-1.6.0,source=/unicode-segmentation-1.6.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/unicode-segmentation-1.6.0 \
@@ -7045,7 +7045,7 @@ COPY --link --from=dep-n-unicode-segmentation-1.6.0-0711d9c6f9e71290 /tmp/clis-d
 ## name = "dep-n-unicode-segmentation-1.6.0-0711d9c6f9e71290"
 ## script = '''
 ## FROM rust-base AS dep-n-unicode-segmentation-1.6.0-0711d9c6f9e71290
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
 ##   --mount=from=cratesio-unicode-segmentation-1.6.0,source=/unicode-segmentation-1.6.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/unicode-segmentation-1.6.0 \
@@ -7083,7 +7083,7 @@ COPY --link --from=dep-n-unicode-segmentation-1.6.0-0711d9c6f9e71290 /tmp/clis-d
 
 
 FROM rust-base AS dep-n-heck-0.3.1-41892b3573d1a97c
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
   --mount=from=cratesio-heck-0.3.1,source=/heck-0.3.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/heck-0.3.1 \
@@ -7154,7 +7154,7 @@ COPY --link --from=dep-n-heck-0.3.1-41892b3573d1a97c /tmp/clis-dbcc_2-2-1/releas
 ## name = "dep-n-heck-0.3.1-41892b3573d1a97c"
 ## script = '''
 ## FROM rust-base AS dep-n-heck-0.3.1-41892b3573d1a97c
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
 ##   --mount=from=cratesio-heck-0.3.1,source=/heck-0.3.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/heck-0.3.1 \
@@ -7196,7 +7196,7 @@ FROM scratch AS cratesio-proc-macro-error-attr-1.0.4
 ADD --chmod=0664 --unpack --checksum=sha256:a1be40180e52ecc98ad80b184934baf3d0d29f979574e439af5a55274b35f869 \
   https://static.crates.io/crates/proc-macro-error-attr/proc-macro-error-attr-1.0.4.crate /
 FROM rust-base AS dep-n-proc-macro-error-attr-1.0.4-5abbb4d0b3e50e85
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
   --mount=from=cratesio-proc-macro-error-attr-1.0.4,source=/proc-macro-error-attr-1.0.4,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro-error-attr-1.0.4 \
@@ -7282,7 +7282,7 @@ COPY --link --from=dep-n-proc-macro-error-attr-1.0.4-5abbb4d0b3e50e85 /tmp/clis-
 ## name = "dep-n-proc-macro-error-attr-1.0.4-5abbb4d0b3e50e85"
 ## script = '''
 ## FROM rust-base AS dep-n-proc-macro-error-attr-1.0.4-5abbb4d0b3e50e85
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
 ##   --mount=from=cratesio-proc-macro-error-attr-1.0.4,source=/proc-macro-error-attr-1.0.4,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro-error-attr-1.0.4 \
@@ -7326,7 +7326,7 @@ FROM scratch AS cratesio-proc-macro-error-1.0.4
 ADD --chmod=0664 --unpack --checksum=sha256:da25490ff9892aab3fcf7c36f08cfb902dd3e71ca0f9f9517bea02a73a5ce38c \
   https://static.crates.io/crates/proc-macro-error/proc-macro-error-1.0.4.crate /
 FROM rust-base AS dep-n-proc-macro-error-1.0.4-8d3142ab9efe4ea8
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
   --mount=from=cratesio-proc-macro-error-1.0.4,source=/proc-macro-error-1.0.4,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro-error-1.0.4 \
@@ -7450,7 +7450,7 @@ COPY --link --from=dep-n-proc-macro-error-1.0.4-8d3142ab9efe4ea8 /tmp/clis-dbcc_
 ## name = "dep-n-proc-macro-error-1.0.4-8d3142ab9efe4ea8"
 ## script = '''
 ## FROM rust-base AS dep-n-proc-macro-error-1.0.4-8d3142ab9efe4ea8
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
 ##   --mount=from=cratesio-proc-macro-error-1.0.4,source=/proc-macro-error-1.0.4,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro-error-1.0.4 \
@@ -7500,7 +7500,7 @@ FROM scratch AS cratesio-structopt-derive-0.4.13
 ADD --chmod=0664 --unpack --checksum=sha256:65e51c492f9e23a220534971ff5afc14037289de430e3c83f9daf6a1b6ae91e8 \
   https://static.crates.io/crates/structopt-derive/structopt-derive-0.4.13.crate /
 FROM rust-base AS dep-n-structopt-derive-0.4.13-0187f3c8576aef3b
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
   --mount=from=cratesio-structopt-derive-0.4.13,source=/structopt-derive-0.4.13,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/structopt-derive-0.4.13 \
@@ -7623,7 +7623,7 @@ COPY --link --from=dep-n-structopt-derive-0.4.13-0187f3c8576aef3b /tmp/clis-dbcc
 ## name = "dep-n-structopt-derive-0.4.13-0187f3c8576aef3b"
 ## script = '''
 ## FROM rust-base AS dep-n-structopt-derive-0.4.13-0187f3c8576aef3b
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
 ##   --mount=from=cratesio-structopt-derive-0.4.13,source=/structopt-derive-0.4.13,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/structopt-derive-0.4.13 \
@@ -7671,7 +7671,7 @@ FROM scratch AS cratesio-structopt-0.3.20
 ADD --chmod=0664 --unpack --checksum=sha256:126d630294ec449fae0b16f964e35bf3c74f940da9dca17ee9b905f7b3112eb8 \
   https://static.crates.io/crates/structopt/structopt-0.3.20.crate /
 FROM rust-base AS dep-n-structopt-0.3.20-05c5d104c65b93b5
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
   --mount=from=cratesio-structopt-0.3.20,source=/structopt-0.3.20,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/structopt-0.3.20 \
@@ -7952,7 +7952,7 @@ COPY --link --from=dep-n-structopt-0.3.20-05c5d104c65b93b5 /tmp/clis-dbcc_2-2-1/
 ## name = "dep-n-structopt-0.3.20-05c5d104c65b93b5"
 ## script = '''
 ## FROM rust-base AS dep-n-structopt-0.3.20-05c5d104c65b93b5
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
 ##   --mount=from=cratesio-structopt-0.3.20,source=/structopt-0.3.20,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/structopt-0.3.20 \
@@ -8028,7 +8028,7 @@ FROM scratch AS cratesio-dbcc-2.2.1
 ADD --chmod=0664 --unpack --checksum=sha256:6bbc56797a8a9d3a4045bdc1c8ac8fc8abd4b6610e085a727e33acaa01de9050 \
   https://static.crates.io/crates/dbcc/dbcc-2.2.1.crate /
 FROM rust-base AS dep-n-dbcc-2.2.1-e0edff43b19741a4
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
   --mount=from=cratesio-dbcc-2.2.1,source=/dbcc-2.2.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/dbcc-2.2.1 \
@@ -8732,7 +8732,7 @@ COPY --link --from=dep-n-dbcc-2.2.1-e0edff43b19741a4 /tmp/clis-dbcc_2-2-1/releas
 ## name = "dep-n-dbcc-2.2.1-e0edff43b19741a4"
 ## script = '''
 ## FROM rust-base AS dep-n-dbcc-2.2.1-e0edff43b19741a4
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
 ##   --mount=from=cratesio-dbcc-2.2.1,source=/dbcc-2.2.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/dbcc-2.2.1 \
@@ -8876,7 +8876,7 @@ COPY --link --from=dep-n-dbcc-2.2.1-e0edff43b19741a4 /tmp/clis-dbcc_2-2-1/releas
 
 
 FROM rust-base AS dep-n-dbcc-2.2.1-6cd0852da8e8bf94
-SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
   --mount=from=cratesio-dbcc-2.2.1,source=/dbcc-2.2.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/dbcc-2.2.1 \
@@ -9332,7 +9332,7 @@ COPY --link --from=dep-n-dbcc-2.2.1-6cd0852da8e8bf94 /tmp/clis-dbcc_2-2-1/releas
 ## name = "dep-n-dbcc-2.2.1-6cd0852da8e8bf94"
 ## script = '''
 ## FROM rust-base AS dep-n-dbcc-2.2.1-6cd0852da8e8bf94
-## SHELL ["/bin/bash", "-euxo", "pipefail", "-c"]
+## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
 ##   --mount=from=cratesio-dbcc-2.2.1,source=/dbcc-2.2.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/dbcc-2.2.1 \
