@@ -10,6 +10,7 @@ use serde::{Deserialize, Serialize};
 use szyk::{sort, Node, TopsortError};
 
 use crate::{
+    green::Green,
     logging::maybe_log,
     stage::{Stage, RST, RUST},
     PKG,
@@ -131,7 +132,7 @@ impl Md {
     }
 
     #[must_use]
-    pub(crate) fn rust_stage(&self) -> String {
+    fn rust_stage(&self) -> String {
         format!(
             "{}\nARG SOURCE_DATE_EPOCH=42\n", // https://reproducible-builds.org/docs/source-date-epoch/
             &self.stages.iter().find(|NamedStage { name, .. }| *name == *RUST).unwrap().script
@@ -281,7 +282,7 @@ impl Md {
         buf.push('\n');
     }
 
-    pub(crate) fn block_along_with_predecessors(&self, mds: &[Self]) -> String {
+    fn block_along_with_predecessors(&self, mds: &[Self]) -> String {
         let mut blocks = String::new();
         let mut visited_cratesio_stages = IndexSet::new();
         for md in mds {
@@ -294,6 +295,27 @@ impl Md {
         }
         self.append_blocks(&mut blocks, &mut visited_cratesio_stages);
         blocks
+    }
+
+    pub(crate) fn finalize(
+        &self,
+        green: &Green,
+        target_path: &Utf8Path,
+        krate_name: &str,
+        mds: &[Self],
+    ) -> Result<Utf8PathBuf> {
+        let md_path = self.this.path(target_path);
+        let containerfile_path = target_path.join(format!("{krate_name}-{}.Dockerfile", self.this));
+
+        self.write_to(&md_path)?;
+
+        let mut containerfile = green.new_containerfile();
+        containerfile.pushln(&self.rust_stage());
+        containerfile.nl();
+        containerfile.push(&self.block_along_with_predecessors(mds));
+        containerfile.write_to(&containerfile_path)?;
+
+        Ok(containerfile_path)
     }
 }
 
