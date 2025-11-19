@@ -69,11 +69,6 @@ impl From<MdId> for Md {
 
 impl Md {
     #[must_use]
-    pub(crate) fn new(extrafn: &str) -> Self {
-        MdId::new(extrafn).into()
-    }
-
-    #[must_use]
     pub(crate) fn this(&self) -> MdId {
         self.this
     }

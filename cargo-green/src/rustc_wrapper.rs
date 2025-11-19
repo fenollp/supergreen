@@ -226,7 +226,7 @@ async fn do_wrap_rustc(
 
     let crate_out = crate_out_dir(out_dir_var)?;
 
-    let mut md = Md::new(&extrafn);
+    let mut md: Md = MdId::new(&extrafn).into();
     md.push_block(&RUST, green.base.image_inline.clone().unwrap());
 
     fs::create_dir_all(&out_dir).map_err(|e| anyhow!("Failed to `mkdir -p {out_dir}`: {e}"))?;
