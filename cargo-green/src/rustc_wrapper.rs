@@ -442,54 +442,54 @@ async fn do_wrap_rustc(
         return fallback.await;
     }
 
-    let contexts = &md.contexts;
-    let build = |stage, dir| green.build_out(&containerfile_path, stage, contexts, dir);
-    let (call, envs, built) = build(&out_stage, &out_dir).await;
+    let build = |stage, dir| green.build_out(&containerfile_path, stage, &md.contexts, dir);
+    let (call, envs, Effects { written, stdout, stderr }, built) =
+        build(&out_stage, &out_dir).await;
+
     green
-        .maybe_write_final_path(&containerfile_path, contexts, &call, &envs)
+        .maybe_write_final_path(&containerfile_path, &md.contexts, &call, &envs)
         .map_err(|e| anyhow!("Failed producing final path: {e}"))?;
 
-    match built {
-        Ok(Effects { written, stdout, stderr }) => {
-            if !written.is_empty() || !stdout.is_empty() || !stderr.is_empty() {
-                md.writes = written;
-                md.stdout = stdout;
-                md.stderr = stderr;
-                info!("re-opening (RW) crate's md {md_path}");
-                md.write_to(&md_path)?;
-            }
+    if !written.is_empty() || !stdout.is_empty() || !stderr.is_empty() {
+        md.writes = written;
+        md.stdout = stdout;
+        md.stderr = stderr;
+        info!("re-opening (RW) crate's md {md_path}");
+        md.write_to(&md_path)?;
+    }
 
-            let final_stage = format!(
-                "FROM scratch\n{}\n",
-                md.writes
-                    .iter()
-                    .filter_map(|f| f.file_name())
-                    .filter(|f| !f.ends_with(".d"))
-                    .filter(|f| f != &format!("{out_stage}-{STDOUT}"))
-                    .filter(|f| f != &format!("{out_stage}-{STDERR}"))
-                    .filter(|f| f != &format!("{out_stage}-{ERRCODE}"))
-                    .map(|f| (f, f.replace(&extrafn, "")))
-                    .map(|(src, dst)| format!("COPY --link --from={out_stage} /{src} /{dst}"))
-                    .collect::<Vec<_>>()
-                    .join("\n")
-            );
+    let final_stage = format!(
+        "FROM scratch\n{}\n",
+        md.writes
+            .iter()
+            .filter_map(|f| f.file_name())
+            .filter(|f| !f.ends_with(".d"))
+            .filter(|f| f != &format!("{out_stage}-{STDOUT}"))
+            .filter(|f| f != &format!("{out_stage}-{STDERR}"))
+            .filter(|f| f != &format!("{out_stage}-{ERRCODE}"))
+            .map(|f| (f, f.replace(&extrafn, "")))
+            .map(|(src, dst)| format!("COPY --link --from={out_stage} /{src} /{dst}"))
+            .collect::<Vec<_>>()
+            .join("\n")
+    );
 
-            green
-                .maybe_append_to_final_path(&md_path, final_stage)
-                .map_err(|e| anyhow!("Failed finishing final path: {e}"))?;
-        }
-        Err(e) if debug.is_none() => {
+    green
+        .maybe_append_to_final_path(&md_path, final_stage)
+        .map_err(|e| anyhow!("Failed finishing final path: {e}"))?;
+
+    if let Err(e) = built {
+        if debug.is_none() {
             warn!("Falling back due to {e}");
             // Bubble up actual error & outputs
             return fallback
                 .await
                 .inspect(|()| eprintln!("BUG: {PKG} should not have encountered this error: {e}"));
         }
-        Err(e) => return Err(e),
+        return Err(e);
     }
 
     if let Some(incremental) = incremental {
-        if let (_, _, Err(e)) = build(&incremental_stage, &incremental).await {
+        if let (_, _, _, Err(e)) = build(&incremental_stage, &incremental).await {
             warn!("Error building incremental data: {e}");
             return Err(e);
         }
