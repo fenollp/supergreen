@@ -4,7 +4,10 @@ use std::{
     fs::OpenOptions,
     io::Write,
     ops::Not,
-    os::unix::fs::{MetadataExt, OpenOptionsExt},
+    os::unix::{
+        fs::{MetadataExt, OpenOptionsExt},
+        process::ExitStatusExt,
+    },
     process::{ExitStatus, Stdio},
     time::{Duration, Instant},
 };
@@ -173,7 +176,7 @@ pub(crate) async fn fetch_digest(img: &ImageUri) -> Result<ImageUri> {
     actual(img).await.map_err(|e| anyhow!("Failed getting digest for {img}: {e}"))
 }
 
-#[derive(Debug)]
+#[derive(Debug, Default)]
 pub(crate) struct Effects {
     pub(crate) written: Vec<Utf8PathBuf>,
     pub(crate) stdout: Vec<String>,
@@ -186,7 +189,7 @@ impl Green {
         containerfile: &Utf8Path,
         target: &Stage,
     ) -> Result<()> {
-        self.build(containerfile, target, &[].into(), None).await.2.map(|_| ())
+        self.build(containerfile, target, &[].into(), None).await.3
     }
 
     pub(crate) async fn build_out(
@@ -195,7 +198,7 @@ impl Green {
         target: &Stage,
         contexts: &IndexSet<BuildContext>,
         out_dir: &Utf8Path,
-    ) -> (String, String, Result<Effects>) {
+    ) -> (String, String, Effects, Result<()>) {
         self.build(containerfile, target, contexts, Some(out_dir)).await
     }
 
@@ -205,12 +208,13 @@ impl Green {
         target: &Stage,
         contexts: &IndexSet<BuildContext>,
         out_dir: Option<&Utf8Path>,
-    ) -> (String, String, Result<Effects>) {
-        let rtrn = |e| ("".to_owned(), "".to_owned(), Err(e));
+    ) -> (String, String, Effects, Result<()>) {
+        let rtrn = |e, effects| ("".to_owned(), "".to_owned(), effects, Err(e));
+        let mut effects = Effects::default();
 
         let mut cmd = match self.cmd() {
             Ok(cmd) => cmd,
-            Err(e) => return rtrn(e),
+            Err(e) => return rtrn(e, effects),
         };
         cmd.arg("build");
 
@@ -321,17 +325,53 @@ impl Green {
             .replace(cmd.as_std().get_program().to_str().unwrap(), &self.runner.to_string());
         let envs = cmd.envs_string(&self.runner.buildnoop_envs());
 
-        let (status, effects) = match run_build(cmd, &call, containerfile, target, out_dir).await {
-            Ok((status, effects)) => (status, effects),
-            Err(e) => return rtrn(e),
+        let status = match run_build(&mut effects, cmd, &call, containerfile, target, out_dir).await
+        {
+            Ok(status) => status,
+            Err(e) => return rtrn(e, effects),
         };
 
         // Something is very wrong here. Try to be helpful by logging some info about runner config:
         if !status.success() {
+            let cargo_warnings = effects
+                .stdout
+                .iter()
+                .filter_map(|line| {
+                    if line.starts_with("cargo:warning=") {
+                        Some(line.trim_start_matches("cargo:warning="))
+                    } else if line.starts_with("cargo::warning=") {
+                        Some(line.trim_start_matches("cargo::warning="))
+                    } else {
+                        None
+                    }
+                })
+                .collect::<Vec<_>>()
+                .join("\n");
+
+            let cargo_errors = effects
+                .stdout
+                .iter()
+                .filter_map(|line| {
+                    if line.starts_with("cargo:error=") {
+                        Some(line.trim_start_matches("cargo:error="))
+                    } else if line.starts_with("cargo::error=") {
+                        Some(line.trim_start_matches("cargo::error="))
+                    } else {
+                        None
+                    }
+                })
+                .collect::<Vec<_>>()
+                .join("\n");
+
+            if !cargo_warnings.is_empty() || !cargo_errors.is_empty() {
+                let e = anyhow!("Runner failed.\n{cargo_warnings}\n{cargo_errors}\n");
+                return rtrn(e, effects);
+            }
+
             let logs = env::var(ENV_LOG_PATH!())
                 .map(|val| format!("\nCheck logs at {val}"))
                 .unwrap_or_default();
-            return rtrn(anyhow!(
+            let e = anyhow!(
                 "Runner failed.{logs}
 Please report an issue along with information from the following:
 * {runner} buildx version
@@ -340,10 +380,11 @@ Please report an issue along with information from the following:
 * cargo green supergreen env
 ",
                 runner = self.runner,
-            ));
+            );
+            return rtrn(e, effects);
         }
 
-        (call, envs, Ok(effects))
+        (call, envs, effects, Ok(()))
     }
 }
 
@@ -371,12 +412,13 @@ Please report an issue along with information from the following:
 // Unable to build rust-base: Runner failed.
 
 async fn run_build(
+    effects: &mut Effects,
     mut cmd: Command,
     call: &str,
     containerfile: &Utf8Path,
     target: &Stage,
     out_dir: Option<&Utf8Path>,
-) -> Result<(ExitStatus, Effects)> {
+) -> Result<ExitStatus> {
     let start = Instant::now();
     let mut child = cmd.spawn().map_err(|e| anyhow!("Failed starting `{call}`: {e}"))?;
 
@@ -457,7 +499,7 @@ async fn run_build(
                         err_handle = Some(buf);
                     } else if name == rcd_path {
                         let line = TokioBufReader::new(f).lines().next_line().await;
-                        rcd = line.ok().flatten().and_then(|x| x.parse::<i8>().ok());
+                        rcd = line.ok().flatten().and_then(|x| x.parse::<i32>().ok());
                     } else {
                         written.push(name.clone());
                         info!("creating (RW) {name:?}");
@@ -559,8 +601,8 @@ async fn run_build(
         let res = child.wait().await;
         (start.elapsed(), res)
     };
-    let status = res.map_err(|e| anyhow!("Failed calling `{call}`: {e}"))?;
-    info!("build ran in {secs:?}: {status}");
+    let mut status = res.map_err(|e| anyhow!("Failed calling `{call}`: {e}"))?;
+    info!("build ran in {secs:?}");
 
     if let Ok(e) = rx_err.try_recv() {
         bail!("Runner BUG: {e}")
@@ -571,22 +613,22 @@ async fn run_build(
     // * if the call doesn't fail, the file isn't created.
     // * if the build fails that's a bug, and no files will be outputed.
 
-    let mut effects = Effects { written: vec![], stdout: vec![], stderr: vec![] };
     if let Some((dbg_out, dbg_err)) = handles {
         match join!(timeout(dbg_out), timeout(dbg_err)) {
-            (Ok(Ok(Ok((_, _, Some(errcode), _)))), _) => {
-                bail!("Runner failed with exit code {errcode}")
-            }
-            (Ok(Ok(Err(e))), _) => {
-                bail!("Something went wrong (maybe retry?): {e}")
-            }
-            (Ok(Ok(Ok((Some(out_buf), Some(err_buf), _, written)))), _) => {
+            (Ok(Ok(Err(e))), _) => bail!("Something went wrong (maybe retry?): {e}"),
+            (Ok(Ok(Ok((Some(out_buf), Some(err_buf), errcode, written)))), _) => {
                 let Accumulated { stdout, .. } = fwd(&out_buf, "➤", fwd_stdout);
                 let Accumulated { stderr, envs, libs, .. } = fwd(&err_buf, "✖", fwd_stderr);
                 info!("Suggested {PKG}-specific config: envs:{} libs:{}", envs.len(), libs.len());
                 effects.stdout = stdout;
                 effects.stderr = stderr;
                 effects.written = written;
+
+                if let Some(errcode) = errcode.map(ExitStatus::from_raw) {
+                    if !errcode.success() {
+                        status = errcode;
+                    }
+                }
             }
             (e1, e2) => {
                 bail!("BUG: STDIO forwarding crashed: {e1:?} | {e2:?}")
@@ -594,7 +636,7 @@ async fn run_build(
         }
     }
     drop(child);
-    Ok((status, effects))
+    Ok(status)
 }
 
 #[inline]
