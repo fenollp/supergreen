@@ -337,13 +337,10 @@ impl Green {
                 .stdout
                 .iter()
                 .filter_map(|line| {
-                    if line.starts_with("cargo:warning=") {
-                        Some(line.trim_start_matches("cargo:warning="))
-                    } else if line.starts_with("cargo::warning=") {
-                        Some(line.trim_start_matches("cargo::warning="))
-                    } else {
-                        None
-                    }
+                    // https://doc.rust-lang.org/cargo/reference/build-scripts.html#cargo-warning
+                    line.split_once("cargo:warning=")
+                        .xor(line.split_once("cargo::warning="))
+                        .map(|(_, rhs)| rhs)
                 })
                 .collect::<Vec<_>>()
                 .join("\n");
@@ -352,13 +349,10 @@ impl Green {
                 .stdout
                 .iter()
                 .filter_map(|line| {
-                    if line.starts_with("cargo:error=") {
-                        Some(line.trim_start_matches("cargo:error="))
-                    } else if line.starts_with("cargo::error=") {
-                        Some(line.trim_start_matches("cargo::error="))
-                    } else {
-                        None
-                    }
+                    // https://doc.rust-lang.org/cargo/reference/build-scripts.html#cargo-error
+                    line.split_once("cargo:error=")
+                        .xor(line.split_once("cargo::error="))
+                        .map(|(_, rhs)| rhs)
                 })
                 .collect::<Vec<_>>()
                 .join("\n");
@@ -372,7 +366,7 @@ impl Green {
                 .map(|val| format!("\nCheck logs at {val}"))
                 .unwrap_or_default();
             let e = anyhow!(
-                "Runner failed.{logs}
+                "Runner failed.{logs}\n{stdout}\n{stderr}\n
 Please report an issue along with information from the following:
 * {runner} buildx version
 * {runner} info
@@ -380,6 +374,8 @@ Please report an issue along with information from the following:
 * cargo green supergreen env
 ",
                 runner = self.runner,
+                stdout = effects.stdout.join("\n"),
+                stderr = effects.stderr.join("\n"),
             );
             return rtrn(e, effects);
         }
