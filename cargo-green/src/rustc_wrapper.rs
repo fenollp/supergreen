@@ -416,12 +416,7 @@ async fn do_wrap_rustc(
         md.push_block(&incremental_stage, incremental_block);
     }
 
-    let mut out_block = format!("FROM scratch AS {out_stage}\n");
-    out_block.push_str(&format!("COPY --link --from={rustc_stage} {out_dir}/*-{mdid}* /\n"));
-    md.push_block(&out_stage, out_block);
-    // TODO? in Dockerfile, when using outputs:
-    // => skip the COPY (--mount=from=out-08c4d63ed4366a99)
-    //   => use the stage directly (--mount=from=dep-l-buildxargs-1.4.0-08c4d63ed4366a99)
+    md.out_block(&out_stage, &rustc_stage, &out_dir, false);
 
     let containerfile_path = md.finalize(&green, &target_path, krate_name, &mds)?;
 
@@ -446,6 +441,21 @@ async fn do_wrap_rustc(
     }
 
     Ok(())
+}
+
+impl Md {
+    /// TODO? in Dockerfile, when using outputs:
+    /// => skip the COPY (--mount=from=out-08c4d63ed4366a99) use the stage directly
+    fn out_block(&mut self, stage: &Stage, prev: &Stage, out_dir: &Utf8Path, flag: bool) {
+        let mut block = format!("FROM scratch AS {stage}\n");
+        if flag {
+            block.push_str(&format!("COPY --link --from={prev} {out_dir}/* /\n"));
+        } else {
+            let mdid = self.this();
+            block.push_str(&format!("COPY --link --from={prev} {out_dir}/*-{mdid}* /\n"));
+        }
+        self.push_block(stage, block);
+    }
 }
 
 impl Green {
