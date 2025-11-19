@@ -419,17 +419,7 @@ async fn do_wrap_rustc(
     // => skip the COPY (--mount=from=out-08c4d63ed4366a99)
     //   => use the stage directly (--mount=from=dep-l-buildxargs-1.4.0-08c4d63ed4366a99)
 
-    let md_path = md.this().path(&target_path);
-    let containerfile_path = target_path.join(format!("{krate_name}-{mdid}.Dockerfile"));
-
-    md.write_to(&md_path)?;
-
-    let mut containerfile = green.new_containerfile();
-    containerfile.pushln(&md.rust_stage());
-    containerfile.nl();
-    containerfile.push(&md.block_along_with_predecessors(&mds));
-    containerfile.write_to(&containerfile_path)?;
-    drop(containerfile);
+    let containerfile_path = md.finalize(&green, &target_path, krate_name, &mds)?;
 
     // TODO: use tracing instead:
     // https://docs.rs/tracing-subscriber/latest/tracing_subscriber/fmt/struct.Subscriber.html
