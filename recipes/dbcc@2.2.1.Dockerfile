@@ -108,12 +108,282 @@ COPY --link --from=dep-n-byte-tools-0.3.1-208f428f6e945660 /tmp/clis-dbcc_2-2-1/
 FROM scratch AS cratesio-typenum-1.12.0
 ADD --chmod=0664 --unpack --checksum=sha256:373c8a200f9e67a0c95e62a4f52fbf80c23b4381c05a17845531982fa99e6b33 \
   https://static.crates.io/crates/typenum/typenum-1.12.0.crate /
+FROM rust-base AS dep-x-typenum-1.12.0-8d58cd83e669a465
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-dbcc_2-2-1/release/build/typenum-8d58cd83e669a465
+RUN \
+  --mount=from=cratesio-typenum-1.12.0,source=/typenum-1.12.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/typenum-1.12.0,rw \
+    { \
+        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/typenum-1.12.0/build/main.rs | sed 's/fn main/fn actual_8d58cd83e669a465_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/typenum-1.12.0/build/main.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/typenum-1.12.0/build/main.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/typenum-1.12.0/build/main.rs ; \
+        { \
+          echo ; \
+          echo 'fn main() {' ; \
+          echo '    use std::env::{args_os, var_os};' ; \
+          echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+          echo '        use std::process::{Command, Stdio};' ; \
+          echo '        let mut cmd = Command::new("cargo-green");' ; \
+          echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+          echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+          echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+          echo '        assert!(res.success());' ; \
+          echo '    } else {' ; \
+          echo '        actual_8d58cd83e669a465_main()' ; \
+          echo '    }' ; \
+          echo '}' ; \
+        } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/typenum-1.12.0/build/main.rs ; \
+    } && \
+    env CARGO="$(which cargo)" \
+        CARGO_CRATE_NAME="build_script_main" \
+        CARGO_INCREMENTAL="0" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/typenum-1.12.0" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/typenum-1.12.0/Cargo.toml" \
+        CARGO_PKG_AUTHORS="Paho Lurie-Gregg <paho@paholg.com>:Andre Bogus <bogusandre@gmail.com>" \
+        CARGO_PKG_DESCRIPTION="Typenum is a Rust library for type-level numbers evaluated at compile time. It currently supports bits, unsigned integers, and signed integers. It also provides a type-level array of type-level numbers, but its implementation is incomplete." \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE="MIT/Apache-2.0" \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME="typenum" \
+        CARGO_PKG_README="README.md" \
+        CARGO_PKG_REPOSITORY="https://github.com/paholg/typenum" \
+        CARGO_PKG_RUST_VERSION= \
+        CARGO_PKG_VERSION="1.12.0" \
+        CARGO_PKG_VERSION_MAJOR="1" \
+        CARGO_PKG_VERSION_MINOR="12" \
+        CARGO_PKG_VERSION_PATCH="0" \
+        CARGO_PKG_VERSION_PRE= \
+        CARGOGREEN=1 \
+      rustc '--crate-name' 'build_script_main' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'bin' '--emit' 'dep-info,link' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("force_unix_path_separator", "i128", "no_std", "strict"))' '-C' 'metadata=434a1b81506b92bb' '-C' 'extra-filename=-8d58cd83e669a465' '--out-dir' '/tmp/clis-dbcc_2-2-1/release/build/typenum-8d58cd83e669a465' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-dbcc_2-2-1/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/typenum-1.12.0/build/main.rs \
+        1>          /tmp/clis-dbcc_2-2-1/release/build/typenum-8d58cd83e669a465/out-8d58cd83e669a465-stdout \
+        2>          /tmp/clis-dbcc_2-2-1/release/build/typenum-8d58cd83e669a465/out-8d58cd83e669a465-stderr \
+        || echo $? >/tmp/clis-dbcc_2-2-1/release/build/typenum-8d58cd83e669a465/out-8d58cd83e669a465-errcode\
+  ; find /tmp/clis-dbcc_2-2-1/release/build/typenum-8d58cd83e669a465/*-8d58cd83e669a465* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-8d58cd83e669a465
+COPY --link --from=dep-x-typenum-1.12.0-8d58cd83e669a465 /tmp/clis-dbcc_2-2-1/release/build/typenum-8d58cd83e669a465/*-8d58cd83e669a465* /
+
+## this = "8d58cd83e669a465"
+## writes = [
+##     "build_script_main-8d58cd83e669a465",
+##     "build_script_main-8d58cd83e669a465.d",
+## ]
+## stderr = [
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-dbcc_2-2-1/release/build/typenum-8d58cd83e669a465/build_script_main-8d58cd83e669a465.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-dbcc_2-2-1/release/build/typenum-8d58cd83e669a465/build_script_main-8d58cd83e669a465","emit":"link"}',
+## ]
+##
+## [[stages]]
+## name = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.86.0-slim@sha256:57d415bbd61ce11e2d5f73de068103c7bd9f3188dc132c97cef4a8f62989e944 AS rust-base"
+##
+## [[stages]]
+## name = "cratesio-typenum-1.12.0"
+## script = '''
+## FROM scratch AS cratesio-typenum-1.12.0
+## ADD --chmod=0664 --unpack --checksum=sha256:373c8a200f9e67a0c95e62a4f52fbf80c23b4381c05a17845531982fa99e6b33 \
+##   https://static.crates.io/crates/typenum/typenum-1.12.0.crate /'''
+##
+## [[stages]]
+## name = "dep-x-typenum-1.12.0-8d58cd83e669a465"
+## script = '''
+## FROM rust-base AS dep-x-typenum-1.12.0-8d58cd83e669a465
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-dbcc_2-2-1/release/build/typenum-8d58cd83e669a465
+## RUN \
+##   --mount=from=cratesio-typenum-1.12.0,source=/typenum-1.12.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/typenum-1.12.0,rw \
+##     { \
+##         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/typenum-1.12.0/build/main.rs | sed 's/fn main/fn actual_8d58cd83e669a465_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/typenum-1.12.0/build/main.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/typenum-1.12.0/build/main.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/typenum-1.12.0/build/main.rs ; \
+##         { \
+##           echo ; \
+##           echo 'fn main() {' ; \
+##           echo '    use std::env::{args_os, var_os};' ; \
+##           echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+##           echo '        use std::process::{Command, Stdio};' ; \
+##           echo '        let mut cmd = Command::new("cargo-green");' ; \
+##           echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+##           echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+##           echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+##           echo '        assert!(res.success());' ; \
+##           echo '    } else {' ; \
+##           echo '        actual_8d58cd83e669a465_main()' ; \
+##           echo '    }' ; \
+##           echo '}' ; \
+##         } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/typenum-1.12.0/build/main.rs ; \
+##     } && \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CRATE_NAME="build_script_main" \
+##         CARGO_INCREMENTAL="0" \
+##         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/typenum-1.12.0" \
+##         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/typenum-1.12.0/Cargo.toml" \
+##         CARGO_PKG_AUTHORS="Paho Lurie-Gregg <paho@paholg.com>:Andre Bogus <bogusandre@gmail.com>" \
+##         CARGO_PKG_DESCRIPTION="Typenum is a Rust library for type-level numbers evaluated at compile time. It currently supports bits, unsigned integers, and signed integers. It also provides a type-level array of type-level numbers, but its implementation is incomplete." \
+##         CARGO_PKG_HOMEPAGE= \
+##         CARGO_PKG_LICENSE="MIT/Apache-2.0" \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME="typenum" \
+##         CARGO_PKG_README="README.md" \
+##         CARGO_PKG_REPOSITORY="https://github.com/paholg/typenum" \
+##         CARGO_PKG_RUST_VERSION= \
+##         CARGO_PKG_VERSION="1.12.0" \
+##         CARGO_PKG_VERSION_MAJOR="1" \
+##         CARGO_PKG_VERSION_MINOR="12" \
+##         CARGO_PKG_VERSION_PATCH="0" \
+##         CARGO_PKG_VERSION_PRE= \
+##         CARGOGREEN=1 \
+##       rustc '--crate-name' 'build_script_main' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'bin' '--emit' 'dep-info,link' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("force_unix_path_separator", "i128", "no_std", "strict"))' '-C' 'metadata=434a1b81506b92bb' '-C' 'extra-filename=-8d58cd83e669a465' '--out-dir' '/tmp/clis-dbcc_2-2-1/release/build/typenum-8d58cd83e669a465' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-dbcc_2-2-1/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/typenum-1.12.0/build/main.rs \
+##         1>          /tmp/clis-dbcc_2-2-1/release/build/typenum-8d58cd83e669a465/out-8d58cd83e669a465-stdout \
+##         2>          /tmp/clis-dbcc_2-2-1/release/build/typenum-8d58cd83e669a465/out-8d58cd83e669a465-stderr \
+##         || echo $? >/tmp/clis-dbcc_2-2-1/release/build/typenum-8d58cd83e669a465/out-8d58cd83e669a465-errcode\
+##   ; find /tmp/clis-dbcc_2-2-1/release/build/typenum-8d58cd83e669a465/*-8d58cd83e669a465* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+## name = "out-8d58cd83e669a465"
+## script = """
+## FROM scratch AS out-8d58cd83e669a465
+## COPY --link --from=dep-x-typenum-1.12.0-8d58cd83e669a465 /tmp/clis-dbcc_2-2-1/release/build/typenum-8d58cd83e669a465/*-8d58cd83e669a465* /"""
+
+FROM rust-base AS run-z-typenum-1.12.0-3cf9e442dfddd505
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-dbcc_2-2-1/release/build/typenum-3cf9e442dfddd505/out
+WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/typenum-1.12.0
+RUN \
+  --mount=from=out-8d58cd83e669a465,source=/build_script_main-8d58cd83e669a465,dst=/tmp/clis-dbcc_2-2-1/release/build/typenum-8d58cd83e669a465/build-script-main \
+  --mount=from=cratesio-typenum-1.12.0,source=/typenum-1.12.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/typenum-1.12.0 \
+    env CARGO="$(which cargo)" \
+        CARGO_CFG_FEATURE= \
+        CARGO_CFG_PANIC="unwind" \
+        CARGO_CFG_TARGET_ABI= \
+        CARGO_CFG_TARGET_ARCH="x86_64" \
+        CARGO_CFG_TARGET_ENDIAN="little" \
+        CARGO_CFG_TARGET_ENV="gnu" \
+        CARGO_CFG_TARGET_FAMILY="unix" \
+        CARGO_CFG_TARGET_FEATURE="fxsr,sse,sse2" \
+        CARGO_CFG_TARGET_HAS_ATOMIC="16,32,64,8,ptr" \
+        CARGO_CFG_TARGET_OS="linux" \
+        CARGO_CFG_TARGET_POINTER_WIDTH="64" \
+        CARGO_CFG_TARGET_VENDOR="unknown" \
+        CARGO_CFG_UNIX= \
+        CARGO_ENCODED_RUSTFLAGS= \
+        CARGO_INCREMENTAL="0" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/typenum-1.12.0" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/typenum-1.12.0/Cargo.toml" \
+        CARGO_PKG_AUTHORS="Paho Lurie-Gregg <paho@paholg.com>:Andre Bogus <bogusandre@gmail.com>" \
+        CARGO_PKG_DESCRIPTION="Typenum is a Rust library for type-level numbers evaluated at compile time. It currently supports bits, unsigned integers, and signed integers. It also provides a type-level array of type-level numbers, but its implementation is incomplete." \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE="MIT/Apache-2.0" \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME="typenum" \
+        CARGO_PKG_README="README.md" \
+        CARGO_PKG_REPOSITORY="https://github.com/paholg/typenum" \
+        CARGO_PKG_RUST_VERSION= \
+        CARGO_PKG_VERSION="1.12.0" \
+        CARGO_PKG_VERSION_MAJOR="1" \
+        CARGO_PKG_VERSION_MINOR="12" \
+        CARGO_PKG_VERSION_PATCH="0" \
+        CARGO_PKG_VERSION_PRE= \
+        DEBUG="false" \
+        HOST="x86_64-unknown-linux-gnu" \
+        NUM_JOBS="4" \
+        OPT_LEVEL="3" \
+        OUT_DIR="/tmp/clis-dbcc_2-2-1/release/build/typenum-3cf9e442dfddd505/out" \
+        PROFILE="release" \
+        RUSTC=rustc \
+        RUSTDOC="/home/runner/.rustup/toolchains/1.86.0-x86_64-unknown-linux-gnu/bin/rustdoc" \
+        TARGET="x86_64-unknown-linux-gnu" \
+        CARGOGREEN=1 \
+      CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-dbcc_2-2-1/release/build/typenum-8d58cd83e669a465/build-script-main \
+        1>          /tmp/clis-dbcc_2-2-1/release/build/typenum-3cf9e442dfddd505/out/ran-3cf9e442dfddd505-stdout \
+        2>          /tmp/clis-dbcc_2-2-1/release/build/typenum-3cf9e442dfddd505/out/ran-3cf9e442dfddd505-stderr \
+        || echo $? >/tmp/clis-dbcc_2-2-1/release/build/typenum-3cf9e442dfddd505/out/ran-3cf9e442dfddd505-errcode\
+  ; find /tmp/clis-dbcc_2-2-1/release/build/typenum-3cf9e442dfddd505/out/*-3cf9e442dfddd505* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS ran-3cf9e442dfddd505
+COPY --link --from=run-z-typenum-1.12.0-3cf9e442dfddd505 /tmp/clis-dbcc_2-2-1/release/build/typenum-3cf9e442dfddd505/out/* /
+
+## this = "3cf9e442dfddd505"
+## deps = ["8d58cd83e669a465"]
+## writes = [
+##     "consts.rs",
+##     "op.rs",
+##     "tests.rs",
+## ]
+## stdout = [
+##     "cargo:rustc-env=TYPENUM_BUILD_CONSTS=/tmp/clis-dbcc_2-2-1/release/build/typenum-3cf9e442dfddd505/out/consts.rs",
+##     "cargo:rustc-env=TYPENUM_BUILD_OP=/tmp/clis-dbcc_2-2-1/release/build/typenum-3cf9e442dfddd505/out/op.rs",
+## ]
+##
+## [[stages]]
+## name = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.86.0-slim@sha256:57d415bbd61ce11e2d5f73de068103c7bd9f3188dc132c97cef4a8f62989e944 AS rust-base"
+##
+## [[stages]]
+## name = "run-z-typenum-1.12.0-3cf9e442dfddd505"
+## script = '''
+## FROM rust-base AS run-z-typenum-1.12.0-3cf9e442dfddd505
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-dbcc_2-2-1/release/build/typenum-3cf9e442dfddd505/out
+## WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/typenum-1.12.0
+## RUN \
+##   --mount=from=out-8d58cd83e669a465,source=/build_script_main-8d58cd83e669a465,dst=/tmp/clis-dbcc_2-2-1/release/build/typenum-8d58cd83e669a465/build-script-main \
+##   --mount=from=cratesio-typenum-1.12.0,source=/typenum-1.12.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/typenum-1.12.0 \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CFG_FEATURE= \
+##         CARGO_CFG_PANIC="unwind" \
+##         CARGO_CFG_TARGET_ABI= \
+##         CARGO_CFG_TARGET_ARCH="x86_64" \
+##         CARGO_CFG_TARGET_ENDIAN="little" \
+##         CARGO_CFG_TARGET_ENV="gnu" \
+##         CARGO_CFG_TARGET_FAMILY="unix" \
+##         CARGO_CFG_TARGET_FEATURE="fxsr,sse,sse2" \
+##         CARGO_CFG_TARGET_HAS_ATOMIC="16,32,64,8,ptr" \
+##         CARGO_CFG_TARGET_OS="linux" \
+##         CARGO_CFG_TARGET_POINTER_WIDTH="64" \
+##         CARGO_CFG_TARGET_VENDOR="unknown" \
+##         CARGO_CFG_UNIX= \
+##         CARGO_ENCODED_RUSTFLAGS= \
+##         CARGO_INCREMENTAL="0" \
+##         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/typenum-1.12.0" \
+##         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/typenum-1.12.0/Cargo.toml" \
+##         CARGO_PKG_AUTHORS="Paho Lurie-Gregg <paho@paholg.com>:Andre Bogus <bogusandre@gmail.com>" \
+##         CARGO_PKG_DESCRIPTION="Typenum is a Rust library for type-level numbers evaluated at compile time. It currently supports bits, unsigned integers, and signed integers. It also provides a type-level array of type-level numbers, but its implementation is incomplete." \
+##         CARGO_PKG_HOMEPAGE= \
+##         CARGO_PKG_LICENSE="MIT/Apache-2.0" \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME="typenum" \
+##         CARGO_PKG_README="README.md" \
+##         CARGO_PKG_REPOSITORY="https://github.com/paholg/typenum" \
+##         CARGO_PKG_RUST_VERSION= \
+##         CARGO_PKG_VERSION="1.12.0" \
+##         CARGO_PKG_VERSION_MAJOR="1" \
+##         CARGO_PKG_VERSION_MINOR="12" \
+##         CARGO_PKG_VERSION_PATCH="0" \
+##         CARGO_PKG_VERSION_PRE= \
+##         DEBUG="false" \
+##         HOST="x86_64-unknown-linux-gnu" \
+##         NUM_JOBS="4" \
+##         OPT_LEVEL="3" \
+##         OUT_DIR="/tmp/clis-dbcc_2-2-1/release/build/typenum-3cf9e442dfddd505/out" \
+##         PROFILE="release" \
+##         RUSTC=rustc \
+##         RUSTDOC="/home/runner/.rustup/toolchains/1.86.0-x86_64-unknown-linux-gnu/bin/rustdoc" \
+##         TARGET="x86_64-unknown-linux-gnu" \
+##         CARGOGREEN=1 \
+##       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-dbcc_2-2-1/release/build/typenum-8d58cd83e669a465/build-script-main \
+##         1>          /tmp/clis-dbcc_2-2-1/release/build/typenum-3cf9e442dfddd505/out/ran-3cf9e442dfddd505-stdout \
+##         2>          /tmp/clis-dbcc_2-2-1/release/build/typenum-3cf9e442dfddd505/out/ran-3cf9e442dfddd505-stderr \
+##         || echo $? >/tmp/clis-dbcc_2-2-1/release/build/typenum-3cf9e442dfddd505/out/ran-3cf9e442dfddd505-errcode\
+##   ; find /tmp/clis-dbcc_2-2-1/release/build/typenum-3cf9e442dfddd505/out/*-3cf9e442dfddd505* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+## name = "ran-3cf9e442dfddd505"
+## script = """
+## FROM scratch AS ran-3cf9e442dfddd505
+## COPY --link --from=run-z-typenum-1.12.0-3cf9e442dfddd505 /tmp/clis-dbcc_2-2-1/release/build/typenum-3cf9e442dfddd505/out/* /"""
+
+
 FROM rust-base AS dep-n-typenum-1.12.0-0c59626b95871fe7
 SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
   --mount=from=cratesio-typenum-1.12.0,source=/typenum-1.12.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/typenum-1.12.0 \
-  --mount=from=crate_out-3cf9e442dfddd505,dst=/tmp/clis-dbcc_2-2-1/release/build/typenum-3cf9e442dfddd505/out \
+  --mount=from=ran-3cf9e442dfddd505,dst=/tmp/clis-dbcc_2-2-1/release/build/typenum-3cf9e442dfddd505/out,source=/ \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="typenum" \
         CARGO_INCREMENTAL="0" \
@@ -137,6 +407,8 @@ RUN \
         CARGOGREEN=1 \
         TYPENUM_BUILD_CONSTS="/tmp/clis-dbcc_2-2-1/release/build/typenum-3cf9e442dfddd505/out/consts.rs" \
         TYPENUM_BUILD_OP="/tmp/clis-dbcc_2-2-1/release/build/typenum-3cf9e442dfddd505/out/op.rs" \
+        TYPENUM_BUILD_CONSTS="/tmp/clis-dbcc_2-2-1/release/build/typenum-3cf9e442dfddd505/out/consts.rs" \
+        TYPENUM_BUILD_OP="/tmp/clis-dbcc_2-2-1/release/build/typenum-3cf9e442dfddd505/out/op.rs" \
       rustc '--crate-name' 'typenum' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("force_unix_path_separator", "i128", "no_std", "strict"))' '-C' 'metadata=9b72b0a35302172d' '-C' 'extra-filename=-0c59626b95871fe7' '--out-dir' '/tmp/clis-dbcc_2-2-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-dbcc_2-2-1/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/typenum-1.12.0/src/lib.rs \
         1>          /tmp/clis-dbcc_2-2-1/release/deps/out-0c59626b95871fe7-stdout \
         2>          /tmp/clis-dbcc_2-2-1/release/deps/out-0c59626b95871fe7-stderr \
@@ -146,6 +418,11 @@ FROM scratch AS out-0c59626b95871fe7
 COPY --link --from=dep-n-typenum-1.12.0-0c59626b95871fe7 /tmp/clis-dbcc_2-2-1/release/deps/*-0c59626b95871fe7* /
 
 ## this = "0c59626b95871fe7"
+## deps = [
+##     "3cf9e442dfddd505",
+##     "8d58cd83e669a465",
+## ]
+## buildrs_results = ["3cf9e442dfddd505"]
 ## writes = [
 ##     "libtypenum-0c59626b95871fe7.rlib",
 ##     "libtypenum-0c59626b95871fe7.rmeta",
@@ -219,9 +496,14 @@ COPY --link --from=dep-n-typenum-1.12.0-0c59626b95871fe7 /tmp/clis-dbcc_2-2-1/re
 ##     '{"$message_type":"diagnostic","message":"61 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 61 warnings emitted\u001b[0m\n\n"}',
 ## ]
 ##
-## [[contexts]]
-## name = "crate_out-3cf9e442dfddd505"
-## uri = "/tmp/clis-dbcc_2-2-1/release/build/typenum-3cf9e442dfddd505/out"
+## [[mounts]]
+## name = "ran-3cf9e442dfddd505"
+## src = "/"
+## dst = "/tmp/clis-dbcc_2-2-1/release/build/typenum-3cf9e442dfddd505/out"
+##
+## [set_envs]
+## TYPENUM_BUILD_CONSTS = "/tmp/clis-dbcc_2-2-1/release/build/typenum-3cf9e442dfddd505/out/consts.rs"
+## TYPENUM_BUILD_OP = "/tmp/clis-dbcc_2-2-1/release/build/typenum-3cf9e442dfddd505/out/op.rs"
 ##
 ## [[stages]]
 ## name = "rust-base"
@@ -242,7 +524,7 @@ COPY --link --from=dep-n-typenum-1.12.0-0c59626b95871fe7 /tmp/clis-dbcc_2-2-1/re
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
 ##   --mount=from=cratesio-typenum-1.12.0,source=/typenum-1.12.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/typenum-1.12.0 \
-##   --mount=from=crate_out-3cf9e442dfddd505,dst=/tmp/clis-dbcc_2-2-1/release/build/typenum-3cf9e442dfddd505/out \
+##   --mount=from=ran-3cf9e442dfddd505,dst=/tmp/clis-dbcc_2-2-1/release/build/typenum-3cf9e442dfddd505/out,source=/ \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="typenum" \
 ##         CARGO_INCREMENTAL="0" \
@@ -264,6 +546,8 @@ COPY --link --from=dep-n-typenum-1.12.0-0c59626b95871fe7 /tmp/clis-dbcc_2-2-1/re
 ##         CARGO_PKG_VERSION_PRE= \
 ##         OUT_DIR="/tmp/clis-dbcc_2-2-1/release/build/typenum-3cf9e442dfddd505/out" \
 ##         CARGOGREEN=1 \
+##         TYPENUM_BUILD_CONSTS="/tmp/clis-dbcc_2-2-1/release/build/typenum-3cf9e442dfddd505/out/consts.rs" \
+##         TYPENUM_BUILD_OP="/tmp/clis-dbcc_2-2-1/release/build/typenum-3cf9e442dfddd505/out/op.rs" \
 ##         TYPENUM_BUILD_CONSTS="/tmp/clis-dbcc_2-2-1/release/build/typenum-3cf9e442dfddd505/out/consts.rs" \
 ##         TYPENUM_BUILD_OP="/tmp/clis-dbcc_2-2-1/release/build/typenum-3cf9e442dfddd505/out/op.rs" \
 ##       rustc '--crate-name' 'typenum' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("force_unix_path_separator", "i128", "no_std", "strict"))' '-C' 'metadata=9b72b0a35302172d' '-C' 'extra-filename=-0c59626b95871fe7' '--out-dir' '/tmp/clis-dbcc_2-2-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-dbcc_2-2-1/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/typenum-1.12.0/src/lib.rs \
@@ -317,8 +601,13 @@ FROM scratch AS out-0afa135837d93e68
 COPY --link --from=dep-n-generic-array-0.12.3-0afa135837d93e68 /tmp/clis-dbcc_2-2-1/release/deps/*-0afa135837d93e68* /
 
 ## this = "0afa135837d93e68"
-## deps = ["0c59626b95871fe7"]
+## deps = [
+##     "0c59626b95871fe7",
+##     "8d58cd83e669a465",
+##     "3cf9e442dfddd505",
+## ]
 ## short_externs = ["0c59626b95871fe7"]
+## buildrs_results = ["3cf9e442dfddd505"]
 ## writes = [
 ##     "generic_array-0afa135837d93e68.d",
 ##     "libgeneric_array-0afa135837d93e68.rlib",
@@ -343,10 +632,6 @@ COPY --link --from=dep-n-generic-array-0.12.3-0afa135837d93e68 /tmp/clis-dbcc_2-
 ## [[externs]]
 ## from = "out-0c59626b95871fe7"
 ## xtern = "libtypenum-0c59626b95871fe7.rmeta"
-##
-## [[contexts]]
-## name = "crate_out-3cf9e442dfddd505"
-## uri = "/tmp/clis-dbcc_2-2-1/release/build/typenum-3cf9e442dfddd505/out"
 ##
 ## [[stages]]
 ## name = "rust-base"
@@ -555,12 +840,15 @@ COPY --link --from=dep-n-crypto-mac-0.7.0-c92b10e2fa1c82cb /tmp/clis-dbcc_2-2-1/
 ##     "0afa135837d93e68",
 ##     "0c59626b95871fe7",
 ##     "fe593aa0503da824",
+##     "8d58cd83e669a465",
+##     "3cf9e442dfddd505",
 ## ]
 ## short_externs = [
 ##     "0afa135837d93e68",
 ##     "0c59626b95871fe7",
 ##     "fe593aa0503da824",
 ## ]
+## buildrs_results = ["3cf9e442dfddd505"]
 ## writes = [
 ##     "crypto_mac-c92b10e2fa1c82cb.d",
 ##     "libcrypto_mac-c92b10e2fa1c82cb.rlib",
@@ -595,10 +883,6 @@ COPY --link --from=dep-n-crypto-mac-0.7.0-c92b10e2fa1c82cb /tmp/clis-dbcc_2-2-1/
 ## [[externs]]
 ## from = "out-fe593aa0503da824"
 ## xtern = "libsubtle-fe593aa0503da824.rmeta"
-##
-## [[contexts]]
-## name = "crate_out-3cf9e442dfddd505"
-## uri = "/tmp/clis-dbcc_2-2-1/release/build/typenum-3cf9e442dfddd505/out"
 ##
 ## [[stages]]
 ## name = "rust-base"
@@ -701,11 +985,14 @@ COPY --link --from=dep-n-digest-0.8.1-3c7631a805111659 /tmp/clis-dbcc_2-2-1/rele
 ## deps = [
 ##     "0afa135837d93e68",
 ##     "0c59626b95871fe7",
+##     "8d58cd83e669a465",
+##     "3cf9e442dfddd505",
 ## ]
 ## short_externs = [
 ##     "0afa135837d93e68",
 ##     "0c59626b95871fe7",
 ## ]
+## buildrs_results = ["3cf9e442dfddd505"]
 ## writes = [
 ##     "digest-3c7631a805111659.d",
 ##     "libdigest-3c7631a805111659.rlib",
@@ -736,10 +1023,6 @@ COPY --link --from=dep-n-digest-0.8.1-3c7631a805111659 /tmp/clis-dbcc_2-2-1/rele
 ## [[externs]]
 ## from = "out-0c59626b95871fe7"
 ## xtern = "libtypenum-0c59626b95871fe7.rmeta"
-##
-## [[contexts]]
-## name = "crate_out-3cf9e442dfddd505"
-## uri = "/tmp/clis-dbcc_2-2-1/release/build/typenum-3cf9e442dfddd505/out"
 ##
 ## [[stages]]
 ## name = "rust-base"
@@ -954,6 +1237,8 @@ COPY --link --from=dep-n-blake2-0.8.1-90ca44a8caf54d0f /tmp/clis-dbcc_2-2-1/rele
 ##     "fe593aa0503da824",
 ##     "3c7631a805111659",
 ##     "3e36cb37043b614a",
+##     "8d58cd83e669a465",
+##     "3cf9e442dfddd505",
 ## ]
 ## short_externs = [
 ##     "208f428f6e945660",
@@ -964,6 +1249,7 @@ COPY --link --from=dep-n-blake2-0.8.1-90ca44a8caf54d0f /tmp/clis-dbcc_2-2-1/rele
 ##     "3c7631a805111659",
 ##     "3e36cb37043b614a",
 ## ]
+## buildrs_results = ["3cf9e442dfddd505"]
 ## writes = [
 ##     "blake2-90ca44a8caf54d0f.d",
 ##     "libblake2-90ca44a8caf54d0f.rlib",
@@ -1036,10 +1322,6 @@ COPY --link --from=dep-n-blake2-0.8.1-90ca44a8caf54d0f /tmp/clis-dbcc_2-2-1/rele
 ## [[externs]]
 ## from = "out-3e36cb37043b614a"
 ## xtern = "libopaque_debug-3e36cb37043b614a.rmeta"
-##
-## [[contexts]]
-## name = "crate_out-3cf9e442dfddd505"
-## uri = "/tmp/clis-dbcc_2-2-1/release/build/typenum-3cf9e442dfddd505/out"
 ##
 ## [[stages]]
 ## name = "rust-base"
@@ -1208,6 +1490,280 @@ COPY --link --from=dep-n-unicode-xid-0.2.1-ca80afcc82eeec0a /tmp/clis-dbcc_2-2-1
 FROM scratch AS cratesio-proc-macro2-1.0.24
 ADD --chmod=0664 --unpack --checksum=sha256:1e0704ee1a7e00d7bb417d0770ea303c1bccbabf0ef1667dae92b5967f5f8a71 \
   https://static.crates.io/crates/proc-macro2/proc-macro2-1.0.24.crate /
+FROM rust-base AS dep-x-proc-macro2-1.0.24-68e214c30c4bb8c4
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-dbcc_2-2-1/release/build/proc-macro2-68e214c30c4bb8c4
+RUN \
+  --mount=from=cratesio-proc-macro2-1.0.24,source=/proc-macro2-1.0.24,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.24,rw \
+    { \
+        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.24/build.rs | sed 's/fn main/fn actual_68e214c30c4bb8c4_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.24/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.24/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.24/build.rs ; \
+        { \
+          echo ; \
+          echo 'fn main() {' ; \
+          echo '    use std::env::{args_os, var_os};' ; \
+          echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+          echo '        use std::process::{Command, Stdio};' ; \
+          echo '        let mut cmd = Command::new("cargo-green");' ; \
+          echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+          echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+          echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+          echo '        assert!(res.success());' ; \
+          echo '    } else {' ; \
+          echo '        actual_68e214c30c4bb8c4_main()' ; \
+          echo '    }' ; \
+          echo '}' ; \
+        } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.24/build.rs ; \
+    } && \
+    env CARGO="$(which cargo)" \
+        CARGO_CRATE_NAME="build_script_build" \
+        CARGO_INCREMENTAL="0" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.24" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.24/Cargo.toml" \
+        CARGO_PKG_AUTHORS="Alex Crichton <alex@alexcrichton.com>:David Tolnay <dtolnay@gmail.com>" \
+        CARGO_PKG_DESCRIPTION="A substitute implementation of the compiler's `proc_macro` API to decouple\ntoken-based libraries from the procedural macro use case.\n" \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE="MIT OR Apache-2.0" \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME="proc-macro2" \
+        CARGO_PKG_README="README.md" \
+        CARGO_PKG_REPOSITORY="https://github.com/alexcrichton/proc-macro2" \
+        CARGO_PKG_RUST_VERSION= \
+        CARGO_PKG_VERSION="1.0.24" \
+        CARGO_PKG_VERSION_MAJOR="1" \
+        CARGO_PKG_VERSION_MINOR="0" \
+        CARGO_PKG_VERSION_PATCH="24" \
+        CARGO_PKG_VERSION_PRE= \
+        CARGOGREEN=1 \
+      rustc '--crate-name' 'build_script_build' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'bin' '--emit' 'dep-info,link' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--cfg' 'feature="default"' '--cfg' 'feature="proc-macro"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "nightly", "proc-macro", "span-locations"))' '-C' 'metadata=4e8d381f880e48e6' '-C' 'extra-filename=-68e214c30c4bb8c4' '--out-dir' '/tmp/clis-dbcc_2-2-1/release/build/proc-macro2-68e214c30c4bb8c4' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-dbcc_2-2-1/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.24/build.rs \
+        1>          /tmp/clis-dbcc_2-2-1/release/build/proc-macro2-68e214c30c4bb8c4/out-68e214c30c4bb8c4-stdout \
+        2>          /tmp/clis-dbcc_2-2-1/release/build/proc-macro2-68e214c30c4bb8c4/out-68e214c30c4bb8c4-stderr \
+        || echo $? >/tmp/clis-dbcc_2-2-1/release/build/proc-macro2-68e214c30c4bb8c4/out-68e214c30c4bb8c4-errcode\
+  ; find /tmp/clis-dbcc_2-2-1/release/build/proc-macro2-68e214c30c4bb8c4/*-68e214c30c4bb8c4* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-68e214c30c4bb8c4
+COPY --link --from=dep-x-proc-macro2-1.0.24-68e214c30c4bb8c4 /tmp/clis-dbcc_2-2-1/release/build/proc-macro2-68e214c30c4bb8c4/*-68e214c30c4bb8c4* /
+
+## this = "68e214c30c4bb8c4"
+## writes = [
+##     "build_script_build-68e214c30c4bb8c4",
+##     "build_script_build-68e214c30c4bb8c4.d",
+## ]
+## stderr = [
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-dbcc_2-2-1/release/build/proc-macro2-68e214c30c4bb8c4/build_script_build-68e214c30c4bb8c4.d","emit":"dep-info"}',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `procmacro2_semver_exempt`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.24/build.rs","byte_start":2055,"byte_end":2079,"line_start":54,"line_end":54,"column_start":30,"column_end":54,"is_primary":true,"text":[{"text":"    let semver_exempt = cfg!(procmacro2_semver_exempt);","highlight_start":30,"highlight_end":54}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"expected names are: `docsrs`, `feature`, and `test` and 31 more","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(procmacro2_semver_exempt)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"`#[warn(unexpected_cfgs)]` on by default","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `procmacro2_semver_exempt`\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.24/build.rs:54:30\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m54\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    let semver_exempt = cfg!(procmacro2_semver_exempt);\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                              \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: expected names are: `docsrs`, `feature`, and `test` and 31 more\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m            [lints.rust]\u001b[0m\n\u001b[0m            unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(procmacro2_semver_exempt)'] }\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: `#[warn(unexpected_cfgs)]` on by default\u001b[0m\n\n"}''',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-dbcc_2-2-1/release/build/proc-macro2-68e214c30c4bb8c4/build_script_build-68e214c30c4bb8c4","emit":"link"}',
+##     '{"$message_type":"diagnostic","message":"1 warning emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 1 warning emitted\u001b[0m\n\n"}',
+## ]
+##
+## [[stages]]
+## name = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.86.0-slim@sha256:57d415bbd61ce11e2d5f73de068103c7bd9f3188dc132c97cef4a8f62989e944 AS rust-base"
+##
+## [[stages]]
+## name = "cratesio-proc-macro2-1.0.24"
+## script = '''
+## FROM scratch AS cratesio-proc-macro2-1.0.24
+## ADD --chmod=0664 --unpack --checksum=sha256:1e0704ee1a7e00d7bb417d0770ea303c1bccbabf0ef1667dae92b5967f5f8a71 \
+##   https://static.crates.io/crates/proc-macro2/proc-macro2-1.0.24.crate /'''
+##
+## [[stages]]
+## name = "dep-x-proc-macro2-1.0.24-68e214c30c4bb8c4"
+## script = '''
+## FROM rust-base AS dep-x-proc-macro2-1.0.24-68e214c30c4bb8c4
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-dbcc_2-2-1/release/build/proc-macro2-68e214c30c4bb8c4
+## RUN \
+##   --mount=from=cratesio-proc-macro2-1.0.24,source=/proc-macro2-1.0.24,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.24,rw \
+##     { \
+##         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.24/build.rs | sed 's/fn main/fn actual_68e214c30c4bb8c4_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.24/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.24/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.24/build.rs ; \
+##         { \
+##           echo ; \
+##           echo 'fn main() {' ; \
+##           echo '    use std::env::{args_os, var_os};' ; \
+##           echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+##           echo '        use std::process::{Command, Stdio};' ; \
+##           echo '        let mut cmd = Command::new("cargo-green");' ; \
+##           echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+##           echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+##           echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+##           echo '        assert!(res.success());' ; \
+##           echo '    } else {' ; \
+##           echo '        actual_68e214c30c4bb8c4_main()' ; \
+##           echo '    }' ; \
+##           echo '}' ; \
+##         } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.24/build.rs ; \
+##     } && \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CRATE_NAME="build_script_build" \
+##         CARGO_INCREMENTAL="0" \
+##         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.24" \
+##         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.24/Cargo.toml" \
+##         CARGO_PKG_AUTHORS="Alex Crichton <alex@alexcrichton.com>:David Tolnay <dtolnay@gmail.com>" \
+##         CARGO_PKG_DESCRIPTION="A substitute implementation of the compiler's `proc_macro` API to decouple\ntoken-based libraries from the procedural macro use case.\n" \
+##         CARGO_PKG_HOMEPAGE= \
+##         CARGO_PKG_LICENSE="MIT OR Apache-2.0" \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME="proc-macro2" \
+##         CARGO_PKG_README="README.md" \
+##         CARGO_PKG_REPOSITORY="https://github.com/alexcrichton/proc-macro2" \
+##         CARGO_PKG_RUST_VERSION= \
+##         CARGO_PKG_VERSION="1.0.24" \
+##         CARGO_PKG_VERSION_MAJOR="1" \
+##         CARGO_PKG_VERSION_MINOR="0" \
+##         CARGO_PKG_VERSION_PATCH="24" \
+##         CARGO_PKG_VERSION_PRE= \
+##         CARGOGREEN=1 \
+##       rustc '--crate-name' 'build_script_build' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'bin' '--emit' 'dep-info,link' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--cfg' 'feature="default"' '--cfg' 'feature="proc-macro"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "nightly", "proc-macro", "span-locations"))' '-C' 'metadata=4e8d381f880e48e6' '-C' 'extra-filename=-68e214c30c4bb8c4' '--out-dir' '/tmp/clis-dbcc_2-2-1/release/build/proc-macro2-68e214c30c4bb8c4' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-dbcc_2-2-1/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.24/build.rs \
+##         1>          /tmp/clis-dbcc_2-2-1/release/build/proc-macro2-68e214c30c4bb8c4/out-68e214c30c4bb8c4-stdout \
+##         2>          /tmp/clis-dbcc_2-2-1/release/build/proc-macro2-68e214c30c4bb8c4/out-68e214c30c4bb8c4-stderr \
+##         || echo $? >/tmp/clis-dbcc_2-2-1/release/build/proc-macro2-68e214c30c4bb8c4/out-68e214c30c4bb8c4-errcode\
+##   ; find /tmp/clis-dbcc_2-2-1/release/build/proc-macro2-68e214c30c4bb8c4/*-68e214c30c4bb8c4* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+## name = "out-68e214c30c4bb8c4"
+## script = """
+## FROM scratch AS out-68e214c30c4bb8c4
+## COPY --link --from=dep-x-proc-macro2-1.0.24-68e214c30c4bb8c4 /tmp/clis-dbcc_2-2-1/release/build/proc-macro2-68e214c30c4bb8c4/*-68e214c30c4bb8c4* /"""
+
+FROM rust-base AS run-z-proc-macro2-1.0.24-c9d8dd2789e1c19f
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-dbcc_2-2-1/release/build/proc-macro2-c9d8dd2789e1c19f/out
+WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.24
+RUN \
+  --mount=from=out-68e214c30c4bb8c4,source=/build_script_build-68e214c30c4bb8c4,dst=/tmp/clis-dbcc_2-2-1/release/build/proc-macro2-68e214c30c4bb8c4/build-script-build \
+  --mount=from=cratesio-proc-macro2-1.0.24,source=/proc-macro2-1.0.24,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.24 \
+    env CARGO="$(which cargo)" \
+        CARGO_CFG_FEATURE="default,proc-macro" \
+        CARGO_CFG_PANIC="unwind" \
+        CARGO_CFG_TARGET_ABI= \
+        CARGO_CFG_TARGET_ARCH="x86_64" \
+        CARGO_CFG_TARGET_ENDIAN="little" \
+        CARGO_CFG_TARGET_ENV="gnu" \
+        CARGO_CFG_TARGET_FAMILY="unix" \
+        CARGO_CFG_TARGET_FEATURE="fxsr,sse,sse2" \
+        CARGO_CFG_TARGET_HAS_ATOMIC="16,32,64,8,ptr" \
+        CARGO_CFG_TARGET_OS="linux" \
+        CARGO_CFG_TARGET_POINTER_WIDTH="64" \
+        CARGO_CFG_TARGET_VENDOR="unknown" \
+        CARGO_CFG_UNIX= \
+        CARGO_ENCODED_RUSTFLAGS= \
+        CARGO_FEATURE_DEFAULT="1" \
+        CARGO_FEATURE_PROC_MACRO="1" \
+        CARGO_INCREMENTAL="0" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.24" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.24/Cargo.toml" \
+        CARGO_PKG_AUTHORS="Alex Crichton <alex@alexcrichton.com>:David Tolnay <dtolnay@gmail.com>" \
+        CARGO_PKG_DESCRIPTION="A substitute implementation of the compiler's `proc_macro` API to decouple\ntoken-based libraries from the procedural macro use case.\n" \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE="MIT OR Apache-2.0" \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME="proc-macro2" \
+        CARGO_PKG_README="README.md" \
+        CARGO_PKG_REPOSITORY="https://github.com/alexcrichton/proc-macro2" \
+        CARGO_PKG_RUST_VERSION= \
+        CARGO_PKG_VERSION="1.0.24" \
+        CARGO_PKG_VERSION_MAJOR="1" \
+        CARGO_PKG_VERSION_MINOR="0" \
+        CARGO_PKG_VERSION_PATCH="24" \
+        CARGO_PKG_VERSION_PRE= \
+        DEBUG="false" \
+        HOST="x86_64-unknown-linux-gnu" \
+        NUM_JOBS="4" \
+        OPT_LEVEL="0" \
+        OUT_DIR="/tmp/clis-dbcc_2-2-1/release/build/proc-macro2-c9d8dd2789e1c19f/out" \
+        PROFILE="release" \
+        RUSTC=rustc \
+        RUSTDOC="/home/runner/.rustup/toolchains/1.86.0-x86_64-unknown-linux-gnu/bin/rustdoc" \
+        TARGET="x86_64-unknown-linux-gnu" \
+        CARGOGREEN=1 \
+      CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-dbcc_2-2-1/release/build/proc-macro2-68e214c30c4bb8c4/build-script-build \
+        1>          /tmp/clis-dbcc_2-2-1/release/build/proc-macro2-c9d8dd2789e1c19f/out/ran-c9d8dd2789e1c19f-stdout \
+        2>          /tmp/clis-dbcc_2-2-1/release/build/proc-macro2-c9d8dd2789e1c19f/out/ran-c9d8dd2789e1c19f-stderr \
+        || echo $? >/tmp/clis-dbcc_2-2-1/release/build/proc-macro2-c9d8dd2789e1c19f/out/ran-c9d8dd2789e1c19f-errcode\
+  ; find /tmp/clis-dbcc_2-2-1/release/build/proc-macro2-c9d8dd2789e1c19f/out/*-c9d8dd2789e1c19f* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS ran-c9d8dd2789e1c19f
+COPY --link --from=run-z-proc-macro2-1.0.24-c9d8dd2789e1c19f /tmp/clis-dbcc_2-2-1/release/build/proc-macro2-c9d8dd2789e1c19f/out/* /
+
+## this = "c9d8dd2789e1c19f"
+## deps = ["68e214c30c4bb8c4"]
+## stdout = [
+##     "cargo:rerun-if-changed=build.rs",
+##     "cargo:rustc-cfg=lexerror_display",
+##     "cargo:rustc-cfg=hygiene",
+##     "cargo:rustc-cfg=use_proc_macro",
+##     "cargo:rustc-cfg=wrap_proc_macro",
+## ]
+##
+## [[stages]]
+## name = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.86.0-slim@sha256:57d415bbd61ce11e2d5f73de068103c7bd9f3188dc132c97cef4a8f62989e944 AS rust-base"
+##
+## [[stages]]
+## name = "run-z-proc-macro2-1.0.24-c9d8dd2789e1c19f"
+## script = '''
+## FROM rust-base AS run-z-proc-macro2-1.0.24-c9d8dd2789e1c19f
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-dbcc_2-2-1/release/build/proc-macro2-c9d8dd2789e1c19f/out
+## WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.24
+## RUN \
+##   --mount=from=out-68e214c30c4bb8c4,source=/build_script_build-68e214c30c4bb8c4,dst=/tmp/clis-dbcc_2-2-1/release/build/proc-macro2-68e214c30c4bb8c4/build-script-build \
+##   --mount=from=cratesio-proc-macro2-1.0.24,source=/proc-macro2-1.0.24,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.24 \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CFG_FEATURE="default,proc-macro" \
+##         CARGO_CFG_PANIC="unwind" \
+##         CARGO_CFG_TARGET_ABI= \
+##         CARGO_CFG_TARGET_ARCH="x86_64" \
+##         CARGO_CFG_TARGET_ENDIAN="little" \
+##         CARGO_CFG_TARGET_ENV="gnu" \
+##         CARGO_CFG_TARGET_FAMILY="unix" \
+##         CARGO_CFG_TARGET_FEATURE="fxsr,sse,sse2" \
+##         CARGO_CFG_TARGET_HAS_ATOMIC="16,32,64,8,ptr" \
+##         CARGO_CFG_TARGET_OS="linux" \
+##         CARGO_CFG_TARGET_POINTER_WIDTH="64" \
+##         CARGO_CFG_TARGET_VENDOR="unknown" \
+##         CARGO_CFG_UNIX= \
+##         CARGO_ENCODED_RUSTFLAGS= \
+##         CARGO_FEATURE_DEFAULT="1" \
+##         CARGO_FEATURE_PROC_MACRO="1" \
+##         CARGO_INCREMENTAL="0" \
+##         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.24" \
+##         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.24/Cargo.toml" \
+##         CARGO_PKG_AUTHORS="Alex Crichton <alex@alexcrichton.com>:David Tolnay <dtolnay@gmail.com>" \
+##         CARGO_PKG_DESCRIPTION="A substitute implementation of the compiler's `proc_macro` API to decouple\ntoken-based libraries from the procedural macro use case.\n" \
+##         CARGO_PKG_HOMEPAGE= \
+##         CARGO_PKG_LICENSE="MIT OR Apache-2.0" \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME="proc-macro2" \
+##         CARGO_PKG_README="README.md" \
+##         CARGO_PKG_REPOSITORY="https://github.com/alexcrichton/proc-macro2" \
+##         CARGO_PKG_RUST_VERSION= \
+##         CARGO_PKG_VERSION="1.0.24" \
+##         CARGO_PKG_VERSION_MAJOR="1" \
+##         CARGO_PKG_VERSION_MINOR="0" \
+##         CARGO_PKG_VERSION_PATCH="24" \
+##         CARGO_PKG_VERSION_PRE= \
+##         DEBUG="false" \
+##         HOST="x86_64-unknown-linux-gnu" \
+##         NUM_JOBS="4" \
+##         OPT_LEVEL="0" \
+##         OUT_DIR="/tmp/clis-dbcc_2-2-1/release/build/proc-macro2-c9d8dd2789e1c19f/out" \
+##         PROFILE="release" \
+##         RUSTC=rustc \
+##         RUSTDOC="/home/runner/.rustup/toolchains/1.86.0-x86_64-unknown-linux-gnu/bin/rustdoc" \
+##         TARGET="x86_64-unknown-linux-gnu" \
+##         CARGOGREEN=1 \
+##       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-dbcc_2-2-1/release/build/proc-macro2-68e214c30c4bb8c4/build-script-build \
+##         1>          /tmp/clis-dbcc_2-2-1/release/build/proc-macro2-c9d8dd2789e1c19f/out/ran-c9d8dd2789e1c19f-stdout \
+##         2>          /tmp/clis-dbcc_2-2-1/release/build/proc-macro2-c9d8dd2789e1c19f/out/ran-c9d8dd2789e1c19f-stderr \
+##         || echo $? >/tmp/clis-dbcc_2-2-1/release/build/proc-macro2-c9d8dd2789e1c19f/out/ran-c9d8dd2789e1c19f-errcode\
+##   ; find /tmp/clis-dbcc_2-2-1/release/build/proc-macro2-c9d8dd2789e1c19f/out/*-c9d8dd2789e1c19f* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+## name = "ran-c9d8dd2789e1c19f"
+## script = """
+## FROM scratch AS ran-c9d8dd2789e1c19f
+## COPY --link --from=run-z-proc-macro2-1.0.24-c9d8dd2789e1c19f /tmp/clis-dbcc_2-2-1/release/build/proc-macro2-c9d8dd2789e1c19f/out/* /"""
+
+
 FROM rust-base AS dep-n-proc-macro2-1.0.24-80b37ce9903d0def
 SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
@@ -1215,6 +1771,7 @@ RUN \
   --mount=from=cratesio-proc-macro2-1.0.24,source=/proc-macro2-1.0.24,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.24 \
   --mount=from=out-ca80afcc82eeec0a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-ca80afcc82eeec0a.rlib,source=/libunicode_xid-ca80afcc82eeec0a.rlib \
   --mount=from=out-ca80afcc82eeec0a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-ca80afcc82eeec0a.rmeta,source=/libunicode_xid-ca80afcc82eeec0a.rmeta \
+  --mount=from=ran-c9d8dd2789e1c19f,dst=/tmp/clis-dbcc_2-2-1/release/build/proc-macro2-c9d8dd2789e1c19f/out,source=/ \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="proc_macro2" \
         CARGO_INCREMENTAL="0" \
@@ -1245,8 +1802,13 @@ FROM scratch AS out-80b37ce9903d0def
 COPY --link --from=dep-n-proc-macro2-1.0.24-80b37ce9903d0def /tmp/clis-dbcc_2-2-1/release/deps/*-80b37ce9903d0def* /
 
 ## this = "80b37ce9903d0def"
-## deps = ["ca80afcc82eeec0a"]
+## deps = [
+##     "ca80afcc82eeec0a",
+##     "c9d8dd2789e1c19f",
+##     "68e214c30c4bb8c4",
+## ]
 ## short_externs = ["ca80afcc82eeec0a"]
+## buildrs_results = ["c9d8dd2789e1c19f"]
 ## writes = [
 ##     "libproc_macro2-80b37ce9903d0def.rlib",
 ##     "libproc_macro2-80b37ce9903d0def.rmeta",
@@ -1375,6 +1937,11 @@ COPY --link --from=dep-n-proc-macro2-1.0.24-80b37ce9903d0def /tmp/clis-dbcc_2-2-
 ## from = "out-ca80afcc82eeec0a"
 ## xtern = "libunicode_xid-ca80afcc82eeec0a.rmeta"
 ##
+## [[mounts]]
+## name = "ran-c9d8dd2789e1c19f"
+## src = "/"
+## dst = "/tmp/clis-dbcc_2-2-1/release/build/proc-macro2-c9d8dd2789e1c19f/out"
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.86.0-slim@sha256:57d415bbd61ce11e2d5f73de068103c7bd9f3188dc132c97cef4a8f62989e944 AS rust-base"
@@ -1396,6 +1963,7 @@ COPY --link --from=dep-n-proc-macro2-1.0.24-80b37ce9903d0def /tmp/clis-dbcc_2-2-
 ##   --mount=from=cratesio-proc-macro2-1.0.24,source=/proc-macro2-1.0.24,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.24 \
 ##   --mount=from=out-ca80afcc82eeec0a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-ca80afcc82eeec0a.rlib,source=/libunicode_xid-ca80afcc82eeec0a.rlib \
 ##   --mount=from=out-ca80afcc82eeec0a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-ca80afcc82eeec0a.rmeta,source=/libunicode_xid-ca80afcc82eeec0a.rmeta \
+##   --mount=from=ran-c9d8dd2789e1c19f,dst=/tmp/clis-dbcc_2-2-1/release/build/proc-macro2-c9d8dd2789e1c19f/out,source=/ \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="proc_macro2" \
 ##         CARGO_INCREMENTAL="0" \
@@ -1473,11 +2041,14 @@ COPY --link --from=dep-n-quote-1.0.7-dd5debcb2b51fc02 /tmp/clis-dbcc_2-2-1/relea
 ## deps = [
 ##     "80b37ce9903d0def",
 ##     "ca80afcc82eeec0a",
+##     "68e214c30c4bb8c4",
+##     "c9d8dd2789e1c19f",
 ## ]
 ## short_externs = [
 ##     "80b37ce9903d0def",
 ##     "ca80afcc82eeec0a",
 ## ]
+## buildrs_results = ["c9d8dd2789e1c19f"]
 ## writes = [
 ##     "libquote-dd5debcb2b51fc02.rlib",
 ##     "libquote-dd5debcb2b51fc02.rmeta",
@@ -1563,6 +2134,286 @@ COPY --link --from=dep-n-quote-1.0.7-dd5debcb2b51fc02 /tmp/clis-dbcc_2-2-1/relea
 FROM scratch AS cratesio-syn-1.0.46
 ADD --chmod=0664 --unpack --checksum=sha256:5ad5de3220ea04da322618ded2c42233d02baca219d6f160a3e9c87cda16c942 \
   https://static.crates.io/crates/syn/syn-1.0.46.crate /
+FROM rust-base AS dep-x-syn-1.0.46-83f4ce3a9272e51d
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-dbcc_2-2-1/release/build/syn-83f4ce3a9272e51d
+RUN \
+  --mount=from=cratesio-syn-1.0.46,source=/syn-1.0.46,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/syn-1.0.46,rw \
+    { \
+        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/syn-1.0.46/build.rs | sed 's/fn main/fn actual_83f4ce3a9272e51d_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/syn-1.0.46/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/syn-1.0.46/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/syn-1.0.46/build.rs ; \
+        { \
+          echo ; \
+          echo 'fn main() {' ; \
+          echo '    use std::env::{args_os, var_os};' ; \
+          echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+          echo '        use std::process::{Command, Stdio};' ; \
+          echo '        let mut cmd = Command::new("cargo-green");' ; \
+          echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+          echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+          echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+          echo '        assert!(res.success());' ; \
+          echo '    } else {' ; \
+          echo '        actual_83f4ce3a9272e51d_main()' ; \
+          echo '    }' ; \
+          echo '}' ; \
+        } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/syn-1.0.46/build.rs ; \
+    } && \
+    env CARGO="$(which cargo)" \
+        CARGO_CRATE_NAME="build_script_build" \
+        CARGO_INCREMENTAL="0" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/syn-1.0.46" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/syn-1.0.46/Cargo.toml" \
+        CARGO_PKG_AUTHORS="David Tolnay <dtolnay@gmail.com>" \
+        CARGO_PKG_DESCRIPTION="Parser for Rust source code" \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE="MIT OR Apache-2.0" \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME="syn" \
+        CARGO_PKG_README="README.md" \
+        CARGO_PKG_REPOSITORY="https://github.com/dtolnay/syn" \
+        CARGO_PKG_RUST_VERSION= \
+        CARGO_PKG_VERSION="1.0.46" \
+        CARGO_PKG_VERSION_MAJOR="1" \
+        CARGO_PKG_VERSION_MINOR="0" \
+        CARGO_PKG_VERSION_PATCH="46" \
+        CARGO_PKG_VERSION_PRE= \
+        CARGOGREEN=1 \
+      rustc '--crate-name' 'build_script_build' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'bin' '--emit' 'dep-info,link' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--cfg' 'feature="clone-impls"' '--cfg' 'feature="default"' '--cfg' 'feature="derive"' '--cfg' 'feature="extra-traits"' '--cfg' 'feature="full"' '--cfg' 'feature="parsing"' '--cfg' 'feature="printing"' '--cfg' 'feature="proc-macro"' '--cfg' 'feature="quote"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("clone-impls", "default", "derive", "extra-traits", "fold", "full", "parsing", "printing", "proc-macro", "quote", "test", "visit", "visit-mut"))' '-C' 'metadata=fe60029a265c2f83' '-C' 'extra-filename=-83f4ce3a9272e51d' '--out-dir' '/tmp/clis-dbcc_2-2-1/release/build/syn-83f4ce3a9272e51d' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-dbcc_2-2-1/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/syn-1.0.46/build.rs \
+        1>          /tmp/clis-dbcc_2-2-1/release/build/syn-83f4ce3a9272e51d/out-83f4ce3a9272e51d-stdout \
+        2>          /tmp/clis-dbcc_2-2-1/release/build/syn-83f4ce3a9272e51d/out-83f4ce3a9272e51d-stderr \
+        || echo $? >/tmp/clis-dbcc_2-2-1/release/build/syn-83f4ce3a9272e51d/out-83f4ce3a9272e51d-errcode\
+  ; find /tmp/clis-dbcc_2-2-1/release/build/syn-83f4ce3a9272e51d/*-83f4ce3a9272e51d* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-83f4ce3a9272e51d
+COPY --link --from=dep-x-syn-1.0.46-83f4ce3a9272e51d /tmp/clis-dbcc_2-2-1/release/build/syn-83f4ce3a9272e51d/*-83f4ce3a9272e51d* /
+
+## this = "83f4ce3a9272e51d"
+## writes = [
+##     "build_script_build-83f4ce3a9272e51d",
+##     "build_script_build-83f4ce3a9272e51d.d",
+## ]
+## stderr = [
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-dbcc_2-2-1/release/build/syn-83f4ce3a9272e51d/build_script_build-83f4ce3a9272e51d.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-dbcc_2-2-1/release/build/syn-83f4ce3a9272e51d/build_script_build-83f4ce3a9272e51d","emit":"link"}',
+## ]
+##
+## [[stages]]
+## name = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.86.0-slim@sha256:57d415bbd61ce11e2d5f73de068103c7bd9f3188dc132c97cef4a8f62989e944 AS rust-base"
+##
+## [[stages]]
+## name = "cratesio-syn-1.0.46"
+## script = '''
+## FROM scratch AS cratesio-syn-1.0.46
+## ADD --chmod=0664 --unpack --checksum=sha256:5ad5de3220ea04da322618ded2c42233d02baca219d6f160a3e9c87cda16c942 \
+##   https://static.crates.io/crates/syn/syn-1.0.46.crate /'''
+##
+## [[stages]]
+## name = "dep-x-syn-1.0.46-83f4ce3a9272e51d"
+## script = '''
+## FROM rust-base AS dep-x-syn-1.0.46-83f4ce3a9272e51d
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-dbcc_2-2-1/release/build/syn-83f4ce3a9272e51d
+## RUN \
+##   --mount=from=cratesio-syn-1.0.46,source=/syn-1.0.46,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/syn-1.0.46,rw \
+##     { \
+##         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/syn-1.0.46/build.rs | sed 's/fn main/fn actual_83f4ce3a9272e51d_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/syn-1.0.46/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/syn-1.0.46/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/syn-1.0.46/build.rs ; \
+##         { \
+##           echo ; \
+##           echo 'fn main() {' ; \
+##           echo '    use std::env::{args_os, var_os};' ; \
+##           echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+##           echo '        use std::process::{Command, Stdio};' ; \
+##           echo '        let mut cmd = Command::new("cargo-green");' ; \
+##           echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+##           echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+##           echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+##           echo '        assert!(res.success());' ; \
+##           echo '    } else {' ; \
+##           echo '        actual_83f4ce3a9272e51d_main()' ; \
+##           echo '    }' ; \
+##           echo '}' ; \
+##         } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/syn-1.0.46/build.rs ; \
+##     } && \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CRATE_NAME="build_script_build" \
+##         CARGO_INCREMENTAL="0" \
+##         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/syn-1.0.46" \
+##         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/syn-1.0.46/Cargo.toml" \
+##         CARGO_PKG_AUTHORS="David Tolnay <dtolnay@gmail.com>" \
+##         CARGO_PKG_DESCRIPTION="Parser for Rust source code" \
+##         CARGO_PKG_HOMEPAGE= \
+##         CARGO_PKG_LICENSE="MIT OR Apache-2.0" \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME="syn" \
+##         CARGO_PKG_README="README.md" \
+##         CARGO_PKG_REPOSITORY="https://github.com/dtolnay/syn" \
+##         CARGO_PKG_RUST_VERSION= \
+##         CARGO_PKG_VERSION="1.0.46" \
+##         CARGO_PKG_VERSION_MAJOR="1" \
+##         CARGO_PKG_VERSION_MINOR="0" \
+##         CARGO_PKG_VERSION_PATCH="46" \
+##         CARGO_PKG_VERSION_PRE= \
+##         CARGOGREEN=1 \
+##       rustc '--crate-name' 'build_script_build' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'bin' '--emit' 'dep-info,link' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--cfg' 'feature="clone-impls"' '--cfg' 'feature="default"' '--cfg' 'feature="derive"' '--cfg' 'feature="extra-traits"' '--cfg' 'feature="full"' '--cfg' 'feature="parsing"' '--cfg' 'feature="printing"' '--cfg' 'feature="proc-macro"' '--cfg' 'feature="quote"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("clone-impls", "default", "derive", "extra-traits", "fold", "full", "parsing", "printing", "proc-macro", "quote", "test", "visit", "visit-mut"))' '-C' 'metadata=fe60029a265c2f83' '-C' 'extra-filename=-83f4ce3a9272e51d' '--out-dir' '/tmp/clis-dbcc_2-2-1/release/build/syn-83f4ce3a9272e51d' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-dbcc_2-2-1/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/syn-1.0.46/build.rs \
+##         1>          /tmp/clis-dbcc_2-2-1/release/build/syn-83f4ce3a9272e51d/out-83f4ce3a9272e51d-stdout \
+##         2>          /tmp/clis-dbcc_2-2-1/release/build/syn-83f4ce3a9272e51d/out-83f4ce3a9272e51d-stderr \
+##         || echo $? >/tmp/clis-dbcc_2-2-1/release/build/syn-83f4ce3a9272e51d/out-83f4ce3a9272e51d-errcode\
+##   ; find /tmp/clis-dbcc_2-2-1/release/build/syn-83f4ce3a9272e51d/*-83f4ce3a9272e51d* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+## name = "out-83f4ce3a9272e51d"
+## script = """
+## FROM scratch AS out-83f4ce3a9272e51d
+## COPY --link --from=dep-x-syn-1.0.46-83f4ce3a9272e51d /tmp/clis-dbcc_2-2-1/release/build/syn-83f4ce3a9272e51d/*-83f4ce3a9272e51d* /"""
+
+FROM rust-base AS run-z-syn-1.0.46-6fd417ad443e5221
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-dbcc_2-2-1/release/build/syn-6fd417ad443e5221/out
+WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/syn-1.0.46
+RUN \
+  --mount=from=out-83f4ce3a9272e51d,source=/build_script_build-83f4ce3a9272e51d,dst=/tmp/clis-dbcc_2-2-1/release/build/syn-83f4ce3a9272e51d/build-script-build \
+  --mount=from=cratesio-syn-1.0.46,source=/syn-1.0.46,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/syn-1.0.46 \
+    env CARGO="$(which cargo)" \
+        CARGO_CFG_FEATURE="clone-impls,default,derive,extra-traits,full,parsing,printing,proc-macro,quote" \
+        CARGO_CFG_PANIC="unwind" \
+        CARGO_CFG_TARGET_ABI= \
+        CARGO_CFG_TARGET_ARCH="x86_64" \
+        CARGO_CFG_TARGET_ENDIAN="little" \
+        CARGO_CFG_TARGET_ENV="gnu" \
+        CARGO_CFG_TARGET_FAMILY="unix" \
+        CARGO_CFG_TARGET_FEATURE="fxsr,sse,sse2" \
+        CARGO_CFG_TARGET_HAS_ATOMIC="16,32,64,8,ptr" \
+        CARGO_CFG_TARGET_OS="linux" \
+        CARGO_CFG_TARGET_POINTER_WIDTH="64" \
+        CARGO_CFG_TARGET_VENDOR="unknown" \
+        CARGO_CFG_UNIX= \
+        CARGO_ENCODED_RUSTFLAGS= \
+        CARGO_FEATURE_CLONE_IMPLS="1" \
+        CARGO_FEATURE_DEFAULT="1" \
+        CARGO_FEATURE_DERIVE="1" \
+        CARGO_FEATURE_EXTRA_TRAITS="1" \
+        CARGO_FEATURE_FULL="1" \
+        CARGO_FEATURE_PARSING="1" \
+        CARGO_FEATURE_PRINTING="1" \
+        CARGO_FEATURE_PROC_MACRO="1" \
+        CARGO_FEATURE_QUOTE="1" \
+        CARGO_INCREMENTAL="0" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/syn-1.0.46" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/syn-1.0.46/Cargo.toml" \
+        CARGO_PKG_AUTHORS="David Tolnay <dtolnay@gmail.com>" \
+        CARGO_PKG_DESCRIPTION="Parser for Rust source code" \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE="MIT OR Apache-2.0" \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME="syn" \
+        CARGO_PKG_README="README.md" \
+        CARGO_PKG_REPOSITORY="https://github.com/dtolnay/syn" \
+        CARGO_PKG_RUST_VERSION= \
+        CARGO_PKG_VERSION="1.0.46" \
+        CARGO_PKG_VERSION_MAJOR="1" \
+        CARGO_PKG_VERSION_MINOR="0" \
+        CARGO_PKG_VERSION_PATCH="46" \
+        CARGO_PKG_VERSION_PRE= \
+        DEBUG="false" \
+        HOST="x86_64-unknown-linux-gnu" \
+        NUM_JOBS="4" \
+        OPT_LEVEL="0" \
+        OUT_DIR="/tmp/clis-dbcc_2-2-1/release/build/syn-6fd417ad443e5221/out" \
+        PROFILE="release" \
+        RUSTC=rustc \
+        RUSTDOC="/home/runner/.rustup/toolchains/1.86.0-x86_64-unknown-linux-gnu/bin/rustdoc" \
+        TARGET="x86_64-unknown-linux-gnu" \
+        CARGOGREEN=1 \
+      CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-dbcc_2-2-1/release/build/syn-83f4ce3a9272e51d/build-script-build \
+        1>          /tmp/clis-dbcc_2-2-1/release/build/syn-6fd417ad443e5221/out/ran-6fd417ad443e5221-stdout \
+        2>          /tmp/clis-dbcc_2-2-1/release/build/syn-6fd417ad443e5221/out/ran-6fd417ad443e5221-stderr \
+        || echo $? >/tmp/clis-dbcc_2-2-1/release/build/syn-6fd417ad443e5221/out/ran-6fd417ad443e5221-errcode\
+  ; find /tmp/clis-dbcc_2-2-1/release/build/syn-6fd417ad443e5221/out/*-6fd417ad443e5221* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS ran-6fd417ad443e5221
+COPY --link --from=run-z-syn-1.0.46-6fd417ad443e5221 /tmp/clis-dbcc_2-2-1/release/build/syn-6fd417ad443e5221/out/* /
+
+## this = "6fd417ad443e5221"
+## deps = ["83f4ce3a9272e51d"]
+## stdout = ["cargo:rustc-cfg=syn_disable_nightly_tests"]
+##
+## [[stages]]
+## name = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.86.0-slim@sha256:57d415bbd61ce11e2d5f73de068103c7bd9f3188dc132c97cef4a8f62989e944 AS rust-base"
+##
+## [[stages]]
+## name = "run-z-syn-1.0.46-6fd417ad443e5221"
+## script = '''
+## FROM rust-base AS run-z-syn-1.0.46-6fd417ad443e5221
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-dbcc_2-2-1/release/build/syn-6fd417ad443e5221/out
+## WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/syn-1.0.46
+## RUN \
+##   --mount=from=out-83f4ce3a9272e51d,source=/build_script_build-83f4ce3a9272e51d,dst=/tmp/clis-dbcc_2-2-1/release/build/syn-83f4ce3a9272e51d/build-script-build \
+##   --mount=from=cratesio-syn-1.0.46,source=/syn-1.0.46,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/syn-1.0.46 \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CFG_FEATURE="clone-impls,default,derive,extra-traits,full,parsing,printing,proc-macro,quote" \
+##         CARGO_CFG_PANIC="unwind" \
+##         CARGO_CFG_TARGET_ABI= \
+##         CARGO_CFG_TARGET_ARCH="x86_64" \
+##         CARGO_CFG_TARGET_ENDIAN="little" \
+##         CARGO_CFG_TARGET_ENV="gnu" \
+##         CARGO_CFG_TARGET_FAMILY="unix" \
+##         CARGO_CFG_TARGET_FEATURE="fxsr,sse,sse2" \
+##         CARGO_CFG_TARGET_HAS_ATOMIC="16,32,64,8,ptr" \
+##         CARGO_CFG_TARGET_OS="linux" \
+##         CARGO_CFG_TARGET_POINTER_WIDTH="64" \
+##         CARGO_CFG_TARGET_VENDOR="unknown" \
+##         CARGO_CFG_UNIX= \
+##         CARGO_ENCODED_RUSTFLAGS= \
+##         CARGO_FEATURE_CLONE_IMPLS="1" \
+##         CARGO_FEATURE_DEFAULT="1" \
+##         CARGO_FEATURE_DERIVE="1" \
+##         CARGO_FEATURE_EXTRA_TRAITS="1" \
+##         CARGO_FEATURE_FULL="1" \
+##         CARGO_FEATURE_PARSING="1" \
+##         CARGO_FEATURE_PRINTING="1" \
+##         CARGO_FEATURE_PROC_MACRO="1" \
+##         CARGO_FEATURE_QUOTE="1" \
+##         CARGO_INCREMENTAL="0" \
+##         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/syn-1.0.46" \
+##         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/syn-1.0.46/Cargo.toml" \
+##         CARGO_PKG_AUTHORS="David Tolnay <dtolnay@gmail.com>" \
+##         CARGO_PKG_DESCRIPTION="Parser for Rust source code" \
+##         CARGO_PKG_HOMEPAGE= \
+##         CARGO_PKG_LICENSE="MIT OR Apache-2.0" \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME="syn" \
+##         CARGO_PKG_README="README.md" \
+##         CARGO_PKG_REPOSITORY="https://github.com/dtolnay/syn" \
+##         CARGO_PKG_RUST_VERSION= \
+##         CARGO_PKG_VERSION="1.0.46" \
+##         CARGO_PKG_VERSION_MAJOR="1" \
+##         CARGO_PKG_VERSION_MINOR="0" \
+##         CARGO_PKG_VERSION_PATCH="46" \
+##         CARGO_PKG_VERSION_PRE= \
+##         DEBUG="false" \
+##         HOST="x86_64-unknown-linux-gnu" \
+##         NUM_JOBS="4" \
+##         OPT_LEVEL="0" \
+##         OUT_DIR="/tmp/clis-dbcc_2-2-1/release/build/syn-6fd417ad443e5221/out" \
+##         PROFILE="release" \
+##         RUSTC=rustc \
+##         RUSTDOC="/home/runner/.rustup/toolchains/1.86.0-x86_64-unknown-linux-gnu/bin/rustdoc" \
+##         TARGET="x86_64-unknown-linux-gnu" \
+##         CARGOGREEN=1 \
+##       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-dbcc_2-2-1/release/build/syn-83f4ce3a9272e51d/build-script-build \
+##         1>          /tmp/clis-dbcc_2-2-1/release/build/syn-6fd417ad443e5221/out/ran-6fd417ad443e5221-stdout \
+##         2>          /tmp/clis-dbcc_2-2-1/release/build/syn-6fd417ad443e5221/out/ran-6fd417ad443e5221-stderr \
+##         || echo $? >/tmp/clis-dbcc_2-2-1/release/build/syn-6fd417ad443e5221/out/ran-6fd417ad443e5221-errcode\
+##   ; find /tmp/clis-dbcc_2-2-1/release/build/syn-6fd417ad443e5221/out/*-6fd417ad443e5221* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+## name = "ran-6fd417ad443e5221"
+## script = """
+## FROM scratch AS ran-6fd417ad443e5221
+## COPY --link --from=run-z-syn-1.0.46-6fd417ad443e5221 /tmp/clis-dbcc_2-2-1/release/build/syn-6fd417ad443e5221/out/* /"""
+
+
 FROM rust-base AS dep-n-syn-1.0.46-bbffa8c7e6a16356
 SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
@@ -1574,6 +2425,7 @@ RUN \
   --mount=from=out-ca80afcc82eeec0a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-ca80afcc82eeec0a.rmeta,source=/libunicode_xid-ca80afcc82eeec0a.rmeta \
   --mount=from=out-dd5debcb2b51fc02,dst=/tmp/clis-dbcc_2-2-1/release/deps/libquote-dd5debcb2b51fc02.rlib,source=/libquote-dd5debcb2b51fc02.rlib \
   --mount=from=out-dd5debcb2b51fc02,dst=/tmp/clis-dbcc_2-2-1/release/deps/libquote-dd5debcb2b51fc02.rmeta,source=/libquote-dd5debcb2b51fc02.rmeta \
+  --mount=from=ran-6fd417ad443e5221,dst=/tmp/clis-dbcc_2-2-1/release/build/syn-6fd417ad443e5221/out,source=/ \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="syn" \
         CARGO_INCREMENTAL="0" \
@@ -1608,11 +2460,19 @@ COPY --link --from=dep-n-syn-1.0.46-bbffa8c7e6a16356 /tmp/clis-dbcc_2-2-1/releas
 ##     "80b37ce9903d0def",
 ##     "ca80afcc82eeec0a",
 ##     "dd5debcb2b51fc02",
+##     "6fd417ad443e5221",
+##     "68e214c30c4bb8c4",
+##     "c9d8dd2789e1c19f",
+##     "83f4ce3a9272e51d",
 ## ]
 ## short_externs = [
 ##     "80b37ce9903d0def",
 ##     "ca80afcc82eeec0a",
 ##     "dd5debcb2b51fc02",
+## ]
+## buildrs_results = [
+##     "c9d8dd2789e1c19f",
+##     "6fd417ad443e5221",
 ## ]
 ## writes = [
 ##     "libsyn-bbffa8c7e6a16356.rlib",
@@ -1655,6 +2515,11 @@ COPY --link --from=dep-n-syn-1.0.46-bbffa8c7e6a16356 /tmp/clis-dbcc_2-2-1/releas
 ## from = "out-dd5debcb2b51fc02"
 ## xtern = "libquote-dd5debcb2b51fc02.rmeta"
 ##
+## [[mounts]]
+## name = "ran-6fd417ad443e5221"
+## src = "/"
+## dst = "/tmp/clis-dbcc_2-2-1/release/build/syn-6fd417ad443e5221/out"
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.86.0-slim@sha256:57d415bbd61ce11e2d5f73de068103c7bd9f3188dc132c97cef4a8f62989e944 AS rust-base"
@@ -1680,6 +2545,7 @@ COPY --link --from=dep-n-syn-1.0.46-bbffa8c7e6a16356 /tmp/clis-dbcc_2-2-1/releas
 ##   --mount=from=out-ca80afcc82eeec0a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-ca80afcc82eeec0a.rmeta,source=/libunicode_xid-ca80afcc82eeec0a.rmeta \
 ##   --mount=from=out-dd5debcb2b51fc02,dst=/tmp/clis-dbcc_2-2-1/release/deps/libquote-dd5debcb2b51fc02.rlib,source=/libquote-dd5debcb2b51fc02.rlib \
 ##   --mount=from=out-dd5debcb2b51fc02,dst=/tmp/clis-dbcc_2-2-1/release/deps/libquote-dd5debcb2b51fc02.rmeta,source=/libquote-dd5debcb2b51fc02.rmeta \
+##   --mount=from=ran-6fd417ad443e5221,dst=/tmp/clis-dbcc_2-2-1/release/build/syn-6fd417ad443e5221/out,source=/ \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="syn" \
 ##         CARGO_INCREMENTAL="0" \
@@ -1759,12 +2625,20 @@ COPY --link --from=dep-n-derive-getters-0.1.1-10105863fb18eb2a /tmp/clis-dbcc_2-
 ##     "ca80afcc82eeec0a",
 ##     "dd5debcb2b51fc02",
 ##     "bbffa8c7e6a16356",
+##     "68e214c30c4bb8c4",
+##     "c9d8dd2789e1c19f",
+##     "83f4ce3a9272e51d",
+##     "6fd417ad443e5221",
 ## ]
 ## short_externs = [
 ##     "80b37ce9903d0def",
 ##     "ca80afcc82eeec0a",
 ##     "dd5debcb2b51fc02",
 ##     "bbffa8c7e6a16356",
+## ]
+## buildrs_results = [
+##     "c9d8dd2789e1c19f",
+##     "6fd417ad443e5221",
 ## ]
 ## writes = [
 ##     "derive_getters-10105863fb18eb2a.d",
@@ -1852,11 +2726,285 @@ COPY --link --from=dep-n-derive-getters-0.1.1-10105863fb18eb2a /tmp/clis-dbcc_2-
 FROM scratch AS cratesio-memchr-2.3.3
 ADD --chmod=0664 --unpack --checksum=sha256:3728d817d99e5ac407411fa471ff9800a778d88a24685968b36824eaf4bee400 \
   https://static.crates.io/crates/memchr/memchr-2.3.3.crate /
+FROM rust-base AS dep-x-memchr-2.3.3-61489e0fb1dac057
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-dbcc_2-2-1/release/build/memchr-61489e0fb1dac057
+RUN \
+  --mount=from=cratesio-memchr-2.3.3,source=/memchr-2.3.3,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/memchr-2.3.3,rw \
+    { \
+        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/memchr-2.3.3/build.rs | sed 's/fn main/fn actual_61489e0fb1dac057_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/memchr-2.3.3/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/memchr-2.3.3/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/memchr-2.3.3/build.rs ; \
+        { \
+          echo ; \
+          echo 'fn main() {' ; \
+          echo '    use std::env::{args_os, var_os};' ; \
+          echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+          echo '        use std::process::{Command, Stdio};' ; \
+          echo '        let mut cmd = Command::new("cargo-green");' ; \
+          echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+          echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+          echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+          echo '        assert!(res.success());' ; \
+          echo '    } else {' ; \
+          echo '        actual_61489e0fb1dac057_main()' ; \
+          echo '    }' ; \
+          echo '}' ; \
+        } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/memchr-2.3.3/build.rs ; \
+    } && \
+    env CARGO="$(which cargo)" \
+        CARGO_CRATE_NAME="build_script_build" \
+        CARGO_INCREMENTAL="0" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/memchr-2.3.3" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/memchr-2.3.3/Cargo.toml" \
+        CARGO_PKG_AUTHORS="Andrew Gallant <jamslam@gmail.com>:bluss" \
+        CARGO_PKG_DESCRIPTION="Safe interface to memchr." \
+        CARGO_PKG_HOMEPAGE="https://github.com/BurntSushi/rust-memchr" \
+        CARGO_PKG_LICENSE="Unlicense/MIT" \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME="memchr" \
+        CARGO_PKG_README="README.md" \
+        CARGO_PKG_REPOSITORY="https://github.com/BurntSushi/rust-memchr" \
+        CARGO_PKG_RUST_VERSION= \
+        CARGO_PKG_VERSION="2.3.3" \
+        CARGO_PKG_VERSION_MAJOR="2" \
+        CARGO_PKG_VERSION_MINOR="3" \
+        CARGO_PKG_VERSION_PATCH="3" \
+        CARGO_PKG_VERSION_PRE= \
+        CARGOGREEN=1 \
+      rustc '--crate-name' 'build_script_build' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'bin' '--emit' 'dep-info,link' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--cfg' 'feature="use_std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "libc", "std", "use_std"))' '-C' 'metadata=7dde5b126d7aeb62' '-C' 'extra-filename=-61489e0fb1dac057' '--out-dir' '/tmp/clis-dbcc_2-2-1/release/build/memchr-61489e0fb1dac057' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-dbcc_2-2-1/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/memchr-2.3.3/build.rs \
+        1>          /tmp/clis-dbcc_2-2-1/release/build/memchr-61489e0fb1dac057/out-61489e0fb1dac057-stdout \
+        2>          /tmp/clis-dbcc_2-2-1/release/build/memchr-61489e0fb1dac057/out-61489e0fb1dac057-stderr \
+        || echo $? >/tmp/clis-dbcc_2-2-1/release/build/memchr-61489e0fb1dac057/out-61489e0fb1dac057-errcode\
+  ; find /tmp/clis-dbcc_2-2-1/release/build/memchr-61489e0fb1dac057/*-61489e0fb1dac057* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-61489e0fb1dac057
+COPY --link --from=dep-x-memchr-2.3.3-61489e0fb1dac057 /tmp/clis-dbcc_2-2-1/release/build/memchr-61489e0fb1dac057/*-61489e0fb1dac057* /
+
+## this = "61489e0fb1dac057"
+## writes = [
+##     "build_script_build-61489e0fb1dac057",
+##     "build_script_build-61489e0fb1dac057.d",
+## ]
+## stderr = [
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-dbcc_2-2-1/release/build/memchr-61489e0fb1dac057/build_script_build-61489e0fb1dac057.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-dbcc_2-2-1/release/build/memchr-61489e0fb1dac057/build_script_build-61489e0fb1dac057","emit":"link"}',
+## ]
+##
+## [[stages]]
+## name = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.86.0-slim@sha256:57d415bbd61ce11e2d5f73de068103c7bd9f3188dc132c97cef4a8f62989e944 AS rust-base"
+##
+## [[stages]]
+## name = "cratesio-memchr-2.3.3"
+## script = '''
+## FROM scratch AS cratesio-memchr-2.3.3
+## ADD --chmod=0664 --unpack --checksum=sha256:3728d817d99e5ac407411fa471ff9800a778d88a24685968b36824eaf4bee400 \
+##   https://static.crates.io/crates/memchr/memchr-2.3.3.crate /'''
+##
+## [[stages]]
+## name = "dep-x-memchr-2.3.3-61489e0fb1dac057"
+## script = '''
+## FROM rust-base AS dep-x-memchr-2.3.3-61489e0fb1dac057
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-dbcc_2-2-1/release/build/memchr-61489e0fb1dac057
+## RUN \
+##   --mount=from=cratesio-memchr-2.3.3,source=/memchr-2.3.3,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/memchr-2.3.3,rw \
+##     { \
+##         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/memchr-2.3.3/build.rs | sed 's/fn main/fn actual_61489e0fb1dac057_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/memchr-2.3.3/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/memchr-2.3.3/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/memchr-2.3.3/build.rs ; \
+##         { \
+##           echo ; \
+##           echo 'fn main() {' ; \
+##           echo '    use std::env::{args_os, var_os};' ; \
+##           echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+##           echo '        use std::process::{Command, Stdio};' ; \
+##           echo '        let mut cmd = Command::new("cargo-green");' ; \
+##           echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+##           echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+##           echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+##           echo '        assert!(res.success());' ; \
+##           echo '    } else {' ; \
+##           echo '        actual_61489e0fb1dac057_main()' ; \
+##           echo '    }' ; \
+##           echo '}' ; \
+##         } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/memchr-2.3.3/build.rs ; \
+##     } && \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CRATE_NAME="build_script_build" \
+##         CARGO_INCREMENTAL="0" \
+##         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/memchr-2.3.3" \
+##         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/memchr-2.3.3/Cargo.toml" \
+##         CARGO_PKG_AUTHORS="Andrew Gallant <jamslam@gmail.com>:bluss" \
+##         CARGO_PKG_DESCRIPTION="Safe interface to memchr." \
+##         CARGO_PKG_HOMEPAGE="https://github.com/BurntSushi/rust-memchr" \
+##         CARGO_PKG_LICENSE="Unlicense/MIT" \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME="memchr" \
+##         CARGO_PKG_README="README.md" \
+##         CARGO_PKG_REPOSITORY="https://github.com/BurntSushi/rust-memchr" \
+##         CARGO_PKG_RUST_VERSION= \
+##         CARGO_PKG_VERSION="2.3.3" \
+##         CARGO_PKG_VERSION_MAJOR="2" \
+##         CARGO_PKG_VERSION_MINOR="3" \
+##         CARGO_PKG_VERSION_PATCH="3" \
+##         CARGO_PKG_VERSION_PRE= \
+##         CARGOGREEN=1 \
+##       rustc '--crate-name' 'build_script_build' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'bin' '--emit' 'dep-info,link' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--cfg' 'feature="use_std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "libc", "std", "use_std"))' '-C' 'metadata=7dde5b126d7aeb62' '-C' 'extra-filename=-61489e0fb1dac057' '--out-dir' '/tmp/clis-dbcc_2-2-1/release/build/memchr-61489e0fb1dac057' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-dbcc_2-2-1/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/memchr-2.3.3/build.rs \
+##         1>          /tmp/clis-dbcc_2-2-1/release/build/memchr-61489e0fb1dac057/out-61489e0fb1dac057-stdout \
+##         2>          /tmp/clis-dbcc_2-2-1/release/build/memchr-61489e0fb1dac057/out-61489e0fb1dac057-stderr \
+##         || echo $? >/tmp/clis-dbcc_2-2-1/release/build/memchr-61489e0fb1dac057/out-61489e0fb1dac057-errcode\
+##   ; find /tmp/clis-dbcc_2-2-1/release/build/memchr-61489e0fb1dac057/*-61489e0fb1dac057* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+## name = "out-61489e0fb1dac057"
+## script = """
+## FROM scratch AS out-61489e0fb1dac057
+## COPY --link --from=dep-x-memchr-2.3.3-61489e0fb1dac057 /tmp/clis-dbcc_2-2-1/release/build/memchr-61489e0fb1dac057/*-61489e0fb1dac057* /"""
+
+FROM rust-base AS run-z-memchr-2.3.3-3e5e06c429d97718
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-dbcc_2-2-1/release/build/memchr-3e5e06c429d97718/out
+WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/memchr-2.3.3
+RUN \
+  --mount=from=out-61489e0fb1dac057,source=/build_script_build-61489e0fb1dac057,dst=/tmp/clis-dbcc_2-2-1/release/build/memchr-61489e0fb1dac057/build-script-build \
+  --mount=from=cratesio-memchr-2.3.3,source=/memchr-2.3.3,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/memchr-2.3.3 \
+    env CARGO="$(which cargo)" \
+        CARGO_CFG_FEATURE="default,std,use_std" \
+        CARGO_CFG_PANIC="unwind" \
+        CARGO_CFG_TARGET_ABI= \
+        CARGO_CFG_TARGET_ARCH="x86_64" \
+        CARGO_CFG_TARGET_ENDIAN="little" \
+        CARGO_CFG_TARGET_ENV="gnu" \
+        CARGO_CFG_TARGET_FAMILY="unix" \
+        CARGO_CFG_TARGET_FEATURE="fxsr,sse,sse2" \
+        CARGO_CFG_TARGET_HAS_ATOMIC="16,32,64,8,ptr" \
+        CARGO_CFG_TARGET_OS="linux" \
+        CARGO_CFG_TARGET_POINTER_WIDTH="64" \
+        CARGO_CFG_TARGET_VENDOR="unknown" \
+        CARGO_CFG_UNIX= \
+        CARGO_ENCODED_RUSTFLAGS= \
+        CARGO_FEATURE_DEFAULT="1" \
+        CARGO_FEATURE_STD="1" \
+        CARGO_FEATURE_USE_STD="1" \
+        CARGO_INCREMENTAL="0" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/memchr-2.3.3" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/memchr-2.3.3/Cargo.toml" \
+        CARGO_PKG_AUTHORS="Andrew Gallant <jamslam@gmail.com>:bluss" \
+        CARGO_PKG_DESCRIPTION="Safe interface to memchr." \
+        CARGO_PKG_HOMEPAGE="https://github.com/BurntSushi/rust-memchr" \
+        CARGO_PKG_LICENSE="Unlicense/MIT" \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME="memchr" \
+        CARGO_PKG_README="README.md" \
+        CARGO_PKG_REPOSITORY="https://github.com/BurntSushi/rust-memchr" \
+        CARGO_PKG_RUST_VERSION= \
+        CARGO_PKG_VERSION="2.3.3" \
+        CARGO_PKG_VERSION_MAJOR="2" \
+        CARGO_PKG_VERSION_MINOR="3" \
+        CARGO_PKG_VERSION_PATCH="3" \
+        CARGO_PKG_VERSION_PRE= \
+        DEBUG="false" \
+        HOST="x86_64-unknown-linux-gnu" \
+        NUM_JOBS="4" \
+        OPT_LEVEL="3" \
+        OUT_DIR="/tmp/clis-dbcc_2-2-1/release/build/memchr-3e5e06c429d97718/out" \
+        PROFILE="release" \
+        RUSTC=rustc \
+        RUSTDOC="/home/runner/.rustup/toolchains/1.86.0-x86_64-unknown-linux-gnu/bin/rustdoc" \
+        TARGET="x86_64-unknown-linux-gnu" \
+        CARGOGREEN=1 \
+      CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-dbcc_2-2-1/release/build/memchr-61489e0fb1dac057/build-script-build \
+        1>          /tmp/clis-dbcc_2-2-1/release/build/memchr-3e5e06c429d97718/out/ran-3e5e06c429d97718-stdout \
+        2>          /tmp/clis-dbcc_2-2-1/release/build/memchr-3e5e06c429d97718/out/ran-3e5e06c429d97718-stderr \
+        || echo $? >/tmp/clis-dbcc_2-2-1/release/build/memchr-3e5e06c429d97718/out/ran-3e5e06c429d97718-errcode\
+  ; find /tmp/clis-dbcc_2-2-1/release/build/memchr-3e5e06c429d97718/out/*-3e5e06c429d97718* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS ran-3e5e06c429d97718
+COPY --link --from=run-z-memchr-2.3.3-3e5e06c429d97718 /tmp/clis-dbcc_2-2-1/release/build/memchr-3e5e06c429d97718/out/* /
+
+## this = "3e5e06c429d97718"
+## deps = ["61489e0fb1dac057"]
+## stdout = [
+##     "cargo:rustc-cfg=memchr_runtime_simd",
+##     "cargo:rustc-cfg=memchr_runtime_sse2",
+##     "cargo:rustc-cfg=memchr_runtime_sse42",
+##     "cargo:rustc-cfg=memchr_runtime_avx",
+## ]
+##
+## [[stages]]
+## name = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.86.0-slim@sha256:57d415bbd61ce11e2d5f73de068103c7bd9f3188dc132c97cef4a8f62989e944 AS rust-base"
+##
+## [[stages]]
+## name = "run-z-memchr-2.3.3-3e5e06c429d97718"
+## script = '''
+## FROM rust-base AS run-z-memchr-2.3.3-3e5e06c429d97718
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-dbcc_2-2-1/release/build/memchr-3e5e06c429d97718/out
+## WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/memchr-2.3.3
+## RUN \
+##   --mount=from=out-61489e0fb1dac057,source=/build_script_build-61489e0fb1dac057,dst=/tmp/clis-dbcc_2-2-1/release/build/memchr-61489e0fb1dac057/build-script-build \
+##   --mount=from=cratesio-memchr-2.3.3,source=/memchr-2.3.3,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/memchr-2.3.3 \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CFG_FEATURE="default,std,use_std" \
+##         CARGO_CFG_PANIC="unwind" \
+##         CARGO_CFG_TARGET_ABI= \
+##         CARGO_CFG_TARGET_ARCH="x86_64" \
+##         CARGO_CFG_TARGET_ENDIAN="little" \
+##         CARGO_CFG_TARGET_ENV="gnu" \
+##         CARGO_CFG_TARGET_FAMILY="unix" \
+##         CARGO_CFG_TARGET_FEATURE="fxsr,sse,sse2" \
+##         CARGO_CFG_TARGET_HAS_ATOMIC="16,32,64,8,ptr" \
+##         CARGO_CFG_TARGET_OS="linux" \
+##         CARGO_CFG_TARGET_POINTER_WIDTH="64" \
+##         CARGO_CFG_TARGET_VENDOR="unknown" \
+##         CARGO_CFG_UNIX= \
+##         CARGO_ENCODED_RUSTFLAGS= \
+##         CARGO_FEATURE_DEFAULT="1" \
+##         CARGO_FEATURE_STD="1" \
+##         CARGO_FEATURE_USE_STD="1" \
+##         CARGO_INCREMENTAL="0" \
+##         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/memchr-2.3.3" \
+##         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/memchr-2.3.3/Cargo.toml" \
+##         CARGO_PKG_AUTHORS="Andrew Gallant <jamslam@gmail.com>:bluss" \
+##         CARGO_PKG_DESCRIPTION="Safe interface to memchr." \
+##         CARGO_PKG_HOMEPAGE="https://github.com/BurntSushi/rust-memchr" \
+##         CARGO_PKG_LICENSE="Unlicense/MIT" \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME="memchr" \
+##         CARGO_PKG_README="README.md" \
+##         CARGO_PKG_REPOSITORY="https://github.com/BurntSushi/rust-memchr" \
+##         CARGO_PKG_RUST_VERSION= \
+##         CARGO_PKG_VERSION="2.3.3" \
+##         CARGO_PKG_VERSION_MAJOR="2" \
+##         CARGO_PKG_VERSION_MINOR="3" \
+##         CARGO_PKG_VERSION_PATCH="3" \
+##         CARGO_PKG_VERSION_PRE= \
+##         DEBUG="false" \
+##         HOST="x86_64-unknown-linux-gnu" \
+##         NUM_JOBS="4" \
+##         OPT_LEVEL="3" \
+##         OUT_DIR="/tmp/clis-dbcc_2-2-1/release/build/memchr-3e5e06c429d97718/out" \
+##         PROFILE="release" \
+##         RUSTC=rustc \
+##         RUSTDOC="/home/runner/.rustup/toolchains/1.86.0-x86_64-unknown-linux-gnu/bin/rustdoc" \
+##         TARGET="x86_64-unknown-linux-gnu" \
+##         CARGOGREEN=1 \
+##       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-dbcc_2-2-1/release/build/memchr-61489e0fb1dac057/build-script-build \
+##         1>          /tmp/clis-dbcc_2-2-1/release/build/memchr-3e5e06c429d97718/out/ran-3e5e06c429d97718-stdout \
+##         2>          /tmp/clis-dbcc_2-2-1/release/build/memchr-3e5e06c429d97718/out/ran-3e5e06c429d97718-stderr \
+##         || echo $? >/tmp/clis-dbcc_2-2-1/release/build/memchr-3e5e06c429d97718/out/ran-3e5e06c429d97718-errcode\
+##   ; find /tmp/clis-dbcc_2-2-1/release/build/memchr-3e5e06c429d97718/out/*-3e5e06c429d97718* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+## name = "ran-3e5e06c429d97718"
+## script = """
+## FROM scratch AS ran-3e5e06c429d97718
+## COPY --link --from=run-z-memchr-2.3.3-3e5e06c429d97718 /tmp/clis-dbcc_2-2-1/release/build/memchr-3e5e06c429d97718/out/* /"""
+
+
 FROM rust-base AS dep-n-memchr-2.3.3-c93fd10415a641fd
 SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
   --mount=from=cratesio-memchr-2.3.3,source=/memchr-2.3.3,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/memchr-2.3.3 \
+  --mount=from=ran-3e5e06c429d97718,dst=/tmp/clis-dbcc_2-2-1/release/build/memchr-3e5e06c429d97718/out,source=/ \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="memchr" \
         CARGO_INCREMENTAL="0" \
@@ -1887,6 +3035,11 @@ FROM scratch AS out-c93fd10415a641fd
 COPY --link --from=dep-n-memchr-2.3.3-c93fd10415a641fd /tmp/clis-dbcc_2-2-1/release/deps/*-c93fd10415a641fd* /
 
 ## this = "c93fd10415a641fd"
+## deps = [
+##     "3e5e06c429d97718",
+##     "61489e0fb1dac057",
+## ]
+## buildrs_results = ["3e5e06c429d97718"]
 ## writes = [
 ##     "libmemchr-c93fd10415a641fd.rlib",
 ##     "libmemchr-c93fd10415a641fd.rmeta",
@@ -1931,6 +3084,11 @@ COPY --link --from=dep-n-memchr-2.3.3-c93fd10415a641fd /tmp/clis-dbcc_2-2-1/rele
 ##     '{"$message_type":"diagnostic","message":"32 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 32 warnings emitted\u001b[0m\n\n"}',
 ## ]
 ##
+## [[mounts]]
+## name = "ran-3e5e06c429d97718"
+## src = "/"
+## dst = "/tmp/clis-dbcc_2-2-1/release/build/memchr-3e5e06c429d97718/out"
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.86.0-slim@sha256:57d415bbd61ce11e2d5f73de068103c7bd9f3188dc132c97cef4a8f62989e944 AS rust-base"
@@ -1950,6 +3108,7 @@ COPY --link --from=dep-n-memchr-2.3.3-c93fd10415a641fd /tmp/clis-dbcc_2-2-1/rele
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
 ##   --mount=from=cratesio-memchr-2.3.3,source=/memchr-2.3.3,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/memchr-2.3.3 \
+##   --mount=from=ran-3e5e06c429d97718,dst=/tmp/clis-dbcc_2-2-1/release/build/memchr-3e5e06c429d97718/out,source=/ \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="memchr" \
 ##         CARGO_INCREMENTAL="0" \
@@ -1983,9 +3142,392 @@ COPY --link --from=dep-n-memchr-2.3.3-c93fd10415a641fd /tmp/clis-dbcc_2-2-1/rele
 ## FROM scratch AS out-c93fd10415a641fd
 ## COPY --link --from=dep-n-memchr-2.3.3-c93fd10415a641fd /tmp/clis-dbcc_2-2-1/release/deps/*-c93fd10415a641fd* /"""
 
+FROM scratch AS cratesio-version_check-0.1.5
+ADD --chmod=0664 --unpack --checksum=sha256:914b1a6776c4c929a602fafd8bc742e06365d4bcbe48c30f9cca5824f70dc9dd \
+  https://static.crates.io/crates/version_check/version_check-0.1.5.crate /
+FROM rust-base AS dep-n-version_check-0.1.5-ed6bfe682093b191
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
+RUN \
+  --mount=from=cratesio-version_check-0.1.5,source=/version_check-0.1.5,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/version_check-0.1.5 \
+    env CARGO="$(which cargo)" \
+        CARGO_CRATE_NAME="version_check" \
+        CARGO_INCREMENTAL="0" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/version_check-0.1.5" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/version_check-0.1.5/Cargo.toml" \
+        CARGO_PKG_AUTHORS="Sergio Benitez <sb@sergio.bz>" \
+        CARGO_PKG_DESCRIPTION="Tiny crate to check the version of the installed/running rustc." \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE="MIT/Apache-2.0" \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME="version_check" \
+        CARGO_PKG_README="README.md" \
+        CARGO_PKG_REPOSITORY="https://github.com/SergioBenitez/version_check" \
+        CARGO_PKG_RUST_VERSION= \
+        CARGO_PKG_VERSION="0.1.5" \
+        CARGO_PKG_VERSION_MAJOR="0" \
+        CARGO_PKG_VERSION_MINOR="1" \
+        CARGO_PKG_VERSION_PATCH="5" \
+        CARGO_PKG_VERSION_PRE= \
+        CARGOGREEN=1 \
+      rustc '--crate-name' 'version_check' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=e229ef0753ac5e72' '-C' 'extra-filename=-ed6bfe682093b191' '--out-dir' '/tmp/clis-dbcc_2-2-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-dbcc_2-2-1/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/version_check-0.1.5/src/lib.rs \
+        1>          /tmp/clis-dbcc_2-2-1/release/deps/out-ed6bfe682093b191-stdout \
+        2>          /tmp/clis-dbcc_2-2-1/release/deps/out-ed6bfe682093b191-stderr \
+        || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-ed6bfe682093b191-errcode\
+  ; find /tmp/clis-dbcc_2-2-1/release/deps/*-ed6bfe682093b191* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-ed6bfe682093b191
+COPY --link --from=dep-n-version_check-0.1.5-ed6bfe682093b191 /tmp/clis-dbcc_2-2-1/release/deps/*-ed6bfe682093b191* /
+
+## this = "ed6bfe682093b191"
+## writes = [
+##     "libversion_check-ed6bfe682093b191.rlib",
+##     "libversion_check-ed6bfe682093b191.rmeta",
+##     "version_check-ed6bfe682093b191.d",
+## ]
+## stderr = [
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-dbcc_2-2-1/release/deps/version_check-ed6bfe682093b191.d","emit":"dep-info"}',
+##     '{"$message_type":"diagnostic","message":"use of deprecated method `core::str::<impl str>::trim_right`: superseded by `trim_end`","code":{"code":"deprecated","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/version_check-0.1.5/src/lib.rs","byte_start":2973,"byte_end":2983,"line_start":92,"line_end":92,"column_start":44,"column_end":54,"is_primary":true,"text":[{"text":"    let date = components.nth(1).map(|s| s.trim_right().trim_right_matches(\")\"));","highlight_start":44,"highlight_end":54}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"`#[warn(deprecated)]` on by default","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"replace the use of the deprecated method","code":null,"level":"help","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/version_check-0.1.5/src/lib.rs","byte_start":2973,"byte_end":2983,"line_start":92,"line_end":92,"column_start":44,"column_end":54,"is_primary":true,"text":[{"text":"    let date = components.nth(1).map(|s| s.trim_right().trim_right_matches(\")\"));","highlight_start":44,"highlight_end":54}],"label":null,"suggested_replacement":"trim_end","suggestion_applicability":"MachineApplicable","expansion":null}],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: use of deprecated method `core::str::<impl str>::trim_right`: superseded by `trim_end`\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/version_check-0.1.5/src/lib.rs:92:44\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m92\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    let date = components.nth(1).map(|s| s.trim_right().trim_right_matches(\")\"));\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                            \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: `#[warn(deprecated)]` on by default\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;14mhelp\u001b[0m\u001b[0m: replace the use of the deprecated method\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m92\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[38;5;9m- \u001b[0m\u001b[0m    let date = components.nth(1).map(|s| s.\u001b[0m\u001b[0m\u001b[38;5;9mtrim_right\u001b[0m\u001b[0m().trim_right_matches(\")\"));\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m92\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[38;5;10m+ \u001b[0m\u001b[0m    let date = components.nth(1).map(|s| s.\u001b[0m\u001b[0m\u001b[38;5;10mtrim_end\u001b[0m\u001b[0m().trim_right_matches(\")\"));\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\n"}',
+##     '{"$message_type":"diagnostic","message":"use of deprecated method `core::str::<impl str>::trim_right_matches`: superseded by `trim_end_matches`","code":{"code":"deprecated","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/version_check-0.1.5/src/lib.rs","byte_start":2986,"byte_end":3004,"line_start":92,"line_end":92,"column_start":57,"column_end":75,"is_primary":true,"text":[{"text":"    let date = components.nth(1).map(|s| s.trim_right().trim_right_matches(\")\"));","highlight_start":57,"highlight_end":75}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"replace the use of the deprecated method","code":null,"level":"help","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/version_check-0.1.5/src/lib.rs","byte_start":2986,"byte_end":3004,"line_start":92,"line_end":92,"column_start":57,"column_end":75,"is_primary":true,"text":[{"text":"    let date = components.nth(1).map(|s| s.trim_right().trim_right_matches(\")\"));","highlight_start":57,"highlight_end":75}],"label":null,"suggested_replacement":"trim_end_matches","suggestion_applicability":"MachineApplicable","expansion":null}],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: use of deprecated method `core::str::<impl str>::trim_right_matches`: superseded by `trim_end_matches`\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/version_check-0.1.5/src/lib.rs:92:57\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m92\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    let date = components.nth(1).map(|s| s.trim_right().trim_right_matches(\")\"));\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                                         \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;14mhelp\u001b[0m\u001b[0m: replace the use of the deprecated method\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m92\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[38;5;9m- \u001b[0m\u001b[0m    let date = components.nth(1).map(|s| s.trim_right().\u001b[0m\u001b[0m\u001b[38;5;9mtrim_right_matches\u001b[0m\u001b[0m(\")\"));\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m92\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[38;5;10m+ \u001b[0m\u001b[0m    let date = components.nth(1).map(|s| s.trim_right().\u001b[0m\u001b[0m\u001b[38;5;10mtrim_end_matches\u001b[0m\u001b[0m(\")\"));\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\n"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-dbcc_2-2-1/release/deps/libversion_check-ed6bfe682093b191.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-dbcc_2-2-1/release/deps/libversion_check-ed6bfe682093b191.rlib","emit":"link"}',
+##     '{"$message_type":"diagnostic","message":"2 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 2 warnings emitted\u001b[0m\n\n"}',
+## ]
+##
+## [[stages]]
+## name = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.86.0-slim@sha256:57d415bbd61ce11e2d5f73de068103c7bd9f3188dc132c97cef4a8f62989e944 AS rust-base"
+##
+## [[stages]]
+## name = "cratesio-version_check-0.1.5"
+## script = '''
+## FROM scratch AS cratesio-version_check-0.1.5
+## ADD --chmod=0664 --unpack --checksum=sha256:914b1a6776c4c929a602fafd8bc742e06365d4bcbe48c30f9cca5824f70dc9dd \
+##   https://static.crates.io/crates/version_check/version_check-0.1.5.crate /'''
+##
+## [[stages]]
+## name = "dep-n-version_check-0.1.5-ed6bfe682093b191"
+## script = '''
+## FROM rust-base AS dep-n-version_check-0.1.5-ed6bfe682093b191
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
+## RUN \
+##   --mount=from=cratesio-version_check-0.1.5,source=/version_check-0.1.5,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/version_check-0.1.5 \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CRATE_NAME="version_check" \
+##         CARGO_INCREMENTAL="0" \
+##         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/version_check-0.1.5" \
+##         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/version_check-0.1.5/Cargo.toml" \
+##         CARGO_PKG_AUTHORS="Sergio Benitez <sb@sergio.bz>" \
+##         CARGO_PKG_DESCRIPTION="Tiny crate to check the version of the installed/running rustc." \
+##         CARGO_PKG_HOMEPAGE= \
+##         CARGO_PKG_LICENSE="MIT/Apache-2.0" \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME="version_check" \
+##         CARGO_PKG_README="README.md" \
+##         CARGO_PKG_REPOSITORY="https://github.com/SergioBenitez/version_check" \
+##         CARGO_PKG_RUST_VERSION= \
+##         CARGO_PKG_VERSION="0.1.5" \
+##         CARGO_PKG_VERSION_MAJOR="0" \
+##         CARGO_PKG_VERSION_MINOR="1" \
+##         CARGO_PKG_VERSION_PATCH="5" \
+##         CARGO_PKG_VERSION_PRE= \
+##         CARGOGREEN=1 \
+##       rustc '--crate-name' 'version_check' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=e229ef0753ac5e72' '-C' 'extra-filename=-ed6bfe682093b191' '--out-dir' '/tmp/clis-dbcc_2-2-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-dbcc_2-2-1/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/version_check-0.1.5/src/lib.rs \
+##         1>          /tmp/clis-dbcc_2-2-1/release/deps/out-ed6bfe682093b191-stdout \
+##         2>          /tmp/clis-dbcc_2-2-1/release/deps/out-ed6bfe682093b191-stderr \
+##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-ed6bfe682093b191-errcode\
+##   ; find /tmp/clis-dbcc_2-2-1/release/deps/*-ed6bfe682093b191* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+## name = "out-ed6bfe682093b191"
+## script = """
+## FROM scratch AS out-ed6bfe682093b191
+## COPY --link --from=dep-n-version_check-0.1.5-ed6bfe682093b191 /tmp/clis-dbcc_2-2-1/release/deps/*-ed6bfe682093b191* /"""
+
 FROM scratch AS cratesio-nom-4.2.3
 ADD --chmod=0664 --unpack --checksum=sha256:2ad2a91a8e869eeb30b9cb3119ae87773a8f4ae617f41b1eb9c154b2905f7bd6 \
   https://static.crates.io/crates/nom/nom-4.2.3.crate /
+FROM rust-base AS dep-x-nom-4.2.3-06618df55a12bfba
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-dbcc_2-2-1/release/build/nom-06618df55a12bfba
+RUN \
+  --mount=from=cratesio-nom-4.2.3,source=/nom-4.2.3,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3,rw \
+  --mount=from=out-ed6bfe682093b191,dst=/tmp/clis-dbcc_2-2-1/release/deps/libversion_check-ed6bfe682093b191.rlib,source=/libversion_check-ed6bfe682093b191.rlib \
+    { \
+        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/build.rs | sed 's/fn main/fn actual_06618df55a12bfba_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/build.rs ; \
+        { \
+          echo ; \
+          echo 'fn main() {' ; \
+          echo '    use std::env::{args_os, var_os};' ; \
+          echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+          echo '        use std::process::{Command, Stdio};' ; \
+          echo '        let mut cmd = Command::new("cargo-green");' ; \
+          echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+          echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+          echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+          echo '        assert!(res.success());' ; \
+          echo '    } else {' ; \
+          echo '        actual_06618df55a12bfba_main()' ; \
+          echo '    }' ; \
+          echo '}' ; \
+        } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/build.rs ; \
+    } && \
+    env CARGO="$(which cargo)" \
+        CARGO_CRATE_NAME="build_script_build" \
+        CARGO_INCREMENTAL="0" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/Cargo.toml" \
+        CARGO_PKG_AUTHORS="contact@geoffroycouprie.com" \
+        CARGO_PKG_DESCRIPTION="A byte-oriented, zero-copy, parser combinators library" \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE="MIT" \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME="nom" \
+        CARGO_PKG_README="README.md" \
+        CARGO_PKG_REPOSITORY="https://github.com/Geal/nom" \
+        CARGO_PKG_RUST_VERSION= \
+        CARGO_PKG_VERSION="4.2.3" \
+        CARGO_PKG_VERSION_MAJOR="4" \
+        CARGO_PKG_VERSION_MINOR="2" \
+        CARGO_PKG_VERSION_PATCH="3" \
+        CARGO_PKG_VERSION_PRE= \
+        CARGOGREEN=1 \
+      rustc '--crate-name' 'build_script_build' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'bin' '--emit' 'dep-info,link' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--cfg' 'feature="alloc"' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--cfg' 'feature="verbose-errors"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "default", "lazy_static", "regex", "regexp", "regexp_macros", "std", "verbose-errors"))' '-C' 'metadata=bc59df464ab884e8' '-C' 'extra-filename=-06618df55a12bfba' '--out-dir' '/tmp/clis-dbcc_2-2-1/release/build/nom-06618df55a12bfba' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-dbcc_2-2-1/release/deps' '--extern' 'version_check=/tmp/clis-dbcc_2-2-1/release/deps/libversion_check-ed6bfe682093b191.rlib' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/build.rs \
+        1>          /tmp/clis-dbcc_2-2-1/release/build/nom-06618df55a12bfba/out-06618df55a12bfba-stdout \
+        2>          /tmp/clis-dbcc_2-2-1/release/build/nom-06618df55a12bfba/out-06618df55a12bfba-stderr \
+        || echo $? >/tmp/clis-dbcc_2-2-1/release/build/nom-06618df55a12bfba/out-06618df55a12bfba-errcode\
+  ; find /tmp/clis-dbcc_2-2-1/release/build/nom-06618df55a12bfba/*-06618df55a12bfba* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-06618df55a12bfba
+COPY --link --from=dep-x-nom-4.2.3-06618df55a12bfba /tmp/clis-dbcc_2-2-1/release/build/nom-06618df55a12bfba/*-06618df55a12bfba* /
+
+## this = "06618df55a12bfba"
+## deps = ["ed6bfe682093b191"]
+## short_externs = ["ed6bfe682093b191"]
+## writes = [
+##     "build_script_build-06618df55a12bfba",
+##     "build_script_build-06618df55a12bfba.d",
+## ]
+## stderr = [
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-dbcc_2-2-1/release/build/nom-06618df55a12bfba/build_script_build-06618df55a12bfba.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-dbcc_2-2-1/release/build/nom-06618df55a12bfba/build_script_build-06618df55a12bfba","emit":"link"}',
+## ]
+##
+## [[externs]]
+## from = "out-ed6bfe682093b191"
+## xtern = "libversion_check-ed6bfe682093b191.rlib"
+##
+## [[stages]]
+## name = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.86.0-slim@sha256:57d415bbd61ce11e2d5f73de068103c7bd9f3188dc132c97cef4a8f62989e944 AS rust-base"
+##
+## [[stages]]
+## name = "cratesio-nom-4.2.3"
+## script = '''
+## FROM scratch AS cratesio-nom-4.2.3
+## ADD --chmod=0664 --unpack --checksum=sha256:2ad2a91a8e869eeb30b9cb3119ae87773a8f4ae617f41b1eb9c154b2905f7bd6 \
+##   https://static.crates.io/crates/nom/nom-4.2.3.crate /'''
+##
+## [[stages]]
+## name = "dep-x-nom-4.2.3-06618df55a12bfba"
+## script = '''
+## FROM rust-base AS dep-x-nom-4.2.3-06618df55a12bfba
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-dbcc_2-2-1/release/build/nom-06618df55a12bfba
+## RUN \
+##   --mount=from=cratesio-nom-4.2.3,source=/nom-4.2.3,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3,rw \
+##   --mount=from=out-ed6bfe682093b191,dst=/tmp/clis-dbcc_2-2-1/release/deps/libversion_check-ed6bfe682093b191.rlib,source=/libversion_check-ed6bfe682093b191.rlib \
+##     { \
+##         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/build.rs | sed 's/fn main/fn actual_06618df55a12bfba_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/build.rs ; \
+##         { \
+##           echo ; \
+##           echo 'fn main() {' ; \
+##           echo '    use std::env::{args_os, var_os};' ; \
+##           echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+##           echo '        use std::process::{Command, Stdio};' ; \
+##           echo '        let mut cmd = Command::new("cargo-green");' ; \
+##           echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+##           echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+##           echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+##           echo '        assert!(res.success());' ; \
+##           echo '    } else {' ; \
+##           echo '        actual_06618df55a12bfba_main()' ; \
+##           echo '    }' ; \
+##           echo '}' ; \
+##         } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/build.rs ; \
+##     } && \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CRATE_NAME="build_script_build" \
+##         CARGO_INCREMENTAL="0" \
+##         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3" \
+##         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/Cargo.toml" \
+##         CARGO_PKG_AUTHORS="contact@geoffroycouprie.com" \
+##         CARGO_PKG_DESCRIPTION="A byte-oriented, zero-copy, parser combinators library" \
+##         CARGO_PKG_HOMEPAGE= \
+##         CARGO_PKG_LICENSE="MIT" \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME="nom" \
+##         CARGO_PKG_README="README.md" \
+##         CARGO_PKG_REPOSITORY="https://github.com/Geal/nom" \
+##         CARGO_PKG_RUST_VERSION= \
+##         CARGO_PKG_VERSION="4.2.3" \
+##         CARGO_PKG_VERSION_MAJOR="4" \
+##         CARGO_PKG_VERSION_MINOR="2" \
+##         CARGO_PKG_VERSION_PATCH="3" \
+##         CARGO_PKG_VERSION_PRE= \
+##         CARGOGREEN=1 \
+##       rustc '--crate-name' 'build_script_build' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'bin' '--emit' 'dep-info,link' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--cfg' 'feature="alloc"' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--cfg' 'feature="verbose-errors"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "default", "lazy_static", "regex", "regexp", "regexp_macros", "std", "verbose-errors"))' '-C' 'metadata=bc59df464ab884e8' '-C' 'extra-filename=-06618df55a12bfba' '--out-dir' '/tmp/clis-dbcc_2-2-1/release/build/nom-06618df55a12bfba' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-dbcc_2-2-1/release/deps' '--extern' 'version_check=/tmp/clis-dbcc_2-2-1/release/deps/libversion_check-ed6bfe682093b191.rlib' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/build.rs \
+##         1>          /tmp/clis-dbcc_2-2-1/release/build/nom-06618df55a12bfba/out-06618df55a12bfba-stdout \
+##         2>          /tmp/clis-dbcc_2-2-1/release/build/nom-06618df55a12bfba/out-06618df55a12bfba-stderr \
+##         || echo $? >/tmp/clis-dbcc_2-2-1/release/build/nom-06618df55a12bfba/out-06618df55a12bfba-errcode\
+##   ; find /tmp/clis-dbcc_2-2-1/release/build/nom-06618df55a12bfba/*-06618df55a12bfba* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+## name = "out-06618df55a12bfba"
+## script = """
+## FROM scratch AS out-06618df55a12bfba
+## COPY --link --from=dep-x-nom-4.2.3-06618df55a12bfba /tmp/clis-dbcc_2-2-1/release/build/nom-06618df55a12bfba/*-06618df55a12bfba* /"""
+
+FROM rust-base AS run-z-nom-4.2.3-5d24f54f80b61353
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-dbcc_2-2-1/release/build/nom-5d24f54f80b61353/out
+WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3
+RUN \
+  --mount=from=out-06618df55a12bfba,source=/build_script_build-06618df55a12bfba,dst=/tmp/clis-dbcc_2-2-1/release/build/nom-06618df55a12bfba/build-script-build \
+  --mount=from=cratesio-nom-4.2.3,source=/nom-4.2.3,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3 \
+    env CARGO="$(which cargo)" \
+        CARGO_CFG_FEATURE="alloc,default,std,verbose-errors" \
+        CARGO_CFG_PANIC="unwind" \
+        CARGO_CFG_TARGET_ABI= \
+        CARGO_CFG_TARGET_ARCH="x86_64" \
+        CARGO_CFG_TARGET_ENDIAN="little" \
+        CARGO_CFG_TARGET_ENV="gnu" \
+        CARGO_CFG_TARGET_FAMILY="unix" \
+        CARGO_CFG_TARGET_FEATURE="fxsr,sse,sse2" \
+        CARGO_CFG_TARGET_HAS_ATOMIC="16,32,64,8,ptr" \
+        CARGO_CFG_TARGET_OS="linux" \
+        CARGO_CFG_TARGET_POINTER_WIDTH="64" \
+        CARGO_CFG_TARGET_VENDOR="unknown" \
+        CARGO_CFG_UNIX= \
+        CARGO_ENCODED_RUSTFLAGS= \
+        CARGO_FEATURE_ALLOC="1" \
+        CARGO_FEATURE_DEFAULT="1" \
+        CARGO_FEATURE_STD="1" \
+        CARGO_FEATURE_VERBOSE_ERRORS="1" \
+        CARGO_INCREMENTAL="0" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/Cargo.toml" \
+        CARGO_PKG_AUTHORS="contact@geoffroycouprie.com" \
+        CARGO_PKG_DESCRIPTION="A byte-oriented, zero-copy, parser combinators library" \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE="MIT" \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME="nom" \
+        CARGO_PKG_README="README.md" \
+        CARGO_PKG_REPOSITORY="https://github.com/Geal/nom" \
+        CARGO_PKG_RUST_VERSION= \
+        CARGO_PKG_VERSION="4.2.3" \
+        CARGO_PKG_VERSION_MAJOR="4" \
+        CARGO_PKG_VERSION_MINOR="2" \
+        CARGO_PKG_VERSION_PATCH="3" \
+        CARGO_PKG_VERSION_PRE= \
+        DEBUG="false" \
+        HOST="x86_64-unknown-linux-gnu" \
+        NUM_JOBS="4" \
+        OPT_LEVEL="3" \
+        OUT_DIR="/tmp/clis-dbcc_2-2-1/release/build/nom-5d24f54f80b61353/out" \
+        PROFILE="release" \
+        RUSTC=rustc \
+        RUSTDOC="/home/runner/.rustup/toolchains/1.86.0-x86_64-unknown-linux-gnu/bin/rustdoc" \
+        TARGET="x86_64-unknown-linux-gnu" \
+        CARGOGREEN=1 \
+      CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-dbcc_2-2-1/release/build/nom-06618df55a12bfba/build-script-build \
+        1>          /tmp/clis-dbcc_2-2-1/release/build/nom-5d24f54f80b61353/out/ran-5d24f54f80b61353-stdout \
+        2>          /tmp/clis-dbcc_2-2-1/release/build/nom-5d24f54f80b61353/out/ran-5d24f54f80b61353-stderr \
+        || echo $? >/tmp/clis-dbcc_2-2-1/release/build/nom-5d24f54f80b61353/out/ran-5d24f54f80b61353-errcode\
+  ; find /tmp/clis-dbcc_2-2-1/release/build/nom-5d24f54f80b61353/out/*-5d24f54f80b61353* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS ran-5d24f54f80b61353
+COPY --link --from=run-z-nom-4.2.3-5d24f54f80b61353 /tmp/clis-dbcc_2-2-1/release/build/nom-5d24f54f80b61353/out/* /
+
+## this = "5d24f54f80b61353"
+## deps = [
+##     "ed6bfe682093b191",
+##     "06618df55a12bfba",
+## ]
+## stdout = ["cargo:rustc-cfg=stable_i128"]
+##
+## [[stages]]
+## name = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.86.0-slim@sha256:57d415bbd61ce11e2d5f73de068103c7bd9f3188dc132c97cef4a8f62989e944 AS rust-base"
+##
+## [[stages]]
+## name = "run-z-nom-4.2.3-5d24f54f80b61353"
+## script = '''
+## FROM rust-base AS run-z-nom-4.2.3-5d24f54f80b61353
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-dbcc_2-2-1/release/build/nom-5d24f54f80b61353/out
+## WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3
+## RUN \
+##   --mount=from=out-06618df55a12bfba,source=/build_script_build-06618df55a12bfba,dst=/tmp/clis-dbcc_2-2-1/release/build/nom-06618df55a12bfba/build-script-build \
+##   --mount=from=cratesio-nom-4.2.3,source=/nom-4.2.3,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3 \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CFG_FEATURE="alloc,default,std,verbose-errors" \
+##         CARGO_CFG_PANIC="unwind" \
+##         CARGO_CFG_TARGET_ABI= \
+##         CARGO_CFG_TARGET_ARCH="x86_64" \
+##         CARGO_CFG_TARGET_ENDIAN="little" \
+##         CARGO_CFG_TARGET_ENV="gnu" \
+##         CARGO_CFG_TARGET_FAMILY="unix" \
+##         CARGO_CFG_TARGET_FEATURE="fxsr,sse,sse2" \
+##         CARGO_CFG_TARGET_HAS_ATOMIC="16,32,64,8,ptr" \
+##         CARGO_CFG_TARGET_OS="linux" \
+##         CARGO_CFG_TARGET_POINTER_WIDTH="64" \
+##         CARGO_CFG_TARGET_VENDOR="unknown" \
+##         CARGO_CFG_UNIX= \
+##         CARGO_ENCODED_RUSTFLAGS= \
+##         CARGO_FEATURE_ALLOC="1" \
+##         CARGO_FEATURE_DEFAULT="1" \
+##         CARGO_FEATURE_STD="1" \
+##         CARGO_FEATURE_VERBOSE_ERRORS="1" \
+##         CARGO_INCREMENTAL="0" \
+##         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3" \
+##         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3/Cargo.toml" \
+##         CARGO_PKG_AUTHORS="contact@geoffroycouprie.com" \
+##         CARGO_PKG_DESCRIPTION="A byte-oriented, zero-copy, parser combinators library" \
+##         CARGO_PKG_HOMEPAGE= \
+##         CARGO_PKG_LICENSE="MIT" \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME="nom" \
+##         CARGO_PKG_README="README.md" \
+##         CARGO_PKG_REPOSITORY="https://github.com/Geal/nom" \
+##         CARGO_PKG_RUST_VERSION= \
+##         CARGO_PKG_VERSION="4.2.3" \
+##         CARGO_PKG_VERSION_MAJOR="4" \
+##         CARGO_PKG_VERSION_MINOR="2" \
+##         CARGO_PKG_VERSION_PATCH="3" \
+##         CARGO_PKG_VERSION_PRE= \
+##         DEBUG="false" \
+##         HOST="x86_64-unknown-linux-gnu" \
+##         NUM_JOBS="4" \
+##         OPT_LEVEL="3" \
+##         OUT_DIR="/tmp/clis-dbcc_2-2-1/release/build/nom-5d24f54f80b61353/out" \
+##         PROFILE="release" \
+##         RUSTC=rustc \
+##         RUSTDOC="/home/runner/.rustup/toolchains/1.86.0-x86_64-unknown-linux-gnu/bin/rustdoc" \
+##         TARGET="x86_64-unknown-linux-gnu" \
+##         CARGOGREEN=1 \
+##       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-dbcc_2-2-1/release/build/nom-06618df55a12bfba/build-script-build \
+##         1>          /tmp/clis-dbcc_2-2-1/release/build/nom-5d24f54f80b61353/out/ran-5d24f54f80b61353-stdout \
+##         2>          /tmp/clis-dbcc_2-2-1/release/build/nom-5d24f54f80b61353/out/ran-5d24f54f80b61353-stderr \
+##         || echo $? >/tmp/clis-dbcc_2-2-1/release/build/nom-5d24f54f80b61353/out/ran-5d24f54f80b61353-errcode\
+##   ; find /tmp/clis-dbcc_2-2-1/release/build/nom-5d24f54f80b61353/out/*-5d24f54f80b61353* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+## name = "ran-5d24f54f80b61353"
+## script = """
+## FROM scratch AS ran-5d24f54f80b61353
+## COPY --link --from=run-z-nom-4.2.3-5d24f54f80b61353 /tmp/clis-dbcc_2-2-1/release/build/nom-5d24f54f80b61353/out/* /"""
+
+
 FROM rust-base AS dep-n-nom-4.2.3-cd5fc4bcd4e040ed
 SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
@@ -1993,6 +3535,7 @@ RUN \
   --mount=from=cratesio-nom-4.2.3,source=/nom-4.2.3,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3 \
   --mount=from=out-c93fd10415a641fd,dst=/tmp/clis-dbcc_2-2-1/release/deps/libmemchr-c93fd10415a641fd.rlib,source=/libmemchr-c93fd10415a641fd.rlib \
   --mount=from=out-c93fd10415a641fd,dst=/tmp/clis-dbcc_2-2-1/release/deps/libmemchr-c93fd10415a641fd.rmeta,source=/libmemchr-c93fd10415a641fd.rmeta \
+  --mount=from=ran-5d24f54f80b61353,dst=/tmp/clis-dbcc_2-2-1/release/build/nom-5d24f54f80b61353/out,source=/ \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="nom" \
         CARGO_INCREMENTAL="0" \
@@ -2023,8 +3566,19 @@ FROM scratch AS out-cd5fc4bcd4e040ed
 COPY --link --from=dep-n-nom-4.2.3-cd5fc4bcd4e040ed /tmp/clis-dbcc_2-2-1/release/deps/*-cd5fc4bcd4e040ed* /
 
 ## this = "cd5fc4bcd4e040ed"
-## deps = ["c93fd10415a641fd"]
+## deps = [
+##     "c93fd10415a641fd",
+##     "5d24f54f80b61353",
+##     "61489e0fb1dac057",
+##     "3e5e06c429d97718",
+##     "ed6bfe682093b191",
+##     "06618df55a12bfba",
+## ]
 ## short_externs = ["c93fd10415a641fd"]
+## buildrs_results = [
+##     "3e5e06c429d97718",
+##     "5d24f54f80b61353",
+## ]
 ## writes = [
 ##     "libnom-cd5fc4bcd4e040ed.rlib",
 ##     "libnom-cd5fc4bcd4e040ed.rmeta",
@@ -2112,6 +3666,11 @@ COPY --link --from=dep-n-nom-4.2.3-cd5fc4bcd4e040ed /tmp/clis-dbcc_2-2-1/release
 ## from = "out-c93fd10415a641fd"
 ## xtern = "libmemchr-c93fd10415a641fd.rmeta"
 ##
+## [[mounts]]
+## name = "ran-5d24f54f80b61353"
+## src = "/"
+## dst = "/tmp/clis-dbcc_2-2-1/release/build/nom-5d24f54f80b61353/out"
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.86.0-slim@sha256:57d415bbd61ce11e2d5f73de068103c7bd9f3188dc132c97cef4a8f62989e944 AS rust-base"
@@ -2133,6 +3692,7 @@ COPY --link --from=dep-n-nom-4.2.3-cd5fc4bcd4e040ed /tmp/clis-dbcc_2-2-1/release
 ##   --mount=from=cratesio-nom-4.2.3,source=/nom-4.2.3,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nom-4.2.3 \
 ##   --mount=from=out-c93fd10415a641fd,dst=/tmp/clis-dbcc_2-2-1/release/deps/libmemchr-c93fd10415a641fd.rlib,source=/libmemchr-c93fd10415a641fd.rlib \
 ##   --mount=from=out-c93fd10415a641fd,dst=/tmp/clis-dbcc_2-2-1/release/deps/libmemchr-c93fd10415a641fd.rmeta,source=/libmemchr-c93fd10415a641fd.rmeta \
+##   --mount=from=ran-5d24f54f80b61353,dst=/tmp/clis-dbcc_2-2-1/release/build/nom-5d24f54f80b61353/out,source=/ \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="nom" \
 ##         CARGO_INCREMENTAL="0" \
@@ -2224,6 +3784,15 @@ COPY --link --from=dep-n-can-dbc-3.0.2-593834cb44ccbead /tmp/clis-dbcc_2-2-1/rel
 ##     "bbffa8c7e6a16356",
 ##     "cd5fc4bcd4e040ed",
 ##     "c93fd10415a641fd",
+##     "68e214c30c4bb8c4",
+##     "c9d8dd2789e1c19f",
+##     "83f4ce3a9272e51d",
+##     "6fd417ad443e5221",
+##     "61489e0fb1dac057",
+##     "3e5e06c429d97718",
+##     "ed6bfe682093b191",
+##     "06618df55a12bfba",
+##     "5d24f54f80b61353",
 ## ]
 ## short_externs = [
 ##     "10105863fb18eb2a",
@@ -2233,6 +3802,12 @@ COPY --link --from=dep-n-can-dbc-3.0.2-593834cb44ccbead /tmp/clis-dbcc_2-2-1/rel
 ##     "bbffa8c7e6a16356",
 ##     "cd5fc4bcd4e040ed",
 ##     "c93fd10415a641fd",
+## ]
+## buildrs_results = [
+##     "c9d8dd2789e1c19f",
+##     "6fd417ad443e5221",
+##     "3e5e06c429d97718",
+##     "5d24f54f80b61353",
 ## ]
 ## writes = [
 ##     "can_dbc-593834cb44ccbead.d",
@@ -2679,6 +4254,273 @@ COPY --link --from=dep-n-cfg-if-0.1.10-abefcc22b095b628 /tmp/clis-dbcc_2-2-1/rel
 FROM scratch AS cratesio-log-0.4.11
 ADD --chmod=0664 --unpack --checksum=sha256:4fabed175da42fed1fa0746b0ea71f412aa9d35e76e95e59b192c64b9dc2bf8b \
   https://static.crates.io/crates/log/log-0.4.11.crate /
+FROM rust-base AS dep-x-log-0.4.11-6a05ba984ca0deea
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-dbcc_2-2-1/release/build/log-6a05ba984ca0deea
+RUN \
+  --mount=from=cratesio-log-0.4.11,source=/log-0.4.11,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/log-0.4.11,rw \
+    { \
+        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/log-0.4.11/build.rs | sed 's/fn main/fn actual_6a05ba984ca0deea_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/log-0.4.11/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/log-0.4.11/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/log-0.4.11/build.rs ; \
+        { \
+          echo ; \
+          echo 'fn main() {' ; \
+          echo '    use std::env::{args_os, var_os};' ; \
+          echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+          echo '        use std::process::{Command, Stdio};' ; \
+          echo '        let mut cmd = Command::new("cargo-green");' ; \
+          echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+          echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+          echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+          echo '        assert!(res.success());' ; \
+          echo '    } else {' ; \
+          echo '        actual_6a05ba984ca0deea_main()' ; \
+          echo '    }' ; \
+          echo '}' ; \
+        } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/log-0.4.11/build.rs ; \
+    } && \
+    env CARGO="$(which cargo)" \
+        CARGO_CRATE_NAME="build_script_build" \
+        CARGO_INCREMENTAL="0" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/log-0.4.11" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/log-0.4.11/Cargo.toml" \
+        CARGO_PKG_AUTHORS="The Rust Project Developers" \
+        CARGO_PKG_DESCRIPTION="A lightweight logging facade for Rust\n" \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE="MIT OR Apache-2.0" \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME="log" \
+        CARGO_PKG_README="README.md" \
+        CARGO_PKG_REPOSITORY="https://github.com/rust-lang/log" \
+        CARGO_PKG_RUST_VERSION= \
+        CARGO_PKG_VERSION="0.4.11" \
+        CARGO_PKG_VERSION_MAJOR="0" \
+        CARGO_PKG_VERSION_MINOR="4" \
+        CARGO_PKG_VERSION_PATCH="11" \
+        CARGO_PKG_VERSION_PRE= \
+        CARGOGREEN=1 \
+      rustc '--crate-name' 'build_script_build' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'bin' '--emit' 'dep-info,link' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("kv_unstable", "kv_unstable_sval", "max_level_debug", "max_level_error", "max_level_info", "max_level_off", "max_level_trace", "max_level_warn", "release_max_level_debug", "release_max_level_error", "release_max_level_info", "release_max_level_off", "release_max_level_trace", "release_max_level_warn", "serde", "std", "sval"))' '-C' 'metadata=3dec2e68cb106a8b' '-C' 'extra-filename=-6a05ba984ca0deea' '--out-dir' '/tmp/clis-dbcc_2-2-1/release/build/log-6a05ba984ca0deea' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-dbcc_2-2-1/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/log-0.4.11/build.rs \
+        1>          /tmp/clis-dbcc_2-2-1/release/build/log-6a05ba984ca0deea/out-6a05ba984ca0deea-stdout \
+        2>          /tmp/clis-dbcc_2-2-1/release/build/log-6a05ba984ca0deea/out-6a05ba984ca0deea-stderr \
+        || echo $? >/tmp/clis-dbcc_2-2-1/release/build/log-6a05ba984ca0deea/out-6a05ba984ca0deea-errcode\
+  ; find /tmp/clis-dbcc_2-2-1/release/build/log-6a05ba984ca0deea/*-6a05ba984ca0deea* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-6a05ba984ca0deea
+COPY --link --from=dep-x-log-0.4.11-6a05ba984ca0deea /tmp/clis-dbcc_2-2-1/release/build/log-6a05ba984ca0deea/*-6a05ba984ca0deea* /
+
+## this = "6a05ba984ca0deea"
+## writes = [
+##     "build_script_build-6a05ba984ca0deea",
+##     "build_script_build-6a05ba984ca0deea.d",
+## ]
+## stderr = [
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-dbcc_2-2-1/release/build/log-6a05ba984ca0deea/build_script_build-6a05ba984ca0deea.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-dbcc_2-2-1/release/build/log-6a05ba984ca0deea/build_script_build-6a05ba984ca0deea","emit":"link"}',
+## ]
+##
+## [[stages]]
+## name = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.86.0-slim@sha256:57d415bbd61ce11e2d5f73de068103c7bd9f3188dc132c97cef4a8f62989e944 AS rust-base"
+##
+## [[stages]]
+## name = "cratesio-log-0.4.11"
+## script = '''
+## FROM scratch AS cratesio-log-0.4.11
+## ADD --chmod=0664 --unpack --checksum=sha256:4fabed175da42fed1fa0746b0ea71f412aa9d35e76e95e59b192c64b9dc2bf8b \
+##   https://static.crates.io/crates/log/log-0.4.11.crate /'''
+##
+## [[stages]]
+## name = "dep-x-log-0.4.11-6a05ba984ca0deea"
+## script = '''
+## FROM rust-base AS dep-x-log-0.4.11-6a05ba984ca0deea
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-dbcc_2-2-1/release/build/log-6a05ba984ca0deea
+## RUN \
+##   --mount=from=cratesio-log-0.4.11,source=/log-0.4.11,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/log-0.4.11,rw \
+##     { \
+##         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/log-0.4.11/build.rs | sed 's/fn main/fn actual_6a05ba984ca0deea_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/log-0.4.11/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/log-0.4.11/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/log-0.4.11/build.rs ; \
+##         { \
+##           echo ; \
+##           echo 'fn main() {' ; \
+##           echo '    use std::env::{args_os, var_os};' ; \
+##           echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+##           echo '        use std::process::{Command, Stdio};' ; \
+##           echo '        let mut cmd = Command::new("cargo-green");' ; \
+##           echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+##           echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+##           echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+##           echo '        assert!(res.success());' ; \
+##           echo '    } else {' ; \
+##           echo '        actual_6a05ba984ca0deea_main()' ; \
+##           echo '    }' ; \
+##           echo '}' ; \
+##         } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/log-0.4.11/build.rs ; \
+##     } && \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CRATE_NAME="build_script_build" \
+##         CARGO_INCREMENTAL="0" \
+##         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/log-0.4.11" \
+##         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/log-0.4.11/Cargo.toml" \
+##         CARGO_PKG_AUTHORS="The Rust Project Developers" \
+##         CARGO_PKG_DESCRIPTION="A lightweight logging facade for Rust\n" \
+##         CARGO_PKG_HOMEPAGE= \
+##         CARGO_PKG_LICENSE="MIT OR Apache-2.0" \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME="log" \
+##         CARGO_PKG_README="README.md" \
+##         CARGO_PKG_REPOSITORY="https://github.com/rust-lang/log" \
+##         CARGO_PKG_RUST_VERSION= \
+##         CARGO_PKG_VERSION="0.4.11" \
+##         CARGO_PKG_VERSION_MAJOR="0" \
+##         CARGO_PKG_VERSION_MINOR="4" \
+##         CARGO_PKG_VERSION_PATCH="11" \
+##         CARGO_PKG_VERSION_PRE= \
+##         CARGOGREEN=1 \
+##       rustc '--crate-name' 'build_script_build' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'bin' '--emit' 'dep-info,link' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("kv_unstable", "kv_unstable_sval", "max_level_debug", "max_level_error", "max_level_info", "max_level_off", "max_level_trace", "max_level_warn", "release_max_level_debug", "release_max_level_error", "release_max_level_info", "release_max_level_off", "release_max_level_trace", "release_max_level_warn", "serde", "std", "sval"))' '-C' 'metadata=3dec2e68cb106a8b' '-C' 'extra-filename=-6a05ba984ca0deea' '--out-dir' '/tmp/clis-dbcc_2-2-1/release/build/log-6a05ba984ca0deea' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-dbcc_2-2-1/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/log-0.4.11/build.rs \
+##         1>          /tmp/clis-dbcc_2-2-1/release/build/log-6a05ba984ca0deea/out-6a05ba984ca0deea-stdout \
+##         2>          /tmp/clis-dbcc_2-2-1/release/build/log-6a05ba984ca0deea/out-6a05ba984ca0deea-stderr \
+##         || echo $? >/tmp/clis-dbcc_2-2-1/release/build/log-6a05ba984ca0deea/out-6a05ba984ca0deea-errcode\
+##   ; find /tmp/clis-dbcc_2-2-1/release/build/log-6a05ba984ca0deea/*-6a05ba984ca0deea* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+## name = "out-6a05ba984ca0deea"
+## script = """
+## FROM scratch AS out-6a05ba984ca0deea
+## COPY --link --from=dep-x-log-0.4.11-6a05ba984ca0deea /tmp/clis-dbcc_2-2-1/release/build/log-6a05ba984ca0deea/*-6a05ba984ca0deea* /"""
+
+FROM rust-base AS run-z-log-0.4.11-d1fe451af816ca5e
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-dbcc_2-2-1/release/build/log-d1fe451af816ca5e/out
+WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/log-0.4.11
+RUN \
+  --mount=from=out-6a05ba984ca0deea,source=/build_script_build-6a05ba984ca0deea,dst=/tmp/clis-dbcc_2-2-1/release/build/log-6a05ba984ca0deea/build-script-build \
+  --mount=from=cratesio-log-0.4.11,source=/log-0.4.11,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/log-0.4.11 \
+    env CARGO="$(which cargo)" \
+        CARGO_CFG_FEATURE="std" \
+        CARGO_CFG_PANIC="unwind" \
+        CARGO_CFG_TARGET_ABI= \
+        CARGO_CFG_TARGET_ARCH="x86_64" \
+        CARGO_CFG_TARGET_ENDIAN="little" \
+        CARGO_CFG_TARGET_ENV="gnu" \
+        CARGO_CFG_TARGET_FAMILY="unix" \
+        CARGO_CFG_TARGET_FEATURE="fxsr,sse,sse2" \
+        CARGO_CFG_TARGET_HAS_ATOMIC="16,32,64,8,ptr" \
+        CARGO_CFG_TARGET_OS="linux" \
+        CARGO_CFG_TARGET_POINTER_WIDTH="64" \
+        CARGO_CFG_TARGET_VENDOR="unknown" \
+        CARGO_CFG_UNIX= \
+        CARGO_ENCODED_RUSTFLAGS= \
+        CARGO_FEATURE_STD="1" \
+        CARGO_INCREMENTAL="0" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/log-0.4.11" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/log-0.4.11/Cargo.toml" \
+        CARGO_PKG_AUTHORS="The Rust Project Developers" \
+        CARGO_PKG_DESCRIPTION="A lightweight logging facade for Rust\n" \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE="MIT OR Apache-2.0" \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME="log" \
+        CARGO_PKG_README="README.md" \
+        CARGO_PKG_REPOSITORY="https://github.com/rust-lang/log" \
+        CARGO_PKG_RUST_VERSION= \
+        CARGO_PKG_VERSION="0.4.11" \
+        CARGO_PKG_VERSION_MAJOR="0" \
+        CARGO_PKG_VERSION_MINOR="4" \
+        CARGO_PKG_VERSION_PATCH="11" \
+        CARGO_PKG_VERSION_PRE= \
+        DEBUG="false" \
+        HOST="x86_64-unknown-linux-gnu" \
+        NUM_JOBS="4" \
+        OPT_LEVEL="3" \
+        OUT_DIR="/tmp/clis-dbcc_2-2-1/release/build/log-d1fe451af816ca5e/out" \
+        PROFILE="release" \
+        RUSTC=rustc \
+        RUSTDOC="/home/runner/.rustup/toolchains/1.86.0-x86_64-unknown-linux-gnu/bin/rustdoc" \
+        TARGET="x86_64-unknown-linux-gnu" \
+        CARGOGREEN=1 \
+      CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-dbcc_2-2-1/release/build/log-6a05ba984ca0deea/build-script-build \
+        1>          /tmp/clis-dbcc_2-2-1/release/build/log-d1fe451af816ca5e/out/ran-d1fe451af816ca5e-stdout \
+        2>          /tmp/clis-dbcc_2-2-1/release/build/log-d1fe451af816ca5e/out/ran-d1fe451af816ca5e-stderr \
+        || echo $? >/tmp/clis-dbcc_2-2-1/release/build/log-d1fe451af816ca5e/out/ran-d1fe451af816ca5e-errcode\
+  ; find /tmp/clis-dbcc_2-2-1/release/build/log-d1fe451af816ca5e/out/*-d1fe451af816ca5e* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS ran-d1fe451af816ca5e
+COPY --link --from=run-z-log-0.4.11-d1fe451af816ca5e /tmp/clis-dbcc_2-2-1/release/build/log-d1fe451af816ca5e/out/* /
+
+## this = "d1fe451af816ca5e"
+## deps = ["6a05ba984ca0deea"]
+## stdout = [
+##     "cargo:rustc-cfg=atomic_cas",
+##     "cargo:rerun-if-changed=build.rs",
+## ]
+##
+## [[stages]]
+## name = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.86.0-slim@sha256:57d415bbd61ce11e2d5f73de068103c7bd9f3188dc132c97cef4a8f62989e944 AS rust-base"
+##
+## [[stages]]
+## name = "run-z-log-0.4.11-d1fe451af816ca5e"
+## script = '''
+## FROM rust-base AS run-z-log-0.4.11-d1fe451af816ca5e
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-dbcc_2-2-1/release/build/log-d1fe451af816ca5e/out
+## WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/log-0.4.11
+## RUN \
+##   --mount=from=out-6a05ba984ca0deea,source=/build_script_build-6a05ba984ca0deea,dst=/tmp/clis-dbcc_2-2-1/release/build/log-6a05ba984ca0deea/build-script-build \
+##   --mount=from=cratesio-log-0.4.11,source=/log-0.4.11,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/log-0.4.11 \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CFG_FEATURE="std" \
+##         CARGO_CFG_PANIC="unwind" \
+##         CARGO_CFG_TARGET_ABI= \
+##         CARGO_CFG_TARGET_ARCH="x86_64" \
+##         CARGO_CFG_TARGET_ENDIAN="little" \
+##         CARGO_CFG_TARGET_ENV="gnu" \
+##         CARGO_CFG_TARGET_FAMILY="unix" \
+##         CARGO_CFG_TARGET_FEATURE="fxsr,sse,sse2" \
+##         CARGO_CFG_TARGET_HAS_ATOMIC="16,32,64,8,ptr" \
+##         CARGO_CFG_TARGET_OS="linux" \
+##         CARGO_CFG_TARGET_POINTER_WIDTH="64" \
+##         CARGO_CFG_TARGET_VENDOR="unknown" \
+##         CARGO_CFG_UNIX= \
+##         CARGO_ENCODED_RUSTFLAGS= \
+##         CARGO_FEATURE_STD="1" \
+##         CARGO_INCREMENTAL="0" \
+##         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/log-0.4.11" \
+##         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/log-0.4.11/Cargo.toml" \
+##         CARGO_PKG_AUTHORS="The Rust Project Developers" \
+##         CARGO_PKG_DESCRIPTION="A lightweight logging facade for Rust\n" \
+##         CARGO_PKG_HOMEPAGE= \
+##         CARGO_PKG_LICENSE="MIT OR Apache-2.0" \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME="log" \
+##         CARGO_PKG_README="README.md" \
+##         CARGO_PKG_REPOSITORY="https://github.com/rust-lang/log" \
+##         CARGO_PKG_RUST_VERSION= \
+##         CARGO_PKG_VERSION="0.4.11" \
+##         CARGO_PKG_VERSION_MAJOR="0" \
+##         CARGO_PKG_VERSION_MINOR="4" \
+##         CARGO_PKG_VERSION_PATCH="11" \
+##         CARGO_PKG_VERSION_PRE= \
+##         DEBUG="false" \
+##         HOST="x86_64-unknown-linux-gnu" \
+##         NUM_JOBS="4" \
+##         OPT_LEVEL="3" \
+##         OUT_DIR="/tmp/clis-dbcc_2-2-1/release/build/log-d1fe451af816ca5e/out" \
+##         PROFILE="release" \
+##         RUSTC=rustc \
+##         RUSTDOC="/home/runner/.rustup/toolchains/1.86.0-x86_64-unknown-linux-gnu/bin/rustdoc" \
+##         TARGET="x86_64-unknown-linux-gnu" \
+##         CARGOGREEN=1 \
+##       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-dbcc_2-2-1/release/build/log-6a05ba984ca0deea/build-script-build \
+##         1>          /tmp/clis-dbcc_2-2-1/release/build/log-d1fe451af816ca5e/out/ran-d1fe451af816ca5e-stdout \
+##         2>          /tmp/clis-dbcc_2-2-1/release/build/log-d1fe451af816ca5e/out/ran-d1fe451af816ca5e-stderr \
+##         || echo $? >/tmp/clis-dbcc_2-2-1/release/build/log-d1fe451af816ca5e/out/ran-d1fe451af816ca5e-errcode\
+##   ; find /tmp/clis-dbcc_2-2-1/release/build/log-d1fe451af816ca5e/out/*-d1fe451af816ca5e* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+## name = "ran-d1fe451af816ca5e"
+## script = """
+## FROM scratch AS ran-d1fe451af816ca5e
+## COPY --link --from=run-z-log-0.4.11-d1fe451af816ca5e /tmp/clis-dbcc_2-2-1/release/build/log-d1fe451af816ca5e/out/* /"""
+
+
 FROM rust-base AS dep-n-log-0.4.11-09be6f37eb701f15
 SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
@@ -2686,6 +4528,7 @@ RUN \
   --mount=from=cratesio-log-0.4.11,source=/log-0.4.11,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/log-0.4.11 \
   --mount=from=out-abefcc22b095b628,dst=/tmp/clis-dbcc_2-2-1/release/deps/libcfg_if-abefcc22b095b628.rlib,source=/libcfg_if-abefcc22b095b628.rlib \
   --mount=from=out-abefcc22b095b628,dst=/tmp/clis-dbcc_2-2-1/release/deps/libcfg_if-abefcc22b095b628.rmeta,source=/libcfg_if-abefcc22b095b628.rmeta \
+  --mount=from=ran-d1fe451af816ca5e,dst=/tmp/clis-dbcc_2-2-1/release/build/log-d1fe451af816ca5e/out,source=/ \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="log" \
         CARGO_INCREMENTAL="0" \
@@ -2716,8 +4559,13 @@ FROM scratch AS out-09be6f37eb701f15
 COPY --link --from=dep-n-log-0.4.11-09be6f37eb701f15 /tmp/clis-dbcc_2-2-1/release/deps/*-09be6f37eb701f15* /
 
 ## this = "09be6f37eb701f15"
-## deps = ["abefcc22b095b628"]
+## deps = [
+##     "abefcc22b095b628",
+##     "d1fe451af816ca5e",
+##     "6a05ba984ca0deea",
+## ]
 ## short_externs = ["abefcc22b095b628"]
+## buildrs_results = ["d1fe451af816ca5e"]
 ## writes = [
 ##     "liblog-09be6f37eb701f15.rlib",
 ##     "liblog-09be6f37eb701f15.rmeta",
@@ -2745,6 +4593,11 @@ COPY --link --from=dep-n-log-0.4.11-09be6f37eb701f15 /tmp/clis-dbcc_2-2-1/releas
 ## from = "out-abefcc22b095b628"
 ## xtern = "libcfg_if-abefcc22b095b628.rmeta"
 ##
+## [[mounts]]
+## name = "ran-d1fe451af816ca5e"
+## src = "/"
+## dst = "/tmp/clis-dbcc_2-2-1/release/build/log-d1fe451af816ca5e/out"
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.86.0-slim@sha256:57d415bbd61ce11e2d5f73de068103c7bd9f3188dc132c97cef4a8f62989e944 AS rust-base"
@@ -2766,6 +4619,7 @@ COPY --link --from=dep-n-log-0.4.11-09be6f37eb701f15 /tmp/clis-dbcc_2-2-1/releas
 ##   --mount=from=cratesio-log-0.4.11,source=/log-0.4.11,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/log-0.4.11 \
 ##   --mount=from=out-abefcc22b095b628,dst=/tmp/clis-dbcc_2-2-1/release/deps/libcfg_if-abefcc22b095b628.rlib,source=/libcfg_if-abefcc22b095b628.rlib \
 ##   --mount=from=out-abefcc22b095b628,dst=/tmp/clis-dbcc_2-2-1/release/deps/libcfg_if-abefcc22b095b628.rmeta,source=/libcfg_if-abefcc22b095b628.rmeta \
+##   --mount=from=ran-d1fe451af816ca5e,dst=/tmp/clis-dbcc_2-2-1/release/build/log-d1fe451af816ca5e/out,source=/ \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="log" \
 ##         CARGO_INCREMENTAL="0" \
@@ -2802,11 +4656,287 @@ COPY --link --from=dep-n-log-0.4.11-09be6f37eb701f15 /tmp/clis-dbcc_2-2-1/releas
 FROM scratch AS cratesio-libc-0.2.79
 ADD --chmod=0664 --unpack --checksum=sha256:2448f6066e80e3bfc792e9c98bf705b4b0fc6e8ef5b43e5889aff0eaa9c58743 \
   https://static.crates.io/crates/libc/libc-0.2.79.crate /
+FROM rust-base AS dep-x-libc-0.2.79-c24270f3fa48706e
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-dbcc_2-2-1/release/build/libc-c24270f3fa48706e
+RUN \
+  --mount=from=cratesio-libc-0.2.79,source=/libc-0.2.79,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.79,rw \
+    { \
+        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.79/build.rs | sed 's/fn main/fn actual_c24270f3fa48706e_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.79/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.79/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.79/build.rs ; \
+        { \
+          echo ; \
+          echo 'fn main() {' ; \
+          echo '    use std::env::{args_os, var_os};' ; \
+          echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+          echo '        use std::process::{Command, Stdio};' ; \
+          echo '        let mut cmd = Command::new("cargo-green");' ; \
+          echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+          echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+          echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+          echo '        assert!(res.success());' ; \
+          echo '    } else {' ; \
+          echo '        actual_c24270f3fa48706e_main()' ; \
+          echo '    }' ; \
+          echo '}' ; \
+        } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.79/build.rs ; \
+    } && \
+    env CARGO="$(which cargo)" \
+        CARGO_CRATE_NAME="build_script_build" \
+        CARGO_INCREMENTAL="0" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.79" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.79/Cargo.toml" \
+        CARGO_PKG_AUTHORS="The Rust Project Developers" \
+        CARGO_PKG_DESCRIPTION="Raw FFI bindings to platform libraries like libc.\n" \
+        CARGO_PKG_HOMEPAGE="https://github.com/rust-lang/libc" \
+        CARGO_PKG_LICENSE="MIT OR Apache-2.0" \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME="libc" \
+        CARGO_PKG_README="README.md" \
+        CARGO_PKG_REPOSITORY="https://github.com/rust-lang/libc" \
+        CARGO_PKG_RUST_VERSION= \
+        CARGO_PKG_VERSION="0.2.79" \
+        CARGO_PKG_VERSION_MAJOR="0" \
+        CARGO_PKG_VERSION_MINOR="2" \
+        CARGO_PKG_VERSION_PATCH="79" \
+        CARGO_PKG_VERSION_PRE= \
+        CARGOGREEN=1 \
+      rustc '--crate-name' 'build_script_build' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'bin' '--emit' 'dep-info,link' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("align", "const-extern-fn", "default", "extra_traits", "rustc-dep-of-std", "rustc-std-workspace-core", "std", "use_std"))' '-C' 'metadata=533d37a68881c18e' '-C' 'extra-filename=-c24270f3fa48706e' '--out-dir' '/tmp/clis-dbcc_2-2-1/release/build/libc-c24270f3fa48706e' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-dbcc_2-2-1/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.79/build.rs \
+        1>          /tmp/clis-dbcc_2-2-1/release/build/libc-c24270f3fa48706e/out-c24270f3fa48706e-stdout \
+        2>          /tmp/clis-dbcc_2-2-1/release/build/libc-c24270f3fa48706e/out-c24270f3fa48706e-stderr \
+        || echo $? >/tmp/clis-dbcc_2-2-1/release/build/libc-c24270f3fa48706e/out-c24270f3fa48706e-errcode\
+  ; find /tmp/clis-dbcc_2-2-1/release/build/libc-c24270f3fa48706e/*-c24270f3fa48706e* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-c24270f3fa48706e
+COPY --link --from=dep-x-libc-0.2.79-c24270f3fa48706e /tmp/clis-dbcc_2-2-1/release/build/libc-c24270f3fa48706e/*-c24270f3fa48706e* /
+
+## this = "c24270f3fa48706e"
+## writes = [
+##     "build_script_build-c24270f3fa48706e",
+##     "build_script_build-c24270f3fa48706e.d",
+## ]
+## stderr = [
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-dbcc_2-2-1/release/build/libc-c24270f3fa48706e/build_script_build-c24270f3fa48706e.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-dbcc_2-2-1/release/build/libc-c24270f3fa48706e/build_script_build-c24270f3fa48706e","emit":"link"}',
+## ]
+##
+## [[stages]]
+## name = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.86.0-slim@sha256:57d415bbd61ce11e2d5f73de068103c7bd9f3188dc132c97cef4a8f62989e944 AS rust-base"
+##
+## [[stages]]
+## name = "cratesio-libc-0.2.79"
+## script = '''
+## FROM scratch AS cratesio-libc-0.2.79
+## ADD --chmod=0664 --unpack --checksum=sha256:2448f6066e80e3bfc792e9c98bf705b4b0fc6e8ef5b43e5889aff0eaa9c58743 \
+##   https://static.crates.io/crates/libc/libc-0.2.79.crate /'''
+##
+## [[stages]]
+## name = "dep-x-libc-0.2.79-c24270f3fa48706e"
+## script = '''
+## FROM rust-base AS dep-x-libc-0.2.79-c24270f3fa48706e
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-dbcc_2-2-1/release/build/libc-c24270f3fa48706e
+## RUN \
+##   --mount=from=cratesio-libc-0.2.79,source=/libc-0.2.79,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.79,rw \
+##     { \
+##         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.79/build.rs | sed 's/fn main/fn actual_c24270f3fa48706e_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.79/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.79/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.79/build.rs ; \
+##         { \
+##           echo ; \
+##           echo 'fn main() {' ; \
+##           echo '    use std::env::{args_os, var_os};' ; \
+##           echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+##           echo '        use std::process::{Command, Stdio};' ; \
+##           echo '        let mut cmd = Command::new("cargo-green");' ; \
+##           echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+##           echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+##           echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+##           echo '        assert!(res.success());' ; \
+##           echo '    } else {' ; \
+##           echo '        actual_c24270f3fa48706e_main()' ; \
+##           echo '    }' ; \
+##           echo '}' ; \
+##         } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.79/build.rs ; \
+##     } && \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CRATE_NAME="build_script_build" \
+##         CARGO_INCREMENTAL="0" \
+##         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.79" \
+##         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.79/Cargo.toml" \
+##         CARGO_PKG_AUTHORS="The Rust Project Developers" \
+##         CARGO_PKG_DESCRIPTION="Raw FFI bindings to platform libraries like libc.\n" \
+##         CARGO_PKG_HOMEPAGE="https://github.com/rust-lang/libc" \
+##         CARGO_PKG_LICENSE="MIT OR Apache-2.0" \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME="libc" \
+##         CARGO_PKG_README="README.md" \
+##         CARGO_PKG_REPOSITORY="https://github.com/rust-lang/libc" \
+##         CARGO_PKG_RUST_VERSION= \
+##         CARGO_PKG_VERSION="0.2.79" \
+##         CARGO_PKG_VERSION_MAJOR="0" \
+##         CARGO_PKG_VERSION_MINOR="2" \
+##         CARGO_PKG_VERSION_PATCH="79" \
+##         CARGO_PKG_VERSION_PRE= \
+##         CARGOGREEN=1 \
+##       rustc '--crate-name' 'build_script_build' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'bin' '--emit' 'dep-info,link' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("align", "const-extern-fn", "default", "extra_traits", "rustc-dep-of-std", "rustc-std-workspace-core", "std", "use_std"))' '-C' 'metadata=533d37a68881c18e' '-C' 'extra-filename=-c24270f3fa48706e' '--out-dir' '/tmp/clis-dbcc_2-2-1/release/build/libc-c24270f3fa48706e' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-dbcc_2-2-1/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.79/build.rs \
+##         1>          /tmp/clis-dbcc_2-2-1/release/build/libc-c24270f3fa48706e/out-c24270f3fa48706e-stdout \
+##         2>          /tmp/clis-dbcc_2-2-1/release/build/libc-c24270f3fa48706e/out-c24270f3fa48706e-stderr \
+##         || echo $? >/tmp/clis-dbcc_2-2-1/release/build/libc-c24270f3fa48706e/out-c24270f3fa48706e-errcode\
+##   ; find /tmp/clis-dbcc_2-2-1/release/build/libc-c24270f3fa48706e/*-c24270f3fa48706e* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+## name = "out-c24270f3fa48706e"
+## script = """
+## FROM scratch AS out-c24270f3fa48706e
+## COPY --link --from=dep-x-libc-0.2.79-c24270f3fa48706e /tmp/clis-dbcc_2-2-1/release/build/libc-c24270f3fa48706e/*-c24270f3fa48706e* /"""
+
+FROM rust-base AS run-z-libc-0.2.79-6e365980216c917e
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-dbcc_2-2-1/release/build/libc-6e365980216c917e/out
+WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.79
+RUN \
+  --mount=from=out-c24270f3fa48706e,source=/build_script_build-c24270f3fa48706e,dst=/tmp/clis-dbcc_2-2-1/release/build/libc-c24270f3fa48706e/build-script-build \
+  --mount=from=cratesio-libc-0.2.79,source=/libc-0.2.79,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.79 \
+    env CARGO="$(which cargo)" \
+        CARGO_CFG_FEATURE="default,std" \
+        CARGO_CFG_PANIC="unwind" \
+        CARGO_CFG_TARGET_ABI= \
+        CARGO_CFG_TARGET_ARCH="x86_64" \
+        CARGO_CFG_TARGET_ENDIAN="little" \
+        CARGO_CFG_TARGET_ENV="gnu" \
+        CARGO_CFG_TARGET_FAMILY="unix" \
+        CARGO_CFG_TARGET_FEATURE="fxsr,sse,sse2" \
+        CARGO_CFG_TARGET_HAS_ATOMIC="16,32,64,8,ptr" \
+        CARGO_CFG_TARGET_OS="linux" \
+        CARGO_CFG_TARGET_POINTER_WIDTH="64" \
+        CARGO_CFG_TARGET_VENDOR="unknown" \
+        CARGO_CFG_UNIX= \
+        CARGO_ENCODED_RUSTFLAGS= \
+        CARGO_FEATURE_DEFAULT="1" \
+        CARGO_FEATURE_STD="1" \
+        CARGO_INCREMENTAL="0" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.79" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.79/Cargo.toml" \
+        CARGO_PKG_AUTHORS="The Rust Project Developers" \
+        CARGO_PKG_DESCRIPTION="Raw FFI bindings to platform libraries like libc.\n" \
+        CARGO_PKG_HOMEPAGE="https://github.com/rust-lang/libc" \
+        CARGO_PKG_LICENSE="MIT OR Apache-2.0" \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME="libc" \
+        CARGO_PKG_README="README.md" \
+        CARGO_PKG_REPOSITORY="https://github.com/rust-lang/libc" \
+        CARGO_PKG_RUST_VERSION= \
+        CARGO_PKG_VERSION="0.2.79" \
+        CARGO_PKG_VERSION_MAJOR="0" \
+        CARGO_PKG_VERSION_MINOR="2" \
+        CARGO_PKG_VERSION_PATCH="79" \
+        CARGO_PKG_VERSION_PRE= \
+        DEBUG="false" \
+        HOST="x86_64-unknown-linux-gnu" \
+        NUM_JOBS="4" \
+        OPT_LEVEL="3" \
+        OUT_DIR="/tmp/clis-dbcc_2-2-1/release/build/libc-6e365980216c917e/out" \
+        PROFILE="release" \
+        RUSTC=rustc \
+        RUSTDOC="/home/runner/.rustup/toolchains/1.86.0-x86_64-unknown-linux-gnu/bin/rustdoc" \
+        TARGET="x86_64-unknown-linux-gnu" \
+        CARGOGREEN=1 \
+      CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-dbcc_2-2-1/release/build/libc-c24270f3fa48706e/build-script-build \
+        1>          /tmp/clis-dbcc_2-2-1/release/build/libc-6e365980216c917e/out/ran-6e365980216c917e-stdout \
+        2>          /tmp/clis-dbcc_2-2-1/release/build/libc-6e365980216c917e/out/ran-6e365980216c917e-stderr \
+        || echo $? >/tmp/clis-dbcc_2-2-1/release/build/libc-6e365980216c917e/out/ran-6e365980216c917e-errcode\
+  ; find /tmp/clis-dbcc_2-2-1/release/build/libc-6e365980216c917e/out/*-6e365980216c917e* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS ran-6e365980216c917e
+COPY --link --from=run-z-libc-0.2.79-6e365980216c917e /tmp/clis-dbcc_2-2-1/release/build/libc-6e365980216c917e/out/* /
+
+## this = "6e365980216c917e"
+## deps = ["c24270f3fa48706e"]
+## stdout = [
+##     "cargo:rustc-cfg=freebsd11",
+##     "cargo:rustc-cfg=libc_priv_mod_use",
+##     "cargo:rustc-cfg=libc_union",
+##     "cargo:rustc-cfg=libc_const_size_of",
+##     "cargo:rustc-cfg=libc_align",
+##     "cargo:rustc-cfg=libc_core_cvoid",
+##     "cargo:rustc-cfg=libc_packedN",
+##     "cargo:rustc-cfg=libc_cfg_target_vendor",
+## ]
+##
+## [[stages]]
+## name = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.86.0-slim@sha256:57d415bbd61ce11e2d5f73de068103c7bd9f3188dc132c97cef4a8f62989e944 AS rust-base"
+##
+## [[stages]]
+## name = "run-z-libc-0.2.79-6e365980216c917e"
+## script = '''
+## FROM rust-base AS run-z-libc-0.2.79-6e365980216c917e
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-dbcc_2-2-1/release/build/libc-6e365980216c917e/out
+## WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.79
+## RUN \
+##   --mount=from=out-c24270f3fa48706e,source=/build_script_build-c24270f3fa48706e,dst=/tmp/clis-dbcc_2-2-1/release/build/libc-c24270f3fa48706e/build-script-build \
+##   --mount=from=cratesio-libc-0.2.79,source=/libc-0.2.79,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.79 \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CFG_FEATURE="default,std" \
+##         CARGO_CFG_PANIC="unwind" \
+##         CARGO_CFG_TARGET_ABI= \
+##         CARGO_CFG_TARGET_ARCH="x86_64" \
+##         CARGO_CFG_TARGET_ENDIAN="little" \
+##         CARGO_CFG_TARGET_ENV="gnu" \
+##         CARGO_CFG_TARGET_FAMILY="unix" \
+##         CARGO_CFG_TARGET_FEATURE="fxsr,sse,sse2" \
+##         CARGO_CFG_TARGET_HAS_ATOMIC="16,32,64,8,ptr" \
+##         CARGO_CFG_TARGET_OS="linux" \
+##         CARGO_CFG_TARGET_POINTER_WIDTH="64" \
+##         CARGO_CFG_TARGET_VENDOR="unknown" \
+##         CARGO_CFG_UNIX= \
+##         CARGO_ENCODED_RUSTFLAGS= \
+##         CARGO_FEATURE_DEFAULT="1" \
+##         CARGO_FEATURE_STD="1" \
+##         CARGO_INCREMENTAL="0" \
+##         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.79" \
+##         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.79/Cargo.toml" \
+##         CARGO_PKG_AUTHORS="The Rust Project Developers" \
+##         CARGO_PKG_DESCRIPTION="Raw FFI bindings to platform libraries like libc.\n" \
+##         CARGO_PKG_HOMEPAGE="https://github.com/rust-lang/libc" \
+##         CARGO_PKG_LICENSE="MIT OR Apache-2.0" \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME="libc" \
+##         CARGO_PKG_README="README.md" \
+##         CARGO_PKG_REPOSITORY="https://github.com/rust-lang/libc" \
+##         CARGO_PKG_RUST_VERSION= \
+##         CARGO_PKG_VERSION="0.2.79" \
+##         CARGO_PKG_VERSION_MAJOR="0" \
+##         CARGO_PKG_VERSION_MINOR="2" \
+##         CARGO_PKG_VERSION_PATCH="79" \
+##         CARGO_PKG_VERSION_PRE= \
+##         DEBUG="false" \
+##         HOST="x86_64-unknown-linux-gnu" \
+##         NUM_JOBS="4" \
+##         OPT_LEVEL="3" \
+##         OUT_DIR="/tmp/clis-dbcc_2-2-1/release/build/libc-6e365980216c917e/out" \
+##         PROFILE="release" \
+##         RUSTC=rustc \
+##         RUSTDOC="/home/runner/.rustup/toolchains/1.86.0-x86_64-unknown-linux-gnu/bin/rustdoc" \
+##         TARGET="x86_64-unknown-linux-gnu" \
+##         CARGOGREEN=1 \
+##       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-dbcc_2-2-1/release/build/libc-c24270f3fa48706e/build-script-build \
+##         1>          /tmp/clis-dbcc_2-2-1/release/build/libc-6e365980216c917e/out/ran-6e365980216c917e-stdout \
+##         2>          /tmp/clis-dbcc_2-2-1/release/build/libc-6e365980216c917e/out/ran-6e365980216c917e-stderr \
+##         || echo $? >/tmp/clis-dbcc_2-2-1/release/build/libc-6e365980216c917e/out/ran-6e365980216c917e-errcode\
+##   ; find /tmp/clis-dbcc_2-2-1/release/build/libc-6e365980216c917e/out/*-6e365980216c917e* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+## name = "ran-6e365980216c917e"
+## script = """
+## FROM scratch AS ran-6e365980216c917e
+## COPY --link --from=run-z-libc-0.2.79-6e365980216c917e /tmp/clis-dbcc_2-2-1/release/build/libc-6e365980216c917e/out/* /"""
+
+
 FROM rust-base AS dep-n-libc-0.2.79-087afb0c1713a9a6
 SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
   --mount=from=cratesio-libc-0.2.79,source=/libc-0.2.79,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.79 \
+  --mount=from=ran-6e365980216c917e,dst=/tmp/clis-dbcc_2-2-1/release/build/libc-6e365980216c917e/out,source=/ \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="libc" \
         CARGO_INCREMENTAL="0" \
@@ -2837,6 +4967,11 @@ FROM scratch AS out-087afb0c1713a9a6
 COPY --link --from=dep-n-libc-0.2.79-087afb0c1713a9a6 /tmp/clis-dbcc_2-2-1/release/deps/*-087afb0c1713a9a6* /
 
 ## this = "087afb0c1713a9a6"
+## deps = [
+##     "6e365980216c917e",
+##     "c24270f3fa48706e",
+## ]
+## buildrs_results = ["6e365980216c917e"]
 ## writes = [
 ##     "libc-087afb0c1713a9a6.d",
 ##     "liblibc-087afb0c1713a9a6.rlib",
@@ -2898,6 +5033,11 @@ COPY --link --from=dep-n-libc-0.2.79-087afb0c1713a9a6 /tmp/clis-dbcc_2-2-1/relea
 ##     '{"$message_type":"diagnostic","message":"49 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 49 warnings emitted\u001b[0m\n\n"}',
 ## ]
 ##
+## [[mounts]]
+## name = "ran-6e365980216c917e"
+## src = "/"
+## dst = "/tmp/clis-dbcc_2-2-1/release/build/libc-6e365980216c917e/out"
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.86.0-slim@sha256:57d415bbd61ce11e2d5f73de068103c7bd9f3188dc132c97cef4a8f62989e944 AS rust-base"
@@ -2917,6 +5057,7 @@ COPY --link --from=dep-n-libc-0.2.79-087afb0c1713a9a6 /tmp/clis-dbcc_2-2-1/relea
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
 ##   --mount=from=cratesio-libc-0.2.79,source=/libc-0.2.79,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.79 \
+##   --mount=from=ran-6e365980216c917e,dst=/tmp/clis-dbcc_2-2-1/release/build/libc-6e365980216c917e/out,source=/ \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="libc" \
 ##         CARGO_INCREMENTAL="0" \
@@ -2989,8 +5130,13 @@ FROM scratch AS out-737035cdf92a82de
 COPY --link --from=dep-n-atty-0.2.14-737035cdf92a82de /tmp/clis-dbcc_2-2-1/release/deps/*-737035cdf92a82de* /
 
 ## this = "737035cdf92a82de"
-## deps = ["087afb0c1713a9a6"]
+## deps = [
+##     "087afb0c1713a9a6",
+##     "c24270f3fa48706e",
+##     "6e365980216c917e",
+## ]
 ## short_externs = ["087afb0c1713a9a6"]
+## buildrs_results = ["6e365980216c917e"]
 ## writes = [
 ##     "atty-737035cdf92a82de.d",
 ##     "libatty-737035cdf92a82de.rlib",
@@ -3343,8 +5489,13 @@ FROM scratch AS out-014f7ab42daca0d7
 COPY --link --from=dep-n-aho-corasick-0.7.14-014f7ab42daca0d7 /tmp/clis-dbcc_2-2-1/release/deps/*-014f7ab42daca0d7* /
 
 ## this = "014f7ab42daca0d7"
-## deps = ["c93fd10415a641fd"]
+## deps = [
+##     "c93fd10415a641fd",
+##     "61489e0fb1dac057",
+##     "3e5e06c429d97718",
+## ]
 ## short_externs = ["c93fd10415a641fd"]
+## buildrs_results = ["3e5e06c429d97718"]
 ## writes = [
 ##     "aho_corasick-014f7ab42daca0d7.d",
 ##     "libaho_corasick-014f7ab42daca0d7.rlib",
@@ -3798,6 +5949,8 @@ COPY --link --from=dep-n-regex-1.4.1-5ba8c6f49cc2732d /tmp/clis-dbcc_2-2-1/relea
 ##     "eec8efd7d7dadd3c",
 ##     "3ace2abd55187163",
 ##     "a79af56de238e2b5",
+##     "61489e0fb1dac057",
+##     "3e5e06c429d97718",
 ## ]
 ## short_externs = [
 ##     "014f7ab42daca0d7",
@@ -3806,6 +5959,7 @@ COPY --link --from=dep-n-regex-1.4.1-5ba8c6f49cc2732d /tmp/clis-dbcc_2-2-1/relea
 ##     "3ace2abd55187163",
 ##     "a79af56de238e2b5",
 ## ]
+## buildrs_results = ["3e5e06c429d97718"]
 ## writes = [
 ##     "libregex-5ba8c6f49cc2732d.rlib",
 ##     "libregex-5ba8c6f49cc2732d.rmeta",
@@ -4094,6 +6248,12 @@ COPY --link --from=dep-n-env_logger-0.7.1-94c0a2bd3b1451c8 /tmp/clis-dbcc_2-2-1/
 ##     "3ace2abd55187163",
 ##     "a79af56de238e2b5",
 ##     "3d5a70ee74f70e2b",
+##     "c24270f3fa48706e",
+##     "6e365980216c917e",
+##     "6a05ba984ca0deea",
+##     "d1fe451af816ca5e",
+##     "61489e0fb1dac057",
+##     "3e5e06c429d97718",
 ## ]
 ## short_externs = [
 ##     "737035cdf92a82de",
@@ -4109,6 +6269,11 @@ COPY --link --from=dep-n-env_logger-0.7.1-94c0a2bd3b1451c8 /tmp/clis-dbcc_2-2-1/
 ##     "3ace2abd55187163",
 ##     "a79af56de238e2b5",
 ##     "3d5a70ee74f70e2b",
+## ]
+## buildrs_results = [
+##     "6e365980216c917e",
+##     "d1fe451af816ca5e",
+##     "3e5e06c429d97718",
 ## ]
 ## writes = [
 ##     "env_logger-94c0a2bd3b1451c8.d",
@@ -4385,6 +6550,12 @@ COPY --link --from=dep-n-pretty_env_logger-0.4.0-682e69746a16e0c7 /tmp/clis-dbcc
 ##     "3ace2abd55187163",
 ##     "a79af56de238e2b5",
 ##     "3d5a70ee74f70e2b",
+##     "c24270f3fa48706e",
+##     "6e365980216c917e",
+##     "6a05ba984ca0deea",
+##     "d1fe451af816ca5e",
+##     "61489e0fb1dac057",
+##     "3e5e06c429d97718",
 ## ]
 ## short_externs = [
 ##     "94c0a2bd3b1451c8",
@@ -4401,6 +6572,11 @@ COPY --link --from=dep-n-pretty_env_logger-0.4.0-682e69746a16e0c7 /tmp/clis-dbcc
 ##     "3ace2abd55187163",
 ##     "a79af56de238e2b5",
 ##     "3d5a70ee74f70e2b",
+## ]
+## buildrs_results = [
+##     "6e365980216c917e",
+##     "d1fe451af816ca5e",
+##     "3e5e06c429d97718",
 ## ]
 ## writes = [
 ##     "libpretty_env_logger-682e69746a16e0c7.rlib",
@@ -4701,6 +6877,145 @@ COPY --link --from=dep-n-unicode-xid-0.2.1-f585407da4c0bf6f /tmp/clis-dbcc_2-2-1
 ## FROM scratch AS out-f585407da4c0bf6f
 ## COPY --link --from=dep-n-unicode-xid-0.2.1-f585407da4c0bf6f /tmp/clis-dbcc_2-2-1/release/deps/*-f585407da4c0bf6f* /"""
 
+FROM rust-base AS run-z-proc-macro2-1.0.24-c7420a74a7aab1f6
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-dbcc_2-2-1/release/build/proc-macro2-c7420a74a7aab1f6/out
+WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.24
+RUN \
+  --mount=from=out-68e214c30c4bb8c4,source=/build_script_build-68e214c30c4bb8c4,dst=/tmp/clis-dbcc_2-2-1/release/build/proc-macro2-68e214c30c4bb8c4/build-script-build \
+  --mount=from=cratesio-proc-macro2-1.0.24,source=/proc-macro2-1.0.24,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.24 \
+    env CARGO="$(which cargo)" \
+        CARGO_CFG_FEATURE="default,proc-macro" \
+        CARGO_CFG_PANIC="unwind" \
+        CARGO_CFG_TARGET_ABI= \
+        CARGO_CFG_TARGET_ARCH="x86_64" \
+        CARGO_CFG_TARGET_ENDIAN="little" \
+        CARGO_CFG_TARGET_ENV="gnu" \
+        CARGO_CFG_TARGET_FAMILY="unix" \
+        CARGO_CFG_TARGET_FEATURE="fxsr,sse,sse2" \
+        CARGO_CFG_TARGET_HAS_ATOMIC="16,32,64,8,ptr" \
+        CARGO_CFG_TARGET_OS="linux" \
+        CARGO_CFG_TARGET_POINTER_WIDTH="64" \
+        CARGO_CFG_TARGET_VENDOR="unknown" \
+        CARGO_CFG_UNIX= \
+        CARGO_ENCODED_RUSTFLAGS= \
+        CARGO_FEATURE_DEFAULT="1" \
+        CARGO_FEATURE_PROC_MACRO="1" \
+        CARGO_INCREMENTAL="0" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.24" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.24/Cargo.toml" \
+        CARGO_PKG_AUTHORS="Alex Crichton <alex@alexcrichton.com>:David Tolnay <dtolnay@gmail.com>" \
+        CARGO_PKG_DESCRIPTION="A substitute implementation of the compiler's `proc_macro` API to decouple\ntoken-based libraries from the procedural macro use case.\n" \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE="MIT OR Apache-2.0" \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME="proc-macro2" \
+        CARGO_PKG_README="README.md" \
+        CARGO_PKG_REPOSITORY="https://github.com/alexcrichton/proc-macro2" \
+        CARGO_PKG_RUST_VERSION= \
+        CARGO_PKG_VERSION="1.0.24" \
+        CARGO_PKG_VERSION_MAJOR="1" \
+        CARGO_PKG_VERSION_MINOR="0" \
+        CARGO_PKG_VERSION_PATCH="24" \
+        CARGO_PKG_VERSION_PRE= \
+        DEBUG="false" \
+        HOST="x86_64-unknown-linux-gnu" \
+        NUM_JOBS="4" \
+        OPT_LEVEL="3" \
+        OUT_DIR="/tmp/clis-dbcc_2-2-1/release/build/proc-macro2-c7420a74a7aab1f6/out" \
+        PROFILE="release" \
+        RUSTC=rustc \
+        RUSTDOC="/home/runner/.rustup/toolchains/1.86.0-x86_64-unknown-linux-gnu/bin/rustdoc" \
+        TARGET="x86_64-unknown-linux-gnu" \
+        CARGOGREEN=1 \
+      CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-dbcc_2-2-1/release/build/proc-macro2-68e214c30c4bb8c4/build-script-build \
+        1>          /tmp/clis-dbcc_2-2-1/release/build/proc-macro2-c7420a74a7aab1f6/out/ran-c7420a74a7aab1f6-stdout \
+        2>          /tmp/clis-dbcc_2-2-1/release/build/proc-macro2-c7420a74a7aab1f6/out/ran-c7420a74a7aab1f6-stderr \
+        || echo $? >/tmp/clis-dbcc_2-2-1/release/build/proc-macro2-c7420a74a7aab1f6/out/ran-c7420a74a7aab1f6-errcode\
+  ; find /tmp/clis-dbcc_2-2-1/release/build/proc-macro2-c7420a74a7aab1f6/out/*-c7420a74a7aab1f6* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS ran-c7420a74a7aab1f6
+COPY --link --from=run-z-proc-macro2-1.0.24-c7420a74a7aab1f6 /tmp/clis-dbcc_2-2-1/release/build/proc-macro2-c7420a74a7aab1f6/out/* /
+
+## this = "c7420a74a7aab1f6"
+## deps = ["68e214c30c4bb8c4"]
+## stdout = [
+##     "cargo:rerun-if-changed=build.rs",
+##     "cargo:rustc-cfg=lexerror_display",
+##     "cargo:rustc-cfg=hygiene",
+##     "cargo:rustc-cfg=use_proc_macro",
+##     "cargo:rustc-cfg=wrap_proc_macro",
+## ]
+##
+## [[stages]]
+## name = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.86.0-slim@sha256:57d415bbd61ce11e2d5f73de068103c7bd9f3188dc132c97cef4a8f62989e944 AS rust-base"
+##
+## [[stages]]
+## name = "run-z-proc-macro2-1.0.24-c7420a74a7aab1f6"
+## script = '''
+## FROM rust-base AS run-z-proc-macro2-1.0.24-c7420a74a7aab1f6
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-dbcc_2-2-1/release/build/proc-macro2-c7420a74a7aab1f6/out
+## WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.24
+## RUN \
+##   --mount=from=out-68e214c30c4bb8c4,source=/build_script_build-68e214c30c4bb8c4,dst=/tmp/clis-dbcc_2-2-1/release/build/proc-macro2-68e214c30c4bb8c4/build-script-build \
+##   --mount=from=cratesio-proc-macro2-1.0.24,source=/proc-macro2-1.0.24,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.24 \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CFG_FEATURE="default,proc-macro" \
+##         CARGO_CFG_PANIC="unwind" \
+##         CARGO_CFG_TARGET_ABI= \
+##         CARGO_CFG_TARGET_ARCH="x86_64" \
+##         CARGO_CFG_TARGET_ENDIAN="little" \
+##         CARGO_CFG_TARGET_ENV="gnu" \
+##         CARGO_CFG_TARGET_FAMILY="unix" \
+##         CARGO_CFG_TARGET_FEATURE="fxsr,sse,sse2" \
+##         CARGO_CFG_TARGET_HAS_ATOMIC="16,32,64,8,ptr" \
+##         CARGO_CFG_TARGET_OS="linux" \
+##         CARGO_CFG_TARGET_POINTER_WIDTH="64" \
+##         CARGO_CFG_TARGET_VENDOR="unknown" \
+##         CARGO_CFG_UNIX= \
+##         CARGO_ENCODED_RUSTFLAGS= \
+##         CARGO_FEATURE_DEFAULT="1" \
+##         CARGO_FEATURE_PROC_MACRO="1" \
+##         CARGO_INCREMENTAL="0" \
+##         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.24" \
+##         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.24/Cargo.toml" \
+##         CARGO_PKG_AUTHORS="Alex Crichton <alex@alexcrichton.com>:David Tolnay <dtolnay@gmail.com>" \
+##         CARGO_PKG_DESCRIPTION="A substitute implementation of the compiler's `proc_macro` API to decouple\ntoken-based libraries from the procedural macro use case.\n" \
+##         CARGO_PKG_HOMEPAGE= \
+##         CARGO_PKG_LICENSE="MIT OR Apache-2.0" \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME="proc-macro2" \
+##         CARGO_PKG_README="README.md" \
+##         CARGO_PKG_REPOSITORY="https://github.com/alexcrichton/proc-macro2" \
+##         CARGO_PKG_RUST_VERSION= \
+##         CARGO_PKG_VERSION="1.0.24" \
+##         CARGO_PKG_VERSION_MAJOR="1" \
+##         CARGO_PKG_VERSION_MINOR="0" \
+##         CARGO_PKG_VERSION_PATCH="24" \
+##         CARGO_PKG_VERSION_PRE= \
+##         DEBUG="false" \
+##         HOST="x86_64-unknown-linux-gnu" \
+##         NUM_JOBS="4" \
+##         OPT_LEVEL="3" \
+##         OUT_DIR="/tmp/clis-dbcc_2-2-1/release/build/proc-macro2-c7420a74a7aab1f6/out" \
+##         PROFILE="release" \
+##         RUSTC=rustc \
+##         RUSTDOC="/home/runner/.rustup/toolchains/1.86.0-x86_64-unknown-linux-gnu/bin/rustdoc" \
+##         TARGET="x86_64-unknown-linux-gnu" \
+##         CARGOGREEN=1 \
+##       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-dbcc_2-2-1/release/build/proc-macro2-68e214c30c4bb8c4/build-script-build \
+##         1>          /tmp/clis-dbcc_2-2-1/release/build/proc-macro2-c7420a74a7aab1f6/out/ran-c7420a74a7aab1f6-stdout \
+##         2>          /tmp/clis-dbcc_2-2-1/release/build/proc-macro2-c7420a74a7aab1f6/out/ran-c7420a74a7aab1f6-stderr \
+##         || echo $? >/tmp/clis-dbcc_2-2-1/release/build/proc-macro2-c7420a74a7aab1f6/out/ran-c7420a74a7aab1f6-errcode\
+##   ; find /tmp/clis-dbcc_2-2-1/release/build/proc-macro2-c7420a74a7aab1f6/out/*-c7420a74a7aab1f6* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+## name = "ran-c7420a74a7aab1f6"
+## script = """
+## FROM scratch AS ran-c7420a74a7aab1f6
+## COPY --link --from=run-z-proc-macro2-1.0.24-c7420a74a7aab1f6 /tmp/clis-dbcc_2-2-1/release/build/proc-macro2-c7420a74a7aab1f6/out/* /"""
+
 
 FROM rust-base AS dep-n-proc-macro2-1.0.24-5eebdd82bed7d9de
 SHELL ["/bin/sh", "-eux", "-c"]
@@ -4709,6 +7024,7 @@ RUN \
   --mount=from=cratesio-proc-macro2-1.0.24,source=/proc-macro2-1.0.24,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.24 \
   --mount=from=out-f585407da4c0bf6f,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-f585407da4c0bf6f.rlib,source=/libunicode_xid-f585407da4c0bf6f.rlib \
   --mount=from=out-f585407da4c0bf6f,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-f585407da4c0bf6f.rmeta,source=/libunicode_xid-f585407da4c0bf6f.rmeta \
+  --mount=from=ran-c7420a74a7aab1f6,dst=/tmp/clis-dbcc_2-2-1/release/build/proc-macro2-c7420a74a7aab1f6/out,source=/ \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="proc_macro2" \
         CARGO_INCREMENTAL="0" \
@@ -4739,8 +7055,13 @@ FROM scratch AS out-5eebdd82bed7d9de
 COPY --link --from=dep-n-proc-macro2-1.0.24-5eebdd82bed7d9de /tmp/clis-dbcc_2-2-1/release/deps/*-5eebdd82bed7d9de* /
 
 ## this = "5eebdd82bed7d9de"
-## deps = ["f585407da4c0bf6f"]
+## deps = [
+##     "f585407da4c0bf6f",
+##     "c7420a74a7aab1f6",
+##     "68e214c30c4bb8c4",
+## ]
 ## short_externs = ["f585407da4c0bf6f"]
+## buildrs_results = ["c7420a74a7aab1f6"]
 ## writes = [
 ##     "libproc_macro2-5eebdd82bed7d9de.rlib",
 ##     "libproc_macro2-5eebdd82bed7d9de.rmeta",
@@ -4869,6 +7190,11 @@ COPY --link --from=dep-n-proc-macro2-1.0.24-5eebdd82bed7d9de /tmp/clis-dbcc_2-2-
 ## from = "out-f585407da4c0bf6f"
 ## xtern = "libunicode_xid-f585407da4c0bf6f.rmeta"
 ##
+## [[mounts]]
+## name = "ran-c7420a74a7aab1f6"
+## src = "/"
+## dst = "/tmp/clis-dbcc_2-2-1/release/build/proc-macro2-c7420a74a7aab1f6/out"
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.86.0-slim@sha256:57d415bbd61ce11e2d5f73de068103c7bd9f3188dc132c97cef4a8f62989e944 AS rust-base"
@@ -4890,6 +7216,7 @@ COPY --link --from=dep-n-proc-macro2-1.0.24-5eebdd82bed7d9de /tmp/clis-dbcc_2-2-
 ##   --mount=from=cratesio-proc-macro2-1.0.24,source=/proc-macro2-1.0.24,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.24 \
 ##   --mount=from=out-f585407da4c0bf6f,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-f585407da4c0bf6f.rlib,source=/libunicode_xid-f585407da4c0bf6f.rlib \
 ##   --mount=from=out-f585407da4c0bf6f,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-f585407da4c0bf6f.rmeta,source=/libunicode_xid-f585407da4c0bf6f.rmeta \
+##   --mount=from=ran-c7420a74a7aab1f6,dst=/tmp/clis-dbcc_2-2-1/release/build/proc-macro2-c7420a74a7aab1f6/out,source=/ \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="proc_macro2" \
 ##         CARGO_INCREMENTAL="0" \
@@ -4965,11 +7292,14 @@ COPY --link --from=dep-n-quote-1.0.7-0298ff41e604ba82 /tmp/clis-dbcc_2-2-1/relea
 ## deps = [
 ##     "5eebdd82bed7d9de",
 ##     "f585407da4c0bf6f",
+##     "68e214c30c4bb8c4",
+##     "c7420a74a7aab1f6",
 ## ]
 ## short_externs = [
 ##     "5eebdd82bed7d9de",
 ##     "f585407da4c0bf6f",
 ## ]
+## buildrs_results = ["c7420a74a7aab1f6"]
 ## writes = [
 ##     "libquote-0298ff41e604ba82.rlib",
 ##     "libquote-0298ff41e604ba82.rmeta",
@@ -5425,11 +7755,14 @@ COPY --link --from=dep-n-nix-0.5.1-4ee318c191cb8959 /tmp/clis-dbcc_2-2-1/release
 ## deps = [
 ##     "e976848f96abbbd4",
 ##     "087afb0c1713a9a6",
+##     "c24270f3fa48706e",
+##     "6e365980216c917e",
 ## ]
 ## short_externs = [
 ##     "e976848f96abbbd4",
 ##     "087afb0c1713a9a6",
 ## ]
+## buildrs_results = ["6e365980216c917e"]
 ## writes = [
 ##     "libnix-4ee318c191cb8959.rlib",
 ##     "libnix-4ee318c191cb8959.rmeta",
@@ -5894,6 +8227,8 @@ COPY --link --from=dep-n-socketcan-1.7.0-7d72679ab99cdbe3 /tmp/clis-dbcc_2-2-1/r
 ##     "4ee318c191cb8959",
 ##     "e976848f96abbbd4",
 ##     "35b125c45c1cafb3",
+##     "c24270f3fa48706e",
+##     "6e365980216c917e",
 ## ]
 ## short_externs = [
 ##     "f065076cf799d91a",
@@ -5903,6 +8238,7 @@ COPY --link --from=dep-n-socketcan-1.7.0-7d72679ab99cdbe3 /tmp/clis-dbcc_2-2-1/r
 ##     "e976848f96abbbd4",
 ##     "35b125c45c1cafb3",
 ## ]
+## buildrs_results = ["6e365980216c917e"]
 ## writes = [
 ##     "libsocketcan-7d72679ab99cdbe3.rlib",
 ##     "libsocketcan-7d72679ab99cdbe3.rmeta",
@@ -6167,11 +8503,276 @@ COPY --link --from=dep-n-ansi_term-0.11.0-320ef4b8ee2e57f9 /tmp/clis-dbcc_2-2-1/
 FROM scratch AS cratesio-bitflags-1.2.1
 ADD --chmod=0664 --unpack --checksum=sha256:cf1de2fe8c75bc145a2f577add951f8134889b4795d47466a54a5c846d691693 \
   https://static.crates.io/crates/bitflags/bitflags-1.2.1.crate /
+FROM rust-base AS dep-x-bitflags-1.2.1-432a3f8b7eb878d8
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-dbcc_2-2-1/release/build/bitflags-432a3f8b7eb878d8
+RUN \
+  --mount=from=cratesio-bitflags-1.2.1,source=/bitflags-1.2.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bitflags-1.2.1,rw \
+    { \
+        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bitflags-1.2.1/build.rs | sed 's/fn main/fn actual_432a3f8b7eb878d8_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bitflags-1.2.1/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bitflags-1.2.1/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bitflags-1.2.1/build.rs ; \
+        { \
+          echo ; \
+          echo 'fn main() {' ; \
+          echo '    use std::env::{args_os, var_os};' ; \
+          echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+          echo '        use std::process::{Command, Stdio};' ; \
+          echo '        let mut cmd = Command::new("cargo-green");' ; \
+          echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+          echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+          echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+          echo '        assert!(res.success());' ; \
+          echo '    } else {' ; \
+          echo '        actual_432a3f8b7eb878d8_main()' ; \
+          echo '    }' ; \
+          echo '}' ; \
+        } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bitflags-1.2.1/build.rs ; \
+    } && \
+    env CARGO="$(which cargo)" \
+        CARGO_CRATE_NAME="build_script_build" \
+        CARGO_INCREMENTAL="0" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bitflags-1.2.1" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bitflags-1.2.1/Cargo.toml" \
+        CARGO_PKG_AUTHORS="The Rust Project Developers" \
+        CARGO_PKG_DESCRIPTION="A macro to generate structures which behave like bitflags.\n" \
+        CARGO_PKG_HOMEPAGE="https://github.com/bitflags/bitflags" \
+        CARGO_PKG_LICENSE="MIT/Apache-2.0" \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME="bitflags" \
+        CARGO_PKG_README="README.md" \
+        CARGO_PKG_REPOSITORY="https://github.com/bitflags/bitflags" \
+        CARGO_PKG_RUST_VERSION= \
+        CARGO_PKG_VERSION="1.2.1" \
+        CARGO_PKG_VERSION_MAJOR="1" \
+        CARGO_PKG_VERSION_MINOR="2" \
+        CARGO_PKG_VERSION_PATCH="1" \
+        CARGO_PKG_VERSION_PRE= \
+        CARGOGREEN=1 \
+      rustc '--crate-name' 'build_script_build' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'bin' '--emit' 'dep-info,link' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--cfg' 'feature="default"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "example_generated"))' '-C' 'metadata=d9a6e52780498a75' '-C' 'extra-filename=-432a3f8b7eb878d8' '--out-dir' '/tmp/clis-dbcc_2-2-1/release/build/bitflags-432a3f8b7eb878d8' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-dbcc_2-2-1/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bitflags-1.2.1/build.rs \
+        1>          /tmp/clis-dbcc_2-2-1/release/build/bitflags-432a3f8b7eb878d8/out-432a3f8b7eb878d8-stdout \
+        2>          /tmp/clis-dbcc_2-2-1/release/build/bitflags-432a3f8b7eb878d8/out-432a3f8b7eb878d8-stderr \
+        || echo $? >/tmp/clis-dbcc_2-2-1/release/build/bitflags-432a3f8b7eb878d8/out-432a3f8b7eb878d8-errcode\
+  ; find /tmp/clis-dbcc_2-2-1/release/build/bitflags-432a3f8b7eb878d8/*-432a3f8b7eb878d8* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-432a3f8b7eb878d8
+COPY --link --from=dep-x-bitflags-1.2.1-432a3f8b7eb878d8 /tmp/clis-dbcc_2-2-1/release/build/bitflags-432a3f8b7eb878d8/*-432a3f8b7eb878d8* /
+
+## this = "432a3f8b7eb878d8"
+## writes = [
+##     "build_script_build-432a3f8b7eb878d8",
+##     "build_script_build-432a3f8b7eb878d8.d",
+## ]
+## stderr = [
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-dbcc_2-2-1/release/build/bitflags-432a3f8b7eb878d8/build_script_build-432a3f8b7eb878d8.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-dbcc_2-2-1/release/build/bitflags-432a3f8b7eb878d8/build_script_build-432a3f8b7eb878d8","emit":"link"}',
+## ]
+##
+## [[stages]]
+## name = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.86.0-slim@sha256:57d415bbd61ce11e2d5f73de068103c7bd9f3188dc132c97cef4a8f62989e944 AS rust-base"
+##
+## [[stages]]
+## name = "cratesio-bitflags-1.2.1"
+## script = '''
+## FROM scratch AS cratesio-bitflags-1.2.1
+## ADD --chmod=0664 --unpack --checksum=sha256:cf1de2fe8c75bc145a2f577add951f8134889b4795d47466a54a5c846d691693 \
+##   https://static.crates.io/crates/bitflags/bitflags-1.2.1.crate /'''
+##
+## [[stages]]
+## name = "dep-x-bitflags-1.2.1-432a3f8b7eb878d8"
+## script = '''
+## FROM rust-base AS dep-x-bitflags-1.2.1-432a3f8b7eb878d8
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-dbcc_2-2-1/release/build/bitflags-432a3f8b7eb878d8
+## RUN \
+##   --mount=from=cratesio-bitflags-1.2.1,source=/bitflags-1.2.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bitflags-1.2.1,rw \
+##     { \
+##         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bitflags-1.2.1/build.rs | sed 's/fn main/fn actual_432a3f8b7eb878d8_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bitflags-1.2.1/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bitflags-1.2.1/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bitflags-1.2.1/build.rs ; \
+##         { \
+##           echo ; \
+##           echo 'fn main() {' ; \
+##           echo '    use std::env::{args_os, var_os};' ; \
+##           echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+##           echo '        use std::process::{Command, Stdio};' ; \
+##           echo '        let mut cmd = Command::new("cargo-green");' ; \
+##           echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+##           echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+##           echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+##           echo '        assert!(res.success());' ; \
+##           echo '    } else {' ; \
+##           echo '        actual_432a3f8b7eb878d8_main()' ; \
+##           echo '    }' ; \
+##           echo '}' ; \
+##         } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bitflags-1.2.1/build.rs ; \
+##     } && \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CRATE_NAME="build_script_build" \
+##         CARGO_INCREMENTAL="0" \
+##         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bitflags-1.2.1" \
+##         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bitflags-1.2.1/Cargo.toml" \
+##         CARGO_PKG_AUTHORS="The Rust Project Developers" \
+##         CARGO_PKG_DESCRIPTION="A macro to generate structures which behave like bitflags.\n" \
+##         CARGO_PKG_HOMEPAGE="https://github.com/bitflags/bitflags" \
+##         CARGO_PKG_LICENSE="MIT/Apache-2.0" \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME="bitflags" \
+##         CARGO_PKG_README="README.md" \
+##         CARGO_PKG_REPOSITORY="https://github.com/bitflags/bitflags" \
+##         CARGO_PKG_RUST_VERSION= \
+##         CARGO_PKG_VERSION="1.2.1" \
+##         CARGO_PKG_VERSION_MAJOR="1" \
+##         CARGO_PKG_VERSION_MINOR="2" \
+##         CARGO_PKG_VERSION_PATCH="1" \
+##         CARGO_PKG_VERSION_PRE= \
+##         CARGOGREEN=1 \
+##       rustc '--crate-name' 'build_script_build' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'bin' '--emit' 'dep-info,link' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--cfg' 'feature="default"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "example_generated"))' '-C' 'metadata=d9a6e52780498a75' '-C' 'extra-filename=-432a3f8b7eb878d8' '--out-dir' '/tmp/clis-dbcc_2-2-1/release/build/bitflags-432a3f8b7eb878d8' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-dbcc_2-2-1/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bitflags-1.2.1/build.rs \
+##         1>          /tmp/clis-dbcc_2-2-1/release/build/bitflags-432a3f8b7eb878d8/out-432a3f8b7eb878d8-stdout \
+##         2>          /tmp/clis-dbcc_2-2-1/release/build/bitflags-432a3f8b7eb878d8/out-432a3f8b7eb878d8-stderr \
+##         || echo $? >/tmp/clis-dbcc_2-2-1/release/build/bitflags-432a3f8b7eb878d8/out-432a3f8b7eb878d8-errcode\
+##   ; find /tmp/clis-dbcc_2-2-1/release/build/bitflags-432a3f8b7eb878d8/*-432a3f8b7eb878d8* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+## name = "out-432a3f8b7eb878d8"
+## script = """
+## FROM scratch AS out-432a3f8b7eb878d8
+## COPY --link --from=dep-x-bitflags-1.2.1-432a3f8b7eb878d8 /tmp/clis-dbcc_2-2-1/release/build/bitflags-432a3f8b7eb878d8/*-432a3f8b7eb878d8* /"""
+
+FROM rust-base AS run-z-bitflags-1.2.1-57d98863263b7a3c
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-dbcc_2-2-1/release/build/bitflags-57d98863263b7a3c/out
+WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bitflags-1.2.1
+RUN \
+  --mount=from=out-432a3f8b7eb878d8,source=/build_script_build-432a3f8b7eb878d8,dst=/tmp/clis-dbcc_2-2-1/release/build/bitflags-432a3f8b7eb878d8/build-script-build \
+  --mount=from=cratesio-bitflags-1.2.1,source=/bitflags-1.2.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bitflags-1.2.1 \
+    env CARGO="$(which cargo)" \
+        CARGO_CFG_FEATURE="default" \
+        CARGO_CFG_PANIC="unwind" \
+        CARGO_CFG_TARGET_ABI= \
+        CARGO_CFG_TARGET_ARCH="x86_64" \
+        CARGO_CFG_TARGET_ENDIAN="little" \
+        CARGO_CFG_TARGET_ENV="gnu" \
+        CARGO_CFG_TARGET_FAMILY="unix" \
+        CARGO_CFG_TARGET_FEATURE="fxsr,sse,sse2" \
+        CARGO_CFG_TARGET_HAS_ATOMIC="16,32,64,8,ptr" \
+        CARGO_CFG_TARGET_OS="linux" \
+        CARGO_CFG_TARGET_POINTER_WIDTH="64" \
+        CARGO_CFG_TARGET_VENDOR="unknown" \
+        CARGO_CFG_UNIX= \
+        CARGO_ENCODED_RUSTFLAGS= \
+        CARGO_FEATURE_DEFAULT="1" \
+        CARGO_INCREMENTAL="0" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bitflags-1.2.1" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bitflags-1.2.1/Cargo.toml" \
+        CARGO_PKG_AUTHORS="The Rust Project Developers" \
+        CARGO_PKG_DESCRIPTION="A macro to generate structures which behave like bitflags.\n" \
+        CARGO_PKG_HOMEPAGE="https://github.com/bitflags/bitflags" \
+        CARGO_PKG_LICENSE="MIT/Apache-2.0" \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME="bitflags" \
+        CARGO_PKG_README="README.md" \
+        CARGO_PKG_REPOSITORY="https://github.com/bitflags/bitflags" \
+        CARGO_PKG_RUST_VERSION= \
+        CARGO_PKG_VERSION="1.2.1" \
+        CARGO_PKG_VERSION_MAJOR="1" \
+        CARGO_PKG_VERSION_MINOR="2" \
+        CARGO_PKG_VERSION_PATCH="1" \
+        CARGO_PKG_VERSION_PRE= \
+        DEBUG="false" \
+        HOST="x86_64-unknown-linux-gnu" \
+        NUM_JOBS="4" \
+        OPT_LEVEL="3" \
+        OUT_DIR="/tmp/clis-dbcc_2-2-1/release/build/bitflags-57d98863263b7a3c/out" \
+        PROFILE="release" \
+        RUSTC=rustc \
+        RUSTDOC="/home/runner/.rustup/toolchains/1.86.0-x86_64-unknown-linux-gnu/bin/rustdoc" \
+        TARGET="x86_64-unknown-linux-gnu" \
+        CARGOGREEN=1 \
+      CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-dbcc_2-2-1/release/build/bitflags-432a3f8b7eb878d8/build-script-build \
+        1>          /tmp/clis-dbcc_2-2-1/release/build/bitflags-57d98863263b7a3c/out/ran-57d98863263b7a3c-stdout \
+        2>          /tmp/clis-dbcc_2-2-1/release/build/bitflags-57d98863263b7a3c/out/ran-57d98863263b7a3c-stderr \
+        || echo $? >/tmp/clis-dbcc_2-2-1/release/build/bitflags-57d98863263b7a3c/out/ran-57d98863263b7a3c-errcode\
+  ; find /tmp/clis-dbcc_2-2-1/release/build/bitflags-57d98863263b7a3c/out/*-57d98863263b7a3c* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS ran-57d98863263b7a3c
+COPY --link --from=run-z-bitflags-1.2.1-57d98863263b7a3c /tmp/clis-dbcc_2-2-1/release/build/bitflags-57d98863263b7a3c/out/* /
+
+## this = "57d98863263b7a3c"
+## deps = ["432a3f8b7eb878d8"]
+## stdout = ["cargo:rustc-cfg=bitflags_const_fn"]
+##
+## [[stages]]
+## name = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.86.0-slim@sha256:57d415bbd61ce11e2d5f73de068103c7bd9f3188dc132c97cef4a8f62989e944 AS rust-base"
+##
+## [[stages]]
+## name = "run-z-bitflags-1.2.1-57d98863263b7a3c"
+## script = '''
+## FROM rust-base AS run-z-bitflags-1.2.1-57d98863263b7a3c
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-dbcc_2-2-1/release/build/bitflags-57d98863263b7a3c/out
+## WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bitflags-1.2.1
+## RUN \
+##   --mount=from=out-432a3f8b7eb878d8,source=/build_script_build-432a3f8b7eb878d8,dst=/tmp/clis-dbcc_2-2-1/release/build/bitflags-432a3f8b7eb878d8/build-script-build \
+##   --mount=from=cratesio-bitflags-1.2.1,source=/bitflags-1.2.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bitflags-1.2.1 \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CFG_FEATURE="default" \
+##         CARGO_CFG_PANIC="unwind" \
+##         CARGO_CFG_TARGET_ABI= \
+##         CARGO_CFG_TARGET_ARCH="x86_64" \
+##         CARGO_CFG_TARGET_ENDIAN="little" \
+##         CARGO_CFG_TARGET_ENV="gnu" \
+##         CARGO_CFG_TARGET_FAMILY="unix" \
+##         CARGO_CFG_TARGET_FEATURE="fxsr,sse,sse2" \
+##         CARGO_CFG_TARGET_HAS_ATOMIC="16,32,64,8,ptr" \
+##         CARGO_CFG_TARGET_OS="linux" \
+##         CARGO_CFG_TARGET_POINTER_WIDTH="64" \
+##         CARGO_CFG_TARGET_VENDOR="unknown" \
+##         CARGO_CFG_UNIX= \
+##         CARGO_ENCODED_RUSTFLAGS= \
+##         CARGO_FEATURE_DEFAULT="1" \
+##         CARGO_INCREMENTAL="0" \
+##         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bitflags-1.2.1" \
+##         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bitflags-1.2.1/Cargo.toml" \
+##         CARGO_PKG_AUTHORS="The Rust Project Developers" \
+##         CARGO_PKG_DESCRIPTION="A macro to generate structures which behave like bitflags.\n" \
+##         CARGO_PKG_HOMEPAGE="https://github.com/bitflags/bitflags" \
+##         CARGO_PKG_LICENSE="MIT/Apache-2.0" \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME="bitflags" \
+##         CARGO_PKG_README="README.md" \
+##         CARGO_PKG_REPOSITORY="https://github.com/bitflags/bitflags" \
+##         CARGO_PKG_RUST_VERSION= \
+##         CARGO_PKG_VERSION="1.2.1" \
+##         CARGO_PKG_VERSION_MAJOR="1" \
+##         CARGO_PKG_VERSION_MINOR="2" \
+##         CARGO_PKG_VERSION_PATCH="1" \
+##         CARGO_PKG_VERSION_PRE= \
+##         DEBUG="false" \
+##         HOST="x86_64-unknown-linux-gnu" \
+##         NUM_JOBS="4" \
+##         OPT_LEVEL="3" \
+##         OUT_DIR="/tmp/clis-dbcc_2-2-1/release/build/bitflags-57d98863263b7a3c/out" \
+##         PROFILE="release" \
+##         RUSTC=rustc \
+##         RUSTDOC="/home/runner/.rustup/toolchains/1.86.0-x86_64-unknown-linux-gnu/bin/rustdoc" \
+##         TARGET="x86_64-unknown-linux-gnu" \
+##         CARGOGREEN=1 \
+##       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-dbcc_2-2-1/release/build/bitflags-432a3f8b7eb878d8/build-script-build \
+##         1>          /tmp/clis-dbcc_2-2-1/release/build/bitflags-57d98863263b7a3c/out/ran-57d98863263b7a3c-stdout \
+##         2>          /tmp/clis-dbcc_2-2-1/release/build/bitflags-57d98863263b7a3c/out/ran-57d98863263b7a3c-stderr \
+##         || echo $? >/tmp/clis-dbcc_2-2-1/release/build/bitflags-57d98863263b7a3c/out/ran-57d98863263b7a3c-errcode\
+##   ; find /tmp/clis-dbcc_2-2-1/release/build/bitflags-57d98863263b7a3c/out/*-57d98863263b7a3c* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+## name = "ran-57d98863263b7a3c"
+## script = """
+## FROM scratch AS ran-57d98863263b7a3c
+## COPY --link --from=run-z-bitflags-1.2.1-57d98863263b7a3c /tmp/clis-dbcc_2-2-1/release/build/bitflags-57d98863263b7a3c/out/* /"""
+
+
 FROM rust-base AS dep-n-bitflags-1.2.1-d19718ebe5a0c815
 SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 RUN \
   --mount=from=cratesio-bitflags-1.2.1,source=/bitflags-1.2.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bitflags-1.2.1 \
+  --mount=from=ran-57d98863263b7a3c,dst=/tmp/clis-dbcc_2-2-1/release/build/bitflags-57d98863263b7a3c/out,source=/ \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="bitflags" \
         CARGO_INCREMENTAL="0" \
@@ -6202,6 +8803,11 @@ FROM scratch AS out-d19718ebe5a0c815
 COPY --link --from=dep-n-bitflags-1.2.1-d19718ebe5a0c815 /tmp/clis-dbcc_2-2-1/release/deps/*-d19718ebe5a0c815* /
 
 ## this = "d19718ebe5a0c815"
+## deps = [
+##     "57d98863263b7a3c",
+##     "432a3f8b7eb878d8",
+## ]
+## buildrs_results = ["57d98863263b7a3c"]
 ## writes = [
 ##     "bitflags-d19718ebe5a0c815.d",
 ##     "libbitflags-d19718ebe5a0c815.rlib",
@@ -6215,6 +8821,11 @@ COPY --link --from=dep-n-bitflags-1.2.1-d19718ebe5a0c815 /tmp/clis-dbcc_2-2-1/re
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-dbcc_2-2-1/release/deps/libbitflags-d19718ebe5a0c815.rlib","emit":"link"}',
 ##     '{"$message_type":"diagnostic","message":"2 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 2 warnings emitted\u001b[0m\n\n"}',
 ## ]
+##
+## [[mounts]]
+## name = "ran-57d98863263b7a3c"
+## src = "/"
+## dst = "/tmp/clis-dbcc_2-2-1/release/build/bitflags-57d98863263b7a3c/out"
 ##
 ## [[stages]]
 ## name = "rust-base"
@@ -6235,6 +8846,7 @@ COPY --link --from=dep-n-bitflags-1.2.1-d19718ebe5a0c815 /tmp/clis-dbcc_2-2-1/re
 ## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
 ## RUN \
 ##   --mount=from=cratesio-bitflags-1.2.1,source=/bitflags-1.2.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bitflags-1.2.1 \
+##   --mount=from=ran-57d98863263b7a3c,dst=/tmp/clis-dbcc_2-2-1/release/build/bitflags-57d98863263b7a3c/out,source=/ \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="bitflags" \
 ##         CARGO_INCREMENTAL="0" \
@@ -6744,6 +9356,10 @@ COPY --link --from=dep-n-clap-2.33.3-5a839c872643e159 /tmp/clis-dbcc_2-2-1/relea
 ##     "b7e82f41d8b26a14",
 ##     "e55c633902343b3a",
 ##     "3fc8ab5befc6e8f4",
+##     "c24270f3fa48706e",
+##     "6e365980216c917e",
+##     "432a3f8b7eb878d8",
+##     "57d98863263b7a3c",
 ## ]
 ## short_externs = [
 ##     "320ef4b8ee2e57f9",
@@ -6754,6 +9370,10 @@ COPY --link --from=dep-n-clap-2.33.3-5a839c872643e159 /tmp/clis-dbcc_2-2-1/relea
 ##     "b7e82f41d8b26a14",
 ##     "e55c633902343b3a",
 ##     "3fc8ab5befc6e8f4",
+## ]
+## buildrs_results = [
+##     "6e365980216c917e",
+##     "57d98863263b7a3c",
 ## ]
 ## writes = [
 ##     "clap-5a839c872643e159.d",
@@ -7192,9 +9812,380 @@ COPY --link --from=dep-n-heck-0.3.1-41892b3573d1a97c /tmp/clis-dbcc_2-2-1/releas
 ## FROM scratch AS out-41892b3573d1a97c
 ## COPY --link --from=dep-n-heck-0.3.1-41892b3573d1a97c /tmp/clis-dbcc_2-2-1/release/deps/*-41892b3573d1a97c* /"""
 
+FROM scratch AS cratesio-version_check-0.9.2
+ADD --chmod=0664 --unpack --checksum=sha256:b5a972e5669d67ba988ce3dc826706fb0a8b01471c088cb0b6110b805cc36aed \
+  https://static.crates.io/crates/version_check/version_check-0.9.2.crate /
+FROM rust-base AS dep-n-version_check-0.9.2-60fca3ce4f4c7ac9
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
+RUN \
+  --mount=from=cratesio-version_check-0.9.2,source=/version_check-0.9.2,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/version_check-0.9.2 \
+    env CARGO="$(which cargo)" \
+        CARGO_CRATE_NAME="version_check" \
+        CARGO_INCREMENTAL="0" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/version_check-0.9.2" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/version_check-0.9.2/Cargo.toml" \
+        CARGO_PKG_AUTHORS="Sergio Benitez <sb@sergio.bz>" \
+        CARGO_PKG_DESCRIPTION="Tiny crate to check the version of the installed/running rustc." \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE="MIT/Apache-2.0" \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME="version_check" \
+        CARGO_PKG_README="README.md" \
+        CARGO_PKG_REPOSITORY="https://github.com/SergioBenitez/version_check" \
+        CARGO_PKG_RUST_VERSION= \
+        CARGO_PKG_VERSION="0.9.2" \
+        CARGO_PKG_VERSION_MAJOR="0" \
+        CARGO_PKG_VERSION_MINOR="9" \
+        CARGO_PKG_VERSION_PATCH="2" \
+        CARGO_PKG_VERSION_PRE= \
+        CARGOGREEN=1 \
+      rustc '--crate-name' 'version_check' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=fe93cedea1189829' '-C' 'extra-filename=-60fca3ce4f4c7ac9' '--out-dir' '/tmp/clis-dbcc_2-2-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-dbcc_2-2-1/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/version_check-0.9.2/src/lib.rs \
+        1>          /tmp/clis-dbcc_2-2-1/release/deps/out-60fca3ce4f4c7ac9-stdout \
+        2>          /tmp/clis-dbcc_2-2-1/release/deps/out-60fca3ce4f4c7ac9-stderr \
+        || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-60fca3ce4f4c7ac9-errcode\
+  ; find /tmp/clis-dbcc_2-2-1/release/deps/*-60fca3ce4f4c7ac9* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-60fca3ce4f4c7ac9
+COPY --link --from=dep-n-version_check-0.9.2-60fca3ce4f4c7ac9 /tmp/clis-dbcc_2-2-1/release/deps/*-60fca3ce4f4c7ac9* /
+
+## this = "60fca3ce4f4c7ac9"
+## writes = [
+##     "libversion_check-60fca3ce4f4c7ac9.rlib",
+##     "libversion_check-60fca3ce4f4c7ac9.rmeta",
+##     "version_check-60fca3ce4f4c7ac9.d",
+## ]
+## stderr = [
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-dbcc_2-2-1/release/deps/version_check-60fca3ce4f4c7ac9.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-dbcc_2-2-1/release/deps/libversion_check-60fca3ce4f4c7ac9.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-dbcc_2-2-1/release/deps/libversion_check-60fca3ce4f4c7ac9.rlib","emit":"link"}',
+## ]
+##
+## [[stages]]
+## name = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.86.0-slim@sha256:57d415bbd61ce11e2d5f73de068103c7bd9f3188dc132c97cef4a8f62989e944 AS rust-base"
+##
+## [[stages]]
+## name = "cratesio-version_check-0.9.2"
+## script = '''
+## FROM scratch AS cratesio-version_check-0.9.2
+## ADD --chmod=0664 --unpack --checksum=sha256:b5a972e5669d67ba988ce3dc826706fb0a8b01471c088cb0b6110b805cc36aed \
+##   https://static.crates.io/crates/version_check/version_check-0.9.2.crate /'''
+##
+## [[stages]]
+## name = "dep-n-version_check-0.9.2-60fca3ce4f4c7ac9"
+## script = '''
+## FROM rust-base AS dep-n-version_check-0.9.2-60fca3ce4f4c7ac9
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
+## RUN \
+##   --mount=from=cratesio-version_check-0.9.2,source=/version_check-0.9.2,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/version_check-0.9.2 \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CRATE_NAME="version_check" \
+##         CARGO_INCREMENTAL="0" \
+##         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/version_check-0.9.2" \
+##         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/version_check-0.9.2/Cargo.toml" \
+##         CARGO_PKG_AUTHORS="Sergio Benitez <sb@sergio.bz>" \
+##         CARGO_PKG_DESCRIPTION="Tiny crate to check the version of the installed/running rustc." \
+##         CARGO_PKG_HOMEPAGE= \
+##         CARGO_PKG_LICENSE="MIT/Apache-2.0" \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME="version_check" \
+##         CARGO_PKG_README="README.md" \
+##         CARGO_PKG_REPOSITORY="https://github.com/SergioBenitez/version_check" \
+##         CARGO_PKG_RUST_VERSION= \
+##         CARGO_PKG_VERSION="0.9.2" \
+##         CARGO_PKG_VERSION_MAJOR="0" \
+##         CARGO_PKG_VERSION_MINOR="9" \
+##         CARGO_PKG_VERSION_PATCH="2" \
+##         CARGO_PKG_VERSION_PRE= \
+##         CARGOGREEN=1 \
+##       rustc '--crate-name' 'version_check' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=fe93cedea1189829' '-C' 'extra-filename=-60fca3ce4f4c7ac9' '--out-dir' '/tmp/clis-dbcc_2-2-1/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-dbcc_2-2-1/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/version_check-0.9.2/src/lib.rs \
+##         1>          /tmp/clis-dbcc_2-2-1/release/deps/out-60fca3ce4f4c7ac9-stdout \
+##         2>          /tmp/clis-dbcc_2-2-1/release/deps/out-60fca3ce4f4c7ac9-stderr \
+##         || echo $? >/tmp/clis-dbcc_2-2-1/release/deps/out-60fca3ce4f4c7ac9-errcode\
+##   ; find /tmp/clis-dbcc_2-2-1/release/deps/*-60fca3ce4f4c7ac9* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+## name = "out-60fca3ce4f4c7ac9"
+## script = """
+## FROM scratch AS out-60fca3ce4f4c7ac9
+## COPY --link --from=dep-n-version_check-0.9.2-60fca3ce4f4c7ac9 /tmp/clis-dbcc_2-2-1/release/deps/*-60fca3ce4f4c7ac9* /"""
+
 FROM scratch AS cratesio-proc-macro-error-attr-1.0.4
 ADD --chmod=0664 --unpack --checksum=sha256:a1be40180e52ecc98ad80b184934baf3d0d29f979574e439af5a55274b35f869 \
   https://static.crates.io/crates/proc-macro-error-attr/proc-macro-error-attr-1.0.4.crate /
+FROM rust-base AS dep-x-proc-macro-error-attr-1.0.4-a8c1169fdce9c43a
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-dbcc_2-2-1/release/build/proc-macro-error-attr-a8c1169fdce9c43a
+RUN \
+  --mount=from=cratesio-proc-macro-error-attr-1.0.4,source=/proc-macro-error-attr-1.0.4,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro-error-attr-1.0.4,rw \
+  --mount=from=out-60fca3ce4f4c7ac9,dst=/tmp/clis-dbcc_2-2-1/release/deps/libversion_check-60fca3ce4f4c7ac9.rlib,source=/libversion_check-60fca3ce4f4c7ac9.rlib \
+    { \
+        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro-error-attr-1.0.4/build.rs | sed 's/fn main/fn actual_a8c1169fdce9c43a_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro-error-attr-1.0.4/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro-error-attr-1.0.4/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro-error-attr-1.0.4/build.rs ; \
+        { \
+          echo ; \
+          echo 'fn main() {' ; \
+          echo '    use std::env::{args_os, var_os};' ; \
+          echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+          echo '        use std::process::{Command, Stdio};' ; \
+          echo '        let mut cmd = Command::new("cargo-green");' ; \
+          echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+          echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+          echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+          echo '        assert!(res.success());' ; \
+          echo '    } else {' ; \
+          echo '        actual_a8c1169fdce9c43a_main()' ; \
+          echo '    }' ; \
+          echo '}' ; \
+        } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro-error-attr-1.0.4/build.rs ; \
+    } && \
+    env CARGO="$(which cargo)" \
+        CARGO_CRATE_NAME="build_script_build" \
+        CARGO_INCREMENTAL="0" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro-error-attr-1.0.4" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro-error-attr-1.0.4/Cargo.toml" \
+        CARGO_PKG_AUTHORS="CreepySkeleton <creepy-skeleton@yandex.ru>" \
+        CARGO_PKG_DESCRIPTION="Attribute macro for proc-macro-error crate" \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE="MIT OR Apache-2.0" \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME="proc-macro-error-attr" \
+        CARGO_PKG_README= \
+        CARGO_PKG_REPOSITORY="https://gitlab.com/CreepySkeleton/proc-macro-error" \
+        CARGO_PKG_RUST_VERSION= \
+        CARGO_PKG_VERSION="1.0.4" \
+        CARGO_PKG_VERSION_MAJOR="1" \
+        CARGO_PKG_VERSION_MINOR="0" \
+        CARGO_PKG_VERSION_PATCH="4" \
+        CARGO_PKG_VERSION_PRE= \
+        CARGOGREEN=1 \
+      rustc '--crate-name' 'build_script_build' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'bin' '--emit' 'dep-info,link' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=5e80a959c8fc5243' '-C' 'extra-filename=-a8c1169fdce9c43a' '--out-dir' '/tmp/clis-dbcc_2-2-1/release/build/proc-macro-error-attr-a8c1169fdce9c43a' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-dbcc_2-2-1/release/deps' '--extern' 'version_check=/tmp/clis-dbcc_2-2-1/release/deps/libversion_check-60fca3ce4f4c7ac9.rlib' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro-error-attr-1.0.4/build.rs \
+        1>          /tmp/clis-dbcc_2-2-1/release/build/proc-macro-error-attr-a8c1169fdce9c43a/out-a8c1169fdce9c43a-stdout \
+        2>          /tmp/clis-dbcc_2-2-1/release/build/proc-macro-error-attr-a8c1169fdce9c43a/out-a8c1169fdce9c43a-stderr \
+        || echo $? >/tmp/clis-dbcc_2-2-1/release/build/proc-macro-error-attr-a8c1169fdce9c43a/out-a8c1169fdce9c43a-errcode\
+  ; find /tmp/clis-dbcc_2-2-1/release/build/proc-macro-error-attr-a8c1169fdce9c43a/*-a8c1169fdce9c43a* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-a8c1169fdce9c43a
+COPY --link --from=dep-x-proc-macro-error-attr-1.0.4-a8c1169fdce9c43a /tmp/clis-dbcc_2-2-1/release/build/proc-macro-error-attr-a8c1169fdce9c43a/*-a8c1169fdce9c43a* /
+
+## this = "a8c1169fdce9c43a"
+## deps = ["60fca3ce4f4c7ac9"]
+## short_externs = ["60fca3ce4f4c7ac9"]
+## writes = [
+##     "build_script_build-a8c1169fdce9c43a",
+##     "build_script_build-a8c1169fdce9c43a.d",
+## ]
+## stderr = [
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-dbcc_2-2-1/release/build/proc-macro-error-attr-a8c1169fdce9c43a/build_script_build-a8c1169fdce9c43a.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-dbcc_2-2-1/release/build/proc-macro-error-attr-a8c1169fdce9c43a/build_script_build-a8c1169fdce9c43a","emit":"link"}',
+## ]
+##
+## [[externs]]
+## from = "out-60fca3ce4f4c7ac9"
+## xtern = "libversion_check-60fca3ce4f4c7ac9.rlib"
+##
+## [[stages]]
+## name = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.86.0-slim@sha256:57d415bbd61ce11e2d5f73de068103c7bd9f3188dc132c97cef4a8f62989e944 AS rust-base"
+##
+## [[stages]]
+## name = "cratesio-proc-macro-error-attr-1.0.4"
+## script = '''
+## FROM scratch AS cratesio-proc-macro-error-attr-1.0.4
+## ADD --chmod=0664 --unpack --checksum=sha256:a1be40180e52ecc98ad80b184934baf3d0d29f979574e439af5a55274b35f869 \
+##   https://static.crates.io/crates/proc-macro-error-attr/proc-macro-error-attr-1.0.4.crate /'''
+##
+## [[stages]]
+## name = "dep-x-proc-macro-error-attr-1.0.4-a8c1169fdce9c43a"
+## script = '''
+## FROM rust-base AS dep-x-proc-macro-error-attr-1.0.4-a8c1169fdce9c43a
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-dbcc_2-2-1/release/build/proc-macro-error-attr-a8c1169fdce9c43a
+## RUN \
+##   --mount=from=cratesio-proc-macro-error-attr-1.0.4,source=/proc-macro-error-attr-1.0.4,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro-error-attr-1.0.4,rw \
+##   --mount=from=out-60fca3ce4f4c7ac9,dst=/tmp/clis-dbcc_2-2-1/release/deps/libversion_check-60fca3ce4f4c7ac9.rlib,source=/libversion_check-60fca3ce4f4c7ac9.rlib \
+##     { \
+##         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro-error-attr-1.0.4/build.rs | sed 's/fn main/fn actual_a8c1169fdce9c43a_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro-error-attr-1.0.4/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro-error-attr-1.0.4/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro-error-attr-1.0.4/build.rs ; \
+##         { \
+##           echo ; \
+##           echo 'fn main() {' ; \
+##           echo '    use std::env::{args_os, var_os};' ; \
+##           echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+##           echo '        use std::process::{Command, Stdio};' ; \
+##           echo '        let mut cmd = Command::new("cargo-green");' ; \
+##           echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+##           echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+##           echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+##           echo '        assert!(res.success());' ; \
+##           echo '    } else {' ; \
+##           echo '        actual_a8c1169fdce9c43a_main()' ; \
+##           echo '    }' ; \
+##           echo '}' ; \
+##         } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro-error-attr-1.0.4/build.rs ; \
+##     } && \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CRATE_NAME="build_script_build" \
+##         CARGO_INCREMENTAL="0" \
+##         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro-error-attr-1.0.4" \
+##         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro-error-attr-1.0.4/Cargo.toml" \
+##         CARGO_PKG_AUTHORS="CreepySkeleton <creepy-skeleton@yandex.ru>" \
+##         CARGO_PKG_DESCRIPTION="Attribute macro for proc-macro-error crate" \
+##         CARGO_PKG_HOMEPAGE= \
+##         CARGO_PKG_LICENSE="MIT OR Apache-2.0" \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME="proc-macro-error-attr" \
+##         CARGO_PKG_README= \
+##         CARGO_PKG_REPOSITORY="https://gitlab.com/CreepySkeleton/proc-macro-error" \
+##         CARGO_PKG_RUST_VERSION= \
+##         CARGO_PKG_VERSION="1.0.4" \
+##         CARGO_PKG_VERSION_MAJOR="1" \
+##         CARGO_PKG_VERSION_MINOR="0" \
+##         CARGO_PKG_VERSION_PATCH="4" \
+##         CARGO_PKG_VERSION_PRE= \
+##         CARGOGREEN=1 \
+##       rustc '--crate-name' 'build_script_build' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'bin' '--emit' 'dep-info,link' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=5e80a959c8fc5243' '-C' 'extra-filename=-a8c1169fdce9c43a' '--out-dir' '/tmp/clis-dbcc_2-2-1/release/build/proc-macro-error-attr-a8c1169fdce9c43a' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-dbcc_2-2-1/release/deps' '--extern' 'version_check=/tmp/clis-dbcc_2-2-1/release/deps/libversion_check-60fca3ce4f4c7ac9.rlib' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro-error-attr-1.0.4/build.rs \
+##         1>          /tmp/clis-dbcc_2-2-1/release/build/proc-macro-error-attr-a8c1169fdce9c43a/out-a8c1169fdce9c43a-stdout \
+##         2>          /tmp/clis-dbcc_2-2-1/release/build/proc-macro-error-attr-a8c1169fdce9c43a/out-a8c1169fdce9c43a-stderr \
+##         || echo $? >/tmp/clis-dbcc_2-2-1/release/build/proc-macro-error-attr-a8c1169fdce9c43a/out-a8c1169fdce9c43a-errcode\
+##   ; find /tmp/clis-dbcc_2-2-1/release/build/proc-macro-error-attr-a8c1169fdce9c43a/*-a8c1169fdce9c43a* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+## name = "out-a8c1169fdce9c43a"
+## script = """
+## FROM scratch AS out-a8c1169fdce9c43a
+## COPY --link --from=dep-x-proc-macro-error-attr-1.0.4-a8c1169fdce9c43a /tmp/clis-dbcc_2-2-1/release/build/proc-macro-error-attr-a8c1169fdce9c43a/*-a8c1169fdce9c43a* /"""
+
+FROM rust-base AS run-z-proc-macro-error-attr-1.0.4-9280cbeb00d67650
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-dbcc_2-2-1/release/build/proc-macro-error-attr-9280cbeb00d67650/out
+WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro-error-attr-1.0.4
+RUN \
+  --mount=from=out-a8c1169fdce9c43a,source=/build_script_build-a8c1169fdce9c43a,dst=/tmp/clis-dbcc_2-2-1/release/build/proc-macro-error-attr-a8c1169fdce9c43a/build-script-build \
+  --mount=from=cratesio-proc-macro-error-attr-1.0.4,source=/proc-macro-error-attr-1.0.4,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro-error-attr-1.0.4 \
+    env CARGO="$(which cargo)" \
+        CARGO_CFG_FEATURE= \
+        CARGO_CFG_PANIC="unwind" \
+        CARGO_CFG_TARGET_ABI= \
+        CARGO_CFG_TARGET_ARCH="x86_64" \
+        CARGO_CFG_TARGET_ENDIAN="little" \
+        CARGO_CFG_TARGET_ENV="gnu" \
+        CARGO_CFG_TARGET_FAMILY="unix" \
+        CARGO_CFG_TARGET_FEATURE="fxsr,sse,sse2" \
+        CARGO_CFG_TARGET_HAS_ATOMIC="16,32,64,8,ptr" \
+        CARGO_CFG_TARGET_OS="linux" \
+        CARGO_CFG_TARGET_POINTER_WIDTH="64" \
+        CARGO_CFG_TARGET_VENDOR="unknown" \
+        CARGO_CFG_UNIX= \
+        CARGO_ENCODED_RUSTFLAGS= \
+        CARGO_INCREMENTAL="0" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro-error-attr-1.0.4" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro-error-attr-1.0.4/Cargo.toml" \
+        CARGO_PKG_AUTHORS="CreepySkeleton <creepy-skeleton@yandex.ru>" \
+        CARGO_PKG_DESCRIPTION="Attribute macro for proc-macro-error crate" \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE="MIT OR Apache-2.0" \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME="proc-macro-error-attr" \
+        CARGO_PKG_README= \
+        CARGO_PKG_REPOSITORY="https://gitlab.com/CreepySkeleton/proc-macro-error" \
+        CARGO_PKG_RUST_VERSION= \
+        CARGO_PKG_VERSION="1.0.4" \
+        CARGO_PKG_VERSION_MAJOR="1" \
+        CARGO_PKG_VERSION_MINOR="0" \
+        CARGO_PKG_VERSION_PATCH="4" \
+        CARGO_PKG_VERSION_PRE= \
+        DEBUG="false" \
+        HOST="x86_64-unknown-linux-gnu" \
+        NUM_JOBS="4" \
+        OPT_LEVEL="0" \
+        OUT_DIR="/tmp/clis-dbcc_2-2-1/release/build/proc-macro-error-attr-9280cbeb00d67650/out" \
+        PROFILE="release" \
+        RUSTC=rustc \
+        RUSTDOC="/home/runner/.rustup/toolchains/1.86.0-x86_64-unknown-linux-gnu/bin/rustdoc" \
+        TARGET="x86_64-unknown-linux-gnu" \
+        CARGOGREEN=1 \
+      CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-dbcc_2-2-1/release/build/proc-macro-error-attr-a8c1169fdce9c43a/build-script-build \
+        1>          /tmp/clis-dbcc_2-2-1/release/build/proc-macro-error-attr-9280cbeb00d67650/out/ran-9280cbeb00d67650-stdout \
+        2>          /tmp/clis-dbcc_2-2-1/release/build/proc-macro-error-attr-9280cbeb00d67650/out/ran-9280cbeb00d67650-stderr \
+        || echo $? >/tmp/clis-dbcc_2-2-1/release/build/proc-macro-error-attr-9280cbeb00d67650/out/ran-9280cbeb00d67650-errcode\
+  ; find /tmp/clis-dbcc_2-2-1/release/build/proc-macro-error-attr-9280cbeb00d67650/out/*-9280cbeb00d67650* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS ran-9280cbeb00d67650
+COPY --link --from=run-z-proc-macro-error-attr-1.0.4-9280cbeb00d67650 /tmp/clis-dbcc_2-2-1/release/build/proc-macro-error-attr-9280cbeb00d67650/out/* /
+
+## this = "9280cbeb00d67650"
+## deps = [
+##     "60fca3ce4f4c7ac9",
+##     "a8c1169fdce9c43a",
+## ]
+##
+## [[stages]]
+## name = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.86.0-slim@sha256:57d415bbd61ce11e2d5f73de068103c7bd9f3188dc132c97cef4a8f62989e944 AS rust-base"
+##
+## [[stages]]
+## name = "run-z-proc-macro-error-attr-1.0.4-9280cbeb00d67650"
+## script = '''
+## FROM rust-base AS run-z-proc-macro-error-attr-1.0.4-9280cbeb00d67650
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-dbcc_2-2-1/release/build/proc-macro-error-attr-9280cbeb00d67650/out
+## WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro-error-attr-1.0.4
+## RUN \
+##   --mount=from=out-a8c1169fdce9c43a,source=/build_script_build-a8c1169fdce9c43a,dst=/tmp/clis-dbcc_2-2-1/release/build/proc-macro-error-attr-a8c1169fdce9c43a/build-script-build \
+##   --mount=from=cratesio-proc-macro-error-attr-1.0.4,source=/proc-macro-error-attr-1.0.4,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro-error-attr-1.0.4 \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CFG_FEATURE= \
+##         CARGO_CFG_PANIC="unwind" \
+##         CARGO_CFG_TARGET_ABI= \
+##         CARGO_CFG_TARGET_ARCH="x86_64" \
+##         CARGO_CFG_TARGET_ENDIAN="little" \
+##         CARGO_CFG_TARGET_ENV="gnu" \
+##         CARGO_CFG_TARGET_FAMILY="unix" \
+##         CARGO_CFG_TARGET_FEATURE="fxsr,sse,sse2" \
+##         CARGO_CFG_TARGET_HAS_ATOMIC="16,32,64,8,ptr" \
+##         CARGO_CFG_TARGET_OS="linux" \
+##         CARGO_CFG_TARGET_POINTER_WIDTH="64" \
+##         CARGO_CFG_TARGET_VENDOR="unknown" \
+##         CARGO_CFG_UNIX= \
+##         CARGO_ENCODED_RUSTFLAGS= \
+##         CARGO_INCREMENTAL="0" \
+##         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro-error-attr-1.0.4" \
+##         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro-error-attr-1.0.4/Cargo.toml" \
+##         CARGO_PKG_AUTHORS="CreepySkeleton <creepy-skeleton@yandex.ru>" \
+##         CARGO_PKG_DESCRIPTION="Attribute macro for proc-macro-error crate" \
+##         CARGO_PKG_HOMEPAGE= \
+##         CARGO_PKG_LICENSE="MIT OR Apache-2.0" \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME="proc-macro-error-attr" \
+##         CARGO_PKG_README= \
+##         CARGO_PKG_REPOSITORY="https://gitlab.com/CreepySkeleton/proc-macro-error" \
+##         CARGO_PKG_RUST_VERSION= \
+##         CARGO_PKG_VERSION="1.0.4" \
+##         CARGO_PKG_VERSION_MAJOR="1" \
+##         CARGO_PKG_VERSION_MINOR="0" \
+##         CARGO_PKG_VERSION_PATCH="4" \
+##         CARGO_PKG_VERSION_PRE= \
+##         DEBUG="false" \
+##         HOST="x86_64-unknown-linux-gnu" \
+##         NUM_JOBS="4" \
+##         OPT_LEVEL="0" \
+##         OUT_DIR="/tmp/clis-dbcc_2-2-1/release/build/proc-macro-error-attr-9280cbeb00d67650/out" \
+##         PROFILE="release" \
+##         RUSTC=rustc \
+##         RUSTDOC="/home/runner/.rustup/toolchains/1.86.0-x86_64-unknown-linux-gnu/bin/rustdoc" \
+##         TARGET="x86_64-unknown-linux-gnu" \
+##         CARGOGREEN=1 \
+##       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-dbcc_2-2-1/release/build/proc-macro-error-attr-a8c1169fdce9c43a/build-script-build \
+##         1>          /tmp/clis-dbcc_2-2-1/release/build/proc-macro-error-attr-9280cbeb00d67650/out/ran-9280cbeb00d67650-stdout \
+##         2>          /tmp/clis-dbcc_2-2-1/release/build/proc-macro-error-attr-9280cbeb00d67650/out/ran-9280cbeb00d67650-stderr \
+##         || echo $? >/tmp/clis-dbcc_2-2-1/release/build/proc-macro-error-attr-9280cbeb00d67650/out/ran-9280cbeb00d67650-errcode\
+##   ; find /tmp/clis-dbcc_2-2-1/release/build/proc-macro-error-attr-9280cbeb00d67650/out/*-9280cbeb00d67650* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+## name = "ran-9280cbeb00d67650"
+## script = """
+## FROM scratch AS ran-9280cbeb00d67650
+## COPY --link --from=run-z-proc-macro-error-attr-1.0.4-9280cbeb00d67650 /tmp/clis-dbcc_2-2-1/release/build/proc-macro-error-attr-9280cbeb00d67650/out/* /"""
+
+
 FROM rust-base AS dep-n-proc-macro-error-attr-1.0.4-5abbb4d0b3e50e85
 SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
@@ -7203,6 +10194,7 @@ RUN \
   --mount=from=out-80b37ce9903d0def,dst=/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-80b37ce9903d0def.rlib,source=/libproc_macro2-80b37ce9903d0def.rlib \
   --mount=from=out-ca80afcc82eeec0a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-ca80afcc82eeec0a.rlib,source=/libunicode_xid-ca80afcc82eeec0a.rlib \
   --mount=from=out-dd5debcb2b51fc02,dst=/tmp/clis-dbcc_2-2-1/release/deps/libquote-dd5debcb2b51fc02.rlib,source=/libquote-dd5debcb2b51fc02.rlib \
+  --mount=from=ran-9280cbeb00d67650,dst=/tmp/clis-dbcc_2-2-1/release/build/proc-macro-error-attr-9280cbeb00d67650/out,source=/ \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="proc_macro_error_attr" \
         CARGO_INCREMENTAL="0" \
@@ -7237,11 +10229,20 @@ COPY --link --from=dep-n-proc-macro-error-attr-1.0.4-5abbb4d0b3e50e85 /tmp/clis-
 ##     "80b37ce9903d0def",
 ##     "ca80afcc82eeec0a",
 ##     "dd5debcb2b51fc02",
+##     "9280cbeb00d67650",
+##     "68e214c30c4bb8c4",
+##     "c9d8dd2789e1c19f",
+##     "60fca3ce4f4c7ac9",
+##     "a8c1169fdce9c43a",
 ## ]
 ## short_externs = [
 ##     "80b37ce9903d0def",
 ##     "ca80afcc82eeec0a",
 ##     "dd5debcb2b51fc02",
+## ]
+## buildrs_results = [
+##     "c9d8dd2789e1c19f",
+##     "9280cbeb00d67650",
 ## ]
 ## writes = [
 ##     "libproc_macro_error_attr-5abbb4d0b3e50e85.so",
@@ -7267,6 +10268,11 @@ COPY --link --from=dep-n-proc-macro-error-attr-1.0.4-5abbb4d0b3e50e85 /tmp/clis-
 ## from = "out-dd5debcb2b51fc02"
 ## xtern = "libquote-dd5debcb2b51fc02.rlib"
 ##
+## [[mounts]]
+## name = "ran-9280cbeb00d67650"
+## src = "/"
+## dst = "/tmp/clis-dbcc_2-2-1/release/build/proc-macro-error-attr-9280cbeb00d67650/out"
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.86.0-slim@sha256:57d415bbd61ce11e2d5f73de068103c7bd9f3188dc132c97cef4a8f62989e944 AS rust-base"
@@ -7289,6 +10295,7 @@ COPY --link --from=dep-n-proc-macro-error-attr-1.0.4-5abbb4d0b3e50e85 /tmp/clis-
 ##   --mount=from=out-80b37ce9903d0def,dst=/tmp/clis-dbcc_2-2-1/release/deps/libproc_macro2-80b37ce9903d0def.rlib,source=/libproc_macro2-80b37ce9903d0def.rlib \
 ##   --mount=from=out-ca80afcc82eeec0a,dst=/tmp/clis-dbcc_2-2-1/release/deps/libunicode_xid-ca80afcc82eeec0a.rlib,source=/libunicode_xid-ca80afcc82eeec0a.rlib \
 ##   --mount=from=out-dd5debcb2b51fc02,dst=/tmp/clis-dbcc_2-2-1/release/deps/libquote-dd5debcb2b51fc02.rlib,source=/libquote-dd5debcb2b51fc02.rlib \
+##   --mount=from=ran-9280cbeb00d67650,dst=/tmp/clis-dbcc_2-2-1/release/build/proc-macro-error-attr-9280cbeb00d67650/out,source=/ \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="proc_macro_error_attr" \
 ##         CARGO_INCREMENTAL="0" \
@@ -7325,6 +10332,285 @@ COPY --link --from=dep-n-proc-macro-error-attr-1.0.4-5abbb4d0b3e50e85 /tmp/clis-
 FROM scratch AS cratesio-proc-macro-error-1.0.4
 ADD --chmod=0664 --unpack --checksum=sha256:da25490ff9892aab3fcf7c36f08cfb902dd3e71ca0f9f9517bea02a73a5ce38c \
   https://static.crates.io/crates/proc-macro-error/proc-macro-error-1.0.4.crate /
+FROM rust-base AS dep-x-proc-macro-error-1.0.4-d482437b542d8e2c
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-dbcc_2-2-1/release/build/proc-macro-error-d482437b542d8e2c
+RUN \
+  --mount=from=cratesio-proc-macro-error-1.0.4,source=/proc-macro-error-1.0.4,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro-error-1.0.4,rw \
+  --mount=from=out-60fca3ce4f4c7ac9,dst=/tmp/clis-dbcc_2-2-1/release/deps/libversion_check-60fca3ce4f4c7ac9.rlib,source=/libversion_check-60fca3ce4f4c7ac9.rlib \
+    { \
+        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro-error-1.0.4/build.rs | sed 's/fn main/fn actual_d482437b542d8e2c_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro-error-1.0.4/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro-error-1.0.4/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro-error-1.0.4/build.rs ; \
+        { \
+          echo ; \
+          echo 'fn main() {' ; \
+          echo '    use std::env::{args_os, var_os};' ; \
+          echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+          echo '        use std::process::{Command, Stdio};' ; \
+          echo '        let mut cmd = Command::new("cargo-green");' ; \
+          echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+          echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+          echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+          echo '        assert!(res.success());' ; \
+          echo '    } else {' ; \
+          echo '        actual_d482437b542d8e2c_main()' ; \
+          echo '    }' ; \
+          echo '}' ; \
+        } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro-error-1.0.4/build.rs ; \
+    } && \
+    env CARGO="$(which cargo)" \
+        CARGO_CRATE_NAME="build_script_build" \
+        CARGO_INCREMENTAL="0" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro-error-1.0.4" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro-error-1.0.4/Cargo.toml" \
+        CARGO_PKG_AUTHORS="CreepySkeleton <creepy-skeleton@yandex.ru>" \
+        CARGO_PKG_DESCRIPTION="Almost drop-in replacement to panics in proc-macros" \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE="MIT OR Apache-2.0" \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME="proc-macro-error" \
+        CARGO_PKG_README="README.md" \
+        CARGO_PKG_REPOSITORY="https://gitlab.com/CreepySkeleton/proc-macro-error" \
+        CARGO_PKG_RUST_VERSION= \
+        CARGO_PKG_VERSION="1.0.4" \
+        CARGO_PKG_VERSION_MAJOR="1" \
+        CARGO_PKG_VERSION_MINOR="0" \
+        CARGO_PKG_VERSION_PATCH="4" \
+        CARGO_PKG_VERSION_PRE= \
+        CARGOGREEN=1 \
+      rustc '--crate-name' 'build_script_build' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'bin' '--emit' 'dep-info,link' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--cfg' 'feature="default"' '--cfg' 'feature="syn"' '--cfg' 'feature="syn-error"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "syn", "syn-error"))' '-C' 'metadata=027e63f80df68673' '-C' 'extra-filename=-d482437b542d8e2c' '--out-dir' '/tmp/clis-dbcc_2-2-1/release/build/proc-macro-error-d482437b542d8e2c' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-dbcc_2-2-1/release/deps' '--extern' 'version_check=/tmp/clis-dbcc_2-2-1/release/deps/libversion_check-60fca3ce4f4c7ac9.rlib' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro-error-1.0.4/build.rs \
+        1>          /tmp/clis-dbcc_2-2-1/release/build/proc-macro-error-d482437b542d8e2c/out-d482437b542d8e2c-stdout \
+        2>          /tmp/clis-dbcc_2-2-1/release/build/proc-macro-error-d482437b542d8e2c/out-d482437b542d8e2c-stderr \
+        || echo $? >/tmp/clis-dbcc_2-2-1/release/build/proc-macro-error-d482437b542d8e2c/out-d482437b542d8e2c-errcode\
+  ; find /tmp/clis-dbcc_2-2-1/release/build/proc-macro-error-d482437b542d8e2c/*-d482437b542d8e2c* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-d482437b542d8e2c
+COPY --link --from=dep-x-proc-macro-error-1.0.4-d482437b542d8e2c /tmp/clis-dbcc_2-2-1/release/build/proc-macro-error-d482437b542d8e2c/*-d482437b542d8e2c* /
+
+## this = "d482437b542d8e2c"
+## deps = ["60fca3ce4f4c7ac9"]
+## short_externs = ["60fca3ce4f4c7ac9"]
+## writes = [
+##     "build_script_build-d482437b542d8e2c",
+##     "build_script_build-d482437b542d8e2c.d",
+## ]
+## stderr = [
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-dbcc_2-2-1/release/build/proc-macro-error-d482437b542d8e2c/build_script_build-d482437b542d8e2c.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-dbcc_2-2-1/release/build/proc-macro-error-d482437b542d8e2c/build_script_build-d482437b542d8e2c","emit":"link"}',
+## ]
+##
+## [[externs]]
+## from = "out-60fca3ce4f4c7ac9"
+## xtern = "libversion_check-60fca3ce4f4c7ac9.rlib"
+##
+## [[stages]]
+## name = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.86.0-slim@sha256:57d415bbd61ce11e2d5f73de068103c7bd9f3188dc132c97cef4a8f62989e944 AS rust-base"
+##
+## [[stages]]
+## name = "cratesio-proc-macro-error-1.0.4"
+## script = '''
+## FROM scratch AS cratesio-proc-macro-error-1.0.4
+## ADD --chmod=0664 --unpack --checksum=sha256:da25490ff9892aab3fcf7c36f08cfb902dd3e71ca0f9f9517bea02a73a5ce38c \
+##   https://static.crates.io/crates/proc-macro-error/proc-macro-error-1.0.4.crate /'''
+##
+## [[stages]]
+## name = "dep-x-proc-macro-error-1.0.4-d482437b542d8e2c"
+## script = '''
+## FROM rust-base AS dep-x-proc-macro-error-1.0.4-d482437b542d8e2c
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-dbcc_2-2-1/release/build/proc-macro-error-d482437b542d8e2c
+## RUN \
+##   --mount=from=cratesio-proc-macro-error-1.0.4,source=/proc-macro-error-1.0.4,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro-error-1.0.4,rw \
+##   --mount=from=out-60fca3ce4f4c7ac9,dst=/tmp/clis-dbcc_2-2-1/release/deps/libversion_check-60fca3ce4f4c7ac9.rlib,source=/libversion_check-60fca3ce4f4c7ac9.rlib \
+##     { \
+##         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro-error-1.0.4/build.rs | sed 's/fn main/fn actual_d482437b542d8e2c_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro-error-1.0.4/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro-error-1.0.4/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro-error-1.0.4/build.rs ; \
+##         { \
+##           echo ; \
+##           echo 'fn main() {' ; \
+##           echo '    use std::env::{args_os, var_os};' ; \
+##           echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+##           echo '        use std::process::{Command, Stdio};' ; \
+##           echo '        let mut cmd = Command::new("cargo-green");' ; \
+##           echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+##           echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+##           echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+##           echo '        assert!(res.success());' ; \
+##           echo '    } else {' ; \
+##           echo '        actual_d482437b542d8e2c_main()' ; \
+##           echo '    }' ; \
+##           echo '}' ; \
+##         } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro-error-1.0.4/build.rs ; \
+##     } && \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CRATE_NAME="build_script_build" \
+##         CARGO_INCREMENTAL="0" \
+##         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro-error-1.0.4" \
+##         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro-error-1.0.4/Cargo.toml" \
+##         CARGO_PKG_AUTHORS="CreepySkeleton <creepy-skeleton@yandex.ru>" \
+##         CARGO_PKG_DESCRIPTION="Almost drop-in replacement to panics in proc-macros" \
+##         CARGO_PKG_HOMEPAGE= \
+##         CARGO_PKG_LICENSE="MIT OR Apache-2.0" \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME="proc-macro-error" \
+##         CARGO_PKG_README="README.md" \
+##         CARGO_PKG_REPOSITORY="https://gitlab.com/CreepySkeleton/proc-macro-error" \
+##         CARGO_PKG_RUST_VERSION= \
+##         CARGO_PKG_VERSION="1.0.4" \
+##         CARGO_PKG_VERSION_MAJOR="1" \
+##         CARGO_PKG_VERSION_MINOR="0" \
+##         CARGO_PKG_VERSION_PATCH="4" \
+##         CARGO_PKG_VERSION_PRE= \
+##         CARGOGREEN=1 \
+##       rustc '--crate-name' 'build_script_build' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'bin' '--emit' 'dep-info,link' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--cfg' 'feature="default"' '--cfg' 'feature="syn"' '--cfg' 'feature="syn-error"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "syn", "syn-error"))' '-C' 'metadata=027e63f80df68673' '-C' 'extra-filename=-d482437b542d8e2c' '--out-dir' '/tmp/clis-dbcc_2-2-1/release/build/proc-macro-error-d482437b542d8e2c' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-dbcc_2-2-1/release/deps' '--extern' 'version_check=/tmp/clis-dbcc_2-2-1/release/deps/libversion_check-60fca3ce4f4c7ac9.rlib' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro-error-1.0.4/build.rs \
+##         1>          /tmp/clis-dbcc_2-2-1/release/build/proc-macro-error-d482437b542d8e2c/out-d482437b542d8e2c-stdout \
+##         2>          /tmp/clis-dbcc_2-2-1/release/build/proc-macro-error-d482437b542d8e2c/out-d482437b542d8e2c-stderr \
+##         || echo $? >/tmp/clis-dbcc_2-2-1/release/build/proc-macro-error-d482437b542d8e2c/out-d482437b542d8e2c-errcode\
+##   ; find /tmp/clis-dbcc_2-2-1/release/build/proc-macro-error-d482437b542d8e2c/*-d482437b542d8e2c* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+## name = "out-d482437b542d8e2c"
+## script = """
+## FROM scratch AS out-d482437b542d8e2c
+## COPY --link --from=dep-x-proc-macro-error-1.0.4-d482437b542d8e2c /tmp/clis-dbcc_2-2-1/release/build/proc-macro-error-d482437b542d8e2c/*-d482437b542d8e2c* /"""
+
+FROM rust-base AS run-z-proc-macro-error-1.0.4-d3ab6ec8e15943fd
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-dbcc_2-2-1/release/build/proc-macro-error-d3ab6ec8e15943fd/out
+WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro-error-1.0.4
+RUN \
+  --mount=from=out-d482437b542d8e2c,source=/build_script_build-d482437b542d8e2c,dst=/tmp/clis-dbcc_2-2-1/release/build/proc-macro-error-d482437b542d8e2c/build-script-build \
+  --mount=from=cratesio-proc-macro-error-1.0.4,source=/proc-macro-error-1.0.4,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro-error-1.0.4 \
+    env CARGO="$(which cargo)" \
+        CARGO_CFG_FEATURE="default,syn,syn-error" \
+        CARGO_CFG_PANIC="unwind" \
+        CARGO_CFG_TARGET_ABI= \
+        CARGO_CFG_TARGET_ARCH="x86_64" \
+        CARGO_CFG_TARGET_ENDIAN="little" \
+        CARGO_CFG_TARGET_ENV="gnu" \
+        CARGO_CFG_TARGET_FAMILY="unix" \
+        CARGO_CFG_TARGET_FEATURE="fxsr,sse,sse2" \
+        CARGO_CFG_TARGET_HAS_ATOMIC="16,32,64,8,ptr" \
+        CARGO_CFG_TARGET_OS="linux" \
+        CARGO_CFG_TARGET_POINTER_WIDTH="64" \
+        CARGO_CFG_TARGET_VENDOR="unknown" \
+        CARGO_CFG_UNIX= \
+        CARGO_ENCODED_RUSTFLAGS= \
+        CARGO_FEATURE_DEFAULT="1" \
+        CARGO_FEATURE_SYN="1" \
+        CARGO_FEATURE_SYN_ERROR="1" \
+        CARGO_INCREMENTAL="0" \
+        CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro-error-1.0.4" \
+        CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro-error-1.0.4/Cargo.toml" \
+        CARGO_PKG_AUTHORS="CreepySkeleton <creepy-skeleton@yandex.ru>" \
+        CARGO_PKG_DESCRIPTION="Almost drop-in replacement to panics in proc-macros" \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE="MIT OR Apache-2.0" \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME="proc-macro-error" \
+        CARGO_PKG_README="README.md" \
+        CARGO_PKG_REPOSITORY="https://gitlab.com/CreepySkeleton/proc-macro-error" \
+        CARGO_PKG_RUST_VERSION= \
+        CARGO_PKG_VERSION="1.0.4" \
+        CARGO_PKG_VERSION_MAJOR="1" \
+        CARGO_PKG_VERSION_MINOR="0" \
+        CARGO_PKG_VERSION_PATCH="4" \
+        CARGO_PKG_VERSION_PRE= \
+        DEBUG="false" \
+        HOST="x86_64-unknown-linux-gnu" \
+        NUM_JOBS="4" \
+        OPT_LEVEL="0" \
+        OUT_DIR="/tmp/clis-dbcc_2-2-1/release/build/proc-macro-error-d3ab6ec8e15943fd/out" \
+        PROFILE="release" \
+        RUSTC=rustc \
+        RUSTDOC="/home/runner/.rustup/toolchains/1.86.0-x86_64-unknown-linux-gnu/bin/rustdoc" \
+        TARGET="x86_64-unknown-linux-gnu" \
+        CARGOGREEN=1 \
+      CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-dbcc_2-2-1/release/build/proc-macro-error-d482437b542d8e2c/build-script-build \
+        1>          /tmp/clis-dbcc_2-2-1/release/build/proc-macro-error-d3ab6ec8e15943fd/out/ran-d3ab6ec8e15943fd-stdout \
+        2>          /tmp/clis-dbcc_2-2-1/release/build/proc-macro-error-d3ab6ec8e15943fd/out/ran-d3ab6ec8e15943fd-stderr \
+        || echo $? >/tmp/clis-dbcc_2-2-1/release/build/proc-macro-error-d3ab6ec8e15943fd/out/ran-d3ab6ec8e15943fd-errcode\
+  ; find /tmp/clis-dbcc_2-2-1/release/build/proc-macro-error-d3ab6ec8e15943fd/out/*-d3ab6ec8e15943fd* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS ran-d3ab6ec8e15943fd
+COPY --link --from=run-z-proc-macro-error-1.0.4-d3ab6ec8e15943fd /tmp/clis-dbcc_2-2-1/release/build/proc-macro-error-d3ab6ec8e15943fd/out/* /
+
+## this = "d3ab6ec8e15943fd"
+## deps = [
+##     "60fca3ce4f4c7ac9",
+##     "d482437b542d8e2c",
+## ]
+## stdout = ["cargo:rustc-cfg=use_fallback"]
+##
+## [[stages]]
+## name = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.86.0-slim@sha256:57d415bbd61ce11e2d5f73de068103c7bd9f3188dc132c97cef4a8f62989e944 AS rust-base"
+##
+## [[stages]]
+## name = "run-z-proc-macro-error-1.0.4-d3ab6ec8e15943fd"
+## script = '''
+## FROM rust-base AS run-z-proc-macro-error-1.0.4-d3ab6ec8e15943fd
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-dbcc_2-2-1/release/build/proc-macro-error-d3ab6ec8e15943fd/out
+## WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro-error-1.0.4
+## RUN \
+##   --mount=from=out-d482437b542d8e2c,source=/build_script_build-d482437b542d8e2c,dst=/tmp/clis-dbcc_2-2-1/release/build/proc-macro-error-d482437b542d8e2c/build-script-build \
+##   --mount=from=cratesio-proc-macro-error-1.0.4,source=/proc-macro-error-1.0.4,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro-error-1.0.4 \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CFG_FEATURE="default,syn,syn-error" \
+##         CARGO_CFG_PANIC="unwind" \
+##         CARGO_CFG_TARGET_ABI= \
+##         CARGO_CFG_TARGET_ARCH="x86_64" \
+##         CARGO_CFG_TARGET_ENDIAN="little" \
+##         CARGO_CFG_TARGET_ENV="gnu" \
+##         CARGO_CFG_TARGET_FAMILY="unix" \
+##         CARGO_CFG_TARGET_FEATURE="fxsr,sse,sse2" \
+##         CARGO_CFG_TARGET_HAS_ATOMIC="16,32,64,8,ptr" \
+##         CARGO_CFG_TARGET_OS="linux" \
+##         CARGO_CFG_TARGET_POINTER_WIDTH="64" \
+##         CARGO_CFG_TARGET_VENDOR="unknown" \
+##         CARGO_CFG_UNIX= \
+##         CARGO_ENCODED_RUSTFLAGS= \
+##         CARGO_FEATURE_DEFAULT="1" \
+##         CARGO_FEATURE_SYN="1" \
+##         CARGO_FEATURE_SYN_ERROR="1" \
+##         CARGO_INCREMENTAL="0" \
+##         CARGO_MANIFEST_DIR="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro-error-1.0.4" \
+##         CARGO_MANIFEST_PATH="/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro-error-1.0.4/Cargo.toml" \
+##         CARGO_PKG_AUTHORS="CreepySkeleton <creepy-skeleton@yandex.ru>" \
+##         CARGO_PKG_DESCRIPTION="Almost drop-in replacement to panics in proc-macros" \
+##         CARGO_PKG_HOMEPAGE= \
+##         CARGO_PKG_LICENSE="MIT OR Apache-2.0" \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME="proc-macro-error" \
+##         CARGO_PKG_README="README.md" \
+##         CARGO_PKG_REPOSITORY="https://gitlab.com/CreepySkeleton/proc-macro-error" \
+##         CARGO_PKG_RUST_VERSION= \
+##         CARGO_PKG_VERSION="1.0.4" \
+##         CARGO_PKG_VERSION_MAJOR="1" \
+##         CARGO_PKG_VERSION_MINOR="0" \
+##         CARGO_PKG_VERSION_PATCH="4" \
+##         CARGO_PKG_VERSION_PRE= \
+##         DEBUG="false" \
+##         HOST="x86_64-unknown-linux-gnu" \
+##         NUM_JOBS="4" \
+##         OPT_LEVEL="0" \
+##         OUT_DIR="/tmp/clis-dbcc_2-2-1/release/build/proc-macro-error-d3ab6ec8e15943fd/out" \
+##         PROFILE="release" \
+##         RUSTC=rustc \
+##         RUSTDOC="/home/runner/.rustup/toolchains/1.86.0-x86_64-unknown-linux-gnu/bin/rustdoc" \
+##         TARGET="x86_64-unknown-linux-gnu" \
+##         CARGOGREEN=1 \
+##       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-dbcc_2-2-1/release/build/proc-macro-error-d482437b542d8e2c/build-script-build \
+##         1>          /tmp/clis-dbcc_2-2-1/release/build/proc-macro-error-d3ab6ec8e15943fd/out/ran-d3ab6ec8e15943fd-stdout \
+##         2>          /tmp/clis-dbcc_2-2-1/release/build/proc-macro-error-d3ab6ec8e15943fd/out/ran-d3ab6ec8e15943fd-stderr \
+##         || echo $? >/tmp/clis-dbcc_2-2-1/release/build/proc-macro-error-d3ab6ec8e15943fd/out/ran-d3ab6ec8e15943fd-errcode\
+##   ; find /tmp/clis-dbcc_2-2-1/release/build/proc-macro-error-d3ab6ec8e15943fd/out/*-d3ab6ec8e15943fd* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+## name = "ran-d3ab6ec8e15943fd"
+## script = """
+## FROM scratch AS ran-d3ab6ec8e15943fd
+## COPY --link --from=run-z-proc-macro-error-1.0.4-d3ab6ec8e15943fd /tmp/clis-dbcc_2-2-1/release/build/proc-macro-error-d3ab6ec8e15943fd/out/* /"""
+
+
 FROM rust-base AS dep-n-proc-macro-error-1.0.4-8d3142ab9efe4ea8
 SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-dbcc_2-2-1/release/deps
@@ -7339,6 +10625,7 @@ RUN \
   --mount=from=out-dd5debcb2b51fc02,dst=/tmp/clis-dbcc_2-2-1/release/deps/libquote-dd5debcb2b51fc02.rmeta,source=/libquote-dd5debcb2b51fc02.rmeta \
   --mount=from=out-bbffa8c7e6a16356,dst=/tmp/clis-dbcc_2-2-1/release/deps/libsyn-bbffa8c7e6a16356.rlib,source=/libsyn-bbffa8c7e6a16356.rlib \
   --mount=from=out-bbffa8c7e6a16356,dst=/tmp/clis-dbcc_2-2-1/release/deps/libsyn-bbffa8c7e6a16356.rmeta,source=/libsyn-bbffa8c7e6a16356.rmeta \
+  --mount=from=ran-d3ab6ec8e15943fd,dst=/tmp/clis-dbcc_2-2-1/release/build/proc-macro-error-d3ab6ec8e15943fd/out,source=/ \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME="proc_macro_error" \
         CARGO_INCREMENTAL="0" \
@@ -7375,6 +10662,15 @@ COPY --link --from=dep-n-proc-macro-error-1.0.4-8d3142ab9efe4ea8 /tmp/clis-dbcc_
 ##     "ca80afcc82eeec0a",
 ##     "dd5debcb2b51fc02",
 ##     "bbffa8c7e6a16356",
+##     "d3ab6ec8e15943fd",
+##     "68e214c30c4bb8c4",
+##     "c9d8dd2789e1c19f",
+##     "60fca3ce4f4c7ac9",
+##     "a8c1169fdce9c43a",
+##     "9280cbeb00d67650",
+##     "83f4ce3a9272e51d",
+##     "6fd417ad443e5221",
+##     "d482437b542d8e2c",
 ## ]
 ## short_externs = [
 ##     "5abbb4d0b3e50e85",
@@ -7382,6 +10678,12 @@ COPY --link --from=dep-n-proc-macro-error-1.0.4-8d3142ab9efe4ea8 /tmp/clis-dbcc_
 ##     "ca80afcc82eeec0a",
 ##     "dd5debcb2b51fc02",
 ##     "bbffa8c7e6a16356",
+## ]
+## buildrs_results = [
+##     "c9d8dd2789e1c19f",
+##     "9280cbeb00d67650",
+##     "6fd417ad443e5221",
+##     "d3ab6ec8e15943fd",
 ## ]
 ## writes = [
 ##     "libproc_macro_error-8d3142ab9efe4ea8.rlib",
@@ -7435,6 +10737,11 @@ COPY --link --from=dep-n-proc-macro-error-1.0.4-8d3142ab9efe4ea8 /tmp/clis-dbcc_
 ## from = "out-bbffa8c7e6a16356"
 ## xtern = "libsyn-bbffa8c7e6a16356.rmeta"
 ##
+## [[mounts]]
+## name = "ran-d3ab6ec8e15943fd"
+## src = "/"
+## dst = "/tmp/clis-dbcc_2-2-1/release/build/proc-macro-error-d3ab6ec8e15943fd/out"
+##
 ## [[stages]]
 ## name = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.86.0-slim@sha256:57d415bbd61ce11e2d5f73de068103c7bd9f3188dc132c97cef4a8f62989e944 AS rust-base"
@@ -7463,6 +10770,7 @@ COPY --link --from=dep-n-proc-macro-error-1.0.4-8d3142ab9efe4ea8 /tmp/clis-dbcc_
 ##   --mount=from=out-dd5debcb2b51fc02,dst=/tmp/clis-dbcc_2-2-1/release/deps/libquote-dd5debcb2b51fc02.rmeta,source=/libquote-dd5debcb2b51fc02.rmeta \
 ##   --mount=from=out-bbffa8c7e6a16356,dst=/tmp/clis-dbcc_2-2-1/release/deps/libsyn-bbffa8c7e6a16356.rlib,source=/libsyn-bbffa8c7e6a16356.rlib \
 ##   --mount=from=out-bbffa8c7e6a16356,dst=/tmp/clis-dbcc_2-2-1/release/deps/libsyn-bbffa8c7e6a16356.rmeta,source=/libsyn-bbffa8c7e6a16356.rmeta \
+##   --mount=from=ran-d3ab6ec8e15943fd,dst=/tmp/clis-dbcc_2-2-1/release/build/proc-macro-error-d3ab6ec8e15943fd/out,source=/ \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME="proc_macro_error" \
 ##         CARGO_INCREMENTAL="0" \
@@ -7550,6 +10858,15 @@ COPY --link --from=dep-n-structopt-derive-0.4.13-0187f3c8576aef3b /tmp/clis-dbcc
 ##     "ca80afcc82eeec0a",
 ##     "dd5debcb2b51fc02",
 ##     "bbffa8c7e6a16356",
+##     "68e214c30c4bb8c4",
+##     "c9d8dd2789e1c19f",
+##     "60fca3ce4f4c7ac9",
+##     "a8c1169fdce9c43a",
+##     "9280cbeb00d67650",
+##     "83f4ce3a9272e51d",
+##     "6fd417ad443e5221",
+##     "d482437b542d8e2c",
+##     "d3ab6ec8e15943fd",
 ## ]
 ## short_externs = [
 ##     "41892b3573d1a97c",
@@ -7560,6 +10877,12 @@ COPY --link --from=dep-n-structopt-derive-0.4.13-0187f3c8576aef3b /tmp/clis-dbcc
 ##     "ca80afcc82eeec0a",
 ##     "dd5debcb2b51fc02",
 ##     "bbffa8c7e6a16356",
+## ]
+## buildrs_results = [
+##     "c9d8dd2789e1c19f",
+##     "9280cbeb00d67650",
+##     "6fd417ad443e5221",
+##     "d3ab6ec8e15943fd",
 ## ]
 ## writes = [
 ##     "libstructopt_derive-0187f3c8576aef3b.so",
@@ -7760,6 +11083,19 @@ COPY --link --from=dep-n-structopt-0.3.20-05c5d104c65b93b5 /tmp/clis-dbcc_2-2-1/
 ##     "ca80afcc82eeec0a",
 ##     "dd5debcb2b51fc02",
 ##     "bbffa8c7e6a16356",
+##     "c24270f3fa48706e",
+##     "6e365980216c917e",
+##     "432a3f8b7eb878d8",
+##     "57d98863263b7a3c",
+##     "68e214c30c4bb8c4",
+##     "c9d8dd2789e1c19f",
+##     "60fca3ce4f4c7ac9",
+##     "a8c1169fdce9c43a",
+##     "9280cbeb00d67650",
+##     "83f4ce3a9272e51d",
+##     "6fd417ad443e5221",
+##     "d482437b542d8e2c",
+##     "d3ab6ec8e15943fd",
 ## ]
 ## short_externs = [
 ##     "5a839c872643e159",
@@ -7781,6 +11117,14 @@ COPY --link --from=dep-n-structopt-0.3.20-05c5d104c65b93b5 /tmp/clis-dbcc_2-2-1/
 ##     "ca80afcc82eeec0a",
 ##     "dd5debcb2b51fc02",
 ##     "bbffa8c7e6a16356",
+## ]
+## buildrs_results = [
+##     "6e365980216c917e",
+##     "57d98863263b7a3c",
+##     "c9d8dd2789e1c19f",
+##     "9280cbeb00d67650",
+##     "6fd417ad443e5221",
+##     "d3ab6ec8e15943fd",
 ## ]
 ## writes = [
 ##     "libstructopt-05c5d104c65b93b5.rlib",
@@ -8222,6 +11566,29 @@ COPY --link --from=dep-n-dbcc-2.2.1-e0edff43b19741a4 /tmp/clis-dbcc_2-2-1/releas
 ##     "0711d9c6f9e71290",
 ##     "8d3142ab9efe4ea8",
 ##     "5abbb4d0b3e50e85",
+##     "8d58cd83e669a465",
+##     "3cf9e442dfddd505",
+##     "68e214c30c4bb8c4",
+##     "c9d8dd2789e1c19f",
+##     "83f4ce3a9272e51d",
+##     "6fd417ad443e5221",
+##     "61489e0fb1dac057",
+##     "3e5e06c429d97718",
+##     "ed6bfe682093b191",
+##     "06618df55a12bfba",
+##     "5d24f54f80b61353",
+##     "6a05ba984ca0deea",
+##     "d1fe451af816ca5e",
+##     "c24270f3fa48706e",
+##     "6e365980216c917e",
+##     "c7420a74a7aab1f6",
+##     "432a3f8b7eb878d8",
+##     "57d98863263b7a3c",
+##     "60fca3ce4f4c7ac9",
+##     "a8c1169fdce9c43a",
+##     "9280cbeb00d67650",
+##     "d482437b542d8e2c",
+##     "d3ab6ec8e15943fd",
 ## ]
 ## short_externs = [
 ##     "90ca44a8caf54d0f",
@@ -8278,6 +11645,19 @@ COPY --link --from=dep-n-dbcc-2.2.1-e0edff43b19741a4 /tmp/clis-dbcc_2-2-1/releas
 ##     "0711d9c6f9e71290",
 ##     "8d3142ab9efe4ea8",
 ##     "5abbb4d0b3e50e85",
+## ]
+## buildrs_results = [
+##     "3cf9e442dfddd505",
+##     "c9d8dd2789e1c19f",
+##     "6fd417ad443e5221",
+##     "3e5e06c429d97718",
+##     "5d24f54f80b61353",
+##     "d1fe451af816ca5e",
+##     "6e365980216c917e",
+##     "c7420a74a7aab1f6",
+##     "57d98863263b7a3c",
+##     "9280cbeb00d67650",
+##     "d3ab6ec8e15943fd",
 ## ]
 ## writes = [
 ##     "dbcc-e0edff43b19741a4.d",
@@ -8713,10 +12093,6 @@ COPY --link --from=dep-n-dbcc-2.2.1-e0edff43b19741a4 /tmp/clis-dbcc_2-2-1/releas
 ## from = "out-5abbb4d0b3e50e85"
 ## xtern = "libproc_macro_error_attr-5abbb4d0b3e50e85.so"
 ##
-## [[contexts]]
-## name = "crate_out-3cf9e442dfddd505"
-## uri = "/tmp/clis-dbcc_2-2-1/release/build/typenum-3cf9e442dfddd505/out"
-##
 ## [[stages]]
 ## name = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.86.0-slim@sha256:57d415bbd61ce11e2d5f73de068103c7bd9f3188dc132c97cef4a8f62989e944 AS rust-base"
@@ -8965,9 +12341,9 @@ RUN \
 FROM scratch AS out-6cd0852da8e8bf94
 COPY --link --from=dep-n-dbcc-2.2.1-6cd0852da8e8bf94 /tmp/clis-dbcc_2-2-1/release/deps/*-6cd0852da8e8bf94* /
 
-# Pipe this file to (not portable due to usage of local build contexts):
+# Pipe this file to:
 # DOCKER_BUILDKIT="1" \
-#   docker build --network=none --output=. --build-context=crate_out-3cf9e442dfddd505=/tmp/clis-dbcc_2-2-1/release/build/typenum-3cf9e442dfddd505/out - <THIS_FILE
+#   docker build --network=none --output=. - <THIS_FILE
 
 ## this = "6cd0852da8e8bf94"
 ## deps = [
@@ -9026,6 +12402,29 @@ COPY --link --from=dep-n-dbcc-2.2.1-6cd0852da8e8bf94 /tmp/clis-dbcc_2-2-1/releas
 ##     "0711d9c6f9e71290",
 ##     "8d3142ab9efe4ea8",
 ##     "5abbb4d0b3e50e85",
+##     "8d58cd83e669a465",
+##     "3cf9e442dfddd505",
+##     "68e214c30c4bb8c4",
+##     "c9d8dd2789e1c19f",
+##     "83f4ce3a9272e51d",
+##     "6fd417ad443e5221",
+##     "61489e0fb1dac057",
+##     "3e5e06c429d97718",
+##     "ed6bfe682093b191",
+##     "06618df55a12bfba",
+##     "5d24f54f80b61353",
+##     "6a05ba984ca0deea",
+##     "d1fe451af816ca5e",
+##     "c24270f3fa48706e",
+##     "6e365980216c917e",
+##     "c7420a74a7aab1f6",
+##     "432a3f8b7eb878d8",
+##     "57d98863263b7a3c",
+##     "60fca3ce4f4c7ac9",
+##     "a8c1169fdce9c43a",
+##     "9280cbeb00d67650",
+##     "d482437b542d8e2c",
+##     "d3ab6ec8e15943fd",
 ## ]
 ## short_externs = [
 ##     "90ca44a8caf54d0f",
@@ -9083,6 +12482,19 @@ COPY --link --from=dep-n-dbcc-2.2.1-6cd0852da8e8bf94 /tmp/clis-dbcc_2-2-1/releas
 ##     "0711d9c6f9e71290",
 ##     "8d3142ab9efe4ea8",
 ##     "5abbb4d0b3e50e85",
+## ]
+## buildrs_results = [
+##     "3cf9e442dfddd505",
+##     "c9d8dd2789e1c19f",
+##     "6fd417ad443e5221",
+##     "3e5e06c429d97718",
+##     "5d24f54f80b61353",
+##     "d1fe451af816ca5e",
+##     "6e365980216c917e",
+##     "c7420a74a7aab1f6",
+##     "57d98863263b7a3c",
+##     "9280cbeb00d67650",
+##     "d3ab6ec8e15943fd",
 ## ]
 ## writes = [
 ##     "dbcc-6cd0852da8e8bf94",
@@ -9312,10 +12724,6 @@ COPY --link --from=dep-n-dbcc-2.2.1-6cd0852da8e8bf94 /tmp/clis-dbcc_2-2-1/releas
 ## [[externs]]
 ## from = "out-5abbb4d0b3e50e85"
 ## xtern = "libproc_macro_error_attr-5abbb4d0b3e50e85.so"
-##
-## [[contexts]]
-## name = "crate_out-3cf9e442dfddd505"
-## uri = "/tmp/clis-dbcc_2-2-1/release/build/typenum-3cf9e442dfddd505/out"
 ##
 ## [[stages]]
 ## name = "rust-base"
