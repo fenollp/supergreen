@@ -2,18 +2,18 @@ use anyhow::{bail, Result};
 use camino::{Utf8Path, Utf8PathBuf};
 use indexmap::IndexSet;
 
-use crate::ext::Popped;
+use crate::{ext::Popped, md::MdId};
 
 const SYSROOT_CRATES: &[&str] = &["alloc", "core", "proc_macro", "std", "test"];
 
 /// RustcArgs contains parts of `rustc`'s arguments
-#[derive(Debug, Default, PartialEq)]
+#[derive(Debug, PartialEq)]
 pub(crate) struct RustcArgs {
     /// 0..: --extern=EXTERN | --extern EXTERN
     pub(crate) externs: IndexSet<String>,
 
     /// 1: -C extra-filename=EXTRAFN e.g. "-710b4516f388a5e4"
-    pub(crate) extrafn: String,
+    pub(crate) mdid: MdId,
 
     /// 0|1: -C incremental=INCREMENTAL
     pub(crate) incremental: Option<Utf8PathBuf>,
@@ -35,7 +35,14 @@ pub(crate) fn as_rustc(
 ) -> Result<(RustcArgs, Vec<String>)> {
     let mut args = vec![];
 
-    let mut state: RustcArgs = Default::default();
+    let mut state = RustcArgs {
+        externs: IndexSet::default(),
+        mdid: "0".repeat(16).into(),
+        incremental: None,
+        input: "".into(),
+        out_dir: "".into(),
+        target_path: "".into(),
+    };
 
     let mut s_e = true;
     let mut key = arguments.first().expect("PROOF: defo not empty").clone();
@@ -98,8 +105,8 @@ pub(crate) fn as_rustc(
         match key.as_str() {
             "-C" => match val.split_once('=') {
                 Some(("extra-filename", v)) => {
-                    assert_eq!(state.extrafn, "");
-                    v.clone_into(&mut state.extrafn);
+                    assert_eq!(state.mdid.to_string(), "0".repeat(16));
+                    state.mdid = MdId::new(v);
                 }
                 Some(("incremental", v)) => {
                     assert_eq!(state.incremental, None);
@@ -174,9 +181,9 @@ pub(crate) fn as_rustc(
         match exploded[..] {
             ["out", crate_dir, "build", ..] => {
                 let Some((_, extrafn)) = crate_dir.rsplit_once('-') else {
-                    bail!("BUG: crate directory SHOULD contain extra-filename")
+                    bail!("BUG: crate directory SHOULD contain extra-filename: {crate_dir:?}")
                 };
-                state.extrafn = format!("-{extrafn}");
+                state.mdid = extrafn.into();
                 out_dir.popped(3)
             }
             _ => bail!("BUG: $OUT_DIR is surprising for this build script: {exploded:?}"),
@@ -250,7 +257,7 @@ mod tests {
             "-C", "embed-bitcode=no",
             "-C", "debuginfo=2",
             "-C", "metadata=710b4516f388a5e4",
-            "-C", "extra-filename=-710b4516f388a5e4",                                         // state.extrafn
+            "-C", "extra-filename=-710b4516f388a5e4",                                         // state.mdid
             "--out-dir", "$PWD/target/debug/deps",                                            // state.out_dir =+> state.target_path
             "-C", "linker=/usr/bin/clang",
             "-C", "incremental=$PWD/target/debug/incremental",                                   // state.incremental
@@ -278,7 +285,7 @@ mod tests {
                 .into_iter()
                 .map(ToOwned::to_owned)
                 .collect(),
-                extrafn: "-710b4516f388a5e4".to_owned(),
+                mdid: "710b4516f388a5e4".into(),
                 incremental: Some(as_argument("$PWD/target/debug/incremental").into()),
                 input: as_argument("src/main.rs").into(),
                 out_dir: as_argument("$PWD/target/debug/deps").into(),
@@ -330,7 +337,7 @@ mod tests {
             "-C", "debuginfo=2",
             "--test",
             "-C", "metadata=7c7a0950383d41d3",
-            "-C", "extra-filename=-7c7a0950383d41d3",                                         // state.extrafn
+            "-C", "extra-filename=-7c7a0950383d41d3",                                         // state.mdid
             "--out-dir", "$PWD/target/debug/deps",                                            // state.out_dir =+> state.target_path
             "-C", "linker=/usr/bin/clang",
             "-C", "incremental=$PWD/target/debug/incremental",                                // state.incremental
@@ -360,7 +367,7 @@ mod tests {
                 .into_iter()
                 .map(ToOwned::to_owned)
                 .collect(),
-                extrafn: "-7c7a0950383d41d3".to_owned(),
+                mdid: "7c7a0950383d41d3".into(),
                 incremental: Some(as_argument("$PWD/target/debug/incremental").into()),
                 input: as_argument("src/main.rs").into(),
                 out_dir: as_argument("$PWD/target/debug/deps").into(),
@@ -431,7 +438,7 @@ mod tests {
             st,
             RustcArgs {
                 externs: Default::default(),
-                extrafn: "-c7101a3d6c8e4dce".to_owned(),
+                mdid: "c7101a3d6c8e4dce".into(),
                 incremental: None,
                 input: as_argument("$HOME/.cargo/registry/src/index.crates.io-6f17d22bba15001f/rustix-0.38.20/build.rs").into(),
                 out_dir: as_argument("$PWD/target/debug/build/rustix-c7101a3d6c8e4dce").into(),
@@ -501,7 +508,7 @@ mod tests {
             st,
             RustcArgs {
                 externs: ["libtime_core-c880e75c55528c08.rlib".to_owned()].into(),
-                extrafn: "-89438a15ab938e2f".to_owned(),
+                mdid: "89438a15ab938e2f".into(),
                 incremental: None,
                 input: as_argument("$HOME/.cargo/registry/src/index.crates.io-6f17d22bba15001f/time-macros-0.2.14/src/lib.rs").into(),
                 out_dir: as_argument("/tmp/wfrefwef__cargo-deny_0-14-3/release/deps").into(),
@@ -567,7 +574,7 @@ mod tests {
             st,
             RustcArgs {
                 externs: Default::default(),
-                extrafn: "-96fe5c8493f1a08f".to_owned(),
+                mdid: "96fe5c8493f1a08f".into(),
                 incremental: None,
                 input: as_argument("src/build.rs").into(),
                 out_dir: as_argument(
@@ -635,7 +642,7 @@ mod tests {
                     "libpkg_config-a6962381fee76247.rlib".to_owned(),
                     "libvcpkg-ebcbc23bfdf4209b.rlib".to_owned(),
                 ].into(),
-                extrafn: "-99f749eccead4467".to_owned(),
+                mdid: "99f749eccead4467".into(),
                 incremental: None,
                 input: as_argument("$HOME/.cargo/registry/src/index.crates.io-6f17d22bba15001f/openssl-sys-0.9.95/build/main.rs").into(),
                 out_dir: as_argument(
@@ -729,7 +736,7 @@ mod tests {
             st,
             RustcArgs {
                 externs: [].into(),
-                extrafn: "-94793bb2b78c57b5".to_owned(),
+                mdid: "94793bb2b78c57b5".into(),
                 incremental: None,
                 input: "".into(),
                 out_dir: "".into(),

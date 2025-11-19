@@ -130,7 +130,7 @@ async fn wrap_rustc(
 
     let out_dir_var = env::var("OUT_DIR").ok().map(Utf8PathBuf::from);
 
-    let (st, args) = as_rustc(&pwd, &arguments, out_dir_var.as_deref())?;
+    let (st @ RustcArgs { mdid, .. }, args) = as_rustc(&pwd, &arguments, out_dir_var.as_deref())?;
 
     let buildrs = ["build_script_build", "build_script_main"].contains(&crate_name);
     // NOTE: krate_name != crate_name: Gets named build_script_build + s/-/_/g + may actually be a different name
@@ -145,7 +145,7 @@ async fn wrap_rustc(
 
     let full_krate_id = {
         let kind = if buildrs { 'X' } else { 'N' }; // exe or normal
-        format!("{kind} {krate_name} {krate_version}{}", st.extrafn)
+        format!("{kind} {krate_name} {krate_version} {mdid}")
     };
 
     logging::setup(&full_krate_id);
@@ -217,7 +217,7 @@ async fn do_wrap_rustc(
     pwd: Utf8PathBuf,
     args: Vec<String>,
     out_dir_var: Option<Utf8PathBuf>,
-    RustcArgs { externs, extrafn, incremental, input, out_dir, target_path }: RustcArgs,
+    RustcArgs { externs, mdid, incremental, input, out_dir, target_path }: RustcArgs,
     fallback: impl Future<Output = Result<()>>,
 ) -> Result<()> {
     let debug = maybe_log();
@@ -226,7 +226,7 @@ async fn do_wrap_rustc(
 
     let crate_out = crate_out_dir(out_dir_var)?;
 
-    let mut md: Md = MdId::new(&extrafn).into();
+    let mut md: Md = mdid.into();
     md.push_block(&RUST, green.base.image_inline.clone().unwrap());
 
     fs::create_dir_all(&out_dir).map_err(|e| anyhow!("Failed to `mkdir -p {out_dir}`: {e}"))?;
@@ -403,7 +403,7 @@ async fn do_wrap_rustc(
     rustc_block.push_str(&format!("        2>          {out_dir}/{out_stage}-{STDERR} \\\n"));
     rustc_block.push_str(&format!("        || echo $? >{out_dir}/{out_stage}-{ERRCODE}\\\n"));
     // TODO: [`COPY --rewrite-timestamp ...` to apply SOURCE_DATE_EPOCH build arg value to the timestamps of the files](https://github.com/moby/buildkit/issues/6348)
-    rustc_block.push_str(&format!("  ; find {out_dir}/*{extrafn}* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH\n"));
+    rustc_block.push_str(&format!("  ; find {out_dir}/*-{mdid}* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH\n"));
     md.push_block(&rustc_stage, rustc_block);
 
     if let Some(ref incremental) = incremental {
@@ -413,14 +413,14 @@ async fn do_wrap_rustc(
     }
 
     let mut out_block = format!("FROM scratch AS {out_stage}\n");
-    out_block.push_str(&format!("COPY --link --from={rustc_stage} {out_dir}/*{extrafn}* /\n"));
+    out_block.push_str(&format!("COPY --link --from={rustc_stage} {out_dir}/*-{mdid}* /\n"));
     md.push_block(&out_stage, out_block);
     // TODO? in Dockerfile, when using outputs:
     // => skip the COPY (--mount=from=out-08c4d63ed4366a99)
     //   => use the stage directly (--mount=from=dep-l-buildxargs-1.4.0-08c4d63ed4366a99)
 
     let md_path = md.this().path(&target_path);
-    let containerfile_path = target_path.join(format!("{krate_name}{extrafn}.Dockerfile"));
+    let containerfile_path = target_path.join(format!("{krate_name}-{mdid}.Dockerfile"));
 
     md.write_to(&md_path)?;
 
