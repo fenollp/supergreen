@@ -613,8 +613,9 @@ async fn run_build(
         match join!(timeout(dbg_out), timeout(dbg_err)) {
             (Ok(Ok(Err(e))), _) => bail!("Something went wrong (maybe retry?): {e}"),
             (Ok(Ok(Ok((Some(out_buf), Some(err_buf), errcode, written)))), _) => {
-                let Accumulated { stdout, .. } = fwd(&out_buf, "➤", fwd_stdout);
-                let Accumulated { stderr, envs, libs, .. } = fwd(&err_buf, "✖", fwd_stderr);
+                let FromStdout { stdout } = fwd_stdout(&out_buf, "➤")?;
+
+                let FromStderr { stderr, envs, libs } = fwd_stderr(&err_buf, "✖");
                 info!("Suggested {PKG}-specific config: envs:{} libs:{}", envs.len(), libs.len());
                 effects.stdout = stdout;
                 effects.stderr = stderr;
@@ -645,14 +646,16 @@ fn strip_ansi_escapes(line: &str) -> String {
         .replace("\\u001b[38;5;9m", "")
 }
 
-#[must_use]
-fn fwd(
-    stdio: &str,
-    badge: &'static str,
-    fwd_std: impl Fn(&str, &mut Accumulated) + Send + 'static,
-) -> Accumulated {
-    let mut acc = Accumulated::default();
-    for line in stdio.lines() {
+#[derive(Debug, Default)]
+struct FromStderr {
+    stderr: Vec<String>,
+    envs: IndexSet<String>,
+    libs: IndexSet<String>,
+}
+
+fn fwd_stderr(stderr: &str, badge: &'static str) -> FromStderr {
+    let mut acc = FromStderr::default();
+    for line in stderr.lines() {
         if line.is_empty() {
             continue;
         }
@@ -660,49 +663,105 @@ fn fwd(
         debug!("{badge} {}", strip_ansi_escapes(line));
 
         if let Some(msg) = lift_stdio(line) {
-            fwd_std(msg, &mut acc);
-        }
+            let mut msg = msg.to_owned();
 
-        // //warning: panic message contains an unused formatting placeholder
-        // //--> /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.36/build.rs:191:17
-        // FIXME un-rewrite /index.crates.io-0000000000000000/ in cargo messages
-        // => also in .d files
-        // cache should be ok (cargo's point of view) if written right after green's build(..) call
+            if let Some(var) = rechrome::env_not_comptime_defined(&msg) {
+                acc.envs.insert(var.to_owned());
+                if let Some(new_msg) = rechrome::suggest_set_envs(var, &msg) {
+                    info!("suggesting to passthrough missing env with set-envs {var:?}");
+                    msg = new_msg;
+                }
+            }
+
+            if let Some(lib) = rechrome::lib_not_found(&msg) {
+                acc.libs.insert(lib.to_owned());
+                if let Some(new_msg) = rechrome::suggest_add(lib, &msg) {
+                    info!("suggesting to add lib to base image {lib:?}");
+                    msg = new_msg;
+                }
+            }
+
+            hide_credentials_on_rate_limit(&mut msg);
+
+            eprintln!("{msg}");
+            acc.stderr.push(msg);
+        }
     }
     acc
 }
 
+// //warning: panic message contains an unused formatting placeholder
+// //--> /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.36/build.rs:191:17
+// TODO un-rewrite /index.crates.io-0000000000000000/ in cargo messages
+// => also in .d files
+// cache should be ok (cargo's point of view) if written right after green's build(..) call
+
 #[derive(Debug, Default)]
-struct Accumulated {
-    envs: IndexSet<String>,
-    libs: IndexSet<String>,
+struct FromStdout {
     stdout: Vec<String>,
-    stderr: Vec<String>,
 }
 
-fn fwd_stderr(msg: &str, acc: &mut Accumulated) {
-    let mut msg = msg.to_owned();
+fn fwd_stdout(stdout: &str, badge: &'static str) -> Result<FromStdout> {
+    let mut acc = FromStdout::default();
+    for line in stdout.lines() {
+        if line.is_empty() {
+            continue;
+        }
 
-    if let Some(var) = rechrome::env_not_comptime_defined(&msg) {
-        acc.envs.insert(var.to_owned());
-        if let Some(new_msg) = rechrome::suggest_set_envs(var, &msg) {
-            info!("suggesting to passthrough missing env with set-envs {var:?}");
-            msg = new_msg;
+        debug!("{badge} {}", strip_ansi_escapes(line));
+
+        if let Some(msg) = lift_stdio(line) {
+            info!("(To cargo's STDOUT): {msg}");
+
+            if let Some((_, rhs)) = msg.split_once("cargo::").xor(msg.split_once("cargo:")) {
+                // https://doc.rust-lang.org/cargo/reference/build-scripts.html#outputs-of-the-build-script
+                // > MSRV: 1.77 is required for cargo::KEY=VALUE syntax. To support older versions, use the cargo:KEY=VALUE syntax.
+                if rhs.starts_with("rerun-if-changed=") {
+                    // PATH — Tells Cargo when to re-run the script.
+                } else if rhs.starts_with("rerun-if-env-changed=") {
+                    // VAR — Tells Cargo when to re-run the script.
+                } else if rhs.starts_with("rustc-link-arg=") {
+                    // FLAG — Passes custom flags to a linker for benchmarks, binaries, cdylib crates, examples, and tests.
+                } else if rhs.starts_with("rustc-link-arg-cdylib=") {
+                    // FLAG — Passes custom flags to a linker for cdylib crates.
+                } else if rhs.starts_with("rustc-link-arg-bin=BIN=") {
+                    // FLAG — Passes custom flags to a linker for the binary BIN.
+                } else if rhs.starts_with("rustc-link-arg-bins=") {
+                    // FLAG — Passes custom flags to a linker for binaries.
+                } else if rhs.starts_with("rustc-link-arg-tests=") {
+                    // FLAG — Passes custom flags to a linker for tests.
+                } else if rhs.starts_with("rustc-link-arg-examples=") {
+                    // FLAG — Passes custom flags to a linker for examples.
+                } else if rhs.starts_with("rustc-link-arg-benches=") {
+                    // FLAG — Passes custom flags to a linker for benchmarks.
+                } else if rhs.starts_with("rustc-link-lib=") {
+                    // LIB — Adds a library to link.
+                } else if rhs.starts_with("rustc-link-search=") {
+                    // [KIND=]PATH — Adds to the library search path.
+                } else if rhs.starts_with("rustc-flags=") {
+                    // FLAGS — Passes certain flags to the compiler.
+                } else if rhs.starts_with("rustc-cfg=") {
+                    // KEY[="VALUE"] — Enables compile-time cfg settings.
+                } else if rhs.starts_with("rustc-check-cfg=") {
+                    // CHECK_CFG – Register custom cfgs as expected for compile-time checking of configs.
+                } else if rhs.starts_with("rustc-env=") {
+                    // VAR=VALUE — Sets an environment variable.
+                } else if rhs.starts_with("error=") {
+                    // MESSAGE — Displays an error on the terminal.
+                } else if rhs.starts_with("warning=") {
+                    // MESSAGE — Displays a warning on the terminal.
+                } else if rhs.starts_with("metadata=") {
+                    // KEY=VALUE — Metadata, used by links scripts.
+                } else {
+                    bail!("BUG: unexpected cargo directive {rhs:?}")
+                }
+            }
+
+            println!("{msg}");
+            acc.stdout.push(msg.to_owned());
         }
     }
-
-    if let Some(lib) = rechrome::lib_not_found(&msg) {
-        acc.libs.insert(lib.to_owned());
-        if let Some(new_msg) = rechrome::suggest_add(lib, &msg) {
-            info!("suggesting to add lib to base image {lib:?}");
-            msg = new_msg;
-        }
-    }
-
-    hide_credentials_on_rate_limit(&mut msg);
-
-    eprintln!("{msg}");
-    acc.stderr.push(msg);
+    Ok(acc)
 }
 
 /// Somehow, GitHub Actions won't hide this secret
@@ -726,12 +785,6 @@ fn hide_credentials_from_final_log() {
     hide_credentials_on_rate_limit(&mut msg);
     assert_eq!(msg,
         "toomanyrequests: You have reached your pull rate limit as 'hubuser': *************************************. You may increase the limit by upgrading. https://www.docker.com/increase-rate-limit");
-}
-
-fn fwd_stdout(msg: &str, acc: &mut Accumulated) {
-    info!("(To cargo's STDOUT): {msg}");
-    println!("{msg}");
-    acc.stdout.push(msg.to_owned());
 }
 
 #[test]
