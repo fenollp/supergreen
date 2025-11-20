@@ -35,22 +35,22 @@ impl Stage {
         Self::new(&format!("cwd-{metadata}"))
     }
 
-    pub(crate) fn crate_out(metadata: MdId) -> Result<Self> {
-        Self::new(&format!("crate_out-{metadata}"))
+    #[must_use]
+    pub(crate) fn is_local(&self) -> bool {
+        self.starts_with("cwd-")
     }
 
-    // TODO: link this to the build script it's coming from
+    #[must_use]
+    pub(crate) fn is_remote(&self) -> bool {
+        self.starts_with("cratesio-") || self.starts_with("checkout-")
+    }
+
     pub(crate) fn cratesio(name_dash_version: &str) -> Result<Self> {
         Self::new(&format!("cratesio-{name_dash_version}"))
     }
 
     pub(crate) fn checkout(dir: &str, commit: &str) -> Result<Self> {
         Self::new(&format!("checkout-{dir}-{commit}"))
-    }
-
-    #[must_use]
-    pub(crate) fn is_remote(&self) -> bool {
-        self.starts_with("cratesio-") || self.starts_with("checkout-")
     }
 
     pub(crate) fn incremental(metadata: MdId) -> Result<Self> {
@@ -88,19 +88,17 @@ fn is_alnum_dot_underscore(c: char) -> bool {
 #[test]
 fn stages() {
     let local = Stage::local(MdId::new("-9d1546e4763fe483")).unwrap();
-    let crate_out = Stage::crate_out(MdId::new("-9d1546e4763fe483")).unwrap();
     let cratesio = Stage::cratesio("syn-1.0.46").unwrap();
     let checkout =
         Stage::checkout("buildxargs-76dd4ee9dadcdcf0", "df9b810011cd416b8e3fc02911f2f496acb8475e")
             .unwrap();
 
-    let stages = [
+    let pairs = [
         (
             Stage::dep("l-buildxargs-1.4.0-b4243835fd7aaf9f").unwrap(),
             "dep-l-buildxargs-1.4.0-b4243835fd7aaf9f",
         ),
         (local.clone(), "cwd-9d1546e4763fe483"),
-        (crate_out.clone(), "crate_out-9d1546e4763fe483"),
         (cratesio.clone(), "cratesio-syn-1.0.46"),
         (
             checkout.clone(),
@@ -110,9 +108,14 @@ fn stages() {
         (Stage::output(MdId::new("-9d1546e4763fe483")).unwrap(), "out-9d1546e4763fe483"),
     ];
 
-    for (stage, sname) in stages {
+    for (stage, sname) in pairs {
         assert_eq!(stage.to_string(), sname);
+
         assert_eq!(stage.is_remote(), [&cratesio, &checkout].contains(&&stage));
+        assert_eq!(!stage.is_remote(), ![&cratesio, &checkout].contains(&&stage));
+
+        assert_eq!(stage.is_local(), [&local].contains(&&stage));
+        assert_eq!(!stage.is_local(), ![&local].contains(&&stage));
     }
 }
 
