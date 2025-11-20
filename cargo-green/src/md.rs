@@ -240,7 +240,7 @@ impl Md {
         Ok(mds)
     }
 
-    pub(crate) fn sort_deps(&mut self, mds: Vec<(Utf8PathBuf, Self)>) -> Result<Vec<Utf8PathBuf>> {
+    fn sort_deps(&mut self, mds: Vec<(Utf8PathBuf, Self)>) -> Result<Vec<Utf8PathBuf>> {
         let mut dag: Vec<_> = mds
             .into_iter()
             .map(|(md_path, md)| {
