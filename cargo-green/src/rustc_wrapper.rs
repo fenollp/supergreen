@@ -205,6 +205,13 @@ fn crate_out_dir(out_dir_var: Option<Utf8PathBuf>) -> Result<Option<Utf8PathBuf>
     Ok(Some(crate_out))
 }
 
+fn cargo_home() -> Result<Utf8PathBuf> {
+    home::cargo_home()
+        .map_err(|e| anyhow!("bad $CARGO_HOME or something: {e}"))?
+        .try_into()
+        .map_err(|e| anyhow!("corrupted $CARGO_HOME path: {e}"))
+}
+
 #[expect(clippy::too_many_arguments)]
 async fn do_wrap_rustc(
     green: Green,
@@ -235,10 +242,7 @@ async fn do_wrap_rustc(
             .map_err(|e| anyhow!("Failed to `mkdir -p {incremental}`: {e}"))?;
     }
 
-    let cargo_home: Utf8PathBuf = home::cargo_home()
-        .map_err(|e| anyhow!("bad $CARGO_HOME or something: {e}"))?
-        .try_into()
-        .map_err(|e| anyhow!("corrupted $CARGO_HOME path: {e}"))?;
+    let cargo_home = cargo_home()?;
 
     // TODO: support non-crates.io crates managers + proxies
     // TODO: use --secret mounts for private deps (and secret direct artifacts)
