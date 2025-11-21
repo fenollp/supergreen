@@ -144,6 +144,7 @@ async fn wrap_rustc(
     let krate_repository = env::var("CARGO_PKG_REPOSITORY").ok().unwrap_or_default();
 
     let full_krate_id = {
+        // X: for building build scripts
         let kind = if buildrs { 'X' } else { 'N' }; // exe or normal
         format!("{kind} {krate_name} {krate_version} {mdid}")
     };
@@ -225,16 +226,13 @@ async fn do_wrap_rustc(
     RustcArgs { externs, mdid, incremental, input, out_dir, target_path }: RustcArgs,
     fallback: impl Future<Output = Result<()>>,
 ) -> Result<()> {
-    let debug = maybe_log();
-
-    let incremental = green.incremental().then_some(incremental).flatten();
-
     let crate_out = crate_out_dir(out_dir_var)?;
 
     let mut md: Md = mdid.into();
     md.push_block(&RUST, green.base.image_inline.clone().unwrap());
 
     fs::create_dir_all(&out_dir).map_err(|e| anyhow!("Failed to `mkdir -p {out_dir}`: {e}"))?;
+    let incremental = green.incremental().then_some(incremental).flatten();
     if let Some(ref incremental) = incremental {
         fs::create_dir_all(incremental)
             .map_err(|e| anyhow!("Failed to `mkdir -p {incremental}`: {e}"))?;
@@ -269,11 +267,10 @@ async fn do_wrap_rustc(
     info!("picked {rustc_stage} for {input}");
     let input = rewrite_cratesio_index(&input);
 
-    let incremental_stage = Stage::incremental(md.this())?;
-    let out_stage = Stage::output(md.this())?;
+    let incremental_stage = Stage::incremental(mdid)?;
+    let out_stage = Stage::output(mdid)?;
 
-    let mut rustc_block = String::new();
-    rustc_block.push_str(&format!("FROM {RST} AS {rustc_stage}\n"));
+    let mut rustc_block = format!("FROM {RST} AS {rustc_stage}\n");
     rustc_block.push_str(&format!("SHELL {:?}\n", ["/bin/sh", "-eux", "-c"]));
     rustc_block.push_str(&format!("WORKDIR {out_dir}\n"));
     if !pwd.starts_with(cargo_home.join("registry/src")) {
@@ -293,7 +290,7 @@ async fn do_wrap_rustc(
 
         None
     } else {
-        let cwd_stage = Stage::local(md.this())?;
+        let cwd_stage = Stage::local(mdid)?;
         // NOTE: we don't `rm -rf cwd_root`
         let cwd_root = tmp().join(format!("{PKG}_{VSN}"));
         fs::create_dir_all(&cwd_root)
@@ -390,7 +387,7 @@ async fn do_wrap_rustc(
         for var in ["PATH", "DYLD_FALLBACK_LIBRARY_PATH", "LD_LIBRARY_PATH", "LIBPATH"] {
             let Ok(val) = env::var(var) else { continue };
             debug!("system env set (skipped): ${var}={val:?}");
-            if !val.is_empty() && debug.is_some() {
+            if !val.is_empty() {
                 rustc_block.push_str(&format!("#       {var}={val:?} \\\n"));
             }
         }
@@ -420,9 +417,7 @@ async fn do_wrap_rustc(
     // https://github.com/tugglecore/rust-tracing-primer
     // TODO: `cargo green -v{N+1} ..` starts a TUI showing colored logs on above `cargo -v{N} ..`
 
-    green
-        .do_build(fallback, &containerfile_path, &out_stage, &mut md, &out_dir, &target_path)
-        .await?;
+    md.do_build(&green, fallback, &containerfile_path, &out_stage, &out_dir, &target_path).await?;
 
     if let Some(incremental) = incremental {
         if let (_, _, _, Err(e)) = green
@@ -450,55 +445,55 @@ impl Md {
         }
         self.push_block(stage, block);
     }
-}
 
-impl Green {
     async fn do_build(
-        &self,
+        &mut self,
+        green: &Green,
         fallback: impl Future<Output = Result<()>>,
         containerfile_path: &Utf8Path,
         stage: &Stage,
-        md: &mut Md,
         out_dir: &Utf8Path,
         target_path: &Utf8Path,
     ) -> Result<()> {
-        if self.runner == Runner::None {
+        if green.runner == Runner::None {
             info!("Runner disabled, falling back...");
             return fallback.await;
         }
 
         let (call, envs, Effects { written, stdout, stderr }, built) =
-            self.build_out(containerfile_path, stage, &md.contexts, out_dir).await;
+            green.build_out(containerfile_path, stage, &self.contexts, out_dir).await;
 
-        self.maybe_write_final_path(containerfile_path, &md.contexts, &call, &envs)
+        green
+            .maybe_write_final_path(containerfile_path, &self.contexts, &call, &envs)
             .map_err(|e| anyhow!("Failed producing final path: {e}"))?;
 
-        let md_path = md.this().path(target_path);
+        let md_path = self.this().path(target_path);
 
         if !written.is_empty() || !stdout.is_empty() || !stderr.is_empty() {
-            md.writes = written;
-            md.stdout = stdout;
-            md.stderr = stderr;
+            self.writes = written;
+            self.stdout = stdout;
+            self.stderr = stderr;
             info!("re-opening (RW) crate's md {md_path}");
-            md.write_to(&md_path)?;
+            self.write_to(&md_path)?;
         }
 
         let final_stage = format!(
             "FROM scratch\n{}\n",
-            md.writes
+            self.writes
                 .iter()
                 .filter_map(|f| f.file_name())
                 .filter(|f| !f.ends_with(".d"))
                 .filter(|f| f != &format!("{stage}-{STDOUT}"))
                 .filter(|f| f != &format!("{stage}-{STDERR}"))
                 .filter(|f| f != &format!("{stage}-{ERRCODE}"))
-                .map(|f| (f, f.replace(&format!("-{}", md.this()), "")))
+                .map(|f| (f, f.replace(&format!("-{}", self.this()), "")))
                 .map(|(src, dst)| format!("COPY --link --from={stage} /{src} /{dst}"))
                 .collect::<Vec<_>>()
                 .join("\n")
         );
 
-        self.maybe_append_to_final_path(&md_path, final_stage)
+        green
+            .maybe_append_to_final_path(&md_path, final_stage)
             .map_err(|e| anyhow!("Failed finishing final path: {e}"))?;
 
         if let Err(e) = built {
