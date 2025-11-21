@@ -35,7 +35,7 @@ ignored = [ "astral-tokio-tar" ]
 [dependencies]
 anyhow.workspace = true
 astral-tokio-tar.workspace = true
-atomicwrites.workspace = true
+atomic-write-file.workspace = true
 camino.workspace = true
 cargo-lock.workspace = true
 cargo-subcommand-metadata.workspace = true
