@@ -160,7 +160,7 @@ $(jobdef 'bin')
         toolchain: stable
         cache-on-failure: true
 
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@v6
 
 $(while read -r name path; do
   cat <<EOW
@@ -362,7 +362,7 @@ $(
 )
 
 $(restore_bin)
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@v6
 $(rundeps_versions)
 
     - name: Prepare local private registry cache

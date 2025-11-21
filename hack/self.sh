@@ -40,7 +40,7 @@ $(rundeps_versions)
 
 $(restore_bin)
 
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@v6
 
     - name: Cache \`cargo fetch\`
       uses: actions/cache@v4
@@ -85,7 +85,7 @@ $(jobdef 'bin')
         cache-on-failure: true
 $(rundeps_versions)
 
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@v6
 
     - name: Cache \`cargo fetch\`
       uses: actions/cache@v4
