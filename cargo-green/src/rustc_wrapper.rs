@@ -246,7 +246,7 @@ async fn do_wrap_rustc(
 
     // TODO: support non-crates.io crates managers + proxies
     // TODO: use --secret mounts for private deps (and secret direct artifacts)
-    let (input_mount, rustc_stage) = if input.starts_with(cargo_home.join("registry/src")) {
+    let input_mount = if input.starts_with(cargo_home.join("registry/src")) {
         // Input is of a crate dep (hosted at crates.io)
         // Let's optimize this case by fetching & caching crate tarball
 
@@ -255,23 +255,21 @@ async fn do_wrap_rustc(
                 .await?;
         md.push_block(&stage, block);
 
-        (Some((stage, Some(src), dst)), Stage::dep(&crate_id)?)
-    } else if !krate_repository.is_empty()
-        && krate_manifest_dir.starts_with(cargo_home.join("git/checkouts"))
-    {
+        Some((stage, Some(src), dst))
+    } else if krate_manifest_dir.starts_with(cargo_home.join("git/checkouts")) {
         // Input is of a git checked out dep
 
         let (stage, dst, block) =
             checkouts::into_stage(krate_manifest_dir, &krate_repository).await?;
         md.push_block(&stage, block);
 
-        (Some((stage, None, dst)), Stage::dep(&crate_id)?)
+        Some((stage, None, dst))
+    } else if input.is_relative() {
+        None // Input is local code
     } else {
-        // Input is local code
-
-        assert!(input.is_relative(), "BUG: input isn't relative: {input:?}");
-        (None, Stage::local(&crate_id)?)
+        bail!("BUG: unhandled input {input:?} ({krate_manifest_dir})")
     };
+    let rustc_stage = Stage::dep(&crate_id)?;
     info!("picked {rustc_stage} for {input}");
     let input = rewrite_cratesio_index(&input);
 
@@ -299,7 +297,7 @@ async fn do_wrap_rustc(
 
         None
     } else {
-        let cwd_stage = Stage::local_mount(md.this())?;
+        let cwd_stage = Stage::local(md.this())?;
         // NOTE: we don't `rm -rf cwd_root`
         let cwd_root = tmp().join(format!("{PKG}_{VSN}"));
         fs::create_dir_all(&cwd_root)
