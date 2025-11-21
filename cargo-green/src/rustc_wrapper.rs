@@ -241,7 +241,6 @@ async fn do_exec_buildrs(
     ));
     run_block
         .push_str(&format!("  --mount=from={code_stage},source={code_src},dst={code_dst} \\\n"));
-    // run_block.push_str(&format!("    cd {code_dst} && \\\n"));
 
     // let target_path = previous_md_path.parent().unwrap();
     // let (mounts, mut mds) =
