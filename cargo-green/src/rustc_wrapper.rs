@@ -155,7 +155,6 @@ async fn wrap_rustc(
     do_wrap_rustc(
         green,
         &krate_name,
-        krate_version,
         krate_manifest_dir,
         krate_repository,
         buildrs,
@@ -216,7 +215,6 @@ fn cargo_home() -> Result<Utf8PathBuf> {
 async fn do_wrap_rustc(
     green: Green,
     krate_name: &str,
-    krate_version: String,
     krate_manifest_dir: &Utf8Path,
     krate_repository: String,
     buildrs: bool,
@@ -250,9 +248,7 @@ async fn do_wrap_rustc(
         // Input is of a crate dep (hosted at crates.io)
         // Let's optimize this case by fetching & caching crate tarball
 
-        let (stage, src, dst, block) =
-            cratesio::into_stage(&cargo_home, krate_name, &krate_version, krate_manifest_dir)
-                .await?;
+        let (stage, src, dst, block) = cratesio::into_stage(krate_name, krate_manifest_dir).await?;
         md.push_block(&stage, block);
 
         Some((stage, Some(src), dst))
