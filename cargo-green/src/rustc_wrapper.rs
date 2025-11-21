@@ -141,8 +141,6 @@ async fn wrap_rustc(
     let krate_manifest_dir = env::var("CARGO_MANIFEST_DIR").expect("$CARGO_MANIFEST_DIR");
     let krate_manifest_dir = Utf8Path::new(&krate_manifest_dir);
 
-    let krate_repository = env::var("CARGO_PKG_REPOSITORY").ok().unwrap_or_default();
-
     let full_krate_id = {
         // X: for building build scripts
         let kind = if buildrs { 'X' } else { 'N' }; // exe or normal
@@ -157,7 +155,6 @@ async fn wrap_rustc(
         green,
         &krate_name,
         krate_manifest_dir,
-        krate_repository,
         buildrs,
         full_krate_id.replace(' ', "-"),
         pwd,
@@ -217,7 +214,6 @@ async fn do_wrap_rustc(
     green: Green,
     krate_name: &str,
     krate_manifest_dir: &Utf8Path,
-    krate_repository: String,
     buildrs: bool,
     crate_id: String,
     pwd: Utf8PathBuf,
@@ -253,8 +249,7 @@ async fn do_wrap_rustc(
     } else if krate_manifest_dir.starts_with(cargo_home.join("git/checkouts")) {
         // Input is of a git checked out dep
 
-        let (stage, dst, block) =
-            checkouts::into_stage(krate_manifest_dir, &krate_repository).await?;
+        let (stage, dst, block) = checkouts::into_stage(krate_manifest_dir).await?;
         md.push_block(&stage, block);
 
         Some((stage, None, dst))
