@@ -40,8 +40,8 @@ impl Stage {
     }
 
     // TODO: link this to the build script it's coming from
-    pub(crate) fn cratesio(name: &str, version: &str) -> Result<Self> {
-        Self::new(&format!("cratesio-{name}-{version}"))
+    pub(crate) fn cratesio(name_dash_version: &str) -> Result<Self> {
+        Self::new(&format!("cratesio-{name_dash_version}"))
     }
 
     pub(crate) fn checkout(dir: &str, commit: &str) -> Result<Self> {
@@ -89,7 +89,7 @@ fn is_alnum_dot_underscore(c: char) -> bool {
 fn stages() {
     let local = Stage::local(MdId::new("-9d1546e4763fe483")).unwrap();
     let crate_out = Stage::crate_out(MdId::new("-9d1546e4763fe483")).unwrap();
-    let cratesio = Stage::cratesio("syn", "1.0.46").unwrap();
+    let cratesio = Stage::cratesio("syn-1.0.46").unwrap();
     let checkout =
         Stage::checkout("buildxargs-76dd4ee9dadcdcf0", "df9b810011cd416b8e3fc02911f2f496acb8475e")
             .unwrap();
