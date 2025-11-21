@@ -6,8 +6,8 @@ use tokio::process::Command;
 
 use crate::{ext::CommandExt, stage::Stage};
 
-// https://docs.docker.com/reference/dockerfile/#add---keep-git-dir
-// --build-arg BUILDKIT_CONTEXT_KEEP_GIT_DIR=0 https://docs.docker.com/engine/reference/builder/#buildkit-built-in-build-args
+/// https://docs.docker.com/reference/dockerfile/#add---keep-git-dir
+/// --build-arg BUILDKIT_CONTEXT_KEEP_GIT_DIR=0 https://docs.docker.com/engine/reference/builder/#buildkit-built-in-build-args
 pub(crate) async fn into_stage(
     krate_manifest_dir: &Utf8Path,
     krate_repository: &str,

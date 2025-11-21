@@ -31,11 +31,7 @@ impl Stage {
         Self::new(&format!("dep-{crate_id}"))
     }
 
-    pub(crate) fn local(crate_id: &str) -> Result<Self> {
-        Self::new(&format!("pkg-{crate_id}"))
-    }
-
-    pub(crate) fn local_mount(metadata: MdId) -> Result<Self> {
+    pub(crate) fn local(metadata: MdId) -> Result<Self> {
         Self::new(&format!("cwd-{metadata}"))
     }
 
@@ -91,7 +87,7 @@ fn is_alnum_dot_underscore(c: char) -> bool {
 
 #[test]
 fn stages() {
-    let local_mount = Stage::local_mount(MdId::new("-9d1546e4763fe483")).unwrap();
+    let local = Stage::local(MdId::new("-9d1546e4763fe483")).unwrap();
     let crate_out = Stage::crate_out(MdId::new("-9d1546e4763fe483")).unwrap();
     let cratesio = Stage::cratesio("syn", "1.0.46").unwrap();
     let checkout =
@@ -103,11 +99,7 @@ fn stages() {
             Stage::dep("l-buildxargs-1.4.0-b4243835fd7aaf9f").unwrap(),
             "dep-l-buildxargs-1.4.0-b4243835fd7aaf9f",
         ),
-        (
-            Stage::local("t-cargo-green-0.11.0-8555e1723d7ec5eb").unwrap(),
-            "pkg-t-cargo-green-0.11.0-8555e1723d7ec5eb",
-        ),
-        (local_mount.clone(), "cwd-9d1546e4763fe483"),
+        (local.clone(), "cwd-9d1546e4763fe483"),
         (crate_out.clone(), "crate_out-9d1546e4763fe483"),
         (cratesio.clone(), "cratesio-syn-1.0.46"),
         (
