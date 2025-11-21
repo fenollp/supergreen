@@ -14,7 +14,7 @@ jobs:
         toolchain: stable
         cache-on-failure: true
 
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@v6
 
     - name: Cache `cargo fetch` index
       uses: actions/cache@v4
@@ -99,7 +99,7 @@ jobs:
         chmod +x ./cargo-green
         { ! ./cargo-green --version ; } | grep cargo-green
         mv ./cargo-green ~/.cargo/bin/
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@v6
     - run: docker info
     - run: docker buildx version
     - run: docker buildx build --help
@@ -398,7 +398,7 @@ jobs:
         chmod +x ./cargo-green
         { ! ./cargo-green --version ; } | grep cargo-green
         mv ./cargo-green ~/.cargo/bin/
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@v6
     - run: docker info
     - run: docker buildx version
     - run: docker buildx build --help
@@ -697,7 +697,7 @@ jobs:
         chmod +x ./cargo-green
         { ! ./cargo-green --version ; } | grep cargo-green
         mv ./cargo-green ~/.cargo/bin/
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@v6
     - run: docker info
     - run: docker buildx version
     - run: docker buildx build --help
@@ -996,7 +996,7 @@ jobs:
         chmod +x ./cargo-green
         { ! ./cargo-green --version ; } | grep cargo-green
         mv ./cargo-green ~/.cargo/bin/
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@v6
     - run: docker info
     - run: docker buildx version
     - run: docker buildx build --help
@@ -1295,7 +1295,7 @@ jobs:
         chmod +x ./cargo-green
         { ! ./cargo-green --version ; } | grep cargo-green
         mv ./cargo-green ~/.cargo/bin/
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@v6
     - run: docker info
     - run: docker buildx version
     - run: docker buildx build --help
@@ -1594,7 +1594,7 @@ jobs:
         chmod +x ./cargo-green
         { ! ./cargo-green --version ; } | grep cargo-green
         mv ./cargo-green ~/.cargo/bin/
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@v6
     - run: docker info
     - run: docker buildx version
     - run: docker buildx build --help
@@ -1893,7 +1893,7 @@ jobs:
         chmod +x ./cargo-green
         { ! ./cargo-green --version ; } | grep cargo-green
         mv ./cargo-green ~/.cargo/bin/
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@v6
     - run: docker info
     - run: docker buildx version
     - run: docker buildx build --help
@@ -2193,7 +2193,7 @@ jobs:
         chmod +x ./cargo-green
         { ! ./cargo-green --version ; } | grep cargo-green
         mv ./cargo-green ~/.cargo/bin/
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@v6
     - run: docker info
     - run: docker buildx version
     - run: docker buildx build --help
@@ -2492,7 +2492,7 @@ jobs:
         chmod +x ./cargo-green
         { ! ./cargo-green --version ; } | grep cargo-green
         mv ./cargo-green ~/.cargo/bin/
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@v6
     - run: docker info
     - run: docker buildx version
     - run: docker buildx build --help
@@ -2791,7 +2791,7 @@ jobs:
         chmod +x ./cargo-green
         { ! ./cargo-green --version ; } | grep cargo-green
         mv ./cargo-green ~/.cargo/bin/
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@v6
     - run: docker info
     - run: docker buildx version
     - run: docker buildx build --help
@@ -3090,7 +3090,7 @@ jobs:
         chmod +x ./cargo-green
         { ! ./cargo-green --version ; } | grep cargo-green
         mv ./cargo-green ~/.cargo/bin/
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@v6
     - run: docker info
     - run: docker buildx version
     - run: docker buildx build --help
@@ -3389,7 +3389,7 @@ jobs:
         chmod +x ./cargo-green
         { ! ./cargo-green --version ; } | grep cargo-green
         mv ./cargo-green ~/.cargo/bin/
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@v6
     - run: docker info
     - run: docker buildx version
     - run: docker buildx build --help
@@ -3688,7 +3688,7 @@ jobs:
         chmod +x ./cargo-green
         { ! ./cargo-green --version ; } | grep cargo-green
         mv ./cargo-green ~/.cargo/bin/
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@v6
     - run: docker info
     - run: docker buildx version
     - run: docker buildx build --help

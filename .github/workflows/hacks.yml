@@ -9,7 +9,7 @@ jobs:
       run:
         shell: bash -euo pipefail {0}
     steps:
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@v6
     - run: ./hack/clis.sh | tee .github/workflows/clis.yml
     - run: ./hack/self.sh | tee .github/workflows/self.yml
     - run: ./hack/docs.sh
@@ -24,7 +24,7 @@ jobs:
   hit:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@v6
     - run: ./hack/hit.sh
 
 
@@ -35,7 +35,7 @@ jobs:
       run:
         shell: bash -euo pipefail {0}
     steps:
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@v6
     - run: ./hack/latest_buildkit.sh | tee cargo-green/src/latest_buildkit.txt
     - run: git --no-pager diff --exit-code -- cargo-green/src/latest_buildkit.txt || echo "::warning file=cargo-green/src/latest_buildkit.txt,line=1,col=1::New version out"
 
@@ -64,7 +64,7 @@ jobs:
         cache-all-crates: true
         cache-workspace-crates: true
 
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@v6
 
     - name: Cache `cargo fetch`
       uses: actions/cache@v4
