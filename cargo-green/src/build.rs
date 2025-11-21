@@ -1,7 +1,6 @@
 use std::{
     env,
     error::Error,
-    fs::OpenOptions,
     io::Write,
     ops::Not,
     os::unix::{
@@ -13,7 +12,7 @@ use std::{
 };
 
 use anyhow::{anyhow, bail, Result};
-use atomicwrites::{AtomicFile, OverwriteBehavior};
+use atomic_write_file::AtomicWriteFile;
 use camino::{Utf8Path, Utf8PathBuf};
 use indexmap::IndexSet;
 use log::{debug, info};
@@ -511,12 +510,13 @@ async fn run_build(
                             .map_err(|e| anyhow!("Failed unTARing buffer: {e}"))?;
                         debug!("produced {name} 0x{}", sha256::digest(&buf));
 
-                        let atomix = AtomicFile::new(&fname, OverwriteBehavior::AllowOverwrite);
-                        let mut options = OpenOptions::new();
-                        options.read(true).write(true).create(true).truncate(true).mode(mode);
-                        atomix
-                            .write_with_options(|f| f.write_all(&buf), options)
-                            .map_err(|e| anyhow!("Failed writing unTARed: {e}"))?;
+                        let mut opts = AtomicWriteFile::options();
+                        opts.mode(mode);
+                        let mut file = opts
+                            .open(&fname)
+                            .map_err(|e| anyhow!("Failed opening atomic {fname}: {e}"))?;
+                        file.write_all(&buf).map_err(|e| anyhow!("Failed writing unTARed: {e}"))?;
+                        file.commit().map_err(|e| anyhow!("Failed writing unTARed: {e}"))?;
 
                         assert_eq!(f.link_name().unwrap(), None);
                         assert_eq!(f.header().entry_type().as_byte(), 0x30);
