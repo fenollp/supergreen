@@ -40,6 +40,7 @@ cargo_toml = { version = "0, >=0.21", default-features = false }
 chrono = { version = "0, >=0.4", features = [ "now" ], default-features = false }
 indexmap = { version = "2", features = [ "serde", "std" ], default-features = false }
 merkle_hash = { version = "3", features = [ "camino", "parallel" ], default-features = false }
+shell-quote = { version = "0, >=0.7", features = [ "sh" ], default-features = false }
 tokio-stream = { version = "0, >=0.1", default-features = false }
 # clap = { version = "4", features = [ "derive" ] }
 # clap-cargo = { version = "0, >=0.15", features = [ "cargo_metadata", "clap" ] }
