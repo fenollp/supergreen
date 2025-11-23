@@ -2,7 +2,7 @@
 set -o pipefail
 
 stable=1.91.1 # Closest to latest stable, as official Rust images availability permits (TODO: use rustup when image isn't yet available)
-fixed=1.86.0 # Some fixed rustc version
+fixed=1.90.0 # Some fixed rustc version
 
 
 jobdef() {
