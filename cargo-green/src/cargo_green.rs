@@ -291,9 +291,6 @@ impl Green {
                     warn!("Failed creating sentinel {sentinel}: {e}")
                 }
             })
-            .map_err(|e| {
-                let containerfile = containerfile.remove_from(&path);
-                anyhow!("{containerfile}\n\nUnable to prebuild: {e}")
-            })
+            .map_err(|e| anyhow!("{path}\n\nUnable to prebuild: {e}"))
     }
 }

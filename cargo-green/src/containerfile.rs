@@ -42,9 +42,6 @@ impl Containerfile {
         info!("opening (RW) containerfile {path}");
         fs::write(path, &self.script).map_err(|e| anyhow!("Failed creating {path}: {e}"))?;
 
-        let ignore = format!("{path}.dockerignore");
-        fs::write(&ignore, "").map_err(|e| anyhow!("Failed creating {ignore}: {e}"))?;
-
         if maybe_log().is_some() {
             info!("dockerfile: {path}");
             match fs::read_to_string(path) {
@@ -57,12 +54,5 @@ impl Containerfile {
         }
 
         Ok(())
-    }
-
-    #[must_use]
-    pub(crate) fn remove_from(&self, path: &Utf8Path) -> String {
-        let _ = fs::remove_file(path);
-        let _ = fs::remove_file(format!("{path}.dockerignore"));
-        self.script.clone()
     }
 }
