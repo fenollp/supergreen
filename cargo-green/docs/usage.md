@@ -2,7 +2,8 @@
 # Usage:
   cargo green supergreen env [ENV ...]                           Show used values
   cargo green supergreen doc [ENV ...]                           Documentation of said values
-  cargo green fetch                                              Pulls images
+  cargo green fetch                                              Pulls images and crates
+  cargo green supergreen sync                                    Pulls everything, for offline usage
   cargo green supergreen push                                    Push cache image (all tags)
   cargo green supergreen builder [ { recreate | rm } --clean ]   Manage local/remote builder
   cargo green supergreen -h | --help
