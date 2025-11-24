@@ -195,10 +195,6 @@ fn crate_out_dir(out_dir_var: Option<Utf8PathBuf>) -> Result<Option<Utf8PathBuf>
         return Ok(None);
     }
 
-    let ignore = crate_out.with_file_name(".dockerignore");
-    fs::write(&ignore, "")
-        .map_err(|e| anyhow!("Failed creating crate_out dockerignore {ignore}: {e}"))?;
-
     Ok(Some(crate_out))
 }
 
@@ -290,10 +286,6 @@ async fn do_wrap_rustc(
         let cwd_root = tmp().join(format!("{PKG}_{VSN}"));
         fs::create_dir_all(&cwd_root)
             .map_err(|e| anyhow!("Failed `mkdir -p {cwd_root:?}`: {e}"))?;
-
-        let ignore = cwd_root.join(".dockerignore");
-        fs::write(&ignore, "")
-            .map_err(|e| anyhow!("Failed creating cwd dockerignore {ignore:?}: {e}"))?;
 
         let tree = MerkleTree::builder(&pwd).algorithm(Blake3).hash_names(true).build()?;
         let hashed_tree =
