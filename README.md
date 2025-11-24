@@ -67,7 +67,8 @@ Minimum requirements:
 # Usage:
   cargo green supergreen env [ENV ...]                           Show used values
   cargo green supergreen doc [ENV ...]                           Documentation of said values
-  cargo green fetch                                              Pulls images
+  cargo green fetch                                              Pulls images and crates
+  cargo green supergreen sync                                    Pulls everything, for offline usage
   cargo green supergreen push                                    Push cache image (all tags)
   cargo green supergreen builder [ { recreate | rm } --clean ]   Manage local/remote builder
   cargo green supergreen -h | --help
@@ -442,6 +443,8 @@ Controls runner's `--network none (default) | default | host` setting.
 
 Set this to `"default"` if e.g. your `base-image-inline` calls curl or wget or installs some packages.
 
+It turns out `--network` is part of BuildKit's cache key, so an initial online build won't cache-hit on later offline builds.
+
 Set to `none` when in `$CARGO_NET_OFFLINE` mode. See
   * <https://doc.rust-lang.org/cargo/reference/config.html#netoffline>
   * <https://github.com/rust-lang/rustup/issues/4289>
@@ -714,6 +717,7 @@ all:
 * [ ] [`buildx`: `--cache-from` takes longer than actual (cached) build](https://github.com/docker/buildx/issues/3491)
 * [ ] [`buildx`: The cache export step hangs](https://github.com/docker/buildx/issues/537)
 * [ ] [`buildkit`: `COPY --rewrite-timestamp ...` to apply SOURCE_DATE_EPOCH build arg value to the timestamps of the files](https://github.com/moby/buildkit/issues/6348)
+* [ ] [`buildkit`: Dockerfile frontend: `ADD --checksum=.. https://..` hides HTTP error](https://github.com/moby/buildkit/issues/6380)
 
 
 ## En vrac

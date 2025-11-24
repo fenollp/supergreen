@@ -176,13 +176,9 @@ async fn main() -> Result<()> {
         if !cmd.status().await?.success() {
             exit(1)
         }
-        return cargo_green::fetch(green).await;
+        return green.prebuild(true).await;
     }
-    // TODO: `cargo clean` (even when `--dry-run` ?): list+rm .log + cfetch & prebuilt Dockerfiles + ...
-    //=> introduce fn.s to easily keep track of these
-
-    // After fetch: fetch pulls which may turn prebuilding into wasted work.
-    cargo_green::maybe_prebuild_base(&green).await?;
+    green.prebuild(false).await?;
 
     if !cmd.status().await?.success() {
         exit(1)

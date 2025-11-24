@@ -20,6 +20,7 @@ pub(crate) async fn main(mut green: Green, arg1: Option<&str>, args: Vec<String>
     match (arg1, args.first().map(String::as_str), args.get(1).map(String::as_str)) {
         (Some("env"), _, _) => green.envs(args)?,
         (Some("doc"), _, _) => green.docs(args)?,
+        (Some("sync"), None, None) => green.prebuild(false).await?,
         (Some("push"), None, None) => green.push().await?,
         (Some("builder"), None, None) => green.inspect_builder().await?,
         (Some("builder"), Some("rm"), None) => green.rm_builder(true).await?,

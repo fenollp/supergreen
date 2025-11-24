@@ -4,24 +4,20 @@ use std::{
 };
 
 use anyhow::{anyhow, bail, Result};
-use futures::{stream::iter, StreamExt, TryStreamExt};
 use log::{debug, info, warn};
-use tokio::try_join;
 
 use crate::{
     build::fetch_digest,
     cratesio::{self},
     experiments::EXPERIMENTS,
-    ext::CommandExt,
     green::{validate_csv, Green},
-    hash,
-    image_uri::{ImageUri, SYNTAX_IMAGE},
+    image_uri::SYNTAX_IMAGE,
     lockfile::{find_lockfile, locked_crates},
     logging::{self, maybe_log},
     network::Network,
     pwd,
     runner::{Runner, BUILDKIT_HOST, DOCKER_BUILDKIT, DOCKER_CONTEXT, DOCKER_HOST},
-    stage::{Stage, RST, RUST},
+    stage::{Stage, RST},
     tmp, ENV_FINAL_PATH, ENV_RUNNER, ENV_SYNTAX_IMAGE, PKG, VSN,
 };
 
@@ -216,163 +212,88 @@ pub(crate) async fn main() -> Result<Green> {
     Ok(green)
 }
 
-pub(crate) async fn maybe_prebuild_base(green: &Green) -> Result<()> {
-    let mut containerfile = green.new_containerfile();
-    containerfile.pushln(green.base.image_inline.as_deref().unwrap());
+impl Green {
+    /// cargo green supergreen sync
+    /// * no cargo.lock needed, but use deps if available
+    /// * pull images as they are given (maybe locked)
+    /// * TODO: push caches (tags?) ~ find last containerfile and rerun that build with cacheto
+    pub(crate) async fn prebuild(&self, require_lockfile: bool) -> Result<()> {
+        logging::setup("prebuild");
+        let _ = maybe_log();
+        info!("{PKG}@{VSN} original args: {:?} pwd={:?}", env::args(), pwd());
 
-    let fname = format!("{PKG}-{RST}-{}.Dockerfile", containerfile.hashed());
-    let sentinel = tmp().join(format!("{fname}.done"));
-    info!("checking the existence of {sentinel}");
-    if sentinel.exists() {
-        return Ok(());
-    }
+        let mut packages = vec![];
+        if let Err(e) = (async {
+            let manifest_path_lockfile = find_lockfile().await?;
+            debug!("using lockfile at {manifest_path_lockfile}");
 
-    let path = tmp().join(fname);
-    containerfile.write_to(&path)?;
+            packages = locked_crates(&manifest_path_lockfile).await?;
+            info!("found {} packages", packages.len());
 
-    // Turns out --network is part of BuildKit's cache key, so an initial online build
-    // won't cache hit on later offline builds.
-    green
-        .build_cacheonly(&path, &RUST)
+            Ok(())
+        })
         .await
-        .inspect(|_| {
-            if let Err(e) = fs::write(&sentinel, "") {
-                warn!("Failed creating sentinel {sentinel}: {e}")
+        {
+            if require_lockfile {
+                return Err(e);
             }
-        })
-        .map_err(|e| {
-            let containerfile = containerfile.remove_from(&path);
-            anyhow!("{containerfile}\n\nUnable to build {RST}: {e}")
-        })
-}
-
-pub(crate) async fn fetch(green: Green) -> Result<()> {
-    logging::setup("fetch");
-    let _ = maybe_log();
-    info!("{PKG}@{VSN} original args: {:?} pwd={:?}", env::args(), pwd());
-
-    let manifest_path_lockfile = find_lockfile().await?;
-    debug!("using lockfile at {manifest_path_lockfile}");
-
-    let packages = locked_crates(&manifest_path_lockfile).await?;
-    info!("found {} packages", packages.len());
-
-    let imgs: Vec<_> = [
-        // NOTE: we don't pull ENV_CACHE_IMAGES
-        (env::var(ENV_SYNTAX_IMAGE!()).ok(), Some(&green.syntax)),
-        (env::var(ENV_BASE_IMAGE!()).ok(), Some(&green.base.image)),
-        (env::var(ENV_BUILDER_IMAGE!()).ok(), green.builder.image.as_ref()),
-    ]
-    .into_iter()
-    .filter_map(|(user_input, img)| img.map(|img| (user_input, img)))
-    .map(|(user_input, img)| {
-        if img.locked() && user_input.map(|x| !x.contains("@sha256:")).unwrap_or(true) {
-            // Don't pull a locked image unless that's what's asked
-            // Otherwise, pull unlocked
-            img.unlocked()
-        } else {
-            img.to_owned()
         }
-    })
-    .collect();
 
-    let mut containerfile = green.new_containerfile();
+        let stage = Stage::new("prebuild").unwrap();
+        let mut containerfile = self.new_containerfile();
 
-    let imger = |img: &str| img.replace(['/', ':'], "-");
-    let ddb = green.builder.is_default();
+        containerfile.pushln(self.base.image_inline.as_deref().unwrap());
 
-    for img in imgs.iter().filter(|_| !ddb) {
-        let img = img.noscheme();
-        containerfile.push(&format!("FROM --platform=$BUILDPLATFORM {img} AS {}\n", imger(img)));
-    }
+        let stager = |i| format!("{stage}-{i}");
+        let mut leaves = 0;
+        // 127: https://github.com/docker/docs/issues/8230
+        for (i, pkgs) in packages.chunks(127).enumerate() {
+            leaves = i;
 
-    let stage = Stage::new("cargo-fetch").unwrap();
-    let stager = |i| format!("{stage}-{i}");
+            containerfile.push(&format!("FROM scratch AS {}\n", stager(i)));
 
-    let mut leaves = 0;
-    // 127: https://github.com/docker/docs/issues/8230
-    for (i, pkgs) in packages.chunks(127).enumerate() {
-        leaves = i;
+            let (name, version, hash) = &pkgs[0];
+            let name_dash_version = format!("{name}-{version}");
+            debug!("will fetch crate {name_dash_version}");
+            containerfile.pushln(cratesio::add_step(name, &name_dash_version, hash).trim());
 
-        containerfile.push(&format!("FROM scratch AS {}\n", stager(i)));
-
-        let (name, version, hash) = &pkgs[0];
-        debug!("will fetch crate {name}: {version}");
-        containerfile.pushln(cratesio::add_step(name, version, hash).trim());
-
-        for (name, version, hash) in &pkgs[1..] {
-            debug!("will fetch crate {name}: {version}");
-            containerfile.pushln(cratesio::add_step(name, version, hash).trim());
+            for (name, version, hash) in &pkgs[1..] {
+                let name_dash_version = format!("{name}-{version}");
+                debug!("will fetch crate {name_dash_version}");
+                containerfile.pushln(cratesio::add_step(name, &name_dash_version, hash).trim());
+            }
         }
-    }
-    containerfile.push(&format!("FROM scratch AS {stage}\n"));
-    for leaf in 0..=leaves {
-        containerfile.push(&format!("COPY --link --from={} / /\n", stager(leaf)));
-    }
 
-    for img in imgs.iter().filter(|_| !ddb) {
-        let imgd = imger(img.noscheme());
-        containerfile.push(&format!("COPY --link --from={imgd} / /{imgd}\n"));
-    }
+        containerfile.push(&format!("FROM scratch AS {stage}\n"));
+        if leaves > 0 {
+            for leaf in 0..=leaves {
+                containerfile
+                    .push(&format!("COPY --link --from={stg} / /{stg}\n", stg = stager(leaf)));
+            }
+        }
+        containerfile.push(&format!("COPY --link --from={RST} / /{RST}\n"));
 
-    let fname = format!(
-        "{PKG}-fetch-{}.Dockerfile",
-        hash(&(containerfile.hashed() + &format!("{imgs:?}")))
-    );
-    let sentinel = tmp().join(format!("{fname}.done"));
-    info!("checking the existence of {sentinel}");
-    if sentinel.exists() {
-        return Ok(());
-    }
+        let fname = format!("{PKG}-{VSN}-prebuilt-{}.Dockerfile", containerfile.hashed());
 
-    let path = tmp().join(fname);
-    containerfile.write_to(&path)?;
-
-    let imgs_is_empty = imgs.is_empty();
-
-    let load_to_docker = async {
-        if imgs_is_empty || !ddb {
+        let sentinel = tmp().join(format!("{fname}.done"));
+        info!("checking the existence of {sentinel}");
+        if sentinel.exists() {
             return Ok(());
         }
-        pull(&green, imgs).await // NOTE: can't pull these with build(..): they won't get --load'ed
-    };
 
-    let cache_packages = async {
-        if packages.is_empty() && (imgs_is_empty || ddb) {
-            return Ok(());
-        }
-        green.build_cacheonly(&path, &stage).await
-    };
+        let path = tmp().join(fname);
+        containerfile.write_to(&path)?;
 
-    let ((), ()) = try_join!(load_to_docker, cache_packages).inspect(|_| {
-        if let Err(e) = fs::write(&sentinel, "") {
-            warn!("Failed creating sentinel {sentinel}: {e}")
-        }
-    })?;
-    Ok(())
-}
-
-async fn pull(green: &Green, imgs: Vec<ImageUri>) -> Result<()> {
-    // TODO: nice TUI that handles concurrent progress
-    iter(imgs.into_iter())
-        .map(|img| async { do_pull(green, img).await })
-        .buffer_unordered(10)
-        .try_collect()
-        .await
-}
-
-async fn do_pull(green: &Green, img: ImageUri) -> Result<()> {
-    println!("Pulling {img}...");
-    let mut cmd = green.cmd()?;
-    cmd.arg("pull").arg(img.noscheme());
-    let o = cmd
-        .spawn()
-        .map_err(|e| anyhow!("Failed to start {}: {e}", cmd.show()))?
-        .wait()
-        .await
-        .map_err(|e| anyhow!("Failed to call {}: {e}", cmd.show()))?;
-    if !o.success() {
-        bail!("Failed to pull {img}")
+        self.build_cacheonly(&path, &stage)
+            .await
+            .inspect(|()| {
+                if let Err(e) = fs::write(&sentinel, "") {
+                    warn!("Failed creating sentinel {sentinel}: {e}")
+                }
+            })
+            .map_err(|e| {
+                let containerfile = containerfile.remove_from(&path);
+                anyhow!("{containerfile}\n\nUnable to prebuild: {e}")
+            })
     }
-    Ok(())
 }
