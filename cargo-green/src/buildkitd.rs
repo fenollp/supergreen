@@ -2,9 +2,6 @@ use std::collections::BTreeMap;
 
 use serde::{Deserialize, Serialize};
 
-/// TODO: for low-powered machines
-/// [worker.oci]
-/// max-parallelism = 4
 #[derive(Debug, Default, Serialize, Deserialize, PartialEq)]
 #[serde(default, rename_all = "kebab-case")]
 pub(crate) struct Config {
@@ -15,6 +12,9 @@ pub(crate) struct Config {
 
     #[serde(skip_serializing_if = "BTreeMap::is_empty")]
     pub(crate) registry: BTreeMap<String, Registry>,
+
+    #[serde(skip_serializing_if = "BTreeMap::is_empty")]
+    pub(crate) worker: BTreeMap<String, Worker>,
 
     #[serde(skip_serializing_if = "Vec::is_empty")]
     pub(crate) insecure_entitlements: Vec<String>,
@@ -31,6 +31,12 @@ pub(crate) struct Registry {
 
     #[serde(skip_serializing_if = "<&bool as std::ops::Not>::not")]
     pub(crate) insecure: bool,
+}
+
+#[derive(Debug, Default, Serialize, Deserialize, PartialEq)]
+#[serde(default, rename_all = "kebab-case")]
+pub(crate) struct Worker {
+    pub(crate) max_parallelism: u8,
 }
 
 #[test]
@@ -117,6 +123,27 @@ insecure-entitlements = [
         de,
         Config {
             insecure_entitlements: vec!["network.host".to_owned(), "security.insecure".to_owned()],
+            ..Default::default()
+        }
+    );
+
+    let ser = toml::to_string_pretty(&de).unwrap();
+    println!("{ser}");
+    assert_eq!(ser, cfg);
+}
+
+#[test]
+fn parallelism() {
+    let cfg = &r#"
+[worker.oci]
+max-parallelism = 4
+"#[1..];
+
+    let de: Config = toml::de::from_str(cfg).unwrap();
+    assert_eq!(
+        de,
+        Config {
+            worker: [("oci".to_owned(), Worker { max_parallelism: 4 })].into(),
             ..Default::default()
         }
     );
