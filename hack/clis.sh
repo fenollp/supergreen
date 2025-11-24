@@ -31,7 +31,6 @@ source "$repo_root"/hack/ck.sh
 
 # TODO: set about green's overhead with --timings
 
-# TODO: https://crates.io/categories/command-line-utilities?sort=recent-updates
 declare -a nvs nvs_args
    i=0  ; nvs[i]=buildxargs@master;           oks[i]=ok; nvs_args[i]='--git https://github.com/fenollp/buildxargs.git'
 ((i+=1)); nvs[i]=cargo-audit@0.21.1;          oks[i]=ko; nvs_args[i]='--features=fix' # TODO: re-ok when GitHub Actions runners update to patched BuildKit (>=v0.20)   environment variable `RING_CORE_PREFIX` not defined at compile time
@@ -105,8 +104,7 @@ declare -a nvs nvs_args
 ((i+=1)); nvs[i]=stu@0.7.1;                   oks[i]=ko; nvs_args[i]='' # BUG: unexpected crate-type: 'cdylib' error: could not compile `crc64fast-nvme` (lib)
 
 
-#TODO: not a cli but try users of https://github.com/dtolnay/watt
-  # curl -s 'https://crates.io/api/v1/crates/rustversion/reverse_dependencies?page=4&per_page=100' --compressed |jq '.versions[]|select(.bin_names != [])|.crate'
+#TODO: not a cli but try users of https://github.com/dtolnay/watt `./hack/find.sh rev watt` (no results)
 #TODO: play with cargo flags: lto (embeds bitcode)
 #TODO: allowlist non-busting rustc flags => se about this cache key
 #TODO: test cargo -vv build -> test -> build and look for "Dirty", expect none
