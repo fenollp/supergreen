@@ -21,6 +21,7 @@ pub(crate) async fn main(mut green: Green, arg1: Option<&str>, args: Vec<String>
         (Some("env"), _, _) => green.envs(args)?,
         (Some("doc"), _, _) => green.docs(args)?,
         (Some("sync"), None, None) => green.prebuild(false).await?,
+        (Some("sync"), Some("data"), None) => sync_data(&green),
         (Some("push"), None, None) => green.push().await?,
         (Some("builder"), None, None) => green.inspect_builder().await?,
         (Some("builder"), Some("rm"), None) => green.rm_builder(true).await?,
@@ -41,6 +42,13 @@ pub(crate) async fn main(mut green: Green, arg1: Option<&str>, args: Vec<String>
 
 pub(crate) fn just_help(arg1: Option<&str>) -> bool {
     matches!(arg1, None | Some("-h" | "--help" | "-V" | "--version"))
+}
+
+/// TODO: replace with non-hackish way eg. local cache backend
+fn sync_data(green: &Green) {
+    if let Some(ref data) = green.builder.data {
+        println!("{data}");
+    }
 }
 
 //TODO: util to inspect + clear (+ push) build cache: docker buildx du --verbose
