@@ -292,8 +292,8 @@ $(jobdef "$(slugify "$name_at_version")")
         - $fixed
     env:
       CARGO_TARGET_DIR: /tmp/clis-$(slugify "$name_at_version")
-      CARGOGREEN_CACHE_FROM_IMAGES: docker-image://localhost:12345/\${{ github.repository }}
-      CARGOGREEN_CACHE_TO_IMAGES: docker-image://localhost:23456/\${{ github.repository }}
+    # CARGOGREEN_CACHE_FROM_IMAGES: docker-image://localhost:12345/\${{ github.repository }}
+    # CARGOGREEN_CACHE_TO_IMAGES: docker-image://localhost:23456/\${{ github.repository }}
       CARGOGREEN_FINAL_PATH: recipes/$name_at_version.Dockerfile
       CARGOGREEN_EXPERIMENT: finalpathnonprimary # dumps on each build call
       CARGOGREEN_LOG: trace
@@ -328,11 +328,13 @@ $(restore_builder_data)
 $(rundeps_versions)
 
     - name: Prepare local private registry cache
+      if: \${{ env.CARGOGREEN_CACHE_FROM_IMAGES != '' || env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
       run: |
         # https://github.com/fenollp/supergreen/actions/caches
         mkdir -p $registry
         mkdir -p $registry_new
     - name: 🔵 Restore local private registry cache
+      if: \${{ env.CARGOGREEN_CACHE_FROM_IMAGES != '' || env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
       uses: actions/cache/restore@v4
       with:
         path: $registry
@@ -345,6 +347,7 @@ $(rundeps_versions)
           localprivatereg-
 
     - name: Pull regist3 image
+      if: \${{ env.CARGOGREEN_CACHE_FROM_IMAGES != '' || env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
       run: |
         false \\
         || docker build --tag regist3 - <<<'FROM docker.io/registry:3' \\
@@ -352,8 +355,10 @@ $(rundeps_versions)
         || docker build --tag regist3 - <<<'FROM public.ecr.aws/docker/registry:3' \\
         || exit 1
     - name: Start "cache from" image registry
+      if: \${{ env.CARGOGREEN_CACHE_FROM_IMAGES != '' }}
       run: docker run --name=reg-from --rm --detach -p 12345:5000 --user \$(id -u):\$(id -g) -v     $registry:/var/lib/registry regist3
     - name: Start "cache to" image registry
+      if: \${{ env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
       run: docker run --name=reg-to   --rm --detach -p 23456:5000 --user \$(id -u):\$(id -g) -v $registry_new:/var/lib/registry regist3
 
     - name: 🔵 Envs
@@ -399,13 +404,14 @@ $(postcond_fresh _)
 $(postconds _)
 
     - name: 🔵 Compare old/new local private registry image digests
-      if: \${{ always() }}
+      if: \${{ always() && env.CARGOGREEN_CACHE_FROM_IMAGES != '' && env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
       run: |
         diff --width=150 -y \\
           <(find $registry/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print \$NF}' | sort -u) \\
           <(find $registry_new/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print \$NF}' | sort -u) || true
         du -sh $registry $registry_new || true
     - name: Local private registry cache dance
+      if: \${{ always() && env.CARGOGREEN_CACHE_FROM_IMAGES != '' && env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
       run: |
         # [ci: caches keep growing](https://github.com/moby/buildkit/issues/1850)
         docker stop --timeout 10 reg-from reg-to
