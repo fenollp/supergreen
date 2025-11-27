@@ -210,15 +210,15 @@ COPY --link --from=dep-n-shlex-1.3.0-a2dd0fe0df0b57cb /tmp/clis-buildxargs_maste
 ## FROM scratch AS out-a2dd0fe0df0b57cb
 ## COPY --link --from=dep-n-shlex-1.3.0-a2dd0fe0df0b57cb /tmp/clis-buildxargs_master/release/deps/*-a2dd0fe0df0b57cb* /"""
 
-FROM scratch AS checkout-buildxargs-76dd4ee9dadcdcf0-3763d0dfe22b32822bb785a28ae1d7a204deeb5d
+FROM scratch AS checkout-buildxargs-76dd4ee9dadcdcf0-0060a682a2f84b295cfd2cff36602784f36ed9cf
 ADD --keep-git-dir=false \
-  https://github.com/fenollp/buildxargs.git#3763d0dfe22b32822bb785a28ae1d7a204deeb5d /
+  https://github.com/fenollp/buildxargs.git#0060a682a2f84b295cfd2cff36602784f36ed9cf /
 FROM rust-base AS dep-n-buildxargs-1.4.0-6b139e29a6fbee8c
 SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-buildxargs_master/release/deps
-WORKDIR /home/runner/.cargo/git/checkouts/buildxargs-76dd4ee9dadcdcf0/3763d0d
+WORKDIR /home/runner/.cargo/git/checkouts/buildxargs-76dd4ee9dadcdcf0/0060a68
 RUN \
-  --mount=from=checkout-buildxargs-76dd4ee9dadcdcf0-3763d0dfe22b32822bb785a28ae1d7a204deeb5d,dst=/home/runner/.cargo/git/checkouts/buildxargs-76dd4ee9dadcdcf0/3763d0d \
+  --mount=from=checkout-buildxargs-76dd4ee9dadcdcf0-0060a682a2f84b295cfd2cff36602784f36ed9cf,dst=/home/runner/.cargo/git/checkouts/buildxargs-76dd4ee9dadcdcf0/0060a68 \
   --mount=from=out-b23dd1fb69296b44,dst=/tmp/clis-buildxargs_master/release/deps/libpico_args-b23dd1fb69296b44.rlib,source=/libpico_args-b23dd1fb69296b44.rlib \
   --mount=from=out-b23dd1fb69296b44,dst=/tmp/clis-buildxargs_master/release/deps/libpico_args-b23dd1fb69296b44.rmeta,source=/libpico_args-b23dd1fb69296b44.rmeta \
   --mount=from=out-a2dd0fe0df0b57cb,dst=/tmp/clis-buildxargs_master/release/deps/libshlex-a2dd0fe0df0b57cb.rlib,source=/libshlex-a2dd0fe0df0b57cb.rlib \
@@ -226,8 +226,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=buildxargs \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR=/home/runner/.cargo/git/checkouts/buildxargs-76dd4ee9dadcdcf0/3763d0d \
-        CARGO_MANIFEST_PATH=/home/runner/.cargo/git/checkouts/buildxargs-76dd4ee9dadcdcf0/3763d0d/Cargo.toml \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/git/checkouts/buildxargs-76dd4ee9dadcdcf0/0060a68 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/git/checkouts/buildxargs-76dd4ee9dadcdcf0/0060a68/Cargo.toml \
         CARGO_PKG_AUTHORS=Pierre' Fenoll <pierrefenoll@gmail.com>' \
         CARGO_PKG_DESCRIPTION=xargs' for BuildKit with docker buildx bake' \
         CARGO_PKG_HOMEPAGE= \
@@ -294,11 +294,11 @@ COPY --link --from=dep-n-buildxargs-1.4.0-6b139e29a6fbee8c /tmp/clis-buildxargs_
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "checkout-buildxargs-76dd4ee9dadcdcf0-3763d0dfe22b32822bb785a28ae1d7a204deeb5d"
+## name = "checkout-buildxargs-76dd4ee9dadcdcf0-0060a682a2f84b295cfd2cff36602784f36ed9cf"
 ## script = '''
-## FROM scratch AS checkout-buildxargs-76dd4ee9dadcdcf0-3763d0dfe22b32822bb785a28ae1d7a204deeb5d
+## FROM scratch AS checkout-buildxargs-76dd4ee9dadcdcf0-0060a682a2f84b295cfd2cff36602784f36ed9cf
 ## ADD --keep-git-dir=false \
-##   https://github.com/fenollp/buildxargs.git#3763d0dfe22b32822bb785a28ae1d7a204deeb5d /'''
+##   https://github.com/fenollp/buildxargs.git#0060a682a2f84b295cfd2cff36602784f36ed9cf /'''
 ##
 ## [[stages]]
 ## name = "dep-n-buildxargs-1.4.0-6b139e29a6fbee8c"
@@ -306,9 +306,9 @@ COPY --link --from=dep-n-buildxargs-1.4.0-6b139e29a6fbee8c /tmp/clis-buildxargs_
 ## FROM rust-base AS dep-n-buildxargs-1.4.0-6b139e29a6fbee8c
 ## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-buildxargs_master/release/deps
-## WORKDIR /home/runner/.cargo/git/checkouts/buildxargs-76dd4ee9dadcdcf0/3763d0d
+## WORKDIR /home/runner/.cargo/git/checkouts/buildxargs-76dd4ee9dadcdcf0/0060a68
 ## RUN \
-##   --mount=from=checkout-buildxargs-76dd4ee9dadcdcf0-3763d0dfe22b32822bb785a28ae1d7a204deeb5d,dst=/home/runner/.cargo/git/checkouts/buildxargs-76dd4ee9dadcdcf0/3763d0d \
+##   --mount=from=checkout-buildxargs-76dd4ee9dadcdcf0-0060a682a2f84b295cfd2cff36602784f36ed9cf,dst=/home/runner/.cargo/git/checkouts/buildxargs-76dd4ee9dadcdcf0/0060a68 \
 ##   --mount=from=out-b23dd1fb69296b44,dst=/tmp/clis-buildxargs_master/release/deps/libpico_args-b23dd1fb69296b44.rlib,source=/libpico_args-b23dd1fb69296b44.rlib \
 ##   --mount=from=out-b23dd1fb69296b44,dst=/tmp/clis-buildxargs_master/release/deps/libpico_args-b23dd1fb69296b44.rmeta,source=/libpico_args-b23dd1fb69296b44.rmeta \
 ##   --mount=from=out-a2dd0fe0df0b57cb,dst=/tmp/clis-buildxargs_master/release/deps/libshlex-a2dd0fe0df0b57cb.rlib,source=/libshlex-a2dd0fe0df0b57cb.rlib \
@@ -316,8 +316,8 @@ COPY --link --from=dep-n-buildxargs-1.4.0-6b139e29a6fbee8c /tmp/clis-buildxargs_
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=buildxargs \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR=/home/runner/.cargo/git/checkouts/buildxargs-76dd4ee9dadcdcf0/3763d0d \
-##         CARGO_MANIFEST_PATH=/home/runner/.cargo/git/checkouts/buildxargs-76dd4ee9dadcdcf0/3763d0d/Cargo.toml \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/git/checkouts/buildxargs-76dd4ee9dadcdcf0/0060a68 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/git/checkouts/buildxargs-76dd4ee9dadcdcf0/0060a68/Cargo.toml \
 ##         CARGO_PKG_AUTHORS=Pierre' Fenoll <pierrefenoll@gmail.com>' \
 ##         CARGO_PKG_DESCRIPTION=xargs' for BuildKit with docker buildx bake' \
 ##         CARGO_PKG_HOMEPAGE= \
@@ -351,9 +351,9 @@ COPY --link --from=dep-n-buildxargs-1.4.0-6b139e29a6fbee8c /tmp/clis-buildxargs_
 FROM rust-base AS dep-n-buildxargs-1.4.0-08fbf7e44bba6617
 SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-buildxargs_master/release/deps
-WORKDIR /home/runner/.cargo/git/checkouts/buildxargs-76dd4ee9dadcdcf0/3763d0d
+WORKDIR /home/runner/.cargo/git/checkouts/buildxargs-76dd4ee9dadcdcf0/0060a68
 RUN \
-  --mount=from=checkout-buildxargs-76dd4ee9dadcdcf0-3763d0dfe22b32822bb785a28ae1d7a204deeb5d,dst=/home/runner/.cargo/git/checkouts/buildxargs-76dd4ee9dadcdcf0/3763d0d \
+  --mount=from=checkout-buildxargs-76dd4ee9dadcdcf0-0060a682a2f84b295cfd2cff36602784f36ed9cf,dst=/home/runner/.cargo/git/checkouts/buildxargs-76dd4ee9dadcdcf0/0060a68 \
   --mount=from=out-6b139e29a6fbee8c,dst=/tmp/clis-buildxargs_master/release/deps/libbuildxargs-6b139e29a6fbee8c.rlib,source=/libbuildxargs-6b139e29a6fbee8c.rlib \
   --mount=from=out-b23dd1fb69296b44,dst=/tmp/clis-buildxargs_master/release/deps/libpico_args-b23dd1fb69296b44.rlib,source=/libpico_args-b23dd1fb69296b44.rlib \
   --mount=from=out-a2dd0fe0df0b57cb,dst=/tmp/clis-buildxargs_master/release/deps/libshlex-a2dd0fe0df0b57cb.rlib,source=/libshlex-a2dd0fe0df0b57cb.rlib \
@@ -361,8 +361,8 @@ RUN \
         CARGO_BIN_NAME=buildxargs \
         CARGO_CRATE_NAME=buildxargs \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR=/home/runner/.cargo/git/checkouts/buildxargs-76dd4ee9dadcdcf0/3763d0d \
-        CARGO_MANIFEST_PATH=/home/runner/.cargo/git/checkouts/buildxargs-76dd4ee9dadcdcf0/3763d0d/Cargo.toml \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/git/checkouts/buildxargs-76dd4ee9dadcdcf0/0060a68 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/git/checkouts/buildxargs-76dd4ee9dadcdcf0/0060a68/Cargo.toml \
         CARGO_PKG_AUTHORS=Pierre' Fenoll <pierrefenoll@gmail.com>' \
         CARGO_PKG_DESCRIPTION=xargs' for BuildKit with docker buildx bake' \
         CARGO_PKG_HOMEPAGE= \
@@ -429,11 +429,11 @@ COPY --link --from=dep-n-buildxargs-1.4.0-08fbf7e44bba6617 /tmp/clis-buildxargs_
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "checkout-buildxargs-76dd4ee9dadcdcf0-3763d0dfe22b32822bb785a28ae1d7a204deeb5d"
+## name = "checkout-buildxargs-76dd4ee9dadcdcf0-0060a682a2f84b295cfd2cff36602784f36ed9cf"
 ## script = '''
-## FROM scratch AS checkout-buildxargs-76dd4ee9dadcdcf0-3763d0dfe22b32822bb785a28ae1d7a204deeb5d
+## FROM scratch AS checkout-buildxargs-76dd4ee9dadcdcf0-0060a682a2f84b295cfd2cff36602784f36ed9cf
 ## ADD --keep-git-dir=false \
-##   https://github.com/fenollp/buildxargs.git#3763d0dfe22b32822bb785a28ae1d7a204deeb5d /'''
+##   https://github.com/fenollp/buildxargs.git#0060a682a2f84b295cfd2cff36602784f36ed9cf /'''
 ##
 ## [[stages]]
 ## name = "dep-n-buildxargs-1.4.0-08fbf7e44bba6617"
@@ -441,9 +441,9 @@ COPY --link --from=dep-n-buildxargs-1.4.0-08fbf7e44bba6617 /tmp/clis-buildxargs_
 ## FROM rust-base AS dep-n-buildxargs-1.4.0-08fbf7e44bba6617
 ## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-buildxargs_master/release/deps
-## WORKDIR /home/runner/.cargo/git/checkouts/buildxargs-76dd4ee9dadcdcf0/3763d0d
+## WORKDIR /home/runner/.cargo/git/checkouts/buildxargs-76dd4ee9dadcdcf0/0060a68
 ## RUN \
-##   --mount=from=checkout-buildxargs-76dd4ee9dadcdcf0-3763d0dfe22b32822bb785a28ae1d7a204deeb5d,dst=/home/runner/.cargo/git/checkouts/buildxargs-76dd4ee9dadcdcf0/3763d0d \
+##   --mount=from=checkout-buildxargs-76dd4ee9dadcdcf0-0060a682a2f84b295cfd2cff36602784f36ed9cf,dst=/home/runner/.cargo/git/checkouts/buildxargs-76dd4ee9dadcdcf0/0060a68 \
 ##   --mount=from=out-6b139e29a6fbee8c,dst=/tmp/clis-buildxargs_master/release/deps/libbuildxargs-6b139e29a6fbee8c.rlib,source=/libbuildxargs-6b139e29a6fbee8c.rlib \
 ##   --mount=from=out-b23dd1fb69296b44,dst=/tmp/clis-buildxargs_master/release/deps/libpico_args-b23dd1fb69296b44.rlib,source=/libpico_args-b23dd1fb69296b44.rlib \
 ##   --mount=from=out-a2dd0fe0df0b57cb,dst=/tmp/clis-buildxargs_master/release/deps/libshlex-a2dd0fe0df0b57cb.rlib,source=/libshlex-a2dd0fe0df0b57cb.rlib \
@@ -451,8 +451,8 @@ COPY --link --from=dep-n-buildxargs-1.4.0-08fbf7e44bba6617 /tmp/clis-buildxargs_
 ##         CARGO_BIN_NAME=buildxargs \
 ##         CARGO_CRATE_NAME=buildxargs \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR=/home/runner/.cargo/git/checkouts/buildxargs-76dd4ee9dadcdcf0/3763d0d \
-##         CARGO_MANIFEST_PATH=/home/runner/.cargo/git/checkouts/buildxargs-76dd4ee9dadcdcf0/3763d0d/Cargo.toml \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/git/checkouts/buildxargs-76dd4ee9dadcdcf0/0060a68 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/git/checkouts/buildxargs-76dd4ee9dadcdcf0/0060a68/Cargo.toml \
 ##         CARGO_PKG_AUTHORS=Pierre' Fenoll <pierrefenoll@gmail.com>' \
 ##         CARGO_PKG_DESCRIPTION=xargs' for BuildKit with docker buildx bake' \
 ##         CARGO_PKG_HOMEPAGE= \
