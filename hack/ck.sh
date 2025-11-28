@@ -44,7 +44,6 @@ rundeps_versions() {
     - run: docker buildx build --help
     - run: podman version || true
     - run: cargo -Vv
-    - run: docker buildx prune --all --force
 EOF
 }
 
@@ -145,6 +144,7 @@ cat <<EOF
 EOF
 }
 
+
 unset_action_envs() {
     [[ $# -eq 0 ]]
 cat <<EOF
@@ -154,6 +154,7 @@ cat <<EOF
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
 EOF
 }
+
 
 login_to_readonly_hub() {
     [[ $# -eq 0 ]]
@@ -166,6 +167,7 @@ cat <<EOF
 EOF
 }
 
+
 # https://github.com/fenollp/supergreen/pkgs/container/supergreen
 login_to_readwrite_ghcr() {
     [[ $# -eq 0 ]]
@@ -175,5 +177,89 @@ cat <<EOF
         registry: ghcr.io
         username: \${{ github.actor }}
         password: \${{ secrets.GITHUB_TOKEN }}
+EOF
+}
+
+
+bin_job() {
+    [[ $# -eq 0 ]]
+cat <<EOF
+$(jobdef 'bin')
+    steps:
+    - uses: actions/checkout@v6
+
+    - uses: actions-rust-lang/setup-rust-toolchain@v1
+      with:
+        toolchain: $stable
+        cache-on-failure: true
+$(rundeps_versions)
+
+    - name: Cache \`cargo fetch\`
+      uses: actions/cache@v4
+      with:
+        path: |
+          ~/.cargo/registry/index/
+          ~/.cargo/registry/cache/
+          ~/.cargo/git/db/
+        key: \${{ github.job }}-\${{ runner.os }}-cargo-deps-\${{ hashFiles('**/Cargo.lock') }}
+        restore-keys: \${{ github.job }}-\${{ runner.os }}-cargo-deps-
+
+    - name: Cache \`cargo install\`
+      uses: actions/cache@v4
+      with:
+        path: ~/instmp
+        key: \${{ runner.os }}-cargo-install-\${{ hashFiles('**/Cargo.lock') }}
+        restore-keys: |
+          \${{ runner.os }}-cargo-install-
+
+    - name: Compile HEAD cargo-green
+      run: |
+        CARGO_TARGET_DIR=~/instmp cargo install --locked --force --path=./cargo-green
+
+    - uses: actions/upload-artifact@v5
+      with:
+        name: cargo-green
+        path: /home/runner/.cargo/bin/cargo-green
+        if-no-files-found: error
+
+# \$(login_to_readonly_hub)
+#     - run: cargo green supergreen sync
+#     - uses: actions-rust-lang/setup-rust-toolchain@v1
+#       with:
+#         toolchain: $fixed
+#         cache-on-failure: true
+#     - run: cargo green supergreen sync
+# \$(rundeps_versions)
+#     - run: cargo green supergreen builder rm || true
+#     - run: sudo du -sh \$(cargo green supergreen sync data 2>/dev/null) || true
+#     - run: sudo cp -r \$(cargo green supergreen sync data 2>/dev/null) /home/runner/builder-cache || true
+#     - run: sudo chown -R \$(id -u):\$(id -g) /home/runner/builder-cache
+#     - run: du -sh /home/runner/builder-cache || true
+#     - run: ls -lha /home/runner/builder-cache/ || true
+#     - uses: actions/upload-artifact@v5
+#       with:
+#         name: builder-data
+#         path: /home/runner/builder-cache
+#         if-no-files-found: error
+EOF
+}
+
+
+restore_builder_data() {
+    [[ $# -eq 0 ]]
+    cat <<EOF
+    - if: \${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
+      name: Retrieve saved builder data
+      uses: actions/download-artifact@v6
+      with:
+        name: builder-data
+        path: /home/runner/builder-cache
+    - if: \${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
+      run: |
+        set -x
+        sudo mkdir -p \$(cargo green supergreen sync data 2>/dev/null)
+        sudo mv -v /home/runner/builder-cache/* \$(cargo green supergreen sync data 2>/dev/null)/
+        sudo chown -R root:root \$(cargo green supergreen sync data 2>/dev/null)
+
 EOF
 }

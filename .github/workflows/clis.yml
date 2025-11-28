@@ -9,33 +9,27 @@ jobs:
       run:
         shell: bash -euo pipefail {0}
     steps:
-    - uses: actions-rust-lang/setup-rust-toolchain@v1
-      with:
-        toolchain: stable
-        cache-on-failure: true
-
     - uses: actions/checkout@v6
 
-    - name: Cache `cargo fetch` index
-      uses: actions/cache@v4
+    - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
-        path: ~/.cargo/registry/index/
-        key: ${{ github.job }}-${{ runner.os }}-cargo-deps-index-${{ hashFiles('**/Cargo.lock') }}
-        restore-keys: ${{ github.job }}-${{ runner.os }}-cargo-deps-index-
+        toolchain: 1.91.1
+        cache-on-failure: true
+    - run: docker info
+    - run: docker buildx version
+    - run: docker buildx build --help
+    - run: podman version || true
+    - run: cargo -Vv
 
-    - name: Cache `cargo fetch` cache
+    - name: Cache `cargo fetch`
       uses: actions/cache@v4
       with:
-        path: ~/.cargo/registry/cache/
-        key: ${{ github.job }}-${{ runner.os }}-cargo-deps-cache-${{ hashFiles('**/Cargo.lock') }}
-        restore-keys: ${{ github.job }}-${{ runner.os }}-cargo-deps-cache-
-
-    - name: Cache `cargo fetch` gitdb
-      uses: actions/cache@v4
-      with:
-        path: ~/.cargo/git/db/
-        key: ${{ github.job }}-${{ runner.os }}-cargo-deps-gitdb-${{ hashFiles('**/Cargo.lock') }}
-        restore-keys: ${{ github.job }}-${{ runner.os }}-cargo-deps-gitdb-
+        path: |
+          ~/.cargo/registry/index/
+          ~/.cargo/registry/cache/
+          ~/.cargo/git/db/
+        key: ${{ github.job }}-${{ runner.os }}-cargo-deps-${{ hashFiles('**/Cargo.lock') }}
+        restore-keys: ${{ github.job }}-${{ runner.os }}-cargo-deps-
 
     - name: Cache `cargo install`
       uses: actions/cache@v4
@@ -53,6 +47,27 @@ jobs:
       with:
         name: cargo-green
         path: /home/runner/.cargo/bin/cargo-green
+        if-no-files-found: error
+
+# $(login_to_readonly_hub)
+#     - run: cargo green supergreen sync
+#     - uses: actions-rust-lang/setup-rust-toolchain@v1
+#       with:
+#         toolchain: 1.90.0
+#         cache-on-failure: true
+#     - run: cargo green supergreen sync
+# $(rundeps_versions)
+#     - run: cargo green supergreen builder rm || true
+#     - run: sudo du -sh $(cargo green supergreen sync data 2>/dev/null) || true
+#     - run: sudo cp -r $(cargo green supergreen sync data 2>/dev/null) /home/runner/builder-cache || true
+#     - run: sudo chown -R $(id -u):$(id -g) /home/runner/builder-cache
+#     - run: du -sh /home/runner/builder-cache || true
+#     - run: ls -lha /home/runner/builder-cache/ || true
+#     - uses: actions/upload-artifact@v5
+#       with:
+#         name: builder-data
+#         path: /home/runner/builder-cache
+#         if-no-files-found: error
 
   buildxargs_master:
     runs-on: ubuntu-latest
@@ -99,13 +114,24 @@ jobs:
         chmod +x ./cargo-green
         { ! ./cargo-green --version ; } | grep cargo-green
         mv ./cargo-green ~/.cargo/bin/
+    - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
+      name: Retrieve saved builder data
+      uses: actions/download-artifact@v6
+      with:
+        name: builder-data
+        path: /home/runner/builder-cache
+    - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
+      run: |
+        set -x
+        sudo mkdir -p $(cargo green supergreen sync data 2>/dev/null)
+        sudo mv -v /home/runner/builder-cache/* $(cargo green supergreen sync data 2>/dev/null)/
+        sudo chown -R root:root $(cargo green supergreen sync data 2>/dev/null)
     - uses: actions/checkout@v6
     - run: docker info
     - run: docker buildx version
     - run: docker buildx build --help
     - run: podman version || true
     - run: cargo -Vv
-    - run: docker buildx prune --all --force
 
     - name: Prepare local private registry cache
       run: |
@@ -173,6 +199,7 @@ jobs:
       with:
         name: buildxargs@master.Dockerfile
         path: ${{ env.CARGOGREEN_FINAL_PATH }}
+        if-no-files-found: error
     - if: ${{ always() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
@@ -398,13 +425,24 @@ jobs:
         chmod +x ./cargo-green
         { ! ./cargo-green --version ; } | grep cargo-green
         mv ./cargo-green ~/.cargo/bin/
+    - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
+      name: Retrieve saved builder data
+      uses: actions/download-artifact@v6
+      with:
+        name: builder-data
+        path: /home/runner/builder-cache
+    - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
+      run: |
+        set -x
+        sudo mkdir -p $(cargo green supergreen sync data 2>/dev/null)
+        sudo mv -v /home/runner/builder-cache/* $(cargo green supergreen sync data 2>/dev/null)/
+        sudo chown -R root:root $(cargo green supergreen sync data 2>/dev/null)
     - uses: actions/checkout@v6
     - run: docker info
     - run: docker buildx version
     - run: docker buildx build --help
     - run: podman version || true
     - run: cargo -Vv
-    - run: docker buildx prune --all --force
 
     - name: Prepare local private registry cache
       run: |
@@ -472,6 +510,7 @@ jobs:
       with:
         name: cargo-llvm-cov@0.5.36.Dockerfile
         path: ${{ env.CARGOGREEN_FINAL_PATH }}
+        if-no-files-found: error
     - if: ${{ always() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
@@ -697,13 +736,24 @@ jobs:
         chmod +x ./cargo-green
         { ! ./cargo-green --version ; } | grep cargo-green
         mv ./cargo-green ~/.cargo/bin/
+    - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
+      name: Retrieve saved builder data
+      uses: actions/download-artifact@v6
+      with:
+        name: builder-data
+        path: /home/runner/builder-cache
+    - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
+      run: |
+        set -x
+        sudo mkdir -p $(cargo green supergreen sync data 2>/dev/null)
+        sudo mv -v /home/runner/builder-cache/* $(cargo green supergreen sync data 2>/dev/null)/
+        sudo chown -R root:root $(cargo green supergreen sync data 2>/dev/null)
     - uses: actions/checkout@v6
     - run: docker info
     - run: docker buildx version
     - run: docker buildx build --help
     - run: podman version || true
     - run: cargo -Vv
-    - run: docker buildx prune --all --force
 
     - name: Prepare local private registry cache
       run: |
@@ -771,6 +821,7 @@ jobs:
       with:
         name: cross@0.2.5.Dockerfile
         path: ${{ env.CARGOGREEN_FINAL_PATH }}
+        if-no-files-found: error
     - if: ${{ always() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
@@ -996,13 +1047,24 @@ jobs:
         chmod +x ./cargo-green
         { ! ./cargo-green --version ; } | grep cargo-green
         mv ./cargo-green ~/.cargo/bin/
+    - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
+      name: Retrieve saved builder data
+      uses: actions/download-artifact@v6
+      with:
+        name: builder-data
+        path: /home/runner/builder-cache
+    - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
+      run: |
+        set -x
+        sudo mkdir -p $(cargo green supergreen sync data 2>/dev/null)
+        sudo mv -v /home/runner/builder-cache/* $(cargo green supergreen sync data 2>/dev/null)/
+        sudo chown -R root:root $(cargo green supergreen sync data 2>/dev/null)
     - uses: actions/checkout@v6
     - run: docker info
     - run: docker buildx version
     - run: docker buildx build --help
     - run: podman version || true
     - run: cargo -Vv
-    - run: docker buildx prune --all --force
 
     - name: Prepare local private registry cache
       run: |
@@ -1070,6 +1132,7 @@ jobs:
       with:
         name: dbcc@2.2.1.Dockerfile
         path: ${{ env.CARGOGREEN_FINAL_PATH }}
+        if-no-files-found: error
     - if: ${{ always() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
@@ -1295,13 +1358,24 @@ jobs:
         chmod +x ./cargo-green
         { ! ./cargo-green --version ; } | grep cargo-green
         mv ./cargo-green ~/.cargo/bin/
+    - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
+      name: Retrieve saved builder data
+      uses: actions/download-artifact@v6
+      with:
+        name: builder-data
+        path: /home/runner/builder-cache
+    - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
+      run: |
+        set -x
+        sudo mkdir -p $(cargo green supergreen sync data 2>/dev/null)
+        sudo mv -v /home/runner/builder-cache/* $(cargo green supergreen sync data 2>/dev/null)/
+        sudo chown -R root:root $(cargo green supergreen sync data 2>/dev/null)
     - uses: actions/checkout@v6
     - run: docker info
     - run: docker buildx version
     - run: docker buildx build --help
     - run: podman version || true
     - run: cargo -Vv
-    - run: docker buildx prune --all --force
 
     - name: Prepare local private registry cache
       run: |
@@ -1369,6 +1443,7 @@ jobs:
       with:
         name: diesel_cli@2.3.2.Dockerfile
         path: ${{ env.CARGOGREEN_FINAL_PATH }}
+        if-no-files-found: error
     - if: ${{ always() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
@@ -1594,13 +1669,24 @@ jobs:
         chmod +x ./cargo-green
         { ! ./cargo-green --version ; } | grep cargo-green
         mv ./cargo-green ~/.cargo/bin/
+    - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
+      name: Retrieve saved builder data
+      uses: actions/download-artifact@v6
+      with:
+        name: builder-data
+        path: /home/runner/builder-cache
+    - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
+      run: |
+        set -x
+        sudo mkdir -p $(cargo green supergreen sync data 2>/dev/null)
+        sudo mv -v /home/runner/builder-cache/* $(cargo green supergreen sync data 2>/dev/null)/
+        sudo chown -R root:root $(cargo green supergreen sync data 2>/dev/null)
     - uses: actions/checkout@v6
     - run: docker info
     - run: docker buildx version
     - run: docker buildx build --help
     - run: podman version || true
     - run: cargo -Vv
-    - run: docker buildx prune --all --force
 
     - name: Prepare local private registry cache
       run: |
@@ -1668,6 +1754,7 @@ jobs:
       with:
         name: hickory-dns@0.25.0-alpha.1.Dockerfile
         path: ${{ env.CARGOGREEN_FINAL_PATH }}
+        if-no-files-found: error
     - if: ${{ always() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
@@ -1893,13 +1980,24 @@ jobs:
         chmod +x ./cargo-green
         { ! ./cargo-green --version ; } | grep cargo-green
         mv ./cargo-green ~/.cargo/bin/
+    - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
+      name: Retrieve saved builder data
+      uses: actions/download-artifact@v6
+      with:
+        name: builder-data
+        path: /home/runner/builder-cache
+    - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
+      run: |
+        set -x
+        sudo mkdir -p $(cargo green supergreen sync data 2>/dev/null)
+        sudo mv -v /home/runner/builder-cache/* $(cargo green supergreen sync data 2>/dev/null)/
+        sudo chown -R root:root $(cargo green supergreen sync data 2>/dev/null)
     - uses: actions/checkout@v6
     - run: docker info
     - run: docker buildx version
     - run: docker buildx build --help
     - run: podman version || true
     - run: cargo -Vv
-    - run: docker buildx prune --all --force
 
     - name: Prepare local private registry cache
       run: |
@@ -1967,6 +2065,7 @@ jobs:
       with:
         name: mussh@3.1.3.Dockerfile
         path: ${{ env.CARGOGREEN_FINAL_PATH }}
+        if-no-files-found: error
     - if: ${{ always() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
@@ -2193,13 +2292,24 @@ jobs:
         chmod +x ./cargo-green
         { ! ./cargo-green --version ; } | grep cargo-green
         mv ./cargo-green ~/.cargo/bin/
+    - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
+      name: Retrieve saved builder data
+      uses: actions/download-artifact@v6
+      with:
+        name: builder-data
+        path: /home/runner/builder-cache
+    - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
+      run: |
+        set -x
+        sudo mkdir -p $(cargo green supergreen sync data 2>/dev/null)
+        sudo mv -v /home/runner/builder-cache/* $(cargo green supergreen sync data 2>/dev/null)/
+        sudo chown -R root:root $(cargo green supergreen sync data 2>/dev/null)
     - uses: actions/checkout@v6
     - run: docker info
     - run: docker buildx version
     - run: docker buildx build --help
     - run: podman version || true
     - run: cargo -Vv
-    - run: docker buildx prune --all --force
 
     - name: Prepare local private registry cache
       run: |
@@ -2267,6 +2377,7 @@ jobs:
       with:
         name: ntpd@1.2.3.Dockerfile
         path: ${{ env.CARGOGREEN_FINAL_PATH }}
+        if-no-files-found: error
     - if: ${{ always() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
@@ -2492,13 +2603,24 @@ jobs:
         chmod +x ./cargo-green
         { ! ./cargo-green --version ; } | grep cargo-green
         mv ./cargo-green ~/.cargo/bin/
+    - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
+      name: Retrieve saved builder data
+      uses: actions/download-artifact@v6
+      with:
+        name: builder-data
+        path: /home/runner/builder-cache
+    - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
+      run: |
+        set -x
+        sudo mkdir -p $(cargo green supergreen sync data 2>/dev/null)
+        sudo mv -v /home/runner/builder-cache/* $(cargo green supergreen sync data 2>/dev/null)/
+        sudo chown -R root:root $(cargo green supergreen sync data 2>/dev/null)
     - uses: actions/checkout@v6
     - run: docker info
     - run: docker buildx version
     - run: docker buildx build --help
     - run: podman version || true
     - run: cargo -Vv
-    - run: docker buildx prune --all --force
 
     - name: Prepare local private registry cache
       run: |
@@ -2566,6 +2688,7 @@ jobs:
       with:
         name: qcow2-rs@0.1.2.Dockerfile
         path: ${{ env.CARGOGREEN_FINAL_PATH }}
+        if-no-files-found: error
     - if: ${{ always() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
@@ -2791,13 +2914,24 @@ jobs:
         chmod +x ./cargo-green
         { ! ./cargo-green --version ; } | grep cargo-green
         mv ./cargo-green ~/.cargo/bin/
+    - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
+      name: Retrieve saved builder data
+      uses: actions/download-artifact@v6
+      with:
+        name: builder-data
+        path: /home/runner/builder-cache
+    - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
+      run: |
+        set -x
+        sudo mkdir -p $(cargo green supergreen sync data 2>/dev/null)
+        sudo mv -v /home/runner/builder-cache/* $(cargo green supergreen sync data 2>/dev/null)/
+        sudo chown -R root:root $(cargo green supergreen sync data 2>/dev/null)
     - uses: actions/checkout@v6
     - run: docker info
     - run: docker buildx version
     - run: docker buildx build --help
     - run: podman version || true
     - run: cargo -Vv
-    - run: docker buildx prune --all --force
 
     - name: Prepare local private registry cache
       run: |
@@ -2865,6 +2999,7 @@ jobs:
       with:
         name: ripgrep@14.1.0.Dockerfile
         path: ${{ env.CARGOGREEN_FINAL_PATH }}
+        if-no-files-found: error
     - if: ${{ always() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
@@ -3090,13 +3225,24 @@ jobs:
         chmod +x ./cargo-green
         { ! ./cargo-green --version ; } | grep cargo-green
         mv ./cargo-green ~/.cargo/bin/
+    - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
+      name: Retrieve saved builder data
+      uses: actions/download-artifact@v6
+      with:
+        name: builder-data
+        path: /home/runner/builder-cache
+    - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
+      run: |
+        set -x
+        sudo mkdir -p $(cargo green supergreen sync data 2>/dev/null)
+        sudo mv -v /home/runner/builder-cache/* $(cargo green supergreen sync data 2>/dev/null)/
+        sudo chown -R root:root $(cargo green supergreen sync data 2>/dev/null)
     - uses: actions/checkout@v6
     - run: docker info
     - run: docker buildx version
     - run: docker buildx build --help
     - run: podman version || true
     - run: cargo -Vv
-    - run: docker buildx prune --all --force
 
     - name: Prepare local private registry cache
       run: |
@@ -3164,6 +3310,7 @@ jobs:
       with:
         name: rublk@0.2.0.Dockerfile
         path: ${{ env.CARGOGREEN_FINAL_PATH }}
+        if-no-files-found: error
     - if: ${{ always() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
@@ -3389,13 +3536,24 @@ jobs:
         chmod +x ./cargo-green
         { ! ./cargo-green --version ; } | grep cargo-green
         mv ./cargo-green ~/.cargo/bin/
+    - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
+      name: Retrieve saved builder data
+      uses: actions/download-artifact@v6
+      with:
+        name: builder-data
+        path: /home/runner/builder-cache
+    - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
+      run: |
+        set -x
+        sudo mkdir -p $(cargo green supergreen sync data 2>/dev/null)
+        sudo mv -v /home/runner/builder-cache/* $(cargo green supergreen sync data 2>/dev/null)/
+        sudo chown -R root:root $(cargo green supergreen sync data 2>/dev/null)
     - uses: actions/checkout@v6
     - run: docker info
     - run: docker buildx version
     - run: docker buildx build --help
     - run: podman version || true
     - run: cargo -Vv
-    - run: docker buildx prune --all --force
 
     - name: Prepare local private registry cache
       run: |
@@ -3463,6 +3621,7 @@ jobs:
       with:
         name: vixargs@0.1.0.Dockerfile
         path: ${{ env.CARGOGREEN_FINAL_PATH }}
+        if-no-files-found: error
     - if: ${{ always() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
@@ -3688,13 +3847,24 @@ jobs:
         chmod +x ./cargo-green
         { ! ./cargo-green --version ; } | grep cargo-green
         mv ./cargo-green ~/.cargo/bin/
+    - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
+      name: Retrieve saved builder data
+      uses: actions/download-artifact@v6
+      with:
+        name: builder-data
+        path: /home/runner/builder-cache
+    - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
+      run: |
+        set -x
+        sudo mkdir -p $(cargo green supergreen sync data 2>/dev/null)
+        sudo mv -v /home/runner/builder-cache/* $(cargo green supergreen sync data 2>/dev/null)/
+        sudo chown -R root:root $(cargo green supergreen sync data 2>/dev/null)
     - uses: actions/checkout@v6
     - run: docker info
     - run: docker buildx version
     - run: docker buildx build --help
     - run: podman version || true
     - run: cargo -Vv
-    - run: docker buildx prune --all --force
 
     - name: Prepare local private registry cache
       run: |
@@ -3762,6 +3932,7 @@ jobs:
       with:
         name: cargo-config2@0.1.34.Dockerfile
         path: ${{ env.CARGOGREEN_FINAL_PATH }}
+        if-no-files-found: error
     - if: ${{ always() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |

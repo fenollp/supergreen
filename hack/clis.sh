@@ -151,44 +151,7 @@ name: CLIs
 jobs:
 
 
-$(jobdef 'bin')
-    steps:
-    - uses: actions-rust-lang/setup-rust-toolchain@v1
-      with:
-        toolchain: stable
-        cache-on-failure: true
-
-    - uses: actions/checkout@v6
-
-$(while read -r name path; do
-  cat <<EOW
-    - name: Cache \`cargo fetch\` $name
-      uses: actions/cache@v4
-      with:
-        path: $path
-        key: \${{ github.job }}-\${{ runner.os }}-cargo-deps-$name-\${{ hashFiles('**/Cargo.lock') }}
-        restore-keys: \${{ github.job }}-\${{ runner.os }}-cargo-deps-$name-
-
-EOW
-  done < <(printf '%s ~/.cargo/registry/index/\n%s ~/.cargo/registry/cache/\n%s ~/.cargo/git/db/\n' index cache gitdb)
-)
-
-    - name: Cache \`cargo install\`
-      uses: actions/cache@v4
-      with:
-        path: ~/instmp
-        key: \${{ runner.os }}-cargo-install-\${{ hashFiles('**/Cargo.lock') }}
-        restore-keys: |
-          \${{ runner.os }}-cargo-install-
-
-    - name: Compile HEAD cargo-green
-      run: |
-        CARGO_TARGET_DIR=~/instmp cargo install --locked --force --path=./cargo-green
-
-    - uses: actions/upload-artifact@v5
-      with:
-        name: cargo-green
-        path: /home/runner/.cargo/bin/cargo-green
+$(bin_job)
 
 EOF
 }
@@ -360,6 +323,7 @@ $(
 )
 
 $(restore_bin)
+$(restore_builder_data)
     - uses: actions/checkout@v6
 $(rundeps_versions)
 
@@ -418,6 +382,7 @@ $(unset_action_envs)
       with:
         name: $name_at_version.Dockerfile
         path: \${{ env.CARGOGREEN_FINAL_PATH }}
+        if-no-files-found: error
 $(postconds _)
 $(cache_usage)
 

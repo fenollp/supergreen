@@ -39,7 +39,7 @@ $(login_to_readonly_hub)
 $(rundeps_versions)
 
 $(restore_bin)
-
+$(restore_builder_data)
     - uses: actions/checkout@v6
 
     - name: Cache \`cargo fetch\`
@@ -77,43 +77,7 @@ name: self
 jobs:
 
 
-$(jobdef 'bin')
-    steps:
-    - uses: actions-rust-lang/setup-rust-toolchain@v1
-      with:
-        toolchain: stable
-        cache-on-failure: true
-$(rundeps_versions)
-
-    - uses: actions/checkout@v6
-
-    - name: Cache \`cargo fetch\`
-      uses: actions/cache@v4
-      with:
-        path: |
-          ~/.cargo/registry/index/
-          ~/.cargo/registry/cache/
-          ~/.cargo/git/db/
-        key: \${{ github.job }}-\${{ runner.os }}-cargo-deps-\${{ hashFiles('**/Cargo.lock') }}
-        restore-keys: \${{ github.job }}-\${{ runner.os }}-cargo-deps-
-
-    - name: Cache \`cargo install\`
-      uses: actions/cache@v4
-      with:
-        path: ~/instmp
-        key: \${{ runner.os }}-cargo-install-\${{ hashFiles('**/Cargo.lock') }}
-        restore-keys: |
-          \${{ runner.os }}-cargo-install-
-
-    - name: Compile HEAD cargo-green
-      run: |
-        CARGO_TARGET_DIR=~/instmp cargo install --locked --force --path=./cargo-green
-
-    - uses: actions/upload-artifact@v5
-      with:
-        name: cargo-green
-        path: /home/runner/.cargo/bin/cargo-green
-
+$(bin_job)
 
 $(bin_jobdef 'installs')
     steps:
