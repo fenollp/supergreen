@@ -145,6 +145,12 @@ echo
 #---
 
 
+case "${BUILDX_BUILDER:-}" in
+  '') export BUILDX_BUILDER=supergreen ;;
+  'empty') export BUILDX_BUILDER= ;;
+  *) ;;
+esac
+
 rm $CARGO_TARGET_DIR/release/deps/${install_package%@*}-????????????????
 invocation=$(grep -vE '^## ' $CARGOGREEN_FINAL_PATH | grep -E '^# ' | tail -n1 | cut -c2- | head -n1 | cut -d'<' -f1 | sed "s%--output=.%-o=$CARGO_TARGET_DIR/release/deps/%")
 $invocation --call=format=json,check   <$CARGOGREEN_FINAL_PATH | jq 'del(.sources[0])'
@@ -153,6 +159,8 @@ $invocation --call=format=json,targets <$CARGOGREEN_FINAL_PATH | jq 'del(.source
 $invocation                            <$CARGOGREEN_FINAL_PATH
 $CARGO_TARGET_DIR/release/deps/${install_package%@*} --help >/dev/null
 [[ $install_sha = $(sha256sum $CARGO_TARGET_DIR/release/deps/${install_package%@*} | awk '{print $1}') ]] # rebuild => no change
+
+unset BUILDX_BUILDER
 
 echo Builds fine and in a standalone way
 echo
