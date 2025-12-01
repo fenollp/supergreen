@@ -31,112 +31,121 @@ source "$repo_root"/hack/ck.sh
 
 # TODO: set about green's overhead with --timings
 
+# ok: builds | ko: doesn't build | [ok]D: ok|ko but old: shows too many cfg warnings | Ok: takes >=10min in CI
 declare -a nvs nvs_args
    i=0  ; nvs[i]=buildxargs@master;           oks[i]=ok; nvs_args[i]='--git https://github.com/fenollp/buildxargs.git'
-((i+=1)); nvs[i]=cargo-audit@0.21.1;          oks[i]=ko; nvs_args[i]='--features=fix' # TODO: re-ok when GitHub Actions runners update to patched BuildKit (>=v0.20)   environment variable `RING_CORE_PREFIX` not defined at compile time
-((i+=1)); nvs[i]=cargo-bpf@2.3.0;             oks[i]=ko; nvs_args[i]='' # (No libelf-dev installed on host) (Wrapper compiles successfully) Build script fails to run: Running `CARGO=.. .../bpf-sys-c62ba29dc4f555d9/build-script-build` ... error: gelf.h: No such file => TODO: see about overriding RUSTC_LINKER=/usr/bin/clang
-((i+=1)); nvs[i]=cargo-deny@0.18.5;           oks[i]=hm; nvs_args[i]='' # Just takes ~12min in CI...
-((i+=1)); nvs[i]=cargo-fuzz@0.12.0;           oks[i]=ko; nvs_args[i]='' # .. environment variable `TARGET_PLATFORM` not defined at compile time .. current_platform-0.2.0 + HOST_PLATFORM
-((i+=1)); nvs[i]=cargo-green@main;            oks[i]=ok; nvs_args[i]='--git https://github.com/fenollp/supergreen.git --branch=main cargo-green'
-((i+=1)); nvs[i]=cargo-llvm-cov@0.5.36;       oks[i]=ok; nvs_args[i]=''
-((i+=1)); nvs[i]=cargo-nextest@0.9.72;        oks[i]=ko; nvs_args[i]='' # .. environment variable `TARGET` not defined at compile time .. self_update-0.39.0
-((i+=1)); nvs[i]=cross@0.2.5;                 oks[i]=ok; nvs_args[i]='--git https://github.com/cross-rs/cross.git --tag=v0.2.5 cross'
-((i+=1)); nvs[i]=dbcc@2.2.1;                  oks[i]=ok; nvs_args[i]=''
-((i+=1)); nvs[i]=diesel_cli@2.3.2;            oks[i]=ok; nvs_args[i]='--no-default-features --features=postgres'
-((i+=1)); nvs[i]=hickory-dns@0.25.0-alpha.1;  oks[i]=ok; nvs_args[i]='--features=dns-over-rustls'
-((i+=1)); nvs[i]=mussh@3.1.3;                 oks[i]=ok; nvs_args[i]=''
-((i+=1)); nvs[i]=ntpd@1.2.3;                  oks[i]=ok; nvs_args[i]=''
-((i+=1)); nvs[i]=qcow2-rs@0.1.2;              oks[i]=ok; nvs_args[i]=''
-((i+=1)); nvs[i]=ripgrep@14.1.0;              oks[i]=ok; nvs_args[i]=''
-((i+=1)); nvs[i]=rublk@0.2.0;                 oks[i]=ok; nvs_args[i]=''
-((i+=1)); nvs[i]=shpool@0.6.2;                oks[i]=ko; nvs_args[i]='' # sudo apt-get install libpam0g-dev
-((i+=1)); nvs[i]=statehub@0.14.10;            oks[i]=ko; nvs_args[i]='' # BUG: unexpected crate-type: 'cdylib'
-((i+=1)); nvs[i]=torrust-index@3.0.0;         oks[i]=ko; nvs_args[i]='' # /usr/bin/ld: cannot find -lssl: No such file or directory
-((i+=1)); nvs[i]=cargo-authors@0.5.5;         oks[i]=ko; nvs_args[i]='' # ERROR: failed to solve: ResourceExhausted: ResourceExhausted: ResourceExhausted: ResourceExhausted: ResourceExhausted: grpc: received message larger than max (6653826 vs. 4194304)
+((i+=1)); nvs[i]=cargo-audit@0.22.0;          oks[i]=Ok; nvs_args[i]='--features=fix'
+((i+=1)); nvs[i]=cargo-deny@0.18.5;           oks[i]=Ok; nvs_args[i]=''
+((i+=1)); nvs[i]=cargo-fuzz@0.13.1;           oks[i]=ko; nvs_args[i]=''
+((i+=1)); nvs[i]=cargo-green@main;            oks[i]=ko; nvs_args[i]='--git https://github.com/fenollp/supergreen.git --branch=main cargo-green' # BUG: couldn't read `cargo-green/src/main.rs`: No such file or directory (os error 2)
+((i+=1)); nvs[i]=cargo-llvm-cov@0.6.21;       oks[i]=ok; nvs_args[i]=''
+((i+=1)); nvs[i]=cargo-nextest@0.9.114;       oks[i]=ok; nvs_args[i]=''
+((i+=1)); nvs[i]=cross@0.2.5;                 oks[i]=ok; nvs_args[i]='--git https://github.com/cross-rs/cross.git --rev=49cd054de9b832dfc11a4895c72b0aef533b5c6a cross' # Pinned on 2025/12/03
+((i+=1)); nvs[i]=dbcc@2.2.1;                  oks[i]=oD; nvs_args[i]=''
+((i+=1)); nvs[i]=diesel_cli@2.3.4;            oks[i]=ok; nvs_args[i]='--no-default-features --features=postgres'
+((i+=1)); nvs[i]=hickory-dns@0.26.0-alpha.1;  oks[i]=ok; nvs_args[i]=''
+((i+=1)); nvs[i]=mussh@3.1.3;                 oks[i]=oD; nvs_args[i]=''
+((i+=1)); nvs[i]=ntpd@1.7.0-alpha.20251003;   oks[i]=ok; nvs_args[i]=''
+((i+=1)); nvs[i]=qcow2-rs@0.1.6;              oks[i]=ok; nvs_args[i]=''
+((i+=1)); nvs[i]=ripgrep@15.1.0;              oks[i]=ok; nvs_args[i]=''
+((i+=1)); nvs[i]=rublk@0.2.13;                oks[i]=ok; nvs_args[i]=''
+((i+=1)); nvs[i]=shpool@0.9.3;                oks[i]=ok; nvs_args[i]=''
+
+#cdylib
+((i+=1)); nvs[i]=statehub@0.14.10;            oks[i]=oD; nvs_args[i]=''
+((i+=1)); nvs[i]=code_reload@main             oks[i]=ko; nvs_args[i]='--git https://github.com/alordash/code_reload.git --rev=fc16bd2102ea1b59f55563923d6c161684230950 simple' # Pinned on 2025/12/03 # BUG: couldn't read `$CARGO_HOME/git/checkouts/code_reload-a4960c8e3a9a144c/fc16bd2/src/code_reload_core/src/lib.rs`: No such file or directory (os error 2)
+((i+=1)); nvs[i]=stu@0.7.5;                   oks[i]=ok; nvs_args[i]=''
+
+((i+=1)); nvs[i]=torrust-index@3.0.0-develop; oks[i]=ko; nvs_args[i]='--git https://github.com/torrust/torrust-index.git --rev=f9c17f3d6f37b949101df3a5d4b4384c641ff929' # Pinned on 2025/12/03 # use of unresolved module or unlinked crate `reqwest`
+((i+=1)); nvs[i]=cargo-authors@0.5.5;         oks[i]=ok; nvs_args[i]=''
 ((i+=1)); nvs[i]=vixargs@0.1.0;               oks[i]=ok; nvs_args[i]=''
-((i+=1)); nvs[i]=cargo-config2@0.1.34;        oks[i]=ok; nvs_args[i]='--example=get'
-((i+=1)); nvs[i]=privaxy@0.5.2;               oks[i]=ko; nvs_args[i]='--git https://github.com/Barre/privaxy.git --tag=v0.5.2 privaxy' # undefined reference to `__isoc23_strtol'\n          /usr/bin/ld: rand_unix.c:(.text.wait_random_seeded+0x204): undefined reference to `__isoc23_strtol'\n          collect2: error: ld returned 1 exit status\n          \n  = note: some `extern` functions couldn't be found; some native libraries may need to be installed or have their path specified\n  = note: use the `-l` flag to specify native libraries to link\n  = note: use the `cargo:rustc-link-lib` directive to specify the native libraries to link with Cargo (see https://doc.rust-lang.org/cargo/reference/build-scripts.html#rustc-link-lib
+((i+=1)); nvs[i]=cargo-config2@0.1.39;        oks[i]=ok; nvs_args[i]='--example=get'
+((i+=1)); nvs[i]=privaxy@main;                oks[i]=ko; nvs_args[i]='--git https://github.com/Barre/privaxy.git --rev=5dad688538bc7397d71d1c9cfd9d9d53bcf68032 privaxy' # Pinned on 2025/12/03 # BUG: $CARGO_HOME/registry/src/index.crates.io-0000000000000000/openssl-src-111.18.0+1.1.1n/src/lib.rs:496:32: No such file or directory
 
-((i+=1)); nvs[i]=miri@master;                 oks[i]=ko; nvs_args[i]='--git https://github.com/rust-lang/miri.git --rev=dcd2112' # can't find crate for `either`
-((i+=1)); nvs[i]=zed@main;                    oks[i]=ko; nvs_args[i]='--git https://github.com/zed-industries/zed.git --tag=v0.179.5 zed' # error: could not download file from 'https://static.rust-lang.org/dist/channel-rust-1.85.toml.sha256'
-((i+=1)); nvs[i]=verso@main;                  oks[i]=ko; nvs_args[i]='--git https://github.com/versotile-org/verso.git --rev 62e3085 verso' # error: could not download file from 'https://static.rust-lang.org/dist/channel-rust-1.85.0.toml.sha256'
-((i+=1)); nvs[i]=cargo-udeps@0.1.55;          oks[i]=ko; nvs_args[i]='' # TODO: seems to not use libssl-dev & fails building openssl-sys crate.
+((i+=1)); nvs[i]=miri@master;                 oks[i]=ko; nvs_args[i]='--git https://github.com/rust-lang/miri.git --rev=092a83d273087c4f9dd7f1e34a0cd1916819c674' # Pinned on 2025/12/03 # can't find crate for `rustc_errors`
+((i+=1)); nvs[i]=zed@main;                    oks[i]=ko; nvs_args[i]='--git https://github.com/zed-industries/zed.git --tag=v0.215.3-pre zed' # Pinned on 2025/12/03 # BUG: error: couldn't read `crates/collections/src/collections.rs`: No such file or directory (os error 2)
+((i+=1)); nvs[i]=verso@main;                  oks[i]=kD; nvs_args[i]='--git https://github.com/versotile-org/verso.git --rev eb719bdd6c7b verso' # Pinned on 2025/12/03 # use of unresolved module or unlinked crate `arboard`
+((i+=1)); nvs[i]=cargo-udeps@0.1.60;          oks[i]=ko; nvs_args[i]='' # extern location for cargo does not exist: /tmp/clis-cargo-udeps_0-1-60/release/deps/libcargo-71fcb7d73f0f1dfb.rmeta
 
-((i+=1)); nvs[i]=mirai@main;                  oks[i]=ko; nvs_args[i]='--git https://github.com/facebookexperimental/MIRAI.git --tag=v1.1.9 checker'
-# error: could not find `checker` in https://github.com/facebookexperimental/MIRAI.git?tag=v1.1.9 with version `*`
-# ---
-# #10 0.170 ::STDERR:: info: syncing channel updates for 'nightly-2023-12-30-x86_64-unknown-linux-gnu'
-# #10 0.170 ::STDERR:: error: could not download file from 'https://static.rust-lang.org/dist/2023-12-30/channel-rust-nightly.toml.sha256' to '/usr/local/rustup/tmp/56sbia14kl406mlj_file':
-#             failed to make network request:
-#               error sending request for url (https://static.rust-lang.org/dist/2023-12-30/channel-rust-nightly.toml.sha256):
-#                 client error (Connect): dns error: failed to lookup address information:
-#                   Temporary failure in name resolution: failed to lookup address information: Temporary failure in name resolution
+((i+=1)); nvs[i]=mirai@main;                  oks[i]=ko; nvs_args[i]='--git https://github.com/facebookexperimental/MIRAI.git --rev=8c258d28652c2bf5fbf7b92b7a6d4298d4ae18bc checker' # Pinned on 2025/12/03
+#     Updating git repository `https://github.com/facebookexperimental/MIRAI.git`
+#     Updating git submodule `git@github.com:microsoft/vcpkg.git`
+# error: failed to update submodule `vcpkg`
+# Caused by:
+#   failed to fetch submodule `vcpkg` from git@github.com:microsoft/vcpkg.git
+# Caused by:
+#   failed to authenticate when downloading repository
+#   * attempted ssh-agent authentication, but no usernames succeeded: `git`
+#   if the git CLI succeeds then `net.git-fetch-with-cli` may help here
+#   https://doc.rust-lang.org/cargo/reference/config.html#netgit-fetch-with-cli
+# Caused by:
+#   no authentication methods succeeded
 
+((i+=1)); nvs[i]=a-mir-formality@main;        oks[i]=kD; nvs_args[i]='--git https://github.com/rust-lang/a-mir-formality.git --rev=3fc2f38319bb729fbf2f59c38e15e23a9b774716 a-mir-formality' # Pinned 2025/12/03 # error: cannot export macro_rules! macros from a `proc-macro` crate type currently
 
-((i+=1)); nvs[i]=synthesizer@master;          oks[i]=ko; nvs_args[i]='--git https://github.com/hsfzxjy/handwriter.ttf.git --rev=ba4ab89 synthesizer' # (probably needs git-lfs) no binary target
+#((i+=1)); nvs[i]=kani-verifier@0.66.0;       oks[i]=ok; nvs_args[i]='--bin=cargo-kani --bin=kani'
+ ((i+=1)); nvs[i]=kani-verifier@0.66.0;       oks[i]=ok; nvs_args[i]='--bin=cargo-kani'
 
-((i+=1)); nvs[i]=a-mir-formality@main;        oks[i]=ko; nvs_args[i]='--git https://github.com/rust-lang/a-mir-formality.git --rev=8cc6aba a-mir-formality' #
+((i+=1)); nvs[i]=creusat@master;              oks[i]=ko; nvs_args[i]='--git https://github.com/sarsko/creusat.git --rev=0758fe729d52d8289f3db3508940662e2969ec97 CreuSAT' # Pinned on 2025/12/03 # error: couldn't read `CreuSAT/src/lib.rs`: No such file or directory (os error 2)
+#80 [checkout-0758fe7-0758fe729d52d8289f3db3508940662e2969ec97 1/1] ADD --keep-git-dir=false   https://github.com/sarsko/creusat.git#0758fe729d52d8289f3db3508940662e2969ec97 /
+#80 0.026 Initialized empty Git repository in /var/lib/buildkit/runc-overlayfs/snapshots/snapshots/28181/fs/
+#80 0.033 fatal: Not a valid object name 0758fe729d52d8289f3db3508940662e2969ec97^{commit}
+#80 7.016 From https://github.com/sarsko/creusat
+#80 7.016  * branch              0758fe729d52d8289f3db3508940662e2969ec97 -> FETCH_HEAD
+#80 7.019 0758fe729d52d8289f3db3508940662e2969ec97
 
-# ((i+=1)); nvs[i]=cargo-prusti@master;         oks[i]=ko; nvs_args[i]='--git https://github.com/viperproject/prusti-dev.git --tag=v-2024-03-26-1504 cargo-prusti' #
-((i+=1)); nvs[i]=prusti@master;               oks[i]=ko; nvs_args[i]='--git https://github.com/viperproject/prusti-dev.git --tag=v-2024-03-26-1504 prusti' #
+((i+=1)); nvs[i]=cargo-make@0.37.24;          oks[i]=ko; nvs_args[i]='' # BUG confused by 2 versions of same crate: struct takes 3 generic arguments but 2 generic arguments were supplied
 
-((i+=1)); nvs[i]=kani-verifier@0.54.0;        oks[i]=ko; nvs_args[i]='' #
+#rust-toolchain.toml
+((i+=1)); nvs[i]=coccinelleforrust@main;      oks[i]=ko; nvs_args[i]='--git https://gitlab.inria.fr/coccinelle/coccinelleforrust.git --rev=04050b76b coccinelleforrust' # Pinned on 2025/12/03 # TODO: Unable to locate package python3.12-dev => try installing python3.12-dev via "also-run"
+((i+=1)); nvs[i]=edit@main;                   oks[i]=ko; nvs_args[i]='--git https://github.com/microsoft/edit --tag=v1.2.1 edit' # Pinned 2025/12/04 # error[E0554]: `#![feature]` may not be used on the stable release channel
+# => does toolchain file impact whole project or just primary crate?
+((i+=1)); nvs[i]=pyrefly@main;                oks[i]=ko; nvs_args[i]='--git https://github.com/facebook/pyrefly --tag=0.44.0' # Pinned 2025/12/05 # BUG: couldn't read `$CARGO_HOME/git/checkouts/displaydoc-6f27dab09e41f0bc/7dc6e32/src/lib.rs`: No such file or directory
 
-((i+=1)); nvs[i]=creusat@master;              oks[i]=ko; nvs_args[i]='--git https://github.com/sarsko/creusat.git --rev=b36aacd CreuSAT' #
+((i+=1)); nvs[i]=ipa@main;                    oks[i]=ko; nvs_args[i]='--git https://github.com/seekbytes/IPA.git --rev=3094f92 ipa' # Pinned on 2025/12/04 # BUG couldn't read `$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/khronos_api-3.1.0/api_webgl/extensions/WEBGL_multiview/extension.xml`: No such file or directory (os error 2)
 
-((i+=1)); nvs[i]=cargo-make@0.37.15;          oks[i]=ko; nvs_args[i]='' #
+((i+=1)); nvs[i]=cargo-tally@1.0.71;          oks[i]=ok; nvs_args[i]=''
+((i+=1)); nvs[i]=cargo-mutants@25.3.1;        oks[i]=ok; nvs_args[i]=''
+((i+=1)); nvs[i]=binsider@0.3.0;              oks[i]=ok; nvs_args[i]=''
 
-
-((i+=1)); nvs[i]=coccinelleforrust@main;      oks[i]=ko; nvs_args[i]='--git https://gitlab.inria.fr/coccinelle/coccinelleforrust.git --rev=b06ba306 coccinelleforrust' #--branch=ctl2
-# could not download file from 'https://static.rust-lang.org/dist/channel-rust-nightly.toml.sha256' to '/usr/local/rustup/tmp/dmbquji61f3vgrgv_file':
-#   failed to make network request: error sending request for url (https://static.rust-lang.org/dist/channel-rust-nightly.toml.sha256):
-#     client error (Connect): dns error: failed to lookup address information: Temporary failure in name resolution: failed to lookup address information: Temporary failure in name resolution
-#=> has a toolchain file requiring nightly but --network=none
-#==> see (1) adapt this file to `cargo +nightly install` (2) pass env to allow network (3) at each crate, read toolchain file to auto-add a corresponding stage
-
-((i+=1)); nvs[i]=ipa@main;                    oks[i]=ko; nvs_args[i]='--git https://github.com/seekbytes/IPA.git --rev=3094f92 ipa' # environment variable `MIME_TYPES_GENERATED_PATH` not defined at compile time
-
-
-# ((i+=1)); nvs[i]=cargo-tally@1.0.48;          oks[i]=ok; nvs_args[i]='' #
-# ((i+=1)); nvs[i]=cargo-mutants@24.7.1;        oks[i]=ok; nvs_args[i]='' #
-# ((i+=1)); nvs[i]=binsider@0.2.0;              oks[i]=ok; nvs_args[i]='' #
-
-((i+=1)); nvs[i]=stu@0.7.1;                   oks[i]=ko; nvs_args[i]='' # BUG: unexpected crate-type: 'cdylib' error: could not compile `crc64fast-nvme` (lib)
-
+((i+=1)); nvs[i]=gifski@1.34.0;               oks[i]=ok; nvs_args[i]=''
 
 #TODO: not a cli but try users of https://github.com/dtolnay/watt `./hack/find.sh rev watt` (no results)
 #TODO: play with cargo flags: lto (embeds bitcode)
 #TODO: allowlist non-busting rustc flags => se about this cache key
 #TODO: test cargo -vv build -> test -> build and look for "Dirty", expect none
 
-# TODO https://github.com/aizcutei/nanometers?tab=readme-ov-file#testing-locally
+((i+=1)); nvs[i]=nanometers@master;           oks[i]=ko; nvs_args[i]='--git https://github.com/aizcutei/nanometers.git --rev=ca11bbbead' # Pinned 2025/12/04 # WEIRD: system library `pango` required by crate `pango-sys` was not found.
 
 # TODO: https://belmoussaoui.com/blog/8-how-to-flatpak-a-rust-application/
 
-# TODO: cargo install --git https://github.com/astral-sh/uv uv
+((i+=1)); nvs[i]=uv@main;                     oks[i]=ko; nvs_args[i]='--git https://github.com/astral-sh/uv.git --rev=2748dce uv' # Pinned 2025/12/04 BUG: couldn't read `crates/uv-macros/src/lib.rs`: No such file or directory
 
-# TODO: https://github.com/flamegraph-rs/flamegraph
+((i+=1)); nvs[i]=flamegraph@0.6.10;           oks[i]=ok; nvs_args[i]=''
 
-# TODO: https://codeberg.org/willempx/qair/
+((i+=1)); nvs[i]=qair@main;                   oks[i]=kD; nvs_args[i]='--git https://codeberg.org/willempx/qair.git --rev=0751f410da' # Pinned 2025/12/04 # conflicting implementations of trait `Trait` for type `(dyn Send + Sync + 'static)` # rustc 1.91.1 too new
 
-# TODO: https://git.sr.ht/~ireas/rusty-man
+((i+=1)); nvs[i]=rusty-man@master;            oks[i]=ko; nvs_args[i]='--git https://git.sr.ht/~ireas/rusty-man --tag=v0.5.0' # Pinned 2025/12/04 # BUG: error: couldn't read `src/main.rs`: No such file or directory (os error 2)
 
-# TODO: https://github.com/asterinas/asterinas
-# TODO: https://github.com/microsoft/edit
-# => does toolchain file impact whole project or just primary crate?
+((i+=1)); nvs[i]=asterinas@main;              oks[i]=ko; nvs_args[i]='--git=https://github.com/asterinas/asterinas --tag=v0.16.1 cargo-osdk' # Pinned 2025/12/04 # BUG: couldn't read `$CARGO_HOME/git/checkouts/asterinas-afa2d1b9c5178441/48c7c37/ostd/libs/align_ext/src/lib.rs`: No such file or directory
 
-# TODO: cargo install --locked --git https://fuchsia.googlesource.com/fargo fargo
+((i+=1)); nvs[i]=fargo@main;                  oks[i]=kD; nvs_args[i]='--git https://fuchsia.googlesource.com/fargo --rev=a7d967b' # Pinned 2025/12/04 # BUG: couldn't read `src/lib.rs`: No such file or directory
 
-# TODO: https://github.com/CyberTimon/RapidRAW
+((i+=1)); nvs[i]=rapidraw@main;               oks[i]=ko; nvs_args[i]='--git https://github.com/CyberTimon/RapidRAW.git --tag=v1.4.6 RapidRAW' # Pinned 2025/12/04 # system library `gdk-3.0` required by crate `gdk-sys`
 
-# TODO: https://github.com/Automattic/harper/releases/tag/v0.37.0 harper-cli
-# TODO: https://lib.rs/crates/zstd
-# TODO: https://github.com/facebook/pyrefly
-# TODO: https://gitlab.freedesktop.org/gstreamer/gst-plugins-rs/-/tree/4ee38b6cf99407bc8a633a4a06784e09816ff48d
+((i+=1)); nvs[i]=harper@master;               oks[i]=ko; nvs_args[i]='--git https://github.com/Automattic/harper.git --tag=v1.1.0 harper-ls' # Pinned 2025/12/04 # BUG: couldn't read `harper-pos-utils/src/lib.rs`: No such file or directory
 
-# TODO: https://crates.io/crates/bottom
-#   dependent on https://lib.rs/crates/nvml-wrapper
-#   and https://github.com/nagisa/rust_libloading
+#zstd
+((i+=1)); nvs[i]=sccache@0.12.0;              oks[i]=ok; nvs_args[i]=''
+
+((i+=1)); nvs[i]=gst-plugin-webrtc-signalling@main; oks[i]=kD; nvs_args[i]='--git https://gitlab.freedesktop.org/gstreamer/gst-plugins-rs --rev=0a592e9c5649b4099b0ef7c25b6389d4bccea94a' # Pinned on 2025/12/05 # BUG: couldn't read `net/webrtc/protocol/src/lib.rs`: No such file or directory
+#((i+=1)); nvs[i]=cargo-c@0.10.18+cargo-0.92.0; oks[i]=ko; nvs_args[i]='' # extern location for cargo does not exist: /tmp/clis-cargo-c_0-10-18+cargo-0-92-0/release/deps/libcargo-398e775d8efe7ba7.rmeta
+ ((i+=1)); nvs[i]=cargo-c@0.10.15+cargo-0.90.0; oks[i]=ko; nvs_args[i]='' # extern location for cargo does not exist: /tmp/clis-cargo-c_0-10-15+cargo-0-90-0/release/deps/libcargo-6a92f81c48ba907f.rmeta
+
+# Depends on https://lib.rs/crates/nvml-wrapper and on https://github.com/nagisa/rust_libloading
+((i+=1)); nvs[i]=bottom@0.11.4;               oks[i]=ok; nvs_args[i]=''
+
+((i+=1)); nvs[i]=cargo-rail@0.1.0;            oks[i]=ko; nvs_args[i]='' # requires rustc 1.91.0 or newer
 
 #FIXME: test with Environment: CARGO_BUILD_RUSTC_WRAPPER or RUSTC_WRAPPER  or Environment: CARGO_BUILD_RUSTC_WORKSPACE_WRAPPER or RUSTC_WORKSPACE_WRAPPER
 # => the final invocation is $RUSTC_WRAPPER $RUSTC_WORKSPACE_WRAPPER $RUSTC.
@@ -169,18 +178,28 @@ as_env() {
   local name_at_version=$1; shift
   [[ $# -eq 0 ]]
   case "$name_at_version" in
+    bottom@*) envvars+=(CARGOGREEN_SET_ENVS='BTM_GENERATE,BTM_BUILD_RELEASE_CALLER,CIRRUS_CHANGE_IN_REPO,GITHUB_SHA'); envvars+=(BTM_GENERATE=); envvars+=(BTM_BUILD_RELEASE_CALLER=); envvars+=(CIRRUS_CHANGE_IN_REPO=); envvars+=(GITHUB_SHA=) ;; # TODO: drop once fully wrapping buildrs execs
     cargo-authors@*) envvars+=(CARGOGREEN_ADD_APT='libssl-dev,zlib1g-dev') ;;
-    cargo-udeps@*) envvars+=(CARGOGREEN_ADD_APT='libssl-dev,zlib1g-dev') ;;
+    cargo-c@*) envvars+=(CARGOGREEN_SET_ENVS='RUST_HOST_TARGET') ;;
+    cargo-fuzz@*) envvars+=(CARGOGREEN_SET_ENVS='HOST_PLATFORM,TARGET_PLATFORM') ;;
+    cargo-make@*) envvars+=(CARGOGREEN_SET_ENVS='RING_CORE_PREFIX') ;;
+    cargo-nextest@*) envvars+=(CARGOGREEN_SET_ENVS='NEXTEST_BUILD_HOST_TARGET,TARGET') ;;
+    cargo-udeps@*) envvars+=(CARGOGREEN_ADD_APT='libssl-dev,zlib1g-dev' CARGOGREEN_SET_ENVS='RUST_HOST_TARGET') ;;
+    coccinelleforrust@*) envvars+=(CARGOGREEN_ADD_APT='python3-dev') ;;
     dbcc@*) envvars+=(CARGOGREEN_SET_ENVS='TYPENUM_BUILD_CONSTS,TYPENUM_BUILD_OP') ;;
     diesel_cli@*) envvars+=(CARGOGREEN_ADD_APT='libpq-dev') ;;
+    harper@*) envvars+=(CARGOGREEN_SET_ENVS='CRUNCHY_LIB_SUFFIX') ;;
     hickory-dns@*) envvars+=(CARGOGREEN_SET_ENVS='RING_CORE_PREFIX') ;;
+    kani-verifier@*) envvars+=(CARGOGREEN_SET_ENVS='TARGET') ;;
     mussh@*) envvars+=(CARGOGREEN_ADD_APT='libsqlite3-dev,libssl-dev,zlib1g-dev') ;;
+    nanometers@*) envvars+=(CARGOGREEN_ADD_APT='libcairo2-dev,libpango-1.0-0,libpango1.0-dev,libssl-dev,libxcb-render0-dev,libxcb-shape0-dev,libxcb-xfixes0-dev,libxkbcommon-dev') ;;
     ntpd@*) envvars+=(CARGOGREEN_SET_ENVS='NTPD_RS_GIT_DATE,NTPD_RS_GIT_REV,RING_CORE_PREFIX') ;;
-    # cargo-bpf@*) envvars+=(CARGOGREEN_ADD_APT='libelf-dev') ;;
-    # privaxy@*) envvars+=(CARGOGREEN_ADD_APT='libssl-dev,openssl' CARGOGREEN_SET_ENVS='DEP_OPENSSL_LIBRESSL_VERSION_NUMBER,DEP_OPENSSL_VERSION_NUMBER' CARGOGREEN_BASE_IMAGE=docker-image://docker.io/library/rust:1) ;;
-    # shpool@*) envvars+=(CARGOGREEN_ADD_APT='libpam0g-dev') ;;
-    # torrust-index@*) envvars+=(CARGOGREEN_ADD_APT='libssl-dev,zlib1g-dev' CARGOGREEN_SET_ENVS='MIME_TYPES_GENERATED_PATH,RING_CORE_PREFIX') ;;
-    # stu@*) envvars+=(CARGOGREEN_SET_ENVS=RING_CORE_PREFIX) ;;
+    privaxy@*) envvars+=(CARGOGREEN_ADD_APT='libssl-dev') ;;
+    sccache@*) envvars+=(CARGOGREEN_ADD_APT='libssl-dev,zlib1g-dev' CARGOGREEN_SET_ENVS='RING_CORE_PREFIX') ;;
+    statehub@*) envvars+=(CARGOGREEN_SET_ENVS='VERGEN_CARGO_TARGET_TRIPLE,VERGEN_BUILD_SEMVER') ;;
+    stu@*) envvars+=(CARGOGREEN_SET_ENVS='RING_CORE_PREFIX') ;;
+    torrust-index@*) envvars+=(CARGOGREEN_ADD_APT='libssl-dev,zlib1g-dev' CARGOGREEN_SET_ENVS='MIME_TYPES_GENERATED_PATH,RING_CORE_PREFIX') ;;
+    zed@*) envvars+=(CARGOGREEN_SET_ENVS='CRUNCHY_LIB_SUFFIX') ;;
     *) ;;
   esac
 
@@ -190,83 +209,83 @@ as_env() {
   fi
 
   if [[ -n "${CARGOGREEN_LOG_PATH:-}" ]]; then
-    echo Using CARGOGREEN_LOG_PATH
+    echo Using CARGOGREEN_LOG_PATH="$CARGOGREEN_LOG_PATH"
     envvars+=(CARGOGREEN_LOG_PATH="$CARGOGREEN_LOG_PATH")
   fi
   if [[ -n "${CARGOGREEN_LOG:-}" ]]; then
-    echo Using CARGOGREEN_LOG
+    echo Using CARGOGREEN_LOG="$CARGOGREEN_LOG"
     envvars+=(CARGOGREEN_LOG="$CARGOGREEN_LOG")
   fi
   if [[ -n "${CARGOGREEN_LOG_STYLE:-}" ]]; then
-    echo Using CARGOGREEN_LOG_STYLE
+    echo Using CARGOGREEN_LOG_STYLE="$CARGOGREEN_LOG_STYLE"
     envvars+=(CARGOGREEN_LOG_STYLE="$CARGOGREEN_LOG_STYLE")
   fi
   if [[ -n "${CARGOGREEN_RUNNER:-}" ]]; then
-    echo Using CARGOGREEN_RUNNER
+    echo Using CARGOGREEN_RUNNER="$CARGOGREEN_RUNNER"
     envvars+=(CARGOGREEN_RUNNER="$CARGOGREEN_RUNNER")
   fi
   if [[ -n "${BUILDX_BUILDER:-}" ]]; then
-    echo Using BUILDX_BUILDER
+    echo Using BUILDX_BUILDER="$BUILDX_BUILDER"
     envvars+=(BUILDX_BUILDER="$BUILDX_BUILDER")
   fi
   if [[ -n "${CARGOGREEN_BUILDER_IMAGE:-}" ]]; then
-    echo Using CARGOGREEN_BUILDER_IMAGE
+    echo Using CARGOGREEN_BUILDER_IMAGE="$CARGOGREEN_BUILDER_IMAGE"
     envvars+=(CARGOGREEN_BUILDER_IMAGE="$CARGOGREEN_BUILDER_IMAGE")
   fi
   if [[ -n "${CARGOGREEN_SYNTAX_IMAGE:-}" ]]; then
-    echo Using CARGOGREEN_SYNTAX_IMAGE
+    echo Using CARGOGREEN_SYNTAX_IMAGE="$CARGOGREEN_SYNTAX_IMAGE"
     envvars+=(CARGOGREEN_SYNTAX_IMAGE="$CARGOGREEN_SYNTAX_IMAGE")
   fi
   if [[ -n "${CARGOGREEN_REGISTRY_MIRRORS:-}" ]]; then
-    echo Using CARGOGREEN_REGISTRY_MIRRORS
+    echo Using CARGOGREEN_REGISTRY_MIRRORS="$CARGOGREEN_REGISTRY_MIRRORS"
     envvars+=(CARGOGREEN_REGISTRY_MIRRORS="$CARGOGREEN_REGISTRY_MIRRORS")
   fi
   if [[ -n "${CARGOGREEN_CACHE_IMAGES:-}" ]]; then
-    echo Using CARGOGREEN_CACHE_IMAGES
+    echo Using CARGOGREEN_CACHE_IMAGES="$CARGOGREEN_CACHE_IMAGES"
     envvars+=(CARGOGREEN_CACHE_IMAGES="$CARGOGREEN_CACHE_IMAGES")
   fi
   if [[ -n "${CARGOGREEN_CACHE_FROM_IMAGES:-}" ]]; then
-    echo Using CARGOGREEN_CACHE_FROM_IMAGES
+    echo Using CARGOGREEN_CACHE_FROM_IMAGES="$CARGOGREEN_CACHE_FROM_IMAGES"
     envvars+=(CARGOGREEN_CACHE_FROM_IMAGES="$CARGOGREEN_CACHE_FROM_IMAGES")
   fi
   if [[ -n "${CARGOGREEN_CACHE_TO_IMAGES:-}" ]]; then
-    echo Using CARGOGREEN_CACHE_TO_IMAGES
+    echo Using CARGOGREEN_CACHE_TO_IMAGES="$CARGOGREEN_CACHE_TO_IMAGES"
     envvars+=(CARGOGREEN_CACHE_TO_IMAGES="$CARGOGREEN_CACHE_TO_IMAGES")
   fi
   if [[ -n "${CARGOGREEN_FINAL_PATH:-}" ]]; then
-    echo Using CARGOGREEN_FINAL_PATH
+    echo Using CARGOGREEN_FINAL_PATH="$CARGOGREEN_FINAL_PATH"
     envvars+=(CARGOGREEN_FINAL_PATH="$CARGOGREEN_FINAL_PATH")
   fi
   if [[ -n "${CARGOGREEN_BASE_IMAGE:-}" ]]; then
-    echo Using CARGOGREEN_BASE_IMAGE
+    echo Using CARGOGREEN_BASE_IMAGE="$CARGOGREEN_BASE_IMAGE"
     envvars+=(CARGOGREEN_BASE_IMAGE="$CARGOGREEN_BASE_IMAGE")
   fi
   if [[ -n "${CARGOGREEN_SET_ENVS:-}" ]]; then
-    echo Using CARGOGREEN_SET_ENVS
+    echo Using CARGOGREEN_SET_ENVS="$CARGOGREEN_SET_ENVS"
     envvars+=(CARGOGREEN_SET_ENVS="$CARGOGREEN_SET_ENVS")
   fi
   if [[ -n "${CARGOGREEN_BASE_IMAGE_INLINE:-}" ]]; then
-    echo Using CARGOGREEN_BASE_IMAGE_INLINE
+    echo Using CARGOGREEN_BASE_IMAGE_INLINE="$CARGOGREEN_BASE_IMAGE_INLINE"
     envvars+=(CARGOGREEN_BASE_IMAGE_INLINE="$CARGOGREEN_BASE_IMAGE_INLINE")
   fi
   if [[ -n "${CARGOGREEN_WITH_NETWORK:-}" ]]; then
-    echo Using CARGOGREEN_WITH_NETWORK
+    echo Using CARGOGREEN_WITH_NETWORK="$CARGOGREEN_WITH_NETWORK"
     envvars+=(CARGOGREEN_WITH_NETWORK="$CARGOGREEN_WITH_NETWORK")
   fi
   if [[ -n "${CARGOGREEN_ADD_APT:-}" ]]; then
-    echo Using CARGOGREEN_ADD_APT
+    echo Using CARGOGREEN_ADD_APT="$CARGOGREEN_ADD_APT"
     envvars+=(CARGOGREEN_ADD_APT="$CARGOGREEN_ADD_APT")
   fi
   if [[ -n "${CARGOGREEN_ADD_APT_GET:-}" ]]; then
-    echo Using CARGOGREEN_ADD_APT_GET
+    echo Using CARGOGREEN_ADD_APT_GET="$CARGOGREEN_ADD_APT_GET"
     envvars+=(CARGOGREEN_ADD_APT_GET="$CARGOGREEN_ADD_APT_GET")
   fi
   if [[ -n "${CARGOGREEN_ADD_APK:-}" ]]; then
-    echo Using CARGOGREEN_ADD_APK
+    echo Using CARGOGREEN_ADD_APK="$CARGOGREEN_ADD_APK"
     envvars+=(CARGOGREEN_ADD_APK="$CARGOGREEN_ADD_APK")
   fi
   if [[ -n "${CARGOGREEN_EXPERIMENT:-}" ]]; then
-    echo Using CARGOGREEN_EXPERIMENT
+    echo Using CARGOGREEN_EXPERIMENT="$CARGOGREEN_EXPERIMENT"
     envvars+=(CARGOGREEN_EXPERIMENT="$CARGOGREEN_EXPERIMENT")
   fi
 }
@@ -447,7 +466,11 @@ if [[ $# = 0 ]]; then
   header
 
   for i in "${!nvs[@]}"; do
-    [[ "${oks[$i]}" != 'ok' ]] && continue
+    o=${oks[$i]}
+    case "${o:0:1}" in
+        o|O) ;;
+        *) continue ;;
+    esac
     name_at_version=${nvs["$i"]}
     case "$name_at_version" in
       cargo-green@*) continue ;;
@@ -475,14 +498,18 @@ case "${BUILDX_BUILDER:-}" in
 esac
 
 install_dir=$repo_root/target
-CARGO=${CARGO:-cargo}
+CARGO=${CARGO:-cargo} ; [[ "$CARGO" = 'cargo' ]] && CARGO="$CARGO +$fixed"
 
 # Special first arg handling..
 case "$arg1" in
   # Try all, sequentially
   ok)
     for i in "${!nvs[@]}"; do
-      case "${oks[$i]}" in ok|hm) ;; *) continue ;; esac
+      o=${oks[$i]}
+      case "${o:0:1}" in
+          o|O) ;;
+          *) continue ;;
+      esac
       nv=${nvs[$i]}
       "$0" "${nv#*@}"
     done
@@ -544,7 +571,7 @@ fi
 name_at_version=${nvs[$i]}
 args=${nvs_args[$i]}
 
-session_name=$(slugify "$name_at_version")$(slugify "${DOCKER_HOST:-}")
+session_name=$(slugify "$name_at_version") #$(slugify "${DOCKER_HOST:-}")
 tmptrgt=/tmp/clis-$session_name
 tmplogs=$tmptrgt.logs.txt
 tmpgooo=$tmptrgt.state
@@ -571,7 +598,8 @@ send \
 tmux select-layout even-vertical
 tmux split-window
 
-envvars=(PATH=$install_dir/bin:"$PATH")
+envvars=(CARGO_INCREMENTAL=0)
+envvars+=(PATH=$install_dir/bin:"$PATH")
 envvars+=(CARGOGREEN_LOG=trace)
 envvars+=(CARGOGREEN_LOG_PATH="$tmplogs")
 envvars+=(CARGO_TARGET_DIR="$tmptrgt")
@@ -582,12 +610,10 @@ fi
 # envvars+=(CARGOGREEN_SYNTAX_IMAGE=docker-image://docker.io/docker/dockerfile:1@sha256:4c68376a702446fc3c79af22de146a148bc3367e73c25a5803d453b6b3f722fb)
 # envvars+=(CARGOGREEN_BASE_IMAGE=docker-image://docker.io/library/rust:1.86.0-slim@sha256:3f391b0678a6e0c88fd26f13e399c9c515ac47354e3cadfee7daee3b21651a4f)
 as_env "$name_at_version"
-[[ "$CARGO" = 'cargo' ]] && CARGO="$CARGO +$fixed"
 send \
   'until' '[[' -f "$tmpgooo".installed ']];' 'do' sleep '.1;' 'done' '&&' rm "$tmpgooo".* \
   '&&' 'if' '[[' "$reset" '=' '1' ']];' 'then' docker buildx rm "$BUILDX_BUILDER" --force '||' 'exit' '1;' 'fi' \
   '&&' 'case' "$name_at_version" 'in' ntpd'@*)' export NTPD_RS_GIT_REV=$ntpd_locked_commit '&&' export NTPD_RS_GIT_DATE=$ntpd_locked_date ';;' '*)' ';;' 'esac' \
-  '&&' export CARGO_INCREMENTAL=0 \
   '&&' "${envvars[@]}" $CARGO green -vv install --timings $jobs --root=$tmpbins $frozen --force "$(as_install "$name_at_version")" "$args" \
   '&&' tmux kill-session -t "$session_name"
 tmux select-layout even-vertical
