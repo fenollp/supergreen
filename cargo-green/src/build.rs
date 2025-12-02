@@ -1,4 +1,5 @@
 use std::{
+    collections::BTreeMap,
     env,
     error::Error,
     io::Write,
@@ -544,7 +545,7 @@ async fn run_build(
         let dbg_err = spawn({
             let mut lines = TokioBufReader::new(child.stderr.take().expect("started")).lines();
             async move {
-                let mut details: Vec<String> = vec![];
+                let mut details: BTreeMap<String, String> = [].into();
                 let mut dones = 0;
                 let mut cacheds = 0;
                 while let Ok(Some(line)) = lines.next_line().await {
@@ -565,7 +566,11 @@ async fn run_build(
                     // Show data transfers (Bytes, maybe also timings?)
                     for (idx, pattern) in line.as_str().match_indices(" transferring ") {
                         let detail = line[(pattern.len() + idx)..].trim_end_matches(" done");
-                        details.push(detail.to_owned());
+                        let Some((ctx, value)) = detail.split_once(':') else { continue };
+                        details
+                            .entry(ctx.to_owned())
+                            .and_modify(|v| *v = value.to_owned())
+                            .or_insert(value.to_owned());
                     }
 
                     // Count DONEs and CACHEDs
