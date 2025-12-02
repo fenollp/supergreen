@@ -3,12 +3,12 @@ use std::{
     env,
     fs::{self},
     future::Future,
+    iter::once,
 };
 
 use anyhow::{anyhow, bail, Result};
 use camino::{Utf8Path, Utf8PathBuf};
-use log::{debug, error, info, trace, warn};
-use merkle_hash::{Algorithm::Blake3, MerkleTree};
+use log::{debug, error, info, warn};
 use tokio::process::Command;
 
 use crate::{
@@ -23,7 +23,7 @@ use crate::{
     runner::Runner,
     rustc_arguments::{as_rustc, RustcArgs},
     stage::{Stage, RST, RUST},
-    tmp, PKG, VSN,
+    PKG, VSN,
 };
 
 // NOTE: this RUSTC_WRAPPER program only ever gets called by `cargo`, so we save
@@ -281,46 +281,68 @@ async fn do_wrap_rustc(
 
         None
     } else {
+        // NOTE: build contexts have to be directories, can't be files.
+        //> failed to get build context path {$HOME/wefwefwef/supergreen.git/Cargo.lock <nil>}: not a directory
+
         let cwd_stage = Stage::local(mdid)?;
-        // NOTE: we don't `rm -rf cwd_root`
-        let cwd_root = tmp().join(format!("{PKG}_{VSN}"));
-        fs::create_dir_all(&cwd_root)
-            .map_err(|e| anyhow!("Failed `mkdir -p {cwd_root:?}`: {e}"))?;
 
-        let tree = MerkleTree::builder(&pwd).algorithm(Blake3).hash_names(true).build()?;
-        let hashed_tree =
-            tree.root.item.hash.iter().map(|b| format!("{b:02x}")).collect::<String>();
+        info!("mounting {}files under {pwd}", if pwd.join(".git").is_dir() { "git " } else { "" });
 
-        let cwd_path = cwd_root.join(hashed_tree);
+        let (keep, lose): (Vec<_>, Vec<_>) = {
+            let mut entries = fs::read_dir(&pwd)
+                .map_err(|e| anyhow!("Failed reading dir {pwd:?}: {e}"))?
+                .map(|entry| -> Result<_> {
+                    let entry = entry?;
+                    let fpath = entry.path();
+                    let fpath: Utf8PathBuf = fpath
+                        .try_into()
+                        .map_err(|e| anyhow!("corrupted UTF-8 encoding with {entry:?}: {e}"))?;
+                    let Some(fname) = fpath.file_name() else {
+                        bail!("unexpected root (/) for {entry:?}")
+                    };
+                    Ok(fname.to_owned())
+                })
+                .collect::<Result<Vec<_>>>()?;
+            entries.sort(); // deterministic iteration
+            entries.into_iter().partition(|fname| {
+                if fname == ".dockerignore" {
+                    debug!("excluding {fname}");
+                    return false;
+                }
+                if fname == ".git" && pwd.join(fname).is_dir() {
+                    debug!("excluding {fname} dir");
+                    return false; // Skip copying .git dir
+                }
+                if pwd.join(fname).join("CACHEDIR.TAG").exists() {
+                    debug!("excluding {fname} dir");
+                    return false; // Test for existence of ./target/CACHEDIR.TAG See https://bford.info/cachedir/
+                }
+                debug!("keeping {fname}");
+                true
+            })
+        };
 
-        info!(
-            "copying all {}files under {pwd} to {cwd_path}",
-            if pwd.join(".git").is_dir() { "git " } else { "" }
-        );
-
-        copy_dir_all(&pwd, &cwd_path)?; //TODO: atomic mv: https://github.com/untitaker/rust-atomicwrites
-
-        // TODO: --mount=bind each file one by one => drop temp dir ctx (needs [multiple] `mkdir -p`[s] first though)
-        // This doesn't work: rustc_block.push_str(&format!("  --mount=from=cwd,dst={pwd} \\\n"));
-        // ✖ 0.040 runc run failed: unable to start container process: error during container init:
-        //     error mounting "/var/lib/docker/tmp/buildkit-mount1189821268/libaho_corasick-b99b6e1b4f09cbff.rlib"
-        //     to rootfs at "/home/runner/work/rustcbuildx/rustcbuildx/target/debug/deps/libaho_corasick-b99b6e1b4f09cbff.rlib":
-        //         mkdir /var/lib/docker/buildkit/executor/m7p2ehjfewlxfi5zjupw23oo7/rootfs/home/runner/work/rustcbuildx/rustcbuildx/target:
-        //             read-only file system
-        // Meaning: tried to mount overlapping paths
-        // TODO: try mounting each individual file from `*.d` dep file
-        // 0 0s debug HEAD λ cat rustcbuildx.d
-        // $target_dir/debug/rustcbuildx: $cwd/src/cli.rs $cwd/src/cratesio.rs $cwd/src/envs.rs $cwd/src/main.rs $cwd/src/md.rs $cwd/src/parse.rs $cwd/src/pops.rs $cwd/src/runner.rs $cwd/src/stage.rs
-
-        // TODO: do better to avoid copying >1 times local work dir on each cargo call => context-mount local content-addressed tarball?
-        // test|cargo-green|0.8.0|f273b3fc9f002200] copying all git files under $HOME/wefwefwef/supergreen.git to /tmp/cargo-green_0.8.0/CWDf273b3fc9f002200
-        // bin|cargo-green|0.8.0|efe5575298075b07] copying all git files under $HOME/wefwefwef/supergreen.git to /tmp/cargo-green_0.8.0/CWDefe5575298075b07
-        // TODO: or just include the files in containerfile?
-
-        rustc_block.push_str(&format!("COPY --link --from={cwd_stage} / .\n"));
         rustc_block.push_str("RUN \\\n");
+        for fname in keep {
+            rustc_block.push_str(&format!(
+                "  --mount=from={cwd_stage},dst={pwd}/{fname},source=/{fname} \\\n"
+            ));
+        }
+        // TODO: do better than mounting depth=1 (exclude non-git files (.d file?))
 
-        Some((cwd_stage, cwd_path))
+        if !lose.is_empty() {
+            let lose: String = lose
+                .into_iter()
+                .chain(once(".dockerignore".to_owned()))
+                .map(|fname| format!("/{fname}\n"))
+                .collect();
+            fs::write(pwd.join(".dockerignore"), lose).unwrap();
+            //FIXME: if exists: save + extend (then restore??) .dockerignore
+            //TODO? add .gitignore in there?
+            //TODO? exclude everything, only include `git ls-files`?
+        }
+
+        Some((cwd_stage, pwd.clone()))
     };
 
     if let Some(crate_out) = crate_out.as_deref() {
@@ -618,45 +640,4 @@ fn crate_out_name(name: &Utf8Path) -> Stage {
         .map(|(_, x)| Stage::crate_out(MdId::new(&format!("-{x}"))))
         .expect("PROOF: suffix is /out")
         .expect("PROOF: out dir path format")
-}
-
-fn copy_dir_all(src: &Utf8Path, dst: &Utf8Path) -> Result<()> {
-    debug!("copy_dir_all: checking (RO) {dst}");
-    if dst.exists() {
-        return Ok(());
-    }
-
-    // Heuristic: test for existence of ./target/CACHEDIR.TAG
-    // https://bford.info/cachedir/
-    let cachedir = src.join("CACHEDIR.TAG");
-    debug!("copy_dir_all: checking (RO) {cachedir}");
-    if cachedir.exists() {
-        return Ok(()); // Skip copying ./target dir
-    }
-
-    fs::create_dir_all(dst).map_err(|e| anyhow!("Failed `mkdir -p {dst:?}`: {e}"))?;
-
-    // TODO: deterministic iteration
-    for entry in fs::read_dir(src).map_err(|e| anyhow!("Failed reading dir {src:?}: {e}"))? {
-        let entry = entry?;
-        let fpath = entry.path();
-        let fpath: Utf8PathBuf = fpath
-            .clone()
-            .try_into()
-            .map_err(|e| anyhow!("copying {fpath:?} found corrupted UTF-8 encoding: {e}"))?;
-        let Some(fname) = fpath.file_name() else { return Ok(()) };
-        let ty = entry.file_type().map_err(|e| anyhow!("Failed typing {entry:?}: {e}"))?;
-        if ty.is_dir() {
-            if fname == ".git" {
-                continue; // Skip copying .git dir
-            }
-            copy_dir_all(&fpath, &dst.join(fname))?;
-        } else {
-            trace!("copying to {:?}: {fpath:?}", dst.join(fname));
-            fs::copy(&fpath, dst.join(fname)).map_err(|e| {
-                anyhow!("Failed `cp {fpath:?} {dst:?}` ({:?}): {e}", entry.metadata())
-            })?;
-        }
-    }
-    Ok(())
 }
