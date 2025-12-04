@@ -1479,7 +1479,7 @@ jobs:
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
-        env CARGOGREEN_SET_ENVS=NEXTEST_BUILD_HOST_TARGET,TARGET \
+        env  \
           cargo green -vv install --locked --force cargo-nextest@0.9.114  |& tee _
     - name: 🔵 cargo install jobs=1
       if: ${{ job.steps.cargo-install.status == failure() }}
@@ -1488,7 +1488,7 @@ jobs:
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
-        env CARGOGREEN_SET_ENVS=NEXTEST_BUILD_HOST_TARGET,TARGET \
+        env  \
           cargo green -vv install --jobs=1 --locked --force cargo-nextest@0.9.114  |& tee _
     - if: ${{ always() && matrix.toolchain != '1.91.1' }}
       uses: actions/upload-artifact@v6
@@ -1575,7 +1575,7 @@ jobs:
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
-        env CARGOGREEN_SET_ENVS=NEXTEST_BUILD_HOST_TARGET,TARGET \
+        env  \
           cargo green -vv install --locked --force cargo-nextest@0.9.114  |& tee _
     - name: ...doesn't recompile anything
       run: |
@@ -2123,7 +2123,7 @@ jobs:
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
-        env CARGOGREEN_SET_ENVS=TYPENUM_BUILD_CONSTS,TYPENUM_BUILD_OP \
+        env  \
           cargo green -vv install --locked --force dbcc@2.2.1  |& tee _
     - name: 🔵 cargo install jobs=1
       if: ${{ job.steps.cargo-install.status == failure() }}
@@ -2132,7 +2132,7 @@ jobs:
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
-        env CARGOGREEN_SET_ENVS=TYPENUM_BUILD_CONSTS,TYPENUM_BUILD_OP \
+        env  \
           cargo green -vv install --jobs=1 --locked --force dbcc@2.2.1  |& tee _
     - if: ${{ always() && matrix.toolchain != '1.91.1' }}
       uses: actions/upload-artifact@v6
@@ -2219,7 +2219,7 @@ jobs:
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
-        env CARGOGREEN_SET_ENVS=TYPENUM_BUILD_CONSTS,TYPENUM_BUILD_OP \
+        env  \
           cargo green -vv install --locked --force dbcc@2.2.1  |& tee _
     - name: ...doesn't recompile anything
       run: |
@@ -2767,7 +2767,7 @@ jobs:
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
-        env CARGOGREEN_SET_ENVS=RING_CORE_PREFIX \
+        env  \
           cargo green -vv install --locked --force hickory-dns@0.26.0-alpha.1  |& tee _
     - name: 🔵 cargo install jobs=1
       if: ${{ job.steps.cargo-install.status == failure() }}
@@ -2776,7 +2776,7 @@ jobs:
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
-        env CARGOGREEN_SET_ENVS=RING_CORE_PREFIX \
+        env  \
           cargo green -vv install --jobs=1 --locked --force hickory-dns@0.26.0-alpha.1  |& tee _
     - if: ${{ always() && matrix.toolchain != '1.91.1' }}
       uses: actions/upload-artifact@v6
@@ -2863,7 +2863,7 @@ jobs:
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
-        env CARGOGREEN_SET_ENVS=RING_CORE_PREFIX \
+        env  \
           cargo green -vv install --locked --force hickory-dns@0.26.0-alpha.1  |& tee _
     - name: ...doesn't recompile anything
       run: |
@@ -3412,7 +3412,7 @@ jobs:
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
-        env CARGOGREEN_SET_ENVS=NTPD_RS_GIT_DATE,NTPD_RS_GIT_REV,RING_CORE_PREFIX \
+        env  \
           cargo green -vv install --locked --force ntpd@1.7.0-alpha.20251003  |& tee _
     - name: 🔵 cargo install jobs=1
       if: ${{ job.steps.cargo-install.status == failure() }}
@@ -3421,7 +3421,7 @@ jobs:
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
-        env CARGOGREEN_SET_ENVS=NTPD_RS_GIT_DATE,NTPD_RS_GIT_REV,RING_CORE_PREFIX \
+        env  \
           cargo green -vv install --jobs=1 --locked --force ntpd@1.7.0-alpha.20251003  |& tee _
     - if: ${{ always() && matrix.toolchain != '1.91.1' }}
       uses: actions/upload-artifact@v6
@@ -3508,7 +3508,7 @@ jobs:
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
-        env CARGOGREEN_SET_ENVS=NTPD_RS_GIT_DATE,NTPD_RS_GIT_REV,RING_CORE_PREFIX \
+        env  \
           cargo green -vv install --locked --force ntpd@1.7.0-alpha.20251003  |& tee _
     - name: ...doesn't recompile anything
       run: |
@@ -5022,7 +5022,7 @@ jobs:
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
-        env CARGOGREEN_SET_ENVS=VERGEN_CARGO_TARGET_TRIPLE,VERGEN_BUILD_SEMVER \
+        env  \
           cargo green -vv install --locked --force statehub@0.14.10  |& tee _
     - name: 🔵 cargo install jobs=1
       if: ${{ job.steps.cargo-install.status == failure() }}
@@ -5031,7 +5031,7 @@ jobs:
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
-        env CARGOGREEN_SET_ENVS=VERGEN_CARGO_TARGET_TRIPLE,VERGEN_BUILD_SEMVER \
+        env  \
           cargo green -vv install --jobs=1 --locked --force statehub@0.14.10  |& tee _
     - if: ${{ always() && matrix.toolchain != '1.91.1' }}
       uses: actions/upload-artifact@v6
@@ -5118,7 +5118,7 @@ jobs:
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
-        env CARGOGREEN_SET_ENVS=VERGEN_CARGO_TARGET_TRIPLE,VERGEN_BUILD_SEMVER \
+        env  \
           cargo green -vv install --locked --force statehub@0.14.10  |& tee _
     - name: ...doesn't recompile anything
       run: |
@@ -5344,7 +5344,7 @@ jobs:
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
-        env CARGOGREEN_SET_ENVS=RING_CORE_PREFIX \
+        env  \
           cargo green -vv install --locked --force stu@0.7.5  |& tee _
     - name: 🔵 cargo install jobs=1
       if: ${{ job.steps.cargo-install.status == failure() }}
@@ -5353,7 +5353,7 @@ jobs:
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
-        env CARGOGREEN_SET_ENVS=RING_CORE_PREFIX \
+        env  \
           cargo green -vv install --jobs=1 --locked --force stu@0.7.5  |& tee _
     - if: ${{ always() && matrix.toolchain != '1.91.1' }}
       uses: actions/upload-artifact@v6
@@ -5440,7 +5440,7 @@ jobs:
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
-        env CARGOGREEN_SET_ENVS=RING_CORE_PREFIX \
+        env  \
           cargo green -vv install --locked --force stu@0.7.5  |& tee _
     - name: ...doesn't recompile anything
       run: |
@@ -6632,7 +6632,7 @@ jobs:
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
-        env CARGOGREEN_SET_ENVS=TARGET \
+        env  \
           cargo green -vv install --locked --force kani-verifier@0.66.0 --bin=cargo-kani |& tee _
     - name: 🔵 cargo install jobs=1
       if: ${{ job.steps.cargo-install.status == failure() }}
@@ -6641,7 +6641,7 @@ jobs:
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
-        env CARGOGREEN_SET_ENVS=TARGET \
+        env  \
           cargo green -vv install --jobs=1 --locked --force kani-verifier@0.66.0 --bin=cargo-kani |& tee _
     - if: ${{ always() && matrix.toolchain != '1.91.1' }}
       uses: actions/upload-artifact@v6
@@ -6728,7 +6728,7 @@ jobs:
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
-        env CARGOGREEN_SET_ENVS=TARGET \
+        env  \
           cargo green -vv install --locked --force kani-verifier@0.66.0 --bin=cargo-kani |& tee _
     - name: ...doesn't recompile anything
       run: |
@@ -8564,7 +8564,7 @@ jobs:
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
-        env CARGOGREEN_ADD_APT=libssl-dev,zlib1g-dev CARGOGREEN_SET_ENVS=RING_CORE_PREFIX \
+        env CARGOGREEN_ADD_APT=libssl-dev,zlib1g-dev \
           cargo green -vv install --locked --force sccache@0.12.0  |& tee _
     - name: 🔵 cargo install jobs=1
       if: ${{ job.steps.cargo-install.status == failure() }}
@@ -8573,7 +8573,7 @@ jobs:
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
-        env CARGOGREEN_ADD_APT=libssl-dev,zlib1g-dev CARGOGREEN_SET_ENVS=RING_CORE_PREFIX \
+        env CARGOGREEN_ADD_APT=libssl-dev,zlib1g-dev \
           cargo green -vv install --jobs=1 --locked --force sccache@0.12.0  |& tee _
     - if: ${{ always() && matrix.toolchain != '1.91.1' }}
       uses: actions/upload-artifact@v6
@@ -8660,7 +8660,7 @@ jobs:
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
-        env CARGOGREEN_ADD_APT=libssl-dev,zlib1g-dev CARGOGREEN_SET_ENVS=RING_CORE_PREFIX \
+        env CARGOGREEN_ADD_APT=libssl-dev,zlib1g-dev \
           cargo green -vv install --locked --force sccache@0.12.0  |& tee _
     - name: ...doesn't recompile anything
       run: |
