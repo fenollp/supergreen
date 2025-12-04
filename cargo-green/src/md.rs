@@ -4,7 +4,7 @@ use std::{collections::HashMap, env, fmt, fs, io::ErrorKind, str::FromStr};
 
 use anyhow::{anyhow, bail, Result};
 use camino::{Utf8Path, Utf8PathBuf};
-use indexmap::IndexSet;
+use indexmap::{IndexMap, IndexSet};
 use log::{info, trace, warn};
 use serde::{Deserialize, Serialize};
 use szyk::{sort, Node, TopsortError};
@@ -16,6 +16,30 @@ use crate::{
     PKG,
 };
 
+//FIXME unpub?
+#[derive(Debug, Clone, Deserialize, Serialize, Eq)]
+pub(crate) struct NamedMount {
+    pub(crate) name: Stage,
+    pub(crate) mount: Utf8PathBuf,
+}
+
+/// For use by IndexSet
+impl PartialEq for NamedMount {
+    fn eq(&self, other: &Self) -> bool {
+        self.mount == other.mount
+    }
+}
+
+/// For use by IndexSet
+impl std::hash::Hash for NamedMount {
+    fn hash<H>(&self, state: &mut H)
+    where
+        H: std::hash::Hasher,
+    {
+        self.mount.hash(state);
+    }
+}
+
 #[derive(Debug, Clone, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub(crate) struct Md {
@@ -26,6 +50,13 @@ pub(crate) struct Md {
 
     #[serde(default, skip_serializing_if = "IndexSet::is_empty")]
     deps: IndexSet<MdId>,
+
+    #[serde(default, skip_serializing_if = "IndexSet::is_empty")]
+    pub(crate) buildrs_results: IndexSet<MdId>,
+    #[serde(default, skip_serializing_if = "IndexSet::is_empty")]
+    pub(crate) mounts: IndexSet<NamedMount>,
+    #[serde(default, skip_serializing_if = "IndexMap::is_empty")]
+    pub(crate) set_envs: IndexMap<String, String>,
 
     #[serde(default, skip_serializing_if = "IndexSet::is_empty")]
     pub(crate) contexts: IndexSet<BuildContext>,
@@ -55,6 +86,9 @@ impl From<MdId> for Md {
             this,
             externs: IndexSet::default(),
             deps: IndexSet::default(),
+            buildrs_results: IndexSet::default(),
+            mounts: IndexSet::default(),
+            set_envs: IndexMap::default(),
             contexts: IndexSet::default(),
             stages: IndexSet::default(),
             writes: Vec::default(),
@@ -75,7 +109,7 @@ impl Md {
     }
 
     #[must_use]
-    fn deps(&self) -> Vec<MdId> {
+    pub(crate) fn deps(&self) -> Vec<MdId> {
         self.deps.iter().cloned().collect()
     }
 
@@ -140,6 +174,19 @@ impl Md {
         // * set it to the directory's birth date otherwise (should be a relative path to local files).
     }
 
+    #[must_use]
+    pub(crate) fn code_stage(&self) -> Option<&NamedStage> {
+        self.stages.iter().find(|ns| {
+            let name = ns.name();
+            name.is_local() || name.is_remote()
+        })
+    }
+
+    #[must_use]
+    fn last_stage(&self) -> Stage {
+        self.stages.last().map(AsStage::name).unwrap().clone()
+    }
+
     pub(crate) fn push_stage(&mut self, ns: &NamedStage) {
         self.stages.insert(ns.clone());
     }
@@ -185,6 +232,7 @@ impl Md {
     pub(crate) fn assemble_build_dependencies(
         &mut self,
         externs: IndexSet<String>,
+        out_dir_var: Option<Utf8PathBuf>,
         target_path: &Utf8Path,
     ) -> Result<Vec<Self>> {
         let mut mds = Mds::default();
@@ -217,6 +265,23 @@ impl Md {
                 trace!("❯ transitive {transitive}");
                 extern_mdids.insert(*transitive);
             }
+
+            // for buildrs_result in &extern_md.buildrs_results {
+            //     let br_md_path = md_pather(buildrs_result);
+            //     let br_md = mds.get_or_read(&br_md_path)?;
+            //     for dep in &br_md.deps {
+            //         let mut dep_md_path = md_pather(&format!("*-{dep}"));
+            //         for (i, p) in glob::glob(dep_md_path.as_str()).unwrap().enumerate() {
+            //             assert_eq!(i, 0, ">>> {p:?}");
+            //             dep_md_path = p.unwrap().try_into().unwrap();
+            //         }
+            //         let dep_md = mds.get_or_read(&dep_md_path)?;
+            //         extern_mds_and_paths.push((dep_md_path, dep_md));
+            //     }
+            //     extern_mds_and_paths.push((br_md_path, br_md));
+            // }
+            self.buildrs_results.extend(extern_md.buildrs_results);
+            //FIXME? also add transitive buildrs_results?
         }
 
         for dep in extern_mdids {
@@ -237,6 +302,76 @@ impl Md {
 
         assert_eq!(self.deps(), vec![]);
 
+        if let Some(out_dir) = out_dir_var {
+            assert_eq!(
+                out_dir.file_name(),
+                Some("out"),
+                "BUG: unexpected $OUT_DIR={out_dir} format"
+            );
+            // With OUT_DIR="/tmp/clis-vixargs_0-1-0/release/build/proc-macro-error-attr-de2f43c37de3bfce/out"
+            //   => proc-macro-error-attr-de2f43c37de3bfce
+            let z_dep = out_dir.parent().unwrap().file_name().unwrap();
+            assert_eq!("proc-macro-error-attr-de2f43c37de3bfce", Utf8PathBuf::from("/tmp/clis-vixargs_0-1-0/release/build/proc-macro-error-attr-de2f43c37de3bfce/out").parent().unwrap().file_name().unwrap());
+            assert_eq!(
+                "de2f43c37de3bfce",
+                "proc-macro-error-attr-de2f43c37de3bfce".rsplit('-').next().unwrap()
+            );
+            let z_dep = z_dep.rsplit('-').next().unwrap();
+            let z_dep: MdId = z_dep.into();
+
+            // extern_mdids.insert(z_dep.to_owned());
+            self.buildrs_results.insert(z_dep);
+
+            let z_dep_md_path = z_dep.path(target_path);
+            let z_dep_md = mds.get_or_read(&z_dep_md_path)?;
+            info!("also mounting {z_dep}'s buildrs out dir {out_dir}");
+            self.mounts.insert(NamedMount { name: z_dep_md.last_stage(), mount: out_dir });
+
+            for line in &z_dep_md.stdout {
+                // > MSRV: 1.77 is required for cargo::KEY=VALUE syntax. To support older versions, use the cargo:KEY=VALUE syntax.
+                for directive in ["cargo::", "cargo:"] {
+                    if let Some((_prefix, rhs)) = line.split_once(&format!("{directive}rustc-env="))
+                    {
+                        // NOTE: cargo errors if second '=' doesn't exist
+                        if let Some((var, val)) = rhs.split_once("=") {
+                            self.set_envs.insert(var.to_owned(), val.to_owned());
+                        }
+                    }
+                }
+            }
+
+            // info!("and adding that buildrs dep");
+            // // build_script_build-422764cb03f8177b
+            // assert_eq!(z_dep_md.deps.len(), 1);
+            // let x_dep = format!("build_script_build-{}", z_dep_md.deps[0]);
+            // let x_dep_md_path = md_pather(&x_dep);
+            // let x_dep_md = mds.get_or_read(&x_dep_md_path)?;
+            // info!("and adding that buildrs dep: {x_dep_md:?}");
+            // extern_mds_and_paths.push((x_dep_md_path, x_dep_md));
+
+            // extern_mdids.insert(x_dep);
+
+            extern_mds_and_paths.push((z_dep_md_path, z_dep_md));
+        }
+
+        for buildrs_result in &self.buildrs_results {
+            let br_md_path = buildrs_result.path(target_path);
+            let br_md = mds.get_or_read(&br_md_path)?;
+            for dep in &br_md.deps {
+                let dep_md_path = dep.path(target_path);
+                let dep_md = mds.get_or_read(&dep_md_path)?;
+
+                for dep in &dep_md.deps {
+                    let dep_md_path = dep.path(target_path);
+                    let dep_md = mds.get_or_read(&dep_md_path)?;
+                    extern_mds_and_paths.push((dep_md_path, dep_md));
+                }
+
+                extern_mds_and_paths.push((dep_md_path, dep_md));
+            }
+            extern_mds_and_paths.push((br_md_path, br_md));
+        }
+
         let extern_md_paths = self.sort_deps(extern_mds_and_paths)?;
         info!("extern_md_paths: {}", extern_md_paths.len());
 
@@ -248,7 +383,8 @@ impl Md {
         Ok(mds)
     }
 
-    fn sort_deps(&mut self, mds: Vec<(Utf8PathBuf, Self)>) -> Result<Vec<Utf8PathBuf>> {
+    //FIXME: unpub
+    pub(crate) fn sort_deps(&mut self, mds: Vec<(Utf8PathBuf, Self)>) -> Result<Vec<Utf8PathBuf>> {
         let mut dag: Vec<_> = mds
             .into_iter()
             .map(|(md_path, md)| {
@@ -352,10 +488,10 @@ impl std::hash::Hash for MountExtern {
 
 /// A file cache
 #[derive(Debug, Default)]
-struct Mds(HashMap<Utf8PathBuf, Md>);
+pub(crate) struct Mds(HashMap<Utf8PathBuf, Md>);
 
 impl Mds {
-    fn get_or_read(&mut self, path: &Utf8Path) -> Result<Md> {
+    pub(crate) fn get_or_read(&mut self, path: &Utf8Path) -> Result<Md> {
         if let Some(md) = self.0.get(path) {
             return Ok(md.clone());
         }
@@ -462,6 +598,9 @@ fn md_ser() {
         this: MdId(0x711ba64e1183a234),
         externs: [MountExtern { from: RUST.clone(), xtern: "blop".into() }].into(),
         deps: [MdId(0x81529f4c2380d9ec), MdId(0x88a4324b2aff6db9)].into(),
+        buildrs_results: [MdId(0xa2ba26818f759606)].into(),
+        mounts: [].into(),
+        set_envs: [].into(),
         contexts: [BuildContext {
             name: "rust".try_into().unwrap(),
             uri: "/some/local/path".into(),
@@ -488,6 +627,7 @@ deps = [
     "81529f4c2380d9ec",
     "88a4324b2aff6db9",
 ]
+buildrs_results = ["a2ba26818f759606"]
 writes = [
     "deps/primeorder-06397107ab8300fa.d",
     "deps/libprimeorder-06397107ab8300fa.rmeta",

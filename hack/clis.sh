@@ -180,25 +180,14 @@ as_env() {
   case "$name_at_version" in
     bottom@*) envvars+=(CARGOGREEN_SET_ENVS='BTM_GENERATE,BTM_BUILD_RELEASE_CALLER,CIRRUS_CHANGE_IN_REPO,GITHUB_SHA'); envvars+=(BTM_GENERATE=); envvars+=(BTM_BUILD_RELEASE_CALLER=); envvars+=(CIRRUS_CHANGE_IN_REPO=); envvars+=(GITHUB_SHA=) ;; # TODO: drop once fully wrapping buildrs execs
     cargo-authors@*) envvars+=(CARGOGREEN_ADD_APT='libssl-dev,zlib1g-dev') ;;
-    cargo-c@*) envvars+=(CARGOGREEN_SET_ENVS='RUST_HOST_TARGET') ;;
-    cargo-fuzz@*) envvars+=(CARGOGREEN_SET_ENVS='HOST_PLATFORM,TARGET_PLATFORM') ;;
-    cargo-make@*) envvars+=(CARGOGREEN_SET_ENVS='RING_CORE_PREFIX') ;;
-    cargo-nextest@*) envvars+=(CARGOGREEN_SET_ENVS='NEXTEST_BUILD_HOST_TARGET,TARGET') ;;
-    cargo-udeps@*) envvars+=(CARGOGREEN_ADD_APT='libssl-dev,zlib1g-dev' CARGOGREEN_SET_ENVS='RUST_HOST_TARGET') ;;
+    cargo-udeps@*) envvars+=(CARGOGREEN_ADD_APT='libssl-dev,zlib1g-dev') ;;
     coccinelleforrust@*) envvars+=(CARGOGREEN_ADD_APT='python3-dev') ;;
-    dbcc@*) envvars+=(CARGOGREEN_SET_ENVS='TYPENUM_BUILD_CONSTS,TYPENUM_BUILD_OP') ;;
     diesel_cli@*) envvars+=(CARGOGREEN_ADD_APT='libpq-dev') ;;
-    harper@*) envvars+=(CARGOGREEN_SET_ENVS='CRUNCHY_LIB_SUFFIX') ;;
-    hickory-dns@*) envvars+=(CARGOGREEN_SET_ENVS='RING_CORE_PREFIX') ;;
-    kani-verifier@*) envvars+=(CARGOGREEN_SET_ENVS='TARGET') ;;
     mussh@*) envvars+=(CARGOGREEN_ADD_APT='libsqlite3-dev,libssl-dev,zlib1g-dev') ;;
     nanometers@*) envvars+=(CARGOGREEN_ADD_APT='libcairo2-dev,libpango-1.0-0,libpango1.0-dev,libssl-dev,libxcb-render0-dev,libxcb-shape0-dev,libxcb-xfixes0-dev,libxkbcommon-dev') ;;
-    ntpd@*) envvars+=(CARGOGREEN_SET_ENVS='NTPD_RS_GIT_DATE,NTPD_RS_GIT_REV,RING_CORE_PREFIX') ;;
     privaxy@*) envvars+=(CARGOGREEN_ADD_APT='libssl-dev') ;;
-    sccache@*) envvars+=(CARGOGREEN_ADD_APT='libssl-dev,zlib1g-dev' CARGOGREEN_SET_ENVS='RING_CORE_PREFIX') ;;
-    stu@*) envvars+=(CARGOGREEN_SET_ENVS='RING_CORE_PREFIX') ;;
-    torrust-index@*) envvars+=(CARGOGREEN_ADD_APT='libssl-dev,zlib1g-dev' CARGOGREEN_SET_ENVS='MIME_TYPES_GENERATED_PATH,RING_CORE_PREFIX') ;;
-    zed@*) envvars+=(CARGOGREEN_SET_ENVS='CRUNCHY_LIB_SUFFIX') ;;
+    sccache@*) envvars+=(CARGOGREEN_ADD_APT='libssl-dev,zlib1g-dev') ;;
+    torrust-index@*) envvars+=(CARGOGREEN_ADD_APT='libssl-dev,zlib1g-dev') ;;
     *) ;;
   esac
 
