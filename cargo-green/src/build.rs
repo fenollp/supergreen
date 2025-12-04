@@ -182,6 +182,7 @@ pub(crate) struct Effects {
     pub(crate) written: Vec<Utf8PathBuf>,
     pub(crate) stdout: Vec<String>,
     pub(crate) stderr: Vec<String>,
+    pub(crate) cargo_rustc_env: IndexSet<String>,
 }
 
 impl Green {
@@ -634,7 +635,9 @@ async fn run_build(
         match join!(timeout(dbg_out), timeout(dbg_err)) {
             (Ok(Ok(Err(e))), _) => bail!("Something went wrong (maybe retry?): {e}"),
             (Ok(Ok(Ok((Some(out_buf), Some(err_buf), errcode, written)))), _) => {
-                let FromStdout { stdout } = fwd_stdout(&out_buf, "➤");
+                let FromStdout { stdout, rustc_envs } = fwd_stdout(&out_buf, "➤");
+                info!("Buildscript {PKG}-specific config: envs:{}", rustc_envs.len());
+                effects.cargo_rustc_env = rustc_envs;
 
                 let FromStderr { stderr, envs, libs } = fwd_stderr(&err_buf, "✖");
                 info!("Suggested {PKG}-specific config: envs:{} libs:{}", envs.len(), libs.len());
@@ -720,6 +723,7 @@ fn fwd_stderr(stderr: &str, badge: &'static str) -> FromStderr {
 #[derive(Debug, Default)]
 struct FromStdout {
     stdout: Vec<String>,
+    rustc_envs: IndexSet<String>,
 }
 
 fn fwd_stdout(stdout: &str, badge: &'static str) -> FromStdout {
@@ -767,6 +771,10 @@ fn fwd_stdout(stdout: &str, badge: &'static str) -> FromStdout {
                     // CHECK_CFG – Register custom cfgs as expected for compile-time checking of configs.
                 } else if rhs.starts_with("rustc-env=") {
                     // VAR=VALUE — Sets an environment variable.
+                    if let Some((var, _)) = rhs.split_once("=") {
+                        // NOTE: cargo errors if second '=' doesn't exist
+                        acc.rustc_envs.insert(var.to_owned().to_owned());
+                    }
                 } else if rhs.starts_with("error=") {
                     // MESSAGE — Displays an error on the terminal.
                 } else if rhs.starts_with("warning=") {

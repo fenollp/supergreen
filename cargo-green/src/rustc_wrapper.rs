@@ -12,12 +12,13 @@ use tokio::process::Command;
 
 use crate::{
     build::{Effects, ERRCODE, STDERR, STDOUT},
+    buildrs_wrapper::rewrite_main,
     checkouts,
     cratesio::{self, rewrite_cratesio_index},
     ext::CommandExt,
     green::Green,
     logging::{self, maybe_log},
-    md::{BuildContext, Md, MdId, MountExtern},
+    md::{BuildContext, Md, MountExtern, NamedMount},
     pwd, relative,
     runner::Runner,
     rustc_arguments::{as_rustc, RustcArgs},
@@ -28,6 +29,7 @@ use crate::{
 // NOTE: this RUSTC_WRAPPER program only ever gets called by `cargo`, so we save
 //       ourselves some trouble and assume std::path::{Path, PathBuf} are UTF-8.
 
+#[macro_export]
 macro_rules! ENV {
     () => {
         "CARGOGREEN"
@@ -166,37 +168,6 @@ async fn wrap_rustc(
     .inspect_err(|e| error!("Error: {e}"))
 }
 
-fn crate_out_dir(out_dir_var: Option<Utf8PathBuf>) -> Result<Option<Utf8PathBuf>> {
-    let Some(crate_out) = out_dir_var else { return Ok(None) };
-    assert_eq!(crate_out.file_name(), Some("out"), "BUG: unexpected $OUT_DIR={crate_out} format");
-
-    info!("listing (RO) crate_out contents {crate_out}");
-    let listing = fs::read_dir(&crate_out)
-        .map_err(|e| anyhow!("Failed reading crate_out dir {crate_out}: {e}"))?;
-
-    let count = listing
-        .map_while(Result::ok)
-        .inspect(|f| {
-            info!(
-                "metadata for {f:?}: {:?}",
-                f.metadata().map(|fmd| format!(
-                    "created:{c:?} accessed:{a:?} modified:{m:?}",
-                    c = fmd.created(),
-                    a = fmd.accessed(),
-                    m = fmd.modified(),
-                ))
-            );
-        })
-        .count();
-
-    // Dir empty => mount can be dropped
-    if count == 0 {
-        return Ok(None);
-    }
-
-    Ok(Some(crate_out))
-}
-
 fn cargo_home() -> Result<Utf8PathBuf> {
     home::cargo_home()
         .map_err(|e| anyhow!("bad $CARGO_HOME or something: {e}"))?
@@ -217,8 +188,6 @@ async fn do_wrap_rustc(
     RustcArgs { externs, mdid, incremental, input, out_dir, target_path }: RustcArgs,
     fallback: impl Future<Output = Result<()>>,
 ) -> Result<()> {
-    let crate_out = crate_out_dir(out_dir_var)?;
-
     let mut md: Md = mdid.into();
     md.push_block(&RUST, green.base.image_inline.clone().unwrap());
 
@@ -270,7 +239,8 @@ async fn do_wrap_rustc(
         let name = code_stage.name();
         let src = src.as_deref().map(|src| format!(",source={src}")).unwrap_or_default();
         let mount = if swappity { format!(",dst={dst}{src}") } else { format!("{src},dst={dst}") };
-        rustc_block.push_str(&format!("  --mount=from={name}{mount} \\\n"));
+        let rw = if buildrs { ",rw" } else { "" }; //FIXME
+        rustc_block.push_str(&format!("  --mount=from={name}{mount}{rw} \\\n"));
     }
 
     let input = rewrite_cratesio_index(&input);
@@ -278,24 +248,25 @@ async fn do_wrap_rustc(
     let incremental_stage = Stage::incremental(mdid)?;
     let out_stage = Stage::output(mdid)?;
 
-    if let Some(crate_out) = crate_out.as_deref() {
-        let named = crate_out_name(crate_out);
-        rustc_block.push_str(&format!("  --mount=from={named},dst={crate_out} \\\n"));
+    if let Some((name, uri)) = code_stage.context() {
+        info!("loading {name:?}: {uri}");
+        md.contexts = [BuildContext { name, uri }].into();
+        info!("loading 1 build context");
     }
 
-    md.contexts =
-        [code_stage.context(), crate_out.map(|crate_out| (crate_out_name(&crate_out), crate_out))]
-            .into_iter()
-            .flatten()
-            .map(|(name, uri)| BuildContext { name, uri })
-            .inspect(|BuildContext { name, uri }| info!("loading {name:?}: {uri}"))
-            .collect();
-    info!("loading {} build contexts", md.contexts.len());
-
-    let mds = md.assemble_build_dependencies(externs, &target_path)?;
+    let mds = md.assemble_build_dependencies(externs, out_dir_var, &target_path)?;
     for MountExtern { from, xtern } in md.externs() {
         let dst = target_path.join("deps").join(xtern);
         rustc_block.push_str(&format!("  --mount=from={from},dst={dst},source=/{xtern} \\\n"));
+    }
+    for NamedMount { name, mount } in &md.mounts {
+        rustc_block.push_str(&format!("  --mount=from={name},dst={mount},source=/ \\\n"));
+    }
+
+    if buildrs {
+        // TODO: this won't work with e.g. tokio-decorated main fns (async + decorator needs duplicating)
+        // TODO: replace this Rust patching by simply shell patching ==> must work on macOS x-compiling for eg. Linux
+        rustc_block.push_str(&rewrite_main(mdid, &input));
     }
 
     let args = args.into_iter().map(|arg| safeify(&arg).unwrap()).collect::<Vec<_>>().join(" ");
@@ -315,7 +286,7 @@ async fn do_wrap_rustc(
         md.push_block(&incremental_stage, incremental_block);
     }
 
-    md.out_block(&out_stage, &rustc_stage, &out_dir);
+    md.out_block(&out_stage, &rustc_stage, &out_dir, false);
 
     let containerfile_path = md.finalize(&green, &target_path, krate_name, &mds)?;
 
@@ -366,8 +337,16 @@ impl Md {
         }
         block.push_str(&format!("        {}=1 \\\n", ENV!()));
 
-        // => cargo upstream issue "pass env vars read/wrote by build script on call to rustc"
-        // TODO whence https://github.com/rust-lang/cargo/issues/14444#issuecomment-2305891696
+        for (var, val) in &self.set_envs {
+            if set.contains(var) {
+                continue;
+            }
+            warn!("setting rustc-env: ${var}={val:?}");
+            let val = safeify(val)?;
+            block.push_str(&format!("        {var}={val} \\\n"));
+            set.insert(var.to_owned());
+        }
+
         for var in green_set_envs {
             if set.contains(var) {
                 continue;
@@ -379,12 +358,6 @@ impl Md {
                 set.insert(var.to_owned());
             }
         }
-        // TODO: catch these cargo:rustc-env= to add to TOML+Dockerfile in extremis so downstream knows about these envs
-        // 2025-04-05T09:42:41.5322589Z [typenum 1.12.0] cargo:rustc-env=TYPENUM_BUILD_CONSTS=/home/runner/instst/release/build/typenum-3cf9e442dfddd505/out/consts.rs
-        // 2025-04-05T09:42:41.5748814Z [typenum 1.12.0] cargo:rustc-env=TYPENUM_BUILD_OP=/home/runner/instst/release/build/typenum-3cf9e442dfddd505/out/op.rs
-        // https://doc.rust-lang.org/cargo/reference/build-scripts.html#outputs-of-the-build-script
-        // https://github.com/ALinuxPerson/build_script?tab=readme-ov-file#examples
-        // TODO: also maybe same for "rustc wrote"?
 
         // TODO: keep only paths that we explicitly mount or copy
         if false {
@@ -417,14 +390,26 @@ impl Md {
 
     /// TODO? in Dockerfile, when using outputs:
     /// => skip the COPY (--mount=from=out-08c4d63ed4366a99) use the stage directly
-    fn out_block(&mut self, stage: &Stage, prev: &Stage, out_dir: &Utf8Path) {
+    //FIXME? unpub
+    pub(crate) fn out_block(
+        &mut self,
+        stage: &Stage,
+        prev: &Stage,
+        out_dir: &Utf8Path,
+        buildrs: bool,
+    ) {
         let mut block = format!("FROM scratch AS {stage}\n");
-        let mdid = self.this();
-        block.push_str(&format!("COPY --link --from={prev} {out_dir}/*-{mdid}* /\n"));
+        if buildrs {
+            block.push_str(&format!("COPY --link --from={prev} {out_dir} /\n"));
+        } else {
+            let mdid = self.this();
+            block.push_str(&format!("COPY --link --from={prev} {out_dir}/*-{mdid}* /\n"));
+        }
         self.push_block(stage, block);
     }
 
-    async fn do_build(
+    //FIXME? unpub
+    pub(crate) async fn do_build(
         &mut self,
         green: &Green,
         fallback: impl Future<Output = Result<()>>,
@@ -438,7 +423,7 @@ impl Md {
             return fallback.await;
         }
 
-        let (call, envs, Effects { written, stdout, stderr }, built) =
+        let (call, envs, Effects { written, stdout, stderr, cargo_rustc_env }, built) =
             green.build_out(containerfile_path, stage, &self.contexts, out_dir).await;
 
         green
@@ -447,10 +432,15 @@ impl Md {
 
         let md_path = self.this().path(target_path);
 
-        if !written.is_empty() || !stdout.is_empty() || !stderr.is_empty() {
+        if !written.is_empty()
+            || !stdout.is_empty()
+            || !stderr.is_empty()
+            || !cargo_rustc_env.is_empty()
+        {
             self.writes = written;
             self.stdout = stdout;
             self.stderr = stderr;
+            // self.cargo_rustc_env = cargo_rustc_env;
             info!("re-opening (RW) crate's md {md_path}");
             self.write_to(&md_path)?;
         }
@@ -504,10 +494,22 @@ fn fmap_env((var, val): (String, String), buildrs: bool) -> Option<(String, Stri
             debug!("env is set: {var}={val}");
         }
         let val = match var.as_str() {
+            // "CARGO_PKG_DESCRIPTION" => "FIXME".to_owned(),
             "CARGO_MANIFEST_DIR" | "CARGO_MANIFEST_PATH" => {
                 rewrite_cratesio_index(Utf8Path::new(&val)).to_string()
             }
             "TERM" => return None,
+            "RUSTC" => "rustc".to_owned(), // Rewrite host rustc so the base_image one can be used
+            // "CARGO_TARGET_DIR" | "CARGO_BUILD_TARGET_DIR" => {
+            //     virtual_target_dir(Utf8Path::new(&val)).to_string()
+            // }
+            // // TODO: a constant $CARGO_TARGET_DIR possible solution is to wrap build script as it runs,
+            // // ie. controlling all outputs. This should help: https://github.com/trailofbits/build-wrap/blob/d7f43b76e655e43755f68e28e9d729b4ed1dd115/src/wrapper.rs#L29
+            // //(dbcc)=> Dirty typenum v1.12.0: stale, https://github.com/rust-lang/cargo/blob/7987d4bfe683267ba179b42af55891badde3ccbf/src/cargo/core/compiler/fingerprint/mod.rs#L2030
+            // //=> /tmp/clis-dbcc_2-2-1/release/deps/typenum-32188cb0392f25b9.d
+            // "OUT_DIR" => virtual_target_dir(Utf8Path::new(&val)).to_string(),
+            "CARGO_TARGET_DIR" | "CARGO_BUILD_TARGET_DIR" => return None,
+            "OUT_DIR" => val,
             _ => val,
         };
         return Some((var, val));
@@ -589,21 +591,4 @@ a\
 l'"#
         .to_owned()
     );
-}
-
-#[test]
-fn crate_out_name_for_some_pkg() {
-    let crate_out = Utf8Path::new("/home/maison/target/debug/build/quote-adce79444856d618/out");
-    let res = crate_out_name(crate_out);
-    assert_eq!(res, "crate_out-adce79444856d618".try_into().unwrap());
-}
-
-#[must_use]
-fn crate_out_name(name: &Utf8Path) -> Stage {
-    name.parent()
-        .and_then(|x| x.file_name())
-        .and_then(|x| x.rsplit_once('-'))
-        .map(|(_, x)| Stage::crate_out(MdId::new(&format!("-{x}"))))
-        .expect("PROOF: suffix is /out")
-        .expect("PROOF: out dir path format")
 }
