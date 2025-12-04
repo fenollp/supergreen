@@ -3,7 +3,7 @@ set -o pipefail
 
 [[ $# -eq 0 ]] && echo "
 Usage:
-sort=? keyword=? category=?	$0 find
+sort=? keyword=? category=?	$0 find [ <crate> ]
 sort=?				$0 rev <crate>
 
 Modifiers:
@@ -24,6 +24,7 @@ Modifiers:
 			| date-and-time | template-engine | internationalization | emulators | accessibility
 			| email | localization | computer-vision | aerospace | virtualization | security | automotive
 " && exit 1
+verb=$1; shift
 sort=${sort:-recent-updates}
 pause=1
 ua=https://github.com/fenollp/supergreen
@@ -41,8 +42,9 @@ rev() {
 }
 
 search() {
-	[[ $# -eq 0 ]]
+	[[ $# -le 1 ]]
 	local query="sort=$sort"
+	if [[ "${1:-}" != '' ]]; then query="$query&q=$1"; fi
 	if [[ "${keyword:-}" != '' ]]; then query="$query&keyword=$keyword"; fi
 	if [[ "${category:-}" != '' ]]; then query="$query&category=$category"; fi
 	echo "$query"
@@ -55,8 +57,8 @@ search() {
 	done
 }
 
-case "${1:-}" in
-rev) rev "$1" ;;
-find) search ;;
-*) echo "Unexpected argument '$1'!" && exit 1
+case "$verb" in
+rev) rev $1 ;;
+find) search ${1:-} ;;
+*) echo "Unexpected argument '$verb'!" && exit 1
 esac
