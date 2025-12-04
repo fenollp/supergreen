@@ -4,7 +4,7 @@ use anyhow::{anyhow, Result};
 use log::info;
 use tokio::time::Timeout;
 
-const SOME_TIME: Duration = Duration::from_secs(2);
+const SOME_TIME: Duration = Duration::from_secs(4);
 
 #[track_caller]
 pub(crate) fn timeout<F>(fut: F) -> Timeout<F::IntoFuture>
