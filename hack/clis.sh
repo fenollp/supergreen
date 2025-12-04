@@ -290,6 +290,8 @@ $(jobdef "$(slugify "$name_at_version")")
         toolchain:
         - $stable
         - $fixed
+        exclude:
+        - toolchain: \${{ github.ref != 'refs/heads/main' && '$stable' }}
     env:
       CARGO_TARGET_DIR: /tmp/clis-$(slugify "$name_at_version")
     # CARGOGREEN_CACHE_FROM_IMAGES: docker-image://localhost:12345/\${{ github.repository }}
