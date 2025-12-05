@@ -457,7 +457,7 @@ arg1=$1; shift
 rmrf=${rmrf:-0}
 reset=${reset:-0}
 [[ "${clean:-0}" = 1 ]] && rmrf=1 && reset=1
-jobs=${jobs:-$(nproc)}
+jobs=${jobs:-''} ; [[ "$jobs" != '' ]] && jobs="--jobs=$jobs"
 frozen=--locked ; [[ "${offline:-}" = '1' ]] && frozen=--frozen
 final=${final:-0}
 
@@ -514,7 +514,7 @@ set -x
     CARGOGREEN_EXPERIMENT=finalpathnonprimary \
     PATH=$install_dir/bin:"$PATH" \
     CARGO_TARGET_DIR="$tmptrgt" \
-      $CARGO green -v $arg1 --jobs=$jobs --all-targets --all-features $frozen -p cargo-green
+      $CARGO green -v $arg1 $jobs --all-targets --all-features $frozen -p cargo-green
     exit ;;
 esac
 
@@ -579,7 +579,7 @@ send \
   'until' '[[' -f "$tmpgooo".installed ']];' 'do' sleep '.1;' 'done' '&&' rm "$tmpgooo".* \
   '&&' 'if' '[[' "$reset" '=' '1' ']];' 'then' docker buildx rm "$BUILDX_BUILDER" --force '||' 'exit' '1;' 'fi' \
   '&&' 'case' "$name_at_version" 'in' ntpd'@*)' export NTPD_RS_GIT_REV=$ntpd_locked_commit '&&' export NTPD_RS_GIT_DATE=$ntpd_locked_date ';;' '*)' ';;' 'esac' \
-  '&&' "${envvars[@]}" $CARGO green -vv install --timings --jobs=$jobs --root=$tmpbins $frozen --force "$(as_install "$name_at_version")" "$args" \
+  '&&' "${envvars[@]}" $CARGO green -vv install --timings $jobs --root=$tmpbins $frozen --force "$(as_install "$name_at_version")" "$args" \
   '&&' tmux kill-session -t "$session_name"
 tmux select-layout even-vertical
 
