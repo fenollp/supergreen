@@ -68,9 +68,10 @@ cat <<EOF
     - name: ...doesn't recompile anything
       run: |
         err=0
-        grep Finished  $cargologs | grep -E [012]...s || err=1
-        grep Dirty     $cargologs                     && err=1
-        grep Compiling $cargologs                     && err=1
+        grep Finished  $cargologs
+        grep Finished  $cargologs | grep -E [012]...s || ((err+=1))
+        grep Dirty     $cargologs                     && ((err+=2))
+        grep Compiling $cargologs                     && ((err+=4))
         exit \$err
 EOF
 }
