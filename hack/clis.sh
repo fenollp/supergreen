@@ -184,6 +184,11 @@ as_env() {
     *) ;;
   esac
 
+  if [[ -n "${DOCKER_HOST:-}" ]]; then
+    echo Using DOCKER_HOST="$DOCKER_HOST"
+    envvars+=(DOCKER_HOST="$DOCKER_HOST")
+  fi
+
   if [[ -n "${CARGOGREEN_LOG_PATH:-}" ]]; then
     echo Using CARGOGREEN_LOG_PATH
     envvars+=(CARGOGREEN_LOG_PATH="$CARGOGREEN_LOG_PATH")
