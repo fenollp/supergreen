@@ -489,7 +489,7 @@ set -x
     mkdir -p "$tmptrgt"
     if [[ "$rmrf" = '1' ]]; then rm -rf "$tmptrgt"/* || exit 1; fi
     if [[ "$reset" = 1 ]]; then docker buildx rm "$BUILDX_BUILDER" --force || exit 1; fi
-    CARGO_TARGET_DIR=$install_dir $CARGO install $frozen --force --root=$install_dir --path="$PWD"/cargo-green
+    CARGO_TARGET_DIR=$install_dir cargo install $frozen --force --root=$install_dir --path="$PWD"/cargo-green
     ls -lha $install_dir/bin/cargo-green
     rm $tmplogs >/dev/null 2>&1 || true
     touch $tmplogs
@@ -537,7 +537,7 @@ fi
 name_at_version=${nvs[$i]}
 args=${nvs_args[$i]}
 
-session_name=$(slugify "$name_at_version")$(slugify "${DOCKER_HOST:-_}")
+session_name=$(slugify "$name_at_version")$(slugify "${DOCKER_HOST:-}")
 tmptrgt=/tmp/clis-$session_name
 tmplogs=$tmptrgt.logs.txt
 tmpgooo=$tmptrgt.state
@@ -558,15 +558,15 @@ send() {
 gitdir=$(realpath "$(dirname "$(dirname "$0")")")
 send \
   set -x \
-    '&&' CARGO_TARGET_DIR=$install_dir $CARGO install $frozen --force --root=$install_dir --path="$gitdir"/cargo-green \
+    '&&' CARGO_TARGET_DIR=$install_dir cargo install $frozen --force --root=$install_dir --path="$gitdir"/cargo-green \
     '&&' touch "$tmpgooo".installed \
     '&&' "rm $tmplogs >/dev/null 2>&1; touch $tmplogs; tail -f $tmplogs; :"
 tmux select-layout even-vertical
 tmux split-window
 
-envvars=(CARGOGREEN_LOG=trace)
+envvars=(PATH=$install_dir/bin:"$PATH")
+envvars+=(CARGOGREEN_LOG=trace)
 envvars+=(CARGOGREEN_LOG_PATH="$tmplogs")
-envvars+=(PATH=$install_dir/bin:"$PATH")
 envvars+=(CARGO_TARGET_DIR="$tmptrgt")
 if [[ "$final" = '1' ]]; then
   envvars+=(CARGOGREEN_FINAL_PATH=recipes/$name_at_version.Dockerfile)
@@ -575,10 +575,12 @@ fi
 # envvars+=(CARGOGREEN_SYNTAX_IMAGE=docker-image://docker.io/docker/dockerfile:1@sha256:4c68376a702446fc3c79af22de146a148bc3367e73c25a5803d453b6b3f722fb)
 # envvars+=(CARGOGREEN_BASE_IMAGE=docker-image://docker.io/library/rust:1.86.0-slim@sha256:3f391b0678a6e0c88fd26f13e399c9c515ac47354e3cadfee7daee3b21651a4f)
 as_env "$name_at_version"
+[[ "$CARGO" = 'cargo' ]] && CARGO="$CARGO +$fixed"
 send \
   'until' '[[' -f "$tmpgooo".installed ']];' 'do' sleep '.1;' 'done' '&&' rm "$tmpgooo".* \
   '&&' 'if' '[[' "$reset" '=' '1' ']];' 'then' docker buildx rm "$BUILDX_BUILDER" --force '||' 'exit' '1;' 'fi' \
   '&&' 'case' "$name_at_version" 'in' ntpd'@*)' export NTPD_RS_GIT_REV=$ntpd_locked_commit '&&' export NTPD_RS_GIT_DATE=$ntpd_locked_date ';;' '*)' ';;' 'esac' \
+  '&&' export CARGO_INCREMENTAL=0 \
   '&&' "${envvars[@]}" $CARGO green -vv install --timings $jobs --root=$tmpbins $frozen --force "$(as_install "$name_at_version")" "$args" \
   '&&' tmux kill-session -t "$session_name"
 tmux select-layout even-vertical
