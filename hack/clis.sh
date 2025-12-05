@@ -16,7 +16,7 @@ source "$repo_root"/hack/ck.sh
 # Usage:    rmrf=1 $0 ..                           #=> rm -rf $CARGO_TARGET_DIR/*; cargo ...
 # Usage:   reset=1 $0 ..                           #=> docker buildx rm $BUILDX_BUILDER; cargo ...
 # Usage:   clean=1 $0 ..                           #=> Both reset=1 + rmrf=1
-# Usage:   final=1 $0 ..                           #=> Generate final Containerfile
+# Usage:   final=0 $0 ..                           #=> Don't generate final Containerfile
 #
 # Usage:    DOCKER_HOST=.. $0 ..                   #=> Overrides machine
 # Usage: BUILDX_BUILDER=.. $0 ..                   #=> Overrides builder (set to "empty" to set BUILDX_BUILDER='')
@@ -459,7 +459,7 @@ reset=${reset:-0}
 [[ "${clean:-0}" = 1 ]] && rmrf=1 && reset=1
 jobs=${jobs:-''} ; [[ "$jobs" != '' ]] && jobs="--jobs=$jobs"
 frozen=--locked ; [[ "${offline:-}" = '1' ]] && frozen=--frozen
-final=${final:-0}
+final=${final:-1}
 
 case "${BUILDX_BUILDER:-}" in
   '') BUILDX_BUILDER=supergreen ;;
