@@ -587,6 +587,11 @@ tmux select-layout even-vertical
 
 tmux attach-session -t "$session_name"
 
+if [[ "$final" = '1' ]]; then
+  cat recipes/$name_at_version.Dockerfile | sed "s%/home/$USER/%/home/runner/%g" >recipes/$name_at_version.Dockerfile-
+  mv recipes/$name_at_version.Dockerfile- recipes/$name_at_version.Dockerfile
+fi
+
 echo "$name_at_version"
 echo "Target dir: $tmptrgt"
 echo "Logs: $tmplogs"
