@@ -846,9 +846,10 @@ jobs:
     - name: ...doesn't recompile anything
       run: |
         err=0
-        grep Finished  ../_ | grep -E [012]...s || err=1
-        grep Dirty     ../_                     && err=1
-        grep Compiling ../_                     && err=1
+        grep Finished  ../_
+        grep Finished  ../_ | grep -E [012]...s || ((err+=1))
+        grep Dirty     ../_                     && ((err+=2))
+        grep Compiling ../_                     && ((err+=4))
         exit $err
     - if: ${{ always() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
@@ -1149,9 +1150,10 @@ jobs:
     - name: ...doesn't recompile anything
       run: |
         err=0
-        grep Finished  ../_ | grep -E [012]...s || err=1
-        grep Dirty     ../_                     && err=1
-        grep Compiling ../_                     && err=1
+        grep Finished  ../_
+        grep Finished  ../_ | grep -E [012]...s || ((err+=1))
+        grep Dirty     ../_                     && ((err+=2))
+        grep Compiling ../_                     && ((err+=4))
         exit $err
     - if: ${{ always() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
@@ -1452,9 +1454,10 @@ jobs:
     - name: ...doesn't recompile anything
       run: |
         err=0
-        grep Finished  ../_ | grep -E [012]...s || err=1
-        grep Dirty     ../_                     && err=1
-        grep Compiling ../_                     && err=1
+        grep Finished  ../_
+        grep Finished  ../_ | grep -E [012]...s || ((err+=1))
+        grep Dirty     ../_                     && ((err+=2))
+        grep Compiling ../_                     && ((err+=4))
         exit $err
     - if: ${{ always() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
@@ -1978,9 +1981,10 @@ jobs:
     - name: ...doesn't recompile anything
       run: |
         err=0
-        grep Finished  ../_ | grep -E [012]...s || err=1
-        grep Dirty     ../_                     && err=1
-        grep Compiling ../_                     && err=1
+        grep Finished  ../_
+        grep Finished  ../_ | grep -E [012]...s || ((err+=1))
+        grep Dirty     ../_                     && ((err+=2))
+        grep Compiling ../_                     && ((err+=4))
         exit $err
     - if: ${{ always() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
