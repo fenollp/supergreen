@@ -378,12 +378,14 @@ $(rundeps_versions)
 
 $(cache_usage)
     - name: 🔵 cargo install
+      id: cargo-install
+      continue-on-error: true # TODO: drop: MAY hide concurrency issues
       run: |
 $(unset_action_envs)
         env ${envvars[@]} \\
           cargo green -vv install --locked --force $(as_install "$name_at_version") $@ |& tee _
     - name: 🔵 cargo install jobs=1
-      if: \${{ failure() }}
+      if: \${{ job.steps.cargo-install.status == failure() }}
       run: |
 $(unset_action_envs)
         env ${envvars[@]} \\
