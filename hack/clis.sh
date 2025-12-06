@@ -433,13 +433,6 @@ $(cache_usage)
 EOF
 }
 
-maybe_show_logs() {
-  local logfile=$1; shift
-  [[ $# -eq 0 ]]
-  case "$(wc "$logfile")" in '0 0 0 '*) ;;
-                                     *) $PAGER "$logfile" ;; esac
-}
-
 # No args: generate CI file
 if [[ $# = 0 ]]; then
   header
@@ -520,7 +513,6 @@ set -x
     PATH=$install_dir/bin:"$PATH" \
     CARGO_TARGET_DIR="$tmptrgt" \
       $CARGO green -v $arg1 --jobs=$jobs --all-targets --all-features $frozen -p cargo-green
-    maybe_show_logs "$tmplogs"
     exit ;;
 esac
 
@@ -594,4 +586,3 @@ tmux attach-session -t "$session_name"
 echo "$name_at_version"
 echo "Target dir: $tmptrgt"
 echo "Logs: $tmplogs"
-maybe_show_logs "$tmplogs"
