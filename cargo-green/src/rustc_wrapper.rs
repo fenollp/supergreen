@@ -382,7 +382,7 @@ async fn do_wrap_rustc(
         if let Ok(val) = env::var(var) {
             warn!("passing ${var}={val:?} env through");
             let val = safeify(&val)?;
-            rustc_block.push_str(&format!("        {var}={val:?} \\\n"));
+            rustc_block.push_str(&format!("        {var}={val} \\\n"));
         }
     }
     // TODO: catch these cargo:rustc-env= to add to TOML+Dockerfile in extremis so downstream knows about these envs
