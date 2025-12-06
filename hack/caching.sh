@@ -1,10 +1,8 @@
 #!/usr/bin/env -S bash -eux
 set -o pipefail
 
-CARGO=${CARGO:-cargo}
-
 export CARGO_TARGET_DIR=$(realpath "$(dirname "$(dirname "$0")")")/target
-$CARGO install --locked --force --path cargo-green/
+cargo install --locked --force --path cargo-green/
 
 install_package=buildxargs@1.4.0
 install_root=$(mktemp -d)
@@ -18,9 +16,16 @@ export CARGO_TARGET_DIR=/tmp/cargo-green--hack-caching--target-dir
 mkdir -p $CARGO_TARGET_DIR
 rm -rf $CARGO_TARGET_DIR/* $CARGOGREEN_LOG_PATH* >/dev/null
 
+CARGO='cargo +1.84.1'
 $CARGO green supergreen env
-#$CARGO +1.84.1 green supergreen env
-#TODO: ensure match of local & sandboxed cargo/rustc => local is authoritative on the extrafn hash => need rustup calls/suggestions
+
+git_add() {
+    local f=$1; shift
+    [[ $# -eq 0 ]]
+    cat $f | sed "s%/home/runner/%/home/$USER/%g" >$f-
+    mv $f- $f
+    git add $f
+}
 
 compute_installed_bin_sha256() {
 	sha256sum $install_root/bin/${install_package%@*} | awk '{print $1}'
@@ -58,7 +63,7 @@ rm -rf $CARGO_TARGET_DIR/* >/dev/null
 rm -rf $CARGOGREEN_LOG_PATH >/dev/null
 rm -rf $install_root/* >/dev/null
 $CARGO green install --locked                            $install_package --root=$install_root
-git add $CARGOGREEN_FINAL_PATH
+git_add $CARGOGREEN_FINAL_PATH
 ensure__produces_same_shas # => just computes shas
 ensure__rewrite_cratesio_index__works
 $install_root/bin/${install_package%@*} --help >/dev/null
@@ -76,7 +81,7 @@ rm -rf $CARGO_TARGET_DIR/* >/dev/null
 rm -rf $CARGOGREEN_LOG_PATH >/dev/null
 rm -rf $install_root/* >/dev/null
 $CARGO green install --locked --frozen --offline --force $install_package --root=$install_root
-git add $CARGOGREEN_FINAL_PATH
+git_add $CARGOGREEN_FINAL_PATH
 ensure__produces_same_shas # rebuild => same shas
 ensure__rewrite_cratesio_index__works
 $install_root/bin/${install_package%@*} --help >/dev/null
@@ -101,7 +106,7 @@ rm -rf $CARGO_TARGET_DIR/* >/dev/null
 rm -rf $CARGOGREEN_LOG_PATH >/dev/null
 rm -rf $install_root/* >/dev/null
 $CARGO green install --locked --frozen --offline --force $install_package --root=$install_root
-git add $CARGOGREEN_FINAL_PATH
+git_add $CARGOGREEN_FINAL_PATH
 ensure__produces_same_shas # rebuild => same shas
 ensure__rewrite_cratesio_index__works
 $install_root/bin/${install_package%@*} --help >/dev/null
@@ -121,7 +126,7 @@ rm -rf $CARGO_TARGET_DIR/* >/dev/null
 rm -rf $CARGOGREEN_LOG_PATH >/dev/null
 rm -rf $install_root/* >/dev/null
 $CARGO green install --locked --frozen --offline --force $install_package --root=$install_root
-git add $CARGOGREEN_FINAL_PATH
+git_add $CARGOGREEN_FINAL_PATH
 ensure__produces_same_shas # rebuild without reading cache => new layers written to cache!!
 ensure__rewrite_cratesio_index__works
 $install_root/bin/${install_package%@*} --help >/dev/null
@@ -170,6 +175,7 @@ echo
 
 
 export CARGOGREEN_BASE_IMAGE=docker-image://docker.io/library/rust:1.84.0-slim@sha256:0ec205a9abb049604cb085f2fdf7630f1a31dad1f7ad4986154a56501fb7ca77
+CARGO='cargo +1.84.0'
 
 rm -rf $CARGO_TARGET_DIR/* >/dev/null
 rm -rf $CARGOGREEN_LOG_PATH >/dev/null
@@ -188,7 +194,7 @@ cat <<EOF | diff -u - <(git --no-pager diff --ignore-matching-lines='^##' -- $CA
  
  
 EOF
-git add $CARGOGREEN_FINAL_PATH
+git_add $CARGOGREEN_FINAL_PATH
 ! ensure__produces_same_shas # change rustc => changes shas
 rm -rf $CARGOGREEN_LOG_PATH.produced >/dev/null
 ensure__produces_same_shas # (here, we just re-compute shas)
@@ -250,7 +256,7 @@ ensure__rewrite_cratesio_index__works
 $install_root/bin/${install_package%@*} --help >/dev/null
 [[ $install_sha = $(compute_installed_bin_sha256) ]] # change targetdir => no binary changes
 # git --no-pager diff -- $CARGOGREEN_FINAL_PATH
-git add $CARGOGREEN_FINAL_PATH
+git_add $CARGOGREEN_FINAL_PATH
 
 echo Changing CARGO_TARGET_DIR tho.... TODO: replace target dir in final path with e.g. /target/ or '/target/$target_triple/'
 echo
