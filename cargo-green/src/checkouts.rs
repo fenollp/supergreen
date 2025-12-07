@@ -3,15 +3,48 @@ use std::{fs::read_to_string, process::Stdio};
 use anyhow::{anyhow, bail, Result};
 use camino::{Utf8Path, Utf8PathBuf};
 use log::info;
+use serde::{Deserialize, Serialize};
 use tokio::process::Command;
 
-use crate::{ext::CommandExt, stage::Stage};
+use crate::{
+    ext::CommandExt,
+    stage::{AsBlock, AsStage, NamedStage, Stage},
+};
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash)]
+pub(crate) struct Checkouts {
+    stage: Stage,
+    repo: String,
+    commit: String,
+    krate_manifest_dir: Utf8PathBuf,
+}
+
+impl AsBlock for Checkouts {
+    fn as_block(&self) -> Option<String> {
+        let Self { stage, repo, commit, .. } = self;
+        Some(format!(
+            r#"
+FROM scratch AS {stage}
+ADD --keep-git-dir=false \
+  {repo}#{commit} /
+"#,
+        ))
+    }
+}
+
+impl AsStage<'_> for Checkouts {
+    fn name(&self) -> &Stage {
+        &self.stage
+    }
+
+    fn mounts(&self) -> Vec<(Option<Utf8PathBuf>, Utf8PathBuf, bool)> {
+        vec![(None, self.krate_manifest_dir.clone(), false)]
+    }
+}
 
 /// https://docs.docker.com/reference/dockerfile/#add---keep-git-dir
 /// --build-arg BUILDKIT_CONTEXT_KEEP_GIT_DIR=0 https://docs.docker.com/engine/reference/builder/#buildkit-built-in-build-args
-pub(crate) async fn into_stage(
-    krate_manifest_dir: &Utf8Path,
-) -> Result<(Stage, Utf8PathBuf, String)> {
+pub(crate) async fn as_stage(krate_manifest_dir: &Utf8Path) -> Result<NamedStage> {
     // TODO: replace execve with pure Rust impl, e.g. gitoxide
     let mut cmd = Command::new("git");
     cmd.kill_on_drop(true); // Underlying OS process dies with us
@@ -44,15 +77,12 @@ pub(crate) async fn into_stage(
     let dir = krate_manifest_dir.parent().unwrap().file_name().unwrap();
     let stage = Stage::checkout(dir, commit)?;
 
-    let block = format!(
-        r#"
-FROM scratch AS {stage}
-ADD --keep-git-dir=false \
-  {repo}#{commit} /
-"#,
-    );
-
-    Ok((stage, krate_manifest_dir.to_owned(), block))
+    Ok(NamedStage::Checkouts(Checkouts {
+        stage,
+        repo: repo.to_owned(),
+        commit: commit.to_owned(),
+        krate_manifest_dir: krate_manifest_dir.to_owned(),
+    }))
 }
 
 fn commit_and_repo(head: &str) -> Result<(&str, &str)> {

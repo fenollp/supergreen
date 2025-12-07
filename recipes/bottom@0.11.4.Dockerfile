@@ -60,18 +60,24 @@ COPY --link --from=dep-n-anyhow-1.0.100-543166d220417af1 /tmp/clis-bottom_0-11-4
 ## ]
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-anyhow-1.0.100"
-## script = '''
-## FROM scratch AS cratesio-anyhow-1.0.100
-## ADD --chmod=0664 --unpack --checksum=sha256:a23eb6b1614318a8071c9b2521f36b424b2c83db5eb3a0fead4a6c0809af6e61 \
-##   https://static.crates.io/crates/anyhow/anyhow-1.0.100.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-anyhow-1.0.100"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.100"
+## name = "anyhow"
+## name_dash_version = "anyhow-1.0.100"
+## hash = "a23eb6b1614318a8071c9b2521f36b424b2c83db5eb3a0fead4a6c0809af6e61"
 ##
 ## [[stages]]
-## name = "dep-n-anyhow-1.0.100-543166d220417af1"
+##
+## [stages.Script]
+## stage = "dep-n-anyhow-1.0.100-543166d220417af1"
 ## script = '''
 ## FROM rust-base AS dep-n-anyhow-1.0.100-543166d220417af1
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -110,7 +116,9 @@ COPY --link --from=dep-n-anyhow-1.0.100-543166d220417af1 /tmp/clis-bottom_0-11-4
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-543166d220417af1* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-543166d220417af1"
+##
+## [stages.Script]
+## stage = "out-543166d220417af1"
 ## script = """
 ## FROM scratch AS out-543166d220417af1
 ## COPY --link --from=dep-n-anyhow-1.0.100-543166d220417af1 /tmp/clis-bottom_0-11-4/release/deps/*-543166d220417af1* /"""
@@ -168,18 +176,24 @@ COPY --link --from=dep-n-gimli-0.31.1-aecdb940ee340dcf /tmp/clis-bottom_0-11-4/r
 ## ]
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-gimli-0.31.1"
-## script = '''
-## FROM scratch AS cratesio-gimli-0.31.1
-## ADD --chmod=0664 --unpack --checksum=sha256:07e28edb80900c19c28f1072f2e8aeca7fa06b23cd4169cefe1af5aa3260783f \
-##   https://static.crates.io/crates/gimli/gimli-0.31.1.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-gimli-0.31.1"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/gimli-0.31.1"
+## name = "gimli"
+## name_dash_version = "gimli-0.31.1"
+## hash = "07e28edb80900c19c28f1072f2e8aeca7fa06b23cd4169cefe1af5aa3260783f"
 ##
 ## [[stages]]
-## name = "dep-n-gimli-0.31.1-aecdb940ee340dcf"
+##
+## [stages.Script]
+## stage = "dep-n-gimli-0.31.1-aecdb940ee340dcf"
 ## script = '''
 ## FROM rust-base AS dep-n-gimli-0.31.1-aecdb940ee340dcf
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -217,7 +231,9 @@ COPY --link --from=dep-n-gimli-0.31.1-aecdb940ee340dcf /tmp/clis-bottom_0-11-4/r
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-aecdb940ee340dcf* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-aecdb940ee340dcf"
+##
+## [stages.Script]
+## stage = "out-aecdb940ee340dcf"
 ## script = """
 ## FROM scratch AS out-aecdb940ee340dcf
 ## COPY --link --from=dep-n-gimli-0.31.1-aecdb940ee340dcf /tmp/clis-bottom_0-11-4/release/deps/*-aecdb940ee340dcf* /"""
@@ -290,18 +306,24 @@ COPY --link --from=dep-n-addr2line-0.24.2-ab8ec344bce3c3a9 /tmp/clis-bottom_0-11
 ## xtern = "libgimli-aecdb940ee340dcf.rmeta"
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-addr2line-0.24.2"
-## script = '''
-## FROM scratch AS cratesio-addr2line-0.24.2
-## ADD --chmod=0664 --unpack --checksum=sha256:dfbe277e56a376000877090da837660b4427aad530e3028d44e0bffe4f89a1c1 \
-##   https://static.crates.io/crates/addr2line/addr2line-0.24.2.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-addr2line-0.24.2"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/addr2line-0.24.2"
+## name = "addr2line"
+## name_dash_version = "addr2line-0.24.2"
+## hash = "dfbe277e56a376000877090da837660b4427aad530e3028d44e0bffe4f89a1c1"
 ##
 ## [[stages]]
-## name = "dep-n-addr2line-0.24.2-ab8ec344bce3c3a9"
+##
+## [stages.Script]
+## stage = "dep-n-addr2line-0.24.2-ab8ec344bce3c3a9"
 ## script = '''
 ## FROM rust-base AS dep-n-addr2line-0.24.2-ab8ec344bce3c3a9
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -341,7 +363,9 @@ COPY --link --from=dep-n-addr2line-0.24.2-ab8ec344bce3c3a9 /tmp/clis-bottom_0-11
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-ab8ec344bce3c3a9* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-ab8ec344bce3c3a9"
+##
+## [stages.Script]
+## stage = "out-ab8ec344bce3c3a9"
 ## script = """
 ## FROM scratch AS out-ab8ec344bce3c3a9
 ## COPY --link --from=dep-n-addr2line-0.24.2-ab8ec344bce3c3a9 /tmp/clis-bottom_0-11-4/release/deps/*-ab8ec344bce3c3a9* /"""
@@ -402,18 +426,24 @@ COPY --link --from=dep-n-cfg-if-1.0.3-bcc7b80470034230 /tmp/clis-bottom_0-11-4/r
 ## ]
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-cfg-if-1.0.3"
-## script = '''
-## FROM scratch AS cratesio-cfg-if-1.0.3
-## ADD --chmod=0664 --unpack --checksum=sha256:2fd1289c04a9ea8cb22300a459a72a385d7c73d3259e2ed7dcb2af674838cfa9 \
-##   https://static.crates.io/crates/cfg-if/cfg-if-1.0.3.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-cfg-if-1.0.3"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/cfg-if-1.0.3"
+## name = "cfg-if"
+## name_dash_version = "cfg-if-1.0.3"
+## hash = "2fd1289c04a9ea8cb22300a459a72a385d7c73d3259e2ed7dcb2af674838cfa9"
 ##
 ## [[stages]]
-## name = "dep-n-cfg-if-1.0.3-bcc7b80470034230"
+##
+## [stages.Script]
+## stage = "dep-n-cfg-if-1.0.3-bcc7b80470034230"
 ## script = '''
 ## FROM rust-base AS dep-n-cfg-if-1.0.3-bcc7b80470034230
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -454,7 +484,9 @@ COPY --link --from=dep-n-cfg-if-1.0.3-bcc7b80470034230 /tmp/clis-bottom_0-11-4/r
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-bcc7b80470034230* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-bcc7b80470034230"
+##
+## [stages.Script]
+## stage = "out-bcc7b80470034230"
 ## script = """
 ## FROM scratch AS out-bcc7b80470034230
 ## COPY --link --from=dep-n-cfg-if-1.0.3-bcc7b80470034230 /tmp/clis-bottom_0-11-4/release/deps/*-bcc7b80470034230* /"""
@@ -513,18 +545,24 @@ COPY --link --from=dep-n-libc-0.2.176-f9a7f201e668dfaf /tmp/clis-bottom_0-11-4/r
 ## ]
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-libc-0.2.176"
-## script = '''
-## FROM scratch AS cratesio-libc-0.2.176
-## ADD --chmod=0664 --unpack --checksum=sha256:58f929b4d672ea937a23a1ab494143d968337a5f47e56d0815df1e0890ddf174 \
-##   https://static.crates.io/crates/libc/libc-0.2.176.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-libc-0.2.176"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.176"
+## name = "libc"
+## name_dash_version = "libc-0.2.176"
+## hash = "58f929b4d672ea937a23a1ab494143d968337a5f47e56d0815df1e0890ddf174"
 ##
 ## [[stages]]
-## name = "dep-n-libc-0.2.176-f9a7f201e668dfaf"
+##
+## [stages.Script]
+## stage = "dep-n-libc-0.2.176-f9a7f201e668dfaf"
 ## script = '''
 ## FROM rust-base AS dep-n-libc-0.2.176-f9a7f201e668dfaf
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -563,7 +601,9 @@ COPY --link --from=dep-n-libc-0.2.176-f9a7f201e668dfaf /tmp/clis-bottom_0-11-4/r
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-f9a7f201e668dfaf* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-f9a7f201e668dfaf"
+##
+## [stages.Script]
+## stage = "out-f9a7f201e668dfaf"
 ## script = """
 ## FROM scratch AS out-f9a7f201e668dfaf
 ## COPY --link --from=dep-n-libc-0.2.176-f9a7f201e668dfaf /tmp/clis-bottom_0-11-4/release/deps/*-f9a7f201e668dfaf* /"""
@@ -621,18 +661,24 @@ COPY --link --from=dep-n-adler2-2.0.1-5c64281ff3719f6c /tmp/clis-bottom_0-11-4/r
 ## ]
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-adler2-2.0.1"
-## script = '''
-## FROM scratch AS cratesio-adler2-2.0.1
-## ADD --chmod=0664 --unpack --checksum=sha256:320119579fcad9c21884f5c4861d16174d0e06250625266f50fe6898340abefa \
-##   https://static.crates.io/crates/adler2/adler2-2.0.1.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-adler2-2.0.1"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/adler2-2.0.1"
+## name = "adler2"
+## name_dash_version = "adler2-2.0.1"
+## hash = "320119579fcad9c21884f5c4861d16174d0e06250625266f50fe6898340abefa"
 ##
 ## [[stages]]
-## name = "dep-n-adler2-2.0.1-5c64281ff3719f6c"
+##
+## [stages.Script]
+## stage = "dep-n-adler2-2.0.1-5c64281ff3719f6c"
 ## script = '''
 ## FROM rust-base AS dep-n-adler2-2.0.1-5c64281ff3719f6c
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -670,7 +716,9 @@ COPY --link --from=dep-n-adler2-2.0.1-5c64281ff3719f6c /tmp/clis-bottom_0-11-4/r
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-5c64281ff3719f6c* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-5c64281ff3719f6c"
+##
+## [stages.Script]
+## stage = "out-5c64281ff3719f6c"
 ## script = """
 ## FROM scratch AS out-5c64281ff3719f6c
 ## COPY --link --from=dep-n-adler2-2.0.1-5c64281ff3719f6c /tmp/clis-bottom_0-11-4/release/deps/*-5c64281ff3719f6c* /"""
@@ -740,18 +788,24 @@ COPY --link --from=dep-n-miniz_oxide-0.8.9-7624e0df862dfe1f /tmp/clis-bottom_0-1
 ## xtern = "libadler2-5c64281ff3719f6c.rmeta"
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-miniz_oxide-0.8.9"
-## script = '''
-## FROM scratch AS cratesio-miniz_oxide-0.8.9
-## ADD --chmod=0664 --unpack --checksum=sha256:1fa76a2c86f704bdb222d66965fb3d63269ce38518b83cb0575fca855ebb6316 \
-##   https://static.crates.io/crates/miniz_oxide/miniz_oxide-0.8.9.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-miniz_oxide-0.8.9"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/miniz_oxide-0.8.9"
+## name = "miniz_oxide"
+## name_dash_version = "miniz_oxide-0.8.9"
+## hash = "1fa76a2c86f704bdb222d66965fb3d63269ce38518b83cb0575fca855ebb6316"
 ##
 ## [[stages]]
-## name = "dep-n-miniz_oxide-0.8.9-7624e0df862dfe1f"
+##
+## [stages.Script]
+## stage = "dep-n-miniz_oxide-0.8.9-7624e0df862dfe1f"
 ## script = '''
 ## FROM rust-base AS dep-n-miniz_oxide-0.8.9-7624e0df862dfe1f
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -791,7 +845,9 @@ COPY --link --from=dep-n-miniz_oxide-0.8.9-7624e0df862dfe1f /tmp/clis-bottom_0-1
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-7624e0df862dfe1f* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-7624e0df862dfe1f"
+##
+## [stages.Script]
+## stage = "out-7624e0df862dfe1f"
 ## script = """
 ## FROM scratch AS out-7624e0df862dfe1f
 ## COPY --link --from=dep-n-miniz_oxide-0.8.9-7624e0df862dfe1f /tmp/clis-bottom_0-11-4/release/deps/*-7624e0df862dfe1f* /"""
@@ -851,18 +907,24 @@ COPY --link --from=dep-n-memchr-2.7.5-c80d603364c0d236 /tmp/clis-bottom_0-11-4/r
 ## ]
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-memchr-2.7.5"
-## script = '''
-## FROM scratch AS cratesio-memchr-2.7.5
-## ADD --chmod=0664 --unpack --checksum=sha256:32a282da65faaf38286cf3be983213fcf1d2e2a58700e808f83f4ea9a4804bc0 \
-##   https://static.crates.io/crates/memchr/memchr-2.7.5.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-memchr-2.7.5"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/memchr-2.7.5"
+## name = "memchr"
+## name_dash_version = "memchr-2.7.5"
+## hash = "32a282da65faaf38286cf3be983213fcf1d2e2a58700e808f83f4ea9a4804bc0"
 ##
 ## [[stages]]
-## name = "dep-n-memchr-2.7.5-c80d603364c0d236"
+##
+## [stages.Script]
+## stage = "dep-n-memchr-2.7.5-c80d603364c0d236"
 ## script = '''
 ## FROM rust-base AS dep-n-memchr-2.7.5-c80d603364c0d236
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -902,7 +964,9 @@ COPY --link --from=dep-n-memchr-2.7.5-c80d603364c0d236 /tmp/clis-bottom_0-11-4/r
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-c80d603364c0d236* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-c80d603364c0d236"
+##
+## [stages.Script]
+## stage = "out-c80d603364c0d236"
 ## script = """
 ## FROM scratch AS out-c80d603364c0d236
 ## COPY --link --from=dep-n-memchr-2.7.5-c80d603364c0d236 /tmp/clis-bottom_0-11-4/release/deps/*-c80d603364c0d236* /"""
@@ -973,18 +1037,24 @@ COPY --link --from=dep-n-object-0.36.7-5fcd109adb9e8917 /tmp/clis-bottom_0-11-4/
 ## xtern = "libmemchr-c80d603364c0d236.rmeta"
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-object-0.36.7"
-## script = '''
-## FROM scratch AS cratesio-object-0.36.7
-## ADD --chmod=0664 --unpack --checksum=sha256:62948e14d923ea95ea2c7c86c71013138b66525b86bdc08d2dcc262bdb497b87 \
-##   https://static.crates.io/crates/object/object-0.36.7.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-object-0.36.7"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/object-0.36.7"
+## name = "object"
+## name_dash_version = "object-0.36.7"
+## hash = "62948e14d923ea95ea2c7c86c71013138b66525b86bdc08d2dcc262bdb497b87"
 ##
 ## [[stages]]
-## name = "dep-n-object-0.36.7-5fcd109adb9e8917"
+##
+## [stages.Script]
+## stage = "dep-n-object-0.36.7-5fcd109adb9e8917"
 ## script = '''
 ## FROM rust-base AS dep-n-object-0.36.7-5fcd109adb9e8917
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -1025,7 +1095,9 @@ COPY --link --from=dep-n-object-0.36.7-5fcd109adb9e8917 /tmp/clis-bottom_0-11-4/
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-5fcd109adb9e8917* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-5fcd109adb9e8917"
+##
+## [stages.Script]
+## stage = "out-5fcd109adb9e8917"
 ## script = """
 ## FROM scratch AS out-5fcd109adb9e8917
 ## COPY --link --from=dep-n-object-0.36.7-5fcd109adb9e8917 /tmp/clis-bottom_0-11-4/release/deps/*-5fcd109adb9e8917* /"""
@@ -1089,18 +1161,24 @@ COPY --link --from=dep-n-rustc-demangle-0.1.26-6330deb0bd1f668c /tmp/clis-bottom
 ## ]
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-rustc-demangle-0.1.26"
-## script = '''
-## FROM scratch AS cratesio-rustc-demangle-0.1.26
-## ADD --chmod=0664 --unpack --checksum=sha256:56f7d92ca342cea22a06f2121d944b4fd82af56988c270852495420f961d4ace \
-##   https://static.crates.io/crates/rustc-demangle/rustc-demangle-0.1.26.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-rustc-demangle-0.1.26"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustc-demangle-0.1.26"
+## name = "rustc-demangle"
+## name_dash_version = "rustc-demangle-0.1.26"
+## hash = "56f7d92ca342cea22a06f2121d944b4fd82af56988c270852495420f961d4ace"
 ##
 ## [[stages]]
-## name = "dep-n-rustc-demangle-0.1.26-6330deb0bd1f668c"
+##
+## [stages.Script]
+## stage = "dep-n-rustc-demangle-0.1.26-6330deb0bd1f668c"
 ## script = '''
 ## FROM rust-base AS dep-n-rustc-demangle-0.1.26-6330deb0bd1f668c
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -1139,7 +1217,9 @@ COPY --link --from=dep-n-rustc-demangle-0.1.26-6330deb0bd1f668c /tmp/clis-bottom
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-6330deb0bd1f668c* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-6330deb0bd1f668c"
+##
+## [stages.Script]
+## stage = "out-6330deb0bd1f668c"
 ## script = """
 ## FROM scratch AS out-6330deb0bd1f668c
 ## COPY --link --from=dep-n-rustc-demangle-0.1.26-6330deb0bd1f668c /tmp/clis-bottom_0-11-4/release/deps/*-6330deb0bd1f668c* /"""
@@ -1310,18 +1390,24 @@ COPY --link --from=dep-n-backtrace-0.3.75-4b25e827b1f336c5 /tmp/clis-bottom_0-11
 ## xtern = "librustc_demangle-6330deb0bd1f668c.rmeta"
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-backtrace-0.3.75"
-## script = '''
-## FROM scratch AS cratesio-backtrace-0.3.75
-## ADD --chmod=0664 --unpack --checksum=sha256:6806a6321ec58106fea15becdad98371e28d92ccbc7c8f1b3b6dd724fe8f1002 \
-##   https://static.crates.io/crates/backtrace/backtrace-0.3.75.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-backtrace-0.3.75"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/backtrace-0.3.75"
+## name = "backtrace"
+## name_dash_version = "backtrace-0.3.75"
+## hash = "6806a6321ec58106fea15becdad98371e28d92ccbc7c8f1b3b6dd724fe8f1002"
 ##
 ## [[stages]]
-## name = "dep-n-backtrace-0.3.75-4b25e827b1f336c5"
+##
+## [stages.Script]
+## stage = "dep-n-backtrace-0.3.75-4b25e827b1f336c5"
 ## script = '''
 ## FROM rust-base AS dep-n-backtrace-0.3.75-4b25e827b1f336c5
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -1378,7 +1464,9 @@ COPY --link --from=dep-n-backtrace-0.3.75-4b25e827b1f336c5 /tmp/clis-bottom_0-11
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-4b25e827b1f336c5* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-4b25e827b1f336c5"
+##
+## [stages.Script]
+## stage = "out-4b25e827b1f336c5"
 ## script = """
 ## FROM scratch AS out-4b25e827b1f336c5
 ## COPY --link --from=dep-n-backtrace-0.3.75-4b25e827b1f336c5 /tmp/clis-bottom_0-11-4/release/deps/*-4b25e827b1f336c5* /"""
@@ -1436,18 +1524,24 @@ COPY --link --from=dep-n-anstyle-1.0.11-474d4f32b765f566 /tmp/clis-bottom_0-11-4
 ## ]
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-anstyle-1.0.11"
-## script = '''
-## FROM scratch AS cratesio-anstyle-1.0.11
-## ADD --chmod=0664 --unpack --checksum=sha256:862ed96ca487e809f1c8e5a8447f6ee2cf102f846893800b20cebdf541fc6bbd \
-##   https://static.crates.io/crates/anstyle/anstyle-1.0.11.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-anstyle-1.0.11"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anstyle-1.0.11"
+## name = "anstyle"
+## name_dash_version = "anstyle-1.0.11"
+## hash = "862ed96ca487e809f1c8e5a8447f6ee2cf102f846893800b20cebdf541fc6bbd"
 ##
 ## [[stages]]
-## name = "dep-n-anstyle-1.0.11-474d4f32b765f566"
+##
+## [stages.Script]
+## stage = "dep-n-anstyle-1.0.11-474d4f32b765f566"
 ## script = '''
 ## FROM rust-base AS dep-n-anstyle-1.0.11-474d4f32b765f566
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -1485,7 +1579,9 @@ COPY --link --from=dep-n-anstyle-1.0.11-474d4f32b765f566 /tmp/clis-bottom_0-11-4
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-474d4f32b765f566* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-474d4f32b765f566"
+##
+## [stages.Script]
+## stage = "out-474d4f32b765f566"
 ## script = """
 ## FROM scratch AS out-474d4f32b765f566
 ## COPY --link --from=dep-n-anstyle-1.0.11-474d4f32b765f566 /tmp/clis-bottom_0-11-4/release/deps/*-474d4f32b765f566* /"""
@@ -1543,18 +1639,24 @@ COPY --link --from=dep-n-utf8parse-0.2.2-485f25491c4f3159 /tmp/clis-bottom_0-11-
 ## ]
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-utf8parse-0.2.2"
-## script = '''
-## FROM scratch AS cratesio-utf8parse-0.2.2
-## ADD --chmod=0664 --unpack --checksum=sha256:06abde3611657adf66d383f00b093d7faecc7fa57071cce2578660c9f1010821 \
-##   https://static.crates.io/crates/utf8parse/utf8parse-0.2.2.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-utf8parse-0.2.2"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/utf8parse-0.2.2"
+## name = "utf8parse"
+## name_dash_version = "utf8parse-0.2.2"
+## hash = "06abde3611657adf66d383f00b093d7faecc7fa57071cce2578660c9f1010821"
 ##
 ## [[stages]]
-## name = "dep-n-utf8parse-0.2.2-485f25491c4f3159"
+##
+## [stages.Script]
+## stage = "dep-n-utf8parse-0.2.2-485f25491c4f3159"
 ## script = '''
 ## FROM rust-base AS dep-n-utf8parse-0.2.2-485f25491c4f3159
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -1592,7 +1694,9 @@ COPY --link --from=dep-n-utf8parse-0.2.2-485f25491c4f3159 /tmp/clis-bottom_0-11-
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-485f25491c4f3159* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-485f25491c4f3159"
+##
+## [stages.Script]
+## stage = "out-485f25491c4f3159"
 ## script = """
 ## FROM scratch AS out-485f25491c4f3159
 ## COPY --link --from=dep-n-utf8parse-0.2.2-485f25491c4f3159 /tmp/clis-bottom_0-11-4/release/deps/*-485f25491c4f3159* /"""
@@ -1662,18 +1766,24 @@ COPY --link --from=dep-n-anstyle-parse-0.2.7-0128270153fe60f9 /tmp/clis-bottom_0
 ## xtern = "libutf8parse-485f25491c4f3159.rmeta"
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-anstyle-parse-0.2.7"
-## script = '''
-## FROM scratch AS cratesio-anstyle-parse-0.2.7
-## ADD --chmod=0664 --unpack --checksum=sha256:4e7644824f0aa2c7b9384579234ef10eb7efb6a0deb83f9630a49594dd9c15c2 \
-##   https://static.crates.io/crates/anstyle-parse/anstyle-parse-0.2.7.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-anstyle-parse-0.2.7"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anstyle-parse-0.2.7"
+## name = "anstyle-parse"
+## name_dash_version = "anstyle-parse-0.2.7"
+## hash = "4e7644824f0aa2c7b9384579234ef10eb7efb6a0deb83f9630a49594dd9c15c2"
 ##
 ## [[stages]]
-## name = "dep-n-anstyle-parse-0.2.7-0128270153fe60f9"
+##
+## [stages.Script]
+## stage = "dep-n-anstyle-parse-0.2.7-0128270153fe60f9"
 ## script = '''
 ## FROM rust-base AS dep-n-anstyle-parse-0.2.7-0128270153fe60f9
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -1713,7 +1823,9 @@ COPY --link --from=dep-n-anstyle-parse-0.2.7-0128270153fe60f9 /tmp/clis-bottom_0
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-0128270153fe60f9* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-0128270153fe60f9"
+##
+## [stages.Script]
+## stage = "out-0128270153fe60f9"
 ## script = """
 ## FROM scratch AS out-0128270153fe60f9
 ## COPY --link --from=dep-n-anstyle-parse-0.2.7-0128270153fe60f9 /tmp/clis-bottom_0-11-4/release/deps/*-0128270153fe60f9* /"""
@@ -1771,18 +1883,24 @@ COPY --link --from=dep-n-anstyle-query-1.1.4-51ecac537d9b8985 /tmp/clis-bottom_0
 ## ]
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-anstyle-query-1.1.4"
-## script = '''
-## FROM scratch AS cratesio-anstyle-query-1.1.4
-## ADD --chmod=0664 --unpack --checksum=sha256:9e231f6134f61b71076a3eab506c379d4f36122f2af15a9ff04415ea4c3339e2 \
-##   https://static.crates.io/crates/anstyle-query/anstyle-query-1.1.4.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-anstyle-query-1.1.4"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anstyle-query-1.1.4"
+## name = "anstyle-query"
+## name_dash_version = "anstyle-query-1.1.4"
+## hash = "9e231f6134f61b71076a3eab506c379d4f36122f2af15a9ff04415ea4c3339e2"
 ##
 ## [[stages]]
-## name = "dep-n-anstyle-query-1.1.4-51ecac537d9b8985"
+##
+## [stages.Script]
+## stage = "dep-n-anstyle-query-1.1.4-51ecac537d9b8985"
 ## script = '''
 ## FROM rust-base AS dep-n-anstyle-query-1.1.4-51ecac537d9b8985
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -1820,7 +1938,9 @@ COPY --link --from=dep-n-anstyle-query-1.1.4-51ecac537d9b8985 /tmp/clis-bottom_0
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-51ecac537d9b8985* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-51ecac537d9b8985"
+##
+## [stages.Script]
+## stage = "out-51ecac537d9b8985"
 ## script = """
 ## FROM scratch AS out-51ecac537d9b8985
 ## COPY --link --from=dep-n-anstyle-query-1.1.4-51ecac537d9b8985 /tmp/clis-bottom_0-11-4/release/deps/*-51ecac537d9b8985* /"""
@@ -1878,18 +1998,24 @@ COPY --link --from=dep-n-colorchoice-1.0.4-f8497aaf26004854 /tmp/clis-bottom_0-1
 ## ]
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-colorchoice-1.0.4"
-## script = '''
-## FROM scratch AS cratesio-colorchoice-1.0.4
-## ADD --chmod=0664 --unpack --checksum=sha256:b05b61dc5112cbb17e4b6cd61790d9845d13888356391624cbe7e41efeac1e75 \
-##   https://static.crates.io/crates/colorchoice/colorchoice-1.0.4.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-colorchoice-1.0.4"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/colorchoice-1.0.4"
+## name = "colorchoice"
+## name_dash_version = "colorchoice-1.0.4"
+## hash = "b05b61dc5112cbb17e4b6cd61790d9845d13888356391624cbe7e41efeac1e75"
 ##
 ## [[stages]]
-## name = "dep-n-colorchoice-1.0.4-f8497aaf26004854"
+##
+## [stages.Script]
+## stage = "dep-n-colorchoice-1.0.4-f8497aaf26004854"
 ## script = '''
 ## FROM rust-base AS dep-n-colorchoice-1.0.4-f8497aaf26004854
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -1927,7 +2053,9 @@ COPY --link --from=dep-n-colorchoice-1.0.4-f8497aaf26004854 /tmp/clis-bottom_0-1
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-f8497aaf26004854* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-f8497aaf26004854"
+##
+## [stages.Script]
+## stage = "out-f8497aaf26004854"
 ## script = """
 ## FROM scratch AS out-f8497aaf26004854
 ## COPY --link --from=dep-n-colorchoice-1.0.4-f8497aaf26004854 /tmp/clis-bottom_0-11-4/release/deps/*-f8497aaf26004854* /"""
@@ -1985,18 +2113,24 @@ COPY --link --from=dep-n-is_terminal_polyfill-1.70.1-7ceac97f45c2812c /tmp/clis-
 ## ]
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-is_terminal_polyfill-1.70.1"
-## script = '''
-## FROM scratch AS cratesio-is_terminal_polyfill-1.70.1
-## ADD --chmod=0664 --unpack --checksum=sha256:7943c866cc5cd64cbc25b2e01621d07fa8eb2a1a23160ee81ce38704e97b8ecf \
-##   https://static.crates.io/crates/is_terminal_polyfill/is_terminal_polyfill-1.70.1.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-is_terminal_polyfill-1.70.1"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/is_terminal_polyfill-1.70.1"
+## name = "is_terminal_polyfill"
+## name_dash_version = "is_terminal_polyfill-1.70.1"
+## hash = "7943c866cc5cd64cbc25b2e01621d07fa8eb2a1a23160ee81ce38704e97b8ecf"
 ##
 ## [[stages]]
-## name = "dep-n-is_terminal_polyfill-1.70.1-7ceac97f45c2812c"
+##
+## [stages.Script]
+## stage = "dep-n-is_terminal_polyfill-1.70.1-7ceac97f45c2812c"
 ## script = '''
 ## FROM rust-base AS dep-n-is_terminal_polyfill-1.70.1-7ceac97f45c2812c
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -2034,7 +2168,9 @@ COPY --link --from=dep-n-is_terminal_polyfill-1.70.1-7ceac97f45c2812c /tmp/clis-
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-7ceac97f45c2812c* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-7ceac97f45c2812c"
+##
+## [stages.Script]
+## stage = "out-7ceac97f45c2812c"
 ## script = """
 ## FROM scratch AS out-7ceac97f45c2812c
 ## COPY --link --from=dep-n-is_terminal_polyfill-1.70.1-7ceac97f45c2812c /tmp/clis-bottom_0-11-4/release/deps/*-7ceac97f45c2812c* /"""
@@ -2168,18 +2304,24 @@ COPY --link --from=dep-n-anstream-0.6.20-7781d61f12b9b080 /tmp/clis-bottom_0-11-
 ## xtern = "libis_terminal_polyfill-7ceac97f45c2812c.rmeta"
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-anstream-0.6.20"
-## script = '''
-## FROM scratch AS cratesio-anstream-0.6.20
-## ADD --chmod=0664 --unpack --checksum=sha256:3ae563653d1938f79b1ab1b5e668c87c76a9930414574a6583a7b7e11a8e6192 \
-##   https://static.crates.io/crates/anstream/anstream-0.6.20.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-anstream-0.6.20"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anstream-0.6.20"
+## name = "anstream"
+## name_dash_version = "anstream-0.6.20"
+## hash = "3ae563653d1938f79b1ab1b5e668c87c76a9930414574a6583a7b7e11a8e6192"
 ##
 ## [[stages]]
-## name = "dep-n-anstream-0.6.20-7781d61f12b9b080"
+##
+## [stages.Script]
+## stage = "dep-n-anstream-0.6.20-7781d61f12b9b080"
 ## script = '''
 ## FROM rust-base AS dep-n-anstream-0.6.20-7781d61f12b9b080
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -2229,7 +2371,9 @@ COPY --link --from=dep-n-anstream-0.6.20-7781d61f12b9b080 /tmp/clis-bottom_0-11-
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-7781d61f12b9b080* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-7781d61f12b9b080"
+##
+## [stages.Script]
+## stage = "out-7781d61f12b9b080"
 ## script = """
 ## FROM scratch AS out-7781d61f12b9b080
 ## COPY --link --from=dep-n-anstream-0.6.20-7781d61f12b9b080 /tmp/clis-bottom_0-11-4/release/deps/*-7781d61f12b9b080* /"""
@@ -2287,18 +2431,24 @@ COPY --link --from=dep-n-clap_lex-0.7.5-6c766cb86489d754 /tmp/clis-bottom_0-11-4
 ## ]
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-clap_lex-0.7.5"
-## script = '''
-## FROM scratch AS cratesio-clap_lex-0.7.5
-## ADD --chmod=0664 --unpack --checksum=sha256:b94f61472cee1439c0b966b47e3aca9ae07e45d070759512cd390ea2bebc6675 \
-##   https://static.crates.io/crates/clap_lex/clap_lex-0.7.5.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-clap_lex-0.7.5"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/clap_lex-0.7.5"
+## name = "clap_lex"
+## name_dash_version = "clap_lex-0.7.5"
+## hash = "b94f61472cee1439c0b966b47e3aca9ae07e45d070759512cd390ea2bebc6675"
 ##
 ## [[stages]]
-## name = "dep-n-clap_lex-0.7.5-6c766cb86489d754"
+##
+## [stages.Script]
+## stage = "dep-n-clap_lex-0.7.5-6c766cb86489d754"
 ## script = '''
 ## FROM rust-base AS dep-n-clap_lex-0.7.5-6c766cb86489d754
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -2336,7 +2486,9 @@ COPY --link --from=dep-n-clap_lex-0.7.5-6c766cb86489d754 /tmp/clis-bottom_0-11-4
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-6c766cb86489d754* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-6c766cb86489d754"
+##
+## [stages.Script]
+## stage = "out-6c766cb86489d754"
 ## script = """
 ## FROM scratch AS out-6c766cb86489d754
 ## COPY --link --from=dep-n-clap_lex-0.7.5-6c766cb86489d754 /tmp/clis-bottom_0-11-4/release/deps/*-6c766cb86489d754* /"""
@@ -2396,18 +2548,24 @@ COPY --link --from=dep-n-strsim-0.11.1-97094fd99bcbe118 /tmp/clis-bottom_0-11-4/
 ## ]
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-strsim-0.11.1"
-## script = '''
-## FROM scratch AS cratesio-strsim-0.11.1
-## ADD --chmod=0664 --unpack --checksum=sha256:7da8b5736845d9f2fcb837ea5d9e2628564b3b043a70948a3f0b778838c5fb4f \
-##   https://static.crates.io/crates/strsim/strsim-0.11.1.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-strsim-0.11.1"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/strsim-0.11.1"
+## name = "strsim"
+## name_dash_version = "strsim-0.11.1"
+## hash = "7da8b5736845d9f2fcb837ea5d9e2628564b3b043a70948a3f0b778838c5fb4f"
 ##
 ## [[stages]]
-## name = "dep-n-strsim-0.11.1-97094fd99bcbe118"
+##
+## [stages.Script]
+## stage = "dep-n-strsim-0.11.1-97094fd99bcbe118"
 ## script = '''
 ## FROM rust-base AS dep-n-strsim-0.11.1-97094fd99bcbe118
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -2447,7 +2605,9 @@ COPY --link --from=dep-n-strsim-0.11.1-97094fd99bcbe118 /tmp/clis-bottom_0-11-4/
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-97094fd99bcbe118* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-97094fd99bcbe118"
+##
+## [stages.Script]
+## stage = "out-97094fd99bcbe118"
 ## script = """
 ## FROM scratch AS out-97094fd99bcbe118
 ## COPY --link --from=dep-n-strsim-0.11.1-97094fd99bcbe118 /tmp/clis-bottom_0-11-4/release/deps/*-97094fd99bcbe118* /"""
@@ -2506,18 +2666,24 @@ COPY --link --from=dep-n-bitflags-2.10.0-f4de441526a3a0e1 /tmp/clis-bottom_0-11-
 ## ]
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-bitflags-2.10.0"
-## script = '''
-## FROM scratch AS cratesio-bitflags-2.10.0
-## ADD --chmod=0664 --unpack --checksum=sha256:812e12b5285cc515a9c72a5c1d3b6d46a19dac5acfef5265968c166106e31dd3 \
-##   https://static.crates.io/crates/bitflags/bitflags-2.10.0.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-bitflags-2.10.0"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bitflags-2.10.0"
+## name = "bitflags"
+## name_dash_version = "bitflags-2.10.0"
+## hash = "812e12b5285cc515a9c72a5c1d3b6d46a19dac5acfef5265968c166106e31dd3"
 ##
 ## [[stages]]
-## name = "dep-n-bitflags-2.10.0-f4de441526a3a0e1"
+##
+## [stages.Script]
+## stage = "dep-n-bitflags-2.10.0-f4de441526a3a0e1"
 ## script = '''
 ## FROM rust-base AS dep-n-bitflags-2.10.0-f4de441526a3a0e1
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -2556,7 +2722,9 @@ COPY --link --from=dep-n-bitflags-2.10.0-f4de441526a3a0e1 /tmp/clis-bottom_0-11-
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-f4de441526a3a0e1* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-f4de441526a3a0e1"
+##
+## [stages.Script]
+## stage = "out-f4de441526a3a0e1"
 ## script = """
 ## FROM scratch AS out-f4de441526a3a0e1
 ## COPY --link --from=dep-n-bitflags-2.10.0-f4de441526a3a0e1 /tmp/clis-bottom_0-11-4/release/deps/*-f4de441526a3a0e1* /"""
@@ -2614,18 +2782,24 @@ COPY --link --from=dep-n-linux-raw-sys-0.11.0-d76349ee608b2408 /tmp/clis-bottom_
 ## ]
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-linux-raw-sys-0.11.0"
-## script = '''
-## FROM scratch AS cratesio-linux-raw-sys-0.11.0
-## ADD --chmod=0664 --unpack --checksum=sha256:df1d3c3b53da64cf5760482273a98e575c651a67eec7f77df96b5b642de8f039 \
-##   https://static.crates.io/crates/linux-raw-sys/linux-raw-sys-0.11.0.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-linux-raw-sys-0.11.0"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/linux-raw-sys-0.11.0"
+## name = "linux-raw-sys"
+## name_dash_version = "linux-raw-sys-0.11.0"
+## hash = "df1d3c3b53da64cf5760482273a98e575c651a67eec7f77df96b5b642de8f039"
 ##
 ## [[stages]]
-## name = "dep-n-linux-raw-sys-0.11.0-d76349ee608b2408"
+##
+## [stages.Script]
+## stage = "dep-n-linux-raw-sys-0.11.0-d76349ee608b2408"
 ## script = '''
 ## FROM rust-base AS dep-n-linux-raw-sys-0.11.0-d76349ee608b2408
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -2663,7 +2837,9 @@ COPY --link --from=dep-n-linux-raw-sys-0.11.0-d76349ee608b2408 /tmp/clis-bottom_
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-d76349ee608b2408* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-d76349ee608b2408"
+##
+## [stages.Script]
+## stage = "out-d76349ee608b2408"
 ## script = """
 ## FROM scratch AS out-d76349ee608b2408
 ## COPY --link --from=dep-n-linux-raw-sys-0.11.0-d76349ee608b2408 /tmp/clis-bottom_0-11-4/release/deps/*-d76349ee608b2408* /"""
@@ -2750,18 +2926,24 @@ COPY --link --from=dep-n-rustix-1.1.2-4b7500c7860b2cc4 /tmp/clis-bottom_0-11-4/r
 ## xtern = "liblinux_raw_sys-d76349ee608b2408.rmeta"
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-rustix-1.1.2"
-## script = '''
-## FROM scratch AS cratesio-rustix-1.1.2
-## ADD --chmod=0664 --unpack --checksum=sha256:cd15f8a2c5551a84d56efdc1cd049089e409ac19a3072d5037a17fd70719ff3e \
-##   https://static.crates.io/crates/rustix/rustix-1.1.2.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-rustix-1.1.2"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustix-1.1.2"
+## name = "rustix"
+## name_dash_version = "rustix-1.1.2"
+## hash = "cd15f8a2c5551a84d56efdc1cd049089e409ac19a3072d5037a17fd70719ff3e"
 ##
 ## [[stages]]
-## name = "dep-n-rustix-1.1.2-4b7500c7860b2cc4"
+##
+## [stages.Script]
+## stage = "dep-n-rustix-1.1.2-4b7500c7860b2cc4"
 ## script = '''
 ## FROM rust-base AS dep-n-rustix-1.1.2-4b7500c7860b2cc4
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -2804,7 +2986,9 @@ COPY --link --from=dep-n-rustix-1.1.2-4b7500c7860b2cc4 /tmp/clis-bottom_0-11-4/r
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-4b7500c7860b2cc4* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-4b7500c7860b2cc4"
+##
+## [stages.Script]
+## stage = "out-4b7500c7860b2cc4"
 ## script = """
 ## FROM scratch AS out-4b7500c7860b2cc4
 ## COPY --link --from=dep-n-rustix-1.1.2-4b7500c7860b2cc4 /tmp/clis-bottom_0-11-4/release/deps/*-4b7500c7860b2cc4* /"""
@@ -2902,18 +3086,24 @@ COPY --link --from=dep-n-terminal_size-0.4.3-05041d90e5ab8975 /tmp/clis-bottom_0
 ## xtern = "liblinux_raw_sys-d76349ee608b2408.rmeta"
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-terminal_size-0.4.3"
-## script = '''
-## FROM scratch AS cratesio-terminal_size-0.4.3
-## ADD --chmod=0664 --unpack --checksum=sha256:60b8cb979cb11c32ce1603f8137b22262a9d131aaa5c37b5678025f22b8becd0 \
-##   https://static.crates.io/crates/terminal_size/terminal_size-0.4.3.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-terminal_size-0.4.3"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/terminal_size-0.4.3"
+## name = "terminal_size"
+## name_dash_version = "terminal_size-0.4.3"
+## hash = "60b8cb979cb11c32ce1603f8137b22262a9d131aaa5c37b5678025f22b8becd0"
 ##
 ## [[stages]]
-## name = "dep-n-terminal_size-0.4.3-05041d90e5ab8975"
+##
+## [stages.Script]
+## stage = "dep-n-terminal_size-0.4.3-05041d90e5ab8975"
 ## script = '''
 ## FROM rust-base AS dep-n-terminal_size-0.4.3-05041d90e5ab8975
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -2957,7 +3147,9 @@ COPY --link --from=dep-n-terminal_size-0.4.3-05041d90e5ab8975 /tmp/clis-bottom_0
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-05041d90e5ab8975* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-05041d90e5ab8975"
+##
+## [stages.Script]
+## stage = "out-05041d90e5ab8975"
 ## script = """
 ## FROM scratch AS out-05041d90e5ab8975
 ## COPY --link --from=dep-n-terminal_size-0.4.3-05041d90e5ab8975 /tmp/clis-bottom_0-11-4/release/deps/*-05041d90e5ab8975* /"""
@@ -3175,18 +3367,24 @@ COPY --link --from=dep-n-clap_builder-4.5.48-3e6104b95ab1cefa /tmp/clis-bottom_0
 ## xtern = "liblinux_raw_sys-d76349ee608b2408.rmeta"
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-clap_builder-4.5.48"
-## script = '''
-## FROM scratch AS cratesio-clap_builder-4.5.48
-## ADD --chmod=0664 --unpack --checksum=sha256:c2ba64afa3c0a6df7fa517765e31314e983f51dda798ffba27b988194fb65dc9 \
-##   https://static.crates.io/crates/clap_builder/clap_builder-4.5.48.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-clap_builder-4.5.48"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/clap_builder-4.5.48"
+## name = "clap_builder"
+## name_dash_version = "clap_builder-4.5.48"
+## hash = "c2ba64afa3c0a6df7fa517765e31314e983f51dda798ffba27b988194fb65dc9"
 ##
 ## [[stages]]
-## name = "dep-n-clap_builder-4.5.48-3e6104b95ab1cefa"
+##
+## [stages.Script]
+## stage = "dep-n-clap_builder-4.5.48-3e6104b95ab1cefa"
 ## script = '''
 ## FROM rust-base AS dep-n-clap_builder-4.5.48-3e6104b95ab1cefa
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -3250,7 +3448,9 @@ COPY --link --from=dep-n-clap_builder-4.5.48-3e6104b95ab1cefa /tmp/clis-bottom_0
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-3e6104b95ab1cefa* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-3e6104b95ab1cefa"
+##
+## [stages.Script]
+## stage = "out-3e6104b95ab1cefa"
 ## script = """
 ## FROM scratch AS out-3e6104b95ab1cefa
 ## COPY --link --from=dep-n-clap_builder-4.5.48-3e6104b95ab1cefa /tmp/clis-bottom_0-11-4/release/deps/*-3e6104b95ab1cefa* /"""
@@ -3308,18 +3508,24 @@ COPY --link --from=dep-n-heck-0.5.0-80ea6e95a9b9cb95 /tmp/clis-bottom_0-11-4/rel
 ## ]
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-heck-0.5.0"
-## script = '''
-## FROM scratch AS cratesio-heck-0.5.0
-## ADD --chmod=0664 --unpack --checksum=sha256:2304e00983f87ffb38b55b444b5e3b60a884b5d30c0fca7d82fe33449bbe55ea \
-##   https://static.crates.io/crates/heck/heck-0.5.0.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-heck-0.5.0"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/heck-0.5.0"
+## name = "heck"
+## name_dash_version = "heck-0.5.0"
+## hash = "2304e00983f87ffb38b55b444b5e3b60a884b5d30c0fca7d82fe33449bbe55ea"
 ##
 ## [[stages]]
-## name = "dep-n-heck-0.5.0-80ea6e95a9b9cb95"
+##
+## [stages.Script]
+## stage = "dep-n-heck-0.5.0-80ea6e95a9b9cb95"
 ## script = '''
 ## FROM rust-base AS dep-n-heck-0.5.0-80ea6e95a9b9cb95
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -3357,7 +3563,9 @@ COPY --link --from=dep-n-heck-0.5.0-80ea6e95a9b9cb95 /tmp/clis-bottom_0-11-4/rel
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-80ea6e95a9b9cb95* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-80ea6e95a9b9cb95"
+##
+## [stages.Script]
+## stage = "out-80ea6e95a9b9cb95"
 ## script = """
 ## FROM scratch AS out-80ea6e95a9b9cb95
 ## COPY --link --from=dep-n-heck-0.5.0-80ea6e95a9b9cb95 /tmp/clis-bottom_0-11-4/release/deps/*-80ea6e95a9b9cb95* /"""
@@ -3415,18 +3623,24 @@ COPY --link --from=dep-n-unicode-ident-1.0.19-e5b0a74e46b2ddd2 /tmp/clis-bottom_
 ## ]
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-unicode-ident-1.0.19"
-## script = '''
-## FROM scratch AS cratesio-unicode-ident-1.0.19
-## ADD --chmod=0664 --unpack --checksum=sha256:f63a545481291138910575129486daeaf8ac54aee4387fe7906919f7830c7d9d \
-##   https://static.crates.io/crates/unicode-ident/unicode-ident-1.0.19.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-unicode-ident-1.0.19"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/unicode-ident-1.0.19"
+## name = "unicode-ident"
+## name_dash_version = "unicode-ident-1.0.19"
+## hash = "f63a545481291138910575129486daeaf8ac54aee4387fe7906919f7830c7d9d"
 ##
 ## [[stages]]
-## name = "dep-n-unicode-ident-1.0.19-e5b0a74e46b2ddd2"
+##
+## [stages.Script]
+## stage = "dep-n-unicode-ident-1.0.19-e5b0a74e46b2ddd2"
 ## script = '''
 ## FROM rust-base AS dep-n-unicode-ident-1.0.19-e5b0a74e46b2ddd2
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -3464,7 +3678,9 @@ COPY --link --from=dep-n-unicode-ident-1.0.19-e5b0a74e46b2ddd2 /tmp/clis-bottom_
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-e5b0a74e46b2ddd2* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-e5b0a74e46b2ddd2"
+##
+## [stages.Script]
+## stage = "out-e5b0a74e46b2ddd2"
 ## script = """
 ## FROM scratch AS out-e5b0a74e46b2ddd2
 ## COPY --link --from=dep-n-unicode-ident-1.0.19-e5b0a74e46b2ddd2 /tmp/clis-bottom_0-11-4/release/deps/*-e5b0a74e46b2ddd2* /"""
@@ -3535,18 +3751,24 @@ COPY --link --from=dep-n-proc-macro2-1.0.101-a6a685fcaf51819c /tmp/clis-bottom_0
 ## xtern = "libunicode_ident-e5b0a74e46b2ddd2.rmeta"
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-proc-macro2-1.0.101"
-## script = '''
-## FROM scratch AS cratesio-proc-macro2-1.0.101
-## ADD --chmod=0664 --unpack --checksum=sha256:89ae43fd86e4158d6db51ad8e2b80f313af9cc74f5c0e03ccb87de09998732de \
-##   https://static.crates.io/crates/proc-macro2/proc-macro2-1.0.101.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-proc-macro2-1.0.101"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.101"
+## name = "proc-macro2"
+## name_dash_version = "proc-macro2-1.0.101"
+## hash = "89ae43fd86e4158d6db51ad8e2b80f313af9cc74f5c0e03ccb87de09998732de"
 ##
 ## [[stages]]
-## name = "dep-n-proc-macro2-1.0.101-a6a685fcaf51819c"
+##
+## [stages.Script]
+## stage = "dep-n-proc-macro2-1.0.101-a6a685fcaf51819c"
 ## script = '''
 ## FROM rust-base AS dep-n-proc-macro2-1.0.101-a6a685fcaf51819c
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -3587,7 +3809,9 @@ COPY --link --from=dep-n-proc-macro2-1.0.101-a6a685fcaf51819c /tmp/clis-bottom_0
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-a6a685fcaf51819c* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-a6a685fcaf51819c"
+##
+## [stages.Script]
+## stage = "out-a6a685fcaf51819c"
 ## script = """
 ## FROM scratch AS out-a6a685fcaf51819c
 ## COPY --link --from=dep-n-proc-macro2-1.0.101-a6a685fcaf51819c /tmp/clis-bottom_0-11-4/release/deps/*-a6a685fcaf51819c* /"""
@@ -3673,18 +3897,24 @@ COPY --link --from=dep-n-quote-1.0.40-fe88bef665d31034 /tmp/clis-bottom_0-11-4/r
 ## xtern = "libunicode_ident-e5b0a74e46b2ddd2.rmeta"
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-quote-1.0.40"
-## script = '''
-## FROM scratch AS cratesio-quote-1.0.40
-## ADD --chmod=0664 --unpack --checksum=sha256:1885c039570dc00dcb4ff087a89e185fd56bae234ddc7f056a945bf36467248d \
-##   https://static.crates.io/crates/quote/quote-1.0.40.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-quote-1.0.40"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.40"
+## name = "quote"
+## name_dash_version = "quote-1.0.40"
+## hash = "1885c039570dc00dcb4ff087a89e185fd56bae234ddc7f056a945bf36467248d"
 ##
 ## [[stages]]
-## name = "dep-n-quote-1.0.40-fe88bef665d31034"
+##
+## [stages.Script]
+## stage = "dep-n-quote-1.0.40-fe88bef665d31034"
 ## script = '''
 ## FROM rust-base AS dep-n-quote-1.0.40-fe88bef665d31034
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -3726,7 +3956,9 @@ COPY --link --from=dep-n-quote-1.0.40-fe88bef665d31034 /tmp/clis-bottom_0-11-4/r
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-fe88bef665d31034* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-fe88bef665d31034"
+##
+## [stages.Script]
+## stage = "out-fe88bef665d31034"
 ## script = """
 ## FROM scratch AS out-fe88bef665d31034
 ## COPY --link --from=dep-n-quote-1.0.40-fe88bef665d31034 /tmp/clis-bottom_0-11-4/release/deps/*-fe88bef665d31034* /"""
@@ -3824,18 +4056,24 @@ COPY --link --from=dep-n-syn-2.0.106-d8ac7146e5acfe07 /tmp/clis-bottom_0-11-4/re
 ## xtern = "libquote-fe88bef665d31034.rmeta"
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-syn-2.0.106"
-## script = '''
-## FROM scratch AS cratesio-syn-2.0.106
-## ADD --chmod=0664 --unpack --checksum=sha256:ede7c438028d4436d71104916910f5bb611972c5cfd7f89b8300a8186e6fada6 \
-##   https://static.crates.io/crates/syn/syn-2.0.106.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-syn-2.0.106"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/syn-2.0.106"
+## name = "syn"
+## name_dash_version = "syn-2.0.106"
+## hash = "ede7c438028d4436d71104916910f5bb611972c5cfd7f89b8300a8186e6fada6"
 ##
 ## [[stages]]
-## name = "dep-n-syn-2.0.106-d8ac7146e5acfe07"
+##
+## [stages.Script]
+## stage = "dep-n-syn-2.0.106-d8ac7146e5acfe07"
 ## script = '''
 ## FROM rust-base AS dep-n-syn-2.0.106-d8ac7146e5acfe07
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -3879,7 +4117,9 @@ COPY --link --from=dep-n-syn-2.0.106-d8ac7146e5acfe07 /tmp/clis-bottom_0-11-4/re
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-d8ac7146e5acfe07* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-d8ac7146e5acfe07"
+##
+## [stages.Script]
+## stage = "out-d8ac7146e5acfe07"
 ## script = """
 ## FROM scratch AS out-d8ac7146e5acfe07
 ## COPY --link --from=dep-n-syn-2.0.106-d8ac7146e5acfe07 /tmp/clis-bottom_0-11-4/release/deps/*-d8ac7146e5acfe07* /"""
@@ -3974,18 +4214,24 @@ COPY --link --from=dep-n-clap_derive-4.5.47-0162f5e01682605c /tmp/clis-bottom_0-
 ## xtern = "libsyn-d8ac7146e5acfe07.rlib"
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-clap_derive-4.5.47"
-## script = '''
-## FROM scratch AS cratesio-clap_derive-4.5.47
-## ADD --chmod=0664 --unpack --checksum=sha256:bbfd7eae0b0f1a6e63d4b13c9c478de77c2eb546fba158ad50b4203dc24b9f9c \
-##   https://static.crates.io/crates/clap_derive/clap_derive-4.5.47.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-clap_derive-4.5.47"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/clap_derive-4.5.47"
+## name = "clap_derive"
+## name_dash_version = "clap_derive-4.5.47"
+## hash = "bbfd7eae0b0f1a6e63d4b13c9c478de77c2eb546fba158ad50b4203dc24b9f9c"
 ##
 ## [[stages]]
-## name = "dep-n-clap_derive-4.5.47-0162f5e01682605c"
+##
+## [stages.Script]
+## stage = "dep-n-clap_derive-4.5.47-0162f5e01682605c"
 ## script = '''
 ## FROM rust-base AS dep-n-clap_derive-4.5.47-0162f5e01682605c
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -4028,7 +4274,9 @@ COPY --link --from=dep-n-clap_derive-4.5.47-0162f5e01682605c /tmp/clis-bottom_0-
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-0162f5e01682605c* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-0162f5e01682605c"
+##
+## [stages.Script]
+## stage = "out-0162f5e01682605c"
 ## script = """
 ## FROM scratch AS out-0162f5e01682605c
 ## COPY --link --from=dep-n-clap_derive-4.5.47-0162f5e01682605c /tmp/clis-bottom_0-11-4/release/deps/*-0162f5e01682605c* /"""
@@ -4325,18 +4573,24 @@ COPY --link --from=dep-n-clap-4.5.48-ff1c187a0dbef276 /tmp/clis-bottom_0-11-4/re
 ## xtern = "libsyn-d8ac7146e5acfe07.rmeta"
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-clap-4.5.48"
-## script = '''
-## FROM scratch AS cratesio-clap-4.5.48
-## ADD --chmod=0664 --unpack --checksum=sha256:e2134bb3ea021b78629caa971416385309e0131b351b25e01dc16fb54e1b5fae \
-##   https://static.crates.io/crates/clap/clap-4.5.48.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-clap-4.5.48"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/clap-4.5.48"
+## name = "clap"
+## name_dash_version = "clap-4.5.48"
+## hash = "e2134bb3ea021b78629caa971416385309e0131b351b25e01dc16fb54e1b5fae"
 ##
 ## [[stages]]
-## name = "dep-n-clap-4.5.48-ff1c187a0dbef276"
+##
+## [stages.Script]
+## stage = "dep-n-clap-4.5.48-ff1c187a0dbef276"
 ## script = '''
 ## FROM rust-base AS dep-n-clap-4.5.48-ff1c187a0dbef276
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -4413,7 +4667,9 @@ COPY --link --from=dep-n-clap-4.5.48-ff1c187a0dbef276 /tmp/clis-bottom_0-11-4/re
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-ff1c187a0dbef276* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-ff1c187a0dbef276"
+##
+## [stages.Script]
+## stage = "out-ff1c187a0dbef276"
 ## script = """
 ## FROM scratch AS out-ff1c187a0dbef276
 ## COPY --link --from=dep-n-clap-4.5.48-ff1c187a0dbef276 /tmp/clis-bottom_0-11-4/release/deps/*-ff1c187a0dbef276* /"""
@@ -4480,18 +4736,24 @@ COPY --link --from=dep-n-concat-string-1.0.1-502a42165bb1ea2e /tmp/clis-bottom_0
 ## ]
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-concat-string-1.0.1"
-## script = '''
-## FROM scratch AS cratesio-concat-string-1.0.1
-## ADD --chmod=0664 --unpack --checksum=sha256:7439becb5fafc780b6f4de382b1a7a3e70234afe783854a4702ee8adbb838609 \
-##   https://static.crates.io/crates/concat-string/concat-string-1.0.1.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-concat-string-1.0.1"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/concat-string-1.0.1"
+## name = "concat-string"
+## name_dash_version = "concat-string-1.0.1"
+## hash = "7439becb5fafc780b6f4de382b1a7a3e70234afe783854a4702ee8adbb838609"
 ##
 ## [[stages]]
-## name = "dep-n-concat-string-1.0.1-502a42165bb1ea2e"
+##
+## [stages.Script]
+## stage = "dep-n-concat-string-1.0.1-502a42165bb1ea2e"
 ## script = '''
 ## FROM rust-base AS dep-n-concat-string-1.0.1-502a42165bb1ea2e
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -4529,7 +4791,9 @@ COPY --link --from=dep-n-concat-string-1.0.1-502a42165bb1ea2e /tmp/clis-bottom_0
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-502a42165bb1ea2e* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-502a42165bb1ea2e"
+##
+## [stages.Script]
+## stage = "out-502a42165bb1ea2e"
 ## script = """
 ## FROM scratch AS out-502a42165bb1ea2e
 ## COPY --link --from=dep-n-concat-string-1.0.1-502a42165bb1ea2e /tmp/clis-bottom_0-11-4/release/deps/*-502a42165bb1ea2e* /"""
@@ -4599,18 +4863,24 @@ COPY --link --from=dep-n-unicode-segmentation-1.12.0-e2e2c4e4f1494ad7 /tmp/clis-
 ## ]
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-unicode-segmentation-1.12.0"
-## script = '''
-## FROM scratch AS cratesio-unicode-segmentation-1.12.0
-## ADD --chmod=0664 --unpack --checksum=sha256:f6ccf251212114b54433ec949fd6a7841275f9ada20dddd2f29e9ceea4501493 \
-##   https://static.crates.io/crates/unicode-segmentation/unicode-segmentation-1.12.0.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-unicode-segmentation-1.12.0"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/unicode-segmentation-1.12.0"
+## name = "unicode-segmentation"
+## name_dash_version = "unicode-segmentation-1.12.0"
+## hash = "f6ccf251212114b54433ec949fd6a7841275f9ada20dddd2f29e9ceea4501493"
 ##
 ## [[stages]]
-## name = "dep-n-unicode-segmentation-1.12.0-e2e2c4e4f1494ad7"
+##
+## [stages.Script]
+## stage = "dep-n-unicode-segmentation-1.12.0-e2e2c4e4f1494ad7"
 ## script = '''
 ## FROM rust-base AS dep-n-unicode-segmentation-1.12.0-e2e2c4e4f1494ad7
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -4650,7 +4920,9 @@ COPY --link --from=dep-n-unicode-segmentation-1.12.0-e2e2c4e4f1494ad7 /tmp/clis-
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-e2e2c4e4f1494ad7* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-e2e2c4e4f1494ad7"
+##
+## [stages.Script]
+## stage = "out-e2e2c4e4f1494ad7"
 ## script = """
 ## FROM scratch AS out-e2e2c4e4f1494ad7
 ## COPY --link --from=dep-n-unicode-segmentation-1.12.0-e2e2c4e4f1494ad7 /tmp/clis-bottom_0-11-4/release/deps/*-e2e2c4e4f1494ad7* /"""
@@ -4727,18 +4999,24 @@ COPY --link --from=dep-n-convert_case-0.7.1-23f17bf60a47bf29 /tmp/clis-bottom_0-
 ## xtern = "libunicode_segmentation-e2e2c4e4f1494ad7.rmeta"
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-convert_case-0.7.1"
-## script = '''
-## FROM scratch AS cratesio-convert_case-0.7.1
-## ADD --chmod=0664 --unpack --checksum=sha256:bb402b8d4c85569410425650ce3eddc7d698ed96d39a73f941b08fb63082f1e7 \
-##   https://static.crates.io/crates/convert_case/convert_case-0.7.1.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-convert_case-0.7.1"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/convert_case-0.7.1"
+## name = "convert_case"
+## name_dash_version = "convert_case-0.7.1"
+## hash = "bb402b8d4c85569410425650ce3eddc7d698ed96d39a73f941b08fb63082f1e7"
 ##
 ## [[stages]]
-## name = "dep-n-convert_case-0.7.1-23f17bf60a47bf29"
+##
+## [stages.Script]
+## stage = "dep-n-convert_case-0.7.1-23f17bf60a47bf29"
 ## script = '''
 ## FROM rust-base AS dep-n-convert_case-0.7.1-23f17bf60a47bf29
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -4778,7 +5056,9 @@ COPY --link --from=dep-n-convert_case-0.7.1-23f17bf60a47bf29 /tmp/clis-bottom_0-
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-23f17bf60a47bf29* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-23f17bf60a47bf29"
+##
+## [stages.Script]
+## stage = "out-23f17bf60a47bf29"
 ## script = """
 ## FROM scratch AS out-23f17bf60a47bf29
 ## COPY --link --from=dep-n-convert_case-0.7.1-23f17bf60a47bf29 /tmp/clis-bottom_0-11-4/release/deps/*-23f17bf60a47bf29* /"""
@@ -4880,18 +5160,24 @@ COPY --link --from=dep-n-derive_more-impl-2.0.1-76ad1e4169cd8fb1 /tmp/clis-botto
 ## xtern = "libsyn-d8ac7146e5acfe07.rlib"
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-derive_more-impl-2.0.1"
-## script = '''
-## FROM scratch AS cratesio-derive_more-impl-2.0.1
-## ADD --chmod=0664 --unpack --checksum=sha256:bda628edc44c4bb645fbe0f758797143e4e07926f7ebf4e9bdfbd3d2ce621df3 \
-##   https://static.crates.io/crates/derive_more-impl/derive_more-impl-2.0.1.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-derive_more-impl-2.0.1"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/derive_more-impl-2.0.1"
+## name = "derive_more-impl"
+## name_dash_version = "derive_more-impl-2.0.1"
+## hash = "bda628edc44c4bb645fbe0f758797143e4e07926f7ebf4e9bdfbd3d2ce621df3"
 ##
 ## [[stages]]
-## name = "dep-n-derive_more-impl-2.0.1-76ad1e4169cd8fb1"
+##
+## [stages.Script]
+## stage = "dep-n-derive_more-impl-2.0.1-76ad1e4169cd8fb1"
 ## script = '''
 ## FROM rust-base AS dep-n-derive_more-impl-2.0.1-76ad1e4169cd8fb1
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -4935,7 +5221,9 @@ COPY --link --from=dep-n-derive_more-impl-2.0.1-76ad1e4169cd8fb1 /tmp/clis-botto
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-76ad1e4169cd8fb1* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-76ad1e4169cd8fb1"
+##
+## [stages.Script]
+## stage = "out-76ad1e4169cd8fb1"
 ## script = """
 ## FROM scratch AS out-76ad1e4169cd8fb1
 ## COPY --link --from=dep-n-derive_more-impl-2.0.1-76ad1e4169cd8fb1 /tmp/clis-bottom_0-11-4/release/deps/*-76ad1e4169cd8fb1* /"""
@@ -5046,18 +5334,24 @@ COPY --link --from=dep-n-derive_more-2.0.1-8e36e7e24472db53 /tmp/clis-bottom_0-1
 ## xtern = "libsyn-d8ac7146e5acfe07.rlib"
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-derive_more-2.0.1"
-## script = '''
-## FROM scratch AS cratesio-derive_more-2.0.1
-## ADD --chmod=0664 --unpack --checksum=sha256:093242cf7570c207c83073cf82f79706fe7b8317e98620a47d5be7c3d8497678 \
-##   https://static.crates.io/crates/derive_more/derive_more-2.0.1.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-derive_more-2.0.1"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/derive_more-2.0.1"
+## name = "derive_more"
+## name_dash_version = "derive_more-2.0.1"
+## hash = "093242cf7570c207c83073cf82f79706fe7b8317e98620a47d5be7c3d8497678"
 ##
 ## [[stages]]
-## name = "dep-n-derive_more-2.0.1-8e36e7e24472db53"
+##
+## [stages.Script]
+## stage = "dep-n-derive_more-2.0.1-8e36e7e24472db53"
 ## script = '''
 ## FROM rust-base AS dep-n-derive_more-2.0.1-8e36e7e24472db53
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -5102,7 +5396,9 @@ COPY --link --from=dep-n-derive_more-2.0.1-8e36e7e24472db53 /tmp/clis-bottom_0-1
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-8e36e7e24472db53* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-8e36e7e24472db53"
+##
+## [stages.Script]
+## stage = "out-8e36e7e24472db53"
 ## script = """
 ## FROM scratch AS out-8e36e7e24472db53
 ## COPY --link --from=dep-n-derive_more-2.0.1-8e36e7e24472db53 /tmp/clis-bottom_0-11-4/release/deps/*-8e36e7e24472db53* /"""
@@ -5163,18 +5459,24 @@ COPY --link --from=dep-n-litrs-0.4.2-3604409be8eaf589 /tmp/clis-bottom_0-11-4/re
 ## ]
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-litrs-0.4.2"
-## script = '''
-## FROM scratch AS cratesio-litrs-0.4.2
-## ADD --chmod=0664 --unpack --checksum=sha256:f5e54036fe321fd421e10d732f155734c4e4afd610dd556d9a82833ab3ee0bed \
-##   https://static.crates.io/crates/litrs/litrs-0.4.2.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-litrs-0.4.2"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/litrs-0.4.2"
+## name = "litrs"
+## name_dash_version = "litrs-0.4.2"
+## hash = "f5e54036fe321fd421e10d732f155734c4e4afd610dd556d9a82833ab3ee0bed"
 ##
 ## [[stages]]
-## name = "dep-n-litrs-0.4.2-3604409be8eaf589"
+##
+## [stages.Script]
+## stage = "dep-n-litrs-0.4.2-3604409be8eaf589"
 ## script = '''
 ## FROM rust-base AS dep-n-litrs-0.4.2-3604409be8eaf589
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -5215,7 +5517,9 @@ COPY --link --from=dep-n-litrs-0.4.2-3604409be8eaf589 /tmp/clis-bottom_0-11-4/re
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-3604409be8eaf589* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-3604409be8eaf589"
+##
+## [stages.Script]
+## stage = "out-3604409be8eaf589"
 ## script = """
 ## FROM scratch AS out-3604409be8eaf589
 ## COPY --link --from=dep-n-litrs-0.4.2-3604409be8eaf589 /tmp/clis-bottom_0-11-4/release/deps/*-3604409be8eaf589* /"""
@@ -5278,18 +5582,24 @@ COPY --link --from=dep-n-document-features-0.2.11-a357ac629c0bd6ed /tmp/clis-bot
 ## xtern = "liblitrs-3604409be8eaf589.rlib"
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-document-features-0.2.11"
-## script = '''
-## FROM scratch AS cratesio-document-features-0.2.11
-## ADD --chmod=0664 --unpack --checksum=sha256:95249b50c6c185bee49034bcb378a49dc2b5dff0be90ff6616d31d64febab05d \
-##   https://static.crates.io/crates/document-features/document-features-0.2.11.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-document-features-0.2.11"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/document-features-0.2.11"
+## name = "document-features"
+## name_dash_version = "document-features-0.2.11"
+## hash = "95249b50c6c185bee49034bcb378a49dc2b5dff0be90ff6616d31d64febab05d"
 ##
 ## [[stages]]
-## name = "dep-n-document-features-0.2.11-a357ac629c0bd6ed"
+##
+## [stages.Script]
+## stage = "dep-n-document-features-0.2.11-a357ac629c0bd6ed"
 ## script = '''
 ## FROM rust-base AS dep-n-document-features-0.2.11-a357ac629c0bd6ed
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -5328,7 +5638,9 @@ COPY --link --from=dep-n-document-features-0.2.11-a357ac629c0bd6ed /tmp/clis-bot
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-a357ac629c0bd6ed* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-a357ac629c0bd6ed"
+##
+## [stages.Script]
+## stage = "out-a357ac629c0bd6ed"
 ## script = """
 ## FROM scratch AS out-a357ac629c0bd6ed
 ## COPY --link --from=dep-n-document-features-0.2.11-a357ac629c0bd6ed /tmp/clis-bottom_0-11-4/release/deps/*-a357ac629c0bd6ed* /"""
@@ -5387,18 +5699,24 @@ COPY --link --from=dep-n-log-0.4.28-c01ce176251a4811 /tmp/clis-bottom_0-11-4/rel
 ## ]
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-log-0.4.28"
-## script = '''
-## FROM scratch AS cratesio-log-0.4.28
-## ADD --chmod=0664 --unpack --checksum=sha256:34080505efa8e45a4b816c349525ebe327ceaa8559756f0356cba97ef3bf7432 \
-##   https://static.crates.io/crates/log/log-0.4.28.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-log-0.4.28"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/log-0.4.28"
+## name = "log"
+## name_dash_version = "log-0.4.28"
+## hash = "34080505efa8e45a4b816c349525ebe327ceaa8559756f0356cba97ef3bf7432"
 ##
 ## [[stages]]
-## name = "dep-n-log-0.4.28-c01ce176251a4811"
+##
+## [stages.Script]
+## stage = "dep-n-log-0.4.28-c01ce176251a4811"
 ## script = '''
 ## FROM rust-base AS dep-n-log-0.4.28-c01ce176251a4811
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -5437,7 +5755,9 @@ COPY --link --from=dep-n-log-0.4.28-c01ce176251a4811 /tmp/clis-bottom_0-11-4/rel
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-c01ce176251a4811* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-c01ce176251a4811"
+##
+## [stages.Script]
+## stage = "out-c01ce176251a4811"
 ## script = """
 ## FROM scratch AS out-c01ce176251a4811
 ## COPY --link --from=dep-n-log-0.4.28-c01ce176251a4811 /tmp/clis-bottom_0-11-4/release/deps/*-c01ce176251a4811* /"""
@@ -5523,18 +5843,24 @@ COPY --link --from=dep-n-mio-1.0.4-bf1e1fb5f7dcb9cb /tmp/clis-bottom_0-11-4/rele
 ## xtern = "liblog-c01ce176251a4811.rmeta"
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-mio-1.0.4"
-## script = '''
-## FROM scratch AS cratesio-mio-1.0.4
-## ADD --chmod=0664 --unpack --checksum=sha256:78bed444cc8a2160f01cbcf811ef18cac863ad68ae8ca62092e8db51d51c761c \
-##   https://static.crates.io/crates/mio/mio-1.0.4.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-mio-1.0.4"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/mio-1.0.4"
+## name = "mio"
+## name_dash_version = "mio-1.0.4"
+## hash = "78bed444cc8a2160f01cbcf811ef18cac863ad68ae8ca62092e8db51d51c761c"
 ##
 ## [[stages]]
-## name = "dep-n-mio-1.0.4-bf1e1fb5f7dcb9cb"
+##
+## [stages.Script]
+## stage = "dep-n-mio-1.0.4-bf1e1fb5f7dcb9cb"
 ## script = '''
 ## FROM rust-base AS dep-n-mio-1.0.4-bf1e1fb5f7dcb9cb
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -5576,7 +5902,9 @@ COPY --link --from=dep-n-mio-1.0.4-bf1e1fb5f7dcb9cb /tmp/clis-bottom_0-11-4/rele
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-bf1e1fb5f7dcb9cb* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-bf1e1fb5f7dcb9cb"
+##
+## [stages.Script]
+## stage = "out-bf1e1fb5f7dcb9cb"
 ## script = """
 ## FROM scratch AS out-bf1e1fb5f7dcb9cb
 ## COPY --link --from=dep-n-mio-1.0.4-bf1e1fb5f7dcb9cb /tmp/clis-bottom_0-11-4/release/deps/*-bf1e1fb5f7dcb9cb* /"""
@@ -5639,18 +5967,24 @@ COPY --link --from=dep-n-scopeguard-1.2.0-cd2fb476592b617e /tmp/clis-bottom_0-11
 ## ]
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-scopeguard-1.2.0"
-## script = '''
-## FROM scratch AS cratesio-scopeguard-1.2.0
-## ADD --chmod=0664 --unpack --checksum=sha256:94143f37725109f92c262ed2cf5e59bce7498c01bcc1502d7b9afe439a4e9f49 \
-##   https://static.crates.io/crates/scopeguard/scopeguard-1.2.0.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-scopeguard-1.2.0"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/scopeguard-1.2.0"
+## name = "scopeguard"
+## name_dash_version = "scopeguard-1.2.0"
+## hash = "94143f37725109f92c262ed2cf5e59bce7498c01bcc1502d7b9afe439a4e9f49"
 ##
 ## [[stages]]
-## name = "dep-n-scopeguard-1.2.0-cd2fb476592b617e"
+##
+## [stages.Script]
+## stage = "dep-n-scopeguard-1.2.0-cd2fb476592b617e"
 ## script = '''
 ## FROM rust-base AS dep-n-scopeguard-1.2.0-cd2fb476592b617e
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -5693,7 +6027,9 @@ COPY --link --from=dep-n-scopeguard-1.2.0-cd2fb476592b617e /tmp/clis-bottom_0-11
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-cd2fb476592b617e* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-cd2fb476592b617e"
+##
+## [stages.Script]
+## stage = "out-cd2fb476592b617e"
 ## script = """
 ## FROM scratch AS out-cd2fb476592b617e
 ## COPY --link --from=dep-n-scopeguard-1.2.0-cd2fb476592b617e /tmp/clis-bottom_0-11-4/release/deps/*-cd2fb476592b617e* /"""
@@ -5764,18 +6100,24 @@ COPY --link --from=dep-n-lock_api-0.4.13-8375f72fd9e6cff1 /tmp/clis-bottom_0-11-
 ## xtern = "libscopeguard-cd2fb476592b617e.rmeta"
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-lock_api-0.4.13"
-## script = '''
-## FROM scratch AS cratesio-lock_api-0.4.13
-## ADD --chmod=0664 --unpack --checksum=sha256:96936507f153605bddfcda068dd804796c84324ed2510809e5b2a624c81da765 \
-##   https://static.crates.io/crates/lock_api/lock_api-0.4.13.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-lock_api-0.4.13"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/lock_api-0.4.13"
+## name = "lock_api"
+## name_dash_version = "lock_api-0.4.13"
+## hash = "96936507f153605bddfcda068dd804796c84324ed2510809e5b2a624c81da765"
 ##
 ## [[stages]]
-## name = "dep-n-lock_api-0.4.13-8375f72fd9e6cff1"
+##
+## [stages.Script]
+## stage = "dep-n-lock_api-0.4.13-8375f72fd9e6cff1"
 ## script = '''
 ## FROM rust-base AS dep-n-lock_api-0.4.13-8375f72fd9e6cff1
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -5816,7 +6158,9 @@ COPY --link --from=dep-n-lock_api-0.4.13-8375f72fd9e6cff1 /tmp/clis-bottom_0-11-
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-8375f72fd9e6cff1* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-8375f72fd9e6cff1"
+##
+## [stages.Script]
+## stage = "out-8375f72fd9e6cff1"
 ## script = """
 ## FROM scratch AS out-8375f72fd9e6cff1
 ## COPY --link --from=dep-n-lock_api-0.4.13-8375f72fd9e6cff1 /tmp/clis-bottom_0-11-4/release/deps/*-8375f72fd9e6cff1* /"""
@@ -5874,18 +6218,24 @@ COPY --link --from=dep-n-smallvec-1.15.1-58dafb16b883fa0b /tmp/clis-bottom_0-11-
 ## ]
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-smallvec-1.15.1"
-## script = '''
-## FROM scratch AS cratesio-smallvec-1.15.1
-## ADD --chmod=0664 --unpack --checksum=sha256:67b1b7a3b5fe4f1376887184045fcf45c69e92af734b7aaddc05fb777b6fbd03 \
-##   https://static.crates.io/crates/smallvec/smallvec-1.15.1.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-smallvec-1.15.1"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/smallvec-1.15.1"
+## name = "smallvec"
+## name_dash_version = "smallvec-1.15.1"
+## hash = "67b1b7a3b5fe4f1376887184045fcf45c69e92af734b7aaddc05fb777b6fbd03"
 ##
 ## [[stages]]
-## name = "dep-n-smallvec-1.15.1-58dafb16b883fa0b"
+##
+## [stages.Script]
+## stage = "dep-n-smallvec-1.15.1-58dafb16b883fa0b"
 ## script = '''
 ## FROM rust-base AS dep-n-smallvec-1.15.1-58dafb16b883fa0b
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -5923,7 +6273,9 @@ COPY --link --from=dep-n-smallvec-1.15.1-58dafb16b883fa0b /tmp/clis-bottom_0-11-
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-58dafb16b883fa0b* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-58dafb16b883fa0b"
+##
+## [stages.Script]
+## stage = "out-58dafb16b883fa0b"
 ## script = """
 ## FROM scratch AS out-58dafb16b883fa0b
 ## COPY --link --from=dep-n-smallvec-1.15.1-58dafb16b883fa0b /tmp/clis-bottom_0-11-4/release/deps/*-58dafb16b883fa0b* /"""
@@ -6022,18 +6374,24 @@ COPY --link --from=dep-n-parking_lot_core-0.9.11-538126fd8c817f0d /tmp/clis-bott
 ## xtern = "libsmallvec-58dafb16b883fa0b.rmeta"
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-parking_lot_core-0.9.11"
-## script = '''
-## FROM scratch AS cratesio-parking_lot_core-0.9.11
-## ADD --chmod=0664 --unpack --checksum=sha256:bc838d2a56b5b1a6c25f55575dfc605fabb63bb2365f6c2353ef9159aa69e4a5 \
-##   https://static.crates.io/crates/parking_lot_core/parking_lot_core-0.9.11.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-parking_lot_core-0.9.11"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/parking_lot_core-0.9.11"
+## name = "parking_lot_core"
+## name_dash_version = "parking_lot_core-0.9.11"
+## hash = "bc838d2a56b5b1a6c25f55575dfc605fabb63bb2365f6c2353ef9159aa69e4a5"
 ##
 ## [[stages]]
-## name = "dep-n-parking_lot_core-0.9.11-538126fd8c817f0d"
+##
+## [stages.Script]
+## stage = "dep-n-parking_lot_core-0.9.11-538126fd8c817f0d"
 ## script = '''
 ## FROM rust-base AS dep-n-parking_lot_core-0.9.11-538126fd8c817f0d
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -6078,7 +6436,9 @@ COPY --link --from=dep-n-parking_lot_core-0.9.11-538126fd8c817f0d /tmp/clis-bott
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-538126fd8c817f0d* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-538126fd8c817f0d"
+##
+## [stages.Script]
+## stage = "out-538126fd8c817f0d"
 ## script = """
 ## FROM scratch AS out-538126fd8c817f0d
 ## COPY --link --from=dep-n-parking_lot_core-0.9.11-538126fd8c817f0d /tmp/clis-bottom_0-11-4/release/deps/*-538126fd8c817f0d* /"""
@@ -6212,18 +6572,24 @@ COPY --link --from=dep-n-parking_lot-0.12.4-bd7f807a29c9e838 /tmp/clis-bottom_0-
 ## xtern = "libsmallvec-58dafb16b883fa0b.rmeta"
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-parking_lot-0.12.4"
-## script = '''
-## FROM scratch AS cratesio-parking_lot-0.12.4
-## ADD --chmod=0664 --unpack --checksum=sha256:70d58bf43669b5795d1576d0641cfb6fbb2057bf629506267a92807158584a13 \
-##   https://static.crates.io/crates/parking_lot/parking_lot-0.12.4.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-parking_lot-0.12.4"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/parking_lot-0.12.4"
+## name = "parking_lot"
+## name_dash_version = "parking_lot-0.12.4"
+## hash = "70d58bf43669b5795d1576d0641cfb6fbb2057bf629506267a92807158584a13"
 ##
 ## [[stages]]
-## name = "dep-n-parking_lot-0.12.4-bd7f807a29c9e838"
+##
+## [stages.Script]
+## stage = "dep-n-parking_lot-0.12.4-bd7f807a29c9e838"
 ## script = '''
 ## FROM rust-base AS dep-n-parking_lot-0.12.4-bd7f807a29c9e838
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -6273,7 +6639,9 @@ COPY --link --from=dep-n-parking_lot-0.12.4-bd7f807a29c9e838 /tmp/clis-bottom_0-
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-bd7f807a29c9e838* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-bd7f807a29c9e838"
+##
+## [stages.Script]
+## stage = "out-bd7f807a29c9e838"
 ## script = """
 ## FROM scratch AS out-bd7f807a29c9e838
 ## COPY --link --from=dep-n-parking_lot-0.12.4-bd7f807a29c9e838 /tmp/clis-bottom_0-11-4/release/deps/*-bd7f807a29c9e838* /"""
@@ -6346,18 +6714,24 @@ COPY --link --from=dep-n-signal-hook-registry-1.4.6-cc2c207d3ff51418 /tmp/clis-b
 ## xtern = "liblibc-f9a7f201e668dfaf.rmeta"
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-signal-hook-registry-1.4.6"
-## script = '''
-## FROM scratch AS cratesio-signal-hook-registry-1.4.6
-## ADD --chmod=0664 --unpack --checksum=sha256:b2a4719bff48cee6b39d12c020eeb490953ad2443b7055bd0b21fca26bd8c28b \
-##   https://static.crates.io/crates/signal-hook-registry/signal-hook-registry-1.4.6.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-signal-hook-registry-1.4.6"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/signal-hook-registry-1.4.6"
+## name = "signal-hook-registry"
+## name_dash_version = "signal-hook-registry-1.4.6"
+## hash = "b2a4719bff48cee6b39d12c020eeb490953ad2443b7055bd0b21fca26bd8c28b"
 ##
 ## [[stages]]
-## name = "dep-n-signal-hook-registry-1.4.6-cc2c207d3ff51418"
+##
+## [stages.Script]
+## stage = "dep-n-signal-hook-registry-1.4.6-cc2c207d3ff51418"
 ## script = '''
 ## FROM rust-base AS dep-n-signal-hook-registry-1.4.6-cc2c207d3ff51418
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -6397,7 +6771,9 @@ COPY --link --from=dep-n-signal-hook-registry-1.4.6-cc2c207d3ff51418 /tmp/clis-b
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-cc2c207d3ff51418* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-cc2c207d3ff51418"
+##
+## [stages.Script]
+## stage = "out-cc2c207d3ff51418"
 ## script = """
 ## FROM scratch AS out-cc2c207d3ff51418
 ## COPY --link --from=dep-n-signal-hook-registry-1.4.6-cc2c207d3ff51418 /tmp/clis-bottom_0-11-4/release/deps/*-cc2c207d3ff51418* /"""
@@ -6486,18 +6862,24 @@ COPY --link --from=dep-n-signal-hook-0.3.18-d71989a1402a8c27 /tmp/clis-bottom_0-
 ## xtern = "libsignal_hook_registry-cc2c207d3ff51418.rmeta"
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-signal-hook-0.3.18"
-## script = '''
-## FROM scratch AS cratesio-signal-hook-0.3.18
-## ADD --chmod=0664 --unpack --checksum=sha256:d881a16cf4426aa584979d30bd82cb33429027e42122b169753d6ef1085ed6e2 \
-##   https://static.crates.io/crates/signal-hook/signal-hook-0.3.18.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-signal-hook-0.3.18"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/signal-hook-0.3.18"
+## name = "signal-hook"
+## name_dash_version = "signal-hook-0.3.18"
+## hash = "d881a16cf4426aa584979d30bd82cb33429027e42122b169753d6ef1085ed6e2"
 ##
 ## [[stages]]
-## name = "dep-n-signal-hook-0.3.18-d71989a1402a8c27"
+##
+## [stages.Script]
+## stage = "dep-n-signal-hook-0.3.18-d71989a1402a8c27"
 ## script = '''
 ## FROM rust-base AS dep-n-signal-hook-0.3.18-d71989a1402a8c27
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -6540,7 +6922,9 @@ COPY --link --from=dep-n-signal-hook-0.3.18-d71989a1402a8c27 /tmp/clis-bottom_0-
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-d71989a1402a8c27* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-d71989a1402a8c27"
+##
+## [stages.Script]
+## stage = "out-d71989a1402a8c27"
 ## script = """
 ## FROM scratch AS out-d71989a1402a8c27
 ## COPY --link --from=dep-n-signal-hook-0.3.18-d71989a1402a8c27 /tmp/clis-bottom_0-11-4/release/deps/*-d71989a1402a8c27* /"""
@@ -6662,18 +7046,24 @@ COPY --link --from=dep-n-signal-hook-mio-0.2.4-a80732dbcc1c030b /tmp/clis-bottom
 ## xtern = "libsignal_hook_registry-cc2c207d3ff51418.rmeta"
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-signal-hook-mio-0.2.4"
-## script = '''
-## FROM scratch AS cratesio-signal-hook-mio-0.2.4
-## ADD --chmod=0664 --unpack --checksum=sha256:34db1a06d485c9142248b7a054f034b349b212551f3dfd19c94d45a754a217cd \
-##   https://static.crates.io/crates/signal-hook-mio/signal-hook-mio-0.2.4.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-signal-hook-mio-0.2.4"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/signal-hook-mio-0.2.4"
+## name = "signal-hook-mio"
+## name_dash_version = "signal-hook-mio-0.2.4"
+## hash = "34db1a06d485c9142248b7a054f034b349b212551f3dfd19c94d45a754a217cd"
 ##
 ## [[stages]]
-## name = "dep-n-signal-hook-mio-0.2.4-a80732dbcc1c030b"
+##
+## [stages.Script]
+## stage = "dep-n-signal-hook-mio-0.2.4-a80732dbcc1c030b"
 ## script = '''
 ## FROM rust-base AS dep-n-signal-hook-mio-0.2.4-a80732dbcc1c030b
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -6721,7 +7111,9 @@ COPY --link --from=dep-n-signal-hook-mio-0.2.4-a80732dbcc1c030b /tmp/clis-bottom
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-a80732dbcc1c030b* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-a80732dbcc1c030b"
+##
+## [stages.Script]
+## stage = "out-a80732dbcc1c030b"
 ## script = """
 ## FROM scratch AS out-a80732dbcc1c030b
 ## COPY --link --from=dep-n-signal-hook-mio-0.2.4-a80732dbcc1c030b /tmp/clis-bottom_0-11-4/release/deps/*-a80732dbcc1c030b* /"""
@@ -7075,18 +7467,24 @@ COPY --link --from=dep-n-crossterm-0.29.0-ebe2f271fb65aaff /tmp/clis-bottom_0-11
 ## xtern = "libsignal_hook_mio-a80732dbcc1c030b.rmeta"
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-crossterm-0.29.0"
-## script = '''
-## FROM scratch AS cratesio-crossterm-0.29.0
-## ADD --chmod=0664 --unpack --checksum=sha256:d8b9f2e4c67f833b660cdb0a3523065869fb35570177239812ed4c905aeff87b \
-##   https://static.crates.io/crates/crossterm/crossterm-0.29.0.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-crossterm-0.29.0"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossterm-0.29.0"
+## name = "crossterm"
+## name_dash_version = "crossterm-0.29.0"
+## hash = "d8b9f2e4c67f833b660cdb0a3523065869fb35570177239812ed4c905aeff87b"
 ##
 ## [[stages]]
-## name = "dep-n-crossterm-0.29.0-ebe2f271fb65aaff"
+##
+## [stages.Script]
+## stage = "dep-n-crossterm-0.29.0-ebe2f271fb65aaff"
 ## script = '''
 ## FROM rust-base AS dep-n-crossterm-0.29.0-ebe2f271fb65aaff
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -7172,7 +7570,9 @@ COPY --link --from=dep-n-crossterm-0.29.0-ebe2f271fb65aaff /tmp/clis-bottom_0-11
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-ebe2f271fb65aaff* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-ebe2f271fb65aaff"
+##
+## [stages.Script]
+## stage = "out-ebe2f271fb65aaff"
 ## script = """
 ## FROM scratch AS out-ebe2f271fb65aaff
 ## COPY --link --from=dep-n-crossterm-0.29.0-ebe2f271fb65aaff /tmp/clis-bottom_0-11-4/release/deps/*-ebe2f271fb65aaff* /"""
@@ -7275,18 +7675,24 @@ COPY --link --from=dep-n-nix-0.30.1-7fcbdfc3e33c4e2a /tmp/clis-bottom_0-11-4/rel
 ## xtern = "liblibc-f9a7f201e668dfaf.rmeta"
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-nix-0.30.1"
-## script = '''
-## FROM scratch AS cratesio-nix-0.30.1
-## ADD --chmod=0664 --unpack --checksum=sha256:74523f3a35e05aba87a1d978330aef40f67b0304ac79c1c00b294c9830543db6 \
-##   https://static.crates.io/crates/nix/nix-0.30.1.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-nix-0.30.1"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nix-0.30.1"
+## name = "nix"
+## name_dash_version = "nix-0.30.1"
+## hash = "74523f3a35e05aba87a1d978330aef40f67b0304ac79c1c00b294c9830543db6"
 ##
 ## [[stages]]
-## name = "dep-n-nix-0.30.1-7fcbdfc3e33c4e2a"
+##
+## [stages.Script]
+## stage = "dep-n-nix-0.30.1-7fcbdfc3e33c4e2a"
 ## script = '''
 ## FROM rust-base AS dep-n-nix-0.30.1-7fcbdfc3e33c4e2a
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -7331,7 +7737,9 @@ COPY --link --from=dep-n-nix-0.30.1-7fcbdfc3e33c4e2a /tmp/clis-bottom_0-11-4/rel
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-7fcbdfc3e33c4e2a* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-7fcbdfc3e33c4e2a"
+##
+## [stages.Script]
+## stage = "out-7fcbdfc3e33c4e2a"
 ## script = """
 ## FROM scratch AS out-7fcbdfc3e33c4e2a
 ## COPY --link --from=dep-n-nix-0.30.1-7fcbdfc3e33c4e2a /tmp/clis-bottom_0-11-4/release/deps/*-7fcbdfc3e33c4e2a* /"""
@@ -7441,18 +7849,24 @@ COPY --link --from=dep-n-ctrlc-3.5.0-1d6911db2f7eed96 /tmp/clis-bottom_0-11-4/re
 ## xtern = "liblibc-f9a7f201e668dfaf.rmeta"
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-ctrlc-3.5.0"
-## script = '''
-## FROM scratch AS cratesio-ctrlc-3.5.0
-## ADD --chmod=0664 --unpack --checksum=sha256:881c5d0a13b2f1498e2306e82cbada78390e152d4b1378fb28a84f4dcd0dc4f3 \
-##   https://static.crates.io/crates/ctrlc/ctrlc-3.5.0.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-ctrlc-3.5.0"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ctrlc-3.5.0"
+## name = "ctrlc"
+## name_dash_version = "ctrlc-3.5.0"
+## hash = "881c5d0a13b2f1498e2306e82cbada78390e152d4b1378fb28a84f4dcd0dc4f3"
 ##
 ## [[stages]]
-## name = "dep-n-ctrlc-3.5.0-1d6911db2f7eed96"
+##
+## [stages.Script]
+## stage = "dep-n-ctrlc-3.5.0-1d6911db2f7eed96"
 ## script = '''
 ## FROM rust-base AS dep-n-ctrlc-3.5.0-1d6911db2f7eed96
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -7498,7 +7912,9 @@ COPY --link --from=dep-n-ctrlc-3.5.0-1d6911db2f7eed96 /tmp/clis-bottom_0-11-4/re
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-1d6911db2f7eed96* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-1d6911db2f7eed96"
+##
+## [stages.Script]
+## stage = "out-1d6911db2f7eed96"
 ## script = """
 ## FROM scratch AS out-1d6911db2f7eed96
 ## COPY --link --from=dep-n-ctrlc-3.5.0-1d6911db2f7eed96 /tmp/clis-bottom_0-11-4/release/deps/*-1d6911db2f7eed96* /"""
@@ -7556,18 +7972,24 @@ COPY --link --from=dep-n-option-ext-0.2.0-4add3e8b8273fdc2 /tmp/clis-bottom_0-11
 ## ]
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-option-ext-0.2.0"
-## script = '''
-## FROM scratch AS cratesio-option-ext-0.2.0
-## ADD --chmod=0664 --unpack --checksum=sha256:04744f49eae99ab78e0d5c0b603ab218f515ea8cfe5a456d7629ad883a3b6e7d \
-##   https://static.crates.io/crates/option-ext/option-ext-0.2.0.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-option-ext-0.2.0"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/option-ext-0.2.0"
+## name = "option-ext"
+## name_dash_version = "option-ext-0.2.0"
+## hash = "04744f49eae99ab78e0d5c0b603ab218f515ea8cfe5a456d7629ad883a3b6e7d"
 ##
 ## [[stages]]
-## name = "dep-n-option-ext-0.2.0-4add3e8b8273fdc2"
+##
+## [stages.Script]
+## stage = "dep-n-option-ext-0.2.0-4add3e8b8273fdc2"
 ## script = '''
 ## FROM rust-base AS dep-n-option-ext-0.2.0-4add3e8b8273fdc2
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -7605,7 +8027,9 @@ COPY --link --from=dep-n-option-ext-0.2.0-4add3e8b8273fdc2 /tmp/clis-bottom_0-11
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-4add3e8b8273fdc2* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-4add3e8b8273fdc2"
+##
+## [stages.Script]
+## stage = "out-4add3e8b8273fdc2"
 ## script = """
 ## FROM scratch AS out-4add3e8b8273fdc2
 ## COPY --link --from=dep-n-option-ext-0.2.0-4add3e8b8273fdc2 /tmp/clis-bottom_0-11-4/release/deps/*-4add3e8b8273fdc2* /"""
@@ -7691,18 +8115,24 @@ COPY --link --from=dep-n-dirs-sys-0.5.0-611cd2b65a99ff1c /tmp/clis-bottom_0-11-4
 ## xtern = "liboption_ext-4add3e8b8273fdc2.rmeta"
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-dirs-sys-0.5.0"
-## script = '''
-## FROM scratch AS cratesio-dirs-sys-0.5.0
-## ADD --chmod=0664 --unpack --checksum=sha256:e01a3366d27ee9890022452ee61b2b63a67e6f13f58900b651ff5665f0bb1fab \
-##   https://static.crates.io/crates/dirs-sys/dirs-sys-0.5.0.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-dirs-sys-0.5.0"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/dirs-sys-0.5.0"
+## name = "dirs-sys"
+## name_dash_version = "dirs-sys-0.5.0"
+## hash = "e01a3366d27ee9890022452ee61b2b63a67e6f13f58900b651ff5665f0bb1fab"
 ##
 ## [[stages]]
-## name = "dep-n-dirs-sys-0.5.0-611cd2b65a99ff1c"
+##
+## [stages.Script]
+## stage = "dep-n-dirs-sys-0.5.0-611cd2b65a99ff1c"
 ## script = '''
 ## FROM rust-base AS dep-n-dirs-sys-0.5.0-611cd2b65a99ff1c
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -7744,7 +8174,9 @@ COPY --link --from=dep-n-dirs-sys-0.5.0-611cd2b65a99ff1c /tmp/clis-bottom_0-11-4
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-611cd2b65a99ff1c* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-611cd2b65a99ff1c"
+##
+## [stages.Script]
+## stage = "out-611cd2b65a99ff1c"
 ## script = """
 ## FROM scratch AS out-611cd2b65a99ff1c
 ## COPY --link --from=dep-n-dirs-sys-0.5.0-611cd2b65a99ff1c /tmp/clis-bottom_0-11-4/release/deps/*-611cd2b65a99ff1c* /"""
@@ -7842,18 +8274,24 @@ COPY --link --from=dep-n-dirs-6.0.0-85591fa479b21f9f /tmp/clis-bottom_0-11-4/rel
 ## xtern = "liboption_ext-4add3e8b8273fdc2.rmeta"
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-dirs-6.0.0"
-## script = '''
-## FROM scratch AS cratesio-dirs-6.0.0
-## ADD --chmod=0664 --unpack --checksum=sha256:c3e8aa94d75141228480295a7d0e7feb620b1a5ad9f12bc40be62411e38cce4e \
-##   https://static.crates.io/crates/dirs/dirs-6.0.0.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-dirs-6.0.0"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/dirs-6.0.0"
+## name = "dirs"
+## name_dash_version = "dirs-6.0.0"
+## hash = "c3e8aa94d75141228480295a7d0e7feb620b1a5ad9f12bc40be62411e38cce4e"
 ##
 ## [[stages]]
-## name = "dep-n-dirs-6.0.0-85591fa479b21f9f"
+##
+## [stages.Script]
+## stage = "dep-n-dirs-6.0.0-85591fa479b21f9f"
 ## script = '''
 ## FROM rust-base AS dep-n-dirs-6.0.0-85591fa479b21f9f
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -7897,7 +8335,9 @@ COPY --link --from=dep-n-dirs-6.0.0-85591fa479b21f9f /tmp/clis-bottom_0-11-4/rel
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-85591fa479b21f9f* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-85591fa479b21f9f"
+##
+## [stages.Script]
+## stage = "out-85591fa479b21f9f"
 ## script = """
 ## FROM scratch AS out-85591fa479b21f9f
 ## COPY --link --from=dep-n-dirs-6.0.0-85591fa479b21f9f /tmp/clis-bottom_0-11-4/release/deps/*-85591fa479b21f9f* /"""
@@ -7957,18 +8397,24 @@ COPY --link --from=dep-n-allocator-api2-0.2.21-237920045c805089 /tmp/clis-bottom
 ## ]
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-allocator-api2-0.2.21"
-## script = '''
-## FROM scratch AS cratesio-allocator-api2-0.2.21
-## ADD --chmod=0664 --unpack --checksum=sha256:683d7910e743518b0e34f1186f92494becacb047c7b6bf616c96772180fef923 \
-##   https://static.crates.io/crates/allocator-api2/allocator-api2-0.2.21.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-allocator-api2-0.2.21"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/allocator-api2-0.2.21"
+## name = "allocator-api2"
+## name_dash_version = "allocator-api2-0.2.21"
+## hash = "683d7910e743518b0e34f1186f92494becacb047c7b6bf616c96772180fef923"
 ##
 ## [[stages]]
-## name = "dep-n-allocator-api2-0.2.21-237920045c805089"
+##
+## [stages.Script]
+## stage = "dep-n-allocator-api2-0.2.21-237920045c805089"
 ## script = '''
 ## FROM rust-base AS dep-n-allocator-api2-0.2.21-237920045c805089
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -8006,7 +8452,9 @@ COPY --link --from=dep-n-allocator-api2-0.2.21-237920045c805089 /tmp/clis-bottom
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-237920045c805089* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-237920045c805089"
+##
+## [stages.Script]
+## stage = "out-237920045c805089"
 ## script = """
 ## FROM scratch AS out-237920045c805089
 ## COPY --link --from=dep-n-allocator-api2-0.2.21-237920045c805089 /tmp/clis-bottom_0-11-4/release/deps/*-237920045c805089* /"""
@@ -8064,18 +8512,24 @@ COPY --link --from=dep-n-equivalent-1.0.2-377c55d6e7e3018c /tmp/clis-bottom_0-11
 ## ]
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-equivalent-1.0.2"
-## script = '''
-## FROM scratch AS cratesio-equivalent-1.0.2
-## ADD --chmod=0664 --unpack --checksum=sha256:877a4ace8713b0bcf2a4e7eec82529c029f1d0619886d18145fea96c3ffe5c0f \
-##   https://static.crates.io/crates/equivalent/equivalent-1.0.2.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-equivalent-1.0.2"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/equivalent-1.0.2"
+## name = "equivalent"
+## name_dash_version = "equivalent-1.0.2"
+## hash = "877a4ace8713b0bcf2a4e7eec82529c029f1d0619886d18145fea96c3ffe5c0f"
 ##
 ## [[stages]]
-## name = "dep-n-equivalent-1.0.2-377c55d6e7e3018c"
+##
+## [stages.Script]
+## stage = "dep-n-equivalent-1.0.2-377c55d6e7e3018c"
 ## script = '''
 ## FROM rust-base AS dep-n-equivalent-1.0.2-377c55d6e7e3018c
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -8113,7 +8567,9 @@ COPY --link --from=dep-n-equivalent-1.0.2-377c55d6e7e3018c /tmp/clis-bottom_0-11
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-377c55d6e7e3018c* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-377c55d6e7e3018c"
+##
+## [stages.Script]
+## stage = "out-377c55d6e7e3018c"
 ## script = """
 ## FROM scratch AS out-377c55d6e7e3018c
 ## COPY --link --from=dep-n-equivalent-1.0.2-377c55d6e7e3018c /tmp/clis-bottom_0-11-4/release/deps/*-377c55d6e7e3018c* /"""
@@ -8171,18 +8627,24 @@ COPY --link --from=dep-n-foldhash-0.2.0-096447fe41f6c043 /tmp/clis-bottom_0-11-4
 ## ]
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-foldhash-0.2.0"
-## script = '''
-## FROM scratch AS cratesio-foldhash-0.2.0
-## ADD --chmod=0664 --unpack --checksum=sha256:77ce24cb58228fbb8aa041425bb1050850ac19177686ea6e0f41a70416f56fdb \
-##   https://static.crates.io/crates/foldhash/foldhash-0.2.0.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-foldhash-0.2.0"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/foldhash-0.2.0"
+## name = "foldhash"
+## name_dash_version = "foldhash-0.2.0"
+## hash = "77ce24cb58228fbb8aa041425bb1050850ac19177686ea6e0f41a70416f56fdb"
 ##
 ## [[stages]]
-## name = "dep-n-foldhash-0.2.0-096447fe41f6c043"
+##
+## [stages.Script]
+## stage = "dep-n-foldhash-0.2.0-096447fe41f6c043"
 ## script = '''
 ## FROM rust-base AS dep-n-foldhash-0.2.0-096447fe41f6c043
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -8220,7 +8682,9 @@ COPY --link --from=dep-n-foldhash-0.2.0-096447fe41f6c043 /tmp/clis-bottom_0-11-4
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-096447fe41f6c043* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-096447fe41f6c043"
+##
+## [stages.Script]
+## stage = "out-096447fe41f6c043"
 ## script = """
 ## FROM scratch AS out-096447fe41f6c043
 ## COPY --link --from=dep-n-foldhash-0.2.0-096447fe41f6c043 /tmp/clis-bottom_0-11-4/release/deps/*-096447fe41f6c043* /"""
@@ -8318,18 +8782,24 @@ COPY --link --from=dep-n-hashbrown-0.16.0-75a46f0c9de185ab /tmp/clis-bottom_0-11
 ## xtern = "libfoldhash-096447fe41f6c043.rmeta"
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-hashbrown-0.16.0"
-## script = '''
-## FROM scratch AS cratesio-hashbrown-0.16.0
-## ADD --chmod=0664 --unpack --checksum=sha256:5419bdc4f6a9207fbeba6d11b604d481addf78ecd10c11ad51e76c2f6482748d \
-##   https://static.crates.io/crates/hashbrown/hashbrown-0.16.0.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-hashbrown-0.16.0"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/hashbrown-0.16.0"
+## name = "hashbrown"
+## name_dash_version = "hashbrown-0.16.0"
+## hash = "5419bdc4f6a9207fbeba6d11b604d481addf78ecd10c11ad51e76c2f6482748d"
 ##
 ## [[stages]]
-## name = "dep-n-hashbrown-0.16.0-75a46f0c9de185ab"
+##
+## [stages.Script]
+## stage = "dep-n-hashbrown-0.16.0-75a46f0c9de185ab"
 ## script = '''
 ## FROM rust-base AS dep-n-hashbrown-0.16.0-75a46f0c9de185ab
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -8373,7 +8843,9 @@ COPY --link --from=dep-n-hashbrown-0.16.0-75a46f0c9de185ab /tmp/clis-bottom_0-11
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-75a46f0c9de185ab* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-75a46f0c9de185ab"
+##
+## [stages.Script]
+## stage = "out-75a46f0c9de185ab"
 ## script = """
 ## FROM scratch AS out-75a46f0c9de185ab
 ## COPY --link --from=dep-n-hashbrown-0.16.0-75a46f0c9de185ab /tmp/clis-bottom_0-11-4/release/deps/*-75a46f0c9de185ab* /"""
@@ -8431,18 +8903,24 @@ COPY --link --from=dep-n-humantime-2.3.0-8d10865a98510d2d /tmp/clis-bottom_0-11-
 ## ]
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-humantime-2.3.0"
-## script = '''
-## FROM scratch AS cratesio-humantime-2.3.0
-## ADD --chmod=0664 --unpack --checksum=sha256:135b12329e5e3ce057a9f972339ea52bc954fe1e9358ef27f95e89716fbc5424 \
-##   https://static.crates.io/crates/humantime/humantime-2.3.0.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-humantime-2.3.0"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/humantime-2.3.0"
+## name = "humantime"
+## name_dash_version = "humantime-2.3.0"
+## hash = "135b12329e5e3ce057a9f972339ea52bc954fe1e9358ef27f95e89716fbc5424"
 ##
 ## [[stages]]
-## name = "dep-n-humantime-2.3.0-8d10865a98510d2d"
+##
+## [stages.Script]
+## stage = "dep-n-humantime-2.3.0-8d10865a98510d2d"
 ## script = '''
 ## FROM rust-base AS dep-n-humantime-2.3.0-8d10865a98510d2d
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -8480,7 +8958,9 @@ COPY --link --from=dep-n-humantime-2.3.0-8d10865a98510d2d /tmp/clis-bottom_0-11-
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-8d10865a98510d2d* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-8d10865a98510d2d"
+##
+## [stages.Script]
+## stage = "out-8d10865a98510d2d"
 ## script = """
 ## FROM scratch AS out-8d10865a98510d2d
 ## COPY --link --from=dep-n-humantime-2.3.0-8d10865a98510d2d /tmp/clis-bottom_0-11-4/release/deps/*-8d10865a98510d2d* /"""
@@ -8590,18 +9070,24 @@ COPY --link --from=dep-n-indexmap-2.11.4-b43e6c5f947e2f50 /tmp/clis-bottom_0-11-
 ## xtern = "libfoldhash-096447fe41f6c043.rmeta"
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-indexmap-2.11.4"
-## script = '''
-## FROM scratch AS cratesio-indexmap-2.11.4
-## ADD --chmod=0664 --unpack --checksum=sha256:4b0f83760fb341a774ed326568e19f5a863af4a952def8c39f9ab92fd95b88e5 \
-##   https://static.crates.io/crates/indexmap/indexmap-2.11.4.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-indexmap-2.11.4"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/indexmap-2.11.4"
+## name = "indexmap"
+## name_dash_version = "indexmap-2.11.4"
+## hash = "4b0f83760fb341a774ed326568e19f5a863af4a952def8c39f9ab92fd95b88e5"
 ##
 ## [[stages]]
-## name = "dep-n-indexmap-2.11.4-b43e6c5f947e2f50"
+##
+## [stages.Script]
+## stage = "dep-n-indexmap-2.11.4-b43e6c5f947e2f50"
 ## script = '''
 ## FROM rust-base AS dep-n-indexmap-2.11.4-b43e6c5f947e2f50
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -8647,7 +9133,9 @@ COPY --link --from=dep-n-indexmap-2.11.4-b43e6c5f947e2f50 /tmp/clis-bottom_0-11-
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-b43e6c5f947e2f50* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-b43e6c5f947e2f50"
+##
+## [stages.Script]
+## stage = "out-b43e6c5f947e2f50"
 ## script = """
 ## FROM scratch AS out-b43e6c5f947e2f50
 ## COPY --link --from=dep-n-indexmap-2.11.4-b43e6c5f947e2f50 /tmp/clis-bottom_0-11-4/release/deps/*-b43e6c5f947e2f50* /"""
@@ -8709,18 +9197,24 @@ COPY --link --from=dep-n-indoc-2.0.6-6220bf836a43fe21 /tmp/clis-bottom_0-11-4/re
 ## ]
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-indoc-2.0.6"
-## script = '''
-## FROM scratch AS cratesio-indoc-2.0.6
-## ADD --chmod=0664 --unpack --checksum=sha256:f4c7245a08504955605670dbf141fceab975f15ca21570696aebe9d2e71576bd \
-##   https://static.crates.io/crates/indoc/indoc-2.0.6.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-indoc-2.0.6"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/indoc-2.0.6"
+## name = "indoc"
+## name_dash_version = "indoc-2.0.6"
+## hash = "f4c7245a08504955605670dbf141fceab975f15ca21570696aebe9d2e71576bd"
 ##
 ## [[stages]]
-## name = "dep-n-indoc-2.0.6-6220bf836a43fe21"
+##
+## [stages.Script]
+## stage = "dep-n-indoc-2.0.6-6220bf836a43fe21"
 ## script = '''
 ## FROM rust-base AS dep-n-indoc-2.0.6-6220bf836a43fe21
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -8758,7 +9252,9 @@ COPY --link --from=dep-n-indoc-2.0.6-6220bf836a43fe21 /tmp/clis-bottom_0-11-4/re
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-6220bf836a43fe21* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-6220bf836a43fe21"
+##
+## [stages.Script]
+## stage = "out-6220bf836a43fe21"
 ## script = """
 ## FROM scratch AS out-6220bf836a43fe21
 ## COPY --link --from=dep-n-indoc-2.0.6-6220bf836a43fe21 /tmp/clis-bottom_0-11-4/release/deps/*-6220bf836a43fe21* /"""
@@ -8817,18 +9313,24 @@ COPY --link --from=dep-n-either-1.15.0-2f7cbff5a773db3c /tmp/clis-bottom_0-11-4/
 ## ]
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-either-1.15.0"
-## script = '''
-## FROM scratch AS cratesio-either-1.15.0
-## ADD --chmod=0664 --unpack --checksum=sha256:48c757948c5ede0e46177b7add2e67155f70e33c07fea8284df6576da70b3719 \
-##   https://static.crates.io/crates/either/either-1.15.0.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-either-1.15.0"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/either-1.15.0"
+## name = "either"
+## name_dash_version = "either-1.15.0"
+## hash = "48c757948c5ede0e46177b7add2e67155f70e33c07fea8284df6576da70b3719"
 ##
 ## [[stages]]
-## name = "dep-n-either-1.15.0-2f7cbff5a773db3c"
+##
+## [stages.Script]
+## stage = "dep-n-either-1.15.0-2f7cbff5a773db3c"
 ## script = '''
 ## FROM rust-base AS dep-n-either-1.15.0-2f7cbff5a773db3c
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -8867,7 +9369,9 @@ COPY --link --from=dep-n-either-1.15.0-2f7cbff5a773db3c /tmp/clis-bottom_0-11-4/
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-2f7cbff5a773db3c* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-2f7cbff5a773db3c"
+##
+## [stages.Script]
+## stage = "out-2f7cbff5a773db3c"
 ## script = """
 ## FROM scratch AS out-2f7cbff5a773db3c
 ## COPY --link --from=dep-n-either-1.15.0-2f7cbff5a773db3c /tmp/clis-bottom_0-11-4/release/deps/*-2f7cbff5a773db3c* /"""
@@ -8944,18 +9448,24 @@ COPY --link --from=dep-n-itertools-0.14.0-62522c8d5cefce5c /tmp/clis-bottom_0-11
 ## xtern = "libeither-2f7cbff5a773db3c.rmeta"
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-itertools-0.14.0"
-## script = '''
-## FROM scratch AS cratesio-itertools-0.14.0
-## ADD --chmod=0664 --unpack --checksum=sha256:2b192c782037fadd9cfa75548310488aabdbf3d2da73885b31bd0abd03351285 \
-##   https://static.crates.io/crates/itertools/itertools-0.14.0.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-itertools-0.14.0"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/itertools-0.14.0"
+## name = "itertools"
+## name_dash_version = "itertools-0.14.0"
+## hash = "2b192c782037fadd9cfa75548310488aabdbf3d2da73885b31bd0abd03351285"
 ##
 ## [[stages]]
-## name = "dep-n-itertools-0.14.0-62522c8d5cefce5c"
+##
+## [stages.Script]
+## stage = "dep-n-itertools-0.14.0-62522c8d5cefce5c"
 ## script = '''
 ## FROM rust-base AS dep-n-itertools-0.14.0-62522c8d5cefce5c
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -8995,7 +9505,9 @@ COPY --link --from=dep-n-itertools-0.14.0-62522c8d5cefce5c /tmp/clis-bottom_0-11
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-62522c8d5cefce5c* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-62522c8d5cefce5c"
+##
+## [stages.Script]
+## stage = "out-62522c8d5cefce5c"
 ## script = """
 ## FROM scratch AS out-62522c8d5cefce5c
 ## COPY --link --from=dep-n-itertools-0.14.0-62522c8d5cefce5c /tmp/clis-bottom_0-11-4/release/deps/*-62522c8d5cefce5c* /"""
@@ -9065,18 +9577,24 @@ COPY --link --from=dep-n-libloading-0.8.9-df4754f37f4b1975 /tmp/clis-bottom_0-11
 ## xtern = "libcfg_if-bcc7b80470034230.rmeta"
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-libloading-0.8.9"
-## script = '''
-## FROM scratch AS cratesio-libloading-0.8.9
-## ADD --chmod=0664 --unpack --checksum=sha256:d7c4b02199fee7c5d21a5ae7d8cfa79a6ef5bb2fc834d6e9058e89c825efdc55 \
-##   https://static.crates.io/crates/libloading/libloading-0.8.9.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-libloading-0.8.9"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libloading-0.8.9"
+## name = "libloading"
+## name_dash_version = "libloading-0.8.9"
+## hash = "d7c4b02199fee7c5d21a5ae7d8cfa79a6ef5bb2fc834d6e9058e89c825efdc55"
 ##
 ## [[stages]]
-## name = "dep-n-libloading-0.8.9-df4754f37f4b1975"
+##
+## [stages.Script]
+## stage = "dep-n-libloading-0.8.9-df4754f37f4b1975"
 ## script = '''
 ## FROM rust-base AS dep-n-libloading-0.8.9-df4754f37f4b1975
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -9116,7 +9634,9 @@ COPY --link --from=dep-n-libloading-0.8.9-df4754f37f4b1975 /tmp/clis-bottom_0-11
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-df4754f37f4b1975* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-df4754f37f4b1975"
+##
+## [stages.Script]
+## stage = "out-df4754f37f4b1975"
 ## script = """
 ## FROM scratch AS out-df4754f37f4b1975
 ## COPY --link --from=dep-n-libloading-0.8.9-df4754f37f4b1975 /tmp/clis-bottom_0-11-4/release/deps/*-df4754f37f4b1975* /"""
@@ -9202,18 +9722,24 @@ COPY --link --from=dep-n-nvml-wrapper-sys-0.9.0-d90cab48e1e9dad4 /tmp/clis-botto
 ## xtern = "libcfg_if-bcc7b80470034230.rmeta"
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-nvml-wrapper-sys-0.9.0"
-## script = '''
-## FROM scratch AS cratesio-nvml-wrapper-sys-0.9.0
-## ADD --chmod=0664 --unpack --checksum=sha256:dd23dbe2eb8d8335d2bce0299e0a07d6a63c089243d626ca75b770a962ff49e6 \
-##   https://static.crates.io/crates/nvml-wrapper-sys/nvml-wrapper-sys-0.9.0.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-nvml-wrapper-sys-0.9.0"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nvml-wrapper-sys-0.9.0"
+## name = "nvml-wrapper-sys"
+## name_dash_version = "nvml-wrapper-sys-0.9.0"
+## hash = "dd23dbe2eb8d8335d2bce0299e0a07d6a63c089243d626ca75b770a962ff49e6"
 ##
 ## [[stages]]
-## name = "dep-n-nvml-wrapper-sys-0.9.0-d90cab48e1e9dad4"
+##
+## [stages.Script]
+## stage = "dep-n-nvml-wrapper-sys-0.9.0-d90cab48e1e9dad4"
 ## script = '''
 ## FROM rust-base AS dep-n-nvml-wrapper-sys-0.9.0-d90cab48e1e9dad4
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -9255,7 +9781,9 @@ COPY --link --from=dep-n-nvml-wrapper-sys-0.9.0-d90cab48e1e9dad4 /tmp/clis-botto
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-d90cab48e1e9dad4* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-d90cab48e1e9dad4"
+##
+## [stages.Script]
+## stage = "out-d90cab48e1e9dad4"
 ## script = """
 ## FROM scratch AS out-d90cab48e1e9dad4
 ## COPY --link --from=dep-n-nvml-wrapper-sys-0.9.0-d90cab48e1e9dad4 /tmp/clis-bottom_0-11-4/release/deps/*-d90cab48e1e9dad4* /"""
@@ -9313,18 +9841,24 @@ COPY --link --from=dep-n-static_assertions-1.1.0-59c5c7af2d8c2ea3 /tmp/clis-bott
 ## ]
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-static_assertions-1.1.0"
-## script = '''
-## FROM scratch AS cratesio-static_assertions-1.1.0
-## ADD --chmod=0664 --unpack --checksum=sha256:a2eb9349b6444b326872e140eb1cf5e7c522154d69e7a0ffb0fb81c06b37543f \
-##   https://static.crates.io/crates/static_assertions/static_assertions-1.1.0.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-static_assertions-1.1.0"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/static_assertions-1.1.0"
+## name = "static_assertions"
+## name_dash_version = "static_assertions-1.1.0"
+## hash = "a2eb9349b6444b326872e140eb1cf5e7c522154d69e7a0ffb0fb81c06b37543f"
 ##
 ## [[stages]]
-## name = "dep-n-static_assertions-1.1.0-59c5c7af2d8c2ea3"
+##
+## [stages.Script]
+## stage = "dep-n-static_assertions-1.1.0-59c5c7af2d8c2ea3"
 ## script = '''
 ## FROM rust-base AS dep-n-static_assertions-1.1.0-59c5c7af2d8c2ea3
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -9362,7 +9896,9 @@ COPY --link --from=dep-n-static_assertions-1.1.0-59c5c7af2d8c2ea3 /tmp/clis-bott
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-59c5c7af2d8c2ea3* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-59c5c7af2d8c2ea3"
+##
+## [stages.Script]
+## stage = "out-59c5c7af2d8c2ea3"
 ## script = """
 ## FROM scratch AS out-59c5c7af2d8c2ea3
 ## COPY --link --from=dep-n-static_assertions-1.1.0-59c5c7af2d8c2ea3 /tmp/clis-bottom_0-11-4/release/deps/*-59c5c7af2d8c2ea3* /"""
@@ -9460,18 +9996,24 @@ COPY --link --from=dep-n-thiserror-impl-1.0.69-d53e4373fd9c345d /tmp/clis-bottom
 ## xtern = "libsyn-d8ac7146e5acfe07.rlib"
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-thiserror-impl-1.0.69"
-## script = '''
-## FROM scratch AS cratesio-thiserror-impl-1.0.69
-## ADD --chmod=0664 --unpack --checksum=sha256:4fee6c4efc90059e10f81e6d42c60a18f76588c3d74cb83a0b242a2b6c7504c1 \
-##   https://static.crates.io/crates/thiserror-impl/thiserror-impl-1.0.69.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-thiserror-impl-1.0.69"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thiserror-impl-1.0.69"
+## name = "thiserror-impl"
+## name_dash_version = "thiserror-impl-1.0.69"
+## hash = "4fee6c4efc90059e10f81e6d42c60a18f76588c3d74cb83a0b242a2b6c7504c1"
 ##
 ## [[stages]]
-## name = "dep-n-thiserror-impl-1.0.69-d53e4373fd9c345d"
+##
+## [stages.Script]
+## stage = "dep-n-thiserror-impl-1.0.69-d53e4373fd9c345d"
 ## script = '''
 ## FROM rust-base AS dep-n-thiserror-impl-1.0.69-d53e4373fd9c345d
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -9513,7 +10055,9 @@ COPY --link --from=dep-n-thiserror-impl-1.0.69-d53e4373fd9c345d /tmp/clis-bottom
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-d53e4373fd9c345d* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-d53e4373fd9c345d"
+##
+## [stages.Script]
+## stage = "out-d53e4373fd9c345d"
 ## script = """
 ## FROM scratch AS out-d53e4373fd9c345d
 ## COPY --link --from=dep-n-thiserror-impl-1.0.69-d53e4373fd9c345d /tmp/clis-bottom_0-11-4/release/deps/*-d53e4373fd9c345d* /"""
@@ -9611,18 +10155,24 @@ COPY --link --from=dep-n-thiserror-1.0.69-5165da34b7b78b17 /tmp/clis-bottom_0-11
 ## xtern = "libsyn-d8ac7146e5acfe07.rlib"
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-thiserror-1.0.69"
-## script = '''
-## FROM scratch AS cratesio-thiserror-1.0.69
-## ADD --chmod=0664 --unpack --checksum=sha256:b6aaf5339b578ea85b50e080feb250a3e8ae8cfcdff9a461c9ec2904bc923f52 \
-##   https://static.crates.io/crates/thiserror/thiserror-1.0.69.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-thiserror-1.0.69"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thiserror-1.0.69"
+## name = "thiserror"
+## name_dash_version = "thiserror-1.0.69"
+## hash = "b6aaf5339b578ea85b50e080feb250a3e8ae8cfcdff9a461c9ec2904bc923f52"
 ##
 ## [[stages]]
-## name = "dep-n-thiserror-1.0.69-5165da34b7b78b17"
+##
+## [stages.Script]
+## stage = "dep-n-thiserror-1.0.69-5165da34b7b78b17"
 ## script = '''
 ## FROM rust-base AS dep-n-thiserror-1.0.69-5165da34b7b78b17
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -9666,7 +10216,9 @@ COPY --link --from=dep-n-thiserror-1.0.69-5165da34b7b78b17 /tmp/clis-bottom_0-11
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-5165da34b7b78b17* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-5165da34b7b78b17"
+##
+## [stages.Script]
+## stage = "out-5165da34b7b78b17"
 ## script = """
 ## FROM scratch AS out-5165da34b7b78b17
 ## COPY --link --from=dep-n-thiserror-1.0.69-5165da34b7b78b17 /tmp/clis-bottom_0-11-4/release/deps/*-5165da34b7b78b17* /"""
@@ -9724,18 +10276,24 @@ COPY --link --from=dep-n-fnv-1.0.7-498ad1309b878047 /tmp/clis-bottom_0-11-4/rele
 ## ]
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-fnv-1.0.7"
-## script = '''
-## FROM scratch AS cratesio-fnv-1.0.7
-## ADD --chmod=0664 --unpack --checksum=sha256:3f9eec918d3f24069decb9af1554cad7c880e2da24a9afd88aca000531ab82c1 \
-##   https://static.crates.io/crates/fnv/fnv-1.0.7.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-fnv-1.0.7"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/fnv-1.0.7"
+## name = "fnv"
+## name_dash_version = "fnv-1.0.7"
+## hash = "3f9eec918d3f24069decb9af1554cad7c880e2da24a9afd88aca000531ab82c1"
 ##
 ## [[stages]]
-## name = "dep-n-fnv-1.0.7-498ad1309b878047"
+##
+## [stages.Script]
+## stage = "dep-n-fnv-1.0.7-498ad1309b878047"
 ## script = '''
 ## FROM rust-base AS dep-n-fnv-1.0.7-498ad1309b878047
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -9773,7 +10331,9 @@ COPY --link --from=dep-n-fnv-1.0.7-498ad1309b878047 /tmp/clis-bottom_0-11-4/rele
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-498ad1309b878047* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-498ad1309b878047"
+##
+## [stages.Script]
+## stage = "out-498ad1309b878047"
 ## script = """
 ## FROM scratch AS out-498ad1309b878047
 ## COPY --link --from=dep-n-fnv-1.0.7-498ad1309b878047 /tmp/clis-bottom_0-11-4/release/deps/*-498ad1309b878047* /"""
@@ -9834,18 +10394,24 @@ COPY --link --from=dep-n-ident_case-1.0.1-40d25c5ef07f6027 /tmp/clis-bottom_0-11
 ## ]
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-ident_case-1.0.1"
-## script = '''
-## FROM scratch AS cratesio-ident_case-1.0.1
-## ADD --chmod=0664 --unpack --checksum=sha256:b9e0384b61958566e926dc50660321d12159025e767c18e043daf26b70104c39 \
-##   https://static.crates.io/crates/ident_case/ident_case-1.0.1.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-ident_case-1.0.1"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ident_case-1.0.1"
+## name = "ident_case"
+## name_dash_version = "ident_case-1.0.1"
+## hash = "b9e0384b61958566e926dc50660321d12159025e767c18e043daf26b70104c39"
 ##
 ## [[stages]]
-## name = "dep-n-ident_case-1.0.1-40d25c5ef07f6027"
+##
+## [stages.Script]
+## stage = "dep-n-ident_case-1.0.1-40d25c5ef07f6027"
 ## script = '''
 ## FROM rust-base AS dep-n-ident_case-1.0.1-40d25c5ef07f6027
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -9883,7 +10449,9 @@ COPY --link --from=dep-n-ident_case-1.0.1-40d25c5ef07f6027 /tmp/clis-bottom_0-11
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-40d25c5ef07f6027* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-40d25c5ef07f6027"
+##
+## [stages.Script]
+## stage = "out-40d25c5ef07f6027"
 ## script = """
 ## FROM scratch AS out-40d25c5ef07f6027
 ## COPY --link --from=dep-n-ident_case-1.0.1-40d25c5ef07f6027 /tmp/clis-bottom_0-11-4/release/deps/*-40d25c5ef07f6027* /"""
@@ -9941,18 +10509,24 @@ COPY --link --from=dep-n-strsim-0.11.1-c308dc16fc5a3763 /tmp/clis-bottom_0-11-4/
 ## ]
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-strsim-0.11.1"
-## script = '''
-## FROM scratch AS cratesio-strsim-0.11.1
-## ADD --chmod=0664 --unpack --checksum=sha256:7da8b5736845d9f2fcb837ea5d9e2628564b3b043a70948a3f0b778838c5fb4f \
-##   https://static.crates.io/crates/strsim/strsim-0.11.1.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-strsim-0.11.1"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/strsim-0.11.1"
+## name = "strsim"
+## name_dash_version = "strsim-0.11.1"
+## hash = "7da8b5736845d9f2fcb837ea5d9e2628564b3b043a70948a3f0b778838c5fb4f"
 ##
 ## [[stages]]
-## name = "dep-n-strsim-0.11.1-c308dc16fc5a3763"
+##
+## [stages.Script]
+## stage = "dep-n-strsim-0.11.1-c308dc16fc5a3763"
 ## script = '''
 ## FROM rust-base AS dep-n-strsim-0.11.1-c308dc16fc5a3763
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -9992,7 +10566,9 @@ COPY --link --from=dep-n-strsim-0.11.1-c308dc16fc5a3763 /tmp/clis-bottom_0-11-4/
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-c308dc16fc5a3763* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-c308dc16fc5a3763"
+##
+## [stages.Script]
+## stage = "out-c308dc16fc5a3763"
 ## script = """
 ## FROM scratch AS out-c308dc16fc5a3763
 ## COPY --link --from=dep-n-strsim-0.11.1-c308dc16fc5a3763 /tmp/clis-bottom_0-11-4/release/deps/*-c308dc16fc5a3763* /"""
@@ -10140,18 +10716,24 @@ COPY --link --from=dep-n-darling_core-0.20.11-4c8f223e192a4051 /tmp/clis-bottom_
 ## xtern = "libsyn-d8ac7146e5acfe07.rmeta"
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-darling_core-0.20.11"
-## script = '''
-## FROM scratch AS cratesio-darling_core-0.20.11
-## ADD --chmod=0664 --unpack --checksum=sha256:0d00b9596d185e565c2207a0b01f8bd1a135483d02d9b7b0a54b11da8d53412e \
-##   https://static.crates.io/crates/darling_core/darling_core-0.20.11.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-darling_core-0.20.11"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/darling_core-0.20.11"
+## name = "darling_core"
+## name_dash_version = "darling_core-0.20.11"
+## hash = "0d00b9596d185e565c2207a0b01f8bd1a135483d02d9b7b0a54b11da8d53412e"
 ##
 ## [[stages]]
-## name = "dep-n-darling_core-0.20.11-4c8f223e192a4051"
+##
+## [stages.Script]
+## stage = "dep-n-darling_core-0.20.11-4c8f223e192a4051"
 ## script = '''
 ## FROM rust-base AS dep-n-darling_core-0.20.11-4c8f223e192a4051
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -10205,7 +10787,9 @@ COPY --link --from=dep-n-darling_core-0.20.11-4c8f223e192a4051 /tmp/clis-bottom_
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-4c8f223e192a4051* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-4c8f223e192a4051"
+##
+## [stages.Script]
+## stage = "out-4c8f223e192a4051"
 ## script = """
 ## FROM scratch AS out-4c8f223e192a4051
 ## COPY --link --from=dep-n-darling_core-0.20.11-4c8f223e192a4051 /tmp/clis-bottom_0-11-4/release/deps/*-4c8f223e192a4051* /"""
@@ -10323,18 +10907,24 @@ COPY --link --from=dep-n-darling_macro-0.20.11-74a806dd3208bbe9 /tmp/clis-bottom
 ## xtern = "libsyn-d8ac7146e5acfe07.rlib"
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-darling_macro-0.20.11"
-## script = '''
-## FROM scratch AS cratesio-darling_macro-0.20.11
-## ADD --chmod=0664 --unpack --checksum=sha256:fc34b93ccb385b40dc71c6fceac4b2ad23662c7eeb248cf10d529b7e055b6ead \
-##   https://static.crates.io/crates/darling_macro/darling_macro-0.20.11.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-darling_macro-0.20.11"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/darling_macro-0.20.11"
+## name = "darling_macro"
+## name_dash_version = "darling_macro-0.20.11"
+## hash = "fc34b93ccb385b40dc71c6fceac4b2ad23662c7eeb248cf10d529b7e055b6ead"
 ##
 ## [[stages]]
-## name = "dep-n-darling_macro-0.20.11-74a806dd3208bbe9"
+##
+## [stages.Script]
+## stage = "dep-n-darling_macro-0.20.11-74a806dd3208bbe9"
 ## script = '''
 ## FROM rust-base AS dep-n-darling_macro-0.20.11-74a806dd3208bbe9
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -10382,7 +10972,9 @@ COPY --link --from=dep-n-darling_macro-0.20.11-74a806dd3208bbe9 /tmp/clis-bottom
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-74a806dd3208bbe9* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-74a806dd3208bbe9"
+##
+## [stages.Script]
+## stage = "out-74a806dd3208bbe9"
 ## script = """
 ## FROM scratch AS out-74a806dd3208bbe9
 ## COPY --link --from=dep-n-darling_macro-0.20.11-74a806dd3208bbe9 /tmp/clis-bottom_0-11-4/release/deps/*-74a806dd3208bbe9* /"""
@@ -10549,18 +11141,24 @@ COPY --link --from=dep-n-darling-0.20.11-32d5bae9b92de94f /tmp/clis-bottom_0-11-
 ## xtern = "libdarling_macro-74a806dd3208bbe9.so"
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-darling-0.20.11"
-## script = '''
-## FROM scratch AS cratesio-darling-0.20.11
-## ADD --chmod=0664 --unpack --checksum=sha256:fc7f46116c46ff9ab3eb1597a45688b6715c6e628b5c133e288e709a29bcb4ee \
-##   https://static.crates.io/crates/darling/darling-0.20.11.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-darling-0.20.11"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/darling-0.20.11"
+## name = "darling"
+## name_dash_version = "darling-0.20.11"
+## hash = "fc7f46116c46ff9ab3eb1597a45688b6715c6e628b5c133e288e709a29bcb4ee"
 ##
 ## [[stages]]
-## name = "dep-n-darling-0.20.11-32d5bae9b92de94f"
+##
+## [stages.Script]
+## stage = "dep-n-darling-0.20.11-32d5bae9b92de94f"
 ## script = '''
 ## FROM rust-base AS dep-n-darling-0.20.11-32d5bae9b92de94f
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -10617,7 +11215,9 @@ COPY --link --from=dep-n-darling-0.20.11-32d5bae9b92de94f /tmp/clis-bottom_0-11-
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-32d5bae9b92de94f* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-32d5bae9b92de94f"
+##
+## [stages.Script]
+## stage = "out-32d5bae9b92de94f"
 ## script = """
 ## FROM scratch AS out-32d5bae9b92de94f
 ## COPY --link --from=dep-n-darling-0.20.11-32d5bae9b92de94f /tmp/clis-bottom_0-11-4/release/deps/*-32d5bae9b92de94f* /"""
@@ -10747,18 +11347,24 @@ COPY --link --from=dep-n-wrapcenum-derive-0.4.1-0c9b558737a241ab /tmp/clis-botto
 ## xtern = "libdarling_macro-74a806dd3208bbe9.so"
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-wrapcenum-derive-0.4.1"
-## script = '''
-## FROM scratch AS cratesio-wrapcenum-derive-0.4.1
-## ADD --chmod=0664 --unpack --checksum=sha256:a76ff259533532054cfbaefb115c613203c73707017459206380f03b3b3f266e \
-##   https://static.crates.io/crates/wrapcenum-derive/wrapcenum-derive-0.4.1.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-wrapcenum-derive-0.4.1"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/wrapcenum-derive-0.4.1"
+## name = "wrapcenum-derive"
+## name_dash_version = "wrapcenum-derive-0.4.1"
+## hash = "a76ff259533532054cfbaefb115c613203c73707017459206380f03b3b3f266e"
 ##
 ## [[stages]]
-## name = "dep-n-wrapcenum-derive-0.4.1-0c9b558737a241ab"
+##
+## [stages.Script]
+## stage = "dep-n-wrapcenum-derive-0.4.1-0c9b558737a241ab"
 ## script = '''
 ## FROM rust-base AS dep-n-wrapcenum-derive-0.4.1-0c9b558737a241ab
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -10806,7 +11412,9 @@ COPY --link --from=dep-n-wrapcenum-derive-0.4.1-0c9b558737a241ab /tmp/clis-botto
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-0c9b558737a241ab* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-0c9b558737a241ab"
+##
+## [stages.Script]
+## stage = "out-0c9b558737a241ab"
 ## script = """
 ## FROM scratch AS out-0c9b558737a241ab
 ## COPY --link --from=dep-n-wrapcenum-derive-0.4.1-0c9b558737a241ab /tmp/clis-bottom_0-11-4/release/deps/*-0c9b558737a241ab* /"""
@@ -11080,18 +11688,24 @@ COPY --link --from=dep-n-nvml-wrapper-0.11.0-00a58d6d9cc67991 /tmp/clis-bottom_0
 ## xtern = "libdarling_macro-74a806dd3208bbe9.so"
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-nvml-wrapper-0.11.0"
-## script = '''
-## FROM scratch AS cratesio-nvml-wrapper-0.11.0
-## ADD --chmod=0664 --unpack --checksum=sha256:0d5c6c0ef9702176a570f06ad94f3198bc29c524c8b498f1b9346e1b1bdcbb3a \
-##   https://static.crates.io/crates/nvml-wrapper/nvml-wrapper-0.11.0.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-nvml-wrapper-0.11.0"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nvml-wrapper-0.11.0"
+## name = "nvml-wrapper"
+## name_dash_version = "nvml-wrapper-0.11.0"
+## hash = "0d5c6c0ef9702176a570f06ad94f3198bc29c524c8b498f1b9346e1b1bdcbb3a"
 ##
 ## [[stages]]
-## name = "dep-n-nvml-wrapper-0.11.0-00a58d6d9cc67991"
+##
+## [stages.Script]
+## stage = "dep-n-nvml-wrapper-0.11.0-00a58d6d9cc67991"
 ## script = '''
 ## FROM rust-base AS dep-n-nvml-wrapper-0.11.0-00a58d6d9cc67991
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -11162,7 +11776,9 @@ COPY --link --from=dep-n-nvml-wrapper-0.11.0-00a58d6d9cc67991 /tmp/clis-bottom_0
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-00a58d6d9cc67991* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-00a58d6d9cc67991"
+##
+## [stages.Script]
+## stage = "out-00a58d6d9cc67991"
 ## script = """
 ## FROM scratch AS out-00a58d6d9cc67991
 ## COPY --link --from=dep-n-nvml-wrapper-0.11.0-00a58d6d9cc67991 /tmp/clis-bottom_0-11-4/release/deps/*-00a58d6d9cc67991* /"""
@@ -11300,18 +11916,24 @@ COPY --link --from=dep-n-instability-0.3.9-aae7976707a3a506 /tmp/clis-bottom_0-1
 ## xtern = "libindoc-6220bf836a43fe21.so"
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-instability-0.3.9"
-## script = '''
-## FROM scratch AS cratesio-instability-0.3.9
-## ADD --chmod=0664 --unpack --checksum=sha256:435d80800b936787d62688c927b6490e887c7ef5ff9ce922c6c6050fca75eb9a \
-##   https://static.crates.io/crates/instability/instability-0.3.9.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-instability-0.3.9"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/instability-0.3.9"
+## name = "instability"
+## name_dash_version = "instability-0.3.9"
+## hash = "435d80800b936787d62688c927b6490e887c7ef5ff9ce922c6c6050fca75eb9a"
 ##
 ## [[stages]]
-## name = "dep-n-instability-0.3.9-aae7976707a3a506"
+##
+## [stages.Script]
+## stage = "dep-n-instability-0.3.9-aae7976707a3a506"
 ## script = '''
 ## FROM rust-base AS dep-n-instability-0.3.9-aae7976707a3a506
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -11361,7 +11983,9 @@ COPY --link --from=dep-n-instability-0.3.9-aae7976707a3a506 /tmp/clis-bottom_0-1
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-aae7976707a3a506* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-aae7976707a3a506"
+##
+## [stages.Script]
+## stage = "out-aae7976707a3a506"
 ## script = """
 ## FROM scratch AS out-aae7976707a3a506
 ## COPY --link --from=dep-n-instability-0.3.9-aae7976707a3a506 /tmp/clis-bottom_0-11-4/release/deps/*-aae7976707a3a506* /"""
@@ -11423,18 +12047,24 @@ COPY --link --from=dep-n-rustversion-1.0.22-dda15780a2e006fc /tmp/clis-bottom_0-
 ## uri = "/tmp/clis-bottom_0-11-4/release/build/rustversion-bad50d9b12f2ed5f/out"
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-rustversion-1.0.22"
-## script = '''
-## FROM scratch AS cratesio-rustversion-1.0.22
-## ADD --chmod=0664 --unpack --checksum=sha256:b39cdef0fa800fc44525c84ccb54a029961a8215f9619753635a9c0d2538d46d \
-##   https://static.crates.io/crates/rustversion/rustversion-1.0.22.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-rustversion-1.0.22"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustversion-1.0.22"
+## name = "rustversion"
+## name_dash_version = "rustversion-1.0.22"
+## hash = "b39cdef0fa800fc44525c84ccb54a029961a8215f9619753635a9c0d2538d46d"
 ##
 ## [[stages]]
-## name = "dep-n-rustversion-1.0.22-dda15780a2e006fc"
+##
+## [stages.Script]
+## stage = "dep-n-rustversion-1.0.22-dda15780a2e006fc"
 ## script = '''
 ## FROM rust-base AS dep-n-rustversion-1.0.22-dda15780a2e006fc
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -11474,7 +12104,9 @@ COPY --link --from=dep-n-rustversion-1.0.22-dda15780a2e006fc /tmp/clis-bottom_0-
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-dda15780a2e006fc* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-dda15780a2e006fc"
+##
+## [stages.Script]
+## stage = "out-dda15780a2e006fc"
 ## script = """
 ## FROM scratch AS out-dda15780a2e006fc
 ## COPY --link --from=dep-n-rustversion-1.0.22-dda15780a2e006fc /tmp/clis-bottom_0-11-4/release/deps/*-dda15780a2e006fc* /"""
@@ -11543,18 +12175,24 @@ COPY --link --from=dep-n-castaway-0.2.4-8decb7bcf8b14c00 /tmp/clis-bottom_0-11-4
 ## uri = "/tmp/clis-bottom_0-11-4/release/build/rustversion-bad50d9b12f2ed5f/out"
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-castaway-0.2.4"
-## script = '''
-## FROM scratch AS cratesio-castaway-0.2.4
-## ADD --chmod=0664 --unpack --checksum=sha256:dec551ab6e7578819132c713a93c022a05d60159dc86e7a7050223577484c55a \
-##   https://static.crates.io/crates/castaway/castaway-0.2.4.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-castaway-0.2.4"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/castaway-0.2.4"
+## name = "castaway"
+## name_dash_version = "castaway-0.2.4"
+## hash = "dec551ab6e7578819132c713a93c022a05d60159dc86e7a7050223577484c55a"
 ##
 ## [[stages]]
-## name = "dep-n-castaway-0.2.4-8decb7bcf8b14c00"
+##
+## [stages.Script]
+## stage = "dep-n-castaway-0.2.4-8decb7bcf8b14c00"
 ## script = '''
 ## FROM rust-base AS dep-n-castaway-0.2.4-8decb7bcf8b14c00
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -11593,7 +12231,9 @@ COPY --link --from=dep-n-castaway-0.2.4-8decb7bcf8b14c00 /tmp/clis-bottom_0-11-4
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-8decb7bcf8b14c00* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-8decb7bcf8b14c00"
+##
+## [stages.Script]
+## stage = "out-8decb7bcf8b14c00"
 ## script = """
 ## FROM scratch AS out-8decb7bcf8b14c00
 ## COPY --link --from=dep-n-castaway-0.2.4-8decb7bcf8b14c00 /tmp/clis-bottom_0-11-4/release/deps/*-8decb7bcf8b14c00* /"""
@@ -11651,18 +12291,24 @@ COPY --link --from=dep-n-itoa-1.0.15-69b00326e9a10f07 /tmp/clis-bottom_0-11-4/re
 ## ]
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-itoa-1.0.15"
-## script = '''
-## FROM scratch AS cratesio-itoa-1.0.15
-## ADD --chmod=0664 --unpack --checksum=sha256:4a5f13b858c8d314ee3e8f639011f7ccefe71f97f96e50151fb991f267928e2c \
-##   https://static.crates.io/crates/itoa/itoa-1.0.15.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-itoa-1.0.15"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/itoa-1.0.15"
+## name = "itoa"
+## name_dash_version = "itoa-1.0.15"
+## hash = "4a5f13b858c8d314ee3e8f639011f7ccefe71f97f96e50151fb991f267928e2c"
 ##
 ## [[stages]]
-## name = "dep-n-itoa-1.0.15-69b00326e9a10f07"
+##
+## [stages.Script]
+## stage = "dep-n-itoa-1.0.15-69b00326e9a10f07"
 ## script = '''
 ## FROM rust-base AS dep-n-itoa-1.0.15-69b00326e9a10f07
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -11700,7 +12346,9 @@ COPY --link --from=dep-n-itoa-1.0.15-69b00326e9a10f07 /tmp/clis-bottom_0-11-4/re
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-69b00326e9a10f07* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-69b00326e9a10f07"
+##
+## [stages.Script]
+## stage = "out-69b00326e9a10f07"
 ## script = """
 ## FROM scratch AS out-69b00326e9a10f07
 ## COPY --link --from=dep-n-itoa-1.0.15-69b00326e9a10f07 /tmp/clis-bottom_0-11-4/release/deps/*-69b00326e9a10f07* /"""
@@ -11758,18 +12406,24 @@ COPY --link --from=dep-n-ryu-1.0.20-18f3925ee0c911f3 /tmp/clis-bottom_0-11-4/rel
 ## ]
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-ryu-1.0.20"
-## script = '''
-## FROM scratch AS cratesio-ryu-1.0.20
-## ADD --chmod=0664 --unpack --checksum=sha256:28d3b2b1366ec20994f1fd18c3c594f05c5dd4bc44d8bb0c1c632c8d6829481f \
-##   https://static.crates.io/crates/ryu/ryu-1.0.20.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-ryu-1.0.20"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ryu-1.0.20"
+## name = "ryu"
+## name_dash_version = "ryu-1.0.20"
+## hash = "28d3b2b1366ec20994f1fd18c3c594f05c5dd4bc44d8bb0c1c632c8d6829481f"
 ##
 ## [[stages]]
-## name = "dep-n-ryu-1.0.20-18f3925ee0c911f3"
+##
+## [stages.Script]
+## stage = "dep-n-ryu-1.0.20-18f3925ee0c911f3"
 ## script = '''
 ## FROM rust-base AS dep-n-ryu-1.0.20-18f3925ee0c911f3
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -11807,7 +12461,9 @@ COPY --link --from=dep-n-ryu-1.0.20-18f3925ee0c911f3 /tmp/clis-bottom_0-11-4/rel
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-18f3925ee0c911f3* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-18f3925ee0c911f3"
+##
+## [stages.Script]
+## stage = "out-18f3925ee0c911f3"
 ## script = """
 ## FROM scratch AS out-18f3925ee0c911f3
 ## COPY --link --from=dep-n-ryu-1.0.20-18f3925ee0c911f3 /tmp/clis-bottom_0-11-4/release/deps/*-18f3925ee0c911f3* /"""
@@ -11940,18 +12596,24 @@ COPY --link --from=dep-n-compact_str-0.9.0-9d597eb8a044c444 /tmp/clis-bottom_0-1
 ## uri = "/tmp/clis-bottom_0-11-4/release/build/rustversion-bad50d9b12f2ed5f/out"
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-compact_str-0.9.0"
-## script = '''
-## FROM scratch AS cratesio-compact_str-0.9.0
-## ADD --chmod=0664 --unpack --checksum=sha256:3fdb1325a1cece981e8a296ab8f0f9b63ae357bd0784a9faaf548cc7b480707a \
-##   https://static.crates.io/crates/compact_str/compact_str-0.9.0.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-compact_str-0.9.0"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/compact_str-0.9.0"
+## name = "compact_str"
+## name_dash_version = "compact_str-0.9.0"
+## hash = "3fdb1325a1cece981e8a296ab8f0f9b63ae357bd0784a9faaf548cc7b480707a"
 ##
 ## [[stages]]
-## name = "dep-n-compact_str-0.9.0-9d597eb8a044c444"
+##
+## [stages.Script]
+## stage = "dep-n-compact_str-0.9.0-9d597eb8a044c444"
 ## script = '''
 ## FROM rust-base AS dep-n-compact_str-0.9.0-9d597eb8a044c444
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -12000,7 +12662,9 @@ COPY --link --from=dep-n-compact_str-0.9.0-9d597eb8a044c444 /tmp/clis-bottom_0-1
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-9d597eb8a044c444* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-9d597eb8a044c444"
+##
+## [stages.Script]
+## stage = "out-9d597eb8a044c444"
 ## script = """
 ## FROM scratch AS out-9d597eb8a044c444
 ## COPY --link --from=dep-n-compact_str-0.9.0-9d597eb8a044c444 /tmp/clis-bottom_0-11-4/release/deps/*-9d597eb8a044c444* /"""
@@ -12088,18 +12752,24 @@ COPY --link --from=dep-n-thiserror-impl-2.0.16-7d11f28f28b53c03 /tmp/clis-bottom
 ## xtern = "libsyn-d8ac7146e5acfe07.rlib"
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-thiserror-impl-2.0.16"
-## script = '''
-## FROM scratch AS cratesio-thiserror-impl-2.0.16
-## ADD --chmod=0664 --unpack --checksum=sha256:6c5e1be1c48b9172ee610da68fd9cd2770e7a4056cb3fc98710ee6906f0c7960 \
-##   https://static.crates.io/crates/thiserror-impl/thiserror-impl-2.0.16.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-thiserror-impl-2.0.16"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thiserror-impl-2.0.16"
+## name = "thiserror-impl"
+## name_dash_version = "thiserror-impl-2.0.16"
+## hash = "6c5e1be1c48b9172ee610da68fd9cd2770e7a4056cb3fc98710ee6906f0c7960"
 ##
 ## [[stages]]
-## name = "dep-n-thiserror-impl-2.0.16-7d11f28f28b53c03"
+##
+## [stages.Script]
+## stage = "dep-n-thiserror-impl-2.0.16-7d11f28f28b53c03"
 ## script = '''
 ## FROM rust-base AS dep-n-thiserror-impl-2.0.16-7d11f28f28b53c03
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -12141,7 +12811,9 @@ COPY --link --from=dep-n-thiserror-impl-2.0.16-7d11f28f28b53c03 /tmp/clis-bottom
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-7d11f28f28b53c03* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-7d11f28f28b53c03"
+##
+## [stages.Script]
+## stage = "out-7d11f28f28b53c03"
 ## script = """
 ## FROM scratch AS out-7d11f28f28b53c03
 ## COPY --link --from=dep-n-thiserror-impl-2.0.16-7d11f28f28b53c03 /tmp/clis-bottom_0-11-4/release/deps/*-7d11f28f28b53c03* /"""
@@ -12239,18 +12911,24 @@ COPY --link --from=dep-n-thiserror-2.0.16-36c67758280c66db /tmp/clis-bottom_0-11
 ## xtern = "libsyn-d8ac7146e5acfe07.rlib"
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-thiserror-2.0.16"
-## script = '''
-## FROM scratch AS cratesio-thiserror-2.0.16
-## ADD --chmod=0664 --unpack --checksum=sha256:3467d614147380f2e4e374161426ff399c91084acd2363eaf549172b3d5e60c0 \
-##   https://static.crates.io/crates/thiserror/thiserror-2.0.16.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-thiserror-2.0.16"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thiserror-2.0.16"
+## name = "thiserror"
+## name_dash_version = "thiserror-2.0.16"
+## hash = "3467d614147380f2e4e374161426ff399c91084acd2363eaf549172b3d5e60c0"
 ##
 ## [[stages]]
-## name = "dep-n-thiserror-2.0.16-36c67758280c66db"
+##
+## [stages.Script]
+## stage = "dep-n-thiserror-2.0.16-36c67758280c66db"
 ## script = '''
 ## FROM rust-base AS dep-n-thiserror-2.0.16-36c67758280c66db
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -12294,7 +12972,9 @@ COPY --link --from=dep-n-thiserror-2.0.16-36c67758280c66db /tmp/clis-bottom_0-11
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-36c67758280c66db* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-36c67758280c66db"
+##
+## [stages.Script]
+## stage = "out-36c67758280c66db"
 ## script = """
 ## FROM scratch AS out-36c67758280c66db
 ## COPY --link --from=dep-n-thiserror-2.0.16-36c67758280c66db /tmp/clis-bottom_0-11-4/release/deps/*-36c67758280c66db* /"""
@@ -12474,18 +13154,24 @@ COPY --link --from=dep-n-kasuari-0.4.9-b8afbfd5ebd5409a /tmp/clis-bottom_0-11-4/
 ## xtern = "libsyn-d8ac7146e5acfe07.rmeta"
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-kasuari-0.4.9"
-## script = '''
-## FROM scratch AS cratesio-kasuari-0.4.9
-## ADD --chmod=0664 --unpack --checksum=sha256:12a3d6645acdef96d256c1f9fd3be7ecfa60d8457520a50bbd1600b6053f8173 \
-##   https://static.crates.io/crates/kasuari/kasuari-0.4.9.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-kasuari-0.4.9"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/kasuari-0.4.9"
+## name = "kasuari"
+## name_dash_version = "kasuari-0.4.9"
+## hash = "12a3d6645acdef96d256c1f9fd3be7ecfa60d8457520a50bbd1600b6053f8173"
 ##
 ## [[stages]]
-## name = "dep-n-kasuari-0.4.9-b8afbfd5ebd5409a"
+##
+## [stages.Script]
+## stage = "dep-n-kasuari-0.4.9-b8afbfd5ebd5409a"
 ## script = '''
 ## FROM rust-base AS dep-n-kasuari-0.4.9-b8afbfd5ebd5409a
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -12545,7 +13231,9 @@ COPY --link --from=dep-n-kasuari-0.4.9-b8afbfd5ebd5409a /tmp/clis-bottom_0-11-4/
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-b8afbfd5ebd5409a* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-b8afbfd5ebd5409a"
+##
+## [stages.Script]
+## stage = "out-b8afbfd5ebd5409a"
 ## script = """
 ## FROM scratch AS out-b8afbfd5ebd5409a
 ## COPY --link --from=dep-n-kasuari-0.4.9-b8afbfd5ebd5409a /tmp/clis-bottom_0-11-4/release/deps/*-b8afbfd5ebd5409a* /"""
@@ -12655,18 +13343,24 @@ COPY --link --from=dep-n-lru-0.16.2-8b8abe6a59d58226 /tmp/clis-bottom_0-11-4/rel
 ## xtern = "libfoldhash-096447fe41f6c043.rmeta"
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-lru-0.16.2"
-## script = '''
-## FROM scratch AS cratesio-lru-0.16.2
-## ADD --chmod=0664 --unpack --checksum=sha256:96051b46fc183dc9cd4a223960ef37b9af631b55191852a8274bfef064cda20f \
-##   https://static.crates.io/crates/lru/lru-0.16.2.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-lru-0.16.2"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/lru-0.16.2"
+## name = "lru"
+## name_dash_version = "lru-0.16.2"
+## hash = "96051b46fc183dc9cd4a223960ef37b9af631b55191852a8274bfef064cda20f"
 ##
 ## [[stages]]
-## name = "dep-n-lru-0.16.2-8b8abe6a59d58226"
+##
+## [stages.Script]
+## stage = "dep-n-lru-0.16.2-8b8abe6a59d58226"
 ## script = '''
 ## FROM rust-base AS dep-n-lru-0.16.2-8b8abe6a59d58226
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -12712,7 +13406,9 @@ COPY --link --from=dep-n-lru-0.16.2-8b8abe6a59d58226 /tmp/clis-bottom_0-11-4/rel
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-8b8abe6a59d58226* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-8b8abe6a59d58226"
+##
+## [stages.Script]
+## stage = "out-8b8abe6a59d58226"
 ## script = """
 ## FROM scratch AS out-8b8abe6a59d58226
 ## COPY --link --from=dep-n-lru-0.16.2-8b8abe6a59d58226 /tmp/clis-bottom_0-11-4/release/deps/*-8b8abe6a59d58226* /"""
@@ -12807,18 +13503,24 @@ COPY --link --from=dep-n-strum_macros-0.27.2-af45737d814ae18e /tmp/clis-bottom_0
 ## xtern = "libsyn-d8ac7146e5acfe07.rlib"
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-strum_macros-0.27.2"
-## script = '''
-## FROM scratch AS cratesio-strum_macros-0.27.2
-## ADD --chmod=0664 --unpack --checksum=sha256:7695ce3845ea4b33927c055a39dc438a45b059f7c1b3d91d38d10355fb8cbca7 \
-##   https://static.crates.io/crates/strum_macros/strum_macros-0.27.2.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-strum_macros-0.27.2"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/strum_macros-0.27.2"
+## name = "strum_macros"
+## name_dash_version = "strum_macros-0.27.2"
+## hash = "7695ce3845ea4b33927c055a39dc438a45b059f7c1b3d91d38d10355fb8cbca7"
 ##
 ## [[stages]]
-## name = "dep-n-strum_macros-0.27.2-af45737d814ae18e"
+##
+## [stages.Script]
+## stage = "dep-n-strum_macros-0.27.2-af45737d814ae18e"
 ## script = '''
 ## FROM rust-base AS dep-n-strum_macros-0.27.2-af45737d814ae18e
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -12861,7 +13563,9 @@ COPY --link --from=dep-n-strum_macros-0.27.2-af45737d814ae18e /tmp/clis-bottom_0
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-af45737d814ae18e* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-af45737d814ae18e"
+##
+## [stages.Script]
+## stage = "out-af45737d814ae18e"
 ## script = """
 ## FROM scratch AS out-af45737d814ae18e
 ## COPY --link --from=dep-n-strum_macros-0.27.2-af45737d814ae18e /tmp/clis-bottom_0-11-4/release/deps/*-af45737d814ae18e* /"""
@@ -12965,18 +13669,24 @@ COPY --link --from=dep-n-strum-0.27.2-618d55986ea84d86 /tmp/clis-bottom_0-11-4/r
 ## xtern = "libsyn-d8ac7146e5acfe07.rlib"
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-strum-0.27.2"
-## script = '''
-## FROM scratch AS cratesio-strum-0.27.2
-## ADD --chmod=0664 --unpack --checksum=sha256:af23d6f6c1a224baef9d3f61e287d2761385a5b88fdab4eb4c6f11aeb54c4bcf \
-##   https://static.crates.io/crates/strum/strum-0.27.2.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-strum-0.27.2"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/strum-0.27.2"
+## name = "strum"
+## name_dash_version = "strum-0.27.2"
+## hash = "af23d6f6c1a224baef9d3f61e287d2761385a5b88fdab4eb4c6f11aeb54c4bcf"
 ##
 ## [[stages]]
-## name = "dep-n-strum-0.27.2-618d55986ea84d86"
+##
+## [stages.Script]
+## stage = "dep-n-strum-0.27.2-618d55986ea84d86"
 ## script = '''
 ## FROM rust-base AS dep-n-strum-0.27.2-618d55986ea84d86
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -13020,7 +13730,9 @@ COPY --link --from=dep-n-strum-0.27.2-618d55986ea84d86 /tmp/clis-bottom_0-11-4/r
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-618d55986ea84d86* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-618d55986ea84d86"
+##
+## [stages.Script]
+## stage = "out-618d55986ea84d86"
 ## script = """
 ## FROM scratch AS out-618d55986ea84d86
 ## COPY --link --from=dep-n-strum-0.27.2-618d55986ea84d86 /tmp/clis-bottom_0-11-4/release/deps/*-618d55986ea84d86* /"""
@@ -13088,18 +13800,24 @@ COPY --link --from=dep-n-unicode-segmentation-1.12.0-c3cf906c5a4083dc /tmp/clis-
 ## ]
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-unicode-segmentation-1.12.0"
-## script = '''
-## FROM scratch AS cratesio-unicode-segmentation-1.12.0
-## ADD --chmod=0664 --unpack --checksum=sha256:f6ccf251212114b54433ec949fd6a7841275f9ada20dddd2f29e9ceea4501493 \
-##   https://static.crates.io/crates/unicode-segmentation/unicode-segmentation-1.12.0.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-unicode-segmentation-1.12.0"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/unicode-segmentation-1.12.0"
+## name = "unicode-segmentation"
+## name_dash_version = "unicode-segmentation-1.12.0"
+## hash = "f6ccf251212114b54433ec949fd6a7841275f9ada20dddd2f29e9ceea4501493"
 ##
 ## [[stages]]
-## name = "dep-n-unicode-segmentation-1.12.0-c3cf906c5a4083dc"
+##
+## [stages.Script]
+## stage = "dep-n-unicode-segmentation-1.12.0-c3cf906c5a4083dc"
 ## script = '''
 ## FROM rust-base AS dep-n-unicode-segmentation-1.12.0-c3cf906c5a4083dc
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -13139,7 +13857,9 @@ COPY --link --from=dep-n-unicode-segmentation-1.12.0-c3cf906c5a4083dc /tmp/clis-
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-c3cf906c5a4083dc* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-c3cf906c5a4083dc"
+##
+## [stages.Script]
+## stage = "out-c3cf906c5a4083dc"
 ## script = """
 ## FROM scratch AS out-c3cf906c5a4083dc
 ## COPY --link --from=dep-n-unicode-segmentation-1.12.0-c3cf906c5a4083dc /tmp/clis-bottom_0-11-4/release/deps/*-c3cf906c5a4083dc* /"""
@@ -13216,18 +13936,24 @@ COPY --link --from=dep-n-itertools-0.13.0-e975a39171bd5743 /tmp/clis-bottom_0-11
 ## xtern = "libeither-2f7cbff5a773db3c.rmeta"
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-itertools-0.13.0"
-## script = '''
-## FROM scratch AS cratesio-itertools-0.13.0
-## ADD --chmod=0664 --unpack --checksum=sha256:413ee7dfc52ee1a4949ceeb7dbc8a33f2d6c088194d9f922fb8318faf1f01186 \
-##   https://static.crates.io/crates/itertools/itertools-0.13.0.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-itertools-0.13.0"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/itertools-0.13.0"
+## name = "itertools"
+## name_dash_version = "itertools-0.13.0"
+## hash = "413ee7dfc52ee1a4949ceeb7dbc8a33f2d6c088194d9f922fb8318faf1f01186"
 ##
 ## [[stages]]
-## name = "dep-n-itertools-0.13.0-e975a39171bd5743"
+##
+## [stages.Script]
+## stage = "dep-n-itertools-0.13.0-e975a39171bd5743"
 ## script = '''
 ## FROM rust-base AS dep-n-itertools-0.13.0-e975a39171bd5743
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -13267,7 +13993,9 @@ COPY --link --from=dep-n-itertools-0.13.0-e975a39171bd5743 /tmp/clis-bottom_0-11
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-e975a39171bd5743* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-e975a39171bd5743"
+##
+## [stages.Script]
+## stage = "out-e975a39171bd5743"
 ## script = """
 ## FROM scratch AS out-e975a39171bd5743
 ## COPY --link --from=dep-n-itertools-0.13.0-e975a39171bd5743 /tmp/clis-bottom_0-11-4/release/deps/*-e975a39171bd5743* /"""
@@ -13327,18 +14055,24 @@ COPY --link --from=dep-n-unicode-width-0.2.0-f6f32a8a5a2fe2b5 /tmp/clis-bottom_0
 ## ]
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-unicode-width-0.2.0"
-## script = '''
-## FROM scratch AS cratesio-unicode-width-0.2.0
-## ADD --chmod=0664 --unpack --checksum=sha256:1fc81956842c57dac11422a97c3b8195a1ff727f06e85c84ed2e8aa277c9a0fd \
-##   https://static.crates.io/crates/unicode-width/unicode-width-0.2.0.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-unicode-width-0.2.0"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/unicode-width-0.2.0"
+## name = "unicode-width"
+## name_dash_version = "unicode-width-0.2.0"
+## hash = "1fc81956842c57dac11422a97c3b8195a1ff727f06e85c84ed2e8aa277c9a0fd"
 ##
 ## [[stages]]
-## name = "dep-n-unicode-width-0.2.0-f6f32a8a5a2fe2b5"
+##
+## [stages.Script]
+## stage = "dep-n-unicode-width-0.2.0-f6f32a8a5a2fe2b5"
 ## script = '''
 ## FROM rust-base AS dep-n-unicode-width-0.2.0-f6f32a8a5a2fe2b5
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -13378,7 +14112,9 @@ COPY --link --from=dep-n-unicode-width-0.2.0-f6f32a8a5a2fe2b5 /tmp/clis-bottom_0
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-f6f32a8a5a2fe2b5* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-f6f32a8a5a2fe2b5"
+##
+## [stages.Script]
+## stage = "out-f6f32a8a5a2fe2b5"
 ## script = """
 ## FROM scratch AS out-f6f32a8a5a2fe2b5
 ## COPY --link --from=dep-n-unicode-width-0.2.0-f6f32a8a5a2fe2b5 /tmp/clis-bottom_0-11-4/release/deps/*-f6f32a8a5a2fe2b5* /"""
@@ -13489,18 +14225,24 @@ COPY --link --from=dep-n-unicode-truncate-2.0.0-5b7939c59c45c565 /tmp/clis-botto
 ## xtern = "libunicode_width-f6f32a8a5a2fe2b5.rmeta"
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-unicode-truncate-2.0.0"
-## script = '''
-## FROM scratch AS cratesio-unicode-truncate-2.0.0
-## ADD --chmod=0664 --unpack --checksum=sha256:8fbf03860ff438702f3910ca5f28f8dac63c1c11e7efb5012b8b175493606330 \
-##   https://static.crates.io/crates/unicode-truncate/unicode-truncate-2.0.0.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-unicode-truncate-2.0.0"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/unicode-truncate-2.0.0"
+## name = "unicode-truncate"
+## name_dash_version = "unicode-truncate-2.0.0"
+## hash = "8fbf03860ff438702f3910ca5f28f8dac63c1c11e7efb5012b8b175493606330"
 ##
 ## [[stages]]
-## name = "dep-n-unicode-truncate-2.0.0-5b7939c59c45c565"
+##
+## [stages.Script]
+## stage = "dep-n-unicode-truncate-2.0.0-5b7939c59c45c565"
 ## script = '''
 ## FROM rust-base AS dep-n-unicode-truncate-2.0.0-5b7939c59c45c565
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -13547,7 +14289,9 @@ COPY --link --from=dep-n-unicode-truncate-2.0.0-5b7939c59c45c565 /tmp/clis-botto
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-5b7939c59c45c565* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-5b7939c59c45c565"
+##
+## [stages.Script]
+## stage = "out-5b7939c59c45c565"
 ## script = """
 ## FROM scratch AS out-5b7939c59c45c565
 ## COPY --link --from=dep-n-unicode-truncate-2.0.0-5b7939c59c45c565 /tmp/clis-bottom_0-11-4/release/deps/*-5b7939c59c45c565* /"""
@@ -13955,18 +14699,24 @@ COPY --link --from=dep-n-ratatui-core-0.1.0-beta.0-9cd79dc02c3057e6 /tmp/clis-bo
 ## uri = "/tmp/clis-bottom_0-11-4/release/build/rustversion-bad50d9b12f2ed5f/out"
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-ratatui-core-0.1.0-beta.0"
-## script = '''
-## FROM scratch AS cratesio-ratatui-core-0.1.0-beta.0
-## ADD --chmod=0664 --unpack --checksum=sha256:dc3634611dccc2110ab05a64fec77d26c5f0e0cb0c0bfecb291d9a15841aae91 \
-##   https://static.crates.io/crates/ratatui-core/ratatui-core-0.1.0-beta.0.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-ratatui-core-0.1.0-beta.0"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ratatui-core-0.1.0-beta.0"
+## name = "ratatui-core"
+## name_dash_version = "ratatui-core-0.1.0-beta.0"
+## hash = "dc3634611dccc2110ab05a64fec77d26c5f0e0cb0c0bfecb291d9a15841aae91"
 ##
 ## [[stages]]
-## name = "dep-n-ratatui-core-0.1.0-beta.0-9cd79dc02c3057e6"
+##
+## [stages.Script]
+## stage = "dep-n-ratatui-core-0.1.0-beta.0-9cd79dc02c3057e6"
 ## script = '''
 ## FROM rust-base AS dep-n-ratatui-core-0.1.0-beta.0-9cd79dc02c3057e6
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -14062,7 +14812,9 @@ COPY --link --from=dep-n-ratatui-core-0.1.0-beta.0-9cd79dc02c3057e6 /tmp/clis-bo
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-9cd79dc02c3057e6* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-9cd79dc02c3057e6"
+##
+## [stages.Script]
+## stage = "out-9cd79dc02c3057e6"
 ## script = """
 ## FROM scratch AS out-9cd79dc02c3057e6
 ## COPY --link --from=dep-n-ratatui-core-0.1.0-beta.0-9cd79dc02c3057e6 /tmp/clis-bottom_0-11-4/release/deps/*-9cd79dc02c3057e6* /"""
@@ -14784,18 +15536,24 @@ COPY --link --from=dep-n-ratatui-crossterm-0.1.0-beta.0-e23c37a3c4a8c828 /tmp/cl
 ## uri = "/tmp/clis-bottom_0-11-4/release/build/rustversion-bad50d9b12f2ed5f/out"
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-ratatui-crossterm-0.1.0-beta.0"
-## script = '''
-## FROM scratch AS cratesio-ratatui-crossterm-0.1.0-beta.0
-## ADD --chmod=0664 --unpack --checksum=sha256:fd7e4e028ac1cb4718f25ff039a476c8e2270a3021a614221f9fa2551abfa51c \
-##   https://static.crates.io/crates/ratatui-crossterm/ratatui-crossterm-0.1.0-beta.0.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-ratatui-crossterm-0.1.0-beta.0"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ratatui-crossterm-0.1.0-beta.0"
+## name = "ratatui-crossterm"
+## name_dash_version = "ratatui-crossterm-0.1.0-beta.0"
+## hash = "fd7e4e028ac1cb4718f25ff039a476c8e2270a3021a614221f9fa2551abfa51c"
 ##
 ## [[stages]]
-## name = "dep-n-ratatui-crossterm-0.1.0-beta.0-e23c37a3c4a8c828"
+##
+## [stages.Script]
+## stage = "dep-n-ratatui-crossterm-0.1.0-beta.0-e23c37a3c4a8c828"
 ## script = '''
 ## FROM rust-base AS dep-n-ratatui-crossterm-0.1.0-beta.0-e23c37a3c4a8c828
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -14941,7 +15699,9 @@ COPY --link --from=dep-n-ratatui-crossterm-0.1.0-beta.0-e23c37a3c4a8c828 /tmp/cl
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-e23c37a3c4a8c828* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-e23c37a3c4a8c828"
+##
+## [stages.Script]
+## stage = "out-e23c37a3c4a8c828"
 ## script = """
 ## FROM scratch AS out-e23c37a3c4a8c828
 ## COPY --link --from=dep-n-ratatui-crossterm-0.1.0-beta.0-e23c37a3c4a8c828 /tmp/clis-bottom_0-11-4/release/deps/*-e23c37a3c4a8c828* /"""
@@ -15011,18 +15771,24 @@ COPY --link --from=dep-n-line-clipping-0.3.3-d2dc0977654598eb /tmp/clis-bottom_0
 ## xtern = "libbitflags-f4de441526a3a0e1.rmeta"
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-line-clipping-0.3.3"
-## script = '''
-## FROM scratch AS cratesio-line-clipping-0.3.3
-## ADD --chmod=0664 --unpack --checksum=sha256:51a1679740111eb63b7b4cb3c97b1d5d9f82e142292a25edcfdb4120a48b3880 \
-##   https://static.crates.io/crates/line-clipping/line-clipping-0.3.3.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-line-clipping-0.3.3"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/line-clipping-0.3.3"
+## name = "line-clipping"
+## name_dash_version = "line-clipping-0.3.3"
+## hash = "51a1679740111eb63b7b4cb3c97b1d5d9f82e142292a25edcfdb4120a48b3880"
 ##
 ## [[stages]]
-## name = "dep-n-line-clipping-0.3.3-d2dc0977654598eb"
+##
+## [stages.Script]
+## stage = "dep-n-line-clipping-0.3.3-d2dc0977654598eb"
 ## script = '''
 ## FROM rust-base AS dep-n-line-clipping-0.3.3-d2dc0977654598eb
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -15062,7 +15828,9 @@ COPY --link --from=dep-n-line-clipping-0.3.3-d2dc0977654598eb /tmp/clis-bottom_0
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-d2dc0977654598eb* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-d2dc0977654598eb"
+##
+## [stages.Script]
+## stage = "out-d2dc0977654598eb"
 ## script = """
 ## FROM scratch AS out-d2dc0977654598eb
 ## COPY --link --from=dep-n-line-clipping-0.3.3-d2dc0977654598eb /tmp/clis-bottom_0-11-4/release/deps/*-d2dc0977654598eb* /"""
@@ -15127,18 +15895,24 @@ COPY --link --from=dep-n-powerfmt-0.2.0-e64a19be6d4ec013 /tmp/clis-bottom_0-11-4
 ## ]
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-powerfmt-0.2.0"
-## script = '''
-## FROM scratch AS cratesio-powerfmt-0.2.0
-## ADD --chmod=0664 --unpack --checksum=sha256:439ee305def115ba05938db6eb1644ff94165c5ab5e9420d1c1bcedbba909391 \
-##   https://static.crates.io/crates/powerfmt/powerfmt-0.2.0.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-powerfmt-0.2.0"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/powerfmt-0.2.0"
+## name = "powerfmt"
+## name_dash_version = "powerfmt-0.2.0"
+## hash = "439ee305def115ba05938db6eb1644ff94165c5ab5e9420d1c1bcedbba909391"
 ##
 ## [[stages]]
-## name = "dep-n-powerfmt-0.2.0-e64a19be6d4ec013"
+##
+## [stages.Script]
+## stage = "dep-n-powerfmt-0.2.0-e64a19be6d4ec013"
 ## script = '''
 ## FROM rust-base AS dep-n-powerfmt-0.2.0-e64a19be6d4ec013
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -15179,7 +15953,9 @@ COPY --link --from=dep-n-powerfmt-0.2.0-e64a19be6d4ec013 /tmp/clis-bottom_0-11-4
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-e64a19be6d4ec013* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-e64a19be6d4ec013"
+##
+## [stages.Script]
+## stage = "out-e64a19be6d4ec013"
 ## script = """
 ## FROM scratch AS out-e64a19be6d4ec013
 ## COPY --link --from=dep-n-powerfmt-0.2.0-e64a19be6d4ec013 /tmp/clis-bottom_0-11-4/release/deps/*-e64a19be6d4ec013* /"""
@@ -15249,18 +16025,24 @@ COPY --link --from=dep-n-deranged-0.5.4-8d9f9e5c65b7205e /tmp/clis-bottom_0-11-4
 ## xtern = "libpowerfmt-e64a19be6d4ec013.rmeta"
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-deranged-0.5.4"
-## script = '''
-## FROM scratch AS cratesio-deranged-0.5.4
-## ADD --chmod=0664 --unpack --checksum=sha256:a41953f86f8a05768a6cda24def994fd2f424b04ec5c719cf89989779f199071 \
-##   https://static.crates.io/crates/deranged/deranged-0.5.4.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-deranged-0.5.4"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/deranged-0.5.4"
+## name = "deranged"
+## name_dash_version = "deranged-0.5.4"
+## hash = "a41953f86f8a05768a6cda24def994fd2f424b04ec5c719cf89989779f199071"
 ##
 ## [[stages]]
-## name = "dep-n-deranged-0.5.4-8d9f9e5c65b7205e"
+##
+## [stages.Script]
+## stage = "dep-n-deranged-0.5.4-8d9f9e5c65b7205e"
 ## script = '''
 ## FROM rust-base AS dep-n-deranged-0.5.4-8d9f9e5c65b7205e
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -15300,7 +16082,9 @@ COPY --link --from=dep-n-deranged-0.5.4-8d9f9e5c65b7205e /tmp/clis-bottom_0-11-4
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-8d9f9e5c65b7205e* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-8d9f9e5c65b7205e"
+##
+## [stages.Script]
+## stage = "out-8d9f9e5c65b7205e"
 ## script = """
 ## FROM scratch AS out-8d9f9e5c65b7205e
 ## COPY --link --from=dep-n-deranged-0.5.4-8d9f9e5c65b7205e /tmp/clis-bottom_0-11-4/release/deps/*-8d9f9e5c65b7205e* /"""
@@ -15361,18 +16145,24 @@ COPY --link --from=dep-n-num-conv-0.1.0-0dc06332281b1d1e /tmp/clis-bottom_0-11-4
 ## ]
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-num-conv-0.1.0"
-## script = '''
-## FROM scratch AS cratesio-num-conv-0.1.0
-## ADD --chmod=0664 --unpack --checksum=sha256:51d515d32fb182ee37cda2ccdcb92950d6a3c2893aa280e540671c2cd0f3b1d9 \
-##   https://static.crates.io/crates/num-conv/num-conv-0.1.0.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-num-conv-0.1.0"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-conv-0.1.0"
+## name = "num-conv"
+## name_dash_version = "num-conv-0.1.0"
+## hash = "51d515d32fb182ee37cda2ccdcb92950d6a3c2893aa280e540671c2cd0f3b1d9"
 ##
 ## [[stages]]
-## name = "dep-n-num-conv-0.1.0-0dc06332281b1d1e"
+##
+## [stages.Script]
+## stage = "dep-n-num-conv-0.1.0-0dc06332281b1d1e"
 ## script = '''
 ## FROM rust-base AS dep-n-num-conv-0.1.0-0dc06332281b1d1e
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -15413,7 +16203,9 @@ COPY --link --from=dep-n-num-conv-0.1.0-0dc06332281b1d1e /tmp/clis-bottom_0-11-4
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-0dc06332281b1d1e* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-0dc06332281b1d1e"
+##
+## [stages.Script]
+## stage = "out-0dc06332281b1d1e"
 ## script = """
 ## FROM scratch AS out-0dc06332281b1d1e
 ## COPY --link --from=dep-n-num-conv-0.1.0-0dc06332281b1d1e /tmp/clis-bottom_0-11-4/release/deps/*-0dc06332281b1d1e* /"""
@@ -15471,18 +16263,24 @@ COPY --link --from=dep-n-num_threads-0.1.7-da62e1a72e26635a /tmp/clis-bottom_0-1
 ## ]
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-num_threads-0.1.7"
-## script = '''
-## FROM scratch AS cratesio-num_threads-0.1.7
-## ADD --chmod=0664 --unpack --checksum=sha256:5c7398b9c8b70908f6371f47ed36737907c87c52af34c268fed0bf0ceb92ead9 \
-##   https://static.crates.io/crates/num_threads/num_threads-0.1.7.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-num_threads-0.1.7"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num_threads-0.1.7"
+## name = "num_threads"
+## name_dash_version = "num_threads-0.1.7"
+## hash = "5c7398b9c8b70908f6371f47ed36737907c87c52af34c268fed0bf0ceb92ead9"
 ##
 ## [[stages]]
-## name = "dep-n-num_threads-0.1.7-da62e1a72e26635a"
+##
+## [stages.Script]
+## stage = "dep-n-num_threads-0.1.7-da62e1a72e26635a"
 ## script = '''
 ## FROM rust-base AS dep-n-num_threads-0.1.7-da62e1a72e26635a
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -15520,7 +16318,9 @@ COPY --link --from=dep-n-num_threads-0.1.7-da62e1a72e26635a /tmp/clis-bottom_0-1
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-da62e1a72e26635a* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-da62e1a72e26635a"
+##
+## [stages.Script]
+## stage = "out-da62e1a72e26635a"
 ## script = """
 ## FROM scratch AS out-da62e1a72e26635a
 ## COPY --link --from=dep-n-num_threads-0.1.7-da62e1a72e26635a /tmp/clis-bottom_0-11-4/release/deps/*-da62e1a72e26635a* /"""
@@ -15578,18 +16378,24 @@ COPY --link --from=dep-n-time-core-0.1.6-6b511e8369ee2b6b /tmp/clis-bottom_0-11-
 ## ]
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-time-core-0.1.6"
-## script = '''
-## FROM scratch AS cratesio-time-core-0.1.6
-## ADD --chmod=0664 --unpack --checksum=sha256:40868e7c1d2f0b8d73e4a8c7f0ff63af4f6d19be117e90bd73eb1d62cf831c6b \
-##   https://static.crates.io/crates/time-core/time-core-0.1.6.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-time-core-0.1.6"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/time-core-0.1.6"
+## name = "time-core"
+## name_dash_version = "time-core-0.1.6"
+## hash = "40868e7c1d2f0b8d73e4a8c7f0ff63af4f6d19be117e90bd73eb1d62cf831c6b"
 ##
 ## [[stages]]
-## name = "dep-n-time-core-0.1.6-6b511e8369ee2b6b"
+##
+## [stages.Script]
+## stage = "dep-n-time-core-0.1.6-6b511e8369ee2b6b"
 ## script = '''
 ## FROM rust-base AS dep-n-time-core-0.1.6-6b511e8369ee2b6b
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -15627,7 +16433,9 @@ COPY --link --from=dep-n-time-core-0.1.6-6b511e8369ee2b6b /tmp/clis-bottom_0-11-
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-6b511e8369ee2b6b* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-6b511e8369ee2b6b"
+##
+## [stages.Script]
+## stage = "out-6b511e8369ee2b6b"
 ## script = """
 ## FROM scratch AS out-6b511e8369ee2b6b
 ## COPY --link --from=dep-n-time-core-0.1.6-6b511e8369ee2b6b /tmp/clis-bottom_0-11-4/release/deps/*-6b511e8369ee2b6b* /"""
@@ -15761,18 +16569,24 @@ COPY --link --from=dep-n-time-0.3.44-d48fa55a8ead9508 /tmp/clis-bottom_0-11-4/re
 ## xtern = "libtime_core-6b511e8369ee2b6b.rmeta"
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-time-0.3.44"
-## script = '''
-## FROM scratch AS cratesio-time-0.3.44
-## ADD --chmod=0664 --unpack --checksum=sha256:91e7d9e3bb61134e77bde20dd4825b97c010155709965fedf0f49bb138e52a9d \
-##   https://static.crates.io/crates/time/time-0.3.44.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-time-0.3.44"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/time-0.3.44"
+## name = "time"
+## name_dash_version = "time-0.3.44"
+## hash = "91e7d9e3bb61134e77bde20dd4825b97c010155709965fedf0f49bb138e52a9d"
 ##
 ## [[stages]]
-## name = "dep-n-time-0.3.44-d48fa55a8ead9508"
+##
+## [stages.Script]
+## stage = "dep-n-time-0.3.44-d48fa55a8ead9508"
 ## script = '''
 ## FROM rust-base AS dep-n-time-0.3.44-d48fa55a8ead9508
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -15822,7 +16636,9 @@ COPY --link --from=dep-n-time-0.3.44-d48fa55a8ead9508 /tmp/clis-bottom_0-11-4/re
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-d48fa55a8ead9508* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-d48fa55a8ead9508"
+##
+## [stages.Script]
+## stage = "out-d48fa55a8ead9508"
 ## script = """
 ## FROM scratch AS out-d48fa55a8ead9508
 ## COPY --link --from=dep-n-time-0.3.44-d48fa55a8ead9508 /tmp/clis-bottom_0-11-4/release/deps/*-d48fa55a8ead9508* /"""
@@ -16410,18 +17226,24 @@ COPY --link --from=dep-n-ratatui-widgets-0.3.0-beta.0-0a88be36706a839f /tmp/clis
 ## uri = "/tmp/clis-bottom_0-11-4/release/build/rustversion-bad50d9b12f2ed5f/out"
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-ratatui-widgets-0.3.0-beta.0"
-## script = '''
-## FROM scratch AS cratesio-ratatui-widgets-0.3.0-beta.0
-## ADD --chmod=0664 --unpack --checksum=sha256:5bf145c4da1f8e5c58957350985ace8facbbf394ddecc526cd33e7dcf5831c41 \
-##   https://static.crates.io/crates/ratatui-widgets/ratatui-widgets-0.3.0-beta.0.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-ratatui-widgets-0.3.0-beta.0"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ratatui-widgets-0.3.0-beta.0"
+## name = "ratatui-widgets"
+## name_dash_version = "ratatui-widgets-0.3.0-beta.0"
+## hash = "5bf145c4da1f8e5c58957350985ace8facbbf394ddecc526cd33e7dcf5831c41"
 ##
 ## [[stages]]
-## name = "dep-n-ratatui-widgets-0.3.0-beta.0-0a88be36706a839f"
+##
+## [stages.Script]
+## stage = "dep-n-ratatui-widgets-0.3.0-beta.0-0a88be36706a839f"
 ## script = '''
 ## FROM rust-base AS dep-n-ratatui-widgets-0.3.0-beta.0-0a88be36706a839f
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -16545,7 +17367,9 @@ COPY --link --from=dep-n-ratatui-widgets-0.3.0-beta.0-0a88be36706a839f /tmp/clis
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-0a88be36706a839f* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-0a88be36706a839f"
+##
+## [stages.Script]
+## stage = "out-0a88be36706a839f"
 ## script = """
 ## FROM scratch AS out-0a88be36706a839f
 ## COPY --link --from=dep-n-ratatui-widgets-0.3.0-beta.0-0a88be36706a839f /tmp/clis-bottom_0-11-4/release/deps/*-0a88be36706a839f* /"""
@@ -17145,18 +17969,24 @@ COPY --link --from=dep-n-ratatui-macros-0.7.0-beta.0-f2b0d417d18ff3fe /tmp/clis-
 ## uri = "/tmp/clis-bottom_0-11-4/release/build/rustversion-bad50d9b12f2ed5f/out"
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-ratatui-macros-0.7.0-beta.0"
-## script = '''
-## FROM scratch AS cratesio-ratatui-macros-0.7.0-beta.0
-## ADD --chmod=0664 --unpack --checksum=sha256:b59d6fd5d3796a0305d4bfb1e5f7b86db2f4968a8c69b439f379f73efa4495c3 \
-##   https://static.crates.io/crates/ratatui-macros/ratatui-macros-0.7.0-beta.0.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-ratatui-macros-0.7.0-beta.0"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ratatui-macros-0.7.0-beta.0"
+## name = "ratatui-macros"
+## name_dash_version = "ratatui-macros-0.7.0-beta.0"
+## hash = "b59d6fd5d3796a0305d4bfb1e5f7b86db2f4968a8c69b439f379f73efa4495c3"
 ##
 ## [[stages]]
-## name = "dep-n-ratatui-macros-0.7.0-beta.0-f2b0d417d18ff3fe"
+##
+## [stages.Script]
+## stage = "dep-n-ratatui-macros-0.7.0-beta.0-f2b0d417d18ff3fe"
 ## script = '''
 ## FROM rust-base AS dep-n-ratatui-macros-0.7.0-beta.0-f2b0d417d18ff3fe
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -17282,7 +18112,9 @@ COPY --link --from=dep-n-ratatui-macros-0.7.0-beta.0-f2b0d417d18ff3fe /tmp/clis-
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-f2b0d417d18ff3fe* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-f2b0d417d18ff3fe"
+##
+## [stages.Script]
+## stage = "out-f2b0d417d18ff3fe"
 ## script = """
 ## FROM scratch AS out-f2b0d417d18ff3fe
 ## COPY --link --from=dep-n-ratatui-macros-0.7.0-beta.0-f2b0d417d18ff3fe /tmp/clis-bottom_0-11-4/release/deps/*-f2b0d417d18ff3fe* /"""
@@ -18124,18 +18956,24 @@ COPY --link --from=dep-n-ratatui-0.30.0-beta.0-85dafea1106b5a19 /tmp/clis-bottom
 ## uri = "/tmp/clis-bottom_0-11-4/release/build/rustversion-bad50d9b12f2ed5f/out"
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-ratatui-0.30.0-beta.0"
-## script = '''
-## FROM scratch AS cratesio-ratatui-0.30.0-beta.0
-## ADD --chmod=0664 --unpack --checksum=sha256:6c9f96d98eaa3ce9d7ed031916670ea79a3ce487f8365385b11bc69da69038ba \
-##   https://static.crates.io/crates/ratatui/ratatui-0.30.0-beta.0.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-ratatui-0.30.0-beta.0"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ratatui-0.30.0-beta.0"
+## name = "ratatui"
+## name_dash_version = "ratatui-0.30.0-beta.0"
+## hash = "6c9f96d98eaa3ce9d7ed031916670ea79a3ce487f8365385b11bc69da69038ba"
 ##
 ## [[stages]]
-## name = "dep-n-ratatui-0.30.0-beta.0-85dafea1106b5a19"
+##
+## [stages.Script]
+## stage = "dep-n-ratatui-0.30.0-beta.0-85dafea1106b5a19"
 ## script = '''
 ## FROM rust-base AS dep-n-ratatui-0.30.0-beta.0-85dafea1106b5a19
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -18301,7 +19139,9 @@ COPY --link --from=dep-n-ratatui-0.30.0-beta.0-85dafea1106b5a19 /tmp/clis-bottom
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-85dafea1106b5a19* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-85dafea1106b5a19"
+##
+## [stages.Script]
+## stage = "out-85dafea1106b5a19"
 ## script = """
 ## FROM scratch AS out-85dafea1106b5a19
 ## COPY --link --from=dep-n-ratatui-0.30.0-beta.0-85dafea1106b5a19 /tmp/clis-bottom_0-11-4/release/deps/*-85dafea1106b5a19* /"""
@@ -18376,18 +19216,24 @@ COPY --link --from=dep-n-aho-corasick-1.1.3-818dcc26aba0d876 /tmp/clis-bottom_0-
 ## xtern = "libmemchr-c80d603364c0d236.rmeta"
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-aho-corasick-1.1.3"
-## script = '''
-## FROM scratch AS cratesio-aho-corasick-1.1.3
-## ADD --chmod=0664 --unpack --checksum=sha256:8e60d3430d3a69478ad0993f19238d2df97c507009a52b3c10addcd7f6bcb916 \
-##   https://static.crates.io/crates/aho-corasick/aho-corasick-1.1.3.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-aho-corasick-1.1.3"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aho-corasick-1.1.3"
+## name = "aho-corasick"
+## name_dash_version = "aho-corasick-1.1.3"
+## hash = "8e60d3430d3a69478ad0993f19238d2df97c507009a52b3c10addcd7f6bcb916"
 ##
 ## [[stages]]
-## name = "dep-n-aho-corasick-1.1.3-818dcc26aba0d876"
+##
+## [stages.Script]
+## stage = "dep-n-aho-corasick-1.1.3-818dcc26aba0d876"
 ## script = '''
 ## FROM rust-base AS dep-n-aho-corasick-1.1.3-818dcc26aba0d876
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -18427,7 +19273,9 @@ COPY --link --from=dep-n-aho-corasick-1.1.3-818dcc26aba0d876 /tmp/clis-bottom_0-
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-818dcc26aba0d876* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-818dcc26aba0d876"
+##
+## [stages.Script]
+## stage = "out-818dcc26aba0d876"
 ## script = """
 ## FROM scratch AS out-818dcc26aba0d876
 ## COPY --link --from=dep-n-aho-corasick-1.1.3-818dcc26aba0d876 /tmp/clis-bottom_0-11-4/release/deps/*-818dcc26aba0d876* /"""
@@ -18485,18 +19333,24 @@ COPY --link --from=dep-n-regex-syntax-0.8.6-e8c86476c582c98b /tmp/clis-bottom_0-
 ## ]
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-regex-syntax-0.8.6"
-## script = '''
-## FROM scratch AS cratesio-regex-syntax-0.8.6
-## ADD --chmod=0664 --unpack --checksum=sha256:caf4aa5b0f434c91fe5c7f1ecb6a5ece2130b02ad2a590589dda5146df959001 \
-##   https://static.crates.io/crates/regex-syntax/regex-syntax-0.8.6.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-regex-syntax-0.8.6"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/regex-syntax-0.8.6"
+## name = "regex-syntax"
+## name_dash_version = "regex-syntax-0.8.6"
+## hash = "caf4aa5b0f434c91fe5c7f1ecb6a5ece2130b02ad2a590589dda5146df959001"
 ##
 ## [[stages]]
-## name = "dep-n-regex-syntax-0.8.6-e8c86476c582c98b"
+##
+## [stages.Script]
+## stage = "dep-n-regex-syntax-0.8.6-e8c86476c582c98b"
 ## script = '''
 ## FROM rust-base AS dep-n-regex-syntax-0.8.6-e8c86476c582c98b
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -18534,7 +19388,9 @@ COPY --link --from=dep-n-regex-syntax-0.8.6-e8c86476c582c98b /tmp/clis-bottom_0-
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-e8c86476c582c98b* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-e8c86476c582c98b"
+##
+## [stages.Script]
+## stage = "out-e8c86476c582c98b"
 ## script = """
 ## FROM scratch AS out-e8c86476c582c98b
 ## COPY --link --from=dep-n-regex-syntax-0.8.6-e8c86476c582c98b /tmp/clis-bottom_0-11-4/release/deps/*-e8c86476c582c98b* /"""
@@ -18632,18 +19488,24 @@ COPY --link --from=dep-n-regex-automata-0.4.10-6f7c303d142e0412 /tmp/clis-bottom
 ## xtern = "libregex_syntax-e8c86476c582c98b.rmeta"
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-regex-automata-0.4.10"
-## script = '''
-## FROM scratch AS cratesio-regex-automata-0.4.10
-## ADD --chmod=0664 --unpack --checksum=sha256:6b9458fa0bfeeac22b5ca447c63aaf45f28439a709ccd244698632f9aa6394d6 \
-##   https://static.crates.io/crates/regex-automata/regex-automata-0.4.10.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-regex-automata-0.4.10"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/regex-automata-0.4.10"
+## name = "regex-automata"
+## name_dash_version = "regex-automata-0.4.10"
+## hash = "6b9458fa0bfeeac22b5ca447c63aaf45f28439a709ccd244698632f9aa6394d6"
 ##
 ## [[stages]]
-## name = "dep-n-regex-automata-0.4.10-6f7c303d142e0412"
+##
+## [stages.Script]
+## stage = "dep-n-regex-automata-0.4.10-6f7c303d142e0412"
 ## script = '''
 ## FROM rust-base AS dep-n-regex-automata-0.4.10-6f7c303d142e0412
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -18687,7 +19549,9 @@ COPY --link --from=dep-n-regex-automata-0.4.10-6f7c303d142e0412 /tmp/clis-bottom
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-6f7c303d142e0412* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-6f7c303d142e0412"
+##
+## [stages.Script]
+## stage = "out-6f7c303d142e0412"
 ## script = """
 ## FROM scratch AS out-6f7c303d142e0412
 ## COPY --link --from=dep-n-regex-automata-0.4.10-6f7c303d142e0412 /tmp/clis-bottom_0-11-4/release/deps/*-6f7c303d142e0412* /"""
@@ -18799,18 +19663,24 @@ COPY --link --from=dep-n-regex-1.11.2-df900add298d9323 /tmp/clis-bottom_0-11-4/r
 ## xtern = "libregex_syntax-e8c86476c582c98b.rmeta"
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-regex-1.11.2"
-## script = '''
-## FROM scratch AS cratesio-regex-1.11.2
-## ADD --chmod=0664 --unpack --checksum=sha256:23d7fd106d8c02486a8d64e778353d1cffe08ce79ac2e82f540c86d0facf6912 \
-##   https://static.crates.io/crates/regex/regex-1.11.2.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-regex-1.11.2"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/regex-1.11.2"
+## name = "regex"
+## name_dash_version = "regex-1.11.2"
+## hash = "23d7fd106d8c02486a8d64e778353d1cffe08ce79ac2e82f540c86d0facf6912"
 ##
 ## [[stages]]
-## name = "dep-n-regex-1.11.2-df900add298d9323"
+##
+## [stages.Script]
+## stage = "dep-n-regex-1.11.2-df900add298d9323"
 ## script = '''
 ## FROM rust-base AS dep-n-regex-1.11.2-df900add298d9323
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -18858,7 +19728,9 @@ COPY --link --from=dep-n-regex-1.11.2-df900add298d9323 /tmp/clis-bottom_0-11-4/r
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-df900add298d9323* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-df900add298d9323"
+##
+## [stages.Script]
+## stage = "out-df900add298d9323"
 ## script = """
 ## FROM scratch AS out-df900add298d9323
 ## COPY --link --from=dep-n-regex-1.11.2-df900add298d9323 /tmp/clis-bottom_0-11-4/release/deps/*-df900add298d9323* /"""
@@ -18922,18 +19794,24 @@ COPY --link --from=dep-n-serde_core-1.0.226-e386c3d490144c22 /tmp/clis-bottom_0-
 ## uri = "/tmp/clis-bottom_0-11-4/release/build/serde_core-cc6da97a70fe7bbb/out"
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-serde_core-1.0.226"
-## script = '''
-## FROM scratch AS cratesio-serde_core-1.0.226
-## ADD --chmod=0664 --unpack --checksum=sha256:ba2ba63999edb9dac981fb34b3e5c0d111a69b0924e253ed29d83f7c99e966a4 \
-##   https://static.crates.io/crates/serde_core/serde_core-1.0.226.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-serde_core-1.0.226"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.226"
+## name = "serde_core"
+## name_dash_version = "serde_core-1.0.226"
+## hash = "ba2ba63999edb9dac981fb34b3e5c0d111a69b0924e253ed29d83f7c99e966a4"
 ##
 ## [[stages]]
-## name = "dep-n-serde_core-1.0.226-e386c3d490144c22"
+##
+## [stages.Script]
+## stage = "dep-n-serde_core-1.0.226-e386c3d490144c22"
 ## script = '''
 ## FROM rust-base AS dep-n-serde_core-1.0.226-e386c3d490144c22
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -18973,7 +19851,9 @@ COPY --link --from=dep-n-serde_core-1.0.226-e386c3d490144c22 /tmp/clis-bottom_0-
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-e386c3d490144c22* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-e386c3d490144c22"
+##
+## [stages.Script]
+## stage = "out-e386c3d490144c22"
 ## script = """
 ## FROM scratch AS out-e386c3d490144c22
 ## COPY --link --from=dep-n-serde_core-1.0.226-e386c3d490144c22 /tmp/clis-bottom_0-11-4/release/deps/*-e386c3d490144c22* /"""
@@ -19061,18 +19941,24 @@ COPY --link --from=dep-n-serde_derive-1.0.226-f819c6fdab92cab2 /tmp/clis-bottom_
 ## xtern = "libsyn-d8ac7146e5acfe07.rlib"
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-serde_derive-1.0.226"
-## script = '''
-## FROM scratch AS cratesio-serde_derive-1.0.226
-## ADD --chmod=0664 --unpack --checksum=sha256:8db53ae22f34573731bafa1db20f04027b2d25e02d8205921b569171699cdb33 \
-##   https://static.crates.io/crates/serde_derive/serde_derive-1.0.226.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-serde_derive-1.0.226"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_derive-1.0.226"
+## name = "serde_derive"
+## name_dash_version = "serde_derive-1.0.226"
+## hash = "8db53ae22f34573731bafa1db20f04027b2d25e02d8205921b569171699cdb33"
 ##
 ## [[stages]]
-## name = "dep-n-serde_derive-1.0.226-f819c6fdab92cab2"
+##
+## [stages.Script]
+## stage = "dep-n-serde_derive-1.0.226-f819c6fdab92cab2"
 ## script = '''
 ## FROM rust-base AS dep-n-serde_derive-1.0.226-f819c6fdab92cab2
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -19114,7 +20000,9 @@ COPY --link --from=dep-n-serde_derive-1.0.226-f819c6fdab92cab2 /tmp/clis-bottom_
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-f819c6fdab92cab2* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-f819c6fdab92cab2"
+##
+## [stages.Script]
+## stage = "out-f819c6fdab92cab2"
 ## script = """
 ## FROM scratch AS out-f819c6fdab92cab2
 ## COPY --link --from=dep-n-serde_derive-1.0.226-f819c6fdab92cab2 /tmp/clis-bottom_0-11-4/release/deps/*-f819c6fdab92cab2* /"""
@@ -19253,18 +20141,24 @@ COPY --link --from=dep-n-serde-1.0.226-4fa987dce710c612 /tmp/clis-bottom_0-11-4/
 ## uri = "/tmp/clis-bottom_0-11-4/release/build/serde_core-cc6da97a70fe7bbb/out"
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-serde-1.0.226"
-## script = '''
-## FROM scratch AS cratesio-serde-1.0.226
-## ADD --chmod=0664 --unpack --checksum=sha256:0dca6411025b24b60bfa7ec1fe1f8e710ac09782dca409ee8237ba74b51295fd \
-##   https://static.crates.io/crates/serde/serde-1.0.226.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-serde-1.0.226"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.226"
+## name = "serde"
+## name_dash_version = "serde-1.0.226"
+## hash = "0dca6411025b24b60bfa7ec1fe1f8e710ac09782dca409ee8237ba74b51295fd"
 ##
 ## [[stages]]
-## name = "dep-n-serde-1.0.226-4fa987dce710c612"
+##
+## [stages.Script]
+## stage = "dep-n-serde-1.0.226-4fa987dce710c612"
 ## script = '''
 ## FROM rust-base AS dep-n-serde-1.0.226-4fa987dce710c612
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -19315,7 +20209,9 @@ COPY --link --from=dep-n-serde-1.0.226-4fa987dce710c612 /tmp/clis-bottom_0-11-4/
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-4fa987dce710c612* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-4fa987dce710c612"
+##
+## [stages.Script]
+## stage = "out-4fa987dce710c612"
 ## script = """
 ## FROM scratch AS out-4fa987dce710c612
 ## COPY --link --from=dep-n-serde-1.0.226-4fa987dce710c612 /tmp/clis-bottom_0-11-4/release/deps/*-4fa987dce710c612* /"""
@@ -19376,18 +20272,24 @@ COPY --link --from=dep-n-lazycell-1.3.0-17ad1b883e8355fd /tmp/clis-bottom_0-11-4
 ## ]
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-lazycell-1.3.0"
-## script = '''
-## FROM scratch AS cratesio-lazycell-1.3.0
-## ADD --chmod=0664 --unpack --checksum=sha256:830d08ce1d1d941e6b30645f1a0eb5643013d835ce3779a5fc208261dbe10f55 \
-##   https://static.crates.io/crates/lazycell/lazycell-1.3.0.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-lazycell-1.3.0"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/lazycell-1.3.0"
+## name = "lazycell"
+## name_dash_version = "lazycell-1.3.0"
+## hash = "830d08ce1d1d941e6b30645f1a0eb5643013d835ce3779a5fc208261dbe10f55"
 ##
 ## [[stages]]
-## name = "dep-n-lazycell-1.3.0-17ad1b883e8355fd"
+##
+## [stages.Script]
+## stage = "dep-n-lazycell-1.3.0-17ad1b883e8355fd"
 ## script = '''
 ## FROM rust-base AS dep-n-lazycell-1.3.0-17ad1b883e8355fd
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -19425,7 +20327,9 @@ COPY --link --from=dep-n-lazycell-1.3.0-17ad1b883e8355fd /tmp/clis-bottom_0-11-4
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-17ad1b883e8355fd* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-17ad1b883e8355fd"
+##
+## [stages.Script]
+## stage = "out-17ad1b883e8355fd"
 ## script = """
 ## FROM scratch AS out-17ad1b883e8355fd
 ## COPY --link --from=dep-n-lazycell-1.3.0-17ad1b883e8355fd /tmp/clis-bottom_0-11-4/release/deps/*-17ad1b883e8355fd* /"""
@@ -19484,18 +20388,24 @@ COPY --link --from=dep-n-num-traits-0.2.19-fe709d6b7b792595 /tmp/clis-bottom_0-1
 ## ]
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-num-traits-0.2.19"
-## script = '''
-## FROM scratch AS cratesio-num-traits-0.2.19
-## ADD --chmod=0664 --unpack --checksum=sha256:071dfc062690e90b734c0b2273ce72ad0ffa95f0c74596bc250dcfd960262841 \
-##   https://static.crates.io/crates/num-traits/num-traits-0.2.19.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-num-traits-0.2.19"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-traits-0.2.19"
+## name = "num-traits"
+## name_dash_version = "num-traits-0.2.19"
+## hash = "071dfc062690e90b734c0b2273ce72ad0ffa95f0c74596bc250dcfd960262841"
 ##
 ## [[stages]]
-## name = "dep-n-num-traits-0.2.19-fe709d6b7b792595"
+##
+## [stages.Script]
+## stage = "dep-n-num-traits-0.2.19-fe709d6b7b792595"
 ## script = '''
 ## FROM rust-base AS dep-n-num-traits-0.2.19-fe709d6b7b792595
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -19534,7 +20444,9 @@ COPY --link --from=dep-n-num-traits-0.2.19-fe709d6b7b792595 /tmp/clis-bottom_0-1
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-fe709d6b7b792595* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-fe709d6b7b792595"
+##
+## [stages.Script]
+## stage = "out-fe709d6b7b792595"
 ## script = """
 ## FROM scratch AS out-fe709d6b7b792595
 ## COPY --link --from=dep-n-num-traits-0.2.19-fe709d6b7b792595 /tmp/clis-bottom_0-11-4/release/deps/*-fe709d6b7b792595* /"""
@@ -19601,18 +20513,24 @@ COPY --link --from=dep-n-typenum-1.18.0-28fef2c975a78e11 /tmp/clis-bottom_0-11-4
 ## uri = "/tmp/clis-bottom_0-11-4/release/build/typenum-d9a335b83768a642/out"
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-typenum-1.18.0"
-## script = '''
-## FROM scratch AS cratesio-typenum-1.18.0
-## ADD --chmod=0664 --unpack --checksum=sha256:1dccffe3ce07af9386bfd29e80c0ab1a8205a2fc34e4bcd40364df902cfa8f3f \
-##   https://static.crates.io/crates/typenum/typenum-1.18.0.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-typenum-1.18.0"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/typenum-1.18.0"
+## name = "typenum"
+## name_dash_version = "typenum-1.18.0"
+## hash = "1dccffe3ce07af9386bfd29e80c0ab1a8205a2fc34e4bcd40364df902cfa8f3f"
 ##
 ## [[stages]]
-## name = "dep-n-typenum-1.18.0-28fef2c975a78e11"
+##
+## [stages.Script]
+## stage = "dep-n-typenum-1.18.0-28fef2c975a78e11"
 ## script = '''
 ## FROM rust-base AS dep-n-typenum-1.18.0-28fef2c975a78e11
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -19655,7 +20573,9 @@ COPY --link --from=dep-n-typenum-1.18.0-28fef2c975a78e11 /tmp/clis-bottom_0-11-4
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-28fef2c975a78e11* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-28fef2c975a78e11"
+##
+## [stages.Script]
+## stage = "out-28fef2c975a78e11"
 ## script = """
 ## FROM scratch AS out-28fef2c975a78e11
 ## COPY --link --from=dep-n-typenum-1.18.0-28fef2c975a78e11 /tmp/clis-bottom_0-11-4/release/deps/*-28fef2c975a78e11* /"""
@@ -19781,18 +20701,24 @@ COPY --link --from=dep-n-uom-0.37.0-f8a67bb39d66d364 /tmp/clis-bottom_0-11-4/rel
 ## uri = "/tmp/clis-bottom_0-11-4/release/build/typenum-d9a335b83768a642/out"
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-uom-0.37.0"
-## script = '''
-## FROM scratch AS cratesio-uom-0.37.0
-## ADD --chmod=0664 --unpack --checksum=sha256:cd5cfe7d84f6774726717f358a37f5bca8fca273bed4de40604ad129d1107b49 \
-##   https://static.crates.io/crates/uom/uom-0.37.0.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-uom-0.37.0"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/uom-0.37.0"
+## name = "uom"
+## name_dash_version = "uom-0.37.0"
+## hash = "cd5cfe7d84f6774726717f358a37f5bca8fca273bed4de40604ad129d1107b49"
 ##
 ## [[stages]]
-## name = "dep-n-uom-0.37.0-f8a67bb39d66d364"
+##
+## [stages.Script]
+## stage = "dep-n-uom-0.37.0-f8a67bb39d66d364"
 ## script = '''
 ## FROM rust-base AS dep-n-uom-0.37.0-f8a67bb39d66d364
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -19834,7 +20760,9 @@ COPY --link --from=dep-n-uom-0.37.0-f8a67bb39d66d364 /tmp/clis-bottom_0-11-4/rel
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-f8a67bb39d66d364* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-f8a67bb39d66d364"
+##
+## [stages.Script]
+## stage = "out-f8a67bb39d66d364"
 ## script = """
 ## FROM scratch AS out-f8a67bb39d66d364
 ## COPY --link --from=dep-n-uom-0.37.0-f8a67bb39d66d364 /tmp/clis-bottom_0-11-4/release/deps/*-f8a67bb39d66d364* /"""
@@ -19961,18 +20889,24 @@ COPY --link --from=dep-n-starship-battery-0.10.2-1c1146852062883c /tmp/clis-bott
 ## uri = "/tmp/clis-bottom_0-11-4/release/build/typenum-d9a335b83768a642/out"
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-starship-battery-0.10.2"
-## script = '''
-## FROM scratch AS cratesio-starship-battery-0.10.2
-## ADD --chmod=0664 --unpack --checksum=sha256:5b781e3db6801873ce18c19041da668920c46223cdc7059ea20e2f8fe1ba85a2 \
-##   https://static.crates.io/crates/starship-battery/starship-battery-0.10.2.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-starship-battery-0.10.2"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/starship-battery-0.10.2"
+## name = "starship-battery"
+## name_dash_version = "starship-battery-0.10.2"
+## hash = "5b781e3db6801873ce18c19041da668920c46223cdc7059ea20e2f8fe1ba85a2"
 ##
 ## [[stages]]
-## name = "dep-n-starship-battery-0.10.2-1c1146852062883c"
+##
+## [stages.Script]
+## stage = "dep-n-starship-battery-0.10.2-1c1146852062883c"
 ## script = '''
 ## FROM rust-base AS dep-n-starship-battery-0.10.2-1c1146852062883c
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -20021,7 +20955,9 @@ COPY --link --from=dep-n-starship-battery-0.10.2-1c1146852062883c /tmp/clis-bott
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-1c1146852062883c* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-1c1146852062883c"
+##
+## [stages.Script]
+## stage = "out-1c1146852062883c"
 ## script = """
 ## FROM scratch AS out-1c1146852062883c
 ## COPY --link --from=dep-n-starship-battery-0.10.2-1c1146852062883c /tmp/clis-bottom_0-11-4/release/deps/*-1c1146852062883c* /"""
@@ -20107,18 +21043,24 @@ COPY --link --from=dep-n-sysinfo-0.37.0-b88ad5a61ec178e5 /tmp/clis-bottom_0-11-4
 ## xtern = "libmemchr-c80d603364c0d236.rmeta"
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-sysinfo-0.37.0"
-## script = '''
-## FROM scratch AS cratesio-sysinfo-0.37.0
-## ADD --chmod=0664 --unpack --checksum=sha256:07cec4dc2d2e357ca1e610cfb07de2fa7a10fc3e9fe89f72545f3d244ea87753 \
-##   https://static.crates.io/crates/sysinfo/sysinfo-0.37.0.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-sysinfo-0.37.0"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/sysinfo-0.37.0"
+## name = "sysinfo"
+## name_dash_version = "sysinfo-0.37.0"
+## hash = "07cec4dc2d2e357ca1e610cfb07de2fa7a10fc3e9fe89f72545f3d244ea87753"
 ##
 ## [[stages]]
-## name = "dep-n-sysinfo-0.37.0-b88ad5a61ec178e5"
+##
+## [stages.Script]
+## stage = "dep-n-sysinfo-0.37.0-b88ad5a61ec178e5"
 ## script = '''
 ## FROM rust-base AS dep-n-sysinfo-0.37.0-b88ad5a61ec178e5
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -20160,7 +21102,9 @@ COPY --link --from=dep-n-sysinfo-0.37.0-b88ad5a61ec178e5 /tmp/clis-bottom_0-11-4
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-b88ad5a61ec178e5* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-b88ad5a61ec178e5"
+##
+## [stages.Script]
+## stage = "out-b88ad5a61ec178e5"
 ## script = """
 ## FROM scratch AS out-b88ad5a61ec178e5
 ## COPY --link --from=dep-n-sysinfo-0.37.0-b88ad5a61ec178e5 /tmp/clis-bottom_0-11-4/release/deps/*-b88ad5a61ec178e5* /"""
@@ -20218,18 +21162,24 @@ COPY --link --from=dep-n-timeless-0.0.14-alpha-3f9985f66e9630d5 /tmp/clis-bottom
 ## ]
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-timeless-0.0.14-alpha"
-## script = '''
-## FROM scratch AS cratesio-timeless-0.0.14-alpha
-## ADD --chmod=0664 --unpack --checksum=sha256:04121e3f47427f2604066a4c4af25102e6c5794b167f6dee85958898ebf7f131 \
-##   https://static.crates.io/crates/timeless/timeless-0.0.14-alpha.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-timeless-0.0.14-alpha"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/timeless-0.0.14-alpha"
+## name = "timeless"
+## name_dash_version = "timeless-0.0.14-alpha"
+## hash = "04121e3f47427f2604066a4c4af25102e6c5794b167f6dee85958898ebf7f131"
 ##
 ## [[stages]]
-## name = "dep-n-timeless-0.0.14-alpha-3f9985f66e9630d5"
+##
+## [stages.Script]
+## stage = "dep-n-timeless-0.0.14-alpha-3f9985f66e9630d5"
 ## script = '''
 ## FROM rust-base AS dep-n-timeless-0.0.14-alpha-3f9985f66e9630d5
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -20267,7 +21217,9 @@ COPY --link --from=dep-n-timeless-0.0.14-alpha-3f9985f66e9630d5 /tmp/clis-bottom
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-3f9985f66e9630d5* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-3f9985f66e9630d5"
+##
+## [stages.Script]
+## stage = "out-3f9985f66e9630d5"
 ## script = """
 ## FROM scratch AS out-3f9985f66e9630d5
 ## COPY --link --from=dep-n-timeless-0.0.14-alpha-3f9985f66e9630d5 /tmp/clis-bottom_0-11-4/release/deps/*-3f9985f66e9630d5* /"""
@@ -20341,18 +21293,24 @@ COPY --link --from=dep-n-serde_spanned-1.0.2-486f5010721ca03f /tmp/clis-bottom_0
 ## uri = "/tmp/clis-bottom_0-11-4/release/build/serde_core-cc6da97a70fe7bbb/out"
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-serde_spanned-1.0.2"
-## script = '''
-## FROM scratch AS cratesio-serde_spanned-1.0.2
-## ADD --chmod=0664 --unpack --checksum=sha256:5417783452c2be558477e104686f7de5dae53dba813c28435e0e70f82d9b04ee \
-##   https://static.crates.io/crates/serde_spanned/serde_spanned-1.0.2.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-serde_spanned-1.0.2"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_spanned-1.0.2"
+## name = "serde_spanned"
+## name_dash_version = "serde_spanned-1.0.2"
+## hash = "5417783452c2be558477e104686f7de5dae53dba813c28435e0e70f82d9b04ee"
 ##
 ## [[stages]]
-## name = "dep-n-serde_spanned-1.0.2-486f5010721ca03f"
+##
+## [stages.Script]
+## stage = "dep-n-serde_spanned-1.0.2-486f5010721ca03f"
 ## script = '''
 ## FROM rust-base AS dep-n-serde_spanned-1.0.2-486f5010721ca03f
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -20392,7 +21350,9 @@ COPY --link --from=dep-n-serde_spanned-1.0.2-486f5010721ca03f /tmp/clis-bottom_0
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-486f5010721ca03f* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-486f5010721ca03f"
+##
+## [stages.Script]
+## stage = "out-486f5010721ca03f"
 ## script = """
 ## FROM scratch AS out-486f5010721ca03f
 ## COPY --link --from=dep-n-serde_spanned-1.0.2-486f5010721ca03f /tmp/clis-bottom_0-11-4/release/deps/*-486f5010721ca03f* /"""
@@ -20466,18 +21426,24 @@ COPY --link --from=dep-n-toml_datetime-0.7.2-a6131364fdfb66ea /tmp/clis-bottom_0
 ## uri = "/tmp/clis-bottom_0-11-4/release/build/serde_core-cc6da97a70fe7bbb/out"
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-toml_datetime-0.7.2"
-## script = '''
-## FROM scratch AS cratesio-toml_datetime-0.7.2
-## ADD --chmod=0664 --unpack --checksum=sha256:32f1085dec27c2b6632b04c80b3bb1b4300d6495d1e129693bdda7d91e72eec1 \
-##   https://static.crates.io/crates/toml_datetime/toml_datetime-0.7.2.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-toml_datetime-0.7.2"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/toml_datetime-0.7.2"
+## name = "toml_datetime"
+## name_dash_version = "toml_datetime-0.7.2"
+## hash = "32f1085dec27c2b6632b04c80b3bb1b4300d6495d1e129693bdda7d91e72eec1"
 ##
 ## [[stages]]
-## name = "dep-n-toml_datetime-0.7.2-a6131364fdfb66ea"
+##
+## [stages.Script]
+## stage = "dep-n-toml_datetime-0.7.2-a6131364fdfb66ea"
 ## script = '''
 ## FROM rust-base AS dep-n-toml_datetime-0.7.2-a6131364fdfb66ea
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -20517,7 +21483,9 @@ COPY --link --from=dep-n-toml_datetime-0.7.2-a6131364fdfb66ea /tmp/clis-bottom_0
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-a6131364fdfb66ea* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-a6131364fdfb66ea"
+##
+## [stages.Script]
+## stage = "out-a6131364fdfb66ea"
 ## script = """
 ## FROM scratch AS out-a6131364fdfb66ea
 ## COPY --link --from=dep-n-toml_datetime-0.7.2-a6131364fdfb66ea /tmp/clis-bottom_0-11-4/release/deps/*-a6131364fdfb66ea* /"""
@@ -20575,18 +21543,24 @@ COPY --link --from=dep-n-winnow-0.7.13-5ad81920c96388dd /tmp/clis-bottom_0-11-4/
 ## ]
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-winnow-0.7.13"
-## script = '''
-## FROM scratch AS cratesio-winnow-0.7.13
-## ADD --chmod=0664 --unpack --checksum=sha256:21a0236b59786fed61e2a80582dd500fe61f18b5dca67a4a067d0bc9039339cf \
-##   https://static.crates.io/crates/winnow/winnow-0.7.13.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-winnow-0.7.13"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/winnow-0.7.13"
+## name = "winnow"
+## name_dash_version = "winnow-0.7.13"
+## hash = "21a0236b59786fed61e2a80582dd500fe61f18b5dca67a4a067d0bc9039339cf"
 ##
 ## [[stages]]
-## name = "dep-n-winnow-0.7.13-5ad81920c96388dd"
+##
+## [stages.Script]
+## stage = "dep-n-winnow-0.7.13-5ad81920c96388dd"
 ## script = '''
 ## FROM rust-base AS dep-n-winnow-0.7.13-5ad81920c96388dd
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -20624,7 +21598,9 @@ COPY --link --from=dep-n-winnow-0.7.13-5ad81920c96388dd /tmp/clis-bottom_0-11-4/
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-5ad81920c96388dd* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-5ad81920c96388dd"
+##
+## [stages.Script]
+## stage = "out-5ad81920c96388dd"
 ## script = """
 ## FROM scratch AS out-5ad81920c96388dd
 ## COPY --link --from=dep-n-winnow-0.7.13-5ad81920c96388dd /tmp/clis-bottom_0-11-4/release/deps/*-5ad81920c96388dd* /"""
@@ -20694,18 +21670,24 @@ COPY --link --from=dep-n-toml_parser-1.0.3-71ba734f92c1b05b /tmp/clis-bottom_0-1
 ## xtern = "libwinnow-5ad81920c96388dd.rmeta"
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-toml_parser-1.0.3"
-## script = '''
-## FROM scratch AS cratesio-toml_parser-1.0.3
-## ADD --chmod=0664 --unpack --checksum=sha256:4cf893c33be71572e0e9aa6dd15e6677937abd686b066eac3f8cd3531688a627 \
-##   https://static.crates.io/crates/toml_parser/toml_parser-1.0.3.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-toml_parser-1.0.3"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/toml_parser-1.0.3"
+## name = "toml_parser"
+## name_dash_version = "toml_parser-1.0.3"
+## hash = "4cf893c33be71572e0e9aa6dd15e6677937abd686b066eac3f8cd3531688a627"
 ##
 ## [[stages]]
-## name = "dep-n-toml_parser-1.0.3-71ba734f92c1b05b"
+##
+## [stages.Script]
+## stage = "dep-n-toml_parser-1.0.3-71ba734f92c1b05b"
 ## script = '''
 ## FROM rust-base AS dep-n-toml_parser-1.0.3-71ba734f92c1b05b
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -20745,7 +21727,9 @@ COPY --link --from=dep-n-toml_parser-1.0.3-71ba734f92c1b05b /tmp/clis-bottom_0-1
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-71ba734f92c1b05b* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-71ba734f92c1b05b"
+##
+## [stages.Script]
+## stage = "out-71ba734f92c1b05b"
 ## script = """
 ## FROM scratch AS out-71ba734f92c1b05b
 ## COPY --link --from=dep-n-toml_parser-1.0.3-71ba734f92c1b05b /tmp/clis-bottom_0-11-4/release/deps/*-71ba734f92c1b05b* /"""
@@ -20804,18 +21788,24 @@ COPY --link --from=dep-n-toml_writer-1.0.3-b0da495d45294c09 /tmp/clis-bottom_0-1
 ## ]
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-toml_writer-1.0.3"
-## script = '''
-## FROM scratch AS cratesio-toml_writer-1.0.3
-## ADD --chmod=0664 --unpack --checksum=sha256:d163a63c116ce562a22cda521fcc4d79152e7aba014456fb5eb442f6d6a10109 \
-##   https://static.crates.io/crates/toml_writer/toml_writer-1.0.3.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-toml_writer-1.0.3"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/toml_writer-1.0.3"
+## name = "toml_writer"
+## name_dash_version = "toml_writer-1.0.3"
+## hash = "d163a63c116ce562a22cda521fcc4d79152e7aba014456fb5eb442f6d6a10109"
 ##
 ## [[stages]]
-## name = "dep-n-toml_writer-1.0.3-b0da495d45294c09"
+##
+## [stages.Script]
+## stage = "dep-n-toml_writer-1.0.3-b0da495d45294c09"
 ## script = '''
 ## FROM rust-base AS dep-n-toml_writer-1.0.3-b0da495d45294c09
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -20854,7 +21844,9 @@ COPY --link --from=dep-n-toml_writer-1.0.3-b0da495d45294c09 /tmp/clis-bottom_0-1
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-b0da495d45294c09* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-b0da495d45294c09"
+##
+## [stages.Script]
+## stage = "out-b0da495d45294c09"
 ## script = """
 ## FROM scratch AS out-b0da495d45294c09
 ## COPY --link --from=dep-n-toml_writer-1.0.3-b0da495d45294c09 /tmp/clis-bottom_0-11-4/release/deps/*-b0da495d45294c09* /"""
@@ -21052,18 +22044,24 @@ COPY --link --from=dep-n-toml_edit-0.23.6-0c3cafbaba151b29 /tmp/clis-bottom_0-11
 ## uri = "/tmp/clis-bottom_0-11-4/release/build/serde_core-cc6da97a70fe7bbb/out"
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-toml_edit-0.23.6"
-## script = '''
-## FROM scratch AS cratesio-toml_edit-0.23.6
-## ADD --chmod=0664 --unpack --checksum=sha256:f3effe7c0e86fdff4f69cdd2ccc1b96f933e24811c5441d44904e8683e27184b \
-##   https://static.crates.io/crates/toml_edit/toml_edit-0.23.6.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-toml_edit-0.23.6"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/toml_edit-0.23.6"
+## name = "toml_edit"
+## name_dash_version = "toml_edit-0.23.6"
+## hash = "f3effe7c0e86fdff4f69cdd2ccc1b96f933e24811c5441d44904e8683e27184b"
 ##
 ## [[stages]]
-## name = "dep-n-toml_edit-0.23.6-0c3cafbaba151b29"
+##
+## [stages.Script]
+## stage = "dep-n-toml_edit-0.23.6-0c3cafbaba151b29"
 ## script = '''
 ## FROM rust-base AS dep-n-toml_edit-0.23.6-0c3cafbaba151b29
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -21123,7 +22121,9 @@ COPY --link --from=dep-n-toml_edit-0.23.6-0c3cafbaba151b29 /tmp/clis-bottom_0-11
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-0c3cafbaba151b29* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-0c3cafbaba151b29"
+##
+## [stages.Script]
+## stage = "out-0c3cafbaba151b29"
 ## script = """
 ## FROM scratch AS out-0c3cafbaba151b29
 ## COPY --link --from=dep-n-toml_edit-0.23.6-0c3cafbaba151b29 /tmp/clis-bottom_0-11-4/release/deps/*-0c3cafbaba151b29* /"""
@@ -21209,18 +22209,24 @@ COPY --link --from=dep-n-unicode-ellipsis-0.3.0-5655a7c92326394a /tmp/clis-botto
 ## xtern = "libunicode_width-f6f32a8a5a2fe2b5.rmeta"
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-unicode-ellipsis-0.3.0"
-## script = '''
-## FROM scratch AS cratesio-unicode-ellipsis-0.3.0
-## ADD --chmod=0664 --unpack --checksum=sha256:34ed7a61d66ae6471dc2fa895bc9c30c3351760c95e8c7afeb978acab3ccf04b \
-##   https://static.crates.io/crates/unicode-ellipsis/unicode-ellipsis-0.3.0.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-unicode-ellipsis-0.3.0"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/unicode-ellipsis-0.3.0"
+## name = "unicode-ellipsis"
+## name_dash_version = "unicode-ellipsis-0.3.0"
+## hash = "34ed7a61d66ae6471dc2fa895bc9c30c3351760c95e8c7afeb978acab3ccf04b"
 ##
 ## [[stages]]
-## name = "dep-n-unicode-ellipsis-0.3.0-5655a7c92326394a"
+##
+## [stages.Script]
+## stage = "dep-n-unicode-ellipsis-0.3.0-5655a7c92326394a"
 ## script = '''
 ## FROM rust-base AS dep-n-unicode-ellipsis-0.3.0-5655a7c92326394a
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -21262,7 +22268,9 @@ COPY --link --from=dep-n-unicode-ellipsis-0.3.0-5655a7c92326394a /tmp/clis-botto
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-5655a7c92326394a* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-5655a7c92326394a"
+##
+## [stages.Script]
+## stage = "out-5655a7c92326394a"
 ## script = """
 ## FROM scratch AS out-5655a7c92326394a
 ## COPY --link --from=dep-n-unicode-ellipsis-0.3.0-5655a7c92326394a /tmp/clis-bottom_0-11-4/release/deps/*-5655a7c92326394a* /"""
@@ -22795,18 +23803,24 @@ COPY --link --from=dep-n-bottom-0.11.4-e9185293987a3339 /tmp/clis-bottom_0-11-4/
 ## uri = "/tmp/clis-bottom_0-11-4/release/build/typenum-d9a335b83768a642/out"
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-bottom-0.11.4"
-## script = '''
-## FROM scratch AS cratesio-bottom-0.11.4
-## ADD --chmod=0664 --unpack --checksum=sha256:f89c83caf9d0dff93ff083a84a1afcc9479315102d67d33afa13237c83bed15d \
-##   https://static.crates.io/crates/bottom/bottom-0.11.4.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-bottom-0.11.4"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bottom-0.11.4"
+## name = "bottom"
+## name_dash_version = "bottom-0.11.4"
+## hash = "f89c83caf9d0dff93ff083a84a1afcc9479315102d67d33afa13237c83bed15d"
 ##
 ## [[stages]]
-## name = "dep-n-bottom-0.11.4-e9185293987a3339"
+##
+## [stages.Script]
+## stage = "dep-n-bottom-0.11.4-e9185293987a3339"
 ## script = '''
 ## FROM rust-base AS dep-n-bottom-0.11.4-e9185293987a3339
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -23087,7 +24101,9 @@ COPY --link --from=dep-n-bottom-0.11.4-e9185293987a3339 /tmp/clis-bottom_0-11-4/
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-e9185293987a3339* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-e9185293987a3339"
+##
+## [stages.Script]
+## stage = "out-e9185293987a3339"
 ## script = """
 ## FROM scratch AS out-e9185293987a3339
 ## COPY --link --from=dep-n-bottom-0.11.4-e9185293987a3339 /tmp/clis-bottom_0-11-4/release/deps/*-e9185293987a3339* /"""
@@ -24058,18 +25074,24 @@ COPY --link --from=dep-n-bottom-0.11.4-4ec85bbd35749cc4 /tmp/clis-bottom_0-11-4/
 ## uri = "/tmp/clis-bottom_0-11-4/release/build/typenum-d9a335b83768a642/out"
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-bottom-0.11.4"
-## script = '''
-## FROM scratch AS cratesio-bottom-0.11.4
-## ADD --chmod=0664 --unpack --checksum=sha256:f89c83caf9d0dff93ff083a84a1afcc9479315102d67d33afa13237c83bed15d \
-##   https://static.crates.io/crates/bottom/bottom-0.11.4.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-bottom-0.11.4"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bottom-0.11.4"
+## name = "bottom"
+## name_dash_version = "bottom-0.11.4"
+## hash = "f89c83caf9d0dff93ff083a84a1afcc9479315102d67d33afa13237c83bed15d"
 ##
 ## [[stages]]
-## name = "dep-n-bottom-0.11.4-4ec85bbd35749cc4"
+##
+## [stages.Script]
+## stage = "dep-n-bottom-0.11.4-4ec85bbd35749cc4"
 ## script = '''
 ## FROM rust-base AS dep-n-bottom-0.11.4-4ec85bbd35749cc4
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -24238,7 +25260,9 @@ COPY --link --from=dep-n-bottom-0.11.4-4ec85bbd35749cc4 /tmp/clis-bottom_0-11-4/
 ##   ; find /tmp/clis-bottom_0-11-4/release/deps/*-4ec85bbd35749cc4* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-4ec85bbd35749cc4"
+##
+## [stages.Script]
+## stage = "out-4ec85bbd35749cc4"
 ## script = """
 ## FROM scratch AS out-4ec85bbd35749cc4
 ## COPY --link --from=dep-n-bottom-0.11.4-4ec85bbd35749cc4 /tmp/clis-bottom_0-11-4/release/deps/*-4ec85bbd35749cc4* /"""
