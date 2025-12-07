@@ -56,18 +56,24 @@ COPY --link --from=dep-n-anyhow-1.0.100-8d1dc5ae4f738a51 /tmp/clis-kani-verifier
 ## ]
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-anyhow-1.0.100"
-## script = '''
-## FROM scratch AS cratesio-anyhow-1.0.100
-## ADD --chmod=0664 --unpack --checksum=sha256:a23eb6b1614318a8071c9b2521f36b424b2c83db5eb3a0fead4a6c0809af6e61 \
-##   https://static.crates.io/crates/anyhow/anyhow-1.0.100.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-anyhow-1.0.100"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.100"
+## name = "anyhow"
+## name_dash_version = "anyhow-1.0.100"
+## hash = "a23eb6b1614318a8071c9b2521f36b424b2c83db5eb3a0fead4a6c0809af6e61"
 ##
 ## [[stages]]
-## name = "dep-n-anyhow-1.0.100-8d1dc5ae4f738a51"
+##
+## [stages.Script]
+## stage = "dep-n-anyhow-1.0.100-8d1dc5ae4f738a51"
 ## script = '''
 ## FROM rust-base AS dep-n-anyhow-1.0.100-8d1dc5ae4f738a51
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -102,7 +108,9 @@ COPY --link --from=dep-n-anyhow-1.0.100-8d1dc5ae4f738a51 /tmp/clis-kani-verifier
 ##   ; find /tmp/clis-kani-verifier_0-66-0/release/deps/*-8d1dc5ae4f738a51* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-8d1dc5ae4f738a51"
+##
+## [stages.Script]
+## stage = "out-8d1dc5ae4f738a51"
 ## script = """
 ## FROM scratch AS out-8d1dc5ae4f738a51
 ## COPY --link --from=dep-n-anyhow-1.0.100-8d1dc5ae4f738a51 /tmp/clis-kani-verifier_0-66-0/release/deps/*-8d1dc5ae4f738a51* /"""
@@ -156,18 +164,24 @@ COPY --link --from=dep-n-home-0.5.12-46a3f77b3083d543 /tmp/clis-kani-verifier_0-
 ## ]
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-home-0.5.12"
-## script = '''
-## FROM scratch AS cratesio-home-0.5.12
-## ADD --chmod=0664 --unpack --checksum=sha256:cc627f471c528ff0c4a49e1d5e60450c8f6461dd6d10ba9dcd3a61d3dff7728d \
-##   https://static.crates.io/crates/home/home-0.5.12.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-home-0.5.12"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/home-0.5.12"
+## name = "home"
+## name_dash_version = "home-0.5.12"
+## hash = "cc627f471c528ff0c4a49e1d5e60450c8f6461dd6d10ba9dcd3a61d3dff7728d"
 ##
 ## [[stages]]
-## name = "dep-n-home-0.5.12-46a3f77b3083d543"
+##
+## [stages.Script]
+## stage = "dep-n-home-0.5.12-46a3f77b3083d543"
 ## script = '''
 ## FROM rust-base AS dep-n-home-0.5.12-46a3f77b3083d543
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -201,7 +215,9 @@ COPY --link --from=dep-n-home-0.5.12-46a3f77b3083d543 /tmp/clis-kani-verifier_0-
 ##   ; find /tmp/clis-kani-verifier_0-66-0/release/deps/*-46a3f77b3083d543* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-46a3f77b3083d543"
+##
+## [stages.Script]
+## stage = "out-46a3f77b3083d543"
 ## script = """
 ## FROM scratch AS out-46a3f77b3083d543
 ## COPY --link --from=dep-n-home-0.5.12-46a3f77b3083d543 /tmp/clis-kani-verifier_0-66-0/release/deps/*-46a3f77b3083d543* /"""
@@ -256,18 +272,24 @@ COPY --link --from=dep-n-log-0.4.28-64be2e589e1b58c5 /tmp/clis-kani-verifier_0-6
 ## ]
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-log-0.4.28"
-## script = '''
-## FROM scratch AS cratesio-log-0.4.28
-## ADD --chmod=0664 --unpack --checksum=sha256:34080505efa8e45a4b816c349525ebe327ceaa8559756f0356cba97ef3bf7432 \
-##   https://static.crates.io/crates/log/log-0.4.28.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-log-0.4.28"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/log-0.4.28"
+## name = "log"
+## name_dash_version = "log-0.4.28"
+## hash = "34080505efa8e45a4b816c349525ebe327ceaa8559756f0356cba97ef3bf7432"
 ##
 ## [[stages]]
-## name = "dep-n-log-0.4.28-64be2e589e1b58c5"
+##
+## [stages.Script]
+## stage = "dep-n-log-0.4.28-64be2e589e1b58c5"
 ## script = '''
 ## FROM rust-base AS dep-n-log-0.4.28-64be2e589e1b58c5
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -302,7 +324,9 @@ COPY --link --from=dep-n-log-0.4.28-64be2e589e1b58c5 /tmp/clis-kani-verifier_0-6
 ##   ; find /tmp/clis-kani-verifier_0-66-0/release/deps/*-64be2e589e1b58c5* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-64be2e589e1b58c5"
+##
+## [stages.Script]
+## stage = "out-64be2e589e1b58c5"
 ## script = """
 ## FROM scratch AS out-64be2e589e1b58c5
 ## COPY --link --from=dep-n-log-0.4.28-64be2e589e1b58c5 /tmp/clis-kani-verifier_0-66-0/release/deps/*-64be2e589e1b58c5* /"""
@@ -368,18 +392,24 @@ COPY --link --from=dep-n-os_info-3.12.0-2e95c4cd8dc3cea9 /tmp/clis-kani-verifier
 ## xtern = "liblog-64be2e589e1b58c5.rmeta"
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-os_info-3.12.0"
-## script = '''
-## FROM scratch AS cratesio-os_info-3.12.0
-## ADD --chmod=0664 --unpack --checksum=sha256:d0e1ac5fde8d43c34139135df8ea9ee9465394b2d8d20f032d38998f64afffc3 \
-##   https://static.crates.io/crates/os_info/os_info-3.12.0.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-os_info-3.12.0"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/os_info-3.12.0"
+## name = "os_info"
+## name_dash_version = "os_info-3.12.0"
+## hash = "d0e1ac5fde8d43c34139135df8ea9ee9465394b2d8d20f032d38998f64afffc3"
 ##
 ## [[stages]]
-## name = "dep-n-os_info-3.12.0-2e95c4cd8dc3cea9"
+##
+## [stages.Script]
+## stage = "dep-n-os_info-3.12.0-2e95c4cd8dc3cea9"
 ## script = '''
 ## FROM rust-base AS dep-n-os_info-3.12.0-2e95c4cd8dc3cea9
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -415,7 +445,9 @@ COPY --link --from=dep-n-os_info-3.12.0-2e95c4cd8dc3cea9 /tmp/clis-kani-verifier
 ##   ; find /tmp/clis-kani-verifier_0-66-0/release/deps/*-2e95c4cd8dc3cea9* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-2e95c4cd8dc3cea9"
+##
+## [stages.Script]
+## stage = "out-2e95c4cd8dc3cea9"
 ## script = """
 ## FROM scratch AS out-2e95c4cd8dc3cea9
 ## COPY --link --from=dep-n-os_info-3.12.0-2e95c4cd8dc3cea9 /tmp/clis-kani-verifier_0-66-0/release/deps/*-2e95c4cd8dc3cea9* /"""
@@ -525,18 +557,24 @@ COPY --link --from=dep-n-kani-verifier-0.66.0-dfd373a18b646a92 /tmp/clis-kani-ve
 ## xtern = "liblog-64be2e589e1b58c5.rmeta"
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-kani-verifier-0.66.0"
-## script = '''
-## FROM scratch AS cratesio-kani-verifier-0.66.0
-## ADD --chmod=0664 --unpack --checksum=sha256:07485e9dd5ec9dfb861681b98ef64ea1593a5dc0b9f7a49a490231dfdfcc0a19 \
-##   https://static.crates.io/crates/kani-verifier/kani-verifier-0.66.0.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-kani-verifier-0.66.0"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/kani-verifier-0.66.0"
+## name = "kani-verifier"
+## name_dash_version = "kani-verifier-0.66.0"
+## hash = "07485e9dd5ec9dfb861681b98ef64ea1593a5dc0b9f7a49a490231dfdfcc0a19"
 ##
 ## [[stages]]
-## name = "dep-n-kani-verifier-0.66.0-dfd373a18b646a92"
+##
+## [stages.Script]
+## stage = "dep-n-kani-verifier-0.66.0-dfd373a18b646a92"
 ## script = '''
 ## FROM rust-base AS dep-n-kani-verifier-0.66.0-dfd373a18b646a92
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -582,7 +620,9 @@ COPY --link --from=dep-n-kani-verifier-0.66.0-dfd373a18b646a92 /tmp/clis-kani-ve
 ##   ; find /tmp/clis-kani-verifier_0-66-0/release/deps/*-dfd373a18b646a92* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-dfd373a18b646a92"
+##
+## [stages.Script]
+## stage = "out-dfd373a18b646a92"
 ## script = """
 ## FROM scratch AS out-dfd373a18b646a92
 ## COPY --link --from=dep-n-kani-verifier-0.66.0-dfd373a18b646a92 /tmp/clis-kani-verifier_0-66-0/release/deps/*-dfd373a18b646a92* /"""
@@ -680,18 +720,24 @@ COPY --link --from=dep-n-kani-verifier-0.66.0-9e144b88b270f21c /tmp/clis-kani-ve
 ## xtern = "liblog-64be2e589e1b58c5.rlib"
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-kani-verifier-0.66.0"
-## script = '''
-## FROM scratch AS cratesio-kani-verifier-0.66.0
-## ADD --chmod=0664 --unpack --checksum=sha256:07485e9dd5ec9dfb861681b98ef64ea1593a5dc0b9f7a49a490231dfdfcc0a19 \
-##   https://static.crates.io/crates/kani-verifier/kani-verifier-0.66.0.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-kani-verifier-0.66.0"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/kani-verifier-0.66.0"
+## name = "kani-verifier"
+## name_dash_version = "kani-verifier-0.66.0"
+## hash = "07485e9dd5ec9dfb861681b98ef64ea1593a5dc0b9f7a49a490231dfdfcc0a19"
 ##
 ## [[stages]]
-## name = "dep-n-kani-verifier-0.66.0-9e144b88b270f21c"
+##
+## [stages.Script]
+## stage = "dep-n-kani-verifier-0.66.0-9e144b88b270f21c"
 ## script = '''
 ## FROM rust-base AS dep-n-kani-verifier-0.66.0-9e144b88b270f21c
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -735,7 +781,9 @@ COPY --link --from=dep-n-kani-verifier-0.66.0-9e144b88b270f21c /tmp/clis-kani-ve
 ##   ; find /tmp/clis-kani-verifier_0-66-0/release/deps/*-9e144b88b270f21c* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-9e144b88b270f21c"
+##
+## [stages.Script]
+## stage = "out-9e144b88b270f21c"
 ## script = """
 ## FROM scratch AS out-9e144b88b270f21c
 ## COPY --link --from=dep-n-kani-verifier-0.66.0-9e144b88b270f21c /tmp/clis-kani-verifier_0-66-0/release/deps/*-9e144b88b270f21c* /"""

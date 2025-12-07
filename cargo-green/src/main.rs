@@ -28,6 +28,7 @@ mod containerfile;
 mod cratesio;
 mod du;
 mod ext;
+mod relative;
 #[macro_use]
 mod r#final;
 #[macro_use]

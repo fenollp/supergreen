@@ -12,7 +12,7 @@ use szyk::{sort, Node, TopsortError};
 use crate::{
     green::Green,
     logging::maybe_log,
-    stage::{Stage, RST, RUST},
+    stage::{AsBlock, AsStage, NamedStage, Script, Stage, RST},
     PKG,
 };
 
@@ -125,7 +125,7 @@ impl Md {
     }
 
     fn to_string_pretty(&self) -> Result<String> {
-        if !self.stages.iter().any(|NamedStage { name, .. }| *name == *RUST) {
+        if !self.stages.iter().any(NamedStage::is_rust) {
             bail!("Md is missing root stage {RST}")
         }
         toml::to_string_pretty(self).map_err(Into::into)
@@ -135,7 +135,7 @@ impl Md {
     fn rust_stage(&self) -> String {
         format!(
             "{}\nARG SOURCE_DATE_EPOCH=42\n", // https://reproducible-builds.org/docs/source-date-epoch/
-            &self.stages.iter().find(|NamedStage { name, .. }| *name == *RUST).unwrap().script
+            &self.stages.iter().find(|ns| ns.is_rust()).and_then(AsBlock::as_block).unwrap()
         )
 
         // TODO? use a non-fixed EPOCH value
@@ -144,33 +144,43 @@ impl Md {
         // * set it to the directory's birth date otherwise (should be a relative path to local files).
     }
 
-    pub(crate) fn push_block(&mut self, name: &Stage, block: String) {
-        self.stages.insert(NamedStage { name: name.clone(), script: block.trim().to_owned() });
+    pub(crate) fn push_stage(&mut self, ns: &NamedStage) {
+        self.stages.insert(ns.clone());
     }
 
-    fn append_blocks(&self, dockerfile: &mut String, visited: &mut IndexSet<Stage>) {
-        let mut stages = self.stages.iter().filter(|NamedStage { name, .. }| *name != *RUST);
+    pub(crate) fn push_block(&mut self, name: &Stage, block: String) {
+        let ns = Script { stage: name.clone(), script: block.trim().to_owned() };
+        self.stages.insert(NamedStage::Script(ns));
+    }
 
-        let NamedStage { name, script } = stages.next().expect("at least one stage");
+    fn append_blocks(&self, blocks: &mut String, visited: &mut IndexSet<Stage>) {
+        let mut stages = self.stages.iter().filter(|ns| !ns.is_rust());
+
+        let ns = stages.find(|ns| ns.as_block().is_some()).unwrap();
+        let name = ns.name();
+        let script = ns.as_block().unwrap();
 
         let mut filter = None;
         if name.is_remote() {
             filter = Some(name);
             if visited.insert(name.to_owned()) {
-                dockerfile.push_str(script);
+                blocks.push_str(script.trim());
             }
         } else {
             // Otherwise, write it back in
-            dockerfile.push_str(script);
+            blocks.push_str(script.trim());
         }
-        dockerfile.push('\n');
+        blocks.push('\n');
 
-        for NamedStage { name, script } in stages {
+        // for NamedStage { name, script } in stages {
+        for ns in stages {
+            let name = ns.name();
             if Some(name) == filter {
                 continue;
             }
-            dockerfile.push_str(script);
-            dockerfile.push('\n');
+            let Some(script) = ns.as_block() else { continue };
+            blocks.push_str(script.trim());
+            blocks.push('\n');
         }
     }
 
@@ -284,16 +294,16 @@ impl Md {
 
     fn block_along_with_predecessors(&self, mds: &[Self]) -> String {
         let mut blocks = String::new();
-        let mut visited_cratesio_stages = IndexSet::new();
+        let mut visited = IndexSet::new();
         for md in mds {
-            md.append_blocks(&mut blocks, &mut visited_cratesio_stages);
+            md.append_blocks(&mut blocks, &mut visited);
             blocks.push('\n');
             for line in toml::to_string_pretty(md).expect("previously enc").lines() {
                 Self::comment_pretty(line, &mut blocks);
             }
             blocks.push('\n');
         }
-        self.append_blocks(&mut blocks, &mut visited_cratesio_stages);
+        self.append_blocks(&mut blocks, &mut visited);
         blocks
     }
 
@@ -349,12 +359,6 @@ fn get_or_read(mds: &mut HashMap<Utf8PathBuf, Md>, path: &Utf8Path) -> Result<Md
     let md = Md::from_file(path)?;
     let _ = mds.insert(path.to_path_buf(), md.clone());
     Ok(md)
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash)]
-struct NamedStage {
-    name: Stage,
-    script: String,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, Eq, PartialEq, Ord, PartialOrd, Hash)]
@@ -448,6 +452,8 @@ fn mdid_de() {
 
 #[test]
 fn md_ser() {
+    use crate::stage::RUST;
+
     let md = Md {
         this: MdId(0x711ba64e1183a234),
         externs: [MountExtern { from: RUST.clone(), xtern: "blop".into() }].into(),
@@ -458,7 +464,11 @@ fn md_ser() {
             uri: "/some/local/path".into(),
         }]
         .into(),
-        stages: [NamedStage { name: RUST.clone(), script: format!("FROM rust AS {RST}") }].into(),
+        stages: [NamedStage::Script(Script {
+            stage: RUST.clone(),
+            script: format!("FROM rust AS {RST}"),
+        })]
+        .into(),
         writes: vec![
             "deps/primeorder-06397107ab8300fa.d".into(),
             "deps/libprimeorder-06397107ab8300fa.rmeta".into(),
@@ -494,7 +504,9 @@ name = "rust"
 uri = "/some/local/path"
 
 [[stages]]
-name = "rust-base"
+
+[stages.Script]
+stage = "rust-base"
 script = "FROM rust AS rust-base"
 "#[1..],
         md.to_string_pretty().unwrap()

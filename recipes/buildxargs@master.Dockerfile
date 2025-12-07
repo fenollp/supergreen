@@ -55,18 +55,24 @@ COPY --link --from=dep-n-pico-args-0.5.0-b23dd1fb69296b44 /tmp/clis-buildxargs_m
 ## ]
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-pico-args-0.5.0"
-## script = '''
-## FROM scratch AS cratesio-pico-args-0.5.0
-## ADD --chmod=0664 --unpack --checksum=sha256:5be167a7af36ee22fe3115051bc51f6e6c7054c9348e28deb4f49bd6f705a315 \
-##   https://static.crates.io/crates/pico-args/pico-args-0.5.0.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-pico-args-0.5.0"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/pico-args-0.5.0"
+## name = "pico-args"
+## name_dash_version = "pico-args-0.5.0"
+## hash = "5be167a7af36ee22fe3115051bc51f6e6c7054c9348e28deb4f49bd6f705a315"
 ##
 ## [[stages]]
-## name = "dep-n-pico-args-0.5.0-b23dd1fb69296b44"
+##
+## [stages.Script]
+## stage = "dep-n-pico-args-0.5.0-b23dd1fb69296b44"
 ## script = '''
 ## FROM rust-base AS dep-n-pico-args-0.5.0-b23dd1fb69296b44
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -100,7 +106,9 @@ COPY --link --from=dep-n-pico-args-0.5.0-b23dd1fb69296b44 /tmp/clis-buildxargs_m
 ##   ; find /tmp/clis-buildxargs_master/release/deps/*-b23dd1fb69296b44* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-b23dd1fb69296b44"
+##
+## [stages.Script]
+## stage = "out-b23dd1fb69296b44"
 ## script = """
 ## FROM scratch AS out-b23dd1fb69296b44
 ## COPY --link --from=dep-n-pico-args-0.5.0-b23dd1fb69296b44 /tmp/clis-buildxargs_master/release/deps/*-b23dd1fb69296b44* /"""
@@ -160,18 +168,24 @@ COPY --link --from=dep-n-shlex-1.3.0-a2dd0fe0df0b57cb /tmp/clis-buildxargs_maste
 ## ]
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "cratesio-shlex-1.3.0"
-## script = '''
-## FROM scratch AS cratesio-shlex-1.3.0
-## ADD --chmod=0664 --unpack --checksum=sha256:0fda2ff0d084019ba4d7c6f371c95d8fd75ce3524c3cb8fb653a3023f6323e64 \
-##   https://static.crates.io/crates/shlex/shlex-1.3.0.crate /'''
+##
+## [stages.Cratesio]
+## stage = "cratesio-shlex-1.3.0"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0"
+## name = "shlex"
+## name_dash_version = "shlex-1.3.0"
+## hash = "0fda2ff0d084019ba4d7c6f371c95d8fd75ce3524c3cb8fb653a3023f6323e64"
 ##
 ## [[stages]]
-## name = "dep-n-shlex-1.3.0-a2dd0fe0df0b57cb"
+##
+## [stages.Script]
+## stage = "dep-n-shlex-1.3.0-a2dd0fe0df0b57cb"
 ## script = '''
 ## FROM rust-base AS dep-n-shlex-1.3.0-a2dd0fe0df0b57cb
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -205,7 +219,9 @@ COPY --link --from=dep-n-shlex-1.3.0-a2dd0fe0df0b57cb /tmp/clis-buildxargs_maste
 ##   ; find /tmp/clis-buildxargs_master/release/deps/*-a2dd0fe0df0b57cb* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-a2dd0fe0df0b57cb"
+##
+## [stages.Script]
+## stage = "out-a2dd0fe0df0b57cb"
 ## script = """
 ## FROM scratch AS out-a2dd0fe0df0b57cb
 ## COPY --link --from=dep-n-shlex-1.3.0-a2dd0fe0df0b57cb /tmp/clis-buildxargs_master/release/deps/*-a2dd0fe0df0b57cb* /"""
@@ -290,18 +306,23 @@ COPY --link --from=dep-n-buildxargs-1.4.0-6b139e29a6fbee8c /tmp/clis-buildxargs_
 ## xtern = "libshlex-a2dd0fe0df0b57cb.rmeta"
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "checkout-buildxargs-76dd4ee9dadcdcf0-0060a682a2f84b295cfd2cff36602784f36ed9cf"
-## script = '''
-## FROM scratch AS checkout-buildxargs-76dd4ee9dadcdcf0-0060a682a2f84b295cfd2cff36602784f36ed9cf
-## ADD --keep-git-dir=false \
-##   https://github.com/fenollp/buildxargs.git#0060a682a2f84b295cfd2cff36602784f36ed9cf /'''
+##
+## [stages.Checkouts]
+## stage = "checkout-buildxargs-76dd4ee9dadcdcf0-0060a682a2f84b295cfd2cff36602784f36ed9cf"
+## repo = "https://github.com/fenollp/buildxargs.git"
+## commit = "0060a682a2f84b295cfd2cff36602784f36ed9cf"
+## krate_manifest_dir = "/home/runner/.cargo/git/checkouts/buildxargs-76dd4ee9dadcdcf0/0060a68"
 ##
 ## [[stages]]
-## name = "dep-n-buildxargs-1.4.0-6b139e29a6fbee8c"
+##
+## [stages.Script]
+## stage = "dep-n-buildxargs-1.4.0-6b139e29a6fbee8c"
 ## script = '''
 ## FROM rust-base AS dep-n-buildxargs-1.4.0-6b139e29a6fbee8c
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -342,7 +363,9 @@ COPY --link --from=dep-n-buildxargs-1.4.0-6b139e29a6fbee8c /tmp/clis-buildxargs_
 ##   ; find /tmp/clis-buildxargs_master/release/deps/*-6b139e29a6fbee8c* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-6b139e29a6fbee8c"
+##
+## [stages.Script]
+## stage = "out-6b139e29a6fbee8c"
 ## script = """
 ## FROM scratch AS out-6b139e29a6fbee8c
 ## COPY --link --from=dep-n-buildxargs-1.4.0-6b139e29a6fbee8c /tmp/clis-buildxargs_master/release/deps/*-6b139e29a6fbee8c* /"""
@@ -425,18 +448,23 @@ COPY --link --from=dep-n-buildxargs-1.4.0-08fbf7e44bba6617 /tmp/clis-buildxargs_
 ## xtern = "libshlex-a2dd0fe0df0b57cb.rlib"
 ##
 ## [[stages]]
-## name = "rust-base"
+##
+## [stages.Script]
+## stage = "rust-base"
 ## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
 ##
 ## [[stages]]
-## name = "checkout-buildxargs-76dd4ee9dadcdcf0-0060a682a2f84b295cfd2cff36602784f36ed9cf"
-## script = '''
-## FROM scratch AS checkout-buildxargs-76dd4ee9dadcdcf0-0060a682a2f84b295cfd2cff36602784f36ed9cf
-## ADD --keep-git-dir=false \
-##   https://github.com/fenollp/buildxargs.git#0060a682a2f84b295cfd2cff36602784f36ed9cf /'''
+##
+## [stages.Checkouts]
+## stage = "checkout-buildxargs-76dd4ee9dadcdcf0-0060a682a2f84b295cfd2cff36602784f36ed9cf"
+## repo = "https://github.com/fenollp/buildxargs.git"
+## commit = "0060a682a2f84b295cfd2cff36602784f36ed9cf"
+## krate_manifest_dir = "/home/runner/.cargo/git/checkouts/buildxargs-76dd4ee9dadcdcf0/0060a68"
 ##
 ## [[stages]]
-## name = "dep-n-buildxargs-1.4.0-08fbf7e44bba6617"
+##
+## [stages.Script]
+## stage = "dep-n-buildxargs-1.4.0-08fbf7e44bba6617"
 ## script = '''
 ## FROM rust-base AS dep-n-buildxargs-1.4.0-08fbf7e44bba6617
 ## SHELL ["/bin/sh", "-eux", "-c"]
@@ -477,7 +505,9 @@ COPY --link --from=dep-n-buildxargs-1.4.0-08fbf7e44bba6617 /tmp/clis-buildxargs_
 ##   ; find /tmp/clis-buildxargs_master/release/deps/*-08fbf7e44bba6617* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
-## name = "out-08fbf7e44bba6617"
+##
+## [stages.Script]
+## stage = "out-08fbf7e44bba6617"
 ## script = """
 ## FROM scratch AS out-08fbf7e44bba6617
 ## COPY --link --from=dep-n-buildxargs-1.4.0-08fbf7e44bba6617 /tmp/clis-buildxargs_master/release/deps/*-08fbf7e44bba6617* /"""

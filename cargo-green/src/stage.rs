@@ -1,9 +1,11 @@
 use std::sync::LazyLock;
 
 use anyhow::{anyhow, bail, Error, Result};
+use camino::Utf8PathBuf;
 use nutype::nutype;
+use serde::{Deserialize, Serialize};
 
-use crate::md::MdId;
+use crate::{checkouts, cratesio, md::MdId, relative};
 
 pub(crate) const RST: &str = "rust-base"; // Twin, for Display
 pub(crate) static RUST: LazyLock<Stage> = LazyLock::new(|| Stage::new(RST).unwrap());
@@ -59,6 +61,94 @@ impl Stage {
 
     pub(crate) fn output(metadata: MdId) -> Result<Self> {
         Self::new(&format!("out-{metadata}"))
+    }
+}
+
+pub(crate) trait AsStage<'de>: AsBlock + Deserialize<'de> + Serialize {
+    fn name(&self) -> &Stage;
+    fn mounts(&self) -> Vec<(Option<Utf8PathBuf>, Utf8PathBuf, bool)> {
+        vec![]
+    }
+    fn context(&self) -> Option<(Stage, Utf8PathBuf)> {
+        None
+    }
+}
+
+pub(crate) trait AsBlock {
+    fn as_block(&self) -> Option<String> {
+        None
+    }
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash)]
+pub(crate) struct Script {
+    pub(crate) stage: Stage,
+    pub(crate) script: String,
+}
+
+impl AsBlock for Script {
+    fn as_block(&self) -> Option<String> {
+        Some(self.script.clone())
+    }
+}
+
+impl AsStage<'_> for Script {
+    fn name(&self) -> &Stage {
+        &self.stage
+    }
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash)]
+pub(crate) enum NamedStage {
+    Script(Script),
+    Cratesio(cratesio::Cratesio),
+    Checkouts(checkouts::Checkouts),
+    Relative(relative::Relative),
+}
+
+impl NamedStage {
+    pub(crate) fn is_rust(&self) -> bool {
+        *self.name() == *RUST
+    }
+}
+
+impl AsBlock for NamedStage {
+    fn as_block(&self) -> Option<String> {
+        match self {
+            NamedStage::Script(dep) => dep.as_block(),
+            NamedStage::Cratesio(dep) => dep.as_block(),
+            NamedStage::Checkouts(dep) => dep.as_block(),
+            NamedStage::Relative(dep) => dep.as_block(),
+        }
+    }
+}
+
+impl AsStage<'_> for NamedStage {
+    fn name(&self) -> &Stage {
+        match self {
+            NamedStage::Script(dep) => dep.name(),
+            NamedStage::Cratesio(dep) => dep.name(),
+            NamedStage::Checkouts(dep) => dep.name(),
+            NamedStage::Relative(dep) => dep.name(),
+        }
+    }
+
+    fn mounts(&self) -> Vec<(Option<Utf8PathBuf>, Utf8PathBuf, bool)> {
+        match self {
+            NamedStage::Script(dep) => dep.mounts(),
+            NamedStage::Cratesio(dep) => dep.mounts(),
+            NamedStage::Checkouts(dep) => dep.mounts(),
+            NamedStage::Relative(dep) => dep.mounts(),
+        }
+    }
+
+    fn context(&self) -> Option<(Stage, Utf8PathBuf)> {
+        match self {
+            NamedStage::Script(dep) => dep.context(),
+            NamedStage::Cratesio(dep) => dep.context(),
+            NamedStage::Checkouts(dep) => dep.context(),
+            NamedStage::Relative(dep) => dep.context(),
+        }
     }
 }
 

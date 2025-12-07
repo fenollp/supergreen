@@ -3,7 +3,6 @@ use std::{
     env,
     fs::{self},
     future::Future,
-    iter::once,
 };
 
 use anyhow::{anyhow, bail, Result};
@@ -19,10 +18,10 @@ use crate::{
     green::Green,
     logging::{self, maybe_log},
     md::{BuildContext, Md, MdId, MountExtern},
-    pwd,
+    pwd, relative,
     runner::Runner,
     rustc_arguments::{as_rustc, RustcArgs},
-    stage::{Stage, RST, RUST},
+    stage::{AsStage, Stage, RST, RUST},
     PKG, VSN,
 };
 
@@ -156,7 +155,7 @@ async fn wrap_rustc(
         &krate_name,
         krate_manifest_dir,
         buildrs,
-        full_krate_id.replace(' ', "-"),
+        Stage::dep(&full_krate_id.replace(' ', "-"))?,
         pwd,
         args,
         out_dir_var,
@@ -211,7 +210,7 @@ async fn do_wrap_rustc(
     krate_name: &str,
     krate_manifest_dir: &Utf8Path,
     buildrs: bool,
-    crate_id: String,
+    rustc_stage: Stage,
     pwd: Utf8PathBuf,
     args: Vec<String>,
     out_dir_var: Option<Utf8PathBuf>,
@@ -232,34 +231,7 @@ async fn do_wrap_rustc(
 
     let cargo_home = cargo_home()?;
 
-    // TODO: support non-crates.io crates managers + proxies
-    // TODO: use --secret mounts for private deps (and secret direct artifacts)
-    let input_mount = if input.starts_with(cargo_home.join("registry/src")) {
-        // Input is of a crate dep (hosted at crates.io)
-        // Let's optimize this case by fetching & caching crate tarball
-
-        let (stage, src, dst, block) = cratesio::into_stage(krate_name, krate_manifest_dir).await?;
-        md.push_block(&stage, block);
-
-        Some((stage, Some(src), dst))
-    } else if krate_manifest_dir.starts_with(cargo_home.join("git/checkouts")) {
-        // Input is of a git checked out dep
-
-        let (stage, dst, block) = checkouts::into_stage(krate_manifest_dir).await?;
-        md.push_block(&stage, block);
-
-        Some((stage, None, dst))
-    } else if input.is_relative() {
-        None // Input is local code
-    } else {
-        bail!("BUG: unhandled input {input:?} ({krate_manifest_dir})")
-    };
-    let rustc_stage = Stage::dep(&crate_id)?;
     info!("picked {rustc_stage} for {input}");
-    let input = rewrite_cratesio_index(&input);
-
-    let incremental_stage = Stage::incremental(mdid)?;
-    let out_stage = Stage::output(mdid)?;
 
     let mut rustc_block = format!("FROM {RST} AS {rustc_stage}\n");
     rustc_block.push_str(&format!("SHELL {:?}\n", ["/bin/sh", "-eux", "-c"]));
@@ -274,88 +246,50 @@ async fn do_wrap_rustc(
         rustc_block.push_str(&format!("WORKDIR {incremental}\n"));
     }
 
-    let cwd = if let Some((name, src, dst)) = input_mount.as_ref() {
-        rustc_block.push_str("RUN \\\n");
-        let source = src.as_deref().map(|src| format!(",source={src}")).unwrap_or_default();
-        rustc_block.push_str(&format!("  --mount=from={name}{source},dst={dst} \\\n"));
+    // TODO: support non-crates.io crates managers + proxies
+    // TODO: use --secret mounts for private deps (and secret direct artifacts)
+    let code_stage = if input.starts_with(cargo_home.join("registry/src")) {
+        // Input is of a crate dep (hosted at crates.io)
+        // Let's optimize this case by fetching & caching crate tarball
 
-        None
+        cratesio::named_stage(krate_name, krate_manifest_dir).await?
+    } else if krate_manifest_dir.starts_with(cargo_home.join("git/checkouts")) {
+        // Input is of a git checked out dep
+
+        checkouts::as_stage(krate_manifest_dir).await?
+    } else if input.is_relative() {
+        // Input is local code
+
+        relative::as_stage(mdid, &pwd).await?
     } else {
-        // NOTE: build contexts have to be directories, can't be files.
-        //> failed to get build context path {$HOME/wefwefwef/supergreen.git/Cargo.lock <nil>}: not a directory
-
-        let cwd_stage = Stage::local(mdid)?;
-
-        info!("mounting {}files under {pwd}", if pwd.join(".git").is_dir() { "git " } else { "" });
-
-        let (keep, lose): (Vec<_>, Vec<_>) = {
-            let mut entries = fs::read_dir(&pwd)
-                .map_err(|e| anyhow!("Failed reading dir {pwd:?}: {e}"))?
-                .map(|entry| -> Result<_> {
-                    let entry = entry?;
-                    let fpath = entry.path();
-                    let fpath: Utf8PathBuf = fpath
-                        .try_into()
-                        .map_err(|e| anyhow!("corrupted UTF-8 encoding with {entry:?}: {e}"))?;
-                    let Some(fname) = fpath.file_name() else {
-                        bail!("unexpected root (/) for {entry:?}")
-                    };
-                    Ok(fname.to_owned())
-                })
-                .collect::<Result<Vec<_>>>()?;
-            entries.sort(); // deterministic iteration
-            entries.into_iter().partition(|fname| {
-                if fname == ".dockerignore" {
-                    debug!("excluding {fname}");
-                    return false;
-                }
-                if fname == ".git" && pwd.join(fname).is_dir() {
-                    debug!("excluding {fname} dir");
-                    return false; // Skip copying .git dir
-                }
-                if pwd.join(fname).join("CACHEDIR.TAG").exists() {
-                    debug!("excluding {fname} dir");
-                    return false; // Test for existence of ./target/CACHEDIR.TAG See https://bford.info/cachedir/
-                }
-                debug!("keeping {fname}");
-                true
-            })
-        };
-
-        rustc_block.push_str("RUN \\\n");
-        for fname in keep {
-            rustc_block.push_str(&format!(
-                "  --mount=from={cwd_stage},dst={pwd}/{fname},source=/{fname} \\\n"
-            ));
-        }
-        // TODO: do better than mounting depth=1 (exclude non-git files (.d file?))
-
-        if !lose.is_empty() {
-            let lose: String = lose
-                .into_iter()
-                .chain(once(".dockerignore".to_owned()))
-                .map(|fname| format!("/{fname}\n"))
-                .collect();
-            fs::write(pwd.join(".dockerignore"), lose).unwrap();
-            //FIXME: if exists: save + extend (then restore??) .dockerignore
-            //TODO? add .gitignore in there?
-            //TODO? exclude everything, only include `git ls-files`?
-        }
-
-        Some((cwd_stage, pwd.clone()))
+        bail!("BUG: unhandled input {input:?} ({krate_manifest_dir})")
     };
+    md.push_stage(&code_stage);
+    rustc_block.push_str("RUN \\\n");
+    for (src, dst, swappity) in code_stage.mounts() {
+        let name = code_stage.name();
+        let src = src.as_deref().map(|src| format!(",source={src}")).unwrap_or_default();
+        let mount = if swappity { format!(",dst={dst}{src}") } else { format!("{src},dst={dst}") };
+        rustc_block.push_str(&format!("  --mount=from={name}{mount} \\\n"));
+    }
+
+    let input = rewrite_cratesio_index(&input);
+
+    let incremental_stage = Stage::incremental(mdid)?;
+    let out_stage = Stage::output(mdid)?;
 
     if let Some(crate_out) = crate_out.as_deref() {
         let named = crate_out_name(crate_out);
         rustc_block.push_str(&format!("  --mount=from={named},dst={crate_out} \\\n"));
     }
 
-    md.contexts = [cwd, crate_out.map(|crate_out| (crate_out_name(&crate_out), crate_out))]
-        .into_iter()
-        .flatten()
-        .map(|(name, uri)| BuildContext { name, uri })
-        .inspect(|BuildContext { name, uri }| info!("loading {name:?}: {uri}"))
-        .collect();
+    md.contexts =
+        [code_stage.context(), crate_out.map(|crate_out| (crate_out_name(&crate_out), crate_out))]
+            .into_iter()
+            .flatten()
+            .map(|(name, uri)| BuildContext { name, uri })
+            .inspect(|BuildContext { name, uri }| info!("loading {name:?}: {uri}"))
+            .collect();
     info!("loading {} build contexts", md.contexts.len());
 
     let mds = md.assemble_build_dependencies(externs, &target_path)?;
