@@ -16,7 +16,7 @@ use anyhow::{anyhow, bail, Result};
 use atomic_write_file::AtomicWriteFile;
 use camino::{Utf8Path, Utf8PathBuf};
 use indexmap::IndexSet;
-use log::{debug, info};
+use log::{debug, info, warn};
 use reqwest::Client as ReqwestClient;
 use serde::Deserialize;
 use tokio::{
@@ -618,7 +618,7 @@ async fn run_build(
         match join!(timeout(dbg_out), timeout(dbg_err)) {
             (Ok(Ok(Err(e))), _) => bail!("Something went wrong (maybe retry?): {e}"),
             (Ok(Ok(Ok((Some(out_buf), Some(err_buf), errcode, written)))), _) => {
-                let FromStdout { stdout } = fwd_stdout(&out_buf, "➤")?;
+                let FromStdout { stdout } = fwd_stdout(&out_buf, "➤");
 
                 let FromStderr { stderr, envs, libs } = fwd_stderr(&err_buf, "✖");
                 info!("Suggested {PKG}-specific config: envs:{} libs:{}", envs.len(), libs.len());
@@ -706,7 +706,7 @@ struct FromStdout {
     stdout: Vec<String>,
 }
 
-fn fwd_stdout(stdout: &str, badge: &'static str) -> Result<FromStdout> {
+fn fwd_stdout(stdout: &str, badge: &'static str) -> FromStdout {
     let mut acc = FromStdout::default();
     for line in stdout.lines() {
         if line.is_empty() {
@@ -758,7 +758,7 @@ fn fwd_stdout(stdout: &str, badge: &'static str) -> Result<FromStdout> {
                 } else if rhs.starts_with("metadata=") {
                     // KEY=VALUE — Metadata, used by links scripts.
                 } else {
-                    bail!("BUG: unexpected cargo directive {rhs:?}")
+                    warn!("unexpected cargo directive {rhs:?}")
                 }
             }
 
@@ -766,7 +766,7 @@ fn fwd_stdout(stdout: &str, badge: &'static str) -> Result<FromStdout> {
             acc.stdout.push(msg.to_owned());
         }
     }
-    Ok(acc)
+    acc
 }
 
 /// Somehow, GitHub Actions won't hide this secret
