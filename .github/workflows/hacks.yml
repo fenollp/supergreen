@@ -28,6 +28,13 @@ jobs:
     - run: ./hack/hit.sh
 
 
+  portable:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v6
+    - run: ./hack/portable.sh
+
+
   latest_buildkit:
     runs-on: ubuntu-latest
     continue-on-error: true
