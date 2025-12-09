@@ -611,7 +611,7 @@ Verifies properties about caching crates & granularity.
 > docker buildx prune --all --force
 
 ### `./hack/hit.sh`
-Estimate of amount of crates reused through compilation of `./recipes/` `--> ~5%`!
+Estimate the of amount of crates reused through compilation of `./recipes/` `--> ~5%`!
 Expecting more with larger/more representative corpus + smart locking of transitive deps.
 ```
 recipes/buildxargs@1.4.0.Dockerfile
@@ -627,6 +627,9 @@ Total stages: 1065
 Stages in common: 58
 5.44%
 ```
+
+### `./hack/portable.sh`
+Count "portable" recipes in this repo (not portable = usage of local build contexts).
 
 ### When `git-bisect`ing
 ```make
