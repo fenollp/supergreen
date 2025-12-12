@@ -43,7 +43,7 @@ $(restore_builder_data)
     - uses: actions/checkout@v6
 
     - name: Cache \`cargo fetch\`
-      uses: actions/cache@v4
+      uses: actions/cache@v5
       with:
         path: |
           ~/.cargo/registry/index/
