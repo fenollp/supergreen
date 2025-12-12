@@ -6,18 +6,23 @@ macro_rules! ENV_EXPERIMENT {
     };
 }
 
-pub(crate) const EXPERIMENTS: &[&str] = &["finalpathnonprimary", "incremental", "repro"];
+pub(crate) const EXPERIMENTS: &[&str] = &[
+    //
+    "finalpathnonprimary",
+    "incremental",
+    "repro",
+];
+
+macro_rules! experiment {
+    ($name:tt) => {
+        pub(crate) fn $name(&self) -> bool {
+            self.experiment.iter().any(|ex| ex == stringify!($name))
+        }
+    };
+}
 
 impl Green {
-    pub(crate) fn finalpathnonprimary(&self) -> bool {
-        self.experiment.iter().any(|ex| ex == "finalpathnonprimary")
-    }
-
-    pub(crate) fn incremental(&self) -> bool {
-        self.experiment.iter().any(|ex| ex == "incremental")
-    }
-
-    pub(crate) fn repro(&self) -> bool {
-        self.experiment.iter().any(|ex| ex == "repro")
-    }
+    experiment!(finalpathnonprimary);
+    experiment!(incremental);
+    experiment!(repro);
 }
