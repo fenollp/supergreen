@@ -274,10 +274,6 @@ COPY --link --from=dep-n-buildxargs-1.4.0-6b139e29a6fbee8c /tmp/clis-buildxargs_
 ##     "b23dd1fb69296b44",
 ##     "a2dd0fe0df0b57cb",
 ## ]
-## short_externs = [
-##     "b23dd1fb69296b44",
-##     "a2dd0fe0df0b57cb",
-## ]
 ## writes = [
 ##     "buildxargs-6b139e29a6fbee8c.d",
 ##     "libbuildxargs-6b139e29a6fbee8c.rlib",
@@ -417,11 +413,6 @@ COPY --link --from=dep-n-buildxargs-1.4.0-08fbf7e44bba6617 /tmp/clis-buildxargs_
 
 ## this = "08fbf7e44bba6617"
 ## deps = [
-##     "6b139e29a6fbee8c",
-##     "b23dd1fb69296b44",
-##     "a2dd0fe0df0b57cb",
-## ]
-## short_externs = [
 ##     "6b139e29a6fbee8c",
 ##     "b23dd1fb69296b44",
 ##     "a2dd0fe0df0b57cb",

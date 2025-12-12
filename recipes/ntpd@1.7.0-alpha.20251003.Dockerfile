@@ -161,7 +161,6 @@ COPY --link --from=dep-n-clock-steering-0.2.1-9dd4b48829148398 /tmp/clis-ntpd_1-
 
 ## this = "9dd4b48829148398"
 ## deps = ["93b6478caf319772"]
-## short_externs = ["93b6478caf319772"]
 ## writes = [
 ##     "clock_steering-9dd4b48829148398.d",
 ##     "libclock_steering-9dd4b48829148398.rlib",
@@ -412,7 +411,6 @@ COPY --link --from=dep-n-generic-array-0.14.7-523ed8994559e91b /tmp/clis-ntpd_1-
 
 ## this = "523ed8994559e91b"
 ## deps = ["7d56f2624f7fb484"]
-## short_externs = ["7d56f2624f7fb484"]
 ## writes = [
 ##     "generic_array-523ed8994559e91b.d",
 ##     "libgeneric_array-523ed8994559e91b.rlib",
@@ -671,10 +669,6 @@ COPY --link --from=dep-n-getrandom-0.2.16-2ae0eb9fb2c721bb /tmp/clis-ntpd_1-7-0-
 ##     "5a4301c208f24f4c",
 ##     "93b6478caf319772",
 ## ]
-## short_externs = [
-##     "5a4301c208f24f4c",
-##     "93b6478caf319772",
-## ]
 ## writes = [
 ##     "getrandom-2ae0eb9fb2c721bb.d",
 ##     "libgetrandom-2ae0eb9fb2c721bb.rlib",
@@ -814,11 +808,6 @@ COPY --link --from=dep-n-rand_core-0.6.4-fd7543c0686511cd /tmp/clis-ntpd_1-7-0-a
 
 ## this = "fd7543c0686511cd"
 ## deps = [
-##     "2ae0eb9fb2c721bb",
-##     "5a4301c208f24f4c",
-##     "93b6478caf319772",
-## ]
-## short_externs = [
 ##     "2ae0eb9fb2c721bb",
 ##     "5a4301c208f24f4c",
 ##     "93b6478caf319772",
@@ -985,14 +974,6 @@ COPY --link --from=dep-n-crypto-common-0.1.6-cebe1cbff4994413 /tmp/clis-ntpd_1-7
 
 ## this = "cebe1cbff4994413"
 ## deps = [
-##     "523ed8994559e91b",
-##     "7d56f2624f7fb484",
-##     "fd7543c0686511cd",
-##     "2ae0eb9fb2c721bb",
-##     "5a4301c208f24f4c",
-##     "93b6478caf319772",
-## ]
-## short_externs = [
 ##     "523ed8994559e91b",
 ##     "7d56f2624f7fb484",
 ##     "fd7543c0686511cd",
@@ -1200,15 +1181,6 @@ COPY --link --from=dep-n-aead-0.5.2-4b9b0df243e430b1 /tmp/clis-ntpd_1-7-0-alpha-
 ##     "5a4301c208f24f4c",
 ##     "93b6478caf319772",
 ## ]
-## short_externs = [
-##     "cebe1cbff4994413",
-##     "523ed8994559e91b",
-##     "7d56f2624f7fb484",
-##     "fd7543c0686511cd",
-##     "2ae0eb9fb2c721bb",
-##     "5a4301c208f24f4c",
-##     "93b6478caf319772",
-## ]
 ## writes = [
 ##     "aead-4b9b0df243e430b1.d",
 ##     "libaead-4b9b0df243e430b1.rlib",
@@ -1404,10 +1376,6 @@ COPY --link --from=dep-n-inout-0.1.4-933693afe5da87fd /tmp/clis-ntpd_1-7-0-alpha
 ##     "523ed8994559e91b",
 ##     "7d56f2624f7fb484",
 ## ]
-## short_externs = [
-##     "523ed8994559e91b",
-##     "7d56f2624f7fb484",
-## ]
 ## writes = [
 ##     "inout-933693afe5da87fd.d",
 ##     "libinout-933693afe5da87fd.rlib",
@@ -1560,16 +1528,6 @@ COPY --link --from=dep-n-cipher-0.4.4-8863b3b614042642 /tmp/clis-ntpd_1-7-0-alph
 
 ## this = "8863b3b614042642"
 ## deps = [
-##     "cebe1cbff4994413",
-##     "523ed8994559e91b",
-##     "7d56f2624f7fb484",
-##     "fd7543c0686511cd",
-##     "2ae0eb9fb2c721bb",
-##     "5a4301c208f24f4c",
-##     "93b6478caf319772",
-##     "933693afe5da87fd",
-## ]
-## short_externs = [
 ##     "cebe1cbff4994413",
 ##     "523ed8994559e91b",
 ##     "7d56f2624f7fb484",
@@ -1921,18 +1879,6 @@ COPY --link --from=dep-n-aes-0.8.4-d09eff787322ac92 /tmp/clis-ntpd_1-7-0-alpha-2
 ##     "933693afe5da87fd",
 ##     "d0b16ab74f2da8e3",
 ## ]
-## short_externs = [
-##     "5a4301c208f24f4c",
-##     "8863b3b614042642",
-##     "cebe1cbff4994413",
-##     "523ed8994559e91b",
-##     "7d56f2624f7fb484",
-##     "fd7543c0686511cd",
-##     "2ae0eb9fb2c721bb",
-##     "93b6478caf319772",
-##     "933693afe5da87fd",
-##     "d0b16ab74f2da8e3",
-## ]
 ## writes = [
 ##     "aes-d09eff787322ac92.d",
 ##     "libaes-d09eff787322ac92.rlib",
@@ -2189,10 +2135,6 @@ COPY --link --from=dep-n-dbl-0.3.2-7d6eda3dd622da8e /tmp/clis-ntpd_1-7-0-alpha-2
 ##     "523ed8994559e91b",
 ##     "7d56f2624f7fb484",
 ## ]
-## short_externs = [
-##     "523ed8994559e91b",
-##     "7d56f2624f7fb484",
-## ]
 ## writes = [
 ##     "dbl-7d6eda3dd622da8e.d",
 ##     "libdbl-7d6eda3dd622da8e.rlib",
@@ -2333,10 +2275,6 @@ COPY --link --from=dep-n-block-buffer-0.10.4-be39a74c6398de96 /tmp/clis-ntpd_1-7
 
 ## this = "be39a74c6398de96"
 ## deps = [
-##     "523ed8994559e91b",
-##     "7d56f2624f7fb484",
-## ]
-## short_externs = [
 ##     "523ed8994559e91b",
 ##     "7d56f2624f7fb484",
 ## ]
@@ -2615,17 +2553,6 @@ COPY --link --from=dep-n-digest-0.10.7-aa4812039bdce888 /tmp/clis-ntpd_1-7-0-alp
 ##     "93b6478caf319772",
 ##     "f22c7bf8d1e18975",
 ## ]
-## short_externs = [
-##     "be39a74c6398de96",
-##     "523ed8994559e91b",
-##     "7d56f2624f7fb484",
-##     "cebe1cbff4994413",
-##     "fd7543c0686511cd",
-##     "2ae0eb9fb2c721bb",
-##     "5a4301c208f24f4c",
-##     "93b6478caf319772",
-##     "f22c7bf8d1e18975",
-## ]
 ## writes = [
 ##     "digest-aa4812039bdce888.d",
 ##     "libdigest-aa4812039bdce888.rlib",
@@ -2858,21 +2785,6 @@ COPY --link --from=dep-n-cmac-0.7.2-6ac8d0251eb66447 /tmp/clis-ntpd_1-7-0-alpha-
 
 ## this = "6ac8d0251eb66447"
 ## deps = [
-##     "8863b3b614042642",
-##     "cebe1cbff4994413",
-##     "523ed8994559e91b",
-##     "7d56f2624f7fb484",
-##     "fd7543c0686511cd",
-##     "2ae0eb9fb2c721bb",
-##     "5a4301c208f24f4c",
-##     "93b6478caf319772",
-##     "933693afe5da87fd",
-##     "7d6eda3dd622da8e",
-##     "aa4812039bdce888",
-##     "be39a74c6398de96",
-##     "f22c7bf8d1e18975",
-## ]
-## short_externs = [
 ##     "8863b3b614042642",
 ##     "cebe1cbff4994413",
 ##     "523ed8994559e91b",
@@ -3151,17 +3063,6 @@ COPY --link --from=dep-n-ctr-0.9.2-b05e247bd900343a /tmp/clis-ntpd_1-7-0-alpha-2
 
 ## this = "b05e247bd900343a"
 ## deps = [
-##     "8863b3b614042642",
-##     "cebe1cbff4994413",
-##     "523ed8994559e91b",
-##     "7d56f2624f7fb484",
-##     "fd7543c0686511cd",
-##     "2ae0eb9fb2c721bb",
-##     "5a4301c208f24f4c",
-##     "93b6478caf319772",
-##     "933693afe5da87fd",
-## ]
-## short_externs = [
 ##     "8863b3b614042642",
 ##     "cebe1cbff4994413",
 ##     "523ed8994559e91b",
@@ -3560,27 +3461,6 @@ COPY --link --from=dep-n-aes-siv-0.7.0-52d5490f955beadb /tmp/clis-ntpd_1-7-0-alp
 ##     "b05e247bd900343a",
 ##     "fd233fb45e407496",
 ## ]
-## short_externs = [
-##     "4b9b0df243e430b1",
-##     "cebe1cbff4994413",
-##     "523ed8994559e91b",
-##     "7d56f2624f7fb484",
-##     "fd7543c0686511cd",
-##     "2ae0eb9fb2c721bb",
-##     "5a4301c208f24f4c",
-##     "93b6478caf319772",
-##     "d09eff787322ac92",
-##     "8863b3b614042642",
-##     "933693afe5da87fd",
-##     "d0b16ab74f2da8e3",
-##     "6ac8d0251eb66447",
-##     "7d6eda3dd622da8e",
-##     "aa4812039bdce888",
-##     "be39a74c6398de96",
-##     "f22c7bf8d1e18975",
-##     "b05e247bd900343a",
-##     "fd233fb45e407496",
-## ]
 ## writes = [
 ##     "aes_siv-52d5490f955beadb.d",
 ##     "libaes_siv-52d5490f955beadb.rlib",
@@ -3910,18 +3790,6 @@ COPY --link --from=dep-n-md-5-0.10.6-5c47893368a03a5c /tmp/clis-ntpd_1-7-0-alpha
 
 ## this = "5c47893368a03a5c"
 ## deps = [
-##     "5a4301c208f24f4c",
-##     "aa4812039bdce888",
-##     "be39a74c6398de96",
-##     "523ed8994559e91b",
-##     "7d56f2624f7fb484",
-##     "cebe1cbff4994413",
-##     "fd7543c0686511cd",
-##     "2ae0eb9fb2c721bb",
-##     "93b6478caf319772",
-##     "f22c7bf8d1e18975",
-## ]
-## short_externs = [
 ##     "5a4301c208f24f4c",
 ##     "aa4812039bdce888",
 ##     "be39a74c6398de96",
@@ -4264,7 +4132,6 @@ COPY --link --from=dep-n-ppv-lite86-0.2.21-6e69d7ce14b873ac /tmp/clis-ntpd_1-7-0
 
 ## this = "6e69d7ce14b873ac"
 ## deps = ["3c4f5c2990477ff1"]
-## short_externs = ["3c4f5c2990477ff1"]
 ## writes = [
 ##     "libppv_lite86-6e69d7ce14b873ac.rlib",
 ##     "libppv_lite86-6e69d7ce14b873ac.rmeta",
@@ -4400,14 +4267,6 @@ COPY --link --from=dep-n-rand_chacha-0.3.1-28f07c8df04e8bde /tmp/clis-ntpd_1-7-0
 
 ## this = "28f07c8df04e8bde"
 ## deps = [
-##     "6e69d7ce14b873ac",
-##     "3c4f5c2990477ff1",
-##     "fd7543c0686511cd",
-##     "2ae0eb9fb2c721bb",
-##     "5a4301c208f24f4c",
-##     "93b6478caf319772",
-## ]
-## short_externs = [
 ##     "6e69d7ce14b873ac",
 ##     "3c4f5c2990477ff1",
 ##     "fd7543c0686511cd",
@@ -4603,15 +4462,6 @@ COPY --link --from=dep-n-rand-0.8.5-b2b2029003f4f41b /tmp/clis-ntpd_1-7-0-alpha-
 
 ## this = "b2b2029003f4f41b"
 ## deps = [
-##     "93b6478caf319772",
-##     "28f07c8df04e8bde",
-##     "6e69d7ce14b873ac",
-##     "3c4f5c2990477ff1",
-##     "fd7543c0686511cd",
-##     "2ae0eb9fb2c721bb",
-##     "5a4301c208f24f4c",
-## ]
-## short_externs = [
 ##     "93b6478caf319772",
 ##     "28f07c8df04e8bde",
 ##     "6e69d7ce14b873ac",
@@ -4958,10 +4808,6 @@ COPY --link --from=dep-n-aws-lc-rs-1.14.1-90227bfec647f88b /tmp/clis-ntpd_1-7-0-
 
 ## this = "90227bfec647f88b"
 ## deps = [
-##     "135dbb753da3a4f4",
-##     "fd233fb45e407496",
-## ]
-## short_externs = [
 ##     "135dbb753da3a4f4",
 ##     "fd233fb45e407496",
 ## ]
@@ -5328,7 +5174,6 @@ COPY --link --from=dep-n-rustls-pki-types-1.12.0-88022d560b8b0ce0 /tmp/clis-ntpd
 
 ## this = "88022d560b8b0ce0"
 ## deps = ["fd233fb45e407496"]
-## short_externs = ["fd233fb45e407496"]
 ## writes = [
 ##     "librustls_pki_types-88022d560b8b0ce0.rlib",
 ##     "librustls_pki_types-88022d560b8b0ce0.rmeta",
@@ -5578,13 +5423,6 @@ COPY --link --from=dep-n-rustls-webpki-0.103.7-6da74749e9752714 /tmp/clis-ntpd_1
 ##     "88022d560b8b0ce0",
 ##     "2d8d07531d218763",
 ## ]
-## short_externs = [
-##     "90227bfec647f88b",
-##     "135dbb753da3a4f4",
-##     "fd233fb45e407496",
-##     "88022d560b8b0ce0",
-##     "2d8d07531d218763",
-## ]
 ## writes = [
 ##     "libwebpki-6da74749e9752714.rlib",
 ##     "libwebpki-6da74749e9752714.rmeta",
@@ -5770,17 +5608,6 @@ COPY --link --from=dep-n-rustls-0.23.32-79af5f0cc8b8fe11 /tmp/clis-ntpd_1-7-0-al
 
 ## this = "79af5f0cc8b8fe11"
 ## deps = [
-##     "90227bfec647f88b",
-##     "135dbb753da3a4f4",
-##     "fd233fb45e407496",
-##     "64be2e589e1b58c5",
-##     "d2455ec75a446def",
-##     "88022d560b8b0ce0",
-##     "6da74749e9752714",
-##     "2d8d07531d218763",
-##     "f22c7bf8d1e18975",
-## ]
-## short_externs = [
 ##     "90227bfec647f88b",
 ##     "135dbb753da3a4f4",
 ##     "fd233fb45e407496",
@@ -6121,11 +5948,6 @@ COPY --link --from=dep-n-rustls-native-certs-0.8.1-9227835a4d59a1b8 /tmp/clis-nt
 ##     "88022d560b8b0ce0",
 ##     "fd233fb45e407496",
 ## ]
-## short_externs = [
-##     "2ff594c6e039dec5",
-##     "88022d560b8b0ce0",
-##     "fd233fb45e407496",
-## ]
 ## writes = [
 ##     "librustls_native_certs-9227835a4d59a1b8.rlib",
 ##     "librustls_native_certs-9227835a4d59a1b8.rmeta",
@@ -6280,20 +6102,6 @@ COPY --link --from=dep-n-rustls-platform-verifier-0.5.3-db666fad349f8ca6 /tmp/cl
 
 ## this = "db666fad349f8ca6"
 ## deps = [
-##     "64be2e589e1b58c5",
-##     "d2455ec75a446def",
-##     "79af5f0cc8b8fe11",
-##     "90227bfec647f88b",
-##     "135dbb753da3a4f4",
-##     "fd233fb45e407496",
-##     "88022d560b8b0ce0",
-##     "6da74749e9752714",
-##     "2d8d07531d218763",
-##     "f22c7bf8d1e18975",
-##     "9227835a4d59a1b8",
-##     "2ff594c6e039dec5",
-## ]
-## short_externs = [
 ##     "64be2e589e1b58c5",
 ##     "d2455ec75a446def",
 ##     "79af5f0cc8b8fe11",
@@ -6716,7 +6524,6 @@ COPY --link --from=dep-n-proc-macro2-1.0.101-30dd1c0184916507 /tmp/clis-ntpd_1-7
 
 ## this = "30dd1c0184916507"
 ## deps = ["d90ab847601a2565"]
-## short_externs = ["d90ab847601a2565"]
 ## writes = [
 ##     "libproc_macro2-30dd1c0184916507.rlib",
 ##     "libproc_macro2-30dd1c0184916507.rmeta",
@@ -6845,10 +6652,6 @@ COPY --link --from=dep-n-quote-1.0.41-41756a17d2ad9431 /tmp/clis-ntpd_1-7-0-alph
 
 ## this = "41756a17d2ad9431"
 ## deps = [
-##     "30dd1c0184916507",
-##     "d90ab847601a2565",
-## ]
-## short_externs = [
 ##     "30dd1c0184916507",
 ##     "d90ab847601a2565",
 ## ]
@@ -6991,11 +6794,6 @@ COPY --link --from=dep-n-syn-2.0.106-8f37513da063fb69 /tmp/clis-ntpd_1-7-0-alpha
 
 ## this = "8f37513da063fb69"
 ## deps = [
-##     "30dd1c0184916507",
-##     "d90ab847601a2565",
-##     "41756a17d2ad9431",
-## ]
-## short_externs = [
 ##     "30dd1c0184916507",
 ##     "d90ab847601a2565",
 ##     "41756a17d2ad9431",
@@ -7151,12 +6949,6 @@ COPY --link --from=dep-n-serde_derive-1.0.228-b925936788ba7057 /tmp/clis-ntpd_1-
 ##     "41756a17d2ad9431",
 ##     "8f37513da063fb69",
 ## ]
-## short_externs = [
-##     "30dd1c0184916507",
-##     "d90ab847601a2565",
-##     "41756a17d2ad9431",
-##     "8f37513da063fb69",
-## ]
 ## writes = [
 ##     "libserde_derive-b925936788ba7057.so",
 ##     "serde_derive-b925936788ba7057.d",
@@ -7300,14 +7092,6 @@ COPY --link --from=dep-n-serde-1.0.228-d9535ff1afbc9e07 /tmp/clis-ntpd_1-7-0-alp
 
 ## this = "d9535ff1afbc9e07"
 ## deps = [
-##     "1bc4bef1fdca14c4",
-##     "b925936788ba7057",
-##     "30dd1c0184916507",
-##     "d90ab847601a2565",
-##     "41756a17d2ad9431",
-##     "8f37513da063fb69",
-## ]
-## short_externs = [
 ##     "1bc4bef1fdca14c4",
 ##     "b925936788ba7057",
 ##     "30dd1c0184916507",
@@ -7605,7 +7389,6 @@ COPY --link --from=dep-n-mio-1.0.4-8a04991c75463c17 /tmp/clis-ntpd_1-7-0-alpha-2
 
 ## this = "8a04991c75463c17"
 ## deps = ["93b6478caf319772"]
-## short_externs = ["93b6478caf319772"]
 ## writes = [
 ##     "libmio-8a04991c75463c17.rlib",
 ##     "libmio-8a04991c75463c17.rmeta",
@@ -7845,7 +7628,6 @@ COPY --link --from=dep-n-socket2-0.6.0-332f7f94bdc8a158 /tmp/clis-ntpd_1-7-0-alp
 
 ## this = "332f7f94bdc8a158"
 ## deps = ["93b6478caf319772"]
-## short_externs = ["93b6478caf319772"]
 ## writes = [
 ##     "libsocket2-332f7f94bdc8a158.rlib",
 ##     "libsocket2-332f7f94bdc8a158.rmeta",
@@ -7975,12 +7757,6 @@ COPY --link --from=dep-n-tokio-macros-2.5.0-a43fab541260b57a /tmp/clis-ntpd_1-7-
 
 ## this = "a43fab541260b57a"
 ## deps = [
-##     "30dd1c0184916507",
-##     "d90ab847601a2565",
-##     "41756a17d2ad9431",
-##     "8f37513da063fb69",
-## ]
-## short_externs = [
 ##     "30dd1c0184916507",
 ##     "d90ab847601a2565",
 ##     "41756a17d2ad9431",
@@ -8138,18 +7914,6 @@ COPY --link --from=dep-n-tokio-1.47.1-c395c10495b0b3f9 /tmp/clis-ntpd_1-7-0-alph
 
 ## this = "c395c10495b0b3f9"
 ## deps = [
-##     "bf097c132b6f21a4",
-##     "93b6478caf319772",
-##     "8a04991c75463c17",
-##     "a22006e28be69faf",
-##     "332f7f94bdc8a158",
-##     "a43fab541260b57a",
-##     "30dd1c0184916507",
-##     "d90ab847601a2565",
-##     "41756a17d2ad9431",
-##     "8f37513da063fb69",
-## ]
-## short_externs = [
 ##     "bf097c132b6f21a4",
 ##     "93b6478caf319772",
 ##     "8a04991c75463c17",
@@ -8411,29 +8175,6 @@ COPY --link --from=dep-n-tokio-rustls-0.26.4-1d9512fc7c74ae08 /tmp/clis-ntpd_1-7
 
 ## this = "1d9512fc7c74ae08"
 ## deps = [
-##     "79af5f0cc8b8fe11",
-##     "90227bfec647f88b",
-##     "135dbb753da3a4f4",
-##     "fd233fb45e407496",
-##     "64be2e589e1b58c5",
-##     "d2455ec75a446def",
-##     "88022d560b8b0ce0",
-##     "6da74749e9752714",
-##     "2d8d07531d218763",
-##     "f22c7bf8d1e18975",
-##     "c395c10495b0b3f9",
-##     "bf097c132b6f21a4",
-##     "93b6478caf319772",
-##     "8a04991c75463c17",
-##     "a22006e28be69faf",
-##     "332f7f94bdc8a158",
-##     "a43fab541260b57a",
-##     "30dd1c0184916507",
-##     "d90ab847601a2565",
-##     "41756a17d2ad9431",
-##     "8f37513da063fb69",
-## ]
-## short_externs = [
 ##     "79af5f0cc8b8fe11",
 ##     "90227bfec647f88b",
 ##     "135dbb753da3a4f4",
@@ -8787,12 +8528,6 @@ COPY --link --from=dep-n-tracing-attributes-0.1.30-503f6bcf688b11a3 /tmp/clis-nt
 ##     "41756a17d2ad9431",
 ##     "8f37513da063fb69",
 ## ]
-## short_externs = [
-##     "30dd1c0184916507",
-##     "d90ab847601a2565",
-##     "41756a17d2ad9431",
-##     "8f37513da063fb69",
-## ]
 ## writes = [
 ##     "libtracing_attributes-503f6bcf688b11a3.so",
 ##     "tracing_attributes-503f6bcf688b11a3.d",
@@ -8927,7 +8662,6 @@ COPY --link --from=dep-n-tracing-core-0.1.34-2bf32bfc77d4a425 /tmp/clis-ntpd_1-7
 
 ## this = "2bf32bfc77d4a425"
 ## deps = ["d2455ec75a446def"]
-## short_externs = ["d2455ec75a446def"]
 ## writes = [
 ##     "libtracing_core-2bf32bfc77d4a425.rlib",
 ##     "libtracing_core-2bf32bfc77d4a425.rmeta",
@@ -9069,17 +8803,6 @@ COPY --link --from=dep-n-tracing-0.1.41-075e13f932ee5314 /tmp/clis-ntpd_1-7-0-al
 
 ## this = "075e13f932ee5314"
 ## deps = [
-##     "64be2e589e1b58c5",
-##     "a22006e28be69faf",
-##     "503f6bcf688b11a3",
-##     "30dd1c0184916507",
-##     "d90ab847601a2565",
-##     "41756a17d2ad9431",
-##     "8f37513da063fb69",
-##     "2bf32bfc77d4a425",
-##     "d2455ec75a446def",
-## ]
-## short_externs = [
 ##     "64be2e589e1b58c5",
 ##     "a22006e28be69faf",
 ##     "503f6bcf688b11a3",
@@ -9391,61 +9114,6 @@ COPY --link --from=dep-n-ntp-proto-1.7.0-alpha.20251003-b5f6bfad0d8f8471 /tmp/cl
 
 ## this = "b5f6bfad0d8f8471"
 ## deps = [
-##     "4b9b0df243e430b1",
-##     "cebe1cbff4994413",
-##     "523ed8994559e91b",
-##     "7d56f2624f7fb484",
-##     "fd7543c0686511cd",
-##     "2ae0eb9fb2c721bb",
-##     "5a4301c208f24f4c",
-##     "93b6478caf319772",
-##     "52d5490f955beadb",
-##     "d09eff787322ac92",
-##     "8863b3b614042642",
-##     "933693afe5da87fd",
-##     "d0b16ab74f2da8e3",
-##     "6ac8d0251eb66447",
-##     "7d6eda3dd622da8e",
-##     "aa4812039bdce888",
-##     "be39a74c6398de96",
-##     "f22c7bf8d1e18975",
-##     "b05e247bd900343a",
-##     "fd233fb45e407496",
-##     "5c47893368a03a5c",
-##     "b2b2029003f4f41b",
-##     "28f07c8df04e8bde",
-##     "6e69d7ce14b873ac",
-##     "3c4f5c2990477ff1",
-##     "79af5f0cc8b8fe11",
-##     "90227bfec647f88b",
-##     "135dbb753da3a4f4",
-##     "64be2e589e1b58c5",
-##     "d2455ec75a446def",
-##     "88022d560b8b0ce0",
-##     "6da74749e9752714",
-##     "2d8d07531d218763",
-##     "db666fad349f8ca6",
-##     "9227835a4d59a1b8",
-##     "2ff594c6e039dec5",
-##     "d9535ff1afbc9e07",
-##     "1bc4bef1fdca14c4",
-##     "b925936788ba7057",
-##     "30dd1c0184916507",
-##     "d90ab847601a2565",
-##     "41756a17d2ad9431",
-##     "8f37513da063fb69",
-##     "c395c10495b0b3f9",
-##     "bf097c132b6f21a4",
-##     "8a04991c75463c17",
-##     "a22006e28be69faf",
-##     "332f7f94bdc8a158",
-##     "a43fab541260b57a",
-##     "1d9512fc7c74ae08",
-##     "075e13f932ee5314",
-##     "503f6bcf688b11a3",
-##     "2bf32bfc77d4a425",
-## ]
-## short_externs = [
 ##     "4b9b0df243e430b1",
 ##     "cebe1cbff4994413",
 ##     "523ed8994559e91b",
@@ -10145,7 +9813,6 @@ COPY --link --from=dep-n-pps-time-0.2.3-eb10259898586549 /tmp/clis-ntpd_1-7-0-al
 
 ## this = "eb10259898586549"
 ## deps = ["93b6478caf319772"]
-## short_externs = ["93b6478caf319772"]
 ## writes = [
 ##     "libpps_time-eb10259898586549.rlib",
 ##     "libpps_time-eb10259898586549.rmeta",
@@ -10619,12 +10286,6 @@ COPY --link --from=dep-n-serde_json-1.0.145-3956e8613ae2191d /tmp/clis-ntpd_1-7-
 ##     "89e84ce63cef1c32",
 ##     "1bc4bef1fdca14c4",
 ## ]
-## short_externs = [
-##     "810c45601233a792",
-##     "1bf2d419b0e312f0",
-##     "89e84ce63cef1c32",
-##     "1bc4bef1fdca14c4",
-## ]
 ## writes = [
 ##     "libserde_json-3956e8613ae2191d.rlib",
 ##     "libserde_json-3956e8613ae2191d.rmeta",
@@ -10817,27 +10478,6 @@ COPY --link --from=dep-n-timestamped-socket-0.2.7-e18c08f3473fbbaf /tmp/clis-ntp
 
 ## this = "e18c08f3473fbbaf"
 ## deps = [
-##     "93b6478caf319772",
-##     "d9535ff1afbc9e07",
-##     "1bc4bef1fdca14c4",
-##     "b925936788ba7057",
-##     "30dd1c0184916507",
-##     "d90ab847601a2565",
-##     "41756a17d2ad9431",
-##     "8f37513da063fb69",
-##     "c395c10495b0b3f9",
-##     "bf097c132b6f21a4",
-##     "8a04991c75463c17",
-##     "a22006e28be69faf",
-##     "332f7f94bdc8a158",
-##     "a43fab541260b57a",
-##     "075e13f932ee5314",
-##     "64be2e589e1b58c5",
-##     "503f6bcf688b11a3",
-##     "2bf32bfc77d4a425",
-##     "d2455ec75a446def",
-## ]
-## short_externs = [
 ##     "93b6478caf319772",
 ##     "d9535ff1afbc9e07",
 ##     "1bc4bef1fdca14c4",
@@ -11174,15 +10814,6 @@ COPY --link --from=dep-n-serde_spanned-0.6.9-9efeb8ba5429dc73 /tmp/clis-ntpd_1-7
 ##     "41756a17d2ad9431",
 ##     "8f37513da063fb69",
 ## ]
-## short_externs = [
-##     "d9535ff1afbc9e07",
-##     "1bc4bef1fdca14c4",
-##     "b925936788ba7057",
-##     "30dd1c0184916507",
-##     "d90ab847601a2565",
-##     "41756a17d2ad9431",
-##     "8f37513da063fb69",
-## ]
 ## writes = [
 ##     "libserde_spanned-9efeb8ba5429dc73.rlib",
 ##     "libserde_spanned-9efeb8ba5429dc73.rmeta",
@@ -11381,15 +11012,6 @@ COPY --link --from=dep-n-toml_datetime-0.6.11-ba469190e2df5ae2 /tmp/clis-ntpd_1-
 
 ## this = "ba469190e2df5ae2"
 ## deps = [
-##     "d9535ff1afbc9e07",
-##     "1bc4bef1fdca14c4",
-##     "b925936788ba7057",
-##     "30dd1c0184916507",
-##     "d90ab847601a2565",
-##     "41756a17d2ad9431",
-##     "8f37513da063fb69",
-## ]
-## short_externs = [
 ##     "d9535ff1afbc9e07",
 ##     "1bc4bef1fdca14c4",
 ##     "b925936788ba7057",
@@ -11812,10 +11434,6 @@ COPY --link --from=dep-n-indexmap-2.11.4-a726055e510b5710 /tmp/clis-ntpd_1-7-0-a
 ##     "4ab91e794913659c",
 ##     "f3886a4b366ef278",
 ## ]
-## short_externs = [
-##     "4ab91e794913659c",
-##     "f3886a4b366ef278",
-## ]
 ## writes = [
 ##     "indexmap-a726055e510b5710.d",
 ##     "libindexmap-a726055e510b5710.rlib",
@@ -12084,21 +11702,6 @@ COPY --link --from=dep-n-toml_edit-0.22.27-960c257e979200c0 /tmp/clis-ntpd_1-7-0
 
 ## this = "960c257e979200c0"
 ## deps = [
-##     "a726055e510b5710",
-##     "4ab91e794913659c",
-##     "f3886a4b366ef278",
-##     "d9535ff1afbc9e07",
-##     "1bc4bef1fdca14c4",
-##     "b925936788ba7057",
-##     "30dd1c0184916507",
-##     "d90ab847601a2565",
-##     "41756a17d2ad9431",
-##     "8f37513da063fb69",
-##     "9efeb8ba5429dc73",
-##     "ba469190e2df5ae2",
-##     "876f7323b6273c7b",
-## ]
-## short_externs = [
 ##     "a726055e510b5710",
 ##     "4ab91e794913659c",
 ##     "f3886a4b366ef278",
@@ -12402,22 +12005,6 @@ COPY --link --from=dep-n-toml-0.8.23-d7e70c2bc4581f22 /tmp/clis-ntpd_1-7-0-alpha
 
 ## this = "d7e70c2bc4581f22"
 ## deps = [
-##     "d9535ff1afbc9e07",
-##     "1bc4bef1fdca14c4",
-##     "b925936788ba7057",
-##     "30dd1c0184916507",
-##     "d90ab847601a2565",
-##     "41756a17d2ad9431",
-##     "8f37513da063fb69",
-##     "9efeb8ba5429dc73",
-##     "ba469190e2df5ae2",
-##     "960c257e979200c0",
-##     "a726055e510b5710",
-##     "4ab91e794913659c",
-##     "f3886a4b366ef278",
-##     "876f7323b6273c7b",
-## ]
-## short_externs = [
 ##     "d9535ff1afbc9e07",
 ##     "1bc4bef1fdca14c4",
 ##     "b925936788ba7057",
@@ -12918,7 +12505,6 @@ COPY --link --from=dep-n-sharded-slab-0.1.7-4d66c3c554384830 /tmp/clis-ntpd_1-7-
 
 ## this = "4d66c3c554384830"
 ## deps = ["7475590c5cec2ded"]
-## short_externs = ["7475590c5cec2ded"]
 ## writes = [
 ##     "libsharded_slab-4d66c3c554384830.rlib",
 ##     "libsharded_slab-4d66c3c554384830.rmeta",
@@ -13150,7 +12736,6 @@ COPY --link --from=dep-n-thread_local-1.1.9-42c7ea5a78f3c604 /tmp/clis-ntpd_1-7-
 
 ## this = "42c7ea5a78f3c604"
 ## deps = ["5a4301c208f24f4c"]
-## short_externs = ["5a4301c208f24f4c"]
 ## writes = [
 ##     "libthread_local-42c7ea5a78f3c604.rlib",
 ##     "libthread_local-42c7ea5a78f3c604.rmeta",
@@ -13293,15 +12878,6 @@ COPY --link --from=dep-n-tracing-subscriber-0.3.20-b671934748d136d0 /tmp/clis-nt
 
 ## this = "b671934748d136d0"
 ## deps = [
-##     "6610440eb99272a1",
-##     "4d66c3c554384830",
-##     "7475590c5cec2ded",
-##     "42c7ea5a78f3c604",
-##     "5a4301c208f24f4c",
-##     "2bf32bfc77d4a425",
-##     "d2455ec75a446def",
-## ]
-## short_externs = [
 ##     "6610440eb99272a1",
 ##     "4d66c3c554384830",
 ##     "7475590c5cec2ded",
@@ -13641,82 +13217,6 @@ COPY --link --from=dep-n-ntpd-1.7.0-alpha.20251003-27edfaa695fb596f /tmp/clis-nt
 
 ## this = "27edfaa695fb596f"
 ## deps = [
-##     "9dd4b48829148398",
-##     "93b6478caf319772",
-##     "b5f6bfad0d8f8471",
-##     "4b9b0df243e430b1",
-##     "cebe1cbff4994413",
-##     "523ed8994559e91b",
-##     "7d56f2624f7fb484",
-##     "fd7543c0686511cd",
-##     "2ae0eb9fb2c721bb",
-##     "5a4301c208f24f4c",
-##     "52d5490f955beadb",
-##     "d09eff787322ac92",
-##     "8863b3b614042642",
-##     "933693afe5da87fd",
-##     "d0b16ab74f2da8e3",
-##     "6ac8d0251eb66447",
-##     "7d6eda3dd622da8e",
-##     "aa4812039bdce888",
-##     "be39a74c6398de96",
-##     "f22c7bf8d1e18975",
-##     "b05e247bd900343a",
-##     "fd233fb45e407496",
-##     "5c47893368a03a5c",
-##     "b2b2029003f4f41b",
-##     "28f07c8df04e8bde",
-##     "6e69d7ce14b873ac",
-##     "3c4f5c2990477ff1",
-##     "79af5f0cc8b8fe11",
-##     "90227bfec647f88b",
-##     "135dbb753da3a4f4",
-##     "64be2e589e1b58c5",
-##     "d2455ec75a446def",
-##     "88022d560b8b0ce0",
-##     "6da74749e9752714",
-##     "2d8d07531d218763",
-##     "db666fad349f8ca6",
-##     "9227835a4d59a1b8",
-##     "2ff594c6e039dec5",
-##     "d9535ff1afbc9e07",
-##     "1bc4bef1fdca14c4",
-##     "b925936788ba7057",
-##     "30dd1c0184916507",
-##     "d90ab847601a2565",
-##     "41756a17d2ad9431",
-##     "8f37513da063fb69",
-##     "c395c10495b0b3f9",
-##     "bf097c132b6f21a4",
-##     "8a04991c75463c17",
-##     "a22006e28be69faf",
-##     "332f7f94bdc8a158",
-##     "a43fab541260b57a",
-##     "1d9512fc7c74ae08",
-##     "075e13f932ee5314",
-##     "503f6bcf688b11a3",
-##     "2bf32bfc77d4a425",
-##     "eb10259898586549",
-##     "3956e8613ae2191d",
-##     "810c45601233a792",
-##     "1bf2d419b0e312f0",
-##     "89e84ce63cef1c32",
-##     "e18c08f3473fbbaf",
-##     "d7e70c2bc4581f22",
-##     "9efeb8ba5429dc73",
-##     "ba469190e2df5ae2",
-##     "960c257e979200c0",
-##     "a726055e510b5710",
-##     "4ab91e794913659c",
-##     "f3886a4b366ef278",
-##     "876f7323b6273c7b",
-##     "b671934748d136d0",
-##     "6610440eb99272a1",
-##     "4d66c3c554384830",
-##     "7475590c5cec2ded",
-##     "42c7ea5a78f3c604",
-## ]
-## short_externs = [
 ##     "9dd4b48829148398",
 ##     "93b6478caf319772",
 ##     "b5f6bfad0d8f8471",
@@ -14609,7 +14109,7 @@ COPY --link --from=dep-n-ntpd-1.7.0-alpha.20251003-27edfaa695fb596f /tmp/clis-nt
 ## COPY --link --from=dep-n-ntpd-1.7.0-alpha.20251003-27edfaa695fb596f /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/*-27edfaa695fb596f* /"""
 
 
-FROM rust-base AS dep-n-ntpd-1.7.0-alpha.20251003-8263de81f7228f9d
+FROM rust-base AS dep-n-ntpd-1.7.0-alpha.20251003-608d6f568e30b338
 SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps
 RUN \
@@ -14691,8 +14191,8 @@ RUN \
   --mount=from=out-7475590c5cec2ded,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblazy_static-7475590c5cec2ded.rlib,source=/liblazy_static-7475590c5cec2ded.rlib \
   --mount=from=out-42c7ea5a78f3c604,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libthread_local-42c7ea5a78f3c604.rlib,source=/libthread_local-42c7ea5a78f3c604.rlib \
     env CARGO="$(which cargo)" \
-        CARGO_BIN_NAME=ntp-daemon \
-        CARGO_CRATE_NAME=ntp_daemon \
+        CARGO_BIN_NAME=ntp-metrics-exporter \
+        CARGO_CRATE_NAME=ntp_metrics_exporter \
         CARGO_INCREMENTAL=0 \
         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ntpd-1.7.0-alpha.20251003 \
         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ntpd-1.7.0-alpha.20251003/Cargo.toml \
@@ -14716,19 +14216,19 @@ RUN \
         CARGOGREEN=1 \
         NTPD_RS_GIT_DATE=2025-05-09 \
         NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
-      rustc '--crate-name' 'ntp_daemon' '--edition' '2024' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'bin' '--emit' 'dep-info,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="default"' '--cfg' 'feature="pps"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "hardware-timestamping", "pps"))' '-C' 'metadata=8eb43aa219f24be4' '-C' 'extra-filename=-8263de81f7228f9d' '--out-dir' '/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' '--extern' 'clock_steering=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libclock_steering-9dd4b48829148398.rlib' '--extern' 'libc=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibc-93b6478caf319772.rlib' '--extern' 'ntp_proto=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libntp_proto-b5f6bfad0d8f8471.rlib' '--extern' 'ntpd=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libntpd-27edfaa695fb596f.rlib' '--extern' 'pps_time=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libpps_time-eb10259898586549.rlib' '--extern' 'rand=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/librand-b2b2029003f4f41b.rlib' '--extern' 'rustls23=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/librustls-79af5f0cc8b8fe11.rlib' '--extern' 'serde=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libserde-d9535ff1afbc9e07.rlib' '--extern' 'serde_json=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libserde_json-3956e8613ae2191d.rlib' '--extern' 'timestamped_socket=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtimestamped_socket-e18c08f3473fbbaf.rlib' '--extern' 'tokio=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtokio-c395c10495b0b3f9.rlib' '--extern' 'toml=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtoml-d7e70c2bc4581f22.rlib' '--extern' 'tracing=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtracing-075e13f932ee5314.rlib' '--extern' 'tracing_subscriber=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtracing_subscriber-b671934748d136d0.rlib' '--cap-lints' 'warn' '-L' 'native=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ntpd-1.7.0-alpha.20251003/bin/ntp-daemon.rs \
-        1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-8263de81f7228f9d-stdout \
-        2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-8263de81f7228f9d-stderr \
-        || echo $? >/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-8263de81f7228f9d-errcode\
-  ; find /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/*-8263de81f7228f9d* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
-FROM scratch AS out-8263de81f7228f9d
-COPY --link --from=dep-n-ntpd-1.7.0-alpha.20251003-8263de81f7228f9d /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/*-8263de81f7228f9d* /
+      rustc '--crate-name' 'ntp_metrics_exporter' '--edition' '2024' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'bin' '--emit' 'dep-info,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="default"' '--cfg' 'feature="pps"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "hardware-timestamping", "pps"))' '-C' 'metadata=fe91005e497e1f05' '-C' 'extra-filename=-608d6f568e30b338' '--out-dir' '/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' '--extern' 'clock_steering=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libclock_steering-9dd4b48829148398.rlib' '--extern' 'libc=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibc-93b6478caf319772.rlib' '--extern' 'ntp_proto=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libntp_proto-b5f6bfad0d8f8471.rlib' '--extern' 'ntpd=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libntpd-27edfaa695fb596f.rlib' '--extern' 'pps_time=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libpps_time-eb10259898586549.rlib' '--extern' 'rand=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/librand-b2b2029003f4f41b.rlib' '--extern' 'rustls23=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/librustls-79af5f0cc8b8fe11.rlib' '--extern' 'serde=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libserde-d9535ff1afbc9e07.rlib' '--extern' 'serde_json=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libserde_json-3956e8613ae2191d.rlib' '--extern' 'timestamped_socket=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtimestamped_socket-e18c08f3473fbbaf.rlib' '--extern' 'tokio=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtokio-c395c10495b0b3f9.rlib' '--extern' 'toml=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtoml-d7e70c2bc4581f22.rlib' '--extern' 'tracing=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtracing-075e13f932ee5314.rlib' '--extern' 'tracing_subscriber=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtracing_subscriber-b671934748d136d0.rlib' '--cap-lints' 'warn' '-L' 'native=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ntpd-1.7.0-alpha.20251003/bin/ntp-metrics-exporter.rs \
+        1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-608d6f568e30b338-stdout \
+        2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-608d6f568e30b338-stderr \
+        || echo $? >/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-608d6f568e30b338-errcode\
+  ; find /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/*-608d6f568e30b338* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-608d6f568e30b338
+COPY --link --from=dep-n-ntpd-1.7.0-alpha.20251003-608d6f568e30b338 /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/*-608d6f568e30b338* /
 
 # Pipe this file to (not portable due to usage of local build contexts):
 # DOCKER_BUILDKIT="1" \
 #   docker build --network=none --output=. --build-context=crate_out-c2a85ea3d52ad392=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-c2a85ea3d52ad392/out --build-context=crate_out-2d875791ad1d3d18=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out --build-context=crate_out-cfe125327cacaf16=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde-cfe125327cacaf16/out --build-context=crate_out-badeea6458a799e8=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_core-badeea6458a799e8/out - <THIS_FILE
 
-## this = "8263de81f7228f9d"
+## this = "608d6f568e30b338"
 ## deps = [
 ##     "9dd4b48829148398",
 ##     "93b6478caf319772",
@@ -14806,90 +14306,13 @@ COPY --link --from=dep-n-ntpd-1.7.0-alpha.20251003-8263de81f7228f9d /tmp/clis-nt
 ##     "7475590c5cec2ded",
 ##     "42c7ea5a78f3c604",
 ## ]
-## short_externs = [
-##     "9dd4b48829148398",
-##     "93b6478caf319772",
-##     "b5f6bfad0d8f8471",
-##     "4b9b0df243e430b1",
-##     "cebe1cbff4994413",
-##     "523ed8994559e91b",
-##     "7d56f2624f7fb484",
-##     "fd7543c0686511cd",
-##     "2ae0eb9fb2c721bb",
-##     "5a4301c208f24f4c",
-##     "52d5490f955beadb",
-##     "d09eff787322ac92",
-##     "8863b3b614042642",
-##     "933693afe5da87fd",
-##     "d0b16ab74f2da8e3",
-##     "6ac8d0251eb66447",
-##     "7d6eda3dd622da8e",
-##     "aa4812039bdce888",
-##     "be39a74c6398de96",
-##     "f22c7bf8d1e18975",
-##     "b05e247bd900343a",
-##     "fd233fb45e407496",
-##     "5c47893368a03a5c",
-##     "b2b2029003f4f41b",
-##     "28f07c8df04e8bde",
-##     "6e69d7ce14b873ac",
-##     "3c4f5c2990477ff1",
-##     "79af5f0cc8b8fe11",
-##     "90227bfec647f88b",
-##     "135dbb753da3a4f4",
-##     "64be2e589e1b58c5",
-##     "d2455ec75a446def",
-##     "88022d560b8b0ce0",
-##     "6da74749e9752714",
-##     "2d8d07531d218763",
-##     "db666fad349f8ca6",
-##     "9227835a4d59a1b8",
-##     "2ff594c6e039dec5",
-##     "d9535ff1afbc9e07",
-##     "1bc4bef1fdca14c4",
-##     "b925936788ba7057",
-##     "30dd1c0184916507",
-##     "d90ab847601a2565",
-##     "41756a17d2ad9431",
-##     "8f37513da063fb69",
-##     "c395c10495b0b3f9",
-##     "bf097c132b6f21a4",
-##     "8a04991c75463c17",
-##     "a22006e28be69faf",
-##     "332f7f94bdc8a158",
-##     "a43fab541260b57a",
-##     "1d9512fc7c74ae08",
-##     "075e13f932ee5314",
-##     "503f6bcf688b11a3",
-##     "2bf32bfc77d4a425",
-##     "27edfaa695fb596f",
-##     "eb10259898586549",
-##     "3956e8613ae2191d",
-##     "810c45601233a792",
-##     "1bf2d419b0e312f0",
-##     "89e84ce63cef1c32",
-##     "e18c08f3473fbbaf",
-##     "d7e70c2bc4581f22",
-##     "9efeb8ba5429dc73",
-##     "ba469190e2df5ae2",
-##     "960c257e979200c0",
-##     "a726055e510b5710",
-##     "4ab91e794913659c",
-##     "f3886a4b366ef278",
-##     "876f7323b6273c7b",
-##     "b671934748d136d0",
-##     "6610440eb99272a1",
-##     "4d66c3c554384830",
-##     "7475590c5cec2ded",
-##     "42c7ea5a78f3c604",
-## ]
 ## writes = [
-##     "ntp_daemon-8263de81f7228f9d",
-##     "ntp_daemon-8263de81f7228f9d.d",
+##     "ntp_metrics_exporter-608d6f568e30b338",
+##     "ntp_metrics_exporter-608d6f568e30b338.d",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ntp_daemon-8263de81f7228f9d.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ntp_daemon-8263de81f7228f9d","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ntp_metrics_exporter-608d6f568e30b338.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ntp_metrics_exporter-608d6f568e30b338","emit":"link"}',
 ## ]
 ##
 ## [[externs]]
@@ -15230,9 +14653,9 @@ COPY --link --from=dep-n-ntpd-1.7.0-alpha.20251003-8263de81f7228f9d /tmp/clis-nt
 ## [[stages]]
 ##
 ## [stages.Script]
-## stage = "dep-n-ntpd-1.7.0-alpha.20251003-8263de81f7228f9d"
+## stage = "dep-n-ntpd-1.7.0-alpha.20251003-608d6f568e30b338"
 ## script = '''
-## FROM rust-base AS dep-n-ntpd-1.7.0-alpha.20251003-8263de81f7228f9d
+## FROM rust-base AS dep-n-ntpd-1.7.0-alpha.20251003-608d6f568e30b338
 ## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps
 ## RUN \
@@ -15314,8 +14737,8 @@ COPY --link --from=dep-n-ntpd-1.7.0-alpha.20251003-8263de81f7228f9d /tmp/clis-nt
 ##   --mount=from=out-7475590c5cec2ded,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblazy_static-7475590c5cec2ded.rlib,source=/liblazy_static-7475590c5cec2ded.rlib \
 ##   --mount=from=out-42c7ea5a78f3c604,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libthread_local-42c7ea5a78f3c604.rlib,source=/libthread_local-42c7ea5a78f3c604.rlib \
 ##     env CARGO="$(which cargo)" \
-##         CARGO_BIN_NAME=ntp-daemon \
-##         CARGO_CRATE_NAME=ntp_daemon \
+##         CARGO_BIN_NAME=ntp-metrics-exporter \
+##         CARGO_CRATE_NAME=ntp_metrics_exporter \
 ##         CARGO_INCREMENTAL=0 \
 ##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ntpd-1.7.0-alpha.20251003 \
 ##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ntpd-1.7.0-alpha.20251003/Cargo.toml \
@@ -15339,19 +14762,19 @@ COPY --link --from=dep-n-ntpd-1.7.0-alpha.20251003-8263de81f7228f9d /tmp/clis-nt
 ##         CARGOGREEN=1 \
 ##         NTPD_RS_GIT_DATE=2025-05-09 \
 ##         NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
-##       rustc '--crate-name' 'ntp_daemon' '--edition' '2024' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'bin' '--emit' 'dep-info,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="default"' '--cfg' 'feature="pps"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "hardware-timestamping", "pps"))' '-C' 'metadata=8eb43aa219f24be4' '-C' 'extra-filename=-8263de81f7228f9d' '--out-dir' '/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' '--extern' 'clock_steering=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libclock_steering-9dd4b48829148398.rlib' '--extern' 'libc=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibc-93b6478caf319772.rlib' '--extern' 'ntp_proto=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libntp_proto-b5f6bfad0d8f8471.rlib' '--extern' 'ntpd=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libntpd-27edfaa695fb596f.rlib' '--extern' 'pps_time=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libpps_time-eb10259898586549.rlib' '--extern' 'rand=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/librand-b2b2029003f4f41b.rlib' '--extern' 'rustls23=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/librustls-79af5f0cc8b8fe11.rlib' '--extern' 'serde=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libserde-d9535ff1afbc9e07.rlib' '--extern' 'serde_json=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libserde_json-3956e8613ae2191d.rlib' '--extern' 'timestamped_socket=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtimestamped_socket-e18c08f3473fbbaf.rlib' '--extern' 'tokio=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtokio-c395c10495b0b3f9.rlib' '--extern' 'toml=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtoml-d7e70c2bc4581f22.rlib' '--extern' 'tracing=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtracing-075e13f932ee5314.rlib' '--extern' 'tracing_subscriber=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtracing_subscriber-b671934748d136d0.rlib' '--cap-lints' 'warn' '-L' 'native=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ntpd-1.7.0-alpha.20251003/bin/ntp-daemon.rs \
-##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-8263de81f7228f9d-stdout \
-##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-8263de81f7228f9d-stderr \
-##         || echo $? >/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-8263de81f7228f9d-errcode\
-##   ; find /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/*-8263de81f7228f9d* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc '--crate-name' 'ntp_metrics_exporter' '--edition' '2024' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'bin' '--emit' 'dep-info,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="default"' '--cfg' 'feature="pps"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "hardware-timestamping", "pps"))' '-C' 'metadata=fe91005e497e1f05' '-C' 'extra-filename=-608d6f568e30b338' '--out-dir' '/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' '--extern' 'clock_steering=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libclock_steering-9dd4b48829148398.rlib' '--extern' 'libc=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibc-93b6478caf319772.rlib' '--extern' 'ntp_proto=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libntp_proto-b5f6bfad0d8f8471.rlib' '--extern' 'ntpd=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libntpd-27edfaa695fb596f.rlib' '--extern' 'pps_time=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libpps_time-eb10259898586549.rlib' '--extern' 'rand=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/librand-b2b2029003f4f41b.rlib' '--extern' 'rustls23=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/librustls-79af5f0cc8b8fe11.rlib' '--extern' 'serde=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libserde-d9535ff1afbc9e07.rlib' '--extern' 'serde_json=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libserde_json-3956e8613ae2191d.rlib' '--extern' 'timestamped_socket=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtimestamped_socket-e18c08f3473fbbaf.rlib' '--extern' 'tokio=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtokio-c395c10495b0b3f9.rlib' '--extern' 'toml=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtoml-d7e70c2bc4581f22.rlib' '--extern' 'tracing=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtracing-075e13f932ee5314.rlib' '--extern' 'tracing_subscriber=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtracing_subscriber-b671934748d136d0.rlib' '--cap-lints' 'warn' '-L' 'native=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ntpd-1.7.0-alpha.20251003/bin/ntp-metrics-exporter.rs \
+##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-608d6f568e30b338-stdout \
+##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-608d6f568e30b338-stderr \
+##         || echo $? >/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-608d6f568e30b338-errcode\
+##   ; find /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/*-608d6f568e30b338* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
 ## [stages.Script]
-## stage = "out-8263de81f7228f9d"
+## stage = "out-608d6f568e30b338"
 ## script = """
-## FROM scratch AS out-8263de81f7228f9d
-## COPY --link --from=dep-n-ntpd-1.7.0-alpha.20251003-8263de81f7228f9d /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/*-8263de81f7228f9d* /"""
+## FROM scratch AS out-608d6f568e30b338
+## COPY --link --from=dep-n-ntpd-1.7.0-alpha.20251003-608d6f568e30b338 /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/*-608d6f568e30b338* /"""
 
 FROM scratch
-COPY --link --from=out-8263de81f7228f9d /ntp_daemon-8263de81f7228f9d /ntp_daemon
+COPY --link --from=out-608d6f568e30b338 /ntp_metrics_exporter-608d6f568e30b338 /ntp_metrics_exporter
