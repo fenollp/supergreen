@@ -74,7 +74,7 @@ jobs:
     - uses: actions/checkout@v6
 
     - name: Cache `cargo fetch`
-      uses: actions/cache@v4
+      uses: actions/cache@v5
       with:
         path: |
           ~/.cargo/registry/index/
@@ -84,7 +84,7 @@ jobs:
         restore-keys: ${{ github.job }}-${{ runner.os }}-cargo-deps-
 
     - name: Cache `cargo install`
-      uses: actions/cache@v4
+      uses: actions/cache@v5
       with:
         path: ~/instmp
         key: ${{ runner.os }}-cargo-install-${{ hashFiles('**/Cargo.lock') }}

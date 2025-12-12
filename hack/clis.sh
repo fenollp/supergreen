@@ -361,7 +361,7 @@ $(rundeps_versions)
         mkdir -p $registry_new
     - name: 🔵 Restore local private registry cache
       if: \${{ env.CARGOGREEN_CACHE_FROM_IMAGES != '' || env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
-      uses: actions/cache/restore@v4
+      uses: actions/cache/restore@v5
       with:
         path: $registry
         # github.run_id: https://github.com/actions/toolkit/issues/658#issuecomment-2640690759
@@ -446,7 +446,7 @@ $(postconds _)
         rm -rf $registry
         mv $registry_new $registry
     - name: Save local private registry cache
-      uses: actions/cache/save@v4
+      uses: actions/cache/save@v5
       if: \${{ false }} # TODO: drop when digests are stable
       with:
         path: $registry

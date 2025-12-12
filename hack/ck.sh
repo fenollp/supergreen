@@ -196,7 +196,7 @@ $(jobdef 'bin')
 $(rundeps_versions)
 
     - name: Cache \`cargo fetch\`
-      uses: actions/cache@v4
+      uses: actions/cache@v5
       with:
         path: |
           ~/.cargo/registry/index/
@@ -206,7 +206,7 @@ $(rundeps_versions)
         restore-keys: \${{ github.job }}-\${{ runner.os }}-cargo-deps-
 
     - name: Cache \`cargo install\`
-      uses: actions/cache@v4
+      uses: actions/cache@v5
       with:
         path: ~/instmp
         key: \${{ runner.os }}-cargo-install-\${{ hashFiles('**/Cargo.lock') }}
