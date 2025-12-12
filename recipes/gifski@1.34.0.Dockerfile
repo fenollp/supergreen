@@ -260,7 +260,6 @@ COPY --link --from=dep-n-anstyle-parse-0.2.7-3a154f05c18fe502 /tmp/clis-gifski_1
 
 ## this = "3a154f05c18fe502"
 ## deps = ["e99b4cd86d1b3d1a"]
-## short_externs = ["e99b4cd86d1b3d1a"]
 ## writes = [
 ##     "anstyle_parse-3a154f05c18fe502.d",
 ##     "libanstyle_parse-3a154f05c18fe502.rlib",
@@ -719,14 +718,6 @@ COPY --link --from=dep-n-anstream-0.6.19-14a190e9584fadc4 /tmp/clis-gifski_1-34-
 ##     "b0f9d0eb7e3c5228",
 ##     "08b147e17b2f127e",
 ## ]
-## short_externs = [
-##     "25158921b2975a45",
-##     "3a154f05c18fe502",
-##     "e99b4cd86d1b3d1a",
-##     "f174fe24d94bb0d5",
-##     "b0f9d0eb7e3c5228",
-##     "08b147e17b2f127e",
-## ]
 ## writes = [
 ##     "anstream-14a190e9584fadc4.d",
 ##     "libanstream-14a190e9584fadc4.rlib",
@@ -1141,17 +1132,6 @@ COPY --link --from=dep-n-clap_builder-4.5.41-82004e3d29174042 /tmp/clis-gifski_1
 ##     "944acfd6f9571391",
 ##     "87be0482eaec7565",
 ## ]
-## short_externs = [
-##     "14a190e9584fadc4",
-##     "25158921b2975a45",
-##     "3a154f05c18fe502",
-##     "e99b4cd86d1b3d1a",
-##     "f174fe24d94bb0d5",
-##     "b0f9d0eb7e3c5228",
-##     "08b147e17b2f127e",
-##     "944acfd6f9571391",
-##     "87be0482eaec7565",
-## ]
 ## writes = [
 ##     "clap_builder-82004e3d29174042.d",
 ##     "libclap_builder-82004e3d29174042.rlib",
@@ -1372,18 +1352,6 @@ COPY --link --from=dep-n-clap-4.5.41-67f6ec320d9c110f /tmp/clis-gifski_1-34-0/re
 
 ## this = "67f6ec320d9c110f"
 ## deps = [
-##     "82004e3d29174042",
-##     "14a190e9584fadc4",
-##     "25158921b2975a45",
-##     "3a154f05c18fe502",
-##     "e99b4cd86d1b3d1a",
-##     "f174fe24d94bb0d5",
-##     "b0f9d0eb7e3c5228",
-##     "08b147e17b2f127e",
-##     "944acfd6f9571391",
-##     "87be0482eaec7565",
-## ]
-## short_externs = [
 ##     "82004e3d29174042",
 ##     "14a190e9584fadc4",
 ##     "25158921b2975a45",
@@ -1714,7 +1682,6 @@ COPY --link --from=dep-n-crossbeam-channel-0.5.15-724af7b5f0e810c4 /tmp/clis-gif
 
 ## this = "724af7b5f0e810c4"
 ## deps = ["5ac36063ddf29a62"]
-## short_externs = ["5ac36063ddf29a62"]
 ## writes = [
 ##     "crossbeam_channel-724af7b5f0e810c4.d",
 ##     "libcrossbeam_channel-724af7b5f0e810c4.rlib",
@@ -2049,7 +2016,6 @@ COPY --link --from=dep-n-gif-0.13.3-6bb7dc2aa9596226 /tmp/clis-gifski_1-34-0/rel
 
 ## this = "6bb7dc2aa9596226"
 ## deps = ["92ecf42010bb6640"]
-## short_externs = ["92ecf42010bb6640"]
 ## writes = [
 ##     "gif-6bb7dc2aa9596226.d",
 ##     "libgif-6bb7dc2aa9596226.rlib",
@@ -2391,7 +2357,6 @@ COPY --link --from=dep-n-rgb-0.8.51-b630417cd5f2024a /tmp/clis-gifski_1-34-0/rel
 
 ## this = "b630417cd5f2024a"
 ## deps = ["f0cdacabc0947b7b"]
-## short_externs = ["f0cdacabc0947b7b"]
 ## writes = [
 ##     "librgb-b630417cd5f2024a.rlib",
 ##     "librgb-b630417cd5f2024a.rmeta",
@@ -2521,13 +2486,6 @@ COPY --link --from=dep-n-gif-dispose-5.0.1-a4fb05ba2aa05e69 /tmp/clis-gifski_1-3
 
 ## this = "a4fb05ba2aa05e69"
 ## deps = [
-##     "6bb7dc2aa9596226",
-##     "92ecf42010bb6640",
-##     "deae4624c4370e95",
-##     "b630417cd5f2024a",
-##     "f0cdacabc0947b7b",
-## ]
-## short_externs = [
 ##     "6bb7dc2aa9596226",
 ##     "92ecf42010bb6640",
 ##     "deae4624c4370e95",
@@ -3020,7 +2978,6 @@ COPY --link --from=dep-n-crossbeam-epoch-0.9.18-c2e7f2fc3addf6be /tmp/clis-gifsk
 
 ## this = "c2e7f2fc3addf6be"
 ## deps = ["5ac36063ddf29a62"]
-## short_externs = ["5ac36063ddf29a62"]
 ## writes = [
 ##     "crossbeam_epoch-c2e7f2fc3addf6be.d",
 ##     "libcrossbeam_epoch-c2e7f2fc3addf6be.rlib",
@@ -3167,10 +3124,6 @@ COPY --link --from=dep-n-crossbeam-deque-0.8.6-cc1298b8da143bbe /tmp/clis-gifski
 ##     "c2e7f2fc3addf6be",
 ##     "5ac36063ddf29a62",
 ## ]
-## short_externs = [
-##     "c2e7f2fc3addf6be",
-##     "5ac36063ddf29a62",
-## ]
 ## writes = [
 ##     "crossbeam_deque-cc1298b8da143bbe.d",
 ##     "libcrossbeam_deque-cc1298b8da143bbe.rlib",
@@ -3306,11 +3259,6 @@ COPY --link --from=dep-n-rayon-core-1.12.1-efba4db9305abd55 /tmp/clis-gifski_1-3
 
 ## this = "efba4db9305abd55"
 ## deps = [
-##     "cc1298b8da143bbe",
-##     "c2e7f2fc3addf6be",
-##     "5ac36063ddf29a62",
-## ]
-## short_externs = [
 ##     "cc1298b8da143bbe",
 ##     "c2e7f2fc3addf6be",
 ##     "5ac36063ddf29a62",
@@ -3467,13 +3415,6 @@ COPY --link --from=dep-n-rayon-1.10.0-53357b7dd9022303 /tmp/clis-gifski_1-34-0/r
 
 ## this = "53357b7dd9022303"
 ## deps = [
-##     "64b2ef074583e2a3",
-##     "efba4db9305abd55",
-##     "cc1298b8da143bbe",
-##     "c2e7f2fc3addf6be",
-##     "5ac36063ddf29a62",
-## ]
-## short_externs = [
 ##     "64b2ef074583e2a3",
 ##     "efba4db9305abd55",
 ##     "cc1298b8da143bbe",
@@ -3753,7 +3694,6 @@ COPY --link --from=dep-n-thread_local-1.1.9-6b8c8ab37131cd0c /tmp/clis-gifski_1-
 
 ## this = "6b8c8ab37131cd0c"
 ## deps = ["e1f9b2ca981c3e9f"]
-## short_externs = ["e1f9b2ca981c3e9f"]
 ## writes = [
 ##     "libthread_local-6b8c8ab37131cd0c.rlib",
 ##     "libthread_local-6b8c8ab37131cd0c.rmeta",
@@ -3903,20 +3843,6 @@ COPY --link --from=dep-n-imagequant-4.4.1-13cdc94a2acbf464 /tmp/clis-gifski_1-34
 
 ## this = "13cdc94a2acbf464"
 ## deps = [
-##     "9b55b30a1b85e195",
-##     "0774a35541eb4e3b",
-##     "53357b7dd9022303",
-##     "64b2ef074583e2a3",
-##     "efba4db9305abd55",
-##     "cc1298b8da143bbe",
-##     "c2e7f2fc3addf6be",
-##     "5ac36063ddf29a62",
-##     "b630417cd5f2024a",
-##     "f0cdacabc0947b7b",
-##     "6b8c8ab37131cd0c",
-##     "e1f9b2ca981c3e9f",
-## ]
-## short_externs = [
 ##     "9b55b30a1b85e195",
 ##     "0774a35541eb4e3b",
 ##     "53357b7dd9022303",
@@ -4163,7 +4089,6 @@ COPY --link --from=dep-n-crc32fast-1.5.0-51c01ae8d7468fb2 /tmp/clis-gifski_1-34-
 
 ## this = "51c01ae8d7468fb2"
 ## deps = ["e1f9b2ca981c3e9f"]
-## short_externs = ["e1f9b2ca981c3e9f"]
 ## writes = [
 ##     "crc32fast-51c01ae8d7468fb2.d",
 ##     "libcrc32fast-51c01ae8d7468fb2.rlib",
@@ -4400,7 +4325,6 @@ COPY --link --from=dep-n-libz-rs-sys-0.5.1-2a56889f8f4194b3 /tmp/clis-gifski_1-3
 
 ## this = "2a56889f8f4194b3"
 ## deps = ["1ce6de5e74c29a43"]
-## short_externs = ["1ce6de5e74c29a43"]
 ## writes = [
 ##     "liblibz_rs_sys-2a56889f8f4194b3.rlib",
 ##     "liblibz_rs_sys-2a56889f8f4194b3.rmeta",
@@ -4533,12 +4457,6 @@ COPY --link --from=dep-n-flate2-1.1.2-92283f56cec7b441 /tmp/clis-gifski_1-34-0/r
 
 ## this = "92283f56cec7b441"
 ## deps = [
-##     "51c01ae8d7468fb2",
-##     "e1f9b2ca981c3e9f",
-##     "2a56889f8f4194b3",
-##     "1ce6de5e74c29a43",
-## ]
-## short_externs = [
 ##     "51c01ae8d7468fb2",
 ##     "e1f9b2ca981c3e9f",
 ##     "2a56889f8f4194b3",
@@ -4829,16 +4747,6 @@ COPY --link --from=dep-n-lodepng-3.12.1-c1608f7a6e4ba58d /tmp/clis-gifski_1-34-0
 ##     "b630417cd5f2024a",
 ##     "f0cdacabc0947b7b",
 ## ]
-## short_externs = [
-##     "51c01ae8d7468fb2",
-##     "e1f9b2ca981c3e9f",
-##     "92283f56cec7b441",
-##     "2a56889f8f4194b3",
-##     "1ce6de5e74c29a43",
-##     "3afb72ac1310d574",
-##     "b630417cd5f2024a",
-##     "f0cdacabc0947b7b",
-## ]
 ## writes = [
 ##     "liblodepng-c1608f7a6e4ba58d.rlib",
 ##     "liblodepng-c1608f7a6e4ba58d.rmeta",
@@ -5029,7 +4937,6 @@ COPY --link --from=dep-n-loop9-0.1.5-4166f710ac396229 /tmp/clis-gifski_1-34-0/re
 
 ## this = "4166f710ac396229"
 ## deps = ["deae4624c4370e95"]
-## short_externs = ["deae4624c4370e95"]
 ## writes = [
 ##     "libloop9-4166f710ac396229.rlib",
 ##     "libloop9-4166f710ac396229.rmeta",
@@ -5371,10 +5278,6 @@ COPY --link --from=dep-n-ordered-channel-1.2.0-d1042fb932b56ff4 /tmp/clis-gifski
 ##     "724af7b5f0e810c4",
 ##     "5ac36063ddf29a62",
 ## ]
-## short_externs = [
-##     "724af7b5f0e810c4",
-##     "5ac36063ddf29a62",
-## ]
 ## writes = [
 ##     "libordered_channel-d1042fb932b56ff4.rlib",
 ##     "libordered_channel-d1042fb932b56ff4.rmeta",
@@ -5509,11 +5412,6 @@ COPY --link --from=dep-n-pbr-1.1.1-791a05c54d467a7f /tmp/clis-gifski_1-34-0/rele
 
 ## this = "791a05c54d467a7f"
 ## deps = [
-##     "724af7b5f0e810c4",
-##     "5ac36063ddf29a62",
-##     "3afb72ac1310d574",
-## ]
-## short_externs = [
 ##     "724af7b5f0e810c4",
 ##     "5ac36063ddf29a62",
 ##     "3afb72ac1310d574",
@@ -5783,16 +5681,6 @@ COPY --link --from=dep-n-resize-0.8.8-925466e96a5b0042 /tmp/clis-gifski_1-34-0/r
 
 ## this = "925466e96a5b0042"
 ## deps = [
-##     "53357b7dd9022303",
-##     "64b2ef074583e2a3",
-##     "efba4db9305abd55",
-##     "cc1298b8da143bbe",
-##     "c2e7f2fc3addf6be",
-##     "5ac36063ddf29a62",
-##     "b630417cd5f2024a",
-##     "f0cdacabc0947b7b",
-## ]
-## short_externs = [
 ##     "53357b7dd9022303",
 ##     "64b2ef074583e2a3",
 ##     "efba4db9305abd55",
@@ -6216,11 +6104,6 @@ COPY --link --from=dep-n-yuv-0.1.9-9318e068e99f9028 /tmp/clis-gifski_1-34-0/rele
 ##     "b630417cd5f2024a",
 ##     "f0cdacabc0947b7b",
 ## ]
-## short_externs = [
-##     "53c0c58048ae59b2",
-##     "b630417cd5f2024a",
-##     "f0cdacabc0947b7b",
-## ]
 ## writes = [
 ##     "libyuv-9318e068e99f9028.rlib",
 ##     "libyuv-9318e068e99f9028.rmeta",
@@ -6407,54 +6290,6 @@ COPY --link --from=dep-n-gifski-1.34.0-b9aa6f1c171c6150 /tmp/clis-gifski_1-34-0/
 
 ## this = "b9aa6f1c171c6150"
 ## deps = [
-##     "67f6ec320d9c110f",
-##     "82004e3d29174042",
-##     "14a190e9584fadc4",
-##     "25158921b2975a45",
-##     "3a154f05c18fe502",
-##     "e99b4cd86d1b3d1a",
-##     "f174fe24d94bb0d5",
-##     "b0f9d0eb7e3c5228",
-##     "08b147e17b2f127e",
-##     "944acfd6f9571391",
-##     "87be0482eaec7565",
-##     "724af7b5f0e810c4",
-##     "5ac36063ddf29a62",
-##     "00cc39e2b93187ae",
-##     "6bb7dc2aa9596226",
-##     "92ecf42010bb6640",
-##     "a4fb05ba2aa05e69",
-##     "deae4624c4370e95",
-##     "b630417cd5f2024a",
-##     "f0cdacabc0947b7b",
-##     "13cdc94a2acbf464",
-##     "9b55b30a1b85e195",
-##     "0774a35541eb4e3b",
-##     "53357b7dd9022303",
-##     "64b2ef074583e2a3",
-##     "efba4db9305abd55",
-##     "cc1298b8da143bbe",
-##     "c2e7f2fc3addf6be",
-##     "6b8c8ab37131cd0c",
-##     "e1f9b2ca981c3e9f",
-##     "c1608f7a6e4ba58d",
-##     "51c01ae8d7468fb2",
-##     "92283f56cec7b441",
-##     "2a56889f8f4194b3",
-##     "1ce6de5e74c29a43",
-##     "3afb72ac1310d574",
-##     "4166f710ac396229",
-##     "dbbab79b50c30bb1",
-##     "53c0c58048ae59b2",
-##     "d1042fb932b56ff4",
-##     "791a05c54d467a7f",
-##     "a6f6d4c5688e7cda",
-##     "925466e96a5b0042",
-##     "3fec38877dfe5eae",
-##     "88872ac441f60d2c",
-##     "9318e068e99f9028",
-## ]
-## short_externs = [
 ##     "67f6ec320d9c110f",
 ##     "82004e3d29174042",
 ##     "14a190e9584fadc4",
@@ -6898,55 +6733,6 @@ COPY --link --from=dep-n-gifski-1.34.0-2e47a233552ee146 /tmp/clis-gifski_1-34-0/
 
 ## this = "2e47a233552ee146"
 ## deps = [
-##     "67f6ec320d9c110f",
-##     "82004e3d29174042",
-##     "14a190e9584fadc4",
-##     "25158921b2975a45",
-##     "3a154f05c18fe502",
-##     "e99b4cd86d1b3d1a",
-##     "f174fe24d94bb0d5",
-##     "b0f9d0eb7e3c5228",
-##     "08b147e17b2f127e",
-##     "944acfd6f9571391",
-##     "87be0482eaec7565",
-##     "724af7b5f0e810c4",
-##     "5ac36063ddf29a62",
-##     "00cc39e2b93187ae",
-##     "6bb7dc2aa9596226",
-##     "92ecf42010bb6640",
-##     "a4fb05ba2aa05e69",
-##     "deae4624c4370e95",
-##     "b630417cd5f2024a",
-##     "f0cdacabc0947b7b",
-##     "b9aa6f1c171c6150",
-##     "13cdc94a2acbf464",
-##     "9b55b30a1b85e195",
-##     "0774a35541eb4e3b",
-##     "53357b7dd9022303",
-##     "64b2ef074583e2a3",
-##     "efba4db9305abd55",
-##     "cc1298b8da143bbe",
-##     "c2e7f2fc3addf6be",
-##     "6b8c8ab37131cd0c",
-##     "e1f9b2ca981c3e9f",
-##     "c1608f7a6e4ba58d",
-##     "51c01ae8d7468fb2",
-##     "92283f56cec7b441",
-##     "2a56889f8f4194b3",
-##     "1ce6de5e74c29a43",
-##     "3afb72ac1310d574",
-##     "4166f710ac396229",
-##     "dbbab79b50c30bb1",
-##     "53c0c58048ae59b2",
-##     "d1042fb932b56ff4",
-##     "791a05c54d467a7f",
-##     "a6f6d4c5688e7cda",
-##     "925466e96a5b0042",
-##     "3fec38877dfe5eae",
-##     "88872ac441f60d2c",
-##     "9318e068e99f9028",
-## ]
-## short_externs = [
 ##     "67f6ec320d9c110f",
 ##     "82004e3d29174042",
 ##     "14a190e9584fadc4",

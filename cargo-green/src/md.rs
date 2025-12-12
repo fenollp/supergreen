@@ -28,9 +28,6 @@ pub(crate) struct Md {
     deps: IndexSet<MdId>,
 
     #[serde(default, skip_serializing_if = "IndexSet::is_empty")]
-    short_externs: IndexSet<MdId>,
-
-    #[serde(default, skip_serializing_if = "IndexSet::is_empty")]
     pub(crate) contexts: IndexSet<BuildContext>,
 
     stages: IndexSet<NamedStage>,
@@ -58,7 +55,6 @@ impl From<MdId> for Md {
             this,
             externs: IndexSet::default(),
             deps: IndexSet::default(),
-            short_externs: IndexSet::default(),
             contexts: IndexSet::default(),
             stages: IndexSet::default(),
             writes: Vec::default(),
@@ -199,6 +195,8 @@ impl Md {
         let exclude_rmeta_when_not_needed =
             |xtern: &Utf8Path| if no_rmetas { !xtern.as_str().ends_with(".rmeta") } else { true };
 
+        let mut short_externs = IndexSet::new();
+
         for xtern in externs {
             // E.g. libproc_macro2-e44df32b5d502568.rmeta
             // E.g. libunicode_xid-c443c88a44e24bc6.rlib
@@ -211,19 +209,19 @@ impl Md {
             let xtern: MdId = xtern.into();
 
             trace!("❯ short extern {xtern}");
-            self.short_externs.insert(xtern);
+            short_externs.insert(xtern);
 
             let extern_md = xtern.path(target_path);
             info!("checking (RO) extern's externs {extern_md}");
             let extern_md = get_or_read(&mut mds, &extern_md)?;
 
-            for transitive in extern_md.short_externs {
+            for transitive in &extern_md.deps {
                 trace!("❯ transitive short extern {transitive}");
-                self.short_externs.insert(transitive);
+                short_externs.insert(*transitive);
             }
         }
 
-        for dep in &self.short_externs {
+        for dep in &short_externs {
             let dep_md_path = dep.path(target_path);
             let dep_md = get_or_read(&mut mds, &dep_md_path)?;
             let dep_stage = Stage::output(*dep)?;
@@ -238,6 +236,8 @@ impl Md {
             );
             extern_mds_and_paths.push((dep_md_path, dep_md));
         }
+
+        assert_eq!(self.deps(), Vec::new());
 
         let extern_md_paths = self.sort_deps(extern_mds_and_paths)?;
         info!("extern_md_paths: {}", extern_md_paths.len());
@@ -458,7 +458,6 @@ fn md_ser() {
         this: MdId(0x711ba64e1183a234),
         externs: [MountExtern { from: RUST.clone(), xtern: "blop".into() }].into(),
         deps: [MdId(0x81529f4c2380d9ec), MdId(0x88a4324b2aff6db9)].into(),
-        short_externs: [MdId(0xb8c41dbf50ca5479), MdId(0x96a741f581f4126a)].into(),
         contexts: [BuildContext {
             name: "rust".try_into().unwrap(),
             uri: "/some/local/path".into(),
@@ -484,10 +483,6 @@ this = "711ba64e1183a234"
 deps = [
     "81529f4c2380d9ec",
     "88a4324b2aff6db9",
-]
-short_externs = [
-    "b8c41dbf50ca5479",
-    "96a741f581f4126a",
 ]
 writes = [
     "deps/primeorder-06397107ab8300fa.d",

@@ -389,7 +389,6 @@ COPY --link --from=dep-n-serde-1.0.228-3fdff6812a6b72d7 /tmp/clis-cargo-config2_
 
 ## this = "3fdff6812a6b72d7"
 ## deps = ["8e892930c8cabc4c"]
-## short_externs = ["8e892930c8cabc4c"]
 ## writes = [
 ##     "libserde-3fdff6812a6b72d7.rlib",
 ##     "libserde-3fdff6812a6b72d7.rmeta",
@@ -628,7 +627,6 @@ COPY --link --from=dep-n-proc-macro2-1.0.101-30dd1c0184916507 /tmp/clis-cargo-co
 
 ## this = "30dd1c0184916507"
 ## deps = ["d90ab847601a2565"]
-## short_externs = ["d90ab847601a2565"]
 ## writes = [
 ##     "libproc_macro2-30dd1c0184916507.rlib",
 ##     "libproc_macro2-30dd1c0184916507.rmeta",
@@ -753,10 +751,6 @@ COPY --link --from=dep-n-quote-1.0.41-41756a17d2ad9431 /tmp/clis-cargo-config2_0
 
 ## this = "41756a17d2ad9431"
 ## deps = [
-##     "30dd1c0184916507",
-##     "d90ab847601a2565",
-## ]
-## short_externs = [
 ##     "30dd1c0184916507",
 ##     "d90ab847601a2565",
 ## ]
@@ -895,11 +889,6 @@ COPY --link --from=dep-n-syn-2.0.106-cdb9268ed435c0dd /tmp/clis-cargo-config2_0-
 
 ## this = "cdb9268ed435c0dd"
 ## deps = [
-##     "30dd1c0184916507",
-##     "d90ab847601a2565",
-##     "41756a17d2ad9431",
-## ]
-## short_externs = [
 ##     "30dd1c0184916507",
 ##     "d90ab847601a2565",
 ##     "41756a17d2ad9431",
@@ -1051,12 +1040,6 @@ COPY --link --from=dep-n-serde_derive-1.0.228-e6208564c687fff8 /tmp/clis-cargo-c
 ##     "41756a17d2ad9431",
 ##     "cdb9268ed435c0dd",
 ## ]
-## short_externs = [
-##     "30dd1c0184916507",
-##     "d90ab847601a2565",
-##     "41756a17d2ad9431",
-##     "cdb9268ed435c0dd",
-## ]
 ## writes = [
 ##     "libserde_derive-e6208564c687fff8.so",
 ##     "serde_derive-e6208564c687fff8.d",
@@ -1185,7 +1168,6 @@ COPY --link --from=dep-n-serde_spanned-1.0.3-04b81e166a1398dc /tmp/clis-cargo-co
 
 ## this = "04b81e166a1398dc"
 ## deps = ["8e892930c8cabc4c"]
-## short_externs = ["8e892930c8cabc4c"]
 ## writes = [
 ##     "libserde_spanned-04b81e166a1398dc.rlib",
 ##     "libserde_spanned-04b81e166a1398dc.rmeta",
@@ -1310,7 +1292,6 @@ COPY --link --from=dep-n-toml_datetime-0.7.3-e8adf688a3d8d0bc /tmp/clis-cargo-co
 
 ## this = "e8adf688a3d8d0bc"
 ## deps = ["8e892930c8cabc4c"]
-## short_externs = ["8e892930c8cabc4c"]
 ## writes = [
 ##     "libtoml_datetime-e8adf688a3d8d0bc.rlib",
 ##     "libtoml_datetime-e8adf688a3d8d0bc.rmeta",
@@ -1550,7 +1531,6 @@ COPY --link --from=dep-n-toml_parser-1.0.4-20cfe062590d30b6 /tmp/clis-cargo-conf
 
 ## this = "20cfe062590d30b6"
 ## deps = ["5d47119b38aa8292"]
-## short_externs = ["5d47119b38aa8292"]
 ## writes = [
 ##     "libtoml_parser-20cfe062590d30b6.rlib",
 ##     "libtoml_parser-20cfe062590d30b6.rmeta",
@@ -1800,14 +1780,6 @@ COPY --link --from=dep-n-toml-0.9.8-07d853966f418260 /tmp/clis-cargo-config2_0-1
 ##     "5d47119b38aa8292",
 ##     "3ce1b0d306dbd063",
 ## ]
-## short_externs = [
-##     "8e892930c8cabc4c",
-##     "04b81e166a1398dc",
-##     "e8adf688a3d8d0bc",
-##     "20cfe062590d30b6",
-##     "5d47119b38aa8292",
-##     "3ce1b0d306dbd063",
-## ]
 ## writes = [
 ##     "libtoml-07d853966f418260.rlib",
 ##     "libtoml-07d853966f418260.rmeta",
@@ -2011,21 +1983,6 @@ COPY --link --from=dep-n-cargo-config2-0.1.39-e720b63b19c5adaf /tmp/clis-cargo-c
 
 ## this = "e720b63b19c5adaf"
 ## deps = [
-##     "3fdff6812a6b72d7",
-##     "8e892930c8cabc4c",
-##     "e6208564c687fff8",
-##     "30dd1c0184916507",
-##     "d90ab847601a2565",
-##     "41756a17d2ad9431",
-##     "cdb9268ed435c0dd",
-##     "07d853966f418260",
-##     "04b81e166a1398dc",
-##     "e8adf688a3d8d0bc",
-##     "20cfe062590d30b6",
-##     "5d47119b38aa8292",
-##     "3ce1b0d306dbd063",
-## ]
-## short_externs = [
 ##     "3fdff6812a6b72d7",
 ##     "8e892930c8cabc4c",
 ##     "e6208564c687fff8",
@@ -2505,10 +2462,6 @@ COPY --link --from=dep-n-clap_builder-4.5.48-8f1dfe11d7b9a4e2 /tmp/clis-cargo-co
 ##     "2814aacc98907639",
 ##     "43d8efeffba57382",
 ## ]
-## short_externs = [
-##     "2814aacc98907639",
-##     "43d8efeffba57382",
-## ]
 ## writes = [
 ##     "clap_builder-8f1dfe11d7b9a4e2.d",
 ##     "libclap_builder-8f1dfe11d7b9a4e2.rlib",
@@ -2755,13 +2708,6 @@ COPY --link --from=dep-n-clap_derive-4.5.47-e171b1f90e2ba1ae /tmp/clis-cargo-con
 ##     "41756a17d2ad9431",
 ##     "cdb9268ed435c0dd",
 ## ]
-## short_externs = [
-##     "3c7b5c3a02d329ae",
-##     "30dd1c0184916507",
-##     "d90ab847601a2565",
-##     "41756a17d2ad9431",
-##     "cdb9268ed435c0dd",
-## ]
 ## writes = [
 ##     "clap_derive-e171b1f90e2ba1ae.d",
 ##     "libclap_derive-e171b1f90e2ba1ae.so",
@@ -2910,17 +2856,6 @@ COPY --link --from=dep-n-clap-4.5.48-67fccf9eaae1d1d4 /tmp/clis-cargo-config2_0-
 
 ## this = "67fccf9eaae1d1d4"
 ## deps = [
-##     "8f1dfe11d7b9a4e2",
-##     "2814aacc98907639",
-##     "43d8efeffba57382",
-##     "e171b1f90e2ba1ae",
-##     "3c7b5c3a02d329ae",
-##     "30dd1c0184916507",
-##     "d90ab847601a2565",
-##     "41756a17d2ad9431",
-##     "cdb9268ed435c0dd",
-## ]
-## short_externs = [
 ##     "8f1dfe11d7b9a4e2",
 ##     "2814aacc98907639",
 ##     "43d8efeffba57382",
@@ -3792,12 +3727,6 @@ COPY --link --from=dep-n-serde_json-1.0.145-0f77016abcd2177b /tmp/clis-cargo-con
 ##     "89e84ce63cef1c32",
 ##     "8e892930c8cabc4c",
 ## ]
-## short_externs = [
-##     "810c45601233a792",
-##     "1bf2d419b0e312f0",
-##     "89e84ce63cef1c32",
-##     "8e892930c8cabc4c",
-## ]
 ## writes = [
 ##     "libserde_json-0f77016abcd2177b.rlib",
 ##     "libserde_json-0f77016abcd2177b.rmeta",
@@ -4607,10 +4536,6 @@ COPY --link --from=dep-n-rustix-1.1.2-8f359398f3e604f7 /tmp/clis-cargo-config2_0
 ##     "ce86806852979c44",
 ##     "ebded25e6abcab7c",
 ## ]
-## short_externs = [
-##     "ce86806852979c44",
-##     "ebded25e6abcab7c",
-## ]
 ## writes = [
 ##     "librustix-8f359398f3e604f7.rlib",
 ##     "librustix-8f359398f3e604f7.rmeta",
@@ -4750,13 +4675,6 @@ COPY --link --from=dep-n-tempfile-3.23.0-dcba645f27464ac3 /tmp/clis-cargo-config
 
 ## this = "dcba645f27464ac3"
 ## deps = [
-##     "04191ca710c3c8e2",
-##     "ac21bf491a093e13",
-##     "8f359398f3e604f7",
-##     "ce86806852979c44",
-##     "ebded25e6abcab7c",
-## ]
-## short_externs = [
 ##     "04191ca710c3c8e2",
 ##     "ac21bf491a093e13",
 ##     "8f359398f3e604f7",
@@ -4964,45 +4882,6 @@ COPY --link --from=dep-n-cargo-config2-0.1.39-c9ff6e9320c4df36 /tmp/clis-cargo-c
 
 ## this = "c9ff6e9320c4df36"
 ## deps = [
-##     "8d1dc5ae4f738a51",
-##     "c8f6ab39a2fe04b9",
-##     "e720b63b19c5adaf",
-##     "3fdff6812a6b72d7",
-##     "8e892930c8cabc4c",
-##     "e6208564c687fff8",
-##     "30dd1c0184916507",
-##     "d90ab847601a2565",
-##     "41756a17d2ad9431",
-##     "cdb9268ed435c0dd",
-##     "07d853966f418260",
-##     "04b81e166a1398dc",
-##     "e8adf688a3d8d0bc",
-##     "20cfe062590d30b6",
-##     "5d47119b38aa8292",
-##     "3ce1b0d306dbd063",
-##     "67fccf9eaae1d1d4",
-##     "8f1dfe11d7b9a4e2",
-##     "2814aacc98907639",
-##     "43d8efeffba57382",
-##     "e171b1f90e2ba1ae",
-##     "3c7b5c3a02d329ae",
-##     "a715cbbac90745d7",
-##     "4b2d7aa4d6b0798a",
-##     "8b3ccc11003710ff",
-##     "0f77016abcd2177b",
-##     "810c45601233a792",
-##     "1bf2d419b0e312f0",
-##     "89e84ce63cef1c32",
-##     "c925917d3a2b2fd9",
-##     "7b9d42ac3c43d233",
-##     "dcba645f27464ac3",
-##     "04191ca710c3c8e2",
-##     "ac21bf491a093e13",
-##     "8f359398f3e604f7",
-##     "ce86806852979c44",
-##     "ebded25e6abcab7c",
-## ]
-## short_externs = [
 ##     "8d1dc5ae4f738a51",
 ##     "c8f6ab39a2fe04b9",
 ##     "e720b63b19c5adaf",

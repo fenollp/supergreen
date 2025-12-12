@@ -271,10 +271,6 @@ COPY --link --from=dep-n-nom-7.1.3-58bb9043b74c5306 /tmp/clis-binsider_0-3-0/rel
 ##     "446590d7e9e55fe8",
 ##     "d72c693e96b456e6",
 ## ]
-## short_externs = [
-##     "446590d7e9e55fe8",
-##     "d72c693e96b456e6",
-## ]
 ## writes = [
 ##     "libnom-58bb9043b74c5306.rlib",
 ##     "libnom-58bb9043b74c5306.rmeta",
@@ -768,7 +764,6 @@ COPY --link --from=dep-n-castaway-0.2.4-8decb7bcf8b14c00 /tmp/clis-binsider_0-3-
 
 ## this = "8decb7bcf8b14c00"
 ## deps = ["dda15780a2e006fc"]
-## short_externs = ["dda15780a2e006fc"]
 ## writes = [
 ##     "castaway-8decb7bcf8b14c00.d",
 ##     "libcastaway-8decb7bcf8b14c00.rlib",
@@ -1338,14 +1333,6 @@ COPY --link --from=dep-n-compact_str-0.8.1-124eb5757d8f47c0 /tmp/clis-binsider_0
 ##     "18f3925ee0c911f3",
 ##     "59c5c7af2d8c2ea3",
 ## ]
-## short_externs = [
-##     "8decb7bcf8b14c00",
-##     "dda15780a2e006fc",
-##     "75e60b79da774513",
-##     "69b00326e9a10f07",
-##     "18f3925ee0c911f3",
-##     "59c5c7af2d8c2ea3",
-## ]
 ## writes = [
 ##     "compact_str-124eb5757d8f47c0.d",
 ##     "libcompact_str-124eb5757d8f47c0.rlib",
@@ -1738,10 +1725,6 @@ COPY --link --from=dep-n-mio-1.1.0-d029cc97b9ccc1f2 /tmp/clis-binsider_0-3-0/rel
 ##     "015cac199e93641a",
 ##     "27ee29cc72525df6",
 ## ]
-## short_externs = [
-##     "015cac199e93641a",
-##     "27ee29cc72525df6",
-## ]
 ## writes = [
 ##     "libmio-d029cc97b9ccc1f2.rlib",
 ##     "libmio-d029cc97b9ccc1f2.rmeta",
@@ -1989,7 +1972,6 @@ COPY --link --from=dep-n-lock_api-0.4.14-c8582c37391e4a8c /tmp/clis-binsider_0-3
 
 ## this = "c8582c37391e4a8c"
 ## deps = ["a701d84b146739da"]
-## short_externs = ["a701d84b146739da"]
 ## writes = [
 ##     "liblock_api-c8582c37391e4a8c.rlib",
 ##     "liblock_api-c8582c37391e4a8c.rmeta",
@@ -2226,11 +2208,6 @@ COPY --link --from=dep-n-parking_lot_core-0.9.12-f5d7989d6bdef15d /tmp/clis-bins
 ##     "015cac199e93641a",
 ##     "ae4f75357e556562",
 ## ]
-## short_externs = [
-##     "75e60b79da774513",
-##     "015cac199e93641a",
-##     "ae4f75357e556562",
-## ]
 ## writes = [
 ##     "libparking_lot_core-f5d7989d6bdef15d.rlib",
 ##     "libparking_lot_core-f5d7989d6bdef15d.rmeta",
@@ -2382,14 +2359,6 @@ COPY --link --from=dep-n-parking_lot-0.12.5-937efa7b56f71b6c /tmp/clis-binsider_
 
 ## this = "937efa7b56f71b6c"
 ## deps = [
-##     "c8582c37391e4a8c",
-##     "a701d84b146739da",
-##     "f5d7989d6bdef15d",
-##     "75e60b79da774513",
-##     "015cac199e93641a",
-##     "ae4f75357e556562",
-## ]
-## short_externs = [
 ##     "c8582c37391e4a8c",
 ##     "a701d84b146739da",
 ##     "f5d7989d6bdef15d",
@@ -2680,10 +2649,6 @@ COPY --link --from=dep-n-rustix-0.38.44-8b10becad79ad57a /tmp/clis-binsider_0-3-
 ##     "f4de441526a3a0e1",
 ##     "9bb2a9d768b55ca7",
 ## ]
-## short_externs = [
-##     "f4de441526a3a0e1",
-##     "9bb2a9d768b55ca7",
-## ]
 ## writes = [
 ##     "librustix-8b10becad79ad57a.rlib",
 ##     "librustix-8b10becad79ad57a.rmeta",
@@ -2815,7 +2780,6 @@ COPY --link --from=dep-n-signal-hook-registry-1.4.7-328d94993eb73c64 /tmp/clis-b
 
 ## this = "328d94993eb73c64"
 ## deps = ["015cac199e93641a"]
-## short_externs = ["015cac199e93641a"]
 ## writes = [
 ##     "libsignal_hook_registry-328d94993eb73c64.rlib",
 ##     "libsignal_hook_registry-328d94993eb73c64.rmeta",
@@ -2939,10 +2903,6 @@ COPY --link --from=dep-n-signal-hook-0.3.18-dd71e14b27262e89 /tmp/clis-binsider_
 
 ## this = "dd71e14b27262e89"
 ## deps = [
-##     "015cac199e93641a",
-##     "328d94993eb73c64",
-## ]
-## short_externs = [
 ##     "015cac199e93641a",
 ##     "328d94993eb73c64",
 ## ]
@@ -3087,13 +3047,6 @@ COPY --link --from=dep-n-signal-hook-mio-0.2.5-419af6a259833b56 /tmp/clis-binsid
 
 ## this = "419af6a259833b56"
 ## deps = [
-##     "015cac199e93641a",
-##     "d029cc97b9ccc1f2",
-##     "27ee29cc72525df6",
-##     "dd71e14b27262e89",
-##     "328d94993eb73c64",
-## ]
-## short_externs = [
 ##     "015cac199e93641a",
 ##     "d029cc97b9ccc1f2",
 ##     "27ee29cc72525df6",
@@ -3288,23 +3241,6 @@ COPY --link --from=dep-n-crossterm-0.28.1-411647e82b0eba9d /tmp/clis-binsider_0-
 
 ## this = "411647e82b0eba9d"
 ## deps = [
-##     "f4de441526a3a0e1",
-##     "d029cc97b9ccc1f2",
-##     "015cac199e93641a",
-##     "27ee29cc72525df6",
-##     "937efa7b56f71b6c",
-##     "c8582c37391e4a8c",
-##     "a701d84b146739da",
-##     "f5d7989d6bdef15d",
-##     "75e60b79da774513",
-##     "ae4f75357e556562",
-##     "8b10becad79ad57a",
-##     "9bb2a9d768b55ca7",
-##     "dd71e14b27262e89",
-##     "328d94993eb73c64",
-##     "419af6a259833b56",
-## ]
-## short_externs = [
 ##     "f4de441526a3a0e1",
 ##     "d029cc97b9ccc1f2",
 ##     "015cac199e93641a",
@@ -3913,7 +3849,6 @@ COPY --link --from=dep-n-proc-macro2-1.0.103-c65c53ccfc4d16eb /tmp/clis-binsider
 
 ## this = "c65c53ccfc4d16eb"
 ## deps = ["f00842f45d7e2fde"]
-## short_externs = ["f00842f45d7e2fde"]
 ## writes = [
 ##     "libproc_macro2-c65c53ccfc4d16eb.rlib",
 ##     "libproc_macro2-c65c53ccfc4d16eb.rmeta",
@@ -4038,10 +3973,6 @@ COPY --link --from=dep-n-quote-1.0.42-33f66cd0015b4e4f /tmp/clis-binsider_0-3-0/
 
 ## this = "33f66cd0015b4e4f"
 ## deps = [
-##     "c65c53ccfc4d16eb",
-##     "f00842f45d7e2fde",
-## ]
-## short_externs = [
 ##     "c65c53ccfc4d16eb",
 ##     "f00842f45d7e2fde",
 ## ]
@@ -4295,11 +4226,6 @@ COPY --link --from=dep-n-syn-2.0.111-5b5526e4db89c9ec /tmp/clis-binsider_0-3-0/r
 ##     "f00842f45d7e2fde",
 ##     "33f66cd0015b4e4f",
 ## ]
-## short_externs = [
-##     "c65c53ccfc4d16eb",
-##     "f00842f45d7e2fde",
-##     "33f66cd0015b4e4f",
-## ]
 ## writes = [
 ##     "libsyn-5b5526e4db89c9ec.rlib",
 ##     "libsyn-5b5526e4db89c9ec.rmeta",
@@ -4454,15 +4380,6 @@ COPY --link --from=dep-n-darling_core-0.20.11-b068be7b97c188e1 /tmp/clis-binside
 
 ## this = "b068be7b97c188e1"
 ## deps = [
-##     "498ad1309b878047",
-##     "40d25c5ef07f6027",
-##     "c65c53ccfc4d16eb",
-##     "f00842f45d7e2fde",
-##     "33f66cd0015b4e4f",
-##     "c308dc16fc5a3763",
-##     "5b5526e4db89c9ec",
-## ]
-## short_externs = [
 ##     "498ad1309b878047",
 ##     "40d25c5ef07f6027",
 ##     "c65c53ccfc4d16eb",
@@ -4670,16 +4587,6 @@ COPY --link --from=dep-n-darling_macro-0.20.11-dfbb9a53b0de0f84 /tmp/clis-binsid
 ##     "c308dc16fc5a3763",
 ##     "5b5526e4db89c9ec",
 ## ]
-## short_externs = [
-##     "b068be7b97c188e1",
-##     "498ad1309b878047",
-##     "40d25c5ef07f6027",
-##     "c65c53ccfc4d16eb",
-##     "f00842f45d7e2fde",
-##     "33f66cd0015b4e4f",
-##     "c308dc16fc5a3763",
-##     "5b5526e4db89c9ec",
-## ]
 ## writes = [
 ##     "darling_macro-dfbb9a53b0de0f84.d",
 ##     "libdarling_macro-dfbb9a53b0de0f84.so",
@@ -4847,17 +4754,6 @@ COPY --link --from=dep-n-darling-0.20.11-949f672f1de23f30 /tmp/clis-binsider_0-3
 
 ## this = "949f672f1de23f30"
 ## deps = [
-##     "b068be7b97c188e1",
-##     "498ad1309b878047",
-##     "40d25c5ef07f6027",
-##     "c65c53ccfc4d16eb",
-##     "f00842f45d7e2fde",
-##     "33f66cd0015b4e4f",
-##     "c308dc16fc5a3763",
-##     "5b5526e4db89c9ec",
-##     "dfbb9a53b0de0f84",
-## ]
-## short_externs = [
 ##     "b068be7b97c188e1",
 ##     "498ad1309b878047",
 ##     "40d25c5ef07f6027",
@@ -5192,19 +5088,6 @@ COPY --link --from=dep-n-instability-0.3.9-334acb4362dadd9e /tmp/clis-binsider_0
 ##     "dfbb9a53b0de0f84",
 ##     "8a0472f4f1506ef3",
 ## ]
-## short_externs = [
-##     "949f672f1de23f30",
-##     "b068be7b97c188e1",
-##     "498ad1309b878047",
-##     "40d25c5ef07f6027",
-##     "c65c53ccfc4d16eb",
-##     "f00842f45d7e2fde",
-##     "33f66cd0015b4e4f",
-##     "c308dc16fc5a3763",
-##     "5b5526e4db89c9ec",
-##     "dfbb9a53b0de0f84",
-##     "8a0472f4f1506ef3",
-## ]
 ## writes = [
 ##     "instability-334acb4362dadd9e.d",
 ##     "libinstability-334acb4362dadd9e.so",
@@ -5478,7 +5361,6 @@ COPY --link --from=dep-n-itertools-0.13.0-ae8a8aa9cae3b02e /tmp/clis-binsider_0-
 
 ## this = "ae8a8aa9cae3b02e"
 ## deps = ["2f7cbff5a773db3c"]
-## short_externs = ["2f7cbff5a773db3c"]
 ## writes = [
 ##     "itertools-ae8a8aa9cae3b02e.d",
 ##     "libitertools-ae8a8aa9cae3b02e.rlib",
@@ -5937,11 +5819,6 @@ COPY --link --from=dep-n-hashbrown-0.15.5-0e481a60c7b29f2f /tmp/clis-binsider_0-
 ##     "377c55d6e7e3018c",
 ##     "1758dc1be00f4cda",
 ## ]
-## short_externs = [
-##     "237920045c805089",
-##     "377c55d6e7e3018c",
-##     "1758dc1be00f4cda",
-## ]
 ## writes = [
 ##     "hashbrown-0e481a60c7b29f2f.d",
 ##     "libhashbrown-0e481a60c7b29f2f.rlib",
@@ -6088,12 +5965,6 @@ COPY --link --from=dep-n-lru-0.12.5-cf204e36697e5bdd /tmp/clis-binsider_0-3-0/re
 
 ## this = "cf204e36697e5bdd"
 ## deps = [
-##     "0e481a60c7b29f2f",
-##     "237920045c805089",
-##     "377c55d6e7e3018c",
-##     "1758dc1be00f4cda",
-## ]
-## short_externs = [
 ##     "0e481a60c7b29f2f",
 ##     "237920045c805089",
 ##     "377c55d6e7e3018c",
@@ -6474,14 +6345,6 @@ COPY --link --from=dep-n-strum_macros-0.26.4-5a43962ca82ce156 /tmp/clis-binsider
 ##     "dda15780a2e006fc",
 ##     "5b5526e4db89c9ec",
 ## ]
-## short_externs = [
-##     "80ea6e95a9b9cb95",
-##     "c65c53ccfc4d16eb",
-##     "f00842f45d7e2fde",
-##     "33f66cd0015b4e4f",
-##     "dda15780a2e006fc",
-##     "5b5526e4db89c9ec",
-## ]
 ## writes = [
 ##     "libstrum_macros-5a43962ca82ce156.so",
 ##     "strum_macros-5a43962ca82ce156.d",
@@ -6633,15 +6496,6 @@ COPY --link --from=dep-n-strum-0.26.3-1c858e72c37c71dc /tmp/clis-binsider_0-3-0/
 
 ## this = "1c858e72c37c71dc"
 ## deps = [
-##     "5a43962ca82ce156",
-##     "80ea6e95a9b9cb95",
-##     "c65c53ccfc4d16eb",
-##     "f00842f45d7e2fde",
-##     "33f66cd0015b4e4f",
-##     "dda15780a2e006fc",
-##     "5b5526e4db89c9ec",
-## ]
-## short_externs = [
 ##     "5a43962ca82ce156",
 ##     "80ea6e95a9b9cb95",
 ##     "c65c53ccfc4d16eb",
@@ -7043,12 +6897,6 @@ COPY --link --from=dep-n-unicode-truncate-1.1.0-dee45c7dcb8acc8c /tmp/clis-binsi
 ##     "c3cf906c5a4083dc",
 ##     "4fbc28c59bebd11c",
 ## ]
-## short_externs = [
-##     "ae8a8aa9cae3b02e",
-##     "2f7cbff5a773db3c",
-##     "c3cf906c5a4083dc",
-##     "4fbc28c59bebd11c",
-## ]
 ## writes = [
 ##     "libunicode_truncate-dee45c7dcb8acc8c.rlib",
 ##     "libunicode_truncate-dee45c7dcb8acc8c.rmeta",
@@ -7290,57 +7138,6 @@ COPY --link --from=dep-n-ratatui-0.28.1-9f53c963dc6f01ee /tmp/clis-binsider_0-3-
 
 ## this = "9f53c963dc6f01ee"
 ## deps = [
-##     "f4de441526a3a0e1",
-##     "71d4e074bc44e409",
-##     "124eb5757d8f47c0",
-##     "8decb7bcf8b14c00",
-##     "dda15780a2e006fc",
-##     "75e60b79da774513",
-##     "69b00326e9a10f07",
-##     "18f3925ee0c911f3",
-##     "59c5c7af2d8c2ea3",
-##     "411647e82b0eba9d",
-##     "d029cc97b9ccc1f2",
-##     "015cac199e93641a",
-##     "27ee29cc72525df6",
-##     "937efa7b56f71b6c",
-##     "c8582c37391e4a8c",
-##     "a701d84b146739da",
-##     "f5d7989d6bdef15d",
-##     "ae4f75357e556562",
-##     "8b10becad79ad57a",
-##     "9bb2a9d768b55ca7",
-##     "dd71e14b27262e89",
-##     "328d94993eb73c64",
-##     "419af6a259833b56",
-##     "334acb4362dadd9e",
-##     "949f672f1de23f30",
-##     "b068be7b97c188e1",
-##     "498ad1309b878047",
-##     "40d25c5ef07f6027",
-##     "c65c53ccfc4d16eb",
-##     "f00842f45d7e2fde",
-##     "33f66cd0015b4e4f",
-##     "c308dc16fc5a3763",
-##     "5b5526e4db89c9ec",
-##     "dfbb9a53b0de0f84",
-##     "8a0472f4f1506ef3",
-##     "ae8a8aa9cae3b02e",
-##     "2f7cbff5a773db3c",
-##     "cf204e36697e5bdd",
-##     "0e481a60c7b29f2f",
-##     "237920045c805089",
-##     "377c55d6e7e3018c",
-##     "1758dc1be00f4cda",
-##     "9a94605722b759d8",
-##     "1c858e72c37c71dc",
-##     "5a43962ca82ce156",
-##     "80ea6e95a9b9cb95",
-##     "c3cf906c5a4083dc",
-##     "dee45c7dcb8acc8c",
-##     "4fbc28c59bebd11c",
-## ]
-## short_externs = [
 ##     "f4de441526a3a0e1",
 ##     "71d4e074bc44e409",
 ##     "124eb5757d8f47c0",
@@ -8091,12 +7888,6 @@ COPY --link --from=dep-n-thiserror-impl-1.0.69-610e6fc31d386639 /tmp/clis-binsid
 ##     "33f66cd0015b4e4f",
 ##     "5b5526e4db89c9ec",
 ## ]
-## short_externs = [
-##     "c65c53ccfc4d16eb",
-##     "f00842f45d7e2fde",
-##     "33f66cd0015b4e4f",
-##     "5b5526e4db89c9ec",
-## ]
 ## writes = [
 ##     "libthiserror_impl-610e6fc31d386639.so",
 ##     "thiserror_impl-610e6fc31d386639.d",
@@ -8239,13 +8030,6 @@ COPY --link --from=dep-n-thiserror-1.0.69-62dbdb24e19a6798 /tmp/clis-binsider_0-
 
 ## this = "62dbdb24e19a6798"
 ## deps = [
-##     "610e6fc31d386639",
-##     "c65c53ccfc4d16eb",
-##     "f00842f45d7e2fde",
-##     "33f66cd0015b4e4f",
-##     "5b5526e4db89c9ec",
-## ]
-## short_externs = [
 ##     "610e6fc31d386639",
 ##     "c65c53ccfc4d16eb",
 ##     "f00842f45d7e2fde",
@@ -8491,64 +8275,6 @@ COPY --link --from=dep-n-ansi-to-tui-6.0.1-cd77d544790460cb /tmp/clis-binsider_0
 
 ## this = "cd77d544790460cb"
 ## deps = [
-##     "58bb9043b74c5306",
-##     "446590d7e9e55fe8",
-##     "d72c693e96b456e6",
-##     "9f53c963dc6f01ee",
-##     "f4de441526a3a0e1",
-##     "71d4e074bc44e409",
-##     "124eb5757d8f47c0",
-##     "8decb7bcf8b14c00",
-##     "dda15780a2e006fc",
-##     "75e60b79da774513",
-##     "69b00326e9a10f07",
-##     "18f3925ee0c911f3",
-##     "59c5c7af2d8c2ea3",
-##     "411647e82b0eba9d",
-##     "d029cc97b9ccc1f2",
-##     "015cac199e93641a",
-##     "27ee29cc72525df6",
-##     "937efa7b56f71b6c",
-##     "c8582c37391e4a8c",
-##     "a701d84b146739da",
-##     "f5d7989d6bdef15d",
-##     "ae4f75357e556562",
-##     "8b10becad79ad57a",
-##     "9bb2a9d768b55ca7",
-##     "dd71e14b27262e89",
-##     "328d94993eb73c64",
-##     "419af6a259833b56",
-##     "334acb4362dadd9e",
-##     "949f672f1de23f30",
-##     "b068be7b97c188e1",
-##     "498ad1309b878047",
-##     "40d25c5ef07f6027",
-##     "c65c53ccfc4d16eb",
-##     "f00842f45d7e2fde",
-##     "33f66cd0015b4e4f",
-##     "c308dc16fc5a3763",
-##     "5b5526e4db89c9ec",
-##     "dfbb9a53b0de0f84",
-##     "8a0472f4f1506ef3",
-##     "ae8a8aa9cae3b02e",
-##     "2f7cbff5a773db3c",
-##     "cf204e36697e5bdd",
-##     "0e481a60c7b29f2f",
-##     "237920045c805089",
-##     "377c55d6e7e3018c",
-##     "1758dc1be00f4cda",
-##     "9a94605722b759d8",
-##     "1c858e72c37c71dc",
-##     "5a43962ca82ce156",
-##     "80ea6e95a9b9cb95",
-##     "c3cf906c5a4083dc",
-##     "dee45c7dcb8acc8c",
-##     "4fbc28c59bebd11c",
-##     "673b1ea8421457f7",
-##     "62dbdb24e19a6798",
-##     "610e6fc31d386639",
-## ]
-## short_externs = [
 ##     "58bb9043b74c5306",
 ##     "446590d7e9e55fe8",
 ##     "d72c693e96b456e6",
@@ -9352,7 +9078,6 @@ COPY --link --from=dep-n-addr2line-0.25.1-25d6f95ac7166050 /tmp/clis-binsider_0-
 
 ## this = "25d6f95ac7166050"
 ## deps = ["ad3f80eeed74168f"]
-## short_externs = ["ad3f80eeed74168f"]
 ## writes = [
 ##     "addr2line-25d6f95ac7166050.d",
 ##     "libaddr2line-25d6f95ac7166050.rlib",
@@ -9580,7 +9305,6 @@ COPY --link --from=dep-n-miniz_oxide-0.8.9-7624e0df862dfe1f /tmp/clis-binsider_0
 
 ## this = "7624e0df862dfe1f"
 ## deps = ["5c64281ff3719f6c"]
-## short_externs = ["5c64281ff3719f6c"]
 ## writes = [
 ##     "libminiz_oxide-7624e0df862dfe1f.rlib",
 ##     "libminiz_oxide-7624e0df862dfe1f.rmeta",
@@ -9702,7 +9426,6 @@ COPY --link --from=dep-n-object-0.37.3-356197461cd813c8 /tmp/clis-binsider_0-3-0
 
 ## this = "356197461cd813c8"
 ## deps = ["446590d7e9e55fe8"]
-## short_externs = ["446590d7e9e55fe8"]
 ## writes = [
 ##     "libobject-356197461cd813c8.rlib",
 ##     "libobject-356197461cd813c8.rmeta",
@@ -9955,17 +9678,6 @@ COPY --link --from=dep-n-backtrace-0.3.76-464c7b5d1bb75c1c /tmp/clis-binsider_0-
 
 ## this = "464c7b5d1bb75c1c"
 ## deps = [
-##     "25d6f95ac7166050",
-##     "ad3f80eeed74168f",
-##     "75e60b79da774513",
-##     "015cac199e93641a",
-##     "7624e0df862dfe1f",
-##     "5c64281ff3719f6c",
-##     "356197461cd813c8",
-##     "446590d7e9e55fe8",
-##     "6330deb0bd1f668c",
-## ]
-## short_externs = [
 ##     "25d6f95ac7166050",
 ##     "ad3f80eeed74168f",
 ##     "75e60b79da774513",
@@ -10403,11 +10115,6 @@ COPY --link --from=dep-n-console-0.15.11-234a41adface500e /tmp/clis-binsider_0-3
 ##     "4dfe72483c2407f4",
 ##     "f6f32a8a5a2fe2b5",
 ## ]
-## short_externs = [
-##     "015cac199e93641a",
-##     "4dfe72483c2407f4",
-##     "f6f32a8a5a2fe2b5",
-## ]
 ## writes = [
 ##     "console-234a41adface500e.d",
 ##     "libconsole-234a41adface500e.rlib",
@@ -10574,21 +10281,6 @@ COPY --link --from=dep-n-better-panic-0.3.0-a9957c47648323cc /tmp/clis-binsider_
 
 ## this = "a9957c47648323cc"
 ## deps = [
-##     "464c7b5d1bb75c1c",
-##     "25d6f95ac7166050",
-##     "ad3f80eeed74168f",
-##     "75e60b79da774513",
-##     "015cac199e93641a",
-##     "7624e0df862dfe1f",
-##     "5c64281ff3719f6c",
-##     "356197461cd813c8",
-##     "446590d7e9e55fe8",
-##     "6330deb0bd1f668c",
-##     "234a41adface500e",
-##     "4dfe72483c2407f4",
-##     "f6f32a8a5a2fe2b5",
-## ]
-## short_externs = [
 ##     "464c7b5d1bb75c1c",
 ##     "25d6f95ac7166050",
 ##     "ad3f80eeed74168f",
@@ -11176,10 +10868,6 @@ COPY --link --from=dep-n-chrono-0.4.42-fb55c8c1706c1cf3 /tmp/clis-binsider_0-3-0
 ##     "d519fdd1b6004b59",
 ##     "fd8333b78f8771af",
 ## ]
-## short_externs = [
-##     "d519fdd1b6004b59",
-##     "fd8333b78f8771af",
-## ]
 ## writes = [
 ##     "chrono-fb55c8c1706c1cf3.d",
 ##     "libchrono-fb55c8c1706c1cf3.rlib",
@@ -11524,7 +11212,6 @@ COPY --link --from=dep-n-anstyle-parse-0.2.7-0128270153fe60f9 /tmp/clis-binsider
 
 ## this = "0128270153fe60f9"
 ## deps = ["485f25491c4f3159"]
-## short_externs = ["485f25491c4f3159"]
 ## writes = [
 ##     "anstyle_parse-0128270153fe60f9.d",
 ##     "libanstyle_parse-0128270153fe60f9.rlib",
@@ -11976,14 +11663,6 @@ COPY --link --from=dep-n-anstream-0.6.21-a11e36dd35aeacb7 /tmp/clis-binsider_0-3
 
 ## this = "a11e36dd35aeacb7"
 ## deps = [
-##     "d47ef3d8ec31d3ef",
-##     "0128270153fe60f9",
-##     "485f25491c4f3159",
-##     "e5811f2649650ef8",
-##     "f8497aaf26004854",
-##     "3b69081b69ee7a80",
-## ]
-## short_externs = [
 ##     "d47ef3d8ec31d3ef",
 ##     "0128270153fe60f9",
 ##     "485f25491c4f3159",
@@ -12490,10 +12169,6 @@ COPY --link --from=dep-n-rustix-1.1.2-7d030f49849ec102 /tmp/clis-binsider_0-3-0/
 ##     "f4de441526a3a0e1",
 ##     "004444fd6ca40129",
 ## ]
-## short_externs = [
-##     "f4de441526a3a0e1",
-##     "004444fd6ca40129",
-## ]
 ## writes = [
 ##     "librustix-7d030f49849ec102.rlib",
 ##     "librustix-7d030f49849ec102.rmeta",
@@ -12629,11 +12304,6 @@ COPY --link --from=dep-n-terminal_size-0.4.3-563b33ae52765181 /tmp/clis-binsider
 
 ## this = "563b33ae52765181"
 ## deps = [
-##     "7d030f49849ec102",
-##     "f4de441526a3a0e1",
-##     "004444fd6ca40129",
-## ]
-## short_externs = [
 ##     "7d030f49849ec102",
 ##     "f4de441526a3a0e1",
 ##     "004444fd6ca40129",
@@ -12802,21 +12472,6 @@ COPY --link --from=dep-n-clap_builder-4.5.53-d1f0762a24b06a3e /tmp/clis-binsider
 
 ## this = "d1f0762a24b06a3e"
 ## deps = [
-##     "a11e36dd35aeacb7",
-##     "d47ef3d8ec31d3ef",
-##     "0128270153fe60f9",
-##     "485f25491c4f3159",
-##     "e5811f2649650ef8",
-##     "f8497aaf26004854",
-##     "3b69081b69ee7a80",
-##     "413508145855405f",
-##     "97094fd99bcbe118",
-##     "563b33ae52765181",
-##     "7d030f49849ec102",
-##     "f4de441526a3a0e1",
-##     "004444fd6ca40129",
-## ]
-## short_externs = [
 ##     "a11e36dd35aeacb7",
 ##     "d47ef3d8ec31d3ef",
 ##     "0128270153fe60f9",
@@ -13080,13 +12735,6 @@ COPY --link --from=dep-n-clap_derive-4.5.49-e96784057f465db0 /tmp/clis-binsider_
 ##     "33f66cd0015b4e4f",
 ##     "5b5526e4db89c9ec",
 ## ]
-## short_externs = [
-##     "80ea6e95a9b9cb95",
-##     "c65c53ccfc4d16eb",
-##     "f00842f45d7e2fde",
-##     "33f66cd0015b4e4f",
-##     "5b5526e4db89c9ec",
-## ]
 ## writes = [
 ##     "clap_derive-e96784057f465db0.d",
 ##     "libclap_derive-e96784057f465db0.so",
@@ -13257,28 +12905,6 @@ COPY --link --from=dep-n-clap-4.5.53-1893f85133986ddc /tmp/clis-binsider_0-3-0/r
 
 ## this = "1893f85133986ddc"
 ## deps = [
-##     "d1f0762a24b06a3e",
-##     "a11e36dd35aeacb7",
-##     "d47ef3d8ec31d3ef",
-##     "0128270153fe60f9",
-##     "485f25491c4f3159",
-##     "e5811f2649650ef8",
-##     "f8497aaf26004854",
-##     "3b69081b69ee7a80",
-##     "413508145855405f",
-##     "97094fd99bcbe118",
-##     "563b33ae52765181",
-##     "7d030f49849ec102",
-##     "f4de441526a3a0e1",
-##     "004444fd6ca40129",
-##     "e96784057f465db0",
-##     "80ea6e95a9b9cb95",
-##     "c65c53ccfc4d16eb",
-##     "f00842f45d7e2fde",
-##     "33f66cd0015b4e4f",
-##     "5b5526e4db89c9ec",
-## ]
-## short_externs = [
 ##     "d1f0762a24b06a3e",
 ##     "a11e36dd35aeacb7",
 ##     "d47ef3d8ec31d3ef",
@@ -13827,11 +13453,6 @@ COPY --link --from=dep-n-gethostname-1.1.0-5aada9d57c9f52a6 /tmp/clis-binsider_0
 ##     "f4de441526a3a0e1",
 ##     "004444fd6ca40129",
 ## ]
-## short_externs = [
-##     "7d030f49849ec102",
-##     "f4de441526a3a0e1",
-##     "004444fd6ca40129",
-## ]
 ## writes = [
 ##     "gethostname-5aada9d57c9f52a6.d",
 ##     "libgethostname-5aada9d57c9f52a6.rlib",
@@ -14093,13 +13714,6 @@ COPY --link --from=dep-n-x11rb-0.13.2-38e2625730766b36 /tmp/clis-binsider_0-3-0/
 ##     "004444fd6ca40129",
 ##     "2c71aa41f30aa5fb",
 ## ]
-## short_externs = [
-##     "5aada9d57c9f52a6",
-##     "7d030f49849ec102",
-##     "f4de441526a3a0e1",
-##     "004444fd6ca40129",
-##     "2c71aa41f30aa5fb",
-## ]
 ## writes = [
 ##     "libx11rb-38e2625730766b36.rlib",
 ##     "libx11rb-38e2625730766b36.rmeta",
@@ -14288,23 +13902,6 @@ COPY --link --from=dep-n-arboard-3.6.1-24067945f7487d10 /tmp/clis-binsider_0-3-0
 
 ## this = "24067945f7487d10"
 ## deps = [
-##     "27ee29cc72525df6",
-##     "937efa7b56f71b6c",
-##     "c8582c37391e4a8c",
-##     "a701d84b146739da",
-##     "f5d7989d6bdef15d",
-##     "75e60b79da774513",
-##     "015cac199e93641a",
-##     "ae4f75357e556562",
-##     "a7e40514d2e8c918",
-##     "38e2625730766b36",
-##     "5aada9d57c9f52a6",
-##     "7d030f49849ec102",
-##     "f4de441526a3a0e1",
-##     "004444fd6ca40129",
-##     "2c71aa41f30aa5fb",
-## ]
-## short_externs = [
 ##     "27ee29cc72525df6",
 ##     "937efa7b56f71b6c",
 ##     "c8582c37391e4a8c",
@@ -14690,7 +14287,6 @@ COPY --link --from=dep-n-crossbeam-channel-0.5.15-468b66f8459b1d7a /tmp/clis-bin
 
 ## this = "468b66f8459b1d7a"
 ## deps = ["ba2b25bb1b7f1285"]
-## short_externs = ["ba2b25bb1b7f1285"]
 ## writes = [
 ##     "crossbeam_channel-468b66f8459b1d7a.d",
 ##     "libcrossbeam_channel-468b66f8459b1d7a.rlib",
@@ -14811,7 +14407,6 @@ COPY --link --from=dep-n-crossbeam-epoch-0.9.18-8d173dde1e6e6eaa /tmp/clis-binsi
 
 ## this = "8d173dde1e6e6eaa"
 ## deps = ["ba2b25bb1b7f1285"]
-## short_externs = ["ba2b25bb1b7f1285"]
 ## writes = [
 ##     "crossbeam_epoch-8d173dde1e6e6eaa.d",
 ##     "libcrossbeam_epoch-8d173dde1e6e6eaa.rlib",
@@ -14958,10 +14553,6 @@ COPY --link --from=dep-n-crossbeam-deque-0.8.6-3d29a9a043a9f040 /tmp/clis-binsid
 ##     "8d173dde1e6e6eaa",
 ##     "ba2b25bb1b7f1285",
 ## ]
-## short_externs = [
-##     "8d173dde1e6e6eaa",
-##     "ba2b25bb1b7f1285",
-## ]
 ## writes = [
 ##     "crossbeam_deque-3d29a9a043a9f040.d",
 ##     "libcrossbeam_deque-3d29a9a043a9f040.rlib",
@@ -15092,7 +14683,6 @@ COPY --link --from=dep-n-crossbeam-queue-0.3.12-985c18b8999cd518 /tmp/clis-binsi
 
 ## this = "985c18b8999cd518"
 ## deps = ["ba2b25bb1b7f1285"]
-## short_externs = ["ba2b25bb1b7f1285"]
 ## writes = [
 ##     "crossbeam_queue-985c18b8999cd518.d",
 ##     "libcrossbeam_queue-985c18b8999cd518.rlib",
@@ -15221,13 +14811,6 @@ COPY --link --from=dep-n-crossbeam-0.8.4-737387c58e13eb4f /tmp/clis-binsider_0-3
 
 ## this = "737387c58e13eb4f"
 ## deps = [
-##     "468b66f8459b1d7a",
-##     "ba2b25bb1b7f1285",
-##     "3d29a9a043a9f040",
-##     "8d173dde1e6e6eaa",
-##     "985c18b8999cd518",
-## ]
-## short_externs = [
 ##     "468b66f8459b1d7a",
 ##     "ba2b25bb1b7f1285",
 ##     "3d29a9a043a9f040",
@@ -15503,7 +15086,6 @@ COPY --link --from=dep-n-memmap2-0.9.9-5c5bb704732536ee /tmp/clis-binsider_0-3-0
 
 ## this = "5c5bb704732536ee"
 ## deps = ["015cac199e93641a"]
-## short_externs = ["015cac199e93641a"]
 ## writes = [
 ##     "libmemmap2-5c5bb704732536ee.rlib",
 ##     "libmemmap2-5c5bb704732536ee.rmeta",
@@ -15771,86 +15353,6 @@ COPY --link --from=dep-n-heh-0.6.1-fec0616cecc32d32 /tmp/clis-binsider_0-3-0/rel
 
 ## this = "fec0616cecc32d32"
 ## deps = [
-##     "24067945f7487d10",
-##     "27ee29cc72525df6",
-##     "937efa7b56f71b6c",
-##     "c8582c37391e4a8c",
-##     "a701d84b146739da",
-##     "f5d7989d6bdef15d",
-##     "75e60b79da774513",
-##     "015cac199e93641a",
-##     "ae4f75357e556562",
-##     "a7e40514d2e8c918",
-##     "38e2625730766b36",
-##     "5aada9d57c9f52a6",
-##     "7d030f49849ec102",
-##     "f4de441526a3a0e1",
-##     "004444fd6ca40129",
-##     "2c71aa41f30aa5fb",
-##     "1893f85133986ddc",
-##     "d1f0762a24b06a3e",
-##     "a11e36dd35aeacb7",
-##     "d47ef3d8ec31d3ef",
-##     "0128270153fe60f9",
-##     "485f25491c4f3159",
-##     "e5811f2649650ef8",
-##     "f8497aaf26004854",
-##     "3b69081b69ee7a80",
-##     "413508145855405f",
-##     "97094fd99bcbe118",
-##     "563b33ae52765181",
-##     "e96784057f465db0",
-##     "80ea6e95a9b9cb95",
-##     "c65c53ccfc4d16eb",
-##     "f00842f45d7e2fde",
-##     "33f66cd0015b4e4f",
-##     "5b5526e4db89c9ec",
-##     "737387c58e13eb4f",
-##     "468b66f8459b1d7a",
-##     "ba2b25bb1b7f1285",
-##     "3d29a9a043a9f040",
-##     "8d173dde1e6e6eaa",
-##     "985c18b8999cd518",
-##     "b4f1019f17e2cec5",
-##     "5c5bb704732536ee",
-##     "9f53c963dc6f01ee",
-##     "71d4e074bc44e409",
-##     "124eb5757d8f47c0",
-##     "8decb7bcf8b14c00",
-##     "dda15780a2e006fc",
-##     "69b00326e9a10f07",
-##     "18f3925ee0c911f3",
-##     "59c5c7af2d8c2ea3",
-##     "411647e82b0eba9d",
-##     "d029cc97b9ccc1f2",
-##     "8b10becad79ad57a",
-##     "9bb2a9d768b55ca7",
-##     "dd71e14b27262e89",
-##     "328d94993eb73c64",
-##     "419af6a259833b56",
-##     "334acb4362dadd9e",
-##     "949f672f1de23f30",
-##     "b068be7b97c188e1",
-##     "498ad1309b878047",
-##     "40d25c5ef07f6027",
-##     "c308dc16fc5a3763",
-##     "dfbb9a53b0de0f84",
-##     "8a0472f4f1506ef3",
-##     "ae8a8aa9cae3b02e",
-##     "2f7cbff5a773db3c",
-##     "cf204e36697e5bdd",
-##     "0e481a60c7b29f2f",
-##     "237920045c805089",
-##     "377c55d6e7e3018c",
-##     "1758dc1be00f4cda",
-##     "9a94605722b759d8",
-##     "1c858e72c37c71dc",
-##     "5a43962ca82ce156",
-##     "c3cf906c5a4083dc",
-##     "dee45c7dcb8acc8c",
-##     "4fbc28c59bebd11c",
-## ]
-## short_externs = [
 ##     "24067945f7487d10",
 ##     "27ee29cc72525df6",
 ##     "937efa7b56f71b6c",
@@ -16801,7 +16303,6 @@ COPY --link --from=dep-n-itertools-0.14.0-62522c8d5cefce5c /tmp/clis-binsider_0-
 
 ## this = "62522c8d5cefce5c"
 ## deps = ["2f7cbff5a773db3c"]
-## short_externs = ["2f7cbff5a773db3c"]
 ## writes = [
 ##     "itertools-62522c8d5cefce5c.d",
 ##     "libitertools-62522c8d5cefce5c.rlib",
@@ -17270,12 +16771,6 @@ COPY --link --from=dep-n-scroll_derive-0.13.1-b7d2d724162db84c /tmp/clis-binside
 ##     "33f66cd0015b4e4f",
 ##     "5b5526e4db89c9ec",
 ## ]
-## short_externs = [
-##     "c65c53ccfc4d16eb",
-##     "f00842f45d7e2fde",
-##     "33f66cd0015b4e4f",
-##     "5b5526e4db89c9ec",
-## ]
 ## writes = [
 ##     "libscroll_derive-b7d2d724162db84c.so",
 ##     "scroll_derive-b7d2d724162db84c.d",
@@ -17407,13 +16902,6 @@ COPY --link --from=dep-n-scroll-0.13.0-af97f0dc6a7f6b27 /tmp/clis-binsider_0-3-0
 
 ## this = "af97f0dc6a7f6b27"
 ## deps = [
-##     "b7d2d724162db84c",
-##     "c65c53ccfc4d16eb",
-##     "f00842f45d7e2fde",
-##     "33f66cd0015b4e4f",
-##     "5b5526e4db89c9ec",
-## ]
-## short_externs = [
 ##     "b7d2d724162db84c",
 ##     "c65c53ccfc4d16eb",
 ##     "f00842f45d7e2fde",
@@ -17568,16 +17056,6 @@ COPY --link --from=dep-n-goblin-0.10.3-5d4b9118bbd95fc8 /tmp/clis-binsider_0-3-0
 
 ## this = "5d4b9118bbd95fc8"
 ## deps = [
-##     "27ee29cc72525df6",
-##     "d294e9a3fde8eb9f",
-##     "af97f0dc6a7f6b27",
-##     "b7d2d724162db84c",
-##     "c65c53ccfc4d16eb",
-##     "f00842f45d7e2fde",
-##     "33f66cd0015b4e4f",
-##     "5b5526e4db89c9ec",
-## ]
-## short_externs = [
 ##     "27ee29cc72525df6",
 ##     "d294e9a3fde8eb9f",
 ##     "af97f0dc6a7f6b27",
@@ -17791,19 +17269,6 @@ COPY --link --from=dep-n-lddtree-0.3.8-61e4764801f8f8ea /tmp/clis-binsider_0-3-0
 
 ## this = "61e4764801f8f8ea"
 ## deps = [
-##     "daa6b52d7f3909ea",
-##     "296dbfbcb0248ddf",
-##     "5d4b9118bbd95fc8",
-##     "27ee29cc72525df6",
-##     "d294e9a3fde8eb9f",
-##     "af97f0dc6a7f6b27",
-##     "b7d2d724162db84c",
-##     "c65c53ccfc4d16eb",
-##     "f00842f45d7e2fde",
-##     "33f66cd0015b4e4f",
-##     "5b5526e4db89c9ec",
-## ]
-## short_externs = [
 ##     "daa6b52d7f3909ea",
 ##     "296dbfbcb0248ddf",
 ##     "5d4b9118bbd95fc8",
@@ -18359,7 +17824,6 @@ COPY --link --from=dep-n-document-features-0.2.12-6410498f71d4db67 /tmp/clis-bin
 
 ## this = "6410498f71d4db67"
 ## deps = ["f416a32b758c538a"]
-## short_externs = ["f416a32b758c538a"]
 ## writes = [
 ##     "document_features-6410498f71d4db67.d",
 ##     "libdocument_features-6410498f71d4db67.so",
@@ -18494,20 +17958,6 @@ COPY --link --from=dep-n-crossterm-0.29.0-9d1ffa4c8c51b7c8 /tmp/clis-binsider_0-
 
 ## this = "9d1ffa4c8c51b7c8"
 ## deps = [
-##     "f4de441526a3a0e1",
-##     "6410498f71d4db67",
-##     "f416a32b758c538a",
-##     "937efa7b56f71b6c",
-##     "c8582c37391e4a8c",
-##     "a701d84b146739da",
-##     "f5d7989d6bdef15d",
-##     "75e60b79da774513",
-##     "015cac199e93641a",
-##     "ae4f75357e556562",
-##     "7d030f49849ec102",
-##     "004444fd6ca40129",
-## ]
-## short_externs = [
 ##     "f4de441526a3a0e1",
 ##     "6410498f71d4db67",
 ##     "f416a32b758c538a",
@@ -18792,23 +18242,6 @@ COPY --link --from=dep-n-comfy-table-7.2.1-36391bfac96fb88c /tmp/clis-binsider_0
 ##     "c3cf906c5a4083dc",
 ##     "f6f32a8a5a2fe2b5",
 ## ]
-## short_externs = [
-##     "9d1ffa4c8c51b7c8",
-##     "f4de441526a3a0e1",
-##     "6410498f71d4db67",
-##     "f416a32b758c538a",
-##     "937efa7b56f71b6c",
-##     "c8582c37391e4a8c",
-##     "a701d84b146739da",
-##     "f5d7989d6bdef15d",
-##     "75e60b79da774513",
-##     "015cac199e93641a",
-##     "ae4f75357e556562",
-##     "7d030f49849ec102",
-##     "004444fd6ca40129",
-##     "c3cf906c5a4083dc",
-##     "f6f32a8a5a2fe2b5",
-## ]
 ## writes = [
 ##     "comfy_table-36391bfac96fb88c.d",
 ##     "libcomfy_table-36391bfac96fb88c.rlib",
@@ -19069,10 +18502,6 @@ COPY --link --from=dep-n-linux-personality-2.0.0-235a6c98f0ab2de4 /tmp/clis-bins
 ##     "f4de441526a3a0e1",
 ##     "015cac199e93641a",
 ## ]
-## short_externs = [
-##     "f4de441526a3a0e1",
-##     "015cac199e93641a",
-## ]
 ## writes = [
 ##     "liblinux_personality-235a6c98f0ab2de4.rlib",
 ##     "liblinux_personality-235a6c98f0ab2de4.rmeta",
@@ -19208,11 +18637,6 @@ COPY --link --from=dep-n-nix-0.29.0-f3bf7a0461872b99 /tmp/clis-binsider_0-3-0/re
 
 ## this = "f3bf7a0461872b99"
 ## deps = [
-##     "f4de441526a3a0e1",
-##     "75e60b79da774513",
-##     "015cac199e93641a",
-## ]
-## short_externs = [
 ##     "f4de441526a3a0e1",
 ##     "75e60b79da774513",
 ##     "015cac199e93641a",
@@ -19372,7 +18796,6 @@ COPY --link --from=dep-n-aho-corasick-1.1.4-3acc4b766482c2eb /tmp/clis-binsider_
 
 ## this = "3acc4b766482c2eb"
 ## deps = ["446590d7e9e55fe8"]
-## short_externs = ["446590d7e9e55fe8"]
 ## writes = [
 ##     "aho_corasick-3acc4b766482c2eb.d",
 ##     "libaho_corasick-3acc4b766482c2eb.rlib",
@@ -19613,11 +19036,6 @@ COPY --link --from=dep-n-regex-automata-0.4.13-486b3c1c650656c3 /tmp/clis-binsid
 ##     "446590d7e9e55fe8",
 ##     "87e4d2c8afc3d093",
 ## ]
-## short_externs = [
-##     "3acc4b766482c2eb",
-##     "446590d7e9e55fe8",
-##     "87e4d2c8afc3d093",
-## ]
 ## writes = [
 ##     "libregex_automata-486b3c1c650656c3.rlib",
 ##     "libregex_automata-486b3c1c650656c3.rmeta",
@@ -19766,12 +19184,6 @@ COPY --link --from=dep-n-regex-1.12.2-d9316ed9b5a14e0e /tmp/clis-binsider_0-3-0/
 
 ## this = "d9316ed9b5a14e0e"
 ## deps = [
-##     "3acc4b766482c2eb",
-##     "446590d7e9e55fe8",
-##     "486b3c1c650656c3",
-##     "87e4d2c8afc3d093",
-## ]
-## short_externs = [
 ##     "3acc4b766482c2eb",
 ##     "446590d7e9e55fe8",
 ##     "486b3c1c650656c3",
@@ -19936,12 +19348,6 @@ COPY --link --from=dep-n-serde_derive-1.0.217-91dc898216da4fb0 /tmp/clis-binside
 ##     "33f66cd0015b4e4f",
 ##     "5b5526e4db89c9ec",
 ## ]
-## short_externs = [
-##     "c65c53ccfc4d16eb",
-##     "f00842f45d7e2fde",
-##     "33f66cd0015b4e4f",
-##     "5b5526e4db89c9ec",
-## ]
 ## writes = [
 ##     "libserde_derive-91dc898216da4fb0.so",
 ##     "serde_derive-91dc898216da4fb0.d",
@@ -20078,13 +19484,6 @@ COPY --link --from=dep-n-serde-1.0.217-f78cc236b394a06b /tmp/clis-binsider_0-3-0
 
 ## this = "f78cc236b394a06b"
 ## deps = [
-##     "91dc898216da4fb0",
-##     "c65c53ccfc4d16eb",
-##     "f00842f45d7e2fde",
-##     "33f66cd0015b4e4f",
-##     "5b5526e4db89c9ec",
-## ]
-## short_externs = [
 ##     "91dc898216da4fb0",
 ##     "c65c53ccfc4d16eb",
 ##     "f00842f45d7e2fde",
@@ -20246,17 +19645,6 @@ COPY --link --from=dep-n-serde_json-1.0.143-c03f30fcfa21182a /tmp/clis-binsider_
 
 ## this = "c03f30fcfa21182a"
 ## deps = [
-##     "69b00326e9a10f07",
-##     "446590d7e9e55fe8",
-##     "18f3925ee0c911f3",
-##     "f78cc236b394a06b",
-##     "91dc898216da4fb0",
-##     "c65c53ccfc4d16eb",
-##     "f00842f45d7e2fde",
-##     "33f66cd0015b4e4f",
-##     "5b5526e4db89c9ec",
-## ]
-## short_externs = [
 ##     "69b00326e9a10f07",
 ##     "446590d7e9e55fe8",
 ##     "18f3925ee0c911f3",
@@ -20470,12 +19858,6 @@ COPY --link --from=dep-n-serde_repr-0.1.20-48d795f6f8ba656c /tmp/clis-binsider_0
 ##     "33f66cd0015b4e4f",
 ##     "5b5526e4db89c9ec",
 ## ]
-## short_externs = [
-##     "c65c53ccfc4d16eb",
-##     "f00842f45d7e2fde",
-##     "33f66cd0015b4e4f",
-##     "5b5526e4db89c9ec",
-## ]
 ## writes = [
 ##     "libserde_repr-48d795f6f8ba656c.so",
 ##     "serde_repr-48d795f6f8ba656c.d",
@@ -20616,15 +19998,6 @@ COPY --link --from=dep-n-syscalls-0.6.18-dede5a1c687ebe22 /tmp/clis-binsider_0-3
 
 ## this = "dede5a1c687ebe22"
 ## deps = [
-##     "f78cc236b394a06b",
-##     "91dc898216da4fb0",
-##     "c65c53ccfc4d16eb",
-##     "f00842f45d7e2fde",
-##     "33f66cd0015b4e4f",
-##     "5b5526e4db89c9ec",
-##     "48d795f6f8ba656c",
-## ]
-## short_externs = [
 ##     "f78cc236b394a06b",
 ##     "91dc898216da4fb0",
 ##     "c65c53ccfc4d16eb",
@@ -20812,10 +20185,6 @@ COPY --link --from=dep-n-uzers-0.12.1-ed0ea63f8b0d1f05 /tmp/clis-binsider_0-3-0/
 
 ## this = "ed0ea63f8b0d1f05"
 ## deps = [
-##     "015cac199e93641a",
-##     "27ee29cc72525df6",
-## ]
-## short_externs = [
 ##     "015cac199e93641a",
 ##     "27ee29cc72525df6",
 ## ]
@@ -21051,62 +20420,6 @@ COPY --link --from=dep-n-lurk-cli-0.3.10-33d6821f194da430 /tmp/clis-binsider_0-3
 
 ## this = "33d6821f194da430"
 ## deps = [
-##     "543166d220417af1",
-##     "6a8f66799873246d",
-##     "1893f85133986ddc",
-##     "d1f0762a24b06a3e",
-##     "a11e36dd35aeacb7",
-##     "d47ef3d8ec31d3ef",
-##     "0128270153fe60f9",
-##     "485f25491c4f3159",
-##     "e5811f2649650ef8",
-##     "f8497aaf26004854",
-##     "3b69081b69ee7a80",
-##     "413508145855405f",
-##     "97094fd99bcbe118",
-##     "563b33ae52765181",
-##     "7d030f49849ec102",
-##     "f4de441526a3a0e1",
-##     "004444fd6ca40129",
-##     "e96784057f465db0",
-##     "80ea6e95a9b9cb95",
-##     "c65c53ccfc4d16eb",
-##     "f00842f45d7e2fde",
-##     "33f66cd0015b4e4f",
-##     "5b5526e4db89c9ec",
-##     "36391bfac96fb88c",
-##     "9d1ffa4c8c51b7c8",
-##     "6410498f71d4db67",
-##     "f416a32b758c538a",
-##     "937efa7b56f71b6c",
-##     "c8582c37391e4a8c",
-##     "a701d84b146739da",
-##     "f5d7989d6bdef15d",
-##     "75e60b79da774513",
-##     "015cac199e93641a",
-##     "ae4f75357e556562",
-##     "c3cf906c5a4083dc",
-##     "f6f32a8a5a2fe2b5",
-##     "234a41adface500e",
-##     "4dfe72483c2407f4",
-##     "235a6c98f0ab2de4",
-##     "f3bf7a0461872b99",
-##     "d9316ed9b5a14e0e",
-##     "3acc4b766482c2eb",
-##     "446590d7e9e55fe8",
-##     "486b3c1c650656c3",
-##     "87e4d2c8afc3d093",
-##     "f78cc236b394a06b",
-##     "91dc898216da4fb0",
-##     "c03f30fcfa21182a",
-##     "69b00326e9a10f07",
-##     "18f3925ee0c911f3",
-##     "dede5a1c687ebe22",
-##     "48d795f6f8ba656c",
-##     "ed0ea63f8b0d1f05",
-##     "27ee29cc72525df6",
-## ]
-## short_externs = [
 ##     "543166d220417af1",
 ##     "6a8f66799873246d",
 ##     "1893f85133986ddc",
@@ -21901,7 +21214,6 @@ COPY --link --from=dep-n-sysinfo-0.37.2-a080a022bdb88544 /tmp/clis-binsider_0-3-
 
 ## this = "a080a022bdb88544"
 ## deps = ["015cac199e93641a"]
-## short_externs = ["015cac199e93641a"]
 ## writes = [
 ##     "libsysinfo-a080a022bdb88544.rlib",
 ##     "libsysinfo-a080a022bdb88544.rmeta",
@@ -22361,13 +21673,6 @@ COPY --link --from=dep-n-mockall_derive-0.13.1-79175329501f4916 /tmp/clis-binsid
 ##     "33f66cd0015b4e4f",
 ##     "5b5526e4db89c9ec",
 ## ]
-## short_externs = [
-##     "e83e846865289db4",
-##     "c65c53ccfc4d16eb",
-##     "f00842f45d7e2fde",
-##     "33f66cd0015b4e4f",
-##     "5b5526e4db89c9ec",
-## ]
 ## writes = [
 ##     "libmockall_derive-79175329501f4916.so",
 ##     "mockall_derive-79175329501f4916.d",
@@ -22615,10 +21920,6 @@ COPY --link --from=dep-n-predicates-3.1.3-8097086080ae3287 /tmp/clis-binsider_0-
 ##     "d47ef3d8ec31d3ef",
 ##     "d706a800daecd5a7",
 ## ]
-## short_externs = [
-##     "d47ef3d8ec31d3ef",
-##     "d706a800daecd5a7",
-## ]
 ## writes = [
 ##     "libpredicates-8097086080ae3287.rlib",
 ##     "libpredicates-8097086080ae3287.rmeta",
@@ -22861,10 +22162,6 @@ COPY --link --from=dep-n-predicates-tree-1.0.12-a7d2856a03ed8f37 /tmp/clis-binsi
 ##     "d706a800daecd5a7",
 ##     "f6783fb93bf0da90",
 ## ]
-## short_externs = [
-##     "d706a800daecd5a7",
-##     "f6783fb93bf0da90",
-## ]
 ## writes = [
 ##     "libpredicates_tree-a7d2856a03ed8f37.rlib",
 ##     "libpredicates_tree-a7d2856a03ed8f37.rmeta",
@@ -23021,22 +22318,6 @@ COPY --link --from=dep-n-mockall-0.13.1-c37b8813585ec3b9 /tmp/clis-binsider_0-3-
 
 ## this = "c37b8813585ec3b9"
 ## deps = [
-##     "75e60b79da774513",
-##     "575bc6f23bb0e968",
-##     "a8788b2dd00e8777",
-##     "79175329501f4916",
-##     "e83e846865289db4",
-##     "c65c53ccfc4d16eb",
-##     "f00842f45d7e2fde",
-##     "33f66cd0015b4e4f",
-##     "5b5526e4db89c9ec",
-##     "8097086080ae3287",
-##     "d47ef3d8ec31d3ef",
-##     "d706a800daecd5a7",
-##     "a7d2856a03ed8f37",
-##     "f6783fb93bf0da90",
-## ]
-## short_externs = [
 ##     "75e60b79da774513",
 ##     "575bc6f23bb0e968",
 ##     "a8788b2dd00e8777",
@@ -23524,7 +22805,6 @@ COPY --link --from=dep-n-deranged-0.5.5-e975eae9fcfe2f6e /tmp/clis-binsider_0-3-
 
 ## this = "e975eae9fcfe2f6e"
 ## deps = ["e64a19be6d4ec013"]
-## short_externs = ["e64a19be6d4ec013"]
 ## writes = [
 ##     "deranged-e975eae9fcfe2f6e.d",
 ##     "libderanged-e975eae9fcfe2f6e.rlib",
@@ -24193,10 +23473,6 @@ COPY --link --from=dep-n-time-macros-0.2.24-928bd56556ac71a6 /tmp/clis-binsider_
 ##     "56638b8335d08a08",
 ##     "70ad37177a31a4b7",
 ## ]
-## short_externs = [
-##     "56638b8335d08a08",
-##     "70ad37177a31a4b7",
-## ]
 ## writes = [
 ##     "libtime_macros-928bd56556ac71a6.so",
 ##     "time_macros-928bd56556ac71a6.d",
@@ -24334,18 +23610,6 @@ COPY --link --from=dep-n-time-0.3.44-ba1850cdb66d6728 /tmp/clis-binsider_0-3-0/r
 
 ## this = "ba1850cdb66d6728"
 ## deps = [
-##     "e975eae9fcfe2f6e",
-##     "e64a19be6d4ec013",
-##     "69b00326e9a10f07",
-##     "015cac199e93641a",
-##     "0dc06332281b1d1e",
-##     "da62e1a72e26635a",
-##     "6b511e8369ee2b6b",
-##     "928bd56556ac71a6",
-##     "56638b8335d08a08",
-##     "70ad37177a31a4b7",
-## ]
-## short_externs = [
 ##     "e975eae9fcfe2f6e",
 ##     "e64a19be6d4ec013",
 ##     "69b00326e9a10f07",
@@ -24585,21 +23849,6 @@ COPY --link --from=dep-n-simplelog-0.12.2-1a6b8c42c9d86990 /tmp/clis-binsider_0-
 
 ## this = "1a6b8c42c9d86990"
 ## deps = [
-##     "27ee29cc72525df6",
-##     "7722dfeb6e0096bb",
-##     "ba1850cdb66d6728",
-##     "e975eae9fcfe2f6e",
-##     "e64a19be6d4ec013",
-##     "69b00326e9a10f07",
-##     "015cac199e93641a",
-##     "0dc06332281b1d1e",
-##     "da62e1a72e26635a",
-##     "6b511e8369ee2b6b",
-##     "928bd56556ac71a6",
-##     "56638b8335d08a08",
-##     "70ad37177a31a4b7",
-## ]
-## short_externs = [
 ##     "27ee29cc72525df6",
 ##     "7722dfeb6e0096bb",
 ##     "ba1850cdb66d6728",
@@ -24856,12 +24105,6 @@ COPY --link --from=dep-n-thiserror-impl-2.0.17-39992d12d8397c0f /tmp/clis-binsid
 ##     "33f66cd0015b4e4f",
 ##     "5b5526e4db89c9ec",
 ## ]
-## short_externs = [
-##     "c65c53ccfc4d16eb",
-##     "f00842f45d7e2fde",
-##     "33f66cd0015b4e4f",
-##     "5b5526e4db89c9ec",
-## ]
 ## writes = [
 ##     "libthiserror_impl-39992d12d8397c0f.so",
 ##     "thiserror_impl-39992d12d8397c0f.d",
@@ -24995,13 +24238,6 @@ COPY --link --from=dep-n-thiserror-2.0.17-e3266ae07b4b82f0 /tmp/clis-binsider_0-
 
 ## this = "e3266ae07b4b82f0"
 ## deps = [
-##     "39992d12d8397c0f",
-##     "c65c53ccfc4d16eb",
-##     "f00842f45d7e2fde",
-##     "33f66cd0015b4e4f",
-##     "5b5526e4db89c9ec",
-## ]
-## short_externs = [
 ##     "39992d12d8397c0f",
 ##     "c65c53ccfc4d16eb",
 ##     "f00842f45d7e2fde",
@@ -25232,52 +24468,6 @@ COPY --link --from=dep-n-termbg-0.6.2-c94531d8a31fa653 /tmp/clis-binsider_0-3-0/
 
 ## this = "c94531d8a31fa653"
 ## deps = [
-##     "411647e82b0eba9d",
-##     "f4de441526a3a0e1",
-##     "d029cc97b9ccc1f2",
-##     "015cac199e93641a",
-##     "27ee29cc72525df6",
-##     "937efa7b56f71b6c",
-##     "c8582c37391e4a8c",
-##     "a701d84b146739da",
-##     "f5d7989d6bdef15d",
-##     "75e60b79da774513",
-##     "ae4f75357e556562",
-##     "8b10becad79ad57a",
-##     "9bb2a9d768b55ca7",
-##     "dd71e14b27262e89",
-##     "328d94993eb73c64",
-##     "419af6a259833b56",
-##     "c37b8813585ec3b9",
-##     "575bc6f23bb0e968",
-##     "a8788b2dd00e8777",
-##     "79175329501f4916",
-##     "e83e846865289db4",
-##     "c65c53ccfc4d16eb",
-##     "f00842f45d7e2fde",
-##     "33f66cd0015b4e4f",
-##     "5b5526e4db89c9ec",
-##     "8097086080ae3287",
-##     "d47ef3d8ec31d3ef",
-##     "d706a800daecd5a7",
-##     "a7d2856a03ed8f37",
-##     "f6783fb93bf0da90",
-##     "1a6b8c42c9d86990",
-##     "7722dfeb6e0096bb",
-##     "ba1850cdb66d6728",
-##     "e975eae9fcfe2f6e",
-##     "e64a19be6d4ec013",
-##     "69b00326e9a10f07",
-##     "0dc06332281b1d1e",
-##     "da62e1a72e26635a",
-##     "6b511e8369ee2b6b",
-##     "928bd56556ac71a6",
-##     "56638b8335d08a08",
-##     "70ad37177a31a4b7",
-##     "e3266ae07b4b82f0",
-##     "39992d12d8397c0f",
-## ]
-## short_externs = [
 ##     "411647e82b0eba9d",
 ##     "f4de441526a3a0e1",
 ##     "d029cc97b9ccc1f2",
@@ -26084,11 +25274,6 @@ COPY --link --from=dep-n-textwrap-0.16.2-6831a79d202b5f60 /tmp/clis-binsider_0-3
 ##     "c19f7152a2ccd55e",
 ##     "f6f32a8a5a2fe2b5",
 ## ]
-## short_externs = [
-##     "fc662e929ec5345b",
-##     "c19f7152a2ccd55e",
-##     "f6f32a8a5a2fe2b5",
-## ]
 ## writes = [
 ##     "libtextwrap-6831a79d202b5f60.rlib",
 ##     "libtextwrap-6831a79d202b5f60.rmeta",
@@ -26246,18 +25431,6 @@ COPY --link --from=dep-n-derive_builder_core-0.20.2-0f2430de742f266a /tmp/clis-b
 
 ## this = "0f2430de742f266a"
 ## deps = [
-##     "949f672f1de23f30",
-##     "b068be7b97c188e1",
-##     "498ad1309b878047",
-##     "40d25c5ef07f6027",
-##     "c65c53ccfc4d16eb",
-##     "f00842f45d7e2fde",
-##     "33f66cd0015b4e4f",
-##     "c308dc16fc5a3763",
-##     "5b5526e4db89c9ec",
-##     "dfbb9a53b0de0f84",
-## ]
-## short_externs = [
 ##     "949f672f1de23f30",
 ##     "b068be7b97c188e1",
 ##     "498ad1309b878047",
@@ -26504,19 +25677,6 @@ COPY --link --from=dep-n-derive_builder_macro-0.20.2-c057befa1d5630e0 /tmp/clis-
 ##     "5b5526e4db89c9ec",
 ##     "dfbb9a53b0de0f84",
 ## ]
-## short_externs = [
-##     "0f2430de742f266a",
-##     "949f672f1de23f30",
-##     "b068be7b97c188e1",
-##     "498ad1309b878047",
-##     "40d25c5ef07f6027",
-##     "c65c53ccfc4d16eb",
-##     "f00842f45d7e2fde",
-##     "33f66cd0015b4e4f",
-##     "c308dc16fc5a3763",
-##     "5b5526e4db89c9ec",
-##     "dfbb9a53b0de0f84",
-## ]
 ## writes = [
 ##     "derive_builder_macro-c057befa1d5630e0.d",
 ##     "libderive_builder_macro-c057befa1d5630e0.so",
@@ -26690,20 +25850,6 @@ COPY --link --from=dep-n-derive_builder-0.20.2-8ec7fb184bbc354d /tmp/clis-binsid
 
 ## this = "8ec7fb184bbc354d"
 ## deps = [
-##     "c057befa1d5630e0",
-##     "0f2430de742f266a",
-##     "949f672f1de23f30",
-##     "b068be7b97c188e1",
-##     "498ad1309b878047",
-##     "40d25c5ef07f6027",
-##     "c65c53ccfc4d16eb",
-##     "f00842f45d7e2fde",
-##     "33f66cd0015b4e4f",
-##     "c308dc16fc5a3763",
-##     "5b5526e4db89c9ec",
-##     "dfbb9a53b0de0f84",
-## ]
-## short_externs = [
 ##     "c057befa1d5630e0",
 ##     "0f2430de742f266a",
 ##     "949f672f1de23f30",
@@ -27103,62 +26249,6 @@ COPY --link --from=dep-n-tui-big-text-0.6.1-76af8f3ef6569b9c /tmp/clis-binsider_
 
 ## this = "76af8f3ef6569b9c"
 ## deps = [
-##     "8ec7fb184bbc354d",
-##     "c057befa1d5630e0",
-##     "0f2430de742f266a",
-##     "949f672f1de23f30",
-##     "b068be7b97c188e1",
-##     "498ad1309b878047",
-##     "40d25c5ef07f6027",
-##     "c65c53ccfc4d16eb",
-##     "f00842f45d7e2fde",
-##     "33f66cd0015b4e4f",
-##     "c308dc16fc5a3763",
-##     "5b5526e4db89c9ec",
-##     "dfbb9a53b0de0f84",
-##     "5318e1d4f9f6db45",
-##     "ae8a8aa9cae3b02e",
-##     "2f7cbff5a773db3c",
-##     "9f53c963dc6f01ee",
-##     "f4de441526a3a0e1",
-##     "71d4e074bc44e409",
-##     "124eb5757d8f47c0",
-##     "8decb7bcf8b14c00",
-##     "dda15780a2e006fc",
-##     "75e60b79da774513",
-##     "69b00326e9a10f07",
-##     "18f3925ee0c911f3",
-##     "59c5c7af2d8c2ea3",
-##     "411647e82b0eba9d",
-##     "d029cc97b9ccc1f2",
-##     "015cac199e93641a",
-##     "27ee29cc72525df6",
-##     "937efa7b56f71b6c",
-##     "c8582c37391e4a8c",
-##     "a701d84b146739da",
-##     "f5d7989d6bdef15d",
-##     "ae4f75357e556562",
-##     "8b10becad79ad57a",
-##     "9bb2a9d768b55ca7",
-##     "dd71e14b27262e89",
-##     "328d94993eb73c64",
-##     "419af6a259833b56",
-##     "334acb4362dadd9e",
-##     "8a0472f4f1506ef3",
-##     "cf204e36697e5bdd",
-##     "0e481a60c7b29f2f",
-##     "237920045c805089",
-##     "377c55d6e7e3018c",
-##     "1758dc1be00f4cda",
-##     "9a94605722b759d8",
-##     "1c858e72c37c71dc",
-##     "5a43962ca82ce156",
-##     "80ea6e95a9b9cb95",
-##     "c3cf906c5a4083dc",
-##     "dee45c7dcb8acc8c",
-##     "4fbc28c59bebd11c",
-## ]
-## short_externs = [
 ##     "8ec7fb184bbc354d",
 ##     "c057befa1d5630e0",
 ##     "0f2430de742f266a",
@@ -27976,58 +27066,6 @@ COPY --link --from=dep-n-ratatui-0.29.0-f29b3bfa6e2ffbd4 /tmp/clis-binsider_0-3-
 ##     "4fbc28c59bebd11c",
 ##     "f6f32a8a5a2fe2b5",
 ## ]
-## short_externs = [
-##     "f4de441526a3a0e1",
-##     "71d4e074bc44e409",
-##     "124eb5757d8f47c0",
-##     "8decb7bcf8b14c00",
-##     "dda15780a2e006fc",
-##     "75e60b79da774513",
-##     "69b00326e9a10f07",
-##     "18f3925ee0c911f3",
-##     "59c5c7af2d8c2ea3",
-##     "411647e82b0eba9d",
-##     "d029cc97b9ccc1f2",
-##     "015cac199e93641a",
-##     "27ee29cc72525df6",
-##     "937efa7b56f71b6c",
-##     "c8582c37391e4a8c",
-##     "a701d84b146739da",
-##     "f5d7989d6bdef15d",
-##     "ae4f75357e556562",
-##     "8b10becad79ad57a",
-##     "9bb2a9d768b55ca7",
-##     "dd71e14b27262e89",
-##     "328d94993eb73c64",
-##     "419af6a259833b56",
-##     "8a0472f4f1506ef3",
-##     "334acb4362dadd9e",
-##     "949f672f1de23f30",
-##     "b068be7b97c188e1",
-##     "498ad1309b878047",
-##     "40d25c5ef07f6027",
-##     "c65c53ccfc4d16eb",
-##     "f00842f45d7e2fde",
-##     "33f66cd0015b4e4f",
-##     "c308dc16fc5a3763",
-##     "5b5526e4db89c9ec",
-##     "dfbb9a53b0de0f84",
-##     "ae8a8aa9cae3b02e",
-##     "2f7cbff5a773db3c",
-##     "cf204e36697e5bdd",
-##     "0e481a60c7b29f2f",
-##     "237920045c805089",
-##     "377c55d6e7e3018c",
-##     "1758dc1be00f4cda",
-##     "9a94605722b759d8",
-##     "1c858e72c37c71dc",
-##     "5a43962ca82ce156",
-##     "80ea6e95a9b9cb95",
-##     "c3cf906c5a4083dc",
-##     "dee45c7dcb8acc8c",
-##     "4fbc28c59bebd11c",
-##     "f6f32a8a5a2fe2b5",
-## ]
 ## writes = [
 ##     "libratatui-f29b3bfa6e2ffbd4.rlib",
 ##     "libratatui-f29b3bfa6e2ffbd4.rmeta",
@@ -28768,59 +27806,6 @@ COPY --link --from=dep-n-tui-input-0.11.1-4b18436362607fc6 /tmp/clis-binsider_0-
 ##     "4fbc28c59bebd11c",
 ##     "f6f32a8a5a2fe2b5",
 ## ]
-## short_externs = [
-##     "f29b3bfa6e2ffbd4",
-##     "f4de441526a3a0e1",
-##     "71d4e074bc44e409",
-##     "124eb5757d8f47c0",
-##     "8decb7bcf8b14c00",
-##     "dda15780a2e006fc",
-##     "75e60b79da774513",
-##     "69b00326e9a10f07",
-##     "18f3925ee0c911f3",
-##     "59c5c7af2d8c2ea3",
-##     "411647e82b0eba9d",
-##     "d029cc97b9ccc1f2",
-##     "015cac199e93641a",
-##     "27ee29cc72525df6",
-##     "937efa7b56f71b6c",
-##     "c8582c37391e4a8c",
-##     "a701d84b146739da",
-##     "f5d7989d6bdef15d",
-##     "ae4f75357e556562",
-##     "8b10becad79ad57a",
-##     "9bb2a9d768b55ca7",
-##     "dd71e14b27262e89",
-##     "328d94993eb73c64",
-##     "419af6a259833b56",
-##     "8a0472f4f1506ef3",
-##     "334acb4362dadd9e",
-##     "949f672f1de23f30",
-##     "b068be7b97c188e1",
-##     "498ad1309b878047",
-##     "40d25c5ef07f6027",
-##     "c65c53ccfc4d16eb",
-##     "f00842f45d7e2fde",
-##     "33f66cd0015b4e4f",
-##     "c308dc16fc5a3763",
-##     "5b5526e4db89c9ec",
-##     "dfbb9a53b0de0f84",
-##     "ae8a8aa9cae3b02e",
-##     "2f7cbff5a773db3c",
-##     "cf204e36697e5bdd",
-##     "0e481a60c7b29f2f",
-##     "237920045c805089",
-##     "377c55d6e7e3018c",
-##     "1758dc1be00f4cda",
-##     "9a94605722b759d8",
-##     "1c858e72c37c71dc",
-##     "5a43962ca82ce156",
-##     "80ea6e95a9b9cb95",
-##     "c3cf906c5a4083dc",
-##     "dee45c7dcb8acc8c",
-##     "4fbc28c59bebd11c",
-##     "f6f32a8a5a2fe2b5",
-## ]
 ## writes = [
 ##     "libtui_input-4b18436362607fc6.rlib",
 ##     "libtui_input-4b18436362607fc6.rmeta",
@@ -29422,12 +28407,6 @@ COPY --link --from=dep-n-derive-getters-0.5.0-3f0193084cf293a5 /tmp/clis-binside
 ##     "33f66cd0015b4e4f",
 ##     "5b5526e4db89c9ec",
 ## ]
-## short_externs = [
-##     "c65c53ccfc4d16eb",
-##     "f00842f45d7e2fde",
-##     "33f66cd0015b4e4f",
-##     "5b5526e4db89c9ec",
-## ]
 ## writes = [
 ##     "derive_getters-3f0193084cf293a5.d",
 ##     "libderive_getters-3f0193084cf293a5.so",
@@ -29564,18 +28543,6 @@ COPY --link --from=dep-n-derive_setters-0.1.8-4ddb721ba29c4021 /tmp/clis-binside
 
 ## this = "4ddb721ba29c4021"
 ## deps = [
-##     "949f672f1de23f30",
-##     "b068be7b97c188e1",
-##     "498ad1309b878047",
-##     "40d25c5ef07f6027",
-##     "c65c53ccfc4d16eb",
-##     "f00842f45d7e2fde",
-##     "33f66cd0015b4e4f",
-##     "c308dc16fc5a3763",
-##     "5b5526e4db89c9ec",
-##     "dfbb9a53b0de0f84",
-## ]
-## short_externs = [
 ##     "949f672f1de23f30",
 ##     "b068be7b97c188e1",
 ##     "498ad1309b878047",
@@ -29844,62 +28811,6 @@ COPY --link --from=dep-n-tui-popup-0.5.1-9d8835c7538b57bc /tmp/clis-binsider_0-3
 
 ## this = "9d8835c7538b57bc"
 ## deps = [
-##     "3f0193084cf293a5",
-##     "c65c53ccfc4d16eb",
-##     "f00842f45d7e2fde",
-##     "33f66cd0015b4e4f",
-##     "5b5526e4db89c9ec",
-##     "4ddb721ba29c4021",
-##     "949f672f1de23f30",
-##     "b068be7b97c188e1",
-##     "498ad1309b878047",
-##     "40d25c5ef07f6027",
-##     "c308dc16fc5a3763",
-##     "dfbb9a53b0de0f84",
-##     "6410498f71d4db67",
-##     "f416a32b758c538a",
-##     "9f53c963dc6f01ee",
-##     "f4de441526a3a0e1",
-##     "71d4e074bc44e409",
-##     "124eb5757d8f47c0",
-##     "8decb7bcf8b14c00",
-##     "dda15780a2e006fc",
-##     "75e60b79da774513",
-##     "69b00326e9a10f07",
-##     "18f3925ee0c911f3",
-##     "59c5c7af2d8c2ea3",
-##     "411647e82b0eba9d",
-##     "d029cc97b9ccc1f2",
-##     "015cac199e93641a",
-##     "27ee29cc72525df6",
-##     "937efa7b56f71b6c",
-##     "c8582c37391e4a8c",
-##     "a701d84b146739da",
-##     "f5d7989d6bdef15d",
-##     "ae4f75357e556562",
-##     "8b10becad79ad57a",
-##     "9bb2a9d768b55ca7",
-##     "dd71e14b27262e89",
-##     "328d94993eb73c64",
-##     "419af6a259833b56",
-##     "334acb4362dadd9e",
-##     "8a0472f4f1506ef3",
-##     "ae8a8aa9cae3b02e",
-##     "2f7cbff5a773db3c",
-##     "cf204e36697e5bdd",
-##     "0e481a60c7b29f2f",
-##     "237920045c805089",
-##     "377c55d6e7e3018c",
-##     "1758dc1be00f4cda",
-##     "9a94605722b759d8",
-##     "1c858e72c37c71dc",
-##     "5a43962ca82ce156",
-##     "80ea6e95a9b9cb95",
-##     "c3cf906c5a4083dc",
-##     "dee45c7dcb8acc8c",
-##     "4fbc28c59bebd11c",
-## ]
-## short_externs = [
 ##     "3f0193084cf293a5",
 ##     "c65c53ccfc4d16eb",
 ##     "f00842f45d7e2fde",
@@ -30564,7 +29475,6 @@ COPY --link --from=dep-n-form_urlencoded-1.2.2-25a80c59e33f7172 /tmp/clis-binsid
 
 ## this = "25a80c59e33f7172"
 ## deps = ["a7e40514d2e8c918"]
-## short_externs = ["a7e40514d2e8c918"]
 ## writes = [
 ##     "form_urlencoded-25a80c59e33f7172.d",
 ##     "libform_urlencoded-25a80c59e33f7172.rlib",
@@ -30688,12 +29598,6 @@ COPY --link --from=dep-n-displaydoc-0.2.5-d36e06f4d2973ebf /tmp/clis-binsider_0-
 
 ## this = "d36e06f4d2973ebf"
 ## deps = [
-##     "c65c53ccfc4d16eb",
-##     "f00842f45d7e2fde",
-##     "33f66cd0015b4e4f",
-##     "5b5526e4db89c9ec",
-## ]
-## short_externs = [
 ##     "c65c53ccfc4d16eb",
 ##     "f00842f45d7e2fde",
 ##     "33f66cd0015b4e4f",
@@ -30948,12 +29852,6 @@ COPY --link --from=dep-n-synstructure-0.13.2-02bd51472597bbaf /tmp/clis-binsider
 ##     "33f66cd0015b4e4f",
 ##     "5b5526e4db89c9ec",
 ## ]
-## short_externs = [
-##     "c65c53ccfc4d16eb",
-##     "f00842f45d7e2fde",
-##     "33f66cd0015b4e4f",
-##     "5b5526e4db89c9ec",
-## ]
 ## writes = [
 ##     "libsynstructure-02bd51472597bbaf.rlib",
 ##     "libsynstructure-02bd51472597bbaf.rmeta",
@@ -31113,13 +30011,6 @@ COPY --link --from=dep-n-yoke-derive-0.8.1-1de3bafc873f1216 /tmp/clis-binsider_0
 ##     "5b5526e4db89c9ec",
 ##     "02bd51472597bbaf",
 ## ]
-## short_externs = [
-##     "c65c53ccfc4d16eb",
-##     "f00842f45d7e2fde",
-##     "33f66cd0015b4e4f",
-##     "5b5526e4db89c9ec",
-##     "02bd51472597bbaf",
-## ]
 ## writes = [
 ##     "libyoke_derive-1de3bafc873f1216.so",
 ##     "yoke_derive-1de3bafc873f1216.d",
@@ -31256,13 +30147,6 @@ COPY --link --from=dep-n-zerofrom-derive-0.1.6-5d644a9ac26785bc /tmp/clis-binsid
 
 ## this = "5d644a9ac26785bc"
 ## deps = [
-##     "c65c53ccfc4d16eb",
-##     "f00842f45d7e2fde",
-##     "33f66cd0015b4e4f",
-##     "5b5526e4db89c9ec",
-##     "02bd51472597bbaf",
-## ]
-## short_externs = [
 ##     "c65c53ccfc4d16eb",
 ##     "f00842f45d7e2fde",
 ##     "33f66cd0015b4e4f",
@@ -31406,14 +30290,6 @@ COPY --link --from=dep-n-zerofrom-0.1.6-c0c878e67aa70949 /tmp/clis-binsider_0-3-
 
 ## this = "c0c878e67aa70949"
 ## deps = [
-##     "5d644a9ac26785bc",
-##     "c65c53ccfc4d16eb",
-##     "f00842f45d7e2fde",
-##     "33f66cd0015b4e4f",
-##     "5b5526e4db89c9ec",
-##     "02bd51472597bbaf",
-## ]
-## short_externs = [
 ##     "5d644a9ac26785bc",
 ##     "c65c53ccfc4d16eb",
 ##     "f00842f45d7e2fde",
@@ -31575,17 +30451,6 @@ COPY --link --from=dep-n-yoke-0.8.1-285be9cc2c80e099 /tmp/clis-binsider_0-3-0/re
 
 ## this = "285be9cc2c80e099"
 ## deps = [
-##     "60b88b2013bc3630",
-##     "1de3bafc873f1216",
-##     "c65c53ccfc4d16eb",
-##     "f00842f45d7e2fde",
-##     "33f66cd0015b4e4f",
-##     "5b5526e4db89c9ec",
-##     "02bd51472597bbaf",
-##     "c0c878e67aa70949",
-##     "5d644a9ac26785bc",
-## ]
-## short_externs = [
 ##     "60b88b2013bc3630",
 ##     "1de3bafc873f1216",
 ##     "c65c53ccfc4d16eb",
@@ -31793,12 +30658,6 @@ COPY --link --from=dep-n-zerovec-derive-0.11.2-9981f1bc583270fe /tmp/clis-binsid
 ##     "33f66cd0015b4e4f",
 ##     "5b5526e4db89c9ec",
 ## ]
-## short_externs = [
-##     "c65c53ccfc4d16eb",
-##     "f00842f45d7e2fde",
-##     "33f66cd0015b4e4f",
-##     "5b5526e4db89c9ec",
-## ]
 ## writes = [
 ##     "libzerovec_derive-9981f1bc583270fe.so",
 ##     "zerovec_derive-9981f1bc583270fe.d",
@@ -31944,19 +30803,6 @@ COPY --link --from=dep-n-zerovec-0.11.5-dcb53a3e2fd7882e /tmp/clis-binsider_0-3-
 
 ## this = "dcb53a3e2fd7882e"
 ## deps = [
-##     "285be9cc2c80e099",
-##     "60b88b2013bc3630",
-##     "1de3bafc873f1216",
-##     "c65c53ccfc4d16eb",
-##     "f00842f45d7e2fde",
-##     "33f66cd0015b4e4f",
-##     "5b5526e4db89c9ec",
-##     "02bd51472597bbaf",
-##     "c0c878e67aa70949",
-##     "5d644a9ac26785bc",
-##     "9981f1bc583270fe",
-## ]
-## short_externs = [
 ##     "285be9cc2c80e099",
 ##     "60b88b2013bc3630",
 ##     "1de3bafc873f1216",
@@ -32193,20 +31039,6 @@ COPY --link --from=dep-n-potential_utf-0.1.4-ca4422846eea701e /tmp/clis-binsider
 
 ## this = "ca4422846eea701e"
 ## deps = [
-##     "dcb53a3e2fd7882e",
-##     "285be9cc2c80e099",
-##     "60b88b2013bc3630",
-##     "1de3bafc873f1216",
-##     "c65c53ccfc4d16eb",
-##     "f00842f45d7e2fde",
-##     "33f66cd0015b4e4f",
-##     "5b5526e4db89c9ec",
-##     "02bd51472597bbaf",
-##     "c0c878e67aa70949",
-##     "5d644a9ac26785bc",
-##     "9981f1bc583270fe",
-## ]
-## short_externs = [
 ##     "dcb53a3e2fd7882e",
 ##     "285be9cc2c80e099",
 ##     "60b88b2013bc3630",
@@ -32457,22 +31289,6 @@ COPY --link --from=dep-n-icu_collections-2.1.1-355340594fa783f1 /tmp/clis-binsid
 
 ## this = "355340594fa783f1"
 ## deps = [
-##     "d36e06f4d2973ebf",
-##     "c65c53ccfc4d16eb",
-##     "f00842f45d7e2fde",
-##     "33f66cd0015b4e4f",
-##     "5b5526e4db89c9ec",
-##     "ca4422846eea701e",
-##     "dcb53a3e2fd7882e",
-##     "285be9cc2c80e099",
-##     "60b88b2013bc3630",
-##     "1de3bafc873f1216",
-##     "02bd51472597bbaf",
-##     "c0c878e67aa70949",
-##     "5d644a9ac26785bc",
-##     "9981f1bc583270fe",
-## ]
-## short_externs = [
 ##     "d36e06f4d2973ebf",
 ##     "c65c53ccfc4d16eb",
 ##     "f00842f45d7e2fde",
@@ -32968,21 +31784,6 @@ COPY --link --from=dep-n-tinystr-0.8.2-5d6c80b8b74f4415 /tmp/clis-binsider_0-3-0
 ##     "5d644a9ac26785bc",
 ##     "9981f1bc583270fe",
 ## ]
-## short_externs = [
-##     "d36e06f4d2973ebf",
-##     "c65c53ccfc4d16eb",
-##     "f00842f45d7e2fde",
-##     "33f66cd0015b4e4f",
-##     "5b5526e4db89c9ec",
-##     "dcb53a3e2fd7882e",
-##     "285be9cc2c80e099",
-##     "60b88b2013bc3630",
-##     "1de3bafc873f1216",
-##     "02bd51472597bbaf",
-##     "c0c878e67aa70949",
-##     "5d644a9ac26785bc",
-##     "9981f1bc583270fe",
-## ]
 ## writes = [
 ##     "libtinystr-5d6c80b8b74f4415.rlib",
 ##     "libtinystr-5d6c80b8b74f4415.rmeta",
@@ -33353,24 +32154,6 @@ COPY --link --from=dep-n-icu_locale_core-2.1.1-3372cee6aba9181c /tmp/clis-binsid
 ##     "9981f1bc583270fe",
 ##     "43c5b06d16fbb91f",
 ## ]
-## short_externs = [
-##     "d36e06f4d2973ebf",
-##     "c65c53ccfc4d16eb",
-##     "f00842f45d7e2fde",
-##     "33f66cd0015b4e4f",
-##     "5b5526e4db89c9ec",
-##     "51b49d6e57393b5e",
-##     "5d6c80b8b74f4415",
-##     "dcb53a3e2fd7882e",
-##     "285be9cc2c80e099",
-##     "60b88b2013bc3630",
-##     "1de3bafc873f1216",
-##     "02bd51472597bbaf",
-##     "c0c878e67aa70949",
-##     "5d644a9ac26785bc",
-##     "9981f1bc583270fe",
-##     "43c5b06d16fbb91f",
-## ]
 ## writes = [
 ##     "icu_locale_core-3372cee6aba9181c.d",
 ##     "libicu_locale_core-3372cee6aba9181c.rlib",
@@ -33650,19 +32433,6 @@ COPY --link --from=dep-n-zerotrie-0.2.3-e01aae235f45a5bc /tmp/clis-binsider_0-3-
 ##     "c0c878e67aa70949",
 ##     "5d644a9ac26785bc",
 ## ]
-## short_externs = [
-##     "d36e06f4d2973ebf",
-##     "c65c53ccfc4d16eb",
-##     "f00842f45d7e2fde",
-##     "33f66cd0015b4e4f",
-##     "5b5526e4db89c9ec",
-##     "285be9cc2c80e099",
-##     "60b88b2013bc3630",
-##     "1de3bafc873f1216",
-##     "02bd51472597bbaf",
-##     "c0c878e67aa70949",
-##     "5d644a9ac26785bc",
-## ]
 ## writes = [
 ##     "libzerotrie-e01aae235f45a5bc.rlib",
 ##     "libzerotrie-e01aae235f45a5bc.rmeta",
@@ -33898,26 +32668,6 @@ COPY --link --from=dep-n-icu_provider-2.1.1-25e4ef6a9a726684 /tmp/clis-binsider_
 
 ## this = "25e4ef6a9a726684"
 ## deps = [
-##     "d36e06f4d2973ebf",
-##     "c65c53ccfc4d16eb",
-##     "f00842f45d7e2fde",
-##     "33f66cd0015b4e4f",
-##     "5b5526e4db89c9ec",
-##     "3372cee6aba9181c",
-##     "51b49d6e57393b5e",
-##     "5d6c80b8b74f4415",
-##     "dcb53a3e2fd7882e",
-##     "285be9cc2c80e099",
-##     "60b88b2013bc3630",
-##     "1de3bafc873f1216",
-##     "02bd51472597bbaf",
-##     "c0c878e67aa70949",
-##     "5d644a9ac26785bc",
-##     "9981f1bc583270fe",
-##     "43c5b06d16fbb91f",
-##     "e01aae235f45a5bc",
-## ]
-## short_externs = [
 ##     "d36e06f4d2973ebf",
 ##     "c65c53ccfc4d16eb",
 ##     "f00842f45d7e2fde",
@@ -34247,31 +32997,6 @@ COPY --link --from=dep-n-icu_normalizer-2.1.1-aadb359103d3cffb /tmp/clis-binside
 
 ## this = "aadb359103d3cffb"
 ## deps = [
-##     "355340594fa783f1",
-##     "d36e06f4d2973ebf",
-##     "c65c53ccfc4d16eb",
-##     "f00842f45d7e2fde",
-##     "33f66cd0015b4e4f",
-##     "5b5526e4db89c9ec",
-##     "ca4422846eea701e",
-##     "dcb53a3e2fd7882e",
-##     "285be9cc2c80e099",
-##     "60b88b2013bc3630",
-##     "1de3bafc873f1216",
-##     "02bd51472597bbaf",
-##     "c0c878e67aa70949",
-##     "5d644a9ac26785bc",
-##     "9981f1bc583270fe",
-##     "70316daf3ae79f0e",
-##     "25e4ef6a9a726684",
-##     "3372cee6aba9181c",
-##     "51b49d6e57393b5e",
-##     "5d6c80b8b74f4415",
-##     "43c5b06d16fbb91f",
-##     "e01aae235f45a5bc",
-##     "ae4f75357e556562",
-## ]
-## short_externs = [
 ##     "355340594fa783f1",
 ##     "d36e06f4d2973ebf",
 ##     "c65c53ccfc4d16eb",
@@ -34786,30 +33511,6 @@ COPY --link --from=dep-n-icu_properties-2.1.1-2cf4509a4c9d79c5 /tmp/clis-binside
 ##     "25e4ef6a9a726684",
 ##     "e01aae235f45a5bc",
 ## ]
-## short_externs = [
-##     "355340594fa783f1",
-##     "d36e06f4d2973ebf",
-##     "c65c53ccfc4d16eb",
-##     "f00842f45d7e2fde",
-##     "33f66cd0015b4e4f",
-##     "5b5526e4db89c9ec",
-##     "ca4422846eea701e",
-##     "dcb53a3e2fd7882e",
-##     "285be9cc2c80e099",
-##     "60b88b2013bc3630",
-##     "1de3bafc873f1216",
-##     "02bd51472597bbaf",
-##     "c0c878e67aa70949",
-##     "5d644a9ac26785bc",
-##     "9981f1bc583270fe",
-##     "3372cee6aba9181c",
-##     "51b49d6e57393b5e",
-##     "5d6c80b8b74f4415",
-##     "43c5b06d16fbb91f",
-##     "ef521d097ba1e001",
-##     "25e4ef6a9a726684",
-##     "e01aae235f45a5bc",
-## ]
 ## writes = [
 ##     "icu_properties-2cf4509a4c9d79c5.d",
 ##     "libicu_properties-2cf4509a4c9d79c5.rlib",
@@ -35166,34 +33867,6 @@ COPY --link --from=dep-n-idna_adapter-1.2.1-eee8a4b7b8326b1a /tmp/clis-binsider_
 
 ## this = "eee8a4b7b8326b1a"
 ## deps = [
-##     "aadb359103d3cffb",
-##     "355340594fa783f1",
-##     "d36e06f4d2973ebf",
-##     "c65c53ccfc4d16eb",
-##     "f00842f45d7e2fde",
-##     "33f66cd0015b4e4f",
-##     "5b5526e4db89c9ec",
-##     "ca4422846eea701e",
-##     "dcb53a3e2fd7882e",
-##     "285be9cc2c80e099",
-##     "60b88b2013bc3630",
-##     "1de3bafc873f1216",
-##     "02bd51472597bbaf",
-##     "c0c878e67aa70949",
-##     "5d644a9ac26785bc",
-##     "9981f1bc583270fe",
-##     "70316daf3ae79f0e",
-##     "25e4ef6a9a726684",
-##     "3372cee6aba9181c",
-##     "51b49d6e57393b5e",
-##     "5d6c80b8b74f4415",
-##     "43c5b06d16fbb91f",
-##     "e01aae235f45a5bc",
-##     "ae4f75357e556562",
-##     "2cf4509a4c9d79c5",
-##     "ef521d097ba1e001",
-## ]
-## short_externs = [
 ##     "aadb359103d3cffb",
 ##     "355340594fa783f1",
 ##     "d36e06f4d2973ebf",
@@ -35757,36 +34430,6 @@ COPY --link --from=dep-n-idna-1.1.0-cbfeef2f4ba6268b /tmp/clis-binsider_0-3-0/re
 ##     "ef521d097ba1e001",
 ##     "849cadbe1c4455d9",
 ## ]
-## short_externs = [
-##     "eee8a4b7b8326b1a",
-##     "aadb359103d3cffb",
-##     "355340594fa783f1",
-##     "d36e06f4d2973ebf",
-##     "c65c53ccfc4d16eb",
-##     "f00842f45d7e2fde",
-##     "33f66cd0015b4e4f",
-##     "5b5526e4db89c9ec",
-##     "ca4422846eea701e",
-##     "dcb53a3e2fd7882e",
-##     "285be9cc2c80e099",
-##     "60b88b2013bc3630",
-##     "1de3bafc873f1216",
-##     "02bd51472597bbaf",
-##     "c0c878e67aa70949",
-##     "5d644a9ac26785bc",
-##     "9981f1bc583270fe",
-##     "70316daf3ae79f0e",
-##     "25e4ef6a9a726684",
-##     "3372cee6aba9181c",
-##     "51b49d6e57393b5e",
-##     "5d6c80b8b74f4415",
-##     "43c5b06d16fbb91f",
-##     "e01aae235f45a5bc",
-##     "ae4f75357e556562",
-##     "2cf4509a4c9d79c5",
-##     "ef521d097ba1e001",
-##     "849cadbe1c4455d9",
-## ]
 ## writes = [
 ##     "idna-cbfeef2f4ba6268b.d",
 ##     "libidna-cbfeef2f4ba6268b.rlib",
@@ -36216,41 +34859,6 @@ COPY --link --from=dep-n-url-2.5.7-8accda4a7d08371a /tmp/clis-binsider_0-3-0/rel
 
 ## this = "8accda4a7d08371a"
 ## deps = [
-##     "25a80c59e33f7172",
-##     "a7e40514d2e8c918",
-##     "cbfeef2f4ba6268b",
-##     "eee8a4b7b8326b1a",
-##     "aadb359103d3cffb",
-##     "355340594fa783f1",
-##     "d36e06f4d2973ebf",
-##     "c65c53ccfc4d16eb",
-##     "f00842f45d7e2fde",
-##     "33f66cd0015b4e4f",
-##     "5b5526e4db89c9ec",
-##     "ca4422846eea701e",
-##     "dcb53a3e2fd7882e",
-##     "285be9cc2c80e099",
-##     "60b88b2013bc3630",
-##     "1de3bafc873f1216",
-##     "02bd51472597bbaf",
-##     "c0c878e67aa70949",
-##     "5d644a9ac26785bc",
-##     "9981f1bc583270fe",
-##     "70316daf3ae79f0e",
-##     "25e4ef6a9a726684",
-##     "3372cee6aba9181c",
-##     "51b49d6e57393b5e",
-##     "5d6c80b8b74f4415",
-##     "43c5b06d16fbb91f",
-##     "e01aae235f45a5bc",
-##     "ae4f75357e556562",
-##     "2cf4509a4c9d79c5",
-##     "ef521d097ba1e001",
-##     "849cadbe1c4455d9",
-##     "f78cc236b394a06b",
-##     "91dc898216da4fb0",
-## ]
-## short_externs = [
 ##     "25a80c59e33f7172",
 ##     "a7e40514d2e8c918",
 ##     "cbfeef2f4ba6268b",
@@ -36763,43 +35371,6 @@ COPY --link --from=dep-n-webbrowser-1.0.6-4921e493704cbd66 /tmp/clis-binsider_0-
 
 ## this = "4921e493704cbd66"
 ## deps = [
-##     "27ee29cc72525df6",
-##     "8accda4a7d08371a",
-##     "25a80c59e33f7172",
-##     "a7e40514d2e8c918",
-##     "cbfeef2f4ba6268b",
-##     "eee8a4b7b8326b1a",
-##     "aadb359103d3cffb",
-##     "355340594fa783f1",
-##     "d36e06f4d2973ebf",
-##     "c65c53ccfc4d16eb",
-##     "f00842f45d7e2fde",
-##     "33f66cd0015b4e4f",
-##     "5b5526e4db89c9ec",
-##     "ca4422846eea701e",
-##     "dcb53a3e2fd7882e",
-##     "285be9cc2c80e099",
-##     "60b88b2013bc3630",
-##     "1de3bafc873f1216",
-##     "02bd51472597bbaf",
-##     "c0c878e67aa70949",
-##     "5d644a9ac26785bc",
-##     "9981f1bc583270fe",
-##     "70316daf3ae79f0e",
-##     "25e4ef6a9a726684",
-##     "3372cee6aba9181c",
-##     "51b49d6e57393b5e",
-##     "5d6c80b8b74f4415",
-##     "43c5b06d16fbb91f",
-##     "e01aae235f45a5bc",
-##     "ae4f75357e556562",
-##     "2cf4509a4c9d79c5",
-##     "ef521d097ba1e001",
-##     "849cadbe1c4455d9",
-##     "f78cc236b394a06b",
-##     "91dc898216da4fb0",
-## ]
-## short_externs = [
 ##     "27ee29cc72525df6",
 ##     "8accda4a7d08371a",
 ##     "25a80c59e33f7172",
@@ -37389,12 +35960,6 @@ COPY --link --from=dep-n-which-8.0.0-df16eb942d3512f6 /tmp/clis-binsider_0-3-0/r
 ##     "f4de441526a3a0e1",
 ##     "004444fd6ca40129",
 ## ]
-## short_externs = [
-##     "294abaa641f83b69",
-##     "7d030f49849ec102",
-##     "f4de441526a3a0e1",
-##     "004444fd6ca40129",
-## ]
 ## writes = [
 ##     "libwhich-df16eb942d3512f6.rlib",
 ##     "libwhich-df16eb942d3512f6.rmeta",
@@ -37915,204 +36480,6 @@ COPY --link --from=dep-n-binsider-0.3.0-57082a0a280de00b /tmp/clis-binsider_0-3-
 
 ## this = "57082a0a280de00b"
 ## deps = [
-##     "cd77d544790460cb",
-##     "58bb9043b74c5306",
-##     "446590d7e9e55fe8",
-##     "d72c693e96b456e6",
-##     "9f53c963dc6f01ee",
-##     "f4de441526a3a0e1",
-##     "71d4e074bc44e409",
-##     "124eb5757d8f47c0",
-##     "8decb7bcf8b14c00",
-##     "dda15780a2e006fc",
-##     "75e60b79da774513",
-##     "69b00326e9a10f07",
-##     "18f3925ee0c911f3",
-##     "59c5c7af2d8c2ea3",
-##     "411647e82b0eba9d",
-##     "d029cc97b9ccc1f2",
-##     "015cac199e93641a",
-##     "27ee29cc72525df6",
-##     "937efa7b56f71b6c",
-##     "c8582c37391e4a8c",
-##     "a701d84b146739da",
-##     "f5d7989d6bdef15d",
-##     "ae4f75357e556562",
-##     "8b10becad79ad57a",
-##     "9bb2a9d768b55ca7",
-##     "dd71e14b27262e89",
-##     "328d94993eb73c64",
-##     "419af6a259833b56",
-##     "334acb4362dadd9e",
-##     "949f672f1de23f30",
-##     "b068be7b97c188e1",
-##     "498ad1309b878047",
-##     "40d25c5ef07f6027",
-##     "c65c53ccfc4d16eb",
-##     "f00842f45d7e2fde",
-##     "33f66cd0015b4e4f",
-##     "c308dc16fc5a3763",
-##     "5b5526e4db89c9ec",
-##     "dfbb9a53b0de0f84",
-##     "8a0472f4f1506ef3",
-##     "ae8a8aa9cae3b02e",
-##     "2f7cbff5a773db3c",
-##     "cf204e36697e5bdd",
-##     "0e481a60c7b29f2f",
-##     "237920045c805089",
-##     "377c55d6e7e3018c",
-##     "1758dc1be00f4cda",
-##     "9a94605722b759d8",
-##     "1c858e72c37c71dc",
-##     "5a43962ca82ce156",
-##     "80ea6e95a9b9cb95",
-##     "c3cf906c5a4083dc",
-##     "dee45c7dcb8acc8c",
-##     "4fbc28c59bebd11c",
-##     "673b1ea8421457f7",
-##     "62dbdb24e19a6798",
-##     "610e6fc31d386639",
-##     "a9957c47648323cc",
-##     "464c7b5d1bb75c1c",
-##     "25d6f95ac7166050",
-##     "ad3f80eeed74168f",
-##     "7624e0df862dfe1f",
-##     "5c64281ff3719f6c",
-##     "356197461cd813c8",
-##     "6330deb0bd1f668c",
-##     "234a41adface500e",
-##     "4dfe72483c2407f4",
-##     "f6f32a8a5a2fe2b5",
-##     "425f5f5bea7aea0e",
-##     "fb55c8c1706c1cf3",
-##     "d519fdd1b6004b59",
-##     "fd8333b78f8771af",
-##     "1893f85133986ddc",
-##     "d1f0762a24b06a3e",
-##     "a11e36dd35aeacb7",
-##     "d47ef3d8ec31d3ef",
-##     "0128270153fe60f9",
-##     "485f25491c4f3159",
-##     "e5811f2649650ef8",
-##     "f8497aaf26004854",
-##     "3b69081b69ee7a80",
-##     "413508145855405f",
-##     "97094fd99bcbe118",
-##     "563b33ae52765181",
-##     "7d030f49849ec102",
-##     "004444fd6ca40129",
-##     "e96784057f465db0",
-##     "0d4ef2ff5412e0c0",
-##     "fec0616cecc32d32",
-##     "24067945f7487d10",
-##     "a7e40514d2e8c918",
-##     "38e2625730766b36",
-##     "5aada9d57c9f52a6",
-##     "2c71aa41f30aa5fb",
-##     "737387c58e13eb4f",
-##     "468b66f8459b1d7a",
-##     "ba2b25bb1b7f1285",
-##     "3d29a9a043a9f040",
-##     "8d173dde1e6e6eaa",
-##     "985c18b8999cd518",
-##     "b4f1019f17e2cec5",
-##     "5c5bb704732536ee",
-##     "62522c8d5cefce5c",
-##     "61e4764801f8f8ea",
-##     "daa6b52d7f3909ea",
-##     "296dbfbcb0248ddf",
-##     "5d4b9118bbd95fc8",
-##     "d294e9a3fde8eb9f",
-##     "af97f0dc6a7f6b27",
-##     "b7d2d724162db84c",
-##     "33d6821f194da430",
-##     "543166d220417af1",
-##     "6a8f66799873246d",
-##     "36391bfac96fb88c",
-##     "9d1ffa4c8c51b7c8",
-##     "6410498f71d4db67",
-##     "f416a32b758c538a",
-##     "235a6c98f0ab2de4",
-##     "f3bf7a0461872b99",
-##     "d9316ed9b5a14e0e",
-##     "3acc4b766482c2eb",
-##     "486b3c1c650656c3",
-##     "87e4d2c8afc3d093",
-##     "f78cc236b394a06b",
-##     "91dc898216da4fb0",
-##     "c03f30fcfa21182a",
-##     "dede5a1c687ebe22",
-##     "48d795f6f8ba656c",
-##     "ed0ea63f8b0d1f05",
-##     "a1ed774e9d68f20c",
-##     "a080a022bdb88544",
-##     "c94531d8a31fa653",
-##     "c37b8813585ec3b9",
-##     "575bc6f23bb0e968",
-##     "a8788b2dd00e8777",
-##     "79175329501f4916",
-##     "e83e846865289db4",
-##     "8097086080ae3287",
-##     "d706a800daecd5a7",
-##     "a7d2856a03ed8f37",
-##     "f6783fb93bf0da90",
-##     "1a6b8c42c9d86990",
-##     "7722dfeb6e0096bb",
-##     "ba1850cdb66d6728",
-##     "e975eae9fcfe2f6e",
-##     "e64a19be6d4ec013",
-##     "0dc06332281b1d1e",
-##     "da62e1a72e26635a",
-##     "6b511e8369ee2b6b",
-##     "928bd56556ac71a6",
-##     "56638b8335d08a08",
-##     "70ad37177a31a4b7",
-##     "e3266ae07b4b82f0",
-##     "39992d12d8397c0f",
-##     "6831a79d202b5f60",
-##     "fc662e929ec5345b",
-##     "c19f7152a2ccd55e",
-##     "76af8f3ef6569b9c",
-##     "8ec7fb184bbc354d",
-##     "c057befa1d5630e0",
-##     "0f2430de742f266a",
-##     "5318e1d4f9f6db45",
-##     "4b18436362607fc6",
-##     "f29b3bfa6e2ffbd4",
-##     "9d8835c7538b57bc",
-##     "3f0193084cf293a5",
-##     "4ddb721ba29c4021",
-##     "4921e493704cbd66",
-##     "8accda4a7d08371a",
-##     "25a80c59e33f7172",
-##     "cbfeef2f4ba6268b",
-##     "eee8a4b7b8326b1a",
-##     "aadb359103d3cffb",
-##     "355340594fa783f1",
-##     "d36e06f4d2973ebf",
-##     "ca4422846eea701e",
-##     "dcb53a3e2fd7882e",
-##     "285be9cc2c80e099",
-##     "60b88b2013bc3630",
-##     "1de3bafc873f1216",
-##     "02bd51472597bbaf",
-##     "c0c878e67aa70949",
-##     "5d644a9ac26785bc",
-##     "9981f1bc583270fe",
-##     "70316daf3ae79f0e",
-##     "25e4ef6a9a726684",
-##     "3372cee6aba9181c",
-##     "51b49d6e57393b5e",
-##     "5d6c80b8b74f4415",
-##     "43c5b06d16fbb91f",
-##     "e01aae235f45a5bc",
-##     "2cf4509a4c9d79c5",
-##     "ef521d097ba1e001",
-##     "849cadbe1c4455d9",
-##     "df16eb942d3512f6",
-##     "294abaa641f83b69",
-## ]
-## short_externs = [
 ##     "cd77d544790460cb",
 ##     "58bb9043b74c5306",
 ##     "446590d7e9e55fe8",
@@ -40481,205 +38848,6 @@ COPY --link --from=dep-n-binsider-0.3.0-a8146e490d947a74 /tmp/clis-binsider_0-3-
 
 ## this = "a8146e490d947a74"
 ## deps = [
-##     "cd77d544790460cb",
-##     "58bb9043b74c5306",
-##     "446590d7e9e55fe8",
-##     "d72c693e96b456e6",
-##     "9f53c963dc6f01ee",
-##     "f4de441526a3a0e1",
-##     "71d4e074bc44e409",
-##     "124eb5757d8f47c0",
-##     "8decb7bcf8b14c00",
-##     "dda15780a2e006fc",
-##     "75e60b79da774513",
-##     "69b00326e9a10f07",
-##     "18f3925ee0c911f3",
-##     "59c5c7af2d8c2ea3",
-##     "411647e82b0eba9d",
-##     "d029cc97b9ccc1f2",
-##     "015cac199e93641a",
-##     "27ee29cc72525df6",
-##     "937efa7b56f71b6c",
-##     "c8582c37391e4a8c",
-##     "a701d84b146739da",
-##     "f5d7989d6bdef15d",
-##     "ae4f75357e556562",
-##     "8b10becad79ad57a",
-##     "9bb2a9d768b55ca7",
-##     "dd71e14b27262e89",
-##     "328d94993eb73c64",
-##     "419af6a259833b56",
-##     "334acb4362dadd9e",
-##     "949f672f1de23f30",
-##     "b068be7b97c188e1",
-##     "498ad1309b878047",
-##     "40d25c5ef07f6027",
-##     "c65c53ccfc4d16eb",
-##     "f00842f45d7e2fde",
-##     "33f66cd0015b4e4f",
-##     "c308dc16fc5a3763",
-##     "5b5526e4db89c9ec",
-##     "dfbb9a53b0de0f84",
-##     "8a0472f4f1506ef3",
-##     "ae8a8aa9cae3b02e",
-##     "2f7cbff5a773db3c",
-##     "cf204e36697e5bdd",
-##     "0e481a60c7b29f2f",
-##     "237920045c805089",
-##     "377c55d6e7e3018c",
-##     "1758dc1be00f4cda",
-##     "9a94605722b759d8",
-##     "1c858e72c37c71dc",
-##     "5a43962ca82ce156",
-##     "80ea6e95a9b9cb95",
-##     "c3cf906c5a4083dc",
-##     "dee45c7dcb8acc8c",
-##     "4fbc28c59bebd11c",
-##     "673b1ea8421457f7",
-##     "62dbdb24e19a6798",
-##     "610e6fc31d386639",
-##     "a9957c47648323cc",
-##     "464c7b5d1bb75c1c",
-##     "25d6f95ac7166050",
-##     "ad3f80eeed74168f",
-##     "7624e0df862dfe1f",
-##     "5c64281ff3719f6c",
-##     "356197461cd813c8",
-##     "6330deb0bd1f668c",
-##     "234a41adface500e",
-##     "4dfe72483c2407f4",
-##     "f6f32a8a5a2fe2b5",
-##     "57082a0a280de00b",
-##     "425f5f5bea7aea0e",
-##     "fb55c8c1706c1cf3",
-##     "d519fdd1b6004b59",
-##     "fd8333b78f8771af",
-##     "1893f85133986ddc",
-##     "d1f0762a24b06a3e",
-##     "a11e36dd35aeacb7",
-##     "d47ef3d8ec31d3ef",
-##     "0128270153fe60f9",
-##     "485f25491c4f3159",
-##     "e5811f2649650ef8",
-##     "f8497aaf26004854",
-##     "3b69081b69ee7a80",
-##     "413508145855405f",
-##     "97094fd99bcbe118",
-##     "563b33ae52765181",
-##     "7d030f49849ec102",
-##     "004444fd6ca40129",
-##     "e96784057f465db0",
-##     "0d4ef2ff5412e0c0",
-##     "fec0616cecc32d32",
-##     "24067945f7487d10",
-##     "a7e40514d2e8c918",
-##     "38e2625730766b36",
-##     "5aada9d57c9f52a6",
-##     "2c71aa41f30aa5fb",
-##     "737387c58e13eb4f",
-##     "468b66f8459b1d7a",
-##     "ba2b25bb1b7f1285",
-##     "3d29a9a043a9f040",
-##     "8d173dde1e6e6eaa",
-##     "985c18b8999cd518",
-##     "b4f1019f17e2cec5",
-##     "5c5bb704732536ee",
-##     "62522c8d5cefce5c",
-##     "61e4764801f8f8ea",
-##     "daa6b52d7f3909ea",
-##     "296dbfbcb0248ddf",
-##     "5d4b9118bbd95fc8",
-##     "d294e9a3fde8eb9f",
-##     "af97f0dc6a7f6b27",
-##     "b7d2d724162db84c",
-##     "33d6821f194da430",
-##     "543166d220417af1",
-##     "6a8f66799873246d",
-##     "36391bfac96fb88c",
-##     "9d1ffa4c8c51b7c8",
-##     "6410498f71d4db67",
-##     "f416a32b758c538a",
-##     "235a6c98f0ab2de4",
-##     "f3bf7a0461872b99",
-##     "d9316ed9b5a14e0e",
-##     "3acc4b766482c2eb",
-##     "486b3c1c650656c3",
-##     "87e4d2c8afc3d093",
-##     "f78cc236b394a06b",
-##     "91dc898216da4fb0",
-##     "c03f30fcfa21182a",
-##     "dede5a1c687ebe22",
-##     "48d795f6f8ba656c",
-##     "ed0ea63f8b0d1f05",
-##     "a1ed774e9d68f20c",
-##     "a080a022bdb88544",
-##     "c94531d8a31fa653",
-##     "c37b8813585ec3b9",
-##     "575bc6f23bb0e968",
-##     "a8788b2dd00e8777",
-##     "79175329501f4916",
-##     "e83e846865289db4",
-##     "8097086080ae3287",
-##     "d706a800daecd5a7",
-##     "a7d2856a03ed8f37",
-##     "f6783fb93bf0da90",
-##     "1a6b8c42c9d86990",
-##     "7722dfeb6e0096bb",
-##     "ba1850cdb66d6728",
-##     "e975eae9fcfe2f6e",
-##     "e64a19be6d4ec013",
-##     "0dc06332281b1d1e",
-##     "da62e1a72e26635a",
-##     "6b511e8369ee2b6b",
-##     "928bd56556ac71a6",
-##     "56638b8335d08a08",
-##     "70ad37177a31a4b7",
-##     "e3266ae07b4b82f0",
-##     "39992d12d8397c0f",
-##     "6831a79d202b5f60",
-##     "fc662e929ec5345b",
-##     "c19f7152a2ccd55e",
-##     "76af8f3ef6569b9c",
-##     "8ec7fb184bbc354d",
-##     "c057befa1d5630e0",
-##     "0f2430de742f266a",
-##     "5318e1d4f9f6db45",
-##     "4b18436362607fc6",
-##     "f29b3bfa6e2ffbd4",
-##     "9d8835c7538b57bc",
-##     "3f0193084cf293a5",
-##     "4ddb721ba29c4021",
-##     "4921e493704cbd66",
-##     "8accda4a7d08371a",
-##     "25a80c59e33f7172",
-##     "cbfeef2f4ba6268b",
-##     "eee8a4b7b8326b1a",
-##     "aadb359103d3cffb",
-##     "355340594fa783f1",
-##     "d36e06f4d2973ebf",
-##     "ca4422846eea701e",
-##     "dcb53a3e2fd7882e",
-##     "285be9cc2c80e099",
-##     "60b88b2013bc3630",
-##     "1de3bafc873f1216",
-##     "02bd51472597bbaf",
-##     "c0c878e67aa70949",
-##     "5d644a9ac26785bc",
-##     "9981f1bc583270fe",
-##     "70316daf3ae79f0e",
-##     "25e4ef6a9a726684",
-##     "3372cee6aba9181c",
-##     "51b49d6e57393b5e",
-##     "5d6c80b8b74f4415",
-##     "43c5b06d16fbb91f",
-##     "e01aae235f45a5bc",
-##     "2cf4509a4c9d79c5",
-##     "ef521d097ba1e001",
-##     "849cadbe1c4455d9",
-##     "df16eb942d3512f6",
-##     "294abaa641f83b69",
-## ]
-## short_externs = [
 ##     "cd77d544790460cb",
 ##     "58bb9043b74c5306",
 ##     "446590d7e9e55fe8",

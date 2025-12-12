@@ -266,7 +266,6 @@ COPY --link --from=dep-n-aho-corasick-1.1.3-a01a7f030e27d71e /tmp/clis-ripgrep_1
 
 ## this = "a01a7f030e27d71e"
 ## deps = ["3a40f50ac19c9d2e"]
-## short_externs = ["3a40f50ac19c9d2e"]
 ## writes = [
 ##     "aho_corasick-a01a7f030e27d71e.d",
 ##     "libaho_corasick-a01a7f030e27d71e.rlib",
@@ -507,11 +506,6 @@ COPY --link --from=dep-n-regex-automata-0.4.13-e22c3e2bd8aa6773 /tmp/clis-ripgre
 ##     "3a40f50ac19c9d2e",
 ##     "34711e95edd06069",
 ## ]
-## short_externs = [
-##     "a01a7f030e27d71e",
-##     "3a40f50ac19c9d2e",
-##     "34711e95edd06069",
-## ]
 ## writes = [
 ##     "libregex_automata-e22c3e2bd8aa6773.rlib",
 ##     "libregex_automata-e22c3e2bd8aa6773.rmeta",
@@ -658,12 +652,6 @@ COPY --link --from=dep-n-bstr-1.12.0-d3eea57fb24a933f /tmp/clis-ripgrep_15-1-0/r
 
 ## this = "d3eea57fb24a933f"
 ## deps = [
-##     "3a40f50ac19c9d2e",
-##     "e22c3e2bd8aa6773",
-##     "a01a7f030e27d71e",
-##     "34711e95edd06069",
-## ]
-## short_externs = [
 ##     "3a40f50ac19c9d2e",
 ##     "e22c3e2bd8aa6773",
 ##     "a01a7f030e27d71e",
@@ -941,14 +929,6 @@ COPY --link --from=dep-n-globset-0.4.18-626b3cb378b61839 /tmp/clis-ripgrep_15-1-
 
 ## this = "626b3cb378b61839"
 ## deps = [
-##     "a01a7f030e27d71e",
-##     "3a40f50ac19c9d2e",
-##     "d3eea57fb24a933f",
-##     "e22c3e2bd8aa6773",
-##     "34711e95edd06069",
-##     "961aebfc4598d968",
-## ]
-## short_externs = [
 ##     "a01a7f030e27d71e",
 ##     "3a40f50ac19c9d2e",
 ##     "d3eea57fb24a933f",
@@ -1374,17 +1354,6 @@ COPY --link --from=dep-n-grep-cli-0.1.12-1b7b0003cc5fcc34 /tmp/clis-ripgrep_15-1
 ##     "fda8220236222977",
 ##     "82ca06e8aad1563b",
 ## ]
-## short_externs = [
-##     "d3eea57fb24a933f",
-##     "3a40f50ac19c9d2e",
-##     "e22c3e2bd8aa6773",
-##     "a01a7f030e27d71e",
-##     "34711e95edd06069",
-##     "626b3cb378b61839",
-##     "961aebfc4598d968",
-##     "fda8220236222977",
-##     "82ca06e8aad1563b",
-## ]
 ## writes = [
 ##     "grep_cli-1b7b0003cc5fcc34.d",
 ##     "libgrep_cli-1b7b0003cc5fcc34.rlib",
@@ -1587,7 +1556,6 @@ COPY --link --from=dep-n-grep-matcher-0.1.8-d59a566cc66becf8 /tmp/clis-ripgrep_1
 
 ## this = "d59a566cc66becf8"
 ## deps = ["3a40f50ac19c9d2e"]
-## short_externs = ["3a40f50ac19c9d2e"]
 ## writes = [
 ##     "grep_matcher-d59a566cc66becf8.d",
 ##     "libgrep_matcher-d59a566cc66becf8.rlib",
@@ -1822,7 +1790,6 @@ COPY --link --from=dep-n-encoding_rs-0.8.35-e0d6e4f8a8eb4371 /tmp/clis-ripgrep_1
 
 ## this = "e0d6e4f8a8eb4371"
 ## deps = ["e78ec6df4b56941f"]
-## short_externs = ["e78ec6df4b56941f"]
 ## writes = [
 ##     "encoding_rs-e0d6e4f8a8eb4371.d",
 ##     "libencoding_rs-e0d6e4f8a8eb4371.rlib",
@@ -1982,10 +1949,6 @@ COPY --link --from=dep-n-encoding_rs_io-0.1.7-651f5691fade4e93 /tmp/clis-ripgrep
 ##     "e0d6e4f8a8eb4371",
 ##     "e78ec6df4b56941f",
 ## ]
-## short_externs = [
-##     "e0d6e4f8a8eb4371",
-##     "e78ec6df4b56941f",
-## ]
 ## writes = [
 ##     "encoding_rs_io-651f5691fade4e93.d",
 ##     "libencoding_rs_io-651f5691fade4e93.rlib",
@@ -2116,7 +2079,6 @@ COPY --link --from=dep-n-memmap2-0.9.9-977b6f2f3b8d0f6b /tmp/clis-ripgrep_15-1-0
 
 ## this = "977b6f2f3b8d0f6b"
 ## deps = ["fda8220236222977"]
-## short_externs = ["fda8220236222977"]
 ## writes = [
 ##     "libmemmap2-977b6f2f3b8d0f6b.rlib",
 ##     "libmemmap2-977b6f2f3b8d0f6b.rmeta",
@@ -2260,20 +2222,6 @@ COPY --link --from=dep-n-grep-searcher-0.1.16-82a451c10ca406e4 /tmp/clis-ripgrep
 
 ## this = "82a451c10ca406e4"
 ## deps = [
-##     "d3eea57fb24a933f",
-##     "3a40f50ac19c9d2e",
-##     "e22c3e2bd8aa6773",
-##     "a01a7f030e27d71e",
-##     "34711e95edd06069",
-##     "e0d6e4f8a8eb4371",
-##     "e78ec6df4b56941f",
-##     "651f5691fade4e93",
-##     "d59a566cc66becf8",
-##     "961aebfc4598d968",
-##     "977b6f2f3b8d0f6b",
-##     "fda8220236222977",
-## ]
-## short_externs = [
 ##     "d3eea57fb24a933f",
 ##     "3a40f50ac19c9d2e",
 ##     "e22c3e2bd8aa6773",
@@ -2635,7 +2583,6 @@ COPY --link --from=dep-n-serde-1.0.228-b2e448cd36891534 /tmp/clis-ripgrep_15-1-0
 
 ## this = "b2e448cd36891534"
 ## deps = ["9c5f6198d88ce592"]
-## short_externs = ["9c5f6198d88ce592"]
 ## writes = [
 ##     "libserde-b2e448cd36891534.rlib",
 ##     "libserde-b2e448cd36891534.rmeta",
@@ -2992,12 +2939,6 @@ COPY --link --from=dep-n-serde_json-1.0.145-53d4d749d624f2e4 /tmp/clis-ripgrep_1
 ##     "60ca480634bc0094",
 ##     "9c5f6198d88ce592",
 ## ]
-## short_externs = [
-##     "4ed5967b8bb80767",
-##     "3a40f50ac19c9d2e",
-##     "60ca480634bc0094",
-##     "9c5f6198d88ce592",
-## ]
 ## writes = [
 ##     "libserde_json-53d4d749d624f2e4.rlib",
 ##     "libserde_json-53d4d749d624f2e4.rmeta",
@@ -3191,27 +3132,6 @@ COPY --link --from=dep-n-grep-printer-0.3.1-a2f81f4f0caeb673 /tmp/clis-ripgrep_1
 
 ## this = "a2f81f4f0caeb673"
 ## deps = [
-##     "d3eea57fb24a933f",
-##     "3a40f50ac19c9d2e",
-##     "e22c3e2bd8aa6773",
-##     "a01a7f030e27d71e",
-##     "34711e95edd06069",
-##     "d59a566cc66becf8",
-##     "82a451c10ca406e4",
-##     "e0d6e4f8a8eb4371",
-##     "e78ec6df4b56941f",
-##     "651f5691fade4e93",
-##     "961aebfc4598d968",
-##     "977b6f2f3b8d0f6b",
-##     "fda8220236222977",
-##     "b2e448cd36891534",
-##     "9c5f6198d88ce592",
-##     "53d4d749d624f2e4",
-##     "4ed5967b8bb80767",
-##     "60ca480634bc0094",
-##     "82ca06e8aad1563b",
-## ]
-## short_externs = [
 ##     "d3eea57fb24a933f",
 ##     "3a40f50ac19c9d2e",
 ##     "e22c3e2bd8aa6773",
@@ -3563,15 +3483,6 @@ COPY --link --from=dep-n-grep-regex-0.1.14-45a71c617829751e /tmp/clis-ripgrep_15
 ##     "d59a566cc66becf8",
 ##     "961aebfc4598d968",
 ## ]
-## short_externs = [
-##     "d3eea57fb24a933f",
-##     "3a40f50ac19c9d2e",
-##     "e22c3e2bd8aa6773",
-##     "a01a7f030e27d71e",
-##     "34711e95edd06069",
-##     "d59a566cc66becf8",
-##     "961aebfc4598d968",
-## ]
 ## writes = [
 ##     "grep_regex-45a71c617829751e.d",
 ##     "libgrep_regex-45a71c617829751e.rlib",
@@ -3798,31 +3709,6 @@ COPY --link --from=dep-n-grep-0.4.1-90b5ae48eae28f98 /tmp/clis-ripgrep_15-1-0/re
 
 ## this = "90b5ae48eae28f98"
 ## deps = [
-##     "1b7b0003cc5fcc34",
-##     "d3eea57fb24a933f",
-##     "3a40f50ac19c9d2e",
-##     "e22c3e2bd8aa6773",
-##     "a01a7f030e27d71e",
-##     "34711e95edd06069",
-##     "626b3cb378b61839",
-##     "961aebfc4598d968",
-##     "fda8220236222977",
-##     "82ca06e8aad1563b",
-##     "d59a566cc66becf8",
-##     "a2f81f4f0caeb673",
-##     "82a451c10ca406e4",
-##     "e0d6e4f8a8eb4371",
-##     "e78ec6df4b56941f",
-##     "651f5691fade4e93",
-##     "977b6f2f3b8d0f6b",
-##     "b2e448cd36891534",
-##     "9c5f6198d88ce592",
-##     "53d4d749d624f2e4",
-##     "4ed5967b8bb80767",
-##     "60ca480634bc0094",
-##     "45a71c617829751e",
-## ]
-## short_externs = [
 ##     "1b7b0003cc5fcc34",
 ##     "d3eea57fb24a933f",
 ##     "3a40f50ac19c9d2e",
@@ -4305,7 +4191,6 @@ COPY --link --from=dep-n-crossbeam-epoch-0.9.18-6e1b12b7fe23bc4e /tmp/clis-ripgr
 
 ## this = "6e1b12b7fe23bc4e"
 ## deps = ["8d39f2957943d5af"]
-## short_externs = ["8d39f2957943d5af"]
 ## writes = [
 ##     "crossbeam_epoch-6e1b12b7fe23bc4e.d",
 ##     "libcrossbeam_epoch-6e1b12b7fe23bc4e.rlib",
@@ -4449,10 +4334,6 @@ COPY --link --from=dep-n-crossbeam-deque-0.8.6-bc8564e6a21281ae /tmp/clis-ripgre
 
 ## this = "bc8564e6a21281ae"
 ## deps = [
-##     "6e1b12b7fe23bc4e",
-##     "8d39f2957943d5af",
-## ]
-## short_externs = [
 ##     "6e1b12b7fe23bc4e",
 ##     "8d39f2957943d5af",
 ## ]
@@ -4697,7 +4578,6 @@ COPY --link --from=dep-n-walkdir-2.5.0-0b24d0afda3e5658 /tmp/clis-ripgrep_15-1-0
 
 ## this = "0b24d0afda3e5658"
 ## deps = ["dc83793791eda320"]
-## short_externs = ["dc83793791eda320"]
 ## writes = [
 ##     "libwalkdir-0b24d0afda3e5658.rlib",
 ##     "libwalkdir-0b24d0afda3e5658.rmeta",
@@ -4842,20 +4722,6 @@ COPY --link --from=dep-n-ignore-0.4.24-2cc462596c8f1df7 /tmp/clis-ripgrep_15-1-0
 
 ## this = "2cc462596c8f1df7"
 ## deps = [
-##     "bc8564e6a21281ae",
-##     "6e1b12b7fe23bc4e",
-##     "8d39f2957943d5af",
-##     "626b3cb378b61839",
-##     "a01a7f030e27d71e",
-##     "3a40f50ac19c9d2e",
-##     "d3eea57fb24a933f",
-##     "e22c3e2bd8aa6773",
-##     "34711e95edd06069",
-##     "961aebfc4598d968",
-##     "dc83793791eda320",
-##     "0b24d0afda3e5658",
-## ]
-## short_externs = [
 ##     "bc8564e6a21281ae",
 ##     "6e1b12b7fe23bc4e",
 ##     "8d39f2957943d5af",
@@ -5357,41 +5223,6 @@ COPY --link --from=dep-n-ripgrep-15.1.0-2449a649f34fa613 /tmp/clis-ripgrep_15-1-
 
 ## this = "2449a649f34fa613"
 ## deps = [
-##     "668c6ccec8f0b208",
-##     "d3eea57fb24a933f",
-##     "3a40f50ac19c9d2e",
-##     "e22c3e2bd8aa6773",
-##     "a01a7f030e27d71e",
-##     "34711e95edd06069",
-##     "90b5ae48eae28f98",
-##     "1b7b0003cc5fcc34",
-##     "626b3cb378b61839",
-##     "961aebfc4598d968",
-##     "fda8220236222977",
-##     "82ca06e8aad1563b",
-##     "d59a566cc66becf8",
-##     "a2f81f4f0caeb673",
-##     "82a451c10ca406e4",
-##     "e0d6e4f8a8eb4371",
-##     "e78ec6df4b56941f",
-##     "651f5691fade4e93",
-##     "977b6f2f3b8d0f6b",
-##     "b2e448cd36891534",
-##     "9c5f6198d88ce592",
-##     "53d4d749d624f2e4",
-##     "4ed5967b8bb80767",
-##     "60ca480634bc0094",
-##     "45a71c617829751e",
-##     "2cc462596c8f1df7",
-##     "bc8564e6a21281ae",
-##     "6e1b12b7fe23bc4e",
-##     "8d39f2957943d5af",
-##     "dc83793791eda320",
-##     "0b24d0afda3e5658",
-##     "7a1f13bcc63da167",
-##     "61beeb1f0d30d2c6",
-## ]
-## short_externs = [
 ##     "668c6ccec8f0b208",
 ##     "d3eea57fb24a933f",
 ##     "3a40f50ac19c9d2e",

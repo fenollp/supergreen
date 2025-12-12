@@ -371,7 +371,6 @@ COPY --link --from=dep-n-os_info-3.12.0-2e95c4cd8dc3cea9 /tmp/clis-kani-verifier
 
 ## this = "2e95c4cd8dc3cea9"
 ## deps = ["64be2e589e1b58c5"]
-## short_externs = ["64be2e589e1b58c5"]
 ## writes = [
 ##     "libos_info-2e95c4cd8dc3cea9.rlib",
 ##     "libos_info-2e95c4cd8dc3cea9.rmeta",
@@ -502,12 +501,6 @@ COPY --link --from=dep-n-kani-verifier-0.66.0-dfd373a18b646a92 /tmp/clis-kani-ve
 
 ## this = "dfd373a18b646a92"
 ## deps = [
-##     "8d1dc5ae4f738a51",
-##     "46a3f77b3083d543",
-##     "2e95c4cd8dc3cea9",
-##     "64be2e589e1b58c5",
-## ]
-## short_externs = [
 ##     "8d1dc5ae4f738a51",
 ##     "46a3f77b3083d543",
 ##     "2e95c4cd8dc3cea9",
@@ -677,13 +670,6 @@ COPY --link --from=dep-n-kani-verifier-0.66.0-9e144b88b270f21c /tmp/clis-kani-ve
 
 ## this = "9e144b88b270f21c"
 ## deps = [
-##     "8d1dc5ae4f738a51",
-##     "46a3f77b3083d543",
-##     "dfd373a18b646a92",
-##     "2e95c4cd8dc3cea9",
-##     "64be2e589e1b58c5",
-## ]
-## short_externs = [
 ##     "8d1dc5ae4f738a51",
 ##     "46a3f77b3083d543",
 ##     "dfd373a18b646a92",
