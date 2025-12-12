@@ -720,6 +720,7 @@ all:
 * [ ] [`buildx`: The cache export step hangs](https://github.com/docker/buildx/issues/537)
 * [ ] [`buildkit`: `COPY --rewrite-timestamp ...` to apply SOURCE_DATE_EPOCH build arg value to the timestamps of the files](https://github.com/moby/buildkit/issues/6348)
 * [ ] [`buildkit`: Dockerfile frontend: `ADD --checksum=.. https://..` hides HTTP error](https://github.com/moby/buildkit/issues/6380)
+* [ ] [`buildkit`: Support passing `--local context=FILE`](https://github.com/moby/buildkit/issues/6410)
 
 
 ## En vrac
